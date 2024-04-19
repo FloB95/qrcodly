@@ -40,7 +40,7 @@ export function QrCode({ settings }: QrCodeProps) {
 
   const onDownloadClick = () => {
     if (!qrCode) return;
-    qrCode.download({
+    void qrCode.download({
       extension: fileExt,
     });
   };

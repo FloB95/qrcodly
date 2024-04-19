@@ -22,8 +22,6 @@ export function ColorPicker({
   setBackground: (background: string) => void;
   className?: string;
 }) {
-  console.log("background", background);
-
   const solids = [
     "#E2E2E2",
     "#ff75c3",

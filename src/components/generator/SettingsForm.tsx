@@ -34,13 +34,13 @@ type SettingsFormProps = {
 };
 
 export function SettingsForm({ settings, onChange }: SettingsFormProps) {
-  const form = useForm<z.infer<typeof QrCodeSettingsSchema>>({
+  const form = useForm({
     defaultValues: {
-      background: settings.backgroundOptions.color,
+      background: settings?.backgroundOptions?.color ?? "#ffffff",
     },
   });
 
-  const handleChange = (data: z.infer<typeof QrCodeSettingsSchema>) => {
+  const handleChange = (data: any) => {
     onChange(data);
   };
 
@@ -55,7 +55,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
           name="width"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Width</FormLabel>
+              <FormLabel>Width (px)</FormLabel>
               <FormControl>
                 <Input type="number" placeholder="300" {...field} />
               </FormControl>
@@ -68,7 +68,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
           name="height"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Height</FormLabel>
+              <FormLabel>Height (px)</FormLabel>
               <FormControl>
                 <Input type="number" placeholder="300" {...field} />
               </FormControl>
@@ -81,7 +81,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
           name="margin"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Margin</FormLabel>
+              <FormLabel>Margin (px)</FormLabel>
               <FormControl>
                 <Input type="number" placeholder="0" {...field} />
               </FormControl>
@@ -218,7 +218,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
           name="imageMargin"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Margin</FormLabel>
+              <FormLabel>Margin (px)</FormLabel>
               <FormControl>
                 <Input type="number" placeholder="0" {...field} />
               </FormControl>

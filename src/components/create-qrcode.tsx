@@ -82,7 +82,9 @@ export const CreateQRcode = () => {
           <div className="flex-1">
             <SettingsForm
               settings={qrCodeSettings}
-              onChange={(d) => console.log(d)}
+              onChange={(d) => {
+                console.log("change",d);
+              }}
             />
           </div>
           <div>
