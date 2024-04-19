@@ -1,7 +1,14 @@
 import Link from "next/link";
 import Container from "./ui/container";
+import { type ReactHTMLElement } from "react";
 
-const navigation = [
+interface NavigationItem {
+  name: string;
+  href: string;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+}
+
+const navigation: NavigationItem[] = [
   {
     name: "GitHub",
     href: "https://github.com/FloB95/qrcodly",
