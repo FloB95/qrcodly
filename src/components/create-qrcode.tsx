@@ -26,7 +26,7 @@ export const CreateQRcode = () => {
     width: 300,
     height: 300,
     type: "svg" as DrawType,
-    data: "http://qr-code-styling.com",
+    data: "https://example.com",
     image: "/favicon.ico",
     margin: 10,
     qrOptions: {
@@ -78,7 +78,7 @@ export const CreateQRcode = () => {
   });
 
   return (
-    <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
+    <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow min-h-[600px]">
       <div className="px-4 py-5 sm:px-6">
         <Input placeholder="Enter URL https://example.com/" />
       </div>

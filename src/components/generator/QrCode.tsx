@@ -46,7 +46,7 @@ export default function QrCode({ settings }: QrCodeProps) {
   };
 
   return (
-    <div>
+    <div className="p-12">
       <div className="max-h-[300px] max-w-[300px]" ref={ref} />
       <div className="mt-4 flex justify-between">
         <Select onValueChange={onExtensionChange}>

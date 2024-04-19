@@ -1,17 +1,20 @@
 import { CreateQRcode } from "~/components/create-qrcode";
+import Footer from "~/components/Footer";
 import Container from "~/components/ui/container";
 
 export default async function Home() {
   return (
-    <main className="min-h-screen justify-center bg-gradient-to-br from-zinc-50 to-orange-100">
-      <div className="flex py-2"></div>
+    <main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100">
+      <div>
+        <Container>
+          <h1 className="my-16 text-4xl font-bold text-center">Generate your QR Code</h1>
+          <div className="mb-2">
+            <CreateQRcode />
+          </div>
+        </Container>
+      </div>
 
-      <Container>
-        <h1 className="mt-10 text-4xl font-bold">Generate your QR Code</h1>
-        <div className="mt-10">
-          <CreateQRcode />
-        </div>
-      </Container>
+      <Footer />
     </main>
   );
 }
