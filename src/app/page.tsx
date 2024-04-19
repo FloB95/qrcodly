@@ -1,7 +1,5 @@
-import { CreatePost } from "~/components/create-post";
 import { CreateQRcode } from "~/components/create-qrcode";
 import Container from "~/components/ui/container";
-import { api } from "~/trpc/server";
 
 export default async function Home() {
   return (

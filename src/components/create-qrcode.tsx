@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Input } from "./ui/input";
 import { SettingsForm } from "./generator/SettingsForm";
-import { QrCode } from "./generator/QrCode";
 import {
   type DrawType,
   type TypeNumber,
@@ -14,7 +13,13 @@ import {
   type CornerDotType,
   type Options,
 } from "qr-code-styling";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import dynamic from "next/dynamic";
+
+
+const QrCode = dynamic(() => import("./generator/QrCode"), {
+  ssr: false,
+});
 
 export const CreateQRcode = () => {
   const [qrCodeSettings, setQrCodeSettings] = useState<Options>({
@@ -88,7 +93,9 @@ export const CreateQRcode = () => {
             />
           </div>
           <div>
-            <QrCode settings={qrCodeSettings} />
+            <Suspense fallback={<div>Loading...</div>}>
+              <QrCode settings={qrCodeSettings} />
+            </Suspense>
           </div>
         </div>
       </div>

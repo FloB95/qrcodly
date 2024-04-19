@@ -36,7 +36,16 @@ type SettingsFormProps = {
 export function SettingsForm({ settings, onChange }: SettingsFormProps) {
   const form = useForm({
     defaultValues: {
+      width: settings?.width ?? 300,
+      height: settings?.height ?? 300,
+      margin: settings?.margin ?? 0,
+      dotStyle: settings?.dotsOptions?.type ?? "rounded",
+      cornersSquareStyle: settings?.cornersSquareOptions?.type ?? "extra-rounded",
+      cornersDotStyle: settings?.cornersDotOptions?.type ?? "dot",
       background: settings?.backgroundOptions?.color ?? "#ffffff",
+      hideBackgroundDots: settings?.imageOptions?.hideBackgroundDots ?? true,
+      imageSize: settings?.imageOptions?.imageSize ?? 0.4,
+      imageMargin: settings?.imageOptions?.margin ?? 0,
     },
   });
 

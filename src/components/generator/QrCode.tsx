@@ -16,7 +16,7 @@ export type QrCodeProps = {
   settings: Options;
 };
 
-export function QrCode({ settings }: QrCodeProps) {
+export default function QrCode({ settings }: QrCodeProps) {
   const [options, setOptions] = useState<Options>(settings);
   const [fileExt, setFileExt] = useState<FileExtension>("svg");
   const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));
