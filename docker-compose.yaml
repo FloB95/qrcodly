@@ -1,0 +1,38 @@
+# just for local setup !!!
+
+services:
+  db:
+    container_name: qrcodly-mysql
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: qrcodly
+      MYSQL_USER: qrcodly
+      MYSQL_PASSWORD: qrcodly
+    networks:
+      - qrcodly
+    volumes:
+      - qrcodly-database:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  pma:
+    container_name: qrcodly-pma
+    image: phpmyadmin:latest
+    restart: unless-stopped
+    ports:
+      - 9001:80
+    networks:
+      - qrcodly
+    environment:
+      PMA_HOST: "db"
+      UPLOAD_LIMIT: 1000M
+    depends_on:
+      - db
+
+networks:
+  qrcodly:
+    name: qrcodly
+
+volumes:
+  qrcodly-database:
