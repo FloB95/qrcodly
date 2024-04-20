@@ -16,7 +16,6 @@ import {
 import { Suspense, useState } from "react";
 import dynamic from "next/dynamic";
 
-
 const QrCode = dynamic(() => import("./generator/QrCode"), {
   ssr: false,
 });
@@ -25,10 +24,10 @@ export const CreateQRcode = () => {
   const [qrCodeSettings, setQrCodeSettings] = useState<Options>({
     width: 300,
     height: 300,
-    type: "svg" as DrawType,
-    data: "https://example.com",
-    image: "/favicon.ico",
-    margin: 10,
+    type: "canvas" as DrawType,
+    data: "",
+    image: "/android-chrome-512x512.png",
+    margin: 0,
     qrOptions: {
       typeNumber: 0 as TypeNumber,
       mode: "Byte" as Mode,
@@ -78,27 +77,67 @@ export const CreateQRcode = () => {
   });
 
   return (
-    <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow min-h-[600px]">
-      <div className="px-4 py-5 sm:px-6">
-        <Input placeholder="Enter URL https://example.com/" />
-      </div>
-      <div className="px-4 py-5 sm:p-6">
-        <div className="flex">
-          <div className="flex-1">
-            <SettingsForm
-              settings={qrCodeSettings}
-              onChange={(d) => {
-                console.log("change",d);
-              }}
-            />
-          </div>
-          <div>
-            <Suspense fallback={<div>Loading...</div>}>
-              <QrCode settings={qrCodeSettings} />
-            </Suspense>
+    <>
+      <Input
+        className="mx-auto max-w-[650px] p-6"
+        placeholder="Enter URL https://example.com/"
+        value={qrCodeSettings.data}
+        onChange={(e) => {
+          setQrCodeSettings((prev) => ({
+            ...prev,
+            data: e.target.value,
+          }));
+        }}
+        autoFocus
+      />
+      <div className="mt-12 min-h-[500px] divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
+        <div className="px-4 py-5 sm:p-6">
+          <div className="flex">
+            <div className="flex-1">
+              <SettingsForm
+                settings={qrCodeSettings}
+                onChange={(d) => {
+                  // merge the new settings with the old settings
+                  setQrCodeSettings((prev) => ({
+                    ...prev,
+                    ...d,
+                    qrOptions: {
+                      ...prev.qrOptions,
+                      ...d.qrOptions,
+                    },
+                    imageOptions: {
+                      ...prev.imageOptions,
+                      ...d.imageOptions,
+                    },
+                    dotsOptions: {
+                      ...prev.dotsOptions,
+                      ...d.dotsOptions,
+                    },
+                    backgroundOptions: {
+                      ...prev.backgroundOptions,
+                      ...d.backgroundOptions,
+                    },
+                    cornersSquareOptions: {
+                      ...prev.cornersSquareOptions,
+                      ...d.cornersSquareOptions,
+                    },
+                    cornersDotOptions: {
+                      ...prev.cornersDotOptions,
+                      ...d.cornersDotOptions,
+                    },
+                  }));
+                  console.log(qrCodeSettings);
+                }}
+              />
+            </div>
+            <div>
+              <Suspense fallback={<div>Loading...</div>}>
+                <QrCode settings={qrCodeSettings} />
+              </Suspense>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

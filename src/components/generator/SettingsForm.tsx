@@ -50,7 +50,18 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
   });
 
   const handleChange = (data: any) => {
-    onChange(data);
+    // map form data with settings
+    settings.width = Number(data.width);
+    settings.height = Number(data.height);
+    settings.margin = Number(data.margin);
+    settings.dotsOptions.type = data.dotStyle;
+    settings.cornersSquareOptions.type = data.cornersSquareStyle;
+    settings.cornersDotOptions.type = data.cornersDotStyle;
+    settings.backgroundOptions.color = data.background;
+    settings.imageOptions.hideBackgroundDots = data.hideBackgroundDots;
+    settings.imageOptions.imageSize = Number(data.imageSize);
+    settings.imageOptions.margin = Number(data.imageMargin);
+    onChange(settings);
   };
 
   return (

@@ -7,7 +7,7 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100">
       <div>
         <Container>
-          <h1 className="my-16 text-4xl font-bold text-center">Generate your QR Code</h1>
+          <h1 className="my-16 text-4xl font-bold text-center">Free & Open Source QR Code</h1>
           <div className="mb-2">
             <CreateQRcode />
           </div>

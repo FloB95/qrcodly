@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Container from "./ui/container";
-import { type ReactHTMLElement } from "react";
 
 interface NavigationItem {
   name: string;
@@ -35,7 +34,7 @@ export default function Footer() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-400 hover:text-gray-500"
+                className="text-gray-600 hover:text-gray-800"
                 target="_blank"
               >
                 <span className="sr-only">{item.name}</span>
@@ -49,11 +48,12 @@ export default function Footer() {
             </p>
           </div>
         </div>
-        <div className="justify-center space-x-4 pb-12 pt-6 text-xs text-gray-500 md:flex md:items-center lg:px-8">
+        <div className="justify-center space-x-4 pb-12 pt-6 text-xs md:flex md:items-center lg:px-8">
           <Link
             href="https://www.fb-dev.de/impressum/"
             title="Legal Notice"
             target="_blank"
+            className="text-gray-600 hover:text-gray-800"
           >
             Legal Notice
           </Link>
@@ -61,6 +61,7 @@ export default function Footer() {
             href="https://www.fb-dev.de/datenschutz/"
             title="Legal Notice"
             target="_blank"
+            className="text-gray-600 hover:text-gray-800 "
           >
             Privacy Policy
           </Link>

@@ -10,14 +10,26 @@ import QRCodeStyling, {
   type Options,
 } from "qr-code-styling";
 import { Button } from "../ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 export type QrCodeProps = {
   settings: Options;
 };
 
 export default function QrCode({ settings }: QrCodeProps) {
-  const [options, setOptions] = useState<Options>(settings);
+  const options = settings;
+
+  // if no data set, set default data
+  if (!options.data) {
+    options.data = "https://www.qrcodly.de";
+  }
+
   const [fileExt, setFileExt] = useState<FileExtension>("svg");
   const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));
   const ref = useRef<HTMLDivElement>(null);
@@ -41,19 +53,17 @@ export default function QrCode({ settings }: QrCodeProps) {
   const onDownloadClick = () => {
     if (!qrCode) return;
     void qrCode.download({
+      name: "qr-code",
       extension: fileExt,
     });
   };
 
   return (
     <div className="p-12">
-      <div className="max-h-[300px] max-w-[300px]" ref={ref} />
-      <div className="mt-4 flex justify-between">
-        <Select onValueChange={onExtensionChange}>
-          <SelectTrigger
-            value={fileExt}
-            className="w-[180px]"
-          >
+      <div className="canvas-wrap max-h-[300px] max-w-[300px]" ref={ref} />
+      <div className="mt-8 flex justify-between">
+        <Select onValueChange={onExtensionChange} value={fileExt}>
+          <SelectTrigger className="w-[160px]">
             <SelectValue placeholder="Select filetype" />
           </SelectTrigger>
           <SelectContent>
@@ -70,4 +80,3 @@ export default function QrCode({ settings }: QrCodeProps) {
     </div>
   );
 }
-
