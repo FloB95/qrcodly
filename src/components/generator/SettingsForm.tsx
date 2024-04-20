@@ -53,14 +53,14 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
     // map form data with settings
     settings.width = Number(data.width);
     settings.height = Number(data.height);
-    settings.margin = Number(data.margin);
-    settings.dotsOptions.type = data.dotStyle;
-    settings.cornersSquareOptions.type = data.cornersSquareStyle;
-    settings.cornersDotOptions.type = data.cornersDotStyle;
-    settings.backgroundOptions.color = data.background;
-    settings.imageOptions.hideBackgroundDots = data.hideBackgroundDots;
-    settings.imageOptions.imageSize = Number(data.imageSize);
-    settings.imageOptions.margin = Number(data.imageMargin);
+    if(settings.margin) settings.margin = Number(data.margin);
+    if(settings.dotsOptions) settings.dotsOptions.type = data.dotStyle;
+    if(settings.cornersSquareOptions) settings.cornersSquareOptions.type = data.cornersSquareStyle;
+    if(settings.cornersDotOptions) settings.cornersDotOptions.type = data.cornersDotStyle;
+    if(settings.backgroundOptions) settings.backgroundOptions.color = data.background;
+    if(settings.imageOptions) settings.imageOptions.hideBackgroundDots = data.hideBackgroundDots;
+    if(settings.imageOptions) settings.imageOptions.imageSize = Number(data.imageSize);
+    if(settings.imageOptions) settings.imageOptions.margin = Number(data.imageMargin);
     onChange(settings);
   };
 
@@ -136,7 +136,10 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                   <FormItem>
                     <FormLabel>Dot Style</FormLabel>
                     <FormControl>
-                      <Select>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select a style" />
                         </SelectTrigger>
@@ -144,11 +147,11 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                           <SelectItem value="square">Square</SelectItem>
                           <SelectItem value="dots">Dots</SelectItem>
                           <SelectItem value="rounded">Rounded</SelectItem>
-                          <SelectItem value="extraRounded">
+                          <SelectItem value="extra-rounded">
                             Extra rounded
                           </SelectItem>
                           <SelectItem value="classy">Classy</SelectItem>
-                          <SelectItem value="classyRounded">
+                          <SelectItem value="classy-rounded">
                             Classy rounded
                           </SelectItem>
                         </SelectContent>
@@ -166,14 +169,17 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                   <FormItem>
                     <FormLabel>Corners Square Style</FormLabel>
                     <FormControl>
-                      <Select>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select a style" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="square">Square</SelectItem>
                           <SelectItem value="dot">Dot</SelectItem>
-                          <SelectItem value="extraRounded">
+                          <SelectItem value="extra-rounded">
                             Extra rounded
                           </SelectItem>
                         </SelectContent>
@@ -191,7 +197,10 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                   <FormItem>
                     <FormLabel>Corners Dot Style</FormLabel>
                     <FormControl>
-                      <Select>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select a style" />
                         </SelectTrigger>

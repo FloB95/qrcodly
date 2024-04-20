@@ -80,7 +80,7 @@ export const CreateQRcode = () => {
     <>
       <Input
         className="mx-auto max-w-[650px] p-6"
-        placeholder="Enter URL https://example.com/"
+        placeholder="Enter Text or URL https://example.com/"
         value={qrCodeSettings.data}
         onChange={(e) => {
           setQrCodeSettings((prev) => ({
@@ -126,7 +126,6 @@ export const CreateQRcode = () => {
                       ...d.cornersDotOptions,
                     },
                   }));
-                  console.log(qrCodeSettings);
                 }}
               />
             </div>
