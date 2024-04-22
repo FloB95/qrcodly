@@ -18,12 +18,13 @@ import dynamic from "next/dynamic";
 
 const QrCode = dynamic(() => import("./generator/QrCode"), {
   ssr: false,
+  loading: () => <div>Loading...</div>,
 });
 
 export const CreateQRcode = () => {
   const [qrCodeSettings, setQrCodeSettings] = useState<Options>({
-    width: 300,
-    height: 300,
+    width: 1000,
+    height: 1000,
     type: "canvas" as DrawType,
     data: "",
     image: "/android-chrome-512x512.png",
@@ -130,7 +131,7 @@ export const CreateQRcode = () => {
               />
             </div>
             <div>
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={null}>
                 <QrCode settings={qrCodeSettings} />
               </Suspense>
             </div>

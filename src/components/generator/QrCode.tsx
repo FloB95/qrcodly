@@ -45,7 +45,6 @@ export default function QrCode({ settings }: QrCodeProps) {
     qrCode.update(options);
   }, [qrCode, options]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onExtensionChange = (ext: string) => {
     setFileExt(ext as FileExtension);
   };

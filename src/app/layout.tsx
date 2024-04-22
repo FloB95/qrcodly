@@ -11,7 +11,8 @@ const openSans = Inter({
 
 export const metadata = {
   title: "QRcodly - Free & Open Source QR Code Generator",
-  description: "The modern free and open-source QR code generator.",
+  description:
+    "Generate, customize, and edit QR codes effortlessly with QRcodly, your go-to Free & Open Source QR Code Generator. Create custom QR codes for URLs, text, contact information, and more. Enjoy user-friendly design and unlimited access.",
   icons: [
     {
       rel: "icon",
@@ -28,9 +29,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={`font-sans ${openSans.variable}`}>

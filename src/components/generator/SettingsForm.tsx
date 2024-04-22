@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -26,6 +27,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { type Options } from "qr-code-styling";
 import { ColorPicker } from "./ColorPicker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Slider } from "../ui/slider";
 
 type SettingsFormProps = {
   onChange: (data: Options) => void;
@@ -53,14 +55,21 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
     // map form data with settings
     settings.width = Number(data.width);
     settings.height = Number(data.height);
-    if(settings.margin) settings.margin = Number(data.margin);
-    if(settings.dotsOptions) settings.dotsOptions.type = data.dotStyle;
-    if(settings.cornersSquareOptions) settings.cornersSquareOptions.type = data.cornersSquareStyle;
-    if(settings.cornersDotOptions) settings.cornersDotOptions.type = data.cornersDotStyle;
-    if(settings.backgroundOptions) settings.backgroundOptions.color = data.background;
-    if(settings.imageOptions) settings.imageOptions.hideBackgroundDots = data.hideBackgroundDots;
-    if(settings.imageOptions) settings.imageOptions.imageSize = Number(data.imageSize);
-    if(settings.imageOptions) settings.imageOptions.margin = Number(data.imageMargin);
+    if (typeof settings.margin !== "undefined")
+      settings.margin = Number(data.margin);
+    if (settings.dotsOptions) settings.dotsOptions.type = data.dotStyle;
+    if (settings.cornersSquareOptions)
+      settings.cornersSquareOptions.type = data.cornersSquareStyle;
+    if (settings.cornersDotOptions)
+      settings.cornersDotOptions.type = data.cornersDotStyle;
+    if (settings.backgroundOptions)
+      settings.backgroundOptions.color = data.background;
+    if (settings.imageOptions)
+      settings.imageOptions.hideBackgroundDots = data.hideBackgroundDots;
+    if (settings.imageOptions)
+      settings.imageOptions.imageSize = Number(data.imageSize);
+    if (settings.imageOptions)
+      settings.imageOptions.margin = Number(data.imageMargin);
     onChange(settings);
   };
 
@@ -78,8 +87,8 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
             <TabsTrigger className="flex-1" value="dot">
               Dot Settings
             </TabsTrigger>
-            <TabsTrigger className="flex-1" value="background">
-              Background Settings
+            <TabsTrigger className="flex-1" value="image">
+              Image Settings
             </TabsTrigger>
           </TabsList>
 
@@ -90,23 +99,26 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                 name="width"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Width (px)</FormLabel>
+                    <FormLabel>Size (Quality)</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="300" {...field} />
+                      <Slider
+                        className="cursor-pointer"
+                        value={[form.getValues("width")]}
+                        max={2000}
+                        min={300}
+                        step={25}
+                        onValueChange={(e: any) => {
+                          form.setValue("width", e);
+                          form.setValue("height", e);
+                        }}
+                      />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="height"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Height (px)</FormLabel>
-                    <FormControl>
-                      <Input type="number" placeholder="300" {...field} />
-                    </FormControl>
+                    <FormDescription>
+                      <div className="mt-3 text-center">
+                        {form.getValues("height")} x {form.getValues("width")}{" "}
+                        px
+                      </div>
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -116,13 +128,43 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                 name="margin"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Margin (px)</FormLabel>
+                    <FormLabel>Margin</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="0" {...field} />
+                      <Slider
+                        className="cursor-pointer"
+                        value={[field.value]}
+                        max={300}
+                        min={0}
+                        step={10}
+                        onValueChange={field.onChange}
+                      />
                     </FormControl>
+                    <FormDescription>
+                      <div className="mt-3 text-center">{field.value} px</div>
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
+              />
+              <FormField
+                control={form.control}
+                name="background"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Background</FormLabel>
+                      <FormControl>
+                        <div>
+                          <ColorPicker
+                            background={field.value}
+                            setBackground={field.onChange}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
             </div>
           </TabsContent>
@@ -217,33 +259,16 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
             </div>
           </TabsContent>
 
-          <TabsContent value="background" className="mt-0">
+          <TabsContent value="image" className="mt-0">
             <div className="flex flex-col flex-wrap space-y-6 p-2">
-              <FormField
-                control={form.control}
-                name="background"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Background</FormLabel>
-                      <FormControl>
-                        <ColorPicker
-                          background={field.value}
-                          setBackground={field.onChange}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-
               <FormField
                 control={form.control}
                 name="hideBackgroundDots"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                    <FormLabel>Hide Background Dots</FormLabel>
+                    <FormLabel className="cursor-pointer">
+                      Hide Background Dots
+                    </FormLabel>
                     <FormControl>
                       <Checkbox
                         checked={field.value}
@@ -262,8 +287,20 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                   <FormItem>
                     <FormLabel>Image Size</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="0.4" {...field} />
+                      <Slider
+                        className="cursor-pointer"
+                        value={[form.getValues("imageSize")]}
+                        max={1}
+                        min={0.1}
+                        step={0.1}
+                        onValueChange={field.onChange}
+                      />
                     </FormControl>
+                    <FormDescription>
+                      <div className="mt-3 text-center">
+                        {field.value * 100} %
+                      </div>
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -274,10 +311,20 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                 name="imageMargin"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Margin (px)</FormLabel>
+                    <FormLabel>Margin</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="0" {...field} />
+                      <Slider
+                        className="cursor-pointer"
+                        value={[field.value]}
+                        max={100}
+                        min={0}
+                        step={10}
+                        onValueChange={field.onChange}
+                      />
                     </FormControl>
+                    <FormDescription>
+                      <div className="mt-3 text-center">{field.value} px</div>
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
