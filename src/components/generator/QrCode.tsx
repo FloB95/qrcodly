@@ -58,11 +58,14 @@ export default function QrCode({ settings }: QrCodeProps) {
   };
 
   return (
-    <div className="p-12">
-      <div className="canvas-wrap max-h-[300px] max-w-[300px]" ref={ref} />
-      <div className="mt-8 flex justify-between">
+    <div className="flex p-12 md:flex-col">
+      <div
+        className="canvas-wrap max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]"
+        ref={ref}
+      />
+      <div className="mt-8 flex flex-col space-y-4 p-8 md:flex-row md:justify-between md:space-x-4 md:p-0 md:space-y-0">
         <Select onValueChange={onExtensionChange} value={fileExt}>
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger className="lg:w-[160px]">
             <SelectValue placeholder="Select filetype" />
           </SelectTrigger>
           <SelectContent>

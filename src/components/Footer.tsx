@@ -26,7 +26,7 @@ const navigation: NavigationItem[] = [
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="mt-10">
+    <footer className="mt-4">
       <Container>
         <div className="mx-auto px-6 pt-12 md:flex md:items-center md:justify-between lg:px-8">
           <div className="flex justify-center space-x-6 md:order-2">

@@ -76,7 +76,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
     <Form {...form}>
       <form
         onChange={form.handleSubmit(handleChange)}
-        className="w-2/3 space-y-6"
+        className="xl:w-2/3 space-y-6"
       >
         <Tabs defaultValue={"general"} className="w-full">
           <TabsList className="mb-4 w-full">

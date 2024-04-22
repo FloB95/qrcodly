@@ -94,7 +94,7 @@ export const CreateQRcode = () => {
       />
       <div className="mt-12 min-h-[500px] divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
         <div className="px-4 py-5 sm:p-6">
-          <div className="flex">
+          <div className="flex flex-col md:flex-row">
             <div className="flex-1">
               <SettingsForm
                 settings={qrCodeSettings}
