@@ -10,7 +10,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Paintbrush } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { cn } from "~/lib/utils";
 
 export function ColorPicker({
@@ -155,7 +155,7 @@ const GradientButton = ({
       className="relative rounded-md !bg-cover !bg-center p-0.5 transition-all"
       style={{ background }}
     >
-      <div className="bg-popover/80 rounded-md p-1 text-center text-xs">
+      <div className="rounded-md bg-popover/80 p-1 text-center text-xs">
         {children}
       </div>
     </div>

@@ -1,13 +1,15 @@
 import { CreateQRcode } from "~/components/create-qrcode";
 import Footer from "~/components/Footer";
+import Header from "~/components/Header";
 import Container from "~/components/ui/container";
 
 export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100">
+      <Header />
       <div>
         <Container>
-          <h1 className="my-16 text-center text-4xl font-bold">
+          <h1 className="my-14 text-center text-4xl font-bold">
             <span className="text-2xl">Free & Open Source</span> <br /> QR Code
             Generator
           </h1>

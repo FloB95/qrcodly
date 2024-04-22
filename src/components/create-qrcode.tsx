@@ -15,10 +15,11 @@ import {
 } from "qr-code-styling";
 import { Suspense, useState } from "react";
 import dynamic from "next/dynamic";
+import { QrCodeSkeleton } from "./generator/QrCodeSkeleton";
 
 const QrCode = dynamic(() => import("./generator/QrCode"), {
   ssr: false,
-  loading: () => <div>Loading...</div>,
+  loading: () => <QrCodeSkeleton />,
 });
 
 export const CreateQRcode = () => {
