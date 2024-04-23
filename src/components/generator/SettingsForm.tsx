@@ -76,7 +76,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
     <Form {...form}>
       <form
         onChange={form.handleSubmit(handleChange)}
-        className="xl:w-2/3 space-y-6"
+        className="space-y-6 xl:w-2/3"
       >
         <Tabs defaultValue={"general"} className="w-full">
           <TabsList className="mb-4 w-full">
@@ -112,11 +112,8 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         }}
                       />
                     </FormControl>
-                    <FormDescription>
-                      <div className="mt-3 text-center">
-                        {form.getValues("height")} x {form.getValues("width")}{" "}
-                        px
-                      </div>
+                    <FormDescription className="pt-3 text-center">
+                      {form.getValues("height")} x {form.getValues("width")} px
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -138,8 +135,8 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         onValueChange={field.onChange}
                       />
                     </FormControl>
-                    <FormDescription>
-                      <div className="mt-3 text-center">{field.value} px</div>
+                    <FormDescription className="pt-3 text-center">
+                      {field.value} px
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -295,10 +292,8 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         onValueChange={field.onChange}
                       />
                     </FormControl>
-                    <FormDescription>
-                      <div className="mt-3 text-center">
-                        {field.value * 100} %
-                      </div>
+                    <FormDescription className="pt-3 text-center">
+                      {field.value * 100} %
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -321,8 +316,8 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         onValueChange={field.onChange}
                       />
                     </FormControl>
-                    <FormDescription>
-                      <div className="mt-3 text-center">{field.value} px</div>
+                    <FormDescription className="pt-3 text-center">
+                      {field.value} px
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
