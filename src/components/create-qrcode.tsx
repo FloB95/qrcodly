@@ -42,7 +42,7 @@ export const CreateQRcode = () => {
       crossOrigin: "anonymous",
     },
     dotsOptions: {
-      color: "#222222",
+      color: "#000000",
       // gradient: {
       //   type: 'linear', // 'radial'
       //   rotation: 0,
@@ -59,7 +59,7 @@ export const CreateQRcode = () => {
       // },
     },
     cornersSquareOptions: {
-      color: "#222222",
+      color: "#000000",
       type: "extra-rounded" as CornerSquareType,
       // gradient: {
       //   type: 'linear', // 'radial'
@@ -68,7 +68,7 @@ export const CreateQRcode = () => {
       // },
     },
     cornersDotOptions: {
-      color: "#222222",
+      color: "#000000",
       type: "dot" as CornerDotType,
       // gradient: {
       //   type: 'linear', // 'radial'

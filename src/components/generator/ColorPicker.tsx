@@ -133,7 +133,6 @@ export function ColorPicker({
         </Tabs>
 
         <Input
-          id="custom"
           value={background}
           className="col-span-2 mt-4 h-8"
           onChange={(e) => setBackground(e.currentTarget.value)}

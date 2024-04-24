@@ -40,9 +40,12 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
       height: settings?.height ?? 300,
       margin: settings?.margin ?? 0,
       dotStyle: settings?.dotsOptions?.type ?? "rounded",
+      dotColor: settings?.dotsOptions?.color ?? "#000000",
       cornersSquareStyle:
         settings?.cornersSquareOptions?.type ?? "extra-rounded",
       cornersDotStyle: settings?.cornersDotOptions?.type ?? "dot",
+      cornersDotColor: settings?.cornersDotOptions?.color ?? "#000000",
+      cornersSquareColor: settings?.cornersSquareOptions?.color ?? "#000000",
       background: settings?.backgroundOptions?.color ?? "#ffffff",
       hideBackgroundDots: settings?.imageOptions?.hideBackgroundDots ?? true,
       imageSize: settings?.imageOptions?.imageSize ?? 0.4,
@@ -57,10 +60,15 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
     if (typeof settings.margin !== "undefined")
       settings.margin = Number(data.margin);
     if (settings.dotsOptions) settings.dotsOptions.type = data.dotStyle;
+    if (settings.dotsOptions) settings.dotsOptions.color = data.dotColor;
     if (settings.cornersSquareOptions)
       settings.cornersSquareOptions.type = data.cornersSquareStyle;
+    if (settings.cornersSquareOptions)
+      settings.cornersSquareOptions.color = data.cornersSquareColor;
     if (settings.cornersDotOptions)
       settings.cornersDotOptions.type = data.cornersDotStyle;
+    if (settings.cornersDotOptions)
+      settings.cornersDotOptions.color = data.cornersDotColor;
     if (settings.backgroundOptions)
       settings.backgroundOptions.color = data.background;
     if (settings.imageOptions)
@@ -153,7 +161,10 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         <div>
                           <ColorPicker
                             background={field.value}
-                            setBackground={field.onChange}
+                            setBackground={(color) => {
+                              field.onChange(color);
+                              handleChange(form.getValues());
+                            }}
                           />
                         </div>
                       </FormControl>
@@ -167,91 +178,160 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
 
           <TabsContent value="dot" className="mt-0">
             <div className="flex flex-col flex-wrap space-y-6 p-2">
-              <FormField
-                control={form.control}
-                name="dotStyle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Dot Style</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a style" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="square">Square</SelectItem>
-                          <SelectItem value="dots">Dots</SelectItem>
-                          <SelectItem value="rounded">Rounded</SelectItem>
-                          <SelectItem value="extra-rounded">
-                            Extra rounded
-                          </SelectItem>
-                          <SelectItem value="classy">Classy</SelectItem>
-                          <SelectItem value="classy-rounded">
-                            Classy rounded
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex w-full flex-wrap space-x-8">
+                <FormField
+                  control={form.control}
+                  name="dotStyle"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Dot Style</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a style" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="square">Square</SelectItem>
+                            <SelectItem value="dots">Dots</SelectItem>
+                            <SelectItem value="rounded">Rounded</SelectItem>
+                            <SelectItem value="extra-rounded">
+                              Extra rounded
+                            </SelectItem>
+                            <SelectItem value="classy">Classy</SelectItem>
+                            <SelectItem value="classy-rounded">
+                              Classy rounded
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="dotColor"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Dot Color</FormLabel>
+                      <FormControl>
+                        <div>
+                          <ColorPicker
+                            background={field.value}
+                            setBackground={(color) => {
+                              field.onChange(color);
+                              handleChange(form.getValues());
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-              <FormField
-                control={form.control}
-                name="cornersSquareStyle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Corners Square Style</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a style" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="square">Square</SelectItem>
-                          <SelectItem value="dot">Dot</SelectItem>
-                          <SelectItem value="extra-rounded">
-                            Extra rounded
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex w-full flex-wrap space-x-8">
+                <FormField
+                  control={form.control}
+                  name="cornersSquareStyle"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Corners Square Style</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a style" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="square">Square</SelectItem>
+                            <SelectItem value="dot">Dot</SelectItem>
+                            <SelectItem value="extra-rounded">
+                              Extra rounded
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="cornersSquareColor"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Corners Square Color</FormLabel>
+                      <FormControl>
+                        <div>
+                          <ColorPicker
+                            background={field.value}
+                            setBackground={(color) => {
+                              field.onChange(color);
+                              handleChange(form.getValues());
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-              <FormField
-                control={form.control}
-                name="cornersDotStyle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Corners Dot Style</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a style" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="square">Square</SelectItem>
-                          <SelectItem value="dot">Dot</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex w-full flex-wrap space-x-8">
+                <FormField
+                  control={form.control}
+                  name="cornersDotStyle"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Corners Dot Style</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a style" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="square">Square</SelectItem>
+                            <SelectItem value="dot">Dot</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="cornersDotColor"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Corners Dot Color</FormLabel>
+                      <FormControl>
+                        <div>
+                          <ColorPicker
+                            background={field.value}
+                            setBackground={(color) => {
+                              field.onChange(color);
+                              handleChange(form.getValues());
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </TabsContent>
 
