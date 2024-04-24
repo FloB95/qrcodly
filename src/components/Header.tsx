@@ -14,7 +14,7 @@ export default function Header() {
                 <Button>Sign in</Button>
               </SignInButton>
             </SignedOut>
-            <SignedIn>
+            <SignedIn >
               <UserButton />
             </SignedIn>
           </div>

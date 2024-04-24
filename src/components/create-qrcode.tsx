@@ -28,7 +28,7 @@ export const CreateQRcode = () => {
     height: 1000,
     type: "canvas" as DrawType,
     data: "",
-    image: "/android-chrome-512x512.png",
+    image: "",
     margin: 0,
     qrOptions: {
       typeNumber: 0 as TypeNumber,
@@ -99,6 +99,7 @@ export const CreateQRcode = () => {
               <SettingsForm
                 settings={qrCodeSettings}
                 onChange={(d) => {
+                  console.log("d",d)
                   // merge the new settings with the old settings
                   setQrCodeSettings((prev) => ({
                     ...prev,

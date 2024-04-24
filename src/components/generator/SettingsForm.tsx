@@ -27,6 +27,7 @@ import { type Options } from "qr-code-styling";
 import { ColorPicker } from "./ColorPicker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Slider } from "../ui/slider";
+import { Input } from "../ui/input";
 
 type SettingsFormProps = {
   onChange: (data: Options) => void;
@@ -48,6 +49,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
       cornersSquareColor: settings?.cornersSquareOptions?.color ?? "#000000",
       background: settings?.backgroundOptions?.color ?? "#ffffff",
       hideBackgroundDots: settings?.imageOptions?.hideBackgroundDots ?? true,
+      image: settings?.image ?? "",
       imageSize: settings?.imageOptions?.imageSize ?? 0.4,
       imageMargin: settings?.imageOptions?.margin ?? 0,
     },
@@ -71,6 +73,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
       settings.cornersDotOptions.color = data.cornersDotColor;
     if (settings.backgroundOptions)
       settings.backgroundOptions.color = data.background;
+    if (typeof settings.image !== "undefined") settings.image = data.image;
     if (settings.imageOptions)
       settings.imageOptions.hideBackgroundDots = data.hideBackgroundDots;
     if (settings.imageOptions)
@@ -337,6 +340,39 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
 
           <TabsContent value="image" className="mt-0">
             <div className="flex flex-col flex-wrap space-y-6 p-2">
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Picture</FormLabel>
+                    <FormControl>
+                      <div className="grid w-full max-w-sm items-center gap-1.5">
+                        <Input
+                          type="file"
+                          accept=".jpg,.jpeg,.png,.svg,.webp"
+                          // value={field.value}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            // transform file to base64 url
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.readAsDataURL(file);
+                              reader.onload = () => {
+                                const base64 = reader.result as string;
+                                field.onChange(base64);
+                                handleChange(form.getValues());
+                              };
+                            }
+                          }}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="hideBackgroundDots"
