@@ -4,9 +4,9 @@ import { Button } from "./ui/button";
 
 export default function Header() {
   return (
-    <header className="pt-8">
+    <header className="pt-7">
       <Container>
-        <div className="flex justify-between px-6 lg:px-8">
+        <div className="flex justify-between px-6 lg:px-8 pt-1">
           <div className="text-3xl font-bold">QRcodly</div>
           <div>
             <SignedOut>

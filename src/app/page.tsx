@@ -10,7 +10,7 @@ export default async function Home() {
       <Header />
       <div>
         <Container>
-          <h1 className="my-10 text-center text-4xl font-bold">
+          <h1 className="mb-10 mt-8 text-center text-4xl font-bold">
             <span className="text-2xl">Free & Open Source</span> <br /> QR Code
             Generator
           </h1>
