@@ -1,5 +1,6 @@
-import { CreateQRcode } from "~/components/create-qrcode";
+
 import Footer from "~/components/Footer";
+import { QRcodeGenerator } from "~/components/qr-generator/QRcodeGenerator";
 import Header from "~/components/Header";
 import Container from "~/components/ui/container";
 
@@ -14,7 +15,7 @@ export default async function Home() {
             Generator
           </h1>
           <div className="mb-2">
-            <CreateQRcode />
+            <QRcodeGenerator />
           </div>
         </Container>
       </div>
@@ -23,19 +24,3 @@ export default async function Home() {
     </main>
   );
 }
-
-// async function CrudShowcase() {
-//   const latestPost = await api.post.getLatest();
-
-//   return (
-//     <div className="w-full max-w-xs">
-//       {latestPost ? (
-//         <p className="truncate">Your most recent post: {latestPost.name}</p>
-//       ) : (
-//         <p>You have no posts yet.</p>
-//       )}
-
-//       <CreatePost />
-//     </div>
-//   );
-// }

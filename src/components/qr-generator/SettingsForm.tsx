@@ -345,7 +345,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                 name="image"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Picture</FormLabel>
+                    <FormLabel>Image</FormLabel>
                     <FormControl>
                       <div className="grid w-full max-w-sm items-center gap-1.5">
                         <Input
