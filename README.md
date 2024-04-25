@@ -5,10 +5,14 @@ It allows you to easily generate QR codes for various purposes, such as sharing 
 
 ## Features
 
-- Simple and easy-to-use API for generating QR codes
-- Support for different QR code types and error correction levels
+- Simple and easy-to-use API for generating QR codes (TODO)
+- Support for different QR code types and error correction levels (TODO)
 - Customizable QR code size, color, and background
 - Export QR codes to various image formats (PNG, JPEG, SVG, etc.)
+
+### Please visit [Todos](todos.md) section for more information about the project status and future plans
+
+---
 
 ## Installation
 
