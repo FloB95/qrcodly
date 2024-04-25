@@ -1,0 +1,1 @@
+ALTER TABLE `qrcodly_qr_code` MODIFY COLUMN `json` json NOT NULL;

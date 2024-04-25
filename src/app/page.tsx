@@ -22,15 +22,13 @@ export default async function Home() {
         </Container>
       </div>
 
-      <CrudShowcase />
-
       <Footer />
     </main>
   );
 }
 
-
-async function CrudShowcase() {
+// TODO remove when you have your own data
+export async function CrudShowcase() {
   const latestPost = await api.post.getLatest();
 
   return (

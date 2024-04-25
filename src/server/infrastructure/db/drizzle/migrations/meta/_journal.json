@@ -8,6 +8,20 @@
       "when": 1714035050150,
       "tag": "0000_real_donald_blake",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1714040067997,
+      "tag": "0001_rare_firebrand",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1714040094381,
+      "tag": "0002_freezing_absorbing_man",
+      "breakpoints": true
     }
   ]
 }

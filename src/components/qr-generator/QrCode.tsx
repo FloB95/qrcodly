@@ -18,6 +18,7 @@ import {
   type TQRcodeOptions,
 } from "~/server/domain/entities/QRcode";
 import QRCodeStyling from "qr-code-styling";
+import { api } from "~/trpc/react";
 
 export type QrCodeProps = {
   settings: TQRcodeOptions;
@@ -31,6 +32,7 @@ export default function QrCode({ settings }: QrCodeProps) {
     options.data = "https://www.qrcodly.de";
   }
 
+  const createQrCode = api.qrCode.create.useMutation();
   const [fileExt, setFileExt] = useState<TFileExtension>("svg");
   const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));
   const ref = useRef<HTMLDivElement>(null);
@@ -50,8 +52,9 @@ export default function QrCode({ settings }: QrCodeProps) {
     setFileExt(ext as TFileExtension);
   };
 
-  const onDownloadClick = () => {
+  const onDownloadClick = async () => {
     if (!qrCode) return;
+    await createQrCode.mutate(options);
     void qrCode.download({
       name: "qr-code",
       extension: fileExt,

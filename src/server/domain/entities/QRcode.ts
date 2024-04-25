@@ -124,7 +124,7 @@ export const Gradient = z.object({
 /**
  * Type definition for specifying QR code generation options.
  */
-export const Options = z.object({
+export const QrCodeOptionsSchema = z.object({
   type: DrawType.default("canvas"),
   shape: ShapeType.default("square"),
   width: z.number().default(1000),
@@ -180,13 +180,13 @@ export const Options = z.object({
 /**
  * Alias for the inferred type of QR code generation options.
  */
-export type TQRcodeOptions = z.infer<typeof Options>;
+export type TQRcodeOptions = z.infer<typeof QrCodeOptionsSchema>;
 
 /**
  * Schema definition for QR code entity.
  */
 export const QRcodeSchema = BaseEntitySchema.extend({
-  config: Options,
+  config: QrCodeOptionsSchema,
 });
 
 /**

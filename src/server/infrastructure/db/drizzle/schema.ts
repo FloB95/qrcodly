@@ -6,7 +6,9 @@ import {
   timestamp,
   varchar,
   datetime,
+  json,
 } from "drizzle-orm/mysql-core";
+import { type TQRcodeOptions } from "~/server/domain/entities/QRcode";
 
 /**
  * Multi-project schema feature of Drizzle ORM. Use the same
@@ -31,11 +33,11 @@ export const posts = createTable(
   }),
 );
 
-export const qrCode = createTable("qr_code", {
+export const qrCodeTable = createTable("qr_code", {
   id: varchar("id", {
     length: 36,
   }).primaryKey(),
-  name: varchar("name", { length: 256 }),
+  config: json("json").$type<TQRcodeOptions>().notNull(),
   createdAt: datetime("createdAt").notNull(),
   updatedAt: datetime("updatedAt"),
 });
