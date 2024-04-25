@@ -1,7 +1,6 @@
-import React from "react";
 import { Input } from "../ui/input";
 import { type TQRcodeOptions } from "~/server/domain/entities/QRcode";
-import { Button, buttonVariants } from "../ui/button";
+import { buttonVariants } from "../ui/button";
 import {
   DocumentTextIcon,
   LinkIcon,
@@ -21,7 +20,7 @@ export const ContentForm = ({
 }: TContentFormProps) => {
   return (
     <>
-      <Tabs defaultValue="url" className="h-full">
+      <Tabs defaultValue="url" className="h-full" suppressHydrationWarning>
         <TabsList className="absolute bottom-0 left-0 top-0 flex  h-full flex-col space-y-2 bg-transparent">
           <TabsTrigger value="url" asChild>
             <button
@@ -45,7 +44,6 @@ export const ContentForm = ({
           </TabsTrigger>
           <TabsTrigger value="wifi" disabled asChild>
             <button
-              disabled
               className={buttonVariants({
                 variant: "tab",
                 size: "icon",

@@ -129,6 +129,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                     <FormLabel>Size (Quality)</FormLabel>
                     <FormControl>
                       <Slider
+                        name="width"
                         className="cursor-pointer"
                         value={[form.getValues("width")]}
                         max={2000}
@@ -140,7 +141,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         }}
                       />
                     </FormControl>
-                    <FormDescription className="pt-3 text-center">
+                    <FormDescription className="pt-1 text-center">
                       {form.getValues("height")} x {form.getValues("width")} px
                     </FormDescription>
                     <FormMessage />
@@ -155,6 +156,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                     <FormLabel>Margin</FormLabel>
                     <FormControl>
                       <Slider
+                        name="margin"
                         className="cursor-pointer"
                         value={[field.value]}
                         max={300}
@@ -163,7 +165,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         onValueChange={field.onChange}
                       />
                     </FormControl>
-                    <FormDescription className="pt-3 text-center">
+                    <FormDescription className="pt-1 text-center">
                       {field.value} px
                     </FormDescription>
                     <FormMessage />
@@ -207,6 +209,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                       <FormLabel>Dot Style</FormLabel>
                       <FormControl>
                         <Select
+                          name="dotStyle"
                           onValueChange={field.onChange}
                           value={field.value}
                         >
@@ -263,6 +266,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                       <FormLabel>Corners Square Style</FormLabel>
                       <FormControl>
                         <Select
+                          name="cornersSquareStyle"
                           onValueChange={field.onChange}
                           value={field.value}
                         >
@@ -314,6 +318,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                       <FormLabel>Corners Dot Style</FormLabel>
                       <FormControl>
                         <Select
+                          name="cornersDotStyle"
                           onValueChange={field.onChange}
                           value={field.value}
                         >
@@ -366,6 +371,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                     <FormControl>
                       <div className="grid w-full max-w-sm items-center gap-1.5">
                         <Input
+                          name="image"
                           type="file"
                           accept=".jpg,.jpeg,.png,.svg,.webp"
                           // value={field.value}
@@ -400,6 +406,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                     </FormLabel>
                     <FormControl>
                       <Checkbox
+                        name="hideBackgroundDots"
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />
@@ -417,6 +424,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                     <FormLabel>Image Size</FormLabel>
                     <FormControl>
                       <Slider
+                        name="imageSize"
                         className="cursor-pointer"
                         value={[form.getValues("imageSize")]}
                         max={1}
@@ -425,7 +433,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         onValueChange={field.onChange}
                       />
                     </FormControl>
-                    <FormDescription className="pt-3 text-center">
+                    <FormDescription className="pt-1 text-center">
                       {field.value * 100} %
                     </FormDescription>
                     <FormMessage />
@@ -441,6 +449,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                     <FormLabel>Margin</FormLabel>
                     <FormControl>
                       <Slider
+                        name="imageMargin"
                         className="cursor-pointer"
                         value={[field.value]}
                         max={100}
@@ -449,7 +458,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         onValueChange={field.onChange}
                       />
                     </FormControl>
-                    <FormDescription className="pt-3 text-center">
+                    <FormDescription className="pt-1 text-center">
                       {field.value} px
                     </FormDescription>
                     <FormMessage />
