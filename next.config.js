@@ -9,7 +9,7 @@ await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 const config = {
-  webpack: (config, { isServer }) => {
+  webpack: (config) => {
     config.externals = [...config.externals, "skia-canvas"];
     return config;
   },

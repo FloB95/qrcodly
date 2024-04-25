@@ -1,5 +1,7 @@
 # Todos
 
+- Fix QR Code Generation (Image Settings) the image margin should be relative to the QR Code size
+- Add Color Select Gradient functionality
 - Run Migrations on Server start
 - Add Backend structure (Routes, Controllers, Models)
 - Cleanup Frontend / restructure in components
@@ -16,3 +18,4 @@
 - Add predefined Qr Code Templates
 - Add Tests !!!
 - Optimize CI/CD
+- Add english Legal Notice and Privacy Policy
