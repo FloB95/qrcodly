@@ -85,7 +85,7 @@ export const ContentForm = ({
               className="max-w-[650px] p-6"
               placeholder="Enter Text or URL https://example.com/"
               value={qrCodeSettings.data}
-              onChange={onChange}
+              onChange={(e) => onChange(e.target.value)}
               autoFocus
             />
           </div>
