@@ -22,6 +22,13 @@
       "when": 1714040094381,
       "tag": "0002_freezing_absorbing_man",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1714057211190,
+      "tag": "0003_furry_sue_storm",
+      "breakpoints": true
     }
   ]
 }

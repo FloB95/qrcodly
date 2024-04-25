@@ -1,0 +1,1 @@
+ALTER TABLE `qrcodly_qr_code` ADD `created_by` varchar(255);

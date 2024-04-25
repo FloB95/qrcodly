@@ -16,6 +16,8 @@ import {
 import QRCodeStyling from "qr-code-styling";
 import { api } from "~/trpc/react";
 import { Loader2 } from "lucide-react";
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label";
 
 export type QrCodeProps = {
   settings: TQRcodeOptions;
@@ -63,12 +65,16 @@ export default function QrCode({ settings }: QrCodeProps) {
   };
 
   return (
-    <div className="flex p-12 md:flex-col">
+    <div className="flex md:flex-col space-y-6">
       <div
         className="canvas-wrap max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]"
         ref={ref}
       />
-      <div className="mt-8 flex flex-col space-y-4 p-8 md:flex-row md:justify-between md:space-x-4 md:space-y-0 md:p-0">
+      <div className="flex items-center space-x-2">
+        <Switch id="airplane-mode" disabled />
+        <Label htmlFor="airplane-mode">Enable Statistics and Editing</Label>
+      </div>
+      <div className="flex flex-col space-y-4 p-8 md:flex-row md:justify-between md:space-x-4 md:space-y-0 md:p-0">
         <Select onValueChange={onExtensionChange} value={fileExt}>
           <SelectTrigger className="lg:w-[160px]">
             <SelectValue placeholder="Select filetype" />
