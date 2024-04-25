@@ -28,16 +28,16 @@ export default async function Home() {
 }
 
 // TODO remove when you have your own data
-export async function CrudShowcase() {
-  const latestPost = await api.post.getLatest();
+// async function CrudShowcase() {
+//   const latestPost = await api.post.getLatest();
 
-  return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-    </div>
-  );
-}
+//   return (
+//     <div className="w-full max-w-xs">
+//       {latestPost ? (
+//         <p className="truncate">Your most recent post: {latestPost.name}</p>
+//       ) : (
+//         <p>You have no posts yet.</p>
+//       )}
+//     </div>
+//   );
+// }

@@ -1,5 +1,8 @@
 import { postRouter } from "~/server/presentation/api/routers/post";
-import { createCallerFactory, createTRPCRouter } from "~/server/presentation/api/trpc";
+import {
+  createCallerFactory,
+  createTRPCRouter,
+} from "~/server/presentation/api/trpc";
 import { qrCodeRouter } from "./routers/qrCode";
 
 /**

@@ -54,7 +54,7 @@ export default function QrCode({ settings }: QrCodeProps) {
 
   const onDownloadClick = async () => {
     if (!qrCode) return;
-    await createQrCode.mutate(options);
+    await createQrCode.mutateAsync(options);
     void qrCode.download({
       name: "qr-code",
       extension: fileExt,

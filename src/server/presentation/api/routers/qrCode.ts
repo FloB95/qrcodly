@@ -16,7 +16,6 @@ export const qrCodeRouter = createTRPCRouter({
   create: publicProcedure
     .input(QrCodeOptionsSchema)
     .mutation(async ({ ctx, input }) => {
-
       // TODO impelement controller, repository, and use case and store
       const newId = uuidv4();
       const qrCode = new QRcode(newId, input);
