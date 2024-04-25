@@ -19,9 +19,9 @@ import {
 } from "~/components/ui/select";
 import { Checkbox } from "~/components/ui/checkbox";
 import { ColorPicker } from "./ColorPicker";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { Slider } from "../ui/slider";
-import { Input } from "../ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { Slider } from "~/components/ui/slider";
+import { Input } from "~/components/ui/input";
 import {
   type TCornerSquareType,
   type TCornerDotType,

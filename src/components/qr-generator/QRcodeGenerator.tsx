@@ -12,9 +12,10 @@ import {
   PaintBrushIcon,
   QrCodeIcon,
 } from "@heroicons/react/24/outline";
-import { Button } from "../ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Button } from "~/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { type TQRcodeOptions } from "~/server/domain/entities/QRcode";
+import { ContentForm } from "./ContentForm";
 
 type QRCodeState = TQRcodeOptions;
 type QRCodeAction = { type: string; payload: Partial<TQRcodeOptions> };
@@ -79,42 +80,22 @@ export const QRcodeGenerator = () => {
             </div>
           </TabsTrigger>
         </TabsList>
-        <div className="mt-4 flex space-x-6">
-          <div className="flex flex-col justify-center">
-            <div className="flex flex-col space-y-2">
-              <Button size={"icon"}>
-                <LinkIcon className="h-6 w-6 text-white" />
-              </Button>
-              <Button size={"icon"} variant={"white"} disabled>
-                <DocumentTextIcon className="h-6 w-6" />
-              </Button>
-              <Button size={"icon"} variant={"white"} disabled>
-                <WifiIcon className="h-6 w-6" />
-              </Button>
-            </div>
-          </div>
+        <div className="relative mt-4 flex space-x-6">
+          <div className="w-16"></div>
           <div className="min-h-[500px] flex-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
             <div className="px-4 py-5 sm:p-12">
               <div className="flex flex-col md:flex-row">
                 <div className="flex-1">
                   <TabsContent value="qrCodeContent" className="h-full">
-                    <div className="flex h-full flex-1 flex-col">
-                      <p className="mb-4 text-xl font-semibold">
-                        Enter your URL here
-                      </p>
-                      <Input
-                        className="max-w-[650px] p-6"
-                        placeholder="Enter Text or URL https://example.com/"
-                        value={qrCodeSettings.data}
-                        onChange={(e) =>
-                          dispatch({
-                            type: "UPDATE_SETTINGS",
-                            payload: { data: e.target.value },
-                          })
-                        }
-                        autoFocus
-                      />
-                    </div>
+                    <ContentForm
+                      qrCodeSettings={qrCodeSettings}
+                      onChange={(val: string) =>
+                        dispatch({
+                          type: "UPDATE_SETTINGS",
+                          payload: { data: val },
+                        })
+                      }
+                    />
                   </TabsContent>
                   <TabsContent value="qrCodeSettings">
                     <SettingsForm

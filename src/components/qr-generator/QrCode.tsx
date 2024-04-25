@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "~/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "~/components/ui/select";
 import {
   type TFileExtension,
   type TQRcodeOptions,
@@ -16,8 +16,8 @@ import {
 import QRCodeStyling from "qr-code-styling";
 import { api } from "~/trpc/react";
 import { Loader2 } from "lucide-react";
-import { Switch } from "../ui/switch";
-import { Label } from "../ui/label";
+import { Switch } from "~/components/ui/switch";
+import { Label } from "~/components/ui/label";
 
 export type QrCodeProps = {
   settings: TQRcodeOptions;

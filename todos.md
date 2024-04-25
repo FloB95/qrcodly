@@ -1,21 +1,22 @@
 # Todos
 
-- Fix QR Code Generation (Image Settings) the image margin should be relative to the QR Code size
+- Fix QR Code Generation (Image Settings) - image margin relative to QR Code size
 - Add Color Select Gradient functionality
+- Optimize Page loading - no lazy load QR and SignIn Button
 - Run Migrations on Server start
 - Add Backend structure (Routes, Controllers, Models)
 - Cleanup Frontend / restructure in components
 - Add User Dashboard:
   - List QR Codes
   - Create QR Codes
-  - Update QR codesStatistics
+  - Update QR codes statistics
   - Delete QR Codes
 - Add New QR Code Variants:
   - Text
   - Wifi
   - vCard
-- Add Qr Code Borders
-- Add predefined Qr Code Templates
+- Add QR Code Borders
+- Add predefined QR Code Templates
 - Add Tests !!!
 - Optimize CI/CD
-- Add english Legal Notice and Privacy Policy
+- Add English Legal Notice and Privacy Policy
