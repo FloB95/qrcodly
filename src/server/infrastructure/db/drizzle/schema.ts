@@ -1,6 +1,3 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
-
 import { sql } from "drizzle-orm";
 import {
   bigint,
@@ -8,10 +5,11 @@ import {
   mysqlTableCreator,
   timestamp,
   varchar,
+  datetime,
 } from "drizzle-orm/mysql-core";
 
 /**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
+ * Multi-project schema feature of Drizzle ORM. Use the same
  * database instance for multiple projects.
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
@@ -32,3 +30,12 @@ export const posts = createTable(
     nameIndex: index("name_idx").on(example.name),
   }),
 );
+
+export const qrCode = createTable("qr_code", {
+  id: varchar("id", {
+    length: 36,
+  }).primaryKey(),
+  name: varchar("name", { length: 256 }),
+  createdAt: datetime("createdAt").notNull(),
+  updatedAt: datetime("updatedAt"),
+});

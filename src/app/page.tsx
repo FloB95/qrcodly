@@ -1,8 +1,10 @@
-
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Footer from "~/components/Footer";
 import { QRcodeGenerator } from "~/components/qr-generator/QRcodeGenerator";
 import Header from "~/components/Header";
 import Container from "~/components/ui/container";
+import { api } from "~/trpc/server";
 
 export default async function Home() {
   return (
@@ -20,7 +22,24 @@ export default async function Home() {
         </Container>
       </div>
 
+      <CrudShowcase />
+
       <Footer />
     </main>
+  );
+}
+
+
+async function CrudShowcase() {
+  const latestPost = await api.post.getLatest();
+
+  return (
+    <div className="w-full max-w-xs">
+      {latestPost ? (
+        <p className="truncate">Your most recent post: {latestPost.name}</p>
+      ) : (
+        <p>You have no posts yet.</p>
+      )}
+    </div>
   );
 }

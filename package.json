@@ -10,6 +10,7 @@
     "build": "next build",
     "db:push": "drizzle-kit push:mysql",
     "db:studio": "drizzle-kit studio",
+    "db:generate-migration": "drizzle-kit generate:mysql --config=drizzle.config.ts",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start"
