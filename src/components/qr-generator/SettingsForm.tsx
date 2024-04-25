@@ -23,15 +23,15 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Checkbox } from "~/components/ui/checkbox";
-import { type Options } from "qr-code-styling";
 import { ColorPicker } from "./ColorPicker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Slider } from "../ui/slider";
 import { Input } from "../ui/input";
+import { type TQRcodeOptions } from "~/server/domain/entities/QRcode";
 
 type SettingsFormProps = {
-  onChange: (data: Options) => void;
-  settings: Options;
+  onChange: (data: TQRcodeOptions) => void;
+  settings: TQRcodeOptions;
 };
 
 export function SettingsForm({ settings, onChange }: SettingsFormProps) {

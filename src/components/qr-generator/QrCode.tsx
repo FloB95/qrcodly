@@ -5,10 +5,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { useEffect, useRef, useState } from "react";
-import QRCodeStyling, {
-  type FileExtension,
-  type Options,
-} from "qr-code-styling";
 import { Button } from "../ui/button";
 import {
   Select,
@@ -17,10 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Cog6ToothIcon } from "@heroicons/react/24/outline";
+import {
+  type TFileExtension,
+  type TQRcodeOptions,
+} from "~/server/domain/entities/QRcode";
+import QRCodeStyling from "qr-code-styling";
 
 export type QrCodeProps = {
-  settings: Options;
+  settings: TQRcodeOptions;
 };
 
 export default function QrCode({ settings }: QrCodeProps) {
@@ -31,7 +31,7 @@ export default function QrCode({ settings }: QrCodeProps) {
     options.data = "https://www.qrcodly.de";
   }
 
-  const [fileExt, setFileExt] = useState<FileExtension>("svg");
+  const [fileExt, setFileExt] = useState<TFileExtension>("svg");
   const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));
   const ref = useRef<HTMLDivElement>(null);
 
@@ -47,7 +47,7 @@ export default function QrCode({ settings }: QrCodeProps) {
   }, [qrCode, options]);
 
   const onExtensionChange = (ext: string) => {
-    setFileExt(ext as FileExtension);
+    setFileExt(ext as TFileExtension);
   };
 
   const onDownloadClick = () => {

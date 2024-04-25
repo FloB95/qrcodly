@@ -1,0 +1,67 @@
+name: Pull Request
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+# on: push
+
+env:
+  NODE_VERSION: 20.1.0
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+  CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+  NODE_ENV: production
+
+jobs:
+  linting:
+    name: Lint
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Continuous integration
+        uses: ./.github/actions/ci-setup
+
+      - name: Lint Application
+        run: npm run lint
+
+  type-check:
+    name: Types
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Continuous Integration
+        uses: ./.github/actions/ci-setup
+
+      - name: Check Application Types
+        run: npm run type-check
+
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Continuous Integration
+        uses: ./.github/actions/ci-setup
+
+      - name: Build Application
+        run: npm run build
+
+  # test:
+  #   name: Test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+
+  #     - name: Npm Clean Install
+  #       run: npm ci
+
+  #     - name: Run tests
+  #       run: npm test

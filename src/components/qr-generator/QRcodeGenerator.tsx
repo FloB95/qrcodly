@@ -4,7 +4,6 @@ import { useReducer, Suspense } from "react";
 import { Input } from "~/components/ui/input";
 import { SettingsForm } from "./SettingsForm";
 import { QrCodeDefaults } from "~/config/QrCodeDefaults";
-import { type Options } from "qr-code-styling";
 import { DynamicQrCode } from "./DynamicQrCode";
 import {
   LinkIcon,
@@ -15,9 +14,10 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { type TQRcodeOptions } from "~/server/domain/entities/QRcode";
 
-type QRCodeState = Options;
-type QRCodeAction = { type: string; payload: Partial<Options> };
+type QRCodeState = TQRcodeOptions;
+type QRCodeAction = { type: string; payload: Partial<TQRcodeOptions> };
 
 function qrCodeReducer(state: QRCodeState, action: QRCodeAction): QRCodeState {
   switch (action.type) {
@@ -26,7 +26,10 @@ function qrCodeReducer(state: QRCodeState, action: QRCodeAction): QRCodeState {
         ...state,
         ...action.payload,
         qrOptions: { ...state.qrOptions, ...action.payload.qrOptions },
-        imageOptions: { ...state.imageOptions, ...action.payload.imageOptions },
+        imageOptions: { 
+          ...state.imageOptions, 
+          ...action.payload.imageOptions,
+        },
         dotsOptions: { ...state.dotsOptions, ...action.payload.dotsOptions },
         backgroundOptions: {
           ...state.backgroundOptions,
@@ -49,7 +52,7 @@ function qrCodeReducer(state: QRCodeState, action: QRCodeAction): QRCodeState {
 export const QRcodeGenerator = () => {
   const [qrCodeSettings, dispatch] = useReducer(qrCodeReducer, QrCodeDefaults);
 
-  const handleSettingsChange = (settings: Partial<Options>) => {
+  const handleSettingsChange = (settings: Partial<TQRcodeOptions>) => {
     dispatch({ type: "UPDATE_SETTINGS", payload: settings });
   };
 

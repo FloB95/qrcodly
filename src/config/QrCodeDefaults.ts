@@ -1,25 +1,17 @@
-import {
-  type DrawType,
-  type TypeNumber,
-  type Mode,
-  type ErrorCorrectionLevel,
-  type DotType,
-  type CornerSquareType,
-  type CornerDotType,
-  type Options,
-} from "qr-code-styling";
+import { type TQRcodeOptions } from "~/server/domain/entities/QRcode";
 
-export const QrCodeDefaults: Options = {
+export const QrCodeDefaults: TQRcodeOptions = {
+  shape: "square",
   width: 1000,
   height: 1000,
-  type: "canvas" as DrawType,
+  type: "canvas",
   data: "",
   image: "",
   margin: 0,
   qrOptions: {
-    typeNumber: 0 as TypeNumber,
-    mode: "Byte" as Mode,
-    errorCorrectionLevel: "Q" as ErrorCorrectionLevel,
+    typeNumber: 0,
+    mode: "Byte",
+    errorCorrectionLevel: "Q",
   },
   imageOptions: {
     hideBackgroundDots: true,
@@ -34,9 +26,10 @@ export const QrCodeDefaults: Options = {
     //   rotation: 0,
     //   colorStops: [{ offset: 0, color: '#8688B2' }, { offset: 1, color: '#77779C' }]
     // },
-    type: "rounded" as DotType,
+    type: "rounded",
   },
   backgroundOptions: {
+    round: 0,
     color: "#ffffff",
     // gradient: {
     //   type: 'linear', // 'radial'
@@ -46,7 +39,7 @@ export const QrCodeDefaults: Options = {
   },
   cornersSquareOptions: {
     color: "#000000",
-    type: "extra-rounded" as CornerSquareType,
+    type: "extra-rounded",
     // gradient: {
     //   type: 'linear', // 'radial'
     //   rotation: 180,
@@ -55,7 +48,7 @@ export const QrCodeDefaults: Options = {
   },
   cornersDotOptions: {
     color: "#000000",
-    type: "dot" as CornerDotType,
+    type: "dot",
     // gradient: {
     //   type: 'linear', // 'radial'
     //   rotation: 180,
