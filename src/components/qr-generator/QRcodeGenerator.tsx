@@ -60,7 +60,7 @@ export const QRcodeGenerator = () => {
   return (
     <>
       <Tabs defaultValue="qrCodeContent">
-        <TabsList className="mx-auto grid h-auto w-[400px] grid-cols-2 bg-white p-2">
+        <TabsList className="mx-auto grid h-auto w-[400px] grid-cols-2 bg-white p-2 shadow">
           <TabsTrigger
             value="qrCodeContent"
             className=" data-[state=active]:bg-gray-200"
