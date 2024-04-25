@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -27,15 +22,37 @@ import { ColorPicker } from "./ColorPicker";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Slider } from "../ui/slider";
 import { Input } from "../ui/input";
-import { type TQRcodeOptions } from "~/server/domain/entities/QRcode";
+import {
+  type TCornerSquareType,
+  type TCornerDotType,
+  type TDotType,
+  type TQRcodeOptions,
+} from "~/server/domain/entities/QRcode";
 
 type SettingsFormProps = {
   onChange: (data: TQRcodeOptions) => void;
   settings: TQRcodeOptions;
 };
 
+type FormValues = {
+  width: number;
+  height: number;
+  margin: number;
+  dotStyle: TDotType;
+  dotColor: string;
+  cornersSquareStyle: TCornerSquareType;
+  cornersDotStyle: TCornerDotType;
+  cornersDotColor: string;
+  cornersSquareColor: string;
+  background: string;
+  hideBackgroundDots: boolean;
+  image: string;
+  imageSize: number;
+  imageMargin: number;
+};
+
 export function SettingsForm({ settings, onChange }: SettingsFormProps) {
-  const form = useForm({
+  const form = useForm<FormValues>({
     defaultValues: {
       width: settings?.width ?? 300,
       height: settings?.height ?? 300,
@@ -55,7 +72,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
     },
   });
 
-  const handleChange = (data: any) => {
+  const handleChange = (data: FormValues) => {
     // map form data with settings
     settings.width = Number(data.width);
     settings.height = Number(data.height);
@@ -118,8 +135,8 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         min={300}
                         step={25}
                         onValueChange={(e: any) => {
-                          form.setValue("width", e);
-                          form.setValue("height", e);
+                          form.setValue("width", e as number);
+                          form.setValue("height", e as number);
                         }}
                       />
                     </FormControl>

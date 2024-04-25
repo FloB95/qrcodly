@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { QRcode, QrCodeOptionsSchema } from "~/server/domain/entities/QRcode";
 import { db } from "~/server/infrastructure/db/drizzle";
 import { qrCodeTable } from "~/server/infrastructure/db/drizzle/schema";

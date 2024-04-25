@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import dynamic from "next/dynamic";
 import { QrCodeSkeleton } from "./QrCodeSkeleton";
 

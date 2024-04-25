@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import Footer from "~/components/Footer";
 import { QRcodeGenerator } from "~/components/qr-generator/QRcodeGenerator";
 import Header from "~/components/Header";
 import Container from "~/components/ui/container";
-import { api } from "~/trpc/server";
 
 export default async function Home() {
   return (

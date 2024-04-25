@@ -72,16 +72,19 @@ export const DotType = z.enum([
   "square",
   "extra-rounded",
 ]);
+export type TDotType = z.infer<typeof DotType>;
 
 /**
  * Type definition for specifying the type of corner dots.
  */
 export const CornerDotType = z.enum(["dot", "square"]);
+export type TCornerDotType = z.infer<typeof CornerDotType>;
 
 /**
  * Type definition for specifying the type of corner squares.
  */
 export const CornerSquareType = z.enum(["dot", "square", "extra-rounded"]);
+export type TCornerSquareType = z.infer<typeof CornerSquareType>;
 
 /**
  * Type definition for specifying file extensions.

@@ -35,4 +35,5 @@ export const migrateDb = async () => {
       console.log("Failed to migrate database", error);
     });
 };
+
 void migrateDb();
