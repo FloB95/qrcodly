@@ -19,6 +19,7 @@ import {
 } from "~/server/domain/entities/QRcode";
 import QRCodeStyling from "qr-code-styling";
 import { api } from "~/trpc/react";
+import { Loader2 } from "lucide-react";
 
 export type QrCodeProps = {
   settings: TQRcodeOptions;
@@ -35,6 +36,7 @@ export default function QrCode({ settings }: QrCodeProps) {
   const createQrCode = api.qrCode.create.useMutation();
   const [fileExt, setFileExt] = useState<TFileExtension>("svg");
   const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));
+  const [isDownloading, setIsDownloading] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,11 +56,14 @@ export default function QrCode({ settings }: QrCodeProps) {
 
   const onDownloadClick = async () => {
     if (!qrCode) return;
+    setIsDownloading(true);
     await createQrCode.mutateAsync(options);
-    void qrCode.download({
+    await qrCode.download({
       name: "qr-code",
       extension: fileExt,
     });
+
+    setIsDownloading(false);
   };
 
   return (
@@ -80,7 +85,13 @@ export default function QrCode({ settings }: QrCodeProps) {
           </SelectContent>
         </Select>
         <div className="flex justify-end">
-          <Button onClick={onDownloadClick}>Download</Button>
+          {!isDownloading ? (
+            <Button onClick={onDownloadClick}>Download</Button>
+          ) : (
+            <Button disabled>
+              <Loader2 className="mr-2 h-6 w-6 animate-spin" /> Download
+            </Button>
+          )}
         </div>
       </div>
     </div>
