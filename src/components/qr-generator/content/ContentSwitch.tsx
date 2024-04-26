@@ -10,17 +10,17 @@ import { UrlSection } from "./UrlSection";
 import { TextSection } from "./TextSection";
 import { type TCurrentQrCodeInput } from "../QRcodeGenerator";
 
-type TContentFormProps = {
+type TContentSwitchProps = {
   currentInput: TCurrentQrCodeInput;
   setCurrentInput: (input: TCurrentQrCodeInput) => void;
   onChange: (e: string) => void;
 };
 
-export const ContentForm = ({
+export const ContentSwitch = ({
   currentInput,
   setCurrentInput,
   onChange,
-}: TContentFormProps) => {
+}: TContentSwitchProps) => {
   return (
     <>
       <Tabs

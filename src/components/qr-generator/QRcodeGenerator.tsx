@@ -6,7 +6,7 @@ import { QrCodeDefaults } from "~/config/QrCodeDefaults";
 import { DynamicQrCode } from "./DynamicQrCode";
 import { PaintBrushIcon, QrCodeIcon } from "@heroicons/react/24/outline";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { ContentForm } from "./content/ContentForm";
+import { ContentSwitch } from "./content/ContentSwitch";
 import {
   type TUrlInput,
   type TQRcodeOptions,
@@ -91,7 +91,7 @@ export const QRcodeGenerator = () => {
               <div className="flex flex-col md:flex-row">
                 <div className="flex-1">
                   <TabsContent value="qrCodeContent" className="ac mt-0 h-full">
-                    <ContentForm
+                    <ContentSwitch
                       currentInput={currentInput}
                       setCurrentInput={setCurrentInput}
                       onChange={(val: string) =>
