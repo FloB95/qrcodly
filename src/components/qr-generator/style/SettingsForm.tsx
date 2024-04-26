@@ -153,7 +153,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                 name="margin"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Margin</FormLabel>
+                    <FormLabel>Border Spacing</FormLabel>
                     <FormControl>
                       <Slider
                         name="margin"

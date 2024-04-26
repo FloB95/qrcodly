@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { buttonVariants } from "../ui/button";
+import { buttonVariants } from "~/components/ui/button";
 import {
   DocumentTextIcon,
   LinkIcon,
   WifiIcon,
 } from "@heroicons/react/24/outline";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { UrlInput } from "./content-inputs/UrlInput";
-import { TextInput } from "./content-inputs/TextInput";
-import { type TCurrentQrCodeInput } from "./QRcodeGenerator";
+import { UrlSection } from "./UrlSection";
+import { TextSection } from "./TextSection";
+import { type TCurrentQrCodeInput } from "../QRcodeGenerator";
 
 type TContentFormProps = {
   currentInput: TCurrentQrCodeInput;
@@ -61,7 +61,7 @@ export const ContentForm = ({
           </TabsTrigger>
         </TabsList>
         <TabsContent value="url">
-          <UrlInput
+          <UrlSection
             value={currentInput.tab === "url" ? currentInput.value : ""}
             onChange={(e) => {
               if (currentInput.tab !== "url") return;
@@ -71,7 +71,7 @@ export const ContentForm = ({
           />
         </TabsContent>
         <TabsContent value="text" className="h-full">
-          <TextInput
+          <TextSection
             value={currentInput.tab === "text" ? currentInput.value : ""}
             onChange={(e) => {
               if (currentInput.tab !== "text") return;
