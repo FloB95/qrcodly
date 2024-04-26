@@ -9,11 +9,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { UrlSection } from "./UrlSection";
 import { TextSection } from "./TextSection";
 import { type TCurrentQrCodeInput } from "../QRcodeGenerator";
+import { type TQRcodeOptions } from "~/server/domain/types/QRcode";
 
 type TContentSwitchProps = {
   currentInput: TCurrentQrCodeInput;
   setCurrentInput: (input: TCurrentQrCodeInput) => void;
-  onChange: (e: string) => void;
+  onChange: (e: string, contentType: TQRcodeOptions["contentType"]) => void;
 };
 
 export const ContentSwitch = ({
@@ -28,7 +29,7 @@ export const ContentSwitch = ({
         className="max-w-[650px]"
         suppressHydrationWarning
         onValueChange={(value: any) => {
-          setCurrentInput({ value: "", tab: value });
+          setCurrentInput({ value: "", tab: value, editable: false });
         }}
       >
         <TabsList className="mb-6 flex justify-start space-x-3 bg-transparent p-0">
@@ -63,10 +64,13 @@ export const ContentSwitch = ({
         <TabsContent value="url">
           <UrlSection
             value={currentInput.tab === "url" ? currentInput.value : ""}
-            onChange={(e) => {
+            editable={
+              currentInput.tab === "url" ? currentInput.editable : false
+            }
+            onChange={(url, editable) => {
               if (currentInput.tab !== "url") return;
-              setCurrentInput({ ...currentInput, value: e });
-              onChange(e);
+              setCurrentInput({ ...currentInput, value: url, editable });
+              onChange(url, { type: "url", editable });
             }}
           />
         </TabsContent>
@@ -76,7 +80,7 @@ export const ContentSwitch = ({
             onChange={(e) => {
               if (currentInput.tab !== "text") return;
               setCurrentInput({ ...currentInput, value: e });
-              onChange(e);
+              onChange(e, { type: "text" });
             }}
           />
         </TabsContent>

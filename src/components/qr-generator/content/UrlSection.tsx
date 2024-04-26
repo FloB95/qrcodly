@@ -10,31 +10,40 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "~/components/ui/form";
 import { useDebouncedValue } from "~/hooks/use-debounced-value";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Switch } from "~/components/ui/switch";
+import { useAuth } from "@clerk/nextjs";
+import { LoginRequiredDialog } from "../LoginRequiredDialog";
 
 type TUrlSectionProps = {
   value: string;
-  onChange: (e: string) => void;
+  editable: boolean;
+  onChange: (value: string, editable: boolean) => void;
 };
 
 const formSchema = z.object({
   url: UrlInputSchema,
+  editable: z.boolean(),
 });
 
-export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
+export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
+  const { isSignedIn } = useAuth();
+  const [alertOpen, setAlertOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       url: value,
+      editable,
     },
   });
   const [debounced] = useDebouncedValue(form.getValues("url"), 500);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    onChange(values.url);
+    onChange(values.url, values.editable);
   }
 
   // handle submit automatically after debounced value
@@ -44,26 +53,57 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
   }, [debounced]);
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="url"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  {...field}
-                  className="p-6"
-                  placeholder="Enter URL https://example.com/"
-                  autoFocus
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </form>
-    </Form>
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="url"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    {...field}
+                    className="p-6"
+                    placeholder="Enter URL https://example.com/"
+                    autoFocus
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="editable"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex">
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={(e) => {
+                        if (!isSignedIn) {
+                          setAlertOpen(true);
+                          return;
+                        }
+                        field.onChange(e);
+                        void form.handleSubmit(onSubmit)();
+                      }}
+                    />
+                  </FormControl>
+                  <FormLabel className="ml-2 mt-1.5">
+                    Enable Statistics and Editing
+                  </FormLabel>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+
+      <LoginRequiredDialog alertOpen={alertOpen} setAlertOpen={setAlertOpen} />
+    </>
   );
 };

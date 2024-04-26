@@ -15,7 +15,7 @@ import {
 } from "~/server/domain/types/QRcode";
 
 export type TCurrentQrCodeInput =
-  | { tab: "url"; value: TUrlInput }
+  | { tab: "url"; value: TUrlInput; editable: boolean }
   | { tab: "text"; value: TTextInput }
   | { tab: "wifi"; value: TWifiInput };
 type QRCodeState = TQRcodeOptions;
@@ -28,6 +28,10 @@ function qrCodeReducer(state: QRCodeState, action: QRCodeAction): QRCodeState {
         ...state,
         ...action.payload,
         qrOptions: { ...state.qrOptions, ...action.payload.qrOptions },
+        contentType: {
+          ...state.contentType,
+          ...action.payload.contentType,
+        },
         imageOptions: {
           ...state.imageOptions,
           ...action.payload.imageOptions,
@@ -56,6 +60,7 @@ export const QRcodeGenerator = () => {
   const [currentInput, setCurrentInput] = useState<TCurrentQrCodeInput>({
     value: "",
     tab: "url",
+    editable: false,
   });
 
   const handleSettingsChange = (settings: Partial<TQRcodeOptions>) => {
@@ -94,10 +99,10 @@ export const QRcodeGenerator = () => {
                     <ContentSwitch
                       currentInput={currentInput}
                       setCurrentInput={setCurrentInput}
-                      onChange={(val: string) =>
+                      onChange={(val, contentType) =>
                         dispatch({
                           type: "UPDATE_SETTINGS",
-                          payload: { data: val },
+                          payload: { data: val, contentType },
                         })
                       }
                     />

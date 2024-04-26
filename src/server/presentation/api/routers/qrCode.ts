@@ -20,6 +20,11 @@ export const qrCodeRouter = createTRPCRouter({
       const newId = uuidv4();
       const qrCode = new QRcode(newId, input, user?.id);
 
+      // if user is not logged in, or contentType is not url, remove editable
+      if (!user || input.contentType.type !== "url") {
+        input.contentType.editable = undefined;
+      }
+
       await db
         .insert(qrCodeTable)
         .values({
@@ -30,5 +35,10 @@ export const qrCodeRouter = createTRPCRouter({
           updatedAt: qrCode.updatedAt,
         } as NewQrCode)
         .execute();
+
+      return {
+        success: true,
+        isStored: qrCode.createdBy ? true : false,
+      };
     }),
 });

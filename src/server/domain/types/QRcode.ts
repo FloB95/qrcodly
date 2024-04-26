@@ -138,10 +138,34 @@ export const Gradient = z.object({
 });
 
 /**
+ * Type definition for specifying the content type of the QR code.
+ */
+export const QrCodeContentType = z.union([
+  z.literal("url"),
+  z.literal("text"),
+  z.literal("wifi"),
+]);
+
+/**
  * Type definition for specifying QR code generation options.
  */
 export const QrCodeOptionsSchema = z.object({
   type: DrawType.default("canvas"),
+  contentType: z
+    .object({
+      type: QrCodeContentType,
+      // Add a conditional field based on the value of `type`
+      editable: z.boolean().optional(),
+    })
+    .superRefine((arg, ctx) => {
+      if (arg.type === "url" && typeof arg.editable === "undefined") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom, // customize your issue
+          message: "editable is required for url content type",
+        });
+      }
+      return z.NEVER; // The return value is not used, but we need to return something to satisfy the typing
+    }),
   shape: ShapeType.default("square"),
   width: z.number().default(1000),
   height: z.number().default(1000),
