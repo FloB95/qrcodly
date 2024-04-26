@@ -1,22 +1,23 @@
 "use client";
 
-import { useReducer, Suspense } from "react";
-import { Input } from "~/components/ui/input";
+import { useReducer, Suspense, useState } from "react";
 import { SettingsForm } from "./SettingsForm";
 import { QrCodeDefaults } from "~/config/QrCodeDefaults";
 import { DynamicQrCode } from "./DynamicQrCode";
-import {
-  LinkIcon,
-  DocumentTextIcon,
-  WifiIcon,
-  PaintBrushIcon,
-  QrCodeIcon,
-} from "@heroicons/react/24/outline";
-import { Button } from "~/components/ui/button";
+import { PaintBrushIcon, QrCodeIcon } from "@heroicons/react/24/outline";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { type TQRcodeOptions } from "~/server/domain/entities/QRcode";
 import { ContentForm } from "./ContentForm";
+import {
+  type TUrlInput,
+  type TQRcodeOptions,
+  type TTextInput,
+  type TWifiInput,
+} from "~/server/domain/types/QRcode";
 
+export type TCurrentQrCodeInput =
+  | { tab: "url"; value: TUrlInput }
+  | { tab: "text"; value: TTextInput }
+  | { tab: "wifi"; value: TWifiInput };
 type QRCodeState = TQRcodeOptions;
 type QRCodeAction = { type: string; payload: Partial<TQRcodeOptions> };
 
@@ -52,6 +53,10 @@ function qrCodeReducer(state: QRCodeState, action: QRCodeAction): QRCodeState {
 
 export const QRcodeGenerator = () => {
   const [qrCodeSettings, dispatch] = useReducer(qrCodeReducer, QrCodeDefaults);
+  const [currentInput, setCurrentInput] = useState<TCurrentQrCodeInput>({
+    value: "",
+    tab: "url",
+  });
 
   const handleSettingsChange = (settings: Partial<TQRcodeOptions>) => {
     dispatch({ type: "UPDATE_SETTINGS", payload: settings });
@@ -81,14 +86,14 @@ export const QRcodeGenerator = () => {
           </TabsTrigger>
         </TabsList>
         <div className="relative mt-4 flex space-x-6">
-          <div className="w-16"></div>
-          <div className="min-h-[500px] flex-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
-            <div className="px-4 py-5 sm:p-12">
+          <div className="mx-auto min-h-[500px] max-w-[1200px] flex-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
+            <div className="px-4 py-5 sm:p-10">
               <div className="flex flex-col md:flex-row">
                 <div className="flex-1">
-                  <TabsContent value="qrCodeContent" className="h-full">
+                  <TabsContent value="qrCodeContent" className="mt-0 h-full">
                     <ContentForm
-                      qrCodeSettings={qrCodeSettings}
+                      currentInput={currentInput}
+                      setCurrentInput={setCurrentInput}
                       onChange={(val: string) =>
                         dispatch({
                           type: "UPDATE_SETTINGS",
@@ -97,7 +102,7 @@ export const QRcodeGenerator = () => {
                       }
                     />
                   </TabsContent>
-                  <TabsContent value="qrCodeSettings">
+                  <TabsContent value="qrCodeSettings" className="mt-0">
                     <SettingsForm
                       settings={qrCodeSettings}
                       onChange={handleSettingsChange}

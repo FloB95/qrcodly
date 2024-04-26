@@ -27,7 +27,7 @@ import {
   type TCornerDotType,
   type TDotType,
   type TQRcodeOptions,
-} from "~/server/domain/entities/QRcode";
+} from "~/server/domain/types/QRcode";
 
 type SettingsFormProps = {
   onChange: (data: TQRcodeOptions) => void;

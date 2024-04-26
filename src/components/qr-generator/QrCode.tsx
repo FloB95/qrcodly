@@ -9,15 +9,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import {
-  type TFileExtension,
-  type TQRcodeOptions,
-} from "~/server/domain/entities/QRcode";
 import QRCodeStyling from "qr-code-styling";
 import { api } from "~/trpc/react";
 import { Loader2 } from "lucide-react";
 import { Switch } from "~/components/ui/switch";
 import { Label } from "~/components/ui/label";
+import {
+  type TFileExtension,
+  type TQRcodeOptions,
+} from "~/server/domain/types/QRcode";
 
 export type QrCodeProps = {
   settings: TQRcodeOptions;
@@ -65,7 +65,7 @@ export default function QrCode({ settings }: QrCodeProps) {
   };
 
   return (
-    <div className="flex md:flex-col space-y-6">
+    <div className="flex space-y-6 md:flex-col">
       <div
         className="canvas-wrap max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]"
         ref={ref}

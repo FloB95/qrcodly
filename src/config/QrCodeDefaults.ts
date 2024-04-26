@@ -1,4 +1,4 @@
-import { type TQRcodeOptions } from "~/server/domain/entities/QRcode";
+import { type TQRcodeOptions } from "~/server/domain/types/QRcode";
 
 export const QrCodeDefaults: TQRcodeOptions = {
   shape: "square",

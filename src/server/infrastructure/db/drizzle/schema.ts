@@ -8,7 +8,7 @@ import {
   datetime,
   json,
 } from "drizzle-orm/mysql-core";
-import { type TQRcodeOptions } from "~/server/domain/entities/QRcode";
+import { type TQRcodeOptions } from "~/server/domain/types/QRcode";
 
 /**
  * Multi-project schema feature of Drizzle ORM. Use the same

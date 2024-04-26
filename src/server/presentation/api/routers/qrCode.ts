@@ -1,4 +1,4 @@
-import { QRcode, QrCodeOptionsSchema } from "~/server/domain/entities/QRcode";
+import { QRcode } from "~/server/domain/entities/QRcode";
 import { db } from "~/server/infrastructure/db/drizzle";
 import { qrCodeTable } from "~/server/infrastructure/db/drizzle/schema";
 import { v4 as uuidv4 } from "uuid";
@@ -7,12 +7,13 @@ import {
   createTRPCRouter,
   publicProcedure,
 } from "~/server/presentation/api/trpc";
+import { QrCodeOptionsSchema } from "~/server/domain/types/QRcode";
 
 type NewQrCode = typeof qrCodeTable.$inferInsert;
 
 export const qrCodeRouter = createTRPCRouter({
   create: publicProcedure
-    .input(QrCodeOptionsSchema)
+    .input(QrCodeOptionsSchema) // TODO replace with dto schema
     .mutation(async ({ ctx, input }) => {
       // TODO impelement controller, repository, and use case and store
       const user = await currentUser();
@@ -29,7 +30,5 @@ export const qrCodeRouter = createTRPCRouter({
           updatedAt: qrCode.updatedAt,
         } as NewQrCode)
         .execute();
-
-      console.log(input);
     }),
 });
