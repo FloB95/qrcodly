@@ -48,7 +48,7 @@
     "mysql2": "^3.9.1",
     "next": "^14.0",
     "qr-code-styling": "^1.6.0-rc.1",
-    "react": "18.2.0",
+    "react": "18.3.1",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.51.3",
     "server-only": "^0.0.1",
@@ -62,7 +62,7 @@
   "devDependencies": {
     "@types/eslint": "^8.56.2",
     "@types/node": "^20.11.20",
-    "@types/react": "^18.2.57",
+    "@types/react": "^18.3.1",
     "@types/react-dom": "^18.2.19",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
