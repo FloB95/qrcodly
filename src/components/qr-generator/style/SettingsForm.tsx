@@ -182,7 +182,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                       <FormControl>
                         <div>
                           <ColorPicker
-                            background={field.value}
+                            background={[field.value]}
                             setBackground={(color) => {
                               field.onChange(color);
                               handleChange(form.getValues());
@@ -243,7 +243,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                       <FormControl>
                         <div>
                           <ColorPicker
-                            background={field.value}
+                            background={[field.value]}
                             setBackground={(color) => {
                               field.onChange(color);
                               handleChange(form.getValues());
@@ -295,7 +295,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                       <FormControl>
                         <div>
                           <ColorPicker
-                            background={field.value}
+                            background={[field.value]}
                             setBackground={(color) => {
                               field.onChange(color);
                               handleChange(form.getValues());
@@ -344,7 +344,7 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                       <FormControl>
                         <div>
                           <ColorPicker
-                            background={field.value}
+                            background={[field.value]}
                             setBackground={(color) => {
                               field.onChange(color);
                               handleChange(form.getValues());

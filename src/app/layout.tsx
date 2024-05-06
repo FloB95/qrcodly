@@ -4,7 +4,7 @@ import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
 
-import { TRPCReactProvider } from "~/trpc/react";
+import { TRPCReactProvider } from "~/lib/trpc/react";
 import { Toaster } from '~/components/ui/toaster';
 
 const openSans = Inter({
@@ -51,6 +51,11 @@ export default function RootLayout({
             href="/favicon-16x16.png"
           />
           <link rel="manifest" href="/site.webmanifest" />
+          <script
+            defer
+            src="https://umami.fb-development.de/script.js"
+            data-website-id="f018e703-4ea8-4304-9189-77e93dd9fcb4"
+          ></script>
         </head>
         <body className={`font-sans ${openSans.variable}`}>
           <TRPCReactProvider>{children}</TRPCReactProvider>

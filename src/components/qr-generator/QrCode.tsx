@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import QRCodeStyling from "qr-code-styling";
-import { api } from "~/trpc/react";
+import { api } from "~/lib/trpc/react";
 import { Loader2 } from "lucide-react";
 import { Switch } from "~/components/ui/switch";
 import { Label } from "~/components/ui/label";
@@ -63,7 +63,9 @@ export default function QrCode({ settings }: QrCodeProps) {
           // show toast
           toast({
             title: "New QR code created",
-            description: "We saved your QR code for later use.",
+            description:
+              "We saved your QR code in your dashboard for later use.",
+            duration: 10000,
           });
         }
       },
