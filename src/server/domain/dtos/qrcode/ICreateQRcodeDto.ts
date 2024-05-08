@@ -1,5 +1,5 @@
-import { type z } from 'zod'
-import { BaseDtoOmitFields } from '../IBaseDtoOmitFields';
+import { type z } from "zod";
+import { BaseDtoOmitFields } from "../IBaseDtoOmitFields";
 import { QRcodeSchema } from "~/server/domain/types/QRcode";
 
 /**
@@ -7,10 +7,10 @@ import { QRcodeSchema } from "~/server/domain/types/QRcode";
  */
 export const CreateQRcodeDtoSchema = QRcodeSchema.omit({
   ...BaseDtoOmitFields,
-  createdBy: true
+  createdBy: true,
 });
 
 /**
  * Interface for the Create QRcode DTO.
  */
-export type ICreateQRcodeDto = z.infer<typeof CreateQRcodeDtoSchema>
+export type ICreateQRcodeDto = z.infer<typeof CreateQRcodeDtoSchema>;

@@ -7,5 +7,5 @@ export interface IBaseUseCase {
    * @param args The arguments for the use case.
    * @returns The result of the use case execution.
    */
-  execute(...args: any): any
+  execute(...args: any): any;
 }

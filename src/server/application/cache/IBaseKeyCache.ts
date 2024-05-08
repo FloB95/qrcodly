@@ -13,24 +13,24 @@ export interface IBaseKeyCache {
     key: string,
     value: string | Buffer | number,
     expirationTimeSeconds?: number,
-  ): Promise<void>
+  ): Promise<void>;
 
   /**
    * Retrieves a value from the cache.
    * @param key The key to retrieve.
    * @returns A promise that resolves to the retrieved value or null if not found.
    */
-  get(key: string): Promise<string | Buffer | number | null>
+  get(key: string): Promise<string | Buffer | number | null>;
 
   /**
    * Deletes a value from the cache.
    * @param key The key to delete.
    * @returns A promise that resolves when the value is deleted.
    */
-  del(key: string): Promise<void>
+  del(key: string): Promise<void>;
 
   /**
    * Disconnects from the cache.
    */
-  disconnect(): void
+  disconnect(): void;
 }

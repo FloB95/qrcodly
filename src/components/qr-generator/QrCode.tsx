@@ -12,8 +12,6 @@ import {
 import QRCodeStyling from "qr-code-styling";
 import { api } from "~/lib/trpc/react";
 import { Loader2 } from "lucide-react";
-import { Switch } from "~/components/ui/switch";
-import { Label } from "~/components/ui/label";
 import {
   type TFileExtension,
   type TQRcodeOptions,
@@ -56,20 +54,23 @@ export default function QrCode({ settings }: QrCodeProps) {
   const onDownloadClick = async () => {
     if (!qrCode) return;
     setIsDownloading(true);
-    await createQrCode.mutateAsync(options, {
-      onSuccess: (data) => {
-        // if user is logged in, show toast
-        if (data.success && data.isStored) {
-          // show toast
-          toast({
-            title: "New QR code created",
-            description:
-              "We saved your QR code in your dashboard for later use.",
-            duration: 10000,
-          });
-        }
+    await createQrCode.mutateAsync(
+      { config: options },
+      {
+        onSuccess: (data) => {
+          // if user is logged in, show toast
+          if (data.success && data.isStored) {
+            // show toast
+            toast({
+              title: "New QR code created",
+              description:
+                "We saved your QR code in your dashboard for later use.",
+              duration: 10000,
+            });
+          }
+        },
       },
-    });
+    );
     await qrCode.download({
       name: "qr-code",
       extension: fileExt,
