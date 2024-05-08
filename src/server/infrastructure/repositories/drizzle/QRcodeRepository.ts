@@ -3,7 +3,7 @@ import { BaseRepository } from "./BaseRepository";
 import { QRcode } from "~/server/domain/entities/QRcode";
 import { type IQRcodeRepository } from "~/server/application/repositories/IQRcodeRepository";
 import { db } from "~/server/infrastructure/db/drizzle";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 type NewQrCode = typeof qrCodeTable.$inferInsert;
 type DbQrCode = typeof qrCodeTable.$inferSelect;
@@ -46,6 +46,7 @@ class QRcodeRepository
   async findByUserId(userId: string): Promise<QRcode[]> {
     const qrCodes = await db.query.qrCodeTable.findMany({
       where: eq(this.table.createdBy, userId),
+      orderBy: desc(this.table.createdAt),
     });
     return qrCodes.map((dbQRcode) =>
       QRcodeRepository.mapDbEntryToQRcode(dbQRcode),
