@@ -39,6 +39,20 @@ class QRcodeRepository
   }
 
   /**
+   * Finds all QRcodes created by a specific user.
+   * @param userId The ID of the User.
+   * @returns A Promise that resolves to an array of QRcodes.
+   */
+  async findByUserId(userId: string): Promise<QRcode[]> {
+    const qrCodes = await db.query.qrCodeTable.findMany({
+      where: eq(this.table.createdBy, userId),
+    });
+    return qrCodes.map((dbQRcode) =>
+      QRcodeRepository.mapDbEntryToQRcode(dbQRcode),
+    );
+  }
+
+  /**
    * Creates a new QRcode entity in the database.
    * @param entity The QRcode entity to create.
    * @returns A promise resolved once the QRcode has been created.

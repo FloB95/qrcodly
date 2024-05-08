@@ -18,4 +18,8 @@ export class QRcode extends BaseEntity {
   ) {
     super(id);
   }
+
+  getContentType(): string {
+    return this.config.contentType.type;
+  }
 }

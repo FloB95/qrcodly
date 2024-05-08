@@ -29,7 +29,6 @@ export default function QrCode({ settings }: QrCodeProps) {
   const [fileExt, setFileExt] = useState<TFileExtension>("svg");
   const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));
 
-  const [isDownloading, setIsDownloading] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,7 +52,7 @@ export default function QrCode({ settings }: QrCodeProps) {
 
   const onDownloadClick = async () => {
     if (!qrCode) return;
-    setIsDownloading(true);
+
     await createQrCode.mutateAsync(
       { config: options },
       {
@@ -75,8 +74,6 @@ export default function QrCode({ settings }: QrCodeProps) {
       name: "qr-code",
       extension: fileExt,
     });
-
-    setIsDownloading(false);
   };
 
   return (
@@ -98,7 +95,7 @@ export default function QrCode({ settings }: QrCodeProps) {
           </SelectContent>
         </Select>
         <div className="flex justify-end">
-          {!isDownloading ? (
+          {!createQrCode.isPending ? (
             <Button
               disabled={options.data.length <= 0}
               onClick={onDownloadClick}

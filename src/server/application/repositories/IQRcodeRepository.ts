@@ -11,4 +11,11 @@ export interface IQRcodeRepository extends IBaseSqlRepository<QRcode> {
    * @returns A Promise that resolves to an array of QRcodes.
    */
   findAll(query: ISqlQueryFindBy<QRcode>): Promise<QRcode[]>;
+
+  /**
+   * Finds all QRcodes created by a specific user.
+   * @param userId The ID of the User.
+   * @returns A Promise that resolves to an array of QRcodes.
+   */
+  findByUserId(userId: string): Promise<QRcode[]>;
 }
