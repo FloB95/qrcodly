@@ -9,7 +9,8 @@ export interface ICreateQRcodeUseCase extends IBaseUseCase {
   /**
    * Executes the Create QRcode Use Case.
    * @param qrCode The qrCode data to create a new qrCode.
+   * @param createdBy The ID of the user who created the qrCode.
    * @returns The created qrCode.
    */
-  execute(qrCode: ICreateQRcodeDto): Promise<QRcode>;
+  execute(qrCode: ICreateQRcodeDto, createdBy?: string): Promise<QRcode>;
 }

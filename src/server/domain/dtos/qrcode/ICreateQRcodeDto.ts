@@ -7,6 +7,7 @@ import { QRcodeSchema } from "~/server/domain/types/QRcode";
  */
 export const CreateQRcodeDtoSchema = QRcodeSchema.omit({
   ...BaseDtoOmitFields,
+  createdBy: true
 });
 
 /**

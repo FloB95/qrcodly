@@ -10,12 +10,13 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
   /**
    * Executes the use case to create a new QRcode entity based on the given DTO.
    * @param dto The data transfer object containing the details for the QRcode to be created.
+   * @param createdBy The ID of the user who created the QRcode.
    * @returns A promise that resolves with the newly created QRcode entity.
    */
-  async execute(dto: ICreateQRcodeDto): Promise<QRcode> {
+  async execute(dto: ICreateQRcodeDto, createdBy?: string): Promise<QRcode> {
     const repo = new QRcodeRepository();
     const newId = await repo.generateId();
-    const qrCode = new QRcode(newId, dto.config, dto.createdBy);
+    const qrCode = new QRcode(newId, dto.config, createdBy);
 
     // Create the QR code entity in the database.
     await repo.create(qrCode);
