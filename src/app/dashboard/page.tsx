@@ -5,7 +5,7 @@ export default async function Dashboard() {
   const myQRcodes = await api.qrCode.getMyQrCodes();
   return (
     <div className="flex h-full w-full flex-1 flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold">Dashboard is in development</h1>
+      <h1 className="text-4xl font-bold my-16">Dashboard is in development</h1>
       {myQRcodes.map((qr) => (
         <div key={qr.id}>
           <QrCode settings={qr.config} />

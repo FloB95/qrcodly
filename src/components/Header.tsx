@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Container from "./ui/container";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import Link from "next/link";
 
 export default function Header() {
@@ -20,7 +20,10 @@ export default function Header() {
               </SignInButton>
             </SignedOut>
             <SignedIn>
-              <UserButton />
+              <div className="flex space-x-10">
+                <Link href="/dashboard" className={buttonVariants()}>Dashboard</Link>
+                <UserButton />
+              </div>
             </SignedIn>
           </div>
         </div>
