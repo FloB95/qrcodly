@@ -13,6 +13,9 @@ export const qrCodeRouter = createTRPCRouter({
     .mutation(async ({ input }) => await createQrCodeAction(input)),
   getMyQrCodes: protectedProcedure.query(async ({ ctx }) => {
     const repo = new QRcodeRepository();
+
+    if (!ctx.currentUser) throw new Error("User not found.");
+
     const qrCodes = await repo.findByUserId(ctx.currentUser.id);
     return qrCodes;
   }),
