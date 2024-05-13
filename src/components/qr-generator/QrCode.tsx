@@ -24,7 +24,6 @@ export type QrCodeProps = {
 
 export default function QrCode({ settings }: QrCodeProps) {
   const options = settings;
-
   const createQrCode = api.qrCode.create.useMutation();
   const [fileExt, setFileExt] = useState<TFileExtension>("svg");
   const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));

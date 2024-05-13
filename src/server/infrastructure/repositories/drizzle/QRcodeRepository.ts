@@ -9,7 +9,7 @@ type NewQrCode = typeof qrCodeTable.$inferInsert;
 type DbQrCode = typeof qrCodeTable.$inferSelect;
 
 /**
- * Repository for managing QRcode entities.
+ * Repository for managing QRcode Database entities.
  * Inherits from BaseRepository and implements IQRcodeRepository interface.
  */
 class QRcodeRepository

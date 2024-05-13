@@ -81,6 +81,7 @@ export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
                 <div className="flex">
                   <FormControl>
                     <Switch
+                      disabled
                       checked={field.value}
                       onCheckedChange={(e) => {
                         if (!isSignedIn) {
