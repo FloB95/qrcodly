@@ -2,10 +2,10 @@
 
 import { currentUser } from "@clerk/nextjs/server";
 import { CreateQRcodeUseCase } from "~/server/application/useCases/qrcode/implementations/CreateQRcodeUseCase";
-import { type ICreateQRcodeDto } from "~/server/domain/dtos/qrcode/ICreateQRcodeDto";
+import { type TCreateQRcodeDto } from "~/server/domain/dtos/qrcode/TCreateQRcodeDto";
 import QRcodeRepository from "~/server/infrastructure/repositories/drizzle/QRcodeRepository";
 
-export const createQrCodeAction = async (input: ICreateQRcodeDto) => {
+export const createQrCodeAction = async (input: TCreateQRcodeDto) => {
   const qrCodeConfig = input.config;
   const user = await currentUser();
 

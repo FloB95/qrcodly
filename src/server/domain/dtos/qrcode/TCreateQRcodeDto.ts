@@ -13,4 +13,4 @@ export const CreateQRcodeDtoSchema = QRcodeSchema.omit({
 /**
  * Interface for the Create QRcode DTO.
  */
-export type ICreateQRcodeDto = z.infer<typeof CreateQRcodeDtoSchema>;
+export type TCreateQRcodeDto = z.infer<typeof CreateQRcodeDtoSchema>;

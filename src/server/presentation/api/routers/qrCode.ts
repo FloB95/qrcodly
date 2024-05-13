@@ -4,7 +4,7 @@ import {
   publicProcedure,
 } from "~/server/presentation/api/trpc";
 import { createQrCodeAction } from "../../controller/QRcodeController";
-import { CreateQRcodeDtoSchema } from "~/server/domain/dtos/qrcode/ICreateQRcodeDto";
+import { CreateQRcodeDtoSchema } from "~/server/domain/dtos/qrcode/TCreateQRcodeDto";
 import QRcodeRepository from "~/server/infrastructure/repositories/drizzle/QRcodeRepository";
 
 export const qrCodeRouter = createTRPCRouter({

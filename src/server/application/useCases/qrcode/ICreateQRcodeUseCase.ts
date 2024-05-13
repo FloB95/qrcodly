@@ -1,6 +1,6 @@
 import { type QRcode } from "~/server/domain/entities/QRcode";
 import { type IBaseUseCase } from "../IBaseUseCase";
-import { type ICreateQRcodeDto } from "~/server/domain/dtos/qrcode/ICreateQRcodeDto";
+import { type TCreateQRcodeDto } from "~/server/domain/dtos/qrcode/TCreateQRcodeDto";
 
 /**
  * Interface for the Create QRcode Use Case.
@@ -12,5 +12,5 @@ export interface ICreateQRcodeUseCase extends IBaseUseCase {
    * @param createdBy The ID of the user who created the qrCode.
    * @returns The created qrCode.
    */
-  execute(qrCode: ICreateQRcodeDto, createdBy?: string): Promise<QRcode>;
+  execute(qrCode: TCreateQRcodeDto, createdBy?: string): Promise<QRcode>;
 }

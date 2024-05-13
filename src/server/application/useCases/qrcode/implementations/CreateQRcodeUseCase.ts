@@ -1,6 +1,6 @@
 import { QRcode } from "~/server/domain/entities/QRcode";
 import { type ICreateQRcodeUseCase } from "../ICreateQRcodeUseCase";
-import { type ICreateQRcodeDto } from "~/server/domain/dtos/qrcode/ICreateQRcodeDto";
+import { type TCreateQRcodeDto } from "~/server/domain/dtos/qrcode/TCreateQRcodeDto";
 import { type IQRcodeRepository } from "~/server/application/repositories/IQRcodeRepository";
 
 /**
@@ -15,7 +15,7 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
    * @param createdBy The ID of the user who created the QRcode.
    * @returns A promise that resolves with the newly created QRcode entity.
    */
-  async execute(dto: ICreateQRcodeDto, createdBy?: string): Promise<QRcode> {
+  async execute(dto: TCreateQRcodeDto, createdBy?: string): Promise<QRcode> {
     const newId = await this.qrCodeRepository.generateId();
     const qrCode = new QRcode(newId, dto.config, createdBy);
 
