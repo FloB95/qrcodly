@@ -24,7 +24,7 @@ export const LoginRequiredDialog = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Login Required!</AlertDialogTitle>
           <AlertDialogDescription>
-            You need to sign in to use this feature. <br />{" "}
+            You need to sign in to use this feature. <br />
             <strong>${`Don't worry, it's free!`}</strong>
           </AlertDialogDescription>
         </AlertDialogHeader>

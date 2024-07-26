@@ -2,7 +2,7 @@
 
 - Fix QR Code Generation (Image Settings) - image margin relative to QR Code size
 - Add Color Select Gradient functionality
-- Optimize Page loading - no lazy load QR and SignIn Button
+- Optimize Page loading - no lazy load QR code and SignIn Button
 - Run Migrations on Server start
 - Add Backend structure (Routes, Controllers, Models)
 - Cleanup Frontend / restructure in components
@@ -12,11 +12,10 @@
   - Update QR codes statistics
   - Delete QR Codes
 - Add New QR Code Variants:
-  - Text
   - Wifi
   - vCard
 - Add QR Code Borders
-- Add predefined QR Code Templates
+- Add QR Code Templates / export functionality for QR Code styles
 - Add Tests !!!
 - Optimize CI/CD
 - Add English Legal Notice and Privacy Policy

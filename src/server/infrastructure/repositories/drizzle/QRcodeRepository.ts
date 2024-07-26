@@ -18,19 +18,10 @@ class QRcodeRepository
 {
   table = qrCodeTable;
 
-  /**
-   * Finds all QRcode entities in the database.
-   * @returns A promise containing an array of QRcode instances.
-   */
   findAll(): Promise<QRcode[]> {
     throw new Error("Method not implemented.");
   }
 
-  /**
-   * Finds a single QRcode entity by its ID.
-   * @param id The ID of the QRcode to find.
-   * @returns A promise containing the QRcode found, or undefined if no QRcode is found.
-   */
   async findOneById(id: string): Promise<QRcode | undefined> {
     const qrCode = await db.query.qrCodeTable.findFirst({
       where: eq(this.table.id, id),
@@ -38,11 +29,6 @@ class QRcodeRepository
     return qrCode ? QRcodeRepository.mapDbEntryToQRcode(qrCode) : undefined;
   }
 
-  /**
-   * Finds all QRcodes created by a specific user.
-   * @param userId The ID of the User.
-   * @returns A Promise that resolves to an array of QRcodes.
-   */
   async findByUserId(userId: string): Promise<QRcode[]> {
     const qrCodes = await db.query.qrCodeTable.findMany({
       where: eq(this.table.createdBy, userId),
@@ -53,11 +39,6 @@ class QRcodeRepository
     );
   }
 
-  /**
-   * Creates a new QRcode entity in the database.
-   * @param entity The QRcode entity to create.
-   * @returns A promise resolved once the QRcode has been created.
-   */
   async create(entity: QRcode): Promise<void> {
     await db
       .insert(this.table)
@@ -71,20 +52,10 @@ class QRcodeRepository
       .execute();
   }
 
-  /**
-   * Updates a QRcode entity in the database.
-   * @param entity The QRcode entity to update.
-   * @returns A promise resolved once the QRcode has been updated.
-   */
   update(entity: QRcode): Promise<void> {
     throw new Error("Method not implemented.");
   }
 
-  /**
-   * Deletes a QRcode entity from the database.
-   * @param entity The QRcode to delete.
-   * @returns A promise resolved with a boolean indicating whether the delete was successful.
-   */
   delete(entity: QRcode): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
