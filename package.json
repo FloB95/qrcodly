@@ -40,7 +40,7 @@
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "critters": "^0.0.22",
+    "critters": "^0.0.24",
     "drizzle-orm": "^0.30.9",
     "lucide-react": "^0.376.0",
     "mysql2": "^3.11.0",
