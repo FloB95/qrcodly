@@ -44,7 +44,7 @@ export default function Footer() {
           </div>
           <div className="mt-8 md:order-1 md:mt-0">
             <p className="text-center text-xs leading-5 text-gray-500">
-              &copy; FB-Development {currentYear} - QR Code is a registered
+              &copy; FB Dev {currentYear} - QR Code is a registered
               trademark of DENSO WAVE INCORPORATED
             </p>
           </div>
