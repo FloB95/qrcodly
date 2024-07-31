@@ -5,9 +5,9 @@ import { env } from "~/env";
 export default {
   schema: "./src/server/infrastructure/db/drizzle/schema.ts",
   out: "./src/server/infrastructure/db/drizzle/migrations",
-  driver: "mysql2",
+  dialect: "mysql",
   dbCredentials: {
-    uri: env.DATABASE_URL,
+    url: env.DATABASE_URL,
     host: "localhost",
     user: "root",
     password: "root",
