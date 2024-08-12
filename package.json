@@ -42,7 +42,7 @@
     "clsx": "^2.1.0",
     "critters": "^0.0.24",
     "drizzle-orm": "^0.30.9",
-    "lucide-react": "^0.417.0",
+    "lucide-react": "^0.427.0",
     "mysql2": "^3.11.0",
     "next": "^14.0",
     "qr-code-styling": "^1.6.0-rc.1",
