@@ -1,13 +1,13 @@
-name: "Setup Continuous Integration"
-description: "Cache Dependencies"
+name: 'Setup Continuous Integration'
+description: 'Cache Dependencies'
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 20.1.0
-        cache: "npm"
+        cache: 'npm'
 
     # - name: Cache NPM Dependencies
     #   uses: actions/cache@v3
@@ -18,4 +18,8 @@ runs:
 
     - name: Install Dependencies
       run: npm ci
+      shell: bash
+
+    - name: Check Installed Packages
+      run: npm list @types/node
       shell: bash
