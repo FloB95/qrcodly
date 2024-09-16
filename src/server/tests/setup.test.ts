@@ -17,6 +17,5 @@ test("example router", async () => {
   };
 
   const example = await caller.post.hello(input);
-
   expect(example).toMatchObject({ greeting: "Hello test" });
 });

@@ -53,15 +53,15 @@ jobs:
       - name: Build Application
         run: npm run build
 
-  # test:
-  #   name: Test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  #     - name: Npm Clean Install
-  #       run: npm ci
+      - name: Npm Clean Install
+        run: npm ci
 
-  #     - name: Run tests
-  #       run: npm test
+      - name: Run tests
+        run: npm test
