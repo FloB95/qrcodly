@@ -3,7 +3,6 @@
 - Fix QR Code Generation (Image Settings) - image margin relative to QR Code size
 - Add Color Select Gradient functionality
 - Optimize Page loading - no lazy load QR code and SignIn Button
-- Run Migrations on Server start
 - Add Backend structure (Routes, Controllers, Models)
 - Cleanup Frontend / restructure in components
 - Add User Dashboard:
