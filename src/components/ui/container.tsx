@@ -1,6 +1,19 @@
-export default function Container({ children }: { children: React.ReactNode }) {
+import { cn } from "~/lib/utils";
+
+export default function Container({
+  className = "",
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="container mx-auto sm:px-6 lg:px-8 relative overflow-hidden">
+    <div
+      className={cn(
+        "container relative mx-auto overflow-hidden sm:px-6 lg:px-8",
+        className,
+      )}
+    >
       {children}
     </div>
   );
