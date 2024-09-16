@@ -63,13 +63,12 @@ const QrCodeDownloadBtn = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild disabled={options.data.length <= 0}>
-        {!createQrCode.isPending ? (
-          <Button disabled={options.data.length <= 0}>Download</Button>
-        ) : (
-          <Button disabled>
-            <Loader2 className="mr-2 h-6 w-6 animate-spin" /> Download
-          </Button>
-        )}
+        <Button
+          isLoading={createQrCode.isPending}
+          disabled={options.data.length <= 0 || createQrCode.isPending}
+        >
+          Download
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>

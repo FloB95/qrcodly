@@ -56,8 +56,9 @@ class QRcodeRepository
     throw new Error("Method not implemented.");
   }
 
-  delete(entity: QRcode): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async delete(entity: QRcode): Promise<boolean> {
+    await db.delete(this.table).where(eq(this.table.id, entity.id)).execute();
+    return true;
   }
 
   /**
