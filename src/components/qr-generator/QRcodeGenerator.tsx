@@ -14,7 +14,6 @@ import {
   type TWifiInput,
 } from "~/server/domain/types/QRcode";
 import QrCodeDownloadBtn from "./QrCodeDownloadBtn";
-import QRCodeStyling from "qr-code-styling";
 
 export type TCurrentQrCodeInput =
   | { tab: "url"; value: TUrlInput; editable: boolean }
@@ -95,7 +94,7 @@ export const QRcodeGenerator = () => {
         <div className="relative mt-4 flex space-x-6">
           <div className="mx-auto min-h-[500px] max-w-[1200px] flex-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
             <div className="px-4 py-5 sm:p-10">
-              <div className="flex flex-col md:flex-row space-x-12">
+              <div className="flex flex-col space-x-12 md:flex-row">
                 <div className="flex-1">
                   <TabsContent value="qrCodeContent" className="ac mt-0 h-full">
                     <ContentSwitch
@@ -121,12 +120,12 @@ export const QRcodeGenerator = () => {
                     <div className="flex space-y-6 md:flex-col">
                       <DynamicQrCode settings={qrCodeSettings} />
                     </div>
-                      <div className="flex justify-end mt-6">
-                        <QrCodeDownloadBtn
-                          qrCode={new QRCodeStyling(qrCodeSettings)}
-                          saveOnDownload={true}
-                        />
-                      </div>
+                    <div className="mt-6 flex justify-end">
+                      <QrCodeDownloadBtn
+                        qrCodeSettings={qrCodeSettings}
+                        saveOnDownload={true}
+                      />
+                    </div>
                   </Suspense>
                 </div>
               </div>

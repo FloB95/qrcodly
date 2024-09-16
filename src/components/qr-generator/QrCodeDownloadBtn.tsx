@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 "use client";
 
 import { api } from "~/lib/trpc/react";
 import { Button } from "../ui/button";
-import type QRCodeStyling from "qr-code-styling";
-import { Loader2 } from "lucide-react";
 import {
   type TQRcodeOptions,
   type TFileExtension,
@@ -16,24 +18,35 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useEffect, useState } from "react";
 
+let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
-  qrCode,
+  qrCodeSettings,
   saveOnDownload = false,
 }: {
-  qrCode: QRCodeStyling;
+  qrCodeSettings: TQRcodeOptions;
   saveOnDownload?: boolean;
 }) => {
+  const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
   const apiUtils = api.useUtils();
   const createQrCode = api.qrCode.create.useMutation();
-  const options = qrCode._options as TQRcodeOptions;
+
+  useEffect(() => {
+    // Dynamically import the QRCodeStyling class only when the component mounts
+    import("qr-code-styling").then((module) => {
+      QRCodeStyling = module.default;
+      const qrCode = new QRCodeStyling(qrCodeSettings); // Create a new instance with the current settings
+      setQrCodeInstance(qrCode); // Store the instance in the state
+    });
+  }, [qrCodeSettings]);
 
   const onDownloadClick = async (fileExt: TFileExtension) => {
-    if (!qrCode) return;
+    if (!qrCodeInstance) return;
 
     if (saveOnDownload) {
       await createQrCode.mutateAsync(
-        { config: options },
+        { config: qrCodeSettings },
         {
           onSuccess: (data) => {
             // if user is logged in, show toast
@@ -54,7 +67,7 @@ const QrCodeDownloadBtn = ({
       await apiUtils.qrCode.getMyQrCodes.invalidate();
     }
 
-    await qrCode.download({
+    await qrCodeInstance.download({
       name: "qr-code",
       extension: fileExt,
     });
@@ -62,10 +75,10 @@ const QrCodeDownloadBtn = ({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild disabled={options.data.length <= 0}>
+      <DropdownMenuTrigger asChild disabled={qrCodeSettings.data.length <= 0}>
         <Button
           isLoading={createQrCode.isPending}
-          disabled={options.data.length <= 0 || createQrCode.isPending}
+          disabled={qrCodeSettings.data.length <= 0 || createQrCode.isPending}
         >
           Download
         </Button>
