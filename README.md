@@ -22,7 +22,7 @@ To use QRcodly in your project, you can just manually download the source code. 
 2. run `npm install` to install dependencies
 3. start local database with `docker-compose up -d`
 4. setup environment variables in `.env` file using `.env.example` as a template
-5. push database schema with `npm run db:push`
+5. the database will be migrated automatically on server start
 6. run `npm run dev` to start the server
 7. for authentication you have to setup [Clerk](https://clerk.com/)
 

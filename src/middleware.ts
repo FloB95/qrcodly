@@ -1,9 +1,18 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { Logger } from "next-axiom";
+import { NextResponse } from "next/server";
 
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
 
-export default clerkMiddleware((auth, req) => {
+export default clerkMiddleware((auth, req, event) => {
+  const logger = new Logger({ source: "middleware" }); // traffic, request
+  logger.middleware(req);
+
+  event.waitUntil(logger.flush());
+
   if (isProtectedRoute(req)) auth().protect();
+
+  return NextResponse.next();
 });
 
 export const config = {

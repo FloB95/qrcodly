@@ -12,6 +12,11 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+    LOG_LEVEL: z
+      .enum(["error", "info", "debug", "off", "warm"])
+      .default("info"),
+    AXIOM_TOKEN: z.string(),
+    AXIOM_DATASET: z.string(),
   },
 
   /**
@@ -33,6 +38,9 @@ export const env = createEnv({
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    LOG_LEVEL: process.env.LOG_LEVEL,
+    AXIOM_TOKEN: process.env.AXIOM_TOKEN,
+    AXIOM_DATASET: process.env.AXIOM_DATASET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
