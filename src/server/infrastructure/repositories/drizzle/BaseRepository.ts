@@ -27,16 +27,10 @@ export abstract class BaseRepository<T> implements IBaseSqlRepository<T> {
    * Finds all entries in the database that match the given query conditions.
    * @param limit - Maximum number of results to return.
    * @param offset - Offset of the first result to return.
-   * @param select - Specific columns to fetch.
    * @param where - Filtering conditions.
    * @returns A promise that resolves to an array of matching entries.
    */
-  abstract findAll({
-    limit,
-    offset,
-    select,
-    where,
-  }: ISqlQueryFindBy<T>): Promise<T[]>;
+  abstract findAll({ limit, offset, where }: ISqlQueryFindBy<T>): Promise<T[]>;
 
   /**
    * Finds a single entry by its ID.
@@ -141,7 +135,7 @@ export abstract class BaseRepository<T> implements IBaseSqlRepository<T> {
    */
   public withWhere<T extends MySqlSelect>(
     qb: T,
-    where: WhereConditions<any>,
+    where: WhereConditions<T>,
   ): MySqlSelectDynamic<T> {
     const whereDrizzle = where
       ? convertWhereConditionToDrizzle<T>(where, this.table)

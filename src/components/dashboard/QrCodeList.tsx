@@ -10,6 +10,7 @@ import { Loader2 } from "lucide-react";
 export const QrCodeList = () => {
   const { isLoading, data: qrCodes } = api.qrCode.getMyQrCodes.useQuery();
 
+
   if (isLoading || !qrCodes) {
     return (
       <div>
@@ -20,7 +21,7 @@ export const QrCodeList = () => {
 
   return (
     <Container className="justify-center space-y-4">
-      {qrCodes.map((qr) => {
+      {qrCodes.data.map((qr) => {
         const { ...q } = qr; // fix next error
         return <DashboardListItem key={qr.id} qr={q as QRcode} />;
       })}

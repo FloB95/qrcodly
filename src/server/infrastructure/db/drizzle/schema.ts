@@ -37,7 +37,7 @@ export const qrCodeTable = createTable("qr_code", {
   id: varchar("id", {
     length: 36,
   }).primaryKey(),
-  config: json("json").$type<TQRcodeOptions>().notNull(),
+  config: json("config").$type<TQRcodeOptions>().notNull(),
   createdBy: varchar("created_by", { length: 255 }),
   createdAt: datetime("createdAt").notNull(),
   updatedAt: datetime("updatedAt"),
