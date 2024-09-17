@@ -3,6 +3,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { CreateQRcodeUseCase } from "~/server/application/useCases/qrcode/implementations/CreateQRcodeUseCase";
 import { type TCreateQRcodeDto } from "~/server/domain/dtos/qrcode/TCreateQRcodeDto";
+import { logger } from "~/server/infrastructure/logger";
 import QRcodeRepository from "~/server/infrastructure/repositories/drizzle/QRcodeRepository";
 
 export const createQrCodeAction = async (input: TCreateQRcodeDto) => {
@@ -15,7 +16,7 @@ export const createQrCodeAction = async (input: TCreateQRcodeDto) => {
   }
 
   const qrCodeRepository = new QRcodeRepository();
-  const useCase = new CreateQRcodeUseCase(qrCodeRepository);
+  const useCase = new CreateQRcodeUseCase(qrCodeRepository, logger);
   const qrCode = await useCase.execute(
     {
       config: qrCodeConfig,

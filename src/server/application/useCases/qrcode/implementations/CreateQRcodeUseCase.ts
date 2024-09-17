@@ -2,12 +2,16 @@ import { QRcode } from "~/server/domain/entities/QRcode";
 import { type ICreateQRcodeUseCase } from "../ICreateQRcodeUseCase";
 import { type TCreateQRcodeDto } from "~/server/domain/dtos/qrcode/TCreateQRcodeDto";
 import { type IQRcodeRepository } from "~/server/application/repositories/IQRcodeRepository";
+import { type IBaseLogger } from "~/server/application/logger/IBaseLogger";
 
 /**
  * Use case for creating a QRcode entity.
  */
 export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
-  constructor(private qrCodeRepository: IQRcodeRepository) {}
+  constructor(
+    private qrCodeRepository: IQRcodeRepository,
+    private logger: IBaseLogger,
+  ) {}
 
   /**
    * Executes the use case to create a new QRcode entity based on the given DTO.
@@ -26,6 +30,11 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
     const createdQrCode = await this.qrCodeRepository.findOneById(newId);
 
     if (!createdQrCode) throw new Error("Failed to create QR code");
+    
+    this.logger.info("QR code created successfully", {
+      id: createdQrCode.id,
+      createdBy: createdQrCode.createdBy,
+    });
 
     return createdQrCode;
   }
