@@ -30,7 +30,7 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
         },
       },
     );
-  }, [qr]);
+  }, [qr, deleteMutation, apiUtils]);
 
   return (
     <div className="flex justify-center space-x-8">

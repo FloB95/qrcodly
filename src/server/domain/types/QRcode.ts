@@ -227,5 +227,5 @@ export type TQRcodeOptions = z.infer<typeof QrCodeOptionsSchema>;
  */
 export const QRcodeSchema = BaseEntitySchema.extend({
   config: QrCodeOptionsSchema,
-  createdBy: z.string().optional(),
+  createdBy: z.string().nullable().optional(),
 });

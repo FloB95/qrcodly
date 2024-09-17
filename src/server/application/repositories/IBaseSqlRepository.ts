@@ -10,22 +10,21 @@ export type WhereField = {
 };
 
 // Define the conditions for the `where` object
-export type WhereConditions<T> = {
-  [K in keyof T]: WhereField; // For each key in T, there is a WhereField
-};
+export type WhereConditions<T> = Partial<{
+  [K in keyof T]: WhereField;
+}>;
 
 // Define the interface for a SQL query to find by certain conditions
 export interface ISqlQueryFindBy<T> {
   limit: number; // Maximum number of results to return
   offset: number; // Number of results to skip
-  select?: Partial<{ [K in keyof T]: boolean }>; // Fields to include in the result
   where?: WhereConditions<T>; // Conditions to filter the results
 }
 
 // Define the base repository interface
 export interface IBaseSqlRepository<T> {
   table: any; // Table or collection name
-  findAll({ limit, offset, select, where }: ISqlQueryFindBy<T>): Promise<T[]>; // Find all items matching the conditions
+  findAll({ limit, offset, where }: ISqlQueryFindBy<T>): Promise<T[]>; // Find all items matching the conditions
   countTotal(): Promise<number>; // Count the total number of items
   findOneById(id: string): Promise<T | undefined>; // Find an item by its ID
   create(item: T): Promise<void>; // Create a new item

@@ -30,7 +30,7 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
     const createdQrCode = await this.qrCodeRepository.findOneById(newId);
 
     if (!createdQrCode) throw new Error("Failed to create QR code");
-    
+
     this.logger.info("QR code created successfully", {
       id: createdQrCode.id,
       createdBy: createdQrCode.createdBy,

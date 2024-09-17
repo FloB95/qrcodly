@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { qrCodeTable } from "~/server/infrastructure/db/drizzle/schema";
 import { BaseRepository } from "./BaseRepository";
 import { QRcode } from "~/server/domain/entities/QRcode";
 import { type IQRcodeRepository } from "~/server/application/repositories/IQRcodeRepository";
 import { db } from "~/server/infrastructure/db/drizzle";
 import { desc, eq } from "drizzle-orm";
+import { convertMySqlColumnsToSelectObj } from "../../db/drizzle/utils";
+import { getTableConfig } from "drizzle-orm/mysql-core";
+import { type ISqlQueryFindBy } from "~/server/application/repositories/IBaseSqlRepository";
 
 type NewQrCode = typeof qrCodeTable.$inferInsert;
 type DbQrCode = typeof qrCodeTable.$inferSelect;
@@ -18,8 +22,30 @@ class QRcodeRepository
 {
   table = qrCodeTable;
 
-  findAll(): Promise<QRcode[]> {
-    throw new Error("Method not implemented.");
+  async findAll({
+    limit,
+    offset,
+    where,
+  }: ISqlQueryFindBy<QRcode>): Promise<QRcode[]> {
+    const allColumns = convertMySqlColumnsToSelectObj(
+      getTableConfig(this.table).columns,
+    );
+    const query = db
+      .select(allColumns)
+      .from(this.table)
+      .orderBy(desc(this.table.createdAt))
+      .$dynamic();
+
+    // add where conditions
+    if (where) void this.withWhere(query, where as unknown as any);
+
+    // add pagination
+    void this.withPagination(query, offset, limit);
+
+    const qrCodes = await query.execute();
+    return qrCodes.map((qrCode: any) =>
+      QRcodeRepository.mapDbEntryToQRcode(qrCode),
+    );
   }
 
   async findOneById(id: string): Promise<QRcode | undefined> {

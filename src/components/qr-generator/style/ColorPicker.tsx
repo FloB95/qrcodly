@@ -55,8 +55,6 @@ export function ColorPicker({
 
   const [currentTab, setCurrentTab] = useState(defaultTab);
 
-  console.log("background", background);
-
   return (
     <Popover>
       <PopoverTrigger asChild>
