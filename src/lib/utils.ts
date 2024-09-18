@@ -6,7 +6,10 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import vCardFactory from "vcards-js";
-import { type TWifiInput, type TVCardInput } from "~/server/domain/types/QRcode";
+import {
+  type TWifiInput,
+  type TVCardInput,
+} from "~/server/domain/types/QRcode";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

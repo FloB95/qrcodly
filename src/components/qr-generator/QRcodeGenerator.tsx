@@ -102,12 +102,16 @@ export const QRcodeGenerator = () => {
                     <ContentSwitch
                       currentInput={currentInput}
                       setCurrentInput={setCurrentInput}
-                      onChange={(val, contentType) =>
+                      onChange={(val, originalVal, contentType) => {
                         dispatch({
                           type: "UPDATE_SETTINGS",
-                          payload: { data: val, contentType },
-                        })
-                      }
+                          payload: {
+                            data: val,
+                            originalData: originalVal,
+                            contentType,
+                          },
+                        });
+                      }}
                     />
                   </TabsContent>
                   <TabsContent value="qrCodeSettings" className="mt-0">

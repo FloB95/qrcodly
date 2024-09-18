@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { z } from "zod";
 import { BaseEntitySchema } from "../entities/BaseEntity";
 
@@ -7,40 +10,60 @@ export type TUrlInput = z.infer<typeof UrlInputSchema>;
 export const TextInputSchema = z.string().max(1000);
 export type TTextInput = z.infer<typeof TextInputSchema>;
 
-export const WifiInputSchema = z.object({
-  ssid: z.string().min(2).max(32),
-  password: z.string().max(64),
-  encryption: z.enum(["WPA", "WEP", "nopass"]).default("WPA"),
-}).default({
-  ssid: "",
-  password: "",
-  encryption: "WPA",
-});
+export const WifiInputSchema = z
+  .object({
+    ssid: z.string().max(32),
+    password: z.string().max(64),
+    encryption: z.enum(["WPA", "WEP", "nopass"]).default("WPA"),
+  })
+  .default({
+    ssid: "",
+    password: "",
+    encryption: "WPA",
+  });
 export type TWifiInput = z.infer<typeof WifiInputSchema>;
 
-export const VCardInputSchema = z
-  .object({
-    firstName: z.string().max(64).optional(),
-    lastName: z.string().max(64).optional(),
-    email: z.string().email().optional(),
-    phone: z
-      .string()
-      .regex(/^\+?\d{1,4}\d{6,15}$/)
-      .optional(),
-    fax: z
-      .string()
-      .regex(/^\+?\d{1,4}\d{6,15}$/)
-      .optional(),
-    company: z.string().max(64).optional(),
-    job: z.string().max(64).optional(),
-    street: z.string().max(64).optional(),
-    city: z.string().max(64).optional(),
-    zip: z.string().max(10).optional(),
-    state: z.string().max(64).optional(),
-    country: z.string().max(64).optional(),
-    website: z.string().url().optional(),
-  });
+export const VCardInputSchema = z.object({
+  firstName: z.string().max(64).optional(),
+  lastName: z.string().max(64).optional(),
+  email: z.string().email().optional(),
+  phone: z
+    .string()
+    .regex(/^\+?\d{1,4}\d{6,15}$/)
+    .optional(),
+  fax: z
+    .string()
+    .regex(/^\+?\d{1,4}\d{6,15}$/)
+    .optional(),
+  company: z.string().max(64).optional(),
+  job: z.string().max(64).optional(),
+  street: z.string().max(64).optional(),
+  city: z.string().max(64).optional(),
+  zip: z.string().max(10).optional(),
+  state: z.string().max(64).optional(),
+  country: z.string().max(64).optional(),
+  website: z.string().url().optional(),
+});
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
+
+const QrCodeContentOriginalDataSchema = z.union([
+  UrlInputSchema,
+  TextInputSchema,
+  WifiInputSchema,
+  VCardInputSchema,
+]);
+
+export type TQrCodeContentOriginalData = z.infer<
+  typeof QrCodeContentOriginalDataSchema
+>;
+
+// Define the type mapping
+export type TQrCodeContentOriginalDataMap = {
+  url: z.infer<typeof UrlInputSchema>;
+  text: z.infer<typeof TextInputSchema>;
+  wifi: z.infer<typeof WifiInputSchema>;
+  vCard: z.infer<typeof VCardInputSchema>;
+};
 
 /**
  * Type definition for specifying numbers within a certain range.
@@ -174,6 +197,7 @@ export const QrCodeContentType = z.union([
   z.literal("wifi"),
   z.literal("vCard"),
 ]);
+export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
 
 /**
  * Type definition for specifying QR code generation options.
@@ -200,6 +224,7 @@ export const QrCodeOptionsSchema = z.object({
   height: z.number().default(1000),
   margin: z.number().default(0),
   data: z.string(),
+  originalData: QrCodeContentOriginalDataSchema,
   image: z.string().optional(),
   qrOptions: z.object({
     typeNumber: TypeNumber.default(0),

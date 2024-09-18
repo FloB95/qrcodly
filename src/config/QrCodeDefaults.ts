@@ -10,6 +10,7 @@ export const QrCodeDefaults: TQRcodeOptions = {
     editable: false,
   },
   data: "",
+  originalData: "",
   image: "",
   margin: 0,
   qrOptions: {

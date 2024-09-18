@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 "use client";
 
@@ -9,6 +10,41 @@ import { toast } from "../ui/use-toast";
 import { Button } from "../ui/button";
 import { DynamicQrCode } from "../qr-generator/DynamicQrCode";
 import { QrCodeSkeleton } from "../qr-generator/QrCodeSkeleton";
+import {
+  DocumentTextIcon,
+  IdentificationIcon,
+} from "@heroicons/react/24/outline";
+import { LinkIcon, WifiIcon } from "lucide-react";
+
+const GetNameByContentType = (qr: QRcode) => {
+  switch (qr.config.contentType.type) {
+    case "url":
+      return qr.config.data;
+    case "text":
+      return qr.config.data;
+    case "wifi":
+      return qr.getOriginalData<"wifi">().ssid;
+    case "vCard":
+      return `${qr.getOriginalData<"vCard">()?.firstName ?? ""} ${qr.getOriginalData<"vCard">()?.lastName ?? ""}`;
+    default:
+      return "Unknown";
+  }
+};
+
+const GetQrCodeIconByContentType = (qr: QRcode) => {
+  switch (qr.config.contentType.type) {
+    case "url":
+      return <LinkIcon className="mr-2 h-6 w-6" />;
+    case "text":
+      return <DocumentTextIcon className="mr-2 h-6 w-6" />;
+    case "wifi":
+      return <WifiIcon className="mr-2 h-6 w-6" />;
+    case "vCard":
+      return <IdentificationIcon className="mr-2 h-6 w-6" />;
+    default:
+      return "❓";
+  }
+};
 
 export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -34,16 +70,16 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
 
   return (
     <div className="flex justify-center space-x-8">
-      <div className="max-h-[100px] max-w-[100px] lg:max-h-[100px] lg:max-w-[100px] overflow-hidden">
+      <div className="flex justify-center flex-col text-center">{GetQrCodeIconByContentType(qr)}</div>
+      <div className="max-h-[100px] max-w-[100px] overflow-hidden lg:max-h-[100px] lg:max-w-[100px]">
         <DynamicQrCode
           settings={qr.config}
           additionalStyles="max-h-[100px] max-w-[100px] lg:max-h-[100px] lg:max-w-[100px]"
         />
-        <QrCodeSkeleton
-        />
+        <QrCodeSkeleton />
       </div>
       <div>
-        <p>{qr.config.data}</p>
+        <p>{GetNameByContentType(qr)}</p>
       </div>
       <div>
         <QrCodeDownloadBtn qrCodeSettings={qr.config} />
@@ -56,5 +92,3 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
     </div>
   );
 };
-
-
