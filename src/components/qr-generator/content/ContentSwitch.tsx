@@ -11,6 +11,7 @@ import { UrlSection } from "./UrlSection";
 import { TextSection } from "./TextSection";
 import { type TCurrentQrCodeInput } from "../QRcodeGenerator";
 import {
+  type TQrCodeContentOriginalData,
   VCardInputSchema,
   WifiInputSchema,
   type TQRcodeOptions,
@@ -22,7 +23,11 @@ import { WiFiSection } from "./WiFiSection";
 type TContentSwitchProps = {
   currentInput: TCurrentQrCodeInput;
   setCurrentInput: (input: TCurrentQrCodeInput) => void;
-  onChange: (e: string, contentType: TQRcodeOptions["contentType"]) => void;
+  onChange: (
+    v: string,
+    originalVal: TQrCodeContentOriginalData,
+    contentType: TQRcodeOptions["contentType"],
+  ) => void;
 };
 
 export const ContentSwitch = ({
@@ -87,17 +92,17 @@ export const ContentSwitch = ({
             onChange={(url, editable) => {
               if (currentInput.tab !== "url") return;
               setCurrentInput({ ...currentInput, value: url, editable });
-              onChange(url, { type: "url", editable });
+              onChange(url, url, { type: "url", editable });
             }}
           />
         </TabsContent>
         <TabsContent value="text" className="h-full">
           <TextSection
             value={currentInput.tab === "text" ? currentInput.value : ""}
-            onChange={(e) => {
+            onChange={(v) => {
               if (currentInput.tab !== "text") return;
-              setCurrentInput({ ...currentInput, value: e });
-              onChange(e, { type: "text" });
+              setCurrentInput({ ...currentInput, value: v });
+              onChange(v, v, { type: "text" });
             }}
           />
         </TabsContent>
@@ -110,10 +115,10 @@ export const ContentSwitch = ({
                     encryption: "WPA",
                   }).data!
             }
-            onChange={(e) => {
+            onChange={(v) => {
               if (currentInput.tab !== "wifi") return;
-              setCurrentInput({ ...currentInput, value: e });
-              onChange(convertWiFiObjToString(e), { type: "vCard" });
+              setCurrentInput({ ...currentInput, value: v });
+              onChange(convertWiFiObjToString(v), v, { type: "wifi" });
             }}
           />
         </TabsContent>
@@ -124,10 +129,10 @@ export const ContentSwitch = ({
                 ? VCardInputSchema.safeParse(currentInput.value).data!
                 : VCardInputSchema.safeParse({}).data!
             }
-            onChange={(e) => {
+            onChange={(v) => {
               if (currentInput.tab !== "vCard") return;
-              setCurrentInput({ ...currentInput, value: e });
-              onChange(convertVCardObjToString(e), { type: "vCard" });
+              setCurrentInput({ ...currentInput, value: v });
+              onChange(convertVCardObjToString(v), v, { type: "vCard" });
             }}
           />
         </TabsContent>

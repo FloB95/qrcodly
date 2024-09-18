@@ -91,9 +91,9 @@ export function ColorPicker({
             <TabsTrigger className="flex-1" value="solid">
               Solid
             </TabsTrigger>
-            <TabsTrigger className="flex-1" value="gradient">
+            {/* <TabsTrigger className="flex-1" value="gradient">
               Gradient
-            </TabsTrigger>
+            </TabsTrigger> */}
           </TabsList>
 
           <TabsContent value="solid" className="mt-0 flex flex-wrap gap-1">
@@ -107,7 +107,7 @@ export function ColorPicker({
             ))}
           </TabsContent>
 
-          <TabsContent value="gradient" className="mt-0">
+          {/* <TabsContent value="gradient" className="mt-0">
             <div className="mb-2 flex flex-wrap gap-1">
               {gradients.map((s, i) => (
                 <div
@@ -120,7 +120,7 @@ export function ColorPicker({
                 />
               ))}
             </div>
-          </TabsContent>
+          </TabsContent> */}
 
           <TabsContent value="password">Change your password here.</TabsContent>
         </Tabs>
