@@ -4,6 +4,7 @@ import {
   DocumentTextIcon,
   LinkIcon,
   WifiIcon,
+  IdentificationIcon,
 } from "@heroicons/react/24/outline";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { UrlSection } from "./UrlSection";
@@ -32,7 +33,7 @@ export const ContentSwitch = ({
           setCurrentInput({ value: "", tab: value, editable: false });
         }}
       >
-        <TabsList className="mb-6 flex justify-start space-x-3 bg-transparent p-0">
+        <TabsList className="mb-6 flex h-auto flex-wrap justify-start space-x-3 bg-transparent p-0">
           <TabsTrigger value="url" asChild>
             <button
               className={buttonVariants({
@@ -60,6 +61,15 @@ export const ContentSwitch = ({
               <WifiIcon className="mr-2 h-6 w-6" /> WIFI
             </button>
           </TabsTrigger>
+          <TabsTrigger value="vCard" disabled asChild>
+            <button
+              className={buttonVariants({
+                variant: "tab",
+              })}
+            >
+              <IdentificationIcon className="mr-2 h-6 w-6" /> VCARD
+            </button>
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="url">
           <UrlSection
@@ -85,6 +95,7 @@ export const ContentSwitch = ({
           />
         </TabsContent>
         <TabsContent value="wifi"></TabsContent>
+        <TabsContent value="vCard"></TabsContent>
       </Tabs>
     </>
   );

@@ -5,9 +5,9 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="pt-7">
+    <header className="pt-10">
       <Container>
-        <div className="flex justify-between px-6 pt-1 lg:px-8">
+        <div className="flex justify-between sm:px-6 pt-1 lg:px-8">
           <div className="text-3xl font-bold">
             <Link href="/" title="QRcodly">
               QRcodly
@@ -20,7 +20,7 @@ export default function Header() {
               </SignInButton>
             </SignedOut>
             <SignedIn>
-              <div className="flex space-x-10">
+              <div className="flex space-x-4 sm:space-x-10">
                 <Link href="/dashboard" className={buttonVariants()}>Dashboard</Link>
                 <UserButton />
               </div>

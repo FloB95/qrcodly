@@ -18,3 +18,4 @@
 - Add Tests !!!
 - Optimize CI/CD
 - Add English Legal Notice and Privacy Policy
+- Responsive Optimization
