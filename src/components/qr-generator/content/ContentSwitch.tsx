@@ -10,7 +10,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { UrlSection } from "./UrlSection";
 import { TextSection } from "./TextSection";
 import { type TCurrentQrCodeInput } from "../QRcodeGenerator";
-import { type TQRcodeOptions } from "~/server/domain/types/QRcode";
+import {
+  VCardInputSchema,
+  type TQRcodeOptions,
+} from "~/server/domain/types/QRcode";
+import { VcardSection } from "./VcardSection";
+import { convertVCardObjToString } from "~/lib/utils";
 
 type TContentSwitchProps = {
   currentInput: TCurrentQrCodeInput;
@@ -61,7 +66,7 @@ export const ContentSwitch = ({
               <WifiIcon className="mr-2 h-6 w-6" /> WIFI
             </button>
           </TabsTrigger>
-          <TabsTrigger value="vCard" disabled asChild>
+          <TabsTrigger value="vCard" asChild>
             <button
               className={buttonVariants({
                 variant: "tab",
@@ -95,7 +100,21 @@ export const ContentSwitch = ({
           />
         </TabsContent>
         <TabsContent value="wifi"></TabsContent>
-        <TabsContent value="vCard"></TabsContent>
+        <TabsContent value="vCard">
+          <VcardSection
+            value={
+              currentInput.tab === "vCard"
+                ? VCardInputSchema.safeParse(currentInput.value).data!
+                : VCardInputSchema.safeParse({}).data!
+            }
+            onChange={(e) => {
+              if (currentInput.tab !== "vCard") return;
+              setCurrentInput({ ...currentInput, value: e });
+              // convert object to vcard string
+              onChange(convertVCardObjToString(e), { type: "vCard" });
+            }}
+          />
+        </TabsContent>
       </Tabs>
     </>
   );

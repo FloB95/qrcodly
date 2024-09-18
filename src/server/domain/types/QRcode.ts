@@ -14,6 +14,30 @@ export const WifiInputSchema = z.object({
 });
 export type TWifiInput = z.infer<typeof WifiInputSchema>;
 
+export const VCardInputSchema = z
+  .object({
+    firstName: z.string().max(64).optional(),
+    lastName: z.string().max(64).optional(),
+    email: z.string().email().optional(),
+    phone: z
+      .string()
+      .regex(/^\+?\d{1,4}\d{6,15}$/)
+      .optional(),
+    fax: z
+      .string()
+      .regex(/^\+?\d{1,4}\d{6,15}$/)
+      .optional(),
+    company: z.string().max(64).optional(),
+    job: z.string().max(64).optional(),
+    street: z.string().max(64).optional(),
+    city: z.string().max(64).optional(),
+    zip: z.string().max(10).optional(),
+    state: z.string().max(64).optional(),
+    country: z.string().max(64).optional(),
+    website: z.string().url().optional(),
+  });
+export type TVCardInput = z.infer<typeof VCardInputSchema>;
+
 /**
  * Type definition for specifying numbers within a certain range.
  * @example
@@ -144,6 +168,7 @@ export const QrCodeContentType = z.union([
   z.literal("url"),
   z.literal("text"),
   z.literal("wifi"),
+  z.literal("vCard"),
 ]);
 
 /**
