@@ -1,21 +1,25 @@
 # Todos
 
-- Fix QR Code Generation (Image Settings) - image margin relative to QR Code size
-- Add Color Select Gradient functionality
 - Optimize Page loading - no lazy load QR code and SignIn Button
-- Add Backend structure (Routes, Controllers, Models)
-- Cleanup Frontend / restructure in components
 - Add User Dashboard:
+  - Custom Dashboard Navigation
   - List QR Codes
   - Create QR Codes
-  - Update QR codes statistics
+  - Update QR codes (URLs)
   - Delete QR Codes
-- Add New QR Code Variants:
-  - Wifi
-  - vCard
+  - QR Code Templates / export functionality for QR Code styles
+  - QR Code Grouping (Folders)
+  - QR Code Statistics
+
 - Add QR Code Borders
-- Add QR Code Templates / export functionality for QR Code styles
 - Add Tests !!!
 - Optimize CI/CD
+- Optimize Logging
+- Add Redis for caching
 - Add English Legal Notice and Privacy Policy
+- Add Url Shortener for editable QR Code URLs
+- Add different vCard Types (Private and Business)
+- Add Predefined Icons for QR Code Image
+- Add Color Select Gradient functionality
+- Add Images to Shape Select fields
 - Responsive Optimization

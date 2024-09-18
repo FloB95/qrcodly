@@ -121,7 +121,7 @@ export const QRcodeGenerator = () => {
                     />
                   </TabsContent>
                 </div>
-                <div className="">
+                <div>
                   <Suspense fallback={null}>
                     <div className="flex justify-center space-y-6 md:flex-col md:justify-start">
                       <DynamicQrCode settings={qrCodeSettings} />
