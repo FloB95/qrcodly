@@ -51,11 +51,11 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
   const deleteMutation = api.qrCode.delete.useMutation();
   const apiUtils = api.useUtils();
   const handleDelete = useCallback(() => {
+    setIsDeleting(true);
     deleteMutation.mutate(
       { id: qr.id },
       {
         onSuccess: async () => {
-          setIsDeleting(true);
           await apiUtils.qrCode.getMyQrCodes.invalidate();
           toast({
             title: "QR code deleted",
@@ -70,7 +70,9 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
 
   return (
     <div className="flex justify-center space-x-8">
-      <div className="flex justify-center flex-col text-center">{GetQrCodeIconByContentType(qr)}</div>
+      <div className="flex flex-col justify-center text-center">
+        {GetQrCodeIconByContentType(qr)}
+      </div>
       <div className="max-h-[100px] max-w-[100px] overflow-hidden lg:max-h-[100px] lg:max-w-[100px]">
         <DynamicQrCode
           settings={qr.config}

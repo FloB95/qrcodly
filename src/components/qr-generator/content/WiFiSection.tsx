@@ -76,11 +76,12 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
           <FormField
             control={form.control}
             name="password"
+            disabled={form.getValues("encryption") === "nopass"}
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Enter your first name" />
+                  <Input {...field} autoCorrect="off" autoComplete="off" placeholder="Enter your first name" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,6 +101,10 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
                         "encryption",
                         value as TWifiInput["encryption"],
                       );
+
+                      if (value === "nopass") {
+                        form.setValue("password", "");
+                      }
                     }}
                     value={field.value}
                   >

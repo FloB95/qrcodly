@@ -1,4 +1,5 @@
 import { QrCodeList } from "~/components/dashboard/QrCodeList";
+import { StatisticChart } from "~/components/dashboard/StatisticChart";
 
 export default function Dashboard() {
   return (
@@ -7,6 +8,8 @@ export default function Dashboard() {
         Dashboard is in development 🚀
       </h1>
       <QrCodeList />
+      
+      {/* <StatisticChart /> */}
     </div>
   );
 }
