@@ -6,7 +6,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import vCardFactory from "vcards-js";
-import { type TVCardInput } from "~/server/domain/types/QRcode";
+import { type TWifiInput, type TVCardInput } from "~/server/domain/types/QRcode";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -30,4 +30,9 @@ export function convertVCardObjToString(vCardInput: TVCardInput): string {
   if (vCardInput.website) vCard.url = vCardInput.website;
 
   return vCard.getFormattedString();
+}
+
+export function convertWiFiObjToString(wiFiInput: TWifiInput): string {
+  const wifiString = `WIFI:T:${wiFiInput.encryption};S:${wiFiInput.ssid};P:${wiFiInput.password};;`;
+  return wifiString;
 }

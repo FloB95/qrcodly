@@ -12,10 +12,12 @@ import { TextSection } from "./TextSection";
 import { type TCurrentQrCodeInput } from "../QRcodeGenerator";
 import {
   VCardInputSchema,
+  WifiInputSchema,
   type TQRcodeOptions,
 } from "~/server/domain/types/QRcode";
 import { VcardSection } from "./VcardSection";
-import { convertVCardObjToString } from "~/lib/utils";
+import { convertVCardObjToString, convertWiFiObjToString } from "~/lib/utils";
+import { WiFiSection } from "./WiFiSection";
 
 type TContentSwitchProps = {
   currentInput: TCurrentQrCodeInput;
@@ -57,7 +59,7 @@ export const ContentSwitch = ({
               <DocumentTextIcon className="mr-2 h-6 w-6" /> TEXT
             </button>
           </TabsTrigger>
-          <TabsTrigger value="wifi" disabled asChild>
+          <TabsTrigger value="wifi" asChild>
             <button
               className={buttonVariants({
                 variant: "tab",
@@ -99,7 +101,22 @@ export const ContentSwitch = ({
             }}
           />
         </TabsContent>
-        <TabsContent value="wifi"></TabsContent>
+        <TabsContent value="wifi">
+          <WiFiSection
+            value={
+              currentInput.tab === "wifi"
+                ? WifiInputSchema.safeParse(currentInput.value).data!
+                : WifiInputSchema.safeParse({
+                    encryption: "WPA",
+                  }).data!
+            }
+            onChange={(e) => {
+              if (currentInput.tab !== "wifi") return;
+              setCurrentInput({ ...currentInput, value: e });
+              onChange(convertWiFiObjToString(e), { type: "vCard" });
+            }}
+          />
+        </TabsContent>
         <TabsContent value="vCard">
           <VcardSection
             value={
@@ -110,7 +127,6 @@ export const ContentSwitch = ({
             onChange={(e) => {
               if (currentInput.tab !== "vCard") return;
               setCurrentInput({ ...currentInput, value: e });
-              // convert object to vcard string
               onChange(convertVCardObjToString(e), { type: "vCard" });
             }}
           />

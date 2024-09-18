@@ -27,7 +27,6 @@ type VcardSectionProps = {
 
 export const VcardSection = ({ onChange, value }: VcardSectionProps) => {
   const form = useForm<FormValues>({
-    // replace all undefined values with empty string
     resolver: zodResolver(VCardInputSchema),
     defaultValues: value,
   });

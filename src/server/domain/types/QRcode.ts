@@ -8,9 +8,13 @@ export const TextInputSchema = z.string().max(1000);
 export type TTextInput = z.infer<typeof TextInputSchema>;
 
 export const WifiInputSchema = z.object({
-  ssid: z.string().max(32),
+  ssid: z.string().min(2).max(32),
   password: z.string().max(64),
-  encryption: z.enum(["WPA", "WEP", "nopass"]),
+  encryption: z.enum(["WPA", "WEP", "nopass"]).default("WPA"),
+}).default({
+  ssid: "",
+  password: "",
+  encryption: "WPA",
 });
 export type TWifiInput = z.infer<typeof WifiInputSchema>;
 
