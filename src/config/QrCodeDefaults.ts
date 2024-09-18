@@ -20,7 +20,7 @@ export const QrCodeDefaults: TQRcodeOptions = {
   imageOptions: {
     hideBackgroundDots: true,
     imageSize: 0.4,
-    margin: 20,
+    margin: 30,
     crossOrigin: "anonymous",
   },
   dotsOptions: {

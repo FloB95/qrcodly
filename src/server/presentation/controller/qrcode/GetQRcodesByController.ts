@@ -23,7 +23,7 @@ class GetQRcodesByController implements IController {
       offset: page,
       where: {
         createdBy: {
-          eq: where.createdBy,
+          eq: where.createdBy, //TODO add dynamic where conditions
         },
       },
     });

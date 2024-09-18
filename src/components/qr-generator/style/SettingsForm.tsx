@@ -41,9 +41,9 @@ type FormValues = {
   dotStyle: TDotType;
   dotColor: string;
   cornersSquareStyle: TCornerSquareType;
+  cornersSquareColor: string;
   cornersDotStyle: TCornerDotType;
   cornersDotColor: string;
-  cornersSquareColor: string;
   background: string;
   hideBackgroundDots: boolean;
   image: string;
@@ -51,24 +51,23 @@ type FormValues = {
   imageMargin: number;
 };
 
-export function SettingsForm({ settings, onChange }: SettingsFormProps) {
+export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
   const form = useForm<FormValues>({
     defaultValues: {
-      width: settings?.width ?? 300,
-      height: settings?.height ?? 300,
-      margin: settings?.margin ?? 0,
-      dotStyle: settings?.dotsOptions?.type ?? "rounded",
-      dotColor: settings?.dotsOptions?.color ?? "#000000",
-      cornersSquareStyle:
-        settings?.cornersSquareOptions?.type ?? "extra-rounded",
-      cornersDotStyle: settings?.cornersDotOptions?.type ?? "dot",
-      cornersDotColor: settings?.cornersDotOptions?.color ?? "#000000",
-      cornersSquareColor: settings?.cornersSquareOptions?.color ?? "#000000",
-      background: settings?.backgroundOptions?.color ?? "#ffffff",
-      hideBackgroundDots: settings?.imageOptions?.hideBackgroundDots ?? true,
-      image: settings?.image ?? "",
-      imageSize: settings?.imageOptions?.imageSize ?? 0.4,
-      imageMargin: settings?.imageOptions?.margin ?? 0,
+      width: settings.width,
+      height: settings.height,
+      margin: settings.margin,
+      dotStyle: settings.dotsOptions?.type ?? "dot",
+      dotColor: settings.dotsOptions?.color ?? "#000000",
+      cornersSquareStyle: settings.cornersSquareOptions?.type ?? "square",
+      cornersSquareColor: settings.cornersSquareOptions?.color ?? "#000000",
+      cornersDotStyle: settings.cornersDotOptions?.type ?? "dot",
+      cornersDotColor: settings.cornersDotOptions?.color ?? "#000000",
+      background: settings.backgroundOptions?.color ?? "#ffffff",
+      hideBackgroundDots: settings.imageOptions?.hideBackgroundDots ?? true,
+      image: settings.image ?? "",
+      imageSize: settings.imageOptions?.imageSize ?? 0.4,
+      imageMargin: settings.imageOptions?.margin ?? 30,
     },
   });
 
@@ -76,27 +75,39 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
     // map form data with settings
     settings.width = Number(data.width);
     settings.height = Number(data.height);
-    if (typeof settings.margin !== "undefined")
-      settings.margin = Number(data.margin);
-    if (settings.dotsOptions) settings.dotsOptions.type = data.dotStyle;
-    if (settings.dotsOptions) settings.dotsOptions.color = data.dotColor;
-    if (settings.cornersSquareOptions)
-      settings.cornersSquareOptions.type = data.cornersSquareStyle;
-    if (settings.cornersSquareOptions)
-      settings.cornersSquareOptions.color = data.cornersSquareColor;
-    if (settings.cornersDotOptions)
-      settings.cornersDotOptions.type = data.cornersDotStyle;
-    if (settings.cornersDotOptions)
-      settings.cornersDotOptions.color = data.cornersDotColor;
-    if (settings.backgroundOptions)
-      settings.backgroundOptions.color = data.background;
+    settings.margin = (settings.width / 100) * data.margin;
+
+    const updateOption = <T extends NonNullable<unknown>, K extends keyof T>(
+      option: T | undefined,
+      key: K,
+      value: T[K],
+    ) => {
+      if (option) option[key] = value;
+    };
+    updateOption(settings.dotsOptions, "type", data.dotStyle);
+    updateOption(settings.dotsOptions, "color", data.dotColor);
+    updateOption(
+      settings.cornersSquareOptions,
+      "type",
+      data.cornersSquareStyle,
+    );
+    updateOption(
+      settings.cornersSquareOptions,
+      "color",
+      data.cornersSquareColor,
+    );
+    updateOption(settings.cornersDotOptions, "type", data.cornersDotStyle);
+    updateOption(settings.cornersDotOptions, "color", data.cornersDotColor);
+    updateOption(settings.backgroundOptions, "color", data.background);
     if (typeof settings.image !== "undefined") settings.image = data.image;
-    if (settings.imageOptions)
-      settings.imageOptions.hideBackgroundDots = data.hideBackgroundDots;
-    if (settings.imageOptions)
-      settings.imageOptions.imageSize = Number(data.imageSize);
-    if (settings.imageOptions)
-      settings.imageOptions.margin = Number(data.imageMargin);
+    updateOption(
+      settings.imageOptions,
+      "hideBackgroundDots",
+      data.hideBackgroundDots,
+    );
+    updateOption(settings.imageOptions, "imageSize", Number(data.imageSize));
+    updateOption(settings.imageOptions, "margin", Number(data.width) * 0.03);
+
     onChange(settings);
   };
 
@@ -109,13 +120,13 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
         <Tabs defaultValue={"general"} className="w-full">
           <TabsList className="mb-4 w-full">
             <TabsTrigger className="flex-1" value="general">
-              General Settings
+              General
             </TabsTrigger>
             <TabsTrigger className="flex-1" value="dot">
-              Dot Settings
+              Shape
             </TabsTrigger>
             <TabsTrigger className="flex-1" value="image">
-              Image Settings
+              Image
             </TabsTrigger>
           </TabsList>
 
@@ -159,14 +170,14 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                         name="margin"
                         className="cursor-pointer"
                         value={[field.value]}
-                        max={300}
+                        max={10}
                         min={0}
-                        step={10}
+                        step={1}
                         onValueChange={field.onChange}
                       />
                     </FormControl>
                     <FormDescription className="pt-1 text-center">
-                      {field.value} px
+                      {field.value} %
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -415,60 +426,10 @@ export function SettingsForm({ settings, onChange }: SettingsFormProps) {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="imageSize"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Image Size</FormLabel>
-                    <FormControl>
-                      <Slider
-                        name="imageSize"
-                        className="cursor-pointer"
-                        value={[form.getValues("imageSize")]}
-                        max={1}
-                        min={0.1}
-                        step={0.1}
-                        onValueChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormDescription className="pt-1 text-center">
-                      {field.value * 100} %
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="imageMargin"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Margin</FormLabel>
-                    <FormControl>
-                      <Slider
-                        name="imageMargin"
-                        className="cursor-pointer"
-                        value={[field.value]}
-                        max={100}
-                        min={0}
-                        step={10}
-                        onValueChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormDescription className="pt-1 text-center">
-                      {field.value} px
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
           </TabsContent>
         </Tabs>
       </form>
     </Form>
   );
-}
+};

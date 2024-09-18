@@ -71,7 +71,7 @@ export const QRcodeGenerator = () => {
   return (
     <>
       <Tabs defaultValue="qrCodeContent">
-        <TabsList className="mx-auto grid h-auto w-[400px] grid-cols-2 bg-white p-2 shadow">
+        <TabsList className="mx-auto grid h-auto max-w-[400px] grid-cols-2 bg-white p-2 shadow">
           <TabsTrigger
             value="qrCodeContent"
             className=" data-[state=active]:bg-gray-200"
@@ -94,7 +94,7 @@ export const QRcodeGenerator = () => {
         <div className="relative mt-4 flex space-x-6">
           <div className="mx-auto min-h-[500px] max-w-[1200px] flex-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
             <div className="px-4 py-5 sm:p-10">
-              <div className="flex flex-col space-x-12 md:flex-row">
+              <div className="flex flex-col space-y-10 md:flex-row md:space-x-12 md:space-y-0">
                 <div className="flex-1">
                   <TabsContent value="qrCodeContent" className="ac mt-0 h-full">
                     <ContentSwitch
@@ -115,12 +115,12 @@ export const QRcodeGenerator = () => {
                     />
                   </TabsContent>
                 </div>
-                <div>
+                <div className="">
                   <Suspense fallback={null}>
-                    <div className="flex space-y-6 md:flex-col">
+                    <div className="flex justify-center space-y-6 md:flex-col md:justify-start">
                       <DynamicQrCode settings={qrCodeSettings} />
                     </div>
-                    <div className="mt-6 flex justify-end">
+                    <div className="mt-6 flex justify-center md:justify-end">
                       <QrCodeDownloadBtn
                         qrCodeSettings={qrCodeSettings}
                         saveOnDownload={true}

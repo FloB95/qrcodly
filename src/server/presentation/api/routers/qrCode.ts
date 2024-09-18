@@ -4,7 +4,6 @@ import {
   publicProcedure,
 } from "~/server/presentation/api/trpc";
 import { CreateQRcodeDtoSchema } from "~/server/domain/dtos/qrcode/TCreateQRcodeDto";
-import QRcodeRepository from "~/server/infrastructure/repositories/drizzle/QRcodeRepository";
 import { DeleteQRcodeDtoSchema } from "~/server/domain/dtos/qrcode/TDeleteQRcodeDto";
 import {
   createQRcodeControllerFactory,
