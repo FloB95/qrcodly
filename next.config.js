@@ -2,9 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-
 import { withAxiom } from "next-axiom";
-
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
@@ -16,6 +14,7 @@ await import("./src/env.js");
 const config = {
   webpack: (config) => {
     config.externals = [...config.externals];
+    config.resolve.fallback = { fs: false };
     return config;
   },
 };

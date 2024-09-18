@@ -12,13 +12,15 @@ import {
   type TQRcodeOptions,
   type TTextInput,
   type TWifiInput,
+  type TVCardInput,
 } from "~/server/domain/types/QRcode";
 import QrCodeDownloadBtn from "./QrCodeDownloadBtn";
 
 export type TCurrentQrCodeInput =
   | { tab: "url"; value: TUrlInput; editable: boolean }
   | { tab: "text"; value: TTextInput }
-  | { tab: "wifi"; value: TWifiInput };
+  | { tab: "wifi"; value: TWifiInput }
+  | { tab: "vCard"; value: TVCardInput };
 type QRCodeState = TQRcodeOptions;
 type QRCodeAction = { type: string; payload: Partial<TQRcodeOptions> };
 
