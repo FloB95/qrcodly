@@ -1,14 +1,80 @@
 import { QrCodeList } from "~/components/dashboard/QrCodeList";
-import { StatisticChart } from "~/components/dashboard/StatisticChart";
+import { File, ListFilter, PlusCircle } from "lucide-react";
 
-export default function Dashboard() {
+import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import Container from "~/components/ui/container";
+import { ArrowDownOnSquareIcon, FunnelIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+
+export default function Dashboard2() {
   return (
     <div className="flex h-full w-full flex-1 flex-col items-center justify-center">
-      <h1 className="my-16 text-4xl font-bold">
-        Dashboard is in development 🚀
-      </h1>
-      <QrCodeList />
-      
+      {/* <QrCodeList /> */}
+
+      <Container>
+        <h1 className="my-8 text-center text-4xl font-bold">
+          Dashboard is in development 🚀
+        </h1>
+
+        <Tabs defaultValue="all">
+          <div className="flex items-center">
+            <TabsList>
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="active">Active</TabsTrigger>
+              <TabsTrigger value="draft">Draft</TabsTrigger>
+              <TabsTrigger value="archived" className="hidden sm:flex">
+                Archived
+              </TabsTrigger>
+            </TabsList>
+            <div className="ml-auto flex items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-9 gap-1">
+                    <FunnelIcon className="h-4 w-4" />
+                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                      Filter
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuCheckboxItem checked>
+                    Active
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Button size="sm" variant="outline" className="h-9 gap-1">
+                <ArrowDownOnSquareIcon className="h-4 w-4" />
+                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                  Export
+                </span>
+              </Button>
+              <Button size="sm" className="h-9 gap-1">
+                <PlusCircleIcon className="h-4 w-4" />
+                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                  Add QR code
+                </span>
+              </Button>
+            </div>
+          </div>
+          <div className="mx-auto flex-1">
+            <TabsContent value="all">
+              <QrCodeList />
+            </TabsContent>
+          </div>
+        </Tabs>
+      </Container>
       {/* <StatisticChart /> */}
     </div>
   );

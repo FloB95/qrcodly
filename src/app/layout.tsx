@@ -1,11 +1,12 @@
-import { ClerkProvider } from '@clerk/nextjs'
+import { ClerkProvider } from "@clerk/nextjs";
 
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/lib/trpc/react";
-import { Toaster } from '~/components/ui/toaster';
+import { Toaster } from "~/components/ui/toaster";
+import { TooltipProvider } from "~/components/ui/tooltip";
 
 const openSans = Inter({
   subsets: ["latin"],
@@ -58,7 +59,9 @@ export default function RootLayout({
           ></script>
         </head>
         <body className={`font-sans ${openSans.variable}`}>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </TRPCReactProvider>
           <Toaster />
         </body>
       </html>
