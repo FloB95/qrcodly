@@ -1,3 +1,4 @@
+import Footer from "~/components/Footer";
 import Header from "~/components/Header";
 
 export default async function DashboardLayout({
@@ -9,6 +10,7 @@ export default async function DashboardLayout({
     <main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100">
       <Header />
       {children}
+      <Footer />
     </main>
   );
 }
