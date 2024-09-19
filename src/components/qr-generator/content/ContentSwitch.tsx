@@ -111,9 +111,7 @@ export const ContentSwitch = ({
             value={
               currentInput.tab === "wifi"
                 ? WifiInputSchema.safeParse(currentInput.value).data!
-                : WifiInputSchema.safeParse({
-                    encryption: "WPA",
-                  }).data!
+                : WifiInputSchema.safeParse({}).data!
             }
             onChange={(v) => {
               if (currentInput.tab !== "wifi") return;

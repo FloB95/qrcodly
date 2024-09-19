@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type IGetQRcodesUseCase } from "~/server/application/useCases/qrcode/IGetQRcodesUseCase";
 import { type IController } from "../../interfaces/IController";
 import { type IPaginationDto } from "~/server/domain/dtos/IPaginationDto";

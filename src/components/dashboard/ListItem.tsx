@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 "use client";
 
 import { type QRcode } from "~/server/domain/entities/QRcode";
@@ -55,14 +53,21 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
     deleteMutation.mutate(
       { id: qr.id },
       {
-        onSuccess: async () => {
-          await apiUtils.qrCode.getMyQrCodes.invalidate();
-          toast({
-            title: "QR code deleted",
-            description: "We deleted your QR code.",
-            duration: 5000,
-          });
-          setIsDeleting(false);
+        onSuccess: () => {
+          apiUtils.qrCode.getMyQrCodes
+            .invalidate()
+            .then(() => {
+              toast({
+                title: "QR code deleted",
+                description: "We deleted your QR code.",
+                duration: 5000,
+              });
+              setIsDeleting(false);
+            })
+            .catch((error) => {
+              console.error("Failed to invalidate QR codes:", error);
+              setIsDeleting(false);
+            });
         },
       },
     );

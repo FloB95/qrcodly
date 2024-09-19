@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -31,12 +30,9 @@ type WiFiSectionProps = {
 };
 
 export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
-  const defaultValues = value
-    ? value
-    : ({ ssid: "", password: "", encryption: "WPA" } as TWifiInput);
   const form = useForm<FormValues>({
     resolver: zodResolver(WifiInputSchema),
-    defaultValues,
+    defaultValues: value,
   });
 
   const [debounced] = useDebouncedValue(form.getValues(), 500);
@@ -47,12 +43,18 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 
   // handle submit automatically after debounced value
   useEffect(() => {
+    if (typeof debounced.encryption === "undefined") {
+      debounced.encryption = "WPA";
+    }
+
     if (
       JSON.stringify(debounced) === "{}" ||
-      JSON.stringify(debounced) === JSON.stringify(value)
+      JSON.stringify(debounced) === JSON.stringify(value) ||
+      typeof debounced.ssid === "undefined"
     ) {
       return;
     }
+
     void form.handleSubmit(onSubmit)();
   }, [debounced]);
 
@@ -81,7 +83,12 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
               <FormItem className="w-full">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input {...field} autoCorrect="off" autoComplete="off" placeholder="Enter your first name" />
+                  <Input
+                    {...field}
+                    autoCorrect="off"
+                    autoComplete="off"
+                    placeholder="Enter your first name"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -96,6 +103,7 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
                 <FormControl>
                   <Select
                     name="encryption"
+                    defaultValue="WPA"
                     onValueChange={(value) => {
                       form.setValue(
                         "encryption",
