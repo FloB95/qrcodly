@@ -24,6 +24,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 const GetNameByContentType = (qr: QRcode) => {
   switch (qr.config.contentType.type) {
@@ -86,7 +87,7 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
 
   return (
     <TableRow className="border-none bg-white shadow hover:bg-muted/90">
-      <TableCell className="hidden sm:table-cell py-8">
+      <TableCell className="hidden py-8 sm:table-cell">
         <div className="flex space-x-8">
           <div className="ml-4 flex flex-col justify-center">
             {GetQrCodeIconByContentType(qr)}
@@ -104,18 +105,33 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
         <Badge variant="outline">Active</Badge>
       </TableCell>
       <TableCell>
-        <div className="flex space-x-2">
-          <span>10</span> <EyeIcon width={20} height={20} />
+        <div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex space-x-2">
+                <span>10</span> <EyeIcon width={20} height={20} />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top">10 total views</TooltipContent>
+          </Tooltip>
         </div>
       </TableCell>
       <TableCell className="hidden md:table-cell">
-        2023-11-29 08:15 AM
+        <span>
+          {qr.createdAt.toLocaleString(undefined, {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          })}
+        </span>
       </TableCell>
       <TableCell>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button aria-haspopup="true" size="icon" variant="ghost">
-              <EllipsisVerticalIcon width={28} height={28}/>
+              <EllipsisVerticalIcon width={28} height={28} />
               <span className="sr-only">Toggle menu</span>
             </Button>
           </DropdownMenuTrigger>
