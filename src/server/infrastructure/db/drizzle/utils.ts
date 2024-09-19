@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { and, eq, gt, gte, like, lt, lte, not, type SQL } from "drizzle-orm";
 import {
   type MySqlColumn,
@@ -40,8 +37,8 @@ export function convertWhereConditionToDrizzle<T>(
       }
       if (whereField.like !== undefined) {
         sql = sql
-          ? and(sql, like(table[key], `%${whereField.like}%`))
-          : like(table[key], `%${whereField.like}%`);
+          ? and(sql, like(table[key] as MySqlColumn, `%${whereField.like}%`))
+          : like(table[key] as MySqlColumn, `%${whereField.like}%`);
       }
       if (whereField.gt !== undefined) {
         sql = sql
@@ -84,10 +81,10 @@ export function convertQuerySelectToDrizzle(
 ) {
   return select
     ? Object.entries(select)
-        .filter(([key, value]) => value === true)
+        .filter(([_, value]) => value === true)
         .reduce(
-          (acc, [key, value]) => {
-            acc[key] = table[key];
+          (acc, [key]) => {
+            acc[key] = table[key] as MySqlColumn;
             return acc;
           },
           {} as Record<string, any>,

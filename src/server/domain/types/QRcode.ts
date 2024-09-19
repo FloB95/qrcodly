@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { z } from "zod";
 import { BaseEntitySchema } from "../entities/BaseEntity";
 
@@ -10,17 +7,11 @@ export type TUrlInput = z.infer<typeof UrlInputSchema>;
 export const TextInputSchema = z.string().max(1000);
 export type TTextInput = z.infer<typeof TextInputSchema>;
 
-export const WifiInputSchema = z
-  .object({
-    ssid: z.string().max(32),
-    password: z.string().max(64).optional(),
-    encryption: z.enum(["WPA", "WEP", "nopass"]).default("WPA"),
-  })
-  .default({
-    ssid: "",
-    password: "",
-    encryption: "WPA",
-  });
+export const WifiInputSchema = z.object({
+  ssid: z.string().max(32),
+  password: z.string().max(64).optional(),
+  encryption: z.enum(["WPA", "WEP", "nopass"]).default("WPA"),
+});
 export type TWifiInput = z.infer<typeof WifiInputSchema>;
 
 export const VCardInputSchema = z.object({
