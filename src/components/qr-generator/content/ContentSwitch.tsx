@@ -116,7 +116,6 @@ export const ContentSwitch = ({
             onChange={(v) => {
               if (currentInput.tab !== "wifi") return;
               setCurrentInput({ ...currentInput, value: v });
-              console.log(currentInput.value);
               onChange(convertWiFiObjToString(v), v, { type: "wifi" });
             }}
           />
