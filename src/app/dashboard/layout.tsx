@@ -8,7 +8,7 @@ export default async function DashboardLayout({
 }) {
   return (
     <main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100">
-      <Header />
+      <Header hideDashboardLink />
       {children}
       <Footer />
     </main>
