@@ -25,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Loader2 } from "lucide-react";
 
 const GetNameByContentType = (qr: QRcode) => {
   switch (qr.config.contentType.type) {
@@ -62,6 +63,17 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
   const apiUtils = api.useUtils();
   const handleDelete = useCallback(() => {
     setIsDeleting(true);
+    const t = toast({
+      title: "QR code is being deleted",
+      open: isDeleting,
+      description: (
+        <div className="flex space-x-2">
+          <Loader2 className="mr-2 h-6 w-6 animate-spin" />{" "}
+          <span>we are deleting your QR code</span>
+        </div>
+      ),
+    });
+
     deleteMutation.mutate(
       { id: qr.id },
       {
@@ -69,14 +81,21 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
           apiUtils.qrCode.getMyQrCodes
             .invalidate()
             .then(() => {
+              t.dismiss();
               toast({
                 title: "QR code deleted",
-                description: "We deleted your QR code.",
+                description: "Your QR code has been successfully deleted.",
                 duration: 5000,
               });
               setIsDeleting(false);
             })
             .catch((error) => {
+              t.dismiss();
+              toast({
+                title: "Failed to invalidate QR codes",
+                description: "Please refresh the page to see the changes.",
+                duration: 5000,
+              });
               console.error("Failed to invalidate QR codes:", error);
               setIsDeleting(false);
             });
@@ -86,13 +105,15 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
   }, [qr, deleteMutation, apiUtils]);
 
   return (
-    <TableRow className="border-none bg-white shadow hover:bg-muted/90">
-      <TableCell className="hidden py-8 sm:table-cell">
+    <TableRow
+      className={`rounded-lg border-none shadow hover:bg-muted/90 ${isDeleting ? "bg-muted/70" : "bg-white"}`}
+    >
+      <TableCell className="hidden rounded-l-lg sm:table-cell">
         <div className="flex space-x-8">
           <div className="ml-4 flex flex-col justify-center">
             {GetQrCodeIconByContentType(qr)}
           </div>
-          <div className="h-[100px] w-[100px] overflow-hidden">
+          <div className="h-[90px] w-[90px] overflow-hidden">
             <DynamicQrCode
               settings={qr.config}
               additionalStyles="max-h-[100px] max-w-[100px] lg:max-h-[100px] lg:max-w-[100px]"
@@ -100,7 +121,20 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
           </div>
         </div>
       </TableCell>
-      <TableCell className="font-medium">{GetNameByContentType(qr)}</TableCell>
+      <TableCell className="font-medium">
+        <>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="max-w-[400px] overflow-hidden text-ellipsis whitespace-nowrap inline-block">
+                {GetNameByContentType(qr)}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="top">
+              <div className="max-w-[400px]">{GetNameByContentType(qr)}</div>
+            </TooltipContent>
+          </Tooltip>
+        </>
+      </TableCell>
       <TableCell>
         <Badge variant="outline">Active</Badge>
       </TableCell>
@@ -127,10 +161,15 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
           })}
         </span>
       </TableCell>
-      <TableCell>
+      <TableCell className="rounded-r-lg">
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button aria-haspopup="true" size="icon" variant="ghost">
+          <DropdownMenuTrigger asChild disabled={isDeleting}>
+            <Button
+              aria-haspopup="true"
+              size="icon"
+              variant="ghost"
+              disabled={isDeleting}
+            >
               <EllipsisVerticalIcon width={28} height={28} />
               <span className="sr-only">Toggle menu</span>
             </Button>
@@ -141,9 +180,9 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
               <QrCodeDownloadBtn qrCodeSettings={qr.config} />
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Button isLoading={isDeleting} onClick={handleDelete}>
+              <div className="cursor-pointer" onClick={handleDelete}>
                 Delete
-              </Button>
+              </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

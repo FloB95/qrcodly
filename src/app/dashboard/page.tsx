@@ -1,5 +1,4 @@
 import { QrCodeList } from "~/components/dashboard/QrCodeList";
-import { File, ListFilter, PlusCircle } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -12,26 +11,30 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Container from "~/components/ui/container";
-import { ArrowDownOnSquareIcon, FunnelIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownOnSquareIcon,
+  FunnelIcon,
+  PlusCircleIcon,
+  QueueListIcon,
+  Squares2X2Icon,
+} from "@heroicons/react/24/outline";
 
 export default function Dashboard2() {
   return (
-    <div className="flex h-full w-full flex-1 flex-col items-center justify-center">
-      {/* <QrCodeList /> */}
-
+    <div className="flex h-full w-full flex-1 flex-col items-center justify-center mt-24">
       <Container>
-        <h1 className="my-8 text-center text-4xl font-bold">
-          Dashboard is in development 🚀
-        </h1>
-
-        <Tabs defaultValue="all">
+        <Tabs defaultValue="list">
           <div className="flex items-center">
             <TabsList>
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="active">Active</TabsTrigger>
-              <TabsTrigger value="draft">Draft</TabsTrigger>
-              <TabsTrigger value="archived" className="hidden sm:flex">
-                Archived
+              <TabsTrigger value="list">
+                <div className="flex space-x-2">
+                  <QueueListIcon width={20} height={20} /> <span>List</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger value="cards">
+                <div className="flex space-x-2">
+                  <Squares2X2Icon width={20} height={20} /> <span>Cards</span>
+                </div>
               </TabsTrigger>
             </TabsList>
             <div className="ml-auto flex items-center gap-2">
@@ -69,7 +72,7 @@ export default function Dashboard2() {
             </div>
           </div>
           <div className="mx-auto flex-1">
-            <TabsContent value="all">
+            <TabsContent value="list">
               <QrCodeList />
             </TabsContent>
           </div>
