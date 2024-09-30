@@ -71,7 +71,7 @@
     "@types/recharts": "^1.8.29",
     "@types/uuid": "^9.0.8",
     "@types/vcards-js": "^2.10.5",
-    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
     "@typescript-eslint/parser": "^7.1.1",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.23.0",
