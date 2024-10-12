@@ -29,10 +29,4 @@ export interface IBaseLogger {
    * @param {object} [obj] - Additional data to log.
    */
   error: (message: string, obj?: object) => void;
-
-  /**
-   * Gets the logger instance.
-   * @returns {any} The logger instance.
-   */
-  getLoggerInstance: () => any;
 }

@@ -1,3 +1,3 @@
-import { AxiomLogger } from "./AxiomLogger";
+import { Logger } from "./Logger";
 
-export const logger = new AxiomLogger();
+export const logger = new Logger();
