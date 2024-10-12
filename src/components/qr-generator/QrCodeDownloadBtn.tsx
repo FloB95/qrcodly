@@ -24,9 +24,11 @@ let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
   qrCodeSettings,
   saveOnDownload = false,
+  noStyling = false,
 }: {
   qrCodeSettings: TQRcodeOptions;
   saveOnDownload?: boolean;
+  noStyling?: boolean;
 }) => {
   const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
   const apiUtils = api.useUtils();
@@ -75,13 +77,20 @@ const QrCodeDownloadBtn = ({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild disabled={qrCodeSettings.data.length <= 0}>
-        <Button
-          isLoading={createQrCode.isPending}
-          disabled={qrCodeSettings.data.length <= 0 || createQrCode.isPending}
-        >
-          Download
-        </Button>
+      <DropdownMenuTrigger
+        asChild
+        disabled={qrCodeSettings.data.length <= 0 || createQrCode.isPending}
+      >
+        {noStyling ? (
+          <div className="cursor-pointer">Download</div>
+        ) : (
+          <Button
+            isLoading={createQrCode.isPending}
+            disabled={qrCodeSettings.data.length <= 0 || createQrCode.isPending}
+          >
+            Download
+          </Button>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>

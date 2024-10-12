@@ -177,7 +177,7 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <QrCodeDownloadBtn qrCodeSettings={qr.config} />
+              <QrCodeDownloadBtn qrCodeSettings={qr.config} noStyling />
             </DropdownMenuItem>
             <DropdownMenuItem>
               <div className="cursor-pointer" onClick={handleDelete}>

@@ -13,10 +13,16 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   webpack: (config) => {
-    config.externals = [...config.externals];
+    config.externals = [
+      ...config.externals,
+      {
+        "thread-stream": "commonjs thread-stream",
+      },
+    ];
     config.resolve.fallback = { fs: false };
     return config;
   },
+  serverComponentsExternalPackages: ["pino", "pino-pretty"],
 };
 
 export default withAxiom(config);

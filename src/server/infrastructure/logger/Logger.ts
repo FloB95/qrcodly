@@ -1,26 +1,27 @@
-import { Logger, LogLevel } from "next-axiom";
+import { Logger as AxiomLogger, LogLevel as AxiomLogLevel } from "next-axiom";
+import pino, { type Logger as PinoLogger } from "pino";
 import { env } from "~/env";
 import { type IBaseLogger } from "~/server/application/logger/IBaseLogger";
 
 /**
  * Implementation of the IBaseLogger interface using Pino.
  */
-export class AxiomLogger implements IBaseLogger {
-  private logger: Logger;
+export class Logger implements IBaseLogger {
+  private axiomLogger: AxiomLogger;
+  private pinoLogger: PinoLogger;
 
   constructor() {
-    this.logger = new Logger({
-      logLevel: LogLevel[env.LOG_LEVEL as keyof typeof LogLevel],
+    this.axiomLogger = new AxiomLogger({
+      logLevel: AxiomLogLevel[env.LOG_LEVEL as keyof typeof AxiomLogLevel],
       source: "backend-log",
     });
-  }
 
-  /**
-   * Get the underlying Pino logger instance.
-   * @returns The Pino logger instance.
-   */
-  getLoggerInstance(): Logger {
-    return this.logger;
+    this.pinoLogger = pino({
+      level: env.LOG_LEVEL,
+      transport: {
+        target: "pino-pretty",
+      },
+    });
   }
 
   /**
@@ -29,7 +30,8 @@ export class AxiomLogger implements IBaseLogger {
    * @param obj Additional data to log.
    */
   debug(message: string, obj?: object): void {
-    this.logger.debug(message, obj);
+    this.axiomLogger.debug(message, obj);
+    this.pinoLogger.debug(obj, message);
   }
 
   /**
@@ -38,7 +40,8 @@ export class AxiomLogger implements IBaseLogger {
    * @param obj Additional data to log.
    */
   info(message: string, obj?: object): void {
-    this.logger.info(message, obj);
+    this.axiomLogger.info(message, obj);
+    this.pinoLogger.info(obj, message);
   }
 
   /**
@@ -47,7 +50,8 @@ export class AxiomLogger implements IBaseLogger {
    * @param obj Additional data to log.
    */
   warn(message: string, obj?: object): void {
-    this.logger.warn(message, obj);
+    this.axiomLogger.warn(message, obj);
+    this.pinoLogger.warn(obj, message);
   }
 
   /**
@@ -56,6 +60,7 @@ export class AxiomLogger implements IBaseLogger {
    * @param obj Additional data to log.
    */
   error(message: string, obj?: object): void {
-    this.logger.error(message, obj);
+    this.axiomLogger.error(message, obj);
+    this.pinoLogger.error(obj, message);
   }
 }
