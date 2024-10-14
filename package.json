@@ -82,7 +82,7 @@
     "eslint-plugin-drizzle": "^0.2.3",
     "postcss": "^8.4.34",
     "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.11",
+    "prettier-plugin-tailwindcss": "^0.6.8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.2",
     "vite-tsconfig-paths": "^5.0.1",
