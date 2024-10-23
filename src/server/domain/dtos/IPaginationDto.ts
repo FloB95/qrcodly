@@ -1,4 +1,4 @@
-import { type ZodSchema, z } from "zod";
+import { z } from "zod";
 
 /**
  * Schema for the Pagination Response DTO.

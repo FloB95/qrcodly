@@ -10,17 +10,28 @@ import {
   deleteQRcodeControllerFactory,
   getQRcodesControllerFactory,
 } from "../../factories/QRcodeControllerFactory";
+import { RateLimiter } from "~/server/infrastructure/ratelimit";
+import { TRPCError } from "@trpc/server";
 
 export const qrCodeRouter = createTRPCRouter({
   create: publicProcedure
     .input(CreateQRcodeDtoSchema)
-    .mutation(
-      async ({ input }) => await createQRcodeControllerFactory().handle(input),
-    ),
+    .mutation(async ({ input }) => {
+      const identifier = "api.qrcode.create";
+      const result = await RateLimiter.limit(identifier);
+      // rate limiter error
+      if (!result.success) {
+        throw new TRPCError({
+          code: "TOO_MANY_REQUESTS",
+          message: "Rate limit exceeded",
+        });
+      }
+
+      return await createQRcodeControllerFactory().handle(input);
+    }),
 
   getMyQrCodes: protectedProcedure.query(async ({ ctx }) => {
     if (!ctx.currentUser) throw new Error("User not found.");
-
     return await getQRcodesControllerFactory().handle({
       page: 1,
       limit: 10,

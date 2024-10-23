@@ -216,7 +216,11 @@ export const QrCodeOptionsSchema = z.object({
   margin: z.number().default(0),
   data: z.string(),
   originalData: QrCodeContentOriginalDataSchema,
-  image: z.string().optional(),
+  // max size 1 mb
+  image: z
+    .string()
+    .max(1.5 * 1024 * 1024, "Image is to large!")
+    .optional(),
   qrOptions: z.object({
     typeNumber: TypeNumber.default(0),
     mode: Mode.default("Byte"),

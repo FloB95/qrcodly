@@ -32,16 +32,16 @@ export function ColorPicker({
     "#09203f",
   ];
 
-  const gradients = [
-    ["#accbee", "#e7f0fd"],
-    ["#000000", "#434343"],
-    ["#09203f", "#537895"],
-    ["#f953c6", "#b91d73"],
-    ["#ee0979", "#ff6a00"],
-    ["#F00000", "#DC281E"],
-    ["#00c6ff", "#0072ff"],
-    ["#4facfe", "#00f2fe"],
-  ];
+  // const gradients = [
+  //   ["#accbee", "#e7f0fd"],
+  //   ["#000000", "#434343"],
+  //   ["#09203f", "#537895"],
+  //   ["#f953c6", "#b91d73"],
+  //   ["#ee0979", "#ff6a00"],
+  //   ["#F00000", "#DC281E"],
+  //   ["#00c6ff", "#0072ff"],
+  //   ["#4facfe", "#00f2fe"],
+  // ];
 
   const defaultTab = useMemo(() => {
     if (background.length > 1) return "gradient";

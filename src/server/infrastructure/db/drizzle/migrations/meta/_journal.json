@@ -36,6 +36,13 @@
       "when": 1726566178984,
       "tag": "0004_stiff_johnny_blaze",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1729686021351,
+      "tag": "0005_nifty_network",
+      "breakpoints": true
     }
   ]
 }

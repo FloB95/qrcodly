@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import { defineConfig, loadEnv } from "vite";
+// Import from 'vitest/config' instead of 'vite'
+import { defineConfig } from "vitest/config";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
@@ -7,6 +7,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
-    env: loadEnv("", process.cwd(), ""),
+    env: process.env, // Vitest will automatically load environment variables
   },
 });
