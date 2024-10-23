@@ -28,9 +28,4 @@ export interface IBaseKeyCache {
    * @returns A promise that resolves when the value is deleted.
    */
   del(key: string): Promise<void>;
-
-  /**
-   * Disconnects from the cache.
-   */
-  disconnect(): void;
 }

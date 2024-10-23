@@ -17,6 +17,8 @@ export const env = createEnv({
       .default("info"),
     AXIOM_TOKEN: z.string(),
     AXIOM_DATASET: z.string(),
+    UPSTASH_REDIS_REST_URL: z.string(),
+    UPSTASH_REDIS_REST_TOKEN: z.string(),
   },
 
   /**
@@ -41,6 +43,8 @@ export const env = createEnv({
     LOG_LEVEL: process.env.LOG_LEVEL,
     AXIOM_TOKEN: process.env.AXIOM_TOKEN,
     AXIOM_DATASET: process.env.AXIOM_DATASET,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

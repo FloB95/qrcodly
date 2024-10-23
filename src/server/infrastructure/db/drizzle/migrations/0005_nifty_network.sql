@@ -1,0 +1,1 @@
+DROP TABLE `qrcodly_post`;

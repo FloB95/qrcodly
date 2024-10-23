@@ -135,7 +135,7 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
               <FormField
                 control={form.control}
                 name="width"
-                render={({ field }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel>Size (Quality)</FormLabel>
                     <FormControl>

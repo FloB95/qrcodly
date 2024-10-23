@@ -25,6 +25,7 @@ To use QRcodly in your project, you can just manually download the source code. 
 5. the database will be migrated automatically on server start
 6. run `npm run dev` to start the server
 7. for authentication you have to setup [Clerk](https://clerk.com/)
+8. for rate limiting and redis you have to setup [upstash](https://upstash.com/) or use a custom service
 
 ## Used stack
 
@@ -40,3 +41,4 @@ To build QRcodly we used the following technologies:
 - [shadcn/ui](https://ui.shadcn.com/) - UI components library
 - [QR Code Styling](https://qr-code-styling.com/) - QR code generator library
 - [create t3-app](https://create.t3.gg/) - Base project template
+- [upstash](https://upstash.com/) - Redis + Rate limiting
