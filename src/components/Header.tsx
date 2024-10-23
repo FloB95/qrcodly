@@ -13,21 +13,22 @@ export default function Header({ hideDashboardLink = false }) {
               QRcodly
             </Link>
           </div>
-          <div>
+          <div className="flex space-x-4 sm:space-x-6">
+            <Link href="/doc" className="h-10 px-2 py-2">
+              API
+            </Link>
             <SignedOut>
               <SignInButton>
                 <Button>Sign in</Button>
               </SignInButton>
             </SignedOut>
             <SignedIn>
-              <div className="flex space-x-4 sm:space-x-10">
-                {!hideDashboardLink && (
-                  <Link href="/dashboard" className={buttonVariants()}>
-                    Dashboard
-                  </Link>
-                )}
-                <UserButton />
-              </div>
+              {!hideDashboardLink && (
+                <Link href="/dashboard" className={buttonVariants()}>
+                  Dashboard
+                </Link>
+              )}
+              <UserButton />
             </SignedIn>
           </div>
         </div>

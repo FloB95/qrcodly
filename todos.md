@@ -23,3 +23,4 @@
 - Add Color Select Gradient functionality
 - Add Images to Shape Select fields
 - Responsive Optimization
+- Add public api + documentation for QR Code generation
