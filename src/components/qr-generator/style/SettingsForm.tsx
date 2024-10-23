@@ -390,10 +390,20 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
                             const file = e.target.files?.[0];
                             // transform file to base64 url
                             if (file) {
+                              // check max file size
+                              if (file.size > 1 * 1024 * 1024) {
+                                alert("File is too big! Max size is 1MB");
+                                // clear file
+                                e.target.value = "";
+                                return;
+                              }
+
+                              // convert to base64
                               const reader = new FileReader();
                               reader.readAsDataURL(file);
                               reader.onload = () => {
                                 const base64 = reader.result as string;
+                                console.log(base64.length);
                                 field.onChange(base64);
                                 handleChange(form.getValues());
                               };

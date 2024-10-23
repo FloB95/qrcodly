@@ -45,7 +45,7 @@ export const ContentSwitch = ({
           setCurrentInput({ value: "", tab: value, editable: false });
         }}
       >
-        <TabsList className="mb-6 flex h-auto flex-wrap justify-start space-x-3 bg-transparent p-0">
+        <TabsList className="mb-6 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-4">
           <TabsTrigger value="url" asChild>
             <button
               className={buttonVariants({

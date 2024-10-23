@@ -1,5 +1,6 @@
 # Todos
 
+- Optimize Styling Ui (add icons for dot styles & add a better image upload ui)
 - Optimize Page loading - no lazy load QR code and SignIn Button
 - Add User Dashboard:
   - Custom Dashboard Navigation
@@ -15,7 +16,6 @@
 - Add Tests !!!
 - Optimize CI/CD
 - Optimize Logging
-- Add Redis for caching
 - Add English Legal Notice and Privacy Policy
 - Add Url Shortener for editable QR Code URLs
 - Add different vCard Types (Private and Business)
