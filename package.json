@@ -7,7 +7,7 @@
     "type-check": "tsc --noEmit -p tsconfig.json",
     "format": "prettier --config prettier.config.js --write \"src/**/*.ts\"",
     "pr:precheck": "npm run format && npm run lint && npm run type-check && npm run build",
-    "build": "next build",
+    "build": "NODE_ENV=production next build",
     "db:studio": "drizzle-kit studio",
     "db:generate-migration": "drizzle-kit generate --config=drizzle.config.ts",
     "dev": "next dev",
