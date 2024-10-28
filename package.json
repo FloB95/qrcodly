@@ -46,7 +46,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "critters": "^0.0.24",
-    "drizzle-orm": "^0.33",
+    "drizzle-orm": "^0.35",
     "fs": "^0.0.1-security",
     "lucide-react": "^0.436.0",
     "mysql2": "^3.11.0",
