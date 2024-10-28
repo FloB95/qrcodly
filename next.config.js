@@ -22,7 +22,6 @@ const config = {
     config.resolve.fallback = { fs: false };
     return config;
   },
-  serverComponentsExternalPackages: ["pino", "pino-pretty"],
 };
 
 export default withAxiom(config);
