@@ -9,12 +9,12 @@ runs:
         node-version: 20.1.0
         cache: 'npm'
 
-    - name: Cache NPM Dependencies
-      uses: actions/cache@v3
-      id: cache-primes
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+    # - name: Cache NPM Dependencies
+    #   uses: actions/cache@v3
+    #   id: cache-primes
+    #   with:
+    #     path: node_modules
+    #     key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
 
     - name: Install Dependencies
       run: npm ci
