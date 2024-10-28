@@ -34,6 +34,7 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
     this.logger.info("QR code created successfully", {
       id: createdQrCode.id,
       createdBy: createdQrCode.createdBy,
+      content: createdQrCode.getOriginalData(),
     });
 
     return createdQrCode;

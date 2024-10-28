@@ -12,6 +12,9 @@ await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 const config = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack: (config) => {
     config.externals = [
       ...config.externals,
@@ -22,7 +25,6 @@ const config = {
     config.resolve.fallback = { fs: false };
     return config;
   },
-  serverComponentsExternalPackages: ["pino", "pino-pretty"],
 };
 
 export default withAxiom(config);

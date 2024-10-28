@@ -12,8 +12,10 @@ class CreateQRcodeController implements IController {
     const user = await currentUser();
 
     // if user is not logged in, or contentType is not url, remove editable
-    if (!user || qrCodeConfig.contentType.type !== "url") {
+    if (qrCodeConfig.contentType.type !== "url") {
       qrCodeConfig.contentType.editable = undefined;
+    } else if (!user) {
+      qrCodeConfig.contentType.editable = false;
     }
 
     const qrCode = await this.createQRcodeUseCase.execute(
