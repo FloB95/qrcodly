@@ -11,7 +11,7 @@ env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
   CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-  NODE_ENV: development
+  NODE_ENV: production
   LOG_LEVEL: error
   AXIOM_TOKEN: ${{ secrets.AXIOM_TOKEN }}
   AXIOM_DATASET: ${{ secrets.AXIOM_DATASET }}
