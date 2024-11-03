@@ -30,7 +30,7 @@ export default function QrCode({
     // set default data if not provided
     qrCode.update({
       ...options,
-      data: options.data || "https://qrcodly.com",
+      data: options.data || "https://qrcodly.de",
     });
   }, [qrCode, options]);
 
