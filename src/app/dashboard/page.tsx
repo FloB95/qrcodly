@@ -21,8 +21,11 @@ import {
 
 export default function Dashboard() {
   return (
-    <div className="flex h-full w-full flex-1 flex-col items-center justify-center mt-24">
+    <div className="mt-24 flex h-full w-full flex-1 flex-col items-center justify-center">
       <Container>
+        <h1 className="mb-24 mt-8 text-center text-4xl font-bold">
+            Dashboard is in development !
+        </h1>
         <Tabs defaultValue="list">
           <div className="flex items-center">
             <TabsList>

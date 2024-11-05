@@ -48,23 +48,20 @@ const QrCodeDownloadBtn = ({
 
     if (saveOnDownload) {
       try {
-        await createQrCode.mutateAsync(
-          { config: qrCodeSettings },
-          {
-            onSuccess: (data) => {
-              // if user is logged in, show toast
-              if (data.success && data.isStored) {
-                // show toast
-                toast({
-                  title: "New QR code created",
-                  description:
-                    "We saved your QR code in your dashboard for later use.",
-                  duration: 10000,
-                });
-              }
-            },
+        await createQrCode.mutateAsync(qrCodeSettings, {
+          onSuccess: (data) => {
+            // if user is logged in, show toast
+            if (data.success && data.isStored) {
+              // show toast
+              toast({
+                title: "New QR code created",
+                description:
+                  "We saved your QR code in your dashboard for later use.",
+                duration: 10000,
+              });
+            }
           },
-        );
+        });
 
         // invalidate dashboard cache
         await apiUtils.qrCode.getMyQrCodes.invalidate();

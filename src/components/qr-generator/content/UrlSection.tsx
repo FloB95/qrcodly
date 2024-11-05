@@ -67,6 +67,15 @@ export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
                     className="p-6"
                     placeholder="Enter URL https://example.com/"
                     autoFocus
+                    onBlur={(e) => {
+                      if (e.target.value === "") return;
+                      if (
+                        !e.target.value.startsWith("http://") &&
+                        !e.target.value.startsWith("https://")
+                      ) {
+                        field.onChange(`https://${e.target.value}`);
+                      }
+                    }}
                   />
                 </FormControl>
                 <FormMessage />

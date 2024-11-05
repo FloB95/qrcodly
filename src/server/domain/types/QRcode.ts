@@ -1,5 +1,9 @@
 import { z } from "zod";
 import { BaseEntitySchema } from "../entities/BaseEntity";
+const emptyStringToUndefined = <T extends z.ZodTypeAny>(
+  schema: T,
+): z.ZodEffects<T, z.infer<T> | undefined> =>
+  z.preprocess((value) => (value === "" ? undefined : value), schema);
 
 export const UrlInputSchema = z.string().url();
 export type TUrlInput = z.infer<typeof UrlInputSchema>;
@@ -9,31 +13,35 @@ export type TTextInput = z.infer<typeof TextInputSchema>;
 
 export const WifiInputSchema = z.object({
   ssid: z.string().max(32),
-  password: z.string().max(64).optional(),
+  password: emptyStringToUndefined(z.string().max(64).optional()),
   encryption: z.enum(["WPA", "WEP", "nopass"]).default("WPA"),
 });
 export type TWifiInput = z.infer<typeof WifiInputSchema>;
 
 export const VCardInputSchema = z.object({
-  firstName: z.string().max(64).optional(),
-  lastName: z.string().max(64).optional(),
-  email: z.string().email().optional(),
-  phone: z
-    .string()
-    .regex(/^\+?\d{1,4}\d{6,15}$/)
-    .optional(),
-  fax: z
-    .string()
-    .regex(/^\+?\d{1,4}\d{6,15}$/)
-    .optional(),
-  company: z.string().max(64).optional(),
-  job: z.string().max(64).optional(),
-  street: z.string().max(64).optional(),
-  city: z.string().max(64).optional(),
-  zip: z.string().max(10).optional(),
-  state: z.string().max(64).optional(),
-  country: z.string().max(64).optional(),
-  website: z.string().url().optional(),
+  firstName: emptyStringToUndefined(z.string().max(64).optional()),
+  lastName: emptyStringToUndefined(z.string().max(64).optional()),
+  email: emptyStringToUndefined(z.string().email().optional()),
+  phone: emptyStringToUndefined(
+    z
+      .string()
+      .regex(/^\+?\d{1,4}\d{6,15}$/)
+      .optional(),
+  ),
+  fax: emptyStringToUndefined(
+    z
+      .string()
+      .regex(/^\+?\d{1,4}\d{6,15}$/)
+      .optional(),
+  ),
+  company: emptyStringToUndefined(z.string().max(64).optional()),
+  job: emptyStringToUndefined(z.string().max(64).optional()),
+  street: emptyStringToUndefined(z.string().max(64).optional()),
+  city: emptyStringToUndefined(z.string().max(64).optional()),
+  zip: emptyStringToUndefined(z.string().max(10).optional()),
+  state: emptyStringToUndefined(z.string().max(64).optional()),
+  country: emptyStringToUndefined(z.string().max(64).optional()),
+  website: emptyStringToUndefined(z.string().url().optional()),
 });
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
 

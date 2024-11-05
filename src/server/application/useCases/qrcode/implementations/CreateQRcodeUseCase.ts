@@ -3,6 +3,7 @@ import { type ICreateQRcodeUseCase } from "../ICreateQRcodeUseCase";
 import { type TCreateQRcodeDto } from "~/server/domain/dtos/qrcode/TCreateQRcodeDto";
 import { type IQRcodeRepository } from "~/server/application/repositories/IQRcodeRepository";
 import { type IBaseLogger } from "~/server/application/logger/IBaseLogger";
+import { QrCodeDefaults } from "~/config/QrCodeDefaults";
 
 /**
  * Use case for creating a QRcode entity.
@@ -21,7 +22,14 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
    */
   async execute(dto: TCreateQRcodeDto, createdBy?: string): Promise<QRcode> {
     const newId = await this.qrCodeRepository.generateId();
-    const qrCode = new QRcode(newId, dto.config, createdBy);
+
+    // merge dto with default qrcode config
+    const qrCodeConfig = {
+      ...QrCodeDefaults,
+      ...dto,
+    };
+
+    const qrCode = new QRcode(newId, qrCodeConfig, createdBy);
 
     // Create the QR code entity in the database.
     await this.qrCodeRepository.create(qrCode);
