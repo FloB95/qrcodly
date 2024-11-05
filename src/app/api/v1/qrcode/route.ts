@@ -53,4 +53,4 @@ const createHandler = async (req: NextRequest) => {
   });
 };
 
-export const POST = (req: NextRequest) => ApiErrorHandler(createHandler, req);
+export const POST = async (req: NextRequest) => ApiErrorHandler(createHandler, req);
