@@ -29,21 +29,36 @@ export const VcardSection = ({ onChange, value }: VcardSectionProps) => {
   const form = useForm<FormValues>({
     resolver: zodResolver(VCardInputSchema),
     defaultValues: value,
+    shouldFocusError: false,
+    shouldUnregister: true,
+    reValidateMode: "onBlur",
   });
 
   const [debounced] = useDebouncedValue(form.getValues(), 500);
 
   function onSubmit(values: FormValues) {
+    console.log("values", values);
     onChange(values);
   }
 
   // handle submit automatically after debounced value
   useEffect(() => {
+    const processedDebounced = Object.fromEntries(
+      Object.entries(debounced).map(([key, val]) => [
+        key,
+        val === "" ? undefined : val,
+      ]),
+    );
+
     if (
-      JSON.stringify(debounced) === "{}" ||
-      JSON.stringify(debounced) === JSON.stringify(value)
+      JSON.stringify(processedDebounced) === "{}" ||
+      JSON.stringify(processedDebounced) === JSON.stringify(value)
     )
       return;
+
+    console.log("debounced", processedDebounced);
+    console.log("value", value);
+
     void form.handleSubmit(onSubmit)();
   }, [debounced]);
 
@@ -222,7 +237,19 @@ export const VcardSection = ({ onChange, value }: VcardSectionProps) => {
             <FormItem>
               <FormLabel>Website</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Enter your website URL" />
+                <Input
+                  {...field}
+                  placeholder="Enter your website URL"
+                  onBlur={(e) => {
+                    if (e.target.value === "") return;
+                    if (
+                      !e.target.value.startsWith("http://") &&
+                      !e.target.value.startsWith("https://")
+                    ) {
+                      field.onChange(`https://${e.target.value}`);
+                    }
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

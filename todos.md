@@ -1,5 +1,7 @@
 # Todos
 
+- Add public API + documentation for QR Code generation
+- Add API keys for public API authentication
 - Optimize Styling Ui (add icons for dot styles & add a better image upload ui)
 - Optimize Page loading - no lazy load QR code and SignIn Button
 - Add User Dashboard:
@@ -23,4 +25,3 @@
 - Add Color Select Gradient functionality
 - Add Images to Shape Select fields
 - Responsive Optimization
-- Add public api + documentation for QR Code generation

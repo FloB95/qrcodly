@@ -8,22 +8,17 @@ class CreateQRcodeController implements IController {
   constructor(private createQRcodeUseCase: ICreateQRcodeUseCase) {}
 
   public async handle(input: TCreateQRcodeDto) {
-    const qrCodeConfig = input.config;
+    // merge input with default qrcode config
     const user = await currentUser();
 
     // if user is not logged in, or contentType is not url, remove editable
-    if (qrCodeConfig.contentType.type !== "url") {
-      qrCodeConfig.contentType.editable = undefined;
+    if (input.contentType.type !== "url") {
+      input.contentType.editable = undefined;
     } else if (!user) {
-      qrCodeConfig.contentType.editable = false;
+      input.contentType.editable = false;
     }
 
-    const qrCode = await this.createQRcodeUseCase.execute(
-      {
-        config: qrCodeConfig,
-      },
-      user?.id,
-    );
+    const qrCode = await this.createQRcodeUseCase.execute(input, user?.id);
 
     return {
       success: true,
