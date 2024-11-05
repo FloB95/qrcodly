@@ -6,7 +6,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 // Import required modules
 import "node-self"; // Required for `self` compatibility
-import * as nodeCanvas from "canvas";
 import QRCodeStyling from "qr-code-styling-node";
 import { JSDOM } from "jsdom"; // Correct the typo here (uppercase JSDOM)
 import { QrCodeDefaults } from "~/config/QrCodeDefaults";
@@ -21,7 +20,6 @@ export const generateQRcode = async (options: any) => {
 
   // Create a new QR code styling instance
   const qrCode = new QRCodeStyling({
-    nodeCanvas,
     jsdom: JSDOM,
     ...{
       ...QrCodeDefaults,

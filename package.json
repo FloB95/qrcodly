@@ -43,7 +43,6 @@
     "@upstash/ratelimit": "^2.0.4",
     "@upstash/redis": "^1.34.3",
     "buffer": "^6.0.3",
-    "canvas": "^2.11.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.36",
