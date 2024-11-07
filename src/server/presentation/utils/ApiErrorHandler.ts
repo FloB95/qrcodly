@@ -39,7 +39,7 @@ export async function ApiErrorHandler(
     }
 
     logger.error("API Error occurred", {
-      ...responsePayload,
+      ...responsePayload as object,
       url: req.url,
     });
 

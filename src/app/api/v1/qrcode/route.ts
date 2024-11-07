@@ -1,13 +1,11 @@
 "use server";
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type NextRequest } from "next/server";
-import { z } from "zod";
 import { BadRequestError } from "~/server/application/errors/http";
 import { TooManyRequestsError } from "~/server/application/errors/http/TooManyRequestsError";
 import { CreateQRcodeDtoSchema } from "~/server/domain/dtos/qrcode/TCreateQRcodeDto";
 import {
-  FileExtension,
-  type TFileExtension,
+  type TFileExtension
 } from "~/server/domain/types/QRcode";
 import { RateLimiter } from "~/server/infrastructure/ratelimit";
 import { createQRcodeControllerFactory } from "~/server/presentation/factories/QRcodeControllerFactory";
