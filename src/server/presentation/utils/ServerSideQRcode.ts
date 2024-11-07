@@ -31,8 +31,6 @@ export const generateQRcode = async (options: any) => {
   // Generate the QR code in SVG format
   const svgBuffer = await qrCode.getRawData(options.fileType);
 
-  console.log(svgBuffer);
-
   if (!svgBuffer) return null;
   const svgData = Buffer.isBuffer(svgBuffer)
     ? svgBuffer.toString("utf-8")

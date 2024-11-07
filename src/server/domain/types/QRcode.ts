@@ -227,8 +227,8 @@ export const QrCodeOptionsSchema = z.object({
   // max size 1 mb
   image: z
     .string()
-    .max(1.5 * 1024 * 1024, "Image is to large!")
-    .optional(),
+    .max(0.5 * 1024 * 1024, "Image is to large! Max size is 0.5 MB.")
+    .optional().describe("The image as base64 to be embedded in the QR code. Max size 0.5 MB."),
   qrOptions: z.object({
     typeNumber: TypeNumber.default(0),
     mode: Mode.default("Byte"),

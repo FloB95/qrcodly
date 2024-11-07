@@ -68,7 +68,7 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
             <FormItem>
               <FormLabel>Network</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="Enter your email" />
+                <Input {...field} placeholder="Enter your network name" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -87,7 +87,7 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
                     {...field}
                     autoCorrect="off"
                     autoComplete="off"
-                    placeholder="Enter your first name"
+                    placeholder="Enter your password"
                   />
                 </FormControl>
                 <FormMessage />

@@ -26,7 +26,7 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
     // merge dto with default qrcode config
     const qrCodeConfig = {
       ...QrCodeDefaults,
-      ...dto,
+      ...dto.config,
     };
 
     const qrCode = new QRcode(newId, qrCodeConfig, createdBy);

@@ -5,9 +5,10 @@ import {
   BadRequestError,
   CustomApiError,
 } from "~/server/application/errors/http";
+import { logger } from "~/server/infrastructure/logger";
 
 export async function ApiErrorHandler(
-  callback: (req: NextRequest) => Promise<Response>, // Sicherstellen, dass der Rückgabewert ein Promise ist
+  callback: (req: NextRequest) => Promise<Response>,
   req: NextRequest,
 ) {
   try {
@@ -25,17 +26,22 @@ export async function ApiErrorHandler(
         code: e.statusCode,
       };
       if (e instanceof BadRequestError) {
-        responsePayload.fieldErrors = e.fieldErrors;
+        responsePayload.fieldErrors = e.zodIssues;
       }
     } else if (e instanceof ZodError) {
       statusCode = 400;
       responsePayload = {
         message: "Validation error",
-        fieldErrors: e.flatten().fieldErrors,
+        fieldErrors: e.issues,
       };
     } else if (e instanceof Error) {
       console.error("Unexpected error:", e);
     }
+
+    logger.error("API Error occurred", {
+      ...responsePayload,
+      url: req.url,
+    });
 
     return new Response(JSON.stringify(responsePayload), {
       status: statusCode,
