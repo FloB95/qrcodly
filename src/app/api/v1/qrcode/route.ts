@@ -1,12 +1,11 @@
 "use server";
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type NextRequest } from "next/server";
-import { z } from "zod";
+import { BadRequestError } from "~/server/application/errors/http";
 import { TooManyRequestsError } from "~/server/application/errors/http/TooManyRequestsError";
 import { CreateQRcodeDtoSchema } from "~/server/domain/dtos/qrcode/TCreateQRcodeDto";
 import {
-  FileExtension,
-  type TFileExtension,
+  type TFileExtension
 } from "~/server/domain/types/QRcode";
 import { RateLimiter } from "~/server/infrastructure/ratelimit";
 import { createQRcodeControllerFactory } from "~/server/presentation/factories/QRcodeControllerFactory";
@@ -34,9 +33,7 @@ const createHandler = async (req: NextRequest) => {
 
   // validate payload
   const payload = await req.json();
-  const validatedPayload = CreateQRcodeDtoSchema.merge(
-    z.object({ fileType: FileExtension.default("svg") }),
-  ).parse(payload);
+  const validatedPayload = CreateQRcodeDtoSchema.parse(payload);
   const res = await createQRcodeControllerFactory().handle(validatedPayload);
 
   if (!res) {
@@ -44,13 +41,19 @@ const createHandler = async (req: NextRequest) => {
   }
 
   const qrCode = await generateQRcode(validatedPayload);
+
+  if (!qrCode) {
+    throw new BadRequestError("Failed to generate QR code");
+  }
+
   const contentType = getContentType(validatedPayload.fileType);
 
   // return qr code as svg
   return new Response(qrCode, {
-    status: 200,
+    status: 201,
     headers: { "Content-Type": contentType },
   });
 };
 
-export const POST = async (req: NextRequest) => ApiErrorHandler(createHandler, req);
+export const POST = async (req: NextRequest) =>
+  ApiErrorHandler(createHandler, req);

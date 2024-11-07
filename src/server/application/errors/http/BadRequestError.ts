@@ -1,4 +1,4 @@
-import { type ZodError, type typeToFlattenedError } from "zod";
+import { type ZodIssue } from "zod";
 import { CustomApiError } from "./CustomApiError";
 
 /**
@@ -6,24 +6,22 @@ import { CustomApiError } from "./CustomApiError";
  */
 export class BadRequestError extends CustomApiError {
   /**
-   * An object where keys are field names and values are arrays of error messages.
+   * An array of ZodIssue objects representing the validation errors.
    */
-  fieldErrors?: typeToFlattenedError<any, string>["fieldErrors"]; // Use the correct type from Zod
+  zodIssues: ZodIssue[];
 
   /**
    * Creates an instance of BadRequestError.
    * @param message The error message.
-   * @param zodError An instance of ZodError representing the validation errors.
+   * @param zodIssues An array of ZodIssue objects representing the validation errors.
    */
-  constructor(message: string, zodError?: ZodError) {
-    if (zodError) {
-      message =
-        "Your request has invalid fields, please fix them and try again.";
+  constructor(message: string, zodIssues: ZodIssue[] = []) {
+    if (zodIssues.length > 0) {
+      message = `Your request has invalid fields, please fix them and try again.`;
     }
 
     super(message, 400);
 
-    // Assign the flattened Zod errors if provided
-    this.fieldErrors = zodError ? zodError.flatten().fieldErrors : undefined;
+    this.zodIssues = zodIssues;
   }
 }

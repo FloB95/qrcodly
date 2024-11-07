@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import vCardFactory from "vcards-js";
-import { type ZodIssue } from "zod";
 import {
   type TWifiInput,
   type TVCardInput,

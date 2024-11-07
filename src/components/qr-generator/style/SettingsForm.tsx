@@ -403,7 +403,6 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
                               reader.readAsDataURL(file);
                               reader.onload = () => {
                                 const base64 = reader.result as string;
-                                console.log(base64.length);
                                 field.onChange(base64);
                                 handleChange(form.getValues());
                               };

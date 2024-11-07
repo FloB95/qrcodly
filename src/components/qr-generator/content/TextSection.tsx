@@ -56,7 +56,7 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
                   {...field}
                   autoFocus
                   className="px-6 py-3.5"
-                  placeholder="Enter your Text..."
+                  placeholder="Enter your text..."
                   rows={10}
                 />
               </FormControl>

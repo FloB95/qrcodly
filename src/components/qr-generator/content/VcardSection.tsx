@@ -37,7 +37,6 @@ export const VcardSection = ({ onChange, value }: VcardSectionProps) => {
   const [debounced] = useDebouncedValue(form.getValues(), 500);
 
   function onSubmit(values: FormValues) {
-    console.log("values", values);
     onChange(values);
   }
 
@@ -55,9 +54,6 @@ export const VcardSection = ({ onChange, value }: VcardSectionProps) => {
       JSON.stringify(processedDebounced) === JSON.stringify(value)
     )
       return;
-
-    console.log("debounced", processedDebounced);
-    console.log("value", value);
 
     void form.handleSubmit(onSubmit)();
   }, [debounced]);
