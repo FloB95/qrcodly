@@ -48,7 +48,7 @@
     "drizzle-orm": "^0.36",
     "fs": "^0.0.1-security",
     "jsdom": "^25.0.1",
-    "lucide-react": "^0.454.0",
+    "lucide-react": "^0.456.0",
     "mysql2": "^3.11.4",
     "next": "^15.0.2",
     "next-axiom": "^1.5.1",
