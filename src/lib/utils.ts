@@ -34,3 +34,13 @@ export function convertWiFiObjToString(wiFiInput: TWifiInput): string {
   const wifiString = `WIFI:T:${wiFiInput.encryption};S:${wiFiInput.ssid};P:${wiFiInput.password};;`;
   return wifiString;
 }
+
+export function toSnakeCase(str: string) {
+  return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+}
+
+export function toSnakeCaseKeys(obj: object) {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [toSnakeCase(key), value]),
+  );
+}

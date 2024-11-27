@@ -9,6 +9,8 @@ import { Button } from "../ui/button";
 import {
   type TQRcodeOptions,
   type TFileExtension,
+  TQrCodeContentType,
+  TQrCodeContentOriginalData,
 } from "~/server/domain/types/QRcode";
 import { toast } from "../ui/use-toast";
 import {
@@ -19,13 +21,19 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useEffect, useState } from "react";
+import { TCurrentQrCodeInput } from "./QRcodeGenerator";
 
 let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
+  qrCodeData,
   qrCodeSettings,
   saveOnDownload = false,
   noStyling = false,
 }: {
+  qrCodeData: {
+    contentType: TQrCodeContentType;
+    data: TQrCodeContentOriginalData;
+  };
   qrCodeSettings: TQRcodeOptions;
   saveOnDownload?: boolean;
   noStyling?: boolean;
@@ -49,7 +57,11 @@ const QrCodeDownloadBtn = ({
     if (saveOnDownload) {
       try {
         await createQrCode.mutateAsync(
-          { config: qrCodeSettings },
+          {
+            contentType: qrCodeData.contentType,
+            data: qrCodeData.data,
+            config: qrCodeSettings,
+          },
           {
             onSuccess: (data) => {
               // if user is logged in, show toast

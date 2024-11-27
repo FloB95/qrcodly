@@ -14,7 +14,7 @@ import {
   type TQrCodeContentOriginalData,
   VCardInputSchema,
   WifiInputSchema,
-  type TQRcodeOptions,
+  TQrCodeContentType,
 } from "~/server/domain/types/QRcode";
 import { VcardSection } from "./VcardSection";
 import { convertVCardObjToString, convertWiFiObjToString } from "~/lib/utils";
@@ -26,7 +26,7 @@ type TContentSwitchProps = {
   onChange: (
     v: string,
     originalVal: TQrCodeContentOriginalData,
-    contentType: TQRcodeOptions["contentType"],
+    contentType: TQrCodeContentType,
   ) => void;
 };
 
@@ -92,7 +92,7 @@ export const ContentSwitch = ({
             onChange={(url, editable) => {
               if (currentInput.tab !== "url") return;
               setCurrentInput({ ...currentInput, value: url, editable });
-              onChange(url, url, { type: "url", editable });
+              onChange(url, url, "url");
             }}
           />
         </TabsContent>
@@ -102,7 +102,7 @@ export const ContentSwitch = ({
             onChange={(v) => {
               if (currentInput.tab !== "text") return;
               setCurrentInput({ ...currentInput, value: v });
-              onChange(v, v, { type: "text" });
+              onChange(v, v, "text");
             }}
           />
         </TabsContent>
@@ -116,7 +116,7 @@ export const ContentSwitch = ({
             onChange={(v) => {
               if (currentInput.tab !== "wifi") return;
               setCurrentInput({ ...currentInput, value: v });
-              onChange(convertWiFiObjToString(v), v, { type: "wifi" });
+              onChange(convertWiFiObjToString(v), v, "wifi");
             }}
           />
         </TabsContent>
@@ -130,7 +130,7 @@ export const ContentSwitch = ({
             onChange={(v) => {
               if (currentInput.tab !== "vCard") return;
               setCurrentInput({ ...currentInput, value: v });
-              onChange(convertVCardObjToString(v), v, { type: "vCard" });
+              onChange(convertVCardObjToString(v), v, "vCard");
             }}
           />
         </TabsContent>

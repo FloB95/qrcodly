@@ -5,12 +5,7 @@ export const QrCodeDefaults: TQRcodeOptions = {
   width: 1000,
   height: 1000,
   type: "canvas",
-  contentType: {
-    type: "url",
-    editable: false,
-  },
   data: "",
-  originalData: "",
   image: "",
   margin: 0,
   qrOptions: {

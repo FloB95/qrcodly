@@ -26,24 +26,29 @@ import {
 } from "../ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Loader2 } from "lucide-react";
+import { TQrCodeContentOriginalDataMap } from "~/server/domain/types/QRcode";
 
 const GetNameByContentType = (qr: QRcode) => {
-  switch (qr.config.contentType.type) {
+  switch (qr.contentType) {
     case "url":
       return qr.config.data;
     case "text":
       return qr.config.data;
     case "wifi":
-      return qr.getOriginalData<"wifi">().ssid;
+      const wifiData =
+        qr.getOriginalData() as TQrCodeContentOriginalDataMap["wifi"];
+      return wifiData?.ssid;
     case "vCard":
-      return `${qr.getOriginalData<"vCard">()?.firstName ?? ""} ${qr.getOriginalData<"vCard">()?.lastName ?? ""}`;
+      const vCardData =
+        qr.getOriginalData() as TQrCodeContentOriginalDataMap["vCard"];
+      return `${vCardData?.firstName ?? ""} ${vCardData?.lastName ?? ""}`;
     default:
       return "Unknown";
   }
 };
 
 const GetQrCodeIconByContentType = (qr: QRcode) => {
-  switch (qr.config.contentType.type) {
+  switch (qr.contentType) {
     case "url":
       return <LinkIcon className="mr-2 h-6 w-6" />;
     case "text":
@@ -125,7 +130,7 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
         <>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="max-w-[400px] overflow-hidden text-ellipsis whitespace-nowrap inline-block">
+              <div className="inline-block max-w-[400px] overflow-hidden text-ellipsis whitespace-nowrap">
                 {GetNameByContentType(qr)}
               </div>
             </TooltipTrigger>
@@ -177,7 +182,14 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <QrCodeDownloadBtn qrCodeSettings={qr.config} noStyling />
+              <QrCodeDownloadBtn
+                qrCodeSettings={qr.config}
+                qrCodeData={{
+                  contentType: qr.contentType,
+                  data: qr.config.data,
+                }}
+                noStyling
+              />
             </DropdownMenuItem>
             <DropdownMenuItem>
               <div className="cursor-pointer" onClick={handleDelete}>

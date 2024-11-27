@@ -45,7 +45,7 @@ export const VCardInputSchema = z.object({
 });
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
 
-const QrCodeContentOriginalDataSchema = z.union([
+export const QrCodeContentOriginalDataSchema = z.union([
   UrlInputSchema,
   TextInputSchema,
   WifiInputSchema,
@@ -203,32 +203,19 @@ export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
  */
 export const QrCodeOptionsSchema = z.object({
   type: DrawType.default("canvas"),
-  contentType: z
-    .object({
-      type: QrCodeContentType,
-      // Add a conditional field based on the value of `type`
-      editable: z.boolean().optional(),
-    })
-    .superRefine((arg, ctx) => {
-      if (arg.type === "url" && typeof arg.editable === "undefined") {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom, // customize your issue
-          message: "editable is required for url content type",
-        });
-      }
-      return z.NEVER; // The return value is not used, but we need to return something to satisfy the typing
-    }),
   shape: ShapeType.default("square"),
   width: z.number().default(1000),
   height: z.number().default(1000),
   margin: z.number().default(0),
   data: z.string(),
-  originalData: QrCodeContentOriginalDataSchema,
   // max size 1 mb
   image: z
     .string()
     .max(0.5 * 1024 * 1024, "Image is to large! Max size is 0.5 MB.")
-    .optional().describe("The image as base64 to be embedded in the QR code. Max size 0.5 MB."),
+    .optional()
+    .describe(
+      "The image as base64 to be embedded in the QR code. Max size 0.5 MB.",
+    ),
   qrOptions: z.object({
     typeNumber: TypeNumber.default(0),
     mode: Mode.default("Byte"),
@@ -284,5 +271,60 @@ export type TQRcodeOptions = z.infer<typeof QrCodeOptionsSchema>;
  */
 export const QRcodeSchema = BaseEntitySchema.extend({
   config: QrCodeOptionsSchema,
+  contentType: QrCodeContentType,
+  originalData: QrCodeContentOriginalDataSchema,
   createdBy: z.string().nullable().optional(),
+}).superRefine((values, ctx) => {
+  const { contentType, originalData } = values;
+
+  // Validate the original data based on the content type
+  switch (contentType) {
+    case "url":
+      if (!UrlInputSchema.safeParse(originalData).success) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["originalData"],
+          message: "Invalid URL format.",
+        });
+      }
+      break;
+
+    case "text":
+      if (!TextInputSchema.safeParse(originalData).success) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["originalData"],
+          message:
+            "Text must be a string with a maximum length of 1000 characters.",
+        });
+      }
+      break;
+
+    case "wifi":
+      if (!WifiInputSchema.safeParse(originalData).success) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["originalData"],
+          message: "Invalid WiFi configuration.",
+        });
+      }
+      break;
+
+    case "vCard":
+      if (!VCardInputSchema.safeParse(originalData).success) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["originalData"],
+          message: "Invalid vCard configuration.",
+        });
+      }
+      break;
+
+    default:
+      ctx.addIssue({
+        code: "custom",
+        path: ["contentType"],
+        message: "Unsupported content type.",
+      });
+  }
 });

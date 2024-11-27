@@ -4,7 +4,7 @@ import {
   datetime,
   json,
 } from "drizzle-orm/mysql-core";
-import { type TQRcodeOptions } from "~/server/domain/types/QRcode";
+import { TQrCodeContentOriginalData, TQrCodeContentType, type TQRcodeOptions } from "~/server/domain/types/QRcode";
 
 /**
  * Multi-project schema feature of Drizzle ORM. Use the same
@@ -19,7 +19,13 @@ export const qrCodeTable = createTable("qr_code", {
     length: 36,
   }).primaryKey(),
   config: json("config").$type<TQRcodeOptions>().notNull(),
-  createdBy: varchar("created_by", { length: 255 }),
-  createdAt: datetime("createdAt").notNull(),
-  updatedAt: datetime("updatedAt"),
+  content_type: varchar("content_type", { length: 255 })
+    .$type<TQrCodeContentType>()
+    .notNull(),
+  original_data: json("original_data")
+    .$type<TQrCodeContentOriginalData>()
+    .notNull(),
+  created_by: varchar("created_by", { length: 255 }),
+  created_at: datetime("created_at").notNull(),
+  updated_at: datetime("updated_at"),
 });

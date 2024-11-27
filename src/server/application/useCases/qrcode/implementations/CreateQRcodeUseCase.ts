@@ -29,7 +29,13 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
       ...dto.config,
     };
 
-    const qrCode = new QRcode(newId, qrCodeConfig, createdBy);
+    const qrCode = new QRcode(
+      newId,
+      qrCodeConfig,
+      dto.contentType,
+      dto.data,
+      createdBy,
+    );
 
     // Create the QR code entity in the database.
     await this.qrCodeRepository.create(qrCode);

@@ -6,7 +6,9 @@ import { QRcodeSchema } from "../../types/QRcode";
  * Schema for the QR code Response DTO.
  * Combines the base entity schema with the QR code schema and makes all fields optional.
  */
-export const QRcodeResponseDtoSchema = BaseEntitySchema.merge(QRcodeSchema);
+export const QRcodeResponseDtoSchema = BaseEntitySchema.merge(
+  QRcodeSchema._def.schema,
+);
 
 /**
  * Type for the QR code Response DTO.
