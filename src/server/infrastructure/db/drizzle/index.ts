@@ -16,7 +16,12 @@ const globalForDb = globalThis as unknown as {
 const conn = globalForDb.conn ?? createPool({ uri: env.DATABASE_URL });
 if (env.NODE_ENV !== "production") globalForDb.conn = conn;
 
-export const db = drizzle(conn, { schema, mode: "default", logger: false });
+export const db = drizzle(conn, {
+  schema,
+  mode: "default",
+  logger: false,
+  casing: "snake_case",
+});
 
 // TODO - This is a temporary solution to run migrations on the database. This should be replaced
 export const migrateDb = async () => {

@@ -31,10 +31,6 @@ function qrCodeReducer(state: QRCodeState, action: QRCodeAction): QRCodeState {
         ...state,
         ...action.payload,
         qrOptions: { ...state.qrOptions, ...action.payload.qrOptions },
-        contentType: {
-          ...state.contentType,
-          ...action.payload.contentType,
-        },
         imageOptions: {
           ...state.imageOptions,
           ...action.payload.imageOptions,
@@ -76,7 +72,7 @@ export const QRcodeGenerator = () => {
         <TabsList className="mx-auto grid h-auto max-w-[400px] grid-cols-2 bg-white p-2 shadow">
           <TabsTrigger
             value="qrCodeContent"
-            className=" data-[state=active]:bg-gray-200"
+            className="data-[state=active]:bg-gray-200"
           >
             <div className="flex space-x-2">
               <QrCodeIcon className="h-6 w-6" />{" "}
@@ -85,7 +81,7 @@ export const QRcodeGenerator = () => {
           </TabsTrigger>
           <TabsTrigger
             value="qrCodeSettings"
-            className=" data-[state=active]:bg-gray-200"
+            className="data-[state=active]:bg-gray-200"
           >
             <div className="flex space-x-2">
               <PaintBrushIcon className="h-6 w-6" />{" "}
@@ -102,13 +98,11 @@ export const QRcodeGenerator = () => {
                     <ContentSwitch
                       currentInput={currentInput}
                       setCurrentInput={setCurrentInput}
-                      onChange={(val, originalVal, contentType) => {
+                      onChange={(val) => {
                         dispatch({
                           type: "UPDATE_SETTINGS",
                           payload: {
                             data: val,
-                            originalData: originalVal,
-                            contentType,
                           },
                         });
                       }}
@@ -128,6 +122,10 @@ export const QRcodeGenerator = () => {
                     </div>
                     <div className="mt-6 flex justify-center md:justify-end">
                       <QrCodeDownloadBtn
+                        qrCodeData={{
+                          contentType: currentInput.tab,
+                          data: currentInput.value,
+                        }}
                         qrCodeSettings={qrCodeSettings}
                         saveOnDownload={true}
                       />

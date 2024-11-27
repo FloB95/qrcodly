@@ -20,25 +20,30 @@ export class QRcode extends BaseEntity {
     public readonly id: string,
     // public name: string,
     public config: TQRcodeOptions,
+    public contentType: TQrCodeContentType,
+    public originalData: TQrCodeContentOriginalDataMap[TQrCodeContentType],
     public createdBy?: string | null,
   ) {
     super(id);
   }
 
-  getContentType(): string {
-    return this.config.contentType.type;
+  getContentType(): TQrCodeContentType {
+    return this.contentType;
   }
 
-  // TODO don't require t to be specified use current contentType
-  getOriginalData<
-    T extends TQrCodeContentType,
-  >(): TQrCodeContentOriginalDataMap[T] {
-    return this.config.originalData as TQrCodeContentOriginalDataMap[T];
+  getOriginalData(): TQrCodeContentOriginalDataMap[TQrCodeContentType] {
+    return this.originalData;
   }
 
   // TODO for frontend class generation maybe use a different way
   static fromDTO(json: TQRcodeResponseDto): QRcode {
-    const q = new QRcode(json.id, json.config, json.createdBy);
+    const q = new QRcode(
+      json.id,
+      json.config,
+      json.contentType,
+      json.originalData,
+      json.createdBy,
+    );
     q.createdAt = json.createdAt;
     q.updatedAt = json.updatedAt;
     return q;

@@ -10,6 +10,7 @@ import {
   type WhereConditions,
   type ISqlQueryFindBy,
 } from "~/server/application/repositories/IBaseSqlRepository";
+import { toSnakeCaseKeys } from "~/lib/utils";
 
 type NewQrCode = typeof qrCodeTable.$inferInsert;
 type DbQrCode = typeof qrCodeTable.$inferSelect;
@@ -35,12 +36,17 @@ class QRcodeRepository
     const query = db
       .select(allColumns)
       .from(this.table)
-      .orderBy(desc(this.table.createdAt))
+      .orderBy(desc(this.table.created_at))
       .$dynamic();
 
     // add where conditions
-    if (where)
-      void this.withWhere(query, where as WhereConditions<typeof qrCodeTable>);
+    if (where) {
+      // convert where conditions to drizzle-orm format
+      void this.withWhere(
+        query,
+        toSnakeCaseKeys(where) as WhereConditions<typeof qrCodeTable>,
+      );
+    }
 
     // add pagination
     void this.withPagination(query, offset, limit);
@@ -58,8 +64,8 @@ class QRcodeRepository
 
   async findByUserId(userId: string): Promise<QRcode[]> {
     const qrCodes = await db.query.qrCodeTable.findMany({
-      where: eq(this.table.createdBy, userId),
-      orderBy: desc(this.table.createdAt),
+      where: eq(this.table.created_by, userId),
+      orderBy: desc(this.table.created_at),
     });
     return qrCodes.map((dbQRcode) =>
       QRcodeRepository.mapDbEntryToQRcode(dbQRcode),
@@ -72,9 +78,11 @@ class QRcodeRepository
       .values({
         id: entity.id,
         config: entity.config,
-        createdAt: entity.createdAt,
-        createdBy: entity.createdBy,
-        updatedAt: entity.updatedAt,
+        content_type: entity.contentType,
+        original_data: entity.originalData,
+        created_at: entity.createdAt,
+        created_by: entity.createdBy,
+        updated_at: entity.updatedAt,
       } as NewQrCode)
       .execute();
   }
@@ -94,9 +102,15 @@ class QRcodeRepository
    * @returns The domain QRcode entity.
    */
   public static mapDbEntryToQRcode(dbQRcode: DbQrCode): QRcode {
-    const qrCode = new QRcode(dbQRcode.id, dbQRcode.config, dbQRcode.createdBy);
-    qrCode.setCreatedAt(dbQRcode.createdAt);
-    qrCode.setUpdatedAt(dbQRcode.updatedAt);
+    const qrCode = new QRcode(
+      dbQRcode.id,
+      dbQRcode.config,
+      dbQRcode.content_type,
+      dbQRcode.original_data,
+      dbQRcode.created_by,
+    );
+    qrCode.setCreatedAt(dbQRcode.created_at);
+    qrCode.setUpdatedAt(dbQRcode.updated_at);
     return qrCode;
   }
 }

@@ -1,0 +1,88 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "id": "d1ef16a4-0116-45bf-84ba-24f4b5a310fc",
+  "prevId": "048b81a6-55e5-4420-91e5-b14974f88ae9",
+  "tables": {
+    "qrcodly_qr_code": {
+      "name": "qrcodly_qr_code",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(36)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "config": {
+          "name": "config",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "contentType": {
+          "name": "contentType",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "originalData": {
+          "name": "originalData",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdBy": {
+          "name": "createdBy",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "qrcodly_qr_code_id": {
+          "name": "qrcodly_qr_code_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    }
+  },
+  "views": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {
+      "\"qrcodly_qr_code\".\"content_type\"": "\"qrcodly_qr_code\".\"contentType\"",
+      "\"qrcodly_qr_code\".\"original_data\"": "\"qrcodly_qr_code\".\"originalData\"",
+      "\"qrcodly_qr_code\".\"created_by\"": "\"qrcodly_qr_code\".\"createdBy\""
+    }
+  },
+  "internal": {
+    "tables": {},
+    "indexes": {}
+  }
+}
