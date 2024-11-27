@@ -4,6 +4,7 @@ import { type TCreateQRcodeDto } from "~/server/domain/dtos/qrcode/TCreateQRcode
 import { type IQRcodeRepository } from "~/server/application/repositories/IQRcodeRepository";
 import { type IBaseLogger } from "~/server/application/logger/IBaseLogger";
 import { QrCodeDefaults } from "~/config/QrCodeDefaults";
+import { convertQRCodeDataToStringByType } from "~/lib/utils";
 
 /**
  * Use case for creating a QRcode entity.
@@ -27,6 +28,7 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
     const qrCodeConfig = {
       ...QrCodeDefaults,
       ...dto.config,
+      data: convertQRCodeDataToStringByType(dto.data, dto.contentType),
     };
 
     const qrCode = new QRcode(
