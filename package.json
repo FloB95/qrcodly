@@ -86,7 +86,7 @@
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.27.1",
     "eslint": "^9.14",
-    "eslint-config-next": "15.0.2",
+    "eslint-config-next": "15.0.3",
     "eslint-plugin-drizzle": "^0.2.3",
     "i": "^0.3.7",
     "npm": "^10.9.0",
