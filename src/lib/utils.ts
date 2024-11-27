@@ -4,6 +4,8 @@ import vCardFactory from "vcards-js";
 import {
   type TWifiInput,
   type TVCardInput,
+  TQrCodeContentOriginalData,
+  TQrCodeContentType,
 } from "~/server/domain/types/QRcode";
 
 export function cn(...inputs: ClassValue[]) {
@@ -34,6 +36,24 @@ export function convertWiFiObjToString(wiFiInput: TWifiInput): string {
   const wifiString = `WIFI:T:${wiFiInput.encryption};S:${wiFiInput.ssid};P:${wiFiInput.password};;`;
   return wifiString;
 }
+
+export const convertQRCodeDataToStringByType = (
+  data: TQrCodeContentOriginalData,
+  contentType: TQrCodeContentType,
+): string => {
+  switch (contentType) {
+    case "url":
+      return data as string;
+    case "text":
+      return data as string;
+    case "wifi":
+      return convertWiFiObjToString(data as TWifiInput);
+    case "vCard":
+      return convertVCardObjToString(data as TVCardInput);
+    default:
+      throw new Error("Invalid content type");
+  }
+};
 
 export function toSnakeCase(str: string) {
   return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
