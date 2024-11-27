@@ -6,7 +6,7 @@ It allows you to easily generate QR codes for various purposes, such as sharing 
 ## Features
 
 - Simple and easy-to-use API for generating QR codes (TODO)
-- Support for different QR code types and error correction levels (TODO)
+- Support for different QR code types (URL, contact, Wi-Fi, etc.)
 - Customizable QR code size, color, and background
 - Export QR codes to various image formats (PNG, JPEG, SVG, etc.)
 

@@ -24,7 +24,7 @@ const getContentType = (extension: TFileExtension): string => {
 };
 
 const createHandler = async (req: NextRequest) => {
-  const identifier = "api.qrcod2e.create";
+  const identifier = "api.qrcode.create";
   const result = await RateLimiter.limit(identifier);
   // rate limiter error
   if (!result.success) {
