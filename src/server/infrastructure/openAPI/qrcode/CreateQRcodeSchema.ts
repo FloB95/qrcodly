@@ -13,7 +13,7 @@ export const CreateQRcodeResponseJsonSchema = zodToJsonSchema(
   },
 );
 
-export const CreateQRcodeSwaggerSchema = {
+export const CreateQRcodeOpenAPISchema = {
   description: "Create a QR Code",
   tags: ["QRcode"],
   parameters: [
