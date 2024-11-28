@@ -1,7 +1,7 @@
-import { CreateQRcodeSwaggerSchema } from "./qrcode/CreateQRcodeSchema";
+import { CreateQRcodeOpenAPISchema } from "./qrcode/CreateQRcodeSchema";
 
-export const swagger = {
-  swagger: "2.0",
+export const openAPI = {
+  openapi: "3.0.3",
   info: {
     title: "BETA API Documentation",
     description:
@@ -29,7 +29,7 @@ export const swagger = {
   // },
   paths: {
     "/qrcode": {
-      post: CreateQRcodeSwaggerSchema,
+      post: CreateQRcodeOpenAPISchema,
     },
   },
 };

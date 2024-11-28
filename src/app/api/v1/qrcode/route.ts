@@ -1,5 +1,3 @@
-"use server";
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type NextRequest } from "next/server";
 import { BadRequestError } from "~/server/application/errors/http";
 import { TooManyRequestsError } from "~/server/application/errors/http/TooManyRequestsError";
