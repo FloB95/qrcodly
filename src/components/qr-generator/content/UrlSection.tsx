@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { Switch } from "~/components/ui/switch";
 import { useAuth } from "@clerk/nextjs";
 import { LoginRequiredDialog } from "../LoginRequiredDialog";
+import { Badge } from "~/components/ui/badge";
 
 type TUrlSectionProps = {
   value: string;
@@ -55,7 +56,7 @@ export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
             name="url"
@@ -102,8 +103,9 @@ export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
                       }}
                     />
                   </FormControl>
-                  <FormLabel className="ml-2 mt-1.5">
+                  <FormLabel className="ml-2 mt-[4px] relative pr-10">
                     Enable Statistics and Editing
+                    <Badge className="hidden sm:block absolute top-[-10px] right-[-35%] w-[110px]">Coming soon!</Badge>
                   </FormLabel>
                 </div>
                 <FormMessage />

@@ -49,7 +49,7 @@ export default function Footer() {
             </p>
           </div>
         </div>
-        <div className="justify-center space-x-4 pb-12 pt-6 text-xs md:flex md:items-center lg:px-8">
+        <div className="text-center justify-center space-x-4 pb-12 pt-6 text-xs md:flex md:items-center lg:px-8">
           <Link
             href="https://www.fb-dev.de/impressum/"
             title="Legal Notice"

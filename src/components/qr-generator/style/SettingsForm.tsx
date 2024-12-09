@@ -211,7 +211,7 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
 
           <TabsContent value="dot" className="mt-0">
             <div className="flex flex-col flex-wrap space-y-6 p-2">
-              <div className="flex w-full flex-wrap space-x-8">
+              <div className="block sm:flex w-full flex-wrap space-y-2 sm:space-y-0 sm:space-x-8">
                 <FormField
                   control={form.control}
                   name="dotStyle"
@@ -268,7 +268,7 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
                 />
               </div>
 
-              <div className="flex w-full flex-wrap space-x-8">
+              <div className="block sm:flex w-full flex-wrap space-y-2 sm:space-y-0 sm:space-x-8">
                 <FormField
                   control={form.control}
                   name="cornersSquareStyle"
@@ -320,7 +320,7 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
                 />
               </div>
 
-              <div className="flex w-full flex-wrap space-x-8">
+              <div className="block sm:flex w-full flex-wrap space-y-2 sm:space-y-0 sm:space-x-8">
                 <FormField
                   control={form.control}
                   name="cornersDotStyle"

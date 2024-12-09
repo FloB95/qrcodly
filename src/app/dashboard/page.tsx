@@ -34,7 +34,7 @@ export default function Dashboard() {
                   <QueueListIcon width={20} height={20} /> <span>List</span>
                 </div>
               </TabsTrigger>
-              <TabsTrigger value="cards">
+              <TabsTrigger value="cards" disabled>
                 <div className="flex space-x-2">
                   <Squares2X2Icon width={20} height={20} /> <span>Cards</span>
                 </div>
@@ -42,8 +42,8 @@ export default function Dashboard() {
             </TabsList>
             <div className="ml-auto flex items-center gap-2">
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9 gap-1">
+                <DropdownMenuTrigger asChild disabled>
+                  <Button variant="outline" size="sm" className="h-9 gap-1" disabled>
                     <FunnelIcon className="h-4 w-4" />
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                       Filter
@@ -60,7 +60,7 @@ export default function Dashboard() {
                   <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Button size="sm" variant="outline" className="h-9 gap-1">
+              <Button size="sm" variant="outline" className="h-9 gap-1" disabled>
                 <ArrowDownOnSquareIcon className="h-4 w-4" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                   Export
