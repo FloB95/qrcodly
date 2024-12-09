@@ -28,8 +28,8 @@ const createHandler = async (req: NextRequest) => {
   }
 
   // validate payload
-  const payload = await req.json();
-  const validatedPayload = CreateQRcodeDtoSchema.parse(payload);
+  const payload = await req.json() as unknown;
+  const validatedPayload = CreateQRcodeDtoSchema.parse(payload as Record<string, unknown>);
   const res = await createQRcodeControllerFactory().handle(validatedPayload);
 
   if (!res) {
