@@ -143,7 +143,7 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
       <TableCell>
         <Badge variant="outline">Active</Badge>
       </TableCell>
-      <TableCell>
+      {/* <TableCell>
         <div>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -154,7 +154,7 @@ export const DashboardListItem = ({ qr }: { qr: QRcode }) => {
             <TooltipContent side="top">10 total views</TooltipContent>
           </Tooltip>
         </div>
-      </TableCell>
+      </TableCell> */}
       <TableCell className="hidden md:table-cell">
         <span>
           {qr.createdAt.toLocaleString(undefined, {
