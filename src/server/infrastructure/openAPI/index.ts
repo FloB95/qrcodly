@@ -12,8 +12,12 @@ export const openAPI = {
     description: "Download API JSON",
     url: "/api/v1/doc",
   },
-  host: "https://www.qrcodly.de",
-  basePath: "/api/v1",
+  servers: [
+    {
+      url: "https://www.qrcodly.de/api/v1", // Basis-URL hier angeben
+      description: "Main API Server",
+    },
+  ],
   // schemes: ["https"],
   consumes: ["application/json"],
   produces: ["application/json"],
