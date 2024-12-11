@@ -15,6 +15,7 @@ class CreateQRcodeController implements IController {
     return {
       success: true,
       isStored: qrCode.createdBy ? true : false,
+      qrCodeId: qrCode.id,
     };
   }
 }

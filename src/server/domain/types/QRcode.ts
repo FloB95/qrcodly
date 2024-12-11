@@ -227,38 +227,57 @@ export const QrCodeOptionsSchema = z.object({
     crossOrigin: z.string().default("anonymous"),
     margin: z.number().min(0).max(100).default(20),
   }),
-  dotsOptions: z.object({
-    type: DotType.default("rounded"),
-    color: z
-      .string()
-      .regex(/^#[0-9A-F]{6}$/i)
-      .default("#000000"),
-    gradient: Gradient.optional(),
-  }),
-  cornersSquareOptions: z.object({
-    type: CornerSquareType.default("extra-rounded"),
-    color: z
-      .string()
-      .regex(/^#[0-9A-F]{6}$/i)
-      .default("#000000"),
-    gradient: Gradient.optional(),
-  }),
-  cornersDotOptions: z.object({
-    type: CornerDotType.default("dot"),
-    color: z
-      .string()
-      .regex(/^#[0-9A-F]{6}$/i)
-      .default("#000000"),
-    gradient: Gradient.optional(),
-  }),
-  backgroundOptions: z.object({
-    round: z.number().default(0),
-    color: z
-      .string()
-      .regex(/^#[0-9A-F]{6}$/i)
-      .default("#FFFFFF"),
-    gradient: Gradient.optional(),
-  }),
+  dotsOptions: z.union([
+    z.object({
+      type: DotType.default("rounded"),
+      color: z
+        .string()
+        .regex(/^#[0-9A-F]{6}$/i)
+        .default("#000000"),
+    }),
+    z.object({
+      type: DotType.default("rounded"),
+      gradient: Gradient.optional(),
+    }),
+  ]),
+  cornersSquareOptions: z.union([
+    z.object({
+      type: CornerSquareType.default("extra-rounded"),
+      color: z
+        .string()
+        .regex(/^#[0-9A-F]{6}$/i)
+        .default("#000000"),
+    }),
+    z.object({
+      type: CornerSquareType.default("extra-rounded"),
+      gradient: Gradient.optional(),
+    }),
+  ]),
+  cornersDotOptions: z.union([
+    z.object({
+      type: CornerDotType.default("dot"),
+      color: z
+        .string()
+        .regex(/^#[0-9A-F]{6}$/i)
+        .default("#000000"),
+    }),
+    z.object({
+      type: CornerDotType.default("dot"),
+      gradient: Gradient.optional(),
+    }),
+  ]),
+  backgroundOptions: z.union([
+    z.object({
+      color: z
+        .string()
+        .regex(/^#[0-9A-F]{6}$/i)
+        .default("#FFFFFF"),
+    }),
+    z.object({
+      round: z.number().default(0),
+      gradient: Gradient.optional(),
+    }),
+  ]),
 });
 
 /**

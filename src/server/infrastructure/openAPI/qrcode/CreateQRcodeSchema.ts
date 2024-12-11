@@ -16,14 +16,15 @@ export const CreateQRcodeResponseJsonSchema = zodToJsonSchema(
 export const CreateQRcodeOpenAPISchema = {
   description: "Create a QR Code",
   tags: ["QRcode"],
-  parameters: [
-    {
-      name: "body",
-      description: "QR Code data",
-      schema: CreateQRcodeResponseJsonSchema?.definitions?.response,
-      in: "body",
+  requestBody: {
+    description: "QR Code data",
+    required: true,
+    content: {
+      "application/json": {
+        schema: CreateQRcodeResponseJsonSchema?.definitions?.response,
+      },
     },
-  ],
+  },
   responses: {
     201: {
       description: "QR Code created successfully and returned as File",
