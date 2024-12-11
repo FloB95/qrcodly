@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { error } from "console";
 import { type NextRequest } from "next/server";
 import { ZodError } from "zod";
 import {
@@ -34,13 +35,12 @@ export async function ApiErrorHandler(
         message: "Validation error",
         fieldErrors: e.issues,
       };
-    } else if (e instanceof Error) {
-      console.error("Unexpected error:", e);
     }
 
     logger.error("API Error occurred", {
-      ...responsePayload as object,
+      ...(responsePayload as object),
       url: req.url,
+      error: e,
     });
 
     return new Response(JSON.stringify(responsePayload), {

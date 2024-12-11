@@ -58,12 +58,24 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
       height: settings.height,
       margin: settings.margin,
       dotStyle: settings.dotsOptions?.type ?? "dot",
-      dotColor: settings.dotsOptions?.color ?? "#000000",
+      dotColor:
+        "color" in settings.dotsOptions
+          ? settings.dotsOptions.color
+          : "#000000",
       cornersSquareStyle: settings.cornersSquareOptions?.type ?? "square",
-      cornersSquareColor: settings.cornersSquareOptions?.color ?? "#000000",
+      cornersSquareColor:
+        "color" in settings.cornersSquareOptions
+          ? settings.cornersSquareOptions.color
+          : "#000000",
       cornersDotStyle: settings.cornersDotOptions?.type ?? "dot",
-      cornersDotColor: settings.cornersDotOptions?.color ?? "#000000",
-      background: settings.backgroundOptions?.color ?? "#ffffff",
+      cornersDotColor:
+        "color" in settings.cornersDotOptions
+          ? settings.cornersDotOptions.color
+          : "#000000",
+      background:
+        "color" in settings.backgroundOptions
+          ? settings.backgroundOptions.color
+          : "#ffffff",
       hideBackgroundDots: settings.imageOptions?.hideBackgroundDots ?? true,
       image: settings.image ?? "",
       imageSize: settings.imageOptions?.imageSize ?? 0.4,
@@ -77,13 +89,28 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
     settings.height = Number(data.height);
     settings.margin = (settings.width / 100) * data.margin;
 
-    const updateOption = <T extends NonNullable<unknown>, K extends keyof T>(
-      option: T | undefined,
+    type OptionType = {
+      type?: string;
+      color?: string;
+      hideBackgroundDots?: boolean;
+      imageSize?: number;
+      margin?: number;
+      round?: number;
+      gradient?: {
+        type: "radial" | "linear";
+        rotation: number;
+        colorStops: { color: string; offset: number }[];
+      };
+    };
+
+    const updateOption = <K extends keyof OptionType>(
+      option: OptionType | undefined,
       key: K,
-      value: T[K],
+      value: OptionType[K],
     ) => {
       if (option) option[key] = value;
     };
+
     updateOption(settings.dotsOptions, "type", data.dotStyle);
     updateOption(settings.dotsOptions, "color", data.dotColor);
     updateOption(
@@ -211,7 +238,7 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
 
           <TabsContent value="dot" className="mt-0">
             <div className="flex flex-col flex-wrap space-y-6 p-2">
-              <div className="block sm:flex w-full flex-wrap space-y-2 sm:space-y-0 sm:space-x-8">
+              <div className="block w-full flex-wrap space-y-2 sm:flex sm:space-x-8 sm:space-y-0">
                 <FormField
                   control={form.control}
                   name="dotStyle"
@@ -268,7 +295,7 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
                 />
               </div>
 
-              <div className="block sm:flex w-full flex-wrap space-y-2 sm:space-y-0 sm:space-x-8">
+              <div className="block w-full flex-wrap space-y-2 sm:flex sm:space-x-8 sm:space-y-0">
                 <FormField
                   control={form.control}
                   name="cornersSquareStyle"
@@ -320,7 +347,7 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
                 />
               </div>
 
-              <div className="block sm:flex w-full flex-wrap space-y-2 sm:space-y-0 sm:space-x-8">
+              <div className="block w-full flex-wrap space-y-2 sm:flex sm:space-x-8 sm:space-y-0">
                 <FormField
                   control={form.control}
                   name="cornersDotStyle"
