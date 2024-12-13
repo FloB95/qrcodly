@@ -5,7 +5,7 @@ export const openAPI = {
   info: {
     title: "BETA API Documentation",
     description:
-      "This is a first version of the QRcodly API documentation. It is a BETA version and will be updated soon.",
+      "This is a first version of the QRcodly API documentation. It is a BETA version!",
     version: "BETA 0.1.0",
   },
   externalDocs: {

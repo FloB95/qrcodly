@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { error } from "console";
 import { type NextRequest } from "next/server";
 import { ZodError } from "zod";
 import {
