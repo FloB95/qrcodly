@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 "use client";
 
 import { api } from "~/lib/trpc/react";
@@ -9,8 +5,8 @@ import { Button } from "../ui/button";
 import {
   type TQRcodeOptions,
   type TFileExtension,
-  TQrCodeContentType,
-  TQrCodeContentOriginalData,
+  type TQrCodeContentType,
+  type TQrCodeContentOriginalData,
 } from "~/server/domain/types/QRcode";
 import { toast } from "../ui/use-toast";
 import {
@@ -21,9 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useEffect, useState } from "react";
-import { TCurrentQrCodeInput } from "./QRcodeGenerator";
+import type QRCodeStyling from "qr-code-styling";
 
-let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
   qrCodeData,
   qrCodeSettings,
@@ -38,17 +33,28 @@ const QrCodeDownloadBtn = ({
   saveOnDownload?: boolean;
   noStyling?: boolean;
 }) => {
-  const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
+  const [qrCodeInstance, setQrCodeInstance] = useState<QRCodeStyling | null>(
+    null,
+  );
   const apiUtils = api.useUtils();
   const createQrCode = api.qrCode.create.useMutation();
 
   useEffect(() => {
-    // Dynamically import the QRCodeStyling class only when the component mounts
-    import("qr-code-styling").then((module) => {
-      QRCodeStyling = module.default;
-      const qrCode = new QRCodeStyling(qrCodeSettings); // Create a new instance with the current settings
-      setQrCodeInstance(qrCode); // Store the instance in the state
-    });
+    let isMounted = true;
+
+    const initializeQRCode = async () => {
+      const { default: QRCodeStyling } = await import("qr-code-styling");
+      if (isMounted) {
+        const qrCode = new QRCodeStyling(qrCodeSettings);
+        setQrCodeInstance(qrCode);
+      }
+    };
+
+    void initializeQRCode();
+
+    return () => {
+      isMounted = false;
+    };
   }, [qrCodeSettings]);
 
   const onDownloadClick = async (fileExt: TFileExtension) => {
@@ -56,37 +62,35 @@ const QrCodeDownloadBtn = ({
 
     if (saveOnDownload) {
       try {
-        await createQrCode.mutateAsync(
-          {
-            contentType: qrCodeData.contentType,
-            data: qrCodeData.data,
-            config: qrCodeSettings,
-          },
-          {
-            onSuccess: (data) => {
-              // if user is logged in, show toast
-              if (data.success && data.isStored) {
-                // show toast
-                toast({
-                  title: "New QR code created",
-                  description:
-                    "We saved your QR code in your dashboard for later use.",
-                  duration: 10000,
-                });
-              }
-            },
-          },
-        );
+        const result = await createQrCode.mutateAsync({
+          contentType: qrCodeData.contentType,
+          data: qrCodeData.data,
+          config: qrCodeSettings,
+        });
 
-        // invalidate dashboard cache
+        if (result.success && result.isStored) {
+          toast({
+            title: "New QR code created",
+            description:
+              "We saved your QR code in your dashboard for later use.",
+            duration: 10000,
+          });
+        }
+
         await apiUtils.qrCode.getMyQrCodes.invalidate();
-      } catch (error) {}
+      } catch (error) {
+        console.error("Failed to save QR code", error);
+      }
     }
 
-    await qrCodeInstance.download({
-      name: "qr-code",
-      extension: fileExt,
-    });
+    try {
+      await qrCodeInstance.download({
+        name: "qr-code",
+        extension: fileExt,
+      });
+    } catch (error) {
+      console.error("Failed to download QR code", error);
+    }
   };
 
   return (
@@ -108,30 +112,15 @@ const QrCodeDownloadBtn = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuGroup>
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => onDownloadClick("svg")}
-          >
-            <span>SVG</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => onDownloadClick("jpeg")}
-          >
-            <span>JPG</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => onDownloadClick("webp")}
-          >
-            <span>WEBP</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => onDownloadClick("png")}
-          >
-            <span>PNG</span>
-          </DropdownMenuItem>
+          {["svg", "jpeg", "webp", "png"].map((ext) => (
+            <DropdownMenuItem
+              key={ext}
+              className="cursor-pointer"
+              onClick={() => onDownloadClick(ext as TFileExtension)}
+            >
+              <span>{ext.toUpperCase()}</span>
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

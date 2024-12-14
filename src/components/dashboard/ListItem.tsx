@@ -9,11 +9,9 @@ import { Button } from "../ui/button";
 import { DynamicQrCode } from "../qr-generator/DynamicQrCode";
 import {
   DocumentTextIcon,
-  EllipsisVerticalIcon,
-  EyeIcon,
-  IdentificationIcon,
+  EllipsisVerticalIcon, IdentificationIcon,
   LinkIcon,
-  WifiIcon,
+  WifiIcon
 } from "@heroicons/react/24/outline";
 import { TableCell, TableRow } from "../ui/table";
 import { Badge } from "../ui/badge";
@@ -26,7 +24,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Loader2 } from "lucide-react";
-import { TQrCodeContentOriginalDataMap } from "~/server/domain/types/QRcode";
+import { type TQrCodeContentOriginalDataMap } from "~/server/domain/types/QRcode";
 
 const GetNameByContentType = (qr: QRcode) => {
   switch (qr.contentType) {

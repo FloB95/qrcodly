@@ -4,8 +4,8 @@ import vCardFactory from "vcards-js";
 import {
   type TWifiInput,
   type TVCardInput,
-  TQrCodeContentOriginalData,
-  TQrCodeContentType,
+  type TQrCodeContentOriginalData,
+  type TQrCodeContentType,
 } from "~/server/domain/types/QRcode";
 
 export function cn(...inputs: ClassValue[]) {
