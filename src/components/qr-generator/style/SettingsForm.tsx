@@ -56,7 +56,7 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
   const handleIconSelect = (iconName?: string) => {
     settings.image = iconName;
     onChange(settings);
-    form.setValue("image", iconName);
+    form.setValue("image", iconName ?? "");
   };
 
   const form = useForm<FormValues>({
