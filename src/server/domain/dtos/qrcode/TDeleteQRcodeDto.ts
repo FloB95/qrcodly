@@ -1,13 +1,13 @@
 import { z } from "zod";
 
 /**
- * Schema for the Create QRcode DTO.
+ * Schema for the Delete QRcode DTO.
  */
 export const DeleteQRcodeDtoSchema = z.object({
   id: z.string(),
 });
 
 /**
- * Interface for the Create QRcode DTO.
+ * Type for the Delete QRcode DTO.
  */
 export type TDeleteQRcodeDto = z.infer<typeof DeleteQRcodeDtoSchema>;

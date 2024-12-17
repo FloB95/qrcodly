@@ -7,10 +7,15 @@ import DeleteQRcodeController from "../controller/qrcode/DeleteQRcodeController"
 import { DeleteQRcodeUseCase } from "~/server/application/useCases/qrcode/implementations/DeleteQRcodeUseCase";
 import { GetQRcodesUseCase } from "~/server/application/useCases/qrcode/implementations/GetQRcodesUseCase";
 import GetQRcodesByController from "../controller/qrcode/GetQRcodesByController";
+import EventEmitter from "~/server/infrastructure/events";
 
 export const createQRcodeControllerFactory = () => {
   const qrCodeRepository = new QRcodeRepository();
-  const createQRcodeUseCase = new CreateQRcodeUseCase(qrCodeRepository, logger);
+  const createQRcodeUseCase = new CreateQRcodeUseCase(
+    qrCodeRepository,
+    logger,
+    EventEmitter,
+  );
   return new CreateQRcodeController(createQRcodeUseCase);
 };
 

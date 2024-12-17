@@ -102,15 +102,16 @@ class QRcodeRepository
    * @returns The domain QRcode entity.
    */
   public static mapDbEntryToQRcode(dbQRcode: DbQrCode): QRcode {
-    const qrCode = new QRcode(
-      dbQRcode.id,
-      dbQRcode.config,
-      dbQRcode.content_type,
-      dbQRcode.original_data,
-      dbQRcode.created_by,
-    );
-    qrCode.setCreatedAt(dbQRcode.created_at);
-    qrCode.setUpdatedAt(dbQRcode.updated_at);
+    // Creating a new QRcode instance
+    const qrCode = QRcode.create({
+      id: dbQRcode.id,
+      config: dbQRcode.config,
+      contentType: dbQRcode.content_type,
+      originalData: dbQRcode.original_data,
+      createdBy: dbQRcode.created_by,
+      createdAt: dbQRcode.created_at,
+      updatedAt: dbQRcode.updated_at,
+    });
     return qrCode;
   }
 }
