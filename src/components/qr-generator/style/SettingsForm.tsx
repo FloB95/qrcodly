@@ -28,6 +28,7 @@ import {
   type TDotType,
   type TQRcodeOptions,
 } from "~/server/domain/types/QRcode";
+import IconPicker from "./IconPicker";
 
 type SettingsFormProps = {
   onChange: (data: TQRcodeOptions) => void;
@@ -52,6 +53,12 @@ type FormValues = {
 };
 
 export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
+  const handleIconSelect = (iconName?: string) => {
+    settings.image = iconName;
+    onChange(settings);
+    form.setValue("image", iconName);
+  };
+
   const form = useForm<FormValues>({
     defaultValues: {
       width: settings.width,
@@ -153,7 +160,7 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
               Shape
             </TabsTrigger>
             <TabsTrigger className="flex-1" value="image">
-              Image
+              Icon
             </TabsTrigger>
           </TabsList>
 
@@ -405,7 +412,7 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
                 name="image"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Image</FormLabel>
+                    <FormLabel>Icon</FormLabel>
                     <FormControl>
                       <div className="grid w-full max-w-sm items-center gap-1.5">
                         <Input
@@ -462,6 +469,11 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
                   </FormItem>
                 )}
               />
+
+              <div>
+                <p className="text-sm font-medium leading-none mb-4">You can also choose from predefined icons</p>
+                <IconPicker onSelect={handleIconSelect} />
+              </div>
             </div>
           </TabsContent>
         </Tabs>
