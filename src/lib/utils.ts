@@ -64,3 +64,8 @@ export function toSnakeCaseKeys(obj: object) {
     Object.entries(obj).map(([key, value]) => [toSnakeCase(key), value]),
   );
 }
+
+export const svgToBase64 = (svgString: string): string => {
+  const base64 = window.btoa(svgString);
+  return `data:image/svg+xml;base64,${base64}`;
+};
