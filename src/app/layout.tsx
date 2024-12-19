@@ -16,7 +16,7 @@ const openSans = Inter({
 export const metadata = {
   title: "QRcodly - Free & Open Source QR Code Generator",
   description:
-    "Generate, customize, and edit QR codes effortlessly with QRcodly, your go-to Free & Open Source QR Code Generator.",
+    "Create fully customizable and stylish QR codes with QRcodly, a free and open-source QR code generator. Generate QR codes for URLs, text, Wi-Fi, vCards, and more. Easy-to-use, secure, and perfect for personal or business use. Start now!",
   icons: [
     {
       rel: "icon",
