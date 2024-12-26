@@ -7,22 +7,30 @@ import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "~/lib/trpc/react";
 import { Toaster } from "~/components/ui/toaster";
 import { TooltipProvider } from "~/components/ui/tooltip";
+import { Metadata } from "next";
 
 const openSans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "QRcodly - Free & Open Source QR Code Generator",
   description:
-    "Generate, customize, and edit QR codes effortlessly with QRcodly, your go-to Free & Open Source QR Code Generator.",
+    "Create fully customizable and stylish QR codes with QRcodly, a free and open-source QR code generator. Generate QR codes for URLs, text, Wi-Fi, vCards, and more. Easy-to-use, secure, and perfect for personal or business use. Start now!",
   icons: [
     {
       rel: "icon",
       url: "/favicon.ico",
     },
   ],
+  openGraph: {
+    images: [
+      {
+        url: "https://www.qrcodly.de/og-image.webp"
+      }
+    ]
+  }
 };
 
 export default function RootLayout({
