@@ -56,7 +56,7 @@ export function ColorPicker({
   const [currentTab, setCurrentTab] = useState(defaultTab);
 
   return (
-    <Popover>
+    <Popover modal={true}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
@@ -81,10 +81,10 @@ export function ColorPicker({
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-64">
+      <PopoverContent className="w-64" sideOffset={10}>
         <Tabs
           defaultValue={defaultTab}
-          className="w-full"
+          className="w-full relative"
           onValueChange={setCurrentTab}
         >
           <TabsList className="mb-4 w-full">
