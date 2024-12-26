@@ -5,5 +5,5 @@ import { QrCodeOptionsSchema } from "./QRcode";
 export const ConfigTemplateSchema = BaseEntitySchema.extend({
   config: QrCodeOptionsSchema,
   createdBy: z.string(),
-  name: z.string().optional(),
+  name: z.string(),
 });

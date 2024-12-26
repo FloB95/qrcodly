@@ -1,21 +1,23 @@
 import { TConfigTemplateResponseDto } from "../dtos/configTemplate/TConfigTemplateResponseDto";
-import { TQRcodeOptions } from "../types/QRcode";
+import { TCreateConfigTemplateDto } from "../dtos/configTemplate/TCreateConfigTemplateDto";
 import { BaseEntity } from "./BaseEntity";
+
+type Config = TCreateConfigTemplateDto["config"];
 
 /**
  * Represents a ConfigTemplate entity.
  * @extends BaseEntity
  */
 export class ConfigTemplate extends BaseEntity {
-  private readonly _config: TQRcodeOptions;
+  private readonly _config: Config;
   private readonly _createdBy: string;
-  private readonly _name?: string;
+  private readonly _name: string;
 
   private constructor(
     id: string,
-    config: TQRcodeOptions,
+    config: Config,
     createdBy: string,
-    name?: string,
+    name: string,
     createdAt?: Date,
     updatedAt?: Date | null,
   ) {
@@ -35,9 +37,9 @@ export class ConfigTemplate extends BaseEntity {
 
   /**
    * Gets the configuration options.
-   * @returns {TQRcodeOptions} The configuration options.
+   * @returns {Config} The configuration options.
    */
-  get config(): TQRcodeOptions {
+  get config(): Config {
     return this._config;
   }
 
@@ -51,9 +53,9 @@ export class ConfigTemplate extends BaseEntity {
 
   /**
    * Gets the name of the configuration template.
-   * @returns {string | undefined} The name of the configuration template.
+   * @returns {string} The name of the configuration template.
    */
-  get name(): string | undefined {
+  get name(): string {
     return this._name;
   }
 
@@ -79,18 +81,18 @@ export class ConfigTemplate extends BaseEntity {
    *
    * @param {Object} params - The parameters for creating the configuration template.
    * @param {string} params.id - The ID of the configuration template.
-   * @param {TQRcodeOptions} params.config - The configuration options for generating the QR code.
+   * @param {Config} params.config - The configuration options for generating the QR code.
    * @param {string} params.createdBy - The user ID who created the configuration template.
-   * @param {string} [params.name] - The name of the configuration template.
+   * @param {string} params.name - The name of the configuration template.
    * @param {Date} [params.createdAt] - The date and time when the configuration template was created.
    * @param {Date | null} [params.updatedAt] - The date and time when the configuration template was last updated.
    * @returns {ConfigTemplate} The created ConfigTemplate instance.
    */
   static create(params: {
     id: string;
-    config: TQRcodeOptions;
+    config: Config;
     createdBy: string;
-    name?: string;
+    name: string;
     createdAt?: Date;
     updatedAt?: Date | null;
   }): ConfigTemplate {

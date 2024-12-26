@@ -3,6 +3,7 @@ import {
   createTRPCRouter,
 } from "~/server/presentation/api/trpc";
 import { qrCodeRouter } from "./routers/qrCode";
+import { qrCodeTemplateRouter } from "./routers/configTemplate";
 
 /**
  * This is the primary router for your server.
@@ -11,6 +12,7 @@ import { qrCodeRouter } from "./routers/qrCode";
  */
 export const appRouter = createTRPCRouter({
   qrCode: qrCodeRouter,
+  qrCodeTemplate: qrCodeTemplateRouter, 
 });
 
 // export type definition of API

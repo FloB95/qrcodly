@@ -4,6 +4,7 @@ import {
   datetime,
   json,
 } from "drizzle-orm/mysql-core";
+import { TCreateConfigTemplateDto } from "~/server/domain/dtos/configTemplate/TCreateConfigTemplateDto";
 import {
   TQrCodeContentOriginalData,
   TQrCodeContentType,
@@ -40,8 +41,11 @@ export const qrCodeConfigTemplateTable = createTable(
     id: varchar("id", {
       length: 36,
     }).primaryKey(),
-    name: varchar("name", { length: 255 }).default(""),
-    config: json("config").$type<TQRcodeOptions>().notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    config: json("config")
+      .$type<TCreateConfigTemplateDto["config"]>()
+      .notNull(),
+    created_by: varchar("created_by", { length: 255 }).notNull(),
     created_at: datetime("created_at").notNull(),
     updated_at: datetime("updated_at"),
   },
