@@ -9,7 +9,7 @@ import { logger } from "~/server/infrastructure/logger";
  */
 export function loadQRcodeEvents(emitter: IEventEmitter) {
   // QRcode created event handler
-  console.log("loading QRcode events")
+  console.log("loading QRcode events");
   const qrCodeCreatedHandler = new QRCodeCreatedHandler(logger);
   emitter.on<QRCodeCreatedEvent>(QRCodeCreatedEvent.eventName, (e) =>
     qrCodeCreatedHandler.handle(e),

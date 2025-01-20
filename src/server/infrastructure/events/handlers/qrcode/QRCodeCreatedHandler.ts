@@ -11,7 +11,7 @@ export class QRCodeCreatedHandler {
     this.logger = logger;
   }
 
-  async handle(event: QRCodeCreatedEvent): Promise<void> {
+  handle(event: QRCodeCreatedEvent): void {
     const qrCode = event.qrCode;
     this.logger.info("QR code created successfully", {
       id: qrCode.id,
