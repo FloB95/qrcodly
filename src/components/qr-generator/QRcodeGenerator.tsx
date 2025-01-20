@@ -15,7 +15,7 @@ import {
   type TVCardInput,
 } from "~/server/domain/types/QRcode";
 import QrCodeDownloadBtn from "./QrCodeDownloadBtn";
-import QrCodeSaveTemplateBtn from "./QrCodeSaveTemplateBtn";
+// import QrCodeSaveTemplateBtn from "./QrCodeSaveTemplateBtn";
 
 export type TCurrentQrCodeInput =
   | { tab: "url"; value: TUrlInput; editable: boolean }
@@ -122,7 +122,7 @@ export const QRcodeGenerator = () => {
                       <DynamicQrCode settings={qrCodeSettings} />
                     </div>
                     <div className="mt-6 flex justify-center md:justify-between">
-                      <QrCodeSaveTemplateBtn config={qrCodeSettings} />
+                      {/* <QrCodeSaveTemplateBtn config={qrCodeSettings} /> */}
                       <QrCodeDownloadBtn
                         qrCodeData={{
                           contentType: currentInput.tab,

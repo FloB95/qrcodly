@@ -13,10 +13,8 @@ export const qrCodeTemplateRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const identifier = "api.qrcodeTemplate.create";
       const result = await RateLimiter.limit(identifier);
+
       // rate limiter error
-
-      console.log("input", input);
-
       if (!result.success) {
         throw new TRPCError({
           code: "TOO_MANY_REQUESTS",
