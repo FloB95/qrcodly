@@ -5,6 +5,8 @@ import { type IQRcodeRepository } from "~/server/application/repositories/IQRcod
 import { type IBaseLogger } from "~/server/application/logger/IBaseLogger";
 import { QrCodeDefaults } from "~/config/QrCodeDefaults";
 import { convertQRCodeDataToStringByType } from "~/lib/utils";
+import { IEventEmitter } from "~/server/domain/events/IEventEmitter";
+import { QRCodeCreatedEvent } from "~/server/domain/events/qrcode/QRCodeCreatedEvent";
 
 /**
  * Use case for creating a QRcode entity.
@@ -13,6 +15,7 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
   constructor(
     private qrCodeRepository: IQRcodeRepository,
     private logger: IBaseLogger,
+    private eventEmitter: IEventEmitter,
   ) {}
 
   /**
@@ -31,26 +34,29 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
       data: convertQRCodeDataToStringByType(dto.data, dto.contentType),
     };
 
-    const qrCode = new QRcode(
-      newId,
-      qrCodeConfig,
-      dto.contentType,
-      dto.data,
+    const qrCode = QRcode.create({
+      id: newId,
+      config: qrCodeConfig,
+      contentType: dto.contentType,
+      originalData: dto.data,
       createdBy,
-    );
+    });
 
     // Create the QR code entity in the database.
     await this.qrCodeRepository.create(qrCode);
 
     // Retrieve the created QR code entity from the database.
     const createdQrCode = await this.qrCodeRepository.findOneById(newId);
-
     if (!createdQrCode) throw new Error("Failed to create QR code");
+
+    // Emit the QRCodeCreatedEvent.
+    const event = new QRCodeCreatedEvent(createdQrCode);
+    this.eventEmitter.emit(event);
 
     this.logger.info("QR code created successfully", {
       id: createdQrCode.id,
       createdBy: createdQrCode.createdBy,
-      content: createdQrCode.getOriginalData(),
+      content: createdQrCode.originalData,
     });
 
     return createdQrCode;

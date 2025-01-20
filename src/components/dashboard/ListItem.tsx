@@ -35,12 +35,11 @@ const GetNameByContentType = (qr: QRcode) => {
     case "text":
       return qr.config.data;
     case "wifi":
-      const wifiData =
-        qr.getOriginalData() as TQrCodeContentOriginalDataMap["wifi"];
+      const wifiData = qr.originalData as TQrCodeContentOriginalDataMap["wifi"];
       return wifiData?.ssid;
     case "vCard":
       const vCardData =
-        qr.getOriginalData() as TQrCodeContentOriginalDataMap["vCard"];
+        qr.originalData as TQrCodeContentOriginalDataMap["vCard"];
       return `${vCardData?.firstName ?? ""} ${vCardData?.lastName ?? ""}`;
     default:
       return "Unknown";
