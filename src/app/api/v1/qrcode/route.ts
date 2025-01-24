@@ -33,7 +33,7 @@ const createHandler = async (req: NextRequest) => {
   try {
     payload = await req.json();
   } catch (error) {
-    throw new BadRequestError("Invalid request payload");
+    throw new BadRequestError("Invalid JSON payload");
   }
   const validatedPayload = CreateQRcodeDtoSchema.parse(
     payload as Record<string, unknown>,
