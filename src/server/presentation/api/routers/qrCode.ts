@@ -12,6 +12,7 @@ import {
 } from "../../factories/QRcodeControllerFactory";
 import { RateLimiter } from "~/server/infrastructure/ratelimit";
 import { TRPCError } from "@trpc/server";
+import { logger } from "~/server/infrastructure/logger";
 
 export const qrCodeRouter = createTRPCRouter({
   create: publicProcedure
@@ -21,6 +22,10 @@ export const qrCodeRouter = createTRPCRouter({
       const result = await RateLimiter.limit(identifier);
       // rate limiter error
       if (!result.success) {
+        logger.warn("TRPC Rate limit exceeded", {
+          identifier,
+        });
+
         throw new TRPCError({
           code: "TOO_MANY_REQUESTS",
           message: "Rate limit exceeded",
