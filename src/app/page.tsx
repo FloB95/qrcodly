@@ -2,6 +2,7 @@ import Footer from "~/components/Footer";
 import { QRcodeGenerator } from "~/components/qr-generator/QRcodeGenerator";
 import Header from "~/components/Header";
 import Container from "~/components/ui/container";
+import { Cta } from "~/components/Cta";
 
 export default async function Home() {
   return (
@@ -16,6 +17,8 @@ export default async function Home() {
           <div className="mb-2">
             <QRcodeGenerator />
           </div>
+
+          <Cta />
         </Container>
       </div>
 
