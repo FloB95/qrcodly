@@ -31,7 +31,7 @@ export async function ApiErrorHandler(
     } else if (e instanceof ZodError) {
       statusCode = 400;
       responsePayload = {
-        message: "Validation error",
+        message: "Bad Request! Field validation failed. Please check the errors.",
         fieldErrors: e.issues,
       };
     }

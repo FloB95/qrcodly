@@ -50,7 +50,7 @@ export const QrCodeContentOriginalDataSchema = z.union([
   TextInputSchema,
   WifiInputSchema,
   VCardInputSchema,
-]);
+]).describe("The actual content of the QR code. (valid URL, text, wifi, vCard...)");
 
 export type TQrCodeContentOriginalData = z.infer<
   typeof QrCodeContentOriginalDataSchema
