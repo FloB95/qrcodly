@@ -21,6 +21,7 @@ export const TemplatesList = ({
   return (
     <div className="grid cursor-pointer grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       {templates.map((template) => {
+        const s: any = { settings, ...template.config };
         return (
           <div
             key={template.id}
@@ -30,7 +31,7 @@ export const TemplatesList = ({
             <div>
               <p className="text mb-1 text-sm font-semibold">{template.name}</p>
               <div className="h-24 w-24">
-                <DynamicQrCode settings={{ settings, ...template.config }} />
+                <DynamicQrCode settings={s} />
               </div>
             </div>
           </div>
