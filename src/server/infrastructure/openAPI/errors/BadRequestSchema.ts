@@ -20,7 +20,9 @@ const BadRequestErrorResponseSchema = z
     message: "Error code must be 400",
     path: ["code"],
   })
-  .describe("Bad Request Response. Your request has invalid fields. Errors are zod schema errors.");
+  .describe(
+    "Bad Request Response. Your request has invalid fields. Errors are zod schema errors.",
+  );
 
 const zodToJsonObj = zodToJsonSchema(BadRequestErrorResponseSchema, {
   $refStrategy: "none",

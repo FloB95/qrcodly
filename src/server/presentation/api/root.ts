@@ -12,7 +12,7 @@ import { qrCodeTemplateRouter } from "./routers/configTemplate";
  */
 export const appRouter = createTRPCRouter({
   qrCode: qrCodeRouter,
-  qrCodeTemplate: qrCodeTemplateRouter, 
+  qrCodeTemplate: qrCodeTemplateRouter,
 });
 
 // export type definition of API

@@ -4,7 +4,11 @@ import { useReducer, Suspense, useState } from "react";
 import { SettingsForm } from "./style/SettingsForm";
 import { QrCodeDefaults } from "~/config/QrCodeDefaults";
 import { DynamicQrCode } from "./DynamicQrCode";
-import { PaintBrushIcon, QrCodeIcon } from "@heroicons/react/24/outline";
+import {
+  PaintBrushIcon,
+  QrCodeIcon,
+  StarIcon,
+} from "@heroicons/react/24/outline";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { ContentSwitch } from "./content/ContentSwitch";
 import {
@@ -15,7 +19,8 @@ import {
   type TVCardInput,
 } from "~/server/domain/types/QRcode";
 import QrCodeDownloadBtn from "./QrCodeDownloadBtn";
-// import QrCodeSaveTemplateBtn from "./QrCodeSaveTemplateBtn";
+import QrCodeSaveTemplateBtn from "./QrCodeSaveTemplateBtn";
+// import { TemplateTabs } from "./templates/TemplateTabs";
 
 export type TCurrentQrCodeInput =
   | { tab: "url"; value: TUrlInput; editable: boolean }
@@ -70,7 +75,7 @@ export const QRcodeGenerator = () => {
   return (
     <>
       <Tabs defaultValue="qrCodeContent">
-        <TabsList className="mx-auto grid h-auto max-w-[400px] grid-cols-2 bg-white p-2 shadow">
+        <TabsList className="mx-auto grid h-auto max-w-[450px] grid-cols-3 bg-white p-2 shadow">
           <TabsTrigger
             value="qrCodeContent"
             className="data-[state=active]:bg-gray-200"
@@ -89,6 +94,15 @@ export const QRcodeGenerator = () => {
               <span className="flex flex-col justify-center">Style</span>
             </div>
           </TabsTrigger>
+          {/* <TabsTrigger
+            value="qrCodeTemplates"
+            className="data-[state=active]:bg-gray-200"
+          >
+            <div className="flex space-x-2">
+              <StarIcon className="h-6 w-6" />{" "}
+              <span className="flex flex-col justify-center">Templates</span>
+            </div>
+          </TabsTrigger> */}
         </TabsList>
         <div className="relative mt-4 flex space-x-6">
           <div className="mx-auto min-h-[500px] max-w-[1200px] flex-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
@@ -115,6 +129,12 @@ export const QRcodeGenerator = () => {
                       onChange={handleSettingsChange}
                     />
                   </TabsContent>
+                  {/* <TabsContent value="qrCodeTemplates" className="mt-0">
+                    <TemplateTabs
+                      onSelect={handleSettingsChange}
+                      settings={qrCodeSettings}
+                    />
+                  </TabsContent> */}
                 </div>
                 <div>
                   <Suspense fallback={null}>
@@ -122,7 +142,7 @@ export const QRcodeGenerator = () => {
                       <DynamicQrCode settings={qrCodeSettings} />
                     </div>
                     <div className="mt-6 flex justify-center md:justify-between">
-                      {/* <QrCodeSaveTemplateBtn config={qrCodeSettings} /> */}
+                      <QrCodeSaveTemplateBtn config={qrCodeSettings} />
                       <QrCodeDownloadBtn
                         qrCodeData={{
                           contentType: currentInput.tab,

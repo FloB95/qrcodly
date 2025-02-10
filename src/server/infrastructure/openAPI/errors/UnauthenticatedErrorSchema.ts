@@ -14,7 +14,7 @@ export const UnauthenticatedErrorResponseSchema = z
   .describe("Unauthenticated Response. The request was not authenticated.");
 
 const zodToJsonObj = zodToJsonSchema(UnauthenticatedErrorResponseSchema, {
-  $refStrategy: 'none',
+  $refStrategy: "none",
   target: "openApi3",
   definitions: {
     response: UnauthenticatedErrorResponseSchema,

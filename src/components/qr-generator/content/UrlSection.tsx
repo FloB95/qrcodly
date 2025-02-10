@@ -41,7 +41,7 @@ export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
       editable,
     },
   });
-  const [debounced] = useDebouncedValue(form.getValues("url"), 500);
+  const [debounced] = useDebouncedValue(form.watch("url"), 500);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     onChange(values.url, values.editable);
@@ -51,7 +51,7 @@ export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
   useEffect(() => {
     if (debounced === value) return;
     void form.handleSubmit(onSubmit)();
-  }, [debounced]);
+  }, [debounced, value, form]);
 
   return (
     <>

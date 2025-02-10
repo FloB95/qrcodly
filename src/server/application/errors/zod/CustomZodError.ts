@@ -1,4 +1,4 @@
-import { ZodError, type ZodIssue } from 'zod'
+import { ZodError, type ZodIssue } from "zod";
 
 /**
  * Represents a CustomZodError, which is an extension of the ZodError class.
@@ -11,11 +11,11 @@ export class CustomZodError extends ZodError {
    */
   constructor(message: string, path: string[]) {
     const issue: ZodIssue = {
-      code: 'custom',
+      code: "custom",
       message,
       path,
-    }
+    };
 
-    super([issue])
+    super([issue]);
   }
 }

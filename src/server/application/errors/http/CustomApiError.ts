@@ -5,7 +5,7 @@ export class CustomApiError extends Error {
   /**
    * The http status code.
    */
-  statusCode: number
+  statusCode: number;
 
   /**
    * Creates an instance of CustomApiError.
@@ -13,7 +13,7 @@ export class CustomApiError extends Error {
    * @param code The http status code.
    */
   constructor(message: string, code: number) {
-    super(message)
-    this.statusCode = code
+    super(message);
+    this.statusCode = code;
   }
 }

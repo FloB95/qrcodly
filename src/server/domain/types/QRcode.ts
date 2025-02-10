@@ -45,12 +45,11 @@ export const VCardInputSchema = z.object({
 });
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
 
-export const QrCodeContentOriginalDataSchema = z.union([
-  UrlInputSchema,
-  TextInputSchema,
-  WifiInputSchema,
-  VCardInputSchema,
-]).describe("The actual content of the QR code. (valid URL, text, wifi, vCard...)");
+export const QrCodeContentOriginalDataSchema = z
+  .union([UrlInputSchema, TextInputSchema, WifiInputSchema, VCardInputSchema])
+  .describe(
+    "The actual content of the QR code. (valid URL, text, wifi, vCard...)",
+  );
 
 export type TQrCodeContentOriginalData = z.infer<
   typeof QrCodeContentOriginalDataSchema

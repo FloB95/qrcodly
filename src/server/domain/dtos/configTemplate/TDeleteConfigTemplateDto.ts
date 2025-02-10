@@ -11,4 +11,6 @@ export const DeleteConfigTemplateDtoSchema = z.object({
  * Type for the DeleteConfigTemplate DTO.
  * This type is inferred from the DeleteConfigTemplateDtoSchema and represents the data required to delete a configuration template.
  */
-export type TDeleteConfigTemplateDto = z.infer<typeof DeleteConfigTemplateDtoSchema>;
+export type TDeleteConfigTemplateDto = z.infer<
+  typeof DeleteConfigTemplateDtoSchema
+>;

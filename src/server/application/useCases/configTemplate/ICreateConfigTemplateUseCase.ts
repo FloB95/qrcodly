@@ -12,5 +12,8 @@ export interface ICreateConfigTemplateUseCase extends IBaseUseCase {
    * @param createdBy The ID of the user who created the config template.
    * @returns The created Config Template.
    */
-  execute(dto: TCreateConfigTemplateDto, createdBy: string): Promise<ConfigTemplate>;
+  execute(
+    dto: TCreateConfigTemplateDto,
+    createdBy: string,
+  ): Promise<ConfigTemplate>;
 }

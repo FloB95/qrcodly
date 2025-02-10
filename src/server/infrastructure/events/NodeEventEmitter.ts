@@ -1,17 +1,17 @@
-import { EventEmitter } from 'events'
-import { BaseEvent } from '~/server/domain/events/BaseEvent'
-import { IEventEmitter } from '~/server/domain/events/IEventEmitter'
+import { EventEmitter } from "events";
+import { BaseEvent } from "~/server/domain/events/BaseEvent";
+import { IEventEmitter } from "~/server/domain/events/IEventEmitter";
 
 /**
  * NodeEventEmitter class for emitting and listening to events using Node.js EventEmitter.
  */
 export class NodeEventEmitter implements IEventEmitter {
-  private emitter: EventEmitter
+  private emitter: EventEmitter;
 
   constructor() {
     this.emitter = new EventEmitter({
       captureRejections: true,
-    })
+    });
   }
 
   /**
@@ -19,7 +19,7 @@ export class NodeEventEmitter implements IEventEmitter {
    * @param event The event to emit.
    */
   emit(event: BaseEvent): void {
-    this.emitter.emit(event.eventName(), event)
+    this.emitter.emit(event.eventName(), event);
   }
 
   /**
@@ -28,6 +28,6 @@ export class NodeEventEmitter implements IEventEmitter {
    * @param listener The listener function to be called when the event is emitted.
    */
   on<T>(eventName: string, listener: (event: T) => void): void {
-    this.emitter.on(eventName, listener)
+    this.emitter.on(eventName, listener);
   }
 }

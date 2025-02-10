@@ -31,7 +31,7 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
       text: value,
     },
   });
-  const [debounced] = useDebouncedValue(form.getValues("text"), 500);
+  const [debounced] = useDebouncedValue(form.watch("text"), 500);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     onChange(values.text);
@@ -41,7 +41,7 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
   useEffect(() => {
     if (debounced === value) return;
     void form.handleSubmit(onSubmit)();
-  }, [debounced]);
+  }, [debounced, value, form]);
 
   return (
     <Form {...form}>

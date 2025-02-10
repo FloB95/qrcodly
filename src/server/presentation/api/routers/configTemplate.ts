@@ -1,11 +1,14 @@
 import {
   createTRPCRouter,
-  protectedProcedure
+  protectedProcedure,
 } from "~/server/presentation/api/trpc";
 import { RateLimiter } from "~/server/infrastructure/ratelimit";
 import { TRPCError } from "@trpc/server";
 import { CreateConfigTemplateDtoSchema } from "~/server/domain/dtos/configTemplate/TCreateConfigTemplateDto";
-import { createConfigTemplateControllerFactory } from "../../factories/ConfigTemplateControllerFactory";
+import {
+  createConfigTemplateControllerFactory,
+  getMyConfigTemplatesControllerFactory,
+} from "../../factories/ConfigTemplateControllerFactory";
 
 export const qrCodeTemplateRouter = createTRPCRouter({
   create: protectedProcedure
@@ -25,9 +28,8 @@ export const qrCodeTemplateRouter = createTRPCRouter({
       return await createConfigTemplateControllerFactory().handle(input);
     }),
 
-  // delete: protectedProcedure
-  //   .input(DeleteQRcodeDtoSchema)
-  //   .mutation(
-  //     async ({ input }) => await deleteQRcodeControllerFactory().handle(input),
-  //   ),
+  getMyConfigTemplates: protectedProcedure.query(async ({ ctx }) => {
+    if (!ctx.currentUser) throw new Error("User not found.");
+    return await getMyConfigTemplatesControllerFactory().handle();
+  }),
 });
