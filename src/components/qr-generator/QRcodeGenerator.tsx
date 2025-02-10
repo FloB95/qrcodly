@@ -19,7 +19,7 @@ import {
   type TVCardInput,
 } from "~/server/domain/types/QRcode";
 import QrCodeDownloadBtn from "./QrCodeDownloadBtn";
-import QrCodeSaveTemplateBtn from "./QrCodeSaveTemplateBtn";
+// import QrCodeSaveTemplateBtn from "./QrCodeSaveTemplateBtn";
 // import { TemplateTabs } from "./templates/TemplateTabs";
 
 export type TCurrentQrCodeInput =
@@ -75,7 +75,7 @@ export const QRcodeGenerator = () => {
   return (
     <>
       <Tabs defaultValue="qrCodeContent">
-        <TabsList className="mx-auto grid h-auto max-w-[450px] grid-cols-3 bg-white p-2 shadow">
+        <TabsList className="mx-auto grid h-auto max-w-[350px] grid-cols-2 bg-white p-2 shadow">
           <TabsTrigger
             value="qrCodeContent"
             className="data-[state=active]:bg-gray-200"
@@ -142,7 +142,7 @@ export const QRcodeGenerator = () => {
                       <DynamicQrCode settings={qrCodeSettings} />
                     </div>
                     <div className="mt-6 flex justify-center md:justify-between">
-                      <QrCodeSaveTemplateBtn config={qrCodeSettings} />
+                      {/* <QrCodeSaveTemplateBtn config={qrCodeSettings} /> */}
                       <QrCodeDownloadBtn
                         qrCodeData={{
                           contentType: currentInput.tab,
