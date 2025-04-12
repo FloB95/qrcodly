@@ -8,6 +8,7 @@ import { TRPCReactProvider } from "~/lib/trpc/react";
 import { Toaster } from "~/components/ui/toaster";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { Metadata } from "next";
+import { PostHogProvider } from "~/components/PostHogProvider";
 
 const openSans = Inter({
   subsets: ["latin"],
@@ -27,10 +28,10 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: "https://www.qrcodly.de/og-image.webp"
-      }
-    ]
-  }
+        url: "https://www.qrcodly.de/og-image.webp",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -67,9 +68,11 @@ export default function RootLayout({
           ></script>
         </head>
         <body className={`font-sans ${openSans.variable}`}>
-          <TRPCReactProvider>
-            <TooltipProvider>{children}</TooltipProvider>
-          </TRPCReactProvider>
+          <PostHogProvider>
+            <TRPCReactProvider>
+              <TooltipProvider>{children}</TooltipProvider>
+            </TRPCReactProvider>
+          </PostHogProvider>
           <Toaster />
         </body>
       </html>

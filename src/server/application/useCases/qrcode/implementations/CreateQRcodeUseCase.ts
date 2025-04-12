@@ -7,6 +7,7 @@ import { QrCodeDefaults } from "~/config/QrCodeDefaults";
 import { convertQRCodeDataToStringByType } from "~/lib/utils";
 import { IEventEmitter } from "~/server/domain/events/IEventEmitter";
 import { QRCodeCreatedEvent } from "~/server/domain/events/qrcode/QRCodeCreatedEvent";
+import { analytics } from "~/server/infrastructure/analytics";
 
 /**
  * Use case for creating a QRcode entity.
@@ -57,6 +58,14 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
       id: createdQrCode.id,
       createdBy: createdQrCode.createdBy,
       content: createdQrCode.originalData,
+    });
+
+    analytics.capture({
+      distinctId: createdQrCode.id,
+      event: QRCodeCreatedEvent.eventName,
+      properties: {
+        ...createdQrCode,
+      },
     });
 
     return createdQrCode;
