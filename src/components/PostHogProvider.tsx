@@ -20,7 +20,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isSignedIn) {
-      posthog.identify(user?.id, {
+      posthog.identify(user.id, {
         email: user?.primaryEmailAddress?.emailAddress,
         fullName: user?.fullName,
       });
