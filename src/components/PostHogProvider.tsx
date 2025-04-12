@@ -5,8 +5,10 @@ import { PostHogProvider as PHProvider, usePostHog } from "posthog-js/react";
 import { Suspense, useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { env } from "~/env";
+import { useUser } from "@clerk/nextjs";
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
+  const { isSignedIn, user } = useUser();
   useEffect(() => {
     posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
       api_host: "/ingest",
@@ -15,6 +17,15 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       capture_pageleave: true, // Enable pageleave capture
     });
   }, []);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      posthog.identify(user?.id, {
+        email: user?.primaryEmailAddress?.emailAddress,
+        fullName: user?.fullName,
+      });
+    }
+  }, [isSignedIn, user?.id]);
 
   return (
     <PHProvider client={posthog}>

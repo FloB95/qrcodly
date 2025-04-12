@@ -68,7 +68,6 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
           ...createdQrCode,
         },
       });
-
     return createdQrCode;
   }
 }
