@@ -22,6 +22,7 @@ import {
 } from "../ui/dropdown-menu";
 import { useEffect, useState } from "react";
 import { TCurrentQrCodeInput } from "./QRcodeGenerator";
+import posthog from "posthog-js";
 
 let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
@@ -77,6 +78,11 @@ const QrCodeDownloadBtn = ({
             },
           },
         );
+
+        posthog.capture("QRCodeCreated", {
+          contentType: qrCodeData.contentType,
+          data: qrCodeData.data,
+        });
 
         // invalidate dashboard cache
         await apiUtils.qrCode.getMyQrCodes.invalidate();

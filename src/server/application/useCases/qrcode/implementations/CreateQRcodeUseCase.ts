@@ -59,15 +59,7 @@ export class CreateQRcodeUseCase implements ICreateQRcodeUseCase {
       createdBy: createdQrCode.createdBy,
       content: createdQrCode.originalData,
     });
-
-    if (createdBy)
-      analytics.capture({
-        distinctId: createdBy,
-        event: QRCodeCreatedEvent.eventName,
-        properties: {
-          ...createdQrCode,
-        },
-      });
+    
     return createdQrCode;
   }
 }
