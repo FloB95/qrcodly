@@ -1,0 +1,50 @@
+services:
+  db:
+    container_name: qrcodly-db
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: qrcodly
+    volumes:
+      - database:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    container_name: qrcodly-pma
+    image: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 300M
+    ports:
+      - 8081:80
+
+  redis:
+    container_name: qrcodly-redis
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+
+  minio:
+    container_name: qrcodly-minio
+    image: minio/minio:latest
+    restart: always
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: testtest
+      MINIO_DEFAULT_BUCKETS: qrcodly
+      MINIO_STORAGE_USE_HTTPS: 0
+    volumes:
+      - minio-data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    command: server /data --console-address ":9001"
+
+volumes:
+  database:
+  minio-data:

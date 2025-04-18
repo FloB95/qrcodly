@@ -1,0 +1,18 @@
+{
+	"name": "qrcodly-typescript-config",
+	"version": "1.0.0",
+	"type": "module",
+	"files": [
+		"tsconfig.backend.json",
+		"tsconfig.build.json",
+		"tsconfig.common.json",
+		"tsconfig.frontend.json"
+	],
+	"exports": {
+		"./tsconfig.backend.json": "./tsconfig.backend.json",
+		"./tsconfig.build.json": "./tsconfig.build.json",
+		"./tsconfig.common.json": "./tsconfig.common.json",
+		"./tsconfig.frontend.json": "./tsconfig.frontend.json",
+		"./*": "./*"
+	}
+}

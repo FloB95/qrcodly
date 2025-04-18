@@ -1,0 +1,50 @@
+name: PR Labeler
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  assign-author:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: toshimaru/auto-author-assign@v2.1.1
+          with:
+            repo-token: "${{ secrets.GITHUB_TOKEN }}"
+  pr-labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: TimonVS/pr-labeler-action@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/pr-labeler.yml # optional, .github/pr-labeler.yml is the default value
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Apply chore label if no label set
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo, number: issue_number } = context.issue;
+            const label = "chore"
+
+            // Fetch the current labels on the PR
+            const { data: currentLabels } = await github.rest.issues.listLabelsOnIssue({
+              owner,
+              repo,
+              issue_number
+            });
+
+            // If there are no labels, add the default
+            if (currentLabels.length === 0) {
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number,
+                labels: [label]
+              });
+            }

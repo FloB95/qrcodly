@@ -1,0 +1,14 @@
+name: 'Setup Continuous Integration'
+description: 'Cache Dependencies'
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.14.0
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+      shell: bash

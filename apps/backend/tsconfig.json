@@ -1,0 +1,33 @@
+{
+	"compilerOptions": {
+		"module": "es2020",
+		"moduleResolution": "node",
+		"removeComments": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"strictPropertyInitialization": false,
+		"target": "ES2020",
+		"sourceMap": true,
+		"outDir": "./build",
+		"incremental": true,
+		"strict": true,
+		"esModuleInterop": true,
+		"noEmit": false,
+		"skipLibCheck": true,
+		"composite": true,
+		"baseUrl": ".",
+		"isolatedModules": true,
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"include": ["eslint.config.js", "./src/**/*.ts", "**/*.cjs", "**/*.mjs", "setup.test.ts"],
+	"exclude": ["node_modules", "build", "test"],
+	"types": ["@types/jest"],
+	"ts-node": {
+		"require": ["tsconfig-paths/register"]
+	},
+	"references": [
+		{ "path": "../../packages/api-types/tsconfig.build.json" },
+	]
+}
