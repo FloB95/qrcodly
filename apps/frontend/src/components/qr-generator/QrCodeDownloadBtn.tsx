@@ -54,6 +54,8 @@ const QrCodeDownloadBtn = ({
 	const onDownloadClick = async (fileExt: TFileExtension) => {
 		if (!qrCodeInstance) return;
 
+		console.log('Downloading QR code...', qrCode);
+
 		if (saveOnDownload) {
 			try {
 				await createQrCodeMutation.mutateAsync(qrCode, {

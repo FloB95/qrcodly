@@ -242,8 +242,8 @@ export function ColorPicker({
 								</label>
 								<Slider
 									defaultValue={[rotation]}
-									max={360}
-									step={1}
+									max={180}
+									step={30}
 									onValueChange={(e: unknown) => handleRotationChange(e as number)}
 								/>
 							</div>

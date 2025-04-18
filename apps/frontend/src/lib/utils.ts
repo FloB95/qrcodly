@@ -36,7 +36,7 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
 		imageOptions: {
 			hideBackgroundDots: options.imageOptions.hideBackgroundDots,
 			imageSize: 0.4,
-			margin: 30,
+			margin: 40,
 			crossOrigin: 'anonymous',
 		},
 		dotsOptions: {
