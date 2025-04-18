@@ -8,6 +8,10 @@ export const env = createEnv({
 	 */
 	server: {
 		NODE_ENV: z.enum(['development', 'test', 'production']),
+		AXIOM_TOKEN: z.string(),
+		AXIOM_DATASET: z.string(),
+		CLERK_SECRET_KEY: z.string(),
+		CLERK_ENCRYPTION_KEY: z.string(),
 	},
 
 	/**
@@ -16,7 +20,8 @@ export const env = createEnv({
 	 * `NEXT_PUBLIC_`.
 	 */
 	client: {
-		// NEXT_PUBLIC_CLIENTVAR: z.string(),
+		NEXT_PUBLIC_API_URL: z.string().url(),
+		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
 		NEXT_PUBLIC_POSTHOG_KEY: z.string(),
 		NEXT_PUBLIC_POSTHOG_HOST: z.string(),
 	},
@@ -27,6 +32,13 @@ export const env = createEnv({
 	 */
 	runtimeEnv: {
 		NODE_ENV: process.env.NODE_ENV,
+		NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+		AXIOM_TOKEN: process.env.AXIOM_TOKEN,
+		AXIOM_DATASET: process.env.AXIOM_DATASET,
+		CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+		CLERK_ENCRYPTION_KEY: process.env.CLERK_ENCRYPTION_KEY,
+
+		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
 		NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
 		NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
 		// NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,

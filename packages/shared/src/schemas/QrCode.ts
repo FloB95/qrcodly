@@ -100,8 +100,8 @@ export const GradientType = z.enum(['radial', 'linear']);
  * Type definition for specifying a gradient.
  */
 export const Gradient = z.object({
-	type: GradientType.default('linear'),
-	rotation: z.number().default(0),
+	type: GradientType,
+	rotation: z.number(),
 	colorStops: z
 		.array(
 			z.object({
@@ -130,16 +130,16 @@ export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
  * Type definition for specifying QR code generation options.
  */
 export const QrCodeOptionsSchema = z.object({
-	width: z.number().default(1000),
-	height: z.number().default(1000),
-	margin: z.number().default(0),
+	width: z.number(),
+	height: z.number(),
+	margin: z.number(),
 	image: z
 		.string()
 		.max(0.5 * 1024 * 1024, 'Image is to large! Max size is 0.5 MB.')
 		.optional()
 		.describe('The image as base64 to be embedded in the QR code. Max size 0.5 MB.'),
 	imageOptions: z.object({
-		hideBackgroundDots: z.boolean().default(true),
+		hideBackgroundDots: z.boolean(),
 	}),
 	dotsOptions: z.object({
 		type: DotType,

@@ -14,11 +14,12 @@ import {
 	CreateQrCodeDto,
 	GetQrCodeQueryParamsSchema,
 	TCreateQrCodeDto,
+	TCreateQrCodeResponseDto,
 	TGetQrCodeQueryParamsDto,
 	TIdRequestQueryDto,
 	TQrCodePaginatedResponseDto,
 	TQrCodeResponseDto,
-} from '@shared/schemas/src';
+} from '@shared/schemas';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -62,7 +63,9 @@ export class QrCodeController extends AbstractController {
 		skipAuth: true,
 		bodySchema: CreateQrCodeDto,
 	})
-	async create(request: IHttpRequest<TCreateQrCodeDto>) {
+	async create(
+		request: IHttpRequest<TCreateQrCodeDto>,
+	): Promise<IHttpResponse<TCreateQrCodeResponseDto>> {
 		// user can be logged in or not
 
 		const { userId } = getAuth(request);

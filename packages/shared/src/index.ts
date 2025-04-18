@@ -2,7 +2,7 @@
  * DTOs
  **************************/
 export { CreateQrCodeDto } from './dtos/qr-code/CreateQrCodeDto';
-export type { TCreateQrCodeDto } from './dtos/qr-code/CreateQrCodeDto';
+export type { TCreateQrCodeDto, TCreateQrCodeResponseDto } from './dtos/qr-code/CreateQrCodeDto';
 
 export { QrCodesRequestDtoSchema } from './dtos/qr-code/QrCodeListRequestDto';
 export type { TQrCodesRequestDto } from './dtos/qr-code/QrCodeListRequestDto';
@@ -44,6 +44,7 @@ export {
 } from './schemas/QrCode';
 
 export type {
+	TFileExtension,
 	TQrCode,
 	TUrlInput,
 	TTextInput,

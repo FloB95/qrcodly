@@ -21,3 +21,9 @@ export const CreateQrCodeDto = z.effect(
 );
 
 export type TCreateQrCodeDto = z.infer<typeof CreateQrCodeDto>;
+
+export type TCreateQrCodeResponseDto = {
+	success: boolean;
+	isStored: boolean;
+	qrCodeId: string;
+};

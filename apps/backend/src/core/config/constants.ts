@@ -12,7 +12,7 @@ export const FASTIFY_LOGGING: boolean = false;
 
 export const RATE_LIMIT_MAX: number = 30;
 export const RATE_LIMIT_TIME_WINDOW: string = '1 minute';
-export const ALLOWED_ORIGINS: string[] = [];
+export const ALLOWED_ORIGINS: string[] = [env.FRONTEND_URL, 'http://localhost:3000'];
 
 export const DEFAULT_TIME_ZONE: string = 'Europe/Berlin';
 

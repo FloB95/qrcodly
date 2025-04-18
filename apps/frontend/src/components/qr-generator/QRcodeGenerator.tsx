@@ -130,11 +130,11 @@ export const QRcodeGenerator = () => {
 										<div className="mt-6 flex justify-center md:justify-between">
 											<QrCodeSaveTemplateBtn config={qrCodeSettings} />
 											<QrCodeDownloadBtn
-												qrCodeData={{
+												qrCode={{
 													contentType: currentInput.tab,
-													data: currentInput.value,
+													content: currentInput.value,
+													config: qrCodeSettings,
 												}}
-												qrCodeSettings={qrCodeSettings}
 												saveOnDownload={true}
 											/>
 										</div>

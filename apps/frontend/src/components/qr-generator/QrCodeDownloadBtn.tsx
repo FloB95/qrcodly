@@ -17,77 +17,64 @@ import {
 import { useEffect, useState } from 'react';
 import posthog from 'posthog-js';
 import { convertQrCodeOptionsToLibraryOptions } from '@/lib/utils';
-import type {
-	TFileExtension,
-	TQrCodeContent,
-	TQrCodeContentType,
-	TQrCodeOptions,
-} from '@shared/schemas/src/schemas/QrCode';
-import { convertQRCodeDataToStringByType } from '@shared/schemas';
+import {
+	convertQRCodeDataToStringByType,
+	type TCreateQrCodeDto,
+	type TFileExtension,
+} from '@shared/schemas';
+import { useCreateQrCodeMutation } from '@/lib/api/qr-code';
+import { toast } from '../ui/use-toast';
 
 let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
-	qrCodeData,
-	qrCodeSettings,
+	qrCode,
 	saveOnDownload = false,
 	noStyling = false,
 }: {
-	qrCodeData: {
-		contentType: TQrCodeContentType;
-		data: TQrCodeContent;
-	};
-	qrCodeSettings: TQrCodeOptions;
+	qrCode: TCreateQrCodeDto;
 	saveOnDownload?: boolean;
 	noStyling?: boolean;
 }) => {
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
+
+	const createQrCodeMutation = useCreateQrCodeMutation();
+
 	useEffect(() => {
 		// Dynamically import the QRCodeStyling class only when the component mounts
 		import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
-			const qrCode = new QRCodeStyling({
-				...convertQrCodeOptionsToLibraryOptions(qrCodeSettings),
-				data: convertQRCodeDataToStringByType(qrCodeData.data, qrCodeData.contentType),
+			const qrCodeInstance = new QRCodeStyling({
+				...convertQrCodeOptionsToLibraryOptions(qrCode.config),
+				data: convertQRCodeDataToStringByType(qrCode.content, qrCode.contentType),
 			}); // Create a new instance with the current settings
-			setQrCodeInstance(qrCode); // Store the instance in the state
+			setQrCodeInstance(qrCodeInstance); // Store the instance in the state
 		});
-	}, [qrCodeSettings]);
+	}, [qrCode]);
 
 	const onDownloadClick = async (fileExt: TFileExtension) => {
 		if (!qrCodeInstance) return;
 
 		if (saveOnDownload) {
 			try {
-				// await createQrCode.mutateAsync(
-				//   {
-				//     contentType: qrCodeData.contentType,
-				//     data: qrCodeData.data,
-				//     config: qrCodeSettings,
-				//   },
-				//   {
-				//     onSuccess: (data) => {
-				//       // if user is logged in, show toast
-				//       if (data.success && data.isStored) {
-				//         // show toast
-				//         toast({
-				//           title: "New QR code created",
-				//           description:
-				//             "We saved your QR Code in your dashboard for later use.",
-				//           duration: 10000,
-				//         });
-				//       }
-				//     },
-				//   },
-				// );
-
-				posthog.capture('QRCodeCreated', {
-					contentType: qrCodeData.contentType,
-					data: qrCodeData.data,
+				await createQrCodeMutation.mutateAsync(qrCode, {
+					onSuccess: (data) => {
+						// if user is logged in, show toast
+						if (data.success && data.isStored) {
+							// show toast
+							toast({
+								title: 'New QR code created',
+								description: 'We saved your QR Code in your dashboard for later use.',
+								duration: 10000,
+							});
+						}
+					},
 				});
 
-				// invalidate dashboard cache
-				// await apiUtils.qrCode.getMyQrCodes.invalidate();
-			} catch (error) {}
+				posthog.capture('QRCodeCreated', {
+					contentType: qrCode.contentType,
+					data: qrCode.content,
+				});
+			} catch {}
 		}
 
 		await qrCodeInstance.download({
@@ -100,14 +87,20 @@ const QrCodeDownloadBtn = ({
 		<DropdownMenu>
 			<DropdownMenuTrigger
 				asChild
-				// disabled={qrCodeSettings.data.length <= 0 || createQrCode.isPending}
+				disabled={
+					(typeof qrCode.content === 'string' && qrCode.content.length <= 0) ||
+					createQrCodeMutation.isPending
+				}
 			>
 				{noStyling ? (
 					<div className="cursor-pointer">Download</div>
 				) : (
 					<Button
-					// isLoading={createQrCode.isPending}
-					// disabled={qrCodeSettings.data.length <= 0 || createQrCode.isPending}
+						isLoading={createQrCodeMutation.isPending}
+						disabled={
+							(typeof qrCode.content === 'string' && qrCode.content.length <= 0) ||
+							createQrCodeMutation.isPending
+						}
 					>
 						Download
 					</Button>

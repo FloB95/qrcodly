@@ -1,13 +1,10 @@
 import { ClerkProvider } from '@clerk/nextjs';
-
 import '@/styles/globals.css';
-
 import { Inter } from 'next/font/google';
-
 import { Toaster } from '@/components/ui/toaster';
-import { TooltipProvider } from '@/components/ui/tooltip';
 import { type Metadata } from 'next';
-import { PostHogProvider } from '@/components/PostHogProvider';
+import Providers from '@/components/provider';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const openSans = Inter({
 	subsets: ['latin'],
@@ -49,9 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					></script>
 				</head>
 				<body className={`font-sans ${openSans.variable}`}>
-					<PostHogProvider>
-						<TooltipProvider>{children}</TooltipProvider>
-					</PostHogProvider>
+					<Providers>{children}</Providers>
 					<Toaster />
 				</body>
 			</html>

@@ -19,7 +19,9 @@ import {
 	Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 
-export default function Dashboard() {
+
+export default async function Dashboard() {
+
 	return (
 		<div className="mt-24 flex h-full w-full flex-1 flex-col items-center justify-center">
 			<Container>
