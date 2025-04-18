@@ -1,5 +1,5 @@
 import { AbstractEvent } from '@/core/event/AbstractEvent';
-import { TQrCode } from '../domain/entities/QrCode';
+import { type TQrCode } from '../domain/entities/QrCode';
 
 /**
  * Event triggered when a QR code is created.

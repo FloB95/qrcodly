@@ -1,4 +1,4 @@
-import { HttpHeader } from 'fastify/types/utils';
+import { type HttpHeader } from 'fastify/types/utils';
 
 /**
  * Interface representing an HTTP response.

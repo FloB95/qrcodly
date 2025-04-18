@@ -1,7 +1,7 @@
 import { container } from 'tsyringe';
 
 // other imports
-import { type FastifyInstance, FastifyPluginCallback } from 'fastify';
+import { type FastifyInstance, type FastifyPluginCallback } from 'fastify';
 import { Logger } from '@/core/logging';
 import { registerRoutes } from '@/libs/fastify/helpers';
 import { QrCodeController } from './http/controller/QrCodeController';

@@ -10,7 +10,7 @@ import { and, eq, gt, gte, like, lt, lte, not, type SQL } from 'drizzle-orm';
  */
 export function convertWhereConditionToDrizzle<T>(
 	where: WhereConditions<T>,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 	table: MySqlTableWithColumns<any>,
 ): SQL | undefined {
 	let sql: SQL<unknown> | undefined;

@@ -23,7 +23,6 @@ export default abstract class AbstractRepository<T> {
 		this.appCache = container.resolve(KeyCache);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	abstract table: MySqlTableWithColumns<any>;
 	abstract findAll({ limit, offset, where }: ISqlQueryFindBy<T>): Promise<T[]>;
 	abstract findOneById(id: string): Promise<T | undefined>;

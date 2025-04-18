@@ -18,7 +18,7 @@ export default [
 		ignores: [
 			'**/node_modules',
 			'**/build',
-			'**/jest.config.ts',
+			'**/jest.config.js',
 			'**/drizzle.config.ts',
 			'**/prettier.config.cjs',
 			'**/artillery-setup.mjs',

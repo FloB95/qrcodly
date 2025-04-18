@@ -12,13 +12,12 @@ import { UnauthorizedError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/IResponse';
 import {
 	GetQrCodeQueryParamsSchema,
-	type TCreateQrCodeDto,
-	type TQrCodeResponseDto,
-	CreateQrCodeDto,
-	type TGetQrCodeQueryParamsDto,
-	type TQrCodePaginatedResponseDto,
-	type TIdRequestQueryDto,
-} from 'qrcodly-api-types';
+	TGetQrCodeQueryParamsDto,
+} from '../../domain/dtos/qr-code/QrCodeRequestParamsDto';
+import { TQrCodePaginatedResponseDto } from '../../domain/dtos/qr-code/QrCodePaginatedResponseDto';
+import { CreateQrCodeDto, TCreateQrCodeDto } from '../../domain/dtos/qr-code/CreateQrCodeDto';
+import { TIdRequestQueryDto } from '@/core/domain/dto/IdRequestQuery';
+import { TQrCodeResponseDto } from '../../domain/dtos/qr-code/QrCodeResponseDto';
 
 @injectable()
 export class QrCodeController extends AbstractController {

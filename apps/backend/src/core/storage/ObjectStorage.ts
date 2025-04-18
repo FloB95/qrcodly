@@ -33,7 +33,6 @@ export class ObjectStorage implements IFileStorage {
 				forcePathStyle: true,
 			});
 			this.bucketName = env.S3_BUCKET_NAME;
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (e: any) {
 			console.log('Error initializing S3 client', e);
 		}

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
-	FastifyInstance,
-	RegisterOptions,
+	type FastifyInstance,
+	type RegisterOptions,
 	type FastifyPluginOptions,
 	type FastifyReply,
 	type FastifyRequest,
@@ -11,12 +11,12 @@ import { BadRequestError, CustomApiError } from '@/core/error/http';
 import { container, type InjectionToken } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { ErrorReporter } from '@/core/error';
-import { IHttpRequest, IHttpRequestWithAuth } from '@/core/interface/IRequest';
-import { ROUTE_METADATA_KEY, RouteMetadata } from '@/core/decorators/route';
-import { IHttpResponse } from '@/core/interface/IResponse';
-import AbstractController from '@/core/http/controller/AbstractController';
+import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/IRequest';
+import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route';
+import { type IHttpResponse } from '@/core/interface/IResponse';
+import type AbstractController from '@/core/http/controller/AbstractController';
 import { isAuthenticated } from '@/core/http/middleware/auth';
-import { SafeParseReturnType, ZodSchema } from 'zod';
+import { type SafeParseReturnType, type ZodSchema } from 'zod';
 import qs from 'qs';
 
 /**
@@ -53,7 +53,6 @@ export const fastifyErrorHandler = (
 		// if error is instance of BadRequestError attach zod errors
 		const zodErrors = error instanceof BadRequestError ? error.zodErrors : [];
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const responsePayload: any = {
 			message: error.message,
 			code: error.statusCode,

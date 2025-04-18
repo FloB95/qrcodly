@@ -1,6 +1,10 @@
 import { createTable } from '@/core/db/utils';
 import { datetime, index, json, varchar } from 'drizzle-orm/mysql-core';
-import { type TQrCodeOptions, type TQrCodeContentType, type TQrCodeContent } from 'qrcodly-api-types';
+import {
+	type TQrCodeContent,
+	type TQrCodeContentType,
+	type TQrCodeOptions,
+} from '../schemas/QrCode';
 
 export const qrCode = createTable(
 	'qr_code',

@@ -1,4 +1,4 @@
-import { S3Error, TOriginalError } from './S3Error';
+import { S3Error, type TOriginalError } from './S3Error';
 
 export class S3DeleteError extends S3Error {
 	constructor(message: string, originalError?: TOriginalError) {

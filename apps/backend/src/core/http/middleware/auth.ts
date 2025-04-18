@@ -1,6 +1,6 @@
 import { UnauthenticatedError } from '@/core/error/http';
 import { getAuth } from '@clerk/fastify';
-import { FastifyRequest } from 'fastify';
+import { type FastifyRequest } from 'fastify';
 
 /**
  * Middleware function to check if a user is signed in.
@@ -10,14 +10,14 @@ import { FastifyRequest } from 'fastify';
  * @throws {UnauthenticatedError} If the user is not authenticated.
  */
 export function isAuthenticated(request: FastifyRequest, _reply: unknown, done: () => void) {
-    const { userId } = getAuth(request);
+	const { userId } = getAuth(request);
 
-    if (!userId) {
-        throw new UnauthenticatedError();
-    }
+	if (!userId) {
+		throw new UnauthenticatedError();
+	}
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    request.user = { id: userId };
-    done();
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	request.user = { id: userId };
+	done();
 }

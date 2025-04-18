@@ -22,12 +22,9 @@
 		}
 	},
 	"include": ["eslint.config.js", "./src/**/*.ts", "**/*.cjs", "**/*.mjs", "setup.test.ts"],
-	"exclude": ["node_modules", "build", "test"],
+	"exclude": ["node_modules", "build", "test", ""],
 	"types": ["@types/jest"],
 	"ts-node": {
 		"require": ["tsconfig-paths/register"]
-	},
-	"references": [
-		{ "path": "../../packages/api-types/tsconfig.build.json" },
-	]
+	}
 }

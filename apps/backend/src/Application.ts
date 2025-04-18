@@ -33,7 +33,6 @@ export class Application {
 			return;
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-misused-promises
 		const forceShutdownTimer = setTimeout(async () => {
 			this.logger.info(`Process exited after ${gracefulShutdownTimeoutInS}s`);
 			const errorMsg = `Shutdown timed out after ${gracefulShutdownTimeoutInS} seconds`;

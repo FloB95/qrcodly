@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyPluginCallback } from 'fastify';
+import { type FastifyInstance, type FastifyPluginCallback } from 'fastify';
 
 // modules
 import qrCode from './qr-code/setup';

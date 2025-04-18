@@ -1,5 +1,5 @@
-import { FastifyRequest } from 'fastify';
-import { IncomingHttpHeaders } from 'http';
+import { type FastifyRequest } from 'fastify';
+import { type IncomingHttpHeaders } from 'http';
 
 export interface IHttpRequest<B = unknown, P = unknown, Q = unknown> extends FastifyRequest {
 	body: B;
