@@ -11,13 +11,14 @@ import { ListQrCodesUseCase } from '../../useCase/ListQrCodesUseCase';
 import { UnauthorizedError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/IResponse';
 import {
+	CreateQrCodeDto,
 	GetQrCodeQueryParamsSchema,
+	TCreateQrCodeDto,
 	TGetQrCodeQueryParamsDto,
-} from '../../domain/dtos/qr-code/QrCodeRequestParamsDto';
-import { TQrCodePaginatedResponseDto } from '../../domain/dtos/qr-code/QrCodePaginatedResponseDto';
-import { CreateQrCodeDto, TCreateQrCodeDto } from '../../domain/dtos/qr-code/CreateQrCodeDto';
-import { TIdRequestQueryDto } from '@/core/domain/dto/IdRequestQuery';
-import { TQrCodeResponseDto } from '../../domain/dtos/qr-code/QrCodeResponseDto';
+	TIdRequestQueryDto,
+	TQrCodePaginatedResponseDto,
+	TQrCodeResponseDto,
+} from '@shared/schemas/src';
 
 @injectable()
 export class QrCodeController extends AbstractController {

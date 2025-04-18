@@ -19,7 +19,7 @@ describe('test application', () => {
 	it('should start the server and make a healthcheck', async () => {
 		const response = await testServer.inject({
 			method: 'GET',
-			url: `${API_BASE_PATH}/`,
+			url: `${API_BASE_PATH}`,
 		});
 
 		expect(response.statusCode).toBe(200);

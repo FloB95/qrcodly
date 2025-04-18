@@ -1,6 +1,6 @@
 import { type z } from 'zod';
 import { QrCodeResponseDto } from './QrCodeResponseDto';
-import { PaginationResponseDtoSchema } from '@/core/domain/dto/PaginationDto';
+import { PaginationResponseDtoSchema } from '../PaginationDto';
 
 export const QrCodePaginatedResponseDto = PaginationResponseDtoSchema(QrCodeResponseDto);
 

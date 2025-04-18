@@ -5,7 +5,7 @@ import { Logger } from '@/core/logging';
 import { EventEmitter } from '@/core/event';
 import { TQrCode } from '../domain/entities/QrCode';
 import { QRCodeCreatedEvent } from '../event/QRCodeCreatedEvent';
-import { TCreateQrCodeDto } from '../domain/dtos/qr-code/CreateQrCodeDto';
+import { TCreateQrCodeDto } from '@shared/schemas';
 
 /**
  * Use case for creating a QrCode entity.

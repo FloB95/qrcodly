@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AbstractEntitySchema } from '@/core/domain/schema/AbstractEntitySchema';
+import { AbstractEntitySchema } from './AbstractEntitySchema';
 
 const emptyStringToUndefined = <T extends z.ZodTypeAny>(
 	schema: T,
@@ -7,10 +7,10 @@ const emptyStringToUndefined = <T extends z.ZodTypeAny>(
 	z.preprocess((value) => (value === '' ? undefined : value), schema);
 
 export const UrlInputSchema = z.string().url();
-export type TUrlInput = z.infer<typeof UrlInputSchema>;
+export type TUrlInput = string;
 
 export const TextInputSchema = z.string().max(1000);
-export type TTextInput = z.infer<typeof TextInputSchema>;
+export type TTextInput = string;
 
 export const WifiInputSchema = z.object({
 	ssid: z.string().max(32),

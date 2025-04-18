@@ -1,5 +1,5 @@
-import { QrCodeSchema } from '../../schemas/QrCode';
 import { z } from 'zod';
+import { QrCodeSchema } from '../../schemas/QrCode';
 
 const QRcodeSchemaDef = QrCodeSchema._def.schema; // Extract the base schema from the PanelSchema
 const t = QrCodeSchema._def.effect;

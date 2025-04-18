@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { QrCodeOptionsSchema } from './QrCode';
-import { AbstractEntitySchema } from '@/core/domain/schema/AbstractEntitySchema';
+import { AbstractEntitySchema } from './AbstractEntitySchema';
 
 export const ConfigTemplateSchema = AbstractEntitySchema.extend({
 	config: QrCodeOptionsSchema,
