@@ -1,0 +1,27 @@
+{
+	"name": "qrcodly-api-types",
+	"version": "1.0.0",
+	"scripts": {
+		"clean": "rimraf dist .turbo",
+		"dev": "pnpm watch",
+		"typecheck": "tsc --noEmit",
+		"build": "tsc -p tsconfig.build.json",
+		"lint": "eslint ."
+	},
+	"main": "dist/index.js",
+	"module": "src/index.ts",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist/**/*"
+	],
+	"devDependencies": {
+		"qrcodly-eslint-config": "workspace:*",
+		"qrcodly-typescript-config": "workspace:*"
+	},
+	"dependencies": {
+		"@types/vcards-js": "^2.10.5",
+		"vcards-js": "^2.10.0",
+		"zod": "catalog:",
+		"zod-class": "0.0.16"
+	}
+}
