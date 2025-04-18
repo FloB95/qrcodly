@@ -5,6 +5,7 @@
 - Optimize Styling Ui (add icons for dot styles & add a better image upload ui)
 - Optimize Page loading - no lazy load QR code and SignIn Button
 - Add User Dashboard:
+
   - Custom Dashboard Navigation
   - List QR Codes
   - Create QR Codes

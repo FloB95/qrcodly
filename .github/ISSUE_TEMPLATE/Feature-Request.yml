@@ -1,16 +1,16 @@
 name: Feature Request
 description: Request or suggest a new feature
-title: "[Feature]: "
-labels: ["enhancement"]
+title: '[Feature]: '
+labels: ['enhancement']
 body:
-    - type: markdown
-      attributes:
-          value: |
-                ## Important Note
-                Please fill out each section below, otherwise your issue will be closed. This information allows the maintainers to diagnose (and fix!) your problem as quickly as possible, which means you will receive a faster response.
+  - type: markdown
+    attributes:
+      value: |
+        ## Important Note
+        Please fill out each section below, otherwise your issue will be closed. This information allows the maintainers to diagnose (and fix!) your problem as quickly as possible, which means you will receive a faster response.
 
-    - type: textarea
-      attributes:
-          label: Feature Description
-      validations:
-          required: true
+  - type: textarea
+    attributes:
+      label: Feature Description
+    validations:
+      required: true

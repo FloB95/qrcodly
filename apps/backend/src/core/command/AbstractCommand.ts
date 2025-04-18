@@ -16,7 +16,10 @@ export abstract class AbstractCommand {
 	/**
 	 * Executes the command logic.
 	 */
-	protected abstract execute(options: Record<string, unknown>, parentCommand: Command): Promise<void>;
+	protected abstract execute(
+		options: Record<string, unknown>,
+		parentCommand: Command,
+	): Promise<void>;
 
 	/**
 	 * Registers the command to be executed.

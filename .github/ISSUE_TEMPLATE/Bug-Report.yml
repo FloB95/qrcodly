@@ -1,26 +1,26 @@
 name: Bug Report
 description: Submit a bug report
 title: '[Bug]: '
-labels: ["bug"]
+labels: ['bug']
 body:
-    - type: markdown
-      attributes:
-          value: |
-              ## Important Note
-              Please fill out each section below, otherwise your issue will be closed. These information will help the maintainers diagnose (and fix!) your problem as quickly as possible, which means you'll get a faster response.
+  - type: markdown
+    attributes:
+      value: |
+        ## Important Note
+        Please fill out each section below, otherwise your issue will be closed. These information will help the maintainers diagnose (and fix!) your problem as quickly as possible, which means you'll get a faster response.
 
-    - type: textarea
-      attributes:
-          label: Expected Behavior
-      validations:
-          required: true
-    - type: textarea
-      attributes:
-          label: Actual Behavior
-      validations:
-          required: true
-    - type: textarea
-      attributes:
-          label: Steps to Reproduce
-      validations:
-          required: false
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual Behavior
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+    validations:
+      required: false

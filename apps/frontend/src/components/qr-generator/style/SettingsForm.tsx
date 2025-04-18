@@ -1,457 +1,444 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ColorPicker } from "./ColorPicker";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
-import { Input } from "@/components/ui/input";
-import IconPicker from "./IconPicker";
-import type { TQrCodeOptions } from "qrcodly-api-types";
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ColorPicker } from './ColorPicker';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Slider } from '@/components/ui/slider';
+import { Input } from '@/components/ui/input';
+import IconPicker from './IconPicker';
+import type { TQrCodeOptions } from 'qrcodly-api-types';
 
 type SettingsFormProps = {
-  onChange: (data: TQrCodeOptions) => void;
-  settings: TQrCodeOptions;
+	onChange: (data: TQrCodeOptions) => void;
+	settings: TQrCodeOptions;
 };
 
 export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
-  const handleIconSelect = (iconName?: string) => {
-    settings.image = iconName;
-    onChange(settings);
-    form.setValue("image", iconName ?? "");
-  };
+	const handleIconSelect = (iconName?: string) => {
+		settings.image = iconName;
+		onChange(settings);
+		form.setValue('image', iconName ?? '');
+	};
 
-  const form = useForm<TQrCodeOptions>({
-    defaultValues: {
-      width: settings.width,
-      height: settings.height,
-      margin: settings.margin,
-      dotsOptions: {
-        type: settings.dotsOptions?.type ?? "dot",
-        style:
-          typeof settings.dotsOptions?.style === "string"
-            ? "#000000" // Default color if style is a string
-            : ((
-                settings.dotsOptions?.style as {
-                  colorStops?: { color: string }[];
-                }
-              )?.colorStops?.[0]?.color ?? "#000000"),
-      },
-      cornersSquareOptions: {
-        type: settings.cornersSquareOptions?.type ?? "square",
-        style:
-          typeof settings.cornersSquareOptions?.style === "string"
-            ? "#000000"
-            : ((
-                settings.cornersSquareOptions?.style as {
-                  colorStops?: { color: string }[];
-                }
-              )?.colorStops?.[0]?.color ?? "#000000"),
-      },
-      cornersDotOptions: {
-        type: settings.cornersDotOptions?.type ?? "dot",
-        style:
-          typeof settings.cornersDotOptions?.style === "string"
-            ? "#000000"
-            : ((
-                settings.cornersDotOptions?.style as {
-                  colorStops?: { color: string }[];
-                }
-              )?.colorStops?.[0]?.color ?? "#000000"),
-      },
-      backgroundOptions: {
-        style:
-          typeof settings.backgroundOptions?.style === "string"
-            ? "#ffffff"
-            : ((
-                settings.backgroundOptions?.style as {
-                  colorStops?: { color: string }[];
-                }
-              )?.colorStops?.[0]?.color ?? "#ffffff"),
-      },
-      imageOptions: {
-        hideBackgroundDots: settings.imageOptions?.hideBackgroundDots ?? true,
-      },
-    },
-  });
+	const form = useForm<TQrCodeOptions>({
+		defaultValues: {
+			width: settings.width,
+			height: settings.height,
+			margin: settings.margin,
+			dotsOptions: {
+				type: settings.dotsOptions?.type ?? 'dot',
+				style:
+					typeof settings.dotsOptions?.style === 'string'
+						? '#000000' // Default color if style is a string
+						: ((
+								settings.dotsOptions?.style as {
+									colorStops?: { color: string }[];
+								}
+							)?.colorStops?.[0]?.color ?? '#000000'),
+			},
+			cornersSquareOptions: {
+				type: settings.cornersSquareOptions?.type ?? 'square',
+				style:
+					typeof settings.cornersSquareOptions?.style === 'string'
+						? '#000000'
+						: ((
+								settings.cornersSquareOptions?.style as {
+									colorStops?: { color: string }[];
+								}
+							)?.colorStops?.[0]?.color ?? '#000000'),
+			},
+			cornersDotOptions: {
+				type: settings.cornersDotOptions?.type ?? 'dot',
+				style:
+					typeof settings.cornersDotOptions?.style === 'string'
+						? '#000000'
+						: ((
+								settings.cornersDotOptions?.style as {
+									colorStops?: { color: string }[];
+								}
+							)?.colorStops?.[0]?.color ?? '#000000'),
+			},
+			backgroundOptions: {
+				style:
+					typeof settings.backgroundOptions?.style === 'string'
+						? '#ffffff'
+						: ((
+								settings.backgroundOptions?.style as {
+									colorStops?: { color: string }[];
+								}
+							)?.colorStops?.[0]?.color ?? '#ffffff'),
+			},
+			imageOptions: {
+				hideBackgroundDots: settings.imageOptions?.hideBackgroundDots ?? true,
+			},
+		},
+	});
 
-  const handleChange = (data: TQrCodeOptions) => {
-    settings.width = Number(data.width);
-    settings.height = Number(data.height);
-    settings.margin = (settings.width / 100) * data.margin;
+	const handleChange = (data: TQrCodeOptions) => {
+		settings.width = Number(data.width);
+		settings.height = Number(data.height);
+		settings.margin = (settings.width / 100) * data.margin;
 
-    settings.dotsOptions = {
-      type: data.dotsOptions.type,
-      style: data.dotsOptions.style,
-    };
+		settings.dotsOptions = {
+			type: data.dotsOptions.type,
+			style: data.dotsOptions.style,
+		};
 
-    settings.cornersSquareOptions = {
-      type: data.cornersSquareOptions.type,
-      style: data.cornersSquareOptions.style,
-    };
+		settings.cornersSquareOptions = {
+			type: data.cornersSquareOptions.type,
+			style: data.cornersSquareOptions.style,
+		};
 
-    settings.cornersDotOptions = {
-      type: data.cornersDotOptions.type,
-      style: data.cornersDotOptions.style,
-    };
+		settings.cornersDotOptions = {
+			type: data.cornersDotOptions.type,
+			style: data.cornersDotOptions.style,
+		};
 
-    settings.backgroundOptions = {
-      style: data.backgroundOptions.style,
-    };
+		settings.backgroundOptions = {
+			style: data.backgroundOptions.style,
+		};
 
-    settings.imageOptions = {
-      hideBackgroundDots: data.imageOptions.hideBackgroundDots,
-    };
+		settings.imageOptions = {
+			hideBackgroundDots: data.imageOptions.hideBackgroundDots,
+		};
 
-    onChange(settings);
-  };
+		onChange(settings);
+	};
 
-  return (
-    <Form {...form}>
-      <form
-        onChange={form.handleSubmit(handleChange)}
-        className="space-y-6 xl:w-2/3"
-      >
-        <Tabs defaultValue={"general"} className="w-full">
-          <TabsList className="mb-4 w-full">
-            <TabsTrigger className="flex-1" value="general">
-              General
-            </TabsTrigger>
-            <TabsTrigger className="flex-1" value="dot">
-              Shape
-            </TabsTrigger>
-            <TabsTrigger className="flex-1" value="image">
-              Icon
-            </TabsTrigger>
-          </TabsList>
+	return (
+		<Form {...form}>
+			<form onChange={form.handleSubmit(handleChange)} className="space-y-6 xl:w-2/3">
+				<Tabs defaultValue={'general'} className="w-full">
+					<TabsList className="mb-4 w-full">
+						<TabsTrigger className="flex-1" value="general">
+							General
+						</TabsTrigger>
+						<TabsTrigger className="flex-1" value="dot">
+							Shape
+						</TabsTrigger>
+						<TabsTrigger className="flex-1" value="image">
+							Icon
+						</TabsTrigger>
+					</TabsList>
 
-          <TabsContent value="general" className="mt-0">
-            <div className="flex flex-col flex-wrap space-y-6 p-2">
-              <FormField
-                control={form.control}
-                name="width"
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Size (Quality)</FormLabel>
-                    <FormControl>
-                      <Slider
-                        name="width"
-                        className="cursor-pointer"
-                        value={[form.getValues("width")]}
-                        max={2000}
-                        min={300}
-                        step={25}
-                        onValueChange={(e: unknown) => {
-                          form.setValue("width", e as number);
-                          form.setValue("height", e as number);
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription className="pt-1 text-center">
-                      {form.getValues("height")} x {form.getValues("width")} px
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="margin"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Border Spacing</FormLabel>
-                    <FormControl>
-                      <Slider
-                        name="margin"
-                        className="cursor-pointer"
-                        value={[field.value]}
-                        max={10}
-                        min={0}
-                        step={1}
-                        onValueChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormDescription className="pt-1 text-center">
-                      {field.value} %
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="backgroundOptions.style"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Background</FormLabel>
-                      <FormControl>
-                        <div>
-                          <ColorPicker
-                            defaultBackground={field.value}
-                            onChange={(color) => {
-                              field.onChange(color);
-                              handleChange(form.getValues());
-                            }}
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-          </TabsContent>
+					<TabsContent value="general" className="mt-0">
+						<div className="flex flex-col flex-wrap space-y-6 p-2">
+							<FormField
+								control={form.control}
+								name="width"
+								render={() => (
+									<FormItem>
+										<FormLabel>Size (Quality)</FormLabel>
+										<FormControl>
+											<Slider
+												name="width"
+												className="cursor-pointer"
+												value={[form.getValues('width')]}
+												max={2000}
+												min={300}
+												step={25}
+												onValueChange={(e: unknown) => {
+													form.setValue('width', e as number);
+													form.setValue('height', e as number);
+												}}
+											/>
+										</FormControl>
+										<FormDescription className="pt-1 text-center">
+											{form.getValues('height')} x {form.getValues('width')} px
+										</FormDescription>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="margin"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Border Spacing</FormLabel>
+										<FormControl>
+											<Slider
+												name="margin"
+												className="cursor-pointer"
+												value={[field.value]}
+												max={10}
+												min={0}
+												step={1}
+												onValueChange={field.onChange}
+											/>
+										</FormControl>
+										<FormDescription className="pt-1 text-center">{field.value} %</FormDescription>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="backgroundOptions.style"
+								render={({ field }) => {
+									return (
+										<FormItem>
+											<FormLabel>Background</FormLabel>
+											<FormControl>
+												<div>
+													<ColorPicker
+														defaultBackground={field.value}
+														onChange={(color) => {
+															field.onChange(color);
+															handleChange(form.getValues());
+														}}
+													/>
+												</div>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									);
+								}}
+							/>
+						</div>
+					</TabsContent>
 
-          <TabsContent value="dot" className="mt-0">
-            <div className="flex flex-col flex-wrap space-y-6 p-2">
-              <div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
-                <FormField
-                  control={form.control}
-                  name="dotsOptions.type"
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel>Dot Style</FormLabel>
-                      <FormControl>
-                        <Select
-                          name="dotsOptions.type"
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a style" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="square">Square</SelectItem>
-                            <SelectItem value="dots">Dots</SelectItem>
-                            <SelectItem value="rounded">Rounded</SelectItem>
-                            <SelectItem value="extra-rounded">
-                              Extra rounded
-                            </SelectItem>
-                            <SelectItem value="classy">Classy</SelectItem>
-                            <SelectItem value="classy-rounded">
-                              Classy rounded
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="dotsOptions.style"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Dot Color</FormLabel>
-                      <FormControl>
-                        <div>
-                          <ColorPicker
-                            defaultBackground={field.value}
-                            onChange={(color) => {
-                              field.onChange(color);
-                              handleChange(form.getValues());
-                            }}
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+					<TabsContent value="dot" className="mt-0">
+						<div className="flex flex-col flex-wrap space-y-6 p-2">
+							<div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
+								<FormField
+									control={form.control}
+									name="dotsOptions.type"
+									render={({ field }) => (
+										<FormItem className="flex-1">
+											<FormLabel>Dot Style</FormLabel>
+											<FormControl>
+												<Select
+													name="dotsOptions.type"
+													onValueChange={field.onChange}
+													value={field.value}
+												>
+													<SelectTrigger>
+														<SelectValue placeholder="Select a style" />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem value="square">Square</SelectItem>
+														<SelectItem value="dots">Dots</SelectItem>
+														<SelectItem value="rounded">Rounded</SelectItem>
+														<SelectItem value="extra-rounded">Extra rounded</SelectItem>
+														<SelectItem value="classy">Classy</SelectItem>
+														<SelectItem value="classy-rounded">Classy rounded</SelectItem>
+													</SelectContent>
+												</Select>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="dotsOptions.style"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Dot Color</FormLabel>
+											<FormControl>
+												<div>
+													<ColorPicker
+														defaultBackground={field.value}
+														onChange={(color) => {
+															field.onChange(color);
+															handleChange(form.getValues());
+														}}
+													/>
+												</div>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
 
-              <div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
-                <FormField
-                  control={form.control}
-                  name="cornersSquareOptions.type"
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel>Corners Square Style</FormLabel>
-                      <FormControl>
-                        <Select
-                          name="cornersSquareOptions.type"
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a style" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="square">Square</SelectItem>
-                            <SelectItem value="dot">Dot</SelectItem>
-                            <SelectItem value="extra-rounded">
-                              Extra rounded
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="cornersSquareOptions.style"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Corners Square Color</FormLabel>
-                      <FormControl>
-                        <div>
-                          <ColorPicker
-                            defaultBackground={field.value}
-                            onChange={(color) => {
-                              field.onChange(color);
-                              handleChange(form.getValues());
-                            }}
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+							<div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
+								<FormField
+									control={form.control}
+									name="cornersSquareOptions.type"
+									render={({ field }) => (
+										<FormItem className="flex-1">
+											<FormLabel>Corners Square Style</FormLabel>
+											<FormControl>
+												<Select
+													name="cornersSquareOptions.type"
+													onValueChange={field.onChange}
+													value={field.value}
+												>
+													<SelectTrigger>
+														<SelectValue placeholder="Select a style" />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem value="square">Square</SelectItem>
+														<SelectItem value="dot">Dot</SelectItem>
+														<SelectItem value="extra-rounded">Extra rounded</SelectItem>
+													</SelectContent>
+												</Select>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="cornersSquareOptions.style"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Corners Square Color</FormLabel>
+											<FormControl>
+												<div>
+													<ColorPicker
+														defaultBackground={field.value}
+														onChange={(color) => {
+															field.onChange(color);
+															handleChange(form.getValues());
+														}}
+													/>
+												</div>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
 
-              <div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
-                <FormField
-                  control={form.control}
-                  name="cornersDotOptions.type"
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormLabel>Corners Dot Style</FormLabel>
-                      <FormControl>
-                        <Select
-                          name="cornersDotOptions.type"
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a style" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="square">Square</SelectItem>
-                            <SelectItem value="dot">Dot</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="cornersDotOptions.style"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Corners Dot Color</FormLabel>
-                      <FormControl>
-                        <div>
-                          <ColorPicker
-                            defaultBackground={field.value}
-                            onChange={(color) => {
-                              field.onChange(color);
-                              handleChange(form.getValues());
-                            }}
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-          </TabsContent>
+							<div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
+								<FormField
+									control={form.control}
+									name="cornersDotOptions.type"
+									render={({ field }) => (
+										<FormItem className="flex-1">
+											<FormLabel>Corners Dot Style</FormLabel>
+											<FormControl>
+												<Select
+													name="cornersDotOptions.type"
+													onValueChange={field.onChange}
+													value={field.value}
+												>
+													<SelectTrigger>
+														<SelectValue placeholder="Select a style" />
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem value="square">Square</SelectItem>
+														<SelectItem value="dot">Dot</SelectItem>
+													</SelectContent>
+												</Select>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="cornersDotOptions.style"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Corners Dot Color</FormLabel>
+											<FormControl>
+												<div>
+													<ColorPicker
+														defaultBackground={field.value}
+														onChange={(color) => {
+															field.onChange(color);
+															handleChange(form.getValues());
+														}}
+													/>
+												</div>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+						</div>
+					</TabsContent>
 
-          <TabsContent value="image" className="mt-0">
-            <div className="flex flex-col flex-wrap space-y-6 p-2">
-              <FormField
-                control={form.control}
-                name="image"
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Icon</FormLabel>
-                    <FormControl>
-                      <div className="grid w-full max-w-sm items-center gap-1.5">
-                        <Input
-                          name="image"
-                          type="file"
-                          accept=".jpg,.jpeg,.png,.svg,.webp"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              if (file.size > 1 * 1024 * 1024) {
-                                alert("File is too big! Max size is 1MB");
-                                e.target.value = "";
-                                return;
-                              }
+					<TabsContent value="image" className="mt-0">
+						<div className="flex flex-col flex-wrap space-y-6 p-2">
+							<FormField
+								control={form.control}
+								name="image"
+								render={() => (
+									<FormItem>
+										<FormLabel>Icon</FormLabel>
+										<FormControl>
+											<div className="grid w-full max-w-sm items-center gap-1.5">
+												<Input
+													name="image"
+													type="file"
+													accept=".jpg,.jpeg,.png,.svg,.webp"
+													onChange={(e) => {
+														const file = e.target.files?.[0];
+														if (file) {
+															if (file.size > 1 * 1024 * 1024) {
+																alert('File is too big! Max size is 1MB');
+																e.target.value = '';
+																return;
+															}
 
-                              const reader = new FileReader();
-                              reader.readAsDataURL(file);
-                              reader.onload = () => {
-                                const base64 = reader.result as string;
-                                settings.image = base64;
-                                onChange(settings);
-                              };
-                            }
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+															const reader = new FileReader();
+															reader.readAsDataURL(file);
+															reader.onload = () => {
+																const base64 = reader.result as string;
+																settings.image = base64;
+																onChange(settings);
+															};
+														}
+													}}
+												/>
+											</div>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 
-              <FormField
-                control={form.control}
-                name="imageOptions.hideBackgroundDots"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4">
-                    <FormLabel className="cursor-pointer">
-                      Hide Background Dots
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        name="imageOptions.hideBackgroundDots"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+							<FormField
+								control={form.control}
+								name="imageOptions.hideBackgroundDots"
+								render={({ field }) => (
+									<FormItem className="flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4">
+										<FormLabel className="cursor-pointer">Hide Background Dots</FormLabel>
+										<FormControl>
+											<Checkbox
+												name="imageOptions.hideBackgroundDots"
+												checked={field.value}
+												onCheckedChange={field.onChange}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 
-              <div>
-                <p className="mb-4 text-sm leading-none font-medium">
-                  You can also choose from predefined icons
-                </p>
-                <IconPicker onSelect={handleIconSelect} />
-              </div>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </form>
-    </Form>
-  );
+							<div>
+								<p className="mb-4 text-sm leading-none font-medium">
+									You can also choose from predefined icons
+								</p>
+								<IconPicker onSelect={handleIconSelect} />
+							</div>
+						</div>
+					</TabsContent>
+				</Tabs>
+			</form>
+		</Form>
+	);
 };

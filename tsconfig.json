@@ -1,4 +1,0 @@
-{
-	"extends": "./packages/typescript-config/tsconfig.common.json",
-	"exclude": ["**/build/**/*", "**/node_modules/**/*"]
-}

@@ -1,20 +1,14 @@
 {
-  "extends": "qrcodly-typescript-config/tsconfig.frontend.json",
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.cjs",
-    "**/*.js",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": ["node_modules", ".next"],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "plugins": [{ "name": "next" }],
-    "paths": {
-      "@/*": ["./src/*"],
-      "qrcodly-api-types*": ["../../packages/api-types/src*"]
-    }
-  }
+	"extends": "qrcodly-typescript-config/tsconfig.frontend.json",
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.js", ".next/types/**/*.ts"],
+	"exclude": ["node_modules", ".next"],
+	"compilerOptions": {
+		"maxNodeModuleJsDepth": 2,
+		"skipLibCheck": true,
+		"baseUrl": ".",
+		"plugins": [{ "name": "next" }],
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	}
 }

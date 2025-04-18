@@ -1,4 +1,4 @@
-import { NotFoundError } from '@/core/error/http'
+import { NotFoundError } from '@/core/error/http';
 
 export class QrCodeNotFoundError extends NotFoundError {
 	constructor() {

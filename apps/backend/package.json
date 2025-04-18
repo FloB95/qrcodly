@@ -18,7 +18,7 @@
 		"copyMailerTemplates": "cp -r ./src/core/mailer/templates ./build/src/core/mailer/templates",
 		"start": "pnpm run db:migrate && TZ=Europe/Berlin node build/src/index.js",
 		"dev-server": "docker-compose up -d",
-		"dev": "TZ=Europe/Berlin tsx watch --include ./src  src/index.ts",
+		"dev": "TZ=Europe/Berlin tsx watch --tsconfig ./tsconfig.json --include ./src src/index.ts",
 		"test": "NODE_ENV=test LOG_LEVEL=error && jest --runInBand",
 		"test:detectOpenHandles": "jest --silent --runInBand --detectOpenHandles",
 		"db:push": "drizzle-kit push --config=drizzle.config.ts",
