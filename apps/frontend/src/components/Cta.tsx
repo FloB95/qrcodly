@@ -5,7 +5,7 @@ import { EnvelopeIcon } from '@heroicons/react/24/outline';
 
 export const Cta = () => {
 	return (
-		<div className="text-center max-w-screen-md mx-auto my-28">
+		<div className="text-center mx-auto my-28">
 			<h2 className="text-4xl font-bold mb-4">Help us improve – your feedback matters! 🚀</h2>
 			<p className="text-2xl font-bold">
 				We are constantly working on improving QRcodly. <br />

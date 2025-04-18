@@ -10,7 +10,7 @@
 	"scripts": {
 		"setup": "pnpm install",
 		"build": "turbo run build",
-		"format": "prettier --config .prettierrc.js --write .",
+		"format": "prettier --config .prettierrc.json --write .",
 		"lint": "turbo run lint",
 		"clean": "turbo run clean --parallel"
 	},

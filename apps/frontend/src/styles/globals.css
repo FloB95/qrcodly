@@ -134,3 +134,9 @@
 	width: 40px;
 	height: 40px;
 }
+
+@media (min-width: 1400px) {
+	.container {
+		max-width: 1400px;
+	}
+}

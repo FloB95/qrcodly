@@ -6,7 +6,16 @@ import {
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 
+// Utility function to check if all properties of an object are undefined
+function areAllPropertiesUndefined(obj: Record<string, any>): boolean {
+	return Object.values(obj).every((value) => value === undefined);
+}
+
 export function convertVCardObjToString(vCardInput: TVCardInput): string {
+	if (areAllPropertiesUndefined(vCardInput)) {
+		return '';
+	}
+
 	const vCard = new VCF();
 
 	if (vCardInput.firstName || vCardInput.lastName) {
@@ -53,6 +62,10 @@ export function convertVCardObjToString(vCardInput: TVCardInput): string {
 }
 
 export function convertWiFiObjToString(wiFiInput: TWifiInput): string {
+	if (areAllPropertiesUndefined(wiFiInput)) {
+		return '';
+	}
+
 	const wifiString = `WIFI:T:${wiFiInput.encryption};S:${wiFiInput.ssid};P:${wiFiInput.password};;`;
 	return wifiString;
 }
