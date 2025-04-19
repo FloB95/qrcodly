@@ -1,4 +1,3 @@
-import { env } from '@/env';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/nextjs';
 import type {
@@ -7,34 +6,12 @@ import type {
 	TQrCodePaginatedResponseDto,
 } from '@shared/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-if (!env.NEXT_PUBLIC_API_URL) {
-	throw new Error('NEXT_PUBLIC_API_URL is not defined in the environment variables');
-}
+import { apiRequest } from '../utils';
 
 // Define query keys
 export const queryKeys = {
 	myQrCodes: ['myQrCodes'],
 } as const;
-
-// API request helper
-async function apiRequest<T>(endpoint: string, options: RequestInit): Promise<T> {
-	try {
-		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}${endpoint}`, options);
-
-		if (!response.ok) {
-			const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
-			throw new Error(
-				`API request failed with status ${response.status}: ${JSON.stringify(errorBody)}`,
-			);
-		}
-
-		return (await response.json()) as T;
-	} catch (error) {
-		console.error('API request error:', error);
-		throw new Error('Failed to communicate with the server');
-	}
-}
 
 // Hook to fetch QR codes
 export function useMyQrCodesQuery() {
@@ -53,6 +30,7 @@ export function useMyQrCodesQuery() {
 				},
 			});
 		},
+		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 2,
 	});

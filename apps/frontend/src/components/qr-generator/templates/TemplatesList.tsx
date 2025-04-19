@@ -1,8 +1,7 @@
-import type { TConfigTemplate, TCreateConfigTemplateDto, TQrCodeOptions } from '@shared/schemas';
+import type { TConfigTemplate, TCreateConfigTemplateDto } from '@shared/schemas';
 import { DynamicQrCode } from '../DynamicQrCode';
 
 type TemplateListProps = {
-	settings: TQrCodeOptions;
 	templates: TCreateConfigTemplateDto[] | TConfigTemplate[];
 	onSelect: (data: TCreateConfigTemplateDto | TConfigTemplate) => void;
 };

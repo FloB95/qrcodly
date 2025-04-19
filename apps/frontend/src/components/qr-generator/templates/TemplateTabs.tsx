@@ -6,10 +6,17 @@ import { useAuth } from '@clerk/nextjs';
 import { PREDEFINED_TEMPLATES } from './PredefinedTemplatesData';
 import type { TConfigTemplate, TCreateConfigTemplateDto } from '@shared/schemas';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
+import { useMyConfigTemplatesQuery } from '@/lib/api/config-template';
+import { StarIcon } from 'lucide-react';
 
 export const TemplateTabs = () => {
 	const { isSignedIn } = useAuth();
 	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
+
+	const myConfigTemplatesQuery = useMyConfigTemplatesQuery();
+	const { isLoading, data: configTemplates } = isSignedIn
+		? myConfigTemplatesQuery
+		: { isLoading: false, data: null };
 
 	const handleSelect = (template: TCreateConfigTemplateDto | TConfigTemplate) => {
 		updateConfig({
@@ -33,24 +40,21 @@ export const TemplateTabs = () => {
 				</TabsList>
 				{isSignedIn && (
 					<TabsContent value="myTemplates" className="mt-0">
-						{/* <div>
-              {isLoading && <p>Loading...</p>}
-              {configTemplates && (
-                <TemplatesList
-                  templates={configTemplates}
-                  onSelect={handleSelect}
-                  settings={settings}
-                />
-              )}
-            </div> */}
+						<div>
+							{isLoading && <p>Loading...</p>}
+							{configTemplates && configTemplates.data.length > 0 ? (
+								<TemplatesList templates={configTemplates.data} onSelect={handleSelect} />
+							) : (
+								<div className="mt-20 justify-center text-center flex flex-col items-center">
+									<StarIcon className="h-12 w-12" />
+									<p className="text-center text-md mt-4">You don&apos;t have any templates yet.</p>
+								</div>
+							)}
+						</div>
 					</TabsContent>
 				)}
 				<TabsContent value="predefinedTemplates" className="mt-0">
-					<TemplatesList
-						templates={PREDEFINED_TEMPLATES}
-						onSelect={handleSelect}
-						settings={config}
-					/>
+					<TemplatesList templates={PREDEFINED_TEMPLATES} onSelect={handleSelect} />
 				</TabsContent>
 			</Tabs>
 		</div>

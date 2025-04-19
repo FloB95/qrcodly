@@ -1,6 +1,5 @@
-import type { TQrCodeOptions } from '@shared/schemas';
+import { env } from '@/env';
 import { type ClassValue, clsx } from 'clsx';
-import type { Options } from 'qr-code-styling';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -119,5 +118,24 @@ export function rgbaToHex(colorStr: string, forceRemoveAlpha = false): string {
 				.map((string) => (string.length === 1 ? '0' + string : string)) // Adds 0 when length of one number is 1
 				.join('')
 		);
+	}
+}
+
+// API request helper
+export async function apiRequest<T>(endpoint: string, options: RequestInit): Promise<T> {
+	try {
+		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}${endpoint}`, options);
+
+		if (!response.ok) {
+			const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+			throw new Error(
+				`API request failed with status ${response.status}: ${JSON.stringify(errorBody)}`,
+			);
+		}
+
+		return (await response.json()) as T;
+	} catch (error) {
+		console.error('API request error:', error);
+		throw new Error('Failed to communicate with the server');
 	}
 }

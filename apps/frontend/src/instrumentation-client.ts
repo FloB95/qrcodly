@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 // This file configures the initialization of Sentry on the client.
 // The added config here will be used whenever a users loads a page in their browser.
@@ -8,7 +8,7 @@ import * as Sentry from '@sentry/nextjs';
 import { env } from './env';
 
 Sentry.init({
-	enabled: env.NODE_ENV === 'production',
+	enabled: process.env.NODE_ENV === 'production',
 	dsn: env.NEXT_PUBLIC_SENTRY_DSN,
 
 	// Add optional integrations for additional features
