@@ -4,7 +4,7 @@ import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-s
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateQrCodeDto, type TQrCodeResponseDto } from '@shared/schemas';
 import { container } from 'tsyringe';
-import { CreateQrCodeUseCase } from '../../useCase/CreateQRcodeUseCase';
+import { CreateQrCodeUseCase } from '../../useCase/qr-code/CreateQrCodeUseCase';
 import { type User } from '@clerk/fastify';
 import { type TQrCode } from '../../domain/entities/QrCode';
 

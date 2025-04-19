@@ -1,9 +1,11 @@
 import { IBaseUseCase } from '@/core/interface/IBaseUseCase';
-import QrCodeRepository from '../domain/repository/QrCodeRepository';
+import QrCodeRepository from '../../domain/repository/QrCodeRepository';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
-import { TQrCode } from '../domain/entities/QrCode';
-import { QrCodeService } from '../services/QrCodeService';
+import { TQrCode } from '../../domain/entities/QrCode';
+import { QrCodeService } from '../../services/QrCodeService';
+import { EventEmitter } from '@/core/event';
+import { QrCodeDeletedEvent } from '../../event/QrCodeDeletedEvent';
 
 /**
  * Use case for deleting a QRcode entity.
@@ -14,6 +16,7 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(Logger) private logger: Logger,
 		@inject(QrCodeService) private qrCodeService: QrCodeService,
+		@inject(EventEmitter) private eventEmitter: EventEmitter,
 	) {}
 
 	/**
@@ -27,6 +30,10 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 
 		// log the deletion
 		if (res) {
+			// Emit the QrCodeCreatedEvent.
+			const event = new QrCodeDeletedEvent(qrCode);
+			this.eventEmitter.emit(event);
+
 			this.logger.info('QR code deleted successfully', {
 				id: qrCode.id,
 				deletedBy: deletedBy,

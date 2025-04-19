@@ -2,19 +2,19 @@ import { AbstractEvent } from '@/core/event/AbstractEvent';
 import { type TQrCode } from '../domain/entities/QrCode';
 
 /**
- * Event triggered when a QR code is created.
+ * Event triggered when a QR code is deleted.
  */
-export class QrCodeCreatedEvent extends AbstractEvent {
+export class QrCodeDeletedEvent extends AbstractEvent {
 	/**
 	 * The name of the event.
 	 */
-	static readonly eventName = 'QRCodeCreated';
+	static readonly eventName = 'QRCodeDeleted';
 
 	constructor(public readonly qrCode: TQrCode) {
 		super();
 	}
 
 	eventName(): string {
-		return QrCodeCreatedEvent.eventName;
+		return QrCodeDeletedEvent.eventName;
 	}
 }

@@ -2,7 +2,7 @@ import { createTable } from '@/core/db/utils';
 import { type TQrCodeContent, type TQrCodeContentType, type TQrCodeOptions } from '@shared/schemas';
 import { datetime, index, json, text, varchar } from 'drizzle-orm/mysql-core';
 
-export const qrCode = createTable(
+const qrCode = createTable(
 	'qr_code',
 	{
 		id: varchar('id', {

@@ -1,22 +1,22 @@
 import { AbstractEventHandler } from '@/core/event/handler/AbstractEventHandler';
 import { EventHandler } from '@/core/decorators/EventHandler';
-import { QRCodeCreatedEvent } from '../QRCodeCreatedEvent';
+import { QrCodeCreatedEvent } from '../QrCodeCreatedEvent';
 import { container } from 'tsyringe';
 import { QrCodeService } from '../../services/QrCodeService';
 import QrCodeRepository from '../../domain/repository/QrCodeRepository';
 import { Logger } from '@/core/logging';
 
-@EventHandler(QRCodeCreatedEvent.eventName)
-export class QrCodeCreatedEventHandler extends AbstractEventHandler<QRCodeCreatedEvent> {
+@EventHandler(QrCodeCreatedEvent.eventName)
+export class QrCodeCreatedEventHandler extends AbstractEventHandler<QrCodeCreatedEvent> {
 	constructor() {
 		super();
 	}
 
 	/**
 	 * Handles the event.
-	 * @param {QRCodeCreatedEvent} event The event to handle.
+	 * @param {QrCodeCreatedEvent} event The event to handle.
 	 */
-	async handle(event: QRCodeCreatedEvent): Promise<void> {
+	async handle(event: QrCodeCreatedEvent): Promise<void> {
 		const qrCodeService = container.resolve(QrCodeService);
 		const qrCodeRepository = container.resolve(QrCodeRepository);
 		const logger = container.resolve(Logger);

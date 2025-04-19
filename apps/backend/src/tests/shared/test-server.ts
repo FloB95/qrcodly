@@ -4,7 +4,6 @@ import { container } from 'tsyringe';
 import { ShutdownService } from '@/core/shutdown/ShutdownService';
 import { clerkClient } from '@clerk/fastify';
 import { CLERK_JWT_TEMPLATE } from '@/modules/qr-code/config/constants';
-import { faker } from '@faker-js/faker/.';
 
 const TEST_USER_ID = 'user_2fTGlAmh9a1UhD5JYOD70Z4Y31T';
 const TEST_USER_2_ID = 'user_2vxx4UoYRjT2mi1I4FMFEbpzbAA';

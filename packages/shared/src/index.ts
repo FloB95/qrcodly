@@ -16,11 +16,17 @@ export type { TGetQrCodeQueryParamsDto } from './dtos/qr-code/QrCodeRequestParam
 export { QrCodeResponseDto } from './dtos/qr-code/QrCodeResponseDto';
 export type { TQrCodeResponseDto } from './dtos/qr-code/QrCodeResponseDto';
 
-export { ConfigTemplateResponseDtoSchema } from './dtos/qr-code-templates/TConfigTemplateResponseDto';
-export type { TConfigTemplateResponseDto } from './dtos/qr-code-templates/TConfigTemplateResponseDto';
+export { ConfigTemplatePaginatedResponseDto } from './dtos/qr-code-templates/ConfigTemplatePaginatedResponseDto';
+export type { TConfigTemplatePaginatedResponseDto } from './dtos/qr-code-templates/ConfigTemplatePaginatedResponseDto';
 
-export { CreateConfigTemplateDtoSchema } from './dtos/qr-code-templates/TCreateConfigTemplateDto';
-export type { TCreateConfigTemplateDto } from './dtos/qr-code-templates/TCreateConfigTemplateDto';
+export { ConfigTemplateResponseDto } from './dtos/qr-code-templates/ConfigTemplateResponseDto';
+export type { TConfigTemplateResponseDto } from './dtos/qr-code-templates/ConfigTemplateResponseDto';
+
+export { CreateConfigTemplateDto } from './dtos/qr-code-templates/CreateConfigTemplateDto';
+export type { TCreateConfigTemplateDto } from './dtos/qr-code-templates/CreateConfigTemplateDto';
+
+export { GetConfigTemplateQueryParamsDto } from './dtos/qr-code-templates/ConfigTemplateRequestParamsDto';
+export type { TGetConfigTemplateQueryParamsDto } from './dtos/qr-code-templates/ConfigTemplateRequestParamsDto';
 
 export { IdRequestQueryDto } from './dtos/IdRequestQuery';
 export type { TIdRequestQueryDto } from './dtos/IdRequestQuery';

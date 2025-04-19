@@ -1,12 +1,12 @@
 import { IBaseUseCase } from '@/core/interface/IBaseUseCase';
 import { inject, injectable } from 'tsyringe';
-import QrCodeRepository from '../domain/repository/QrCodeRepository';
+import QrCodeRepository from '../../domain/repository/QrCodeRepository';
 import { Logger } from '@/core/logging';
 import { EventEmitter } from '@/core/event';
-import { TQrCode } from '../domain/entities/QrCode';
-import { QRCodeCreatedEvent } from '../event/QRCodeCreatedEvent';
+import { TQrCode } from '../../domain/entities/QrCode';
+import { QrCodeCreatedEvent } from '../../event/QrCodeCreatedEvent';
 import { TCreateQrCodeDto } from '@shared/schemas';
-import { QrCodeService } from '../services/QrCodeService';
+import { QrCodeService } from '../../services/QrCodeService';
 
 /**
  * Use case for creating a QrCode entity.
@@ -46,8 +46,8 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 		const createdQrCode = await this.qrCodeRepository.findOneById(newId);
 		if (!createdQrCode) throw new Error('Failed to create QR code');
 
-		// Emit the QRCodeCreatedEvent.
-		const event = new QRCodeCreatedEvent(createdQrCode);
+		// Emit the QrCodeCreatedEvent.
+		const event = new QrCodeCreatedEvent(createdQrCode);
 		this.eventEmitter.emit(event);
 
 		this.logger.info('QR code created successfully', {

@@ -4,7 +4,7 @@ import { ConfigTemplateSchema } from '../../schemas/QrCodeConfigTemplate';
 /**
  * Schema for the Create Config Template DTO.
  */
-export const CreateConfigTemplateDtoSchema = ConfigTemplateSchema.pick({
+export const CreateConfigTemplateDto = ConfigTemplateSchema.pick({
 	name: true,
 	config: true,
 });
@@ -12,4 +12,4 @@ export const CreateConfigTemplateDtoSchema = ConfigTemplateSchema.pick({
 /**
  * Type for the Create Config Template DTO.
  */
-export type TCreateConfigTemplateDto = z.infer<typeof CreateConfigTemplateDtoSchema>;
+export type TCreateConfigTemplateDto = z.infer<typeof CreateConfigTemplateDto>;

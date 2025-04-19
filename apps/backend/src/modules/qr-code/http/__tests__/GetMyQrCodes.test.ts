@@ -6,7 +6,7 @@ import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-s
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateQrCodeDto } from '@shared/schemas';
 import { container } from 'tsyringe';
-import { CreateQrCodeUseCase } from '../../useCase/CreateQRcodeUseCase';
+import { CreateQrCodeUseCase } from '../../useCase/qr-code/CreateQrCodeUseCase';
 import { type User } from '@clerk/fastify';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code/get-my`;

@@ -12,60 +12,58 @@ import {
 
 @injectable()
 export class QrCodeService {
+	private readonly validMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
+	private readonly signedUrlExpirySeconds = 24 * 60 * 60; // 24 hours
+
 	constructor(
 		@inject(ObjectStorage) private objectStorage: ObjectStorage,
 		@inject(Logger) private logger: Logger,
 	) {}
 
-	private generateFileFromBase64(base64: string, fileName: string) {
-		// Convert base64 image to buffer and validate
-		if (base64) {
-			const isBase64 = base64.startsWith('data:image/') && base64.includes(';base64,');
-			if (!isBase64) {
-				throw new BadRequestError('Invalid base64 image format');
-			}
-
-			// Extract the mime type and the actual base64 data
-			const [metadata, base64Data] = base64.split(',');
-			const mimeType = metadata.split(';')[0].split(':')[1];
-
-			// Validate mime type
-			const validMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
-			if (!validMimeTypes.includes(mimeType)) {
-				throw new BadRequestError('Invalid image type. Only JPG, PNG, SVG, and WEBP are allowed.');
-			}
-
-			// Decode base64 to buffer
-			const buffer = Buffer.from(base64Data, 'base64');
-
-			// Handle file extension
-			let extension = mimeType.split('/')[1];
-			if (extension === 'svg+xml') {
-				extension = 'svg';
-			}
-
-			return {
-				buffer,
-				fileName: `${fileName}.${extension}`,
-				mimeType,
-			};
+	/**
+	 * Validates and converts a base64 string into a file object.
+	 */
+	private validateAndConvertBase64(base64: string, fileName: string) {
+		if (!base64?.startsWith('data:image/') || !base64?.includes(';base64,')) {
+			throw new BadRequestError('Invalid base64 image format');
 		}
 
-		return undefined;
+		const [metadata, base64Data] = base64.split(',');
+		const mimeType = metadata.split(';')[0].split(':')[1];
+
+		if (!this.validMimeTypes.includes(mimeType)) {
+			throw new BadRequestError('Invalid image type. Only JPG, PNG, SVG, and WEBP are allowed.');
+		}
+
+		const buffer = Buffer.from(base64Data, 'base64');
+		const extension = mimeType === 'image/svg+xml' ? 'svg' : mimeType.split('/')[1];
+
+		return { buffer, fileName: `${fileName}.${extension}`, mimeType };
 	}
 
-	public async uploadQrCodeImage(
-		qrCode: Omit<TQrCode, 'createdAt' | 'updatedAt'>,
-	): Promise<string | undefined> {
-		if (!qrCode.config.image) return undefined;
-		const file = this.generateFileFromBase64(qrCode.config.image, qrCode.id);
-		if (!file) return undefined;
+	/**
+	 * Constructs the file path for QR code images.
+	 */
+	private constructFilePath(folder: string, userId: string | undefined, fileName: string): string {
+		return userId ? `${folder}/${userId}/${fileName}` : `${folder}/${fileName}`;
+	}
 
-		const filePath = qrCode.createdBy
-			? `${QR_CODE_UPLOAD_FOLDER}/${qrCode.createdBy}/${file.fileName}`
-			: `${QR_CODE_UPLOAD_FOLDER}/${file.fileName}`;
+	/**
+	 * Uploads a QR code image to object storage.
+	 */
+	public async uploadQrCodeImage(
+		qrCode: Pick<TQrCode, 'id' | 'createdBy' | 'config'>,
+	): Promise<string | undefined> {
+		const { config, id, createdBy } = qrCode;
+		if (!config.image) return undefined;
 
 		try {
+			const file = this.validateAndConvertBase64(config.image, id);
+			const filePath = this.constructFilePath(
+				QR_CODE_UPLOAD_FOLDER,
+				createdBy ?? undefined,
+				file.fileName,
+			);
 			await this.objectStorage.upload(filePath, file.buffer, file.mimeType);
 			return filePath;
 		} catch (error) {
@@ -74,78 +72,94 @@ export class QrCodeService {
 		}
 	}
 
-	public async deleteQrCodeImages(qrCode: TQrCode): Promise<void> {
-		if (qrCode.config.image) {
-			try {
-				await this.objectStorage.delete(qrCode.config.image);
-			} catch (error) {
-				this.logger.error('Failed to delete QR code image', error as Error);
-			}
-		}
-
-		if (qrCode.previewImage) {
-			try {
-				await this.objectStorage.delete(qrCode.previewImage);
-			} catch (error) {
-				this.logger.error('Failed to delete QR code image', error as Error);
-			}
+	/**
+	 * Deletes a single image from object storage.
+	 */
+	private async deleteImage(imagePath: string | undefined): Promise<void> {
+		if (!imagePath) return;
+		try {
+			await this.objectStorage.delete(imagePath);
+		} catch (error) {
+			this.logger.error(`Failed to delete image: ${imagePath}`, error as Error);
 		}
 	}
 
+	/**
+	 * Deletes QR code images from object storage.
+	 */
+	public async deleteQrCodeImages(qrCode: Pick<TQrCode, 'config' | 'previewImage'>): Promise<void> {
+		await Promise.all([
+			this.deleteImage(qrCode.config.image),
+			this.deleteImage(qrCode.previewImage ?? undefined),
+		]);
+	}
+
+	/**
+	 * Generates a preview image for the QR code.
+	 */
 	public async generatePreviewImage(
-		qrCode: Omit<TQrCode, 'createdAt' | 'updatedAt'>,
+		qrCode: Pick<
+			TQrCode,
+			'id' | 'createdBy' | 'config' | 'content' | 'contentType' | 'previewImage'
+		>,
 	): Promise<string | undefined> {
+		const { id, createdBy, config, content, contentType, previewImage } = qrCode;
+		if (previewImage || config.image) return undefined;
+
 		try {
-			// TODO: Check fix for this
-			// if qrcode has image, preview image can be generated from it
-			if (qrCode.previewImage || qrCode.config.image) return;
+			const fileName = `${id}.webp`;
+			const filePath = this.constructFilePath(
+				QR_CODE_PREVIEW_IMAGE_FOLDER,
+				createdBy ?? undefined,
+				fileName,
+			);
 
-			const fileName = `${qrCode.id}.webp`;
-			const filePath = qrCode.createdBy
-				? `${QR_CODE_PREVIEW_IMAGE_FOLDER}/${qrCode.createdBy}/${fileName}`
-				: `${QR_CODE_PREVIEW_IMAGE_FOLDER}/${fileName}`;
-
-			qrCode = await this.generatePresignedUrls(qrCode as TQrCode);
 			const instance = await generateQrCodeStylingInstance({
-				...convertQrCodeOptionsToLibraryOptions(qrCode.config),
-				data: convertQRCodeDataToStringByType(qrCode.content, qrCode.contentType),
+				...convertQrCodeOptionsToLibraryOptions(config),
+				data: convertQRCodeDataToStringByType(content, contentType),
 			});
 
-			// Generate the QR code in SVG format
 			const svg = await instance.getRawData('svg');
-			if (!svg) return;
-			const buffer = Buffer.isBuffer(svg)
-				? svg
-				: svg instanceof Blob && Buffer.from(await svg.arrayBuffer());
+			if (!svg) return undefined;
 
-			await this.objectStorage.upload(filePath, buffer as Buffer, 'image/svg+xml');
+			const buffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
+
+			await this.objectStorage.upload(filePath, buffer, 'image/svg+xml');
 			return filePath;
 		} catch (error) {
-			this.logger.error('Failed to upload QR code preview image', error as Error);
-			return;
+			this.logger.error('Failed to generate QR code preview image', error as Error);
+			return undefined;
 		}
 	}
 
+	/**
+	 * Converts an image path to a presigned URL.
+	 */
 	private async convertImagePathToPresignedUrl(imagePath: string): Promise<string | undefined> {
 		try {
-			// The URL will be valid for 24 hours
-			return await this.objectStorage.getSignedUrl(imagePath, 24 * 60 * 60);
+			return await this.objectStorage.getSignedUrl(imagePath, this.signedUrlExpirySeconds);
 		} catch (error) {
 			this.logger.error(`Error generating signed URL for image: ${imagePath}`, error as Error);
 			return undefined;
 		}
 	}
 
-	public async generatePresignedUrls(qrCode: TQrCode) {
-		if (qrCode.config.image) {
-			qrCode.config.image = await this.convertImagePathToPresignedUrl(qrCode.config.image);
+	/**
+	 * Generates presigned URLs for QR code images.
+	 */
+	public async generatePresignedUrls(qrCode: TQrCode): Promise<TQrCode> {
+		const updatedQrCode = { ...qrCode };
+		if (updatedQrCode.config.image) {
+			updatedQrCode.config.image = await this.convertImagePathToPresignedUrl(
+				updatedQrCode.config.image,
+			);
 		}
 
-		if (qrCode.previewImage) {
-			qrCode.previewImage =
-				(await this.convertImagePathToPresignedUrl(qrCode.previewImage)) || null;
+		if (updatedQrCode.previewImage) {
+			updatedQrCode.previewImage =
+				(await this.convertImagePathToPresignedUrl(updatedQrCode.previewImage)) ?? null;
 		}
 
-		return qrCode;
+		return updatedQrCode;
 	}
 }

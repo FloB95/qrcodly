@@ -2,17 +2,19 @@ import { Delete, Get, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/AbstractController';
 import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/IRequest';
 import { inject, injectable } from 'tsyringe';
-import { CreateQrCodeUseCase } from '../../useCase/CreateQRcodeUseCase';
 import { getAuth } from '@clerk/fastify';
 import QrCodeRepository from '../../domain/repository/QrCodeRepository';
-import { DeleteQrCodeUseCase } from '../../useCase/DeleteQrCodeUseCase';
+import { DeleteQrCodeUseCase } from '../../useCase/qr-code/DeleteQrCodeUseCase';
+import { CreateQrCodeUseCase } from '../../useCase/qr-code/CreateQrCodeUseCase';
 import { QrCodeNotFoundError } from '../../error/http/QrCodeNotFoundError';
-import { ListQrCodesUseCase } from '../../useCase/ListQrCodesUseCase';
+import { ListQrCodesUseCase } from '../../useCase/qr-code/ListQrCodeUseCase';
 import { UnauthorizedError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/IResponse';
 import {
 	CreateQrCodeDto,
 	GetQrCodeQueryParamsSchema,
+	QrCodePaginatedResponseDto,
+	QrCodeResponseDto,
 	TCreateQrCodeDto,
 	TCreateQrCodeResponseDto,
 	TGetQrCodeQueryParamsDto,
@@ -56,7 +58,7 @@ export class QrCodeController extends AbstractController {
 			data: qrCodes,
 		};
 
-		return this.makeApiHttpResponse(200, pagination);
+		return this.makeApiHttpResponse(200, QrCodePaginatedResponseDto.parse(pagination));
 	}
 
 	@Post('', {
@@ -98,7 +100,7 @@ export class QrCodeController extends AbstractController {
 			throw new UnauthorizedError();
 		}
 
-		return this.makeApiHttpResponse(200, qrCode);
+		return this.makeApiHttpResponse(200, QrCodeResponseDto.parse(qrCode));
 	}
 
 	@Delete('/:id')
