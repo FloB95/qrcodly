@@ -96,7 +96,9 @@ export class QrCodeService {
 		qrCode: Omit<TQrCode, 'createdAt' | 'updatedAt'>,
 	): Promise<string | undefined> {
 		try {
-			if (qrCode.previewImage) return;
+			// TODO: Check fix for this
+			// if qrcode has image, preview image can be generated from it
+			if (qrCode.previewImage || qrCode.config.image) return;
 
 			const fileName = `${qrCode.id}.webp`;
 			const filePath = qrCode.createdBy
@@ -112,7 +114,7 @@ export class QrCodeService {
 			// Generate the QR code in SVG format
 			const svg = await instance.getRawData('svg');
 
-			console.log("svg generated");
+			console.log('svg generated');
 
 			if (!svg) return;
 			const buffer = Buffer.isBuffer(svg)

@@ -37,7 +37,7 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 		// Convert image path to presigned URL
 		await Promise.all(
 			qrCodes.map(async (qrCode) => {
-				qrCode = await this.qrCodeService.generatePresignedUrls(qrCode);
+				await this.qrCodeService.generatePresignedUrls(qrCode);
 			}),
 		);
 

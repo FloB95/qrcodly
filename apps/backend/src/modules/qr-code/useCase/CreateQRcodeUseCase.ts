@@ -6,7 +6,6 @@ import { EventEmitter } from '@/core/event';
 import { TQrCode } from '../domain/entities/QrCode';
 import { QRCodeCreatedEvent } from '../event/QRCodeCreatedEvent';
 import { TCreateQrCodeDto } from '@shared/schemas';
-import { QR_CODE_IMAGE_FOLDER } from '../config/constants';
 import { QrCodeService } from '../services/QrCodeService';
 
 /**
