@@ -6,10 +6,9 @@ import { Cta } from '@/components/Cta';
 
 export default async function Home() {
 	// const { data, error } = useQuery({
-		// 	queryKey: ['qr-codes'],
-		// 	queryFn: getMyQrCodes,
-		// });
-
+	// 	queryKey: ['qr-codes'],
+	// 	queryFn: getMyQrCodes,
+	// });
 
 	return (
 		<main className="flex px-4 sm:px-0 min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100">
@@ -21,7 +20,7 @@ export default async function Home() {
 						<span className="text-2xl">Free & Open Source</span> <br /> QR Code Generator
 					</h1>
 					<div className="mb-2">
-						<QRcodeGenerator />
+							<QRcodeGenerator />
 					</div>
 
 					<Cta />

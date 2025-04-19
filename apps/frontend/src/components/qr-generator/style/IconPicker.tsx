@@ -23,7 +23,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 	const [color, setColor] = useState<string>('#000000');
 	const [searchTerm, setSearchTerm] = useState<string>('');
 
-	const handleIconClick = (iconName?: string) => {
+	const handleIconClick = React.useCallback((iconName?: string) => {
 		if (iconName) {
 			setSelectedIcon(iconName);
 			const IconComponent = Icons[iconName as keyof typeof Icons];
@@ -38,7 +38,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 		}
 
 		onSelect(undefined);
-	};
+	}, [color, onSelect]);
 
 	const filteredIcons = Object.keys(Icons).filter((iconName) =>
 		iconName.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -48,7 +48,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 		if (selectedIcon) {
 			handleIconClick(selectedIcon);
 		}
-	}, [color]);
+	}, [color, handleIconClick, selectedIcon]);
 
 	return (
 		<Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>

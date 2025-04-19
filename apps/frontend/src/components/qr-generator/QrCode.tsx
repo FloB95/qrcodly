@@ -11,6 +11,9 @@ export type QrCodeProps = {
 };
 
 export default function QrCode({ qrCode, additionalStyles = '' }: QrCodeProps) {
+
+	console.log('QrCode', qrCode);
+
 	const options: Options = useMemo(
 		() => ({
 			...convertQrCodeOptionsToLibraryOptions(qrCode.config),

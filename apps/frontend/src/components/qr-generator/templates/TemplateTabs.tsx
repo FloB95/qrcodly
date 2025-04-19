@@ -4,19 +4,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TemplatesList } from './TemplatesList';
 import { useAuth } from '@clerk/nextjs';
 import { PREDEFINED_TEMPLATES } from './PredefinedTemplatesData';
-import type { TConfigTemplate, TCreateConfigTemplateDto, TQrCodeOptions } from '@shared/schemas';
+import type { TConfigTemplate, TCreateConfigTemplateDto } from '@shared/schemas';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 
-type TemplateTabsProps = {
-	settings: TQrCodeOptions;
-	onSelect: (data: TQrCodeOptions) => void;
-};
-
-export const TemplateTabs = ({ settings, onSelect }: TemplateTabsProps) => {
+export const TemplateTabs = () => {
 	const { isSignedIn } = useAuth();
+	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
 
 	const handleSelect = (template: TCreateConfigTemplateDto | TConfigTemplate) => {
-		onSelect({
-			...settings,
+		updateConfig({
+			...config,
 			...template.config,
 		});
 	};
@@ -52,7 +49,7 @@ export const TemplateTabs = ({ settings, onSelect }: TemplateTabsProps) => {
 					<TemplatesList
 						templates={PREDEFINED_TEMPLATES}
 						onSelect={handleSelect}
-						settings={settings}
+						settings={config}
 					/>
 				</TabsContent>
 			</Tabs>

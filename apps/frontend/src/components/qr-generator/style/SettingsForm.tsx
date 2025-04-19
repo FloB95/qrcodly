@@ -24,102 +24,100 @@ import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import IconPicker from './IconPicker';
 import type { TQrCodeOptions } from '@shared/schemas';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 
-type SettingsFormProps = {
-	onChange: (data: TQrCodeOptions) => void;
-	settings: TQrCodeOptions;
-};
+export const SettingsForm = () => {
+	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
 
-export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
 	const handleIconSelect = (iconName?: string) => {
-		settings.image = iconName;
-		onChange(settings);
+		config.image = iconName;
+		updateConfig(config);
 		form.setValue('image', iconName ?? '');
 	};
 
 	const form = useForm<TQrCodeOptions>({
 		defaultValues: {
-			width: settings.width,
-			height: settings.height,
-			margin: settings.margin,
+			width: config.width,
+			height: config.height,
+			margin: config.margin,
 			dotsOptions: {
-				type: settings.dotsOptions?.type ?? 'dot',
+				type: config.dotsOptions?.type ?? 'dot',
 				style:
-					typeof settings.dotsOptions?.style === 'string'
+					typeof config.dotsOptions?.style === 'string'
 						? '#000000' // Default color if style is a string
 						: ((
-								settings.dotsOptions?.style as {
+								config.dotsOptions?.style as {
 									colorStops?: { color: string }[];
 								}
 							)?.colorStops?.[0]?.color ?? '#000000'),
 			},
 			cornersSquareOptions: {
-				type: settings.cornersSquareOptions?.type ?? 'square',
+				type: config.cornersSquareOptions?.type ?? 'square',
 				style:
-					typeof settings.cornersSquareOptions?.style === 'string'
+					typeof config.cornersSquareOptions?.style === 'string'
 						? '#000000'
 						: ((
-								settings.cornersSquareOptions?.style as {
+								config.cornersSquareOptions?.style as {
 									colorStops?: { color: string }[];
 								}
 							)?.colorStops?.[0]?.color ?? '#000000'),
 			},
 			cornersDotOptions: {
-				type: settings.cornersDotOptions?.type ?? 'dot',
+				type: config.cornersDotOptions?.type ?? 'dot',
 				style:
-					typeof settings.cornersDotOptions?.style === 'string'
+					typeof config.cornersDotOptions?.style === 'string'
 						? '#000000'
 						: ((
-								settings.cornersDotOptions?.style as {
+								config.cornersDotOptions?.style as {
 									colorStops?: { color: string }[];
 								}
 							)?.colorStops?.[0]?.color ?? '#000000'),
 			},
 			backgroundOptions: {
 				style:
-					typeof settings.backgroundOptions?.style === 'string'
+					typeof config.backgroundOptions?.style === 'string'
 						? '#ffffff'
 						: ((
-								settings.backgroundOptions?.style as {
+								config.backgroundOptions?.style as {
 									colorStops?: { color: string }[];
 								}
 							)?.colorStops?.[0]?.color ?? '#ffffff'),
 			},
 			imageOptions: {
-				hideBackgroundDots: settings.imageOptions?.hideBackgroundDots ?? true,
+				hideBackgroundDots: config.imageOptions?.hideBackgroundDots ?? true,
 			},
 		},
 	});
 
 	const handleChange = (data: TQrCodeOptions) => {
-		settings.width = Number(data.width);
-		settings.height = Number(data.height);
-		settings.margin = (settings.width / 100) * data.margin;
+		config.width = Number(data.width);
+		config.height = Number(data.height);
+		config.margin = (config.width / 100) * data.margin;
 
-		settings.dotsOptions = {
+		config.dotsOptions = {
 			type: data.dotsOptions.type,
 			style: data.dotsOptions.style,
 		};
 
-		settings.cornersSquareOptions = {
+		config.cornersSquareOptions = {
 			type: data.cornersSquareOptions.type,
 			style: data.cornersSquareOptions.style,
 		};
 
-		settings.cornersDotOptions = {
+		config.cornersDotOptions = {
 			type: data.cornersDotOptions.type,
 			style: data.cornersDotOptions.style,
 		};
 
-		settings.backgroundOptions = {
+		config.backgroundOptions = {
 			style: data.backgroundOptions.style,
 		};
 
-		settings.imageOptions = {
+		config.imageOptions = {
 			hideBackgroundDots: data.imageOptions.hideBackgroundDots,
 		};
 
-		onChange(settings);
+		updateConfig(config);
 	};
 
 	return (
@@ -398,8 +396,8 @@ export const SettingsForm = ({ onChange, settings }: SettingsFormProps) => {
 															reader.readAsDataURL(file);
 															reader.onload = () => {
 																const base64 = reader.result as string;
-																settings.image = base64;
-																onChange(settings);
+																config.image = base64;
+																updateConfig(config);
 															};
 														}
 													}}

@@ -81,6 +81,7 @@ export const DashboardListItem = ({ qr }: { qr: TQrCode }) => {
 			duration: 5000,
 		});
 
+		console.log('Deleting QR code:', qr.id);
 		// deleteMutation.mutate(
 		//   { id: qr.id },
 		//   {
@@ -109,7 +110,7 @@ export const DashboardListItem = ({ qr }: { qr: TQrCode }) => {
 		//     },
 		//   },
 		// );
-	}, [qr]);
+	}, [qr, isDeleting]);
 
 	return (
 		<TableRow

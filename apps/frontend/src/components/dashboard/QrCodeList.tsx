@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableRow } from '../ui/table';
 import { useMyQrCodesQuery } from '@/lib/api/qr-code';
 
 export const QrCodeList = () => {
-	const { data: qrCodes, isLoading, error } = useMyQrCodesQuery();
+	const { data: qrCodes, isLoading } = useMyQrCodesQuery();
 
 	if (isLoading || !qrCodes) {
 		return (

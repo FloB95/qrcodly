@@ -80,7 +80,7 @@ export function useCreateQrCodeMutation() {
 		},
 		onSuccess: () => {
 			// Invalidate the 'myQrCodes' query to refetch the updated data
-			void queryClient.invalidateQueries(queryKeys.myQrCodes);
+			void queryClient.invalidateQueries({ queryKey: [...queryKeys.myQrCodes] });
 		},
 		onError: (error) => {
 			console.error('Error creating QR code:', error);

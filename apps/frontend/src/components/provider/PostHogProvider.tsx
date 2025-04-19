@@ -25,7 +25,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 				fullName: user?.fullName,
 			});
 		}
-	}, [isSignedIn, user?.id]);
+	}, [isSignedIn, user?.id, user?.fullName, user?.primaryEmailAddress?.emailAddress]);
 
 	return (
 		<PHProvider client={posthog}>
