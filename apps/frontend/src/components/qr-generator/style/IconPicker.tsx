@@ -48,7 +48,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 		if (selectedIcon) {
 			handleIconClick(selectedIcon);
 		}
-	}, [color, handleIconClick, selectedIcon]);
+	}, [color, selectedIcon]);
 
 	return (
 		<Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
