@@ -28,12 +28,13 @@ import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStore
 
 export const SettingsForm = () => {
 	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
-
 	const handleIconSelect = (iconName?: string) => {
 		config.image = iconName;
 		updateConfig(config);
 		form.setValue('image', iconName ?? '');
 	};
+
+	console.log('config', config)
 
 	const form = useForm<TQrCodeOptions>({
 		defaultValues: {
@@ -41,47 +42,19 @@ export const SettingsForm = () => {
 			height: config.height,
 			margin: config.margin,
 			dotsOptions: {
-				type: config.dotsOptions?.type ?? 'dot',
-				style:
-					typeof config.dotsOptions?.style === 'string'
-						? '#000000' // Default color if style is a string
-						: ((
-								config.dotsOptions?.style as {
-									colorStops?: { color: string }[];
-								}
-							)?.colorStops?.[0]?.color ?? '#000000'),
+				type: config.dotsOptions.type,
+				style: config.dotsOptions.style,
 			},
 			cornersSquareOptions: {
-				type: config.cornersSquareOptions?.type ?? 'square',
-				style:
-					typeof config.cornersSquareOptions?.style === 'string'
-						? '#000000'
-						: ((
-								config.cornersSquareOptions?.style as {
-									colorStops?: { color: string }[];
-								}
-							)?.colorStops?.[0]?.color ?? '#000000'),
+				type: config.cornersSquareOptions.type,
+				style: config.cornersSquareOptions.style,
 			},
 			cornersDotOptions: {
-				type: config.cornersDotOptions?.type ?? 'dot',
-				style:
-					typeof config.cornersDotOptions?.style === 'string'
-						? '#000000'
-						: ((
-								config.cornersDotOptions?.style as {
-									colorStops?: { color: string }[];
-								}
-							)?.colorStops?.[0]?.color ?? '#000000'),
+				type: config.cornersDotOptions.type,
+				style: config.cornersDotOptions.style,
 			},
 			backgroundOptions: {
-				style:
-					typeof config.backgroundOptions?.style === 'string'
-						? '#ffffff'
-						: ((
-								config.backgroundOptions?.style as {
-									colorStops?: { color: string }[];
-								}
-							)?.colorStops?.[0]?.color ?? '#ffffff'),
+				style: config.backgroundOptions.style,
 			},
 			imageOptions: {
 				hideBackgroundDots: config.imageOptions?.hideBackgroundDots ?? true,
@@ -197,7 +170,7 @@ export const SettingsForm = () => {
 											<FormControl>
 												<div>
 													<ColorPicker
-														defaultBackground={field.value}
+														defaultColor={field.value}
 														onChange={(color) => {
 															field.onChange(color);
 															handleChange(form.getValues());
@@ -254,7 +227,7 @@ export const SettingsForm = () => {
 											<FormControl>
 												<div>
 													<ColorPicker
-														defaultBackground={field.value}
+														defaultColor={field.value}
 														onChange={(color) => {
 															field.onChange(color);
 															handleChange(form.getValues());
@@ -304,7 +277,7 @@ export const SettingsForm = () => {
 											<FormControl>
 												<div>
 													<ColorPicker
-														defaultBackground={field.value}
+														defaultColor={field.value}
 														onChange={(color) => {
 															field.onChange(color);
 															handleChange(form.getValues());
@@ -353,7 +326,7 @@ export const SettingsForm = () => {
 											<FormControl>
 												<div>
 													<ColorPicker
-														defaultBackground={field.value}
+														defaultColor={field.value}
 														onChange={(color) => {
 															field.onChange(color);
 															handleChange(form.getValues());

@@ -21,12 +21,12 @@ export const PREDEFINED_TEMPLATES: TCreateConfigTemplateDto[] = [
 					rotation: 90,
 					colorStops: [
 						{
-							color: '#9b33c3',
+							color: '#7D10A8',
 							offset: 0,
 						},
 						{
 							color: '#ff6a00',
-							offset: 1,
+							offset: 100,
 						},
 					],
 				},

@@ -67,7 +67,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 						className="mb-4 w-full rounded border p-2"
 					/>
 					<ColorPicker
-						defaultBackground={color}
+						defaultColor={color}
 						onChange={(color) => {
 							setColor(color as string);
 						}}

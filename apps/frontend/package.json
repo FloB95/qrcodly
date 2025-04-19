@@ -45,6 +45,7 @@
 		"posthog-js": "^1.236.2",
 		"qr-code-styling": "^1.9.2",
 		"react": "^19.0.0",
+		"react-best-gradient-color-picker": "^3.0.14",
 		"react-dom": "^19.0.0",
 		"react-hook-form": "^7.55.0",
 		"recharts": "^2.15.3",
