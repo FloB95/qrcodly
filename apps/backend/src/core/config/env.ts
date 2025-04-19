@@ -7,7 +7,7 @@ import { z } from 'zod';
  * built with invalid env vars.
  */
 const server = z.object({
-	BASE_URL: z.string().url().default('http://localhost:5000'),
+	BASE_URL: z.string().url().default('http://localhost:5001'),
 	FRONTEND_URL: z.string().url().default('https://www.qrcodly.de'),
 	DB_HOST: z.string(),
 	DB_USER: z.string(),
@@ -20,7 +20,7 @@ const server = z.object({
 		.default(false),
 	DB_SEEDING: z.union([z.boolean(), z.string().transform((val) => val === 'true')]).default(false),
 	NODE_ENV: z.enum(['development', 'test', 'production']).default('production'),
-	API_PORT: z.string().default('5000'),
+	API_PORT: z.string().default('5001'),
 	API_HOST: z.string().default('127.0.0.1'),
 	LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 	REDIS_URL: z.string().url(),

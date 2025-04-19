@@ -1,4 +1,3 @@
-import 'node-self';
 import QRCodeStyling, { type Options } from 'qr-code-styling';
 import { JSDOM } from 'jsdom';
 

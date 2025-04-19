@@ -25,6 +25,8 @@ import { Input } from '@/components/ui/input';
 import IconPicker from './IconPicker';
 import type { TQrCodeOptions } from '@shared/schemas';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
+import { Button } from '@/components/ui/button';
+import { TrashIcon } from 'lucide-react';
 
 export const SettingsForm = () => {
 	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
@@ -400,11 +402,21 @@ export const SettingsForm = () => {
 								)}
 							/>
 
-							<div>
-								<p className="mb-4 text-sm leading-none font-medium">
-									You can also choose from predefined icons
-								</p>
-								<IconPicker onSelect={handleIconSelect} />
+							<div className="flex justify-between">
+								<div>
+									<p className="mb-4 text-sm leading-none font-medium">
+										You can also choose from predefined icons
+									</p>
+									<IconPicker onSelect={handleIconSelect} />
+								</div>
+								{config.image && (
+									<div className="flex justify-end flex-col">
+										<Button onClick={() => updateConfig({ ...config, image: '' })}>
+											<TrashIcon color="white" width={24} height={24} className="mr-2" />
+											Clear Icon
+										</Button>
+									</div>
+								)}
 							</div>
 						</div>
 					</TabsContent>
