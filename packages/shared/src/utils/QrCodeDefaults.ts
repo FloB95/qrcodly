@@ -1,4 +1,4 @@
-import type { TQrCodeOptions } from '@shared/schemas';
+import { TQrCodeOptions } from '../schemas/QrCode';
 
 export const QrCodeDefaults: TQrCodeOptions = {
 	width: 1000,
@@ -10,20 +10,6 @@ export const QrCodeDefaults: TQrCodeOptions = {
 	},
 	dotsOptions: {
 		style: '#000000',
-		//"style": {
-		//    "type": "linear", // 'radial'
-		//    "rotation": 0,
-		//    "colorStops": [
-		//        {
-		//            "offset": 0,
-		//            "color": "#8688B2"
-		//        },
-		//        {
-		//            "offset": 1,
-		//            "color": "#77779C"
-		//        }
-		//    ]
-		//}
 		type: 'rounded',
 	},
 	backgroundOptions: {

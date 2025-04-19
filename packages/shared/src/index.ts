@@ -67,3 +67,5 @@ export {
 	convertWiFiObjToString,
 	convertVCardObjToString,
 } from './utils';
+
+export { QrCodeDefaults } from './utils/QrCodeDefaults';

@@ -13,7 +13,7 @@ const server = z.object({
 	DB_USER: z.string(),
 	DB_PASSWORD: z.string(),
 	DB_NAME: z.string(),
-	TEST_DB_NAME: z.string().default('db_test'),
+	TEST_DB_NAME: z.string().default('qrcodly_test'),
 	DB_PORT: z.string(),
 	DB_MIGRATING: z
 		.union([z.boolean(), z.string().transform((val) => val === 'true')])
@@ -35,7 +35,7 @@ const server = z.object({
 	S3_UPLOAD_KEY: z.string(),
 	S3_UPLOAD_SECRET: z.string(),
 	S3_BUCKET_NAME: z.string(),
-	SENTRY_DSN: z.string().url().optional(),
+	SENTRY_DSN: z.string().url(),
 	AXIOM_DATASET: z.string().optional(),
 	AXIOM_TOKEN: z.string().optional(),
 	CLERK_PUBLISHABLE_KEY: z.string(),

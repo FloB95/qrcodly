@@ -1,13 +1,12 @@
 'use client';
 
-import { QrCodeDefaults } from '@/config/QrCodeDefaults';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../ui/tooltip';
 import { NameDialog } from '../NameDialog';
 import { Button } from '@/components/ui/button';
-import type { TQrCodeOptions } from '@shared/schemas';
+import { QrCodeDefaults, type TQrCodeOptions } from '@shared/schemas';
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 	const { isSignedIn } = useAuth();

@@ -2,6 +2,7 @@ import { singleton } from 'tsyringe';
 import { env } from '../config/env';
 import { OnShutdown } from '../decorators/OnShutdown';
 import { init, type NodeClient, captureException, isInitialized } from '@sentry/node';
+import { IN_PRODUCTION } from '../config/constants';
 
 export type TErrorLevel = 'fatal' | 'error' | 'warning' | 'info';
 
@@ -17,13 +18,11 @@ export class ErrorReporter {
 	private client: NodeClient | undefined;
 
 	constructor() {
-		if (env.SENTRY_DSN) {
-			this.client = init({
-				dsn: env.SENTRY_DSN,
-				// Set sampling rate for profiling - this is evaluated only once per SDK.init
-				profileSessionSampleRate: 1.0,
-			});
-		}
+		this.client = init({
+			enabled: IN_PRODUCTION,
+			dsn: env.SENTRY_DSN,
+			profileSessionSampleRate: 1.0,
+		});
 	}
 
 	private report(error: Error | string, options?: TReportingOptions) {

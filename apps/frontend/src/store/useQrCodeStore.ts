@@ -1,5 +1,9 @@
-import { QrCodeDefaults } from '@/config/QrCodeDefaults';
-import type { TQrCodeContent, TQrCodeContentType, TQrCodeOptions } from '@shared/schemas';
+import {
+	QrCodeDefaults,
+	type TQrCodeContent,
+	type TQrCodeContentType,
+	type TQrCodeOptions,
+} from '@shared/schemas';
 import { createStore } from 'zustand/vanilla';
 
 export type QrCodeGeneratorState = {

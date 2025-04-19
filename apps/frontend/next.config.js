@@ -1,3 +1,4 @@
+import { withSentryConfig } from '@sentry/nextjs';
 import { withAxiom } from 'next-axiom';
 
 /**
@@ -45,4 +46,15 @@ const config = {
 	},
 };
 
-export default withAxiom(config);
+// Combine both Sentry and Axiom configurations
+const sentryOptions = {
+	org: "fb-development",
+	project: "qrcodly",
+	silent: !process.env.CI,
+	widenClientFileUpload: true,
+	tunnelRoute: "/monitoring",
+	disableLogger: true,
+	automaticVercelMonitors: true,
+};
+
+export default withAxiom(withSentryConfig(config, sentryOptions));

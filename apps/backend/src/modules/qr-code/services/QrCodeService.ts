@@ -113,9 +113,6 @@ export class QrCodeService {
 
 			// Generate the QR code in SVG format
 			const svg = await instance.getRawData('svg');
-
-			console.log('svg generated');
-
 			if (!svg) return;
 			const buffer = Buffer.isBuffer(svg)
 				? svg

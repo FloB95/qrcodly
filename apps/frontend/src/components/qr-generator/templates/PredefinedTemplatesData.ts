@@ -1,5 +1,4 @@
-import { QrCodeDefaults } from '@/config/QrCodeDefaults';
-import type { TCreateConfigTemplateDto } from '@shared/schemas';
+import { QrCodeDefaults, type TCreateConfigTemplateDto } from '@shared/schemas';
 
 export const PREDEFINED_TEMPLATES: TCreateConfigTemplateDto[] = [
 	{

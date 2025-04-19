@@ -1,0 +1,67 @@
+import { API_BASE_PATH } from '@/core/config/constants';
+import { faker } from '@faker-js/faker';
+import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { type FastifyInstance } from 'fastify';
+import {
+	QrCodeDefaults,
+	type TCreateQrCodeResponseDto,
+	type TCreateQrCodeDto,
+	type TQrCodeResponseDto,
+} from '@shared/schemas';
+import { container } from 'tsyringe';
+import { CreateQrCodeUseCase } from '../../useCase/CreateQRcodeUseCase';
+import { type User } from '@clerk/fastify';
+import { type TQrCode } from '../../domain/entities/QrCode';
+
+const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
+
+/**
+ * Generates a new random QR code DTO.
+ */
+const generateQrCodeDto = (): TCreateQrCodeDto => ({
+	content: faker.internet.url(),
+	contentType: 'url',
+	config: QrCodeDefaults,
+});
+
+/**
+ * Create QR Code API Tests
+ */
+describe('createQrCode', () => {
+	let testServer: FastifyInstance;
+	let accessToken: string;
+	let user: User;
+	let createQrCode: TQrCode;
+
+	const getQrCodeRequest = async (id: string, token?: string) =>
+		testServer.inject({
+			method: 'GET',
+			url: `${QR_CODE_API_PATH}/${id}`,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token ? `Bearer ${token}` : '',
+			},
+		});
+
+	beforeAll(async () => {
+		const serverSetup = await getTestServerWithUserAuth();
+		testServer = serverSetup.testServer;
+		accessToken = serverSetup.accessToken;
+		user = serverSetup.user;
+	});
+
+	afterAll(async () => {
+		await shutDownServer();
+	});
+
+	it('should create a QR code and return status code 201', async () => {
+		const createQrCodeDto = generateQrCodeDto();
+		createQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, user.id);
+		console.log(accessToken);
+		const response = await getQrCodeRequest(createQrCode.id, accessToken);
+		const receivedQrCode = JSON.parse(response.payload) as TQrCodeResponseDto;
+
+		expect(response.statusCode).toBe(200);
+		expect(receivedQrCode.id).toMatch(createQrCode.id);
+	});
+});
