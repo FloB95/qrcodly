@@ -24,6 +24,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { Loader2 } from 'lucide-react';
 import type { TQrCode, TQrCodeContentMap } from '@shared/schemas';
+import { useCreateQrCodeMutation, useDeleteQrCodeMutation } from '@/lib/api/qr-code';
 
 const GetNameByContentType = (qr: TQrCode) => {
 	switch (qr.contentType) {
@@ -59,8 +60,7 @@ const GetQrCodeIconByContentType = (qr: TQrCode) => {
 
 export const DashboardListItem = ({ qr }: { qr: TQrCode }) => {
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
-	// const deleteMutation = api.qrCode.delete.useMutation();
-	// const apiUtils = api.useUtils();
+	const deleteQrCodeMutation = useDeleteQrCodeMutation();
 	const handleDelete = useCallback(() => {
 		setIsDeleting(true);
 		const t = toast({
@@ -74,42 +74,23 @@ export const DashboardListItem = ({ qr }: { qr: TQrCode }) => {
 			),
 		});
 
-		t.dismiss();
-		toast({
-			title: 'QR code deleted',
-			description: 'Your QR code has been successfully deleted.',
-			duration: 5000,
+		deleteQrCodeMutation.mutate(qr.id, {
+			onSuccess: () => {
+				t.dismiss();
+				setIsDeleting(false);
+			},
+			onError: () => {
+				t.dismiss();
+				toast({
+					title: 'Error deleting QR code',
+					description:
+						'There was an error deleting your QR code. We got notified and will fix it soon.',
+					variant: 'destructive',
+					duration: 5000,
+				});
+				setIsDeleting(false);
+			},
 		});
-
-		console.log('Deleting QR code:', qr.id);
-		// deleteMutation.mutate(
-		//   { id: qr.id },
-		//   {
-		//     onSuccess: () => {
-		//       apiUtils.qrCode.getMyQrCodes
-		//         .invalidate()
-		//         .then(() => {
-		//           t.dismiss();
-		//           toast({
-		//             title: "QR code deleted",
-		//             description: "Your QR code has been successfully deleted.",
-		//             duration: 5000,
-		//           });
-		//           setIsDeleting(false);
-		//         })
-		//         .catch((error) => {
-		//           t.dismiss();
-		//           toast({
-		//             title: "Failed to invalidate QR codes",
-		//             description: "Please refresh the page to see the changes.",
-		//             duration: 5000,
-		//           });
-		//           console.error("Failed to invalidate QR codes:", error);
-		//           setIsDeleting(false);
-		//         });
-		//     },
-		//   },
-		// );
 	}, [qr, isDeleting]);
 
 	return (

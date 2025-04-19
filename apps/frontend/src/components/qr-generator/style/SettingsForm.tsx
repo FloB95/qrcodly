@@ -34,7 +34,7 @@ export const SettingsForm = () => {
 		form.setValue('image', iconName ?? '');
 	};
 
-	console.log('config', config)
+	console.log('config', config);
 
 	const form = useForm<TQrCodeOptions>({
 		defaultValues: {

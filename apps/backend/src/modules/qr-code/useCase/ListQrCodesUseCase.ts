@@ -3,13 +3,19 @@ import { inject, injectable } from 'tsyringe';
 import QrCodeRepository from '../domain/repository/QrCodeRepository';
 import { ISqlQueryFindBy } from '@/core/interface/IRepository';
 import { TQrCode } from '../domain/entities/QrCode';
+import { Logger } from '@/core/logging';
+import { QrCodeService } from '../services/QrCodeService';
 
 /**
  * Use case for retrieving QR codes based on query parameters.
  */
 @injectable()
 export class ListQrCodesUseCase implements IBaseUseCase {
-	constructor(@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository) {}
+	constructor(
+		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
+		@inject(QrCodeService) private qrCodeService: QrCodeService,
+		@inject(Logger) private logger: Logger,
+	) {}
 
 	/**
 	 * Executes the use case to retrieve QR codes based on the provided query parameters.
@@ -27,6 +33,13 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 			offset,
 			where,
 		});
+
+		// Convert image path to presigned URL
+		await Promise.all(
+			qrCodes.map(async (qrCode) => {
+				qrCode = await this.qrCodeService.generatePresignedUrls(qrCode);
+			}),
+		);
 
 		// Count the total number of QR codes
 		const total = await this.qrCodeRepository.countTotal(where);

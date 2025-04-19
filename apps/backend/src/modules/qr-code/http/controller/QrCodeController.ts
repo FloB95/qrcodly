@@ -62,6 +62,11 @@ export class QrCodeController extends AbstractController {
 	@Post('', {
 		skipAuth: true,
 		bodySchema: CreateQrCodeDto,
+		config: {
+			rateLimit: {
+				max: 5,
+			},
+		},
 	})
 	async create(
 		request: IHttpRequest<TCreateQrCodeDto>,

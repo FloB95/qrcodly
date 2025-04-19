@@ -101,7 +101,7 @@ export class ObjectStorage implements IFileStorage {
 
 	async getSignedUrl(
 		key: string,
-		expiresIn: number = DEFAULT_PUBLIC_LINK_LIFETIME,
+		expiresIn: number | undefined = DEFAULT_PUBLIC_LINK_LIFETIME,
 	): Promise<string> {
 		try {
 			const command = new GetObjectCommand({

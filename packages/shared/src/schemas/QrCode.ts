@@ -167,6 +167,7 @@ export const QrCodeSchema = AbstractEntitySchema.extend({
 	config: QrCodeOptionsSchema,
 	contentType: QrCodeContentType,
 	content: QrCodeContentSchema,
+	previewImage: z.string().nullable(),
 	createdBy: z.string().nullable(),
 }).superRefine((values, ctx) => {
 	const { contentType, content } = values;

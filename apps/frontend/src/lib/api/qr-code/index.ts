@@ -87,3 +87,28 @@ export function useCreateQrCodeMutation() {
 		},
 	});
 }
+// Function to delete a QR code
+export function useDeleteQrCodeMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async (qrCodeId: string): Promise<void> => {
+			const token = await getToken();
+			const headers: HeadersInit = {
+				Authorization: `Bearer ${token}`,
+			};
+			await apiRequest<void>(`/qr-code/${qrCodeId}`, {
+				method: 'DELETE',
+				headers,
+			});
+		},
+		onSuccess: () => {
+			// Invalidate the 'myQrCodes' query to refetch the updated data
+			void queryClient.invalidateQueries({ queryKey: [...queryKeys.myQrCodes] });
+		},
+		onError: (error) => {
+			console.error('Error deleting QR code:', error);
+		},
+	});
+}

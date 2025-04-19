@@ -1,6 +1,7 @@
 import { container } from 'tsyringe';
 import { EventEmitter } from '../event/EventEmitter';
 import { AbstractEventHandler } from '../event/handler/AbstractEventHandler';
+import { Logger } from '../logging';
 
 /**
  * Decorator to register a class as an event handler for a specific event.
@@ -19,6 +20,9 @@ export function EventHandler(eventName: string): ClassDecorator {
 			);
 		}
 
+		container
+			.resolve(Logger)
+			.debug(`Registering event handler for event "${eventName}": ${target.name}`);
 		emitter.on(eventName, (event) => void handlerInstance.handle(event));
 	};
 }
