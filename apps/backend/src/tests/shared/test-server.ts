@@ -4,8 +4,10 @@ import { container } from 'tsyringe';
 import { ShutdownService } from '@/core/shutdown/ShutdownService';
 import { clerkClient } from '@clerk/fastify';
 import { CLERK_JWT_TEMPLATE } from '@/modules/qr-code/config/constants';
+import { faker } from '@faker-js/faker/.';
 
 const TEST_USER_ID = 'user_2fTGlAmh9a1UhD5JYOD70Z4Y31T';
+const TEST_USER_2_ID = 'user_2vxx4UoYRjT2mi1I4FMFEbpzbAA';
 
 async function setupTestServer(): Promise<FastifyInstance> {
 	const testServer = await container.resolve(Server).build();
@@ -13,9 +15,9 @@ async function setupTestServer(): Promise<FastifyInstance> {
 	return testServer.server;
 }
 
-async function getTestUser() {
+async function getTestUser(userId: string = TEST_USER_ID) {
 	// Create a new test user if it doesn't exist
-	const user = await clerkClient.users.getUser(TEST_USER_ID);
+	const user = await clerkClient.users.getUser(userId);
 	const session = await clerkClient.sessions.createSession({
 		userId: user.id,
 	});
@@ -23,22 +25,17 @@ async function getTestUser() {
 	return { user, accessToken };
 }
 
-export async function deleteTestUser(userId: string) {
-	try {
-		await clerkClient.users.deleteUser(userId);
-	} catch (error) {
-		console.error(`Failed to delete test user: ${(error as Error).message}`);
-	}
-}
-
 export async function getTestServerWithUserAuth() {
 	const testServer = await setupTestServer();
 	const { user, accessToken } = await getTestUser();
+	const { user: user2, accessToken: accessToken2 } = await getTestUser(TEST_USER_2_ID);
 
 	return {
 		testServer,
-		accessToken: accessToken,
+		accessToken,
+		accessToken2,
 		user,
+		user2,
 	};
 }
 

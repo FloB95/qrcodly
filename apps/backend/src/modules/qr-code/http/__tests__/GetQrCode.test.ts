@@ -2,12 +2,7 @@ import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
 import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
 import { type FastifyInstance } from 'fastify';
-import {
-	QrCodeDefaults,
-	type TCreateQrCodeResponseDto,
-	type TCreateQrCodeDto,
-	type TQrCodeResponseDto,
-} from '@shared/schemas';
+import { QrCodeDefaults, type TCreateQrCodeDto, type TQrCodeResponseDto } from '@shared/schemas';
 import { container } from 'tsyringe';
 import { CreateQrCodeUseCase } from '../../useCase/CreateQRcodeUseCase';
 import { type User } from '@clerk/fastify';
@@ -31,6 +26,7 @@ describe('createQrCode', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 	let user: User;
+	let user2: User;
 	let createQrCode: TQrCode;
 
 	const getQrCodeRequest = async (id: string, token?: string) =>
@@ -48,6 +44,7 @@ describe('createQrCode', () => {
 		testServer = serverSetup.testServer;
 		accessToken = serverSetup.accessToken;
 		user = serverSetup.user;
+		user2 = serverSetup.user2;
 	});
 
 	afterAll(async () => {
@@ -57,11 +54,24 @@ describe('createQrCode', () => {
 	it('should create a QR code and return status code 201', async () => {
 		const createQrCodeDto = generateQrCodeDto();
 		createQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, user.id);
-		console.log(accessToken);
 		const response = await getQrCodeRequest(createQrCode.id, accessToken);
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeResponseDto;
 
 		expect(response.statusCode).toBe(200);
 		expect(receivedQrCode.id).toMatch(createQrCode.id);
+	});
+
+	it('should return a 403 when user try to access other users QrCOde', async () => {
+		const createQrCodeDto = generateQrCodeDto();
+
+		createQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, user2.id);
+
+		const response = await getQrCodeRequest(createQrCode.id, accessToken);
+		expect(response.statusCode).toBe(403);
+	});
+
+	it('should return a 404 on invalid-id', async () => {
+		const response = await getQrCodeRequest('invalid-id', accessToken);
+		expect(response.statusCode).toBe(404);
 	});
 });
