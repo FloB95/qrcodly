@@ -2,8 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import QRCodeStyling, { type Options } from 'qr-code-styling';
-import { cn, convertQrCodeOptionsToLibraryOptions } from '@/lib/utils';
-import { convertQRCodeDataToStringByType, type TQrCode } from '@shared/schemas';
+import { cn } from '@/lib/utils';
+import {
+	convertQRCodeDataToStringByType,
+	convertQrCodeOptionsToLibraryOptions,
+	type TQrCode,
+} from '@shared/schemas';
 
 export type QrCodeProps = {
 	qrCode: Pick<TQrCode, 'config' | 'content' | 'contentType'>;

@@ -62,6 +62,7 @@ export * from './schemas/QrCodeConfigTemplate';
  * Utils
  **************************/
 export {
+	convertQrCodeOptionsToLibraryOptions,
 	convertQRCodeDataToStringByType,
 	convertWiFiObjToString,
 	convertVCardObjToString,

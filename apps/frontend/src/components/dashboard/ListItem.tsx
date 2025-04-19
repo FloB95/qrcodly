@@ -24,7 +24,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { Loader2 } from 'lucide-react';
 import type { TQrCode, TQrCodeContentMap } from '@shared/schemas';
-import { useCreateQrCodeMutation, useDeleteQrCodeMutation } from '@/lib/api/qr-code';
+import { useDeleteQrCodeMutation } from '@/lib/api/qr-code';
 
 const GetNameByContentType = (qr: TQrCode) => {
 	switch (qr.contentType) {
@@ -101,10 +101,14 @@ export const DashboardListItem = ({ qr }: { qr: TQrCode }) => {
 				<div className="flex space-x-8">
 					<div className="ml-4 flex flex-col justify-center">{GetQrCodeIconByContentType(qr)}</div>
 					<div className="h-[90px] w-[90px] overflow-hidden">
-						<DynamicQrCode
-							qrCode={qr}
-							additionalStyles="max-h-[100px] max-w-[100px] lg:max-h-[100px] lg:max-w-[100px]"
-						/>
+						{qr.previewImage ? (
+							<img src={qr.previewImage} alt="QR code preview" loading="lazy" />
+						) : (
+							<DynamicQrCode
+								qrCode={qr}
+								additionalStyles="max-h-[100px] max-w-[100px] lg:max-h-[100px] lg:max-w-[100px]"
+							/>
+						)}
 					</div>
 				</div>
 			</TableCell>

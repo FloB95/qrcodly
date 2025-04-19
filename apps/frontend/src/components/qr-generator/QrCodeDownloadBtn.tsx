@@ -16,9 +16,9 @@ import {
 } from '../ui/dropdown-menu';
 import { useEffect, useState } from 'react';
 import posthog from 'posthog-js';
-import { convertQrCodeOptionsToLibraryOptions } from '@/lib/utils';
 import {
 	convertQRCodeDataToStringByType,
+	convertQrCodeOptionsToLibraryOptions,
 	type TCreateQrCodeDto,
 	type TFileExtension,
 } from '@shared/schemas';

@@ -4,6 +4,11 @@ import { ObjectStorage } from '@/core/storage';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { TQrCode } from '../domain/entities/QrCode';
+import { generateQrCodeStylingInstance } from '../lib/styled-qr-code';
+import {
+	convertQRCodeDataToStringByType,
+	convertQrCodeOptionsToLibraryOptions,
+} from '@shared/schemas';
 
 @injectable()
 export class QrCodeService {
@@ -90,15 +95,31 @@ export class QrCodeService {
 	public async generatePreviewImage(
 		qrCode: Omit<TQrCode, 'createdAt' | 'updatedAt'>,
 	): Promise<string | undefined> {
-		if (qrCode.previewImage) return;
-
-		const fileName = `${qrCode.id}.webp`;
-		const filePath = qrCode.createdBy
-			? `${QR_CODE_PREVIEW_IMAGE_FOLDER}/${qrCode.createdBy}/${fileName}`
-			: `${QR_CODE_PREVIEW_IMAGE_FOLDER}/${fileName}`;
-
 		try {
-			await this.objectStorage.upload(filePath, 'file.buffer');
+			if (qrCode.previewImage) return;
+
+			const fileName = `${qrCode.id}.webp`;
+			const filePath = qrCode.createdBy
+				? `${QR_CODE_PREVIEW_IMAGE_FOLDER}/${qrCode.createdBy}/${fileName}`
+				: `${QR_CODE_PREVIEW_IMAGE_FOLDER}/${fileName}`;
+
+			qrCode = await this.generatePresignedUrls(qrCode as TQrCode);
+			const instance = await generateQrCodeStylingInstance({
+				...convertQrCodeOptionsToLibraryOptions(qrCode.config),
+				data: convertQRCodeDataToStringByType(qrCode.content, qrCode.contentType),
+			});
+
+			// Generate the QR code in SVG format
+			const svg = await instance.getRawData('svg');
+
+			console.log("svg generated");
+
+			if (!svg) return;
+			const buffer = Buffer.isBuffer(svg)
+				? svg
+				: svg instanceof Blob && Buffer.from(await svg.arrayBuffer());
+
+			await this.objectStorage.upload(filePath, buffer as Buffer, 'image/svg+xml');
 			return filePath;
 		} catch (error) {
 			this.logger.error('Failed to upload QR code preview image', error as Error);
@@ -116,7 +137,7 @@ export class QrCodeService {
 		}
 	}
 
-	public async generatePresignedUrls(qrCode: TQrCode): Promise<TQrCode> {
+	public async generatePresignedUrls(qrCode: TQrCode) {
 		if (qrCode.config.image) {
 			qrCode.config.image = await this.convertImagePathToPresignedUrl(qrCode.config.image);
 		}

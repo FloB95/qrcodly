@@ -34,7 +34,7 @@ export class ObjectStorage implements IFileStorage {
 			});
 			this.bucketName = env.S3_BUCKET_NAME;
 		} catch (e: any) {
-			console.log('Error initializing S3 client', e);
+			this.logger.error('Error initializing S3 client', e);
 		}
 	}
 

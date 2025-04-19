@@ -1,4 +1,6 @@
+import { Options } from 'qr-code-styling';
 import {
+	TQrCodeOptions,
 	type TQrCodeContent,
 	type TQrCodeContentType,
 	type TVCardInput,
@@ -87,3 +89,60 @@ export const convertQRCodeDataToStringByType = (
 			throw new Error('Invalid content type');
 	}
 };
+
+export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): Options {
+	return {
+		shape: 'square',
+		width: options.width,
+		height: options.height,
+		image: options.image,
+		type: 'canvas',
+		margin: options.margin,
+		qrOptions: {
+			typeNumber: 0,
+			mode: 'Byte',
+			errorCorrectionLevel: 'Q',
+		},
+		imageOptions: {
+			hideBackgroundDots: options.imageOptions.hideBackgroundDots,
+			imageSize: 0.4,
+			margin: 40,
+			crossOrigin: 'anonymous',
+		},
+		dotsOptions: {
+			...(typeof options.dotsOptions.style === 'object'
+				? {
+						gradient: options.dotsOptions.style,
+						color: undefined,
+					}
+				: { color: options.dotsOptions.style, gradient: undefined }),
+			type: options.dotsOptions.type,
+		},
+		backgroundOptions: {
+			...(typeof options.backgroundOptions.style === 'object'
+				? {
+						gradient: options.backgroundOptions.style,
+						color: undefined,
+					}
+				: { color: options.backgroundOptions.style, gradient: undefined }),
+		},
+		cornersSquareOptions: {
+			...(typeof options.cornersSquareOptions.style === 'object'
+				? {
+						gradient: options.cornersSquareOptions.style,
+						color: undefined,
+					}
+				: { color: options.cornersSquareOptions.style, gradien: undefined }),
+			type: options.cornersSquareOptions.type,
+		},
+		cornersDotOptions: {
+			...(typeof options.cornersDotOptions.style === 'object'
+				? {
+						gradient: options.cornersDotOptions.style,
+						color: undefined,
+					}
+				: { color: options.cornersDotOptions.style, gradient: undefined }),
+			type: options.cornersDotOptions.type,
+		},
+	};
+}
