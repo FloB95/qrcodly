@@ -90,6 +90,10 @@ export const convertQRCodeDataToStringByType = (
 	}
 };
 
+export function degreesToRadians(degrees: number): number {
+	return degrees * (Math.PI / 180);
+}
+
 export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): Options {
 	return {
 		shape: 'square',
@@ -112,7 +116,10 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
 		dotsOptions: {
 			...(typeof options.dotsOptions.style === 'object'
 				? {
-						gradient: options.dotsOptions.style,
+						gradient: {
+							...options.dotsOptions.style,
+							rotation: degreesToRadians((options.dotsOptions.style.rotation - 90) % 360),
+						},
 						color: undefined,
 					}
 				: { color: options.dotsOptions.style, gradient: undefined }),
@@ -121,7 +128,12 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
 		backgroundOptions: {
 			...(typeof options.backgroundOptions.style === 'object'
 				? {
-						gradient: options.backgroundOptions.style,
+						gradient: {
+							...options.backgroundOptions.style,
+							rotation: degreesToRadians(
+								(options.backgroundOptions.style.rotation - 90 + 360) % 360,
+							),
+						},
 						color: undefined,
 					}
 				: { color: options.backgroundOptions.style, gradient: undefined }),
@@ -129,7 +141,12 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
 		cornersSquareOptions: {
 			...(typeof options.cornersSquareOptions.style === 'object'
 				? {
-						gradient: options.cornersSquareOptions.style,
+						gradient: {
+							...options.cornersSquareOptions.style,
+							rotation: degreesToRadians(
+								(options.cornersSquareOptions.style.rotation - 90 + 360) % 360,
+							),
+						},
 						color: undefined,
 					}
 				: { color: options.cornersSquareOptions.style, gradien: undefined }),
@@ -138,7 +155,12 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
 		cornersDotOptions: {
 			...(typeof options.cornersDotOptions.style === 'object'
 				? {
-						gradient: options.cornersDotOptions.style,
+						gradient: {
+							...options.cornersDotOptions.style,
+							rotation: degreesToRadians(
+								(options.cornersDotOptions.style.rotation - 90 + 360) % 360,
+							),
+						},
 						color: undefined,
 					}
 				: { color: options.cornersDotOptions.style, gradient: undefined }),

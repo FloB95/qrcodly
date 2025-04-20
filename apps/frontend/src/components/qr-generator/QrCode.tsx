@@ -1,30 +1,36 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import QRCodeStyling, { type Options } from 'qr-code-styling';
-import { cn } from '@/lib/utils';
+import { useEffect, useMemo, useRef, useState } from "react";
+import QRCodeStyling, { type Options } from "qr-code-styling";
+import { cn } from "@/lib/utils";
 import {
 	convertQRCodeDataToStringByType,
 	convertQrCodeOptionsToLibraryOptions,
 	type TQrCode,
-} from '@shared/schemas';
+} from "@shared/schemas";
 
 export type QrCodeProps = {
-	qrCode: Pick<TQrCode, 'config' | 'content' | 'contentType'>;
+	qrCode: Pick<TQrCode, "config" | "content" | "contentType">;
 	additionalStyles?: string;
 };
 
-export default function QrCode({ qrCode, additionalStyles = '' }: QrCodeProps) {
+export default function QrCode({ qrCode, additionalStyles = "" }: QrCodeProps) {
+	console.log(qrCode.config);
+	console.log(convertQrCodeOptionsToLibraryOptions(qrCode.config));
+
 	const options: Options = useMemo(
 		() => ({
 			...convertQrCodeOptionsToLibraryOptions(qrCode.config),
 			data:
-				convertQRCodeDataToStringByType(qrCode.content, qrCode.contentType) || 'https://qrcodly.de',
+				convertQRCodeDataToStringByType(qrCode.content, qrCode.contentType) ||
+				"https://qrcodly.de",
 		}),
 		[qrCode.config, qrCode.content, qrCode.contentType],
 	);
 	const [qrCodeInstance, setQrCode] = useState<QRCodeStyling>();
 	const ref = useRef<HTMLDivElement>(null);
+
+	console.log("QrCode", options);
 
 	useEffect(() => {
 		setQrCode(new QRCodeStyling(options));
@@ -45,7 +51,7 @@ export default function QrCode({ qrCode, additionalStyles = '' }: QrCodeProps) {
 		<>
 			<div
 				className={cn(
-					'canvas-wrap max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]',
+					"canvas-wrap max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]",
 					additionalStyles,
 				)}
 				ref={ref}

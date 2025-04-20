@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import { LoginRequiredDialog } from '../LoginRequiredDialog';
-import { useAuth } from '@clerk/nextjs';
-import { useState } from 'react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../../ui/tooltip';
-import { NameDialog } from '../NameDialog';
-import { Button } from '@/components/ui/button';
-import { QrCodeDefaults, type TQrCodeOptions } from '@shared/schemas';
-import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
-import { toast } from '@/components/ui/use-toast';
+import { LoginRequiredDialog } from "../LoginRequiredDialog";
+import { useAuth } from "@clerk/nextjs";
+import { useState } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
+import { NameDialog } from "../NameDialog";
+import { Button } from "@/components/ui/button";
+import { QrCodeDefaults, type TQrCodeOptions } from "@shared/schemas";
+import { useCreateConfigTemplateMutation } from "@/lib/api/config-template";
+import { toast } from "@/components/ui/use-toast";
+import posthog from "posthog-js";
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 	const { isSignedIn } = useAuth();
@@ -28,9 +29,13 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 				{
 					onSuccess: () => {
 						toast({
-							title: 'New Template Created',
-							description: 'We saved your QR Code Template for later use.',
+							title: "New Template Created",
+							description: "We saved your QR Code Template for later use.",
 							duration: 10000,
+						});
+
+						posthog.capture("config-template-created", {
+							templateName: templateName,
 						});
 					},
 				},
@@ -46,7 +51,9 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 				<TooltipTrigger asChild>
 					<Button
 						variant={
-							JSON.stringify(config) === JSON.stringify(QrCodeDefaults) ? 'secondary' : 'default'
+							JSON.stringify(config) === JSON.stringify(QrCodeDefaults)
+								? "secondary"
+								: "default"
 						}
 						className="cursor-pointer"
 						// isLoading={createQrCodeTemplateMutation.isPending}

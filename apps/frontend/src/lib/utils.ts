@@ -12,12 +12,24 @@ export function toSnakeCase(str: string) {
 }
 
 export function toSnakeCaseKeys(obj: object) {
-	return Object.fromEntries(Object.entries(obj).map(([key, value]) => [toSnakeCase(key), value]));
+	return Object.fromEntries(
+		Object.entries(obj).map(([key, value]) => [toSnakeCase(key), value]),
+	);
 }
 
 export const svgToBase64 = (svgString: string): string => {
 	const base64 = window.btoa(svgString);
 	return `data:image/svg+xml;base64,${base64}`;
+};
+
+export const formatDate = (date: Date | string): string => {
+	return new Intl.DateTimeFormat(undefined, {
+		year: 'numeric',
+		month: 'numeric',
+		day: 'numeric',
+		hour: '2-digit',
+		minute: '2-digit',
+	}).format(new Date(date));
 };
 
 /**
@@ -114,7 +126,9 @@ export function rgbaToHex(colorStr: string, forceRemoveAlpha = false): string {
 				.split(',') // splits them at ","
 				.filter((_string, index) => !forceRemoveAlpha || index !== 3)
 				.map((string) => parseFloat(string)) // Converts them to numbers
-				.map((number, index) => (index === 3 ? Math.round(number * 255) : number)) // Converts alpha to 255 number
+				.map((number, index) =>
+					index === 3 ? Math.round(number * 255) : number,
+				) // Converts alpha to 255 number
 				.map((number) => number.toString(16)) // Converts numbers to hex
 				.map((string) => (string.length === 1 ? '0' + string : string)) // Adds 0 when length of one number is 1
 				.join('')
@@ -131,10 +145,16 @@ export async function apiRequest<T>(
 	try {
 		// Construct query string if queryParams are provided
 		const queryString = queryParams ? `?${qs.stringify(queryParams)}` : '';
-		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`, options);
+		const response = await fetch(
+			`${env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`,
+			options,
+		);
 
 		if (!response.ok) {
-			const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+			const errorBody = (await response.json().catch(() => ({}))) as Record<
+				string,
+				unknown
+			>;
 			throw new Error(
 				`API request failed with status ${response.status}: ${JSON.stringify(errorBody)}`,
 			);

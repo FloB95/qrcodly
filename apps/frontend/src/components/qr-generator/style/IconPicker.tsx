@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import * as Icons from '@heroicons/react/24/outline';
+import React, { useEffect, useState } from "react";
+import * as Icons from "@heroicons/react/24/outline";
 import {
 	Dialog,
 	DialogContent,
@@ -7,11 +7,12 @@ import {
 	DialogFooter,
 	DialogTitle,
 	DialogTrigger,
-} from '@/components/ui/dialog';
-import { ColorPicker } from './ColorPicker';
-import { svgToBase64 } from '@/lib/utils';
-import ReactDOMServer from 'react-dom/server';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/dialog";
+import { ColorPicker } from "./ColorPicker";
+import { svgToBase64 } from "@/lib/utils";
+import ReactDOMServer from "react-dom/server";
+import { Button } from "@/components/ui/button";
+import posthog from "posthog-js";
 
 interface IconPickerProps {
 	onSelect: (iconName?: string) => void;
@@ -19,26 +20,40 @@ interface IconPickerProps {
 
 const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
-	const [selectedIcon, setSelectedIcon] = useState<string | undefined>(undefined);
-	const [color, setColor] = useState<string>('#000000');
-	const [searchTerm, setSearchTerm] = useState<string>('');
+	const [selectedIcon, setSelectedIcon] = useState<string | undefined>(
+		undefined,
+	);
+	const [color, setColor] = useState<string>("#000000");
+	const [searchTerm, setSearchTerm] = useState<string>("");
 
-	const handleIconClick = React.useCallback((iconName?: string) => {
-		if (iconName) {
-			setSelectedIcon(iconName);
-			const IconComponent = Icons[iconName as keyof typeof Icons];
-			const svgString = ReactDOMServer.renderToString(
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill={color}>
-					<IconComponent className="h-6 w-6" style={{ color }} />
-				</svg>,
-			);
-			const base64 = svgToBase64(svgString);
-			onSelect(base64);
-			return;
-		}
+	const handleIconClick = React.useCallback(
+		(iconName?: string) => {
+			if (iconName) {
+				setSelectedIcon(iconName);
+				const IconComponent = Icons[iconName as keyof typeof Icons];
+				const svgString = ReactDOMServer.renderToString(
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="24"
+						height="24"
+						fill={color}
+					>
+						<IconComponent className="h-6 w-6" style={{ color }} />
+					</svg>,
+				);
+				const base64 = svgToBase64(svgString);
+				onSelect(base64);
 
-		onSelect(undefined);
-	}, [color, onSelect]);
+				posthog.capture("predefined-icon-selected", {
+					iconName,
+				});
+				return;
+			}
+
+			onSelect(undefined);
+		},
+		[color, onSelect],
+	);
 
 	const filteredIcons = Object.keys(Icons).filter((iconName) =>
 		iconName.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -57,7 +72,9 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 			</DialogTrigger>
 			<DialogContent>
 				<DialogTitle>Select an Icon</DialogTitle>
-				<DialogDescription>Choose an icon and a color for your selection.</DialogDescription>
+				<DialogDescription>
+					Choose an icon and a color for your selection.
+				</DialogDescription>
 				<div className="mt-4 flex space-x-4">
 					<input
 						type="text"
@@ -81,7 +98,9 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 							<div
 								key={iconName}
 								className={`cursor-pointer rounded border p-2 ${
-									selectedIcon === iconName ? 'border-blue-500' : 'border-gray-300'
+									selectedIcon === iconName
+										? "border-blue-500"
+										: "border-gray-300"
 								}`}
 								onClick={() => handleIconClick(iconName)}
 							>
@@ -100,7 +119,10 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 					>
 						Clear
 					</Button>
-					<Button onClick={() => setDialogIsOpen(false)} disabled={!selectedIcon}>
+					<Button
+						onClick={() => setDialogIsOpen(false)}
+						disabled={!selectedIcon}
+					>
 						Select
 					</Button>
 				</DialogFooter>
