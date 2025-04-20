@@ -13,6 +13,26 @@ const config = {
 		ignoreDuringBuilds: true,
 	},
 	webpack: (config) => {
+		config.module.rules.push({
+			test: /\.svg$/,
+			use: [
+				{
+					loader: '@svgr/webpack',
+					options: {
+						svgo: true,
+						svgoConfig: {
+							plugins: [
+								{
+									name: 'removeViewBox',
+									active: false,
+								},
+							],
+						},
+					},
+				},
+			],
+		});
+
 		config.externals = [
 			...config.externals,
 			{
@@ -48,11 +68,11 @@ const config = {
 
 // Combine both Sentry and Axiom configurations
 const sentryOptions = {
-	org: "fb-development",
-	project: "qrcodly",
+	org: 'fb-development',
+	project: 'qrcodly',
 	silent: !process.env.CI,
 	widenClientFileUpload: true,
-	tunnelRoute: "/monitoring",
+	tunnelRoute: '/monitoring',
 	disableLogger: true,
 	automaticVercelMonitors: true,
 };

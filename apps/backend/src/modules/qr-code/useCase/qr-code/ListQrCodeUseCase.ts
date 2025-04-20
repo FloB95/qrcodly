@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import QrCodeRepository from '../../domain/repository/QrCodeRepository';
 import { ISqlQueryFindBy } from '@/core/interface/IRepository';
 import { TQrCode } from '../../domain/entities/QrCode';
-import { QrCodeService } from '../../services/QrCodeService';
+import { ImageService } from '../../services/ImageService';
 
 /**
  * Use case for retrieving QR codes based on query parameters.
@@ -12,7 +12,7 @@ import { QrCodeService } from '../../services/QrCodeService';
 export class ListQrCodesUseCase implements IBaseUseCase {
 	constructor(
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
-		@inject(QrCodeService) private qrCodeService: QrCodeService,
+		@inject(ImageService) private imageService: ImageService,
 	) {}
 
 	/**
@@ -35,7 +35,12 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 		// Convert image path to presigned URL
 		await Promise.all(
 			qrCodes.map(async (qrCode) => {
-				await this.qrCodeService.generatePresignedUrls(qrCode);
+				if (qrCode.config.image) {
+					qrCode.config.image = await this.imageService.getSignedUrl(qrCode.config.image);
+				}
+				if (qrCode.previewImage) {
+					qrCode.previewImage = (await this.imageService.getSignedUrl(qrCode.previewImage)) ?? null;
+				}
 			}),
 		);
 

@@ -3,7 +3,7 @@ import QrCodeRepository from '../../domain/repository/QrCodeRepository';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { TQrCode } from '../../domain/entities/QrCode';
-import { QrCodeService } from '../../services/QrCodeService';
+import { ImageService } from '../../services/ImageService';
 import { EventEmitter } from '@/core/event';
 import { QrCodeDeletedEvent } from '../../event/QrCodeDeletedEvent';
 
@@ -15,7 +15,7 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 	constructor(
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(Logger) private logger: Logger,
-		@inject(QrCodeService) private qrCodeService: QrCodeService,
+		@inject(ImageService) private imageService: ImageService,
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
 	) {}
 
@@ -25,7 +25,8 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 	 * @returns A promise that resolves to true if the deletion was successful, otherwise false.
 	 */
 	async execute(qrCode: TQrCode, deletedBy: string): Promise<boolean> {
-		await this.qrCodeService.deleteQrCodeImages(qrCode);
+		await this.imageService.deleteImage(qrCode.config.image);
+		await this.imageService.deleteImage(qrCode.previewImage ?? undefined);
 		const res = await this.qrCodeRepository.delete(qrCode);
 
 		// log the deletion

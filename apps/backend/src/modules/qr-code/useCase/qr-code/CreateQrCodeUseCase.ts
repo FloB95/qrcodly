@@ -6,7 +6,7 @@ import { EventEmitter } from '@/core/event';
 import { TQrCode } from '../../domain/entities/QrCode';
 import { QrCodeCreatedEvent } from '../../event/QrCodeCreatedEvent';
 import { TCreateQrCodeDto } from '@shared/schemas';
-import { QrCodeService } from '../../services/QrCodeService';
+import { ImageService } from '../../services/ImageService';
 
 /**
  * Use case for creating a QrCode entity.
@@ -17,7 +17,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(Logger) private logger: Logger,
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
-		@inject(QrCodeService) private qrCodeService: QrCodeService,
+		@inject(ImageService) private imageService: ImageService,
 	) {}
 
 	/**
@@ -37,7 +37,13 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 		};
 
 		// convert base64 image to buffer and upload to s3
-		qrCode.config.image = await this.qrCodeService.uploadQrCodeImage(qrCode);
+		if (qrCode.config.image) {
+			qrCode.config.image = await this.imageService.uploadImage(
+				qrCode.config.image,
+				newId,
+				createdBy ?? undefined,
+			);
+		}
 
 		// Create the QR code entity in the database.
 		await this.qrCodeRepository.create(qrCode);

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1080" height="1080" viewBox="0 0 1080 1080" xml:space="preserve">
+<desc>Created with Fabric.js 5.2.4</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 540 540)" id="cd789a54-9355-4364-8539-750df890c3ea"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-540" y="-540" rx="0" ry="0" width="1080" height="1080" />
+</g>
+<g transform="matrix(1 0 0 1 540 540)" id="705b3fb2-692f-4adc-b0af-a69d9f6527af"  >
+</g>
+<g transform="matrix(4.54 0 0 4.54 540 540)" clip-path="url(#CLIPPATH_3)"  >
+<clipPath id="CLIPPATH_3" >
+	<path transform="matrix(1 0 0 1 0.05 0) translate(-126.05, -126)" id="clip-path-corners-square-color-0-0-5" d="M 126 7 C 60.28788346578354 7.027610135434728 7.036197558028547 60.312868611796404 7.050002626050556 126.02498949634952 C 7.063807694072565 191.73711038090264 60.33787766533463 244.99998949579782 126.04999999999998 244.99998949579782 C 191.76212233466532 244.99998949579782 245.0361923059274 191.73711038090266 245.04999737394945 126.02498949634956 C 245.06380244197146 60.312868611796446 191.8121165342165 7.027610135434749 126.10000000000005 6.999999999999986 z M 126 41 C 172.9344328049416 41.0276084946618 210.963800571457 79.09054640014651 210.94999632352904 126.02498529519771 C 210.93619207560104 172.9594241902489 172.88444092508783 210.99998529411636 125.95000000000003 210.99998529411639 C 79.01555907491223 210.9999852941164 40.96380792439899 172.95942419024897 40.950003676470985 126.02498529519777 C 40.93619942854298 79.09054640014656 78.96556719505831 41.027608494661884 125.8999999999999 41.000000000000014 Z" stroke-linecap="round" />
+</clipPath>
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  x="-119" y="-119" rx="0" ry="0" width="238" height="238" />
+</g>
+</svg>

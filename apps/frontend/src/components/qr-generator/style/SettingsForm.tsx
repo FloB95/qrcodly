@@ -200,6 +200,7 @@ export const SettingsForm = () => {
 													name="dotsOptions.type"
 													onValueChange={field.onChange}
 													value={field.value}
+													// open={true}
 												>
 													<SelectTrigger>
 														<SelectValue placeholder="Select a style" />
@@ -258,9 +259,18 @@ export const SettingsForm = () => {
 														<SelectValue placeholder="Select a style" />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem value="square">Square</SelectItem>
-														<SelectItem value="dot">Dot</SelectItem>
-														<SelectItem value="extra-rounded">Extra rounded</SelectItem>
+														<SelectItem icon="icons/corners-square-square.svg" value="square">
+															Square
+														</SelectItem>
+														<SelectItem icon="icons/corners-square-dot.svg" value="dot">
+															Dot
+														</SelectItem>
+														<SelectItem
+															icon="icons/corners-square-rounded.svg"
+															value="extra-rounded"
+														>
+															Extra rounded
+														</SelectItem>
 													</SelectContent>
 												</Select>
 											</FormControl>
@@ -308,8 +318,12 @@ export const SettingsForm = () => {
 														<SelectValue placeholder="Select a style" />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem value="square">Square</SelectItem>
-														<SelectItem value="dot">Dot</SelectItem>
+														<SelectItem icon="icons/corners-dot-square.svg" value="square">
+															Square
+														</SelectItem>
+														<SelectItem icon="icons/corners-dot-dot.svg" value="dot">
+															Dot
+														</SelectItem>
 													</SelectContent>
 												</Select>
 											</FormControl>

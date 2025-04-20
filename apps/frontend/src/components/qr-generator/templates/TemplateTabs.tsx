@@ -7,7 +7,7 @@ import { PREDEFINED_TEMPLATES } from './PredefinedTemplatesData';
 import type { TConfigTemplate, TCreateConfigTemplateDto } from '@shared/schemas';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { useMyConfigTemplatesQuery } from '@/lib/api/config-template';
-import { StarIcon } from 'lucide-react';
+import { Loader2, StarIcon } from 'lucide-react';
 
 export const TemplateTabs = () => {
 	const { isSignedIn } = useAuth();
@@ -41,9 +41,12 @@ export const TemplateTabs = () => {
 				{isSignedIn && (
 					<TabsContent value="myTemplates" className="mt-0">
 						<div>
-							{isLoading && <p>Loading...</p>}
-							{configTemplates && configTemplates.data.length > 0 ? (
-								<TemplatesList templates={configTemplates.data} onSelect={handleSelect} />
+							{isLoading ? (
+								<div className="mt-20 justify-center text-center flex flex-col items-center">
+									<Loader2 className="mr-2 h-12 w-12 animate-spin" />
+								</div>
+							) : configTemplates && configTemplates.data.length > 0 ? (
+								<TemplatesList templates={configTemplates?.data ?? []} onSelect={handleSelect} />
 							) : (
 								<div className="mt-20 justify-center text-center flex flex-col items-center">
 									<StarIcon className="h-12 w-12" />
