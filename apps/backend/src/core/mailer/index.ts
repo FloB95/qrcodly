@@ -1,1 +1,1 @@
-export { Mailer } from './Mailer';
+export { Mailer } from './mailer';

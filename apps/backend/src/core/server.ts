@@ -14,12 +14,12 @@ import { clerkPlugin } from '@clerk/fastify';
 import { fastifyErrorHandler, registerRoutes } from '@/libs/fastify/helpers';
 import { env } from './config/env';
 import fastifyHelmet from '@fastify/helmet';
-import { TooManyRequestsError } from './error/http/TooManyRequestsError';
+import { TooManyRequestsError } from './error/http/too-many-requests.error';
 import fastifyCookie from '@fastify/cookie';
 import fastifyRateLimit from '@fastify/rate-limit';
 import fastifyCors from '@fastify/cors';
-import { OnShutdown } from './decorators/OnShutdown';
-import { HealthController } from './http/controller/HealthController';
+import { OnShutdown } from './decorators/on-shutdown.decorator';
+import { HealthController } from './http/controller/health.controller';
 
 @singleton()
 export class Server {

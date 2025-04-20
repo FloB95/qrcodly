@@ -1,1 +1,1 @@
-export { KeyCache } from './KeyCache';
+export { KeyCache } from './key-cache';

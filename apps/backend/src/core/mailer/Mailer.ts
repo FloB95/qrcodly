@@ -1,14 +1,14 @@
 import nodemailer, { type Transporter } from 'nodemailer';
 import Handlebars from 'handlebars';
 import { inject, singleton } from 'tsyringe';
-import { type Attachment, type IMailer } from '../interface/IMailer';
+import { type Attachment, type IMailer } from '../interface/mailer.interface';
 import { env } from '../config/env';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { DEFAULT_FROM_MAIL, IN_TEST } from '../config/constants';
 import { Logger } from '../logging';
 import { dirname, join as pathJoin } from 'path';
 import { readFile } from 'fs/promises';
-import { OnShutdown } from '../decorators/OnShutdown';
+import { OnShutdown } from '../decorators/on-shutdown.decorator';
 import { fileURLToPath } from 'url';
 import { type Address } from 'nodemailer/lib/mailer';
 

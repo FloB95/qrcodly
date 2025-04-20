@@ -1,7 +1,7 @@
 import { Server } from '@/core/server';
 import { type FastifyInstance } from 'fastify';
 import { container } from 'tsyringe';
-import { ShutdownService } from '@/core/shutdown/ShutdownService';
+import { ShutdownService } from '@/core/shutdown/shutdown.service';
 import { clerkClient } from '@clerk/fastify';
 import { CLERK_JWT_TEMPLATE } from '@/modules/qr-code/config/constants';
 

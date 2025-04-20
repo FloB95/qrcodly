@@ -1,1 +1,1 @@
-export { ErrorReporter } from './ErrorReporter';
+export { ErrorReporter } from './error-reporter';

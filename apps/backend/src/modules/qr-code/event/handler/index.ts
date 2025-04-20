@@ -1,1 +1,1 @@
-import './QrCodeCreatedEventHandler';
+import './qr-code-created.event-handler';

@@ -1,5 +1,5 @@
 import { BaseImageStrategy } from './base-image.strategy';
-import { type TConfigTemplate } from '../entities/ConfigTemplate';
+import { type TConfigTemplate } from '../entities/config-template.entity';
 import { generateQrCodeStylingInstance } from '../../lib/styled-qr-code';
 import { convertQrCodeOptionsToLibraryOptions } from '@shared/schemas';
 import { QR_CODE_TEMPLATE_PREVIEW_IMAGE_FOLDER } from '../../config/constants';

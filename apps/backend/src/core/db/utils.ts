@@ -1,5 +1,5 @@
 import { mysqlTableCreator, type MySqlTableWithColumns } from 'drizzle-orm/mysql-core';
-import { type WhereConditions, type WhereField } from '../interface/IRepository';
+import { type WhereConditions, type WhereField } from '../interface/repository.interface';
 import { and, eq, gt, gte, like, lt, lte, not, type SQL } from 'drizzle-orm';
 
 /**

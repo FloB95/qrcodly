@@ -1,4 +1,4 @@
-import { type ServiceClass, ShutdownService } from '../ShutdownService';
+import { type ServiceClass, ShutdownService } from '../shutdown.service';
 import { container } from 'tsyringe';
 import { mock } from 'jest-mock-extended';
 

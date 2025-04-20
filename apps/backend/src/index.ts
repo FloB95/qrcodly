@@ -1,4 +1,4 @@
-import { Application } from './Application';
+import { Application } from './application';
 
 const app = new Application();
 void app.start();

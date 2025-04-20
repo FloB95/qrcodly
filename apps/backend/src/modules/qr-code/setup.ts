@@ -4,11 +4,11 @@ import { container } from 'tsyringe';
 import { type FastifyInstance, type FastifyPluginCallback } from 'fastify';
 import { Logger } from '@/core/logging';
 import { registerRoutes } from '@/libs/fastify/helpers';
-import { QrCodeController } from './http/controller/QrCodeController';
+import { QrCodeController } from './http/controller/qr-code.controller';
 
 // Register Event Handlers
 import './event/handler'
-import { ConfigTemplateController } from './http/controller/ConfigTemplateController';
+import { ConfigTemplateController } from './http/controller/config-template.controller';
 
 const setupQrCodeModule: FastifyPluginCallback = (fastify: FastifyInstance, options) => {
 	registerRoutes(fastify, QrCodeController, `/qr-code`, options);

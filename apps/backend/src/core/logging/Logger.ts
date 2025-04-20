@@ -1,7 +1,7 @@
 import pino, { type Logger as PinoLogger } from 'pino';
 import { singleton } from 'tsyringe';
 import { env } from '@/core/config/env';
-import { type ILogger } from '../interface/ILogger';
+import { type ILogger } from '../interface/logger.interface';
 import { LOGGER_REDACT_PATHS } from '../config/constants';
 
 /**

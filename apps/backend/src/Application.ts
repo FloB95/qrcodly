@@ -1,11 +1,11 @@
 import './core/setup';
 import { container } from 'tsyringe';
 import { Logger } from './core/logging';
-import { ShutdownService } from './core/shutdown/ShutdownService';
+import { ShutdownService } from './core/shutdown/shutdown.service';
 import { Server } from './core/server';
 import { poolConnection } from './core/db';
 import { sleep } from './utils/general';
-import { CronJobWorker } from './core/jobs/CronJobWorker';
+import { CronJobWorker } from './core/jobs/cron-job-worker';
 
 export class Application {
 	private logger = container.resolve(Logger);

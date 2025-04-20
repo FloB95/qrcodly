@@ -6,7 +6,7 @@ import { readdirSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { container } from 'tsyringe';
 import { fileURLToPath } from 'url';
-import { type AbstractCommand } from './core/command/AbstractCommand';
+import { type AbstractCommand } from './core/command/abstract-command';
 
 process.env.TZ = 'Europe/Berlin';
 

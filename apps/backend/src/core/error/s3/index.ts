@@ -1,4 +1,4 @@
-export { S3DeleteError } from './S3DeleteError';
-export { S3FetchError } from './S3FetchError';
-export { S3UploadError } from './S3UploadError';
-export { S3SignedUrlError } from './S3SignedUrlError';
+export { S3DeleteError } from './s3-delete.error';
+export { S3FetchError } from './s3-fetch.error';
+export { S3UploadError } from './s3-upload.error';
+export { S3SignedUrlError } from './s3-signed-url.error';
