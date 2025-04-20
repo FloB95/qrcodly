@@ -9,7 +9,7 @@
 	"author": "Florian Breuer",
 	"license": "ISC",
 	"engines": {
-		"node": ">=22.14.0"
+		"node": ">=22.11.0"
 	},
 	"scripts": {
 		"lint": "eslint .",

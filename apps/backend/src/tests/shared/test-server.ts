@@ -3,7 +3,7 @@ import { type FastifyInstance } from 'fastify';
 import { container } from 'tsyringe';
 import { ShutdownService } from '@/core/shutdown/shutdown.service';
 import { clerkClient } from '@clerk/fastify';
-import { CLERK_JWT_TEMPLATE } from '@/modules/qr-code/config/constants';
+import { CLERK_JWT_TEMPLATE } from '@/core/config/constants';
 
 const TEST_USER_ID = 'user_2fTGlAmh9a1UhD5JYOD70Z4Y31T';
 const TEST_USER_2_ID = 'user_2vxx4UoYRjT2mi1I4FMFEbpzbAA';
