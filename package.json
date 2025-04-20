@@ -13,8 +13,9 @@
 		"format": "prettier --config .prettierrc.json --write .",
 		"lint": "turbo run lint",
 		"clean": "turbo run clean --parallel",
-		"backend:build": "cd apps/backend && npm run build",
-		"backend:start": "cd apps/backend && npm run start"
+		"build:shared-package": "cd packages/shared && pnpm build",
+		"backend:build": "pnpm run build:shared-package && cd apps/backend && pnpm install && pnpm build",
+		"backend:start": "cd apps/backend && pnpm run start"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.14",

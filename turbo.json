@@ -8,31 +8,20 @@
 		"typecheck": {
 			"dependsOn": ["^typecheck"]
 		},
-		"format": {},
-		"format:check": {},
-		"lint:backend": {
-			"dependsOn": ["qrcodly-api-types#lint"]
+		"build": {
+			"dependsOn": ["^build", "pnpm-install"],
+			"outputs": ["build/**"]
 		},
-		"lint:frontend": {},
-		"lint": {},
-		"lintfix": {},
-		"test:backend": {
-			"outputs": ["coverage/**"]
-		},
-		"test:frontend": {
-			"outputs": ["coverage/**"]
-		},
-		"test:nodes": {
-			"outputs": ["coverage/**"]
-		},
-		"test": {},
-		"watch": {
+		"pnpm-install": {
 			"cache": false,
-			"persistent": true
+			"outputs": []
 		},
-		"dev": {
-			"cache": false,
-			"persistent": true
-		}
+		"apps/backend:build": {
+			"dependsOn": ["packages/**:build"]
+		},
+		"@apps/backend:build": {
+			"dependsOn": ["packages/**:build"]
+		},
+		"packages/**:build": {}
 	}
 }
