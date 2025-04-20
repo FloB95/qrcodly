@@ -15,7 +15,9 @@
 		"clean": "turbo run clean --parallel",
 		"build:shared-package": "cd packages/shared && pnpm build",
 		"backend:build": "pnpm run build:shared-package && cd apps/backend && pnpm install && pnpm build",
-		"backend:start": "cd apps/backend && pnpm run start"
+		"backend:start": "cd apps/backend && pnpm run start",
+		"frontend:build": "pnpm run build:shared-package && cd apps/frontend && pnpm install && pnpm build",
+		"frontend:start": "cd apps/frontend && pnpm run start"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.14",
