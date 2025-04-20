@@ -8,6 +8,7 @@ import { QrCodeDefaults, type TCreateConfigTemplateDto } from '@shared/schemas';
 import { container } from 'tsyringe';
 import { CreateConfigTemplateUseCase } from '../../../useCase/config-template/create-config-template.use-case';
 import { type User } from '@clerk/fastify';
+import qs from 'qs';
 
 const CONFIG_TEMPLATE_API_PATH = `${API_BASE_PATH}/config-template`;
 
@@ -35,7 +36,7 @@ describe('listConfigTemplates', () => {
 	) =>
 		testServer.inject({
 			method: 'GET',
-			url: `${CONFIG_TEMPLATE_API_PATH}?${new URLSearchParams(queryParams).toString()}`,
+			url: `${CONFIG_TEMPLATE_API_PATH}?${qs.stringify(queryParams)}`,
 			headers: {
 				Authorization: token ? `Bearer ${token}` : '',
 			},
@@ -96,6 +97,31 @@ describe('listConfigTemplates', () => {
 		expect(total).toBe(3);
 		expect(page).toBe(1);
 		expect(limit).toBe(2);
+		data.forEach((configTemplate: any) => {
+			expect(configTemplate.createdBy).toBe(user.id);
+			expect(configTemplate.isPredefined).toBeUndefined();
+		});
+	});
+
+	it('should ignore the createdBy param and still get only current user config templates', async () => {
+		const response = await listConfigTemplatesRequest(
+			{
+				where: {
+					createdBy: {
+						eq: user2.id,
+					},
+				},
+			},
+			accessToken,
+		);
+
+		expect(response.statusCode).toBe(200);
+
+		const { data, total, page, limit } = JSON.parse(response.payload);
+		expect(Array.isArray(data)).toBe(true);
+		expect(total).toBe(3);
+		expect(page).toBe(1);
+		expect(limit).toBe(10);
 		data.forEach((configTemplate: any) => {
 			expect(configTemplate.createdBy).toBe(user.id);
 			expect(configTemplate.isPredefined).toBeUndefined();

@@ -15,7 +15,7 @@ export const TemplatesList = ({ templates, onSelect }: TemplateListProps) => {
 	};
 
 	return (
-		<div className="grid cursor-pointer grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+		<div className="grid cursor-pointer grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 px-2 h-[400px] overflow-y-auto">
 			{templates.map((template, index) => {
 				return (
 					<div key={index} className="flex" onClick={() => handleSelect(template)}>

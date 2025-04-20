@@ -1,6 +1,7 @@
 import { env } from '@/env';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import qs from 'qs';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -122,9 +123,15 @@ export function rgbaToHex(colorStr: string, forceRemoveAlpha = false): string {
 }
 
 // API request helper
-export async function apiRequest<T>(endpoint: string, options: RequestInit): Promise<T> {
+export async function apiRequest<T>(
+	endpoint: string,
+	options: RequestInit,
+	queryParams?: Record<string, unknown>,
+): Promise<T> {
 	try {
-		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}${endpoint}`, options);
+		// Construct query string if queryParams are provided
+		const queryString = queryParams ? `?${qs.stringify(queryParams)}` : '';
+		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`, options);
 
 		if (!response.ok) {
 			const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;

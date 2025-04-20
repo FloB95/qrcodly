@@ -33,21 +33,32 @@ export function usePredefinedTemplatesQuery() {
 }
 
 // Hook to fetch configuration templates
-export function useListConfigTemplatesQuery() {
+export function useListConfigTemplatesQuery(searchName?: string) {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: queryKeys.listConfigTemplates,
+		queryKey: [...queryKeys.listConfigTemplates, searchName],
 		queryFn: async (): Promise<TConfigTemplatePaginatedResponseDto> => {
 			const token = await getToken();
 
-			return apiRequest<TConfigTemplatePaginatedResponseDto>('/config-template', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
+			return apiRequest<TConfigTemplatePaginatedResponseDto>(
+				`/config-template`,
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
 				},
-			});
+				{
+					where: {
+						name: {
+							like: searchName ?? '',
+						},
+					},
+					limit: 20,
+				},
+			);
 		},
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes

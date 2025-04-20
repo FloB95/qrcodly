@@ -202,15 +202,7 @@ function createValidationHook<T>(
 	type: 'body' | 'query',
 ) {
 	return (request: FastifyRequest, _reply: FastifyReply, done: () => void) => {
-		const dataToValidate =
-			type === 'body'
-				? request.body
-				: Object.fromEntries(
-						Object.entries(request.query || {}).map(([key, value]) => [
-							key,
-							key !== 'where' ? value : qs.parse(value as string),
-						]),
-					);
+		const dataToValidate = type === 'body' ? request.body : qs.parse(request.query as string);
 		const validationResult: SafeParseReturnType<T, T> = schema.safeParse(dataToValidate);
 		if (!validationResult.success) {
 			throw new BadRequestError(errorMessage, validationResult.error.issues);

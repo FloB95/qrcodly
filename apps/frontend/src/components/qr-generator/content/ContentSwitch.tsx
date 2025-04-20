@@ -25,8 +25,9 @@ export const ContentSwitch = () => {
 				className="max-w-[650px]"
 				suppressHydrationWarning
 				onValueChange={(value) => {
+					// TODO fix this: qr code is being rendered when switching tabs
 					updateContentType(value as 'url' | 'text' | 'wifi' | 'vCard');
-					updateContent('');
+					if (content !== '') updateContent('');
 				}}
 			>
 				<TabsList className="mb-6 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-4">
