@@ -1,6 +1,6 @@
 import { createTable } from '@/core/db/utils';
 import { type TQrCodeOptions } from '@shared/schemas';
-import { datetime, index, json, varchar } from 'drizzle-orm/mysql-core';
+import { boolean, datetime, index, json, text, varchar } from 'drizzle-orm/mysql-core';
 
 const configTemplate = createTable(
 	'qr_code_config_template',
@@ -8,8 +8,10 @@ const configTemplate = createTable(
 		id: varchar('id', {
 			length: 36,
 		}).primaryKey(),
-		name: varchar('name', { length: 255 }).notNull(),
-		config: json('config').$type<TQrCodeOptions>().notNull(),
+		name: varchar({ length: 255 }).notNull(),
+		config: json().$type<TQrCodeOptions>().notNull(),
+		previewImage: text(),
+		isPredefined: boolean().default(false).notNull(),
 		createdBy: varchar({ length: 255 }),
 		createdAt: datetime().notNull(),
 		updatedAt: datetime(),

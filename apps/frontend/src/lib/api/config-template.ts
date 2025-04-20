@@ -11,7 +11,26 @@ import { apiRequest } from '../utils';
 // Define query keys
 export const queryKeys = {
 	myConfigTemplates: ['myConfigTemplates'],
+	predefinedTemplates: ['predefinedTemplates'],
 } as const;
+
+// Hook to fetch predefined configuration templates
+export function usePredefinedTemplatesQuery() {
+	return useQuery({
+		queryKey: queryKeys.predefinedTemplates,
+		queryFn: async (): Promise<TConfigTemplatePaginatedResponseDto> => {
+			return apiRequest<TConfigTemplatePaginatedResponseDto>('/config-template/get-predefined', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+		},
+		refetchOnWindowFocus: false,
+		staleTime: 5 * 60 * 1000, // 5 minutes
+		retry: 2,
+	});
+}
 
 // Hook to fetch configuration templates
 export function useMyConfigTemplatesQuery() {
@@ -30,7 +49,7 @@ export function useMyConfigTemplatesQuery() {
 				},
 			});
 		},
-    refetchOnWindowFocus: false,
+		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 2,
 	});

@@ -36,11 +36,19 @@ export abstract class BaseImageStrategy {
 		return userId ? `${folder}/${userId}/${fileName}` : `${folder}/${fileName}`;
 	}
 
+	async getSignedUrl(imagePath: string): Promise<string | undefined> {
+		try {
+			return await this.objectStorage.getSignedUrl(imagePath, this.signedUrlExpirySeconds);
+		} catch (error) {
+			this.logger.error(`Error generating signed URL for Path: ${imagePath}`, error as Error);
+			return undefined;
+		}
+	}
+
 	abstract upload(
 		file: { buffer: Buffer; fileName: string; mimeType: string },
 		userId?: string,
 	): Promise<string | undefined>;
 	abstract delete(imagePath?: string): Promise<void>;
-	abstract getSignedUrl(imagePath: string): Promise<string | undefined>;
 	abstract generatePreview?(...args: any[]): Promise<string | undefined>;
 }

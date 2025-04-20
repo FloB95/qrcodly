@@ -35,18 +35,6 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 		}
 	}
 
-	async getSignedUrl(imagePath: string): Promise<string | undefined> {
-		try {
-			return await this.objectStorage.getSignedUrl(imagePath, this.signedUrlExpirySeconds);
-		} catch (error) {
-			this.logger.error(
-				`Error generating signed URL for QR code image: ${imagePath}`,
-				error as Error,
-			);
-			return undefined;
-		}
-	}
-
 	async generatePreview(
 		qrCode: Pick<TQrCode, 'id' | 'createdBy' | 'config' | 'content' | 'contentType'>,
 	): Promise<string | undefined> {

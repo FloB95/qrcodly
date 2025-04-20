@@ -2,11 +2,12 @@ import { BaseImageStrategy } from './base-image.strategy';
 import { type TConfigTemplate } from '../entities/config-template.entity';
 import { generateQrCodeStylingInstance } from '../../lib/styled-qr-code';
 import { convertQrCodeOptionsToLibraryOptions } from '@shared/schemas';
-import { QR_CODE_TEMPLATE_PREVIEW_IMAGE_FOLDER } from '../../config/constants';
+import {
+	QR_CODE_TEMPLATE_PREVIEW_IMAGE_FOLDER,
+	QR_CODE_TEMPLATE_UPLOAD_FOLDER
+} from '../../config/constants';
 
 export class QrCodeTemplateImageStrategy extends BaseImageStrategy {
-	private readonly templateFolderName: string = 'qr-code-templates';
-
 	constructor() {
 		super();
 	}
@@ -15,7 +16,7 @@ export class QrCodeTemplateImageStrategy extends BaseImageStrategy {
 		file: { buffer: Buffer; fileName: string; mimeType: string },
 		userId?: string,
 	): Promise<string | undefined> {
-		const filePath = this.constructFilePath(this.templateFolderName, userId, file.fileName);
+		const filePath = this.constructFilePath(QR_CODE_TEMPLATE_UPLOAD_FOLDER, userId, file.fileName);
 		try {
 			await this.objectStorage.upload(filePath, file.buffer, file.mimeType);
 			return filePath;
@@ -27,7 +28,7 @@ export class QrCodeTemplateImageStrategy extends BaseImageStrategy {
 
 	async delete(imagePath?: string): Promise<void> {
 		if (!imagePath) return;
-		const templatePathRegex = new RegExp(`^${this.templateFolderName}/`);
+		const templatePathRegex = new RegExp(`^${QR_CODE_TEMPLATE_UPLOAD_FOLDER}/`);
 		if (!templatePathRegex.test(imagePath)) {
 			this.logger.warn(`Attempted to delete image outside the template folder: ${imagePath}`);
 			return;
@@ -66,23 +67,6 @@ export class QrCodeTemplateImageStrategy extends BaseImageStrategy {
 			return filePath;
 		} catch (error) {
 			this.logger.error('Failed to generate QR code preview image', error as Error);
-			return undefined;
-		}
-	}
-
-	async getSignedUrl(imagePath: string): Promise<string | undefined> {
-		const templatePathRegex = new RegExp(`^${this.templateFolderName}/`);
-		if (!templatePathRegex.test(imagePath)) {
-			this.logger.warn(`Attempted to get signed URL outside the template folder: ${imagePath}`);
-			return undefined;
-		}
-		try {
-			return await this.objectStorage.getSignedUrl(imagePath, this.signedUrlExpirySeconds);
-		} catch (error) {
-			this.logger.error(
-				`Error generating signed URL for QR code template image: ${imagePath}`,
-				error as Error,
-			);
 			return undefined;
 		}
 	}

@@ -2,8 +2,8 @@ import { type SQL } from 'drizzle-orm';
 
 // Define the types for the `where` object
 export type WhereField = {
-	eq?: string | Date; // Field is equal to the provided value
-	neq?: string | Date; // Field is not equal to the provided value
+	eq?: string | Date | boolean; // Field is equal to the provided value
+	neq?: string | Date | boolean; // Field is not equal to the provided value
 	like?: string; // Field is similar to the provided value
 	gt?: Date; // Field is greater than the provided value
 	gte?: Date; // Field is greater than or equal to the provided value

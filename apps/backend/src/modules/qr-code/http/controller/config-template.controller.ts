@@ -1,6 +1,6 @@
 import { Delete, Get, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
-import { type IHttpRequestWithAuth } from '@/core/interface/request.interface';
+import type { IHttpRequestWithAuth } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
 import ConfigTemplateRepository from '../../domain/repository/config-template.repository';
 import { DeleteConfigTemplateUseCase } from '../../useCase/config-template/delete-config-template.use-case';
@@ -47,6 +47,33 @@ export class ConfigTemplateController extends AbstractController {
 				...where,
 				createdBy: {
 					eq: request.user.id,
+				},
+			},
+		});
+
+		// create pagination response object
+		const pagination = {
+			page: page,
+			limit: limit,
+			total,
+			data: configTemplates,
+		};
+
+		return this.makeApiHttpResponse(200, ConfigTemplatePaginatedResponseDto.parse(pagination));
+	}
+
+	@Get('/get-predefined', {
+		skipAuth: true,
+	})
+	async getPredefined(): Promise<IHttpResponse<TConfigTemplatePaginatedResponseDto>> {
+		const page = 1;
+		const limit = 10;
+		const { configTemplates, total } = await this.listConfigTemplatesUseCase.execute({
+			limit,
+			offset: page,
+			where: {
+				isPredefined: {
+					eq: true,
 				},
 			},
 		});

@@ -3,6 +3,8 @@ import { inject, injectable } from 'tsyringe';
 import ConfigTemplateRepository from '../../domain/repository/config-template.repository';
 import { ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import { TConfigTemplate } from '../../domain/entities/config-template.entity';
+import { ImageService } from '../../services/image.service';
+import { QrCodeTemplateImageStrategy } from '../../domain/strategies/qr-code-template-image.strategy';
 
 /**
  * Use case for retrieving Config Templates based on query parameters.
@@ -11,7 +13,10 @@ import { TConfigTemplate } from '../../domain/entities/config-template.entity';
 export class ListConfigTemplatesUseCase implements IBaseUseCase {
 	constructor(
 		@inject(ConfigTemplateRepository) private configTemplateRepository: ConfigTemplateRepository,
-	) {}
+		@inject(ImageService) private imageService: ImageService,
+	) {
+		this.imageService.setStrategy(new QrCodeTemplateImageStrategy());
+	}
 
 	/**
 	 * Executes the use case to retrieve Config Templates based on the provided query parameters.
@@ -29,6 +34,21 @@ export class ListConfigTemplatesUseCase implements IBaseUseCase {
 			offset,
 			where,
 		});
+
+		// Convert image path to presigned URL
+		await Promise.all(
+			configTemplates.map(async (configTemplate) => {
+				if (configTemplate.config.image) {
+					configTemplate.config.image = await this.imageService.getSignedUrl(
+						configTemplate.config.image,
+					);
+				}
+				if (configTemplate.previewImage) {
+					configTemplate.previewImage =
+						(await this.imageService.getSignedUrl(configTemplate.previewImage)) ?? null;
+				}
+			}),
+		);
 
 		// Count the total number of Config Templates
 		const total = await this.configTemplateRepository.countTotal(where);

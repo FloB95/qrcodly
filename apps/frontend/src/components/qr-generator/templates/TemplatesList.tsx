@@ -1,13 +1,16 @@
-import type { TConfigTemplate, TCreateConfigTemplateDto } from '@shared/schemas';
+/* eslint-disable @next/next/no-img-element */
+
+import type { TConfigTemplateResponseDto } from '@shared/schemas';
 import { DynamicQrCode } from '../DynamicQrCode';
 
+
 type TemplateListProps = {
-	templates: TCreateConfigTemplateDto[] | TConfigTemplate[];
-	onSelect: (data: TCreateConfigTemplateDto | TConfigTemplate) => void;
+	templates: TConfigTemplateResponseDto[];
+	onSelect: (data: TConfigTemplateResponseDto) => void;
 };
 
 export const TemplatesList = ({ templates, onSelect }: TemplateListProps) => {
-	const handleSelect = (template: TCreateConfigTemplateDto | TConfigTemplate) => {
+	const handleSelect = (template: TConfigTemplateResponseDto) => {
 		onSelect(template);
 	};
 
@@ -19,13 +22,19 @@ export const TemplatesList = ({ templates, onSelect }: TemplateListProps) => {
 						<div>
 							<p className="text mb-1 text-sm font-semibold">{template.name}</p>
 							<div className="h-24 w-24">
-								<DynamicQrCode
-									qrCode={{
-										config: template.config,
-										content: 'https://www.qrcodly.de/',
-										contentType: 'url',
-									}}
-								/>
+								<div className="h-[90px] w-[90px] overflow-hidden">
+									{template.previewImage ? (
+										<img src={template.previewImage} alt="QR code preview" loading="lazy" />
+									) : (
+										<DynamicQrCode
+											qrCode={{
+												config: template.config,
+												content: 'https://www.qrcodly.de/',
+												contentType: 'url',
+											}}
+										/>
+									)}
+								</div>
 							</div>
 						</div>
 					</div>

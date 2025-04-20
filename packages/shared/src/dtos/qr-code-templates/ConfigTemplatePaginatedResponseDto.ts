@@ -4,6 +4,8 @@ import { ConfigTemplateResponseDto } from './ConfigTemplateResponseDto';
 import { TConfigTemplate } from '../../schemas/QrCodeConfigTemplate';
 
 export const ConfigTemplatePaginatedResponseDto =
-	PaginationResponseDtoSchema<TConfigTemplate>(ConfigTemplateResponseDto);
+	PaginationResponseDtoSchema<Omit<TConfigTemplate, 'isPredefined'>>(ConfigTemplateResponseDto);
 
-export type TConfigTemplatePaginatedResponseDto = z.infer<typeof ConfigTemplatePaginatedResponseDto>;
+export type TConfigTemplatePaginatedResponseDto = z.infer<
+	typeof ConfigTemplatePaginatedResponseDto
+>;
