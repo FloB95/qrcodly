@@ -19,12 +19,15 @@ export function usePredefinedTemplatesQuery() {
 	return useQuery({
 		queryKey: queryKeys.predefinedTemplates,
 		queryFn: async (): Promise<TConfigTemplatePaginatedResponseDto> => {
-			return apiRequest<TConfigTemplatePaginatedResponseDto>('/config-template/predefined', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
+			return apiRequest<TConfigTemplatePaginatedResponseDto>(
+				'/config-template/predefined',
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+					},
 				},
-			});
+			);
 		},
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes
@@ -88,8 +91,10 @@ export function useCreateConfigTemplateMutation() {
 			});
 		},
 		onSuccess: () => {
-			// Invalidate the 'myConfigTemplates' query to refetch the updated data
-			void queryClient.invalidateQueries({ queryKey: [...queryKeys.myConfigTemplates] });
+			// Invalidate the 'listConfigTemplates' query to refetch the updated data
+			void queryClient.invalidateQueries({
+				queryKey: [...queryKeys.listConfigTemplates],
+			});
 		},
 		onError: (error) => {
 			console.error('Error creating configuration template:', error);
@@ -114,8 +119,10 @@ export function useDeleteConfigTemplateMutation() {
 			});
 		},
 		onSuccess: () => {
-			// Invalidate the 'myConfigTemplates' query to refetch the updated data
-			void queryClient.invalidateQueries({ queryKey: [...queryKeys.myConfigTemplates] });
+			// Invalidate the 'listConfigTemplates' query to refetch the updated data
+			void queryClient.invalidateQueries({
+				queryKey: [...queryKeys.listConfigTemplates],
+			});
 		},
 		onError: (error) => {
 			console.error('Error deleting configuration template:', error);
