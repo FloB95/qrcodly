@@ -12,7 +12,9 @@
 		"build": "turbo run build",
 		"format": "prettier --config .prettierrc.json --write .",
 		"lint": "turbo run lint",
-		"clean": "turbo run clean --parallel"
+		"clean": "turbo run clean --parallel",
+		"backend:build": "cd apps/backend && npm run build",
+		"backend:start": "cd apps/backend && npm run start"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.14",

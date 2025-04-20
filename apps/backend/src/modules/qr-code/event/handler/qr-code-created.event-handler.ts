@@ -20,6 +20,15 @@ export class QrCodeCreatedEventHandler extends AbstractEventHandler<QrCodeCreate
 		const imageService = container.resolve(ImageService);
 		const qrCodeRepository = container.resolve(QrCodeRepository);
 		const logger = container.resolve(Logger);
+		
+		// skip if QR code has an image CURRENTLY not supported
+		if (event.qrCode.config.image) {
+			logger.debug('QR code has an image, skipping preview image generation', {
+				id: event.qrCode.id,
+				createdBy: event.qrCode.createdBy,
+			});
+			return;
+		}
 
 		// generate preview image and upload to s3
 		const previewImage = await imageService.generatePreview(event.qrCode);

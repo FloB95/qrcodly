@@ -1,4 +1,4 @@
-import { AbstractCommand } from '@/core/command/abstract-command';
+import { AbstractCommand } from '@/core/command/abstract.command';
 import { type Command } from 'commander';
 import { injectable } from 'tsyringe';
 

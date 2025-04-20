@@ -6,7 +6,7 @@ import { readdirSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { container } from 'tsyringe';
 import { fileURLToPath } from 'url';
-import { type AbstractCommand } from './core/command/abstract-command';
+import { type AbstractCommand } from './core/command/abstract.command';
 
 process.env.TZ = 'Europe/Berlin';
 
@@ -17,7 +17,7 @@ async function loadCommands(parentCommand: Command) {
 	const coreCommandsDir = resolve(__dirname, 'core', 'command');
 
 	// Combine core commands and module commands into a single array of directories
-	const commandDirs = [{ path: coreCommandsDir, exclude: 'AbstractCommand.ts' }];
+	const commandDirs = [{ path: coreCommandsDir, exclude: 'abstract-command.ts' }];
 
 	// Read all module directories and add their command paths
 	const moduleDirs = readdirSync(modulesDir, { withFileTypes: true }).filter((dirent) =>
@@ -26,7 +26,7 @@ async function loadCommands(parentCommand: Command) {
 	for (const moduleDir of moduleDirs) {
 		commandDirs.push({
 			path: resolve(modulesDir, moduleDir.name, 'command'),
-			exclude: 'AbstractCommand.ts',
+			exclude: 'abstract-command.ts',
 		});
 	}
 
@@ -34,7 +34,7 @@ async function loadCommands(parentCommand: Command) {
 	for (const { path, exclude } of commandDirs) {
 		if (existsSync(path)) {
 			const commandFiles = readdirSync(path).filter(
-				(file) => file.endsWith('Command.ts') && file !== exclude,
+				(file) => file.endsWith('.command.ts') && file !== exclude,
 			);
 
 			for (const file of commandFiles) {
