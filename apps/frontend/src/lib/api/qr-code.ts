@@ -10,19 +10,19 @@ import { apiRequest } from '../utils';
 
 // Define query keys
 export const queryKeys = {
-	myQrCodes: ['myQrCodes'],
+	listQrCodes: ['listQrCodes'],
 } as const;
 
 // Hook to fetch QR codes
-export function useMyQrCodesQuery() {
+export function useListQrCodesQuery() {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: queryKeys.myQrCodes,
+		queryKey: queryKeys.listQrCodes,
 		queryFn: async (): Promise<TQrCodePaginatedResponseDto> => {
 			const token = await getToken();
 
-			return apiRequest<TQrCodePaginatedResponseDto>('/qr-code/get-my', {
+			return apiRequest<TQrCodePaginatedResponseDto>('/qr-code', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

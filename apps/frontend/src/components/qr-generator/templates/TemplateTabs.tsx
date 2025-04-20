@@ -5,7 +5,7 @@ import { TemplatesList } from './TemplatesList';
 import { useAuth } from '@clerk/nextjs';
 import type { TConfigTemplate, TCreateConfigTemplateDto } from '@shared/schemas';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
-import { useMyConfigTemplatesQuery, usePredefinedTemplatesQuery } from '@/lib/api/config-template';
+import { useListConfigTemplatesQuery, usePredefinedTemplatesQuery } from '@/lib/api/config-template';
 import { Loader2, StarIcon } from 'lucide-react';
 
 export const TemplateTabs = () => {
@@ -15,7 +15,7 @@ export const TemplateTabs = () => {
 	const { data: predefinedTemplates, isLoading: isLoadingPredefinedTemplates } =
 		usePredefinedTemplatesQuery();
 
-	const myConfigTemplatesQuery = useMyConfigTemplatesQuery();
+	const myConfigTemplatesQuery = useListConfigTemplatesQuery();
 	const { isLoading, data: configTemplates } = isSignedIn
 		? myConfigTemplatesQuery
 		: { isLoading: false, data: null };

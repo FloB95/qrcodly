@@ -10,7 +10,7 @@ import { apiRequest } from '../utils';
 
 // Define query keys
 export const queryKeys = {
-	myConfigTemplates: ['myConfigTemplates'],
+	listConfigTemplates: ['listConfigTemplates'],
 	predefinedTemplates: ['predefinedTemplates'],
 } as const;
 
@@ -19,7 +19,7 @@ export function usePredefinedTemplatesQuery() {
 	return useQuery({
 		queryKey: queryKeys.predefinedTemplates,
 		queryFn: async (): Promise<TConfigTemplatePaginatedResponseDto> => {
-			return apiRequest<TConfigTemplatePaginatedResponseDto>('/config-template/get-predefined', {
+			return apiRequest<TConfigTemplatePaginatedResponseDto>('/config-template/predefined', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -33,15 +33,15 @@ export function usePredefinedTemplatesQuery() {
 }
 
 // Hook to fetch configuration templates
-export function useMyConfigTemplatesQuery() {
+export function useListConfigTemplatesQuery() {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: queryKeys.myConfigTemplates,
+		queryKey: queryKeys.listConfigTemplates,
 		queryFn: async (): Promise<TConfigTemplatePaginatedResponseDto> => {
 			const token = await getToken();
 
-			return apiRequest<TConfigTemplatePaginatedResponseDto>('/config-template/get-my', {
+			return apiRequest<TConfigTemplatePaginatedResponseDto>('/config-template', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

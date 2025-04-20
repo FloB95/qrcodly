@@ -3,10 +3,10 @@
 import { DashboardListItem } from './ListItem';
 import { Loader2 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableRow } from '../ui/table';
-import { useMyQrCodesQuery } from '@/lib/api/qr-code';
+import { useListQrCodesQuery } from '@/lib/api/qr-code';
 
 export const QrCodeList = () => {
-	const { data: qrCodes, isLoading } = useMyQrCodesQuery();
+	const { data: qrCodes, isLoading } = useListQrCodesQuery();
 
 	if (isLoading || !qrCodes) {
 		return (

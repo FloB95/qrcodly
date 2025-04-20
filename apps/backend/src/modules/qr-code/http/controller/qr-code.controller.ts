@@ -34,8 +34,8 @@ export class QrCodeController extends AbstractController {
 		super();
 	}
 
-	@Get('/get-my', { querySchema: GetQrCodeQueryParamsSchema })
-	async getMy(
+	@Get('', { querySchema: GetQrCodeQueryParamsSchema })
+	async list(
 		request: IHttpRequestWithAuth<unknown, unknown, TGetQrCodeQueryParamsDto>,
 	): Promise<IHttpResponse<TQrCodePaginatedResponseDto>> {
 		const { page, limit, where } = request.query;

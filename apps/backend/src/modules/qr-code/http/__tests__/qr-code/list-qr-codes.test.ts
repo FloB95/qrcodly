@@ -6,10 +6,10 @@ import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-s
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateQrCodeDto } from '@shared/schemas';
 import { container } from 'tsyringe';
-import { CreateQrCodeUseCase } from '../../useCase/qr-code/create-qr-code.use-case';
+import { CreateQrCodeUseCase } from '../../../useCase/qr-code/create-qr-code.use-case';
 import { type User } from '@clerk/fastify';
 
-const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code/get-my`;
+const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 
 /**
  * Generates a new random QR code DTO.
@@ -21,16 +21,16 @@ const generateQrCodeDto = (): TCreateQrCodeDto => ({
 });
 
 /**
- * Get My QR Codes API Tests
+ * List QR Codes API Tests
  */
-describe('getMyQrCodes', () => {
+describe('listQrCodes', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 	let accessToken2: string;
 	let user: User;
 	let user2: User;
 
-	const getMyQrCodesRequest = async (queryParams: Record<string, any> = {}, token?: string) =>
+	const listQrCodesRequest = async (queryParams: Record<string, any> = {}, token?: string) =>
 		testServer.inject({
 			method: 'GET',
 			url: `${QR_CODE_API_PATH}?${new URLSearchParams(queryParams).toString()}`,
@@ -64,8 +64,8 @@ describe('getMyQrCodes', () => {
 		await shutDownServer();
 	});
 
-	it('should fetch the signed-in user’s QR codes and return status code 200', async () => {
-		const response = await getMyQrCodesRequest({}, accessToken);
+	it('should fetch only the signed-in user’s QR codes and return status code 200', async () => {
+		const response = await listQrCodesRequest({}, accessToken);
 
 		expect(response.statusCode).toBe(200);
 
@@ -75,12 +75,12 @@ describe('getMyQrCodes', () => {
 		expect(page).toBe(1); // Default page
 		expect(limit).toBe(10); // Default limit
 		data.forEach((qrCode: any) => {
-			expect(qrCode.createdBy).toBe(user.id);
+			expect(qrCode.createdBy).toBe(user.id); // Ensure only user1's QR codes are returned
 		});
 	});
 
 	it('should respect pagination parameters', async () => {
-		const response = await getMyQrCodesRequest({ page: 1, limit: 2 }, accessToken);
+		const response = await listQrCodesRequest({ page: 1, limit: 2 }, accessToken);
 
 		expect(response.statusCode).toBe(200);
 
@@ -91,8 +91,8 @@ describe('getMyQrCodes', () => {
 		expect(limit).toBe(2);
 	});
 
-	it('should return an empty list if the user has no QR codes', async () => {
-		const response = await getMyQrCodesRequest({}, accessToken2);
+	it('ensure the list works without page and limit parameters', async () => {
+		const response = await listQrCodesRequest({}, accessToken2);
 
 		expect(response.statusCode).toBe(200);
 
@@ -100,10 +100,13 @@ describe('getMyQrCodes', () => {
 		expect(Array.isArray(data)).toBe(true);
 		expect(data.length).toBe(2); // User2 has 2 QR codes
 		expect(total).toBe(2);
+		data.forEach((qrCode: any) => {
+			expect(qrCode.createdBy).toBe(user2.id); // Ensure only user2's QR codes are returned
+		});
 	});
 
 	it('should return 401 if no authorization token is provided', async () => {
-		const response = await getMyQrCodesRequest();
+		const response = await listQrCodesRequest();
 
 		expect(response.statusCode).toBe(401);
 

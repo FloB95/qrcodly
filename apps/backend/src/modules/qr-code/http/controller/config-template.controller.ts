@@ -35,8 +35,8 @@ export class ConfigTemplateController extends AbstractController {
 		super();
 	}
 
-	@Get('/get-my', { querySchema: GetConfigTemplateQueryParamsDto })
-	async getMy(
+	@Get('', { querySchema: GetConfigTemplateQueryParamsDto })
+	async list(
 		request: IHttpRequestWithAuth<unknown, unknown, TGetConfigTemplateQueryParamsDto>,
 	): Promise<IHttpResponse<TConfigTemplatePaginatedResponseDto>> {
 		const { page, limit, where } = request.query;
@@ -62,7 +62,7 @@ export class ConfigTemplateController extends AbstractController {
 		return this.makeApiHttpResponse(200, ConfigTemplatePaginatedResponseDto.parse(pagination));
 	}
 
-	@Get('/get-predefined', {
+	@Get('/predefined', {
 		skipAuth: true,
 	})
 	async getPredefined(): Promise<IHttpResponse<TConfigTemplatePaginatedResponseDto>> {
