@@ -42,7 +42,9 @@ export function useCreateQrCodeMutation() {
 	const { getToken } = useAuth();
 
 	return useMutation({
-		mutationFn: async (qrCode: TCreateQrCodeDto): Promise<TCreateQrCodeResponseDto> => {
+		mutationFn: async (
+			qrCode: TCreateQrCodeDto,
+		): Promise<TCreateQrCodeResponseDto> => {
 			const token = await getToken();
 			const headers: HeadersInit = {
 				'Content-Type': 'application/json',
@@ -57,8 +59,10 @@ export function useCreateQrCodeMutation() {
 			});
 		},
 		onSuccess: () => {
-			// Invalidate the 'myQrCodes' query to refetch the updated data
-			void queryClient.invalidateQueries({ queryKey: [...queryKeys.myQrCodes] });
+			// Invalidate the 'listQrCodes' query to refetch the updated data
+			void queryClient.invalidateQueries({
+				queryKey: [...queryKeys.listQrCodes],
+			});
 		},
 		onError: (error) => {
 			console.error('Error creating QR code:', error);
@@ -82,8 +86,10 @@ export function useDeleteQrCodeMutation() {
 			});
 		},
 		onSuccess: () => {
-			// Invalidate the 'myQrCodes' query to refetch the updated data
-			void queryClient.invalidateQueries({ queryKey: [...queryKeys.myQrCodes] });
+			// Invalidate the 'listQrCodes' query to refetch the updated data
+			void queryClient.invalidateQueries({
+				queryKey: [...queryKeys.listQrCodes],
+			});
 		},
 		onError: (error) => {
 			console.error('Error deleting QR code:', error);

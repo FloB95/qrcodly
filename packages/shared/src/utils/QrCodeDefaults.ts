@@ -1,4 +1,4 @@
-import { TQrCodeOptions } from '../schemas/QrCode';
+import { type TQrCodeOptions } from '../schemas/QrCode';
 
 export const QrCodeDefaults: TQrCodeOptions = {
 	width: 1000,
