@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import {
 	Form,
 	FormControl,
@@ -8,19 +8,19 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form';
-import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { useEffect } from 'react';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
+} from "@/components/ui/form";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from '@/components/ui/select';
-import { WifiInputSchema, type TWifiInput } from '@shared/schemas/src';
+} from "@/components/ui/select";
+import { WifiInputSchema, type TWifiInput } from "@shared/schemas/src";
 // Import from the shared package
 
 type FormValues = TWifiInput;
@@ -36,7 +36,7 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 		defaultValues: {
 			ssid: value?.ssid,
 			password: value?.password,
-			encryption: value?.encryption || 'WPA',
+			encryption: value?.encryption || "WPA",
 		},
 	});
 
@@ -46,16 +46,18 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 		onChange(values);
 	}
 
+	console.log("rendering");
+
 	// handle submit automatically after debounced value
 	useEffect(() => {
-		if (typeof debounced.encryption === 'undefined') {
-			debounced.encryption = 'WPA';
+		if (typeof debounced.encryption === "undefined") {
+			debounced.encryption = "WPA";
 		}
 
 		if (
-			JSON.stringify(debounced) === '{}' ||
+			JSON.stringify(debounced) === "{}" ||
 			JSON.stringify(debounced) === JSON.stringify(value) ||
-			typeof debounced.ssid === 'undefined'
+			typeof debounced.ssid === "undefined"
 		) {
 			return;
 		}
@@ -83,7 +85,7 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 					<FormField
 						control={form.control}
 						name="password"
-						disabled={form.getValues('encryption') === 'nopass'}
+						disabled={form.getValues("encryption") === "nopass"}
 						render={({ field }) => (
 							<FormItem className="w-full">
 								<FormLabel>Password</FormLabel>
@@ -110,10 +112,13 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 										name="encryption"
 										defaultValue="WPA"
 										onValueChange={(value) => {
-											form.setValue('encryption', value as TWifiInput['encryption']);
+											form.setValue(
+												"encryption",
+												value as TWifiInput["encryption"],
+											);
 
-											if (value === 'nopass') {
-												form.setValue('password', '');
+											if (value === "nopass") {
+												form.setValue("password", "");
 											}
 										}}
 										value={field.value}

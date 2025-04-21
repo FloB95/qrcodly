@@ -10,7 +10,11 @@ import { UrlSection } from "./UrlSection";
 import { TextSection } from "./TextSection";
 import { VcardSection } from "./VcardSection";
 import { WiFiSection } from "./WiFiSection";
-import { VCardInputSchema, WifiInputSchema } from "@shared/schemas";
+import {
+	UrlInputSchema,
+	VCardInputSchema,
+	WifiInputSchema,
+} from "@shared/schemas";
 import { useQrCodeGeneratorStore } from "@/components/provider/QrCodeConfigStoreProvider";
 
 export const ContentSwitch = () => {
@@ -70,15 +74,13 @@ export const ContentSwitch = () => {
 				<TabsContent value="url">
 					<UrlSection
 						value={
-							contentType === "url" && typeof content === "string"
-								? content
-								: ""
+							contentType === "url"
+								? UrlInputSchema.safeParse(content).data!
+								: UrlInputSchema.safeParse({}).data!
 						}
-						// TODO add editable prop to url section
-						editable={false}
-						onChange={(url) => {
+						onChange={(v) => {
 							if (contentType !== "url") return;
-							updateContent(url);
+							updateContent(v);
 						}}
 					/>
 				</TabsContent>
@@ -118,8 +120,6 @@ export const ContentSwitch = () => {
 						onChange={(v) => {
 							if (contentType !== "vCard") return;
 							updateContent(v);
-							// setCurrentInput({ ...currentInput, value: v });
-							// onChange(convertVCardObjToString(v), v, 'vCard');
 						}}
 					/>
 				</TabsContent>

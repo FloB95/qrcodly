@@ -3,7 +3,6 @@
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
 	Form,
 	FormControl,
@@ -18,40 +17,44 @@ import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@clerk/nextjs";
 import { LoginRequiredDialog } from "../LoginRequiredDialog";
 import { Badge } from "@/components/ui/badge";
-import { UrlInputSchema } from "@shared/schemas";
+import { UrlInputSchema, type TUrlInput } from "@shared/schemas";
+
+type FormValues = TUrlInput;
 
 type TUrlSectionProps = {
-	value: string;
-	editable: boolean;
-	onChange: (value: string, editable: boolean) => void;
+	onChange: (data: FormValues) => void;
+	value: FormValues;
 };
 
-const formSchema = z.object({
-	url: UrlInputSchema,
-	editable: z.boolean(),
-});
-
-export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
+export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
+
+	const form = useForm<FormValues>({
+		resolver: zodResolver(UrlInputSchema),
 		defaultValues: {
-			url: value,
-			editable,
+			url: value?.url,
+			isEditable: false,
+			isActive: true,
 		},
 	});
-	const [debounced] = useDebouncedValue(form.watch("url"), 500);
+	const [debounced] = useDebouncedValue<FormValues>(form.getValues(), 500);
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		onChange(values.url, values.editable);
+	function onSubmit(values: FormValues) {
+		onChange(values);
 	}
 
 	// handle submit automatically after debounced value
 	useEffect(() => {
-		if (debounced === value) return;
+		if (
+			JSON.stringify(debounced) === "{}" ||
+			JSON.stringify(debounced) === JSON.stringify(value) ||
+			typeof debounced?.url === "undefined"
+		) {
+			return;
+		}
 		void form.handleSubmit(onSubmit)();
-	}, [debounced, value, form]);
+	}, [debounced]);
 
 	return (
 		<>
@@ -85,7 +88,7 @@ export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
 					/>
 					<FormField
 						control={form.control}
-						name="editable"
+						name="isEditable"
 						render={({ field }) => (
 							<FormItem>
 								<div className="flex">

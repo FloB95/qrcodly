@@ -5,6 +5,7 @@ import {
 	type TQrCodeContentType,
 	type TVCardInput,
 	type TWifiInput,
+	TUrlInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 
@@ -78,7 +79,7 @@ export const convertQRCodeDataToStringByType = (
 ): string => {
 	switch (contentType) {
 		case 'url':
-			return data as string;
+			return (data as TUrlInput).url;
 		case 'text':
 			return data as string;
 		case 'wifi':

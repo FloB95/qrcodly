@@ -32,7 +32,8 @@ import Image from "next/image";
 const GetNameByContentType = (qr: TQrCode) => {
 	switch (qr.contentType) {
 		case "url":
-			return qr.content as TQrCodeContentMap["url"];
+			const urlData = qr.content as TQrCodeContentMap["url"];
+			return urlData?.url;
 		case "text":
 			return qr.content as TQrCodeContentMap["text"];
 		case "wifi":

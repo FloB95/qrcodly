@@ -182,9 +182,9 @@ export function ColorPicker({
 						}
 						setColor(b);
 						const gradientObject = getGradientObject(b);
-						// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 						if (
 							gradientObject?.isGradient &&
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 							gradientObject.colors?.length > 2
 						) {
 							deletePoint(1); // delete the middle point
