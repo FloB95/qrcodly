@@ -1,6 +1,6 @@
 # QRcodly
 
-**QRcodly** is an open-source QR code generator that helps you quickly create QR codes for various purposes — from sharing URLs and contact details to Wi-Fi credentials and more.
+**QRcodly** is an free open-source QR code generator that helps you quickly create QR codes for various purposes — from sharing URLs and contact details to Wi-Fi credentials and more.
 
 ---
 

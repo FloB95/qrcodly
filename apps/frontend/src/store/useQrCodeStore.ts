@@ -30,22 +30,25 @@ export const defaultInitState: QrCodeGeneratorState = {
 export const createQrCodeGeneratorStore = (
 	initState: QrCodeGeneratorState = defaultInitState,
 ) => {
-	// Check for unsavedQrConfig in localStorage
-	const savedConfig = localStorage.getItem('unsavedQrConfig');
-	if (savedConfig) {
-		try {
-			const parsedConfig = JSON.parse(savedConfig) as Partial<TQrCodeOptions>;
-			initState.config = {
-				...initState.config,
-				...parsedConfig,
-			};
-			// Clear the unsavedQrConfig from localStorage
-			localStorage.removeItem('unsavedQrConfig');
-		} catch (error) {
-			console.error(
-				'Failed to parse unsavedQrConfig from localStorage:',
-				error,
-			);
+	// Check if we're in a browser environment
+	if (typeof window !== 'undefined') {
+		// Check for unsavedQrConfig in localStorage
+		const savedConfig = localStorage.getItem('unsavedQrConfig');
+		if (savedConfig) {
+			try {
+				const parsedConfig = JSON.parse(savedConfig) as Partial<TQrCodeOptions>;
+				initState.config = {
+					...initState.config,
+					...parsedConfig,
+				};
+				// Clear the unsavedQrConfig from localStorage
+				localStorage.removeItem('unsavedQrConfig');
+			} catch (error) {
+				console.error(
+					'Failed to parse unsavedQrConfig from localStorage:',
+					error,
+				);
+			}
 		}
 	}
 
