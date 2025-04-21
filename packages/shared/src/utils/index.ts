@@ -5,7 +5,7 @@ import {
 	type TQrCodeContentType,
 	type TVCardInput,
 	type TWifiInput,
-	TUrlInput,
+	type TUrlInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 
