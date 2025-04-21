@@ -27,6 +27,7 @@ import type { TQrCode, TQrCodeContentMap } from "@shared/schemas";
 import { useDeleteQrCodeMutation } from "@/lib/api/qr-code";
 import posthog from "posthog-js";
 import { formatDate } from "@/lib/utils";
+import Image from "next/image";
 
 const GetNameByContentType = (qr: TQrCode) => {
 	switch (qr.contentType) {
@@ -104,14 +105,20 @@ export const DashboardListItem = ({ qr }: { qr: TQrCode }) => {
 		<TableRow
 			className={`hover:bg-muted/90 rounded-lg border-none shadow ${isDeleting ? "bg-muted/70" : "bg-white"}`}
 		>
-			<TableCell className="hidden rounded-l-lg sm:table-cell">
+			<TableCell className="table-cell rounded-l-lg">
 				<div className="flex space-x-8">
-					<div className="ml-4 flex flex-col justify-center">
+					<div className="ml-4 hidden flex-col justify-center sm:flex">
 						{GetQrCodeIconByContentType(qr)}
 					</div>
 					<div className="h-[90px] w-[90px] overflow-hidden">
 						{qr.previewImage ? (
-							<img src={qr.previewImage} alt="QR code preview" loading="lazy" />
+							<Image
+								src={qr.previewImage}
+								width={180}
+								height={180}
+								alt="QR code preview"
+								loading="lazy"
+							/>
 						) : (
 							<DynamicQrCode
 								qrCode={qr}
@@ -125,7 +132,7 @@ export const DashboardListItem = ({ qr }: { qr: TQrCode }) => {
 				<>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<div className="inline-block max-w-[400px] overflow-hidden text-ellipsis whitespace-nowrap">
+							<div className="inline-block max-w-[400px] truncate overflow-hidden text-ellipsis whitespace-nowrap">
 								{GetNameByContentType(qr)}
 							</div>
 						</TooltipTrigger>
@@ -135,7 +142,7 @@ export const DashboardListItem = ({ qr }: { qr: TQrCode }) => {
 					</Tooltip>
 				</>
 			</TableCell>
-			<TableCell>
+			<TableCell className="hidden sm:table-cell">
 				<Badge variant="outline">Active</Badge>
 			</TableCell>
 			{/* <TableCell>

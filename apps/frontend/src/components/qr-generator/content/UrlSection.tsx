@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import {
 	Form,
 	FormControl,
@@ -11,14 +11,14 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form';
-import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { useEffect, useState } from 'react';
-import { Switch } from '@/components/ui/switch';
-import { useAuth } from '@clerk/nextjs';
-import { LoginRequiredDialog } from '../LoginRequiredDialog';
-import { Badge } from '@/components/ui/badge';
-import { UrlInputSchema } from '@shared/schemas';
+} from "@/components/ui/form";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { useEffect, useState } from "react";
+import { Switch } from "@/components/ui/switch";
+import { useAuth } from "@clerk/nextjs";
+import { LoginRequiredDialog } from "../LoginRequiredDialog";
+import { Badge } from "@/components/ui/badge";
+import { UrlInputSchema } from "@shared/schemas";
 
 type TUrlSectionProps = {
 	value: string;
@@ -41,7 +41,7 @@ export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
 			editable,
 		},
 	});
-	const [debounced] = useDebouncedValue(form.watch('url'), 500);
+	const [debounced] = useDebouncedValue(form.watch("url"), 500);
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		onChange(values.url, values.editable);
@@ -69,10 +69,10 @@ export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
 										placeholder="Enter URL https://example.com/"
 										autoFocus
 										onBlur={(e) => {
-											if (e.target.value === '') return;
+											if (e.target.value === "") return;
 											if (
-												!e.target.value.startsWith('http://') &&
-												!e.target.value.startsWith('https://')
+												!e.target.value.startsWith("http://") &&
+												!e.target.value.startsWith("https://")
 											) {
 												field.onChange(`https://${e.target.value}`);
 											}
@@ -105,7 +105,7 @@ export const UrlSection = ({ value, editable, onChange }: TUrlSectionProps) => {
 									</FormControl>
 									<FormLabel className="relative mt-[4px] ml-2 pr-10">
 										Enable Statistics and Editing
-										<Badge className="absolute top-5 block w-[110px] sm:top-[-10px] sm:right-[-35%]">
+										<Badge className="xs:absolute xs:top-5 relative top-2 block w-[110px] sm:top-[-10px] sm:right-[-35%]">
 											Coming soon!
 										</Badge>
 									</FormLabel>

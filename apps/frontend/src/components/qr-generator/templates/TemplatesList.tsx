@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import type { TConfigTemplateResponseDto } from "@shared/schemas";
 import { DynamicQrCode } from "../DynamicQrCode";
 import { TrashIcon } from "@heroicons/react/24/outline";
@@ -24,6 +22,7 @@ import { useDeleteConfigTemplateMutation } from "@/lib/api/config-template";
 import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import posthog from "posthog-js";
+import Image from "next/image";
 
 type TemplateListProps = {
 	templates: TConfigTemplateResponseDto[];
@@ -110,7 +109,9 @@ export const TemplatesList = ({
 						</Tooltip>
 						<div className="relative overflow-hidden">
 							{template.previewImage ? (
-								<img
+								<Image
+									height={300}
+									width={300}
 									src={template.previewImage}
 									alt="QR code preview"
 									loading="lazy"

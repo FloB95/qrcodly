@@ -79,8 +79,8 @@ export class ObjectStorage implements IFileStorage {
 				ContentType: contentType,
 			});
 
-			const res = await this.s3Client.send(command);
-			this.logger.info('File uploaded to S3:', { k, contentType, res });
+			await this.s3Client.send(command);
+			this.logger.info('File uploaded to S3:', { k, contentType });
 		} catch (error: unknown) {
 			this.logger.error('Error uploading file to S3', { k, contentType, error });
 			throw new S3UploadError('File upload failed', error as Error);

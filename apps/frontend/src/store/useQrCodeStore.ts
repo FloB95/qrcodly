@@ -18,7 +18,8 @@ export type QrCodeGeneratorActions = {
 	updateContentType: (contentType: TQrCodeContentType) => void;
 };
 
-export type QrCodeGeneratorStore = QrCodeGeneratorState & QrCodeGeneratorActions;
+export type QrCodeGeneratorStore = QrCodeGeneratorState &
+	QrCodeGeneratorActions;
 
 export const defaultInitState: QrCodeGeneratorState = {
 	config: QrCodeDefaults,
@@ -26,7 +27,28 @@ export const defaultInitState: QrCodeGeneratorState = {
 	contentType: 'url',
 };
 
-export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = defaultInitState) => {
+export const createQrCodeGeneratorStore = (
+	initState: QrCodeGeneratorState = defaultInitState,
+) => {
+	// Check for unsavedQrConfig in localStorage
+	const savedConfig = localStorage.getItem('unsavedQrConfig');
+	if (savedConfig) {
+		try {
+			const parsedConfig = JSON.parse(savedConfig) as Partial<TQrCodeOptions>;
+			initState.config = {
+				...initState.config,
+				...parsedConfig,
+			};
+			// Clear the unsavedQrConfig from localStorage
+			localStorage.removeItem('unsavedQrConfig');
+		} catch (error) {
+			console.error(
+				'Failed to parse unsavedQrConfig from localStorage:',
+				error,
+			);
+		}
+	}
+
 	return createStore<QrCodeGeneratorStore>()((set) => ({
 		...initState,
 		updateConfig: (config) => {

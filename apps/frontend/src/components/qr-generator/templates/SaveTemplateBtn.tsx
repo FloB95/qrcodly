@@ -56,15 +56,20 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 								: "default"
 						}
 						className="cursor-pointer"
-						// isLoading={createQrCodeTemplateMutation.isPending}
+						isLoading={createConfigTemplateMutation.isPending}
 						onClick={() => {
 							if (!isSignedIn) {
+								// Store the config in localStorage before prompting login
+								localStorage.setItem("unsavedQrConfig", JSON.stringify(config));
 								setAlertOpen(true);
 								return;
 							}
 							setNameDialogOpen(true);
 						}}
-						disabled={JSON.stringify(config) === JSON.stringify(QrCodeDefaults)}
+						disabled={
+							createConfigTemplateMutation.isPending &&
+							JSON.stringify(config) === JSON.stringify(QrCodeDefaults)
+						}
 					>
 						Save as Template
 					</Button>

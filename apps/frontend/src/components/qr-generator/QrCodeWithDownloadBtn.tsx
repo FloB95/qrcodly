@@ -1,11 +1,13 @@
-import { Suspense } from 'react';
-import { DynamicQrCode } from './DynamicQrCode';
-import QrCodeSaveTemplateBtn from './templates/SaveTemplateBtn';
-import QrCodeDownloadBtn from './QrCodeDownloadBtn';
-import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
+import { Suspense } from "react";
+import { DynamicQrCode } from "./DynamicQrCode";
+import QrCodeSaveTemplateBtn from "./templates/SaveTemplateBtn";
+import QrCodeDownloadBtn from "./QrCodeDownloadBtn";
+import { useQrCodeGeneratorStore } from "../provider/QrCodeConfigStoreProvider";
 
 export const QrCodeWithDownloadBtn = () => {
-	const { config, content, contentType } = useQrCodeGeneratorStore((state) => state);
+	const { config, content, contentType } = useQrCodeGeneratorStore(
+		(state) => state,
+	);
 	return (
 		<div>
 			<Suspense fallback={null}>
@@ -18,7 +20,7 @@ export const QrCodeWithDownloadBtn = () => {
 						}}
 					/>
 				</div>
-				<div className="mt-6 flex justify-center md:justify-between">
+				<div className="mt-6 flex justify-center space-x-2 md:justify-between">
 					<QrCodeSaveTemplateBtn config={config} />
 					<QrCodeDownloadBtn
 						qrCode={{
