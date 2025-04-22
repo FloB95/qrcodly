@@ -18,38 +18,57 @@ import { useAuth } from "@clerk/nextjs";
 import { LoginRequiredDialog } from "../LoginRequiredDialog";
 import { Badge } from "@/components/ui/badge";
 import { UrlInputSchema, type TUrlInput } from "@shared/schemas";
+import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
 
-type FormValues = TUrlInput;
+type FormValues = Omit<TUrlInput, "shortUrl">;
 
 type TUrlSectionProps = {
-	onChange: (data: FormValues) => void;
+	onChange: (data: TUrlInput) => void;
 	value: FormValues;
+};
+
+const generateShortUrl = () => {
+	const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+	const randomString = Array.from({ length: 5 }, () =>
+		characters.charAt(Math.floor(Math.random() * characters.length)),
+	).join("");
+	return `https://www.qrcodly.de/u/${randomString}`;
 };
 
 export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
+	const [shortUrl] = useState<string | null>(generateShortUrl());
+	const [originalUrl, setOriginalUrl] = useState<string | null>(
+		value?.url ?? null,
+	);
 
-	const form = useForm<FormValues>({
+	const form = useForm<Omit<FormValues, "shortUrl">>({
 		resolver: zodResolver(UrlInputSchema),
 		defaultValues: {
-			url: value?.url,
-			isEditable: false,
-			isActive: true,
+			url: value?.url ?? "",
+			isEditable: value?.isEditable ?? false,
 		},
 	});
-	const [debounced] = useDebouncedValue<FormValues>(form.getValues(), 500);
+
+	const [debounced] = useDebouncedValue<string | null>(originalUrl, 500);
 
 	function onSubmit(values: FormValues) {
-		onChange(values);
+		if (!originalUrl) return;
+		const payload: TUrlInput = {
+			...values,
+			url: originalUrl,
+			shortUrl: shortUrl,
+		};
+
+		onChange(payload);
 	}
 
-	// handle submit automatically after debounced value
 	useEffect(() => {
 		if (
 			JSON.stringify(debounced) === "{}" ||
-			JSON.stringify(debounced) === JSON.stringify(value) ||
-			typeof debounced?.url === "undefined"
+			JSON.stringify(debounced) === JSON.stringify(value?.url) ||
+			debounced === null
 		) {
 			return;
 		}
@@ -68,6 +87,12 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 								<FormControl>
 									<Input
 										{...field}
+										value={originalUrl ?? field.value}
+										onChange={(e) => {
+											const val = e.target.value;
+											setOriginalUrl(val);
+											field.onChange(val);
+										}}
 										className="p-6"
 										placeholder="Enter URL https://example.com/"
 										autoFocus
@@ -77,15 +102,28 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 												!e.target.value.startsWith("http://") &&
 												!e.target.value.startsWith("https://")
 											) {
-												field.onChange(`https://${e.target.value}`);
+												const withHttps = `https://${e.target.value}`;
+												setOriginalUrl(withHttps);
+												field.onChange(withHttps);
 											}
 										}}
 									/>
 								</FormControl>
+
+								{form.getValues().isEditable && shortUrl && (
+									<div className="-mt-1 ml-6 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
+										<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold" />
+										<span className="text-muted-foreground pt-1 text-sm">
+											{shortUrl}
+										</span>
+									</div>
+								)}
+
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
+
 					<FormField
 						control={form.control}
 						name="isEditable"
@@ -94,9 +132,8 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 								<div className="flex">
 									<FormControl>
 										<Switch
-											disabled
 											checked={field.value}
-											onCheckedChange={(e) => {
+											onCheckedChange={async (e) => {
 												if (!isSignedIn) {
 													setAlertOpen(true);
 													return;
@@ -106,10 +143,13 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 											}}
 										/>
 									</FormControl>
-									<FormLabel className="relative mt-[4px] ml-2 pr-10">
+									<FormLabel className="relative mt-[4px] ml-2 pr-2">
 										Enable Statistics and Editing
-										<Badge className="xs:absolute xs:top-5 relative top-2 block w-[110px] sm:top-[-10px] sm:right-[-35%]">
-											Coming soon!
+										<Badge
+											variant="green"
+											className="xs:absolute xs:top-5 relative top-2 block sm:top-[-10px] sm:left-full"
+										>
+											New!
 										</Badge>
 									</FormLabel>
 								</div>

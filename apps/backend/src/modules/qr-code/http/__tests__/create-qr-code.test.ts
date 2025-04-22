@@ -14,7 +14,10 @@ const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
  * Generates a new random QR code DTO.
  */
 const generateQrCodeDto = (): TCreateQrCodeDto => ({
-	content: faker.internet.url(),
+	content: {
+		url: faker.internet.url(),
+		isEditable: false, // TODO add as param
+	},
 	contentType: 'url',
 	config: QrCodeDefaults,
 });

@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe';
 import { BaseImageStrategy } from '../domain/strategies/base-image.strategy';
-import { QrCodeImageStrategy } from '../domain/strategies/qr-code-image.strategy';
+import { QrCodeImageStrategy } from '@/modules/qr-code/domain/strategies/qr-code-image.strategy';
 
 @injectable()
 export class ImageService {

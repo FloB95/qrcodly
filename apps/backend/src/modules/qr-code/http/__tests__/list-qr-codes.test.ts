@@ -6,8 +6,8 @@ import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-s
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateQrCodeDto } from '@shared/schemas';
 import { container } from 'tsyringe';
-import { CreateQrCodeUseCase } from '../../../useCase/qr-code/create-qr-code.use-case';
 import { type User } from '@clerk/fastify';
+import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 
@@ -15,7 +15,10 @@ const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
  * Generates a new random QR code DTO.
  */
 const generateQrCodeDto = (): TCreateQrCodeDto => ({
-	content: faker.internet.url(),
+	content: {
+		url: faker.internet.url(),
+		isEditable: false,
+	},
 	contentType: 'url',
 	config: QrCodeDefaults,
 });

@@ -1,7 +1,7 @@
 import './core/setup';
 import { container } from 'tsyringe';
 import { Logger } from './core/logging';
-import { ShutdownService } from './core/shutdown/shutdown.service';
+import { ShutdownService } from './core/services/shutdown.service';
 import { Server } from './core/server';
 import { poolConnection } from './core/db';
 import { sleep } from './utils/general';

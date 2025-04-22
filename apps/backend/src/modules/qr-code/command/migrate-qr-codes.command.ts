@@ -1,10 +1,10 @@
 import { inject, injectable } from 'tsyringe';
 import { AbstractCommand } from '@/core/command/abstract.command';
-import { ImageService } from '../services/image.service';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
+import { ImageService } from '@/core/services/image.service';
 
 @injectable()
-export default class CreateUserCommand extends AbstractCommand {
+export default class MigrateQrCodesCommand extends AbstractCommand {
 	constructor(
 		@inject(ImageService) private imageService: ImageService,
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,

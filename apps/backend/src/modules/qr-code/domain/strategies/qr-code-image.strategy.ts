@@ -1,4 +1,3 @@
-import { BaseImageStrategy } from './base-image.strategy';
 import {
 	convertQRCodeDataToStringByType,
 	convertQrCodeOptionsToLibraryOptions,
@@ -6,6 +5,7 @@ import {
 } from '@shared/schemas';
 import { QR_CODE_PREVIEW_IMAGE_FOLDER, QR_CODE_UPLOAD_FOLDER } from '../../config/constants';
 import { generateQrCodeStylingInstance } from '../../lib/styled-qr-code';
+import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
 
 export class QrCodeImageStrategy extends BaseImageStrategy {
 	constructor() {

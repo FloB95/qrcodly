@@ -1,13 +1,13 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
-import ConfigTemplateRepository from '../../domain/repository/config-template.repository';
+import ConfigTemplateRepository from '../domain/repository/config-template.repository';
 import { Logger } from '@/core/logging';
 import { EventEmitter } from '@/core/event';
-import { TConfigTemplate } from '../../domain/entities/config-template.entity';
+import { TConfigTemplate } from '../domain/entities/config-template.entity';
 import { TCreateConfigTemplateDto } from '@shared/schemas';
-import { ConfigTemplateCreatedEvent } from '../../event/config-template-created.event';
-import { ImageService } from '../../services/image.service';
-import { QrCodeTemplateImageStrategy } from '../../domain/strategies/qr-code-template-image.strategy';
+import { ConfigTemplateCreatedEvent } from '../event/config-template-created.event';
+import { ImageService } from '@/core/services/image.service';
+import { ConfigTemplateImageStrategy } from '../domain/strategies/config-template-image.strategy';
 
 /**
  * Use case for creating a ConfigTemplate entity.
@@ -20,7 +20,7 @@ export class CreateConfigTemplateUseCase implements IBaseUseCase {
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
 		@inject(ImageService) private imageService: ImageService,
 	) {
-		this.imageService.setStrategy(new QrCodeTemplateImageStrategy());
+		this.imageService.setStrategy(new ConfigTemplateImageStrategy());
 	}
 
 	/**

@@ -4,8 +4,8 @@ import { ConfigTemplateCreatedEvent } from '../config-template-created.event';
 import { container } from 'tsyringe';
 import ConfigTemplateRepository from '../../domain/repository/config-template.repository';
 import { Logger } from '@/core/logging';
-import { ImageService } from '../../services/image.service';
-import { QrCodeTemplateImageStrategy } from '../../domain/strategies/qr-code-template-image.strategy';
+import { ImageService } from '@/core/services/image.service';
+import { ConfigTemplateImageStrategy } from '../../domain/strategies/config-template-image.strategy';
 
 @EventHandler(ConfigTemplateCreatedEvent.eventName)
 export class ConfigTemplateCreatedEventHandler extends AbstractEventHandler<ConfigTemplateCreatedEvent> {
@@ -19,7 +19,7 @@ export class ConfigTemplateCreatedEventHandler extends AbstractEventHandler<Conf
 	 */
 	async handle(event: ConfigTemplateCreatedEvent): Promise<void> {
 		const imageService = container.resolve(ImageService);
-		imageService.setStrategy(new QrCodeTemplateImageStrategy());
+		imageService.setStrategy(new ConfigTemplateImageStrategy());
 		const configTemplateRepository = container.resolve(ConfigTemplateRepository);
 		const logger = container.resolve(Logger);
 

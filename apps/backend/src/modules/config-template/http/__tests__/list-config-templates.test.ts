@@ -6,9 +6,9 @@ import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-s
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateConfigTemplateDto } from '@shared/schemas';
 import { container } from 'tsyringe';
-import { CreateConfigTemplateUseCase } from '../../../useCase/config-template/create-config-template.use-case';
 import { type User } from '@clerk/fastify';
 import qs from 'qs';
+import { CreateConfigTemplateUseCase } from '../../useCase/create-config-template.use-case';
 
 const CONFIG_TEMPLATE_API_PATH = `${API_BASE_PATH}/config-template`;
 

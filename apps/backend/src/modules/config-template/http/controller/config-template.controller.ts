@@ -3,12 +3,12 @@ import AbstractController from '@/core/http/controller/abstract.controller';
 import type { IHttpRequestWithAuth } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
 import ConfigTemplateRepository from '../../domain/repository/config-template.repository';
-import { DeleteConfigTemplateUseCase } from '../../useCase/config-template/delete-config-template.use-case';
-import { CreateConfigTemplateUseCase } from '../../useCase/config-template/create-config-template.use-case';
+import { DeleteConfigTemplateUseCase } from '../../useCase/delete-config-template.use-case';
+import { CreateConfigTemplateUseCase } from '../../useCase/create-config-template.use-case';
 import { ConfigTemplateNotFoundError } from '../../error/http/config-template-not-found.error';
 import { UnauthorizedError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/response.interface';
-import { ListConfigTemplatesUseCase } from '../../useCase/config-template/list-config-templates.use-case';
+import { ListConfigTemplatesUseCase } from '../../useCase/list-config-templates.use-case';
 import {
 	ConfigTemplatePaginatedResponseDto,
 	ConfigTemplateResponseDto,

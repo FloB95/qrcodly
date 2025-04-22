@@ -1,10 +1,10 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
-import ConfigTemplateRepository from '../../domain/repository/config-template.repository';
+import ConfigTemplateRepository from '../domain/repository/config-template.repository';
 import { ISqlQueryFindBy } from '@/core/interface/repository.interface';
-import { TConfigTemplate } from '../../domain/entities/config-template.entity';
-import { ImageService } from '../../services/image.service';
-import { QrCodeTemplateImageStrategy } from '../../domain/strategies/qr-code-template-image.strategy';
+import { TConfigTemplate } from '../domain/entities/config-template.entity';
+import { ImageService } from '@/core/services/image.service';
+import { ConfigTemplateImageStrategy } from '../domain/strategies/config-template-image.strategy';
 
 /**
  * Use case for retrieving Config Templates based on query parameters.
@@ -15,7 +15,7 @@ export class ListConfigTemplatesUseCase implements IBaseUseCase {
 		@inject(ConfigTemplateRepository) private configTemplateRepository: ConfigTemplateRepository,
 		@inject(ImageService) private imageService: ImageService,
 	) {
-		this.imageService.setStrategy(new QrCodeTemplateImageStrategy());
+		this.imageService.setStrategy(new ConfigTemplateImageStrategy());
 	}
 
 	/**

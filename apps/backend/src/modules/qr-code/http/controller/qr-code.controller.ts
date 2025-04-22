@@ -4,10 +4,7 @@ import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/r
 import { inject, injectable } from 'tsyringe';
 import { getAuth } from '@clerk/fastify';
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
-import { DeleteQrCodeUseCase } from '../../useCase/qr-code/delete-qr-code.use-case';
-import { CreateQrCodeUseCase } from '../../useCase/qr-code/create-qr-code.use-case';
 import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
-import { ListQrCodesUseCase } from '../../useCase/qr-code/list-qr-code.use-case';
 import { UnauthorizedError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import {
@@ -21,7 +18,11 @@ import {
 	TIdRequestQueryDto,
 	TQrCodePaginatedResponseDto,
 	TQrCodeResponseDto,
+	TUrlInput,
 } from '@shared/schemas';
+import { ListQrCodesUseCase } from '../../useCase/list-qr-code.use-case';
+import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
+import { DeleteQrCodeUseCase } from '../../useCase/delete-qr-code.use-case';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -76,6 +77,11 @@ export class QrCodeController extends AbstractController {
 		// user can be logged in or not
 
 		const { userId } = getAuth(request);
+
+		// set editable to false if user is not logged in
+		if (!userId && request.body.contentType === 'url') {
+			(request.body.content as TUrlInput).isEditable = false;
+		}
 
 		const qrCode = await this.createQrCodeUseCase.execute(request.body, userId);
 		return this.makeApiHttpResponse(201, {

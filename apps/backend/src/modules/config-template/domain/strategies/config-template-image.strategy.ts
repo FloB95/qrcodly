@@ -1,13 +1,13 @@
-import { BaseImageStrategy } from './base-image.strategy';
 import { type TConfigTemplate } from '../entities/config-template.entity';
-import { generateQrCodeStylingInstance } from '../../lib/styled-qr-code';
 import { convertQrCodeOptionsToLibraryOptions } from '@shared/schemas';
 import {
 	QR_CODE_TEMPLATE_PREVIEW_IMAGE_FOLDER,
-	QR_CODE_TEMPLATE_UPLOAD_FOLDER
+	QR_CODE_TEMPLATE_UPLOAD_FOLDER,
 } from '../../config/constants';
+import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
+import { generateQrCodeStylingInstance } from '@/modules/qr-code/lib/styled-qr-code';
 
-export class QrCodeTemplateImageStrategy extends BaseImageStrategy {
+export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 	constructor() {
 		super();
 	}

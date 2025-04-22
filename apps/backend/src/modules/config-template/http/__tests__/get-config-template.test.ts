@@ -1,12 +1,17 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
 import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
 import { type FastifyInstance } from 'fastify';
-import { QrCodeDefaults, type TCreateConfigTemplateDto } from '@shared/schemas';
+import {
+	type TCreateConfigTemplateDto,
+	type TConfigTemplateResponseDto,
+	QrCodeDefaults,
+} from '@shared/schemas';
 import { container } from 'tsyringe';
-import { CreateConfigTemplateUseCase } from '../../../useCase/config-template/create-config-template.use-case';
 import { type User } from '@clerk/fastify';
-import ConfigTemplateRepository from '@/modules/qr-code/domain/repository/config-template.repository';
+import { CreateConfigTemplateUseCase } from '../../useCase/create-config-template.use-case';
+import { type TConfigTemplate } from '../../domain/entities/config-template.entity';
 
 const CONFIG_TEMPLATE_API_PATH = `${API_BASE_PATH}/config-template`;
 
@@ -19,19 +24,21 @@ const generateConfigTemplateDto = (): TCreateConfigTemplateDto => ({
 });
 
 /**
- * Delete Config Template API Tests
+ * Get Config Template API Tests
  */
-describe('deleteConfigTemplate', () => {
+describe('getConfigTemplate', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 	let user: User;
 	let user2: User;
+	let createConfigTemplate: TConfigTemplate;
 
-	const deleteConfigTemplateRequest = async (id: string, token?: string) =>
+	const getConfigTemplateRequest = async (id: string, token?: string) =>
 		testServer.inject({
-			method: 'DELETE',
+			method: 'GET',
 			url: `${CONFIG_TEMPLATE_API_PATH}/${id}`,
 			headers: {
+				'Content-Type': 'application/json',
 				Authorization: token ? `Bearer ${token}` : '',
 			},
 		});
@@ -48,51 +55,47 @@ describe('deleteConfigTemplate', () => {
 		await shutDownServer();
 	});
 
-	it('should delete a Config Template and return status code 200', async () => {
-		// Create a Config Template for the tests
+	it('should retrieve a Config Template and return status code 200', async () => {
 		const createConfigTemplateDto = generateConfigTemplateDto();
-		const createdConfigTemplate = await container
+		createConfigTemplate = await container
 			.resolve(CreateConfigTemplateUseCase)
 			.execute(createConfigTemplateDto, user.id);
-		const response = await deleteConfigTemplateRequest(createdConfigTemplate.id, accessToken);
+		const response = await getConfigTemplateRequest(createConfigTemplate.id, accessToken);
+		const receivedConfigTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
 
 		expect(response.statusCode).toBe(200);
-		expect(JSON.parse(response.payload)).toMatchObject({
-			deleted: true,
-		});
+		expect(receivedConfigTemplate.id).toBe(createConfigTemplate.id);
+		expect(receivedConfigTemplate.name).toBe(createConfigTemplateDto.name);
+		expect(receivedConfigTemplate.config).toEqual(createConfigTemplateDto.config);
 
-		// Verify that the Config Template is deleted
-		const found = await container
-			.resolve(ConfigTemplateRepository)
-			.findOneById(createdConfigTemplate.id);
-		expect(found).toBeUndefined();
+		// @ts-ignore expecting the isPredefined property to be undefined
+		expect(receivedConfigTemplate.isPredefined).toBeUndefined();
 	});
 
 	it('should return a 401 when not authenticated', async () => {
-		const response = await deleteConfigTemplateRequest('createdConfigTemplate.id');
+		const response = await getConfigTemplateRequest(createConfigTemplate.id);
 		expect(response.statusCode).toBe(401);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
 	});
 
-	it('should return 403 when a user tries to delete another user’s Config Template', async () => {
-		// Create a Config Template for user2
+	it('should return a 403 when a user tries to access another user’s Config Template', async () => {
 		const createConfigTemplateDto = generateConfigTemplateDto();
-		const otherConfigTemplate = await container
+
+		createConfigTemplate = await container
 			.resolve(CreateConfigTemplateUseCase)
 			.execute(createConfigTemplateDto, user2.id);
 
-		// Attempt to delete user2's Config Template with user1's token
-		const response = await deleteConfigTemplateRequest(otherConfigTemplate.id, accessToken);
+		const response = await getConfigTemplateRequest(createConfigTemplate.id, accessToken);
 		expect(response.statusCode).toBe(403);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
 	});
 
-	it('should return 404 when trying to delete a non-existent Config Template', async () => {
-		const response = await deleteConfigTemplateRequest('non-existent-id', accessToken);
+	it('should return a 404 for an invalid ID', async () => {
+		const response = await getConfigTemplateRequest('invalid-id', accessToken);
 		expect(response.statusCode).toBe(404);
 
 		const { message } = JSON.parse(response.payload);

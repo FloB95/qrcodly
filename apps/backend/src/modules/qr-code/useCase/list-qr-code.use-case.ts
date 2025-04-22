@@ -1,9 +1,9 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
-import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { ISqlQueryFindBy } from '@/core/interface/repository.interface';
-import { TQrCode } from '../../domain/entities/qr-code.entity';
-import { ImageService } from '../../services/image.service';
+import QrCodeRepository from '../domain/repository/qr-code.repository';
+import { ImageService } from '@/core/services/image.service';
+import { TQrCode } from '../domain/entities/qr-code.entity';
 
 /**
  * Use case for retrieving QR codes based on query parameters.

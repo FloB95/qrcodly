@@ -2,10 +2,11 @@ import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
 import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
 import { type FastifyInstance } from 'fastify';
-import { QrCodeDefaults, type TCreateQrCodeDto } from '@shared/schemas';
+import { QrCodeDefaults, type TCreateQrCodeDto, type TQrCodeResponseDto } from '@shared/schemas';
 import { container } from 'tsyringe';
-import { CreateQrCodeUseCase } from '../../../useCase/qr-code/create-qr-code.use-case';
 import { type User } from '@clerk/fastify';
+import { type TQrCode } from '../../domain/entities/qr-code.entity';
+import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 
@@ -13,25 +14,30 @@ const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
  * Generates a new random QR code DTO.
  */
 const generateQrCodeDto = (): TCreateQrCodeDto => ({
-	content: faker.internet.url(),
+	content: {
+		url: faker.internet.url(),
+		isEditable: false,
+	},
 	contentType: 'url',
 	config: QrCodeDefaults,
 });
 
 /**
- * Delete QR Code API Tests
+ * Create QR Code API Tests
  */
-describe('deleteQrCode', () => {
+describe('createQrCode', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 	let user: User;
 	let user2: User;
+	let createQrCode: TQrCode;
 
-	const deleteQrCodeRequest = async (id: string, token?: string) =>
+	const getQrCodeRequest = async (id: string, token?: string) =>
 		testServer.inject({
-			method: 'DELETE',
+			method: 'GET',
 			url: `${QR_CODE_API_PATH}/${id}`,
 			headers: {
+				'Content-Type': 'application/json',
 				Authorization: token ? `Bearer ${token}` : '',
 			},
 		});
@@ -48,45 +54,38 @@ describe('deleteQrCode', () => {
 		await shutDownServer();
 	});
 
-	it('should delete a QR code and return status code 200', async () => {
-		// Create a QR code for the tests
+	it('should create a QR code and return status code 201', async () => {
 		const createQrCodeDto = generateQrCodeDto();
-		const createdQrCode = await container
-			.resolve(CreateQrCodeUseCase)
-			.execute(createQrCodeDto, user.id);
-		const response = await deleteQrCodeRequest(createdQrCode.id, accessToken);
+		createQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, user.id);
+		const response = await getQrCodeRequest(createQrCode.id, accessToken);
+		const receivedQrCode = JSON.parse(response.payload) as TQrCodeResponseDto;
 
 		expect(response.statusCode).toBe(200);
-		expect(JSON.parse(response.payload)).toMatchObject({
-			deleted: true,
-		});
+		expect(receivedQrCode.id).toMatch(createQrCode.id);
 	});
 
-	it('should return a 401 when not authenticated', async () => {
-		const response = await deleteQrCodeRequest('createQrCode.id');
+	it('should return a 401 when no authenticated', async () => {
+		const response = await getQrCodeRequest(createQrCode.id);
 		expect(response.statusCode).toBe(401);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
 	});
 
-	it('should return 403 when a user tries to delete another user’s QR code', async () => {
-		// Create a QR code for user2
+	it('should return a 403 when user try to access other users QrCOde', async () => {
 		const createQrCodeDto = generateQrCodeDto();
-		const otherQrCode = await container
-			.resolve(CreateQrCodeUseCase)
-			.execute(createQrCodeDto, user2.id);
 
-		// Attempt to delete user2's QR code with user1's token
-		const response = await deleteQrCodeRequest(otherQrCode.id, accessToken);
+		createQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, user2.id);
+
+		const response = await getQrCodeRequest(createQrCode.id, accessToken);
 		expect(response.statusCode).toBe(403);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
 	});
 
-	it('should return 404 when trying to delete a non-existent QR code', async () => {
-		const response = await deleteQrCodeRequest('non-existent-id', accessToken);
+	it('should return a 404 on invalid-id', async () => {
+		const response = await getQrCodeRequest('invalid-id', accessToken);
 		expect(response.statusCode).toBe(404);
 
 		const { message } = JSON.parse(response.payload);

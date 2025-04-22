@@ -11,7 +11,9 @@ export const UrlInputSchema = z.object({
 	isEditable: z.boolean().optional(),
 	isActive: z.boolean().optional(),
 });
-export type TUrlInput = z.infer<typeof UrlInputSchema>;
+export type TUrlInput = z.infer<typeof UrlInputSchema> & {
+	shortUrl: string | null;
+};
 
 export const TextInputSchema = z.string().max(1000);
 export type TTextInput = string;

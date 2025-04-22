@@ -1,12 +1,12 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
-import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { Logger } from '@/core/logging';
 import { EventEmitter } from '@/core/event';
-import { TQrCode } from '../../domain/entities/qr-code.entity';
-import { QrCodeCreatedEvent } from '../../event/qr-code-created.event';
 import { TCreateQrCodeDto } from '@shared/schemas';
-import { ImageService } from '../../services/image.service';
+import QrCodeRepository from '../domain/repository/qr-code.repository';
+import { ImageService } from '@/core/services/image.service';
+import { QrCodeCreatedEvent } from '../event/qr-code-created.event';
+import { TQrCode } from '../domain/entities/qr-code.entity';
 
 /**
  * Use case for creating a QrCode entity.
