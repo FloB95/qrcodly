@@ -22,10 +22,11 @@ export class GetReservedShortCodeUseCase {
 				destinationUrl: {
 					eq: null,
 				},
+				qrCodeId: {
+					eq: null,
+				},
 			},
 		});
-
-		console.log('reservedShortUrl', reservedShortUrl);
 
 		// If user has any reserved short URL, return the first one
 		if (reservedShortUrl.length > 0) {

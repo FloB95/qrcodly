@@ -30,6 +30,7 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 		const shortUrl: Omit<TShortUrl, 'createdAt' | 'updatedAt'> = {
 			id: newId,
 			shortCode,
+			qrCodeId: null,
 			...dto,
 			createdBy,
 		};

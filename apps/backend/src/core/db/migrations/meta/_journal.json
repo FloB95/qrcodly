@@ -15,6 +15,13 @@
 			"when": 1745327185542,
 			"tag": "0001_lucky_gravity",
 			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "5",
+			"when": 1745333814722,
+			"tag": "0002_stale_bushwacker",
+			"breakpoints": true
 		}
 	]
 }

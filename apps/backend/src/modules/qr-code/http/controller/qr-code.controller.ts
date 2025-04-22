@@ -10,14 +10,14 @@ import { type IHttpResponse } from '@/core/interface/response.interface';
 import {
 	CreateQrCodeDto,
 	GetQrCodeQueryParamsSchema,
-	QrCodePaginatedResponseDto,
 	QrCodeResponseDto,
+	QrCodeWithRelationsPaginatedResponseDto,
 	TCreateQrCodeDto,
 	TCreateQrCodeResponseDto,
 	TGetQrCodeQueryParamsDto,
 	TIdRequestQueryDto,
-	TQrCodePaginatedResponseDto,
 	TQrCodeResponseDto,
+	TQrCodeWithRelationsPaginatedResponseDto,
 } from '@shared/schemas';
 import { ListQrCodesUseCase } from '../../useCase/list-qr-code.use-case';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
@@ -37,7 +37,7 @@ export class QrCodeController extends AbstractController {
 	@Get('', { querySchema: GetQrCodeQueryParamsSchema })
 	async list(
 		request: IHttpRequestWithAuth<unknown, unknown, TGetQrCodeQueryParamsDto>,
-	): Promise<IHttpResponse<TQrCodePaginatedResponseDto>> {
+	): Promise<IHttpResponse<TQrCodeWithRelationsPaginatedResponseDto>> {
 		const { page, limit, where } = request.query;
 		const { qrCodes, total } = await this.listQrCodesUseCase.execute({
 			limit: limit,
@@ -58,7 +58,7 @@ export class QrCodeController extends AbstractController {
 			data: qrCodes,
 		};
 
-		return this.makeApiHttpResponse(200, QrCodePaginatedResponseDto.parse(pagination));
+		return this.makeApiHttpResponse(200, QrCodeWithRelationsPaginatedResponseDto.parse(pagination));
 	}
 
 	@Post('', {

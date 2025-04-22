@@ -46,6 +46,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 
 		this.logger.info('Short URL updated successfully', {
 			id: shortUrl.id,
+			qrCodeId: shortUrl.qrCodeId,
 			updatedBy,
 		});
 

@@ -3,7 +3,9 @@ import { desc, eq } from 'drizzle-orm';
 import db from '@/core/db';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
-import qrCode, { TQrCode } from '../entities/qr-code.entity';
+import qrCode, { TQrCode, TQrCodeWithRelations } from '../entities/qr-code.entity';
+import { shortUrl } from '@/core/db/schemas';
+import { TShortUrl } from '@/modules/url-shortener/domain/entities/short-url.entity';
 
 /**
  * Repository for managing QR Code entities.
@@ -21,16 +23,34 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	 * @param options - Query options.
 	 * @returns A promise that resolves to an array of QR codes.
 	 */
-	async findAll({ limit, offset, where }: ISqlQueryFindBy<TQrCode>): Promise<TQrCode[]> {
+	async findAll({
+		limit,
+		offset,
+		where,
+	}: ISqlQueryFindBy<TQrCode>): Promise<TQrCodeWithRelations[]> {
 		const query = db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
+
+		query.leftJoin(shortUrl, eq(this.table.id, shortUrl.qrCodeId)).$dynamic();
 
 		// add where conditions
 		if (where) void this.withWhere(query, where);
 
 		// add pagination
 		void this.withPagination(query, offset, limit);
-		const qrCodes = await query.execute();
-		return qrCodes;
+
+		const qrCodes = (await query.execute()) as unknown as {
+			qr_code: TQrCode;
+			short_url: TShortUrl | null;
+		}[];
+
+		const qrCodesWithShortUrl = qrCodes.map((row) => {
+			return {
+				...row.qr_code,
+				shortUrl: row.short_url,
+			} as TQrCodeWithRelations;
+		});
+
+		return qrCodesWithShortUrl;
 	}
 
 	/**
@@ -41,6 +61,9 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	async findOneById(id: string): Promise<TQrCode | undefined> {
 		const qrCode = await db.query.qrCode.findFirst({
 			where: eq(this.table.id, id),
+			with: {
+				shortUrl: true,
+			},
 		});
 		return qrCode;
 	}

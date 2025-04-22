@@ -54,16 +54,12 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 
 		// handle url shortening
 		const { type, data } = qrCode.content;
+		let originalUrl = null;
+		let shortUrl = null;
 		if (createdBy && type === 'url' && data.isEditable) {
-			const shortUrl = await this.getReservedShortCodeUseCase.execute(createdBy);
+			shortUrl = await this.getReservedShortCodeUseCase.execute(createdBy);
 			if (shortUrl) {
-				await this.updateShortUrlUseCase.execute(
-					shortUrl,
-					{
-						destinationUrl: data.url,
-					},
-					createdBy,
-				);
+				originalUrl = qrCode.content.data.url;
 				qrCode.content.data.url = buildShortUrl(shortUrl.shortCode);
 			} else {
 				const errorMessage = 'Failed to get reserved short URL';
@@ -73,6 +69,17 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 
 		// Create the QR code entity in the database.
 		await this.qrCodeRepository.create(qrCode);
+		if (originalUrl && shortUrl && createdBy && type === 'url' && data.isEditable) {
+			// add qrCode to the shortUrl
+			await this.updateShortUrlUseCase.execute(
+				shortUrl,
+				{
+					destinationUrl: originalUrl,
+					qrCodeId: newId,
+				},
+				createdBy,
+			);
+		}
 
 		// Retrieve the created QR code entity from the database.
 		const createdQrCode = await this.qrCodeRepository.findOneById(newId);

@@ -6,6 +6,7 @@ import { ShortUrlSchema } from '../../schemas/ShortUrl';
  */
 export const UpdateShortUrlDto = ShortUrlSchema.pick({
 	destinationUrl: true,
+	qrCodeId: true,
 });
 
 /**

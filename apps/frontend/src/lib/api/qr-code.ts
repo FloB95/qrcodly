@@ -3,7 +3,7 @@ import { useAuth } from '@clerk/nextjs';
 import type {
 	TCreateQrCodeDto,
 	TCreateQrCodeResponseDto,
-	TQrCodePaginatedResponseDto,
+	TQrCodeWithRelationsPaginatedResponseDto,
 } from '@shared/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
@@ -19,10 +19,10 @@ export function useListQrCodesQuery() {
 
 	return useQuery({
 		queryKey: queryKeys.listQrCodes,
-		queryFn: async (): Promise<TQrCodePaginatedResponseDto> => {
+		queryFn: async (): Promise<TQrCodeWithRelationsPaginatedResponseDto> => {
 			const token = await getToken();
 
-			return apiRequest<TQrCodePaginatedResponseDto>('/qr-code', {
+			return apiRequest<TQrCodeWithRelationsPaginatedResponseDto>('/qr-code', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

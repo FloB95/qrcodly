@@ -24,25 +24,25 @@ import {
 } from "../ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Loader2 } from "lucide-react";
-import type { TQrCode } from "@shared/schemas";
+import type { TQrCode, TQrCodeWithRelationsResponseDto } from "@shared/schemas";
 import { useDeleteQrCodeMutation } from "@/lib/api/qr-code";
 import posthog from "posthog-js";
 import { formatDate } from "@/lib/utils";
 import Image from "next/image";
 
-const GetNameByContentType = (qr: TQrCode) => {
+const GetNameByContentType = (qr: TQrCodeWithRelationsResponseDto) => {
 	switch (qr.content.type) {
 		case "url":
 			const { url, isEditable } = qr.content.data;
 			return (
 				<>
-					{isEditable ? (
+					{isEditable && qr?.shortUrl ? (
 						<div>
 							{url}
 							<div className="mt-1 ml-2 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
 								<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold" />
 								<span className="text-muted-foreground pt-1 text-sm">
-									dsasdsaas
+									{qr.shortUrl.destinationUrl}
 								</span>
 							</div>
 						</div>
@@ -79,7 +79,11 @@ const GetQrCodeIconByContentType = (qr: TQrCode) => {
 	}
 };
 
-export const DashboardListItem = ({ qr }: { qr: TQrCode }) => {
+export const DashboardListItem = ({
+	qr,
+}: {
+	qr: TQrCodeWithRelationsResponseDto;
+}) => {
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const deleteQrCodeMutation = useDeleteQrCodeMutation();
 	const handleDelete = useCallback(() => {
