@@ -1,14 +1,11 @@
 import { inject, injectable } from 'tsyringe';
 import { AbstractCommand } from '@/core/command/abstract.command';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
-import { ImageService } from '@/core/services/image.service';
+import { TQrCodeContent, TQrCodeContentType } from '@shared/schemas';
 
 @injectable()
 export default class MigrateQrCodesCommand extends AbstractCommand {
-	constructor(
-		@inject(ImageService) private imageService: ImageService,
-		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
-	) {
+	constructor(@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository) {
 		super();
 	}
 
@@ -20,22 +17,21 @@ export default class MigrateQrCodesCommand extends AbstractCommand {
 		const qrCodes = await this.qrCodeRepository.findAll({
 			limit: 1000,
 			offset: 0,
-			where: {
-				contentType: {
-					eq: 'url',
-				},
-			},
 		});
+
 		await Promise.all(
 			qrCodes.map(async (qrcode) => {
-				qrcode.content = {
-					url: qrcode.content as string,
-					isEditable: false,
-					isActive: true,
+				const content: TQrCodeContent = {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					type: qrcode.contentType,
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					data: qrcode.content,
 				};
 
 				await this.qrCodeRepository.update(qrcode, {
-					content: qrcode.content,
+					content,
 				});
 			}),
 		);

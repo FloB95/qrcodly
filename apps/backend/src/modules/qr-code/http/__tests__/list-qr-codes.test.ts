@@ -16,10 +16,12 @@ const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
  */
 const generateQrCodeDto = (): TCreateQrCodeDto => ({
 	content: {
-		url: faker.internet.url(),
-		isEditable: false,
+		type: 'url',
+		data: {
+			url: faker.internet.url(),
+			isEditable: false,
+		},
 	},
-	contentType: 'url',
 	config: QrCodeDefaults,
 });
 

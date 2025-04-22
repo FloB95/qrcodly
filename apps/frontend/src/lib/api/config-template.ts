@@ -29,6 +29,7 @@ export function usePredefinedTemplatesQuery() {
 				},
 			);
 		},
+		refetchOnMount: false,
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 2,
@@ -63,6 +64,7 @@ export function useListConfigTemplatesQuery(searchName?: string) {
 				},
 			);
 		},
+		refetchOnMount: false,
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 2,

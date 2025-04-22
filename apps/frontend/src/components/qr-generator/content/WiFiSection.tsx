@@ -46,8 +46,6 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 		onChange(values);
 	}
 
-	console.log("rendering");
-
 	// handle submit automatically after debounced value
 	useEffect(() => {
 		if (typeof debounced.encryption === "undefined") {

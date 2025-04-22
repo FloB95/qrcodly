@@ -11,26 +11,26 @@ import { TextSection } from "./TextSection";
 import { VcardSection } from "./VcardSection";
 import { WiFiSection } from "./WiFiSection";
 import {
-	UrlInputSchema,
-	VCardInputSchema,
-	WifiInputSchema,
+	getDefaultContentByType,
+	type TQrCodeContentType,
+	type TTextInput,
+	type TUrlInput,
+	type TVCardInput,
+	type TWifiInput,
 } from "@shared/schemas";
 import { useQrCodeGeneratorStore } from "@/components/provider/QrCodeConfigStoreProvider";
 
 export const ContentSwitch = () => {
-	const { content, updateContent, contentType, updateContentType } =
-		useQrCodeGeneratorStore((state) => state);
+	const { content, updateContent } = useQrCodeGeneratorStore((state) => state);
 
 	return (
 		<>
 			<Tabs
-				defaultValue={contentType}
+				defaultValue={content.type}
 				className="max-w-[650px]"
 				suppressHydrationWarning
 				onValueChange={(value) => {
-					// TODO fix this: qr code is being rendered when switching tabs
-					updateContentType(value as "url" | "text" | "wifi" | "vCard");
-					if (content !== "") updateContent("");
+					updateContent(getDefaultContentByType(value as TQrCodeContentType));
 				}}
 			>
 				<TabsList className="mb-6 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4">
@@ -73,53 +73,45 @@ export const ContentSwitch = () => {
 				</TabsList>
 				<TabsContent value="url">
 					<UrlSection
-						value={
-							contentType === "url"
-								? UrlInputSchema.safeParse(content).data!
-								: UrlInputSchema.safeParse({}).data!
-						}
+						value={content.data as TUrlInput}
 						onChange={(v) => {
-							if (contentType !== "url") return;
-							updateContent(v);
+							updateContent({
+								type: "url",
+								data: v,
+							});
 						}}
 					/>
 				</TabsContent>
 				<TabsContent value="text" className="h-full">
 					<TextSection
-						value={
-							contentType === "text" && typeof content === "string"
-								? content
-								: ""
-						}
+						value={content.data as TTextInput}
 						onChange={(v) => {
-							if (contentType !== "text") return;
-							updateContent(v);
+							updateContent({
+								type: "text",
+								data: v,
+							});
 						}}
 					/>
 				</TabsContent>
 				<TabsContent value="wifi">
 					<WiFiSection
-						value={
-							contentType === "wifi"
-								? WifiInputSchema.safeParse(content).data!
-								: WifiInputSchema.safeParse({}).data!
-						}
+						value={content.data as TWifiInput}
 						onChange={(v) => {
-							if (contentType !== "wifi") return;
-							updateContent(v);
+							updateContent({
+								type: "wifi",
+								data: v,
+							});
 						}}
 					/>
 				</TabsContent>
 				<TabsContent value="vCard">
 					<VcardSection
-						value={
-							contentType === "vCard"
-								? VCardInputSchema.safeParse(content).data!
-								: VCardInputSchema.safeParse({}).data!
-						}
+						value={content.data as TVCardInput}
 						onChange={(v) => {
-							if (contentType !== "vCard") return;
-							updateContent(v);
+							updateContent({
+								type: "vCard",
+								data: v,
+							});
 						}}
 					/>
 				</TabsContent>

@@ -19,6 +19,7 @@ import { LoginRequiredDialog } from "../LoginRequiredDialog";
 import { Badge } from "@/components/ui/badge";
 import { UrlInputSchema, type TUrlInput } from "@shared/schemas";
 import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
+import { useGetReservedShortUrlMutation } from "@/lib/api/url-shortener";
 
 type FormValues = Omit<TUrlInput, "shortUrl">;
 
@@ -27,18 +28,11 @@ type TUrlSectionProps = {
 	value: FormValues;
 };
 
-const generateShortUrl = () => {
-	const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-	const randomString = Array.from({ length: 5 }, () =>
-		characters.charAt(Math.floor(Math.random() * characters.length)),
-	).join("");
-	return `https://www.qrcodly.de/u/${randomString}`;
-};
-
 export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
+	const getReservedShortUrlMutation = useGetReservedShortUrlMutation();
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
-	const [shortUrl] = useState<string | null>(generateShortUrl());
+	const [shortUrl, setSortUrl] = useState<string | null>(null);
 	const [originalUrl, setOriginalUrl] = useState<string | null>(
 		value?.url ?? null,
 	);
@@ -55,14 +49,25 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 
 	function onSubmit(values: FormValues) {
 		if (!originalUrl) return;
-		const payload: TUrlInput = {
+		const payload = {
 			...values,
 			url: originalUrl,
-			shortUrl: shortUrl,
+			// shortUrl: shortUrl,
 		};
 
 		onChange(payload);
 	}
+
+	async function getSortUrl() {
+		const shortUrl = await getReservedShortUrlMutation.mutateAsync();
+		setSortUrl(`https://www.qrcodly.de/u/${shortUrl.shortCode}`);
+	}
+
+	useEffect(() => {
+		if (isSignedIn) {
+			void getSortUrl();
+		}
+	}, [isSignedIn]);
 
 	useEffect(() => {
 		if (
@@ -110,7 +115,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 									/>
 								</FormControl>
 
-								{form.getValues().isEditable && shortUrl && (
+								{form.getValues().isEditable && shortUrl && originalUrl && (
 									<div className="-mt-1 ml-6 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
 										<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold" />
 										<span className="text-muted-foreground pt-1 text-sm">
@@ -133,6 +138,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 									<FormControl>
 										<Switch
 											checked={field.value}
+											disabled={!originalUrl}
 											onCheckedChange={async (e) => {
 												if (!isSignedIn) {
 													setAlertOpen(true);

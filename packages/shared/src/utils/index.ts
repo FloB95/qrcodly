@@ -73,20 +73,66 @@ export function convertWiFiObjToString(wiFiInput: TWifiInput): string {
 	return wifiString;
 }
 
-export const convertQRCodeDataToStringByType = (
-	data: TQrCodeContent,
-	contentType: TQrCodeContentType,
-): string => {
-	switch (contentType) {
+export const convertQRCodeDataToStringByType = (content: TQrCodeContent): string => {
+	switch (content.type) {
 		case 'url':
-			const { shortUrl, url, isEditable } = data as TUrlInput;
-			return shortUrl && isEditable ? shortUrl : url;
+			const { url, isEditable } = content.data;
+			// return shortUrl && isEditable ? shortUrl : url;
+			return url;
 		case 'text':
-			return data as string;
+			return content.data;
 		case 'wifi':
-			return convertWiFiObjToString(data as TWifiInput);
+			return convertWiFiObjToString(content.data);
 		case 'vCard':
-			return convertVCardObjToString(data as TVCardInput);
+			return convertVCardObjToString(content.data);
+		default:
+			throw new Error('Invalid content type');
+	}
+};
+
+export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeContent => {
+	switch (type) {
+		case 'url':
+			return {
+				type: 'url',
+				data: {
+					url: '',
+					isEditable: false,
+				},
+			};
+		case 'text':
+			return {
+				type: 'text',
+				data: '',
+			};
+		case 'wifi':
+			return {
+				type: 'wifi',
+				data: {
+					ssid: '',
+					encryption: 'WPA',
+					password: undefined,
+				},
+			};
+		case 'vCard':
+			return {
+				type: 'vCard',
+				data: {
+					firstName: undefined,
+					lastName: undefined,
+					email: undefined,
+					phone: undefined,
+					fax: undefined,
+					company: undefined,
+					job: undefined,
+					street: undefined,
+					city: undefined,
+					zip: undefined,
+					state: undefined,
+					country: undefined,
+					website: undefined,
+				},
+			};
 		default:
 			throw new Error('Invalid content type');
 	}

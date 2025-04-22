@@ -36,9 +36,9 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 	}
 
 	async generatePreview(
-		qrCode: Pick<TQrCode, 'id' | 'createdBy' | 'config' | 'content' | 'contentType'>,
+		qrCode: Pick<TQrCode, 'id' | 'createdBy' | 'config' | 'content'>,
 	): Promise<string | undefined> {
-		const { id, createdBy, config, content, contentType } = qrCode;
+		const { id, createdBy, config, content } = qrCode;
 
 		try {
 			const fileName = `${id}.svg`;
@@ -50,7 +50,7 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 
 			const instance = await generateQrCodeStylingInstance({
 				...convertQrCodeOptionsToLibraryOptions(config),
-				data: convertQRCodeDataToStringByType(content, contentType),
+				data: convertQRCodeDataToStringByType(content),
 			});
 
 			const svg = await instance.getRawData('svg');

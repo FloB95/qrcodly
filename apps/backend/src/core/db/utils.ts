@@ -1,6 +1,6 @@
 import { mysqlTableCreator, type MySqlTableWithColumns } from 'drizzle-orm/mysql-core';
 import { type WhereConditions, type WhereField } from '../interface/repository.interface';
-import { and, eq, gt, gte, like, lt, lte, not, type SQL } from 'drizzle-orm';
+import { and, eq, gt, gte, isNotNull, isNull, like, lt, lte, not, type SQL } from 'drizzle-orm';
 
 /**
  * Converts a where condition object to a Drizzle SQL object.
@@ -21,12 +21,20 @@ export function convertWhereConditionToDrizzle<T>(
 			const whereField = value as WhereField;
 
 			if (whereField.eq !== undefined) {
-				sql = sql ? and(sql, eq(table[key], whereField.eq)) : eq(table[key], whereField.eq);
+				if (whereField.eq === null) {
+					sql = sql ? and(sql, isNull(table[key])) : eq(table[key], null);
+				} else {
+					sql = sql ? and(sql, eq(table[key], whereField.eq)) : eq(table[key], whereField.eq);
+				}
 			}
 			if (whereField.neq !== undefined) {
-				sql = sql
-					? and(sql, not(eq(table[key], whereField.neq)))
-					: not(eq(table[key], whereField.neq));
+				if (whereField.neq === null) {
+					sql = sql ? and(sql, isNotNull(table[key])) : not(eq(table[key], null));
+				} else {
+					sql = sql
+						? and(sql, not(eq(table[key], whereField.neq)))
+						: not(eq(table[key], whereField.neq));
+				}
 			}
 			if (whereField.like !== undefined) {
 				sql = sql

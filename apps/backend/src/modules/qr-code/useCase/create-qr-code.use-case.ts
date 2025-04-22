@@ -7,6 +7,10 @@ import QrCodeRepository from '../domain/repository/qr-code.repository';
 import { ImageService } from '@/core/services/image.service';
 import { QrCodeCreatedEvent } from '../event/qr-code-created.event';
 import { TQrCode } from '../domain/entities/qr-code.entity';
+import { GetReservedShortCodeUseCase } from '@/modules/url-shortener/useCase/get-reserved-short-url.use-case';
+import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
+import { buildShortUrl } from '@/modules/url-shortener/utils';
+import { UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/update-short-url.use-case';
 
 /**
  * Use case for creating a QrCode entity.
@@ -18,6 +22,9 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 		@inject(Logger) private logger: Logger,
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
 		@inject(ImageService) private imageService: ImageService,
+		@inject(GetReservedShortCodeUseCase)
+		private getReservedShortCodeUseCase: GetReservedShortCodeUseCase,
+		@inject(UpdateShortUrlUseCase) private updateShortUrlUseCase: UpdateShortUrlUseCase,
 	) {}
 
 	/**
@@ -43,6 +50,25 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 				newId,
 				createdBy ?? undefined,
 			);
+		}
+
+		// handle url shortening
+		const { type, data } = qrCode.content;
+		if (createdBy && type === 'url' && data.isEditable) {
+			const shortUrl = await this.getReservedShortCodeUseCase.execute(createdBy);
+			if (shortUrl) {
+				await this.updateShortUrlUseCase.execute(
+					shortUrl,
+					{
+						destinationUrl: data.url,
+					},
+					createdBy,
+				);
+				qrCode.content.data.url = buildShortUrl(shortUrl.shortCode);
+			} else {
+				const errorMessage = 'Failed to get reserved short URL';
+				throw new UnhandledServerError(new Error(errorMessage), errorMessage);
+			}
 		}
 
 		// Create the QR code entity in the database.

@@ -10,7 +10,7 @@ import {
 } from "@shared/schemas";
 
 export type QrCodeProps = {
-	qrCode: Pick<TQrCode, "config" | "content" | "contentType">;
+	qrCode: Pick<TQrCode, "config" | "content">;
 	additionalStyles?: string;
 };
 
@@ -19,10 +19,9 @@ export default function QrCode({ qrCode, additionalStyles = "" }: QrCodeProps) {
 		() => ({
 			...convertQrCodeOptionsToLibraryOptions(qrCode.config),
 			data:
-				convertQRCodeDataToStringByType(qrCode.content, qrCode.contentType) ||
-				"https://qrcodly.de",
+				convertQRCodeDataToStringByType(qrCode.content) || "https://qrcodly.de",
 		}),
-		[qrCode.config, qrCode.content, qrCode.contentType],
+		[qrCode.config, qrCode.content],
 	);
 	const [qrCodeInstance, setQrCode] = useState<QRCodeStyling>();
 	const ref = useRef<HTMLDivElement>(null);

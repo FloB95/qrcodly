@@ -6,6 +6,7 @@ import { toast } from "../ui/use-toast";
 import { Button } from "../ui/button";
 import { DynamicQrCode } from "../qr-generator/DynamicQrCode";
 import {
+	ArrowTurnDownRightIcon,
 	DocumentTextIcon,
 	EllipsisVerticalIcon,
 	IdentificationIcon,
@@ -23,24 +24,40 @@ import {
 } from "../ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Loader2 } from "lucide-react";
-import type { TQrCode, TQrCodeContentMap } from "@shared/schemas";
+import type { TQrCode } from "@shared/schemas";
 import { useDeleteQrCodeMutation } from "@/lib/api/qr-code";
 import posthog from "posthog-js";
 import { formatDate } from "@/lib/utils";
 import Image from "next/image";
 
 const GetNameByContentType = (qr: TQrCode) => {
-	switch (qr.contentType) {
+	switch (qr.content.type) {
 		case "url":
-			const urlData = qr.content as TQrCodeContentMap["url"];
-			return urlData?.url;
+			const { url, isEditable } = qr.content.data;
+			return (
+				<>
+					{isEditable ? (
+						<div>
+							{url}
+							<div className="mt-1 ml-2 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
+								<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold" />
+								<span className="text-muted-foreground pt-1 text-sm">
+									dsasdsaas
+								</span>
+							</div>
+						</div>
+					) : (
+						url
+					)}
+				</>
+			);
 		case "text":
-			return qr.content as TQrCodeContentMap["text"];
+			return qr.content.data;
 		case "wifi":
-			const wifiData = qr.content as TQrCodeContentMap["wifi"];
+			const wifiData = qr.content.data;
 			return wifiData?.ssid;
 		case "vCard":
-			const vCardData = qr.content as TQrCodeContentMap["vCard"];
+			const vCardData = qr.content.data;
 			return `${vCardData?.firstName ?? ""} ${vCardData?.lastName ?? ""}`;
 		default:
 			return "Unknown";
@@ -48,7 +65,7 @@ const GetNameByContentType = (qr: TQrCode) => {
 };
 
 const GetQrCodeIconByContentType = (qr: TQrCode) => {
-	switch (qr.contentType) {
+	switch (qr.content.type) {
 		case "url":
 			return <LinkIcon className="mr-2 h-6 w-6" />;
 		case "text":
@@ -144,7 +161,9 @@ export const DashboardListItem = ({ qr }: { qr: TQrCode }) => {
 				</>
 			</TableCell>
 			<TableCell className="hidden sm:table-cell">
-				<Badge variant="outline">Active</Badge>
+				{qr.content.type === "url" && qr.content.data?.isEditable && (
+					<Badge variant="outline">Active</Badge>
+				)}
 			</TableCell>
 			{/* <TableCell>
         <div>

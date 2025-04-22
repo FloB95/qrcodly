@@ -3,9 +3,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-'use client';
+"use client";
 
-import { Button } from '../ui/button';
+import { Button } from "../ui/button";
 // import { toast } from "../ui/use-toast";
 import {
 	DropdownMenu,
@@ -13,17 +13,17 @@ import {
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import { useEffect, useState } from 'react';
-import posthog from 'posthog-js';
+} from "../ui/dropdown-menu";
+import { useEffect, useState } from "react";
+import posthog from "posthog-js";
 import {
 	convertQRCodeDataToStringByType,
 	convertQrCodeOptionsToLibraryOptions,
 	type TCreateQrCodeDto,
 	type TFileExtension,
-} from '@shared/schemas';
-import { useCreateQrCodeMutation } from '@/lib/api/qr-code';
-import { toast } from '../ui/use-toast';
+} from "@shared/schemas";
+import { useCreateQrCodeMutation } from "@/lib/api/qr-code";
+import { toast } from "../ui/use-toast";
 
 let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
@@ -41,11 +41,11 @@ const QrCodeDownloadBtn = ({
 
 	useEffect(() => {
 		// Dynamically import the QRCodeStyling class only when the component mounts
-		import('qr-code-styling').then((module) => {
+		import("qr-code-styling").then((module) => {
 			QRCodeStyling = module.default;
 			const qrCodeInstance = new QRCodeStyling({
 				...convertQrCodeOptionsToLibraryOptions(qrCode.config),
-				data: convertQRCodeDataToStringByType(qrCode.content, qrCode.contentType),
+				data: convertQRCodeDataToStringByType(qrCode.content),
 			}); // Create a new instance with the current settings
 			setQrCodeInstance(qrCodeInstance); // Store the instance in the state
 		});
@@ -62,23 +62,23 @@ const QrCodeDownloadBtn = ({
 						if (data.success && data.isStored) {
 							// show toast
 							toast({
-								title: 'New QR code created',
-								description: 'We saved your QR Code in your dashboard for later use.',
+								title: "New QR code created",
+								description:
+									"We saved your QR Code in your dashboard for later use.",
 								duration: 10000,
 							});
 						}
 					},
 				});
 
-				posthog.capture('QRCodeCreated', {
-					contentType: qrCode.contentType,
+				posthog.capture("QRCodeCreated", {
 					data: qrCode.content,
 				});
 			} catch {}
 		}
 
 		await qrCodeInstance.download({
-			name: 'qr-code',
+			name: "qr-code",
 			extension: fileExt,
 		});
 	};
@@ -88,7 +88,8 @@ const QrCodeDownloadBtn = ({
 			<DropdownMenuTrigger
 				asChild
 				disabled={
-					(typeof qrCode.content === 'string' && qrCode.content.length <= 0) ||
+					(typeof qrCode.content.data === "string" &&
+						qrCode.content.data.length <= 0) ||
 					createQrCodeMutation.isPending
 				}
 			>
@@ -98,7 +99,8 @@ const QrCodeDownloadBtn = ({
 					<Button
 						isLoading={createQrCodeMutation.isPending}
 						disabled={
-							(typeof qrCode.content === 'string' && qrCode.content.length <= 0) ||
+							(typeof qrCode.content.data === "string" &&
+								qrCode.content.data.length <= 0) ||
 							createQrCodeMutation.isPending
 						}
 					>
@@ -108,16 +110,28 @@ const QrCodeDownloadBtn = ({
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuGroup>
-					<DropdownMenuItem className="cursor-pointer" onClick={() => onDownloadClick('svg')}>
+					<DropdownMenuItem
+						className="cursor-pointer"
+						onClick={() => onDownloadClick("svg")}
+					>
 						<span>SVG</span>
 					</DropdownMenuItem>
-					<DropdownMenuItem className="cursor-pointer" onClick={() => onDownloadClick('jpeg')}>
+					<DropdownMenuItem
+						className="cursor-pointer"
+						onClick={() => onDownloadClick("jpeg")}
+					>
 						<span>JPG</span>
 					</DropdownMenuItem>
-					<DropdownMenuItem className="cursor-pointer" onClick={() => onDownloadClick('webp')}>
+					<DropdownMenuItem
+						className="cursor-pointer"
+						onClick={() => onDownloadClick("webp")}
+					>
 						<span>WEBP</span>
 					</DropdownMenuItem>
-					<DropdownMenuItem className="cursor-pointer" onClick={() => onDownloadClick('png')}>
+					<DropdownMenuItem
+						className="cursor-pointer"
+						onClick={() => onDownloadClick("png")}
+					>
 						<span>PNG</span>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>

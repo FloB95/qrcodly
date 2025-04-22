@@ -18,7 +18,6 @@ import {
 	TIdRequestQueryDto,
 	TQrCodePaginatedResponseDto,
 	TQrCodeResponseDto,
-	TUrlInput,
 } from '@shared/schemas';
 import { ListQrCodesUseCase } from '../../useCase/list-qr-code.use-case';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
@@ -79,8 +78,8 @@ export class QrCodeController extends AbstractController {
 		const { userId } = getAuth(request);
 
 		// set editable to false if user is not logged in
-		if (!userId && request.body.contentType === 'url') {
-			(request.body.content as TUrlInput).isEditable = false;
+		if (!userId && request.body.content.type === 'url') {
+			request.body.content.data.isEditable = false;
 		}
 
 		const qrCode = await this.createQrCodeUseCase.execute(request.body, userId);

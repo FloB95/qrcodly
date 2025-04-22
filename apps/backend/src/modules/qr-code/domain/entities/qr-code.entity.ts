@@ -1,5 +1,5 @@
 import { createTable } from '@/core/db/utils';
-import { type TQrCodeContent, type TQrCodeContentType, type TQrCodeOptions } from '@shared/schemas';
+import { type TQrCodeContent, type TQrCodeOptions } from '@shared/schemas';
 import { datetime, index, json, text, varchar } from 'drizzle-orm/mysql-core';
 
 const qrCode = createTable(
@@ -9,7 +9,6 @@ const qrCode = createTable(
 			length: 36,
 		}).primaryKey(),
 		config: json().$type<TQrCodeOptions>().notNull(),
-		contentType: varchar({ length: 255 }).$type<TQrCodeContentType>().notNull(),
 		content: json().$type<TQrCodeContent>().notNull(),
 		previewImage: text(),
 		createdBy: varchar({ length: 255 }),

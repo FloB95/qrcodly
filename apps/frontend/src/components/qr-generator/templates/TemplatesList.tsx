@@ -120,8 +120,13 @@ export const TemplatesList = ({
 								<DynamicQrCode
 									qrCode={{
 										config: template.config,
-										content: "https://www.qrcodly.de/",
-										contentType: "url",
+										content: {
+											type: "url",
+											data: {
+												url: "https://www.qrcodly.de/",
+												isEditable: false,
+											},
+										},
 									}}
 								/>
 							)}
