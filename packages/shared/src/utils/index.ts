@@ -5,7 +5,6 @@ import {
 	type TQrCodeContentType,
 	type TVCardInput,
 	type TWifiInput,
-	type TUrlInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 
@@ -76,9 +75,8 @@ export function convertWiFiObjToString(wiFiInput: TWifiInput): string {
 export const convertQRCodeDataToStringByType = (content: TQrCodeContent): string => {
 	switch (content.type) {
 		case 'url':
-			const { url, isEditable } = content.data;
-			// return shortUrl && isEditable ? shortUrl : url;
-			return url;
+			const { url, isEditable, shortUrl } = content.data as unknown as any;
+			return shortUrl && isEditable ? shortUrl : url;
 		case 'text':
 			return content.data;
 		case 'wifi':

@@ -21,7 +21,7 @@ import { UrlInputSchema, type TUrlInput } from "@shared/schemas";
 import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
 import { useGetReservedShortUrlMutation } from "@/lib/api/url-shortener";
 
-type FormValues = Omit<TUrlInput, "shortUrl">;
+type FormValues = TUrlInput;
 
 type TUrlSectionProps = {
 	onChange: (data: TUrlInput) => void;
@@ -52,7 +52,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		const payload = {
 			...values,
 			url: originalUrl,
-			// shortUrl: shortUrl,
+			shortUrl: shortUrl,
 		};
 
 		onChange(payload);

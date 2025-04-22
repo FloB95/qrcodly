@@ -6,14 +6,18 @@ import { TCreateQrCodeDto } from '@shared/schemas';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
 import { ImageService } from '@/core/services/image.service';
 import { QrCodeCreatedEvent } from '../event/qr-code-created.event';
-import { TQrCode } from '../domain/entities/qr-code.entity';
+import { TQrCode } from '../domain/entities/qr-code.entity'; // Assuming this type includes the shortUrl relation now
 import { GetReservedShortCodeUseCase } from '@/modules/url-shortener/useCase/get-reserved-short-url.use-case';
-import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { buildShortUrl } from '@/modules/url-shortener/utils';
 import { UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/update-short-url.use-case';
+import db from '@/core/db'; // Import the DB instance for transactions
+import { TShortUrl } from '@/modules/url-shortener/domain/entities/short-url.entity';
+import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
+import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/qr-code-not-found.error'; // Assuming this is the correct error import
 
 /**
  * Use case for creating a QrCode entity.
+ * Handles creation, image upload, and optional short URL linking within a transaction.
  */
 @injectable()
 export class CreateQrCodeUseCase implements IBaseUseCase {
@@ -29,71 +33,100 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 
 	/**
 	 * Executes the use case to create a new QRcode entity based on the given DTO.
-	 * @param _dto The data transfer object containing the details for the QRcode to be created.
+	 * All database operations for core creation and short URL linking are wrapped in a transaction.
+	 * @param dto The data transfer object containing the details for the QRcode to be created.
 	 * @param createdBy The ID of the user who created the QRcode.
-	 * @returns A promise that resolves with the newly created QRcode entity.
+	 * @returns A promise that resolves with the newly created QRcode entity, potentially with linked shortUrl.
 	 */
-	async execute(dto: TCreateQrCodeDto, createdBy: string | null): Promise<TQrCode> {
+	async execute(
+		dto: TCreateQrCodeDto,
+		createdBy: string | null,
+	): Promise<TQrCode & { shortUrl: TShortUrl | null }> {
+		// Generate ID before the transaction if not database-generated
 		const newId = await this.qrCodeRepository.generateId();
 
-		const qrCode: Omit<TQrCode, 'createdAt' | 'updatedAt'> = {
-			id: newId,
-			...dto,
-			createdBy,
-			previewImage: null,
-		};
+		let createdQrCodeWithShortUrl: TQrCode & { shortUrl: TShortUrl | null };
 
-		// convert base64 image to buffer and upload to s3
-		if (qrCode.config.image) {
-			qrCode.config.image = await this.imageService.uploadImage(
-				qrCode.config.image,
-				newId,
-				createdBy ?? undefined,
-			);
-		}
+		try {
+			// Wrap all critical operations in a database transaction for atomicity.
+			// If any error is thrown within this async function, Drizzle will automatically perform a transaction rollback.
+			createdQrCodeWithShortUrl = await db.transaction(async () => {
+				const qrCodeData: Omit<TQrCode, 'createdAt' | 'updatedAt'> = {
+					id: newId,
+					...dto,
+					createdBy,
+					previewImage: null, // Set initial value
+				};
 
-		// handle url shortening
-		const { type, data } = qrCode.content;
-		let originalUrl = null;
-		let shortUrl = null;
-		if (createdBy && type === 'url' && data.isEditable) {
-			shortUrl = await this.getReservedShortCodeUseCase.execute(createdBy);
-			if (shortUrl) {
-				originalUrl = qrCode.content.data.url;
-				qrCode.content.data.url = buildShortUrl(shortUrl.shortCode);
-			} else {
-				const errorMessage = 'Failed to get reserved short URL';
-				throw new UnhandledServerError(new Error(errorMessage), errorMessage);
+				// Handle base64 image upload if provided. Error here will rollback transaction.
+				if (qrCodeData.config.image) {
+					qrCodeData.config.image = await this.imageService.uploadImage(
+						qrCodeData.config.image,
+						newId,
+						createdBy ?? undefined,
+					);
+				}
+
+				// Handle URL shortening logic specifically for 'url' type and editable content
+				let originalUrlToLink: string | null = null;
+				let reservedShortUrl: TShortUrl | null = null;
+
+				if (createdBy && qrCodeData.content.type === 'url' && qrCodeData.content.data.isEditable) {
+					reservedShortUrl = await this.getReservedShortCodeUseCase.execute(createdBy);
+
+					if (!reservedShortUrl) {
+						// Throw specific error to signal business failure and trigger rollback
+						throw new ShortUrlNotFoundError();
+					}
+
+					// Store original URL and update QR code content URL to the short URL
+					originalUrlToLink = qrCodeData.content.data.url;
+					qrCodeData.content.data.url = buildShortUrl(reservedShortUrl.shortCode);
+				}
+
+				// Create the QR code entity in the database.
+				await this.qrCodeRepository.create(qrCodeData);
+
+				// Link the reserved short URL if URL shortening was applied
+				if (originalUrlToLink && reservedShortUrl) {
+					await this.updateShortUrlUseCase.execute(
+						reservedShortUrl,
+						{
+							destinationUrl: originalUrlToLink,
+							qrCodeId: newId,
+						},
+						createdBy!,
+					);
+				}
+
+				const finalQrCode = await this.qrCodeRepository.findOneById(newId);
+
+				if (!finalQrCode) {
+					throw new Error('Failed to retrieve created QR code within transaction.');
+				}
+
+				return finalQrCode as TQrCode & { shortUrl: TShortUrl | null };
+			});
+		} catch (error) {
+			this.logger.error('Failed to create QR code within transaction', { error });
+
+			if (error instanceof ShortUrlNotFoundError) {
+				throw error; // Let specific business error propagate
 			}
+
+			throw new UnhandledServerError(error as Error, 'QR code creation transaction failed.');
 		}
 
-		// Create the QR code entity in the database.
-		await this.qrCodeRepository.create(qrCode);
-		if (originalUrl && shortUrl && createdBy && type === 'url' && data.isEditable) {
-			// add qrCode to the shortUrl
-			await this.updateShortUrlUseCase.execute(
-				shortUrl,
-				{
-					destinationUrl: originalUrl,
-					qrCodeId: newId,
-				},
-				createdBy,
-			);
-		}
-
-		// Retrieve the created QR code entity from the database.
-		const createdQrCode = await this.qrCodeRepository.findOneById(newId);
-		if (!createdQrCode) throw new Error('Failed to create QR code');
-
-		// Emit the QrCodeCreatedEvent.
-		const event = new QrCodeCreatedEvent(createdQrCode);
+		// Emit the creation event *after* the transaction has successfully committed.
+		const event = new QrCodeCreatedEvent(createdQrCodeWithShortUrl);
 		this.eventEmitter.emit(event);
 
+		// Log success
 		this.logger.info('QR code created successfully', {
-			id: createdQrCode.id,
-			createdBy: createdQrCode.createdBy,
+			id: createdQrCodeWithShortUrl.id,
+			createdBy: createdQrCodeWithShortUrl.createdBy,
 		});
 
-		return createdQrCode;
+		return createdQrCodeWithShortUrl;
 	}
 }
