@@ -1,1 +1,3 @@
-export const SHORT_BASE_URL = 'https://www.qrcodly.de/u/';
+import { env } from '@/core/config/env';
+
+export const SHORT_BASE_URL = `${env.FRONTEND_URL}/u/`;

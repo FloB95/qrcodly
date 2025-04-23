@@ -64,7 +64,7 @@ const QrCodeDownloadBtn = ({
 							toast({
 								title: "New QR code created",
 								description:
-									"We saved your QR Code in your dashboard for later use.",
+									"We saved your QR Code in your collection for later use.",
 								duration: 10000,
 							});
 						}

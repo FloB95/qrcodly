@@ -24,7 +24,7 @@ export default async function Dashboard() {
 		<div className="mt-24 flex h-full w-full flex-1 flex-col items-center justify-center">
 			<Container>
 				<h1 className="mt-8 mb-24 text-center text-4xl font-bold">
-					Dashboard is in development !
+					The collection view is in development !
 				</h1>
 				<Tabs defaultValue="list">
 					<div className="flex items-center">

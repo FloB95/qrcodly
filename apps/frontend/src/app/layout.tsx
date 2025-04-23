@@ -56,11 +56,11 @@ export default function RootLayout({
 						href="/favicon-16x16.png"
 					/>
 					<link rel="manifest" href="/site.webmanifest" />
-					<script
+					{/* <script
 						defer
-						src="https://umami.fb-development.de/script.js"
+						src="umami.js"
 						data-website-id="b1deaa39-901b-400d-9cb5-e76b880b3520"
-					></script>
+					></script> */}
 				</head>
 				<body className={`font-sans ${openSans.variable}`}>
 					<Providers>{children}</Providers>

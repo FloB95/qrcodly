@@ -40,6 +40,9 @@ const server = z.object({
 	AXIOM_TOKEN: z.string().optional(),
 	CLERK_PUBLISHABLE_KEY: z.string(),
 	CLERK_SECRET_KEY: z.string(),
+	POSTHOG_API_KEY: z.string(),
+	POSTHOG_PROJECT_ID: z.string(),
+	POSTHOG_HOST: z.string(),
 });
 
 // Don't touch the part below

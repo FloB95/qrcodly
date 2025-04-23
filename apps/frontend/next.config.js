@@ -57,6 +57,14 @@ const config = {
 				source: "/ingest/decide",
 				destination: "https://eu.i.posthog.com/decide",
 			},
+			{
+				source: "/umami.js",
+				destination: "https://umami.fb-development.de/script.js",
+			},
+			{
+				source: "/api/umami",
+				destination: "https://umami.fb-development.de/api/send",
+			},
 		];
 	},
 	// This is required to support PostHog trailing slash API requests

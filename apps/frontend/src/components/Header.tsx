@@ -1,7 +1,7 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
-import Container from './ui/container';
-import { Button, buttonVariants } from './ui/button';
-import Link from 'next/link';
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import Container from "./ui/container";
+import { Button, buttonVariants } from "./ui/button";
+import Link from "next/link";
 
 export default function Header({ hideDashboardLink = false }) {
 	return (
@@ -24,8 +24,8 @@ export default function Header({ hideDashboardLink = false }) {
 						</SignedOut>
 						<SignedIn>
 							{!hideDashboardLink && (
-								<Link href="/dashboard" className={buttonVariants()}>
-									Dashboard
+								<Link href="/collection" className={buttonVariants()}>
+									My Collection
 								</Link>
 							)}
 							<UserButton />

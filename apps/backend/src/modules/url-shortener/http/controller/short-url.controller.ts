@@ -11,6 +11,7 @@ import {
 	TShortUrlResponseDto,
 } from '@shared/schemas';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
+import { PostHogAnalyticsService } from '../../services/post-hog-analytics.service';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -18,6 +19,7 @@ export class ShortUrlController extends AbstractController {
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
 		@inject(GetReservedShortCodeUseCase)
 		private getReservedShortCodeUseCase: GetReservedShortCodeUseCase,
+		@inject(PostHogAnalyticsService) private postHogAnalyticsService: PostHogAnalyticsService,
 	) {
 		super();
 	}
@@ -42,5 +44,21 @@ export class ShortUrlController extends AbstractController {
 	): Promise<IHttpResponse<TShortUrlResponseDto>> {
 		const shortUrl = await this.getReservedShortCodeUseCase.execute(request.user.id);
 		return this.makeApiHttpResponse(200, ShortUrlResponseDto.parse(shortUrl));
+	}
+
+	@Get('/:shortCode/analytics')
+	async getAnalytics(
+		request: IHttpRequestWithAuth<unknown, TGetShortUrlRequestQueryDto>,
+	): Promise<IHttpResponse> {
+		const { shortCode } = request.params;
+
+		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
+		if (!shortUrl) {
+			throw new ShortUrlNotFoundError();
+		}
+
+		const data = await this.postHogAnalyticsService.getAnalyticsForUrlCode(shortUrl.shortCode);
+
+		return this.makeApiHttpResponse(200, data);
 	}
 }
