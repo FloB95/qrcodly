@@ -4,8 +4,11 @@ import Header from "@/components/Header";
 import Container from "@/components/ui/container";
 import { Cta } from "@/components/Cta";
 import type { DefaultPageParams } from "@/types/page";
+import { getTranslations } from "next-intl/server";
 
-export default function Page({ params }: DefaultPageParams) {
+export default async function Page({ params }: DefaultPageParams) {
+	const { locale } = await params;
+	const t = await getTranslations({ locale });
 	return (
 		<main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
 			<Header />
@@ -13,8 +16,7 @@ export default function Page({ params }: DefaultPageParams) {
 			<div>
 				<Container>
 					<h1 className="mt-8 mb-10 text-center text-4xl font-bold">
-						<span className="text-2xl">Free & Open Source</span> <br /> QR Code
-						Generator
+						<div dangerouslySetInnerHTML={{ __html: t.raw("headline") }} />
 					</h1>
 					<div className="mb-2">
 						<QRcodeGenerator />

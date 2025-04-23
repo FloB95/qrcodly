@@ -155,7 +155,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 										{t("enableEditing")}
 										<Badge
 											variant="green"
-											className="xs:absolute xs:top-5 relative top-2 block sm:top-[-10px] sm:left-full"
+											className="xs:absolute xs:top-5 relative top-2 block w-fit sm:top-[-10px] sm:left-full"
 										>
 											{t("newBadge")}
 										</Badge>
