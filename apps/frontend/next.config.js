@@ -1,6 +1,7 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import { withAxiom } from "next-axiom";
 import { env } from "./src/env.js";
+import createNextIntlPlugin from "next-intl/plugin";
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
@@ -87,4 +88,5 @@ const sentryOptions = {
 	automaticVercelMonitors: true,
 };
 
-export default withAxiom(withSentryConfig(config, sentryOptions));
+const withNextIntl = createNextIntlPlugin();
+export default withAxiom(withNextIntl(withSentryConfig(config, sentryOptions)));

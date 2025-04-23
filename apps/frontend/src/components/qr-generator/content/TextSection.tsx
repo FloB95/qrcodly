@@ -1,13 +1,20 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { useEffect } from 'react';
-import { Textarea } from '@/components/ui/textarea';
-import { TextInputSchema } from '@shared/schemas';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormMessage,
+} from "@/components/ui/form";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { useEffect } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { TextInputSchema } from "@shared/schemas";
+import { useTranslations } from "next-intl";
 
 type TTextSectionProps = {
 	value: string;
@@ -19,13 +26,14 @@ const formSchema = z.object({
 });
 
 export const TextSection = ({ value, onChange }: TTextSectionProps) => {
+	const t = useTranslations("generator.contentSwitch.text");
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			text: value,
 		},
 	});
-	const [debounced] = useDebouncedValue(form.watch('text'), 500);
+	const [debounced] = useDebouncedValue(form.watch("text"), 500);
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		onChange(values.text);
@@ -50,7 +58,7 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
 									{...field}
 									autoFocus
 									className="px-6 py-3.5"
-									placeholder="Enter your text..."
+									placeholder={t("placeholder")}
 									rows={10}
 								/>
 							</FormControl>

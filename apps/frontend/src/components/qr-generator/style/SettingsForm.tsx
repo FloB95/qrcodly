@@ -27,8 +27,10 @@ import type { TQrCodeOptions } from "@shared/schemas";
 import { useQrCodeGeneratorStore } from "@/components/provider/QrCodeConfigStoreProvider";
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export const SettingsForm = () => {
+	const t = useTranslations("generator.settingsForm");
 	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
 	const handleIconSelect = (iconName?: string) => {
 		config.image = iconName;
@@ -102,13 +104,13 @@ export const SettingsForm = () => {
 				<Tabs defaultValue={"general"} className="w-full">
 					<TabsList className="mb-4 w-full">
 						<TabsTrigger className="flex-1" value="general">
-							General
+							{t("tabGeneral")}
 						</TabsTrigger>
 						<TabsTrigger className="flex-1" value="dot">
-							Shape
+							{t("tabShape")}
 						</TabsTrigger>
 						<TabsTrigger className="flex-1" value="image">
-							Icon
+							{t("tabIcon")}
 						</TabsTrigger>
 					</TabsList>
 
@@ -119,7 +121,7 @@ export const SettingsForm = () => {
 								name="width"
 								render={() => (
 									<FormItem>
-										<FormLabel>Size (Quality)</FormLabel>
+										<FormLabel>{t("sizeLabel")}</FormLabel>
 										<FormControl>
 											<Slider
 												name="width"
@@ -146,7 +148,7 @@ export const SettingsForm = () => {
 								name="margin"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Border Spacing</FormLabel>
+										<FormLabel>{t("borderSpacingLabel")}</FormLabel>
 										<FormControl>
 											<Slider
 												name="margin"
@@ -171,7 +173,7 @@ export const SettingsForm = () => {
 								render={({ field }) => {
 									return (
 										<FormItem>
-											<FormLabel>Background</FormLabel>
+											<FormLabel>{t("backgroundLabel")}</FormLabel>
 											<FormControl>
 												<div>
 													<ColorPicker
@@ -199,27 +201,36 @@ export const SettingsForm = () => {
 									name="dotsOptions.type"
 									render={({ field }) => (
 										<FormItem className="flex-1">
-											<FormLabel>Dot Style</FormLabel>
+											<FormLabel>{t("dotStyle.label")}</FormLabel>
 											<FormControl>
 												<Select
 													name="dotsOptions.type"
 													onValueChange={field.onChange}
 													value={field.value}
-													// open={true}
 												>
 													<SelectTrigger>
-														<SelectValue placeholder="Select a style" />
+														<SelectValue
+															placeholder={t("dotStyle.placeholder")}
+														/>
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem value="square">Square</SelectItem>
-														<SelectItem value="dots">Dots</SelectItem>
-														<SelectItem value="rounded">Rounded</SelectItem>
-														<SelectItem value="extra-rounded">
-															Extra rounded
+														<SelectItem value="square">
+															{t("dotStyle.optionLabelSquare")}
 														</SelectItem>
-														<SelectItem value="classy">Classy</SelectItem>
+														<SelectItem value="dots">
+															{t("dotStyle.optionLabelDots")}
+														</SelectItem>
+														<SelectItem value="rounded">
+															{t("dotStyle.optionLabelRounded")}
+														</SelectItem>
+														<SelectItem value="extra-rounded">
+															{t("dotStyle.optionLabelExtraRound")}
+														</SelectItem>
+														<SelectItem value="classy">
+															{t("dotStyle.optionLabelClassy")}
+														</SelectItem>
 														<SelectItem value="classy-rounded">
-															Classy rounded
+															{t("dotStyle.optionLabelClassyRounded")}
 														</SelectItem>
 													</SelectContent>
 												</Select>
@@ -233,7 +244,7 @@ export const SettingsForm = () => {
 									name="dotsOptions.style"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Dot Color</FormLabel>
+											<FormLabel>{t("dotColor")}</FormLabel>
 											<FormControl>
 												<div>
 													<ColorPicker
@@ -257,7 +268,7 @@ export const SettingsForm = () => {
 									name="cornersSquareOptions.type"
 									render={({ field }) => (
 										<FormItem className="flex-1">
-											<FormLabel>Corners Square Style</FormLabel>
+											<FormLabel>{t("cornersSquareOptions.label")}</FormLabel>
 											<FormControl>
 												<Select
 													name="cornersSquareOptions.type"
@@ -265,26 +276,30 @@ export const SettingsForm = () => {
 													value={field.value}
 												>
 													<SelectTrigger>
-														<SelectValue placeholder="Select a style" />
+														<SelectValue
+															placeholder={t(
+																"cornersSquareOptions.placeholder",
+															)}
+														/>
 													</SelectTrigger>
 													<SelectContent>
 														<SelectItem
 															icon="icons/corners-square-square.svg"
 															value="square"
 														>
-															Square
+															{t("cornersSquareOptions.optionLabelSquare")}
 														</SelectItem>
 														<SelectItem
 															icon="icons/corners-square-dot.svg"
 															value="dot"
 														>
-															Dot
+															{t("cornersSquareOptions.optionLabelDot")}
 														</SelectItem>
 														<SelectItem
 															icon="icons/corners-square-rounded.svg"
 															value="extra-rounded"
 														>
-															Extra rounded
+															{t("cornersSquareOptions.optionLabelExtraRound")}
 														</SelectItem>
 													</SelectContent>
 												</Select>
@@ -298,7 +313,7 @@ export const SettingsForm = () => {
 									name="cornersSquareOptions.style"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Corners Square Color</FormLabel>
+											<FormLabel>{t("cornersSquareColor")}</FormLabel>
 											<FormControl>
 												<div>
 													<ColorPicker
@@ -322,7 +337,7 @@ export const SettingsForm = () => {
 									name="cornersDotOptions.type"
 									render={({ field }) => (
 										<FormItem className="flex-1">
-											<FormLabel>Corners Dot Style</FormLabel>
+											<FormLabel>{t("cornersDotOptions.label")}</FormLabel>
 											<FormControl>
 												<Select
 													name="cornersDotOptions.type"
@@ -330,20 +345,22 @@ export const SettingsForm = () => {
 													value={field.value}
 												>
 													<SelectTrigger>
-														<SelectValue placeholder="Select a style" />
+														<SelectValue
+															placeholder={t("cornersDotOptions.placeholder")}
+														/>
 													</SelectTrigger>
 													<SelectContent>
 														<SelectItem
 															icon="icons/corners-dot-square.svg"
 															value="square"
 														>
-															Square
+															{t("cornersDotOptions.optionLabelSquare")}
 														</SelectItem>
 														<SelectItem
 															icon="icons/corners-dot-dot.svg"
 															value="dot"
 														>
-															Dot
+															{t("cornersDotOptions.optionLabelDot")}
 														</SelectItem>
 													</SelectContent>
 												</Select>
@@ -357,7 +374,7 @@ export const SettingsForm = () => {
 									name="cornersDotOptions.style"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Corners Dot Color</FormLabel>
+											<FormLabel>{t("cornersDotColor")}</FormLabel>
 											<FormControl>
 												<div>
 													<ColorPicker
@@ -384,7 +401,7 @@ export const SettingsForm = () => {
 								name="image"
 								render={() => (
 									<FormItem>
-										<FormLabel>Icon</FormLabel>
+										<FormLabel>{t("iconLabel")}</FormLabel>
 										<FormControl>
 											<div className="grid w-full max-w-sm items-center gap-1.5">
 												<Input
@@ -395,7 +412,7 @@ export const SettingsForm = () => {
 														const file = e.target.files?.[0];
 														if (file) {
 															if (file.size > 1 * 1024 * 1024) {
-																alert("File is too big! Max size is 1MB");
+																alert(t("errorToLargeFile"));
 																e.target.value = "";
 																return;
 															}
@@ -423,7 +440,7 @@ export const SettingsForm = () => {
 								render={({ field }) => (
 									<FormItem className="flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4">
 										<FormLabel className="cursor-pointer">
-											Hide Background Dots
+											{t("hideBackgroundDots")}
 										</FormLabel>
 										<FormControl>
 											<Checkbox
@@ -440,7 +457,7 @@ export const SettingsForm = () => {
 							<div className="flex justify-between">
 								<div>
 									<p className="mb-4 text-sm leading-none font-medium">
-										You can also choose from predefined icons
+										{t("predefinedIconInfo")}
 									</p>
 									<IconPicker onSelect={handleIconSelect} />
 								</div>
@@ -456,7 +473,7 @@ export const SettingsForm = () => {
 												height={24}
 												className="mr-2"
 											/>
-											Clear Icon
+											{t("clearBtn")}
 										</Button>
 									</div>
 								)}

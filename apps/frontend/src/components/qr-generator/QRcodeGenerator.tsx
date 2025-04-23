@@ -11,8 +11,10 @@ import { ContentSwitch } from "./content/ContentSwitch";
 import { TemplateTabs } from "./templates/TemplateTabs";
 import { QrCodeWithDownloadBtn } from "./QrCodeWithDownloadBtn";
 import { QrCodeGeneratorStoreProvider } from "../provider/QrCodeConfigStoreProvider";
+import { useTranslations } from "next-intl";
 
 export const QRcodeGenerator = () => {
+	const t = useTranslations("generator");
 	return (
 		<QrCodeGeneratorStoreProvider>
 			<Tabs defaultValue="qrCodeContent">
@@ -23,7 +25,9 @@ export const QRcodeGenerator = () => {
 					>
 						<div className="flex space-x-2">
 							<QrCodeIcon className="xs:block hidden h-6 w-6" />{" "}
-							<span className="flex flex-col justify-center">Content</span>
+							<span className="flex flex-col justify-center">
+								{t("tabs.content")}
+							</span>
 						</div>
 					</TabsTrigger>
 					<TabsTrigger
@@ -32,7 +36,9 @@ export const QRcodeGenerator = () => {
 					>
 						<div className="flex space-x-2">
 							<PaintBrushIcon className="xs:block hidden h-6 w-6" />{" "}
-							<span className="flex flex-col justify-center">Style</span>
+							<span className="flex flex-col justify-center">
+								{t("tabs.style")}
+							</span>
 						</div>
 					</TabsTrigger>
 					<TabsTrigger
@@ -41,7 +47,9 @@ export const QRcodeGenerator = () => {
 					>
 						<div className="flex space-x-2">
 							<StarIcon className="xs:block hidden h-6 w-6" />{" "}
-							<span className="flex flex-col justify-center">Templates</span>
+							<span className="flex flex-col justify-center">
+								{t("tabs.templates")}
+							</span>
 						</div>
 					</TabsTrigger>
 				</TabsList>

@@ -1,15 +1,18 @@
-import React from 'react';
-import { buttonVariants } from './ui/button';
-import Link from 'next/link';
-import { EnvelopeIcon } from '@heroicons/react/24/outline';
+import React from "react";
+import { buttonVariants } from "./ui/button";
+import Link from "next/link";
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 
 export const Cta = () => {
+	const t = useTranslations("contentElements.feedbackCta");
 	return (
-		<div className="text-center mx-auto my-28">
-			<h2 className="text-4xl font-bold mb-4">Help us improve – your feedback matters! 🚀</h2>
+		<div className="mx-auto my-28 text-center">
+			<h2 className="mb-4 text-4xl font-bold">{t("headline")}</h2>
 			<p className="text-2xl font-bold">
-				We are constantly working on improving QRcodly. <br />
-				If you have any feedback or questions, please let us know.
+				{t("subHeadline1")}
+				<br />
+				{t("subHeadline2")}
 			</p>
 			<div className="mt-8 flex flex-wrap justify-center space-x-4">
 				<Link
@@ -36,11 +39,15 @@ export const Cta = () => {
 					</span>
 					Discord
 				</Link>
-				<Link href="mailto:info@qrcodly.de" target="_blank" className={buttonVariants()}>
+				<Link
+					href="mailto:info@qrcodly.de"
+					target="_blank"
+					className={buttonVariants()}
+				>
 					<span className="mr-2 h-[24px] w-[24px]">
 						<EnvelopeIcon />
 					</span>
-					Mail
+					{t("emailBtn")}
 				</Link>
 			</div>
 		</div>

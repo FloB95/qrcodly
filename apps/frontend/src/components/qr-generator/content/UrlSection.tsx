@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { UrlInputSchema, type TUrlInput } from "@shared/schemas";
 import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
 import { useGetReservedShortUrlMutation } from "@/lib/api/url-shortener";
+import { useTranslations } from "next-intl";
 
 type FormValues = TUrlInput;
 
@@ -29,6 +30,7 @@ type TUrlSectionProps = {
 };
 
 export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
+	const t = useTranslations("generator.contentSwitch.url");
 	const getReservedShortUrlMutation = useGetReservedShortUrlMutation();
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
@@ -99,7 +101,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 											field.onChange(val);
 										}}
 										className="p-6"
-										placeholder="Enter URL https://example.com/"
+										placeholder={t("placeholder")}
 										autoFocus
 										onBlur={(e) => {
 											if (e.target.value === "") return;
@@ -150,12 +152,12 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 										/>
 									</FormControl>
 									<FormLabel className="relative mt-[4px] ml-2 pr-2">
-										Enable Statistics and Editing
+										{t("enableEditing")}
 										<Badge
 											variant="green"
 											className="xs:absolute xs:top-5 relative top-2 block sm:top-[-10px] sm:left-full"
 										>
-											New!
+											{t("newBadge")}
 										</Badge>
 									</FormLabel>
 								</div>

@@ -1,0 +1,239 @@
+{
+	"metadata": {
+		"title": "QRcodly - Free & Open Source QR Code Generator",
+		"description": "Create fully customizable and stylish QR codes with QRcodly, a free qr code generator. Generate QR codes for URLs, text, Wi-Fi, vCards, and more. Easy-to-use, secure, and perfect for personal or business use. Start now!",
+		"keywords": "free qr code generator, qrcode generator, create qr code, create qr code free"
+	},
+	"doc": {
+		"title": "Documentation Under Update",
+		"description": "We're currently working on updating this section to serve you better. Please check back soon!"
+	},
+	"analytics": {
+		"totalViews": "total views",
+		"stateActive": "active",
+		"stateInactive": "disabled"
+	},
+	"header": {
+		"collectionBtn": "My Collection",
+		"signInBtn": "Sign In"
+	},
+	"footer": {
+		"qrCodeCopyright": "QR Code is a registered trademark of DENSO WAVE INCORPORATED",
+		"legalNotice": "Legal Notice",
+		"privacyPolicy": "Privacy Policy"
+	},
+	"contentElements": {
+		"iconPicker": {
+			"openTrigger": "Open Icon Picker",
+			"dialogTitle": "Select an Icon",
+			"dialogDescription": "Choose an icon and a color for your selection.",
+			"searchPlaceholder": "Search for an icon",
+			"clearBtn": "Clear",
+			"selectBtn": "Select"
+		},
+		"loader": {
+			"loading": "Loading..."
+		},
+		"feedbackCta": {
+			"headline": "Help us improve – your feedback matters! 🚀",
+			"subHeadline1": "We are constantly working on improving QRcodly.",
+			"subHeadline2": "If you have any feedback or questions, please let us know.",
+			"emailBtn": "Email us"
+		}
+	},
+	"qrCode": {
+		"error": {
+			"delete": {
+				"title": "Error deleting QR code",
+				"message": "There was an error deleting your QR code. We got notified and will fix it soon."
+			},
+			"noFound": "No QR codes found"
+		},
+		"actionsMenu": {
+			"title": "Actions",
+			"edit": "Edit",
+			"delete": "Delete"
+		},
+		"download": {
+			"successTitle": "New QR code created",
+			"successDescription": "We saved your QR Code in your collection for later use.",
+			"downloadBtn": "Download"
+		}
+	},
+	"loginDialog": {
+		"title": "Login Required",
+		"description": "You need to sign in to use this feature.",
+		"subDescription": "Don't worry, it's free!",
+		"cancelBtn": "Cancel",
+		"loginBtn": "Sign in"
+	},
+	"nameDialog": {
+		"placeholder": "Name",
+		"cancelBtn": "Cancel",
+		"saveBtn": "Save",
+		"characters": "characters"
+	},
+	"templates": {
+		"tabs": {
+			"myTemplates": "My Templates",
+			"predefinedTemplates": "Predefined"
+		},
+		"noTemplates": "You don't have any templates yet.",
+		"search": {
+			"placeholder": "Search for a template",
+			"noResults": "No templates found for \"{searchName}\""
+		},
+		"noPredefinedTemplates": "No predefined templates are available at the moment.",
+		"templateCreatedTitle": "New Template Created",
+		"templateCreatedDescription": "Your template has been created successfully.",
+		"saveAsBtn": "Save As Template",
+		"saveInfo": "Save the current QR code style as a reusable template.",
+		"savePopup": {
+			"title": "Save current QR code style as template",
+			"placeholder": "Template Name"
+		},
+		"delete": {
+			"beingDeleted": "Template is being deleted",
+			"deletingInfo": "we are deleting your QR code",
+			"errorTitle": "Failed to delete template",
+			"errorDescription": "An error occurred while deleting the template. . We got notified and will fix it soon."
+		},
+		"confirmPopup": {
+			"title": "Confirm Deletion",
+			"description": "Are you sure you want to delete the template",
+			"description2": "This action cannot be undone.",
+			"confirmBtn": "Delete",
+			"cancelBtn": "Cancel"
+		}
+	},
+	"generator": {
+		"tabs": {
+			"content": "Content",
+			"style": "Style",
+			"templates": "Templates"
+		},
+		"settingsForm": {
+			"tabGeneral": "General",
+			"tabShape": "Shape",
+			"tabIcon": "Icon",
+			"sizeLabel": "Size (Quality)",
+			"borderSpacingLabel": "Border Spacing",
+			"backgroundLabel": "Background",
+			"dotStyle": {
+				"label": "Dot Style",
+				"placeholder": "Select a dot style",
+				"optionLabelSquare": "Square",
+				"optionLabelDots": "Dots",
+				"optionLabelRounded": "Rounded",
+				"optionLabelExtraRound": "Extra rounded",
+				"optionLabelClassy": "Classy",
+				"optionLabelClassyRounded": "Classy rounded"
+			},
+			"dotColor": "Dot Color",
+			"cornersSquareOptions": {
+				"placeholder": "Select a style",
+				"label": "Corners Square Style",
+				"optionLabelSquare": "Square",
+				"optionLabelDot": "Dot",
+				"optionLabelExtraRound": "Extra rounded"
+			},
+			"cornersSquareColor": "Corners Square Color",
+			"cornersDotOptions": {
+				"label": "Corners Dot Style",
+				"placeholder": "Select a style",
+				"optionLabelSquare": "Square",
+				"optionLabelDot": "Dot"
+			},
+			"cornersDotColor": "Corners Dot Color",
+			"iconLabel": "Icon",
+			"errorToLargeFile": "File is too big! Max size is 1MB",
+			"hideBackgroundDots": "Hide Background Dots",
+			"predefinedIconInfo": "You can also choose from predefined icons.",
+			"clearBtn": "Clear Icon"
+		},
+		"contentSwitch": {
+			"tabUrl": "URL",
+			"tabText": "TEXT",
+			"tabWifi": "WIFI",
+			"tabVCard": "VCARD",
+			"text": {
+				"placeholder": "Enter your text here"
+			},
+			"url": {
+				"placeholder": "Enter URL https://example.com/",
+				"enableEditing": "Enable Statistics and Editing",
+				"newBadge": "New!"
+			},
+			"wifi": {
+				"network": {
+					"label": "Network",
+					"placeholder": "Enter your network name"
+				},
+				"password": {
+					"label": "Password",
+					"placeholder": "Enter your password"
+				},
+				"encryption": {
+					"label": "Encryption",
+					"optionLabelWpa": "WPA/WPA2",
+					"optionLabelWep": "WEP",
+					"optionNoPass": "No Password"
+				}
+			},
+			"vCard": {
+				"firstName": {
+					"label": "First Name",
+					"placeholder": "Enter your first name"
+				},
+				"lastName": {
+					"label": "Last Name",
+					"placeholder": "Enter your last name"
+				},
+				"email": {
+					"label": "Email",
+					"placeholder": "Enter your email"
+				},
+				"phone": {
+					"label": "Phone",
+					"placeholder": "Enter your phone number"
+				},
+				"fax": {
+					"label": "Fax",
+					"placeholder": "Enter your fax number"
+				},
+				"company": {
+					"label": "Company",
+					"placeholder": "Enter your company name"
+				},
+				"jobTitle": {
+					"label": "Job Title",
+					"placeholder": "Enter your job title"
+				},
+				"street": {
+					"label": "Street",
+					"placeholder": "Enter your street address"
+				},
+				"city": {
+					"label": "City",
+					"placeholder": "Enter your city"
+				},
+				"zipCode": {
+					"label": "Zip Code",
+					"placeholder": "Enter your zip code"
+				},
+				"state": {
+					"label": "State",
+					"placeholder": "Enter your state"
+				},
+				"country": {
+					"label": "Country",
+					"placeholder": "Enter your country"
+				},
+				"website": {
+					"label": "Website",
+					"placeholder": "Enter your website URL"
+				}
+			}
+		}
+	}
+}

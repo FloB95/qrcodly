@@ -21,6 +21,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { WifiInputSchema, type TWifiInput } from "@shared/schemas/src";
+import { useTranslations } from "next-intl";
 // Import from the shared package
 
 type FormValues = TWifiInput;
@@ -31,6 +32,7 @@ type WiFiSectionProps = {
 };
 
 export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
+	const t = useTranslations("generator.contentSwitch.wifi");
 	const form = useForm<FormValues>({
 		resolver: zodResolver(WifiInputSchema),
 		defaultValues: {
@@ -71,9 +73,9 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 					name="ssid"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Network</FormLabel>
+							<FormLabel>{t("network.label")}</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder="Enter your network name" />
+								<Input {...field} placeholder={t("network.placeholder")} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -86,13 +88,13 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 						disabled={form.getValues("encryption") === "nopass"}
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>Password</FormLabel>
+								<FormLabel>{t("password.label")}</FormLabel>
 								<FormControl>
 									<Input
 										{...field}
 										autoCorrect="off"
 										autoComplete="off"
-										placeholder="Enter your password"
+										placeholder={t("password.placeholder")}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -104,7 +106,7 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 						name="encryption"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>Encryption</FormLabel>
+								<FormLabel>{t("encryption.label")}</FormLabel>
 								<FormControl>
 									<Select
 										name="encryption"
@@ -125,9 +127,15 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 											<SelectValue placeholder="Select the encryption type" />
 										</SelectTrigger>
 										<SelectContent>
-											<SelectItem value="WPA">WPA/WPA2</SelectItem>
-											<SelectItem value="WEP">WEP</SelectItem>
-											<SelectItem value="nopass">no password</SelectItem>
+											<SelectItem value="WPA">
+												{t("encryption.optionLabelWpa")}
+											</SelectItem>
+											<SelectItem value="WEP">
+												{t("encryption.optionLabelWep")}
+											</SelectItem>
+											<SelectItem value="nopass">
+												{t("encryption.optionNoPass")}
+											</SelectItem>
 										</SelectContent>
 									</Select>
 								</FormControl>

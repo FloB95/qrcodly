@@ -129,7 +129,6 @@ export function ColorPicker({
 					className={cn(
 						"w-[220px] justify-start text-left font-normal",
 						!color && "text-muted-foreground",
-						// className,
 					)}
 				>
 					<div className="flex w-full items-center gap-2">

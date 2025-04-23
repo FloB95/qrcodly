@@ -19,11 +19,13 @@ import posthog from "posthog-js";
 import {
 	convertQRCodeDataToStringByType,
 	convertQrCodeOptionsToLibraryOptions,
+	getDefaultContentByType,
 	type TCreateQrCodeDto,
 	type TFileExtension,
 } from "@shared/schemas";
 import { useCreateQrCodeMutation } from "@/lib/api/qr-code";
 import { toast } from "../ui/use-toast";
+import { useTranslations } from "next-intl";
 
 let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
@@ -35,8 +37,8 @@ const QrCodeDownloadBtn = ({
 	saveOnDownload?: boolean;
 	noStyling?: boolean;
 }) => {
+	const t = useTranslations("qrCode.download");
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
-
 	const createQrCodeMutation = useCreateQrCodeMutation();
 
 	useEffect(() => {
@@ -62,9 +64,8 @@ const QrCodeDownloadBtn = ({
 						if (data.success && data.isStored) {
 							// show toast
 							toast({
-								title: "New QR code created",
-								description:
-									"We saved your QR Code in your collection for later use.",
+								title: t("successTitle"),
+								description: t("successDescription"),
 								duration: 10000,
 							});
 						}
@@ -88,8 +89,8 @@ const QrCodeDownloadBtn = ({
 			<DropdownMenuTrigger
 				asChild
 				disabled={
-					(typeof qrCode.content.data === "string" &&
-						qrCode.content.data.length <= 0) ||
+					JSON.stringify(qrCode.content) ===
+						JSON.stringify(getDefaultContentByType(qrCode.content.type)) ||
 					createQrCodeMutation.isPending
 				}
 			>
@@ -99,12 +100,12 @@ const QrCodeDownloadBtn = ({
 					<Button
 						isLoading={createQrCodeMutation.isPending}
 						disabled={
-							(typeof qrCode.content.data === "string" &&
-								qrCode.content.data.length <= 0) ||
+							JSON.stringify(qrCode.content) ===
+								JSON.stringify(getDefaultContentByType(qrCode.content.type)) ||
 							createQrCodeMutation.isPending
 						}
 					>
-						Download
+						{t("downloadBtn")}
 					</Button>
 				)}
 			</DropdownMenuTrigger>

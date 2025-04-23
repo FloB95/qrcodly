@@ -2,8 +2,10 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Container from "./ui/container";
 import { Button, buttonVariants } from "./ui/button";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function Header({ hideDashboardLink = false }) {
+	const t = useTranslations("header");
 	return (
 		<header className="pt-10">
 			<Container>
@@ -19,13 +21,13 @@ export default function Header({ hideDashboardLink = false }) {
 						</Link>
 						<SignedOut>
 							<SignInButton>
-								<Button>Sign in</Button>
+								<Button>{t("signInBtn")}</Button>
 							</SignInButton>
 						</SignedOut>
 						<SignedIn>
 							{!hideDashboardLink && (
 								<Link href="/collection" className={buttonVariants()}>
-									My Collection
+									{t("collectionBtn")}
 								</Link>
 							)}
 							<UserButton />

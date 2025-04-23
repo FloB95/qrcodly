@@ -23,6 +23,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import posthog from "posthog-js";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 type TemplateListProps = {
 	templates: TConfigTemplateResponseDto[];
@@ -35,6 +36,7 @@ export const TemplatesList = ({
 	onSelect,
 	deletable,
 }: TemplateListProps) => {
+	const trans = useTranslations("templates");
 	const [selectedTemplate, setSelectedTemplate] =
 		useState<TConfigTemplateResponseDto | null>(null);
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
@@ -54,12 +56,12 @@ export const TemplatesList = ({
 
 		setIsDeleting(true);
 		const t = toast({
-			title: "Template is being deleted",
+			title: trans("delete.beingDeleted"),
 			open: isDeleting,
 			description: (
 				<div className="flex space-x-2">
 					<Loader2 className="mr-2 h-6 w-6 animate-spin" />{" "}
-					<span>we are deleting your QR code</span>
+					<span>{trans("delete.deletingInfo")}</span>
 				</div>
 			),
 		});
@@ -78,9 +80,8 @@ export const TemplatesList = ({
 			onError: () => {
 				t.dismiss();
 				toast({
-					title: "Failed to delete template",
-					description:
-						"An error occurred while deleting the template. . We got notified and will fix it soon.",
+					title: trans("delete.errorTitle"),
+					description: trans("delete.errorDescription"),
 					variant: "destructive",
 					duration: 5000,
 				});
@@ -146,13 +147,15 @@ export const TemplatesList = ({
 									</DialogTrigger>
 									<DialogContent>
 										<DialogHeader>
-											<DialogTitle>Confirm Deletion</DialogTitle>
+											<DialogTitle>{trans("confirmPopup.title")}</DialogTitle>
 											<DialogDescription>
-												Are you sure you want to delete the template{" "}
+												{trans("confirmPopup.description")}{" "}
 												<span className="font-bold text-black">
 													{selectedTemplate?.name}
 												</span>{" "}
-												? This action cannot be undone.
+												?
+												<br />
+												{trans("confirmPopup.description2")}
 											</DialogDescription>
 										</DialogHeader>
 										<DialogFooter>
@@ -161,7 +164,7 @@ export const TemplatesList = ({
 													variant="secondary"
 													onClick={() => setSelectedTemplate(null)}
 												>
-													Cancel
+													{trans("confirmPopup.cancelBtn")}
 												</Button>
 											</DialogClose>
 											<DialogClose asChild>
@@ -169,7 +172,7 @@ export const TemplatesList = ({
 													variant="destructive"
 													onClick={() => handleDelete()}
 												>
-													Delete
+													{trans("confirmPopup.confirmBtn")}
 												</Button>
 											</DialogClose>
 										</DialogFooter>

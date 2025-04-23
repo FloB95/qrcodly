@@ -1,9 +1,10 @@
-'use client';
-import { getQueryClient } from '@/lib/queryClient';
-import { QueryClientProvider } from '@tanstack/react-query';
-import type * as React from 'react';
-import { TooltipProvider } from '../ui/tooltip';
-import { PostHogProvider } from './PostHogProvider';
+"use client";
+import { getQueryClient } from "@/lib/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+import type * as React from "react";
+import { TooltipProvider } from "../ui/tooltip";
+import { PostHogProvider } from "./PostHogProvider";
+import { NextIntlClientProvider } from "next-intl";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
 	const queryClient = getQueryClient();

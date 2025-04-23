@@ -45,6 +45,7 @@
     "lucide-react": "^0.488.0",
     "next": "^15.2.3",
     "next-axiom": "^1.9.1",
+    "next-intl": "^4.0.3",
     "posthog-js": "^1.236.2",
     "qr-code-styling": "^1.9.2",
     "qs": "^6.14.0",

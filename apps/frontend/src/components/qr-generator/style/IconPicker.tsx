@@ -13,12 +13,14 @@ import { svgToBase64 } from "@/lib/utils";
 import ReactDOMServer from "react-dom/server";
 import { Button } from "@/components/ui/button";
 import posthog from "posthog-js";
+import { useTranslations } from "next-intl";
 
 interface IconPickerProps {
 	onSelect: (iconName?: string) => void;
 }
 
 const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
+	const t = useTranslations("contentElements.iconPicker");
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
 	const [selectedIcon, setSelectedIcon] = useState<string | undefined>(
 		undefined,
@@ -68,17 +70,15 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 	return (
 		<Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
 			<DialogTrigger asChild>
-				<Button>Open Icon Picker</Button>
+				<Button>{t("openTrigger")}</Button>
 			</DialogTrigger>
 			<DialogContent>
-				<DialogTitle>Select an Icon</DialogTitle>
-				<DialogDescription>
-					Choose an icon and a color for your selection.
-				</DialogDescription>
+				<DialogTitle>{t("dialogTitle")}</DialogTitle>
+				<DialogDescription>{t("dialogDescription")}</DialogDescription>
 				<div className="mt-4 flex space-x-4">
 					<input
 						type="text"
-						placeholder="Search icons..."
+						placeholder={t("searchPlaceholder")}
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
 						className="mb-4 w-full rounded border p-2"
@@ -117,13 +117,13 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 							handleIconClick(undefined);
 						}}
 					>
-						Clear
+						{t("clearBtn")}
 					</Button>
 					<Button
 						onClick={() => setDialogIsOpen(false)}
 						disabled={!selectedIcon}
 					>
-						Select
+						{t("selectBtn")}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

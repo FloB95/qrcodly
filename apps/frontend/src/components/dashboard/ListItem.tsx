@@ -35,6 +35,7 @@ import { formatDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useGetViewsFromShortCodeQuery } from "@/lib/api/url-shortener";
+import { useTranslations } from "next-intl";
 
 const GetNameByContentType = (qr: TQrCodeWithRelationsResponseDto) => {
 	switch (qr.content.type) {
@@ -86,6 +87,7 @@ const GetQrCodeIconByContentType = (qr: TQrCode) => {
 };
 
 export const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
+	const t = useTranslations();
 	const { data } = useGetViewsFromShortCodeQuery(shortUrl.shortCode);
 	if (data) {
 		return (
@@ -96,7 +98,9 @@ export const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 							<span>{data.views}</span> <EyeIcon width={20} height={20} />
 						</div>
 					</TooltipTrigger>
-					<TooltipContent side="top">{data.views} total views</TooltipContent>
+					<TooltipContent side="top">
+						{data.views} {t("analytics.totalViews")}
+					</TooltipContent>
 				</Tooltip>
 			</div>
 		);
@@ -110,6 +114,7 @@ export const DashboardListItem = ({
 }: {
 	qr: TQrCodeWithRelationsResponseDto;
 }) => {
+	const trans = useTranslations();
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const deleteQrCodeMutation = useDeleteQrCodeMutation();
 	const handleDelete = useCallback(() => {
@@ -138,9 +143,8 @@ export const DashboardListItem = ({
 			onError: () => {
 				t.dismiss();
 				toast({
-					title: "Error deleting QR code",
-					description:
-						"There was an error deleting your QR code. We got notified and will fix it soon.",
+					title: trans("qrCode.error.delete.title"),
+					description: trans("qrCode.error.delete.message"),
 					variant: "destructive",
 					duration: 5000,
 				});
@@ -193,7 +197,9 @@ export const DashboardListItem = ({
 			<TableCell className="hidden sm:table-cell">
 				{qr.shortUrl && (
 					<Badge variant="outline">
-						{qr.shortUrl.isActive ? "Active" : "Disabled"}
+						{qr.shortUrl.isActive
+							? trans("analytics.stateActive")
+							: trans("analytics.stateInactive")}
 					</Badge>
 				)}
 			</TableCell>
@@ -217,10 +223,14 @@ export const DashboardListItem = ({
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
-						<DropdownMenuLabel>Actions</DropdownMenuLabel>
+						<DropdownMenuLabel>
+							{trans("qrCode.actionsMenu.title")}
+						</DropdownMenuLabel>
 						<DropdownMenuItem>
 							<Link href={`/collection/qr-code/${qr.id}`} prefetch>
-								<div className="flex items-center space-x-2">Edit</div>
+								<div className="flex items-center space-x-2">
+									{trans("qrCode.actionsMenu.edit")}
+								</div>
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem>
@@ -228,7 +238,7 @@ export const DashboardListItem = ({
 						</DropdownMenuItem>
 						<DropdownMenuItem>
 							<div className="cursor-pointer" onClick={handleDelete}>
-								Delete
+								{trans("qrCode.actionsMenu.delete")}
 							</div>
 						</DropdownMenuItem>
 					</DropdownMenuContent>

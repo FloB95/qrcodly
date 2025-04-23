@@ -10,8 +10,10 @@ import { QrCodeDefaults, type TQrCodeOptions } from "@shared/schemas";
 import { useCreateConfigTemplateMutation } from "@/lib/api/config-template";
 import { toast } from "@/components/ui/use-toast";
 import posthog from "posthog-js";
+import { useTranslations } from "next-intl";
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
+	const t = useTranslations("templates");
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
@@ -29,8 +31,8 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 				{
 					onSuccess: () => {
 						toast({
-							title: "New Template Created",
-							description: "We saved your QR Code Template for later use.",
+							title: t("templateCreatedTitle"),
+							description: t("templateCreatedDescription"),
 							duration: 10000,
 						});
 
@@ -67,19 +69,19 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 							JSON.stringify(config) === JSON.stringify(QrCodeDefaults)
 						}
 					>
-						Save as Template
+						{t("saveAsBtn")}
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent side="top">
-					<p>Save the current QR code style as a reusable template.</p>
+					<p>{t("saveInfo")}</p>
 				</TooltipContent>
 			</Tooltip>
 
 			<LoginRequiredDialog alertOpen={alertOpen} setAlertOpen={setAlertOpen} />
 
 			<NameDialog
-				dialogHeadline="Save current QR code style as template"
-				placeholder="Template Name"
+				dialogHeadline={t("savePopup.title")}
+				placeholder={t("savePopup.placeholder")}
 				isOpen={nameDialogOpen}
 				setIsOpen={setNameDialogOpen}
 				onSubmit={handleSave}
