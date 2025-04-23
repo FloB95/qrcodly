@@ -16,6 +16,7 @@ export * from './dtos/url-shortener/ShortUrlRequestParamsDto';
 export * from './dtos/url-shortener/ShortUrlResponseDto';
 export * from './dtos/url-shortener/CreateShortUrlDto';
 export * from './dtos/url-shortener/UpdateShortUrlDto';
+export * from './dtos/url-shortener/AnalyticsResponseDto';
 
 export * from './dtos/IdRequestQuery';
 export * from './dtos/ListRequestDto';
@@ -28,6 +29,7 @@ export * from './schemas/AbstractEntitySchema';
 export * from './schemas/QrCode';
 export * from './schemas/QrCodeConfigTemplate';
 export * from './schemas/ShortUrl';
+export * from './schemas/AnalyticsSchema';
 
 /***************************
  * Utils
