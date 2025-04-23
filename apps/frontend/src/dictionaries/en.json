@@ -1,17 +1,17 @@
 {
 	"metadata": {
 		"title": "QRcodly - Free & Open Source QR Code Generator",
-		"description": "Create fully customizable and stylish QR codes with QRcodly, a free qr code generator. Generate QR codes for URLs, text, Wi-Fi, vCards, and more. Easy-to-use, secure, and perfect for personal or business use. Start now!",
-		"keywords": "free qr code generator, qrcode generator, create qr code, create qr code free"
+		"description": "Easily create fully customizable and stylish QR codes with QRcodly, a free QR code generator. Generate QR codes for URLs, text, Wi-Fi, vCards, and more. Easy to use, secure, and perfect for personal or business use. Start now!",
+		"keywords": "free QR code generator, QR code creator, generate QR codes, custom QR code maker"
 	},
 	"doc": {
 		"title": "Documentation Under Update",
-		"description": "We're currently working on updating this section to serve you better. Please check back soon!"
+		"description": "We're currently working on updating this section to better serve you. Please check back soon!"
 	},
 	"analytics": {
-		"totalViews": "total views",
-		"stateActive": "active",
-		"stateInactive": "disabled"
+		"totalViews": "Total Views",
+		"stateActive": "Active",
+		"stateInactive": "Disabled"
 	},
 	"header": {
 		"collectionBtn": "My Collection",
@@ -44,8 +44,8 @@
 	"qrCode": {
 		"error": {
 			"delete": {
-				"title": "Error deleting QR code",
-				"message": "There was an error deleting your QR code. We got notified and will fix it soon."
+				"title": "Error Deleting QR Code",
+				"message": "There was an error deleting your QR code. We've been notified and will fix it as soon as possible."
 			},
 			"noFound": "No QR codes found"
 		},
@@ -55,7 +55,7 @@
 			"delete": "Delete"
 		},
 		"download": {
-			"successTitle": "New QR code created",
+			"successTitle": "New QR Code Created",
 			"successDescription": "We saved your QR Code in your collection for later use.",
 			"downloadBtn": "Download"
 		}
@@ -63,9 +63,9 @@
 	"loginDialog": {
 		"title": "Login Required",
 		"description": "You need to sign in to use this feature.",
-		"subDescription": "Don't worry, it's free!",
+		"subDescription": "Don’t worry – it’s completely free!",
 		"cancelBtn": "Cancel",
-		"loginBtn": "Sign in"
+		"loginBtn": "Sign In"
 	},
 	"nameDialog": {
 		"placeholder": "Name",
@@ -89,18 +89,18 @@
 		"saveAsBtn": "Save As Template",
 		"saveInfo": "Save the current QR code style as a reusable template.",
 		"savePopup": {
-			"title": "Save current QR code style as template",
+			"title": "Save Current QR Code Style as Template",
 			"placeholder": "Template Name"
 		},
 		"delete": {
 			"beingDeleted": "Template is being deleted",
-			"deletingInfo": "we are deleting your QR code",
-			"errorTitle": "Failed to delete template",
-			"errorDescription": "An error occurred while deleting the template. . We got notified and will fix it soon."
+			"deletingInfo": "We are deleting your QR code",
+			"errorTitle": "Failed to Delete Template",
+			"errorDescription": "An error occurred while deleting the template. We've been notified and will fix it soon."
 		},
 		"confirmPopup": {
 			"title": "Confirm Deletion",
-			"description": "Are you sure you want to delete the template",
+			"description": "Are you sure you want to delete the template?",
 			"description2": "This action cannot be undone.",
 			"confirmBtn": "Delete",
 			"cancelBtn": "Cancel"
@@ -125,9 +125,9 @@
 				"optionLabelSquare": "Square",
 				"optionLabelDots": "Dots",
 				"optionLabelRounded": "Rounded",
-				"optionLabelExtraRound": "Extra rounded",
+				"optionLabelExtraRound": "Extra Rounded",
 				"optionLabelClassy": "Classy",
-				"optionLabelClassyRounded": "Classy rounded"
+				"optionLabelClassyRounded": "Classy Rounded"
 			},
 			"dotColor": "Dot Color",
 			"cornersSquareOptions": {
@@ -135,7 +135,7 @@
 				"label": "Corners Square Style",
 				"optionLabelSquare": "Square",
 				"optionLabelDot": "Dot",
-				"optionLabelExtraRound": "Extra rounded"
+				"optionLabelExtraRound": "Extra Rounded"
 			},
 			"cornersSquareColor": "Corners Square Color",
 			"cornersDotOptions": {
@@ -146,7 +146,7 @@
 			},
 			"cornersDotColor": "Corners Dot Color",
 			"iconLabel": "Icon",
-			"errorToLargeFile": "File is too big! Max size is 1MB",
+			"errorToLargeFile": "The file is too large. Maximum size is 1MB.",
 			"hideBackgroundDots": "Hide Background Dots",
 			"predefinedIconInfo": "You can also choose from predefined icons.",
 			"clearBtn": "Clear Icon"
@@ -190,7 +190,7 @@
 					"placeholder": "Enter your last name"
 				},
 				"email": {
-					"label": "Email",
+					"label": "Email Address",
 					"placeholder": "Enter your email"
 				},
 				"phone": {
