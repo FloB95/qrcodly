@@ -22,6 +22,13 @@
 			"when": 1745333814722,
 			"tag": "0002_stale_bushwacker",
 			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "5",
+			"when": 1745404671274,
+			"tag": "0003_sleepy_zodiak",
+			"breakpoints": true
 		}
 	]
 }

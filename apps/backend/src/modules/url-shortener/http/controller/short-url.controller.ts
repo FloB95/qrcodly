@@ -6,12 +6,15 @@ import ShortUrlRepository from '../../domain/repository/short-url.repository';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import { ShortUrlNotFoundError } from '../../error/http/qr-code-not-found.error';
 import {
+	AnalyticsResponseDto,
 	ShortUrlResponseDto,
+	TAnalyticsResponseDto,
 	TGetShortUrlRequestQueryDto,
 	TShortUrlResponseDto,
 } from '@shared/schemas';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
-import { PostHogAnalyticsService } from '../../services/post-hog-analytics.service';
+import { UmamiAnalyticsService } from '../../services/umami-analytics.service';
+import { SHORT_BASE_URL } from '../../config/constants';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -19,7 +22,7 @@ export class ShortUrlController extends AbstractController {
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
 		@inject(GetReservedShortCodeUseCase)
 		private getReservedShortCodeUseCase: GetReservedShortCodeUseCase,
-		@inject(PostHogAnalyticsService) private postHogAnalyticsService: PostHogAnalyticsService,
+		@inject(UmamiAnalyticsService) private umamiAnalyticsService: UmamiAnalyticsService,
 	) {
 		super();
 	}
@@ -49,7 +52,8 @@ export class ShortUrlController extends AbstractController {
 	@Get('/:shortCode/analytics')
 	async getAnalytics(
 		request: IHttpRequestWithAuth<unknown, TGetShortUrlRequestQueryDto>,
-	): Promise<IHttpResponse> {
+	): Promise<IHttpResponse<TAnalyticsResponseDto>> {
+		// TODO add redis cache if growing
 		const { shortCode } = request.params;
 
 		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
@@ -57,8 +61,29 @@ export class ShortUrlController extends AbstractController {
 			throw new ShortUrlNotFoundError();
 		}
 
-		const data = await this.postHogAnalyticsService.getAnalyticsForUrlCode(shortUrl.shortCode);
+		const data = await this.umamiAnalyticsService.getAnalyticsForEndpoint(
+			SHORT_BASE_URL + shortCode,
+		);
 
-		return this.makeApiHttpResponse(200, data);
+		return this.makeApiHttpResponse(200, AnalyticsResponseDto.parse(data));
+	}
+
+	@Get('/:shortCode/get-views')
+	async getViews(request: IHttpRequestWithAuth<unknown, TGetShortUrlRequestQueryDto>): Promise<
+		IHttpResponse<{
+			views: number;
+		}>
+	> {
+		// TODO add redis cache if growing
+		const { shortCode } = request.params;
+
+		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
+		if (!shortUrl) {
+			throw new ShortUrlNotFoundError();
+		}
+
+		const data = await this.umamiAnalyticsService.getViewsForEndpoint(SHORT_BASE_URL + shortCode);
+
+		return this.makeApiHttpResponse(200, { views: data });
 	}
 }

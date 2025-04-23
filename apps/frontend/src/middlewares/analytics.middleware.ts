@@ -1,6 +1,5 @@
 import { env } from '@/env';
 import { apiRequest } from '@/lib/utils';
-import { logger } from '@sentry/nextjs';
 import type { TShortUrl } from '@shared/schemas';
 import { NextResponse, type NextRequest } from 'next/server';
 
@@ -19,7 +18,7 @@ export async function handleAnalytics(req: NextRequest) {
 	const payload = {
 		type: 'event',
 		payload: {
-			website: '70b7b2df-e299-4171-a03b-a615bff2130d',
+			website: env.NEXT_PUBLIC_UMAMI_WEBSITE,
 			url: req.url,
 			userAgent: headers.get('user-agent') ?? '',
 			hostname,
@@ -48,17 +47,17 @@ export async function handleAnalytics(req: NextRequest) {
 			},
 		});
 
-		if (!response?.destinationUrl) {
+		shortUrl = response;
+
+		if (!shortUrl?.destinationUrl || !shortUrl.isActive) {
 			return NextResponse.rewrite(new URL('/404', req.url));
 		}
-
-		shortUrl = response;
 	} catch {
 		return NextResponse.rewrite(new URL('/404', req.url));
 	}
 
 	try {
-		const res = await fetch(`${env.ANALYTICS_API_HOST}/api/send`, {
+		const res = await fetch(`${env.UMAMI_API_HOST}/api/send`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -72,15 +71,15 @@ export async function handleAnalytics(req: NextRequest) {
 			const contentType = res.headers.get('content-type');
 			if (contentType?.includes('application/json')) {
 				const jsonResponse = (await res.json()) as Record<string, unknown>;
-				logger.error('Response Analytics API:', { error: jsonResponse });
+				console.error('Response Analytics API:', { error: jsonResponse });
 			} else {
 				const textResponse = await res.text();
-				logger.error('Response Analytics API:', { error: textResponse });
+				console.error('Response Analytics API:', { error: textResponse });
 			}
 		}
 	} catch (error) {
 		console.log('Error sending request to logger:', error);
 	}
 
-	return NextResponse.redirect(new URL(shortUrl.destinationUrl!));
+	return NextResponse.redirect(new URL(shortUrl.destinationUrl));
 }

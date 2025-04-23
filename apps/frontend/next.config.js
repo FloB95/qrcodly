@@ -1,5 +1,6 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import { withAxiom } from "next-axiom";
+import { env } from "./src/env.js";
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
@@ -59,11 +60,11 @@ const config = {
 			},
 			{
 				source: "/umami.js",
-				destination: "https://umami.fb-development.de/script.js",
+				destination: `${env.UMAMI_API_HOST}/script.js`,
 			},
 			{
 				source: "/api/umami",
-				destination: "https://umami.fb-development.de/api/send",
+				destination: `${env.UMAMI_API_HOST}/api/send`,
 			},
 		];
 	},

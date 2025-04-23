@@ -9,7 +9,6 @@ const emptyStringToUndefined = <T extends z.ZodTypeAny>(
 export const UrlInputSchema = z.object({
 	url: z.string().url(),
 	isEditable: z.boolean().optional(),
-	isActive: z.boolean().optional(),
 });
 export type TUrlInput = z.infer<typeof UrlInputSchema>;
 

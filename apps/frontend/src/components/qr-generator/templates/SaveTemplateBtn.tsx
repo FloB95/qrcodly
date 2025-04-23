@@ -50,11 +50,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<Button
-						variant={
-							JSON.stringify(config) === JSON.stringify(QrCodeDefaults)
-								? "secondary"
-								: "default"
-						}
+						variant="outlineStrong"
 						className="cursor-pointer"
 						isLoading={createConfigTemplateMutation.isPending}
 						onClick={() => {
@@ -67,7 +63,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 							setNameDialogOpen(true);
 						}}
 						disabled={
-							createConfigTemplateMutation.isPending &&
+							createConfigTemplateMutation.isPending ||
 							JSON.stringify(config) === JSON.stringify(QrCodeDefaults)
 						}
 					>

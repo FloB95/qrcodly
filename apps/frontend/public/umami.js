@@ -26,7 +26,7 @@
 			j = v(y + "exclude-hash") === b,
 			x = v(y + "domains") || "",
 			O = x.split(",").map((t) => t.trim()),
-			E = `${(S || "" || f.src.split("/").slice(0, -1).join("/")).replace(/\/$/, "")}/api/send`,
+			E = `${(S || "" || f.src.split("/").slice(0, -1).join("/")).replace(/\/$/, "")}/api/umami`,
 			L = `${e}x${a}`,
 			$ = /data-umami-event-([\w-_]+)/,
 			D = y + "umami-event",

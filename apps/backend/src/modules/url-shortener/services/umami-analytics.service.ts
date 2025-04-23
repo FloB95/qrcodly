@@ -1,46 +1,74 @@
-import { inject, injectable } from 'tsyringe';
-import { env } from '@/core/config/env';
+import { inject, singleton } from 'tsyringe';
 import { Logger } from '@/core/logging';
-import { SHORT_BASE_URL } from '@/modules/url-shortener/config/constants';
+import { env } from '@/core/config/env';
+import QueryString from 'qs';
+import { TAnalyticsMetric, TAnalyticsResponseDto } from '@shared/schemas';
 
-interface UrlAnalyticsOverview {
-	views: number;
-	uniqueVisitors: number;
-	breakdowns: {
-		devices: { name: string; count: number }[];
-		countries: { name: string; count: number }[];
-	};
-}
-
-@injectable()
+@singleton()
 export class UmamiAnalyticsService {
 	private umamiHost: string;
-	private umamiApiKey: string;
+	private umamiUsername: string;
+	private umamiPassword: string;
+	private umamiAuthToken: string;
+	private umamiWebsiteId: string;
 	private logger: Logger;
 
 	constructor(@inject(Logger) logger: Logger) {
 		this.umamiHost = env.UMAMI_HOST;
-		this.umamiApiKey = env.UMAMI_API_KEY;
-
-		if (!this.umamiHost || !this.umamiApiKey) {
-			logger.error('Umami environment variables are not set.', {
-				umamiHost: !!this.umamiHost,
-				umamiApiKey: !!this.umamiApiKey,
-			});
-			throw new Error('Umami environment variables UMAMI_HOST and UMAMI_API_KEY must be set.');
-		}
+		this.umamiUsername = env.UMAMI_USERNAME;
+		this.umamiPassword = env.UMAMI_PASSWORD;
+		this.umamiWebsiteId = env.UMAMI_WEBSITE;
 
 		this.logger = logger;
 	}
 
-	private async fetchUmamiData(endpoint: string): Promise<any> {
-		const url = `${this.umamiHost}/api/analytics/${endpoint}`;
+	private async fetchUmamiAuthToken(): Promise<string> {
+		const url = `${this.umamiHost}/api/auth/login`;
+		const body = {
+			username: this.umamiUsername,
+			password: this.umamiPassword,
+		};
+
+		try {
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(body),
+			});
+
+			if (!response.ok) {
+				const errorBody = await response.text();
+				this.logger.error(`Umami API Error ${response.status}: ${errorBody}`, {
+					status: response.status,
+					body: errorBody,
+				});
+				throw new Error(`Failed to fetch auth token from Umami: ${response.status} - ${errorBody}`);
+			}
+
+			const data = (await response.json()) as unknown as { token: string };
+			this.umamiAuthToken = data.token;
+			return data.token;
+		} catch (error) {
+			this.logger.error('Error fetching auth token from Umami API', { error });
+			throw error;
+		}
+	}
+
+	private async fetchUmamiData(endpoint: string, queryObject: object): Promise<any> {
+		const token = this.umamiAuthToken || (await this.fetchUmamiAuthToken());
+
+		const queryString = QueryString.stringify(queryObject);
+		const url = `${this.umamiHost}/api/${endpoint}?${queryString}`;
+
+		console.log('url', url);
 
 		try {
 			const response = await fetch(url, {
 				method: 'GET',
 				headers: {
-					Authorization: `Bearer ${this.umamiApiKey}`,
+					Authorization: `Bearer ${token}`,
 				},
 			});
 
@@ -60,40 +88,81 @@ export class UmamiAnalyticsService {
 		}
 	}
 
-	/**
-	 * Retrieves analytics data for a specific URL code (short URL).
-	 * @param urlCode The short URL code to filter analytics by.
-	 * @returns A promise resolving with the structured analytics data for the specific URL code.
-	 * @throws {Error} If fetching data from Umami fails.
-	 */
-	public async getAnalyticsForUrlCode(urlCode: string): Promise<UrlAnalyticsOverview> {
-		try {
-			// Gesamtansicht für den URL-Code (Seitenaufrufe und eindeutige Besucher)
-			const stats = await this.fetchUmamiData(`stats?url=${SHORT_BASE_URL}${urlCode}`);
+	private mapMetrics(metrics: { x: string; y: number }[]): TAnalyticsMetric[] {
+		metrics = metrics.filter((metric) => metric.x !== null && metric.x !== undefined);
 
-			// Beispiel: Umami liefert keine detaillierte Gerätespezifizierung oder Länderauswertung
-			const breakdowns = {
-				devices: [
-					{ name: 'Desktop', count: 150 },
-					{ name: 'Mobile', count: 50 },
-				],
-				countries: [
-					{ name: 'Germany', count: 120 },
-					{ name: 'USA', count: 30 },
-				],
-			};
+		return metrics.map((metric) => ({
+			label: metric.x,
+			count: metric.y,
+		}));
+	}
 
-			const analyticsData: UrlAnalyticsOverview = {
-				views: stats.total_pageviews || 0,
-				uniqueVisitors: stats.total_visitors || 0,
-				breakdowns,
-			};
-
-			this.logger.info(`Successfully retrieved analytics for URL code: ${urlCode}`);
-			return analyticsData;
-		} catch (error) {
-			this.logger.error(`Failed to retrieve analytics for URL code: ${urlCode}`, { error });
-			throw new Error(`Failed to retrieve analytics data for URL code ${urlCode}.`);
+	public async getViewsForEndpoint(url: string): Promise<number> {
+		const now = Date.now();
+		const defaultParams = {
+			startAt: new Date('2023-04-20T00:00:00Z').getTime(), // old start date to get all data
+			endAt: now,
+			unit: 'minute',
+			url: url,
+			compare: 'false',
+		};
+		interface WebsiteStats {
+			pageviews?: { value: number };
 		}
+
+		const websiteStats = (await this.fetchUmamiData(
+			`websites/${this.umamiWebsiteId}/stats`,
+			defaultParams,
+		)) as WebsiteStats;
+
+		return websiteStats?.pageviews?.value ?? 0;
+	}
+
+	public async getAnalyticsForEndpoint(url: string): Promise<TAnalyticsResponseDto> {
+		const now = Date.now();
+		const defaultParams = {
+			startAt: new Date('2023-04-20T00:00:00Z').getTime(), // old start date to get all data
+			endAt: now,
+			unit: 'minute',
+			url: url,
+			compare: 'false',
+		};
+
+		const websiteStats = await this.fetchUmamiData(
+			`websites/${this.umamiWebsiteId}/stats`,
+			defaultParams,
+		);
+		const browserMetrics = this.mapMetrics(
+			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
+				...defaultParams,
+				type: 'browser',
+			}),
+		);
+		const osMetrics = this.mapMetrics(
+			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
+				...defaultParams,
+				type: 'os',
+			}),
+		);
+		const deviceMetrics = this.mapMetrics(
+			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
+				...defaultParams,
+				type: 'device',
+			}),
+		);
+		const countryMetrics = this.mapMetrics(
+			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
+				...defaultParams,
+				type: 'country',
+			}),
+		);
+
+		return {
+			shortUrlStats: websiteStats,
+			browserMetrics,
+			osMetrics,
+			deviceMetrics,
+			countryMetrics,
+		};
 	}
 }

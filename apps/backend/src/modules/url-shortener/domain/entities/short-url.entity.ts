@@ -1,7 +1,7 @@
 import { qrCode } from '@/core/db/schemas';
 import { createTable } from '@/core/db/utils';
 import { relations } from 'drizzle-orm';
-import { datetime, index, text, varchar } from 'drizzle-orm/mysql-core';
+import { boolean, datetime, index, text, varchar } from 'drizzle-orm/mysql-core';
 
 const shortUrl = createTable(
 	'short_url',
@@ -16,6 +16,7 @@ const shortUrl = createTable(
 		})
 			.references(() => qrCode.id, { onDelete: 'cascade' })
 			.unique(),
+		isActive: boolean().notNull(),
 		createdBy: varchar({ length: 255 }).notNull(),
 		createdAt: datetime().notNull(),
 		updatedAt: datetime(),

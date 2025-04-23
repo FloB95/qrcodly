@@ -1,4 +1,8 @@
 {
 	"prettier.configPath": ".prettierrc.json",
-	"cSpell.words": ["dtos", "qrcodly"]
+	"cSpell.words": [
+		"dtos",
+		"qrcodly",
+		"umami"
+	]
 }

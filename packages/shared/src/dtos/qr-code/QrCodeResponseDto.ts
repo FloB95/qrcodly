@@ -1,4 +1,4 @@
-import { type z } from 'zod';
+import { z } from 'zod';
 import { QrCodeSchema } from '../../schemas/QrCode';
 import { ShortUrlResponseDto } from '../url-shortener/ShortUrlResponseDto';
 

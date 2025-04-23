@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { type Metadata } from "next";
 import Providers from "@/components/provider";
+import { env } from "@/env";
 
 const openSans = Inter({
 	subsets: ["latin"],
@@ -56,11 +57,11 @@ export default function RootLayout({
 						href="/favicon-16x16.png"
 					/>
 					<link rel="manifest" href="/site.webmanifest" />
-					{/* <script
+					<script
 						defer
 						src="umami.js"
-						data-website-id="b1deaa39-901b-400d-9cb5-e76b880b3520"
-					></script> */}
+						data-website-id={env.NEXT_PUBLIC_UMAMI_WEBSITE}
+					></script>
 				</head>
 				<body className={`font-sans ${openSans.variable}`}>
 					<Providers>{children}</Providers>

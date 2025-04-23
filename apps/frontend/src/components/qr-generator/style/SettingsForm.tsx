@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 import {
 	Form,
 	FormControl,
@@ -9,31 +9,31 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form';
+} from "@/components/ui/form";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { ColorPicker } from './ColorPicker';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Slider } from '@/components/ui/slider';
-import { Input } from '@/components/ui/input';
-import IconPicker from './IconPicker';
-import type { TQrCodeOptions } from '@shared/schemas';
-import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
-import { Button } from '@/components/ui/button';
-import { TrashIcon } from 'lucide-react';
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ColorPicker } from "./ColorPicker";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import IconPicker from "./IconPicker";
+import type { TQrCodeOptions } from "@shared/schemas";
+import { useQrCodeGeneratorStore } from "@/components/provider/QrCodeConfigStoreProvider";
+import { Button } from "@/components/ui/button";
+import { TrashIcon } from "lucide-react";
 
 export const SettingsForm = () => {
 	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
 	const handleIconSelect = (iconName?: string) => {
 		config.image = iconName;
 		updateConfig(config);
-		form.setValue('image', iconName ?? '');
+		form.setValue("image", iconName ?? "");
 	};
 
 	const form = useForm<TQrCodeOptions>({
@@ -95,8 +95,11 @@ export const SettingsForm = () => {
 
 	return (
 		<Form {...form}>
-			<form onChange={form.handleSubmit(handleChange)} className="space-y-6 xl:w-2/3">
-				<Tabs defaultValue={'general'} className="w-full">
+			<form
+				onChange={form.handleSubmit(handleChange)}
+				className="space-y-6 xl:w-2/3"
+			>
+				<Tabs defaultValue={"general"} className="w-full">
 					<TabsList className="mb-4 w-full">
 						<TabsTrigger className="flex-1" value="general">
 							General
@@ -121,18 +124,18 @@ export const SettingsForm = () => {
 											<Slider
 												name="width"
 												className="cursor-pointer"
-												value={[form.getValues('width')]}
+												value={[form.getValues("width")]}
 												max={2000}
 												min={300}
 												step={25}
 												onValueChange={(e: unknown) => {
-													form.setValue('width', e as number);
-													form.setValue('height', e as number);
+													form.setValue("width", e as number);
+													form.setValue("height", e as number);
 												}}
 											/>
 										</FormControl>
 										<FormDescription className="pt-1 text-center">
-											{form.getValues('height')} x {form.getValues('width')} px
+											{form.getValues("height")} x {form.getValues("width")} px
 										</FormDescription>
 										<FormMessage />
 									</FormItem>
@@ -155,7 +158,9 @@ export const SettingsForm = () => {
 												onValueChange={field.onChange}
 											/>
 										</FormControl>
-										<FormDescription className="pt-1 text-center">{field.value} %</FormDescription>
+										<FormDescription className="pt-1 text-center">
+											{field.value} %
+										</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -209,9 +214,13 @@ export const SettingsForm = () => {
 														<SelectItem value="square">Square</SelectItem>
 														<SelectItem value="dots">Dots</SelectItem>
 														<SelectItem value="rounded">Rounded</SelectItem>
-														<SelectItem value="extra-rounded">Extra rounded</SelectItem>
+														<SelectItem value="extra-rounded">
+															Extra rounded
+														</SelectItem>
 														<SelectItem value="classy">Classy</SelectItem>
-														<SelectItem value="classy-rounded">Classy rounded</SelectItem>
+														<SelectItem value="classy-rounded">
+															Classy rounded
+														</SelectItem>
 													</SelectContent>
 												</Select>
 											</FormControl>
@@ -259,10 +268,16 @@ export const SettingsForm = () => {
 														<SelectValue placeholder="Select a style" />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem icon="icons/corners-square-square.svg" value="square">
+														<SelectItem
+															icon="icons/corners-square-square.svg"
+															value="square"
+														>
 															Square
 														</SelectItem>
-														<SelectItem icon="icons/corners-square-dot.svg" value="dot">
+														<SelectItem
+															icon="icons/corners-square-dot.svg"
+															value="dot"
+														>
 															Dot
 														</SelectItem>
 														<SelectItem
@@ -318,10 +333,16 @@ export const SettingsForm = () => {
 														<SelectValue placeholder="Select a style" />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem icon="icons/corners-dot-square.svg" value="square">
+														<SelectItem
+															icon="icons/corners-dot-square.svg"
+															value="square"
+														>
 															Square
 														</SelectItem>
-														<SelectItem icon="icons/corners-dot-dot.svg" value="dot">
+														<SelectItem
+															icon="icons/corners-dot-dot.svg"
+															value="dot"
+														>
 															Dot
 														</SelectItem>
 													</SelectContent>
@@ -374,8 +395,8 @@ export const SettingsForm = () => {
 														const file = e.target.files?.[0];
 														if (file) {
 															if (file.size > 1 * 1024 * 1024) {
-																alert('File is too big! Max size is 1MB');
-																e.target.value = '';
+																alert("File is too big! Max size is 1MB");
+																e.target.value = "";
 																return;
 															}
 
@@ -401,7 +422,9 @@ export const SettingsForm = () => {
 								name="imageOptions.hideBackgroundDots"
 								render={({ field }) => (
 									<FormItem className="flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4">
-										<FormLabel className="cursor-pointer">Hide Background Dots</FormLabel>
+										<FormLabel className="cursor-pointer">
+											Hide Background Dots
+										</FormLabel>
 										<FormControl>
 											<Checkbox
 												name="imageOptions.hideBackgroundDots"
@@ -422,9 +445,17 @@ export const SettingsForm = () => {
 									<IconPicker onSelect={handleIconSelect} />
 								</div>
 								{config.image && (
-									<div className="flex justify-end flex-col">
-										<Button onClick={() => updateConfig({ ...config, image: '' })}>
-											<TrashIcon color="white" width={24} height={24} className="mr-2" />
+									<div className="flex flex-col justify-end">
+										<Button
+											variant="destructive"
+											onClick={() => updateConfig({ ...config, image: "" })}
+										>
+											<TrashIcon
+												color="white"
+												width={24}
+												height={24}
+												className="mr-2"
+											/>
 											Clear Icon
 										</Button>
 									</div>

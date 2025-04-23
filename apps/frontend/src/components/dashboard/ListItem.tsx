@@ -23,12 +23,18 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { Loader2 } from "lucide-react";
-import type { TQrCode, TQrCodeWithRelationsResponseDto } from "@shared/schemas";
+import { EyeIcon, Loader2 } from "lucide-react";
+import type {
+	TQrCode,
+	TQrCodeWithRelationsResponseDto,
+	TShortUrl,
+} from "@shared/schemas";
 import { useDeleteQrCodeMutation } from "@/lib/api/qr-code";
 import posthog from "posthog-js";
 import { formatDate } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
+import { useGetViewsFromShortCodeQuery } from "@/lib/api/url-shortener";
 
 const GetNameByContentType = (qr: TQrCodeWithRelationsResponseDto) => {
 	switch (qr.content.type) {
@@ -77,6 +83,26 @@ const GetQrCodeIconByContentType = (qr: TQrCode) => {
 		default:
 			return "❓";
 	}
+};
+
+export const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
+	const { data } = useGetViewsFromShortCodeQuery(shortUrl.shortCode);
+	if (data) {
+		return (
+			<div>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<div className="flex space-x-2">
+							<span>{data.views}</span> <EyeIcon width={20} height={20} />
+						</div>
+					</TooltipTrigger>
+					<TooltipContent side="top">{data.views} total views</TooltipContent>
+				</Tooltip>
+			</div>
+		);
+	}
+
+	return <></>;
 };
 
 export const DashboardListItem = ({
@@ -165,22 +191,15 @@ export const DashboardListItem = ({
 				</>
 			</TableCell>
 			<TableCell className="hidden sm:table-cell">
-				{qr.content.type === "url" && qr.content.data?.isEditable && (
-					<Badge variant="outline">Active</Badge>
+				{qr.shortUrl && (
+					<Badge variant="outline">
+						{qr.shortUrl.isActive ? "Active" : "Disabled"}
+					</Badge>
 				)}
 			</TableCell>
-			{/* <TableCell>
-        <div>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="flex space-x-2">
-                <span>10</span> <EyeIcon width={20} height={20} />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="top">10 total views</TooltipContent>
-          </Tooltip>
-        </div>
-      </TableCell> */}
+			<TableCell>
+				{qr.shortUrl && <ViewComponent shortUrl={qr.shortUrl} />}
+			</TableCell>
 			<TableCell className="hidden md:table-cell">
 				<span>{formatDate(qr.createdAt)}</span>
 			</TableCell>
@@ -199,6 +218,11 @@ export const DashboardListItem = ({
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
+						<DropdownMenuItem>
+							<Link href={`/collection/qr-code/${qr.id}`} prefetch>
+								<div className="flex items-center space-x-2">Edit</div>
+							</Link>
+						</DropdownMenuItem>
 						<DropdownMenuItem>
 							<QrCodeDownloadBtn qrCode={qr} noStyling />
 						</DropdownMenuItem>
