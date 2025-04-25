@@ -1,11 +1,13 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Container from "./ui/container";
 import { Button, buttonVariants } from "./ui/button";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { LanguageNav } from "./LanguageNav";
 
 export default function Header({ hideDashboardLink = false }) {
 	const t = useTranslations("header");
+
 	return (
 		<header className="pt-10">
 			<Container>
@@ -32,6 +34,7 @@ export default function Header({ hideDashboardLink = false }) {
 							)}
 							<UserButton />
 						</SignedIn>
+						<LanguageNav />
 					</div>
 				</div>
 			</Container>

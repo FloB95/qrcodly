@@ -2,15 +2,15 @@
 	"headline": "<span class=\"text-2xl\">Kostenloser & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
 		"title": "QRcodly - Kostenloser & Open Source QR Code Generator",
-		"description": "Erstellen Sie einfach vollständig anpassbare und stilvolle QR Codes mit QRcodly, einem kostenlosen QR Code Generator. Generieren Sie QR Codes für URLs, Text, WLAN, vCards und mehr. Einfach zu bedienen, sicher und perfekt für den privaten oder geschäftlichen Gebrauch. Starten Sie jetzt!",
-		"keywords": "kostenloser QR Code Generator, QR Code Ersteller, QR Codes generieren, benutzerdefinierter QR Code Maker"
+		"description": "QRcodly: Dein kostenloser QR Code Generator. Erstelle sofort QR Codes für Link, vCard, WLAN & mehr. Anpassbar & gratis. Jetzt QR Code generieren!",
+		"keywords": "qr code generator, qr code erstellen, qr code generieren, kostenlos, gratis, qr code erstellen kostenlos, qr code generator kostenlos, vcard qr code, link qr code, qrgenerator"
 	},
 	"doc": {
 		"title": "Dokumentation wird gerade aktualisiert",
-		"description": "Wir arbeiten derzeit daran, diesen Abschnitt zu aktualisieren, um Ihnen besser zu dienen. Bitte schauen Sie bald wieder vorbei!"
+		"description": "Wir arbeiten derzeit daran, diesen Abschnitt zu aktualisieren, um dir besser zu dienen. Bitte schau bald wieder vorbei!"
 	},
 	"analytics": {
-		"totalViews": "Gesamtaufrufe",
+		"totalViews": "Aufrufe",
 		"stateActive": "Aktiv",
 		"stateInactive": "Deaktiviert"
 	},
@@ -27,7 +27,7 @@
 		"iconPicker": {
 			"openTrigger": "Symbolauswahl öffnen",
 			"dialogTitle": "Ein Symbol auswählen",
-			"dialogDescription": "Wählen Sie ein Symbol und eine Farbe für Ihre Auswahl.",
+			"dialogDescription": "Wähle ein Symbol und eine Farbe für deine Auswahl.",
 			"searchPlaceholder": "Nach einem Symbol suchen",
 			"clearBtn": "Löschen",
 			"selectBtn": "Auswählen"
@@ -36,17 +36,17 @@
 			"loading": "Lädt..."
 		},
 		"feedbackCta": {
-			"headline": "Ihr Feedback zählt! 🚀",
+			"headline": "Hilf uns, besser zu werden – dein Feedback ist wichtig! 🚀",
 			"subHeadline1": "Wir arbeiten ständig daran, QRcodly zu verbessern.",
-			"subHeadline2": "Wenn Sie Feedback oder Fragen haben, lassen Sie es uns bitte wissen.",
-			"emailBtn": "E-Mail"
+			"subHeadline2": "Wenn du Feedback oder Fragen hast, lass es uns bitte wissen.",
+			"emailBtn": "E-Mail an uns"
 		}
 	},
 	"qrCode": {
 		"error": {
 			"delete": {
 				"title": "Fehler beim Löschen des QR Codes",
-				"message": "Beim Löschen Ihres QR Codes ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem so schnell wie möglich beheben."
+				"message": "Beim Löschen deines QR Codes ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem so schnell wie möglich beheben."
 			},
 			"noFound": "Keine QR Codes gefunden"
 		},
@@ -57,13 +57,13 @@
 		},
 		"download": {
 			"successTitle": "Neuer QR Code erstellt",
-			"successDescription": "Wir haben Ihren QR Code für die spätere Verwendung in Ihrer Sammlung gespeichert.",
+			"successDescription": "Wir haben deinen QR Code für die spätere Verwendung in deiner Sammlung gespeichert.",
 			"downloadBtn": "Herunterladen"
 		}
 	},
 	"loginDialog": {
 		"title": "Anmeldung erforderlich",
-		"description": "Sie müssen sich anmelden, um diese Funktion nutzen zu können.",
+		"description": "Du musst dich anmelden, um diese Funktion nutzen zu können.",
 		"subDescription": "Keine Sorge – es ist völlig kostenlos!",
 		"cancelBtn": "Abbrechen",
 		"loginBtn": "Anmelden"
@@ -79,29 +79,29 @@
 			"myTemplates": "Meine Vorlagen",
 			"predefinedTemplates": "Vordefinierte"
 		},
-		"noTemplates": "Sie haben noch keine Vorlagen.",
+		"noTemplates": "Du hast noch keine Vorlagen.",
 		"search": {
 			"placeholder": "Nach einer Vorlage suchen",
 			"noResults": "Keine Vorlagen für \"{searchName}\" gefunden"
 		},
 		"noPredefinedTemplates": "Momentan sind keine vordefinierten Vorlagen verfügbar.",
 		"templateCreatedTitle": "Neue Vorlage erstellt",
-		"templateCreatedDescription": "Ihre Vorlage wurde erfolgreich erstellt.",
+		"templateCreatedDescription": "Deine Vorlage wurde erfolgreich erstellt.",
 		"saveAsBtn": "Als Vorlage speichern",
-		"saveInfo": "Speichern Sie den aktuellen QR-Code-Stil als wiederverwendbare Vorlage.",
+		"saveInfo": "Speichere den aktuellen QR-Code-Stil als wiederverwendbare Vorlage.",
 		"savePopup": {
 			"title": "Aktuellen QR-Code-Stil als Vorlage speichern",
 			"placeholder": "Vorlagenname"
 		},
 		"delete": {
 			"beingDeleted": "Vorlage wird gelöscht",
-			"deletingInfo": "Wir löschen Ihre Vorlage.",
+			"deletingInfo": "Wir löschen deine Vorlage.",
 			"errorTitle": "Vorlage konnte nicht gelöscht werden",
 			"errorDescription": "Beim Löschen der Vorlage ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem bald beheben."
 		},
 		"confirmPopup": {
 			"title": "Löschen bestätigen",
-			"description": "Sind Sie sicher, dass Sie die Vorlage löschen möchten?",
+			"description": "Bist du sicher, dass du die Vorlage löschen möchtest?",
 			"description2": "Diese Aktion kann nicht rückgängig gemacht werden.",
 			"confirmBtn": "Löschen",
 			"cancelBtn": "Abbrechen"
@@ -122,7 +122,7 @@
 			"backgroundLabel": "Hintergrund",
 			"dotStyle": {
 				"label": "Punktstil",
-				"placeholder": "Wählen Sie einen Punktstil",
+				"placeholder": "Wähle einen Punktstil",
 				"optionLabelSquare": "Quadratisch",
 				"optionLabelDots": "Punkte",
 				"optionLabelRounded": "Abgerundet",
@@ -132,7 +132,7 @@
 			},
 			"dotColor": "Punktfarbe",
 			"cornersSquareOptions": {
-				"placeholder": "Wählen Sie einen Stil",
+				"placeholder": "Wähle einen Stil",
 				"label": "Stil der Eckquadrate",
 				"optionLabelSquare": "Quadratisch",
 				"optionLabelDot": "Punkt",
@@ -141,7 +141,7 @@
 			"cornersSquareColor": "Farbe der Eckquadrate",
 			"cornersDotOptions": {
 				"label": "Stil der Eckpunkte",
-				"placeholder": "Wählen Sie einen Stil",
+				"placeholder": "Wähle einen Stil",
 				"optionLabelSquare": "Quadratisch",
 				"optionLabelDot": "Punkt"
 			},
@@ -149,7 +149,7 @@
 			"iconLabel": "Symbol",
 			"errorToLargeFile": "Die Datei ist zu groß. Maximale Größe ist 1MB.",
 			"hideBackgroundDots": "Hintergrundpunkte ausblenden",
-			"predefinedIconInfo": "Sie können auch aus vordefinierten Symbolen wählen.",
+			"predefinedIconInfo": "Du kannst auch aus vordefinierten Symbolen wählen.",
 			"clearBtn": "Symbol löschen"
 		},
 		"contentSwitch": {
@@ -158,21 +158,21 @@
 			"tabWifi": "WLAN",
 			"tabVCard": "VCARD",
 			"text": {
-				"placeholder": "Geben Sie hier Ihren Text ein"
+				"placeholder": "Gib hier deinen Text ein"
 			},
 			"url": {
-				"placeholder": "URL eingeben https://beispiel.com/",
+				"placeholder": "Gib deine URL ein https://beispiel.com/",
 				"enableEditing": "Statistiken und Bearbeitung aktivieren",
 				"newBadge": "Neu!"
 			},
 			"wifi": {
 				"network": {
 					"label": "Netzwerk",
-					"placeholder": "Geben Sie Ihren Netzwerknamen ein"
+					"placeholder": "Gib deinen Netzwerknamen ein"
 				},
 				"password": {
 					"label": "Passwort",
-					"placeholder": "Geben Sie Ihr Passwort ein"
+					"placeholder": "Gib dein Passwort ein"
 				},
 				"encryption": {
 					"label": "Verschlüsselung",
@@ -184,55 +184,55 @@
 			"vCard": {
 				"firstName": {
 					"label": "Vorname",
-					"placeholder": "Geben Sie Ihren Vornamen ein"
+					"placeholder": "Gib deinen Vornamen ein"
 				},
 				"lastName": {
 					"label": "Nachname",
-					"placeholder": "Geben Sie Ihren Nachnamen ein"
+					"placeholder": "Gib deinen Nachnamen ein"
 				},
 				"email": {
 					"label": "E-Mail-Adresse",
-					"placeholder": "Geben Sie Ihre E-Mail ein"
+					"placeholder": "Gib deine E-Mail ein"
 				},
 				"phone": {
 					"label": "Telefon",
-					"placeholder": "Geben Sie Ihre Telefonnummer ein"
+					"placeholder": "Gib deine Telefonnummer ein"
 				},
 				"fax": {
 					"label": "Fax",
-					"placeholder": "Geben Sie Ihre Faxnummer ein"
+					"placeholder": "Gib deine Faxnummer ein"
 				},
 				"company": {
 					"label": "Firma",
-					"placeholder": "Geben Sie Ihren Firmennamen ein"
+					"placeholder": "Gib deinen Firmennamen ein"
 				},
 				"jobTitle": {
 					"label": "Berufsbezeichnung",
-					"placeholder": "Geben Sie Ihre Berufsbezeichnung ein"
+					"placeholder": "Gib deine Berufsbezeichnung ein"
 				},
 				"street": {
 					"label": "Straße",
-					"placeholder": "Geben Sie Ihre Straße und Hausnummer ein"
+					"placeholder": "Gib deine Straße und Hausnummer ein"
 				},
 				"city": {
 					"label": "Stadt",
-					"placeholder": "Geben Sie Ihre Stadt ein"
+					"placeholder": "Gib deine Stadt ein"
 				},
 				"zipCode": {
 					"label": "Postleitzahl",
-					"placeholder": "Geben Sie Ihre Postleitzahl ein"
+					"placeholder": "Gib deine Postleitzahl ein"
 				},
 				"state": {
 					"label": "Bundesland",
-					"placeholder": "Geben Sie Ihr Bundesland ein"
+					"placeholder": "Gib dein Bundesland ein"
 				},
 				"country": {
 					"label": "Land",
-					"placeholder": "Geben Sie Ihr Land ein"
+					"placeholder": "Gib dein Land ein"
 				},
 				"website": {
 					"label": "Webseite",
-					"placeholder": "Geben Sie Ihre Webseiten-URL ein"
+					"placeholder": "Gib deine Webseiten-URL ein"
 				}
 			}
 		}

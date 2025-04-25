@@ -5,6 +5,7 @@ import Container from "@/components/ui/container";
 import { Cta } from "@/components/Cta";
 import type { DefaultPageParams } from "@/types/page";
 import { getTranslations } from "next-intl/server";
+import { Features } from "@/components/Features";
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
@@ -16,12 +17,15 @@ export default async function Page({ params }: DefaultPageParams) {
 			<div>
 				<Container>
 					<h1 className="mt-8 mb-10 text-center text-4xl font-bold">
-						<div dangerouslySetInnerHTML={{ __html: t.raw("headline") }} />
+						<div
+							dangerouslySetInnerHTML={{ __html: String(t.raw("headline")) }}
+						/>
 					</h1>
 					<div className="mb-2">
 						<QRcodeGenerator />
 					</div>
 
+					<Features />
 					<Cta />
 				</Container>
 			</div>

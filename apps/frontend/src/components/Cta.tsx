@@ -7,9 +7,9 @@ import { useTranslations } from "next-intl";
 export const Cta = () => {
 	const t = useTranslations("contentElements.feedbackCta");
 	return (
-		<div className="mx-auto my-28 text-center">
+		<div className="mx-auto mt-40 mb-28 text-center">
 			<h2 className="mb-4 text-4xl font-bold">{t("headline")}</h2>
-			<p className="text-2xl font-bold">
+			<p className="text-accent-foreground text-xl sm:text-2xl">
 				{t("subHeadline1")}
 				<br />
 				{t("subHeadline2")}

@@ -1,8 +1,8 @@
-import React from "react";
 import { apiRequest } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import type { TQrCode } from "@shared/schemas";
+import type { TQrCodeWithRelationsResponseDto } from "@shared/schemas";
+import { AnalyticsSection } from "@/components/dashboard/analytics/AnalyticsSection";
 
 interface QRCodeDetailProps {
 	params: Promise<{
@@ -14,18 +14,21 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 	const { id } = await params;
 
 	// Fetch QR code details
-	let qrCode: TQrCode | null = null;
+	let qrCode: TQrCodeWithRelationsResponseDto | null = null;
 	try {
 		const { getToken } = await auth();
 		const token = await getToken();
 
-		qrCode = await apiRequest<TQrCode>(`/qr-code/${id}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
+		qrCode = await apiRequest<TQrCodeWithRelationsResponseDto>(
+			`/qr-code/${id}`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
 			},
-		});
+		);
 	} catch (error) {
 		console.error("Failed to fetch QR code details:", error);
 	}
@@ -34,6 +37,8 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 	if (!qrCode) {
 		notFound();
 	}
+
+	console.log("qrCode", qrCode);
 
 	return (
 		<div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-md">
@@ -61,6 +66,9 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 				<strong>Updated At:</strong>{" "}
 				{qrCode.updatedAt ? new Date(qrCode.updatedAt).toLocaleString() : ""}
 			</div>
+			{qrCode.shortUrl && (
+				<AnalyticsSection shortCode={qrCode.shortUrl.shortCode} />
+			)}
 		</div>
 	);
 }

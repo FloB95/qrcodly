@@ -44,11 +44,11 @@ const GetNameByContentType = (qr: TQrCodeWithRelationsResponseDto) => {
 			return (
 				<>
 					{isEditable && qr?.shortUrl ? (
-						<div>
+						<div className="text-muted-foreground">
 							{url}
 							<div className="mt-1 ml-2 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
 								<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold" />
-								<span className="text-muted-foreground pt-1 text-sm">
+								<span className="pt-1 text-sm text-black">
 									{qr.shortUrl.destinationUrl}
 								</span>
 							</div>
@@ -89,7 +89,7 @@ const GetQrCodeIconByContentType = (qr: TQrCode) => {
 export const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	const t = useTranslations();
 	const { data } = useGetViewsFromShortCodeQuery(shortUrl.shortCode);
-	if (data) {
+	if (data?.views) {
 		return (
 			<div>
 				<Tooltip>
@@ -183,7 +183,7 @@ export const DashboardListItem = ({
 			<TableCell className="font-medium">
 				<>
 					<Tooltip>
-						<TooltipTrigger asChild>
+						<TooltipTrigger asChild disabled>
 							<div className="inline-block max-w-[400px] truncate overflow-hidden text-ellipsis whitespace-nowrap">
 								{GetNameByContentType(qr)}
 							</div>
