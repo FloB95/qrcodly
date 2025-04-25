@@ -10,14 +10,14 @@ import { type IHttpResponse } from '@/core/interface/response.interface';
 import {
 	CreateQrCodeDto,
 	GetQrCodeQueryParamsSchema,
-	QrCodeResponseDto,
 	QrCodeWithRelationsPaginatedResponseDto,
+	QrCodeWithRelationsResponseDto,
 	TCreateQrCodeDto,
 	TCreateQrCodeResponseDto,
 	TGetQrCodeQueryParamsDto,
 	TIdRequestQueryDto,
-	TQrCodeResponseDto,
 	TQrCodeWithRelationsPaginatedResponseDto,
+	TQrCodeWithRelationsResponseDto,
 } from '@shared/schemas';
 import { ListQrCodesUseCase } from '../../useCase/list-qr-code.use-case';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
@@ -93,10 +93,11 @@ export class QrCodeController extends AbstractController {
 	@Get('/:id')
 	async getOneById(
 		request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>,
-	): Promise<IHttpResponse<TQrCodeResponseDto>> {
+	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
 		const { id } = request.params;
 
 		const qrCode = await this.qrCodeRepository.findOneById(id);
+		console.log('qrCode', qrCode);
 		if (!qrCode) {
 			throw new QrCodeNotFoundError();
 		}
@@ -105,7 +106,7 @@ export class QrCodeController extends AbstractController {
 			throw new UnauthorizedError();
 		}
 
-		return this.makeApiHttpResponse(200, QrCodeResponseDto.parse(qrCode));
+		return this.makeApiHttpResponse(200, QrCodeWithRelationsResponseDto.parse(qrCode));
 	}
 
 	@Delete('/:id')

@@ -2,7 +2,7 @@ import { inject, singleton } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { env } from '@/core/config/env';
 import QueryString from 'qs';
-import { TAnalyticsMetric, TAnalyticsResponseDto } from '@shared/schemas';
+import { TAnalyticsMetric, TAnalyticsResponseDto, TTimeSeries } from '@shared/schemas';
 
 @singleton()
 export class UmamiAnalyticsService {
@@ -97,6 +97,36 @@ export class UmamiAnalyticsService {
 		}));
 	}
 
+	private mapSessionsAndPageviews({
+		pageviews,
+		sessions,
+	}: {
+		pageviews: { x: string; y: number }[];
+		sessions: { x: string; y: number }[];
+	}): {
+		pageviews: TTimeSeries[];
+		sessions: TTimeSeries[];
+	} {
+		const mappedPageviews = pageviews
+			.filter((metric) => metric.x !== null && metric.x !== undefined)
+			.map((metric) => ({
+				date: metric.x,
+				value: metric.y,
+			}));
+
+		const mappedSessions = sessions
+			.filter((metric) => metric.x !== null && metric.x !== undefined)
+			.map((metric) => ({
+				date: metric.x,
+				value: metric.y,
+			}));
+
+		return {
+			pageviews: mappedPageviews,
+			sessions: mappedSessions,
+		};
+	}
+
 	public async getViewsForEndpoint(url: string): Promise<number> {
 		const now = Date.now();
 		const defaultParams = {
@@ -132,6 +162,14 @@ export class UmamiAnalyticsService {
 			`websites/${this.umamiWebsiteId}/stats`,
 			defaultParams,
 		);
+
+		const viewsAndSessions = this.mapSessionsAndPageviews(
+			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/pageviews`, {
+				...defaultParams,
+				type: 'browser',
+			}),
+		);
+
 		const browserMetrics = this.mapMetrics(
 			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
 				...defaultParams,
@@ -159,6 +197,7 @@ export class UmamiAnalyticsService {
 
 		return {
 			shortUrlStats: websiteStats,
+			viewsAndSessions,
 			browserMetrics,
 			osMetrics,
 			deviceMetrics,
