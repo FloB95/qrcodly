@@ -6,6 +6,7 @@ import { ShortUrlSchema } from '../../schemas/ShortUrl';
  */
 export const CreateShortUrlDto = ShortUrlSchema.pick({
 	destinationUrl: true,
+	isActive: true,
 });
 
 /**

@@ -155,9 +155,9 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
 		},
 		imageOptions: {
 			hideBackgroundDots: options.imageOptions.hideBackgroundDots,
-			imageSize: 0.4,
-			margin: 40,
+			margin: 30,
 			crossOrigin: 'anonymous',
+			saveAsBlob: true,
 		},
 		dotsOptions: {
 			...(typeof options.dotsOptions.style === 'object'
