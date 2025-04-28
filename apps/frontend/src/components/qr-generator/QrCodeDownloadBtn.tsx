@@ -70,6 +70,18 @@ const QrCodeDownloadBtn = ({
 							});
 						}
 					},
+					onError: (e) => {
+						toast({
+							variant: "destructive",
+							title: t("errorTitle"),
+							description: e.message,
+							duration: 10000,
+						});
+
+						posthog.capture("error:qr-code-created", {
+							qrCode: qrCode,
+						});
+					},
 				});
 
 				posthog.capture("QRCodeCreated", {

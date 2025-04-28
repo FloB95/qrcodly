@@ -87,6 +87,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 				id: shortUrl.id,
 				destinationUrl: shortUrl.destinationUrl,
 				shortCode: shortUrl.shortCode,
+				isActive: shortUrl.isActive,
 				createdAt: new Date(),
 				createdBy: shortUrl.createdBy,
 			})

@@ -52,7 +52,7 @@ export default async function RootLayout({
 	}
 
 	return (
-		<ClerkProvider dynamic>
+		<ClerkProvider>
 			<html lang={locale} className="light">
 				<head>
 					<link

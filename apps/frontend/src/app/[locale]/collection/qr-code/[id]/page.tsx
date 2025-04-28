@@ -38,8 +38,6 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 		notFound();
 	}
 
-	console.log("qrCode", qrCode);
-
 	return (
 		<div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-md">
 			<h1 className="mb-4 text-2xl font-bold">QR Code Details</h1>

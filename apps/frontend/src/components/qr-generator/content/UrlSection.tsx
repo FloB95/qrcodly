@@ -146,6 +146,9 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 													setAlertOpen(true);
 													return;
 												}
+
+												if (!shortUrl) return;
+
 												field.onChange(e);
 												void form.handleSubmit(onSubmit)();
 											}}

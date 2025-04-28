@@ -40,6 +40,18 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 							templateName: templateName,
 						});
 					},
+					onError: (e) => {
+						toast({
+							variant: "destructive",
+							title: t("templateCreatedErrorTitle"),
+							description: e.message,
+							duration: 10000,
+						});
+
+						posthog.capture("error:config-template-created", {
+							templateName: templateName,
+						});
+					},
 				},
 			);
 		} catch (error) {

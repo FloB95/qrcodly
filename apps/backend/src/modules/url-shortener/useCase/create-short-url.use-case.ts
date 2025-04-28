@@ -31,7 +31,6 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 			id: newId,
 			shortCode,
 			qrCodeId: null,
-			isActive: true,
 			...dto,
 			createdBy,
 		};

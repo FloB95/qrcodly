@@ -6,9 +6,6 @@ import { PageAndSessionViewChart } from "./PageAndSessionViewChart";
 
 export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 	const { isLoading, data } = useGetAnalyticsFromShortCode(shortCode);
-	console.log("isLoading", isLoading);
-	console.log("data", data);
-
 	if (isLoading || !data) {
 		return;
 	}

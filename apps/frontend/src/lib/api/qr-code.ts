@@ -61,7 +61,7 @@ export function useCreateQrCodeMutation() {
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
 			void queryClient.invalidateQueries({
-				queryKey: [...queryKeys.listQrCodes],
+				queryKey: queryKeys.listQrCodes,
 			});
 		},
 		onError: (error) => {
@@ -88,7 +88,7 @@ export function useDeleteQrCodeMutation() {
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
 			void queryClient.invalidateQueries({
-				queryKey: [...queryKeys.listQrCodes],
+				queryKey: queryKeys.listQrCodes,
 			});
 		},
 		onError: (error) => {

@@ -62,8 +62,6 @@ export class UmamiAnalyticsService {
 		const queryString = QueryString.stringify(queryObject);
 		const url = `${this.umamiHost}/api/${endpoint}?${queryString}`;
 
-		console.log('url', url);
-
 		try {
 			const response = await fetch(url, {
 				method: 'GET',

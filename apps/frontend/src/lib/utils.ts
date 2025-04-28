@@ -145,27 +145,23 @@ export async function apiRequest<T>(
 	options: RequestInit,
 	queryParams?: Record<string, unknown>,
 ): Promise<T> {
-	try {
-		// Construct query string if queryParams are provided
-		const queryString = queryParams ? `?${qs.stringify(queryParams)}` : '';
-		const response = await fetch(
-			`${env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`,
-			options,
+	// Construct query string if queryParams are provided
+	const queryString = queryParams ? `?${qs.stringify(queryParams)}` : '';
+	const response = await fetch(
+		`${env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`,
+		options,
+	);
+
+	if (!response.ok) {
+		const errorBody = (await response.json().catch(() => ({}))) as Record<
+			string,
+			unknown
+		>;
+		throw new Error(
+			(errorBody?.message as string | undefined) ??
+				'An error occurred while fetching data',
 		);
-
-		if (!response.ok) {
-			const errorBody = (await response.json().catch(() => ({}))) as Record<
-				string,
-				unknown
-			>;
-			throw new Error(
-				`API request failed with status ${response.status}: ${JSON.stringify(errorBody)}`,
-			);
-		}
-
-		return (await response.json()) as T;
-	} catch (error) {
-		console.error('API request error:', error);
-		throw new Error('Failed to communicate with the server');
 	}
+
+	return (await response.json()) as T;
 }

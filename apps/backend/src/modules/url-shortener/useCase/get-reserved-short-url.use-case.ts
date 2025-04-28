@@ -37,6 +37,7 @@ export class GetReservedShortCodeUseCase {
 		const shortUrl = await this.createShortUrlUseCase.execute(
 			{
 				destinationUrl: null,
+				isActive: false,
 			},
 			userId,
 		);

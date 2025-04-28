@@ -97,7 +97,6 @@ export class QrCodeController extends AbstractController {
 		const { id } = request.params;
 
 		const qrCode = await this.qrCodeRepository.findOneById(id);
-		console.log('qrCode', qrCode);
 		if (!qrCode) {
 			throw new QrCodeNotFoundError();
 		}

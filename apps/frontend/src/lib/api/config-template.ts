@@ -95,7 +95,7 @@ export function useCreateConfigTemplateMutation() {
 		onSuccess: () => {
 			// Invalidate the 'listConfigTemplates' query to refetch the updated data
 			void queryClient.invalidateQueries({
-				queryKey: [...queryKeys.listConfigTemplates],
+				queryKey: queryKeys.listConfigTemplates,
 			});
 		},
 		onError: (error) => {
@@ -123,7 +123,7 @@ export function useDeleteConfigTemplateMutation() {
 		onSuccess: () => {
 			// Invalidate the 'listConfigTemplates' query to refetch the updated data
 			void queryClient.invalidateQueries({
-				queryKey: [...queryKeys.listConfigTemplates],
+				queryKey: queryKeys.listConfigTemplates,
 			});
 		},
 		onError: (error) => {

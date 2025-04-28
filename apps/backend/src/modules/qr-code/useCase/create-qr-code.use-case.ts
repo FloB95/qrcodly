@@ -14,6 +14,7 @@ import db from '@/core/db'; // Import the DB instance for transactions
 import { TShortUrl } from '@/modules/url-shortener/domain/entities/short-url.entity';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/qr-code-not-found.error'; // Assuming this is the correct error import
+import { CustomApiError } from '@/core/error/http';
 
 /**
  * Use case for creating a QrCode entity.
@@ -94,6 +95,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 						{
 							destinationUrl: originalUrlToLink,
 							qrCodeId: newId,
+							isActive: true,
 						},
 						createdBy!,
 					);
@@ -110,7 +112,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 		} catch (error) {
 			this.logger.error('Failed to create QR code within transaction', { error });
 
-			if (error instanceof ShortUrlNotFoundError) {
+			if (error instanceof ShortUrlNotFoundError || CustomApiError) {
 				throw error; // Let specific business error propagate
 			}
 

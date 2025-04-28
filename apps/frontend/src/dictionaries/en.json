@@ -58,7 +58,8 @@
 		"download": {
 			"successTitle": "New QR Code Created",
 			"successDescription": "We saved your QR Code in your collection for later use.",
-			"downloadBtn": "Download"
+			"downloadBtn": "Download",
+			"errorTitle": "Error saving QR Code"
 		}
 	},
 	"loginDialog": {
@@ -87,6 +88,8 @@
 		"noPredefinedTemplates": "No predefined templates are available at the moment.",
 		"templateCreatedTitle": "New Template Created",
 		"templateCreatedDescription": "Your template has been created successfully.",
+		"templateCreatedErrorTitle": "Error Creating Template",
+		"templateCreatedErrorDescription": "There was an error creating your template. We've been notified and will fix it as soon as possible.",
 		"saveAsBtn": "Save As Template",
 		"saveInfo": "Save the current QR code style as a reusable template.",
 		"savePopup": {
