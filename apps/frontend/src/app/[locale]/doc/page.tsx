@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import Container from "@/components/ui/container";
-import { getTranslations } from "next-intl/server";
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
+import Container from '@/components/ui/container';
+import { getTranslations } from 'next-intl/server';
 
 export default async function Documentation() {
 	const t = await getTranslations();
@@ -13,8 +13,8 @@ export default async function Documentation() {
 				<Header />
 				<Container>
 					<div className="py-32 text-center md:py-60">
-						<h1 className="text-4xl font-bold">{t("doc.title")}</h1>
-						<p className="mt-4 text-lg text-gray-600">{t("doc.description")}</p>
+						<h1 className="text-4xl font-bold">{t('doc.title')}</h1>
+						<p className="mt-4 text-lg text-gray-600">{t('doc.description')}</p>
 					</div>
 				</Container>
 				<Footer />

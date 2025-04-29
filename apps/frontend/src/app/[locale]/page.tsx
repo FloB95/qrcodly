@@ -1,11 +1,11 @@
-import Footer from "@/components/Footer";
-import { QRcodeGenerator } from "@/components/qr-generator/QRcodeGenerator";
-import Header from "@/components/Header";
-import Container from "@/components/ui/container";
-import { Cta } from "@/components/Cta";
-import type { DefaultPageParams } from "@/types/page";
-import { getTranslations } from "next-intl/server";
-import { Features } from "@/components/Features";
+import Footer from '@/components/Footer';
+import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
+import Header from '@/components/Header';
+import Container from '@/components/ui/container';
+import { Cta } from '@/components/Cta';
+import type { DefaultPageParams } from '@/types/page';
+import { getTranslations } from 'next-intl/server';
+import { Features } from '@/components/Features';
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
@@ -17,9 +17,7 @@ export default async function Page({ params }: DefaultPageParams) {
 			<div>
 				<Container>
 					<h1 className="mt-12 mb-16 text-center text-4xl font-bold">
-						<div
-							dangerouslySetInnerHTML={{ __html: String(t.raw("headline")) }}
-						/>
+						<div dangerouslySetInnerHTML={{ __html: String(t.raw('headline')) }} />
 					</h1>
 					<div className="mb-2">
 						<QRcodeGenerator />

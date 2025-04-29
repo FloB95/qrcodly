@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import {
 	Form,
 	FormControl,
@@ -8,13 +8,13 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
-import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { useEffect } from "react";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { VCardInputSchema, type TVCardInput } from "@shared/schemas/src";
-import { useTranslations } from "next-intl";
+} from '@/components/ui/form';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import { useEffect } from 'react';
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { VCardInputSchema, type TVCardInput } from '@shared/schemas/src';
+import { useTranslations } from 'next-intl';
 
 type FormValues = TVCardInput;
 
@@ -24,13 +24,13 @@ type VCardSectionProps = {
 };
 
 export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
-	const t = useTranslations("generator.contentSwitch.vCard");
+	const t = useTranslations('generator.contentSwitch.vCard');
 	const form = useForm<FormValues>({
 		resolver: zodResolver(VCardInputSchema),
 		defaultValues: value,
 		shouldFocusError: false,
 		shouldUnregister: true,
-		reValidateMode: "onBlur",
+		reValidateMode: 'onBlur',
 	});
 
 	const [debounced] = useDebouncedValue(form.getValues(), 500);
@@ -42,14 +42,11 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	// handle submit automatically after debounced value
 	useEffect(() => {
 		const processedDebounced = Object.fromEntries(
-			Object.entries(debounced).map(([key, val]) => [
-				key,
-				val === "" ? undefined : val,
-			]),
+			Object.entries(debounced).map(([key, val]) => [key, val === '' ? undefined : val]),
 		);
 
 		if (
-			JSON.stringify(processedDebounced) === "{}" ||
+			JSON.stringify(processedDebounced) === '{}' ||
 			JSON.stringify(processedDebounced) === JSON.stringify(value)
 		)
 			return;
@@ -66,9 +63,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="firstName"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t("firstName.label")}</FormLabel>
+								<FormLabel>{t('firstName.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t("firstName.placeholder")} />
+									<Input {...field} placeholder={t('firstName.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -79,9 +76,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="lastName"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t("lastName.label")}</FormLabel>
+								<FormLabel>{t('lastName.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t("lastName.placeholder")} />
+									<Input {...field} placeholder={t('lastName.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -94,9 +91,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					name="email"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t("email.label")}</FormLabel>
+							<FormLabel>{t('email.label')}</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder={t("email.placeholder")} />
+								<Input {...field} placeholder={t('email.placeholder')} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -108,9 +105,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="phone"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t("phone.label")}</FormLabel>
+								<FormLabel>{t('phone.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t("phone.placeholder")} />
+									<Input {...field} placeholder={t('phone.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -121,9 +118,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="fax"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t("fax.label")}</FormLabel>
+								<FormLabel>{t('fax.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t("fax.placeholder")} />
+									<Input {...field} placeholder={t('fax.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -136,9 +133,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="company"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t("company.label")}</FormLabel>
+								<FormLabel>{t('company.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t("company.placeholder")} />
+									<Input {...field} placeholder={t('company.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -149,9 +146,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="job"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t("jobTitle.label")}</FormLabel>
+								<FormLabel>{t('jobTitle.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t("jobTitle.placeholder")} />
+									<Input {...field} placeholder={t('jobTitle.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -163,9 +160,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					name="street"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t("street.label")}</FormLabel>
+							<FormLabel>{t('street.label')}</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder={t("street.placeholder")} />
+								<Input {...field} placeholder={t('street.placeholder')} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -177,9 +174,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="city"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t("city.label")}</FormLabel>
+								<FormLabel>{t('city.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t("city.placeholder")} />
+									<Input {...field} placeholder={t('city.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -190,9 +187,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="zip"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t("zipCode.label")}</FormLabel>
+								<FormLabel>{t('zipCode.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t("zipCode.placeholder")} />
+									<Input {...field} placeholder={t('zipCode.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -204,9 +201,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					name="state"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t("state.label")}</FormLabel>
+							<FormLabel>{t('state.label')}</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder={t("state.placeholder")} />
+								<Input {...field} placeholder={t('state.placeholder')} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -217,9 +214,9 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					name="country"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t("country.label")}</FormLabel>
+							<FormLabel>{t('country.label')}</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder={t("country.placeholder")} />
+								<Input {...field} placeholder={t('country.placeholder')} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -230,16 +227,16 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					name="website"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t("website.label")}</FormLabel>
+							<FormLabel>{t('website.label')}</FormLabel>
 							<FormControl>
 								<Input
 									{...field}
-									placeholder={t("website.placeholder")}
+									placeholder={t('website.placeholder')}
 									onBlur={(e) => {
-										if (e.target.value === "") return;
+										if (e.target.value === '') return;
 										if (
-											!e.target.value.startsWith("http://") &&
-											!e.target.value.startsWith("https://")
+											!e.target.value.startsWith('http://') &&
+											!e.target.value.startsWith('https://')
 										) {
 											field.onChange(`https://${e.target.value}`);
 										}

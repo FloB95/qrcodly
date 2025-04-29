@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import {
 	Dialog,
 	DialogContent,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { useTranslations } from "next-intl";
-import { DialogClose } from "@radix-ui/react-dialog";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { useTranslations } from 'next-intl';
+import { DialogClose } from '@radix-ui/react-dialog';
 
 type TNameDialogProps = {
 	dialogHeadline: string;
@@ -25,11 +25,11 @@ export function NameDialog({
 	setIsOpen,
 	onSubmit,
 }: TNameDialogProps) {
-	const t = useTranslations("nameDialog");
-	const [name, setName] = useState("");
+	const t = useTranslations('nameDialog');
+	const [name, setName] = useState('');
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === "Enter") {
+		if (e.key === 'Enter') {
 			onSubmit(name);
 		}
 	};
@@ -42,7 +42,7 @@ export function NameDialog({
 				</DialogHeader>
 				<div className="my-2">
 					<Input
-						placeholder={placeholder ?? t("placeholder")}
+						placeholder={placeholder ?? t('placeholder')}
 						id="name"
 						className="mb-1"
 						value={name}
@@ -51,17 +51,17 @@ export function NameDialog({
 						maxLength={40}
 					/>
 					<div className="px-2 py-1 text-sm text-gray-500">
-						{name.length}/40 {t("characters")}
+						{name.length}/40 {t('characters')}
 					</div>
 				</div>
 				<DialogFooter>
 					<DialogClose asChild>
 						<Button type="button" variant="secondary">
-							{t("cancelBtn")}
+							{t('cancelBtn')}
 						</Button>
 					</DialogClose>
 					<Button type="submit" onClick={() => onSubmit(name)}>
-						{t("saveBtn")}
+						{t('saveBtn')}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

@@ -1,12 +1,12 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import Container from "./ui/container";
-import { Button, buttonVariants } from "./ui/button";
-import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
-import { LanguageNav } from "./LanguageNav";
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import Container from './ui/container';
+import { Button, buttonVariants } from './ui/button';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import { LanguageNav } from './LanguageNav';
 
 export default function Header({ hideDashboardLink = false }) {
-	const t = useTranslations("header");
+	const t = useTranslations('header');
 
 	return (
 		<header className="pt-10">
@@ -23,13 +23,13 @@ export default function Header({ hideDashboardLink = false }) {
 						</Link>
 						<SignedOut>
 							<SignInButton>
-								<Button>{t("signInBtn")}</Button>
+								<Button>{t('signInBtn')}</Button>
 							</SignInButton>
 						</SignedOut>
 						<SignedIn>
 							{!hideDashboardLink && (
 								<Link href="/collection" className={buttonVariants()}>
-									{t("collectionBtn")}
+									{t('collectionBtn')}
 								</Link>
 							)}
 							<UserButton />

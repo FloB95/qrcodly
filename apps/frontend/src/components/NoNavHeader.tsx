@@ -1,5 +1,5 @@
-import Container from "./ui/container";
-import Link from "next/link";
+import Container from './ui/container';
+import Link from 'next/link';
 
 export default function NoNavHeader() {
 	return (

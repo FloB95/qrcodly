@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Container from "./ui/container";
-import { useTranslations } from "next-intl";
+import Link from 'next/link';
+import Container from './ui/container';
+import { useTranslations } from 'next-intl';
 
 interface NavigationItem {
 	name: string;
@@ -10,8 +10,8 @@ interface NavigationItem {
 
 const navigation: NavigationItem[] = [
 	{
-		name: "GitHub",
-		href: "https://github.com/FloB95/qrcodly",
+		name: 'GitHub',
+		href: 'https://github.com/FloB95/qrcodly',
 		icon: (props) => (
 			<svg fill="currentColor" viewBox="0 0 24 24" {...props}>
 				<path
@@ -25,7 +25,7 @@ const navigation: NavigationItem[] = [
 ];
 
 export default function Footer() {
-	const t = useTranslations("footer");
+	const t = useTranslations('footer');
 	const currentYear = new Date().getFullYear();
 	return (
 		<footer className="mt-4">
@@ -46,26 +46,26 @@ export default function Footer() {
 					</div>
 					<div className="mt-8 md:order-1 md:mt-0">
 						<p className="text-center text-xs leading-5 text-gray-500">
-							&copy; FB Dev {currentYear} - {t("qrCodeCopyright")}
+							&copy; FB Dev {currentYear} - {t('qrCodeCopyright')}
 						</p>
 					</div>
 				</div>
 				<div className="justify-center space-x-4 pt-6 pb-12 text-center text-xs md:flex md:items-center lg:px-8">
 					<Link
 						href="https://www.fb-dev.de/impressum/"
-						title={t("legalNotice")}
+						title={t('legalNotice')}
 						target="_blank"
 						className="text-gray-600 hover:text-gray-800"
 					>
-						{t("legalNotice")}
+						{t('legalNotice')}
 					</Link>
 					<Link
 						href="https://www.fb-dev.de/datenschutz/"
-						title={t("privacyPolicy")}
+						title={t('privacyPolicy')}
 						target="_blank"
 						className="text-gray-600 hover:text-gray-800"
 					>
-						{t("privacyPolicy")}
+						{t('privacyPolicy')}
 					</Link>
 				</div>
 			</Container>

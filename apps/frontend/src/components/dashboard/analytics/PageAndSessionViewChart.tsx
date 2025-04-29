@@ -1,30 +1,24 @@
-"use client";
+'use client';
 
-import { Bar, BarChart, XAxis } from "recharts";
+import { Bar, BarChart, XAxis } from 'recharts';
 
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
 	type ChartConfig,
 	ChartContainer,
 	ChartTooltip,
 	ChartTooltipContent,
-} from "@/components/ui/chart";
-import type { TPageviewsAndSessions } from "@shared/schemas";
+} from '@/components/ui/chart';
+import type { TPageviewsAndSessions } from '@shared/schemas';
 
 const chartConfig = {
 	pageviews: {
-		label: "Page Views",
-		color: "var(--chart-1)",
+		label: 'Page Views',
+		color: 'var(--chart-1)',
 	},
 	sessions: {
-		label: "Sessions",
-		color: "var(--chart-2)",
+		label: 'Sessions',
+		color: 'var(--chart-2)',
 	},
 } satisfies ChartConfig;
 
@@ -56,8 +50,8 @@ export function PageAndSessionViewChart({ chartData }: StatisticChartProps) {
 							tickMargin={10}
 							axisLine={false}
 							tickFormatter={(value) =>
-								new Date(value).toLocaleDateString("en-US", {
-									weekday: "short",
+								new Date(value).toLocaleDateString('en-US', {
+									weekday: 'short',
 								})
 							}
 						/>
@@ -73,11 +67,7 @@ export function PageAndSessionViewChart({ chartData }: StatisticChartProps) {
 							fill="var(--color-pageviews)"
 							radius={[4, 4, 0, 0]}
 						/>
-						<ChartTooltip
-							content={<ChartTooltipContent />}
-							cursor={false}
-							defaultIndex={1}
-						/>
+						<ChartTooltip content={<ChartTooltipContent />} cursor={false} defaultIndex={1} />
 					</BarChart>
 				</ChartContainer>
 			</CardContent>

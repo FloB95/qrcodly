@@ -1,13 +1,13 @@
-import { withSentryConfig } from "@sentry/nextjs";
-import { withAxiom } from "next-axiom";
-import { env } from "./src/env.js";
-import createNextIntlPlugin from "next-intl/plugin";
+import { withSentryConfig } from '@sentry/nextjs';
+import { withAxiom } from 'next-axiom';
+import { env } from './src/env.js';
+import createNextIntlPlugin from 'next-intl/plugin';
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
-await import("./src/env.js");
+await import('./src/env.js');
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -19,13 +19,13 @@ const config = {
 			test: /\.svg$/,
 			use: [
 				{
-					loader: "@svgr/webpack",
+					loader: '@svgr/webpack',
 					options: {
 						svgo: true,
 						svgoConfig: {
 							plugins: [
 								{
-									name: "removeViewBox",
+									name: 'removeViewBox',
 									active: false,
 								},
 							],
@@ -38,7 +38,7 @@ const config = {
 		config.externals = [
 			...config.externals,
 			{
-				"thread-stream": "commonjs thread-stream",
+				'thread-stream': 'commonjs thread-stream',
 			},
 		];
 
@@ -48,23 +48,23 @@ const config = {
 	async rewrites() {
 		return [
 			{
-				source: "/ingest/static/:path*",
-				destination: "https://eu-assets.i.posthog.com/static/:path*",
+				source: '/ingest/static/:path*',
+				destination: 'https://eu-assets.i.posthog.com/static/:path*',
 			},
 			{
-				source: "/ingest/:path*",
-				destination: "https://eu.i.posthog.com/:path*",
+				source: '/ingest/:path*',
+				destination: 'https://eu.i.posthog.com/:path*',
 			},
 			{
-				source: "/ingest/decide",
-				destination: "https://eu.i.posthog.com/decide",
+				source: '/ingest/decide',
+				destination: 'https://eu.i.posthog.com/decide',
 			},
 			{
-				source: "/umami.js",
+				source: '/umami.js',
 				destination: `${env.UMAMI_API_HOST}/script.js`,
 			},
 			{
-				source: "/api/umami",
+				source: '/api/umami',
 				destination: `${env.UMAMI_API_HOST}/api/send`,
 			},
 		];
@@ -72,18 +72,18 @@ const config = {
 	// This is required to support PostHog trailing slash API requests
 	skipTrailingSlashRedirect: true,
 	images: {
-		domains: ["localhost", "s3.fr-par.scw.cloud"],
-		formats: ["image/webp"],
+		domains: ['localhost', 's3.fr-par.scw.cloud'],
+		formats: ['image/webp'],
 	},
 };
 
 // Combine both Sentry and Axiom configurations
 const sentryOptions = {
-	org: "fb-development",
-	project: "qrcodly",
+	org: 'fb-development',
+	project: 'qrcodly',
 	silent: !process.env.CI,
 	widenClientFileUpload: true,
-	tunnelRoute: "/monitoring",
+	tunnelRoute: '/monitoring',
 	disableLogger: true,
 	automaticVercelMonitors: true,
 };

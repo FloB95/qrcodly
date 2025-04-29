@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import {
 	Form,
 	FormControl,
@@ -9,33 +9,33 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ColorPicker } from "./ColorPicker";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
-import { Input } from "@/components/ui/input";
-import IconPicker from "./IconPicker";
-import type { TQrCodeOptions } from "@shared/schemas";
-import { useQrCodeGeneratorStore } from "@/components/provider/QrCodeConfigStoreProvider";
-import { Button } from "@/components/ui/button";
-import { TrashIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ColorPicker } from './ColorPicker';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Slider } from '@/components/ui/slider';
+import { Input } from '@/components/ui/input';
+import IconPicker from './IconPicker';
+import type { TQrCodeOptions } from '@shared/schemas';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
+import { Button } from '@/components/ui/button';
+import { TrashIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export const SettingsForm = () => {
-	const t = useTranslations("generator.settingsForm");
+	const t = useTranslations('generator.settingsForm');
 	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
 	const handleIconSelect = (iconName?: string) => {
 		config.image = iconName;
 		updateConfig(config);
-		form.setValue("image", iconName ?? "");
+		form.setValue('image', iconName ?? '');
 	};
 
 	const form = useForm<TQrCodeOptions>({
@@ -97,20 +97,17 @@ export const SettingsForm = () => {
 
 	return (
 		<Form {...form}>
-			<form
-				onChange={form.handleSubmit(handleChange)}
-				className="space-y-6 xl:w-2/3"
-			>
-				<Tabs defaultValue={"general"} className="w-full">
+			<form onChange={form.handleSubmit(handleChange)} className="space-y-6 xl:w-2/3">
+				<Tabs defaultValue={'general'} className="w-full">
 					<TabsList className="mb-4 w-full">
 						<TabsTrigger className="flex-1" value="general">
-							{t("tabGeneral")}
+							{t('tabGeneral')}
 						</TabsTrigger>
 						<TabsTrigger className="flex-1" value="dot">
-							{t("tabShape")}
+							{t('tabShape')}
 						</TabsTrigger>
 						<TabsTrigger className="flex-1" value="image">
-							{t("tabIcon")}
+							{t('tabIcon')}
 						</TabsTrigger>
 					</TabsList>
 
@@ -121,23 +118,23 @@ export const SettingsForm = () => {
 								name="width"
 								render={() => (
 									<FormItem>
-										<FormLabel>{t("sizeLabel")}</FormLabel>
+										<FormLabel>{t('sizeLabel')}</FormLabel>
 										<FormControl>
 											<Slider
 												name="width"
 												className="cursor-pointer"
-												value={[form.getValues("width")]}
+												value={[form.getValues('width')]}
 												max={2000}
 												min={300}
 												step={25}
 												onValueChange={(e: unknown) => {
-													form.setValue("width", e as number);
-													form.setValue("height", e as number);
+													form.setValue('width', e as number);
+													form.setValue('height', e as number);
 												}}
 											/>
 										</FormControl>
 										<FormDescription className="pt-1 text-center">
-											{form.getValues("height")} x {form.getValues("width")} px
+											{form.getValues('height')} x {form.getValues('width')} px
 										</FormDescription>
 										<FormMessage />
 									</FormItem>
@@ -148,7 +145,7 @@ export const SettingsForm = () => {
 								name="margin"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>{t("borderSpacingLabel")}</FormLabel>
+										<FormLabel>{t('borderSpacingLabel')}</FormLabel>
 										<FormControl>
 											<Slider
 												name="margin"
@@ -160,9 +157,7 @@ export const SettingsForm = () => {
 												onValueChange={field.onChange}
 											/>
 										</FormControl>
-										<FormDescription className="pt-1 text-center">
-											{field.value} %
-										</FormDescription>
+										<FormDescription className="pt-1 text-center">{field.value} %</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -173,7 +168,7 @@ export const SettingsForm = () => {
 								render={({ field }) => {
 									return (
 										<FormItem>
-											<FormLabel>{t("backgroundLabel")}</FormLabel>
+											<FormLabel>{t('backgroundLabel')}</FormLabel>
 											<FormControl>
 												<div>
 													<ColorPicker
@@ -201,7 +196,7 @@ export const SettingsForm = () => {
 									name="dotsOptions.type"
 									render={({ field }) => (
 										<FormItem className="flex-1">
-											<FormLabel>{t("dotStyle.label")}</FormLabel>
+											<FormLabel>{t('dotStyle.label')}</FormLabel>
 											<FormControl>
 												<Select
 													name="dotsOptions.type"
@@ -209,28 +204,24 @@ export const SettingsForm = () => {
 													value={field.value}
 												>
 													<SelectTrigger>
-														<SelectValue
-															placeholder={t("dotStyle.placeholder")}
-														/>
+														<SelectValue placeholder={t('dotStyle.placeholder')} />
 													</SelectTrigger>
 													<SelectContent>
 														<SelectItem value="square">
-															{t("dotStyle.optionLabelSquare")}
+															{t('dotStyle.optionLabelSquare')}
 														</SelectItem>
-														<SelectItem value="dots">
-															{t("dotStyle.optionLabelDots")}
-														</SelectItem>
+														<SelectItem value="dots">{t('dotStyle.optionLabelDots')}</SelectItem>
 														<SelectItem value="rounded">
-															{t("dotStyle.optionLabelRounded")}
+															{t('dotStyle.optionLabelRounded')}
 														</SelectItem>
 														<SelectItem value="extra-rounded">
-															{t("dotStyle.optionLabelExtraRound")}
+															{t('dotStyle.optionLabelExtraRound')}
 														</SelectItem>
 														<SelectItem value="classy">
-															{t("dotStyle.optionLabelClassy")}
+															{t('dotStyle.optionLabelClassy')}
 														</SelectItem>
 														<SelectItem value="classy-rounded">
-															{t("dotStyle.optionLabelClassyRounded")}
+															{t('dotStyle.optionLabelClassyRounded')}
 														</SelectItem>
 													</SelectContent>
 												</Select>
@@ -244,7 +235,7 @@ export const SettingsForm = () => {
 									name="dotsOptions.style"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>{t("dotColor")}</FormLabel>
+											<FormLabel>{t('dotColor')}</FormLabel>
 											<FormControl>
 												<div>
 													<ColorPicker
@@ -268,7 +259,7 @@ export const SettingsForm = () => {
 									name="cornersSquareOptions.type"
 									render={({ field }) => (
 										<FormItem className="flex-1">
-											<FormLabel>{t("cornersSquareOptions.label")}</FormLabel>
+											<FormLabel>{t('cornersSquareOptions.label')}</FormLabel>
 											<FormControl>
 												<Select
 													name="cornersSquareOptions.type"
@@ -276,30 +267,20 @@ export const SettingsForm = () => {
 													value={field.value}
 												>
 													<SelectTrigger>
-														<SelectValue
-															placeholder={t(
-																"cornersSquareOptions.placeholder",
-															)}
-														/>
+														<SelectValue placeholder={t('cornersSquareOptions.placeholder')} />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem
-															icon="icons/corners-square-square.svg"
-															value="square"
-														>
-															{t("cornersSquareOptions.optionLabelSquare")}
+														<SelectItem icon="icons/corners-square-square.svg" value="square">
+															{t('cornersSquareOptions.optionLabelSquare')}
 														</SelectItem>
-														<SelectItem
-															icon="icons/corners-square-dot.svg"
-															value="dot"
-														>
-															{t("cornersSquareOptions.optionLabelDot")}
+														<SelectItem icon="icons/corners-square-dot.svg" value="dot">
+															{t('cornersSquareOptions.optionLabelDot')}
 														</SelectItem>
 														<SelectItem
 															icon="icons/corners-square-rounded.svg"
 															value="extra-rounded"
 														>
-															{t("cornersSquareOptions.optionLabelExtraRound")}
+															{t('cornersSquareOptions.optionLabelExtraRound')}
 														</SelectItem>
 													</SelectContent>
 												</Select>
@@ -313,7 +294,7 @@ export const SettingsForm = () => {
 									name="cornersSquareOptions.style"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>{t("cornersSquareColor")}</FormLabel>
+											<FormLabel>{t('cornersSquareColor')}</FormLabel>
 											<FormControl>
 												<div>
 													<ColorPicker
@@ -337,7 +318,7 @@ export const SettingsForm = () => {
 									name="cornersDotOptions.type"
 									render={({ field }) => (
 										<FormItem className="flex-1">
-											<FormLabel>{t("cornersDotOptions.label")}</FormLabel>
+											<FormLabel>{t('cornersDotOptions.label')}</FormLabel>
 											<FormControl>
 												<Select
 													name="cornersDotOptions.type"
@@ -345,22 +326,14 @@ export const SettingsForm = () => {
 													value={field.value}
 												>
 													<SelectTrigger>
-														<SelectValue
-															placeholder={t("cornersDotOptions.placeholder")}
-														/>
+														<SelectValue placeholder={t('cornersDotOptions.placeholder')} />
 													</SelectTrigger>
 													<SelectContent>
-														<SelectItem
-															icon="icons/corners-dot-square.svg"
-															value="square"
-														>
-															{t("cornersDotOptions.optionLabelSquare")}
+														<SelectItem icon="icons/corners-dot-square.svg" value="square">
+															{t('cornersDotOptions.optionLabelSquare')}
 														</SelectItem>
-														<SelectItem
-															icon="icons/corners-dot-dot.svg"
-															value="dot"
-														>
-															{t("cornersDotOptions.optionLabelDot")}
+														<SelectItem icon="icons/corners-dot-dot.svg" value="dot">
+															{t('cornersDotOptions.optionLabelDot')}
 														</SelectItem>
 													</SelectContent>
 												</Select>
@@ -374,7 +347,7 @@ export const SettingsForm = () => {
 									name="cornersDotOptions.style"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>{t("cornersDotColor")}</FormLabel>
+											<FormLabel>{t('cornersDotColor')}</FormLabel>
 											<FormControl>
 												<div>
 													<ColorPicker
@@ -401,7 +374,7 @@ export const SettingsForm = () => {
 								name="image"
 								render={() => (
 									<FormItem>
-										<FormLabel>{t("iconLabel")}</FormLabel>
+										<FormLabel>{t('iconLabel')}</FormLabel>
 										<FormControl>
 											<div className="grid w-full max-w-sm items-center gap-1.5">
 												<Input
@@ -412,8 +385,8 @@ export const SettingsForm = () => {
 														const file = e.target.files?.[0];
 														if (file) {
 															if (file.size > 1 * 1024 * 1024) {
-																alert(t("errorToLargeFile"));
-																e.target.value = "";
+																alert(t('errorToLargeFile'));
+																e.target.value = '';
 																return;
 															}
 
@@ -439,9 +412,7 @@ export const SettingsForm = () => {
 								name="imageOptions.hideBackgroundDots"
 								render={({ field }) => (
 									<FormItem className="flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4">
-										<FormLabel className="cursor-pointer">
-											{t("hideBackgroundDots")}
-										</FormLabel>
+										<FormLabel className="cursor-pointer">{t('hideBackgroundDots')}</FormLabel>
 										<FormControl>
 											<Checkbox
 												name="imageOptions.hideBackgroundDots"
@@ -456,24 +427,17 @@ export const SettingsForm = () => {
 
 							<div className="flex justify-between">
 								<div>
-									<p className="mb-4 text-sm leading-none font-medium">
-										{t("predefinedIconInfo")}
-									</p>
+									<p className="mb-4 text-sm leading-none font-medium">{t('predefinedIconInfo')}</p>
 									<IconPicker onSelect={handleIconSelect} />
 								</div>
 								{config.image && (
 									<div className="flex flex-col justify-end">
 										<Button
 											variant="destructive"
-											onClick={() => updateConfig({ ...config, image: "" })}
+											onClick={() => updateConfig({ ...config, image: '' })}
 										>
-											<TrashIcon
-												color="white"
-												width={24}
-												height={24}
-												className="mr-2"
-											/>
-											{t("clearBtn")}
+											<TrashIcon color="white" width={24} height={24} className="mr-2" />
+											{t('clearBtn')}
 										</Button>
 									</div>
 								)}

@@ -1,8 +1,8 @@
-import { Suspense } from "react";
-import { DynamicQrCode } from "./DynamicQrCode";
-import QrCodeSaveTemplateBtn from "./templates/SaveTemplateBtn";
-import QrCodeDownloadBtn from "./QrCodeDownloadBtn";
-import { useQrCodeGeneratorStore } from "../provider/QrCodeConfigStoreProvider";
+import { Suspense } from 'react';
+import { DynamicQrCode } from './DynamicQrCode';
+import QrCodeSaveTemplateBtn from './templates/SaveTemplateBtn';
+import QrCodeDownloadBtn from './QrCodeDownloadBtn';
+import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 
 export const QrCodeWithDownloadBtn = () => {
 	const { config, content } = useQrCodeGeneratorStore((state) => state);

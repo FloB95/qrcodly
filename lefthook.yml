@@ -2,7 +2,7 @@ pre-commit:
   commands:
     prettier_check:
       glob: '{apps,packages}/**/*.{css,js,ts,tsx,json}'
-      run: pnpm prettier --write --ignore-unknown --no-error-on-unmatched-pattern {staged_files}
+      run: pnpm format --write --ignore-unknown --no-error-on-unmatched-pattern {staged_files}
       stage_fixed: true
       skip:
         - merge

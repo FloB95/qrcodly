@@ -1,29 +1,26 @@
-"use client";
+'use client';
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useAuth } from "@clerk/nextjs";
-import { MyTemplatesTab } from "./tabs/MyTemplatesTab";
-import { PredefinedTemplatesTab } from "./tabs/PredefinedTemplatesTab";
-import { useTranslations } from "next-intl";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useAuth } from '@clerk/nextjs';
+import { MyTemplatesTab } from './tabs/MyTemplatesTab';
+import { PredefinedTemplatesTab } from './tabs/PredefinedTemplatesTab';
+import { useTranslations } from 'next-intl';
 
 export const TemplateTabs = () => {
-	const t = useTranslations("templates.tabs");
+	const t = useTranslations('templates.tabs');
 	const { isSignedIn } = useAuth();
 
 	return (
 		<div className="xl:w-2/3">
-			<Tabs
-				defaultValue={isSignedIn ? "myTemplates" : "predefinedTemplates"}
-				className="w-full"
-			>
+			<Tabs defaultValue={isSignedIn ? 'myTemplates' : 'predefinedTemplates'} className="w-full">
 				<TabsList className="mb-4 w-full">
 					{isSignedIn && (
 						<TabsTrigger className="flex-1" value="myTemplates">
-							{t("myTemplates")}
+							{t('myTemplates')}
 						</TabsTrigger>
 					)}
 					<TabsTrigger className="flex-1" value="predefinedTemplates">
-						{t("predefinedTemplates")}
+						{t('predefinedTemplates')}
 					</TabsTrigger>
 				</TabsList>
 				{isSignedIn && (

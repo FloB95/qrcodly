@@ -1,5 +1,5 @@
-import { SignInButton } from "@clerk/nextjs";
-import React from "react";
+import { SignInButton } from '@clerk/nextjs';
+import React from 'react';
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -9,8 +9,8 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { useTranslations } from "next-intl";
+} from '@/components/ui/alert-dialog';
+import { useTranslations } from 'next-intl';
 
 export const LoginRequiredDialog = ({
 	alertOpen,
@@ -19,22 +19,22 @@ export const LoginRequiredDialog = ({
 	alertOpen: boolean;
 	setAlertOpen: (open: boolean) => void;
 }) => {
-	const t = useTranslations("loginDialog");
+	const t = useTranslations('loginDialog');
 	return (
 		<AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>{t("title")}</AlertDialogTitle>
+					<AlertDialogTitle>{t('title')}</AlertDialogTitle>
 					<AlertDialogDescription>
-						{t("description")}
+						{t('description')}
 						<br />
-						<strong>{t("subDescription")}</strong>
+						<strong>{t('subDescription')}</strong>
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>{t("cancelBtn")}</AlertDialogCancel>
+					<AlertDialogCancel>{t('cancelBtn')}</AlertDialogCancel>
 					<SignInButton>
-						<AlertDialogAction>{t("loginBtn")}</AlertDialogAction>
+						<AlertDialogAction>{t('loginBtn')}</AlertDialogAction>
 					</SignInButton>
 				</AlertDialogFooter>
 			</AlertDialogContent>

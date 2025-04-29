@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { DashboardListItem } from "./ListItem";
-import { Loader2 } from "lucide-react";
-import { Table, TableBody, TableCell, TableRow } from "../ui/table";
-import { useListQrCodesQuery } from "@/lib/api/qr-code";
-import { useTranslations } from "next-intl";
+import { DashboardListItem } from './ListItem';
+import { Loader2 } from 'lucide-react';
+import { Table, TableBody, TableCell, TableRow } from '../ui/table';
+import { useListQrCodesQuery } from '@/lib/api/qr-code';
+import { useTranslations } from 'next-intl';
 
 export const QrCodeList = () => {
 	const t = useTranslations();
@@ -27,9 +27,7 @@ export const QrCodeList = () => {
 				{qrCodes.data.length === 0 && (
 					<TableRow className="hover:bg-transparent">
 						<TableCell colSpan={6} className="text-center">
-							<h2 className="my-10 text-2xl font-bold">
-								{t("qrCode.error.noFound")}
-							</h2>
+							<h2 className="my-10 text-2xl font-bold">{t('qrCode.error.noFound')}</h2>
 						</TableCell>
 					</TableRow>
 				)}

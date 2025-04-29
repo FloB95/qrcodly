@@ -1,13 +1,9 @@
-import type { TConfigTemplateResponseDto } from "@shared/schemas";
-import { DynamicQrCode } from "../DynamicQrCode";
-import { TrashIcon } from "@heroicons/react/24/outline";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { useCallback, useState } from "react";
+import type { TConfigTemplateResponseDto } from '@shared/schemas';
+import { DynamicQrCode } from '../DynamicQrCode';
+import { TrashIcon } from '@heroicons/react/24/outline';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { useCallback, useState } from 'react';
 import {
 	Dialog,
 	DialogClose,
@@ -17,13 +13,13 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog";
-import { useDeleteConfigTemplateMutation } from "@/lib/api/config-template";
-import { toast } from "@/components/ui/use-toast";
-import { Loader2 } from "lucide-react";
-import posthog from "posthog-js";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
+} from '@/components/ui/dialog';
+import { useDeleteConfigTemplateMutation } from '@/lib/api/config-template';
+import { toast } from '@/components/ui/use-toast';
+import { Loader2 } from 'lucide-react';
+import posthog from 'posthog-js';
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 type TemplateListProps = {
 	templates: TConfigTemplateResponseDto[];
@@ -31,21 +27,16 @@ type TemplateListProps = {
 	deletable?: boolean;
 };
 
-export const TemplatesList = ({
-	templates,
-	onSelect,
-	deletable,
-}: TemplateListProps) => {
-	const trans = useTranslations("templates");
-	const [selectedTemplate, setSelectedTemplate] =
-		useState<TConfigTemplateResponseDto | null>(null);
+export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListProps) => {
+	const trans = useTranslations('templates');
+	const [selectedTemplate, setSelectedTemplate] = useState<TConfigTemplateResponseDto | null>(null);
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const deleteTemplateMutation = useDeleteConfigTemplateMutation();
 
 	const handleSelect = (template: TConfigTemplateResponseDto) => {
 		onSelect(template);
 
-		posthog.capture("config-template-selected", {
+		posthog.capture('config-template-selected', {
 			id: template.id,
 			templateName: template.name,
 		});
@@ -56,12 +47,12 @@ export const TemplatesList = ({
 
 		setIsDeleting(true);
 		const t = toast({
-			title: trans("delete.beingDeleted"),
+			title: trans('delete.beingDeleted'),
 			open: isDeleting,
 			description: (
 				<div className="flex space-x-2">
-					<Loader2 className="mr-2 h-6 w-6 animate-spin" />{" "}
-					<span>{trans("delete.deletingInfo")}</span>
+					<Loader2 className="mr-2 h-6 w-6 animate-spin" />{' '}
+					<span>{trans('delete.deletingInfo')}</span>
 				</div>
 			),
 		});
@@ -72,7 +63,7 @@ export const TemplatesList = ({
 				setIsDeleting(false);
 				setSelectedTemplate(null);
 
-				posthog.capture("config-template-deleted", {
+				posthog.capture('config-template-deleted', {
 					id: selectedTemplate.id,
 					templateName: selectedTemplate.name,
 				});
@@ -80,9 +71,9 @@ export const TemplatesList = ({
 			onError: () => {
 				t.dismiss();
 				toast({
-					title: trans("delete.errorTitle"),
-					description: trans("delete.errorDescription"),
-					variant: "destructive",
+					title: trans('delete.errorTitle'),
+					description: trans('delete.errorDescription'),
+					variant: 'destructive',
 					duration: 5000,
 				});
 				setIsDeleting(false);
@@ -95,16 +86,10 @@ export const TemplatesList = ({
 		<div className="grid h-[400px] cursor-pointer grid-cols-2 gap-4 overflow-y-auto px-2 lg:grid-cols-3">
 			{templates.map((template, index) => {
 				return (
-					<div
-						key={index}
-						onClick={() => handleSelect(template)}
-						className="group relative"
-					>
+					<div key={index} onClick={() => handleSelect(template)} className="group relative">
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<p className="text mb-1 truncate text-sm font-semibold">
-									{template.name}
-								</p>
+								<p className="text mb-1 truncate text-sm font-semibold">{template.name}</p>
 							</TooltipTrigger>
 							<TooltipContent side="top">{template.name}</TooltipContent>
 						</Tooltip>
@@ -122,9 +107,9 @@ export const TemplatesList = ({
 									qrCode={{
 										config: template.config,
 										content: {
-											type: "url",
+											type: 'url',
 											data: {
-												url: "https://www.qrcodly.de/",
+												url: 'https://www.qrcodly.de/',
 												isEditable: false,
 											},
 										},
@@ -147,32 +132,23 @@ export const TemplatesList = ({
 									</DialogTrigger>
 									<DialogContent>
 										<DialogHeader>
-											<DialogTitle>{trans("confirmPopup.title")}</DialogTitle>
+											<DialogTitle>{trans('confirmPopup.title')}</DialogTitle>
 											<DialogDescription>
-												{trans("confirmPopup.description")}{" "}
-												<span className="font-bold text-black">
-													{selectedTemplate?.name}
-												</span>{" "}
-												?
+												{trans('confirmPopup.description')}{' '}
+												<span className="font-bold text-black">{selectedTemplate?.name}</span> ?
 												<br />
-												{trans("confirmPopup.description2")}
+												{trans('confirmPopup.description2')}
 											</DialogDescription>
 										</DialogHeader>
 										<DialogFooter>
 											<DialogClose asChild>
-												<Button
-													variant="secondary"
-													onClick={() => setSelectedTemplate(null)}
-												>
-													{trans("confirmPopup.cancelBtn")}
+												<Button variant="secondary" onClick={() => setSelectedTemplate(null)}>
+													{trans('confirmPopup.cancelBtn')}
 												</Button>
 											</DialogClose>
 											<DialogClose asChild>
-												<Button
-													variant="destructive"
-													onClick={() => handleDelete()}
-												>
-													{trans("confirmPopup.confirmBtn")}
+												<Button variant="destructive" onClick={() => handleDelete()}>
+													{trans('confirmPopup.confirmBtn')}
 												</Button>
 											</DialogClose>
 										</DialogFooter>

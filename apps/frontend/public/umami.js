@@ -1,5 +1,5 @@
 !(function () {
-	"use strict";
+	'use strict';
 	((t) => {
 		const {
 				screen: { width: e, height: a },
@@ -12,24 +12,24 @@
 			} = t,
 			{ hostname: d, href: h, origin: m } = o,
 			{ currentScript: f, referrer: p } = c,
-			g = h.startsWith("data:") ? void 0 : t.localStorage;
+			g = h.startsWith('data:') ? void 0 : t.localStorage;
 		if (!f) return;
-		const y = "data-",
-			b = "true",
+		const y = 'data-',
+			b = 'true',
 			v = f.getAttribute.bind(f),
-			N = v(y + "website-id"),
-			S = v(y + "host-url"),
-			w = v(y + "tag"),
-			T = "false" !== v(y + "auto-track"),
-			k = v(y + "do-not-track") === b,
-			A = v(y + "exclude-search") === b,
-			j = v(y + "exclude-hash") === b,
-			x = v(y + "domains") || "",
-			O = x.split(",").map((t) => t.trim()),
-			E = `${(S || "" || f.src.split("/").slice(0, -1).join("/")).replace(/\/$/, "")}/api/umami`,
+			N = v(y + 'website-id'),
+			S = v(y + 'host-url'),
+			w = v(y + 'tag'),
+			T = 'false' !== v(y + 'auto-track'),
+			k = v(y + 'do-not-track') === b,
+			A = v(y + 'exclude-search') === b,
+			j = v(y + 'exclude-hash') === b,
+			x = v(y + 'domains') || '',
+			O = x.split(',').map((t) => t.trim()),
+			E = `${(S || '' || f.src.split('/').slice(0, -1).join('/')).replace(/\/$/, '')}/api/umami`,
 			L = `${e}x${a}`,
 			$ = /data-umami-event-([\w-_]+)/,
-			D = y + "umami-event",
+			D = y + 'umami-event',
 			K = 300,
 			U = () => ({
 				website: N,
@@ -45,31 +45,31 @@
 				a &&
 					((R = P),
 					(P = new URL(a, o.href)),
-					A && (P.search = ""),
-					j && (P.hash = ""),
+					A && (P.search = ''),
+					j && (P.hash = ''),
 					(P = P.toString()),
 					P !== R && setTimeout(C, K));
 			},
 			B = () =>
 				F ||
 				!N ||
-				(g && g.getItem("umami.disabled")) ||
+				(g && g.getItem('umami.disabled')) ||
 				(x && !O.includes(d)) ||
 				(k &&
 					(() => {
 						const t = l || n || i;
-						return 1 === t || "1" === t || "yes" === t;
+						return 1 === t || '1' === t || 'yes' === t;
 					})()),
-			W = async (t, e = "event") => {
+			W = async (t, e = 'event') => {
 				if (B()) return;
-				const a = { "Content-Type": "application/json" };
-				void 0 !== J && (a["x-umami-cache"] = J);
+				const a = { 'Content-Type': 'application/json' };
+				void 0 !== J && (a['x-umami-cache'] = J);
 				try {
 					const r = await fetch(E, {
-							method: "POST",
+							method: 'POST',
 							body: JSON.stringify({ type: e, payload: t }),
 							headers: a,
-							credentials: "omit",
+							credentials: 'omit',
 						}),
 						n = await r.json();
 					n && ((F = !!n.disabled), (J = n.cache));
@@ -83,21 +83,19 @@
 							const r = t[e];
 							return (...e) => (a.apply(null, e), r.apply(t, e));
 						};
-						(s.pushState = t(s, "pushState", _)),
-							(s.replaceState = t(s, "replaceState", _));
+						(s.pushState = t(s, 'pushState', _)), (s.replaceState = t(s, 'replaceState', _));
 					})(),
 					(() => {
 						const t = new MutationObserver(([t]) => {
 								z = t && t.target ? t.target.text : void 0;
 							}),
-							e = c.querySelector("head > title");
-						e &&
-							t.observe(e, { subtree: !0, characterData: !0, childList: !0 });
+							e = c.querySelector('head > title');
+						e && t.observe(e, { subtree: !0, characterData: !0, childList: !0 });
 					})(),
 					c.addEventListener(
-						"click",
+						'click',
 						async (t) => {
-							const e = (t) => ["BUTTON", "A"].includes(t),
+							const e = (t) => ['BUTTON', 'A'].includes(t),
 								a = async (t) => {
 									const e = t.getAttribute.bind(t),
 										a = e(D);
@@ -127,9 +125,9 @@
 								const { href: e, target: r } = n,
 									i = n.getAttribute(D);
 								if (i)
-									if ("A" === n.tagName) {
+									if ('A' === n.tagName) {
 										const c =
-											"_blank" === r ||
+											'_blank' === r ||
 											t.ctrlKey ||
 											t.shiftKey ||
 											t.metaKey ||
@@ -138,10 +136,10 @@
 											return (
 												c || t.preventDefault(),
 												a(n).then(() => {
-													c || (("_top" === r ? u.location : o).href = e);
+													c || (('_top' === r ? u.location : o).href = e);
 												})
 											);
-									} else if ("BUTTON" === n.tagName) return a(n);
+									} else if ('BUTTON' === n.tagName) return a(n);
 							}
 						},
 						!0,
@@ -150,26 +148,24 @@
 			},
 			C = (t, e) =>
 				W(
-					"string" == typeof t
-						? { ...U(), name: t, data: "object" == typeof e ? e : void 0 }
-						: "object" == typeof t
+					'string' == typeof t
+						? { ...U(), name: t, data: 'object' == typeof e ? e : void 0 }
+						: 'object' == typeof t
 							? t
-							: "function" == typeof t
+							: 'function' == typeof t
 								? t(U())
 								: U(),
 				),
-			I = (t) => W({ ...U(), data: t }, "identify");
+			I = (t) => W({ ...U(), data: t }, 'identify');
 		t.umami || (t.umami = { track: C, identify: I });
 		let J,
 			M,
 			P = h,
-			R = p.startsWith(m) ? "" : p,
+			R = p.startsWith(m) ? '' : p,
 			z = c.title,
 			F = !1;
 		T &&
 			!B() &&
-			("complete" === c.readyState
-				? q()
-				: c.addEventListener("readystatechange", q, !0));
+			('complete' === c.readyState ? q() : c.addEventListener('readystatechange', q, !0));
 	})(window);
 })();

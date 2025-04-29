@@ -1,55 +1,36 @@
-"use client";
+'use client';
 
-import { SettingsForm } from "./style/SettingsForm";
-import {
-	PaintBrushIcon,
-	QrCodeIcon,
-	StarIcon,
-} from "@heroicons/react/24/outline";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ContentSwitch } from "./content/ContentSwitch";
-import { TemplateTabs } from "./templates/TemplateTabs";
-import { QrCodeWithDownloadBtn } from "./QrCodeWithDownloadBtn";
-import { QrCodeGeneratorStoreProvider } from "../provider/QrCodeConfigStoreProvider";
-import { useTranslations } from "next-intl";
+import { SettingsForm } from './style/SettingsForm';
+import { PaintBrushIcon, QrCodeIcon, StarIcon } from '@heroicons/react/24/outline';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ContentSwitch } from './content/ContentSwitch';
+import { TemplateTabs } from './templates/TemplateTabs';
+import { QrCodeWithDownloadBtn } from './QrCodeWithDownloadBtn';
+import { QrCodeGeneratorStoreProvider } from '../provider/QrCodeConfigStoreProvider';
+import { useTranslations } from 'next-intl';
 
 export const QRcodeGenerator = () => {
-	const t = useTranslations("generator");
+	const t = useTranslations('generator');
 	return (
 		<QrCodeGeneratorStoreProvider>
 			<Tabs defaultValue="qrCodeContent">
 				<TabsList className="mx-auto grid h-auto max-w-[450px] grid-cols-3 bg-white p-2 shadow">
-					<TabsTrigger
-						value="qrCodeContent"
-						className="data-[state=active]:bg-gray-200"
-					>
+					<TabsTrigger value="qrCodeContent" className="data-[state=active]:bg-gray-200">
 						<div className="flex space-x-2">
-							<QrCodeIcon className="xs:block hidden h-6 w-6" />{" "}
-							<span className="flex flex-col justify-center">
-								{t("tabs.content")}
-							</span>
+							<QrCodeIcon className="xs:block hidden h-6 w-6" />{' '}
+							<span className="flex flex-col justify-center">{t('tabs.content')}</span>
 						</div>
 					</TabsTrigger>
-					<TabsTrigger
-						value="qrCodeSettings"
-						className="data-[state=active]:bg-gray-200"
-					>
+					<TabsTrigger value="qrCodeSettings" className="data-[state=active]:bg-gray-200">
 						<div className="flex space-x-2">
-							<PaintBrushIcon className="xs:block hidden h-6 w-6" />{" "}
-							<span className="flex flex-col justify-center">
-								{t("tabs.style")}
-							</span>
+							<PaintBrushIcon className="xs:block hidden h-6 w-6" />{' '}
+							<span className="flex flex-col justify-center">{t('tabs.style')}</span>
 						</div>
 					</TabsTrigger>
-					<TabsTrigger
-						value="qrCodeTemplates"
-						className="data-[state=active]:bg-gray-200"
-					>
+					<TabsTrigger value="qrCodeTemplates" className="data-[state=active]:bg-gray-200">
 						<div className="flex space-x-2">
-							<StarIcon className="xs:block hidden h-6 w-6" />{" "}
-							<span className="flex flex-col justify-center">
-								{t("tabs.templates")}
-							</span>
+							<StarIcon className="xs:block hidden h-6 w-6" />{' '}
+							<span className="flex flex-col justify-center">{t('tabs.templates')}</span>
 						</div>
 					</TabsTrigger>
 				</TabsList>

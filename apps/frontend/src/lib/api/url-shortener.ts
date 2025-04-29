@@ -42,13 +42,10 @@ export function useGetViewsFromShortCodeQuery(shortCode: string) {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			};
-			return await apiRequest<{ views: number }>(
-				`/short-url/${shortCode}/get-views`,
-				{
-					method: 'GET',
-					headers,
-				},
-			);
+			return await apiRequest<{ views: number }>(`/short-url/${shortCode}/get-views`, {
+				method: 'GET',
+				headers,
+			});
 		},
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes
@@ -67,13 +64,10 @@ export function useGetAnalyticsFromShortCode(shortCode: string) {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			};
-			return await apiRequest<TAnalyticsResponseDto>(
-				`/short-url/${shortCode}/analytics`,
-				{
-					method: 'GET',
-					headers,
-				},
-			);
+			return await apiRequest<TAnalyticsResponseDto>(`/short-url/${shortCode}/analytics`, {
+				method: 'GET',
+				headers,
+			});
 		},
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes

@@ -11,9 +11,7 @@ export async function handleAnalytics(req: NextRequest) {
 	const hostnameRegex =
 		/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
 	const hostname =
-		cleanedHostname && hostnameRegex.test(cleanedHostname)
-			? cleanedHostname
-			: 'unknown';
+		cleanedHostname && hostnameRegex.test(cleanedHostname) ? cleanedHostname : 'unknown';
 
 	const payload = {
 		type: 'event',

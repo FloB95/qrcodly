@@ -42,9 +42,7 @@ export function useCreateQrCodeMutation() {
 	const { getToken } = useAuth();
 
 	return useMutation({
-		mutationFn: async (
-			qrCode: TCreateQrCodeDto,
-		): Promise<TCreateQrCodeResponseDto> => {
+		mutationFn: async (qrCode: TCreateQrCodeDto): Promise<TCreateQrCodeResponseDto> => {
 			const token = await getToken();
 			const headers: HeadersInit = {
 				'Content-Type': 'application/json',

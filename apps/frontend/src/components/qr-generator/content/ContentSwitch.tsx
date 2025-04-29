@@ -1,15 +1,15 @@
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from '@/components/ui/button';
 import {
 	DocumentTextIcon,
 	LinkIcon,
 	WifiIcon,
 	IdentificationIcon,
-} from "@heroicons/react/24/outline";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { UrlSection } from "./UrlSection";
-import { TextSection } from "./TextSection";
-import { VCardSection } from "./VcardSection";
-import { WiFiSection } from "./WiFiSection";
+} from '@heroicons/react/24/outline';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { UrlSection } from './UrlSection';
+import { TextSection } from './TextSection';
+import { VCardSection } from './VcardSection';
+import { WiFiSection } from './WiFiSection';
 import {
 	getDefaultContentByType,
 	type TQrCodeContentType,
@@ -17,12 +17,12 @@ import {
 	type TUrlInput,
 	type TVCardInput,
 	type TWifiInput,
-} from "@shared/schemas";
-import { useQrCodeGeneratorStore } from "@/components/provider/QrCodeConfigStoreProvider";
-import { useTranslations } from "next-intl";
+} from '@shared/schemas';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
+import { useTranslations } from 'next-intl';
 
 export const ContentSwitch = () => {
-	const t = useTranslations("generator.contentSwitch");
+	const t = useTranslations('generator.contentSwitch');
 	const { content, updateContent } = useQrCodeGeneratorStore((state) => state);
 
 	return (
@@ -38,37 +38,37 @@ export const ContentSwitch = () => {
 				<TabsTrigger value="url" asChild>
 					<button
 						className={buttonVariants({
-							variant: "tab",
+							variant: 'tab',
 						})}
 					>
-						<LinkIcon className="mr-2 h-6 w-6" /> {t("tabUrl")}
+						<LinkIcon className="mr-2 h-6 w-6" /> {t('tabUrl')}
 					</button>
 				</TabsTrigger>
 				<TabsTrigger value="text" asChild>
 					<button
 						className={buttonVariants({
-							variant: "tab",
+							variant: 'tab',
 						})}
 					>
-						<DocumentTextIcon className="mr-2 h-6 w-6" /> {t("tabText")}
+						<DocumentTextIcon className="mr-2 h-6 w-6" /> {t('tabText')}
 					</button>
 				</TabsTrigger>
 				<TabsTrigger value="wifi" asChild>
 					<button
 						className={buttonVariants({
-							variant: "tab",
+							variant: 'tab',
 						})}
 					>
-						<WifiIcon className="mr-2 h-6 w-6" /> {t("tabWifi")}
+						<WifiIcon className="mr-2 h-6 w-6" /> {t('tabWifi')}
 					</button>
 				</TabsTrigger>
 				<TabsTrigger value="vCard" asChild>
 					<button
 						className={buttonVariants({
-							variant: "tab",
+							variant: 'tab',
 						})}
 					>
-						<IdentificationIcon className="mr-2 h-6 w-6" /> {t("tabVCard")}
+						<IdentificationIcon className="mr-2 h-6 w-6" /> {t('tabVCard')}
 					</button>
 				</TabsTrigger>
 			</TabsList>
@@ -77,7 +77,7 @@ export const ContentSwitch = () => {
 					value={content.data as TUrlInput}
 					onChange={(v) => {
 						updateContent({
-							type: "url",
+							type: 'url',
 							data: v,
 						});
 					}}
@@ -88,7 +88,7 @@ export const ContentSwitch = () => {
 					value={content.data as TTextInput}
 					onChange={(v) => {
 						updateContent({
-							type: "text",
+							type: 'text',
 							data: v,
 						});
 					}}
@@ -99,7 +99,7 @@ export const ContentSwitch = () => {
 					value={content.data as TWifiInput}
 					onChange={(v) => {
 						updateContent({
-							type: "wifi",
+							type: 'wifi',
 							data: v,
 						});
 					}}
@@ -110,7 +110,7 @@ export const ContentSwitch = () => {
 					value={content.data as TVCardInput}
 					onChange={(v) => {
 						updateContent({
-							type: "vCard",
+							type: 'vCard',
 							data: v,
 						});
 					}}

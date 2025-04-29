@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import QrCodeDownloadBtn from "../qr-generator/QrCodeDownloadBtn";
-import { useCallback, useState } from "react";
-import { toast } from "../ui/use-toast";
-import { Button } from "../ui/button";
-import { DynamicQrCode } from "../qr-generator/DynamicQrCode";
+import QrCodeDownloadBtn from '../qr-generator/QrCodeDownloadBtn';
+import { useCallback, useState } from 'react';
+import { toast } from '../ui/use-toast';
+import { Button } from '../ui/button';
+import { DynamicQrCode } from '../qr-generator/DynamicQrCode';
 import {
 	ArrowTurnDownRightIcon,
 	DocumentTextIcon,
@@ -12,34 +12,30 @@ import {
 	IdentificationIcon,
 	LinkIcon,
 	WifiIcon,
-} from "@heroicons/react/24/outline";
-import { TableCell, TableRow } from "../ui/table";
-import { Badge } from "../ui/badge";
+} from '@heroicons/react/24/outline';
+import { TableCell, TableRow } from '../ui/table';
+import { Badge } from '../ui/badge';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { EyeIcon, Loader2 } from "lucide-react";
-import type {
-	TQrCode,
-	TQrCodeWithRelationsResponseDto,
-	TShortUrl,
-} from "@shared/schemas";
-import { useDeleteQrCodeMutation } from "@/lib/api/qr-code";
-import posthog from "posthog-js";
-import { formatDate } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
-import { useGetViewsFromShortCodeQuery } from "@/lib/api/url-shortener";
-import { useTranslations } from "next-intl";
+} from '../ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { EyeIcon, Loader2 } from 'lucide-react';
+import type { TQrCode, TQrCodeWithRelationsResponseDto, TShortUrl } from '@shared/schemas';
+import { useDeleteQrCodeMutation } from '@/lib/api/qr-code';
+import posthog from 'posthog-js';
+import { formatDate } from '@/lib/utils';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useGetViewsFromShortCodeQuery } from '@/lib/api/url-shortener';
+import { useTranslations } from 'next-intl';
 
 const GetNameByContentType = (qr: TQrCodeWithRelationsResponseDto) => {
 	switch (qr.content.type) {
-		case "url":
+		case 'url':
 			const { url, isEditable } = qr.content.data;
 			return (
 				<>
@@ -48,9 +44,7 @@ const GetNameByContentType = (qr: TQrCodeWithRelationsResponseDto) => {
 							{url}
 							<div className="mt-1 ml-2 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
 								<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold" />
-								<span className="pt-1 text-sm text-black">
-									{qr.shortUrl.destinationUrl}
-								</span>
+								<span className="pt-1 text-sm text-black">{qr.shortUrl.destinationUrl}</span>
 							</div>
 						</div>
 					) : (
@@ -58,31 +52,31 @@ const GetNameByContentType = (qr: TQrCodeWithRelationsResponseDto) => {
 					)}
 				</>
 			);
-		case "text":
+		case 'text':
 			return qr.content.data;
-		case "wifi":
+		case 'wifi':
 			const wifiData = qr.content.data;
 			return wifiData?.ssid;
-		case "vCard":
+		case 'vCard':
 			const vCardData = qr.content.data;
-			return `${vCardData?.firstName ?? ""} ${vCardData?.lastName ?? ""}`;
+			return `${vCardData?.firstName ?? ''} ${vCardData?.lastName ?? ''}`;
 		default:
-			return "Unknown";
+			return 'Unknown';
 	}
 };
 
 const GetQrCodeIconByContentType = (qr: TQrCode) => {
 	switch (qr.content.type) {
-		case "url":
+		case 'url':
 			return <LinkIcon className="mr-2 h-6 w-6" />;
-		case "text":
+		case 'text':
 			return <DocumentTextIcon className="mr-2 h-6 w-6" />;
-		case "wifi":
+		case 'wifi':
 			return <WifiIcon className="mr-2 h-6 w-6" />;
-		case "vCard":
+		case 'vCard':
 			return <IdentificationIcon className="mr-2 h-6 w-6" />;
 		default:
-			return "❓";
+			return '❓';
 	}
 };
 
@@ -99,7 +93,7 @@ export const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 						</div>
 					</TooltipTrigger>
 					<TooltipContent side="top">
-						{data.views} {t("analytics.totalViews")}
+						{data.views} {t('analytics.totalViews')}
 					</TooltipContent>
 				</Tooltip>
 			</div>
@@ -109,22 +103,18 @@ export const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	return <></>;
 };
 
-export const DashboardListItem = ({
-	qr,
-}: {
-	qr: TQrCodeWithRelationsResponseDto;
-}) => {
+export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
 	const trans = useTranslations();
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const deleteQrCodeMutation = useDeleteQrCodeMutation();
 	const handleDelete = useCallback(() => {
 		setIsDeleting(true);
 		const t = toast({
-			title: "QR code is being deleted",
+			title: 'QR code is being deleted',
 			open: isDeleting,
 			description: (
 				<div className="flex space-x-2">
-					<Loader2 className="mr-2 h-6 w-6 animate-spin" />{" "}
+					<Loader2 className="mr-2 h-6 w-6 animate-spin" />{' '}
 					<span>we are deleting your QR code</span>
 				</div>
 			),
@@ -135,7 +125,7 @@ export const DashboardListItem = ({
 				t.dismiss();
 				setIsDeleting(false);
 
-				posthog.capture("qr-code-deleted", {
+				posthog.capture('qr-code-deleted', {
 					id: qr.id,
 					content: qr.content,
 				});
@@ -143,9 +133,9 @@ export const DashboardListItem = ({
 			onError: () => {
 				t.dismiss();
 				toast({
-					title: trans("qrCode.error.delete.title"),
-					description: trans("qrCode.error.delete.message"),
-					variant: "destructive",
+					title: trans('qrCode.error.delete.title'),
+					description: trans('qrCode.error.delete.message'),
+					variant: 'destructive',
 					duration: 5000,
 				});
 				setIsDeleting(false);
@@ -155,7 +145,7 @@ export const DashboardListItem = ({
 
 	return (
 		<TableRow
-			className={`hover:bg-muted/90 rounded-lg border-none shadow ${isDeleting ? "bg-muted/70" : "bg-white"}`}
+			className={`hover:bg-muted/90 rounded-lg border-none shadow ${isDeleting ? 'bg-muted/70' : 'bg-white'}`}
 		>
 			<TableCell className="table-cell rounded-l-lg">
 				<div className="flex space-x-8">
@@ -198,38 +188,29 @@ export const DashboardListItem = ({
 				{qr.shortUrl && (
 					<Badge variant="outline">
 						{qr.shortUrl.isActive
-							? trans("analytics.stateActive")
-							: trans("analytics.stateInactive")}
+							? trans('analytics.stateActive')
+							: trans('analytics.stateInactive')}
 					</Badge>
 				)}
 			</TableCell>
-			<TableCell>
-				{qr.shortUrl && <ViewComponent shortUrl={qr.shortUrl} />}
-			</TableCell>
+			<TableCell>{qr.shortUrl && <ViewComponent shortUrl={qr.shortUrl} />}</TableCell>
 			<TableCell className="hidden md:table-cell">
 				<span>{formatDate(qr.createdAt)}</span>
 			</TableCell>
 			<TableCell className="rounded-r-lg">
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild disabled={isDeleting}>
-						<Button
-							aria-haspopup="true"
-							size="icon"
-							variant="ghost"
-							disabled={isDeleting}
-						>
+						<Button aria-haspopup="true" size="icon" variant="ghost" disabled={isDeleting}>
 							<EllipsisVerticalIcon width={28} height={28} />
 							<span className="sr-only">Toggle menu</span>
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
-						<DropdownMenuLabel>
-							{trans("qrCode.actionsMenu.title")}
-						</DropdownMenuLabel>
+						<DropdownMenuLabel>{trans('qrCode.actionsMenu.title')}</DropdownMenuLabel>
 						<DropdownMenuItem>
 							<Link href={`/collection/qr-code/${qr.id}`} prefetch>
 								<div className="flex items-center space-x-2">
-									{trans("qrCode.actionsMenu.edit")}
+									{trans('qrCode.actionsMenu.edit')}
 								</div>
 							</Link>
 						</DropdownMenuItem>
@@ -238,7 +219,7 @@ export const DashboardListItem = ({
 						</DropdownMenuItem>
 						<DropdownMenuItem>
 							<div className="cursor-pointer" onClick={handleDelete}>
-								{trans("qrCode.actionsMenu.delete")}
+								{trans('qrCode.actionsMenu.delete')}
 							</div>
 						</DropdownMenuItem>
 					</DropdownMenuContent>

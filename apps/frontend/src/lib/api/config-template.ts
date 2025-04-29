@@ -19,15 +19,12 @@ export function usePredefinedTemplatesQuery() {
 	return useQuery({
 		queryKey: queryKeys.predefinedTemplates,
 		queryFn: async (): Promise<TConfigTemplatePaginatedResponseDto> => {
-			return apiRequest<TConfigTemplatePaginatedResponseDto>(
-				'/config-template/predefined',
-				{
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-					},
+			return apiRequest<TConfigTemplatePaginatedResponseDto>('/config-template/predefined', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
 				},
-			);
+			});
 		},
 		refetchOnMount: false,
 		refetchOnWindowFocus: false,

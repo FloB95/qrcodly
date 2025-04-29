@@ -36,13 +36,13 @@ services:
       # Umami environment variables
       DATABASE_URL: mysql://root:root@db/umami
       UMAMI_SECRET: your-secret-key
-      UMAMI_HOST: "http://localhost"
+      UMAMI_HOST: 'http://localhost'
       UMAMI_EMAIL: admin@example.com
-      UMAMI_PASSWORD: "admin_password"
-      UMAMI_DEFAULT_URL: "http://localhost"
-      DISABLE_BOT_CHECK: "true"
+      UMAMI_PASSWORD: 'admin_password'
+      UMAMI_DEFAULT_URL: 'http://localhost'
+      DISABLE_BOT_CHECK: 'true'
     ports:
-      - "3001:3000"  # Port, auf dem Umami zugänglich ist
+      - '3001:3000' # Port, auf dem Umami zugänglich ist
     depends_on:
       - db
   minio:

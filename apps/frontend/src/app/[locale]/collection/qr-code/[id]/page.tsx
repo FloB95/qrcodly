@@ -1,9 +1,9 @@
-import { apiRequest, getShortUrlFromCode } from "@/lib/utils";
-import { notFound } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
-import type { TQrCodeWithRelationsResponseDto } from "@shared/schemas";
-import { AnalyticsSection } from "@/components/dashboard/analytics/AnalyticsSection";
-import Container from "@/components/ui/container";
+import { apiRequest, getShortUrlFromCode } from '@/lib/utils';
+import { notFound } from 'next/navigation';
+import { auth } from '@clerk/nextjs/server';
+import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import { AnalyticsSection } from '@/components/dashboard/analytics/AnalyticsSection';
+import Container from '@/components/ui/container';
 
 interface QRCodeDetailProps {
 	params: Promise<{
@@ -20,18 +20,15 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 		const { getToken } = await auth();
 		const token = await getToken();
 
-		qrCode = await apiRequest<TQrCodeWithRelationsResponseDto>(
-			`/qr-code/${id}`,
-			{
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
+		qrCode = await apiRequest<TQrCodeWithRelationsResponseDto>(`/qr-code/${id}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
 			},
-		);
+		});
 	} catch (error) {
-		console.error("Failed to fetch QR code details:", error);
+		console.error('Failed to fetch QR code details:', error);
 	}
 
 	// Handle not found
@@ -48,7 +45,7 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 				</div>
 				{qrCode.shortUrl?.shortCode && (
 					<div className="mb-4">
-						<strong>QR Code URL:</strong>{" "}
+						<strong>QR Code URL:</strong>{' '}
 						<a
 							href={getShortUrlFromCode(qrCode.shortUrl.shortCode)}
 							target="_blank"
@@ -61,7 +58,7 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 				)}
 				{qrCode.shortUrl?.destinationUrl && (
 					<div className="mb-4">
-						<strong>Ziel URL:</strong>{" "}
+						<strong>Ziel URL:</strong>{' '}
 						<a
 							href={qrCode.shortUrl.destinationUrl}
 							target="_blank"
@@ -73,17 +70,14 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 					</div>
 				)}
 				<div className="mb-4">
-					<strong>Created At:</strong>{" "}
-					{new Date(qrCode.createdAt).toLocaleString()}
+					<strong>Created At:</strong> {new Date(qrCode.createdAt).toLocaleString()}
 				</div>
 				<div className="mb-4">
-					<strong>Updated At:</strong>{" "}
-					{qrCode.updatedAt ? new Date(qrCode.updatedAt).toLocaleString() : ""}
+					<strong>Updated At:</strong>{' '}
+					{qrCode.updatedAt ? new Date(qrCode.updatedAt).toLocaleString() : ''}
 				</div>
 			</div>
-			{qrCode.shortUrl && (
-				<AnalyticsSection shortCode={qrCode.shortUrl.shortCode} />
-			)}
+			{qrCode.shortUrl && <AnalyticsSection shortCode={qrCode.shortUrl.shortCode} />}
 		</Container>
 	);
 }

@@ -1,10 +1,10 @@
-import Footer from "@/components/Footer";
-import NoNavHeader from "@/components/NoNavHeader";
-import { buttonVariants } from "@/components/ui/button";
-import Container from "@/components/ui/container";
-import type { DefaultPageParams } from "@/types/page";
-import Link from "next/link";
-import React from "react";
+import Footer from '@/components/Footer';
+import NoNavHeader from '@/components/NoNavHeader';
+import { buttonVariants } from '@/components/ui/button';
+import Container from '@/components/ui/container';
+import type { DefaultPageParams } from '@/types/page';
+import Link from 'next/link';
+import React from 'react';
 
 export default function NotFoundPage({ params }: DefaultPageParams) {
 	return (
