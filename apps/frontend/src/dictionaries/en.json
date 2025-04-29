@@ -1,4 +1,7 @@
 {
+	"general": {
+		"comingSoon": "coming soon!"
+	},
 	"headline": "<span class=\"text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
 		"title": "QRcodly - Free & Open Source QR Code Generator",
@@ -43,7 +46,7 @@
 		},
 		"featuresCta": {
 			"headline": "Overview of Key Features",
-			"subHeadline": "With QRcodly, you can create, edit, manage, and analyze QR codes – all in one place.",
+			"subHeadline": "With QRcodly you can create, edit, manage, and analyze QR codes – all in one place.",
 			"emailBtn": "Email us",
 			"editFeature": {
 				"headline": "Edit QR Codes Anytime",
@@ -54,12 +57,16 @@
 				"subHeadline": "Track how often and where your QR codes are scanned – in real time."
 			},
 			"overviewFeature": {
-				"headline": "Organized QR Code Collections",
+				"headline": "Organized QR Code Collection",
 				"subHeadline": "Keep all your generated QR codes in one central, easy-to-manage location."
 			},
 			"templateFeature": {
 				"headline": "Create Designs with Templates",
 				"subHeadline": "Save time and ensure consistent branding. Use your design templates to quickly apply styles to new QR codes."
+			},
+			"teamFeature": {
+				"headline": "Collaborate in Teams",
+				"subHeadline": "Invite team members and work together on QR codes. Perfect for companies, agencies, and teams."
 			}
 		}
 	},

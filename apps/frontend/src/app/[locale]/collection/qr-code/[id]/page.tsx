@@ -43,16 +43,16 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 				<div className="mb-4">
 					<strong>ID:</strong> {qrCode.id}
 				</div>
-				{qrCode.shortUrl?.shortCode && (
+				{qrCode.content.type === 'url' && (
 					<div className="mb-4">
 						<strong>QR Code URL:</strong>{' '}
 						<a
-							href={getShortUrlFromCode(qrCode.shortUrl.shortCode)}
+							href={qrCode.content.data.url}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-blue-500 underline"
 						>
-							{getShortUrlFromCode(qrCode.shortUrl.shortCode)}
+							{qrCode.content.data.url}
 						</a>
 					</div>
 				)}

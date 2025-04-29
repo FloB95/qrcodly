@@ -149,11 +149,11 @@ export class UmamiAnalyticsService {
 	public async getAnalyticsForEndpoint(url: string): Promise<TAnalyticsResponseDto> {
 		const now = Date.now();
 		const defaultParams = {
-			startAt: new Date('2023-04-20T00:00:00Z').getTime(), // old start date to get all data
+			startAt: '1745398436000',
 			endAt: now,
-			unit: 'minute',
+			unit: 'day',
 			url: url,
-			compare: 'false',
+			// compare: 'false',
 		};
 
 		const websiteStats = await this.fetchUmamiData(
@@ -164,7 +164,6 @@ export class UmamiAnalyticsService {
 		const viewsAndSessions = this.mapSessionsAndPageviews(
 			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/pageviews`, {
 				...defaultParams,
-				type: 'browser',
 			}),
 		);
 

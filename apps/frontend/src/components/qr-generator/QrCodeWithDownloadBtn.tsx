@@ -9,7 +9,7 @@ export const QrCodeWithDownloadBtn = () => {
 	return (
 		<div>
 			<Suspense fallback={null}>
-				<div className="flex justify-center space-y-6 md:flex-col md:justify-start">
+				<div className="flex justify-center space-y-6 lg:flex-col lg:justify-start">
 					<DynamicQrCode
 						qrCode={{
 							content,
@@ -17,7 +17,7 @@ export const QrCodeWithDownloadBtn = () => {
 						}}
 					/>
 				</div>
-				<div className="mt-6 flex justify-center space-x-2 md:justify-between">
+				<div className="mt-6 flex justify-center lg:space-x-2 flex-col space-y-2 lg:space-y-0 lg:flex-row lg:justify-between">
 					<QrCodeSaveTemplateBtn config={config} />
 					<QrCodeDownloadBtn
 						qrCode={{

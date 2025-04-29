@@ -1,4 +1,7 @@
 {
+	"general": {
+		"comingSoon": "demnächst verfügbar!"
+	},
 	"headline": "<span class=\"text-2xl\">Kostenloser & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
 		"title": "QRcodly - Kostenloser & Open Source QR Code Generator",
@@ -54,12 +57,16 @@
 				"subHeadline": "Behalte im Blick, wie oft und von wo aus deine QR-Codes gescannt werden."
 			},
 			"overviewFeature": {
-				"headline": "Übersichtliche QR-Code Kollektion",
+				"headline": "Übersichtliche QR-Code Sammlung",
 				"subHeadline": "Behalte den Überblick über alle deine generierten QR-Codes an einem zentralen Ort."
 			},
 			"templateFeature": {
 				"headline": "Designs mit Vorlagen erstellen",
 				"subHeadline": "Spare Zeit und sorge für einheitliches Branding. Erstelle Vorlagen mit deinen bevorzugten Styles und wende diese einfach auf neue QR-Codes an."
+			},
+			"teamFeature": {
+				"headline": "Im Team zusammenarbeiten",
+				"subHeadline": "Lade Teammitglieder ein und arbeite gemeinsam an QR-Codes. Ideal für Unternehmen, Agenturen und Teams."
 			}
 		}
 	},
@@ -79,7 +86,8 @@
 		"download": {
 			"successTitle": "Neuer QR Code erstellt",
 			"successDescription": "Wir haben deinen QR Code für die spätere Verwendung in deiner Sammlung gespeichert.",
-			"downloadBtn": "Herunterladen"
+			"downloadBtn": "Herunterladen",
+			"errorTitle": "Fehler beim Speichern des QR Codes"
 		}
 	},
 	"loginDialog": {
@@ -108,6 +116,8 @@
 		"noPredefinedTemplates": "Momentan sind keine vordefinierten Vorlagen verfügbar.",
 		"templateCreatedTitle": "Neue Vorlage erstellt",
 		"templateCreatedDescription": "Deine Vorlage wurde erfolgreich erstellt.",
+		"templateCreatedErrorTitle": "Fehler beim Erstellen der Vorlage",
+		"templateCreatedErrorDescription": "Beim Erstellen deiner Vorlage ist ein Fehler aufgetreten. Wir wurden bereits benachrichtigt und beheben das Problem so schnell wie möglich.",
 		"saveAsBtn": "Als Vorlage speichern",
 		"saveInfo": "Speichere den aktuellen QR-Code-Stil als wiederverwendbare Vorlage.",
 		"savePopup": {

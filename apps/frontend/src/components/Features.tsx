@@ -3,12 +3,14 @@ import {
 	QrCodeIcon,
 	RectangleStackIcon,
 	StarIcon,
+	UserGroupIcon,
 } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
-import React from 'react';
+import { Badge } from './ui/badge';
 
 export const Features = () => {
 	const t = useTranslations('contentElements.featuresCta');
+	const t2 = useTranslations('general');
 	return (
 		<div className="my-18 space-y-5 sm:my-32">
 			<div className="mx-auto max-w-3xl text-center">
@@ -44,6 +46,19 @@ export const Features = () => {
 					</div>
 					<h2 className="mb-3 text-xl font-bold text-gray-900">{t('templateFeature.headline')}</h2>
 					<p className="text-gray-600">{t('templateFeature.subHeadline')}</p>
+				</div>
+			</div>
+
+			<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+				<div className="md:col-span-2 lg:col-start-2">
+					<div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md relative">
+						<Badge className="absolute right-4 top-4">{t2('comingSoon')}</Badge>
+						<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
+							<UserGroupIcon className="h-8 w-8" />
+						</div>
+						<h2 className="mb-3 text-xl font-bold text-gray-900">{t('teamFeature.headline')}</h2>
+						<p className="text-gray-600">{t('teamFeature.subHeadline')}</p>
+					</div>
 				</div>
 			</div>
 		</div>
