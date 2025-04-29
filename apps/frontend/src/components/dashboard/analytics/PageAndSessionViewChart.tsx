@@ -1,7 +1,14 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, XAxis } from "recharts";
 
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import {
 	type ChartConfig,
 	ChartContainer,
@@ -10,14 +17,14 @@ import {
 } from "@/components/ui/chart";
 import type { TPageviewsAndSessions } from "@shared/schemas";
 
-export const description = "An interactive stacked bar chart";
-
 const chartConfig = {
 	pageviews: {
 		label: "Page Views",
+		color: "var(--chart-1)",
 	},
 	sessions: {
 		label: "Sessions",
+		color: "var(--chart-2)",
 	},
 } satisfies ChartConfig;
 
@@ -33,60 +40,47 @@ export function PageAndSessionViewChart({ chartData }: StatisticChartProps) {
 	}));
 
 	return (
-		<ChartContainer
-			config={chartConfig}
-			className="aspect-auto h-[250px] w-full"
-		>
-			<BarChart
-				accessibilityLayer
-				data={combinedData}
-				margin={{ left: 12, right: 12 }}
-			>
-				<CartesianGrid vertical={false} />
-				<XAxis
-					dataKey="date"
-					tickLine={false}
-					axisLine={false}
-					tickMargin={8}
-					minTickGap={32}
-					tickFormatter={(value: string) =>
-						new Date(value).toLocaleDateString("DE-US", {
-							month: "short",
-							day: "numeric",
-						})
-					}
-				/>
-				<YAxis
-					width={34}
-					tickLine={false}
-					axisLine={true}
-					tickMargin={8}
-					minTickGap={10}
-					tickFormatter={(value: number) => value.toLocaleString()}
-				/>
-				<ChartTooltip
-					content={
-						<ChartTooltipContent
-							className="w-[180px]"
-							labelFormatter={(value: string) =>
+		<Card>
+			<CardHeader>
+				<CardDescription>Total Views</CardDescription>
+				<CardTitle className="flex space-x-2 text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+					<span>{1200}</span>
+				</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<ChartContainer config={chartConfig}>
+					<BarChart accessibilityLayer data={combinedData}>
+						<XAxis
+							dataKey="date"
+							tickLine={false}
+							tickMargin={10}
+							axisLine={false}
+							tickFormatter={(value) =>
 								new Date(value).toLocaleDateString("en-US", {
-									month: "short",
-									day: "numeric",
-									year: "numeric",
+									weekday: "short",
 								})
 							}
-							formatter={(value: number, name: string) => {
-								const label =
-									chartConfig[name as keyof typeof chartConfig]?.label || name;
-								return [value.toLocaleString(), label];
-							}}
 						/>
-					}
-				/>
-				<Legend />
-				<Bar dataKey="sessions" background={{ fill: "green" }} stackId="a" />
-				<Bar dataKey="pageviews" background={{ fill: "red" }} stackId="a" />
-			</BarChart>
-		</ChartContainer>
+						<Bar
+							dataKey="sessions"
+							stackId="a"
+							fill="var(--color-sessions)"
+							radius={[0, 0, 4, 4]}
+						/>
+						<Bar
+							dataKey="pageviews"
+							stackId="a"
+							fill="var(--color-pageviews)"
+							radius={[4, 4, 0, 0]}
+						/>
+						<ChartTooltip
+							content={<ChartTooltipContent />}
+							cursor={false}
+							defaultIndex={1}
+						/>
+					</BarChart>
+				</ChartContainer>
+			</CardContent>
+		</Card>
 	);
 }

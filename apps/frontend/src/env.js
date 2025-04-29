@@ -20,6 +20,7 @@ export const env = createEnv({
 	 * `NEXT_PUBLIC_`.
 	 */
 	client: {
+		NEXT_PUBLIC_FRONTEND_URL: z.string().url(),
 		NEXT_PUBLIC_API_URL: z.string().url(),
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
 		NEXT_PUBLIC_POSTHOG_KEY: z.string(),
@@ -41,6 +42,7 @@ export const env = createEnv({
 		UMAMI_API_HOST: process.env.UMAMI_API_HOST,
 		NEXT_PUBLIC_UMAMI_WEBSITE: process.env.NEXT_PUBLIC_UMAMI_WEBSITE,
 
+		NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL,
 		NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
 			process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,

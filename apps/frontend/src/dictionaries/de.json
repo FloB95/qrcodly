@@ -36,10 +36,31 @@
 			"loading": "Lädt..."
 		},
 		"feedbackCta": {
-			"headline": "Hilf uns, besser zu werden – dein Feedback ist wichtig! 🚀",
+			"headline": "Dein Feedback ist wichtig! 🚀",
 			"subHeadline1": "Wir arbeiten ständig daran, QRcodly zu verbessern.",
 			"subHeadline2": "Wenn du Feedback oder Fragen hast, lass es uns bitte wissen.",
-			"emailBtn": "E-Mail an uns"
+			"emailBtn": "E-Mail"
+		},
+		"featuresCta": {
+			"headline": "Übersicht der wichtigsten Funktionen",
+			"subHeadline": "Mit QRcodly kannst du QR-Codes kostenlos erstellen, bearbeiten, verwalten und analysieren – alles an einem Ort.",
+			"emailBtn": "Email us",
+			"editFeature": {
+				"headline": "QR-Codes jederzeit bearbeiten",
+				"subHeadline": "Erstelle QR-Codes kostenlos und passe die Ziel-URL auch nach dem Druck jederzeit an."
+			},
+			"statisticFeature": {
+				"headline": "QR-Code-Statistiken in Echtzeit",
+				"subHeadline": "Behalte im Blick, wie oft und von wo aus deine QR-Codes gescannt werden."
+			},
+			"overviewFeature": {
+				"headline": "Übersichtliche QR-Code Kollektion",
+				"subHeadline": "Behalte den Überblick über alle deine generierten QR-Codes an einem zentralen Ort."
+			},
+			"templateFeature": {
+				"headline": "Designs mit Vorlagen erstellen",
+				"subHeadline": "Spare Zeit und sorge für einheitliches Branding. Erstelle Vorlagen mit deinen bevorzugten Styles und wende diese einfach auf neue QR-Codes an."
+			}
 		}
 	},
 	"qrCode": {

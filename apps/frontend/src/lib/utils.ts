@@ -7,6 +7,10 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
+export function getShortUrlFromCode(code: string): string {
+	return `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${code}`;
+}
+
 export const sleep = (ms: number): Promise<void> =>
 	new Promise((resolve) => setTimeout(resolve, ms));
 

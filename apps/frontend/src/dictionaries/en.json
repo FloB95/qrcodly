@@ -40,6 +40,27 @@
 			"subHeadline1": "We are constantly working on improving QRcodly.",
 			"subHeadline2": "If you have any feedback or questions, please let us know.",
 			"emailBtn": "Email us"
+		},
+		"featuresCta": {
+			"headline": "Overview of Key Features",
+			"subHeadline": "With QRcodly, you can create, edit, manage, and analyze QR codes – all in one place.",
+			"emailBtn": "Email us",
+			"editFeature": {
+				"headline": "Edit QR Codes Anytime",
+				"subHeadline": "Create QR codes for free and change the destination URL even after printing."
+			},
+			"statisticFeature": {
+				"headline": "Real-Time QR Code Analytics",
+				"subHeadline": "Track how often and where your QR codes are scanned – in real time."
+			},
+			"overviewFeature": {
+				"headline": "Organized QR Code Collections",
+				"subHeadline": "Keep all your generated QR codes in one central, easy-to-manage location."
+			},
+			"templateFeature": {
+				"headline": "Create Designs with Templates",
+				"subHeadline": "Save time and ensure consistent branding. Use your design templates to quickly apply styles to new QR codes."
+			}
 		}
 	},
 	"qrCode": {

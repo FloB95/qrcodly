@@ -50,7 +50,7 @@ export function NameDialog({
 						onKeyDown={handleKeyDown}
 						maxLength={40}
 					/>
-					<div className="text-sm text-gray-500">
+					<div className="px-2 py-1 text-sm text-gray-500">
 						{name.length}/40 {t("characters")}
 					</div>
 				</div>

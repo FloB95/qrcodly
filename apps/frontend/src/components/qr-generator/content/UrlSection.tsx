@@ -21,6 +21,7 @@ import { UrlInputSchema, type TUrlInput } from "@shared/schemas";
 import { ArrowTurnDownRightIcon } from "@heroicons/react/24/outline";
 import { useGetReservedShortUrlMutation } from "@/lib/api/url-shortener";
 import { useTranslations } from "next-intl";
+import { getShortUrlFromCode } from "@/lib/utils";
 
 type FormValues = TUrlInput;
 
@@ -62,7 +63,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 
 	async function getSortUrl() {
 		const shortUrl = await getReservedShortUrlMutation.mutateAsync();
-		setSortUrl(`https://www.qrcodly.de/u/${shortUrl.shortCode}`);
+		setSortUrl(getShortUrlFromCode(shortUrl.shortCode));
 	}
 
 	useEffect(() => {
