@@ -9,7 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
 
 // Define query keys
-export const queryKeys = {
+export const qrCodeQueryKeys = {
 	listQrCodes: ['listQrCodes'],
 } as const;
 
@@ -18,7 +18,7 @@ export function useListQrCodesQuery() {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: queryKeys.listQrCodes,
+		queryKey: qrCodeQueryKeys.listQrCodes,
 		queryFn: async (): Promise<TQrCodeWithRelationsPaginatedResponseDto> => {
 			const token = await getToken();
 
@@ -59,7 +59,7 @@ export function useCreateQrCodeMutation() {
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
 			void queryClient.invalidateQueries({
-				queryKey: queryKeys.listQrCodes,
+				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
 		onError: (error) => {
@@ -86,7 +86,7 @@ export function useDeleteQrCodeMutation() {
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
 			void queryClient.invalidateQueries({
-				queryKey: queryKeys.listQrCodes,
+				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
 		onError: (error) => {

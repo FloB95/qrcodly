@@ -6,11 +6,15 @@ import { toast } from '../ui/use-toast';
 import { Button } from '../ui/button';
 import { DynamicQrCode } from '../qr-generator/DynamicQrCode';
 import {
+	ArrowDownTrayIcon,
 	ArrowTurnDownRightIcon,
 	DocumentTextIcon,
 	EllipsisVerticalIcon,
+	EyeSlashIcon,
 	IdentificationIcon,
 	LinkIcon,
+	PencilIcon,
+	TrashIcon,
 	WifiIcon,
 } from '@heroicons/react/24/outline';
 import { TableCell, TableRow } from '../ui/table';
@@ -30,7 +34,10 @@ import posthog from 'posthog-js';
 import { formatDate } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useGetViewsFromShortCodeQuery } from '@/lib/api/url-shortener';
+import {
+	useGetViewsFromShortCodeQuery,
+	useToggleActiveStateMutation,
+} from '@/lib/api/url-shortener';
 import { useTranslations } from 'next-intl';
 
 const GetNameByContentType = (qr: TQrCodeWithRelationsResponseDto) => {
@@ -107,6 +114,29 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 	const trans = useTranslations();
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const deleteQrCodeMutation = useDeleteQrCodeMutation();
+	const toggleActiveStateMutation = useToggleActiveStateMutation();
+
+	const toggleActiveState = useCallback(() => {
+		if (!qr.shortUrl) return;
+
+		toggleActiveStateMutation.mutate(qr.shortUrl.shortCode, {
+			onSuccess: () => {
+				posthog.capture('short-url-toggled', {
+					id: qr.shortUrl!.id,
+					isActive: qr.shortUrl?.isActive,
+				});
+			},
+			onError: () => {
+				toast({
+					title: trans('shortUrl.error.toggleActiveState.title'),
+					description: trans('shortUrl.error.toggleActiveState.message'),
+					variant: 'destructive',
+					duration: 5000,
+				});
+			},
+		});
+	}, [qr]);
+
 	const handleDelete = useCallback(() => {
 		setIsDeleting(true);
 		const t = toast({
@@ -145,7 +175,7 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 
 	return (
 		<TableRow
-			className={`hover:bg-muted/90 rounded-lg border-none shadow ${isDeleting ? 'bg-muted/70' : 'bg-white'}`}
+			className={`hover:bg-gray-50 rounded-lg border-none shadow ${isDeleting ? '!bg-muted/70' : qr.shortUrl?.isActive === false ? '!bg-muted' : 'bg-white'}`}
 		>
 			<TableCell className="table-cell rounded-l-lg">
 				<div className="flex space-x-8">
@@ -186,7 +216,7 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 			</TableCell>
 			<TableCell className="hidden sm:table-cell">
 				{qr.shortUrl && (
-					<Badge variant="outline">
+					<Badge variant={qr.shortUrl.isActive ? 'outline' : 'default'}>
 						{qr.shortUrl.isActive
 							? trans('analytics.stateActive')
 							: trans('analytics.stateInactive')}
@@ -207,17 +237,35 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>{trans('qrCode.actionsMenu.title')}</DropdownMenuLabel>
-						<DropdownMenuItem>
+						<DropdownMenuItem className="flex space-x-2">
+							<PencilIcon className="h-4 w-4" />
 							<Link href={`/collection/qr-code/${qr.id}`} prefetch>
 								<div className="flex items-center space-x-2">
 									{trans('qrCode.actionsMenu.edit')}
 								</div>
 							</Link>
 						</DropdownMenuItem>
-						<DropdownMenuItem>
+						<DropdownMenuItem className="flex space-x-2">
+							<ArrowDownTrayIcon className="h-4 w-4" />
 							<QrCodeDownloadBtn qrCode={qr} noStyling />
 						</DropdownMenuItem>
-						<DropdownMenuItem>
+						{qr.shortUrl && (
+							<DropdownMenuItem className="flex space-x-2">
+								{qr.shortUrl.isActive ? (
+									<EyeSlashIcon className="h-4 w-4" />
+								) : (
+									<EyeIcon className="h-4 w-4" />
+								)}
+
+								<div className="cursor-pointer" onClick={toggleActiveState}>
+									{qr.shortUrl.isActive
+										? trans('qrCode.actionsMenu.disableShortUrl')
+										: trans('qrCode.actionsMenu.enableShortUrl')}
+								</div>
+							</DropdownMenuItem>
+						)}
+						<DropdownMenuItem className="flex space-x-2">
+							<TrashIcon className="h-4 w-4" />
 							<div className="cursor-pointer" onClick={handleDelete}>
 								{trans('qrCode.actionsMenu.delete')}
 							</div>

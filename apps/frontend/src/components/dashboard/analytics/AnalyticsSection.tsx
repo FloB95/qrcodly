@@ -1,12 +1,12 @@
 'use client';
 
-import { useGetAnalyticsFromShortCode } from '@/lib/api/url-shortener';
+import { useGetAnalyticsFromShortCodeQuery } from '@/lib/api/url-shortener';
 import React from 'react';
 import { PageAndSessionViewChart } from './PageAndSessionViewChart';
 import { DeviceChart } from './DeviceChart';
 
 export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
-	const { isLoading, data } = useGetAnalyticsFromShortCode(shortCode);
+	const { isLoading, data } = useGetAnalyticsFromShortCodeQuery(shortCode);
 	if (isLoading || !data) {
 		return;
 	}

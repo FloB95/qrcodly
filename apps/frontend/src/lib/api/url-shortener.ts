@@ -1,7 +1,8 @@
 import { useAuth } from '@clerk/nextjs';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
 import type { TAnalyticsResponseDto, TShortUrl } from '@shared/schemas';
+import { qrCodeQueryKeys } from './qr-code';
 
 // Define query keys
 export const queryKeys = {
@@ -26,7 +27,30 @@ export function useGetReservedShortUrlMutation() {
 			});
 		},
 		onError: (error) => {
-			console.error('Error deleting configuration template:', error);
+			console.error('Error fetching reserved short URL:', error);
+		},
+	});
+}
+
+export function useToggleActiveStateMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async (shortCode: string): Promise<TShortUrl> => {
+			const token = await getToken();
+			const headers: HeadersInit = {
+				Authorization: `Bearer ${token}`,
+			};
+			return await apiRequest<TShortUrl>(`/short-url/${shortCode}/toggle-active-state`, {
+				method: 'POST',
+				headers,
+			});
+		},
+		onSuccess: () => {
+			void queryClient.invalidateQueries({
+				queryKey: qrCodeQueryKeys.listQrCodes,
+			});
 		},
 	});
 }
@@ -53,7 +77,7 @@ export function useGetViewsFromShortCodeQuery(shortCode: string) {
 	});
 }
 
-export function useGetAnalyticsFromShortCode(shortCode: string) {
+export function useGetAnalyticsFromShortCodeQuery(shortCode: string) {
 	const { getToken } = useAuth();
 
 	return useQuery({

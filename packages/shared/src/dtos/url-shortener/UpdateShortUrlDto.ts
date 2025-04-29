@@ -8,7 +8,7 @@ export const UpdateShortUrlDto = ShortUrlSchema.pick({
 	destinationUrl: true,
 	qrCodeId: true,
 	isActive: true,
-});
+}).partial();
 
 /**
  * Type definition for updating a short URL DTO.

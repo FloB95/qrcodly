@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import { AbstractCommand } from '@/core/command/abstract.command';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
-import { TQrCodeContent, TQrCodeContentType } from '@shared/schemas';
+import { TQrCodeContent } from '@shared/schemas';
 
 @injectable()
 export default class MigrateQrCodesCommand extends AbstractCommand {

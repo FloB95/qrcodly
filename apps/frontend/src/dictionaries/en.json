@@ -70,6 +70,14 @@
 			}
 		}
 	},
+	"shortUrl": {
+		"error": {
+			"toggleActiveState": {
+				"title": "Error Changing State",
+				"message": "There was an error changing the state. We've been notified and will fix it as soon as possible."
+			}
+		}
+	},
 	"qrCode": {
 		"error": {
 			"delete": {
@@ -81,7 +89,9 @@
 		"actionsMenu": {
 			"title": "Actions",
 			"edit": "Edit",
-			"delete": "Delete"
+			"delete": "Delete",
+			"disableShortUrl": "Disable",
+			"enableShortUrl": "Enable"
 		},
 		"download": {
 			"successTitle": "New QR Code Created",

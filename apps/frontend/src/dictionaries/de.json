@@ -70,6 +70,14 @@
 			}
 		}
 	},
+	"shortUrl": {
+		"error": {
+			"toggleActiveState": {
+				"title": "Fehler beim Ändern des Status",
+				"message": "Beim Ändern des Status ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem so schnell wie möglich beheben."
+			}
+		}
+	},
 	"qrCode": {
 		"error": {
 			"delete": {
@@ -81,7 +89,9 @@
 		"actionsMenu": {
 			"title": "Aktionen",
 			"edit": "Bearbeiten",
-			"delete": "Löschen"
+			"delete": "Löschen",
+			"disableShortUrl": "Deaktivieren",
+			"enableShortUrl": "Aktivieren"
 		},
 		"download": {
 			"successTitle": "Neuer QR Code erstellt",

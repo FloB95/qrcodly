@@ -49,7 +49,7 @@ export const Features = () => {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+			<div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 				<div className="md:col-span-2 lg:col-start-2">
 					<div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md relative">
 						<Badge className="absolute right-4 top-4">{t2('comingSoon')}</Badge>

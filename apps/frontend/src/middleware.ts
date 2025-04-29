@@ -1,7 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { Logger } from 'next-axiom';
 import { NextResponse } from 'next/server';
-import { handleAnalytics } from './middlewares/analytics.middleware';
+import { processAnalyticsAndRedirect } from './middlewares/process-analytics-and-redirect.middleware';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 
@@ -22,7 +22,7 @@ export default clerkMiddleware(async (auth, req, event) => {
 	// Handle analytics for specific routes
 	const urlPattern = /^\/u\/[a-z0-9]{5}$/;
 	if (urlPattern.test(new URL(req.url).pathname)) {
-		return await handleAnalytics(req);
+		return await processAnalyticsAndRedirect(req);
 	}
 
 	// Apply the next-intl middleware

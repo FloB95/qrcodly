@@ -3,7 +3,7 @@ import { apiRequest } from '@/lib/utils';
 import type { TShortUrl } from '@shared/schemas';
 import { NextResponse, type NextRequest } from 'next/server';
 
-export async function handleAnalytics(req: NextRequest) {
+export async function processAnalyticsAndRedirect(req: NextRequest) {
 	// Extract data from headers
 	const headers = req.headers;
 	const rawHostname = headers.get('host') ?? '';
