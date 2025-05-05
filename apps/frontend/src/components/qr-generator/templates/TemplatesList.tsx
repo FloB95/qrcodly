@@ -20,6 +20,7 @@ import { Loader2 } from 'lucide-react';
 import posthog from 'posthog-js';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { fetchImageAsBase64 } from '@/lib/utils';
 
 type TemplateListProps = {
 	templates: TConfigTemplateResponseDto[];
@@ -33,14 +34,24 @@ export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListPr
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const deleteTemplateMutation = useDeleteConfigTemplateMutation();
 
-	const handleSelect = (template: TConfigTemplateResponseDto) => {
-		onSelect(template);
+	const handleSelect = useCallback(
+		async (template: TConfigTemplateResponseDto) => {
+			try {
+				if (template.config.image) {
+					template.config.image = await fetchImageAsBase64(template.config.image);
+				}
+				onSelect(template);
 
-		posthog.capture('config-template-selected', {
-			id: template.id,
-			templateName: template.name,
-		});
-	};
+				posthog.capture('config-template-selected', {
+					id: template.id,
+					templateName: template.name,
+				});
+			} catch (error) {
+				console.error('Failed to convert image to base64:', error);
+			}
+		},
+		[onSelect],
+	);
 
 	const handleDelete = useCallback(() => {
 		if (!selectedTemplate) return;

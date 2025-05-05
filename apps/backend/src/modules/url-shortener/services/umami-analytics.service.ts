@@ -153,13 +153,12 @@ export class UmamiAnalyticsService {
 			endAt: now,
 			unit: 'day',
 			url: url,
-			// compare: 'false',
 		};
 
-		const websiteStats = await this.fetchUmamiData(
-			`websites/${this.umamiWebsiteId}/stats`,
-			defaultParams,
-		);
+		const websiteStats = await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/stats`, {
+			...defaultParams,
+			compare: 'false',
+		});
 
 		const viewsAndSessions = this.mapSessionsAndPageviews(
 			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/pageviews`, {

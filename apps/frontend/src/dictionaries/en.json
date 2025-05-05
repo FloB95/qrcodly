@@ -15,7 +15,9 @@
 	"analytics": {
 		"totalViews": "Total Views",
 		"stateActive": "Active",
-		"stateInactive": "Disabled"
+		"stateInactive": "Disabled",
+		"activeDescription": "Active: Users can access the destination page, and views are tracked.",
+		"inactiveDescription": "Inactive: Access and tracking are disabled."
 	},
 	"header": {
 		"collectionBtn": "My Collection",

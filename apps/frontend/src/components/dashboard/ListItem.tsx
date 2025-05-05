@@ -90,7 +90,7 @@ const GetQrCodeIconByContentType = (qr: TQrCode) => {
 export const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	const t = useTranslations();
 	const { data } = useGetViewsFromShortCodeQuery(shortUrl.shortCode);
-	if (data?.views) {
+	if (data?.views !== undefined) {
 		return (
 			<div>
 				<Tooltip>
@@ -216,11 +216,22 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 			</TableCell>
 			<TableCell className="hidden sm:table-cell">
 				{qr.shortUrl && (
-					<Badge variant={qr.shortUrl.isActive ? 'outline' : 'default'}>
-						{qr.shortUrl.isActive
-							? trans('analytics.stateActive')
-							: trans('analytics.stateInactive')}
-					</Badge>
+					<Tooltip>
+						<TooltipTrigger asChild disabled>
+							<Badge variant={qr.shortUrl.isActive ? 'default' : 'outline'}>
+								{qr.shortUrl.isActive
+									? trans('analytics.stateActive')
+									: trans('analytics.stateInactive')}
+							</Badge>
+						</TooltipTrigger>
+						<TooltipContent side="top">
+							<div>
+								{qr.shortUrl.isActive
+									? trans('analytics.activeDescription')
+									: trans('analytics.inactiveDescription')}
+							</div>
+						</TooltipContent>
+					</Tooltip>
 				)}
 			</TableCell>
 			<TableCell>{qr.shortUrl && <ViewComponent shortUrl={qr.shortUrl} />}</TableCell>
@@ -237,12 +248,14 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>{trans('qrCode.actionsMenu.title')}</DropdownMenuLabel>
-						<DropdownMenuItem className="flex space-x-2">
-							<PencilIcon className="h-4 w-4" />
-							<Link href={`/collection/qr-code/${qr.id}`} prefetch>
-								<div className="flex items-center space-x-2">
-									{trans('qrCode.actionsMenu.edit')}
-								</div>
+						<DropdownMenuItem>
+							<Link
+								className="flex space-x-2 items-center"
+								href={`/collection/qr-code/${qr.id}`}
+								prefetch
+							>
+								<PencilIcon className="h-4 w-4" />
+								<div className="">{trans('qrCode.actionsMenu.edit')}</div>
 							</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem className="flex space-x-2">
@@ -250,25 +263,26 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 							<QrCodeDownloadBtn qrCode={qr} noStyling />
 						</DropdownMenuItem>
 						{qr.shortUrl && (
-							<DropdownMenuItem className="flex space-x-2">
+							<DropdownMenuItem
+								className="flex space-x-2 cursor-pointer"
+								onClick={toggleActiveState}
+							>
 								{qr.shortUrl.isActive ? (
 									<EyeSlashIcon className="h-4 w-4" />
 								) : (
 									<EyeIcon className="h-4 w-4" />
 								)}
 
-								<div className="cursor-pointer" onClick={toggleActiveState}>
+								<div>
 									{qr.shortUrl.isActive
 										? trans('qrCode.actionsMenu.disableShortUrl')
 										: trans('qrCode.actionsMenu.enableShortUrl')}
 								</div>
 							</DropdownMenuItem>
 						)}
-						<DropdownMenuItem className="flex space-x-2">
+						<DropdownMenuItem className="flex space-x-2 cursor-pointer" onClick={handleDelete}>
 							<TrashIcon className="h-4 w-4" />
-							<div className="cursor-pointer" onClick={handleDelete}>
-								{trans('qrCode.actionsMenu.delete')}
-							</div>
+							<div>{trans('qrCode.actionsMenu.delete')}</div>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

@@ -19,8 +19,8 @@ import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { Badge } from '@/components/ui/badge';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
 import { ArrowTurnDownRightIcon } from '@heroicons/react/24/outline';
-import { useGetReservedShortUrlMutation } from '@/lib/api/url-shortener';
 import { useTranslations } from 'next-intl';
+import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { getShortUrlFromCode } from '@/lib/utils';
 
 type FormValues = TUrlInput;
@@ -32,10 +32,9 @@ type TUrlSectionProps = {
 
 export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
-	const getReservedShortUrlMutation = useGetReservedShortUrlMutation();
+	const { data: shortUrl } = useGetReservedShortUrlQuery();
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
-	const [shortUrl, setSortUrl] = useState<string | null>(null);
 	const [originalUrl, setOriginalUrl] = useState<string | null>(value?.url ?? null);
 
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
@@ -53,22 +52,11 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		const payload = {
 			...values,
 			url: originalUrl,
-			shortUrl: shortUrl,
+			shortUrl: shortUrl ? getShortUrlFromCode(shortUrl.shortCode) : null,
 		};
 
 		onChange(payload);
 	}
-
-	async function getSortUrl() {
-		const shortUrl = await getReservedShortUrlMutation.mutateAsync();
-		setSortUrl(getShortUrlFromCode(shortUrl.shortCode));
-	}
-
-	useEffect(() => {
-		if (isSignedIn) {
-			void getSortUrl();
-		}
-	}, [isSignedIn]);
 
 	useEffect(() => {
 		if (
@@ -80,6 +68,11 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		}
 		void form.handleSubmit(onSubmit)();
 	}, [debounced]);
+
+	useEffect(() => {
+		form.reset();
+		setOriginalUrl(null);
+	}, [shortUrl]);
 
 	return (
 		<>
@@ -119,7 +112,9 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 								{form.getValues().isEditable && shortUrl && originalUrl && (
 									<div className="-mt-1 ml-6 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
 										<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold" />
-										<span className="text-muted-foreground pt-1 text-sm">{shortUrl}</span>
+										<span className="text-muted-foreground pt-1 text-sm">
+											{getShortUrlFromCode(shortUrl.shortCode)}
+										</span>
 									</div>
 								)}
 

@@ -27,6 +27,17 @@ export const svgToBase64 = (svgString: string): string => {
 	return `data:image/svg+xml;base64,${base64}`;
 };
 
+export const fetchImageAsBase64 = async (url: string) => {
+	const response = await fetch(url);
+	const blob = await response.blob();
+	return new Promise<string>((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onloadend = () => resolve(reader.result as string);
+		reader.onerror = reject;
+		reader.readAsDataURL(blob);
+	});
+};
+
 export const formatDate = (date: Date | string): string => {
 	return new Intl.DateTimeFormat(undefined, {
 		year: 'numeric',

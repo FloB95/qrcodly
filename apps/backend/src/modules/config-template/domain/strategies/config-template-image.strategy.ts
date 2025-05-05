@@ -1,6 +1,7 @@
 import { type TConfigTemplate } from '../entities/config-template.entity';
 import { convertQrCodeOptionsToLibraryOptions } from '@shared/schemas';
 import {
+	QR_CODE_TEMPLATE_FOLDER,
 	QR_CODE_TEMPLATE_PREVIEW_IMAGE_FOLDER,
 	QR_CODE_TEMPLATE_UPLOAD_FOLDER,
 } from '../../config/constants';
@@ -28,7 +29,7 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 
 	async delete(imagePath?: string): Promise<void> {
 		if (!imagePath) return;
-		const templatePathRegex = new RegExp(`^${QR_CODE_TEMPLATE_UPLOAD_FOLDER}/`);
+		const templatePathRegex = new RegExp(`^${QR_CODE_TEMPLATE_FOLDER}/`);
 		if (!templatePathRegex.test(imagePath)) {
 			this.logger.warn(`Attempted to delete image outside the template folder: ${imagePath}`);
 			return;

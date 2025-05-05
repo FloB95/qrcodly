@@ -13,9 +13,11 @@
 		"description": "Wir arbeiten derzeit daran, diesen Abschnitt zu aktualisieren, um dir besser zu dienen. Bitte schau bald wieder vorbei!"
 	},
 	"analytics": {
-		"totalViews": "Aufrufe",
+		"totalViews": "Gesamtaufrufe",
 		"stateActive": "Aktiv",
-		"stateInactive": "Deaktiviert"
+		"stateInactive": "Deaktiviert",
+		"activeDescription": "Aktiv: Benutzer können auf die Zielseite zugreifen und Aufrufe werden analysiert.",
+		"inactiveDescription": "Deaktiviert: Zugriff und Analyse sind deaktiviert."
 	},
 	"header": {
 		"collectionBtn": "Meine Sammlung",

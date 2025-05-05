@@ -5,18 +5,23 @@ import type { TAnalyticsResponseDto, TShortUrl } from '@shared/schemas';
 import { qrCodeQueryKeys } from './qr-code';
 
 // Define query keys
-export const queryKeys = {
+export const urlShortenerQueryKeys = {
 	qrCodeViews: ['qrCodeViews'],
 	shortCodeAnalytics: ['shortCodeAnalytics'],
+	reservedShortUrl: ['reservedShortUrl'],
 } as const;
 
 // Function to delete a configuration template
-export function useGetReservedShortUrlMutation() {
+export function useGetReservedShortUrlQuery() {
 	const { getToken } = useAuth();
 
-	return useMutation({
-		mutationFn: async (): Promise<TShortUrl> => {
+	return useQuery({
+		queryKey: urlShortenerQueryKeys.reservedShortUrl,
+		queryFn: async (): Promise<TShortUrl | null> => {
 			const token = await getToken();
+
+			if (!token) return null;
+
 			const headers: HeadersInit = {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
@@ -26,9 +31,8 @@ export function useGetReservedShortUrlMutation() {
 				headers,
 			});
 		},
-		onError: (error) => {
-			console.error('Error fetching reserved short URL:', error);
-		},
+		staleTime: 5 * 60 * 1000, // 5 minutes
+		retry: 2,
 	});
 }
 
@@ -59,7 +63,7 @@ export function useGetViewsFromShortCodeQuery(shortCode: string) {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: [...queryKeys.qrCodeViews, shortCode],
+		queryKey: [...urlShortenerQueryKeys.qrCodeViews, shortCode],
 		queryFn: async (): Promise<{ views: number }> => {
 			const token = await getToken();
 			const headers: HeadersInit = {
@@ -81,7 +85,7 @@ export function useGetAnalyticsFromShortCodeQuery(shortCode: string) {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: [...queryKeys.shortCodeAnalytics, shortCode],
+		queryKey: [...urlShortenerQueryKeys.shortCodeAnalytics, shortCode],
 		queryFn: async (): Promise<TAnalyticsResponseDto> => {
 			const token = await getToken();
 			const headers: HeadersInit = {

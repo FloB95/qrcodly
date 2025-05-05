@@ -3,7 +3,11 @@ import {
 	convertQrCodeOptionsToLibraryOptions,
 	type TQrCode,
 } from '@shared/schemas';
-import { QR_CODE_PREVIEW_IMAGE_FOLDER, QR_CODE_UPLOAD_FOLDER } from '../../config/constants';
+import {
+	QR_CODE_IMAGE_FOLDER,
+	QR_CODE_PREVIEW_IMAGE_FOLDER,
+	QR_CODE_UPLOAD_FOLDER,
+} from '../../config/constants';
 import { generateQrCodeStylingInstance } from '../../lib/styled-qr-code';
 import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
 
@@ -28,6 +32,11 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 
 	async delete(imagePath?: string): Promise<void> {
 		if (!imagePath) return;
+		const qrCodePathRegex = new RegExp(`^${QR_CODE_IMAGE_FOLDER}/`);
+		if (!qrCodePathRegex.test(imagePath)) {
+			this.logger.warn(`Attempted to delete image outside the qrCode folder: ${imagePath}`);
+			return;
+		}
 		try {
 			await this.objectStorage.delete(imagePath);
 		} catch (error) {

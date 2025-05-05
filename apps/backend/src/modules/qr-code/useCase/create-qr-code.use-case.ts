@@ -6,14 +6,14 @@ import { TCreateQrCodeDto } from '@shared/schemas';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
 import { ImageService } from '@/core/services/image.service';
 import { QrCodeCreatedEvent } from '../event/qr-code-created.event';
-import { TQrCode } from '../domain/entities/qr-code.entity'; // Assuming this type includes the shortUrl relation now
+import { TQrCode, TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
 import { GetReservedShortCodeUseCase } from '@/modules/url-shortener/useCase/get-reserved-short-url.use-case';
 import { buildShortUrl } from '@/modules/url-shortener/utils';
 import { UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/update-short-url.use-case';
-import db from '@/core/db'; // Import the DB instance for transactions
+import db from '@/core/db';
 import { TShortUrl } from '@/modules/url-shortener/domain/entities/short-url.entity';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
-import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/qr-code-not-found.error'; // Assuming this is the correct error import
+import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/qr-code-not-found.error';
 import { CustomApiError } from '@/core/error/http';
 
 /**
@@ -39,18 +39,13 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 	 * @param createdBy The ID of the user who created the QRcode.
 	 * @returns A promise that resolves with the newly created QRcode entity, potentially with linked shortUrl.
 	 */
-	async execute(
-		dto: TCreateQrCodeDto,
-		createdBy: string | null,
-	): Promise<TQrCode & { shortUrl: TShortUrl | null }> {
+	async execute(dto: TCreateQrCodeDto, createdBy: string | null): Promise<TQrCodeWithRelations> {
 		// Generate ID before the transaction if not database-generated
 		const newId = await this.qrCodeRepository.generateId();
 
-		let createdQrCodeWithShortUrl: TQrCode & { shortUrl: TShortUrl | null };
+		let createdQrCodeWithShortUrl: TQrCodeWithRelations;
 
 		try {
-			// Wrap all critical operations in a database transaction for atomicity.
-			// If any error is thrown within this async function, Drizzle will automatically perform a transaction rollback.
 			createdQrCodeWithShortUrl = await db.transaction(async () => {
 				const qrCodeData: Omit<TQrCode, 'createdAt' | 'updatedAt'> = {
 					id: newId,

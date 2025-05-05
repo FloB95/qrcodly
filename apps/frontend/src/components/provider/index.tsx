@@ -4,7 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import type * as React from 'react';
 import { TooltipProvider } from '../ui/tooltip';
 import { PostHogProvider } from './PostHogProvider';
-import { NextIntlClientProvider } from 'next-intl';
+import { QrCodeGeneratorStoreProvider } from './QrCodeConfigStoreProvider';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
 	const queryClient = getQueryClient();
@@ -12,7 +12,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<PostHogProvider>
-				<TooltipProvider>{children}</TooltipProvider>
+				<QrCodeGeneratorStoreProvider>
+					<TooltipProvider>{children}</TooltipProvider>
+				</QrCodeGeneratorStoreProvider>
 			</PostHogProvider>
 		</QueryClientProvider>
 	);

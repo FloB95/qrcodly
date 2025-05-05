@@ -23,9 +23,12 @@ import {
 	type TCreateQrCodeDto,
 	type TFileExtension,
 } from '@shared/schemas';
-import { useCreateQrCodeMutation } from '@/lib/api/qr-code';
+import { qrCodeQueryKeys, useCreateQrCodeMutation } from '@/lib/api/qr-code';
 import { toast } from '../ui/use-toast';
 import { useTranslations } from 'next-intl';
+import { useQueryClient } from '@tanstack/react-query';
+import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
+import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 
 let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
@@ -38,8 +41,10 @@ const QrCodeDownloadBtn = ({
 	noStyling?: boolean;
 }) => {
 	const t = useTranslations('qrCode.download');
+	const { content, updateContent } = useQrCodeGeneratorStore((state) => state);
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
 	const createQrCodeMutation = useCreateQrCodeMutation();
+	const queryClient = useQueryClient();
 
 	useEffect(() => {
 		// Dynamically import the QRCodeStyling class only when the component mounts
@@ -68,6 +73,21 @@ const QrCodeDownloadBtn = ({
 								description: t('successDescription'),
 								duration: 10000,
 							});
+
+							if (content.type === 'url' && content.data.isEditable) {
+								updateContent({
+									type: 'url',
+									data: {
+										url: '',
+										isEditable: false,
+									},
+								});
+							}
+
+							void Promise.all([
+								queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
+								queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
+							]);
 						}
 					},
 					onError: (e) => {
