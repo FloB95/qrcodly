@@ -42,6 +42,22 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = def
 				console.error('Failed to parse unsavedQrConfig from localStorage:', error);
 			}
 		}
+
+		const savedContent = localStorage.getItem('unsavedQrContent');
+		if (savedContent) {
+			try {
+				const parsedContent = JSON.parse(savedContent) as TQrCodeContent;
+				console.log('Parsed content from localStorage:', parsedContent);
+				initState.content = {
+					...initState.content,
+					...parsedContent,
+				};
+				// Clear the unsavedQrContent from localStorage
+				localStorage.removeItem('unsavedQrContent');
+			} catch (error) {
+				console.error('Failed to parse unsavedQrContent from localStorage:', error);
+			}
+		}
 	}
 
 	return createStore<QrCodeGeneratorStore>()((set) => ({

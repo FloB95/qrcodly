@@ -22,6 +22,7 @@ import { ArrowTurnDownRightIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { getShortUrlFromCode } from '@/lib/utils';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 
 type FormValues = TUrlInput;
 
@@ -36,6 +37,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [originalUrl, setOriginalUrl] = useState<string | null>(value?.url ?? null);
+	const { content, config } = useQrCodeGeneratorStore((state) => state);
 
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
 		resolver: zodResolver(UrlInputSchema),
@@ -73,6 +75,12 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		form.reset();
 		setOriginalUrl(null);
 	}, [shortUrl]);
+
+	useEffect(() => {
+		if (value?.url) {
+			setOriginalUrl(value.url);
+		}
+	}, [value]);
 
 	return (
 		<>
@@ -135,6 +143,8 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 											disabled={!originalUrl}
 											onCheckedChange={async (e) => {
 												if (!isSignedIn) {
+													localStorage.setItem('unsavedQrContent', JSON.stringify(content));
+													localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
 													setAlertOpen(true);
 													return;
 												}

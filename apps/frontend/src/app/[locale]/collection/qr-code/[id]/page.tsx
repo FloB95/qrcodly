@@ -1,4 +1,4 @@
-import { apiRequest, getShortUrlFromCode } from '@/lib/utils';
+import { apiRequest } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
