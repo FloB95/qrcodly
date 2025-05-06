@@ -130,7 +130,7 @@ export function ColorPicker({ defaultColor, onChange, withGradient = true }: Col
 					</div>
 				</Button>
 			</DialogTrigger>
-			<DialogContent hideOverlay hideClose style={{ width: '320px' }}>
+			<DialogContent style={{ width: '320px' }}>
 				<DialogTitle hidden>Color Picker</DialogTitle>
 				<DialogDescription hidden aria-hidden="true">
 					Use the color picker dialog to select a color or gradient for the background. This tool
