@@ -25,10 +25,16 @@ export default clerkMiddleware(async (auth, req, event) => {
 		return await processAnalyticsAndRedirect(req);
 	}
 
-	// Apply the next-intl middleware
-	const intlResponse = intlMiddleware(req);
-	if (intlResponse) {
-		return intlResponse;
+	const pathname = new URL(req.url).pathname;
+	if (
+		!pathname.startsWith('/api') &&
+		!pathname.startsWith('/umami.js') &&
+		!pathname.startsWith('/ingest')
+	) {
+		const intlResponse = intlMiddleware(req);
+		if (intlResponse) {
+			return intlResponse;
+		}
 	}
 
 	return NextResponse.next();

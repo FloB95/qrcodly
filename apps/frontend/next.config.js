@@ -88,5 +88,9 @@ const sentryOptions = {
 	automaticVercelMonitors: true,
 };
 
-const withNextIntl = createNextIntlPlugin();
+const withNextIntl = createNextIntlPlugin({
+	routing: {
+		exclude: ['/api/**', '/umami.js', '/ingest/**'],
+	},
+});
 export default withAxiom(withNextIntl(withSentryConfig(config, sentryOptions)));
