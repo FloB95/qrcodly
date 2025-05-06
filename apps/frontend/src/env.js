@@ -1,5 +1,5 @@
-import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
+import { createEnv } from '@t3-oss/env-nextjs';
+import { z } from 'zod';
 
 export const env = createEnv({
 	/**
@@ -7,10 +7,11 @@ export const env = createEnv({
 	 * isn't built with invalid env vars.
 	 */
 	server: {
-		NODE_ENV: z.enum(["development", "test", "production"]),
+		NODE_ENV: z.enum(['development', 'test', 'production']),
 		AXIOM_TOKEN: z.string(),
 		AXIOM_DATASET: z.string(),
 		CLERK_SECRET_KEY: z.string(),
+		UMAMI_API_HOST: z.string().url(),
 	},
 
 	/**
@@ -19,11 +20,13 @@ export const env = createEnv({
 	 * `NEXT_PUBLIC_`.
 	 */
 	client: {
+		NEXT_PUBLIC_FRONTEND_URL: z.string().url(),
 		NEXT_PUBLIC_API_URL: z.string().url(),
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
 		NEXT_PUBLIC_POSTHOG_KEY: z.string(),
 		NEXT_PUBLIC_POSTHOG_HOST: z.string(),
 		NEXT_PUBLIC_SENTRY_DSN: z.string(),
+		NEXT_PUBLIC_UMAMI_WEBSITE: z.string(),
 	},
 
 	/**
@@ -36,10 +39,12 @@ export const env = createEnv({
 		AXIOM_TOKEN: process.env.AXIOM_TOKEN,
 		AXIOM_DATASET: process.env.AXIOM_DATASET,
 		CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+		UMAMI_API_HOST: process.env.UMAMI_API_HOST,
+		NEXT_PUBLIC_UMAMI_WEBSITE: process.env.NEXT_PUBLIC_UMAMI_WEBSITE,
 
+		NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL,
 		NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
-		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
-			process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
 		NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
 		NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
 	},

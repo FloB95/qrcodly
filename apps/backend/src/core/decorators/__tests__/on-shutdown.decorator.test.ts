@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { ShutdownService } from '@/core/shutdown/shutdown.service';
+import { ShutdownService } from '@/core/services/shutdown.service';
 import { OnShutdown } from '../on-shutdown.decorator';
 import { container } from 'tsyringe';
 import { mock } from 'jest-mock-extended';

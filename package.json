@@ -21,10 +21,10 @@
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.14",
-		"@types/node": "^22.14.1",
-		"eslint": "^9.24.0",
+		"@types/node": "^22.15.3",
+		"eslint": "^9.26.0",
 		"jest": "^29.7.0",
-		"lefthook": "^1.11.10",
+		"lefthook": "^1.11.12",
 		"prettier": "^3.5.3",
 		"qrcodly-eslint-config": "workspace:*",
 		"rimraf": "^6.0.1",

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Container from './ui/container';
+import { useTranslations } from 'next-intl';
 
 interface NavigationItem {
 	name: string;
@@ -24,6 +25,7 @@ const navigation: NavigationItem[] = [
 ];
 
 export default function Footer() {
+	const t = useTranslations('footer');
 	const currentYear = new Date().getFullYear();
 	return (
 		<footer className="mt-4">
@@ -44,27 +46,26 @@ export default function Footer() {
 					</div>
 					<div className="mt-8 md:order-1 md:mt-0">
 						<p className="text-center text-xs leading-5 text-gray-500">
-							&copy; FB Dev {currentYear} - QR Code is a registered trademark of DENSO WAVE
-							INCORPORATED
+							&copy; FB Dev {currentYear} - {t('qrCodeCopyright')}
 						</p>
 					</div>
 				</div>
-				<div className="text-center justify-center space-x-4 pb-12 pt-6 text-xs md:flex md:items-center lg:px-8">
+				<div className="justify-center space-x-4 pt-6 pb-12 text-center text-xs md:flex md:items-center lg:px-8">
 					<Link
 						href="https://www.fb-dev.de/impressum/"
-						title="Legal Notice"
+						title={t('legalNotice')}
 						target="_blank"
 						className="text-gray-600 hover:text-gray-800"
 					>
-						Legal Notice
+						{t('legalNotice')}
 					</Link>
 					<Link
 						href="https://www.fb-dev.de/datenschutz/"
-						title="Legal Notice"
+						title={t('privacyPolicy')}
 						target="_blank"
-						className="text-gray-600 hover:text-gray-800 "
+						className="text-gray-600 hover:text-gray-800"
 					>
-						Privacy Policy
+						{t('privacyPolicy')}
 					</Link>
 				</div>
 			</Container>

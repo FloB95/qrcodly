@@ -7,19 +7,35 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
+export function getShortUrlFromCode(code: string): string {
+	return `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${code}`;
+}
+
+export const sleep = (ms: number): Promise<void> =>
+	new Promise((resolve) => setTimeout(resolve, ms));
+
 export function toSnakeCase(str: string) {
 	return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 }
 
 export function toSnakeCaseKeys(obj: object) {
-	return Object.fromEntries(
-		Object.entries(obj).map(([key, value]) => [toSnakeCase(key), value]),
-	);
+	return Object.fromEntries(Object.entries(obj).map(([key, value]) => [toSnakeCase(key), value]));
 }
 
 export const svgToBase64 = (svgString: string): string => {
 	const base64 = window.btoa(svgString);
 	return `data:image/svg+xml;base64,${base64}`;
+};
+
+export const fetchImageAsBase64 = async (url: string) => {
+	const response = await fetch(url);
+	const blob = await response.blob();
+	return new Promise<string>((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onloadend = () => resolve(reader.result as string);
+		reader.onerror = reject;
+		reader.readAsDataURL(blob);
+	});
 };
 
 export const formatDate = (date: Date | string): string => {
@@ -126,9 +142,7 @@ export function rgbaToHex(colorStr: string, forceRemoveAlpha = false): string {
 				.split(',') // splits them at ","
 				.filter((_string, index) => !forceRemoveAlpha || index !== 3)
 				.map((string) => parseFloat(string)) // Converts them to numbers
-				.map((number, index) =>
-					index === 3 ? Math.round(number * 255) : number,
-				) // Converts alpha to 255 number
+				.map((number, index) => (index === 3 ? Math.round(number * 255) : number)) // Converts alpha to 255 number
 				.map((number) => number.toString(16)) // Converts numbers to hex
 				.map((string) => (string.length === 1 ? '0' + string : string)) // Adds 0 when length of one number is 1
 				.join('')
@@ -142,27 +156,16 @@ export async function apiRequest<T>(
 	options: RequestInit,
 	queryParams?: Record<string, unknown>,
 ): Promise<T> {
-	try {
-		// Construct query string if queryParams are provided
-		const queryString = queryParams ? `?${qs.stringify(queryParams)}` : '';
-		const response = await fetch(
-			`${env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`,
-			options,
+	// Construct query string if queryParams are provided
+	const queryString = queryParams ? `?${qs.stringify(queryParams)}` : '';
+	const response = await fetch(`${env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`, options);
+
+	if (!response.ok) {
+		const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+		throw new Error(
+			(errorBody?.message as string | undefined) ?? 'An error occurred while fetching data',
 		);
-
-		if (!response.ok) {
-			const errorBody = (await response.json().catch(() => ({}))) as Record<
-				string,
-				unknown
-			>;
-			throw new Error(
-				`API request failed with status ${response.status}: ${JSON.stringify(errorBody)}`,
-			);
-		}
-
-		return (await response.json()) as T;
-	} catch (error) {
-		console.error('API request error:', error);
-		throw new Error('Failed to communicate with the server');
 	}
+
+	return (await response.json()) as T;
 }

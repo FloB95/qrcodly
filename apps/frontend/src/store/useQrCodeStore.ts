@@ -1,35 +1,30 @@
-import {
-	QrCodeDefaults,
-	type TQrCodeContent,
-	type TQrCodeContentType,
-	type TQrCodeOptions,
-} from '@shared/schemas';
+import { QrCodeDefaults, type TQrCodeContent, type TQrCodeOptions } from '@shared/schemas';
 import { createStore } from 'zustand/vanilla';
 
 export type QrCodeGeneratorState = {
 	config: TQrCodeOptions;
 	content: TQrCodeContent;
-	contentType: TQrCodeContentType;
 };
 
 export type QrCodeGeneratorActions = {
 	updateConfig: (config: Partial<TQrCodeOptions>) => void;
 	updateContent: (content: TQrCodeContent) => void;
-	updateContentType: (contentType: TQrCodeContentType) => void;
 };
 
-export type QrCodeGeneratorStore = QrCodeGeneratorState &
-	QrCodeGeneratorActions;
+export type QrCodeGeneratorStore = QrCodeGeneratorState & QrCodeGeneratorActions;
 
 export const defaultInitState: QrCodeGeneratorState = {
 	config: QrCodeDefaults,
-	content: '',
-	contentType: 'url',
+	content: {
+		type: 'url',
+		data: {
+			url: '',
+			isEditable: false,
+		},
+	},
 };
 
-export const createQrCodeGeneratorStore = (
-	initState: QrCodeGeneratorState = defaultInitState,
-) => {
+export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = defaultInitState) => {
 	// Check if we're in a browser environment
 	if (typeof window !== 'undefined') {
 		// Check for unsavedQrConfig in localStorage
@@ -44,10 +39,7 @@ export const createQrCodeGeneratorStore = (
 				// Clear the unsavedQrConfig from localStorage
 				localStorage.removeItem('unsavedQrConfig');
 			} catch (error) {
-				console.error(
-					'Failed to parse unsavedQrConfig from localStorage:',
-					error,
-				);
+				console.error('Failed to parse unsavedQrConfig from localStorage:', error);
 			}
 		}
 	}
@@ -83,6 +75,5 @@ export const createQrCodeGeneratorStore = (
 			}));
 		},
 		updateContent: (content) => set({ content }),
-		updateContentType: (contentType) => set({ contentType }),
 	}));
 };

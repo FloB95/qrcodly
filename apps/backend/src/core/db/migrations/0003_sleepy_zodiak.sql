@@ -1,0 +1,1 @@
+ALTER TABLE `short_url` ADD `is_active` boolean NOT NULL;

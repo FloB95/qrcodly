@@ -1,17 +1,19 @@
-"use client";
+'use client';
 
-import { LoginRequiredDialog } from "../LoginRequiredDialog";
-import { useAuth } from "@clerk/nextjs";
-import { useState } from "react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../ui/tooltip";
-import { NameDialog } from "../NameDialog";
-import { Button } from "@/components/ui/button";
-import { QrCodeDefaults, type TQrCodeOptions } from "@shared/schemas";
-import { useCreateConfigTemplateMutation } from "@/lib/api/config-template";
-import { toast } from "@/components/ui/use-toast";
-import posthog from "posthog-js";
+import { LoginRequiredDialog } from '../LoginRequiredDialog';
+import { useAuth } from '@clerk/nextjs';
+import { useState } from 'react';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../../ui/tooltip';
+import { NameDialog } from '../NameDialog';
+import { Button } from '@/components/ui/button';
+import { QrCodeDefaults, type TQrCodeOptions } from '@shared/schemas';
+import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
+import { toast } from '@/components/ui/use-toast';
+import posthog from 'posthog-js';
+import { useTranslations } from 'next-intl';
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
+	const t = useTranslations('templates');
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
@@ -29,12 +31,24 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 				{
 					onSuccess: () => {
 						toast({
-							title: "New Template Created",
-							description: "We saved your QR Code Template for later use.",
+							title: t('templateCreatedTitle'),
+							description: t('templateCreatedDescription'),
 							duration: 10000,
 						});
 
-						posthog.capture("config-template-created", {
+						posthog.capture('config-template-created', {
+							templateName: templateName,
+						});
+					},
+					onError: (e) => {
+						toast({
+							variant: 'destructive',
+							title: t('templateCreatedErrorTitle'),
+							description: e.message,
+							duration: 10000,
+						});
+
+						posthog.capture('error:config-template-created', {
 							templateName: templateName,
 						});
 					},
@@ -50,40 +64,36 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<Button
-						variant={
-							JSON.stringify(config) === JSON.stringify(QrCodeDefaults)
-								? "secondary"
-								: "default"
-						}
+						variant="outlineStrong"
 						className="cursor-pointer"
 						isLoading={createConfigTemplateMutation.isPending}
 						onClick={() => {
 							if (!isSignedIn) {
 								// Store the config in localStorage before prompting login
-								localStorage.setItem("unsavedQrConfig", JSON.stringify(config));
+								localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
 								setAlertOpen(true);
 								return;
 							}
 							setNameDialogOpen(true);
 						}}
 						disabled={
-							createConfigTemplateMutation.isPending &&
+							createConfigTemplateMutation.isPending ||
 							JSON.stringify(config) === JSON.stringify(QrCodeDefaults)
 						}
 					>
-						Save as Template
+						{t('saveAsBtn')}
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent side="top">
-					<p>Save the current QR code style as a reusable template.</p>
+					<p>{t('saveInfo')}</p>
 				</TooltipContent>
 			</Tooltip>
 
 			<LoginRequiredDialog alertOpen={alertOpen} setAlertOpen={setAlertOpen} />
 
 			<NameDialog
-				dialogHeadline="Save current QR code style as template"
-				placeholder="Template Name"
+				dialogHeadline={t('savePopup.title')}
+				placeholder={t('savePopup.placeholder')}
 				isOpen={nameDialogOpen}
 				setIsOpen={setNameDialogOpen}
 				onSubmit={handleSave}
