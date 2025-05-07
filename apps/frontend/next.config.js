@@ -21,7 +21,7 @@ const config = {
 				{
 					loader: '@svgr/webpack',
 					options: {
-						svgo: true,
+						svgo: false,
 						svgoConfig: {
 							plugins: [
 								{
@@ -86,6 +86,7 @@ const sentryOptions = {
 	tunnelRoute: '/monitoring',
 	disableLogger: true,
 	automaticVercelMonitors: true,
+	dryRun: true,
 };
 
 const withNextIntl = createNextIntlPlugin({
