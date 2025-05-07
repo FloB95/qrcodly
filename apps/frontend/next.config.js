@@ -85,8 +85,14 @@ const sentryOptions = {
 	widenClientFileUpload: true,
 	tunnelRoute: '/monitoring',
 	disableLogger: true,
-	automaticVercelMonitors: true,
 	dryRun: true,
+	telemetry: false,
+	sourcemaps: {
+		disable: true,
+	},
+	release: {
+		create: false,
+	},
 };
 
 const withNextIntl = createNextIntlPlugin({
