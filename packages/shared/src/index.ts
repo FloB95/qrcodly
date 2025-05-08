@@ -2,6 +2,7 @@
  * DTOs
  **************************/
 export * from './dtos/qr-code/CreateQrCodeDto';
+export * from './dtos/qr-code/UpdateQrCodeDto';
 export * from './dtos/qr-code/QrCodeListRequestDto';
 export * from './dtos/qr-code/QrCodePaginatedResponseDto';
 export * from './dtos/qr-code/QrCodeRequestParamsDto';

@@ -154,6 +154,7 @@ export const QrCodeOptionsSchema = z.object({
 export type TQrCodeOptions = z.infer<typeof QrCodeOptionsSchema>;
 
 export const QrCodeSchema = AbstractEntitySchema.extend({
+	name: z.string().max(32).nullable(),
 	config: QrCodeOptionsSchema,
 	content: QrCodeContent,
 	previewImage: z.string().nullable(),
