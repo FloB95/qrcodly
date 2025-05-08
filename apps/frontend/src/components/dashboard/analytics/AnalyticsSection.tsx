@@ -42,7 +42,7 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 	);
 
 	return (
-		<div className="grid flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 lg:grid-cols-3 pb-10">
+		<div className="grid flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 lg:grid-cols-3 pb-4">
 			{browserChart.data.length > 0 && (
 				<BarChartCard
 					data={browserChart.data}

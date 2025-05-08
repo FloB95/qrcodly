@@ -18,7 +18,7 @@ export const Cta = () => {
 			<div className="mt-8 flex flex-wrap justify-center space-x-4">
 				<Link href="https://github.com/FloB95/qrcodly" target="_blank" className={buttonVariants()}>
 					<span className="mr-2 h-[24px] w-[24px]">
-						<Image src="icons/github-logo.svg" width={24} height={24} alt="GitHub Logo" />
+						<Image src="/icons/github-logo.svg" width={24} height={24} alt="GitHub Logo" />
 					</span>
 					GitHub
 				</Link>

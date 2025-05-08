@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { DetailPageContent } from '@/components/qr-code-detail/DetailPageContent';
+import { Cta } from '@/components/Cta';
 
 interface QRCodeDetailProps {
 	params: Promise<{
@@ -35,5 +36,10 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 		notFound();
 	}
 
-	return <DetailPageContent qrCode={qrCode} />;
+	return (
+		<>
+			<DetailPageContent qrCode={qrCode} />
+			<Cta />
+		</>
+	);
 }

@@ -50,7 +50,7 @@ export function PageAndSessionViewChart({ chartData }: StatisticChartProps) {
 							tickMargin={10}
 							axisLine={false}
 							tickFormatter={(value) =>
-								new Date(value).toLocaleDateString('en-US', {
+								new Date(value as string | number).toLocaleDateString('en-US', {
 									weekday: 'short',
 								})
 							}
