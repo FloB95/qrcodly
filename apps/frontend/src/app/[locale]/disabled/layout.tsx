@@ -1,10 +1,10 @@
 import Footer from '@/components/Footer';
-import Header from '@/components/Header';
+import NoNavHeader from '@/components/NoNavHeader';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
-			<Header hideDashboardLink />
+			<NoNavHeader />
 			{children}
 			<Footer />
 		</main>

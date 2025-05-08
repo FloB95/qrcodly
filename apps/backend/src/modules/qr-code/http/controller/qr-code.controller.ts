@@ -22,6 +22,7 @@ import {
 import { ListQrCodesUseCase } from '../../useCase/list-qr-code.use-case';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 import { DeleteQrCodeUseCase } from '../../useCase/delete-qr-code.use-case';
+import { ImageService } from '@/core/services/image.service';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -30,6 +31,7 @@ export class QrCodeController extends AbstractController {
 		@inject(CreateQrCodeUseCase) private createQrCodeUseCase: CreateQrCodeUseCase,
 		@inject(DeleteQrCodeUseCase) private deleteQrCodeUseCase: DeleteQrCodeUseCase,
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
+		@inject(ImageService) private imageService: ImageService,
 	) {
 		super();
 	}
@@ -104,6 +106,20 @@ export class QrCodeController extends AbstractController {
 		if (qrCode.createdBy !== request.user.id) {
 			throw new UnauthorizedError();
 		}
+
+		// Convert image path to presigned URL
+		await Promise.all([
+			(async () => {
+				if (qrCode.config.image) {
+					qrCode.config.image = await this.imageService.getSignedUrl(qrCode.config.image);
+				}
+			})(),
+			(async () => {
+				if (qrCode.previewImage) {
+					qrCode.previewImage = (await this.imageService.getSignedUrl(qrCode.previewImage)) ?? null;
+				}
+			})(),
+		]);
 
 		return this.makeApiHttpResponse(200, QrCodeWithRelationsResponseDto.parse(qrCode));
 	}

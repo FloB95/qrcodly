@@ -33,7 +33,7 @@ export const QRcodeGenerator = () => {
 				</TabsTrigger>
 			</TabsList>
 			<div className="relative mt-4 flex space-x-6">
-				<div className="mx-auto min-h-[500px] max-w-[1200px] flex-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
+				<div className="mx-auto min-h-[500px] max-w-[1200px] flex-1 overflow-hidden rounded-lg bg-white shadow">
 					<div className="px-4 py-5 sm:p-10">
 						<div className="flex flex-col space-y-10 md:flex-row md:space-y-0 md:space-x-12">
 							<div className="flex-1">

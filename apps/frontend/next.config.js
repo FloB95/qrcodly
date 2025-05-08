@@ -95,9 +95,5 @@ const sentryOptions = {
 	},
 };
 
-const withNextIntl = createNextIntlPlugin({
-	routing: {
-		exclude: ['/api/**', '/umami.js', '/ingest/**'],
-	},
-});
+const withNextIntl = createNextIntlPlugin();
 export default withAxiom(withNextIntl(withSentryConfig(config, sentryOptions)));

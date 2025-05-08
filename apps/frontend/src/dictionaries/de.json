@@ -19,6 +19,14 @@
 		"activeDescription": "Aktiv: Benutzer können auf die Zielseite zugreifen und Aufrufe werden analysiert.",
 		"inactiveDescription": "Deaktiviert: Zugriff und Analyse sind deaktiviert."
 	},
+	"chart": {
+		"visitors": "Besucher",
+		"title": {
+			"browserUsage": "Verwendete Browser",
+			"deviceUsage": "Verwendete Geräte",
+			"countryDistribution": "Länderübersicht"
+		}
+	},
 	"header": {
 		"collectionBtn": "Meine Sammlung",
 		"signInBtn": "Anmelden"
@@ -55,7 +63,7 @@
 				"subHeadline": "Erstelle QR-Codes kostenlos und passe die Ziel-URL auch nach dem Druck jederzeit an."
 			},
 			"statisticFeature": {
-				"headline": "QR-Code-Statistiken in Echtzeit",
+				"headline": "Detalierte QR-Code-Statistiken in Echtzeit",
 				"subHeadline": "Behalte im Blick, wie oft und von wo aus deine QR-Codes gescannt werden."
 			},
 			"overviewFeature": {
@@ -80,6 +88,12 @@
 			}
 		}
 	},
+	"qrCodeDisabled": {
+		"title": "QR-Code deaktiviert",
+		"description": "Dieser QR-Code ist leider nicht mehr aktiv. Das Ziel ist nicht mehr verfügbar.",
+		"note": "Wenn Sie glauben, dass es sich um einen Fehler handelt, kontaktieren Sie bitte den Eigentümer des QR-Codes oder versuchen Sie es später erneut.",
+		"button": "Zur Startseite"
+	},
 	"qrCode": {
 		"error": {
 			"delete": {
@@ -88,9 +102,15 @@
 			},
 			"noFound": "Keine QR Codes gefunden"
 		},
+		"confirmDeletePopup": {
+			"title": "Bestätige das Löschen",
+			"description": "Bist du sicher, dass du den QR Code löschen möchtest?",
+			"confirmBtn": "Löschen",
+			"cancelBtn": "Abbrechen"
+		},
 		"actionsMenu": {
 			"title": "Aktionen",
-			"edit": "Bearbeiten",
+			"view": "Ansehen",
 			"delete": "Löschen",
 			"disableShortUrl": "Deaktivieren",
 			"enableShortUrl": "Aktivieren"

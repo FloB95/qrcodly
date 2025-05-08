@@ -4,16 +4,6 @@ import { TrashIcon } from '@heroicons/react/24/outline';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { useCallback, useState } from 'react';
-import {
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '@/components/ui/dialog';
 import { useDeleteConfigTemplateMutation } from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
 import { Loader2 } from 'lucide-react';
@@ -21,6 +11,16 @@ import posthog from 'posthog-js';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { fetchImageAsBase64 } from '@/lib/utils';
+import {
+	AlertDialog,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 type TemplateListProps = {
 	templates: TConfigTemplateResponseDto[];
@@ -128,8 +128,8 @@ export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListPr
 								/>
 							)}
 							{deletable && (
-								<Dialog>
-									<DialogTrigger asChild>
+								<AlertDialog>
+									<AlertDialogTrigger asChild>
 										<Button
 											size="icon"
 											onClick={(e) => {
@@ -140,31 +140,31 @@ export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListPr
 										>
 											<TrashIcon className="h-6 w-6" />
 										</Button>
-									</DialogTrigger>
-									<DialogContent>
-										<DialogHeader>
-											<DialogTitle>{trans('confirmPopup.title')}</DialogTitle>
-											<DialogDescription>
+									</AlertDialogTrigger>
+									<AlertDialogContent>
+										<AlertDialogHeader>
+											<AlertDialogTitle>{trans('confirmPopup.title')}</AlertDialogTitle>
+											<AlertDialogDescription>
 												{trans('confirmPopup.description')}{' '}
 												<span className="font-bold text-black">{selectedTemplate?.name}</span> ?
 												<br />
 												{trans('confirmPopup.description2')}
-											</DialogDescription>
-										</DialogHeader>
-										<DialogFooter>
-											<DialogClose asChild>
+											</AlertDialogDescription>
+										</AlertDialogHeader>
+										<AlertDialogFooter>
+											<AlertDialogCancel asChild>
 												<Button variant="secondary" onClick={() => setSelectedTemplate(null)}>
 													{trans('confirmPopup.cancelBtn')}
 												</Button>
-											</DialogClose>
-											<DialogClose asChild>
+											</AlertDialogCancel>
+											<AlertDialogCancel asChild>
 												<Button variant="destructive" onClick={() => handleDelete()}>
 													{trans('confirmPopup.confirmBtn')}
 												</Button>
-											</DialogClose>
-										</DialogFooter>
-									</DialogContent>
-								</Dialog>
+											</AlertDialogCancel>
+										</AlertDialogFooter>
+									</AlertDialogContent>
+								</AlertDialog>
 							)}
 						</div>
 					</div>

@@ -19,6 +19,14 @@
 		"activeDescription": "Active: Users can access the destination page, and views are tracked.",
 		"inactiveDescription": "Inactive: Access and tracking are disabled."
 	},
+	"chart": {
+		"visitors": "Visitors",
+		"title": {
+			"browserUsage": "Used Browsers",
+			"deviceUsage": "Used Devices",
+			"countryDistribution": "Distribution by country"
+		}
+	},
 	"header": {
 		"collectionBtn": "My Collection",
 		"signInBtn": "Sign In"
@@ -55,7 +63,7 @@
 				"subHeadline": "Create QR codes for free and change the destination URL even after printing."
 			},
 			"statisticFeature": {
-				"headline": "Real-Time QR Code Analytics",
+				"headline": "Detailed Real-Time QR Code Analytics",
 				"subHeadline": "Track how often and where your QR codes are scanned – in real time."
 			},
 			"overviewFeature": {
@@ -80,6 +88,12 @@
 			}
 		}
 	},
+	"qrCodeDisabled": {
+		"title": "QR Code Disabled",
+		"description": "Sorry, this QR code is no longer active. The destination it pointed to is unavailable.",
+		"note": "If you believe this is a mistake, please contact the owner of the QR code or try again later.",
+		"button": "Go Back Home"
+	},
 	"qrCode": {
 		"error": {
 			"delete": {
@@ -88,9 +102,15 @@
 			},
 			"noFound": "No QR codes found"
 		},
+		"confirmDeletePopup": {
+			"title": "Confirm Deletion",
+			"description": "Are you sure you want to delete the QR code?",
+			"confirmBtn": "Delete",
+			"cancelBtn": "Cancel"
+		},
 		"actionsMenu": {
 			"title": "Actions",
-			"edit": "Edit",
+			"view": "View",
 			"delete": "Delete",
 			"disableShortUrl": "Disable",
 			"enableShortUrl": "Enable"

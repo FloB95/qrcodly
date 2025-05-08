@@ -1,4 +1,5 @@
 import { env } from '@/env';
+import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { apiRequest } from '@/lib/utils';
 import type { TShortUrl } from '@shared/schemas';
 import { NextResponse, type NextRequest } from 'next/server';
@@ -48,7 +49,14 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		shortUrl = response;
 
 		if (!shortUrl?.destinationUrl || !shortUrl.isActive) {
-			return NextResponse.rewrite(new URL('/404', req.url));
+			const acceptLanguage = headers.get('accept-language') ?? 'en';
+			const userLocale = acceptLanguage.split(',')[0]?.split('-')[0] ?? 'en';
+			const locale = SUPPORTED_LANGUAGES.includes(
+				userLocale as (typeof SUPPORTED_LANGUAGES)[number],
+			)
+				? (userLocale as (typeof SUPPORTED_LANGUAGES)[number])
+				: 'en';
+			return NextResponse.rewrite(new URL(`/${locale}/disabled`, req.url));
 		}
 	} catch {
 		return NextResponse.rewrite(new URL('/404', req.url));

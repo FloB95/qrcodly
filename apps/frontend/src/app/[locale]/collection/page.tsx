@@ -73,7 +73,6 @@ export default async function Dashboard() {
 					</div>
 				</Tabs>
 			</Container>
-			{/* <StatisticChart /> */}
 		</div>
 	);
 }
