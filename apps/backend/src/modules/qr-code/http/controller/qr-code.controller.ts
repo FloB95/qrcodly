@@ -18,17 +18,21 @@ import {
 	TIdRequestQueryDto,
 	TQrCodeWithRelationsPaginatedResponseDto,
 	TQrCodeWithRelationsResponseDto,
+	TUpdateQrCodeDto,
+	UpdateQrCodeDto,
 } from '@shared/schemas';
 import { ListQrCodesUseCase } from '../../useCase/list-qr-code.use-case';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 import { DeleteQrCodeUseCase } from '../../useCase/delete-qr-code.use-case';
 import { ImageService } from '@/core/services/image.service';
+import { UpdateQrCodeUseCase } from '../../useCase/update-qr-code.use-case';
 
 @injectable()
 export class QrCodeController extends AbstractController {
 	constructor(
 		@inject(ListQrCodesUseCase) private listQrCodesUseCase: ListQrCodesUseCase,
 		@inject(CreateQrCodeUseCase) private createQrCodeUseCase: CreateQrCodeUseCase,
+		@inject(UpdateQrCodeUseCase) private updateQrCodeUseCase: UpdateQrCodeUseCase,
 		@inject(DeleteQrCodeUseCase) private deleteQrCodeUseCase: DeleteQrCodeUseCase,
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(ImageService) private imageService: ImageService,
@@ -122,6 +126,31 @@ export class QrCodeController extends AbstractController {
 		]);
 
 		return this.makeApiHttpResponse(200, QrCodeWithRelationsResponseDto.parse(qrCode));
+	}
+
+	@Post('/:id')
+	async update(
+		request: IHttpRequestWithAuth<TUpdateQrCodeDto, TIdRequestQueryDto>,
+	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
+		const { id } = request.params;
+
+		const qrCode = await this.qrCodeRepository.findOneById(id);
+		if (!qrCode) {
+			throw new QrCodeNotFoundError();
+		}
+
+		if (qrCode.createdBy !== request.user.id) {
+			throw new UnauthorizedError();
+		}
+
+		const updateQrCodeDto = UpdateQrCodeDto.parse(request.body);
+		const updatedQrCode = await this.updateQrCodeUseCase.execute(
+			qrCode,
+			updateQrCodeDto,
+			request.user.id,
+		);
+
+		return this.makeApiHttpResponse(200, QrCodeWithRelationsResponseDto.parse(updatedQrCode));
 	}
 
 	@Delete('/:id')

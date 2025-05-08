@@ -10,6 +10,7 @@ const qrCode = createTable(
 		id: varchar('id', {
 			length: 36,
 		}).primaryKey(),
+		name: varchar({ length: 255 }),
 		config: json().$type<TQrCodeOptions>().notNull(),
 		content: json().$type<TQrCodeContent>().notNull(),
 		previewImage: text(),
