@@ -1,19 +1,9 @@
-import type { TConfigTemplateResponseDto } from '@shared/schemas';
+import type { TConfigTemplateResponseDto, TQrCode } from '@shared/schemas';
 import { DynamicQrCode } from '../DynamicQrCode';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
-import { useCallback, useState } from 'react';
-import {
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '@/components/ui/dialog';
+import { useCallback, useMemo, useState } from 'react';
 import { useDeleteConfigTemplateMutation } from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
 import { Loader2 } from 'lucide-react';
@@ -21,12 +11,89 @@ import posthog from 'posthog-js';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { fetchImageAsBase64 } from '@/lib/utils';
+import {
+	AlertDialog,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { AlertDialogAction } from '@radix-ui/react-alert-dialog';
+import React from 'react';
 
 type TemplateListProps = {
 	templates: TConfigTemplateResponseDto[];
 	onSelect: (data: TConfigTemplateResponseDto) => void;
 	deletable?: boolean;
 };
+
+const TemplateCard = React.memo(
+	({
+		template,
+		onSelect,
+		deletable,
+		onDeleteClick,
+	}: {
+		template: TConfigTemplateResponseDto;
+		onSelect: () => void;
+		deletable: boolean;
+		onDeleteClick: () => void;
+	}) => {
+		const qrCodeData = useMemo<Pick<TQrCode, 'config' | 'content'>>(
+			() => ({
+				config: template.config,
+				content: {
+					type: 'url',
+					data: {
+						url: 'https://www.qrcodly.de/',
+						isEditable: false,
+					},
+				},
+			}),
+			[template.config],
+		);
+
+		return (
+			<div onClick={onSelect} className="group relative">
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<p className="mb-1 truncate text-sm font-semibold">{template.name}</p>
+					</TooltipTrigger>
+					<TooltipContent side="top">{template.name}</TooltipContent>
+				</Tooltip>
+				<div className="relative overflow-hidden">
+					{template.previewImage ? (
+						<Image
+							height={300}
+							width={300}
+							src={template.previewImage}
+							alt="QR code preview"
+							loading="lazy"
+						/>
+					) : (
+						<DynamicQrCode qrCode={qrCodeData} />
+					)}
+					{deletable && (
+						<Button
+							size="icon"
+							onClick={(e) => {
+								e.stopPropagation();
+								onDeleteClick();
+							}}
+							className="absolute right-3 -bottom-1 h-8 w-8 -translate-y-1/2 scale-75 transform cursor-pointer opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
+						>
+							<TrashIcon className="h-6 w-6" />
+						</Button>
+					)}
+				</div>
+			</div>
+		);
+	},
+);
+
+TemplateCard.displayName = 'TemplateCard';
 
 export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListProps) => {
 	const trans = useTranslations('templates');
@@ -41,7 +108,6 @@ export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListPr
 					template.config.image = await fetchImageAsBase64(template.config.image);
 				}
 				onSelect(template);
-
 				posthog.capture('config-template-selected', {
 					id: template.id,
 					templateName: template.name,
@@ -73,7 +139,6 @@ export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListPr
 				t.dismiss();
 				setIsDeleting(false);
 				setSelectedTemplate(null);
-
 				posthog.capture('config-template-deleted', {
 					id: selectedTemplate.id,
 					templateName: selectedTemplate.name,
@@ -95,81 +160,42 @@ export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListPr
 
 	return (
 		<div className="grid h-[400px] cursor-pointer grid-cols-2 gap-4 overflow-y-auto px-2 lg:grid-cols-3">
-			{templates.map((template, index) => {
-				return (
-					<div key={index} onClick={() => handleSelect(template)} className="group relative">
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<p className="text mb-1 truncate text-sm font-semibold">{template.name}</p>
-							</TooltipTrigger>
-							<TooltipContent side="top">{template.name}</TooltipContent>
-						</Tooltip>
-						<div className="relative overflow-hidden">
-							{template.previewImage ? (
-								<Image
-									height={300}
-									width={300}
-									src={template.previewImage}
-									alt="QR code preview"
-									loading="lazy"
-								/>
-							) : (
-								<DynamicQrCode
-									qrCode={{
-										config: template.config,
-										content: {
-											type: 'url',
-											data: {
-												url: 'https://www.qrcodly.de/',
-												isEditable: false,
-											},
-										},
-									}}
-								/>
-							)}
-							{deletable && (
-								<Dialog>
-									<DialogTrigger asChild>
-										<Button
-											size="icon"
-											onClick={(e) => {
-												e.stopPropagation(); // Prevent triggering the parent `onClick`
-												setSelectedTemplate(template);
-											}}
-											className="absolute right-3 -bottom-1 h-8 w-8 -translate-y-1/2 scale-75 transform cursor-pointer opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
-										>
-											<TrashIcon className="h-6 w-6" />
+			{templates.map((template, index) => (
+				<React.Fragment key={index}>
+					<TemplateCard
+						template={template}
+						onSelect={() => handleSelect(template)}
+						deletable={!!deletable}
+						onDeleteClick={() => setSelectedTemplate(template)}
+					/>
+					{deletable && selectedTemplate?.id === template.id && (
+						<AlertDialog open={true} onOpenChange={(open) => !open && setSelectedTemplate(null)}>
+							<AlertDialogContent>
+								<AlertDialogHeader>
+									<AlertDialogTitle>{trans('confirmPopup.title')}</AlertDialogTitle>
+									<AlertDialogDescription>
+										{trans('confirmPopup.description')}{' '}
+										<span className="font-bold text-black">{selectedTemplate.name}</span> ?<br />
+										{trans('confirmPopup.description2')}
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+								<AlertDialogFooter>
+									<AlertDialogCancel asChild>
+										<Button variant="secondary" onClick={() => setSelectedTemplate(null)}>
+											{trans('confirmPopup.cancelBtn')}
 										</Button>
-									</DialogTrigger>
-									<DialogContent>
-										<DialogHeader>
-											<DialogTitle>{trans('confirmPopup.title')}</DialogTitle>
-											<DialogDescription>
-												{trans('confirmPopup.description')}{' '}
-												<span className="font-bold text-black">{selectedTemplate?.name}</span> ?
-												<br />
-												{trans('confirmPopup.description2')}
-											</DialogDescription>
-										</DialogHeader>
-										<DialogFooter>
-											<DialogClose asChild>
-												<Button variant="secondary" onClick={() => setSelectedTemplate(null)}>
-													{trans('confirmPopup.cancelBtn')}
-												</Button>
-											</DialogClose>
-											<DialogClose asChild>
-												<Button variant="destructive" onClick={() => handleDelete()}>
-													{trans('confirmPopup.confirmBtn')}
-												</Button>
-											</DialogClose>
-										</DialogFooter>
-									</DialogContent>
-								</Dialog>
-							)}
-						</div>
-					</div>
-				);
-			})}
+									</AlertDialogCancel>
+									<AlertDialogAction asChild>
+										<Button variant="destructive" onClick={() => handleDelete()}>
+											{trans('confirmPopup.confirmBtn')}
+										</Button>
+									</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog>
+					)}
+				</React.Fragment>
+			))}
 		</div>
 	);
 };

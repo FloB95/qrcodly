@@ -65,6 +65,8 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 				<TooltipTrigger asChild>
 					<Button
 						variant="outlineStrong"
+						// variant="ghost"
+						// size="text"
 						className="cursor-pointer"
 						isLoading={createConfigTemplateMutation.isPending}
 						onClick={() => {

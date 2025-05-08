@@ -18,7 +18,7 @@ import { useAuth } from '@clerk/nextjs';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { Badge } from '@/components/ui/badge';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
-import { ArrowTurnDownRightIcon } from '@heroicons/react/24/outline';
+import { ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { getShortUrlFromCode } from '@/lib/utils';
@@ -119,7 +119,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 
 								{form.getValues().isEditable && shortUrl && originalUrl && (
 									<div className="-mt-1 ml-6 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
-										<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold" />
+										<ArrowTurnLeftUpIcon className="-mt-2 mr-2 h-6 w-6 font-bold" />
 										<span className="text-muted-foreground pt-1 text-sm">
 											{getShortUrlFromCode(shortUrl.shortCode)}
 										</span>
@@ -131,45 +131,50 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 						)}
 					/>
 
-					<FormField
-						control={form.control}
-						name="isEditable"
-						render={({ field }) => (
-							<FormItem>
-								<div className="flex">
-									<FormControl>
-										<Switch
-											checked={field.value}
-											disabled={!originalUrl}
-											onCheckedChange={async (e) => {
-												if (!isSignedIn) {
-													localStorage.setItem('unsavedQrContent', JSON.stringify(content));
-													localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
-													setAlertOpen(true);
-													return;
-												}
+					<div
+						className={`transition-opacity duration-300 ease-in-out ${
+							originalUrl ? 'opacity-100' : 'opacity-0 pointer-events-none'
+						}`}
+					>
+						<FormField
+							control={form.control}
+							name="isEditable"
+							render={({ field }) => (
+								<FormItem>
+									<div className="flex">
+										<FormControl>
+											<Switch
+												checked={field.value}
+												onCheckedChange={async (e) => {
+													if (!isSignedIn) {
+														localStorage.setItem('unsavedQrContent', JSON.stringify(content));
+														localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
+														setAlertOpen(true);
+														return;
+													}
 
-												if (!shortUrl) return;
+													if (!shortUrl) return;
 
-												field.onChange(e);
-												void form.handleSubmit(onSubmit)();
-											}}
-										/>
-									</FormControl>
-									<FormLabel className="relative mt-[4px] ml-2 pr-2">
-										{t('enableEditing')}
-										<Badge
-											variant="green"
-											className="xs:absolute xs:top-5 relative top-2 block w-fit sm:top-[-10px] sm:left-full"
-										>
-											{t('newBadge')}
-										</Badge>
-									</FormLabel>
-								</div>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+													field.onChange(e);
+													void form.handleSubmit(onSubmit)();
+												}}
+											/>
+										</FormControl>
+										<FormLabel className="relative mt-[4px] ml-2 pr-2">
+											{t('enableEditing')}
+											<Badge
+												variant="green"
+												className="xs:absolute xs:top-5 relative top-2 block w-fit sm:top-[-10px] sm:left-full"
+											>
+												{t('newBadge')}
+											</Badge>
+										</FormLabel>
+									</div>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 				</form>
 			</Form>
 
