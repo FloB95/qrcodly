@@ -14,7 +14,6 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 	constructor(
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
 		@inject(Logger) private logger: Logger,
-		@inject(EventEmitter) private eventEmitter: EventEmitter,
 	) {}
 
 	/**

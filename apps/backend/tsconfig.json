@@ -17,7 +17,6 @@
 		"composite": true,
 		"baseUrl": ".",
 		"isolatedModules": true,
-		"preserveSymlinks": true,
 		"paths": {
 			"@/*": ["./src/*"]
 		}
@@ -27,6 +26,6 @@
 	"types": ["@types/jest"],
 	"ts-node": {
 		"require": ["tsconfig-paths/register"]
-	},
-	"references": [{ "path": "../../packages/shared/tsconfig.json" }]
+	}
+	// "references": [{ "path": "../../packages/shared/tsconfig.json" }]
 }
