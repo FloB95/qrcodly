@@ -89,10 +89,10 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 						reservedShortUrl,
 						{
 							destinationUrl: originalUrlToLink,
-							qrCodeId: newId,
 							isActive: true,
 						},
 						createdBy!,
+						newId,
 					);
 				}
 

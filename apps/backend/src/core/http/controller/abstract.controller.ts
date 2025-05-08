@@ -25,23 +25,4 @@ export default abstract class AbstractController {
 			},
 		};
 	}
-
-	/**
-	 * Handles an error and throws a custom API error.
-	 * @param error The error to handle.
-	 * @throws {CustomApiError} If the error is a custom API error.
-	 * @throws {BadRequestError} If the error is a Zod error.
-	 * @throws {UnhandledServerError} If the error is not a custom API or Zod error.
-	 */
-	protected handleError(error: Error): never {
-		if (error instanceof CustomApiError) {
-			throw error;
-		}
-
-		if (error instanceof ZodError) {
-			throw new BadRequestError(error.message, error.issues);
-		}
-
-		throw new UnhandledServerError(error);
-	}
 }

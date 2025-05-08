@@ -17,6 +17,7 @@
 		"composite": true,
 		"baseUrl": ".",
 		"isolatedModules": true,
+		"preserveSymlinks": true,
 		"paths": {
 			"@/*": ["./src/*"]
 		}

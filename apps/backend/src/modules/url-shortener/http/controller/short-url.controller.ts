@@ -11,6 +11,8 @@ import {
 	TAnalyticsResponseDto,
 	TGetShortUrlRequestQueryDto,
 	TShortUrlResponseDto,
+	TUpdateShortUrlDto,
+	UpdateShortUrlDto,
 } from '@shared/schemas';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
 import { UmamiAnalyticsService } from '../../services/umami-analytics.service';
@@ -38,6 +40,21 @@ export class ShortUrlController extends AbstractController {
 	): Promise<IHttpResponse<TShortUrlResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode);
 		return this.makeApiHttpResponse(200, ShortUrlResponseDto.parse(shortUrl));
+	}
+
+	@Post('/:shortCode')
+	async update(
+		request: IHttpRequestWithAuth<TUpdateShortUrlDto, TGetShortUrlRequestQueryDto>,
+	): Promise<IHttpResponse<TShortUrlResponseDto>> {
+		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
+		const updateDto = UpdateShortUrlDto.parse(request.body);
+		const updatedShortUrl = await this.updateShortUrlUseCase.execute(
+			shortUrl,
+			updateDto,
+			request.user.id,
+		);
+
+		return this.makeApiHttpResponse(200, ShortUrlResponseDto.parse(updatedShortUrl));
 	}
 
 	@Post('/:shortCode/toggle-active-state')
