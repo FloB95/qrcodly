@@ -28,6 +28,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		shortUrl: TShortUrl,
 		updatesDto: TUpdateShortUrlDto,
 		updatedBy: string,
+		linkedQrCodeId?: string,
 	): Promise<TShortUrl> {
 		const updates: Partial<TShortUrl> = {
 			...updatesDto,
@@ -35,7 +36,10 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		};
 
 		// Persist the updated ShortUrl entity in the database.
-		await this.shortUrlRepository.update(shortUrl, updates);
+		await this.shortUrlRepository.update(shortUrl, {
+			...updates,
+			qrCodeId: linkedQrCodeId,
+		});
 
 		// Retrieve the updated ShortUrl entity from the database.
 		const result = await this.shortUrlRepository.findOneById(shortUrl.id);

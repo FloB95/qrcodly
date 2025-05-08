@@ -2,7 +2,8 @@
 	"compilerOptions": {
 		"composite": true,
 		"target": "ES2020",
-		"module": "CommonJS",
+		"module": "es2020",
+		"moduleResolution": "node",
 		"declaration": true,
 		"declarationMap": true,
 		"outDir": "dist",
@@ -10,7 +11,8 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"rootDir": "src"
+		"rootDir": "src",
+		"preserveSymlinks": true
 	},
 	"include": ["src"],
 	"exclude": ["node_modules", "dist"]

@@ -1,27 +1,12 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { faker } from '@faker-js/faker';
 import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
 import { type FastifyInstance } from 'fastify';
-import { QrCodeDefaults, type TCreateQrCodeDto } from '@shared/schemas';
 import { container } from 'tsyringe';
 import { type User } from '@clerk/fastify';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
+import { generateQrCodeDto } from './utils';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
-
-/**
- * Generates a new random QR code DTO.
- */
-const generateQrCodeDto = (): TCreateQrCodeDto => ({
-	content: {
-		type: 'url',
-		data: {
-			url: faker.internet.url(),
-			isEditable: false,
-		},
-	},
-	config: QrCodeDefaults,
-});
 
 /**
  * Delete QR Code API Tests

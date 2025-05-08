@@ -5,7 +5,7 @@ import { AbstractEntitySchema } from './AbstractEntitySchema';
 export const ConfigTemplateSchema = AbstractEntitySchema.extend({
 	config: QrCodeOptionsSchema,
 	createdBy: z.string(),
-	name: z.string().max(64),
+	name: z.string().max(32),
 	previewImage: z.string().nullable(),
 	isPredefined: z.boolean(),
 });
