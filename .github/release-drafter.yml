@@ -1,6 +1,6 @@
 name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
-category-template: '### $TITLE'
+category-template: "### $TITLE"
 categories:
   - title: '🚀🚀 Major'
     labels:
@@ -13,14 +13,14 @@ categories:
     labels:
       - 'bug'
   - title: '🔨 Maintenance'
-    labels:
+    labels: 
       - 'chore'
   - title: '🔨 Improvements'
-    labels:
+    labels: 
       - 'improve'
       - 'improvement'
   - title: '📝 Documentation'
-    labels:
+    labels: 
       - 'documentation'
   - title: '👝 Dependencies (dependabot)'
     labels:
