@@ -21,6 +21,7 @@ export const QrCodeWithDownloadBtn = () => {
 					<QrCodeSaveTemplateBtn config={config} />
 					<QrCodeDownloadBtn
 						qrCode={{
+							name: null,
 							content,
 							config,
 						}}

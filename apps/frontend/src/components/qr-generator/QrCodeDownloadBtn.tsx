@@ -29,6 +29,7 @@ import { useTranslations } from 'next-intl';
 import { useQueryClient } from '@tanstack/react-query';
 import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
+import * as Sentry from '@sentry/nextjs';
 
 let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
@@ -91,6 +92,7 @@ const QrCodeDownloadBtn = ({
 						}
 					},
 					onError: (e) => {
+						Sentry.captureException(e);
 						toast({
 							variant: 'destructive',
 							title: t('errorTitle'),

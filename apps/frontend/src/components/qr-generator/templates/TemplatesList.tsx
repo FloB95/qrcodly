@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { AlertDialogAction } from '@radix-ui/react-alert-dialog';
 import React from 'react';
+import * as Sentry from '@sentry/nextjs';
 
 type TemplateListProps = {
 	templates: TConfigTemplateResponseDto[];
@@ -144,7 +145,8 @@ export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListPr
 					templateName: selectedTemplate.name,
 				});
 			},
-			onError: () => {
+			onError: (error) => {
+				Sentry.captureException(error);
 				t.dismiss();
 				toast({
 					title: trans('delete.errorTitle'),
