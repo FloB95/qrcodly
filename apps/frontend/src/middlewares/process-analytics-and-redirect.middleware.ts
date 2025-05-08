@@ -24,9 +24,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 			language: headers.get('accept-language') ?? '',
 			referrer: headers.get('referer') ?? '',
 			screen: headers.get('sec-ch-ua-platform') ?? '',
-			title: 'test',
 			ip: headers.get('x-forwarded-for') ?? '',
-			timestamp: Date.now(),
 		},
 	};
 

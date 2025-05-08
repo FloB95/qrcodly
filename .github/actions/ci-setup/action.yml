@@ -6,9 +6,9 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 20.14.0
-        cache: 'npm'
+        node-version: 22.14.0
+        cache: 'pnpm'
 
     - name: Install Dependencies
-      run: npm ci
+      run: pnpm install
       shell: bash

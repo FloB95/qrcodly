@@ -1,0 +1,64 @@
+name: Backend Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'apps/backend/**'
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: 'development'
+      LOG_LEVEL: 'debug'
+      TZ: 'Europe/Berlin'
+      COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      API_HOST: ${{ secrets.API_HOST }}
+      FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+      S3_REGION: ${{ secrets.S3_REGION }}
+      S3_UPLOAD_KEY: ${{ secrets.S3_UPLOAD_KEY }}
+      S3_UPLOAD_SECRET: ${{ secrets.S3_UPLOAD_SECRET }}
+      S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
+      CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+      UMAMI_HOST: ${{ secrets.UMAMI_HOST }}
+      UMAMI_WEBSITE: ${{ secrets.UMAMI_WEBSITE }}
+      UMAMI_USERNAME: ${{ secrets.UMAMI_USERNAME }}
+      UMAMI_PASSWORD: ${{ secrets.UMAMI_PASSWORD }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        working-directory: apps/backend
+        run: pnpm install
+
+      - name: Run Checks
+        working-directory: apps/backend
+        run: pnpm run pr:precheck
