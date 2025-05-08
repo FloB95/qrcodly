@@ -47,7 +47,6 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = def
 		if (savedContent) {
 			try {
 				const parsedContent = JSON.parse(savedContent) as TQrCodeContent;
-				console.log('Parsed content from localStorage:', parsedContent);
 				initState.content = {
 					...initState.content,
 					...parsedContent,

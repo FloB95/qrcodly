@@ -1,9 +1,14 @@
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import { useUpdateShortUrlMutation } from '@/lib/api/url-shortener';
 import { ArrowTurnDownRightIcon } from '@heroicons/react/24/outline';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
-import { useEffect, useState } from 'react';
+import posthog from 'posthog-js';
+import { useCallback, useEffect, useState } from 'react';
+import * as Sentry from '@sentry/nextjs';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 export const UrlContent = ({
 	qrCode,
@@ -12,6 +17,7 @@ export const UrlContent = ({
 	qrCode: TQrCodeWithRelationsResponseDto;
 	isEditMode: boolean;
 }) => {
+	const t = useTranslations();
 	const isShortUrl = qrCode?.shortUrl?.destinationUrl !== undefined;
 	const destinationUrl =
 		qrCode?.shortUrl?.destinationUrl ??
@@ -19,16 +25,50 @@ export const UrlContent = ({
 			? qrCode.content.data.url
 			: '');
 	const [updateValue, setUpdateValue] = useState<string>(destinationUrl);
+	const [debounced] = useDebouncedValue<string | null>(updateValue, 500);
+	const updateShortUrlMutation = useUpdateShortUrlMutation();
 
-	const [debounced] = useDebouncedValue<string | null>(updateValue, 1000);
+	const handleUpdate = useCallback(() => {
+		if (!qrCode?.shortUrl) return;
+
+		const oldDestinationUrl = qrCode.shortUrl.destinationUrl;
+		qrCode.shortUrl.destinationUrl = debounced;
+
+		updateShortUrlMutation.mutate(
+			{ shortCode: qrCode.shortUrl.shortCode, data: { destinationUrl: debounced } },
+			{
+				onSuccess: () => {
+					posthog.capture('qr-code-link-updated', {
+						shortCode: qrCode.shortUrl!.shortCode,
+						data: {
+							destinationUrl: debounced,
+						},
+					});
+					toast({
+						title: t('general.changesSaved'),
+						duration: 2000,
+						variant: 'success',
+					});
+				},
+				onError: (error) => {
+					qrCode.shortUrl!.destinationUrl = oldDestinationUrl;
+					Sentry.captureException(error);
+					toast({
+						title: t('qrCode.error.update.title'),
+						description: t('qrCode.error.update.message'),
+						variant: 'destructive',
+						duration: 5000,
+					});
+				},
+			},
+		);
+	}, [qrCode.id, qrCode.shortUrl, debounced]);
 
 	useEffect(() => {
+		if (!qrCode?.shortUrl) return;
+
 		if (debounced && debounced !== destinationUrl) {
-			toast({
-				title: 'Changes saved',
-				duration: 2000,
-				variant: 'success',
-			});
+			handleUpdate();
 		}
 	}, [debounced]);
 
@@ -40,7 +80,7 @@ export const UrlContent = ({
 				<Input
 					type="text"
 					className="p-6 "
-					placeholder="Update your URL"
+					placeholder={t('qrCode.updateQrCodeUrl')}
 					required
 					value={updateValue}
 					onChange={(e) => {
@@ -61,7 +101,13 @@ export const UrlContent = ({
 					}`}
 				>
 					<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold" />
-					<span className="text-muted-foreground pt-1 text-md">{qrCode.content.data.url}</span>
+					<Link
+						href={qrCode.content.data.url}
+						target="_blank"
+						className="text-muted-foreground pt-1 text-md"
+					>
+						{qrCode.content.data.url}
+					</Link>
 				</div>
 			)}
 		</>

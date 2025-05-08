@@ -53,7 +53,6 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
 									autoFocus
 									className="px-6 py-3.5"
 									placeholder={t('placeholder')}
-									rows={10}
 								/>
 							</FormControl>
 							<FormMessage />

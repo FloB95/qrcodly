@@ -1,6 +1,15 @@
 {
 	"general": {
-		"comingSoon": "coming soon!"
+		"comingSoon": "coming soon!",
+		"noName": "No name",
+		"changesSaved": "Changes saved",
+		"back": "Back",
+		"share": "Share",
+		"view": "View",
+		"edit": "Edit",
+		"delete": "Delete",
+		"notProvided": "Not provided",
+		"addName": "Add a name"
 	},
 	"headline": "<span class=\"text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -11,6 +20,10 @@
 	"doc": {
 		"title": "Documentation Under Update",
 		"description": "We're currently working on updating this section to better serve you. Please check back soon!"
+	},
+	"collection": {
+		"headline": "QR Code Overview in Development",
+		"subHeadline": "Some features are not available yet and will be added in future updates."
 	},
 	"analytics": {
 		"totalViews": "Total Views",
@@ -100,6 +113,10 @@
 				"title": "Error Deleting QR Code",
 				"message": "There was an error deleting your QR code. We've been notified and will fix it as soon as possible."
 			},
+			"update": {
+				"title": "Error Updating QR Code",
+				"message": "There was an error updating your QR code. We've been notified and will fix it as soon as possible."
+			},
 			"noFound": "No QR codes found"
 		},
 		"confirmDeletePopup": {
@@ -108,6 +125,15 @@
 			"confirmBtn": "Delete",
 			"cancelBtn": "Cancel"
 		},
+		"deleting": {
+			"title": "Deleting QR code...",
+			"description": "We are deleting your QR code."
+		},
+		"updateQrCodeName": {
+			"title": "Update QR Code Name",
+			"placeholder": "Enter a name"
+		},
+		"updateQrCodeUrl": "Update your URL",
 		"actionsMenu": {
 			"title": "Actions",
 			"view": "View",

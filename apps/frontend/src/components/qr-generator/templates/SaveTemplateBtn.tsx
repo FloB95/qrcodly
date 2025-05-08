@@ -11,6 +11,7 @@ import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
+import * as Sentry from '@sentry/nextjs';
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 	const t = useTranslations('templates');
@@ -41,6 +42,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 						});
 					},
 					onError: (e) => {
+						Sentry.captureException(e);
 						toast({
 							variant: 'destructive',
 							title: t('templateCreatedErrorTitle'),

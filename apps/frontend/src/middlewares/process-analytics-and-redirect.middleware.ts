@@ -82,6 +82,8 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 				const textResponse = await res.text();
 				console.error('Response Analytics API:', { error: textResponse });
 			}
+		} else {
+			console.log('Analytics sent successfully');
 		}
 	} catch (error) {
 		console.log('Error sending request to logger:', error);
