@@ -90,7 +90,7 @@ const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	const t = useTranslations();
 	const { data } = useGetViewsFromShortCodeQuery(shortUrl.shortCode);
 
-	if (!data?.views) return null;
+	if (data?.views === undefined) return null;
 
 	return (
 		<Tooltip>

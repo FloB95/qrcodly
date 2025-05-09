@@ -3,11 +3,11 @@
 import React, { Suspense, useCallback, useEffect } from 'react';
 import Container from '../ui/container';
 import { Button } from '../ui/button';
-import { ShareIcon } from '@heroicons/react/24/outline';
+import { ShareIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import { DynamicQrCode } from '../qr-generator/DynamicQrCode';
 import QrCodeDownloadBtn from '../qr-generator/QrCodeDownloadBtn';
-import { AnalyticsSection } from '../dashboard/analytics/AnalyticsSection';
+import { AnalyticsSection } from './analytics/AnalyticsSection';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { UrlContent } from './content/Url';
 import { useLocale, useTranslations } from 'next-intl';
