@@ -97,6 +97,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 			.insert(this.table)
 			.values({
 				id: qrCode.id,
+				name: qrCode.name,
 				config: qrCode.config,
 				content: qrCode.content,
 				createdAt: new Date(),
