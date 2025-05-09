@@ -85,7 +85,7 @@ export class ShortUrlController extends AbstractController {
 	): Promise<IHttpResponse<TAnalyticsResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
 		const analyticsData = await this.umamiAnalyticsService.getAnalyticsForEndpoint(
-			buildShortUrl(shortUrl.shortCode),
+			`/u/${shortUrl.shortCode}`,
 		);
 
 		return this.makeApiHttpResponse(200, AnalyticsResponseDto.parse(analyticsData));
@@ -96,9 +96,7 @@ export class ShortUrlController extends AbstractController {
 		request: IHttpRequestWithAuth<unknown, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<{ views: number }>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
-		const views = await this.umamiAnalyticsService.getViewsForEndpoint(
-			buildShortUrl(shortUrl.shortCode),
-		);
+		const views = await this.umamiAnalyticsService.getViewsForEndpoint(`/u/${shortUrl.shortCode}`);
 
 		return this.makeApiHttpResponse(200, { views });
 	}
