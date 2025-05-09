@@ -72,7 +72,7 @@ const QrCodeDownloadBtn = ({
 							toast({
 								title: t('successTitle'),
 								description: t('successDescription'),
-								duration: 10000,
+								duration: 5000,
 							});
 
 							if (content.type === 'url' && content.data.isEditable) {
@@ -97,7 +97,7 @@ const QrCodeDownloadBtn = ({
 							variant: 'destructive',
 							title: t('errorTitle'),
 							description: e.message,
-							duration: 10000,
+							duration: 5000,
 						});
 
 						posthog.capture('error:qr-code-created', {

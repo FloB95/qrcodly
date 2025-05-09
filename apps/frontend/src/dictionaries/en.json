@@ -114,7 +114,7 @@
 		"button": "Go Back Home"
 	},
 	"qrCode": {
-		"storeBtn": "Save QR Code",
+		"storeBtn": "Save",
 		"error": {
 			"delete": {
 				"title": "Error Deleting QR Code",
@@ -154,9 +154,10 @@
 			"downloadBtn": "Download",
 			"errorTitle": "Error saving QR Code"
 		},
+		"saveInfo": "Save the current QR code in your collection for later use.",
 		"savePopup": {
-			"title": "Save Current QR Code Style as Template",
-			"placeholder": "Template Name"
+			"title": "Save Current QR Code",
+			"placeholder": "QR Code Name"
 		}
 	},
 	"loginDialog": {

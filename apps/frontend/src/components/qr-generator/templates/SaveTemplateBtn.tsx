@@ -34,7 +34,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 						toast({
 							title: t('templateCreatedTitle'),
 							description: t('templateCreatedDescription'),
-							duration: 10000,
+							duration: 5000,
 						});
 
 						posthog.capture('config-template-created', {
@@ -47,7 +47,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 							variant: 'destructive',
 							title: t('templateCreatedErrorTitle'),
 							description: e.message,
-							duration: 10000,
+							duration: 5000,
 						});
 
 						posthog.capture('error:config-template-created', {
