@@ -130,7 +130,7 @@ export class UmamiAnalyticsService {
 		const defaultParams = {
 			startAt: new Date('2023-04-20T00:00:00Z').getTime(), // old start date to get all data
 			endAt: now,
-			unit: 'minute',
+			unit: 'day',
 			url: url,
 			compare: 'false',
 			timezone: 'Europe/Berlin',
@@ -150,7 +150,7 @@ export class UmamiAnalyticsService {
 	public async getAnalyticsForEndpoint(url: string): Promise<TAnalyticsResponseDto> {
 		const now = Date.now();
 		const defaultParams = {
-			startAt: '1745398436000',
+			startAt: new Date('2023-04-20T00:00:00Z').getTime(), // old start date to get all data
 			endAt: now,
 			unit: 'day',
 			url: url,

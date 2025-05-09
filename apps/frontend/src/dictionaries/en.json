@@ -9,7 +9,8 @@
 		"edit": "Edit",
 		"delete": "Delete",
 		"notProvided": "Not provided",
-		"addName": "Add a name"
+		"addName": "Add a name",
+		"days": "Days"
 	},
 	"headline": "<span class=\"text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -27,16 +28,21 @@
 	},
 	"analytics": {
 		"totalViews": "Total Views",
+		"totalVisitors": "Total Visitors",
 		"stateActive": "Active",
 		"stateInactive": "Disabled",
 		"activeDescription": "Active: Users can access the destination page, and views are tracked.",
-		"inactiveDescription": "Inactive: Access and tracking are disabled."
+		"inactiveDescription": "Inactive: Access and tracking are disabled.",
+		"noData": "No data has been recorded yet.",
+		"viewsInLastXDays": "{count} Views in the last {days}",
+		"visitorsInLastXDays": "{count} Visitors in the last {days}"
 	},
 	"chart": {
 		"visitors": "Visitors",
 		"title": {
 			"browserUsage": "Used Browsers",
 			"deviceUsage": "Used Devices",
+			"osUsage": "Used Operating Systems",
 			"countryDistribution": "Distribution by country"
 		}
 	},

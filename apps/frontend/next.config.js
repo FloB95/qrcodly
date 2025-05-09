@@ -59,10 +59,10 @@ const config = {
 				source: '/ingest/decide',
 				destination: 'https://eu.i.posthog.com/decide',
 			},
-			{
-				source: '/umami.js',
-				destination: `${env.UMAMI_API_HOST}/script.js`,
-			},
+			// {
+			// 	source: '/umami.js',
+			// 	destination: `${env.UMAMI_API_HOST}/script.js`,
+			// },
 			{
 				source: '/api/umami',
 				destination: `${env.UMAMI_API_HOST}/api/send`,
