@@ -3,6 +3,7 @@ import { Logger } from '@/core/logging';
 import { env } from '@/core/config/env';
 import QueryString from 'qs';
 import { TAnalyticsMetric, TAnalyticsResponseDto, TTimeSeries } from '@shared/schemas';
+import { BROWSERS, DEVICES } from '../config/constants';
 
 @singleton()
 export class UmamiAnalyticsService {
@@ -150,7 +151,7 @@ export class UmamiAnalyticsService {
 	public async getAnalyticsForEndpoint(url: string): Promise<TAnalyticsResponseDto> {
 		const now = Date.now();
 		const defaultParams = {
-			startAt: new Date('2023-04-20T00:00:00Z').getTime(), // old start date to get all data
+			startAt: new Date('2025-01-01T00:00:00Z').getTime(), // old start date to get all data
 			endAt: now,
 			unit: 'day',
 			url: url,
@@ -165,6 +166,8 @@ export class UmamiAnalyticsService {
 		const viewsAndSessions = this.mapSessionsAndPageviews(
 			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/pageviews`, {
 				...defaultParams,
+				startAt: '1746709200000',
+				unit: 'hour',
 			}),
 		);
 
@@ -173,19 +176,28 @@ export class UmamiAnalyticsService {
 				...defaultParams,
 				type: 'browser',
 			}),
-		);
+		).map((metric) => ({
+			...metric,
+			label: BROWSERS[metric.label as keyof typeof BROWSERS] || metric.label,
+		}));
+
 		const osMetrics = this.mapMetrics(
 			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
 				...defaultParams,
 				type: 'os',
 			}),
 		);
+
 		const deviceMetrics = this.mapMetrics(
 			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
 				...defaultParams,
 				type: 'device',
 			}),
-		);
+		).map((metric) => ({
+			...metric,
+			label: DEVICES[metric.label as keyof typeof DEVICES] || metric.label,
+		}));
+
 		const countryMetrics = this.mapMetrics(
 			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
 				...defaultParams,

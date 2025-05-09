@@ -19,7 +19,6 @@ import { UmamiAnalyticsService } from '../../services/umami-analytics.service';
 import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { TShortUrl } from '../../domain/entities/short-url.entity';
 import { UnauthorizedError } from '@/core/error/http';
-import { buildShortUrl } from '../../utils';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
