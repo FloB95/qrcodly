@@ -105,6 +105,7 @@ export const UrlContent = ({
 						href={qrCode.content.data.url}
 						target="_blank"
 						className="text-muted-foreground pt-1 text-md"
+						prefetch={false}
 					>
 						{qrCode.content.data.url}
 					</Link>

@@ -3,11 +3,13 @@
 import { useGetAnalyticsFromShortCodeQuery } from '@/lib/api/url-shortener';
 import { BarChartCard, BarChartCardSkeleton } from './BarChartCard';
 import type { ChartConfig } from '@/components/ui/chart';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon } from '@heroicons/react/24/solid';
+import { getName } from 'i18n-iso-countries';
 
 export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
+	const locale = useLocale();
 	const t = useTranslations();
 	const buildChartData = (metrics: { label: string; count: number }[], title: string) => {
 		const total = metrics.reduce((sum, item) => sum + item.count, 0);
@@ -28,7 +30,7 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 
 	if (isLoading || !data) {
 		return (
-			<div className="grid flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 lg:grid-cols-3">
+			<div className="grid flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 lg:grid-cols-3 pb-3">
 				<BarChartCardSkeleton />
 				<BarChartCardSkeleton />
 				<BarChartCardSkeleton />
@@ -42,6 +44,7 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 		data.countryMetrics ?? [],
 		t('chart.title.countryDistribution'),
 	);
+
 	const osChart = buildChartData(data.osMetrics ?? [], t('chart.title.osUsage'));
 
 	const viewsInLastWeek = data.viewsAndSessions.pageviews
@@ -132,7 +135,12 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 				/>
 
 				<BarChartCard
-					data={countryChart.data}
+					data={countryChart.data.map((data) => {
+						return {
+							...data,
+							label: getName(data.label.toLowerCase(), locale) ?? data.label,
+						};
+					})}
 					config={countryChart.config}
 					title={countryChart.title}
 				/>

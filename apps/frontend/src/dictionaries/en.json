@@ -114,6 +114,7 @@
 		"button": "Go Back Home"
 	},
 	"qrCode": {
+		"storeBtn": "Save QR Code",
 		"error": {
 			"delete": {
 				"title": "Error Deleting QR Code",
@@ -152,6 +153,10 @@
 			"successDescription": "We saved your QR Code in your collection for later use.",
 			"downloadBtn": "Download",
 			"errorTitle": "Error saving QR Code"
+		},
+		"savePopup": {
+			"title": "Save Current QR Code Style as Template",
+			"placeholder": "Template Name"
 		}
 	},
 	"loginDialog": {
@@ -182,7 +187,7 @@
 		"templateCreatedDescription": "Your template has been created successfully.",
 		"templateCreatedErrorTitle": "Error Creating Template",
 		"templateCreatedErrorDescription": "There was an error creating your template. We've been notified and will fix it as soon as possible.",
-		"saveAsBtn": "Save As Template",
+		"saveAsBtn": "Save the current styles as template",
 		"saveInfo": "Save the current QR code style as a reusable template.",
 		"savePopup": {
 			"title": "Save Current QR Code Style as Template",

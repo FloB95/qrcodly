@@ -42,6 +42,7 @@
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"fs": "0.0.1-security",
+		"i18n-iso-countries": "^7.14.0",
 		"lucide-react": "^0.488.0",
 		"next": "^15.3.1",
 		"next-axiom": "^1.9.1",
@@ -71,6 +72,7 @@
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"qrcodly-eslint-config": "workspace:*",
 		"qrcodly-typescript-config": "workspace:*",
+		"shadcn-ui": "^0.9.5",
 		"tailwindcss": "^4.1.5"
 	},
 	"ct3aMetadata": {
