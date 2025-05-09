@@ -1,57 +1,58 @@
 'use client';
 
-import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
 import { useState } from 'react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../../ui/tooltip';
-import { NameDialog } from '../NameDialog';
 import { Button } from '@/components/ui/button';
-import { QrCodeDefaults, type TQrCodeOptions } from '@shared/schemas';
-import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
+import { getDefaultContentByType, type TCreateQrCodeDto } from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
 import * as Sentry from '@sentry/nextjs';
+import { useCreateQrCodeMutation } from '@/lib/api/qr-code';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { LoginRequiredDialog } from './LoginRequiredDialog';
+import { NameDialog } from './NameDialog';
 
-const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
-	const t = useTranslations('templates');
+const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
+	const t = useTranslations('qrCode');
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
 
-	const createConfigTemplateMutation = useCreateConfigTemplateMutation();
+	const createQrCodeMutation = useCreateQrCodeMutation();
 
-	const handleSave = async (templateName: string) => {
+	const handleSave = async (qrCodeName: string) => {
 		setNameDialogOpen(false);
 		try {
-			await createConfigTemplateMutation.mutateAsync(
+			await createQrCodeMutation.mutateAsync(
 				{
-					config,
-					name: templateName,
+					config: qrCode.config,
+					content: qrCode.content,
+					name: qrCodeName,
 				},
 				{
 					onSuccess: () => {
 						toast({
-							title: t('templateCreatedTitle'),
-							description: t('templateCreatedDescription'),
+							title: t('download.successTitle'),
+							description: t('download.successDescription'),
 							duration: 10000,
 						});
 
 						posthog.capture('config-template-created', {
-							templateName: templateName,
+							qrCodeName: qrCodeName,
 						});
 					},
 					onError: (e) => {
 						Sentry.captureException(e);
 						toast({
 							variant: 'destructive',
-							title: t('templateCreatedErrorTitle'),
+							title: t('download.errorTitle'),
 							description: e.message,
 							duration: 10000,
 						});
 
 						posthog.capture('error:config-template-created', {
-							templateName: templateName,
+							qrCodeName: qrCodeName,
 						});
 					},
 				},
@@ -66,25 +67,26 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<Button
-						// variant="outlineStrong"
-						variant="ghost"
+						variant={'outlineStrong'}
 						className="cursor-pointer"
-						isLoading={createConfigTemplateMutation.isPending}
+						isLoading={createQrCodeMutation.isPending}
 						onClick={() => {
 							if (!isSignedIn) {
 								// Store the config in localStorage before prompting login
-								localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
+								localStorage.setItem('unsavedQrContent', JSON.stringify(qrCode.content));
+								localStorage.setItem('unsavedQrConfig', JSON.stringify(qrCode.config));
 								setAlertOpen(true);
 								return;
 							}
 							setNameDialogOpen(true);
 						}}
 						disabled={
-							createConfigTemplateMutation.isPending ||
-							JSON.stringify(config) === JSON.stringify(QrCodeDefaults)
+							JSON.stringify(qrCode.content) ===
+								JSON.stringify(getDefaultContentByType(qrCode.content.type)) ||
+							createQrCodeMutation.isPending
 						}
 					>
-						{t('saveAsBtn')}
+						{t('storeBtn')}
 					</Button>
 				</TooltipTrigger>
 				<TooltipContent side="top">
@@ -105,4 +107,4 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 	);
 };
 
-export default QrCodeSaveTemplateBtn;
+export default SaveQrCodeBtn;

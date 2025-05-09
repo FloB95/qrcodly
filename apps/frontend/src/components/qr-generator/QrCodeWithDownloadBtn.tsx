@@ -3,6 +3,7 @@ import { DynamicQrCode } from './DynamicQrCode';
 import QrCodeSaveTemplateBtn from './templates/SaveTemplateBtn';
 import QrCodeDownloadBtn from './QrCodeDownloadBtn';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
+import SaveQrCodeBtn from './SaveQrCodeBtn';
 
 export const QrCodeWithDownloadBtn = () => {
 	const { config, content } = useQrCodeGeneratorStore((state) => state);
@@ -17,8 +18,14 @@ export const QrCodeWithDownloadBtn = () => {
 						}}
 					/>
 				</div>
-				<div className="mt-6 flex justify-center lg:space-x-2 flex-col space-y-2 lg:space-y-0 lg:flex-row lg:justify-between">
-					<QrCodeSaveTemplateBtn config={config} />
+				<div className="mt-6 flex justify-center lg:space-x-2 flex-col space-y-2 lg:space-y-0 lg:flex-row lg:justify-between mb-3">
+					<SaveQrCodeBtn
+						qrCode={{
+							name: null,
+							content,
+							config,
+						}}
+					/>
 					<QrCodeDownloadBtn
 						qrCode={{
 							name: null,
@@ -27,6 +34,9 @@ export const QrCodeWithDownloadBtn = () => {
 						}}
 						saveOnDownload={true}
 					/>
+				</div>
+				<div className="text-center">
+					<QrCodeSaveTemplateBtn config={config} />
 				</div>
 			</Suspense>
 		</div>

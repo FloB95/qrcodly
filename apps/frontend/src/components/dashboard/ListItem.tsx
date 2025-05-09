@@ -51,7 +51,7 @@ const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => 
 			if (isEditable && qr.shortUrl) {
 				return (
 					<div className="text-muted-foreground">
-						<Link href={url} target="_blank" onClick={(e) => e.stopPropagation()}>
+						<Link href={url} prefetch={false} target="_blank" onClick={(e) => e.stopPropagation()}>
 							{url}
 						</Link>
 						{qr.shortUrl.destinationUrl && (
@@ -62,6 +62,7 @@ const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => 
 									href={qr.shortUrl.destinationUrl}
 									target="_blank"
 									className="pt-1 text-sm text-black"
+									prefetch={false}
 								>
 									{qr.shortUrl.destinationUrl}
 								</Link>
@@ -325,7 +326,11 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 							)}
 
 							<AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-								<AlertDialogTrigger className="cursor-pointer" asChild>
+								<AlertDialogTrigger
+									className="cursor-pointer"
+									asChild
+									onClick={(e) => e.stopPropagation()}
+								>
 									<DropdownMenuItem
 										onSelect={(e) => {
 											e.preventDefault();
@@ -335,7 +340,7 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 										{t('qrCode.actionsMenu.delete')}
 									</DropdownMenuItem>
 								</AlertDialogTrigger>
-								<AlertDialogContent>
+								<AlertDialogContent onClick={(e) => e.stopPropagation()}>
 									<AlertDialogHeader>
 										<AlertDialogTitle>{t('qrCode.confirmDeletePopup.title')}</AlertDialogTitle>
 										<AlertDialogDescription>
@@ -344,7 +349,7 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 									</AlertDialogHeader>
 									<AlertDialogFooter>
 										<AlertDialogCancel asChild>
-											<Button variant="secondary">
+											<Button variant="secondary" onClick={(e) => e.stopPropagation()}>
 												{t('qrCode.confirmDeletePopup.cancelBtn')}
 											</Button>
 										</AlertDialogCancel>
