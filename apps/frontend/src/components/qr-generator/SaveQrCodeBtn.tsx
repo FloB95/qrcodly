@@ -23,6 +23,9 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 
 	const handleSave = async (qrCodeName: string) => {
 		setNameDialogOpen(false);
+
+		console.log('Saving QR code with name:', qrCodeName);
+
 		try {
 			await createQrCodeMutation.mutateAsync(
 				{
@@ -35,7 +38,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 						toast({
 							title: t('download.successTitle'),
 							description: t('download.successDescription'),
-							duration: 10000,
+							duration: 5000,
 						});
 
 						posthog.capture('config-template-created', {
@@ -48,7 +51,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 							variant: 'destructive',
 							title: t('download.errorTitle'),
 							description: e.message,
-							duration: 10000,
+							duration: 5000,
 						});
 
 						posthog.capture('error:config-template-created', {

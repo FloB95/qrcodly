@@ -114,6 +114,7 @@
 		"button": "Zur Startseite"
 	},
 	"qrCode": {
+		"storeBtn": "Speichern",
 		"error": {
 			"delete": {
 				"title": "Fehler beim Löschen des QR Codes",
@@ -152,6 +153,11 @@
 			"successDescription": "Wir haben deinen QR Code für die spätere Verwendung in deiner Sammlung gespeichert.",
 			"downloadBtn": "Herunterladen",
 			"errorTitle": "Fehler beim Speichern des QR Codes"
+		},
+		"saveInfo": "Speichere den aktuellen QR-Code in deiner Sammlung.",
+		"savePopup": {
+			"title": "QR Code speichern",
+			"placeholder": "QR Code Name"
 		}
 	},
 	"loginDialog": {
@@ -182,7 +188,7 @@
 		"templateCreatedDescription": "Deine Vorlage wurde erfolgreich erstellt.",
 		"templateCreatedErrorTitle": "Fehler beim Erstellen der Vorlage",
 		"templateCreatedErrorDescription": "Beim Erstellen deiner Vorlage ist ein Fehler aufgetreten. Wir wurden bereits benachrichtigt und beheben das Problem so schnell wie möglich.",
-		"saveAsBtn": "Als Vorlage speichern",
+		"saveAsBtn": "Speichere die aktuellen Stile als Vorlage",
 		"saveInfo": "Speichere den aktuellen QR-Code-Stil als wiederverwendbare Vorlage.",
 		"savePopup": {
 			"title": "Aktuellen QR-Code-Stil als Vorlage speichern",
