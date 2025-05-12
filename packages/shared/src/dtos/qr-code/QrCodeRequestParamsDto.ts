@@ -1,8 +1,13 @@
 import { z } from 'zod';
-import { DefaultDateWhereQueryParamSchema, PaginationQueryParamsSchema } from '../ListRequestDto';
+import {
+	DefaultDateWhereQueryParamSchema,
+	DefaultStringWhereQueryParamSchema,
+	PaginationQueryParamsSchema,
+} from '../ListRequestDto';
 
 // Schema to validate the request query params for the GetCustomers controller action
 const QrCodeWhereSchema = z.object({
+	name: DefaultStringWhereQueryParamSchema,
 	createdAt: DefaultDateWhereQueryParamSchema,
 });
 

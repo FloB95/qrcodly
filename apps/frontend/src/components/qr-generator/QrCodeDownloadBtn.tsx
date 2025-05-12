@@ -19,11 +19,17 @@ import posthog from 'posthog-js';
 import {
 	convertQRCodeDataToStringByType,
 	convertQrCodeOptionsToLibraryOptions,
+	getDefaultContentByType,
 	type TCreateQrCodeDto,
 	type TFileExtension,
 } from '@shared/schemas';
-import { useCreateQrCodeMutation } from '@/lib/api/qr-code';
+import { qrCodeQueryKeys, useCreateQrCodeMutation } from '@/lib/api/qr-code';
 import { toast } from '../ui/use-toast';
+import { useTranslations } from 'next-intl';
+import { useQueryClient } from '@tanstack/react-query';
+import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
+import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
+import * as Sentry from '@sentry/nextjs';
 
 let QRCodeStyling: any;
 const QrCodeDownloadBtn = ({
@@ -35,9 +41,11 @@ const QrCodeDownloadBtn = ({
 	saveOnDownload?: boolean;
 	noStyling?: boolean;
 }) => {
+	const t = useTranslations('qrCode.download');
+	const { content, updateContent } = useQrCodeGeneratorStore((state) => state);
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
-
 	const createQrCodeMutation = useCreateQrCodeMutation();
+	const queryClient = useQueryClient();
 
 	useEffect(() => {
 		// Dynamically import the QRCodeStyling class only when the component mounts
@@ -45,7 +53,7 @@ const QrCodeDownloadBtn = ({
 			QRCodeStyling = module.default;
 			const qrCodeInstance = new QRCodeStyling({
 				...convertQrCodeOptionsToLibraryOptions(qrCode.config),
-				data: convertQRCodeDataToStringByType(qrCode.content, qrCode.contentType),
+				data: convertQRCodeDataToStringByType(qrCode.content),
 			}); // Create a new instance with the current settings
 			setQrCodeInstance(qrCodeInstance); // Store the instance in the state
 		});
@@ -62,16 +70,43 @@ const QrCodeDownloadBtn = ({
 						if (data.success && data.isStored) {
 							// show toast
 							toast({
-								title: 'New QR code created',
-								description: 'We saved your QR Code in your dashboard for later use.',
-								duration: 10000,
+								title: t('successTitle'),
+								description: t('successDescription'),
+								duration: 5000,
 							});
+
+							if (content.type === 'url' && content.data.isEditable) {
+								updateContent({
+									type: 'url',
+									data: {
+										url: '',
+										isEditable: false,
+									},
+								});
+							}
+
+							void Promise.all([
+								queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
+								queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
+							]);
 						}
+					},
+					onError: (e) => {
+						Sentry.captureException(e);
+						toast({
+							variant: 'destructive',
+							title: t('errorTitle'),
+							description: e.message,
+							duration: 5000,
+						});
+
+						posthog.capture('error:qr-code-created', {
+							qrCode: qrCode,
+						});
 					},
 				});
 
 				posthog.capture('QRCodeCreated', {
-					contentType: qrCode.contentType,
 					data: qrCode.content,
 				});
 			} catch {}
@@ -88,7 +123,8 @@ const QrCodeDownloadBtn = ({
 			<DropdownMenuTrigger
 				asChild
 				disabled={
-					(typeof qrCode.content === 'string' && qrCode.content.length <= 0) ||
+					JSON.stringify(qrCode.content) ===
+						JSON.stringify(getDefaultContentByType(qrCode.content.type)) ||
 					createQrCodeMutation.isPending
 				}
 			>
@@ -98,11 +134,12 @@ const QrCodeDownloadBtn = ({
 					<Button
 						isLoading={createQrCodeMutation.isPending}
 						disabled={
-							(typeof qrCode.content === 'string' && qrCode.content.length <= 0) ||
+							JSON.stringify(qrCode.content) ===
+								JSON.stringify(getDefaultContentByType(qrCode.content.type)) ||
 							createQrCodeMutation.isPending
 						}
 					>
-						Download
+						{t('downloadBtn')}
 					</Button>
 				)}
 			</DropdownMenuTrigger>

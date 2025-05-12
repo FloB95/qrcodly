@@ -8,6 +8,7 @@ import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { TextInputSchema } from '@shared/schemas';
+import { useTranslations } from 'next-intl';
 
 type TTextSectionProps = {
 	value: string;
@@ -19,6 +20,7 @@ const formSchema = z.object({
 });
 
 export const TextSection = ({ value, onChange }: TTextSectionProps) => {
+	const t = useTranslations('generator.contentSwitch.text');
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -50,8 +52,7 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
 									{...field}
 									autoFocus
 									className="px-6 py-3.5"
-									placeholder="Enter your text..."
-									rows={10}
+									placeholder={t('placeholder')}
 								/>
 							</FormControl>
 							<FormMessage />

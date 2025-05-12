@@ -1,24 +1,11 @@
 import { z } from 'zod';
 import { QrCodeSchema } from '../../schemas/QrCode';
 
-const QRcodeSchemaDef = QrCodeSchema._def.schema; // Extract the base schema from the PanelSchema
-const t = QrCodeSchema._def.effect;
-
-export const CreateQrCodeDto = z.effect(
-	QRcodeSchemaDef.pick({
-		config: true,
-		contentType: true,
-		content: true,
-	}),
-	{
-		type: 'refinement',
-		// ZOD Bugfix to keep refinement
-
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		refinement: t.refinement,
-	},
-);
+export const CreateQrCodeDto = QrCodeSchema.pick({
+	name: true,
+	config: true,
+	content: true,
+});
 
 export type TCreateQrCodeDto = z.infer<typeof CreateQrCodeDto>;
 

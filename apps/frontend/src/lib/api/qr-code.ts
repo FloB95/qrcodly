@@ -3,13 +3,14 @@ import { useAuth } from '@clerk/nextjs';
 import type {
 	TCreateQrCodeDto,
 	TCreateQrCodeResponseDto,
-	TQrCodePaginatedResponseDto,
+	TQrCodeWithRelationsPaginatedResponseDto,
+	TUpdateQrCodeDto,
 } from '@shared/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
 
 // Define query keys
-export const queryKeys = {
+export const qrCodeQueryKeys = {
 	listQrCodes: ['listQrCodes'],
 } as const;
 
@@ -18,11 +19,11 @@ export function useListQrCodesQuery() {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: queryKeys.listQrCodes,
-		queryFn: async (): Promise<TQrCodePaginatedResponseDto> => {
+		queryKey: qrCodeQueryKeys.listQrCodes,
+		queryFn: async (): Promise<TQrCodeWithRelationsPaginatedResponseDto> => {
 			const token = await getToken();
 
-			return apiRequest<TQrCodePaginatedResponseDto>('/qr-code', {
+			return apiRequest<TQrCodeWithRelationsPaginatedResponseDto>('/qr-code', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -42,9 +43,7 @@ export function useCreateQrCodeMutation() {
 	const { getToken } = useAuth();
 
 	return useMutation({
-		mutationFn: async (
-			qrCode: TCreateQrCodeDto,
-		): Promise<TCreateQrCodeResponseDto> => {
+		mutationFn: async (qrCode: TCreateQrCodeDto): Promise<TCreateQrCodeResponseDto> => {
 			const token = await getToken();
 			const headers: HeadersInit = {
 				'Content-Type': 'application/json',
@@ -61,7 +60,7 @@ export function useCreateQrCodeMutation() {
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
 			void queryClient.invalidateQueries({
-				queryKey: [...queryKeys.listQrCodes],
+				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
 		onError: (error) => {
@@ -69,6 +68,43 @@ export function useCreateQrCodeMutation() {
 		},
 	});
 }
+
+// Function to update a QR code
+export function useUpdateQrCodeMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async ({
+			qrCodeId,
+			data,
+		}: {
+			qrCodeId: string;
+			data: TUpdateQrCodeDto;
+		}): Promise<void> => {
+			const token = await getToken();
+			const headers: HeadersInit = {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			};
+			await apiRequest<void>(`/qr-code/${qrCodeId}`, {
+				method: 'POST',
+				body: JSON.stringify(data),
+				headers,
+			});
+		},
+		onSuccess: () => {
+			// Invalidate the 'listQrCodes' query to refetch the updated data
+			void queryClient.invalidateQueries({
+				queryKey: qrCodeQueryKeys.listQrCodes,
+			});
+		},
+		onError: (error) => {
+			console.error('Error updating QR code:', error);
+		},
+	});
+}
+
 // Function to delete a QR code
 export function useDeleteQrCodeMutation() {
 	const queryClient = useQueryClient();
@@ -88,7 +124,7 @@ export function useDeleteQrCodeMutation() {
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
 			void queryClient.invalidateQueries({
-				queryKey: [...queryKeys.listQrCodes],
+				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
 		onError: (error) => {

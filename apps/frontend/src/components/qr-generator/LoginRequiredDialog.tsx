@@ -10,6 +10,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { useTranslations } from 'next-intl';
 
 export const LoginRequiredDialog = ({
 	alertOpen,
@@ -18,20 +19,22 @@ export const LoginRequiredDialog = ({
 	alertOpen: boolean;
 	setAlertOpen: (open: boolean) => void;
 }) => {
+	const t = useTranslations('loginDialog');
 	return (
 		<AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Login Required!</AlertDialogTitle>
+					<AlertDialogTitle>{t('title')}</AlertDialogTitle>
 					<AlertDialogDescription>
-						You need to sign in to use this feature. <br />
-						<strong>{`Don't worry, it's free!`}</strong>
+						{t('description')}
+						<br />
+						<strong>{t('subDescription')}</strong>
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogCancel>{t('cancelBtn')}</AlertDialogCancel>
 					<SignInButton>
-						<AlertDialogAction>Sign in</AlertDialogAction>
+						<AlertDialogAction>{t('loginBtn')}</AlertDialogAction>
 					</SignInButton>
 				</AlertDialogFooter>
 			</AlertDialogContent>

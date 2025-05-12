@@ -16,8 +16,9 @@ import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route'
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import type AbstractController from '@/core/http/controller/abstract.controller';
 import { isAuthenticated } from '@/core/http/middleware/auth';
-import { type SafeParseReturnType, type ZodSchema } from 'zod';
+import { ZodError, type SafeParseReturnType, type ZodSchema } from 'zod';
 import qs from 'qs';
+import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 
 /**
  * Parses a Fastify request into an IHttpRequest object.
@@ -105,10 +106,24 @@ export const handleFastifyRequest = async (
 	request: FastifyRequest,
 	reply: FastifyReply,
 ): Promise<void> => {
-	const res = await handler(fastifyRequestParser(request));
-	reply.statusCode = res.statusCode;
-	void reply.headers(res.headers);
-	void reply.send(res.data);
+	try {
+		const res = await handler(fastifyRequestParser(request));
+		reply.statusCode = res.statusCode;
+		void reply.headers(res.headers);
+		void reply.send(res.data);
+	} catch (e) {
+		const error = e as Error;
+		if (error instanceof CustomApiError) {
+			throw error;
+		}
+
+		if (error instanceof ZodError) {
+			// Log the ZodError details for debugging
+			throw new BadRequestError(error.message, error.issues);
+		}
+
+		throw new UnhandledServerError(error);
+	}
 };
 
 /**

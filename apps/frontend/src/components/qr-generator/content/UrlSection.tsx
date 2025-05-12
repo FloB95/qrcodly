@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Input } from '@/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import {
 	Form,
 	FormControl,
@@ -10,51 +10,77 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
-import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { useEffect, useState } from "react";
-import { Switch } from "@/components/ui/switch";
-import { useAuth } from "@clerk/nextjs";
-import { LoginRequiredDialog } from "../LoginRequiredDialog";
-import { Badge } from "@/components/ui/badge";
-import { UrlInputSchema, type TUrlInput } from "@shared/schemas";
+} from '@/components/ui/form';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import { useEffect, useState } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { useAuth } from '@clerk/nextjs';
+import { LoginRequiredDialog } from '../LoginRequiredDialog';
+import { Badge } from '@/components/ui/badge';
+import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
+import { ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
+import { useTranslations } from 'next-intl';
+import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
+import { getShortUrlFromCode } from '@/lib/utils';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 
 type FormValues = TUrlInput;
 
 type TUrlSectionProps = {
-	onChange: (data: FormValues) => void;
+	onChange: (data: TUrlInput) => void;
 	value: FormValues;
 };
 
 export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
+	const t = useTranslations('generator.contentSwitch.url');
+	const { data: shortUrl } = useGetReservedShortUrlQuery();
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
+	const [originalUrl, setOriginalUrl] = useState<string | null>(value?.url ?? null);
+	const { content, config } = useQrCodeGeneratorStore((state) => state);
 
-	const form = useForm<FormValues>({
+	const form = useForm<Omit<FormValues, 'shortUrl'>>({
 		resolver: zodResolver(UrlInputSchema),
 		defaultValues: {
-			url: value?.url,
-			isEditable: false,
-			isActive: true,
+			url: value?.url ?? '',
+			isEditable: value?.isEditable ?? false,
 		},
 	});
-	const [debounced] = useDebouncedValue<FormValues>(form.getValues(), 500);
+
+	const [debounced] = useDebouncedValue<string | null>(originalUrl, 500);
 
 	function onSubmit(values: FormValues) {
-		onChange(values);
+		if (!originalUrl) return;
+		const payload = {
+			...values,
+			url: originalUrl,
+			shortUrl: shortUrl ? getShortUrlFromCode(shortUrl.shortCode) : null,
+		};
+
+		onChange(payload);
 	}
 
-	// handle submit automatically after debounced value
 	useEffect(() => {
 		if (
-			JSON.stringify(debounced) === "{}" ||
-			JSON.stringify(debounced) === JSON.stringify(value) ||
-			typeof debounced?.url === "undefined"
+			JSON.stringify(debounced) === '{}' ||
+			JSON.stringify(debounced) === JSON.stringify(value?.url) ||
+			debounced === null
 		) {
 			return;
 		}
 		void form.handleSubmit(onSubmit)();
 	}, [debounced]);
+
+	useEffect(() => {
+		form.reset();
+		setOriginalUrl(null);
+	}, [shortUrl]);
+
+	useEffect(() => {
+		if (value?.url) {
+			setOriginalUrl(value.url);
+		}
+	}, [value]);
 
 	return (
 		<>
@@ -68,55 +94,87 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 								<FormControl>
 									<Input
 										{...field}
+										value={originalUrl ?? field.value}
+										onChange={(e) => {
+											const val = e.target.value;
+											setOriginalUrl(val);
+											field.onChange(val);
+										}}
 										className="p-6"
-										placeholder="Enter URL https://example.com/"
+										placeholder={t('placeholder')}
 										autoFocus
 										onBlur={(e) => {
-											if (e.target.value === "") return;
+											if (e.target.value === '') return;
 											if (
-												!e.target.value.startsWith("http://") &&
-												!e.target.value.startsWith("https://")
+												!e.target.value.startsWith('http://') &&
+												!e.target.value.startsWith('https://')
 											) {
-												field.onChange(`https://${e.target.value}`);
+												const withHttps = `https://${e.target.value}`;
+												setOriginalUrl(withHttps);
+												field.onChange(withHttps);
 											}
 										}}
 									/>
 								</FormControl>
+
+								{form.getValues().isEditable && shortUrl && originalUrl && (
+									<div className="-mt-1 ml-6 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
+										<ArrowTurnLeftUpIcon className="-mt-2 mr-2 h-6 w-6 font-bold" />
+										<span className="text-muted-foreground pt-1 text-sm">
+											{getShortUrlFromCode(shortUrl.shortCode)}
+										</span>
+									</div>
+								)}
+
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
-					<FormField
-						control={form.control}
-						name="isEditable"
-						render={({ field }) => (
-							<FormItem>
-								<div className="flex">
-									<FormControl>
-										<Switch
-											disabled
-											checked={field.value}
-											onCheckedChange={(e) => {
-												if (!isSignedIn) {
-													setAlertOpen(true);
-													return;
-												}
-												field.onChange(e);
-												void form.handleSubmit(onSubmit)();
-											}}
-										/>
-									</FormControl>
-									<FormLabel className="relative mt-[4px] ml-2 pr-10">
-										Enable Statistics and Editing
-										<Badge className="xs:absolute xs:top-5 relative top-2 block w-[110px] sm:top-[-10px] sm:right-[-35%]">
-											Coming soon!
-										</Badge>
-									</FormLabel>
-								</div>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+
+					<div
+						className={`transition-opacity duration-300 ease-in-out ${
+							originalUrl ? 'opacity-100' : 'opacity-0 pointer-events-none'
+						}`}
+					>
+						<FormField
+							control={form.control}
+							name="isEditable"
+							render={({ field }) => (
+								<FormItem>
+									<div className="flex">
+										<FormControl>
+											<Switch
+												checked={field.value}
+												onCheckedChange={async (e) => {
+													if (!isSignedIn) {
+														localStorage.setItem('unsavedQrContent', JSON.stringify(content));
+														localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
+														setAlertOpen(true);
+														return;
+													}
+
+													if (!shortUrl) return;
+
+													field.onChange(e);
+													void form.handleSubmit(onSubmit)();
+												}}
+											/>
+										</FormControl>
+										<FormLabel className="relative mt-[4px] ml-2 pr-2">
+											{t('enableEditing')}
+											<Badge
+												variant="green"
+												className="xs:absolute xs:top-5 relative top-2 block w-fit sm:top-[-10px] sm:left-full"
+											>
+												{t('newBadge')}
+											</Badge>
+										</FormLabel>
+									</div>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 				</form>
 			</Form>
 

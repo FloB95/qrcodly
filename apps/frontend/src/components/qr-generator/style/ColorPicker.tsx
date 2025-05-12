@@ -1,35 +1,33 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import ReactColorPicker, {
-	useColorPicker,
-} from "react-best-gradient-color-picker";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { PaintBrushIcon } from "@heroicons/react/24/outline";
-import { cn, rgbaToHex } from "@/lib/utils";
-import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { useEffect, useState } from 'react';
+import ReactColorPicker, { useColorPicker } from 'react-best-gradient-color-picker';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { PaintBrushIcon } from '@heroicons/react/24/outline';
+import { cn, rgbaToHex } from '@/lib/utils';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 
 const solidPresets = [
-	"#000000",
-	"#ffa647",
-	"#ffe83f",
-	"#9fff5b",
-	"#70e2ff",
-	"#cd93ff",
-	"#09203f",
-	"#133337",
-	"#DFFF00",
-	"#cc0000",
-	"#FFBF00",
-	"#FF7F50",
-	"#DE3163",
-	"#9FE2BF",
-	"#40E0D0",
-	"#6495ED",
-	"#CCCCFF",
-	"#990000",
+	'#000000',
+	'#ffa647',
+	'#ffe83f',
+	'#9fff5b',
+	'#70e2ff',
+	'#cd93ff',
+	'#09203f',
+	'#133337',
+	'#DFFF00',
+	'#cc0000',
+	'#FFBF00',
+	'#FF7F50',
+	'#DE3163',
+	'#9FE2BF',
+	'#40E0D0',
+	'#6495ED',
+	'#CCCCFF',
+	'#990000',
 ];
 
 type ColorStop = {
@@ -38,7 +36,7 @@ type ColorStop = {
 };
 
 type Gradient = {
-	type: "radial" | "linear";
+	type: 'radial' | 'linear';
 	rotation: number;
 	colorStops: ColorStop[];
 };
@@ -52,37 +50,28 @@ interface ColorPickerProps {
 }
 
 const backgroundToButtonText = (background: ColorType): string => {
-	if (typeof background === "string") return background;
-	const colorStopsStr = background.colorStops
-		.map((stop) => `${stop.color}`)
-		.join(" -> ");
+	if (typeof background === 'string') return background;
+	const colorStopsStr = background.colorStops.map((stop) => `${stop.color}`).join(' -> ');
 	return `${colorStopsStr}`;
 };
 
 const fromColorType = (colorType: ColorType): string => {
-	if (typeof colorType === "string") {
+	if (typeof colorType === 'string') {
 		return colorType;
 	}
 
 	colorType.rotation ??= 0;
 
-	const gradientType =
-		colorType.type === "linear" ? "linear-gradient" : "radial-gradient";
+	const gradientType = colorType.type === 'linear' ? 'linear-gradient' : 'radial-gradient';
 	const colorStops = colorType.colorStops
 		.map((stop) => `${stop.color} ${stop.offset * 100}%`)
-		.join(", ");
+		.join(', ');
 
 	return `${gradientType}(${colorType.rotation}deg, ${colorStops})`;
 };
 
-export function ColorPicker({
-	defaultColor,
-	onChange,
-	withGradient = true,
-}: ColorPickerProps) {
-	const [color, setColor] = useState(
-		defaultColor ? fromColorType(defaultColor) : "#000000",
-	);
+export function ColorPicker({ defaultColor, onChange, withGradient = true }: ColorPickerProps) {
+	const [color, setColor] = useState(defaultColor ? fromColorType(defaultColor) : '#000000');
 	const { valueToHex, getGradientObject, deletePoint } = useColorPicker(
 		fromColorType(color),
 		setColor,
@@ -92,13 +81,8 @@ export function ColorPicker({
 		const gradientObject = getGradientObject(color);
 		if (gradientObject?.isGradient) {
 			return {
-				type:
-					gradientObject.gradientType === "linear-gradient"
-						? "linear"
-						: "radial",
-				rotation: gradientObject.degrees
-					? parseFloat(gradientObject.degrees)
-					: 90,
+				type: gradientObject.gradientType === 'linear-gradient' ? 'linear' : 'radial',
+				rotation: gradientObject.degrees ? parseFloat(gradientObject.degrees) : 90,
 				colorStops: (
 					gradientObject.colors as {
 						value: string;
@@ -125,11 +109,10 @@ export function ColorPicker({
 		<Dialog>
 			<DialogTrigger asChild>
 				<Button
-					variant={"outline"}
+					variant={'outline'}
 					className={cn(
-						"w-[220px] justify-start text-left font-normal",
-						!color && "text-muted-foreground",
-						// className,
+						'w-[220px] justify-start text-left font-normal',
+						!color && 'text-muted-foreground',
 					)}
 				>
 					<div className="flex w-full items-center gap-2">
@@ -142,21 +125,21 @@ export function ColorPicker({
 							<PaintBrushIcon className="h-4 w-4" />
 						)}
 						<div className="flex-1 truncate">
-							{color ? backgroundToButtonText(color) : "Pick a color"}
+							{color ? backgroundToButtonText(color) : 'Pick a color'}
 						</div>
 					</div>
 				</Button>
 			</DialogTrigger>
-			<DialogContent hideOverlay hideClose style={{ width: "320px" }}>
+			<DialogContent style={{ width: '320px' }}>
 				<DialogTitle hidden>Color Picker</DialogTitle>
 				<DialogDescription hidden aria-hidden="true">
-					Use the color picker dialog to select a color or gradient for the
-					background. This tool supports both solid colors and gradients.
+					Use the color picker dialog to select a color or gradient for the background. This tool
+					supports both solid colors and gradients.
 				</DialogDescription>
 				<ReactColorPicker
 					config={{
 						defaultGradient:
-							"linear-gradient(90deg, RGB(255, 165, 76) 0%, rgba(205,147,255,1) 100%)",
+							'linear-gradient(90deg, RGB(255, 165, 76) 0%, rgba(205,147,255,1) 100%)',
 					}}
 					presets={solidPresets}
 					hideControls={!withGradient}
@@ -170,15 +153,9 @@ export function ColorPicker({
 					value={color}
 					onChange={(b) => {
 						// add rotation of none
-						if (
-							b.startsWith("linear-gradient(deg") ||
-							b.startsWith("radial-gradient(deg")
-						) {
-							b = b.replace(
-								/(linear-gradient|radial-gradient)\((?!\d+deg)/,
-								"$1(0deg,",
-							);
-							b = b.replace(/,deg,/, ","); // Remove redundant "deg,"
+						if (b.startsWith('linear-gradient(deg') || b.startsWith('radial-gradient(deg')) {
+							b = b.replace(/(linear-gradient|radial-gradient)\((?!\d+deg)/, '$1(0deg,');
+							b = b.replace(/,deg,/, ','); // Remove redundant "deg,"
 						}
 						setColor(b);
 						const gradientObject = getGradientObject(b);

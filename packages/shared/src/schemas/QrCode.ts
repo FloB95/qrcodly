@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AbstractEntitySchema } from './AbstractEntitySchema';
+import { AbstractEntitySchema } from './AbstractEntitySchema'; // Stelle sicher, dass der Pfad korrekt ist
 
 const emptyStringToUndefined = <T extends z.ZodTypeAny>(
 	schema: T,
@@ -9,7 +9,6 @@ const emptyStringToUndefined = <T extends z.ZodTypeAny>(
 export const UrlInputSchema = z.object({
 	url: z.string().url(),
 	isEditable: z.boolean().optional(),
-	isActive: z.boolean().optional(),
 });
 export type TUrlInput = z.infer<typeof UrlInputSchema>;
 
@@ -50,23 +49,42 @@ export const VCardInputSchema = z.object({
 });
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
 
-export const QrCodeContentSchema = z
-	.union([UrlInputSchema, TextInputSchema, WifiInputSchema, VCardInputSchema])
-	.describe('The actual content of the QR code. (valid URL, text, wifi, vCard...)');
+export const QrCodeContentType = z.union([
+	z.literal('url'),
+	z.literal('text'),
+	z.literal('wifi'),
+	z.literal('vCard'),
+]);
+export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
 
-export type TQrCodeContent = z.infer<typeof QrCodeContentSchema>;
+export const UrlContentSchema = z.object({
+	type: z.literal('url'),
+	data: UrlInputSchema,
+});
 
-// Define the type mapping
-export type TQrCodeContentMap = {
-	url: z.infer<typeof UrlInputSchema>;
-	text: z.infer<typeof TextInputSchema>;
-	wifi: z.infer<typeof WifiInputSchema>;
-	vCard: z.infer<typeof VCardInputSchema>;
-};
+export const TextContentSchema = z.object({
+	type: z.literal('text'),
+	data: TextInputSchema,
+});
 
-/**
- * Type definition for specifying the type of dots.
- */
+export const WifiContentSchema = z.object({
+	type: z.literal('wifi'),
+	data: WifiInputSchema,
+});
+
+export const VCardContentSchema = z.object({
+	type: z.literal('vCard'),
+	data: VCardInputSchema,
+});
+
+export const QrCodeContent = z.discriminatedUnion('type', [
+	UrlContentSchema,
+	TextContentSchema,
+	WifiContentSchema,
+	VCardContentSchema,
+]);
+export type TQrCodeContent = z.infer<typeof QrCodeContent>;
+
 export const DotType = z.enum([
 	'dots',
 	'rounded',
@@ -77,32 +95,17 @@ export const DotType = z.enum([
 ]);
 export type TDotType = z.infer<typeof DotType>;
 
-/**
- * Type definition for specifying the type of corner dots.
- */
 export const CornerDotType = z.enum(['dot', 'square']);
 export type TCornerDotType = z.infer<typeof CornerDotType>;
 
-/**
- * Type definition for specifying the type of corner squares.
- */
 export const CornerSquareType = z.enum(['dot', 'square', 'extra-rounded']);
 export type TCornerSquareType = z.infer<typeof CornerSquareType>;
 
-/**
- * Type definition for specifying file extensions.
- */
 export const FileExtension = z.enum(['svg', 'png', 'jpeg', 'webp']);
 export type TFileExtension = z.infer<typeof FileExtension>;
 
-/**
- * Type definition for specifying the type of gradient.
- */
 export const GradientType = z.enum(['radial', 'linear']);
 
-/**
- * Type definition for specifying a gradient.
- */
 export const Gradient = z.object({
 	type: GradientType,
 	rotation: z.number(),
@@ -114,25 +117,11 @@ export const Gradient = z.object({
 			}),
 		)
 		.min(2)
-		.max(2),
+		.max(2), // Beibehalten auf 2 wie im Original
 });
 
 export const ColorOrGradient = z.union([z.string().regex(/^#[0-9A-F]{6}$/i), Gradient]);
 
-/**
- * Type definition for specifying the content type of the QR code.
- */
-export const QrCodeContentType = z.union([
-	z.literal('url'),
-	z.literal('text'),
-	z.literal('wifi'),
-	z.literal('vCard'),
-]);
-export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
-
-/**
- * Type definition for specifying QR code generation options.
- */
 export const QrCodeOptionsSchema = z.object({
 	width: z.number(),
 	height: z.number(),
@@ -164,67 +153,12 @@ export const QrCodeOptionsSchema = z.object({
 
 export type TQrCodeOptions = z.infer<typeof QrCodeOptionsSchema>;
 
-/**
- * Schema definition for QR code entity.
- */
 export const QrCodeSchema = AbstractEntitySchema.extend({
+	name: z.string().max(32).nullable(),
 	config: QrCodeOptionsSchema,
-	contentType: QrCodeContentType,
-	content: QrCodeContentSchema,
+	content: QrCodeContent,
 	previewImage: z.string().nullable(),
 	createdBy: z.string().nullable(),
-}).superRefine((values, ctx) => {
-	const { contentType, content } = values;
-
-	// Validate the original data based on the content type
-	switch (contentType) {
-		case 'url':
-			if (!UrlInputSchema.safeParse(content).success) {
-				ctx.addIssue({
-					code: 'custom',
-					path: ['content'],
-					message: 'Invalid URL format.',
-				});
-			}
-			break;
-
-		case 'text':
-			if (!TextInputSchema.safeParse(content).success) {
-				ctx.addIssue({
-					code: 'custom',
-					path: ['content'],
-					message: 'Text must be a string with a maximum length of 1000 characters.',
-				});
-			}
-			break;
-
-		case 'wifi':
-			if (!WifiInputSchema.safeParse(content).success) {
-				ctx.addIssue({
-					code: 'custom',
-					path: ['content'],
-					message: 'Invalid WiFi configuration.',
-				});
-			}
-			break;
-
-		case 'vCard':
-			if (!VCardInputSchema.safeParse(content).success) {
-				ctx.addIssue({
-					code: 'custom',
-					path: ['content'],
-					message: 'Invalid vCard configuration.',
-				});
-			}
-			break;
-
-		default:
-			ctx.addIssue({
-				code: 'custom',
-				path: ['contentType'],
-				message: 'Unsupported content type.',
-			});
-	}
 });
 
 export type TQrCode = z.infer<typeof QrCodeSchema>;

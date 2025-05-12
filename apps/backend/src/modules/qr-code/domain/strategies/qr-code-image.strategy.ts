@@ -1,11 +1,15 @@
-import { BaseImageStrategy } from './base-image.strategy';
 import {
 	convertQRCodeDataToStringByType,
 	convertQrCodeOptionsToLibraryOptions,
 	type TQrCode,
 } from '@shared/schemas';
-import { QR_CODE_PREVIEW_IMAGE_FOLDER, QR_CODE_UPLOAD_FOLDER } from '../../config/constants';
+import {
+	QR_CODE_IMAGE_FOLDER,
+	QR_CODE_PREVIEW_IMAGE_FOLDER,
+	QR_CODE_UPLOAD_FOLDER,
+} from '../../config/constants';
 import { generateQrCodeStylingInstance } from '../../lib/styled-qr-code';
+import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
 
 export class QrCodeImageStrategy extends BaseImageStrategy {
 	constructor() {
@@ -28,6 +32,11 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 
 	async delete(imagePath?: string): Promise<void> {
 		if (!imagePath) return;
+		const qrCodePathRegex = new RegExp(`^${QR_CODE_IMAGE_FOLDER}/`);
+		if (!qrCodePathRegex.test(imagePath)) {
+			this.logger.warn(`Attempted to delete image outside the qrCode folder: ${imagePath}`);
+			return;
+		}
 		try {
 			await this.objectStorage.delete(imagePath);
 		} catch (error) {
@@ -36,9 +45,9 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 	}
 
 	async generatePreview(
-		qrCode: Pick<TQrCode, 'id' | 'createdBy' | 'config' | 'content' | 'contentType'>,
+		qrCode: Pick<TQrCode, 'id' | 'createdBy' | 'config' | 'content'>,
 	): Promise<string | undefined> {
-		const { id, createdBy, config, content, contentType } = qrCode;
+		const { id, createdBy, config, content } = qrCode;
 
 		try {
 			const fileName = `${id}.svg`;
@@ -50,7 +59,7 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 
 			const instance = await generateQrCodeStylingInstance({
 				...convertQrCodeOptionsToLibraryOptions(config),
-				data: convertQRCodeDataToStringByType(content, contentType),
+				data: convertQRCodeDataToStringByType(content),
 			});
 
 			const svg = await instance.getRawData('svg');

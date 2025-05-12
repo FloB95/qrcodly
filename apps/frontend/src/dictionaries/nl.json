@@ -1,0 +1,341 @@
+{
+	"general": {
+		"comingSoon": "binnenkort beschikbaar!",
+		"noName": "Geen naam",
+		"changesSaved": "Wijzigingen opgeslagen",
+		"back": "Terug",
+		"share": "Delen",
+		"view": "Bekijken",
+		"edit": "Bewerken",
+		"delete": "Verwijderen",
+		"notProvided": "Niet opgegeven",
+		"addName": "Een naam toevoegen",
+		"days": "Dagen"
+	},
+	"headline": "<span class=\"text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
+	"metadata": {
+		"title": "QRcodly - Gratis & Open Source QR Code Generator",
+		"description": "QRcodly: Jouw gratis QR Code Generator. Maak direct QR Codes voor link, vCard, Wi-Fi & meer. Aanpasbaar & gratis. Genereer nu QR Code!",
+		"keywords": "qr code generator, qr code maken, qr code genereren, gratis, free, qr code maken gratis, qr code generator gratis, vcard qr code, link qr code, qrgenerator"
+	},
+	"doc": {
+		"title": "Documentatie wordt bijgewerkt",
+		"description": "We werken momenteel aan het bijwerken van dit gedeelte om u beter van dienst te zijn. Kom snel terug!"
+	},
+	"collection": {
+		"headline": "QR-codeoverzicht in ontwikkeling",
+		"subHeadline": "Sommige functies zijn nog niet beschikbaar en zullen worden toegevoegd in toekomstige updates."
+	},
+	"analytics": {
+		"totalViews": "Aantal weergaven",
+		"totalVisitors": "Aantal bezoekers",
+		"stateActive": "Actief",
+		"stateInactive": "Uitgeschakeld",
+		"activeDescription": "Actief: gebruikers hebben toegang tot de bestemmingspagina en weergaven worden geanalyseerd.",
+		"inactiveDescription": "Uitgeschakeld: toegang en analyse zijn gedeactiveerd.",
+		"noData": "Nog geen gegevens verzameld.",
+		"viewsInLastXDays": "{count} weergaven in de afgelopen {days} dagen",
+		"visitorsInLastXDays": "{count} bezoekers in de afgelopen {days} dagen"
+	},
+	"chart": {
+		"visitors": "Bezoekers",
+		"title": {
+			"browserUsage": "Gebruikte browsers",
+			"deviceUsage": "Gebruikte apparaten",
+			"osUsage": "Gebruikte besturingssystemen",
+			"countryDistribution": "Distributie per land"
+		}
+	},
+	"header": {
+		"collectionBtn": "Mijn collectie",
+		"signInBtn": "Inloggen"
+	},
+	"footer": {
+		"qrCodeCopyright": "QR Code is een geregistreerd handelsmerk van DENSO WAVE INCORPORATED",
+		"legalNotice": "Wettelijke kennisgeving",
+		"privacyPolicy": "Privacybeleid"
+	},
+	"contentElements": {
+		"iconPicker": {
+			"openTrigger": "Icoonkiezer openen",
+			"dialogTitle": "Een icoon selecteren",
+			"dialogDescription": "Kies een icoon en een kleur voor uw selectie.",
+			"searchPlaceholder": "Zoek naar een icoon",
+			"clearBtn": "Wissen",
+			"selectBtn": "Selecteren"
+		},
+		"loader": {
+			"loading": "Laden..."
+		},
+		"feedbackCta": {
+			"headline": "Uw feedback is belangrijk! 🚀",
+			"subHeadline1": "We werken voortdurend aan het verbeteren van QRcodly.",
+			"subHeadline2": "Als u feedback of vragen heeft, laat het ons dan weten.",
+			"emailBtn": "E-mail ons"
+		},
+		"featuresCta": {
+			"headline": "Overzicht van de belangrijkste functies",
+			"subHeadline": "Met QRcodly kunt u gratis QR-codes maken, bewerken, beheren en analyseren - alles op één plek.",
+			"emailBtn": "E-mail ons",
+			"editFeature": {
+				"headline": "QR-codes op elk moment bewerken",
+				"subHeadline": "Maak gratis QR-codes en pas de doel-URL op elk moment aan, zelfs na het afdrukken."
+			},
+			"statisticFeature": {
+				"headline": "Gedetailleerde real-time QR-codestatistieken",
+				"subHeadline": "Houd bij hoe vaak en waar uw QR-codes worden gescand."
+			},
+			"overviewFeature": {
+				"headline": "Overzichtelijke QR-codeverzameling",
+				"subHeadline": "Houd al uw gegenereerde QR-codes op één centrale locatie bij."
+			},
+			"templateFeature": {
+				"headline": "Ontwerpen maken met sjablonen",
+				"subHeadline": "Bespaar tijd en zorg voor consistente branding. Maak sjablonen met uw voorkeursstijlen en pas deze eenvoudig toe op nieuwe QR-codes."
+			},
+			"teamFeature": {
+				"headline": "Samenwerken in een team",
+				"subHeadline": "Nodig teamleden uit en werk samen aan QR-codes. Ideaal voor bedrijven, bureaus en teams."
+			}
+		}
+	},
+	"shortUrl": {
+		"error": {
+			"toggleActiveState": {
+				"title": "Fout bij het wijzigen van de status",
+				"message": "Er is een fout opgetreden bij het wijzigen van de status. We zijn hiervan op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen."
+			}
+		}
+	},
+	"qrCodeDisabled": {
+		"title": "QR-code uitgeschakeld",
+		"description": "Deze QR-code is helaas niet meer actief. De bestemming is niet meer beschikbaar.",
+		"note": "Als u denkt dat dit een fout is, neem dan contact op met de eigenaar van de QR-code of probeer het later opnieuw.",
+		"button": "Naar de startpagina"
+	},
+	"qrCode": {
+		"storeBtn": "Opslaan",
+		"error": {
+			"delete": {
+				"title": "Fout bij het verwijderen van de QR-code",
+				"message": "Er is een fout opgetreden bij het verwijderen van uw QR-code. We zijn hiervan op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen."
+			},
+			"update": {
+				"title": "Fout bij het bijwerken van de QR-code",
+				"message": "Er is een fout opgetreden bij het bijwerken van uw QR-code. We zijn hiervan op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen."
+			},
+			"noFound": "Geen QR-codes gevonden"
+		},
+		"confirmDeletePopup": {
+			"title": "Verwijderen bevestigen",
+			"description": "Weet u zeker dat u de QR-code wilt verwijderen?",
+			"confirmBtn": "Verwijderen",
+			"cancelBtn": "Annuleren"
+		},
+		"deleting": {
+			"title": "QR-code wordt verwijderd...",
+			"description": "We zijn uw QR-code aan het verwijderen."
+		},
+		"updateQrCodeName": {
+			"title": "QR-code hernoemen",
+			"placeholder": "Voer een naam in"
+		},
+		"updateQrCodeUrl": "URL bijwerken",
+		"actionsMenu": {
+			"title": "Acties",
+			"view": "Bekijken",
+			"delete": "Verwijderen",
+			"disableShortUrl": "Uitschakelen",
+			"enableShortUrl": "Inschakelen"
+		},
+		"download": {
+			"successTitle": "Nieuwe QR-code gemaakt",
+			"successDescription": "We hebben uw QR-code opgeslagen in uw verzameling voor later gebruik.",
+			"downloadBtn": "Downloaden",
+			"errorTitle": "Fout bij het opslaan van de QR-code"
+		},
+		"saveInfo": "Sla de huidige QR-code op in uw verzameling.",
+		"savePopup": {
+			"title": "QR-code opslaan",
+			"placeholder": "Naam QR-code"
+		}
+	},
+	"loginDialog": {
+		"title": "Inloggen vereist",
+		"description": "U moet inloggen om deze functie te gebruiken.",
+		"subDescription": "Geen zorgen – het is helemaal gratis!",
+		"cancelBtn": "Annuleren",
+		"loginBtn": "Inloggen"
+	},
+	"nameDialog": {
+		"placeholder": "Naam",
+		"cancelBtn": "Annuleren",
+		"saveBtn": "Opslaan",
+		"characters": "tekens"
+	},
+	"templates": {
+		"tabs": {
+			"myTemplates": "Mijn sjablonen",
+			"predefinedTemplates": "Vooraf gedefinieerd"
+		},
+		"noTemplates": "U heeft nog geen sjablonen.",
+		"search": {
+			"placeholder": "Zoek naar een sjabloon",
+			"noResults": "Geen sjablonen gevonden voor \"{searchName}\""
+		},
+		"noPredefinedTemplates": "Momenteel zijn er geen vooraf gedefinieerde sjablonen beschikbaar.",
+		"templateCreatedTitle": "Nieuw sjabloon gemaakt",
+		"templateCreatedDescription": "Uw sjabloon is succesvol gemaakt.",
+		"templateCreatedErrorTitle": "Fout bij het maken van sjabloon",
+		"templateCreatedErrorDescription": "Er is een fout opgetreden bij het maken van uw sjabloon. We zijn hiervan al op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen.",
+		"saveAsBtn": "Opslaan als sjabloon",
+		"saveInfo": "Sla het huidige ontwerp op als herbruikbaar sjabloon.",
+		"savePopup": {
+			"title": "Huidig ontwerp opslaan als sjabloon",
+			"placeholder": "Sjabloonnaam"
+		},
+		"delete": {
+			"beingDeleted": "Sjabloon wordt verwijderd",
+			"deletingInfo": "We zijn uw sjabloon aan het verwijderen.",
+			"errorTitle": "Sjabloon kon niet worden verwijderd",
+			"errorDescription": "Er is een fout opgetreden bij het verwijderen van het sjabloon. We zijn hiervan op de hoogte gesteld en zullen het probleem snel oplossen."
+		},
+		"confirmPopup": {
+			"title": "Verwijderen bevestigen",
+			"description": "Weet u zeker dat u het sjabloon wilt verwijderen?",
+			"description2": "Deze actie kan niet ongedaan worden gemaakt.",
+			"confirmBtn": "Verwijderen",
+			"cancelBtn": "Annuleren"
+		}
+	},
+	"generator": {
+		"tabs": {
+			"content": "Inhoud",
+			"style": "Stijl",
+			"templates": "Sjablonen"
+		},
+		"settingsForm": {
+			"tabGeneral": "Algemeen",
+			"tabShape": "Vorm",
+			"tabIcon": "Icoon",
+			"sizeLabel": "Grootte (Kwaliteit)",
+			"borderSpacingLabel": "Randafstand",
+			"backgroundLabel": "Achtergrond",
+			"dotStyle": {
+				"label": "Puntstijl",
+				"placeholder": "Selecteer een puntstijl",
+				"optionLabelSquare": "Vierkant",
+				"optionLabelDots": "Stippen",
+				"optionLabelRounded": "Afgerond",
+				"optionLabelExtraRound": "Extra Afgerond",
+				"optionLabelClassy": "Klassiek",
+				"optionLabelClassyRounded": "Klassiek Afgerond"
+			},
+			"dotColor": "Puntkleur",
+			"cornersSquareOptions": {
+				"placeholder": "Selecteer een stijl",
+				"label": "Hoekvierkantstijl",
+				"optionLabelSquare": "Vierkant",
+				"optionLabelDot": "Punt",
+				"optionLabelExtraRound": "Extra Afgerond"
+			},
+			"cornersSquareColor": "Kleur hoekvierkanten",
+			"cornersDotOptions": {
+				"label": "Hoekpuntstijl",
+				"placeholder": "Selecteer een stijl",
+				"optionLabelSquare": "Vierkant",
+				"optionLabelDot": "Punt"
+			},
+			"cornersDotColor": "Kleur hoekpunten",
+			"iconLabel": "Icoon",
+			"errorToLargeFile": "Het bestand is te groot. Maximale grootte is 1MB.",
+			"hideBackgroundDots": "Achtergrondpunten verbergen",
+			"predefinedIconInfo": "U kunt ook kiezen uit vooraf gedefinieerde iconen.",
+			"clearBtn": "Icoon wissen"
+		},
+		"contentSwitch": {
+			"tabUrl": "URL",
+			"tabText": "TEKST",
+			"tabWifi": "WI-FI",
+			"tabVCard": "VCARD",
+			"text": {
+				"placeholder": "Voer hier uw tekst in"
+			},
+			"url": {
+				"placeholder": "Voer uw URL in https://voorbeeld.com/",
+				"enableEditing": "Statistieken en bewerkingen inschakelen",
+				"newBadge": "Nieuw!"
+			},
+			"wifi": {
+				"network": {
+					"label": "Netwerk",
+					"placeholder": "Voer uw netwerknaam in"
+				},
+				"password": {
+					"label": "Wachtwoord",
+					"placeholder": "Voer uw wachtwoord in"
+				},
+				"encryption": {
+					"label": "Versleuteling",
+					"optionLabelWpa": "WPA/WPA2",
+					"optionLabelWep": "WEP",
+					"optionNoPass": "Geen wachtwoord"
+				}
+			},
+			"vCard": {
+				"firstName": {
+					"label": "Voornaam",
+					"placeholder": "Voer uw voornaam in"
+				},
+				"lastName": {
+					"label": "Achternaam",
+					"placeholder": "Voer uw achternaam in"
+				},
+				"email": {
+					"label": "E-mailadres",
+					"placeholder": "Voer uw e-mailadres in"
+				},
+				"phone": {
+					"label": "Telefoon",
+					"placeholder": "Voer uw telefoonnummer in"
+				},
+				"fax": {
+					"label": "Fax",
+					"placeholder": "Voer uw faxnummer in"
+				},
+				"company": {
+					"label": "Bedrijf",
+					"placeholder": "Voer uw bedrijfsnaam in"
+				},
+				"jobTitle": {
+					"label": "Functietitel",
+					"placeholder": "Voer uw functietitel in"
+				},
+				"street": {
+					"label": "Straat",
+					"placeholder": "Voer uw straat en huisnummer in"
+				},
+				"city": {
+					"label": "Stad",
+					"placeholder": "Voer uw stad in"
+				},
+				"zipCode": {
+					"label": "Postcode",
+					"placeholder": "Voer uw postcode in"
+				},
+				"state": {
+					"label": "Provincie",
+					"placeholder": "Voer uw provincie in"
+				},
+				"country": {
+					"label": "Land",
+					"placeholder": "Voer uw land in"
+				},
+				"website": {
+					"label": "Website",
+					"placeholder": "Voer de URL van uw website in"
+				}
+			}
+		}
+	}
+}

@@ -1,6 +1,6 @@
 import { container } from 'tsyringe';
 import { DEFAULT_SHUTDOWN_PRIORITY } from '../config/constants';
-import { type ServiceClass, ShutdownService } from '../shutdown/shutdown.service';
+import { type ServiceClass, ShutdownService } from '../services/shutdown.service';
 
 /**
  * Decorator that registers a method as a shutdown hook. The method will

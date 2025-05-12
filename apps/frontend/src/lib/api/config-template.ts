@@ -19,16 +19,14 @@ export function usePredefinedTemplatesQuery() {
 	return useQuery({
 		queryKey: queryKeys.predefinedTemplates,
 		queryFn: async (): Promise<TConfigTemplatePaginatedResponseDto> => {
-			return apiRequest<TConfigTemplatePaginatedResponseDto>(
-				'/config-template/predefined',
-				{
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-					},
+			return apiRequest<TConfigTemplatePaginatedResponseDto>('/config-template/predefined', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
 				},
-			);
+			});
 		},
+		refetchOnMount: false,
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 2,
@@ -63,6 +61,7 @@ export function useListConfigTemplatesQuery(searchName?: string) {
 				},
 			);
 		},
+		refetchOnMount: false,
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 2,
@@ -93,7 +92,7 @@ export function useCreateConfigTemplateMutation() {
 		onSuccess: () => {
 			// Invalidate the 'listConfigTemplates' query to refetch the updated data
 			void queryClient.invalidateQueries({
-				queryKey: [...queryKeys.listConfigTemplates],
+				queryKey: queryKeys.listConfigTemplates,
 			});
 		},
 		onError: (error) => {
@@ -121,7 +120,7 @@ export function useDeleteConfigTemplateMutation() {
 		onSuccess: () => {
 			// Invalidate the 'listConfigTemplates' query to refetch the updated data
 			void queryClient.invalidateQueries({
-				queryKey: [...queryKeys.listConfigTemplates],
+				queryKey: queryKeys.listConfigTemplates,
 			});
 		},
 		onError: (error) => {

@@ -26,6 +26,6 @@
 	"types": ["@types/jest"],
 	"ts-node": {
 		"require": ["tsconfig-paths/register"]
-	},
-	"references": [{ "path": "../../packages/shared/tsconfig.json" }]
+	}
+	// "references": [{ "path": "../../packages/shared/tsconfig.json" }]
 }

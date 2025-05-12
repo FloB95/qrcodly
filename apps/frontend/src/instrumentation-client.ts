@@ -10,6 +10,7 @@ import { env } from './env';
 Sentry.init({
 	enabled: process.env.NODE_ENV === 'production',
 	dsn: env.NEXT_PUBLIC_SENTRY_DSN,
+	environment: env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
 
 	// Add optional integrations for additional features
 	integrations: [Sentry.replayIntegration()],

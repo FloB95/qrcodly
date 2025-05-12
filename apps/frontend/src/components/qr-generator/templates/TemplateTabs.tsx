@@ -4,8 +4,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@clerk/nextjs';
 import { MyTemplatesTab } from './tabs/MyTemplatesTab';
 import { PredefinedTemplatesTab } from './tabs/PredefinedTemplatesTab';
+import { useTranslations } from 'next-intl';
 
 export const TemplateTabs = () => {
+	const t = useTranslations('templates.tabs');
 	const { isSignedIn } = useAuth();
 
 	return (
@@ -14,11 +16,11 @@ export const TemplateTabs = () => {
 				<TabsList className="mb-4 w-full">
 					{isSignedIn && (
 						<TabsTrigger className="flex-1" value="myTemplates">
-							My Templates
+							{t('myTemplates')}
 						</TabsTrigger>
 					)}
 					<TabsTrigger className="flex-1" value="predefinedTemplates">
-						Predefined
+						{t('predefinedTemplates')}
 					</TabsTrigger>
 				</TabsList>
 				{isSignedIn && (

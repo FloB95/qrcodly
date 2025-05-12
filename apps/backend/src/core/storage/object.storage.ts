@@ -42,12 +42,10 @@ export class ObjectStorage implements IFileStorage {
 	async get(key: string): Promise<Buffer | null> {
 		const k = this.prefix + key;
 		try {
-			const command = new GetObjectCommand({
+			const response: GetObjectOutput = await this.s3Client.getObject({
 				Bucket: this.bucketName,
 				Key: k,
 			});
-
-			const response: GetObjectOutput = await this.s3Client.send(command);
 
 			if (!response.Body || !(response.Body instanceof Readable)) {
 				this.logger.warn('No readable body found in S3 response', { k });
@@ -72,14 +70,12 @@ export class ObjectStorage implements IFileStorage {
 	): Promise<void> {
 		const k = this.prefix + key;
 		try {
-			const command = new PutObjectCommand({
+			await this.s3Client.putObject({
 				Bucket: this.bucketName,
 				Key: k,
 				Body: data,
 				ContentType: contentType,
 			});
-
-			await this.s3Client.send(command);
 			this.logger.info('File uploaded to S3:', { k, contentType });
 		} catch (error: unknown) {
 			this.logger.error('Error uploading file to S3', { k, contentType, error });
@@ -90,12 +86,10 @@ export class ObjectStorage implements IFileStorage {
 	async delete(key: string): Promise<void> {
 		const k = this.prefix + key;
 		try {
-			const command = new DeleteObjectCommand({
+			await this.s3Client.deleteObject({
 				Bucket: this.bucketName,
 				Key: k,
 			});
-
-			await this.s3Client.send(command);
 			this.logger.info('File deleted from S3:', { k });
 		} catch (error: unknown) {
 			this.logger.error('Error deleting file from S3', { k, error });
