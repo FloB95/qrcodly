@@ -188,10 +188,10 @@
 		"templateCreatedDescription": "Your template has been created successfully.",
 		"templateCreatedErrorTitle": "Error Creating Template",
 		"templateCreatedErrorDescription": "There was an error creating your template. We've been notified and will fix it as soon as possible.",
-		"saveAsBtn": "Save the current styles as template",
+		"saveAsBtn": "Save as template",
 		"saveInfo": "Save the current QR code style as a reusable template.",
 		"savePopup": {
-			"title": "Save Current QR Code Style as Template",
+			"title": "Save current styles as a template",
 			"placeholder": "Template Name"
 		},
 		"delete": {

@@ -37,7 +37,7 @@ export function BarChartCard({ data, config, title }: BarChartCardProps) {
 							data={data}
 							layout="vertical"
 							margin={{
-								right: -100,
+								right: 0,
 							}}
 						>
 							<YAxis
