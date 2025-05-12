@@ -12,7 +12,7 @@ export const FASTIFY_LOGGING: boolean = false;
 
 export const CLERK_JWT_TEMPLATE = 'QRcodly';
 
-export const RATE_LIMIT_MAX: number = 30;
+export const RATE_LIMIT_MAX: number = 60;
 export const RATE_LIMIT_TIME_WINDOW: string = '1 minute';
 export const ALLOWED_ORIGINS: string[] = [
 	'http://localhost:3000',
