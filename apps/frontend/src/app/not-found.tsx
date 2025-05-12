@@ -3,10 +3,8 @@ import Footer from '@/components/Footer';
 import NoNavHeader from '@/components/NoNavHeader';
 import { buttonVariants } from '@/components/ui/button';
 import Container from '@/components/ui/container';
-import { env } from '@/env';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
-import React from 'react';
 
 const openSans = Inter({
 	subsets: ['latin'],
