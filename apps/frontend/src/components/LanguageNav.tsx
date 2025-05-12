@@ -20,7 +20,8 @@ export const LanguageNav = () => {
 			lang,
 			path: currentPath.replace(`/${locale}`, ``),
 		};
-	});
+	}).sort((a, b) => a.lang.localeCompare(b.lang));
+
 	return (
 		<div className="flex flex-col justify-center">
 			<DropdownMenu>
