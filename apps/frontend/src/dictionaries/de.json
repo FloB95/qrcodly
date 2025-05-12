@@ -5,7 +5,7 @@
 		"changesSaved": "Änderungen gespeichert",
 		"back": "Zurück",
 		"share": "Teilen",
-		"view": "Ansehen",
+		"view": "Anzeigen",
 		"edit": "Bearbeiten",
 		"delete": "Löschen",
 		"notProvided": "Nicht angegeben",
@@ -143,7 +143,7 @@
 		"updateQrCodeUrl": "Aktualisiere die URL",
 		"actionsMenu": {
 			"title": "Aktionen",
-			"view": "Ansehen",
+			"view": "Anzeigen",
 			"delete": "Löschen",
 			"disableShortUrl": "Deaktivieren",
 			"enableShortUrl": "Aktivieren"
@@ -188,10 +188,10 @@
 		"templateCreatedDescription": "Deine Vorlage wurde erfolgreich erstellt.",
 		"templateCreatedErrorTitle": "Fehler beim Erstellen der Vorlage",
 		"templateCreatedErrorDescription": "Beim Erstellen deiner Vorlage ist ein Fehler aufgetreten. Wir wurden bereits benachrichtigt und beheben das Problem so schnell wie möglich.",
-		"saveAsBtn": "Speichere die aktuellen Stile als Vorlage",
-		"saveInfo": "Speichere den aktuellen QR-Code-Stil als wiederverwendbare Vorlage.",
+		"saveAsBtn": "Als Vorlage speichern",
+		"saveInfo": "Speichere das aktuelle Design als wiederverwendbare Vorlage.",
 		"savePopup": {
-			"title": "Aktuellen QR-Code-Stil als Vorlage speichern",
+			"title": "Aktuelles Design als Vorlage speichern",
 			"placeholder": "Vorlagenname"
 		},
 		"delete": {

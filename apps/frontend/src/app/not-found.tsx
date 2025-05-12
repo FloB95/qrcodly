@@ -21,7 +21,6 @@ export default async function NotFoundPage() {
 				<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 				<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 				<link rel="manifest" href="/site.webmanifest" />
-				<script defer src="umami.js" data-website-id={env.NEXT_PUBLIC_UMAMI_WEBSITE}></script>
 			</head>
 			<body className={`font-sans ${openSans.variable}`}>
 				<main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">

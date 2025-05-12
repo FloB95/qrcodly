@@ -1,0 +1,341 @@
+{
+	"general": {
+		"comingSoon": "prossimamente!",
+		"noName": "Nessun nome",
+		"changesSaved": "Modifiche salvate",
+		"back": "Indietro",
+		"share": "Condividi",
+		"view": "Visualizza",
+		"edit": "Modifica",
+		"delete": "Elimina",
+		"notProvided": "Non fornito",
+		"addName": "Aggiungi un nome",
+		"days": "Giorni"
+	},
+	"headline": "<span class=\"text-2xl\">Generatore di Codici QR</span> <br /> Gratuito e Open Source",
+	"metadata": {
+		"title": "QRcodly - Generatore di Codici QR Gratuito e Open Source",
+		"description": "QRcodly: Il tuo generatore di codici QR gratuito. Crea subito codici QR per link, vCard, Wi-Fi e altro. Personalizzabile e gratuito. Genera il tuo codice QR ora!",
+		"keywords": "generatore di codici qr, crea codice qr, genera codice qr, gratuito, free, crea codice qr gratuito, generatore di codice qr gratuito, codice qr vcard, codice qr link, qrgenerator"
+	},
+	"doc": {
+		"title": "Documentazione in aggiornamento",
+		"description": "Stiamo attualmente lavorando per aggiornare questa sezione per offrirti un servizio migliore. Torna presto a trovarci!"
+	},
+	"collection": {
+		"headline": "Panoramica dei codici QR in sviluppo",
+		"subHeadline": "Alcune funzionalità non sono ancora disponibili e verranno aggiunte in futuri aggiornamenti."
+	},
+	"analytics": {
+		"totalViews": "Numero di visualizzazioni",
+		"totalVisitors": "Numero di visitatori",
+		"stateActive": "Attivo",
+		"stateInactive": "Disattivato",
+		"activeDescription": "Attivo: gli utenti possono accedere alla pagina di destinazione e le visualizzazioni vengono analizzate.",
+		"inactiveDescription": "Disattivato: l'accesso e l'analisi sono disabilitati.",
+		"noData": "Nessun dato è stato ancora registrato.",
+		"viewsInLastXDays": "{count} visualizzazioni negli ultimi {days} giorni",
+		"visitorsInLastXDays": "{count} visitatori negli ultimi {days} giorni"
+	},
+	"chart": {
+		"visitors": "Visitatori",
+		"title": {
+			"browserUsage": "Browser utilizzati",
+			"deviceUsage": "Dispositivi utilizzati",
+			"osUsage": "Sistemi operativi utilizzati",
+			"countryDistribution": "Distribuzione per paese"
+		}
+	},
+	"header": {
+		"collectionBtn": "La mia Collezione",
+		"signInBtn": "Accedi"
+	},
+	"footer": {
+		"qrCodeCopyright": "QR Code è un marchio registrato di DENSO WAVE INCORPORATED",
+		"legalNotice": "Note Legali",
+		"privacyPolicy": "Informativa sulla privacy"
+	},
+	"contentElements": {
+		"iconPicker": {
+			"openTrigger": "Apri selezione icona",
+			"dialogTitle": "Seleziona un'icona",
+			"dialogDescription": "Scegli un'icona e un colore per la tua selezione.",
+			"searchPlaceholder": "Cerca un'icona",
+			"clearBtn": "Cancella",
+			"selectBtn": "Seleziona"
+		},
+		"loader": {
+			"loading": "Caricamento..."
+		},
+		"feedbackCta": {
+			"headline": "Il tuo feedback è importante! 🚀",
+			"subHeadline1": "Lavoriamo costantemente per migliorare QRcodly.",
+			"subHeadline2": "Se hai feedback o domande, faccelo sapere.",
+			"emailBtn": "Scrivici"
+		},
+		"featuresCta": {
+			"headline": "Panoramica delle funzionalità chiave",
+			"subHeadline": "Con QRcodly puoi creare, modificare, gestire e analizzare codici QR gratuitamente – tutto in un unico posto.",
+			"emailBtn": "Scrivici",
+			"editFeature": {
+				"headline": "Modifica i codici QR in qualsiasi momento",
+				"subHeadline": "Crea codici QR gratuitamente e modifica l'URL di destinazione in qualsiasi momento, anche dopo la stampa."
+			},
+			"statisticFeature": {
+				"headline": "Statistiche dettagliate dei codici QR in tempo reale",
+				"subHeadline": "Tieni traccia di quanto spesso e da dove vengono scansionati i tuoi codici QR."
+			},
+			"overviewFeature": {
+				"headline": "Collezione di codici QR organizzata",
+				"subHeadline": "Tieni traccia di tutti i tuoi codici QR generati in un unico luogo centrale."
+			},
+			"templateFeature": {
+				"headline": "Crea design con modelli",
+				"subHeadline": "Risparmia tempo e garantisci un branding coerente. Crea modelli con i tuoi stili preferiti e applicali facilmente a nuovi codici QR."
+			},
+			"teamFeature": {
+				"headline": "Collabora in team",
+				"subHeadline": "Invita i membri del team e lavora insieme sui codici QR. Ideale per aziende, agenzie e team."
+			}
+		}
+	},
+	"shortUrl": {
+		"error": {
+			"toggleActiveState": {
+				"title": "Errore durante la modifica dello stato",
+				"message": "Si è verificato un errore durante la modifica dello stato. Siamo stati avvisati e risolveremo il problema il prima possibile."
+			}
+		}
+	},
+	"qrCodeDisabled": {
+		"title": "Codice QR disabilitato",
+		"description": "Spiacenti, questo codice QR non è più attivo. La destinazione non è più disponibile.",
+		"note": "Se ritieni che si tratti di un errore, contatta il proprietario del codice QR o riprova più tardi.",
+		"button": "Torna alla Home"
+	},
+	"qrCode": {
+		"storeBtn": "Salva",
+		"error": {
+			"delete": {
+				"title": "Errore durante l'eliminazione del codice QR",
+				"message": "Si è verificato un errore durante l'eliminazione del tuo codice QR. Siamo stati avvisati e risolveremo il problema il prima possibile."
+			},
+			"update": {
+				"title": "Errore durante l'aggiornamento del codice QR",
+				"message": "Si è verificato un errore durante l'aggiornamento del tuo codice QR. Siamo stati avvisati e risolveremo il problema il prima possibile."
+			},
+			"noFound": "Nessun codice QR trovato"
+		},
+		"confirmDeletePopup": {
+			"title": "Conferma eliminazione",
+			"description": "Sei sicuro di voler eliminare il codice QR?",
+			"confirmBtn": "Elimina",
+			"cancelBtn": "Annulla"
+		},
+		"deleting": {
+			"title": "Eliminazione codice QR...",
+			"description": "Stiamo eliminando il tuo codice QR."
+		},
+		"updateQrCodeName": {
+			"title": "Rinomina codice QR",
+			"placeholder": "Inserisci un nome"
+		},
+		"updateQrCodeUrl": "Aggiorna l'URL",
+		"actionsMenu": {
+			"title": "Azioni",
+			"view": "Visualizza",
+			"delete": "Elimina",
+			"disableShortUrl": "Disabilita",
+			"enableShortUrl": "Abilita"
+		},
+		"download": {
+			"successTitle": "Nuovo codice QR creato",
+			"successDescription": "Abbiamo salvato il tuo codice QR nella tua collezione per un uso futuro.",
+			"downloadBtn": "Scarica",
+			"errorTitle": "Errore durante il salvataggio del codice QR"
+		},
+		"saveInfo": "Salva il codice QR attuale nella tua collezione.",
+		"savePopup": {
+			"title": "Salva codice QR",
+			"placeholder": "Nome codice QR"
+		}
+	},
+	"loginDialog": {
+		"title": "Accesso richiesto",
+		"description": "Devi accedere per utilizzare questa funzione.",
+		"subDescription": "Non preoccuparti, è completamente gratuito!",
+		"cancelBtn": "Annulla",
+		"loginBtn": "Accedi"
+	},
+	"nameDialog": {
+		"placeholder": "Nome",
+		"cancelBtn": "Annulla",
+		"saveBtn": "Salva",
+		"characters": "caratteri"
+	},
+	"templates": {
+		"tabs": {
+			"myTemplates": "I miei Modelli",
+			"predefinedTemplates": "Predefiniti"
+		},
+		"noTemplates": "Non hai ancora modelli.",
+		"search": {
+			"placeholder": "Cerca un modello",
+			"noResults": "Nessun modello trovato per \"{searchName}\""
+		},
+		"noPredefinedTemplates": "Al momento non sono disponibili modelli predefiniti.",
+		"templateCreatedTitle": "Nuovo modello creato",
+		"templateCreatedDescription": "Il tuo modello è stato creato con successo.",
+		"templateCreatedErrorTitle": "Errore durante la creazione del modello",
+		"templateCreatedErrorDescription": "Si è verificato un errore durante la creazione del tuo modello. Siamo stati avvisati e risolveremo il problema il prima possibile.",
+		"saveAsBtn": "Salva come modello",
+		"saveInfo": "Salva il design attuale come modello riutilizzabile.",
+		"savePopup": {
+			"title": "Salva design attuale come modello",
+			"placeholder": "Nome del modello"
+		},
+		"delete": {
+			"beingDeleted": "Il modello è in fase di eliminazione",
+			"deletingInfo": "Stiamo eliminando il tuo modello.",
+			"errorTitle": "Impossibile eliminare il modello",
+			"errorDescription": "Si è verificato un errore durante l'eliminazione del modello. Siamo stati avvisati e risolveremo il problema a breve."
+		},
+		"confirmPopup": {
+			"title": "Conferma eliminazione",
+			"description": "Sei sicuro di voler eliminare il modello?",
+			"description2": "Questa azione non può essere annullata.",
+			"confirmBtn": "Elimina",
+			"cancelBtn": "Annulla"
+		}
+	},
+	"generator": {
+		"tabs": {
+			"content": "Contenuto",
+			"style": "Stile",
+			"templates": "Modelli"
+		},
+		"settingsForm": {
+			"tabGeneral": "Generale",
+			"tabShape": "Forma",
+			"tabIcon": "Icona",
+			"sizeLabel": "Dimensione (Qualità)",
+			"borderSpacingLabel": "Spaziatura bordo",
+			"backgroundLabel": "Sfondo",
+			"dotStyle": {
+				"label": "Stile punto",
+				"placeholder": "Seleziona uno stile punto",
+				"optionLabelSquare": "Quadrato",
+				"optionLabelDots": "Punti",
+				"optionLabelRounded": "Arrotondato",
+				"optionLabelExtraRound": "Extra Arrotondato",
+				"optionLabelClassy": "Elegante",
+				"optionLabelClassyRounded": "Elegante Arrotondato"
+			},
+			"dotColor": "Colore punto",
+			"cornersSquareOptions": {
+				"placeholder": "Seleziona uno stile",
+				"label": "Stile quadrati angolari",
+				"optionLabelSquare": "Quadrato",
+				"optionLabelDot": "Punto",
+				"optionLabelExtraRound": "Extra Arrotondato"
+			},
+			"cornersSquareColor": "Colore quadrati angolari",
+			"cornersDotOptions": {
+				"label": "Stile punti angolari",
+				"placeholder": "Seleziona uno stile",
+				"optionLabelSquare": "Quadrato",
+				"optionLabelDot": "Punto"
+			},
+			"cornersDotColor": "Colore punti angolari",
+			"iconLabel": "Icona",
+			"errorToLargeFile": "Il file è troppo grande. La dimensione massima è di 1MB.",
+			"hideBackgroundDots": "Nascondi punti di sfondo",
+			"predefinedIconInfo": "Puoi anche scegliere tra icone predefinite.",
+			"clearBtn": "Cancella icona"
+		},
+		"contentSwitch": {
+			"tabUrl": "URL",
+			"tabText": "TESTO",
+			"tabWifi": "WI-FI",
+			"tabVCard": "VCARD",
+			"text": {
+				"placeholder": "Inserisci il tuo testo qui"
+			},
+			"url": {
+				"placeholder": "Inserisci il tuo URL https://esempio.com/",
+				"enableEditing": "Abilita statistiche e modifica",
+				"newBadge": "Nuovo!"
+			},
+			"wifi": {
+				"network": {
+					"label": "Rete",
+					"placeholder": "Inserisci il nome della tua rete"
+				},
+				"password": {
+					"label": "Password",
+					"placeholder": "Inserisci la tua password"
+				},
+				"encryption": {
+					"label": "Crittografia",
+					"optionLabelWpa": "WPA/WPA2",
+					"optionLabelWep": "WEP",
+					"optionNoPass": "Nessuna password"
+				}
+			},
+			"vCard": {
+				"firstName": {
+					"label": "Nome",
+					"placeholder": "Inserisci il tuo nome"
+				},
+				"lastName": {
+					"label": "Cognome",
+					"placeholder": "Inserisci il tuo cognome"
+				},
+				"email": {
+					"label": "Indirizzo e-mail",
+					"placeholder": "Inserisci la tua e-mail"
+				},
+				"phone": {
+					"label": "Telefono",
+					"placeholder": "Inserisci il tuo numero di telefono"
+				},
+				"fax": {
+					"label": "Fax",
+					"placeholder": "Inserisci il tuo numero di fax"
+				},
+				"company": {
+					"label": "Azienda",
+					"placeholder": "Inserisci il nome della tua azienda"
+				},
+				"jobTitle": {
+					"label": "Qualifica professionale",
+					"placeholder": "Inserisci la tua qualifica professionale"
+				},
+				"street": {
+					"label": "Via",
+					"placeholder": "Inserisci la tua via e numero civico"
+				},
+				"city": {
+					"label": "Città",
+					"placeholder": "Inserisci la tua città"
+				},
+				"zipCode": {
+					"label": "CAP",
+					"placeholder": "Inserisci il tuo CAP"
+				},
+				"state": {
+					"label": "Stato/Regione",
+					"placeholder": "Inserisci il tuo stato/regione"
+				},
+				"country": {
+					"label": "Paese",
+					"placeholder": "Inserisci il tuo paese"
+				},
+				"website": {
+					"label": "Sito web",
+					"placeholder": "Inserisci l'URL del tuo sito web"
+				}
+			}
+		}
+	}
+}
