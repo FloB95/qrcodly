@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { getDefaultContentByType, type TCreateQrCodeDto } from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
@@ -18,13 +18,16 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
+	const [hasMounted, setHasMounted] = useState(false);
 
 	const createQrCodeMutation = useCreateQrCodeMutation();
 
+	useEffect(() => {
+		setHasMounted(true);
+	}, []);
+
 	const handleSave = async (qrCodeName: string) => {
 		setNameDialogOpen(false);
-
-		console.log('Saving QR code with name:', qrCodeName);
 
 		try {
 			await createQrCodeMutation.mutateAsync(
@@ -84,9 +87,12 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 							setNameDialogOpen(true);
 						}}
 						disabled={
-							JSON.stringify(qrCode.content) ===
-								JSON.stringify(getDefaultContentByType(qrCode.content.type)) ||
-							createQrCodeMutation.isPending
+							!hasMounted ||
+							!(
+								JSON.stringify(qrCode.content) !==
+									JSON.stringify(getDefaultContentByType(qrCode.content.type)) &&
+								!createQrCodeMutation.isPending
+							)
 						}
 					>
 						{t('storeBtn')}

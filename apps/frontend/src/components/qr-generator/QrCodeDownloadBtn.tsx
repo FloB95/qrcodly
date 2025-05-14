@@ -6,7 +6,6 @@
 'use client';
 
 import { Button } from '../ui/button';
-// import { toast } from "../ui/use-toast";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -32,6 +31,7 @@ import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import * as Sentry from '@sentry/nextjs';
 
 let QRCodeStyling: any;
+
 const QrCodeDownloadBtn = ({
 	qrCode,
 	saveOnDownload = false,
@@ -44,31 +44,36 @@ const QrCodeDownloadBtn = ({
 	const t = useTranslations('qrCode.download');
 	const { content, updateContent } = useQrCodeGeneratorStore((state) => state);
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
+	const [hasMounted, setHasMounted] = useState(false);
 	const createQrCodeMutation = useCreateQrCodeMutation();
+	const { latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
 	const queryClient = useQueryClient();
 
 	useEffect(() => {
-		// Dynamically import the QRCodeStyling class only when the component mounts
+		setHasMounted(true);
+
 		import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
-			const qrCodeInstance = new QRCodeStyling({
+			const instance = new QRCodeStyling({
 				...convertQrCodeOptionsToLibraryOptions(qrCode.config),
 				data: convertQRCodeDataToStringByType(qrCode.content),
-			}); // Create a new instance with the current settings
-			setQrCodeInstance(qrCodeInstance); // Store the instance in the state
+			});
+			setQrCodeInstance(instance);
 		});
 	}, [qrCode]);
 
 	const onDownloadClick = async (fileExt: TFileExtension) => {
 		if (!qrCodeInstance) return;
 
-		if (saveOnDownload) {
+		const hasChanged =
+			JSON.stringify(qrCode.content) !== JSON.stringify(latestQrCode?.content) ||
+			JSON.stringify(qrCode.config) !== JSON.stringify(latestQrCode?.config);
+
+		if (saveOnDownload && hasChanged) {
 			try {
 				await createQrCodeMutation.mutateAsync(qrCode, {
 					onSuccess: (data) => {
-						// if user is logged in, show toast
 						if (data.success && data.isStored) {
-							// show toast
 							toast({
 								title: t('successTitle'),
 								description: t('successDescription'),
@@ -85,6 +90,11 @@ const QrCodeDownloadBtn = ({
 								});
 							}
 
+							updateLatestQrCode({
+								config: qrCode.config,
+								content: qrCode.content,
+							});
+
 							void Promise.all([
 								queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
 								queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
@@ -100,16 +110,16 @@ const QrCodeDownloadBtn = ({
 							duration: 5000,
 						});
 
-						posthog.capture('error:qr-code-created', {
-							qrCode: qrCode,
-						});
+						posthog.capture('error:qr-code-created', { qrCode });
 					},
 				});
 
 				posthog.capture('QRCodeCreated', {
 					data: qrCode.content,
 				});
-			} catch {}
+			} catch {
+				// silent catch
+			}
 		}
 
 		await qrCodeInstance.download({
@@ -118,27 +128,21 @@ const QrCodeDownloadBtn = ({
 		});
 	};
 
+	const isDisabled =
+		!hasMounted ||
+		JSON.stringify(qrCode.content) ===
+			JSON.stringify(getDefaultContentByType(qrCode.content.type)) ||
+		createQrCodeMutation.isPending;
+
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger
-				asChild
-				disabled={
-					JSON.stringify(qrCode.content) ===
-						JSON.stringify(getDefaultContentByType(qrCode.content.type)) ||
-					createQrCodeMutation.isPending
-				}
-			>
+			<DropdownMenuTrigger asChild disabled={isDisabled}>
 				{noStyling ? (
-					<div className="cursor-pointer">Download</div>
+					<div className={`cursor-pointer ${isDisabled ? 'opacity-50 pointer-events-none' : ''}`}>
+						Download
+					</div>
 				) : (
-					<Button
-						isLoading={createQrCodeMutation.isPending}
-						disabled={
-							JSON.stringify(qrCode.content) ===
-								JSON.stringify(getDefaultContentByType(qrCode.content.type)) ||
-							createQrCodeMutation.isPending
-						}
-					>
+					<Button isLoading={createQrCodeMutation.isPending} disabled={isDisabled}>
 						{t('downloadBtn')}
 					</Button>
 				)}

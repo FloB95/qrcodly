@@ -4,11 +4,23 @@ import { createStore } from 'zustand/vanilla';
 export type QrCodeGeneratorState = {
 	config: TQrCodeOptions;
 	content: TQrCodeContent;
+	latestQrCode?: {
+		config: TQrCodeOptions;
+		content: TQrCodeContent;
+	};
 };
 
 export type QrCodeGeneratorActions = {
 	updateConfig: (config: Partial<TQrCodeOptions>) => void;
 	updateContent: (content: TQrCodeContent) => void;
+	updateLatestQrCode: (
+		latestQrCode:
+			| {
+					config: TQrCodeOptions;
+					content: TQrCodeContent;
+			  }
+			| undefined,
+	) => void;
 };
 
 export type QrCodeGeneratorStore = QrCodeGeneratorState & QrCodeGeneratorActions;
@@ -22,6 +34,7 @@ export const defaultInitState: QrCodeGeneratorState = {
 			isEditable: false,
 		},
 	},
+	latestQrCode: undefined,
 };
 
 export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = defaultInitState) => {
@@ -37,7 +50,7 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = def
 					...parsedConfig,
 				};
 				// Clear the unsavedQrConfig from localStorage
-				localStorage.removeItem('unsavedQrConfig');
+				// localStorage.removeItem('unsavedQrConfig');
 			} catch (error) {
 				console.error('Failed to parse unsavedQrConfig from localStorage:', error);
 			}
@@ -52,7 +65,7 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = def
 					...parsedContent,
 				};
 				// Clear the unsavedQrContent from localStorage
-				localStorage.removeItem('unsavedQrContent');
+				// localStorage.removeItem('unsavedQrContent');
 			} catch (error) {
 				console.error('Failed to parse unsavedQrContent from localStorage:', error);
 			}
@@ -90,5 +103,6 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = def
 			}));
 		},
 		updateContent: (content) => set({ content }),
+		updateLatestQrCode: (latestQrCode) => set({ latestQrCode }),
 	}));
 };
