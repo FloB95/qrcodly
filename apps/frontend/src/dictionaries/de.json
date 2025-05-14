@@ -114,7 +114,7 @@
 		"button": "Zur Startseite"
 	},
 	"qrCode": {
-		"storeBtn": "In Sammlung Speichern",
+		"storeBtn": "In Sammlung speichern",
 		"error": {
 			"delete": {
 				"title": "Fehler beim Löschen des QR Codes",

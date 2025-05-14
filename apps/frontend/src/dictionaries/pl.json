@@ -114,7 +114,7 @@
 		"button": "Idź do strony głównej"
 	},
 	"qrCode": {
-		"storeBtn": "Zapisz",
+		"storeBtn": "Zapisz w kolekcji",
 		"error": {
 			"delete": {
 				"title": "Błąd usuwania kodu QR",

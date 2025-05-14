@@ -114,7 +114,7 @@
 		"button": "Retour à la page d'accueil"
 	},
 	"qrCode": {
-		"storeBtn": "Sauvegarder",
+		"storeBtn": "Enregistrer dans la collection",
 		"error": {
 			"delete": {
 				"title": "Erreur lors de la suppression du code QR",

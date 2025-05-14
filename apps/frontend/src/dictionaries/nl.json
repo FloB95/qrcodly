@@ -114,7 +114,7 @@
 		"button": "Naar de startpagina"
 	},
 	"qrCode": {
-		"storeBtn": "Opslaan",
+		"storeBtn": "Opslaan in collectie",
 		"error": {
 			"delete": {
 				"title": "Fout bij het verwijderen van de QR-code",

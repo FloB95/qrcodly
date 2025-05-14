@@ -114,7 +114,7 @@
 		"button": "Go Back Home"
 	},
 	"qrCode": {
-		"storeBtn": "Save",
+		"storeBtn": "Save in Collection",
 		"error": {
 			"delete": {
 				"title": "Error Deleting QR Code",
