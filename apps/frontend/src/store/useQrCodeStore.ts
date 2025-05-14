@@ -50,7 +50,7 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = def
 					...parsedConfig,
 				};
 				// Clear the unsavedQrConfig from localStorage
-				// localStorage.removeItem('unsavedQrConfig');
+				localStorage.removeItem('unsavedQrConfig');
 			} catch (error) {
 				console.error('Failed to parse unsavedQrConfig from localStorage:', error);
 			}
@@ -65,7 +65,7 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = def
 					...parsedContent,
 				};
 				// Clear the unsavedQrContent from localStorage
-				// localStorage.removeItem('unsavedQrContent');
+				localStorage.removeItem('unsavedQrContent');
 			} catch (error) {
 				console.error('Failed to parse unsavedQrContent from localStorage:', error);
 			}
