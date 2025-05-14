@@ -22,7 +22,6 @@ import {
 } from '@/components/ui/select';
 import { WifiInputSchema, type TWifiInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
-// Import from the shared package
 
 type FormValues = TWifiInput;
 
@@ -48,7 +47,6 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 		onChange(values);
 	}
 
-	// handle submit automatically after debounced value
 	useEffect(() => {
 		if (typeof debounced.encryption === 'undefined') {
 			debounced.encryption = 'WPA';
@@ -73,9 +71,13 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 					name="ssid"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t('network.label')}</FormLabel>
+							<FormLabel>
+								<span translate="no" suppressHydrationWarning>
+									{t('network.label')}
+								</span>
+							</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder={t('network.placeholder')} />
+								<Input {...field} translate="no" placeholder={t('network.placeholder')} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -88,10 +90,15 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 						disabled={form.getValues('encryption') === 'nopass'}
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t('password.label')}</FormLabel>
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('password.label')}
+									</span>
+								</FormLabel>
 								<FormControl>
 									<Input
 										{...field}
+										translate="no"
 										autoCorrect="off"
 										autoComplete="off"
 										placeholder={t('password.placeholder')}
@@ -105,8 +112,12 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 						control={form.control}
 						name="encryption"
 						render={({ field }) => (
-							<FormItem className="w-full">
-								<FormLabel>{t('encryption.label')}</FormLabel>
+							<FormItem className="w-full" translate="no">
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('encryption.label')}
+									</span>
+								</FormLabel>
 								<FormControl>
 									<Select
 										name="encryption"

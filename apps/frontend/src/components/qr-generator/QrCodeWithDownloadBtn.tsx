@@ -18,7 +18,7 @@ export const QrCodeWithDownloadBtn = () => {
 						}}
 					/>
 				</div>
-				<div className="mt-6 flex justify-center lg:space-x-2 flex-col space-y-2 lg:space-y-0 lg:flex-row lg:justify-between mb-3">
+				<div className="mt-6 flex justify-center flex-col space-y-2 mb-3">
 					<QrCodeDownloadBtn
 						qrCode={{
 							name: null,

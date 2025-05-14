@@ -9,8 +9,8 @@
 - 📱 Support for various QR code types: URL, Contact, Wi-Fi, etc.
 - 🎨 Fully customizable: size, color, background and custom Icon upload
 - 📤 Export QR codes in multiple formats (PNG, JPEG, SVG)
+- 🔗 Url shortening and tracking
 - 🔧 Simple, developer-friendly API for generating QR codes (coming soon!)
-- 🔗 Url shortening and tracking (coming soon!)
 
 > 📌 Check out the [Todos](todos.md) page for current status and future plans.
 

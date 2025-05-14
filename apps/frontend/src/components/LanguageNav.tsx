@@ -23,25 +23,39 @@ export const LanguageNav = () => {
 	}).sort((a, b) => a.lang.localeCompare(b.lang));
 
 	return (
-		<div className="flex flex-col justify-center">
-			<DropdownMenu>
-				<DropdownMenuTrigger asChild>
-					<GlobeAsiaAustraliaIcon className="h-8 w-8 cursor-pointer hover:text-gray-700" />
-				</DropdownMenuTrigger>
-				<DropdownMenuContent className="w-12 min-w-12" align="end">
-					{languageLinks.map((link) => (
-						<DropdownMenuItem key={link.lang} className={locale === link.lang ? 'bg-accent' : ''}>
-							<Link
-								locale={link.lang}
-								className={locale === link.lang ? 'font-bold' : ''}
-								href={link.path}
-							>
-								{link.lang.toUpperCase()}
-							</Link>
-						</DropdownMenuItem>
-					))}
-				</DropdownMenuContent>
-			</DropdownMenu>
-		</div>
+		<>
+			<div className="flex-col justify-center hidden sm:flex ">
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<GlobeAsiaAustraliaIcon className="h-8 w-8 cursor-pointer hover:text-gray-700" />
+					</DropdownMenuTrigger>
+					<DropdownMenuContent className="w-12 min-w-12" align="end">
+						{languageLinks.map((link) => (
+							<DropdownMenuItem key={link.lang} className={locale === link.lang ? 'bg-accent' : ''}>
+								<Link
+									locale={link.lang}
+									className={locale === link.lang ? 'font-bold' : ''}
+									href={link.path}
+								>
+									{link.lang.toUpperCase()}
+								</Link>
+							</DropdownMenuItem>
+						))}
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</div>
+			<div className="w-full justify-start flex flex-row space-x-2 sm:hidden p-4">
+				{languageLinks.map((link) => (
+					<Link
+						key={link.lang}
+						locale={link.lang}
+						className={locale === link.lang ? 'font-bold' : ''}
+						href={link.path}
+					>
+						{link.lang.toUpperCase()}
+					</Link>
+				))}
+			</div>
+		</>
 	);
 };

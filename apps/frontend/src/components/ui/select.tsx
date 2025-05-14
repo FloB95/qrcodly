@@ -74,6 +74,7 @@ const SelectContent = React.forwardRef<
 					'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
 				className,
 			)}
+			translate="no"
 			position={position}
 			{...props}
 		>
@@ -99,6 +100,7 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<SelectPrimitive.Label
 		ref={ref}
+		translate="no"
 		className={cn('py-1.5 pl-8 pr-2 text-sm font-semibold', className)}
 		{...props}
 	/>
@@ -111,6 +113,7 @@ const SelectItem = React.forwardRef<
 >(({ className, children, icon, ...props }, ref) => (
 	<SelectPrimitive.Item
 		ref={ref}
+		translate="no"
 		className={cn(
 			'relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
 			icon ? 'pl-2' : 'pl-8', // Adjust padding if icon exists
@@ -140,6 +143,7 @@ const SelectSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<SelectPrimitive.Separator
 		ref={ref}
+		translate="no"
 		className={cn('-mx-1 my-1 h-px bg-muted', className)}
 		{...props}
 	/>
