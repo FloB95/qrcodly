@@ -105,6 +105,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 											setOriginalUrl(val);
 											field.onChange(val);
 										}}
+										maxLength={1000}
 										className="p-6"
 										placeholder={t('placeholder')}
 										autoFocus

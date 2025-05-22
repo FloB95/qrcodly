@@ -51,6 +51,7 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
 								<Textarea
 									{...field}
 									autoFocus
+									maxLength={1000}
 									className="px-6 py-3.5"
 									placeholder={t('placeholder')}
 								/>

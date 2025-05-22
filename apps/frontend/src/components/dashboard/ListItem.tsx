@@ -24,7 +24,7 @@ import { EyeIcon, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { useCallback, useState, memo, Fragment } from 'react';
+import { useCallback, useState, memo } from 'react';
 import { TableCell, TableRow } from '../ui/table';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';

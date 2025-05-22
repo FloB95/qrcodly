@@ -1,7 +1,6 @@
 'use client';
 
 import { DashboardListItem, SkeletonListItem } from './ListItem';
-import { Loader2 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableRow } from '../ui/table';
 import { useListQrCodesQuery } from '@/lib/api/qr-code';
 import { useTranslations } from 'next-intl';
@@ -17,7 +16,6 @@ import {
 import { useState, useMemo, useEffect, Fragment } from 'react';
 import { getPageNumbers } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Skeleton } from '../ui/skeleton';
 
 export const QrCodeList = () => {
 	const t = useTranslations();
