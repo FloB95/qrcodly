@@ -24,7 +24,7 @@ import { EyeIcon, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { useCallback, useState, memo } from 'react';
+import { useCallback, useState, memo, Fragment } from 'react';
 import { TableCell, TableRow } from '../ui/table';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -43,6 +43,7 @@ import { QrCodeIcon } from './QrCodeIcon';
 import * as Sentry from '@sentry/nextjs';
 import { NameDialog } from '../qr-generator/NameDialog';
 import { useRouter } from 'next/navigation';
+import { Skeleton } from '../ui/skeleton';
 
 const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
 	switch (qr.content.type) {
@@ -381,5 +382,15 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 				defaultValue={qr.name ?? ''}
 			/>
 		</>
+	);
+};
+
+export const SkeletonListItem = () => {
+	return (
+		<TableRow className="shadow">
+			<TableCell colSpan={6} className="rounded-l-lg p-0">
+				<Skeleton className="h-[122px] w-full bg-white/70" />
+			</TableCell>
+		</TableRow>
 	);
 };

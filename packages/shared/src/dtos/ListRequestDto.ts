@@ -70,14 +70,14 @@ export const PaginationQueryParamsSchema = (
 			.string()
 			.transform((val) => parseInt(val, 10))
 			.refine((val) => Number.isInteger(val) && val > 0, {
-				message: 'Page must be a positive integer',
+				message: 'Page must be a positive integer greater than 0',
 			})
 			.default('1'),
 		limit: z
 			.string()
 			.transform((val) => parseInt(val, 10))
 			.refine((val) => Number.isInteger(val) && val > 0, {
-				message: 'Limit must be a positive integer',
+				message: 'Limit must be a positive integer greater than 0',
 			})
 			.default('10'),
 		where: whereObj ? whereObj.partial().optional() : z.undefined(),
