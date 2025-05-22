@@ -41,8 +41,8 @@ export class ConfigTemplateController extends AbstractController {
 	): Promise<IHttpResponse<TConfigTemplatePaginatedResponseDto>> {
 		const { page, limit, where } = request.query;
 		const { configTemplates, total } = await this.listConfigTemplatesUseCase.execute({
-			limit: limit,
-			offset: page,
+			limit,
+			page,
 			where: {
 				...where,
 				createdBy: {
@@ -70,7 +70,7 @@ export class ConfigTemplateController extends AbstractController {
 		const limit = 10;
 		const { configTemplates, total } = await this.listConfigTemplatesUseCase.execute({
 			limit,
-			offset: page,
+			page,
 			where: {
 				isPredefined: {
 					eq: true,

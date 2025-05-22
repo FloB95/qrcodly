@@ -1,7 +1,4 @@
-import { BadRequestError, CustomApiError } from '@/core/error/http';
-import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { type IHttpResponse } from '@/core/interface/response.interface';
-import { ZodError } from 'zod';
 
 export default abstract class AbstractController {
 	/**

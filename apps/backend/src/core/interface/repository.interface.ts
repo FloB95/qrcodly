@@ -19,6 +19,6 @@ export type WhereConditions<T> = Partial<{
 // Define the interface for a SQL query to find by certain conditions
 export interface ISqlQueryFindBy<T> {
 	limit: number; // Maximum number of results to return
-	offset: number; // Number of results to skip
+	page: number; // Number of results to skip
 	where?: WhereConditions<T> | SQL<T>; // Conditions to filter the results
 }

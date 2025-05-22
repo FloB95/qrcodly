@@ -21,14 +21,14 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * @param options - Query options.
 	 * @returns A promise that resolves to an array of Short URLs.
 	 */
-	async findAll({ limit, offset, where }: ISqlQueryFindBy<TShortUrl>): Promise<TShortUrl[]> {
+	async findAll({ limit, page, where }: ISqlQueryFindBy<TShortUrl>): Promise<TShortUrl[]> {
 		const query = db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
 
 		// add where conditions
 		if (where) void this.withWhere(query, where);
 
 		// add pagination
-		void this.withPagination(query, offset, limit);
+		void this.withPagination(query, page, limit);
 		const shortUrls = await query.execute();
 		return shortUrls;
 	}

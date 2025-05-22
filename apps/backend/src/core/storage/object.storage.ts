@@ -1,12 +1,6 @@
 import { inject, singleton } from 'tsyringe';
 import { type IFileStorage } from '../interface/file-storage.interface';
-import {
-	PutObjectCommand,
-	DeleteObjectCommand,
-	GetObjectCommand,
-	S3,
-	type GetObjectOutput,
-} from '@aws-sdk/client-s3';
+import { GetObjectCommand, S3, type GetObjectOutput } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { env } from '../config/env';
 import { DEFAULT_PUBLIC_LINK_LIFETIME, IN_TEST } from '../config/constants';
