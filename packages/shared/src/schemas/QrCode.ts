@@ -7,7 +7,7 @@ const emptyStringToUndefined = <T extends z.ZodTypeAny>(
 	z.preprocess((value) => (value === '' ? undefined : value), schema);
 
 export const UrlInputSchema = z.object({
-	url: z.string().url(),
+	url: z.string().url().max(1000),
 	isEditable: z.boolean().optional(),
 });
 export type TUrlInput = z.infer<typeof UrlInputSchema>;
