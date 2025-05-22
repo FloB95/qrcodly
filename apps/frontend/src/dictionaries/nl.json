@@ -337,5 +337,12 @@
 				}
 			}
 		}
+	},
+	"pagination": {
+		"previous": "Vorige",
+		"next": "Volgende",
+		"more": "Meer pagina's",
+		"previousAria": "Ga naar de vorige pagina",
+		"nextAria": "Ga naar de volgende pagina"
 	}
 }

@@ -337,5 +337,12 @@
 				}
 			}
 		}
+	},
+	"pagination": {
+		"previous": "Zurück",
+		"next": "Weiter",
+		"more": "Weitere Seiten",
+		"previousAria": "Zur vorherigen Seite gehen",
+		"nextAria": "Zur nächsten Seite gehen"
 	}
 }
