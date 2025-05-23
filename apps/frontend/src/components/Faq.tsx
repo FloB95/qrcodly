@@ -33,6 +33,7 @@ export default function FAQSection() {
 							<span itemProp="name">{t(item.questionKey)}</span>
 						</AccordionTrigger>
 						<AccordionContent
+							forceMount
 							itemScope
 							itemProp="acceptedAnswer"
 							itemType="https://schema.org/Answer"
