@@ -344,5 +344,28 @@
 		"more": "Meer pagina's",
 		"previousAria": "Ga naar de vorige pagina",
 		"nextAria": "Ga naar de volgende pagina"
+	},
+	"faq": {
+		"headline": "Veelgestelde Vragen",
+		"question1": "Wat is een QR-code?",
+		"answer1": "Een QR-code (Quick Response Code) is een slimme, tweedimensionale barcode die verschillende soorten informatie kan opslaan, zoals websitelinks, tekst of contactgegevens. Het kan eenvoudig worden vastgelegd en ontcijferd met een smartphone of een speciale scanner.",
+		"question2": "Hoe maak ik een QR-code aan?",
+		"answer2": "Met qrcodly.de maakt u in een handomdraai uw eigen QR-code: voer eenvoudig de gewenste inhoud in en download direct uw vers gegenereerde code. Snel en ongecompliceerd!",
+		"question3": "Wat is het verschil tussen statische en dynamische QR-codes?",
+		"answer3": "Statische QR-codes bevatten vaste informatie die na aanmaak niet meer kan worden gewijzigd. Dynamische QR-codes bieden daarentegen maximale flexibiliteit: u kunt de gekoppelde inhoud op elk moment na aanmaak aanpassen en profiteert bovendien van geavanceerde functies zoals gedetailleerde scanstatistieken.",
+		"question4": "Is het gratis om QR-codes te maken?",
+		"answer4": "Ja, de generatie van zowel statische als dynamische QR-codes is en blijft voor altijd gratis, zoveel als u wilt. In de toekomst zullen er beperkingen zijn voor API-verzoeken en voor bedrijven die met meerdere gebruikers werken.",
+		"question5": "Hoe lang is een QR-code geldig?",
+		"answer5": "Statische QR-codes verlopen niet en blijven permanent geldig zolang de gekoppelde inhoud online toegankelijk is. Dynamische QR-codes blijven actief zolang ze in ons systeem worden beheerd en er geen specifieke beperkingen van de provider van toepassing zijn.",
+		"question6": "Wat zijn de voordelen van dynamische QR-codes?",
+		"answer6": "Dynamische QR-codes bieden ongekende flexibiliteit, omdat u de inhoud ervan zelfs na het afdrukken kunt aanpassen. Ze maken ook nauwkeurige scanstatistieken mogelijk, die inzicht geven in locatie, tijd en gebruikt apparaat, zodat u uw campagnes effectief kunt optimaliseren.",
+		"question7": "Heb ik een speciale app nodig om QR-codes te scannen?",
+		"answer7": "Nee, in de meeste gevallen is dat niet nodig! De geïntegreerde camerafunctie van moderne smartphones kan QR-codes nu direct herkennen en de ingebedde inhoud openen – zonder dat een extra app nodig is.",
+		"question8": "Welke statistieken worden verzameld voor dynamische QR-codes?",
+		"answer8": "Wanneer u statistieken inschakelt, wordt bij elke scan van uw dynamische QR-code informatie geregistreerd en geanalyseerd, zoals het aantal scans, bezoekers, gebruikte apparaten, landen, browsers en besturingssystemen.",
+		"question9": "Kan ik een QR-code personaliseren met mijn logo?",
+		"answer9": "Ja, met qrcodly.de kunt u uw QR-codes precies naar wens ontwerpen: integreer uw logo en gebruik uw merkkleuren zonder de scanbaarheid te beïnvloeden. Zo blijven uw codes uniek en professioneel!",
+		"question10": "Werken QR-codes ook in gedrukte vorm?",
+		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!"
 	}
 }

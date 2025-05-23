@@ -8,6 +8,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
+import { env } from '@/env';
 
 const openSans = Inter({
 	subsets: ['latin'],
@@ -50,6 +51,16 @@ export default async function RootLayout({
 		notFound();
 	}
 
+	// Generate alternate links for all supported languages except the current one
+	const alternateLinks = routing.locales.map((lang: string) => (
+		<link
+			key={lang}
+			rel="alternate"
+			hrefLang={lang}
+			href={`${env.NEXT_PUBLIC_FRONTEND_URL}/${lang}`}
+		/>
+	));
+
 	return (
 		<ClerkProvider>
 			<html lang={locale} className="light">
@@ -60,6 +71,7 @@ export default async function RootLayout({
 					<link rel="manifest" href="/site.webmanifest" />
 					{/* <script defer src="/umami.js" data-website-id={env.NEXT_PUBLIC_UMAMI_WEBSITE}></script> */}
 					<meta name="google" content="notranslate" />
+					{alternateLinks}
 				</head>
 				<body className={`font-sans ${openSans.variable}`}>
 					<NextIntlClientProvider>

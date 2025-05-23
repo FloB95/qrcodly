@@ -6,6 +6,7 @@ import { Cta } from '@/components/Cta';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { Features } from '@/components/Features';
+import FAQSection from '@/components/Faq';
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
@@ -25,6 +26,7 @@ export default async function Page({ params }: DefaultPageParams) {
 
 					<Features />
 					<Cta />
+					<FAQSection />
 				</Container>
 			</div>
 

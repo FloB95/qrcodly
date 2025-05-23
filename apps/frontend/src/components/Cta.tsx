@@ -8,7 +8,7 @@ import Image from 'next/image';
 export const Cta = () => {
 	const t = useTranslations('contentElements.feedbackCta');
 	return (
-		<div className="mx-auto mt-20 mb-14 text-center sm:mt-40 sm:mb-28">
+		<div className="mx-auto mt-24 text-center sm:mt-50">
 			<h2 className="mb-4 text-4xl font-bold">{t('headline')}</h2>
 			<p className="text-accent-foreground text-xl sm:text-2xl">
 				{t('subHeadline1')}

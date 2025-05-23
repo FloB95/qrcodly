@@ -12,7 +12,7 @@ export const Features = () => {
 	const t = useTranslations('contentElements.featuresCta');
 	const t2 = useTranslations('general');
 	return (
-		<div className="my-18 space-y-5 sm:my-32">
+		<div className="my-20 space-y-5 sm:my-32">
 			<div className="mx-auto max-w-3xl text-center">
 				<h2 className="mb-4 text-4xl font-bold">{t('headline')}</h2>
 				<p className="text-accent-foreground text-xl sm:text-2xl">{t('subHeadline')}</p>

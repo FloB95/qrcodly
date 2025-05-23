@@ -344,5 +344,28 @@
 		"more": "Weitere Seiten",
 		"previousAria": "Zur vorherigen Seite gehen",
 		"nextAria": "Zur nächsten Seite gehen"
+	},
+	"faq": {
+		"headline": "Häufig gestellte Fragen",
+		"question1": "Was ist ein QR Code?",
+		"answer1": "Ein QR Code (Quick Response Code) ist ein smarter, zweidimensionaler Barcode, der unterschiedlichste Informationen wie Website-Links, Texte oder Kontaktdaten speichern kann. Er lässt sich mühelos mit einem Smartphone oder speziellen Scanner erfassen und entschlüsseln.",
+		"question2": "Wie erstelle ich einen QR Code?",
+		"answer2": "Mit qrcodly.de gestaltest du deinen individuellen QR Code im Handumdrehen: Gib einfach den gewünschten Inhalt ein und lade deinen fertig generierten Code direkt herunter. Schnell und unkompliziert!",
+		"question3": "Was ist der Unterschied zwischen statischen und dynamischen QR Codes?",
+		"answer3": "Statische QR Codes enthalten fest hinterlegte Informationen, die nach der Erstellung nicht mehr veränderbar sind. Dynamische QR Codes bieten hingegen maximale Flexibilität: Du kannst den verlinkten Inhalt jederzeit nachträglich anpassen und profitierst zusätzlich von erweiterten Funktionen wie detaillierten Scan-Statistiken.",
+		"question4": "Ist die Erstellung von QR Codes kostenlos?",
+		"answer4": "Ja, die Erstellung von statischen und dynamischen QR Codes ist und bleibt für immer kostenlos und unbegrenzt. Zukünftig wird es Einschränkungen für API-Anfragen und für Unternehmen mit mehreren Benutzern geben.",
+		"question5": "Wie lange ist ein QR Code gültig?",
+		"answer5": "Statische QR Codes haben kein Verfallsdatum und bleiben dauerhaft gültig, solange der hinterlegte Inhalt online erreichbar ist. Dynamische QR Codes funktionieren, solange sie aktiv in unserem System verwaltet werden und keine spezifischen Einschränkungen durch den Anbieter bestehen.",
+		"question6": "Welche Vorteile bieten dynamische QR Codes?",
+		"answer6": "Dynamische QR Codes bieten dir unvergleichliche Flexibilität, da du ihre Inhalte auch nach dem Druck noch anpassen kannst. Zudem ermöglichen sie präzise Scan-Statistiken, die Aufschluss über Ort, Zeit und genutztes Gerät geben, um deine Kampagnen optimal zu analysieren.",
+		"question7": "Benötige ich eine spezielle App zum Scannen von QR Codes?",
+		"answer7": "Nein, das ist in den meisten Fällen nicht nötig! Die integrierte Kamerafunktion moderner Smartphones ist heute in der Lage, QR Codes direkt zu erkennen und den hinterlegten Inhalt zu öffnen – ganz ohne zusätzliche App.",
+		"question8": "Welche Statistiken werden bei dynamischen QR Codes erfasst?",
+		"answer8": "Wenn du Statistiken aktivierst, werden bei jedem Scan deines dynamischen QR Codes Informationen wie Anzahl der Scans, Besucher, verwendete Geräte, Länder, Browser und Betriebssysteme erfasst und ausgewertet.",
+		"question9": "Kann ich einen QR Code mit meinem Logo personalisieren?",
+		"answer9": "Ja, mit qrcodly.de gestaltest du deine QR Codes ganz nach deinen Wünschen: Integriere dein Logo und nutze deine Markenfarben, ohne die Scanbarkeit zu beeinträchtigen. So bleiben deine Codes einzigartig und professionell!",
+		"question10": "Funktionieren QR Codes auch im Druck?",
+		"answer10": "Absolut! QR Codes sind speziell für den Druck optimiert und funktionieren zuverlässig auf verschiedensten Materialien, solange sie klar und unbeschädigt bleiben. Achte auf gute Druckqualität, dann sind deine Codes überall einsatzbereit!"
 	}
 }
