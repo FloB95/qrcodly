@@ -4,14 +4,12 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import posthog from 'posthog-js';
 import { formatDate } from '@/lib/utils';
 import type { TConfigTemplate, TQrCode } from '@shared/schemas';
 import * as Sentry from '@sentry/nextjs';
-import { useRouter } from 'next/navigation';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { useDeleteConfigTemplateMutation } from '@/lib/api/config-template';
@@ -44,8 +42,8 @@ export const TemplateListItem = ({
 	const t = useTranslations();
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-	const [nameDialogOpen, setNameDialogOpen] = useState(false);
-	const router = useRouter();
+	// const [nameDialogOpen, setNameDialogOpen] = useState(false);
+	// const router = useRouter();
 
 	const deleteMutation = useDeleteConfigTemplateMutation();
 	// const updateQrCodeMutation = useUpdateQrCodeMutation();
@@ -158,7 +156,7 @@ export const TemplateListItem = ({
 						onClick={(e) => {
 							e.preventDefault();
 							e.stopPropagation();
-							setNameDialogOpen(true);
+							// setNameDialogOpen(true);
 						}}
 					>
 						{template.name && template.name != '' ? (

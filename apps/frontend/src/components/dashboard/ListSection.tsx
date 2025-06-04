@@ -1,25 +1,8 @@
 'use client';
 
 import { QrCodeList } from '@/components/dashboard/qrCode/QrCodeList';
-
-import { Button } from '@/components/ui/button';
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-	ArrowDownOnSquareIcon,
-	FunnelIcon,
-	PlusCircleIcon,
-	QrCodeIcon,
-	StarIcon,
-} from '@heroicons/react/24/outline';
-import { TemplateList } from '@/components/dashboard/templates/TemplateList';
+import { QrCodeIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 
 export const ListSection = () => {
@@ -41,11 +24,11 @@ export const ListSection = () => {
 							<QrCodeIcon width={20} height={20} /> <span>QR Codes</span>
 						</div>
 					</TabsTrigger>
-					<TabsTrigger value="templateList">
+					{/* <TabsTrigger value="templateList">
 						<div className="flex space-x-2">
 							<StarIcon width={20} height={20} /> <span>Templates</span>
 						</div>
-					</TabsTrigger>
+					</TabsTrigger> */}
 				</TabsList>
 				{/* <div className="ml-auto flex items-center gap-2">
 					<DropdownMenu>
@@ -77,9 +60,9 @@ export const ListSection = () => {
 				<TabsContent value="qrCodeList">
 					<QrCodeList />
 				</TabsContent>
-				<TabsContent value="templateList">
+				{/* <TabsContent value="templateList">
 					<TemplateList />
-				</TabsContent>
+				</TabsContent> */}
 			</div>
 		</Tabs>
 	);
