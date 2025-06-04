@@ -72,10 +72,7 @@ const fromColorType = (colorType: ColorType): string => {
 
 export function ColorPicker({ defaultColor, onChange, withGradient = true }: ColorPickerProps) {
 	const [color, setColor] = useState(defaultColor ? fromColorType(defaultColor) : '#000000');
-	const { valueToHex, getGradientObject, deletePoint } = useColorPicker(
-		fromColorType(color),
-		setColor,
-	);
+	const { getGradientObject, deletePoint } = useColorPicker(fromColorType(color), setColor);
 
 	const toColorType = (color: string): ColorType => {
 		const gradientObject = getGradientObject(color);
@@ -95,7 +92,7 @@ export function ColorPicker({ defaultColor, onChange, withGradient = true }: Col
 			};
 		}
 
-		return valueToHex();
+		return color;
 	};
 
 	const [debouncedColor] = useDebouncedValue(color, 200);
@@ -146,7 +143,7 @@ export function ColorPicker({ defaultColor, onChange, withGradient = true }: Col
 					disableDarkMode
 					hideGradientStop
 					hideColorGuide
-					hideOpacity
+					// hideOpacity
 					hideAdvancedSliders
 					width={270}
 					height={150}
@@ -157,6 +154,7 @@ export function ColorPicker({ defaultColor, onChange, withGradient = true }: Col
 							b = b.replace(/(linear-gradient|radial-gradient)\((?!\d+deg)/, '$1(0deg,');
 							b = b.replace(/,deg,/, ','); // Remove redundant "deg,"
 						}
+
 						setColor(b);
 						const gradientObject = getGradientObject(b);
 						if (

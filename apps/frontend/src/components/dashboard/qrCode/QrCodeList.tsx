@@ -1,7 +1,7 @@
 'use client';
 
-import { DashboardListItem, SkeletonListItem } from './ListItem';
-import { Table, TableBody, TableCell, TableRow } from '../ui/table';
+import { QrCodeListItem, SkeletonListItem } from './ListItem';
+import { Table, TableBody, TableCell, TableRow } from '../../ui/table';
 import { useListQrCodesQuery } from '@/lib/api/qr-code';
 import { useTranslations } from 'next-intl';
 import {
@@ -12,7 +12,7 @@ import {
 	PaginationLink,
 	PaginationNext,
 	PaginationPrevious,
-} from '../ui/pagination';
+} from '../../ui/pagination';
 import { useState, useMemo, useEffect, Fragment } from 'react';
 import { getPageNumbers } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -88,7 +88,7 @@ export const QrCodeList = () => {
 			<Table className="border-separate border-spacing-y-2">
 				<TableBody>
 					{qrCodes.data.length > 0 ? (
-						qrCodes.data.map((qr) => <DashboardListItem key={qr.id} qr={qr} />)
+						qrCodes.data.map((qr) => <QrCodeListItem key={qr.id} qr={qr} />)
 					) : (
 						<TableRow className="hover:bg-transparent" key="no-data">
 							<TableCell colSpan={6} className="text-center">
