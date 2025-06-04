@@ -120,7 +120,13 @@ export const Gradient = z.object({
 		.max(2), // Beibehalten auf 2 wie im Original
 });
 
-export const ColorOrGradient = z.union([z.string().regex(/^#[0-9A-F]{6}$/i), Gradient]);
+export const ColorOrGradient = z.union([
+	z.string().regex(/^#[0-9A-F]{6}$/i), // hex
+	z
+		.string()
+		.regex(/^rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}(?:\s*,\s*(?:0|1|0?\.\d+))?\s*\)$/i), // rgb or rgba
+	Gradient,
+]);
 
 export const QrCodeOptionsSchema = z.object({
 	width: z.number(),

@@ -18,7 +18,7 @@ import posthog from 'posthog-js';
 import { toast } from '../ui/use-toast';
 import { Input } from '../ui/input';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { QrCodeIcon } from '../dashboard/QrCodeIcon';
+import { QrCodeIcon } from '../dashboard/qrCode/QrCodeIcon';
 import { useDeleteQrCodeMutation, useUpdateQrCodeMutation } from '@/lib/api/qr-code';
 import * as Sentry from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
