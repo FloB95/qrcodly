@@ -38,7 +38,7 @@
 		"@types/nodemailer": "^6.4.17",
 		"@types/qs": "^6.9.18",
 		"@typescript-eslint/eslint-plugin": "^8.31.1",
-		"@typescript-eslint/parser": "^8.31.1",
+		"@typescript-eslint/parser": "^8.34.1",
 		"drizzle-kit": "^0.31.1",
 		"esbuild": "~0.18.20",
 		"eslint-plugin-drizzle": "^0.2.3",
