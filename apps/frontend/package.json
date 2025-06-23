@@ -69,7 +69,7 @@
 		"@tailwindcss/postcss": "^4.1.7",
 		"@types/react": "^19.1.5",
 		"@types/react-dom": "^19.1.5",
-		"eslint-config-next": "^15.3.2",
+		"eslint-config-next": "^15.3.4",
 		"postcss": "^8.5.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"qrcodly-eslint-config": "workspace:*",
