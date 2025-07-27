@@ -70,6 +70,7 @@ export default async function RootLayout({
 					<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 					<link rel="manifest" href="/site.webmanifest" />
 					{/* <script defer src="/umami.js" data-website-id={env.NEXT_PUBLIC_UMAMI_WEBSITE}></script> */}
+					<link rel="canonical" href={`${env.NEXT_PUBLIC_FRONTEND_URL}/en`} />
 					<meta name="google" content="notranslate" />
 					{alternateLinks}
 				</head>
