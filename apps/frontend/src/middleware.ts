@@ -11,9 +11,14 @@ const isProtectedRoute = createRouteMatcher(['(.*)/collection(.*)']);
 const intlMiddleware = createMiddleware(routing);
 
 export default clerkMiddleware(async (auth, req, event) => {
+	const pathname = new URL(req.url).pathname;
+
+	if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
+		return NextResponse.next();
+	}
+
 	const logger = new Logger({ source: 'middleware' });
 	logger.middleware(req);
-
 	event.waitUntil(logger.flush());
 
 	// Handle protected routes
@@ -21,22 +26,19 @@ export default clerkMiddleware(async (auth, req, event) => {
 
 	// Handle analytics for specific routes
 	const urlPattern = /^\/u\/[a-z0-9]{5}$/;
-	if (urlPattern.test(new URL(req.url).pathname)) {
+	if (urlPattern.test(pathname)) {
 		return await processAnalyticsAndRedirect(req);
 	}
 
-	const pathname = new URL(req.url).pathname;
+	// Internationalization Middleware (exclude sitemap & api)
 	if (
 		!pathname.startsWith('/api') &&
-		!pathname.startsWith('/sitemap') &&
 		!pathname.startsWith('/umami.js') &&
 		!pathname.startsWith('/monitoring') &&
 		!pathname.startsWith('/ingest')
 	) {
 		const intlResponse = intlMiddleware(req);
-		if (intlResponse) {
-			return intlResponse;
-		}
+		if (intlResponse) return intlResponse;
 	}
 
 	return NextResponse.next();

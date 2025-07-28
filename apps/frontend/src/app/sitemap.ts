@@ -1,3 +1,4 @@
+// app/sitemap.ts
 import { env } from '@/env';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import type { MetadataRoute } from 'next';
