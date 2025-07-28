@@ -52,14 +52,16 @@ export default async function RootLayout({
 	}
 
 	// Generate alternate links for all supported languages except the current one
-	const alternateLinks = routing.locales.map((lang: string) => (
-		<link
-			key={lang}
-			rel="alternate"
-			hrefLang={lang}
-			href={`${env.NEXT_PUBLIC_FRONTEND_URL}/${lang}`}
-		/>
-	));
+	const alternateLinks = routing.locales
+		.filter((l) => l !== 'en')
+		.map((lang: string) => (
+			<link
+				key={lang}
+				rel="alternate"
+				hrefLang={lang}
+				href={`${env.NEXT_PUBLIC_FRONTEND_URL}/${lang}`}
+			/>
+		));
 
 	return (
 		<ClerkProvider>
@@ -69,9 +71,8 @@ export default async function RootLayout({
 					<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 					<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 					<link rel="manifest" href="/site.webmanifest" />
-					{/* <script defer src="/umami.js" data-website-id={env.NEXT_PUBLIC_UMAMI_WEBSITE}></script> */}
-					<link rel="canonical" href={`${env.NEXT_PUBLIC_FRONTEND_URL}/en`} />
 					<meta name="google" content="notranslate" />
+					<link rel="alternate" hrefLang="en" href={`${env.NEXT_PUBLIC_FRONTEND_URL}/`} />
 					{alternateLinks}
 				</head>
 				<body className={`font-sans ${openSans.variable}`}>
