@@ -28,6 +28,7 @@ export default clerkMiddleware(async (auth, req, event) => {
 	const pathname = new URL(req.url).pathname;
 	if (
 		!pathname.startsWith('/api') &&
+		!pathname.startsWith('/sitemap') &&
 		!pathname.startsWith('/umami.js') &&
 		!pathname.startsWith('/monitoring') &&
 		!pathname.startsWith('/ingest')
