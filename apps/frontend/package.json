@@ -44,7 +44,7 @@
 		"clsx": "^2.1.1",
 		"fs": "0.0.1-security",
 		"i18n-iso-countries": "^7.14.0",
-		"lucide-react": "^0.488.0",
+		"lucide-react": "^0.539.0",
 		"next": "^15.4.4",
 		"next-axiom": "^1.9.2",
 		"next-intl": "^4.3.4",
