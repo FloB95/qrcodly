@@ -76,7 +76,7 @@
 		"qrcodly-typescript-config": "workspace:*",
 		"shadcn-ui": "^0.9.5",
 		"tailwindcss": "^4.1.16",
-		"typescript": "^5.9.3"
+		"typescript": "^5.8.3"
 	},
 	"ct3aMetadata": {
 		"initVersion": "7.39.3"
