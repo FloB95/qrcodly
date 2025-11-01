@@ -3,6 +3,6 @@ packages:
   - apps/*
 
 catalog:
-  zod: 3.24.3
+  zod: 4.1.12
   '@sentry/node': 9.13.0
   dotenv: 16.5.0
