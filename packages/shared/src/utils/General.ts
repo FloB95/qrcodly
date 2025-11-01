@@ -95,7 +95,7 @@ export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeConten
 				type: 'url',
 				data: {
 					url: '',
-					isEditable: false,
+					isEditable: true,
 				},
 			};
 		case 'text':

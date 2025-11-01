@@ -13,7 +13,7 @@ export const DefaultIdQueryParamSchema = z.object({
 export const QueryDateSchema = z
 	.string()
 	.refine((val) => !isNaN(Date.parse(val)), {
-		message: 'Invalid date format',
+		error: 'Invalid date format',
 	})
 	.transform((val) => new Date(val));
 
@@ -35,8 +35,8 @@ export type DefaultStringWhereQueryParam = z.infer<typeof DefaultStringWhereQuer
  */
 export const DefaultEmailWhereQueryParamSchema = z
 	.object({
-		eq: z.string().email(),
-		neq: z.string().email(),
+		eq: z.email(),
+		neq: z.email(),
 		like: z.string(),
 	})
 	.partial()
@@ -62,24 +62,22 @@ export type DefaultDateWhereQueryParam = z.infer<typeof DefaultDateWhereQueryPar
  * @param whereObj The where object schema.
  * @returns A Zod object schema for pagination query parameters.
  */
-export const PaginationQueryParamsSchema = (
-	whereObj?: z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny>,
-) =>
+export const PaginationQueryParamsSchema = (whereObj?: z.ZodObject<z.ZodRawShape>) =>
 	z.object({
 		page: z
 			.string()
 			.transform((val) => parseInt(val, 10))
 			.refine((val) => Number.isInteger(val) && val > 0, {
-				message: 'Page must be a positive integer greater than 0',
+				error: 'Page must be a positive integer greater than 0',
 			})
-			.default('1'),
+			.prefault('1'),
 		limit: z
 			.string()
 			.transform((val) => parseInt(val, 10))
 			.refine((val) => Number.isInteger(val) && val > 0, {
-				message: 'Limit must be a positive integer greater than 0',
+				error: 'Limit must be a positive integer greater than 0',
 			})
-			.default('10'),
+			.prefault('10'),
 		where: whereObj ? whereObj.partial().optional() : z.undefined(),
 	});
 

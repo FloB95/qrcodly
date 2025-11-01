@@ -1,5 +1,5 @@
-import { type ZodIssue } from 'zod';
 import { type Readable } from 'stream';
+import { type z } from 'zod';
 
 /**
  * Asynchronously pauses execution for a specified amount of time.
@@ -53,15 +53,15 @@ export function mergeObjects<T>(original: T, updates: Partial<T>): T {
 }
 
 /**
- * Merges an array of ZodIssue objects, consolidating duplicate errors by combining their paths.
- * @param {ZodIssue[]} errors - An array of ZodIssue objects to merge.
- * @returns {unknown[]} An array of merged ZodIssue objects.
+ * Merges an array of z.core.$ZodIssue objects, consolidating duplicate errors by combining their paths.
+ * @param {z.core.$ZodIssue[]} errors - An array of z.core.$ZodIssue objects to merge.
+ * @returns {unknown[]} An array of merged z.core.$ZodIssue objects.
  */
-export function mergeZodErrorObjects(errors: ZodIssue[]): unknown[] {
-	const mergedErrors: ZodIssue[] = [];
+export function mergeZodErrorObjects(errors: z.core.$ZodIssue[]): z.core.$ZodIssue[] {
+	const mergedErrors: z.core.$ZodIssue[] = [];
 
 	for (const error of errors) {
-		const existingError = mergedErrors.find((e: ZodIssue) => {
+		const existingError = mergedErrors.find((e) => {
 			const keys = Object.keys(e);
 			return keys.every(
 				(key) =>
@@ -72,7 +72,12 @@ export function mergeZodErrorObjects(errors: ZodIssue[]): unknown[] {
 		});
 
 		if (existingError) {
-			existingError.path = [...existingError.path, ...error.path];
+			const mergedError: z.core.$ZodIssue = {
+				...existingError,
+				path: [...existingError.path, ...error.path],
+			};
+			const index = mergedErrors.indexOf(existingError);
+			mergedErrors[index] = mergedError;
 		} else {
 			mergedErrors.push(error);
 		}
