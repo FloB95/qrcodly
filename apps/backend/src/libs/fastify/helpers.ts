@@ -16,7 +16,7 @@ import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route'
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import type AbstractController from '@/core/http/controller/abstract.controller';
 import { isAuthenticated } from '@/core/http/middleware/auth';
-import { ZodError, type SafeParseReturnType, type ZodSchema } from 'zod';
+import { ZodError, type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 
@@ -211,14 +211,10 @@ export function registerRoutes(
 	});
 }
 
-function createValidationHook<T>(
-	schema: ZodSchema<T>,
-	errorMessage: string,
-	type: 'body' | 'query',
-) {
+function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type: 'body' | 'query') {
 	return (request: FastifyRequest, _reply: FastifyReply, done: () => void) => {
 		const dataToValidate = type === 'body' ? request.body : qs.parse(request.query as string);
-		const validationResult: SafeParseReturnType<T, T> = schema.safeParse(dataToValidate);
+		const validationResult: ReturnType<typeof schema.safeParse> = schema.safeParse(dataToValidate);
 		if (!validationResult.success) {
 			throw new BadRequestError(errorMessage, validationResult.error.issues);
 		}

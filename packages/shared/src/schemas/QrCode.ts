@@ -1,13 +1,11 @@
 import { z } from 'zod';
 import { AbstractEntitySchema } from './AbstractEntitySchema'; // Stelle sicher, dass der Pfad korrekt ist
 
-const emptyStringToUndefined = <T extends z.ZodTypeAny>(
-	schema: T,
-): z.ZodEffects<T, z.infer<T> | undefined> =>
+const emptyStringToUndefined = <T extends z.ZodTypeAny>(schema: T) =>
 	z.preprocess((value) => (value === '' ? undefined : value), schema);
 
 export const UrlInputSchema = z.object({
-	url: z.string().url().max(1000),
+	url: z.url().max(1000),
 	isEditable: z.boolean().optional(),
 });
 export type TUrlInput = z.infer<typeof UrlInputSchema>;
@@ -25,7 +23,7 @@ export type TWifiInput = z.infer<typeof WifiInputSchema>;
 export const VCardInputSchema = z.object({
 	firstName: emptyStringToUndefined(z.string().max(64).optional()),
 	lastName: emptyStringToUndefined(z.string().max(64).optional()),
-	email: emptyStringToUndefined(z.string().email().optional()),
+	email: emptyStringToUndefined(z.email().optional()),
 	phone: emptyStringToUndefined(
 		z
 			.string()
@@ -45,7 +43,7 @@ export const VCardInputSchema = z.object({
 	zip: emptyStringToUndefined(z.string().max(10).optional()),
 	state: emptyStringToUndefined(z.string().max(64).optional()),
 	country: emptyStringToUndefined(z.string().max(64).optional()),
-	website: emptyStringToUndefined(z.string().url().optional()),
+	website: emptyStringToUndefined(z.url().optional()),
 });
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
 
