@@ -12,7 +12,7 @@ import {
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { VCardInputSchema, type TVCardInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
 
@@ -26,7 +26,7 @@ type VCardSectionProps = {
 export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.vCard');
 	const form = useForm<FormValues>({
-		resolver: zodResolver(VCardInputSchema),
+		resolver: standardSchemaResolver(VCardInputSchema),
 		defaultValues: value,
 		shouldFocusError: false,
 		shouldUnregister: true,

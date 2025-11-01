@@ -31,7 +31,7 @@ export const defaultInitState: QrCodeGeneratorState = {
 		type: 'url',
 		data: {
 			url: '',
-			isEditable: false,
+			isEditable: true,
 		},
 	},
 	latestQrCode: undefined,

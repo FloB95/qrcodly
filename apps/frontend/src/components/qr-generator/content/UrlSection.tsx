@@ -1,7 +1,7 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useForm } from 'react-hook-form';
 import {
 	Form,
@@ -16,7 +16,6 @@ import { useEffect, useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { useAuth } from '@clerk/nextjs';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
-import { Badge } from '@/components/ui/badge';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
 import { ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
@@ -41,10 +40,10 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const [hasMounted, setHasMounted] = useState(false);
 
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
-		resolver: zodResolver(UrlInputSchema),
+		resolver: standardSchemaResolver(UrlInputSchema),
 		defaultValues: {
 			url: value?.url ?? '',
-			isEditable: value?.isEditable ?? false,
+			isEditable: value?.isEditable ?? true,
 		},
 	});
 
@@ -169,12 +168,6 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 											</FormControl>
 											<FormLabel className="relative mt-[4px] ml-2 pr-2">
 												{t('enableEditing')}
-												<Badge
-													variant="green"
-													className="xs:absolute xs:top-5 relative top-2 block w-fit sm:top-[-10px] sm:left-full"
-												>
-													{t('newBadge')}
-												</Badge>
 											</FormLabel>
 										</div>
 										<FormMessage />
