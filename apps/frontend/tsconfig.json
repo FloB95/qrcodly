@@ -1,36 +1,17 @@
 {
+	"extends": "qrcodly-typescript-config/tsconfig.frontend.json",
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.js", ".next/types/**/*.ts"],
+	"exclude": ["node_modules", ".next"],
 	"compilerOptions": {
-		"target": "ES2017",
-		"lib": ["dom", "dom.iterable", "esnext"],
-		"allowJs": true,
+		"maxNodeModuleJsDepth": 2,
 		"skipLibCheck": true,
-		"strict": true,
-		"noEmit": true,
-		"esModuleInterop": true,
-		"module": "esnext",
-		"moduleResolution": "bundler",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"jsx": "preserve",
-		"incremental": true,
-		"plugins": [
-			{
-				"name": "next"
-			}
-		],
+		"baseUrl": ".",
+		"plugins": [{ "name": "next" }],
 		"paths": {
 			"@/*": ["./src/*"],
 			"@shared/schemas": ["../../packages/shared/src"],
 			"@shared/schemas/*": ["../../packages/shared/src/*"]
-		}
-	},
-	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		".next/types/**/*.ts",
-		".next/dev/types/**/*.ts",
-		"**/*.mts"
-	],
-	"exclude": ["node_modules", ".next"]
+		},
+		"checkJs": false
+	}
 }
