@@ -11,7 +11,7 @@
 		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
-		"jsx": "react-jsx",
+		"jsx": "preserve",
 		"incremental": true,
 		"plugins": [
 			{
@@ -20,7 +20,8 @@
 		],
 		"paths": {
 			"@/*": ["./src/*"],
-			"@shared/schemas": ["../../packages/shared/src/index.js"]
+			"@shared/schemas": ["../../packages/shared/src"],
+			"@shared/schemas/*": ["../../packages/shared/src/*"]
 		}
 	},
 	"include": [
@@ -31,5 +32,5 @@
 		".next/dev/types/**/*.ts",
 		"**/*.mts"
 	],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules", ".next"]
 }

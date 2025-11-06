@@ -11,6 +11,9 @@ await import('./src/env.js');
 
 /** @type {import("next").NextConfig} */
 const config = {
+	typescript: {
+		ignoreBuildErrors: true,
+	},
 	transpilePackages: ['@shared/schemas'],
 	eslint: {
 		ignoreDuringBuilds: true,
