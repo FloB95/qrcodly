@@ -13,5 +13,6 @@
 			"@shared/schemas/*": ["../../packages/shared/src/*"]
 		},
 		"checkJs": false
-	}
+	},
+	"references": [{ "path": "../../packages/shared/tsconfig.json" }]
 }
