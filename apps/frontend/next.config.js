@@ -11,6 +11,7 @@ await import('./src/env.js');
 
 /** @type {import("next").NextConfig} */
 const config = {
+	transpilePackages: ['@shared/schemas'],
 	eslint: {
 		ignoreDuringBuilds: true,
 	},

@@ -17,7 +17,7 @@
 		"backend:build": "pnpm run build:shared-package && cd apps/backend && pnpm install && pnpm build",
 		"backend:start": "cd apps/backend && pnpm run start",
 		"backend:dev": "cd apps/backend && pnpm run dev",
-		"frontend:build": "pnpm run build:shared-package && cd apps/frontend && pnpm install && pnpm build",
+		"frontend:build": "cd apps/frontend && pnpm install && pnpm build",
 		"frontend:start": "cd apps/frontend && pnpm run start",
 		"frontend:dev": "cd apps/frontend && pnpm run dev",
 		"start:dev": "pnpm run backend:dev & pnpm run frontend:dev"
