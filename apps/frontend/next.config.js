@@ -2,6 +2,10 @@ import { withSentryConfig } from '@sentry/nextjs';
 import { withAxiom } from 'next-axiom';
 import { env } from './src/env.js';
 import createNextIntlPlugin from 'next-intl/plugin';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
@@ -11,6 +15,8 @@ await import('./src/env.js');
 
 /** @type {import("next").NextConfig} */
 const config = {
+	output: 'standalone',
+	outputFileTracingRoot: path.join(__dirname, '../../'),
 	transpilePackages: ['@shared/schemas'],
 	eslint: {
 		ignoreDuringBuilds: true,
