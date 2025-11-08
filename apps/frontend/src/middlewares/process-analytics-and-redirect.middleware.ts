@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { env } from '@/env';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { apiRequest } from '@/lib/utils';
 import type { TShortUrl } from '@shared/schemas';
 import { NextResponse, type NextRequest } from 'next/server';
+import { UAParser } from 'ua-parser-js';
 
 export async function processAnalyticsAndRedirect(req: NextRequest) {
 	// Extract data from headers
@@ -14,16 +19,21 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 	const hostname =
 		cleanedHostname && hostnameRegex.test(cleanedHostname) ? cleanedHostname : 'unknown';
 
+	const userAgent = headers.get('user-agent') ?? '';
+	const { browser, device } = UAParser(userAgent);
+
 	const payload = {
 		type: 'event',
 		payload: {
 			website: env.NEXT_PUBLIC_UMAMI_WEBSITE,
 			url: req.url,
-			userAgent: headers.get('user-agent') ?? '',
+			userAgent,
 			hostname,
 			language: headers.get('accept-language') ?? '',
 			referrer: headers.get('referer') ?? '',
 			screen: headers.get('sec-ch-ua-platform') ?? '',
+			device: device.type,
+			browser: browser.name,
 			ip: headers.get('x-forwarded-for') ?? '',
 		},
 	};
