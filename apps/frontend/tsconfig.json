@@ -27,11 +27,13 @@
 		/* Path Aliases */
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"],
-			"@shared/schemas": ["./../../packages/shared/src"],
-			"@shared/schemas/*": ["./../../packages/shared/src/*"]
+			"@/*": ["./src/*"]
 		}
 	},
+	"ts-node": {
+		"require": ["tsconfig-paths/register"]
+	},
+	"references": [{ "path": "../../packages/shared/tsconfig.json" }],
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.js", ".next/types/**/*.ts"],
 	"exclude": ["node_modules", "generated", ".next"]
 }
