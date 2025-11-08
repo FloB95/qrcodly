@@ -15,9 +15,6 @@ await import('./src/env.js');
 
 /** @type {import("next").NextConfig} */
 const config = {
-	output: 'standalone',
-	outputFileTracingRoot: path.join(__dirname, '../../'),
-	transpilePackages: ['@shared/schemas'],
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
