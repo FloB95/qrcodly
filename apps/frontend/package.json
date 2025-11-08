@@ -76,7 +76,9 @@
 		"qrcodly-eslint-config": "workspace:*",
 		"qrcodly-typescript-config": "workspace:*",
 		"shadcn-ui": "^0.9.5",
-		"tailwindcss": "^4.1.16"
+		"tailwindcss": "^4.1.16",
+		"tsconfig-paths": "^4.2.0",
+		"typescript": "^5.8.3"
 	},
 	"ct3aMetadata": {
 		"initVersion": "7.39.3"
