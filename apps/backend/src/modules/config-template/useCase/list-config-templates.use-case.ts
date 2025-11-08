@@ -21,17 +21,15 @@ export class ListConfigTemplatesUseCase implements IBaseUseCase {
 	/**
 	 * Executes the use case to retrieve Config Templates based on the provided query parameters.
 	 * @param limit The maximum number of Config Templates to retrieve.
-	 * @param offset The page number for pagination.
+	 * @param page The page number for pagination.
 	 * @param where Optional filter criteria for the Config Templates.
 	 * @returns An object containing the list of Config Templates and the total count.
 	 */
-	async execute({ limit, offset: page, where }: ISqlQueryFindBy<TConfigTemplate>) {
-		const offset = (page - 1) * limit;
-
+	async execute({ limit, page, where }: ISqlQueryFindBy<TConfigTemplate>) {
 		// Retrieve Config Templates based on the query parameters
 		const configTemplates = await this.configTemplateRepository.findAll({
 			limit,
-			offset,
+			page,
 			where,
 		});
 

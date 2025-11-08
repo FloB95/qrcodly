@@ -11,6 +11,19 @@ export function getShortUrlFromCode(code: string): string {
 	return `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${code}`;
 }
 
+export function getPageNumbers(currentPage: number, totalPages: number) {
+	if (totalPages <= 5) {
+		return Array.from({ length: totalPages }, (_, i) => i + 1);
+	}
+	if (currentPage <= 3) {
+		return [1, 2, 3, 4, 5];
+	}
+	if (currentPage >= totalPages - 2) {
+		return Array.from({ length: 5 }, (_, i) => totalPages - 4 + i);
+	}
+	return Array.from({ length: 5 }, (_, i) => currentPage - 2 + i);
+}
+
 export const sleep = (ms: number): Promise<void> =>
 	new Promise((resolve) => setTimeout(resolve, ms));
 

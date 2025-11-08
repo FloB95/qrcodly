@@ -23,7 +23,7 @@ class ConfigTemplateRepository extends AbstractRepository<TConfigTemplate> {
 	 */
 	async findAll({
 		limit,
-		offset,
+		page,
 		where,
 	}: ISqlQueryFindBy<TConfigTemplate>): Promise<TConfigTemplate[]> {
 		const query = db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
@@ -32,7 +32,7 @@ class ConfigTemplateRepository extends AbstractRepository<TConfigTemplate> {
 		if (where) void this.withWhere(query, where);
 
 		// Add pagination
-		void this.withPagination(query, offset, limit);
+		void this.withPagination(query, page, limit);
 		const configTemplates = await query.execute();
 		return configTemplates;
 	}

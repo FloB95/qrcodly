@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/nextjs';
 import type {
 	TCreateQrCodeDto,
@@ -15,22 +15,26 @@ export const qrCodeQueryKeys = {
 } as const;
 
 // Hook to fetch QR codes
-export function useListQrCodesQuery() {
+export function useListQrCodesQuery(page = 1, limit = 10) {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: qrCodeQueryKeys.listQrCodes,
+		queryKey: [...qrCodeQueryKeys.listQrCodes, page, limit],
 		queryFn: async (): Promise<TQrCodeWithRelationsPaginatedResponseDto> => {
 			const token = await getToken();
 
-			return apiRequest<TQrCodeWithRelationsPaginatedResponseDto>('/qr-code', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
+			return apiRequest<TQrCodeWithRelationsPaginatedResponseDto>(
+				`/qr-code?page=${page}&limit=${limit}`,
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
 				},
-			});
+			);
 		},
+		placeholderData: keepPreviousData,
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 2,

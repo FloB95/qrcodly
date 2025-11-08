@@ -11,24 +11,24 @@ import {
 	AlertDialogTitle,
 	AlertDialogDescription,
 	AlertDialogCancel,
-} from '../ui/alert-dialog';
+} from '../../ui/alert-dialog';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+} from '../../ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../../ui/tooltip';
 import { EyeIcon, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useCallback, useState, memo } from 'react';
-import { TableCell, TableRow } from '../ui/table';
-import { Badge } from '../ui/badge';
-import { Button } from '../ui/button';
-import { toast } from '../ui/use-toast';
+import { TableCell, TableRow } from '../../ui/table';
+import { Badge } from '../../ui/badge';
+import { Button } from '../../ui/button';
+import { toast } from '../../ui/use-toast';
 import posthog from 'posthog-js';
 import { formatDate } from '@/lib/utils';
 import { useDeleteQrCodeMutation, useUpdateQrCodeMutation } from '@/lib/api/qr-code';
@@ -36,13 +36,14 @@ import {
 	useGetViewsFromShortCodeQuery,
 	useToggleActiveStateMutation,
 } from '@/lib/api/url-shortener';
-import { DynamicQrCode } from '../qr-generator/DynamicQrCode';
-import QrCodeDownloadBtn from '../qr-generator/QrCodeDownloadBtn';
+import { DynamicQrCode } from '../../qr-generator/DynamicQrCode';
+import QrCodeDownloadBtn from '../../qr-generator/QrCodeDownloadBtn';
 import type { TQrCodeWithRelationsResponseDto, TShortUrl } from '@shared/schemas';
 import { QrCodeIcon } from './QrCodeIcon';
 import * as Sentry from '@sentry/nextjs';
-import { NameDialog } from '../qr-generator/NameDialog';
+import { NameDialog } from '../../qr-generator/NameDialog';
 import { useRouter } from 'next/navigation';
+import { Skeleton } from '../../ui/skeleton';
 
 const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
 	switch (qr.content.type) {
@@ -108,7 +109,7 @@ const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	);
 };
 
-export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
+export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
 	const t = useTranslations();
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -381,5 +382,15 @@ export const DashboardListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 				defaultValue={qr.name ?? ''}
 			/>
 		</>
+	);
+};
+
+export const SkeletonListItem = () => {
+	return (
+		<TableRow className="shadow">
+			<TableCell colSpan={6} className="rounded-l-lg p-0">
+				<Skeleton className="h-[122px] w-full bg-white/70" />
+			</TableCell>
+		</TableRow>
 	);
 };

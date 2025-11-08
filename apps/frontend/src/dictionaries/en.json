@@ -14,8 +14,8 @@
 	},
 	"headline": "<span class=\"text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
-		"title": "QRcodly - Free & Open Source QR Code Generator",
-		"description": "Easily create fully customizable and stylish QR codes with QRcodly, a free QR code generator. Generate QR codes for URLs, text, Wi-Fi, vCards, and more. Easy to use, secure, and perfect for personal or business use. Start now!",
+		"title": "QRcodly - Free QR Code Generator",
+		"description": "Create free QR codes with logo, custom design or templates – perfect for marketing, business cards & more. Use the QR Code Generator now!",
 		"keywords": "free QR code generator, QR code creator, generate QR codes, custom QR code maker"
 	},
 	"doc": {
@@ -114,7 +114,7 @@
 		"button": "Go Back Home"
 	},
 	"qrCode": {
-		"storeBtn": "Save",
+		"storeBtn": "Save in Collection",
 		"error": {
 			"delete": {
 				"title": "Error Deleting QR Code",
@@ -337,5 +337,35 @@
 				}
 			}
 		}
+	},
+	"pagination": {
+		"previous": "Previous",
+		"next": "Next",
+		"more": "More pages",
+		"previousAria": "Go to previous page",
+		"nextAria": "Go to next page"
+	},
+	"faq": {
+		"headline": "Frequently Asked Questions",
+		"question1": "What is a QR Code?",
+		"answer1": "A QR Code (Quick Response Code) is a smart, two-dimensional barcode that can store various types of information, such as website links, text, or contact details. It can be easily captured and deciphered using a smartphone or a dedicated scanner.",
+		"question2": "How do I create a QR Code?",
+		"answer2": "With qrcodly.de, you can create your custom QR Code in no time: simply enter the desired content and download your freshly generated code directly. Quick and straightforward!",
+		"question3": "What is the difference between static and dynamic QR Codes?",
+		"answer3": "Static QR Codes contain fixed information that cannot be changed after creation. Dynamic QR Codes, on the other hand, offer maximum flexibility: you can adjust the linked content at any time after creation and also benefit from advanced features like detailed scan statistics.",
+		"question4": "Is creating QR Codes free?",
+		"answer4": "Yes, the generation of both static and dynamic QR codes is and will remain free forever, as many as you want. In the future, there will be limitations for API requests and for businesses working with multiple users.",
+		"question5": "How long is a QR Code valid?",
+		"answer5": "Static QR Codes do not expire and remain permanently valid as long as the linked content is accessible online. Dynamic QR Codes remain active as long as they are managed in our system and no specific restrictions apply from the provider.",
+		"question6": "What are the advantages of dynamic QR Codes?",
+		"answer6": "Dynamic QR Codes offer unparalleled flexibility, as you can adjust their content even after printing. They also enable precise scan statistics, providing insights into location, time, and device used, allowing you to optimize your campaigns effectively.",
+		"question7": "Do I need a special app to scan QR Codes?",
+		"answer7": "No, in most cases, it's not necessary! The integrated camera function of modern smartphones can now directly recognize QR Codes and open the embedded content – no additional app required.",
+		"question8": "Which statistics are collected for dynamic QR Codes?",
+		"answer8": "When you enable statistics, each scan of your dynamic QR Code records and analyzes information such as the number of scans, visitors, devices used, countries, browsers, and operating systems.",
+		"question9": "Can I personalize a QR Code with my logo?",
+		"answer9": "Yes, with qrcodly.de, you can design your QR Codes exactly to your liking: integrate your logo and use your brand colors without affecting scanability. This way, your codes remain unique and professional!",
+		"question10": "Do QR Codes also work in print?",
+		"answer10": "Absolutely! QR Codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!"
 	}
 }

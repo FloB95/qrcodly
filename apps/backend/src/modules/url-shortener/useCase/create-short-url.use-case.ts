@@ -1,7 +1,6 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
-import { EventEmitter } from '@/core/event';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { TShortUrl } from '../domain/entities/short-url.entity';
 import { TCreateShortUrlDto } from '@shared/schemas';

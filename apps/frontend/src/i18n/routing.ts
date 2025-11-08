@@ -7,6 +7,7 @@ export type SupportedLanguages = (typeof SUPPORTED_LANGUAGES)[number];
 export const routing = defineRouting({
 	locales: [...SUPPORTED_LANGUAGES],
 	defaultLocale: 'en',
+	localePrefix: 'as-needed',
 });
 
 // Registering locales for i18n-iso-countries

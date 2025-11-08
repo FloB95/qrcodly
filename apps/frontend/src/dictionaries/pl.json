@@ -14,8 +14,8 @@
 	},
 	"headline": "<span class=\"text-2xl\">Darmowy i Open Source</span> <br /> Generator Kodów QR",
 	"metadata": {
-		"title": "QRcodly - Darmowy i Open Source Generator Kodów QR",
-		"description": "QRcodly: Twój darmowy generator kodów QR. Twórz natychmiast kody QR dla linków, wizytówek, Wi-Fi i innych. Konfigurowalny i darmowy. Wygeneruj kod QR już teraz!",
+		"title": "QRcodly - Darmowy Generator Kodów QR",
+		"description": "Twórz darmowe kody QR z logo, własnym designem lub szablonami – idealne do marketingu, wizytówek i nie tylko. Użyj generatora QR już teraz!",
 		"keywords": "generator kodów qr, tworzenie kodów qr, generowanie kodów qr, darmowy, za darmo, tworzenie kodów qr za darmo, generator kodów qr za darmo, kod qr vcard, kod qr link, qrgenerator"
 	},
 	"doc": {
@@ -114,7 +114,7 @@
 		"button": "Idź do strony głównej"
 	},
 	"qrCode": {
-		"storeBtn": "Zapisz",
+		"storeBtn": "Zapisz w kolekcji",
 		"error": {
 			"delete": {
 				"title": "Błąd usuwania kodu QR",
@@ -337,5 +337,35 @@
 				}
 			}
 		}
+	},
+	"pagination": {
+		"previous": "Poprzednia",
+		"next": "Następna",
+		"more": "Więcej stron",
+		"previousAria": "Przejdź do poprzedniej strony",
+		"nextAria": "Przejdź do następnej strony"
+	},
+	"faq": {
+		"headline": "Często Zadawane Pytania",
+		"question1": "Co to jest kod QR?",
+		"answer1": "Kod QR (Quick Response Code) to inteligentny, dwuwymiarowy kod kreskowy, który może przechowywać różne typy informacji, takie jak linki do stron internetowych, tekst lub dane kontaktowe. Można go łatwo przechwycić i rozszyfrować za pomocą smartfona lub dedykowanego skanera.",
+		"question2": "Jak stworzyć kod QR?",
+		"answer2": "Dzięki qrcodly.de stworzysz swój własny kod QR w mgnieniu oka: wystarczy wprowadzić żądaną treść i bezpośrednio pobrać świeżo wygenerowany kod. Szybko i prosto!",
+		"question3": "Jaka jest różnica między statycznymi a dynamicznymi kodami QR?",
+		"answer3": "Statyczne kody QR zawierają stałe informacje, których nie można zmienić po utworzeniu. Dynamiczne kody QR natomiast oferują maksymalną elastyczność: możesz dostosować połączoną treść w dowolnym momencie po utworzeniu, a także korzystać z zaawansowanych funkcji, takich jak szczegółowe statystyki skanowania.",
+		"question4": "Czy tworzenie kodów QR jest bezpłatne?",
+		"answer4": "Tak, generowanie statycznych i dynamicznych kodów QR jest i pozostanie bezpłatne na zawsze, w dowolnej ilości. W przyszłości pojawią się ograniczenia dla zapytań API oraz dla firm pracujących z wieloma użytkownikami.",
+		"question5": "Jak długo ważny jest kod QR?",
+		"answer5": "Statyczne kody QR nie wygasają i pozostają ważne na stałe, o ile połączona treść jest dostępna online. Dynamiczne kody QR pozostają aktywne tak długo, jak są zarządzane w naszym systemie i nie obowiązują żadne specyficzne ograniczenia ze strony dostawcy.",
+		"question6": "Jakie są zalety dynamicznych kodów QR?",
+		"answer6": "Dynamiczne kody QR oferują niezrównaną elastyczność, ponieważ możesz dostosować ich zawartość nawet po wydrukowaniu. Umożliwiają również precyzyjne statystyki skanowania, dostarczając informacji o lokalizacji, czasie i używanym urządzeniu, co pozwala skutecznie optymalizować kampanie.",
+		"question7": "Czy potrzebuję specjalnej aplikacji do skanowania kodów QR?",
+		"answer7": "Nie, w większości przypadków nie jest to konieczne! Zintegrowana funkcja aparatu w nowoczesnych smartfonach może teraz bezpośrednio rozpoznawać kody QR i otwierać osadzoną treść – bez konieczności używania dodatkowej aplikacji.",
+		"question8": "Jakie statystyki są zbierane dla dynamicznych kodów QR?",
+		"answer8": "Po włączeniu statystyk, każde zeskanowanie dynamicznego kodu QR rejestruje i analizuje takie informacje jak liczba skanów, liczba odwiedzających, używane urządzenia, kraje, przeglądarki oraz systemy operacyjne.",
+		"question9": "Czy mogę spersonalizować kod QR za pomocą mojego logo?",
+		"answer9": "Tak, dzięki qrcodly.de możesz zaprojektować swoje kody QR dokładnie według własnych upodobań: zintegruj swoje logo i użyj kolorów swojej marki bez wpływu na możliwość skanowania. W ten sposób Twoje kody pozostaną unikalne i profesjonalne!",
+		"question10": "Czy kody QR działają również w formie drukowanej?",
+		"answer10": "Absolutnie! Kody QR są specjalnie zoptymalizowane do druku i działają niezawodnie na różnych materiałach, o ile pozostają wyraźne i nieuszkodzone. Zapewnij dobrą jakość druku, a Twoje kody będą gotowe do użycia w dowolnym miejscu!"
 	}
 }

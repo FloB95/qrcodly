@@ -24,7 +24,7 @@ export default abstract class AbstractRepository<T> {
 	}
 
 	abstract table: MySqlTableWithColumns<any>;
-	abstract findAll({ limit, offset, where }: ISqlQueryFindBy<T>): Promise<T[]>;
+	abstract findAll({ limit, page, where }: ISqlQueryFindBy<T>): Promise<T[]>;
 	abstract findOneById(id: string): Promise<T | undefined>;
 	abstract create(item: T): Promise<void>;
 	abstract update(item: T, updates: Partial<T>): Promise<void>;
@@ -99,9 +99,10 @@ export default abstract class AbstractRepository<T> {
 		page: number,
 		pageSize: number = DEFAULT_PAGE_SIZE,
 	): MySqlSelectDynamic<T> {
+		const safePage = Math.max(0, page - 1);
 		return qb
 			.limit(pageSize)
-			.offset(page * pageSize)
+			.offset(safePage * pageSize)
 			.$dynamic();
 	}
 

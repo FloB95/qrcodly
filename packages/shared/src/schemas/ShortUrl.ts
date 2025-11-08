@@ -5,8 +5,8 @@ export const ShortCodeSchema = z.string().max(5);
 
 export const ShortUrlSchema = AbstractEntitySchema.extend({
 	shortCode: ShortCodeSchema,
-	destinationUrl: z.string().url().nullable(),
-	qrCodeId: z.string().uuid().nullable(),
+	destinationUrl: z.url().nullable(),
+	qrCodeId: z.uuid().nullable(),
 	isActive: z.boolean(),
 	createdBy: z.string(),
 });

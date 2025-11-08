@@ -14,7 +14,7 @@ export class GetReservedShortCodeUseCase {
 		// Check for reserved short URLs
 		const reservedShortUrl = await this.shortUrlRepository.findAll({
 			limit: 1,
-			offset: 0,
+			page: 0,
 			where: {
 				createdBy: {
 					eq: userId,

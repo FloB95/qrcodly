@@ -23,11 +23,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	 * @param options - Query options.
 	 * @returns A promise that resolves to an array of QR codes.
 	 */
-	async findAll({
-		limit,
-		offset,
-		where,
-	}: ISqlQueryFindBy<TQrCode>): Promise<TQrCodeWithRelations[]> {
+	async findAll({ limit, page, where }: ISqlQueryFindBy<TQrCode>): Promise<TQrCodeWithRelations[]> {
 		const query = db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
 
 		query.leftJoin(shortUrl, eq(this.table.id, shortUrl.qrCodeId)).$dynamic();
@@ -36,7 +32,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 		if (where) void this.withWhere(query, where);
 
 		// add pagination
-		void this.withPagination(query, offset, limit);
+		void this.withPagination(query, page, limit);
 
 		const qrCodes = (await query.execute()) as unknown as {
 			qr_code: TQrCode;

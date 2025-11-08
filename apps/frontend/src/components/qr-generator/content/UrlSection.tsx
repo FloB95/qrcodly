@@ -1,7 +1,7 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useForm } from 'react-hook-form';
 import {
 	Form,
@@ -16,7 +16,6 @@ import { useEffect, useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { useAuth } from '@clerk/nextjs';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
-import { Badge } from '@/components/ui/badge';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
 import { ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
@@ -36,14 +35,15 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
-	const [originalUrl, setOriginalUrl] = useState<string | null>(value?.url ?? null);
+	const [originalUrl, setOriginalUrl] = useState<string | null>(null);
 	const { content, config } = useQrCodeGeneratorStore((state) => state);
+	const [hasMounted, setHasMounted] = useState(false);
 
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
-		resolver: zodResolver(UrlInputSchema),
+		resolver: standardSchemaResolver(UrlInputSchema),
 		defaultValues: {
 			url: value?.url ?? '',
-			isEditable: value?.isEditable ?? false,
+			isEditable: value?.isEditable ?? true,
 		},
 	});
 
@@ -82,6 +82,10 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		}
 	}, [value]);
 
+	useEffect(() => {
+		setHasMounted(true);
+	}, []);
+
 	return (
 		<>
 			<Form {...form}>
@@ -100,6 +104,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 											setOriginalUrl(val);
 											field.onChange(val);
 										}}
+										maxLength={1000}
 										className="p-6"
 										placeholder={t('placeholder')}
 										autoFocus
@@ -131,50 +136,46 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 						)}
 					/>
 
-					<div
-						className={`transition-opacity duration-300 ease-in-out ${
-							originalUrl ? 'opacity-100' : 'opacity-0 pointer-events-none'
-						}`}
-					>
-						<FormField
-							control={form.control}
-							name="isEditable"
-							render={({ field }) => (
-								<FormItem>
-									<div className="flex">
-										<FormControl>
-											<Switch
-												checked={field.value}
-												onCheckedChange={async (e) => {
-													if (!isSignedIn) {
-														localStorage.setItem('unsavedQrContent', JSON.stringify(content));
-														localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
-														setAlertOpen(true);
-														return;
-													}
+					{hasMounted && (
+						<div
+							className={`transition-opacity duration-300 ease-in-out ${
+								originalUrl ? 'opacity-100' : 'opacity-0 pointer-events-none'
+							}`}
+						>
+							<FormField
+								control={form.control}
+								name="isEditable"
+								render={({ field }) => (
+									<FormItem>
+										<div className="flex">
+											<FormControl>
+												<Switch
+													checked={field.value}
+													onCheckedChange={async (e) => {
+														if (!isSignedIn) {
+															localStorage.setItem('unsavedQrContent', JSON.stringify(content));
+															localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
+															setAlertOpen(true);
+															return;
+														}
 
-													if (!shortUrl) return;
+														if (!shortUrl) return;
 
-													field.onChange(e);
-													void form.handleSubmit(onSubmit)();
-												}}
-											/>
-										</FormControl>
-										<FormLabel className="relative mt-[4px] ml-2 pr-2">
-											{t('enableEditing')}
-											<Badge
-												variant="green"
-												className="xs:absolute xs:top-5 relative top-2 block w-fit sm:top-[-10px] sm:left-full"
-											>
-												{t('newBadge')}
-											</Badge>
-										</FormLabel>
-									</div>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</div>
+														field.onChange(e);
+														void form.handleSubmit(onSubmit)();
+													}}
+												/>
+											</FormControl>
+											<FormLabel className="relative mt-[4px] ml-2 pr-2">
+												{t('enableEditing')}
+											</FormLabel>
+										</div>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+					)}
 				</form>
 			</Form>
 

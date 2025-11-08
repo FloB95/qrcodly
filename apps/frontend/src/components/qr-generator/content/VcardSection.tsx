@@ -12,7 +12,7 @@ import {
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { VCardInputSchema, type TVCardInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
 
@@ -26,7 +26,7 @@ type VCardSectionProps = {
 export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.vCard');
 	const form = useForm<FormValues>({
-		resolver: zodResolver(VCardInputSchema),
+		resolver: standardSchemaResolver(VCardInputSchema),
 		defaultValues: value,
 		shouldFocusError: false,
 		shouldUnregister: true,
@@ -39,7 +39,6 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 		onChange(values);
 	}
 
-	// handle submit automatically after debounced value
 	useEffect(() => {
 		const processedDebounced = Object.fromEntries(
 			Object.entries(debounced).map(([key, val]) => [key, val === '' ? undefined : val]),
@@ -63,9 +62,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="firstName"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t('firstName.label')}</FormLabel>
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('firstName.label')}
+									</span>
+								</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('firstName.placeholder')} />
+									<Input {...field} translate="no" placeholder={t('firstName.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -76,9 +79,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="lastName"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t('lastName.label')}</FormLabel>
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('lastName.label')}
+									</span>
+								</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('lastName.placeholder')} />
+									<Input {...field} translate="no" placeholder={t('lastName.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -91,9 +98,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					name="email"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t('email.label')}</FormLabel>
+							<FormLabel>
+								<span translate="no" suppressHydrationWarning>
+									{t('email.label')}
+								</span>
+							</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder={t('email.placeholder')} />
+								<Input {...field} translate="no" placeholder={t('email.placeholder')} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -105,9 +116,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="phone"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t('phone.label')}</FormLabel>
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('phone.label')}
+									</span>
+								</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('phone.placeholder')} />
+									<Input {...field} translate="no" placeholder={t('phone.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -118,9 +133,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="fax"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t('fax.label')}</FormLabel>
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('fax.label')}
+									</span>
+								</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('fax.placeholder')} />
+									<Input {...field} translate="no" placeholder={t('fax.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -133,9 +152,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="company"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t('company.label')}</FormLabel>
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('company.label')}
+									</span>
+								</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('company.placeholder')} />
+									<Input {...field} translate="no" placeholder={t('company.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -146,9 +169,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="job"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t('jobTitle.label')}</FormLabel>
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('jobTitle.label')}
+									</span>
+								</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('jobTitle.placeholder')} />
+									<Input {...field} translate="no" placeholder={t('jobTitle.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -160,9 +187,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					name="street"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t('street.label')}</FormLabel>
+							<FormLabel>
+								<span translate="no" suppressHydrationWarning>
+									{t('street.label')}
+								</span>
+							</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder={t('street.placeholder')} />
+								<Input {...field} translate="no" placeholder={t('street.placeholder')} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -174,9 +205,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="city"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t('city.label')}</FormLabel>
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('city.label')}
+									</span>
+								</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('city.placeholder')} />
+									<Input {...field} translate="no" placeholder={t('city.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -187,9 +222,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						name="zip"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>{t('zipCode.label')}</FormLabel>
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('zipCode.label')}
+									</span>
+								</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('zipCode.placeholder')} />
+									<Input {...field} translate="no" placeholder={t('zipCode.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -201,9 +240,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					name="state"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t('state.label')}</FormLabel>
+							<FormLabel>
+								<span translate="no" suppressHydrationWarning>
+									{t('state.label')}
+								</span>
+							</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder={t('state.placeholder')} />
+								<Input {...field} translate="no" placeholder={t('state.placeholder')} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -214,9 +257,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					name="country"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t('country.label')}</FormLabel>
+							<FormLabel>
+								<span translate="no" suppressHydrationWarning>
+									{t('country.label')}
+								</span>
+							</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder={t('country.placeholder')} />
+								<Input {...field} translate="no" placeholder={t('country.placeholder')} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -227,10 +274,15 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					name="website"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t('website.label')}</FormLabel>
+							<FormLabel>
+								<span translate="no" suppressHydrationWarning>
+									{t('website.label')}
+								</span>
+							</FormLabel>
 							<FormControl>
 								<Input
 									{...field}
+									translate="no"
 									placeholder={t('website.placeholder')}
 									onBlur={(e) => {
 										if (e.target.value === '') return;

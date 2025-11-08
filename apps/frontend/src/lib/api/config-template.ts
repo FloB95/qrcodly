@@ -34,16 +34,27 @@ export function usePredefinedTemplatesQuery() {
 }
 
 // Hook to fetch configuration templates
-export function useListConfigTemplatesQuery(searchName?: string) {
+export function useListConfigTemplatesQuery(searchName?: string, page = 1, limit = 10) {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: [...queryKeys.listConfigTemplates, searchName],
+		queryKey: [...queryKeys.listConfigTemplates, searchName, page, limit],
 		queryFn: async (): Promise<TConfigTemplatePaginatedResponseDto> => {
 			const token = await getToken();
 
+			const extraOptions =
+				searchName !== undefined
+					? {
+							where: {
+								name: {
+									like: searchName,
+								},
+							},
+						}
+					: undefined;
+
 			return apiRequest<TConfigTemplatePaginatedResponseDto>(
-				`/config-template`,
+				`/config-template?page=${page}&limit=${limit}`,
 				{
 					method: 'GET',
 					headers: {
@@ -51,14 +62,7 @@ export function useListConfigTemplatesQuery(searchName?: string) {
 						Authorization: `Bearer ${token}`,
 					},
 				},
-				{
-					where: {
-						name: {
-							like: searchName ?? '',
-						},
-					},
-					limit: 20,
-				},
+				extraOptions,
 			);
 		},
 		refetchOnMount: false,

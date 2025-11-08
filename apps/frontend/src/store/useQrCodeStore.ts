@@ -4,11 +4,23 @@ import { createStore } from 'zustand/vanilla';
 export type QrCodeGeneratorState = {
 	config: TQrCodeOptions;
 	content: TQrCodeContent;
+	latestQrCode?: {
+		config: TQrCodeOptions;
+		content: TQrCodeContent;
+	};
 };
 
 export type QrCodeGeneratorActions = {
 	updateConfig: (config: Partial<TQrCodeOptions>) => void;
 	updateContent: (content: TQrCodeContent) => void;
+	updateLatestQrCode: (
+		latestQrCode:
+			| {
+					config: TQrCodeOptions;
+					content: TQrCodeContent;
+			  }
+			| undefined,
+	) => void;
 };
 
 export type QrCodeGeneratorStore = QrCodeGeneratorState & QrCodeGeneratorActions;
@@ -19,9 +31,10 @@ export const defaultInitState: QrCodeGeneratorState = {
 		type: 'url',
 		data: {
 			url: '',
-			isEditable: false,
+			isEditable: true,
 		},
 	},
+	latestQrCode: undefined,
 };
 
 export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = defaultInitState) => {
@@ -90,5 +103,6 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = def
 			}));
 		},
 		updateContent: (content) => set({ content }),
+		updateLatestQrCode: (latestQrCode) => set({ latestQrCode }),
 	}));
 };

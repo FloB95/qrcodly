@@ -46,8 +46,8 @@ export class QrCodeController extends AbstractController {
 	): Promise<IHttpResponse<TQrCodeWithRelationsPaginatedResponseDto>> {
 		const { page, limit, where } = request.query;
 		const { qrCodes, total } = await this.listQrCodesUseCase.execute({
-			limit: limit,
-			offset: page,
+			limit,
+			page,
 			where: {
 				...where,
 				createdBy: {

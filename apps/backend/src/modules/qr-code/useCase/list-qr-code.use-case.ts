@@ -18,17 +18,15 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 	/**
 	 * Executes the use case to retrieve QR codes based on the provided query parameters.
 	 * @param limit The maximum number of QR codes to retrieve.
-	 * @param offset The page number for pagination.
+	 * @param page The page number for pagination.
 	 * @param where Optional filter criteria for the QR codes.
 	 * @returns An object containing the list of QR codes and the total count.
 	 */
-	async execute({ limit, offset: page, where }: ISqlQueryFindBy<TQrCode>) {
-		const offset = (page - 1) * limit;
-
+	async execute({ limit, page, where }: ISqlQueryFindBy<TQrCode>) {
 		// Retrieve QR codes based on the query parameters
 		const qrCodes = await this.qrCodeRepository.findAll({
 			limit,
-			offset,
+			page,
 			where,
 		});
 

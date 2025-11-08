@@ -1,6 +1,14 @@
 {
 	"extends": "qrcodly-typescript-config/tsconfig.frontend.json",
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.js", ".next/types/**/*.ts"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"**/*.cjs",
+		"**/*.js",
+		".next/types/**/*.ts",
+		".next/standalone/next.config.js"
+	],
 	"exclude": ["node_modules", ".next"],
 	"compilerOptions": {
 		"maxNodeModuleJsDepth": 2,
@@ -8,9 +16,10 @@
 		"baseUrl": ".",
 		"plugins": [{ "name": "next" }],
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@shared/schemas": ["./../../packages/shared/src"],
+			"@shared/schemas/*": ["./../../packages/shared/src/*"]
 		},
 		"checkJs": false
-	},
-	"references": [{ "path": "../../packages/shared/tsconfig.json" }]
+	}
 }

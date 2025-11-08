@@ -16,19 +16,22 @@
 		"build:shared-package": "cd packages/shared && pnpm build",
 		"backend:build": "pnpm run build:shared-package && cd apps/backend && pnpm install && pnpm build",
 		"backend:start": "cd apps/backend && pnpm run start",
-		"frontend:build": "pnpm run build:shared-package && cd apps/frontend && pnpm install && pnpm build",
-		"frontend:start": "cd apps/frontend && pnpm run start"
+		"backend:dev": "cd apps/backend && pnpm run dev",
+		"frontend:build": "cd apps/frontend && pnpm install && pnpm build",
+		"frontend:start": "cd apps/frontend && pnpm run start",
+		"frontend:dev": "cd apps/frontend && pnpm run dev",
+		"start:dev": "pnpm run backend:dev & pnpm run frontend:dev"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.14",
-		"@types/node": "^22.15.3",
-		"eslint": "^9.26.0",
+		"@types/node": "^22.18.13",
+		"eslint": "^9.39.0",
 		"jest": "^29.7.0",
-		"lefthook": "^1.11.12",
-		"prettier": "^3.5.3",
+		"lefthook": "^1.13.6",
+		"prettier": "^3.6.2",
 		"qrcodly-eslint-config": "workspace:*",
-		"rimraf": "^6.0.1",
+		"rimraf": "^6.1.0",
 		"turbo": "2.5.0",
-		"typescript": "^5.8.3"
+		"typescript": "^5.9.3"
 	}
 }

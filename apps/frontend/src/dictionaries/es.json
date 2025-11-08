@@ -14,8 +14,8 @@
 	},
 	"headline": "<span class=\"text-2xl\">Generador de Códigos QR</span> <br /> Gratuito y de Código Abierto",
 	"metadata": {
-		"title": "QRcodly - Generador de Códigos QR Gratuito y de Código Abierto",
-		"description": "QRcodly: Tu generador de códigos QR gratuito. Crea códigos QR al instante para enlaces, vCard, Wi-Fi y más. Personalizable y gratuito. ¡Genera tu código QR ahora!",
+		"title": "QRcodly - Generador de Códigos QR Gratis",
+		"description": "Crea códigos QR gratis con logo, diseño propio o plantillas. Ideal para marketing, tarjetas de visita y más. ¡Usa el generador de QR ahora!",
 		"keywords": "generador de códigos qr, crear código qr, generar código qr, gratis, libre, crear código qr gratis, generador de código qr gratis, código qr vcard, código qr enlace, qrgenerator"
 	},
 	"doc": {
@@ -114,7 +114,7 @@
 		"button": "Ir a la página de inicio"
 	},
 	"qrCode": {
-		"storeBtn": "Guardar",
+		"storeBtn": "Guardar en la colección",
 		"error": {
 			"delete": {
 				"title": "Error al eliminar el código QR",
@@ -337,5 +337,35 @@
 				}
 			}
 		}
+	},
+	"pagination": {
+		"previous": "Anterior",
+		"next": "Siguiente",
+		"more": "Más páginas",
+		"previousAria": "Ir a la página anterior",
+		"nextAria": "Ir a la página siguiente"
+	},
+	"faq": {
+		"headline": "Preguntas Frecuentes",
+		"question1": "¿Qué es un Código QR?",
+		"answer1": "Un Código QR (Código de Respuesta Rápida) es un código de barras inteligente y bidimensional que puede almacenar diversos tipos de información, como enlaces a sitios web, texto o datos de contacto. Se puede capturar y descifrar fácilmente usando un smartphone o un escáner dedicado.",
+		"question2": "¿Cómo creo un Código QR?",
+		"answer2": "Con qrcodly.de, puedes crear tu Código QR personalizado en un abrir y cerrar de ojos: simplemente introduce el contenido deseado y descarga tu código recién generado directamente. ¡Rápido y sencillo!",
+		"question3": "¿Cuál es la diferencia entre Códigos QR estáticos y dinámicos?",
+		"answer3": "Los Códigos QR estáticos contienen información fija que no se puede cambiar después de la creación. Los Códigos QR dinámicos, por otro lado, ofrecen la máxima flexibilidad: puedes ajustar el contenido vinculado en cualquier momento después de la creación y también beneficiarte de funciones avanzadas como estadísticas de escaneo detalladas.",
+		"question4": "¿Es gratuito crear Códigos QR?",
+		"answer4": "Sí, la generación de códigos QR tanto estáticos como dinámicos es y seguirá siendo gratuita para siempre, tantos como desees. En el futuro, habrá limitaciones para las solicitudes de API y para las empresas que trabajen con varios usuarios.",
+		"question5": "¿Cuánto tiempo es válido un Código QR?",
+		"answer5": "Los Códigos QR estáticos no caducan y permanecen válidos permanentemente siempre que el contenido vinculado sea accesible en línea. Los Códigos QR dinámicos permanecen activos mientras se gestionen en nuestro sistema y no se apliquen restricciones específicas del proveedor.",
+		"question6": "¿Cuáles son las ventajas de los Códigos QR dinámicos?",
+		"answer6": "Los Códigos QR dinámicos ofrecen una flexibilidad inigualable, ya que puedes ajustar su contenido incluso después de la impresión. También permiten estadísticas de escaneo precisas, proporcionando información sobre la ubicación, la hora y el dispositivo utilizado, lo que te permite optimizar tus campañas de manera efectiva.",
+		"question7": "¿Necesito una aplicación especial para escanear Códigos QR?",
+		"answer7": "No, en la mayoría de los casos, ¡no es necesario! La función de cámara integrada de los smartphones modernos ahora puede reconocer directamente los Códigos QR y abrir el contenido incrustado, sin necesidad de una aplicación adicional.",
+		"question8": "¿Qué estadísticas se recopilan para los Códigos QR dinámicos?",
+		"answer8": "Cuando habilitas las estadísticas, cada escaneo de tu Código QR dinámico registra y analiza información como el número de escaneos, visitantes, dispositivos utilizados, países, navegadores y sistemas operativos.",
+		"question9": "¿Puedo personalizar un Código QR con mi logotipo?",
+		"answer9": "Sí, con qrcodly.de, puedes diseñar tus Códigos QR exactamente a tu gusto: integra tu logotipo y usa los colores de tu marca sin afectar la capacidad de escaneo. ¡De esta manera, tus códigos seguirán siendo únicos y profesionales!",
+		"question10": "¿Funcionan los Códigos QR también en formato impreso?",
+		"answer10": "¡Absolutamente! Los Códigos QR están optimizados específicamente para la impresión y funcionan de manera fiable en diversos materiales, siempre que permanezcan claros y sin daños. ¡Asegura una buena calidad de impresión, y tus códigos estarán listos para usar en cualquier lugar!"
 	}
 }

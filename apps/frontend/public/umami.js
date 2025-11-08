@@ -83,7 +83,7 @@
 							const r = t[e];
 							return (...e) => (a.apply(null, e), r.apply(t, e));
 						};
-						(s.pushState = t(s, 'pushState', _)), (s.replaceState = t(s, 'replaceState', _));
+						((s.pushState = t(s, 'pushState', _)), (s.replaceState = t(s, 'replaceState', _)));
 					})(),
 					(() => {
 						const t = new MutationObserver(([t]) => {

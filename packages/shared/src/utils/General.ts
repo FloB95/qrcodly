@@ -19,6 +19,7 @@ export function convertVCardObjToString(vCardInput: TVCardInput): string {
 	}
 
 	const vCard = new VCF();
+	vCard.version = '3.0';
 
 	if (vCardInput.firstName || vCardInput.lastName) {
 		vCard.add('n', `${vCardInput.lastName || ''};${vCardInput.firstName || ''}`);
@@ -95,7 +96,7 @@ export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeConten
 				type: 'url',
 				data: {
 					url: '',
-					isEditable: false,
+					isEditable: true,
 				},
 			};
 		case 'text':
