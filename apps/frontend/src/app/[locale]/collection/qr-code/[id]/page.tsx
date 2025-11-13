@@ -11,6 +11,8 @@ interface QRCodeDetailProps {
 	}>;
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 	const { id } = await params;
 
