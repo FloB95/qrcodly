@@ -177,6 +177,7 @@ export async function apiRequest<T>(
 		const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
 		console.error('API request failed:', response.status, response.statusText);
 		console.error('API request failed:', errorBody);
+		console.error('options:', options);
 		throw new Error(
 			(errorBody?.message as string | undefined) ?? 'An error occurred while fetching data',
 		);

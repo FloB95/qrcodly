@@ -27,6 +27,7 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
+				credentials: 'include',
 			},
 		});
 	} catch (error) {
