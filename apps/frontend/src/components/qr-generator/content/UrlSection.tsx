@@ -46,6 +46,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 			isEditable: value?.isEditable ?? true,
 		},
 	});
+	form.setValue('isEditable', isSignedIn && value?.isEditable ? true : false);
 
 	const [debounced] = useDebouncedValue<string | null>(originalUrl, 500);
 

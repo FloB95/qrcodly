@@ -18,7 +18,9 @@
 		"baseUrl": ".",
 		"isolatedModules": true,
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@shared/schemas": ["./../../packages/shared/dist"],
+			"@shared/schemas/*": ["./../../packages/shared/dist/*"]
 		}
 	},
 	"include": ["eslint.config.js", "./src/**/*.ts", "**/*.cjs", "**/*.mjs", "setup.test.ts"],
@@ -26,6 +28,6 @@
 	"types": ["@types/jest"],
 	"ts-node": {
 		"require": ["tsconfig-paths/register"]
-	}
-	// "references": [{ "path": "../../packages/shared/tsconfig.json" }]
+	},
+	"references": [{ "path": "../../packages/shared/tsconfig.json" }]
 }
