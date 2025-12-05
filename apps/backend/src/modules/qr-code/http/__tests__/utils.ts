@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker/.';
+import { faker } from '@faker-js/faker';
 import { QrCodeDefaults, type TCreateQrCodeDto } from '@shared/schemas';
 
 /**
