@@ -1,6 +1,11 @@
 import { pathsToModuleNameMapper, createDefaultPreset } from 'ts-jest';
 import { getTsconfig } from 'get-tsconfig';
-const { compilerOptions } = getTsconfig().config;
+const { compilerOptions: _compilerOptions } = getTsconfig().config;
+// Remove options that require specific moduleResolution values when passing
+// the config directly into ts-jest. Some environments may not set
+// moduleResolution to 'node16'|'nodenext'|'bundler', causing TS5098.
+const { resolvePackageJsonExports, resolvePackageJsonImports, ...compilerOptions } =
+	_compilerOptions || {};
 
 const tsJestOptions = {
 	tsconfig: {

@@ -4,6 +4,7 @@ import { auth } from '@clerk/nextjs/server';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { DetailPageContent } from '@/components/qr-code-detail/DetailPageContent';
 import { Cta } from '@/components/Cta';
+import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
 
 interface QRCodeDetailProps {
 	params: Promise<{
@@ -40,9 +41,17 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 	}
 
 	return (
-		<>
+		<QrCodeGeneratorStoreProvider
+			initState={{
+				id: qrCode.id,
+				name: qrCode.name ?? undefined,
+				config: qrCode.config,
+				content: qrCode.content,
+				latestQrCode: undefined,
+			}}
+		>
 			<DetailPageContent qrCode={qrCode} />
 			<Cta />
-		</>
+		</QrCodeGeneratorStoreProvider>
 	);
 }

@@ -4,13 +4,16 @@
 		"noName": "Geen naam",
 		"changesSaved": "Wijzigingen opgeslagen",
 		"back": "Terug",
+		"backToOverview": "Terug naar de collectie",
 		"share": "Delen",
 		"view": "Bekijken",
 		"edit": "Bewerken",
 		"delete": "Verwijderen",
 		"notProvided": "Niet opgegeven",
 		"addName": "Een naam toevoegen",
-		"days": "Dagen"
+		"days": "Dagen",
+		"changelogTooltip": "Laatste updates",
+		"changelogSubheading": "Hier vind je de nieuwste updates en verbeteringen van QRcodly."
 	},
 	"headline": "<span class=\"text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -115,6 +118,7 @@
 	},
 	"qrCode": {
 		"storeBtn": "Opslaan in collectie",
+		"updateBtn": "QR-code bijwerken",
 		"error": {
 			"delete": {
 				"title": "Fout bij het verwijderen van de QR-code",
@@ -140,10 +144,25 @@
 			"title": "QR-code hernoemen",
 			"placeholder": "Voer een naam in"
 		},
+		"update": {
+			"headline": "QR-code bijwerken",
+			"successTitle": "QR-code bijgewerkt",
+			"successDescription": "Je QR-code is succesvol bijgewerkt.",
+			"errorTitle": "Fout bij het bijwerken van QR-code",
+			"errorDescription": "Er is een fout opgetreden bij het bijwerken van je QR-code. We zijn op de hoogte gebracht en lossen het probleem zo snel mogelijk op.",
+			"infoDialog": {
+				"dialogHeadline": "Opmerking over het bijwerken van een QR-code",
+				"dialogDescription": "Alleen dynamische URL-QR-codes behouden dezelfde inhoud na bewerking. Wijzigingen in tekst, WiFi-gegevens of andere inhoud creëren een nieuwe QR-code. Reeds gedrukte codes tonen de bijgewerkte inhoud niet.",
+				"doNotShowAgain": "Dit bericht niet opnieuw tonen.",
+				"cancelBtn": "Annuleren",
+				"understandBtn": "Begrepen"
+			}
+		},
 		"updateQrCodeUrl": "URL bijwerken",
 		"actionsMenu": {
 			"title": "Acties",
 			"view": "Bekijken",
+			"edit": "Bewerken",
 			"delete": "Verwijderen",
 			"disableShortUrl": "Uitschakelen",
 			"enableShortUrl": "Inschakelen"
@@ -209,6 +228,7 @@
 		}
 	},
 	"generator": {
+		"labelQrCodeName": "QR-code naam",
 		"tabs": {
 			"content": "Inhoud",
 			"style": "Stijl",

@@ -167,7 +167,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 													}}
 												/>
 											</FormControl>
-											<FormLabel className="relative mt-[4px] ml-2 pr-2">
+											<FormLabel className="relative mt-1 ml-2 pr-2">
 												{t('enableEditing')}
 											</FormLabel>
 										</div>

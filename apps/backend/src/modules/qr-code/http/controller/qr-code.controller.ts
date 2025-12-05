@@ -144,6 +144,7 @@ export class QrCodeController extends AbstractController {
 		}
 
 		const updateQrCodeDto = UpdateQrCodeDto.parse(request.body);
+
 		const updatedQrCode = await this.updateQrCodeUseCase.execute(
 			qrCode,
 			updateQrCodeDto,

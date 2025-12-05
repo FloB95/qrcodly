@@ -44,7 +44,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 							duration: 5000,
 						});
 
-						posthog.capture('config-template-created', {
+						posthog.capture('qr-code-created', {
 							qrCodeName: qrCodeName,
 						});
 					},
@@ -57,7 +57,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 							duration: 5000,
 						});
 
-						posthog.capture('error:config-template-created', {
+						posthog.capture('error:qr-code-created', {
 							qrCodeName: qrCodeName,
 						});
 					},

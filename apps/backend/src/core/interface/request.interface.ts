@@ -9,8 +9,11 @@ export interface IHttpRequest<B = unknown, P = unknown, Q = unknown> extends Fas
 	cookies: { [cookieName: string]: string | undefined };
 }
 
-export interface IHttpRequestWithAuth<B = unknown, P = unknown, Q = unknown>
-	extends IHttpRequest<B, P, Q> {
+export interface IHttpRequestWithAuth<B = unknown, P = unknown, Q = unknown> extends IHttpRequest<
+	B,
+	P,
+	Q
+> {
 	user: {
 		id: string;
 	};

@@ -33,7 +33,6 @@ export const SettingsForm = () => {
 	const t = useTranslations('generator.settingsForm');
 	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
 
-	console.log('SettingsForm config:', config);
 	const handleIconSelect = (iconName?: string) => {
 		config.image = iconName;
 		updateConfig(config);

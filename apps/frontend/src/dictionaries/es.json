@@ -4,13 +4,16 @@
 		"noName": "Sin nombre",
 		"changesSaved": "Cambios guardados",
 		"back": "Volver",
+		"backToOverview": "Volver a la colección",
 		"share": "Compartir",
 		"view": "Ver",
 		"edit": "Editar",
 		"delete": "Eliminar",
 		"notProvided": "No proporcionado",
 		"addName": "Añadir un nombre",
-		"days": "Días"
+		"days": "Días",
+		"changelogTooltip": "Últimas actualizaciones",
+		"changelogSubheading": "Aquí puedes encontrar las últimas actualizaciones y mejoras de QRcodly."
 	},
 	"headline": "<span class=\"text-2xl\">Generador de Códigos QR</span> <br /> Gratuito y de Código Abierto",
 	"metadata": {
@@ -115,6 +118,7 @@
 	},
 	"qrCode": {
 		"storeBtn": "Guardar en la colección",
+		"updateBtn": "Actualizar código QR",
 		"error": {
 			"delete": {
 				"title": "Error al eliminar el código QR",
@@ -140,10 +144,25 @@
 			"title": "Renombrar código QR",
 			"placeholder": "Introducir un nombre"
 		},
+		"update": {
+			"headline": "Actualizar código QR",
+			"successTitle": "Código QR actualizado",
+			"successDescription": "Tu código QR se ha actualizado correctamente.",
+			"errorTitle": "Error al actualizar el código QR",
+			"errorDescription": "Se produjo un error al actualizar tu código QR. Hemos sido notificados y resolveremos el problema lo antes posible.",
+			"infoDialog": {
+				"dialogHeadline": "Nota sobre la actualización de un código QR",
+				"dialogDescription": "Solo los códigos QR de URL dinámicos conservan el mismo contenido después de la edición. Los cambios en texto, datos de WiFi u otro contenido generan un nuevo código QR. Los códigos ya impresos no mostrarán el contenido actualizado.",
+				"doNotShowAgain": "No mostrar este mensaje nuevamente.",
+				"cancelBtn": "Cancelar",
+				"understandBtn": "Entendido"
+			}
+		},
 		"updateQrCodeUrl": "Actualizar la URL",
 		"actionsMenu": {
 			"title": "Acciones",
 			"view": "Ver",
+			"edit": "Editar",
 			"delete": "Eliminar",
 			"disableShortUrl": "Desactivar",
 			"enableShortUrl": "Activar"
@@ -209,6 +228,7 @@
 		}
 	},
 	"generator": {
+		"labelQrCodeName": "Nombre del código QR",
 		"tabs": {
 			"content": "Contenido",
 			"style": "Estilo",

@@ -42,7 +42,6 @@ import type { TQrCodeWithRelationsResponseDto, TShortUrl } from '@shared/schemas
 import { QrCodeIcon } from './QrCodeIcon';
 import * as Sentry from '@sentry/nextjs';
 import { NameDialog } from '../../qr-generator/NameDialog';
-import { useRouter } from 'next/navigation';
 import { Skeleton } from '../../ui/skeleton';
 
 const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
@@ -201,15 +200,10 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 		[qr.id, qr.name, updateQrCodeMutation],
 	);
 
-	const router = useRouter();
-
 	return (
 		<>
 			<TableRow
-				onClick={() => {
-					router.push(`/collection/qr-code/${qr.id}`);
-				}}
-				className={`cursor-pointer rounded-lg shadow ${
+				className={`rounded-lg shadow ${
 					isDeleting ? '!bg-muted/70' : qr.shortUrl?.isActive === false ? '!bg-muted' : 'bg-white'
 				}`}
 			>
@@ -292,13 +286,25 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>{t('qrCode.actionsMenu.title')}</DropdownMenuLabel>
 
+							{qr.shortUrl && (
+								<DropdownMenuItem asChild>
+									<Link
+										className="cursor-pointer"
+										href={`/collection/qr-code/${qr.id}`}
+										onClick={(e) => e.stopPropagation()}
+									>
+										{t('qrCode.actionsMenu.view')}
+									</Link>
+								</DropdownMenuItem>
+							)}
+
 							<DropdownMenuItem asChild>
 								<Link
 									className="cursor-pointer"
-									href={`/collection/qr-code/${qr.id}`}
+									href={`/collection/qr-code/${qr.id}/edit`}
 									onClick={(e) => e.stopPropagation()}
 								>
-									{t('qrCode.actionsMenu.view')}
+									{t('qrCode.actionsMenu.edit')}
 								</Link>
 							</DropdownMenuItem>
 

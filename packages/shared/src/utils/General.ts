@@ -215,3 +215,66 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
 		},
 	};
 }
+
+/**
+ * Compares two values for deep equality.
+ * @param {*} value1 - The first value to compare.
+ * @param {*} value2 - The second value to compare.
+ * @returns {boolean} - Returns true if the values are deeply equal, otherwise false.
+ */
+function deepEqual(a: any, b: any): boolean {
+	if (a === b) return true;
+
+	if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
+		return false;
+	}
+
+	if (Array.isArray(a) && Array.isArray(b)) {
+		if (a.length !== b.length) return false;
+		return a.every((item, index) => deepEqual(item, b[index]));
+	}
+
+	if (Array.isArray(a) !== Array.isArray(b)) return false;
+
+	const keysA = Object.keys(a).sort();
+	const keysB = Object.keys(b).sort();
+
+	if (keysA.length !== keysB.length) return false;
+	if (!keysA.every((key, i) => key === keysB[i])) return false;
+
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+	return keysA.every((key) => deepEqual(a[key], b[key]));
+}
+
+/**
+ * Computes the difference between two objects.
+ * @param {Object} obj1 - The first object.
+ * @param {Object} obj2 - The second object.
+ * @param {Array<string>} [ignoreProperties=[]] - An array of property names to ignore.
+ * @returns {Object} - An object representing the differences. Each key in the returned object
+ *                     corresponds to a property that differs between obj1 and obj2, with the
+ *                     old and new values.
+ */
+export function objDiff(
+	obj1: { [key: string]: unknown },
+	obj2: { [key: string]: unknown },
+	ignoreProperties: string[] = [],
+) {
+	const diff: { [key: string]: { oldValue: unknown; newValue: unknown } } = {};
+
+	for (const key in obj1) {
+		// Skip the properties in the ignoreProperties array
+		if (ignoreProperties.includes(key)) {
+			continue;
+		}
+		// Compare the properties using deepEqual
+		if (!deepEqual(obj1[key], obj2[key])) {
+			diff[key] = {
+				oldValue: obj1[key],
+				newValue: obj2[key],
+			};
+		}
+	}
+
+	return diff;
+}

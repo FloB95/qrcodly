@@ -44,6 +44,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		});
 		return shortUrl;
 	}
+
 	/**
 	 * Finds a Short URL by its short code.
 	 * @param shortCode - The short code of the Short URL.
@@ -52,6 +53,18 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	async findOneByShortCode(shortCode: string): Promise<TShortUrl | undefined> {
 		const shortUrl = await db.query.shortUrl.findFirst({
 			where: eq(this.table.shortCode, shortCode),
+		});
+		return shortUrl;
+	}
+
+	/**
+	 * Finds a Short URL by its QR code ID.
+	 * @param qrCodeId - The QR code ID of the Short URL.
+	 * @returns A promise that resolves to the Short URL if found, otherwise undefined.
+	 */
+	async findOneByQrCodeId(qrCodeId: string): Promise<TShortUrl | undefined> {
+		const shortUrl = await db.query.shortUrl.findFirst({
+			where: eq(this.table.qrCodeId, qrCodeId),
 		});
 		return shortUrl;
 	}

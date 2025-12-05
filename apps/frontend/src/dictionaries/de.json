@@ -4,13 +4,16 @@
 		"noName": "Kein Name",
 		"changesSaved": "Änderungen gespeichert",
 		"back": "Zurück",
+		"backToOverview": "Zurück zur Sammlung",
 		"share": "Teilen",
 		"view": "Anzeigen",
 		"edit": "Bearbeiten",
 		"delete": "Löschen",
 		"notProvided": "Nicht angegeben",
 		"addName": "Namen eingeben",
-		"days": "Tage"
+		"days": "Tage",
+		"changelogTooltip": "Die neuesten Updates",
+		"changelogSubheading": "Hier findest du die neuesten Updates und Verbesserungen von QRcodly."
 	},
 	"headline": "<span class=\"text-2xl\">Kostenloser & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -115,6 +118,7 @@
 	},
 	"qrCode": {
 		"storeBtn": "In Sammlung speichern",
+		"updateBtn": "QR Code aktualisieren",
 		"error": {
 			"delete": {
 				"title": "Fehler beim Löschen des QR Codes",
@@ -140,10 +144,25 @@
 			"title": "QR Code umbenennen",
 			"placeholder": "Gib einen Namen ein"
 		},
+		"update": {
+			"headline": "QR Code aktualisieren",
+			"successTitle": "QR Code aktualisiert",
+			"successDescription": "Dein QR Code wurde erfolgreich aktualisiert.",
+			"errorTitle": "Fehler beim Aktualisieren des QR Codes",
+			"errorDescription": "Beim Aktualisieren deines QR Codes ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem so schnell wie möglich beheben.",
+			"infoDialog": {
+				"dialogHeadline": "Hinweis zum Aktualisieren eines QR Codes",
+				"dialogDescription": "Nur dynamische URL-QR-Codes behalten nach der Bearbeitung denselben Inhalt. Änderungen an Text, WiFi-Daten oder anderen Inhalten erzeugen einen neuen QR-Code. Bereits gedruckte Codes zeigen dann nicht mehr die aktualisierten Inhalte an.",
+				"doNotShowAgain": "Diesen Hinweis nicht erneut anzeigen.",
+				"cancelBtn": "Abbrechen",
+				"understandBtn": "Verstanden"
+			}
+		},
 		"updateQrCodeUrl": "Aktualisiere die URL",
 		"actionsMenu": {
 			"title": "Aktionen",
 			"view": "Anzeigen",
+			"edit": "Bearbeiten",
 			"delete": "Löschen",
 			"disableShortUrl": "Deaktivieren",
 			"enableShortUrl": "Aktivieren"
@@ -209,6 +228,7 @@
 		}
 	},
 	"generator": {
+		"labelQrCodeName": "QR Code Name",
 		"tabs": {
 			"content": "Inhalt",
 			"style": "Stil",
