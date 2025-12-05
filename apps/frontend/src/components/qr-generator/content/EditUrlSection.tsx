@@ -23,8 +23,6 @@ export const EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
 	const { shortUrl } = useQrCodeGeneratorStore((state) => state);
 
-	console.log('EditUrlSection render', value);
-
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
 		resolver: standardSchemaResolver(UrlInputSchema),
 		defaultValues: {
