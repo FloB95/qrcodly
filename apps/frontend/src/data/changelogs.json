@@ -1,6 +1,6 @@
 [
 	{
-		"version": "1.1.5",
+		"version": "1.2.0",
 		"date": "2025-12-05",
 		"changes": [
 			"Added a Changelog view so you can see the latest updates directly in the app.",
