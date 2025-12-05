@@ -9,7 +9,6 @@ import { LanguageNav } from './LanguageNav';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from './ui/drawer';
-import { DocumentTextIcon } from '@heroicons/react/24/outline';
 import { Changelog } from './Changelog';
 
 export default function Header({ hideDashboardLink = false }) {
