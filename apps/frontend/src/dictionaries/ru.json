@@ -4,13 +4,16 @@
 		"noName": "Без имени",
 		"changesSaved": "Изменения сохранены",
 		"back": "Назад",
+		"backToOverview": "Вернуться к коллекции",
 		"share": "Поделиться",
 		"view": "Просмотр",
 		"edit": "Редактировать",
 		"delete": "Удалить",
 		"notProvided": "Не предоставлено",
 		"addName": "Добавить имя",
-		"days": "Дни"
+		"days": "Дни",
+		"changelogTooltip": "Последние обновления",
+		"changelogSubheading": "Здесь вы можете найти последние обновления и улучшения QRcodly."
 	},
 	"headline": "<span class=\"text-2xl\">Бесплатный и открытый исходный код</span> <br /> Генератор QR-кодов",
 	"metadata": {
@@ -115,6 +118,7 @@
 	},
 	"qrCode": {
 		"storeBtn": "Сохранить в коллекцию",
+		"updateBtn": "Обновить QR-код",
 		"error": {
 			"delete": {
 				"title": "Ошибка удаления QR-кода",
@@ -140,10 +144,25 @@
 			"title": "Переименовать QR-код",
 			"placeholder": "Введите имя"
 		},
+		"update": {
+			"headline": "Обновить QR-код",
+			"successTitle": "QR Code updated",
+			"successDescription": "Your QR code has been successfully updated.",
+			"errorTitle": "Error updating QR code",
+			"errorDescription": "An error occurred while updating your QR code. We have been notified and will fix the issue as soon as possible.",
+			"infoDialog": {
+				"dialogHeadline": "Note on updating a QR code",
+				"dialogDescription": "Only dynamic URL QR codes retain the same content after editing. Changes to text, WiFi data, or other content create a new QR code. Already printed codes will not show the updated content.",
+				"doNotShowAgain": "Do not show this message again.",
+				"cancelBtn": "Cancel",
+				"understandBtn": "Understood"
+			}
+		},
 		"updateQrCodeUrl": "Обновить URL",
 		"actionsMenu": {
 			"title": "Действия",
 			"view": "Просмотр",
+			"edit": "Редактировать",
 			"delete": "Удалить",
 			"disableShortUrl": "Отключить",
 			"enableShortUrl": "Включить"
@@ -209,6 +228,7 @@
 		"cancelBtn": "Отмена"
 	},
 	"generator": {
+		"labelQrCodeName": "Название QR-кода",
 		"tabs": {
 			"content": "Содержание",
 			"style": "Стиль",

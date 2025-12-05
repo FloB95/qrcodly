@@ -4,13 +4,16 @@
 		"noName": "No name",
 		"changesSaved": "Changes saved",
 		"back": "Back",
+		"backToOverview": "Back to collection",
 		"share": "Share",
 		"view": "View",
 		"edit": "Edit",
 		"delete": "Delete",
 		"notProvided": "Not provided",
 		"addName": "Add a name",
-		"days": "Days"
+		"days": "Days",
+		"changelogTooltip": "Latest updates",
+		"changelogSubheading": "Here you can find the latest updates and improvements of QRcodly."
 	},
 	"headline": "<span class=\"text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -115,6 +118,7 @@
 	},
 	"qrCode": {
 		"storeBtn": "Save in Collection",
+		"updateBtn": "Update QR Code",
 		"error": {
 			"delete": {
 				"title": "Error Deleting QR Code",
@@ -140,10 +144,25 @@
 			"title": "Update QR Code Name",
 			"placeholder": "Enter a name"
 		},
+		"update": {
+			"headline": "Update QR Code",
+			"successTitle": "QR Code updated",
+			"successDescription": "Your QR code has been successfully updated.",
+			"errorTitle": "Error updating QR code",
+			"errorDescription": "An error occurred while updating your QR code. We have been notified and will fix the issue as soon as possible.",
+			"infoDialog": {
+				"dialogHeadline": "Note on updating a QR code",
+				"dialogDescription": "Only dynamic URL QR codes retain the same content after editing. Changes to text, WiFi data, or other content create a new QR code. Already printed codes will not show the updated content.",
+				"doNotShowAgain": "Do not show this message again.",
+				"cancelBtn": "Cancel",
+				"understandBtn": "Understood"
+			}
+		},
 		"updateQrCodeUrl": "Update your URL",
 		"actionsMenu": {
 			"title": "Actions",
 			"view": "View",
+			"edit": "Edit",
 			"delete": "Delete",
 			"disableShortUrl": "Disable",
 			"enableShortUrl": "Enable"
@@ -209,6 +228,7 @@
 		}
 	},
 	"generator": {
+		"labelQrCodeName": "QR Code Name",
 		"tabs": {
 			"content": "Content",
 			"style": "Style",

@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { env } from '@/env';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { apiRequest } from '@/lib/utils';
@@ -85,13 +81,17 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 			const contentType = res.headers.get('content-type');
 			if (contentType?.includes('application/json')) {
 				const jsonResponse = (await res.json()) as Record<string, unknown>;
-				console.error('Response Analytics API:', { error: jsonResponse });
+				console.error('Response Analytics API:', {
+					error: jsonResponse,
+					body: payload,
+				});
 			} else {
 				const textResponse = await res.text();
-				console.error('Response Analytics API:', { error: textResponse });
+				console.error('Response Analytics API:', {
+					error: textResponse,
+					body: payload,
+				});
 			}
-		} else {
-			console.log('Analytics sent successfully');
 		}
 	} catch (error) {
 		console.log('Error sending request to logger:', error);

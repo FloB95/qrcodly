@@ -57,7 +57,7 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 				fileName,
 			);
 
-			const instance = await generateQrCodeStylingInstance({
+			const instance = generateQrCodeStylingInstance({
 				...convertQrCodeOptionsToLibraryOptions(config),
 				data: convertQRCodeDataToStringByType(content),
 			});

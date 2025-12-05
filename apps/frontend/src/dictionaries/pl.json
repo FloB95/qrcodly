@@ -4,13 +4,16 @@
 		"noName": "Brak nazwy",
 		"changesSaved": "Zmiany zapisane",
 		"back": "Wstecz",
+		"backToOverview": "Powrót do kolekcji",
 		"share": "Udostępnij",
 		"view": "Wyświetl",
 		"edit": "Edytuj",
 		"delete": "Usuń",
 		"notProvided": "Nie podano",
 		"addName": "Dodaj nazwę",
-		"days": "Dni"
+		"days": "Dni",
+		"changelogTooltip": "Najnowsze aktualizacje",
+		"changelogSubheading": "Tutaj znajdziesz najnowsze aktualizacje i ulepszenia QRcodly."
 	},
 	"headline": "<span class=\"text-2xl\">Darmowy i Open Source</span> <br /> Generator Kodów QR",
 	"metadata": {
@@ -115,6 +118,7 @@
 	},
 	"qrCode": {
 		"storeBtn": "Zapisz w kolekcji",
+		"updateBtn": "Zaktualizuj kod QR",
 		"error": {
 			"delete": {
 				"title": "Błąd usuwania kodu QR",
@@ -140,10 +144,25 @@
 			"title": "Zmień nazwę kodu QR",
 			"placeholder": "Wprowadź nazwę"
 		},
+		"update": {
+			"headline": "Zaktualizuj kod QR",
+			"successTitle": "Kod QR zaktualizowany",
+			"successDescription": "Twój kod QR został pomyślnie zaktualizowany.",
+			"errorTitle": "Błąd podczas aktualizacji kodu QR",
+			"errorDescription": "Wystąpił błąd podczas aktualizacji kodu QR. Zostaliśmy powiadomieni i naprawimy problem tak szybko, jak to możliwe.",
+			"infoDialog": {
+				"dialogHeadline": "Informacja dotycząca aktualizacji kodu QR",
+				"dialogDescription": "Tylko dynamiczne kody QR URL zachowują tę samą treść po edycji. Zmiany w tekście, danych WiFi lub innych treściach tworzą nowy kod QR. Już wydrukowane kody nie będą pokazywać zaktualizowanej treści.",
+				"doNotShowAgain": "Nie pokazuj tego komunikatu ponownie.",
+				"cancelBtn": "Anuluj",
+				"understandBtn": "Rozumiem"
+			}
+		},
 		"updateQrCodeUrl": "Zaktualizuj URL",
 		"actionsMenu": {
 			"title": "Akcje",
 			"view": "Wyświetl",
+			"edit": "Edytuj",
 			"delete": "Usuń",
 			"disableShortUrl": "Wyłącz",
 			"enableShortUrl": "Włącz"
@@ -209,6 +228,7 @@
 		}
 	},
 	"generator": {
+		"labelQrCodeName": "Nazwa kodu QR",
 		"tabs": {
 			"content": "Treść",
 			"style": "Styl",

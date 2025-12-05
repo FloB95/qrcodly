@@ -3,9 +3,14 @@ import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
 import { TQrCode, TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
-import { TUpdateQrCodeDto, UpdateQrCodeDto } from '@shared/schemas';
+import { objDiff, TUpdateQrCodeDto, UpdateQrCodeDto, UpdateShortUrlDto } from '@shared/schemas';
 import { QrCodeUpdatedEvent } from '../event/qr-code-updated.event';
 import { EventEmitter } from '@/core/event';
+import { QrCodeContentTypeChangeError } from '../error/http/qr-code-content-type-change.error';
+import ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
+import { UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/update-short-url.use-case';
+import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/qr-code-not-found.error';
+import { ImageService } from '@/core/services/image.service';
 
 /**
  * Use case for updating the name of an existing QR code.
@@ -16,6 +21,9 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(Logger) private logger: Logger,
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
+		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
+		@inject(UpdateShortUrlUseCase) private updateShortUrlUseCase: UpdateShortUrlUseCase,
+		@inject(ImageService) private imageService: ImageService,
 	) {}
 
 	/**
@@ -28,24 +36,95 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 	async execute(
 		qrCode: TQrCode,
 		updates: TUpdateQrCodeDto,
-		updatedBy: string | null,
+		updatedBy: string,
 	): Promise<TQrCodeWithRelations> {
 		const validatedUpdates: Partial<TQrCode> = UpdateQrCodeDto.parse(updates);
 		validatedUpdates.updatedAt = new Date();
+
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+		const diffs = objDiff(qrCode, validatedUpdates, [
+			'id',
+			'previewImage',
+			'createdAt',
+			'createdBy',
+			'updatedAt',
+			'shortUrl',
+		]);
+
+		// dont update if no changes
+		if (Object.keys(diffs).length < 1) {
+			return qrCode as TQrCodeWithRelations;
+		}
+
+		if (qrCode.content.type !== validatedUpdates.content?.type) {
+			// make sure content type is not changed
+			throw new QrCodeContentTypeChangeError();
+		}
+
+		// if update is destination url and qr code is connected with short url, update short url
+		if (qrCode.content.type === 'url' && validatedUpdates.content.type === 'url') {
+			if (qrCode.content.data.isEditable) {
+				const shortUrl = await this.shortUrlRepository.findOneByQrCodeId(qrCode.id);
+				if (!shortUrl) {
+					throw new ShortUrlNotFoundError();
+				}
+
+				const updateDto = UpdateShortUrlDto.parse({
+					destinationUrl: validatedUpdates.content.data.url,
+				});
+
+				await this.updateShortUrlUseCase.execute(shortUrl, updateDto, updatedBy);
+
+				// reset content data to current qr code content
+				validatedUpdates.content = qrCode.content;
+			} else {
+				// if not editable, update qr code url directly
+				validatedUpdates.content.data.url = validatedUpdates.content.data.url;
+				validatedUpdates.content.data.isEditable = false;
+			}
+		}
+
+		if (diffs?.config) {
+			// delete and reupload image if changed
+			if (qrCode.config.image && validatedUpdates.config?.image) {
+				await this.imageService.deleteImage(qrCode.config.image);
+
+				validatedUpdates.config.image = await this.imageService.uploadImage(
+					validatedUpdates.config.image,
+					qrCode.id,
+					updatedBy,
+				);
+			} else if (!validatedUpdates.config?.image && qrCode.config.image) {
+				// delete existing image
+				await this.imageService.deleteImage(qrCode.config.image);
+			} else if (!qrCode.config.image && validatedUpdates.config?.image) {
+				// upload new image
+				validatedUpdates.config.image = await this.imageService.uploadImage(
+					validatedUpdates.config.image,
+					qrCode.id,
+					updatedBy,
+				);
+			}
+		}
+
+		// delete preview image if config or content changed
+		if ((diffs?.config || diffs?.content) && qrCode.previewImage) {
+			await this.imageService.deleteImage(qrCode.previewImage);
+			validatedUpdates.previewImage = null;
+		}
+
 		await this.qrCodeRepository.update(qrCode, validatedUpdates);
 
 		const updatedQrCode = (await this.qrCodeRepository.findOneById(
 			qrCode.id,
 		)) as TQrCodeWithRelations;
 
-		// Emit the creation event *after* the transaction has successfully committed.
 		const event = new QrCodeUpdatedEvent(updatedQrCode);
 		this.eventEmitter.emit(event);
 
-		// Log success
 		this.logger.info('QR code updated successfully', {
 			id: updatedQrCode.id,
-			updates,
+			updates: diffs,
 			updatedBy,
 		});
 

@@ -26,7 +26,6 @@ export function randomInt(min: number, max: number): number {
  * @example
  * // Generates a random string of length 10
  * const randomStr = randomString(10)
- * console.log(randomStr) // e.g., "aBc123XyZ9"
  */
 export function randomString(length: number): string {
 	let result = '';
@@ -84,54 +83,6 @@ export function mergeZodErrorObjects(errors: z.core.$ZodIssue[]): z.core.$ZodIss
 	}
 
 	return mergedErrors;
-}
-
-/**
- * Compares two values for deep equality.
- * @param {*} value1 - The first value to compare.
- * @param {*} value2 - The second value to compare.
- * @returns {boolean} - Returns true if the values are deeply equal, otherwise false.
- */
-function deepEqual(value1: unknown, value2: unknown): boolean {
-	// Check if both values are objects (arrays or objects)
-	if (typeof value1 === 'object' && typeof value2 === 'object') {
-		return JSON.stringify(value1) === JSON.stringify(value2);
-	}
-	// For non-objects, use strict equality
-	return value1 === value2;
-}
-
-/**
- * Computes the difference between two objects.
- * @param {Object} obj1 - The first object.
- * @param {Object} obj2 - The second object.
- * @param {Array<string>} [ignoreProperties=[]] - An array of property names to ignore.
- * @returns {Object} - An object representing the differences. Each key in the returned object
- *                     corresponds to a property that differs between obj1 and obj2, with the
- *                     old and new values.
- */
-export function objDiff(
-	obj1: { [key: string]: unknown },
-	obj2: { [key: string]: unknown },
-	ignoreProperties: string[] = [],
-) {
-	const diff: { [key: string]: { oldValue: unknown; newValue: unknown } } = {};
-
-	for (const key in obj1) {
-		// Skip the properties in the ignoreProperties array
-		if (ignoreProperties.includes(key)) {
-			continue;
-		}
-		// Compare the properties using deepEqual
-		if (!deepEqual(obj1[key], obj2[key])) {
-			diff[key] = {
-				oldValue: obj1[key],
-				newValue: obj2[key],
-			};
-		}
-	}
-
-	return diff;
 }
 
 export const streamToBuffer = async (stream: Readable): Promise<Buffer> => {

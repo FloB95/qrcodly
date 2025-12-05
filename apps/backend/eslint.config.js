@@ -36,7 +36,7 @@ export default [
 			ecmaVersion: 5,
 			sourceType: 'script',
 			parserOptions: {
-				project: './tsconfig.json', // Pfad zu deinem tsconfig
+				project: './tsconfig.json',
 				tsconfigRootDir: __dirname,
 			},
 		},

@@ -61,6 +61,10 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 		}
 	};
 
+	const istDisabled =
+		createConfigTemplateMutation.isPending ||
+		JSON.stringify(config) === JSON.stringify(QrCodeDefaults);
+
 	return (
 		<>
 			<Tooltip>
@@ -78,10 +82,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 							}
 							setNameDialogOpen(true);
 						}}
-						disabled={
-							createConfigTemplateMutation.isPending ||
-							JSON.stringify(config) === JSON.stringify(QrCodeDefaults)
-						}
+						disabled={istDisabled}
 					>
 						{t('saveAsBtn')}
 					</Button>
