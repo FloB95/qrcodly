@@ -38,7 +38,7 @@ export const Changelog = () => {
 			<Drawer direction="right" open={isOpen} onOpenChange={setIsOpen}>
 				<DrawerContent className="bg-[#faf8f5]">
 					<DrawerHeader>
-						<DrawerClose className="absolute right-4 top-2">
+						<DrawerClose asChild className="absolute right-4 top-2">
 							<Button variant="ghost" size="icon">
 								<XMarkIcon className="w-6 h-6" />
 							</Button>

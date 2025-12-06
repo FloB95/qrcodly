@@ -38,8 +38,6 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		},
 	};
 
-	console.log('Analytics Payload:', payload);
-
 	// Extract short URL code from the request URL
 	const urlCode = new URL(req.url).pathname.split('/').pop();
 	if (!urlCode) {
