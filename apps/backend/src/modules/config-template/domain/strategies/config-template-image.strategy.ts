@@ -22,7 +22,7 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 			await this.objectStorage.upload(filePath, file.buffer, file.mimeType);
 			return filePath;
 		} catch (error) {
-			this.logger.error('Failed to upload QR code template image', error as Error);
+			this.logger.error('Failed to upload Template image', error as Error);
 			return undefined;
 		}
 	}
@@ -37,7 +37,7 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 		try {
 			await this.objectStorage.delete(imagePath);
 		} catch (error) {
-			this.logger.error(`Failed to delete QR code template image: ${imagePath}`, error as Error);
+			this.logger.error(`Failed to delete Template image: ${imagePath}`, error as Error);
 		}
 	}
 
@@ -67,7 +67,7 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 			await this.objectStorage.upload(filePath, buffer, 'image/svg+xml');
 			return filePath;
 		} catch (error) {
-			this.logger.error('Failed to generate QR code preview image', error as Error);
+			this.logger.error('Failed to generate Template preview image', error as Error);
 			return undefined;
 		}
 	}

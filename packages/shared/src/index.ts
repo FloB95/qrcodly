@@ -11,6 +11,7 @@ export * from './dtos/qr-code/QrCodeResponseDto';
 export * from './dtos/qr-code-templates/ConfigTemplatePaginatedResponseDto';
 export * from './dtos/qr-code-templates/ConfigTemplateResponseDto';
 export * from './dtos/qr-code-templates/CreateConfigTemplateDto';
+export * from './dtos/qr-code-templates/UpdateConfigTemplateDto';
 export * from './dtos/qr-code-templates/ConfigTemplateRequestParamsDto';
 
 export * from './dtos/url-shortener/ShortUrlRequestParamsDto';
@@ -36,4 +37,3 @@ export * from './schemas/AnalyticsSchema';
  * Utils
  **************************/
 export * from './utils';
-export * from './utils/QrCodeDefaults';

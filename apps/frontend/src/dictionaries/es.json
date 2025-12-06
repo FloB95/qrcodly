@@ -26,8 +26,11 @@
 		"description": "Actualmente estamos trabajando para actualizar esta sección y poder servirte mejor. ¡Vuelve pronto!"
 	},
 	"collection": {
-		"headline": "Visión General de Códigos QR en Desarrollo",
-		"subHeadline": "Algunas funciones aún no están disponibles y se añadirán en futuras actualizaciones."
+		"headline": "Tu colección",
+		"subHeadline": "Aquí puedes encontrar todos tus códigos QR y plantillas y gestionarlos.",
+		"tabQrCode": "Códigos QR",
+		"tabTemplates": "Plantillas",
+		"addQrCodeBtn": "Agregar código QR"
 	},
 	"analytics": {
 		"totalViews": "Número de visitas",
@@ -208,10 +211,22 @@
 		"templateCreatedErrorTitle": "Error al crear la plantilla",
 		"templateCreatedErrorDescription": "Se ha producido un error al crear tu plantilla. Ya hemos sido notificados y solucionaremos el problema lo antes posible.",
 		"saveAsBtn": "Guardar como plantilla",
+		"updateBtn": "Actualizar plantilla",
 		"saveInfo": "Guarda el diseño actual como una plantilla reutilizable.",
 		"savePopup": {
 			"title": "Guardar diseño actual como plantilla",
 			"placeholder": "Nombre de la plantilla"
+		},
+		"update": {
+			"headline": "Actualizar plantilla",
+			"successTitle": "Plantilla actualizada",
+			"successDescription": "Tu plantilla se ha actualizado correctamente.",
+			"errorTitle": "Error al actualizar la plantilla",
+			"errorDescription": "Se produjo un error al actualizar tu plantilla. Por favor, revisa los datos e inténtalo de nuevo.",
+			"updateName": {
+				"title": "Renombrar plantilla",
+				"placeholder": "Introduce un nuevo nombre"
+			}
 		},
 		"delete": {
 			"beingDeleted": "La plantilla se está eliminando",
@@ -228,7 +243,7 @@
 		}
 	},
 	"generator": {
-		"labelQrCodeName": "Nombre del código QR",
+		"labelName": "Nombre",
 		"tabs": {
 			"content": "Contenido",
 			"style": "Estilo",

@@ -26,8 +26,11 @@
 		"description": "We werken momenteel aan het bijwerken van dit gedeelte om u beter van dienst te zijn. Kom snel terug!"
 	},
 	"collection": {
-		"headline": "QR-codeoverzicht in ontwikkeling",
-		"subHeadline": "Sommige functies zijn nog niet beschikbaar en zullen worden toegevoegd in toekomstige updates."
+		"headline": "Je collectie",
+		"subHeadline": "Hier vind je al je QR-codes en sjablonen en kun je ze beheren.",
+		"tabQrCode": "QR-codes",
+		"tabTemplates": "Sjablonen",
+		"addQrCodeBtn": "QR-code toevoegen"
 	},
 	"analytics": {
 		"totalViews": "Aantal weergaven",
@@ -208,10 +211,22 @@
 		"templateCreatedErrorTitle": "Fout bij het maken van sjabloon",
 		"templateCreatedErrorDescription": "Er is een fout opgetreden bij het maken van uw sjabloon. We zijn hiervan al op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen.",
 		"saveAsBtn": "Opslaan als sjabloon",
+		"updateBtn": "Sjabloon bijwerken",
 		"saveInfo": "Sla het huidige ontwerp op als herbruikbaar sjabloon.",
 		"savePopup": {
 			"title": "Huidig ontwerp opslaan als sjabloon",
 			"placeholder": "Sjabloonnaam"
+		},
+		"update": {
+			"headline": "Sjabloon bijwerken",
+			"successTitle": "Sjabloon bijgewerkt",
+			"successDescription": "Je sjabloon is succesvol bijgewerkt.",
+			"errorTitle": "Fout bij het bijwerken van sjabloon",
+			"errorDescription": "Er is een fout opgetreden bij het bijwerken van je sjabloon. Controleer je invoer en probeer het opnieuw.",
+			"updateName": {
+				"title": "Sjabloon hernoemen",
+				"placeholder": "Voer een nieuwe naam in"
+			}
 		},
 		"delete": {
 			"beingDeleted": "Sjabloon wordt verwijderd",
@@ -228,7 +243,7 @@
 		}
 	},
 	"generator": {
-		"labelQrCodeName": "QR-code naam",
+		"labelName": "naam",
 		"tabs": {
 			"content": "Inhoud",
 			"style": "Stijl",

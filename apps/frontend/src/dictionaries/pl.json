@@ -26,8 +26,11 @@
 		"description": "Obecnie pracujemy nad aktualizacją tej sekcji, aby lepiej Ci służyć. Proszę, sprawdź ponownie wkrótce!"
 	},
 	"collection": {
-		"headline": "Przegląd kodów QR w przygotowaniu",
-		"subHeadline": "Niektóre funkcje nie są jeszcze dostępne i zostaną dodane w przyszłych aktualizacjach."
+		"headline": "Twoja kolekcja",
+		"subHeadline": "Tutaj znajdziesz wszystkie swoje kody QR i szablony i możesz nimi zarządzać.",
+		"tabQrCode": "Kody QR",
+		"tabTemplates": "Szablony",
+		"addQrCodeBtn": "Dodaj kod QR"
 	},
 	"analytics": {
 		"totalViews": "Liczba wyświetleń",
@@ -208,10 +211,22 @@
 		"templateCreatedErrorTitle": "Błąd tworzenia szablonu",
 		"templateCreatedErrorDescription": "Wystąpił błąd podczas tworzenia szablonu. Zostaliśmy już powiadomieni i rozwiążemy problem tak szybko, jak to możliwe.",
 		"saveAsBtn": "Zapisz jako szablon",
+		"updateBtn": "Aktualizuj szablon",
 		"saveInfo": "Zapisz aktualny projekt jako szablon wielokrotnego użytku.",
 		"savePopup": {
 			"title": "Zapisz bieżący projekt jako szablon",
 			"placeholder": "Nazwa szablonu"
+		},
+		"update": {
+			"headline": "Aktualizuj szablon",
+			"successTitle": "Szablon zaktualizowany",
+			"successDescription": "Twój szablon został pomyślnie zaktualizowany.",
+			"errorTitle": "Błąd podczas aktualizacji szablonu",
+			"errorDescription": "Wystąpił błąd podczas aktualizacji szablonu. Sprawdź dane i spróbuj ponownie.",
+			"updateName": {
+				"title": "Zmień nazwę szablonu",
+				"placeholder": "Wprowadź nową nazwę"
+			}
 		},
 		"delete": {
 			"beingDeleted": "Szablon jest usuwany",
@@ -228,7 +243,7 @@
 		}
 	},
 	"generator": {
-		"labelQrCodeName": "Nazwa kodu QR",
+		"labelName": "Nazwa",
 		"tabs": {
 			"content": "Treść",
 			"style": "Styl",

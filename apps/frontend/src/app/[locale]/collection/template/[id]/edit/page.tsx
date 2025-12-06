@@ -1,15 +1,16 @@
 import { apiRequest } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import type { TConfigTemplate } from '@shared/schemas';
 import type { SupportedLanguages } from '@/i18n/routing';
 import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
 import { getTranslations } from 'next-intl/server';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { env } from '@/env';
 
-interface QRCodeEditProps {
+interface ConfigTemplateEditProps {
 	params: Promise<{
 		id: string;
 		locale: SupportedLanguages;
@@ -18,17 +19,17 @@ interface QRCodeEditProps {
 
 export const dynamic = 'force-dynamic';
 
-export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
+export default async function ConfigTemplateEditPage({ params }: ConfigTemplateEditProps) {
 	const { id, locale } = await params;
 	const t = await getTranslations({ locale });
 
 	// Fetch QR code details
-	let qrCode: TQrCodeWithRelationsResponseDto | null = null;
+	let template: TConfigTemplate | null = null;
 	try {
 		const { getToken } = await auth();
 		const token = await getToken();
 
-		qrCode = await apiRequest<TQrCodeWithRelationsResponseDto>(`/qr-code/${id}`, {
+		template = await apiRequest<TConfigTemplate>(`/config-template/${id}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -37,20 +38,12 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 			},
 		});
 	} catch (error) {
-		console.error('Failed to fetch QR code details:', error);
+		console.error('Failed to fetch Template details:', error);
 	}
 
-	if (!qrCode) {
+	if (!template) {
 		notFound();
 	}
-
-	const tabs = ['url', 'text', 'wifi', 'vCard'];
-	const hiddenProps = tabs.reduce((acc: Record<string, boolean>, t) => {
-		const propName = 'hideContent' + t.charAt(0).toUpperCase() + t.slice(1) + 'Tab';
-		acc[propName] = t !== qrCode.content.type;
-
-		return acc;
-	}, {});
 
 	const backLink = (
 		<Link
@@ -64,34 +57,29 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 	return (
 		<QrCodeGeneratorStoreProvider
 			initState={{
-				id: qrCode.id,
-				name: qrCode.name ?? undefined,
-				config: qrCode.config,
-				content: qrCode.content,
-				shortUrl: qrCode.shortUrl ?? undefined,
-				latestQrCode: {
-					name: qrCode.name ?? undefined,
-					config: qrCode.config,
-					content:
-						qrCode.content.type === 'url' && qrCode.shortUrl?.destinationUrl
-							? {
-									...qrCode.content,
-									data: {
-										...qrCode.content.data,
-										url: qrCode.shortUrl.destinationUrl,
-									},
-								}
-							: qrCode.content,
+				id: template.id,
+				name: template.name ?? undefined,
+				config: template.config,
+				content: {
+					type: 'url',
+					data: {
+						url: env.NEXT_PUBLIC_FRONTEND_URL,
+						isEditable: true,
+					},
 				},
 			}}
 		>
 			<h1 className="mt-12 lg:mt-12 mb-16 text-center text-4xl font-bold">
-				{t('qrCode.update.headline')}
+				{t('templates.update.headline')}
 			</h1>
 			<QRcodeGenerator
-				generatorType="QrCodeWithUpdateBtn"
+				generatorType="QrCodeWithTemplateUpdateBtn"
 				isEditMode
-				{...hiddenProps}
+				hideContentUrlTab
+				hideContentTextTab
+				hideContentWifiTab
+				hideContentVCardTab
+				hideTemplateTab
 				backLink={backLink}
 			/>
 		</QrCodeGeneratorStoreProvider>

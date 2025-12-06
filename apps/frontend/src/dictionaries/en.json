@@ -26,8 +26,11 @@
 		"description": "We're currently working on updating this section to better serve you. Please check back soon!"
 	},
 	"collection": {
-		"headline": "QR Code Overview in Development",
-		"subHeadline": "Some features are not available yet and will be added in future updates."
+		"headline": "Your Collection",
+		"subHeadline": "Here you can find all your QR codes and templates and manage them.",
+		"tabQrCode": "QR Codes",
+		"tabTemplates": "Templates",
+		"addQrCodeBtn": "Add QR Code"
 	},
 	"analytics": {
 		"totalViews": "Total Views",
@@ -208,10 +211,22 @@
 		"templateCreatedErrorTitle": "Error Creating Template",
 		"templateCreatedErrorDescription": "There was an error creating your template. We've been notified and will fix it as soon as possible.",
 		"saveAsBtn": "Save as template",
+		"updateBtn": "Update Template",
 		"saveInfo": "Save the current QR code style as a reusable template.",
 		"savePopup": {
 			"title": "Save current styles as a template",
 			"placeholder": "Template Name"
+		},
+		"update": {
+			"headline": "Update Template",
+			"successTitle": "Template Updated",
+			"successDescription": "Your template has been successfully updated.",
+			"errorTitle": "Error Updating Template",
+			"errorDescription": "An error occurred while updating your template. Please check your input and try again.",
+			"updateName": {
+				"title": "Rename Template",
+				"placeholder": "Enter a new name"
+			}
 		},
 		"delete": {
 			"beingDeleted": "Template is being deleted",
@@ -228,7 +243,7 @@
 		}
 	},
 	"generator": {
-		"labelQrCodeName": "QR Code Name",
+		"labelName": "Name",
 		"tabs": {
 			"content": "Content",
 			"style": "Style",

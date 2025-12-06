@@ -26,8 +26,11 @@
 		"description": "Wir arbeiten derzeit daran, diesen Abschnitt zu aktualisieren, um dir besser zu dienen. Bitte schau bald wieder vorbei!"
 	},
 	"collection": {
-		"headline": "QR-Code-Übersicht in Entwicklung",
-		"subHeadline": "Einige Funktionen sind noch nicht verfügbar und werden in zukünftigen Updates hinzugefügt."
+		"headline": "Deine Sammlung",
+		"subHeadline": "Hier findest du all deine QR-Codes und Vorlagen und kannst sie bearbeiten oder löschen.",
+		"tabQrCode": "QR Codes",
+		"tabTemplates": "Vorlagen",
+		"addQrCodeBtn": "QR Code hinzufügen"
 	},
 	"analytics": {
 		"totalViews": "Anzahl der Aufrufe",
@@ -208,10 +211,22 @@
 		"templateCreatedErrorTitle": "Fehler beim Erstellen der Vorlage",
 		"templateCreatedErrorDescription": "Beim Erstellen deiner Vorlage ist ein Fehler aufgetreten. Wir wurden bereits benachrichtigt und beheben das Problem so schnell wie möglich.",
 		"saveAsBtn": "Als Vorlage speichern",
+		"updateBtn": "Vorlage aktualiseren",
 		"saveInfo": "Speichere das aktuelle Design als wiederverwendbare Vorlage.",
 		"savePopup": {
 			"title": "Aktuelles Design als Vorlage speichern",
 			"placeholder": "Vorlagenname"
+		},
+		"update": {
+			"headline": "Vorlage aktualisieren",
+			"successTitle": "Vorlage aktualisiert",
+			"successDescription": "Deine Vorlage wurde erfolgreich aktualisiert.",
+			"errorTitle": "Fehler beim Aktualisieren der Vorlage",
+			"errorDescription": "Beim Aktualisieren deiner Vorlage ist ein Fehler aufgetreten. Bitte prüfe deine Eingaben und versuche es erneut.",
+			"updateName": {
+				"title": "Vorlage umbenennen",
+				"placeholder": "Gib einen neuen Namen ein"
+			}
 		},
 		"delete": {
 			"beingDeleted": "Vorlage wird gelöscht",
@@ -228,7 +243,7 @@
 		}
 	},
 	"generator": {
-		"labelQrCodeName": "QR Code Name",
+		"labelName": "Name",
 		"tabs": {
 			"content": "Inhalt",
 			"style": "Stil",

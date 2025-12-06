@@ -26,8 +26,11 @@
 		"description": "Stiamo attualmente lavorando per aggiornare questa sezione per offrirti un servizio migliore. Torna presto a trovarci!"
 	},
 	"collection": {
-		"headline": "Panoramica dei codici QR in sviluppo",
-		"subHeadline": "Alcune funzionalità non sono ancora disponibili e verranno aggiunte in futuri aggiornamenti."
+		"headline": "La tua collezione",
+		"subHeadline": "Qui puoi trovare tutti i tuoi codici QR e modelli e gestirli.",
+		"tabQrCode": "QR Code",
+		"tabTemplates": "Modelli",
+		"addQrCodeBtn": "Aggiungi QR Code"
 	},
 	"analytics": {
 		"totalViews": "Numero di visualizzazioni",
@@ -208,10 +211,22 @@
 		"templateCreatedErrorTitle": "Errore durante la creazione del modello",
 		"templateCreatedErrorDescription": "Si è verificato un errore durante la creazione del tuo modello. Siamo stati avvisati e risolveremo il problema il prima possibile.",
 		"saveAsBtn": "Salva come modello",
+		"updateBtn": "Aggiorna modello",
 		"saveInfo": "Salva il design attuale come modello riutilizzabile.",
 		"savePopup": {
 			"title": "Salva design attuale come modello",
 			"placeholder": "Nome del modello"
+		},
+		"update": {
+			"headline": "Aggiorna modello",
+			"successTitle": "Modello aggiornato",
+			"successDescription": "Il tuo modello è stato aggiornato con successo.",
+			"errorTitle": "Errore durante l'aggiornamento del modello",
+			"errorDescription": "Si è verificato un errore durante l'aggiornamento del tuo modello. Controlla i dati e riprova.",
+			"updateName": {
+				"title": "Rinomina modello",
+				"placeholder": "Inserisci un nuovo nome"
+			}
 		},
 		"delete": {
 			"beingDeleted": "Il modello è in fase di eliminazione",
@@ -228,7 +243,7 @@
 		}
 	},
 	"generator": {
-		"labelQrCodeName": "Nome del QR Code",
+		"labelName": "Nome",
 		"tabs": {
 			"content": "Contenuto",
 			"style": "Stile",
