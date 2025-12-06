@@ -11,6 +11,12 @@ import { QrCodeWithUpdateBtn } from './QrCodeWithUpdateBtn';
 import { Input } from '../ui/input';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import React, { useState } from 'react';
+import { QrCodeWithTemplateUpdateBtn } from './templates/QrCodeWithTemplateUpdateBtn';
+
+type QrCodeGeneratorType =
+	| 'QrCodeWithDownloadBtn'
+	| 'QrCodeWithUpdateBtn'
+	| 'QrCodeWithTemplateUpdateBtn';
 
 type QRcodeGeneratorProps = {
 	hideContentTab?: boolean;
@@ -25,6 +31,7 @@ type QRcodeGeneratorProps = {
 	isEditMode?: boolean;
 
 	backLink?: React.ReactNode;
+	generatorType: QrCodeGeneratorType;
 };
 
 export const QRcodeGenerator = ({
@@ -37,6 +44,7 @@ export const QRcodeGenerator = ({
 	hideContentVCardTab,
 	isEditMode,
 	backLink,
+	generatorType = 'QrCodeWithDownloadBtn',
 }: QRcodeGeneratorProps) => {
 	const t = useTranslations('generator');
 	const { name, updateName } = useQrCodeGeneratorStore((state) => state);
@@ -51,6 +59,19 @@ export const QRcodeGenerator = ({
 		(count, tab) => count + (tab ? 0 : 1),
 		0,
 	);
+
+	const qrCodeWithButton = () => {
+		switch (generatorType) {
+			case 'QrCodeWithDownloadBtn':
+				return <QrCodeWithDownloadBtn />;
+			case 'QrCodeWithUpdateBtn':
+				return <QrCodeWithUpdateBtn />;
+			case 'QrCodeWithTemplateUpdateBtn':
+				return <QrCodeWithTemplateUpdateBtn />;
+			default:
+				return <QrCodeWithDownloadBtn />;
+		}
+	};
 
 	return (
 		<div className="relative">
@@ -92,13 +113,13 @@ export const QRcodeGenerator = ({
 									{isEditMode && currentTab === 'qrCodeContent' && (
 										<div className="mb-10 flex flex-col space-y-4">
 											<label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-												<span translate="no">{t('labelQrCodeName')}</span>
+												<span translate="no">{t('labelName')}</span>
 											</label>
 											<Input
 												type="text"
 												className="max-w-md"
 												value={name}
-												placeholder={t('labelQrCodeName')}
+												placeholder={t('labelName')}
 												maxLength={32}
 												onChange={(e) => {
 													updateName(e.target.value);
@@ -129,7 +150,8 @@ export const QRcodeGenerator = ({
 										</TabsContent>
 									)}
 								</div>
-								{isEditMode ? <QrCodeWithUpdateBtn /> : <QrCodeWithDownloadBtn />}
+
+								{qrCodeWithButton()}
 							</div>
 						</div>
 					</div>

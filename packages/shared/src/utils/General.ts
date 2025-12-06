@@ -224,25 +224,19 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
  */
 function deepEqual(a: any, b: any): boolean {
 	if (a === b) return true;
-
-	if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
-		return false;
-	}
+	if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') return false;
 
 	if (Array.isArray(a) && Array.isArray(b)) {
 		if (a.length !== b.length) return false;
 		return a.every((item, index) => deepEqual(item, b[index]));
 	}
-
 	if (Array.isArray(a) !== Array.isArray(b)) return false;
 
 	const keysA = Object.keys(a).sort();
 	const keysB = Object.keys(b).sort();
-
 	if (keysA.length !== keysB.length) return false;
 	if (!keysA.every((key, i) => key === keysB[i])) return false;
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	return keysA.every((key) => deepEqual(a[key], b[key]));
 }
 
@@ -255,24 +249,43 @@ function deepEqual(a: any, b: any): boolean {
  *                     corresponds to a property that differs between obj1 and obj2, with the
  *                     old and new values.
  */
-export function objDiff(
-	obj1: { [key: string]: unknown },
-	obj2: { [key: string]: unknown },
-	ignoreProperties: string[] = [],
-) {
-	const diff: { [key: string]: { oldValue: unknown; newValue: unknown } } = {};
+export function objDiff(obj1: any, obj2: any, ignoreProperties: string[] = []): any {
+	const diff: any = {};
 
 	for (const key in obj1) {
-		// Skip the properties in the ignoreProperties array
-		if (ignoreProperties.includes(key)) {
-			continue;
-		}
-		// Compare the properties using deepEqual
-		if (!deepEqual(obj1[key], obj2[key])) {
-			diff[key] = {
-				oldValue: obj1[key],
-				newValue: obj2[key],
-			};
+		if (ignoreProperties.includes(key)) continue;
+
+		const val1 = obj1[key];
+		const val2 = obj2[key];
+
+		if (typeof val1 === 'object' && val1 !== null && typeof val2 === 'object' && val2 !== null) {
+			if (Array.isArray(val1) && Array.isArray(val2)) {
+				// Arrays: nur Unterschiede speichern
+				const arrayDiffs = val1
+					.map((item, index) => {
+						if (val2[index] === undefined) return { oldValue: item, newValue: undefined };
+						if (!deepEqual(item, val2[index])) {
+							if (typeof item === 'object' && typeof val2[index] === 'object') {
+								return objDiff(item, val2[index]);
+							}
+							return { oldValue: item, newValue: val2[index] };
+						}
+						return null;
+					})
+					.filter(Boolean);
+
+				if (arrayDiffs.length > 0) {
+					diff[key] = arrayDiffs;
+				}
+			} else {
+				// Objekte: rekursiv prüfen
+				const nestedDiff = objDiff(val1, val2, []);
+				if (Object.keys(nestedDiff).length > 0) {
+					diff[key] = nestedDiff;
+				}
+			}
+		} else if (!deepEqual(val1, val2)) {
+			diff[key] = { oldValue: val1, newValue: val2 };
 		}
 	}
 
