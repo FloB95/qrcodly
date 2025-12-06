@@ -18,6 +18,10 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 	const userAgent = headers.get('user-agent') ?? '';
 	const { browser, device } = UAParser(userAgent);
 
+	const language = headers.get('accept-language')
+		? headers.get('accept-language')?.split(',')[0]
+		: '';
+
 	const payload = {
 		type: 'event',
 		payload: {
@@ -25,7 +29,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 			url: req.url,
 			userAgent,
 			hostname,
-			language: headers.get('accept-language') ?? '',
+			language: language ?? '',
 			referrer: headers.get('referer') ?? '',
 			screen: headers.get('sec-ch-ua-platform') ?? '',
 			device: device.type,
@@ -33,6 +37,8 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 			ip: headers.get('x-forwarded-for') ?? '',
 		},
 	};
+
+	console.log('Analytics Payload:', payload);
 
 	// Extract short URL code from the request URL
 	const urlCode = new URL(req.url).pathname.split('/').pop();
