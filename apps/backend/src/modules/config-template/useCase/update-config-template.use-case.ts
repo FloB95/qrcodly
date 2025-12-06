@@ -10,7 +10,7 @@ import { ConfigTemplateImageStrategy } from '../domain/strategies/config-templat
 import { ConfigTemplateUpdatedEvent } from '../event/config-template-updated.event';
 
 /**
- * Use case for creating a ConfigTemplate entity.
+ * Use case for updating a ConfigTemplate entity.
  */
 @injectable()
 export class UpdateConfigTemplateUseCase implements IBaseUseCase {
@@ -24,10 +24,12 @@ export class UpdateConfigTemplateUseCase implements IBaseUseCase {
 	}
 
 	/**
-	 * Executes the use case to create a new ConfigTemplate entity based on the given DTO.
-	 * @param dto The data transfer object containing the details for the ConfigTemplate to be created.
-	 * @param createdBy The ID of the user who created the ConfigTemplate.
-	 * @returns A promise that resolves with the newly created ConfigTemplate entity.
+	 * Executes the use case to update an existing ConfigTemplate entity based on the given DTO.
+	 * Handles image upload/deletion and emits an update event upon successful completion.
+	 * @param configTemplate The existing ConfigTemplate entity to be updated.
+	 * @param updates The data transfer object containing the updates for the ConfigTemplate.
+	 * @param updatedBy The ID of the user who updated the ConfigTemplate.
+	 * @returns A promise that resolves with the updated ConfigTemplate entity.
 	 */
 	async execute(
 		configTemplate: TConfigTemplate,
