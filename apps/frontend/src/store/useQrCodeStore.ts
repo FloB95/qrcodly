@@ -1,3 +1,5 @@
+'use client';
+
 import { type TQrCodeContent, type TQrCodeOptions, type TShortUrl } from '@shared/schemas';
 import { createStore } from 'zustand/vanilla';
 

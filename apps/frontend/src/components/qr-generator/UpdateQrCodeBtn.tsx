@@ -16,8 +16,8 @@ type UpdateBtnDto = Pick<TQrCodeWithRelationsResponseDto, 'id' | 'name' | 'confi
 const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const t = useTranslations('qrCode');
 	const [hasMounted, setHasMounted] = useState(false);
+	const [showInfoDialog, setShowInfoDialog] = useState(false);
 	const [infoDialogIsOpen, setInfoDialogIsOpen] = useState(false);
-	const showInfoDialog = localStorage.getItem(UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY) !== 'true';
 	const queryClient = useQueryClient();
 	const updateQrCodeMutation = useUpdateQrCodeMutation();
 	const { latestQrCode } = useQrCodeGeneratorStore((state) => state);
@@ -28,6 +28,8 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 
 	useEffect(() => {
 		setHasMounted(true);
+		const saved = localStorage.getItem(UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY);
+		setShowInfoDialog(saved !== 'true');
 	}, []);
 
 	const handleUpdate = async () => {

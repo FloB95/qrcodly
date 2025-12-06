@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
@@ -86,7 +87,11 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 
 		if (diffs?.config) {
 			// delete and reupload image if changed
-			if (qrCode.config.image && validatedUpdates.config?.image) {
+			if (
+				qrCode.config.image &&
+				validatedUpdates.config?.image &&
+				!validatedUpdates.config.image.includes(qrCode.config.image)
+			) {
 				await this.imageService.deleteImage(qrCode.config.image);
 
 				validatedUpdates.config.image = await this.imageService.uploadImage(
@@ -104,6 +109,13 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 					qrCode.id,
 					updatedBy,
 				);
+			} else if (
+				qrCode.config.image &&
+				validatedUpdates.config?.image &&
+				validatedUpdates.config.image.includes(qrCode.config.image)
+			) {
+				// if image is the same clear update dto
+				validatedUpdates.config.image = qrCode.config.image;
 			}
 		}
 
