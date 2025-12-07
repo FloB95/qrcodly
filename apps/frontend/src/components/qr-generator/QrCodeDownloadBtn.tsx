@@ -114,7 +114,7 @@ const QrCodeDownloadBtn = ({
 					},
 				});
 
-				posthog.capture('QRCodeCreated', {
+				posthog.capture('qr-code-created', {
 					data: qrCode.content,
 				});
 			} catch {

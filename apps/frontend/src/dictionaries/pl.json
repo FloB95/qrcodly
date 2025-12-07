@@ -240,6 +240,9 @@
 			"description2": "Tej akcji nie można cofnąć.",
 			"confirmBtn": "Usuń",
 			"cancelBtn": "Anuluj"
+		},
+		"actionsMenu": {
+			"qrCodeFromTemplate": "Kod QR z szablonu"
 		}
 	},
 	"generator": {

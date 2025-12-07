@@ -437,8 +437,8 @@ export const SettingsForm = () => {
 											variant="destructive"
 											onClick={() => updateConfig({ ...config, image: '' })}
 										>
-											<TrashIcon color="white" width={24} height={24} className="mr-2" />
-											{t('clearBtn')}
+											<TrashIcon color="white" width={24} height={24} className="sm:mr-2" />
+											<span className="hidden sm:block">{t('clearBtn')}</span>
 										</Button>
 									</div>
 								)}

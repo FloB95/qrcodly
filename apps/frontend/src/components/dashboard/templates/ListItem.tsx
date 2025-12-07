@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import posthog from 'posthog-js';
-import { formatDate } from '@/lib/utils';
+import { fetchImageAsBase64, formatDate } from '@/lib/utils';
 import type { TConfigTemplate, TQrCode } from '@shared/schemas';
 import * as Sentry from '@sentry/nextjs';
 import { TableCell, TableRow } from '@/components/ui/table';
@@ -38,6 +38,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { NameDialog } from '@/components/qr-generator/NameDialog';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export const TemplateListItem = ({
 	template,
@@ -48,7 +49,7 @@ export const TemplateListItem = ({
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
-	// const router = useRouter();
+	const router = useRouter();
 
 	const deleteMutation = useDeleteConfigTemplateMutation();
 	const updateMutation = useUpdateConfigTemplateMutation();
@@ -105,6 +106,23 @@ export const TemplateListItem = ({
 		},
 		[template.id, template.name, updateMutation],
 	);
+
+	const qrCodeFromTemplate = useCallback(async () => {
+		const configToSave = template.config;
+		try {
+			if (configToSave.image) {
+				configToSave.image = await fetchImageAsBase64(configToSave.image);
+			}
+			posthog.capture('create-qr-code-from-config-template', {
+				id: template.id,
+				templateName: template.name,
+			});
+		} catch (error) {
+			console.error('Failed to convert image to base64:', error);
+		}
+		localStorage.setItem('unsavedQrConfig', JSON.stringify(configToSave));
+		router.push('/');
+	}, []);
 
 	return (
 		<>
@@ -167,6 +185,12 @@ export const TemplateListItem = ({
 
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>{t('qrCode.actionsMenu.title')}</DropdownMenuLabel>
+
+							<DropdownMenuItem asChild>
+								<span className="cursor-pointer" onClick={qrCodeFromTemplate}>
+									{t('templates.actionsMenu.qrCodeFromTemplate')}
+								</span>
+							</DropdownMenuItem>
 
 							<DropdownMenuItem asChild>
 								<Link className="cursor-pointer" href={`/collection/template/${template.id}/edit`}>

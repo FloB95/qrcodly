@@ -3,14 +3,7 @@
 import { Input } from '@/components/ui/input';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useForm } from 'react-hook-form';
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect, useState } from 'react';
 import { Switch } from '@/components/ui/switch';
@@ -46,7 +39,6 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 			isEditable: value?.isEditable ?? true,
 		},
 	});
-	form.setValue('isEditable', isSignedIn && value?.isEditable ? true : false);
 
 	const [debounced] = useDebouncedValue<string | null>(originalUrl, 500);
 
@@ -167,9 +159,9 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 													}}
 												/>
 											</FormControl>
-											<FormLabel className="relative mt-1 ml-2 pr-2">
+											<span className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 relative mt-1 ml-2 pr-2">
 												{t('enableEditing')}
-											</FormLabel>
+											</span>
 										</div>
 										<FormMessage />
 									</FormItem>

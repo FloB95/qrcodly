@@ -233,14 +233,17 @@
 			"deletingInfo": "Мы удаляем ваш шаблон.",
 			"errorTitle": "Не удалось удалить шаблон",
 			"errorDescription": "Произошла ошибка при удалении шаблона. Мы были уведомлены и скоро исправим проблему."
+		},
+		"confirmPopup": {
+			"title": "Подтвердить удаление",
+			"description": "Вы уверены, что хотите удалить шаблон?",
+			"description2": "Это действие нельзя отменить.",
+			"confirmBtn": "Удалить",
+			"cancelBtn": "Отмена"
+		},
+		"actionsMenu": {
+			"qrCodeFromTemplate": "QR-код из шаблона"
 		}
-	},
-	"confirmPopup": {
-		"title": "Подтвердить удаление",
-		"description": "Вы уверены, что хотите удалить шаблон?",
-		"description2": "Это действие нельзя отменить.",
-		"confirmBtn": "Удалить",
-		"cancelBtn": "Отмена"
 	},
 	"generator": {
 		"labelName": "Название",

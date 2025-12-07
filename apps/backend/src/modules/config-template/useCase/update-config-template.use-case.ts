@@ -46,14 +46,14 @@ export class UpdateConfigTemplateUseCase implements IBaseUseCase {
 			'createdBy',
 			'updatedAt',
 			'isPredefined',
-		]);
+		]) as Partial<TConfigTemplate>;
 
 		// dont update if no changes
 		if (Object.keys(diffs).length < 1) {
 			return configTemplate;
 		}
 
-		if (diffs?.config) {
+		if (diffs?.config && validatedUpdates.config) {
 			// delete and reupload image if changed
 			if (
 				configTemplate.config.image &&
