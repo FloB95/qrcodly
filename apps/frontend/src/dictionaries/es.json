@@ -240,6 +240,9 @@
 			"description2": "Esta acción no se puede deshacer.",
 			"confirmBtn": "Eliminar",
 			"cancelBtn": "Cancelar"
+		},
+		"actionsMenu": {
+			"qrCodeFromTemplate": "Código QR desde plantilla"
 		}
 	},
 	"generator": {

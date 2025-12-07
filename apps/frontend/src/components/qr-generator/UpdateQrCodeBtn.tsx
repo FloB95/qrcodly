@@ -10,7 +10,6 @@ import * as Sentry from '@sentry/nextjs';
 import { qrCodeQueryKeys, useUpdateQrCodeMutation } from '@/lib/api/qr-code';
 import { QrCodeUpdateDialog, UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY } from './QrCodeUpdateDialog';
 import { useQueryClient } from '@tanstack/react-query';
-import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 
 type UpdateBtnDto = Pick<TQrCodeWithRelationsResponseDto, 'id' | 'name' | 'config' | 'content'>;
 const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
@@ -20,11 +19,6 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const [infoDialogIsOpen, setInfoDialogIsOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const updateQrCodeMutation = useUpdateQrCodeMutation();
-	const { latestQrCode } = useQrCodeGeneratorStore((state) => state);
-	const hasChanged =
-		JSON.stringify(qrCode.content) !== JSON.stringify(latestQrCode?.content) ||
-		JSON.stringify(qrCode.config) !== JSON.stringify(latestQrCode?.config) ||
-		JSON.stringify(qrCode.name) !== JSON.stringify(latestQrCode?.name);
 
 	useEffect(() => {
 		setHasMounted(true);
@@ -94,7 +88,6 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 				}}
 				disabled={
 					!hasMounted ||
-					!hasChanged ||
 					!(
 						JSON.stringify(qrCode.content) !==
 							JSON.stringify(getDefaultContentByType(qrCode.content.type)) &&

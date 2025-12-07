@@ -5,7 +5,7 @@ import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
 import { ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
@@ -22,6 +22,7 @@ type TUrlSectionProps = {
 export const EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
 	const { shortUrl } = useQrCodeGeneratorStore((state) => state);
+	const [originalUrl, setOriginalUrl] = useState<string | null>(null);
 
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
 		resolver: standardSchemaResolver(UrlInputSchema),
@@ -32,11 +33,14 @@ export const EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		},
 	});
 
-	const [debounced] = useDebouncedValue(form.watch('url'), 300);
+	const [debounced] = useDebouncedValue(originalUrl, 300);
 
 	function onSubmit(values: FormValues) {
+		if (!originalUrl) return;
 		const payload = {
 			...values,
+			url: originalUrl,
+			shortUrl: shortUrl ? getShortUrlFromCode(shortUrl.shortCode) : null,
 		};
 
 		onChange(payload);
@@ -65,6 +69,12 @@ export const EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 								<FormControl>
 									<Input
 										{...field}
+										value={originalUrl ?? field.value}
+										onChange={(e) => {
+											const val = e.target.value;
+											setOriginalUrl(val);
+											field.onChange(val);
+										}}
 										maxLength={1000}
 										className="p-6"
 										placeholder={t('placeholder')}
@@ -76,6 +86,7 @@ export const EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 												!e.target.value.startsWith('https://')
 											) {
 												const withHttps = `https://${e.target.value}`;
+												setOriginalUrl(withHttps);
 												field.onChange(withHttps);
 											}
 										}}

@@ -240,6 +240,9 @@
 			"description2": "Deze actie kan niet ongedaan worden gemaakt.",
 			"confirmBtn": "Verwijderen",
 			"cancelBtn": "Annuleren"
+		},
+		"actionsMenu": {
+			"qrCodeFromTemplate": "QR-code uit sjabloon"
 		}
 	},
 	"generator": {

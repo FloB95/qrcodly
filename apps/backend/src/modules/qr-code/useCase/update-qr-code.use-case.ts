@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
@@ -42,7 +41,6 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 		const validatedUpdates: Partial<TQrCode> = UpdateQrCodeDto.parse(updates);
 		validatedUpdates.updatedAt = new Date();
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		const diffs = objDiff(qrCode, validatedUpdates, [
 			'id',
 			'previewImage',
@@ -50,20 +48,20 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 			'createdBy',
 			'updatedAt',
 			'shortUrl',
-		]);
+		]) as Partial<TQrCode>;
 
 		// dont update if no changes
 		if (Object.keys(diffs).length < 1) {
 			return qrCode as TQrCodeWithRelations;
 		}
 
-		if (qrCode.content.type !== validatedUpdates.content?.type) {
+		if (validatedUpdates.content?.type && qrCode.content.type !== validatedUpdates.content?.type) {
 			// make sure content type is not changed
 			throw new QrCodeContentTypeChangeError();
 		}
 
 		// if update is destination url and qr code is connected with short url, update short url
-		if (qrCode.content.type === 'url' && validatedUpdates.content.type === 'url') {
+		if (qrCode.content.type === 'url' && validatedUpdates.content?.type === 'url') {
 			if (qrCode.content.data.isEditable) {
 				const shortUrl = await this.shortUrlRepository.findOneByQrCodeId(qrCode.id);
 				if (!shortUrl) {
@@ -85,7 +83,7 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 			}
 		}
 
-		if (diffs?.config) {
+		if (diffs?.config && validatedUpdates.config) {
 			// delete and reupload image if changed
 			if (
 				qrCode.config.image &&

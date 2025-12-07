@@ -13,7 +13,7 @@ export default async function Documentation() {
 				<Header />
 				<Container>
 					<div className="py-32 text-center md:py-60">
-						<h1 className="text-4xl font-bold">{t('doc.title')}</h1>
+						<h1 className="text-2xl sm:text-4xl font-bold">{t('doc.title')}</h1>
 						<p className="mt-4 text-lg text-gray-600">{t('doc.description')}</p>
 					</div>
 				</Container>

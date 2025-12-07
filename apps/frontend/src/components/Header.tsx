@@ -10,6 +10,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from './ui/drawer';
 import { Changelog } from './Changelog';
+import { RectangleStackIcon } from '@heroicons/react/24/outline';
+import { cn } from '@/lib/utils';
 
 export default function Header({ hideDashboardLink = false }) {
 	const t = useTranslations('header');
@@ -19,7 +21,7 @@ export default function Header({ hideDashboardLink = false }) {
 		<header className="pt-10">
 			<Container>
 				<div className="flex justify-between pt-1 sm:px-6 lg:px-8">
-					<div className="text-3xl font-bold">
+					<div className="text-2xl pt-2 sm:pt-0 sm:text-3xl font-bold">
 						<Link href="/" title="QRcodly">
 							QRcodly
 						</Link>
@@ -35,15 +37,24 @@ export default function Header({ hideDashboardLink = false }) {
 						</SignedOut>
 						<SignedIn>
 							{!hideDashboardLink && (
-								<div className="hidden sm:block">
-									<Link href="/collection" className={buttonVariants()}>
+								<div>
+									<Link
+										href="/collection"
+										className={cn(buttonVariants({ size: 'icon' }), 'sm:hidden')}
+									>
+										<RectangleStackIcon className="h-6 w-6 text-white" />
+									</Link>
+									<Link
+										href="/collection"
+										className={cn(buttonVariants(), 'hidden sm:inline-flex')}
+									>
 										{t('collectionBtn')}
 									</Link>
 								</div>
 							)}
 							<UserButton />
 						</SignedIn>
-						<div className="hidden xs:block">
+						<div className="hidden sm:block">
 							<Changelog />
 						</div>
 						<div className="hidden sm:block">
@@ -92,8 +103,7 @@ export default function Header({ hideDashboardLink = false }) {
 							<Link
 								href="/collection"
 								className={buttonVariants({
-									variant: 'ghost',
-									className: 'w-full justify-start text-foreground font-semibold',
+									className: 'ml-3 justify-start text-foreground font-semibold',
 								})}
 							>
 								{t('collectionBtn')}

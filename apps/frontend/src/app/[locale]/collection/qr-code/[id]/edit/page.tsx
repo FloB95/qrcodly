@@ -54,7 +54,7 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 
 	const backLink = (
 		<Link
-			className="hidden lg:flex items-center space-x-2 px-2 -top-12 absolute"
+			className="flex items-center space-x-2 px-2 -top-24 text-xs lg:-top-12 absolute"
 			href={`/${locale}/collection`}
 		>
 			<ChevronLeftIcon className="w-5 h-5" /> <span>{t('general.backToOverview')}</span>
@@ -85,7 +85,7 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 				},
 			}}
 		>
-			<h1 className="mt-12 lg:mt-12 mb-16 text-center text-4xl font-bold">
+			<h1 className="mt-12 lg:mt-12 mb-16 text-center text-2xl sm:text-4xl font-bold">
 				{t('qrCode.update.headline')}
 			</h1>
 			<QRcodeGenerator

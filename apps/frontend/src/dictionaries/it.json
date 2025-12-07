@@ -240,6 +240,9 @@
 			"description2": "Questa azione non può essere annullata.",
 			"confirmBtn": "Elimina",
 			"cancelBtn": "Annulla"
+		},
+		"actionsMenu": {
+			"qrCodeFromTemplate": "Codice QR da modello"
 		}
 	},
 	"generator": {
