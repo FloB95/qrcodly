@@ -132,7 +132,7 @@ export class UmamiAnalyticsService {
 			startAt: new Date('2023-04-20T00:00:00Z').getTime(), // old start date to get all data
 			endAt: now,
 			unit: 'day',
-			url: url,
+			path: url,
 			compare: 'false',
 			timezone: 'Europe/Berlin',
 		};
@@ -158,7 +158,7 @@ export class UmamiAnalyticsService {
 			startAt: new Date('2025-01-01T00:00:00Z').getTime(), // old start date to get all data
 			endAt: now,
 			unit: 'day',
-			url: url,
+			path: url,
 			timezone: 'Europe/Berlin',
 		};
 
