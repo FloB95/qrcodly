@@ -21,21 +21,11 @@ const MetricSchema = z.object({
 export type TAnalyticsMetric = z.infer<typeof MetricSchema>;
 
 const ShortUrlStatsSchema = z.object({
-	pageviews: z.object({
-		value: z.number(),
-	}),
-	visitors: z.object({
-		value: z.number(),
-	}),
-	visits: z.object({
-		value: z.number(),
-	}),
-	bounces: z.object({
-		value: z.number(),
-	}),
-	totaltime: z.object({
-		value: z.number(),
-	}),
+	pageviews: z.number(),
+	visitors: z.number(),
+	visits: z.number(),
+	bounces: z.number(),
+	totaltime: z.number(),
 });
 export type TShortUrlStats = z.infer<typeof ShortUrlStatsSchema>;
 
