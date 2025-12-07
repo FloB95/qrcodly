@@ -90,7 +90,6 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 				validatedUpdates.config?.image &&
 				!validatedUpdates.config.image.includes(qrCode.config.image)
 			) {
-				console.log('delete and reupload image if changed');
 				await this.imageService.deleteImage(qrCode.config.image);
 
 				validatedUpdates.config.image = await this.imageService.uploadImage(
@@ -99,11 +98,9 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 					updatedBy,
 				);
 			} else if (!validatedUpdates.config?.image && qrCode.config.image) {
-				console.log('delete existing image');
 				// delete existing image
 				await this.imageService.deleteImage(qrCode.config.image);
 			} else if (!qrCode.config.image && validatedUpdates.config?.image) {
-				console.log('// upload new image');
 				// upload new image
 				validatedUpdates.config.image = await this.imageService.uploadImage(
 					validatedUpdates.config.image,
@@ -116,14 +113,12 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 				validatedUpdates.config.image.includes(qrCode.config.image)
 			) {
 				// if image is the same clear update dto
-				console.log('if image is the same clear update dto');
 				validatedUpdates.config.image = qrCode.config.image;
 			}
 		}
 
 		// delete preview image if config or content changed
 		if ((diffs?.config || diffs?.content) && qrCode.previewImage) {
-			console.log('// delete preview image if config or content changed');
 			await this.imageService.deleteImage(qrCode.previewImage);
 			validatedUpdates.previewImage = null;
 		}
