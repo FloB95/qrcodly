@@ -137,7 +137,11 @@ export class UmamiAnalyticsService {
 			timezone: 'Europe/Berlin',
 		};
 		interface WebsiteStats {
-			pageviews?: { value: number };
+			pageviews: number;
+			visitors: number;
+			visits: number;
+			bounces: number;
+			totaltime: number;
 		}
 
 		const websiteStats = (await this.fetchUmamiData(
@@ -145,7 +149,7 @@ export class UmamiAnalyticsService {
 			defaultParams,
 		)) as WebsiteStats;
 
-		return websiteStats?.pageviews?.value ?? 0;
+		return websiteStats?.pageviews ?? 0;
 	}
 
 	public async getAnalyticsForEndpoint(url: string): Promise<TAnalyticsResponseDto> {

@@ -30,21 +30,39 @@ services:
       - 6379:6379
   umami:
     container_name: umami
-    image: ghcr.io/umami-software/umami:mysql-v2.13.0
-    restart: always
-    environment:
-      # Umami environment variables
-      DATABASE_URL: mysql://root:root@db/umami
-      UMAMI_SECRET: your-secret-key
-      UMAMI_HOST: 'http://localhost'
-      UMAMI_EMAIL: admin@example.com
-      UMAMI_PASSWORD: 'admin_password'
-      UMAMI_DEFAULT_URL: 'http://localhost'
-      DISABLE_BOT_CHECK: 'true'
+    image: ghcr.io/umami-software/umami:latest
     ports:
-      - '3001:3000' # Port, auf dem Umami zugänglich ist
+      - '3001:3000'
+    environment:
+      DATABASE_URL: postgresql://umami:umami@umami_db:5432/umami
+      APP_SECRET: replace-me-with-a-random-string
+      DISABLE_BOT_CHECK: 'true'
     depends_on:
-      - db
+      umami_db:
+        condition: service_healthy
+    init: true
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', 'curl http://localhost:3001/api/heartbeat']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  umami_db:
+    container_name: umami-db
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: umami
+    volumes:
+      - umami-db-data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   minio:
     container_name: qrcodly-minio
     image: minio/minio:latest
@@ -64,3 +82,4 @@ services:
 volumes:
   database:
   minio-data:
+  umami-db-data:

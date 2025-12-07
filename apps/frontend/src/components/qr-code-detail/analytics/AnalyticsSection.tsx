@@ -70,7 +70,7 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 					<CardHeader className="relative">
 						<CardDescription>{t('analytics.totalViews')}</CardDescription>
 						<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-							{data.shortUrlStats.pageviews.value}
+							{data.shortUrlStats.pageviews}
 						</CardTitle>
 					</CardHeader>
 					<CardFooter className="flex-col items-start gap-1 text-sm">
@@ -97,7 +97,7 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 					<CardHeader className="relative">
 						<CardDescription>{t('analytics.totalVisitors')}</CardDescription>
 						<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-							{data.shortUrlStats.visitors.value}
+							{data.shortUrlStats.visitors}
 						</CardTitle>
 					</CardHeader>
 					<CardFooter className="flex-col items-start gap-1 text-sm">
