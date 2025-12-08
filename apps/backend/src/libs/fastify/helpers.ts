@@ -211,17 +211,28 @@ export function registerRoutes(
 	});
 }
 
+/**
+ * Creates a validation hook for Fastify request preprocessing.
+ * Validates request body or query parameters against a Zod schema.
+ *
+ * @param schema - The Zod schema to validate against.
+ * @param errorMessage - The error message to return if validation fails.
+ * @param type - The type of data to validate: 'body' or 'query'.
+ * @returns A Fastify preValidation hook function.
+ */
 function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type: 'body' | 'query') {
 	return (request: FastifyRequest, _reply: FastifyReply, done: () => void) => {
 		const dataToValidate = type === 'body' ? request.body : qs.parse(request.query as string);
 		const validationResult: ReturnType<typeof schema.safeParse> = schema.safeParse(dataToValidate);
+
+		// Throw error if validation fails
 		if (!validationResult.success) {
 			throw new BadRequestError(errorMessage, validationResult.error.issues);
 		}
 
-		// Override the body or query object with the validated data
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { success, ...validatedData } = validationResult;
+
 		if (type === 'body') {
 			request.body = validatedData.data;
 		} else {

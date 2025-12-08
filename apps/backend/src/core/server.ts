@@ -60,7 +60,7 @@ export class Server {
 				max: RATE_LIMIT_MAX, // max requests per window
 				timeWindow: RATE_LIMIT_TIME_WINDOW,
 				// allowList: ['127.0.0.1'], // default []
-				nameSpace: 'medium-ratelimit-', // default is 'fastify-rate-limit-'
+				nameSpace: 'qrcodly-ratelimit-', // default is 'fastify-rate-limit-'
 				errorResponseBuilder: function () {
 					throw new TooManyRequestsError();
 				},

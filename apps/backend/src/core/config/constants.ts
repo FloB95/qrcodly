@@ -35,7 +35,7 @@ export const LOGGER_REDACT_PATHS: string[] = ['password', 'user.password'];
 // ---------------------------
 // MAILER CONSTANTS
 // ---------------------------
-export const DEFAULT_FROM_MAIL: string = 'fb@medium.ag';
+export const DEFAULT_FROM_MAIL: string = 'info@qrcodly.de';
 
 // ---------------------------
 // DATABASE CONSTANTS

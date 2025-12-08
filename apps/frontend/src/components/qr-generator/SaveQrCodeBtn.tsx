@@ -49,7 +49,12 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 						});
 					},
 					onError: (e) => {
-						Sentry.captureException(e);
+						Sentry.captureException(e, {
+							data: {
+								qrCodeName: qrCodeName,
+								error: e.message,
+							},
+						});
 						toast({
 							variant: 'destructive',
 							title: t('download.errorTitle'),
@@ -59,6 +64,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 
 						posthog.capture('error:qr-code-created', {
 							qrCodeName: qrCodeName,
+							error: e,
 						});
 					},
 				},

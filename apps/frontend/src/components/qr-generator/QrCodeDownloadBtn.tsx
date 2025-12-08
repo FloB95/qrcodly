@@ -102,7 +102,12 @@ const QrCodeDownloadBtn = ({
 						}
 					},
 					onError: (e) => {
-						Sentry.captureException(e);
+						Sentry.captureException(e, {
+							data: {
+								qrCode: qrCode,
+								error: e.message,
+							},
+						});
 						toast({
 							variant: 'destructive',
 							title: t('errorTitle'),
@@ -110,7 +115,7 @@ const QrCodeDownloadBtn = ({
 							duration: 5000,
 						});
 
-						posthog.capture('error:qr-code-created', { qrCode });
+						posthog.capture('error:qr-code-created', { qrCode, error: e });
 					},
 				});
 
