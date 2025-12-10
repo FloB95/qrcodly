@@ -111,6 +111,7 @@ const QrCodeDownloadBtn = ({
 							data: {
 								qrCode: qrCode,
 								error: {
+									code: error.code,
 									message: error.message,
 									fieldErrors: error?.fieldErrors,
 								},
@@ -121,6 +122,7 @@ const QrCodeDownloadBtn = ({
 							qrCode,
 							error: {
 								message: error.message,
+								code: error.code,
 								fieldErrors: error?.fieldErrors,
 							},
 						});
