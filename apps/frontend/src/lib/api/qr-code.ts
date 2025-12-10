@@ -8,6 +8,8 @@ import type {
 } from '@shared/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
+import type { ApiError } from './ApiError';
 
 // Define query keys
 export const qrCodeQueryKeys = {
@@ -44,6 +46,7 @@ export function useListQrCodesQuery(page = 1, limit = 10) {
 // Function to create a QR code
 export function useCreateQrCodeMutation() {
 	const queryClient = useQueryClient();
+	const { updateLastError } = useQrCodeGeneratorStore((state) => state);
 	const { getToken } = useAuth();
 
 	return useMutation({
@@ -67,8 +70,9 @@ export function useCreateQrCodeMutation() {
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
-		onError: (error) => {
-			console.error('Error creating QR code:', error);
+		onError: (e: Error) => {
+			const error = e as ApiError;
+			updateLastError(error);
 		},
 	});
 }

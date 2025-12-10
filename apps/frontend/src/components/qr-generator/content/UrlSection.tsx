@@ -1,7 +1,7 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
@@ -29,11 +29,12 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [originalUrl, setOriginalUrl] = useState<string | null>(null);
-	const { content, config } = useQrCodeGeneratorStore((state) => state);
+	const { content, config, lastError } = useQrCodeGeneratorStore((state) => state);
 	const [hasMounted, setHasMounted] = useState(false);
 
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
-		resolver: standardSchemaResolver(UrlInputSchema),
+		resolver: zodResolver(UrlInputSchema),
+		criteriaMode: 'all',
 		defaultValues: {
 			url: value?.url ?? '',
 			isEditable: value?.isEditable ?? true,
@@ -52,6 +53,17 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 
 		onChange(payload);
 	}
+
+	useEffect(() => {
+		if (lastError?.fieldErrors) {
+			lastError.fieldErrors.forEach((e) => {
+				if (e.path.length === 0) return;
+				form.setError(e.path[e.path.length - 1] as any, {
+					message: e.message,
+				});
+			});
+		}
+	}, [lastError]);
 
 	useEffect(() => {
 		if (

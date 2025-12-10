@@ -3,6 +3,8 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import qs from 'qs';
 import type { SupportedLanguages } from '@/i18n/routing';
+import { ApiError } from './api/ApiError';
+import type { ZodIssue } from 'zod/v3';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -128,8 +130,10 @@ export async function apiRequest<T>(
 
 	if (!response.ok) {
 		const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
-		throw new Error(
+		throw new ApiError(
 			(errorBody?.message as string | undefined) ?? 'An error occurred while fetching data',
+			response.status,
+			errorBody.fieldErrors as ZodIssue[],
 		);
 	}
 

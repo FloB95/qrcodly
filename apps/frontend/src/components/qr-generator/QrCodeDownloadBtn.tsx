@@ -29,6 +29,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import * as Sentry from '@sentry/nextjs';
+import type { ApiError } from '@/lib/api/ApiError';
+import { useUser } from '@clerk/nextjs';
 
 let QRCodeStyling: any;
 
@@ -41,12 +43,14 @@ const QrCodeDownloadBtn = ({
 	saveOnDownload?: boolean;
 	noStyling?: boolean;
 }) => {
+	const { isSignedIn } = useUser();
 	const t = useTranslations('qrCode.download');
-	const { content, updateContent } = useQrCodeGeneratorStore((state) => state);
+	const { content, updateContent, latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore(
+		(state) => state,
+	);
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
 	const [hasMounted, setHasMounted] = useState(false);
 	const createQrCodeMutation = useCreateQrCodeMutation();
-	const { latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
 	const queryClient = useQueryClient();
 
 	useEffect(() => {
@@ -101,21 +105,34 @@ const QrCodeDownloadBtn = ({
 							]);
 						}
 					},
-					onError: (e) => {
-						Sentry.captureException(e, {
+					onError: (e: Error) => {
+						const error = e as ApiError;
+						Sentry.captureException(error, {
 							data: {
 								qrCode: qrCode,
-								error: e.message,
+								error: {
+									message: error.message,
+									fieldErrors: error?.fieldErrors,
+								},
 							},
 						});
-						toast({
-							variant: 'destructive',
-							title: t('errorTitle'),
-							description: e.message,
-							duration: 5000,
+
+						posthog.capture('error:qr-code-created', {
+							qrCode,
+							error: {
+								message: error.message,
+								fieldErrors: error?.fieldErrors,
+							},
 						});
 
-						posthog.capture('error:qr-code-created', { qrCode, error: e });
+						if (isSignedIn) {
+							toast({
+								variant: 'destructive',
+								title: t('errorTitle'),
+								description: error.message,
+								duration: 5000,
+							});
+						}
 					},
 				});
 

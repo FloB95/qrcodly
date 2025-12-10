@@ -20,6 +20,7 @@ export const defaultInitState: QrCodeGeneratorState = {
 		},
 	},
 	latestQrCode: undefined,
+	lastError: undefined,
 };
 
 export type QrCodeGeneratorStoreApi = ReturnType<typeof createQrCodeGeneratorStore>;

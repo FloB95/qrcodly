@@ -1,5 +1,6 @@
 'use client';
 
+import type { ApiError } from '@/lib/api/ApiError';
 import { type TQrCodeContent, type TQrCodeOptions, type TShortUrl } from '@shared/schemas';
 import { createStore } from 'zustand/vanilla';
 
@@ -14,6 +15,7 @@ export type QrCodeGeneratorState = {
 		config: TQrCodeOptions;
 		content: TQrCodeContent;
 	};
+	lastError?: ApiError;
 };
 
 export type QrCodeGeneratorActions = {
@@ -28,6 +30,7 @@ export type QrCodeGeneratorActions = {
 			  }
 			| undefined,
 	) => void;
+	updateLastError: (lastError: ApiError) => void;
 };
 
 export type QrCodeGeneratorStore = QrCodeGeneratorState & QrCodeGeneratorActions;
@@ -100,5 +103,6 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState) => {
 		},
 		updateContent: (content) => set({ content }),
 		updateLatestQrCode: (latestQrCode) => set({ latestQrCode }),
+		updateLastError: (lastError) => set({ lastError }),
 	}));
 };

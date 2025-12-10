@@ -50,11 +50,11 @@
 		"next-axiom": "^1.9.3",
 		"next-intl": "^4.5.8",
 		"posthog-js": "^1.302.0",
-		"qr-code-styling": "^1.9.2",
+		"qr-code-styling": "catalog:",
 		"qs": "^6.14.0",
-		"react": "^19.2.1",
+		"react": "catalog:",
 		"react-best-gradient-color-picker": "^3.0.14",
-		"react-dom": "^19.2.1",
+		"react-dom": "catalog:",
 		"react-hook-form": "^7.68.0",
 		"recharts": "^2.15.4",
 		"require-in-the-middle": "^7.5.2",
@@ -73,14 +73,14 @@
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
 		"eslint-config-next": "^15.5.7",
-		"postcss": "^8.5.6",
 		"prettier-plugin-tailwindcss": "^0.6.14",
 		"qrcodly-eslint-config": "workspace:*",
 		"qrcodly-typescript-config": "workspace:*",
 		"shadcn-ui": "^0.9.5",
-		"tailwindcss": "^4.1.17",
+		"postcss": "catalog:",
+		"tailwindcss": "catalog:",
 		"tsconfig-paths": "^4.2.0",
-		"typescript": "^5.9.3"
+		"typescript": "catalog:"
 	},
 	"ct3aMetadata": {
 		"initVersion": "7.39.3"
