@@ -8,10 +8,13 @@ import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
 import * as Sentry from '@sentry/nextjs';
-import { useCreateQrCodeMutation } from '@/lib/api/qr-code';
+import { qrCodeQueryKeys, useCreateQrCodeMutation } from '@/lib/api/qr-code';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { LoginRequiredDialog } from './LoginRequiredDialog';
 import { NameDialog } from './NameDialog';
+import { useQueryClient } from '@tanstack/react-query';
+import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
+import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 
 const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 	const t = useTranslations('qrCode');
@@ -19,6 +22,8 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
 	const [hasMounted, setHasMounted] = useState(false);
+	const queryClient = useQueryClient();
+	const { resetStore, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
 
 	const createQrCodeMutation = useCreateQrCodeMutation();
 
@@ -42,6 +47,20 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 							title: t('download.successTitle'),
 							description: t('download.successDescription'),
 							duration: 5000,
+						});
+
+						void Promise.all([
+							queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
+							queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
+						]);
+
+						if (qrCode.content.type === 'url' && qrCode.content.data.isEditable) {
+							resetStore();
+						}
+
+						updateLatestQrCode({
+							config: qrCode.config,
+							content: qrCode.content,
 						});
 
 						posthog.capture('qr-code-created', {

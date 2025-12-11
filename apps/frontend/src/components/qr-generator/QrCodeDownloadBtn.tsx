@@ -45,7 +45,7 @@ const QrCodeDownloadBtn = ({
 }) => {
 	const { isSignedIn } = useUser();
 	const t = useTranslations('qrCode.download');
-	const { content, updateContent, latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore(
+	const { resetStore, latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore(
 		(state) => state,
 	);
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
@@ -83,15 +83,13 @@ const QrCodeDownloadBtn = ({
 								description: t('successDescription'),
 								duration: 5000,
 							});
+							void Promise.all([
+								queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
+								queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
+							]);
 
-							if (content.type === 'url' && content.data.isEditable) {
-								updateContent({
-									type: 'url',
-									data: {
-										url: '',
-										isEditable: false,
-									},
-								});
+							if (qrCode.content.type === 'url' && qrCode.content.data.isEditable) {
+								resetStore();
 							}
 
 							updateLatestQrCode({
@@ -99,10 +97,9 @@ const QrCodeDownloadBtn = ({
 								content: qrCode.content,
 							});
 
-							void Promise.all([
-								queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
-								queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
-							]);
+							posthog.capture('qr-code-created', {
+								data: qrCode.content,
+							});
 						}
 					},
 					onError: (e: Error) => {
@@ -136,10 +133,6 @@ const QrCodeDownloadBtn = ({
 							});
 						}
 					},
-				});
-
-				posthog.capture('qr-code-created', {
-					data: qrCode.content,
 				});
 			} catch {
 				// silent catch

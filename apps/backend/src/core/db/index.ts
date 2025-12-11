@@ -1,5 +1,5 @@
 // import * as schema from '@/db/schema'
-import { drizzle } from 'drizzle-orm/mysql2';
+import { drizzle, type MySql2Database } from 'drizzle-orm/mysql2';
 import { env } from '../config/env';
 import * as schema from './schemas';
 import mysql from 'mysql2/promise';
@@ -20,5 +20,7 @@ const db = drizzle(poolConnection, {
 	casing: 'snake_case',
 	logger: DB_LOGGING,
 });
+
+export type AppDatabase = MySql2Database<typeof schema>;
 
 export default db;

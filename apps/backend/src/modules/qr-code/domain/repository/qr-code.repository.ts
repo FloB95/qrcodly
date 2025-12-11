@@ -1,6 +1,5 @@
 import { singleton } from 'tsyringe';
 import { desc, eq } from 'drizzle-orm';
-import db from '@/core/db';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import qrCode, { TQrCode, TQrCodeWithRelations } from '../entities/qr-code.entity';
@@ -24,7 +23,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	 * @returns A promise that resolves to an array of QR codes.
 	 */
 	async findAll({ limit, page, where }: ISqlQueryFindBy<TQrCode>): Promise<TQrCodeWithRelations[]> {
-		const query = db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
+		const query = this.db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
 
 		query.leftJoin(shortUrl, eq(this.table.id, shortUrl.qrCodeId)).$dynamic();
 
@@ -55,7 +54,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	 * @returns A promise that resolves to the QR code if found, otherwise undefined.
 	 */
 	async findOneById(id: string): Promise<TQrCode | undefined> {
-		const qrCode = await db.query.qrCode.findFirst({
+		const qrCode = await this.db.query.qrCode.findFirst({
 			where: eq(this.table.id, id),
 			with: {
 				shortUrl: true,
@@ -70,7 +69,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	 * @param updates - The updates to apply to the QR code.
 	 */
 	async update(qrCode: TQrCode, updates: Partial<TQrCode>): Promise<void> {
-		await db.update(this.table).set(updates).where(eq(this.table.id, qrCode.id));
+		await this.db.update(this.table).set(updates).where(eq(this.table.id, qrCode.id));
 	}
 
 	/**
@@ -79,7 +78,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	 * @returns A promise that resolves to true if the QR code was deleted successfully.
 	 */
 	async delete(qrCode: TQrCode): Promise<boolean> {
-		await db.delete(this.table).where(eq(this.table.id, qrCode.id)).execute();
+		await this.db.delete(this.table).where(eq(this.table.id, qrCode.id)).execute();
 		await this.clearCache();
 		return true;
 	}
@@ -89,7 +88,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	 * @param qrCode - The QR code to create.
 	 */
 	async create(qrCode: Omit<TQrCode, 'createdAt' | 'updatedAt'>): Promise<void> {
-		await db
+		await this.db
 			.insert(this.table)
 			.values({
 				id: qrCode.id,

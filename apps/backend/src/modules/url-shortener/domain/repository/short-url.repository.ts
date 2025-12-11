@@ -1,6 +1,5 @@
 import { singleton } from 'tsyringe';
 import { desc, eq } from 'drizzle-orm';
-import db from '@/core/db';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import shortUrl, { TShortUrl } from '../entities/short-url.entity';
@@ -22,7 +21,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * @returns A promise that resolves to an array of Short URLs.
 	 */
 	async findAll({ limit, page, where }: ISqlQueryFindBy<TShortUrl>): Promise<TShortUrl[]> {
-		const query = db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
+		const query = this.db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
 
 		// add where conditions
 		if (where) void this.withWhere(query, where);
@@ -39,7 +38,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * @returns A promise that resolves to the Short URL if found, otherwise undefined.
 	 */
 	async findOneById(id: string): Promise<TShortUrl | undefined> {
-		const shortUrl = await db.query.shortUrl.findFirst({
+		const shortUrl = await this.db.query.shortUrl.findFirst({
 			where: eq(this.table.id, id),
 		});
 		return shortUrl;
@@ -51,7 +50,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * @returns A promise that resolves to the Short URL if found, otherwise undefined.
 	 */
 	async findOneByShortCode(shortCode: string): Promise<TShortUrl | undefined> {
-		const shortUrl = await db.query.shortUrl.findFirst({
+		const shortUrl = await this.db.query.shortUrl.findFirst({
 			where: eq(this.table.shortCode, shortCode),
 		});
 		return shortUrl;
@@ -63,7 +62,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * @returns A promise that resolves to the Short URL if found, otherwise undefined.
 	 */
 	async findOneByQrCodeId(qrCodeId: string): Promise<TShortUrl | undefined> {
-		const shortUrl = await db.query.shortUrl.findFirst({
+		const shortUrl = await this.db.query.shortUrl.findFirst({
 			where: eq(this.table.qrCodeId, qrCodeId),
 		});
 		return shortUrl;
@@ -75,7 +74,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * @param updates - The updates to apply to the Short URL.
 	 */
 	async update(shortUrl: TShortUrl, updates: Partial<TShortUrl>): Promise<void> {
-		await db.update(this.table).set(updates).where(eq(this.table.id, shortUrl.id));
+		await this.db.update(this.table).set(updates).where(eq(this.table.id, shortUrl.id));
 	}
 
 	/**
@@ -84,7 +83,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * @returns A promise that resolves to true if the Short URL was deleted successfully.
 	 */
 	async delete(shortUrl: TShortUrl): Promise<boolean> {
-		await db.delete(this.table).where(eq(this.table.id, shortUrl.id)).execute();
+		await this.db.delete(this.table).where(eq(this.table.id, shortUrl.id)).execute();
 		await this.clearCache();
 		return true;
 	}
@@ -94,7 +93,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * @param shortUrl - The Short URL to create.
 	 */
 	async create(shortUrl: Omit<TShortUrl, 'createdAt' | 'updatedAt'>): Promise<void> {
-		await db
+		await this.db
 			.insert(this.table)
 			.values({
 				id: shortUrl.id,
@@ -122,7 +121,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 				characters.charAt(Math.floor(Math.random() * characters.length)),
 			).join('');
 
-			const existing = await db
+			const existing = await this.db
 				.select()
 				.from(this.table)
 				.where(eq(this.table.shortCode, shortCode))

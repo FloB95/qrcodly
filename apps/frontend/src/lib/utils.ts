@@ -136,7 +136,6 @@ export async function apiRequest<T>(
 			errorBody.fieldErrors as ZodIssue[],
 		);
 	}
-
 	return (await response.json()) as T;
 }
 

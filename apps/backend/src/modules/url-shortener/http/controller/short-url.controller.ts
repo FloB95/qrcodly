@@ -4,7 +4,7 @@ import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/r
 import { inject, injectable } from 'tsyringe';
 import ShortUrlRepository from '../../domain/repository/short-url.repository';
 import { type IHttpResponse } from '@/core/interface/response.interface';
-import { ShortUrlNotFoundError } from '../../error/http/qr-code-not-found.error';
+import { ShortUrlNotFoundError } from '../../error/http/short-url-not-found.error';
 import {
 	AnalyticsResponseDto,
 	ShortUrlResponseDto,

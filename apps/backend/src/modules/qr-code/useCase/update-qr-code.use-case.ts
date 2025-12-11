@@ -9,7 +9,7 @@ import { EventEmitter } from '@/core/event';
 import { QrCodeContentTypeChangeError } from '../error/http/qr-code-content-type-change.error';
 import ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
 import { UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/update-short-url.use-case';
-import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/qr-code-not-found.error';
+import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { ImageService } from '@/core/services/image.service';
 
 /**
