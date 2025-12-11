@@ -22,7 +22,7 @@ export class CreateConfigTemplateUseCase implements IBaseUseCase {
 	}
 
 	async execute(dto: TCreateConfigTemplateDto, createdBy: string): Promise<TConfigTemplate> {
-		let uploadedImage: string | null = null;
+		let uploadedImage: string | undefined;
 
 		try {
 			return await UnitOfWork.run<TConfigTemplate>(async () => {
