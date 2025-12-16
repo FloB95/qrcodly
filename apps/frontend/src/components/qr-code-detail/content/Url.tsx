@@ -15,7 +15,7 @@ export const UrlContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResponseDto
 	return (
 		<>
 			<h2 className="mb-4 text-2xl font-bold">
-				<a href={destinationUrl} target="_blank" rel="noopener noreferrer">
+				<a href={destinationUrl} target="_blank" rel="noopener noreferrer" className="break-all">
 					{destinationUrl}
 				</a>
 			</h2>

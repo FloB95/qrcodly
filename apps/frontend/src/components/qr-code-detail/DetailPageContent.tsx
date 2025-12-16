@@ -85,11 +85,12 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 				<div className="flex justify-between items-center mb-4 pr-4 pt-2">
 					<div className="flex !space-x-4 items-center flex-1">
 						<Link className="flex items-center space-x-2 pr-5" href={`/${locale}/collection`}>
-							<ChevronLeftIcon className="w-5 h-5" /> <span>{t('general.backToOverview')}</span>
+							<ChevronLeftIcon className="w-5 h-5" />{' '}
+							<span className="hidden sm:block">{t('general.backToOverview')}</span>
 						</Link>
 					</div>
 					<div className="flex space-x-2">
-						<Button variant="link" disabled>
+						<Button variant="link" disabled className="hidden">
 							<ShareIcon className="h-6 w-6 mr-2" />
 							{t('general.share')}
 						</Button>
@@ -126,8 +127,8 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 						</AlertDialog>
 					</div>
 				</div>
-				<div className="px-4 py-5 sm:p-10 flex justify-between flex-1 overflow-hidden rounded-lg bg-white shadow mb-10 md:space-x-12">
-					<div className="flex-1 max-w-[650px]">
+				<div className="px-4 py-5 sm:p-10 md:flex justify-between flex-1 overflow-hidden rounded-lg bg-white shadow mb-10 md:space-x-12">
+					<div className="flex-1 max-w-[650px] mb-10 md:mb-0">
 						{qrCode?.shortUrl && (
 							<Badge
 								className="mb-6 group relative"
@@ -157,6 +158,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 										src={qrCode.previewImage}
 										width={300}
 										height={300}
+										className="max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]"
 										alt="QR code preview"
 										loading="lazy"
 									/>
