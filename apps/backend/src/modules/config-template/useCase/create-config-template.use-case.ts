@@ -66,6 +66,8 @@ export class CreateConfigTemplateUseCase implements IBaseUseCase {
 				return finalTemplate;
 			});
 		} catch (error) {
+			this.logger.error('Failed to create Config Template within transaction', { error });
+
 			// rollback uploaded image on failure
 			if (uploadedImage) await this.imageService.deleteImage(uploadedImage);
 			throw error;

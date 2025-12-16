@@ -4,9 +4,17 @@ import { useGetAnalyticsFromShortCodeQuery } from '@/lib/api/url-shortener';
 import { BarChartCard, BarChartCardSkeleton } from './BarChartCard';
 import type { ChartConfig } from '@/components/ui/chart';
 import { useLocale, useTranslations } from 'next-intl';
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui/card';
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon } from '@heroicons/react/24/solid';
 import { getName } from 'i18n-iso-countries';
+import { AnalyticsCard } from './AnalyticsCard';
 
 export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 	const locale = useLocale();
@@ -65,8 +73,8 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 
 	return (
 		<>
-			<div className="flex mb-4 gap-5 items-center">
-				<Card>
+			<div className="xs:flex mb-4 gap-5 items-center">
+				<Card className="h-full mb-4 xs:mb-0">
 					<CardHeader className="relative">
 						<CardDescription>{t('analytics.totalViews')}</CardDescription>
 						<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
@@ -93,7 +101,7 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 						</div>
 					</CardFooter>
 				</Card>
-				<Card>
+				<Card className="h-full">
 					<CardHeader className="relative">
 						<CardDescription>{t('analytics.totalVisitors')}</CardDescription>
 						<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
@@ -122,30 +130,19 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 				</Card>
 			</div>
 
-			<div className="grid flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 lg:grid-cols-3 pb-4">
-				<BarChartCard
-					data={browserChart.data}
-					config={browserChart.config}
-					title={browserChart.title}
-				/>
-				<BarChartCard
-					data={deviceChart.data}
-					config={deviceChart.config}
-					title={deviceChart.title}
-				/>
-
-				<BarChartCard
+			<div className="md:grid space-y-4 md:space-y-0 flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 pb-4">
+				<AnalyticsCard data={browserChart.data} title={browserChart.title} />
+				<AnalyticsCard data={deviceChart.data} title={deviceChart.title} />
+				<AnalyticsCard
 					data={countryChart.data.map((data) => {
 						return {
 							...data,
 							label: getName(data.label.toLowerCase(), locale) ?? data.label,
 						};
 					})}
-					config={countryChart.config}
 					title={countryChart.title}
 				/>
-
-				<BarChartCard data={osChart.data} config={osChart.config} title={osChart.title} />
+				<AnalyticsCard data={osChart.data} title={osChart.title} />
 			</div>
 		</>
 	);

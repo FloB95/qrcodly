@@ -103,13 +103,13 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 
 				return finalQrCode as TQrCodeWithRelations;
 			});
-		} catch (error) {
+		} catch (error: any) {
 			this.logger.error('Failed to create QR code within transaction', { error });
 
 			// cleanup uploaded image if transaction fails
 			if (createdImage) await this.imageService.deleteImage(createdImage);
 
-			if (error instanceof ShortUrlNotFoundError || error instanceof CustomApiError) {
+			if (error instanceof CustomApiError) {
 				throw error;
 			}
 
