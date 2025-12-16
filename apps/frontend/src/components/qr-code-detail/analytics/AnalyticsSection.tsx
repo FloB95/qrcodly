@@ -1,17 +1,10 @@
 'use client';
 
 import { useGetAnalyticsFromShortCodeQuery } from '@/lib/api/url-shortener';
-import { BarChartCard, BarChartCardSkeleton } from './BarChartCard';
+import { BarChartCardSkeleton } from './BarChartCard';
 import type { ChartConfig } from '@/components/ui/chart';
 import { useLocale, useTranslations } from 'next-intl';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon } from '@heroicons/react/24/solid';
 import { getName } from 'i18n-iso-countries';
 import { AnalyticsCard } from './AnalyticsCard';
