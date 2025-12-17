@@ -30,6 +30,9 @@ export default function Header({ hideDashboardLink = false }) {
 						<Link href="/doc" className="hidden sm:block h-10 px-2 py-2">
 							API
 						</Link>
+						<Link href="/plans" className="hidden sm:block h-10 px-2 py-2">
+							Plans
+						</Link>
 						<SignedOut>
 							<SignInButton>
 								<Button>{t('signInBtn')}</Button>
@@ -90,6 +93,15 @@ export default function Header({ hideDashboardLink = false }) {
 					</div>
 
 					<div className="space-y-2">
+						<Link
+							href="/plan"
+							className={buttonVariants({
+								variant: 'ghost',
+								className: 'w-full justify-start text-foreground font-semibold',
+							})}
+						>
+							Plan
+						</Link>
 						<Link
 							href="/doc"
 							className={buttonVariants({

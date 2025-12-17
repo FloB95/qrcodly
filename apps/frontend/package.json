@@ -16,6 +16,7 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
+		"@clerk/localizations": "^3.31.0",
 		"@clerk/nextjs": "^6.35.6",
 		"@clerk/themes": "^2.4.41",
 		"@heroicons/react": "^2.2.0",
@@ -73,11 +74,11 @@
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
 		"eslint-config-next": "^15.5.7",
+		"postcss": "catalog:",
 		"prettier-plugin-tailwindcss": "^0.6.14",
 		"qrcodly-eslint-config": "workspace:*",
 		"qrcodly-typescript-config": "workspace:*",
 		"shadcn-ui": "^0.9.5",
-		"postcss": "catalog:",
 		"tailwindcss": "catalog:",
 		"tsconfig-paths": "^4.2.0",
 		"typescript": "catalog:"

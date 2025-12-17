@@ -9,6 +9,7 @@ import { routing } from '@/i18n/routing';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { env } from '@/env';
+import { deDE, enUS, frFR, itIT, esES, nlNL, plPL, ruRU } from '@clerk/localizations';
 
 const openSans = Inter({
 	subsets: ['latin'],
@@ -63,8 +64,21 @@ export default async function RootLayout({
 			/>
 		));
 
+	const localeMap: Record<string, typeof enUS> = {
+		en: enUS,
+		de: deDE,
+		nl: nlNL,
+		fr: frFR,
+		it: itIT,
+		es: esES,
+		pl: plPL,
+		ru: ruRU,
+	};
+
+	const clerkLocale = localeMap[locale] || enUS;
+
 	return (
-		<ClerkProvider>
+		<ClerkProvider localization={clerkLocale}>
 			<html lang={locale} className="light">
 				<head>
 					<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

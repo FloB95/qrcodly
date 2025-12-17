@@ -1,22 +1,25 @@
-import { type Entitlement } from './entitlement.types';
+export enum PlanName {
+	ANONYMOUS = 'anonymous',
+	FREE = 'free',
+	PRO = 'pro',
+}
 
-export type PlanConfig = {
-	entitlements: readonly Entitlement[];
-	limits: Record<string, number>;
+export enum LimitKey {
+	QR_CREATE_PER_DAY = 'qr.create.perDay',
+}
+
+type PlanConfig = {
+	limits: Record<LimitKey, number>;
 };
 
-export const PLANS: Record<string, PlanConfig> = {
-	free: {
-		entitlements: ['qr.create', 'qr.type.url'],
-		limits: {
-			'qr.create.perMonth': 10,
-		},
+export const PLANS: Record<PlanName, PlanConfig> = {
+	[PlanName.ANONYMOUS]: {
+		limits: { [LimitKey.QR_CREATE_PER_DAY]: 1 },
 	},
-
-	pro: {
-		entitlements: ['qr.create', 'qr.type.url', 'qr.type.vcard', 'qr.type.mp3'],
-		limits: {
-			'qr.create.perMonth': 1000,
-		},
+	[PlanName.FREE]: {
+		limits: { [LimitKey.QR_CREATE_PER_DAY]: 10 },
+	},
+	[PlanName.PRO]: {
+		limits: { [LimitKey.QR_CREATE_PER_DAY]: 100 },
 	},
 };

@@ -15,6 +15,8 @@ import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { CustomApiError } from '@/core/error/http';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { UnitOfWork } from '@/core/db/unit-of-work';
+import { LimitService } from '@/core/entitlements/limit.service';
+import { LimitKey, PlanName } from '@/core/entitlements/plan.config';
 
 /**
  * Use case for creating a QrCode entity.
@@ -30,6 +32,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 		@inject(GetReservedShortCodeUseCase)
 		private getReservedShortCodeUseCase: GetReservedShortCodeUseCase,
 		@inject(UpdateShortUrlUseCase) private updateShortUrlUseCase: UpdateShortUrlUseCase,
+		@inject(LimitService) private limitService: LimitService,
 	) {}
 
 	/**
@@ -42,9 +45,11 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 	async execute(dto: TCreateQrCodeDto, createdBy: string | null): Promise<TQrCodeWithRelations> {
 		let createdImage: string | undefined;
 
+		await this.limitService.assertLimit(createdBy!, PlanName.ANONYMOUS, LimitKey.QR_CREATE_PER_DAY);
+
 		try {
 			return await UnitOfWork.run<TQrCodeWithRelations>(async () => {
-				// generate ID before transaction if not DB-generated
+				// generate ID before transaction if not DB-generatedƒ
 				const newId = await this.qrCodeRepository.generateId();
 
 				const qrCodeData = {
@@ -100,6 +105,8 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 					id: finalQrCode.id,
 					createdBy: finalQrCode.createdBy,
 				});
+
+				await this.limitService.incrementUsage(createdBy!, LimitKey.QR_CREATE_PER_DAY);
 
 				return finalQrCode as TQrCodeWithRelations;
 			});
