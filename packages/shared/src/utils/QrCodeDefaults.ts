@@ -9,18 +9,30 @@ export const QrCodeDefaults: TQrCodeOptions = {
 		hideBackgroundDots: true,
 	},
 	dotsOptions: {
-		style: '#000000',
+		style: {
+			type: 'hex',
+			value: '#000000',
+		},
 		type: 'rounded',
 	},
 	backgroundOptions: {
-		style: '#ffffff',
+		style: {
+			type: 'hex',
+			value: '#FFFFFF',
+		},
 	},
 	cornersSquareOptions: {
-		style: '#000000',
+		style: {
+			type: 'hex',
+			value: '#000000',
+		},
 		type: 'extra-rounded',
 	},
 	cornersDotOptions: {
-		style: '#000000',
+		style: {
+			type: 'hex',
+			value: '#000000',
+		},
 		type: 'dot',
 	},
 };

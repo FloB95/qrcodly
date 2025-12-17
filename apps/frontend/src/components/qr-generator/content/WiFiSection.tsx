@@ -12,7 +12,6 @@ import {
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import {
 	Select,
 	SelectContent,
@@ -22,6 +21,7 @@ import {
 } from '@/components/ui/select';
 import { WifiInputSchema, type TWifiInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type FormValues = TWifiInput;
 
@@ -33,11 +33,11 @@ type WiFiSectionProps = {
 export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.wifi');
 	const form = useForm<FormValues>({
-		resolver: standardSchemaResolver(WifiInputSchema),
+		resolver: zodResolver(WifiInputSchema),
 		defaultValues: {
-			ssid: value?.ssid,
-			password: value?.password,
-			encryption: value?.encryption || 'WPA',
+			ssid: value.ssid,
+			password: value.password,
+			encryption: value.encryption ?? 'WPA',
 		},
 	});
 

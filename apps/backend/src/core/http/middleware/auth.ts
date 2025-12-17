@@ -10,7 +10,9 @@ import { type FastifyRequest } from 'fastify';
  * @throws {UnauthenticatedError} If the user is not authenticated.
  */
 export function isAuthenticated(request: FastifyRequest, _reply: unknown, done: () => void) {
-	const { userId } = getAuth(request);
+	const { userId, tokenType } = getAuth(request, {
+		acceptsToken: ['session_token', 'api_key'],
+	});
 
 	if (!userId) {
 		throw new UnauthenticatedError();
@@ -18,6 +20,6 @@ export function isAuthenticated(request: FastifyRequest, _reply: unknown, done: 
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	request.user = { id: userId };
+	request.user = { id: userId, tokenType };
 	done();
 }

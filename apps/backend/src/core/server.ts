@@ -20,6 +20,7 @@ import fastifyRateLimit from '@fastify/rate-limit';
 import fastifyCors from '@fastify/cors';
 import { OnShutdown } from './decorators/on-shutdown.decorator';
 import { HealthController } from './http/controller/health.controller';
+import FastifySwagger from '@fastify/swagger';
 
 @singleton()
 export class Server {
@@ -32,6 +33,37 @@ export class Server {
 	}
 
 	async build() {
+		await this.server.register(FastifySwagger, {
+			openapi: {
+				openapi: '3.0.0',
+				info: {
+					title: 'My Fastify App',
+					version: '1.0.0',
+				},
+				servers: [
+					{
+						url: `${env.BACKEND_URL}/api/v1`,
+						description: 'API v1',
+					},
+				],
+				components: {
+					securitySchemes: {
+						bearerAuth: {
+							type: 'http',
+							scheme: 'bearer',
+							bearerFormat: 'API_KEY',
+							description: 'Enter your API key to access this API',
+						},
+					},
+				},
+				security: [
+					{
+						bearerAuth: [],
+					},
+				],
+			},
+		});
+
 		// catch all errors
 		this.setupErrorHandlers();
 
@@ -40,13 +72,16 @@ export class Server {
 			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
 			credentials: true,
 			methods: ['GET', 'POST', 'DELETE', 'PATCH'],
-			origin: ALLOWED_ORIGINS,
+			origin: true,
 		});
 
 		// register authentication provider
 		await this.server.register(clerkPlugin, {
 			secretKey: env.CLERK_SECRET_KEY,
 			publishableKey: env.CLERK_PUBLISHABLE_KEY,
+			telemetry: {
+				disabled: true,
+			},
 		});
 
 		// register cookie
@@ -72,6 +107,19 @@ export class Server {
 
 		// register health check endpoint
 		registerRoutes(this.server, HealthController, API_BASE_PATH);
+
+		this.server.get(
+			'/openapi.json',
+			{
+				schema: {
+					hide: true,
+				},
+			},
+			async (request, reply) => {
+				const openapiSchema = await this.server.swagger();
+				return reply.send(openapiSchema);
+			},
+		);
 
 		// register api modules
 		const modules = await import('@/modules');

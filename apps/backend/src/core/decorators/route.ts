@@ -14,6 +14,7 @@ interface CustomRouteOptions {
 	skipAuth?: boolean;
 	bodySchema?: ZodSchema;
 	querySchema?: ZodSchema;
+	responseSchema?: Record<number, ZodSchema>;
 }
 
 // Merge Fastify's RouteOptions with your custom options
@@ -25,6 +26,7 @@ export interface RouteMetadata {
 	path: string;
 	handlerName: HandlerName;
 	options: RouteOptions;
+	schema?: RouteOptions['schema'];
 }
 
 // Define a symbol to store the route metadata on the controller prototype

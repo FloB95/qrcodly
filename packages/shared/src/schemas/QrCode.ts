@@ -15,7 +15,7 @@ export type TTextInput = string;
 
 export const WifiInputSchema = z.object({
 	ssid: z.string().max(32),
-	password: emptyStringToUndefined(z.string().max(64).optional()),
+	password: z.string().max(64),
 	encryption: z.enum(['WPA', 'WEP', 'nopass']),
 });
 export type TWifiInput = z.infer<typeof WifiInputSchema>;
@@ -105,7 +105,8 @@ export type TFileExtension = z.infer<typeof FileExtension>;
 export const GradientType = z.enum(['radial', 'linear']);
 
 export const Gradient = z.object({
-	type: GradientType,
+	type: z.literal('gradient'),
+	gradientType: GradientType,
 	rotation: z.number(),
 	colorStops: z
 		.array(
@@ -115,16 +116,23 @@ export const Gradient = z.object({
 			}),
 		)
 		.min(2)
-		.max(2), // Beibehalten auf 2 wie im Original
+		.max(2),
 });
 
-export const ColorOrGradient = z.union([
-	z.string().regex(/^#[0-9A-F]{6}$/i), // hex
-	z
+const HexColor = z.object({
+	type: z.literal('hex'),
+	value: z.string().regex(/^#[0-9A-F]{6}$/i),
+});
+
+const RgbaColor = z.object({
+	type: z.literal('rgba'),
+	value: z
 		.string()
-		.regex(/^rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}(?:\s*,\s*(?:0|1|0?\.\d+))?\s*\)$/i), // rgb or rgba
-	Gradient,
-]);
+		.regex(/^rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}(?:\s*,\s*(?:0|1|0?\.\d+))?\s*\)$/i),
+});
+
+export const ColorOrGradient = z.discriminatedUnion('type', [HexColor, RgbaColor, Gradient]);
+export type TColorOrGradient = z.infer<typeof ColorOrGradient>;
 
 export const QrCodeOptionsSchema = z.object({
 	width: z.number(),

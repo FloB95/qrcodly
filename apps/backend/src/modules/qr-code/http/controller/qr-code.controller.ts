@@ -26,6 +26,8 @@ import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 import { DeleteQrCodeUseCase } from '../../useCase/delete-qr-code.use-case';
 import { ImageService } from '@/core/services/image.service';
 import { UpdateQrCodeUseCase } from '../../useCase/update-qr-code.use-case';
+import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
+import z from 'zod';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -40,7 +42,19 @@ export class QrCodeController extends AbstractController {
 		super();
 	}
 
-	@Get('', { querySchema: GetQrCodeQueryParamsSchema })
+	@Get('', {
+		querySchema: GetQrCodeQueryParamsSchema,
+		responseSchema: {
+			200: QrCodeWithRelationsPaginatedResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			description: 'List QR Codes',
+			summary: 'List QR Codes',
+			querystring: z.toJSONSchema(GetQrCodeQueryParamsSchema, { target: 'openapi-3.0' }),
+		},
+	})
 	async list(
 		request: IHttpRequestWithAuth<unknown, unknown, TGetQrCodeQueryParamsDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsPaginatedResponseDto>> {
@@ -75,12 +89,25 @@ export class QrCodeController extends AbstractController {
 				max: 5,
 			},
 		},
+		schema: {
+			description: 'Create a new QR Code',
+			summary: 'Create QR Code',
+			response: {
+				201: {
+					type: 'object',
+					properties: {
+						success: { type: 'boolean' },
+						isStored: { type: 'boolean' },
+						qrCodeId: { type: 'string' },
+					},
+				},
+			},
+		},
 	})
 	async create(
 		request: IHttpRequest<TCreateQrCodeDto>,
 	): Promise<IHttpResponse<TCreateQrCodeResponseDto>> {
-		// user can be logged in or not
-
+		// TODO handle api key auth and implement some verification from frontend
 		const { userId } = getAuth(request);
 
 		// set editable to false if user is not logged in

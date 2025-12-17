@@ -8,7 +8,8 @@ import { z } from 'zod';
  */
 const server = z.object({
 	BASE_URL: z.string().url().default('http://localhost:5001'),
-	FRONTEND_URL: z.string().url().default('https://www.qrcodly.de'),
+	FRONTEND_URL: z.url().default('https://www.qrcodly.de'),
+	BACKEND_URL: z.url(),
 	DB_HOST: z.string(),
 	DB_USER: z.string(),
 	DB_PASSWORD: z.string(),

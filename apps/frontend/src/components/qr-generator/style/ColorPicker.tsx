@@ -8,6 +8,7 @@ import { PaintBrushIcon } from '@heroicons/react/24/outline';
 import { cn, rgbaToHex } from '@/lib/utils';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
+import type { TColorOrGradient } from '@shared/schemas';
 
 const solidPresets = [
 	'#000000',
@@ -30,99 +31,85 @@ const solidPresets = [
 	'#990000',
 ];
 
-type ColorStop = {
-	offset: number;
-	color: string;
-};
-
-type Gradient = {
-	type: 'radial' | 'linear';
-	rotation: number;
-	colorStops: ColorStop[];
-};
-
-type ColorType = string | Gradient;
-
 interface ColorPickerProps {
-	defaultColor?: ColorType;
-	onChange: (background: ColorType) => void;
+	defaultColor?: TColorOrGradient;
+	onChange: (color: TColorOrGradient) => void;
 	withGradient?: boolean;
 }
 
-const backgroundToButtonText = (background: ColorType): string => {
-	if (typeof background === 'string') return background;
-	const colorStopsStr = background.colorStops.map((stop) => `${stop.color}`).join(' -> ');
-	return `${colorStopsStr}`;
+// Button-Text für die Anzeige
+const backgroundToButtonText = (color: TColorOrGradient): string => {
+	switch (color.type) {
+		case 'hex':
+		case 'rgba':
+			return color.value;
+		case 'gradient':
+			return color.colorStops.map((stop) => stop.color).join(' -> ');
+	}
 };
 
-const fromColorType = (colorType: ColorType): string => {
-	if (typeof colorType === 'string') {
-		return colorType;
+// konvertiert TColorOrGradient in CSS string für die lib
+const fromColorType = (color: TColorOrGradient): string => {
+	switch (color.type) {
+		case 'hex':
+		case 'rgba':
+			return color.value;
+		case 'gradient':
+			const gradientType = color.gradientType === 'linear' ? 'linear-gradient' : 'radial-gradient';
+			const colorStops = color.colorStops
+				.map((stop) => `${stop.color} ${stop.offset * 100}%`)
+				.join(', ');
+			return `${gradientType}(${color.rotation}deg, ${colorStops})`;
+	}
+};
+
+// konvertiert CSS string von lib zurück in TColorOrGradient
+const toColorType = (color: string, getGradientObject: any): TColorOrGradient => {
+	const gradientObject = getGradientObject(color);
+	if (gradientObject?.isGradient) {
+		return {
+			type: 'gradient',
+			gradientType: gradientObject.gradientType === 'linear-gradient' ? 'linear' : 'radial',
+			rotation: gradientObject.degrees ? parseFloat(gradientObject.degrees) : 0,
+			colorStops: (gradientObject.colors as { value: string; left: number }[]).map((stop) => ({
+				offset: stop.left / 100,
+				color: rgbaToHex(stop.value, true),
+			})),
+		};
 	}
 
-	colorType.rotation ??= 0;
-
-	const gradientType = colorType.type === 'linear' ? 'linear-gradient' : 'radial-gradient';
-	const colorStops = colorType.colorStops
-		.map((stop) => `${stop.color} ${stop.offset * 100}%`)
-		.join(', ');
-
-	return `${gradientType}(${colorType.rotation}deg, ${colorStops})`;
+	// Standard: als hex oder rgba zurückgeben
+	// Falls es ein rgb(a) String ist, typisiere als rgba, sonst hex
+	if (color.startsWith('#')) return { type: 'hex', value: color };
+	return { type: 'rgba', value: color };
 };
 
 export function ColorPicker({ defaultColor, onChange, withGradient = true }: ColorPickerProps) {
 	const [color, setColor] = useState(defaultColor ? fromColorType(defaultColor) : '#000000');
-	const { getGradientObject, deletePoint } = useColorPicker(fromColorType(color), setColor);
-
-	const toColorType = (color: string): ColorType => {
-		const gradientObject = getGradientObject(color);
-		if (gradientObject?.isGradient) {
-			return {
-				type: gradientObject.gradientType === 'linear-gradient' ? 'linear' : 'radial',
-				rotation: gradientObject.degrees ? parseFloat(gradientObject.degrees) : 90,
-				colorStops: (
-					gradientObject.colors as {
-						value: string;
-						left: number;
-					}[]
-				)?.map((colorStop) => ({
-					offset: colorStop.left / 100,
-					color: rgbaToHex(colorStop.value, true),
-				})),
-			};
-		}
-
-		return color;
-	};
-
+	const { getGradientObject, deletePoint } = useColorPicker(color, setColor);
 	const [debouncedColor] = useDebouncedValue(color, 200);
 
 	useEffect(() => {
-		if (defaultColor && fromColorType(defaultColor) === debouncedColor) return;
-		onChange(toColorType(color));
+		onChange(toColorType(debouncedColor, getGradientObject));
 	}, [debouncedColor]);
 
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button
-					variant={'outline'}
-					className={cn(
-						'w-[220px] justify-start text-left font-normal',
-						!color && 'text-muted-foreground',
-					)}
-				>
+				<Button variant="outline" className={cn('w-[220px] justify-start text-left font-normal')}>
 					<div className="flex w-full items-center gap-2">
 						{color ? (
 							<div
 								className="h-4 w-4 rounded !bg-cover !bg-center transition-all"
 								style={{ background: color }}
-							></div>
+							/>
 						) : (
 							<PaintBrushIcon className="h-4 w-4" />
 						)}
 						<div className="flex-1 truncate">
-							{color ? backgroundToButtonText(color) : 'Pick a color'}
+							{color
+								? backgroundToButtonText(toColorType(color, getGradientObject))
+								: 'Pick a color'}
 						</div>
 					</div>
 				</Button>
@@ -130,39 +117,25 @@ export function ColorPicker({ defaultColor, onChange, withGradient = true }: Col
 			<DialogContent style={{ width: '320px' }}>
 				<DialogTitle hidden>Color Picker</DialogTitle>
 				<DialogDescription hidden aria-hidden="true">
-					Use the color picker dialog to select a color or gradient for the background. This tool
-					supports both solid colors and gradients.
+					Use the color picker dialog to select a color or gradient for the background.
 				</DialogDescription>
 				<ReactColorPicker
-					config={{
-						defaultGradient:
-							'linear-gradient(90deg, RGB(255, 165, 76) 0%, rgba(205,147,255,1) 100%)',
-					}}
+					config={{ defaultGradient: 'linear-gradient(90deg, #ffa647 0%, #cd93ff 100%)' }}
 					presets={solidPresets}
 					hideControls={!withGradient}
 					disableDarkMode
 					hideGradientStop
 					hideColorGuide
-					// hideOpacity
 					hideAdvancedSliders
 					width={270}
 					height={150}
 					value={color}
 					onChange={(b) => {
-						// add rotation of none
-						if (b.startsWith('linear-gradient(deg') || b.startsWith('radial-gradient(deg')) {
-							b = b.replace(/(linear-gradient|radial-gradient)\((?!\d+deg)/, '$1(0deg,');
-							b = b.replace(/,deg,/, ','); // Remove redundant "deg,"
-						}
-
+						if (/gradient\(/.test(b) && !/\d+deg/.test(b)) b = b.replace('(', '(0deg, ');
 						setColor(b);
 						const gradientObject = getGradientObject(b);
-						if (
-							gradientObject?.isGradient &&
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-							gradientObject.colors?.length > 2
-						) {
-							deletePoint(1); // delete the middle point
+						if (gradientObject?.isGradient && gradientObject.colors?.length > 2) {
+							deletePoint(1);
 						}
 					}}
 				/>

@@ -4,6 +4,7 @@ import { env } from './src/env.js';
 import createNextIntlPlugin from 'next-intl/plugin';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createMDX } from 'fumadocs-mdx/next';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -15,6 +16,7 @@ await import('./src/env.js');
 
 /** @type {import("next").NextConfig} */
 const config = {
+	reactStrictMode: true,
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
@@ -88,4 +90,5 @@ const sentryOptions = {
 };
 
 const withNextIntl = createNextIntlPlugin();
-export default withAxiom(withNextIntl(withSentryConfig(config, sentryOptions)));
+const withMDX = createMDX();
+export default withAxiom(withNextIntl(withMDX(withSentryConfig(config, sentryOptions))));

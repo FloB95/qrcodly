@@ -1,10 +1,11 @@
-import { type Options } from 'qr-code-styling';
+import { type Gradient, type Options } from 'qr-code-styling';
 import {
 	type TQrCodeOptions,
 	type TQrCodeContent,
 	type TQrCodeContentType,
 	type TVCardInput,
 	type TWifiInput,
+	type TColorOrGradient,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 
@@ -110,7 +111,7 @@ export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeConten
 				data: {
 					ssid: '',
 					encryption: 'WPA',
-					password: undefined,
+					password: '',
 				},
 			};
 		case 'vCard':
@@ -141,6 +142,26 @@ export function degreesToRadians(degrees: number): number {
 	return degrees * (Math.PI / 180);
 }
 
+function mapColorOrGradientToLibrary(option: TColorOrGradient): {
+	color?: string;
+	gradient?: Gradient;
+} {
+	switch (option.type) {
+		case 'hex':
+			return { color: option.value };
+		case 'rgba':
+			return { color: option.value };
+		case 'gradient':
+			return {
+				gradient: {
+					type: option.gradientType,
+					colorStops: option.colorStops,
+					rotation: (option.rotation - 90 + 360) % 360,
+				},
+			};
+	}
+}
+
 export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): Options {
 	return {
 		shape: 'square',
@@ -161,56 +182,18 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
 			saveAsBlob: true,
 		},
 		dotsOptions: {
-			...(typeof options.dotsOptions.style === 'object'
-				? {
-						gradient: {
-							...options.dotsOptions.style,
-							rotation: degreesToRadians((options.dotsOptions.style.rotation - 90) % 360),
-						},
-						color: undefined,
-					}
-				: { color: options.dotsOptions.style, gradient: undefined }),
+			...mapColorOrGradientToLibrary(options.dotsOptions.style),
 			type: options.dotsOptions.type,
 		},
 		backgroundOptions: {
-			...(typeof options.backgroundOptions.style === 'object'
-				? {
-						gradient: {
-							...options.backgroundOptions.style,
-							rotation: degreesToRadians(
-								(options.backgroundOptions.style.rotation - 90 + 360) % 360,
-							),
-						},
-						color: undefined,
-					}
-				: { color: options.backgroundOptions.style, gradient: undefined }),
+			...mapColorOrGradientToLibrary(options.dotsOptions.style),
 		},
 		cornersSquareOptions: {
-			...(typeof options.cornersSquareOptions.style === 'object'
-				? {
-						gradient: {
-							...options.cornersSquareOptions.style,
-							rotation: degreesToRadians(
-								(options.cornersSquareOptions.style.rotation - 90 + 360) % 360,
-							),
-						},
-						color: undefined,
-					}
-				: { color: options.cornersSquareOptions.style, gradien: undefined }),
+			...mapColorOrGradientToLibrary(options.dotsOptions.style),
 			type: options.cornersSquareOptions.type,
 		},
 		cornersDotOptions: {
-			...(typeof options.cornersDotOptions.style === 'object'
-				? {
-						gradient: {
-							...options.cornersDotOptions.style,
-							rotation: degreesToRadians(
-								(options.cornersDotOptions.style.rotation - 90 + 360) % 360,
-							),
-						},
-						color: undefined,
-					}
-				: { color: options.cornersDotOptions.style, gradient: undefined }),
+			...mapColorOrGradientToLibrary(options.dotsOptions.style),
 			type: options.cornersDotOptions.type,
 		},
 	};

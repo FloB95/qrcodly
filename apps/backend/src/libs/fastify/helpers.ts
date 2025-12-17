@@ -5,6 +5,7 @@ import {
 	type FastifyPluginOptions,
 	type FastifyReply,
 	type FastifyRequest,
+	type RouteOptions,
 } from 'fastify';
 import { mergeZodErrorObjects } from '@/utils/general';
 import { BadRequestError, CustomApiError } from '@/core/error/http';
@@ -16,7 +17,7 @@ import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route'
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import type AbstractController from '@/core/http/controller/abstract.controller';
 import { isAuthenticated } from '@/core/http/middleware/auth';
-import { ZodError, type ZodType } from 'zod';
+import z, { ZodError, type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 
@@ -118,7 +119,6 @@ export const handleFastifyRequest = async (
 		}
 
 		if (error instanceof ZodError) {
-			// Log the ZodError details for debugging
 			throw new BadRequestError(error.message, error.issues);
 		}
 
@@ -167,7 +167,22 @@ export function registerRoutes(
 		const fullPath = (fastifyOptions?.prefix ?? '') + prefix + routeMeta.path;
 		logger.debug(`Registering route METHOD: ${routeMeta.method} PATH: ${fullPath}`);
 
-		const routeOptions = {
+		const schema: Record<string, unknown> = { ...(routeMeta.options.schema ?? {}) };
+
+		if (routeMeta.options.bodySchema) {
+			schema.body = z.toJSONSchema(routeMeta.options.bodySchema, { target: 'openapi-3.0' });
+		}
+
+		if (routeMeta.options.responseSchema) {
+			schema.response = Object.fromEntries(
+				Object.entries(routeMeta.options.responseSchema).map(([status, zodSchema]) => [
+					status,
+					z.toJSONSchema(zodSchema, { target: 'openapi-3.0' }),
+				]),
+			);
+		}
+
+		const routeOptions: RouteOptions = {
 			method: routeMeta.method.toUpperCase(),
 			url: prefix + routeMeta.path,
 			handler: async (request: FastifyRequest, reply: FastifyReply) => {
@@ -182,6 +197,7 @@ export function registerRoutes(
 				);
 			},
 			...routeMeta.options,
+			schema: { ...schema, ...routeMeta.options.schema },
 		};
 
 		// Add authentication prehandler

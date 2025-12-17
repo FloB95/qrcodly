@@ -16,5 +16,6 @@ export interface IHttpRequestWithAuth<B = unknown, P = unknown, Q = unknown> ext
 > {
 	user: {
 		id: string;
+		tokenType: 'session_token' | 'api_key';
 	};
 }
