@@ -186,14 +186,14 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
 			type: options.dotsOptions.type,
 		},
 		backgroundOptions: {
-			...mapColorOrGradientToLibrary(options.dotsOptions.style),
+			...mapColorOrGradientToLibrary(options.backgroundOptions.style),
 		},
 		cornersSquareOptions: {
-			...mapColorOrGradientToLibrary(options.dotsOptions.style),
+			...mapColorOrGradientToLibrary(options.cornersSquareOptions.style),
 			type: options.cornersSquareOptions.type,
 		},
 		cornersDotOptions: {
-			...mapColorOrGradientToLibrary(options.dotsOptions.style),
+			...mapColorOrGradientToLibrary(options.cornersDotOptions.style),
 			type: options.cornersDotOptions.type,
 		},
 	};

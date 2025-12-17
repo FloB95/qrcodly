@@ -7,7 +7,7 @@ import {
 	type FastifyRequest,
 	type RouteOptions,
 } from 'fastify';
-import { mergeZodErrorObjects } from '@/utils/general';
+import { debugConsole, mergeZodErrorObjects } from '@/utils/general';
 import { BadRequestError, CustomApiError } from '@/core/error/http';
 import { container, type InjectionToken } from 'tsyringe';
 import { Logger } from '@/core/logging';
@@ -20,6 +20,7 @@ import { isAuthenticated } from '@/core/http/middleware/auth';
 import z, { ZodError, type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
+import { type ZodTypeProvider } from 'fastify-type-provider-zod';
 
 /**
  * Parses a Fastify request into an IHttpRequest object.
@@ -223,7 +224,7 @@ export function registerRoutes(
 			);
 		}
 
-		fastify.route(routeOptions);
+		fastify.withTypeProvider<ZodTypeProvider>().route(routeOptions);
 	});
 }
 

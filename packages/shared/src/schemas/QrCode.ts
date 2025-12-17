@@ -102,21 +102,18 @@ export type TCornerSquareType = z.infer<typeof CornerSquareType>;
 export const FileExtension = z.enum(['svg', 'png', 'jpeg', 'webp']);
 export type TFileExtension = z.infer<typeof FileExtension>;
 
-export const GradientType = z.enum(['radial', 'linear']);
-
 export const Gradient = z.object({
 	type: z.literal('gradient'),
-	gradientType: GradientType,
+	gradientType: z.enum(['radial', 'linear']),
 	rotation: z.number(),
 	colorStops: z
 		.array(
 			z.object({
 				offset: z.number(),
-				color: z.string().regex(/^#[0-9A-F]{6}$/i),
+				color: z.string().regex(/^#[0-9a-f]{6}$/i),
 			}),
 		)
-		.min(2)
-		.max(2),
+		.length(2),
 });
 
 const HexColor = z.object({

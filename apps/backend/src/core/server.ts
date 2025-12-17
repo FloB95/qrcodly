@@ -1,7 +1,6 @@
 import { inject, singleton } from 'tsyringe';
 import { Logger } from './logging';
 import {
-	ALLOWED_ORIGINS,
 	API_BASE_PATH,
 	FASTIFY_LOGGING,
 	IN_DEVELOPMENT,
@@ -67,6 +66,17 @@ export class Server {
 		// catch all errors
 		this.setupErrorHandlers();
 
+		// disable build in validation and use custom validation
+		this.server.setValidatorCompiler(() => {
+			return () => ({});
+		});
+
+		this.server.setSerializerCompiler(function () {
+			return function (data) {
+				return JSON.stringify(data);
+			};
+		});
+
 		// register security modules
 		await this.server.register(fastifyCors, {
 			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
@@ -124,17 +134,6 @@ export class Server {
 		// register api modules
 		const modules = await import('@/modules');
 		await this.server.register(modules.default, { prefix: API_BASE_PATH });
-
-		// disable build in validation and use custom validation
-		this.server.setValidatorCompiler(() => {
-			return () => ({});
-		});
-
-		this.server.setSerializerCompiler(function () {
-			return function (data) {
-				return JSON.stringify(data);
-			};
-		});
 
 		return this;
 	}

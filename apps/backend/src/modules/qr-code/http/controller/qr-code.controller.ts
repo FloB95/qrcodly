@@ -28,6 +28,7 @@ import { ImageService } from '@/core/services/image.service';
 import { UpdateQrCodeUseCase } from '../../useCase/update-qr-code.use-case';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import z from 'zod';
+import { debugConsole } from '@/utils/general';
 
 @injectable()
 export class QrCodeController extends AbstractController {

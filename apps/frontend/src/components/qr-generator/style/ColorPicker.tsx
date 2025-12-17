@@ -37,7 +37,6 @@ interface ColorPickerProps {
 	withGradient?: boolean;
 }
 
-// Button-Text für die Anzeige
 const backgroundToButtonText = (color: TColorOrGradient): string => {
 	switch (color.type) {
 		case 'hex':
@@ -48,7 +47,6 @@ const backgroundToButtonText = (color: TColorOrGradient): string => {
 	}
 };
 
-// konvertiert TColorOrGradient in CSS string für die lib
 const fromColorType = (color: TColorOrGradient): string => {
 	switch (color.type) {
 		case 'hex':
@@ -63,8 +61,9 @@ const fromColorType = (color: TColorOrGradient): string => {
 	}
 };
 
-// konvertiert CSS string von lib zurück in TColorOrGradient
 const toColorType = (color: string, getGradientObject: any): TColorOrGradient => {
+	console.log('color', color);
+
 	const gradientObject = getGradientObject(color);
 	if (gradientObject?.isGradient) {
 		return {
@@ -78,8 +77,6 @@ const toColorType = (color: string, getGradientObject: any): TColorOrGradient =>
 		};
 	}
 
-	// Standard: als hex oder rgba zurückgeben
-	// Falls es ein rgb(a) String ist, typisiere als rgba, sonst hex
 	if (color.startsWith('#')) return { type: 'hex', value: color };
 	return { type: 'rgba', value: color };
 };

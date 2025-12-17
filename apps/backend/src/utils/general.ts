@@ -1,5 +1,6 @@
 import { type Readable } from 'stream';
 import { type z } from 'zod';
+import util from 'util';
 
 /**
  * Asynchronously pauses execution for a specified amount of time.
@@ -91,4 +92,8 @@ export const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
 		chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
 	}
 	return Buffer.concat(chunks as Buffer[]);
+};
+
+export const debugConsole = (object: object): void => {
+	console.log(util.inspect(object, { depth: null, colors: true }));
 };

@@ -25,6 +25,8 @@ export default function QrCode({ qrCode, additionalStyles = '' }: QrCodeProps) {
 	const [qrCodeInstance, setQrCode] = useState<QRCodeStyling>();
 	const ref = useRef<HTMLDivElement>(null);
 
+	console.log('options', options);
+
 	useEffect(() => {
 		setQrCode(new QRCodeStyling(options));
 	}, []);
