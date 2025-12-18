@@ -1,5 +1,7 @@
 import { type HTTPMethods, type RouteShorthandOptions } from 'fastify';
 import { type ZodSchema } from 'zod';
+import { DeleteResponseSchema } from '../domain/schema/DeleteResponseSchema';
+import { DEFAULT_ERROR_RESPONSES } from '../error/http/error.schemas';
 
 export type HandlerName = string;
 export type Constructable<T = unknown> = new (...args: unknown[]) => T;
@@ -34,9 +36,10 @@ export const ROUTE_METADATA_KEY = Symbol('routes');
 
 // RouteFactory function to create method decorators for different HTTP methods
 const RouteFactory =
-	(method: Method) =>
+	(method: Method, defaultResponseSchema?: Record<number, ZodSchema>) =>
 	(path: string, options: RouteOptions = {}): MethodDecorator =>
 	(target: object, handlerName: string | symbol) => {
+		options.responseSchema = { ...options.responseSchema, ...defaultResponseSchema };
 		const routeMetadata: RouteMetadata = {
 			method,
 			path,
@@ -53,8 +56,37 @@ const RouteFactory =
 	};
 
 // Export HTTP method decorator factories
-export const Get = RouteFactory('get');
-export const Post = RouteFactory('post');
-export const Put = RouteFactory('put');
-export const Patch = RouteFactory('patch');
-export const Delete = RouteFactory('delete');
+export const Get = RouteFactory('get', {
+	401: DEFAULT_ERROR_RESPONSES[401],
+	403: DEFAULT_ERROR_RESPONSES[403],
+	404: DEFAULT_ERROR_RESPONSES[404],
+	429: DEFAULT_ERROR_RESPONSES[429],
+});
+export const Post = RouteFactory('post', {
+	400: DEFAULT_ERROR_RESPONSES[400],
+	401: DEFAULT_ERROR_RESPONSES[401],
+	403: DEFAULT_ERROR_RESPONSES[403],
+	404: DEFAULT_ERROR_RESPONSES[404],
+	429: DEFAULT_ERROR_RESPONSES[429],
+});
+export const Put = RouteFactory('put', {
+	400: DEFAULT_ERROR_RESPONSES[400],
+	401: DEFAULT_ERROR_RESPONSES[401],
+	403: DEFAULT_ERROR_RESPONSES[403],
+	404: DEFAULT_ERROR_RESPONSES[404],
+	429: DEFAULT_ERROR_RESPONSES[429],
+});
+export const Patch = RouteFactory('patch', {
+	400: DEFAULT_ERROR_RESPONSES[400],
+	401: DEFAULT_ERROR_RESPONSES[401],
+	403: DEFAULT_ERROR_RESPONSES[403],
+	404: DEFAULT_ERROR_RESPONSES[404],
+	429: DEFAULT_ERROR_RESPONSES[429],
+});
+export const Delete = RouteFactory('delete', {
+	200: DeleteResponseSchema,
+	401: DEFAULT_ERROR_RESPONSES[401],
+	403: DEFAULT_ERROR_RESPONSES[403],
+	404: DEFAULT_ERROR_RESPONSES[404],
+	429: DEFAULT_ERROR_RESPONSES[429],
+});

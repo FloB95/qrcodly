@@ -27,7 +27,7 @@ export default function Header({ hideDashboardLink = false }) {
 						</Link>
 					</div>
 					<div className="flex space-x-4 sm:space-x-6 items-center">
-						<Link href="/doc" className="hidden sm:block h-10 px-2 py-2">
+						<Link href="/docs" className="hidden sm:block h-10 px-2 py-2">
 							API
 						</Link>
 						<SignedOut>
@@ -91,7 +91,7 @@ export default function Header({ hideDashboardLink = false }) {
 
 					<div className="space-y-2">
 						<Link
-							href="/doc"
+							href="/docs"
 							className={buttonVariants({
 								variant: 'ghost',
 								className: 'w-full justify-start text-foreground font-semibold',

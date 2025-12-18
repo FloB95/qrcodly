@@ -17,9 +17,6 @@ await import('./src/env.js');
 /** @type {import("next").NextConfig} */
 const config = {
 	reactStrictMode: true,
-	eslint: {
-		ignoreDuringBuilds: true,
-	},
 	webpack: (config) => {
 		config.module.rules.push({
 			test: /\.svg$/,
@@ -66,7 +63,18 @@ const config = {
 	// This is required to support PostHog trailing slash API requests
 	skipTrailingSlashRedirect: true,
 	images: {
-		domains: ['localhost', 's3.fr-par.scw.cloud'],
+		remotePatterns: [
+			{
+				protocol: 'http',
+				hostname: 'localhost',
+				port: '3000',
+			},
+			{
+				protocol: 'https',
+				hostname: 's3.fr-par.scw.cloud',
+				pathname: '/**',
+			},
+		],
 		formats: ['image/webp'],
 	},
 };

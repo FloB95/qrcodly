@@ -1,4 +1,4 @@
-import { Delete, Get, Post } from '@/core/decorators/route';
+import { Delete, Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
 import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
@@ -26,9 +26,6 @@ import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 import { DeleteQrCodeUseCase } from '../../useCase/delete-qr-code.use-case';
 import { ImageService } from '@/core/services/image.service';
 import { UpdateQrCodeUseCase } from '../../useCase/update-qr-code.use-case';
-import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
-import z from 'zod';
-import { debugConsole } from '@/utils/general';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -47,13 +44,10 @@ export class QrCodeController extends AbstractController {
 		querySchema: GetQrCodeQueryParamsSchema,
 		responseSchema: {
 			200: QrCodeWithRelationsPaginatedResponseDto,
-			400: DEFAULT_ERROR_RESPONSES[400],
-			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
 			description: 'List QR Codes',
 			summary: 'List QR Codes',
-			querystring: z.toJSONSchema(GetQrCodeQueryParamsSchema, { target: 'openapi-3.0' }),
 		},
 	})
 	async list(
@@ -124,7 +118,15 @@ export class QrCodeController extends AbstractController {
 		});
 	}
 
-	@Get('/:id')
+	@Get('/:id', {
+		responseSchema: {
+			200: QrCodeWithRelationsResponseDto,
+		},
+		schema: {
+			description: 'Get QR Code by ID',
+			summary: 'Get QR Code',
+		},
+	})
 	async getOneById(
 		request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
@@ -156,7 +158,16 @@ export class QrCodeController extends AbstractController {
 		return this.makeApiHttpResponse(200, QrCodeWithRelationsResponseDto.parse(qrCode));
 	}
 
-	@Post('/:id')
+	@Patch('/:id', {
+		bodySchema: UpdateQrCodeDto,
+		responseSchema: {
+			200: QrCodeWithRelationsResponseDto,
+		},
+		schema: {
+			description: 'Update QR Code by ID',
+			summary: 'Update QR Code',
+		},
+	})
 	async update(
 		request: IHttpRequestWithAuth<TUpdateQrCodeDto, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
@@ -171,18 +182,21 @@ export class QrCodeController extends AbstractController {
 			throw new UnauthorizedError();
 		}
 
-		const updateQrCodeDto = UpdateQrCodeDto.parse(request.body);
-
 		const updatedQrCode = await this.updateQrCodeUseCase.execute(
 			qrCode,
-			updateQrCodeDto,
+			request.body,
 			request.user.id,
 		);
 
 		return this.makeApiHttpResponse(200, QrCodeWithRelationsResponseDto.parse(updatedQrCode));
 	}
 
-	@Delete('/:id')
+	@Delete('/:id', {
+		schema: {
+			description: 'Delete QR Code by ID',
+			summary: 'Delete QR Code',
+		},
+	})
 	async deleteOneById(request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>) {
 		const { id } = request.params;
 
