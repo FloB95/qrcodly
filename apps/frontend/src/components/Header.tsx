@@ -9,7 +9,6 @@ import { LanguageNav } from './LanguageNav';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from './ui/drawer';
-import { Changelog } from './Changelog';
 import { RectangleStackIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 
@@ -17,7 +16,6 @@ export default function Header({
 	hideDashboardLink = false,
 	hideLogo = false,
 	hideLanguageNav = false,
-	hideChangeLog = false,
 }) {
 	const t = useTranslations('header');
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -66,11 +64,6 @@ export default function Header({
 							)}
 							<UserButton />
 						</SignedIn>
-						{!hideChangeLog && (
-							<div className="hidden sm:block">
-								<Changelog />
-							</div>
-						)}
 						{!hideLanguageNav && (
 							<div className="hidden sm:block">
 								<LanguageNav />
