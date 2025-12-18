@@ -1,6 +1,8 @@
 import { UnauthenticatedError } from '@/core/error/http';
+import { Logger } from '@/core/logging';
 import { getAuth } from '@clerk/fastify';
 import { type FastifyRequest } from 'fastify';
+import { container } from 'tsyringe';
 
 /**
  * Middleware function to check if a user is signed in.
@@ -21,6 +23,14 @@ export function defaultApiAuthMiddleware(
 	if (!userId) {
 		throw new UnauthenticatedError();
 	}
+
+	container.resolve(Logger).info('api.request', {
+		requestId: request.id,
+		ip: request.ip,
+		method: request.method,
+		accessType: tokenType,
+		userId: userId,
+	});
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore

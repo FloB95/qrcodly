@@ -1,11 +1,10 @@
-// app/sitemap.ts
 import { env } from '@/env';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import type { MetadataRoute } from 'next';
 
 const PAGES = [
 	'', // Home
-	'docs', // Docs ist nicht übersetzt
+	'docs',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -14,7 +13,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
 		let alternates: Record<string, string> = {};
 
-		// Nur für Seiten, die übersetzt sind (z.B. Home)
 		if (page !== 'docs') {
 			alternates = Object.fromEntries(
 				SUPPORTED_LANGUAGES.filter((lang) => lang !== 'en').map((lang) => [
