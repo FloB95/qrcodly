@@ -62,8 +62,6 @@ const fromColorType = (color: TColorOrGradient): string => {
 };
 
 const toColorType = (color: string, getGradientObject: any): TColorOrGradient => {
-	console.log('color', color);
-
 	const gradientObject = getGradientObject(color);
 	if (gradientObject?.isGradient) {
 		return {
