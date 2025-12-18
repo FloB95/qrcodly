@@ -4,7 +4,7 @@
 	"description": "QRcodly Frontend App",
 	"type": "module",
 	"scripts": {
-		"build": "next build",
+		"build": "pnpm run generate:docs && next build",
 		"check": "next lint && tsc --noEmit",
 		"dev": "next dev --turbo",
 		"format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
