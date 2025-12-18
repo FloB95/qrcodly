@@ -121,7 +121,6 @@ export class ConfigTemplateController extends AbstractController {
 	}
 
 	@Post('', {
-		skipAuth: true,
 		bodySchema: CreateConfigTemplateDto,
 		responseSchema: {
 			200: ConfigTemplateResponseDto,
