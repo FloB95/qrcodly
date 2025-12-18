@@ -27,7 +27,9 @@ export function defaultApiAuthMiddleware(
 	container.resolve(Logger).info('api.request', {
 		requestId: request.id,
 		ip: request.ip,
+		ips: request.ips,
 		method: request.method,
+		path: request.url,
 		accessType: tokenType,
 		userId: userId,
 	});
