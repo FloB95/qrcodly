@@ -1,8 +1,6 @@
 ---
-
 title: API
 description: Get started with the QRcodly API
-
 ---
 
 Welcome to the **QRcodly API documentation** 👋
@@ -21,19 +19,21 @@ The API is fully documented using **OpenAPI** and can be integrated into any mod
 
 QRcodly provides an OpenAPI (Swagger) specification that you can import into tools like:
 
-* Postman
-* Insomnia
-* ... other API Clients
+- Postman
+- Insomnia
+- ... other API Clients
 
 You can download the specification here:
 
 ```
-https://www.qrcodly.de/api/v1/openapi.json
+https://api.qrcodly.de/api/v1/openapi.json
 ```
 
 <Card>
-  <strong>Tip</strong><br />
-  Importing the OpenAPI file into Postman or other API Clients is the fastest way to explore and test the API.
+	<strong>Tip</strong>
+	<br />
+	Importing the OpenAPI file into Postman or other API Clients is the fastest way to explore and
+	test the API.
 </Card>
 
 ---
@@ -51,11 +51,14 @@ To authenticate requests, you need an **API key**.
 5. Create a new API key
 
 <Callout type="warning">
-  <p>Keep your API key secret. Do not expose it in public repositories or client-side code.</p>
-  
-  <p>Your API key is shown <strong>only once</strong> during creation and cannot be viewed again.
-  Make sure to store it securely (for example in a password manager or environment variables).
-  If the key is lost or compromised, you must generate a new one.</p>
+	<p>Keep your API key secret. Do not expose it in public repositories or client-side code.</p>
+
+    <p>
+    	Your API key is shown <strong>only once</strong> during creation and cannot be viewed again.
+    	Make sure to store it securely (for example in a password manager or environment variables). If
+    	the key is lost or compromised, you must generate a new one.
+    </p>
+
 </Callout>
 Once created, include the API key in your requests as required by the API documentation.
 
@@ -71,7 +74,6 @@ Usage:
 Authorization: Bearer YOUR_API_KEY
 ```
 
-
 ---
 
 ## Rate Limits & Plans
@@ -80,14 +82,14 @@ QRcodly offers different limits depending on your subscription plan.
 
 ### Free Plan
 
-* Limited number of API requests
-* **Strict rate limiting**
+- Limited number of API requests
+- **Strict rate limiting**
 
 ### Pro Plan (coming soon)
 
-* **Unlimited API requests**
-* Much more relaxed rate limiting
-* Ideal for production use and high-traffic applications
+- **Unlimited API requests**
+- Much more relaxed rate limiting
+- Ideal for production use and high-traffic applications
 
 ---
 
