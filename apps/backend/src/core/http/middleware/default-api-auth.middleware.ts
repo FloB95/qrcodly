@@ -9,10 +9,14 @@ import { type FastifyRequest } from 'fastify';
  *
  * @throws {UnauthenticatedError} If the user is not authenticated.
  */
-export function isAuthenticated(request: FastifyRequest, _reply: unknown, done: () => void) {
+export function defaultApiAuthMiddleware(
+	request: FastifyRequest,
+	_reply: unknown,
+	done: () => void,
+) {
 	const { userId, tokenType } = getAuth(request, {
 		acceptsToken: ['session_token', 'api_key'],
-	});
+	}) as { userId: string | null; tokenType: string };
 
 	if (!userId) {
 		throw new UnauthenticatedError();

@@ -24,18 +24,18 @@ import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 @injectable()
 export class ShortUrlController extends AbstractController {
 	constructor(
-		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
+		@inject(ShortUrlRepository) private readonly shortUrlRepository: ShortUrlRepository,
 		@inject(GetReservedShortCodeUseCase)
-		private getReservedShortCodeUseCase: GetReservedShortCodeUseCase,
+		private readonly getReservedShortCodeUseCase: GetReservedShortCodeUseCase,
 		@inject(UpdateShortUrlUseCase)
-		private updateShortUrlUseCase: UpdateShortUrlUseCase,
-		@inject(UmamiAnalyticsService) private umamiAnalyticsService: UmamiAnalyticsService,
+		private readonly updateShortUrlUseCase: UpdateShortUrlUseCase,
+		@inject(UmamiAnalyticsService) private readonly umamiAnalyticsService: UmamiAnalyticsService,
 	) {
 		super();
 	}
 
 	@Get('/:shortCode', {
-		skipAuth: true,
+		authHandler: false,
 		schema: {
 			hide: true,
 		},

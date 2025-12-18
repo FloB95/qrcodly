@@ -30,15 +30,15 @@ import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema'
 export class ConfigTemplateController extends AbstractController {
 	constructor(
 		@inject(GetConfigTemplateUseCase)
-		private getConfigTemplateUseCase: GetConfigTemplateUseCase,
+		private readonly getConfigTemplateUseCase: GetConfigTemplateUseCase,
 		@inject(ListConfigTemplatesUseCase)
-		private listConfigTemplatesUseCase: ListConfigTemplatesUseCase,
+		private readonly listConfigTemplatesUseCase: ListConfigTemplatesUseCase,
 		@inject(CreateConfigTemplateUseCase)
-		private createConfigTemplateUseCase: CreateConfigTemplateUseCase,
+		private readonly createConfigTemplateUseCase: CreateConfigTemplateUseCase,
 		@inject(UpdateConfigTemplateUseCase)
-		private updateConfigTemplateUseCase: UpdateConfigTemplateUseCase,
+		private readonly updateConfigTemplateUseCase: UpdateConfigTemplateUseCase,
 		@inject(DeleteConfigTemplateUseCase)
-		private deleteConfigTemplateUseCase: DeleteConfigTemplateUseCase,
+		private readonly deleteConfigTemplateUseCase: DeleteConfigTemplateUseCase,
 	) {
 		super();
 	}
@@ -85,7 +85,7 @@ export class ConfigTemplateController extends AbstractController {
 	}
 
 	@Get('/predefined', {
-		skipAuth: true,
+		authHandler: false,
 		responseSchema: {
 			200: ConfigTemplatePaginatedResponseDto,
 			429: DEFAULT_ERROR_RESPONSES[429],

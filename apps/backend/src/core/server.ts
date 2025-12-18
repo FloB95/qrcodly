@@ -20,6 +20,7 @@ import fastifyCors from '@fastify/cors';
 import { OnShutdown } from './decorators/on-shutdown.decorator';
 import { HealthController } from './http/controller/health.controller';
 import FastifySwagger from '@fastify/swagger';
+import { ClerkWebhookController } from './http/controller/clerk.webhook.controller';
 
 @singleton()
 export class Server {
@@ -117,6 +118,9 @@ export class Server {
 
 		// register health check endpoint
 		registerRoutes(this.server, HealthController, API_BASE_PATH);
+
+		// register webhook endpoints
+		registerRoutes(this.server, ClerkWebhookController, API_BASE_PATH);
 
 		this.server.get(
 			`${API_BASE_PATH}/openapi.json`,

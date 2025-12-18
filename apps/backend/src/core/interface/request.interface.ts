@@ -19,3 +19,10 @@ export interface IHttpRequestWithAuth<B = unknown, P = unknown, Q = unknown> ext
 		tokenType: 'session_token' | 'api_key';
 	};
 }
+export interface IHttpRequestWithEvent<B = unknown, P = unknown, Q = unknown> extends IHttpRequest<
+	B,
+	P,
+	Q
+> {
+	event: any;
+}

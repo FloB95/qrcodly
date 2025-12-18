@@ -16,7 +16,7 @@ import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/r
 import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import type AbstractController from '@/core/http/controller/abstract.controller';
-import { isAuthenticated } from '@/core/http/middleware/auth';
+import { defaultApiAuthMiddleware } from '@/core/http/middleware/default-api-auth.middleware';
 import z, { ZodError, type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
@@ -206,13 +206,17 @@ export function registerRoutes(
 			schema: deepMerge(schema, routeMeta.options.schema as unknown as Partial<typeof schema>),
 		};
 
-		// Add authentication prehandler
-		if (!routeMeta.options.skipAuth) {
-			routeOptions.preHandler = isAuthenticated;
+		// Add authentication preHandler
+		if (typeof routeMeta.options.authHandler === 'undefined') {
+			routeOptions.preHandler = defaultApiAuthMiddleware;
+		} else if (routeMeta.options.authHandler) {
+			routeOptions.preHandler = routeMeta.options.authHandler;
+		} else if (routeMeta.options.authHandler === false) {
+			// no authentication for this route
 		}
 
-		// Add request body validation
 		if (routeMeta.options.bodySchema) {
+			// Add request body validation
 			routeOptions.preValidation = createValidationHook(
 				routeMeta.options.bodySchema,
 				'Invalid request body',

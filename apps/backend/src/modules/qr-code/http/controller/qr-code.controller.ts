@@ -31,12 +31,12 @@ import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema'
 @injectable()
 export class QrCodeController extends AbstractController {
 	constructor(
-		@inject(ListQrCodesUseCase) private listQrCodesUseCase: ListQrCodesUseCase,
-		@inject(CreateQrCodeUseCase) private createQrCodeUseCase: CreateQrCodeUseCase,
-		@inject(UpdateQrCodeUseCase) private updateQrCodeUseCase: UpdateQrCodeUseCase,
-		@inject(DeleteQrCodeUseCase) private deleteQrCodeUseCase: DeleteQrCodeUseCase,
-		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
-		@inject(ImageService) private imageService: ImageService,
+		@inject(ListQrCodesUseCase) private readonly listQrCodesUseCase: ListQrCodesUseCase,
+		@inject(CreateQrCodeUseCase) private readonly createQrCodeUseCase: CreateQrCodeUseCase,
+		@inject(UpdateQrCodeUseCase) private readonly updateQrCodeUseCase: UpdateQrCodeUseCase,
+		@inject(DeleteQrCodeUseCase) private readonly deleteQrCodeUseCase: DeleteQrCodeUseCase,
+		@inject(QrCodeRepository) private readonly qrCodeRepository: QrCodeRepository,
+		@inject(ImageService) private readonly imageService: ImageService,
 	) {
 		super();
 	}
@@ -82,7 +82,7 @@ export class QrCodeController extends AbstractController {
 	}
 
 	@Post('', {
-		skipAuth: true,
+		authHandler: false,
 		bodySchema: CreateQrCodeDto,
 		responseSchema: {
 			200: QrCodeWithRelationsResponseDto,

@@ -1,7 +1,5 @@
 import { type HTTPMethods, type RouteShorthandOptions } from 'fastify';
 import { type ZodSchema } from 'zod';
-import { DeleteResponseSchema } from '../domain/schema/DeleteResponseSchema';
-import { DEFAULT_ERROR_RESPONSES } from '../error/http/error.schemas';
 
 export type HandlerName = string;
 export type Constructable<T = unknown> = new (...args: unknown[]) => T;
@@ -13,7 +11,7 @@ type Method = Lowercase<HTTPMethods>;
 
 // Define an interface for additional route options specific to your decorator
 interface CustomRouteOptions {
-	skipAuth?: boolean;
+	authHandler?: RouteOptions['preHandler'] | false;
 	bodySchema?: ZodSchema;
 	querySchema?: ZodSchema;
 	responseSchema?: Record<number, ZodSchema>;
