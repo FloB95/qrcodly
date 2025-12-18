@@ -1,7 +1,6 @@
 import { inject, singleton } from 'tsyringe';
 import { Logger } from './logging';
 import {
-	ALLOWED_ORIGINS,
 	API_BASE_PATH,
 	FASTIFY_LOGGING,
 	IN_DEVELOPMENT,
@@ -20,6 +19,8 @@ import fastifyRateLimit from '@fastify/rate-limit';
 import fastifyCors from '@fastify/cors';
 import { OnShutdown } from './decorators/on-shutdown.decorator';
 import { HealthController } from './http/controller/health.controller';
+import FastifySwagger from '@fastify/swagger';
+import { ClerkWebhookController } from './http/controller/clerk.webhook.controller';
 
 @singleton()
 export class Server {
@@ -32,21 +33,66 @@ export class Server {
 	}
 
 	async build() {
+		await this.server.register(FastifySwagger, {
+			openapi: {
+				openapi: '3.0.0',
+				info: {
+					title: 'My Fastify App',
+					version: '1.0.0',
+				},
+				servers: [
+					{
+						url: `${env.BACKEND_URL}/api/v1`,
+						description: 'API v1',
+					},
+				],
+				components: {
+					securitySchemes: {
+						bearerAuth: {
+							type: 'http',
+							scheme: 'bearer',
+							bearerFormat: 'API_KEY',
+							description: 'Enter your API key to access this API',
+						},
+					},
+				},
+				security: [
+					{
+						bearerAuth: [],
+					},
+				],
+			},
+		});
+
 		// catch all errors
 		this.setupErrorHandlers();
+
+		// disable build in validation and use custom validation
+		this.server.setValidatorCompiler(() => {
+			return () => ({});
+		});
+
+		this.server.setSerializerCompiler(function () {
+			return function (data) {
+				return JSON.stringify(data);
+			};
+		});
 
 		// register security modules
 		await this.server.register(fastifyCors, {
 			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
 			credentials: true,
 			methods: ['GET', 'POST', 'DELETE', 'PATCH'],
-			origin: ALLOWED_ORIGINS,
+			origin: true,
 		});
 
 		// register authentication provider
 		await this.server.register(clerkPlugin, {
 			secretKey: env.CLERK_SECRET_KEY,
 			publishableKey: env.CLERK_PUBLISHABLE_KEY,
+			telemetry: {
+				disabled: true,
+			},
 		});
 
 		// register cookie
@@ -73,20 +119,25 @@ export class Server {
 		// register health check endpoint
 		registerRoutes(this.server, HealthController, API_BASE_PATH);
 
+		// register webhook endpoints
+		registerRoutes(this.server, ClerkWebhookController, API_BASE_PATH);
+
+		this.server.get(
+			`${API_BASE_PATH}/openapi.json`,
+			{
+				schema: {
+					hide: true,
+				},
+			},
+			async (request, reply) => {
+				const openapiSchema = await this.server.swagger();
+				return reply.send(openapiSchema);
+			},
+		);
+
 		// register api modules
 		const modules = await import('@/modules');
 		await this.server.register(modules.default, { prefix: API_BASE_PATH });
-
-		// disable build in validation and use custom validation
-		this.server.setValidatorCompiler(() => {
-			return () => ({});
-		});
-
-		this.server.setSerializerCompiler(function () {
-			return function (data) {
-				return JSON.stringify(data);
-			};
-		});
 
 		return this;
 	}

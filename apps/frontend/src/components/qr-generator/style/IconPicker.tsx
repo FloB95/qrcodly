@@ -14,6 +14,7 @@ import ReactDOMServer from 'react-dom/server';
 import { Button } from '@/components/ui/button';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
+import type { TColorOrGradient } from '@shared/schemas';
 
 interface IconPickerProps {
 	onSelect: (iconName?: string) => void;
@@ -23,7 +24,10 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 	const t = useTranslations('contentElements.iconPicker');
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
 	const [selectedIcon, setSelectedIcon] = useState<string | undefined>(undefined);
-	const [color, setColor] = useState<string>('#000000');
+	const [color, setColor] = useState<Extract<TColorOrGradient, { type: 'hex' }>>({
+		type: 'hex',
+		value: '#000000',
+	});
 	const [searchTerm, setSearchTerm] = useState<string>('');
 
 	const handleIconClick = React.useCallback(
@@ -32,8 +36,8 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 				setSelectedIcon(iconName);
 				const IconComponent = Icons[iconName as keyof typeof Icons];
 				const svgString = ReactDOMServer.renderToString(
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill={color}>
-						<IconComponent className="h-6 w-6" style={{ color }} />
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill={color.value}>
+						<IconComponent className="h-6 w-6" style={{ color: color.value }} />
 					</svg>,
 				);
 				const base64 = svgToBase64(svgString);
@@ -79,7 +83,9 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 					<ColorPicker
 						defaultColor={color}
 						onChange={(color) => {
-							setColor(color as string);
+							if (color.type === 'hex') {
+								setColor(color);
+							}
 						}}
 						withGradient={false}
 					/>
@@ -95,7 +101,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 								}`}
 								onClick={() => handleIconClick(iconName)}
 							>
-								<IconComponent className="mx-auto h-7 w-7" style={{ color }} />
+								<IconComponent className="mx-auto h-7 w-7" style={{ color: color.value }} />
 							</div>
 						);
 					})}

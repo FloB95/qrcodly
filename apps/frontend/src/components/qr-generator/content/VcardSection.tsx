@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -12,9 +14,9 @@ import {
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { VCardInputSchema, type TVCardInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type FormValues = TVCardInput;
 
@@ -26,7 +28,7 @@ type VCardSectionProps = {
 export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.vCard');
 	const form = useForm<FormValues>({
-		resolver: standardSchemaResolver(VCardInputSchema),
+		resolver: zodResolver(VCardInputSchema),
 		defaultValues: value,
 		shouldFocusError: false,
 		shouldUnregister: true,

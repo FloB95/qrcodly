@@ -1,6 +1,5 @@
 'use client';
 
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
@@ -9,6 +8,7 @@ import { useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { TextInputSchema } from '@shared/schemas';
 import { useTranslations } from 'next-intl';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type TTextSectionProps = {
 	value: string;
@@ -22,7 +22,7 @@ const formSchema = z.object({
 export const TextSection = ({ value, onChange }: TTextSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.text');
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: standardSchemaResolver(formSchema),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			text: value,
 		},

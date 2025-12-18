@@ -1,5 +1,19 @@
 [
 	{
+		"version": "1.4.0",
+		"date": "2025-12-18",
+		"changes": [
+			"Upgrade to Next.js 16 for improved performance and features.",
+			"Added a documentation page and MDX-based doc system for better content management.",
+			"Implemented API key support and updated authentication handling.",
+			"Added OpenAPI documentation for backend routes and a new JSON endpoint to expose API docs.",
+			"Updated QR code style schema with full color and gradient support.",
+			"Added CLEK webhook endpoint and event handling; moved logic from middleware to frontend proxy.",
+			"Refactored backend code and updated tests for new features.",
+			"Various formatting and configuration updates."
+		]
+	},
+	{
 		"version": "1.3.0",
 		"date": "2025-12-06",
 		"changes": [

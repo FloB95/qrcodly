@@ -9,11 +9,14 @@ import { LanguageNav } from './LanguageNav';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from './ui/drawer';
-import { Changelog } from './Changelog';
 import { RectangleStackIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 
-export default function Header({ hideDashboardLink = false }) {
+export default function Header({
+	hideDashboardLink = false,
+	hideLogo = false,
+	hideLanguageNav = false,
+}) {
 	const t = useTranslations('header');
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -22,13 +25,20 @@ export default function Header({ hideDashboardLink = false }) {
 			<Container>
 				<div className="flex justify-between pt-1 sm:px-6 lg:px-8">
 					<div className="text-2xl pt-2 sm:pt-0 sm:text-3xl font-bold">
-						<Link href="/" title="QRcodly">
-							QRcodly
-						</Link>
+						{!hideLogo && (
+							<Link href="/" title="QRcodly">
+								QRcodly
+							</Link>
+						)}
 					</div>
 					<div className="flex space-x-4 sm:space-x-6 items-center">
-						<Link href="/doc" className="hidden sm:block h-10 px-2 py-2">
-							API
+						<Link
+							href="/docs"
+							target="blank"
+							locale={'en'}
+							className="hidden sm:block h-10 px-2 py-2"
+						>
+							Docs
 						</Link>
 						<SignedOut>
 							<SignInButton>
@@ -54,12 +64,11 @@ export default function Header({ hideDashboardLink = false }) {
 							)}
 							<UserButton />
 						</SignedIn>
-						<div className="hidden sm:block">
-							<Changelog />
-						</div>
-						<div className="hidden sm:block">
-							<LanguageNav />
-						</div>
+						{!hideLanguageNav && (
+							<div className="hidden sm:block">
+								<LanguageNav />
+							</div>
+						)}
 						{/* Mobile menu button */}
 						<div
 							className="flex items-center justify-center sm:hidden p-2 cursor-pointer"
@@ -91,13 +100,15 @@ export default function Header({ hideDashboardLink = false }) {
 
 					<div className="space-y-2">
 						<Link
-							href="/doc"
+							href="/docs"
+							target="blank"
+							locale={'en'}
 							className={buttonVariants({
 								variant: 'ghost',
 								className: 'w-full justify-start text-foreground font-semibold',
 							})}
 						>
-							API
+							Docs
 						</Link>
 						<SignedIn>
 							<Link
@@ -109,9 +120,11 @@ export default function Header({ hideDashboardLink = false }) {
 								{t('collectionBtn')}
 							</Link>
 						</SignedIn>
-						<div>
-							<LanguageNav />
-						</div>
+						{!hideLanguageNav && (
+							<div>
+								<LanguageNav />
+							</div>
+						)}
 					</div>
 				</DrawerContent>
 			</Drawer>

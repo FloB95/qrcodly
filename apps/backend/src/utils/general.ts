@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type Readable } from 'stream';
 import { type z } from 'zod';
+import util from 'util';
 
 /**
  * Asynchronously pauses execution for a specified amount of time.
@@ -52,6 +54,42 @@ export function mergeObjects<T>(original: T, updates: Partial<T>): T {
 }
 
 /**
+ * Recursively merges two objects of the same type, with `updates` overriding `original`.
+ * Works for nested plain objects. Arrays and non-object values are replaced, not merged.
+ *
+ * @template T - The type of the objects being merged.
+ * @param {T} original - The original object to merge into.
+ * @param {Partial<T>} updates - The object containing updates to merge.
+ * @returns {T} The merged object.
+ */
+export function deepMerge<T>(original: T, updates: Partial<T>): T {
+	if (typeof original !== 'object' || original === null) return updates as T;
+	if (typeof updates !== 'object' || updates === null) return original;
+
+	const result: T = { ...original };
+
+	for (const key in updates) {
+		const originalValue = (original as any)[key];
+		const updateValue = (updates as any)[key];
+
+		if (
+			updateValue &&
+			typeof updateValue === 'object' &&
+			!Array.isArray(updateValue) &&
+			originalValue &&
+			typeof originalValue === 'object' &&
+			!Array.isArray(originalValue)
+		) {
+			result[key] = deepMerge(originalValue, updateValue);
+		} else {
+			result[key] = updateValue;
+		}
+	}
+
+	return result;
+}
+
+/**
  * Merges an array of z.core.$ZodIssue objects, consolidating duplicate errors by combining their paths.
  * @param {z.core.$ZodIssue[]} errors - An array of z.core.$ZodIssue objects to merge.
  * @returns {unknown[]} An array of merged z.core.$ZodIssue objects.
@@ -91,4 +129,8 @@ export const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
 		chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
 	}
 	return Buffer.concat(chunks as Buffer[]);
+};
+
+export const debugConsole = (object: object): void => {
+	console.log(util.inspect(object, { depth: null, colors: true }));
 };
