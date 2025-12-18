@@ -13,7 +13,6 @@ import {
 	QrCodeWithRelationsPaginatedResponseDto,
 	QrCodeWithRelationsResponseDto,
 	TCreateQrCodeDto,
-	TCreateQrCodeResponseDto,
 	TGetQrCodeQueryParamsDto,
 	TIdRequestQueryDto,
 	TQrCodeWithRelationsPaginatedResponseDto,
@@ -26,6 +25,8 @@ import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 import { DeleteQrCodeUseCase } from '../../useCase/delete-qr-code.use-case';
 import { ImageService } from '@/core/services/image.service';
 import { UpdateQrCodeUseCase } from '../../useCase/update-qr-code.use-case';
+import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
+import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -44,10 +45,14 @@ export class QrCodeController extends AbstractController {
 		querySchema: GetQrCodeQueryParamsSchema,
 		responseSchema: {
 			200: QrCodeWithRelationsPaginatedResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
 			description: 'List QR Codes',
 			summary: 'List QR Codes',
+			operationId: 'qr-code/list-qr-codes',
 		},
 	})
 	async list(
@@ -79,31 +84,30 @@ export class QrCodeController extends AbstractController {
 	@Post('', {
 		skipAuth: true,
 		bodySchema: CreateQrCodeDto,
+		responseSchema: {
+			200: QrCodeWithRelationsResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
 		config: {
 			rateLimit: {
 				max: 5,
 			},
 		},
 		schema: {
-			description: 'Create a new QR Code',
-			summary: 'Create QR Code',
-			response: {
-				201: {
-					type: 'object',
-					properties: {
-						success: { type: 'boolean' },
-						isStored: { type: 'boolean' },
-						qrCodeId: { type: 'string' },
-					},
-				},
-			},
+			summary: 'Create a new QR code',
+			description:
+				'Creates a new QR code based on the provided data. If the QR code is dynamic (contentType = URL and isEditable = true), a short URL is automatically generated, linked to the QR code, and returned in the response. Returns the full QR code object including any related entities.',
+			operationId: 'qr-code/create-qr-code',
 		},
 	})
 	async create(
 		request: IHttpRequest<TCreateQrCodeDto>,
-	): Promise<IHttpResponse<TCreateQrCodeResponseDto>> {
-		// TODO handle api key auth and implement some verification from frontend
-		const { userId } = getAuth(request);
+	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
+		const { userId } = getAuth(request, {
+			acceptsToken: ['session_token', 'api_key'],
+		}) as { userId: string | null };
 
 		// set editable to false if user is not logged in
 		if (!userId && request.body.content.type === 'url') {
@@ -111,20 +115,21 @@ export class QrCodeController extends AbstractController {
 		}
 
 		const qrCode = await this.createQrCodeUseCase.execute(request.body, userId);
-		return this.makeApiHttpResponse(201, {
-			success: true,
-			isStored: userId ? true : false,
-			qrCodeId: qrCode.id,
-		});
+		return this.makeApiHttpResponse(201, QrCodeWithRelationsResponseDto.parse(qrCode));
 	}
 
 	@Get('/:id', {
 		responseSchema: {
 			200: QrCodeWithRelationsResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			description: 'Get QR Code by ID',
+			description: 'Get a QR Code by ID',
 			summary: 'Get QR Code',
+			operationId: 'qr-code/get-qr-code-by-id',
 		},
 	})
 	async getOneById(
@@ -162,10 +167,16 @@ export class QrCodeController extends AbstractController {
 		bodySchema: UpdateQrCodeDto,
 		responseSchema: {
 			200: QrCodeWithRelationsResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			description: 'Update QR Code by ID',
+			description: 'Update a QR Code by ID',
 			summary: 'Update QR Code',
+			operationId: 'qr-code/update-qr-code-by-id',
 		},
 	})
 	async update(
@@ -192,9 +203,17 @@ export class QrCodeController extends AbstractController {
 	}
 
 	@Delete('/:id', {
+		responseSchema: {
+			200: DeleteResponseSchema,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
 		schema: {
-			description: 'Delete QR Code by ID',
+			description: 'Delete a QR Code by ID',
 			summary: 'Delete QR Code',
+			operationId: 'qr-code/delete-qr-code-by-id',
 		},
 	})
 	async deleteOneById(request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>) {

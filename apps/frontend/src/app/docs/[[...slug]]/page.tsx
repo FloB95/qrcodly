@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/mdx-components';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 
-export default async function Page(props: PageProps<'/[locale]/docs/[[...slug]]'>) {
+export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
 	const params = await props.params;
 	const page = source.getPage(params.slug);
 	if (!page) notFound();
@@ -27,7 +27,7 @@ export default async function Page(props: PageProps<'/[locale]/docs/[[...slug]]'
 	const MDX = page.data.body;
 
 	return (
-		<DocsPage toc={page.data.toc} full={page.data.full}>
+		<DocsPage full={page.data.full}>
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription>{page.data.description}</DocsDescription>
 			<DocsBody>

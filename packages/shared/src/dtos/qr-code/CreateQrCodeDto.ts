@@ -8,9 +8,3 @@ export const CreateQrCodeDto = QrCodeSchema.pick({
 });
 
 export type TCreateQrCodeDto = z.infer<typeof CreateQrCodeDto>;
-
-export type TCreateQrCodeResponseDto = {
-	success: boolean;
-	isStored: boolean;
-	qrCodeId: string;
-};

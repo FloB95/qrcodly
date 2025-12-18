@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+!*.mdx
+content/docs/api/*
+
 # testing
 /coverage
 

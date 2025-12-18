@@ -2,8 +2,8 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/nextjs';
 import type {
 	TCreateQrCodeDto,
-	TCreateQrCodeResponseDto,
 	TQrCodeWithRelationsPaginatedResponseDto,
+	TQrCodeWithRelationsResponseDto,
 	TUpdateQrCodeDto,
 } from '@shared/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -50,7 +50,7 @@ export function useCreateQrCodeMutation() {
 	const { getToken } = useAuth();
 
 	return useMutation({
-		mutationFn: async (qrCode: TCreateQrCodeDto): Promise<TCreateQrCodeResponseDto> => {
+		mutationFn: async (qrCode: TCreateQrCodeDto): Promise<TQrCodeWithRelationsResponseDto> => {
 			const token = await getToken();
 			const headers: HeadersInit = {
 				'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export function useCreateQrCodeMutation() {
 			if (token) {
 				headers.Authorization = `Bearer ${token}`;
 			}
-			return apiRequest<TCreateQrCodeResponseDto>('/qr-code', {
+			return apiRequest<TQrCodeWithRelationsResponseDto>('/qr-code', {
 				method: 'POST',
 				body: JSON.stringify(qrCode),
 				headers,
@@ -96,7 +96,7 @@ export function useUpdateQrCodeMutation() {
 				Authorization: `Bearer ${token}`,
 			};
 			await apiRequest<void>(`/qr-code/${qrCodeId}`, {
-				method: 'POST',
+				method: 'PATCH',
 				body: JSON.stringify(data),
 				headers,
 			});

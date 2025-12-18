@@ -119,7 +119,7 @@ export class Server {
 		registerRoutes(this.server, HealthController, API_BASE_PATH);
 
 		this.server.get(
-			'/openapi.json',
+			`${API_BASE_PATH}/openapi.json`,
 			{
 				schema: {
 					hide: true,

@@ -77,7 +77,7 @@ const QrCodeDownloadBtn = ({
 			try {
 				await createQrCodeMutation.mutateAsync(qrCode, {
 					onSuccess: (data) => {
-						if (data.success && data.isStored) {
+						if (data.createdBy) {
 							toast({
 								title: t('successTitle'),
 								description: t('successDescription'),
