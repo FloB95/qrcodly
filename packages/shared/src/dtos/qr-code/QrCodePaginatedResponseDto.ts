@@ -9,7 +9,7 @@ export type TQrCodePaginatedResponseDto = z.infer<typeof QrCodePaginatedResponse
 
 export const QrCodeWithRelationsPaginatedResponseDto = PaginationResponseDtoSchema(
 	QrCodeWithRelationsResponseDto,
-);
+).describe('QR Code With Relations Paginated Response');
 export type TQrCodeWithRelationsPaginatedResponseDto = z.infer<
 	typeof QrCodeWithRelationsPaginatedResponseDto
 >;

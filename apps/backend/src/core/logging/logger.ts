@@ -21,7 +21,7 @@ export class Logger implements ILogger {
 			targets: [pinoPrettyTransport],
 		};
 
-		if (env.NODE_ENV === 'production' && env.AXIOM_DATASET && env.AXIOM_TOKEN) {
+		if (env.AXIOM_DATASET && env.AXIOM_TOKEN) {
 			const axiomTransport = {
 				target: '@axiomhq/pino',
 				level: env.LOG_LEVEL,
@@ -37,6 +37,7 @@ export class Logger implements ILogger {
 		this.logger = pino({
 			level: env.LOG_LEVEL,
 			transport: transports,
+			name: 'backend-log',
 			redact: {
 				paths: LOGGER_REDACT_PATHS,
 				censor: '***',

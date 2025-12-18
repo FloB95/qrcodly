@@ -5,6 +5,13 @@ import { z } from 'zod';
  */
 export const AbstractEntitySchema = z.object({
 	id: z.uuid(),
-	createdAt: z.date(),
-	updatedAt: z.date().nullable(),
+	createdAt: z.preprocess((arg) => {
+		if (arg instanceof Date) return arg.toISOString();
+		return arg;
+	}, z.iso.datetime()),
+
+	updatedAt: z.preprocess((arg) => {
+		if (arg instanceof Date) return arg.toISOString();
+		return arg;
+	}, z.iso.datetime().nullable()),
 });

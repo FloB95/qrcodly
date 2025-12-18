@@ -11,9 +11,10 @@ type Method = Lowercase<HTTPMethods>;
 
 // Define an interface for additional route options specific to your decorator
 interface CustomRouteOptions {
-	skipAuth?: boolean;
+	authHandler?: RouteOptions['preHandler'] | false;
 	bodySchema?: ZodSchema;
 	querySchema?: ZodSchema;
+	responseSchema?: Record<number, ZodSchema>;
 }
 
 // Merge Fastify's RouteOptions with your custom options
@@ -25,6 +26,7 @@ export interface RouteMetadata {
 	path: string;
 	handlerName: HandlerName;
 	options: RouteOptions;
+	schema?: RouteOptions['schema'];
 }
 
 // Define a symbol to store the route metadata on the controller prototype

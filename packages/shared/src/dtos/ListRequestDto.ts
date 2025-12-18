@@ -9,13 +9,12 @@ export const DefaultIdQueryParamSchema = z.object({
 
 /**
  * Schema for default date where query parameter.
+ * Transform is now handled via preprocess to be JSON Schema compatible.
  */
-export const QueryDateSchema = z
-	.string()
-	.refine((val) => !isNaN(Date.parse(val)), {
-		error: 'Invalid date format',
-	})
-	.transform((val) => new Date(val));
+export const QueryDateSchema = z.preprocess((arg) => {
+	if (arg instanceof Date) return arg.toISOString();
+	return arg;
+}, z.iso.datetime());
 
 /**
  * Schema for default string where query parameter.
@@ -35,14 +34,17 @@ export type DefaultStringWhereQueryParam = z.infer<typeof DefaultStringWhereQuer
  */
 export const DefaultEmailWhereQueryParamSchema = z
 	.object({
-		eq: z.email(),
-		neq: z.email(),
+		eq: z.string().email(),
+		neq: z.string().email(),
 		like: z.string(),
 	})
 	.partial()
 	.optional();
 export type DefaultEmailWhereQueryParam = z.infer<typeof DefaultEmailWhereQueryParamSchema>;
 
+/**
+ * Schema for default date where query parameter.
+ */
 export const DefaultDateWhereQueryParamSchema = z
 	.object({
 		eq: QueryDateSchema,
@@ -60,28 +62,27 @@ export type DefaultDateWhereQueryParam = z.infer<typeof DefaultDateWhereQueryPar
 /**
  * Schema for pagination query parameters.
  * @param whereObj The where object schema.
- * @returns A Zod object schema for pagination query parameters.
  */
 export const PaginationQueryParamsSchema = (whereObj?: z.ZodObject<z.ZodRawShape>) =>
 	z.object({
 		page: z
-			.string()
-			.transform((val) => parseInt(val, 10))
-			.refine((val) => Number.isInteger(val) && val > 0, {
-				error: 'Page must be a positive integer greater than 0',
-			})
-			.prefault('1'),
+			.preprocess(
+				(val) => (typeof val === 'string' ? parseInt(val, 10) : val),
+				z.number().int().min(1).max(1000),
+			)
+			.default(1),
 		limit: z
-			.string()
-			.transform((val) => parseInt(val, 10))
-			.refine((val) => Number.isInteger(val) && val > 0, {
-				error: 'Limit must be a positive integer greater than 0',
-			})
-			.prefault('10'),
+			.preprocess(
+				(val) => (typeof val === 'string' ? parseInt(val, 10) : val),
+				z.number().int().min(1).max(100),
+			)
+			.default(10),
 		where: whereObj ? whereObj.partial().optional() : z.undefined(),
 	});
 
-// this is for the swagger schema since we expect the where query param to be a string and not an object
+/**
+ * Base schema for where query parameter (as string for Swagger/OpenAPI).
+ */
 export const BaseWhereQueryParamSchema = z.object({
 	where: z
 		.string()

@@ -126,7 +126,7 @@ export function useUpdateConfigTemplateMutation() {
 				Authorization: `Bearer ${token}`,
 			};
 			return apiRequest<TConfigTemplateResponseDto>(`/config-template/${configTemplateId}`, {
-				method: 'POST',
+				method: 'PATCH',
 				body: JSON.stringify(data),
 				headers,
 			});

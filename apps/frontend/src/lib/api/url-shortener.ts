@@ -1,7 +1,7 @@
 import { useAuth } from '@clerk/nextjs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
-import type { TAnalyticsResponseDto, TShortUrl, TUpdateShortUrlDto } from '@shared/schemas';
+import type { TAnalyticsResponseDto, TShortUrl } from '@shared/schemas';
 import { qrCodeQueryKeys } from './qr-code';
 
 // Define query keys
@@ -33,37 +33,6 @@ export function useGetReservedShortUrlQuery() {
 		},
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 2,
-	});
-}
-
-export function useUpdateShortUrlMutation() {
-	const queryClient = useQueryClient();
-	const { getToken } = useAuth();
-
-	return useMutation({
-		mutationFn: async ({
-			shortCode,
-			data,
-		}: {
-			shortCode: string;
-			data: TUpdateShortUrlDto;
-		}): Promise<TShortUrl> => {
-			const token = await getToken();
-			const headers: HeadersInit = {
-				Authorization: `Bearer ${token}`,
-				'Content-Type': 'application/json',
-			};
-			return await apiRequest<TShortUrl>(`/short-url/${shortCode}`, {
-				method: 'POST',
-				body: JSON.stringify(data),
-				headers,
-			});
-		},
-		onSuccess: () => {
-			void queryClient.invalidateQueries({
-				queryKey: qrCodeQueryKeys.listQrCodes,
-			});
-		},
 	});
 }
 
