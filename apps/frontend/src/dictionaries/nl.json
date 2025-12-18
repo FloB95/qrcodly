@@ -102,6 +102,10 @@
 			"teamFeature": {
 				"headline": "Samenwerken in een team",
 				"subHeadline": "Nodig teamleden uit en werk samen aan QR-codes. Ideaal voor bedrijven, bureaus en teams."
+			},
+			"secureFeature": {
+				"headline": "Je gegevens blijven in Duitsland",
+				"subHeadline": "Qrcodly host alle gegevens lokaal – geen doorgifte aan externe diensten. Alleen Clerk wordt gebruikt voor authenticatie."
 			}
 		}
 	},
@@ -404,6 +408,8 @@
 		"question9": "Kan ik een QR-code personaliseren met mijn logo?",
 		"answer9": "Ja, met qrcodly.de kunt u uw QR-codes precies naar wens ontwerpen: integreer uw logo en gebruik uw merkkleuren zonder de scanbaarheid te beïnvloeden. Zo blijven uw codes uniek en professioneel!",
 		"question10": "Werken QR-codes ook in gedrukte vorm?",
-		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!"
+		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!",
+		"question11": "Waar worden mijn gegevens gehost?",
+		"answer11": "Alle gegevens bij Qrcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk."
 	}
 }

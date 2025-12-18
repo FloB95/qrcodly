@@ -1,4 +1,5 @@
 import { type HTTPMethods, type RouteShorthandOptions } from 'fastify';
+import { type preHandlerMetaHookHandler } from 'fastify/types/hooks';
 import { type ZodSchema } from 'zod';
 
 export type HandlerName = string;
@@ -11,7 +12,7 @@ type Method = Lowercase<HTTPMethods>;
 
 // Define an interface for additional route options specific to your decorator
 interface CustomRouteOptions {
-	authHandler?: RouteOptions['preHandler'] | false;
+	authHandler?: preHandlerMetaHookHandler | false;
 	bodySchema?: ZodSchema;
 	querySchema?: ZodSchema;
 	responseSchema?: Record<number, ZodSchema>;

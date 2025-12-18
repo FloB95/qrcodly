@@ -20,6 +20,7 @@ import { defaultApiAuthMiddleware } from '@/core/http/middleware/default-api-aut
 import z, { ZodError, type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
+import { addUserToRequestMiddleware } from '@/core/http/middleware/add-user-to-request.middleware';
 
 /**
  * Parses a Fastify request into an IHttpRequest object.
@@ -206,11 +207,14 @@ export function registerRoutes(
 			schema: deepMerge(schema, routeMeta.options.schema as unknown as Partial<typeof schema>),
 		};
 
+		// add user to reuqest
+		routeOptions.preHandler = [addUserToRequestMiddleware];
+
 		// Add authentication preHandler
 		if (typeof routeMeta.options.authHandler === 'undefined') {
-			routeOptions.preHandler = defaultApiAuthMiddleware;
+			routeOptions.preHandler.push(defaultApiAuthMiddleware);
 		} else if (routeMeta.options.authHandler) {
-			routeOptions.preHandler = routeMeta.options.authHandler;
+			routeOptions.preHandler.push(routeMeta.options.authHandler);
 		} else if (routeMeta.options.authHandler === false) {
 			// no authentication for this route
 		}

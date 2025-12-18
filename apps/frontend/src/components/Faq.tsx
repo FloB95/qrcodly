@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 export default function FAQSection() {
 	const t = useTranslations('faq');
 
-	const faqItems = Array.from({ length: 10 }).map((_, index) => ({
+	const faqItems = Array.from({ length: 11 }).map((_, index) => ({
 		questionKey: `question${index + 1}`,
 		answerKey: `answer${index + 1}`,
 	}));
@@ -19,7 +19,7 @@ export default function FAQSection() {
 			itemType="https://schema.org/FAQPage"
 			className="mx-auto mt-24 mb-10 text-center sm:mt-50 sm:mb-28"
 		>
-			<h2 className="mb-8 text-2xl sm:text-4xl font-bold text-center">{t('headline')}</h2>
+			<h2 className="text-2xl sm:text-4xl font-bold text-center">{t('headline')}</h2>
 			<Accordion type="single" collapsible defaultValue="item-1">
 				{faqItems.map((item, index) => (
 					<AccordionItem

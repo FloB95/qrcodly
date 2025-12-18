@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Webhook } from 'svix';
 import type { FastifyRequest } from 'fastify';
-import { UnauthenticatedError } from '@/core/error/http';
+import { UnauthorizedError } from '@/core/error/http';
 import { env } from '@/core/config/env';
 import { container } from 'tsyringe';
 import { Logger } from '@/core/logging';
@@ -20,12 +20,12 @@ export function clerkWebhookAuthHandler(
 		const svixSignature = headers['svix-signature'] as string;
 
 		if (!svixId || !svixTimestamp || !svixSignature) {
-			throw new UnauthenticatedError('Missing webhook headers');
+			throw new UnauthorizedError('Missing webhook headers');
 		}
 
 		const payload = request.body as JSON | undefined;
 		if (!payload) {
-			throw new UnauthenticatedError('Missing payload');
+			throw new UnauthorizedError('Missing payload');
 		}
 
 		const wh = new Webhook(env.CLERK_WEBHOOK_SECRET_KEY);
@@ -49,6 +49,6 @@ export function clerkWebhookAuthHandler(
 		logger.error('clerk.webhook.auth.error', {
 			message: error.message,
 		});
-		throw new UnauthenticatedError('Invalid webhook signature');
+		throw new UnauthorizedError('Invalid webhook signature');
 	}
 }

@@ -8,6 +8,7 @@ import { getTranslations } from 'next-intl/server';
 import { Features } from '@/components/Features';
 import FAQSection from '@/components/Faq';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
+import { ShieldCheck } from 'lucide-react';
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
@@ -19,7 +20,7 @@ export default async function Page({ params }: DefaultPageParams) {
 
 				<div>
 					<Container>
-						<h1 className="mt-12 lg:mt-4 mb-16 text-center text-2xl sm:text-4xl font-bold">
+						<h1 className="mt-12 mb-14 text-center text-2xl sm:text-4xl font-bold">
 							<div dangerouslySetInnerHTML={{ __html: String(t.raw('headline')) }} />
 						</h1>
 						<div className="mb-2">

@@ -1,7 +1,9 @@
 import { type FastifyRequest } from 'fastify';
 import { type IncomingHttpHeaders } from 'http';
+import { type IUser } from './user.interface';
 
 export interface IHttpRequest<B = unknown, P = unknown, Q = unknown> extends FastifyRequest {
+	user: null | IUser;
 	body: B;
 	params: P;
 	query: Q;
@@ -14,10 +16,7 @@ export interface IHttpRequestWithAuth<B = unknown, P = unknown, Q = unknown> ext
 	P,
 	Q
 > {
-	user: {
-		id: string;
-		tokenType: 'session_token' | 'api_key';
-	};
+	user: IUser;
 }
 export interface IHttpRequestWithEvent<B = unknown, P = unknown, Q = unknown> extends IHttpRequest<
 	B,

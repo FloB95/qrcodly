@@ -1,6 +1,5 @@
 import { PlanName } from '@/core/config/plan.config';
 import { UnauthorizedError } from '@/core/error/http';
-import { type IUser } from '@/core/interface/user.interface';
 import { Logger } from '@/core/logging';
 import { getAuth } from '@clerk/fastify';
 import { type FastifyRequest } from 'fastify';
@@ -13,28 +12,20 @@ import { container } from 'tsyringe';
  *
  * @throws {UnauthorizedError} If the user is not authenticated.
  */
-export function defaultApiAuthMiddleware(
+export function addUserToRequestMiddleware(
 	request: FastifyRequest,
 	_reply: unknown,
 	done: () => void,
 ) {
+	const { userId, tokenType, has } = getAuth(request, {
+		acceptsToken: ['session_token', 'api_key'],
+	}) as { userId: string | null; tokenType: string; has: any };
+
+	/* eslint-disable @typescript-eslint/no-unsafe-call */
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	const user = request.user as IUser;
-
-	if (!user || !user?.id) {
-		throw new UnauthorizedError();
-	}
-
-	container.resolve(Logger).info('api.request', {
-		requestId: request.id,
-		ip: request.ip,
-		ips: request.ips,
-		method: request.method,
-		path: request.url,
-		accessType: user.tokenType,
-		userId: user.id,
-	});
-
+	request.user = userId
+		? { id: userId, tokenType, plan: has({ plan: PlanName.PRO }) ? PlanName.PRO : PlanName.FREE }
+		: null;
 	done();
 }

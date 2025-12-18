@@ -102,6 +102,10 @@
 			"teamFeature": {
 				"headline": "Collaborate in Teams",
 				"subHeadline": "Invite team members and work together on QR codes. Perfect for companies, agencies, and teams."
+			},
+			"secureFeature": {
+				"headline": "Your data stays in Germany",
+				"subHeadline": "Qrcodly hosts all data locally – no sharing with external services. We only use Clerk for authentication."
 			}
 		}
 	},
@@ -404,6 +408,8 @@
 		"question9": "Can I personalize a QR Code with my logo?",
 		"answer9": "Yes, with qrcodly.de, you can design your QR Codes exactly to your liking: integrate your logo and use your brand colors without affecting scanability. This way, your codes remain unique and professional!",
 		"question10": "Do QR Codes also work in print?",
-		"answer10": "Absolutely! QR Codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!"
+		"answer10": "Absolutely! QR Codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
+		"question11": "Where is my data hosted?",
+		"answer11": "All data at Qrcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication."
 	}
 }

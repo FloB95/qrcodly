@@ -15,8 +15,8 @@ import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { CustomApiError } from '@/core/error/http';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { UnitOfWork } from '@/core/db/unit-of-work';
-import { LimitService } from '@/core/entitlements/limit.service';
-import { LimitKey, PlanName } from '@/core/entitlements/plan.config';
+import { IUser } from '@/core/interface/user.interface';
+import { CreateQrCodePolicy } from '../policies/create-qr-code.policy';
 
 /**
  * Use case for creating a QrCode entity.
@@ -32,30 +32,31 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 		@inject(GetReservedShortCodeUseCase)
 		private getReservedShortCodeUseCase: GetReservedShortCodeUseCase,
 		@inject(UpdateShortUrlUseCase) private updateShortUrlUseCase: UpdateShortUrlUseCase,
-		@inject(LimitService) private limitService: LimitService,
 	) {}
 
 	/**
 	 * Executes the use case to create a new QRcode entity based on the given DTO.
 	 * All database operations for core creation and short URL linking are wrapped in a transaction.
 	 * @param dto The data transfer object containing the details for the QRcode to be created.
-	 * @param createdBy The ID of the user who created the QRcode.
+	 * @param user The user object who created the QRcode.
 	 * @returns A promise that resolves with the newly created QRcode entity, potentially with linked shortUrl.
 	 */
-	async execute(dto: TCreateQrCodeDto, createdBy: string | null): Promise<TQrCodeWithRelations> {
-		let createdImage: string | undefined;
+	async execute(dto: TCreateQrCodeDto, user: IUser | null): Promise<TQrCodeWithRelations> {
+		// handle limitations and access check
+		const policy = new CreateQrCodePolicy(user, dto);
+		await policy.checkAccess();
 
-		await this.limitService.assertLimit(createdBy!, PlanName.ANONYMOUS, LimitKey.QR_CREATE_PER_DAY);
+		let createdImage: string | undefined;
 
 		try {
 			return await UnitOfWork.run<TQrCodeWithRelations>(async () => {
-				// generate ID before transaction if not DB-generatedƒ
+				// generate ID before transaction if not DB-generated
 				const newId = await this.qrCodeRepository.generateId();
 
 				const qrCodeData = {
 					id: newId,
 					...dto,
-					createdBy,
+					createdBy: user?.id ?? null,
 					previewImage: null,
 				};
 
@@ -64,7 +65,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 					const uploaded = await this.imageService.uploadImage(
 						qrCodeData.config.image,
 						newId,
-						createdBy ?? undefined,
+						user?.id ?? undefined,
 					);
 					createdImage = uploaded;
 					qrCodeData.config.image = uploaded;
@@ -74,8 +75,8 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 				let originalUrl: string | null = null;
 				let reservedShortUrl: TShortUrl | null = null;
 
-				if (createdBy && qrCodeData.content.type === 'url' && qrCodeData.content.data.isEditable) {
-					reservedShortUrl = await this.getReservedShortCodeUseCase.execute(createdBy);
+				if (user?.id && qrCodeData.content.type === 'url' && qrCodeData.content.data.isEditable) {
+					reservedShortUrl = await this.getReservedShortCodeUseCase.execute(user?.id);
 
 					if (!reservedShortUrl) throw new ShortUrlNotFoundError();
 
@@ -91,7 +92,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 					await this.updateShortUrlUseCase.execute(
 						reservedShortUrl,
 						{ destinationUrl: originalUrl, isActive: true },
-						createdBy!,
+						user!.id,
 						newId,
 					);
 				}
@@ -106,8 +107,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 					createdBy: finalQrCode.createdBy,
 				});
 
-				await this.limitService.incrementUsage(createdBy!, LimitKey.QR_CREATE_PER_DAY);
-
+				if (user?.id) await policy.incrementUsage();
 				return finalQrCode as TQrCodeWithRelations;
 			});
 		} catch (error: any) {

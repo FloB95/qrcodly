@@ -1,8 +1,11 @@
+'use client';
+
 import type { Tier } from '@/app/[locale]/plans/page';
 import { cn } from '@/lib/utils';
 import { CheckIcon } from '@heroicons/react/24/outline';
-import React from 'react';
+import React, { useState } from 'react';
 import { ProCTA } from './ProCTA';
+import { Switch } from '../ui/switch';
 
 export const PricingCard = ({
 	tier,
@@ -17,6 +20,8 @@ export const PricingCard = ({
 	isAuthenticated: boolean;
 	hasProPlan: boolean;
 }) => {
+	const [planPeriod, setPlanPeriod] = useState<'month' | 'annual'>('annual');
+
 	return (
 		<div
 			className={cn(
@@ -26,12 +31,28 @@ export const PricingCard = ({
 					: 'bg-white text-gray-900 ring-gray-200',
 			)}
 		>
-			<h3 className={cn('text-lg font-semibold', isPro ? 'text-indigo-400' : 'text-indigo-600')}>
-				{tier.name}
-			</h3>
+			<div className="flex justify-between">
+				<h3 className={cn('text-lg font-semibold', isPro ? 'text-indigo-400' : 'text-indigo-600')}>
+					{tier.name}
+				</h3>
+				{tier.priceAnnualPerMonth && (
+					<div className="flex space-x-2 align-middle items-center">
+						<span className="text-s text-gray-200">Jährlich</span>
+						<Switch
+							checked={planPeriod === 'annual'}
+							className="data-[state=checked]:bg-indigo-400!"
+							onCheckedChange={(e) => setPlanPeriod(e ? 'annual' : 'month')}
+						/>
+					</div>
+				)}
+			</div>
 
 			<p className="mt-4 flex items-baseline gap-x-2">
-				<span className="text-5xl font-semibold">{tier.priceMonthly}</span>
+				<span className="text-5xl font-semibold">
+					{planPeriod === 'annual' && tier.priceAnnualPerMonth
+						? tier.priceAnnualPerMonth
+						: tier.priceMonthly}
+				</span>
 				<span className={isPro ? 'text-gray-400' : 'text-gray-500'}>/month</span>
 			</p>
 
@@ -52,7 +73,12 @@ export const PricingCard = ({
 
 			{isPro && (
 				<div className="mt-8">
-					<ProCTA locale={locale} isAuthenticated={isAuthenticated} hasProPlan={hasProPlan} />
+					<ProCTA
+						locale={locale}
+						isAuthenticated={isAuthenticated}
+						hasProPlan={hasProPlan}
+						planPeriod={planPeriod}
+					/>
 				</div>
 			)}
 		</div>

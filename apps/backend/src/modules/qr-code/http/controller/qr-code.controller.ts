@@ -5,7 +5,7 @@ import { inject, injectable } from 'tsyringe';
 import { getAuth } from '@clerk/fastify';
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
-import { UnauthorizedError } from '@/core/error/http';
+import { ForbiddenError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import {
 	CreateQrCodeDto,
@@ -114,7 +114,7 @@ export class QrCodeController extends AbstractController {
 			request.body.content.data.isEditable = false;
 		}
 
-		const qrCode = await this.createQrCodeUseCase.execute(request.body, userId);
+		const qrCode = await this.createQrCodeUseCase.execute(request.body, request.user);
 		return this.makeApiHttpResponse(201, QrCodeWithRelationsResponseDto.parse(qrCode));
 	}
 
@@ -143,7 +143,7 @@ export class QrCodeController extends AbstractController {
 		}
 
 		if (qrCode.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		// Convert image path to presigned URL
@@ -190,7 +190,7 @@ export class QrCodeController extends AbstractController {
 		}
 
 		if (qrCode.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		const updatedQrCode = await this.updateQrCodeUseCase.execute(
@@ -225,7 +225,7 @@ export class QrCodeController extends AbstractController {
 		}
 
 		if (qrCode.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		await this.deleteQrCodeUseCase.execute(qrCode, request.user.id);
