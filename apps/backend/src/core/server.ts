@@ -7,6 +7,7 @@ import {
 	IN_TEST,
 	RATE_LIMIT_MAX,
 	RATE_LIMIT_TIME_WINDOW,
+	UPLOAD_LIMIT,
 } from './config/constants';
 import fastify, { FastifyListenOptions, type FastifyInstance } from 'fastify';
 import { clerkPlugin } from '@clerk/fastify';
@@ -21,6 +22,7 @@ import { OnShutdown } from './decorators/on-shutdown.decorator';
 import { HealthController } from './http/controller/health.controller';
 import FastifySwagger from '@fastify/swagger';
 import { ClerkWebhookController } from './http/controller/clerk.webhook.controller';
+import multipart from '@fastify/multipart';
 
 @singleton()
 export class Server {
@@ -76,6 +78,14 @@ export class Server {
 			return function (data) {
 				return JSON.stringify(data);
 			};
+		});
+
+		// register file multipart handling
+		await this.server.register(multipart, {
+			attachFieldsToBody: true,
+			limits: {
+				fileSize: UPLOAD_LIMIT,
+			},
 		});
 
 		// register security modules

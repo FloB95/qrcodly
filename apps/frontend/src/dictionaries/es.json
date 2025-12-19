@@ -252,6 +252,27 @@
 			"style": "Estilo",
 			"templates": "Plantillas"
 		},
+		"bulkImport": {
+			"title": "Crear múltiples códigos QR",
+			"step1": {
+				"title": "1. Diseñar QR Code",
+				"description": "Diseña tu QR Code o elige una plantilla."
+			},
+			"step2": {
+				"title": "2. Descargar plantilla CSV ({contentType})",
+				"description": "Descarga la plantilla CSV de {contentType} e ingresa tus datos.",
+				"button": "Descargar"
+			},
+			"step3": {
+				"title": "3. Subir plantilla",
+				"description": "Sube aquí el archivo CSV completado."
+			},
+			"info": {
+				"title": "Observa los límites y el inicio de sesión",
+				"description": "Con el archivo CSV puedes crear hasta 5 códigos QR a la vez. Para más, necesitas el plan Pro."
+			},
+			"createButton": "Crear códigos QR"
+		},
 		"settingsForm": {
 			"tabGeneral": "General",
 			"tabShape": "Forma",
@@ -296,6 +317,8 @@
 			"tabText": "TEXTO",
 			"tabWifi": "WIFI",
 			"tabVCard": "VCARD",
+			"cancel": "Cancelar",
+			"bulkModeBtn": "Creación masiva con CSV",
 			"text": {
 				"placeholder": "Introduce tu texto aquí"
 			},
@@ -405,5 +428,15 @@
 		"answer9": "Sí, con qrcodly.de, puedes diseñar tus Códigos QR exactamente a tu gusto: integra tu logotipo y usa los colores de tu marca sin afectar la capacidad de escaneo. ¡De esta manera, tus códigos seguirán siendo únicos y profesionales!",
 		"question10": "¿Funcionan los Códigos QR también en formato impreso?",
 		"answer10": "¡Absolutamente! Los Códigos QR están optimizados específicamente para la impresión y funcionan de manera fiable en diversos materiales, siempre que permanezcan claros y sin daños. ¡Asegura una buena calidad de impresión, y tus códigos estarán listos para usar en cualquier lugar!"
+	},
+	"fileUpload": {
+		"maxFiles": "Se permiten como máximo {maxFiles} archivos",
+		"invalidType": "Tipo de archivo no aceptado",
+		"tooLarge": "Archivo demasiado grande",
+		"uploadZone": {
+			"dragDrop": "Arrastra los archivos aquí",
+			"or": "O haz clic para buscar (máx. 1 archivo)",
+			"browse": "Buscar archivos"
+		}
 	}
 }

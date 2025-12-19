@@ -252,6 +252,27 @@
 			"style": "Stile",
 			"templates": "Modelli"
 		},
+		"bulkImport": {
+			"title": "Crea più codici QR",
+			"step1": {
+				"title": "1. Personalizza QR Code",
+				"description": "Personalizza il tuo QR code o scegli un modello."
+			},
+			"step2": {
+				"title": "2. Scarica il modello CSV ({contentType})",
+				"description": "Scarica il modello CSV {contentType} e inserisci i tuoi dati.",
+				"button": "Scarica"
+			},
+			"step3": {
+				"title": "3. Carica modello",
+				"description": "Carica qui il file CSV completato."
+			},
+			"info": {
+				"title": "Rispetta i limiti e accedi",
+				"description": "Con il file CSV puoi creare fino a 5 codici QR contemporaneamente. Per creare di più, serve il piano Pro."
+			},
+			"createButton": "Crea QR Code"
+		},
 		"settingsForm": {
 			"tabGeneral": "Generale",
 			"tabShape": "Forma",
@@ -296,6 +317,8 @@
 			"tabText": "TESTO",
 			"tabWifi": "WI-FI",
 			"tabVCard": "VCARD",
+			"cancel": "Annulla",
+			"bulkModeBtn": "Creazione massiva CSV",
 			"text": {
 				"placeholder": "Inserisci il tuo testo qui"
 			},
@@ -405,5 +428,15 @@
 		"answer9": "Sì, con qrcodly.de, puoi progettare i tuoi codici QR esattamente come desideri: integra il tuo logo e utilizza i colori del tuo marchio senza compromettere la scansionabilità. In questo modo, i tuoi codici rimarranno unici e professionali!",
 		"question10": "I codici QR funzionano anche in stampa?",
 		"answer10": "Assolutamente! I codici QR sono specificamente ottimizzati per la stampa e funzionano in modo affidabile su vari materiali, a condizione che rimangano chiari e intatti. Assicurati una buona qualità di stampa e i tuoi codici saranno pronti per l'uso ovunque!"
+	},
+	"fileUpload": {
+		"maxFiles": "Consentiti al massimo {maxFiles} file",
+		"invalidType": "Tipo di file non accettato",
+		"tooLarge": "File troppo grande",
+		"uploadZone": {
+			"dragDrop": "Trascina i file qui",
+			"or": "Oppure clicca per sfogliare (max 1 file)",
+			"browse": "Seleziona file"
+		}
 	}
 }

@@ -20,7 +20,7 @@ export const ALLOWED_ORIGINS: string[] = [
 	'https://stage.qrcodly.de',
 	env.FRONTEND_URL,
 ];
-
+export const UPLOAD_LIMIT = 2 * 1024 * 1024; // max 2MB
 export const DEFAULT_TIME_ZONE: string = 'Europe/Berlin';
 
 // Lowest priority, meaning shut down happens after other groups

@@ -16,6 +16,10 @@ export type QrCodeGeneratorState = {
 		content: TQrCodeContent;
 	};
 	lastError?: ApiError;
+	bulkMode: {
+		isBulkMode: boolean;
+		file?: File;
+	};
 };
 
 export type QrCodeGeneratorActions = {
@@ -31,6 +35,7 @@ export type QrCodeGeneratorActions = {
 			| undefined,
 	) => void;
 	updateLastError: (lastError: ApiError) => void;
+	updateBulkMode: (isBulkMode: boolean, file?: File) => void;
 	resetStore: () => void;
 };
 
@@ -105,6 +110,13 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState) => {
 		updateContent: (content) => set({ content }),
 		updateLatestQrCode: (latestQrCode) => set({ latestQrCode }),
 		updateLastError: (lastError) => set({ lastError }),
+		updateBulkMode: (isBulkMode, file) =>
+			set({
+				bulkMode: {
+					isBulkMode,
+					file,
+				},
+			}),
 		resetStore: () => set({ ...initState }),
 	}));
 };

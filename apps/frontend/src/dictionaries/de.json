@@ -252,6 +252,30 @@
 			"style": "Stil",
 			"templates": "Vorlagen"
 		},
+		"bulkImport": {
+			"title": "Mehrere QR Codes erstellen",
+			"successTitle": "QR Codes erstellt",
+			"successDescription": "Deine QR Codes wurde erfolgreich erstellt.",
+			"errorTitle": "Fehler beim erstellen der QR Codes",
+			"step1": {
+				"title": "1. QR Code gestalten",
+				"description": "Gestalte deinen QR Code oder wähle eine Vorlage aus."
+			},
+			"step2": {
+				"title": "2. CSV-Vorlage herunterladen ({contentType})",
+				"description": "Lade die {contentType} CSV-Vorlage herunter und trage deine Daten ein.",
+				"button": "Download"
+			},
+			"step3": {
+				"title": "3. Vorlage hochladen",
+				"description": "Lade die ausgefüllte CSV-Datei hier hoch."
+			},
+			"info": {
+				"title": "Beachte die Limits",
+				"description": "Mit der CSV-Datei kannst du maximal 5 QR Codes gleichzeitig erstellen. Für mehr benötigst du den Pro-Plan."
+			},
+			"createButton": "QR Codes erstellen"
+		},
 		"settingsForm": {
 			"tabGeneral": "Allgemein",
 			"tabShape": "Form",
@@ -296,6 +320,8 @@
 			"tabText": "TEXT",
 			"tabWifi": "WLAN",
 			"tabVCard": "VCARD",
+			"cancel": "Abbrechen",
+			"bulkModeBtn": "CSV Massenerstellung",
 			"text": {
 				"placeholder": "Gib hier deinen Text ein"
 			},
@@ -405,5 +431,15 @@
 		"answer9": "Ja, mit qrcodly.de gestaltest du deine QR Codes ganz nach deinen Wünschen: Integriere dein Logo und nutze deine Markenfarben, ohne die Scanbarkeit zu beeinträchtigen. So bleiben deine Codes einzigartig und professionell!",
 		"question10": "Funktionieren QR Codes auch im Druck?",
 		"answer10": "Absolut! QR Codes sind speziell für den Druck optimiert und funktionieren zuverlässig auf verschiedensten Materialien, solange sie klar und unbeschädigt bleiben. Achte auf gute Druckqualität, dann sind deine Codes überall einsatzbereit!"
+	},
+	"fileUpload": {
+		"maxFiles": "Es sind maximal {maxFiles} Dateien erlaubt",
+		"invalidType": "Dateityp wird nicht unterstützt",
+		"tooLarge": "Datei ist zu groß",
+		"uploadZone": {
+			"dragDrop": "Dateien hierher ziehen",
+			"or": "Oder klicken, um zu durchsuchen (max. 1 Datei)",
+			"browse": "Dateien auswählen"
+		}
 	}
 }

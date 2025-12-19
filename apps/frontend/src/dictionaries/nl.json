@@ -252,6 +252,27 @@
 			"style": "Stijl",
 			"templates": "Sjablonen"
 		},
+		"bulkImport": {
+			"title": "Meerdere QR-codes maken",
+			"step1": {
+				"title": "1. QR Code stijlen",
+				"description": "Stijl je QR-code of kies een sjabloon."
+			},
+			"step2": {
+				"title": "2. Download CSV-sjabloon ({contentType})",
+				"description": "Download het CSV-sjabloon {contentType} en voer je gegevens in.",
+				"button": "Download"
+			},
+			"step3": {
+				"title": "3. Upload sjabloon",
+				"description": "Upload hier het ingevulde CSV-bestand."
+			},
+			"info": {
+				"title": "Houd rekening met limieten en inloggen",
+				"description": "Met het CSV-bestand kun je maximaal 5 QR-codes tegelijk maken. Voor meer heb je het Pro-plan nodig."
+			},
+			"createButton": "QR-codes maken"
+		},
 		"settingsForm": {
 			"tabGeneral": "Algemeen",
 			"tabShape": "Vorm",
@@ -296,6 +317,8 @@
 			"tabText": "TEKST",
 			"tabWifi": "WI-FI",
 			"tabVCard": "VCARD",
+			"cancel": "Annuleren",
+			"bulkModeBtn": "CSV Massale aanmaak",
 			"text": {
 				"placeholder": "Voer hier uw tekst in"
 			},
@@ -405,5 +428,15 @@
 		"answer9": "Ja, met qrcodly.de kunt u uw QR-codes precies naar wens ontwerpen: integreer uw logo en gebruik uw merkkleuren zonder de scanbaarheid te beïnvloeden. Zo blijven uw codes uniek en professioneel!",
 		"question10": "Werken QR-codes ook in gedrukte vorm?",
 		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!"
+	},
+	"fileUpload": {
+		"maxFiles": "Maximaal {maxFiles} bestanden toegestaan",
+		"invalidType": "Bestandstype niet toegestaan",
+		"tooLarge": "Bestand te groot",
+		"uploadZone": {
+			"dragDrop": "Sleep bestanden hierheen",
+			"or": "Of klik om te bladeren (max. 1 bestand)",
+			"browse": "Bestanden selecteren"
+		}
 	}
 }

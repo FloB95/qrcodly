@@ -20,6 +20,7 @@ import { defaultApiAuthMiddleware } from '@/core/http/middleware/default-api-aut
 import z, { ZodError, type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
+import { multipartFromDataMiddleware } from '@/core/http/middleware/multipart-from-data.middleware';
 
 /**
  * Parses a Fastify request into an IHttpRequest object.
@@ -37,6 +38,7 @@ export const fastifyRequestParser = <T extends IHttpRequestWithAuth>(
 			cookies[key] = c.value ?? undefined;
 		}
 	}
+
 	return Object.freeze({ ...request, cookies }) as T;
 };
 
@@ -102,7 +104,7 @@ export const getOptionsWithPrefix = (options: FastifyPluginOptions, prefix: stri
  * @param reply - The Fastify reply object.
  * @returns A promise that resolves when the reply has been sent.
  */
-export const handleFastifyRequest = async (
+const handleFastifyRequest = async (
 	handler: (request: IHttpRequest | IHttpRequestWithAuth) => Promise<IHttpResponse>,
 	request: FastifyRequest,
 	reply: FastifyReply,
@@ -125,6 +127,20 @@ export const handleFastifyRequest = async (
 		throw new UnhandledServerError(error);
 	}
 };
+
+export function parseJsonFields(body: Record<string, any>, fieldsToParse: string[] = ['config']) {
+	const parsedBody: Record<string, any> = { ...body };
+
+	for (const key of fieldsToParse) {
+		if (parsedBody[key] && typeof parsedBody[key] === 'string') {
+			try {
+				parsedBody[key] = JSON.parse(parsedBody[key]);
+			} catch (e: any) {}
+		}
+	}
+
+	return parsedBody;
+}
 
 /**
  * Registers routes for a Fastify instance based on metadata from the provided controller class.
@@ -170,12 +186,23 @@ export function registerRoutes(
 		const schema: Record<string, unknown> = { ...(routeMeta.options.schema ?? {}) };
 
 		if (routeMeta.options.bodySchema) {
-			schema.body = z.toJSONSchema(routeMeta.options.bodySchema, { target: 'openapi-3.0' });
+			schema.body = z.toJSONSchema(routeMeta.options.bodySchema, {
+				target: 'openapi-3.0',
+				unrepresentable: 'any',
+			});
+
+			console.log(
+				z.toJSONSchema(routeMeta.options.bodySchema, {
+					target: 'openapi-3.0',
+					unrepresentable: 'any',
+				}),
+			);
 		}
 
 		if (routeMeta.options.querySchema) {
 			schema.querystring = z.toJSONSchema(routeMeta.options.querySchema, {
 				target: 'openapi-3.0',
+				unrepresentable: 'any',
 			});
 		}
 
@@ -183,7 +210,7 @@ export function registerRoutes(
 			schema.response = Object.fromEntries(
 				Object.entries(routeMeta.options.responseSchema).map(([status, zodSchema]) => [
 					status,
-					z.toJSONSchema(zodSchema, { target: 'openapi-3.0' }),
+					z.toJSONSchema(zodSchema, { target: 'openapi-3.0', unrepresentable: 'any' }),
 				]),
 			);
 		}
@@ -247,7 +274,14 @@ export function registerRoutes(
  * @returns A Fastify preValidation hook function.
  */
 function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type: 'body' | 'query') {
-	return (request: FastifyRequest, _reply: FastifyReply, done: () => void) => {
+	return async (request: FastifyRequest, _reply: FastifyReply, done: () => void) => {
+		if (request.headers['content-type']?.startsWith('multipart/form-data')) {
+			const formData = await request.formData();
+			const body: Record<string, any> = {};
+			formData.forEach((value, key) => (body[key] = value));
+			request.body = parseJsonFields(body);
+		}
+
 		const dataToValidate = type === 'body' ? request.body : qs.parse(request.query as string);
 		const validationResult: ReturnType<typeof schema.safeParse> = schema.safeParse(dataToValidate);
 

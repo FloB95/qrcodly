@@ -63,6 +63,7 @@
 		"@fastify/cors": "^11.1.0",
 		"@fastify/csrf-protection": "^7.1.0",
 		"@fastify/helmet": "^13.0.2",
+		"@fastify/multipart": "^9.3.0",
 		"@fastify/rate-limit": "^10.3.0",
 		"@fastify/swagger": "^9.6.1",
 		"@sentry/node": "catalog:",

@@ -83,6 +83,10 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 								}
 							: qrCode.content,
 				},
+				bulkMode: {
+					isBulkMode: false,
+					file: undefined,
+				},
 			}}
 		>
 			<h1 className="mt-12 lg:mt-12 mb-16 text-center text-2xl sm:text-4xl font-bold">
