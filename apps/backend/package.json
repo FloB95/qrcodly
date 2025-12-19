@@ -69,6 +69,7 @@
 		"@sentry/node": "catalog:",
 		"@shared/schemas": "workspace:^",
 		"commander": "^13.1.0",
+		"csv-parse": "^6.1.0",
 		"dotenv": "catalog:",
 		"drizzle-orm": "^0.42.0",
 		"drizzle-zod": "^0.7.1",

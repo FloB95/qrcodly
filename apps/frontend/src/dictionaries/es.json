@@ -269,7 +269,7 @@
 			},
 			"info": {
 				"title": "Observa los límites y el inicio de sesión",
-				"description": "Con el archivo CSV puedes crear hasta 5 códigos QR a la vez. Para más, necesitas el plan Pro."
+				"description": "Con el archivo CSV puedes crear hasta 15 códigos QR a la vez. Para más, necesitas el plan Pro."
 			},
 			"createButton": "Crear códigos QR"
 		},

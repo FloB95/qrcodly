@@ -21,6 +21,7 @@ export const ALLOWED_ORIGINS: string[] = [
 	env.FRONTEND_URL,
 ];
 export const UPLOAD_LIMIT = 2 * 1024 * 1024; // max 2MB
+export const MAX_QR_CODE_CSV_UPLOADS = 15;
 export const DEFAULT_TIME_ZONE: string = 'Europe/Berlin';
 
 // Lowest priority, meaning shut down happens after other groups

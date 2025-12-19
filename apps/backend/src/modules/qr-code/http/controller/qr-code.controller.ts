@@ -5,7 +5,7 @@ import { inject, injectable } from 'tsyringe';
 import { getAuth } from '@clerk/fastify';
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
-import { BadRequestError, UnauthorizedError } from '@/core/error/http';
+import { UnauthorizedError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import {
 	BulkImportQrCodeDto,
@@ -29,7 +29,7 @@ import { ImageService } from '@/core/services/image.service';
 import { UpdateQrCodeUseCase } from '../../useCase/update-qr-code.use-case';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
-import { debugConsole, sleep } from '@/utils/general';
+import { BulkImportQrCodesUseCase } from '../../useCase/bulk-import-qr-codes.use-case';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -38,6 +38,8 @@ export class QrCodeController extends AbstractController {
 		@inject(CreateQrCodeUseCase) private readonly createQrCodeUseCase: CreateQrCodeUseCase,
 		@inject(UpdateQrCodeUseCase) private readonly updateQrCodeUseCase: UpdateQrCodeUseCase,
 		@inject(DeleteQrCodeUseCase) private readonly deleteQrCodeUseCase: DeleteQrCodeUseCase,
+		@inject(BulkImportQrCodesUseCase)
+		private readonly bulkImportQrCodesUseCase: BulkImportQrCodesUseCase,
 		@inject(QrCodeRepository) private readonly qrCodeRepository: QrCodeRepository,
 		@inject(ImageService) private readonly imageService: ImageService,
 	) {
@@ -127,7 +129,6 @@ export class QrCodeController extends AbstractController {
 			200: QrCodeWithRelationsResponseDto,
 			400: DEFAULT_ERROR_RESPONSES[400],
 			401: DEFAULT_ERROR_RESPONSES[401],
-			403: DEFAULT_ERROR_RESPONSES[403],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		config: {
@@ -147,10 +148,9 @@ export class QrCodeController extends AbstractController {
 	async bulkImport(
 		request: IHttpRequestWithAuth<TBulkImportQrCodeDto>,
 	): Promise<IHttpResponse<any>> {
-		await sleep(1000);
-		console.log(request.body);
-
-		return this.makeApiHttpResponse(201, { test: true });
+		const qrCodes = await this.bulkImportQrCodesUseCase.execute(request.body, request.user.id);
+		const response = qrCodes.map((qrCode) => QrCodeWithRelationsResponseDto.parse(qrCode));
+		return this.makeApiHttpResponse(201, response);
 	}
 
 	@Get('/:id', {

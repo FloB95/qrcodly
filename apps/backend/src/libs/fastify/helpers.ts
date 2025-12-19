@@ -20,7 +20,6 @@ import { defaultApiAuthMiddleware } from '@/core/http/middleware/default-api-aut
 import z, { ZodError, type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
-import { multipartFromDataMiddleware } from '@/core/http/middleware/multipart-from-data.middleware';
 
 /**
  * Parses a Fastify request into an IHttpRequest object.
@@ -190,13 +189,6 @@ export function registerRoutes(
 				target: 'openapi-3.0',
 				unrepresentable: 'any',
 			});
-
-			console.log(
-				z.toJSONSchema(routeMeta.options.bodySchema, {
-					target: 'openapi-3.0',
-					unrepresentable: 'any',
-				}),
-			);
 		}
 
 		if (routeMeta.options.querySchema) {

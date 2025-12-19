@@ -269,7 +269,7 @@
 			},
 			"info": {
 				"title": "Przestrzegaj limitów i zaloguj się",
-				"description": "Za pomocą pliku CSV możesz utworzyć maksymalnie 5 kodów QR jednocześnie. Aby utworzyć więcej, potrzebny jest plan Pro."
+				"description": "Za pomocą pliku CSV możesz utworzyć maksymalnie 15 kodów QR jednocześnie. Aby utworzyć więcej, potrzebny jest plan Pro."
 			},
 			"createButton": "Utwórz kody QR"
 		},

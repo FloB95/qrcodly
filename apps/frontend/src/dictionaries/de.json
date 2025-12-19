@@ -272,7 +272,7 @@
 			},
 			"info": {
 				"title": "Beachte die Limits",
-				"description": "Mit der CSV-Datei kannst du maximal 5 QR Codes gleichzeitig erstellen. Für mehr benötigst du den Pro-Plan."
+				"description": "Mit der CSV-Datei kannst du maximal 15 QR Codes gleichzeitig erstellen. Für mehr benötigst du den Pro-Plan."
 			},
 			"createButton": "QR Codes erstellen"
 		},
