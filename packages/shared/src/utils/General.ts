@@ -66,7 +66,7 @@ export function convertVCardObjToString(vCardInput: TVCardInput): string {
 }
 
 export function convertWiFiObjToString(wiFiInput: TWifiInput): string {
-	if (areAllPropertiesUndefined(wiFiInput)) {
+	if (areAllPropertiesUndefined(wiFiInput) || wiFiInput.ssid === '') {
 		return '';
 	}
 
