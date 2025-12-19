@@ -19,7 +19,7 @@ const tiers: Tier[] = [
 	{
 		name: 'Free',
 		id: 'tier-free',
-		priceMonthly: '0€',
+		priceMonthly: '$0',
 		description: 'Free forever. All essential QR code features with no paywalls.',
 		features: [
 			'Unlimited QR codes',
@@ -36,8 +36,8 @@ const tiers: Tier[] = [
 	{
 		name: 'Pro',
 		id: 'tier-pro',
-		priceMonthly: '3,50€',
-		priceAnnualPerMonth: '2,99€',
+		priceMonthly: '$3,50',
+		priceAnnualPerMonth: '$2,99',
 		features: [
 			'Everything in Free',
 			'Unlimited MP3 QR codes',

@@ -5,7 +5,7 @@ import { container } from 'tsyringe';
 
 export abstract class BaseImageStrategy {
 	protected readonly validMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
-	protected readonly signedUrlExpirySeconds = 24 * 60 * 60; // 24 hours
+	protected readonly signedUrlExpirySeconds = 7 * 24 * 60 * 60; // 7 Days
 	protected readonly objectStorage: ObjectStorage;
 	protected readonly logger: Logger;
 

@@ -1,4 +1,4 @@
-import { type PlanName } from '@/core/config/plan.config';
+import { QR_CODE_PLAN_LIMITS, type PlanName } from '@/core/config/plan.config';
 import { UnauthorizedError } from '@/core/error/http';
 import { PlanLimitExceededError } from '@/core/error/http/plan-limit-exceeded.error';
 import { type IUser } from '@/core/interface/user.interface';
@@ -11,10 +11,7 @@ import { type TQrCodeContentType, type TCreateQrCodeDto } from '@shared/schemas'
 
 export class CreateQrCodePolicy extends AbstractPolicy {
 	private limitsByQrCodeType: Record<PlanName, Partial<Record<TQrCodeContentType, number | null>>> =
-		{
-			free: {},
-			pro: {},
-		};
+		QR_CODE_PLAN_LIMITS;
 
 	constructor(
 		private readonly user: IUser | null,

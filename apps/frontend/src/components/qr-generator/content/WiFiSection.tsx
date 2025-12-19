@@ -44,6 +44,8 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 	const [debounced] = useDebouncedValue<FormValues>(form.getValues(), 500);
 
 	function onSubmit(values: FormValues) {
+		console.log('submit', values);
+
 		onChange(values);
 	}
 
@@ -55,7 +57,7 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 		if (
 			JSON.stringify(debounced) === '{}' ||
 			JSON.stringify(debounced) === JSON.stringify(value) ||
-			typeof debounced.ssid === 'undefined'
+			debounced.ssid.length < 1
 		) {
 			return;
 		}
