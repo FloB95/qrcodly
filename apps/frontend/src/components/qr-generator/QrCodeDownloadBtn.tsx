@@ -107,7 +107,7 @@ const QrCodeDownloadBtn = ({
 
 						if (error.code >= 500) {
 							Sentry.captureException(error, {
-								data: {
+								extra: {
 									qrCode,
 									error: {
 										code: error.code,

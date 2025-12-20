@@ -30,7 +30,7 @@ export class BadRequestError extends CustomApiError {
 			});
 
 			this.message +=
-				(this.message[this.message.length] !== '.' ? '. ' : ' ') + validationError.toString();
+				(this.message[this.message.length - 1] !== '.' ? '. ' : ' ') + validationError.toString();
 		}
 
 		this.zodError = zodError;

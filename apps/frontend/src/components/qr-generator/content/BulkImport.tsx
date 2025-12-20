@@ -69,7 +69,7 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 
 						if (error.code >= 500) {
 							Sentry.captureException(error, {
-								data: {
+								extra: {
 									error: {
 										code: error.code,
 										message: error.message,

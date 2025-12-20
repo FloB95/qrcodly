@@ -47,7 +47,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 
 						if (error.code >= 500) {
 							Sentry.captureException(error, {
-								data: {
+								extra: {
 									templateName: templateName,
 									config,
 									error: {

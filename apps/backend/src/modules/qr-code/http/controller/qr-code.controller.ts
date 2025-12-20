@@ -122,7 +122,7 @@ export class QrCodeController extends AbstractController {
 	@Post('/bulk-import', {
 		bodySchema: BulkImportQrCodeDto,
 		responseSchema: {
-			200: QrCodeWithRelationsResponseDto,
+			201: QrCodeWithRelationsResponseDto,
 			400: DEFAULT_ERROR_RESPONSES[400],
 			401: DEFAULT_ERROR_RESPONSES[401],
 			429: DEFAULT_ERROR_RESPONSES[429],

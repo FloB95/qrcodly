@@ -3,11 +3,15 @@ description: 'Cache Dependencies'
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 22
-        cache: pnpm
-
+    - uses: actions/checkout@v5
     - uses: pnpm/action-setup@v4
       with:
         version: 9
+    - uses: actions/setup-node@v6
+      with:
+        node-version: '22'
+        cache: 'pnpm'
+
+    - name: Install Dependencies
+      run: pnpm install
+      shell: bash

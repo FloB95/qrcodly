@@ -73,7 +73,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 
 						if (error.code >= 500) {
 							Sentry.captureException(error, {
-								data: {
+								extra: {
 									qrCodeName: qrCodeName,
 									qrCode,
 									error: {
