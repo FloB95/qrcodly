@@ -5,7 +5,12 @@ import type { MetadataRoute } from 'next';
 const PAGES = [
 	'', // Home
 	'docs',
+	'plans',
+	'imprint',
+	'privacy-policy',
 ];
+
+const NOT_TRANSLATED = ['docs', 'imprint', 'privacy-policy'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	return PAGES.map((page) => {
@@ -13,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
 		let alternates: Record<string, string> = {};
 
-		if (page !== 'docs') {
+		if (!NOT_TRANSLATED.includes(page)) {
 			alternates = Object.fromEntries(
 				SUPPORTED_LANGUAGES.filter((lang) => lang !== 'en').map((lang) => [
 					lang,

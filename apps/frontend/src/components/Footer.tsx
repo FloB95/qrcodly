@@ -52,17 +52,15 @@ export default function Footer() {
 				</div>
 				<div className="justify-center space-x-4 pt-6 pb-12 text-center text-xs md:flex md:items-center lg:px-8">
 					<Link
-						href="https://www.fb-dev.de/impressum/"
+						href="/imprint"
 						title={t('legalNotice')}
-						target="_blank"
 						className="text-gray-600 hover:text-gray-800"
 					>
 						{t('legalNotice')}
 					</Link>
 					<Link
-						href="https://www.fb-dev.de/datenschutz/"
+						href="/privacy-policy"
 						title={t('privacyPolicy')}
-						target="_blank"
 						className="text-gray-600 hover:text-gray-800"
 					>
 						{t('privacyPolicy')}

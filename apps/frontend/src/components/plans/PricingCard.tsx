@@ -57,7 +57,9 @@ export const PricingCard = ({
 			</p>
 
 			{tier.description && (
-				<p className="mt-6 text-sm text-muted-foreground font-medium">{tier.description}</p>
+				<p className={`mt-6 text-sm font-medium ${isPro ? 'text-gray-400' : 'text-gray-500'}`}>
+					{tier.description}
+				</p>
 			)}
 
 			<ul className="mt-8 space-y-3 text-sm">

@@ -14,34 +14,33 @@ export type Tier = {
 	features: string[];
 	featured: boolean;
 };
-
 const tiers: Tier[] = [
 	{
 		name: 'Free',
 		id: 'tier-free',
 		priceMonthly: '$0',
-		description: 'Free forever. All essential QR code features with no paywalls.',
+		description:
+			'Completely free. Access all essential QR code features without limits or paywalls.',
 		features: [
-			'Unlimited QR codes',
-			'Unlimited scans',
+			'Unlimited QR codes & scans',
 			'Static & dynamic QR codes',
 			'Custom styling & icons',
-			'Unlimited analytics',
+			'Detailed analytics',
 			'No credit card required',
 			'Limited API access',
-			'Limited MP3 QR codes',
+			'Limited bulk QR code generation',
 		],
 		featured: false,
 	},
 	{
 		name: 'Pro',
 		id: 'tier-pro',
-		priceMonthly: '$3,50',
-		priceAnnualPerMonth: '$2,99',
+		priceMonthly: '$3.50',
+		priceAnnualPerMonth: '$2.99',
+		description: 'Support us & unlock all features for your QR codes.',
 		features: [
 			'Everything in Free',
-			'Unlimited MP3 QR codes',
-			'Bulk QR code generation',
+			'Unlimited bulk QR code generation',
 			'Unlimited API access',
 			'Priority support',
 			'Team features (coming soon)',
@@ -56,7 +55,7 @@ export default async function Page({ params }: DefaultPageParams) {
 	const hasProPlan = has({ plan: 'pro_user' });
 
 	return (
-		<main className="flex min-h-screen flex-col bg-linear-to-br from-zinc-50 to-orange-100">
+		<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
 			<Header />
 
 			<Container className="py-24">

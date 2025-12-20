@@ -15,8 +15,8 @@ import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { CustomApiError } from '@/core/error/http';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { UnitOfWork } from '@/core/db/unit-of-work';
-import { IUser } from '@/core/interface/user.interface';
 import { CreateQrCodePolicy } from '../policies/create-qr-code.policy';
+import { TUser } from '@/core/domain/schema/UserSchema';
 
 /**
  * Use case for creating a QrCode entity.
@@ -41,7 +41,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 	 * @param user The user object who created the QRcode.
 	 * @returns A promise that resolves with the newly created QRcode entity, potentially with linked shortUrl.
 	 */
-	async execute(dto: TCreateQrCodeDto, user: IUser | null): Promise<TQrCodeWithRelations> {
+	async execute(dto: TCreateQrCodeDto, user: TUser | undefined): Promise<TQrCodeWithRelations> {
 		// handle limitations and access check
 		const policy = new CreateQrCodePolicy(user, dto);
 		await policy.checkAccess();

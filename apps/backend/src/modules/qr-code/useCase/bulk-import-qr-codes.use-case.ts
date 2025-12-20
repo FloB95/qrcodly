@@ -15,6 +15,7 @@ import { BulkWifiCsvDto } from '../domain/dtos/BulkWifiCsvDto';
 import { BulkVCardCsvDto } from '../domain/dtos/BulkVCardCsvDto';
 import { BadRequestError, CustomApiError } from '@/core/error/http';
 import { TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
+import { TUser } from '@/core/domain/schema/UserSchema';
 
 @injectable()
 export class BulkImportQrCodesUseCase {
@@ -63,7 +64,7 @@ export class BulkImportQrCodesUseCase {
 		@inject(Logger) private readonly logger: Logger,
 	) {}
 
-	async execute(dto: TBulkImportQrCodeDto, userId: string): Promise<TQrCodeWithRelations[]> {
+	async execute(dto: TBulkImportQrCodeDto, user: TUser): Promise<TQrCodeWithRelations[]> {
 		const createdQrCodes: TQrCodeWithRelations[] = [];
 		const { contentType, file, config } = dto;
 
@@ -80,7 +81,7 @@ export class BulkImportQrCodesUseCase {
 		this.logger.info('bulk.import.records', {
 			contentType,
 			items: validRecords.length,
-			userId,
+			user: user.id,
 		});
 
 		for (const record of validRecords) {
@@ -94,7 +95,7 @@ export class BulkImportQrCodesUseCase {
 							data: contentType === 'text' ? record?.text : record,
 						}),
 					},
-					userId,
+					user,
 				),
 			);
 

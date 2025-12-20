@@ -106,8 +106,8 @@
 				"subHeadline": "Lade Teammitglieder ein und arbeite gemeinsam an QR-Codes. Ideal für Unternehmen, Agenturen und Teams."
 			},
 			"secureFeature": {
-				"headline": "Deine Daten bleiben in Deutschland",
-				"subHeadline": "Qrcodly hostet alle Daten lokal – keine Weitergabe an externe Dienste. Einzig für die Authentifizierung nutzen wir Clerk."
+				"headline": "Deine Daten bleiben bei uns",
+				"subHeadline": "Qrcodly hostet alle Daten lokal in Deutschland – keine Weitergabe an externe Dienste. Einzig für die Authentifizierung nutzen wir Clerk."
 			}
 		}
 	},

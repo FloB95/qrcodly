@@ -106,8 +106,8 @@
 				"subHeadline": "Invitez des membres de l'équipe et travaillez ensemble sur les codes QR. Idéal pour les entreprises, les agences et les équipes."
 			},
 			"secureFeature": {
-				"headline": "Vos données restent en Allemagne",
-				"subHeadline": "Qrcodly héberge toutes les données localement – aucune transmission à des services externes. Nous utilisons uniquement Clerk pour l’authentification."
+				"headline": "Vos données restent chez nous",
+				"subHeadline": "Qrcodly héberge toutes les données localement en Allemagne – sans les partager avec des services externes. Nous utilisons uniquement Clerk pour l’authentification."
 			}
 		}
 	},

@@ -2,7 +2,14 @@
 
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
@@ -20,7 +27,7 @@ const formSchema = z.object({
 });
 
 export const TextSection = ({ value, onChange }: TTextSectionProps) => {
-	const t = useTranslations('generator.contentSwitch.text');
+	const t = useTranslations('generator.contentSwitch');
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -47,13 +54,22 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
 					name="text"
 					render={({ field }) => (
 						<FormItem>
+							<FormLabel>
+								<p
+									className="first-letter:uppercase lowercase"
+									translate="no"
+									suppressHydrationWarning
+								>
+									{t('tab.text')}
+								</p>
+							</FormLabel>
 							<FormControl>
 								<Textarea
 									{...field}
 									autoFocus
 									maxLength={1000}
 									className="px-6 py-3.5"
-									placeholder={t('placeholder')}
+									placeholder={t('text.placeholder')}
 								/>
 							</FormControl>
 							<FormMessage />

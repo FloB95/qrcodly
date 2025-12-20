@@ -106,8 +106,8 @@
 				"subHeadline": "Nodig teamleden uit en werk samen aan QR-codes. Ideaal voor bedrijven, bureaus en teams."
 			},
 			"secureFeature": {
-				"headline": "Je gegevens blijven in Duitsland",
-				"subHeadline": "Qrcodly host alle gegevens lokaal – geen doorgifte aan externe diensten. Alleen Clerk wordt gebruikt voor authenticatie."
+				"headline": "Je gegevens blijven bij ons",
+				"subHeadline": "Qrcodly host alle gegevens lokaal in Duitsland – geen doorsturing naar externe diensten. Alleen voor authenticatie gebruiken we Clerk."
 			}
 		}
 	},

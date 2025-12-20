@@ -140,7 +140,7 @@ export class QrCodeController extends AbstractController {
 		},
 	})
 	async bulkImport(request: IHttpRequest<TBulkImportQrCodeDto>): Promise<IHttpResponse<any>> {
-		const qrCodes = await this.bulkImportQrCodesUseCase.execute(request.body, request.user.id);
+		const qrCodes = await this.bulkImportQrCodesUseCase.execute(request.body, request.user);
 		const response = qrCodes.map((qrCode) => QrCodeWithRelationsResponseDto.parse(qrCode));
 		return this.makeApiHttpResponse(201, response);
 	}

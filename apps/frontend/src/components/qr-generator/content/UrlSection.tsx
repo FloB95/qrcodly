@@ -3,7 +3,14 @@
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect, useState } from 'react';
 import { Switch } from '@/components/ui/switch';
@@ -100,6 +107,11 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 						name="url"
 						render={({ field }) => (
 							<FormItem>
+								<FormLabel>
+									<p translate="no" suppressHydrationWarning>
+										Url
+									</p>
+								</FormLabel>
 								<FormControl>
 									<Input
 										{...field}

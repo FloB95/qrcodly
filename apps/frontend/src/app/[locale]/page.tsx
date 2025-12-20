@@ -8,14 +8,13 @@ import { getTranslations } from 'next-intl/server';
 import { Features } from '@/components/Features';
 import FAQSection from '@/components/Faq';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
-import { ShieldCheck } from 'lucide-react';
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
 	const t = await getTranslations({ locale });
 	return (
 		<QrCodeGeneratorStoreProvider>
-			<main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
+			<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
 				<Header />
 
 				<div>

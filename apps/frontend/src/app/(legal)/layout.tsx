@@ -1,15 +1,12 @@
 // app/docs/layout.tsx
 import '@/styles/globals.css';
-import { source } from '@/lib/source';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import { baseOptions } from '@/lib/layout.shared';
-import { RootProvider } from 'fumadocs-ui/provider/next';
 import Header from '@/components/Header';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
-import Providers from '@/components/provider';
 import { NextIntlClientProvider } from 'next-intl';
+import Footer from '@/components/Footer';
+import Container from '@/components/ui/container';
 
 const openSans = Inter({
 	subsets: ['latin'],
@@ -52,24 +49,11 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
 
 				<body className={`font-sans ${openSans.variable}`}>
 					<NextIntlClientProvider>
-						<Providers>
-							<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
-								<RootProvider theme={{ enabled: false }}>
-									<DocsLayout
-										themeSwitch={{ enabled: false }}
-										tree={source.pageTree}
-										{...baseOptions()}
-									>
-										<>
-											<div className="hidden md:block sm:md-10">
-												<Header hideLogo hideLanguageNav />
-											</div>
-											{children}
-										</>
-									</DocsLayout>
-								</RootProvider>
-							</main>
-						</Providers>
+						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
+							<Header hideLanguageNav />
+							<Container className="mt-22 px-6 sm:px-20 lg:px-40 mb-10">{children}</Container>
+							<Footer />
+						</main>
 					</NextIntlClientProvider>
 					<Toaster />
 				</body>

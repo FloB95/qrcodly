@@ -10,6 +10,7 @@ export enum RateLimitPolicy {
 export enum RateLimitTier {
 	ANONYMOUS = 'anonymous',
 	AUTHENTICATED = 'authenticated',
+	PRO_PLAN = 'pro_plan',
 }
 
 type RateLimitTierLimits = {
@@ -24,17 +25,21 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	[RateLimitPolicy.DEFAULT]: {
 		[RateLimitTier.ANONYMOUS]: 20,
 		[RateLimitTier.AUTHENTICATED]: 80,
+		[RateLimitTier.PRO_PLAN]: 120,
 	},
 	[RateLimitPolicy.QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 4,
 		[RateLimitTier.AUTHENTICATED]: 10,
+		[RateLimitTier.PRO_PLAN]: 30,
 	},
 	[RateLimitPolicy.BULK_QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 2,
+		[RateLimitTier.PRO_PLAN]: 20,
 	},
 	[RateLimitPolicy.TEMPLATE_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 5,
+		[RateLimitTier.PRO_PLAN]: 20,
 	},
 } as const;

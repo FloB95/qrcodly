@@ -23,6 +23,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -185,6 +186,7 @@ export const TemplateListItem = ({
 
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>{t('qrCode.actionsMenu.title')}</DropdownMenuLabel>
+							<DropdownMenuSeparator />
 
 							<DropdownMenuItem asChild>
 								<span className="cursor-pointer" onClick={qrCodeFromTemplate}>

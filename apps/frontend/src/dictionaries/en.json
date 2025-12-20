@@ -20,7 +20,7 @@
 	"headline": "<span class=\"text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
 		"title": "QRcodly - Free QR Code Generator",
-		"description": "Create free QR codes with logo, custom design or templates – perfect for marketing, business cards & more. Use the QR Code Generator now!",
+		"description": "Create free QR codes with logo, custom design or templates – perfect for marketing, business cards & more. Use the QR code Generator now!",
 		"keywords": "free QR code generator, QR code creator, generate QR codes, custom QR code maker"
 	},
 	"doc": {
@@ -30,9 +30,9 @@
 	"collection": {
 		"headline": "Your Collection",
 		"subHeadline": "Here you can find all your QR codes and templates and manage them.",
-		"tabQrCode": "QR Codes",
+		"tabQrCode": "QR codes",
 		"tabTemplates": "Templates",
-		"addQrCodeBtn": "Add QR Code"
+		"addQrCodeBtn": "Add QR code"
 	},
 	"analytics": {
 		"totalViews": "Total Views",
@@ -59,7 +59,7 @@
 		"signInBtn": "Sign In"
 	},
 	"footer": {
-		"qrCodeCopyright": "QR Code is a registered trademark of DENSO WAVE INCORPORATED",
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED",
 		"legalNotice": "Legal Notice",
 		"privacyPolicy": "Privacy Policy"
 	},
@@ -86,15 +86,15 @@
 			"subHeadline": "With QRcodly you can create, edit, manage, and analyze QR codes – all in one place.",
 			"emailBtn": "Email us",
 			"editFeature": {
-				"headline": "Edit QR Codes Anytime",
+				"headline": "Edit QR codes Anytime",
 				"subHeadline": "Create QR codes for free and change the destination URL even after printing."
 			},
 			"statisticFeature": {
-				"headline": "Detailed Real-Time QR Code Analytics",
+				"headline": "Detailed Real-Time QR code Analytics",
 				"subHeadline": "Track how often and where your QR codes are scanned – in real time."
 			},
 			"overviewFeature": {
-				"headline": "Organized QR Code Collection",
+				"headline": "Organized QR code Collection",
 				"subHeadline": "Keep all your generated QR codes in one central, easy-to-manage location."
 			},
 			"templateFeature": {
@@ -106,8 +106,8 @@
 				"subHeadline": "Invite team members and work together on QR codes. Perfect for companies, agencies, and teams."
 			},
 			"secureFeature": {
-				"headline": "Your data stays in Germany",
-				"subHeadline": "Qrcodly hosts all data locally – no sharing with external services. We only use Clerk for authentication."
+				"headline": "Your data stays with us",
+				"subHeadline": "Qrcodly hosts all data locally in Germany – no sharing with external services. Only for authentication, we use Clerk."
 			}
 		}
 	},
@@ -120,21 +120,21 @@
 		}
 	},
 	"qrCodeDisabled": {
-		"title": "QR Code Disabled",
+		"title": "QR code Disabled",
 		"description": "Sorry, this QR code is no longer active. The destination it pointed to is unavailable.",
 		"note": "If you believe this is a mistake, please contact the owner of the QR code or try again later.",
 		"button": "Go Back Home"
 	},
 	"qrCode": {
 		"storeBtn": "Save in Collection",
-		"updateBtn": "Update QR Code",
+		"updateBtn": "Update QR code",
 		"error": {
 			"delete": {
-				"title": "Error Deleting QR Code",
+				"title": "Error Deleting QR code",
 				"message": "There was an error deleting your QR code. We've been notified and will fix it as soon as possible."
 			},
 			"update": {
-				"title": "Error Updating QR Code",
+				"title": "Error Updating QR code",
 				"message": "There was an error updating your QR code. We've been notified and will fix it as soon as possible."
 			},
 			"noFound": "No QR codes found"
@@ -150,12 +150,12 @@
 			"description": "We are deleting your QR code."
 		},
 		"updateQrCodeName": {
-			"title": "Update QR Code Name",
+			"title": "Update QR code Name",
 			"placeholder": "Enter a name"
 		},
 		"update": {
-			"headline": "Update QR Code",
-			"successTitle": "QR Code updated",
+			"headline": "Update QR code",
+			"successTitle": "QR code updated",
 			"successDescription": "Your QR code has been successfully updated.",
 			"errorTitle": "Error updating QR code",
 			"errorDescription": "An error occurred while updating your QR code. We have been notified and will fix the issue as soon as possible.",
@@ -177,15 +177,15 @@
 			"enableShortUrl": "Enable"
 		},
 		"download": {
-			"successTitle": "New QR Code Created",
-			"successDescription": "We saved your QR Code in your collection for later use.",
+			"successTitle": "New QR code Created",
+			"successDescription": "We saved your QR code in your collection for later use.",
 			"downloadBtn": "Download",
-			"errorTitle": "Error saving QR Code"
+			"errorTitle": "Error saving QR code"
 		},
 		"saveInfo": "Save the current QR code in your collection for later use.",
 		"savePopup": {
-			"title": "Save Current QR Code",
-			"placeholder": "QR Code Name"
+			"title": "Save Current QR code",
+			"placeholder": "QR code Name"
 		}
 	},
 	"loginDialog": {
@@ -248,7 +248,7 @@
 			"cancelBtn": "Cancel"
 		},
 		"actionsMenu": {
-			"qrCodeFromTemplate": "QR Code from Template"
+			"qrCodeFromTemplate": "QR code from Template"
 		}
 	},
 	"generator": {
@@ -264,7 +264,7 @@
 			"successDescription": "All your QR codes have been successfully imported.",
 			"errorTitle": "Import failed",
 			"step1": {
-				"title": "1. Style QR Code",
+				"title": "1. Style QR code",
 				"description": "Style your QR code or choose a template."
 			},
 			"step2": {
@@ -280,7 +280,7 @@
 				"title": "Observe limits",
 				"description": "You can create up to 15 QR codes at once with the CSV file. For more, you need the Pro plan."
 			},
-			"createButton": "Create QR Codes"
+			"createButton": "Create QR codes"
 		},
 		"settingsForm": {
 			"tabGeneral": "General",
@@ -418,26 +418,26 @@
 	},
 	"faq": {
 		"headline": "Frequently Asked Questions",
-		"question1": "What is a QR Code?",
-		"answer1": "A QR Code (Quick Response Code) is a smart, two-dimensional barcode that can store various types of information, such as website links, text, or contact details. It can be easily captured and deciphered using a smartphone or a dedicated scanner.",
-		"question2": "How do I create a QR Code?",
-		"answer2": "With qrcodly.de, you can create your custom QR Code in no time: simply enter the desired content and download your freshly generated code directly. Quick and straightforward!",
-		"question3": "What is the difference between static and dynamic QR Codes?",
-		"answer3": "Static QR Codes contain fixed information that cannot be changed after creation. Dynamic QR Codes, on the other hand, offer maximum flexibility: you can adjust the linked content at any time after creation and also benefit from advanced features like detailed scan statistics.",
-		"question4": "Is creating QR Codes free?",
+		"question1": "What is a QR code?",
+		"answer1": "A QR code (Quick Response Code) is a smart, two-dimensional barcode that can store various types of information, such as website links, text, or contact details. It can be easily captured and deciphered using a smartphone or a dedicated scanner.",
+		"question2": "How do I create a QR code?",
+		"answer2": "With qrcodly.de, you can create your custom QR code in no time: simply enter the desired content and download your freshly generated code directly. Quick and straightforward!",
+		"question3": "What is the difference between static and dynamic QR codes?",
+		"answer3": "Static QR codes contain fixed information that cannot be changed after creation. Dynamic QR codes, on the other hand, offer maximum flexibility: you can adjust the linked content at any time after creation and also benefit from advanced features like detailed scan statistics.",
+		"question4": "Is creating QR codes free?",
 		"answer4": "Yes, the generation of both static and dynamic QR codes is and will remain free forever, as many as you want. In the future, there will be limitations for API requests and for businesses working with multiple users.",
-		"question5": "How long is a QR Code valid?",
-		"answer5": "Static QR Codes do not expire and remain permanently valid as long as the linked content is accessible online. Dynamic QR Codes remain active as long as they are managed in our system and no specific restrictions apply from the provider.",
-		"question6": "What are the advantages of dynamic QR Codes?",
-		"answer6": "Dynamic QR Codes offer unparalleled flexibility, as you can adjust their content even after printing. They also enable precise scan statistics, providing insights into location, time, and device used, allowing you to optimize your campaigns effectively.",
-		"question7": "Do I need a special app to scan QR Codes?",
-		"answer7": "No, in most cases, it's not necessary! The integrated camera function of modern smartphones can now directly recognize QR Codes and open the embedded content – no additional app required.",
-		"question8": "Which statistics are collected for dynamic QR Codes?",
-		"answer8": "When you enable statistics, each scan of your dynamic QR Code records and analyzes information such as the number of scans, visitors, devices used, countries, browsers, and operating systems.",
-		"question9": "Can I personalize a QR Code with my logo?",
-		"answer9": "Yes, with qrcodly.de, you can design your QR Codes exactly to your liking: integrate your logo and use your brand colors without affecting scanability. This way, your codes remain unique and professional!",
-		"question10": "Do QR Codes also work in print?",
-		"answer10": "Absolutely! QR Codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
+		"question5": "How long is a QR code valid?",
+		"answer5": "Static QR codes do not expire and remain permanently valid as long as the linked content is accessible online. Dynamic QR codes remain active as long as they are managed in our system and no specific restrictions apply from the provider.",
+		"question6": "What are the advantages of dynamic QR codes?",
+		"answer6": "Dynamic QR codes offer unparalleled flexibility, as you can adjust their content even after printing. They also enable precise scan statistics, providing insights into location, time, and device used, allowing you to optimize your campaigns effectively.",
+		"question7": "Do I need a special app to scan QR codes?",
+		"answer7": "No, in most cases, it's not necessary! The integrated camera function of modern smartphones can now directly recognize QR codes and open the embedded content – no additional app required.",
+		"question8": "Which statistics are collected for dynamic QR codes?",
+		"answer8": "When you enable statistics, each scan of your dynamic QR code records and analyzes information such as the number of scans, visitors, devices used, countries, browsers, and operating systems.",
+		"question9": "Can I personalize a QR code with my logo?",
+		"answer9": "Yes, with qrcodly.de, you can design your QR codes exactly to your liking: integrate your logo and use your brand colors without affecting scanability. This way, your codes remain unique and professional!",
+		"question10": "Do QR codes also work in print?",
+		"answer10": "Absolutely! QR codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
 		"question11": "Where is my data hosted?",
 		"answer11": "All data at Qrcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication."
 	},
