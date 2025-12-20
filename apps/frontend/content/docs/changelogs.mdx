@@ -6,13 +6,58 @@ description: See what's new in QRcodly
 Welcome to the **QRcodly Changelog**! 📦  
 Here you can see all recent updates, new features, improvements, and fixes — explained in a simple way.
 
-<Callout type="info">
-  Stay up-to-date with the latest features and improvements in QRcodly.
-</Callout>
+<Callout type="info">Stay up-to-date with the latest features and improvements in QRcodly.</Callout>
 
-## Latest Release: 1.4.0 - 2025-12-18
+## Latest Release: 1.5.0 - 2025-12-20
 
-  <Card
+<Card
+  title="v1.5.0 Latest"
+  description={
+    <>
+      <p>🚀 <strong>Release Notes – Version 1.5.0</strong></p>
+      <p>QRcodly now lets you import multiple QR codes at once using CSV files. This makes creating lots of QR codes faster and easier. We've also improved backend support, added rate limits, and updated translations to make everything more reliable.</p>
+
+      <h4>✨ New Features</h4>
+      <ul className="list-disc ml-5 space-y-1">
+        <li>Bulk Import (CSV): Upload structured CSV files to create multiple QR codes at once.</li>
+        <li>New Bulk Import UI: Step-by-step guided interface for uploading and validating CSV files.</li>
+        <li>Bulk Import API & Use Case: Reliable server-side processing for bulk imports.</li>
+        <li>CSV Templates: Ready-to-download CSV templates for URL, Text, WiFi, and vCard QR codes.</li>
+      </ul>
+
+      <h4>🔒 Rate Limiting</h4>
+      <ul className="list-disc ml-5 space-y-1">
+        <li>Introduced a rate-limit system to prevent abuse.</li>
+        <li>Dedicated limit for the bulk import endpoint.</li>
+      </ul>
+
+      <h4>🧩 Types & DTOs</h4>
+      <ul className="list-disc ml-5 space-y-1">
+        <li>Added new DTOs and schemas for bulk import content types.</li>
+        <li>Improved HTTP request typings (authenticated vs. unauthenticated requests).</li>
+        <li>General TypeScript safety and consistency improvements.</li>
+      </ul>
+
+      <h4>🌍 Translations</h4>
+      <ul className="list-disc ml-5 space-y-1">
+        <li>Updated and extended translations for bulk import UI and messages.</li>
+      </ul>
+
+      <h4>🛠 Maintenance & Cleanup</h4>
+      <ul className="list-disc ml-5 space-y-1">
+        <li>Formatting and linting cleanups.</li>
+        <li>Lockfile formatting updates.</li>
+        <li>Minor fixes and internal refactors.</li>
+      </ul>
+    </>
+
+}
+/>
+
+## Previous Releases
+
+<Cards>
+ <Card
     title="v1.4.0 Latest"
     description={
       <>
@@ -38,11 +83,9 @@ Here you can see all recent updates, new features, improvements, and fixes — e
         </ul>
       </>
     }
-  />
 
-## Previous Releases
+/>
 
-<Cards>
   <Card
     title="v1.3.0 - 2025-12-06"
     description={
@@ -61,7 +104,9 @@ Here you can see all recent updates, new features, improvements, and fixes — e
         </ul>
       </>
     }
-  />
+
+/>
+
   <Card
     title="v1.2.0 - 2025-12-05"
     description={
@@ -91,7 +136,9 @@ Here you can see all recent updates, new features, improvements, and fixes — e
         </ul>
       </>
     }
-  />
+
+/>
+
   <Card
     title="v1.1.4 - 2025-11-06"
     description={
@@ -106,7 +153,9 @@ Here you can see all recent updates, new features, improvements, and fixes — e
         </ul>
       </>
     }
-  />
+
+/>
+
   <Card
     title="v1.1.2 - 2025-06-04"
     description={
@@ -163,5 +212,7 @@ Here you can see all recent updates, new features, improvements, and fixes — e
         </ul>
       </>
     }
-  />
+
+/>
+
 </Cards>

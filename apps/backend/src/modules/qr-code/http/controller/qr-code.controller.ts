@@ -110,6 +110,9 @@ export class QrCodeController extends AbstractController {
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
 		const userId = request.user?.id ?? null;
 
+		console.log('user', request.user);
+		console.log('userId', userId);
+
 		// set editable to false if user is not logged in
 		if (!userId && request.body.content.type === 'url') {
 			request.body.content.data.isEditable = false;

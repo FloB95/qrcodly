@@ -17,11 +17,7 @@ export function defaultApiAuthMiddleware(
 	_reply: unknown,
 	done: () => void,
 ) {
-	const { userId, tokenType } = getAuth(request, {
-		acceptsToken: ['session_token', 'api_key'],
-	}) as { userId: string | null; tokenType: TTokenType };
-
-	if (!userId) {
+	if (!request.user?.id) {
 		throw new UnauthenticatedError();
 	}
 
@@ -30,10 +26,9 @@ export function defaultApiAuthMiddleware(
 		ip: request.clientIp,
 		method: request.method,
 		path: request.url,
-		accessType: tokenType,
-		userId: userId,
+		accessType: request.user.tokenType,
+		userId: request.user.id,
 	});
 
-	request.user = { id: userId, tokenType };
 	done();
 }

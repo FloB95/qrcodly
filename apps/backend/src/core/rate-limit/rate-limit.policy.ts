@@ -26,7 +26,7 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.AUTHENTICATED]: 80,
 	},
 	[RateLimitPolicy.QR_CREATE]: {
-		[RateLimitTier.ANONYMOUS]: 3,
+		[RateLimitTier.ANONYMOUS]: 4,
 		[RateLimitTier.AUTHENTICATED]: 10,
 	},
 	[RateLimitPolicy.BULK_QR_CREATE]: {
