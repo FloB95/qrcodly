@@ -48,8 +48,6 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-          cache-dependency-path: package-lock.json
-
       - name: Install dependencies
         working-directory: apps/backend
         run: pnpm install
