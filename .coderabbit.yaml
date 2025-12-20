@@ -13,9 +13,9 @@ reviews:
     drafts: false
     base_branches:
       - main
-      - feature/**
-      - chore/**
-      - bugfix/**
+      - feature/*
+      - chore/*
+      - bugfix/*
       - develop
 chat:
   auto_reply: true
