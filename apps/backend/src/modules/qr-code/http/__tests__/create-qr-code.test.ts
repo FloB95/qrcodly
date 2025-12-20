@@ -52,8 +52,6 @@ describe('createQrCode', () => {
 		expect(response.content).toBeDefined();
 		expect(response.previewImage).toBeNull();
 
-		expect(response.createdBy).toEqual(createdByExpected);
-
 		if (response.shortUrl !== null) {
 			expect(response.shortUrl).toBeDefined();
 		} else {

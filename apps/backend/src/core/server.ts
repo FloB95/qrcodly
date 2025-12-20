@@ -3,6 +3,7 @@ import { Logger } from './logging';
 import {
 	API_BASE_PATH,
 	FASTIFY_LOGGING,
+	IN_TEST,
 	RATE_LIMIT_TIME_WINDOW,
 	UPLOAD_LIMIT,
 } from './config/constants';
@@ -111,36 +112,36 @@ export class Server {
 		});
 
 		// register rate limit
-		// if (!IN_TEST && !IN_DEVELOPMENT) {
-		await this.server.register(fastifyRateLimit, {
-			hook: 'preHandler',
-			keyGenerator: (request) => {
-				const { userId } = getAuth(request, {
-					acceptsToken: ['session_token', 'api_key'],
-				}) as { userId: string | null };
+		if (!IN_TEST) {
+			await this.server.register(fastifyRateLimit, {
+				hook: 'preHandler',
+				keyGenerator: (request) => {
+					const { userId } = getAuth(request, {
+						acceptsToken: ['session_token', 'api_key'],
+					}) as { userId: string | null };
 
-				return userId ? `user:${userId}` : `anon:${request.clientIp}`;
-			},
-			max: (request) => {
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				const policy = request.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT;
-				return resolveRateLimit(request, policy);
-			},
-			redis: container.resolve(KeyCache).getClient(),
-			timeWindow: RATE_LIMIT_TIME_WINDOW,
-			nameSpace: 'qrcodly-ratelimit-',
-			errorResponseBuilder: function (req, context) {
-				container.resolve(Logger).warn('request.rate.limit.hit', {
-					url: req.url,
-					ip: req.clientIp,
-					user: req.user?.id,
-					limit: context.max,
-				});
-				throw new TooManyRequestsError();
-			},
-		});
-		// }
+					return userId ? `user:${userId}` : `anon:${request.clientIp}`;
+				},
+				max: (request) => {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					const policy = request.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT;
+					return resolveRateLimit(request, policy);
+				},
+				redis: container.resolve(KeyCache).getClient(),
+				timeWindow: RATE_LIMIT_TIME_WINDOW,
+				nameSpace: 'qrcodly-ratelimit-',
+				errorResponseBuilder: function (req, context) {
+					container.resolve(Logger).warn('request.rate.limit.hit', {
+						url: req.url,
+						ip: req.clientIp,
+						user: req.user?.id,
+						limit: context.max,
+					});
+					throw new TooManyRequestsError();
+				},
+			});
+		}
 
 		// register hooks
 		this.server.addHook('onRequest', (request, reply, done) => {
