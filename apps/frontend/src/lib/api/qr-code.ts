@@ -84,13 +84,15 @@ export function useBulkCreateQrCodeMutation() {
 
 	return useMutation({
 		mutationFn: async (dto: TBulkImportQrCodeDto) => {
-			if (!dto.file) return;
+			if (!dto.file) {
+				throw new Error('File is required for bulk import');
+			}
 
 			const token = await getToken();
 			const formData = new FormData();
 			formData.append('contentType', dto.contentType as string);
 			formData.append('config', JSON.stringify(dto.config));
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
 			formData.append('file', dto.file);
 
 			const headers: HeadersInit = {};

@@ -52,7 +52,7 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: package-lock.json
 
-          - name: Install pnpm
+      - name: Install pnpm
         run: npm install -g pnpm
 
       - name: Install dependencies

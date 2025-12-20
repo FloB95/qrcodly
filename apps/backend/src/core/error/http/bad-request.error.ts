@@ -19,7 +19,7 @@ export class BadRequestError extends CustomApiError {
 	/**
 	 * Creates an instance of BadRequestError.
 	 * @param message The error message.
-	 * @param zodErrors An array of ZodIssue objects representing the validation errors.
+	 * @param zodError An optional ZodError object representing validation errors.
 	 */
 	constructor(message: string, zodError?: $ZodError) {
 		super(message, 400);
