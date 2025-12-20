@@ -1,0 +1,4 @@
+SSID;Password;Crittografia (WPA, WEP, nopass);Nome
+MioWiFi;password123;WPA;Rete domestica
+WiFiOspiti;;nopass;Rete ospiti
+WiFiUfficio;passufficio;WEP;Ufficio

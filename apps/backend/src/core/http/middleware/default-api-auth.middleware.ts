@@ -13,7 +13,7 @@ export function defaultApiAuthMiddleware(
 	_reply: unknown,
 	done: () => void,
 ) {
-	if (!user || !user?.id) {
+	if (!request.user?.id) {
 		throw new UnauthorizedError();
 	}
 

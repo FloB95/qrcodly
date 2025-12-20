@@ -1,6 +1,6 @@
 import { Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
-import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/request.interface';
+import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
 import ShortUrlRepository from '../../domain/repository/short-url.repository';
 import { type IHttpResponse } from '@/core/interface/response.interface';
@@ -41,7 +41,7 @@ export class ShortUrlController extends AbstractController {
 		},
 	})
 	async getOneByShortCode(
-		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
+		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto, unknown, false>,
 	): Promise<IHttpResponse<TShortUrlResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode);
 		return this.makeApiHttpResponse(200, ShortUrlResponseDto.parse(shortUrl));
@@ -64,7 +64,7 @@ export class ShortUrlController extends AbstractController {
 		},
 	})
 	async update(
-		request: IHttpRequestWithAuth<TUpdateShortUrlDto, TGetShortUrlRequestQueryDto>,
+		request: IHttpRequest<TUpdateShortUrlDto, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<TShortUrlResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
 		const updateDto = UpdateShortUrlDto.parse(request.body);
@@ -93,7 +93,7 @@ export class ShortUrlController extends AbstractController {
 		},
 	})
 	async toggleActiveState(
-		request: IHttpRequestWithAuth<unknown, TGetShortUrlRequestQueryDto>,
+		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<TShortUrlResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
 		const updatedShortUrl = await this.updateShortUrlUseCase.execute(
@@ -118,9 +118,7 @@ export class ShortUrlController extends AbstractController {
 			operationId: 'short-url/reserve-short-url',
 		},
 	})
-	async reserveShortUrl(
-		request: IHttpRequestWithAuth,
-	): Promise<IHttpResponse<TShortUrlResponseDto>> {
+	async reserveShortUrl(request: IHttpRequest): Promise<IHttpResponse<TShortUrlResponseDto>> {
 		const shortUrl = await this.getReservedShortCodeUseCase.execute(request.user.id);
 		return this.makeApiHttpResponse(200, ShortUrlResponseDto.parse(shortUrl));
 	}
@@ -141,7 +139,7 @@ export class ShortUrlController extends AbstractController {
 		},
 	})
 	async getAnalytics(
-		request: IHttpRequestWithAuth<unknown, TGetShortUrlRequestQueryDto>,
+		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<TAnalyticsResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
 		const analyticsData = await this.umamiAnalyticsService.getAnalyticsForEndpoint(
@@ -174,7 +172,7 @@ export class ShortUrlController extends AbstractController {
 		},
 	})
 	async getViews(
-		request: IHttpRequestWithAuth<unknown, TGetShortUrlRequestQueryDto>,
+		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<{ views: number }>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
 		const views = await this.umamiAnalyticsService.getViewsForEndpoint(`/u/${shortUrl.shortCode}`);

@@ -21,6 +21,10 @@ export const defaultInitState: QrCodeGeneratorState = {
 	},
 	latestQrCode: undefined,
 	lastError: undefined,
+	bulkMode: {
+		file: undefined,
+		isBulkMode: false,
+	},
 };
 
 export type QrCodeGeneratorStoreApi = ReturnType<typeof createQrCodeGeneratorStore>;

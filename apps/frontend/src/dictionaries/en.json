@@ -4,6 +4,7 @@
 		"noName": "No name",
 		"changesSaved": "Changes saved",
 		"back": "Back",
+		"toCollection": "To Collection",
 		"backToOverview": "Back to collection",
 		"share": "Share",
 		"view": "View",
@@ -13,7 +14,8 @@
 		"addName": "Add a name",
 		"days": "Days",
 		"changelogTooltip": "Latest updates",
-		"changelogSubheading": "Here you can find the latest updates and improvements of QRcodly."
+		"changelogSubheading": "Here you can find the latest updates and improvements of QRcodly.",
+		"newBadge": "New!"
 	},
 	"headline": "<span class=\"text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -256,6 +258,30 @@
 			"style": "Style",
 			"templates": "Templates"
 		},
+		"bulkImport": {
+			"title": "Create multiple {contentType} QR codes",
+			"successTitle": "Import successful",
+			"successDescription": "All your QR codes have been successfully imported.",
+			"errorTitle": "Import failed",
+			"step1": {
+				"title": "1. Style QR Code",
+				"description": "Style your QR code or choose a template."
+			},
+			"step2": {
+				"title": "2. Download CSV Template ({contentType})",
+				"description": "Download the {contentType} CSV template and enter your data.",
+				"button": "Download"
+			},
+			"step3": {
+				"title": "3. Upload Template",
+				"description": "Upload the completed CSV file here."
+			},
+			"info": {
+				"title": "Observe limits",
+				"description": "You can create up to 15 QR codes at once with the CSV file. For more, you need the Pro plan."
+			},
+			"createButton": "Create QR Codes"
+		},
 		"settingsForm": {
 			"tabGeneral": "General",
 			"tabShape": "Shape",
@@ -296,17 +322,20 @@
 			"clearBtn": "Clear Icon"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEXT",
-			"tabWifi": "WIFI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEXT",
+				"wifi": "WIFI",
+				"vCard": "VCARD"
+			},
+			"cancel": "Cancel",
+			"bulkModeBtn": "CSV Bulk Creation",
 			"text": {
 				"placeholder": "Enter your text here"
 			},
 			"url": {
 				"placeholder": "Enter URL https://example.com/",
-				"enableEditing": "Enable Statistics and Editing",
-				"newBadge": "New!"
+				"enableEditing": "Enable Statistics and Editing"
 			},
 			"wifi": {
 				"network": {
@@ -411,5 +440,15 @@
 		"answer10": "Absolutely! QR Codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
 		"question11": "Where is my data hosted?",
 		"answer11": "All data at Qrcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication."
+	},
+	"fileUpload": {
+		"maxFiles": "Maximum {maxFiles} files allowed",
+		"invalidType": "File type not accepted",
+		"tooLarge": "File too large",
+		"uploadZone": {
+			"dragDrop": "Drag & drop files here",
+			"or": "Or click to browse (max 1 file)",
+			"browse": "Browse files"
+		}
 	}
 }

@@ -4,6 +4,7 @@
 		"noName": "Geen naam",
 		"changesSaved": "Wijzigingen opgeslagen",
 		"back": "Terug",
+		"toCollection": "Naar collectie",
 		"backToOverview": "Terug naar de collectie",
 		"share": "Delen",
 		"view": "Bekijken",
@@ -13,7 +14,8 @@
 		"addName": "Een naam toevoegen",
 		"days": "Dagen",
 		"changelogTooltip": "Laatste updates",
-		"changelogSubheading": "Hier vind je de nieuwste updates en verbeteringen van QRcodly."
+		"changelogSubheading": "Hier vind je de nieuwste updates en verbeteringen van QRcodly.",
+		"newBadge": "Nieuw!"
 	},
 	"headline": "<span class=\"text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -256,6 +258,30 @@
 			"style": "Stijl",
 			"templates": "Sjablonen"
 		},
+		"bulkImport": {
+			"title": "Meerdere {contentType} QR-codes maken",
+			"successTitle": "Import geslaagd",
+			"successDescription": "Al je QR-codes zijn succesvol geïmporteerd.",
+			"errorTitle": "Import mislukt",
+			"step1": {
+				"title": "1. QR Code stijlen",
+				"description": "Stijl je QR-code of kies een sjabloon."
+			},
+			"step2": {
+				"title": "2. Download CSV-sjabloon ({contentType})",
+				"description": "Download het CSV-sjabloon {contentType} en voer je gegevens in.",
+				"button": "Download"
+			},
+			"step3": {
+				"title": "3. Upload sjabloon",
+				"description": "Upload hier het ingevulde CSV-bestand."
+			},
+			"info": {
+				"title": "Houd rekening met limieten en inloggen",
+				"description": "Met het CSV-bestand kun je maximaal 15 QR-codes tegelijk maken. Voor meer heb je het Pro-plan nodig."
+			},
+			"createButton": "QR-codes maken"
+		},
 		"settingsForm": {
 			"tabGeneral": "Algemeen",
 			"tabShape": "Vorm",
@@ -296,17 +322,20 @@
 			"clearBtn": "Icoon wissen"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEKST",
-			"tabWifi": "WI-FI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEKST",
+				"wifi": "WI-FI",
+				"vCard": "VCARD"
+			},
+			"cancel": "Annuleren",
+			"bulkModeBtn": "CSV Massale aanmaak",
 			"text": {
 				"placeholder": "Voer hier uw tekst in"
 			},
 			"url": {
 				"placeholder": "Voer uw URL in https://voorbeeld.com/",
-				"enableEditing": "Statistieken en bewerkingen inschakelen",
-				"newBadge": "Nieuw!"
+				"enableEditing": "Statistieken en bewerkingen inschakelen"
 			},
 			"wifi": {
 				"network": {
@@ -411,5 +440,15 @@
 		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!",
 		"question11": "Waar worden mijn gegevens gehost?",
 		"answer11": "Alle gegevens bij Qrcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk."
+	},
+	"fileUpload": {
+		"maxFiles": "Maximaal {maxFiles} bestanden toegestaan",
+		"invalidType": "Bestandstype niet toegestaan",
+		"tooLarge": "Bestand te groot",
+		"uploadZone": {
+			"dragDrop": "Sleep bestanden hierheen",
+			"or": "Of klik om te bladeren (max. 1 bestand)",
+			"browse": "Bestanden selecteren"
+		}
 	}
 }

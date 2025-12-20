@@ -86,7 +86,6 @@ const sentryOptions = {
 	silent: !process.env.CI,
 	widenClientFileUpload: true,
 	tunnelRoute: '/monitoring',
-	disableLogger: true,
 	dryRun: true,
 	telemetry: false,
 	sourcemaps: {

@@ -4,6 +4,7 @@
 		"noName": "Sans nom",
 		"changesSaved": "Modifications enregistrées",
 		"back": "Retour",
+		"toCollection": "Vers la collection",
 		"backToOverview": "Retour à la collection",
 		"share": "Partager",
 		"view": "Voir",
@@ -13,7 +14,8 @@
 		"addName": "Ajouter un nom",
 		"days": "Jours",
 		"changelogTooltip": "Dernières mises à jour",
-		"changelogSubheading": "Ici, vous pouvez consulter les dernières mises à jour et améliorations de QRcodly."
+		"changelogSubheading": "Ici, vous pouvez consulter les dernières mises à jour et améliorations de QRcodly.",
+		"newBadge": "Nouveau !"
 	},
 	"headline": "<span class=\"text-2xl\">Générateur de Code QR</span> <br /> Gratuit et Open Source",
 	"metadata": {
@@ -256,6 +258,30 @@
 			"style": "Style",
 			"templates": "Modèles"
 		},
+		"bulkImport": {
+			"title": "Créer plusieurs codes QR {contentType}",
+			"successTitle": "Importation réussie",
+			"successDescription": "Tous vos codes QR ont été importés avec succès.",
+			"errorTitle": "Échec de l'importation",
+			"step1": {
+				"title": "1. Personnaliser QR Code",
+				"description": "Personnalisez votre QR code ou choisissez un modèle."
+			},
+			"step2": {
+				"title": "2. Télécharger le modèle CSV ({contentType})",
+				"description": "Téléchargez le modèle CSV {contentType} et saisissez vos données.",
+				"button": "Télécharger"
+			},
+			"step3": {
+				"title": "3. Importer le modèle",
+				"description": "Téléchargez ici le fichier CSV complété."
+			},
+			"info": {
+				"title": "Respectez les limites et connectez-vous",
+				"description": "Avec le fichier CSV, vous pouvez créer jusqu'à 15 QR codes à la fois. Pour plus, vous avez besoin du plan Pro."
+			},
+			"createButton": "Créer les QR codes"
+		},
 		"settingsForm": {
 			"tabGeneral": "Général",
 			"tabShape": "Forme",
@@ -296,17 +322,20 @@
 			"clearBtn": "Effacer l'icône"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEXTE",
-			"tabWifi": "WI-FI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEXTE",
+				"wifi": "WI-FI",
+				"vCard": "VCARD"
+			},
+			"cancel": "Annuler",
+			"bulkModeBtn": "Création en masse CSV",
 			"text": {
 				"placeholder": "Saisissez votre texte ici"
 			},
 			"url": {
 				"placeholder": "Saisissez votre URL https://exemple.com/",
-				"enableEditing": "Activer les statistiques et la modification",
-				"newBadge": "Nouveau !"
+				"enableEditing": "Activer les statistiques et la modification"
 			},
 			"wifi": {
 				"network": {
@@ -411,5 +440,15 @@
 		"answer10": "Absolument ! Les Codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, tant qu'ils restent clairs et intacts. Assurez une bonne qualité d'impression, et vos codes seront prêts à être utilisés partout !",
 		"question11": "Où sont hébergées mes données ?",
 		"answer11": "Toutes les données de Qrcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous ne partageons aucune donnée avec des tiers. Nous utilisons uniquement Clerk pour la connexion et l’authentification."
+	},
+	"fileUpload": {
+		"maxFiles": "Maximum {maxFiles} fichiers autorisés",
+		"invalidType": "Type de fichier non accepté",
+		"tooLarge": "Fichier trop volumineux",
+		"uploadZone": {
+			"dragDrop": "Glisser-déposer les fichiers ici",
+			"or": "Ou cliquez pour parcourir (max. 1 fichier)",
+			"browse": "Parcourir les fichiers"
+		}
 	}
 }

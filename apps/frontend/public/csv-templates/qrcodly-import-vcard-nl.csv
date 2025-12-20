@@ -1,0 +1,3 @@
+Naam;Voornaam;Achternaam;Email;Telefoon;Fax;Bedrijf;Functie;Straat;Stad;Postcode;Provincie;Land;Website
+Jan Jansen;Jan;Jansen;jan@example.com;123456789;;Voorbeeld BV;Ontwikkelaar;Hoofdstraat 123;Stad;12345;ProvincieX;LandY;https://voorbeeld.com
+Anna de Vries;Anna;de Vries;anna@example.com;987654321;;Voorbeeld NV;Manager;Bijstraat 456;Stad;67890;ProvincieY;LandZ;https://voorbeeld.org

@@ -1,6 +1,5 @@
 import { Delete, Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
-import type { IHttpRequestWithAuth } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
 import { DeleteConfigTemplateUseCase } from '../../useCase/delete-config-template.use-case';
 import { CreateConfigTemplateUseCase } from '../../useCase/create-config-template.use-case';
@@ -25,6 +24,8 @@ import {
 import { GetConfigTemplateUseCase } from '../../useCase/get-config-template.use-case';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
+import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
+import { type IHttpRequest } from '@/core/interface/request.interface';
 
 @injectable()
 export class ConfigTemplateController extends AbstractController {
@@ -59,7 +60,7 @@ export class ConfigTemplateController extends AbstractController {
 		},
 	})
 	async list(
-		request: IHttpRequestWithAuth<unknown, unknown, TGetConfigTemplateQueryParamsDto>,
+		request: IHttpRequest<unknown, unknown, TGetConfigTemplateQueryParamsDto>,
 	): Promise<IHttpResponse<TConfigTemplatePaginatedResponseDto>> {
 		const { page, limit, where } = request.query;
 		const { configTemplates, total } = await this.listConfigTemplatesUseCase.execute({
@@ -129,9 +130,7 @@ export class ConfigTemplateController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		config: {
-			rateLimit: {
-				max: 5,
-			},
+			rateLimitPolicy: RateLimitPolicy.TEMPLATE_CREATE,
 		},
 		schema: {
 			summary: 'Create a new template',
@@ -140,7 +139,7 @@ export class ConfigTemplateController extends AbstractController {
 		},
 	})
 	async create(
-		request: IHttpRequestWithAuth<TCreateConfigTemplateDto>,
+		request: IHttpRequest<TCreateConfigTemplateDto>,
 	): Promise<IHttpResponse<TConfigTemplateResponseDto>> {
 		// user can be logged in or not
 
@@ -166,7 +165,7 @@ export class ConfigTemplateController extends AbstractController {
 		},
 	})
 	async getOneById(
-		request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>,
+		request: IHttpRequest<unknown, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TConfigTemplateResponseDto>> {
 		const { id } = request.params;
 
@@ -199,7 +198,7 @@ export class ConfigTemplateController extends AbstractController {
 		},
 	})
 	async update(
-		request: IHttpRequestWithAuth<TUpdateConfigTemplateDto, TIdRequestQueryDto>,
+		request: IHttpRequest<TUpdateConfigTemplateDto, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TConfigTemplateResponseDto>> {
 		const { id } = request.params;
 
@@ -235,7 +234,7 @@ export class ConfigTemplateController extends AbstractController {
 			operationId: 'template/delete-template-id',
 		},
 	})
-	async deleteOneById(request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>) {
+	async deleteOneById(request: IHttpRequest<unknown, TIdRequestQueryDto>) {
 		const { id } = request.params;
 
 		const configTemplate = await this.getConfigTemplateUseCase.execute(id);

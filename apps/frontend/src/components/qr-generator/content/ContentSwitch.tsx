@@ -1,11 +1,12 @@
 'use client';
 
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
 	DocumentTextIcon,
 	LinkIcon,
 	WifiIcon,
 	IdentificationIcon,
+	DocumentArrowUpIcon,
 } from '@heroicons/react/24/outline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UrlSection } from './UrlSection';
@@ -23,6 +24,8 @@ import {
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { useTranslations } from 'next-intl';
 import { EditUrlSection } from './EditUrlSection';
+import { BulkImport } from './BulkImport';
+import { Badge } from '@/components/ui/badge';
 
 type ContentSwitchProps = {
 	hideContentUrlTab?: boolean;
@@ -41,8 +44,10 @@ export const ContentSwitch = ({
 	isEditMode,
 }: ContentSwitchProps) => {
 	const t = useTranslations('generator.contentSwitch');
-	const { content, updateContent } = useQrCodeGeneratorStore((state) => state);
-
+	const t2 = useTranslations('general');
+	const { content, updateContent, bulkMode, updateBulkMode } = useQrCodeGeneratorStore(
+		(state) => state,
+	);
 	return (
 		<Tabs
 			defaultValue={content.type}
@@ -52,7 +57,7 @@ export const ContentSwitch = ({
 				updateContent(getDefaultContentByType(value as TQrCodeContentType));
 			}}
 		>
-			<TabsList className="mb-6 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4">
+			<TabsList className="mb-3 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4">
 				{!hideContentUrlTab && (
 					<TabsTrigger value="url" asChild>
 						<button
@@ -60,7 +65,7 @@ export const ContentSwitch = ({
 								variant: 'tab',
 							})}
 						>
-							<LinkIcon className="mr-2 h-6 w-6" /> {t('tabUrl')}
+							<LinkIcon className="mr-2 h-6 w-6" /> {t('tab.url')}
 						</button>
 					</TabsTrigger>
 				)}
@@ -71,7 +76,7 @@ export const ContentSwitch = ({
 								variant: 'tab',
 							})}
 						>
-							<DocumentTextIcon className="mr-2 h-6 w-6" /> {t('tabText')}
+							<DocumentTextIcon className="mr-2 h-6 w-6" /> {t('tab.text')}
 						</button>
 					</TabsTrigger>
 				)}
@@ -82,7 +87,7 @@ export const ContentSwitch = ({
 								variant: 'tab',
 							})}
 						>
-							<WifiIcon className="mr-2 h-6 w-6" /> {t('tabWifi')}
+							<WifiIcon className="mr-2 h-6 w-6" /> {t('tab.wifi')}
 						</button>
 					</TabsTrigger>
 				)}
@@ -93,74 +98,97 @@ export const ContentSwitch = ({
 								variant: 'tab',
 							})}
 						>
-							<IdentificationIcon className="mr-2 h-6 w-6" /> {t('tabVCard')}
+							<IdentificationIcon className="mr-2 h-6 w-6" /> {t('tab.vCard')}
 						</button>
 					</TabsTrigger>
 				)}
 			</TabsList>
-			{!hideContentUrlTab && (
-				<TabsContent value="url">
-					{isEditMode ? (
-						<EditUrlSection
-							value={content.data as TUrlInput}
-							onChange={(v) => {
-								updateContent({
-									type: 'url',
-									data: v,
-								});
-							}}
-						/>
-					) : (
-						<UrlSection
-							value={content.data as TUrlInput}
-							onChange={(v) => {
-								updateContent({
-									type: 'url',
-									data: v,
-								});
-							}}
-						/>
+			<div className="flex flex-row-reverse cursor-pointer">
+				{bulkMode.isBulkMode ? (
+					<Button variant="link" onClick={() => updateBulkMode(false, undefined)}>
+						{t('cancel')}
+					</Button>
+				) : (
+					<div className="relative flex mb-2 align-middle">
+						<Button className="p-0" variant="link" onClick={() => updateBulkMode(true, undefined)}>
+							<DocumentArrowUpIcon className="w-6 h-6 mr-1.5" /> {t('bulkModeBtn')}
+						</Button>
+						<div className="mt-1.5 ml-2">
+							<Badge className="cursor-default hidden xs:block">{t2('newBadge')}</Badge>
+						</div>
+					</div>
+				)}
+			</div>
+
+			{bulkMode.isBulkMode ? (
+				<BulkImport contentType={content.type} />
+			) : (
+				<>
+					{!hideContentUrlTab && (
+						<TabsContent value="url">
+							{isEditMode ? (
+								<EditUrlSection
+									value={content.data as TUrlInput}
+									onChange={(v) => {
+										updateContent({
+											type: 'url',
+											data: v,
+										});
+									}}
+								/>
+							) : (
+								<UrlSection
+									value={content.data as TUrlInput}
+									onChange={(v) => {
+										updateContent({
+											type: 'url',
+											data: v,
+										});
+									}}
+								/>
+							)}
+						</TabsContent>
 					)}
-				</TabsContent>
-			)}
-			{!hideContentTextTab && (
-				<TabsContent value="text" className="h-full">
-					<TextSection
-						value={content.data as TTextInput}
-						onChange={(v) => {
-							updateContent({
-								type: 'text',
-								data: v,
-							});
-						}}
-					/>
-				</TabsContent>
-			)}
-			{!hideContentWifiTab && (
-				<TabsContent value="wifi">
-					<WiFiSection
-						value={content.data as TWifiInput}
-						onChange={(v) => {
-							updateContent({
-								type: 'wifi',
-								data: v,
-							});
-						}}
-					/>
-				</TabsContent>
-			)}
-			{!hideContentVCardTab && (
-				<TabsContent value="vCard">
-					<VCardSection
-						value={content.data as TVCardInput}
-						onChange={(v) => {
-							updateContent({
-								type: 'vCard',
-								data: v,
-							});
-						}}
-					/>
-				</TabsContent>
+					{!hideContentTextTab && (
+						<TabsContent value="text" className="h-full">
+							<TextSection
+								value={content.data as TTextInput}
+								onChange={(v) => {
+									updateContent({
+										type: 'text',
+										data: v,
+									});
+								}}
+							/>
+						</TabsContent>
+					)}
+					{!hideContentWifiTab && (
+						<TabsContent value="wifi">
+							<WiFiSection
+								value={content.data as TWifiInput}
+								onChange={(v) => {
+									updateContent({
+										type: 'wifi',
+										data: v,
+									});
+								}}
+							/>
+						</TabsContent>
+					)}
+					{!hideContentVCardTab && (
+						<TabsContent value="vCard">
+							<VCardSection
+								value={content.data as TVCardInput}
+								onChange={(v) => {
+									updateContent({
+										type: 'vCard',
+										data: v,
+									});
+								}}
+							/>
+						</TabsContent>
+					)}
+				</>
 			)}
 		</Tabs>
 	);

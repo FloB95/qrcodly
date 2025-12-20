@@ -4,6 +4,7 @@
 		"noName": "Kein Name",
 		"changesSaved": "Änderungen gespeichert",
 		"back": "Zurück",
+		"toCollection": "Zur Sammlung",
 		"backToOverview": "Zurück zur Sammlung",
 		"share": "Teilen",
 		"view": "Anzeigen",
@@ -13,7 +14,8 @@
 		"addName": "Namen eingeben",
 		"days": "Tage",
 		"changelogTooltip": "Die neuesten Updates",
-		"changelogSubheading": "Hier findest du die neuesten Updates und Verbesserungen von QRcodly."
+		"changelogSubheading": "Hier findest du die neuesten Updates und Verbesserungen von QRcodly.",
+		"newBadge": "Neu!"
 	},
 	"headline": "<span class=\"text-2xl\">Kostenloser & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -256,6 +258,30 @@
 			"style": "Stil",
 			"templates": "Vorlagen"
 		},
+		"bulkImport": {
+			"title": "Mehrere {contentType} QR Codes erstellen",
+			"successTitle": "Import erfolgreich",
+			"successDescription": "Alle deine QR-Codes wurden erfolgreich importiert.",
+			"errorTitle": "Import fehlgeschlagen",
+			"step1": {
+				"title": "1. QR Code gestalten",
+				"description": "Gestalte deinen QR Code oder wähle eine Vorlage aus."
+			},
+			"step2": {
+				"title": "2. CSV-Vorlage herunterladen ({contentType})",
+				"description": "Lade die {contentType} CSV-Vorlage herunter und trage deine Daten ein.",
+				"button": "Download"
+			},
+			"step3": {
+				"title": "3. Vorlage hochladen",
+				"description": "Lade die ausgefüllte CSV-Datei hier hoch."
+			},
+			"info": {
+				"title": "Beachte die Limits",
+				"description": "Mit der CSV-Datei kannst du maximal 15 QR Codes gleichzeitig erstellen. Für mehr benötigst du den Pro-Plan."
+			},
+			"createButton": "QR Codes erstellen"
+		},
 		"settingsForm": {
 			"tabGeneral": "Allgemein",
 			"tabShape": "Form",
@@ -296,17 +322,20 @@
 			"clearBtn": "Symbol löschen"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEXT",
-			"tabWifi": "WLAN",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEXT",
+				"wifi": "WLAN",
+				"vCard": "VCARD"
+			},
+			"cancel": "Abbrechen",
+			"bulkModeBtn": "CSV Massenerstellung",
 			"text": {
 				"placeholder": "Gib hier deinen Text ein"
 			},
 			"url": {
 				"placeholder": "Gib deine URL ein https://beispiel.com/",
-				"enableEditing": "Statistiken und Bearbeitung aktivieren",
-				"newBadge": "Neu!"
+				"enableEditing": "Statistiken und Bearbeitung aktivieren"
 			},
 			"wifi": {
 				"network": {
@@ -411,5 +440,15 @@
 		"answer10": "Absolut! QR Codes sind speziell für den Druck optimiert und funktionieren zuverlässig auf verschiedensten Materialien, solange sie klar und unbeschädigt bleiben. Achte auf gute Druckqualität, dann sind deine Codes überall einsatzbereit!",
 		"question11": "Wo werden meine Daten gehostet?",
 		"answer11": "Alle Daten bei Qrcodly werden ausschließlich auf Servern in Deutschland gespeichert. Wir geben keine Daten an Dritte weiter. Lediglich für die Anmeldung und Authentifizierung nutzen wir den Dienst Clerk."
+	},
+	"fileUpload": {
+		"maxFiles": "Es sind maximal {maxFiles} Dateien erlaubt",
+		"invalidType": "Dateityp wird nicht unterstützt",
+		"tooLarge": "Datei ist zu groß",
+		"uploadZone": {
+			"dragDrop": "Dateien hierher ziehen",
+			"or": "Oder klicken, um zu durchsuchen (max. 1 Datei)",
+			"browse": "Dateien auswählen"
+		}
 	}
 }

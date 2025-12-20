@@ -1,3 +1,4 @@
+import { PlanName } from '@/core/config/plan.config';
 import { type TTokenType } from '@/core/domain/schema/UserSchema';
 import { Logger } from '@/core/logging';
 import { getAuth } from '@clerk/fastify';
@@ -23,7 +24,8 @@ export function addUserToRequestMiddleware(
 	});
 
 	request.user = userId
-		? { id: userId, tokenType, plan: has({ plan: PlanName.PRO }) ? PlanName.PRO : PlanName.FREE }
+		? // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+			{ id: userId, tokenType, plan: has({ plan: PlanName.PRO }) ? PlanName.PRO : PlanName.FREE }
 		: undefined;
 	done();
 }

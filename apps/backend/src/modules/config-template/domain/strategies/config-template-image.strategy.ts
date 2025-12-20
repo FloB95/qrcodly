@@ -66,8 +66,8 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 
 			await this.objectStorage.upload(filePath, buffer, 'image/svg+xml');
 			return filePath;
-		} catch (error) {
-			this.logger.error('Failed to generate Template preview image', error as Error);
+		} catch (error: any) {
+			this.logger.error('Failed to generate Template preview image', error);
 			return undefined;
 		}
 	}

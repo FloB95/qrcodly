@@ -1,17 +1,18 @@
 import { Delete, Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
-import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/request.interface';
+import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
-import { getAuth } from '@clerk/fastify';
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
 import { ForbiddenError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import {
+	BulkImportQrCodeDto,
 	CreateQrCodeDto,
 	GetQrCodeQueryParamsSchema,
 	QrCodeWithRelationsPaginatedResponseDto,
 	QrCodeWithRelationsResponseDto,
+	TBulkImportQrCodeDto,
 	TCreateQrCodeDto,
 	TGetQrCodeQueryParamsDto,
 	TIdRequestQueryDto,
@@ -27,6 +28,8 @@ import { ImageService } from '@/core/services/image.service';
 import { UpdateQrCodeUseCase } from '../../useCase/update-qr-code.use-case';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
+import { BulkImportQrCodesUseCase } from '../../useCase/bulk-import-qr-codes.use-case';
+import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -35,6 +38,8 @@ export class QrCodeController extends AbstractController {
 		@inject(CreateQrCodeUseCase) private readonly createQrCodeUseCase: CreateQrCodeUseCase,
 		@inject(UpdateQrCodeUseCase) private readonly updateQrCodeUseCase: UpdateQrCodeUseCase,
 		@inject(DeleteQrCodeUseCase) private readonly deleteQrCodeUseCase: DeleteQrCodeUseCase,
+		@inject(BulkImportQrCodesUseCase)
+		private readonly bulkImportQrCodesUseCase: BulkImportQrCodesUseCase,
 		@inject(QrCodeRepository) private readonly qrCodeRepository: QrCodeRepository,
 		@inject(ImageService) private readonly imageService: ImageService,
 	) {
@@ -56,7 +61,7 @@ export class QrCodeController extends AbstractController {
 		},
 	})
 	async list(
-		request: IHttpRequestWithAuth<unknown, unknown, TGetQrCodeQueryParamsDto>,
+		request: IHttpRequest<unknown, unknown, TGetQrCodeQueryParamsDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsPaginatedResponseDto>> {
 		const { page, limit, where } = request.query;
 		const { qrCodes, total } = await this.listQrCodesUseCase.execute({
@@ -91,9 +96,7 @@ export class QrCodeController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		config: {
-			rateLimit: {
-				max: 5,
-			},
+			rateLimitPolicy: RateLimitPolicy.QR_CREATE,
 		},
 		schema: {
 			summary: 'Create a new QR code',
@@ -103,7 +106,7 @@ export class QrCodeController extends AbstractController {
 		},
 	})
 	async create(
-		request: IHttpRequest<TCreateQrCodeDto>,
+		request: IHttpRequest<TCreateQrCodeDto, unknown, unknown, false>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
 		const userId = request.user?.id ?? null;
 
@@ -114,6 +117,32 @@ export class QrCodeController extends AbstractController {
 
 		const qrCode = await this.createQrCodeUseCase.execute(request.body, request.user);
 		return this.makeApiHttpResponse(201, QrCodeWithRelationsResponseDto.parse(qrCode));
+	}
+
+	@Post('/bulk-import', {
+		bodySchema: BulkImportQrCodeDto,
+		responseSchema: {
+			201: QrCodeWithRelationsResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		config: {
+			rateLimitPolicy: RateLimitPolicy.BULK_QR_CREATE,
+		},
+		schema: {
+			summary: 'Create multiple QR codes from CSV',
+			description:
+				'Generates multiple QR codes at once using the provided CSV file and optional configuration. ' +
+				'Each row in the CSV corresponds to a single QR code. ' +
+				'Returns an array of QR code objects including any related entities.',
+			operationId: 'qr-code/bulk-create-qr-codes',
+		},
+	})
+	async bulkImport(request: IHttpRequest<TBulkImportQrCodeDto>): Promise<IHttpResponse<any>> {
+		const qrCodes = await this.bulkImportQrCodesUseCase.execute(request.body, request.user.id);
+		const response = qrCodes.map((qrCode) => QrCodeWithRelationsResponseDto.parse(qrCode));
+		return this.makeApiHttpResponse(201, response);
 	}
 
 	@Get('/:id', {
@@ -128,10 +157,14 @@ export class QrCodeController extends AbstractController {
 			description: 'Get a QR Code by ID',
 			summary: 'Get QR Code',
 			operationId: 'qr-code/get-qr-code-by-id',
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				'Content-Length': '80',
+			},
 		},
 	})
 	async getOneById(
-		request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>,
+		request: IHttpRequest<unknown, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
 		const { id } = request.params;
 
@@ -178,7 +211,7 @@ export class QrCodeController extends AbstractController {
 		},
 	})
 	async update(
-		request: IHttpRequestWithAuth<TUpdateQrCodeDto, TIdRequestQueryDto>,
+		request: IHttpRequest<TUpdateQrCodeDto, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
 		const { id } = request.params;
 
@@ -214,7 +247,7 @@ export class QrCodeController extends AbstractController {
 			operationId: 'qr-code/delete-qr-code-by-id',
 		},
 	})
-	async deleteOneById(request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>) {
+	async deleteOneById(request: IHttpRequest<unknown, TIdRequestQueryDto>) {
 		const { id } = request.params;
 
 		const qrCode = await this.qrCodeRepository.findOneById(id);

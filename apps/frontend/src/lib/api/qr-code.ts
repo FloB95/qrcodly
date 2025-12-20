@@ -1,6 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/nextjs';
 import type {
+	TBulkImportQrCodeDto,
 	TCreateQrCodeDto,
 	TQrCodeWithRelationsPaginatedResponseDto,
 	TQrCodeWithRelationsResponseDto,
@@ -73,6 +74,38 @@ export function useCreateQrCodeMutation() {
 		onError: (e: Error) => {
 			const error = e as ApiError;
 			updateLastError(error);
+		},
+	});
+}
+
+export function useBulkCreateQrCodeMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async (dto: TBulkImportQrCodeDto) => {
+			if (!dto.file) {
+				throw new Error('File is required for bulk import');
+			}
+
+			const token = await getToken();
+			const formData = new FormData();
+			formData.append('contentType', dto.contentType as string);
+			formData.append('config', JSON.stringify(dto.config));
+
+			formData.append('file', dto.file);
+
+			const headers: HeadersInit = {};
+			if (token) headers.Authorization = `Bearer ${token}`;
+
+			return apiRequest<TQrCodeWithRelationsResponseDto[]>('/qr-code/bulk-import', {
+				method: 'POST',
+				body: formData,
+				headers,
+			});
+		},
+		onSuccess: () => {
+			void queryClient.invalidateQueries({ queryKey: ['listQrCodes'] });
 		},
 	});
 }
