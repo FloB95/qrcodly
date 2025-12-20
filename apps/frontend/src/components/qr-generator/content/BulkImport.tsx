@@ -123,7 +123,7 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 					</ItemContent>
 					<ItemActions>
 						<Link
-							href={`/csv-templates/${contentType.toLocaleLowerCase()}_${locale}.csv`}
+							href={`/csv-templates/qrcodly-import-${contentType.toLocaleLowerCase()}-${locale}.csv`}
 							locale={false}
 							title=""
 							className={buttonVariants({ variant: 'outline', size: 'sm' })}
