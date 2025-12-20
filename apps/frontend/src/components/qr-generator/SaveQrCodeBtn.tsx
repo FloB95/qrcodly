@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { getDefaultContentByType, type TCreateQrCodeDto } from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
-import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
 import { qrCodeQueryKeys, useCreateQrCodeMutation } from '@/lib/api/qr-code';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
@@ -15,6 +15,7 @@ import { NameDialog } from './NameDialog';
 import { useQueryClient } from '@tanstack/react-query';
 import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
+import type { ApiError } from '@/lib/api/ApiError';
 
 const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 	const t = useTranslations('qrCode');
@@ -67,33 +68,38 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 							qrCodeName: qrCodeName,
 						});
 					},
-					onError: (e: any) => {
-						Sentry.captureException(e, {
-							data: {
-								qrCodeName: qrCodeName,
-								config: qrCode.config,
-								content: qrCode.content,
-								error: {
-									message: e.message,
-									fieldErrors: e?.fieldErrors,
+					onError: (e: Error) => {
+						const error = e as ApiError;
+
+						if (error.code >= 500) {
+							Sentry.captureException(error, {
+								data: {
+									qrCodeName: qrCodeName,
+									qrCode,
+									error: {
+										code: error.code,
+										message: error.message,
+										fieldErrors: error?.fieldErrors,
+									},
 								},
-							},
-						});
+							});
+
+							posthog.capture('error:qr-code-created', {
+								qrCodeName: qrCodeName,
+								qrCode,
+								error: {
+									code: error.code,
+									message: error.message,
+									fieldErrors: error?.fieldErrors,
+								},
+							});
+						}
+
 						toast({
 							variant: 'destructive',
 							title: t('download.errorTitle'),
-							description: e.message,
+							description: error.message,
 							duration: 5000,
-						});
-
-						posthog.capture('error:qr-code-created', {
-							qrCodeName: qrCodeName,
-							config: qrCode.config,
-							content: qrCode.content,
-							error: {
-								message: e.message,
-								fieldErrors: e?.fieldErrors,
-							},
 						});
 					},
 				},

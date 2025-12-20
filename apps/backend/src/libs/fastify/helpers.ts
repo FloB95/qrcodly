@@ -17,9 +17,10 @@ import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route'
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import type AbstractController from '@/core/http/controller/abstract.controller';
 import { defaultApiAuthMiddleware } from '@/core/http/middleware/default-api-auth.middleware';
-import z, { ZodError, type ZodType } from 'zod';
+import z, { type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
+import { $ZodError } from 'zod/v4/core';
 
 /**
  * Parses a Fastify request into an IHttpRequest object.
@@ -54,15 +55,13 @@ export const fastifyErrorHandler = (
 ) => {
 	if (error instanceof CustomApiError) {
 		// if error is instance of BadRequestError attach zod errors
-		const zodErrors = error instanceof BadRequestError ? error.zodErrors : [];
-
 		const responsePayload: any = {
 			message: error.message,
 			code: error.statusCode,
 		};
 
-		if (zodErrors.length > 0) {
-			const mergedErrors = mergeZodErrorObjects(zodErrors);
+		if (error instanceof BadRequestError && error.zodError) {
+			const mergedErrors = mergeZodErrorObjects(error.zodError.issues);
 			responsePayload.fieldErrors = mergedErrors;
 		}
 
@@ -119,8 +118,9 @@ const handleFastifyRequest = async (
 			throw error;
 		}
 
-		if (error instanceof ZodError) {
-			throw new BadRequestError(error.message, error.issues);
+		if (error instanceof $ZodError) {
+			console.log('zod error !!!!');
+			throw new BadRequestError(error.message, error);
 		}
 
 		throw new UnhandledServerError(error);
@@ -278,7 +278,8 @@ function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type:
 
 		// Throw error if validation fails
 		if (!validationResult.success) {
-			throw new BadRequestError(errorMessage, validationResult.error.issues);
+			console.log('zod error !!!!');
+			throw new BadRequestError(errorMessage, validationResult.error);
 		}
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars

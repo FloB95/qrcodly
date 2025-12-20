@@ -1,0 +1,4 @@
+SSID;Contraseña;Cifrado (WPA, WEP, nopass);Nombre
+MiWiFi;contraseña123;WPA;Red de casa
+WiFiInvitado;;nopass;Red invitada
+WiFiOficina;passoficina;WEP;Oficina

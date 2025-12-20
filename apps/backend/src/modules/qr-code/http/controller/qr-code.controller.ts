@@ -2,7 +2,6 @@ import { Delete, Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
-import { getAuth } from '@clerk/fastify';
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
 import { UnauthorizedError } from '@/core/error/http';
@@ -129,7 +128,7 @@ export class QrCodeController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		config: {
-			rateLimitPolicy: RateLimitPolicy.QR_CREATE,
+			rateLimitPolicy: RateLimitPolicy.BULK_QR_CREATE,
 		},
 		schema: {
 			summary: 'Create multiple QR codes from CSV',

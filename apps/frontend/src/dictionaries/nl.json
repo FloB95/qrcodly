@@ -254,6 +254,9 @@
 		},
 		"bulkImport": {
 			"title": "Meerdere {contentType} QR-codes maken",
+			"successTitle": "Import geslaagd",
+			"successDescription": "Al je QR-codes zijn succesvol geïmporteerd.",
+			"errorTitle": "Import mislukt",
 			"step1": {
 				"title": "1. QR Code stijlen",
 				"description": "Stijl je QR-code of kies een sjabloon."

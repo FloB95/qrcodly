@@ -1,0 +1,4 @@
+SSID;Passwort;Verschlüsselung (WPA, WEP, nopass);Name
+MeinWiFi;passwort123;WPA;Heimnetzwerk
+GastWiFi;;nopass;Gastnetzwerk
+BüroWiFi;büropass;WEP;Büro

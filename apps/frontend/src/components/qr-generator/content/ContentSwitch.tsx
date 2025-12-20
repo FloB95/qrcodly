@@ -46,9 +46,6 @@ export const ContentSwitch = ({
 	const { content, updateContent, bulkMode, updateBulkMode } = useQrCodeGeneratorStore(
 		(state) => state,
 	);
-
-	console.log(bulkMode);
-
 	return (
 		<Tabs
 			defaultValue={content.type}

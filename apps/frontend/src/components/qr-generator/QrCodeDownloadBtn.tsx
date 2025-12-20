@@ -104,25 +104,28 @@ const QrCodeDownloadBtn = ({
 					},
 					onError: (e: Error) => {
 						const error = e as ApiError;
-						Sentry.captureException(error, {
-							data: {
-								qrCode: qrCode,
+
+						if (error.code >= 500) {
+							Sentry.captureException(error, {
+								data: {
+									qrCode,
+									error: {
+										code: error.code,
+										message: error.message,
+										fieldErrors: error?.fieldErrors,
+									},
+								},
+							});
+
+							posthog.capture('error:qr-code-created', {
+								qrCode,
 								error: {
 									code: error.code,
 									message: error.message,
 									fieldErrors: error?.fieldErrors,
 								},
-							},
-						});
-
-						posthog.capture('error:qr-code-created', {
-							qrCode,
-							error: {
-								message: error.message,
-								code: error.code,
-								fieldErrors: error?.fieldErrors,
-							},
-						});
+							});
+						}
 
 						if (isSignedIn) {
 							toast({

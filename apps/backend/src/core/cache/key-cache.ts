@@ -28,6 +28,10 @@ export class KeyCache implements IKeyCache {
 		}
 	}
 
+	getClient() {
+		return this.client;
+	}
+
 	async get(key: string): Promise<string | Buffer | number | null> {
 		return await this.client.get(key);
 	}

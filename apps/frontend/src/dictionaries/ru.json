@@ -254,6 +254,9 @@
 		},
 		"bulkImport": {
 			"title": "Создать несколько QR-кодов {contentType}",
+			"successTitle": "Импорт выполнен успешно",
+			"successDescription": "Все ваши QR-коды были успешно импортированы.",
+			"errorTitle": "Ошибка импорта",
 			"step1": {
 				"title": "1. Оформление QR-кода",
 				"description": "Сделайте QR-код или выберите шаблон."

@@ -3,8 +3,8 @@ import { inject, injectable } from 'tsyringe';
 import { QrCodeContent, TBulkImportQrCodeDto, TQrCodeContentType } from '@shared/schemas';
 import { CreateQrCodeUseCase } from './create-qr-code.use-case';
 import { Logger } from '@/core/logging';
-import { $ZodIssue } from 'zod/v4/core';
-import { ZodError, ZodObject } from 'zod';
+import { $ZodError } from 'zod/v4/core';
+import { ZodObject } from 'zod';
 import { BulkUrlCsvDto } from '../domain/dtos/BulkUrlCsvDto';
 import { BulkToManyQrCodesError } from '../error/http/bulk-to-many-qr-codes.error';
 import { parse } from 'csv-parse/sync';
@@ -13,7 +13,7 @@ import { sleep } from '@/utils/general';
 import { BulkTextCsvDto } from '../domain/dtos/BulkTextCsvDto';
 import { BulkWifiCsvDto } from '../domain/dtos/BulkWifiCsvDto';
 import { BulkVCardCsvDto } from '../domain/dtos/BulkVCardCsvDto';
-import { BadRequestError } from '@/core/error/http';
+import { BadRequestError, CustomApiError } from '@/core/error/http';
 import { TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
 
 @injectable()
@@ -73,7 +73,7 @@ export class BulkImportQrCodesUseCase {
 		if (validationErrors.length) {
 			throw new BadRequestError(
 				`Error parsing CSV File in line: ${validationErrors[0].line}`,
-				validationErrors[0].issues,
+				validationErrors[0].error,
 			);
 		}
 
@@ -115,38 +115,46 @@ export class BulkImportQrCodesUseCase {
 		contentType: TQrCodeContentType,
 	): {
 		validRecords: any[];
-		validationErrors: { line: number; issues: $ZodIssue[] }[];
+		validationErrors: { line: number; error: $ZodError }[];
 	} {
-		const validRecords: any[] = [];
-		const errors: { line: number; issues: $ZodIssue[] }[] = [];
+		try {
+			const validRecords: any[] = [];
+			const errors: { line: number; error: $ZodError }[] = [];
 
-		const rawRecords = parse(csvString, {
-			from_line: 2,
-			skip_empty_lines: true,
-			delimiter: ';',
-			columns: this.columnMap[contentType].columns,
-		});
+			const rawRecords = parse(csvString, {
+				from_line: 2,
+				skip_empty_lines: true,
+				delimiter: ';',
+				columns: this.columnMap[contentType].columns,
+			});
 
-		if (rawRecords.length > MAX_QR_CODE_CSV_UPLOADS) {
-			throw new BulkToManyQrCodesError(rawRecords.length, MAX_QR_CODE_CSV_UPLOADS);
-		}
-
-		rawRecords.forEach((record, index) => {
-			try {
-				const parsed = this.columnMap[contentType].schema.parse(record);
-				validRecords.push(parsed);
-			} catch (error) {
-				if (error instanceof ZodError) {
-					errors.push({
-						line: index + 2,
-						issues: error.issues,
-					});
-				} else {
-					throw error;
-				}
+			// TODO implement plan policy handling
+			if (rawRecords.length > MAX_QR_CODE_CSV_UPLOADS) {
+				throw new BulkToManyQrCodesError(rawRecords.length, MAX_QR_CODE_CSV_UPLOADS);
 			}
-		});
 
-		return { validRecords, validationErrors: errors };
+			rawRecords.forEach((record, index) => {
+				try {
+					const parsed = this.columnMap[contentType].schema.parse(record);
+					validRecords.push(parsed);
+				} catch (error) {
+					if (error instanceof $ZodError) {
+						errors.push({
+							line: index + 2,
+							error,
+						});
+					} else {
+						throw error;
+					}
+				}
+			});
+
+			return { validRecords, validationErrors: errors };
+		} catch (error) {
+			if (error instanceof CustomApiError) throw error;
+
+			const e = error as any;
+			throw new BadRequestError(e.message);
+		}
 	}
 }

@@ -23,7 +23,7 @@ type RateLimitPolicies = {
 export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	[RateLimitPolicy.DEFAULT]: {
 		[RateLimitTier.ANONYMOUS]: 20,
-		[RateLimitTier.AUTHENTICATED]: 100,
+		[RateLimitTier.AUTHENTICATED]: 80,
 	},
 	[RateLimitPolicy.QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 2,
@@ -31,7 +31,7 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	},
 	[RateLimitPolicy.BULK_QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,
-		[RateLimitTier.AUTHENTICATED]: 2,
+		[RateLimitTier.AUTHENTICATED]: 122,
 	},
 	[RateLimitPolicy.TEMPLATE_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,

@@ -254,6 +254,9 @@
 		},
 		"bulkImport": {
 			"title": "Utwórz wiele kodów QR {contentType}",
+			"successTitle": "Import zakończony sukcesem",
+			"successDescription": "Wszystkie Twoje kody QR zostały pomyślnie zaimportowane.",
+			"errorTitle": "Import nie powiódł się",
 			"step1": {
 				"title": "1. Stylizuj QR Code",
 				"description": "Stylizuj swój QR Code lub wybierz szablon."

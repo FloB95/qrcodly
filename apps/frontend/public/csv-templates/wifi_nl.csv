@@ -1,0 +1,4 @@
+SSID;Wachtwoord;Encryptie (WPA, WEP, nopass);Naam
+MijnWiFi;wachtwoord123;WPA;Thuisnetwerk
+GastWiFi;;nopass;Gastnetwerk
+KantoorWiFi;kantoorpass;WEP;Kantoor

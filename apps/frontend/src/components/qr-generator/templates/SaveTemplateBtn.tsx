@@ -12,6 +12,7 @@ import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
 import * as Sentry from '@sentry/nextjs';
+import type { ApiError } from '@/lib/api/ApiError';
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 	const t = useTranslations('templates');
@@ -41,17 +42,32 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 							templateName: templateName,
 						});
 					},
-					onError: (e) => {
-						Sentry.captureException(e);
+					onError: (e: Error) => {
+						const error = e as ApiError;
+
+						if (error.code >= 500) {
+							Sentry.captureException(error, {
+								data: {
+									templateName: templateName,
+									config,
+									error: {
+										code: error.code,
+										message: error.message,
+										fieldErrors: error?.fieldErrors,
+									},
+								},
+							});
+
+							posthog.capture('error:config-template-created', {
+								templateName: templateName,
+							});
+						}
+
 						toast({
 							variant: 'destructive',
 							title: t('templateCreatedErrorTitle'),
-							description: e.message,
+							description: error.message,
 							duration: 5000,
-						});
-
-						posthog.capture('error:config-template-created', {
-							templateName: templateName,
 						});
 					},
 				},

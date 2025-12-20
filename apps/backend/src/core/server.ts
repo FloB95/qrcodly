@@ -1,4 +1,4 @@
-import { inject, singleton } from 'tsyringe';
+import { container, inject, singleton } from 'tsyringe';
 import { Logger } from './logging';
 import {
 	API_BASE_PATH,
@@ -22,6 +22,7 @@ import { ClerkWebhookController } from './http/controller/clerk.webhook.controll
 import multipart from '@fastify/multipart';
 import { resolveRateLimit } from './rate-limit/rate-limit.resolver';
 import { RateLimitPolicy } from './rate-limit/rate-limit.policy';
+import { KeyCache } from './cache';
 
 @singleton()
 export class Server {
@@ -126,9 +127,16 @@ export class Server {
 				const policy = request.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT;
 				return resolveRateLimit(request, policy);
 			},
+			redis: container.resolve(KeyCache).getClient(),
 			timeWindow: RATE_LIMIT_TIME_WINDOW,
 			nameSpace: 'qrcodly-ratelimit-',
-			errorResponseBuilder: function () {
+			errorResponseBuilder: function (req, context) {
+				container.resolve(Logger).warn('request.rate.limit.hit', {
+					url: req.url,
+					ip: req.clientIp,
+					user: req.user?.id,
+					limit: context.max,
+				});
 				throw new TooManyRequestsError();
 			},
 		});

@@ -1,0 +1,4 @@
+URL;Nom;Activer les statistiques et l'édition (1 = oui, 0 = non)
+http://www.votre-site.com;Mon QR Code 1;0
+http://www.votre-site.com;;1
+http://www.votre-site.com;Mon QR Code 3;1

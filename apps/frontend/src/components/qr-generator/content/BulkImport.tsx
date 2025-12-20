@@ -5,14 +5,19 @@ import type { TQrCodeContentType } from '@shared/schemas';
 import { ArrowDownTrayIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { FileUploader } from '@/components/FileUploader';
-import { useBulkCreateQrCodeMutation } from '@/lib/api/qr-code';
+import { qrCodeQueryKeys, useBulkCreateQrCodeMutation } from '@/lib/api/qr-code';
 import { toast } from '@/components/ui/use-toast';
 import Link from 'next/link';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
 import { useState } from 'react';
+import type { ApiError } from '@/lib/api/ApiError';
+import posthog from 'posthog-js';
+import * as Sentry from '@sentry/nextjs';
+import { useQueryClient } from '@tanstack/react-query';
+import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
 
 type BulkImportProps = {
 	contentType: TQrCodeContentType;
@@ -24,7 +29,8 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 	const { config, bulkMode, updateBulkMode } = useQrCodeGeneratorStore((state) => state);
 	const t = useTranslations('generator.bulkImport');
 	const tContentType = useTranslations('generator.contentSwitch.tab');
-
+	const queryClient = useQueryClient();
+	const locale = useLocale();
 	const bulkCreateQrCodeMutation = useBulkCreateQrCodeMutation();
 
 	const handleSave = async () => {
@@ -50,58 +56,49 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 							),
 						});
 
-						// void Promise.all([
-						// 	queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
-						// 	queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
-						// ]);
+						void Promise.all([
+							queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
+							queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
+						]);
 
-						// if (qrCode.content.type === 'url' && qrCode.content.data.isEditable) {
-						// 	resetStore();
-						// }
-
-						// updateLatestQrCode({
-						// 	config: qrCode.config,
-						// 	content: qrCode.content,
-						// });
-
-						// posthog.capture('qr-code-created', {
-						// 	qrCodeName: qrCodeName,
-						// });
+						posthog.capture('qr-code-bulk-import', {
+							contentType,
+							file: bulkMode.file?.name,
+						});
 					},
 					onError: (e: any) => {
-						// Sentry.captureException(e, {
-						// 	data: {
-						// 		qrCodeName: qrCodeName,
-						// 		config: qrCode.config,
-						// 		content: qrCode.content,
-						// 		error: {
-						// 			message: e.message,
-						// 			fieldErrors: e?.fieldErrors,
-						// 		},
-						// 	},
-						// });
+						const error = e as ApiError;
+
+						if (error.code >= 500) {
+							Sentry.captureException(error, {
+								data: {
+									error: {
+										code: error.code,
+										message: error.message,
+										fieldErrors: error?.fieldErrors,
+									},
+								},
+							});
+
+							posthog.capture('error:qr-code-bulk-import', {
+								error: {
+									code: error.code,
+									message: error.message,
+									fieldErrors: error?.fieldErrors,
+								},
+							});
+						}
+
 						toast({
 							variant: 'destructive',
-							title: t('download.errorTitle'),
-							description: e.message,
+							title: t('errorTitle'),
+							description: error.message,
 							duration: 5000,
 						});
-
-						// posthog.capture('error:qr-code-created', {
-						// 	qrCodeName: qrCodeName,
-						// 	config: qrCode.config,
-						// 	content: qrCode.content,
-						// 	error: {
-						// 		message: e.message,
-						// 		fieldErrors: e?.fieldErrors,
-						// 	},
-						// });
 					},
 				},
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch (error) {}
 	};
 
 	return (
@@ -125,9 +122,14 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 						</ItemDescription>
 					</ItemContent>
 					<ItemActions>
-						<Button variant="outline" size="sm">
+						<Link
+							href={`/csv-templates/${contentType.toLocaleLowerCase()}_${locale}.csv`}
+							locale={false}
+							title=""
+							className={buttonVariants({ variant: 'outline', size: 'sm' })}
+						>
 							{t('step2.button')} <ArrowDownTrayIcon className="w-4 h-4 ml-2" />
-						</Button>
+						</Link>
 					</ItemActions>
 				</Item>
 

@@ -254,9 +254,9 @@
 		},
 		"bulkImport": {
 			"title": "Mehrere {contentType} QR Codes erstellen",
-			"successTitle": "QR Codes erstellt",
-			"successDescription": "Deine QR Codes wurde erfolgreich erstellt.",
-			"errorTitle": "Fehler beim erstellen der QR Codes",
+			"successTitle": "Import erfolgreich",
+			"successDescription": "Alle deine QR-Codes wurden erfolgreich importiert.",
+			"errorTitle": "Import fehlgeschlagen",
 			"step1": {
 				"title": "1. QR Code gestalten",
 				"description": "Gestalte deinen QR Code oder wähle eine Vorlage aus."
