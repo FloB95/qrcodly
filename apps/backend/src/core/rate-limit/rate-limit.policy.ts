@@ -26,15 +26,15 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.AUTHENTICATED]: 80,
 	},
 	[RateLimitPolicy.QR_CREATE]: {
-		[RateLimitTier.ANONYMOUS]: 2,
-		[RateLimitTier.AUTHENTICATED]: 5,
+		[RateLimitTier.ANONYMOUS]: 3,
+		[RateLimitTier.AUTHENTICATED]: 10,
 	},
 	[RateLimitPolicy.BULK_QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,
-		[RateLimitTier.AUTHENTICATED]: 122,
+		[RateLimitTier.AUTHENTICATED]: 2,
 	},
 	[RateLimitPolicy.TEMPLATE_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,
-		[RateLimitTier.AUTHENTICATED]: 3,
+		[RateLimitTier.AUTHENTICATED]: 5,
 	},
 } as const;

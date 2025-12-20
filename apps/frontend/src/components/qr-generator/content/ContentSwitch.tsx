@@ -25,6 +25,7 @@ import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStore
 import { useTranslations } from 'next-intl';
 import { EditUrlSection } from './EditUrlSection';
 import { BulkImport } from './BulkImport';
+import { Badge } from '@/components/ui/badge';
 
 type ContentSwitchProps = {
 	hideContentUrlTab?: boolean;
@@ -43,6 +44,7 @@ export const ContentSwitch = ({
 	isEditMode,
 }: ContentSwitchProps) => {
 	const t = useTranslations('generator.contentSwitch');
+	const t2 = useTranslations('general');
 	const { content, updateContent, bulkMode, updateBulkMode } = useQrCodeGeneratorStore(
 		(state) => state,
 	);
@@ -107,9 +109,14 @@ export const ContentSwitch = ({
 						{t('cancel')}
 					</Button>
 				) : (
-					<Button className="mb-2" variant="link" onClick={() => updateBulkMode(true, undefined)}>
-						<DocumentArrowUpIcon className="w-6 h-6 mr-1.5" /> {t('bulkModeBtn')}
-					</Button>
+					<div className="relative flex mb-2 align-middle">
+						<Button className="p-0" variant="link" onClick={() => updateBulkMode(true, undefined)}>
+							<DocumentArrowUpIcon className="w-6 h-6 mr-1.5" /> {t('bulkModeBtn')}
+						</Button>
+						<div className="mt-1.5 ml-2">
+							<Badge className="cursor-default hidden xs:block">{t2('newBadge')}</Badge>
+						</div>
+					</div>
 				)}
 			</div>
 

@@ -59,12 +59,9 @@ export const FileUploader = ({ value, onValueChange, maxFiles = 1, accept }: Fil
 	);
 
 	const onFileReject = React.useCallback(
-		(file: File, message: string) => {
+		(message: string) => {
 			toast({
 				title: message,
-				// description: `"${file.name.length > 20 ? `${file.name.slice(0, 20)}...` : file.name}" ${t(
-				// 	'upload.rejected',
-				// )}`,
 				variant: 'destructive',
 				duration: 5000,
 			});
@@ -77,7 +74,7 @@ export const FileUploader = ({ value, onValueChange, maxFiles = 1, accept }: Fil
 			value={value}
 			onValueChange={onValueChange}
 			onUpload={onUpload}
-			onFileReject={onFileReject}
+			onFileReject={(_, message) => onFileReject(message)}
 			maxFiles={maxFiles}
 			accept={accept}
 			className="w-full"

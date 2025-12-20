@@ -119,7 +119,6 @@ const handleFastifyRequest = async (
 		}
 
 		if (error instanceof $ZodError) {
-			console.log('zod error !!!!');
 			throw new BadRequestError(error.message, error);
 		}
 
@@ -278,7 +277,6 @@ function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type:
 
 		// Throw error if validation fails
 		if (!validationResult.success) {
-			console.log('zod error !!!!');
 			throw new BadRequestError(errorMessage, validationResult.error);
 		}
 

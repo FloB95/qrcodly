@@ -4,6 +4,7 @@
 		"noName": "No name",
 		"changesSaved": "Changes saved",
 		"back": "Back",
+		"toCollection": "To Collection",
 		"backToOverview": "Back to collection",
 		"share": "Share",
 		"view": "View",
@@ -13,7 +14,8 @@
 		"addName": "Add a name",
 		"days": "Days",
 		"changelogTooltip": "Latest updates",
-		"changelogSubheading": "Here you can find the latest updates and improvements of QRcodly."
+		"changelogSubheading": "Here you can find the latest updates and improvements of QRcodly.",
+		"newBadge": "New!"
 	},
 	"headline": "<span class=\"text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -329,8 +331,7 @@
 			},
 			"url": {
 				"placeholder": "Enter URL https://example.com/",
-				"enableEditing": "Enable Statistics and Editing",
-				"newBadge": "New!"
+				"enableEditing": "Enable Statistics and Editing"
 			},
 			"wifi": {
 				"network": {

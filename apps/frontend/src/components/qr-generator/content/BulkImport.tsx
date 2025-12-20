@@ -18,6 +18,7 @@ import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
 import { useQueryClient } from '@tanstack/react-query';
 import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type BulkImportProps = {
 	contentType: TQrCodeContentType;
@@ -26,9 +27,9 @@ type BulkImportProps = {
 export const BulkImport = ({ contentType }: BulkImportProps) => {
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
+	const [isUploaded, setIsUploaded] = useState(false);
 	const { config, bulkMode, updateBulkMode } = useQrCodeGeneratorStore((state) => state);
-	const t = useTranslations('generator.bulkImport');
-	const tContentType = useTranslations('generator.contentSwitch.tab');
+	const t = useTranslations();
 	const queryClient = useQueryClient();
 	const locale = useLocale();
 	const bulkCreateQrCodeMutation = useBulkCreateQrCodeMutation();
@@ -45,16 +46,13 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 				},
 				{
 					onSuccess: () => {
-						toast({
-							title: t('successTitle'),
-							description: t('successDescription'),
-							duration: 5000,
-							action: (
-								<Link href="/collection" className={buttonVariants({ variant: 'secondary' })}>
-									Zur Sammlung
-								</Link>
-							),
+						scrollTo({
+							top: 200,
+							behavior: 'smooth',
 						});
+						setTimeout(() => {
+							setIsUploaded(true);
+						}, 500);
 
 						void Promise.all([
 							queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
@@ -91,7 +89,7 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 
 						toast({
 							variant: 'destructive',
-							title: t('errorTitle'),
+							title: t('generator.bulkImport.errorTitle'),
 							description: error.message,
 							duration: 5000,
 						});
@@ -102,75 +100,141 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 	};
 
 	return (
-		<div>
-			<h3 className="font-bold text-xl mb-4">
-				{t('title', { contentType: tContentType(contentType) })}
-			</h3>
-			<div className="flex gap-3 flex-col">
-				<Item variant="outline">
-					<ItemContent>
-						<ItemTitle>{t('step1.title')}</ItemTitle>
-						<ItemDescription>{t('step1.description')}</ItemDescription>
-					</ItemContent>
-				</Item>
-
-				<Item variant="outline">
-					<ItemContent>
-						<ItemTitle>{t('step2.title', { contentType: tContentType(contentType) })}</ItemTitle>
-						<ItemDescription>
-							{t('step2.description', { contentType: tContentType(contentType) })}
-						</ItemDescription>
-					</ItemContent>
-					<ItemActions>
-						<Link
-							href={`/csv-templates/qrcodly-import-${contentType.toLocaleLowerCase()}-${locale}.csv`}
-							locale={false}
-							title=""
-							className={buttonVariants({ variant: 'outline', size: 'sm' })}
-						>
-							{t('step2.button')} <ArrowDownTrayIcon className="w-4 h-4 ml-2" />
-						</Link>
-					</ItemActions>
-				</Item>
-
-				<Item variant="outline">
-					<ItemContent>
-						<ItemTitle>{t('step3.title')}</ItemTitle>
-						<ItemDescription>{t('step3.description')}</ItemDescription>
-					</ItemContent>
-				</Item>
-
-				<FileUploader
-					value={bulkMode.file ? [bulkMode.file] : []}
-					onValueChange={(files) => updateBulkMode(true, files[0])}
-					maxFiles={1}
-					accept="text/csv"
-				/>
-
-				<Item variant="outline">
-					<InformationCircleIcon className="w-8 h-8 text-blue-500" />
-					<ItemContent>
-						<ItemTitle>{t('info.title')}</ItemTitle>
-						<ItemDescription>{t('info.description')}</ItemDescription>
-					</ItemContent>
-				</Item>
-
-				<div className="mt-2">
-					<Button
-						isLoading={bulkCreateQrCodeMutation.isPending}
-						disabled={!bulkMode.file || bulkCreateQrCodeMutation.isPending}
-						onClick={() => {
-							if (!isSignedIn) {
-								setAlertOpen(true);
-								return;
-							}
-							handleSave();
-						}}
+		<div className="relative">
+			<AnimatePresence>
+				{isUploaded && (
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						className="flex flex-col items-center justify-center p-6 mt-4"
 					>
-						{t('createButton')}
-					</Button>
-				</div>
-			</div>
+						<motion.svg
+							width="50"
+							height="50"
+							viewBox="0 0 120 120"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<circle
+								cx="60"
+								cy="60"
+								r="54"
+								stroke="#34D399"
+								strokeWidth="8"
+								className="stroke-current text-green-500"
+							/>
+							<motion.path
+								d="M40 60 L55 75 L80 45"
+								stroke="#34D399"
+								strokeWidth="10"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								initial={{ pathLength: 0 }}
+								animate={{ pathLength: 1 }}
+								transition={{ duration: 0.5, ease: 'easeInOut' }}
+							/>
+						</motion.svg>
+
+						<h3 className="mt-4 text-lg sm:text-2xl font-bold">
+							{t('generator.bulkImport.successTitle')}
+						</h3>
+						<p className="mt-2 text-center">{t('generator.bulkImport.successDescription')}</p>
+						<div className="flex gap-2 mt-4">
+							<Link href="/collection" className={buttonVariants()}>
+								{t('general.toCollection')}
+							</Link>
+							<Button variant="outlineStrong" onClick={() => updateBulkMode(false, undefined)}>
+								{t('general.back')}
+							</Button>
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>
+
+			{!isUploaded && (
+				<>
+					<h3 className="font-bold text-xl mb-4">
+						{t('generator.bulkImport.title', {
+							contentType: t('generator.contentSwitch.tab.' + contentType),
+						})}
+					</h3>
+					<div className="flex gap-3 flex-col">
+						<Item variant="outline">
+							<ItemContent>
+								<ItemTitle>{t('generator.bulkImport.step1.title')}</ItemTitle>
+								<ItemDescription>{t('generator.bulkImport.step1.description')}</ItemDescription>
+							</ItemContent>
+						</Item>
+
+						<Item variant="outline">
+							<ItemContent>
+								<ItemTitle>
+									{t('generator.bulkImport.step2.title', {
+										contentType: t('generator.contentSwitch.tab.' + contentType),
+									})}
+								</ItemTitle>
+								<ItemDescription>
+									{t('generator.bulkImport.step2.description', {
+										contentType: t('generator.contentSwitch.tab.' + contentType),
+									})}
+								</ItemDescription>
+							</ItemContent>
+							<ItemActions>
+								<Link
+									href={`/csv-templates/qrcodly-import-${contentType.toLocaleLowerCase()}-${locale}.csv`}
+									title={t('generator.bulkImport.step2.button')}
+									className={buttonVariants({ variant: 'outline', size: 'sm' })}
+								>
+									{t('generator.bulkImport.step2.button')}{' '}
+									<ArrowDownTrayIcon className="w-4 h-4 ml-2" />
+								</Link>
+							</ItemActions>
+						</Item>
+
+						<Item variant="outline">
+							<ItemContent>
+								<ItemTitle>{t('generator.bulkImport.step3.title')}</ItemTitle>
+								<ItemDescription>{t('generator.bulkImport.step3.description')}</ItemDescription>
+							</ItemContent>
+						</Item>
+
+						<FileUploader
+							value={bulkMode.file ? [bulkMode.file] : []}
+							onValueChange={(files) => updateBulkMode(true, files[0])}
+							maxFiles={1}
+							accept="text/csv"
+						/>
+
+						<Item variant="outline">
+							<InformationCircleIcon className="w-8 h-8 text-blue-500" />
+							<ItemContent>
+								<ItemTitle>{t('generator.bulkImport.info.title')}</ItemTitle>
+								<ItemDescription>{t('generator.bulkImport.info.description')}</ItemDescription>
+							</ItemContent>
+						</Item>
+
+						<div className="mt-2 justify-between space-x-2 space-y-2 xs:flex">
+							<Button
+								isLoading={bulkCreateQrCodeMutation.isPending}
+								disabled={!bulkMode.file || bulkCreateQrCodeMutation.isPending}
+								onClick={() => {
+									if (!isSignedIn) {
+										setAlertOpen(true);
+										return;
+									}
+									handleSave();
+								}}
+							>
+								{t('generator.bulkImport.createButton')}
+							</Button>
+							<Button variant="outlineStrong" onClick={() => updateBulkMode(false, undefined)}>
+								{t('general.back')}
+							</Button>
+						</div>
+					</div>
+				</>
+			)}
 			<LoginRequiredDialog alertOpen={alertOpen} setAlertOpen={setAlertOpen} />
 		</div>
 	);

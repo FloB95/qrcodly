@@ -4,6 +4,7 @@
 		"noName": "Без имени",
 		"changesSaved": "Изменения сохранены",
 		"back": "Назад",
+		"toCollection": "В коллекцию",
 		"backToOverview": "Вернуться к коллекции",
 		"share": "Поделиться",
 		"view": "Просмотр",
@@ -13,7 +14,8 @@
 		"addName": "Добавить имя",
 		"days": "Дни",
 		"changelogTooltip": "Последние обновления",
-		"changelogSubheading": "Здесь вы можете найти последние обновления и улучшения QRcodly."
+		"changelogSubheading": "Здесь вы можете найти последние обновления и улучшения QRcodly.",
+		"newBadge": "Новый!"
 	},
 	"headline": "<span class=\"text-2xl\">Бесплатный и открытый исходный код</span> <br /> Генератор QR-кодов",
 	"metadata": {
@@ -329,8 +331,7 @@
 			},
 			"url": {
 				"placeholder": "Введите ваш URL https://example.com/",
-				"enableEditing": "Включить статистику и редактирование",
-				"newBadge": "Новый!"
+				"enableEditing": "Включить статистику и редактирование"
 			},
 			"wifi": {
 				"network": {

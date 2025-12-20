@@ -4,6 +4,7 @@
 		"noName": "Sin nombre",
 		"changesSaved": "Cambios guardados",
 		"back": "Volver",
+		"toCollection": "A la colección",
 		"backToOverview": "Volver a la colección",
 		"share": "Compartir",
 		"view": "Ver",
@@ -13,7 +14,8 @@
 		"addName": "Añadir un nombre",
 		"days": "Días",
 		"changelogTooltip": "Últimas actualizaciones",
-		"changelogSubheading": "Aquí puedes encontrar las últimas actualizaciones y mejoras de QRcodly."
+		"changelogSubheading": "Aquí puedes encontrar las últimas actualizaciones y mejoras de QRcodly.",
+		"newBadge": "¡Nuevo!"
 	},
 	"headline": "<span class=\"text-2xl\">Generador de Códigos QR</span> <br /> Gratuito y de Código Abierto",
 	"metadata": {
@@ -329,8 +331,7 @@
 			},
 			"url": {
 				"placeholder": "Introduce tu URL https://ejemplo.com/",
-				"enableEditing": "Habilitar estadísticas y edición",
-				"newBadge": "¡Nuevo!"
+				"enableEditing": "Habilitar estadísticas y edición"
 			},
 			"wifi": {
 				"network": {
