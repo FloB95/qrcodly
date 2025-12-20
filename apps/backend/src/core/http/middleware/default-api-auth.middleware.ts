@@ -1,3 +1,4 @@
+import { type TTokenType } from '@/core/domain/schema/UserSchema';
 import { UnauthenticatedError } from '@/core/error/http';
 import { Logger } from '@/core/logging';
 import { getAuth } from '@clerk/fastify';
@@ -18,7 +19,7 @@ export function defaultApiAuthMiddleware(
 ) {
 	const { userId, tokenType } = getAuth(request, {
 		acceptsToken: ['session_token', 'api_key'],
-	}) as { userId: string | null; tokenType: string };
+	}) as { userId: string | null; tokenType: TTokenType };
 
 	if (!userId) {
 		throw new UnauthenticatedError();
@@ -26,16 +27,13 @@ export function defaultApiAuthMiddleware(
 
 	container.resolve(Logger).info('api.request', {
 		requestId: request.id,
-		ip: request.ip,
-		ips: request.ips,
+		ip: request.clientIp,
 		method: request.method,
 		path: request.url,
 		accessType: tokenType,
 		userId: userId,
 	});
 
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
 	request.user = { id: userId, tokenType };
 	done();
 }

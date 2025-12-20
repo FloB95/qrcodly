@@ -12,21 +12,22 @@ import { BadRequestError, CustomApiError } from '@/core/error/http';
 import { container, type InjectionToken } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { ErrorReporter } from '@/core/error';
-import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/request.interface';
+import { type IHttpRequest } from '@/core/interface/request.interface';
 import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import type AbstractController from '@/core/http/controller/abstract.controller';
 import { defaultApiAuthMiddleware } from '@/core/http/middleware/default-api-auth.middleware';
-import z, { ZodError, type ZodType } from 'zod';
+import z, { type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
+import { $ZodError } from 'zod/v4/core';
 
 /**
  * Parses a Fastify request into an IHttpRequest object.
  * @param request The Fastify request object.
- * @returns The parsed IHttpRequest or IHttpRequestWithAuth object.
+ * @returns The parsed IHttpRequest object.
  */
-export const fastifyRequestParser = <T extends IHttpRequestWithAuth>(
+export const fastifyRequestParser = <T extends IHttpRequest>(
 	request: FastifyRequest & { user?: { id: string } },
 ): T => {
 	const { cookies } = request;
@@ -37,6 +38,7 @@ export const fastifyRequestParser = <T extends IHttpRequestWithAuth>(
 			cookies[key] = c.value ?? undefined;
 		}
 	}
+
 	return Object.freeze({ ...request, cookies }) as T;
 };
 
@@ -53,15 +55,13 @@ export const fastifyErrorHandler = (
 ) => {
 	if (error instanceof CustomApiError) {
 		// if error is instance of BadRequestError attach zod errors
-		const zodErrors = error instanceof BadRequestError ? error.zodErrors : [];
-
 		const responsePayload: any = {
 			message: error.message,
 			code: error.statusCode,
 		};
 
-		if (zodErrors.length > 0) {
-			const mergedErrors = mergeZodErrorObjects(zodErrors);
+		if (error instanceof BadRequestError && error.zodError) {
+			const mergedErrors = mergeZodErrorObjects(error.zodError.issues);
 			responsePayload.fieldErrors = mergedErrors;
 		}
 
@@ -102,8 +102,8 @@ export const getOptionsWithPrefix = (options: FastifyPluginOptions, prefix: stri
  * @param reply - The Fastify reply object.
  * @returns A promise that resolves when the reply has been sent.
  */
-export const handleFastifyRequest = async (
-	handler: (request: IHttpRequest | IHttpRequestWithAuth) => Promise<IHttpResponse>,
+const handleFastifyRequest = async (
+	handler: (request: IHttpRequest) => Promise<IHttpResponse>,
 	request: FastifyRequest,
 	reply: FastifyReply,
 ): Promise<void> => {
@@ -118,13 +118,27 @@ export const handleFastifyRequest = async (
 			throw error;
 		}
 
-		if (error instanceof ZodError) {
-			throw new BadRequestError(error.message, error.issues);
+		if (error instanceof $ZodError) {
+			throw new BadRequestError(error.message, error);
 		}
 
 		throw new UnhandledServerError(error);
 	}
 };
+
+export function parseJsonFields(body: Record<string, any>, fieldsToParse: string[] = ['config']) {
+	const parsedBody: Record<string, any> = { ...body };
+
+	for (const key of fieldsToParse) {
+		if (parsedBody[key] && typeof parsedBody[key] === 'string') {
+			try {
+				parsedBody[key] = JSON.parse(parsedBody[key]);
+			} catch (e: any) {}
+		}
+	}
+
+	return parsedBody;
+}
 
 /**
  * Registers routes for a Fastify instance based on metadata from the provided controller class.
@@ -170,12 +184,16 @@ export function registerRoutes(
 		const schema: Record<string, unknown> = { ...(routeMeta.options.schema ?? {}) };
 
 		if (routeMeta.options.bodySchema) {
-			schema.body = z.toJSONSchema(routeMeta.options.bodySchema, { target: 'openapi-3.0' });
+			schema.body = z.toJSONSchema(routeMeta.options.bodySchema, {
+				target: 'openapi-3.0',
+				unrepresentable: 'any',
+			});
 		}
 
 		if (routeMeta.options.querySchema) {
 			schema.querystring = z.toJSONSchema(routeMeta.options.querySchema, {
 				target: 'openapi-3.0',
+				unrepresentable: 'any',
 			});
 		}
 
@@ -183,7 +201,7 @@ export function registerRoutes(
 			schema.response = Object.fromEntries(
 				Object.entries(routeMeta.options.responseSchema).map(([status, zodSchema]) => [
 					status,
-					z.toJSONSchema(zodSchema, { target: 'openapi-3.0' }),
+					z.toJSONSchema(zodSchema, { target: 'openapi-3.0', unrepresentable: 'any' }),
 				]),
 			);
 		}
@@ -193,11 +211,9 @@ export function registerRoutes(
 			url: prefix + routeMeta.path,
 			handler: async (request: FastifyRequest, reply: FastifyReply) => {
 				return handleFastifyRequest(
-					(
-						handler as (
-							request: IHttpRequest | IHttpRequestWithAuth,
-						) => Promise<IHttpResponse<unknown>>
-					).bind(controllerInstance),
+					(handler as (request: IHttpRequest) => Promise<IHttpResponse<unknown>>).bind(
+						controllerInstance,
+					),
 					request,
 					reply,
 				);
@@ -246,14 +262,22 @@ export function registerRoutes(
  * @param type - The type of data to validate: 'body' or 'query'.
  * @returns A Fastify preValidation hook function.
  */
+
 function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type: 'body' | 'query') {
-	return (request: FastifyRequest, _reply: FastifyReply, done: () => void) => {
+	return async (request: FastifyRequest, _reply: FastifyReply) => {
+		if (request.headers['content-type']?.startsWith('multipart/form-data')) {
+			const formData = await request.formData();
+			const body: Record<string, any> = {};
+			formData.forEach((value, key) => (body[key] = value));
+			request.body = parseJsonFields(body);
+		}
+
 		const dataToValidate = type === 'body' ? request.body : qs.parse(request.query as string);
 		const validationResult: ReturnType<typeof schema.safeParse> = schema.safeParse(dataToValidate);
 
 		// Throw error if validation fails
 		if (!validationResult.success) {
-			throw new BadRequestError(errorMessage, validationResult.error.issues);
+			throw new BadRequestError(errorMessage, validationResult.error);
 		}
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -264,7 +288,21 @@ function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type:
 		} else {
 			request.query = validatedData.data;
 		}
-
-		done();
 	};
+}
+
+export function resolveClientIp(request: FastifyRequest): string {
+	// Cloudflare IP Header
+	const cfIp = request.headers['cf-connecting-ip'] as string | undefined;
+	if (cfIp) return cfIp;
+
+	// Standard Forwarded Header (z. B. bei anderen Proxies)
+	const xForwardedFor = request.headers['x-forwarded-for'] as string | undefined;
+	if (xForwardedFor) {
+		// x-forwarded-for kann mehrere IPs enthalten, erste ist die echte Client-IP
+		return xForwardedFor.split(',')[0].trim();
+	}
+
+	// Fallback
+	return request.ip;
 }

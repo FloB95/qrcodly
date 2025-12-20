@@ -6,7 +6,7 @@ import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import SaveQrCodeBtn from './SaveQrCodeBtn';
 
 export const QrCodeWithDownloadBtn = () => {
-	const { config, content } = useQrCodeGeneratorStore((state) => state);
+	const { config, content, bulkMode } = useQrCodeGeneratorStore((state) => state);
 	return (
 		<div>
 			<Suspense fallback={null}>
@@ -18,24 +18,26 @@ export const QrCodeWithDownloadBtn = () => {
 						}}
 					/>
 				</div>
-				<div className="mt-6 flex justify-center flex-col space-y-2 mb-3">
-					<QrCodeDownloadBtn
-						qrCode={{
-							name: null,
-							content,
-							config,
-						}}
-						saveOnDownload={true}
-					/>
-					<SaveQrCodeBtn
-						qrCode={{
-							name: null,
-							content,
-							config,
-						}}
-					/>
-				</div>
-				<div className="text-center">
+				{!bulkMode.isBulkMode && (
+					<div className="mt-6 flex justify-center flex-col space-y-2 mb-3">
+						<QrCodeDownloadBtn
+							qrCode={{
+								name: null,
+								content,
+								config,
+							}}
+							saveOnDownload={true}
+						/>
+						<SaveQrCodeBtn
+							qrCode={{
+								name: null,
+								content,
+								config,
+							}}
+						/>
+					</div>
+				)}
+				<div className={`text-center ${bulkMode.isBulkMode && 'mt-4'}`}>
 					<QrCodeSaveTemplateBtn config={config} />
 				</div>
 			</Suspense>

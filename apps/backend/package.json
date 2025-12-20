@@ -63,11 +63,13 @@
 		"@fastify/cors": "^11.1.0",
 		"@fastify/csrf-protection": "^7.1.0",
 		"@fastify/helmet": "^13.0.2",
+		"@fastify/multipart": "^9.3.0",
 		"@fastify/rate-limit": "^10.3.0",
 		"@fastify/swagger": "^9.6.1",
 		"@sentry/node": "catalog:",
 		"@shared/schemas": "workspace:^",
 		"commander": "^13.1.0",
+		"csv-parse": "^6.1.0",
 		"dotenv": "catalog:",
 		"drizzle-orm": "^0.42.0",
 		"drizzle-zod": "^0.7.1",
@@ -88,6 +90,7 @@
 		"tsyringe": "^4.10.0",
 		"uuid": "^11.1.0",
 		"zod": "catalog:",
-		"zod-to-json-schema": "^3.25.0"
+		"zod-to-json-schema": "^3.25.0",
+		"zod-validation-error": "^5.0.0"
 	}
 }

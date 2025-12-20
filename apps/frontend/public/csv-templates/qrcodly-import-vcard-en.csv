@@ -1,0 +1,3 @@
+Name;FirstName;LastName;Email;Phone;Fax;Company;Job;Street;City;ZIP;State;Country;Website
+John Doe;John;Doe;john@example.com;123456789;;Example Inc.;Developer;123 Main St;Cityville;12345;StateX;CountryY;https://example.com
+Jane Smith;Jane;Smith;jane@example.com;987654321;;Example Corp.;Manager;456 Elm St;Townsville;67890;StateY;CountryZ;https://example.org

@@ -24,9 +24,11 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
 		);
 	}
 
+	// @ts-ignore
 	const MDX = page.data.body;
 
 	return (
+		// @ts-ignore
 		<DocsPage full={page.data.full}>
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription>{page.data.description}</DocsDescription>
@@ -34,6 +36,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
 				<MDX
 					components={getMDXComponents({
 						// this allows you to link to other pages with relative file paths
+						// @ts-ignore
 						a: createRelativeLink(source, page),
 					})}
 				/>

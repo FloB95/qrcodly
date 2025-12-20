@@ -11,6 +11,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 export const LanguageNav = () => {
 	const locale = useLocale();
@@ -29,12 +30,15 @@ export const LanguageNav = () => {
 					<DropdownMenuTrigger asChild>
 						<GlobeAsiaAustraliaIcon className="h-8 w-8 cursor-pointer hover:text-gray-700" />
 					</DropdownMenuTrigger>
-					<DropdownMenuContent className="w-12 min-w-12" align="end">
+					<DropdownMenuContent className="w-12 min-w-12 -mr-2" align="end">
 						{languageLinks.map((link) => (
-							<DropdownMenuItem key={link.lang} className={locale === link.lang ? 'bg-accent' : ''}>
+							<DropdownMenuItem
+								key={link.lang}
+								className={cn(locale === link.lang ? 'bg-accent' : '', 'p-0')}
+							>
 								<Link
 									locale={link.lang}
-									className={locale === link.lang ? 'font-bold' : ''}
+									className={cn(locale === link.lang ? 'font-bold' : '', 'p-2 text-center w-full')}
 									href={link.path}
 								>
 									{link.lang.toUpperCase()}

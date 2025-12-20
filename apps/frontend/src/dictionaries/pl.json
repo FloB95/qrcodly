@@ -4,6 +4,7 @@
 		"noName": "Brak nazwy",
 		"changesSaved": "Zmiany zapisane",
 		"back": "Wstecz",
+		"toCollection": "Do kolekcji",
 		"backToOverview": "Powrót do kolekcji",
 		"share": "Udostępnij",
 		"view": "Wyświetl",
@@ -13,7 +14,8 @@
 		"addName": "Dodaj nazwę",
 		"days": "Dni",
 		"changelogTooltip": "Najnowsze aktualizacje",
-		"changelogSubheading": "Tutaj znajdziesz najnowsze aktualizacje i ulepszenia QRcodly."
+		"changelogSubheading": "Tutaj znajdziesz najnowsze aktualizacje i ulepszenia QRcodly.",
+		"newBadge": "Nowość!"
 	},
 	"headline": "<span class=\"text-2xl\">Darmowy i Open Source</span> <br /> Generator Kodów QR",
 	"metadata": {
@@ -252,6 +254,30 @@
 			"style": "Styl",
 			"templates": "Szablony"
 		},
+		"bulkImport": {
+			"title": "Utwórz wiele kodów QR {contentType}",
+			"successTitle": "Import zakończony sukcesem",
+			"successDescription": "Wszystkie Twoje kody QR zostały pomyślnie zaimportowane.",
+			"errorTitle": "Import nie powiódł się",
+			"step1": {
+				"title": "1. Stylizuj QR Code",
+				"description": "Stylizuj swój QR Code lub wybierz szablon."
+			},
+			"step2": {
+				"title": "2. Pobierz szablon CSV ({contentType})",
+				"description": "Pobierz szablon CSV {contentType} i wprowadź swoje dane.",
+				"button": "Pobierz"
+			},
+			"step3": {
+				"title": "3. Prześlij szablon",
+				"description": "Prześlij tutaj wypełniony plik CSV."
+			},
+			"info": {
+				"title": "Przestrzegaj limitów i zaloguj się",
+				"description": "Za pomocą pliku CSV możesz utworzyć maksymalnie 15 kodów QR jednocześnie. Aby utworzyć więcej, potrzebny jest plan Pro."
+			},
+			"createButton": "Utwórz kody QR"
+		},
 		"settingsForm": {
 			"tabGeneral": "Ogólne",
 			"tabShape": "Kształt",
@@ -292,17 +318,20 @@
 			"clearBtn": "Wyczyść ikonę"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEKST",
-			"tabWifi": "WI-FI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEKST",
+				"wifi": "WI-FI",
+				"vCard": "VCARD"
+			},
+			"cancel": "Anuluj",
+			"bulkModeBtn": "Masowe tworzenie CSV",
 			"text": {
 				"placeholder": "Wpisz swój tekst tutaj"
 			},
 			"url": {
 				"placeholder": "Wpisz swój URL https://przyklad.com/",
-				"enableEditing": "Włącz statystyki i edycję",
-				"newBadge": "Nowość!"
+				"enableEditing": "Włącz statystyki i edycję"
 			},
 			"wifi": {
 				"network": {
@@ -405,5 +434,15 @@
 		"answer9": "Tak, dzięki qrcodly.de możesz zaprojektować swoje kody QR dokładnie według własnych upodobań: zintegruj swoje logo i użyj kolorów swojej marki bez wpływu na możliwość skanowania. W ten sposób Twoje kody pozostaną unikalne i profesjonalne!",
 		"question10": "Czy kody QR działają również w formie drukowanej?",
 		"answer10": "Absolutnie! Kody QR są specjalnie zoptymalizowane do druku i działają niezawodnie na różnych materiałach, o ile pozostają wyraźne i nieuszkodzone. Zapewnij dobrą jakość druku, a Twoje kody będą gotowe do użycia w dowolnym miejscu!"
+	},
+	"fileUpload": {
+		"maxFiles": "Dozwolona maksymalnie {maxFiles} plików",
+		"invalidType": "Nieobsługiwany typ pliku",
+		"tooLarge": "Plik jest za duży",
+		"uploadZone": {
+			"dragDrop": "Przeciągnij i upuść pliki tutaj",
+			"or": "Lub kliknij, aby wybrać (max 1 plik)",
+			"browse": "Wybierz pliki"
+		}
 	}
 }

@@ -48,6 +48,10 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 				config: qrCode.config,
 				content: qrCode.content,
 				latestQrCode: undefined,
+				bulkMode: {
+					isBulkMode: false,
+					file: undefined,
+				},
 			}}
 		>
 			<DetailPageContent qrCode={qrCode} />

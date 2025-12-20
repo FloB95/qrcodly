@@ -1,0 +1,3 @@
+Imię;Imię;Nazwisko;Email;Telefon;Faks;Firma;Stanowisko;Ulica;Miasto;Kod Pocztowy;Województwo;Kraj;Strona www
+Jan Kowalski;Jan;Kowalski;jan@example.com;123456789;;Przykład Sp. z o.o.;Programista;ul. Główna 123;Miasto;12345;WojX;KrajY;https://przyklad.com
+Anna Nowak;Anna;Nowak;anna@example.com;987654321;;Przykład Sp. z o.o.;Manager;ul. Druga 456;Miasto;67890;WojY;KrajZ;https://przyklad.org
