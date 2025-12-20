@@ -253,7 +253,7 @@
 			"templates": "Vorlagen"
 		},
 		"bulkImport": {
-			"title": "Mehrere QR Codes erstellen",
+			"title": "Mehrere {contentType} QR Codes erstellen",
 			"successTitle": "QR Codes erstellt",
 			"successDescription": "Deine QR Codes wurde erfolgreich erstellt.",
 			"errorTitle": "Fehler beim erstellen der QR Codes",
@@ -316,10 +316,12 @@
 			"clearBtn": "Symbol löschen"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEXT",
-			"tabWifi": "WLAN",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEXT",
+				"wifi": "WLAN",
+				"vCard": "VCARD"
+			},
 			"cancel": "Abbrechen",
 			"bulkModeBtn": "CSV Massenerstellung",
 			"text": {

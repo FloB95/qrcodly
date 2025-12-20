@@ -253,7 +253,7 @@
 			"templates": "Modelli"
 		},
 		"bulkImport": {
-			"title": "Crea più codici QR",
+			"title": "Creare più codici QR {contentType}",
 			"step1": {
 				"title": "1. Personalizza QR Code",
 				"description": "Personalizza il tuo QR code o scegli un modello."
@@ -313,10 +313,12 @@
 			"clearBtn": "Cancella icona"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TESTO",
-			"tabWifi": "WI-FI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TESTO",
+				"wifi": "WI-FI",
+				"vCard": "VCARD"
+			},
 			"cancel": "Annulla",
 			"bulkModeBtn": "Creazione massiva CSV",
 			"text": {

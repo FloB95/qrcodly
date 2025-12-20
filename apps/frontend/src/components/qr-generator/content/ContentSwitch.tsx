@@ -66,7 +66,7 @@ export const ContentSwitch = ({
 								variant: 'tab',
 							})}
 						>
-							<LinkIcon className="mr-2 h-6 w-6" /> {t('tabUrl')}
+							<LinkIcon className="mr-2 h-6 w-6" /> {t('tab.url')}
 						</button>
 					</TabsTrigger>
 				)}
@@ -77,7 +77,7 @@ export const ContentSwitch = ({
 								variant: 'tab',
 							})}
 						>
-							<DocumentTextIcon className="mr-2 h-6 w-6" /> {t('tabText')}
+							<DocumentTextIcon className="mr-2 h-6 w-6" /> {t('tab.text')}
 						</button>
 					</TabsTrigger>
 				)}
@@ -88,7 +88,7 @@ export const ContentSwitch = ({
 								variant: 'tab',
 							})}
 						>
-							<WifiIcon className="mr-2 h-6 w-6" /> {t('tabWifi')}
+							<WifiIcon className="mr-2 h-6 w-6" /> {t('tab.wifi')}
 						</button>
 					</TabsTrigger>
 				)}
@@ -99,7 +99,7 @@ export const ContentSwitch = ({
 								variant: 'tab',
 							})}
 						>
-							<IdentificationIcon className="mr-2 h-6 w-6" /> {t('tabVCard')}
+							<IdentificationIcon className="mr-2 h-6 w-6" /> {t('tab.vCard')}
 						</button>
 					</TabsTrigger>
 				)}

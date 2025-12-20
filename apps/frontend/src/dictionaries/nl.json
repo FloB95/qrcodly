@@ -253,7 +253,7 @@
 			"templates": "Sjablonen"
 		},
 		"bulkImport": {
-			"title": "Meerdere QR-codes maken",
+			"title": "Meerdere {contentType} QR-codes maken",
 			"step1": {
 				"title": "1. QR Code stijlen",
 				"description": "Stijl je QR-code of kies een sjabloon."
@@ -313,10 +313,12 @@
 			"clearBtn": "Icoon wissen"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEKST",
-			"tabWifi": "WI-FI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEKST",
+				"wifi": "WI-FI",
+				"vCard": "VCARD"
+			},
 			"cancel": "Annuleren",
 			"bulkModeBtn": "CSV Massale aanmaak",
 			"text": {

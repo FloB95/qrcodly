@@ -253,7 +253,7 @@
 			"templates": "Шаблоны"
 		},
 		"bulkImport": {
-			"title": "Создание нескольких QR-кодов",
+			"title": "Создать несколько QR-кодов {contentType}",
 			"step1": {
 				"title": "1. Оформление QR-кода",
 				"description": "Сделайте QR-код или выберите шаблон."
@@ -313,10 +313,12 @@
 			"clearBtn": "Очистить иконку"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "ТЕКСТ",
-			"tabWifi": "WI-FI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "ТЕКСТ",
+				"wifi": "WI-FI",
+				"vCard": "VCARD"
+			},
 			"cancel": "Отмена",
 			"bulkModeBtn": "Массовое создание CSV",
 			"text": {

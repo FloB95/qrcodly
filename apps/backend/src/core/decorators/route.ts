@@ -1,5 +1,6 @@
 import { type HTTPMethods, type RouteShorthandOptions } from 'fastify';
 import { type ZodSchema } from 'zod';
+import { type RateLimitPolicy } from '../rate-limit/rate-limit.policy';
 
 export type HandlerName = string;
 export type Constructable<T = unknown> = new (...args: unknown[]) => T;
@@ -15,6 +16,9 @@ interface CustomRouteOptions {
 	bodySchema?: ZodSchema;
 	querySchema?: ZodSchema;
 	responseSchema?: Record<number, ZodSchema>;
+	config?: {
+		rateLimitPolicy?: RateLimitPolicy;
+	};
 }
 
 // Merge Fastify's RouteOptions with your custom options

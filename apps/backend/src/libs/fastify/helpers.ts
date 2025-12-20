@@ -12,7 +12,7 @@ import { BadRequestError, CustomApiError } from '@/core/error/http';
 import { container, type InjectionToken } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { ErrorReporter } from '@/core/error';
-import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/request.interface';
+import { type IHttpRequest } from '@/core/interface/request.interface';
 import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import type AbstractController from '@/core/http/controller/abstract.controller';
@@ -24,9 +24,9 @@ import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 /**
  * Parses a Fastify request into an IHttpRequest object.
  * @param request The Fastify request object.
- * @returns The parsed IHttpRequest or IHttpRequestWithAuth object.
+ * @returns The parsed IHttpRequest object.
  */
-export const fastifyRequestParser = <T extends IHttpRequestWithAuth>(
+export const fastifyRequestParser = <T extends IHttpRequest>(
 	request: FastifyRequest & { user?: { id: string } },
 ): T => {
 	const { cookies } = request;
@@ -104,7 +104,7 @@ export const getOptionsWithPrefix = (options: FastifyPluginOptions, prefix: stri
  * @returns A promise that resolves when the reply has been sent.
  */
 const handleFastifyRequest = async (
-	handler: (request: IHttpRequest | IHttpRequestWithAuth) => Promise<IHttpResponse>,
+	handler: (request: IHttpRequest) => Promise<IHttpResponse>,
 	request: FastifyRequest,
 	reply: FastifyReply,
 ): Promise<void> => {
@@ -212,11 +212,9 @@ export function registerRoutes(
 			url: prefix + routeMeta.path,
 			handler: async (request: FastifyRequest, reply: FastifyReply) => {
 				return handleFastifyRequest(
-					(
-						handler as (
-							request: IHttpRequest | IHttpRequestWithAuth,
-						) => Promise<IHttpResponse<unknown>>
-					).bind(controllerInstance),
+					(handler as (request: IHttpRequest) => Promise<IHttpResponse<unknown>>).bind(
+						controllerInstance,
+					),
 					request,
 					reply,
 				);
@@ -265,8 +263,9 @@ export function registerRoutes(
  * @param type - The type of data to validate: 'body' or 'query'.
  * @returns A Fastify preValidation hook function.
  */
+
 function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type: 'body' | 'query') {
-	return async (request: FastifyRequest, _reply: FastifyReply, done: () => void) => {
+	return async (request: FastifyRequest, _reply: FastifyReply) => {
 		if (request.headers['content-type']?.startsWith('multipart/form-data')) {
 			const formData = await request.formData();
 			const body: Record<string, any> = {};
@@ -290,7 +289,21 @@ function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type:
 		} else {
 			request.query = validatedData.data;
 		}
-
-		done();
 	};
+}
+
+export function resolveClientIp(request: FastifyRequest): string {
+	// Cloudflare IP Header
+	const cfIp = request.headers['cf-connecting-ip'] as string | undefined;
+	if (cfIp) return cfIp;
+
+	// Standard Forwarded Header (z. B. bei anderen Proxies)
+	const xForwardedFor = request.headers['x-forwarded-for'] as string | undefined;
+	if (xForwardedFor) {
+		// x-forwarded-for kann mehrere IPs enthalten, erste ist die echte Client-IP
+		return xForwardedFor.split(',')[0].trim();
+	}
+
+	// Fallback
+	return request.ip;
 }

@@ -3,15 +3,12 @@ import { Logger } from './logging';
 import {
 	API_BASE_PATH,
 	FASTIFY_LOGGING,
-	IN_DEVELOPMENT,
-	IN_TEST,
-	RATE_LIMIT_MAX,
 	RATE_LIMIT_TIME_WINDOW,
 	UPLOAD_LIMIT,
 } from './config/constants';
 import fastify, { FastifyListenOptions, type FastifyInstance } from 'fastify';
-import { clerkPlugin } from '@clerk/fastify';
-import { fastifyErrorHandler, registerRoutes } from '@/libs/fastify/helpers';
+import { clerkPlugin, getAuth } from '@clerk/fastify';
+import { fastifyErrorHandler, registerRoutes, resolveClientIp } from '@/libs/fastify/helpers';
 import { env } from './config/env';
 import fastifyHelmet from '@fastify/helmet';
 import { TooManyRequestsError } from './error/http/too-many-requests.error';
@@ -23,6 +20,8 @@ import { HealthController } from './http/controller/health.controller';
 import FastifySwagger from '@fastify/swagger';
 import { ClerkWebhookController } from './http/controller/clerk.webhook.controller';
 import multipart from '@fastify/multipart';
+import { resolveRateLimit } from './rate-limit/rate-limit.resolver';
+import { RateLimitPolicy } from './rate-limit/rate-limit.policy';
 
 @singleton()
 export class Server {
@@ -111,17 +110,35 @@ export class Server {
 		});
 
 		// register rate limit
-		if (!IN_TEST && !IN_DEVELOPMENT) {
-			await this.server.register(fastifyRateLimit, {
-				max: RATE_LIMIT_MAX, // max requests per window
-				timeWindow: RATE_LIMIT_TIME_WINDOW,
-				// allowList: ['127.0.0.1'], // default []
-				nameSpace: 'qrcodly-ratelimit-', // default is 'fastify-rate-limit-'
-				errorResponseBuilder: function () {
-					throw new TooManyRequestsError();
-				},
-			});
-		}
+		// if (!IN_TEST && !IN_DEVELOPMENT) {
+		await this.server.register(fastifyRateLimit, {
+			hook: 'preHandler',
+			keyGenerator: (request) => {
+				const { userId } = getAuth(request, {
+					acceptsToken: ['session_token', 'api_key'],
+				}) as { userId: string | null };
+
+				return userId ? `user:${userId}` : `anon:${request.clientIp}`;
+			},
+			max: (request) => {
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				const policy = request.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT;
+				return resolveRateLimit(request, policy);
+			},
+			timeWindow: RATE_LIMIT_TIME_WINDOW,
+			nameSpace: 'qrcodly-ratelimit-',
+			errorResponseBuilder: function () {
+				throw new TooManyRequestsError();
+			},
+		});
+		// }
+
+		// register hooks
+		this.server.addHook('onRequest', (request, reply, done) => {
+			request.clientIp = resolveClientIp(request);
+			done();
+		});
 
 		// register security modules
 		await this.server.register(fastifyHelmet);

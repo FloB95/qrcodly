@@ -253,7 +253,7 @@
 			"templates": "Szablony"
 		},
 		"bulkImport": {
-			"title": "Tworzenie wielu kodów QR",
+			"title": "Utwórz wiele kodów QR {contentType}",
 			"step1": {
 				"title": "1. Stylizuj QR Code",
 				"description": "Stylizuj swój QR Code lub wybierz szablon."
@@ -313,10 +313,12 @@
 			"clearBtn": "Wyczyść ikonę"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEKST",
-			"tabWifi": "WI-FI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEKST",
+				"wifi": "WI-FI",
+				"vCard": "VCARD"
+			},
 			"cancel": "Anuluj",
 			"bulkModeBtn": "Masowe tworzenie CSV",
 			"text": {

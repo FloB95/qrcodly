@@ -253,7 +253,7 @@
 			"templates": "Plantillas"
 		},
 		"bulkImport": {
-			"title": "Crear múltiples códigos QR",
+			"title": "Crear varios códigos QR de {contentType}",
 			"step1": {
 				"title": "1. Diseñar QR Code",
 				"description": "Diseña tu QR Code o elige una plantilla."
@@ -313,10 +313,12 @@
 			"clearBtn": "Borrar icono"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEXTO",
-			"tabWifi": "WIFI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEXTO",
+				"wifi": "WIFI",
+				"vCard": "VCARD"
+			},
 			"cancel": "Cancelar",
 			"bulkModeBtn": "Creación masiva con CSV",
 			"text": {

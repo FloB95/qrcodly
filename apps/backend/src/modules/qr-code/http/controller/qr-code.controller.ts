@@ -1,6 +1,6 @@
 import { Delete, Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
-import { type IHttpRequest, type IHttpRequestWithAuth } from '@/core/interface/request.interface';
+import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
 import { getAuth } from '@clerk/fastify';
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
@@ -30,6 +30,7 @@ import { UpdateQrCodeUseCase } from '../../useCase/update-qr-code.use-case';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { BulkImportQrCodesUseCase } from '../../useCase/bulk-import-qr-codes.use-case';
+import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -61,7 +62,7 @@ export class QrCodeController extends AbstractController {
 		},
 	})
 	async list(
-		request: IHttpRequestWithAuth<unknown, unknown, TGetQrCodeQueryParamsDto>,
+		request: IHttpRequest<unknown, unknown, TGetQrCodeQueryParamsDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsPaginatedResponseDto>> {
 		const { page, limit, where } = request.query;
 		const { qrCodes, total } = await this.listQrCodesUseCase.execute({
@@ -96,9 +97,7 @@ export class QrCodeController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		config: {
-			rateLimit: {
-				max: 5,
-			},
+			rateLimitPolicy: RateLimitPolicy.QR_CREATE,
 		},
 		schema: {
 			summary: 'Create a new QR code',
@@ -108,11 +107,9 @@ export class QrCodeController extends AbstractController {
 		},
 	})
 	async create(
-		request: IHttpRequest<TCreateQrCodeDto>,
+		request: IHttpRequest<TCreateQrCodeDto, unknown, unknown, false>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
-		const { userId } = getAuth(request, {
-			acceptsToken: ['session_token', 'api_key'],
-		}) as { userId: string | null };
+		const userId = request.user?.id ?? null;
 
 		// set editable to false if user is not logged in
 		if (!userId && request.body.content.type === 'url') {
@@ -132,9 +129,7 @@ export class QrCodeController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		config: {
-			rateLimit: {
-				max: 2,
-			},
+			rateLimitPolicy: RateLimitPolicy.QR_CREATE,
 		},
 		schema: {
 			summary: 'Create multiple QR codes from CSV',
@@ -145,9 +140,7 @@ export class QrCodeController extends AbstractController {
 			operationId: 'qr-code/bulk-create-qr-codes',
 		},
 	})
-	async bulkImport(
-		request: IHttpRequestWithAuth<TBulkImportQrCodeDto>,
-	): Promise<IHttpResponse<any>> {
+	async bulkImport(request: IHttpRequest<TBulkImportQrCodeDto>): Promise<IHttpResponse<any>> {
 		const qrCodes = await this.bulkImportQrCodesUseCase.execute(request.body, request.user.id);
 		const response = qrCodes.map((qrCode) => QrCodeWithRelationsResponseDto.parse(qrCode));
 		return this.makeApiHttpResponse(201, response);
@@ -172,7 +165,7 @@ export class QrCodeController extends AbstractController {
 		},
 	})
 	async getOneById(
-		request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>,
+		request: IHttpRequest<unknown, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
 		const { id } = request.params;
 
@@ -219,7 +212,7 @@ export class QrCodeController extends AbstractController {
 		},
 	})
 	async update(
-		request: IHttpRequestWithAuth<TUpdateQrCodeDto, TIdRequestQueryDto>,
+		request: IHttpRequest<TUpdateQrCodeDto, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
 		const { id } = request.params;
 
@@ -255,7 +248,7 @@ export class QrCodeController extends AbstractController {
 			operationId: 'qr-code/delete-qr-code-by-id',
 		},
 	})
-	async deleteOneById(request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>) {
+	async deleteOneById(request: IHttpRequest<unknown, TIdRequestQueryDto>) {
 		const { id } = request.params;
 
 		const qrCode = await this.qrCodeRepository.findOneById(id);

@@ -23,6 +23,7 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 	const [alertOpen, setAlertOpen] = useState(false);
 	const { config, bulkMode, updateBulkMode } = useQrCodeGeneratorStore((state) => state);
 	const t = useTranslations('generator.bulkImport');
+	const tContentType = useTranslations('generator.contentSwitch.tab');
 
 	const bulkCreateQrCodeMutation = useBulkCreateQrCodeMutation();
 
@@ -105,7 +106,9 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 
 	return (
 		<div>
-			<p className="font-bold text-xl mb-4">{t('title')}</p>
+			<h3 className="font-bold text-xl mb-4">
+				{t('title', { contentType: tContentType(contentType) })}
+			</h3>
 			<div className="flex gap-3 flex-col">
 				<Item variant="outline">
 					<ItemContent>
@@ -116,8 +119,10 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 
 				<Item variant="outline">
 					<ItemContent>
-						<ItemTitle>{t('step2.title', { contentType })}</ItemTitle>
-						<ItemDescription>{t('step2.description', { contentType })}</ItemDescription>
+						<ItemTitle>{t('step2.title', { contentType: tContentType(contentType) })}</ItemTitle>
+						<ItemDescription>
+							{t('step2.description', { contentType: tContentType(contentType) })}
+						</ItemDescription>
 					</ItemContent>
 					<ItemActions>
 						<Button variant="outline" size="sm">
