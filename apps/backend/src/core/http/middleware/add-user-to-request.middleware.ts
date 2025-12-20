@@ -1,17 +1,9 @@
-import { PlanName } from '@/core/config/plan.config';
-import { UnauthorizedError } from '@/core/error/http';
+import { type TTokenType } from '@/core/domain/schema/UserSchema';
 import { Logger } from '@/core/logging';
 import { getAuth } from '@clerk/fastify';
 import { type FastifyRequest } from 'fastify';
 import { container } from 'tsyringe';
 
-/**
- * Middleware function to check if a user is signed in.
- *
- * @returns A middleware function that checks if the user is authenticated.
- *
- * @throws {UnauthorizedError} If the user is not authenticated.
- */
 export function addUserToRequestMiddleware(
 	request: FastifyRequest,
 	_reply: unknown,
@@ -19,13 +11,19 @@ export function addUserToRequestMiddleware(
 ) {
 	const { userId, tokenType, has } = getAuth(request, {
 		acceptsToken: ['session_token', 'api_key'],
-	}) as { userId: string | null; tokenType: string; has: any };
+	}) as { userId: string | null; tokenType: TTokenType; has: any };
 
-	/* eslint-disable @typescript-eslint/no-unsafe-call */
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
+	container.resolve(Logger).info('api.request', {
+		requestId: request.id,
+		ip: request.clientIp,
+		method: request.method,
+		path: request.url,
+		accessType: tokenType,
+		userId: userId,
+	});
+
 	request.user = userId
 		? { id: userId, tokenType, plan: has({ plan: PlanName.PRO }) ? PlanName.PRO : PlanName.FREE }
-		: null;
+		: undefined;
 	done();
 }

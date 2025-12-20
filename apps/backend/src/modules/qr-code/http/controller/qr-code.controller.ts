@@ -105,9 +105,7 @@ export class QrCodeController extends AbstractController {
 	async create(
 		request: IHttpRequest<TCreateQrCodeDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
-		const { userId } = getAuth(request, {
-			acceptsToken: ['session_token', 'api_key'],
-		}) as { userId: string | null };
+		const userId = request.user?.id ?? null;
 
 		// set editable to false if user is not logged in
 		if (!userId && request.body.content.type === 'url') {

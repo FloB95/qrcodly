@@ -1,10 +1,5 @@
-import { PlanName } from '@/core/config/plan.config';
 import { UnauthorizedError } from '@/core/error/http';
-import { type IUser } from '@/core/interface/user.interface';
-import { Logger } from '@/core/logging';
-import { getAuth } from '@clerk/fastify';
 import { type FastifyRequest } from 'fastify';
-import { container } from 'tsyringe';
 
 /**
  * Middleware function to check if a user is signed in.
@@ -18,23 +13,9 @@ export function defaultApiAuthMiddleware(
 	_reply: unknown,
 	done: () => void,
 ) {
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	const user = request.user as IUser;
-
 	if (!user || !user?.id) {
 		throw new UnauthorizedError();
 	}
-
-	container.resolve(Logger).info('api.request', {
-		requestId: request.id,
-		ip: request.ip,
-		ips: request.ips,
-		method: request.method,
-		path: request.url,
-		accessType: user.tokenType,
-		userId: user.id,
-	});
 
 	done();
 }
