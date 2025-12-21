@@ -83,7 +83,11 @@ export default async function RootLayout({
 
 				<body className={`font-sans ${openSans.variable}`}>
 					<NextIntlClientProvider>
-						<Providers>{children}</Providers>
+						<Providers>
+							<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
+								{children}
+							</main>
+						</Providers>
 					</NextIntlClientProvider>
 					<Toaster />
 				</body>

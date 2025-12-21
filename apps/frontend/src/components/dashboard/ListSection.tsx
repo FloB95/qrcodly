@@ -57,7 +57,7 @@ export const ListSection = () => {
 					</TabsTrigger>
 				</TabsList>
 				<div className="ml-auto flex items-center gap-2">
-					<DropdownMenu>
+					{/* <DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="outline" className="gap-2">
 								<FolderArrowDownIcon className="h-5 w-5" />
@@ -71,7 +71,7 @@ export const ListSection = () => {
 							<DropdownMenuItem>Letzten 30</DropdownMenuItem>
 							<DropdownMenuItem>Alle</DropdownMenuItem>
 						</DropdownMenuContent>
-					</DropdownMenu>
+					</DropdownMenu> */}
 					{/* 
 					<Button size="sm" variant="outline" className="h-9 gap-1" disabled>
 						<ArrowDownOnSquareIcon className="h-4 w-4" />

@@ -4,6 +4,7 @@ import { PricingCard } from '@/components/plans/PricingCard';
 import Container from '@/components/ui/container';
 import type { DefaultPageParams } from '@/types/page';
 import { auth } from '@clerk/nextjs/server';
+import { notFound } from 'next/navigation';
 
 export type Tier = {
 	name: string;
@@ -54,8 +55,11 @@ export default async function Page({ params }: DefaultPageParams) {
 	const { isAuthenticated, has } = await auth();
 	const hasProPlan = has({ plan: 'pro_user' });
 
+	// temporary disable this page
+	if (1 === 1) notFound();
+
 	return (
-		<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
+		<>
 			<Header />
 
 			<Container className="py-24">
@@ -84,6 +88,6 @@ export default async function Page({ params }: DefaultPageParams) {
 			</Container>
 
 			<Footer />
-		</main>
+		</>
 	);
 }

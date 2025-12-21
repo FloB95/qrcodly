@@ -45,24 +45,16 @@ export default function Footer() {
 						))}
 					</div>
 					<div className="mt-8 md:order-1 md:mt-0">
-						<p className="text-center text-xs leading-5 text-gray-500">
+						<p className="text-center text-xs leading-5 ">
 							&copy; FB Dev {currentYear} - {t('qrCodeCopyright')}
 						</p>
 					</div>
 				</div>
 				<div className="justify-center space-x-4 pt-6 pb-12 text-center text-xs md:flex md:items-center lg:px-8">
-					<Link
-						href="/imprint"
-						title={t('legalNotice')}
-						className="text-gray-600 hover:text-gray-800"
-					>
+					<Link href="/imprint" title={t('legalNotice')}>
 						{t('legalNotice')}
 					</Link>
-					<Link
-						href="/privacy-policy"
-						title={t('privacyPolicy')}
-						className="text-gray-600 hover:text-gray-800"
-					>
+					<Link href="/privacy-policy" title={t('privacyPolicy')}>
 						{t('privacyPolicy')}
 					</Link>
 				</div>

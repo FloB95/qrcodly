@@ -49,7 +49,7 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
 
 				<body className={`font-sans ${openSans.variable}`}>
 					<NextIntlClientProvider>
-						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
+						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
 							<Header hideLanguageNav />
 							<Container className="mt-22 px-6 sm:px-20 lg:px-40 mb-10">{children}</Container>
 							<Footer />

@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function NotFoundPage() {
 	return (
-		<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
+		<>
 			<NoNavHeader />
 
 			<Container className="flex flex-col justify-center text-center">
@@ -22,6 +22,6 @@ export default function NotFoundPage() {
 			</Container>
 
 			<Footer />
-		</main>
+		</>
 	);
 }

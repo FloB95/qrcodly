@@ -40,9 +40,9 @@ export default function Header({
 						>
 							Docs
 						</Link>
-						<Link href="/plans" className="hidden sm:block h-10 px-2 py-2">
+						{/* <Link href="/plans" className="hidden sm:block h-10 px-2 py-2">
 							Plans
-						</Link>
+						</Link> */}
 						<SignedOut>
 							<SignInButton>
 								<Button>{t('signInBtn')}</Button>
