@@ -14,26 +14,24 @@ export default async function Page({ params }: DefaultPageParams) {
 	const t = await getTranslations({ locale });
 	return (
 		<QrCodeGeneratorStoreProvider>
-			<main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
-				<Header />
+			<Header />
 
-				<div>
-					<Container>
-						<h1 className="mt-12 lg:mt-4 mb-16 text-center text-2xl sm:text-4xl font-bold">
-							<div dangerouslySetInnerHTML={{ __html: String(t.raw('headline')) }} />
-						</h1>
-						<div className="mb-2">
-							<QRcodeGenerator generatorType="QrCodeWithDownloadBtn" />
-						</div>
+			<div>
+				<Container>
+					<h1 className="mt-12 mb-14 text-center text-2xl sm:text-4xl font-bold">
+						<div dangerouslySetInnerHTML={{ __html: String(t.raw('headline')) }} />
+					</h1>
+					<div className="mb-2">
+						<QRcodeGenerator generatorType="QrCodeWithDownloadBtn" />
+					</div>
 
-						<Features />
-						<Cta />
-						<FAQSection />
-					</Container>
-				</div>
+					<Features />
+					<Cta />
+					<FAQSection />
+				</Container>
+			</div>
 
-				<Footer />
-			</main>
+			<Footer />
 		</QrCodeGeneratorStoreProvider>
 	);
 }

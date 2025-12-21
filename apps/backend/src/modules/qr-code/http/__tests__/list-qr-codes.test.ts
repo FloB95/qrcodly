@@ -7,6 +7,7 @@ import { container } from 'tsyringe';
 import { type User } from '@clerk/fastify';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 import { generateQrCodeDto } from './utils';
+import { PlanName } from '@/core/config/plan.config';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 
@@ -40,13 +41,21 @@ describe('listQrCodes', () => {
 		// Create QR codes for user1
 		for (let i = 0; i < 3; i++) {
 			const createQrCodeDto = generateQrCodeDto();
-			await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, user.id);
+			await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, {
+				id: user.id,
+				plan: PlanName.FREE,
+				tokenType: 'session_token',
+			});
 		}
 
 		// Create QR codes for user2
 		for (let i = 0; i < 2; i++) {
 			const createQrCodeDto = generateQrCodeDto();
-			await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, user2.id);
+			await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, {
+				id: user2.id,
+				plan: PlanName.FREE,
+				tokenType: 'session_token',
+			});
 		}
 	});
 

@@ -36,7 +36,9 @@ export default clerkMiddleware(async (auth, req, event) => {
 		!pathname.startsWith('/umami.js') &&
 		!pathname.startsWith('/monitoring') &&
 		!pathname.startsWith('/docs') &&
-		!pathname.startsWith('/ingest')
+		!pathname.startsWith('/ingest') &&
+		!pathname.startsWith('/privacy-policy') &&
+		!pathname.startsWith('/imprint')
 	) {
 		const intlResponse = intlMiddleware(req);
 		if (intlResponse) return intlResponse;

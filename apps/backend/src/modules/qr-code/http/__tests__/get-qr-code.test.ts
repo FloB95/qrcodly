@@ -7,6 +7,7 @@ import { type User } from '@clerk/fastify';
 import { type TQrCode } from '../../domain/entities/qr-code.entity';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 import { generateQrCodeDto } from './utils';
+import { PlanName } from '@/core/config/plan.config';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 
@@ -44,7 +45,11 @@ describe('createQrCode', () => {
 
 	it('should create a QR code and return status code 201', async () => {
 		const createQrCodeDto = generateQrCodeDto();
-		createQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, user.id);
+		createQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, {
+			id: user.id,
+			plan: PlanName.FREE,
+			tokenType: 'session_token',
+		});
 		const response = await getQrCodeRequest(createQrCode.id, accessToken);
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeResponseDto;
 
@@ -63,7 +68,11 @@ describe('createQrCode', () => {
 	it('should return a 403 when user try to access other users QrCOde', async () => {
 		const createQrCodeDto = generateQrCodeDto();
 
-		createQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, user2.id);
+		createQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, {
+			id: user2.id,
+			plan: PlanName.FREE,
+			tokenType: 'session_token',
+		});
 
 		const response = await getQrCodeRequest(createQrCode.id, accessToken);
 		expect(response.statusCode).toBe(403);

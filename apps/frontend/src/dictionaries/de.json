@@ -104,6 +104,10 @@
 			"teamFeature": {
 				"headline": "Im Team zusammenarbeiten",
 				"subHeadline": "Lade Teammitglieder ein und arbeite gemeinsam an QR-Codes. Ideal für Unternehmen, Agenturen und Teams."
+			},
+			"secureFeature": {
+				"headline": "Deine Daten bleiben bei uns",
+				"subHeadline": "Qrcodly hostet alle Daten lokal in Deutschland – keine Weitergabe an externe Dienste. Einzig für die Authentifizierung nutzen wir Clerk."
 			}
 		}
 	},
@@ -433,7 +437,9 @@
 		"question9": "Kann ich einen QR Code mit meinem Logo personalisieren?",
 		"answer9": "Ja, mit qrcodly.de gestaltest du deine QR Codes ganz nach deinen Wünschen: Integriere dein Logo und nutze deine Markenfarben, ohne die Scanbarkeit zu beeinträchtigen. So bleiben deine Codes einzigartig und professionell!",
 		"question10": "Funktionieren QR Codes auch im Druck?",
-		"answer10": "Absolut! QR Codes sind speziell für den Druck optimiert und funktionieren zuverlässig auf verschiedensten Materialien, solange sie klar und unbeschädigt bleiben. Achte auf gute Druckqualität, dann sind deine Codes überall einsatzbereit!"
+		"answer10": "Absolut! QR Codes sind speziell für den Druck optimiert und funktionieren zuverlässig auf verschiedensten Materialien, solange sie klar und unbeschädigt bleiben. Achte auf gute Druckqualität, dann sind deine Codes überall einsatzbereit!",
+		"question11": "Wo werden meine Daten gehostet?",
+		"answer11": "Alle Daten bei Qrcodly werden ausschließlich auf Servern in Deutschland gespeichert. Wir geben keine Daten an Dritte weiter. Lediglich für die Anmeldung und Authentifizierung nutzen wir den Dienst Clerk."
 	},
 	"fileUpload": {
 		"maxFiles": "Es sind maximal {maxFiles} Dateien erlaubt",

@@ -104,6 +104,10 @@
 			"teamFeature": {
 				"headline": "Collabora in team",
 				"subHeadline": "Invita i membri del team e lavora insieme sui codici QR. Ideale per aziende, agenzie e team."
+			},
+			"secureFeature": {
+				"headline": "I tuoi dati rimangono con noi",
+				"subHeadline": "Qrcodly ospita tutti i dati localmente in Germania – nessuna condivisione con servizi esterni. Usiamo Clerk solo per l'autenticazione."
 			}
 		}
 	},
@@ -433,7 +437,9 @@
 		"question9": "Posso personalizzare un codice QR con il mio logo?",
 		"answer9": "Sì, con qrcodly.de, puoi progettare i tuoi codici QR esattamente come desideri: integra il tuo logo e utilizza i colori del tuo marchio senza compromettere la scansionabilità. In questo modo, i tuoi codici rimarranno unici e professionali!",
 		"question10": "I codici QR funzionano anche in stampa?",
-		"answer10": "Assolutamente! I codici QR sono specificamente ottimizzati per la stampa e funzionano in modo affidabile su vari materiali, a condizione che rimangano chiari e intatti. Assicurati una buona qualità di stampa e i tuoi codici saranno pronti per l'uso ovunque!"
+		"answer10": "Assolutamente! I codici QR sono specificamente ottimizzati per la stampa e funzionano in modo affidabile su vari materiali, a condizione che rimangano chiari e intatti. Assicurati una buona qualità di stampa e i tuoi codici saranno pronti per l'uso ovunque!",
+		"question11": "Dove vengono ospitati i miei dati?",
+		"answer11": "Tutti i dati di Qrcodly sono archiviati esclusivamente su server situati in Germania. Non condividiamo i tuoi dati con terze parti. Utilizziamo Clerk solo per l’accesso e l’autenticazione."
 	},
 	"fileUpload": {
 		"maxFiles": "Consentiti al massimo {maxFiles} file",

@@ -223,6 +223,7 @@ export function registerRoutes(
 			schema: deepMerge(schema, routeMeta.options.schema as unknown as Partial<typeof schema>),
 		};
 
+		// add user to reuqest
 		routeOptions.preHandler = [addUserToRequestMiddleware];
 
 		// Add authentication preHandler

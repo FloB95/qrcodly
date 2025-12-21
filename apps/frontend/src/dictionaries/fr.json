@@ -104,6 +104,10 @@
 			"teamFeature": {
 				"headline": "Collaborer en équipe",
 				"subHeadline": "Invitez des membres de l'équipe et travaillez ensemble sur les codes QR. Idéal pour les entreprises, les agences et les équipes."
+			},
+			"secureFeature": {
+				"headline": "Vos données restent chez nous",
+				"subHeadline": "Qrcodly héberge toutes les données localement en Allemagne – sans les partager avec des services externes. Nous utilisons uniquement Clerk pour l’authentification."
 			}
 		}
 	},
@@ -433,7 +437,9 @@
 		"question9": "Puis-je personnaliser un Code QR avec mon logo ?",
 		"answer9": "Oui, avec qrcodly.de, vous pouvez concevoir vos Codes QR exactement à votre guise : intégrez votre logo et utilisez les couleurs de votre marque sans affecter la scannabilité. Ainsi, vos codes restent uniques et professionnels !",
 		"question10": "Les Codes QR fonctionnent-ils également imprimés ?",
-		"answer10": "Absolument ! Les Codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, tant qu'ils restent clairs et intacts. Assurez une bonne qualité d'impression, et vos codes seront prêts à être utilisés partout !"
+		"answer10": "Absolument ! Les Codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, tant qu'ils restent clairs et intacts. Assurez une bonne qualité d'impression, et vos codes seront prêts à être utilisés partout !",
+		"question11": "Où sont hébergées mes données ?",
+		"answer11": "Toutes les données de Qrcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous ne partageons aucune donnée avec des tiers. Nous utilisons uniquement Clerk pour la connexion et l’authentification."
 	},
 	"fileUpload": {
 		"maxFiles": "Maximum {maxFiles} fichiers autorisés",

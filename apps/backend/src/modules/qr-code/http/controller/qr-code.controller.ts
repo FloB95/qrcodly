@@ -4,7 +4,7 @@ import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
-import { UnauthorizedError } from '@/core/error/http';
+import { ForbiddenError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import {
 	BulkImportQrCodeDto,
@@ -110,15 +110,12 @@ export class QrCodeController extends AbstractController {
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
 		const userId = request.user?.id ?? null;
 
-		console.log('user', request.user);
-		console.log('userId', userId);
-
 		// set editable to false if user is not logged in
 		if (!userId && request.body.content.type === 'url') {
 			request.body.content.data.isEditable = false;
 		}
 
-		const qrCode = await this.createQrCodeUseCase.execute(request.body, userId);
+		const qrCode = await this.createQrCodeUseCase.execute(request.body, request.user);
 		return this.makeApiHttpResponse(201, QrCodeWithRelationsResponseDto.parse(qrCode));
 	}
 
@@ -143,7 +140,7 @@ export class QrCodeController extends AbstractController {
 		},
 	})
 	async bulkImport(request: IHttpRequest<TBulkImportQrCodeDto>): Promise<IHttpResponse<any>> {
-		const qrCodes = await this.bulkImportQrCodesUseCase.execute(request.body, request.user.id);
+		const qrCodes = await this.bulkImportQrCodesUseCase.execute(request.body, request.user);
 		const response = qrCodes.map((qrCode) => QrCodeWithRelationsResponseDto.parse(qrCode));
 		return this.makeApiHttpResponse(201, response);
 	}
@@ -177,7 +174,7 @@ export class QrCodeController extends AbstractController {
 		}
 
 		if (qrCode.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		// Convert image path to presigned URL
@@ -224,7 +221,7 @@ export class QrCodeController extends AbstractController {
 		}
 
 		if (qrCode.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		const updatedQrCode = await this.updateQrCodeUseCase.execute(
@@ -259,7 +256,7 @@ export class QrCodeController extends AbstractController {
 		}
 
 		if (qrCode.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		await this.deleteQrCodeUseCase.execute(qrCode, request.user.id);

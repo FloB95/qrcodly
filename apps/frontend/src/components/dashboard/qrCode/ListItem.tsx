@@ -17,6 +17,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '../../ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../ui/tooltip';
@@ -285,6 +286,7 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>{t('qrCode.actionsMenu.title')}</DropdownMenuLabel>
+							<DropdownMenuSeparator />
 
 							{qr.shortUrl && (
 								<DropdownMenuItem asChild>

@@ -14,7 +14,7 @@ export const TextInputSchema = z.string().max(1000);
 export type TTextInput = string;
 
 export const WifiInputSchema = z.object({
-	ssid: z.string().max(32),
+	ssid: z.string().max(32).min(1),
 	password: z.string().max(64),
 	encryption: z.enum(['WPA', 'WEP', 'nopass']),
 });

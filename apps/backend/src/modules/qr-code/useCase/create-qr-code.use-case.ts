@@ -15,6 +15,8 @@ import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { CustomApiError } from '@/core/error/http';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { UnitOfWork } from '@/core/db/unit-of-work';
+import { CreateQrCodePolicy } from '../policies/create-qr-code.policy';
+import { TUser } from '@/core/domain/schema/UserSchema';
 
 /**
  * Use case for creating a QrCode entity.
@@ -36,10 +38,14 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 	 * Executes the use case to create a new QRcode entity based on the given DTO.
 	 * All database operations for core creation and short URL linking are wrapped in a transaction.
 	 * @param dto The data transfer object containing the details for the QRcode to be created.
-	 * @param createdBy The ID of the user who created the QRcode.
+	 * @param user The user object who created the QRcode.
 	 * @returns A promise that resolves with the newly created QRcode entity, potentially with linked shortUrl.
 	 */
-	async execute(dto: TCreateQrCodeDto, createdBy: string | null): Promise<TQrCodeWithRelations> {
+	async execute(dto: TCreateQrCodeDto, user: TUser | undefined): Promise<TQrCodeWithRelations> {
+		// handle limitations and access check
+		const policy = new CreateQrCodePolicy(user, dto);
+		await policy.checkAccess();
+
 		let createdImage: string | undefined;
 
 		try {
@@ -50,7 +56,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 				const qrCodeData = {
 					id: newId,
 					...dto,
-					createdBy,
+					createdBy: user?.id ?? null,
 					previewImage: null,
 				};
 
@@ -59,7 +65,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 					const uploaded = await this.imageService.uploadImage(
 						qrCodeData.config.image,
 						newId,
-						createdBy ?? undefined,
+						user?.id ?? undefined,
 					);
 					createdImage = uploaded;
 					qrCodeData.config.image = uploaded;
@@ -69,8 +75,8 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 				let originalUrl: string | null = null;
 				let reservedShortUrl: TShortUrl | null = null;
 
-				if (createdBy && qrCodeData.content.type === 'url' && qrCodeData.content.data.isEditable) {
-					reservedShortUrl = await this.getReservedShortCodeUseCase.execute(createdBy);
+				if (user?.id && qrCodeData.content.type === 'url' && qrCodeData.content.data.isEditable) {
+					reservedShortUrl = await this.getReservedShortCodeUseCase.execute(user?.id);
 
 					if (!reservedShortUrl) throw new ShortUrlNotFoundError();
 
@@ -86,7 +92,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 					await this.updateShortUrlUseCase.execute(
 						reservedShortUrl,
 						{ destinationUrl: originalUrl, isActive: true },
-						createdBy!,
+						user!.id,
 						newId,
 					);
 				}
@@ -101,6 +107,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 					createdBy: finalQrCode.createdBy,
 				});
 
+				if (user?.id) await policy.incrementUsage();
 				return finalQrCode as TQrCodeWithRelations;
 			});
 		} catch (error: any) {

@@ -6,7 +6,7 @@ import { CreateConfigTemplateUseCase } from '../../useCase/create-config-templat
 import { ListConfigTemplatesUseCase } from '../../useCase/list-config-templates.use-case';
 import { UpdateConfigTemplateUseCase } from '../../useCase/update-config-template.use-case';
 import { ConfigTemplateNotFoundError } from '../../error/http/config-template-not-found.error';
-import { UnauthorizedError } from '@/core/error/http';
+import { ForbiddenError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import {
 	ConfigTemplatePaginatedResponseDto,
@@ -175,7 +175,7 @@ export class ConfigTemplateController extends AbstractController {
 		}
 
 		if (configTemplate.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		return this.makeApiHttpResponse(200, ConfigTemplateResponseDto.parse(configTemplate));
@@ -208,7 +208,7 @@ export class ConfigTemplateController extends AbstractController {
 		}
 
 		if (configTemplate.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		const updatedTemplate = await this.updateConfigTemplateUseCase.execute(
@@ -243,7 +243,7 @@ export class ConfigTemplateController extends AbstractController {
 		}
 
 		if (configTemplate.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		await this.deleteConfigTemplateUseCase.execute(configTemplate, request.user.id);

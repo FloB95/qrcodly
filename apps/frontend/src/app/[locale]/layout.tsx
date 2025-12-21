@@ -10,6 +10,7 @@ import { routing } from '@/i18n/routing';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { env } from '@/env';
+import { deDE, enUS, frFR, itIT, esES, nlNL, plPL, ruRU } from '@clerk/localizations';
 
 const openSans = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -41,9 +42,22 @@ export default async function RootLayout({
 			/>
 		));
 
+	const localeMap: Record<string, typeof enUS> = {
+		en: enUS,
+		de: deDE,
+		nl: nlNL,
+		fr: frFR,
+		it: itIT,
+		es: esES,
+		pl: plPL,
+		ru: ruRU,
+	};
+
+	const clerkLocale = localeMap[locale] || enUS;
+
 	return (
 		<html lang={locale} className="light" suppressHydrationWarning>
-			<ClerkProvider>
+			<ClerkProvider localization={clerkLocale}>
 				<head>
 					{/* SEO Meta-Tags */}
 					<title>{t('title')}</title>
@@ -69,7 +83,11 @@ export default async function RootLayout({
 
 				<body className={`font-sans ${openSans.variable}`}>
 					<NextIntlClientProvider>
-						<Providers>{children}</Providers>
+						<Providers>
+							<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
+								{children}
+							</main>
+						</Providers>
 					</NextIntlClientProvider>
 					<Toaster />
 				</body>

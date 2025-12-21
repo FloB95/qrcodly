@@ -53,7 +53,7 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
 				<body className={`font-sans ${openSans.variable}`}>
 					<NextIntlClientProvider>
 						<Providers>
-							<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-50 to-orange-100">
+							<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
 								<RootProvider theme={{ enabled: false }}>
 									<DocsLayout
 										themeSwitch={{ enabled: false }}

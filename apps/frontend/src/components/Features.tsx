@@ -2,6 +2,7 @@ import {
 	ChartBarIcon,
 	QrCodeIcon,
 	RectangleStackIcon,
+	ShieldCheckIcon,
 	StarIcon,
 	UserGroupIcon,
 } from '@heroicons/react/24/outline';
@@ -15,10 +16,21 @@ export const Features = () => {
 		<div className="my-20 space-y-5 sm:my-32">
 			<div className="mx-auto max-w-3xl text-center">
 				<h2 className="mb-4 text-2xl sm:text-4xl font-bold">{t('headline')}</h2>
-				<p className="text-accent-foreground text-xl sm:text-2xl">{t('subHeadline')}</p>
+				<h3 className="mb-4 text-lg sm:text-2xl to-muted-foreground">{t('subHeadline')}</h3>
 			</div>
 
-			<div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+			<div className="mt-12 sm:mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+				<div className="md:col-span-2 lg:col-start-2 ">
+					<div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md relative">
+						<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
+							<ShieldCheckIcon className="h-8 w-8" />
+						</div>
+						<h3 className="mb-3 text-xl font-bold text-gray-900">{t('secureFeature.headline')}</h3>
+						<p className="text-gray-600">{t('secureFeature.subHeadline')}</p>
+					</div>
+				</div>
+			</div>
+			<div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 				<div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
 					<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
 						<QrCodeIcon className="h-8 w-8" />

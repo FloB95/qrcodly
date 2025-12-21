@@ -9,10 +9,16 @@ import Link from 'next/link';
 import { buttonVariants } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
+import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
+import { useListQrCodesQuery } from '@/lib/api/qr-code';
 
 export const ListSection = () => {
 	const router = useRouter();
 	const t = useTranslations('collection');
+
+	const { data: templates } = useListConfigTemplatesQuery(undefined, 1, 1);
+
+	const { data: qrCodes } = useListQrCodesQuery(1, 1);
 
 	return (
 		<Tabs
@@ -28,32 +34,37 @@ export const ListSection = () => {
 					<TabsTrigger value="qrCodeList" className="data-[state=active]:bg-gray-200">
 						<div className="sm:flex sm:space-x-2">
 							<QrCodeIcon width={20} height={20} />{' '}
-							<span className="hidden sm:block">{t('tabQrCode')}</span>
+							<span className="hidden sm:block">
+								{t('tabQrCode')} {qrCodes?.total ? `(${qrCodes.total})` : ''}
+							</span>
 						</div>
 					</TabsTrigger>
 					<TabsTrigger value="templateList" className="data-[state=active]:bg-gray-200">
 						<div className="sm:flex sm:space-x-2">
 							<StarIcon width={20} height={20} />{' '}
-							<span className="hidden sm:block">{t('tabTemplates')}</span>
+							<span className="hidden sm:block">
+								{t('tabTemplates')} {templates?.total ? `(${templates.total})` : ''}
+							</span>
 						</div>
 					</TabsTrigger>
 				</TabsList>
 				<div className="ml-auto flex items-center gap-2">
 					{/* <DropdownMenu>
-						<DropdownMenuTrigger asChild disabled>
-							<Button variant="outline" size="sm" className="h-9 gap-1" disabled>
-								<FunnelIcon className="h-4 w-4" />
-								<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Filter</span>
+						<DropdownMenuTrigger asChild>
+							<Button variant="outline" className="gap-2">
+								<FolderArrowDownIcon className="h-5 w-5" />
+								<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Export</span>
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>Filter by</DropdownMenuLabel>
+							<DropdownMenuLabel>Anzahl</DropdownMenuLabel>
 							<DropdownMenuSeparator />
-							<DropdownMenuCheckboxItem checked>Active</DropdownMenuCheckboxItem>
-							<DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-							<DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
+							<DropdownMenuItem>Auswahl</DropdownMenuItem>
+							<DropdownMenuItem>Letzten 30</DropdownMenuItem>
+							<DropdownMenuItem>Alle</DropdownMenuItem>
 						</DropdownMenuContent>
-					</DropdownMenu>
+					</DropdownMenu> */}
+					{/* 
 					<Button size="sm" variant="outline" className="h-9 gap-1" disabled>
 						<ArrowDownOnSquareIcon className="h-4 w-4" />
 						<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Export</span>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import QRCodeStyling, { type Options } from 'qr-code-styling';
 import { cn } from '@/lib/utils';
 import {
@@ -14,7 +14,21 @@ export type QrCodeProps = {
 	additionalStyles?: string;
 };
 
-export default function QrCode({ qrCode, additionalStyles = '' }: QrCodeProps) {
+function areQrCodePropsEqual(prev: QrCodeProps, next: QrCodeProps) {
+	const optionsPrev: Options = {
+		...convertQrCodeOptionsToLibraryOptions(prev.qrCode.config),
+		data: convertQRCodeDataToStringByType(prev.qrCode.content) || 'https://qrcodly.de',
+	};
+
+	const optionsNext: Options = {
+		...convertQrCodeOptionsToLibraryOptions(next.qrCode.config),
+		data: convertQRCodeDataToStringByType(next.qrCode.content) || 'https://qrcodly.de',
+	};
+
+	return JSON.stringify(optionsPrev) == JSON.stringify(optionsNext);
+}
+
+function QrCode({ qrCode, additionalStyles = '' }: QrCodeProps) {
 	const options: Options = useMemo(
 		() => ({
 			...convertQrCodeOptionsToLibraryOptions(qrCode.config),
@@ -41,14 +55,14 @@ export default function QrCode({ qrCode, additionalStyles = '' }: QrCodeProps) {
 	}, [qrCodeInstance, options]);
 
 	return (
-		<>
-			<div
-				className={cn(
-					'canvas-wrap max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]',
-					additionalStyles,
-				)}
-				ref={ref}
-			/>
-		</>
+		<div
+			className={cn(
+				'canvas-wrap max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]',
+				additionalStyles,
+			)}
+			ref={ref}
+		/>
 	);
 }
+
+export default memo(QrCode, areQrCodePropsEqual);

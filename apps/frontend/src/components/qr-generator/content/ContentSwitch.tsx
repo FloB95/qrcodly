@@ -103,7 +103,7 @@ export const ContentSwitch = ({
 					</TabsTrigger>
 				)}
 			</TabsList>
-			<div className="flex flex-row-reverse cursor-pointer">
+			<div className="flex flex-row-reverse cursor-pointer pt-1">
 				{bulkMode.isBulkMode ? (
 					<Button variant="link" onClick={() => updateBulkMode(false, undefined)}>
 						{t('cancel')}

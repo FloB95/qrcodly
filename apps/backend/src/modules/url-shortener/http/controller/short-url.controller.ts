@@ -18,7 +18,7 @@ import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-ur
 import { UmamiAnalyticsService } from '../../services/umami-analytics.service';
 import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { TShortUrl } from '../../domain/entities/short-url.entity';
-import { UnauthorizedError } from '@/core/error/http';
+import { ForbiddenError } from '@/core/error/http';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 
 @injectable()
@@ -188,7 +188,7 @@ export class ShortUrlController extends AbstractController {
 		}
 
 		if (userId && shortUrl.createdBy !== userId) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		return shortUrl;

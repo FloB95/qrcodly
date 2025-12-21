@@ -21,7 +21,7 @@ export default async function NotFoundPage() {
 				<link rel="manifest" href="/site.webmanifest" />
 			</head>
 			<body className={`font-sans ${openSans.variable}`}>
-				<main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
+				<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
 					<NoNavHeader />
 
 					<Container className="flex flex-col justify-center text-center">
