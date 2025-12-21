@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '../ui/button';
 import { CheckoutButton } from '@clerk/nextjs/experimental';
 import { UserBillingBtn } from './UserBillingBtn';
+import { env } from '@/env';
 
 export const ProCTA = ({
 	locale,
@@ -26,8 +27,7 @@ export const ProCTA = ({
 	if (!hasProPlan) {
 		return (
 			<SignedIn>
-				{/* TODO make plan id dynamic */}
-				<CheckoutButton planId="cplan_36wWRWdZoYZnRbidMwr5ArMALFD" planPeriod={planPeriod}>
+				<CheckoutButton planId={env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID} planPeriod={planPeriod}>
 					<Button variant="secondary">Upgrade to Pro</Button>
 				</CheckoutButton>
 			</SignedIn>

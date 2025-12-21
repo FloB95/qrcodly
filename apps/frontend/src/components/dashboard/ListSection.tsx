@@ -2,23 +2,15 @@
 
 import { QrCodeList } from '@/components/dashboard/qrCode/QrCodeList';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FolderArrowDownIcon, PlusIcon, QrCodeIcon, StarIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, QrCodeIcon, StarIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { TemplateList } from './templates/TemplateList';
 import Link from 'next/link';
-import { Button, buttonVariants } from '../ui/button';
+import { buttonVariants } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
 import { useListQrCodesQuery } from '@/lib/api/qr-code';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
 
 export const ListSection = () => {
 	const router = useRouter();

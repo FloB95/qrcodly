@@ -18,6 +18,7 @@ export class UsageRepository {
 
 	async increment(userId: string, limitKey: string) {
 		const key = this.getKey(userId, limitKey);
-		await this.keyCache.set(key, 1, 86400); // 1 day expiration
+		let currentUsage = await this.getUsage(userId, limitKey);
+		await this.keyCache.set(key, currentUsage++, 86400); // 1 day expiration
 	}
 }
