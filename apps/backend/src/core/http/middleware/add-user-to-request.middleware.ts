@@ -14,14 +14,17 @@ export function addUserToRequestMiddleware(
 		acceptsToken: ['session_token', 'api_key'],
 	}) as { userId: string | null; tokenType: TTokenType; has: any };
 
-	container.resolve(Logger).info('api.request', {
-		requestId: request.id,
-		ip: request.clientIp,
-		method: request.method,
-		path: request.url,
-		accessType: tokenType,
-		userId: userId,
-	});
+	// don´t log health check
+	if (request.clientIp !== '127.0.0.1') {
+		container.resolve(Logger).info('api.request', {
+			requestId: request.id,
+			ip: request.clientIp,
+			method: request.method,
+			path: request.url,
+			accessType: tokenType,
+			userId: userId,
+		});
+	}
 
 	request.user = userId
 		? // eslint-disable-next-line @typescript-eslint/no-unsafe-call
