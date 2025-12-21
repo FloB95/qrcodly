@@ -111,7 +111,7 @@ export const QRcodeGenerator = ({
 							<div className="flex flex-col space-y-10 md:flex-row md:space-y-0 md:space-x-12">
 								<div className="flex-1">
 									{isEditMode && currentTab === 'qrCodeContent' && (
-										<div className="mb-10 flex flex-col space-y-4">
+										<div className="mb-8 flex flex-col space-y-4">
 											<label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
 												<span translate="no">{t('labelName')}</span>
 											</label>

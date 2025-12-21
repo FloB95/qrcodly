@@ -14,8 +14,8 @@ export function addUserToRequestMiddleware(
 		acceptsToken: ['session_token', 'api_key'],
 	}) as { userId: string | null; tokenType: TTokenType; has: any };
 
-	// don´t log health check
-	if (request.clientIp !== '127.0.0.1') {
+	// don´t log health check & uptime kuma
+	if (request.clientIp !== '127.0.0.1' && request.clientIp !== '152.53.13.36') {
 		container.resolve(Logger).info('api.request', {
 			requestId: request.id,
 			ip: request.clientIp,

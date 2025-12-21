@@ -57,7 +57,9 @@ export const ContentSwitch = ({
 				updateContent(getDefaultContentByType(value as TQrCodeContentType));
 			}}
 		>
-			<TabsList className="mb-3 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4">
+			<TabsList
+				className={`${isEditMode ? 'mb-6' : 'mb-3 '} grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4`}
+			>
 				{!hideContentUrlTab && (
 					<TabsTrigger value="url" asChild>
 						<button
@@ -103,22 +105,28 @@ export const ContentSwitch = ({
 					</TabsTrigger>
 				)}
 			</TabsList>
-			<div className="flex flex-row-reverse cursor-pointer pt-1">
-				{bulkMode.isBulkMode ? (
-					<Button variant="link" onClick={() => updateBulkMode(false, undefined)}>
-						{t('cancel')}
-					</Button>
-				) : (
-					<div className="relative flex mb-2 align-middle">
-						<Button className="p-0" variant="link" onClick={() => updateBulkMode(true, undefined)}>
-							<DocumentArrowUpIcon className="w-6 h-6 mr-1.5" /> {t('bulkModeBtn')}
+			{!isEditMode && (
+				<div className="flex flex-row-reverse cursor-pointer pt-1">
+					{bulkMode.isBulkMode ? (
+						<Button variant="link" onClick={() => updateBulkMode(false, undefined)}>
+							{t('cancel')}
 						</Button>
-						<div className="mt-1.5 ml-2">
-							<Badge className="cursor-default hidden xs:block">{t2('newBadge')}</Badge>
+					) : (
+						<div className="relative flex mb-2 align-middle">
+							<Button
+								className="p-0"
+								variant="link"
+								onClick={() => updateBulkMode(true, undefined)}
+							>
+								<DocumentArrowUpIcon className="w-6 h-6 mr-1.5" /> {t('bulkModeBtn')}
+							</Button>
+							<div className="mt-1.5 ml-2">
+								<Badge className="cursor-default hidden xs:block">{t2('newBadge')}</Badge>
+							</div>
 						</div>
-					</div>
-				)}
-			</div>
+					)}
+				</div>
+			)}
 
 			{bulkMode.isBulkMode ? (
 				<BulkImport contentType={content.type} />
