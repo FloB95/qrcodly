@@ -7,4 +7,3 @@
 - Add more Documentation
 - Add a separate url shortener page
 - Implement a Pro Plan
-

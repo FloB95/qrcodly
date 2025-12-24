@@ -17,6 +17,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { StandaloneSearchBox, useJsApiLoader, type Libraries } from '@react-google-maps/api';
 import { Loader2 } from 'lucide-react';
+import { env } from '@/env';
 
 type LocationSectionProps = {
 	onChange: (data: TLocationInput) => void;
@@ -39,7 +40,7 @@ export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
 
 	const { isLoaded } = useJsApiLoader({
 		id: 'google-maps-script',
-		googleMapsApiKey: 'AIzaSyA1M1x6Qq_zFtxcj8H8KKt5qyFwCKJ4JOs',
+		googleMapsApiKey: env.NEXT_PUBLIC_GOOGLE_API_KEY,
 		libraries: GOOGLE_MAPS_LIBRARIES,
 		language: locale,
 	});
