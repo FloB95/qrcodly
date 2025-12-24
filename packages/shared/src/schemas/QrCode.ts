@@ -47,40 +47,119 @@ export const VCardInputSchema = z.object({
 });
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
 
+export const LocationInputSchema = z.object({
+	address: z.string().min(1),
+	latitude: z.number().optional(),
+	longitude: z.number().optional(),
+});
+export type TLocationInput = z.infer<typeof LocationInputSchema>;
+
+export const EmailInputSchema = z.object({
+	email: z.email(),
+	subject: z.string().optional(),
+	body: z.string().optional(),
+});
+export type TEmailInput = z.infer<typeof EmailInputSchema>;
+
+export const PhoneInputSchema = z.object({
+	phone: z.string().min(3),
+});
+export type TPhoneInput = z.infer<typeof PhoneInputSchema>;
+
+export const SmsInputSchema = z.object({
+	phone: z.string().min(3),
+	message: z.string().optional(),
+});
+export type TSmsInput = z.infer<typeof SmsInputSchema>;
+
+export const SocialPlatformEnum = z.enum([
+	'instagram',
+	'whatsapp',
+	'tiktok',
+	'youtube',
+	'website',
+	'spotify',
+	'threads',
+	'facebook',
+	'x',
+	'soundcloud',
+	'snapchat',
+	'pinterest',
+	'patreon',
+]);
+
+export const SocialLinkSchema = z.object({
+	platform: SocialPlatformEnum,
+	label: z.string().min(1),
+	url: z.string().url(),
+});
+
+export const SocialInputSchema = z.object({
+	title: z.string().min(1),
+	links: z.array(SocialLinkSchema).min(1),
+});
+
+export type TSocialInput = z.infer<typeof SocialInputSchema>;
+export type TSocialPlatform = z.infer<typeof SocialPlatformEnum>;
+
+export const EventInputSchema = z.object({
+	title: z.string().min(1),
+	description: z.string().optional(),
+	location: z.string().optional(),
+	startDate: z
+		.string()
+		.min(1)
+		.transform((value) => new Date(value).toISOString()),
+
+	endDate: z
+		.string()
+		.min(1)
+		.transform((value) => new Date(value).toISOString()),
+});
+
+export type TEventInput = z.infer<typeof EventInputSchema>;
+
+// Alle Typen als Literal-Union
 export const QrCodeContentType = z.union([
 	z.literal('url'),
 	z.literal('text'),
 	z.literal('wifi'),
 	z.literal('vCard'),
+	z.literal('email'),
+	z.literal('location'),
+	z.literal('event'),
+	z.literal('socials'),
 ]);
 export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
 
-export const UrlContentSchema = z.object({
-	type: z.literal('url'),
-	data: UrlInputSchema,
-});
+const ContentSchemas = {
+	url: UrlInputSchema,
+	text: TextInputSchema,
+	wifi: WifiInputSchema,
+	vCard: VCardInputSchema,
+	email: EmailInputSchema,
+	location: LocationInputSchema,
+	event: EventInputSchema,
+	socials: SocialInputSchema,
+} as const;
 
-export const TextContentSchema = z.object({
-	type: z.literal('text'),
-	data: TextInputSchema,
-});
-
-export const WifiContentSchema = z.object({
-	type: z.literal('wifi'),
-	data: WifiInputSchema,
-});
-
-export const VCardContentSchema = z.object({
-	type: z.literal('vCard'),
-	data: VCardInputSchema,
-});
+const createContentSchema = <T extends keyof typeof ContentSchemas>(type: T) =>
+	z.object({
+		type: z.literal(type),
+		data: ContentSchemas[type],
+	});
 
 export const QrCodeContent = z.discriminatedUnion('type', [
-	UrlContentSchema,
-	TextContentSchema,
-	WifiContentSchema,
-	VCardContentSchema,
+	createContentSchema('url'),
+	createContentSchema('text'),
+	createContentSchema('wifi'),
+	createContentSchema('vCard'),
+	createContentSchema('email'),
+	createContentSchema('location'),
+	createContentSchema('event'),
+	createContentSchema('socials'),
 ]);
+
 export type TQrCodeContent = z.infer<typeof QrCodeContent>;
 
 export const DotType = z.enum([

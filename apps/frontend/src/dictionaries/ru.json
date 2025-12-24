@@ -325,8 +325,12 @@
 			"tab": {
 				"url": "URL",
 				"text": "ТЕКСТ",
-				"wifi": "WI-FI",
-				"vCard": "VCARD"
+				"wifi": "WIFI",
+				"vCard": "VCARD",
+				"email": "ПОЧТА",
+				"location": "МЕСТО",
+				"event": "СОБЫТИЕ",
+				"socials": "СОЦСЕТИ"
 			},
 			"cancel": "Отмена",
 			"bulkModeBtn": "Массовое создание CSV",
@@ -405,6 +409,63 @@
 				"website": {
 					"label": "Веб-сайт",
 					"placeholder": "Введите URL вашего веб-сайта"
+				}
+			},
+			"email": {
+				"email": {
+					"label": "Адрес электронной почты",
+					"placeholder": "Введите адрес электронной почты"
+				},
+				"subject": {
+					"label": "Тема",
+					"placeholder": "Необязательная тема"
+				},
+				"body": {
+					"label": "Сообщение",
+					"placeholder": "Необязательное сообщение"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Адрес",
+					"placeholder": "Поиск адреса или места"
+				},
+				"latitude": {
+					"label": "Широта"
+				},
+				"longitude": {
+					"label": "Долгота"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Название",
+					"placeholder": "Название события"
+				},
+				"description": {
+					"label": "Описание",
+					"placeholder": "Необязательное описание"
+				},
+				"location": {
+					"label": "Место",
+					"placeholder": "Место проведения"
+				},
+				"startDate": {
+					"label": "Дата начала"
+				},
+				"endDate": {
+					"label": "Дата окончания"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Заголовок",
+					"placeholder": "например, Подписывайтесь"
+				},
+				"link": {
+					"placeholder": "URL профиля или сайта",
+					"add": "Добавить ссылку",
+					"remove": "Удалить"
 				}
 			}
 		}

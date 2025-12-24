@@ -326,7 +326,11 @@
 				"url": "URL",
 				"text": "TEXTO",
 				"wifi": "WIFI",
-				"vCard": "VCARD"
+				"vCard": "VCARD",
+				"email": "CORREO",
+				"location": "UBICACIÓN",
+				"event": "EVENTO",
+				"socials": "REDES"
 			},
 			"cancel": "Cancelar",
 			"bulkModeBtn": "Creación masiva con CSV",
@@ -405,6 +409,63 @@
 				"website": {
 					"label": "Sitio web",
 					"placeholder": "Introduce la URL de tu sitio web"
+				}
+			},
+			"email": {
+				"email": {
+					"label": "Correo electrónico",
+					"placeholder": "Introduce una dirección de correo"
+				},
+				"subject": {
+					"label": "Asunto",
+					"placeholder": "Asunto opcional"
+				},
+				"body": {
+					"label": "Mensaje",
+					"placeholder": "Mensaje opcional"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Dirección",
+					"placeholder": "Buscar dirección o lugar"
+				},
+				"latitude": {
+					"label": "Latitud"
+				},
+				"longitude": {
+					"label": "Longitud"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Título",
+					"placeholder": "Nombre del evento"
+				},
+				"description": {
+					"label": "Descripción",
+					"placeholder": "Descripción opcional"
+				},
+				"location": {
+					"label": "Ubicación",
+					"placeholder": "Lugar del evento"
+				},
+				"startDate": {
+					"label": "Fecha de inicio"
+				},
+				"endDate": {
+					"label": "Fecha de fin"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Título",
+					"placeholder": "p.ej. Sígueme"
+				},
+				"link": {
+					"placeholder": "URL del perfil o sitio web",
+					"add": "Añadir enlace",
+					"remove": "Eliminar"
 				}
 			}
 		}

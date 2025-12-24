@@ -325,8 +325,12 @@
 			"tab": {
 				"url": "URL",
 				"text": "TEKST",
-				"wifi": "WI-FI",
-				"vCard": "VCARD"
+				"wifi": "WIFI",
+				"vCard": "VCARD",
+				"email": "EMAIL",
+				"location": "LOCATIE",
+				"event": "EVENT",
+				"socials": "SOCIALS"
 			},
 			"cancel": "Annuleren",
 			"bulkModeBtn": "CSV Massale aanmaak",
@@ -405,6 +409,63 @@
 				"website": {
 					"label": "Website",
 					"placeholder": "Voer de URL van uw website in"
+				}
+			},
+			"email": {
+				"email": {
+					"label": "E-mailadres",
+					"placeholder": "Voer een e-mailadres in"
+				},
+				"subject": {
+					"label": "Onderwerp",
+					"placeholder": "Optioneel onderwerp"
+				},
+				"body": {
+					"label": "Bericht",
+					"placeholder": "Optioneel bericht"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Adres",
+					"placeholder": "Zoek een adres of plaats"
+				},
+				"latitude": {
+					"label": "Breedtegraad"
+				},
+				"longitude": {
+					"label": "Lengtegraad"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Titel",
+					"placeholder": "Naam van het evenement"
+				},
+				"description": {
+					"label": "Beschrijving",
+					"placeholder": "Optionele beschrijving"
+				},
+				"location": {
+					"label": "Locatie",
+					"placeholder": "Evenementlocatie"
+				},
+				"startDate": {
+					"label": "Startdatum"
+				},
+				"endDate": {
+					"label": "Einddatum"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Titel",
+					"placeholder": "bijv. Volg mij"
+				},
+				"link": {
+					"placeholder": "Profiel- of website-URL",
+					"add": "Link toevoegen",
+					"remove": "Verwijderen"
 				}
 			}
 		}

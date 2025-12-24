@@ -27,6 +27,10 @@ type QRcodeGeneratorProps = {
 	hideContentTextTab?: boolean;
 	hideContentWifiTab?: boolean;
 	hideContentVCardTab?: boolean;
+	hideContentEmailTab?: boolean;
+	hideContentLocationTab?: boolean;
+	hideContentEventTab?: boolean;
+	hideContentSocialsTab?: boolean;
 
 	isEditMode?: boolean;
 
@@ -42,6 +46,10 @@ export const QRcodeGenerator = ({
 	hideContentTextTab,
 	hideContentWifiTab,
 	hideContentVCardTab,
+	hideContentEmailTab,
+	hideContentLocationTab,
+	hideContentEventTab,
+	hideContentSocialsTab,
 	isEditMode,
 	backLink,
 	generatorType = 'QrCodeWithDownloadBtn',
@@ -135,6 +143,10 @@ export const QRcodeGenerator = ({
 												hideContentUrlTab={hideContentUrlTab}
 												hideContentVCardTab={hideContentVCardTab}
 												hideContentWifiTab={hideContentWifiTab}
+												hideContentEmailTab={hideContentEmailTab}
+												hideContentLocationTab={hideContentLocationTab}
+												hideContentEventTab={hideContentEventTab}
+												hideContentSocialsTab={hideContentSocialsTab}
 												isEditMode={isEditMode}
 											/>
 										</TabsContent>

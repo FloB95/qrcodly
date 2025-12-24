@@ -81,6 +81,17 @@ const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => 
 		case 'vCard':
 			const { firstName = '', lastName = '' } = qr.content.data;
 			return `${firstName} ${lastName}`;
+		case 'email':
+			return (
+				<div>
+					{qr.content.data.subject && <div>{qr.content.data.subject}</div>}
+					<div>{qr.content.data.email}</div>
+				</div>
+			);
+		case 'location':
+			return qr.content.data.address;
+		case 'event':
+			return qr.content.data.title;
 		default:
 			return 'Unknown';
 	}

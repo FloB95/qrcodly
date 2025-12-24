@@ -326,7 +326,11 @@
 				"url": "URL",
 				"text": "TEXT",
 				"wifi": "WLAN",
-				"vCard": "VCARD"
+				"vCard": "VCARD",
+				"email": "E-MAIL",
+				"location": "STANDORT",
+				"event": "EVENT",
+				"socials": "SOCIALS"
 			},
 			"cancel": "Abbrechen",
 			"bulkModeBtn": "CSV Massenerstellung",
@@ -405,6 +409,63 @@
 				"website": {
 					"label": "Webseite",
 					"placeholder": "Gib deine Webseiten-URL ein"
+				}
+			},
+			"email": {
+				"email": {
+					"label": "E-Mail-Adresse",
+					"placeholder": "Gib eine E-Mail-Adresse ein"
+				},
+				"subject": {
+					"label": "Betreff",
+					"placeholder": "Optionaler Betreff"
+				},
+				"body": {
+					"label": "Nachricht",
+					"placeholder": "Optionale Nachricht"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Adresse",
+					"placeholder": "Adresse oder Ort suchen"
+				},
+				"latitude": {
+					"label": "Breitengrad"
+				},
+				"longitude": {
+					"label": "Längengrad"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Titel",
+					"placeholder": "Name der Veranstaltung"
+				},
+				"description": {
+					"label": "Beschreibung",
+					"placeholder": "Optionale Beschreibung"
+				},
+				"location": {
+					"label": "Ort",
+					"placeholder": "Veranstaltungsort"
+				},
+				"startDate": {
+					"label": "Startdatum"
+				},
+				"endDate": {
+					"label": "Enddatum"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Titel",
+					"placeholder": "z.B. Folge mir"
+				},
+				"link": {
+					"placeholder": "Profil- oder Webseiten-URL",
+					"add": "Link hinzufügen",
+					"remove": "Entfernen"
 				}
 			}
 		}

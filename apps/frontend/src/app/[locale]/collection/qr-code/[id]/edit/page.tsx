@@ -44,13 +44,15 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 		notFound();
 	}
 
-	const tabs = ['url', 'text', 'wifi', 'vCard'];
+	const tabs = ['url', 'text', 'wifi', 'vCard', 'email', 'location', 'event', 'socials'];
 	const hiddenProps = tabs.reduce((acc: Record<string, boolean>, t) => {
 		const propName = 'hideContent' + t.charAt(0).toUpperCase() + t.slice(1) + 'Tab';
 		acc[propName] = t !== qrCode.content.type;
 
 		return acc;
 	}, {});
+
+	console.log('hiddenProps', hiddenProps);
 
 	const backLink = (
 		<Link

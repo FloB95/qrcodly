@@ -326,7 +326,11 @@
 				"url": "URL",
 				"text": "TEXT",
 				"wifi": "WIFI",
-				"vCard": "VCARD"
+				"vCard": "VCARD",
+				"email": "EMAIL",
+				"location": "LOCATION",
+				"event": "EVENT",
+				"socials": "SOCIALS"
 			},
 			"cancel": "Cancel",
 			"bulkModeBtn": "CSV Bulk Creation",
@@ -405,6 +409,63 @@
 				"website": {
 					"label": "Website",
 					"placeholder": "Enter your website URL"
+				}
+			},
+			"email": {
+				"email": {
+					"label": "Email address",
+					"placeholder": "Enter an email address"
+				},
+				"subject": {
+					"label": "Subject",
+					"placeholder": "Optional subject"
+				},
+				"body": {
+					"label": "Message",
+					"placeholder": "Optional message"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Address",
+					"placeholder": "Search for an address or place"
+				},
+				"latitude": {
+					"label": "Latitude"
+				},
+				"longitude": {
+					"label": "Longitude"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Title",
+					"placeholder": "Event name"
+				},
+				"description": {
+					"label": "Description",
+					"placeholder": "Optional description"
+				},
+				"location": {
+					"label": "Location",
+					"placeholder": "Event location"
+				},
+				"startDate": {
+					"label": "Start date"
+				},
+				"endDate": {
+					"label": "End date"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Title",
+					"placeholder": "e.g. Follow me"
+				},
+				"link": {
+					"placeholder": "Profile or website URL",
+					"add": "Add link",
+					"remove": "Remove"
 				}
 			}
 		}

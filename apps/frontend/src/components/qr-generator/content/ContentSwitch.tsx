@@ -7,6 +7,10 @@ import {
 	WifiIcon,
 	IdentificationIcon,
 	DocumentArrowUpIcon,
+	AtSymbolIcon,
+	MapPinIcon,
+	CalendarDaysIcon,
+	EnvelopeOpenIcon,
 } from '@heroicons/react/24/outline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UrlSection } from './UrlSection';
@@ -15,7 +19,11 @@ import { VCardSection } from './VcardSection';
 import { WiFiSection } from './WiFiSection';
 import {
 	getDefaultContentByType,
+	type TEmailInput,
+	type TEventInput,
+	type TLocationInput,
 	type TQrCodeContentType,
+	type TSocialInput,
 	type TTextInput,
 	type TUrlInput,
 	type TVCardInput,
@@ -26,13 +34,20 @@ import { useTranslations } from 'next-intl';
 import { EditUrlSection } from './EditUrlSection';
 import { BulkImport } from './BulkImport';
 import { Badge } from '@/components/ui/badge';
+import { EmailSection } from './EmailSection';
+import { LocationSection } from './LocationSection';
+import { EventSection } from './EventSection';
+import { SocialSection } from './SocialSection';
 
 type ContentSwitchProps = {
 	hideContentUrlTab?: boolean;
 	hideContentTextTab?: boolean;
 	hideContentWifiTab?: boolean;
 	hideContentVCardTab?: boolean;
-
+	hideContentEmailTab?: boolean;
+	hideContentLocationTab?: boolean;
+	hideContentEventTab?: boolean;
+	hideContentSocialsTab?: boolean;
 	isEditMode?: boolean;
 };
 
@@ -41,6 +56,10 @@ export const ContentSwitch = ({
 	hideContentTextTab,
 	hideContentWifiTab,
 	hideContentVCardTab,
+	hideContentEmailTab,
+	hideContentLocationTab,
+	hideContentEventTab,
+	hideContentSocialsTab,
 	isEditMode,
 }: ContentSwitchProps) => {
 	const t = useTranslations('generator.contentSwitch');
@@ -58,7 +77,7 @@ export const ContentSwitch = ({
 			}}
 		>
 			<TabsList
-				className={`${isEditMode ? 'mb-6' : 'mb-3 '} grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-4 md:grid-cols-2 lg:grid-cols-4`}
+				className={`${isEditMode ? 'mb-6' : 'mb-3 '} grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4`}
 			>
 				{!hideContentUrlTab && (
 					<TabsTrigger value="url" asChild>
@@ -101,6 +120,54 @@ export const ContentSwitch = ({
 							})}
 						>
 							<IdentificationIcon className="mr-2 h-6 w-6" /> {t('tab.vCard')}
+						</button>
+					</TabsTrigger>
+				)}
+
+				{!hideContentEmailTab && (
+					<TabsTrigger value="email" asChild>
+						<button
+							className={buttonVariants({
+								variant: 'tab',
+							})}
+						>
+							<EnvelopeOpenIcon className="mr-2 h-6 w-6" /> {t('tab.email')}
+						</button>
+					</TabsTrigger>
+				)}
+
+				{!hideContentLocationTab && (
+					<TabsTrigger value="location" asChild>
+						<button
+							className={buttonVariants({
+								variant: 'tab',
+							})}
+						>
+							<MapPinIcon className="mr-2 h-6 w-6" /> {t('tab.location')}
+						</button>
+					</TabsTrigger>
+				)}
+
+				{!hideContentEventTab && (
+					<TabsTrigger value="event" asChild>
+						<button
+							className={buttonVariants({
+								variant: 'tab',
+							})}
+						>
+							<CalendarDaysIcon className="mr-2 h-6 w-6" /> {t('tab.event')}
+						</button>
+					</TabsTrigger>
+				)}
+
+				{!hideContentSocialsTab && (
+					<TabsTrigger value="socials" asChild>
+						<button
+							className={buttonVariants({
+								variant: 'tab',
+							})}
+						>
+							<AtSymbolIcon className="mr-2 h-6 w-6" /> {t('tab.socials')}
 						</button>
 					</TabsTrigger>
 				)}
@@ -190,6 +257,62 @@ export const ContentSwitch = ({
 								onChange={(v) => {
 									updateContent({
 										type: 'vCard',
+										data: v,
+									});
+								}}
+							/>
+						</TabsContent>
+					)}
+
+					{!hideContentEmailTab && (
+						<TabsContent value="email">
+							<EmailSection
+								value={content.data as TEmailInput}
+								onChange={(v) => {
+									updateContent({
+										type: 'email',
+										data: v,
+									});
+								}}
+							/>
+						</TabsContent>
+					)}
+
+					{!hideContentLocationTab && (
+						<TabsContent value="location">
+							<LocationSection
+								value={content.data as TLocationInput}
+								onChange={(v) => {
+									updateContent({
+										type: 'location',
+										data: v,
+									});
+								}}
+							/>
+						</TabsContent>
+					)}
+
+					{!hideContentEventTab && (
+						<TabsContent value="event">
+							<EventSection
+								value={content.data as TEventInput}
+								onChange={(v) => {
+									updateContent({
+										type: 'event',
+										data: v,
+									});
+								}}
+							/>
+						</TabsContent>
+					)}
+
+					{!hideContentSocialsTab && (
+						<TabsContent value="socials">
+							<SocialSection
+								value={content.data as TSocialInput}
+								onChange={(v) => {
+									updateContent({
+										type: 'socials',
 										data: v,
 									});
 								}}

@@ -80,6 +80,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		) {
 			return;
 		}
+
 		void form.handleSubmit(onSubmit)();
 	}, [debounced]);
 

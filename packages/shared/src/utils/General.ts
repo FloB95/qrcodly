@@ -6,6 +6,9 @@ import {
 	type TVCardInput,
 	type TWifiInput,
 	type TColorOrGradient,
+	TEventInput,
+	TLocationInput,
+	TEmailInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 
@@ -74,6 +77,51 @@ export function convertWiFiObjToString(wiFiInput: TWifiInput): string {
 	return wifiString;
 }
 
+const convertEventObjToString = (event: TEventInput) => {
+	if (
+		areAllPropertiesUndefined(event) ||
+		event.startDate === '' ||
+		event.endDate === '' ||
+		event.title === ''
+	) {
+		return '';
+	}
+
+	const start = new Date(event.startDate).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+	const end = new Date(event.endDate).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+	return `
+		BEGIN:VCALENDAR
+		VERSION:2.0
+		BEGIN:VEVENT
+		SUMMARY:${event.title}
+		DESCRIPTION:${event.description ?? ''}
+		LOCATION:${event.location ?? ''}
+		DTSTART:${start}
+		DTEND:${end}
+		END:VEVENT
+		END:VCALENDAR
+    `.trim();
+};
+
+export const convertLocationObjToString = (location: TLocationInput) => {
+	const { latitude, longitude, address } = location;
+	if (!latitude || !longitude) return '';
+	console.log(latitude, longitude);
+
+	const query = encodeURIComponent(address ?? '');
+	return `geo:${latitude},${longitude}?q=${query}`;
+};
+
+export const convertEmailObjToString = (emailObj: TEmailInput) => {
+	if (areAllPropertiesUndefined(emailObj) || emailObj.email === '') {
+		return '';
+	}
+
+	const { email, subject, body } = emailObj;
+	return `mailto:${email}?subject=${subject}&body=${body}`;
+};
+
 export const convertQRCodeDataToStringByType = (content: TQrCodeContent): string => {
 	switch (content.type) {
 		case 'url':
@@ -85,6 +133,14 @@ export const convertQRCodeDataToStringByType = (content: TQrCodeContent): string
 			return convertWiFiObjToString(content.data);
 		case 'vCard':
 			return convertVCardObjToString(content.data);
+		case 'email':
+			return convertEmailObjToString(content.data);
+		case 'location':
+			return convertLocationObjToString(content.data);
+		case 'event':
+			return convertEventObjToString(content.data);
+		case 'socials':
+			return '';
 		default:
 			throw new Error('Invalid content type');
 	}
@@ -131,6 +187,39 @@ export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeConten
 					state: undefined,
 					country: undefined,
 					website: undefined,
+				},
+			};
+		case 'email':
+			return {
+				type: 'email',
+				data: {
+					email: '',
+					subject: '',
+					body: '',
+				},
+			};
+		case 'location':
+			return {
+				type: 'location',
+				data: {
+					address: '',
+				},
+			};
+		case 'event':
+			return {
+				type: 'event',
+				data: {
+					endDate: '',
+					startDate: '',
+					title: '',
+				},
+			};
+		case 'socials':
+			return {
+				type: 'socials',
+				data: {
+					title: '',
+					links: [],
 				},
 			};
 		default:

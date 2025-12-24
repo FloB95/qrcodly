@@ -9,6 +9,7 @@ export const CreateQrCodeDto = QrCodeSchema.pick({
 
 export type TCreateQrCodeDto = z.infer<typeof CreateQrCodeDto>;
 
+// const contentTypes = Object.keys(QrCodeContent) as TQrCodeContentType[];
 export const BulkImportQrCodeDto = QrCodeSchema.pick({
 	config: true,
 }).extend({

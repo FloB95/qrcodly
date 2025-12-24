@@ -325,8 +325,12 @@
 			"tab": {
 				"url": "URL",
 				"text": "TEKST",
-				"wifi": "WI-FI",
-				"vCard": "VCARD"
+				"wifi": "WIFI",
+				"vCard": "VCARD",
+				"email": "EMAIL",
+				"location": "LOKALIZACJA",
+				"event": "WYDARZENIE",
+				"socials": "SOCIALS"
 			},
 			"cancel": "Anuluj",
 			"bulkModeBtn": "Masowe tworzenie CSV",
@@ -405,6 +409,63 @@
 				"website": {
 					"label": "Strona internetowa",
 					"placeholder": "Wpisz adres URL swojej strony internetowej"
+				}
+			},
+			"email": {
+				"email": {
+					"label": "Adres e-mail",
+					"placeholder": "Wpisz adres e-mail"
+				},
+				"subject": {
+					"label": "Temat",
+					"placeholder": "Opcjonalny temat"
+				},
+				"body": {
+					"label": "Wiadomość",
+					"placeholder": "Opcjonalna wiadomość"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Adres",
+					"placeholder": "Wyszukaj adres lub miejsce"
+				},
+				"latitude": {
+					"label": "Szerokość geograficzna"
+				},
+				"longitude": {
+					"label": "Długość geograficzna"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Tytuł",
+					"placeholder": "Nazwa wydarzenia"
+				},
+				"description": {
+					"label": "Opis",
+					"placeholder": "Opcjonalny opis"
+				},
+				"location": {
+					"label": "Lokalizacja",
+					"placeholder": "Miejsce wydarzenia"
+				},
+				"startDate": {
+					"label": "Data rozpoczęcia"
+				},
+				"endDate": {
+					"label": "Data zakończenia"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Tytuł",
+					"placeholder": "np. Obserwuj mnie"
+				},
+				"link": {
+					"placeholder": "URL profilu lub strony",
+					"add": "Dodaj link",
+					"remove": "Usuń"
 				}
 			}
 		}

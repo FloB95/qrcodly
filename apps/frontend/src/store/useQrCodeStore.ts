@@ -25,7 +25,7 @@ export type QrCodeGeneratorState = {
 export type QrCodeGeneratorActions = {
 	updateName: (name: string) => void;
 	updateConfig: (config: Partial<TQrCodeOptions>) => void;
-	updateContent: (content: TQrCodeContent) => void;
+	updateContent: (content: Partial<TQrCodeContent>) => void;
 	updateLatestQrCode: (
 		latestQrCode:
 			| {
