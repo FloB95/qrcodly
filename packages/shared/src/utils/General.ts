@@ -139,8 +139,8 @@ export const convertQRCodeDataToStringByType = (content: TQrCodeContent): string
 			return convertLocationObjToString(content.data);
 		case 'event':
 			return convertEventObjToString(content.data);
-		case 'socials':
-			return '';
+		// case 'socials':
+		// 	return '';
 		default:
 			throw new Error('Invalid content type');
 	}
@@ -214,14 +214,14 @@ export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeConten
 					title: '',
 				},
 			};
-		case 'socials':
-			return {
-				type: 'socials',
-				data: {
-					title: '',
-					links: [],
-				},
-			};
+		// case 'socials':
+		// 	return {
+		// 		type: 'socials',
+		// 		data: {
+		// 			title: '',
+		// 			links: [],
+		// 		},
+		// 	};
 		default:
 			throw new Error('Invalid content type');
 	}

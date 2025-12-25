@@ -44,8 +44,6 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 	const [debounced] = useDebouncedValue<FormValues>(form.getValues(), 500);
 
 	function onSubmit(values: FormValues) {
-		console.log('submit', values);
-
 		onChange(values);
 	}
 

@@ -52,8 +52,6 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 		return acc;
 	}, {});
 
-	console.log('hiddenProps', hiddenProps);
-
 	const backLink = (
 		<Link
 			className="flex items-center space-x-2 px-2 -top-24 text-xs lg:-top-12 absolute"

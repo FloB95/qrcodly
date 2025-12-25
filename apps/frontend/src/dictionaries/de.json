@@ -161,7 +161,7 @@
 			"errorDescription": "Beim Aktualisieren deines QR Codes ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem so schnell wie möglich beheben.",
 			"infoDialog": {
 				"dialogHeadline": "Hinweis zum Aktualisieren eines QR Codes",
-				"dialogDescription": "Nur dynamische URL-QR-Codes behalten nach der Bearbeitung denselben Inhalt. Änderungen an Text, WiFi-Daten oder anderen Inhalten erzeugen einen neuen QR-Code. Bereits gedruckte Codes zeigen dann nicht mehr die aktualisierten Inhalte an.",
+				"dialogDescription": "Nur dynamische QR-Codes ändern ihr Aussehen nicht nach einer Bearbeitung. Bei statischen QR-Codes wird ein neuer Code erzeugt, sodass bereits gedruckte Versionen nicht mehr aktuell sind.",
 				"doNotShowAgain": "Diesen Hinweis nicht erneut anzeigen.",
 				"cancelBtn": "Abbrechen",
 				"understandBtn": "Verstanden"

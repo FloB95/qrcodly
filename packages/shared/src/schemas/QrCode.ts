@@ -106,15 +106,8 @@ export const EventInputSchema = z.object({
 	title: z.string().min(1),
 	description: z.string().optional(),
 	location: z.string().optional(),
-	startDate: z
-		.string()
-		.min(1)
-		.transform((value) => new Date(value).toISOString()),
-
-	endDate: z
-		.string()
-		.min(1)
-		.transform((value) => new Date(value).toISOString()),
+	startDate: z.iso.datetime().describe('As ISO Datetime String'),
+	endDate: z.iso.datetime().describe('As ISO Datetime String'),
 });
 
 export type TEventInput = z.infer<typeof EventInputSchema>;
@@ -128,7 +121,7 @@ export const QrCodeContentType = z.union([
 	z.literal('email'),
 	z.literal('location'),
 	z.literal('event'),
-	z.literal('socials'),
+	// z.literal('socials'),
 ]);
 export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
 
@@ -140,7 +133,7 @@ const ContentSchemas = {
 	email: EmailInputSchema,
 	location: LocationInputSchema,
 	event: EventInputSchema,
-	socials: SocialInputSchema,
+	// socials: SocialInputSchema,
 } as const;
 
 const createContentSchema = <T extends keyof typeof ContentSchemas>(type: T) =>
@@ -157,7 +150,7 @@ export const QrCodeContent = z.discriminatedUnion('type', [
 	createContentSchema('email'),
 	createContentSchema('location'),
 	createContentSchema('event'),
-	createContentSchema('socials'),
+	// createContentSchema('socials'),
 ]);
 
 export type TQrCodeContent = z.infer<typeof QrCodeContent>;

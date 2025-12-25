@@ -22,7 +22,7 @@ export default async function Page({ params }: DefaultPageParams) {
 						<div dangerouslySetInnerHTML={{ __html: String(t.raw('headline')) }} />
 					</h1>
 					<div className="mb-2">
-						<QRcodeGenerator generatorType="QrCodeWithDownloadBtn" />
+						<QRcodeGenerator hideContentSocialsTab generatorType="QrCodeWithDownloadBtn" />
 					</div>
 
 					<Features />

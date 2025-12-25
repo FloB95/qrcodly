@@ -36,6 +36,8 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 		onChange(values);
 	}
 
+	console.log(JSON.stringify(debounced), JSON.stringify(value));
+
 	useEffect(() => {
 		if (
 			JSON.stringify(debounced) === '{}' ||
@@ -46,10 +48,23 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 			return;
 		}
 
-		console.log(JSON.stringify(debounced), JSON.stringify(value));
-
 		void form.handleSubmit(onSubmit)();
 	}, [debounced]);
+
+	const isoToDatetimeLocal = (iso?: string) => {
+		if (!iso) return '';
+		const date = new Date(iso);
+
+		const pad = (n: number) => String(n).padStart(2, '0');
+
+		return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+			date.getDate(),
+		)}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+	};
+
+	const datetimeLocalToIso = (value: string) => {
+		return new Date(value).toISOString();
+	};
 
 	return (
 		<Form {...form}>
@@ -101,7 +116,12 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 							<FormItem className="w-full">
 								<FormLabel>{t('startDate.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} type="datetime-local" />
+									<Input
+										{...field}
+										value={isoToDatetimeLocal(field.value)}
+										onChange={(e) => field.onChange(datetimeLocalToIso(e.target.value))}
+										type="datetime-local"
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -114,7 +134,12 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 							<FormItem className="w-full">
 								<FormLabel>{t('endDate.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} type="datetime-local" />
+									<Input
+										{...field}
+										value={isoToDatetimeLocal(field.value)}
+										onChange={(e) => field.onChange(datetimeLocalToIso(e.target.value))}
+										type="datetime-local"
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>

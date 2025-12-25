@@ -161,7 +161,7 @@
 			"errorDescription": "An error occurred while updating your QR code. We have been notified and will fix the issue as soon as possible.",
 			"infoDialog": {
 				"dialogHeadline": "Note on updating a QR code",
-				"dialogDescription": "Only dynamic URL QR codes retain the same content after editing. Changes to text, WiFi data, or other content create a new QR code. Already printed codes will not show the updated content.",
+				"dialogDescription": "Only dynamic QR codes keep the same appearance after editing. For static QR codes, a new code is generated, so already printed versions will no longer be up to date.",
 				"doNotShowAgain": "Do not show this message again.",
 				"cancelBtn": "Cancel",
 				"understandBtn": "Understood"

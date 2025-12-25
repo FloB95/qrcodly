@@ -161,7 +161,7 @@
 			"errorDescription": "Er is een fout opgetreden bij het bijwerken van je QR-code. We zijn op de hoogte gebracht en lossen het probleem zo snel mogelijk op.",
 			"infoDialog": {
 				"dialogHeadline": "Opmerking over het bijwerken van een QR-code",
-				"dialogDescription": "Alleen dynamische URL-QR-codes behouden dezelfde inhoud na bewerking. Wijzigingen in tekst, WiFi-gegevens of andere inhoud creëren een nieuwe QR-code. Reeds gedrukte codes tonen de bijgewerkte inhoud niet.",
+				"dialogDescription": "Alleen dynamische QR-codes behouden hetzelfde uiterlijk na een wijziging. Bij statische QR-codes wordt een nieuwe code gegenereerd, waardoor reeds gedrukte versies niet meer actueel zijn.",
 				"doNotShowAgain": "Dit bericht niet opnieuw tonen.",
 				"cancelBtn": "Annuleren",
 				"understandBtn": "Begrepen"

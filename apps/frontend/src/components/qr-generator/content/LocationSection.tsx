@@ -53,7 +53,6 @@ export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
 		if (JSON.stringify(debounced) === '{}' || JSON.stringify(debounced) === JSON.stringify(value)) {
 			return;
 		}
-		console.log('render');
 
 		void form.handleSubmit(onSubmit)();
 	}, [debounced]);

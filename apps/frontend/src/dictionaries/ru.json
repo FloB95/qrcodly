@@ -155,16 +155,16 @@
 		},
 		"update": {
 			"headline": "Обновить QR-код",
-			"successTitle": "QR Code updated",
-			"successDescription": "Your QR code has been successfully updated.",
-			"errorTitle": "Error updating QR code",
-			"errorDescription": "An error occurred while updating your QR code. We have been notified and will fix the issue as soon as possible.",
+			"successTitle": "QR-код обновлён",
+			"successDescription": "Ваш QR-код был успешно обновлён.",
+			"errorTitle": "Ошибка при обновлении QR-кода",
+			"errorDescription": "Произошла ошибка при обновлении вашего QR-кода. Мы уже уведомлены и исправим проблему как можно скорее.",
 			"infoDialog": {
-				"dialogHeadline": "Note on updating a QR code",
-				"dialogDescription": "Only dynamic URL QR codes retain the same content after editing. Changes to text, WiFi data, or other content create a new QR code. Already printed codes will not show the updated content.",
-				"doNotShowAgain": "Do not show this message again.",
-				"cancelBtn": "Cancel",
-				"understandBtn": "Understood"
+				"dialogHeadline": "Примечание об обновлении QR-кода",
+				"dialogDescription": "Только динамические QR-коды сохраняют свой внешний вид после редактирования. Для статических QR-кодов создаётся новый код, поэтому уже напечатанные версии больше не являются актуальными.",
+				"doNotShowAgain": "Больше не показывать это сообщение",
+				"cancelBtn": "Отмена",
+				"understandBtn": "Понятно"
 			}
 		},
 		"updateQrCodeUrl": "Обновить URL",

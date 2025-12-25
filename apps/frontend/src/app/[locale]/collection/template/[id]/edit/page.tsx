@@ -83,6 +83,10 @@ export default async function ConfigTemplateEditPage({ params }: ConfigTemplateE
 				hideContentTextTab
 				hideContentWifiTab
 				hideContentVCardTab
+				hideContentEmailTab
+				hideContentEventTab
+				hideContentLocationTab
+				hideContentSocialsTab
 				hideTemplateTab
 				backLink={backLink}
 			/>
