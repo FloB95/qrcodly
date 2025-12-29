@@ -6,11 +6,12 @@ import {
 	type TVCardInput,
 	type TWifiInput,
 	type TColorOrGradient,
-	TEventInput,
-	TLocationInput,
-	TEmailInput,
+	type TEventInput,
+	type TLocationInput,
+	type TEmailInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
+import ical, { ICalCalendarMethod } from 'ical-generator';
 
 // Utility function to check if all properties of an object are undefined
 function areAllPropertiesUndefined(obj: Record<string, any>): boolean {
@@ -77,7 +78,7 @@ export function convertWiFiObjToString(wiFiInput: TWifiInput): string {
 	return wifiString;
 }
 
-const convertEventObjToString = (event: TEventInput) => {
+export const convertEventObjToString = (event: TEventInput) => {
 	if (
 		areAllPropertiesUndefined(event) ||
 		event.startDate === '' ||
@@ -87,21 +88,20 @@ const convertEventObjToString = (event: TEventInput) => {
 		return '';
 	}
 
-	const start = new Date(event.startDate).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-	const end = new Date(event.endDate).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+	const calendar = ical({ name: event.title });
 
-	return `
-		BEGIN:VCALENDAR
-		VERSION:2.0
-		BEGIN:VEVENT
-		SUMMARY:${event.title}
-		DESCRIPTION:${event.description ?? ''}
-		LOCATION:${event.location ?? ''}
-		DTSTART:${start}
-		DTEND:${end}
-		END:VEVENT
-		END:VCALENDAR
-    `.trim();
+	// A method is required for outlook to display event as an invitation
+	calendar.method(ICalCalendarMethod.ADD);
+	calendar.createEvent({
+		start: event.startDate,
+		end: event.endDate,
+		summary: event.summary,
+		description: event.description,
+		location: event.location,
+		url: event.url,
+	});
+
+	return calendar.toString();
 };
 
 export const convertLocationObjToString = (location: TLocationInput) => {
@@ -138,7 +138,7 @@ export const convertQRCodeDataToStringByType = (content: TQrCodeContent): string
 		case 'location':
 			return convertLocationObjToString(content.data);
 		case 'event':
-			return convertEventObjToString(content.data);
+			return (content.data as unknown as any)?.shortUrl ?? '';
 		// case 'socials':
 		// 	return '';
 		default:

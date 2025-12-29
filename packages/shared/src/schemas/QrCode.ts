@@ -13,17 +13,20 @@ export type TUrlInput = z.infer<typeof UrlInputSchema>;
 export const TextInputSchema = z.string().max(1000);
 export type TTextInput = string;
 
+const WifiEncryptionSchema = z.enum(['WPA', 'WEP', 'nopass']);
+export type TWifiEncryption = z.infer<typeof WifiEncryptionSchema>;
+
 export const WifiInputSchema = z.object({
 	ssid: z.string().max(32).min(1),
 	password: z.string().max(64),
-	encryption: z.enum(['WPA', 'WEP', 'nopass']),
+	encryption: WifiEncryptionSchema,
 });
 export type TWifiInput = z.infer<typeof WifiInputSchema>;
 
 export const VCardInputSchema = z.object({
 	firstName: emptyStringToUndefined(z.string().max(64).optional()),
 	lastName: emptyStringToUndefined(z.string().max(64).optional()),
-	email: emptyStringToUndefined(z.email().optional()),
+	email: emptyStringToUndefined(z.email().max(200).optional()),
 	phone: emptyStringToUndefined(
 		z
 			.string()
@@ -48,16 +51,16 @@ export const VCardInputSchema = z.object({
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
 
 export const LocationInputSchema = z.object({
-	address: z.string().min(1),
-	latitude: z.number().optional(),
-	longitude: z.number().optional(),
+	address: z.string().min(1).max(200),
+	latitude: z.number().min(-90).max(90).optional(),
+	longitude: z.number().min(-180).max(180).optional(),
 });
 export type TLocationInput = z.infer<typeof LocationInputSchema>;
 
 export const EmailInputSchema = z.object({
-	email: z.email(),
-	subject: z.string().optional(),
-	body: z.string().optional(),
+	email: z.email().max(200),
+	subject: z.string().max(250).optional(),
+	body: z.string().max(1000).optional(),
 });
 export type TEmailInput = z.infer<typeof EmailInputSchema>;
 
@@ -91,7 +94,7 @@ export const SocialPlatformEnum = z.enum([
 export const SocialLinkSchema = z.object({
 	platform: SocialPlatformEnum,
 	label: z.string().min(1),
-	url: z.string().url(),
+	url: z.url(),
 });
 
 export const SocialInputSchema = z.object({
@@ -103,9 +106,11 @@ export type TSocialInput = z.infer<typeof SocialInputSchema>;
 export type TSocialPlatform = z.infer<typeof SocialPlatformEnum>;
 
 export const EventInputSchema = z.object({
-	title: z.string().min(1),
-	description: z.string().optional(),
-	location: z.string().optional(),
+	title: z.string().min(1).max(200),
+	summary: z.string().max(500).optional(),
+	description: z.string().max(500).optional(),
+	location: z.string().max(200).optional(),
+	url: emptyStringToUndefined(z.url().optional()),
 	startDate: z.iso.datetime().describe('As ISO Datetime String'),
 	endDate: z.iso.datetime().describe('As ISO Datetime String'),
 });
