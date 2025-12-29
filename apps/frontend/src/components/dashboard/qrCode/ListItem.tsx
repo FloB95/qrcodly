@@ -1,6 +1,11 @@
 'use client';
 
-import { ArrowTurnDownRightIcon, EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import {
+	ArrowTurnDownRightIcon,
+	CalendarIcon,
+	EllipsisVerticalIcon,
+	MapPinIcon,
+} from '@heroicons/react/24/outline';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import {
 	AlertDialog,
@@ -44,6 +49,8 @@ import { QrCodeIcon } from './QrCodeIcon';
 import * as Sentry from '@sentry/nextjs';
 import { NameDialog } from '../../qr-generator/NameDialog';
 import { Skeleton } from '../../ui/skeleton';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Separator } from '@/components/ui/separator';
 
 const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
 	switch (qr.content.type) {
@@ -83,15 +90,55 @@ const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => 
 			return `${firstName} ${lastName}`;
 		case 'email':
 			return (
-				<div>
-					{qr.content.data.subject && <div>{qr.content.data.subject}</div>}
-					<div>{qr.content.data.email}</div>
-				</div>
+				<HoverCard>
+					<HoverCardTrigger asChild>
+						<Button variant="link">{qr.content.data.email}</Button>
+					</HoverCardTrigger>
+					<HoverCardContent className="w-80 py-15">
+						<div className="space-y-2 text-center">
+							<h3 className="text-sm font-semibold">{qr.content.data.email}</h3>
+							<Separator className="max-w-20 my-4 mx-auto" />
+							{qr.content.data.subject && (
+								<h4 className="text-sm font-semibold">{qr.content.data.subject}</h4>
+							)}
+							{qr.content.data.body && <p className="text-sm">{qr.content.data.body}</p>}
+						</div>
+					</HoverCardContent>
+				</HoverCard>
 			);
 		case 'location':
 			return qr.content.data.address;
 		case 'event':
-			return qr.content.data.title;
+			return (
+				<HoverCard>
+					<HoverCardTrigger asChild>
+						<Button variant="link">{qr.content.data.title}</Button>
+					</HoverCardTrigger>
+					<HoverCardContent className="w-80 py-15">
+						<div className="space-y-2 text-center">
+							<h4 className="text-sm font-semibold">{qr.content.data.title}</h4>
+							{qr.content.data.description && (
+								<p className="text-sm">{qr.content.data.description}</p>
+							)}
+							<Separator className="max-w-20 my-4 mx-auto" />
+							{qr.content.data.location && (
+								<div className="flex items-center justify-center space-x-2 text-sm">
+									<MapPinIcon className="w-5 h-5" />
+									<span className="max-w-50">{qr.content.data.location}</span>
+								</div>
+							)}
+							<div className="text-sm flex space-x-2 justify-center">
+								<CalendarIcon className="w-5 h-5" />
+								<span>{formatDate(qr.content.data.startDate)}</span>
+							</div>
+							<div className="text-sm flex space-x-2 justify-center">
+								<CalendarIcon className="w-5 h-5" />
+								<span>{formatDate(qr.content.data.endDate)}</span>
+							</div>
+						</div>
+					</HoverCardContent>
+				</HoverCard>
+			);
 		default:
 			return 'Unknown';
 	}

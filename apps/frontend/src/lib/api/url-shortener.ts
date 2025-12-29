@@ -15,7 +15,7 @@ export const urlShortenerQueryKeys = {
 export function useGetReservedShortUrlQuery() {
 	const { getToken } = useAuth();
 
-	return useQuery({
+	return useQuery<TShortUrl | null>({
 		queryKey: urlShortenerQueryKeys.reservedShortUrl,
 		queryFn: async (): Promise<TShortUrl | null> => {
 			const token = await getToken();

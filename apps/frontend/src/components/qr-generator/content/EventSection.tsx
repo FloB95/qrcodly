@@ -15,6 +15,9 @@ import { useEffect } from 'react';
 import { EventInputSchema, type TEventInput } from '@shared/schemas/src';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
+import { Textarea } from '@/components/ui/textarea';
+import { getShortUrlFromCode } from '@/lib/utils';
+import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 
 type EventSectionProps = {
 	onChange: (data: TEventInput) => void;
@@ -23,6 +26,7 @@ type EventSectionProps = {
 
 export const EventSection = ({ onChange, value }: EventSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.event');
+	const { data: shortUrl } = useGetReservedShortUrlQuery();
 
 	const form = useForm<TEventInput>({
 		resolver: zodResolver(EventInputSchema),
@@ -33,23 +37,36 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 	const [debounced] = useDebouncedValue<TEventInput>(form.getValues(), 500);
 
 	function onSubmit(values: TEventInput) {
-		onChange(values);
+		if (!shortUrl) return;
+
+		const payload = {
+			...values,
+			shortUrl: getShortUrlFromCode(shortUrl.shortCode),
+		};
+
+		onChange(payload);
 	}
 
-	console.log(JSON.stringify(debounced), JSON.stringify(value));
+	const stableStringify = (obj: unknown) => JSON.stringify(obj, Object.keys(obj as object).sort());
 
 	useEffect(() => {
 		if (
 			JSON.stringify(debounced) === '{}' ||
-			JSON.stringify(debounced) === JSON.stringify(value) ||
+			stableStringify(debounced) === stableStringify(value) ||
 			debounced.startDate === '' ||
 			debounced.endDate === ''
 		) {
 			return;
 		}
 
+		console.log(JSON.stringify(debounced), JSON.stringify(value));
+
 		void form.handleSubmit(onSubmit)();
 	}, [debounced]);
+
+	useEffect(() => {
+		form.reset();
+	}, [shortUrl]);
 
 	const isoToDatetimeLocal = (iso?: string) => {
 		if (!iso) return '';
@@ -84,7 +101,7 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 				/>
 				<FormField
 					control={form.control}
-					name="description"
+					name="summary"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>{t('description.label')}</FormLabel>
@@ -97,7 +114,33 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 				/>
 				<FormField
 					control={form.control}
+					name="description"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>{t('description.label')}</FormLabel>
+							<FormControl>
+								<Textarea {...field} placeholder={t('description.placeholder')} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
 					name="location"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>{t('location.label')}</FormLabel>
+							<FormControl>
+								<Input {...field} placeholder={t('location.placeholder')} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="url"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>{t('location.label')}</FormLabel>

@@ -7,3 +7,5 @@
 - Add more Documentation
 - Add a separate url shortener page
 - Implement a Pro Plan
+- Add ICal download for events
+- Implement better context menu for collection list items

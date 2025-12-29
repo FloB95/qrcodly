@@ -50,7 +50,6 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 
 		try {
 			return await UnitOfWork.run<TQrCodeWithRelations>(async () => {
-				// generate ID before transaction if not DB-generated
 				const newId = await this.qrCodeRepository.generateId();
 
 				const qrCodeData = {
