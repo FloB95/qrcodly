@@ -11,13 +11,16 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { EventInputSchema, type TEventInput } from '@shared/schemas/src';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { Textarea } from '@/components/ui/textarea';
 import { getShortUrlFromCode } from '@/lib/utils';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
+import { LoginRequiredDialog } from '../LoginRequiredDialog';
+import { useAuth } from '@clerk/nextjs';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 
 type EventSectionProps = {
 	onChange: (data: TEventInput) => void;
@@ -26,6 +29,9 @@ type EventSectionProps = {
 
 export const EventSection = ({ onChange, value }: EventSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.event');
+	const [alertOpen, setAlertOpen] = useState(false);
+	const { isSignedIn } = useAuth();
+	const { content, config } = useQrCodeGeneratorStore((state) => state);
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
 
 	const form = useForm<TEventInput>({
@@ -37,6 +43,13 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 	const [debounced] = useDebouncedValue<TEventInput>(form.getValues(), 500);
 
 	function onSubmit(values: TEventInput) {
+		if (!isSignedIn) {
+			localStorage.setItem('unsavedQrContent', JSON.stringify(content));
+			localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
+			setAlertOpen(true);
+			return;
+		}
+
 		if (!shortUrl) return;
 
 		const payload = {
@@ -84,87 +97,17 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 	};
 
 	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-				<FormField
-					control={form.control}
-					name="title"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>{t('title.label')}</FormLabel>
-							<FormControl>
-								<Input {...field} placeholder={t('title.placeholder')} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="summary"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>{t('description.label')}</FormLabel>
-							<FormControl>
-								<Input {...field} placeholder={t('description.placeholder')} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="description"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>{t('description.label')}</FormLabel>
-							<FormControl>
-								<Textarea {...field} placeholder={t('description.placeholder')} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="location"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>{t('location.label')}</FormLabel>
-							<FormControl>
-								<Input {...field} placeholder={t('location.placeholder')} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="url"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>{t('location.label')}</FormLabel>
-							<FormControl>
-								<Input {...field} placeholder={t('location.placeholder')} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<div className="flex space-x-4">
+		<>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 					<FormField
 						control={form.control}
-						name="startDate"
+						name="title"
 						render={({ field }) => (
-							<FormItem className="w-full">
-								<FormLabel>{t('startDate.label')}</FormLabel>
+							<FormItem>
+								<FormLabel>{t('title.label')}</FormLabel>
 								<FormControl>
-									<Input
-										{...field}
-										value={isoToDatetimeLocal(field.value)}
-										onChange={(e) => field.onChange(datetimeLocalToIso(e.target.value))}
-										type="datetime-local"
-									/>
+									<Input {...field} placeholder={t('title.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -172,24 +115,97 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 					/>
 					<FormField
 						control={form.control}
-						name="endDate"
+						name="summary"
 						render={({ field }) => (
-							<FormItem className="w-full">
-								<FormLabel>{t('endDate.label')}</FormLabel>
+							<FormItem>
+								<FormLabel>{t('description.label')}</FormLabel>
 								<FormControl>
-									<Input
-										{...field}
-										value={isoToDatetimeLocal(field.value)}
-										onChange={(e) => field.onChange(datetimeLocalToIso(e.target.value))}
-										type="datetime-local"
-									/>
+									<Input {...field} placeholder={t('description.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
-				</div>
-			</form>
-		</Form>
+					<FormField
+						control={form.control}
+						name="description"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>{t('description.label')}</FormLabel>
+								<FormControl>
+									<Textarea {...field} placeholder={t('description.placeholder')} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="location"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>{t('location.label')}</FormLabel>
+								<FormControl>
+									<Input {...field} placeholder={t('location.placeholder')} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="url"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>{t('location.label')}</FormLabel>
+								<FormControl>
+									<Input {...field} placeholder={t('location.placeholder')} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<div className="flex space-x-4">
+						<FormField
+							control={form.control}
+							name="startDate"
+							render={({ field }) => (
+								<FormItem className="w-full">
+									<FormLabel>{t('startDate.label')}</FormLabel>
+									<FormControl>
+										<Input
+											{...field}
+											value={isoToDatetimeLocal(field.value)}
+											onChange={(e) => field.onChange(datetimeLocalToIso(e.target.value))}
+											type="datetime-local"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="endDate"
+							render={({ field }) => (
+								<FormItem className="w-full">
+									<FormLabel>{t('endDate.label')}</FormLabel>
+									<FormControl>
+										<Input
+											{...field}
+											value={isoToDatetimeLocal(field.value)}
+											onChange={(e) => field.onChange(datetimeLocalToIso(e.target.value))}
+											type="datetime-local"
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+				</form>
+			</Form>
+			<LoginRequiredDialog alertOpen={alertOpen} setAlertOpen={setAlertOpen} />
+		</>
 	);
 };

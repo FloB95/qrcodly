@@ -146,6 +146,20 @@ export const convertQRCodeDataToStringByType = (content: TQrCodeContent): string
 	}
 };
 
+export const isDynamic = (content: TQrCodeContent): boolean => {
+	const dynamicTypes: TQrCodeContentType[] = ['event'];
+
+	if (dynamicTypes.includes(content.type)) {
+		return true;
+	}
+
+	if (content.type === 'url') {
+		return content.data.isEditable === true;
+	}
+
+	return false;
+};
+
 export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeContent => {
 	switch (type) {
 		case 'url':

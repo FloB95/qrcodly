@@ -110,7 +110,7 @@ export const EventInputSchema = z.object({
 	summary: z.string().max(500).optional(),
 	description: z.string().max(500).optional(),
 	location: z.string().max(200).optional(),
-	url: emptyStringToUndefined(z.url().optional()),
+	url: z.url().optional(),
 	startDate: z.iso.datetime().describe('As ISO Datetime String'),
 	endDate: z.iso.datetime().describe('As ISO Datetime String'),
 });

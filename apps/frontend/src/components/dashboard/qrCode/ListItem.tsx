@@ -44,13 +44,14 @@ import {
 } from '@/lib/api/url-shortener';
 import { DynamicQrCode } from '../../qr-generator/DynamicQrCode';
 import QrCodeDownloadBtn from '../../qr-generator/QrCodeDownloadBtn';
-import type { TQrCodeWithRelationsResponseDto, TShortUrl } from '@shared/schemas';
+import { isDynamic, type TQrCodeWithRelationsResponseDto, type TShortUrl } from '@shared/schemas';
 import { QrCodeIcon } from './QrCodeIcon';
 import * as Sentry from '@sentry/nextjs';
 import { NameDialog } from '../../qr-generator/NameDialog';
 import { Skeleton } from '../../ui/skeleton';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Separator } from '@/components/ui/separator';
+import { DynamicBadge } from '@/components/qr-generator/DynamicBadge';
 
 const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
 	switch (qr.content.type) {
@@ -259,6 +260,8 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 		[qr.id, qr.name, updateQrCodeMutation],
 	);
 
+	const IS_DYNAMIC = qr.shortUrl && isDynamic(qr.content);
+
 	return (
 		<>
 			<TableRow
@@ -267,7 +270,7 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 				}`}
 			>
 				<TableCell className="rounded-l-lg">
-					<div className="flex space-x-8">
+					<div className="flex space-x-8 max-w-fit">
 						<div className="ml-4 hidden sm:flex items-center">
 							<QrCodeIcon type={qr.content.type} />
 						</div>
@@ -287,7 +290,13 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 					</div>
 				</TableCell>
 
-				<TableCell className="font-medium max-w-[400px] truncate">
+				{IS_DYNAMIC && (
+					<TableCell>
+						<DynamicBadge />
+					</TableCell>
+				)}
+
+				<TableCell colSpan={IS_DYNAMIC ? 1 : 2} className="font-medium max-w-[400px] truncate">
 					<div
 						className="group relative pr-6 inline-block"
 						onClick={(e) => {

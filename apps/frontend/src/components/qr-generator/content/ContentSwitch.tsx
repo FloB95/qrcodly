@@ -83,7 +83,7 @@ const TABS: TabConfig[] = [
 		type: 'email',
 		label: 'email',
 		icon: EnvelopeOpenIcon,
-		enableBulk: true,
+		enableBulk: false,
 		render: ({ value, onChange }) => <EmailSection value={value} onChange={onChange} />,
 	},
 	{
@@ -97,7 +97,7 @@ const TABS: TabConfig[] = [
 		type: 'event',
 		label: 'event',
 		icon: CalendarDaysIcon,
-		enableBulk: true,
+		enableBulk: false,
 		render: ({ value, onChange }) => <EventSection value={value} onChange={onChange} />,
 	},
 ];
@@ -123,12 +123,12 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 			onValueChange={(value) => updateContent(getDefaultContentByType(value as TQrCodeContentType))}
 		>
 			<TabsList
-				className={`${isEditMode ? 'mb-6' : 'mb-3 '} grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4`}
+				className={`mb-6 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4`}
 			>
 				{visibleTabs.map(({ type, icon: Icon, label }) => (
 					<TabsTrigger key={type} value={type} asChild>
 						<button className={buttonVariants({ variant: 'tab' })}>
-							<Icon className="mr-2 h-6 w-6" />
+							<Icon className="mr-2 h-6 w-6 min-w-5" />
 							{t(`tab.${label}`)}
 						</button>
 					</TabsTrigger>
@@ -137,10 +137,8 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 
 			{/* Bulk Header */}
 			{!isEditMode && bulkAllowed && (
-				<div className="flex justify-between pt-1 mb-6">
-					<Badge className="text-sm">
-						Dynamic <CheckBadgeIcon className="ml-2 h-5 w-5" />
-					</Badge>
+				<div className="flex justify-between mb-4">
+					<div></div>
 
 					{bulkMode.isBulkMode ? (
 						<Button variant="link" onClick={() => updateBulkMode(false)}>

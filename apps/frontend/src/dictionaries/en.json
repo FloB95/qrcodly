@@ -15,7 +15,8 @@
 		"days": "Days",
 		"changelogTooltip": "Latest updates",
 		"changelogSubheading": "Here you can find the latest updates and improvements of QRcodly.",
-		"newBadge": "New!"
+		"newBadge": "New!",
+		"dynamicDescription": "Dynamic QR codes can be changed even after they are created. The QR code itself remains the same, but the target, content, or redirect can be updated at any time – without needing to reprint or redistribute the code."
 	},
 	"headline": "<span class=\"text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -489,8 +490,8 @@
 		"answer4": "Yes, the generation of both static and dynamic QR codes is and will remain free forever, as many as you want. In the future, there will be limitations for API requests and for businesses working with multiple users.",
 		"question5": "How long is a QR code valid?",
 		"answer5": "Static QR codes do not expire and remain permanently valid as long as the linked content is accessible online. Dynamic QR codes remain active as long as they are managed in our system and no specific restrictions apply from the provider.",
-		"question6": "What are the advantages of dynamic QR codes?",
-		"answer6": "Dynamic QR codes offer unparalleled flexibility, as you can adjust their content even after printing. They also enable precise scan statistics, providing insights into location, time, and device used, allowing you to optimize your campaigns effectively.",
+		"question6": "What are the benefits of dynamic QR codes?",
+		"answer6": "Dynamic QR codes are marked with the Dynamic badge. They can be updated at any time, even after being created or printed. They also provide useful scan statistics – such as location, time, and devices used – so you can analyze and optimize your campaigns effectively.",
 		"question7": "Do I need a special app to scan QR codes?",
 		"answer7": "No, in most cases, it's not necessary! The integrated camera function of modern smartphones can now directly recognize QR codes and open the embedded content – no additional app required.",
 		"question8": "Which statistics are collected for dynamic QR codes?",

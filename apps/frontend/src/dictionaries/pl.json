@@ -15,7 +15,8 @@
 		"days": "Dni",
 		"changelogTooltip": "Najnowsze aktualizacje",
 		"changelogSubheading": "Tutaj znajdziesz najnowsze aktualizacje i ulepszenia QRcodly.",
-		"newBadge": "Nowość!"
+		"newBadge": "Nowość!",
+		"dynamicDescription": "Dynamiczne kody QR można zmieniać nawet po ich utworzeniu. Sam kod QR pozostaje taki sam, ale cel, zawartość lub przekierowanie można aktualizować w dowolnym momencie – bez konieczności ponownego drukowania lub dystrybucji kodu."
 	},
 	"headline": "<span class=\"text-2xl\">Darmowy i Open Source</span> <br /> Generator Kodów QR",
 	"metadata": {
@@ -490,7 +491,7 @@
 		"question5": "Jak długo ważny jest kod QR?",
 		"answer5": "Statyczne kody QR nie wygasają i pozostają ważne na stałe, o ile połączona treść jest dostępna online. Dynamiczne kody QR pozostają aktywne tak długo, jak są zarządzane w naszym systemie i nie obowiązują żadne specyficzne ograniczenia ze strony dostawcy.",
 		"question6": "Jakie są zalety dynamicznych kodów QR?",
-		"answer6": "Dynamiczne kody QR oferują niezrównaną elastyczność, ponieważ możesz dostosować ich zawartość nawet po wydrukowaniu. Umożliwiają również precyzyjne statystyki skanowania, dostarczając informacji o lokalizacji, czasie i używanym urządzeniu, co pozwala skutecznie optymalizować kampanie.",
+		"answer6": "Dynamiczne kody QR są oznaczone odznaką Dynamic. Można je aktualizować w dowolnym momencie, nawet po ich utworzeniu lub wydrukowaniu. Dostarczają również przydatne statystyki skanowania – np. lokalizację, czas i używane urządzenia – aby skutecznie analizować i optymalizować kampanie.",
 		"question7": "Czy potrzebuję specjalnej aplikacji do skanowania kodów QR?",
 		"answer7": "Nie, w większości przypadków nie jest to konieczne! Zintegrowana funkcja aparatu w nowoczesnych smartfonach może teraz bezpośrednio rozpoznawać kody QR i otwierać osadzoną treść – bez konieczności używania dodatkowej aplikacji.",
 		"question8": "Jakie statystyki są zbierane dla dynamicznych kodów QR?",

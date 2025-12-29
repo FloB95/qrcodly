@@ -15,7 +15,8 @@
 		"days": "Días",
 		"changelogTooltip": "Últimas actualizaciones",
 		"changelogSubheading": "Aquí puedes encontrar las últimas actualizaciones y mejoras de QRcodly.",
-		"newBadge": "¡Nuevo!"
+		"newBadge": "¡Nuevo!",
+		"dynamicDescription": "Los códigos QR dinámicos se pueden modificar incluso después de crearlos. El código QR en sí permanece igual, pero el destino, el contenido o la redirección se pueden actualizar en cualquier momento, sin necesidad de volver a imprimir o redistribuir el código."
 	},
 	"headline": "<span class=\"text-2xl\">Generador de Códigos QR</span> <br /> Gratuito y de Código Abierto",
 	"metadata": {
@@ -489,8 +490,8 @@
 		"answer4": "Sí, la generación de códigos QR tanto estáticos como dinámicos es y seguirá siendo gratuita para siempre, tantos como desees. En el futuro, habrá limitaciones para las solicitudes de API y para las empresas que trabajen con varios usuarios.",
 		"question5": "¿Cuánto tiempo es válido un Código QR?",
 		"answer5": "Los Códigos QR estáticos no caducan y permanecen válidos permanentemente siempre que el contenido vinculado sea accesible en línea. Los Códigos QR dinámicos permanecen activos mientras se gestionen en nuestro sistema y no se apliquen restricciones específicas del proveedor.",
-		"question6": "¿Cuáles son las ventajas de los Códigos QR dinámicos?",
-		"answer6": "Los Códigos QR dinámicos ofrecen una flexibilidad inigualable, ya que puedes ajustar su contenido incluso después de la impresión. También permiten estadísticas de escaneo precisas, proporcionando información sobre la ubicación, la hora y el dispositivo utilizado, lo que te permite optimizar tus campañas de manera efectiva.",
+		"question6": "¿Cuáles son las ventajas de los códigos QR dinámicos?",
+		"answer6": "Los códigos QR dinámicos se identifican con la insignia Dynamic. Se pueden actualizar en cualquier momento, incluso después de haber sido creados o impresos. Además, ofrecen estadísticas útiles de escaneo, como ubicación, hora y dispositivos utilizados, para analizar y optimizar tus campañas de manera efectiva.",
 		"question7": "¿Necesito una aplicación especial para escanear Códigos QR?",
 		"answer7": "No, en la mayoría de los casos, ¡no es necesario! La función de cámara integrada de los smartphones modernos ahora puede reconocer directamente los Códigos QR y abrir el contenido incrustado, sin necesidad de una aplicación adicional.",
 		"question8": "¿Qué estadísticas se recopilan para los Códigos QR dinámicos?",

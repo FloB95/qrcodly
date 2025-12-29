@@ -10,8 +10,12 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export function getShortUrlFromCode(code: string): string {
-	return `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${code}`;
+export function getShortUrlFromCode(code: string, short = false): string {
+	const url = `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${code}`;
+
+	if (!short) return url;
+
+	return url.replace(/^https?:\/\//, '').replace(/^www\./, '');
 }
 
 export function getPageNumbers(currentPage: number, totalPages: number) {
