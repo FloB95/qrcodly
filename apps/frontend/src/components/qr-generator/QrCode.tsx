@@ -53,8 +53,6 @@ function QrCode({ qrCode, additionalStyles = '', shortUrl }: QrCodeProps) {
 		}
 	}, [qrCodeInstance, ref]);
 
-	console.log(shortUrl, isDynamic(qrCode.content));
-
 	useEffect(() => {
 		if (!qrCodeInstance) return;
 		qrCodeInstance?.update(options);

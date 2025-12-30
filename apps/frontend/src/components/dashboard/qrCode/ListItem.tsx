@@ -269,7 +269,7 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 					isDeleting ? '!bg-muted/70' : qr.shortUrl?.isActive === false ? '!bg-muted' : 'bg-white'
 				}`}
 			>
-				<TableCell className="rounded-l-lg">
+				<TableCell className="rounded-l-lg max-w-42.5">
 					<div className="flex space-x-8 max-w-fit">
 						<div className="ml-4 hidden sm:flex items-center">
 							<QrCodeIcon type={qr.content.type} />

@@ -31,7 +31,7 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.event');
 	const [alertOpen, setAlertOpen] = useState(false);
 	const { isSignedIn } = useAuth();
-	const { content, config } = useQrCodeGeneratorStore((state) => state);
+	const { config } = useQrCodeGeneratorStore((state) => state);
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
 
 	const form = useForm<TEventInput>({
@@ -44,7 +44,13 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 
 	function onSubmit(values: TEventInput) {
 		if (!isSignedIn) {
-			localStorage.setItem('unsavedQrContent', JSON.stringify(content));
+			localStorage.setItem(
+				'unsavedQrContent',
+				JSON.stringify({
+					type: 'event',
+					data: values,
+				}),
+			);
 			localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
 			setAlertOpen(true);
 			return;
@@ -71,8 +77,6 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 		) {
 			return;
 		}
-
-		console.log(JSON.stringify(debounced), JSON.stringify(value));
 
 		void form.handleSubmit(onSubmit)();
 	}, [debounced]);
@@ -105,7 +109,7 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 						name="title"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>{t('title.label')}</FormLabel>
+								<FormLabel>{t('title.label')}*</FormLabel>
 								<FormControl>
 									<Input {...field} placeholder={t('title.placeholder')} />
 								</FormControl>
@@ -118,9 +122,9 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 						name="summary"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>{t('description.label')}</FormLabel>
+								<FormLabel>{t('summary.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('description.placeholder')} />
+									<Input {...field} placeholder={t('summary.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -157,9 +161,9 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 						name="url"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>{t('location.label')}</FormLabel>
+								<FormLabel>{t('url.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('location.placeholder')} />
+									<Input {...field} placeholder={t('url.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -171,7 +175,7 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 							name="startDate"
 							render={({ field }) => (
 								<FormItem className="w-full">
-									<FormLabel>{t('startDate.label')}</FormLabel>
+									<FormLabel>{t('startDate.label')}*</FormLabel>
 									<FormControl>
 										<Input
 											{...field}
@@ -189,7 +193,7 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 							name="endDate"
 							render={({ field }) => (
 								<FormItem className="w-full">
-									<FormLabel>{t('endDate.label')}</FormLabel>
+									<FormLabel>{t('endDate.label')}*</FormLabel>
 									<FormControl>
 										<Input
 											{...field}

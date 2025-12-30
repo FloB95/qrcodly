@@ -55,11 +55,12 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 			return qrCode as TQrCodeWithRelations;
 		}
 
+		// make sure content type is not changed
 		if (validatedUpdates.content?.type && qrCode.content.type !== validatedUpdates.content?.type) {
-			// make sure content type is not changed
 			throw new QrCodeContentTypeChangeError();
 		}
 
+		// TODO implement service class with different strategies to handle URL shortening
 		// if update is destination url and qr code is connected with short url, update short url
 		if (qrCode.content.type === 'url' && validatedUpdates.content?.type === 'url') {
 			if (qrCode.content.data.isEditable) {

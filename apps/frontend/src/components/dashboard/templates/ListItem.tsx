@@ -130,7 +130,7 @@ export const TemplateListItem = ({
 			<TableRow
 				className={`cursor-default rounded-lg shadow ${isDeleting ? '!bg-muted/70' : 'bg-white'}`}
 			>
-				<TableCell className="rounded-l-lg">
+				<TableCell className="rounded-l-lg max-w-52">
 					<div className="flex space-x-8 w-50">
 						<div className="ml-4 hidden sm:flex items-center">
 							<StarIcon className="mr-2 h-6 w-6" />

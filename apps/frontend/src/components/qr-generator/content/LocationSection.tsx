@@ -89,7 +89,7 @@ export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
 					name="address"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t('address.label')}</FormLabel>
+							<FormLabel>{t('address.label')}*</FormLabel>
 							<FormControl>
 								<StandaloneSearchBox
 									onLoad={(ref) => setSearchBox(ref)}

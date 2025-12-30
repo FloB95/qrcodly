@@ -57,7 +57,7 @@ export const EmailSection = ({ onChange, value }: EmailSectionProps) => {
 					name="email"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>{t('email.label')}</FormLabel>
+							<FormLabel>{t('email.label')}*</FormLabel>
 							<FormControl>
 								<Input {...field} type="email" placeholder={t('email.placeholder')} />
 							</FormControl>

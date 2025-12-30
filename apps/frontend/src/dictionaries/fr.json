@@ -443,6 +443,10 @@
 					"label": "Titre",
 					"placeholder": "Nom de l’événement"
 				},
+				"summary": {
+					"label": "Résumé",
+					"placeholder": "Résumé optionnel"
+				},
 				"description": {
 					"label": "Description",
 					"placeholder": "Description facultative"
@@ -450,6 +454,10 @@
 				"location": {
 					"label": "Lieu",
 					"placeholder": "Lieu de l’événement"
+				},
+				"url": {
+					"label": "Url",
+					"placeholder": "URL optionnelle"
 				},
 				"startDate": {
 					"label": "Date de début"

@@ -71,8 +71,6 @@ export class BulkImportQrCodesUseCase {
 		const createdQrCodes: TQrCodeWithRelations[] = [];
 		const { contentType, file, config } = dto;
 
-		// TODO check contentType supported
-
 		const csvString = await this.readFile(file);
 		const { validRecords, validationErrors } = this.parseAndValidateCsv(csvString, contentType);
 

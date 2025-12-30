@@ -443,6 +443,10 @@
 					"label": "Название",
 					"placeholder": "Название события"
 				},
+				"summary": {
+					"label": "Краткое описание",
+					"placeholder": "Необязательное краткое описание"
+				},
 				"description": {
 					"label": "Описание",
 					"placeholder": "Необязательное описание"
@@ -450,6 +454,10 @@
 				"location": {
 					"label": "Место",
 					"placeholder": "Место проведения"
+				},
+				"url": {
+					"label": "Url",
+					"placeholder": "Необязательный URL"
 				},
 				"startDate": {
 					"label": "Дата начала"

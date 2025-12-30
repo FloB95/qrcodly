@@ -110,7 +110,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 							<FormItem>
 								<FormLabel>
 									<p translate="no" suppressHydrationWarning>
-										Url
+										Url*
 									</p>
 								</FormLabel>
 								<FormControl>

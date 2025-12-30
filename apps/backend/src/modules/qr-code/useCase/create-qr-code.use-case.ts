@@ -70,6 +70,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 					qrCodeData.config.image = uploaded;
 				}
 
+				// TODO implement service class with different strategies to handle URL shortening
 				// handle URL shortening
 				let originalUrl: string | null = null;
 				let reservedShortUrl: TShortUrl | null = null;

@@ -443,6 +443,10 @@
 					"label": "Titolo",
 					"placeholder": "Nome dell’evento"
 				},
+				"summary": {
+					"label": "Riepilogo",
+					"placeholder": "Riepilogo facoltativo"
+				},
 				"description": {
 					"label": "Descrizione",
 					"placeholder": "Descrizione opzionale"
@@ -450,6 +454,10 @@
 				"location": {
 					"label": "Luogo",
 					"placeholder": "Luogo dell’evento"
+				},
+				"url": {
+					"label": "Url",
+					"placeholder": "URL facoltativa"
 				},
 				"startDate": {
 					"label": "Data di inizio"

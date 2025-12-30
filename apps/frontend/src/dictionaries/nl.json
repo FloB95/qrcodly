@@ -443,6 +443,10 @@
 					"label": "Titel",
 					"placeholder": "Naam van het evenement"
 				},
+				"summary": {
+					"label": "Samenvatting",
+					"placeholder": "Optionele samenvatting"
+				},
 				"description": {
 					"label": "Beschrijving",
 					"placeholder": "Optionele beschrijving"
@@ -450,6 +454,10 @@
 				"location": {
 					"label": "Locatie",
 					"placeholder": "Evenementlocatie"
+				},
+				"url": {
+					"label": "Url",
+					"placeholder": "Optionele URL"
 				},
 				"startDate": {
 					"label": "Startdatum"

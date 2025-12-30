@@ -9,3 +9,5 @@
 - Implement a Pro Plan
 - Add ICal download for events
 - Implement better context menu for collection list items
+- Implement QR Code Views Cache
+

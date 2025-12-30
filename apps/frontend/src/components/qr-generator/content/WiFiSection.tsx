@@ -73,7 +73,7 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 						<FormItem>
 							<FormLabel>
 								<span translate="no" suppressHydrationWarning>
-									{t('network.label')}
+									{t('network.label')}*
 								</span>
 							</FormLabel>
 							<FormControl>
