@@ -79,15 +79,8 @@ export default async function ConfigTemplateEditPage({ params }: ConfigTemplateE
 			<QRcodeGenerator
 				generatorType="QrCodeWithTemplateUpdateBtn"
 				isEditMode
-				hideContentUrlTab
-				hideContentTextTab
-				hideContentWifiTab
-				hideContentVCardTab
-				hideContentEmailTab
-				hideContentEventTab
-				hideContentLocationTab
-				hideContentSocialsTab
-				hideTemplateTab
+				hiddenTabs={['templates']}
+				hiddenContentTypes={['url', 'text', 'wifi', 'vCard', 'email', 'event', 'location']}
 				backLink={backLink}
 			/>
 		</QrCodeGeneratorStoreProvider>

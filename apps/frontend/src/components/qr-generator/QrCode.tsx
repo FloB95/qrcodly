@@ -21,12 +21,20 @@ export type QrCodeProps = {
 function areQrCodePropsEqual(prev: QrCodeProps, next: QrCodeProps) {
 	const optionsPrev: Options = {
 		...convertQrCodeOptionsToLibraryOptions(prev.qrCode.config),
-		data: convertQRCodeDataToStringByType(prev.qrCode.content) || 'https://qrcodly.de',
+		data:
+			convertQRCodeDataToStringByType(
+				prev.qrCode.content,
+				prev.shortUrl ? getShortUrlFromCode(prev.shortUrl.shortCode) : undefined,
+			) || 'https://qrcodly.de',
 	};
 
 	const optionsNext: Options = {
 		...convertQrCodeOptionsToLibraryOptions(next.qrCode.config),
-		data: convertQRCodeDataToStringByType(next.qrCode.content) || 'https://qrcodly.de',
+		data:
+			convertQRCodeDataToStringByType(
+				next.qrCode.content,
+				next.shortUrl ? getShortUrlFromCode(next.shortUrl.shortCode) : undefined,
+			) || 'https://qrcodly.de',
 	};
 
 	return JSON.stringify(optionsPrev) == JSON.stringify(optionsNext);
@@ -36,7 +44,11 @@ function QrCode({ qrCode, additionalStyles = '', shortUrl }: QrCodeProps) {
 	const options: Options = useMemo(
 		() => ({
 			...convertQrCodeOptionsToLibraryOptions(qrCode.config),
-			data: convertQRCodeDataToStringByType(qrCode.content) || 'https://qrcodly.de',
+			data:
+				convertQRCodeDataToStringByType(
+					qrCode.content,
+					shortUrl ? getShortUrlFromCode(shortUrl.shortCode) : undefined,
+				) || 'https://qrcodly.de',
 		}),
 		[qrCode.config, qrCode.content],
 	);

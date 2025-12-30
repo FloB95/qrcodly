@@ -12,6 +12,7 @@ import {
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 import ical, { ICalCalendarMethod } from 'ical-generator';
+import { TShortUrl } from '../schemas/ShortUrl';
 
 // Utility function to check if all properties of an object are undefined
 function areAllPropertiesUndefined(obj: Record<string, any>): boolean {
@@ -88,14 +89,14 @@ export const convertEventObjToString = (event: TEventInput) => {
 		return '';
 	}
 
-	const calendar = ical({ name: event.title });
+	const calendar = ical();
 
 	// A method is required for outlook to display event as an invitation
-	calendar.method(ICalCalendarMethod.ADD);
+	calendar.method(ICalCalendarMethod.PUBLISH);
 	calendar.createEvent({
 		start: event.startDate,
 		end: event.endDate,
-		summary: event.summary,
+		summary: event.title,
 		description: event.description,
 		location: event.location,
 		url: event.url,
@@ -122,10 +123,13 @@ export const convertEmailObjToString = (emailObj: TEmailInput) => {
 	return `mailto:${email}?subject=${subject}&body=${body}`;
 };
 
-export const convertQRCodeDataToStringByType = (content: TQrCodeContent): string => {
+export const convertQRCodeDataToStringByType = (
+	content: TQrCodeContent,
+	shortUrl?: string,
+): string => {
 	switch (content.type) {
 		case 'url':
-			const { url, isEditable, shortUrl } = content.data as unknown as any;
+			const { url, isEditable } = content.data as unknown as any;
 			return shortUrl && isEditable ? shortUrl : url;
 		case 'text':
 			return content.data;
@@ -138,9 +142,7 @@ export const convertQRCodeDataToStringByType = (content: TQrCodeContent): string
 		case 'location':
 			return convertLocationObjToString(content.data);
 		case 'event':
-			return (content.data as unknown as any)?.shortUrl ?? '';
-		// case 'socials':
-		// 	return '';
+			return shortUrl ?? '';
 		default:
 			throw new Error('Invalid content type');
 	}

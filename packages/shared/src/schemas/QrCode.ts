@@ -107,7 +107,6 @@ export type TSocialPlatform = z.infer<typeof SocialPlatformEnum>;
 
 export const EventInputSchema = z.object({
 	title: z.string().min(1).max(200),
-	summary: z.string().max(500).optional(),
 	description: z.string().max(500).optional(),
 	location: z.string().max(200).optional(),
 	url: z.url().optional(),

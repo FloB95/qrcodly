@@ -1,7 +1,7 @@
 import { apiRequest } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import type { TQrCodeContentType, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import type { SupportedLanguages } from '@/i18n/routing';
 import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
@@ -44,13 +44,16 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 		notFound();
 	}
 
-	const tabs = ['url', 'text', 'wifi', 'vCard', 'email', 'location', 'event', 'socials'];
-	const hiddenProps = tabs.reduce((acc: Record<string, boolean>, t) => {
-		const propName = 'hideContent' + t.charAt(0).toUpperCase() + t.slice(1) + 'Tab';
-		acc[propName] = t !== qrCode.content.type;
-
-		return acc;
-	}, {});
+	const ALL_CONTENT_TYPES: TQrCodeContentType[] = [
+		'url',
+		'text',
+		'wifi',
+		'vCard',
+		'email',
+		'location',
+		'event',
+	];
+	const hiddenContentTypes = ALL_CONTENT_TYPES.filter((type) => type !== qrCode.content.type);
 
 	const backLink = (
 		<Link
@@ -95,7 +98,7 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 			<QRcodeGenerator
 				generatorType="QrCodeWithUpdateBtn"
 				isEditMode
-				{...hiddenProps}
+				hiddenContentTypes={hiddenContentTypes}
 				backLink={backLink}
 			/>
 		</QrCodeGeneratorStoreProvider>

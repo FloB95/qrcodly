@@ -14,7 +14,7 @@ export const DynamicBadge = ({ className = '' }: DynamicBadgeProps) => {
 	return (
 		<HoverCard>
 			<HoverCardTrigger asChild>
-				<Badge className={cn('py-2', className)}>
+				<Badge className={cn('py-2 bg-teal-800 hover:bg-teal-900', className)}>
 					Dynamic <CheckBadgeIcon className="ml-2 h-5 w-5" />
 				</Badge>
 			</HoverCardTrigger>

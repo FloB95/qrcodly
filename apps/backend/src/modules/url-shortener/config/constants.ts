@@ -1,6 +1,7 @@
 import { env } from '@/core/config/env';
 
 export const SHORT_BASE_URL = `${env.FRONTEND_URL}/u/`;
+export const DYNAMIC_QR_BASE_URL = `${env.FRONTEND_URL}/api/dynamic-qr/`;
 
 export const DESKTOP_OS = [
 	'BeOS',

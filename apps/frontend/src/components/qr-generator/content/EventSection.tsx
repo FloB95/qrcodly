@@ -119,19 +119,6 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 					/>
 					<FormField
 						control={form.control}
-						name="summary"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>{t('summary.label')}</FormLabel>
-								<FormControl>
-									<Input {...field} placeholder={t('summary.placeholder')} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
 						name="description"
 						render={({ field }) => (
 							<FormItem>

@@ -36,7 +36,7 @@ import { Badge } from '../../ui/badge';
 import { Button } from '../../ui/button';
 import { toast } from '../../ui/use-toast';
 import posthog from 'posthog-js';
-import { formatDate } from '@/lib/utils';
+import { formatDate, getShortUrlFromCode } from '@/lib/utils';
 import { useDeleteQrCodeMutation, useUpdateQrCodeMutation } from '@/lib/api/qr-code';
 import {
 	useGetViewsFromShortCodeQuery,
@@ -60,8 +60,13 @@ const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => 
 			if (isEditable && qr.shortUrl) {
 				return (
 					<div className="text-muted-foreground">
-						<Link href={url} prefetch={false} target="_blank" onClick={(e) => e.stopPropagation()}>
-							{url}
+						<Link
+							href={getShortUrlFromCode(qr.shortUrl.shortCode)}
+							prefetch={false}
+							target="_blank"
+							onClick={(e) => e.stopPropagation()}
+						>
+							{getShortUrlFromCode(qr.shortUrl.shortCode)}
 						</Link>
 						{qr.shortUrl.destinationUrl && (
 							<div className="mt-1 ml-2 flex items-center">
@@ -92,9 +97,7 @@ const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => 
 		case 'email':
 			return (
 				<HoverCard>
-					<HoverCardTrigger asChild>
-						<Button variant="link">{qr.content.data.email}</Button>
-					</HoverCardTrigger>
+					<HoverCardTrigger>{qr.content.data.email}</HoverCardTrigger>
 					<HoverCardContent className="w-80 py-15">
 						<div className="space-y-2 text-center">
 							<h3 className="text-sm font-semibold">{qr.content.data.email}</h3>
@@ -112,9 +115,7 @@ const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => 
 		case 'event':
 			return (
 				<HoverCard>
-					<HoverCardTrigger asChild>
-						<Button variant="link">{qr.content.data.title}</Button>
-					</HoverCardTrigger>
+					<HoverCardTrigger>{qr.content.data.title}</HoverCardTrigger>
 					<HoverCardContent className="w-80 py-15">
 						<div className="space-y-2 text-center">
 							<h4 className="text-sm font-semibold">{qr.content.data.title}</h4>
@@ -260,7 +261,7 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 		[qr.id, qr.name, updateQrCodeMutation],
 	);
 
-	const IS_DYNAMIC = qr.shortUrl && isDynamic(qr.content);
+	const IS_DYNAMIC = !!qr.shortUrl && isDynamic(qr.content);
 
 	return (
 		<>
@@ -284,7 +285,11 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 									loading="lazy"
 								/>
 							) : (
-								<DynamicQrCode qrCode={qr} additionalStyles="max-h-[100px] max-w-[100px]" />
+								<DynamicQrCode
+									qrCode={qr}
+									shortUrl={qr.shortUrl as TShortUrl | undefined}
+									additionalStyles="max-h-[100px] max-w-[100px]"
+								/>
 							)}
 						</div>
 					</div>

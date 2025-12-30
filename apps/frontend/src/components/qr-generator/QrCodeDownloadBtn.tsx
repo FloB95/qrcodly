@@ -31,9 +31,11 @@ import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
 import { useUser } from '@clerk/nextjs';
+import { getShortUrlFromCode } from '@/lib/utils';
 
 let QRCodeStyling: any;
 
+// TODO split 1 dashboard download button 1 generator download button and fix short url
 const QrCodeDownloadBtn = ({
 	qrCode,
 	saveOnDownload = false,
@@ -45,7 +47,7 @@ const QrCodeDownloadBtn = ({
 }) => {
 	const { isSignedIn } = useUser();
 	const t = useTranslations('qrCode.download');
-	const { resetStore, latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore(
+	const { resetStore, latestQrCode, updateLatestQrCode, shortUrl } = useQrCodeGeneratorStore(
 		(state) => state,
 	);
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
@@ -60,7 +62,10 @@ const QrCodeDownloadBtn = ({
 			QRCodeStyling = module.default;
 			const instance = new QRCodeStyling({
 				...convertQrCodeOptionsToLibraryOptions(qrCode.config),
-				data: convertQRCodeDataToStringByType(qrCode.content),
+				data: convertQRCodeDataToStringByType(
+					qrCode.content,
+					shortUrl ? getShortUrlFromCode(shortUrl.shortCode) : undefined,
+				),
 			});
 			setQrCodeInstance(instance);
 		});

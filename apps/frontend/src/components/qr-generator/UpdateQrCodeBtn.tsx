@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { getDefaultContentByType, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import {
+	getDefaultContentByType,
+	isDynamic,
+	type TQrCodeWithRelationsResponseDto,
+} from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
@@ -12,7 +16,10 @@ import { QrCodeUpdateDialog, UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY } from './QrCod
 import { useQueryClient } from '@tanstack/react-query';
 import type { ApiError } from '@/lib/api/ApiError';
 
-type UpdateBtnDto = Pick<TQrCodeWithRelationsResponseDto, 'id' | 'name' | 'config' | 'content'>;
+type UpdateBtnDto = Pick<
+	TQrCodeWithRelationsResponseDto,
+	'id' | 'name' | 'config' | 'content' | 'shortUrl'
+>;
 const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const t = useTranslations('qrCode');
 	const [hasMounted, setHasMounted] = useState(false);
@@ -20,11 +27,12 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const [infoDialogIsOpen, setInfoDialogIsOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const updateQrCodeMutation = useUpdateQrCodeMutation();
+	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
 
 	useEffect(() => {
 		setHasMounted(true);
 		const saved = localStorage.getItem(UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY);
-		setShowInfoDialog(saved !== 'true');
+		setShowInfoDialog(saved !== 'true' && !IS_DYNAMIC);
 	}, []);
 
 	const handleUpdate = async () => {
