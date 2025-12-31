@@ -11,7 +11,7 @@ export type QrCodeGeneratorState = {
 	content: TQrCodeContent;
 	shortUrl?: TShortUrl;
 	latestQrCode?: {
-		name?: string;
+		name?: string | null;
 		config: TQrCodeOptions;
 		content: TQrCodeContent;
 	};
@@ -29,6 +29,7 @@ export type QrCodeGeneratorActions = {
 	updateLatestQrCode: (
 		latestQrCode:
 			| {
+					name?: string | null;
 					config: TQrCodeOptions;
 					content: TQrCodeContent;
 			  }

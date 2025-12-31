@@ -6,8 +6,12 @@ import {
 	type TVCardInput,
 	type TWifiInput,
 	type TColorOrGradient,
+	type TEventInput,
+	type TLocationInput,
+	type TEmailInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
+import ical, { ICalCalendarMethod } from 'ical-generator';
 
 // Utility function to check if all properties of an object are undefined
 function areAllPropertiesUndefined(obj: Record<string, any>): boolean {
@@ -74,20 +78,90 @@ export function convertWiFiObjToString(wiFiInput: TWifiInput): string {
 	return wifiString;
 }
 
-export const convertQRCodeDataToStringByType = (content: TQrCodeContent): string => {
+export const convertEventObjToString = (event: TEventInput) => {
+	if (
+		areAllPropertiesUndefined(event) ||
+		event.startDate === '' ||
+		event.endDate === '' ||
+		event.title === ''
+	) {
+		return '';
+	}
+
+	const calendar = ical();
+
+	// A method is required for outlook to display event as an invitation
+	calendar.method(ICalCalendarMethod.PUBLISH);
+	calendar.createEvent({
+		start: event.startDate,
+		end: event.endDate,
+		summary: event.title,
+		description: event.description,
+		location: event.location,
+		url: event.url,
+	});
+
+	return calendar.toString();
+};
+
+export const convertLocationObjToString = (location: TLocationInput) => {
+	const { latitude, longitude, address } = location;
+	if (!latitude || !longitude) return '';
+	console.log(latitude, longitude);
+
+	const query = encodeURIComponent(address ?? '');
+	return `geo:${latitude},${longitude}?q=${query}`;
+};
+
+export const convertEmailObjToString = (emailObj: TEmailInput) => {
+	if (areAllPropertiesUndefined(emailObj) || emailObj.email === '') {
+		return '';
+	}
+
+	const { email, subject, body } = emailObj;
+	const encodedSubject = subject ? encodeURIComponent(subject) : '';
+	const encodedBody = body ? encodeURIComponent(body) : '';
+	return `mailto:${email}?subject=${encodedSubject}&body=${encodedBody}`;
+};
+
+export const convertQRCodeDataToStringByType = (
+	content: TQrCodeContent,
+	shortUrl?: string,
+): string => {
 	switch (content.type) {
-		case 'url':
-			const { url, isEditable, shortUrl } = content.data as unknown as any;
+		case 'url': {
+			const { url, isEditable } = content.data as unknown as any;
 			return shortUrl && isEditable ? shortUrl : url;
+		}
 		case 'text':
 			return content.data;
 		case 'wifi':
 			return convertWiFiObjToString(content.data);
 		case 'vCard':
 			return convertVCardObjToString(content.data);
+		case 'email':
+			return convertEmailObjToString(content.data);
+		case 'location':
+			return convertLocationObjToString(content.data);
+		case 'event':
+			return shortUrl ?? '';
 		default:
 			throw new Error('Invalid content type');
 	}
+};
+
+export const isDynamic = (content: TQrCodeContent): boolean => {
+	const dynamicTypes: TQrCodeContentType[] = ['event'];
+
+	if (dynamicTypes.includes(content.type)) {
+		return true;
+	}
+
+	if (content.type === 'url') {
+		return content.data.isEditable === true;
+	}
+
+	return false;
 };
 
 export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeContent => {
@@ -133,6 +207,39 @@ export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeConten
 					website: undefined,
 				},
 			};
+		case 'email':
+			return {
+				type: 'email',
+				data: {
+					email: '',
+					subject: '',
+					body: '',
+				},
+			};
+		case 'location':
+			return {
+				type: 'location',
+				data: {
+					address: '',
+				},
+			};
+		case 'event':
+			return {
+				type: 'event',
+				data: {
+					endDate: '',
+					startDate: '',
+					title: '',
+				},
+			};
+		// case 'socials':
+		// 	return {
+		// 		type: 'socials',
+		// 		data: {
+		// 			title: '',
+		// 			links: [],
+		// 		},
+		// 	};
 		default:
 			throw new Error('Invalid content type');
 	}

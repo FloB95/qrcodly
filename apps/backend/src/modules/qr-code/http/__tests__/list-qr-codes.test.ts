@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { API_BASE_PATH } from '@/core/config/constants';
 import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
 import { type FastifyInstance } from 'fastify';

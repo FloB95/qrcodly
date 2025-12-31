@@ -24,7 +24,7 @@
 		}
 	},
 	"include": ["eslint.config.js", "./src/**/*.ts", "**/*.cjs", "**/*.mjs", "setup.test.ts"],
-	"exclude": ["node_modules", "build", "test"],
+	"exclude": ["node_modules", "build", "coverage"],
 	"types": ["@types/jest"],
 	"ts-node": {
 		"require": ["tsconfig-paths/register"]

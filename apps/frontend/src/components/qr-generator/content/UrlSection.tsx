@@ -80,6 +80,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		) {
 			return;
 		}
+
 		void form.handleSubmit(onSubmit)();
 	}, [debounced]);
 
@@ -109,7 +110,7 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 							<FormItem>
 								<FormLabel>
 									<p translate="no" suppressHydrationWarning>
-										Url
+										Url*
 									</p>
 								</FormLabel>
 								<FormControl>

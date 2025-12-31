@@ -32,7 +32,7 @@ export const PricingCard = ({
 			)}
 		>
 			<div className="flex justify-between">
-				<h3 className={cn('text-lg font-semibold', isPro ? 'text-indigo-400' : 'text-indigo-600')}>
+				<h3 className={cn('text-lg font-semibold', isPro ? 'text-teal-500' : 'text-teal-700')}>
 					{tier.name}
 				</h3>
 				{tier.priceAnnualPerMonth && (
@@ -40,7 +40,7 @@ export const PricingCard = ({
 						<span className="text-s text-gray-200">Jährlich</span>
 						<Switch
 							checked={planPeriod === 'annual'}
-							className="data-[state=checked]:bg-indigo-400!"
+							className="data-[state=checked]:bg-teal-600!"
 							onCheckedChange={(e) => setPlanPeriod(e ? 'annual' : 'month')}
 						/>
 					</div>
@@ -66,7 +66,7 @@ export const PricingCard = ({
 				{tier.features.map((feature) => (
 					<li key={feature} className="flex gap-x-3">
 						<CheckIcon
-							className={cn('h-5 w-5 flex-none', isPro ? 'text-indigo-400' : 'text-indigo-600')}
+							className={cn('h-5 w-5 flex-none', isPro ? 'text-teal-500' : 'text-teal-700')}
 						/>
 						{feature}
 					</li>

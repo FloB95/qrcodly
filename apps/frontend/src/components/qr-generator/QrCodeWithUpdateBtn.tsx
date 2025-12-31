@@ -4,7 +4,7 @@ import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import UpdateQrCodeBtn from './UpdateQrCodeBtn';
 
 export const QrCodeWithUpdateBtn = () => {
-	const { id, name, config, content } = useQrCodeGeneratorStore((state) => state);
+	const { id, name, config, content, shortUrl } = useQrCodeGeneratorStore((state) => state);
 	return (
 		<div>
 			<Suspense fallback={null}>
@@ -14,6 +14,7 @@ export const QrCodeWithUpdateBtn = () => {
 							content,
 							config,
 						}}
+						shortUrl={shortUrl || undefined}
 					/>
 				</div>
 				<div className="mt-6 flex justify-center flex-col space-y-2 mb-3">
@@ -23,6 +24,7 @@ export const QrCodeWithUpdateBtn = () => {
 							name: name || null,
 							content,
 							config,
+							shortUrl: shortUrl ?? null,
 						}}
 					/>
 				</div>

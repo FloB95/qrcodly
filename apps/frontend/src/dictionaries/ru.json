@@ -15,7 +15,8 @@
 		"days": "Дни",
 		"changelogTooltip": "Последние обновления",
 		"changelogSubheading": "Здесь вы можете найти последние обновления и улучшения QRcodly.",
-		"newBadge": "Новый!"
+		"newBadge": "Новый!",
+		"dynamicDescription": "Динамические QR-коды можно изменять даже после их создания. Сам QR-код остается прежним, но цель, содержимое или перенаправление можно обновлять в любое время – без необходимости повторной печати или распространения кода."
 	},
 	"headline": "<span class=\"text-2xl\">Бесплатный и открытый исходный код</span> <br /> Генератор QR-кодов",
 	"metadata": {
@@ -155,16 +156,16 @@
 		},
 		"update": {
 			"headline": "Обновить QR-код",
-			"successTitle": "QR Code updated",
-			"successDescription": "Your QR code has been successfully updated.",
-			"errorTitle": "Error updating QR code",
-			"errorDescription": "An error occurred while updating your QR code. We have been notified and will fix the issue as soon as possible.",
+			"successTitle": "QR-код обновлён",
+			"successDescription": "Ваш QR-код был успешно обновлён.",
+			"errorTitle": "Ошибка при обновлении QR-кода",
+			"errorDescription": "Произошла ошибка при обновлении вашего QR-кода. Мы уже уведомлены и исправим проблему как можно скорее.",
 			"infoDialog": {
-				"dialogHeadline": "Note on updating a QR code",
-				"dialogDescription": "Only dynamic URL QR codes retain the same content after editing. Changes to text, WiFi data, or other content create a new QR code. Already printed codes will not show the updated content.",
-				"doNotShowAgain": "Do not show this message again.",
-				"cancelBtn": "Cancel",
-				"understandBtn": "Understood"
+				"dialogHeadline": "Примечание об обновлении QR-кода",
+				"dialogDescription": "Только динамические QR-коды сохраняют свой внешний вид после редактирования. Для статических QR-кодов создаётся новый код, поэтому уже напечатанные версии больше не являются актуальными.",
+				"doNotShowAgain": "Больше не показывать это сообщение",
+				"cancelBtn": "Отмена",
+				"understandBtn": "Понятно"
 			}
 		},
 		"updateQrCodeUrl": "Обновить URL",
@@ -325,8 +326,12 @@
 			"tab": {
 				"url": "URL",
 				"text": "ТЕКСТ",
-				"wifi": "WI-FI",
-				"vCard": "VCARD"
+				"wifi": "WIFI",
+				"vCard": "VCARD",
+				"email": "ПОЧТА",
+				"location": "МЕСТО",
+				"event": "СОБЫТИЕ",
+				"socials": "СОЦСЕТИ"
 			},
 			"cancel": "Отмена",
 			"bulkModeBtn": "Массовое создание CSV",
@@ -406,6 +411,71 @@
 					"label": "Веб-сайт",
 					"placeholder": "Введите URL вашего веб-сайта"
 				}
+			},
+			"email": {
+				"email": {
+					"label": "Адрес электронной почты",
+					"placeholder": "Введите адрес электронной почты"
+				},
+				"subject": {
+					"label": "Тема",
+					"placeholder": "Необязательная тема"
+				},
+				"body": {
+					"label": "Сообщение",
+					"placeholder": "Необязательное сообщение"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Адрес",
+					"placeholder": "Поиск адреса или места"
+				},
+				"latitude": {
+					"label": "Широта"
+				},
+				"longitude": {
+					"label": "Долгота"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Название",
+					"placeholder": "Название события"
+				},
+				"summary": {
+					"label": "Краткое описание",
+					"placeholder": "Необязательное краткое описание"
+				},
+				"description": {
+					"label": "Описание",
+					"placeholder": "Необязательное описание"
+				},
+				"location": {
+					"label": "Место",
+					"placeholder": "Место проведения"
+				},
+				"url": {
+					"label": "Url",
+					"placeholder": "Необязательный URL"
+				},
+				"startDate": {
+					"label": "Дата начала"
+				},
+				"endDate": {
+					"label": "Дата окончания"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Заголовок",
+					"placeholder": "например, Подписывайтесь"
+				},
+				"link": {
+					"placeholder": "URL профиля или сайта",
+					"add": "Добавить ссылку",
+					"remove": "Удалить"
+				}
 			}
 		}
 	},
@@ -429,7 +499,7 @@
 		"question5": "Как долго действует QR-код?",
 		"answer5": "Статические QR-коды не имеют срока действия и остаются постоянно действительными, пока связанный контент доступен в Интернете. Динамические QR-коды остаются активными до тех пор, пока они управляются в нашей системе и не применяются специфические ограничения от поставщика.",
 		"question6": "Каковы преимущества динамических QR-кодов?",
-		"answer6": "Динамические QR-коды обеспечивают беспрецедентную гибкость, поскольку вы можете изменять их содержимое даже после печати. Они также позволяют получать точные статистические данные о сканировании, предоставляя информацию о местоположении, времени и используемом устройстве, что позволяет эффективно оптимизировать ваши кампании.",
+		"answer6": "Динамические QR-коды отмечены значком Dynamic. Их можно обновлять в любое время, даже после создания или печати. Они также предоставляют полезную статистику сканирования – например, местоположение, время и используемые устройства – чтобы эффективно анализировать и оптимизировать ваши кампании.",
 		"question7": "Нужно ли мне специальное приложение для сканирования QR-кодов?",
 		"answer7": "Нет, в большинстве случаев это не требуется! Встроенная функция камеры современных смартфонов теперь может напрямую распознавать QR-коды и открывать встроенное содержимое — без дополнительного приложения.",
 		"question8": "Какая статистика собирается для динамических QR-кодов?",

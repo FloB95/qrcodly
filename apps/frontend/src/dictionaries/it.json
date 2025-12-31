@@ -15,7 +15,8 @@
 		"days": "Giorni",
 		"changelogTooltip": "Ultimi aggiornamenti",
 		"changelogSubheading": "Qui puoi trovare gli ultimi aggiornamenti e miglioramenti di QRcodly.",
-		"newBadge": "Nuovo!"
+		"newBadge": "Nuovo!",
+		"dynamicDescription": "I codici QR dinamici possono essere modificati anche dopo la loro creazione. Il codice QR stesso rimane invariato, ma la destinazione, il contenuto o il reindirizzamento possono essere aggiornati in qualsiasi momento – senza dover ristampare o ridistribuire il codice."
 	},
 	"headline": "<span class=\"text-2xl\">Generatore di Codici QR</span> <br /> Gratuito e Open Source",
 	"metadata": {
@@ -161,7 +162,7 @@
 			"errorDescription": "Si è verificato un errore durante l'aggiornamento del tuo QR Code. Siamo stati avvisati e risolveremo il problema il prima possibile.",
 			"infoDialog": {
 				"dialogHeadline": "Nota sull'aggiornamento di un QR Code",
-				"dialogDescription": "Solo i QR Code URL dinamici mantengono lo stesso contenuto dopo la modifica. Le modifiche a testo, dati WiFi o altri contenuti generano un nuovo QR Code. I codici già stampati non mostreranno i contenuti aggiornati.",
+				"dialogDescription": "Solo i codici QR dinamici mantengono lo stesso aspetto dopo una modifica. Per i codici QR statici viene generato un nuovo codice, quindi le versioni già stampate non sono più aggiornate.",
 				"doNotShowAgain": "Non mostrare più questo messaggio.",
 				"cancelBtn": "Annulla",
 				"understandBtn": "Capito"
@@ -325,8 +326,12 @@
 			"tab": {
 				"url": "URL",
 				"text": "TESTO",
-				"wifi": "WI-FI",
-				"vCard": "VCARD"
+				"wifi": "WIFI",
+				"vCard": "VCARD",
+				"email": "EMAIL",
+				"location": "POSIZIONE",
+				"event": "EVENTO",
+				"socials": "SOCIAL"
 			},
 			"cancel": "Annulla",
 			"bulkModeBtn": "Creazione massiva CSV",
@@ -406,6 +411,71 @@
 					"label": "Sito web",
 					"placeholder": "Inserisci l'URL del tuo sito web"
 				}
+			},
+			"email": {
+				"email": {
+					"label": "Indirizzo email",
+					"placeholder": "Inserisci un indirizzo email"
+				},
+				"subject": {
+					"label": "Oggetto",
+					"placeholder": "Oggetto opzionale"
+				},
+				"body": {
+					"label": "Messaggio",
+					"placeholder": "Messaggio opzionale"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Indirizzo",
+					"placeholder": "Cerca un indirizzo o luogo"
+				},
+				"latitude": {
+					"label": "Latitudine"
+				},
+				"longitude": {
+					"label": "Longitudine"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Titolo",
+					"placeholder": "Nome dell’evento"
+				},
+				"summary": {
+					"label": "Riepilogo",
+					"placeholder": "Riepilogo facoltativo"
+				},
+				"description": {
+					"label": "Descrizione",
+					"placeholder": "Descrizione opzionale"
+				},
+				"location": {
+					"label": "Luogo",
+					"placeholder": "Luogo dell’evento"
+				},
+				"url": {
+					"label": "Url",
+					"placeholder": "URL facoltativa"
+				},
+				"startDate": {
+					"label": "Data di inizio"
+				},
+				"endDate": {
+					"label": "Data di fine"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Titolo",
+					"placeholder": "es. Seguimi"
+				},
+				"link": {
+					"placeholder": "URL del profilo o sito web",
+					"add": "Aggiungi link",
+					"remove": "Rimuovi"
+				}
 			}
 		}
 	},
@@ -428,8 +498,8 @@
 		"answer4": "Sì, la generazione di codici QR sia statici che dinamici è e rimarrà gratuita per sempre, quanti ne desideri. In futuro, ci saranno limitazioni per le richieste API e per le aziende che lavorano con più utenti.",
 		"question5": "Quanto dura un codice QR?",
 		"answer5": "I codici QR statici non scadono e rimangono permanentemente validi finché il contenuto collegato è accessibile online. I codici QR dinamici rimangono attivi finché sono gestiti nel nostro sistema e non si applicano restrizioni specifiche da parte del fornitore.",
-		"question6": "Quali sono i vantaggi dei codici QR dinamici?",
-		"answer6": "I codici QR dinamici offrono una flessibilità senza pari, poiché puoi regolare il loro contenuto anche dopo la stampa. Inoltre, consentono statistiche di scansione precise, fornendo informazioni su posizione, ora e dispositivo utilizzato, permettendoti di ottimizzare efficacemente le tue campagne.",
+		"question6": "Quali sono i vantaggi dei QR code dinamici?",
+		"answer6": "I QR code dinamici sono riconoscibili dal badge Dynamic. Possono essere aggiornati in qualsiasi momento, anche dopo la creazione o la stampa. Forniscono inoltre statistiche utili sulle scansioni – come luogo, orario e dispositivi utilizzati – per analizzare e ottimizzare efficacemente le tue campagne.",
 		"question7": "Ho bisogno di un'app speciale per scansionare i codici QR?",
 		"answer7": "No, nella maggior parte dei casi non è necessario! La funzione fotocamera integrata degli smartphone moderni può ora riconoscere direttamente i codici QR e aprire il contenuto incorporato – non è richiesta alcuna app aggiuntiva.",
 		"question8": "Quali statistiche vengono raccolte per i codici QR dinamici?",

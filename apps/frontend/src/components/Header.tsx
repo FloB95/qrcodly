@@ -102,7 +102,7 @@ export default function Header({
 					</div>
 
 					<div className="space-y-2">
-						<Link
+						{/* <Link
 							href="/plan"
 							className={buttonVariants({
 								variant: 'ghost',
@@ -110,7 +110,7 @@ export default function Header({
 							})}
 						>
 							Plan
-						</Link>
+						</Link> */}
 						<Link
 							href="/docs"
 							target="blank"

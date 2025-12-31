@@ -38,7 +38,8 @@ export default clerkMiddleware(async (auth, req, event) => {
 		!pathname.startsWith('/docs') &&
 		!pathname.startsWith('/ingest') &&
 		!pathname.startsWith('/privacy-policy') &&
-		!pathname.startsWith('/imprint')
+		!pathname.startsWith('/imprint') &&
+		!pathname.startsWith('/qr/')
 	) {
 		const intlResponse = intlMiddleware(req);
 		if (intlResponse) return intlResponse;

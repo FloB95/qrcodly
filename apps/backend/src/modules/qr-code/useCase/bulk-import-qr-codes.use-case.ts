@@ -16,15 +16,18 @@ import { BulkVCardCsvDto } from '../domain/dtos/BulkVCardCsvDto';
 import { BadRequestError, CustomApiError } from '@/core/error/http';
 import { TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
 import { TUser } from '@/core/domain/schema/UserSchema';
+import { BulkContentTypeNotSupported } from '../error/http/bulk-content-type-not-supported.error';
 
 @injectable()
 export class BulkImportQrCodesUseCase {
-	private readonly columnMap: Record<
-		TQrCodeContentType,
-		{
-			columns: string[];
-			schema: ZodObject;
-		}
+	private readonly columnMap: Partial<
+		Record<
+			TQrCodeContentType,
+			{
+				columns: string[];
+				schema: ZodObject;
+			}
+		>
 	> = {
 		url: {
 			columns: ['url', 'name', 'isEditable'],
@@ -119,6 +122,10 @@ export class BulkImportQrCodesUseCase {
 		validationErrors: { line: number; error: $ZodError }[];
 	} {
 		try {
+			if (!this.isBulkSupported(contentType)) {
+				throw new BulkContentTypeNotSupported(contentType);
+			}
+
 			const validRecords: any[] = [];
 			const errors: { line: number; error: $ZodError }[] = [];
 
@@ -126,7 +133,7 @@ export class BulkImportQrCodesUseCase {
 				from_line: 2,
 				skip_empty_lines: true,
 				delimiter: ';',
-				columns: this.columnMap[contentType].columns,
+				columns: this.columnMap[contentType]!.columns,
 			});
 
 			// TODO implement plan policy handling
@@ -136,7 +143,7 @@ export class BulkImportQrCodesUseCase {
 
 			rawRecords.forEach((record, index) => {
 				try {
-					const parsed = this.columnMap[contentType].schema.parse(record);
+					const parsed = this.columnMap[contentType]!.schema.parse(record);
 					validRecords.push(parsed);
 				} catch (error) {
 					if (error instanceof $ZodError) {
@@ -157,5 +164,9 @@ export class BulkImportQrCodesUseCase {
 			const e = error as any;
 			throw new BadRequestError(e.message);
 		}
+	}
+
+	private isBulkSupported(type: TQrCodeContentType): type is keyof typeof this.columnMap {
+		return type in this.columnMap;
 	}
 }

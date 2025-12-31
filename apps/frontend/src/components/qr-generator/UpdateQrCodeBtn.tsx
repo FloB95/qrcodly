@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { getDefaultContentByType, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import {
+	getDefaultContentByType,
+	isDynamic,
+	type TQrCodeWithRelationsResponseDto,
+} from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
@@ -10,8 +14,12 @@ import * as Sentry from '@sentry/nextjs';
 import { qrCodeQueryKeys, useUpdateQrCodeMutation } from '@/lib/api/qr-code';
 import { QrCodeUpdateDialog, UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY } from './QrCodeUpdateDialog';
 import { useQueryClient } from '@tanstack/react-query';
+import type { ApiError } from '@/lib/api/ApiError';
 
-type UpdateBtnDto = Pick<TQrCodeWithRelationsResponseDto, 'id' | 'name' | 'config' | 'content'>;
+type UpdateBtnDto = Pick<
+	TQrCodeWithRelationsResponseDto,
+	'id' | 'name' | 'config' | 'content' | 'shortUrl'
+>;
 const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const t = useTranslations('qrCode');
 	const [hasMounted, setHasMounted] = useState(false);
@@ -19,11 +27,12 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const [infoDialogIsOpen, setInfoDialogIsOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const updateQrCodeMutation = useUpdateQrCodeMutation();
+	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
 
 	useEffect(() => {
 		setHasMounted(true);
 		const saved = localStorage.getItem(UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY);
-		setShowInfoDialog(saved !== 'true');
+		setShowInfoDialog(saved !== 'true' && !IS_DYNAMIC);
 	}, []);
 
 	const handleUpdate = async () => {
@@ -52,19 +61,36 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 							content: qrCode.content,
 						});
 					},
-					onError: (e) => {
-						Sentry.captureException(e);
+					onError: (e: Error) => {
+						const error = e as ApiError;
+
+						if (error.code >= 500) {
+							Sentry.captureException(error, {
+								extra: {
+									error: {
+										name: qrCode.name,
+										config: qrCode.config,
+										content: qrCode.content,
+										message: error.message,
+										fieldErrors: error?.fieldErrors,
+									},
+								},
+							});
+
+							posthog.capture('error:qr-code-updated', {
+								name: qrCode.name,
+								config: qrCode.config,
+								content: qrCode.content,
+								message: error.message,
+								fieldErrors: error?.fieldErrors,
+							});
+						}
+
 						toast({
 							variant: 'destructive',
 							title: t('update.errorTitle'),
-							description: t('update.errorDescription'),
+							description: error.message,
 							duration: 5000,
-						});
-
-						posthog.capture('error:qr-code-updated', {
-							name: qrCode.name,
-							config: qrCode.config,
-							content: qrCode.content,
 						});
 					},
 				},

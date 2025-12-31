@@ -29,6 +29,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_SENTRY_ENVIRONMENT: z.string().default('production'),
 		NEXT_PUBLIC_UMAMI_WEBSITE: z.string(),
 		NEXT_PUBLIC_CLERK_PRO_PLAN_ID: z.string(),
+		NEXT_PUBLIC_GOOGLE_API_KEY: z.string(),
 	},
 
 	/**
@@ -51,6 +52,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
 		NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
 		NEXT_PUBLIC_CLERK_PRO_PLAN_ID: process.env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID,
+		NEXT_PUBLIC_GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

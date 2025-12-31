@@ -15,7 +15,8 @@
 		"days": "Dagen",
 		"changelogTooltip": "Laatste updates",
 		"changelogSubheading": "Hier vind je de nieuwste updates en verbeteringen van QRcodly.",
-		"newBadge": "Nieuw!"
+		"newBadge": "Nieuw!",
+		"dynamicDescription": "Dynamische QR-codes kunnen ook na creatie worden aangepast. De QR-code zelf blijft hetzelfde, maar het doel, de inhoud of de doorverwijzing kan op elk moment worden bijgewerkt – zonder de code opnieuw te hoeven afdrukken of verspreiden."
 	},
 	"headline": "<span class=\"text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
@@ -161,7 +162,7 @@
 			"errorDescription": "Er is een fout opgetreden bij het bijwerken van je QR-code. We zijn op de hoogte gebracht en lossen het probleem zo snel mogelijk op.",
 			"infoDialog": {
 				"dialogHeadline": "Opmerking over het bijwerken van een QR-code",
-				"dialogDescription": "Alleen dynamische URL-QR-codes behouden dezelfde inhoud na bewerking. Wijzigingen in tekst, WiFi-gegevens of andere inhoud creëren een nieuwe QR-code. Reeds gedrukte codes tonen de bijgewerkte inhoud niet.",
+				"dialogDescription": "Alleen dynamische QR-codes behouden hetzelfde uiterlijk na een wijziging. Bij statische QR-codes wordt een nieuwe code gegenereerd, waardoor reeds gedrukte versies niet meer actueel zijn.",
 				"doNotShowAgain": "Dit bericht niet opnieuw tonen.",
 				"cancelBtn": "Annuleren",
 				"understandBtn": "Begrepen"
@@ -325,8 +326,12 @@
 			"tab": {
 				"url": "URL",
 				"text": "TEKST",
-				"wifi": "WI-FI",
-				"vCard": "VCARD"
+				"wifi": "WIFI",
+				"vCard": "VCARD",
+				"email": "EMAIL",
+				"location": "LOCATIE",
+				"event": "EVENT",
+				"socials": "SOCIALS"
 			},
 			"cancel": "Annuleren",
 			"bulkModeBtn": "CSV Massale aanmaak",
@@ -406,6 +411,71 @@
 					"label": "Website",
 					"placeholder": "Voer de URL van uw website in"
 				}
+			},
+			"email": {
+				"email": {
+					"label": "E-mailadres",
+					"placeholder": "Voer een e-mailadres in"
+				},
+				"subject": {
+					"label": "Onderwerp",
+					"placeholder": "Optioneel onderwerp"
+				},
+				"body": {
+					"label": "Bericht",
+					"placeholder": "Optioneel bericht"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Adres",
+					"placeholder": "Zoek een adres of plaats"
+				},
+				"latitude": {
+					"label": "Breedtegraad"
+				},
+				"longitude": {
+					"label": "Lengtegraad"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Titel",
+					"placeholder": "Naam van het evenement"
+				},
+				"summary": {
+					"label": "Samenvatting",
+					"placeholder": "Optionele samenvatting"
+				},
+				"description": {
+					"label": "Beschrijving",
+					"placeholder": "Optionele beschrijving"
+				},
+				"location": {
+					"label": "Locatie",
+					"placeholder": "Evenementlocatie"
+				},
+				"url": {
+					"label": "Url",
+					"placeholder": "Optionele URL"
+				},
+				"startDate": {
+					"label": "Startdatum"
+				},
+				"endDate": {
+					"label": "Einddatum"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Titel",
+					"placeholder": "bijv. Volg mij"
+				},
+				"link": {
+					"placeholder": "Profiel- of website-URL",
+					"add": "Link toevoegen",
+					"remove": "Verwijderen"
+				}
 			}
 		}
 	},
@@ -429,7 +499,7 @@
 		"question5": "Hoe lang is een QR-code geldig?",
 		"answer5": "Statische QR-codes verlopen niet en blijven permanent geldig zolang de gekoppelde inhoud online toegankelijk is. Dynamische QR-codes blijven actief zolang ze in ons systeem worden beheerd en er geen specifieke beperkingen van de provider van toepassing zijn.",
 		"question6": "Wat zijn de voordelen van dynamische QR-codes?",
-		"answer6": "Dynamische QR-codes bieden ongekende flexibiliteit, omdat u de inhoud ervan zelfs na het afdrukken kunt aanpassen. Ze maken ook nauwkeurige scanstatistieken mogelijk, die inzicht geven in locatie, tijd en gebruikt apparaat, zodat u uw campagnes effectief kunt optimaliseren.",
+		"answer6": "Dynamische QR-codes zijn te herkennen aan het Dynamic-badge. Ze kunnen op elk moment worden bijgewerkt, zelfs nadat ze zijn gemaakt of afgedrukt. Ze bieden ook nuttige scanstatistieken – zoals locatie, tijd en gebruikte apparaten – zodat je je campagnes effectief kunt analyseren en optimaliseren.",
 		"question7": "Heb ik een speciale app nodig om QR-codes te scannen?",
 		"answer7": "Nee, in de meeste gevallen is dat niet nodig! De geïntegreerde camerafunctie van moderne smartphones kan QR-codes nu direct herkennen en de ingebedde inhoud openen – zonder dat een extra app nodig is.",
 		"question8": "Welke statistieken worden verzameld voor dynamische QR-codes?",

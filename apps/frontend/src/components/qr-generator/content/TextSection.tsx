@@ -60,7 +60,7 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
 									translate="no"
 									suppressHydrationWarning
 								>
-									{t('tab.text')}
+									{t('tab.text')}*
 								</p>
 							</FormLabel>
 							<FormControl>

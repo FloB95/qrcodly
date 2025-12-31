@@ -10,6 +10,9 @@ import {
 } from '../../config/constants';
 import { generateQrCodeStylingInstance } from '../../lib/styled-qr-code';
 import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
+import { container } from 'tsyringe';
+import ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
+import { buildShortUrl } from '@/modules/url-shortener/utils';
 
 export class QrCodeImageStrategy extends BaseImageStrategy {
 	constructor() {
@@ -49,6 +52,8 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 	): Promise<string | undefined> {
 		const { id, createdBy, config, content } = qrCode;
 
+		const shortUrl = await container.resolve(ShortUrlRepository).findOneByQrCodeId(id);
+
 		try {
 			const fileName = `${id}.svg`;
 			const filePath = this.constructFilePath(
@@ -59,7 +64,10 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 
 			const instance = generateQrCodeStylingInstance({
 				...convertQrCodeOptionsToLibraryOptions(config),
-				data: convertQRCodeDataToStringByType(content),
+				data: convertQRCodeDataToStringByType(
+					content,
+					shortUrl ? buildShortUrl(shortUrl.shortCode) : undefined,
+				),
 			});
 
 			const svg = await instance.getRawData('svg');
