@@ -16,3 +16,4 @@ packages/**/.turbo
 *.swp
 CHANGELOG-*.md
 *.mdx
+CLAUDE.md

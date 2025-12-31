@@ -17,6 +17,7 @@ export default [
 	{
 		ignores: [
 			'**/node_modules',
+			'**/coverage',
 			'**/build',
 			'**/jest.config.js',
 			'**/drizzle.config.ts',

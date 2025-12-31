@@ -17,6 +17,8 @@ const tsJestOptions = {
 const jestConfig = {
 	...createDefaultPreset(),
 	verbose: true,
+	coverageDirectory: '<rootDir>/coverage',
+	coverageProvider: 'v8',
 	preset: 'ts-jest',
 	moduleDirectories: ['node_modules', '<rootDir>'],
 	moduleNameMapper: {
@@ -44,6 +46,7 @@ const jestConfig = {
 	setupFilesAfterEnv: ['<rootDir>/src/tests/setup.test.ts'],
 	testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 	testTimeout: 30000,
+	forceExit: true,
 };
 
 export default jestConfig;

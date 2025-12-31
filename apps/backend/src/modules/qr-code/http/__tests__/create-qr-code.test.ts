@@ -33,7 +33,7 @@ describe('createQrCode', () => {
 
 	const assertQrCodeResponse = (
 		response: TQrCodeWithRelationsResponseDto,
-		createdByExpected: string | null,
+		_createdByExpected: string | null,
 	) => {
 		expect(response.id).toEqual(expect.any(String));
 		expect(response.createdAt).toEqual(expect.any(String));
