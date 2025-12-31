@@ -72,9 +72,6 @@ export const useQrCodeMutations = (qr: TQrCodeWithRelationsResponseDto) => {
 
 	const handleUpdateName = useCallback(
 		(newName: string) => {
-			const oldName = qr.name;
-			qr.name = newName;
-
 			updateQrCodeMutation.mutate(
 				{ qrCodeId: qr.id, data: { name: newName } },
 				{
@@ -85,7 +82,6 @@ export const useQrCodeMutations = (qr: TQrCodeWithRelationsResponseDto) => {
 						});
 					},
 					onError: (error) => {
-						qr.name = oldName;
 						Sentry.captureException(error);
 						toast({
 							title: t('qrCode.error.update.title'),
@@ -97,7 +93,7 @@ export const useQrCodeMutations = (qr: TQrCodeWithRelationsResponseDto) => {
 				},
 			);
 		},
-		[qr, updateQrCodeMutation, t],
+		[qr.id, updateQrCodeMutation, t],
 	);
 
 	return {

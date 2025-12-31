@@ -54,14 +54,31 @@ interface IconPickerProps {
 /* Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-const fetchSvgAsBase64 = async (src: string, color: string) => {
-	const res = await fetch(src);
-	let svg = await res.text();
+const fetchSvgAsBase64 = async (src: string, color: string): Promise<string | undefined> => {
+	try {
+		const res = await fetch(src);
 
-	// Enable color control if SVG uses currentColor
-	svg = svg.replace(/currentColor/g, color);
+		if (!res.ok) {
+			console.error(`Failed to fetch SVG: ${res.status} ${res.statusText}`);
+			return undefined;
+		}
 
-	return svgToBase64(svg);
+		let svg = await res.text();
+
+		// Validate that we got SVG content
+		if (!svg.trim().startsWith('<svg')) {
+			console.error('Invalid SVG content received');
+			return undefined;
+		}
+
+		// Enable color control if SVG uses currentColor
+		svg = svg.replace(/currentColor/g, color);
+
+		return svgToBase64(svg);
+	} catch (error) {
+		console.error('Error fetching or processing SVG:', error);
+		return undefined;
+	}
 };
 
 /* ------------------------------------------------------------------ */

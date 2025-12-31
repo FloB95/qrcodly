@@ -40,7 +40,8 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 		shouldFocusError: false,
 	});
 
-	const [debounced] = useDebouncedValue<TEventInput>(form.getValues(), 500);
+	const formValues = form.watch();
+	const [debounced] = useDebouncedValue<TEventInput>(formValues, 500);
 
 	function onSubmit(values: TEventInput) {
 		if (!isSignedIn) {

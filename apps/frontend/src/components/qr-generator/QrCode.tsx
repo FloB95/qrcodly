@@ -50,7 +50,7 @@ function QrCode({ qrCode, additionalStyles = '', shortUrl }: QrCodeProps) {
 					shortUrl ? getShortUrlFromCode(shortUrl.shortCode) : undefined,
 				) || 'https://qrcodly.de',
 		}),
-		[qrCode.config, qrCode.content],
+		[qrCode.config, qrCode.content, shortUrl],
 	);
 	const [qrCodeInstance, setQrCode] = useState<QRCodeStyling>();
 	const ref = useRef<HTMLDivElement>(null);

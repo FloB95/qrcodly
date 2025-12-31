@@ -119,7 +119,9 @@ export const convertEmailObjToString = (emailObj: TEmailInput) => {
 	}
 
 	const { email, subject, body } = emailObj;
-	return `mailto:${email}?subject=${subject}&body=${body}`;
+	const encodedSubject = subject ? encodeURIComponent(subject) : '';
+	const encodedBody = body ? encodeURIComponent(body) : '';
+	return `mailto:${email}?subject=${encodedSubject}&body=${encodedBody}`;
 };
 
 export const convertQRCodeDataToStringByType = (

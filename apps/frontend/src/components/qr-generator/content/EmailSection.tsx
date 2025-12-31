@@ -35,7 +35,8 @@ export const EmailSection = ({ onChange, value }: EmailSectionProps) => {
 		shouldFocusError: false,
 	});
 
-	const [debounced] = useDebouncedValue<TEmailInput>(form.getValues(), 500);
+	const formValues = form.watch();
+	const [debounced] = useDebouncedValue<TEmailInput>(formValues, 500);
 
 	function onSubmit(values: TEmailInput) {
 		onChange(values);

@@ -17,12 +17,6 @@ import { type TShortUrl } from '@/modules/url-shortener/domain/entities/short-ur
 import { QrCodeUpdatedEvent } from '../../event/qr-code-updated.event';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 
-describe('Fastify Application Setup', () => {
-	it('simple test', () => {
-		expect(true).toBe(true);
-	});
-});
-
 describe('UpdateQrCodeUseCase', () => {
 	let useCase: UpdateQrCodeUseCase;
 	let mockQrCodeRepo: MockProxy<QrCodeRepository>;

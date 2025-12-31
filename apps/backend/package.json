@@ -14,7 +14,7 @@
 	"scripts": {
 		"lint": "eslint .",
 		"typecheck": "tsc --noEmit -p tsconfig.json",
-		"pr:precheck": "pnpm run lint && pnpm run type-check && pnpm run test && pnpm run build",
+		"pr:precheck": "pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build",
 		"build": "tsc -p tsconfig.json && tsc-alias && tsc-esm-fix && node build/src/core/config/env.js && pnpm run copyMailerTemplates",
 		"copyMailerTemplates": "cp -r ./src/core/mailer/templates ./build/src/core/mailer/templates",
 		"start": "pnpm run db:migrate && TZ=Europe/Berlin node build/src/index.js",

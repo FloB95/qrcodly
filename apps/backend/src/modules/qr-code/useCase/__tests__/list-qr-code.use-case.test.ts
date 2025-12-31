@@ -13,12 +13,6 @@ import { mock, type MockProxy } from 'jest-mock-extended';
 import { QrCodeDefaults } from '@shared/schemas';
 import { type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
 
-describe('Fastify Application Setup', () => {
-	it('simple test', () => {
-		expect(true).toBe(true);
-	});
-});
-
 describe('ListQrCodesUseCase', () => {
 	let useCase: ListQrCodesUseCase;
 	let mockRepository: MockProxy<QrCodeRepository>;

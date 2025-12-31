@@ -16,7 +16,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 			throw new Error(`Failed to download QR code content: ${response.statusText}`);
 		}
 
-		const content = await response.text();
+		const content = await response.arrayBuffer();
 		const contentType = response.headers.get('Content-Type') || 'application/octet-stream';
 		const contentDisposition = response.headers.get('Content-Disposition') || '';
 

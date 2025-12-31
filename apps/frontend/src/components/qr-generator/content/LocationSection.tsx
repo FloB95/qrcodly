@@ -35,7 +35,8 @@ export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
 	});
 	const locale = useLocale();
 
-	const [debounced] = useDebouncedValue(form.getValues(), 500);
+	const formValues = form.watch();
+	const [debounced] = useDebouncedValue(formValues, 500);
 	const [searchBox, setSearchBox] = useState<google.maps.places.SearchBox | null>(null);
 
 	const { isLoaded } = useJsApiLoader({
