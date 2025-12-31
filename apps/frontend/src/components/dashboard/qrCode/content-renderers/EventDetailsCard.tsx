@@ -23,7 +23,7 @@ export const EventDetailsCard = ({ event, trigger }: EventDetailsCardProps) => {
 					{event.location && (
 						<div className="flex items-center justify-center space-x-2 text-sm">
 							<MapPinIcon className="w-5 h-5" />
-							<span className="max-w-50">{event.location}</span>
+							<span className="max-w-xs">{event.location}</span>
 						</div>
 					)}
 					<div className="text-sm flex space-x-2 justify-center">

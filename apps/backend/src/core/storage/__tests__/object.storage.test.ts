@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { ObjectStorage } from '..';
@@ -16,7 +15,7 @@ describe('S3StorageService', () => {
 
 	describe('upload', () => {
 		it('uploads a file successfully', async () => {
-			const uploadSpy = jest.spyOn(fileStorage, 'upload').mockResolvedValue(undefined);
+			const uploadSpy = jest.spyOn(fileStorage, 'upload').mockResolvedValue();
 
 			await expect(fileStorage.upload(testKey, testData, mimeType)).resolves.toBeUndefined();
 			expect(uploadSpy).toHaveBeenCalledWith(testKey, testData, mimeType);
@@ -56,7 +55,7 @@ describe('S3StorageService', () => {
 
 	describe('delete', () => {
 		it('deletes a file successfully', async () => {
-			const deleteSpy = jest.spyOn(fileStorage, 'delete').mockResolvedValue(undefined);
+			const deleteSpy = jest.spyOn(fileStorage, 'delete').mockResolvedValue();
 
 			await expect(fileStorage.delete(testKey)).resolves.toBeUndefined();
 			expect(deleteSpy).toHaveBeenCalledWith(testKey);

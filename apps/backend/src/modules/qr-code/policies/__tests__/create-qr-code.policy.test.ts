@@ -42,7 +42,6 @@ describe('CreateQrCodePolicy', () => {
 
 	const createPolicy = (user: TUser | undefined, dto: TCreateQrCodeDto) => {
 		const policy = new CreateQrCodePolicy(user, dto);
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		(policy as any).usageService = mockUsageService;
 		return policy;
 	};

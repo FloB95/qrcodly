@@ -1,5 +1,4 @@
 import { GetReservedShortCodeUseCase } from '../get-reserved-short-url.use-case';
-/* eslint-disable @typescript-eslint/unbound-method */
 import { type CreateShortUrlUseCase } from '../create-short-url.use-case';
 import type ShortUrlRepository from '../../domain/repository/short-url.repository';
 import { mock } from 'jest-mock-extended';

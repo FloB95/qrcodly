@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
 
 import {
 	Form,
@@ -42,6 +43,7 @@ type SocialSectionProps = {
 };
 
 export const SocialSection = ({ value, onChange }: SocialSectionProps) => {
+	const t = useTranslations('generator.contentSwitch.social');
 	const [step, setStep] = useState<1 | 2>(1);
 	const [selected, setSelected] = useState<TSocialPlatform[]>([]);
 
@@ -51,7 +53,7 @@ export const SocialSection = ({ value, onChange }: SocialSectionProps) => {
 		shouldFocusError: false,
 	});
 
-	const { fields, append, remove } = useFieldArray({
+	const { fields, append, remove, replace } = useFieldArray({
 		control: form.control,
 		name: 'links',
 	});
@@ -64,13 +66,12 @@ export const SocialSection = ({ value, onChange }: SocialSectionProps) => {
 	}
 
 	function goToStep2() {
-		selected.forEach((platform) => {
-			append({
-				platform,
-				label: SOCIALS.find((s) => s.key === platform)?.label ?? '',
-				url: '',
-			});
-		});
+		const newLinks = selected.map((platform) => ({
+			platform,
+			label: SOCIALS.find((s) => s.key === platform)?.label ?? '',
+			url: '',
+		}));
+		replace(newLinks);
 		setStep(2);
 	}
 
@@ -87,9 +88,9 @@ export const SocialSection = ({ value, onChange }: SocialSectionProps) => {
 					name="title"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Titel</FormLabel>
+							<FormLabel>{t('title.label')}</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder="Meine Social Links" />
+								<Input {...field} placeholder={t('title.placeholder')} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -119,7 +120,7 @@ export const SocialSection = ({ value, onChange }: SocialSectionProps) => {
 						</div>
 
 						<Button type="button" disabled={selected.length === 0} onClick={goToStep2}>
-							Weiter
+							{t('nextBtn')}
 						</Button>
 					</>
 				)}
@@ -133,7 +134,7 @@ export const SocialSection = ({ value, onChange }: SocialSectionProps) => {
 								return (
 									<div key={field.id} className="rounded-lg border p-4 space-y-3">
 										<div className="flex items-center gap-2 font-semibold">
-											{social?.icon}
+											{social?.icon && <Image src={social.icon} alt="" width={20} height={20} />}
 											{social?.label}
 										</div>
 
@@ -164,7 +165,7 @@ export const SocialSection = ({ value, onChange }: SocialSectionProps) => {
 										/>
 
 										<Button type="button" variant="destructive" onClick={() => remove(index)}>
-											Entfernen
+											{t('removeBtn')}
 										</Button>
 									</div>
 								);
@@ -173,9 +174,9 @@ export const SocialSection = ({ value, onChange }: SocialSectionProps) => {
 
 						<div className="flex gap-2">
 							<Button type="button" variant="secondary" onClick={() => setStep(1)}>
-								Zurück
+								{t('backBtn')}
 							</Button>
-							<Button type="submit">Speichern</Button>
+							<Button type="submit">{t('saveBtn')}</Button>
 						</div>
 					</>
 				)}

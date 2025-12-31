@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
+//@ts-nocheck
 import { ShortUrlStrategyService } from '../short-url-strategy.service';
 import { UrlStrategy } from '../short-url-strategies/url.strategy';
 import { EventUrlStrategy } from '../short-url-strategies/event.strategy';
@@ -103,9 +102,7 @@ describe('ShortUrlStrategyService', () => {
 
 			const result = await service.handle(mockEditableUrlQrCode);
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockUrlStrategy.appliesTo).toHaveBeenCalledWith(mockEditableUrlQrCode.content);
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockUrlStrategy.handle).toHaveBeenCalledWith(mockEditableUrlQrCode);
 			expect(result).toEqual(mockShortUrl);
 		});
@@ -117,9 +114,8 @@ describe('ShortUrlStrategyService', () => {
 
 			const result = await service.handle(mockEventQrCode);
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockEventStrategy.appliesTo).toHaveBeenCalledWith(mockEventQrCode.content);
-			// eslint-disable-next-line @typescript-eslint/unbound-method
+
 			expect(mockEventStrategy.handle).toHaveBeenCalledWith(mockEventQrCode);
 			expect(result).toEqual(mockShortUrl);
 		});
@@ -149,9 +145,8 @@ describe('ShortUrlStrategyService', () => {
 
 			await service.handle(mockTextQrCode);
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockUrlStrategy.appliesTo).toHaveBeenCalled();
-			// eslint-disable-next-line @typescript-eslint/unbound-method
+
 			expect(mockEventStrategy.appliesTo).toHaveBeenCalled();
 		});
 
@@ -161,7 +156,6 @@ describe('ShortUrlStrategyService', () => {
 
 			await service.handle(mockEditableUrlQrCode);
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockUrlStrategy.handle).toHaveBeenCalledWith(mockEditableUrlQrCode);
 		});
 
@@ -173,9 +167,8 @@ describe('ShortUrlStrategyService', () => {
 
 			await service.handle(mockEditableUrlQrCode);
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockUrlStrategy.handle).toHaveBeenCalled();
-			// eslint-disable-next-line @typescript-eslint/unbound-method
+
 			expect(mockEventStrategy.handle).not.toHaveBeenCalled();
 		});
 	});

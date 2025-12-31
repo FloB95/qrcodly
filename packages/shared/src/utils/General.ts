@@ -129,9 +129,10 @@ export const convertQRCodeDataToStringByType = (
 	shortUrl?: string,
 ): string => {
 	switch (content.type) {
-		case 'url':
+		case 'url': {
 			const { url, isEditable } = content.data as unknown as any;
 			return shortUrl && isEditable ? shortUrl : url;
+		}
 		case 'text':
 			return content.data;
 		case 'wifi':

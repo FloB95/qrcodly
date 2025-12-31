@@ -1,10 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 import 'reflect-metadata';
 import { CreateQrCodeUseCase } from '../create-qr-code.use-case';
 import type QrCodeRepository from '../../domain/repository/qr-code.repository';
@@ -22,6 +15,7 @@ import { CreateQrCodePolicy } from '../../policies/create-qr-code.policy';
 import { UnauthorizedError } from '@/core/error/http/unauthorized.error';
 import { PlanLimitExceededError } from '@/core/error/http/plan-limit-exceeded.error';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
+import { PlanName } from '@/core/config/plan.config';
 
 // Mock UnitOfWork
 jest.mock('@/core/db/unit-of-work');
@@ -46,8 +40,8 @@ describe('CreateQrCodeUseCase', () => {
 
 	const mockUser: TUser = {
 		id: 'user-123',
-		email: 'test@example.com',
-		plan: 'free',
+		tokenType: 'session_token',
+		plan: PlanName.FREE,
 	};
 
 	const mockQrCodeDto: TCreateQrCodeDto = {
@@ -77,6 +71,7 @@ describe('CreateQrCodeUseCase', () => {
 		previewImage: null,
 		createdAt: new Date(),
 		updatedAt: new Date(),
+		shortUrl: null,
 	};
 
 	beforeEach(() => {
@@ -102,12 +97,12 @@ describe('CreateQrCodeUseCase', () => {
 
 		// Mock CreateQrCodePolicy
 		(CreateQrCodePolicy as jest.Mock).mockImplementation(() => mockPolicy);
-		mockPolicy.checkAccess.mockResolvedValue(undefined);
-		mockPolicy.incrementUsage.mockResolvedValue(undefined);
+		mockPolicy.checkAccess.mockResolvedValue(true);
+		mockPolicy.incrementUsage.mockResolvedValue();
 
 		// Default mock implementations
 		mockRepository.generateId.mockResolvedValue('qr-123');
-		mockRepository.create.mockResolvedValue(undefined);
+		mockRepository.create.mockResolvedValue();
 		mockRepository.findOneById.mockResolvedValue(mockCreatedQrCode);
 	});
 

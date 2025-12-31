@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/unbound-method */
 import 'reflect-metadata';
 import { CreateConfigTemplateUseCase } from '../create-config-template.use-case';
 import type ConfigTemplateRepository from '../../domain/repository/config-template.repository';
@@ -60,12 +56,12 @@ describe('CreateConfigTemplateUseCase', () => {
 		);
 
 		// Mock UnitOfWork
-		// eslint-disable-next-line @typescript-eslint/require-await
+
 		(UnitOfWork.run as jest.Mock).mockImplementation(async (callback: any) => callback());
 
 		// Default mocks
 		mockRepository.generateId.mockResolvedValue('template-123');
-		mockRepository.create.mockResolvedValue(undefined);
+		mockRepository.create.mockResolvedValue();
 		mockRepository.findOneById.mockResolvedValue(mockCreatedTemplate);
 	});
 
@@ -169,7 +165,7 @@ describe('CreateConfigTemplateUseCase', () => {
 		});
 
 		it('should throw error when created template cannot be retrieved', async () => {
-			// @ts-ignore
+			// @ts-ignore expecting this to test null behavior
 			mockRepository.findOneById.mockResolvedValue(null);
 
 			await expect(useCase.execute(mockDto, 'user-123')).rejects.toThrow(

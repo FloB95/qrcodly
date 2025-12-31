@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 import 'reflect-metadata';
 import { UpdateQrCodeUseCase } from '../update-qr-code.use-case';
 import type QrCodeRepository from '../../domain/repository/qr-code.repository';
@@ -72,7 +68,7 @@ describe('UpdateQrCodeUseCase', () => {
 		);
 
 		// Default mock implementations
-		mockQrCodeRepo.update.mockResolvedValue(undefined);
+		mockQrCodeRepo.update.mockResolvedValue();
 		mockQrCodeRepo.findOneById.mockResolvedValue({
 			...baseQrCode,
 			updatedAt: new Date(),
@@ -378,7 +374,7 @@ describe('UpdateQrCodeUseCase', () => {
 				name: 'Updated Name',
 				config: {
 					...QrCodeDefaults,
-					size: 500,
+					width: 500,
 				},
 			};
 

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/unbound-method */
-// @ts-nocheck
 import 'reflect-metadata';
 import { UpdateConfigTemplateUseCase } from '../update-config-template.use-case';
 import type ConfigTemplateRepository from '../../domain/repository/config-template.repository';
@@ -52,8 +49,8 @@ describe('UpdateConfigTemplateUseCase', () => {
 			mockImageService,
 		);
 
-		mockRepository.update.mockResolvedValue(undefined);
-		mockImageService.deleteImage.mockResolvedValue(undefined);
+		mockRepository.update.mockResolvedValue();
+		mockImageService.deleteImage.mockResolvedValue();
 		mockImageService.uploadImage.mockResolvedValue('https://cdn.example.com/new-image.png');
 	});
 
@@ -206,6 +203,7 @@ describe('UpdateConfigTemplateUseCase', () => {
 				...baseTemplate,
 				config: {
 					...QrCodeDefaults,
+					// @ts-ignore expecting this to test null behavior
 					image: null,
 				},
 			};
@@ -304,6 +302,7 @@ describe('UpdateConfigTemplateUseCase', () => {
 				...baseTemplate,
 				config: {
 					...QrCodeDefaults,
+					// @ts-ignore expecting this to test null behavior
 					image: null,
 				},
 				previewImage: null,

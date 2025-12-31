@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 import 'reflect-metadata';
 import { BulkImportQrCodesUseCase } from '../bulk-import-qr-codes.use-case';
 import { type CreateQrCodeUseCase } from '../create-qr-code.use-case';
@@ -13,6 +9,7 @@ import { type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity'
 import { BadRequestError } from '@/core/error/http';
 import { BulkContentTypeNotSupported } from '../../error/http/bulk-content-type-not-supported.error';
 import { BulkToManyQrCodesError } from '../../error/http/bulk-to-many-qr-codes.error';
+import { PlanName } from '@/core/config/plan.config';
 
 // Mock sleep function
 jest.mock('@/utils/general', () => ({
@@ -32,8 +29,8 @@ describe('BulkImportQrCodesUseCase', () => {
 
 	const mockUser: TUser = {
 		id: 'user-123',
-		email: 'test@example.com',
-		plan: 'free',
+		tokenType: 'session_token',
+		plan: PlanName.FREE,
 	};
 
 	const mockCreatedQrCode: TQrCodeWithRelations = {
@@ -51,6 +48,7 @@ describe('BulkImportQrCodesUseCase', () => {
 		previewImage: null,
 		createdAt: new Date(),
 		updatedAt: new Date(),
+		shortUrl: null,
 	};
 
 	beforeEach(() => {

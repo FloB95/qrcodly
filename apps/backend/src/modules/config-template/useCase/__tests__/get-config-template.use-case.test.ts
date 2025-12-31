@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-// @ts-nocheck
 import 'reflect-metadata';
 import { GetConfigTemplateUseCase } from '../get-config-template.use-case';
 import type ConfigTemplateRepository from '../../domain/repository/config-template.repository';
@@ -69,6 +64,7 @@ describe('GetConfigTemplateUseCase', () => {
 		});
 
 		it('should return null when template not found', async () => {
+			// @ts-ignore expecting this to test null behavior
 			mockRepository.findOneById.mockResolvedValue(null);
 
 			const result = await useCase.execute('non-existent');
@@ -110,6 +106,7 @@ describe('GetConfigTemplateUseCase', () => {
 				...mockTemplate,
 				config: {
 					...QrCodeDefaults,
+					// @ts-ignore expecting this to test null behavior
 					image: null,
 				},
 			};
@@ -135,6 +132,7 @@ describe('GetConfigTemplateUseCase', () => {
 		});
 
 		it('should return null preview when signed URL is null', async () => {
+			// @ts-ignore expecting this to test null behavior
 			mockImageService.getSignedUrl.mockResolvedValue(null);
 
 			const result = await useCase.execute('template-123', true);

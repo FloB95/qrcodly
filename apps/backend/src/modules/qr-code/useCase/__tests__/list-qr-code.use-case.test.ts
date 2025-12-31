@@ -1,9 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/unbound-method */
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 import 'reflect-metadata';
 import { ListQrCodesUseCase } from '../list-qr-code.use-case';
 import type QrCodeRepository from '../../domain/repository/qr-code.repository';
@@ -38,6 +32,7 @@ describe('ListQrCodesUseCase', () => {
 			createdBy: 'user-123',
 			createdAt: new Date(),
 			updatedAt: new Date(),
+			shortUrl: null,
 		},
 		{
 			id: 'qr-2',
@@ -51,6 +46,7 @@ describe('ListQrCodesUseCase', () => {
 			createdBy: 'user-123',
 			createdAt: new Date(),
 			updatedAt: new Date(),
+			shortUrl: null,
 		},
 	];
 
@@ -63,7 +59,7 @@ describe('ListQrCodesUseCase', () => {
 
 		// Default mock implementations
 		mockCache.get.mockResolvedValue(null);
-		mockCache.set.mockResolvedValue(undefined);
+		mockCache.set.mockResolvedValue();
 		// Return fresh copies to avoid mutation issues
 		mockRepository.findAll.mockImplementation(async () => JSON.parse(JSON.stringify(mockQrCodes)));
 		mockRepository.countTotal.mockResolvedValue(2);
@@ -316,6 +312,7 @@ describe('ListQrCodesUseCase', () => {
 					...mockQrCodes[1],
 					config: {
 						...QrCodeDefaults,
+						// @ts-expect-error to test null behavior
 						image: null,
 					},
 				},
@@ -333,6 +330,7 @@ describe('ListQrCodesUseCase', () => {
 		});
 
 		it('should return null preview image when signed URL is null', async () => {
+			// @ts-expect-error to test null behavior
 			mockImageService.getSignedUrl.mockResolvedValue(null);
 
 			const result = await useCase.execute({

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/unbound-method */
 import 'reflect-metadata';
 import { DeleteConfigTemplateUseCase } from '../delete-config-template.use-case';
 import type ConfigTemplateRepository from '../../domain/repository/config-template.repository';
@@ -53,7 +50,7 @@ describe('DeleteConfigTemplateUseCase', () => {
 		);
 
 		mockRepository.delete.mockResolvedValue(true);
-		mockImageService.deleteImage.mockResolvedValue(undefined);
+		mockImageService.deleteImage.mockResolvedValue();
 	});
 
 	afterEach(() => {
@@ -97,7 +94,7 @@ describe('DeleteConfigTemplateUseCase', () => {
 				},
 			};
 
-			// @ts-ignore
+			// @ts-expect-error to test null behavior
 			await useCase.execute(templateWithoutConfigImage, 'user-123');
 
 			expect(mockImageService.deleteImage).toHaveBeenCalledWith(null);

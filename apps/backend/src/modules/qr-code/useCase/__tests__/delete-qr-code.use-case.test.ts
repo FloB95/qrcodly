@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/unbound-method */
-// @ts-nocheck
 import { DeleteQrCodeUseCase } from '../delete-qr-code.use-case';
 import type QrCodeRepository from '../../domain/repository/qr-code.repository';
 import type { Logger } from '@/core/logging';
@@ -179,6 +176,8 @@ describe('DeleteQrCodeUseCase', () => {
 
 		it('should delete images before repository delete', async () => {
 			const callOrder: string[] = [];
+
+			// @ts-expect-error
 			mockImageService.deleteImage.mockImplementation(() => {
 				callOrder.push('deleteImage');
 			});

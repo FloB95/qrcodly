@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/unbound-method */
-// @ts-nocheck
 import 'reflect-metadata';
 import { ListConfigTemplatesUseCase } from '../list-config-templates.use-case';
 import type ConfigTemplateRepository from '../../domain/repository/config-template.repository';
@@ -213,6 +208,7 @@ describe('ListConfigTemplatesUseCase', () => {
 					...mockTemplates[1],
 					config: {
 						...QrCodeDefaults,
+						// @ts-ignore expecting this to test null behavior
 						image: null,
 					},
 				},
@@ -230,6 +226,7 @@ describe('ListConfigTemplatesUseCase', () => {
 		});
 
 		it('should return null preview image when signed URL is null', async () => {
+			// @ts-ignore expecting this to test null behavior
 			mockImageService.getSignedUrl.mockResolvedValue(null);
 
 			const result = await useCase.execute({

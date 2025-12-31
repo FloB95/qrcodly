@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import { DynamicQrCode } from './DynamicQrCode';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import UpdateQrCodeBtn from './UpdateQrCodeBtn';
-import type { TShortUrl } from '@shared/schemas';
 
 export const QrCodeWithUpdateBtn = () => {
 	const { id, name, config, content, shortUrl } = useQrCodeGeneratorStore((state) => state);
@@ -25,7 +24,7 @@ export const QrCodeWithUpdateBtn = () => {
 							name: name || null,
 							content,
 							config,
-							shortUrl: shortUrl as TShortUrl,
+							shortUrl: shortUrl ?? null,
 						}}
 					/>
 				</div>

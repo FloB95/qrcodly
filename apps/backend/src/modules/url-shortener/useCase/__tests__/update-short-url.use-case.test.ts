@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/unbound-method */
 // @ts-nocheck
 import { UpdateShortUrlUseCase } from '../update-short-url.use-case';
 import type ShortUrlRepository from '../../domain/repository/short-url.repository';

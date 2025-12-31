@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 import 'reflect-metadata';
 import { UrlStrategy } from '../url.strategy';
@@ -116,7 +113,6 @@ describe('UrlStrategy', () => {
 
 			await strategy.handle(mockQrCode);
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockGetReservedUseCase.execute).toHaveBeenCalledWith('user_123');
 		});
 
@@ -132,7 +128,6 @@ describe('UrlStrategy', () => {
 
 			await strategy.handle(mockQrCode);
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockUpdateUseCase.execute).toHaveBeenCalledWith(
 				mockReservedShortUrl,
 				expect.objectContaining({
@@ -150,7 +145,6 @@ describe('UrlStrategy', () => {
 
 			await strategy.handle(mockQrCode);
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockUpdateUseCase.execute).toHaveBeenCalledWith(
 				expect.anything(),
 				expect.objectContaining({
@@ -167,7 +161,6 @@ describe('UrlStrategy', () => {
 
 			await strategy.handle(mockQrCode);
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockUpdateUseCase.execute).toHaveBeenCalledWith(
 				expect.anything(),
 				expect.objectContaining({
@@ -184,7 +177,6 @@ describe('UrlStrategy', () => {
 
 			await strategy.handle(mockQrCode);
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			expect(mockUpdateUseCase.execute).toHaveBeenCalledWith(
 				expect.anything(),
 				expect.anything(),
