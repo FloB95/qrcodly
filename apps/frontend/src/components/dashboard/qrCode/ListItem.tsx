@@ -113,7 +113,7 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 				</TableCell>
 
 				{/* Content */}
-				<TableCell className="font-medium max-w-[400px] truncate">
+				<TableCell className="font-medium max-w-[300px] truncate">
 					<div className="overflow-hidden">
 						<RenderContent qr={qr} />
 					</div>

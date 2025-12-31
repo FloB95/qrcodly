@@ -68,7 +68,7 @@ export const GeneratorQrCodeDownloadBtn = ({
 
 		if (saveOnDownload && hasChanged) {
 			try {
-				await createQrCodeMutation.mutateAsync(
+				const savedQrCode = await createQrCodeMutation.mutateAsync(
 					{ name: name || null, config, content },
 					{
 						onSuccess: (data) => {
@@ -131,6 +131,12 @@ export const GeneratorQrCodeDownloadBtn = ({
 						},
 					},
 				);
+
+				// If the saved QR code has a short URL, update the instance before downloading
+				if (savedQrCode?.shortUrl) {
+					const updatedOptions = getQrCodeStylingOptions(config, content, savedQrCode.shortUrl);
+					qrCodeInstance.update(updatedOptions);
+				}
 			} catch {
 				// silent catch - error already handled in onError
 			}
