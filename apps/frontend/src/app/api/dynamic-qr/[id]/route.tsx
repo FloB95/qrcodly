@@ -1,49 +1,34 @@
-import { auth } from '@clerk/nextjs/server';
-import { apiRequest } from '@/lib/utils';
-import {
-	convertEventObjToString,
-	type TQrCodeWithRelationsResponseDto,
-	type TEventInput,
-	type TQrCodeContentType,
-} from '@shared/schemas';
 import { notFound } from 'next/navigation';
 
-export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
 	const { id } = await params;
 
-	const SUPPORTED_QR_CODE_TYPES: TQrCodeContentType[] = ['event'];
-
-	let qrCode: TQrCodeWithRelationsResponseDto | null = null;
-
 	try {
-		const { getToken } = await auth();
-		const token = await getToken();
-
-		qrCode = await apiRequest<TQrCodeWithRelationsResponseDto>(`/qr-code/${id}`, {
+		const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+		const response = await fetch(`${backendUrl}/qr-code/${id}/download`, {
 			method: 'GET',
+		});
+
+		if (!response.ok) {
+			if (response.status === 404) {
+				return notFound();
+			}
+			throw new Error(`Failed to download QR code content: ${response.statusText}`);
+		}
+
+		const content = await response.text();
+		const contentType = response.headers.get('Content-Type') || 'application/octet-stream';
+		const contentDisposition = response.headers.get('Content-Disposition') || '';
+
+		return new Response(content, {
+			status: 200,
 			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
+				'Content-Type': contentType,
+				'Content-Disposition': contentDisposition,
 			},
 		});
 	} catch (err) {
-		console.error(err);
+		console.error('Error downloading QR code content:', err);
 		return notFound();
 	}
-
-	if (!qrCode || !SUPPORTED_QR_CODE_TYPES.includes(qrCode.content.type)) {
-		return notFound();
-	}
-
-	// TODO implement service class to handle different download strategies
-	const eventData = qrCode.content.data as TEventInput;
-	const iCalString = convertEventObjToString(eventData);
-
-	return new Response(iCalString, {
-		status: 200,
-		headers: {
-			'Content-Type': 'text/calendar;charset=utf-8',
-			'Content-Disposition': `attachment; filename="${(qrCode.content.data as TEventInput).title}.ics"`,
-		},
-	});
 }

@@ -10,7 +10,6 @@ import {
 	MapPinIcon,
 	CalendarDaysIcon,
 	EnvelopeOpenIcon,
-	CheckBadgeIcon,
 } from '@heroicons/react/24/outline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UrlSection } from './UrlSection';

@@ -30,6 +30,8 @@ import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { BulkImportQrCodesUseCase } from '../../useCase/bulk-import-qr-codes.use-case';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
+import { DownloadService } from '../../service/download.service';
+import { BadRequestError } from '@/core/error/http';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -42,6 +44,7 @@ export class QrCodeController extends AbstractController {
 		private readonly bulkImportQrCodesUseCase: BulkImportQrCodesUseCase,
 		@inject(QrCodeRepository) private readonly qrCodeRepository: QrCodeRepository,
 		@inject(ImageService) private readonly imageService: ImageService,
+		@inject(DownloadService) private readonly downloadService: DownloadService,
 	) {
 		super();
 	}
@@ -261,5 +264,36 @@ export class QrCodeController extends AbstractController {
 
 		await this.deleteQrCodeUseCase.execute(qrCode, request.user.id);
 		return this.makeApiHttpResponse(200, { deleted: true });
+	}
+
+	@Get('/:id/download', {
+		authHandler: false,
+		schema: {
+			hide: true,
+		},
+	})
+	async downloadContent(
+		request: IHttpRequest<unknown, TIdRequestQueryDto, unknown, false>,
+	): Promise<IHttpResponse<string>> {
+		const { id } = request.params;
+
+		const qrCode = await this.qrCodeRepository.findOneById(id);
+		if (!qrCode) {
+			throw new QrCodeNotFoundError();
+		}
+
+		const downloadResponse = await this.downloadService.handle(qrCode);
+		if (!downloadResponse) {
+			throw new BadRequestError('This QR code type does not support downloading');
+		}
+
+		return {
+			statusCode: 200,
+			data: downloadResponse.content,
+			headers: {
+				'Content-Type': downloadResponse.contentType,
+				'Content-Disposition': `attachment; filename="${downloadResponse.filename}"`,
+			},
+		};
 	}
 }

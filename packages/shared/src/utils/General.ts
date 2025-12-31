@@ -12,7 +12,6 @@ import {
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 import ical, { ICalCalendarMethod } from 'ical-generator';
-import { TShortUrl } from '../schemas/ShortUrl';
 
 // Utility function to check if all properties of an object are undefined
 function areAllPropertiesUndefined(obj: Record<string, any>): boolean {
