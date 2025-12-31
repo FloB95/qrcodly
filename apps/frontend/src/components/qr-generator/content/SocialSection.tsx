@@ -53,7 +53,7 @@ export const SocialSection = ({ value, onChange }: SocialSectionProps) => {
 		shouldFocusError: false,
 	});
 
-	const { fields, append, remove, replace } = useFieldArray({
+	const { fields, remove, replace } = useFieldArray({
 		control: form.control,
 		name: 'links',
 	});
