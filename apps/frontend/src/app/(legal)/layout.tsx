@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { NextIntlClientProvider } from 'next-intl';
 import Footer from '@/components/Footer';
 import Container from '@/components/ui/container';
+import Providers from '@/components/provider';
 
 const openSans = Inter({
 	subsets: ['latin'],
@@ -47,11 +48,13 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
 
 			<body className={`font-sans ${openSans.variable}`}>
 				<NextIntlClientProvider>
-					<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
-						<Header hideLanguageNav />
-						<Container className="mt-22 px-6 sm:px-20 lg:px-40 mb-10">{children}</Container>
-						<Footer />
-					</main>
+					<Providers locale={'en'}>
+						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
+							<Header hideLanguageNav />
+							<Container className="mt-22 px-6 sm:px-20 lg:px-40 mb-10">{children}</Container>
+							<Footer />
+						</main>
+					</Providers>
 				</NextIntlClientProvider>
 				<Toaster />
 			</body>
