@@ -161,7 +161,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 		if (icon) {
 			void handleIconClick(icon);
 		}
-	}, [color, selectedIcon, handleIconClick, ALL_ICONS]);
+	}, [color, selectedIcon]);
 
 	/* ------------------------------------------------------------------ */
 	/* Filter                                                            */
