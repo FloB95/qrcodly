@@ -61,12 +61,12 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 		<>
 			<TableRow className={getRowClassName(isDeleting, qr.shortUrl?.isActive)}>
 				{/* QR Code Preview */}
-				<TableCell className="rounded-l-lg max-w-42.5">
+				<TableCell className="rounded-l-lg max-w-50">
 					<div className="flex space-x-8 max-w-fit">
 						<div className="ml-4 hidden sm:flex items-center">
 							<QrCodeIcon type={qr.content.type} />
 						</div>
-						<div className="h-[90px] w-[90px] overflow-hidden">
+						<div className="h-[100px] w-[100px] overflow-hidden">
 							{qr.previewImage ? (
 								<Image
 									src={qr.previewImage}
@@ -76,11 +76,7 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 									loading="lazy"
 								/>
 							) : (
-								<DynamicQrCode
-									qrCode={qr}
-									shortUrl={qr.shortUrl as TShortUrl | undefined}
-									additionalStyles="max-h-[100px] max-w-[100px]"
-								/>
+								<DynamicQrCode qrCode={qr} additionalStyles="max-h-[100px] max-w-[100px]" />
 							)}
 						</div>
 					</div>
@@ -89,7 +85,7 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 				{/* Dynamic Badge */}
 				{isDynamicQr && (
 					<TableCell>
-						<DynamicBadge />
+						<DynamicBadge className="py-1" />
 					</TableCell>
 				)}
 
