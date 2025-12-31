@@ -61,9 +61,9 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 		<>
 			<TableRow className={getRowClassName(isDeleting, qr.shortUrl?.isActive)}>
 				{/* QR Code Preview */}
-				<TableCell className="rounded-l-lg max-w-50">
-					<div className="flex space-x-8 max-w-fit">
-						<div className="ml-4 hidden sm:flex items-center">
+				<TableCell className="rounded-l-lg max-w-50 pr-2">
+					<div className="flex space-x-2 max-w-fit">
+						<div className="ml-2 hidden sm:flex items-center">
 							<QrCodeIcon type={qr.content.type} />
 						</div>
 						<div className="h-[100px] w-[100px] overflow-hidden">
@@ -114,7 +114,9 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 
 				{/* Content */}
 				<TableCell className="font-medium max-w-[400px] truncate">
-					<RenderContent qr={qr} />
+					<div className="overflow-hidden">
+						<RenderContent qr={qr} />
+					</div>
 				</TableCell>
 
 				{/* Status Badge */}
