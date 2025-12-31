@@ -6,7 +6,7 @@ import { Button, buttonVariants } from '../ui/button';
 import { ShareIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 import { DynamicQrCode } from '../qr-generator/DynamicQrCode';
-import QrCodeDownloadBtn from '../qr-generator/QrCodeDownloadBtn';
+import { SavedQrCodeDownloadBtn } from '../qr-generator/download-buttons';
 import { AnalyticsSection } from './analytics/AnalyticsSection';
 import type { TQrCodeWithRelationsResponseDto, TShortUrl } from '@shared/schemas';
 import { UrlContent } from './content/Url';
@@ -173,14 +173,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 								)}
 							</div>
 							<div className="mt-6 flex justify-center lg:space-x-2 flex-col space-y-2 lg:space-y-0 lg:flex-row lg:justify-between">
-								<QrCodeDownloadBtn
-									qrCode={{
-										name: qrCode.name,
-										content: qrCode.content,
-										config: qrCode.config,
-									}}
-									saveOnDownload={false}
-								/>
+								<SavedQrCodeDownloadBtn qrCode={qrCode} />
 							</div>
 						</Suspense>
 					</div>

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { DynamicQrCode } from './DynamicQrCode';
 import QrCodeSaveTemplateBtn from './templates/SaveTemplateBtn';
-import QrCodeDownloadBtn from './QrCodeDownloadBtn';
+import { GeneratorQrCodeDownloadBtn } from './download-buttons';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import SaveQrCodeBtn from './SaveQrCodeBtn';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
@@ -23,14 +23,7 @@ export const QrCodeWithDownloadBtn = () => {
 				</div>
 				{!bulkMode.isBulkMode && (
 					<div className="mt-4 flex justify-center flex-col space-y-2 mb-3">
-						<QrCodeDownloadBtn
-							qrCode={{
-								name: null,
-								content,
-								config,
-							}}
-							saveOnDownload={true}
-						/>
+						<GeneratorQrCodeDownloadBtn saveOnDownload={true} />
 						<SaveQrCodeBtn
 							qrCode={{
 								name: null,

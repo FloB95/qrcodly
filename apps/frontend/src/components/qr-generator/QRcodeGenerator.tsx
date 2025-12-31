@@ -69,15 +69,28 @@ export const QRcodeGenerator = ({
 	const t = useTranslations('generator');
 	const { name, updateName } = useQrCodeGeneratorStore((state) => state);
 	const [currentTab, setCurrentTab] = useState<GeneratorTab>('content');
-	// const [currentTab, setCurrentTab] = useState('qrCodeContent');
 
 	const visibleTabs = useMemo(
 		() => GENERATOR_TABS.filter((t) => !hiddenTabs.includes(t.type)),
 		[hiddenTabs],
 	);
 
-	const GridCols = `grid-cols-${visibleTabs.length}` as const;
+	// Map visible tab count to actual Tailwind grid-cols classes
+	// Tailwind needs full class names at build time, can't use dynamic strings
+	const getGridColsClass = (count: number): string => {
+		switch (count) {
+			case 1:
+				return 'grid-cols-1';
+			case 2:
+				return 'grid-cols-2';
+			case 3:
+				return 'grid-cols-3';
+			default:
+				return 'grid-cols-3';
+		}
+	};
 
+	const gridColsClass = getGridColsClass(visibleTabs.length);
 	const QrOutputComponent = QR_OUTPUT_MAP[generatorType];
 
 	return (
@@ -86,7 +99,9 @@ export const QRcodeGenerator = ({
 			onValueChange={(v) => setCurrentTab(v as GeneratorTab)}
 			value={currentTab}
 		>
-			<TabsList className={`mx-auto grid h-auto max-w-[450px] ${GridCols} bg-white p-2 shadow`}>
+			<TabsList
+				className={`mx-auto grid h-auto max-w-[450px] ${gridColsClass} bg-white p-2 shadow`}
+			>
 				{visibleTabs.map(({ type, labelKey, icon: Icon }) => (
 					<TabsTrigger key={type} value={type} className="data-[state=active]:bg-gray-200">
 						<div className="flex items-center gap-2">

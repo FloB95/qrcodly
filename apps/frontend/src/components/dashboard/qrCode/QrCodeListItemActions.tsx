@@ -22,7 +22,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import QrCodeDownloadBtn from '@/components/qr-generator/QrCodeDownloadBtn';
+import { SavedQrCodeDownloadBtn } from '@/components/qr-generator/download-buttons';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 
 interface QrCodeListItemActionsProps {
@@ -85,7 +85,7 @@ export const QrCodeListItemActions = ({
 						e.stopPropagation();
 					}}
 				>
-					<QrCodeDownloadBtn qrCode={qr} noStyling />
+					<SavedQrCodeDownloadBtn qrCode={qr} noStyling />
 				</DropdownMenuItem>
 
 				{qr.shortUrl && (
