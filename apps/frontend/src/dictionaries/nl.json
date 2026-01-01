@@ -18,7 +18,7 @@
 		"newBadge": "Nieuw!",
 		"dynamicDescription": "Dynamische QR-codes kunnen ook na creatie worden aangepast. De QR-code zelf blijft hetzelfde, maar het doel, de inhoud of de doorverwijzing kan op elk moment worden bijgewerkt – zonder de code opnieuw te hoeven afdrukken of verspreiden."
 	},
-	"headline": "<span class=\"text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
+	"headline": "<span class=\"text-xl xs:text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
 		"title": "QRcodly - Gratis QR-codegenerator",
 		"description": "Gratis QR-codes maken met logo, eigen ontwerp of sjablonen – ideaal voor marketing, visitekaartjes & meer. Gebruik nu de QR-codegenerator!",

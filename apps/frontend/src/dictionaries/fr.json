@@ -18,7 +18,7 @@
 		"newBadge": "Nouveau !",
 		"dynamicDescription": "Les QR codes dynamiques peuvent être modifiés même après leur création. Le QR code lui-même reste le même, mais la destination, le contenu ou la redirection peuvent être mis à jour à tout moment – sans avoir besoin de réimprimer ou de redistribuer le code."
 	},
-	"headline": "<span class=\"text-2xl\">Générateur de Code QR</span> <br /> Gratuit et Open Source",
+	"headline": "<span class=\"text-xl xs:text-2xl\">Générateur de Code QR</span> <br /> Gratuit et Open Source",
 	"metadata": {
 		"title": "QRcodly - Générateur de Code QR Gratuit",
 		"description": "Créez des QR codes gratuits avec logo, design perso ou modèles – idéal pour marketing, cartes de visite & plus. Utilisez le générateur QR !",

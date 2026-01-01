@@ -18,7 +18,7 @@ export default async function Page({ params }: DefaultPageParams) {
 
 			<div>
 				<Container>
-					<h1 className="mt-12 mb-14 text-center text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+					<h1 className="mt-12 mb-14 text-center text-3xl xs:text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
 						<div dangerouslySetInnerHTML={{ __html: String(t.raw('headline')) }} />
 					</h1>
 					<div className="mb-2">
