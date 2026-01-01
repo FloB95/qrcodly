@@ -38,3 +38,21 @@ export const AnalyticsCard = ({ data, title }: AnalyticsCardProps) => {
 		</Card>
 	);
 };
+
+export const AnalyticsCardSkeleton = () => {
+	return (
+		<Card className="gap-0 h-full">
+			<CardHeader>
+				<div className="h-6 w-32 bg-muted animate-pulse rounded" />
+			</CardHeader>
+			<CardContent className="space-y-3">
+				{[...Array(5)].map((_, i) => (
+					<div key={i} className="flex justify-between items-center">
+						<div className="h-4 w-24 bg-muted animate-pulse rounded" />
+						<div className="h-4 w-20 bg-muted animate-pulse rounded" />
+					</div>
+				))}
+			</CardContent>
+		</Card>
+	);
+};

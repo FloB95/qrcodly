@@ -1,13 +1,11 @@
 'use client';
 
 import { useGetAnalyticsFromShortCodeQuery } from '@/lib/api/url-shortener';
-import { BarChartCardSkeleton } from './BarChartCard';
-import type { ChartConfig } from '@/components/ui/chart';
 import { useLocale, useTranslations } from 'next-intl';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon } from '@heroicons/react/24/solid';
 import { getName } from 'i18n-iso-countries';
-import { AnalyticsCard } from './AnalyticsCard';
+import { AnalyticsCard, AnalyticsCardSkeleton } from './AnalyticsCard';
 
 export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 	const locale = useLocale();
@@ -20,21 +18,17 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 			percentage: total > 0 ? ((item.count / total) * 100).toFixed(0) + '%' : '0%',
 		}));
 
-		const config: ChartConfig = {
-			data: { label: t('chart.visitors') },
-			...Object.fromEntries(metrics.map((item) => [item.label, { label: item.label }])),
-		};
-
-		return { data, config, title };
+		return { data, title };
 	};
 	const { isLoading, data } = useGetAnalyticsFromShortCodeQuery(shortCode);
 
 	if (isLoading || !data) {
 		return (
 			<div className="grid flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 lg:grid-cols-3 pb-3">
-				<BarChartCardSkeleton />
-				<BarChartCardSkeleton />
-				<BarChartCardSkeleton />
+				<AnalyticsCardSkeleton />
+				<AnalyticsCardSkeleton />
+				<AnalyticsCardSkeleton />
+				<AnalyticsCardSkeleton />
 			</div>
 		);
 	}

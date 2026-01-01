@@ -254,11 +254,12 @@ function mapColorOrGradientToLibrary(option: TColorOrGradient): {
 } {
 	switch (option.type) {
 		case 'hex':
-			return { color: option.value };
+			return { color: option.value, gradient: undefined };
 		case 'rgba':
-			return { color: option.value };
+			return { color: option.value, gradient: undefined };
 		case 'gradient':
 			return {
+				color: undefined,
 				gradient: {
 					type: option.gradientType,
 					colorStops: option.colorStops,
