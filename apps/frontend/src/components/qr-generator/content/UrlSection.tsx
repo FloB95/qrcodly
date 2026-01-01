@@ -99,6 +99,13 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		setHasMounted(true);
 	}, []);
 
+	// auto check statistics if user is signed in
+	useEffect(() => {
+		if (hasMounted && isSignedIn && form.getValues().isEditable === false) {
+			form.setValue('isEditable', true);
+		}
+	}, [isSignedIn, shortUrl]);
+
 	return (
 		<>
 			<Form {...form}>

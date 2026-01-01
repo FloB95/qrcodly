@@ -24,7 +24,7 @@ export const LanguageNav = () => {
 	}).sort((a, b) => a.lang.localeCompare(b.lang));
 
 	return (
-		<>
+		<div suppressHydrationWarning>
 			<div className="flex-col justify-center hidden sm:flex ">
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
@@ -60,6 +60,6 @@ export const LanguageNav = () => {
 					</Link>
 				))}
 			</div>
-		</>
+		</div>
 	);
 };
