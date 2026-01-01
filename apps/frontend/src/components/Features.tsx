@@ -21,7 +21,7 @@ export const Features = () => {
 
 			<div className="mt-12 sm:mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 				<div className="md:col-span-2 lg:col-start-2 ">
-					<div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md relative">
+					<div className="flex flex-col items-center rounded-2xl bg-white p-6 text-center relative">
 						<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
 							<ShieldCheckIcon className="h-8 w-8" />
 						</div>
@@ -31,28 +31,28 @@ export const Features = () => {
 				</div>
 			</div>
 			<div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-				<div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+				<div className="flex flex-col items-center rounded-2xl bg-white p-6 text-center">
 					<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
 						<QrCodeIcon className="h-8 w-8" />
 					</div>
 					<h3 className="mb-3 text-xl font-bold text-gray-900">{t('editFeature.headline')}</h3>
 					<p className="text-gray-600">{t('editFeature.subHeadline')}</p>
 				</div>
-				<div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+				<div className="flex flex-col items-center rounded-2xl bg-white p-6 text-center">
 					<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
 						<ChartBarIcon className="h-8 w-8" />
 					</div>
 					<h3 className="mb-3 text-xl font-bold text-gray-900">{t('statisticFeature.headline')}</h3>
 					<p className="text-gray-600">{t('statisticFeature.subHeadline')}</p>
 				</div>
-				<div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+				<div className="flex flex-col items-center rounded-2xl bg-white p-6 text-center">
 					<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
 						<RectangleStackIcon className="h-8 w-8" />
 					</div>
 					<h3 className="mb-3 text-xl font-bold text-gray-900">{t('overviewFeature.headline')}</h3>
 					<p className="text-gray-600">{t('overviewFeature.subHeadline')}</p>
 				</div>
-				<div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md">
+				<div className="flex flex-col items-center rounded-2xl bg-white p-6 text-center">
 					<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
 						<StarIcon className="h-8 w-8" />
 					</div>
@@ -63,7 +63,7 @@ export const Features = () => {
 
 			<div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 				<div className="md:col-span-2 lg:col-start-2">
-					<div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-md relative">
+					<div className="flex flex-col items-center rounded-2xl bg-white p-6 text-center relative">
 						<Badge className="absolute right-4 top-4">{t2('comingSoon')}</Badge>
 						<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-black text-white">
 							<UserGroupIcon className="h-8 w-8" />

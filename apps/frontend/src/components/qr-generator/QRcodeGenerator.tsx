@@ -99,9 +99,7 @@ export const QRcodeGenerator = ({
 			onValueChange={(v) => setCurrentTab(v as GeneratorTab)}
 			value={currentTab}
 		>
-			<TabsList
-				className={`mx-auto grid h-auto max-w-[450px] ${gridColsClass} bg-white p-2 shadow`}
-			>
+			<TabsList className={`mx-auto grid h-auto max-w-[450px] ${gridColsClass} bg-white p-2`}>
 				{visibleTabs.map(({ type, labelKey, icon: Icon }) => (
 					<TabsTrigger key={type} value={type} className="data-[state=active]:bg-gray-200">
 						<div className="flex items-center gap-2">
@@ -113,7 +111,7 @@ export const QRcodeGenerator = ({
 			</TabsList>
 
 			<div className="mt-4 flex">
-				<div className="mx-auto flex min-h-[500px] max-w-[1200px] flex-1 rounded-lg bg-white shadow relative">
+				<div className="mx-auto flex min-h-[500px] max-w-[1200px] flex-1 rounded-2xl bg-white relative">
 					{backLink}
 					<div className="flex flex-1 flex-col p-6 md:flex-row md:gap-12">
 						<div className="flex-1">
