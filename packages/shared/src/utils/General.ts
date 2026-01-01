@@ -107,7 +107,6 @@ export const convertEventObjToString = (event: TEventInput) => {
 export const convertLocationObjToString = (location: TLocationInput) => {
 	const { latitude, longitude, address } = location;
 	if (!latitude || !longitude) return '';
-	console.log(latitude, longitude);
 
 	const query = encodeURIComponent(address ?? '');
 	return `geo:${latitude},${longitude}?q=${query}`;
@@ -263,7 +262,7 @@ function mapColorOrGradientToLibrary(option: TColorOrGradient): {
 				gradient: {
 					type: option.gradientType,
 					colorStops: option.colorStops,
-					rotation: (option.rotation - 90 + 360) % 360,
+					rotation: option.rotation ? (option.rotation - 90 + 360) % 360 : undefined,
 				},
 			};
 	}

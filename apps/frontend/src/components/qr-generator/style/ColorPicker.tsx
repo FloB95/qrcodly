@@ -126,7 +126,12 @@ export function ColorPicker({ defaultColor, onChange, withGradient = true }: Col
 					height={150}
 					value={color}
 					onChange={(b) => {
-						if (/gradient\(/.test(b) && !/\d+deg/.test(b)) b = b.replace('(', '(0deg, ');
+						// add rotation of none
+						if (b.startsWith('linear-gradient(deg') || b.startsWith('radial-gradient(deg')) {
+							b = b.replace(/(linear-gradient|radial-gradient)\((?!\d+deg)/, '$1(0deg,');
+							b = b.replace(/,deg,/, ',');
+						}
+
 						setColor(b);
 						const gradientObject = getGradientObject(b);
 						if (gradientObject?.isGradient && gradientObject.colors?.length > 2) {

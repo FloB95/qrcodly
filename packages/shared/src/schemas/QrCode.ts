@@ -181,7 +181,7 @@ export type TFileExtension = z.infer<typeof FileExtension>;
 export const Gradient = z.object({
 	type: z.literal('gradient'),
 	gradientType: z.enum(['radial', 'linear']),
-	rotation: z.number(),
+	rotation: z.number().nullable(),
 	colorStops: z
 		.array(
 			z.object({
