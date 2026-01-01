@@ -1,35 +1,25 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import ReactColorPicker, { useColorPicker } from 'react-best-gradient-color-picker';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { useMemo } from 'react';
+import ReactColorPicker from 'react-best-gradient-color-picker';
+import {
+	Dialog,
+	DialogContent,
+	DialogTrigger,
+	DialogDescription,
+	DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { PaintBrushIcon } from '@heroicons/react/24/outline';
-import { cn, rgbaToHex } from '@/lib/utils';
-import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
+import { cn } from '@/lib/utils';
 import type { TColorOrGradient } from '@shared/schemas';
-
-const solidPresets = [
-	'#000000',
-	'#ffa647',
-	'#ffe83f',
-	'#9fff5b',
-	'#70e2ff',
-	'#cd93ff',
-	'#09203f',
-	'#133337',
-	'#DFFF00',
-	'#cc0000',
-	'#FFBF00',
-	'#FF7F50',
-	'#DE3163',
-	'#9FE2BF',
-	'#40E0D0',
-	'#6495ED',
-	'#CCCCFF',
-	'#990000',
-];
+import { colorToButtonText, pickerStringToColorType } from '@/lib/color-picker.utils';
+import { useColorPickerState } from '@/hooks/use-color-picker-state';
+import {
+	SOLID_COLOR_PRESETS,
+	DEFAULT_GRADIENT,
+	COLOR_PICKER_CONFIG,
+} from './ColorPicker.constants';
 
 interface ColorPickerProps {
 	defaultColor?: TColorOrGradient;
@@ -37,56 +27,33 @@ interface ColorPickerProps {
 	withGradient?: boolean;
 }
 
-const backgroundToButtonText = (color: TColorOrGradient): string => {
-	switch (color.type) {
-		case 'hex':
-		case 'rgba':
-			return color.value;
-		case 'gradient':
-			return color.colorStops.map((stop) => stop.color).join(' -> ');
-	}
-};
-
-const fromColorType = (color: TColorOrGradient): string => {
-	switch (color.type) {
-		case 'hex':
-		case 'rgba':
-			return color.value;
-		case 'gradient':
-			const gradientType = color.gradientType === 'linear' ? 'linear-gradient' : 'radial-gradient';
-			const colorStops = color.colorStops
-				.map((stop) => `${stop.color} ${stop.offset * 100}%`)
-				.join(', ');
-			return `${gradientType}(${color.rotation}deg, ${colorStops})`;
-	}
-};
-
-const toColorType = (color: string, getGradientObject: any): TColorOrGradient => {
-	const gradientObject = getGradientObject(color);
-	if (gradientObject?.isGradient) {
-		return {
-			type: 'gradient',
-			gradientType: gradientObject.gradientType === 'linear-gradient' ? 'linear' : 'radial',
-			rotation: gradientObject.degrees ? parseFloat(gradientObject.degrees) : 0,
-			colorStops: (gradientObject.colors as { value: string; left: number }[]).map((stop) => ({
-				offset: stop.left / 100,
-				color: rgbaToHex(stop.value, true),
-			})),
-		};
-	}
-
-	if (color.startsWith('#')) return { type: 'hex', value: color };
-	return { type: 'rgba', value: color };
-};
-
+/**
+ * ColorPicker Component
+ *
+ * @param defaultColor - Initial color value
+ * @param onChange - Callback when color changes (debounced)
+ * @param withGradient - Whether to show gradient controls (default: true)
+ *
+ * @example
+ * ```tsx
+ * <ColorPicker
+ *   defaultColor={{ type: 'hex', value: '#ff0000' }}
+ *   onChange={(color) => console.log(color)}
+ *   withGradient={true}
+ * />
+ * ```
+ */
 export function ColorPicker({ defaultColor, onChange, withGradient = true }: ColorPickerProps) {
-	const [color, setColor] = useState(defaultColor ? fromColorType(defaultColor) : '#000000');
-	const { getGradientObject, deletePoint } = useColorPicker(color, setColor);
-	const [debouncedColor] = useDebouncedValue(color, 200);
+	const { color, getGradientObject, handleColorChange } = useColorPickerState({
+		defaultColor,
+		onChange,
+	});
 
-	useEffect(() => {
-		onChange(toColorType(debouncedColor, getGradientObject));
-	}, [debouncedColor]);
+	const buttonText = useMemo(() => {
+		if (!color) return 'Pick a color';
+		const colorObject = pickerStringToColorType(color, getGradientObject);
+		return colorToButtonText(colorObject);
+	}, [color]);
 
 	return (
 		<Dialog>
@@ -95,49 +62,33 @@ export function ColorPicker({ defaultColor, onChange, withGradient = true }: Col
 					<div className="flex w-full items-center gap-2">
 						{color ? (
 							<div
-								className="h-4 w-4 rounded !bg-cover !bg-center transition-all"
+								className="h-4 w-4 rounded bg-cover! bg-center! transition-all"
 								style={{ background: color }}
 							/>
 						) : (
 							<PaintBrushIcon className="h-4 w-4" />
 						)}
-						<div className="flex-1 truncate">
-							{color
-								? backgroundToButtonText(toColorType(color, getGradientObject))
-								: 'Pick a color'}
-						</div>
+						<div className="flex-1 truncate">{buttonText}</div>
 					</div>
 				</Button>
 			</DialogTrigger>
-			<DialogContent style={{ width: '320px' }}>
+			<DialogContent style={{ width: `${COLOR_PICKER_CONFIG.DIALOG_WIDTH}px` }}>
 				<DialogTitle hidden>Color Picker</DialogTitle>
 				<DialogDescription hidden aria-hidden="true">
 					Use the color picker dialog to select a color or gradient for the background.
 				</DialogDescription>
 				<ReactColorPicker
-					config={{ defaultGradient: 'linear-gradient(90deg, #ffa647 0%, #cd93ff 100%)' }}
-					presets={solidPresets}
+					config={{ defaultGradient: DEFAULT_GRADIENT }}
+					presets={SOLID_COLOR_PRESETS}
 					hideControls={!withGradient}
 					disableDarkMode
 					hideGradientStop
 					hideColorGuide
 					hideAdvancedSliders
-					width={270}
-					height={150}
+					width={COLOR_PICKER_CONFIG.PICKER_WIDTH}
+					height={COLOR_PICKER_CONFIG.PICKER_HEIGHT}
 					value={color}
-					onChange={(b) => {
-						// add rotation of none
-						if (b.startsWith('linear-gradient(deg') || b.startsWith('radial-gradient(deg')) {
-							b = b.replace(/(linear-gradient|radial-gradient)\((?!\d+deg)/, '$1(0deg,');
-							b = b.replace(/,deg,/, ',');
-						}
-
-						setColor(b);
-						const gradientObject = getGradientObject(b);
-						if (gradientObject?.isGradient && gradientObject.colors?.length > 2) {
-							deletePoint(1);
-						}
-					}}
+					onChange={handleColorChange}
 				/>
 			</DialogContent>
 		</Dialog>

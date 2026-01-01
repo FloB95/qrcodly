@@ -5,6 +5,7 @@ import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { DetailPageContent } from '@/components/qr-code-detail/DetailPageContent';
 import { Cta } from '@/components/Cta';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
+import Container from '@/components/ui/container';
 
 interface QRCodeDetailProps {
 	params: Promise<{
@@ -55,7 +56,9 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 			}}
 		>
 			<DetailPageContent qrCode={qrCode} />
-			<Cta />
+			<Container className="mt-16">
+				<Cta />
+			</Container>
 		</QrCodeGeneratorStoreProvider>
 	);
 }
