@@ -19,7 +19,7 @@ export default function FAQSection() {
 			itemType="https://schema.org/FAQPage"
 			className="mx-auto mt-24 mb-10 text-center sm:mt-50 sm:mb-28"
 		>
-			<h2 className="text-2xl md:text-4xl font-medium mt-3 leading-[1.2] text-slate-800">
+			<h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-5 lg:mb-10">
 				{t('headline')}
 			</h2>
 			<Accordion type="single" collapsible defaultValue="item-1">

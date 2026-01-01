@@ -43,9 +43,9 @@ const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 };
 
 const getRowClassName = (isDeleting: boolean, isActive: boolean | undefined) => {
-	if (isDeleting) return 'rounded-lg shadow !bg-muted/70';
-	if (isActive === false) return 'rounded-lg shadow !bg-muted';
-	return 'rounded-lg shadow bg-white';
+	if (isDeleting) return 'rounded-2xl !bg-muted/70';
+	if (isActive === false) return 'rounded-2xl !bg-muted';
+	return 'rounded-2xl from-white to-white/70 bg-gradient-to-br';
 };
 
 export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {

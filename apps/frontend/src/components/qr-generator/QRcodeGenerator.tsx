@@ -111,7 +111,7 @@ export const QRcodeGenerator = ({
 			</TabsList>
 
 			<div className="mt-4 flex">
-				<div className="mx-auto flex min-h-[500px] max-w-[1200px] flex-1 rounded-2xl bg-white relative">
+				<div className="mx-auto flex min-h-[500px] max-w-[1200px] flex-1 rounded-2xl from-white to-white/60 bg-gradient-to-br relative">
 					{backLink}
 					<div className="flex flex-1 flex-col p-6 md:flex-row md:gap-12">
 						<div className="flex-1">
