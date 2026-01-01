@@ -33,7 +33,8 @@
 		"subHeadline": "Hier findest du all deine QR-Codes und Vorlagen und kannst sie bearbeiten oder löschen.",
 		"tabQrCode": "QR Codes",
 		"tabTemplates": "Vorlagen",
-		"addQrCodeBtn": "QR Code hinzufügen"
+		"addQrCodeBtn": "QR Code hinzufügen",
+		"bulkImportLabel": "Inhaltstyp auswählen"
 	},
 	"analytics": {
 		"totalViews": "Anzahl der Aufrufe",

@@ -33,7 +33,8 @@
 		"subHeadline": "Здесь вы можете найти все свои QR-коды и шаблоны и управлять ими.",
 		"tabQrCode": "QR-коды",
 		"tabTemplates": "Шаблоны",
-		"addQrCodeBtn": "Добавить QR-код"
+		"addQrCodeBtn": "Добавить QR-код",
+		"bulkImportLabel": "Выберите тип контента"
 	},
 	"analytics": {
 		"totalViews": "Количество просмотров",

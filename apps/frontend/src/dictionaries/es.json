@@ -33,7 +33,8 @@
 		"subHeadline": "Aquí puedes encontrar todos tus códigos QR y plantillas y gestionarlos.",
 		"tabQrCode": "Códigos QR",
 		"tabTemplates": "Plantillas",
-		"addQrCodeBtn": "Agregar código QR"
+		"addQrCodeBtn": "Agregar código QR",
+		"bulkImportLabel": "Seleccionar tipo de contenido"
 	},
 	"analytics": {
 		"totalViews": "Número de visitas",

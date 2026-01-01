@@ -33,7 +33,8 @@
 		"subHeadline": "Tutaj znajdziesz wszystkie swoje kody QR i szablony i możesz nimi zarządzać.",
 		"tabQrCode": "Kody QR",
 		"tabTemplates": "Szablony",
-		"addQrCodeBtn": "Dodaj kod QR"
+		"addQrCodeBtn": "Dodaj kod QR",
+		"bulkImportLabel": "Wybierz typ treści"
 	},
 	"analytics": {
 		"totalViews": "Liczba wyświetleń",

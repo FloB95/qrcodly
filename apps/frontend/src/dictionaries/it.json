@@ -33,7 +33,8 @@
 		"subHeadline": "Qui puoi trovare tutti i tuoi codici QR e modelli e gestirli.",
 		"tabQrCode": "QR Code",
 		"tabTemplates": "Modelli",
-		"addQrCodeBtn": "Aggiungi QR Code"
+		"addQrCodeBtn": "Aggiungi QR Code",
+		"bulkImportLabel": "Seleziona tipo di contenuto"
 	},
 	"analytics": {
 		"totalViews": "Numero di visualizzazioni",

@@ -33,7 +33,8 @@
 		"subHeadline": "Hier vind je al je QR-codes en sjablonen en kun je ze beheren.",
 		"tabQrCode": "QR-codes",
 		"tabTemplates": "Sjablonen",
-		"addQrCodeBtn": "QR-code toevoegen"
+		"addQrCodeBtn": "QR-code toevoegen",
+		"bulkImportLabel": "Selecteer inhoudstype"
 	},
 	"analytics": {
 		"totalViews": "Aantal weergaven",

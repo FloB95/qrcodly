@@ -1,16 +1,7 @@
 'use client';
 
 import { Button, buttonVariants } from '@/components/ui/button';
-import {
-	DocumentTextIcon,
-	LinkIcon,
-	WifiIcon,
-	IdentificationIcon,
-	DocumentArrowUpIcon,
-	MapPinIcon,
-	CalendarDaysIcon,
-	EnvelopeOpenIcon,
-} from '@heroicons/react/24/outline';
+import { DocumentArrowUpIcon } from '@heroicons/react/24/outline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UrlSection } from './UrlSection';
 import { TextSection } from './TextSection';
@@ -25,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { EmailSection } from './EmailSection';
 import { LocationSection } from './LocationSection';
 import { EventSection } from './EventSection';
+import { CONTENT_TYPE_CONFIGS } from '@/lib/content-type.config';
 
 type ContentSwitchProps = {
 	hiddenTabs?: TQrCodeContentType[];
@@ -36,7 +28,7 @@ type TabConfig<T extends TQrCodeContentType = TQrCodeContentType> = {
 	label: string;
 	icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 	hidden?: boolean;
-	enableBulk?: boolean;
+	enableBulk: boolean;
 	render: (props: {
 		value: any;
 		onChange: (v: any) => void;
@@ -44,62 +36,33 @@ type TabConfig<T extends TQrCodeContentType = TQrCodeContentType> = {
 	}) => React.ReactNode;
 };
 
-const TABS: TabConfig[] = [
-	{
-		type: 'url',
-		label: 'url',
-		icon: LinkIcon,
-		enableBulk: true,
-		render: ({ value, onChange, isEditMode }) =>
-			isEditMode ? (
-				<EditUrlSection value={value} onChange={onChange} />
-			) : (
-				<UrlSection value={value} onChange={onChange} />
-			),
+const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({
+	...config,
+	render: ({ value, onChange, isEditMode }) => {
+		switch (config.type) {
+			case 'url':
+				return isEditMode ? (
+					<EditUrlSection value={value} onChange={onChange} />
+				) : (
+					<UrlSection value={value} onChange={onChange} />
+				);
+			case 'text':
+				return <TextSection value={value} onChange={onChange} />;
+			case 'wifi':
+				return <WiFiSection value={value} onChange={onChange} />;
+			case 'vCard':
+				return <VCardSection value={value} onChange={onChange} />;
+			case 'email':
+				return <EmailSection value={value} onChange={onChange} />;
+			case 'location':
+				return <LocationSection value={value} onChange={onChange} />;
+			case 'event':
+				return <EventSection value={value} onChange={onChange} />;
+			default:
+				return null;
+		}
 	},
-	{
-		type: 'text',
-		label: 'text',
-		icon: DocumentTextIcon,
-		enableBulk: true,
-		render: ({ value, onChange }) => <TextSection value={value} onChange={onChange} />,
-	},
-	{
-		type: 'wifi',
-		label: 'wifi',
-		icon: WifiIcon,
-		enableBulk: true,
-		render: ({ value, onChange }) => <WiFiSection value={value} onChange={onChange} />,
-	},
-	{
-		type: 'vCard',
-		label: 'vCard',
-		icon: IdentificationIcon,
-		enableBulk: true,
-		render: ({ value, onChange }) => <VCardSection value={value} onChange={onChange} />,
-	},
-	{
-		type: 'email',
-		label: 'email',
-		icon: EnvelopeOpenIcon,
-		enableBulk: false,
-		render: ({ value, onChange }) => <EmailSection value={value} onChange={onChange} />,
-	},
-	{
-		type: 'location',
-		label: 'location',
-		icon: MapPinIcon,
-		enableBulk: false,
-		render: ({ value, onChange }) => <LocationSection value={value} onChange={onChange} />,
-	},
-	{
-		type: 'event',
-		label: 'event',
-		icon: CalendarDaysIcon,
-		enableBulk: false,
-		render: ({ value, onChange }) => <EventSection value={value} onChange={onChange} />,
-	},
-];
+}));
 
 export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProps) => {
 	const t = useTranslations('generator.contentSwitch');

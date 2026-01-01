@@ -22,9 +22,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 type BulkImportProps = {
 	contentType: TQrCodeContentType;
+	onComplete?: () => void;
 };
 
-export const BulkImport = ({ contentType }: BulkImportProps) => {
+export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [isUploaded, setIsUploaded] = useState(false);
@@ -144,7 +145,13 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 							<Link href="/collection" className={buttonVariants()}>
 								{t('general.toCollection')}
 							</Link>
-							<Button variant="outlineStrong" onClick={() => updateBulkMode(false, undefined)}>
+							<Button
+								variant="outlineStrong"
+								onClick={() => {
+									updateBulkMode(false, undefined);
+									onComplete?.();
+								}}
+							>
 								{t('general.back')}
 							</Button>
 						</div>
@@ -228,7 +235,13 @@ export const BulkImport = ({ contentType }: BulkImportProps) => {
 							>
 								{t('generator.bulkImport.createButton')}
 							</Button>
-							<Button variant="outlineStrong" onClick={() => updateBulkMode(false, undefined)}>
+							<Button
+								variant="outlineStrong"
+								onClick={() => {
+									updateBulkMode(false, undefined);
+									onComplete?.();
+								}}
+							>
 								{t('general.back')}
 							</Button>
 						</div>

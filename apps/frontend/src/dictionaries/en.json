@@ -33,7 +33,8 @@
 		"subHeadline": "Here you can find all your QR codes and templates and manage them.",
 		"tabQrCode": "QR codes",
 		"tabTemplates": "Templates",
-		"addQrCodeBtn": "Add QR code"
+		"addQrCodeBtn": "Add QR code",
+		"bulkImportLabel": "Select Content Type"
 	},
 	"analytics": {
 		"totalViews": "Total Views",
