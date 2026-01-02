@@ -192,6 +192,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
 						className="w-full rounded border p-2"
+						autoFocus={false}
 					/>
 
 					<ColorPicker

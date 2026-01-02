@@ -23,32 +23,40 @@ export const WifiInputSchema = z.object({
 });
 export type TWifiInput = z.infer<typeof WifiInputSchema>;
 
-export const VCardInputSchema = z.object({
-	firstName: emptyStringToUndefined(z.string().max(64).optional()),
-	lastName: emptyStringToUndefined(z.string().max(64).optional()),
-	email: emptyStringToUndefined(z.email().max(100).optional()),
-	phone: emptyStringToUndefined(
-		z
-			.string()
-			.regex(/^\+?\d{1,4}\d{6,15}$/)
-			.optional(),
-	),
-	fax: emptyStringToUndefined(
-		z
-			.string()
-			.regex(/^\+?\d{1,4}\d{6,15}$/)
-			.optional(),
-	),
-	company: emptyStringToUndefined(z.string().max(64).optional()),
-	job: emptyStringToUndefined(z.string().max(64).optional()),
-	street: emptyStringToUndefined(z.string().max(64).optional()),
-	city: emptyStringToUndefined(z.string().max(64).optional()),
-	zip: emptyStringToUndefined(z.string().max(10).optional()),
-	state: emptyStringToUndefined(z.string().max(64).optional()),
-	country: emptyStringToUndefined(z.string().max(64).optional()),
-	website: emptyStringToUndefined(z.url().optional()),
-	isDynamic: z.boolean().optional(),
-});
+export const VCardInputSchema = z
+	.object({
+		firstName: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		lastName: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		email: emptyStringToUndefined(z.email().max(100).optional()),
+		phone: emptyStringToUndefined(
+			z
+				.string()
+				.regex(/^\+?\d{1,4}\d{6,15}$/)
+				.optional(),
+		),
+		fax: emptyStringToUndefined(
+			z
+				.string()
+				.regex(/^\+?\d{1,4}\d{6,15}$/)
+				.optional(),
+		),
+		company: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		job: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		street: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		city: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		zip: emptyStringToUndefined(z.string().min(1).max(10).optional()),
+		state: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		country: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		website: emptyStringToUndefined(z.url().optional()),
+		isDynamic: z.boolean().optional(),
+	})
+	.refine(
+		(data) =>
+			Object.entries(data).some(([key, value]) => key !== 'isDynamic' && value !== undefined),
+		{
+			message: 'At least one vCard field must be provided',
+		},
+	);
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
 
 export const LocationInputSchema = z.object({

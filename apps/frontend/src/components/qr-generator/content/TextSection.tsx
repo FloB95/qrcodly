@@ -26,29 +26,35 @@ const formSchema = z.object({
 	text: TextInputSchema,
 });
 
+import { useWatch } from 'react-hook-form';
+
 export const TextSection = ({ value, onChange }: TTextSectionProps) => {
 	const t = useTranslations('generator.contentSwitch');
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			text: value,
 		},
 	});
-	const [debounced] = useDebouncedValue(form.watch('text'), 500);
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		onChange(values.text);
-	}
+	const watchedText = useWatch({
+		control: form.control,
+		name: 'text',
+	});
 
-	// handle submit automatically after debounced value
+	const [debounced] = useDebouncedValue(watchedText, 500);
+
 	useEffect(() => {
+		if (debounced === undefined) return;
 		if (debounced === value) return;
-		void form.handleSubmit(onSubmit)();
-	}, [debounced, value, form]);
+
+		onChange(debounced);
+	}, [debounced, value, onChange]);
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
+			<form>
 				<FormField
 					control={form.control}
 					name="text"

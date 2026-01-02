@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import {
 	Form,
 	FormControl,
@@ -33,20 +33,12 @@ export const EmailSection = ({ onChange, value }: EmailSectionProps) => {
 
 	const form = useForm<TEmailInput>({
 		resolver: zodResolver(EmailInputSchema),
-		defaultValues: {
-			email: value.email,
-			subject: value.subject,
-			body: value.body,
-		},
+		defaultValues: value,
 		shouldFocusError: false,
 	});
 
-	const formValues = form.watch();
-	const [debounced] = useDebouncedValue<TEmailInput>(formValues, 500);
-
-	function onSubmit(values: TEmailInput) {
-		onChange(values);
-	}
+	const watchedValues = useWatch({ control: form.control }) as TEmailInput;
+	const [debounced] = useDebouncedValue<TEmailInput>(watchedValues, 500);
 
 	useEffect(() => {
 		if (JSON.stringify(debounced) === '{}' || JSON.stringify(debounced) === JSON.stringify(value)) {
@@ -55,6 +47,10 @@ export const EmailSection = ({ onChange, value }: EmailSectionProps) => {
 
 		void form.handleSubmit(onSubmit)();
 	}, [debounced]);
+
+	function onSubmit(values: TEmailInput) {
+		onChange(values);
+	}
 
 	return (
 		<Form {...form}>

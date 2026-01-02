@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import {
 	Form,
 	FormControl,
@@ -42,27 +42,29 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 		},
 	});
 
-	const [debounced] = useDebouncedValue<FormValues>(form.getValues(), 500);
-
 	function onSubmit(values: FormValues) {
 		onChange(values);
 	}
 
-	useEffect(() => {
-		if (typeof debounced.encryption === 'undefined') {
-			debounced.encryption = 'WPA';
-		}
+	const watchedValues = useWatch({
+		control: form.control,
+	}) as FormValues;
+	const [debounced] = useDebouncedValue<FormValues>(watchedValues, 500);
 
-		if (
-			JSON.stringify(debounced) === '{}' ||
-			JSON.stringify(debounced) === JSON.stringify(value) ||
-			debounced.ssid.length < 1
-		) {
+	useEffect(() => {
+		if (!debounced?.ssid || debounced.ssid.length < 1) return;
+
+		if (debounced.encryption === undefined) {
+			form.setValue('encryption', 'WPA');
 			return;
 		}
 
-		void form.handleSubmit(onSubmit)();
-	}, [debounced]);
+		if (JSON.stringify(debounced) === JSON.stringify(value)) {
+			return;
+		}
+
+		onChange(debounced);
+	}, [debounced, value, onChange]);
 
 	return (
 		<Form {...form}>
@@ -95,7 +97,7 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 						</FormItem>
 					)}
 				/>
-				<div className="flex space-x-4">
+				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
 					<FormField
 						control={form.control}
 						name="password"

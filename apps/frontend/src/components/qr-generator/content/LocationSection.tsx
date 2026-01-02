@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import {
 	Form,
 	FormControl,
@@ -30,15 +30,35 @@ const GOOGLE_MAPS_LIBRARIES: Libraries = ['places'];
 
 export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.location');
+	const locale = useLocale();
+
 	const form = useForm<TLocationInput>({
 		resolver: zodResolver(LocationInputSchema),
 		defaultValues: value,
 		shouldFocusError: false,
 	});
-	const locale = useLocale();
 
-	const formValues = form.watch();
-	const [debounced] = useDebouncedValue(formValues, 500);
+	// -----------------------------
+	// Stable debounced form values
+	// -----------------------------
+	const watchedValues = useWatch({ control: form.control }) as TLocationInput;
+	const [debounced] = useDebouncedValue<TLocationInput>(watchedValues, 500);
+
+	useEffect(() => {
+		if (!debounced) return;
+
+		// Avoid unnecessary onChange calls
+		const stableStringify = (obj: unknown) =>
+			JSON.stringify(obj, Object.keys(obj as object).sort());
+
+		if (stableStringify(debounced) === stableStringify(value)) return;
+
+		onChange(debounced);
+	}, [debounced, value, onChange]);
+
+	// -----------------------------
+	// Google Maps SearchBox logic
+	// -----------------------------
 	const [searchBox, setSearchBox] = useState<google.maps.places.SearchBox | null>(null);
 
 	const { isLoaded } = useJsApiLoader({
@@ -47,18 +67,6 @@ export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
 		libraries: GOOGLE_MAPS_LIBRARIES,
 		language: locale,
 	});
-
-	function onSubmit(values: TLocationInput) {
-		onChange(values);
-	}
-
-	useEffect(() => {
-		if (JSON.stringify(debounced) === '{}' || JSON.stringify(debounced) === JSON.stringify(value)) {
-			return;
-		}
-
-		void form.handleSubmit(onSubmit)();
-	}, [debounced]);
 
 	const handlePlacesChanged = () => {
 		if (!searchBox) return;
@@ -84,9 +92,12 @@ export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
 		);
 	}
 
+	// -----------------------------
+	// Render form
+	// -----------------------------
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+			<form className="space-y-6">
 				<FormField
 					control={form.control}
 					name="address"
@@ -115,6 +126,7 @@ export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
 						</FormItem>
 					)}
 				/>
+
 				<div className="flex space-x-4 hidden">
 					<FormField
 						control={form.control}

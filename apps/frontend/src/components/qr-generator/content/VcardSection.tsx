@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import {
 	Form,
 	FormControl,
@@ -29,6 +29,7 @@ type VCardSectionProps = {
 
 export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.vCard');
+
 	const form = useForm<FormValues>({
 		resolver: zodResolver(VCardInputSchema),
 		defaultValues: value,
@@ -37,31 +38,36 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 		reValidateMode: 'onBlur',
 	});
 
-	const [debounced] = useDebouncedValue(form.getValues(), 500);
-
-	function onSubmit(values: FormValues) {
-		// Preserve isDynamic from current value (controlled by DynamicBadge in parent)
-		onChange({ ...values, isDynamic: value.isDynamic });
-	}
+	const watchedValues = useWatch({
+		control: form.control,
+	});
+	const [debounced] = useDebouncedValue<FormValues>(watchedValues, 500);
 
 	useEffect(() => {
-		const processedDebounced = Object.fromEntries(
+		if (!debounced) return;
+
+		const normalized = Object.fromEntries(
 			Object.entries(debounced).map(([key, val]) => [key, val === '' ? undefined : val]),
-		);
+		) as FormValues;
 
-		if (
-			JSON.stringify(processedDebounced) === '{}' ||
-			JSON.stringify(processedDebounced) === JSON.stringify(value)
-		)
-			return;
+		const nextValue: FormValues = {
+			...normalized,
+			isDynamic: value.isDynamic,
+		};
 
-		void form.handleSubmit(onSubmit)();
-	}, [debounced]);
+		if (JSON.stringify(nextValue) === JSON.stringify(value)) return;
+
+		onChange(nextValue);
+	}, [debounced, value, onChange]);
+
+	function onSubmit(values: FormValues) {
+		onChange({ ...values, isDynamic: value.isDynamic });
+	}
 
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-				<div className="flex space-x-4 flex-col sm:flex-row space-y-6">
+				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
 					<FormField
 						control={form.control}
 						name="firstName"
@@ -148,7 +154,7 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						</FormItem>
 					)}
 				/>
-				<div className="flex space-x-4 flex-col sm:flex-row space-y-6">
+				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
 					<FormField
 						control={form.control}
 						name="phone"
@@ -184,7 +190,7 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						)}
 					/>
 				</div>
-				<div className="flex space-x-4 flex-col sm:flex-row space-y-6">
+				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
 					<FormField
 						control={form.control}
 						name="company"
@@ -270,7 +276,7 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						</FormItem>
 					)}
 				/>
-				<div className="flex space-x-4 flex-col sm:flex-row space-y-6">
+				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
 					<FormField
 						control={form.control}
 						name="city"

@@ -40,7 +40,6 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 			isEditable: value?.isEditable ?? true,
 		},
 	});
-
 	const [debounced] = useDebouncedValue<string | null>(originalUrl, 500);
 
 	function onSubmit(values: FormValues) {
@@ -118,7 +117,6 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 									}}
 									maxLength={1000}
 									placeholder={t('placeholder')}
-									autoFocus
 									onBlur={(e) => {
 										if (e.target.value === '') return;
 										if (

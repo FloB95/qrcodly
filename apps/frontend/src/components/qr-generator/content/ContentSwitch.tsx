@@ -137,17 +137,19 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 						<div></div>
 					)}
 
-					{bulkMode.isBulkMode ? (
-						<Button variant="link" onClick={() => updateBulkMode(false)}>
-							{t('cancel')}
-						</Button>
-					) : (
-						<Button variant="link" className="p-0" onClick={() => updateBulkMode(true)}>
-							<DocumentArrowUpIcon className="sm:mr-1.5 h-8 w-8 sm:h-6 sm:w-6" />
-							<span className="hidden sm:block">{t('bulkModeBtn')}</span>
-							<Badge className="ml-2 hidden xs:block">{t2('newBadge')}</Badge>
-						</Button>
-					)}
+					<div className="hidden sm:block">
+						{bulkMode.isBulkMode ? (
+							<Button variant="link" onClick={() => updateBulkMode(false)}>
+								{t('cancel')}
+							</Button>
+						) : (
+							<Button variant="link" className="p-0" onClick={() => updateBulkMode(true)}>
+								<DocumentArrowUpIcon className="sm:mr-1.5 h-8 w-8 sm:h-6 sm:w-6" />
+								<span>{t('bulkModeBtn')}</span>
+								<Badge className="ml-2">{t2('newBadge')}</Badge>
+							</Button>
+						)}
+					</div>
 				</div>
 			)}
 

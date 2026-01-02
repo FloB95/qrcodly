@@ -19,7 +19,9 @@ function areAllPropertiesUndefined(obj: Record<string, any>): boolean {
 }
 
 export function convertVCardObjToString(vCardInput: TVCardInput): string {
-	if (areAllPropertiesUndefined(vCardInput)) {
+	const t = vCardInput;
+	delete t.isDynamic;
+	if (areAllPropertiesUndefined(t)) {
 		return '';
 	}
 
@@ -111,6 +113,10 @@ export const convertLocationObjToString = (location: TLocationInput) => {
 	// If coordinates exist → use them
 	if (latitude != null && longitude != null) {
 		return `geo:${latitude},${longitude}?q=${query}`;
+	}
+
+	if (!address) {
+		return '';
 	}
 
 	return `https://www.google.com/maps/search/?api=1&query=${query}`;
