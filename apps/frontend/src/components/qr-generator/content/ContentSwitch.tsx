@@ -100,7 +100,7 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 
 			{/* Bulk Header */}
 			{!isEditMode && bulkAllowed && (
-				<div className="flex justify-between mb-5 items-center">
+				<div className="flex justify-between mb-4 items-center">
 					{/* Dynamic Badge - Only for URL type */}
 					{content.type === 'url' ? (
 						<DynamicBadge
@@ -138,7 +138,7 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 				<BulkImport contentType={content.type} />
 			) : (
 				visibleTabs.map((tab) => (
-					<TabsContent key={tab.type} value={tab.type}>
+					<TabsContent key={tab.type} value={tab.type} className="pt-2">
 						{tab.render({
 							value: content.data,
 							isEditMode: !!isEditMode,
