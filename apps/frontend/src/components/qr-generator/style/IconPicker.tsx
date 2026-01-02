@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { ColorPicker } from './ColorPicker';
 import { svgToBase64 } from '@/lib/utils';
 import type { TColorOrGradient } from '@shared/schemas';
+import { pickerStringToColorType } from '@/lib/color-picker.utils';
 
 /* ------------------------------------------------------------------ */
 /* Custom Social Icons                                                 */
@@ -107,7 +108,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
 	const [selectedIcon, setSelectedIcon] = useState<string | undefined>();
 	const [searchTerm, setSearchTerm] = useState('');
-	const [color, setColor] = useState<Extract<TColorOrGradient, { type: 'hex' }>>({
+	const [color, setColor] = useState<Extract<TColorOrGradient, { type: 'hex' | 'rgba' }>>({
 		type: 'hex',
 		value: '#000000',
 	});
@@ -198,7 +199,11 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 
 					<ColorPicker
 						defaultColor={color}
-						onChange={(c) => c.type === 'hex' && setColor(c)}
+						onChange={(c) => {
+							if (c.type === 'hex' || c.type === 'rgba') {
+								setColor(c);
+							}
+						}}
 						withGradient={false}
 					/>
 				</div>
