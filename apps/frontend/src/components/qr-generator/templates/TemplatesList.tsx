@@ -92,6 +92,8 @@ const TemplateCard = React.memo(
 			</div>
 		);
 	},
+	// Custom equality function - only re-render if template.id or deletable changes
+	(prev, next) => prev.template.id === next.template.id && prev.deletable === next.deletable,
 );
 
 TemplateCard.displayName = 'TemplateCard';
@@ -162,8 +164,8 @@ export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListPr
 
 	return (
 		<div className="grid h-[400px] cursor-pointer grid-cols-2 gap-4 overflow-y-auto px-2 lg:grid-cols-3">
-			{templates.map((template, index) => (
-				<React.Fragment key={index}>
+			{templates.map((template) => (
+				<React.Fragment key={template.id}>
 					<TemplateCard
 						template={template}
 						onSelect={() => handleSelect(template)}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslations } from 'next-intl';
 import { PaintBrushIcon, QrCodeIcon, StarIcon } from '@heroicons/react/24/outline';
@@ -78,8 +78,8 @@ export const QRcodeGenerator = ({
 
 	// Map visible tab count to actual Tailwind grid-cols classes
 	// Tailwind needs full class names at build time, can't use dynamic strings
-	const getGridColsClass = (count: number): string => {
-		switch (count) {
+	const gridColsClass = useMemo(() => {
+		switch (visibleTabs.length) {
 			case 1:
 				return 'grid-cols-1';
 			case 2:
@@ -89,17 +89,23 @@ export const QRcodeGenerator = ({
 			default:
 				return 'grid-cols-3';
 		}
-	};
+	}, [visibleTabs.length]);
 
-	const gridColsClass = getGridColsClass(visibleTabs.length);
+	// Stable callbacks
+	const handleTabChange = useCallback((v: string) => {
+		setCurrentTab(v as GeneratorTab);
+	}, []);
+
+	const handleNameChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			updateName(e.target.value);
+		},
+		[updateName],
+	);
 	const QrOutputComponent = QR_OUTPUT_MAP[generatorType];
 
 	return (
-		<Tabs
-			defaultValue={currentTab}
-			onValueChange={(v) => setCurrentTab(v as GeneratorTab)}
-			value={currentTab}
-		>
+		<Tabs defaultValue={currentTab} onValueChange={handleTabChange} value={currentTab}>
 			<TabsList className={`mx-auto grid h-auto max-w-[450px] ${gridColsClass} bg-white p-2`}>
 				{visibleTabs.map(({ type, labelKey, icon: Icon }) => (
 					<TabsTrigger key={type} value={type} className="data-[state=active]:bg-gray-200">
@@ -123,7 +129,7 @@ export const QRcodeGenerator = ({
 										<InputGroupInput
 											value={name}
 											maxLength={32}
-											onChange={(e) => updateName(e.target.value)}
+											onChange={handleNameChange}
 											placeholder={t('labelName')}
 											className="pr-16"
 										/>

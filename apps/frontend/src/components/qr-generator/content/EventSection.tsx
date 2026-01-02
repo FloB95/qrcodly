@@ -1,6 +1,7 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { memo } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import {
 	Form,
 	FormControl,
@@ -34,7 +35,7 @@ type EventSectionProps = {
 	value: TEventInput;
 };
 
-export const EventSection = ({ onChange, value }: EventSectionProps) => {
+const _EventSection = ({ onChange, value }: EventSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.event');
 	const [alertOpen, setAlertOpen] = useState(false);
 	const { isSignedIn } = useAuth();
@@ -47,8 +48,8 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 		shouldFocusError: false,
 	});
 
-	const formValues = form.watch();
-	const [debounced] = useDebouncedValue<TEventInput>(formValues, 500);
+	const watchedValues = useWatch({ control: form.control }) as TEventInput;
+	const [debounced] = useDebouncedValue<TEventInput>(watchedValues, 500);
 
 	function onSubmit(values: TEventInput) {
 		if (!isSignedIn) {
@@ -239,3 +240,13 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 		</>
 	);
 };
+
+// Custom equality function to prevent unnecessary re-renders
+function areEventPropsEqual(prev: EventSectionProps, next: EventSectionProps) {
+	return (
+		JSON.stringify(prev.value) === JSON.stringify(next.value) && prev.onChange === next.onChange
+	);
+}
+
+// Export memoized component
+export const EventSection = memo(_EventSection, areEventPropsEqual);

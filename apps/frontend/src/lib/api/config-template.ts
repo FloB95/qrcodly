@@ -46,19 +46,21 @@ export function useListConfigTemplatesQuery(searchName?: string, page = 1, limit
 		queryFn: async (): Promise<TConfigTemplatePaginatedResponseDto> => {
 			const token = await getToken();
 
-			const extraOptions =
-				searchName !== undefined
-					? {
-							where: {
-								name: {
-									like: searchName,
-								},
-							},
-						}
-					: undefined;
+			const queryParams: Record<string, unknown> = {
+				page,
+				limit,
+			};
+
+			if (searchName !== undefined) {
+				queryParams.where = {
+					name: {
+						like: searchName,
+					},
+				};
+			}
 
 			return apiRequest<TConfigTemplatePaginatedResponseDto>(
-				`/config-template?page=${page}&limit=${limit}`,
+				'/config-template',
 				{
 					method: 'GET',
 					headers: {
@@ -66,7 +68,7 @@ export function useListConfigTemplatesQuery(searchName?: string, page = 1, limit
 						Authorization: `Bearer ${token}`,
 					},
 				},
-				extraOptions,
+				queryParams,
 			);
 		},
 		refetchOnMount: false,

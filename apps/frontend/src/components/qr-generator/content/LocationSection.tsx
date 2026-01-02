@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import {
 	Form,
@@ -28,7 +29,7 @@ type LocationSectionProps = {
 
 const GOOGLE_MAPS_LIBRARIES: Libraries = ['places'];
 
-export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
+const _LocationSection = ({ onChange, value }: LocationSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.location');
 	const locale = useLocale();
 
@@ -159,3 +160,13 @@ export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
 		</Form>
 	);
 };
+
+// Custom equality function to prevent unnecessary re-renders
+function areLocationPropsEqual(prev: LocationSectionProps, next: LocationSectionProps) {
+	return (
+		JSON.stringify(prev.value) === JSON.stringify(next.value) && prev.onChange === next.onChange
+	);
+}
+
+// Export memoized component
+export const LocationSection = memo(_LocationSection, areLocationPropsEqual);

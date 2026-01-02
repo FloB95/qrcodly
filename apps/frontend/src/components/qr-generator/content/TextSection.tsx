@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import {
@@ -28,7 +29,7 @@ const formSchema = z.object({
 
 import { useWatch } from 'react-hook-form';
 
-export const TextSection = ({ value, onChange }: TTextSectionProps) => {
+const _TextSection = ({ value, onChange }: TTextSectionProps) => {
 	const t = useTranslations('generator.contentSwitch');
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -85,3 +86,11 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
 		</Form>
 	);
 };
+
+// Custom equality function to prevent unnecessary re-renders
+function areTextPropsEqual(prev: TTextSectionProps, next: TTextSectionProps) {
+	return prev.value === next.value && prev.onChange === next.onChange;
+}
+
+// Export memoized component
+export const TextSection = memo(_TextSection, areTextPropsEqual);

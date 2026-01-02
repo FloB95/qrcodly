@@ -27,13 +27,17 @@ export function useListQrCodesQuery(page = 1, limit = 10) {
 			const token = await getToken();
 
 			return apiRequest<TQrCodeWithRelationsPaginatedResponseDto>(
-				`/qr-code?page=${page}&limit=${limit}`,
+				'/qr-code',
 				{
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
 						Authorization: `Bearer ${token}`,
 					},
+				},
+				{
+					page,
+					limit,
 				},
 			);
 		},

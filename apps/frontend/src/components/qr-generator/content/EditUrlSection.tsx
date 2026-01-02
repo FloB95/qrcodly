@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { Input } from '@/components/ui/input';
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useForm } from 'react-hook-form';
@@ -19,7 +20,7 @@ type TUrlSectionProps = {
 	value: FormValues;
 };
 
-export const EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
+const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
 	const { shortUrl } = useQrCodeGeneratorStore((state) => state);
 	const [originalUrl, setOriginalUrl] = useState<string | null>(null);
@@ -111,3 +112,13 @@ export const EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		</>
 	);
 };
+
+// Custom equality function to prevent unnecessary re-renders
+function areEditUrlPropsEqual(prev: TUrlSectionProps, next: TUrlSectionProps) {
+	return (
+		JSON.stringify(prev.value) === JSON.stringify(next.value) && prev.onChange === next.onChange
+	);
+}
+
+// Export memoized component
+export const EditUrlSection = memo(_EditUrlSection, areEditUrlPropsEqual);

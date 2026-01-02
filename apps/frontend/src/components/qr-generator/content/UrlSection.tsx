@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
@@ -26,7 +27,7 @@ type TUrlSectionProps = {
 	value: FormValues;
 };
 
-export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
+const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
 	const [originalUrl, setOriginalUrl] = useState<string | null>(null);
@@ -138,3 +139,13 @@ export const UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		</Form>
 	);
 };
+
+// Custom equality function to prevent unnecessary re-renders
+function areUrlPropsEqual(prev: TUrlSectionProps, next: TUrlSectionProps) {
+	return (
+		JSON.stringify(prev.value) === JSON.stringify(next.value) && prev.onChange === next.onChange
+	);
+}
+
+// Export memoized component
+export const UrlSection = memo(_UrlSection, areUrlPropsEqual);

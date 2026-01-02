@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import * as Icons from '@heroicons/react/24/outline';
 import ReactDOMServer from 'react-dom/server';
 import posthog from 'posthog-js';
@@ -45,6 +45,22 @@ const CUSTOM_ICONS = [
 type PickerIcon =
 	| { type: 'hero'; key: keyof typeof Icons }
 	| { type: 'custom'; key: string; src: string };
+
+/* ------------------------------------------------------------------ */
+/* ALL_ICONS - Module scope to prevent recreation on every render     */
+/* ------------------------------------------------------------------ */
+
+const ALL_ICONS: PickerIcon[] = [
+	...CUSTOM_ICONS.map((icon) => ({
+		type: 'custom' as const,
+		key: icon.key,
+		src: icon.src,
+	})),
+	...Object.keys(Icons).map((key) => ({
+		type: 'hero' as const,
+		key: key as keyof typeof Icons,
+	})),
+];
 
 interface IconPickerProps {
 	onSelect: (iconBase64?: string) => void;
@@ -97,22 +113,6 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 	});
 
 	/* ------------------------------------------------------------------ */
-	/* Combine Hero + Custom Icons                                         */
-	/* ------------------------------------------------------------------ */
-
-	const ALL_ICONS: PickerIcon[] = [
-		...CUSTOM_ICONS.map((icon) => ({
-			type: 'custom' as const,
-			key: icon.key,
-			src: icon.src,
-		})),
-		...Object.keys(Icons).map((key) => ({
-			type: 'hero' as const,
-			key: key as keyof typeof Icons,
-		})),
-	];
-
-	/* ------------------------------------------------------------------ */
 	/* Icon Selection                                                     */
 	/* ------------------------------------------------------------------ */
 
@@ -161,14 +161,15 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 		if (icon) {
 			void handleIconClick(icon);
 		}
-	}, [color, selectedIcon]);
+	}, [color, selectedIcon, handleIconClick]);
 
 	/* ------------------------------------------------------------------ */
 	/* Filter                                                            */
 	/* ------------------------------------------------------------------ */
 
-	const filteredIcons = ALL_ICONS.filter((icon) =>
-		icon.key.toLowerCase().includes(searchTerm.toLowerCase()),
+	const filteredIcons = useMemo(
+		() => ALL_ICONS.filter((icon) => icon.key.toLowerCase().includes(searchTerm.toLowerCase())),
+		[searchTerm],
 	);
 
 	/* ------------------------------------------------------------------ */

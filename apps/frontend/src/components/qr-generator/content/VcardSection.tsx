@@ -2,6 +2,7 @@
 
 'use client';
 
+import { memo } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import {
 	Form,
@@ -27,7 +28,7 @@ type VCardSectionProps = {
 	value: FormValues;
 };
 
-export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
+const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.vCard');
 
 	const form = useForm<FormValues>({
@@ -424,3 +425,13 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 		</Form>
 	);
 };
+
+// Custom equality function to prevent unnecessary re-renders
+function areVCardPropsEqual(prev: VCardSectionProps, next: VCardSectionProps) {
+	return (
+		JSON.stringify(prev.value) === JSON.stringify(next.value) && prev.onChange === next.onChange
+	);
+}
+
+// Export memoized component
+export const VCardSection = memo(_VCardSection, areVCardPropsEqual);

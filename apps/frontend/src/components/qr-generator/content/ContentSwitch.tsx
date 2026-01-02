@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo, useCallback } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { DocumentArrowUpIcon } from '@heroicons/react/24/outline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -31,43 +32,24 @@ type TabConfig<T extends TQrCodeContentType = TQrCodeContentType> = {
 	icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 	hidden?: boolean;
 	enableBulk: boolean;
-	render: (props: {
-		value: any;
-		onChange: (v: any) => void;
-		isEditMode: boolean;
-	}) => React.ReactNode;
 };
 
+// Stable component map - prevents recreation on every render
+const CONTENT_COMPONENTS = {
+	url: { edit: EditUrlSection, view: UrlSection },
+	text: { edit: TextSection, view: TextSection },
+	wifi: { edit: WiFiSection, view: WiFiSection },
+	vCard: { edit: EditVCardSection, view: VCardSection },
+	email: { edit: EmailSection, view: EmailSection },
+	location: { edit: LocationSection, view: LocationSection },
+	event: { edit: EventSection, view: EventSection },
+} as const;
+
 const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({
-	...config,
-	render: ({ value, onChange, isEditMode }) => {
-		switch (config.type) {
-			case 'url':
-				return isEditMode ? (
-					<EditUrlSection value={value} onChange={onChange} />
-				) : (
-					<UrlSection value={value} onChange={onChange} />
-				);
-			case 'text':
-				return <TextSection value={value} onChange={onChange} />;
-			case 'wifi':
-				return <WiFiSection value={value} onChange={onChange} />;
-			case 'vCard':
-				return isEditMode ? (
-					<EditVCardSection value={value} onChange={onChange} />
-				) : (
-					<VCardSection value={value} onChange={onChange} />
-				);
-			case 'email':
-				return <EmailSection value={value} onChange={onChange} />;
-			case 'location':
-				return <LocationSection value={value} onChange={onChange} />;
-			case 'event':
-				return <EventSection value={value} onChange={onChange} />;
-			default:
-				return null;
-		}
-	},
+	type: config.type,
+	label: config.label,
+	icon: config.icon,
+	enableBulk: config.enableBulk,
 }));
 
 export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProps) => {
@@ -81,7 +63,28 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 	const activeTab = TABS.find((t) => t.type === content.type);
 	const bulkAllowed = activeTab?.enableBulk;
 
-	const visibleTabs = TABS.filter((tab) => !hiddenTabs.includes(tab.type));
+	// Memoize visibleTabs to prevent unnecessary recalculation
+	const visibleTabs = useMemo(
+		() => TABS.filter((tab) => !hiddenTabs.includes(tab.type)),
+		[hiddenTabs],
+	);
+
+	// Stable callback for content updates
+	const handleContentUpdate = useCallback(
+		(type: TQrCodeContentType, data: any) => {
+			updateContent({ type, data });
+		},
+		[updateContent],
+	);
+
+	// Create stable onChange callbacks for each content type
+	const onChangeCallbacks = useMemo(() => {
+		const callbacks: Record<TQrCodeContentType, (data: any) => void> = {} as any;
+		visibleTabs.forEach((tab) => {
+			callbacks[tab.type] = (data: any) => handleContentUpdate(tab.type, data);
+		});
+		return callbacks;
+	}, [visibleTabs, handleContentUpdate]);
 
 	return (
 		<Tabs
@@ -157,15 +160,14 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 			{bulkMode.isBulkMode && bulkAllowed ? (
 				<BulkImport contentType={content.type} />
 			) : (
-				visibleTabs.map((tab) => (
-					<TabsContent key={tab.type} value={tab.type} className="pt-2">
-						{tab.render({
-							value: content.data,
-							isEditMode: !!isEditMode,
-							onChange: (v) => updateContent({ type: tab.type, data: v }),
-						})}
-					</TabsContent>
-				))
+				visibleTabs.map((tab) => {
+					const Component = CONTENT_COMPONENTS[tab.type][isEditMode ? 'edit' : 'view'];
+					return (
+						<TabsContent key={tab.type} value={tab.type} className="pt-2">
+							<Component value={content.data as any} onChange={onChangeCallbacks[tab.type]} />
+						</TabsContent>
+					);
+				})
 			)}
 		</Tabs>
 	);

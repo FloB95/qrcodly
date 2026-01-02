@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card';
 import { Badge } from '../ui/badge';
 import { CheckBadgeIcon } from '@heroicons/react/24/outline';
@@ -16,6 +16,32 @@ type DynamicBadgeProps = {
 	className?: string;
 	checked?: boolean;
 	onChange?: (checked: boolean) => void;
+};
+
+// Animation and style constants - extracted to prevent recreation on every render
+const SHAKE_ANIMATION = {
+	x: [0, -2, 2, -2, 2, 0],
+	rotate: [0, -1, 1, -1, 1, 0],
+};
+
+const SHAKE_TRANSITION = {
+	duration: 0.4,
+	ease: 'easeInOut' as const,
+};
+
+const BADGE_CONTAINER_STYLE = {
+	position: 'relative' as const,
+	display: 'inline-block' as const,
+};
+
+const RIPPLE_STYLE = {
+	background: 'radial-gradient(circle, rgb(20 184 166 / 0.6) 0%, transparent 70%)',
+};
+
+const RIPPLE_ANIMATION = {
+	initial: { scale: 0, opacity: 1 },
+	animate: { scale: 2.5, opacity: 0 },
+	transition: { duration: 1, ease: 'easeOut' as const },
 };
 
 export const DynamicBadge = ({ className = '', checked, onChange }: DynamicBadgeProps) => {
@@ -53,34 +79,30 @@ export const DynamicBadge = ({ className = '', checked, onChange }: DynamicBadge
 		return undefined;
 	}, [content.data, isChecked, isInteractive]);
 
-	const handleChange = (checked: boolean) => {
-		if (!onChange) return;
+	const handleChange = useCallback(
+		(checked: boolean) => {
+			if (!onChange) return;
 
-		if (!isSignedIn) {
-			localStorage.setItem('unsavedQrContent', JSON.stringify(content));
-			localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
-			setAlertOpen(true);
-			return;
-		}
+			if (!isSignedIn) {
+				localStorage.setItem('unsavedQrContent', JSON.stringify(content));
+				localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
+				setAlertOpen(true);
+				return;
+			}
 
-		onChange(checked);
-	};
+			onChange(checked);
+		},
+		[onChange, isSignedIn, content, config],
+	);
 
 	return (
 		<>
 			<HoverCard>
 				<HoverCardTrigger asChild>
 					<motion.div
-						style={{ position: 'relative', display: 'inline-block' }}
-						animate={
-							showAnimation
-								? {
-										x: [0, -2, 2, -2, 2, 0],
-										rotate: [0, -1, 1, -1, 1, 0],
-									}
-								: {}
-						}
-						transition={{ duration: 0.4, ease: 'easeInOut' }}
+						style={BADGE_CONTAINER_STYLE}
+						animate={showAnimation ? SHAKE_ANIMATION : undefined}
+						transition={SHAKE_TRANSITION}
 					>
 						<Badge
 							className={cn(
@@ -102,13 +124,8 @@ export const DynamicBadge = ({ className = '', checked, onChange }: DynamicBadge
 							{showAnimation && (
 								<motion.span
 									className="absolute inset-0 rounded-[inherit]"
-									style={{
-										background:
-											'radial-gradient(circle, rgb(20 184 166 / 0.6) 0%, transparent 70%)',
-									}}
-									initial={{ scale: 0, opacity: 1 }}
-									animate={{ scale: 2.5, opacity: 0 }}
-									transition={{ duration: 1, ease: 'easeOut' }}
+									style={RIPPLE_STYLE}
+									{...RIPPLE_ANIMATION}
 								/>
 							)}
 							<span className="transition-opacity duration-200">Dynamic</span>

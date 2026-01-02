@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import {
 	Form,
@@ -28,7 +29,7 @@ type EmailSectionProps = {
 	value: TEmailInput;
 };
 
-export const EmailSection = ({ onChange, value }: EmailSectionProps) => {
+const _EmailSection = ({ onChange, value }: EmailSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.email');
 
 	const form = useForm<TEmailInput>({
@@ -130,3 +131,13 @@ export const EmailSection = ({ onChange, value }: EmailSectionProps) => {
 		</Form>
 	);
 };
+
+// Custom equality function to prevent unnecessary re-renders
+function areEmailPropsEqual(prev: EmailSectionProps, next: EmailSectionProps) {
+	return (
+		JSON.stringify(prev.value) === JSON.stringify(next.value) && prev.onChange === next.onChange
+	);
+}
+
+// Export memoized component
+export const EmailSection = memo(_EmailSection, areEmailPropsEqual);

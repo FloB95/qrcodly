@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import {
 	Form,
@@ -31,7 +32,7 @@ type WiFiSectionProps = {
 	value: FormValues;
 };
 
-export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
+const _WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.wifi');
 	const form = useForm<FormValues>({
 		resolver: zodResolver(WifiInputSchema),
@@ -171,3 +172,13 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 		</Form>
 	);
 };
+
+// Custom equality function to prevent unnecessary re-renders
+function areWiFiPropsEqual(prev: WiFiSectionProps, next: WiFiSectionProps) {
+	return (
+		JSON.stringify(prev.value) === JSON.stringify(next.value) && prev.onChange === next.onChange
+	);
+}
+
+// Export memoized component
+export const WiFiSection = memo(_WiFiSection, areWiFiPropsEqual);
