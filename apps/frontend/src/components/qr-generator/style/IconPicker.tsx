@@ -18,7 +18,6 @@ import { Button } from '@/components/ui/button';
 import { ColorPicker } from './ColorPicker';
 import { svgToBase64 } from '@/lib/utils';
 import type { TColorOrGradient } from '@shared/schemas';
-import { pickerStringToColorType } from '@/lib/color-picker.utils';
 
 /* ------------------------------------------------------------------ */
 /* Custom Social Icons                                                 */
