@@ -10,17 +10,24 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+	InputGroup,
+	InputGroupInput,
+	InputGroupAddon,
+	InputGroupTextarea,
+	InputGroupText,
+} from '@/components/ui/input-group';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect, useState } from 'react';
 import { EventInputSchema, type TEventInput } from '@shared/schemas/src';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { Textarea } from '@/components/ui/textarea';
 import { getShortUrlFromCode } from '@/lib/utils';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
+import { CharacterCounter } from './CharacterCounter';
 
 type EventSectionProps = {
 	onChange: (data: TEventInput) => void;
@@ -112,7 +119,17 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 							<FormItem>
 								<FormLabel>{t('title.label')}*</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('title.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											placeholder={t('title.placeholder')}
+											maxLength={200}
+											className="pr-20"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={200} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -125,7 +142,18 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 							<FormItem>
 								<FormLabel>{t('description.label')}</FormLabel>
 								<FormControl>
-									<Textarea {...field} placeholder={t('description.placeholder')} />
+									<InputGroup>
+										<InputGroupTextarea
+											{...field}
+											placeholder={t('description.placeholder')}
+											maxLength={500}
+										/>
+										<InputGroupAddon align="block-end">
+											<InputGroupText className="ml-auto">
+												<CharacterCounter current={field.value?.length || 0} max={500} />
+											</InputGroupText>
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -138,7 +166,17 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 							<FormItem>
 								<FormLabel>{t('location.label')}</FormLabel>
 								<FormControl>
-									<Input {...field} placeholder={t('location.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											placeholder={t('location.placeholder')}
+											maxLength={200}
+											className="pr-20"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={200} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>

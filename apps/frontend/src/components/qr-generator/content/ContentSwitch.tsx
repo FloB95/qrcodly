@@ -17,6 +17,7 @@ import { EmailSection } from './EmailSection';
 import { LocationSection } from './LocationSection';
 import { EventSection } from './EventSection';
 import { CONTENT_TYPE_CONFIGS } from '@/lib/content-type.config';
+import { DynamicBadge } from '../DynamicBadge';
 
 type ContentSwitchProps = {
 	hiddenTabs?: TQrCodeContentType[];
@@ -99,8 +100,24 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 
 			{/* Bulk Header */}
 			{!isEditMode && bulkAllowed && (
-				<div className="flex justify-between mb-4">
-					<div></div>
+				<div className="flex justify-between mb-5 items-center">
+					{/* Dynamic Badge - Only for URL type */}
+					{content.type === 'url' ? (
+						<DynamicBadge
+							checked={content.data.isEditable ?? false}
+							onChange={(checked) => {
+								updateContent({
+									type: 'url',
+									data: {
+										...content.data,
+										isEditable: checked,
+									},
+								});
+							}}
+						/>
+					) : (
+						<div></div>
+					)}
 
 					{bulkMode.isBulkMode ? (
 						<Button variant="link" onClick={() => updateBulkMode(false)}>

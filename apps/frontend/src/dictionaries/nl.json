@@ -16,13 +16,28 @@
 		"changelogTooltip": "Laatste updates",
 		"changelogSubheading": "Hier vind je de nieuwste updates en verbeteringen van QRcodly.",
 		"newBadge": "Nieuw!",
-		"dynamicDescription": "Dynamische QR-codes kunnen ook na creatie worden aangepast. De QR-code zelf blijft hetzelfde, maar het doel, de inhoud of de doorverwijzing kan op elk moment worden bijgewerkt – zonder de code opnieuw te hoeven afdrukken of verspreiden."
+		"dynamicDescription": "Dynamische QR-codes kunnen na creatie bewerkt worden, tracken elke scan en bieden gedetailleerde statistieken – zonder de code opnieuw te hoeven afdrukken."
 	},
 	"headline": "<span class=\"text-xl xs:text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
 		"title": "QRcodly - Gratis QR-codegenerator",
 		"description": "Gratis QR-codes maken met logo, eigen ontwerp of sjablonen – ideaal voor marketing, visitekaartjes & meer. Gebruik nu de QR-codegenerator!",
-		"keywords": "qr code generator, qr code maken, qr code genereren, gratis, free, qr code maken gratis, qr code generator gratis, vcard qr code, link qr code, qrgenerator"
+		"keywords": "qr code generator, qr code maken, qr code genereren, gratis, free, qr code maken gratis, qr code generator gratis, vcard qr code, link qr code, qrgenerator",
+		"structuredData": {
+			"description": "Gratis online QR-codegenerator met eigen ontwerpen, logo's en sjablonen. Maak dynamische QR-codes voor URL's, WiFi, vCards en meer.",
+			"features": [
+				"Gratis QR-codegenerator",
+				"Aangepast QR-code ontwerp",
+				"QR-code met logo",
+				"Dynamische QR-codes",
+				"QR-code analytics",
+				"Bulk QR-code aanmaak",
+				"QR-code sjablonen",
+				"WiFi QR-codes",
+				"vCard QR-codes",
+				"URL QR-codes"
+			]
+		}
 	},
 	"doc": {
 		"title": "Documentatie wordt bijgewerkt",

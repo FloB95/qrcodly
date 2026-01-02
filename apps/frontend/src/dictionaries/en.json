@@ -16,13 +16,28 @@
 		"changelogTooltip": "Latest updates",
 		"changelogSubheading": "Here you can find the latest updates and improvements of QRcodly.",
 		"newBadge": "New!",
-		"dynamicDescription": "Dynamic QR codes can be changed even after they are created. The QR code itself remains the same, but the target, content, or redirect can be updated at any time – without needing to reprint or redistribute the code."
+		"dynamicDescription": "Dynamic QR codes can be edited after creation, track every scan, and provide detailed statistics – all without needing to reprint the code."
 	},
 	"headline": "<span class=\"text-xl xs:text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
-		"title": "QRcodly - Free QR Code Generator",
-		"description": "Create free QR codes with logo, custom design or templates – perfect for marketing, business cards & more. Use the QR code Generator now!",
-		"keywords": "free QR code generator, QR code creator, generate QR codes, custom QR code maker"
+		"title": "Free QR Code Generator - Create Custom QR Codes Online | QRcodly",
+		"description": "Generate free QR codes online with custom designs, logos & templates. Create dynamic QR codes for URLs, WiFi, vCards, events & more. Track scans with analytics. No signup required!",
+		"keywords": "QR code generator, free QR code, QR code maker, create QR code, QR code with logo, custom QR code, dynamic QR code, QR code generator free, online QR code generator, QR code creator, WiFi QR code, vCard QR code, QR code analytics, bulk QR code generator",
+		"structuredData": {
+			"description": "Free online QR code generator with custom designs, logos, and templates. Create dynamic QR codes for URLs, WiFi, vCards, and more.",
+			"features": [
+				"Free QR Code Generator",
+				"Custom QR Code Design",
+				"QR Code with Logo",
+				"Dynamic QR Codes",
+				"QR Code Analytics",
+				"Bulk QR Code Creation",
+				"QR Code Templates",
+				"WiFi QR Codes",
+				"vCard QR Codes",
+				"URL QR Codes"
+			]
+		}
 	},
 	"doc": {
 		"title": "Documentation Under Update",

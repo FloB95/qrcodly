@@ -11,11 +11,17 @@ import {
 } from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
-import { Input } from '@/components/ui/input';
+import {
+	InputGroup,
+	InputGroupInput,
+	InputGroupAddon,
+	InputGroupTextarea,
+	InputGroupText,
+} from '@/components/ui/input-group';
 import { EmailInputSchema, type TEmailInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Textarea } from '@/components/ui/textarea';
+import { CharacterCounter } from './CharacterCounter';
 
 type EmailSectionProps = {
 	onChange: (data: TEmailInput) => void;
@@ -60,7 +66,18 @@ export const EmailSection = ({ onChange, value }: EmailSectionProps) => {
 						<FormItem>
 							<FormLabel>{t('email.label')}*</FormLabel>
 							<FormControl>
-								<Input {...field} type="email" placeholder={t('email.placeholder')} />
+								<InputGroup>
+									<InputGroupInput
+										{...field}
+										type="email"
+										placeholder={t('email.placeholder')}
+										maxLength={100}
+										className="pr-20"
+									/>
+									<InputGroupAddon align="inline-end">
+										<CharacterCounter current={field.value?.length || 0} max={100} />
+									</InputGroupAddon>
+								</InputGroup>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -73,7 +90,17 @@ export const EmailSection = ({ onChange, value }: EmailSectionProps) => {
 						<FormItem>
 							<FormLabel>{t('subject.label')}</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder={t('subject.placeholder')} />
+								<InputGroup>
+									<InputGroupInput
+										{...field}
+										placeholder={t('subject.placeholder')}
+										maxLength={250}
+										className="pr-20"
+									/>
+									<InputGroupAddon align="inline-end">
+										<CharacterCounter current={field.value?.length || 0} max={250} />
+									</InputGroupAddon>
+								</InputGroup>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -86,7 +113,18 @@ export const EmailSection = ({ onChange, value }: EmailSectionProps) => {
 						<FormItem>
 							<FormLabel>{t('body.label')}</FormLabel>
 							<FormControl>
-								<Textarea {...field} placeholder={t('body.placeholder')} />
+								<InputGroup>
+									<InputGroupTextarea
+										{...field}
+										placeholder={t('body.placeholder')}
+										maxLength={1000}
+									/>
+									<InputGroupAddon align="block-end">
+										<InputGroupText className="ml-auto">
+											<CharacterCounter current={field.value?.length || 0} max={1000} />
+										</InputGroupText>
+									</InputGroupAddon>
+								</InputGroup>
 							</FormControl>
 							<FormMessage />
 						</FormItem>

@@ -16,13 +16,28 @@
 		"changelogTooltip": "Ultimi aggiornamenti",
 		"changelogSubheading": "Qui puoi trovare gli ultimi aggiornamenti e miglioramenti di QRcodly.",
 		"newBadge": "Nuovo!",
-		"dynamicDescription": "I codici QR dinamici possono essere modificati anche dopo la loro creazione. Il codice QR stesso rimane invariato, ma la destinazione, il contenuto o il reindirizzamento possono essere aggiornati in qualsiasi momento – senza dover ristampare o ridistribuire il codice."
+		"dynamicDescription": "I codici QR dinamici possono essere modificati dopo la creazione, tracciano ogni scansione e forniscono statistiche dettagliate – senza dover ristampare il codice."
 	},
 	"headline": "<span class=\"text-xl xs:text-2xl\">Generatore di Codici QR</span> <br /> Gratuito e Open Source",
 	"metadata": {
 		"title": "QRcodly - Generatore di Codici QR Gratuito",
 		"description": "Crea codici QR gratis con logo, design personalizzato o modelli – perfetti per marketing, biglietti da visita e altro. Usa il generatore ora!",
-		"keywords": "generatore di codici qr, crea codice qr, genera codice qr, gratuito, free, crea codice qr gratuito, generatore di codice qr gratuito, codice qr vcard, codice qr link, qrgenerator"
+		"keywords": "generatore di codici qr, crea codice qr, genera codice qr, gratuito, free, crea codice qr gratuito, generatore di codice qr gratuito, codice qr vcard, codice qr link, qrgenerator",
+		"structuredData": {
+			"description": "Generatore di codici QR online gratuito con design personalizzati, loghi e modelli. Crea codici QR dinamici per URL, WiFi, vCard e altro.",
+			"features": [
+				"Generatore di Codici QR Gratuito",
+				"Design di Codici QR Personalizzato",
+				"Codice QR con Logo",
+				"Codici QR Dinamici",
+				"Analisi dei Codici QR",
+				"Creazione Massiva di Codici QR",
+				"Modelli di Codici QR",
+				"Codici QR WiFi",
+				"Codici QR vCard",
+				"Codici QR URL"
+			]
+		}
 	},
 	"doc": {
 		"title": "Documentazione in aggiornamento",

@@ -6,6 +6,7 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/comp
 import { ArrowTrendingDownIcon, ArrowTrendingUpIcon } from '@heroicons/react/24/solid';
 import { getName } from 'i18n-iso-countries';
 import { AnalyticsCard, AnalyticsCardSkeleton } from './AnalyticsCard';
+import { AnimatedCounter } from './AnimatedCounter';
 
 export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 	const locale = useLocale();
@@ -65,21 +66,21 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 					<CardHeader className="relative">
 						<CardDescription>{t('analytics.totalViews')}</CardDescription>
 						<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-							{data.shortUrlStats.pageviews}
+							<AnimatedCounter value={data.shortUrlStats.pageviews} />
 						</CardTitle>
 					</CardHeader>
 					<CardFooter className="flex-col items-start gap-1 text-sm">
 						<div className="line-clamp-1 flex gap-2 font-medium text-muted-foreground items-center">
-							<div
-								dangerouslySetInnerHTML={{
-									__html: String(
-										t('analytics.viewsInLastXDays', {
-											count: `<span class="font-bold text-black">${viewsInLastWeek}</span>`,
-											days: `<span class="font-bold text-black">7 ${t('general.days')}</span>`,
-										}),
-									),
-								}}
-							/>
+							<span>
+								<span className="font-bold text-black">
+									<AnimatedCounter value={viewsInLastWeek} />
+								</span>{' '}
+								{t('analytics.viewsInLastXDays', {
+									count: '',
+									days: '',
+								}).replace(/\s+/g, ' ')}{' '}
+								<span className="font-bold text-black">7 {t('general.days')}</span>
+							</span>
 							{viewsInLastWeek > 0 ? (
 								<ArrowTrendingUpIcon className="size-5" />
 							) : (
@@ -92,21 +93,21 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 					<CardHeader className="relative">
 						<CardDescription>{t('analytics.totalVisitors')}</CardDescription>
 						<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-							{data.shortUrlStats.visitors}
+							<AnimatedCounter value={data.shortUrlStats.visitors} />
 						</CardTitle>
 					</CardHeader>
 					<CardFooter className="flex-col items-start gap-1 text-sm">
 						<div className="line-clamp-1 flex gap-2 font-medium text-muted-foreground items-center">
-							<div
-								dangerouslySetInnerHTML={{
-									__html: String(
-										t('analytics.visitorsInLastXDays', {
-											count: `<span class="font-bold text-black">${sessionsInLastWeek}</span>`,
-											days: `<span class="font-bold text-black">7 ${t('general.days')}</span>`,
-										}),
-									),
-								}}
-							/>
+							<span>
+								<span className="font-bold text-black">
+									<AnimatedCounter value={sessionsInLastWeek} />
+								</span>{' '}
+								{t('analytics.visitorsInLastXDays', {
+									count: '',
+									days: '',
+								}).replace(/\s+/g, ' ')}{' '}
+								<span className="font-bold text-black">7 {t('general.days')}</span>
+							</span>
 							{sessionsInLastWeek > 0 ? (
 								<ArrowTrendingUpIcon className="size-5" />
 							) : (

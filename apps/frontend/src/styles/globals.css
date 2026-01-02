@@ -141,3 +141,30 @@
 		max-width: 1400px;
 	}
 }
+
+/* Dynamic Badge Attention Animation */
+@keyframes badge-attention {
+	0%,
+	100% {
+		transform: scale(1) translateY(0);
+		box-shadow: 0 0 0 0 rgb(20 184 166 / 0.4);
+	}
+	10%,
+	30% {
+		transform: scale(1.08) translateY(-2px);
+		box-shadow: 0 0 0 8px rgb(20 184 166 / 0);
+	}
+	20% {
+		transform: scale(1.05) translateY(-1px);
+		box-shadow: 0 0 0 4px rgb(20 184 166 / 0.2);
+	}
+	40%,
+	60% {
+		transform: scale(1) translateY(0);
+		box-shadow: 0 0 0 0 rgb(20 184 166 / 0);
+	}
+}
+
+.animate-badge-attention {
+	animation: badge-attention 2s ease-in-out;
+}

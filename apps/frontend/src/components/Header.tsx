@@ -11,6 +11,29 @@ import { useState } from 'react';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from './ui/drawer';
 import { RectangleStackIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+
+const containerVariants = {
+	hidden: { opacity: 0 },
+	visible: {
+		opacity: 1,
+		transition: {
+			staggerChildren: 0.1,
+			delayChildren: 0.1,
+		},
+	},
+};
+
+const itemVariants = {
+	hidden: { opacity: 0, x: -20 },
+	visible: {
+		opacity: 1,
+		x: 0,
+		transition: {
+			duration: 0.3,
+		},
+	},
+};
 
 export default function Header({
 	hideDashboardLink = false,
@@ -101,43 +124,54 @@ export default function Header({
 						</DrawerClose>
 					</div>
 
-					<div className="space-y-2">
-						{/* <Link
-							href="/plan"
-							className={buttonVariants({
-								variant: 'ghost',
-								className: 'w-full justify-start text-foreground font-semibold',
-							})}
-						>
-							Plan
-						</Link> */}
-						<Link
-							href="/docs"
-							target="blank"
-							locale={'en'}
-							className={buttonVariants({
-								variant: 'ghost',
-								className: 'w-full justify-start text-foreground font-semibold',
-							})}
-						>
-							Docs
-						</Link>
-						<SignedIn>
+					<motion.div
+						className="space-y-2"
+						variants={containerVariants}
+						initial="hidden"
+						animate={mobileMenuOpen ? 'visible' : 'hidden'}
+					>
+						{/* <motion.div variants={itemVariants}>
 							<Link
-								href="/collection"
+								href="/plan"
 								className={buttonVariants({
-									className: 'ml-3 justify-start text-foreground font-semibold',
+									variant: 'ghost',
+									className: 'w-full justify-start text-foreground font-semibold',
 								})}
 							>
-								{t('collectionBtn')}
+								Plan
 							</Link>
+						</motion.div> */}
+						<motion.div variants={itemVariants}>
+							<Link
+								href="/docs"
+								target="blank"
+								locale={'en'}
+								className={buttonVariants({
+									variant: 'ghost',
+									className: 'w-full justify-start text-foreground font-semibold',
+								})}
+							>
+								Docs
+							</Link>
+						</motion.div>
+						<SignedIn>
+							<motion.div variants={itemVariants}>
+								<Link
+									href="/collection"
+									className={buttonVariants({
+										className: 'ml-3 justify-start text-foreground font-semibold',
+									})}
+								>
+									{t('collectionBtn')}
+								</Link>
+							</motion.div>
 						</SignedIn>
 						{!hideLanguageNav && (
-							<div>
+							<motion.div variants={itemVariants}>
 								<LanguageNav />
-							</div>
+							</motion.div>
 						)}
-					</div>
+					</motion.div>
 				</DrawerContent>
 			</Drawer>
 		</header>

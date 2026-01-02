@@ -69,7 +69,6 @@ function QrCode({ qrCode, additionalStyles = '', shortUrl }: QrCodeProps) {
 		if (!qrCodeInstance) return;
 
 		qrCodeInstance?.update(options);
-		console.log('qrCodeInstance._options', qrCodeInstance._options);
 	}, [qrCodeInstance, options]);
 
 	return (

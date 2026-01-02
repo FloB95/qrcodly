@@ -14,9 +14,11 @@ import {
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group';
 import { VCardInputSchema, type TVCardInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CharacterCounter } from './CharacterCounter';
 
 type FormValues = TVCardInput;
 
@@ -70,7 +72,18 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input {...field} translate="no" placeholder={t('firstName.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											placeholder={t('firstName.placeholder')}
+											maxLength={64}
+											className="pr-16"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={64} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -87,7 +100,18 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input {...field} translate="no" placeholder={t('lastName.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											placeholder={t('lastName.placeholder')}
+											maxLength={64}
+											className="pr-16"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={64} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -106,7 +130,18 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 								</span>
 							</FormLabel>
 							<FormControl>
-								<Input {...field} translate="no" placeholder={t('email.placeholder')} />
+								<InputGroup>
+									<InputGroupInput
+										{...field}
+										translate="no"
+										placeholder={t('email.placeholder')}
+										maxLength={100}
+										className="pr-20"
+									/>
+									<InputGroupAddon align="inline-end">
+										<CharacterCounter current={field.value?.length || 0} max={100} />
+									</InputGroupAddon>
+								</InputGroup>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -160,7 +195,18 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input {...field} translate="no" placeholder={t('company.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											placeholder={t('company.placeholder')}
+											maxLength={64}
+											className="pr-16"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={64} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -177,7 +223,18 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input {...field} translate="no" placeholder={t('jobTitle.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											placeholder={t('jobTitle.placeholder')}
+											maxLength={64}
+											className="pr-16"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={64} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -195,7 +252,18 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 								</span>
 							</FormLabel>
 							<FormControl>
-								<Input {...field} translate="no" placeholder={t('street.placeholder')} />
+								<InputGroup>
+									<InputGroupInput
+										{...field}
+										translate="no"
+										placeholder={t('street.placeholder')}
+										maxLength={64}
+										className="pr-16"
+									/>
+									<InputGroupAddon align="inline-end">
+										<CharacterCounter current={field.value?.length || 0} max={64} />
+									</InputGroupAddon>
+								</InputGroup>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -213,7 +281,18 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input {...field} translate="no" placeholder={t('city.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											placeholder={t('city.placeholder')}
+											maxLength={64}
+											className="pr-16"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={64} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -230,7 +309,18 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input {...field} translate="no" placeholder={t('zipCode.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											placeholder={t('zipCode.placeholder')}
+											maxLength={10}
+											className="pr-16"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={10} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -248,7 +338,18 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 								</span>
 							</FormLabel>
 							<FormControl>
-								<Input {...field} translate="no" placeholder={t('state.placeholder')} />
+								<InputGroup>
+									<InputGroupInput
+										{...field}
+										translate="no"
+										placeholder={t('state.placeholder')}
+										maxLength={64}
+										className="pr-16"
+									/>
+									<InputGroupAddon align="inline-end">
+										<CharacterCounter current={field.value?.length || 0} max={64} />
+									</InputGroupAddon>
+								</InputGroup>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -265,7 +366,18 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 								</span>
 							</FormLabel>
 							<FormControl>
-								<Input {...field} translate="no" placeholder={t('country.placeholder')} />
+								<InputGroup>
+									<InputGroupInput
+										{...field}
+										translate="no"
+										placeholder={t('country.placeholder')}
+										maxLength={64}
+										className="pr-16"
+									/>
+									<InputGroupAddon align="inline-end">
+										<CharacterCounter current={field.value?.length || 0} max={64} />
+									</InputGroupAddon>
+								</InputGroup>
 							</FormControl>
 							<FormMessage />
 						</FormItem>

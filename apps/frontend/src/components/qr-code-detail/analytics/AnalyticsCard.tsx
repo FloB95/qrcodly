@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslations } from 'next-intl';
 import React from 'react';
+import { AnimatedCounter } from './AnimatedCounter';
 
 interface AnalyticsCardProps {
 	data: Array<Record<string, string | number>>;
@@ -26,7 +27,9 @@ export const AnalyticsCard = ({ data, title }: AnalyticsCardProps) => {
 								<div className="pr-4">{d.label}</div>
 
 								<div className="grid grid-cols-[4rem_1.5rem_2rem] text-muted-foreground text-right">
-									<div className="text-black tabular-nums">{d.data}</div>
+									<div className="text-black tabular-nums">
+										<AnimatedCounter value={Number(d.data)} />
+									</div>
 									<div className="text-center">|</div>
 									<div className="tabular-nums">{d.percentage}</div>
 								</div>

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
-import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group';
 import {
 	Select,
 	SelectContent,
@@ -22,6 +22,7 @@ import {
 import { WifiInputSchema, type TWifiInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CharacterCounter } from './CharacterCounter';
 
 type FormValues = TWifiInput;
 
@@ -77,7 +78,18 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 								</span>
 							</FormLabel>
 							<FormControl>
-								<Input {...field} translate="no" placeholder={t('network.placeholder')} />
+								<InputGroup>
+									<InputGroupInput
+										{...field}
+										translate="no"
+										placeholder={t('network.placeholder')}
+										maxLength={32}
+										className="pr-16"
+									/>
+									<InputGroupAddon align="inline-end">
+										<CharacterCounter current={field.value?.length || 0} max={32} />
+									</InputGroupAddon>
+								</InputGroup>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -96,13 +108,20 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input
-										{...field}
-										translate="no"
-										autoCorrect="off"
-										autoComplete="off"
-										placeholder={t('password.placeholder')}
-									/>
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											autoCorrect="off"
+											autoComplete="off"
+											placeholder={t('password.placeholder')}
+											maxLength={64}
+											className="pr-16"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={64} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>

@@ -10,6 +10,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect, useState } from 'react';
 import { LocationInputSchema, type TLocationInput } from '@shared/schemas/src';
@@ -18,6 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { StandaloneSearchBox, useJsApiLoader, type Libraries } from '@react-google-maps/api';
 import { Loader2 } from 'lucide-react';
 import { env } from '@/env';
+import { CharacterCounter } from './CharacterCounter';
 
 type LocationSectionProps = {
 	onChange: (data: TLocationInput) => void;
@@ -96,7 +98,17 @@ export const LocationSection = ({ onChange, value }: LocationSectionProps) => {
 									onLoad={(ref) => setSearchBox(ref)}
 									onPlacesChanged={handlePlacesChanged}
 								>
-									<Input {...field} placeholder={t('address.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											placeholder={t('address.placeholder')}
+											maxLength={200}
+											className="pr-20"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={200} />
+										</InputGroupAddon>
+									</InputGroup>
 								</StandaloneSearchBox>
 							</FormControl>
 							<FormMessage />

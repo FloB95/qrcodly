@@ -26,7 +26,7 @@ export type TWifiInput = z.infer<typeof WifiInputSchema>;
 export const VCardInputSchema = z.object({
 	firstName: emptyStringToUndefined(z.string().max(64).optional()),
 	lastName: emptyStringToUndefined(z.string().max(64).optional()),
-	email: emptyStringToUndefined(z.email().max(200).optional()),
+	email: emptyStringToUndefined(z.email().max(100).optional()),
 	phone: emptyStringToUndefined(
 		z
 			.string()
@@ -58,7 +58,7 @@ export const LocationInputSchema = z.object({
 export type TLocationInput = z.infer<typeof LocationInputSchema>;
 
 export const EmailInputSchema = z.object({
-	email: z.email().max(200),
+	email: z.email().max(100),
 	subject: z.string().max(250).optional(),
 	body: z.string().max(1000).optional(),
 });

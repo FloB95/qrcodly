@@ -16,13 +16,28 @@
 		"changelogTooltip": "Die neuesten Updates",
 		"changelogSubheading": "Hier findest du die neuesten Updates und Verbesserungen von QRcodly.",
 		"newBadge": "Neu!",
-		"dynamicDescription": "Dynamische QR-Codes können auch nach dem Erstellen noch geändert werden. Der QR-Code selbst bleibt gleich, aber Ziel, Inhalt oder Weiterleitung können jederzeit aktualisiert werden – ohne den Code neu drucken oder verteilen zu müssen."
+		"dynamicDescription": "Dynamische QR-Codes können nach der Erstellung bearbeitet werden, tracken jeden Scan und liefern detaillierte Statistiken – ohne den Code neu drucken zu müssen."
 	},
 	"headline": "<span class=\"text-xl xs:text-2xl\">Kostenloser & Open Source</span> <br /> QR Code Generator",
 	"metadata": {
-		"title": "QRcodly - Kostenloser QR Code Generator",
-		"description": "Kostenlos QR Codes erstellen mit Logo, eigenem Design oder aus Vorlagen – ideal für Marketing, Visitenkarten & mehr. Jetzt QR Code Generator nutzen!",
-		"keywords": "qr code generator, qr code erstellen, qr code generieren, kostenlos, gratis, qr code erstellen kostenlos, qr code generator kostenlos, vcard qr code, link qr code, qrgenerator"
+		"title": "Kostenloser QR Code Generator - QR Codes Online Erstellen | QRcodly",
+		"description": "Erstelle kostenlos QR-Codes online mit eigenem Design, Logo & Vorlagen. Dynamische QR-Codes für URLs, WiFi, vCards, Events & mehr. Scan-Analytics inklusive. Keine Anmeldung!",
+		"keywords": "QR Code Generator, QR Code erstellen, QR Code generieren, kostenloser QR Code, QR Code mit Logo, eigener QR Code, dynamischer QR Code, QR Code Generator kostenlos, online QR Code erstellen, QR Code Maker, WiFi QR Code, vCard QR Code, QR Code Analytics, Massen QR Code Generator",
+		"structuredData": {
+			"description": "Kostenloser Online QR-Code Generator mit eigenem Design, Logo und Vorlagen. Erstelle dynamische QR-Codes für URLs, WiFi, vCards und mehr.",
+			"features": [
+				"Kostenloser QR Code Generator",
+				"Eigenes QR Code Design",
+				"QR Code mit Logo",
+				"Dynamische QR Codes",
+				"QR Code Analytics",
+				"Massen QR Code Erstellung",
+				"QR Code Vorlagen",
+				"WiFi QR Codes",
+				"vCard QR Codes",
+				"URL QR Codes"
+			]
+		}
 	},
 	"doc": {
 		"title": "Dokumentation wird gerade aktualisiert",
