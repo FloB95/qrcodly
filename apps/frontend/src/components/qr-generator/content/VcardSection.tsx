@@ -40,7 +40,8 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	const [debounced] = useDebouncedValue(form.getValues(), 500);
 
 	function onSubmit(values: FormValues) {
-		onChange(values);
+		// Preserve isDynamic from current value (controlled by DynamicBadge in parent)
+		onChange({ ...values, isDynamic: value.isDynamic });
 	}
 
 	useEffect(() => {

@@ -106,10 +106,14 @@ export const convertEventObjToString = (event: TEventInput) => {
 
 export const convertLocationObjToString = (location: TLocationInput) => {
 	const { latitude, longitude, address } = location;
-	if (!latitude || !longitude) return '';
-
 	const query = encodeURIComponent(address ?? '');
-	return `geo:${latitude},${longitude}?q=${query}`;
+
+	// If coordinates exist → use them
+	if (latitude != null && longitude != null) {
+		return `geo:${latitude},${longitude}?q=${query}`;
+	}
+
+	return `https://www.google.com/maps/search/?api=1&query=${query}`;
 };
 
 export const convertEmailObjToString = (emailObj: TEmailInput) => {
@@ -136,8 +140,10 @@ export const convertQRCodeDataToStringByType = (
 			return content.data;
 		case 'wifi':
 			return convertWiFiObjToString(content.data);
-		case 'vCard':
-			return convertVCardObjToString(content.data);
+		case 'vCard': {
+			const { isDynamic } = content.data as unknown as any;
+			return shortUrl && isDynamic ? shortUrl : convertVCardObjToString(content.data);
+		}
 		case 'email':
 			return convertEmailObjToString(content.data);
 		case 'location':
@@ -158,6 +164,10 @@ export const isDynamic = (content: TQrCodeContent): boolean => {
 
 	if (content.type === 'url') {
 		return content.data.isEditable === true;
+	}
+
+	if (content.type === 'vCard') {
+		return content.data.isDynamic === true;
 	}
 
 	return false;
@@ -204,6 +214,7 @@ export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeConten
 					state: undefined,
 					country: undefined,
 					website: undefined,
+					isDynamic: false,
 				},
 			};
 		case 'email':
@@ -342,39 +353,37 @@ function deepEqual(a: any, b: any): boolean {
 export function objDiff(obj1: any, obj2: any, ignoreProperties: string[] = []): any {
 	const diff: any = {};
 
-	for (const key in obj1) {
+	const keys = new Set([...Object.keys(obj1 ?? {}), ...Object.keys(obj2 ?? {})]);
+
+	for (const key of keys) {
 		if (ignoreProperties.includes(key)) continue;
 
-		const val1 = obj1[key];
-		const val2 = obj2[key];
+		const val1 = obj1?.[key];
+		const val2 = obj2?.[key];
 
+		// Key added
+		if (val1 === undefined && val2 !== undefined) {
+			diff[key] = { oldValue: undefined, newValue: val2 };
+			continue;
+		}
+
+		// Key removed
+		if (val1 !== undefined && val2 === undefined) {
+			diff[key] = { oldValue: val1, newValue: undefined };
+			continue;
+		}
+
+		// Both objects
 		if (typeof val1 === 'object' && val1 !== null && typeof val2 === 'object' && val2 !== null) {
-			if (Array.isArray(val1) && Array.isArray(val2)) {
-				// Arrays: nur Unterschiede speichern
-				const arrayDiffs = val1
-					.map((item, index) => {
-						if (val2[index] === undefined) return { oldValue: item, newValue: undefined };
-						if (!deepEqual(item, val2[index])) {
-							if (typeof item === 'object' && typeof val2[index] === 'object') {
-								return objDiff(item, val2[index]);
-							}
-							return { oldValue: item, newValue: val2[index] };
-						}
-						return null;
-					})
-					.filter(Boolean);
-
-				if (arrayDiffs.length > 0) {
-					diff[key] = arrayDiffs;
-				}
-			} else {
-				// Objekte: rekursiv prüfen
-				const nestedDiff = objDiff(val1, val2, []);
-				if (Object.keys(nestedDiff).length > 0) {
-					diff[key] = nestedDiff;
-				}
+			const nestedDiff = objDiff(val1, val2, []);
+			if (Object.keys(nestedDiff).length > 0) {
+				diff[key] = nestedDiff;
 			}
-		} else if (!deepEqual(val1, val2)) {
+			continue;
+		}
+
+		// Primitive change
+		if (!deepEqual(val1, val2)) {
 			diff[key] = { oldValue: val1, newValue: val2 };
 		}
 	}

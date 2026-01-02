@@ -197,6 +197,8 @@
 			"successTitle": "Nieuwe QR-code gemaakt",
 			"successDescription": "We hebben uw QR-code opgeslagen in uw verzameling voor later gebruik.",
 			"downloadBtn": "Downloaden",
+			"vcfFile": "VCF-bestand",
+			"icsFile": "ICS-bestand",
 			"errorTitle": "Fout bij het opslaan van de QR-code"
 		},
 		"saveInfo": "Sla de huidige QR-code op in uw verzameling.",

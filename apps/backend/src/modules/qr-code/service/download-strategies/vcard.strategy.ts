@@ -19,7 +19,8 @@ export class VCardDownloadStrategy implements IDownloadStrategy {
 
 		const firstName = vCardData.firstName || '';
 		const lastName = vCardData.lastName || '';
-		const filename = `${firstName} ${lastName}`.trim() || 'contact';
+		const fallbackName = `${firstName} ${lastName}`.trim() || 'contact';
+		const filename = qrCode.name || fallbackName;
 
 		return {
 			content: vCardString,

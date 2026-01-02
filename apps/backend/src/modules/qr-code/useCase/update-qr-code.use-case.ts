@@ -84,6 +84,21 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 			}
 		}
 
+		// Handle vCard updates - dynamic vCards update content, short URL destination stays at /download
+		if (qrCode.content.type === 'vCard' && validatedUpdates.content?.type === 'vCard') {
+			if (qrCode.content.data.isDynamic) {
+				const shortUrl = await this.shortUrlRepository.findOneByQrCodeId(qrCode.id);
+				if (!shortUrl) {
+					throw new ShortUrlNotFoundError();
+				}
+				validatedUpdates.content.data = validatedUpdates.content.data;
+			} else {
+				// Static vCard: update content directly
+				validatedUpdates.content.data = validatedUpdates.content.data;
+				validatedUpdates.content.data.isDynamic = false;
+			}
+		}
+
 		if (diffs?.config && validatedUpdates.config) {
 			// delete and reupload image if changed
 			if (

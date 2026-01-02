@@ -197,6 +197,8 @@
 			"successTitle": "Nowy kod QR utworzony",
 			"successDescription": "Zapisaliśmy Twój kod QR w Twojej kolekcji do późniejszego wykorzystania.",
 			"downloadBtn": "Pobierz",
+			"vcfFile": "Plik VCF",
+			"icsFile": "Plik ICS",
 			"errorTitle": "Błąd podczas zapisywania kodu QR"
 		},
 		"saveInfo": "Zapisz bieżący kod QR w swojej kolekcji.",

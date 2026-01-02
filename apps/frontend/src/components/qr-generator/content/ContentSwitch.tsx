@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UrlSection } from './UrlSection';
 import { TextSection } from './TextSection';
 import { VCardSection } from './VcardSection';
+import { EditVCardSection } from './EditVCardSection';
 import { WiFiSection } from './WiFiSection';
 import { getDefaultContentByType, type TQrCodeContentType } from '@shared/schemas';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
@@ -52,7 +53,11 @@ const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({
 			case 'wifi':
 				return <WiFiSection value={value} onChange={onChange} />;
 			case 'vCard':
-				return <VCardSection value={value} onChange={onChange} />;
+				return isEditMode ? (
+					<EditVCardSection value={value} onChange={onChange} />
+				) : (
+					<VCardSection value={value} onChange={onChange} />
+				);
 			case 'email':
 				return <EmailSection value={value} onChange={onChange} />;
 			case 'location':
@@ -101,7 +106,7 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 			{/* Bulk Header */}
 			{!isEditMode && bulkAllowed && (
 				<div className="flex justify-between mb-4 items-center">
-					{/* Dynamic Badge - Only for URL type */}
+					{/* Dynamic Badge - For URL and vCard types */}
 					{content.type === 'url' ? (
 						<DynamicBadge
 							checked={content.data.isEditable ?? false}
@@ -111,6 +116,19 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 									data: {
 										...content.data,
 										isEditable: checked,
+									},
+								});
+							}}
+						/>
+					) : content.type === 'vCard' ? (
+						<DynamicBadge
+							checked={content.data.isDynamic ?? false}
+							onChange={(checked) => {
+								updateContent({
+									type: 'vCard',
+									data: {
+										...content.data,
+										isDynamic: checked,
 									},
 								});
 							}}

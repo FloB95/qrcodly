@@ -94,3 +94,54 @@ export const generateEditableUrlQrCodeDto = (): TCreateQrCodeDto => ({
 	},
 	config: QrCodeDefaults,
 });
+
+/**
+ * Generates a dynamic vCard QR code DTO.
+ */
+export const generateDynamicVCardQrCodeDto = (): TCreateQrCodeDto => ({
+	name: faker.lorem.words(3),
+	content: {
+		type: 'vCard',
+		data: {
+			firstName: faker.person.firstName(),
+			lastName: faker.person.lastName(),
+			email: faker.internet.email(),
+			phone: `+${faker.number.int({ min: 1, max: 9999 })}${faker.number.int({ min: 100000, max: 999999999999999 })}`,
+			company: faker.company.name(),
+			isDynamic: true,
+		},
+	},
+	config: QrCodeDefaults,
+});
+
+/**
+ * Generates an email QR code DTO.
+ */
+export const generateEmailQrCodeDto = (): TCreateQrCodeDto => ({
+	name: faker.lorem.words(3),
+	content: {
+		type: 'email',
+		data: {
+			email: faker.internet.email(),
+			subject: faker.lorem.sentence(),
+			body: faker.lorem.paragraph(),
+		},
+	},
+	config: QrCodeDefaults,
+});
+
+/**
+ * Generates a location QR code DTO.
+ */
+export const generateLocationQrCodeDto = (): TCreateQrCodeDto => ({
+	name: faker.lorem.words(3),
+	content: {
+		type: 'location',
+		data: {
+			latitude: faker.location.latitude(),
+			longitude: faker.location.longitude(),
+			address: `${faker.location.streetAddress()}, ${faker.location.city()}`,
+		},
+	},
+	config: QrCodeDefaults,
+});

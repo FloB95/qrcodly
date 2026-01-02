@@ -5,6 +5,7 @@ import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { EventDetailsCard } from './EventDetailsCard';
 import { ShortUrlDisplay } from './ShortUrlDisplay';
 import { EmailDetailsCard } from './EmailDetailsCard';
+import { VCardDetailsCard } from './VCardDetailsCard';
 
 const renderUrlContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	if (qr.content.type !== 'url') return null;
@@ -43,8 +44,24 @@ const renderEventContent = (qr: TQrCodeWithRelationsResponseDto) => {
 
 const renderVCardContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	if (qr.content.type !== 'vCard') return null;
-	const { firstName = '', lastName = '' } = qr.content.data;
-	return `${firstName} ${lastName}`.trim() || 'Contact';
+
+	const vcardData = qr.content.data;
+	const { firstName = '', lastName = '', isDynamic } = vcardData;
+	const displayName = `${firstName} ${lastName}`.trim() || 'Contact';
+
+	// If dynamic and has short URL, show with ShortUrlDisplay
+	if (isDynamic && qr.shortUrl) {
+		return (
+			<ShortUrlDisplay
+				shortCode={qr.shortUrl.shortCode}
+				destinationUrl={qr.shortUrl.destinationUrl}
+				destinationContent={<VCardDetailsCard vcard={vcardData} trigger={displayName} />}
+			/>
+		);
+	}
+
+	// Static vCard or no short URL - show basic name
+	return displayName;
 };
 
 export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {

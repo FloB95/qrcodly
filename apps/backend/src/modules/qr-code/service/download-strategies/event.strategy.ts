@@ -20,7 +20,7 @@ export class EventDownloadStrategy implements IDownloadStrategy {
 		return {
 			content: iCalString,
 			contentType: 'text/calendar;charset=utf-8',
-			filename: `${eventData.title || 'event'}.ics`,
+			filename: `${qrCode.name || eventData.title || 'event'}.ics`,
 		};
 	}
 }

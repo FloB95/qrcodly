@@ -197,6 +197,8 @@
 			"successTitle": "New QR code Created",
 			"successDescription": "We saved your QR code in your collection for later use.",
 			"downloadBtn": "Download",
+			"vcfFile": "VCF File",
+			"icsFile": "ICS File",
 			"errorTitle": "Error saving QR code"
 		},
 		"saveInfo": "Save the current QR code in your collection for later use.",

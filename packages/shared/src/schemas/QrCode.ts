@@ -10,7 +10,7 @@ export const UrlInputSchema = z.object({
 });
 export type TUrlInput = z.infer<typeof UrlInputSchema>;
 
-export const TextInputSchema = z.string().max(1000);
+export const TextInputSchema = z.string().min(1).max(1000);
 export type TTextInput = string;
 
 const WifiEncryptionSchema = z.enum(['WPA', 'WEP', 'nopass']);
@@ -47,6 +47,7 @@ export const VCardInputSchema = z.object({
 	state: emptyStringToUndefined(z.string().max(64).optional()),
 	country: emptyStringToUndefined(z.string().max(64).optional()),
 	website: emptyStringToUndefined(z.url().optional()),
+	isDynamic: z.boolean().optional(),
 });
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
 
