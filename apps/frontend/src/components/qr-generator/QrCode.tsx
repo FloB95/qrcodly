@@ -75,13 +75,13 @@ function QrCode({ qrCode, additionalStyles = '', shortUrl }: QrCodeProps) {
 		<div className="flex flex-col">
 			<div
 				className={cn(
-					'canvas-wrap max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]',
+					'canvas-wrap mx-auto max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]',
 					additionalStyles,
 				)}
 				ref={ref}
 			/>
 			{shortUrl && isDynamic(qrCode.content) && (
-				<div className="mt-4 flex items-center justify-between">
+				<div className="mt-4 hidden sm:flex items-center justify-between">
 					<DynamicBadge />
 					<div className="text-xs ml-4">{getShortUrlFromCode(shortUrl.shortCode, true)}</div>
 				</div>

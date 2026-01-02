@@ -22,7 +22,7 @@ export const QrCodeWithDownloadBtn = () => {
 					/>
 				</div>
 				{!bulkMode.isBulkMode && (
-					<div className="mt-4 flex justify-center flex-col space-y-2 mb-3">
+					<div className="mt-6 flex justify-center flex-col space-y-2 mb-3">
 						<GeneratorQrCodeDownloadBtn saveOnDownload={true} />
 						<SaveQrCodeBtn
 							qrCode={{

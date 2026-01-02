@@ -195,7 +195,7 @@ export const EventSection = ({ onChange, value }: EventSectionProps) => {
 							</FormItem>
 						)}
 					/>
-					<div className="flex space-x-4">
+					<div className="flex space-x-4 flex-col sm:flex-row space-y-6">
 						<FormField
 							control={form.control}
 							name="startDate"

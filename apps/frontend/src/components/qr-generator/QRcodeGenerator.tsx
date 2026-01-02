@@ -8,12 +8,13 @@ import { PaintBrushIcon, QrCodeIcon, StarIcon } from '@heroicons/react/24/outlin
 import { ContentSwitch } from './content/ContentSwitch';
 import { SettingsForm } from './style/SettingsForm';
 import { TemplateTabs } from './templates/TemplateTabs';
-import { Input } from '../ui/input';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import { QrCodeWithDownloadBtn } from './QrCodeWithDownloadBtn';
 import { QrCodeWithUpdateBtn } from './QrCodeWithUpdateBtn';
 import { QrCodeWithTemplateUpdateBtn } from './templates/QrCodeWithTemplateUpdateBtn';
 import type { TQrCodeContentType } from '@shared/schemas';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group';
+import { CharacterCounter } from './content/CharacterCounter';
 
 type GeneratorTab = 'content' | 'style' | 'templates';
 type GeneratorTabConfig = {
@@ -114,16 +115,22 @@ export const QRcodeGenerator = ({
 				<div className="mx-auto flex min-h-[500px] max-w-[1200px] flex-1 rounded-2xl from-white to-white/60 bg-gradient-to-br relative">
 					{backLink}
 					<div className="flex flex-1 flex-col p-6 md:flex-row md:gap-12">
-						<div className="flex-1">
+						<div className="flex-1 mb-10 md:mb-0">
 							{isEditMode && currentTab === 'content' && (
-								<div className="mb-8 max-w-md space-y-2">
-									<label className="text-sm font-medium">{t('labelName')}</label>
-									<Input
-										value={name}
-										maxLength={32}
-										onChange={(e) => updateName(e.target.value)}
-										placeholder={t('labelName')}
-									/>
+								<div className="mb-8 max-w-md">
+									<div className="text-sm font-medium mb-2">{t('labelName')}</div>
+									<InputGroup>
+										<InputGroupInput
+											value={name}
+											maxLength={32}
+											onChange={(e) => updateName(e.target.value)}
+											placeholder={t('labelName')}
+											className="pr-16"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={name?.length || 0} max={32} />
+										</InputGroupAddon>
+									</InputGroup>
 								</div>
 							)}
 

@@ -61,7 +61,7 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-				<div className="flex space-x-4">
+				<div className="flex space-x-4 flex-col sm:flex-row space-y-6">
 					<FormField
 						control={form.control}
 						name="firstName"
@@ -148,7 +148,7 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						</FormItem>
 					)}
 				/>
-				<div className="flex space-x-4">
+				<div className="flex space-x-4 flex-col sm:flex-row space-y-6">
 					<FormField
 						control={form.control}
 						name="phone"
@@ -184,7 +184,7 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						)}
 					/>
 				</div>
-				<div className="flex space-x-4">
+				<div className="flex space-x-4 flex-col sm:flex-row space-y-6">
 					<FormField
 						control={form.control}
 						name="company"
@@ -270,7 +270,7 @@ export const VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						</FormItem>
 					)}
 				/>
-				<div className="flex space-x-4">
+				<div className="flex space-x-4 flex-col sm:flex-row space-y-6">
 					<FormField
 						control={form.control}
 						name="city"

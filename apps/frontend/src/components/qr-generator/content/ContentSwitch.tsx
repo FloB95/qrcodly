@@ -142,9 +142,9 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 							{t('cancel')}
 						</Button>
 					) : (
-						<Button variant="link" onClick={() => updateBulkMode(true)}>
-							<DocumentArrowUpIcon className="mr-1.5 h-6 w-6" />
-							{t('bulkModeBtn')}
+						<Button variant="link" className="p-0" onClick={() => updateBulkMode(true)}>
+							<DocumentArrowUpIcon className="sm:mr-1.5 h-8 w-8 sm:h-6 sm:w-6" />
+							<span className="hidden sm:block">{t('bulkModeBtn')}</span>
 							<Badge className="ml-2 hidden xs:block">{t2('newBadge')}</Badge>
 						</Button>
 					)}

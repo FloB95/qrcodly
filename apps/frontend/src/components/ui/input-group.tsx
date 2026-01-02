@@ -14,8 +14,8 @@ function InputGroup({ className, ...props }: React.ComponentProps<'div'>) {
 			data-slot="input-group"
 			role="group"
 			className={cn(
-				'group/input-group border-input dark:bg-input/30 relative flex w-full items-center rounded-md border shadow-xs transition-[color,box-shadow] outline-none',
-				'h-9 min-w-0 has-[>textarea]:h-auto',
+				'group/input-group border-input dark:bg-input/30 relative flex w-full items-center rounded-md border shadow-xs transition-[color,box-shadow] outline-none bg-white file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground h-10 min-w-0 text-base file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+				'h-auto min-w-0 has-[>textarea]:h-auto',
 
 				// Variants based on alignment.
 				'has-[>[data-align=inline-start]]:[&>input]:pl-2',
@@ -127,7 +127,7 @@ function InputGroupInput({ className, ...props }: React.ComponentProps<'input'>)
 		<Input
 			data-slot="input-group-control"
 			className={cn(
-				'flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent',
+				'flex-1 rounded-none border-0 p-3 h-auto bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent',
 				className,
 			)}
 			{...props}
@@ -140,7 +140,7 @@ function InputGroupTextarea({ className, ...props }: React.ComponentProps<'texta
 		<Textarea
 			data-slot="input-group-control"
 			className={cn(
-				'flex-1 resize-none rounded-none border-0 bg-transparent py-3 shadow-none focus-visible:ring-0 dark:bg-transparent',
+				'flex-1 resize-none rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent',
 				className,
 			)}
 			{...props}
