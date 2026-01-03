@@ -18,7 +18,10 @@ const qrCode = createTable(
 		createdAt: datetime().notNull(),
 		updatedAt: datetime(),
 	},
-	(t) => [index('i_qr_code_created_by').on(t.createdBy)],
+	(t) => [
+		// Composite index for list queries with sorting (ORDER BY createdAt DESC WHERE createdBy=?)
+		index('i_qr_code_created_by_created_at').on(t.createdBy, t.createdAt),
+	],
 );
 
 export type TQrCode = typeof qrCode.$inferSelect;

@@ -1,0 +1,279 @@
+{
+	"version": "5",
+	"dialect": "mysql",
+	"id": "bbca9bb0-2d6c-420a-84c3-033a0af39f8e",
+	"prevId": "af40548b-2bb1-4788-a85e-c949f8ab2a80",
+	"tables": {
+		"qr_code_config_template": {
+			"name": "qr_code_config_template",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"name": {
+					"name": "name",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"config": {
+					"name": "config",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"preview_image": {
+					"name": "preview_image",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"is_predefined": {
+					"name": "is_predefined",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": false
+				},
+				"created_by": {
+					"name": "created_by",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"i_config_template_created_by_created_at": {
+					"name": "i_config_template_created_by_created_at",
+					"columns": ["created_by", "created_at"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {
+				"qr_code_config_template_id": {
+					"name": "qr_code_config_template_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraint": {}
+		},
+		"qr_code": {
+			"name": "qr_code",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"name": {
+					"name": "name",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"config": {
+					"name": "config",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"content": {
+					"name": "content",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"preview_image": {
+					"name": "preview_image",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"created_by": {
+					"name": "created_by",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"i_qr_code_created_by_created_at": {
+					"name": "i_qr_code_created_by_created_at",
+					"columns": ["created_by", "created_at"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {
+				"qr_code_id": {
+					"name": "qr_code_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraint": {}
+		},
+		"short_url": {
+			"name": "short_url",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"short_code": {
+					"name": "short_code",
+					"type": "varchar(5)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"destination_url": {
+					"name": "destination_url",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"qr_code_id": {
+					"name": "qr_code_id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"created_by": {
+					"name": "created_by",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"i_short_url_created_by_created_at": {
+					"name": "i_short_url_created_by_created_at",
+					"columns": ["created_by", "created_at"],
+					"isUnique": false
+				},
+				"i_short_url_qr_code_id": {
+					"name": "i_short_url_qr_code_id",
+					"columns": ["qr_code_id"],
+					"isUnique": false
+				},
+				"i_short_url_reserved": {
+					"name": "i_short_url_reserved",
+					"columns": ["created_by", "qr_code_id", "destination_url"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"short_url_qr_code_id_qr_code_id_fk": {
+					"name": "short_url_qr_code_id_qr_code_id_fk",
+					"tableFrom": "short_url",
+					"tableTo": "qr_code",
+					"columnsFrom": ["qr_code_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {
+				"short_url_id": {
+					"name": "short_url_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {
+				"short_url_shortCode_unique": {
+					"name": "short_url_shortCode_unique",
+					"columns": ["short_code"]
+				},
+				"short_url_qrCodeId_unique": {
+					"name": "short_url_qrCodeId_unique",
+					"columns": ["qr_code_id"]
+				}
+			},
+			"checkConstraint": {}
+		}
+	},
+	"views": {},
+	"_meta": {
+		"schemas": {},
+		"tables": {},
+		"columns": {}
+	},
+	"internal": {
+		"tables": {},
+		"indexes": {}
+	}
+}

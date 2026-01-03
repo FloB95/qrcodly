@@ -103,7 +103,7 @@ export const SocialPlatformEnum = z.enum([
 export const SocialLinkSchema = z.object({
 	platform: SocialPlatformEnum,
 	label: z.string().min(1),
-	url: z.url(),
+	url: z.httpUrl(),
 });
 
 export const SocialInputSchema = z.object({
@@ -118,7 +118,7 @@ export const EventInputSchema = z.object({
 	title: z.string().min(1).max(200),
 	description: z.string().max(500).optional(),
 	location: z.string().max(200).optional(),
-	url: z.url().optional(),
+	url: z.httpUrl().optional(),
 	startDate: z.iso.datetime().describe('As ISO Datetime String'),
 	endDate: z.iso.datetime().describe('As ISO Datetime String'),
 });
@@ -217,9 +217,9 @@ export const ColorOrGradient = z.discriminatedUnion('type', [HexColor, RgbaColor
 export type TColorOrGradient = z.infer<typeof ColorOrGradient>;
 
 export const QrCodeOptionsSchema = z.object({
-	width: z.number(),
-	height: z.number(),
-	margin: z.number(),
+	width: z.number().positive(),
+	height: z.number().positive(),
+	margin: z.number().positive(),
 	image: z
 		.string()
 		.max(0.5 * 1024 * 1024, 'Image is to large! Max size is 0.5 MB.')
