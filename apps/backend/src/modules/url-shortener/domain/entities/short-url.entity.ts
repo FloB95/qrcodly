@@ -26,7 +26,7 @@ const shortUrl = createTable(
 		index('i_short_url_created_by_created_at').on(t.createdBy, t.createdAt),
 		index('i_short_url_qr_code_id').on(t.qrCodeId),
 		// Composite index for reserved URL lookups (WHERE createdBy=? AND qrCodeId IS NULL AND destinationUrl IS NULL)
-		index('i_short_url_reserved').on(t.createdBy, t.qrCodeId, t.destinationUrl),
+		index('i_short_url_reserved').on(t.createdBy, t.qrCodeId),
 	],
 );
 

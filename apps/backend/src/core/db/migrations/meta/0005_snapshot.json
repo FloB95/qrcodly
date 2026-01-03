@@ -1,7 +1,7 @@
 {
 	"version": "5",
 	"dialect": "mysql",
-	"id": "bbca9bb0-2d6c-420a-84c3-033a0af39f8e",
+	"id": "9d464cf7-4c31-4efe-a0d6-0abc9b656826",
 	"prevId": "af40548b-2bb1-4788-a85e-c949f8ab2a80",
 	"tables": {
 		"qr_code_config_template": {
@@ -232,7 +232,7 @@
 				},
 				"i_short_url_reserved": {
 					"name": "i_short_url_reserved",
-					"columns": ["created_by", "qr_code_id", "destination_url"],
+					"columns": ["created_by", "qr_code_id"],
 					"isUnique": false
 				}
 			},
