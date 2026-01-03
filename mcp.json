@@ -9,12 +9,21 @@
 	"servers": {
 		"filesystem": {
 			"command": "npx",
-			"args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/flo/Projects/own/qrcodly-update"],
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-filesystem",
+				"/Users/flo/Projects/own/qrcodly-update"
+			],
 			"env": {}
 		},
 		"git": {
 			"command": "npx",
-			"args": ["-y", "@modelcontextprotocol/server-git", "--repository", "/Users/flo/Projects/own/qrcodly-update"]
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-git",
+				"--repository",
+				"/Users/flo/Projects/own/qrcodly-update"
+			]
 		},
 		"mysql": {
 			"command": "npx",
