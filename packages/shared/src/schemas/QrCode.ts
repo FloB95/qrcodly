@@ -217,9 +217,9 @@ export const ColorOrGradient = z.discriminatedUnion('type', [HexColor, RgbaColor
 export type TColorOrGradient = z.infer<typeof ColorOrGradient>;
 
 export const QrCodeOptionsSchema = z.object({
-	width: z.number().positive(),
-	height: z.number().positive(),
-	margin: z.number().positive(),
+	width: z.number().min(0),
+	height: z.number().min(0),
+	margin: z.number().min(0),
 	image: z
 		.string()
 		.max(0.5 * 1024 * 1024, 'Image is to large! Max size is 0.5 MB.')

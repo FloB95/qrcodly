@@ -50,6 +50,8 @@ describe('updateQrCode', () => {
 	});
 
 	afterAll(async () => {
+		// Small delay to ensure all async Redis operations complete
+		await new Promise((resolve) => setTimeout(resolve, 100));
 		await shutDownServer();
 	});
 
