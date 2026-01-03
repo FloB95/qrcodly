@@ -19,7 +19,9 @@ function areAllPropertiesUndefined(obj: Record<string, any>): boolean {
 }
 
 export function convertVCardObjToString(vCardInput: TVCardInput): string {
-	const t = vCardInput;
+	const t = {
+		...vCardInput,
+	};
 	delete t.isDynamic;
 	if (areAllPropertiesUndefined(t)) {
 		return '';
