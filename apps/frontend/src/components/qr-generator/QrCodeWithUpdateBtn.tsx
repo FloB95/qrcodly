@@ -2,9 +2,11 @@ import { Suspense } from 'react';
 import { DynamicQrCode } from './DynamicQrCode';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import UpdateQrCodeBtn from './UpdateQrCodeBtn';
+import { QrPreview } from './preview';
 
 export const QrCodeWithUpdateBtn = () => {
 	const { id, name, config, content, shortUrl } = useQrCodeGeneratorStore((state) => state);
+
 	return (
 		<div>
 			<Suspense fallback={null}>
@@ -18,6 +20,7 @@ export const QrCodeWithUpdateBtn = () => {
 					/>
 				</div>
 				<div className="mt-6 flex justify-center flex-col space-y-2 mb-3">
+					<QrPreview variant="outline" className="w-full" />
 					<UpdateQrCodeBtn
 						qrCode={{
 							id: id!,

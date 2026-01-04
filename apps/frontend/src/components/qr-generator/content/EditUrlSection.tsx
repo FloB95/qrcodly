@@ -77,7 +77,6 @@ const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 											field.onChange(val);
 										}}
 										maxLength={1000}
-										className="p-6"
 										placeholder={t('placeholder')}
 										autoFocus
 										onBlur={(e) => {

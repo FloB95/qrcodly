@@ -49,8 +49,10 @@ jobs:
           node-version: 22
           cache: 'pnpm'
       - name: Install dependencies
-        working-directory: apps/backend
         run: pnpm install
+
+      - name: Build shared package
+        run: pnpm --filter @shared/schemas build
 
       - name: Run Checks
         working-directory: apps/backend

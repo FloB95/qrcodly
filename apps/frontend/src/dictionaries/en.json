@@ -495,6 +495,58 @@
 					"remove": "Remove"
 				}
 			}
+		},
+		"preview": {
+			"button": "Test Preview",
+			"title": "QR Code Background Preview",
+			"selectTitle": "Select Background",
+			"selectBackground": "Select a background to preview your QR code",
+			"changeBackground": "Change Background",
+			"close": "Close",
+			"predefined": {
+				"title": "Examples",
+				"businessCards": "Business Cards",
+				"brochures": "Brochures",
+				"posters": "Posters",
+				"packaging": "Packaging",
+				"websites": "Websites",
+				"socialMedia": "Social Media"
+			},
+			"camera": {
+				"title": "Camera",
+				"capture": "Capture Frame",
+				"loading": "Initializing camera...",
+				"retry": "Retry Camera Access",
+				"error": {
+					"title": "Camera Error"
+				}
+			},
+			"upload": {
+				"title": "Upload",
+				"dragDrop": "Drag and drop an image here",
+				"orClick": "or click to browse",
+				"formats": "JPG, PNG, WEBP (max 5MB)"
+			},
+			"contrast": {
+				"ratio": "Ratio",
+				"excellent": {
+					"title": "Excellent Visibility"
+				},
+				"good": {
+					"title": "Good Visibility"
+				},
+				"poor": {
+					"title": "Poor Visibility"
+				},
+				"critical": {
+					"title": "Critical - May Not Scan"
+				}
+			},
+			"controls": {
+				"reset": "Reset Position",
+				"resize": "Drag corner to resize",
+				"move": "Drag to reposition · Drag corner to resize"
+			}
 		}
 	},
 	"pagination": {

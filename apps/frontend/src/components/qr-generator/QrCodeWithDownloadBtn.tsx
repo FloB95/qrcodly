@@ -5,10 +5,12 @@ import { GeneratorQrCodeDownloadBtn } from './download-buttons';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import SaveQrCodeBtn from './SaveQrCodeBtn';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
+import { QrPreview } from './preview';
 
 export const QrCodeWithDownloadBtn = () => {
 	const { config, content, bulkMode } = useQrCodeGeneratorStore((state) => state);
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
+
 	return (
 		<div>
 			<Suspense fallback={null}>
@@ -23,6 +25,7 @@ export const QrCodeWithDownloadBtn = () => {
 				</div>
 				{!bulkMode.isBulkMode && (
 					<div className="mt-6 flex justify-center flex-col space-y-2 mb-3">
+						<QrPreview variant="outline" className="w-full" />
 						<GeneratorQrCodeDownloadBtn saveOnDownload={true} />
 						<SaveQrCodeBtn
 							qrCode={{

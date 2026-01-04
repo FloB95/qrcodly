@@ -62,10 +62,26 @@ export function colorTypeToPickerString(color: TColorOrGradient): string {
 			return color.value;
 		case 'gradient': {
 			const gradientType = color.gradientType === 'linear' ? 'linear-gradient' : 'radial-gradient';
-			const colorStops = color.colorStops
-				.map((stop) => `${stop.color} ${stop.offset * 100}%`)
+			const validStops = color.colorStops.filter(
+				(stop) => stop.color && typeof stop.color === 'string',
+			);
+
+			// Ensure we have at least 2 color stops for a valid gradient
+			if (validStops.length < 2) {
+				// Fallback to first valid color or black
+				const fallbackColor = validStops[0]?.color || '#000000';
+				return fallbackColor;
+			}
+
+			const colorStops = validStops
+				.map((stop) => {
+					// Ensure offset is a valid number, default to 0 if NaN
+					const offset = Number.isFinite(stop.offset) ? stop.offset : 0;
+					return `${stop.color} ${offset * 100}%`;
+				})
 				.join(', ');
-			return `${gradientType}(${color.rotation}deg, ${colorStops})`;
+			const rotation = Number.isFinite(color.rotation) ? color.rotation : 0;
+			return `${gradientType}(${rotation}deg, ${colorStops})`;
 		}
 	}
 }
@@ -101,14 +117,19 @@ export function pickerStringToColorType(
 
 	// Handle gradient colors
 	if (gradientObject?.isGradient) {
+		const rotation = gradientObject.degrees ? parseFloat(gradientObject.degrees) : 0;
 		return {
 			type: 'gradient',
 			gradientType: gradientObject.gradientType === 'linear-gradient' ? 'linear' : 'radial',
-			rotation: gradientObject.degrees ? parseFloat(gradientObject.degrees) : 0,
-			colorStops: gradientObject.colors.map((stop) => ({
-				offset: stop.left / 100,
-				color: rgbaToHex(stop.value, true),
-			})),
+			rotation: Number.isFinite(rotation) ? rotation : 0,
+			colorStops: gradientObject.colors.map((stop) => {
+				// Ensure stop.left is a valid number, default to 0 if NaN
+				const left = Number.isFinite(stop.left) ? stop.left : 0;
+				return {
+					offset: left / 100,
+					color: rgbaToHex(stop.value, true),
+				};
+			}),
 		};
 	}
 
@@ -184,6 +205,9 @@ export function normalizeGradientString(gradientString: string): string {
 
 	// Fix double comma issue (e.g., ",deg," -> ",")
 	normalized = normalized.replace(/,deg,/, ',');
+
+	// Fix NaN% in color stops (e.g., "NaN%" -> "0%")
+	normalized = normalized.replace(/NaN%/g, '0%');
 
 	return normalized;
 }
