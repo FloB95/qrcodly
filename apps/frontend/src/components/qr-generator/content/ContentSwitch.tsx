@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect, useRef } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { DocumentArrowUpIcon } from '@heroicons/react/24/outline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -52,6 +52,21 @@ const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({
 	enableBulk: config.enableBulk,
 }));
 
+// Helper functions for localStorage
+const getDynamicPreference = (contentType: 'url' | 'vCard'): boolean => {
+	if (typeof window === 'undefined') return true;
+	const key = contentType === 'url' ? 'qr-url-isEditable' : 'qr-vcard-isDynamic';
+	const stored = localStorage.getItem(key);
+	// If no preference is stored, default to true (checked)
+	return stored === null ? true : stored === 'true';
+};
+
+const setDynamicPreference = (contentType: 'url' | 'vCard', value: boolean): void => {
+	if (typeof window === 'undefined') return;
+	const key = contentType === 'url' ? 'qr-url-isEditable' : 'qr-vcard-isDynamic';
+	localStorage.setItem(key, String(value));
+};
+
 export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProps) => {
 	const t = useTranslations('generator.contentSwitch');
 	const t2 = useTranslations('general');
@@ -62,6 +77,50 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 
 	const activeTab = TABS.find((t) => t.type === content.type);
 	const bulkAllowed = activeTab?.enableBulk;
+
+	// Track the last initialized content type to prevent redundant updates
+	const lastInitializedTypeRef = useRef<string | null>(null);
+
+	// Initialize dynamic state from localStorage on mount and when content type changes
+	useEffect(() => {
+		if (isEditMode) return; // Don't apply defaults in edit mode
+
+		// Only initialize if we haven't already for this content type
+		const contentTypeKey = content.type;
+		if (lastInitializedTypeRef.current === contentTypeKey) return;
+
+		if (content.type === 'url') {
+			const savedPreference = getDynamicPreference('url');
+			const currentValue = content.data.isEditable;
+
+			// Only update if undefined or doesn't match preference
+			if (currentValue === undefined || currentValue !== savedPreference) {
+				updateContent({
+					type: 'url',
+					data: {
+						...content.data,
+						isEditable: savedPreference,
+					},
+				});
+			}
+			lastInitializedTypeRef.current = contentTypeKey;
+		} else if (content.type === 'vCard') {
+			const savedPreference = getDynamicPreference('vCard');
+			const currentValue = content.data.isDynamic;
+
+			// Only update if undefined or doesn't match preference
+			if (currentValue === undefined || currentValue !== savedPreference) {
+				updateContent({
+					type: 'vCard',
+					data: {
+						...content.data,
+						isDynamic: savedPreference,
+					},
+				});
+			}
+			lastInitializedTypeRef.current = contentTypeKey;
+		}
+	}, [content.type, content.data, isEditMode, updateContent]); // Run when content type or data changes
 
 	// Memoize visibleTabs to prevent unnecessary recalculation
 	const visibleTabs = useMemo(
@@ -112,8 +171,10 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 					{/* Dynamic Badge - For URL and vCard types */}
 					{content.type === 'url' ? (
 						<DynamicBadge
-							checked={content.data.isEditable ?? false}
+							checked={content.data.isEditable ?? true}
 							onChange={(checked) => {
+								// Save preference to localStorage when user manually changes it
+								setDynamicPreference('url', checked);
 								updateContent({
 									type: 'url',
 									data: {
@@ -125,8 +186,10 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 						/>
 					) : content.type === 'vCard' ? (
 						<DynamicBadge
-							checked={content.data.isDynamic ?? false}
+							checked={content.data.isDynamic ?? true}
 							onChange={(checked) => {
+								// Save preference to localStorage when user manually changes it
+								setDynamicPreference('vCard', checked);
 								updateContent({
 									type: 'vCard',
 									data: {

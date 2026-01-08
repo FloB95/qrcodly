@@ -495,6 +495,77 @@
 					"remove": "Eliminar"
 				}
 			}
+		},
+		"preview": {
+			"button": "Probar Vista Previa",
+			"title": "Vista Previa del Código QR con Fondo",
+			"selectTitle": "Seleccionar Fondo",
+			"selectDescription": "Prueba cómo se ve tu código QR en diferentes fondos antes de imprimirlo o compartirlo.",
+			"selectBackground": "Selecciona un fondo para previsualizar tu código QR",
+			"changeBackground": "Cambiar Fondo",
+			"close": "Cerrar",
+			"predefined": {
+				"title": "Ejemplos",
+				"businessCards": "Tarjetas de Visita",
+				"brochures": "Folletos",
+				"posters": "Carteles",
+				"packaging": "Embalaje",
+				"websites": "Sitios Web",
+				"socialMedia": "Redes Sociales"
+			},
+			"website": {
+				"title": "Sitio Web",
+				"inputLabel": "URL del Sitio Web",
+				"inputPlaceholder": "Introduce URL (ej. https://ejemplo.com)",
+				"previewButton": "Vista Previa del Sitio Web",
+				"loadingIframe": "Cargando sitio web...",
+				"loadingScreenshot": "Capturando captura de pantalla...",
+				"capturingPreview": "Capturando vista previa...",
+				"info": "Introduce cualquier URL de sitio web para usarla como fondo para tu código QR",
+				"errors": {
+					"invalidUrl": "Por favor introduce una URL válida que comience con http:// o https://",
+					"loadFailed": "Error al cargar el sitio web. Por favor inténtalo de nuevo.",
+					"captureFailed": "Error al capturar el sitio web. Este sitio web puede no permitir la incrustación.",
+					"screenshotFailed": "Error al capturar la captura de pantalla. El servicio de capturas de pantalla puede no estar disponible o la URL no es válida.",
+					"networkError": "Error de red. Por favor verifica tu conexión."
+				},
+				"retry": "Reintentar"
+			},
+			"camera": {
+				"title": "Cámara",
+				"capture": "Capturar Fotograma",
+				"loading": "Inicializando cámara...",
+				"retry": "Reintentar Acceso a Cámara",
+				"error": {
+					"title": "Error de Cámara"
+				}
+			},
+			"upload": {
+				"title": "Subir",
+				"dragDrop": "Arrastra y suelta una imagen aquí",
+				"orClick": "o haz clic para buscar",
+				"formats": "JPG, PNG, WEBP (máx. 5MB)"
+			},
+			"contrast": {
+				"ratio": "Ratio",
+				"excellent": {
+					"title": "Visibilidad Excelente"
+				},
+				"good": {
+					"title": "Buena Visibilidad"
+				},
+				"poor": {
+					"title": "Poca Visibilidad"
+				},
+				"critical": {
+					"title": "Crítico - Puede No Escanear"
+				}
+			},
+			"controls": {
+				"reset": "Restablecer Posición",
+				"resize": "Arrastra la esquina para redimensionar",
+				"move": "Arrastra para reposicionar · Arrastra la esquina para redimensionar"
+			}
 		}
 	},
 	"pagination": {

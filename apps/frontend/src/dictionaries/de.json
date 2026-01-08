@@ -495,6 +495,77 @@
 					"remove": "Entfernen"
 				}
 			}
+		},
+		"preview": {
+			"button": "Vorschau testen",
+			"title": "QR-Code Hintergrund-Vorschau",
+			"selectTitle": "Hintergrund auswählen",
+			"selectDescription": "Teste, wie dein QR-Code auf verschiedenen Hintergründen aussieht, bevor du ihn druckst oder teilst.",
+			"selectBackground": "Wähle einen Hintergrund, um deinen QR-Code zu testen",
+			"changeBackground": "Hintergrund ändern",
+			"close": "Schließen",
+			"predefined": {
+				"title": "Beispiele",
+				"businessCards": "Visitenkarten",
+				"brochures": "Broschüren",
+				"posters": "Plakate",
+				"packaging": "Verpackungen",
+				"websites": "Webseiten",
+				"socialMedia": "Social Media"
+			},
+			"website": {
+				"title": "Website",
+				"inputLabel": "Website-URL",
+				"inputPlaceholder": "URL eingeben (z.B. https://example.com)",
+				"previewButton": "Website-Vorschau",
+				"loadingIframe": "Website wird geladen...",
+				"loadingScreenshot": "Screenshot wird erstellt...",
+				"capturingPreview": "Vorschau wird erfasst...",
+				"info": "Gib eine beliebige Website-URL ein, um sie als Hintergrund für deinen QR-Code zu verwenden",
+				"errors": {
+					"invalidUrl": "Bitte gib eine gültige URL ein, die mit http:// oder https:// beginnt",
+					"loadFailed": "Website konnte nicht geladen werden. Bitte versuche es erneut.",
+					"captureFailed": "Website konnte nicht erfasst werden. Diese Website erlaubt möglicherweise keine Einbettung.",
+					"screenshotFailed": "Screenshot konnte nicht erstellt werden. Der Screenshot-Dienst ist möglicherweise nicht verfügbar oder die URL ist ungültig.",
+					"networkError": "Netzwerkfehler. Bitte überprüfe deine Verbindung."
+				},
+				"retry": "Erneut versuchen"
+			},
+			"camera": {
+				"title": "Kamera",
+				"capture": "Bild aufnehmen",
+				"loading": "Kamera wird initialisiert...",
+				"retry": "Kamerazugriff erneut versuchen",
+				"error": {
+					"title": "Kamera-Fehler"
+				}
+			},
+			"upload": {
+				"title": "Hochladen",
+				"dragDrop": "Bild hier ablegen",
+				"orClick": "oder klicken zum Durchsuchen",
+				"formats": "JPG, PNG, WEBP (max. 5MB)"
+			},
+			"contrast": {
+				"ratio": "Verhältnis",
+				"excellent": {
+					"title": "Ausgezeichnete Sichtbarkeit"
+				},
+				"good": {
+					"title": "Gute Sichtbarkeit"
+				},
+				"poor": {
+					"title": "Schlechte Sichtbarkeit"
+				},
+				"critical": {
+					"title": "Kritisch - Möglicherweise nicht lesbar"
+				}
+			},
+			"controls": {
+				"reset": "Position zurücksetzen",
+				"resize": "Ecke ziehen zum Vergrößern",
+				"move": "Ziehen zum Verschieben · Ecke ziehen zum Vergrößern"
+			}
 		}
 	},
 	"pagination": {

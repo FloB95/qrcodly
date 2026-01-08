@@ -19,7 +19,9 @@ import {
 	TQrCodeWithRelationsPaginatedResponseDto,
 	TQrCodeWithRelationsResponseDto,
 	TUpdateQrCodeDto,
+	TWebsiteScreenshotDto,
 	UpdateQrCodeDto,
+	WebsiteScreenshotDtoSchema,
 } from '@shared/schemas';
 import { ListQrCodesUseCase } from '../../useCase/list-qr-code.use-case';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
@@ -32,6 +34,7 @@ import { BulkImportQrCodesUseCase } from '../../useCase/bulk-import-qr-codes.use
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { DownloadService } from '../../service/download.service';
 import { BadRequestError } from '@/core/error/http';
+import { ScreenshotService } from '@/core/services/screenshot.service';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -45,6 +48,7 @@ export class QrCodeController extends AbstractController {
 		@inject(QrCodeRepository) private readonly qrCodeRepository: QrCodeRepository,
 		@inject(ImageService) private readonly imageService: ImageService,
 		@inject(DownloadService) private readonly downloadService: DownloadService,
+		@inject(ScreenshotService) private readonly screenshotService: ScreenshotService,
 	) {
 		super();
 	}
@@ -293,6 +297,32 @@ export class QrCodeController extends AbstractController {
 			headers: {
 				'Content-Type': downloadResponse.contentType,
 				'Content-Disposition': `attachment; filename="${downloadResponse.filename}"`,
+			},
+		};
+	}
+
+	@Get('/screenshot', {
+		querySchema: WebsiteScreenshotDtoSchema,
+		config: {
+			rateLimitPolicy: RateLimitPolicy.SCREENSHOT_CREATE,
+		},
+		schema: {
+			hide: true,
+		},
+	})
+	async screenshot(
+		request: IHttpRequest<unknown, unknown, TWebsiteScreenshotDto>,
+	): Promise<IHttpResponse<Buffer>> {
+		const { url } = request.query;
+
+		const imageBuffer = await this.screenshotService.captureWebsite(url);
+
+		return {
+			statusCode: 200,
+			data: imageBuffer,
+			headers: {
+				'Content-Type': 'image/jpeg',
+				'Cache-Control': 'public, max-age=86400', // Cache for 24 hours
 			},
 		};
 	}

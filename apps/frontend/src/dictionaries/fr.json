@@ -495,6 +495,77 @@
 					"remove": "Supprimer"
 				}
 			}
+		},
+		"preview": {
+			"button": "Tester l'Aperçu",
+			"title": "Aperçu du Code QR avec Arrière-plan",
+			"selectTitle": "Sélectionner l'Arrière-plan",
+			"selectDescription": "Testez l'apparence de votre code QR sur différents arrière-plans avant de l'imprimer ou de le partager.",
+			"selectBackground": "Sélectionnez un arrière-plan pour prévisualiser votre code QR",
+			"changeBackground": "Changer l'Arrière-plan",
+			"close": "Fermer",
+			"predefined": {
+				"title": "Exemples",
+				"businessCards": "Cartes de Visite",
+				"brochures": "Brochures",
+				"posters": "Affiches",
+				"packaging": "Emballage",
+				"websites": "Sites Web",
+				"socialMedia": "Réseaux Sociaux"
+			},
+			"website": {
+				"title": "Site Web",
+				"inputLabel": "URL du Site Web",
+				"inputPlaceholder": "Entrez l'URL (ex. https://exemple.com)",
+				"previewButton": "Aperçu du Site Web",
+				"loadingIframe": "Chargement du site web...",
+				"loadingScreenshot": "Capture de la capture d'écran...",
+				"capturingPreview": "Capture de l'aperçu...",
+				"info": "Entrez n'importe quelle URL de site web pour l'utiliser comme arrière-plan de votre code QR",
+				"errors": {
+					"invalidUrl": "Veuillez entrer une URL valide commençant par http:// ou https://",
+					"loadFailed": "Échec du chargement du site web. Veuillez réessayer.",
+					"captureFailed": "Échec de la capture du site web. Ce site web peut ne pas autoriser l'intégration.",
+					"screenshotFailed": "Échec de la capture d'écran. Le service de capture d'écran peut être indisponible ou l'URL n'est pas valide.",
+					"networkError": "Erreur réseau. Veuillez vérifier votre connexion."
+				},
+				"retry": "Réessayer"
+			},
+			"camera": {
+				"title": "Caméra",
+				"capture": "Capturer l'Image",
+				"loading": "Initialisation de la caméra...",
+				"retry": "Réessayer l'Accès à la Caméra",
+				"error": {
+					"title": "Erreur de Caméra"
+				}
+			},
+			"upload": {
+				"title": "Télécharger",
+				"dragDrop": "Glissez-déposez une image ici",
+				"orClick": "ou cliquez pour parcourir",
+				"formats": "JPG, PNG, WEBP (max 5Mo)"
+			},
+			"contrast": {
+				"ratio": "Ratio",
+				"excellent": {
+					"title": "Excellente Visibilité"
+				},
+				"good": {
+					"title": "Bonne Visibilité"
+				},
+				"poor": {
+					"title": "Faible Visibilité"
+				},
+				"critical": {
+					"title": "Critique - Peut Ne Pas Scanner"
+				}
+			},
+			"controls": {
+				"reset": "Réinitialiser la Position",
+				"resize": "Faites glisser le coin pour redimensionner",
+				"move": "Faites glisser pour repositionner · Faites glisser le coin pour redimensionner"
+			}
 		}
 	},
 	"pagination": {

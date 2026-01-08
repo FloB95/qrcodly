@@ -8,54 +8,41 @@ Here you can see all recent updates, new features, improvements, and fixes — e
 
 <Callout type="info">Stay up-to-date with the latest features and improvements in QRcodly.</Callout>
 
-## Latest Release: 1.6.0 - 2025-12-31
+## Latest Release: 1.6.1 - 2026-01-08
 
 <Card
-  title="v1.6.0 Latest"
+  title="v1.6.1 Latest"
   description={
     <div>
-      <p>🚀 <strong>Release Notes – Version 1.6.0</strong></p>
-      <p>QRcodly now supports three exciting new QR code types: Email, Location, and Event! You can now create QR codes that open email clients, show map locations, or add calendar events with just a scan. We've also made downloading dynamic QR codes much easier and improved the overall app performance.</p>
+      <p>🚀 <strong>Release Notes – Version 1.6.1</strong></p>
+      <p>This release adds an exciting new way to preview your QR codes! You can now see how your QR code will look in real-world scenarios by placing it on website screenshots or choosing from beautiful background images. Perfect for presentations, marketing materials, or just seeing how your QR code will look before printing.</p>
 
-      <h4>✨ New QR Code Types</h4>
+      <h4>✨ New Features</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Email QR Codes:</strong> Create QR codes that open your email app with pre-filled recipient, subject, and message.</li>
-        <li><strong>Location QR Codes:</strong> Generate QR codes that open map apps with specific coordinates or addresses.</li>
-        <li><strong>Event QR Codes:</strong> Make QR codes that add calendar events (iCal format) with title, time, location, and description.</li>
+        <li><strong>Website Preview:</strong> Upload any website URL and see your QR code placed on a screenshot of that website. Great for mockups and presentations!</li>
+        <li><strong>Background Image Gallery:</strong> Choose from a collection of professional background images to showcase your QR code.</li>
+        <li><strong>Enhanced Preview Modal:</strong> Improved preview window with better controls for positioning and sizing your QR code.</li>
+        <li><strong>Screenshot Service:</strong> Automatic website screenshot capture powered by a reliable screenshot API.</li>
       </ul>
 
-      <h4>📥 Improved Download System</h4>
+      <h4>🎨 Preview Improvements</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Direct Downloads:</strong> Download dynamic QR codes (events, vCards) directly without logging in.</li>
-        <li><strong>Smart File Formats:</strong> Event QR codes download as .ics calendar files, vCard QR codes as .vcf contact files.</li>
-        <li><strong>Better Download Buttons:</strong> Cleaner, more reliable download experience across all QR code types.</li>
+        <li><strong>Background Selector:</strong> Easily switch between website screenshots and predefined backgrounds.</li>
+        <li><strong>Better Camera Controls:</strong> Smoother camera handling when using device camera for preview backgrounds.</li>
+        <li><strong>Improved QR Positioning:</strong> More intuitive controls to position and resize your QR code on backgrounds.</li>
       </ul>
 
-      <h4>🎨 UI & UX Improvements</h4>
+      <h4>🌍 Translations</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Dynamic Badge:</strong> Visual indicator showing which QR codes are dynamic (trackable and editable).</li>
-        <li><strong>Required Field Markers:</strong> Clear visual indicators showing which form fields are required.</li>
-        <li><strong>Optimized Content Switch:</strong> Faster and smoother switching between different QR code types.</li>
-        <li><strong>Improved List View:</strong> Cleaner, more organized QR code collection view.</li>
+        <li>Updated translations across all supported languages (English, German, Spanish, French, Italian, Dutch, Polish, Russian).</li>
+        <li>Added new translation keys for preview features.</li>
       </ul>
 
-      <h4>⚡ Performance & Code Quality</h4>
+      <h4>🛠 Technical Improvements</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Frontend Refactoring:</strong> Broke down large components into smaller, focused pieces for better performance.</li>
-        <li><strong>Better Error Handling:</strong> More reliable error messages and recovery.</li>
-        <li><strong>Code Cleanup:</strong> Removed duplicate code and improved TypeScript type safety.</li>
-      </ul>
-
-      <h4>🧪 Testing & Reliability</h4>
-      <ul className="list-disc ml-5 space-y-1">
-        <li>Added comprehensive backend tests for new download functionality.</li>
-        <li>Improved test coverage for QR code content types.</li>
-      </ul>
-
-      <h4>🔒 Security</h4>
-      <ul className="list-disc ml-5 space-y-1">
-        <li>Moved API keys to secure environment variables.</li>
-        <li>Improved security for analytics integration.</li>
+        <li><strong>Logging:</strong> Added comprehensive logging to screenshot service for better monitoring and debugging.</li>
+        <li><strong>Code Quality:</strong> Removed unused contrast detection hook and cleaned up preview components.</li>
+        <li><strong>Type Safety:</strong> Improved TypeScript types for preview functionality.</li>
       </ul>
     </div>
 
@@ -65,6 +52,58 @@ Here you can see all recent updates, new features, improvements, and fixes — e
 ## Previous Releases
 
 <Cards>
+  <Card
+    title="v1.6.0 - 2025-12-31"
+    description={
+      <div>
+        <p>🚀 <strong>Release Notes – Version 1.6.0</strong></p>
+        <p>QRcodly now supports three exciting new QR code types: Email, Location, and Event! You can now create QR codes that open email clients, show map locations, or add calendar events with just a scan. We've also made downloading dynamic QR codes much easier and improved the overall app performance.</p>
+
+        <h4>✨ New QR Code Types</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Email QR Codes:</strong> Create QR codes that open your email app with pre-filled recipient, subject, and message.</li>
+          <li><strong>Location QR Codes:</strong> Generate QR codes that open map apps with specific coordinates or addresses.</li>
+          <li><strong>Event QR Codes:</strong> Make QR codes that add calendar events (iCal format) with title, time, location, and description.</li>
+        </ul>
+
+        <h4>📥 Improved Download System</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Direct Downloads:</strong> Download dynamic QR codes (events, vCards) directly without logging in.</li>
+          <li><strong>Smart File Formats:</strong> Event QR codes download as .ics calendar files, vCard QR codes as .vcf contact files.</li>
+          <li><strong>Better Download Buttons:</strong> Cleaner, more reliable download experience across all QR code types.</li>
+        </ul>
+
+        <h4>🎨 UI & UX Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Dynamic Badge:</strong> Visual indicator showing which QR codes are dynamic (trackable and editable).</li>
+          <li><strong>Required Field Markers:</strong> Clear visual indicators showing which form fields are required.</li>
+          <li><strong>Optimized Content Switch:</strong> Faster and smoother switching between different QR code types.</li>
+          <li><strong>Improved List View:</strong> Cleaner, more organized QR code collection view.</li>
+        </ul>
+
+        <h4>⚡ Performance & Code Quality</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Frontend Refactoring:</strong> Broke down large components into smaller, focused pieces for better performance.</li>
+          <li><strong>Better Error Handling:</strong> More reliable error messages and recovery.</li>
+          <li><strong>Code Cleanup:</strong> Removed duplicate code and improved TypeScript type safety.</li>
+        </ul>
+
+        <h4>🧪 Testing & Reliability</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li>Added comprehensive backend tests for new download functionality.</li>
+          <li>Improved test coverage for QR code content types.</li>
+        </ul>
+
+        <h4>🔒 Security</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li>Moved API keys to secure environment variables.</li>
+          <li>Improved security for analytics integration.</li>
+        </ul>
+      </div>
+
+  }
+  />
+
   <Card
     title="v1.5.0 - 2025-12-20"
     description={

@@ -495,6 +495,77 @@
 					"remove": "Rimuovi"
 				}
 			}
+		},
+		"preview": {
+			"button": "Prova Anteprima",
+			"title": "Anteprima Codice QR con Sfondo",
+			"selectTitle": "Seleziona Sfondo",
+			"selectDescription": "Testa come appare il tuo codice QR su diversi sfondi prima di stamparlo o condividerlo.",
+			"selectBackground": "Seleziona uno sfondo per visualizzare l'anteprima del tuo codice QR",
+			"changeBackground": "Cambia Sfondo",
+			"close": "Chiudi",
+			"predefined": {
+				"title": "Esempi",
+				"businessCards": "Biglietti da Visita",
+				"brochures": "Brochure",
+				"posters": "Poster",
+				"packaging": "Imballaggio",
+				"websites": "Siti Web",
+				"socialMedia": "Social Media"
+			},
+			"website": {
+				"title": "Sito Web",
+				"inputLabel": "URL del Sito Web",
+				"inputPlaceholder": "Inserisci URL (es. https://esempio.com)",
+				"previewButton": "Anteprima Sito Web",
+				"loadingIframe": "Caricamento sito web...",
+				"loadingScreenshot": "Cattura screenshot...",
+				"capturingPreview": "Cattura anteprima...",
+				"info": "Inserisci qualsiasi URL di sito web da usare come sfondo per il tuo codice QR",
+				"errors": {
+					"invalidUrl": "Inserisci un URL valido che inizi con http:// o https://",
+					"loadFailed": "Impossibile caricare il sito web. Riprova.",
+					"captureFailed": "Impossibile catturare il sito web. Questo sito web potrebbe non consentire l'incorporamento.",
+					"screenshotFailed": "Impossibile catturare lo screenshot. Il servizio screenshot potrebbe non essere disponibile o l'URL non è valido.",
+					"networkError": "Errore di rete. Controlla la tua connessione."
+				},
+				"retry": "Riprova"
+			},
+			"camera": {
+				"title": "Fotocamera",
+				"capture": "Cattura Fotogramma",
+				"loading": "Inizializzazione fotocamera...",
+				"retry": "Riprova Accesso Fotocamera",
+				"error": {
+					"title": "Errore Fotocamera"
+				}
+			},
+			"upload": {
+				"title": "Carica",
+				"dragDrop": "Trascina e rilascia un'immagine qui",
+				"orClick": "o clicca per sfogliare",
+				"formats": "JPG, PNG, WEBP (max 5MB)"
+			},
+			"contrast": {
+				"ratio": "Rapporto",
+				"excellent": {
+					"title": "Visibilità Eccellente"
+				},
+				"good": {
+					"title": "Buona Visibilità"
+				},
+				"poor": {
+					"title": "Scarsa Visibilità"
+				},
+				"critical": {
+					"title": "Critico - Potrebbe Non Scansionare"
+				}
+			},
+			"controls": {
+				"reset": "Ripristina Posizione",
+				"resize": "Trascina l'angolo per ridimensionare",
+				"move": "Trascina per riposizionare · Trascina l'angolo per ridimensionare"
+			}
 		}
 	},
 	"pagination": {
