@@ -7,10 +7,11 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CameraIcon, ArrowUpTrayIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import { CameraIcon, ArrowUpTrayIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CameraCapture } from './CameraCapture';
-import { PredefinedBackgrounds } from './PredefinedBackgrounds';
+// import { PredefinedBackgrounds } from './PredefinedBackgrounds'; // Commented out for future use
+import { WebsitePreview } from './WebsitePreview';
 import { useTranslations } from 'next-intl';
 import type { BackgroundSource } from './types';
 
@@ -80,14 +81,14 @@ export function BackgroundSelector({
 
 	return (
 		<Tabs
-			value={source || 'predefined'}
+			value={source || 'website'}
 			onValueChange={(value) => onSourceChange(value as BackgroundSource)}
 			className="w-full"
 		>
 			<TabsList className="grid w-full grid-cols-3">
-				<TabsTrigger value="predefined" className="flex items-center gap-2">
-					<PhotoIcon className="h-4 w-4" />
-					{t('predefined.title', { default: 'Examples' })}
+				<TabsTrigger value="website" className="flex items-center gap-2">
+					<GlobeAltIcon className="h-4 w-4" />
+					{t('website.title', { default: 'Website' })}
 				</TabsTrigger>
 				<TabsTrigger value="camera" className="flex items-center gap-2">
 					<CameraIcon className="h-4 w-4" />
@@ -99,13 +100,13 @@ export function BackgroundSelector({
 				</TabsTrigger>
 			</TabsList>
 
-			<TabsContent value="predefined" className="mt-4">
+			<TabsContent value="website" className="mt-4">
 				<motion.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ duration: 0.2 }}
 				>
-					<PredefinedBackgrounds onSelect={onImageSelected} />
+					<WebsitePreview onSelect={onImageSelected} />
 				</motion.div>
 			</TabsContent>
 

@@ -495,6 +495,77 @@
 					"remove": "Verwijderen"
 				}
 			}
+		},
+		"preview": {
+			"button": "Voorbeeld Testen",
+			"title": "QR-Code Achtergrond Voorbeeld",
+			"selectTitle": "Achtergrond Selecteren",
+			"selectDescription": "Test hoe je QR-code eruitziet op verschillende achtergronden voordat je deze afdrukt of deelt.",
+			"selectBackground": "Selecteer een achtergrond om je QR-code te bekijken",
+			"changeBackground": "Achtergrond Wijzigen",
+			"close": "Sluiten",
+			"predefined": {
+				"title": "Voorbeelden",
+				"businessCards": "Visitekaartjes",
+				"brochures": "Brochures",
+				"posters": "Posters",
+				"packaging": "Verpakking",
+				"websites": "Websites",
+				"socialMedia": "Social Media"
+			},
+			"website": {
+				"title": "Website",
+				"inputLabel": "Website URL",
+				"inputPlaceholder": "Voer URL in (bijv. https://voorbeeld.com)",
+				"previewButton": "Website Voorbeeld",
+				"loadingIframe": "Website laden...",
+				"loadingScreenshot": "Screenshot vastleggen...",
+				"capturingPreview": "Voorbeeld vastleggen...",
+				"info": "Voer een website-URL in om deze als achtergrond voor je QR-code te gebruiken",
+				"errors": {
+					"invalidUrl": "Voer een geldige URL in die begint met http:// of https://",
+					"loadFailed": "Website laden mislukt. Probeer het opnieuw.",
+					"captureFailed": "Website vastleggen mislukt. Deze website staat mogelijk geen insluiting toe.",
+					"screenshotFailed": "Screenshot vastleggen mislukt. De screenshotservice is mogelijk niet beschikbaar of de URL is ongeldig.",
+					"networkError": "Netwerkfout. Controleer je verbinding."
+				},
+				"retry": "Opnieuw proberen"
+			},
+			"camera": {
+				"title": "Camera",
+				"capture": "Frame Vastleggen",
+				"loading": "Camera initialiseren...",
+				"retry": "Cameratoegang Opnieuw Proberen",
+				"error": {
+					"title": "Camerafout"
+				}
+			},
+			"upload": {
+				"title": "Uploaden",
+				"dragDrop": "Sleep een afbeelding hierheen",
+				"orClick": "of klik om te bladeren",
+				"formats": "JPG, PNG, WEBP (max 5MB)"
+			},
+			"contrast": {
+				"ratio": "Verhouding",
+				"excellent": {
+					"title": "Uitstekende Zichtbaarheid"
+				},
+				"good": {
+					"title": "Goede Zichtbaarheid"
+				},
+				"poor": {
+					"title": "Slechte Zichtbaarheid"
+				},
+				"critical": {
+					"title": "Kritiek - Kan Mogelijk Niet Scannen"
+				}
+			},
+			"controls": {
+				"reset": "Positie Resetten",
+				"resize": "Sleep de hoek om te vergroten/verkleinen",
+				"move": "Sleep om te verplaatsen · Sleep de hoek om te vergroten/verkleinen"
+			}
 		}
 	},
 	"pagination": {

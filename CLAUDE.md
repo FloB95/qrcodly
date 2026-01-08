@@ -130,6 +130,7 @@ pnpm run build          # Compile TypeScript
 ### Module Structure
 
 Each module follows: `src/modules/{module-name}/`
+
 - `domain/` - Entities and value objects
 - `useCase/` - Business logic (injectable with tsyringe)
 - `http/` - Fastify routes and controllers
@@ -145,6 +146,7 @@ Each module follows: `src/modules/{module-name}/`
 **Content Types:** URL, Text, Event, WiFi, vCard, Email, Location, Phone
 
 **Key Use Cases:**
+
 - `CreateQrCodeUseCase` - Creates QR with optional short URL linking
 - `UpdateQrCodeUseCase` - Updates QR (prevents content type changes)
 - `DeleteQrCodeUseCase` - Deletes QR and associated images
@@ -153,36 +155,42 @@ Each module follows: `src/modules/{module-name}/`
 - `ListQrCodesUseCase` - Paginated listing
 
 **Strategy Pattern (Important):**
+
 - `ShortUrlStrategyService` - Routes to strategy based on content type
 - `UrlStrategy` - Handles editable URLs (links to short URL)
 - `EventUrlStrategy` - Handles event QRs (creates dynamic short URL)
 - `VCardStrategy` - Handles dynamic vCards
 
 **Policies:**
+
 - `CreateQrCodePolicy` - Enforces plan limits (Redis-backed usage tracking)
 
 **Plan Limits** (`src/core/config/plan.config.ts`):
+
 ```typescript
 QR_CODE_PLAN_LIMITS = {
-  free: { url: 10, text: 5, event: 0 },
-  pro: { url: null, text: null, event: 100 }
-}
+	free: { url: 10, text: 5, event: 0 },
+	pro: { url: null, text: null, event: 100 },
+};
 ```
 
 #### 2. URL Shortener Module (`src/modules/url-shortener/`)
 
 **Key Use Cases:**
+
 - `CreateShortUrlUseCase` - Generates unique short codes
 - `GetReservedShortCodeUseCase` - Gets/creates reserved URLs (reuses existing)
 - `UpdateShortUrlUseCase` - Updates with redirect loop prevention
 - `GetShortUrlByCodeUseCase` - Retrieves by code
 
 **Critical Business Logic:**
+
 - **Reserved URL Reuse:** Users get same reserved URL until linked to QR
 - **Redirect Loop Prevention:** Prevents short URL pointing to itself
 - **Dynamic QR Redirects:** `DYNAMIC_QR_BASE_URL` + qrCodeId
 
 **Analytics Integration:**
+
 - `UmamiAnalyticsService` - Fetches pageviews, browser/OS/device metrics
 
 #### 3. Config Template Module (`src/modules/config-template/`)
@@ -190,12 +198,14 @@ QR_CODE_PLAN_LIMITS = {
 **Purpose:** Reusable QR code styling templates
 
 **Features:**
+
 - User custom templates
 - Predefined immutable templates
 
 ### Database Schema (Drizzle ORM)
 
 **Key Tables:**
+
 - `qr_codes` - Content (JSON), config (JSON), previewImage
 - `short_urls` - shortCode, destinationUrl, qrCodeId (nullable), isActive
 - `config_templates` - name, config (JSON), isPredefined
@@ -215,11 +225,13 @@ QR_CODE_PLAN_LIMITS = {
 ### State Management
 
 **Zustand Store** (`src/store/useQrCodeStore.ts`):
+
 - QR code generator state (config, content, bulk mode)
 - localStorage persistence
 - Actions: updateConfig, updateContent, updateBulkMode
 
 **React Query** (`@tanstack/react-query`):
+
 - Server state caching
 - Mutations for API calls
 - Automatic refetching
@@ -263,12 +275,14 @@ Pattern: React Query hooks (useQuery, useMutation) with `apiRequest()` utility
 ### Test Structure
 
 **Integration Tests** (`src/modules/*/http/__tests__/*.test.ts`):
+
 - Use `getTestServerWithUserAuth()` - provides `accessToken` and `accessToken2`
 - Database setup/teardown with `shutDownServer()`
 - 30s timeout
 - Run with `pnpm test <filename>`
 
 **Unit Tests** (`src/modules/*/useCase/__tests__/*.use-case.test.ts`):
+
 - Use `jest-mock-extended` for type-safe mocks
 - Test business logic in isolation
 
@@ -293,6 +307,7 @@ pnpm run dev-server  # Starts all services
 ```
 
 **Services:**
+
 - MySQL 8 (3306) + phpMyAdmin (8081)
 - Redis (6379)
 - Umami Analytics (3001) + PostgreSQL
@@ -301,6 +316,7 @@ pnpm run dev-server  # Starts all services
 ### Environment Variables
 
 **Backend** (`.env`):
+
 - `DATABASE_URL` - MySQL connection
 - `REDIS_URL` - Redis connection
 - `CLERK_*` - Clerk API keys
@@ -310,6 +326,7 @@ pnpm run dev-server  # Starts all services
 - `FRONTEND_URL` - For CORS
 
 **Frontend** (`.env.local`):
+
 - `NEXT_PUBLIC_CLERK_*` - Public Clerk keys
 - `NEXT_PUBLIC_UMAMI_*` - Public analytics keys
 
@@ -343,6 +360,7 @@ pnpm run dev-server  # Starts all services
 ### Frontend: Form Handling with Dynamic Flags
 
 For content types with dynamic flags (`isEditable`, `isDynamic`):
+
 - Include flag as form field in `defaultValues`
 - Use `useWatch` to track all fields including flag
 - Debounced submission includes flag in payload
@@ -351,31 +369,40 @@ For content types with dynamic flags (`isEditable`, `isDynamic`):
 ### Frontend: API Mutations
 
 Pattern:
+
 ```typescript
 const mutation = useCreateQrCode();
 mutation.mutate(dto, {
-  onSuccess: (data) => { /* ... */ },
-  onError: (error) => { /* ... */ }
+	onSuccess: (data) => {
+		/* ... */
+	},
+	onError: (error) => {
+		/* ... */
+	},
 });
 ```
 
 ## Key Files & Locations
 
 ### Configuration
+
 - `src/core/config/plan.config.ts` - Plan limits
 - `src/core/config/constants.ts` - API paths, rate limits
 - `.eslintrc.js` - ESLint with test overrides
 
 ### Strategies
+
 - `src/modules/qr-code/service/short-url-strategy.service.ts` - Router
 - `src/modules/qr-code/service/short-url-strategies/url.strategy.ts`
 - `src/modules/qr-code/service/short-url-strategies/event.strategy.ts`
 - `src/modules/qr-code/service/short-url-strategies/vcard.strategy.ts`
 
 ### Policies
+
 - `src/modules/qr-code/policies/create-qr-code.policy.ts` - Rate limiting
 
 ### Shared Schemas
+
 - `packages/shared/src/schemas/QrCode.ts` - All QR content type schemas
 - `packages/shared/src/schemas/ShortUrl.ts` - Short URL schemas
 - `packages/shared/src/utils/General.ts` - Helpers, defaults

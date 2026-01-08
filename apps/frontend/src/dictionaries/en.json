@@ -500,6 +500,7 @@
 			"button": "Test Preview",
 			"title": "QR Code Background Preview",
 			"selectTitle": "Select Background",
+			"selectDescription": "Test how your QR code looks on different backgrounds before printing or sharing.",
 			"selectBackground": "Select a background to preview your QR code",
 			"changeBackground": "Change Background",
 			"close": "Close",
@@ -511,6 +512,24 @@
 				"packaging": "Packaging",
 				"websites": "Websites",
 				"socialMedia": "Social Media"
+			},
+			"website": {
+				"title": "Website",
+				"inputLabel": "Website URL",
+				"inputPlaceholder": "Enter URL (e.g., https://example.com)",
+				"previewButton": "Preview Website",
+				"loadingIframe": "Loading website...",
+				"loadingScreenshot": "Capturing screenshot...",
+				"capturingPreview": "Capturing preview...",
+				"info": "Enter any website URL to use as a background for your QR code",
+				"errors": {
+					"invalidUrl": "Please enter a valid URL starting with http:// or https://",
+					"loadFailed": "Failed to load website. Please try again.",
+					"captureFailed": "Failed to capture website. This website may not allow embedding.",
+					"screenshotFailed": "Failed to capture screenshot. The screenshot service may be unavailable or the URL is invalid.",
+					"networkError": "Network error. Please check your connection."
+				},
+				"retry": "Retry"
 			},
 			"camera": {
 				"title": "Camera",

@@ -39,7 +39,7 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 	const { config, content, shortUrl } = useQrCodeGeneratorStore((state) => state);
 
 	const [step, setStep] = useState<'select' | 'preview'>('select');
-	const [backgroundSource, setBackgroundSource] = useState<BackgroundSource>('predefined');
+	const [backgroundSource, setBackgroundSource] = useState<BackgroundSource>('website');
 	const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
 	const [showInstructions, setShowInstructions] = useState(() => {
 		// Check localStorage to see if user has dismissed instructions
@@ -190,6 +190,14 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 							? t('selectTitle', { default: 'Select Background' })
 							: t('title', { default: 'QR Code Background Preview' })}
 					</DialogTitle>
+					{step === 'select' && (
+						<p className="text-sm text-muted-foreground">
+							{t('selectDescription', {
+								default:
+									'Test how your QR code looks on different backgrounds before printing or sharing.',
+							})}
+						</p>
+					)}
 				</DialogHeader>
 
 				{/* Step 1: Select Background */}
@@ -282,14 +290,31 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 													}}
 													onMouseEnter={() => setIsOverRotateHandle(true)}
 													onMouseLeave={() => setIsOverRotateHandle(false)}
+													initial={{ opacity: 0 }}
 													animate={{
-														opacity: isResizing || isRotating ? 0 : undefined,
-														scale: Math.min(1, position.width / 200),
+														opacity: isResizing || isRotating ? 0 : 0,
+														scale: Math.max(
+															position.width <= 100 ? 0.78125 : 0.9375,
+															Math.min(1, position.width / 200),
+														),
 													}}
-													whileHover={{ scale: Math.min(1, position.width / 200) * 1.15 }}
-													whileTap={{ scale: Math.min(1, position.width / 200) * 0.9 }}
+													whileHover={{
+														opacity: 1,
+														scale:
+															Math.max(
+																position.width <= 100 ? 0.78125 : 0.9375,
+																Math.min(1, position.width / 200),
+															) * 1.15,
+													}}
+													whileTap={{
+														scale:
+															Math.max(
+																position.width <= 100 ? 0.78125 : 0.9375,
+																Math.min(1, position.width / 200),
+															) * 0.9,
+													}}
 													transition={{ duration: 0.2 }}
-													className="absolute top-0 right-0 flex h-8 w-8 cursor-grab items-center justify-center rounded-bl-lg  bg-blue-500 text-white shadow-md opacity-0 transition-opacity group-hover:opacity-100"
+													className="absolute top-0 right-0 flex h-8 w-8 cursor-grab items-center justify-center rounded-bl-lg bg-blue-500 text-white shadow-md"
 													style={{ touchAction: 'none' }}
 												>
 													<ArrowPathIcon className="h-4 w-4" />
@@ -304,14 +329,31 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 													}}
 													onMouseEnter={() => setIsOverResizeHandle(true)}
 													onMouseLeave={() => setIsOverResizeHandle(false)}
+													initial={{ opacity: 0 }}
 													animate={{
-														opacity: isResizing || isRotating ? 0 : undefined,
-														scale: Math.min(1, position.width / 200),
+														opacity: isResizing || isRotating ? 0 : 0,
+														scale: Math.max(
+															position.width <= 100 ? 0.78125 : 0.9375,
+															Math.min(1, position.width / 200),
+														),
 													}}
-													whileHover={{ scale: Math.min(1, position.width / 200) * 1.15 }}
-													whileTap={{ scale: Math.min(1, position.width / 200) * 0.9 }}
+													whileHover={{
+														opacity: 1,
+														scale:
+															Math.max(
+																position.width <= 100 ? 0.78125 : 0.9375,
+																Math.min(1, position.width / 200),
+															) * 1.15,
+													}}
+													whileTap={{
+														scale:
+															Math.max(
+																position.width <= 100 ? 0.78125 : 0.9375,
+																Math.min(1, position.width / 200),
+															) * 0.9,
+													}}
 													transition={{ duration: 0.2 }}
-													className="absolute bottom-0 right-0 flex h-8 w-8 cursor-nwse-resize items-center justify-center rounded-tl-lg bg-primary text-white shadow-md opacity-0 transition-opacity group-hover:opacity-100"
+													className="absolute bottom-0 right-0 flex h-8 w-8 cursor-nwse-resize items-center justify-center rounded-tl-lg bg-primary text-white shadow-md"
 													style={{ touchAction: 'none' }}
 												>
 													<ArrowsPointingOutIcon className="h-4 w-4" />

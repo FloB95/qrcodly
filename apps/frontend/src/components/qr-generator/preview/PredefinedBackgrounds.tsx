@@ -136,6 +136,8 @@ export function PredefinedBackgrounds({ onSelect, className = '' }: PredefinedBa
 						animate={{ opacity: 1, scale: 1 }}
 						transition={{ delay: index * 0.05 }}
 						onClick={() => handleSelect(image.url)}
+						aria-label={`Select ${image.alt} as background`}
+						aria-pressed={selectedImage === image.url}
 						className={`
 							group relative aspect-video overflow-hidden rounded-lg border-2 transition-all
 							${

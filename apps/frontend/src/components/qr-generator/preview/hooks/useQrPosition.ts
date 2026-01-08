@@ -107,12 +107,15 @@ export function useQrPosition(
 
 				const boundary = getBoundaryDimensions();
 				// Limit to 50% of boundary size or MAX_QR_SIZE, whichever is smaller
-				const maxAllowedSize = Math.min(
-					MAX_QR_SIZE,
-					boundary.width * 0.5,
-					boundary.height * 0.5,
-					boundary.width - prev.x,
-					boundary.height - prev.y,
+				const maxAllowedSize = Math.max(
+					MIN_QR_SIZE,
+					Math.min(
+						MAX_QR_SIZE,
+						boundary.width * 0.5,
+						boundary.height * 0.5,
+						boundary.width - prev.x,
+						boundary.height - prev.y,
+					),
 				);
 
 				const newSize = clamp(resizeStartRef.current.width + delta, MIN_QR_SIZE, maxAllowedSize);

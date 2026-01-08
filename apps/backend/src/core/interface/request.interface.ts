@@ -3,15 +3,15 @@ import { type IncomingHttpHeaders } from 'http';
 import { type TUser } from '../domain/schema/UserSchema';
 
 export interface IHttpRequest<
-	B = unknown,
-	P = unknown,
-	Q = unknown,
+	Body = unknown,
+	Params = unknown,
+	Query = unknown,
 	AuthRequired extends boolean = true,
 	WithEvent extends boolean = false,
 > extends FastifyRequest {
-	body: B;
-	params: P;
-	query: Q;
+	body: Body;
+	params: Params;
+	query: Query;
 	headers: IncomingHttpHeaders;
 	cookies: { [cookieName: string]: string | undefined };
 	user: AuthRequired extends true ? TUser : TUser | undefined;

@@ -500,7 +500,8 @@
 			"button": "Vorschau testen",
 			"title": "QR-Code Hintergrund-Vorschau",
 			"selectTitle": "Hintergrund auswählen",
-			"selectBackground": "Wählen Sie einen Hintergrund, um Ihren QR-Code zu testen",
+			"selectDescription": "Testen Sie, wie Ihr QR-Code auf verschiedenen Hintergründen aussieht, bevor Sie ihn drucken oder teilen.",
+			"selectBackground": "Wähle einen Hintergrund, um deinen QR-Code zu testen",
 			"changeBackground": "Hintergrund ändern",
 			"close": "Schließen",
 			"predefined": {
@@ -511,6 +512,24 @@
 				"packaging": "Verpackungen",
 				"websites": "Webseiten",
 				"socialMedia": "Social Media"
+			},
+			"website": {
+				"title": "Website",
+				"inputLabel": "Website-URL",
+				"inputPlaceholder": "URL eingeben (z.B. https://example.com)",
+				"previewButton": "Website-Vorschau",
+				"loadingIframe": "Website wird geladen...",
+				"loadingScreenshot": "Screenshot wird erstellt...",
+				"capturingPreview": "Vorschau wird erfasst...",
+				"info": "Geben Sie eine beliebige Website-URL ein, um sie als Hintergrund für Ihren QR-Code zu verwenden",
+				"errors": {
+					"invalidUrl": "Bitte geben Sie eine gültige URL ein, die mit http:// oder https:// beginnt",
+					"loadFailed": "Website konnte nicht geladen werden. Bitte versuchen Sie es erneut.",
+					"captureFailed": "Website konnte nicht erfasst werden. Diese Website erlaubt möglicherweise keine Einbettung.",
+					"screenshotFailed": "Screenshot konnte nicht erstellt werden. Der Screenshot-Dienst ist möglicherweise nicht verfügbar oder die URL ist ungültig.",
+					"networkError": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung."
+				},
+				"retry": "Erneut versuchen"
 			},
 			"camera": {
 				"title": "Kamera",

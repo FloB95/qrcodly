@@ -495,6 +495,77 @@
 					"remove": "Usuń"
 				}
 			}
+		},
+		"preview": {
+			"button": "Podgląd",
+			"title": "Podgląd kodu QR",
+			"selectTitle": "Wybierz tło",
+			"selectDescription": "Przetestuj, jak wygląda Twój kod QR na różnych tłach przed wydrukowaniem lub udostępnieniem.",
+			"selectBackground": "Wybierz tło, aby wyświetlić podgląd kodu QR",
+			"changeBackground": "Zmień tło",
+			"close": "Zamknij",
+			"predefined": {
+				"title": "Przykłady",
+				"businessCards": "Wizytówki",
+				"brochures": "Broszury",
+				"posters": "Plakaty",
+				"packaging": "Opakowania",
+				"websites": "Strony internetowe",
+				"socialMedia": "Media społecznościowe"
+			},
+			"website": {
+				"title": "Strona internetowa",
+				"inputLabel": "URL strony internetowej",
+				"inputPlaceholder": "Wprowadź URL (np. https://example.com)",
+				"previewButton": "Podgląd strony",
+				"loadingIframe": "Ładowanie strony...",
+				"loadingScreenshot": "Wykonywanie zrzutu ekranu...",
+				"capturingPreview": "Przechwytywanie podglądu...",
+				"info": "Wprowadź dowolny adres URL strony internetowej, aby użyć go jako tła dla kodu QR",
+				"errors": {
+					"invalidUrl": "Proszę wprowadzić prawidłowy URL zaczynający się od http:// lub https://",
+					"loadFailed": "Nie udało się załadować strony. Spróbuj ponownie.",
+					"captureFailed": "Nie udało się przechwycić strony. Ta strona może nie zezwalać na osadzanie.",
+					"screenshotFailed": "Nie udało się wykonać zrzutu ekranu. Usługa zrzutów ekranu może być niedostępna lub URL jest nieprawidłowy.",
+					"networkError": "Błąd sieci. Sprawdź swoje połączenie."
+				},
+				"retry": "Spróbuj ponownie"
+			},
+			"camera": {
+				"title": "Aparat",
+				"capture": "Przechwyć klatkę",
+				"loading": "Inicjalizacja aparatu...",
+				"retry": "Ponów dostęp do aparatu",
+				"error": {
+					"title": "Błąd aparatu"
+				}
+			},
+			"upload": {
+				"title": "Prześlij",
+				"dragDrop": "Przeciągnij i upuść obraz tutaj",
+				"orClick": "lub kliknij, aby przeglądać",
+				"formats": "JPG, PNG, WEBP (max 5MB)"
+			},
+			"contrast": {
+				"ratio": "Współczynnik",
+				"excellent": {
+					"title": "Doskonała widoczność"
+				},
+				"good": {
+					"title": "Dobra widoczność"
+				},
+				"poor": {
+					"title": "Słaba widoczność"
+				},
+				"critical": {
+					"title": "Krytyczna - może nie skanować"
+				}
+			},
+			"controls": {
+				"reset": "Resetuj pozycję",
+				"resize": "Przeciągnij róg, aby zmienić rozmiar",
+				"move": "Przeciągnij, aby zmienić pozycję · Przeciągnij róg, aby zmienić rozmiar"
+			}
 		}
 	},
 	"pagination": {

@@ -68,6 +68,9 @@ export function useCamera(): UseCameraReturn {
 					setError('Failed to access camera. Please try again.');
 					setPermissionState('denied');
 				}
+			} else {
+				setError('Failed to access camera. Please try again.');
+				setPermissionState('denied');
 			}
 		}
 	}, []);

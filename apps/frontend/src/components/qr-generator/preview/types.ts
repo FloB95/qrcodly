@@ -8,7 +8,7 @@ import type { ContrastAnalysisResult } from '@/lib/contrast.utils';
 /**
  * Background source type
  */
-export type BackgroundSource = 'camera' | 'upload' | 'predefined' | null;
+export type BackgroundSource = 'camera' | 'upload' | 'website' | null;
 
 /**
  * Camera permission states
@@ -51,23 +51,4 @@ export interface UseQrPositionReturn {
 	resetPosition: () => void;
 	setPosition: (position: QrPosition) => void;
 	qrRef: RefObject<HTMLDivElement | null>;
-}
-
-/**
- * Props for useContrastDetection hook
- */
-export interface UseContrastDetectionProps {
-	backgroundRef: RefObject<HTMLCanvasElement | HTMLImageElement | HTMLDivElement | null>;
-	qrRef: RefObject<HTMLDivElement | null>;
-	position: QrPosition;
-	qrColor: string;
-	enabled: boolean;
-}
-
-/**
- * Return type for useContrastDetection hook
- */
-export interface UseContrastDetectionReturn {
-	analysis: ContrastAnalysisResult | null;
-	isAnalyzing: boolean;
 }

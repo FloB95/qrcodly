@@ -23,6 +23,7 @@ export * from './dtos/url-shortener/AnalyticsResponseDto';
 export * from './dtos/IdRequestQuery';
 export * from './dtos/ListRequestDto';
 export * from './dtos/PaginationDto';
+export * from './dtos/WebsiteScreenshotDto';
 
 /***************************
  * Schemas
