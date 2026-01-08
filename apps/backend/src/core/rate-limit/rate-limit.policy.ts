@@ -30,7 +30,7 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	},
 	[RateLimitPolicy.QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 4,
-		[RateLimitTier.AUTHENTICATED]: 10,
+		[RateLimitTier.AUTHENTICATED]: 15,
 		[RateLimitTier.PRO_PLAN]: 30,
 	},
 	[RateLimitPolicy.BULK_QR_CREATE]: {

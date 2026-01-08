@@ -181,14 +181,17 @@ export const isDynamic = (content: TQrCodeContent): boolean => {
 	return false;
 };
 
-export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeContent => {
+export const getDefaultContentByType = (
+	type: TQrCodeContentType,
+	isSignedIn = false,
+): TQrCodeContent => {
 	switch (type) {
 		case 'url':
 			return {
 				type: 'url',
 				data: {
 					url: '',
-					isEditable: false,
+					isEditable: isSignedIn,
 				},
 			};
 		case 'text':
@@ -222,7 +225,7 @@ export const getDefaultContentByType = (type: TQrCodeContentType): TQrCodeConten
 					state: undefined,
 					country: undefined,
 					website: undefined,
-					isDynamic: false,
+					isDynamic: isSignedIn,
 				},
 			};
 		case 'email':

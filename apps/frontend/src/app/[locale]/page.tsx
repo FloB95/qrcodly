@@ -9,11 +9,15 @@ import { Features } from '@/components/Features';
 import FAQSection from '@/components/Faq';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
 import Script from 'next/script';
+import { QrCodeDefaults } from '@shared/schemas';
+import { auth } from '@clerk/nextjs/server';
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
 	const t = await getTranslations({ locale });
 	const tMeta = await getTranslations({ locale, namespace: 'metadata' });
+	const { userId } = await auth();
+	const isSignedIn = !!userId;
 
 	// WebApplication Structured Data (homepage-specific)
 	const structuredData = {
@@ -39,7 +43,24 @@ export default async function Page({ params }: DefaultPageParams) {
 	};
 
 	return (
-		<QrCodeGeneratorStoreProvider>
+		<QrCodeGeneratorStoreProvider
+			initState={{
+				config: QrCodeDefaults,
+				content: {
+					type: 'url',
+					data: {
+						url: '',
+						isEditable: isSignedIn,
+					},
+				},
+				latestQrCode: undefined,
+				lastError: undefined,
+				bulkMode: {
+					file: undefined,
+					isBulkMode: false,
+				},
+			}}
+		>
 			{/* WebApplication Structured Data */}
 			<Script
 				id="structured-data-app"

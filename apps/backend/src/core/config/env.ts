@@ -7,7 +7,7 @@ import { z } from 'zod';
  * built with invalid env vars.
  */
 const server = z.object({
-	BASE_URL: z.string().url().default('http://localhost:5001'),
+	BASE_URL: z.url().default('http://localhost:5001'),
 	FRONTEND_URL: z.url().default('https://www.qrcodly.de'),
 	BACKEND_URL: z.url(),
 	DB_HOST: z.string(),
@@ -24,7 +24,7 @@ const server = z.object({
 	API_PORT: z.string().default('5001'),
 	API_HOST: z.string().default('127.0.0.1'),
 	LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
-	REDIS_URL: z.string().url(),
+	REDIS_URL: z.url(),
 	JWT_SECRET: z.string().min(32),
 	COOKIE_SECRET: z.string().min(32),
 	SMTP_HOST: z.string(),
@@ -36,13 +36,13 @@ const server = z.object({
 	S3_UPLOAD_KEY: z.string(),
 	S3_UPLOAD_SECRET: z.string(),
 	S3_BUCKET_NAME: z.string(),
-	SENTRY_DSN: z.string().url(),
+	SENTRY_DSN: z.url(),
 	AXIOM_DATASET: z.string().optional(),
 	AXIOM_TOKEN: z.string().optional(),
 	CLERK_PUBLISHABLE_KEY: z.string(),
 	CLERK_SECRET_KEY: z.string(),
 	CLERK_WEBHOOK_SECRET_KEY: z.string(),
-	UMAMI_HOST: z.string().url(),
+	UMAMI_HOST: z.url(),
 	UMAMI_WEBSITE: z.string(),
 	UMAMI_USERNAME: z.string(),
 	UMAMI_PASSWORD: z.string(),

@@ -16,7 +16,8 @@
 		"changelogTooltip": "Laatste updates",
 		"changelogSubheading": "Hier vind je de nieuwste updates en verbeteringen van QRcodly.",
 		"newBadge": "Nieuw!",
-		"dynamicDescription": "Dynamische QR-codes kunnen na creatie bewerkt worden, tracken elke scan en bieden gedetailleerde statistieken – zonder de code opnieuw te hoeven afdrukken."
+		"dynamicDescription": "Dynamische QR-codes kunnen na creatie bewerkt worden, tracken elke scan en bieden gedetailleerde statistieken – zonder de code opnieuw te hoeven afdrukken.",
+		"dynamicBadgeTooltip": "Maakt het mogelijk om de inhoud later te wijzigen zonder nieuwe QR-code. <i>Hover voor meer info</i>"
 	},
 	"headline": "<span class=\"text-xl xs:text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
 	"metadata": {

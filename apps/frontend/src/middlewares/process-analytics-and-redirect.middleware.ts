@@ -98,7 +98,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 			}
 		}
 	} catch (error) {
-		console.log('Error sending request to logger:', error);
+		console.error('Error sending request to logger:', error);
 	}
 
 	return NextResponse.redirect(new URL(shortUrl.destinationUrl));
