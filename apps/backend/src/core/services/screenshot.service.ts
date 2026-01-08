@@ -37,10 +37,22 @@ export class ScreenshotService {
 				throw new Error(`Screenshot service returned ${response.status}`);
 			}
 
+			// Validate response size (e.g., max 5MB)
+			const contentLength = response.headers.get('content-length');
+			const maxSize = 5 * 1024 * 1024; // 5MB
+			if (contentLength && parseInt(contentLength) > maxSize) {
+				throw new BadRequestError('Screenshot response too large');
+			}
+
 			// Get the image as a buffer
 			const arrayBuffer = await response.arrayBuffer();
-			const buffer = Buffer.from(arrayBuffer);
 
+			// Additional check in case content-length wasn't provided
+			if (arrayBuffer.byteLength > maxSize) {
+				throw new BadRequestError('Screenshot response too large');
+			}
+
+			const buffer = Buffer.from(arrayBuffer);
 			return buffer;
 		} catch (e: any) {
 			const error = e as Error;

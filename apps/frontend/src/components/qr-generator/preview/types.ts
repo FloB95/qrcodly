@@ -3,7 +3,6 @@
  */
 
 import type { RefObject } from 'react';
-import type { ContrastAnalysisResult } from '@/lib/contrast.utils';
 
 /**
  * Background source type

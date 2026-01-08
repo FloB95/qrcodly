@@ -17,15 +17,12 @@ import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useAuth } from '@clerk/nextjs';
-import { fetchScreenshot, isIframeAccessible } from '@/lib/screenshot.utils';
+import { useScreenshotMutation } from '@/lib/api/screenshot';
 
 interface WebsitePreviewProps {
 	onSelect: (imageDataUrl: string) => void;
 	className?: string;
 }
-
-type LoadingMethod = 'iframe' | 'screenshot' | null;
 
 // Zod schema for URL validation
 const websiteUrlSchema = z.object({
@@ -36,11 +33,12 @@ type WebsiteUrlFormData = z.infer<typeof websiteUrlSchema>;
 
 export function WebsitePreview({ onSelect, className = '' }: WebsitePreviewProps) {
 	const t = useTranslations('generator.preview.website');
-	const { getToken } = useAuth();
 	const [isLoading, setIsLoading] = useState(false);
-	const [loadingMethod, setLoadingMethod] = useState<LoadingMethod>(null);
 	const [error, setError] = useState<string | null>(null);
 	const iframeRef = useRef<HTMLIFrameElement>(null);
+
+	// Screenshot mutation
+	const screenshotMutation = useScreenshotMutation();
 
 	// React Hook Form with Zod validation
 	const {
@@ -56,20 +54,10 @@ export function WebsitePreview({ onSelect, className = '' }: WebsitePreviewProps
 	const captureWithScreenshotApi = useCallback(
 		async (websiteUrl: string) => {
 			try {
-				setLoadingMethod('screenshot');
-
-				// Get authentication token
-				const token = await getToken();
-
-				console.log('Fetching screenshot from backend API');
-				const dataUrl = await fetchScreenshot(websiteUrl, token);
-
-				console.log('Screenshot captured successfully, data URL length:', dataUrl.length);
+				const dataUrl = await screenshotMutation.mutateAsync({ url: websiteUrl });
 				onSelect(dataUrl);
 				setIsLoading(false);
-				setLoadingMethod(null);
 			} catch (err) {
-				console.error('Screenshot API failed:', err);
 				setError(
 					t('errors.screenshotFailed', {
 						default:
@@ -77,100 +65,29 @@ export function WebsitePreview({ onSelect, className = '' }: WebsitePreviewProps
 					}),
 				);
 				setIsLoading(false);
-				setLoadingMethod(null);
 			}
 		},
-		[onSelect, t, getToken],
+		[onSelect, t, screenshotMutation],
 	);
-
-	// Try to capture via iframe
-	const tryIframeCapture = useCallback((websiteUrl: string) => {
-		return new Promise<boolean>((resolve) => {
-			const iframe = document.createElement('iframe');
-			iframe.style.position = 'fixed';
-			iframe.style.top = '-9999px';
-			iframe.style.left = '-9999px';
-			iframe.style.width = '1024px';
-			iframe.style.height = '768px';
-			iframe.style.border = 'none';
-			iframe.src = websiteUrl;
-
-			let resolved = false;
-
-			// Set timeout for iframe load (3 seconds)
-			const timeout = setTimeout(() => {
-				if (!resolved) {
-					resolved = true;
-					document.body.removeChild(iframe);
-					resolve(false); // Timeout - fall back to screenshot
-				}
-			}, 3000);
-
-			iframe.onload = () => {
-				if (resolved) return;
-
-				// Check if iframe is accessible
-				const accessible = isIframeAccessible(iframe);
-
-				clearTimeout(timeout);
-				document.body.removeChild(iframe);
-				resolved = true;
-
-				if (accessible) {
-					// Iframe loaded successfully, but we still can't easily capture it
-					// due to browser security restrictions with cross-origin content
-					// Fall back to screenshot API for consistent results
-					resolve(false);
-				} else {
-					resolve(false);
-				}
-			};
-
-			iframe.onerror = () => {
-				if (resolved) return;
-
-				clearTimeout(timeout);
-				document.body.removeChild(iframe);
-				resolved = true;
-				resolve(false);
-			};
-
-			document.body.appendChild(iframe);
-		});
-	}, []);
 
 	// Main preview handler - called on form submit
 	const onSubmit = useCallback(
 		async (data: WebsiteUrlFormData) => {
 			setIsLoading(true);
 			setError(null);
-			setLoadingMethod('iframe');
 
 			try {
-				// Try iframe approach first
-				const iframeSuccess = await tryIframeCapture(data.url);
-
-				if (iframeSuccess) {
-					// Iframe worked (this path is unlikely due to security restrictions)
-					// In practice, we'll almost always fall back to screenshot API
-					setIsLoading(false);
-					setLoadingMethod(null);
-				} else {
-					// Fall back to screenshot API
-					await captureWithScreenshotApi(data.url);
-				}
+				await captureWithScreenshotApi(data.url);
 			} catch (err) {
-				console.error('Preview failed:', err);
 				setError(
 					t('errors.loadFailed', {
 						default: 'Failed to load website. Please try again.',
 					}),
 				);
 				setIsLoading(false);
-				setLoadingMethod(null);
 			}
 		},
-		[t, tryIframeCapture, captureWithScreenshotApi],
+		[t, captureWithScreenshotApi],
 	);
 
 	return (
@@ -229,9 +146,7 @@ export function WebsitePreview({ onSelect, className = '' }: WebsitePreviewProps
 									d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
 								/>
 							</svg>
-							{loadingMethod === 'iframe'
-								? t('loadingIframe', { default: 'Loading website...' })
-								: t('loadingScreenshot', { default: 'Capturing screenshot...' })}
+							{t('loadingScreenshot', { default: 'Capturing screenshot...' })}
 						</span>
 					) : (
 						<span className="flex items-center gap-2">

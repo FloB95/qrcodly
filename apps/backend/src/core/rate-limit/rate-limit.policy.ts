@@ -5,6 +5,7 @@ export enum RateLimitPolicy {
 	BULK_QR_CREATE = 'bulk_qr_create',
 	// template limits
 	TEMPLATE_CREATE = 'template_create',
+	SCREENSHOT_CREATE = 'screenshot_create',
 }
 
 export enum RateLimitTier {
@@ -41,5 +42,10 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 5,
 		[RateLimitTier.PRO_PLAN]: 20,
+	},
+	[RateLimitPolicy.SCREENSHOT_CREATE]: {
+		[RateLimitTier.ANONYMOUS]: 0,
+		[RateLimitTier.AUTHENTICATED]: 3,
+		[RateLimitTier.PRO_PLAN]: 10,
 	},
 } as const;

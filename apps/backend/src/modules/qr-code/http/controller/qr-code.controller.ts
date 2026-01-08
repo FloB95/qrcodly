@@ -303,6 +303,9 @@ export class QrCodeController extends AbstractController {
 
 	@Get('/screenshot', {
 		querySchema: WebsiteScreenshotDtoSchema,
+		config: {
+			rateLimitPolicy: RateLimitPolicy.SCREENSHOT_CREATE,
+		},
 		schema: {
 			hide: true,
 		},
