@@ -3,7 +3,7 @@
 import { useAuth } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { getDefaultContentByType, type TCreateQrCodeDto } from '@shared/schemas';
+import { type TCreateQrCodeDto } from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
 import { useTranslations } from 'next-intl';
 import posthog from 'posthog-js';
