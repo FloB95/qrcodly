@@ -40,8 +40,10 @@ export function getQrCodeStylingOptions(
 /**
  * Check if content is at default state (not ready for download)
  */
-export function isContentAtDefault(content: TQrCodeContent): boolean {
-	return JSON.stringify(content) === JSON.stringify(getDefaultContentByType(content.type));
+export function isContentAtDefault(content: TQrCodeContent, isSignedIn = false): boolean {
+	return (
+		JSON.stringify(content) === JSON.stringify(getDefaultContentByType(content.type, isSignedIn))
+	);
 }
 
 /**

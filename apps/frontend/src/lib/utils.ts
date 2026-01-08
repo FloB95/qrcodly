@@ -146,3 +146,6 @@ export async function apiRequest<T>(
 export function getQrCodeEditLink(lang: SupportedLanguages, qrCodeId: string) {
 	return `/${lang}/collection/qr-code/${qrCodeId}/edit`;
 }
+
+export const stableStringify = (obj: unknown) =>
+	JSON.stringify(obj, Object.keys(obj as object).sort());

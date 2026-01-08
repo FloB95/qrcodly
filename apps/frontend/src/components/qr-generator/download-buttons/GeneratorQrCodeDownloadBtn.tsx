@@ -148,7 +148,10 @@ export const GeneratorQrCodeDownloadBtn = ({
 		});
 	};
 
-	const isDisabled = !hasMounted || isContentAtDefault(content) || createQrCodeMutation.isPending;
+	const isDisabled =
+		!hasMounted ||
+		isContentAtDefault(content, isSignedIn === true) ||
+		createQrCodeMutation.isPending;
 
 	return (
 		<DropdownMenu>

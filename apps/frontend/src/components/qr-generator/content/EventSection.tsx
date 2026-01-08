@@ -23,7 +23,7 @@ import { useEffect, useState } from 'react';
 import { EventInputSchema, type TEventInput } from '@shared/schemas/src';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { getShortUrlFromCode } from '@/lib/utils';
+import { getShortUrlFromCode, stableStringify } from '@/lib/utils';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
@@ -74,8 +74,6 @@ const _EventSection = ({ onChange, value }: EventSectionProps) => {
 
 		onChange(payload);
 	}
-
-	const stableStringify = (obj: unknown) => JSON.stringify(obj, Object.keys(obj as object).sort());
 
 	useEffect(() => {
 		if (

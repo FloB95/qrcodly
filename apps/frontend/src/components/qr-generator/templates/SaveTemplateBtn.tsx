@@ -13,6 +13,7 @@ import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
+import { stableStringify } from '@/lib/utils';
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 	const t = useTranslations('templates');
@@ -77,9 +78,9 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 		}
 	};
 
-	const istDisabled =
+	const isDisabled =
 		createConfigTemplateMutation.isPending ||
-		JSON.stringify(config) === JSON.stringify(QrCodeDefaults);
+		stableStringify(config) === stableStringify(QrCodeDefaults);
 
 	return (
 		<>
@@ -98,7 +99,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 							}
 							setNameDialogOpen(true);
 						}}
-						disabled={istDisabled}
+						disabled={isDisabled}
 					>
 						{t('saveAsBtn')}
 					</Button>

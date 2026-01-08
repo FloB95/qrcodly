@@ -16,6 +16,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import type { ApiError } from '@/lib/api/ApiError';
+import { isContentAtDefault } from '@/lib/qr-code-helpers';
 
 const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 	const t = useTranslations('qrCode');
@@ -109,6 +110,11 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 		}
 	};
 
+	const isDisabled =
+		!hasMounted ||
+		isContentAtDefault(qrCode.content, isSignedIn === true) ||
+		createQrCodeMutation.isPending;
+
 	return (
 		<>
 			<Tooltip>
@@ -127,14 +133,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 							}
 							setNameDialogOpen(true);
 						}}
-						disabled={
-							!hasMounted ||
-							!(
-								JSON.stringify(qrCode.content) !==
-									JSON.stringify(getDefaultContentByType(qrCode.content.type)) &&
-								!createQrCodeMutation.isPending
-							)
-						}
+						disabled={isDisabled}
 					>
 						{t('storeBtn')}
 					</Button>

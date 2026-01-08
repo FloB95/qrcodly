@@ -27,8 +27,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import type { TQrCodeWithRelationsResponseDto, TFileExtension } from '@shared/schemas';
+import { QrCodeDefaults } from '@shared/schemas';
 import { getQrCodeStylingOptions } from '@/lib/qr-code-helpers';
 import posthog from 'posthog-js';
+import { NameDialog } from '@/components/qr-generator/NameDialog';
+import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
+import { toast } from '@/components/ui/use-toast';
+import * as Sentry from '@sentry/nextjs';
+import type { ApiError } from '@/lib/api/ApiError';
+import { stableStringify } from '@/lib/utils';
 
 let QRCodeStyling: any;
 
@@ -50,7 +57,10 @@ export const QrCodeListItemActions = ({
 	onDelete,
 }: QrCodeListItemActionsProps) => {
 	const t = useTranslations();
+	const tTemplates = useTranslations('templates');
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
+	const [templateNameDialogOpen, setTemplateNameDialogOpen] = useState(false);
+	const createConfigTemplateMutation = useCreateConfigTemplateMutation();
 
 	useEffect(() => {
 		import('qr-code-styling').then((module) => {
@@ -81,6 +91,64 @@ export const QrCodeListItemActions = ({
 		window.open(`/api/dynamic-qr/${qr.id}`, '_blank');
 	};
 
+	const handleCreateTemplate = async (templateName: string) => {
+		setTemplateNameDialogOpen(false);
+		try {
+			await createConfigTemplateMutation.mutateAsync(
+				{
+					config: qr.config,
+					name: templateName,
+				},
+				{
+					onSuccess: () => {
+						toast({
+							title: tTemplates('templateCreatedTitle'),
+							description: tTemplates('templateCreatedDescription'),
+							duration: 5000,
+						});
+
+						posthog.capture('config-template-created-from-qr', {
+							templateName: templateName,
+							qrCodeId: qr.id,
+						});
+					},
+					onError: (e: Error) => {
+						const error = e as ApiError;
+
+						if (error.code >= 500) {
+							Sentry.captureException(error, {
+								extra: {
+									templateName: templateName,
+									config: qr.config,
+									qrCodeId: qr.id,
+									error: {
+										code: error.code,
+										message: error.message,
+										fieldErrors: error?.fieldErrors,
+									},
+								},
+							});
+
+							posthog.capture('error:config-template-created-from-qr', {
+								templateName: templateName,
+								qrCodeId: qr.id,
+							});
+						}
+
+						toast({
+							variant: 'destructive',
+							title: tTemplates('templateCreatedErrorTitle'),
+							description: error.message,
+							duration: 5000,
+						});
+					},
+				},
+			);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	const showContentFileDownload = qr.content.type === 'vCard' || qr.content.type === 'event';
 	const contentFileLabel =
 		qr.content.type === 'vCard'
@@ -88,6 +156,8 @@ export const QrCodeListItemActions = ({
 			: qr.content.type === 'event'
 				? t('qrCode.download.icsFile')
 				: '';
+
+	const isConfigDefault = stableStringify(qr.config) === stableStringify(QrCodeDefaults);
 
 	return (
 		<DropdownMenu>
@@ -201,6 +271,19 @@ export const QrCodeListItemActions = ({
 					</DropdownMenuItem>
 				)}
 
+				{!isConfigDefault && (
+					<DropdownMenuItem
+						onClick={(e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							setTemplateNameDialogOpen(true);
+						}}
+						className="cursor-pointer"
+					>
+						{tTemplates('saveAsBtn')}
+					</DropdownMenuItem>
+				)}
+
 				<AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
 					<AlertDialogTrigger
 						className="cursor-pointer"
@@ -244,6 +327,14 @@ export const QrCodeListItemActions = ({
 					</AlertDialogContent>
 				</AlertDialog>
 			</DropdownMenuContent>
+
+			<NameDialog
+				dialogHeadline={tTemplates('savePopup.title')}
+				placeholder={tTemplates('savePopup.placeholder')}
+				isOpen={templateNameDialogOpen}
+				setIsOpen={setTemplateNameDialogOpen}
+				onSubmit={handleCreateTemplate}
+			/>
 		</DropdownMenu>
 	);
 };

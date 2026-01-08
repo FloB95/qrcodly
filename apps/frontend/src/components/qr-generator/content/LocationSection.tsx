@@ -21,6 +21,7 @@ import { StandaloneSearchBox, useJsApiLoader, type Libraries } from '@react-goog
 import { Loader2 } from 'lucide-react';
 import { env } from '@/env';
 import { CharacterCounter } from './CharacterCounter';
+import { stableStringify } from '@/lib/utils';
 
 type LocationSectionProps = {
 	onChange: (data: TLocationInput) => void;
@@ -47,10 +48,6 @@ const _LocationSection = ({ onChange, value }: LocationSectionProps) => {
 
 	useEffect(() => {
 		if (!debounced) return;
-
-		// Avoid unnecessary onChange calls
-		const stableStringify = (obj: unknown) =>
-			JSON.stringify(obj, Object.keys(obj as object).sort());
 
 		if (stableStringify(debounced) === stableStringify(value)) return;
 
