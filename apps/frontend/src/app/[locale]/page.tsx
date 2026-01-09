@@ -11,9 +11,15 @@ import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfig
 import Script from 'next/script';
 import { QrCodeDefaults } from '@shared/schemas';
 import { auth } from '@clerk/nextjs/server';
+import { notFound } from 'next/navigation';
+import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
+	if (!SUPPORTED_LANGUAGES.includes(locale as (typeof SUPPORTED_LANGUAGES)[number])) {
+		notFound();
+	}
+
 	const t = await getTranslations({ locale });
 	const tMeta = await getTranslations({ locale, namespace: 'metadata' });
 	const { userId } = await auth();
