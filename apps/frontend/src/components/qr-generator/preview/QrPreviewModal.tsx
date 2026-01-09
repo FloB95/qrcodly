@@ -1,8 +1,3 @@
-/**
- * QR Preview Modal
- * Main container for QR code background preview feature
- */
-
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -145,15 +140,16 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 
 	// Trigger pulse animation when entering preview step
 	useEffect(() => {
-		if (step === 'preview' && backgroundImage) {
-			// Start pulse animation
-			setShowPulse(true);
-			// Stop pulse after a few seconds
-			const timer = setTimeout(() => {
-				setShowPulse(false);
-			}, 3000);
-			return () => clearTimeout(timer);
+		if (step !== 'preview' || !backgroundImage) {
+			return;
 		}
+		// Start pulse animation
+		setShowPulse(true);
+		// Stop pulse after a few seconds
+		const timer = setTimeout(() => {
+			setShowPulse(false);
+		}, 3000);
+		return () => clearTimeout(timer);
 	}, [step, backgroundImage]);
 
 	const handleImageSelected = (imageDataUrl: string) => {
