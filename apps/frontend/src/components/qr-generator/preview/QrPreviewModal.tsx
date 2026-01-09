@@ -66,6 +66,9 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 		qrRef,
 	} = useQrPosition(containerRef, imageRef);
 
+	const [showPulse, setShowPulse] = useState(false);
+	const [isDragging, setIsDragging] = useState(false);
+
 	// Handle manual dismissal of instructions
 	const handleDismissInstructions = () => {
 		setShowInstructions(false);
@@ -140,6 +143,19 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 		return () => window.removeEventListener('resize', handleResize);
 	}, [backgroundImage, position, setPosition]);
 
+	// Trigger pulse animation when entering preview step
+	useEffect(() => {
+		if (step === 'preview' && backgroundImage) {
+			// Start pulse animation
+			setShowPulse(true);
+			// Stop pulse after a few seconds
+			const timer = setTimeout(() => {
+				setShowPulse(false);
+			}, 3000);
+			return () => clearTimeout(timer);
+		}
+	}, [step, backgroundImage]);
+
 	const handleImageSelected = (imageDataUrl: string) => {
 		setBackgroundImage(imageDataUrl);
 		setStep('preview');
@@ -160,6 +176,8 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 			setStep('select');
 			setBackgroundImage(null);
 			setZoom(1); // Reset zoom
+			setShowPulse(false); // Reset pulse for next open
+			setIsDragging(false);
 		}, 200);
 	};
 
@@ -246,16 +264,45 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 												dragElastic={0}
 												dragMomentum={false}
 												className="absolute top-0 left-0 group"
-												// initial={{
-												// 	x: 0,
-												// 	y: 0,
-												// }}
+												initial={{
+													x: position.x,
+													y: position.y,
+													scale: 0.8,
+													opacity: 0,
+												}}
+												animate={{
+													x: position.x,
+													y: position.y,
+													scale: 1,
+													opacity: 1,
+													boxShadow: isDragging
+														? '0 8px 24px rgba(0, 0, 0, 0.25)'
+														: showPulse
+															? [
+																	'0 0 0 0 rgba(59, 130, 246, 0)',
+																	'0 0 0 8px rgba(59, 130, 246, 0.25)',
+																	'0 0 0 0 rgba(59, 130, 246, 0)',
+																]
+															: '0 0 0 0 rgba(59, 130, 246, 0)',
+												}}
+												transition={{
+													x: { type: 'spring', stiffness: 300, damping: 30 },
+													y: { type: 'spring', stiffness: 300, damping: 30 },
+													scale: { duration: 0.4, ease: 'easeOut' },
+													opacity: { duration: 0.3 },
+													boxShadow: showPulse
+														? { duration: 1.5, repeat: Infinity, ease: 'easeInOut' }
+														: { duration: 0.2 },
+												}}
 												onDragStart={(event) => {
 													if (isResizing || isRotating) {
 														event.preventDefault();
 													}
+													setShowPulse(false);
+													setIsDragging(true);
 												}}
 												onDragEnd={(_, info) => {
+													setIsDragging(false);
 													setPosition({
 														...position,
 														x: position.x + info.offset.x,
@@ -271,6 +318,7 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 													touchAction: 'none',
 													cursor: isResizing ? 'nwse-resize' : isRotating ? 'grabbing' : 'move',
 													rotate: position.rotation,
+													borderRadius: 8,
 												}}
 											>
 												<div className="pointer-events-none h-full w-full">
@@ -286,6 +334,7 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 													onPointerDown={(e) => {
 														e.stopPropagation();
 														e.preventDefault();
+														setShowPulse(false);
 														startRotate(e, qrRef.current);
 													}}
 													onMouseEnter={() => setIsOverRotateHandle(true)}
@@ -325,6 +374,7 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 													onPointerDown={(e) => {
 														e.stopPropagation();
 														e.preventDefault();
+														setShowPulse(false);
 														startResize(e);
 													}}
 													onMouseEnter={() => setIsOverResizeHandle(true)}
