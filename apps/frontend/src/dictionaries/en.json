@@ -498,7 +498,7 @@
 			}
 		},
 		"preview": {
-			"button": "Test Preview",
+			"button": "Open Preview",
 			"title": "QR Code Background Preview",
 			"selectTitle": "Select Background",
 			"selectDescription": "Test how your QR code looks on different backgrounds before printing or sharing.",

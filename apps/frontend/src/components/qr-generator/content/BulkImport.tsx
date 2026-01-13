@@ -56,8 +56,8 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 						}, 500);
 
 						void Promise.all([
-							queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
-							queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
+							queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
+							queryClient.refetchQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
 						]);
 
 						posthog.capture('qr-code-bulk-import', {

@@ -71,7 +71,7 @@ export function useCreateQrCodeMutation() {
 		},
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
-			void queryClient.invalidateQueries({
+			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
@@ -109,7 +109,7 @@ export function useBulkCreateQrCodeMutation() {
 			});
 		},
 		onSuccess: () => {
-			void queryClient.invalidateQueries({ queryKey: ['listQrCodes'] });
+			void queryClient.refetchQueries({ queryKey: ['listQrCodes'] });
 		},
 	});
 }
@@ -140,7 +140,7 @@ export function useUpdateQrCodeMutation() {
 		},
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
-			void queryClient.invalidateQueries({
+			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
@@ -168,7 +168,7 @@ export function useDeleteQrCodeMutation() {
 		},
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
-			void queryClient.invalidateQueries({
+			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},

@@ -498,7 +498,7 @@
 			}
 		},
 		"preview": {
-			"button": "Prova Anteprima",
+			"button": "Apri Anteprima",
 			"title": "Anteprima Codice QR con Sfondo",
 			"selectTitle": "Seleziona Sfondo",
 			"selectDescription": "Testa come appare il tuo codice QR su diversi sfondi prima di stamparlo o condividerlo.",

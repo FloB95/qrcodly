@@ -498,7 +498,7 @@
 			}
 		},
 		"preview": {
-			"button": "Podgląd",
+			"button": "Otwórz podgląd",
 			"title": "Podgląd kodu QR",
 			"selectTitle": "Wybierz tło",
 			"selectDescription": "Przetestuj, jak wygląda Twój kod QR na różnych tłach przed wydrukowaniem lub udostępnieniem.",

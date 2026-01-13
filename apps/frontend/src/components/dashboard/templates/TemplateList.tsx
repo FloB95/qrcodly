@@ -12,7 +12,7 @@ import {
 } from '../../ui/pagination';
 import { useState, useMemo, useEffect, Fragment } from 'react';
 import { getPageNumbers } from '@/lib/utils';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { SkeletonListItem } from '../qrCode/ListItem';
 import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
@@ -20,23 +20,11 @@ import { TemplateListItem } from './ListItem';
 
 export const TemplateList = () => {
 	const t = useTranslations();
-	const router = useRouter();
 	const searchParams = useSearchParams();
 
 	const pageParam = Number(searchParams.get('page')) || 1;
 	const [currentPage, setCurrentPage] = useState(pageParam);
 	const [currentLimit] = useState(10);
-
-	// Keep currentPage in sync with URL
-	useEffect(() => {
-		const url = new URL(window.location.href);
-		if (currentPage === 1) {
-			url.searchParams.delete('page');
-		} else {
-			url.searchParams.set('page', String(currentPage));
-		}
-		router.replace(url.pathname + url.search, { scroll: false });
-	}, [currentPage, router]);
 
 	// If the URL changes (e.g., via back/forward), update currentPage
 	useEffect(() => {

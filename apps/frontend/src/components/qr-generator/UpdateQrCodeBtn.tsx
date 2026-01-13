@@ -54,7 +54,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 							duration: 5000,
 						});
 
-						queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
+						queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
 						posthog.capture('qr-code-updated', {
 							name: qrCode.name,
 							config: qrCode.config,

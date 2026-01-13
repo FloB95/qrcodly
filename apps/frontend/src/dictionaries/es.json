@@ -498,7 +498,7 @@
 			}
 		},
 		"preview": {
-			"button": "Probar Vista Previa",
+			"button": "Abrir Vista Previa",
 			"title": "Vista Previa del Código QR con Fondo",
 			"selectTitle": "Seleccionar Fondo",
 			"selectDescription": "Prueba cómo se ve tu código QR en diferentes fondos antes de imprimirlo o compartirlo.",

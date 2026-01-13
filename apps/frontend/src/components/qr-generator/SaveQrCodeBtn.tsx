@@ -52,8 +52,8 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 						});
 
 						void Promise.all([
-							queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
-							queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
+							queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
+							queryClient.refetchQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
 						]);
 
 						if (qrCode.content.type === 'url' && qrCode.content.data.isEditable) {

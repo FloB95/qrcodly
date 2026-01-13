@@ -498,7 +498,7 @@
 			}
 		},
 		"preview": {
-			"button": "Voorbeeld Testen",
+			"button": "Voorbeeld Openen",
 			"title": "QR-Code Achtergrond Voorbeeld",
 			"selectTitle": "Achtergrond Selecteren",
 			"selectDescription": "Test hoe je QR-code eruitziet op verschillende achtergronden voordat je deze afdrukt of deelt.",

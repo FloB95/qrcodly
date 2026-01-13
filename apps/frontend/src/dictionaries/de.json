@@ -498,7 +498,7 @@
 			}
 		},
 		"preview": {
-			"button": "Vorschau testen",
+			"button": "Vorschau öffnen",
 			"title": "QR-Code Hintergrund-Vorschau",
 			"selectTitle": "Hintergrund auswählen",
 			"selectDescription": "Teste, wie dein QR-Code auf verschiedenen Hintergründen aussieht, bevor du ihn druckst oder teilst.",

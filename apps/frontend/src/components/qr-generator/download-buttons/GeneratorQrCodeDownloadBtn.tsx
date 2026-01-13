@@ -80,8 +80,8 @@ export const GeneratorQrCodeDownloadBtn = ({
 								});
 
 								void Promise.all([
-									queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
-									queryClient.invalidateQueries({
+									queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
+									queryClient.refetchQueries({
 										queryKey: urlShortenerQueryKeys.reservedShortUrl,
 									}),
 								]);

@@ -52,7 +52,7 @@ export function useToggleActiveStateMutation() {
 			});
 		},
 		onSuccess: () => {
-			void queryClient.invalidateQueries({
+			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},

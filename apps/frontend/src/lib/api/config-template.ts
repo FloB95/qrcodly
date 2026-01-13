@@ -101,7 +101,7 @@ export function useCreateConfigTemplateMutation() {
 		},
 		onSuccess: async () => {
 			// Invalidate the 'listConfigTemplates' query to refetch the updated data
-			await queryClient.invalidateQueries({
+			await queryClient.refetchQueries({
 				queryKey: queryKeys.listConfigTemplates,
 			});
 		},
@@ -145,7 +145,7 @@ export function useUpdateConfigTemplateMutation() {
 				config: data.config,
 			});
 
-			void queryClient.invalidateQueries({
+			void queryClient.refetchQueries({
 				queryKey: queryKeys.listConfigTemplates,
 			});
 		},
@@ -182,7 +182,7 @@ export function useDeleteConfigTemplateMutation() {
 		},
 		onSuccess: () => {
 			// Invalidate the 'listConfigTemplates' query to refetch the updated data
-			void queryClient.invalidateQueries({
+			void queryClient.refetchQueries({
 				queryKey: queryKeys.listConfigTemplates,
 			});
 		},

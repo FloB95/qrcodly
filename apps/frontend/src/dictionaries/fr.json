@@ -498,7 +498,7 @@
 			}
 		},
 		"preview": {
-			"button": "Tester l'Aperçu",
+			"button": "Ouvrir l'Aperçu",
 			"title": "Aperçu du Code QR avec Arrière-plan",
 			"selectTitle": "Sélectionner l'Arrière-plan",
 			"selectDescription": "Testez l'apparence de votre code QR sur différents arrière-plans avant de l'imprimer ou de le partager.",
