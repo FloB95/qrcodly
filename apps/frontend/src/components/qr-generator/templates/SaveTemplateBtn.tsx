@@ -6,14 +6,13 @@ import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../ui/tooltip';
 import { NameDialog } from '../NameDialog';
 import { Button } from '@/components/ui/button';
-import { QrCodeDefaults, type TQrCodeOptions } from '@shared/schemas';
+import { objDiff, QrCodeDefaults, type TQrCodeOptions } from '@shared/schemas';
 import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
-import { stableStringify } from '@/lib/utils';
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 	const t = useTranslations('templates');
@@ -80,7 +79,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 
 	const isDisabled =
 		createConfigTemplateMutation.isPending ||
-		stableStringify(config) === stableStringify(QrCodeDefaults);
+		Object.keys(objDiff(QrCodeDefaults, config)).length === 0;
 
 	return (
 		<>

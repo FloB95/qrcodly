@@ -27,7 +27,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import type { TQrCodeWithRelationsResponseDto, TFileExtension } from '@shared/schemas';
-import { QrCodeDefaults } from '@shared/schemas';
+import { objDiff, QrCodeDefaults } from '@shared/schemas';
 import { getQrCodeStylingOptions } from '@/lib/qr-code-helpers';
 import posthog from 'posthog-js';
 import { NameDialog } from '@/components/qr-generator/NameDialog';
@@ -35,7 +35,6 @@ import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
-import { stableStringify } from '@/lib/utils';
 
 let QRCodeStyling: any;
 
@@ -157,7 +156,7 @@ export const QrCodeListItemActions = ({
 				? t('qrCode.download.icsFile')
 				: '';
 
-	const isConfigDefault = stableStringify(qr.config) === stableStringify(QrCodeDefaults);
+	const isConfigDefault = Object.keys(objDiff(QrCodeDefaults, qr.config)).length === 0;
 
 	return (
 		<DropdownMenu>

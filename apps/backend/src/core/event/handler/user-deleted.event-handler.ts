@@ -6,7 +6,7 @@ import { Logger } from '@/core/logging';
 import { sleep } from '@/utils/general';
 
 @EventHandler(UserDeletedEvent.eventName)
-export class QrCodeCreatedEventHandler extends AbstractEventHandler<UserDeletedEvent> {
+export class UserCreatedEventHandler extends AbstractEventHandler<UserDeletedEvent> {
 	constructor() {
 		super();
 	}
@@ -18,8 +18,8 @@ export class QrCodeCreatedEventHandler extends AbstractEventHandler<UserDeletedE
 	async handle(event: UserDeletedEvent): Promise<void> {
 		await sleep(100);
 		const logger = container.resolve(Logger);
-		logger.info('handle user delete', {
-			id: event.user?.id,
+		logger.info('user.deleted', {
+			id: event.user.id,
 		});
 	}
 }

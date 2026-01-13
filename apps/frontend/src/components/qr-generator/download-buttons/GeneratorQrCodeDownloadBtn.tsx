@@ -91,9 +91,8 @@ export const GeneratorQrCodeDownloadBtn = ({
 								}
 
 								updateLatestQrCode({ name: name || null, config, content });
-
-								posthog.capture('qr-code-created', { data: content });
 							}
+							posthog.capture('qr-code-created', { data: content });
 						},
 						onError: (e: Error) => {
 							const error = e as ApiError;

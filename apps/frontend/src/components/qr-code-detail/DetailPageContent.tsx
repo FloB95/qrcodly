@@ -29,6 +29,9 @@ import {
 } from '../ui/alert-dialog';
 import WifiContent from './content/Wifi';
 import VCardContent from './content/VCard';
+import EmailContent from './content/Email';
+import LocationContent from './content/Location';
+import EventContent from './content/Event';
 import Link from 'next/link';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import { getQrCodeEditLink } from '@/lib/utils';
@@ -54,6 +57,12 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 				return <WifiContent qrCode={qrCode} />;
 			case 'vCard':
 				return <VCardContent qrCode={qrCode} />;
+			case 'email':
+				return <EmailContent qrCode={qrCode} />;
+			case 'location':
+				return <LocationContent qrCode={qrCode} />;
+			case 'event':
+				return <EventContent qrCode={qrCode} />;
 			default:
 				return <></>;
 		}

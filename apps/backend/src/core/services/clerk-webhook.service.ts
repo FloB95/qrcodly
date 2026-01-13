@@ -4,6 +4,7 @@ import { UserDeletedEvent } from '../event/user-deleted.event';
 import { AbstractEvent } from '../event/abstract.event';
 import { Logger } from '../logging';
 import { UserCreatedEvent } from '../event/user-created.event';
+import { UserUpdatedEvent } from '../event/user-updated.event';
 
 export type ClerkEventType =
 	| 'user.created'
@@ -22,7 +23,7 @@ export interface ClerkWebhookEvent<T = any> {
 // Mapping: Clerk Event -> Core Event Klasse
 const CLERK_EVENT_MAP: Record<ClerkEventType, (new (...args: any[]) => AbstractEvent) | null> = {
 	'user.created': UserCreatedEvent,
-	'user.updated': null,
+	'user.updated': UserUpdatedEvent,
 	'user.deleted': UserDeletedEvent,
 	'subscription.active': null,
 	'subscription.canceled': null,

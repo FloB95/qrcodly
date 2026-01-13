@@ -1,10 +1,7 @@
 import { AbstractEvent } from '@/core/event/abstract.event';
+import type { UserJSON } from '@clerk/fastify';
 
-type UserCreatedEventData = {
-	id: string;
-	first_name: string;
-	last_name: string;
-};
+type UserCreatedEventData = UserJSON;
 
 /**
  * Event triggered when a User is created.

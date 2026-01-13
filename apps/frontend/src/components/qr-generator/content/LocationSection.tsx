@@ -14,14 +14,13 @@ import { Input } from '@/components/ui/input';
 import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect, useState } from 'react';
-import { LocationInputSchema, type TLocationInput } from '@shared/schemas/src';
+import { LocationInputSchema, objDiff, type TLocationInput } from '@shared/schemas/src';
 import { useLocale, useTranslations } from 'next-intl';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { StandaloneSearchBox, useJsApiLoader, type Libraries } from '@react-google-maps/api';
 import { Loader2 } from 'lucide-react';
 import { env } from '@/env';
 import { CharacterCounter } from './CharacterCounter';
-import { stableStringify } from '@/lib/utils';
 
 type LocationSectionProps = {
 	onChange: (data: TLocationInput) => void;
@@ -49,7 +48,7 @@ const _LocationSection = ({ onChange, value }: LocationSectionProps) => {
 	useEffect(() => {
 		if (!debounced) return;
 
-		if (stableStringify(debounced) === stableStringify(value)) return;
+		if (Object.keys(objDiff(debounced, value)).length === 0) return;
 
 		onChange(debounced);
 	}, [debounced, value, onChange]);

@@ -1,3 +1,4 @@
+import { getShortUrlFromCode } from '@/lib/utils';
 import { ArrowTurnDownRightIcon } from '@heroicons/react/24/outline';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import Link from 'next/link';
@@ -19,7 +20,7 @@ export const UrlContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResponseDto
 					{destinationUrl}
 				</a>
 			</h2>
-			{isShortUrl && (
+			{isShortUrl && qrCode?.shortUrl && (
 				<div
 					className={`ml-2 flex items-center opacity-100 transition-opacity duration-300 ease-in-out`}
 				>
@@ -30,7 +31,7 @@ export const UrlContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResponseDto
 						className="text-muted-foreground pt-1 text-md"
 						prefetch={false}
 					>
-						{qrCode.content.data.url}
+						{getShortUrlFromCode(qrCode.shortUrl.shortCode)}
 					</Link>
 				</div>
 			)}

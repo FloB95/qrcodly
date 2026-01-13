@@ -164,10 +164,6 @@ export class QrCodeController extends AbstractController {
 			description: 'Get a QR Code by ID',
 			summary: 'Get QR Code',
 			operationId: 'qr-code/get-qr-code-by-id',
-			headers: {
-				'Content-Type': 'multipart/form-data',
-				'Content-Length': '80',
-			},
 		},
 	})
 	async getOneById(

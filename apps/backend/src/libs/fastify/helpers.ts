@@ -270,7 +270,6 @@ export function registerRoutes(
  * @param type - The type of data to validate: 'body' or 'query'.
  * @returns A Fastify preValidation hook function.
  */
-
 function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type: 'body' | 'query') {
 	return async (request: FastifyRequest, _reply: FastifyReply) => {
 		if (request.headers['content-type']?.startsWith('multipart/form-data')) {

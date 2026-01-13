@@ -20,10 +20,10 @@ import {
 } from '@/components/ui/input-group';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect, useState } from 'react';
-import { EventInputSchema, type TEventInput } from '@shared/schemas/src';
+import { EventInputSchema, objDiff, type TEventInput } from '@shared/schemas/src';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { getShortUrlFromCode, stableStringify } from '@/lib/utils';
+import { getShortUrlFromCode } from '@/lib/utils';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
@@ -78,7 +78,7 @@ const _EventSection = ({ onChange, value }: EventSectionProps) => {
 	useEffect(() => {
 		if (
 			JSON.stringify(debounced) === '{}' ||
-			stableStringify(debounced) === stableStringify(value) ||
+			Object.keys(objDiff(debounced, value)).length === 0 ||
 			debounced.startDate === '' ||
 			debounced.endDate === ''
 		) {
