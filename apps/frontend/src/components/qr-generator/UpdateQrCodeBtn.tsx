@@ -28,7 +28,9 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
 
 	// Check if valid changes were made by comparing current content with original
-	const hasValidChanges = Object.keys(objDiff(qrCode.content, latestQrCode?.content)).length > 0;
+	const hasValidChanges =
+		Object.keys(objDiff(qrCode.content, latestQrCode?.content)).length > 0 ||
+		qrCode.name !== latestQrCode?.name;
 
 	useEffect(() => {
 		setHasMounted(true);
