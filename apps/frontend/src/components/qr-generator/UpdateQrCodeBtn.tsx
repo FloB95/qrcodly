@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-	getDefaultContentByType,
-	isDynamic,
-	type TQrCodeWithRelationsResponseDto,
-} from '@shared/schemas';
+import { isDynamic, objDiff, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
@@ -15,6 +11,7 @@ import { qrCodeQueryKeys, useUpdateQrCodeMutation } from '@/lib/api/qr-code';
 import { QrCodeUpdateDialog, UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY } from './QrCodeUpdateDialog';
 import { useQueryClient } from '@tanstack/react-query';
 import type { ApiError } from '@/lib/api/ApiError';
+import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 
 type UpdateBtnDto = Pick<
 	TQrCodeWithRelationsResponseDto,
@@ -27,7 +24,11 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const [infoDialogIsOpen, setInfoDialogIsOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const updateQrCodeMutation = useUpdateQrCodeMutation();
+	const { latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
 	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
+
+	// Check if valid changes were made by comparing current content with original
+	const hasValidChanges = Object.keys(objDiff(qrCode.content, latestQrCode?.content)).length > 0;
 
 	useEffect(() => {
 		setHasMounted(true);
@@ -52,6 +53,13 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 							title: t('update.successTitle'),
 							description: t('update.successDescription'),
 							duration: 5000,
+						});
+
+						// Update latestQrCode to reflect the new saved state
+						updateLatestQrCode({
+							name: qrCode.name,
+							config: qrCode.config,
+							content: qrCode.content,
 						});
 
 						queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
@@ -112,14 +120,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 						handleUpdate();
 					}
 				}}
-				disabled={
-					!hasMounted ||
-					!(
-						JSON.stringify(qrCode.content) !==
-							JSON.stringify(getDefaultContentByType(qrCode.content.type)) &&
-						!updateQrCodeMutation.isPending
-					)
-				}
+				disabled={!hasMounted || !hasValidChanges || updateQrCodeMutation.isPending}
 			>
 				{t('updateBtn')}
 			</Button>

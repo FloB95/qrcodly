@@ -64,8 +64,9 @@ const _WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 			return;
 		}
 
-		onChange(debounced);
-	}, [debounced, value, onChange]);
+		// Use handleSubmit to trigger validation before updating
+		void form.handleSubmit(onSubmit)();
+	}, [debounced]);
 
 	return (
 		<Form {...form}>

@@ -46,12 +46,17 @@ const _TextSection = ({ value, onChange }: TTextSectionProps) => {
 
 	const [debounced] = useDebouncedValue(watchedText, 500);
 
+	function onSubmit(values: z.infer<typeof formSchema>) {
+		onChange(values.text);
+	}
+
 	useEffect(() => {
 		if (debounced === undefined) return;
 		if (debounced === value) return;
 
-		onChange(debounced);
-	}, [debounced, value, onChange]);
+		// Use handleSubmit to trigger validation before updating
+		void form.handleSubmit(onSubmit)();
+	}, [debounced]);
 
 	return (
 		<Form {...form}>

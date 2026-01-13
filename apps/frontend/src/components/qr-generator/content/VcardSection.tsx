@@ -44,11 +44,9 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	});
 	const [debounced] = useDebouncedValue<FormValues>(watchedValues, 500);
 
-	useEffect(() => {
-		if (!debounced) return;
-
+	function onSubmit(values: FormValues) {
 		const normalized = Object.fromEntries(
-			Object.entries(debounced).map(([key, val]) => [key, val === '' ? undefined : val]),
+			Object.entries(values).map(([key, val]) => [key, val === '' ? undefined : val]),
 		) as FormValues;
 
 		const nextValue: FormValues = {
@@ -59,11 +57,15 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 		if (JSON.stringify(nextValue) === JSON.stringify(value)) return;
 
 		onChange(nextValue);
-	}, [debounced, value, onChange]);
-
-	function onSubmit(values: FormValues) {
-		onChange({ ...values, isDynamic: value.isDynamic });
 	}
+
+	useEffect(() => {
+		if (!debounced) return;
+		if (JSON.stringify(debounced) === JSON.stringify(value)) return;
+
+		// Use handleSubmit to trigger validation before updating
+		void form.handleSubmit(onSubmit)();
+	}, [debounced]);
 
 	return (
 		<Form {...form}>

@@ -45,13 +45,18 @@ const _LocationSection = ({ onChange, value }: LocationSectionProps) => {
 	const watchedValues = useWatch({ control: form.control }) as TLocationInput;
 	const [debounced] = useDebouncedValue<TLocationInput>(watchedValues, 500);
 
+	function onSubmit(values: TLocationInput) {
+		onChange(values);
+	}
+
 	useEffect(() => {
 		if (!debounced) return;
 
 		if (Object.keys(objDiff(debounced, value)).length === 0) return;
 
-		onChange(debounced);
-	}, [debounced, value, onChange]);
+		// Use handleSubmit to trigger validation before updating
+		void form.handleSubmit(onSubmit)();
+	}, [debounced]);
 
 	// -----------------------------
 	// Google Maps SearchBox logic
