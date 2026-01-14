@@ -26,7 +26,7 @@ export default async function NotFoundPage() {
 
 					<Container className="flex flex-col justify-center text-center">
 						<div>
-							<h1 className="mb-4 text-center text-6xl font-bold">404</h1>
+							<h1 className="mb-4 text-center text-6xl font-semibold">404</h1>
 							<p className="mb-6 text-center text-xl">
 								Oops! The page you&apos;re looking for doesn&apos;t exist.
 							</p>

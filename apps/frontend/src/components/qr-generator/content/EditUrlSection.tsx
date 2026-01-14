@@ -95,7 +95,7 @@ const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 
 								{form.getValues().isEditable && shortUrl && (
 									<div className="-mt-1 ml-6 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
-										<ArrowTurnLeftUpIcon className="-mt-2 mr-2 h-6 w-6 font-bold" />
+										<ArrowTurnLeftUpIcon className="-mt-2 mr-2 h-6 w-6 font-semibold" />
 										<span className="text-muted-foreground pt-1 text-sm">
 											{getShortUrlFromCode(shortUrl.shortCode)}
 										</span>

@@ -20,6 +20,16 @@
 		"dynamicBadgeTooltip": "Maakt het mogelijk om de inhoud later te wijzigen zonder nieuwe QR-code. <i>Hover voor meer info</i>"
 	},
 	"headline": "<span class=\"text-xl xs:text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
+	"hero": {
+		"badge": "Open Source & Voor Altijd Gratis",
+		"title": "De QR Code Generator Zonder Grenzen",
+		"subtitle": "Genereer onbeperkt statische en dynamische QR-codes gratis. Geen verborgen kosten, geen beperkingen, geen premium niveaus.",
+		"benefits": {
+			"unlimited": "Onbeperkte QR-codes",
+			"noSignup": "Gratis Dynamische QR-codes",
+			"noWatermark": "Geen Watermerken"
+		}
+	},
 	"metadata": {
 		"title": "QRcodly - Gratis QR-codegenerator",
 		"description": "Gratis QR-codes maken met logo, eigen ontwerp of sjablonen – ideaal voor marketing, visitekaartjes & meer. Gebruik nu de QR-codegenerator!",
@@ -155,7 +165,8 @@
 				"title": "Fout bij het bijwerken van de QR-code",
 				"message": "Er is een fout opgetreden bij het bijwerken van uw QR-code. We zijn hiervan op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen."
 			},
-			"noFound": "Geen QR-codes gevonden"
+			"noFound": "Geen QR-codes gevonden",
+			"noFoundDescription": "Je hebt nog geen QR-codes aangemaakt. Begin nu met het maken van QR-codes."
 		},
 		"confirmDeletePopup": {
 			"title": "Verwijderen bevestigen",

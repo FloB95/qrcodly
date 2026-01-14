@@ -40,19 +40,16 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 			updatedAt: new Date(),
 		};
 
+		// prevent linking if qr code points to same url to avoid redirect loops
+		if (updatesDto?.destinationUrl === buildShortUrl(shortUrl.shortCode)) {
+			throw new RedirectLoopError();
+		}
+
 		if (linkedQrCodeId) {
 			// verify that qr code exists
 			const qrCode = await this.qrCodeRepository.findOneById(linkedQrCodeId);
 			if (!qrCode) {
 				throw new QrCodeNotFoundError();
-			}
-
-			// prevent linking if qr code points to same url to avoid redirect loops
-			if (
-				qrCode.content.type === 'url' &&
-				updatesDto?.destinationUrl === buildShortUrl(shortUrl.shortCode)
-			) {
-				throw new RedirectLoopError();
 			}
 		}
 

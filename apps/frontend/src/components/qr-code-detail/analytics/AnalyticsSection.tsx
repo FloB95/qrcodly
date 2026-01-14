@@ -72,14 +72,14 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 					<CardFooter className="flex-col items-start gap-1 text-sm">
 						<div className="line-clamp-1 flex gap-2 font-medium text-muted-foreground items-center">
 							<span>
-								<span className="font-bold text-black">
+								<span className="font-semibold text-black">
 									<AnimatedCounter value={viewsInLastWeek} />
 								</span>{' '}
 								{t('analytics.viewsInLastXDays', {
 									count: '',
 									days: '',
 								}).replace(/\s+/g, ' ')}{' '}
-								<span className="font-bold text-black">7 {t('general.days')}</span>
+								<span className="font-semibold text-black">7 {t('general.days')}</span>
 							</span>
 							{viewsInLastWeek > 0 ? (
 								<ArrowTrendingUpIcon className="size-5" />
@@ -99,14 +99,14 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 					<CardFooter className="flex-col items-start gap-1 text-sm">
 						<div className="line-clamp-1 flex gap-2 font-medium text-muted-foreground items-center">
 							<span>
-								<span className="font-bold text-black">
+								<span className="font-semibold text-black">
 									<AnimatedCounter value={sessionsInLastWeek} />
 								</span>{' '}
 								{t('analytics.visitorsInLastXDays', {
 									count: '',
 									days: '',
 								}).replace(/\s+/g, ' ')}{' '}
-								<span className="font-bold text-black">7 {t('general.days')}</span>
+								<span className="font-semibold text-black">7 {t('general.days')}</span>
 							</span>
 							{sessionsInLastWeek > 0 ? (
 								<ArrowTrendingUpIcon className="size-5" />

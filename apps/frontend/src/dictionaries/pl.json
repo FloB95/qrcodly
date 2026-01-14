@@ -20,6 +20,16 @@
 		"dynamicBadgeTooltip": "Umożliwia późniejszą zmianę treści bez nowego kodu QR. <i>Najedź kursorem, aby uzyskać więcej informacji</i>"
 	},
 	"headline": "<span class=\"text-xl xs:text-2xl\">Darmowy i Open Source</span> <br /> Generator Kodów QR",
+	"hero": {
+		"badge": "Open Source i Zawsze Za Darmo",
+		"title": "Generator Kodów QR Bez Ograniczeń",
+		"subtitle": "Generuj nieograniczoną liczbę statycznych i dynamicznych kodów QR za darmo. Bez ukrytych opłat, bez ograniczeń, bez poziomów premium.",
+		"benefits": {
+			"unlimited": "Nieograniczone Kody QR",
+			"noSignup": "Darmowe Dynamiczne Kody QR",
+			"noWatermark": "Bez Znaków Wodnych"
+		}
+	},
 	"metadata": {
 		"title": "QRcodly - Darmowy Generator Kodów QR",
 		"description": "Twórz darmowe kody QR z logo, własnym designem lub szablonami – idealne do marketingu, wizytówek i nie tylko. Użyj generatora QR już teraz!",
@@ -155,7 +165,8 @@
 				"title": "Błąd aktualizacji kodu QR",
 				"message": "Wystąpił błąd podczas aktualizacji kodu QR. Zostaliśmy powiadomieni i rozwiążemy problem tak szybko, jak to możliwe."
 			},
-			"noFound": "Nie znaleziono kodów QR"
+			"noFound": "Nie znaleziono kodów QR",
+			"noFoundDescription": "Nie utworzyłeś jeszcze żadnych kodów QR. Zacznij tworzyć kody QR teraz."
 		},
 		"confirmDeletePopup": {
 			"title": "Potwierdź usunięcie",

@@ -1,7 +1,7 @@
 export default async function Page() {
 	return (
 		<div className="prose prose-neutral">
-			<h1 className="text-3xl font-bold mb-6">Imprint</h1>
+			<h1 className="text-3xl font-semibold mb-6">Imprint</h1>
 
 			<p className="text-base leading-relaxed">
 				Florian Breuer

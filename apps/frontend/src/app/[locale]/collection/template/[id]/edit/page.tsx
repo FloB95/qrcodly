@@ -73,7 +73,7 @@ export default async function ConfigTemplateEditPage({ params }: ConfigTemplateE
 				},
 			}}
 		>
-			<h1 className="mt-12 lg:mt-12 mb-16 text-center text-2xl sm:text-4xl font-bold">
+			<h1 className="mt-12 lg:mt-12 mb-16 text-center text-2xl sm:text-4xl font-semibold">
 				{t('templates.update.headline')}
 			</h1>
 			<QRcodeGenerator

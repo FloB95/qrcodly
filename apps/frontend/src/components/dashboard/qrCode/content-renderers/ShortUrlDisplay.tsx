@@ -32,7 +32,7 @@ export const ShortUrlDisplay = ({
 			</Link>
 			{destinationUrl && (
 				<div className="mt-1 ml-2 flex items-center">
-					<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold text-muted-foreground" />
+					<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-semibold text-muted-foreground" />
 					{destinationContent || (
 						<Link
 							onClick={(e) => e.stopPropagation()}

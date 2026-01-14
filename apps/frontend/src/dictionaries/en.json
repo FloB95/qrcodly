@@ -20,6 +20,16 @@
 		"dynamicBadgeTooltip": "Enables changing content later without a new QR code. <i>Hover for more info</i>"
 	},
 	"headline": "<span class=\"text-xl xs:text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
+	"hero": {
+		"badge": "Open Source & Free Forever",
+		"title": "The QR Code Generator Without Limits",
+		"subtitle": "Generate unlimited static and dynamic QR codes for free. No hidden fees, no restrictions, no premium tiers. Just powerful QR code creation.",
+		"benefits": {
+			"unlimited": "Unlimited QR Codes",
+			"noSignup": "Free Dynamic QR Codes",
+			"noWatermark": "No Watermarks"
+		}
+	},
 	"metadata": {
 		"title": "Free QR Code Generator - Create Custom QR Codes Online | QRcodly",
 		"description": "Generate free QR codes online with custom designs, logos & templates. Create dynamic QR codes for URLs, WiFi, vCards, events & more. Track scans with analytics. No signup required!",
@@ -155,7 +165,8 @@
 				"title": "Error Updating QR code",
 				"message": "There was an error updating your QR code. We've been notified and will fix it as soon as possible."
 			},
-			"noFound": "No QR codes found"
+			"noFound": "No QR codes found",
+			"noFoundDescription": "You haven't created any QR codes yet. Start creating QR codes now."
 		},
 		"confirmDeletePopup": {
 			"title": "Confirm Deletion",

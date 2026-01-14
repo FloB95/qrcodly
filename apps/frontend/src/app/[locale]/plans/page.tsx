@@ -64,7 +64,7 @@ export default async function Page({ params }: DefaultPageParams) {
 
 			<Container className="py-24">
 				<div className="text-center">
-					<h1 className="mt-12 lg:mt-4 text-center text-2xl sm:text-4xl font-bold">
+					<h1 className="mt-12 lg:mt-4 text-center text-2xl sm:text-4xl font-semibold">
 						Choose the right plan for you
 					</h1>
 					<p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">

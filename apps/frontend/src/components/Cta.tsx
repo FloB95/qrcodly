@@ -9,7 +9,7 @@ export const Cta2 = () => {
 	const t = useTranslations('contentElements.feedbackCta');
 	return (
 		<div className="mx-auto mt-24 text-center sm:mt-50">
-			<h2 className="mb-4 text-2xl sm:text-4xl font-bold">{t('headline')}</h2>
+			<h2 className="mb-4 text-2xl sm:text-4xl font-semibold">{t('headline')}</h2>
 			<p className="text-accent-foreground text-xl sm:text-2xl">
 				{t('subHeadline1')}
 				<br />
@@ -39,7 +39,7 @@ export function Cta() {
 	return (
 		<div className="max-w-5xl mx-2 md:mx-auto p-px rounded-2xl bg-gradient-to-r from-[#f4f4f5] to-[#fddfbc]">
 			<div className="flex flex-col items-center justify-center text-center py-12 px-5 xs:px-10 md:py-16 rounded-[15px] bg-gradient-to-r from-white to-[#fff3e6]">
-				<h2 className=" mt-3 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
+				<h2 className=" mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
 					{t('headline')} <br />
 				</h2>
 

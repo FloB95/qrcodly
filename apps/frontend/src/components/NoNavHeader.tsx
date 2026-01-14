@@ -6,7 +6,7 @@ export default function NoNavHeader() {
 		<header className="pt-10">
 			<Container>
 				<div className="flex justify-between pt-1 sm:px-6 lg:px-8">
-					<div className="text-3xl font-bold">
+					<div className="text-3xl font-semibold">
 						<Link href="/" title="QRcodly">
 							QRcodly
 						</Link>

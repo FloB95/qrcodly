@@ -179,7 +179,8 @@ export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListPr
 									<AlertDialogTitle>{trans('confirmPopup.title')}</AlertDialogTitle>
 									<AlertDialogDescription>
 										{trans('confirmPopup.description')}{' '}
-										<span className="font-bold text-black">{selectedTemplate.name}</span> ?<br />
+										<span className="font-semibold text-black">{selectedTemplate.name}</span> ?
+										<br />
 										{trans('confirmPopup.description2')}
 									</AlertDialogDescription>
 								</AlertDialogHeader>

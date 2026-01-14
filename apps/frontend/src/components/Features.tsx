@@ -38,7 +38,7 @@ export const Features = () => {
 	return (
 		<div className="my-20 space-y-5 sm:my-32 tracking-tight">
 			<div className="mx-auto max-w-3xl text-center">
-				<h2 className="mb-4 text-3xl sm:text-4xl font-bold text-slate-900">{t('headline')}</h2>
+				<h2 className="mb-4 text-3xl sm:text-4xl font-semibold text-slate-900">{t('headline')}</h2>
 				<h3 className="mb-4 text-lg sm:text-2xl to-muted-foreground">{t('subHeadline')}</h3>
 			</div>
 

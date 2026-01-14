@@ -89,6 +89,7 @@
 		"prettier-plugin-tailwindcss": "^0.7.2",
 		"qrcodly-eslint-config": "workspace:*",
 		"qrcodly-typescript-config": "workspace:*",
+		"shadcn": "^3.6.3",
 		"shadcn-ui": "^0.9.5",
 		"tailwindcss": "catalog:",
 		"tsconfig-paths": "^4.2.0",

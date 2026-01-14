@@ -112,7 +112,7 @@ export default function Header({
 						<DrawerTitle>Navigation</DrawerTitle>
 					</DrawerHeader>
 					<div className="absolute top-8 left-4 right-4 flex items-center justify-between">
-						<div className="text-xl font-bold  text-black">
+						<div className="text-xl font-semibold  text-black">
 							<Link title="QRcodly" href="/de">
 								QRcodly
 							</Link>

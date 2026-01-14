@@ -54,6 +54,8 @@ export const fastifyErrorHandler = (
 	_request: FastifyRequest,
 	reply: FastifyReply,
 ) => {
+	const logger = container.resolve(Logger);
+
 	if (error instanceof CustomApiError) {
 		// if error is instance of BadRequestError attach zod errors
 		const responsePayload: any = {
@@ -66,6 +68,22 @@ export const fastifyErrorHandler = (
 			responsePayload.fieldErrors = mergedErrors;
 		}
 
+		logger.info(`CustomApiError`, {
+			request: {
+				requestId: _request.id,
+				ip: _request.clientIp,
+				url: _request.url,
+				user: _request.user?.id,
+			},
+			error: {
+				type: error.constructor.name,
+				message: error.message,
+				zodErrors: (error as BadRequestError)?.zodError
+					? (error as BadRequestError)?.zodError?.issues
+					: undefined,
+			},
+		});
+
 		return reply.status(error.statusCode).send(responsePayload);
 	}
 
@@ -73,7 +91,6 @@ export const fastifyErrorHandler = (
 		throw new BadRequestError(error.message);
 	}
 
-	const logger = container.resolve(Logger);
 	logger.error(`Unhandled Server error`, error);
 
 	// report error to Analytics

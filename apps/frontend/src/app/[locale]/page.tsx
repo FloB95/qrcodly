@@ -13,6 +13,7 @@ import { QrCodeDefaults } from '@shared/schemas';
 import { auth } from '@clerk/nextjs/server';
 import { notFound } from 'next/navigation';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { Hero } from '@/components/Hero';
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
@@ -20,7 +21,6 @@ export default async function Page({ params }: DefaultPageParams) {
 		notFound();
 	}
 
-	const t = await getTranslations({ locale });
 	const tMeta = await getTranslations({ locale, namespace: 'metadata' });
 	const { userId } = await auth();
 	const isSignedIn = !!userId;
@@ -78,9 +78,7 @@ export default async function Page({ params }: DefaultPageParams) {
 
 			<article>
 				<Container>
-					<h1 className="mt-12 mb-14 text-center text-3xl xs:text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-						<div dangerouslySetInnerHTML={{ __html: String(t.raw('headline')) }} />
-					</h1>
+					<Hero />
 
 					{/* Main QR Code Generator Tool */}
 					<section aria-label="QR Code Generator Tool" className="mb-2">

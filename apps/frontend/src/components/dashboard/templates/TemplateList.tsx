@@ -87,7 +87,7 @@ export const TemplateList = () => {
 					) : (
 						<TableRow className="hover:bg-transparent" key="no-data">
 							<TableCell colSpan={6} className="text-center">
-								<h2 className="my-10 text-2xl font-bold">{t('templates.noTemplates')}</h2>
+								<h2 className="my-10 text-2xl font-semibold">{t('templates.noTemplates')}</h2>
 							</TableCell>
 						</TableRow>
 					)}

@@ -1,7 +1,7 @@
 export default async function Page() {
 	return (
 		<div className="prose prose-neutral">
-			<h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
+			<h1 className="text-3xl font-semibold mb-6">Privacy Policy</h1>
 
 			<h2 className="text-2xl font-semibold mt-10 mb-4">1. Data Protection at a Glance</h2>
 

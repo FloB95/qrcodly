@@ -137,7 +137,7 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 							/>
 						</motion.svg>
 
-						<h3 className="mt-4 text-lg sm:text-2xl font-bold">
+						<h3 className="mt-4 text-lg sm:text-2xl font-semibold">
 							{t('generator.bulkImport.successTitle')}
 						</h3>
 						<p className="mt-2 text-center">{t('generator.bulkImport.successDescription')}</p>
@@ -161,7 +161,7 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 
 			{!isUploaded && (
 				<>
-					<h3 className="font-bold text-xl mb-4">
+					<h3 className="font-semibold text-xl mb-4">
 						{t('generator.bulkImport.title', {
 							contentType: t('generator.contentSwitch.tab.' + contentType),
 						})}

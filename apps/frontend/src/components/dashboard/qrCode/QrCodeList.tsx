@@ -1,7 +1,7 @@
 'use client';
 
 import { QrCodeListItem, SkeletonListItem } from './ListItem';
-import { Table, TableBody, TableCell, TableRow } from '../../ui/table';
+import { Table, TableBody } from '../../ui/table';
 import { useListQrCodesQuery } from '@/lib/api/qr-code';
 import { useTranslations } from 'next-intl';
 import {
@@ -14,8 +14,19 @@ import {
 	PaginationPrevious,
 } from '../../ui/pagination';
 import { useState, useMemo, useEffect, Fragment } from 'react';
-import { getPageNumbers } from '@/lib/utils';
+import { cn, getPageNumbers } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
+import {
+	Empty,
+	EmptyContent,
+	EmptyDescription,
+	EmptyHeader,
+	EmptyMedia,
+	EmptyTitle,
+} from '@/components/ui/empty';
+import { PlusIcon, QrCodeIcon } from '@heroicons/react/24/outline';
+import { buttonVariants } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const QrCodeList = () => {
 	const t = useTranslations();
@@ -81,21 +92,36 @@ export const QrCodeList = () => {
 		);
 	}
 
-	const pageNumbers = getPageNumbers(currentPage, totalPages);
+	if (qrCodes.data.length === 0) {
+		return (
+			<Empty className="sm:my-12">
+				<EmptyHeader>
+					<EmptyMedia variant="default">
+						<QrCodeIcon className="w-12 h-12" />
+					</EmptyMedia>
+					<EmptyTitle>{t('qrCode.error.noFound')}</EmptyTitle>
+					<EmptyDescription>{t('qrCode.error.noFoundDescription')}</EmptyDescription>
+				</EmptyHeader>
+				<EmptyContent>
+					<Link href="/" className={cn(buttonVariants(), 'md:flex md:space-x-2')}>
+						<PlusIcon className="h-5 w-5" />
+						<span className="sr-only md:not-sr-only md:whitespace-nowrap">
+							{t('collection.addQrCodeBtn')}
+						</span>
+					</Link>
+				</EmptyContent>
+			</Empty>
+		);
+	}
 
+	const pageNumbers = getPageNumbers(currentPage, totalPages);
 	return (
 		<Fragment>
 			<Table className="border-separate border-spacing-y-2">
 				<TableBody>
-					{qrCodes.data.length > 0 ? (
-						qrCodes.data.map((qr) => <QrCodeListItem key={qr.id} qr={qr} />)
-					) : (
-						<TableRow className="hover:bg-transparent" key="no-data">
-							<TableCell colSpan={6} className="text-center">
-								<h2 className="my-10 text-2xl font-bold">{t('qrCode.error.noFound')}</h2>
-							</TableCell>
-						</TableRow>
-					)}
+					{qrCodes?.data.map((qr) => (
+						<QrCodeListItem key={qr.id} qr={qr} />
+					))}
 				</TableBody>
 			</Table>
 			{totalPages > 1 && (

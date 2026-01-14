@@ -1,5 +1,5 @@
 import { getShortUrlFromCode } from '@/lib/utils';
-import { ArrowTurnDownRightIcon } from '@heroicons/react/24/outline';
+import { ArrowTurnDownRightIcon, ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import Link from 'next/link';
 
@@ -15,7 +15,7 @@ export const UrlContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResponseDto
 
 	return (
 		<>
-			<h2 className="mb-4 text-2xl font-bold">
+			<h2 className="mb-4 text-2xl font-semibold">
 				<a href={destinationUrl} target="_blank" rel="noopener noreferrer" className="break-all">
 					{destinationUrl}
 				</a>
@@ -24,7 +24,7 @@ export const UrlContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResponseDto
 				<div
 					className={`ml-2 flex items-center opacity-100 transition-opacity duration-300 ease-in-out`}
 				>
-					<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-bold" />
+					<ArrowTurnLeftUpIcon className="mr-3 h-6 w-6 font-semibold" />
 					<Link
 						href={qrCode.content.data.url}
 						target="_blank"

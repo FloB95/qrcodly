@@ -38,7 +38,10 @@ export const LanguageNav = () => {
 							>
 								<Link
 									locale={link.lang}
-									className={cn(locale === link.lang ? 'font-bold' : '', 'p-2 text-center w-full')}
+									className={cn(
+										locale === link.lang ? 'font-semibold' : '',
+										'p-2 text-center w-full',
+									)}
 									href={link.path}
 								>
 									{link.lang.toUpperCase()}
@@ -48,7 +51,7 @@ export const LanguageNav = () => {
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</div>
-			<div className="w-full justify-start flex flex-row space-x-2 sm:hidden p-4">
+			<div className="w-full justify-start flex flex-row space-x-2 sm:hidden p-4 text-sm mt-10">
 				{languageLinks.map((link) => (
 					<Link
 						key={link.lang}

@@ -151,7 +151,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 
 						<div className="flex !space-x-4 items-center flex-1 mb-6">
 							<QrCodeIcon type={qrCode.content.type} />
-							<h1 className="text-xl font-bold">
+							<h1 className="text-xl font-semibold">
 								{qrCode.name ?? (
 									<span className="text-muted-foreground">{t('general.noName')}</span>
 								)}
