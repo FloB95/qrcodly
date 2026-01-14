@@ -1,5 +1,5 @@
 import { getShortUrlFromCode } from '@/lib/utils';
-import { ArrowTurnDownRightIcon, ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
+import { ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import Link from 'next/link';
 

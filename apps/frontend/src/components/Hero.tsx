@@ -16,7 +16,6 @@ export const Hero = () => {
 			opacity: 1,
 			transition: {
 				staggerChildren: 0.15,
-				delayChildren: 0.3,
 			},
 		},
 	};
@@ -28,7 +27,7 @@ export const Hero = () => {
 			y: 0,
 			transition: {
 				duration: 0.5,
-				ease: 'easeInOut',
+				ease: 'easeInOut' as const,
 			},
 		},
 	};
@@ -52,7 +51,7 @@ export const Hero = () => {
 				animate="visible"
 			>
 				{benefits.map((benefit) => (
-					<motion.div key={benefit} className="flex items-center gap-2">
+					<motion.div key={benefit} className="flex items-center gap-2" variants={itemVariants}>
 						<CheckCircleIcon className="h-6 w-6 text-black" />
 						<span>{benefit}</span>
 					</motion.div>
