@@ -28,22 +28,28 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 			await this.objectStorage.upload(filePath, file.buffer, file.mimeType);
 			return filePath;
 		} catch (error) {
-			this.logger.error('Failed to upload QR code image', error as Error);
+			this.logger.error('error.qrCode.image.upload', {
+				filePath,
+				error,
+			});
 			return undefined;
 		}
 	}
 
-	async delete(imagePath?: string): Promise<void> {
-		if (!imagePath) return;
+	async delete(filePath?: string): Promise<void> {
+		if (!filePath) return;
 		const qrCodePathRegex = new RegExp(`^${QR_CODE_IMAGE_FOLDER}/`);
-		if (!qrCodePathRegex.test(imagePath)) {
-			this.logger.warn(`Attempted to delete image outside the qrCode folder: ${imagePath}`);
+		if (!qrCodePathRegex.test(filePath)) {
+			this.logger.warn(`Attempted to delete image outside the qrCode folder: ${filePath}`);
 			return;
 		}
 		try {
-			await this.objectStorage.delete(imagePath);
+			await this.objectStorage.delete(filePath);
 		} catch (error) {
-			this.logger.error(`Failed to delete QR code image: ${imagePath}`, error as Error);
+			this.logger.error('error.qrCode.image.delete', {
+				filePath,
+				error,
+			});
 		}
 	}
 
@@ -78,7 +84,13 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 			await this.objectStorage.upload(filePath, buffer, 'image/svg+xml');
 			return filePath;
 		} catch (error) {
-			this.logger.error('Failed to generate QR code preview image', error as Error);
+			this.logger.error('error.qrCode.previewImage.create', {
+				qrCode: {
+					id,
+				},
+				error,
+			});
+
 			return undefined;
 		}
 	}

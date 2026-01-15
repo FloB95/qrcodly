@@ -19,7 +19,9 @@ export class UserCreatedEventHandler extends AbstractEventHandler<UserDeletedEve
 		await sleep(100);
 		const logger = container.resolve(Logger);
 		logger.info('user.deleted', {
-			id: event.user.id,
+			user: {
+				id: event.user.id,
+			},
 		});
 	}
 }

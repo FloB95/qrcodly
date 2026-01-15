@@ -82,9 +82,11 @@ export class BulkImportQrCodesUseCase {
 		}
 
 		this.logger.info('bulk.import.records', {
-			contentType,
-			items: validRecords.length,
-			user: user.id,
+			bulkImport: {
+				contentType,
+				items: validRecords.length,
+				user: user.id,
+			},
 		});
 
 		for (const record of validRecords) {

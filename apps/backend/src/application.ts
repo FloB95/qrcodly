@@ -53,7 +53,7 @@ export class Application {
 	}
 
 	private async exitWithCrash(message: string, error: unknown) {
-		this.logger.error(message, { cause: error });
+		this.logger.error(message, { error: error });
 		await sleep(2000);
 		process.exit(1);
 	}

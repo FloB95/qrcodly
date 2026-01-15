@@ -44,9 +44,11 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 		// const event = new ShortUrlCreatedEvent(createdShortUrl);
 		// this.eventEmitter.emit(event);
 
-		this.logger.info('Short URL created successfully', {
-			id: createdShortUrl.id,
-			createdBy: createdShortUrl.createdBy,
+		this.logger.info('shortUrl.created', {
+			shortUrl: {
+				id: createdShortUrl.id,
+				createdBy: createdShortUrl.createdBy,
+			},
 		});
 
 		return createdShortUrl;

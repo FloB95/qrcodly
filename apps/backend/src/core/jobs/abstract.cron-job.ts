@@ -15,7 +15,7 @@ export abstract class AbstractCronJob {
 			await this.execute();
 			this.logger.info(`Cron job ${this.name} completed successfully.`);
 		} catch (error) {
-			this.logger.error(`Error in cron job ${this.name}:`, error as Error);
+			this.logger.error(`Error in cron job ${this.name}:`, { error });
 		}
 	}
 }

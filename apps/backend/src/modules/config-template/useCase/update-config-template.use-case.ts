@@ -102,10 +102,12 @@ export class UpdateConfigTemplateUseCase implements IBaseUseCase {
 		const event = new ConfigTemplateUpdatedEvent(updatedConfigTemplate!);
 		this.eventEmitter.emit(event);
 
-		this.logger.info('Config template updated successfully', {
-			id: updatedConfigTemplate!.id,
-			updates: diffs,
-			updatedBy,
+		this.logger.info('template.updated', {
+			template: {
+				id: updatedConfigTemplate!.id,
+				updates: diffs,
+				updatedBy,
+			},
 		});
 
 		return updatedConfigTemplate!;

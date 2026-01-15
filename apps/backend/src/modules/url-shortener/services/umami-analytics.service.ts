@@ -41,7 +41,7 @@ export class UmamiAnalyticsService {
 
 			if (!response.ok) {
 				const errorBody = await response.text();
-				this.logger.error(`Umami API Error ${response.status}: ${errorBody}`, {
+				this.logger.error(`error.umamiApi.fetchToken`, {
 					status: response.status,
 					body: errorBody,
 				});
@@ -52,7 +52,7 @@ export class UmamiAnalyticsService {
 			this.umamiAuthToken = data.token;
 			return data.token;
 		} catch (error) {
-			this.logger.error('Error fetching auth token from Umami API', { error });
+			this.logger.error('error.umamiApi.fetchToken', { error });
 			throw error;
 		}
 	}
@@ -73,7 +73,7 @@ export class UmamiAnalyticsService {
 
 			if (!response.ok) {
 				const errorBody = await response.text();
-				this.logger.error(`Umami API Error ${response.status}: ${errorBody}`, {
+				this.logger.error(`error.umamiApi.fetchData`, {
 					status: response.status,
 					body: errorBody,
 				});
@@ -82,7 +82,7 @@ export class UmamiAnalyticsService {
 
 			return response.json();
 		} catch (error) {
-			this.logger.error('Error fetching data from Umami API', { error });
+			this.logger.error('error.umamiApi.fetchData', { error });
 			throw error;
 		}
 	}

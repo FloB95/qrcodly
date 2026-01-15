@@ -26,8 +26,10 @@ export class ConfigTemplateUpdatedEventHandler extends AbstractEventHandler<Conf
 		// skip if template has an image CURRENTLY not supported or preview image already exists
 		if (event.configTemplate.config.image || event.configTemplate.previewImage) {
 			logger.debug('Template has an image, skipping preview image generation', {
-				id: event.configTemplate.id,
-				createdBy: event.configTemplate.createdBy,
+				template: {
+					id: event.configTemplate.id,
+					createdBy: event.configTemplate.createdBy,
+				},
 			});
 			return;
 		}
@@ -37,8 +39,10 @@ export class ConfigTemplateUpdatedEventHandler extends AbstractEventHandler<Conf
 		if (previewImage) {
 			await configTemplateRepository.update(event.configTemplate, { previewImage });
 			logger.debug('Config Template preview image generated and uploaded successfully', {
-				id: event.configTemplate.id,
-				createdBy: event.configTemplate.createdBy,
+				template: {
+					id: event.configTemplate.id,
+					createdBy: event.configTemplate.createdBy,
+				},
 			});
 		}
 	}

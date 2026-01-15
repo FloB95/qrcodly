@@ -33,8 +33,10 @@ export class QrCodeUpdatedEventHandler extends AbstractEventHandler<QrCodeUpdate
 		// skip if QR code has an image CURRENTLY not supported or preview image already exists
 		if (event.qrCode.config.image || event.qrCode.previewImage) {
 			logger.debug('QR code has an image, skipping preview image generation', {
-				id: event.qrCode.id,
-				createdBy: event.qrCode.createdBy,
+				qrCode: {
+					id: event.qrCode.id,
+					createdBy: event.qrCode.createdBy,
+				},
 			});
 			return;
 		}
@@ -44,8 +46,10 @@ export class QrCodeUpdatedEventHandler extends AbstractEventHandler<QrCodeUpdate
 		if (previewImage) {
 			await qrCodeRepository.update(event.qrCode, { previewImage });
 			logger.debug('QR code preview image generated and uploaded successfully', {
-				id: event.qrCode.id,
-				createdBy: event.qrCode.createdBy,
+				qrCode: {
+					id: event.qrCode.id,
+					createdBy: event.qrCode.createdBy,
+				},
 			});
 		}
 	}

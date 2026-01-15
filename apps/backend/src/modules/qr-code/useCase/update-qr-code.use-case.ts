@@ -148,10 +148,12 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 		const event = new QrCodeUpdatedEvent(updatedQrCode);
 		this.eventEmitter.emit(event);
 
-		this.logger.info('QR code updated successfully', {
-			id: updatedQrCode.id,
-			updates: diffs,
-			updatedBy,
+		this.logger.info('qrCode.updated', {
+			qrCode: {
+				id: updatedQrCode.id,
+				updates: diffs,
+				updatedBy,
+			},
 		});
 
 		return updatedQrCode;

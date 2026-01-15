@@ -40,7 +40,10 @@ export abstract class BaseImageStrategy {
 		try {
 			return await this.objectStorage.getSignedUrl(imagePath, this.signedUrlExpirySeconds);
 		} catch (error) {
-			this.logger.error(`Error generating signed URL for Path: ${imagePath}`, error as Error);
+			this.logger.error(`error.generating.signedUrl`, {
+				imagePath,
+				error: error as Error,
+			});
 			return undefined;
 		}
 	}

@@ -76,16 +76,18 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 				if (!finalQrCode) throw new Error('Failed to retrieve created QR code.');
 
 				this.eventEmitter.emit(new QrCodeCreatedEvent(finalQrCode));
-				this.logger.info('QR code created successfully', {
-					id: finalQrCode.id,
-					createdBy: finalQrCode.createdBy,
+				this.logger.info('qrCode.created', {
+					qrCode: {
+						id: finalQrCode.id,
+						createdBy: finalQrCode.createdBy,
+					},
 				});
 
 				if (user?.id) await policy.incrementUsage();
 				return finalQrCode as TQrCodeWithRelations;
 			});
 		} catch (error: any) {
-			this.logger.error('Failed to create QR code within transaction', { error });
+			this.logger.error('qrCode.created.error', { error });
 
 			// cleanup uploaded image if transaction fails
 			if (createdImage) await this.imageService.deleteImage(createdImage);

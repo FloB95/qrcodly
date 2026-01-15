@@ -35,13 +35,16 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 			const event = new QrCodeDeletedEvent(qrCode);
 			this.eventEmitter.emit(event);
 
-			this.logger.info('QR code deleted successfully', {
-				id: qrCode.id,
-				deletedBy: deletedBy,
+			this.logger.info('qrCode.deleted', {
+				qrCode: {
+					id: qrCode.id,
+					deletedBy: deletedBy,
+				},
 			});
 		} else {
-			this.logger.warn('Failed to delete QR code', {
+			this.logger.error('error.qrCode.delete', {
 				id: qrCode.id,
+				deletedBy: deletedBy,
 			});
 		}
 

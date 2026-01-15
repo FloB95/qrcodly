@@ -19,11 +19,13 @@ export class UserUpdatedEventHandler extends AbstractEventHandler<UserUpdatedEve
 		await sleep(100);
 		const logger = container.resolve(Logger);
 		logger.info('user.updated', {
-			id: event.user.id,
-			first_name: event.user.first_name,
-			last_name: event.user.last_name,
-			email_addresses: event.user.email_addresses,
-			image_url: event.user.image_url,
+			user: {
+				id: event.user.id,
+				first_name: event.user.first_name,
+				last_name: event.user.last_name,
+				email_addresses: event.user.email_addresses,
+				image_url: event.user.image_url,
+			},
 		});
 	}
 }

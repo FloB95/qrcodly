@@ -1,6 +1,7 @@
 import { PlanName } from '@/core/config/plan.config';
 import { type TTokenType } from '@/core/domain/schema/UserSchema';
 import { Logger } from '@/core/logging';
+import { createRequestLogObject } from '@/libs/fastify/helpers';
 import { getAuth } from '@clerk/fastify';
 import { type FastifyRequest } from 'fastify';
 import { container } from 'tsyringe';
@@ -17,12 +18,7 @@ export function addUserToRequestMiddleware(
 	// don´t log health check & uptime kuma
 	if (request.clientIp !== '127.0.0.1' && request.clientIp !== '152.53.13.36') {
 		container.resolve(Logger).info('api.request', {
-			requestId: request.id,
-			ip: request.clientIp,
-			method: request.method,
-			path: request.url,
-			accessType: tokenType,
-			userId: userId,
+			request: createRequestLogObject(request, { accessType: tokenType }),
 		});
 	}
 

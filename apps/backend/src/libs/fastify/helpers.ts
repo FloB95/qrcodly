@@ -69,12 +69,7 @@ export const fastifyErrorHandler = (
 		}
 
 		logger.info(`CustomApiError`, {
-			request: {
-				requestId: _request.id,
-				ip: _request.clientIp,
-				url: _request.url,
-				user: _request.user?.id,
-			},
+			request: createRequestLogObject(_request),
 			error: {
 				type: error.constructor.name,
 				message: error.message,
@@ -91,7 +86,7 @@ export const fastifyErrorHandler = (
 		throw new BadRequestError(error.message);
 	}
 
-	logger.error(`Unhandled Server error`, error);
+	logger.error(`Unhandled Server error`, { error });
 
 	// report error to Analytics
 	container.resolve(ErrorReporter).error(error, {
@@ -329,4 +324,15 @@ export function resolveClientIp(request: FastifyRequest): string {
 
 	// Fallback
 	return request.ip;
+}
+
+export function createRequestLogObject(request: FastifyRequest, additionalData = {}) {
+	return {
+		id: request.id,
+		ip: request.clientIp,
+		method: request.method,
+		path: request.url,
+		user: request.user?.id,
+		...additionalData,
+	};
 }

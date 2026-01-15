@@ -9,7 +9,12 @@ import {
 } from './config/constants';
 import fastify, { FastifyListenOptions, type FastifyInstance } from 'fastify';
 import { clerkPlugin, getAuth } from '@clerk/fastify';
-import { fastifyErrorHandler, registerRoutes, resolveClientIp } from '@/libs/fastify/helpers';
+import {
+	createRequestLogObject,
+	fastifyErrorHandler,
+	registerRoutes,
+	resolveClientIp,
+} from '@/libs/fastify/helpers';
 import { env } from './config/env';
 import fastifyHelmet from '@fastify/helmet';
 import { TooManyRequestsError } from './error/http/too-many-requests.error';
@@ -133,10 +138,7 @@ export class Server {
 				nameSpace: 'qrcodly-ratelimit-',
 				errorResponseBuilder: function (req, context) {
 					container.resolve(Logger).warn('request.rate.limit.hit', {
-						url: req.url,
-						ip: req.clientIp,
-						user: req.user?.id,
-						limit: context.max,
+						request: createRequestLogObject(req, { rateLimit: context.max }),
 					});
 					throw new TooManyRequestsError();
 				},
@@ -212,7 +214,7 @@ export class Server {
 		try {
 			await this.server.close();
 		} catch (error) {
-			this.logger.error('Error shutting down server', { error });
+			this.logger.error('Error shutting down server', { error: error as Error });
 		}
 	}
 }

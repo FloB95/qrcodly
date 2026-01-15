@@ -12,7 +12,7 @@ export class ScreenshotService {
 	 * @returns Image buffer
 	 */
 	async captureWebsite(url: string): Promise<Buffer> {
-		this.logger.info('screenshot.take', { url });
+		this.logger.info('screenshot.take', { screenshot: { website: url } });
 
 		try {
 			// Using Thum.io (1000/month free, no API key required)
@@ -29,10 +29,12 @@ export class ScreenshotService {
 
 			if (!response.ok) {
 				this.logger.error('screenshot.apiError', {
-					url,
-					screenshotUrl,
-					status: response.status,
-					statusText: response.statusText,
+					screenshot: {
+						website: url,
+						screenshotUrl,
+						status: response.status,
+						statusText: response.statusText,
+					},
 				});
 				throw new Error(`Screenshot service returned ${response.status}`);
 			}
@@ -57,8 +59,10 @@ export class ScreenshotService {
 		} catch (e: any) {
 			const error = e as Error;
 			this.logger.error('screenshot.error', {
-				url,
-				error: error.message,
+				screenshot: {
+					website: url,
+				},
+				error,
 			});
 			throw new BadRequestError(`Failed to capture screenshot: ${error.message}`);
 		}

@@ -39,13 +39,18 @@ export class DeleteConfigTemplateUseCase implements IBaseUseCase {
 			const event = new ConfigTemplateDeletedEvent(configTemplate);
 			this.eventEmitter.emit(event);
 
-			this.logger.info('Config template deleted successfully', {
-				id: configTemplate.id,
-				deletedBy: deletedBy,
+			this.logger.info('template.deleted', {
+				template: {
+					id: configTemplate.id,
+					deletedBy,
+				},
 			});
 		} else {
-			this.logger.warn('Failed to delete config template', {
-				id: configTemplate.id,
+			this.logger.error('error.template.deleted', {
+				template: {
+					id: configTemplate.id,
+					deletedBy,
+				},
 			});
 		}
 

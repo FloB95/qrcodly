@@ -19,9 +19,11 @@ export class UserCreatedEventHandler extends AbstractEventHandler<UserCreatedEve
 		await sleep(100);
 		const logger = container.resolve(Logger);
 		logger.info('user.created', {
-			id: event.user.id,
-			first_name: event.user.first_name,
-			last_name: event.user.last_name,
+			user: {
+				id: event.user.id,
+				first_name: event.user.first_name,
+				last_name: event.user.last_name,
+			},
 		});
 	}
 }

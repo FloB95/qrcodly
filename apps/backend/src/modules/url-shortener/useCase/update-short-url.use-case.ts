@@ -66,11 +66,13 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		// const event = new ShortUrlUpdatedEvent(result);
 		// this.eventEmitter.emit(event);
 
-		this.logger.info('Short URL updated successfully', {
-			id: shortUrl.id,
-			qrCodeId: shortUrl.qrCodeId,
-			updates,
-			updatedBy,
+		this.logger.info('shortUrl.updated', {
+			shortUrl: {
+				id: shortUrl.id,
+				qrCodeId: shortUrl.qrCodeId,
+				updates,
+				updatedBy,
+			},
 		});
 
 		return result!;

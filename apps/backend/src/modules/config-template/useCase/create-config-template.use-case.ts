@@ -58,15 +58,17 @@ export class CreateConfigTemplateUseCase implements IBaseUseCase {
 				// emit event
 				this.eventEmitter.emit(new ConfigTemplateCreatedEvent(finalTemplate));
 
-				this.logger.info('Config Template created successfully', {
-					id: finalTemplate.id,
-					createdBy: finalTemplate.createdBy,
+				this.logger.info('template.created', {
+					template: {
+						id: finalTemplate.id,
+						createdBy: finalTemplate.createdBy,
+					},
 				});
 
 				return finalTemplate;
 			});
 		} catch (error) {
-			this.logger.error('Failed to create Config Template within transaction', { error });
+			this.logger.error('error.template.created', { error });
 
 			// rollback uploaded image on failure
 			if (uploadedImage) await this.imageService.deleteImage(uploadedImage);
