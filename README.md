@@ -10,7 +10,7 @@
 - 🎨 Fully customizable: size, color, background and custom Icon upload
 - 📤 Export QR codes in multiple formats (PNG, JPEG, SVG)
 - 🔗 Url shortening and tracking
-- 🔧 Simple, developer-friendly API for generating QR codes (coming soon!)
+- 🔧 Simple, developer-friendly API for generating QR codes
 
 > 📌 Check out the [Todos](todos.md) page for current status and future plans.
 
@@ -31,6 +31,7 @@
 - [heroicons](https://heroicons.com/) — Icon library
 - [Clerk](https://clerk.com/) — Authentication
 - [PostHog](https://posthog.com/) — Analytics
+- [Fumadocs](https://www.fumadocs.dev/) — Documentation
 
 ### **Backend**
 

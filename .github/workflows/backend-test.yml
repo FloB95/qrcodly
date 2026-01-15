@@ -42,22 +42,17 @@ jobs:
       UMAMI_PASSWORD: ${{ secrets.UMAMI_PASSWORD }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: 'pnpm'
-          cache-dependency-path: package-lock.json
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
       - name: Install dependencies
-        working-directory: apps/backend
         run: pnpm install
+
+      - name: Build shared package
+        run: pnpm --filter @shared/schemas build
 
       - name: Run Checks
         working-directory: apps/backend

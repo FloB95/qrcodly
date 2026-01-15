@@ -5,6 +5,7 @@ import { container } from 'tsyringe';
 import { type User } from '@clerk/fastify';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 import { generateQrCodeDto } from './utils';
+import { PlanName } from '@/core/config/plan.config';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 
@@ -41,9 +42,11 @@ describe('deleteQrCode', () => {
 	it('should delete a QR code and return status code 200', async () => {
 		// Create a QR code for the tests
 		const createQrCodeDto = generateQrCodeDto();
-		const createdQrCode = await container
-			.resolve(CreateQrCodeUseCase)
-			.execute(createQrCodeDto, user.id);
+		const createdQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, {
+			id: user.id,
+			plan: PlanName.FREE,
+			tokenType: 'session_token',
+		});
 		const response = await deleteQrCodeRequest(createdQrCode.id, accessToken);
 
 		expect(response.statusCode).toBe(200);
@@ -63,9 +66,11 @@ describe('deleteQrCode', () => {
 	it('should return 403 when a user tries to delete another user’s QR code', async () => {
 		// Create a QR code for user2
 		const createQrCodeDto = generateQrCodeDto();
-		const otherQrCode = await container
-			.resolve(CreateQrCodeUseCase)
-			.execute(createQrCodeDto, user2.id);
+		const otherQrCode = await container.resolve(CreateQrCodeUseCase).execute(createQrCodeDto, {
+			id: user2.id,
+			plan: PlanName.FREE,
+			tokenType: 'session_token',
+		});
 
 		// Attempt to delete user2's QR code with user1's token
 		const response = await deleteQrCodeRequest(otherQrCode.id, accessToken);

@@ -1,43 +1,48 @@
-import { QrCodeDefaults, type TQrCodeContent, type TQrCodeOptions } from '@shared/schemas';
+'use client';
+
+import type { ApiError } from '@/lib/api/ApiError';
+import { type TQrCodeContent, type TQrCodeOptions, type TShortUrl } from '@shared/schemas';
 import { createStore } from 'zustand/vanilla';
 
 export type QrCodeGeneratorState = {
+	id?: string;
+	name?: string;
 	config: TQrCodeOptions;
 	content: TQrCodeContent;
+	shortUrl?: TShortUrl;
 	latestQrCode?: {
+		name?: string | null;
 		config: TQrCodeOptions;
 		content: TQrCodeContent;
+	};
+	lastError?: ApiError;
+	bulkMode: {
+		isBulkMode: boolean;
+		file?: File;
 	};
 };
 
 export type QrCodeGeneratorActions = {
+	updateName: (name: string) => void;
 	updateConfig: (config: Partial<TQrCodeOptions>) => void;
 	updateContent: (content: TQrCodeContent) => void;
 	updateLatestQrCode: (
 		latestQrCode:
 			| {
+					name?: string | null;
 					config: TQrCodeOptions;
 					content: TQrCodeContent;
 			  }
 			| undefined,
 	) => void;
+	updateLastError: (lastError: ApiError) => void;
+	updateBulkMode: (isBulkMode: boolean, file?: File) => void;
+	resetStore: () => void;
 };
 
 export type QrCodeGeneratorStore = QrCodeGeneratorState & QrCodeGeneratorActions;
 
-export const defaultInitState: QrCodeGeneratorState = {
-	config: QrCodeDefaults,
-	content: {
-		type: 'url',
-		data: {
-			url: '',
-			isEditable: true,
-		},
-	},
-	latestQrCode: undefined,
-};
-
-export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = defaultInitState) => {
+export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState) => {
 	// Check if we're in a browser environment
 	if (typeof window !== 'undefined') {
 		// Check for unsavedQrConfig in localStorage
@@ -74,6 +79,7 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = def
 
 	return createStore<QrCodeGeneratorStore>()((set) => ({
 		...initState,
+		updateName: (name) => set({ name }),
 		updateConfig: (config) => {
 			set((state) => ({
 				config: {
@@ -104,5 +110,14 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState = def
 		},
 		updateContent: (content) => set({ content }),
 		updateLatestQrCode: (latestQrCode) => set({ latestQrCode }),
+		updateLastError: (lastError) => set({ lastError }),
+		updateBulkMode: (isBulkMode, file) =>
+			set({
+				bulkMode: {
+					isBulkMode,
+					file,
+				},
+			}),
+		resetStore: () => set({ ...initState }),
 	}));
 };

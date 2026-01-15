@@ -1,18 +1,21 @@
 'use client';
 
-import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import { EllipsisVerticalIcon, StarIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import posthog from 'posthog-js';
-import { formatDate } from '@/lib/utils';
+import { fetchImageAsBase64, formatDate } from '@/lib/utils';
 import type { TConfigTemplate, TQrCode } from '@shared/schemas';
 import * as Sentry from '@sentry/nextjs';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { useDeleteConfigTemplateMutation } from '@/lib/api/config-template';
+import {
+	useDeleteConfigTemplateMutation,
+	useUpdateConfigTemplateMutation,
+} from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
 import { DynamicQrCode } from '@/components/qr-generator/DynamicQrCode';
 import {
@@ -20,6 +23,7 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -33,6 +37,9 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Skeleton } from '@/components/ui/skeleton';
+import { NameDialog } from '@/components/qr-generator/NameDialog';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export const TemplateListItem = ({
 	template,
@@ -42,11 +49,11 @@ export const TemplateListItem = ({
 	const t = useTranslations();
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-	// const [nameDialogOpen, setNameDialogOpen] = useState(false);
-	// const router = useRouter();
+	const [nameDialogOpen, setNameDialogOpen] = useState(false);
+	const router = useRouter();
 
 	const deleteMutation = useDeleteConfigTemplateMutation();
-	// const updateQrCodeMutation = useUpdateQrCodeMutation();
+	const updateMutation = useUpdateConfigTemplateMutation();
 
 	const qrCodeData = useMemo<Pick<TQrCode, 'config' | 'content'>>(
 		() => ({
@@ -65,7 +72,7 @@ export const TemplateListItem = ({
 	const handleDelete = useCallback(() => {
 		setIsDeleting(true);
 		const toastId = toast({
-			title: t('qrCode.deleting.title'),
+			title: t('templates.delete.beingDeleted'),
 			description: (
 				<div className="flex items-center space-x-2">
 					<Loader2 className="animate-spin" />
@@ -78,69 +85,63 @@ export const TemplateListItem = ({
 			onSuccess: () => {
 				toastId.dismiss();
 				setIsDeleting(false);
-				posthog.capture('template-code-deleted', { id: template.id, name: template.name });
+				posthog.capture('config-template-deleted', { id: template.id, name: template.name });
 			},
 			onError: (error) => {
 				Sentry.captureException(error);
 				toastId.dismiss();
 				setIsDeleting(false);
 				toast({
-					title: t('qrCode.error.delete.title'),
-					description: t('qrCode.error.delete.message'),
+					title: t('templates.delete.errorTitle'),
+					description: t('templates.delete.errorDescription'),
 					variant: 'destructive',
 				});
 			},
 		});
 	}, [template]);
 
-	// const handleUpdate = useCallback(
-	// 	(newName: string) => {
-	// 		const oldName = template.name;
-	// 		template.name = newName;
-	// 		updateQrCodeMutation.mutate(
-	// 			{ qrCodeId: template.id, data: { name: newName } },
-	// 			{
-	// 				onSuccess: () => {
-	// 					posthog.capture('template-code-updated', {
-	// 						id: template.id,
-	// 						data: {
-	// 							name: newName,
-	// 						},
-	// 					});
-	// 				},
-	// 				onError: (error) => {
-	// 					template.name = oldName;
-	// 					Sentry.captureException(error);
-	// 					toast({
-	// 						title: t('qrCode.error.update.title'),
-	// 						description: t('qrCode.error.update.message'),
-	// 						variant: 'destructive',
-	// 						duration: 5000,
-	// 					});
-	// 				},
-	// 			},
-	// 		);
-	// 	},
-	// 	[template.id, template.name, updateQrCodeMutation],
-	// );
+	const handleUpdate = useCallback(
+		(newName: string) => {
+			template.name = newName;
+			updateMutation.mutate({ configTemplateId: template.id, data: { name: newName } });
+		},
+		[template.id, template.name, updateMutation],
+	);
+
+	const qrCodeFromTemplate = useCallback(async () => {
+		const configToSave = template.config;
+		try {
+			if (configToSave.image) {
+				configToSave.image = await fetchImageAsBase64(configToSave.image);
+			}
+			posthog.capture('create-qr-code-from-config-template', {
+				id: template.id,
+				templateName: template.name,
+			});
+		} catch (error) {
+			console.error('Failed to convert image to base64:', error);
+		}
+		localStorage.setItem('unsavedQrConfig', JSON.stringify(configToSave));
+		router.push('/');
+	}, []);
 
 	return (
 		<>
 			<TableRow
-				// onClick={() => {
-				// 	router.push(`/collection/template-code/${template.id}`);
-				// }}
 				className={`cursor-default rounded-lg shadow ${isDeleting ? '!bg-muted/70' : 'bg-white'}`}
 			>
-				<TableCell className="rounded-l-lg">
-					<div className="flex space-x-8">
+				<TableCell className="rounded-l-lg max-w-52">
+					<div className="flex space-x-8 w-50">
+						<div className="ml-4 hidden sm:flex items-center">
+							<StarIcon className="mr-2 h-6 w-6" />
+						</div>
 						<div className="h-[90px] w-[90px] overflow-hidden">
 							{template.previewImage ? (
 								<Image
 									src={template.previewImage}
 									width={180}
 									height={180}
-									alt="QR code preview"
+									alt="Template preview"
 									loading="lazy"
 								/>
 							) : (
@@ -150,13 +151,13 @@ export const TemplateListItem = ({
 					</div>
 				</TableCell>
 
-				<TableCell className="font-medium max-w-[400px] truncate">
+				<TableCell className="font-medium truncate w-full">
 					<div
 						className="group relative pr-6 inline-block"
 						onClick={(e) => {
 							e.preventDefault();
 							e.stopPropagation();
-							// setNameDialogOpen(true);
+							setNameDialogOpen(true);
 						}}
 					>
 						{template.name && template.name != '' ? (
@@ -185,16 +186,19 @@ export const TemplateListItem = ({
 
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>{t('qrCode.actionsMenu.title')}</DropdownMenuLabel>
+							<DropdownMenuSeparator />
 
-							{/* <DropdownMenuItem asChild>
-								<Link
-									className="cursor-pointer"
-									href={`/collection/template-code/${template.id}`}
-									onClick={(e) => e.stopPropagation()}
-								>
-									{t('qrCode.actionsMenu.view')}
+							<DropdownMenuItem asChild>
+								<span className="cursor-pointer" onClick={qrCodeFromTemplate}>
+									{t('templates.actionsMenu.qrCodeFromTemplate')}
+								</span>
+							</DropdownMenuItem>
+
+							<DropdownMenuItem asChild>
+								<Link className="cursor-pointer" href={`/collection/template/${template.id}/edit`}>
+									{t('qrCode.actionsMenu.edit')}
 								</Link>
-							</DropdownMenuItem> */}
+							</DropdownMenuItem>
 
 							<AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
 								<AlertDialogTrigger
@@ -208,20 +212,20 @@ export const TemplateListItem = ({
 											e.stopPropagation();
 										}}
 									>
-										{t('qrCode.actionsMenu.delete')}
+										{t('templates.confirmPopup.confirmBtn')}
 									</DropdownMenuItem>
 								</AlertDialogTrigger>
 								<AlertDialogContent onClick={(e) => e.stopPropagation()}>
 									<AlertDialogHeader>
-										<AlertDialogTitle>{t('qrCode.confirmDeletePopup.title')}</AlertDialogTitle>
+										<AlertDialogTitle>{t('templates.confirmPopup.title')}</AlertDialogTitle>
 										<AlertDialogDescription>
-											{t('qrCode.confirmDeletePopup.description')}
+											{t('templates.confirmPopup.description')}
 										</AlertDialogDescription>
 									</AlertDialogHeader>
 									<AlertDialogFooter>
 										<AlertDialogCancel asChild>
 											<Button variant="secondary" onClick={(e) => e.stopPropagation()}>
-												{t('qrCode.confirmDeletePopup.cancelBtn')}
+												{t('templates.confirmPopup.cancelBtn')}
 											</Button>
 										</AlertDialogCancel>
 										<Button
@@ -233,7 +237,7 @@ export const TemplateListItem = ({
 												setShowDeleteConfirm(false);
 											}}
 										>
-											{t('qrCode.confirmDeletePopup.confirmBtn')}
+											{t('templates.confirmPopup.confirmBtn')}
 										</Button>
 									</AlertDialogFooter>
 								</AlertDialogContent>
@@ -242,15 +246,14 @@ export const TemplateListItem = ({
 					</DropdownMenu>
 				</TableCell>
 			</TableRow>
-			{/* 
 			<NameDialog
-				dialogHeadline={t('qrCode.updateQrCodeName.title')}
-				placeholder={t('qrCode.updateQrCodeName.placeholder')}
+				dialogHeadline={t('templates.update.updateName.title')}
+				placeholder={t('templates.update.updateName.placeholder')}
 				isOpen={nameDialogOpen}
 				setIsOpen={setNameDialogOpen}
 				onSubmit={handleUpdate}
 				defaultValue={template.name ?? ''}
-			/> */}
+			/>
 		</>
 	);
 };

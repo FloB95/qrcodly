@@ -3,15 +3,20 @@
 import { useAuth } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { getDefaultContentByType, type TCreateQrCodeDto } from '@shared/schemas';
+import { type TCreateQrCodeDto } from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
-import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
-import { useCreateQrCodeMutation } from '@/lib/api/qr-code';
+import { qrCodeQueryKeys, useCreateQrCodeMutation } from '@/lib/api/qr-code';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { LoginRequiredDialog } from './LoginRequiredDialog';
 import { NameDialog } from './NameDialog';
+import { useQueryClient } from '@tanstack/react-query';
+import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
+import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
+import type { ApiError } from '@/lib/api/ApiError';
+import { isContentAtDefault } from '@/lib/qr-code-helpers';
 
 const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 	const t = useTranslations('qrCode');
@@ -19,6 +24,8 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
 	const [hasMounted, setHasMounted] = useState(false);
+	const queryClient = useQueryClient();
+	const { resetStore, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
 
 	const createQrCodeMutation = useCreateQrCodeMutation();
 
@@ -44,21 +51,56 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 							duration: 5000,
 						});
 
-						posthog.capture('config-template-created', {
+						void Promise.all([
+							queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes }),
+							queryClient.refetchQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
+						]);
+
+						if (qrCode.content.type === 'url' && qrCode.content.data.isEditable) {
+							resetStore();
+						}
+
+						updateLatestQrCode({
+							config: qrCode.config,
+							content: qrCode.content,
+						});
+
+						posthog.capture('qr-code-created', {
 							qrCodeName: qrCodeName,
 						});
 					},
-					onError: (e) => {
-						Sentry.captureException(e);
+					onError: (e: Error) => {
+						const error = e as ApiError;
+
+						if (error.code >= 500) {
+							Sentry.captureException(error, {
+								extra: {
+									qrCodeName: qrCodeName,
+									qrCode,
+									error: {
+										code: error.code,
+										message: error.message,
+										fieldErrors: error?.fieldErrors,
+									},
+								},
+							});
+
+							posthog.capture('error:qr-code-created', {
+								qrCodeName: qrCodeName,
+								qrCode,
+								error: {
+									code: error.code,
+									message: error.message,
+									fieldErrors: error?.fieldErrors,
+								},
+							});
+						}
+
 						toast({
 							variant: 'destructive',
 							title: t('download.errorTitle'),
-							description: e.message,
+							description: error.message,
 							duration: 5000,
-						});
-
-						posthog.capture('error:config-template-created', {
-							qrCodeName: qrCodeName,
 						});
 					},
 				},
@@ -67,6 +109,11 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 			console.error(error);
 		}
 	};
+
+	const isDisabled =
+		!hasMounted ||
+		isContentAtDefault(qrCode.content, isSignedIn === true) ||
+		createQrCodeMutation.isPending;
 
 	return (
 		<>
@@ -86,14 +133,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 							}
 							setNameDialogOpen(true);
 						}}
-						disabled={
-							!hasMounted ||
-							!(
-								JSON.stringify(qrCode.content) !==
-									JSON.stringify(getDefaultContentByType(qrCode.content.type)) &&
-								!createQrCodeMutation.isPending
-							)
-						}
+						disabled={isDisabled}
 					>
 						{t('storeBtn')}
 					</Button>

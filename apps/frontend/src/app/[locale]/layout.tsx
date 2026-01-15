@@ -1,4 +1,3 @@
-import { ClerkProvider } from '@clerk/nextjs';
 import '@/styles/globals.css';
 import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
@@ -10,34 +9,7 @@ import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { env } from '@/env';
 
-const openSans = Inter({
-	subsets: ['latin'],
-	variable: '--font-sans',
-});
-
-export async function generateMetadata({ params }: DefaultPageParams) {
-	const { locale } = await params;
-	const t = await getTranslations({ locale, namespace: 'metadata' });
-
-	return {
-		title: t('title'),
-		description: t('description'),
-		keywords: t('keywords'),
-		icons: [
-			{
-				rel: 'icon',
-				url: '/favicon.ico',
-			},
-		],
-		openGraph: {
-			images: [
-				{
-					url: 'https://www.qrcodly.de/og-image.webp',
-				},
-			],
-		},
-	};
-}
+const openSans = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export default async function RootLayout({
 	children,
@@ -47,14 +19,18 @@ export default async function RootLayout({
 	params: DefaultPageParams['params'];
 }) {
 	const { locale } = await params;
+
 	if (!hasLocale(routing.locales, locale)) {
 		notFound();
 	}
 
-	// Generate alternate links for all supported languages except the current one
+	// Übersetzungen für Meta-Tags
+	const t = await getTranslations({ locale, namespace: 'metadata' });
+
+	// Alternate Links
 	const alternateLinks = routing.locales
-		.filter((l) => l !== 'en')
-		.map((lang: string) => (
+		.filter((l) => l !== locale)
+		.map((lang) => (
 			<link
 				key={lang}
 				rel="alternate"
@@ -63,25 +39,85 @@ export default async function RootLayout({
 			/>
 		));
 
+	// Organization Structured Data (site-wide)
+	const organizationData = {
+		'@context': 'https://schema.org',
+		'@type': 'Organization',
+		name: 'QRcodly',
+		url: 'https://www.qrcodly.de',
+		logo: 'https://www.qrcodly.de/logo.png',
+		sameAs: [],
+	};
+
 	return (
-		<ClerkProvider>
-			<html lang={locale} className="light">
-				<head>
-					<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-					<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-					<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-					<link rel="manifest" href="/site.webmanifest" />
-					<meta name="google" content="notranslate" />
-					<link rel="alternate" hrefLang="en" href={`${env.NEXT_PUBLIC_FRONTEND_URL}/`} />
-					{alternateLinks}
-				</head>
-				<body className={`font-sans ${openSans.variable}`}>
-					<NextIntlClientProvider>
-						<Providers>{children}</Providers>
-					</NextIntlClientProvider>
-					<Toaster />
-				</body>
-			</html>
-		</ClerkProvider>
+		<html lang={locale} className="light" suppressHydrationWarning>
+			<head>
+				{/* Organization Structured Data */}
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationData) }}
+				/>
+
+				{/* Primary Meta Tags */}
+				<title>{t('title')}</title>
+				<meta name="title" content={t('title')} />
+				<meta name="description" content={t('description')} />
+				<meta name="keywords" content={t('keywords')} />
+
+				{/* Robots & Crawling */}
+				<meta
+					name="robots"
+					content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+				/>
+				<meta
+					name="googlebot"
+					content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+				/>
+				<meta name="google" content="notranslate" />
+
+				{/* Canonical URL */}
+				<link rel="canonical" href={`https://www.qrcodly.de/${locale}`} />
+
+				{/* Open Graph / Facebook */}
+				<meta property="og:type" content="website" />
+				<meta property="og:url" content="https://www.qrcodly.de" />
+				<meta property="og:title" content={t('title')} />
+				<meta property="og:description" content={t('description')} />
+				<meta property="og:image" content="https://www.qrcodly.de/og-image.webp" />
+				<meta property="og:image:width" content="1200" />
+				<meta property="og:image:height" content="630" />
+				<meta property="og:image:alt" content="QRcodly - Free QR Code Generator" />
+				<meta property="og:site_name" content="QRcodly" />
+				<meta property="og:locale" content={locale === 'de' ? 'de_DE' : 'en_US'} />
+
+				{/* Twitter */}
+				<meta name="twitter:card" content="summary_large_image" />
+				<meta name="twitter:url" content="https://www.qrcodly.de" />
+				<meta name="twitter:title" content={t('title')} />
+				<meta name="twitter:description" content={t('description')} />
+				<meta name="twitter:image" content="https://www.qrcodly.de/og-image.webp" />
+
+				{/* Favicons */}
+				<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+				<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+				<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+				<link rel="manifest" href="/site.webmanifest" />
+
+				{/* Alternate Languages */}
+				<link rel="alternate" hrefLang="x-default" href="https://www.qrcodly.de" />
+				{alternateLinks}
+			</head>
+
+			<body className={`font-sans ${openSans.variable}`}>
+				<NextIntlClientProvider>
+					<Providers locale={locale}>
+						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
+							{children}
+						</main>
+					</Providers>
+				</NextIntlClientProvider>
+				<Toaster />
+			</body>
+		</html>
 	);
 }

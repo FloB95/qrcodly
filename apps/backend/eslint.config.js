@@ -17,6 +17,7 @@ export default [
 	{
 		ignores: [
 			'**/node_modules',
+			'**/coverage',
 			'**/build',
 			'**/jest.config.js',
 			'**/drizzle.config.ts',
@@ -36,7 +37,7 @@ export default [
 			ecmaVersion: 5,
 			sourceType: 'script',
 			parserOptions: {
-				project: './tsconfig.json', // Pfad zu deinem tsconfig
+				project: './tsconfig.json',
 				tsconfigRootDir: __dirname,
 			},
 		},
@@ -67,6 +68,24 @@ export default [
 				'warn',
 				{
 					argsIgnorePattern: '^_',
+				},
+			],
+		},
+	},
+	{
+		files: ['**/__tests__/**/*.ts', '**/*.test.ts', '**/*.spec.ts'],
+		rules: {
+			'@typescript-eslint/unbound-method': 'off',
+			'@typescript-eslint/no-unsafe-member-access': 'off',
+			'@typescript-eslint/no-unsafe-return': 'off',
+			'@typescript-eslint/no-unsafe-call': 'off',
+			'@typescript-eslint/require-await': 'off',
+			'@typescript-eslint/ban-ts-comment': 'off',
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{
+					argsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
 				},
 			],
 		},

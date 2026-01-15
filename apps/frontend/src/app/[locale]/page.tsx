@@ -7,30 +7,102 @@ import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { Features } from '@/components/Features';
 import FAQSection from '@/components/Faq';
+import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
+import Script from 'next/script';
+import { QrCodeDefaults } from '@shared/schemas';
+import { auth } from '@clerk/nextjs/server';
+import { notFound } from 'next/navigation';
+import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { Hero } from '@/components/Hero';
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
-	const t = await getTranslations({ locale });
+	if (!SUPPORTED_LANGUAGES.includes(locale as (typeof SUPPORTED_LANGUAGES)[number])) {
+		notFound();
+	}
+
+	const tMeta = await getTranslations({ locale, namespace: 'metadata' });
+	const { userId } = await auth();
+	const isSignedIn = !!userId;
+
+	// WebApplication Structured Data (homepage-specific)
+	const structuredData = {
+		'@context': 'https://schema.org',
+		'@type': 'WebApplication',
+		name: 'QRcodly',
+		url: 'https://www.qrcodly.de',
+		description: tMeta('structuredData.description'),
+		applicationCategory: 'UtilitiesApplication',
+		operatingSystem: 'Any',
+		offers: {
+			'@type': 'Offer',
+			price: '0',
+			priceCurrency: 'EUR',
+		},
+		creator: {
+			'@type': 'Organization',
+			name: 'QRcodly',
+			url: 'https://www.qrcodly.de',
+		},
+		featureList: tMeta.raw('structuredData.features'),
+		screenshot: 'https://www.qrcodly.de/og-image.webp',
+	};
+
 	return (
-		<main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
+		<QrCodeGeneratorStoreProvider
+			initState={{
+				config: QrCodeDefaults,
+				content: {
+					type: 'url',
+					data: {
+						url: '',
+						isEditable: isSignedIn,
+					},
+				},
+				latestQrCode: undefined,
+				lastError: undefined,
+				bulkMode: {
+					file: undefined,
+					isBulkMode: false,
+				},
+			}}
+		>
+			{/* WebApplication Structured Data */}
+			<Script
+				id="structured-data-app"
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+			/>
+
 			<Header />
 
-			<div>
+			<article>
 				<Container>
-					<h1 className="mt-12 lg:mt-4 mb-16 text-center text-4xl font-bold">
-						<div dangerouslySetInnerHTML={{ __html: String(t.raw('headline')) }} />
-					</h1>
-					<div className="mb-2">
-						<QRcodeGenerator />
-					</div>
+					<Hero />
 
-					<Features />
-					<Cta />
-					<FAQSection />
+					{/* Main QR Code Generator Tool */}
+					<section aria-label="QR Code Generator Tool" className="mb-2">
+						<QRcodeGenerator generatorType="QrCodeWithDownloadBtn" />
+					</section>
+
+					{/* Features Section */}
+					<section aria-label="Features" className="mt-16">
+						<Features />
+					</section>
+
+					{/* Call to Action */}
+					<section aria-label="Get Started" className="mt-16">
+						<Cta />
+					</section>
+
+					{/* FAQ Section */}
+					<section aria-label="Frequently Asked Questions" className="mt-16">
+						<FAQSection />
+					</section>
 				</Container>
-			</div>
+			</article>
 
 			<Footer />
-		</main>
+		</QrCodeGeneratorStoreProvider>
 	);
 }

@@ -8,10 +8,8 @@ import { TCreateConfigTemplateDto } from '@shared/schemas';
 import { ConfigTemplateCreatedEvent } from '../event/config-template-created.event';
 import { ImageService } from '@/core/services/image.service';
 import { ConfigTemplateImageStrategy } from '../domain/strategies/config-template-image.strategy';
+import { UnitOfWork } from '@/core/db/unit-of-work';
 
-/**
- * Use case for creating a ConfigTemplate entity.
- */
 @injectable()
 export class CreateConfigTemplateUseCase implements IBaseUseCase {
 	constructor(
@@ -23,46 +21,58 @@ export class CreateConfigTemplateUseCase implements IBaseUseCase {
 		this.imageService.setStrategy(new ConfigTemplateImageStrategy());
 	}
 
-	/**
-	 * Executes the use case to create a new ConfigTemplate entity based on the given DTO.
-	 * @param dto The data transfer object containing the details for the ConfigTemplate to be created.
-	 * @param createdBy The ID of the user who created the ConfigTemplate.
-	 * @returns A promise that resolves with the newly created ConfigTemplate entity.
-	 */
 	async execute(dto: TCreateConfigTemplateDto, createdBy: string): Promise<TConfigTemplate> {
-		const newId = await this.configTemplateRepository.generateId();
+		let uploadedImage: string | undefined;
 
-		const configTemplate: Omit<TConfigTemplate, 'createdAt' | 'updatedAt'> = {
-			id: newId,
-			...dto,
-			createdBy,
-			previewImage: null,
-			isPredefined: false,
-		};
+		try {
+			return await UnitOfWork.run<TConfigTemplate>(async () => {
+				// generate ID before transaction
+				const newId = await this.configTemplateRepository.generateId();
 
-		// convert base64 image to buffer and upload to s3
-		if (configTemplate.config.image) {
-			configTemplate.config.image = await this.imageService.uploadImage(
-				configTemplate.config.image,
-				newId,
-				createdBy,
-			);
+				const configTemplate: Omit<TConfigTemplate, 'createdAt' | 'updatedAt'> = {
+					id: newId,
+					...dto,
+					createdBy,
+					previewImage: null,
+					isPredefined: false,
+				};
+
+				// upload image if provided
+				if (configTemplate.config.image) {
+					const uploaded = await this.imageService.uploadImage(
+						configTemplate.config.image,
+						newId,
+						createdBy,
+					);
+					uploadedImage = uploaded;
+					configTemplate.config.image = uploaded;
+				}
+
+				// create template in DB
+				await this.configTemplateRepository.create(configTemplate);
+
+				// fetch final entity
+				const finalTemplate = await this.configTemplateRepository.findOneById(newId);
+				if (!finalTemplate) throw new Error('Failed to retrieve Config Template');
+
+				// emit event
+				this.eventEmitter.emit(new ConfigTemplateCreatedEvent(finalTemplate));
+
+				this.logger.info('template.created', {
+					template: {
+						id: finalTemplate.id,
+						createdBy: finalTemplate.createdBy,
+					},
+				});
+
+				return finalTemplate;
+			});
+		} catch (error) {
+			this.logger.error('error.template.created', { error });
+
+			// rollback uploaded image on failure
+			if (uploadedImage) await this.imageService.deleteImage(uploadedImage);
+			throw error;
 		}
-
-		await this.configTemplateRepository.create(configTemplate);
-
-		const createdConfigTemplate = await this.configTemplateRepository.findOneById(newId);
-		if (!createdConfigTemplate) throw new Error('Failed to create Config Template');
-
-		// Emit the ConfigTemplateCreatedEvent.
-		const event = new ConfigTemplateCreatedEvent(createdConfigTemplate);
-		this.eventEmitter.emit(event);
-
-		this.logger.info('Config Template created successfully', {
-			id: createdConfigTemplate.id,
-			createdBy: createdConfigTemplate.createdBy,
-		});
-
-		return createdConfigTemplate;
 	}
 }

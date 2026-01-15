@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
 import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
@@ -71,7 +70,7 @@ describe('createConfigTemplate', () => {
 				receivedConfigTemplate.updatedAt === null,
 		).toBe(true);
 
-		// @ts-ignore - Ensure isPredefined is not set
+		// @ts-expect-error - Ensure isPredefined is not set
 		expect(receivedConfigTemplate.isPredefined).toBeUndefined();
 	});
 

@@ -9,8 +9,37 @@ import { LanguageNav } from './LanguageNav';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from './ui/drawer';
+import { RectangleStackIcon } from '@heroicons/react/24/outline';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
-export default function Header({ hideDashboardLink = false }) {
+const containerVariants = {
+	hidden: { opacity: 0 },
+	visible: {
+		opacity: 1,
+		transition: {
+			staggerChildren: 0.1,
+			delayChildren: 0.1,
+		},
+	},
+};
+
+const itemVariants = {
+	hidden: { opacity: 0, x: -20 },
+	visible: {
+		opacity: 1,
+		x: 0,
+		transition: {
+			duration: 0.3,
+		},
+	},
+};
+
+export default function Header({
+	hideDashboardLink = false,
+	hideLogo = false,
+	hideLanguageNav = false,
+}) {
 	const t = useTranslations('header');
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -18,15 +47,25 @@ export default function Header({ hideDashboardLink = false }) {
 		<header className="pt-10">
 			<Container>
 				<div className="flex justify-between pt-1 sm:px-6 lg:px-8">
-					<div className="text-3xl font-bold">
-						<Link href="/" title="QRcodly">
-							QRcodly
-						</Link>
+					<div className="text-2xl pt-2 sm:pt-0 sm:text-3xl font-bold">
+						{!hideLogo && (
+							<Link href="/" title="QRcodly">
+								QRcodly
+							</Link>
+						)}
 					</div>
 					<div className="flex space-x-4 sm:space-x-6 items-center">
-						<Link href="/doc" className="hidden sm:block h-10 px-2 py-2">
-							API
+						<Link
+							href="/docs"
+							target="blank"
+							locale={'en'}
+							className="hidden sm:block h-10 px-2 py-2"
+						>
+							Docs
 						</Link>
+						{/* <Link href="/plans" className="hidden sm:block h-10 px-2 py-2">
+							Plans
+						</Link> */}
 						<SignedOut>
 							<SignInButton>
 								<Button>{t('signInBtn')}</Button>
@@ -34,17 +73,28 @@ export default function Header({ hideDashboardLink = false }) {
 						</SignedOut>
 						<SignedIn>
 							{!hideDashboardLink && (
-								<div className="hidden sm:block">
-									<Link href="/collection" className={buttonVariants()}>
+								<div>
+									<Link
+										href="/collection"
+										className={cn(buttonVariants({ size: 'icon' }), 'sm:hidden')}
+									>
+										<RectangleStackIcon className="h-6 w-6 text-white" />
+									</Link>
+									<Link
+										href="/collection"
+										className={cn(buttonVariants(), 'hidden sm:inline-flex')}
+									>
 										{t('collectionBtn')}
 									</Link>
 								</div>
 							)}
 							<UserButton />
 						</SignedIn>
-						<div className="hidden sm:block">
-							<LanguageNav />
-						</div>
+						{!hideLanguageNav && (
+							<div className="hidden sm:block">
+								<LanguageNav />
+							</div>
+						)}
 						{/* Mobile menu button */}
 						<div
 							className="flex items-center justify-center sm:hidden p-2 cursor-pointer"
@@ -62,7 +112,7 @@ export default function Header({ hideDashboardLink = false }) {
 						<DrawerTitle>Navigation</DrawerTitle>
 					</DrawerHeader>
 					<div className="absolute top-8 left-4 right-4 flex items-center justify-between">
-						<div className="text-xl font-bold  text-black">
+						<div className="text-xl font-semibold  text-black">
 							<Link title="QRcodly" href="/de">
 								QRcodly
 							</Link>
@@ -74,31 +124,54 @@ export default function Header({ hideDashboardLink = false }) {
 						</DrawerClose>
 					</div>
 
-					<div className="space-y-2">
-						<Link
-							href="/doc"
-							className={buttonVariants({
-								variant: 'ghost',
-								className: 'w-full justify-start text-foreground font-semibold',
-							})}
-						>
-							API
-						</Link>
-						<SignedIn>
+					<motion.div
+						className="space-y-2"
+						variants={containerVariants}
+						initial="hidden"
+						animate={mobileMenuOpen ? 'visible' : 'hidden'}
+					>
+						{/* <motion.div variants={itemVariants}>
 							<Link
-								href="/collection"
+								href="/plan"
 								className={buttonVariants({
 									variant: 'ghost',
 									className: 'w-full justify-start text-foreground font-semibold',
 								})}
 							>
-								{t('collectionBtn')}
+								Plan
 							</Link>
+						</motion.div> */}
+						<motion.div variants={itemVariants}>
+							<Link
+								href="/docs"
+								target="blank"
+								locale={'en'}
+								className={buttonVariants({
+									variant: 'ghost',
+									className: 'w-full justify-start text-foreground font-semibold',
+								})}
+							>
+								Docs
+							</Link>
+						</motion.div>
+						<SignedIn>
+							<motion.div variants={itemVariants}>
+								<Link
+									href="/collection"
+									className={buttonVariants({
+										className: 'ml-3 justify-start text-foreground font-semibold',
+									})}
+								>
+									{t('collectionBtn')}
+								</Link>
+							</motion.div>
 						</SignedIn>
-						<div>
-							<LanguageNav />
-						</div>
-					</div>
+						{!hideLanguageNav && (
+							<motion.div variants={itemVariants}>
+								<LanguageNav />
+							</motion.div>
+						)}
+					</motion.div>
 				</DrawerContent>
 			</Drawer>
 		</header>

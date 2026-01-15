@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import { container } from 'tsyringe';
 import { CronJobWorker } from '@/core/jobs/cron-job-worker';
 import { AbstractCronJob } from '@/core/jobs/abstract.cron-job';

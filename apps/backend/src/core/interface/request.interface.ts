@@ -1,17 +1,19 @@
 import { type FastifyRequest } from 'fastify';
 import { type IncomingHttpHeaders } from 'http';
+import { type TUser } from '../domain/schema/UserSchema';
 
-export interface IHttpRequest<B = unknown, P = unknown, Q = unknown> extends FastifyRequest {
-	body: B;
-	params: P;
-	query: Q;
+export interface IHttpRequest<
+	Body = unknown,
+	Params = unknown,
+	Query = unknown,
+	AuthRequired extends boolean = true,
+	WithEvent extends boolean = false,
+> extends FastifyRequest {
+	body: Body;
+	params: Params;
+	query: Query;
 	headers: IncomingHttpHeaders;
 	cookies: { [cookieName: string]: string | undefined };
-}
-
-export interface IHttpRequestWithAuth<B = unknown, P = unknown, Q = unknown>
-	extends IHttpRequest<B, P, Q> {
-	user: {
-		id: string;
-	};
+	user: AuthRequired extends true ? TUser : TUser | undefined;
+	event: WithEvent extends true ? any : undefined;
 }

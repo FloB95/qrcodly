@@ -10,77 +10,167 @@ export const UrlInputSchema = z.object({
 });
 export type TUrlInput = z.infer<typeof UrlInputSchema>;
 
-export const TextInputSchema = z.string().max(1000);
+export const TextInputSchema = z.string().min(1).max(1000);
 export type TTextInput = string;
 
+const WifiEncryptionSchema = z.enum(['WPA', 'WEP', 'nopass']);
+export type TWifiEncryption = z.infer<typeof WifiEncryptionSchema>;
+
 export const WifiInputSchema = z.object({
-	ssid: z.string().max(32),
-	password: emptyStringToUndefined(z.string().max(64).optional()),
-	encryption: z.enum(['WPA', 'WEP', 'nopass']),
+	ssid: z.string().max(32).min(1),
+	password: z.string().max(64),
+	encryption: WifiEncryptionSchema,
 });
 export type TWifiInput = z.infer<typeof WifiInputSchema>;
 
-export const VCardInputSchema = z.object({
-	firstName: emptyStringToUndefined(z.string().max(64).optional()),
-	lastName: emptyStringToUndefined(z.string().max(64).optional()),
-	email: emptyStringToUndefined(z.email().optional()),
-	phone: emptyStringToUndefined(
-		z
-			.string()
-			.regex(/^\+?\d{1,4}\d{6,15}$/)
-			.optional(),
-	),
-	fax: emptyStringToUndefined(
-		z
-			.string()
-			.regex(/^\+?\d{1,4}\d{6,15}$/)
-			.optional(),
-	),
-	company: emptyStringToUndefined(z.string().max(64).optional()),
-	job: emptyStringToUndefined(z.string().max(64).optional()),
-	street: emptyStringToUndefined(z.string().max(64).optional()),
-	city: emptyStringToUndefined(z.string().max(64).optional()),
-	zip: emptyStringToUndefined(z.string().max(10).optional()),
-	state: emptyStringToUndefined(z.string().max(64).optional()),
-	country: emptyStringToUndefined(z.string().max(64).optional()),
-	website: emptyStringToUndefined(z.url().optional()),
-});
+export const VCardInputSchema = z
+	.object({
+		firstName: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		lastName: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		email: emptyStringToUndefined(z.email().max(100).optional()),
+		phone: emptyStringToUndefined(
+			z
+				.string()
+				.regex(/^\+?\d{1,4}\d{6,15}$/)
+				.optional(),
+		),
+		fax: emptyStringToUndefined(
+			z
+				.string()
+				.regex(/^\+?\d{1,4}\d{6,15}$/)
+				.optional(),
+		),
+		company: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		job: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		street: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		city: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		zip: emptyStringToUndefined(z.string().min(1).max(10).optional()),
+		state: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		country: emptyStringToUndefined(z.string().min(1).max(64).optional()),
+		website: emptyStringToUndefined(z.url().optional()),
+		isDynamic: z.boolean().optional(),
+	})
+	.refine(
+		(data) =>
+			Object.entries(data).some(([key, value]) => key !== 'isDynamic' && value !== undefined),
+		{
+			message: 'At least one vCard field must be provided',
+		},
+	);
 export type TVCardInput = z.infer<typeof VCardInputSchema>;
 
+export const LocationInputSchema = z.object({
+	address: z.string().min(1).max(200),
+	latitude: z.number().min(-90).max(90).optional(),
+	longitude: z.number().min(-180).max(180).optional(),
+});
+export type TLocationInput = z.infer<typeof LocationInputSchema>;
+
+export const EmailInputSchema = z.object({
+	email: z.email().max(100),
+	subject: z.string().max(250).optional(),
+	body: z.string().max(1000).optional(),
+});
+export type TEmailInput = z.infer<typeof EmailInputSchema>;
+
+export const PhoneInputSchema = z.object({
+	phone: z.string().min(3),
+});
+export type TPhoneInput = z.infer<typeof PhoneInputSchema>;
+
+export const SmsInputSchema = z.object({
+	phone: z.string().min(3),
+	message: z.string().optional(),
+});
+export type TSmsInput = z.infer<typeof SmsInputSchema>;
+
+export const SocialPlatformEnum = z.enum([
+	'instagram',
+	'whatsapp',
+	'tiktok',
+	'youtube',
+	'website',
+	'spotify',
+	'threads',
+	'facebook',
+	'x',
+	'soundcloud',
+	'snapchat',
+	'pinterest',
+	'patreon',
+]);
+
+export const SocialLinkSchema = z.object({
+	platform: SocialPlatformEnum,
+	label: z.string().min(1),
+	url: z.httpUrl(),
+});
+
+export const SocialInputSchema = z.object({
+	title: z.string().min(1),
+	links: z.array(SocialLinkSchema).min(1),
+});
+
+export type TSocialInput = z.infer<typeof SocialInputSchema>;
+export type TSocialPlatform = z.infer<typeof SocialPlatformEnum>;
+
+export const EventInputSchema = z
+	.object({
+		title: z.string().min(1).max(200),
+		description: z.string().max(500).optional(),
+		location: z.string().max(200).optional(),
+		url: z.httpUrl().optional(),
+		startDate: z.iso.datetime().describe('As ISO Datetime String'),
+		endDate: z.iso.datetime().describe('As ISO Datetime String'),
+	})
+	.refine((data) => new Date(data.startDate) < new Date(data.endDate), {
+		message: 'End date must be after start date',
+		path: ['endDate'],
+	});
+
+export type TEventInput = z.infer<typeof EventInputSchema>;
+
+// Alle Typen als Literal-Union
 export const QrCodeContentType = z.union([
 	z.literal('url'),
 	z.literal('text'),
 	z.literal('wifi'),
 	z.literal('vCard'),
+	z.literal('email'),
+	z.literal('location'),
+	z.literal('event'),
+	// z.literal('socials'),
 ]);
 export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
 
-export const UrlContentSchema = z.object({
-	type: z.literal('url'),
-	data: UrlInputSchema,
-});
+const ContentSchemas = {
+	url: UrlInputSchema,
+	text: TextInputSchema,
+	wifi: WifiInputSchema,
+	vCard: VCardInputSchema,
+	email: EmailInputSchema,
+	location: LocationInputSchema,
+	event: EventInputSchema,
+	// socials: SocialInputSchema,
+} as const;
 
-export const TextContentSchema = z.object({
-	type: z.literal('text'),
-	data: TextInputSchema,
-});
-
-export const WifiContentSchema = z.object({
-	type: z.literal('wifi'),
-	data: WifiInputSchema,
-});
-
-export const VCardContentSchema = z.object({
-	type: z.literal('vCard'),
-	data: VCardInputSchema,
-});
+const createContentSchema = <T extends keyof typeof ContentSchemas>(type: T) =>
+	z.object({
+		type: z.literal(type),
+		data: ContentSchemas[type],
+	});
 
 export const QrCodeContent = z.discriminatedUnion('type', [
-	UrlContentSchema,
-	TextContentSchema,
-	WifiContentSchema,
-	VCardContentSchema,
+	createContentSchema('url'),
+	createContentSchema('text'),
+	createContentSchema('wifi'),
+	createContentSchema('vCard'),
+	createContentSchema('email'),
+	createContentSchema('location'),
+	createContentSchema('event'),
+	// createContentSchema('socials'),
 ]);
+
 export type TQrCodeContent = z.infer<typeof QrCodeContent>;
 
 export const DotType = z.enum([
@@ -102,34 +192,39 @@ export type TCornerSquareType = z.infer<typeof CornerSquareType>;
 export const FileExtension = z.enum(['svg', 'png', 'jpeg', 'webp']);
 export type TFileExtension = z.infer<typeof FileExtension>;
 
-export const GradientType = z.enum(['radial', 'linear']);
-
 export const Gradient = z.object({
-	type: GradientType,
-	rotation: z.number(),
+	type: z.literal('gradient'),
+	gradientType: z.enum(['radial', 'linear']),
+	rotation: z.number().nullable(),
 	colorStops: z
 		.array(
 			z.object({
 				offset: z.number(),
-				color: z.string().regex(/^#[0-9A-F]{6}$/i),
+				color: z.string().regex(/^#[0-9a-f]{6}$/i),
 			}),
 		)
-		.min(2)
-		.max(2), // Beibehalten auf 2 wie im Original
+		.length(2),
 });
 
-export const ColorOrGradient = z.union([
-	z.string().regex(/^#[0-9A-F]{6}$/i), // hex
-	z
+const HexColor = z.object({
+	type: z.literal('hex'),
+	value: z.string().regex(/^#[0-9A-F]{6}$/i),
+});
+
+const RgbaColor = z.object({
+	type: z.literal('rgba'),
+	value: z
 		.string()
-		.regex(/^rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}(?:\s*,\s*(?:0|1|0?\.\d+))?\s*\)$/i), // rgb or rgba
-	Gradient,
-]);
+		.regex(/^rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}(?:\s*,\s*(?:0|1|0?\.\d+))?\s*\)$/i),
+});
+
+export const ColorOrGradient = z.discriminatedUnion('type', [HexColor, RgbaColor, Gradient]);
+export type TColorOrGradient = z.infer<typeof ColorOrGradient>;
 
 export const QrCodeOptionsSchema = z.object({
-	width: z.number(),
-	height: z.number(),
-	margin: z.number(),
+	width: z.number().min(0),
+	height: z.number().min(0),
+	margin: z.number().min(0),
 	image: z
 		.string()
 		.max(0.5 * 1024 * 1024, 'Image is to large! Max size is 0.5 MB.')

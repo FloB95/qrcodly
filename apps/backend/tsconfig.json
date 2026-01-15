@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"module": "es2020",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"removeComments": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
@@ -18,14 +18,16 @@
 		"baseUrl": ".",
 		"isolatedModules": true,
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@shared/schemas": ["./../../packages/shared/dist"],
+			"@shared/schemas/*": ["./../../packages/shared/dist/*"]
 		}
 	},
 	"include": ["eslint.config.js", "./src/**/*.ts", "**/*.cjs", "**/*.mjs", "setup.test.ts"],
-	"exclude": ["node_modules", "build", "test"],
+	"exclude": ["node_modules", "build", "coverage"],
 	"types": ["@types/jest"],
 	"ts-node": {
 		"require": ["tsconfig-paths/register"]
-	}
-	// "references": [{ "path": "../../packages/shared/tsconfig.json" }]
+	},
+	"references": [{ "path": "../../packages/shared/tsconfig.json" }]
 }

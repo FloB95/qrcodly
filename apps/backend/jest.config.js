@@ -1,6 +1,11 @@
 import { pathsToModuleNameMapper, createDefaultPreset } from 'ts-jest';
 import { getTsconfig } from 'get-tsconfig';
-const { compilerOptions } = getTsconfig().config;
+const { compilerOptions: _compilerOptions } = getTsconfig().config;
+// Remove options that require specific moduleResolution values when passing
+// the config directly into ts-jest. Some environments may not set
+// moduleResolution to 'node16'|'nodenext'|'bundler', causing TS5098.
+const { resolvePackageJsonExports, resolvePackageJsonImports, ...compilerOptions } =
+	_compilerOptions || {};
 
 const tsJestOptions = {
 	tsconfig: {
@@ -12,6 +17,8 @@ const tsJestOptions = {
 const jestConfig = {
 	...createDefaultPreset(),
 	verbose: true,
+	coverageDirectory: '<rootDir>/coverage',
+	coverageProvider: 'v8',
 	preset: 'ts-jest',
 	moduleDirectories: ['node_modules', '<rootDir>'],
 	moduleNameMapper: {
@@ -39,6 +46,7 @@ const jestConfig = {
 	setupFilesAfterEnv: ['<rootDir>/src/tests/setup.test.ts'],
 	testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 	testTimeout: 30000,
+	forceExit: true,
 };
 
 export default jestConfig;

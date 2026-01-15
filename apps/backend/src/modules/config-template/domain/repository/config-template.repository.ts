@@ -1,6 +1,5 @@
 import { singleton } from 'tsyringe';
 import { desc, eq } from 'drizzle-orm';
-import db from '@/core/db';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import configTemplate, { TConfigTemplate } from '../entities/config-template.entity';
@@ -26,7 +25,7 @@ class ConfigTemplateRepository extends AbstractRepository<TConfigTemplate> {
 		page,
 		where,
 	}: ISqlQueryFindBy<TConfigTemplate>): Promise<TConfigTemplate[]> {
-		const query = db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
+		const query = this.db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
 
 		// Add where conditions
 		if (where) void this.withWhere(query, where);
@@ -43,7 +42,7 @@ class ConfigTemplateRepository extends AbstractRepository<TConfigTemplate> {
 	 * @returns A promise that resolves to the config template if found, otherwise undefined.
 	 */
 	async findOneById(id: string): Promise<TConfigTemplate | undefined> {
-		const configTemplate = await db.query.configTemplate.findFirst({
+		const configTemplate = await this.db.query.configTemplate.findFirst({
 			where: eq(this.table.id, id),
 		});
 		return configTemplate;
@@ -55,7 +54,7 @@ class ConfigTemplateRepository extends AbstractRepository<TConfigTemplate> {
 	 * @param updates - The updates to apply to the config template.
 	 */
 	async update(configTemplate: TConfigTemplate, updates: Partial<TConfigTemplate>): Promise<void> {
-		await db.update(this.table).set(updates).where(eq(this.table.id, configTemplate.id));
+		await this.db.update(this.table).set(updates).where(eq(this.table.id, configTemplate.id));
 	}
 
 	/**
@@ -64,7 +63,7 @@ class ConfigTemplateRepository extends AbstractRepository<TConfigTemplate> {
 	 * @returns A promise that resolves to true if the config template was deleted successfully.
 	 */
 	async delete(configTemplate: TConfigTemplate): Promise<boolean> {
-		await db.delete(this.table).where(eq(this.table.id, configTemplate.id)).execute();
+		await this.db.delete(this.table).where(eq(this.table.id, configTemplate.id)).execute();
 		await this.clearCache();
 		return true;
 	}
@@ -74,7 +73,7 @@ class ConfigTemplateRepository extends AbstractRepository<TConfigTemplate> {
 	 * @param configTemplate - The config template to create.
 	 */
 	async create(configTemplate: Omit<TConfigTemplate, 'createdAt' | 'updatedAt'>): Promise<void> {
-		await db
+		await this.db
 			.insert(this.table)
 			.values({
 				id: configTemplate.id,

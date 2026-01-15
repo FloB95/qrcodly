@@ -5,6 +5,10 @@ import { EventEmitter } from '@/core/event';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { TShortUrl } from '../domain/entities/short-url.entity';
 import { TUpdateShortUrlDto } from '@shared/schemas';
+import QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.repository';
+import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
+import { RedirectLoopError } from '../error/http/redirect-loop.error';
+import { buildShortUrl } from '../utils';
 
 /**
  * Use case for updating a ShortUrl entity.
@@ -14,6 +18,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 	constructor(
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
 		@inject(Logger) private logger: Logger,
+		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
 	) {}
 
@@ -35,6 +40,19 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 			updatedAt: new Date(),
 		};
 
+		// prevent linking if qr code points to same url to avoid redirect loops
+		if (updatesDto?.destinationUrl === buildShortUrl(shortUrl.shortCode)) {
+			throw new RedirectLoopError();
+		}
+
+		if (linkedQrCodeId) {
+			// verify that qr code exists
+			const qrCode = await this.qrCodeRepository.findOneById(linkedQrCodeId);
+			if (!qrCode) {
+				throw new QrCodeNotFoundError();
+			}
+		}
+
 		// Persist the updated ShortUrl entity in the database.
 		await this.shortUrlRepository.update(shortUrl, {
 			...updates,
@@ -48,11 +66,13 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		// const event = new ShortUrlUpdatedEvent(result);
 		// this.eventEmitter.emit(event);
 
-		this.logger.info('Short URL updated successfully', {
-			id: shortUrl.id,
-			qrCodeId: shortUrl.qrCodeId,
-			updates,
-			updatedBy,
+		this.logger.info('shortUrl.updated', {
+			shortUrl: {
+				id: shortUrl.id,
+				qrCodeId: shortUrl.qrCodeId,
+				updates,
+				updatedBy,
+			},
 		});
 
 		return result!;

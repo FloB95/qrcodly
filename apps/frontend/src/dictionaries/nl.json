@@ -4,27 +4,63 @@
 		"noName": "Geen naam",
 		"changesSaved": "Wijzigingen opgeslagen",
 		"back": "Terug",
+		"toCollection": "Naar collectie",
+		"backToOverview": "Terug naar de collectie",
 		"share": "Delen",
 		"view": "Bekijken",
 		"edit": "Bewerken",
 		"delete": "Verwijderen",
 		"notProvided": "Niet opgegeven",
 		"addName": "Een naam toevoegen",
-		"days": "Dagen"
+		"days": "Dagen",
+		"changelogTooltip": "Laatste updates",
+		"changelogSubheading": "Hier vind je de nieuwste updates en verbeteringen van QRcodly.",
+		"newBadge": "Nieuw!",
+		"dynamicDescription": "Dynamische QR-codes kunnen na creatie bewerkt worden, tracken elke scan en bieden gedetailleerde statistieken – zonder de code opnieuw te hoeven afdrukken.",
+		"dynamicBadgeTooltip": "Maakt het mogelijk om de inhoud later te wijzigen zonder nieuwe QR-code. <i>Hover voor meer info</i>"
 	},
-	"headline": "<span class=\"text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
+	"headline": "<span class=\"text-xl xs:text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
+	"hero": {
+		"badge": "Open Source & Voor Altijd Gratis",
+		"title": "De QR Code Generator Zonder Grenzen",
+		"subtitle": "Genereer onbeperkt statische en dynamische QR-codes gratis. Geen verborgen kosten, geen beperkingen, geen premium niveaus.",
+		"benefits": {
+			"unlimited": "Onbeperkte QR-codes",
+			"noSignup": "Gratis Dynamische QR-codes",
+			"noWatermark": "Geen Watermerken"
+		}
+	},
 	"metadata": {
 		"title": "QRcodly - Gratis QR-codegenerator",
 		"description": "Gratis QR-codes maken met logo, eigen ontwerp of sjablonen – ideaal voor marketing, visitekaartjes & meer. Gebruik nu de QR-codegenerator!",
-		"keywords": "qr code generator, qr code maken, qr code genereren, gratis, free, qr code maken gratis, qr code generator gratis, vcard qr code, link qr code, qrgenerator"
+		"keywords": "qr code generator, qr code maken, qr code genereren, gratis, free, qr code maken gratis, qr code generator gratis, vcard qr code, link qr code, qrgenerator",
+		"structuredData": {
+			"description": "Gratis online QR-codegenerator met eigen ontwerpen, logo's en sjablonen. Maak dynamische QR-codes voor URL's, WiFi, vCards en meer.",
+			"features": [
+				"Gratis QR-codegenerator",
+				"Aangepast QR-code ontwerp",
+				"QR-code met logo",
+				"Dynamische QR-codes",
+				"QR-code analytics",
+				"Bulk QR-code aanmaak",
+				"QR-code sjablonen",
+				"WiFi QR-codes",
+				"vCard QR-codes",
+				"URL QR-codes"
+			]
+		}
 	},
 	"doc": {
 		"title": "Documentatie wordt bijgewerkt",
 		"description": "We werken momenteel aan het bijwerken van dit gedeelte om u beter van dienst te zijn. Kom snel terug!"
 	},
 	"collection": {
-		"headline": "QR-codeoverzicht in ontwikkeling",
-		"subHeadline": "Sommige functies zijn nog niet beschikbaar en zullen worden toegevoegd in toekomstige updates."
+		"headline": "Je collectie",
+		"subHeadline": "Hier vind je al je QR-codes en sjablonen en kun je ze beheren.",
+		"tabQrCode": "QR-codes",
+		"tabTemplates": "Sjablonen",
+		"addQrCodeBtn": "QR-code toevoegen",
+		"bulkImportLabel": "Selecteer inhoudstype"
 	},
 	"analytics": {
 		"totalViews": "Aantal weergaven",
@@ -96,6 +132,10 @@
 			"teamFeature": {
 				"headline": "Samenwerken in een team",
 				"subHeadline": "Nodig teamleden uit en werk samen aan QR-codes. Ideaal voor bedrijven, bureaus en teams."
+			},
+			"secureFeature": {
+				"headline": "Je gegevens blijven bij ons",
+				"subHeadline": "Qrcodly host alle gegevens lokaal in Duitsland – geen doorsturing naar externe diensten. Alleen voor authenticatie gebruiken we Clerk."
 			}
 		}
 	},
@@ -115,6 +155,7 @@
 	},
 	"qrCode": {
 		"storeBtn": "Opslaan in collectie",
+		"updateBtn": "QR-code bijwerken",
 		"error": {
 			"delete": {
 				"title": "Fout bij het verwijderen van de QR-code",
@@ -124,7 +165,8 @@
 				"title": "Fout bij het bijwerken van de QR-code",
 				"message": "Er is een fout opgetreden bij het bijwerken van uw QR-code. We zijn hiervan op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen."
 			},
-			"noFound": "Geen QR-codes gevonden"
+			"noFound": "Geen QR-codes gevonden",
+			"noFoundDescription": "Je hebt nog geen QR-codes aangemaakt. Begin nu met het maken van QR-codes."
 		},
 		"confirmDeletePopup": {
 			"title": "Verwijderen bevestigen",
@@ -140,10 +182,25 @@
 			"title": "QR-code hernoemen",
 			"placeholder": "Voer een naam in"
 		},
+		"update": {
+			"headline": "QR-code bijwerken",
+			"successTitle": "QR-code bijgewerkt",
+			"successDescription": "Je QR-code is succesvol bijgewerkt.",
+			"errorTitle": "Fout bij het bijwerken van QR-code",
+			"errorDescription": "Er is een fout opgetreden bij het bijwerken van je QR-code. We zijn op de hoogte gebracht en lossen het probleem zo snel mogelijk op.",
+			"infoDialog": {
+				"dialogHeadline": "Opmerking over het bijwerken van een QR-code",
+				"dialogDescription": "Alleen dynamische QR-codes behouden hetzelfde uiterlijk na een wijziging. Bij statische QR-codes wordt een nieuwe code gegenereerd, waardoor reeds gedrukte versies niet meer actueel zijn.",
+				"doNotShowAgain": "Dit bericht niet opnieuw tonen.",
+				"cancelBtn": "Annuleren",
+				"understandBtn": "Begrepen"
+			}
+		},
 		"updateQrCodeUrl": "URL bijwerken",
 		"actionsMenu": {
 			"title": "Acties",
 			"view": "Bekijken",
+			"edit": "Bewerken",
 			"delete": "Verwijderen",
 			"disableShortUrl": "Uitschakelen",
 			"enableShortUrl": "Inschakelen"
@@ -152,6 +209,8 @@
 			"successTitle": "Nieuwe QR-code gemaakt",
 			"successDescription": "We hebben uw QR-code opgeslagen in uw verzameling voor later gebruik.",
 			"downloadBtn": "Downloaden",
+			"vcfFile": "VCF-bestand",
+			"icsFile": "ICS-bestand",
 			"errorTitle": "Fout bij het opslaan van de QR-code"
 		},
 		"saveInfo": "Sla de huidige QR-code op in uw verzameling.",
@@ -189,10 +248,22 @@
 		"templateCreatedErrorTitle": "Fout bij het maken van sjabloon",
 		"templateCreatedErrorDescription": "Er is een fout opgetreden bij het maken van uw sjabloon. We zijn hiervan al op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen.",
 		"saveAsBtn": "Opslaan als sjabloon",
+		"updateBtn": "Sjabloon bijwerken",
 		"saveInfo": "Sla het huidige ontwerp op als herbruikbaar sjabloon.",
 		"savePopup": {
 			"title": "Huidig ontwerp opslaan als sjabloon",
 			"placeholder": "Sjabloonnaam"
+		},
+		"update": {
+			"headline": "Sjabloon bijwerken",
+			"successTitle": "Sjabloon bijgewerkt",
+			"successDescription": "Je sjabloon is succesvol bijgewerkt.",
+			"errorTitle": "Fout bij het bijwerken van sjabloon",
+			"errorDescription": "Er is een fout opgetreden bij het bijwerken van je sjabloon. Controleer je invoer en probeer het opnieuw.",
+			"updateName": {
+				"title": "Sjabloon hernoemen",
+				"placeholder": "Voer een nieuwe naam in"
+			}
 		},
 		"delete": {
 			"beingDeleted": "Sjabloon wordt verwijderd",
@@ -206,13 +277,41 @@
 			"description2": "Deze actie kan niet ongedaan worden gemaakt.",
 			"confirmBtn": "Verwijderen",
 			"cancelBtn": "Annuleren"
+		},
+		"actionsMenu": {
+			"qrCodeFromTemplate": "QR-code uit sjabloon"
 		}
 	},
 	"generator": {
+		"labelName": "naam",
 		"tabs": {
 			"content": "Inhoud",
 			"style": "Stijl",
 			"templates": "Sjablonen"
+		},
+		"bulkImport": {
+			"title": "Meerdere {contentType} QR-codes maken",
+			"successTitle": "Import geslaagd",
+			"successDescription": "Al je QR-codes zijn succesvol geïmporteerd.",
+			"errorTitle": "Import mislukt",
+			"step1": {
+				"title": "1. QR Code stijlen",
+				"description": "Stijl je QR-code of kies een sjabloon."
+			},
+			"step2": {
+				"title": "2. Download CSV-sjabloon ({contentType})",
+				"description": "Download het CSV-sjabloon {contentType} en voer je gegevens in.",
+				"button": "Download"
+			},
+			"step3": {
+				"title": "3. Upload sjabloon",
+				"description": "Upload hier het ingevulde CSV-bestand."
+			},
+			"info": {
+				"title": "Houd rekening met limieten en inloggen",
+				"description": "Met het CSV-bestand kun je maximaal 15 QR-codes tegelijk maken. Voor meer heb je het Pro-plan nodig."
+			},
+			"createButton": "QR-codes maken"
 		},
 		"settingsForm": {
 			"tabGeneral": "Algemeen",
@@ -254,17 +353,24 @@
 			"clearBtn": "Icoon wissen"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEKST",
-			"tabWifi": "WI-FI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEKST",
+				"wifi": "WIFI",
+				"vCard": "VCARD",
+				"email": "EMAIL",
+				"location": "LOCATIE",
+				"event": "EVENT",
+				"socials": "SOCIALS"
+			},
+			"cancel": "Annuleren",
+			"bulkModeBtn": "CSV Massale aanmaak",
 			"text": {
 				"placeholder": "Voer hier uw tekst in"
 			},
 			"url": {
 				"placeholder": "Voer uw URL in https://voorbeeld.com/",
-				"enableEditing": "Statistieken en bewerkingen inschakelen",
-				"newBadge": "Nieuw!"
+				"enableEditing": "Statistieken en bewerkingen inschakelen"
 			},
 			"wifi": {
 				"network": {
@@ -335,6 +441,142 @@
 					"label": "Website",
 					"placeholder": "Voer de URL van uw website in"
 				}
+			},
+			"email": {
+				"email": {
+					"label": "E-mailadres",
+					"placeholder": "Voer een e-mailadres in"
+				},
+				"subject": {
+					"label": "Onderwerp",
+					"placeholder": "Optioneel onderwerp"
+				},
+				"body": {
+					"label": "Bericht",
+					"placeholder": "Optioneel bericht"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Adres",
+					"placeholder": "Zoek een adres of plaats"
+				},
+				"latitude": {
+					"label": "Breedtegraad"
+				},
+				"longitude": {
+					"label": "Lengtegraad"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Titel",
+					"placeholder": "Naam van het evenement"
+				},
+				"summary": {
+					"label": "Samenvatting",
+					"placeholder": "Optionele samenvatting"
+				},
+				"description": {
+					"label": "Beschrijving",
+					"placeholder": "Optionele beschrijving"
+				},
+				"location": {
+					"label": "Locatie",
+					"placeholder": "Evenementlocatie"
+				},
+				"url": {
+					"label": "Url",
+					"placeholder": "Optionele URL"
+				},
+				"startDate": {
+					"label": "Startdatum"
+				},
+				"endDate": {
+					"label": "Einddatum"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Titel",
+					"placeholder": "bijv. Volg mij"
+				},
+				"link": {
+					"placeholder": "Profiel- of website-URL",
+					"add": "Link toevoegen",
+					"remove": "Verwijderen"
+				}
+			}
+		},
+		"preview": {
+			"button": "Voorbeeld Openen",
+			"title": "QR-Code Achtergrond Voorbeeld",
+			"selectTitle": "Achtergrond Selecteren",
+			"selectDescription": "Test hoe je QR-code eruitziet op verschillende achtergronden voordat je deze afdrukt of deelt.",
+			"selectBackground": "Selecteer een achtergrond om je QR-code te bekijken",
+			"changeBackground": "Achtergrond Wijzigen",
+			"close": "Sluiten",
+			"predefined": {
+				"title": "Voorbeelden",
+				"businessCards": "Visitekaartjes",
+				"brochures": "Brochures",
+				"posters": "Posters",
+				"packaging": "Verpakking",
+				"websites": "Websites",
+				"socialMedia": "Social Media"
+			},
+			"website": {
+				"title": "Website",
+				"inputLabel": "Website URL",
+				"inputPlaceholder": "Voer URL in (bijv. https://voorbeeld.com)",
+				"previewButton": "Website Voorbeeld",
+				"loadingIframe": "Website laden...",
+				"loadingScreenshot": "Screenshot vastleggen...",
+				"capturingPreview": "Voorbeeld vastleggen...",
+				"info": "Voer een website-URL in om deze als achtergrond voor je QR-code te gebruiken",
+				"errors": {
+					"invalidUrl": "Voer een geldige URL in die begint met http:// of https://",
+					"loadFailed": "Website laden mislukt. Probeer het opnieuw.",
+					"captureFailed": "Website vastleggen mislukt. Deze website staat mogelijk geen insluiting toe.",
+					"screenshotFailed": "Screenshot vastleggen mislukt. De screenshotservice is mogelijk niet beschikbaar of de URL is ongeldig.",
+					"networkError": "Netwerkfout. Controleer je verbinding."
+				},
+				"retry": "Opnieuw proberen"
+			},
+			"camera": {
+				"title": "Camera",
+				"capture": "Frame Vastleggen",
+				"loading": "Camera initialiseren...",
+				"retry": "Cameratoegang Opnieuw Proberen",
+				"error": {
+					"title": "Camerafout"
+				}
+			},
+			"upload": {
+				"title": "Uploaden",
+				"dragDrop": "Sleep een afbeelding hierheen",
+				"orClick": "of klik om te bladeren",
+				"formats": "JPG, PNG, WEBP (max 5MB)"
+			},
+			"contrast": {
+				"ratio": "Verhouding",
+				"excellent": {
+					"title": "Uitstekende Zichtbaarheid"
+				},
+				"good": {
+					"title": "Goede Zichtbaarheid"
+				},
+				"poor": {
+					"title": "Slechte Zichtbaarheid"
+				},
+				"critical": {
+					"title": "Kritiek - Kan Mogelijk Niet Scannen"
+				}
+			},
+			"controls": {
+				"reset": "Positie Resetten",
+				"resize": "Sleep de hoek om te vergroten/verkleinen",
+				"move": "Sleep om te verplaatsen · Sleep de hoek om te vergroten/verkleinen"
 			}
 		}
 	},
@@ -358,7 +600,7 @@
 		"question5": "Hoe lang is een QR-code geldig?",
 		"answer5": "Statische QR-codes verlopen niet en blijven permanent geldig zolang de gekoppelde inhoud online toegankelijk is. Dynamische QR-codes blijven actief zolang ze in ons systeem worden beheerd en er geen specifieke beperkingen van de provider van toepassing zijn.",
 		"question6": "Wat zijn de voordelen van dynamische QR-codes?",
-		"answer6": "Dynamische QR-codes bieden ongekende flexibiliteit, omdat u de inhoud ervan zelfs na het afdrukken kunt aanpassen. Ze maken ook nauwkeurige scanstatistieken mogelijk, die inzicht geven in locatie, tijd en gebruikt apparaat, zodat u uw campagnes effectief kunt optimaliseren.",
+		"answer6": "Dynamische QR-codes zijn te herkennen aan het Dynamic-badge. Ze kunnen op elk moment worden bijgewerkt, zelfs nadat ze zijn gemaakt of afgedrukt. Ze bieden ook nuttige scanstatistieken – zoals locatie, tijd en gebruikte apparaten – zodat je je campagnes effectief kunt analyseren en optimaliseren.",
 		"question7": "Heb ik een speciale app nodig om QR-codes te scannen?",
 		"answer7": "Nee, in de meeste gevallen is dat niet nodig! De geïntegreerde camerafunctie van moderne smartphones kan QR-codes nu direct herkennen en de ingebedde inhoud openen – zonder dat een extra app nodig is.",
 		"question8": "Welke statistieken worden verzameld voor dynamische QR-codes?",
@@ -366,6 +608,18 @@
 		"question9": "Kan ik een QR-code personaliseren met mijn logo?",
 		"answer9": "Ja, met qrcodly.de kunt u uw QR-codes precies naar wens ontwerpen: integreer uw logo en gebruik uw merkkleuren zonder de scanbaarheid te beïnvloeden. Zo blijven uw codes uniek en professioneel!",
 		"question10": "Werken QR-codes ook in gedrukte vorm?",
-		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!"
+		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!",
+		"question11": "Waar worden mijn gegevens gehost?",
+		"answer11": "Alle gegevens bij Qrcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk."
+	},
+	"fileUpload": {
+		"maxFiles": "Maximaal {maxFiles} bestanden toegestaan",
+		"invalidType": "Bestandstype niet toegestaan",
+		"tooLarge": "Bestand te groot",
+		"uploadZone": {
+			"dragDrop": "Sleep bestanden hierheen",
+			"or": "Of klik om te bladeren (max. 1 bestand)",
+			"browse": "Bestanden selecteren"
+		}
 	}
 }

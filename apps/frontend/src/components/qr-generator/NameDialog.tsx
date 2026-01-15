@@ -7,9 +7,10 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group';
 import { useTranslations } from 'next-intl';
 import { DialogClose } from '@radix-ui/react-dialog';
+import { CharacterCounter } from './content/CharacterCounter';
 
 type TNameDialogProps = {
 	dialogHeadline: string;
@@ -43,18 +44,20 @@ export function NameDialog({
 					<DialogTitle>{dialogHeadline}</DialogTitle>
 				</DialogHeader>
 				<div className="my-2">
-					<Input
-						placeholder={placeholder ?? t('placeholder')}
-						id="name"
-						className="mb-1"
-						value={name}
-						onChange={(e) => setName(e.target.value.slice(0, 40))}
-						onKeyDown={handleKeyDown}
-						maxLength={32}
-					/>
-					<div className="px-2 py-1 text-sm text-gray-500">
-						{name.length}/32 {t('characters')}
-					</div>
+					<InputGroup>
+						<InputGroupInput
+							placeholder={placeholder ?? t('placeholder')}
+							id="name"
+							value={name}
+							onChange={(e) => setName(e.target.value.slice(0, 40))}
+							onKeyDown={handleKeyDown}
+							maxLength={32}
+							className="pr-16"
+						/>
+						<InputGroupAddon align="inline-end">
+							<CharacterCounter current={name.length} max={32} />
+						</InputGroupAddon>
+					</InputGroup>
 				</div>
 				<DialogFooter>
 					<DialogClose asChild>

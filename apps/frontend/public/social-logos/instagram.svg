@@ -1,0 +1,23 @@
+<svg height="24" width="24" viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 rounded-[12px] text-current" role="img" aria-hidden="false" aria-labelledby=":r32:_title " style="clip-path: inset(0px round 12px);">
+  <title id=":r32:_title">Instagram</title>
+  <defs>
+    <radialGradient id=":r32:-b" cx="0" cy="0" r="1" gradientTransform="matrix(0 -23.7901 22.1 0 6.4 25.79)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFDD55"></stop>
+      <stop offset=".1" stop-color="#FFDD55"></stop>
+      <stop offset="0.5" stop-color="#FF543E"></stop>
+      <stop offset="1" stop-color="#C837AB"></stop>
+    </radialGradient>
+    <radialGradient id=":r32:-c" cx="0" cy="0" r="1" gradientTransform="matrix(2.06912 10.3195 -42.77621 8.57688 -3.893 1.85)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3771C8"></stop>
+      <stop offset=".128" stop-color="#3771C8"></stop>
+      <stop offset="1" stop-color="#6600ff" stop-opacity="0"></stop>
+    </radialGradient>
+    <clipPath id=":r32:-clip">
+      <path fill="#ffffff" d="M0 0h24v24H0z"></path>
+    </clipPath>
+  </defs>
+  <path fill="url(#:r32:-b)" d="M0 0h24v24H0z"></path>
+  <path fill="url(#:r32:-c)" d="M0 0h24v24H0z"></path>
+  <path fill="#ffffff" d="M12 3.14c-2.4 0-2.71 0-3.66.05a6.5 6.5 0 0 0-2.15.41c-.58.23-1.07.53-1.57 1.03-.49.49-.8.98-1.02 1.57-.22.56-.37 1.2-.41 2.15-.04.94-.05 1.24-.05 3.65 0 2.4 0 2.7.05 3.65.04.95.2 1.6.41 2.16.23.58.53 1.07 1.02 1.57.5.49.99.8 1.57 1.02.57.22 1.21.37 2.15.41.95.04 1.25.05 3.66.05 2.4 0 2.7 0 3.65-.05.94-.04 1.59-.2 2.15-.41a4.3 4.3 0 0 0 1.57-1.02c.5-.5.8-1 1.02-1.57s.37-1.21.42-2.16c.04-.94.05-1.24.05-3.65 0-2.4-.01-2.7-.05-3.65a6.6 6.6 0 0 0-.42-2.15 4.35 4.35 0 0 0-1.02-1.57c-.5-.5-.98-.8-1.57-1.03a6.5 6.5 0 0 0-2.15-.4c-.95-.05-1.25-.06-3.65-.06m-.8 1.6h.8c2.36 0 2.64 0 3.58.05a4.9 4.9 0 0 1 1.64.3c.42.16.71.35 1.02.66s.5.61.67 1.02c.12.32.26.78.3 1.65.04.93.05 1.21.05 3.58 0 2.36 0 2.64-.05 3.58a4.9 4.9 0 0 1-.3 1.64c-.16.42-.36.71-.67 1.02-.3.31-.6.5-1.02.66a4.9 4.9 0 0 1-1.64.31c-.94.04-1.22.05-3.58.05-2.37 0-2.65 0-3.58-.05a4.9 4.9 0 0 1-1.65-.3c-.41-.17-.7-.36-1.02-.67-.3-.3-.5-.6-.66-1.02a4.9 4.9 0 0 1-.3-1.64c-.05-.94-.06-1.22-.06-3.58 0-2.37.01-2.65.05-3.58a4.9 4.9 0 0 1 .3-1.65c.17-.41.36-.7.67-1.02.31-.3.6-.5 1.02-.66a4.9 4.9 0 0 1 1.65-.3c.81-.04 1.13-.05 2.78-.06zm5.53 1.47a1.06 1.06 0 1 0 0 2.12 1.06 1.06 0 0 0 0-2.12M12 7.45a4.55 4.55 0 1 0 0 9.1 4.55 4.55 0 0 0 0-9.1m0 1.6a2.95 2.95 0 1 1 0 5.9 2.95 2.95 0 0 1 0-5.9"></path>
+</svg>

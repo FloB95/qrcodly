@@ -2,13 +2,20 @@ import { env } from '@/env';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import qs from 'qs';
+import type { SupportedLanguages } from '@/i18n/routing';
+import { ApiError } from './api/ApiError';
+import type { ZodIssue } from 'zod/v3';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export function getShortUrlFromCode(code: string): string {
-	return `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${code}`;
+export function getShortUrlFromCode(code: string, short = false): string {
+	const url = `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${code}`;
+
+	if (!short) return url;
+
+	return url.replace(/^https?:\/\//, '').replace(/^www\./, '');
 }
 
 export function getPageNumbers(currentPage: number, totalPages: number) {
@@ -60,54 +67,6 @@ export const formatDate = (date: Date | string): string => {
 		minute: '2-digit',
 	}).format(new Date(date));
 };
-
-/**
- * Compares two values for deep equality.
- * @param {*} value1 - The first value to compare.
- * @param {*} value2 - The second value to compare.
- * @returns {boolean} - Returns true if the values are deeply equal, otherwise false.
- */
-function deepEqual(value1: unknown, value2: unknown): boolean {
-	// Check if both values are objects (arrays or objects)
-	if (typeof value1 === 'object' && typeof value2 === 'object') {
-		return JSON.stringify(value1) === JSON.stringify(value2);
-	}
-	// For non-objects, use strict equality
-	return value1 === value2;
-}
-
-/**
- * Computes the difference between two objects.
- * @param {Object} obj1 - The first object.
- * @param {Object} obj2 - The second object.
- * @param {Array<string>} [ignoreProperties=[]] - An array of property names to ignore.
- * @returns {Object} - An object representing the differences. Each key in the returned object
- *                     corresponds to a property that differs between obj1 and obj2, with the
- *                     old and new values.
- */
-export function objDiff(
-	obj1: Record<string, unknown>,
-	obj2: Record<string, unknown>,
-	ignoreProperties: string[] = [],
-) {
-	const diff: Record<string, { oldValue: unknown; newValue: unknown }> = {};
-
-	for (const key in obj1) {
-		// Skip the properties in the ignoreProperties array
-		if (ignoreProperties.includes(key)) {
-			continue;
-		}
-		// Compare the properties using deepEqual
-		if (!deepEqual(obj1[key], obj2[key])) {
-			diff[key] = {
-				oldValue: obj1[key],
-				newValue: obj2[key],
-			};
-		}
-	}
-
-	return diff;
-}
 
 /**
  * Converts an RGBA color string to a hexadecimal color string.
@@ -175,10 +134,15 @@ export async function apiRequest<T>(
 
 	if (!response.ok) {
 		const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
-		throw new Error(
+		throw new ApiError(
 			(errorBody?.message as string | undefined) ?? 'An error occurred while fetching data',
+			response.status,
+			errorBody.fieldErrors as ZodIssue[],
 		);
 	}
-
 	return (await response.json()) as T;
+}
+
+export function getQrCodeEditLink(lang: SupportedLanguages, qrCodeId: string) {
+	return `/${lang}/collection/qr-code/${qrCodeId}/edit`;
 }

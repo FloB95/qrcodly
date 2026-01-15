@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import { container } from 'tsyringe';
 import { EventEmitter } from '@/core/event';
 import { AbstractEventHandler } from '@/core/event/handler/abstract.event-handler';

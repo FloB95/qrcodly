@@ -29,7 +29,9 @@ export class ObjectStorage implements IFileStorage {
 			});
 			this.bucketName = env.S3_BUCKET_NAME;
 		} catch (e: any) {
-			this.logger.error('Error initializing S3 client', e);
+			this.logger.error('error.initializing.S3.client', {
+				error: e,
+			});
 		}
 	}
 
@@ -42,14 +44,21 @@ export class ObjectStorage implements IFileStorage {
 			});
 
 			if (!response.Body || !(response.Body instanceof Readable)) {
-				this.logger.warn('No readable body found in S3 response', { k });
+				this.logger.warn('No readable body found in S3 response', {
+					file: { key: k },
+				});
 				return null;
 			}
 
 			const buffer = await streamToBuffer(response.Body);
 			return buffer;
 		} catch (error: unknown) {
-			this.logger.error('Error fetching file from S3', { k, error });
+			this.logger.error('error.file.fetching', {
+				file: {
+					key: k,
+				},
+				error,
+			});
 			if (error instanceof Error) {
 				throw new S3FetchError('File fetch failed', error);
 			}
@@ -70,9 +79,20 @@ export class ObjectStorage implements IFileStorage {
 				Body: data,
 				ContentType: contentType,
 			});
-			this.logger.info('File uploaded to S3:', { k, contentType });
+			this.logger.info('file.uploaded', {
+				file: {
+					key: k,
+					contentType,
+				},
+			});
 		} catch (error: unknown) {
-			this.logger.error('Error uploading file to S3', { k, contentType, error });
+			this.logger.error('error.file.uploaded', {
+				file: {
+					key: k,
+					contentType,
+				},
+				error,
+			});
 			throw new S3UploadError('File upload failed', error as Error);
 		}
 	}
@@ -84,9 +104,14 @@ export class ObjectStorage implements IFileStorage {
 				Bucket: this.bucketName,
 				Key: k,
 			});
-			this.logger.info('File deleted from S3:', { k });
+			this.logger.info('file.deleted', {
+				file: { key: k },
+			});
 		} catch (error: unknown) {
-			this.logger.error('Error deleting file from S3', { k, error });
+			this.logger.error('error.file.deleted', {
+				file: { key: k },
+				error,
+			});
 			throw new S3DeleteError('File deletion failed', error as Error);
 		}
 	}
@@ -126,7 +151,7 @@ export class ObjectStorage implements IFileStorage {
 			const url = await getSignedUrl(this.s3Client, command, { expiresIn });
 			return url;
 		} catch (error: unknown) {
-			this.logger.error('Error generating signed URL', { k, error });
+			this.logger.error('error.generating.signed.url', { file: { key: k }, error });
 			throw new S3SignedUrlError('Signed URL generation failed', error as Error);
 		}
 	}

@@ -1,14 +1,13 @@
-import { Delete, Get, Post } from '@/core/decorators/route';
+import { Delete, Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
-import type { IHttpRequestWithAuth } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
-import ConfigTemplateRepository from '../../domain/repository/config-template.repository';
 import { DeleteConfigTemplateUseCase } from '../../useCase/delete-config-template.use-case';
 import { CreateConfigTemplateUseCase } from '../../useCase/create-config-template.use-case';
-import { ConfigTemplateNotFoundError } from '../../error/http/config-template-not-found.error';
-import { UnauthorizedError } from '@/core/error/http';
-import { type IHttpResponse } from '@/core/interface/response.interface';
 import { ListConfigTemplatesUseCase } from '../../useCase/list-config-templates.use-case';
+import { UpdateConfigTemplateUseCase } from '../../useCase/update-config-template.use-case';
+import { ConfigTemplateNotFoundError } from '../../error/http/config-template-not-found.error';
+import { ForbiddenError } from '@/core/error/http';
+import { type IHttpResponse } from '@/core/interface/response.interface';
 import {
 	ConfigTemplatePaginatedResponseDto,
 	ConfigTemplateResponseDto,
@@ -19,25 +18,49 @@ import {
 	TCreateConfigTemplateDto,
 	TGetConfigTemplateQueryParamsDto,
 	TIdRequestQueryDto,
+	TUpdateConfigTemplateDto,
+	UpdateConfigTemplateDto,
 } from '@shared/schemas';
+import { GetConfigTemplateUseCase } from '../../useCase/get-config-template.use-case';
+import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
+import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
+import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
+import { type IHttpRequest } from '@/core/interface/request.interface';
 
 @injectable()
 export class ConfigTemplateController extends AbstractController {
 	constructor(
+		@inject(GetConfigTemplateUseCase)
+		private readonly getConfigTemplateUseCase: GetConfigTemplateUseCase,
 		@inject(ListConfigTemplatesUseCase)
-		private listConfigTemplatesUseCase: ListConfigTemplatesUseCase,
+		private readonly listConfigTemplatesUseCase: ListConfigTemplatesUseCase,
 		@inject(CreateConfigTemplateUseCase)
-		private createConfigTemplateUseCase: CreateConfigTemplateUseCase,
+		private readonly createConfigTemplateUseCase: CreateConfigTemplateUseCase,
+		@inject(UpdateConfigTemplateUseCase)
+		private readonly updateConfigTemplateUseCase: UpdateConfigTemplateUseCase,
 		@inject(DeleteConfigTemplateUseCase)
-		private deleteConfigTemplateUseCase: DeleteConfigTemplateUseCase,
-		@inject(ConfigTemplateRepository) private configTemplateRepository: ConfigTemplateRepository,
+		private readonly deleteConfigTemplateUseCase: DeleteConfigTemplateUseCase,
 	) {
 		super();
 	}
 
-	@Get('', { querySchema: GetConfigTemplateQueryParamsDto })
+	@Get('', {
+		querySchema: GetConfigTemplateQueryParamsDto,
+		responseSchema: {
+			200: ConfigTemplatePaginatedResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			summary: 'List Templates',
+			description:
+				'Fetches a paginated list of templates created by the authenticated user. Supports filtering via query parameters and returns pagination info including page, limit, total count, and template data.',
+			operationId: 'template/list-templates',
+		},
+	})
 	async list(
-		request: IHttpRequestWithAuth<unknown, unknown, TGetConfigTemplateQueryParamsDto>,
+		request: IHttpRequest<unknown, unknown, TGetConfigTemplateQueryParamsDto>,
 	): Promise<IHttpResponse<TConfigTemplatePaginatedResponseDto>> {
 		const { page, limit, where } = request.query;
 		const { configTemplates, total } = await this.listConfigTemplatesUseCase.execute({
@@ -63,7 +86,16 @@ export class ConfigTemplateController extends AbstractController {
 	}
 
 	@Get('/predefined', {
-		skipAuth: true,
+		authHandler: false,
+		responseSchema: {
+			200: ConfigTemplatePaginatedResponseDto,
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			summary: 'List Predefined Templates',
+			description: 'Fetches a paginated list of predefined templates available for all users.',
+			operationId: 'template/list-predefined-templates',
+		},
 	})
 	async getPredefined(): Promise<IHttpResponse<TConfigTemplatePaginatedResponseDto>> {
 		const page = 1;
@@ -91,14 +123,23 @@ export class ConfigTemplateController extends AbstractController {
 
 	@Post('', {
 		bodySchema: CreateConfigTemplateDto,
+		responseSchema: {
+			200: ConfigTemplateResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
 		config: {
-			rateLimit: {
-				max: 5,
-			},
+			rateLimitPolicy: RateLimitPolicy.TEMPLATE_CREATE,
+		},
+		schema: {
+			summary: 'Create a new template',
+			description: 'Creates a new template based on the provided data.',
+			operationId: 'template/create-template',
 		},
 	})
 	async create(
-		request: IHttpRequestWithAuth<TCreateConfigTemplateDto>,
+		request: IHttpRequest<TCreateConfigTemplateDto>,
 	): Promise<IHttpResponse<TConfigTemplateResponseDto>> {
 		// user can be logged in or not
 
@@ -109,35 +150,100 @@ export class ConfigTemplateController extends AbstractController {
 		return this.makeApiHttpResponse(201, ConfigTemplateResponseDto.parse(configTemplate));
 	}
 
-	@Get('/:id')
+	@Get('/:id', {
+		responseSchema: {
+			200: ConfigTemplateResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			description: 'Get Template by ID',
+			summary: 'Get Template',
+			operationId: 'template/get-template-by-id',
+		},
+	})
 	async getOneById(
-		request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>,
+		request: IHttpRequest<unknown, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TConfigTemplateResponseDto>> {
 		const { id } = request.params;
 
-		const configTemplate = await this.configTemplateRepository.findOneById(id);
+		const configTemplate = await this.getConfigTemplateUseCase.execute(id, true);
 		if (!configTemplate) {
 			throw new ConfigTemplateNotFoundError();
 		}
 
 		if (configTemplate.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
 		}
 
 		return this.makeApiHttpResponse(200, ConfigTemplateResponseDto.parse(configTemplate));
 	}
 
-	@Delete('/:id')
-	async deleteOneById(request: IHttpRequestWithAuth<unknown, TIdRequestQueryDto>) {
+	@Patch('/:id', {
+		bodySchema: UpdateConfigTemplateDto,
+		responseSchema: {
+			200: ConfigTemplateResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			description: 'Update Template by ID',
+			summary: 'Update Template',
+			operationId: 'template/update-template-by-id',
+		},
+	})
+	async update(
+		request: IHttpRequest<TUpdateConfigTemplateDto, TIdRequestQueryDto>,
+	): Promise<IHttpResponse<TConfigTemplateResponseDto>> {
 		const { id } = request.params;
 
-		const configTemplate = await this.configTemplateRepository.findOneById(id);
+		const configTemplate = await this.getConfigTemplateUseCase.execute(id);
 		if (!configTemplate) {
 			throw new ConfigTemplateNotFoundError();
 		}
 
 		if (configTemplate.createdBy !== request.user.id) {
-			throw new UnauthorizedError();
+			throw new ForbiddenError();
+		}
+
+		const updatedTemplate = await this.updateConfigTemplateUseCase.execute(
+			configTemplate,
+			request.body,
+			request.user.id,
+		);
+
+		return this.makeApiHttpResponse(200, ConfigTemplateResponseDto.parse(updatedTemplate));
+	}
+
+	@Delete('/:id', {
+		responseSchema: {
+			200: DeleteResponseSchema,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			description: 'Delete Template by ID',
+			summary: 'Delete Template',
+			operationId: 'template/delete-template-id',
+		},
+	})
+	async deleteOneById(request: IHttpRequest<unknown, TIdRequestQueryDto>) {
+		const { id } = request.params;
+
+		const configTemplate = await this.getConfigTemplateUseCase.execute(id);
+		if (!configTemplate) {
+			throw new ConfigTemplateNotFoundError();
+		}
+
+		if (configTemplate.createdBy !== request.user.id) {
+			throw new ForbiddenError();
 		}
 
 		await this.deleteConfigTemplateUseCase.execute(configTemplate, request.user.id);

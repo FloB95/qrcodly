@@ -4,27 +4,63 @@
 		"noName": "No name",
 		"changesSaved": "Changes saved",
 		"back": "Back",
+		"toCollection": "To Collection",
+		"backToOverview": "Back to collection",
 		"share": "Share",
 		"view": "View",
 		"edit": "Edit",
 		"delete": "Delete",
 		"notProvided": "Not provided",
 		"addName": "Add a name",
-		"days": "Days"
+		"days": "Days",
+		"changelogTooltip": "Latest updates",
+		"changelogSubheading": "Here you can find the latest updates and improvements of QRcodly.",
+		"newBadge": "New!",
+		"dynamicDescription": "Dynamic QR codes can be edited after creation, track every scan, and provide detailed statistics – all without needing to reprint the code.",
+		"dynamicBadgeTooltip": "Enables changing content later without a new QR code. <i>Hover for more info</i>"
 	},
-	"headline": "<span class=\"text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
+	"headline": "<span class=\"text-xl xs:text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
+	"hero": {
+		"badge": "Open Source & Free Forever",
+		"title": "QR Code Generator Without Limits",
+		"subtitle": "Generate unlimited static and dynamic QR codes for free. No hidden fees, no restrictions, no premium tiers. Just powerful QR code creation.",
+		"benefits": {
+			"unlimited": "Unlimited QR Codes",
+			"noSignup": "Free Dynamic QR Codes",
+			"noWatermark": "No Watermarks"
+		}
+	},
 	"metadata": {
-		"title": "QRcodly - Free QR Code Generator",
-		"description": "Create free QR codes with logo, custom design or templates – perfect for marketing, business cards & more. Use the QR Code Generator now!",
-		"keywords": "free QR code generator, QR code creator, generate QR codes, custom QR code maker"
+		"title": "Free QR Code Generator - Create Custom QR Codes Online | QRcodly",
+		"description": "Generate free QR codes online with custom designs, logos & templates. Create dynamic QR codes for URLs, WiFi, vCards, events & more. Track scans with analytics. No signup required!",
+		"keywords": "QR code generator, free QR code, QR code maker, create QR code, QR code with logo, custom QR code, dynamic QR code, QR code generator free, online QR code generator, QR code creator, WiFi QR code, vCard QR code, QR code analytics, bulk QR code generator",
+		"structuredData": {
+			"description": "Free online QR code generator with custom designs, logos, and templates. Create dynamic QR codes for URLs, WiFi, vCards, and more.",
+			"features": [
+				"Free QR Code Generator",
+				"Custom QR Code Design",
+				"QR Code with Logo",
+				"Dynamic QR Codes",
+				"QR Code Analytics",
+				"Bulk QR Code Creation",
+				"QR Code Templates",
+				"WiFi QR Codes",
+				"vCard QR Codes",
+				"URL QR Codes"
+			]
+		}
 	},
 	"doc": {
 		"title": "Documentation Under Update",
 		"description": "We're currently working on updating this section to better serve you. Please check back soon!"
 	},
 	"collection": {
-		"headline": "QR Code Overview in Development",
-		"subHeadline": "Some features are not available yet and will be added in future updates."
+		"headline": "Your Collection",
+		"subHeadline": "Here you can find all your QR codes and templates and manage them.",
+		"tabQrCode": "QR codes",
+		"tabTemplates": "Templates",
+		"addQrCodeBtn": "Add QR code",
+		"bulkImportLabel": "Select Content Type"
 	},
 	"analytics": {
 		"totalViews": "Total Views",
@@ -51,7 +87,7 @@
 		"signInBtn": "Sign In"
 	},
 	"footer": {
-		"qrCodeCopyright": "QR Code is a registered trademark of DENSO WAVE INCORPORATED",
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED",
 		"legalNotice": "Legal Notice",
 		"privacyPolicy": "Privacy Policy"
 	},
@@ -78,15 +114,15 @@
 			"subHeadline": "With QRcodly you can create, edit, manage, and analyze QR codes – all in one place.",
 			"emailBtn": "Email us",
 			"editFeature": {
-				"headline": "Edit QR Codes Anytime",
+				"headline": "Edit QR codes Anytime",
 				"subHeadline": "Create QR codes for free and change the destination URL even after printing."
 			},
 			"statisticFeature": {
-				"headline": "Detailed Real-Time QR Code Analytics",
+				"headline": "Detailed Real-Time QR code Analytics",
 				"subHeadline": "Track how often and where your QR codes are scanned – in real time."
 			},
 			"overviewFeature": {
-				"headline": "Organized QR Code Collection",
+				"headline": "Organized QR code Collection",
 				"subHeadline": "Keep all your generated QR codes in one central, easy-to-manage location."
 			},
 			"templateFeature": {
@@ -96,6 +132,10 @@
 			"teamFeature": {
 				"headline": "Collaborate in Teams",
 				"subHeadline": "Invite team members and work together on QR codes. Perfect for companies, agencies, and teams."
+			},
+			"secureFeature": {
+				"headline": "Your data stays with us",
+				"subHeadline": "Qrcodly hosts all data locally in Germany – no sharing with external services. Only for authentication, we use Clerk."
 			}
 		}
 	},
@@ -108,23 +148,25 @@
 		}
 	},
 	"qrCodeDisabled": {
-		"title": "QR Code Disabled",
+		"title": "QR code Disabled",
 		"description": "Sorry, this QR code is no longer active. The destination it pointed to is unavailable.",
 		"note": "If you believe this is a mistake, please contact the owner of the QR code or try again later.",
 		"button": "Go Back Home"
 	},
 	"qrCode": {
 		"storeBtn": "Save in Collection",
+		"updateBtn": "Update QR code",
 		"error": {
 			"delete": {
-				"title": "Error Deleting QR Code",
+				"title": "Error Deleting QR code",
 				"message": "There was an error deleting your QR code. We've been notified and will fix it as soon as possible."
 			},
 			"update": {
-				"title": "Error Updating QR Code",
+				"title": "Error Updating QR code",
 				"message": "There was an error updating your QR code. We've been notified and will fix it as soon as possible."
 			},
-			"noFound": "No QR codes found"
+			"noFound": "No QR codes found",
+			"noFoundDescription": "You haven't created any QR codes yet. Start creating QR codes now."
 		},
 		"confirmDeletePopup": {
 			"title": "Confirm Deletion",
@@ -137,27 +179,44 @@
 			"description": "We are deleting your QR code."
 		},
 		"updateQrCodeName": {
-			"title": "Update QR Code Name",
+			"title": "Update QR code Name",
 			"placeholder": "Enter a name"
+		},
+		"update": {
+			"headline": "Update QR code",
+			"successTitle": "QR code updated",
+			"successDescription": "Your QR code has been successfully updated.",
+			"errorTitle": "Error updating QR code",
+			"errorDescription": "An error occurred while updating your QR code. We have been notified and will fix the issue as soon as possible.",
+			"infoDialog": {
+				"dialogHeadline": "Note on updating a QR code",
+				"dialogDescription": "Only dynamic QR codes keep the same appearance after editing. For static QR codes, a new code is generated, so already printed versions will no longer be up to date.",
+				"doNotShowAgain": "Do not show this message again.",
+				"cancelBtn": "Cancel",
+				"understandBtn": "Understood"
+			}
 		},
 		"updateQrCodeUrl": "Update your URL",
 		"actionsMenu": {
 			"title": "Actions",
 			"view": "View",
+			"edit": "Edit",
 			"delete": "Delete",
 			"disableShortUrl": "Disable",
 			"enableShortUrl": "Enable"
 		},
 		"download": {
-			"successTitle": "New QR Code Created",
-			"successDescription": "We saved your QR Code in your collection for later use.",
+			"successTitle": "New QR code Created",
+			"successDescription": "We saved your QR code in your collection for later use.",
 			"downloadBtn": "Download",
-			"errorTitle": "Error saving QR Code"
+			"vcfFile": "VCF File",
+			"icsFile": "ICS File",
+			"errorTitle": "Error saving QR code"
 		},
 		"saveInfo": "Save the current QR code in your collection for later use.",
 		"savePopup": {
-			"title": "Save Current QR Code",
-			"placeholder": "QR Code Name"
+			"title": "Save Current QR code",
+			"placeholder": "QR code Name"
 		}
 	},
 	"loginDialog": {
@@ -189,10 +248,22 @@
 		"templateCreatedErrorTitle": "Error Creating Template",
 		"templateCreatedErrorDescription": "There was an error creating your template. We've been notified and will fix it as soon as possible.",
 		"saveAsBtn": "Save as template",
+		"updateBtn": "Update Template",
 		"saveInfo": "Save the current QR code style as a reusable template.",
 		"savePopup": {
 			"title": "Save current styles as a template",
 			"placeholder": "Template Name"
+		},
+		"update": {
+			"headline": "Update Template",
+			"successTitle": "Template Updated",
+			"successDescription": "Your template has been successfully updated.",
+			"errorTitle": "Error Updating Template",
+			"errorDescription": "An error occurred while updating your template. Please check your input and try again.",
+			"updateName": {
+				"title": "Rename Template",
+				"placeholder": "Enter a new name"
+			}
 		},
 		"delete": {
 			"beingDeleted": "Template is being deleted",
@@ -206,13 +277,41 @@
 			"description2": "This action cannot be undone.",
 			"confirmBtn": "Delete",
 			"cancelBtn": "Cancel"
+		},
+		"actionsMenu": {
+			"qrCodeFromTemplate": "QR code from Template"
 		}
 	},
 	"generator": {
+		"labelName": "Name",
 		"tabs": {
 			"content": "Content",
 			"style": "Style",
 			"templates": "Templates"
+		},
+		"bulkImport": {
+			"title": "Create multiple {contentType} QR codes",
+			"successTitle": "Import successful",
+			"successDescription": "All your QR codes have been successfully imported.",
+			"errorTitle": "Import failed",
+			"step1": {
+				"title": "1. Style QR code",
+				"description": "Style your QR code or choose a template."
+			},
+			"step2": {
+				"title": "2. Download CSV Template ({contentType})",
+				"description": "Download the {contentType} CSV template and enter your data.",
+				"button": "Download"
+			},
+			"step3": {
+				"title": "3. Upload Template",
+				"description": "Upload the completed CSV file here."
+			},
+			"info": {
+				"title": "Observe limits",
+				"description": "You can create up to 15 QR codes at once with the CSV file. For more, you need the Pro plan."
+			},
+			"createButton": "Create QR codes"
 		},
 		"settingsForm": {
 			"tabGeneral": "General",
@@ -254,17 +353,24 @@
 			"clearBtn": "Clear Icon"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEXT",
-			"tabWifi": "WIFI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEXT",
+				"wifi": "WIFI",
+				"vCard": "VCARD",
+				"email": "EMAIL",
+				"location": "LOCATION",
+				"event": "EVENT",
+				"socials": "SOCIALS"
+			},
+			"cancel": "Cancel",
+			"bulkModeBtn": "CSV Bulk Creation",
 			"text": {
 				"placeholder": "Enter your text here"
 			},
 			"url": {
 				"placeholder": "Enter URL https://example.com/",
-				"enableEditing": "Enable Statistics and Editing",
-				"newBadge": "New!"
+				"enableEditing": "Enable Statistics and Editing"
 			},
 			"wifi": {
 				"network": {
@@ -335,6 +441,142 @@
 					"label": "Website",
 					"placeholder": "Enter your website URL"
 				}
+			},
+			"email": {
+				"email": {
+					"label": "Email address",
+					"placeholder": "Enter an email address"
+				},
+				"subject": {
+					"label": "Subject",
+					"placeholder": "Optional subject"
+				},
+				"body": {
+					"label": "Message",
+					"placeholder": "Optional message"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Address",
+					"placeholder": "Search for an address or place"
+				},
+				"latitude": {
+					"label": "Latitude"
+				},
+				"longitude": {
+					"label": "Longitude"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Title",
+					"placeholder": "Event name"
+				},
+				"summary": {
+					"label": "Summary",
+					"placeholder": "Optional summary"
+				},
+				"description": {
+					"label": "Description",
+					"placeholder": "Optional description"
+				},
+				"location": {
+					"label": "Location",
+					"placeholder": "Event location"
+				},
+				"url": {
+					"label": "Url",
+					"placeholder": "Optional URL"
+				},
+				"startDate": {
+					"label": "Start date"
+				},
+				"endDate": {
+					"label": "End date"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Title",
+					"placeholder": "e.g. Follow me"
+				},
+				"link": {
+					"placeholder": "Profile or website URL",
+					"add": "Add link",
+					"remove": "Remove"
+				}
+			}
+		},
+		"preview": {
+			"button": "Open Preview",
+			"title": "QR Code Background Preview",
+			"selectTitle": "Select Background",
+			"selectDescription": "Test how your QR code looks on different backgrounds before printing or sharing.",
+			"selectBackground": "Select a background to preview your QR code",
+			"changeBackground": "Change Background",
+			"close": "Close",
+			"predefined": {
+				"title": "Examples",
+				"businessCards": "Business Cards",
+				"brochures": "Brochures",
+				"posters": "Posters",
+				"packaging": "Packaging",
+				"websites": "Websites",
+				"socialMedia": "Social Media"
+			},
+			"website": {
+				"title": "Website",
+				"inputLabel": "Website URL",
+				"inputPlaceholder": "Enter URL (e.g., https://example.com)",
+				"previewButton": "Preview Website",
+				"loadingIframe": "Loading website...",
+				"loadingScreenshot": "Capturing screenshot...",
+				"capturingPreview": "Capturing preview...",
+				"info": "Enter any website URL to use as a background for your QR code",
+				"errors": {
+					"invalidUrl": "Please enter a valid URL starting with http:// or https://",
+					"loadFailed": "Failed to load website. Please try again.",
+					"captureFailed": "Failed to capture website. This website may not allow embedding.",
+					"screenshotFailed": "Failed to capture screenshot. The screenshot service may be unavailable or the URL is invalid.",
+					"networkError": "Network error. Please check your connection."
+				},
+				"retry": "Retry"
+			},
+			"camera": {
+				"title": "Camera",
+				"capture": "Capture Frame",
+				"loading": "Initializing camera...",
+				"retry": "Retry Camera Access",
+				"error": {
+					"title": "Camera Error"
+				}
+			},
+			"upload": {
+				"title": "Upload",
+				"dragDrop": "Drag and drop an image here",
+				"orClick": "or click to browse",
+				"formats": "JPG, PNG, WEBP (max 5MB)"
+			},
+			"contrast": {
+				"ratio": "Ratio",
+				"excellent": {
+					"title": "Excellent Visibility"
+				},
+				"good": {
+					"title": "Good Visibility"
+				},
+				"poor": {
+					"title": "Poor Visibility"
+				},
+				"critical": {
+					"title": "Critical - May Not Scan"
+				}
+			},
+			"controls": {
+				"reset": "Reset Position",
+				"resize": "Drag corner to resize",
+				"move": "Drag to reposition · Drag corner to resize"
 			}
 		}
 	},
@@ -347,25 +589,37 @@
 	},
 	"faq": {
 		"headline": "Frequently Asked Questions",
-		"question1": "What is a QR Code?",
-		"answer1": "A QR Code (Quick Response Code) is a smart, two-dimensional barcode that can store various types of information, such as website links, text, or contact details. It can be easily captured and deciphered using a smartphone or a dedicated scanner.",
-		"question2": "How do I create a QR Code?",
-		"answer2": "With qrcodly.de, you can create your custom QR Code in no time: simply enter the desired content and download your freshly generated code directly. Quick and straightforward!",
-		"question3": "What is the difference between static and dynamic QR Codes?",
-		"answer3": "Static QR Codes contain fixed information that cannot be changed after creation. Dynamic QR Codes, on the other hand, offer maximum flexibility: you can adjust the linked content at any time after creation and also benefit from advanced features like detailed scan statistics.",
-		"question4": "Is creating QR Codes free?",
+		"question1": "What is a QR code?",
+		"answer1": "A QR code (Quick Response Code) is a smart, two-dimensional barcode that can store various types of information, such as website links, text, or contact details. It can be easily captured and deciphered using a smartphone or a dedicated scanner.",
+		"question2": "How do I create a QR code?",
+		"answer2": "With qrcodly.de, you can create your custom QR code in no time: simply enter the desired content and download your freshly generated code directly. Quick and straightforward!",
+		"question3": "What is the difference between static and dynamic QR codes?",
+		"answer3": "Static QR codes contain fixed information that cannot be changed after creation. Dynamic QR codes, on the other hand, offer maximum flexibility: you can adjust the linked content at any time after creation and also benefit from advanced features like detailed scan statistics.",
+		"question4": "Is creating QR codes free?",
 		"answer4": "Yes, the generation of both static and dynamic QR codes is and will remain free forever, as many as you want. In the future, there will be limitations for API requests and for businesses working with multiple users.",
-		"question5": "How long is a QR Code valid?",
-		"answer5": "Static QR Codes do not expire and remain permanently valid as long as the linked content is accessible online. Dynamic QR Codes remain active as long as they are managed in our system and no specific restrictions apply from the provider.",
-		"question6": "What are the advantages of dynamic QR Codes?",
-		"answer6": "Dynamic QR Codes offer unparalleled flexibility, as you can adjust their content even after printing. They also enable precise scan statistics, providing insights into location, time, and device used, allowing you to optimize your campaigns effectively.",
-		"question7": "Do I need a special app to scan QR Codes?",
-		"answer7": "No, in most cases, it's not necessary! The integrated camera function of modern smartphones can now directly recognize QR Codes and open the embedded content – no additional app required.",
-		"question8": "Which statistics are collected for dynamic QR Codes?",
-		"answer8": "When you enable statistics, each scan of your dynamic QR Code records and analyzes information such as the number of scans, visitors, devices used, countries, browsers, and operating systems.",
-		"question9": "Can I personalize a QR Code with my logo?",
-		"answer9": "Yes, with qrcodly.de, you can design your QR Codes exactly to your liking: integrate your logo and use your brand colors without affecting scanability. This way, your codes remain unique and professional!",
-		"question10": "Do QR Codes also work in print?",
-		"answer10": "Absolutely! QR Codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!"
+		"question5": "How long is a QR code valid?",
+		"answer5": "Static QR codes do not expire and remain permanently valid as long as the linked content is accessible online. Dynamic QR codes remain active as long as they are managed in our system and no specific restrictions apply from the provider.",
+		"question6": "What are the benefits of dynamic QR codes?",
+		"answer6": "Dynamic QR codes are marked with the Dynamic badge. They can be updated at any time, even after being created or printed. They also provide useful scan statistics – such as location, time, and devices used – so you can analyze and optimize your campaigns effectively.",
+		"question7": "Do I need a special app to scan QR codes?",
+		"answer7": "No, in most cases, it's not necessary! The integrated camera function of modern smartphones can now directly recognize QR codes and open the embedded content – no additional app required.",
+		"question8": "Which statistics are collected for dynamic QR codes?",
+		"answer8": "When you enable statistics, each scan of your dynamic QR code records and analyzes information such as the number of scans, visitors, devices used, countries, browsers, and operating systems.",
+		"question9": "Can I personalize a QR code with my logo?",
+		"answer9": "Yes, with qrcodly.de, you can design your QR codes exactly to your liking: integrate your logo and use your brand colors without affecting scanability. This way, your codes remain unique and professional!",
+		"question10": "Do QR codes also work in print?",
+		"answer10": "Absolutely! QR codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
+		"question11": "Where is my data hosted?",
+		"answer11": "All data at Qrcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication."
+	},
+	"fileUpload": {
+		"maxFiles": "Maximum {maxFiles} files allowed",
+		"invalidType": "File type not accepted",
+		"tooLarge": "File too large",
+		"uploadZone": {
+			"dragDrop": "Drag & drop files here",
+			"or": "Or click to browse (max 1 file)",
+			"browse": "Browse files"
+		}
 	}
 }

@@ -41,7 +41,7 @@ export class UmamiAnalyticsService {
 
 			if (!response.ok) {
 				const errorBody = await response.text();
-				this.logger.error(`Umami API Error ${response.status}: ${errorBody}`, {
+				this.logger.error(`error.umamiApi.fetchToken`, {
 					status: response.status,
 					body: errorBody,
 				});
@@ -52,7 +52,7 @@ export class UmamiAnalyticsService {
 			this.umamiAuthToken = data.token;
 			return data.token;
 		} catch (error) {
-			this.logger.error('Error fetching auth token from Umami API', { error });
+			this.logger.error('error.umamiApi.fetchToken', { error });
 			throw error;
 		}
 	}
@@ -73,7 +73,7 @@ export class UmamiAnalyticsService {
 
 			if (!response.ok) {
 				const errorBody = await response.text();
-				this.logger.error(`Umami API Error ${response.status}: ${errorBody}`, {
+				this.logger.error(`error.umamiApi.fetchData`, {
 					status: response.status,
 					body: errorBody,
 				});
@@ -82,7 +82,7 @@ export class UmamiAnalyticsService {
 
 			return response.json();
 		} catch (error) {
-			this.logger.error('Error fetching data from Umami API', { error });
+			this.logger.error('error.umamiApi.fetchData', { error });
 			throw error;
 		}
 	}
@@ -132,12 +132,16 @@ export class UmamiAnalyticsService {
 			startAt: new Date('2023-04-20T00:00:00Z').getTime(), // old start date to get all data
 			endAt: now,
 			unit: 'day',
-			url: url,
+			path: url,
 			compare: 'false',
 			timezone: 'Europe/Berlin',
 		};
 		interface WebsiteStats {
-			pageviews?: { value: number };
+			pageviews: number;
+			visitors: number;
+			visits: number;
+			bounces: number;
+			totaltime: number;
 		}
 
 		const websiteStats = (await this.fetchUmamiData(
@@ -145,7 +149,7 @@ export class UmamiAnalyticsService {
 			defaultParams,
 		)) as WebsiteStats;
 
-		return websiteStats?.pageviews?.value ?? 0;
+		return websiteStats?.pageviews ?? 0;
 	}
 
 	public async getAnalyticsForEndpoint(url: string): Promise<TAnalyticsResponseDto> {
@@ -154,7 +158,7 @@ export class UmamiAnalyticsService {
 			startAt: new Date('2025-01-01T00:00:00Z').getTime(), // old start date to get all data
 			endAt: now,
 			unit: 'day',
-			url: url,
+			path: url,
 			timezone: 'Europe/Berlin',
 		};
 

@@ -1,6 +1,10 @@
 'use client';
 
+import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { TrashIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import type { TQrCodeOptions, TColorOrGradient } from '@shared/schemas';
 import {
 	Form,
 	FormControl,
@@ -18,30 +22,37 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ColorPicker } from './ColorPicker';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
-import IconPicker from './IconPicker';
-import type { TQrCodeOptions } from '@shared/schemas';
-import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { Button } from '@/components/ui/button';
-import { TrashIcon } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
+import { ColorPicker } from './ColorPicker';
+import IconPicker from './IconPicker';
+import { useToast } from '@/components/ui/use-toast';
+
+// Constants
+const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
+const ACCEPTED_FILE_TYPES = '.jpg,.jpeg,.png,.svg,.webp';
+const SIZE_CONFIG = {
+	MIN: 300,
+	MAX: 2000,
+	STEP: 25,
+} as const;
+const MARGIN_CONFIG = {
+	MIN: 0,
+	MAX: 10,
+	STEP: 1,
+} as const;
 
 export const SettingsForm = () => {
 	const t = useTranslations('generator.settingsForm');
+	const { toast } = useToast();
 	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
 
-	console.log('SettingsForm config:', config);
-	const handleIconSelect = (iconName?: string) => {
-		config.image = iconName;
-		updateConfig(config);
-		form.setValue('image', iconName ?? '');
-	};
-
-	const form = useForm<TQrCodeOptions>({
-		defaultValues: {
+	// Memoize default values to prevent unnecessary re-renders
+	const defaultValues = useMemo<TQrCodeOptions>(
+		() => ({
 			width: config.width,
 			height: config.height,
 			margin: config.margin,
@@ -63,44 +74,133 @@ export const SettingsForm = () => {
 			imageOptions: {
 				hideBackgroundDots: config.imageOptions?.hideBackgroundDots ?? true,
 			},
-		},
+		}),
+		[config],
+	);
+
+	const form = useForm<TQrCodeOptions>({
+		defaultValues,
 	});
 
-	const handleChange = (data: TQrCodeOptions) => {
-		config.width = Number(data.width);
-		config.height = Number(data.height);
-		config.margin = (config.width / 100) * data.margin;
+	// Memoized handler to update config immutably
+	const handleChange = useCallback(
+		(data: TQrCodeOptions) => {
+			const updatedConfig = {
+				...config,
+				width: Number(data.width),
+				height: Number(data.height),
+				margin: (Number(data.width) / 100) * data.margin,
+				dotsOptions: {
+					type: data.dotsOptions.type,
+					style: data.dotsOptions.style,
+				},
+				cornersSquareOptions: {
+					type: data.cornersSquareOptions.type,
+					style: data.cornersSquareOptions.style,
+				},
+				cornersDotOptions: {
+					type: data.cornersDotOptions.type,
+					style: data.cornersDotOptions.style,
+				},
+				backgroundOptions: {
+					style: data.backgroundOptions.style,
+				},
+				imageOptions: {
+					hideBackgroundDots: data.imageOptions.hideBackgroundDots,
+				},
+			};
+			updateConfig(updatedConfig);
+		},
+		[config, updateConfig],
+	);
 
-		config.dotsOptions = {
-			type: data.dotsOptions.type,
-			style: data.dotsOptions.style,
+	// Memoized icon selection handler
+	const handleIconSelect = useCallback(
+		(iconName?: string) => {
+			const updatedConfig = {
+				...config,
+				image: iconName,
+			};
+			updateConfig(updatedConfig);
+			form.setValue('image', iconName ?? '');
+		},
+		[config, updateConfig, form],
+	);
+
+	// Memoized icon removal handler
+	const handleRemoveIcon = useCallback(() => {
+		const updatedConfig = {
+			...config,
+			image: '',
 		};
+		updateConfig(updatedConfig);
+	}, [config, updateConfig]);
 
-		config.cornersSquareOptions = {
-			type: data.cornersSquareOptions.type,
-			style: data.cornersSquareOptions.style,
-		};
+	// Memoized file upload handler with proper error handling
+	const handleFileUpload = useCallback(
+		(event: React.ChangeEvent<HTMLInputElement>) => {
+			const file = event.target.files?.[0];
+			if (!file) return;
 
-		config.cornersDotOptions = {
-			type: data.cornersDotOptions.type,
-			style: data.cornersDotOptions.style,
-		};
+			// Validate file size
+			if (file.size > MAX_FILE_SIZE) {
+				toast({
+					variant: 'destructive',
+					title: t('errorToLargeFile'),
+				});
+				event.target.value = '';
+				return;
+			}
 
-		config.backgroundOptions = {
-			style: data.backgroundOptions.style,
-		};
+			const reader = new FileReader();
 
-		config.imageOptions = {
-			hideBackgroundDots: data.imageOptions.hideBackgroundDots,
-		};
+			reader.onload = () => {
+				const base64 = reader.result as string;
+				const updatedConfig = {
+					...config,
+					image: base64,
+				};
+				updateConfig(updatedConfig);
+			};
 
-		updateConfig(config);
-	};
+			reader.onerror = () => {
+				toast({
+					variant: 'destructive',
+					title: 'Failed to read file',
+				});
+				event.target.value = '';
+			};
+
+			reader.readAsDataURL(file);
+		},
+		[config, updateConfig, t, toast],
+	);
+
+	// Memoized size change handler
+	const handleSizeChange = useCallback(
+		(value: number[]) => {
+			const newSize = value[0];
+			if (newSize !== undefined) {
+				form.setValue('width', newSize);
+				form.setValue('height', newSize);
+			}
+		},
+		[form],
+	);
+
+	// Memoized color change handler factory
+	const createColorChangeHandler = useCallback(
+		(fieldOnChange: (value: TColorOrGradient) => void) => (color: TColorOrGradient) => {
+			fieldOnChange(color);
+			handleChange(form.getValues());
+		},
+		[form, handleChange],
+	);
 
 	return (
 		<Form {...form}>
 			<form onChange={form.handleSubmit(handleChange)} className="space-y-6 xl:w-2/3">
-				<Tabs defaultValue={'general'} className="w-full">
+				<Tabs defaultValue="general" className="w-full">
 					<TabsList className="mb-4 w-full">
 						<TabsTrigger className="flex-1" value="general">
 							{t('tabGeneral')}
@@ -118,21 +218,17 @@ export const SettingsForm = () => {
 							<FormField
 								control={form.control}
 								name="width"
-								render={() => (
+								render={({ field }) => (
 									<FormItem>
 										<FormLabel>{t('sizeLabel')}</FormLabel>
 										<FormControl>
 											<Slider
-												name="width"
 												className="cursor-pointer"
-												value={[form.getValues('width')]}
-												max={2000}
-												min={300}
-												step={25}
-												onValueChange={(e: unknown) => {
-													form.setValue('width', e as number);
-													form.setValue('height', e as number);
-												}}
+												value={[field.value]}
+												max={SIZE_CONFIG.MAX}
+												min={SIZE_CONFIG.MIN}
+												step={SIZE_CONFIG.STEP}
+												onValueChange={handleSizeChange}
 											/>
 										</FormControl>
 										<FormDescription className="pt-1 text-center">
@@ -142,6 +238,7 @@ export const SettingsForm = () => {
 									</FormItem>
 								)}
 							/>
+
 							<FormField
 								control={form.control}
 								name="margin"
@@ -150,12 +247,11 @@ export const SettingsForm = () => {
 										<FormLabel>{t('borderSpacingLabel')}</FormLabel>
 										<FormControl>
 											<Slider
-												name="margin"
 												className="cursor-pointer"
 												value={[field.value]}
-												max={10}
-												min={0}
-												step={1}
+												max={MARGIN_CONFIG.MAX}
+												min={MARGIN_CONFIG.MIN}
+												step={MARGIN_CONFIG.STEP}
 												onValueChange={field.onChange}
 											/>
 										</FormControl>
@@ -164,34 +260,29 @@ export const SettingsForm = () => {
 									</FormItem>
 								)}
 							/>
+
 							<FormField
 								control={form.control}
 								name="backgroundOptions.style"
-								render={({ field }) => {
-									return (
-										<FormItem>
-											<FormLabel>{t('backgroundLabel')}</FormLabel>
-											<FormControl>
-												<div>
-													<ColorPicker
-														defaultColor={field.value}
-														onChange={(color) => {
-															field.onChange(color);
-															handleChange(form.getValues());
-														}}
-													/>
-												</div>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									);
-								}}
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>{t('backgroundLabel')}</FormLabel>
+										<FormControl>
+											<ColorPicker
+												defaultColor={field.value}
+												onChange={createColorChangeHandler(field.onChange)}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
 							/>
 						</div>
 					</TabsContent>
 
 					<TabsContent value="dot" className="mt-0">
 						<div className="flex flex-col flex-wrap space-y-6 p-2">
+							{/* Dots Options */}
 							<div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
 								<FormField
 									control={form.control}
@@ -200,11 +291,7 @@ export const SettingsForm = () => {
 										<FormItem className="flex-1">
 											<FormLabel>{t('dotStyle.label')}</FormLabel>
 											<FormControl>
-												<Select
-													name="dotsOptions.type"
-													onValueChange={field.onChange}
-													value={field.value}
-												>
+												<Select onValueChange={field.onChange} value={field.value}>
 													<SelectTrigger>
 														<SelectValue placeholder={t('dotStyle.placeholder')} />
 													</SelectTrigger>
@@ -232,6 +319,7 @@ export const SettingsForm = () => {
 										</FormItem>
 									)}
 								/>
+
 								<FormField
 									control={form.control}
 									name="dotsOptions.style"
@@ -239,15 +327,10 @@ export const SettingsForm = () => {
 										<FormItem>
 											<FormLabel>{t('dotColor')}</FormLabel>
 											<FormControl>
-												<div>
-													<ColorPicker
-														defaultColor={field.value}
-														onChange={(color) => {
-															field.onChange(color);
-															handleChange(form.getValues());
-														}}
-													/>
-												</div>
+												<ColorPicker
+													defaultColor={field.value}
+													onChange={createColorChangeHandler(field.onChange)}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -255,6 +338,7 @@ export const SettingsForm = () => {
 								/>
 							</div>
 
+							{/* Corners Square Options */}
 							<div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
 								<FormField
 									control={form.control}
@@ -263,11 +347,7 @@ export const SettingsForm = () => {
 										<FormItem className="flex-1">
 											<FormLabel>{t('cornersSquareOptions.label')}</FormLabel>
 											<FormControl>
-												<Select
-													name="cornersSquareOptions.type"
-													onValueChange={field.onChange}
-													value={field.value}
-												>
+												<Select onValueChange={field.onChange} value={field.value}>
 													<SelectTrigger>
 														<SelectValue placeholder={t('cornersSquareOptions.placeholder')} />
 													</SelectTrigger>
@@ -291,6 +371,7 @@ export const SettingsForm = () => {
 										</FormItem>
 									)}
 								/>
+
 								<FormField
 									control={form.control}
 									name="cornersSquareOptions.style"
@@ -298,15 +379,10 @@ export const SettingsForm = () => {
 										<FormItem>
 											<FormLabel>{t('cornersSquareColor')}</FormLabel>
 											<FormControl>
-												<div>
-													<ColorPicker
-														defaultColor={field.value}
-														onChange={(color) => {
-															field.onChange(color);
-															handleChange(form.getValues());
-														}}
-													/>
-												</div>
+												<ColorPicker
+													defaultColor={field.value}
+													onChange={createColorChangeHandler(field.onChange)}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -314,6 +390,7 @@ export const SettingsForm = () => {
 								/>
 							</div>
 
+							{/* Corners Dot Options */}
 							<div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
 								<FormField
 									control={form.control}
@@ -322,11 +399,7 @@ export const SettingsForm = () => {
 										<FormItem className="flex-1">
 											<FormLabel>{t('cornersDotOptions.label')}</FormLabel>
 											<FormControl>
-												<Select
-													name="cornersDotOptions.type"
-													onValueChange={field.onChange}
-													value={field.value}
-												>
+												<Select onValueChange={field.onChange} value={field.value}>
 													<SelectTrigger>
 														<SelectValue placeholder={t('cornersDotOptions.placeholder')} />
 													</SelectTrigger>
@@ -344,6 +417,7 @@ export const SettingsForm = () => {
 										</FormItem>
 									)}
 								/>
+
 								<FormField
 									control={form.control}
 									name="cornersDotOptions.style"
@@ -351,15 +425,10 @@ export const SettingsForm = () => {
 										<FormItem>
 											<FormLabel>{t('cornersDotColor')}</FormLabel>
 											<FormControl>
-												<div>
-													<ColorPicker
-														defaultColor={field.value}
-														onChange={(color) => {
-															field.onChange(color);
-															handleChange(form.getValues());
-														}}
-													/>
-												</div>
+												<ColorPicker
+													defaultColor={field.value}
+													onChange={createColorChangeHandler(field.onChange)}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -380,27 +449,9 @@ export const SettingsForm = () => {
 										<FormControl>
 											<div className="grid w-full max-w-sm items-center gap-1.5">
 												<Input
-													name="image"
 													type="file"
-													accept=".jpg,.jpeg,.png,.svg,.webp"
-													onChange={(e) => {
-														const file = e.target.files?.[0];
-														if (file) {
-															if (file.size > 1 * 1024 * 1024) {
-																alert(t('errorToLargeFile'));
-																e.target.value = '';
-																return;
-															}
-
-															const reader = new FileReader();
-															reader.readAsDataURL(file);
-															reader.onload = () => {
-																const base64 = reader.result as string;
-																config.image = base64;
-																updateConfig(config);
-															};
-														}
-													}}
+													accept={ACCEPTED_FILE_TYPES}
+													onChange={handleFileUpload}
 												/>
 											</div>
 										</FormControl>
@@ -416,11 +467,7 @@ export const SettingsForm = () => {
 									<FormItem className="flex flex-row items-start space-y-0 space-x-3 rounded-md border p-4">
 										<FormLabel className="cursor-pointer">{t('hideBackgroundDots')}</FormLabel>
 										<FormControl>
-											<Checkbox
-												name="imageOptions.hideBackgroundDots"
-												checked={field.value}
-												onCheckedChange={field.onChange}
-											/>
+											<Checkbox checked={field.value} onCheckedChange={field.onChange} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -434,12 +481,9 @@ export const SettingsForm = () => {
 								</div>
 								{config.image && (
 									<div className="flex flex-col justify-end">
-										<Button
-											variant="destructive"
-											onClick={() => updateConfig({ ...config, image: '' })}
-										>
-											<TrashIcon color="white" width={24} height={24} className="mr-2" />
-											{t('clearBtn')}
+										<Button variant="destructive" onClick={handleRemoveIcon}>
+											<TrashIcon color="white" width={24} height={24} className="sm:mr-2" />
+											<span className="hidden sm:block">{t('clearBtn')}</span>
 										</Button>
 									</div>
 								)}

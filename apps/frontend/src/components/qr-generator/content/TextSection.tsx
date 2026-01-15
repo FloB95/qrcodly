@@ -1,14 +1,22 @@
 'use client';
 
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { memo } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { TextInputSchema } from '@shared/schemas';
 import { useTranslations } from 'next-intl';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type TTextSectionProps = {
 	value: string;
@@ -19,41 +27,60 @@ const formSchema = z.object({
 	text: TextInputSchema,
 });
 
-export const TextSection = ({ value, onChange }: TTextSectionProps) => {
-	const t = useTranslations('generator.contentSwitch.text');
+import { useWatch } from 'react-hook-form';
+
+const _TextSection = ({ value, onChange }: TTextSectionProps) => {
+	const t = useTranslations('generator.contentSwitch');
+
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: standardSchemaResolver(formSchema),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			text: value,
 		},
 	});
-	const [debounced] = useDebouncedValue(form.watch('text'), 500);
+
+	const watchedText = useWatch({
+		control: form.control,
+		name: 'text',
+	});
+
+	const [debounced] = useDebouncedValue(watchedText, 500);
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		onChange(values.text);
 	}
 
-	// handle submit automatically after debounced value
 	useEffect(() => {
+		if (debounced === undefined) return;
 		if (debounced === value) return;
+
+		// Use handleSubmit to trigger validation before updating
 		void form.handleSubmit(onSubmit)();
-	}, [debounced, value, form]);
+	}, [debounced]);
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
+			<form>
 				<FormField
 					control={form.control}
 					name="text"
 					render={({ field }) => (
 						<FormItem>
+							<FormLabel>
+								<p
+									className="first-letter:uppercase lowercase"
+									translate="no"
+									suppressHydrationWarning
+								>
+									{t('tab.text')}*
+								</p>
+							</FormLabel>
 							<FormControl>
 								<Textarea
 									{...field}
 									autoFocus
 									maxLength={1000}
-									className="px-6 py-3.5"
-									placeholder={t('placeholder')}
+									placeholder={t('text.placeholder')}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -64,3 +91,11 @@ export const TextSection = ({ value, onChange }: TTextSectionProps) => {
 		</Form>
 	);
 };
+
+// Custom equality function to prevent unnecessary re-renders
+function areTextPropsEqual(prev: TTextSectionProps, next: TTextSectionProps) {
+	return prev.value === next.value && prev.onChange === next.onChange;
+}
+
+// Export memoized component
+export const TextSection = memo(_TextSection, areTextPropsEqual);

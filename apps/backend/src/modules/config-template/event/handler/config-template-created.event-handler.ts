@@ -23,13 +23,26 @@ export class ConfigTemplateCreatedEventHandler extends AbstractEventHandler<Conf
 		const configTemplateRepository = container.resolve(ConfigTemplateRepository);
 		const logger = container.resolve(Logger);
 
+		// skip if Template has an image CURRENTLY not supported
+		if (event.configTemplate.config.image) {
+			logger.debug('Template has an image, skipping preview image generation', {
+				template: {
+					id: event.configTemplate.id,
+					createdBy: event.configTemplate.createdBy,
+				},
+			});
+			return;
+		}
+
 		// generate preview image and upload to s3
 		const previewImage = await imageService.generatePreview(event.configTemplate);
 		if (previewImage) {
 			await configTemplateRepository.update(event.configTemplate, { previewImage });
 			logger.debug('Config Template preview image generated and uploaded successfully', {
-				id: event.configTemplate.id,
-				createdBy: event.configTemplate.createdBy,
+				template: {
+					id: event.configTemplate.id,
+					createdBy: event.configTemplate.createdBy,
+				},
 			});
 		}
 	}

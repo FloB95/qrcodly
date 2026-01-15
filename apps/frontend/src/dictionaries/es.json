@@ -4,27 +4,63 @@
 		"noName": "Sin nombre",
 		"changesSaved": "Cambios guardados",
 		"back": "Volver",
+		"toCollection": "A la colección",
+		"backToOverview": "Volver a la colección",
 		"share": "Compartir",
 		"view": "Ver",
 		"edit": "Editar",
 		"delete": "Eliminar",
 		"notProvided": "No proporcionado",
 		"addName": "Añadir un nombre",
-		"days": "Días"
+		"days": "Días",
+		"changelogTooltip": "Últimas actualizaciones",
+		"changelogSubheading": "Aquí puedes encontrar las últimas actualizaciones y mejoras de QRcodly.",
+		"newBadge": "¡Nuevo!",
+		"dynamicDescription": "Los códigos QR dinámicos se pueden editar después de crearlos, rastrean cada escaneo y proporcionan estadísticas detalladas – sin necesidad de reimprimir el código.",
+		"dynamicBadgeTooltip": "Permite cambiar el contenido más tarde sin un nuevo código QR. <i>Pasa el cursor para más información</i>"
 	},
-	"headline": "<span class=\"text-2xl\">Generador de Códigos QR</span> <br /> Gratuito y de Código Abierto",
+	"headline": "<span class=\"text-xl xs:text-2xl\">Generador de Códigos QR</span> <br /> Gratuito y de Código Abierto",
+	"hero": {
+		"badge": "Open Source y Gratis Para Siempre",
+		"title": "El Generador de Códigos QR Sin Límites",
+		"subtitle": "Genera códigos QR estáticos y dinámicos ilimitados de forma gratuita. Sin tarifas ocultas, sin restricciones, sin niveles premium.",
+		"benefits": {
+			"unlimited": "Códigos QR Ilimitados",
+			"noSignup": "Códigos QR Dinámicos Gratis",
+			"noWatermark": "Sin Marcas de Agua"
+		}
+	},
 	"metadata": {
 		"title": "QRcodly - Generador de Códigos QR Gratis",
 		"description": "Crea códigos QR gratis con logo, diseño propio o plantillas. Ideal para marketing, tarjetas de visita y más. ¡Usa el generador de QR ahora!",
-		"keywords": "generador de códigos qr, crear código qr, generar código qr, gratis, libre, crear código qr gratis, generador de código qr gratis, código qr vcard, código qr enlace, qrgenerator"
+		"keywords": "generador de códigos qr, crear código qr, generar código qr, gratis, libre, crear código qr gratis, generador de código qr gratis, código qr vcard, código qr enlace, qrgenerator",
+		"structuredData": {
+			"description": "Generador de códigos QR online gratis con diseños personalizados, logos y plantillas. Crea códigos QR dinámicos para URLs, WiFi, vCards y más.",
+			"features": [
+				"Generador de Códigos QR Gratis",
+				"Diseño de Códigos QR Personalizado",
+				"Código QR con Logo",
+				"Códigos QR Dinámicos",
+				"Análisis de Códigos QR",
+				"Creación Masiva de Códigos QR",
+				"Plantillas de Códigos QR",
+				"Códigos QR WiFi",
+				"Códigos QR vCard",
+				"Códigos QR URL"
+			]
+		}
 	},
 	"doc": {
 		"title": "Documentación en Actualización",
 		"description": "Actualmente estamos trabajando para actualizar esta sección y poder servirte mejor. ¡Vuelve pronto!"
 	},
 	"collection": {
-		"headline": "Visión General de Códigos QR en Desarrollo",
-		"subHeadline": "Algunas funciones aún no están disponibles y se añadirán en futuras actualizaciones."
+		"headline": "Tu colección",
+		"subHeadline": "Aquí puedes encontrar todos tus códigos QR y plantillas y gestionarlos.",
+		"tabQrCode": "Códigos QR",
+		"tabTemplates": "Plantillas",
+		"addQrCodeBtn": "Agregar código QR",
+		"bulkImportLabel": "Seleccionar tipo de contenido"
 	},
 	"analytics": {
 		"totalViews": "Número de visitas",
@@ -96,6 +132,10 @@
 			"teamFeature": {
 				"headline": "Colaborar en equipo",
 				"subHeadline": "Invita a miembros del equipo y trabajen juntos en códigos QR. Ideal para empresas, agencias y equipos."
+			},
+			"secureFeature": {
+				"headline": "Tus datos permanecen con nosotros",
+				"subHeadline": "Qrcodly aloja todos los datos localmente en Alemania – sin compartirlos con servicios externos. Solo usamos Clerk para la autenticación."
 			}
 		}
 	},
@@ -115,6 +155,7 @@
 	},
 	"qrCode": {
 		"storeBtn": "Guardar en la colección",
+		"updateBtn": "Actualizar código QR",
 		"error": {
 			"delete": {
 				"title": "Error al eliminar el código QR",
@@ -124,7 +165,8 @@
 				"title": "Error al actualizar el código QR",
 				"message": "Se ha producido un error al actualizar tu código QR. Hemos sido notificados y solucionaremos el problema lo antes posible."
 			},
-			"noFound": "No se encontraron códigos QR"
+			"noFound": "No se encontraron códigos QR",
+			"noFoundDescription": "Aún no has creado ningún código QR. Empieza a crear códigos QR ahora."
 		},
 		"confirmDeletePopup": {
 			"title": "Confirmar eliminación",
@@ -140,10 +182,25 @@
 			"title": "Renombrar código QR",
 			"placeholder": "Introducir un nombre"
 		},
+		"update": {
+			"headline": "Actualizar código QR",
+			"successTitle": "Código QR actualizado",
+			"successDescription": "Tu código QR se ha actualizado correctamente.",
+			"errorTitle": "Error al actualizar el código QR",
+			"errorDescription": "Se produjo un error al actualizar tu código QR. Hemos sido notificados y resolveremos el problema lo antes posible.",
+			"infoDialog": {
+				"dialogHeadline": "Nota sobre la actualización de un código QR",
+				"dialogDescription": "Solo los códigos QR dinámicos mantienen el mismo aspecto después de una edición. En el caso de los códigos QR estáticos, se genera un nuevo código, por lo que las versiones ya impresas dejan de estar actualizadas.",
+				"doNotShowAgain": "No mostrar este mensaje nuevamente.",
+				"cancelBtn": "Cancelar",
+				"understandBtn": "Entendido"
+			}
+		},
 		"updateQrCodeUrl": "Actualizar la URL",
 		"actionsMenu": {
 			"title": "Acciones",
 			"view": "Ver",
+			"edit": "Editar",
 			"delete": "Eliminar",
 			"disableShortUrl": "Desactivar",
 			"enableShortUrl": "Activar"
@@ -152,6 +209,8 @@
 			"successTitle": "Nuevo código QR creado",
 			"successDescription": "Hemos guardado tu código QR en tu colección para su uso posterior.",
 			"downloadBtn": "Descargar",
+			"vcfFile": "Archivo VCF",
+			"icsFile": "Archivo ICS",
 			"errorTitle": "Error al guardar el código QR"
 		},
 		"saveInfo": "Guarda el código QR actual en tu colección.",
@@ -189,10 +248,22 @@
 		"templateCreatedErrorTitle": "Error al crear la plantilla",
 		"templateCreatedErrorDescription": "Se ha producido un error al crear tu plantilla. Ya hemos sido notificados y solucionaremos el problema lo antes posible.",
 		"saveAsBtn": "Guardar como plantilla",
+		"updateBtn": "Actualizar plantilla",
 		"saveInfo": "Guarda el diseño actual como una plantilla reutilizable.",
 		"savePopup": {
 			"title": "Guardar diseño actual como plantilla",
 			"placeholder": "Nombre de la plantilla"
+		},
+		"update": {
+			"headline": "Actualizar plantilla",
+			"successTitle": "Plantilla actualizada",
+			"successDescription": "Tu plantilla se ha actualizado correctamente.",
+			"errorTitle": "Error al actualizar la plantilla",
+			"errorDescription": "Se produjo un error al actualizar tu plantilla. Por favor, revisa los datos e inténtalo de nuevo.",
+			"updateName": {
+				"title": "Renombrar plantilla",
+				"placeholder": "Introduce un nuevo nombre"
+			}
 		},
 		"delete": {
 			"beingDeleted": "La plantilla se está eliminando",
@@ -206,13 +277,41 @@
 			"description2": "Esta acción no se puede deshacer.",
 			"confirmBtn": "Eliminar",
 			"cancelBtn": "Cancelar"
+		},
+		"actionsMenu": {
+			"qrCodeFromTemplate": "Código QR desde plantilla"
 		}
 	},
 	"generator": {
+		"labelName": "Nombre",
 		"tabs": {
 			"content": "Contenido",
 			"style": "Estilo",
 			"templates": "Plantillas"
+		},
+		"bulkImport": {
+			"title": "Crear varios códigos QR de {contentType}",
+			"successTitle": "Importación exitosa",
+			"successDescription": "Todos tus códigos QR se han importado correctamente.",
+			"errorTitle": "Error en la importación",
+			"step1": {
+				"title": "1. Diseñar QR Code",
+				"description": "Diseña tu QR Code o elige una plantilla."
+			},
+			"step2": {
+				"title": "2. Descargar plantilla CSV ({contentType})",
+				"description": "Descarga la plantilla CSV de {contentType} e ingresa tus datos.",
+				"button": "Descargar"
+			},
+			"step3": {
+				"title": "3. Subir plantilla",
+				"description": "Sube aquí el archivo CSV completado."
+			},
+			"info": {
+				"title": "Observa los límites y el inicio de sesión",
+				"description": "Con el archivo CSV puedes crear hasta 15 códigos QR a la vez. Para más, necesitas el plan Pro."
+			},
+			"createButton": "Crear códigos QR"
 		},
 		"settingsForm": {
 			"tabGeneral": "General",
@@ -254,17 +353,24 @@
 			"clearBtn": "Borrar icono"
 		},
 		"contentSwitch": {
-			"tabUrl": "URL",
-			"tabText": "TEXTO",
-			"tabWifi": "WIFI",
-			"tabVCard": "VCARD",
+			"tab": {
+				"url": "URL",
+				"text": "TEXTO",
+				"wifi": "WIFI",
+				"vCard": "VCARD",
+				"email": "CORREO",
+				"location": "UBICACIÓN",
+				"event": "EVENTO",
+				"socials": "REDES"
+			},
+			"cancel": "Cancelar",
+			"bulkModeBtn": "Creación masiva con CSV",
 			"text": {
 				"placeholder": "Introduce tu texto aquí"
 			},
 			"url": {
 				"placeholder": "Introduce tu URL https://ejemplo.com/",
-				"enableEditing": "Habilitar estadísticas y edición",
-				"newBadge": "¡Nuevo!"
+				"enableEditing": "Habilitar estadísticas y edición"
 			},
 			"wifi": {
 				"network": {
@@ -335,6 +441,142 @@
 					"label": "Sitio web",
 					"placeholder": "Introduce la URL de tu sitio web"
 				}
+			},
+			"email": {
+				"email": {
+					"label": "Correo electrónico",
+					"placeholder": "Introduce una dirección de correo"
+				},
+				"subject": {
+					"label": "Asunto",
+					"placeholder": "Asunto opcional"
+				},
+				"body": {
+					"label": "Mensaje",
+					"placeholder": "Mensaje opcional"
+				}
+			},
+			"location": {
+				"address": {
+					"label": "Dirección",
+					"placeholder": "Buscar dirección o lugar"
+				},
+				"latitude": {
+					"label": "Latitud"
+				},
+				"longitude": {
+					"label": "Longitud"
+				}
+			},
+			"event": {
+				"title": {
+					"label": "Título",
+					"placeholder": "Nombre del evento"
+				},
+				"summary": {
+					"label": "Resumen",
+					"placeholder": "Resumen opcional"
+				},
+				"description": {
+					"label": "Descripción",
+					"placeholder": "Descripción opcional"
+				},
+				"location": {
+					"label": "Ubicación",
+					"placeholder": "Lugar del evento"
+				},
+				"url": {
+					"label": "Url",
+					"placeholder": "URL opcional"
+				},
+				"startDate": {
+					"label": "Fecha de inicio"
+				},
+				"endDate": {
+					"label": "Fecha de fin"
+				}
+			},
+			"social": {
+				"title": {
+					"label": "Título",
+					"placeholder": "p.ej. Sígueme"
+				},
+				"link": {
+					"placeholder": "URL del perfil o sitio web",
+					"add": "Añadir enlace",
+					"remove": "Eliminar"
+				}
+			}
+		},
+		"preview": {
+			"button": "Abrir Vista Previa",
+			"title": "Vista Previa del Código QR con Fondo",
+			"selectTitle": "Seleccionar Fondo",
+			"selectDescription": "Prueba cómo se ve tu código QR en diferentes fondos antes de imprimirlo o compartirlo.",
+			"selectBackground": "Selecciona un fondo para previsualizar tu código QR",
+			"changeBackground": "Cambiar Fondo",
+			"close": "Cerrar",
+			"predefined": {
+				"title": "Ejemplos",
+				"businessCards": "Tarjetas de Visita",
+				"brochures": "Folletos",
+				"posters": "Carteles",
+				"packaging": "Embalaje",
+				"websites": "Sitios Web",
+				"socialMedia": "Redes Sociales"
+			},
+			"website": {
+				"title": "Sitio Web",
+				"inputLabel": "URL del Sitio Web",
+				"inputPlaceholder": "Introduce URL (ej. https://ejemplo.com)",
+				"previewButton": "Vista Previa del Sitio Web",
+				"loadingIframe": "Cargando sitio web...",
+				"loadingScreenshot": "Capturando captura de pantalla...",
+				"capturingPreview": "Capturando vista previa...",
+				"info": "Introduce cualquier URL de sitio web para usarla como fondo para tu código QR",
+				"errors": {
+					"invalidUrl": "Por favor introduce una URL válida que comience con http:// o https://",
+					"loadFailed": "Error al cargar el sitio web. Por favor inténtalo de nuevo.",
+					"captureFailed": "Error al capturar el sitio web. Este sitio web puede no permitir la incrustación.",
+					"screenshotFailed": "Error al capturar la captura de pantalla. El servicio de capturas de pantalla puede no estar disponible o la URL no es válida.",
+					"networkError": "Error de red. Por favor verifica tu conexión."
+				},
+				"retry": "Reintentar"
+			},
+			"camera": {
+				"title": "Cámara",
+				"capture": "Capturar Fotograma",
+				"loading": "Inicializando cámara...",
+				"retry": "Reintentar Acceso a Cámara",
+				"error": {
+					"title": "Error de Cámara"
+				}
+			},
+			"upload": {
+				"title": "Subir",
+				"dragDrop": "Arrastra y suelta una imagen aquí",
+				"orClick": "o haz clic para buscar",
+				"formats": "JPG, PNG, WEBP (máx. 5MB)"
+			},
+			"contrast": {
+				"ratio": "Ratio",
+				"excellent": {
+					"title": "Visibilidad Excelente"
+				},
+				"good": {
+					"title": "Buena Visibilidad"
+				},
+				"poor": {
+					"title": "Poca Visibilidad"
+				},
+				"critical": {
+					"title": "Crítico - Puede No Escanear"
+				}
+			},
+			"controls": {
+				"reset": "Restablecer Posición",
+				"resize": "Arrastra la esquina para redimensionar",
+				"move": "Arrastra para reposicionar · Arrastra la esquina para redimensionar"
 			}
 		}
 	},
@@ -357,8 +599,8 @@
 		"answer4": "Sí, la generación de códigos QR tanto estáticos como dinámicos es y seguirá siendo gratuita para siempre, tantos como desees. En el futuro, habrá limitaciones para las solicitudes de API y para las empresas que trabajen con varios usuarios.",
 		"question5": "¿Cuánto tiempo es válido un Código QR?",
 		"answer5": "Los Códigos QR estáticos no caducan y permanecen válidos permanentemente siempre que el contenido vinculado sea accesible en línea. Los Códigos QR dinámicos permanecen activos mientras se gestionen en nuestro sistema y no se apliquen restricciones específicas del proveedor.",
-		"question6": "¿Cuáles son las ventajas de los Códigos QR dinámicos?",
-		"answer6": "Los Códigos QR dinámicos ofrecen una flexibilidad inigualable, ya que puedes ajustar su contenido incluso después de la impresión. También permiten estadísticas de escaneo precisas, proporcionando información sobre la ubicación, la hora y el dispositivo utilizado, lo que te permite optimizar tus campañas de manera efectiva.",
+		"question6": "¿Cuáles son las ventajas de los códigos QR dinámicos?",
+		"answer6": "Los códigos QR dinámicos se identifican con la insignia Dynamic. Se pueden actualizar en cualquier momento, incluso después de haber sido creados o impresos. Además, ofrecen estadísticas útiles de escaneo, como ubicación, hora y dispositivos utilizados, para analizar y optimizar tus campañas de manera efectiva.",
 		"question7": "¿Necesito una aplicación especial para escanear Códigos QR?",
 		"answer7": "No, en la mayoría de los casos, ¡no es necesario! La función de cámara integrada de los smartphones modernos ahora puede reconocer directamente los Códigos QR y abrir el contenido incrustado, sin necesidad de una aplicación adicional.",
 		"question8": "¿Qué estadísticas se recopilan para los Códigos QR dinámicos?",
@@ -366,6 +608,18 @@
 		"question9": "¿Puedo personalizar un Código QR con mi logotipo?",
 		"answer9": "Sí, con qrcodly.de, puedes diseñar tus Códigos QR exactamente a tu gusto: integra tu logotipo y usa los colores de tu marca sin afectar la capacidad de escaneo. ¡De esta manera, tus códigos seguirán siendo únicos y profesionales!",
 		"question10": "¿Funcionan los Códigos QR también en formato impreso?",
-		"answer10": "¡Absolutamente! Los Códigos QR están optimizados específicamente para la impresión y funcionan de manera fiable en diversos materiales, siempre que permanezcan claros y sin daños. ¡Asegura una buena calidad de impresión, y tus códigos estarán listos para usar en cualquier lugar!"
+		"answer10": "¡Absolutamente! Los Códigos QR están optimizados específicamente para la impresión y funcionan de manera fiable en diversos materiales, siempre que permanezcan claros y sin daños. ¡Asegura una buena calidad de impresión, y tus códigos estarán listos para usar en cualquier lugar!",
+		"question11": "¿Dónde se alojan mis datos?",
+		"answer11": "Todos los datos de Qrcodly se almacenan exclusivamente en servidores ubicados en Alemania. No compartimos tus datos con terceros. Solo utilizamos Clerk para el inicio de sesión y la autenticación."
+	},
+	"fileUpload": {
+		"maxFiles": "Se permiten como máximo {maxFiles} archivos",
+		"invalidType": "Tipo de archivo no aceptado",
+		"tooLarge": "Archivo demasiado grande",
+		"uploadZone": {
+			"dragDrop": "Arrastra los archivos aquí",
+			"or": "O haz clic para buscar (máx. 1 archivo)",
+			"browse": "Buscar archivos"
+		}
 	}
 }

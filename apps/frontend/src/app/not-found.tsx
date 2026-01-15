@@ -21,12 +21,12 @@ export default async function NotFoundPage() {
 				<link rel="manifest" href="/site.webmanifest" />
 			</head>
 			<body className={`font-sans ${openSans.variable}`}>
-				<main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
+				<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
 					<NoNavHeader />
 
 					<Container className="flex flex-col justify-center text-center">
 						<div>
-							<h1 className="mb-4 text-center text-6xl font-bold">404</h1>
+							<h1 className="mb-4 text-center text-6xl font-semibold">404</h1>
 							<p className="mb-6 text-center text-xl">
 								Oops! The page you&apos;re looking for doesn&apos;t exist.
 							</p>

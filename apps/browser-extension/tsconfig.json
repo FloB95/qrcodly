@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"lib": ["DOM", "ES2022"],
+		"jsx": "react-jsx",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"types": [],
+		"ignoreDeprecations": "6.0",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+			"@shared/schemas": ["./../../packages/shared/src"],
+			"@shared/schemas/*": ["./../../packages/shared/src/*"],
+			"@frontend/*": ["./../frontend/src/*"]
+		}
+	},
+	"include": ["src"]
+}

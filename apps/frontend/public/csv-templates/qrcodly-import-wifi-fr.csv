@@ -1,0 +1,4 @@
+SSID;Mot de passe;Chiffrement (WPA, WEP, nopass);Nom
+MonWiFi;motdepasse123;WPA;Réseau domestique
+WiFiInvité;;nopass;Réseau invité
+WiFiBureau;passbureau;WEP;Bureau

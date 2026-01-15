@@ -23,11 +23,13 @@ export const env = createEnv({
 		NEXT_PUBLIC_FRONTEND_URL: z.string().url(),
 		NEXT_PUBLIC_API_URL: z.string().url(),
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
-		NEXT_PUBLIC_POSTHOG_KEY: z.string(),
-		NEXT_PUBLIC_POSTHOG_HOST: z.string(),
+		NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
+		NEXT_PUBLIC_POSTHOG_HOST: z.string().optional(),
 		NEXT_PUBLIC_SENTRY_DSN: z.string(),
 		NEXT_PUBLIC_SENTRY_ENVIRONMENT: z.string().default('production'),
 		NEXT_PUBLIC_UMAMI_WEBSITE: z.string(),
+		NEXT_PUBLIC_CLERK_PRO_PLAN_ID: z.string(),
+		NEXT_PUBLIC_GOOGLE_API_KEY: z.string(),
 	},
 
 	/**
@@ -49,6 +51,8 @@ export const env = createEnv({
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
 		NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
 		NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+		NEXT_PUBLIC_CLERK_PRO_PLAN_ID: process.env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID,
+		NEXT_PUBLIC_GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

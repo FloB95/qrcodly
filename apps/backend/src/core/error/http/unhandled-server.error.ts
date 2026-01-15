@@ -8,7 +8,9 @@ export class UnhandledServerError extends CustomApiError {
 		super(message, 500);
 
 		const logger = container.resolve(Logger);
-		logger.error(message, error);
+		logger.error(message, {
+			error,
+		});
 
 		container.resolve(ErrorReporter).error(error, {
 			level: 'error',

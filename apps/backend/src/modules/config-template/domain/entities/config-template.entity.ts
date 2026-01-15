@@ -16,7 +16,10 @@ const configTemplate = createTable(
 		createdAt: datetime().notNull(),
 		updatedAt: datetime(),
 	},
-	(t) => [index('i_config_template_created_by').on(t.createdBy)],
+	(t) => [
+		// Composite index for list queries with sorting (ORDER BY createdAt DESC WHERE createdBy=?)
+		index('i_config_template_created_by_created_at').on(t.createdBy, t.createdAt),
+	],
 );
 
 export type TConfigTemplate = typeof configTemplate.$inferSelect;

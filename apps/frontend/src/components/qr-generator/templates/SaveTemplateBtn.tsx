@@ -6,12 +6,13 @@ import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../ui/tooltip';
 import { NameDialog } from '../NameDialog';
 import { Button } from '@/components/ui/button';
-import { QrCodeDefaults, type TQrCodeOptions } from '@shared/schemas';
+import { objDiff, QrCodeDefaults, type TQrCodeOptions } from '@shared/schemas';
 import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
 import * as Sentry from '@sentry/nextjs';
+import type { ApiError } from '@/lib/api/ApiError';
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 	const t = useTranslations('templates');
@@ -41,17 +42,32 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 							templateName: templateName,
 						});
 					},
-					onError: (e) => {
-						Sentry.captureException(e);
+					onError: (e: Error) => {
+						const error = e as ApiError;
+
+						if (error.code >= 500) {
+							Sentry.captureException(error, {
+								extra: {
+									templateName: templateName,
+									config,
+									error: {
+										code: error.code,
+										message: error.message,
+										fieldErrors: error?.fieldErrors,
+									},
+								},
+							});
+
+							posthog.capture('error:config-template-created', {
+								templateName: templateName,
+							});
+						}
+
 						toast({
 							variant: 'destructive',
 							title: t('templateCreatedErrorTitle'),
-							description: e.message,
+							description: error.message,
 							duration: 5000,
-						});
-
-						posthog.capture('error:config-template-created', {
-							templateName: templateName,
 						});
 					},
 				},
@@ -60,6 +76,10 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 			console.error(error);
 		}
 	};
+
+	const isDisabled =
+		createConfigTemplateMutation.isPending ||
+		Object.keys(objDiff(QrCodeDefaults, config)).length === 0;
 
 	return (
 		<>
@@ -78,10 +98,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 							}
 							setNameDialogOpen(true);
 						}}
-						disabled={
-							createConfigTemplateMutation.isPending ||
-							JSON.stringify(config) === JSON.stringify(QrCodeDefaults)
-						}
+						disabled={isDisabled}
 					>
 						{t('saveAsBtn')}
 					</Button>

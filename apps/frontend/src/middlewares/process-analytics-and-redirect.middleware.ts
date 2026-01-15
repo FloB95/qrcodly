@@ -3,6 +3,7 @@ import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { apiRequest } from '@/lib/utils';
 import type { TShortUrl } from '@shared/schemas';
 import { NextResponse, type NextRequest } from 'next/server';
+import { UAParser } from 'ua-parser-js';
 
 export async function processAnalyticsAndRedirect(req: NextRequest) {
 	// Extract data from headers
@@ -14,16 +15,25 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 	const hostname =
 		cleanedHostname && hostnameRegex.test(cleanedHostname) ? cleanedHostname : 'unknown';
 
+	const userAgent = headers.get('user-agent') ?? '';
+	const { browser, device } = UAParser(userAgent);
+
+	const language = headers.get('accept-language')
+		? headers.get('accept-language')?.split(',')[0]
+		: '';
+
 	const payload = {
 		type: 'event',
 		payload: {
 			website: env.NEXT_PUBLIC_UMAMI_WEBSITE,
 			url: req.url,
-			userAgent: headers.get('user-agent') ?? '',
+			userAgent,
 			hostname,
-			language: headers.get('accept-language') ?? '',
+			language: language ?? '',
 			referrer: headers.get('referer') ?? '',
 			screen: headers.get('sec-ch-ua-platform') ?? '',
+			device: device.type,
+			browser: browser.name,
 			ip: headers.get('x-forwarded-for') ?? '',
 		},
 	};
@@ -75,16 +85,20 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 			const contentType = res.headers.get('content-type');
 			if (contentType?.includes('application/json')) {
 				const jsonResponse = (await res.json()) as Record<string, unknown>;
-				console.error('Response Analytics API:', { error: jsonResponse });
+				console.error('Response Analytics API:', {
+					error: jsonResponse,
+					body: payload,
+				});
 			} else {
 				const textResponse = await res.text();
-				console.error('Response Analytics API:', { error: textResponse });
+				console.error('Response Analytics API:', {
+					error: textResponse,
+					body: payload,
+				});
 			}
-		} else {
-			console.log('Analytics sent successfully');
 		}
 	} catch (error) {
-		console.log('Error sending request to logger:', error);
+		console.error('Error sending request to logger:', error);
 	}
 
 	return NextResponse.redirect(new URL(shortUrl.destinationUrl));

@@ -74,11 +74,15 @@ export class Mailer implements IMailer {
 				: typeof to === 'object'
 					? JSON.stringify(to)
 					: to;
-			this.logger.debug(`Email with Subject: ${subject} sent to: ${recipients}`, info);
+			this.logger.debug(`Email with Subject: ${subject} sent to: ${recipients}`, {
+				mail: info,
+			});
 			return info;
 		} catch (error) {
 			this.logger.error(`Failed to send email`, {
-				recipients: to,
+				mail: {
+					recipients: to,
+				},
 				error: error as Error,
 			});
 			throw error;

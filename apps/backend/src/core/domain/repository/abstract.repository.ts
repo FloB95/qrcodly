@@ -12,6 +12,7 @@ import { convertWhereConditionToDrizzle } from '@/core/db/utils';
 import { DEFAULT_PAGE_SIZE } from '@/core/config/constants';
 import { container } from 'tsyringe';
 import { KeyCache } from '@/core/cache';
+import { TransactionContext } from '@/core/db/transaction-context';
 
 /**
  * Abstract class for repositories.
@@ -29,6 +30,13 @@ export default abstract class AbstractRepository<T> {
 	abstract create(item: T): Promise<void>;
 	abstract update(item: T, updates: Partial<T>): Promise<void>;
 	abstract delete(item: T): Promise<boolean>;
+
+	/**
+	 * Use the current transaction if set, otherwise the default db
+	 */
+	protected get db() {
+		return TransactionContext.db;
+	}
 
 	/**
 	 * Counts the total number of items in the table.

@@ -1,13 +1,16 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/nextjs';
 import type {
+	TBulkImportQrCodeDto,
 	TCreateQrCodeDto,
-	TCreateQrCodeResponseDto,
 	TQrCodeWithRelationsPaginatedResponseDto,
+	TQrCodeWithRelationsResponseDto,
 	TUpdateQrCodeDto,
 } from '@shared/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
+import type { ApiError } from './ApiError';
 
 // Define query keys
 export const qrCodeQueryKeys = {
@@ -24,13 +27,17 @@ export function useListQrCodesQuery(page = 1, limit = 10) {
 			const token = await getToken();
 
 			return apiRequest<TQrCodeWithRelationsPaginatedResponseDto>(
-				`/qr-code?page=${page}&limit=${limit}`,
+				'/qr-code',
 				{
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
 						Authorization: `Bearer ${token}`,
 					},
+				},
+				{
+					page,
+					limit,
 				},
 			);
 		},
@@ -44,10 +51,11 @@ export function useListQrCodesQuery(page = 1, limit = 10) {
 // Function to create a QR code
 export function useCreateQrCodeMutation() {
 	const queryClient = useQueryClient();
+	const { updateLastError } = useQrCodeGeneratorStore((state) => state);
 	const { getToken } = useAuth();
 
 	return useMutation({
-		mutationFn: async (qrCode: TCreateQrCodeDto): Promise<TCreateQrCodeResponseDto> => {
+		mutationFn: async (qrCode: TCreateQrCodeDto): Promise<TQrCodeWithRelationsResponseDto> => {
 			const token = await getToken();
 			const headers: HeadersInit = {
 				'Content-Type': 'application/json',
@@ -55,7 +63,7 @@ export function useCreateQrCodeMutation() {
 			if (token) {
 				headers.Authorization = `Bearer ${token}`;
 			}
-			return apiRequest<TCreateQrCodeResponseDto>('/qr-code', {
+			return apiRequest<TQrCodeWithRelationsResponseDto>('/qr-code', {
 				method: 'POST',
 				body: JSON.stringify(qrCode),
 				headers,
@@ -63,12 +71,45 @@ export function useCreateQrCodeMutation() {
 		},
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
-			void queryClient.invalidateQueries({
+			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
-		onError: (error) => {
-			console.error('Error creating QR code:', error);
+		onError: (e: Error) => {
+			const error = e as ApiError;
+			updateLastError(error);
+		},
+	});
+}
+
+export function useBulkCreateQrCodeMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async (dto: TBulkImportQrCodeDto) => {
+			if (!dto.file) {
+				throw new Error('File is required for bulk import');
+			}
+
+			const token = await getToken();
+			const formData = new FormData();
+			formData.append('contentType', dto.contentType as string);
+			formData.append('config', JSON.stringify(dto.config));
+
+			formData.append('file', dto.file);
+
+			const headers: HeadersInit = {};
+			if (token) headers.Authorization = `Bearer ${token}`;
+
+			return apiRequest<TQrCodeWithRelationsResponseDto[]>('/qr-code/bulk-import', {
+				method: 'POST',
+				body: formData,
+				headers,
+			});
+		},
+		onSuccess: () => {
+			void queryClient.refetchQueries({ queryKey: ['listQrCodes'] });
 		},
 	});
 }
@@ -92,14 +133,14 @@ export function useUpdateQrCodeMutation() {
 				Authorization: `Bearer ${token}`,
 			};
 			await apiRequest<void>(`/qr-code/${qrCodeId}`, {
-				method: 'POST',
+				method: 'PATCH',
 				body: JSON.stringify(data),
 				headers,
 			});
 		},
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
-			void queryClient.invalidateQueries({
+			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
@@ -127,7 +168,7 @@ export function useDeleteQrCodeMutation() {
 		},
 		onSuccess: () => {
 			// Invalidate the 'listQrCodes' query to refetch the updated data
-			void queryClient.invalidateQueries({
+			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},

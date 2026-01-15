@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+!*.mdx
+content/docs/api/*
+
 # testing
 /coverage
 
@@ -15,6 +18,7 @@ next-env.d.ts
 
 # production
 /build
+/.source
 
 # misc
 .DS_Store

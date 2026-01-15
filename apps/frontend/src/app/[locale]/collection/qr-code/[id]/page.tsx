@@ -4,12 +4,16 @@ import { auth } from '@clerk/nextjs/server';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { DetailPageContent } from '@/components/qr-code-detail/DetailPageContent';
 import { Cta } from '@/components/Cta';
+import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
+import Container from '@/components/ui/container';
 
 interface QRCodeDetailProps {
 	params: Promise<{
 		id: string;
 	}>;
 }
+
+export const dynamic = 'force-dynamic';
 
 export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 	const { id } = await params;
@@ -25,6 +29,7 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
+				credentials: 'include',
 			},
 		});
 	} catch (error) {
@@ -37,9 +42,23 @@ export default async function QRCodeDetailPage({ params }: QRCodeDetailProps) {
 	}
 
 	return (
-		<>
+		<QrCodeGeneratorStoreProvider
+			initState={{
+				id: qrCode.id,
+				name: qrCode.name ?? undefined,
+				config: qrCode.config,
+				content: qrCode.content,
+				latestQrCode: undefined,
+				bulkMode: {
+					isBulkMode: false,
+					file: undefined,
+				},
+			}}
+		>
 			<DetailPageContent qrCode={qrCode} />
-			<Cta />
-		</>
+			<Container className="mt-16">
+				<Cta />
+			</Container>
+		</QrCodeGeneratorStoreProvider>
 	);
 }

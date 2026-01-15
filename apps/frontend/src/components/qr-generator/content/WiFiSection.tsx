@@ -1,6 +1,7 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { memo } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import {
 	Form,
 	FormControl,
@@ -11,8 +12,7 @@ import {
 } from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
-import { Input } from '@/components/ui/input';
-import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
+import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group';
 import {
 	Select,
 	SelectContent,
@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/select';
 import { WifiInputSchema, type TWifiInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CharacterCounter } from './CharacterCounter';
 
 type FormValues = TWifiInput;
 
@@ -30,36 +32,39 @@ type WiFiSectionProps = {
 	value: FormValues;
 };
 
-export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
+const _WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.wifi');
 	const form = useForm<FormValues>({
-		resolver: standardSchemaResolver(WifiInputSchema),
+		resolver: zodResolver(WifiInputSchema),
 		defaultValues: {
-			ssid: value?.ssid,
-			password: value?.password,
-			encryption: value?.encryption || 'WPA',
+			ssid: value.ssid,
+			password: value.password,
+			encryption: value.encryption ?? 'WPA',
 		},
 	});
-
-	const [debounced] = useDebouncedValue<FormValues>(form.getValues(), 500);
 
 	function onSubmit(values: FormValues) {
 		onChange(values);
 	}
 
-	useEffect(() => {
-		if (typeof debounced.encryption === 'undefined') {
-			debounced.encryption = 'WPA';
-		}
+	const watchedValues = useWatch({
+		control: form.control,
+	}) as FormValues;
+	const [debounced] = useDebouncedValue<FormValues>(watchedValues, 500);
 
-		if (
-			JSON.stringify(debounced) === '{}' ||
-			JSON.stringify(debounced) === JSON.stringify(value) ||
-			typeof debounced.ssid === 'undefined'
-		) {
+	useEffect(() => {
+		if (!debounced?.ssid || debounced.ssid.length < 1) return;
+
+		if (debounced.encryption === undefined) {
+			form.setValue('encryption', 'WPA');
 			return;
 		}
 
+		if (JSON.stringify(debounced) === JSON.stringify(value)) {
+			return;
+		}
+
+		// Use handleSubmit to trigger validation before updating
 		void form.handleSubmit(onSubmit)();
 	}, [debounced]);
 
@@ -73,17 +78,28 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 						<FormItem>
 							<FormLabel>
 								<span translate="no" suppressHydrationWarning>
-									{t('network.label')}
+									{t('network.label')}*
 								</span>
 							</FormLabel>
 							<FormControl>
-								<Input {...field} translate="no" placeholder={t('network.placeholder')} />
+								<InputGroup>
+									<InputGroupInput
+										{...field}
+										translate="no"
+										placeholder={t('network.placeholder')}
+										maxLength={32}
+										className="pr-16"
+									/>
+									<InputGroupAddon align="inline-end">
+										<CharacterCounter current={field.value?.length || 0} max={32} />
+									</InputGroupAddon>
+								</InputGroup>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				<div className="flex space-x-4">
+				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
 					<FormField
 						control={form.control}
 						name="password"
@@ -96,13 +112,20 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input
-										{...field}
-										translate="no"
-										autoCorrect="off"
-										autoComplete="off"
-										placeholder={t('password.placeholder')}
-									/>
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											autoCorrect="off"
+											autoComplete="off"
+											placeholder={t('password.placeholder')}
+											maxLength={64}
+											className="pr-16"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={64} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -150,3 +173,13 @@ export const WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 		</Form>
 	);
 };
+
+// Custom equality function to prevent unnecessary re-renders
+function areWiFiPropsEqual(prev: WiFiSectionProps, next: WiFiSectionProps) {
+	return (
+		JSON.stringify(prev.value) === JSON.stringify(next.value) && prev.onChange === next.onChange
+	);
+}
+
+// Export memoized component
+export const WiFiSection = memo(_WiFiSection, areWiFiPropsEqual);

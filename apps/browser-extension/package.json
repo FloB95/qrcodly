@@ -1,0 +1,31 @@
+{
+	"name": "qrcodly-extension",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"watch": "vite build.watch",
+		"preview": "vite preview --port 5174"
+	},
+	"dependencies": {
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"lucide-react": "^0.488.0",
+		"react": "catalog:",
+		"react-dom": "catalog:",
+		"tailwind-merge": "^3.4.0",
+		"tailwindcss-animate": "^1.0.7",
+		"qr-code-styling": "catalog:"
+	},
+	"devDependencies": {
+		"@tailwindcss/vite": "^4.1.17",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"@vitejs/plugin-react": "^5.1.2",
+		"tailwindcss": "catalog:",
+		"typescript": "catalog:",
+		"vite": "^5.0.0"
+	}
+}

@@ -4,9 +4,13 @@ import type {
 	TCreateConfigTemplateDto,
 	TConfigTemplatePaginatedResponseDto,
 	TConfigTemplateResponseDto,
+	TUpdateConfigTemplateDto,
 } from '@shared/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
+import { toast } from '@/components/ui/use-toast';
+import posthog from 'posthog-js';
+import { useTranslations } from 'next-intl';
 
 // Define query keys
 export const queryKeys = {
@@ -42,19 +46,21 @@ export function useListConfigTemplatesQuery(searchName?: string, page = 1, limit
 		queryFn: async (): Promise<TConfigTemplatePaginatedResponseDto> => {
 			const token = await getToken();
 
-			const extraOptions =
-				searchName !== undefined
-					? {
-							where: {
-								name: {
-									like: searchName,
-								},
-							},
-						}
-					: undefined;
+			const queryParams: Record<string, unknown> = {
+				page,
+				limit,
+			};
+
+			if (searchName !== undefined) {
+				queryParams.where = {
+					name: {
+						like: searchName,
+					},
+				};
+			}
 
 			return apiRequest<TConfigTemplatePaginatedResponseDto>(
-				`/config-template?page=${page}&limit=${limit}`,
+				'/config-template',
 				{
 					method: 'GET',
 					headers: {
@@ -62,7 +68,7 @@ export function useListConfigTemplatesQuery(searchName?: string, page = 1, limit
 						Authorization: `Bearer ${token}`,
 					},
 				},
-				extraOptions,
+				queryParams,
 			);
 		},
 		refetchOnMount: false,
@@ -93,14 +99,67 @@ export function useCreateConfigTemplateMutation() {
 				headers,
 			});
 		},
-		onSuccess: () => {
+		onSuccess: async () => {
 			// Invalidate the 'listConfigTemplates' query to refetch the updated data
-			void queryClient.invalidateQueries({
+			await queryClient.refetchQueries({
 				queryKey: queryKeys.listConfigTemplates,
 			});
 		},
 		onError: (error) => {
 			console.error('Error creating configuration template:', error);
+		},
+	});
+}
+
+export function useUpdateConfigTemplateMutation() {
+	const t = useTranslations('templates');
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation<
+		TConfigTemplateResponseDto, // TData
+		Error, // TError
+		{ configTemplateId: string; data: TUpdateConfigTemplateDto }
+	>({
+		mutationFn: async ({ configTemplateId, data }) => {
+			const token = await getToken();
+			const headers: HeadersInit = {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			};
+			return apiRequest<TConfigTemplateResponseDto>(`/config-template/${configTemplateId}`, {
+				method: 'PATCH',
+				body: JSON.stringify(data),
+				headers,
+			});
+		},
+		onSuccess: (data) => {
+			toast({
+				title: t('update.successTitle'),
+				description: t('update.successDescription'),
+				duration: 5000,
+			});
+
+			posthog.capture('config-template-updated', {
+				name: data.name,
+				config: data.config,
+			});
+
+			void queryClient.refetchQueries({
+				queryKey: queryKeys.listConfigTemplates,
+			});
+		},
+		onError: (e) => {
+			toast({
+				variant: 'destructive',
+				title: t('update.errorTitle'),
+				description: t('update.errorDescription'),
+				duration: 5000,
+			});
+
+			posthog.capture('error:config-template-updated', {
+				error: e,
+			});
 		},
 	});
 }
@@ -123,7 +182,7 @@ export function useDeleteConfigTemplateMutation() {
 		},
 		onSuccess: () => {
 			// Invalidate the 'listConfigTemplates' query to refetch the updated data
-			void queryClient.invalidateQueries({
+			void queryClient.refetchQueries({
 				queryKey: queryKeys.listConfigTemplates,
 			});
 		},

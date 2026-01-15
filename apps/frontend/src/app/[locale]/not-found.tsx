@@ -6,12 +6,12 @@ import Link from 'next/link';
 
 export default function NotFoundPage() {
 	return (
-		<main className="flex min-h-screen flex-col justify-between bg-gradient-to-br from-zinc-50 to-orange-100 px-4 sm:px-0">
+		<>
 			<NoNavHeader />
 
 			<Container className="flex flex-col justify-center text-center">
 				<div>
-					<h1 className="mb-4 text-center text-6xl font-bold">404</h1>
+					<h1 className="mb-4 text-center text-6xl font-semibold">404</h1>
 					<p className="mb-6 text-center text-xl">
 						Oopsss! The page you&apos;re looking for doesn&apos;t exist.
 					</p>
@@ -22,6 +22,6 @@ export default function NotFoundPage() {
 			</Container>
 
 			<Footer />
-		</main>
+		</>
 	);
 }

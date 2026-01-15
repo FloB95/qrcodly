@@ -1,5 +1,6 @@
 import { type HTTPMethods, type RouteShorthandOptions } from 'fastify';
 import { type ZodSchema } from 'zod';
+import { type RateLimitPolicy } from '../rate-limit/rate-limit.policy';
 
 export type HandlerName = string;
 export type Constructable<T = unknown> = new (...args: unknown[]) => T;
@@ -11,9 +12,13 @@ type Method = Lowercase<HTTPMethods>;
 
 // Define an interface for additional route options specific to your decorator
 interface CustomRouteOptions {
-	skipAuth?: boolean;
+	authHandler?: RouteOptions['preHandler'] | false;
 	bodySchema?: ZodSchema;
 	querySchema?: ZodSchema;
+	responseSchema?: Record<number, ZodSchema>;
+	config?: {
+		rateLimitPolicy?: RateLimitPolicy;
+	};
 }
 
 // Merge Fastify's RouteOptions with your custom options
@@ -25,6 +30,7 @@ export interface RouteMetadata {
 	path: string;
 	handlerName: HandlerName;
 	options: RouteOptions;
+	schema?: RouteOptions['schema'];
 }
 
 // Define a symbol to store the route metadata on the controller prototype

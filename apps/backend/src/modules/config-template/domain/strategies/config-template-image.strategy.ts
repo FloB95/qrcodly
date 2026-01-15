@@ -22,22 +22,25 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 			await this.objectStorage.upload(filePath, file.buffer, file.mimeType);
 			return filePath;
 		} catch (error) {
-			this.logger.error('Failed to upload QR code template image', error as Error);
+			this.logger.error('error.template.image.upload', { filePath, error });
 			return undefined;
 		}
 	}
 
-	async delete(imagePath?: string): Promise<void> {
-		if (!imagePath) return;
+	async delete(filePath?: string): Promise<void> {
+		if (!filePath) return;
 		const templatePathRegex = new RegExp(`^${QR_CODE_TEMPLATE_FOLDER}/`);
-		if (!templatePathRegex.test(imagePath)) {
-			this.logger.warn(`Attempted to delete image outside the template folder: ${imagePath}`);
+		if (!templatePathRegex.test(filePath)) {
+			this.logger.warn(`Attempted to delete image outside the template folder: ${filePath}`);
 			return;
 		}
 		try {
-			await this.objectStorage.delete(imagePath);
+			await this.objectStorage.delete(filePath);
 		} catch (error) {
-			this.logger.error(`Failed to delete QR code template image: ${imagePath}`, error as Error);
+			this.logger.error(`error.template.image.delete`, {
+				filePath,
+				error,
+			});
 		}
 	}
 
@@ -66,8 +69,13 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 
 			await this.objectStorage.upload(filePath, buffer, 'image/svg+xml');
 			return filePath;
-		} catch (error) {
-			this.logger.error('Failed to generate QR code preview image', error as Error);
+		} catch (error: any) {
+			this.logger.error('error.template.previewImage.create', {
+				template: {
+					id,
+				},
+				error,
+			});
 			return undefined;
 		}
 	}
