@@ -33,7 +33,7 @@ export const Hero = () => {
 	};
 
 	return (
-		<div className="mt-18 sm:mt-28 mb-14 text-center">
+		<div className="mt-16 sm:mt-20 mb-14 text-center">
 			<Badge variant="outline" className="mb-6 px-4 py-1.5 text-sm font-medium bg-white">
 				{t('badge')}
 			</Badge>
