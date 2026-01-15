@@ -104,7 +104,10 @@ const _EventSection = ({ onChange, value }: EventSectionProps) => {
 	};
 
 	const datetimeLocalToIso = (value: string) => {
-		return new Date(value).toISOString();
+		if (!value) return '';
+		const date = new Date(value);
+		if (isNaN(date.getTime())) return '';
+		return date.toISOString();
 	};
 
 	return (
@@ -206,6 +209,7 @@ const _EventSection = ({ onChange, value }: EventSectionProps) => {
 											{...field}
 											value={isoToDatetimeLocal(field.value)}
 											onChange={(e) => field.onChange(datetimeLocalToIso(e.target.value))}
+											onClick={(e) => e.currentTarget.showPicker()}
 											type="datetime-local"
 										/>
 									</FormControl>
@@ -224,6 +228,7 @@ const _EventSection = ({ onChange, value }: EventSectionProps) => {
 											{...field}
 											value={isoToDatetimeLocal(field.value)}
 											onChange={(e) => field.onChange(datetimeLocalToIso(e.target.value))}
+											onClick={(e) => e.currentTarget.showPicker()}
 											type="datetime-local"
 										/>
 									</FormControl>

@@ -114,14 +114,19 @@ export const SocialInputSchema = z.object({
 export type TSocialInput = z.infer<typeof SocialInputSchema>;
 export type TSocialPlatform = z.infer<typeof SocialPlatformEnum>;
 
-export const EventInputSchema = z.object({
-	title: z.string().min(1).max(200),
-	description: z.string().max(500).optional(),
-	location: z.string().max(200).optional(),
-	url: z.httpUrl().optional(),
-	startDate: z.iso.datetime().describe('As ISO Datetime String'),
-	endDate: z.iso.datetime().describe('As ISO Datetime String'),
-});
+export const EventInputSchema = z
+	.object({
+		title: z.string().min(1).max(200),
+		description: z.string().max(500).optional(),
+		location: z.string().max(200).optional(),
+		url: z.httpUrl().optional(),
+		startDate: z.iso.datetime().describe('As ISO Datetime String'),
+		endDate: z.iso.datetime().describe('As ISO Datetime String'),
+	})
+	.refine((data) => new Date(data.startDate) < new Date(data.endDate), {
+		message: 'End date must be after start date',
+		path: ['endDate'],
+	});
 
 export type TEventInput = z.infer<typeof EventInputSchema>;
 
