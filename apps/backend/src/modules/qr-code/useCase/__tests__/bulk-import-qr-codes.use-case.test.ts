@@ -45,6 +45,7 @@ describe('BulkImportQrCodesUseCase', () => {
 		},
 		config: QrCodeDefaults,
 		createdBy: 'user-123',
+		qrCodeData: 'https://example.com',
 		previewImage: null,
 		createdAt: new Date(),
 		updatedAt: new Date(),

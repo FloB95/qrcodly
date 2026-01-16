@@ -6,10 +6,11 @@ import { type UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/upda
 import { type Logger } from '@/core/logging';
 import { type EventEmitter } from '@/core/event';
 import { type ImageService } from '@/core/services/image.service';
+import { QrCodeDataService } from '../../service/qr-code-data.service';
 import { mock, type MockProxy } from 'jest-mock-extended';
 import { QrCodeDefaults, type TUpdateQrCodeDto } from '@shared/schemas';
 import { type TQrCode, type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
-import { type TShortUrl } from '@/modules/url-shortener/domain/entities/short-url.entity';
+import { type TShortUrlWithDomain } from '@/modules/url-shortener/domain/entities/short-url.entity';
 import { QrCodeUpdatedEvent } from '../../event/qr-code-updated.event';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 
@@ -21,6 +22,7 @@ describe('UpdateQrCodeUseCase', () => {
 	let mockLogger: MockProxy<Logger>;
 	let mockEventEmitter: MockProxy<EventEmitter>;
 	let mockImageService: MockProxy<ImageService>;
+	let mockQrCodeDataService: jest.Mocked<QrCodeDataService>;
 
 	const baseQrCode: TQrCode = {
 		id: 'qr-123',
@@ -34,15 +36,18 @@ describe('UpdateQrCodeUseCase', () => {
 		},
 		config: QrCodeDefaults,
 		createdBy: 'user-123',
+		qrCodeData: 'https://example.com',
 		previewImage: null,
 		createdAt: new Date('2024-01-01'),
 		updatedAt: new Date('2024-01-01'),
 	};
 
-	const mockShortUrl: TShortUrl = {
+	const mockShortUrl: TShortUrlWithDomain = {
 		id: 'short-123',
 		shortCode: 'abc123',
 		destinationUrl: 'https://example.com',
+		customDomainId: null,
+		customDomain: null,
 		isActive: true,
 		qrCodeId: 'qr-123',
 		createdBy: 'user-123',
@@ -57,6 +62,9 @@ describe('UpdateQrCodeUseCase', () => {
 		mockLogger = mock<Logger>();
 		mockEventEmitter = mock<EventEmitter>();
 		mockImageService = mock<ImageService>();
+		mockQrCodeDataService = {
+			computeQrCodeData: jest.fn().mockResolvedValue('https://example.com'),
+		} as unknown as jest.Mocked<QrCodeDataService>;
 
 		useCase = new UpdateQrCodeUseCase(
 			mockQrCodeRepo,
@@ -65,6 +73,7 @@ describe('UpdateQrCodeUseCase', () => {
 			mockShortUrlRepo,
 			mockUpdateShortUrlUseCase,
 			mockImageService,
+			mockQrCodeDataService,
 		);
 
 		// Default mock implementations
@@ -72,6 +81,7 @@ describe('UpdateQrCodeUseCase', () => {
 		mockQrCodeRepo.findOneById.mockResolvedValue({
 			...baseQrCode,
 			updatedAt: new Date(),
+			shortUrl: null,
 		} as TQrCodeWithRelations);
 	});
 

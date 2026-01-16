@@ -13,6 +13,7 @@ const qrCode = createTable(
 		name: varchar({ length: 255 }),
 		config: json().$type<TQrCodeOptions>().notNull(),
 		content: json().$type<TQrCodeContent>().notNull(),
+		qrCodeData: text(),
 		previewImage: text(),
 		createdBy: varchar({ length: 255 }),
 		createdAt: datetime().notNull(),

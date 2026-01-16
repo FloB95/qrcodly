@@ -90,6 +90,8 @@ export class QrCodeController extends AbstractController {
 			data: qrCodes,
 		};
 
+		console.log('qrcodes', qrCodes);
+
 		return this.makeApiHttpResponse(200, QrCodeWithRelationsPaginatedResponseDto.parse(pagination));
 	}
 

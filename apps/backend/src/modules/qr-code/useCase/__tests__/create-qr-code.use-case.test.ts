@@ -5,6 +5,7 @@ import { type Logger } from '@/core/logging';
 import { type EventEmitter } from '@/core/event';
 import { type ImageService } from '@/core/services/image.service';
 import { type ShortUrlStrategyService } from '../../service/short-url-strategy.service';
+import { QrCodeDataService } from '../../service/qr-code-data.service';
 import { mock, type MockProxy } from 'jest-mock-extended';
 import { QrCodeDefaults, type TCreateQrCodeDto } from '@shared/schemas';
 import { type TUser } from '@/core/domain/schema/UserSchema';
@@ -23,6 +24,9 @@ jest.mock('@/core/db/unit-of-work');
 // Mock CreateQrCodePolicy
 jest.mock('../../policies/create-qr-code.policy');
 
+// Mock QrCodeDataService
+jest.mock('../../service/qr-code-data.service');
+
 describe('Fastify Application Setup', () => {
 	it('simple test', () => {
 		expect(true).toBe(true);
@@ -36,6 +40,7 @@ describe('CreateQrCodeUseCase', () => {
 	let mockEventEmitter: MockProxy<EventEmitter>;
 	let mockImageService: MockProxy<ImageService>;
 	let mockShortUrlStrategy: MockProxy<ShortUrlStrategyService>;
+	let mockQrCodeDataService: jest.Mocked<QrCodeDataService>;
 	let mockPolicy: MockProxy<CreateQrCodePolicy>;
 
 	const mockUser: TUser = {
@@ -68,11 +73,12 @@ describe('CreateQrCodeUseCase', () => {
 		},
 		config: QrCodeDefaults,
 		createdBy: 'user-123',
+		qrCodeData: 'https://example.com',
 		previewImage: null,
 		createdAt: new Date(),
 		updatedAt: new Date(),
 		shortUrl: null,
-	};
+	} as TQrCodeWithRelations;
 
 	beforeEach(() => {
 		mockRepository = mock<QrCodeRepository>();
@@ -81,6 +87,9 @@ describe('CreateQrCodeUseCase', () => {
 		mockImageService = mock<ImageService>();
 		mockShortUrlStrategy = mock<ShortUrlStrategyService>();
 		mockPolicy = mock<CreateQrCodePolicy>();
+		mockQrCodeDataService = {
+			computeQrCodeData: jest.fn().mockResolvedValue('https://example.com'),
+		} as unknown as jest.Mocked<QrCodeDataService>;
 
 		useCase = new CreateQrCodeUseCase(
 			mockRepository,
@@ -88,6 +97,7 @@ describe('CreateQrCodeUseCase', () => {
 			mockEventEmitter,
 			mockImageService,
 			mockShortUrlStrategy,
+			mockQrCodeDataService,
 		);
 
 		// Mock UnitOfWork to execute the callback immediately

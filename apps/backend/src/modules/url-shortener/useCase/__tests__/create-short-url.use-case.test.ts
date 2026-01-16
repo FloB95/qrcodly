@@ -1,19 +1,22 @@
 import { CreateShortUrlUseCase } from '../create-short-url.use-case';
 import type ShortUrlRepository from '../../domain/repository/short-url.repository';
+import type CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
 import { type Logger } from '@/core/logging';
 import { mock } from 'jest-mock-extended';
-import type { TShortUrl } from '../../domain/entities/short-url.entity';
+import type { TShortUrlWithDomain } from '../../domain/entities/short-url.entity';
 import type { TCreateShortUrlDto } from '@shared/schemas';
 
 describe('CreateShortUrlUseCase', () => {
 	let useCase: CreateShortUrlUseCase;
 	let mockRepository: jest.Mocked<ShortUrlRepository>;
+	let mockCustomDomainRepository: jest.Mocked<CustomDomainRepository>;
 	let mockLogger: jest.Mocked<Logger>;
 
 	beforeEach(() => {
 		mockRepository = mock<ShortUrlRepository>();
+		mockCustomDomainRepository = mock<CustomDomainRepository>();
 		mockLogger = mock<Logger>();
-		useCase = new CreateShortUrlUseCase(mockRepository, mockLogger);
+		useCase = new CreateShortUrlUseCase(mockRepository, mockCustomDomainRepository, mockLogger);
 	});
 
 	afterEach(() => {
@@ -23,6 +26,7 @@ describe('CreateShortUrlUseCase', () => {
 	describe('execute', () => {
 		const mockDto: TCreateShortUrlDto = {
 			destinationUrl: 'https://example.com',
+			customDomainId: null,
 			isActive: true,
 		};
 
@@ -30,10 +34,12 @@ describe('CreateShortUrlUseCase', () => {
 		const mockId = 'short_url_123';
 		const mockShortCode = 'ABC12';
 
-		const mockCreatedShortUrl: TShortUrl = {
+		const mockCreatedShortUrl: TShortUrlWithDomain = {
 			id: mockId,
 			shortCode: mockShortCode,
 			destinationUrl: mockDto.destinationUrl,
+			customDomainId: null,
+			customDomain: null,
 			isActive: mockDto.isActive,
 			qrCodeId: null,
 			createdBy: mockUserId,
@@ -66,10 +72,11 @@ describe('CreateShortUrlUseCase', () => {
 		it('should create short URL with null destinationUrl for reserved URLs', async () => {
 			const reservedDto: TCreateShortUrlDto = {
 				destinationUrl: null,
+				customDomainId: null,
 				isActive: false,
 			};
 
-			const reservedShortUrl: TShortUrl = {
+			const reservedShortUrl: TShortUrlWithDomain = {
 				...mockCreatedShortUrl,
 				destinationUrl: null,
 				isActive: false,
@@ -105,9 +112,12 @@ describe('CreateShortUrlUseCase', () => {
 
 			await useCase.execute(mockDto, mockUserId);
 
-			expect(mockLogger.info).toHaveBeenCalledWith('Short URL created successfully', {
-				id: mockId,
-				createdBy: mockUserId,
+			expect(mockLogger.info).toHaveBeenCalledWith('shortUrl.created', {
+				shortUrl: {
+					id: mockId,
+					createdBy: mockUserId,
+					customDomainId: mockDto.customDomainId,
+				},
 			});
 		});
 
@@ -145,6 +155,7 @@ describe('CreateShortUrlUseCase', () => {
 				id: mockId,
 				shortCode: mockShortCode,
 				destinationUrl: mockDto.destinationUrl,
+				customDomainId: mockDto.customDomainId,
 				isActive: mockDto.isActive,
 				qrCodeId: null,
 				createdBy: mockUserId,

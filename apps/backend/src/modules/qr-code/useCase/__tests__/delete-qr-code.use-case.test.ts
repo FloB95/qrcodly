@@ -47,6 +47,7 @@ describe('DeleteQrCodeUseCase', () => {
 				...QrCodeDefaults,
 				image: 'https://example.com/image.png',
 			},
+			qrCodeData: 'https://example.com',
 			previewImage: 'https://example.com/preview.png',
 			createdBy: mockUserId,
 			createdAt: new Date(),

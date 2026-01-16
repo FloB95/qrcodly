@@ -46,6 +46,7 @@ const server = z.object({
 	UMAMI_WEBSITE: z.string(),
 	UMAMI_USERNAME: z.string(),
 	UMAMI_PASSWORD: z.string(),
+	CUSTOM_DOMAIN_CNAME_TARGET: z.string().default('custom.qrcodly.io'),
 });
 
 // Don't touch the part below

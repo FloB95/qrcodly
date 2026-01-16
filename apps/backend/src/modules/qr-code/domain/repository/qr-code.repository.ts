@@ -95,6 +95,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 				name: qrCode.name,
 				config: qrCode.config,
 				content: qrCode.content,
+				qrCodeData: qrCode.qrCodeData,
 				createdAt: new Date(),
 				createdBy: qrCode.createdBy,
 			})

@@ -8,6 +8,7 @@ export const generateShortUrlDto = (
 	overrides?: Partial<TCreateShortUrlDto>,
 ): TCreateShortUrlDto => ({
 	destinationUrl: faker.internet.url(),
+	customDomainId: null,
 	isActive: true,
 	...overrides,
 });
@@ -17,6 +18,7 @@ export const generateShortUrlDto = (
  */
 export const generateReservedShortUrlDto = (): TCreateShortUrlDto => ({
 	destinationUrl: null,
+	customDomainId: null,
 	isActive: false,
 });
 

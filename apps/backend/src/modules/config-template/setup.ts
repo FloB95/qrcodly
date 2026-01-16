@@ -9,9 +9,14 @@ import { registerRoutes } from '@/libs/fastify/helpers';
 import './event/handler';
 import { ConfigTemplateController } from './http/controller/config-template.controller';
 
-const setupConfigTemplateModule: FastifyPluginCallback = (fastify: FastifyInstance, options) => {
+const setupConfigTemplateModule: FastifyPluginCallback = (
+	fastify: FastifyInstance,
+	options,
+	done,
+) => {
 	registerRoutes(fastify, ConfigTemplateController, `/config-template`, options);
 	container.resolve(Logger).info('☑️  Config Template module loaded');
+	done();
 };
 
 export default setupConfigTemplateModule;

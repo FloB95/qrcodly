@@ -2,6 +2,7 @@
 import { UpdateShortUrlUseCase } from '../update-short-url.use-case';
 import type ShortUrlRepository from '../../domain/repository/short-url.repository';
 import type QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.repository';
+import type CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
 import { type Logger } from '@/core/logging';
 import { type EventEmitter } from '@/core/event';
 import { mock } from 'jest-mock-extended';
@@ -19,17 +20,20 @@ jest.mock('../../utils', () => ({
 describe('UpdateShortUrlUseCase', () => {
 	let useCase: UpdateShortUrlUseCase;
 	let mockShortUrlRepository: jest.Mocked<ShortUrlRepository>;
+	let mockCustomDomainRepository: jest.Mocked<CustomDomainRepository>;
 	let mockQrCodeRepository: jest.Mocked<QrCodeRepository>;
 	let mockLogger: jest.Mocked<Logger>;
 	let mockEventEmitter: jest.Mocked<EventEmitter>;
 
 	beforeEach(() => {
 		mockShortUrlRepository = mock<ShortUrlRepository>();
+		mockCustomDomainRepository = mock<CustomDomainRepository>();
 		mockQrCodeRepository = mock<QrCodeRepository>();
 		mockLogger = mock<Logger>();
 		mockEventEmitter = mock<EventEmitter>();
 		useCase = new UpdateShortUrlUseCase(
 			mockShortUrlRepository,
+			mockCustomDomainRepository,
 			mockLogger,
 			mockQrCodeRepository,
 			mockEventEmitter,
@@ -47,6 +51,7 @@ describe('UpdateShortUrlUseCase', () => {
 			id: 'short_url_123',
 			shortCode: 'ABC12',
 			destinationUrl: 'https://example.com',
+			customDomainId: null,
 			isActive: true,
 			qrCodeId: null,
 			createdBy: mockUserId,
@@ -371,9 +376,9 @@ describe('UpdateShortUrlUseCase', () => {
 			expect(result.qrCodeId).toBe(qrCodeId);
 		});
 
-		it('should not check for redirect loop when no linkedQrCodeId provided', async () => {
+		it('should not call qrCodeRepository when no linkedQrCodeId provided', async () => {
 			const updateDto: TUpdateShortUrlDto = {
-				destinationUrl: 'https://short.url/ABC12',
+				destinationUrl: 'https://new-example.com',
 			};
 
 			mockShortUrlRepository.update.mockResolvedValue();

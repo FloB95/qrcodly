@@ -2,7 +2,7 @@ import { singleton } from 'tsyringe';
 import { desc, eq } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
-import shortUrl, { TShortUrl } from '../entities/short-url.entity';
+import shortUrl, { TShortUrl, TShortUrlWithDomain } from '../entities/short-url.entity';
 
 /**
  * Repository for managing Short URL entities.
@@ -33,39 +33,48 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	}
 
 	/**
-	 * Finds a Short URL by its ID.
+	 * Finds a Short URL by its ID, including the custom domain name.
 	 * @param id - The ID of the Short URL.
 	 * @returns A promise that resolves to the Short URL if found, otherwise undefined.
 	 */
-	async findOneById(id: string): Promise<TShortUrl | undefined> {
-		const shortUrl = await this.db.query.shortUrl.findFirst({
+	async findOneById(id: string): Promise<TShortUrlWithDomain | undefined> {
+		const result = await this.db.query.shortUrl.findFirst({
 			where: eq(this.table.id, id),
+			with: {
+				customDomain: true,
+			},
 		});
-		return shortUrl;
+		return result;
 	}
 
 	/**
-	 * Finds a Short URL by its short code.
+	 * Finds a Short URL by its short code, including the custom domain name.
 	 * @param shortCode - The short code of the Short URL.
 	 * @returns A promise that resolves to the Short URL if found, otherwise undefined.
 	 */
-	async findOneByShortCode(shortCode: string): Promise<TShortUrl | undefined> {
-		const shortUrl = await this.db.query.shortUrl.findFirst({
+	async findOneByShortCode(shortCode: string): Promise<TShortUrlWithDomain | undefined> {
+		const result = await this.db.query.shortUrl.findFirst({
 			where: eq(this.table.shortCode, shortCode),
+			with: {
+				customDomain: true,
+			},
 		});
-		return shortUrl;
+		return result;
 	}
 
 	/**
-	 * Finds a Short URL by its QR code ID.
+	 * Finds a Short URL by its QR code ID, including the custom domain name.
 	 * @param qrCodeId - The QR code ID of the Short URL.
 	 * @returns A promise that resolves to the Short URL if found, otherwise undefined.
 	 */
-	async findOneByQrCodeId(qrCodeId: string): Promise<TShortUrl | undefined> {
-		const shortUrl = await this.db.query.shortUrl.findFirst({
+	async findOneByQrCodeId(qrCodeId: string): Promise<TShortUrlWithDomain | undefined> {
+		const result = await this.db.query.shortUrl.findFirst({
 			where: eq(this.table.qrCodeId, qrCodeId),
+			with: {
+				customDomain: true,
+			},
 		});
-		return shortUrl;
+		return result;
 	}
 
 	/**
@@ -100,6 +109,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 				destinationUrl: shortUrl.destinationUrl,
 				shortCode: shortUrl.shortCode,
 				isActive: shortUrl.isActive,
+				customDomainId: shortUrl.customDomainId,
 				createdAt: new Date(),
 				createdBy: shortUrl.createdBy,
 			})

@@ -1,8 +1,4 @@
-import {
-	convertQRCodeDataToStringByType,
-	convertQrCodeOptionsToLibraryOptions,
-	type TQrCode,
-} from '@shared/schemas';
+import { convertQrCodeOptionsToLibraryOptions, type TQrCode } from '@shared/schemas';
 import {
 	QR_CODE_IMAGE_FOLDER,
 	QR_CODE_PREVIEW_IMAGE_FOLDER,
@@ -10,9 +6,6 @@ import {
 } from '../../config/constants';
 import { generateQrCodeStylingInstance } from '../../lib/styled-qr-code';
 import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
-import { container } from 'tsyringe';
-import ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
-import { buildShortUrl } from '@/modules/url-shortener/utils';
 
 export class QrCodeImageStrategy extends BaseImageStrategy {
 	constructor() {
@@ -54,11 +47,14 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 	}
 
 	async generatePreview(
-		qrCode: Pick<TQrCode, 'id' | 'createdBy' | 'config' | 'content'>,
+		qrCode: Pick<TQrCode, 'id' | 'createdBy' | 'config' | 'qrCodeData'>,
 	): Promise<string | undefined> {
-		const { id, createdBy, config, content } = qrCode;
+		const { id, createdBy, config, qrCodeData } = qrCode;
 
-		const shortUrl = await container.resolve(ShortUrlRepository).findOneByQrCodeId(id);
+		if (!qrCodeData) {
+			this.logger.warn('qrCode.previewImage.noQrCodeData', { qrCodeId: id });
+			return undefined;
+		}
 
 		try {
 			const fileName = `${id}.svg`;
@@ -70,10 +66,7 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 
 			const instance = generateQrCodeStylingInstance({
 				...convertQrCodeOptionsToLibraryOptions(config),
-				data: convertQRCodeDataToStringByType(
-					content,
-					shortUrl ? buildShortUrl(shortUrl.shortCode) : undefined,
-				),
+				data: qrCodeData,
 			});
 
 			const svg = await instance.getRawData('svg');
