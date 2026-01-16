@@ -287,12 +287,16 @@ export class QrCodeController extends AbstractController {
 			throw new BadRequestError('This QR code type does not support downloading');
 		}
 
+		const rawFilename = downloadResponse.filename;
+		const asciiFilename = this.downloadService.sanitizeAsciiFilename(rawFilename);
+		const encodedFilename = this.downloadService.encodeRFC5987ValueChars(rawFilename);
+
 		return {
 			statusCode: 200,
 			data: downloadResponse.content,
 			headers: {
 				'Content-Type': downloadResponse.contentType,
-				'Content-Disposition': `attachment; filename="${downloadResponse.filename}"`,
+				'Content-Disposition': `attachment; filename="${asciiFilename}"; filename*=UTF-8''${encodedFilename}`,
 			},
 		};
 	}
