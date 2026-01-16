@@ -54,7 +54,8 @@ export const GeneratorQrCodeDownloadBtn = ({
 
 		import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
-			const options = getQrCodeStylingOptions(config, content, shortUrl);
+			// For generator (new QR codes), compute on the fly since there's no stored qrCodeData yet
+			const options = getQrCodeStylingOptions(config, content, { shortUrl });
 			const instance = new QRCodeStyling(options);
 			setQrCodeInstance(instance);
 		});
@@ -131,9 +132,11 @@ export const GeneratorQrCodeDownloadBtn = ({
 					},
 				);
 
-				// If the saved QR code has a short URL, update the instance before downloading
-				if (savedQrCode?.shortUrl) {
-					const updatedOptions = getQrCodeStylingOptions(config, content, savedQrCode.shortUrl);
+				// Update instance with the stored qrCodeData (has correct custom domain)
+				if (savedQrCode?.qrCodeData) {
+					const updatedOptions = getQrCodeStylingOptions(config, content, {
+						qrCodeData: savedQrCode.qrCodeData,
+					});
 					qrCodeInstance.update(updatedOptions);
 				}
 			} catch {

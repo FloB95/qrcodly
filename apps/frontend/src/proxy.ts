@@ -4,14 +4,37 @@ import { NextResponse } from 'next/server';
 import { processAnalyticsAndRedirect } from './middlewares/process-analytics-and-redirect.middleware';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
+import { env } from './env';
 
 const isProtectedRoute = createRouteMatcher(['(.*)/collection(.*)']);
 
 // Create the next-intl middleware
 const intlMiddleware = createMiddleware(routing);
 
+// Extract the main domain from FRONTEND_URL (e.g., "qrcodly.de" from "https://www.qrcodly.de")
+const getMainDomain = () => {
+	try {
+		const url = new URL(env.NEXT_PUBLIC_FRONTEND_URL);
+		// Remove 'www.' prefix if present and get the domain
+		return url.hostname.replace(/^www\./, '');
+	} catch {
+		return 'qrcodly.de';
+	}
+};
+
+const mainDomain = getMainDomain();
+
+// Check if the request is from a custom domain (not our main domain)
+const isCustomDomain = (host: string): boolean => {
+	if (!host) return false;
+	const cleanHost = (host.split(':')[0] ?? '').toLowerCase(); // Remove port
+	// It's a custom domain if it's not our main domain or www.main domain
+	return cleanHost !== mainDomain && cleanHost !== `www.${mainDomain}`;
+};
+
 export default clerkMiddleware(async (auth, req, event) => {
 	const pathname = new URL(req.url).pathname;
+	const host = req.headers.get('host') || '';
 
 	if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
 		return NextResponse.next();
@@ -24,10 +47,18 @@ export default clerkMiddleware(async (auth, req, event) => {
 	// Handle protected routes
 	if (isProtectedRoute(req)) await auth.protect();
 
-	// Handle analytics for specific routes
-	const urlPattern = /^\/u\/[a-z0-9]{5}$/;
-	if (urlPattern.test(pathname)) {
+	// Handle short URL redirects
+	// Pattern 1: Standard route /u/{shortCode} on main domain
+	const standardUrlPattern = /^\/u\/[a-z0-9]{5}$/;
+	if (standardUrlPattern.test(pathname)) {
 		return await processAnalyticsAndRedirect(req);
+	}
+
+	// Pattern 2: Custom domain route /{shortCode} (root-level short code)
+	// Only applies if host is a custom domain (not qrcodly.de)
+	const customDomainUrlPattern = /^\/[a-z0-9]{5}$/;
+	if (isCustomDomain(host) && customDomainUrlPattern.test(pathname)) {
+		return await processAnalyticsAndRedirect(req, host);
 	}
 
 	// Internationalization Middleware (exclude sitemap & api)

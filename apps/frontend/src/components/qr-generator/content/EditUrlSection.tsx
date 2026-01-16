@@ -11,7 +11,7 @@ import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
 import { ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
-import { getShortUrlFromCode } from '@/lib/utils';
+import { createLinkFromShortUrl } from '@/lib/utils';
 
 type FormValues = TUrlInput;
 
@@ -41,7 +41,7 @@ const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		const payload = {
 			...values,
 			url: originalUrl,
-			shortUrl: shortUrl ? getShortUrlFromCode(shortUrl.shortCode) : null,
+			shortUrl: shortUrl ? createLinkFromShortUrl(shortUrl) : null,
 		};
 
 		onChange(payload);
@@ -97,7 +97,7 @@ const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 									<div className="-mt-1 ml-6 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
 										<ArrowTurnLeftUpIcon className="-mt-2 mr-2 h-6 w-6 font-semibold" />
 										<span className="text-muted-foreground pt-1 text-sm">
-											{getShortUrlFromCode(shortUrl.shortCode)}
+											{createLinkFromShortUrl(shortUrl)}
 										</span>
 									</div>
 								)}

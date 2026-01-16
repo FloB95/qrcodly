@@ -7,6 +7,7 @@ export const ShortUrlSchema = AbstractEntitySchema.extend({
 	shortCode: ShortCodeSchema,
 	destinationUrl: z.url().nullable(),
 	qrCodeId: z.uuid().nullable(),
+	customDomainId: z.uuid().nullable().default(null),
 	isActive: z.boolean(),
 	createdBy: z.string(),
 });

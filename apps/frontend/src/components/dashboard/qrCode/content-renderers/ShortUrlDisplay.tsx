@@ -2,22 +2,27 @@
 
 import { ArrowTurnDownRightIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { getShortUrlFromCode } from '@/lib/utils';
+import { useShortUrlLink } from '@/hooks/use-short-url-link';
+import type { TShortUrlResponseDto } from '@shared/schemas';
 
 interface ShortUrlDisplayProps {
-	shortCode: string;
+	shortUrl: TShortUrlResponseDto;
 	destinationUrl?: string | null;
 	destinationContent?: React.ReactNode;
 	className?: string;
 }
 
 export const ShortUrlDisplay = ({
-	shortCode,
+	shortUrl: shortUrlData,
 	destinationUrl,
 	destinationContent,
 	className = 'text-muted-foreground',
 }: ShortUrlDisplayProps) => {
-	const shortUrl = getShortUrlFromCode(shortCode);
+	const { link: shortUrl, isLoading } = useShortUrlLink(shortUrlData);
+
+	if (!shortUrl || isLoading) {
+		return <div className={className}>Loading...</div>;
+	}
 
 	return (
 		<div>
