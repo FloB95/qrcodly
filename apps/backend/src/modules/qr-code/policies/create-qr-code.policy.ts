@@ -3,7 +3,7 @@ import { type TUser } from '@/core/domain/schema/UserSchema';
 import { UnauthorizedError } from '@/core/error/http';
 import { PlanLimitExceededError } from '@/core/error/http/plan-limit-exceeded.error';
 import { AbstractPolicy } from '@/core/policies/abstract.policy';
-import { type TQrCodeContentType, type TCreateQrCodeDto } from '@shared/schemas';
+import { isDynamic, type TQrCodeContentType, type TCreateQrCodeDto } from '@shared/schemas';
 
 export class CreateQrCodePolicy extends AbstractPolicy {
 	private limitsByQrCodeType: Record<PlanName, Partial<Record<TQrCodeContentType, number | null>>> =
@@ -21,6 +21,11 @@ export class CreateQrCodePolicy extends AbstractPolicy {
 	}
 
 	async checkAccess(): Promise<true> {
+		// Dynamic QR codes require authentication (they need short URL linking)
+		if (isDynamic(this.dto.content) && !this.user) {
+			throw new UnauthorizedError('You need to be logged in to create dynamic QR codes');
+		}
+
 		const limit = this.limitsByQrCodeType[this.user?.plan ?? 'free']?.[this.dto.content.type];
 
 		// if no limits set allow access

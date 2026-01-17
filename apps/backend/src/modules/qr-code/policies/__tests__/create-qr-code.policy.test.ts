@@ -209,6 +209,74 @@ describe('CreateQrCodePolicy', () => {
 			expect(result).toBe(true);
 		});
 
+		it('should throw UnauthorizedError for editable URL without user', async () => {
+			const dto: TCreateQrCodeDto = {
+				...mockDto,
+				content: {
+					type: 'url',
+					data: {
+						url: 'https://example.com',
+						isEditable: true,
+					},
+				},
+			};
+			const policy = createPolicy(undefined, dto);
+
+			await expect(policy.checkAccess()).rejects.toThrow(UnauthorizedError);
+			await expect(policy.checkAccess()).rejects.toThrow('dynamic QR codes');
+		});
+
+		it('should throw UnauthorizedError for dynamic vCard without user', async () => {
+			const dto: TCreateQrCodeDto = {
+				...mockDto,
+				content: {
+					type: 'vCard',
+					data: {
+						firstName: 'John',
+						isDynamic: true,
+					},
+				},
+			};
+			const policy = createPolicy(undefined, dto);
+
+			await expect(policy.checkAccess()).rejects.toThrow(UnauthorizedError);
+			await expect(policy.checkAccess()).rejects.toThrow('dynamic QR codes');
+		});
+
+		it('should throw UnauthorizedError for event without user', async () => {
+			const dto: TCreateQrCodeDto = {
+				...mockDto,
+				content: {
+					type: 'event',
+					data: {
+						title: 'Event',
+						startDate: new Date('2026-01-01').toISOString(),
+						endDate: new Date('2026-01-02').toISOString(),
+					},
+				},
+			};
+			const policy = createPolicy(undefined, dto);
+
+			await expect(policy.checkAccess()).rejects.toThrow(UnauthorizedError);
+			await expect(policy.checkAccess()).rejects.toThrow('dynamic QR codes');
+		});
+
+		it('should throw UnauthorizedError for static URL without user when limit exists', async () => {
+			const dto: TCreateQrCodeDto = {
+				...mockDto,
+				content: {
+					type: 'url',
+					data: {
+						url: 'https://example.com',
+						isEditable: false,
+					},
+				},
+			};
+			const policy = createPolicy(undefined, dto);
+
+			await expect(policy.checkAccess()).rejects.toThrow(UnauthorizedError);
+		});
+
 		it('should call usageService.count() with correct key', async () => {
 			mockUsageService.count.mockResolvedValue(5);
 			const policy = createPolicy(mockUser, mockDto);

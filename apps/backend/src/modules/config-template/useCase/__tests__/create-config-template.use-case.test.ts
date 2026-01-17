@@ -133,9 +133,11 @@ describe('CreateConfigTemplateUseCase', () => {
 		it('should log successful creation', async () => {
 			await useCase.execute(mockDto, 'user-123');
 
-			expect(mockLogger.info).toHaveBeenCalledWith('Config Template created successfully', {
-				id: 'template-123',
-				createdBy: 'user-123',
+			expect(mockLogger.info).toHaveBeenCalledWith('template.created', {
+				template: {
+					id: 'template-123',
+					createdBy: 'user-123',
+				},
 			});
 		});
 

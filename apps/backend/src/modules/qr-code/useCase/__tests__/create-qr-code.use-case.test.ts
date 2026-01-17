@@ -5,7 +5,7 @@ import { type Logger } from '@/core/logging';
 import { type EventEmitter } from '@/core/event';
 import { type ImageService } from '@/core/services/image.service';
 import { type ShortUrlStrategyService } from '../../service/short-url-strategy.service';
-import { QrCodeDataService } from '../../service/qr-code-data.service';
+import { type QrCodeDataService } from '../../service/qr-code-data.service';
 import { mock, type MockProxy } from 'jest-mock-extended';
 import { QrCodeDefaults, type TCreateQrCodeDto } from '@shared/schemas';
 import { type TUser } from '@/core/domain/schema/UserSchema';
@@ -228,9 +228,11 @@ describe('CreateQrCodeUseCase', () => {
 		it('should log successful creation with id and createdBy', async () => {
 			await useCase.execute(mockQrCodeDto, mockUser);
 
-			expect(mockLogger.info).toHaveBeenCalledWith('QR code created successfully', {
-				id: 'qr-123',
-				createdBy: 'user-123',
+			expect(mockLogger.info).toHaveBeenCalledWith('qrCode.created', {
+				qrCode: {
+					id: 'qr-123',
+					createdBy: 'user-123',
+				},
 			});
 		});
 
@@ -315,7 +317,7 @@ describe('CreateQrCodeUseCase', () => {
 
 			await expect(useCase.execute(mockQrCodeDto, mockUser)).rejects.toThrow();
 
-			expect(mockLogger.error).toHaveBeenCalledWith('Failed to create QR code within transaction', {
+			expect(mockLogger.error).toHaveBeenCalledWith('qrCode.created.error', {
 				error,
 			});
 		});

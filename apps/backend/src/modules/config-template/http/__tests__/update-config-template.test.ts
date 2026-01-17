@@ -7,6 +7,8 @@ import {
 	type TConfigTemplateResponseDto,
 	type TCreateConfigTemplateDto,
 } from '@shared/schemas';
+import { container } from 'tsyringe';
+import ConfigTemplateRepository from '../../domain/repository/config-template.repository';
 
 const CONFIG_TEMPLATE_API_PATH = `${API_BASE_PATH}/config-template`;
 
@@ -118,6 +120,33 @@ describe('updateConfigTemplate', () => {
 			const updatedTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
 			expect(updatedTemplate.name).toBe('New Name');
 			expect(updatedTemplate.config.width).toBe(600);
+		});
+
+		it('should not be able to update isPredefined', async () => {
+			const createDto = generateConfigTemplateDto();
+			const createResponse = await createConfigTemplateRequest(createDto, accessToken);
+			const createdTemplate = JSON.parse(createResponse.payload) as TConfigTemplateResponseDto;
+
+			const updateDto = {
+				name: 'New Name',
+				isPredefined: true,
+			};
+
+			const response = await updateConfigTemplateRequest(
+				createdTemplate.id,
+				updateDto,
+				accessToken,
+			);
+
+			expect(response.statusCode).toBe(200);
+			const updatedTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
+			expect(updatedTemplate.name).toBe('New Name');
+
+			const configTemplate = await container
+				.resolve(ConfigTemplateRepository)
+				.findOneById(updatedTemplate.id);
+
+			expect(configTemplate?.isPredefined).toBe(false);
 		});
 
 		it('should return 401 when not authenticated', async () => {

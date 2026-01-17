@@ -1,5 +1,66 @@
 import { faker } from '@faker-js/faker';
 import { QrCodeDefaults, type TCreateQrCodeDto } from '@shared/schemas';
+import { API_BASE_PATH } from '@/core/config/constants';
+import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import type { FastifyInstance } from 'fastify';
+
+export const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
+
+export interface TestContext {
+	testServer: FastifyInstance;
+	accessToken: string;
+	accessToken2: string;
+}
+
+let sharedContext: TestContext | null = null;
+let refCount = 0;
+
+/**
+ * Gets or creates a shared test context. Uses reference counting to manage lifecycle.
+ * Call releaseTestContext() in afterAll to properly clean up.
+ */
+export const getTestContext = async (): Promise<TestContext> => {
+	if (!sharedContext) {
+		const serverSetup = await getTestServerWithUserAuth();
+		sharedContext = {
+			testServer: serverSetup.testServer,
+			accessToken: serverSetup.accessToken,
+			accessToken2: serverSetup.accessToken2,
+		};
+	}
+	refCount++;
+	return sharedContext;
+};
+
+/**
+ * Releases the test context. When all references are released, shuts down the server.
+ */
+export const releaseTestContext = async (): Promise<void> => {
+	refCount--;
+	if (refCount <= 0 && sharedContext) {
+		await shutDownServer();
+		sharedContext = null;
+		refCount = 0;
+	}
+};
+
+/**
+ * Helper to create a QR code request.
+ */
+export const createQrCodeRequest = async (
+	testServer: FastifyInstance,
+	payload?: TCreateQrCodeDto,
+	token?: string,
+) =>
+	testServer.inject({
+		method: 'POST',
+		url: QR_CODE_API_PATH,
+		payload,
+		headers: {
+			'Content-Type': 'application/json',
+			...(token && { Authorization: `Bearer ${token}` }),
+		},
+	});
 
 /**
  * Generates a new random QR code DTO.
@@ -19,20 +80,25 @@ export const generateQrCodeDto = (): TCreateQrCodeDto => ({
 /**
  * Generates an event QR code DTO.
  */
-export const generateEventQrCodeDto = (): TCreateQrCodeDto => ({
-	name: faker.lorem.words(3),
-	content: {
-		type: 'event',
-		data: {
-			title: faker.lorem.words(5),
-			location: faker.location.city(),
-			startDate: faker.date.future().toISOString(),
-			endDate: faker.date.future().toISOString(),
-			description: faker.lorem.sentence(),
+export const generateEventQrCodeDto = (): TCreateQrCodeDto => {
+	const startDate = faker.date.future();
+	const endDate = faker.date.future({ refDate: startDate });
+
+	return {
+		name: faker.lorem.words(3),
+		content: {
+			type: 'event',
+			data: {
+				title: faker.lorem.words(5),
+				location: faker.location.city(),
+				startDate: startDate.toISOString(),
+				endDate: endDate.toISOString(),
+				description: faker.lorem.sentence(),
+			},
 		},
-	},
-	config: QrCodeDefaults,
-});
+		config: QrCodeDefaults,
+	};
+};
 
 /**
  * Generates a WiFi QR code DTO.

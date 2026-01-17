@@ -62,6 +62,10 @@ export class KeyCache implements IKeyCache {
 		this.client.disconnect();
 	}
 
+	async flushAllCache(): Promise<void> {
+		await this.client.flushdb();
+	}
+
 	status() {
 		return this.client.status;
 	}

@@ -6,7 +6,7 @@ import { type UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/upda
 import { type Logger } from '@/core/logging';
 import { type EventEmitter } from '@/core/event';
 import { type ImageService } from '@/core/services/image.service';
-import { QrCodeDataService } from '../../service/qr-code-data.service';
+import { type QrCodeDataService } from '../../service/qr-code-data.service';
 import { mock, type MockProxy } from 'jest-mock-extended';
 import { QrCodeDefaults, type TUpdateQrCodeDto } from '@shared/schemas';
 import { type TQrCode, type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
@@ -420,10 +420,12 @@ describe('UpdateQrCodeUseCase', () => {
 
 			await useCase.execute(baseQrCode, updates, 'user-123');
 
-			expect(mockLogger.info).toHaveBeenCalledWith('QR code updated successfully', {
-				id: 'qr-123',
-				updates: expect.any(Object), // objDiff returns complex object with oldValue/newValue
-				updatedBy: 'user-123',
+			expect(mockLogger.info).toHaveBeenCalledWith('qrCode.updated', {
+				qrCode: {
+					id: 'qr-123',
+					updates: expect.any(Object),
+					updatedBy: 'user-123',
+				},
 			});
 		});
 
@@ -447,13 +449,11 @@ describe('UpdateQrCodeUseCase', () => {
 
 			await useCase.execute(baseQrCode, updates, 'user-123');
 
-			expect(mockLogger.info).toHaveBeenCalledWith(
-				'QR code updated successfully',
+			const logCall = (mockLogger.info as jest.Mock).mock.calls[0][1];
+			expect(logCall.qrCode.updates).not.toEqual(
 				expect.objectContaining({
-					updates: expect.not.objectContaining({
-						id: expect.anything(),
-						createdAt: expect.anything(),
-					}),
+					id: expect.anything(),
+					createdAt: expect.anything(),
 				}),
 			);
 		});
