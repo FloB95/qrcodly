@@ -53,7 +53,7 @@ const tiers: Tier[] = [
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
 	const { isAuthenticated, has } = await auth();
-	const hasProPlan = has({ plan: 'pro_user' });
+	const hasProPlan = has({ plan: 'pro' });
 
 	return (
 		<>

@@ -18,30 +18,26 @@ export default async function Page({ params }: DefaultPageParams) {
 
 	return (
 		<ApiKeyProvider userId={user.id}>
-			<div className="px-4 lg:px-6">
-				<Card className="@container/card">
-					<CardContent className="relative">
-						<div className="flex items-center justify-between gap-3">
-							<div className="flex items-center gap-3">
-								<div className="p-3 bg-primary/10 rounded-lg">
-									<CodeBracketIcon className="size-8 stroke-1" />
-								</div>
-								<div>
-									<CardTitle className="mb-0.5">{t('title')}</CardTitle>
-									<CardDescription>
-										<div>{t('description')}</div>
-									</CardDescription>
-								</div>
+			<Card className="@container/card">
+				<CardContent className="relative">
+					<div className="flex items-center justify-between gap-3">
+						<div className="flex items-center gap-3">
+							<div className="p-3 bg-primary/10 rounded-lg">
+								<CodeBracketIcon className="size-8 stroke-1" />
 							</div>
-							<CreateApiKeyDialog />
+							<div>
+								<CardTitle className="mb-0.5">{t('title')}</CardTitle>
+								<CardDescription>
+									<div>{t('description')}</div>
+								</CardDescription>
+							</div>
 						</div>
-					</CardContent>
-				</Card>
-			</div>
+						<CreateApiKeyDialog />
+					</div>
+				</CardContent>
+			</Card>
 
-			<div className="px-4 lg:px-6">
-				<ApiKeyList />
-			</div>
+			<ApiKeyList />
 		</ApiKeyProvider>
 	);
 }
