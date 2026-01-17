@@ -55,9 +55,6 @@ export default async function Page({ params }: DefaultPageParams) {
 	const { isAuthenticated, has } = await auth();
 	const hasProPlan = has({ plan: 'pro_user' });
 
-	// temporary disable this page
-	if (1 === 1) notFound();
-
 	return (
 		<>
 			<Header />

@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { ColorPicker } from './ColorPicker';
 import { svgToBase64 } from '@/lib/utils';
 import type { TColorOrGradient } from '@shared/schemas';
+import { Input } from '@/components/ui/input';
 
 /* ------------------------------------------------------------------ */
 /* Custom Social Icons                                                 */
@@ -187,12 +188,12 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 				<DialogDescription>{t('dialogDescription')}</DialogDescription>
 
 				<div className="mt-4 flex space-x-4">
-					<input
+					<Input
 						type="text"
 						placeholder={t('searchPlaceholder')}
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
-						className="w-full rounded border p-2"
+						className=" p-2"
 						autoFocus={false}
 					/>
 

@@ -33,6 +33,9 @@ describe('createQrCode - Text Content Type', () => {
 		expect(receivedQrCode.content.type).toBe('text');
 		expect(receivedQrCode.content.data).toBe(createQrCodeDto.content.data);
 		expect(receivedQrCode.shortUrl).toBeNull();
+
+		// Verify qrCodeData contains the raw text for text QR codes
+		expect(receivedQrCode.qrCodeData).toBe(createQrCodeDto.content.data);
 	});
 
 	it('should reject empty text', async () => {

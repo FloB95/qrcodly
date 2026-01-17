@@ -41,6 +41,17 @@ describe('createQrCode - vCard Content Type', () => {
 			expect(receivedQrCode.content.data.isDynamic).toBeUndefined();
 		}
 		expect(receivedQrCode.shortUrl).toBeNull();
+
+		// Verify qrCodeData contains VCF format for static vCard
+		expect(receivedQrCode.qrCodeData).toContain('BEGIN:VCARD');
+		expect(receivedQrCode.qrCodeData).toContain('VERSION:3.0');
+		expect(receivedQrCode.qrCodeData).toContain('END:VCARD');
+		if (createQrCodeDto.content.type === 'vCard') {
+			// Verify name field is included (N:{lastName};{firstName})
+			expect(receivedQrCode.qrCodeData).toContain(
+				`N:${createQrCodeDto.content.data.lastName};${createQrCodeDto.content.data.firstName}`,
+			);
+		}
 	});
 
 	it('should create a dynamic vCard QR code (isDynamic: true)', async () => {
@@ -57,6 +68,10 @@ describe('createQrCode - vCard Content Type', () => {
 		expect(receivedQrCode.shortUrl?.shortCode).toEqual(expect.any(String));
 		expect(receivedQrCode.shortUrl?.destinationUrl).toContain(receivedQrCode.id);
 		expect(receivedQrCode.shortUrl?.isActive).toBe(true);
+
+		// Verify qrCodeData contains the short URL for dynamic vCard
+		expect(receivedQrCode.qrCodeData).toContain('/u/');
+		expect(receivedQrCode.qrCodeData).toContain(receivedQrCode.shortUrl?.shortCode);
 	});
 
 	it('should validate email format in vCard', async () => {

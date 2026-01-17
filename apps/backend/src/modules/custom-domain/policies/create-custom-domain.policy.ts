@@ -15,20 +15,12 @@ export class CreateCustomDomainPolicy extends AbstractPolicy {
 	}
 
 	checkAccess(): true {
-		// User must be authenticated
 		if (!this.user) {
 			throw new UnauthorizedError('You need to be logged in to add custom domains.');
 		}
 
 		const limit = this.limits[this.user.plan ?? 'free'];
-
-		// If limit is 0, custom domains are not available for this plan
-		if (limit === 0) {
-			throw new PlanLimitExceededError('custom domain', limit);
-		}
-
-		// Check if user has reached their limit
-		if (this.currentDomainCount >= limit) {
+		if (limit === 0 || this.currentDomainCount >= limit) {
 			throw new PlanLimitExceededError('custom domain', limit);
 		}
 

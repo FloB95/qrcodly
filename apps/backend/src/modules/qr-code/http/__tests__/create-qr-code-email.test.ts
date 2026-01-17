@@ -37,6 +37,13 @@ describe('createQrCode - Email Content Type', () => {
 			expect(receivedQrCode.content.data.body).toBe(createQrCodeDto.content.data.body);
 		}
 		expect(receivedQrCode.shortUrl).toBeNull();
+
+		// Verify qrCodeData contains mailto format
+		if (createQrCodeDto.content.type === 'email') {
+			const { email, subject, body } = createQrCodeDto.content.data;
+			const expectedMailto = `mailto:${email}?subject=${encodeURIComponent(subject ?? '')}&body=${encodeURIComponent(body ?? '')}`;
+			expect(receivedQrCode.qrCodeData).toBe(expectedMailto);
+		}
 	});
 
 	it('should validate email format', async () => {
@@ -112,5 +119,9 @@ describe('createQrCode - Email Content Type', () => {
 		};
 		const response = await createRequest(minimalEmailDto, accessToken);
 		expect(response.statusCode).toBe(201);
+
+		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
+		// Verify qrCodeData for email-only (no subject/body)
+		expect(receivedQrCode.qrCodeData).toBe('mailto:test@example.com?subject=&body=');
 	});
 });

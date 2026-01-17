@@ -63,9 +63,9 @@ export default function Header({
 						>
 							Docs
 						</Link>
-						{/* <Link href="/plans" className="hidden sm:block h-10 px-2 py-2">
+						<Link href="/plans" className="hidden sm:block h-10 px-2 py-2">
 							Plans
-						</Link> */}
+						</Link>
 						<SignedOut>
 							<SignInButton>
 								<Button>{t('signInBtn')}</Button>
@@ -144,17 +144,17 @@ export default function Header({
 						initial="hidden"
 						animate={mobileMenuOpen ? 'visible' : 'hidden'}
 					>
-						{/* <motion.div variants={itemVariants}>
+						<motion.div variants={itemVariants}>
 							<Link
-								href="/plan"
+								href="/plans"
 								className={buttonVariants({
 									variant: 'ghost',
 									className: 'w-full justify-start text-foreground font-semibold',
 								})}
 							>
-								Plan
+								Plans
 							</Link>
-						</motion.div> */}
+						</motion.div>
 						<motion.div variants={itemVariants}>
 							<Link
 								href="/docs"

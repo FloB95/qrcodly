@@ -44,6 +44,10 @@ describe('createQrCode - Event Content Type', () => {
 		expect(receivedQrCode.shortUrl?.shortCode).toEqual(expect.any(String));
 		expect(receivedQrCode.shortUrl?.destinationUrl).toContain(receivedQrCode.id);
 		expect(receivedQrCode.shortUrl?.isActive).toBe(true);
+
+		// Verify qrCodeData contains the short URL for event (always dynamic)
+		expect(receivedQrCode.qrCodeData).toContain('/u/');
+		expect(receivedQrCode.qrCodeData).toContain(receivedQrCode.shortUrl?.shortCode);
 	});
 
 	it('should validate date format for event', async () => {

@@ -256,12 +256,6 @@ export const QrCodeSchema = AbstractEntitySchema.extend({
 	name: z.string().max(32).nullable(),
 	config: QrCodeOptionsSchema,
 	content: QrCodeContent,
-	/**
-	 * The actual data string encoded in the QR code.
-	 * For dynamic/editable content, this is the full short URL (with custom domain if set).
-	 * For static content, this is the raw content (text, vCard string, etc.).
-	 * Computed and stored at creation/update time.
-	 */
 	qrCodeData: z.string().nullable(),
 	previewImage: z.string().nullable(),
 	createdBy: z.string().nullable(),

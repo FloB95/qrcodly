@@ -10,6 +10,7 @@ export interface TestContext {
 	testServer: FastifyInstance;
 	accessToken: string;
 	accessToken2: string;
+	accessTokenPro: string;
 }
 
 let sharedContext: TestContext | null = null;
@@ -26,6 +27,7 @@ export const getTestContext = async (): Promise<TestContext> => {
 			testServer: serverSetup.testServer,
 			accessToken: serverSetup.accessToken,
 			accessToken2: serverSetup.accessToken2,
+			accessTokenPro: serverSetup.accessTokenPro,
 		};
 	}
 	refCount++;

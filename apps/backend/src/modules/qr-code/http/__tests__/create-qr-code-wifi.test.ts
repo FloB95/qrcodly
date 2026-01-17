@@ -35,6 +35,12 @@ describe('createQrCode - WiFi Content Type', () => {
 			expect(receivedQrCode.content.data.encryption).toBe('WPA');
 		}
 		expect(receivedQrCode.shortUrl).toBeNull();
+
+		// Verify qrCodeData contains WiFi string format: WIFI:T:{encryption};S:{ssid};P:{password};;
+		if (createQrCodeDto.content.type === 'wifi') {
+			const { ssid, password, encryption } = createQrCodeDto.content.data;
+			expect(receivedQrCode.qrCodeData).toBe(`WIFI:T:${encryption};S:${ssid};P:${password};;`);
+		}
 	});
 
 	it('should create a WiFi QR code with WEP encryption', async () => {
@@ -57,6 +63,9 @@ describe('createQrCode - WiFi Content Type', () => {
 		if (receivedQrCode.content.type === 'wifi') {
 			expect(receivedQrCode.content.data.encryption).toBe('WEP');
 		}
+
+		// Verify qrCodeData format for WEP encryption
+		expect(receivedQrCode.qrCodeData).toBe('WIFI:T:WEP;S:test-network;P:test-password;;');
 	});
 
 	it('should create a WiFi QR code without encryption', async () => {
@@ -78,6 +87,9 @@ describe('createQrCode - WiFi Content Type', () => {
 		if (receivedQrCode.content.type === 'wifi') {
 			expect(receivedQrCode.content.data.encryption).toBe('nopass');
 		}
+
+		// Verify qrCodeData format for open network (no password)
+		expect(receivedQrCode.qrCodeData).toBe('WIFI:T:nopass;S:open-network;P:;;');
 	});
 
 	it('should reject empty SSID', async () => {

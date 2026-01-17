@@ -37,6 +37,13 @@ describe('createQrCode - Location Content Type', () => {
 			expect(receivedQrCode.content.data.address).toBe(createQrCodeDto.content.data.address);
 		}
 		expect(receivedQrCode.shortUrl).toBeNull();
+
+		// Verify qrCodeData contains geo format for location with coordinates
+		if (createQrCodeDto.content.type === 'location') {
+			const { latitude, longitude, address } = createQrCodeDto.content.data;
+			const expectedGeo = `geo:${latitude},${longitude}?q=${encodeURIComponent(address)}`;
+			expect(receivedQrCode.qrCodeData).toBe(expectedGeo);
+		}
 	});
 
 	it('should validate latitude range (-90 to 90) - above max', async () => {
@@ -147,5 +154,10 @@ describe('createQrCode - Location Content Type', () => {
 		};
 		const response = await createRequest(addressOnlyDto, accessToken);
 		expect(response.statusCode).toBe(201);
+
+		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
+		// Verify qrCodeData contains Google Maps URL for address-only location
+		const expectedUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('123 Main St, City, Country')}`;
+		expect(receivedQrCode.qrCodeData).toBe(expectedUrl);
 	});
 });

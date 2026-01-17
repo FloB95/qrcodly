@@ -68,7 +68,7 @@ export const fastifyErrorHandler = (
 			responsePayload.fieldErrors = mergedErrors;
 		}
 
-		logger.error(`CustomApiError`, {
+		logger.error('CustomApiError', {
 			request: createRequestLogObject(_request),
 			error: {
 				type: error.constructor.name,

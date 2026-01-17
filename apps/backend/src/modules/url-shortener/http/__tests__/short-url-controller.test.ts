@@ -212,6 +212,47 @@ describe('ShortUrlController', () => {
 			);
 			expect(response.statusCode).toBe(400);
 		});
+
+		it('should return 400 when destinationUrl creates redirect loop (points to itself)', async () => {
+			const reserveResponse = await testServer.inject({
+				method: 'GET',
+				url: `${SHORT_URL_API_PATH}/reserved`,
+				headers: { Authorization: `Bearer ${accessToken}` },
+			});
+			const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
+
+			// Construct self-referencing URL (same format as buildShortUrl)
+			const selfReferencingUrl = `http://localhost:3000/u/${shortUrl.shortCode}`;
+
+			const response = await updateShortUrlRequest(
+				shortUrl.shortCode,
+				{ destinationUrl: selfReferencingUrl },
+				accessToken,
+			);
+
+			expect(response.statusCode).toBe(400);
+			const error = JSON.parse(response.payload);
+			expect(error.message).toContain('destination URL is not allowed');
+		});
+
+		it('should allow update when destinationUrl is different from own short URL', async () => {
+			const reserveResponse = await testServer.inject({
+				method: 'GET',
+				url: `${SHORT_URL_API_PATH}/reserved`,
+				headers: { Authorization: `Bearer ${accessToken}` },
+			});
+			const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
+
+			const response = await updateShortUrlRequest(
+				shortUrl.shortCode,
+				{ destinationUrl: 'https://completely-different-site.com' },
+				accessToken,
+			);
+
+			expect(response.statusCode).toBe(200);
+			const updated = JSON.parse(response.payload) as TShortUrlResponseDto;
+			expect(updated.destinationUrl).toBe('https://completely-different-site.com');
+		});
 	});
 
 	describe('POST /:shortCode/toggle-active-state', () => {

@@ -36,6 +36,11 @@ describe('createQrCode - URL Content Type', () => {
 			expect(receivedQrCode.content.data.isEditable).toBe(false);
 		}
 		expect(receivedQrCode.shortUrl).toBeNull();
+
+		// Verify qrCodeData contains the raw URL for static URL QR codes
+		if (createQrCodeDto.content.type === 'url') {
+			expect(receivedQrCode.qrCodeData).toBe(createQrCodeDto.content.data.url);
+		}
 	});
 
 	it('should create a dynamic URL QR code (isEditable: true)', async () => {
@@ -54,6 +59,10 @@ describe('createQrCode - URL Content Type', () => {
 			expect(receivedQrCode.shortUrl?.destinationUrl).toBe(createQrCodeDto.content.data.url);
 		}
 		expect(receivedQrCode.shortUrl?.isActive).toBe(true);
+
+		// Verify qrCodeData contains the short URL for dynamic URL QR codes
+		expect(receivedQrCode.qrCodeData).toContain('/u/');
+		expect(receivedQrCode.qrCodeData).toContain(receivedQrCode.shortUrl?.shortCode);
 	});
 
 	it('should validate URL format', async () => {

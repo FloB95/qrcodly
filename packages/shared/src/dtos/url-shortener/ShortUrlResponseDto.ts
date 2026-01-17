@@ -11,7 +11,7 @@ export type TShortUrlResponseDto = z.infer<typeof ShortUrlResponseDto>;
 export const ShortUrlWithCustomDomainResponseDto = ShortUrlSchema.omit({
 	customDomainId: true,
 }).extend({
-	customDomain: CustomDomainResponseDto,
+	customDomain: CustomDomainResponseDto.nullable(),
 });
 export type TShortUrlWithCustomDomainResponseDto = z.infer<
 	typeof ShortUrlWithCustomDomainResponseDto

@@ -159,14 +159,17 @@ describe('UpdateShortUrlUseCase', () => {
 
 			await useCase.execute(mockShortUrl, updateDto, mockUserId);
 
-			expect(mockLogger.info).toHaveBeenCalledWith('Short URL updated successfully', {
-				id: mockShortUrl.id,
-				qrCodeId: mockShortUrl.qrCodeId,
-				updates: expect.objectContaining({
-					destinationUrl: updateDto.destinationUrl,
-					updatedAt: expect.any(Date),
-				}),
-				updatedBy: mockUserId,
+			expect(mockLogger.info).toHaveBeenCalledWith('shortUrl.updated', {
+				shortUrl: {
+					id: mockShortUrl.id,
+					qrCodeId: mockShortUrl.qrCodeId,
+					customDomainId: mockShortUrl.customDomainId,
+					updates: expect.objectContaining({
+						destinationUrl: updateDto.destinationUrl,
+						updatedAt: expect.any(Date),
+					}),
+					updatedBy: mockUserId,
+				},
 			});
 		});
 
@@ -197,7 +200,7 @@ describe('UpdateShortUrlUseCase', () => {
 
 		it('should allow update when QR code type is not url', async () => {
 			const updateDto: TUpdateShortUrlDto = {
-				destinationUrl: 'https://short.url/ABC12',
+				destinationUrl: 'https://example.com/event-page',
 			};
 
 			const qrCodeId = 'qr_code_123';
