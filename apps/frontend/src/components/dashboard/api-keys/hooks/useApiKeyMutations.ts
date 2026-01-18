@@ -2,6 +2,8 @@
 
 import { useClerk } from '@clerk/nextjs';
 import { useState } from 'react';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 
 export function useApiKeyMutations(apiKeyId: string) {
 	const clerk = useClerk();
@@ -11,6 +13,11 @@ export function useApiKeyMutations(apiKeyId: string) {
 		try {
 			setIsRevoking(true);
 			await clerk.apiKeys.revoke({ apiKeyID: apiKeyId });
+			posthog.capture('api-key:revoked', { apiKeyId });
+		} catch (error) {
+			Sentry.captureException(error);
+			posthog.capture('error:api-key-revoke', { error, apiKeyId });
+			throw error;
 		} finally {
 			setIsRevoking(false);
 		}

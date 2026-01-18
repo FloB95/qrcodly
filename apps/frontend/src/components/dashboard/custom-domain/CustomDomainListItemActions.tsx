@@ -18,10 +18,11 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal, CheckCircle, Copy, Globe } from 'lucide-react';
+import { CheckCircle, Copy, Globe } from 'lucide-react';
 import type { TCustomDomainResponseDto } from '@shared/schemas';
 import { useSetupInstructionsQuery } from '@/lib/api/custom-domain';
 import { toast } from '@/components/ui/use-toast';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 
 interface CustomDomainListItemActionsProps {
 	domain: TCustomDomainResponseDto;
@@ -83,7 +84,7 @@ export function CustomDomainListItemActions({
 				<DropdownMenuTrigger asChild>
 					<Button variant="ghost" className="h-8 w-8 p-0">
 						<span className="sr-only">{t('openMenu')}</span>
-						<MoreHorizontal className="h-4 w-4" />
+						<EllipsisVerticalIcon className="size-6" />
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">

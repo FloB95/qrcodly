@@ -28,6 +28,8 @@ import {
 } from '@/components/ui/form';
 import { Loader2, Copy } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 import {
 	Select,
 	SelectContent,
@@ -76,12 +78,16 @@ export function CreateApiKeyDialog() {
 			form.reset();
 
 			apiKeys.revalidate();
-		} catch (err: any) {
+			posthog.capture('api-key:created', { name: data.name });
+		} catch (err: unknown) {
+			const errorMessage = err instanceof Error ? err.message : t('errorDescription');
 			toast({
 				title: t('errorTitle'),
-				description: err.message || t('errorDescription'),
+				description: errorMessage,
 				variant: 'destructive',
 			});
+			Sentry.captureException(err);
+			posthog.capture('error:api-key-create', { error: err });
 		} finally {
 			setIsCreating(false);
 		}

@@ -28,6 +28,8 @@ import {
 import { Loader2 } from 'lucide-react';
 import { useCreateCustomDomainMutation } from '@/lib/api/custom-domain';
 import { toast } from '@/components/ui/use-toast';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 
 const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
 
@@ -64,6 +66,7 @@ export function AddCustomDomainDialog() {
 					title: t('addSuccess'),
 					description: t('addSuccessDescription', { domain: response.domain }),
 				});
+				posthog.capture('custom-domain:created', { domain: response.domain });
 			},
 			onError: (error) => {
 				toast({
@@ -71,6 +74,8 @@ export function AddCustomDomainDialog() {
 					description: error.message,
 					variant: 'destructive',
 				});
+				Sentry.captureException(error);
+				posthog.capture('error:custom-domain-create', { error, domain: data.domain });
 			},
 		});
 	};

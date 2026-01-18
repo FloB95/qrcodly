@@ -757,12 +757,17 @@
 			"perMonth": "month",
 			"billedAnnually": "Billed annually",
 			"renewsOn": "Renews on {date}",
+			"expiresOn": "Your Pro plan expires on {date}",
 			"upgradeToPro": "Upgrade to Pro",
+			"renewSubscription": "Renew Subscription",
 			"cancelPlan": "Cancel Subscription",
 			"cancelPlanConfirmTitle": "Cancel your subscription?",
 			"cancelPlanConfirmDescription": "Are you sure you want to cancel your Pro subscription? You will lose access to Pro features at the end of your current billing period.",
 			"keepPlan": "Keep Subscription",
 			"proceedToCancel": "Cancel Subscription",
+			"cancelling": "Cancelling...",
+			"cancelSuccess": "Your subscription has been cancelled",
+			"cancelError": "Failed to cancel subscription. Please try again.",
 			"paymentMethods": "Payment Methods",
 			"paymentMethodsDescription": "Manage your saved payment methods for subscription billing.",
 			"addPaymentMethod": "Add Card",
@@ -795,6 +800,43 @@
 				"paid": "Paid",
 				"pending": "Pending",
 				"failed": "Failed"
+			}
+		}
+	},
+	"plans": {
+		"title": "Choose the right plan for you",
+		"subtitle": "QRcodly is free by default. Most features will always stay free. You only pay for cost-intensive infrastructure.",
+		"annual": "Annual",
+		"monthly": "Monthly",
+		"perMonth": "/month",
+		"upgradeToPro": "Upgrade to Pro",
+		"renewSubscription": "Renew Subscription",
+		"manageSubscription": "Manage Subscription",
+		"subscriptionSuccess": "Successfully subscribed to Pro!",
+		"free": {
+			"name": "Free",
+			"description": "Completely free. Access all essential QR code features without limits or paywalls."
+		},
+		"pro": {
+			"name": "Pro",
+			"description": "Support us & unlock all features for your QR codes."
+		},
+		"features": {
+			"free": {
+				"unlimitedQrCodes": "Unlimited QR codes & scans",
+				"staticDynamic": "Static & dynamic QR codes",
+				"customStyling": "Custom styling & icons",
+				"detailedAnalytics": "Detailed analytics",
+				"noCreditCard": "No credit card required",
+				"limitedApi": "Limited API access",
+				"limitedBulk": "Limited bulk QR code generation"
+			},
+			"pro": {
+				"everythingInFree": "Everything in Free",
+				"unlimitedBulk": "Unlimited bulk QR code generation",
+				"unlimitedApi": "Unlimited API access",
+				"prioritySupport": "Priority support",
+				"teamFeatures": "Team features (coming soon)"
 			}
 		}
 	}

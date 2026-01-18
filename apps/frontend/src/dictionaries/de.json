@@ -756,12 +756,17 @@
 			"perMonth": "Monat",
 			"billedAnnually": "Jährlich abgerechnet",
 			"renewsOn": "Verlängert sich am {date}",
+			"expiresOn": "Dein Pro-Abo läuft am {date} aus",
 			"upgradeToPro": "Auf Pro upgraden",
+			"renewSubscription": "Abo erneuern",
 			"cancelPlan": "Abonnement kündigen",
 			"cancelPlanConfirmTitle": "Abonnement kündigen?",
 			"cancelPlanConfirmDescription": "Bist du sicher, dass du dein Pro-Abonnement kündigen möchtest? Du verlierst den Zugriff auf Pro-Funktionen am Ende des aktuellen Abrechnungszeitraums.",
 			"keepPlan": "Abonnement behalten",
 			"proceedToCancel": "Abonnement kündigen",
+			"cancelling": "Wird gekündigt...",
+			"cancelSuccess": "Dein Abonnement wurde gekündigt",
+			"cancelError": "Kündigung fehlgeschlagen. Bitte versuche es erneut.",
 			"paymentMethods": "Zahlungsmethoden",
 			"paymentMethodsDescription": "Verwalte deine gespeicherten Zahlungsmethoden für die Abonnement-Abrechnung.",
 			"addPaymentMethod": "Karte hinzufügen",
@@ -794,6 +799,43 @@
 				"paid": "Bezahlt",
 				"pending": "Ausstehend",
 				"failed": "Fehlgeschlagen"
+			}
+		}
+	},
+	"plans": {
+		"title": "Wähle den richtigen Plan für dich",
+		"subtitle": "QRcodly ist standardmäßig kostenlos. Die meisten Funktionen bleiben immer kostenlos. Du zahlst nur für kostenintensive Infrastruktur.",
+		"annual": "Jährlich",
+		"monthly": "Monatlich",
+		"perMonth": "/Monat",
+		"upgradeToPro": "Auf Pro upgraden",
+		"renewSubscription": "Abo erneuern",
+		"manageSubscription": "Abo verwalten",
+		"subscriptionSuccess": "Erfolgreich Pro abonniert!",
+		"free": {
+			"name": "Free",
+			"description": "Komplett kostenlos. Zugang zu allen wesentlichen QR-Code-Funktionen ohne Limits oder Paywalls."
+		},
+		"pro": {
+			"name": "Pro",
+			"description": "Unterstütze uns & schalte alle Funktionen für deine QR-Codes frei."
+		},
+		"features": {
+			"free": {
+				"unlimitedQrCodes": "Unbegrenzte QR-Codes & Scans",
+				"staticDynamic": "Statische & dynamische QR-Codes",
+				"customStyling": "Individuelle Styles & Icons",
+				"detailedAnalytics": "Detaillierte Analysen",
+				"noCreditCard": "Keine Kreditkarte erforderlich",
+				"limitedApi": "Eingeschränkter API-Zugang",
+				"limitedBulk": "Eingeschränkte Massen-QR-Code-Erstellung"
+			},
+			"pro": {
+				"everythingInFree": "Alles aus Free",
+				"unlimitedBulk": "Unbegrenzte Massen-QR-Code-Erstellung",
+				"unlimitedApi": "Unbegrenzter API-Zugang",
+				"prioritySupport": "Prioritäts-Support",
+				"teamFeatures": "Team-Funktionen (bald verfügbar)"
 			}
 		}
 	}

@@ -85,6 +85,7 @@ function AddPaymentMethodForm({ revalidate }: { revalidate: () => void }) {
 
 			await user.addPaymentMethod(data);
 			revalidate();
+			posthog.capture('payment-method:added');
 		} catch (err: unknown) {
 			const errorMessage = err instanceof Error ? err.message : t('unexpectedError');
 			Sentry.captureException(err);
@@ -137,6 +138,7 @@ function PaymentMethodCard({
 		try {
 			await method.remove();
 			revalidate();
+			posthog.capture('payment-method:removed');
 		} catch (err) {
 			Sentry.captureException(err);
 			posthog.capture('error:remove-payment-method', { error: err });
@@ -151,6 +153,7 @@ function PaymentMethodCard({
 		try {
 			await method.makeDefault();
 			revalidate();
+			posthog.capture('payment-method:set-default');
 		} catch (err) {
 			Sentry.captureException(err);
 			posthog.capture('error:make-default-payment-method', { error: err });
@@ -160,7 +163,7 @@ function PaymentMethodCard({
 	};
 
 	const getBrandIcon = (_brand: string) => {
-		return <CreditCardIcon className="size-8 text-muted-foreground" />;
+		return <CreditCardIcon className="size-6 text-muted-foreground" />;
 	};
 
 	return (
@@ -168,25 +171,26 @@ function PaymentMethodCard({
 			<div className="flex items-center gap-4">
 				{getBrandIcon(method.cardType || '')}
 				<div>
-					<div className="flex items-center gap-2">
+					<div className="flex items-center gap-2 text-sm">
 						<span className="font-medium capitalize">{method.cardType}</span>
 						<span className="text-muted-foreground">•••• {method.last4}</span>
-						{method.isDefault && (
-							<Badge variant="secondary" className="text-xs">
-								{t('default')}
-							</Badge>
-						)}
 					</div>
 					<p className="text-sm text-muted-foreground">
 						{t('expires')} {method.expiryMonth?.toString().padStart(2, '0')}/{method.expiryYear}
 					</p>
 				</div>
+				{method.isDefault && (
+					<Badge variant="outline" className="text-xs gap-1 ml-2">
+						<StarIcon className="h-3 w-3 fill-current" />
+						{t('default')}
+					</Badge>
+				)}
 			</div>
 
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button variant="ghost" size="icon" disabled={isLoading}>
-						<EllipsisVerticalIcon className="size-5" />
+						<EllipsisVerticalIcon className="size-6" />
 						<span className="sr-only">{t('openMenu')}</span>
 					</Button>
 				</DropdownMenuTrigger>

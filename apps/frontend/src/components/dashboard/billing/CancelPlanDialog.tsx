@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useClerk } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
 import {
 	AlertDialog,
@@ -15,17 +14,41 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
+import type { SubscriptionItem } from './types';
 
-export function CancelPlanDialog() {
+interface CancelPlanDialogProps {
+	subscriptionItem: SubscriptionItem;
+	revalidate: () => void;
+}
+
+export function CancelPlanDialog({ subscriptionItem, revalidate }: CancelPlanDialogProps) {
 	const t = useTranslations('settings.billing');
-	const { openUserProfile } = useClerk();
 	const [open, setOpen] = useState(false);
+	const [isPending, setIsPending] = useState(false);
 
-	const handleManageSubscription = () => {
-		setOpen(false);
-		openUserProfile({
-			__experimental_startPath: '/billing',
-		});
+	const handleCancelSubscription = async () => {
+		setIsPending(true);
+		try {
+			await subscriptionItem.cancel({});
+			revalidate();
+			setOpen(false);
+			toast({
+				title: t('cancelSuccess'),
+			});
+			posthog.capture('subscription:cancelled');
+		} catch (error) {
+			Sentry.captureException(error);
+			posthog.capture('error:cancel-subscription', { error });
+			toast({
+				title: t('cancelError'),
+				variant: 'destructive',
+			});
+		} finally {
+			setIsPending(false);
+		}
 	};
 
 	return (
@@ -41,12 +64,13 @@ export function CancelPlanDialog() {
 					<AlertDialogDescription>{t('cancelPlanConfirmDescription')}</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>{t('keepPlan')}</AlertDialogCancel>
+					<AlertDialogCancel disabled={isPending}>{t('keepPlan')}</AlertDialogCancel>
 					<AlertDialogAction
-						onClick={handleManageSubscription}
+						onClick={handleCancelSubscription}
+						disabled={isPending}
 						className="bg-destructive text-white hover:bg-destructive/90"
 					>
-						{t('proceedToCancel')}
+						{isPending ? t('cancelling') : t('proceedToCancel')}
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

@@ -8,6 +8,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { Button } from '@/components/ui/button';
 import { useClearDefaultCustomDomainMutation } from '@/lib/api/custom-domain';
 import { toast } from '@/components/ui/use-toast';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 
 interface SystemDomainListItemProps {
 	systemDomain: string;
@@ -25,12 +27,18 @@ export function SystemDomainListItem({ systemDomain, isDefault }: SystemDomainLi
 					title: t('defaultCleared'),
 					description: t('defaultClearedDescription'),
 				});
+				posthog.capture('custom-domain:set-system-default');
 			},
 			onError: (error) => {
 				toast({
 					title: t('errorTitle'),
 					description: error.message,
 					variant: 'destructive',
+				});
+				Sentry.captureException(error);
+				posthog.capture('error:custom-domain-set-system-default', {
+					errorMessage: error.message,
+					errorName: error.name,
 				});
 			},
 		});

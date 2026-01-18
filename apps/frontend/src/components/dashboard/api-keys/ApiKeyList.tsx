@@ -11,9 +11,9 @@ import {
 	EmptyTitle,
 	EmptyDescription,
 } from '@/components/ui/empty';
-import { KeyRound } from 'lucide-react';
 import { ApiKeyListItem } from './ApiKeyListItem';
 import { useApiKeysContext } from './ApiKeyContext';
+import { KeyIcon } from '@heroicons/react/24/outline';
 
 export function ApiKeyList() {
 	const t = useTranslations('settings.apiKeys');
@@ -45,7 +45,7 @@ export function ApiKeyList() {
 			<Empty>
 				<EmptyHeader>
 					<EmptyMedia>
-						<KeyRound className="h-12 w-12 text-muted-foreground" />
+						<KeyIcon className="h-12 w-12 text-muted-foreground" />
 					</EmptyMedia>
 					<EmptyTitle>{t('errorTitle')}</EmptyTitle>
 					<EmptyDescription>{apiKeys.error.message}</EmptyDescription>
@@ -59,7 +59,7 @@ export function ApiKeyList() {
 			<Empty>
 				<EmptyHeader>
 					<EmptyMedia>
-						<KeyRound className="h-12 w-12 text-muted-foreground" />
+						<KeyIcon className="h-12 w-12 text-muted-foreground" />
 					</EmptyMedia>
 					<EmptyTitle>{t('emptyTitle')}</EmptyTitle>
 					<EmptyDescription>{t('emptyDescription')}</EmptyDescription>

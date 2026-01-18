@@ -17,7 +17,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal } from 'lucide-react';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 
 interface ApiKeyListItemActionsProps {
 	apiKey: {
@@ -45,7 +45,7 @@ export function ApiKeyListItemActions({
 				<DropdownMenuTrigger asChild>
 					<Button variant="ghost" className="h-8 w-8 p-0">
 						<span className="sr-only">{t('openMenu')}</span>
-						<MoreHorizontal className="h-4 w-4" />
+						<EllipsisVerticalIcon className="size-6" />
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">

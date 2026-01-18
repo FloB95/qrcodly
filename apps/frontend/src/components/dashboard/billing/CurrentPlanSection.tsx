@@ -1,31 +1,28 @@
 'use client';
 
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { CheckoutButton, useSubscription } from '@clerk/nextjs/experimental';
 import { CheckIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { env } from '@/env';
+import { PLAN_CONFIGS } from '@/lib/plan.config';
 import { CancelPlanDialog } from './CancelPlanDialog';
 import { BillingSkeleton } from './BillingSkeleton';
 import { formatCurrency, formatDate } from '@/lib/utils';
-
-const FREE_FEATURES = ['10 URL QR codes', '5 Text QR codes', 'Basic analytics', 'Standard support'];
-
-const PRO_FEATURES = [
-	'Unlimited URL QR codes',
-	'Unlimited Text QR codes',
-	'100 Event QR codes',
-	'Advanced analytics',
-	'Custom domains',
-	'API access',
-	'Priority support',
-];
+import posthog from 'posthog-js';
 
 export function CurrentPlanSection() {
+	const pathname = usePathname();
 	const t = useTranslations('settings.billing');
-	const { isLoading, isFetching, data } = useSubscription();
+	const tPlans = useTranslations('plans');
+	const { isLoading, isFetching, data, revalidate } = useSubscription();
+	const [selectedPeriod, setSelectedPeriod] = useState<'annual' | 'month'>('annual');
 
 	if (isLoading || isFetching) {
 		return <BillingSkeleton titleWidth="w-32" />;
@@ -35,7 +32,7 @@ export function CurrentPlanSection() {
 	const currentPlan = subscriptionItem?.plan;
 	const planPeriod = (subscriptionItem?.planPeriod as 'annual' | 'month') || 'annual';
 	const hasProPlan = currentPlan?.slug === 'pro';
-	const features = hasProPlan ? PRO_FEATURES : FREE_FEATURES;
+	const planConfig = hasProPlan ? PLAN_CONFIGS.pro : PLAN_CONFIGS.free;
 
 	const fee = currentPlan?.[planPeriod === 'annual' ? 'annualFee' : 'annualMonthlyFee'];
 	const formattedPrice = fee ? formatCurrency(fee.amount, fee.currency) : '';
@@ -51,7 +48,7 @@ export function CurrentPlanSection() {
 					<div>
 						<CardTitle className="flex items-center gap-2">
 							{t('currentPlan')}
-							<Badge className="text-teal-500" variant="outline">
+							<Badge className="text-teal-500 text-md" variant="outline">
 								{hasProPlan ? 'Pro' : 'Free'}
 							</Badge>
 						</CardTitle>
@@ -71,10 +68,13 @@ export function CurrentPlanSection() {
 					<div>
 						<h4 className="text-sm font-medium mb-3">{t('includedFeatures')}</h4>
 						<ul className="space-y-2">
-							{features.map((feature) => (
-								<li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
-									<CheckIcon className="size-4 text-primary shrink-0" />
-									{feature}
+							{planConfig.featureKeys.map((featureKey) => (
+								<li
+									key={featureKey}
+									className="flex items-center gap-2 text-sm text-muted-foreground"
+								>
+									<CheckIcon className="size-4 stroke-2 text-teal-500" />
+									{tPlans(featureKey)}
 								</li>
 							))}
 						</ul>
@@ -90,26 +90,55 @@ export function CurrentPlanSection() {
 								</span>
 							</p>
 							{subscriptionItem?.periodEnd && (
-								<p className="text-xs text-muted-foreground mt-2">
-									{t('renewsOn', {
-										date: formatDate(subscriptionItem.periodEnd, { hideTime: true }),
-									})}
+								<p
+									className={`text-xs text-muted-foreground mt-2 ${subscriptionItem.canceledAt ? 'text-red-600' : ''}`}
+								>
+									{subscriptionItem.canceledAt
+										? t('expiresOn', {
+												date: formatDate(subscriptionItem.periodEnd, { hideTime: true }),
+											})
+										: t('renewsOn', {
+												date: formatDate(subscriptionItem.periodEnd, { hideTime: true }),
+											})}
 								</p>
 							)}
 						</div>
 					)}
 				</div>
 
-				<div className="flex flex-wrap gap-3 pt-4 border-t">
-					{!hasProPlan ? (
-						<CheckoutButton planId={env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID} planPeriod="annual">
-							<Button size="sm">
-								<SparklesIcon className="size-4 mr-2" />
-								{t('upgradeToPro')}
-							</Button>
-						</CheckoutButton>
+				<div className="flex flex-wrap items-center gap-6 pt-4 border-t">
+					{!hasProPlan || subscriptionItem?.canceledAt ? (
+						<>
+							<CheckoutButton
+								planId={env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID}
+								planPeriod={selectedPeriod}
+								onSubscriptionComplete={() => {
+									revalidate();
+									posthog.capture('subscription:created');
+								}}
+								newSubscriptionRedirectUrl={pathname}
+							>
+								<Button size="sm">
+									<SparklesIcon className="size-4 mr-2" />
+									{hasProPlan && subscriptionItem?.canceledAt
+										? t('renewSubscription')
+										: t('upgradeToPro')}
+								</Button>
+							</CheckoutButton>
+							<Label
+								htmlFor="billing-period"
+								className="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
+							>
+								{tPlans('annual')}
+								<Switch
+									id="billing-period"
+									checked={selectedPeriod === 'annual'}
+									onCheckedChange={(checked) => setSelectedPeriod(checked ? 'annual' : 'month')}
+								/>
+							</Label>
+						</>
 					) : (
-						<CancelPlanDialog />
+						<CancelPlanDialog subscriptionItem={subscriptionItem} revalidate={revalidate} />
 					)}
 				</div>
 			</CardContent>

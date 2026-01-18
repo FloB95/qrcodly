@@ -26,9 +26,7 @@ export default async function Page({ params }: DefaultPageParams) {
 							</div>
 							<div>
 								<CardTitle className="mb-0.5">{t('title')}</CardTitle>
-								<CardDescription>
-									<div>{t('description')}</div>
-								</CardDescription>
+								<CardDescription>{t('description')}</CardDescription>
 							</div>
 						</div>
 					</CardContent>

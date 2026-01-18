@@ -11,6 +11,8 @@ import {
 } from '@/lib/api/custom-domain';
 import type { TCustomDomainResponseDto } from '@shared/schemas';
 import { Loader2 } from 'lucide-react';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 
 export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 	const t = useTranslations('settings.domains');
@@ -43,6 +45,7 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					title: t('deleted'),
 					description: t('deletedDescription', { domain: domain.domain }),
 				});
+				posthog.capture('custom-domain:deleted', { domain: domain.domain });
 			},
 			onError: (error) => {
 				toastInstance.dismiss();
@@ -51,6 +54,11 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					title: t('deleteError'),
 					description: error.message,
 					variant: 'destructive',
+				});
+				Sentry.captureException(error);
+				posthog.capture('error:custom-domain-delete', {
+					error: error.message,
+					domain: domain.domain,
 				});
 			},
 		});
@@ -75,6 +83,7 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					title: t('txtVerified'),
 					description: t('txtVerifiedDescription', { domain: domain.domain }),
 				});
+				posthog.capture('custom-domain:txt-verified', { domain: domain.domain });
 			},
 			onError: (error) => {
 				toastInstance.dismiss();
@@ -83,6 +92,11 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					title: t('verifyError'),
 					description: error.message,
 					variant: 'destructive',
+				});
+				Sentry.captureException(error);
+				posthog.capture('error:custom-domain-verify-txt', {
+					error: error.message,
+					domain: domain.domain,
 				});
 			},
 		});
@@ -107,6 +121,7 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					title: t('cnameVerified'),
 					description: t('cnameVerifiedDescription', { domain: domain.domain }),
 				});
+				posthog.capture('custom-domain:cname-verified', { domain: domain.domain });
 			},
 			onError: (error) => {
 				toastInstance.dismiss();
@@ -115,6 +130,11 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					title: t('verifyError'),
 					description: error.message,
 					variant: 'destructive',
+				});
+				Sentry.captureException(error);
+				posthog.capture('error:custom-domain-verify-cname', {
+					error: error.message,
+					domain: domain.domain,
 				});
 			},
 		});
@@ -139,6 +159,7 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					title: t('defaultSet'),
 					description: t('defaultSetDescription', { domain: domain.domain }),
 				});
+				posthog.capture('custom-domain:set-default', { domain: domain.domain });
 			},
 			onError: (error) => {
 				toastInstance.dismiss();
@@ -147,6 +168,11 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					title: t('setDefaultError'),
 					description: error.message,
 					variant: 'destructive',
+				});
+				Sentry.captureException(error);
+				posthog.capture('error:custom-domain-set-default', {
+					error: error.message,
+					domain: domain.domain,
 				});
 			},
 		});

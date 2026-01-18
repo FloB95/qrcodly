@@ -7,8 +7,9 @@ import { CustomDomainListItemActions } from './CustomDomainListItemActions';
 import { useCustomDomainMutations } from './hooks/useCustomDomainMutations';
 import type { TCustomDomainResponseDto } from '@shared/schemas';
 import { cn } from '@/lib/utils';
-import { CheckCircle, XCircle, Star } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { StarIcon } from '@heroicons/react/24/solid';
 
 interface CustomDomainListItemProps {
 	domain: TCustomDomainResponseDto;
@@ -44,7 +45,7 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 					{domain.domain}
 					{domain.isDefault && (
 						<Badge variant="outline" className="text-xs gap-1">
-							<Star className="h-3 w-3 fill-current" />
+							<StarIcon className="h-3 w-3" />
 							{t('default')}
 						</Badge>
 					)}
