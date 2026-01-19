@@ -64,7 +64,9 @@ export const QrCodeListItemActions = ({
 	useEffect(() => {
 		import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
-			const options = getQrCodeStylingOptions(qr.config, qr.content, qr.shortUrl || undefined);
+			const options = getQrCodeStylingOptions(qr.config, qr.content, {
+				shortUrl: qr.shortUrl || undefined,
+			});
 			const instance = new QRCodeStyling(options);
 			setQrCodeInstance(instance);
 		});

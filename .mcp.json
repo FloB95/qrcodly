@@ -16,6 +16,10 @@
 		"next-devtools": {
 			"command": "npx",
 			"args": ["-y", "next-devtools-mcp@latest"]
+		},
+		"inkeepMcp": {
+			"command": "npx",
+			"args": ["-y", "mcp-remote", "https://mcp.inkeep.com/zod/mcp"]
 		}
 	}
 }
