@@ -146,6 +146,9 @@ describe('updateQrCode', () => {
 				expect(updatedQrCode.content.data.url).toBe(newUrl);
 				expect(updatedQrCode.content.data.isEditable).toBe(false);
 			}
+
+			// Verify qrCodeData is updated to the new URL
+			expect(updatedQrCode.qrCodeData).toBe(newUrl);
 		});
 
 		it('should update editable URL content and update linked short URL', async () => {
@@ -236,6 +239,9 @@ describe('updateQrCode', () => {
 			if (updatedQrCode.content.type === 'text') {
 				expect(updatedQrCode.content.data).toBe(newText);
 			}
+
+			// Verify qrCodeData is updated to the new text
+			expect(updatedQrCode.qrCodeData).toBe(newText);
 		});
 
 		it('should update text content with name', async () => {
@@ -365,6 +371,11 @@ describe('updateQrCode', () => {
 				expect(updatedQrCode.content.data.password).toBe(newWifiData.password);
 				expect(updatedQrCode.content.data.encryption).toBe(newWifiData.encryption);
 			}
+
+			// Verify qrCodeData is updated to the new WiFi string
+			expect(updatedQrCode.qrCodeData).toBe(
+				`WIFI:T:${newWifiData.encryption};S:${newWifiData.ssid};P:${newWifiData.password};;`,
+			);
 		});
 
 		it('should update WiFi with name and config', async () => {

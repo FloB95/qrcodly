@@ -18,9 +18,9 @@ let QRCodeStyling: any;
 
 /**
  * Download button for EDITOR (editing existing QR codes)
- * - Uses context store for current state
- * - No save logic (separate update button)
- * - Downloads current edited version
+ * - Uses context store for current config (styling)
+ * - Uses stored qrCodeData from initialQrCode (has correct custom domain)
+ * - Downloads current edited styling version
  * - Used in: edit pages
  */
 export const EditorQrCodeDownloadBtn = ({
@@ -29,7 +29,7 @@ export const EditorQrCodeDownloadBtn = ({
 	initialQrCode: TQrCodeWithRelationsResponseDto;
 }) => {
 	const t = useTranslations('qrCode.download');
-	const { config, content, shortUrl } = useQrCodeGeneratorStore((state) => state);
+	const { config, content } = useQrCodeGeneratorStore((state) => state);
 
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
 	const [hasMounted, setHasMounted] = useState(false);
@@ -39,12 +39,15 @@ export const EditorQrCodeDownloadBtn = ({
 
 		import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
-			// Use current state from context (edited version)
-			const options = getQrCodeStylingOptions(config, content, shortUrl);
+			// Use stored qrCodeData from the saved QR code (has correct custom domain baked in)
+			// Config/styling comes from context store for live preview
+			const options = getQrCodeStylingOptions(config, content, {
+				qrCodeData: initialQrCode.qrCodeData,
+			});
 			const instance = new QRCodeStyling(options);
 			setQrCodeInstance(instance);
 		});
-	}, [config, content, shortUrl]);
+	}, [config, content, initialQrCode.qrCodeData]);
 
 	const onDownloadClick = async (fileExt: TFileExtension) => {
 		if (!qrCodeInstance) return;

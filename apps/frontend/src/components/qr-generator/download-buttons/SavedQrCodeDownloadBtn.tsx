@@ -37,15 +37,13 @@ export const SavedQrCodeDownloadBtn = ({
 
 		import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
-			const options = getQrCodeStylingOptions(
-				qrCode.config,
-				qrCode.content,
-				qrCode.shortUrl || undefined,
-			);
+			const options = getQrCodeStylingOptions(qrCode.config, qrCode.content, {
+				qrCodeData: qrCode.qrCodeData,
+			});
 			const instance = new QRCodeStyling(options);
 			setQrCodeInstance(instance);
 		});
-	}, [qrCode.config, qrCode.content, qrCode.shortUrl]);
+	}, [qrCode.config, qrCode.content, qrCode.qrCodeData]);
 
 	const onDownloadClick = async (fileExt: TFileExtension) => {
 		if (!qrCodeInstance) return;

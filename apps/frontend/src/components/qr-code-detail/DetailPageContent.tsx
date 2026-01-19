@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { DynamicQrCode } from '../qr-generator/DynamicQrCode';
 import { SavedQrCodeDownloadBtn } from '../qr-generator/download-buttons';
 import { AnalyticsSection } from './analytics/AnalyticsSection';
-import type { TQrCodeWithRelationsResponseDto, TShortUrl } from '@shared/schemas';
+import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { UrlContent } from './content/Url';
 import { useLocale, useTranslations } from 'next-intl';
 import { Badge } from '../ui/badge';
@@ -177,7 +177,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 											content: qrCode.content,
 											config: qrCode.config,
 										}}
-										shortUrl={qrCode.shortUrl as TShortUrl | undefined}
+										shortUrl={qrCode.shortUrl || undefined}
 									/>
 								)}
 							</div>

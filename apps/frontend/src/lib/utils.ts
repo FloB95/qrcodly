@@ -5,13 +5,42 @@ import qs from 'qs';
 import type { SupportedLanguages } from '@/i18n/routing';
 import { ApiError } from './api/ApiError';
 import type { ZodIssue } from 'zod/v3';
-
+import type {
+	TCustomDomainResponseDto,
+	TShortUrlResponseDto,
+	TShortUrlWithCustomDomainResponseDto,
+} from '@shared/schemas';
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export function getShortUrlFromCode(code: string, short = false): string {
-	const url = `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${code}`;
+/**
+ * Creates a full URL from a short URL object.
+ * Automatically uses the custom domain if set, otherwise falls back to system domain.
+ * @param shortUrl - The short URL object containing shortCode and optional customDomain
+ * @param options - Options object
+ * @param options.short - If true, returns a shortened URL without protocol (for display)
+ * @param options.customDomain - Optional custom domain to use (for when shortUrl only has customDomainId)
+ * @returns The full or shortened URL
+ */
+export function createLinkFromShortUrl(
+	shortUrl: TShortUrlWithCustomDomainResponseDto | TShortUrlResponseDto,
+	options: { short?: boolean; customDomain?: TCustomDomainResponseDto | null } = {},
+): string {
+	const { short = false, customDomain: providedDomain } = options;
+	const { shortCode } = shortUrl;
+
+	// Use embedded customDomain first, then fall back to provided domain
+	const customDomain =
+		'customDomain' in shortUrl ? shortUrl.customDomain : (providedDomain ?? undefined);
+
+	let url: string;
+	if (customDomain) {
+		url = `https://${customDomain.domain}/u/${shortCode}`;
+	} else {
+		// System domain uses /u/ prefix (e.g., qrcodly.de/u/abc12)
+		url = `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${shortCode}`;
+	}
 
 	if (!short) return url;
 
@@ -58,15 +87,28 @@ export const fetchImageAsBase64 = async (url: string) => {
 	});
 };
 
-export const formatDate = (date: Date | string): string => {
-	return new Intl.DateTimeFormat(undefined, {
+export const formatDate = (date: Date | string, options?: { hideTime?: boolean }): string => {
+	const formatOptions: Intl.DateTimeFormatOptions = {
 		year: 'numeric',
 		month: 'numeric',
 		day: 'numeric',
-		hour: '2-digit',
-		minute: '2-digit',
-	}).format(new Date(date));
+		...(options?.hideTime ? {} : { hour: '2-digit', minute: '2-digit' }),
+	};
+	return new Intl.DateTimeFormat(undefined, formatOptions).format(new Date(date));
 };
+
+/**
+ * Format a currency amount for display
+ * @param amount - Amount in cents
+ * @param currency - Currency code (e.g., 'USD')
+ * @param locale - Locale for formatting (defaults to 'en-US')
+ */
+export function formatCurrency(amount: number, currency: string, locale = 'en-US'): string {
+	return new Intl.NumberFormat(locale, {
+		style: 'currency',
+		currency: currency.toUpperCase(),
+	}).format(amount / 100);
+}
 
 /**
  * Converts an RGBA color string to a hexadecimal color string.

@@ -11,6 +11,7 @@ import ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-
 import { UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/update-short-url.use-case';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { ImageService } from '@/core/services/image.service';
+import { QrCodeDataService } from '../service/qr-code-data.service';
 
 /**
  * Use case for updating the name of an existing QR code.
@@ -24,6 +25,7 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
 		@inject(UpdateShortUrlUseCase) private updateShortUrlUseCase: UpdateShortUrlUseCase,
 		@inject(ImageService) private imageService: ImageService,
+		@inject(QrCodeDataService) private qrCodeDataService: QrCodeDataService,
 	) {}
 
 	/**
@@ -137,6 +139,14 @@ export class UpdateQrCodeUseCase implements IBaseUseCase {
 		if ((diffs?.config || diffs?.content) && qrCode.previewImage) {
 			await this.imageService.deleteImage(qrCode.previewImage);
 			validatedUpdates.previewImage = null;
+		}
+
+		// Recompute qrCodeData if content changed
+		if (diffs?.content && validatedUpdates.content) {
+			validatedUpdates.qrCodeData = await this.qrCodeDataService.computeQrCodeData(
+				qrCode.id,
+				validatedUpdates.content,
+			);
 		}
 
 		await this.qrCodeRepository.update(qrCode, validatedUpdates);

@@ -5,6 +5,7 @@ import { type TQrCode, type TQrCodeContent } from '@shared/schemas';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { container } from 'tsyringe';
 import { LinkShortUrlContentTypeError } from '../../error/http/link-short-url-content-type.error';
+import { GetDefaultCustomDomainUseCase } from '@/modules/custom-domain/useCase/get-default-custom-domain.use-case';
 
 export class UrlStrategy implements IShortUrlStrategy {
 	appliesTo(content: TQrCodeContent) {
@@ -21,14 +22,21 @@ export class UrlStrategy implements IShortUrlStrategy {
 			.execute(qrCode.createdBy!);
 		if (!reserved) throw new ShortUrlNotFoundError();
 
-		await container
-			.resolve(UpdateShortUrlUseCase)
-			.execute(
-				reserved,
-				{ destinationUrl: qrCode.content.data.url, isActive: true },
-				qrCode.createdBy!,
-				qrCode.id,
-			);
+		// Get user's default custom domain (if any)
+		const defaultDomain = await container
+			.resolve(GetDefaultCustomDomainUseCase)
+			.execute(qrCode.createdBy!);
+
+		await container.resolve(UpdateShortUrlUseCase).execute(
+			reserved,
+			{
+				destinationUrl: qrCode.content.data.url,
+				isActive: true,
+				customDomainId: defaultDomain?.id ?? null,
+			},
+			qrCode.createdBy!,
+			qrCode.id,
+		);
 
 		return reserved;
 	}

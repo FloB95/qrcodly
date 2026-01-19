@@ -1,26 +1,32 @@
 'use client';
 
-import type { Tier } from '@/app/[locale]/plans/page';
 import { cn } from '@/lib/utils';
+import { PLAN_CONFIGS, type PlanId } from '@/lib/plan.config';
 import { CheckIcon } from '@heroicons/react/24/outline';
+import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { ProCTA } from './ProCTA';
 import { Switch } from '../ui/switch';
 
-export const PricingCard = ({
-	tier,
-	isPro,
-	locale,
-	isAuthenticated,
-	hasProPlan,
-}: {
-	tier: Tier;
-	isPro: boolean;
+export type PricingCardProps = {
+	planId: PlanId;
+	priceMonthly: string;
+	priceAnnualPerMonth?: string;
 	locale: string;
 	isAuthenticated: boolean;
-	hasProPlan: boolean;
-}) => {
+};
+
+export const PricingCard = ({
+	planId,
+	priceMonthly,
+	priceAnnualPerMonth,
+	locale,
+	isAuthenticated,
+}: PricingCardProps) => {
+	const t = useTranslations('plans');
 	const [planPeriod, setPlanPeriod] = useState<'month' | 'annual'>('annual');
+	const planConfig = PLAN_CONFIGS[planId];
+	const isPro = planConfig.featured;
 
 	return (
 		<div
@@ -33,11 +39,11 @@ export const PricingCard = ({
 		>
 			<div className="flex justify-between">
 				<h3 className={cn('text-lg font-semibold', isPro ? 'text-teal-500' : 'text-teal-700')}>
-					{tier.name}
+					{t(`${planId}.name`)}
 				</h3>
-				{tier.priceAnnualPerMonth && (
+				{priceAnnualPerMonth && (
 					<div className="flex space-x-2 align-middle items-center">
-						<span className="text-s text-gray-200">Jährlich</span>
+						<span className="text-s text-gray-200">{t('annual')}</span>
 						<Switch
 							checked={planPeriod === 'annual'}
 							className="data-[state=checked]:bg-teal-600!"
@@ -49,38 +55,29 @@ export const PricingCard = ({
 
 			<p className="mt-4 flex items-baseline gap-x-2">
 				<span className="text-5xl font-semibold">
-					{planPeriod === 'annual' && tier.priceAnnualPerMonth
-						? tier.priceAnnualPerMonth
-						: tier.priceMonthly}
+					{planPeriod === 'annual' && priceAnnualPerMonth ? priceAnnualPerMonth : priceMonthly}
 				</span>
-				<span className={isPro ? 'text-gray-400' : 'text-gray-500'}>/month</span>
+				<span className={isPro ? 'text-gray-400' : 'text-gray-500'}>{t('perMonth')}</span>
 			</p>
 
-			{tier.description && (
-				<p className={`mt-6 text-sm font-medium ${isPro ? 'text-gray-400' : 'text-gray-500'}`}>
-					{tier.description}
-				</p>
-			)}
+			<p className={`mt-6 text-sm font-medium ${isPro ? 'text-gray-400' : 'text-gray-500'}`}>
+				{t(`${planId}.description`)}
+			</p>
 
 			<ul className="mt-8 space-y-3 text-sm">
-				{tier.features.map((feature) => (
-					<li key={feature} className="flex gap-x-3">
+				{planConfig.featureKeys.map((featureKey) => (
+					<li key={featureKey} className="flex gap-x-3">
 						<CheckIcon
 							className={cn('h-5 w-5 flex-none', isPro ? 'text-teal-500' : 'text-teal-700')}
 						/>
-						{feature}
+						{t(featureKey)}
 					</li>
 				))}
 			</ul>
 
 			{isPro && (
 				<div className="mt-8">
-					<ProCTA
-						locale={locale}
-						isAuthenticated={isAuthenticated}
-						hasProPlan={hasProPlan}
-						planPeriod={planPeriod}
-					/>
+					<ProCTA locale={locale} isAuthenticated={isAuthenticated} planPeriod={planPeriod} />
 				</div>
 			)}
 		</div>

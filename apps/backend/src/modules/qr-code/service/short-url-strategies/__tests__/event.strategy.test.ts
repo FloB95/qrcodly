@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import { EventUrlStrategy } from '../event.strategy';
 import { GetReservedShortCodeUseCase } from '@/modules/url-shortener/useCase/get-reserved-short-url.use-case';
 import { UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/update-short-url.use-case';
+import { GetDefaultCustomDomainUseCase } from '@/modules/custom-domain/useCase/get-default-custom-domain.use-case';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { LinkShortUrlContentTypeError } from '../../../error/http/link-short-url-content-type.error';
 import { DYNAMIC_QR_BASE_URL } from '@/modules/url-shortener/config/constants';
@@ -23,6 +24,7 @@ describe('EventUrlStrategy', () => {
 	let strategy: EventUrlStrategy;
 	let mockGetReservedUseCase: jest.Mocked<GetReservedShortCodeUseCase>;
 	let mockUpdateUseCase: jest.Mocked<UpdateShortUrlUseCase>;
+	let mockGetDefaultDomainUseCase: jest.Mocked<GetDefaultCustomDomainUseCase>;
 
 	beforeEach(() => {
 		strategy = new EventUrlStrategy();
@@ -32,10 +34,14 @@ describe('EventUrlStrategy', () => {
 		mockUpdateUseCase = {
 			execute: jest.fn(),
 		} as any;
+		mockGetDefaultDomainUseCase = {
+			execute: jest.fn().mockResolvedValue(undefined),
+		} as any;
 
 		(container.resolve as jest.Mock).mockImplementation((token) => {
 			if (token === GetReservedShortCodeUseCase) return mockGetReservedUseCase;
 			if (token === UpdateShortUrlUseCase) return mockUpdateUseCase;
+			if (token === GetDefaultCustomDomainUseCase) return mockGetDefaultDomainUseCase;
 			return null;
 		});
 	});

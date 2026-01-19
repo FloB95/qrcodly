@@ -139,9 +139,11 @@ describe('DeleteConfigTemplateUseCase', () => {
 		it('should log successful deletion', async () => {
 			await useCase.execute(mockTemplate, 'user-123');
 
-			expect(mockLogger.info).toHaveBeenCalledWith('Config template deleted successfully', {
-				id: 'template-123',
-				deletedBy: 'user-123',
+			expect(mockLogger.info).toHaveBeenCalledWith('template.deleted', {
+				template: {
+					id: 'template-123',
+					deletedBy: 'user-123',
+				},
 			});
 		});
 
@@ -150,8 +152,11 @@ describe('DeleteConfigTemplateUseCase', () => {
 
 			await useCase.execute(mockTemplate, 'user-123');
 
-			expect(mockLogger.warn).toHaveBeenCalledWith('Failed to delete config template', {
-				id: 'template-123',
+			expect(mockLogger.error).toHaveBeenCalledWith('error.template.deleted', {
+				template: {
+					id: 'template-123',
+					deletedBy: 'user-123',
+				},
 			});
 		});
 

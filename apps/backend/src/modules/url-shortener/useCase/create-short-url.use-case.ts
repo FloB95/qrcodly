@@ -1,9 +1,11 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
+import { BadRequestError, ForbiddenError } from '@/core/error/http';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
-import { TShortUrl } from '../domain/entities/short-url.entity';
+import { TShortUrl, TShortUrlWithDomain } from '../domain/entities/short-url.entity';
 import { TCreateShortUrlDto } from '@shared/schemas';
+import CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
 
 /**
  * Use case for creating a ShortUrl entity.
@@ -12,6 +14,7 @@ import { TCreateShortUrlDto } from '@shared/schemas';
 export class CreateShortUrlUseCase implements IBaseUseCase {
 	constructor(
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
+		@inject(CustomDomainRepository) private customDomainRepository: CustomDomainRepository,
 		@inject(Logger) private logger: Logger,
 	) {}
 
@@ -21,7 +24,12 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 	 * @param createdBy The ID of the user who created the ShortUrl.
 	 * @returns A promise that resolves with the newly created ShortUrl entity.
 	 */
-	async execute(dto: TCreateShortUrlDto, createdBy: string): Promise<TShortUrl> {
+	async execute(dto: TCreateShortUrlDto, createdBy: string): Promise<TShortUrlWithDomain> {
+		// Validate custom domain ownership if provided
+		if (dto.customDomainId) {
+			await this.validateCustomDomain(dto.customDomainId, createdBy);
+		}
+
 		const newId = await this.shortUrlRepository.generateId();
 		const shortCode = await this.shortUrlRepository.generateShortCode();
 
@@ -29,7 +37,9 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 			id: newId,
 			shortCode,
 			qrCodeId: null,
-			...dto,
+			customDomainId: dto.customDomainId ?? null,
+			destinationUrl: dto.destinationUrl,
+			isActive: dto.isActive,
 			createdBy,
 		};
 
@@ -48,9 +58,29 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 			shortUrl: {
 				id: createdShortUrl.id,
 				createdBy: createdShortUrl.createdBy,
+				customDomainId: createdShortUrl.customDomainId,
 			},
 		});
 
 		return createdShortUrl;
+	}
+
+	/**
+	 * Validates that the custom domain exists, is owned by the user, and is verified.
+	 */
+	private async validateCustomDomain(customDomainId: string, userId: string): Promise<void> {
+		const customDomain = await this.customDomainRepository.findOneById(customDomainId);
+
+		if (!customDomain) {
+			throw new BadRequestError('Custom domain not found.');
+		}
+
+		if (customDomain.createdBy !== userId) {
+			throw new ForbiddenError('You do not own this custom domain.');
+		}
+
+		if (!customDomain.isVerified) {
+			throw new BadRequestError('Custom domain is not verified. Please verify it first.');
+		}
 	}
 }

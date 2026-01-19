@@ -9,9 +9,10 @@ import { QrCodeController } from './http/controller/qr-code.controller';
 // Register Event Handlers
 import './event/handler';
 
-const setupQrCodeModule: FastifyPluginCallback = (fastify: FastifyInstance, options) => {
+const setupQrCodeModule: FastifyPluginCallback = (fastify: FastifyInstance, options, done) => {
 	registerRoutes(fastify, QrCodeController, `/qr-code`, options);
 	container.resolve(Logger).info('☑️  QR Code module loaded');
+	done();
 };
 
 export default setupQrCodeModule;

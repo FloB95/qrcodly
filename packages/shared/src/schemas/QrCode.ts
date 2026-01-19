@@ -256,6 +256,7 @@ export const QrCodeSchema = AbstractEntitySchema.extend({
 	name: z.string().max(32).nullable(),
 	config: QrCodeOptionsSchema,
 	content: QrCodeContent,
+	qrCodeData: z.string().nullable(),
 	previewImage: z.string().nullable(),
 	createdBy: z.string().nullable(),
 });

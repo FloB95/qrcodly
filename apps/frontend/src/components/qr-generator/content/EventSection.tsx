@@ -23,7 +23,7 @@ import { useEffect, useState } from 'react';
 import { EventInputSchema, objDiff, type TEventInput } from '@shared/schemas/src';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { getShortUrlFromCode } from '@/lib/utils';
+import { createLinkFromShortUrl } from '@/lib/utils';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
@@ -69,7 +69,7 @@ const _EventSection = ({ onChange, value }: EventSectionProps) => {
 
 		const payload = {
 			...values,
-			shortUrl: getShortUrlFromCode(shortUrl.shortCode),
+			shortUrl: createLinkFromShortUrl(shortUrl),
 		};
 
 		onChange(payload);

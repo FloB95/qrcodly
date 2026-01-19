@@ -45,6 +45,7 @@ describe('BulkImportQrCodesUseCase', () => {
 		},
 		config: QrCodeDefaults,
 		createdBy: 'user-123',
+		qrCodeData: 'https://example.com',
 		previewImage: null,
 		createdAt: new Date(),
 		updatedAt: new Date(),
@@ -409,9 +410,11 @@ describe('BulkImportQrCodesUseCase', () => {
 			await useCase.execute(dto, mockUser);
 
 			expect(mockLogger.info).toHaveBeenCalledWith('bulk.import.records', {
-				contentType: 'url',
-				items: 2,
-				user: 'user-123',
+				bulkImport: {
+					contentType: 'url',
+					items: 2,
+					user: 'user-123',
+				},
 			});
 		});
 

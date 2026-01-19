@@ -9,7 +9,7 @@ import { LanguageNav } from './LanguageNav';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from './ui/drawer';
-import { RectangleStackIcon } from '@heroicons/react/24/outline';
+import { RectangleStackIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
@@ -63,9 +63,9 @@ export default function Header({
 						>
 							Docs
 						</Link>
-						{/* <Link href="/plans" className="hidden sm:block h-10 px-2 py-2">
+						<Link href="/plans" className="hidden sm:block h-10 px-2 py-2">
 							Plans
-						</Link> */}
+						</Link>
 						<SignedOut>
 							<SignInButton>
 								<Button>{t('signInBtn')}</Button>
@@ -73,7 +73,7 @@ export default function Header({
 						</SignedOut>
 						<SignedIn>
 							{!hideDashboardLink && (
-								<div>
+								<div className="flex items-center gap-2">
 									<Link
 										href="/collection"
 										className={cn(buttonVariants({ size: 'icon' }), 'sm:hidden')}
@@ -86,9 +86,23 @@ export default function Header({
 									>
 										{t('collectionBtn')}
 									</Link>
+									<Link
+										href="/settings/domains"
+										className={cn(
+											buttonVariants({ variant: 'ghost', size: 'icon' }),
+											'hidden sm:inline-flex',
+										)}
+										title={t('settingsBtn')}
+									>
+										<Cog6ToothIcon className="h-5 w-5" />
+									</Link>
 								</div>
 							)}
-							<UserButton />
+							<UserButton
+							// userProfileProps={{
+							// 	apiKeysProps: { hide: true },
+							// }}
+							/>
 						</SignedIn>
 						{!hideLanguageNav && (
 							<div className="hidden sm:block">
@@ -130,17 +144,17 @@ export default function Header({
 						initial="hidden"
 						animate={mobileMenuOpen ? 'visible' : 'hidden'}
 					>
-						{/* <motion.div variants={itemVariants}>
+						<motion.div variants={itemVariants}>
 							<Link
-								href="/plan"
+								href="/plans"
 								className={buttonVariants({
 									variant: 'ghost',
 									className: 'w-full justify-start text-foreground font-semibold',
 								})}
 							>
-								Plan
+								Plans
 							</Link>
-						</motion.div> */}
+						</motion.div>
 						<motion.div variants={itemVariants}>
 							<Link
 								href="/docs"
@@ -163,6 +177,18 @@ export default function Header({
 									})}
 								>
 									{t('collectionBtn')}
+								</Link>
+							</motion.div>
+							<motion.div variants={itemVariants}>
+								<Link
+									href="/settings/domains"
+									className={buttonVariants({
+										variant: 'ghost',
+										className: 'w-full justify-start text-foreground font-semibold',
+									})}
+								>
+									<Cog6ToothIcon className="h-5 w-5 mr-2" />
+									{t('settingsBtn')}
 								</Link>
 							</motion.div>
 						</SignedIn>

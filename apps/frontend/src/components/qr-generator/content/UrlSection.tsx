@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
 import { useTranslations } from 'next-intl';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
-import { getShortUrlFromCode } from '@/lib/utils';
+import { createLinkFromShortUrl } from '@/lib/utils';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { Input } from '@/components/ui/input';
 
@@ -48,7 +48,7 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		const payload = {
 			...values,
 			url: originalUrl,
-			shortUrl: shortUrl ? getShortUrlFromCode(shortUrl.shortCode) : null,
+			shortUrl: shortUrl ? createLinkFromShortUrl(shortUrl) : null,
 		};
 
 		onChange(payload);
