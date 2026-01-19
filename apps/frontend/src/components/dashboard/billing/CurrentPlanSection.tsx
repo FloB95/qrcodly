@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { Link } from '@/i18n/navigation';
 import { CheckoutButton, useSubscription } from '@clerk/nextjs/experimental';
 import { CheckIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
@@ -53,7 +54,15 @@ export function CurrentPlanSection() {
 							</Badge>
 						</CardTitle>
 						<CardDescription className="mt-1">
-							{hasProPlan ? t('proDescription') : t('freeDescription')}
+							{hasProPlan
+								? t('proDescription')
+								: t.rich('freeDescription', {
+										link: (chunks) => (
+											<Link href="/plans" className="underline hover:text-foreground">
+												{chunks}
+											</Link>
+										),
+									})}
 						</CardDescription>
 					</div>
 					{hasProPlan && (
