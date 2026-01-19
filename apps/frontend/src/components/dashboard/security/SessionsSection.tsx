@@ -201,13 +201,13 @@ export function SessionsSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex items-center justify-between">
-					<div className="flex items-center gap-3">
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+					<div className="flex items-start gap-3">
 						<div className="p-2 bg-primary/10 rounded-lg">
 							<ComputerDesktopIcon className="size-5" />
 						</div>
 						<div>
-							<CardTitle className="text-lg">{t('sessionsTitle')}</CardTitle>
+							<CardTitle>{t('sessionsTitle')}</CardTitle>
 							<CardDescription>{t('sessionsDescription')}</CardDescription>
 						</div>
 					</div>

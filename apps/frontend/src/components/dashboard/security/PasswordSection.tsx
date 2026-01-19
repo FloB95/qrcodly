@@ -123,12 +123,12 @@ export function PasswordSection() {
 		return (
 			<Card>
 				<CardHeader>
-					<div className="flex items-center gap-3">
+					<div className="flex items-start gap-3">
 						<div className="p-2 bg-primary/10 rounded-lg">
 							<KeyIcon className="size-5" />
 						</div>
 						<div>
-							<CardTitle className="text-lg">{t('passwordTitle')}</CardTitle>
+							<CardTitle>{t('passwordTitle')}</CardTitle>
 							<CardDescription>{t('passwordDescription')}</CardDescription>
 						</div>
 					</div>
@@ -143,12 +143,12 @@ export function PasswordSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex items-center gap-3">
+				<div className="flex items-start gap-3">
 					<div className="p-2 bg-primary/10 rounded-lg">
 						<KeyIcon className="size-5" />
 					</div>
 					<div>
-						<CardTitle className="text-lg">{t('passwordTitle')}</CardTitle>
+						<CardTitle>{t('passwordTitle')}</CardTitle>
 						<CardDescription>{t('passwordDescription')}</CardDescription>
 					</div>
 				</div>

@@ -19,11 +19,11 @@ export default async function Page({ params }: DefaultPageParams) {
 	return (
 		<ApiKeyProvider userId={user.id}>
 			<Card className="@container/card">
-				<CardContent className="relative">
-					<div className="flex items-center justify-between gap-3">
-						<div className="flex items-center gap-3">
+				<CardContent className="relative px-4 sm:px-6">
+					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+						<div className="flex items-start gap-3">
 							<div className="p-3 bg-primary/10 rounded-lg">
-								<CodeBracketIcon className="size-8 stroke-1" />
+								<CodeBracketIcon className="size-6 sm:size-8 stroke-1" />
 							</div>
 							<div>
 								<CardTitle className="mb-0.5">{t('title')}</CardTitle>
@@ -32,7 +32,9 @@ export default async function Page({ params }: DefaultPageParams) {
 								</CardDescription>
 							</div>
 						</div>
-						<CreateApiKeyDialog />
+						<div>
+							<CreateApiKeyDialog />
+						</div>
 					</div>
 				</CardContent>
 			</Card>

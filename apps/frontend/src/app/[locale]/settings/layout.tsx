@@ -9,7 +9,7 @@ export default async function SettingsLayout({ children }: { children: React.Rea
 	return (
 		<>
 			<Header />
-			<Container className="my-18">
+			<Container className="my-18 md:max-w-full">
 				<SidebarProvider>
 					<AppSidebar variant="inset" />
 					<SidebarInset>

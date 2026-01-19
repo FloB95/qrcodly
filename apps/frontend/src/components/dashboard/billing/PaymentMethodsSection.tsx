@@ -259,26 +259,28 @@ export function PaymentMethodsSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex items-center justify-between">
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
 					<div>
 						<CardTitle className="flex items-center gap-2">{t('paymentMethods')}</CardTitle>
 						<CardDescription className="mt-1">{t('paymentMethodsDescription')}</CardDescription>
 					</div>
-					<Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-						<DialogTrigger asChild>
-							<Button size="sm">
-								<PlusIcon className="size-4 mr-2" />
-								{t('addPaymentMethod')}
-							</Button>
-						</DialogTrigger>
-						<DialogContent className="sm:max-w-md">
-							<DialogHeader>
-								<DialogTitle>{t('addPaymentMethodTitle')}</DialogTitle>
-								<DialogDescription>{t('addPaymentMethodDescription')}</DialogDescription>
-							</DialogHeader>
-							<AddPaymentMethodForm revalidate={handleRevalidate} />
-						</DialogContent>
-					</Dialog>
+					<div>
+						<Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+							<DialogTrigger asChild>
+								<Button size="sm">
+									<PlusIcon className="size-4 mr-2" />
+									{t('addPaymentMethod')}
+								</Button>
+							</DialogTrigger>
+							<DialogContent className="sm:max-w-md">
+								<DialogHeader>
+									<DialogTitle>{t('addPaymentMethodTitle')}</DialogTitle>
+									<DialogDescription>{t('addPaymentMethodDescription')}</DialogDescription>
+								</DialogHeader>
+								<AddPaymentMethodForm revalidate={handleRevalidate} />
+							</DialogContent>
+						</Dialog>
+					</div>
 				</div>
 			</CardHeader>
 			<CardContent>

@@ -78,12 +78,12 @@ export function DeleteAccountSection() {
 	return (
 		<Card className="border-destructive/50">
 			<CardHeader>
-				<div className="flex items-center gap-3">
+				<div className="flex items-start gap-3">
 					<div className="p-2 bg-destructive/10 rounded-lg">
 						<TrashIcon className="size-5 text-destructive" />
 					</div>
 					<div>
-						<CardTitle className="text-lg text-destructive">{t('deleteAccountTitle')}</CardTitle>
+						<CardTitle className="text-destructive">{t('deleteAccountTitle')}</CardTitle>
 						<CardDescription>{t('deleteAccountDescription')}</CardDescription>
 					</div>
 				</div>

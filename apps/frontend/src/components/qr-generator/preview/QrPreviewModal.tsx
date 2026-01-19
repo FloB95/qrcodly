@@ -423,7 +423,7 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 							transition={{
 								delay: 0.5,
 							}}
-							className="fixed bottom-22 left-2 right-2 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 z-50 rounded-lg bg-black/90 px-4 py-3 text-sm text-white shadow-lg backdrop-blur-sm flex items-center gap-3"
+							className="fixed bottom-22 left-2 right-2 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 z-50 rounded-lg bg-black/90 px-4 py-3 text-sm text-white shadow-lg backdrop-blur-sm flex items-start gap-3"
 						>
 							<span>
 								{t('controls.move', {
