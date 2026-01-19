@@ -14,7 +14,7 @@ import {
 import { DynamicBadge } from './DynamicBadge';
 
 export type QrCodeProps = {
-	qrCode: Pick<TQrCode, 'config' | 'content' | 'qrCodeData'>;
+	qrCode: Pick<TQrCode, 'config' | 'content'> & { qrCodeData?: TQrCode['qrCodeData'] };
 	additionalStyles?: string;
 	shortUrl?: TShortUrlWithCustomDomainResponseDto | TShortUrlResponseDto;
 };

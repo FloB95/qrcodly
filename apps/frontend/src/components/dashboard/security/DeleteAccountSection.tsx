@@ -30,7 +30,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 
-const CONFIRMATION_TEXT = 'DELETE';
+const CONFIRMATION_TEXT: string = 'DELETE';
 
 const deleteAccountSchema = z.object({
 	confirmation: z.string().refine((val) => val === CONFIRMATION_TEXT, {
