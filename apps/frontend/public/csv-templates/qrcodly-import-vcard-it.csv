@@ -1,3 +1,3 @@
-Nome;Nome;Cognome;Email;Telefono;Fax;Azienda;Lavoro;Via;Città;CAP;Regione;Paese;Sito Web
-Mario Rossi;Mario;Rossi;mario@example.com;123456789;;Esempio Srl;Sviluppatore;Via Roma 123;Città;12345;RegioneX;PaeseY;https://esempio.com
-Giulia Bianchi;Giulia;Bianchi;giulia@example.com;987654321;;Esempio Spa;Manager;Via Milano 456;Città;67890;RegioneY;PaeseZ;https://esempio.org
+Nome;Nome;Cognome;Email;TelefonoPrivato;TelefonoCellulare;TelefonoAziendale;Fax;Azienda;Lavoro;Via;Città;CAP;Regione;Paese;Sito Web
+Mario Rossi;Mario;Rossi;mario@example.com;;123456789;;Esempio Srl;Sviluppatore;Via Roma 123;Città;12345;RegioneX;PaeseY;https://esempio.com
+Giulia Bianchi;Giulia;Bianchi;giulia@example.com;;987654321;;Esempio Spa;Manager;Via Milano 456;Città;67890;RegioneY;PaeseZ;https://esempio.org

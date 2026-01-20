@@ -405,6 +405,18 @@
 					"label": "Téléphone",
 					"placeholder": "Saisissez votre numéro de téléphone"
 				},
+				"phonePrivate": {
+					"label": "Téléphone (Privé)",
+					"placeholder": "Numéro privé"
+				},
+				"phoneMobile": {
+					"label": "Téléphone (Mobile)",
+					"placeholder": "Numéro mobile"
+				},
+				"phoneBusiness": {
+					"label": "Téléphone (Professionnel)",
+					"placeholder": "Numéro professionnel"
+				},
 				"fax": {
 					"label": "Fax",
 					"placeholder": "Saisissez votre numéro de fax"

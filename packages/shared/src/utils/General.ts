@@ -36,8 +36,16 @@ export function convertVCardObjToString(vCardInput: TVCardInput): string {
 	if (vCardInput.email) {
 		vCard.add('email', vCardInput.email);
 	}
-	if (vCardInput.phone) {
-		vCard.add('tel', vCardInput.phone, { type: 'cell' });
+	// Phone numbers - new fields take priority, legacy 'phone' maps to mobile
+	if (vCardInput.phonePrivate) {
+		vCard.add('tel', vCardInput.phonePrivate, { type: 'home' });
+	}
+	const mobilePhone = vCardInput.phoneMobile || vCardInput.phone;
+	if (mobilePhone) {
+		vCard.add('tel', mobilePhone, { type: 'cell' });
+	}
+	if (vCardInput.phoneBusiness) {
+		vCard.add('tel', vCardInput.phoneBusiness, { type: 'work' });
 	}
 	if (vCardInput.fax) {
 		vCard.add('tel', vCardInput.fax, { type: 'fax' });
@@ -215,7 +223,9 @@ export const getDefaultContentByType = (
 					firstName: undefined,
 					lastName: undefined,
 					email: undefined,
-					phone: undefined,
+					phonePrivate: undefined,
+					phoneMobile: undefined,
+					phoneBusiness: undefined,
 					fax: undefined,
 					company: undefined,
 					job: undefined,

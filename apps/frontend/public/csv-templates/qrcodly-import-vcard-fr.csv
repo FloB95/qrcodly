@@ -1,3 +1,3 @@
-Nom;Prénom;Nom de famille;Email;Téléphone;Fax;Entreprise;Poste;Rue;Ville;Code Postal;État;Pays;Site Web
-Jean Dupont;Jean;Dupont;jean@example.com;123456789;;Exemple SARL;Développeur;123 Rue Principale;Ville;12345;ÉtatX;PaysY;https://exemple.com
-Marie Dubois;Marie;Dubois;marie@example.com;987654321;;Exemple SA;Manager;456 Rue Secondaire;Ville;67890;ÉtatY;PaysZ;https://exemple.org
+Nom;Prénom;Nom de famille;Email;TéléphonePrivé;TéléphoneMobile;TéléphoneProfessionnel;Fax;Entreprise;Poste;Rue;Ville;Code Postal;État;Pays;Site Web
+Jean Dupont;Jean;Dupont;jean@example.com;;123456789;;Exemple SARL;Développeur;123 Rue Principale;Ville;12345;ÉtatX;PaysY;https://exemple.com
+Marie Dubois;Marie;Dubois;marie@example.com;;987654321;;Exemple SA;Manager;456 Rue Secondaire;Ville;67890;ÉtatY;PaysZ;https://exemple.org

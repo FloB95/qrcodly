@@ -405,6 +405,18 @@
 					"label": "Telefoon",
 					"placeholder": "Voer uw telefoonnummer in"
 				},
+				"phonePrivate": {
+					"label": "Telefoon (Privé)",
+					"placeholder": "Privé nummer"
+				},
+				"phoneMobile": {
+					"label": "Telefoon (Mobiel)",
+					"placeholder": "Mobiel nummer"
+				},
+				"phoneBusiness": {
+					"label": "Telefoon (Zakelijk)",
+					"placeholder": "Zakelijk nummer"
+				},
 				"fax": {
 					"label": "Fax",
 					"placeholder": "Voer uw faxnummer in"

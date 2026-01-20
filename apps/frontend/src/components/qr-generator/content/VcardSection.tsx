@@ -31,9 +31,15 @@ type VCardSectionProps = {
 const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.vCard');
 
+	// Map legacy 'phone' field to 'phoneMobile' for backwards compatibility
+	const defaultValues: FormValues = {
+		...value,
+		phoneMobile: value.phoneMobile || value.phone,
+	};
+
 	const form = useForm<FormValues>({
 		resolver: zodResolver(VCardInputSchema),
-		defaultValues: value,
+		defaultValues,
 		shouldFocusError: false,
 		shouldUnregister: true,
 		reValidateMode: 'onBlur',
@@ -157,19 +163,19 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 						</FormItem>
 					)}
 				/>
-				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
+				<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 lg:grid-cols-3 gap-6">
 					<FormField
 						control={form.control}
-						name="phone"
+						name="phonePrivate"
 						render={({ field }) => (
 							<FormItem className="w-full">
 								<FormLabel>
 									<span translate="no" suppressHydrationWarning>
-										{t('phone.label')}
+										{t('phonePrivate.label')}
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input {...field} translate="no" placeholder={t('phone.placeholder')} />
+									<Input {...field} translate="no" placeholder={t('phonePrivate.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -177,22 +183,56 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					/>
 					<FormField
 						control={form.control}
-						name="fax"
+						name="phoneMobile"
 						render={({ field }) => (
 							<FormItem className="w-full">
 								<FormLabel>
 									<span translate="no" suppressHydrationWarning>
-										{t('fax.label')}
+										{t('phoneMobile.label')}
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input {...field} translate="no" placeholder={t('fax.placeholder')} />
+									<Input {...field} translate="no" placeholder={t('phoneMobile.placeholder')} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="phoneBusiness"
+						render={({ field }) => (
+							<FormItem className="w-full">
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('phoneBusiness.label')}
+									</span>
+								</FormLabel>
+								<FormControl>
+									<Input {...field} translate="no" placeholder={t('phoneBusiness.placeholder')} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
 				</div>
+				<FormField
+					control={form.control}
+					name="fax"
+					render={({ field }) => (
+						<FormItem className="w-full">
+							<FormLabel>
+								<span translate="no" suppressHydrationWarning>
+									{t('fax.label')}
+								</span>
+							</FormLabel>
+							<FormControl>
+								<Input {...field} translate="no" placeholder={t('fax.placeholder')} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
 					<FormField
 						control={form.control}

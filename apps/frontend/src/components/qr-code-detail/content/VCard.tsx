@@ -37,16 +37,26 @@ export default function VCardContent({ qrCode }: { qrCode: TQrCodeWithRelationsR
 					<div>{displayValue(data.email)}</div>
 				</div>
 
-				{/* Phone and Fax */}
-				<div className="flex space-x-4">
+				{/* Phone Numbers */}
+				<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 					<div className="w-full">
-						<div className="font-medium mb-1">{t('phone.label')}</div>
-						<div>{displayValue(data.phone)}</div>
+						<div className="font-medium mb-1">{t('phonePrivate.label')}</div>
+						<div>{displayValue(data.phonePrivate)}</div>
 					</div>
 					<div className="w-full">
-						<div className="font-medium mb-1">{t('fax.label')}</div>
-						<div>{displayValue(data.fax)}</div>
+						<div className="font-medium mb-1">{t('phoneMobile.label')}</div>
+						<div>{displayValue(data.phoneMobile || data.phone)}</div>
 					</div>
+					<div className="w-full">
+						<div className="font-medium mb-1">{t('phoneBusiness.label')}</div>
+						<div>{displayValue(data.phoneBusiness)}</div>
+					</div>
+				</div>
+
+				{/* Fax */}
+				<div>
+					<div className="font-medium mb-1">{t('fax.label')}</div>
+					<div>{displayValue(data.fax)}</div>
 				</div>
 
 				{/* Company and Job */}

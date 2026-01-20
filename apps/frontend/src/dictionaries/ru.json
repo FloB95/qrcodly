@@ -405,6 +405,18 @@
 					"label": "Телефон",
 					"placeholder": "Введите ваш номер телефона"
 				},
+				"phonePrivate": {
+					"label": "Телефон (Личный)",
+					"placeholder": "Личный номер"
+				},
+				"phoneMobile": {
+					"label": "Телефон (Мобильный)",
+					"placeholder": "Мобильный номер"
+				},
+				"phoneBusiness": {
+					"label": "Телефон (Рабочий)",
+					"placeholder": "Рабочий номер"
+				},
 				"fax": {
 					"label": "Факс",
 					"placeholder": "Введите ваш номер факса"

@@ -27,10 +27,12 @@ export const VCardDetailsCard = ({ vcard, trigger }: VCardDetailsCardProps) => {
 							<span className="max-w-xs truncate">{vcard.email}</span>
 						</div>
 					)}
-					{vcard.phone && (
+					{(vcard.phoneMobile || vcard.phone || vcard.phonePrivate || vcard.phoneBusiness) && (
 						<div className="flex items-center justify-center space-x-2 text-sm">
 							<PhoneIcon className="w-5 h-5" />
-							<span>{vcard.phone}</span>
+							<span>
+								{vcard.phoneMobile || vcard.phone || vcard.phonePrivate || vcard.phoneBusiness}
+							</span>
 						</div>
 					)}
 					{vcard.company && (
