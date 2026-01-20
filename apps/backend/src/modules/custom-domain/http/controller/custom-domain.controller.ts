@@ -25,38 +25,54 @@ import { GetCustomDomainUseCase } from '../../useCase/get-custom-domain.use-case
 import { SetDefaultCustomDomainUseCase } from '../../useCase/set-default-custom-domain.use-case';
 import { ClearDefaultCustomDomainUseCase } from '../../useCase/clear-default-custom-domain.use-case';
 import { GetDefaultCustomDomainUseCase } from '../../useCase/get-default-custom-domain.use-case';
-import { VerifyCnameUseCase } from '../../useCase/verify-cname.use-case';
-import { DnsVerificationService } from '../../service/dns-verification.service';
+import { ResolveCustomDomainUseCase } from '../../useCase/resolve-custom-domain.use-case';
 import { TCustomDomain } from '../../domain/entities/custom-domain.entity';
 import { z } from 'zod';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
+import { env } from '@/core/config/env';
+import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 
-// Response schema for verification instructions
-const VerificationInstructionsResponseDto = z.object({
-	recordType: z.string(),
-	recordHost: z.string(),
-	recordValue: z.string(),
-	instructions: z.string(),
-});
-
-type TVerificationInstructionsResponseDto = z.infer<typeof VerificationInstructionsResponseDto>;
-
-// Response schema for full setup instructions (TXT + CNAME)
-const FullSetupInstructionsResponseDto = z.object({
-	txtRecord: z.object({
-		recordType: z.string(),
-		recordHost: z.string(),
-		recordValue: z.string(),
-	}),
+// Response schema for setup instructions (Cloudflare-provided TXT records + CNAME)
+const SetupInstructionsResponseDto = z.object({
+	sslValidationRecord: z
+		.object({
+			recordType: z.literal('TXT'),
+			recordHost: z.string(),
+			recordValue: z.string(),
+		})
+		.nullable(),
+	ownershipValidationRecord: z
+		.object({
+			recordType: z.literal('TXT'),
+			recordHost: z.string(),
+			recordValue: z.string(),
+		})
+		.nullable(),
 	cnameRecord: z.object({
-		recordType: z.string(),
+		recordType: z.literal('CNAME'),
 		recordHost: z.string(),
 		recordValue: z.string(),
 	}),
 	instructions: z.string(),
 });
 
-type TFullSetupInstructionsResponseDto = z.infer<typeof FullSetupInstructionsResponseDto>;
+type TSetupInstructionsResponseDto = z.infer<typeof SetupInstructionsResponseDto>;
+
+// Response schema for domain resolution (used by Cloudflare Worker)
+const ResolveDomainResponseDto = z.object({
+	domain: z.string(),
+	isValid: z.boolean(),
+	sslStatus: z.string(),
+});
+
+type TResolveDomainResponseDto = z.infer<typeof ResolveDomainResponseDto>;
+
+// Query schema for domain resolution
+const ResolveDomainQueryDto = z.object({
+	domain: z.string().min(1).max(255),
+});
+
+type TResolveDomainQueryDto = z.infer<typeof ResolveDomainQueryDto>;
 
 @injectable()
 export class CustomDomainController extends AbstractController {
@@ -77,10 +93,8 @@ export class CustomDomainController extends AbstractController {
 		private readonly clearDefaultCustomDomainUseCase: ClearDefaultCustomDomainUseCase,
 		@inject(GetDefaultCustomDomainUseCase)
 		private readonly getDefaultCustomDomainUseCase: GetDefaultCustomDomainUseCase,
-		@inject(VerifyCnameUseCase)
-		private readonly verifyCnameUseCase: VerifyCnameUseCase,
-		@inject(DnsVerificationService)
-		private readonly dnsVerificationService: DnsVerificationService,
+		@inject(ResolveCustomDomainUseCase)
+		private readonly resolveCustomDomainUseCase: ResolveCustomDomainUseCase,
 	) {
 		super();
 	}
@@ -107,7 +121,34 @@ export class CustomDomainController extends AbstractController {
 			query.page,
 			query.limit,
 		);
-		return this.makeApiHttpResponse(200, CustomDomainListResponseDto.parse(result));
+		// Map each domain to the response DTO format
+		const mappedData = result.data.map((domain) => this.mapToResponseDto(domain));
+		return this.makeApiHttpResponse(200, {
+			data: mappedData,
+			pagination: result.pagination,
+		});
+	}
+
+	@Get('/resolve', {
+		authHandler: false,
+		querySchema: ResolveDomainQueryDto,
+		responseSchema: {
+			200: ResolveDomainResponseDto,
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			summary: 'Resolve a custom domain',
+			description:
+				'Public endpoint for Cloudflare Worker to validate if a domain is registered, enabled, and has active SSL. Returns domain validity status.',
+			operationId: 'custom-domain/resolve',
+		},
+	})
+	async resolve(
+		request: IHttpRequest<unknown, unknown, TResolveDomainQueryDto, false>,
+	): Promise<IHttpResponse<TResolveDomainResponseDto>> {
+		const query = ResolveDomainQueryDto.parse(request.query);
+		const result = await this.resolveCustomDomainUseCase.execute(query.domain);
+		return this.makeApiHttpResponse(200, ResolveDomainResponseDto.parse(result));
 	}
 
 	@Get('/default', {
@@ -128,7 +169,7 @@ export class CustomDomainController extends AbstractController {
 		if (!result) {
 			return this.makeApiHttpResponse(200, null);
 		}
-		return this.makeApiHttpResponse(200, CustomDomainResponseDto.parse(result));
+		return this.makeApiHttpResponse(200, this.mapToResponseDto(result));
 	}
 
 	@Post('', {
@@ -143,7 +184,7 @@ export class CustomDomainController extends AbstractController {
 		schema: {
 			summary: 'Add a custom domain',
 			description:
-				'Adds a new custom domain for the authenticated user. The domain must be verified via DNS TXT record before it can be used.',
+				'Adds a new subdomain for the authenticated user. Only subdomains are supported (e.g., links.example.com). The domain is registered with Cloudflare and must be verified via DNS records before it can be used.',
 			operationId: 'custom-domain/create',
 		},
 	})
@@ -152,7 +193,7 @@ export class CustomDomainController extends AbstractController {
 	): Promise<IHttpResponse<TCustomDomainResponseDto>> {
 		const dto = CreateCustomDomainDto.parse(request.body);
 		const customDomain = await this.createCustomDomainUseCase.execute(dto, request.user);
-		return this.makeApiHttpResponse(201, CustomDomainResponseDto.parse(customDomain));
+		return this.makeApiHttpResponse(201, this.mapToResponseDto(customDomain));
 	}
 
 	@Get('/:id', {
@@ -174,33 +215,7 @@ export class CustomDomainController extends AbstractController {
 	): Promise<IHttpResponse<TCustomDomainResponseDto>> {
 		const params = CustomDomainIdParamsDto.parse(request.params);
 		const customDomain = await this.fetchCustomDomain(params.id, request.user.id);
-		return this.makeApiHttpResponse(200, CustomDomainResponseDto.parse(customDomain));
-	}
-
-	@Get('/:id/verification-instructions', {
-		responseSchema: {
-			200: VerificationInstructionsResponseDto,
-			401: DEFAULT_ERROR_RESPONSES[401],
-			403: DEFAULT_ERROR_RESPONSES[403],
-			404: DEFAULT_ERROR_RESPONSES[404],
-			429: DEFAULT_ERROR_RESPONSES[429],
-		},
-		schema: {
-			summary: 'Get verification instructions',
-			description: 'Returns the DNS TXT record instructions for verifying domain ownership.',
-			operationId: 'custom-domain/verification-instructions',
-		},
-	})
-	async getVerificationInstructions(
-		request: IHttpRequest<unknown, TCustomDomainIdParamsDto>,
-	): Promise<IHttpResponse<TVerificationInstructionsResponseDto>> {
-		const params = CustomDomainIdParamsDto.parse(request.params);
-		const customDomain = await this.fetchCustomDomain(params.id, request.user.id);
-		const instructions = this.dnsVerificationService.getVerificationInstructions(
-			customDomain.domain,
-			customDomain.verificationToken,
-		);
-		return this.makeApiHttpResponse(200, VerificationInstructionsResponseDto.parse(instructions));
+		return this.makeApiHttpResponse(200, this.mapToResponseDto(customDomain));
 	}
 
 	@Post('/:id/verify', {
@@ -212,10 +227,13 @@ export class CustomDomainController extends AbstractController {
 			404: DEFAULT_ERROR_RESPONSES[404],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
+		config: {
+			rateLimitPolicy: RateLimitPolicy.DOMAIN_VERIFY,
+		},
 		schema: {
-			summary: 'Verify a custom domain (TXT record)',
+			summary: 'Check domain verification status',
 			description:
-				'Verifies domain ownership by checking for the DNS TXT record. The record must contain the verification token provided during domain creation.',
+				'Polls Cloudflare for the current verification status. Returns updated SSL and ownership status.',
 			operationId: 'custom-domain/verify',
 		},
 	})
@@ -225,59 +243,56 @@ export class CustomDomainController extends AbstractController {
 		const params = CustomDomainIdParamsDto.parse(request.params);
 		const customDomain = await this.fetchCustomDomain(params.id, request.user.id);
 		const verifiedDomain = await this.verifyCustomDomainUseCase.execute(customDomain);
-		return this.makeApiHttpResponse(200, CustomDomainResponseDto.parse(verifiedDomain));
-	}
-
-	@Post('/:id/verify-cname', {
-		responseSchema: {
-			200: CustomDomainResponseDto,
-			400: DEFAULT_ERROR_RESPONSES[400],
-			401: DEFAULT_ERROR_RESPONSES[401],
-			403: DEFAULT_ERROR_RESPONSES[403],
-			404: DEFAULT_ERROR_RESPONSES[404],
-			429: DEFAULT_ERROR_RESPONSES[429],
-		},
-		schema: {
-			summary: 'Verify CNAME record',
-			description:
-				'Verifies that the domain has a valid CNAME record pointing to our servers. This is required for the domain to be used for dynamic QR codes.',
-			operationId: 'custom-domain/verify-cname',
-		},
-	})
-	async verifyCname(
-		request: IHttpRequest<unknown, TCustomDomainIdParamsDto>,
-	): Promise<IHttpResponse<TCustomDomainResponseDto>> {
-		const params = CustomDomainIdParamsDto.parse(request.params);
-		const customDomain = await this.fetchCustomDomain(params.id, request.user.id);
-		const verifiedDomain = await this.verifyCnameUseCase.execute(customDomain);
-		return this.makeApiHttpResponse(200, CustomDomainResponseDto.parse(verifiedDomain));
+		return this.makeApiHttpResponse(200, this.mapToResponseDto(verifiedDomain));
 	}
 
 	@Get('/:id/setup-instructions', {
 		responseSchema: {
-			200: FullSetupInstructionsResponseDto,
+			200: SetupInstructionsResponseDto,
 			401: DEFAULT_ERROR_RESPONSES[401],
 			403: DEFAULT_ERROR_RESPONSES[403],
 			404: DEFAULT_ERROR_RESPONSES[404],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Get full setup instructions',
+			summary: 'Get DNS setup instructions',
 			description:
-				'Returns complete DNS setup instructions including both TXT record (for verification) and CNAME record (for routing).',
+				'Returns the DNS records required for domain verification. Includes Cloudflare-provided TXT records for SSL and ownership verification, plus CNAME record for routing.',
 			operationId: 'custom-domain/setup-instructions',
 		},
 	})
 	async getSetupInstructions(
 		request: IHttpRequest<unknown, TCustomDomainIdParamsDto>,
-	): Promise<IHttpResponse<TFullSetupInstructionsResponseDto>> {
+	): Promise<IHttpResponse<TSetupInstructionsResponseDto>> {
 		const params = CustomDomainIdParamsDto.parse(request.params);
 		const customDomain = await this.fetchCustomDomain(params.id, request.user.id);
-		const instructions = this.dnsVerificationService.getFullSetupInstructions(
-			customDomain.domain,
-			customDomain.verificationToken,
-		);
-		return this.makeApiHttpResponse(200, FullSetupInstructionsResponseDto.parse(instructions));
+
+		const instructions: TSetupInstructionsResponseDto = {
+			sslValidationRecord:
+				customDomain.sslValidationTxtName && customDomain.sslValidationTxtValue
+					? {
+							recordType: 'TXT',
+							recordHost: customDomain.sslValidationTxtName,
+							recordValue: customDomain.sslValidationTxtValue,
+						}
+					: null,
+			ownershipValidationRecord:
+				customDomain.ownershipValidationTxtName && customDomain.ownershipValidationTxtValue
+					? {
+							recordType: 'TXT',
+							recordHost: customDomain.ownershipValidationTxtName,
+							recordValue: customDomain.ownershipValidationTxtValue,
+						}
+					: null,
+			cnameRecord: {
+				recordType: 'CNAME',
+				recordHost: customDomain.domain,
+				recordValue: env.CUSTOM_DOMAIN_CNAME_TARGET,
+			},
+			instructions: this.buildSetupInstructions(customDomain),
+		};
+
+		return this.makeApiHttpResponse(200, SetupInstructionsResponseDto.parse(instructions));
 	}
 
 	@Post('/:id/set-default', {
@@ -292,7 +307,7 @@ export class CustomDomainController extends AbstractController {
 		schema: {
 			summary: 'Set as default domain',
 			description:
-				'Sets this domain as the default for all new dynamic QR codes. The domain must be fully verified (TXT and CNAME) before it can be set as default.',
+				'Sets this domain as the default for all new dynamic QR codes. The domain must have active SSL status before it can be set as default.',
 			operationId: 'custom-domain/set-default',
 		},
 	})
@@ -305,7 +320,7 @@ export class CustomDomainController extends AbstractController {
 			customDomain,
 			request.user.id,
 		);
-		return this.makeApiHttpResponse(200, CustomDomainResponseDto.parse(updatedDomain));
+		return this.makeApiHttpResponse(200, this.mapToResponseDto(updatedDomain));
 	}
 
 	@Post('/clear-default', {
@@ -348,7 +363,8 @@ export class CustomDomainController extends AbstractController {
 		return this.makeApiHttpResponse(200, { deleted: true });
 	}
 
-	// Helper Method
+	// Helper Methods
+
 	private async fetchCustomDomain(id: string, userId: string): Promise<TCustomDomain> {
 		const customDomain = await this.getCustomDomainUseCase.execute(id);
 
@@ -357,5 +373,79 @@ export class CustomDomainController extends AbstractController {
 		}
 
 		return customDomain;
+	}
+
+	/**
+	 * Maps a database entity to the response DTO format.
+	 */
+	private mapToResponseDto(customDomain: TCustomDomain): TCustomDomainResponseDto {
+		// Parse validation errors from JSON string
+		let validationErrors: string[] | null = null;
+		if (customDomain.validationErrors) {
+			try {
+				validationErrors = JSON.parse(customDomain.validationErrors) as string[];
+			} catch {
+				validationErrors = null;
+			}
+		}
+
+		return CustomDomainResponseDto.parse({
+			id: customDomain.id,
+			domain: customDomain.domain,
+			isDefault: customDomain.isDefault,
+			isEnabled: customDomain.isEnabled,
+			createdBy: customDomain.createdBy,
+			createdAt: customDomain.createdAt,
+			updatedAt: customDomain.updatedAt,
+			cloudflareHostnameId: customDomain.cloudflareHostnameId,
+			sslStatus: customDomain.sslStatus,
+			ownershipStatus: customDomain.ownershipStatus,
+			sslValidationRecord:
+				customDomain.sslValidationTxtName && customDomain.sslValidationTxtValue
+					? {
+							name: customDomain.sslValidationTxtName,
+							value: customDomain.sslValidationTxtValue,
+						}
+					: null,
+			ownershipValidationRecord:
+				customDomain.ownershipValidationTxtName && customDomain.ownershipValidationTxtValue
+					? {
+							name: customDomain.ownershipValidationTxtName,
+							value: customDomain.ownershipValidationTxtValue,
+						}
+					: null,
+			validationErrors,
+		});
+	}
+
+	/**
+	 * Builds human-readable setup instructions.
+	 */
+	private buildSetupInstructions(customDomain: TCustomDomain): string {
+		const lines: string[] = ['Add the following DNS records to your domain:'];
+
+		if (customDomain.sslValidationTxtName && customDomain.sslValidationTxtValue) {
+			lines.push('');
+			lines.push('1. SSL Validation (TXT Record):');
+			lines.push(`   Host: ${customDomain.sslValidationTxtName}`);
+			lines.push(`   Value: ${customDomain.sslValidationTxtValue}`);
+		}
+
+		if (customDomain.ownershipValidationTxtName && customDomain.ownershipValidationTxtValue) {
+			lines.push('');
+			lines.push('2. Ownership Verification (TXT Record):');
+			lines.push(`   Host: ${customDomain.ownershipValidationTxtName}`);
+			lines.push(`   Value: ${customDomain.ownershipValidationTxtValue}`);
+		}
+
+		lines.push('');
+		lines.push('3. Routing (CNAME Record):');
+		lines.push(`   Host: ${customDomain.domain}`);
+		lines.push(`   Points to: ${env.CUSTOM_DOMAIN_CNAME_TARGET}`);
+
+		lines.push('');
+		lines.push('Note: DNS changes may take up to 48 hours to propagate.');
+
+		return lines.join('\n');
 	}
 }

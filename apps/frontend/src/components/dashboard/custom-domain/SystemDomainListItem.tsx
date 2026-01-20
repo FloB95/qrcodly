@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Star } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { useClearDefaultCustomDomainMutation } from '@/lib/api/custom-domain';
 import { toast } from '@/components/ui/use-toast';
@@ -61,25 +60,9 @@ export function SystemDomainListItem({ systemDomain, isDefault }: SystemDomainLi
 				</div>
 			</TableCell>
 			<TableCell>
-				<div className="flex items-center gap-2">
-					<Tooltip>
-						<TooltipTrigger>
-							<div className="flex items-center gap-1">
-								<CheckCircle className="h-4 w-4 text-green-500" />
-								<span className="text-xs">TXT</span>
-							</div>
-						</TooltipTrigger>
-						<TooltipContent>{t('systemDomainVerified')}</TooltipContent>
-					</Tooltip>
-					<Tooltip>
-						<TooltipTrigger>
-							<div className="flex items-center gap-1">
-								<CheckCircle className="h-4 w-4 text-green-500" />
-								<span className="text-xs">CNAME</span>
-							</div>
-						</TooltipTrigger>
-						<TooltipContent>{t('systemDomainVerified')}</TooltipContent>
-					</Tooltip>
+				<div className="flex items-center gap-1">
+					<CheckCircle className="size-4 text-green-500" />
+					<span className="text-xs capitalize">{t(`sslStatus.active`)}</span>
 				</div>
 			</TableCell>
 			<TableCell>

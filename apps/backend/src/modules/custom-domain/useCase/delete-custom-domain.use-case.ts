@@ -3,14 +3,17 @@ import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import CustomDomainRepository from '../domain/repository/custom-domain.repository';
 import { TCustomDomain } from '../domain/entities/custom-domain.entity';
+import { CloudflareService, CloudflareApiError } from '../service/cloudflare.service';
 
 /**
  * Use case for deleting a Custom Domain.
+ * Also removes the hostname from Cloudflare.
  */
 @injectable()
 export class DeleteCustomDomainUseCase implements IBaseUseCase {
 	constructor(
 		@inject(CustomDomainRepository) private customDomainRepository: CustomDomainRepository,
+		@inject(CloudflareService) private cloudflareService: CloudflareService,
 		@inject(Logger) private logger: Logger,
 	) {}
 
@@ -21,6 +24,34 @@ export class DeleteCustomDomainUseCase implements IBaseUseCase {
 	 * @returns A promise that resolves when the domain is deleted.
 	 */
 	async execute(customDomain: TCustomDomain): Promise<void> {
+		// Delete from Cloudflare if we have a hostname ID
+		if (customDomain.cloudflareHostnameId) {
+			try {
+				await this.cloudflareService.deleteCustomHostname(customDomain.cloudflareHostnameId);
+				this.logger.info('customDomain.cloudflare.deleted', {
+					cloudflareHostnameId: customDomain.cloudflareHostnameId,
+					domain: customDomain.domain,
+				});
+			} catch (error) {
+				// Log but don't fail - we still want to delete from our database
+				if (error instanceof CloudflareApiError) {
+					this.logger.warn('customDomain.cloudflare.delete.failed', {
+						cloudflareHostnameId: customDomain.cloudflareHostnameId,
+						domain: customDomain.domain,
+						error: error.message,
+						statusCode: error.statusCode,
+					});
+				} else {
+					this.logger.error('customDomain.cloudflare.delete.error', {
+						cloudflareHostnameId: customDomain.cloudflareHostnameId,
+						domain: customDomain.domain,
+						error,
+					});
+				}
+			}
+		}
+
+		// Delete from database
 		await this.customDomainRepository.delete(customDomain);
 
 		this.logger.info('customDomain.deleted', {

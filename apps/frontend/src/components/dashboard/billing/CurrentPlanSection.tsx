@@ -29,7 +29,12 @@ export function CurrentPlanSection() {
 		return <BillingSkeleton titleWidth="w-32" />;
 	}
 
-	const subscriptionItem = data?.subscriptionItems[0];
+	const subscriptionItem = data?.subscriptionItems.filter((s) => s.status === 'active')[0];
+
+	if (!subscriptionItem) {
+		return null;
+	}
+
 	const currentPlan = subscriptionItem?.plan;
 	const planPeriod = (subscriptionItem?.planPeriod as 'annual' | 'month') || 'annual';
 	const hasProPlan = currentPlan?.slug === 'pro';

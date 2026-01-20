@@ -20,5 +20,5 @@ export const QR_CODE_PLAN_LIMITS: Record<
  */
 export const CUSTOM_DOMAIN_PLAN_LIMITS: Record<PlanName, number> = {
 	free: 0,
-	pro: 3,
+	pro: 2,
 };

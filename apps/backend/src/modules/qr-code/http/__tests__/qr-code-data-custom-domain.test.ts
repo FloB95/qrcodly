@@ -13,7 +13,7 @@ import { generateCreateCustomDomainDto } from '@/tests/shared/factories/custom-d
 import db from '@/core/db';
 import { customDomain } from '@/core/db/schemas';
 import { eq, and } from 'drizzle-orm';
-import { randomUUID, randomBytes } from 'crypto';
+import { randomUUID } from 'crypto';
 
 const CUSTOM_DOMAIN_API_PATH = `${API_BASE_PATH}/custom-domain`;
 
@@ -42,19 +42,22 @@ describe('QR Code Data - Custom Domain Integration', () => {
 	const createCustomDomainDirectly = async (
 		domain: string,
 		userId: string,
-		options: { isVerified?: boolean; isCnameValid?: boolean; isDefault?: boolean } = {},
+		options: { sslStatus?: string; isDefault?: boolean } = {},
 	): Promise<string> => {
 		const id = randomUUID();
-		const verificationToken = randomBytes(32).toString('hex');
 		const now = new Date();
 
 		await db.insert(customDomain).values({
 			id,
 			domain: domain.toLowerCase(),
-			isVerified: options.isVerified ?? false,
-			isCnameValid: options.isCnameValid ?? false,
+			sslStatus: options.sslStatus ?? 'pending',
+			ownershipStatus: options.sslStatus === 'active' ? 'verified' : 'pending',
 			isDefault: options.isDefault ?? false,
-			verificationToken,
+			cloudflareHostnameId: null,
+			sslValidationTxtName: null,
+			sslValidationTxtValue: null,
+			ownershipValidationTxtName: null,
+			ownershipValidationTxtValue: null,
 			createdBy: userId,
 			createdAt: now,
 			updatedAt: now,
@@ -105,8 +108,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 			testDomainName = dto.domain.toLowerCase();
 
 			testDomainId = await createCustomDomainDirectly(testDomainName, TEST_USER_PRO_ID, {
-				isVerified: true,
-				isCnameValid: true,
+				sslStatus: 'active',
 				isDefault: true,
 			});
 		});
@@ -211,30 +213,28 @@ describe('QR Code Data - Custom Domain Integration', () => {
 			});
 
 		it('should reject setting unverified domain as default', async () => {
-			// Create an unverified domain directly in DB
+			// Create an unverified domain directly in DB (pending SSL)
 			const dto = generateCreateCustomDomainDto();
 			const domainId = await createCustomDomainDirectly(dto.domain, TEST_USER_PRO_ID, {
-				isVerified: false,
-				isCnameValid: false,
+				sslStatus: 'pending',
 			});
 
-			// Attempt to set as default without verification
+			// Attempt to set as default without SSL being active
 			const setDefaultResponse = await setDefaultDomain(domainId, accessTokenPro);
 			expect(setDefaultResponse.statusCode).toBe(400);
 
 			const error = JSON.parse(setDefaultResponse.payload);
-			expect(error.message).toContain('verified');
+			expect(error.message).toContain('SSL');
 
 			// Cleanup
 			await deleteCustomDomainDirectly(domainId);
 		});
 
-		it('should reject setting domain with only TXT verification (no CNAME) as default', async () => {
-			// Create a domain with only TXT verification
+		it('should reject setting domain with pending_validation SSL as default', async () => {
+			// Create a domain with pending SSL validation
 			const dto = generateCreateCustomDomainDto();
 			const domainId = await createCustomDomainDirectly(dto.domain, TEST_USER_PRO_ID, {
-				isVerified: true,
-				isCnameValid: false,
+				sslStatus: 'pending_validation',
 			});
 
 			// Attempt to set as default
@@ -242,7 +242,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 			expect(setDefaultResponse.statusCode).toBe(400);
 
 			const error = JSON.parse(setDefaultResponse.payload);
-			expect(error.message).toContain('CNAME');
+			expect(error.message).toContain('SSL');
 
 			// Cleanup
 			await deleteCustomDomainDirectly(domainId);

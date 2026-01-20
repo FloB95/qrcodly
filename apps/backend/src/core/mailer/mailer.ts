@@ -13,7 +13,12 @@ import { fileURLToPath } from 'url';
 import { type Address } from 'nodemailer/lib/mailer';
 
 type Template = HandlebarsTemplateDelegate<unknown>;
-type TemplateName = 'user-invited';
+type TemplateName =
+	| 'user-invited'
+	| 'subscription-past-due'
+	| 'subscription-canceled'
+	| 'subscription-domains-disabled'
+	| 'subscription-reactivated';
 
 /**
  * Mailer class for sending emails using Nodemailer.
@@ -55,7 +60,7 @@ export class Mailer implements IMailer {
 		text?: string;
 		html?: string;
 		attachments?: Attachment[];
-	}): Promise<unknown> {
+	}): Promise<SMTPTransport.SentMessageInfo | undefined> {
 		// Skip sending emails in test environment
 		if (IN_TEST) return;
 

@@ -6,7 +6,6 @@ import { toast } from '@/components/ui/use-toast';
 import {
 	useDeleteCustomDomainMutation,
 	useVerifyCustomDomainMutation,
-	useVerifyCnameMutation,
 	useSetDefaultCustomDomainMutation,
 } from '@/lib/api/custom-domain';
 import type { TCustomDomainResponseDto } from '@shared/schemas';
@@ -18,12 +17,10 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 	const t = useTranslations('settings.domains');
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [isVerifying, setIsVerifying] = useState(false);
-	const [isVerifyingCname, setIsVerifyingCname] = useState(false);
 	const [isSettingDefault, setIsSettingDefault] = useState(false);
 
 	const deleteMutation = useDeleteCustomDomainMutation();
 	const verifyMutation = useVerifyCustomDomainMutation();
-	const verifyCnameMutation = useVerifyCnameMutation();
 	const setDefaultMutation = useSetDefaultCustomDomainMutation();
 
 	const handleDelete = useCallback(() => {
@@ -67,7 +64,7 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 	const handleVerify = useCallback(() => {
 		setIsVerifying(true);
 		const toastInstance = toast({
-			title: t('verifyingTxt'),
+			title: t('checkingStatus'),
 			description: (
 				<div className="flex items-center space-x-2">
 					<Loader2 className="h-4 w-4 animate-spin" />
@@ -76,14 +73,26 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 		});
 
 		verifyMutation.mutate(domain.id, {
-			onSuccess: () => {
+			onSuccess: (data) => {
 				toastInstance.dismiss();
 				setIsVerifying(false);
-				toast({
-					title: t('txtVerified'),
-					description: t('txtVerifiedDescription', { domain: domain.domain }),
-				});
-				posthog.capture('custom-domain:txt-verified', { domain: domain.domain });
+				// Check if now fully verified (SSL active)
+				if (data.sslStatus === 'active') {
+					toast({
+						title: t('domainVerified'),
+						description: t('domainVerifiedDescription', { domain: domain.domain }),
+					});
+					posthog.capture('custom-domain:verified', { domain: domain.domain });
+				} else {
+					toast({
+						title: t('statusUpdated'),
+						description: t('statusUpdatedDescription', { status: data.sslStatus }),
+					});
+					posthog.capture('custom-domain:status-checked', {
+						domain: domain.domain,
+						status: data.sslStatus,
+					});
+				}
 			},
 			onError: (error) => {
 				toastInstance.dismiss();
@@ -94,51 +103,13 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					variant: 'destructive',
 				});
 				Sentry.captureException(error);
-				posthog.capture('error:custom-domain-verify-txt', {
+				posthog.capture('error:custom-domain-verify', {
 					error: error.message,
 					domain: domain.domain,
 				});
 			},
 		});
 	}, [domain, verifyMutation, t]);
-
-	const handleVerifyCname = useCallback(() => {
-		setIsVerifyingCname(true);
-		const toastInstance = toast({
-			title: t('verifyingCname'),
-			description: (
-				<div className="flex items-center space-x-2">
-					<Loader2 className="h-4 w-4 animate-spin" />
-				</div>
-			),
-		});
-
-		verifyCnameMutation.mutate(domain.id, {
-			onSuccess: () => {
-				toastInstance.dismiss();
-				setIsVerifyingCname(false);
-				toast({
-					title: t('cnameVerified'),
-					description: t('cnameVerifiedDescription', { domain: domain.domain }),
-				});
-				posthog.capture('custom-domain:cname-verified', { domain: domain.domain });
-			},
-			onError: (error) => {
-				toastInstance.dismiss();
-				setIsVerifyingCname(false);
-				toast({
-					title: t('verifyError'),
-					description: error.message,
-					variant: 'destructive',
-				});
-				Sentry.captureException(error);
-				posthog.capture('error:custom-domain-verify-cname', {
-					error: error.message,
-					domain: domain.domain,
-				});
-			},
-		});
-	}, [domain, verifyCnameMutation, t]);
 
 	const handleSetDefault = useCallback(() => {
 		setIsSettingDefault(true);
@@ -181,11 +152,9 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 	return {
 		isDeleting,
 		isVerifying,
-		isVerifyingCname,
 		isSettingDefault,
 		handleDelete,
 		handleVerify,
-		handleVerifyCname,
 		handleSetDefault,
 	};
 };

@@ -1,0 +1,16 @@
+{
+	"name": "qrcodly-custom-domain-worker",
+	"version": "1.0.0",
+	"description": "Cloudflare Worker for QRcodly custom domain routing",
+	"main": "src/index.ts",
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy",
+		"tail": "wrangler tail"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20241022.0",
+		"wrangler": "^3.86.0",
+		"typescript": "^5.6.3"
+	}
+}

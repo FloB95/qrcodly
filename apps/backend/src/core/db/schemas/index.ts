@@ -11,3 +11,4 @@ export {
 	default as customDomain,
 	customDomainRelations,
 } from '@/modules/custom-domain/domain/entities/custom-domain.entity';
+export { default as subscriptionGracePeriod } from '@/modules/subscription/domain/entities/subscription-grace-period.entity';

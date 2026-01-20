@@ -6,6 +6,8 @@ export enum RateLimitPolicy {
 	// template limits
 	TEMPLATE_CREATE = 'template_create',
 	SCREENSHOT_CREATE = 'screenshot_create',
+	// custom domain limits
+	DOMAIN_VERIFY = 'domain_verify',
 }
 
 export enum RateLimitTier {
@@ -47,5 +49,10 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 3,
 		[RateLimitTier.PRO_PLAN]: 10,
+	},
+	[RateLimitPolicy.DOMAIN_VERIFY]: {
+		[RateLimitTier.ANONYMOUS]: 0,
+		[RateLimitTier.AUTHENTICATED]: 0,
+		[RateLimitTier.PRO_PLAN]: 6,
 	},
 } as const;
