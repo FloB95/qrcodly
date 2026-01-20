@@ -64,22 +64,24 @@ wrangler deploy --env production
 
 ### Environment Variables
 
-| Variable         | Description                                    | Example                  |
-| ---------------- | ---------------------------------------------- | ------------------------ |
-| `BACKEND_API_URL`| QRcodly backend API URL (secret)               | `https://api.qrcodly.de` |
-| `TARGET_DOMAIN`  | Main domain to redirect to                     | `www.qrcodly.de`         |
+| Variable          | Description                      | Example                  |
+| ----------------- | -------------------------------- | ------------------------ |
+| `BACKEND_API_URL` | QRcodly backend API URL (secret) | `https://api.qrcodly.de` |
+| `TARGET_DOMAIN`   | Main domain to redirect to       | `www.qrcodly.de`         |
 
 ### Routes
 
 Configure the worker to handle requests on your CNAME target domain (e.g., `tenant.qrcodly.de`).
 
 In Cloudflare Dashboard:
+
 1. Go to Workers & Pages
 2. Select this worker
 3. Go to Triggers > Routes
 4. Add route: `tenant.qrcodly.de/*`
 
 Or via wrangler.toml:
+
 ```toml
 routes = [
   { pattern = "tenant.qrcodly.de/*", zone_name = "qrcodly.de" }
