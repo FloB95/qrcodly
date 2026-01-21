@@ -114,6 +114,18 @@ export function CustomDomainListItemActions({
 		}
 	};
 
+	const handleCopyDcvHost = () => {
+		if (instructions) {
+			handleCopy(instructions.dcvDelegationRecord.recordHost, 'copiedHostDescription');
+		}
+	};
+
+	const handleCopyDcvValue = () => {
+		if (instructions) {
+			handleCopy(instructions.dcvDelegationRecord.recordValue, 'copiedCnameDescription');
+		}
+	};
+
 	// Domain is fully ready when SSL is active
 	const isFullyVerified = domain.sslStatus === 'active';
 	// Still needs verification if SSL is not active
@@ -324,7 +336,52 @@ export function CustomDomainListItemActions({
 								)}
 							</div>
 
-							{/* Step 3: SSL Validation TXT Record - Always shown */}
+							{/* Step 3: DCV Delegation CNAME Record - For automatic SSL renewal */}
+							<div className="space-y-3">
+								<div className="flex items-center gap-2">
+									<div className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium bg-black text-muted">
+										3
+									</div>
+									<h4 className="font-medium">{t('dcvDelegationStep')}</h4>
+								</div>
+								<div className="rounded-lg border p-4 space-y-3 ml-8">
+									<p className="text-sm text-muted-foreground">{t('dcvDelegationDescription')}</p>
+									<div>
+										<label className="text-sm font-medium text-muted-foreground">
+											{t('recordType')}
+										</label>
+										<p className="font-mono">{instructions.dcvDelegationRecord.recordType}</p>
+									</div>
+									<div>
+										<label className="text-sm font-medium text-muted-foreground">
+											{t('recordHost')}
+										</label>
+										<div className="flex items-center gap-2">
+											<p className="font-mono text-sm break-all flex-1">
+												{instructions.dcvDelegationRecord.recordHost}
+											</p>
+											<Button variant="outline" size="sm" onClick={handleCopyDcvHost}>
+												<Copy className="h-4 w-4" />
+											</Button>
+										</div>
+									</div>
+									<div>
+										<label className="text-sm font-medium text-muted-foreground">
+											{t('pointsTo')}
+										</label>
+										<div className="flex items-center gap-2">
+											<p className="font-mono text-sm break-all flex-1">
+												{instructions.dcvDelegationRecord.recordValue}
+											</p>
+											<Button variant="outline" size="sm" onClick={handleCopyDcvValue}>
+												<Copy className="h-4 w-4" />
+											</Button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{/* Step 4: SSL Validation TXT Record - Always shown */}
 							<div className="space-y-3">
 								<div className="flex items-center gap-2">
 									<div
@@ -332,7 +389,7 @@ export function CustomDomainListItemActions({
 											isFullyVerified ? 'bg-green-200 text-green-800' : 'bg-black text-muted'
 										}`}
 									>
-										3
+										4
 									</div>
 									<h4 className="font-medium">
 										{t('sslValidationStep')}{' '}
@@ -343,7 +400,7 @@ export function CustomDomainListItemActions({
 								</div>
 								{/* Show different content based on phase */}
 								{instructions.phase === 'dns_verification' ? (
-									<p className="text-sm text-muted-foreground ml-8">{t('step3PendingDns')}</p>
+									<p className="text-sm text-muted-foreground ml-8">{t('step4PendingDns')}</p>
 								) : instructions.sslValidationRecord ? (
 									<div className="rounded-lg border p-4 space-y-3 ml-8">
 										<div>
@@ -380,11 +437,11 @@ export function CustomDomainListItemActions({
 										</div>
 									</div>
 								) : (
-									<p className="text-sm text-muted-foreground ml-8">{t('step3LoadingSsl')}</p>
+									<p className="text-sm text-muted-foreground ml-8">{t('step4LoadingSsl')}</p>
 								)}
 							</div>
 
-							<p className="text-sm text-muted-foreground">{t('dnsNote')}</p>
+							<p className="text-sm font-semibold">{t('dnsNote')}</p>
 						</div>
 					)}
 					<DialogFooter className="gap-2">

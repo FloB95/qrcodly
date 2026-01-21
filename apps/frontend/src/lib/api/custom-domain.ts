@@ -13,7 +13,7 @@ import { urlShortenerQueryKeys } from './url-shortener';
 
 /**
  * Setup instructions type for two-phase verification.
- * Phase 1 (dns_verification): Ownership TXT + CNAME
+ * Phase 1 (dns_verification): Ownership TXT + CNAME + DCV Delegation
  * Phase 2 (cloudflare_ssl): SSL TXT record
  */
 export type TSetupInstructions = {
@@ -28,6 +28,12 @@ export type TSetupInstructions = {
 		recordHost: string;
 		recordValue: string;
 	};
+	// DCV delegation CNAME for automatic SSL certificate issuance/renewal
+	dcvDelegationRecord: {
+		recordType: 'CNAME';
+		recordHost: string;
+		recordValue: string;
+	};
 	sslValidationRecord: {
 		recordType: 'TXT';
 		recordHost: string;
@@ -35,6 +41,7 @@ export type TSetupInstructions = {
 	} | null;
 	ownershipTxtVerified: boolean;
 	cnameVerified: boolean;
+	dcvDelegationVerified: boolean;
 	instructions: string;
 };
 

@@ -47,6 +47,11 @@ const SetupInstructionsResponseDto = z.object({
 		recordHost: z.string(),
 		recordValue: z.string(),
 	}),
+	dcvDelegationRecord: z.object({
+		recordType: z.literal('CNAME'),
+		recordHost: z.string(),
+		recordValue: z.string(),
+	}),
 	sslValidationRecord: z
 		.object({
 			recordType: z.literal('TXT'),
@@ -56,6 +61,7 @@ const SetupInstructionsResponseDto = z.object({
 		.nullable(),
 	ownershipTxtVerified: z.boolean(),
 	cnameVerified: z.boolean(),
+	dcvDelegationVerified: z.boolean(),
 	instructions: z.string(),
 });
 
@@ -277,6 +283,10 @@ export class CustomDomainController extends AbstractController {
 		const domainParts = customDomain.domain.split('.');
 		const subdomain = domainParts.slice(0, -2).join('.');
 
+		// Build DCV delegation CNAME value: <hostname>.<dcv-delegation-target>
+		// This enables automatic SSL certificate issuance and renewal via Cloudflare
+		const dcvDelegationValue = `${customDomain.domain}.${env.CLOUDFLARE_DCV_DELEGATION_TARGET}`;
+
 		const instructions: TSetupInstructionsResponseDto = {
 			phase,
 			// Ownership TXT record (our verification token) - shown in Phase 1
@@ -294,6 +304,13 @@ export class CustomDomainController extends AbstractController {
 				recordHost: subdomain,
 				recordValue: env.CUSTOM_DOMAIN_CNAME_TARGET,
 			},
+			// DCV delegation CNAME for automatic SSL certificate issuance/renewal
+			// This delegates the ACME challenge to Cloudflare, enabling automatic cert management
+			dcvDelegationRecord: {
+				recordType: 'CNAME',
+				recordHost: `_acme-challenge.${subdomain}`,
+				recordValue: dcvDelegationValue,
+			},
 			// SSL TXT record (from Cloudflare) - only available in Phase 2
 			sslValidationRecord:
 				phase === 'cloudflare_ssl' &&
@@ -307,6 +324,7 @@ export class CustomDomainController extends AbstractController {
 					: null,
 			ownershipTxtVerified: customDomain.ownershipTxtVerified ?? false,
 			cnameVerified: customDomain.cnameVerified ?? false,
+			dcvDelegationVerified: false, // Not tracked - this is optional for automatic renewals
 			instructions: this.buildSetupInstructions(customDomain),
 		};
 
@@ -452,6 +470,9 @@ export class CustomDomainController extends AbstractController {
 		const domainParts = customDomain.domain.split('.');
 		const subdomain = domainParts.slice(0, -2).join('.');
 
+		// Build DCV delegation CNAME value: <hostname>.<dcv-delegation-target>
+		const dcvDelegationValue = `${customDomain.domain}.${env.CLOUDFLARE_DCV_DELEGATION_TARGET}`;
+
 		if (phase === 'dns_verification') {
 			lines.push('Add the following DNS records to verify domain ownership:');
 			lines.push('');
@@ -473,21 +494,32 @@ export class CustomDomainController extends AbstractController {
 			lines.push(`   Points to: ${env.CUSTOM_DOMAIN_CNAME_TARGET}`);
 
 			lines.push('');
-			lines.push('Once both records are verified, SSL provisioning will begin automatically.');
+
+			// Step 3: DCV Delegation CNAME
+			lines.push('3. SSL Certificate Auto-Renewal (CNAME Record)');
+			lines.push(`   Host: _acme-challenge.${subdomain}`);
+			lines.push(`   Points to: ${dcvDelegationValue}`);
+			lines.push('   Note: This enables automatic SSL certificate issuance and renewal.');
+
+			lines.push('');
+			lines.push('Once records 1 and 2 are verified, SSL provisioning will begin automatically.');
 		} else {
 			// Phase 2: cloudflare_ssl
 			lines.push('DNS verified! Now add the SSL validation record:');
 			lines.push('');
 
-			// Steps 1-2 completed
+			// Steps 1-3 completed/shown
 			lines.push('1. Ownership Verification (TXT Record) ✓');
 			lines.push('2. Routing (CNAME Record) ✓');
+			lines.push('3. SSL Certificate Auto-Renewal (CNAME Record)');
+			lines.push(`   Host: _acme-challenge.${subdomain}`);
+			lines.push(`   Points to: ${dcvDelegationValue}`);
 
 			lines.push('');
 
-			// Step 3: SSL TXT
+			// Step 4: SSL TXT
 			const sslStatus = customDomain.sslStatus === 'active' ? ' ✓' : '';
-			lines.push(`3. SSL Validation (TXT Record)${sslStatus}`);
+			lines.push(`4. SSL Validation (TXT Record)${sslStatus}`);
 			if (customDomain.sslValidationTxtName && customDomain.sslValidationTxtValue) {
 				lines.push(`   Host: ${customDomain.sslValidationTxtName}`);
 				lines.push(`   Value: ${customDomain.sslValidationTxtValue}`);
