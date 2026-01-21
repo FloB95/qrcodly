@@ -90,7 +90,6 @@ describe('CustomDomainController', () => {
 		// Use pro user token since custom domains require pro plan
 		accessToken = serverSetup.accessTokenPro;
 		accessToken2 = serverSetup.accessToken2;
-		userId = serverSetup.userPro.id;
 
 		// Clean up any existing domains from previous test runs
 		await cleanupDomainsForUser(TEST_USER_PRO_ID);

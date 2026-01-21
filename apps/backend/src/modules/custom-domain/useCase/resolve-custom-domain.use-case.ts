@@ -4,6 +4,7 @@ import CustomDomainRepository from '../domain/repository/custom-domain.repositor
 export interface IResolvedDomain {
 	domain: string;
 	isValid: boolean;
+	sslStatus: string;
 }
 
 /**
@@ -35,6 +36,7 @@ export class ResolveCustomDomainUseCase {
 			return {
 				domain,
 				isValid: false,
+				sslStatus: '',
 			};
 		}
 
@@ -43,6 +45,7 @@ export class ResolveCustomDomainUseCase {
 		return {
 			domain: customDomain.domain,
 			isValid,
+			sslStatus: customDomain.sslStatus,
 		};
 	}
 }
