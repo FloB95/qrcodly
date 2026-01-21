@@ -41,6 +41,11 @@ jobs:
       UMAMI_WEBSITE: ${{ secrets.UMAMI_WEBSITE }}
       UMAMI_USERNAME: ${{ secrets.UMAMI_USERNAME }}
       UMAMI_PASSWORD: ${{ secrets.UMAMI_PASSWORD }}
+      BACKEND_URL: 'http://localhost:5001'
+      CLERK_WEBHOOK_SECRET_KEY: 'NOT_USED_IN_TESTS'
+      CLOUDFLARE_API_TOKEN: 'NOT_USED_IN_TESTS'
+      CLOUDFLARE_ZONE_ID: 'NOT_USED_IN_TESTS'
+      CLOUDFLARE_DCV_DELEGATION_TARGET: 'NOT_USED_IN_TESTS'
 
     steps:
       - uses: actions/checkout@v5
