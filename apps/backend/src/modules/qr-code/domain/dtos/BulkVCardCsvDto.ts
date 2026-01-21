@@ -1,7 +1,8 @@
 import { QrCodeSchema, VCardInputSchema } from '@shared/schemas';
 import { z } from 'zod';
 
-const { ...vCardShapeWithoutDynamic } = VCardInputSchema.omit({ isDynamic: true }).shape;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { isDynamic: _, ...vCardShapeWithoutDynamic } = VCardInputSchema.shape;
 
 export const BulkVCardCsvDto = z.object({
 	...QrCodeSchema.pick({ name: true }).shape,
