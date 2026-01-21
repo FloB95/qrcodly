@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { z } from 'zod';
 import {
 	Dialog,
@@ -31,13 +32,19 @@ import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
 
-// Subdomain regex - requires at least 2 dot-separated segments before TLD
-const subdomainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.){2,}[a-zA-Z]{2,}$/;
+// Subdomain regex - matches valid single-level subdomain names only (subdomain.domain.tld)
+const subdomainRegex =
+	/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z]{2,}$/;
 
-// Helper to check if a domain is a subdomain (not an apex domain)
-function isSubdomain(domain: string): boolean {
+// Helper to check if a domain is a single-level subdomain (exactly 3 parts)
+function isSingleLevelSubdomain(domain: string): boolean {
 	const parts = domain.split('.');
-	return parts.length >= 3;
+	return parts.length === 3;
+}
+
+// Helper to check if domain contains qrcodly (blocked)
+function isQrcodlyDomain(domain: string): boolean {
+	return domain.toLowerCase().includes('qrcodly');
 }
 
 const AddDomainSchema = z.object({
@@ -45,11 +52,16 @@ const AddDomainSchema = z.object({
 		.string()
 		.min(3, 'Domain must be at least 3 characters')
 		.max(255, 'Domain must be at most 255 characters')
-		.regex(subdomainRegex, 'Invalid subdomain format')
 		.transform((d) => d.toLowerCase().trim())
-		.refine(isSubdomain, {
+		.refine((d) => !isQrcodlyDomain(d), {
+			message: 'QRcodly domains cannot be used as custom domains.',
+		})
+		.refine((d) => subdomainRegex.test(d), {
+			message: 'Invalid domain format. Please enter a valid subdomain.',
+		})
+		.refine(isSingleLevelSubdomain, {
 			message:
-				'Only subdomains are supported (e.g., links.example.com). Apex domains are not allowed.',
+				'Only single-level subdomains are supported (e.g., links.example.com). Multi-level subdomains are not allowed.',
 		}),
 });
 
@@ -58,6 +70,9 @@ type AddDomainFormData = z.infer<typeof AddDomainSchema>;
 export function AddCustomDomainDialog() {
 	const t = useTranslations('settings.domains');
 	const [open, setOpen] = useState(false);
+	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
 
 	const createMutation = useCreateCustomDomainMutation();
 
@@ -78,6 +93,11 @@ export function AddCustomDomainDialog() {
 					description: t('addSuccessDescription', { domain: response.domain }),
 				});
 				posthog.capture('custom-domain:created', { domain: response.domain });
+
+				// Navigate with showInstructions param to auto-open the setup modal
+				const params = new URLSearchParams(searchParams.toString());
+				params.set('showInstructions', response.id);
+				router.push(`${pathname}?${params.toString()}`);
 			},
 			onError: (error) => {
 				toast({

@@ -4,25 +4,30 @@ import { Logger } from '@/core/logging';
 import CustomDomainRepository from '../domain/repository/custom-domain.repository';
 import {
 	TCustomDomain,
-	TCloudflareSSLStatus,
 	TOwnershipStatus,
+	TVerificationPhase,
 } from '../domain/entities/custom-domain.entity';
 import {
 	CloudflareService,
 	CloudflareApiError,
 	ICloudflareCustomHostname,
 } from '../service/cloudflare.service';
+import { DnsVerificationService } from '../service/dns-verification.service';
 import { DomainVerificationFailedError } from '../error/http/domain-verification-failed.error';
 import { BadRequestError } from '@/core/error/http';
 
 /**
- * Use case for verifying a Custom Domain by polling Cloudflare status.
+ * Use case for verifying a Custom Domain through the two-phase verification process.
+ *
+ * Phase 1 (dns_verification): Verify ownership TXT and CNAME records via DNS lookup.
+ * Phase 2 (cloudflare_ssl): Poll Cloudflare for SSL certificate status.
  */
 @injectable()
 export class VerifyCustomDomainUseCase implements IBaseUseCase {
 	constructor(
 		@inject(CustomDomainRepository) private customDomainRepository: CustomDomainRepository,
 		@inject(CloudflareService) private cloudflareService: CloudflareService,
+		@inject(DnsVerificationService) private dnsVerificationService: DnsVerificationService,
 		@inject(Logger) private logger: Logger,
 	) {}
 
@@ -34,11 +39,107 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 	}
 
 	/**
-	 * Executes the use case to verify a Custom Domain by polling Cloudflare.
-	 * @param customDomain The Custom Domain to verify.
-	 * @returns A promise that resolves with the updated Custom Domain entity.
+	 * Phase 1: Verify DNS records (ownership TXT + CNAME).
+	 * If both are verified, register with Cloudflare and transition to Phase 2.
 	 */
-	async execute(customDomain: TCustomDomain): Promise<TCustomDomain> {
+	private async verifyDnsPhase(customDomain: TCustomDomain): Promise<TCustomDomain> {
+		if (!customDomain.ownershipValidationTxtValue) {
+			throw new BadRequestError('Domain missing verification token');
+		}
+
+		this.logger.info('customDomain.verification.dns.start', {
+			customDomainId: customDomain.id,
+			domain: customDomain.domain,
+		});
+
+		// Verify DNS records using ownershipValidationTxtValue as the verification token
+		const dnsResult = await this.dnsVerificationService.verifyDnsRecords(
+			customDomain.domain,
+			customDomain.ownershipValidationTxtValue,
+		);
+
+		// Update verified flags
+		await this.customDomainRepository.update(customDomain, {
+			ownershipTxtVerified: dnsResult.ownershipTxtVerified,
+			cnameVerified: dnsResult.cnameVerified,
+		});
+
+		this.logger.info('customDomain.verification.dns.result', {
+			customDomainId: customDomain.id,
+			domain: customDomain.domain,
+			ownershipTxtVerified: dnsResult.ownershipTxtVerified,
+			cnameVerified: dnsResult.cnameVerified,
+		});
+
+		// If both DNS records are verified, transition to Cloudflare phase
+		if (dnsResult.ownershipTxtVerified && dnsResult.cnameVerified) {
+			return this.transitionToCloudflarePhase(customDomain);
+		}
+
+		// Return updated domain (still in dns_verification phase)
+		const updatedDomain = await this.customDomainRepository.findOneById(customDomain.id);
+		if (!updatedDomain) throw new Error('Failed to retrieve updated Custom Domain');
+		return updatedDomain;
+	}
+
+	/**
+	 * Transitions from DNS verification to Cloudflare SSL phase.
+	 * Registers the domain with Cloudflare Custom Hostnames API.
+	 */
+	private async transitionToCloudflarePhase(customDomain: TCustomDomain): Promise<TCustomDomain> {
+		this.logger.info('customDomain.verification.transition_to_cloudflare', {
+			customDomainId: customDomain.id,
+			domain: customDomain.domain,
+		});
+
+		// Register with Cloudflare
+		let cloudflareHostname: ICloudflareCustomHostname;
+		try {
+			cloudflareHostname = await this.cloudflareService.createCustomHostname(customDomain.domain);
+		} catch (error) {
+			if (error instanceof CloudflareApiError) {
+				this.logger.error('customDomain.cloudflare.create.failed', {
+					domain: customDomain.domain,
+					error: error.message,
+					statusCode: error.statusCode,
+				});
+				throw new DomainVerificationFailedError(
+					customDomain.domain,
+					`Failed to register domain with Cloudflare: ${error.message}`,
+				);
+			}
+			throw error;
+		}
+
+		// Extract SSL validation records from Cloudflare
+		const sslValidationRecord = cloudflareHostname.ssl.validation_records?.[0];
+
+		// Update domain to Phase 2
+		await this.customDomainRepository.update(customDomain, {
+			verificationPhase: 'cloudflare_ssl' as TVerificationPhase,
+			ownershipStatus: 'verified',
+			cloudflareHostnameId: cloudflareHostname.id,
+			sslStatus: cloudflareHostname.ssl.status,
+			sslValidationTxtName: sslValidationRecord?.txt_name ?? null,
+			sslValidationTxtValue: sslValidationRecord?.txt_value ?? null,
+		});
+
+		this.logger.info('customDomain.verification.cloudflare_registered', {
+			customDomainId: customDomain.id,
+			domain: customDomain.domain,
+			cloudflareHostnameId: cloudflareHostname.id,
+			sslStatus: cloudflareHostname.ssl.status,
+		});
+
+		const updatedDomain = await this.customDomainRepository.findOneById(customDomain.id);
+		if (!updatedDomain) throw new Error('Failed to retrieve updated Custom Domain');
+		return updatedDomain;
+	}
+
+	/**
+	 * Phase 2: Poll Cloudflare for SSL certificate status.
+	 */
+	private async verifyCloudflarePhase(customDomain: TCustomDomain): Promise<TCustomDomain> {
 		// If already fully verified (SSL active), return as-is
 		if (customDomain.sslStatus === 'active') {
 			this.logger.info('customDomain.verification.already_active', {
@@ -76,10 +177,9 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 
 		// Extract updated validation records (they may change)
 		const sslValidationRecord = cloudflareHostname.ssl.validation_records?.[0];
-		const ownershipVerification = cloudflareHostname.ownership_verification;
 
 		// Map Cloudflare status to local status
-		const sslStatus = cloudflareHostname.ssl.status as TCloudflareSSLStatus;
+		const sslStatus = cloudflareHostname.ssl.status;
 		const ownershipStatus = this.mapOwnershipStatus(cloudflareHostname);
 
 		// Extract validation errors from Cloudflare response
@@ -97,10 +197,6 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 			ownershipStatus,
 			sslValidationTxtName: sslValidationRecord?.txt_name ?? customDomain.sslValidationTxtName,
 			sslValidationTxtValue: sslValidationRecord?.txt_value ?? customDomain.sslValidationTxtValue,
-			ownershipValidationTxtName:
-				ownershipVerification?.name ?? customDomain.ownershipValidationTxtName,
-			ownershipValidationTxtValue:
-				ownershipVerification?.value ?? customDomain.ownershipValidationTxtValue,
 			validationErrors: validationErrors.length > 0 ? JSON.stringify(validationErrors) : null,
 		});
 
@@ -119,5 +215,39 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 		});
 
 		return updatedCustomDomain;
+	}
+
+	/**
+	 * Executes the use case to verify a Custom Domain.
+	 * Routes to the appropriate phase-specific verification logic.
+	 * @param customDomain The Custom Domain to verify.
+	 * @returns A promise that resolves with the updated Custom Domain entity.
+	 */
+	async execute(customDomain: TCustomDomain): Promise<TCustomDomain> {
+		// If already fully verified (SSL active), return as-is
+		if (customDomain.sslStatus === 'active') {
+			this.logger.info('customDomain.verification.already_active', {
+				customDomainId: customDomain.id,
+				domain: customDomain.domain,
+			});
+			return customDomain;
+		}
+
+		// Route to appropriate phase
+		if (customDomain.verificationPhase === 'dns_verification') {
+			return this.verifyDnsPhase(customDomain);
+		}
+
+		if (customDomain.verificationPhase === 'cloudflare_ssl') {
+			return this.verifyCloudflarePhase(customDomain);
+		}
+
+		// Default to DNS phase for domains without a phase set (shouldn't happen)
+		this.logger.warn('customDomain.verification.unknown_phase', {
+			customDomainId: customDomain.id,
+			domain: customDomain.domain,
+			verificationPhase: customDomain.verificationPhase,
+		});
+		return this.verifyDnsPhase(customDomain);
 	}
 }

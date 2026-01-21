@@ -32,15 +32,9 @@ import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema'
 import { env } from '@/core/config/env';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 
-// Response schema for setup instructions (Cloudflare-provided TXT records + CNAME)
+// Response schema for setup instructions (two-phase verification)
 const SetupInstructionsResponseDto = z.object({
-	sslValidationRecord: z
-		.object({
-			recordType: z.literal('TXT'),
-			recordHost: z.string(),
-			recordValue: z.string(),
-		})
-		.nullable(),
+	phase: z.enum(['dns_verification', 'cloudflare_ssl']),
 	ownershipValidationRecord: z
 		.object({
 			recordType: z.literal('TXT'),
@@ -53,6 +47,15 @@ const SetupInstructionsResponseDto = z.object({
 		recordHost: z.string(),
 		recordValue: z.string(),
 	}),
+	sslValidationRecord: z
+		.object({
+			recordType: z.literal('TXT'),
+			recordHost: z.string(),
+			recordValue: z.string(),
+		})
+		.nullable(),
+	ownershipTxtVerified: z.boolean(),
+	cnameVerified: z.boolean(),
 	instructions: z.string(),
 });
 
@@ -257,7 +260,7 @@ export class CustomDomainController extends AbstractController {
 		schema: {
 			summary: 'Get DNS setup instructions',
 			description:
-				'Returns the DNS records required for domain verification. Includes Cloudflare-provided TXT records for SSL and ownership verification, plus CNAME record for routing.',
+				'Returns the DNS records required for domain verification. Phase 1 shows ownership TXT and CNAME records. Phase 2 shows Cloudflare SSL TXT record.',
 			operationId: 'custom-domain/setup-instructions',
 		},
 	})
@@ -267,15 +270,16 @@ export class CustomDomainController extends AbstractController {
 		const params = CustomDomainIdParamsDto.parse(request.params);
 		const customDomain = await this.fetchCustomDomain(params.id, request.user.id);
 
+		const phase = customDomain.verificationPhase;
+
+		// Extract subdomain for DNS record display (e.g., "links" from "links.example.com")
+		// DNS providers typically want just the host part, not the full domain
+		const domainParts = customDomain.domain.split('.');
+		const subdomain = domainParts.slice(0, -2).join('.');
+
 		const instructions: TSetupInstructionsResponseDto = {
-			sslValidationRecord:
-				customDomain.sslValidationTxtName && customDomain.sslValidationTxtValue
-					? {
-							recordType: 'TXT',
-							recordHost: customDomain.sslValidationTxtName,
-							recordValue: customDomain.sslValidationTxtValue,
-						}
-					: null,
+			phase,
+			// Ownership TXT record (our verification token) - shown in Phase 1
 			ownershipValidationRecord:
 				customDomain.ownershipValidationTxtName && customDomain.ownershipValidationTxtValue
 					? {
@@ -284,11 +288,25 @@ export class CustomDomainController extends AbstractController {
 							recordValue: customDomain.ownershipValidationTxtValue,
 						}
 					: null,
+			// CNAME record - shown in Phase 1
 			cnameRecord: {
 				recordType: 'CNAME',
-				recordHost: customDomain.domain,
+				recordHost: subdomain,
 				recordValue: env.CUSTOM_DOMAIN_CNAME_TARGET,
 			},
+			// SSL TXT record (from Cloudflare) - only available in Phase 2
+			sslValidationRecord:
+				phase === 'cloudflare_ssl' &&
+				customDomain.sslValidationTxtName &&
+				customDomain.sslValidationTxtValue
+					? {
+							recordType: 'TXT',
+							recordHost: customDomain.sslValidationTxtName,
+							recordValue: customDomain.sslValidationTxtValue,
+						}
+					: null,
+			ownershipTxtVerified: customDomain.ownershipTxtVerified ?? false,
+			cnameVerified: customDomain.cnameVerified ?? false,
 			instructions: this.buildSetupInstructions(customDomain),
 		};
 
@@ -397,6 +415,11 @@ export class CustomDomainController extends AbstractController {
 			createdBy: customDomain.createdBy,
 			createdAt: customDomain.createdAt,
 			updatedAt: customDomain.updatedAt,
+			// Two-phase verification fields
+			verificationPhase: customDomain.verificationPhase || 'dns_verification',
+			ownershipTxtVerified: customDomain.ownershipTxtVerified ?? false,
+			cnameVerified: customDomain.cnameVerified ?? false,
+			// Cloudflare fields
 			cloudflareHostnameId: customDomain.cloudflareHostnameId,
 			sslStatus: customDomain.sslStatus,
 			ownershipStatus: customDomain.ownershipStatus,
@@ -419,29 +442,57 @@ export class CustomDomainController extends AbstractController {
 	}
 
 	/**
-	 * Builds human-readable setup instructions.
+	 * Builds human-readable setup instructions based on verification phase.
 	 */
 	private buildSetupInstructions(customDomain: TCustomDomain): string {
-		const lines: string[] = ['Add the following DNS records to your domain:'];
+		const phase = customDomain.verificationPhase || 'dns_verification';
+		const lines: string[] = [];
 
-		if (customDomain.sslValidationTxtName && customDomain.sslValidationTxtValue) {
+		// Extract subdomain for DNS record display (e.g., "links" from "links.example.com")
+		const domainParts = customDomain.domain.split('.');
+		const subdomain = domainParts.slice(0, -2).join('.');
+
+		if (phase === 'dns_verification') {
+			lines.push('Add the following DNS records to verify domain ownership:');
 			lines.push('');
-			lines.push('1. SSL Validation (TXT Record):');
-			lines.push(`   Host: ${customDomain.sslValidationTxtName}`);
-			lines.push(`   Value: ${customDomain.sslValidationTxtValue}`);
-		}
 
-		if (customDomain.ownershipValidationTxtName && customDomain.ownershipValidationTxtValue) {
+			// Step 1: Ownership TXT
+			const ownershipStatus = customDomain.ownershipTxtVerified ? ' ✓' : '';
+			lines.push(`1. Ownership Verification (TXT Record)${ownershipStatus}`);
+			if (customDomain.ownershipValidationTxtName && customDomain.ownershipValidationTxtValue) {
+				lines.push(`   Host: ${customDomain.ownershipValidationTxtName}`);
+				lines.push(`   Value: ${customDomain.ownershipValidationTxtValue}`);
+			}
+
 			lines.push('');
-			lines.push('2. Ownership Verification (TXT Record):');
-			lines.push(`   Host: ${customDomain.ownershipValidationTxtName}`);
-			lines.push(`   Value: ${customDomain.ownershipValidationTxtValue}`);
-		}
 
-		lines.push('');
-		lines.push('3. Routing (CNAME Record):');
-		lines.push(`   Host: ${customDomain.domain}`);
-		lines.push(`   Points to: ${env.CUSTOM_DOMAIN_CNAME_TARGET}`);
+			// Step 2: CNAME
+			const cnameStatus = customDomain.cnameVerified ? ' ✓' : '';
+			lines.push(`2. Routing (CNAME Record)${cnameStatus}`);
+			lines.push(`   Host: ${subdomain}`);
+			lines.push(`   Points to: ${env.CUSTOM_DOMAIN_CNAME_TARGET}`);
+
+			lines.push('');
+			lines.push('Once both records are verified, SSL provisioning will begin automatically.');
+		} else {
+			// Phase 2: cloudflare_ssl
+			lines.push('DNS verified! Now add the SSL validation record:');
+			lines.push('');
+
+			// Steps 1-2 completed
+			lines.push('1. Ownership Verification (TXT Record) ✓');
+			lines.push('2. Routing (CNAME Record) ✓');
+
+			lines.push('');
+
+			// Step 3: SSL TXT
+			const sslStatus = customDomain.sslStatus === 'active' ? ' ✓' : '';
+			lines.push(`3. SSL Validation (TXT Record)${sslStatus}`);
+			if (customDomain.sslValidationTxtName && customDomain.sslValidationTxtValue) {
+				lines.push(`   Host: ${customDomain.sslValidationTxtName}`);
+				lines.push(`   Value: ${customDomain.sslValidationTxtValue}`);
+			}
+		}
 
 		lines.push('');
 		lines.push('Note: DNS changes may take up to 48 hours to propagate.');

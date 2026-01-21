@@ -1,0 +1,3 @@
+ALTER TABLE `custom_domain` MODIFY COLUMN `verification_phase` enum('dns_verification','cloudflare_ssl') NOT NULL DEFAULT 'dns_verification';--> statement-breakpoint
+ALTER TABLE `custom_domain` MODIFY COLUMN `ssl_status` enum('initializing','pending_validation','pending_issuance','pending_deployment','active','pending_expiration','expired','deleted','validation_timed_out') NOT NULL DEFAULT 'initializing';--> statement-breakpoint
+ALTER TABLE `custom_domain` MODIFY COLUMN `ownership_status` enum('pending','verified') NOT NULL DEFAULT 'pending';

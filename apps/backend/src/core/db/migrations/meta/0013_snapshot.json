@@ -1,0 +1,551 @@
+{
+	"version": "5",
+	"dialect": "mysql",
+	"id": "e35fc47e-01ae-4edb-b098-67bcac92e17e",
+	"prevId": "f9bae640-90df-4b1c-b082-d65c2865c6cf",
+	"tables": {
+		"qr_code_config_template": {
+			"name": "qr_code_config_template",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"name": {
+					"name": "name",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"config": {
+					"name": "config",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"preview_image": {
+					"name": "preview_image",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"is_predefined": {
+					"name": "is_predefined",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": false
+				},
+				"created_by": {
+					"name": "created_by",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"i_config_template_created_by_created_at": {
+					"name": "i_config_template_created_by_created_at",
+					"columns": ["created_by", "created_at"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {
+				"qr_code_config_template_id": {
+					"name": "qr_code_config_template_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraint": {}
+		},
+		"custom_domain": {
+			"name": "custom_domain",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"domain": {
+					"name": "domain",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"is_default": {
+					"name": "is_default",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": false
+				},
+				"is_enabled": {
+					"name": "is_enabled",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": true
+				},
+				"created_by": {
+					"name": "created_by",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"verification_phase": {
+					"name": "verification_phase",
+					"type": "varchar(30)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "'dns_verification'"
+				},
+				"ownership_txt_verified": {
+					"name": "ownership_txt_verified",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": false
+				},
+				"cname_verified": {
+					"name": "cname_verified",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": false
+				},
+				"cloudflare_hostname_id": {
+					"name": "cloudflare_hostname_id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"ssl_status": {
+					"name": "ssl_status",
+					"type": "varchar(50)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "'initializing'"
+				},
+				"ownership_status": {
+					"name": "ownership_status",
+					"type": "varchar(50)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "'pending'"
+				},
+				"ssl_validation_txt_name": {
+					"name": "ssl_validation_txt_name",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"ssl_validation_txt_value": {
+					"name": "ssl_validation_txt_value",
+					"type": "varchar(500)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"ownership_validation_txt_name": {
+					"name": "ownership_validation_txt_name",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"ownership_validation_txt_value": {
+					"name": "ownership_validation_txt_value",
+					"type": "varchar(500)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"validation_errors": {
+					"name": "validation_errors",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"i_custom_domain_created_by_created_at": {
+					"name": "i_custom_domain_created_by_created_at",
+					"columns": ["created_by", "created_at"],
+					"isUnique": false
+				},
+				"i_custom_domain_domain": {
+					"name": "i_custom_domain_domain",
+					"columns": ["domain"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {
+				"custom_domain_id": {
+					"name": "custom_domain_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {
+				"custom_domain_domain_unique": {
+					"name": "custom_domain_domain_unique",
+					"columns": ["domain"]
+				}
+			},
+			"checkConstraint": {}
+		},
+		"qr_code": {
+			"name": "qr_code",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"name": {
+					"name": "name",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"config": {
+					"name": "config",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"content": {
+					"name": "content",
+					"type": "json",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"qr_code_data": {
+					"name": "qr_code_data",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"preview_image": {
+					"name": "preview_image",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"created_by": {
+					"name": "created_by",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"i_qr_code_created_by_created_at": {
+					"name": "i_qr_code_created_by_created_at",
+					"columns": ["created_by", "created_at"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {
+				"qr_code_id": {
+					"name": "qr_code_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraint": {}
+		},
+		"short_url": {
+			"name": "short_url",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"short_code": {
+					"name": "short_code",
+					"type": "varchar(5)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"destination_url": {
+					"name": "destination_url",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"qr_code_id": {
+					"name": "qr_code_id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"custom_domain_id": {
+					"name": "custom_domain_id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"is_active": {
+					"name": "is_active",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"created_by": {
+					"name": "created_by",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"i_short_url_created_by_created_at": {
+					"name": "i_short_url_created_by_created_at",
+					"columns": ["created_by", "created_at"],
+					"isUnique": false
+				},
+				"i_short_url_qr_code_id": {
+					"name": "i_short_url_qr_code_id",
+					"columns": ["qr_code_id"],
+					"isUnique": false
+				},
+				"i_short_url_reserved": {
+					"name": "i_short_url_reserved",
+					"columns": ["created_by", "qr_code_id"],
+					"isUnique": false
+				},
+				"i_short_url_custom_domain_id": {
+					"name": "i_short_url_custom_domain_id",
+					"columns": ["custom_domain_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"short_url_qr_code_id_qr_code_id_fk": {
+					"name": "short_url_qr_code_id_qr_code_id_fk",
+					"tableFrom": "short_url",
+					"tableTo": "qr_code",
+					"columnsFrom": ["qr_code_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				},
+				"short_url_custom_domain_id_custom_domain_id_fk": {
+					"name": "short_url_custom_domain_id_custom_domain_id_fk",
+					"tableFrom": "short_url",
+					"tableTo": "custom_domain",
+					"columnsFrom": ["custom_domain_id"],
+					"columnsTo": ["id"],
+					"onDelete": "set null",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {
+				"short_url_id": {
+					"name": "short_url_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {
+				"short_url_shortCode_unique": {
+					"name": "short_url_shortCode_unique",
+					"columns": ["short_code"]
+				},
+				"short_url_qrCodeId_unique": {
+					"name": "short_url_qrCodeId_unique",
+					"columns": ["qr_code_id"]
+				}
+			},
+			"checkConstraint": {}
+		},
+		"subscription_grace_period": {
+			"name": "subscription_grace_period",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "varchar(36)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"email": {
+					"name": "email",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"first_name": {
+					"name": "first_name",
+					"type": "varchar(255)",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"grace_period_ends_at": {
+					"name": "grace_period_ends_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"processed_at": {
+					"name": "processed_at",
+					"type": "datetime",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"i_subscription_grace_period_ends_at": {
+					"name": "i_subscription_grace_period_ends_at",
+					"columns": ["grace_period_ends_at"],
+					"isUnique": false
+				},
+				"i_subscription_grace_period_user_id": {
+					"name": "i_subscription_grace_period_user_id",
+					"columns": ["user_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {
+				"subscription_grace_period_id": {
+					"name": "subscription_grace_period_id",
+					"columns": ["id"]
+				}
+			},
+			"uniqueConstraints": {
+				"subscription_grace_period_userId_unique": {
+					"name": "subscription_grace_period_userId_unique",
+					"columns": ["user_id"]
+				}
+			},
+			"checkConstraint": {}
+		}
+	},
+	"views": {},
+	"_meta": {
+		"schemas": {},
+		"tables": {},
+		"columns": {}
+	},
+	"internal": {
+		"tables": {},
+		"indexes": {}
+	}
+}

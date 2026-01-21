@@ -1,0 +1,1 @@
+ALTER TABLE `custom_domain` DROP COLUMN `verification_token`;

@@ -12,14 +12,12 @@ import type {
 import { urlShortenerQueryKeys } from './url-shortener';
 
 /**
- * Setup instructions type (Cloudflare-provided TXT records + CNAME).
+ * Setup instructions type for two-phase verification.
+ * Phase 1 (dns_verification): Ownership TXT + CNAME
+ * Phase 2 (cloudflare_ssl): SSL TXT record
  */
 export type TSetupInstructions = {
-	sslValidationRecord: {
-		recordType: 'TXT';
-		recordHost: string;
-		recordValue: string;
-	} | null;
+	phase: 'dns_verification' | 'cloudflare_ssl';
 	ownershipValidationRecord: {
 		recordType: 'TXT';
 		recordHost: string;
@@ -30,6 +28,13 @@ export type TSetupInstructions = {
 		recordHost: string;
 		recordValue: string;
 	};
+	sslValidationRecord: {
+		recordType: 'TXT';
+		recordHost: string;
+		recordValue: string;
+	} | null;
+	ownershipTxtVerified: boolean;
+	cnameVerified: boolean;
 	instructions: string;
 };
 
@@ -197,6 +202,10 @@ export function useVerifyCustomDomainMutation() {
 			void queryClient.refetchQueries({
 				queryKey: customDomainQueryKeys.detail(data.id),
 			});
+			// Refresh setup instructions since phase may have changed
+			void queryClient.refetchQueries({
+				queryKey: customDomainQueryKeys.setupInstructions(data.id),
+			});
 		},
 	});
 }
@@ -209,14 +218,13 @@ export function useDeleteCustomDomainMutation() {
 	const { getToken } = useAuth();
 
 	return useMutation({
-		mutationFn: async (id: string): Promise<void> => {
+		mutationFn: async (id: string): Promise<{ deleted: boolean }> => {
 			const token = await getToken();
-			const headers: HeadersInit = {
-				Authorization: `Bearer ${token}`,
-			};
-			await apiRequest<void>(`/custom-domain/${id}`, {
+			return apiRequest<{ deleted: boolean }>(`/custom-domain/${id}`, {
 				method: 'DELETE',
-				headers,
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			});
 		},
 		onSuccess: () => {

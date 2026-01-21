@@ -2,6 +2,7 @@ import { BULK_IMPORT_PLAN_LIMITS, type PlanName } from '@/core/config/plan.confi
 import { type TUser } from '@/core/domain/schema/UserSchema';
 import { ForbiddenError, UnauthorizedError } from '@/core/error/http';
 import { AbstractPolicy } from '@/core/policies/abstract.policy';
+import { BulkTooManyQrCodesError } from '../error/http/bulk-too-many-qr-codes.error';
 
 export class BulkImportQrCodesPolicy extends AbstractPolicy {
 	constructor(
@@ -32,9 +33,7 @@ export class BulkImportQrCodesPolicy extends AbstractPolicy {
 
 		// check row count limit
 		if (this.recordCount > bulkLimits.maxRows) {
-			throw new ForbiddenError(
-				`Cannot import ${this.recordCount} rows. Maximum allowed is ${bulkLimits.maxRows} rows for your ${plan} plan.`,
-			);
+			throw new BulkTooManyQrCodesError(this.recordCount, bulkLimits.maxRows, plan);
 		}
 
 		return true;

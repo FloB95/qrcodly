@@ -20,9 +20,7 @@ export * from './dtos/url-shortener/CreateShortUrlDto';
 export * from './dtos/url-shortener/UpdateShortUrlDto';
 export * from './dtos/url-shortener/AnalyticsResponseDto';
 
-export * from './dtos/custom-domain/CreateCustomDomainDto';
-export * from './dtos/custom-domain/CustomDomainResponseDto';
-export * from './dtos/custom-domain/CustomDomainRequestParamsDto';
+export * from './dtos/custom-domain';
 
 export * from './dtos/IdRequestQuery';
 export * from './dtos/ListRequestDto';

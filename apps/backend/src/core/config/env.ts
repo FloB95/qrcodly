@@ -47,7 +47,7 @@ const server = z.object({
 	UMAMI_WEBSITE: z.string(),
 	UMAMI_USERNAME: z.string(),
 	UMAMI_PASSWORD: z.string(),
-	CUSTOM_DOMAIN_CNAME_TARGET: z.string().default('tenant.qrcodly.de'),
+	CUSTOM_DOMAIN_CNAME_TARGET: z.string().default('customers.qrcodly.de'),
 	CLOUDFLARE_API_TOKEN: z.string(),
 	CLOUDFLARE_ZONE_ID: z.string(),
 });

@@ -4,31 +4,15 @@ import { PricingCard } from '@/components/plans/PricingCard';
 import Container from '@/components/ui/container';
 import type { PlanId } from '@/lib/plan.config';
 import type { DefaultPageParams } from '@/types/page';
-import { auth } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
-
-type PlanPricing = {
-	planId: PlanId;
-	priceMonthly: string;
-	priceAnnualPerMonth?: string;
-};
-
-const planPricing: PlanPricing[] = [
-	{
-		planId: 'free',
-		priceMonthly: '$0',
-	},
-	{
-		planId: 'pro',
-		priceMonthly: '$3.50',
-		priceAnnualPerMonth: '$2.99',
-	},
-];
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
 	const t = await getTranslations('plans');
 	const { isAuthenticated } = await auth();
+	const clerk = await clerkClient();
+	const plans = await clerk.billing.getPlanList();
 
 	return (
 		<>
@@ -43,12 +27,12 @@ export default async function Page({ params }: DefaultPageParams) {
 				</div>
 
 				<div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-6 lg:grid-cols-2">
-					{planPricing.map((plan) => (
+					{plans.data.map((plan) => (
 						<PricingCard
-							key={plan.planId}
-							planId={plan.planId}
-							priceMonthly={plan.priceMonthly}
-							priceAnnualPerMonth={plan.priceAnnualPerMonth}
+							key={plan.slug}
+							planId={plan.slug as PlanId}
+							priceMonthly={plan.fee?.amount > 0 ? plan.fee?.amountFormatted.toString() : '0'}
+							priceAnnualPerMonth={plan.annualMonthlyFee?.amountFormatted.toString() || ''}
 							locale={locale}
 							isAuthenticated={isAuthenticated}
 						/>

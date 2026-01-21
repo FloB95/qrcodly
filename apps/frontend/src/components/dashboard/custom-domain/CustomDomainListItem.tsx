@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { CustomDomainListItemActions } from './CustomDomainListItemActions';
@@ -16,28 +17,52 @@ interface CustomDomainListItemProps {
 }
 
 /**
- * Maps Cloudflare SSL status to display info.
+ * Maps verification phase and status to display info.
  */
-function getSslStatusInfo(sslStatus: string) {
-	switch (sslStatus) {
-		case 'active':
-			return { icon: CheckCircle, color: 'text-green-500', label: 'active' };
-		case 'pending_validation':
-		case 'pending_issuance':
-		case 'pending_deployment':
-		case 'initializing':
-			return { icon: Clock, color: 'text-yellow-500', label: 'pending' };
-		case 'validation_timed_out':
-		case 'expired':
-		case 'deleted':
-			return { icon: AlertCircle, color: 'text-red-500', label: 'error' };
-		default:
-			return { icon: Clock, color: 'text-muted-foreground', label: 'unknown' };
+function getVerificationStatusInfo(domain: TCustomDomainResponseDto) {
+	// Fully verified - SSL is active
+	if (domain.sslStatus === 'active') {
+		return { icon: CheckCircle, color: 'text-green-500', label: 'active', badge: 'ready' };
 	}
+
+	// Phase 1: DNS verification
+	if (domain.verificationPhase === 'dns_verification') {
+		const verifiedCount = (domain.ownershipTxtVerified ? 1 : 0) + (domain.cnameVerified ? 1 : 0);
+		if (verifiedCount === 0) {
+			return { icon: Clock, color: 'text-yellow-500', label: 'dnsSetup', badge: 'dnsSetup' };
+		}
+		return {
+			icon: Clock,
+			color: 'text-yellow-500',
+			label: 'dnsPartial',
+			badge: 'dnsPartial',
+			count: verifiedCount,
+		};
+	}
+
+	// Phase 2: Cloudflare SSL
+	if (domain.verificationPhase === 'cloudflare_ssl') {
+		// Check for SSL errors
+		if (
+			domain.sslStatus === 'validation_timed_out' ||
+			domain.sslStatus === 'expired' ||
+			domain.sslStatus === 'deleted'
+		) {
+			return { icon: AlertCircle, color: 'text-red-500', label: 'error', badge: 'error' };
+		}
+		return { icon: Clock, color: 'text-yellow-500', label: 'sslPending', badge: 'sslPending' };
+	}
+
+	// Fallback
+	return { icon: Clock, color: 'text-muted-foreground', label: 'unknown', badge: 'setup' };
 }
 
 export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 	const t = useTranslations('settings.domains');
+	const searchParams = useSearchParams();
+	const router = useRouter();
+	const pathname = usePathname();
+
 	const {
 		isDeleting,
 		isVerifying,
@@ -52,7 +77,19 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 	// Domain is fully ready when SSL is active
 	const isFullyVerified = domain.sslStatus === 'active';
 
-	const statusInfo = getSslStatusInfo(domain.sslStatus);
+	// Check if this domain should auto-show instructions (from URL param)
+	const showInstructionsId = searchParams.get('showInstructions');
+	const shouldAutoShowInstructions = showInstructionsId === domain.id;
+
+	// Clear the URL param when instructions are shown
+	const clearShowInstructionsParam = () => {
+		const params = new URLSearchParams(searchParams.toString());
+		params.delete('showInstructions');
+		const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname;
+		router.replace(newUrl);
+	};
+
+	const statusInfo = getVerificationStatusInfo(domain);
 	const StatusIcon = statusInfo.icon;
 	const hasValidationErrors = domain.validationErrors && domain.validationErrors.length > 0;
 
@@ -83,19 +120,20 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 				</div>
 			</TableCell>
 			<TableCell>
-				<Tooltip>
-					<TooltipTrigger>
-						<div className="flex items-center gap-1">
-							<StatusIcon className={cn('h-4 w-4', statusInfo.color)} />
-							<span className="text-xs capitalize">{t(`sslStatus.${statusInfo.label}`)}</span>
-						</div>
-					</TooltipTrigger>
-					<TooltipContent>{t(`sslStatusTooltip.${domain.sslStatus}`)}</TooltipContent>
-				</Tooltip>
+				<div className="flex items-center gap-1">
+					<StatusIcon className={cn('h-4 w-4', statusInfo.color)} />
+					<span className="text-xs">
+						{statusInfo.label === 'dnsPartial' && 'count' in statusInfo
+							? t('verificationStatus.dnsPartial', { count: statusInfo.count as number })
+							: t(`verificationStatus.${statusInfo.label}`)}
+					</span>
+				</div>
 			</TableCell>
 			<TableCell>
 				<Badge variant={isFullyVerified ? 'default' : 'secondary'}>
-					{isFullyVerified ? t('ready') : t('setup')}
+					{statusInfo.badge === 'dnsPartial' && 'count' in statusInfo
+						? t('badge.dnsPartial', { count: statusInfo.count as number })
+						: t(`badge.${statusInfo.badge}`)}
 				</Badge>
 			</TableCell>
 			<TableCell className="text-muted-foreground">{formattedDate}</TableCell>
@@ -108,6 +146,8 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 					onDelete={handleDelete}
 					onVerify={handleVerify}
 					onSetDefault={handleSetDefault}
+					autoShowInstructions={shouldAutoShowInstructions}
+					onInstructionsShown={clearShowInstructionsParam}
 				/>
 			</TableCell>
 		</TableRow>

@@ -1,9 +1,7 @@
 import { z } from 'zod';
 import { AbstractEntitySchema } from './AbstractEntitySchema';
-import {
-	CloudflareSSLStatusSchema,
-	OwnershipStatusSchema,
-} from '../dtos/custom-domain/CustomDomainResponseDto';
+import { CloudflareSSLStatusSchema } from '../dtos/custom-domain/types/ssl-status';
+import { OwnershipStatusSchema } from '../dtos/custom-domain/types/ownership-status';
 
 /**
  * Subdomain validation regex - matches valid subdomain names only.

@@ -704,11 +704,27 @@
 			"checkingStatus": "Checking status...",
 			"statusUpdated": "Status updated",
 			"statusUpdatedDescription": "Current SSL status: {status}. Continue with DNS setup if not yet complete.",
+			"txtVerifiedCnamePending": "TXT record verified",
+			"txtVerifiedCnamePendingDescription": "Ownership TXT record is verified. CNAME record could not be verified yet. Please check your DNS settings and try again later.",
+			"cnameVerifiedTxtPending": "CNAME record verified",
+			"cnameVerifiedTxtPendingDescription": "CNAME record is verified. Ownership TXT record could not be verified yet. Please check your DNS settings and try again later.",
+			"dnsNotVerified": "DNS records not verified",
+			"dnsNotVerifiedDescription": "DNS records could not be verified yet. Please add the required records and try again later. DNS changes can take up to 48 hours to propagate.",
+			"dnsVerificationComplete": "DNS verification complete!",
+			"dnsVerificationCompleteDescription": "Your DNS records have been verified. An SSL certificate is now being provisioned. Check the updated instructions for the SSL validation record.",
+			"fetchingSslInstructions": "Fetching SSL certificate instructions...",
+			"sslInstructionsReady": "SSL instructions ready",
+			"sslInstructionsReadyDescription": "The SSL validation record is now available. Add it to your DNS to complete the setup.",
+			"sslPhaseAlertTitle": "Final step: SSL Certificate",
+			"sslPhaseAlertDescription": "DNS verification is complete. Add the TXT record below to validate your SSL certificate.",
 			"domainVerified": "Domain verified!",
 			"domainVerifiedDescription": "SSL certificate for {domain} is now active. Your domain is ready to use.",
 			"viewInstructions": "Setup instructions",
 			"setupInstructions": "Domain setup instructions",
 			"setupInstructionsDescription": "Follow these steps to activate your custom domain {domain}",
+			"setupInstructionsDescriptionDns": "Add these DNS records to verify ownership of {domain}",
+			"setupInstructionsDescriptionSsl": "DNS verified! Add the SSL record to complete setup for {domain}",
+			"stepCompleted": "Completed",
 			"sslValidationStep": "SSL Certificate Validation (TXT)",
 			"ownershipValidationStep": "Domain Ownership Verification (TXT)",
 			"cnameRecordStep": "CNAME record (forwarding)",
@@ -748,6 +764,30 @@
 				"expired": "SSL certificate has expired. Please contact support.",
 				"deleted": "SSL certificate has been deleted.",
 				"validation_timed_out": "TXT record validation timed out. Please check your DNS settings and try again."
+			},
+			"verificationStatus": {
+				"active": "Active",
+				"dnsSetup": "DNS Setup",
+				"dnsPartial": "DNS {count}/2",
+				"sslPending": "SSL Pending",
+				"error": "Error",
+				"unknown": "Unknown"
+			},
+			"verificationStatusTooltip": {
+				"active": "Your domain is fully verified and ready to use.",
+				"dnsSetup": "Add the TXT and CNAME records to verify domain ownership.",
+				"dnsPartial": "Partial DNS verification. Continue adding the remaining records.",
+				"sslPending": "DNS verified. Waiting for SSL certificate provisioning.",
+				"error": "Verification failed. Check your DNS settings.",
+				"unknown": "Unknown status."
+			},
+			"badge": {
+				"ready": "Ready",
+				"dnsSetup": "DNS Setup",
+				"dnsPartial": "DNS {count}/2",
+				"sslPending": "SSL Pending",
+				"error": "Error",
+				"setup": "Setup"
 			}
 		},
 		"apiKeys": {

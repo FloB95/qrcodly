@@ -14,6 +14,7 @@ import db from '@/core/db';
 import { customDomain } from '@/core/db/schemas';
 import { eq, and } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
+import type { TCustomDomain } from '@/modules/custom-domain/domain/entities/custom-domain.entity';
 
 const CUSTOM_DOMAIN_API_PATH = `${API_BASE_PATH}/custom-domain`;
 
@@ -42,7 +43,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 	const createCustomDomainDirectly = async (
 		domain: string,
 		userId: string,
-		options: { sslStatus?: string; isDefault?: boolean } = {},
+		options: { sslStatus?: TCustomDomain['sslStatus']; isDefault?: boolean } = {},
 	): Promise<string> => {
 		const id = randomUUID();
 		const now = new Date();
@@ -50,7 +51,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 		await db.insert(customDomain).values({
 			id,
 			domain: domain.toLowerCase(),
-			sslStatus: options.sslStatus ?? 'pending',
+			sslStatus: options.sslStatus ?? 'initializing',
 			ownershipStatus: options.sslStatus === 'active' ? 'verified' : 'pending',
 			isDefault: options.isDefault ?? false,
 			cloudflareHostnameId: null,
@@ -213,10 +214,10 @@ describe('QR Code Data - Custom Domain Integration', () => {
 			});
 
 		it('should reject setting unverified domain as default', async () => {
-			// Create an unverified domain directly in DB (pending SSL)
+			// Create an unverified domain directly in DB (initializing SSL)
 			const dto = generateCreateCustomDomainDto();
 			const domainId = await createCustomDomainDirectly(dto.domain, TEST_USER_PRO_ID, {
-				sslStatus: 'pending',
+				sslStatus: 'initializing',
 			});
 
 			// Attempt to set as default without SSL being active

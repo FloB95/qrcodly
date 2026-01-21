@@ -55,7 +55,7 @@ export const PricingCard = ({
 
 			<p className="mt-4 flex items-baseline gap-x-2">
 				<span className="text-5xl font-semibold">
-					{planPeriod === 'annual' && priceAnnualPerMonth ? priceAnnualPerMonth : priceMonthly}
+					${planPeriod === 'annual' && priceAnnualPerMonth ? priceAnnualPerMonth : priceMonthly}
 				</span>
 				<span className={isPro ? 'text-gray-400' : 'text-gray-500'}>{t('perMonth')}</span>
 			</p>
