@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import {
 	DropdownMenu,
@@ -32,6 +32,8 @@ interface CustomDomainListItemActionsProps {
 	onDelete: () => void;
 	onVerify: () => void;
 	onSetDefault: () => void;
+	autoShowInstructions?: boolean;
+	onInstructionsShown?: () => void;
 }
 
 export function CustomDomainListItemActions({
@@ -42,12 +44,31 @@ export function CustomDomainListItemActions({
 	onDelete,
 	onVerify,
 	onSetDefault,
+	autoShowInstructions,
+	onInstructionsShown,
 }: CustomDomainListItemActionsProps) {
 	const t = useTranslations('settings.domains');
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
+	const [hasAutoShown, setHasAutoShown] = useState(false);
 
-	const { data: instructions } = useSetupInstructionsQuery(domain.id);
+	const { data: instructions, refetch: refetchInstructions } = useSetupInstructionsQuery(domain.id);
+
+	// Auto-open instructions dialog if requested (e.g., after domain creation)
+	useEffect(() => {
+		if (autoShowInstructions && !showInstructionsDialog && !hasAutoShown) {
+			setShowInstructionsDialog(true);
+			setHasAutoShown(true);
+			onInstructionsShown?.();
+		}
+	}, [autoShowInstructions, showInstructionsDialog, onInstructionsShown, hasAutoShown]);
+
+	// Automatically refresh instructions when dialog opens
+	useEffect(() => {
+		if (showInstructionsDialog) {
+			void refetchInstructions();
+		}
+	}, [showInstructionsDialog, refetchInstructions]);
 
 	const handleCopy = (text: string, descriptionKey: string) => {
 		navigator.clipboard.writeText(text);
@@ -90,6 +111,18 @@ export function CustomDomainListItemActions({
 	const handleCopyCnameValue = () => {
 		if (instructions) {
 			handleCopy(instructions.cnameRecord.recordValue, 'copiedCnameDescription');
+		}
+	};
+
+	const handleCopyDcvHost = () => {
+		if (instructions) {
+			handleCopy(instructions.dcvDelegationRecord.recordHost, 'copiedHostDescription');
+		}
+	};
+
+	const handleCopyDcvValue = () => {
+		if (instructions) {
+			handleCopy(instructions.dcvDelegationRecord.recordValue, 'copiedCnameDescription');
 		}
 	};
 
@@ -172,29 +205,203 @@ export function CustomDomainListItemActions({
 					<DialogHeader>
 						<DialogTitle>{t('setupInstructions')}</DialogTitle>
 						<DialogDescription>
-							{t('setupInstructionsDescription', { domain: domain.domain })}
+							{instructions?.phase === 'dns_verification'
+								? t('setupInstructionsDescriptionDns', { domain: domain.domain })
+								: t('setupInstructionsDescriptionSsl', { domain: domain.domain })}
 						</DialogDescription>
 					</DialogHeader>
 					{instructions && (
 						<div className="max-h-[65vh] overflow-y-auto space-y-6 pr-2">
-							{/* Step 1: SSL Validation TXT Record */}
-							{instructions.sslValidationRecord && (
+							{/* Step 1: Ownership Validation TXT Record */}
+							{instructions.ownershipValidationRecord && (
 								<div className="space-y-3">
 									<div className="flex items-center gap-2">
 										<div
 											className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
-												isFullyVerified ? 'bg-green-200 text-green-800' : 'bg-black text-muted'
+												instructions.ownershipTxtVerified
+													? 'bg-green-200 text-green-800'
+													: 'bg-black text-muted'
 											}`}
 										>
 											1
 										</div>
 										<h4 className="font-medium">
-											{t('sslValidationStep')}{' '}
-											{isFullyVerified && (
+											{t('ownershipValidationStep')}{' '}
+											{instructions.ownershipTxtVerified && (
 												<CheckCircle className="inline h-4 w-4 text-green-500 ml-1" />
 											)}
 										</h4>
 									</div>
+									{/* Show record details in Phase 1, or collapsed in Phase 2 */}
+									{instructions.phase === 'dns_verification' ? (
+										<div className="rounded-lg border p-4 space-y-3 ml-8">
+											<div>
+												<label className="text-sm font-medium text-muted-foreground">
+													{t('recordType')}
+												</label>
+												<p className="font-mono">
+													{instructions.ownershipValidationRecord.recordType}
+												</p>
+											</div>
+											<div>
+												<label className="text-sm font-medium text-muted-foreground">
+													{t('recordHost')}
+												</label>
+												<div className="flex items-center gap-2">
+													<p className="font-mono text-sm break-all flex-1">
+														{instructions.ownershipValidationRecord.recordHost}
+													</p>
+													<Button variant="outline" size="sm" onClick={handleCopyOwnershipHost}>
+														<Copy className="h-4 w-4" />
+													</Button>
+												</div>
+											</div>
+											<div>
+												<label className="text-sm font-medium text-muted-foreground">
+													{t('recordValue')}
+												</label>
+												<div className="flex items-center gap-2">
+													<p className="font-mono text-sm break-all flex-1">
+														{instructions.ownershipValidationRecord.recordValue}
+													</p>
+													<Button variant="outline" size="sm" onClick={handleCopyOwnershipValue}>
+														<Copy className="h-4 w-4" />
+													</Button>
+												</div>
+											</div>
+										</div>
+									) : (
+										<p className="text-sm text-muted-foreground ml-8">{t('stepCompleted')}</p>
+									)}
+								</div>
+							)}
+
+							{/* Step 2: CNAME Record */}
+							<div className="space-y-3">
+								<div className="flex items-center gap-2">
+									<div
+										className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
+											instructions.cnameVerified
+												? 'bg-green-200 text-green-800'
+												: 'bg-black text-muted'
+										}`}
+									>
+										2
+									</div>
+									<h4 className="font-medium">
+										{t('cnameRecordStep')}{' '}
+										{instructions.cnameVerified && (
+											<CheckCircle className="inline h-4 w-4 text-green-500 ml-1" />
+										)}
+									</h4>
+								</div>
+								{/* Show record details in Phase 1, or collapsed in Phase 2 */}
+								{instructions.phase === 'dns_verification' ? (
+									<div className="rounded-lg border p-4 space-y-3 ml-8">
+										<div>
+											<label className="text-sm font-medium text-muted-foreground">
+												{t('recordType')}
+											</label>
+											<p className="font-mono">{instructions.cnameRecord.recordType}</p>
+										</div>
+										<div>
+											<label className="text-sm font-medium text-muted-foreground">
+												{t('recordHost')}
+											</label>
+											<div className="flex items-center gap-2">
+												<p className="font-mono text-sm break-all flex-1">
+													{instructions.cnameRecord.recordHost}
+												</p>
+												<Button variant="outline" size="sm" onClick={handleCopyCnameHost}>
+													<Copy className="h-4 w-4" />
+												</Button>
+											</div>
+										</div>
+										<div>
+											<label className="text-sm font-medium text-muted-foreground">
+												{t('pointsTo')}
+											</label>
+											<div className="flex items-center gap-2">
+												<p className="font-mono text-sm break-all flex-1">
+													{instructions.cnameRecord.recordValue}
+												</p>
+												<Button variant="outline" size="sm" onClick={handleCopyCnameValue}>
+													<Copy className="h-4 w-4" />
+												</Button>
+											</div>
+										</div>
+									</div>
+								) : (
+									<p className="text-sm text-muted-foreground ml-8">{t('stepCompleted')}</p>
+								)}
+							</div>
+
+							{/* Step 3: DCV Delegation CNAME Record - For automatic SSL renewal */}
+							<div className="space-y-3">
+								<div className="flex items-center gap-2">
+									<div className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium bg-black text-muted">
+										3
+									</div>
+									<h4 className="font-medium">{t('dcvDelegationStep')}</h4>
+								</div>
+								<div className="rounded-lg border p-4 space-y-3 ml-8">
+									<p className="text-sm text-muted-foreground">{t('dcvDelegationDescription')}</p>
+									<div>
+										<label className="text-sm font-medium text-muted-foreground">
+											{t('recordType')}
+										</label>
+										<p className="font-mono">{instructions.dcvDelegationRecord.recordType}</p>
+									</div>
+									<div>
+										<label className="text-sm font-medium text-muted-foreground">
+											{t('recordHost')}
+										</label>
+										<div className="flex items-center gap-2">
+											<p className="font-mono text-sm break-all flex-1">
+												{instructions.dcvDelegationRecord.recordHost}
+											</p>
+											<Button variant="outline" size="sm" onClick={handleCopyDcvHost}>
+												<Copy className="h-4 w-4" />
+											</Button>
+										</div>
+									</div>
+									<div>
+										<label className="text-sm font-medium text-muted-foreground">
+											{t('pointsTo')}
+										</label>
+										<div className="flex items-center gap-2">
+											<p className="font-mono text-sm break-all flex-1">
+												{instructions.dcvDelegationRecord.recordValue}
+											</p>
+											<Button variant="outline" size="sm" onClick={handleCopyDcvValue}>
+												<Copy className="h-4 w-4" />
+											</Button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{/* Step 4: SSL Validation TXT Record - Always shown */}
+							<div className="space-y-3">
+								<div className="flex items-center gap-2">
+									<div
+										className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
+											isFullyVerified ? 'bg-green-200 text-green-800' : 'bg-black text-muted'
+										}`}
+									>
+										4
+									</div>
+									<h4 className="font-medium">
+										{t('sslValidationStep')}{' '}
+										{isFullyVerified && (
+											<CheckCircle className="inline h-4 w-4 text-green-500 ml-1" />
+										)}
+									</h4>
+								</div>
+								{/* Show different content based on phase */}
+								{instructions.phase === 'dns_verification' ? (
+									<p className="text-sm text-muted-foreground ml-8">{t('step4PendingDns')}</p>
+								) : instructions.sslValidationRecord ? (
 									<div className="rounded-lg border p-4 space-y-3 ml-8">
 										<div>
 											<label className="text-sm font-medium text-muted-foreground">
@@ -229,122 +436,12 @@ export function CustomDomainListItemActions({
 											</div>
 										</div>
 									</div>
-								</div>
-							)}
-
-							{/* Step 2: Ownership Validation TXT Record (if present) */}
-							{instructions.ownershipValidationRecord && (
-								<div className="space-y-3">
-									<div className="flex items-center gap-2">
-										<div
-											className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
-												domain.ownershipStatus === 'verified'
-													? 'bg-green-200 text-green-800'
-													: 'bg-black text-muted'
-											}`}
-										>
-											2
-										</div>
-										<h4 className="font-medium">
-											{t('ownershipValidationStep')}{' '}
-											{domain.ownershipStatus === 'verified' && (
-												<CheckCircle className="inline h-4 w-4 text-green-500 ml-1" />
-											)}
-										</h4>
-									</div>
-									<div className="rounded-lg border p-4 space-y-3 ml-8">
-										<div>
-											<label className="text-sm font-medium text-muted-foreground">
-												{t('recordType')}
-											</label>
-											<p className="font-mono">
-												{instructions.ownershipValidationRecord.recordType}
-											</p>
-										</div>
-										<div>
-											<label className="text-sm font-medium text-muted-foreground">
-												{t('recordHost')}
-											</label>
-											<div className="flex items-center gap-2">
-												<p className="font-mono text-sm break-all flex-1">
-													{instructions.ownershipValidationRecord.recordHost}
-												</p>
-												<Button variant="outline" size="sm" onClick={handleCopyOwnershipHost}>
-													<Copy className="h-4 w-4" />
-												</Button>
-											</div>
-										</div>
-										<div>
-											<label className="text-sm font-medium text-muted-foreground">
-												{t('recordValue')}
-											</label>
-											<div className="flex items-center gap-2">
-												<p className="font-mono text-sm break-all flex-1">
-													{instructions.ownershipValidationRecord.recordValue}
-												</p>
-												<Button variant="outline" size="sm" onClick={handleCopyOwnershipValue}>
-													<Copy className="h-4 w-4" />
-												</Button>
-											</div>
-										</div>
-									</div>
-								</div>
-							)}
-
-							{/* Step 3: CNAME Record */}
-							<div className="space-y-3">
-								<div className="flex items-center gap-2">
-									<div
-										className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
-											isFullyVerified ? 'bg-green-200 text-green-800' : 'bg-black text-muted'
-										}`}
-									>
-										{instructions.ownershipValidationRecord ? 3 : 2}
-									</div>
-									<h4 className="font-medium">
-										{t('cnameRecordStep')}{' '}
-										{isFullyVerified && (
-											<CheckCircle className="inline h-4 w-4 text-green-500 ml-1" />
-										)}
-									</h4>
-								</div>
-								<div className="rounded-lg border p-4 space-y-3 ml-8">
-									<div>
-										<label className="text-sm font-medium text-muted-foreground">
-											{t('recordType')}
-										</label>
-										<p className="font-mono">{instructions.cnameRecord.recordType}</p>
-									</div>
-									<div>
-										<label className="text-sm font-medium text-muted-foreground">
-											{t('recordHost')}
-										</label>
-										<div className="flex items-center gap-2">
-											<p className="font-mono text-sm break-all flex-1">
-												{instructions.cnameRecord.recordHost}
-											</p>
-											<Button variant="outline" size="sm" onClick={handleCopyCnameHost}>
-												<Copy className="h-4 w-4" />
-											</Button>
-										</div>
-									</div>
-									<div>
-										<label className="text-sm font-medium text-muted-foreground">
-											{t('pointsTo')}
-										</label>
-										<div className="flex items-center gap-2">
-											<p className="font-mono text-sm break-all flex-1">
-												{instructions.cnameRecord.recordValue}
-											</p>
-											<Button variant="outline" size="sm" onClick={handleCopyCnameValue}>
-												<Copy className="h-4 w-4" />
-											</Button>
-										</div>
-									</div>
-								</div>
+								) : (
+									<p className="text-sm text-muted-foreground ml-8">{t('step4LoadingSsl')}</p>
+								)}
 							</div>
 
-							<p className="text-sm text-muted-foreground">{t('dnsNote')}</p>
+							<p className="text-sm font-semibold">{t('dnsNote')}</p>
 						</div>
 					)}
 					<DialogFooter className="gap-2">

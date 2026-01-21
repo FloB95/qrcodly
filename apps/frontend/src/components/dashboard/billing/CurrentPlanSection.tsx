@@ -83,10 +83,7 @@ export function CurrentPlanSection() {
 						<h4 className="text-sm font-medium mb-3">{t('includedFeatures')}</h4>
 						<ul className="space-y-2">
 							{planConfig.featureKeys.map((featureKey) => (
-								<li
-									key={featureKey}
-									className="flex items-center gap-2 text-sm text-muted-foreground"
-								>
+								<li key={featureKey} className="flex items-center gap-2 text-sm">
 									<CheckIcon className="size-4 stroke-2 text-teal-500" />
 									{tPlans(featureKey)}
 								</li>

@@ -1,11 +1,9 @@
 import { inject, injectable } from 'tsyringe';
 import CustomDomainRepository from '../domain/repository/custom-domain.repository';
-import { TCloudflareSSLStatus } from '../domain/entities/custom-domain.entity';
 
 export interface IResolvedDomain {
 	domain: string;
 	isValid: boolean;
-	sslStatus: TCloudflareSSLStatus | string;
 }
 
 /**
@@ -37,7 +35,6 @@ export class ResolveCustomDomainUseCase {
 			return {
 				domain,
 				isValid: false,
-				sslStatus: 'not_found',
 			};
 		}
 
@@ -46,7 +43,6 @@ export class ResolveCustomDomainUseCase {
 		return {
 			domain: customDomain.domain,
 			isValid,
-			sslStatus: customDomain.sslStatus,
 		};
 	}
 }

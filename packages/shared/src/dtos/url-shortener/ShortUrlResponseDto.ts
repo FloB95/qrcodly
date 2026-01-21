@@ -1,6 +1,6 @@
 import { type z } from 'zod';
 import { ShortUrlSchema } from '../../schemas/ShortUrl';
-import { CustomDomainResponseDto } from '../custom-domain/CustomDomainResponseDto';
+import { CustomDomainResponseDto } from '../custom-domain/response/custom-domain.dto';
 
 /**
  * Schema for the Short URL Response DTO.

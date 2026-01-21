@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { useUser, useClerk } from '@clerk/nextjs';
+import { useState, useCallback } from 'react';
+import { useUser, useClerk, useReverification } from '@clerk/nextjs';
 import { ExclamationTriangleIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -43,6 +44,7 @@ type DeleteAccountFormValues = z.infer<typeof deleteAccountSchema>;
 export function DeleteAccountSection() {
 	const { user } = useUser();
 	const { signOut } = useClerk();
+	const router = useRouter();
 	const t = useTranslations('settings.security');
 	const [isOpen, setIsOpen] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
@@ -54,17 +56,35 @@ export function DeleteAccountSection() {
 		},
 	});
 
+	const confirmationValue = form.watch('confirmation');
+	const isConfirmationValid = confirmationValue === CONFIRMATION_TEXT;
+
+	// Wrap the delete function with useReverification
+	// This automatically handles the reverification modal when Clerk requires it
+	const deleteUserWithReverification = useReverification(
+		useCallback(async () => {
+			if (!user) return;
+			await user.delete();
+		}, [user]),
+	);
+
 	const onSubmit = async () => {
 		if (!user) return;
 
 		setIsDeleting(true);
+		// Close the dialog first so Clerk's reverification modal can appear
+		setIsOpen(false);
+
 		try {
-			await user.delete();
+			await deleteUserWithReverification();
 			await signOut();
 			toast.success(t('accountDeleted'));
+			router.push('/');
 		} catch {
 			toast.error(t('accountDeleteError'));
 			setIsDeleting(false);
+			// Reopen dialog if reverification was cancelled or failed
+			setIsOpen(true);
 		}
 	};
 
@@ -139,7 +159,12 @@ export function DeleteAccountSection() {
 
 								<AlertDialogFooter>
 									<AlertDialogCancel type="button">{t('cancel')}</AlertDialogCancel>
-									<Button type="submit" variant="destructive" isLoading={isDeleting}>
+									<Button
+										type="submit"
+										variant="destructive"
+										isLoading={isDeleting}
+										disabled={!isConfirmationValid}
+									>
 										{t('deleteAccountPermanently')}
 									</Button>
 								</AlertDialogFooter>

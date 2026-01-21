@@ -4,6 +4,7 @@ import { Logger } from '@/core/logging';
 import CustomDomainRepository from '../domain/repository/custom-domain.repository';
 import { TCustomDomain } from '../domain/entities/custom-domain.entity';
 import { BadRequestError } from '@/core/error/http';
+import { DomainSslNotActiveError } from '../error/http/domain-ssl-not-active.error';
 
 /**
  * Use case for setting a Custom Domain as the user's default domain for dynamic QR codes.
@@ -30,9 +31,7 @@ export class SetDefaultCustomDomainUseCase implements IBaseUseCase {
 
 		// Domain must have active SSL status before it can be set as default
 		if (customDomain.sslStatus !== 'active') {
-			throw new BadRequestError(
-				'Domain must be fully verified with active SSL before it can be set as default. Please complete DNS verification first.',
-			);
+			throw new DomainSslNotActiveError(customDomain.domain);
 		}
 
 		// Set this domain as the default (this will also unset any previous default)

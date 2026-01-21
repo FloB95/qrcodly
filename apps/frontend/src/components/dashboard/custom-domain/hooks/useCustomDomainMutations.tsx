@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from '@/components/ui/use-toast';
 import {
@@ -18,6 +18,18 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [isVerifying, setIsVerifying] = useState(false);
 	const [isSettingDefault, setIsSettingDefault] = useState(false);
+
+	const isMountedRef = useRef(true);
+	const verifyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+	useEffect(() => {
+		return () => {
+			isMountedRef.current = false;
+			if (verifyTimeoutRef.current) {
+				clearTimeout(verifyTimeoutRef.current);
+			}
+		};
+	}, []);
 
 	const deleteMutation = useDeleteCustomDomainMutation();
 	const verifyMutation = useVerifyCustomDomainMutation();
@@ -74,23 +86,96 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 
 		verifyMutation.mutate(domain.id, {
 			onSuccess: (data) => {
-				toastInstance.dismiss();
-				setIsVerifying(false);
+				const phaseTransitioned =
+					domain.verificationPhase === 'dns_verification' &&
+					data.verificationPhase === 'cloudflare_ssl';
+
 				// Check if now fully verified (SSL active)
 				if (data.sslStatus === 'active') {
+					toastInstance.dismiss();
+					setIsVerifying(false);
 					toast({
 						title: t('domainVerified'),
 						description: t('domainVerifiedDescription', { domain: domain.domain }),
 					});
 					posthog.capture('custom-domain:verified', { domain: domain.domain });
-				} else {
+				} else if (phaseTransitioned) {
+					// DNS verification complete, domain registered with Cloudflare
+					// Show success immediately and clear loading state
+					toastInstance.dismiss();
+					setIsVerifying(false);
 					toast({
-						title: t('statusUpdated'),
-						description: t('statusUpdatedDescription', { status: data.sslStatus }),
+						title: t('dnsVerificationComplete'),
+						description: t('dnsVerificationCompleteDescription'),
+						duration: 6000,
 					});
+					posthog.capture('custom-domain:dns-verified', {
+						domain: domain.domain,
+						newPhase: data.verificationPhase,
+					});
+
+					// After 2 seconds, silently refresh to fetch SSL validation records from Cloudflare
+					verifyTimeoutRef.current = setTimeout(() => {
+						if (!isMountedRef.current) return;
+
+						verifyMutation.mutate(data.id, {
+							onSuccess: (updatedData) => {
+								if (!isMountedRef.current) return;
+								// Only show toast if SSL is already active (rare but possible)
+								if (updatedData.sslStatus === 'active') {
+									toast({
+										title: t('domainVerified'),
+										description: t('domainVerifiedDescription', { domain: domain.domain }),
+									});
+								}
+							},
+						});
+					}, 2000);
+				} else {
+					toastInstance.dismiss();
+					setIsVerifying(false);
+
+					// Show specific messages based on verification status
+					if (data.verificationPhase === 'dns_verification') {
+						// Still in DNS verification phase
+						if (data.ownershipTxtVerified && !data.cnameVerified) {
+							// TXT verified but CNAME not
+							toast({
+								title: t('txtVerifiedCnamePending'),
+								description: t('txtVerifiedCnamePendingDescription'),
+							});
+						} else if (!data.ownershipTxtVerified && data.cnameVerified) {
+							// CNAME verified but TXT not
+							toast({
+								title: t('cnameVerifiedTxtPending'),
+								description: t('cnameVerifiedTxtPendingDescription'),
+							});
+						} else if (!data.ownershipTxtVerified && !data.cnameVerified) {
+							// Neither verified
+							toast({
+								title: t('dnsNotVerified'),
+								description: t('dnsNotVerifiedDescription'),
+							});
+						} else {
+							// Both verified but still in dns_verification phase (shouldn't happen normally)
+							toast({
+								title: t('statusUpdated'),
+								description: t('statusUpdatedDescription', { status: data.sslStatus }),
+							});
+						}
+					} else {
+						// In cloudflare_ssl phase
+						toast({
+							title: t('statusUpdated'),
+							description: t('statusUpdatedDescription', { status: data.sslStatus }),
+						});
+					}
+
 					posthog.capture('custom-domain:status-checked', {
 						domain: domain.domain,
 						status: data.sslStatus,
+						ownershipTxtVerified: data.ownershipTxtVerified,
+						cnameVerified: data.cnameVerified,
 					});
 				}
 			},

@@ -18,19 +18,28 @@ export function generateCreateCustomDomainDto(
  * Generates a mock custom domain entity for testing.
  */
 export function generateMockCustomDomain(overrides?: Partial<TCustomDomain>): TCustomDomain {
+	const domain = `links-${Date.now()}.example.com`;
+	const subdomain = domain.split('.').slice(0, -2).join('.');
+	const verificationToken = `test-token-${Date.now()}`;
 	return {
 		id: `test-domain-${Date.now()}`,
-		domain: `links-${Date.now()}.example.com`,
+		domain,
 		isDefault: false,
 		isEnabled: true,
 		createdBy: 'test-user-id',
+		// Two-phase verification fields
+		verificationPhase: 'dns_verification',
+		ownershipTxtVerified: false,
+		cnameVerified: false,
+		// Cloudflare fields
 		cloudflareHostnameId: null,
-		sslStatus: 'pending',
+		sslStatus: 'initializing',
 		ownershipStatus: 'pending',
 		sslValidationTxtName: null,
 		sslValidationTxtValue: null,
-		ownershipValidationTxtName: null,
-		ownershipValidationTxtValue: null,
+		// Ownership validation TXT record (just subdomain part for display)
+		ownershipValidationTxtName: `_qrcodly-verify.${subdomain}`,
+		ownershipValidationTxtValue: verificationToken,
 		validationErrors: null,
 		createdAt: new Date(),
 		updatedAt: null,

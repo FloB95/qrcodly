@@ -57,6 +57,9 @@ export default function Footer() {
 					<Link href="/privacy-policy" title={t('privacyPolicy')}>
 						{t('privacyPolicy')}
 					</Link>
+					<a href="mailto:info@qrcodly.de" title={t('contact')}>
+						{t('contact')}
+					</a>
 				</div>
 			</Container>
 		</footer>

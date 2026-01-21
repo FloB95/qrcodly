@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -18,19 +17,10 @@ import { KeyIcon } from '@heroicons/react/24/outline';
 export function ApiKeyList() {
 	const t = useTranslations('settings.apiKeys');
 	const { apiKeys } = useApiKeysContext();
-	const [hasFetched, setHasFetched] = useState(false);
 
-	useEffect(() => {
-		if (apiKeys.isFetching || apiKeys.isLoading || apiKeys.data?.length > 0) {
-			setHasFetched(true);
-		}
-	}, [apiKeys.isFetching, apiKeys.isLoading]);
+	const handleRevalidate = () => apiKeys.revalidate();
 
-	function handleRevalidate() {
-		apiKeys.revalidate();
-	}
-
-	if (!hasFetched || apiKeys.isLoading || apiKeys.isFetching) {
+	if (apiKeys.isLoading) {
 		return (
 			<div className="space-y-4">
 				{[...Array(3)].map((_, i) => (

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useSession } from '@clerk/nextjs';
+import { useState, useCallback } from 'react';
+import { useSession, useReverification } from '@clerk/nextjs';
 import { KeyIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
@@ -81,17 +81,30 @@ export function PasswordSection() {
 
 	const hasPasswordAuth = session?.user.passwordEnabled;
 
+	// Wrap the password update function with useReverification
+	// This automatically handles the reverification modal when Clerk requires it
+	const updatePasswordWithReverification = useReverification(
+		useCallback(
+			async (data: PasswordFormValues) => {
+				if (!session) return;
+
+				await session.user.updatePassword({
+					currentPassword: data.currentPassword,
+					newPassword: data.newPassword,
+					signOutOfOtherSessions: true,
+				});
+			},
+			[session],
+		),
+	);
+
 	const onSubmit = async (data: PasswordFormValues) => {
 		if (!session) return;
 
 		setIsLoading(true);
 
 		try {
-			await session.user.updatePassword({
-				currentPassword: data.currentPassword,
-				newPassword: data.newPassword,
-				signOutOfOtherSessions: true,
-			});
+			await updatePasswordWithReverification(data);
 
 			posthog.capture('password-change:success');
 
@@ -123,7 +136,7 @@ export function PasswordSection() {
 		return (
 			<Card>
 				<CardHeader>
-					<div className="flex items-start gap-3">
+					<div className="flex items-start gap-3 flex-wrap">
 						<div className="p-2 bg-primary/10 rounded-lg">
 							<KeyIcon className="size-5" />
 						</div>
@@ -143,7 +156,7 @@ export function PasswordSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex items-start gap-3">
+				<div className="flex items-start gap-3 flex-wrap">
 					<div className="p-2 bg-primary/10 rounded-lg">
 						<KeyIcon className="size-5" />
 					</div>
@@ -252,7 +265,11 @@ export function PasswordSection() {
 							)}
 						/>
 
-						<Button type="submit" isLoading={isLoading} className="mt-2">
+						<Button
+							type="submit"
+							isLoading={isLoading}
+							className="mt-2 whitespace-normal h-auto xs:h-9"
+						>
 							{t('updatePassword')}
 						</Button>
 					</form>

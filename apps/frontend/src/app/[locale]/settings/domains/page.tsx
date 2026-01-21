@@ -1,17 +1,23 @@
+'use client';
+
 import { AddCustomDomainDialog, CustomDomainList } from '@/components/dashboard/custom-domain';
-import { ExclamationCircleIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
+import { useSubscription } from '@clerk/nextjs/experimental';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { buttonVariants } from '@/components/ui/button';
+import { ProPlanRequiredBadge } from '@/components/ProPlanRequiredBadge';
 
 export default function Page() {
 	const t = useTranslations('settings.domains');
+	const { data } = useSubscription();
 
-	const daysLeftUntilDeactivation = 5;
+	const subscriptionItem = data?.subscriptionItems[0];
+	const hasProPlan = subscriptionItem?.plan?.slug === 'pro';
+
+	// const daysLeftUntilDeactivation = 5;
 	return (
 		<>
-			<Alert variant="destructive">
+			{/* <Alert variant="destructive">
 				<ExclamationCircleIcon className="size-5" />
 				<AlertTitle>Your Pro Plan has expired</AlertTitle>
 				<AlertDescription>
@@ -27,7 +33,7 @@ export default function Page() {
 						Renew Now
 					</a>
 				</AlertDescription>
-			</Alert>
+			</Alert> */}
 			<Card className="@container/card">
 				<CardContent className="relative px-4 sm:px-6">
 					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -42,9 +48,7 @@ export default function Page() {
 								</CardDescription>
 							</div>
 						</div>
-						<div>
-							<AddCustomDomainDialog />
-						</div>
+						<div>{hasProPlan ? <AddCustomDomainDialog /> : <ProPlanRequiredBadge />}</div>
 					</div>
 				</CardContent>
 			</Card>

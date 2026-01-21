@@ -1,25 +1,36 @@
 import { createTable } from '@/core/db/utils';
 import { relations } from 'drizzle-orm';
-import { boolean, datetime, index, text, varchar } from 'drizzle-orm/mysql-core';
+import { boolean, datetime, index, mysqlEnum, text, varchar } from 'drizzle-orm/mysql-core';
+
+/**
+ * Verification phase values for the two-step verification flow.
+ * - dns_verification: User needs to add ownership TXT + CNAME records
+ * - cloudflare_ssl: DNS verified, waiting for Cloudflare SSL provisioning
+ */
+export const VERIFICATION_PHASES = ['dns_verification', 'cloudflare_ssl'] as const;
+export type TVerificationPhase = (typeof VERIFICATION_PHASES)[number];
 
 /**
  * SSL status values from Cloudflare Custom Hostnames API.
  */
-export type TCloudflareSSLStatus =
-	| 'initializing'
-	| 'pending_validation'
-	| 'pending_issuance'
-	| 'pending_deployment'
-	| 'active'
-	| 'pending_expiration'
-	| 'expired'
-	| 'deleted'
-	| 'validation_timed_out';
+export const SSL_STATUSES = [
+	'initializing',
+	'pending_validation',
+	'pending_issuance',
+	'pending_deployment',
+	'active',
+	'pending_expiration',
+	'expired',
+	'deleted',
+	'validation_timed_out',
+] as const;
+export type TCloudflareSSLStatus = (typeof SSL_STATUSES)[number];
 
 /**
- * Ownership verification status.
+ * Ownership verification status values.
  */
-export type TOwnershipStatus = 'pending' | 'verified';
+export const OWNERSHIP_STATUSES = ['pending', 'verified'] as const;
+export type TOwnershipStatus = (typeof OWNERSHIP_STATUSES)[number];
 
 /**
  * Custom Domain entity for user-owned domains.
@@ -38,10 +49,16 @@ const customDomain = createTable(
 		createdBy: varchar({ length: 255 }).notNull(),
 		createdAt: datetime().notNull(),
 		updatedAt: datetime(),
-		// Cloudflare Custom Hostname fields
+		// Two-phase verification fields (using MySQL ENUM for type safety)
+		verificationPhase: mysqlEnum('verification_phase', VERIFICATION_PHASES)
+			.notNull()
+			.default('dns_verification'),
+		ownershipTxtVerified: boolean().notNull().default(false),
+		cnameVerified: boolean().notNull().default(false),
+		// Cloudflare Custom Hostname fields (using MySQL ENUM for type safety)
 		cloudflareHostnameId: varchar({ length: 36 }),
-		sslStatus: varchar({ length: 50 }).notNull().default('initializing'),
-		ownershipStatus: varchar({ length: 50 }).notNull().default('pending'),
+		sslStatus: mysqlEnum('ssl_status', SSL_STATUSES).notNull().default('initializing'),
+		ownershipStatus: mysqlEnum('ownership_status', OWNERSHIP_STATUSES).notNull().default('pending'),
 		// Cloudflare-provided validation records (stored for display to user)
 		sslValidationTxtName: varchar({ length: 255 }),
 		sslValidationTxtValue: varchar({ length: 500 }),

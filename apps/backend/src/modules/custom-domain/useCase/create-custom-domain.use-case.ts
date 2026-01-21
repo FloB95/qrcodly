@@ -1,5 +1,6 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
+import { randomUUID } from 'crypto';
 import { Logger } from '@/core/logging';
 import { type TUser } from '@/core/domain/schema/UserSchema';
 import { type TCreateCustomDomainDto } from '@shared/schemas';
@@ -7,23 +8,22 @@ import CustomDomainRepository from '../domain/repository/custom-domain.repositor
 import { TCustomDomain } from '../domain/entities/custom-domain.entity';
 import { CreateCustomDomainPolicy } from '../policies/create-custom-domain.policy';
 import { DomainAlreadyExistsError } from '../error/http/domain-already-exists.error';
-import { CloudflareService, CloudflareApiError } from '../service/cloudflare.service';
-import { BadRequestError } from '@/core/error/http';
 
 /**
  * Use case for creating a Custom Domain entity.
- * Registers the domain with Cloudflare Custom Hostnames API.
+ * Creates the domain in Phase 1 (dns_verification) - user must verify DNS records
+ * before the domain is registered with Cloudflare.
  */
 @injectable()
 export class CreateCustomDomainUseCase implements IBaseUseCase {
 	constructor(
 		@inject(CustomDomainRepository) private customDomainRepository: CustomDomainRepository,
-		@inject(CloudflareService) private cloudflareService: CloudflareService,
 		@inject(Logger) private logger: Logger,
 	) {}
 
 	/**
 	 * Executes the use case to create a new Custom Domain entity.
+	 * The domain starts in dns_verification phase - user must add TXT and CNAME records.
 	 * @param dto The data transfer object containing the domain to be added.
 	 * @param user The authenticated user.
 	 * @returns A promise that resolves with the newly created Custom Domain entity.
@@ -43,53 +43,40 @@ export class CreateCustomDomainUseCase implements IBaseUseCase {
 		const policy = new CreateCustomDomainPolicy(user, currentDomainCount);
 		await policy.checkAccess();
 
-		// Register with Cloudflare Custom Hostnames
-		let cloudflareHostname;
-		try {
-			cloudflareHostname = await this.cloudflareService.createCustomHostname(domain);
-		} catch (error) {
-			if (error instanceof CloudflareApiError) {
-				this.logger.error('customDomain.cloudflare.create.failed', {
-					domain,
-					error: error.message,
-					statusCode: error.statusCode,
-				});
-				throw new BadRequestError(`Failed to register domain with Cloudflare: ${error.message}`);
-			}
-			throw error;
-		}
-
-		// Extract validation records from Cloudflare response
-		const sslValidationRecord = cloudflareHostname.ssl.validation_records?.[0];
-		const ownershipVerification = cloudflareHostname.ownership_verification;
-
-		// Extract validation errors from Cloudflare response
-		const validationErrors = cloudflareHostname.ssl.validation_errors?.map((e) => e.message) ?? [];
-		if (validationErrors.length > 0) {
-			this.logger.warn('customDomain.cloudflare.validationErrors', {
-				domain,
-				validationErrors,
-			});
-		}
-
-		// Generate ID for new domain
+		// Generate ID and verification token for new domain
 		const newId = await this.customDomainRepository.generateId();
+		const verificationToken = randomUUID();
 
+		// Extract subdomain for TXT record display (e.g., "links" from "links.example.com")
+		// DNS providers typically want just the host part, not the full domain
+		const domainParts = domain.split('.');
+		const subdomain = domainParts.slice(0, -2).join('.');
+
+		// Create domain in Phase 1 (dns_verification)
+		// User must add TXT record (_qrcodly-verify.{subdomain}) and CNAME record
+		// before we register with Cloudflare
 		const customDomain: Omit<TCustomDomain, 'createdAt' | 'updatedAt'> = {
 			id: newId,
 			domain,
 			isDefault: false,
 			isEnabled: true,
 			createdBy: user.id,
-			// Cloudflare fields
-			cloudflareHostnameId: cloudflareHostname.id,
-			sslStatus: cloudflareHostname.ssl.status,
-			ownershipStatus: cloudflareHostname.status === 'active' ? 'verified' : 'pending',
-			sslValidationTxtName: sslValidationRecord?.txt_name ?? null,
-			sslValidationTxtValue: sslValidationRecord?.txt_value ?? null,
-			ownershipValidationTxtName: ownershipVerification?.name ?? null,
-			ownershipValidationTxtValue: ownershipVerification?.value ?? null,
-			validationErrors: validationErrors.length > 0 ? JSON.stringify(validationErrors) : null,
+			// Phase 1: DNS verification
+			verificationPhase: 'dns_verification',
+			ownershipTxtVerified: false,
+			cnameVerified: false,
+			// Cloudflare fields - not registered yet
+			cloudflareHostnameId: null,
+			sslStatus: 'initializing',
+			ownershipStatus: 'pending',
+			// Ownership validation record (our own TXT record for DNS verification)
+			// Store just the subdomain part for display (DNS providers auto-append the domain)
+			ownershipValidationTxtName: `_qrcodly-verify.${subdomain}`,
+			ownershipValidationTxtValue: verificationToken,
+			// SSL validation records - not available until Cloudflare registration
+			sslValidationTxtName: null,
+			sslValidationTxtValue: null,
+			validationErrors: null,
 		};
 
 		// Create the Custom Domain entity in the database
@@ -104,8 +91,7 @@ export class CreateCustomDomainUseCase implements IBaseUseCase {
 				id: createdCustomDomain.id,
 				domain: createdCustomDomain.domain,
 				createdBy: createdCustomDomain.createdBy,
-				cloudflareHostnameId: cloudflareHostname.id,
-				sslStatus: cloudflareHostname.ssl.status,
+				verificationPhase: 'dns_verification',
 			},
 		});
 
