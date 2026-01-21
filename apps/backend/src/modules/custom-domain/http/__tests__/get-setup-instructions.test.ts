@@ -5,6 +5,7 @@ import {
 	cleanupCreatedDomains,
 	getSetupInstructions,
 	generateCreateCustomDomainDto,
+	CUSTOM_DOMAIN_API_PATH,
 	TEST_USER_PRO_ID,
 	type TestContext,
 } from './utils';
@@ -100,5 +101,23 @@ describe('GET /custom-domain/:id/setup-instructions', () => {
 
 		const response = await getSetupInstructions(ctx, domainId, ctx.accessToken2);
 		expect(response.statusCode).toBe(403);
+	});
+
+	it('should return 404 for non-existent domain', async () => {
+		const response = await getSetupInstructions(
+			ctx,
+			'00000000-0000-0000-0000-000000000000',
+			ctx.accessTokenPro,
+		);
+		expect(response.statusCode).toBe(404);
+	});
+
+	it('should return 401 when not authenticated', async () => {
+		const response = await ctx.testServer.inject({
+			method: 'GET',
+			url: `${CUSTOM_DOMAIN_API_PATH}/some-id/setup-instructions`,
+		});
+
+		expect(response.statusCode).toBe(401);
 	});
 });

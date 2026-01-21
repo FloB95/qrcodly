@@ -203,5 +203,25 @@ export const setDefaultDomain = async (context: TestContext, id: string, token: 
 		headers: { Authorization: `Bearer ${token}` },
 	});
 
+export const getDefaultDomain = async (context: TestContext, token: string) =>
+	context.testServer.inject({
+		method: 'GET',
+		url: `${CUSTOM_DOMAIN_API_PATH}/default`,
+		headers: { Authorization: `Bearer ${token}` },
+	});
+
+export const clearDefaultDomain = async (context: TestContext, token: string) =>
+	context.testServer.inject({
+		method: 'POST',
+		url: `${CUSTOM_DOMAIN_API_PATH}/clear-default`,
+		headers: { Authorization: `Bearer ${token}` },
+	});
+
+export const resolveDomain = async (context: TestContext, domain: string) =>
+	context.testServer.inject({
+		method: 'GET',
+		url: `${CUSTOM_DOMAIN_API_PATH}/resolve?domain=${encodeURIComponent(domain)}`,
+	});
+
 // Re-export factory for convenience
 export { generateCreateCustomDomainDto };

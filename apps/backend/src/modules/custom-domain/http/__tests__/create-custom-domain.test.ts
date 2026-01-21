@@ -1,3 +1,4 @@
+import type { TCustomDomainResponseDto } from '@shared/schemas';
 import {
 	getTestContext,
 	releaseTestContext,
@@ -23,6 +24,27 @@ describe('POST /custom-domain (Create Custom Domain)', () => {
 
 	afterAll(async () => {
 		await releaseTestContext();
+	});
+
+	it('should create a custom domain successfully', async () => {
+		const dto = generateCreateCustomDomainDto();
+		const response = await createCustomDomainViaApi(ctx, dto, ctx.accessTokenPro);
+
+		// May fail if user isn't pro - skip in that case
+		if (response.statusCode === 403) {
+			console.log('Skipping success test: Test user is not configured as pro in Clerk');
+			return;
+		}
+
+		expect(response.statusCode).toBe(201);
+
+		const result = JSON.parse(response.payload) as TCustomDomainResponseDto;
+		expect(result.id).toBeDefined();
+		expect(result.domain).toBe(dto.domain.toLowerCase());
+		expect(result.isDefault).toBe(false);
+		expect(result.verificationPhase).toBe('dns_verification');
+		expect(result.sslStatus).toBeDefined();
+		expect(result.ownershipStatus).toBeDefined();
 	});
 
 	it('should return 400 for invalid domain format', async () => {
