@@ -33,8 +33,15 @@ export function convertVCardObjToString(vCardInput: TVCardInput): string {
 	if (vCardInput.firstName || vCardInput.lastName) {
 		vCard.add('n', `${vCardInput.lastName || ''};${vCardInput.firstName || ''}`);
 	}
-	if (vCardInput.email) {
-		vCard.add('email', vCardInput.email);
+	// Email addresses - new fields take priority, legacy 'email' maps to private
+	if (vCardInput.emailPrivate) {
+		vCard.add('email', vCardInput.emailPrivate, { type: 'home' });
+	} else if (vCardInput.email) {
+		// Backwards compatibility: legacy email maps to home/private
+		vCard.add('email', vCardInput.email, { type: 'home' });
+	}
+	if (vCardInput.emailBusiness) {
+		vCard.add('email', vCardInput.emailBusiness, { type: 'work' });
 	}
 	// Phone numbers - new fields take priority, legacy 'phone' maps to mobile
 	if (vCardInput.phonePrivate) {
@@ -222,7 +229,8 @@ export const getDefaultContentByType = (
 				data: {
 					firstName: undefined,
 					lastName: undefined,
-					email: undefined,
+					emailPrivate: undefined,
+					emailBusiness: undefined,
 					phonePrivate: undefined,
 					phoneMobile: undefined,
 					phoneBusiness: undefined,

@@ -21,10 +21,12 @@ export const VCardDetailsCard = ({ vcard, trigger }: VCardDetailsCardProps) => {
 					<h4 className="text-sm font-semibold">{fullName}</h4>
 					{vcard.job && <p className="text-sm text-muted-foreground">{vcard.job}</p>}
 					<Separator className="max-w-20 my-4 mx-auto" />
-					{vcard.email && (
+					{(vcard.emailPrivate || vcard.emailBusiness || vcard.email) && (
 						<div className="flex items-center justify-center space-x-2 text-sm">
 							<EnvelopeIcon className="w-5 h-5" />
-							<span className="max-w-xs truncate">{vcard.email}</span>
+							<span className="max-w-xs truncate">
+								{vcard.emailPrivate || vcard.emailBusiness || vcard.email}
+							</span>
 						</div>
 					)}
 					{(vcard.phoneMobile || vcard.phone || vcard.phonePrivate || vcard.phoneBusiness) && (

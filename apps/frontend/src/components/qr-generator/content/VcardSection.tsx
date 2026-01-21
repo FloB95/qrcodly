@@ -31,10 +31,11 @@ type VCardSectionProps = {
 const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.vCard');
 
-	// Map legacy 'phone' field to 'phoneMobile' for backwards compatibility
+	// Map legacy fields to new fields for backwards compatibility
 	const defaultValues: FormValues = {
 		...value,
 		phoneMobile: value.phoneMobile || value.phone,
+		emailPrivate: value.emailPrivate || value.email,
 	};
 
 	const form = useForm<FormValues>({
@@ -135,34 +136,64 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					/>
 				</div>
 
-				<FormField
-					control={form.control}
-					name="email"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								<span translate="no" suppressHydrationWarning>
-									{t('email.label')}
-								</span>
-							</FormLabel>
-							<FormControl>
-								<InputGroup>
-									<InputGroupInput
-										{...field}
-										translate="no"
-										placeholder={t('email.placeholder')}
-										maxLength={100}
-										className="pr-20"
-									/>
-									<InputGroupAddon align="inline-end">
-										<CharacterCounter current={field.value?.length || 0} max={100} />
-									</InputGroupAddon>
-								</InputGroup>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
+					<FormField
+						control={form.control}
+						name="emailPrivate"
+						render={({ field }) => (
+							<FormItem className="w-full">
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('emailPrivate.label')}
+									</span>
+								</FormLabel>
+								<FormControl>
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											placeholder={t('emailPrivate.placeholder')}
+											maxLength={100}
+											className="pr-20"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={100} />
+										</InputGroupAddon>
+									</InputGroup>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="emailBusiness"
+						render={({ field }) => (
+							<FormItem className="w-full">
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('emailBusiness.label')}
+									</span>
+								</FormLabel>
+								<FormControl>
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											placeholder={t('emailBusiness.placeholder')}
+											maxLength={100}
+											className="pr-20"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={100} />
+										</InputGroupAddon>
+									</InputGroup>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 lg:grid-cols-3 gap-6">
 					<FormField
 						control={form.control}

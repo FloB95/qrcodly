@@ -401,6 +401,14 @@
 					"label": "Адрес электронной почты",
 					"placeholder": "Введите вашу электронную почту"
 				},
+				"emailPrivate": {
+					"label": "E-mail (Личный)",
+					"placeholder": "Личный адрес e-mail"
+				},
+				"emailBusiness": {
+					"label": "E-mail (Рабочий)",
+					"placeholder": "Рабочий адрес e-mail"
+				},
 				"phone": {
 					"label": "Телефон",
 					"placeholder": "Введите ваш номер телефона"

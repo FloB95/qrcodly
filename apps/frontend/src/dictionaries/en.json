@@ -401,6 +401,14 @@
 					"label": "Email Address",
 					"placeholder": "Enter your email"
 				},
+				"emailPrivate": {
+					"label": "Email (Private)",
+					"placeholder": "Private email address"
+				},
+				"emailBusiness": {
+					"label": "Email (Business)",
+					"placeholder": "Business email address"
+				},
 				"phone": {
 					"label": "Phone",
 					"placeholder": "Enter your phone number"

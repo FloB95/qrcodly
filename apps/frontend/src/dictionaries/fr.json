@@ -401,6 +401,14 @@
 					"label": "Adresse e-mail",
 					"placeholder": "Saisissez votre e-mail"
 				},
+				"emailPrivate": {
+					"label": "E-mail (Privé)",
+					"placeholder": "Adresse e-mail privée"
+				},
+				"emailBusiness": {
+					"label": "E-mail (Professionnel)",
+					"placeholder": "Adresse e-mail professionnelle"
+				},
 				"phone": {
 					"label": "Téléphone",
 					"placeholder": "Saisissez votre numéro de téléphone"

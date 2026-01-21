@@ -401,6 +401,14 @@
 					"label": "E-mailadres",
 					"placeholder": "Voer uw e-mailadres in"
 				},
+				"emailPrivate": {
+					"label": "E-mail (Privé)",
+					"placeholder": "Privé e-mailadres"
+				},
+				"emailBusiness": {
+					"label": "E-mail (Zakelijk)",
+					"placeholder": "Zakelijk e-mailadres"
+				},
 				"phone": {
 					"label": "Telefoon",
 					"placeholder": "Voer uw telefoonnummer in"

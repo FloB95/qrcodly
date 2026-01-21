@@ -135,7 +135,7 @@ export class QrCodeController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		config: {
-			rateLimitPolicy: RateLimitPolicy.BULK_QR_CREATE,
+			// rateLimitPolicy: RateLimitPolicy.BULK_QR_CREATE,
 		},
 		schema: {
 			summary: 'Create multiple QR codes from CSV',

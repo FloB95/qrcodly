@@ -31,10 +31,16 @@ export default function VCardContent({ qrCode }: { qrCode: TQrCodeWithRelationsR
 					</div>
 				</div>
 
-				{/* Email */}
-				<div>
-					<div className="font-medium mb-1">{t('email.label')}</div>
-					<div>{displayValue(data.email)}</div>
+				{/* Email Addresses */}
+				<div className="flex space-x-4">
+					<div className="w-full">
+						<div className="font-medium mb-1">{t('emailPrivate.label')}</div>
+						<div>{displayValue(data.emailPrivate || data.email)}</div>
+					</div>
+					<div className="w-full">
+						<div className="font-medium mb-1">{t('emailBusiness.label')}</div>
+						<div>{displayValue(data.emailBusiness)}</div>
+					</div>
 				</div>
 
 				{/* Phone Numbers */}

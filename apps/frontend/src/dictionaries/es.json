@@ -401,6 +401,14 @@
 					"label": "Dirección de correo electrónico",
 					"placeholder": "Introduce tu correo electrónico"
 				},
+				"emailPrivate": {
+					"label": "E-mail (Privado)",
+					"placeholder": "Correo electrónico privado"
+				},
+				"emailBusiness": {
+					"label": "E-mail (Comercial)",
+					"placeholder": "Correo electrónico comercial"
+				},
 				"phone": {
 					"label": "Teléfono",
 					"placeholder": "Introduce tu número de teléfono"
