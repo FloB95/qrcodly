@@ -201,8 +201,8 @@ export function SessionsSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-					<div className="flex items-start gap-3">
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 flex-wrap">
+					<div className="flex items-start gap-3 flex-wrap">
 						<div className="p-2 bg-primary/10 rounded-lg">
 							<ComputerDesktopIcon className="size-5" />
 						</div>
@@ -214,7 +214,7 @@ export function SessionsSection() {
 					{otherSessionsCount > 0 && (
 						<AlertDialog>
 							<AlertDialogTrigger asChild>
-								<Button variant="outline" size="sm">
+								<Button variant="outline" size="sm" className="whitespace-normal h-auto xs:h-9">
 									{t('revokeAllOther')}
 								</Button>
 							</AlertDialogTrigger>

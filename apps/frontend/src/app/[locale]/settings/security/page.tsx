@@ -17,7 +17,7 @@ export default async function Page({ params }: DefaultPageParams) {
 			{/* Header Card */}
 			<Card className="@container/card">
 				<CardContent className="relative">
-					<div className="flex items-start gap-3">
+					<div className="flex items-start gap-3 flex-wrap">
 						<div className="p-3 bg-primary/10 rounded-lg">
 							<ShieldCheckIcon className="size-6 sm:size-8 stroke-1" />
 						</div>

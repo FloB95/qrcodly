@@ -1,6 +1,6 @@
 'use client';
 
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignInButton, UserAvatar } from '@clerk/nextjs';
 import Container from './ui/container';
 import { Button, buttonVariants } from './ui/button';
 import { useTranslations } from 'next-intl';
@@ -54,7 +54,7 @@ export default function Header({
 							</Link>
 						)}
 					</div>
-					<div className="flex space-x-4 sm:space-x-6 items-center">
+					<div className="flex space-x-2 xs:space-x-4 sm:space-x-6 items-center">
 						<Link
 							href="/docs"
 							target="blank"
@@ -86,23 +86,11 @@ export default function Header({
 									>
 										{t('collectionBtn')}
 									</Link>
-									<Link
-										href="/settings/domains"
-										className={cn(
-											buttonVariants({ variant: 'ghost', size: 'icon' }),
-											'hidden sm:inline-flex',
-										)}
-										title={t('settingsBtn')}
-									>
-										<Cog6ToothIcon className="h-5 w-5" />
-									</Link>
 								</div>
 							)}
-							<UserButton
-							// userProfileProps={{
-							// 	apiKeysProps: { hide: true },
-							// }}
-							/>
+							<Link href="/settings/profile">
+								<UserAvatar />
+							</Link>
 						</SignedIn>
 						{!hideLanguageNav && (
 							<div className="hidden sm:block">
@@ -111,7 +99,7 @@ export default function Header({
 						)}
 						{/* Mobile menu button */}
 						<div
-							className="flex items-center justify-center sm:hidden p-2 cursor-pointer"
+							className="flex items-center justify-center sm:hidden xs:p-2 cursor-pointer"
 							onClick={() => setMobileMenuOpen(true)}
 						>
 							<Bars3Icon className="h-8 w-8 text-black" />

@@ -324,24 +324,27 @@ export function CustomDomainListItemActions({
 								)}
 							</div>
 
-							{/* Step 3: SSL Validation TXT Record (only in Phase 2) */}
-							{instructions.phase === 'cloudflare_ssl' && instructions.sslValidationRecord && (
-								<div className="space-y-3">
-									<div className="flex items-center gap-2">
-										<div
-											className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
-												isFullyVerified ? 'bg-green-200 text-green-800' : 'bg-black text-muted'
-											}`}
-										>
-											3
-										</div>
-										<h4 className="font-medium">
-											{t('sslValidationStep')}{' '}
-											{isFullyVerified && (
-												<CheckCircle className="inline h-4 w-4 text-green-500 ml-1" />
-											)}
-										</h4>
+							{/* Step 3: SSL Validation TXT Record - Always shown */}
+							<div className="space-y-3">
+								<div className="flex items-center gap-2">
+									<div
+										className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
+											isFullyVerified ? 'bg-green-200 text-green-800' : 'bg-black text-muted'
+										}`}
+									>
+										3
 									</div>
+									<h4 className="font-medium">
+										{t('sslValidationStep')}{' '}
+										{isFullyVerified && (
+											<CheckCircle className="inline h-4 w-4 text-green-500 ml-1" />
+										)}
+									</h4>
+								</div>
+								{/* Show different content based on phase */}
+								{instructions.phase === 'dns_verification' ? (
+									<p className="text-sm text-muted-foreground ml-8">{t('step3PendingDns')}</p>
+								) : instructions.sslValidationRecord ? (
 									<div className="rounded-lg border p-4 space-y-3 ml-8">
 										<div>
 											<label className="text-sm font-medium text-muted-foreground">
@@ -376,8 +379,10 @@ export function CustomDomainListItemActions({
 											</div>
 										</div>
 									</div>
-								</div>
-							)}
+								) : (
+									<p className="text-sm text-muted-foreground ml-8">{t('step3LoadingSsl')}</p>
+								)}
+							</div>
 
 							<p className="text-sm text-muted-foreground">{t('dnsNote')}</p>
 						</div>

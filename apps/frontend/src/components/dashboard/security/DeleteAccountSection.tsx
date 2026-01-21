@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useUser, useClerk } from '@clerk/nextjs';
+import { useState, useCallback } from 'react';
+import { useUser, useClerk, useReverification } from '@clerk/nextjs';
 import { ExclamationTriangleIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
@@ -54,12 +54,21 @@ export function DeleteAccountSection() {
 		},
 	});
 
+	// Wrap the delete function with useReverification
+	// This automatically handles the reverification modal when Clerk requires it
+	const deleteUserWithReverification = useReverification(
+		useCallback(async () => {
+			if (!user) return;
+			await user.delete();
+		}, [user]),
+	);
+
 	const onSubmit = async () => {
 		if (!user) return;
 
 		setIsDeleting(true);
 		try {
-			await user.delete();
+			await deleteUserWithReverification();
 			await signOut();
 			toast.success(t('accountDeleted'));
 		} catch {

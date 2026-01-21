@@ -1,17 +1,15 @@
 import { AddCustomDomainDialog, CustomDomainList } from '@/components/dashboard/custom-domain';
-import { ExclamationCircleIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { buttonVariants } from '@/components/ui/button';
 
 export default function Page() {
 	const t = useTranslations('settings.domains');
 
-	const daysLeftUntilDeactivation = 5;
+	// const daysLeftUntilDeactivation = 5;
 	return (
 		<>
-			<Alert variant="destructive">
+			{/* <Alert variant="destructive">
 				<ExclamationCircleIcon className="size-5" />
 				<AlertTitle>Your Pro Plan has expired</AlertTitle>
 				<AlertDescription>
@@ -27,7 +25,7 @@ export default function Page() {
 						Renew Now
 					</a>
 				</AlertDescription>
-			</Alert>
+			</Alert> */}
 			<Card className="@container/card">
 				<CardContent className="relative px-4 sm:px-6">
 					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">

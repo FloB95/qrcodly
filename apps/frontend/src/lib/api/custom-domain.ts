@@ -285,7 +285,7 @@ export function useSetupInstructionsQuery(id: string) {
 				},
 			});
 		},
-		staleTime: 60 * 60 * 1000, // 1 hour (tokens don't change frequently)
+		staleTime: 30 * 1000, // 30 seconds - instructions change when verification phase transitions
 	});
 }
 

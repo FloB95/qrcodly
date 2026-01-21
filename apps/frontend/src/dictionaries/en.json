@@ -725,6 +725,8 @@
 			"setupInstructionsDescriptionDns": "Add these DNS records to verify ownership of {domain}",
 			"setupInstructionsDescriptionSsl": "DNS verified! Add the SSL record to complete setup for {domain}",
 			"stepCompleted": "Completed",
+			"step3PendingDns": "Complete steps 1 and 2, then click \"Check Status\" to continue.",
+			"step3LoadingSsl": "Loading SSL certificate instructions... Please click \"Check Status\" to refresh.",
 			"sslValidationStep": "SSL Certificate Validation (TXT)",
 			"ownershipValidationStep": "Domain Ownership Verification (TXT)",
 			"cnameRecordStep": "CNAME record (forwarding)",

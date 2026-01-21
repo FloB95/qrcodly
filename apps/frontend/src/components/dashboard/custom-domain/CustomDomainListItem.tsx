@@ -9,7 +9,6 @@ import { useCustomDomainMutations } from './hooks/useCustomDomainMutations';
 import type { TCustomDomainResponseDto } from '@shared/schemas';
 import { cn } from '@/lib/utils';
 import { CheckCircle, Clock, AlertCircle } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { StarIcon } from '@heroicons/react/24/solid';
 
 interface CustomDomainListItemProps {

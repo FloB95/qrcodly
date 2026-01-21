@@ -1,16 +1,8 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { useUser, useSignIn } from '@clerk/nextjs';
-import {
-	PencilIcon,
-	CameraIcon,
-	EnvelopeIcon,
-	CheckCircleIcon,
-	KeyIcon,
-	EyeIcon,
-	EyeSlashIcon,
-} from '@heroicons/react/24/outline';
+import { useState, useRef, useCallback } from 'react';
+import { useUser, useReverification } from '@clerk/nextjs';
+import { PencilIcon, CameraIcon, EnvelopeIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -52,26 +44,6 @@ const emailSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileSchema>;
 type EmailFormValues = z.infer<typeof emailSchema>;
 
-interface ClerkError {
-	errors?: Array<{ code?: string; message?: string }>;
-}
-
-function isClerkError(error: unknown): error is ClerkError {
-	return (
-		typeof error === 'object' &&
-		error !== null &&
-		'errors' in error &&
-		Array.isArray((error as ClerkError).errors)
-	);
-}
-
-function isReverificationRequired(error: unknown): boolean {
-	if (isClerkError(error)) {
-		return error.errors?.some((e) => e.code === 'session_reverification_required') ?? false;
-	}
-	return false;
-}
-
 function ProfileSkeleton() {
 	return (
 		<div className="flex items-center gap-6">
@@ -86,7 +58,6 @@ function ProfileSkeleton() {
 
 export function ProfileSection() {
 	const { user, isLoaded } = useUser();
-	const { signIn } = useSignIn();
 	const t = useTranslations('settings.profile');
 	const [isEditing, setIsEditing] = useState(false);
 	const [isEditingEmail, setIsEditingEmail] = useState(false);
@@ -96,12 +67,6 @@ export function ProfileSection() {
 	const [verificationCode, setVerificationCode] = useState('');
 	const [isVerifying, setIsVerifying] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
-
-	// Password reverification state
-	const [needsReverification, setNeedsReverification] = useState(false);
-	const [reverificationPassword, setReverificationPassword] = useState('');
-	const [showPassword, setShowPassword] = useState(false);
-	const [isReverifying, setIsReverifying] = useState(false);
 
 	const form = useForm<ProfileFormValues>({
 		resolver: zodResolver(profileSchema),
@@ -130,8 +95,6 @@ export function ProfileSection() {
 		emailForm.reset({ email: '' });
 		setPendingEmailId(null);
 		setVerificationCode('');
-		setNeedsReverification(false);
-		setReverificationPassword('');
 		setIsEditingEmail(true);
 	};
 
@@ -169,24 +132,17 @@ export function ProfileSection() {
 		}
 	};
 
-	const setPrimaryEmail = async () => {
-		if (!user || !pendingEmailId) return;
-
-		try {
-			await user.update({ primaryEmailAddressId: pendingEmailId });
-			toast.success(t('emailUpdated'));
-			setIsEditingEmail(false);
-			setPendingEmailId(null);
-			setVerificationCode('');
-			setNeedsReverification(false);
-		} catch (error) {
-			if (isReverificationRequired(error)) {
-				setNeedsReverification(true);
-			} else {
-				toast.error(t('verificationError'));
-			}
-		}
-	};
+	// Wrap the set primary email function with useReverification
+	// This automatically handles the reverification modal when Clerk requires it
+	const setPrimaryEmailWithReverification = useReverification(
+		useCallback(
+			async (emailId: string) => {
+				if (!user) return;
+				await user.update({ primaryEmailAddressId: emailId });
+			},
+			[user],
+		),
+	);
 
 	const handleVerifyEmail = async () => {
 		if (!user || !pendingEmailId || verificationCode.length !== 6) return;
@@ -200,46 +156,18 @@ export function ProfileSection() {
 			}
 
 			await emailAddress.attemptVerification({ code: verificationCode });
-			await setPrimaryEmail();
-		} catch (error) {
-			if (isReverificationRequired(error)) {
-				setNeedsReverification(true);
-			} else {
-				toast.error(t('verificationError'));
-			}
+
+			// Set as primary email (with automatic reverification if needed)
+			await setPrimaryEmailWithReverification(pendingEmailId);
+
+			toast.success(t('emailUpdated'));
+			setIsEditingEmail(false);
+			setPendingEmailId(null);
+			setVerificationCode('');
+		} catch {
+			toast.error(t('verificationError'));
 		} finally {
 			setIsVerifying(false);
-		}
-	};
-
-	const handleReverification = async () => {
-		if (!user || !signIn || !reverificationPassword) return;
-
-		const primaryEmailAddress = user.primaryEmailAddress?.emailAddress;
-		if (!primaryEmailAddress) {
-			toast.error(t('reverificationError'));
-			return;
-		}
-
-		setIsReverifying(true);
-		try {
-			// Re-authenticate with password to refresh the session
-			const result = await signIn.create({
-				identifier: primaryEmailAddress,
-				password: reverificationPassword,
-			});
-
-			if (result.status === 'complete') {
-				// Session is refreshed, now try to set the primary email again
-				await setPrimaryEmail();
-			} else {
-				toast.error(t('reverificationError'));
-			}
-		} catch {
-			toast.error(t('reverificationError'));
-		} finally {
-			setIsReverifying(false);
-			setReverificationPassword('');
 		}
 	};
 
@@ -291,62 +219,6 @@ export function ProfileSection() {
 
 	// Render the email verification step content
 	const renderEmailVerificationContent = () => {
-		if (needsReverification) {
-			return (
-				<div className="space-y-4">
-					<div className="flex flex-col items-center gap-2 text-center">
-						<div className="p-3 bg-primary/10 rounded-full">
-							<KeyIcon className="size-6" />
-						</div>
-						<p className="text-sm text-muted-foreground">{t('reverificationRequired')}</p>
-					</div>
-					<div className="space-y-2">
-						<label className="text-sm font-medium">{t('currentPassword')}</label>
-						<div className="relative">
-							<Input
-								type={showPassword ? 'text' : 'password'}
-								value={reverificationPassword}
-								onChange={(e) => setReverificationPassword(e.target.value)}
-								placeholder="********"
-								disabled={isReverifying}
-							/>
-							<button
-								type="button"
-								onClick={() => setShowPassword(!showPassword)}
-								className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-							>
-								{showPassword ? (
-									<EyeSlashIcon className="size-5" />
-								) : (
-									<EyeIcon className="size-5" />
-								)}
-							</button>
-						</div>
-					</div>
-					<DialogFooter>
-						<Button
-							type="button"
-							variant="outline"
-							onClick={() => {
-								setNeedsReverification(false);
-								setReverificationPassword('');
-							}}
-							disabled={isReverifying}
-						>
-							{t('back')}
-						</Button>
-						<Button
-							onClick={handleReverification}
-							disabled={!reverificationPassword}
-							isLoading={isReverifying}
-						>
-							{t('confirmAndSave')}
-						</Button>
-					</DialogFooter>
-				</div>
-			);
-		}
-
 		return (
 			<div className="space-y-4">
 				<div className="flex flex-col items-center gap-4">
@@ -448,14 +320,14 @@ export function ProfileSection() {
 
 						{/* Email Section */}
 						<div className="border-t pt-6">
-							<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-								<div className="flex items-start gap-3">
+							<div className="flex flex-col gap-3 flex-wrap sm:flex-row sm:items-center sm:justify-between">
+								<div className="flex items-start gap-3 flex-wrap">
 									<div className="p-2 bg-muted rounded-lg">
 										<EnvelopeIcon className="size-5" />
 									</div>
 									<div>
-										<div className="flex items-center gap-2">
-											<span className="font-medium">{primaryEmail || t('noEmail')}</span>
+										<div className="flex items-center gap-2 flex-wrap">
+											<span className="font-medium break-all">{primaryEmail || t('noEmail')}</span>
 											{user?.primaryEmailAddress?.verification?.status === 'verified' && (
 												<Badge variant="secondary" className="text-xs gap-1">
 													<CheckCircleIcon className="size-3" />
@@ -545,8 +417,6 @@ export function ProfileSection() {
 						if (!open) {
 							setPendingEmailId(null);
 							setVerificationCode('');
-							setNeedsReverification(false);
-							setReverificationPassword('');
 						}
 						setIsEditingEmail(open);
 					}}
@@ -555,11 +425,7 @@ export function ProfileSection() {
 						<DialogHeader>
 							<DialogTitle>{t('changeEmailTitle')}</DialogTitle>
 							<DialogDescription>
-								{needsReverification
-									? t('reverificationDescription')
-									: pendingEmailId
-										? t('verifyEmailDescription')
-										: t('changeEmailDescription')}
+								{!pendingEmailId && t('changeEmailDescription')}
 							</DialogDescription>
 						</DialogHeader>
 

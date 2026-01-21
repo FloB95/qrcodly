@@ -102,51 +102,38 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					posthog.capture('custom-domain:verified', { domain: domain.domain });
 				} else if (phaseTransitioned) {
 					// DNS verification complete, domain registered with Cloudflare
-					// Automatically verify again to fetch the SSL validation records from Cloudflare
-					toastInstance.update({
-						id: toastInstance.id,
+					// Show success immediately and clear loading state
+					toastInstance.dismiss();
+					setIsVerifying(false);
+					toast({
 						title: t('dnsVerificationComplete'),
-						description: t('fetchingSslInstructions'),
+						description: t('dnsVerificationCompleteDescription'),
+						duration: 6000,
 					});
 					posthog.capture('custom-domain:dns-verified', {
 						domain: domain.domain,
 						newPhase: data.verificationPhase,
 					});
 
-					// Small delay to allow Cloudflare to provision SSL validation records
+					// After 2 seconds, silently refresh to fetch SSL validation records from Cloudflare
 					verifyTimeoutRef.current = setTimeout(() => {
 						if (!isMountedRef.current) return;
+						// Silent verification - no loading state, just refresh the data
 						verifyMutation.mutate(data.id, {
 							onSuccess: (updatedData) => {
 								if (!isMountedRef.current) return;
-								toastInstance.dismiss();
-								setIsVerifying(false);
+								// Only show toast if SSL is already active (rare but possible)
 								if (updatedData.sslStatus === 'active') {
 									toast({
 										title: t('domainVerified'),
 										description: t('domainVerifiedDescription', { domain: domain.domain }),
 									});
-								} else {
-									toast({
-										title: t('sslInstructionsReady'),
-										description: t('sslInstructionsReadyDescription'),
-										duration: 6000,
-									});
 								}
+								// Otherwise, the UI will update automatically with the new SSL instructions
 							},
-							onError: () => {
-								if (!isMountedRef.current) return;
-								// If second verify fails, still show success for the DNS verification
-								toastInstance.dismiss();
-								setIsVerifying(false);
-								toast({
-									title: t('dnsVerificationComplete'),
-									description: t('dnsVerificationCompleteDescription'),
-									duration: 8000,
-								});
-							},
+							// Silently ignore errors - user can manually check status again
 						});
-					}, 2500);
+					}, 2000);
 				} else {
 					toastInstance.dismiss();
 					setIsVerifying(false);
