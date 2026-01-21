@@ -402,9 +402,29 @@
 					"label": "Email Address",
 					"placeholder": "Enter your email"
 				},
+				"emailPrivate": {
+					"label": "Email (Private)",
+					"placeholder": "Private email address"
+				},
+				"emailBusiness": {
+					"label": "Email (Business)",
+					"placeholder": "Business email address"
+				},
 				"phone": {
 					"label": "Phone",
 					"placeholder": "Enter your phone number"
+				},
+				"phonePrivate": {
+					"label": "Phone (Private)",
+					"placeholder": "Private phone number"
+				},
+				"phoneMobile": {
+					"label": "Phone (Mobile)",
+					"placeholder": "Mobile phone number"
+				},
+				"phoneBusiness": {
+					"label": "Phone (Business)",
+					"placeholder": "Business phone number"
 				},
 				"fax": {
 					"label": "Fax",

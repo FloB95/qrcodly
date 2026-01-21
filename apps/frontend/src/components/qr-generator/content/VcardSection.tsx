@@ -31,9 +31,16 @@ type VCardSectionProps = {
 const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.vCard');
 
+	// Map legacy fields to new fields for backwards compatibility
+	const defaultValues: FormValues = {
+		...value,
+		phoneMobile: value.phoneMobile || value.phone,
+		emailPrivate: value.emailPrivate || value.email,
+	};
+
 	const form = useForm<FormValues>({
 		resolver: zodResolver(VCardInputSchema),
-		defaultValues: value,
+		defaultValues,
 		shouldFocusError: false,
 		shouldUnregister: true,
 		reValidateMode: 'onBlur',
@@ -129,47 +136,30 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					/>
 				</div>
 
-				<FormField
-					control={form.control}
-					name="email"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								<span translate="no" suppressHydrationWarning>
-									{t('email.label')}
-								</span>
-							</FormLabel>
-							<FormControl>
-								<InputGroup>
-									<InputGroupInput
-										{...field}
-										translate="no"
-										placeholder={t('email.placeholder')}
-										maxLength={100}
-										className="pr-20"
-									/>
-									<InputGroupAddon align="inline-end">
-										<CharacterCounter current={field.value?.length || 0} max={100} />
-									</InputGroupAddon>
-								</InputGroup>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
 				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
 					<FormField
 						control={form.control}
-						name="phone"
+						name="emailPrivate"
 						render={({ field }) => (
 							<FormItem className="w-full">
 								<FormLabel>
 									<span translate="no" suppressHydrationWarning>
-										{t('phone.label')}
+										{t('emailPrivate.label')}
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input {...field} translate="no" placeholder={t('phone.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											placeholder={t('emailPrivate.placeholder')}
+											maxLength={100}
+											className="pr-20"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={100} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -177,22 +167,103 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					/>
 					<FormField
 						control={form.control}
-						name="fax"
+						name="emailBusiness"
 						render={({ field }) => (
 							<FormItem className="w-full">
 								<FormLabel>
 									<span translate="no" suppressHydrationWarning>
-										{t('fax.label')}
+										{t('emailBusiness.label')}
 									</span>
 								</FormLabel>
 								<FormControl>
-									<Input {...field} translate="no" placeholder={t('fax.placeholder')} />
+									<InputGroup>
+										<InputGroupInput
+											{...field}
+											translate="no"
+											placeholder={t('emailBusiness.placeholder')}
+											maxLength={100}
+											className="pr-20"
+										/>
+										<InputGroupAddon align="inline-end">
+											<CharacterCounter current={field.value?.length || 0} max={100} />
+										</InputGroupAddon>
+									</InputGroup>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
 				</div>
+				<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 lg:grid-cols-3 gap-6">
+					<FormField
+						control={form.control}
+						name="phonePrivate"
+						render={({ field }) => (
+							<FormItem className="w-full">
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('phonePrivate.label')}
+									</span>
+								</FormLabel>
+								<FormControl>
+									<Input {...field} translate="no" placeholder={t('phonePrivate.placeholder')} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="phoneMobile"
+						render={({ field }) => (
+							<FormItem className="w-full">
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('phoneMobile.label')}
+									</span>
+								</FormLabel>
+								<FormControl>
+									<Input {...field} translate="no" placeholder={t('phoneMobile.placeholder')} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="phoneBusiness"
+						render={({ field }) => (
+							<FormItem className="w-full">
+								<FormLabel>
+									<span translate="no" suppressHydrationWarning>
+										{t('phoneBusiness.label')}
+									</span>
+								</FormLabel>
+								<FormControl>
+									<Input {...field} translate="no" placeholder={t('phoneBusiness.placeholder')} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
+				<FormField
+					control={form.control}
+					name="fax"
+					render={({ field }) => (
+						<FormItem className="w-full">
+							<FormLabel>
+								<span translate="no" suppressHydrationWarning>
+									{t('fax.label')}
+								</span>
+							</FormLabel>
+							<FormControl>
+								<Input {...field} translate="no" placeholder={t('fax.placeholder')} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
 					<FormField
 						control={form.control}
