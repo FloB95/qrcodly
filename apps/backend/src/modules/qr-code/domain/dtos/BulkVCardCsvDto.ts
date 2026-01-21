@@ -1,7 +1,7 @@
 import { QrCodeSchema, VCardInputSchema } from '@shared/schemas';
 import { z } from 'zod';
 
-const { isDynamic: _, ...vCardShapeWithoutDynamic } = VCardInputSchema.shape;
+const { ...vCardShapeWithoutDynamic } = VCardInputSchema.omit({ isDynamic: true }).shape;
 
 export const BulkVCardCsvDto = z.object({
 	...QrCodeSchema.pick({ name: true }).shape,
