@@ -1,5 +1,6 @@
 {
 	"general": {
+		"proRequired": "Abonnement Pro requis",
 		"comingSoon": "bientôt disponible !",
 		"noName": "Sans nom",
 		"back": "Retour",
@@ -17,7 +18,7 @@
 	"hero": {
 		"badge": "Open Source et Gratuit Pour Toujours",
 		"title": "Le Générateur de Codes QR Sans Limites",
-		"subtitle": "Générez des codes QR statiques et dynamiques illimités gratuitement. Pas de frais cachés, pas de restrictions, pas de niveaux premium.",
+		"subtitle": "Générez des codes QR statiques et dynamiques illimités gratuitement. Pas de frais cachés, pas de restrictions. Création de codes QR puissante et simple.",
 		"benefits": {
 			"unlimited": "Codes QR Illimités",
 			"noSignup": "Codes QR Dynamiques Gratuits",
@@ -74,12 +75,14 @@
 	"header": {
 		"collectionBtn": "Ma Collection",
 		"signInBtn": "Se connecter",
-		"settingsBtn": "Paramètres"
+		"settingsBtn": "Paramètres",
+		"plansBtn": "Tarifs"
 	},
 	"footer": {
 		"qrCodeCopyright": "QR Code est une marque déposée de DENSO WAVE INCORPORATED",
 		"legalNotice": "Mentions légales",
-		"privacyPolicy": "Politique de confidentialité"
+		"privacyPolicy": "Politique de confidentialité",
+		"contact": "Contact"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -118,6 +121,10 @@
 			"templateFeature": {
 				"headline": "Créer des designs avec des modèles",
 				"subHeadline": "Gagnez du temps et assurez une image de marque cohérente. Créez des modèles avec vos styles préférés et appliquez-les facilement à de nouveaux codes QR."
+			},
+			"customDomainFeature": {
+				"headline": "Gardez le contrôle avec votre propre domaine",
+				"subHeadline": "Utilisez votre propre domaine pour les codes QR dynamiques. Gardez le contrôle, restez brandé et possédez chaque lien."
 			},
 			"teamFeature": {
 				"headline": "Collaborer en équipe",
@@ -982,8 +989,8 @@
 		}
 	},
 	"plans": {
-		"title": "Choisissez le plan qui vous convient",
-		"subtitle": "QRcodly est gratuit par défaut. La plupart des fonctionnalités resteront toujours gratuites. Vous ne payez que pour l'infrastructure coûteuse.",
+		"title": "Équitable. Transparent. Sans frais cachés.",
+		"subtitle": "QRcodly est gratuit – pas de période d'essai, pas d'abonnement automatique. Le plan Pro couvre uniquement les fonctionnalités nécessitant une infrastructure supplémentaire.",
 		"annual": "Annuel",
 		"monthly": "Mensuel",
 		"perMonth": "/mois",
@@ -1011,7 +1018,8 @@
 			},
 			"pro": {
 				"everythingInFree": "Tout dans Gratuit",
-				"unlimitedBulk": "Génération en masse de codes QR illimitée",
+				"largerBulkImports": "Importations en masse plus grandes (50 lignes, 2Mo)",
+				"customDomains": "Domaine personnalisé pour codes QR dynamiques",
 				"unlimitedApi": "Accès API illimité",
 				"prioritySupport": "Support prioritaire",
 				"teamFeatures": "Fonctionnalités d'équipe (bientôt)"

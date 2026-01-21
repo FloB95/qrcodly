@@ -1,5 +1,6 @@
 {
 	"general": {
+		"proRequired": "Pro-abonnement vereist",
 		"comingSoon": "binnenkort beschikbaar!",
 		"noName": "Geen naam",
 		"back": "Terug",
@@ -17,7 +18,7 @@
 	"hero": {
 		"badge": "Open Source & Voor Altijd Gratis",
 		"title": "De QR Code Generator Zonder Grenzen",
-		"subtitle": "Genereer onbeperkt statische en dynamische QR-codes gratis. Geen verborgen kosten, geen beperkingen, geen premium niveaus.",
+		"subtitle": "Genereer onbeperkt statische en dynamische QR-codes gratis. Geen verborgen kosten, geen beperkingen. Krachtige en eenvoudige QR-code creatie.",
 		"benefits": {
 			"unlimited": "Onbeperkte QR-codes",
 			"noSignup": "Gratis Dynamische QR-codes",
@@ -74,12 +75,14 @@
 	"header": {
 		"collectionBtn": "Mijn collectie",
 		"signInBtn": "Inloggen",
-		"settingsBtn": "Instellingen"
+		"settingsBtn": "Instellingen",
+		"plansBtn": "Prijzen"
 	},
 	"footer": {
 		"qrCodeCopyright": "QR Code is een geregistreerd handelsmerk van DENSO WAVE INCORPORATED",
 		"legalNotice": "Wettelijke kennisgeving",
-		"privacyPolicy": "Privacybeleid"
+		"privacyPolicy": "Privacybeleid",
+		"contact": "Contact"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -118,6 +121,10 @@
 			"templateFeature": {
 				"headline": "Ontwerpen maken met sjablonen",
 				"subHeadline": "Bespaar tijd en zorg voor consistente branding. Maak sjablonen met uw voorkeursstijlen en pas deze eenvoudig toe op nieuwe QR-codes."
+			},
+			"customDomainFeature": {
+				"headline": "Houd controle met je eigen domein",
+				"subHeadline": "Gebruik je eigen domein voor dynamische QR-codes. Houd controle, blijf gebrand en bezit elke link."
 			},
 			"teamFeature": {
 				"headline": "Samenwerken in een team",
@@ -982,8 +989,8 @@
 		}
 	},
 	"plans": {
-		"title": "Kies het juiste plan voor jou",
-		"subtitle": "QRcodly is standaard gratis. De meeste functies blijven altijd gratis. Je betaalt alleen voor kostbare infrastructuur.",
+		"title": "Eerlijk. Transparant. Geen verborgen kosten.",
+		"subtitle": "QRcodly is gratis te gebruiken – geen proefperiodes, geen automatische abonnementen. Het Pro-plan dekt alleen functies die extra infrastructuur vereisen.",
 		"annual": "Jaarlijks",
 		"monthly": "Maandelijks",
 		"perMonth": "/maand",
@@ -1011,7 +1018,8 @@
 			},
 			"pro": {
 				"everythingInFree": "Alles in Gratis",
-				"unlimitedBulk": "Onbeperkte bulk QR-code generatie",
+				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
+				"customDomains": "Aangepast domein voor dynamische QR-codes",
 				"unlimitedApi": "Onbeperkte API-toegang",
 				"prioritySupport": "Prioriteitsondersteuning",
 				"teamFeatures": "Teamfuncties (binnenkort)"

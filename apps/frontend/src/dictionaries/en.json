@@ -1,5 +1,6 @@
 {
 	"general": {
+		"proRequired": "Pro Plan Required",
 		"comingSoon": "coming soon!",
 		"noName": "No name",
 		"back": "Back",
@@ -17,7 +18,7 @@
 	"hero": {
 		"badge": "Open Source & Free Forever",
 		"title": "QR Code Generator Without Limits",
-		"subtitle": "Generate unlimited static and dynamic QR codes for free. No hidden fees, no restrictions, no premium tiers. Just powerful QR code creation.",
+		"subtitle": "Generate unlimited static and dynamic QR codes for free. No hidden fees, no restrictions. Just powerful QR code creation.",
 		"benefits": {
 			"unlimited": "Unlimited QR Codes",
 			"noSignup": "Free Dynamic QR Codes",
@@ -74,12 +75,14 @@
 	"header": {
 		"collectionBtn": "My Collection",
 		"signInBtn": "Sign In",
-		"settingsBtn": "Settings"
+		"settingsBtn": "Settings",
+		"plansBtn": "Pricing"
 	},
 	"footer": {
 		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED",
 		"legalNotice": "Legal Notice",
-		"privacyPolicy": "Privacy Policy"
+		"privacyPolicy": "Privacy Policy",
+		"contact": "Contact"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -118,6 +121,10 @@
 			"templateFeature": {
 				"headline": "Create Designs with Templates",
 				"subHeadline": "Save time and ensure consistent branding. Use your design templates to quickly apply styles to new QR codes."
+			},
+			"customDomainFeature": {
+				"headline": "Keep Control with Your Own Domain",
+				"subHeadline": "Use your own domain for dynamic QR codes. Keep control, stay branded, and own every link."
 			},
 			"teamFeature": {
 				"headline": "Collaborate in Teams",
@@ -982,8 +989,8 @@
 		}
 	},
 	"plans": {
-		"title": "Choose the right plan for you",
-		"subtitle": "QRcodly is free by default. Most features will always stay free. You only pay for cost-intensive infrastructure.",
+		"title": "Fair. Transparent. No hidden costs.",
+		"subtitle": "QRcodly is free to use – no trial periods, no automatic subscriptions. The Pro plan only covers features that require additional infrastructure.",
 		"annual": "Annual",
 		"monthly": "Monthly",
 		"perMonth": "/month",
@@ -1011,7 +1018,8 @@
 			},
 			"pro": {
 				"everythingInFree": "Everything in Free",
-				"unlimitedBulk": "Unlimited bulk QR code generation",
+				"largerBulkImports": "Larger bulk imports (50 rows, 2MB)",
+				"customDomains": "Custom domain for dynamic QR codes",
 				"unlimitedApi": "Unlimited API access",
 				"prioritySupport": "Priority support",
 				"teamFeatures": "Team features (coming soon)"

@@ -32,17 +32,14 @@ import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
 
-// Subdomain regex - matches valid single-level subdomain names only (subdomain.domain.tld)
 const subdomainRegex =
 	/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.[a-zA-Z]{2,}$/;
 
-// Helper to check if a domain is a single-level subdomain (exactly 3 parts)
 function isSingleLevelSubdomain(domain: string): boolean {
 	const parts = domain.split('.');
 	return parts.length === 3;
 }
 
-// Helper to check if domain contains qrcodly (blocked)
 function isQrcodlyDomain(domain: string): boolean {
 	return domain.toLowerCase().includes('qrcodly');
 }

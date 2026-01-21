@@ -4,12 +4,12 @@ import { SignedIn, SignedOut, SignInButton, UserAvatar } from '@clerk/nextjs';
 import Container from './ui/container';
 import { Button, buttonVariants } from './ui/button';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { LanguageNav } from './LanguageNav';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from './ui/drawer';
-import { RectangleStackIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+import { RectangleStackIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
@@ -41,7 +41,11 @@ export default function Header({
 	hideLanguageNav = false,
 }) {
 	const t = useTranslations('header');
+	const pathname = usePathname();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+	const isDocsActive = pathname.startsWith('/docs');
+	const isPlansActive = pathname === '/plans';
 
 	return (
 		<header className="pt-10">
@@ -59,12 +63,21 @@ export default function Header({
 							href="/docs"
 							target="blank"
 							locale={'en'}
-							className="hidden sm:block h-10 px-2 py-2"
+							className={cn(
+								'hidden sm:block h-10 px-2 py-2',
+								isDocsActive && 'font-semibold text-black',
+							)}
 						>
 							Docs
 						</Link>
-						<Link href="/plans" className="hidden sm:block h-10 px-2 py-2">
-							Plans
+						<Link
+							href="/plans"
+							className={cn(
+								'hidden sm:block h-10 px-2 py-2',
+								isPlansActive && 'font-semibold text-black',
+							)}
+						>
+							{t('plansBtn')}
 						</Link>
 						<SignedOut>
 							<SignInButton>
@@ -137,10 +150,13 @@ export default function Header({
 								href="/plans"
 								className={buttonVariants({
 									variant: 'ghost',
-									className: 'w-full justify-start text-foreground font-semibold',
+									className: cn(
+										'w-full justify-start text-foreground font-semibold',
+										isPlansActive && 'bg-accent',
+									),
 								})}
 							>
-								Plans
+								{t('plansBtn')}
 							</Link>
 						</motion.div>
 						<motion.div variants={itemVariants}>
@@ -150,7 +166,10 @@ export default function Header({
 								locale={'en'}
 								className={buttonVariants({
 									variant: 'ghost',
-									className: 'w-full justify-start text-foreground font-semibold',
+									className: cn(
+										'w-full justify-start text-foreground font-semibold',
+										isDocsActive && 'bg-accent',
+									),
 								})}
 							>
 								Docs
@@ -165,18 +184,6 @@ export default function Header({
 									})}
 								>
 									{t('collectionBtn')}
-								</Link>
-							</motion.div>
-							<motion.div variants={itemVariants}>
-								<Link
-									href="/settings/domains"
-									className={buttonVariants({
-										variant: 'ghost',
-										className: 'w-full justify-start text-foreground font-semibold',
-									})}
-								>
-									<Cog6ToothIcon className="h-5 w-5 mr-2" />
-									{t('settingsBtn')}
 								</Link>
 							</motion.div>
 						</SignedIn>

@@ -33,7 +33,7 @@ export const PricingCard = ({
 			className={cn(
 				'rounded-3xl p-8 ring-1 sm:p-10',
 				isPro
-					? 'bg-black text-white shadow-2xl ring-gray-800'
+					? 'bg-black text-white sm:shadow-2xl sm:ring-gray-800'
 					: 'bg-white text-gray-900 ring-gray-200',
 			)}
 		>

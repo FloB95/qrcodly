@@ -1,5 +1,6 @@
 {
 	"general": {
+		"proRequired": "Pro-Abo erforderlich",
 		"comingSoon": "demnächst verfügbar!",
 		"noName": "Kein Name",
 		"back": "Zurück",
@@ -74,12 +75,14 @@
 	"header": {
 		"collectionBtn": "Meine Sammlung",
 		"signInBtn": "Anmelden",
-		"settingsBtn": "Einstellungen"
+		"settingsBtn": "Einstellungen",
+		"plansBtn": "Preise"
 	},
 	"footer": {
 		"qrCodeCopyright": "QR Code ist eine eingetragene Marke von DENSO WAVE INCORPORATED",
 		"legalNotice": "Impressum",
-		"privacyPolicy": "Datenschutzrichtlinie"
+		"privacyPolicy": "Datenschutzrichtlinie",
+		"contact": "Kontakt"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -118,6 +121,10 @@
 			"templateFeature": {
 				"headline": "Designs mit Vorlagen erstellen",
 				"subHeadline": "Spare Zeit und sorge für einheitliches Branding. Erstelle Vorlagen mit deinen bevorzugten Styles und wende diese einfach auf neue QR-Codes an."
+			},
+			"customDomainFeature": {
+				"headline": "Behalte die Kontrolle mit deiner eigenen Domain",
+				"subHeadline": "Nutze deine eigene Domain für dynamische QR-Codes. Behalte die Kontrolle, bleib gebrandmarkt und besitze jeden Link."
 			},
 			"teamFeature": {
 				"headline": "Im Team zusammenarbeiten",
@@ -982,8 +989,8 @@
 		}
 	},
 	"plans": {
-		"title": "Wähle den richtigen Plan für dich",
-		"subtitle": "QRcodly ist standardmäßig kostenlos. Die meisten Funktionen bleiben immer kostenlos. Du zahlst nur für kostenintensive Infrastruktur.",
+		"title": "Fair. Transparent. Ohne versteckte Kosten.",
+		"subtitle": "QRcodly ist kostenlos nutzbar – keine Testphasen, keine automatischen Abos. Der Pro-Plan deckt ausschließlich Funktionen ab, die zusätzlichen Infrastrukturaufwand verursachen.",
 		"annual": "Jährlich",
 		"monthly": "Monatlich",
 		"perMonth": "/Monat",
@@ -1011,7 +1018,8 @@
 			},
 			"pro": {
 				"everythingInFree": "Alles aus Free",
-				"unlimitedBulk": "Unbegrenzte Massen-QR-Code-Erstellung",
+				"largerBulkImports": "Größere Massenimporte (50 Zeilen, 2MB)",
+				"customDomains": "Eigene Domain für dynamische QR-Codes",
 				"unlimitedApi": "Unbegrenzter API-Zugang",
 				"prioritySupport": "Prioritäts-Support",
 				"teamFeatures": "Team-Funktionen (bald verfügbar)"

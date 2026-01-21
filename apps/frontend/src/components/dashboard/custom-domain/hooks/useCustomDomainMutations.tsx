@@ -86,7 +86,6 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 
 		verifyMutation.mutate(domain.id, {
 			onSuccess: (data) => {
-				// Detect phase transition: dns_verification -> cloudflare_ssl
 				const phaseTransitioned =
 					domain.verificationPhase === 'dns_verification' &&
 					data.verificationPhase === 'cloudflare_ssl';
@@ -118,7 +117,7 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 					// After 2 seconds, silently refresh to fetch SSL validation records from Cloudflare
 					verifyTimeoutRef.current = setTimeout(() => {
 						if (!isMountedRef.current) return;
-						// Silent verification - no loading state, just refresh the data
+
 						verifyMutation.mutate(data.id, {
 							onSuccess: (updatedData) => {
 								if (!isMountedRef.current) return;
@@ -129,9 +128,7 @@ export const useCustomDomainMutations = (domain: TCustomDomainResponseDto) => {
 										description: t('domainVerifiedDescription', { domain: domain.domain }),
 									});
 								}
-								// Otherwise, the UI will update automatically with the new SSL instructions
 							},
-							// Silently ignore errors - user can manually check status again
 						});
 					}, 2000);
 				} else {

@@ -1,5 +1,6 @@
 {
 	"general": {
+		"proRequired": "Wymagany Plan Pro",
 		"comingSoon": "już wkrótce!",
 		"noName": "Brak nazwy",
 		"back": "Wstecz",
@@ -17,7 +18,7 @@
 	"hero": {
 		"badge": "Open Source i Zawsze Za Darmo",
 		"title": "Generator Kodów QR Bez Ograniczeń",
-		"subtitle": "Generuj nieograniczoną liczbę statycznych i dynamicznych kodów QR za darmo. Bez ukrytych opłat, bez ograniczeń, bez poziomów premium.",
+		"subtitle": "Generuj nieograniczoną liczbę statycznych i dynamicznych kodów QR za darmo. Bez ukrytych opłat, bez ograniczeń. Potężne i proste tworzenie kodów QR.",
 		"benefits": {
 			"unlimited": "Nieograniczone Kody QR",
 			"noSignup": "Darmowe Dynamiczne Kody QR",
@@ -74,12 +75,14 @@
 	"header": {
 		"collectionBtn": "Moja kolekcja",
 		"signInBtn": "Zaloguj się",
-		"settingsBtn": "Ustawienia"
+		"settingsBtn": "Ustawienia",
+		"plansBtn": "Cennik"
 	},
 	"footer": {
 		"qrCodeCopyright": "QR Code jest zarejestrowanym znakiem towarowym DENSO WAVE INCORPORATED",
 		"legalNotice": "Nota prawna",
-		"privacyPolicy": "Polityka prywatności"
+		"privacyPolicy": "Polityka prywatności",
+		"contact": "Kontakt"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -118,6 +121,10 @@
 			"templateFeature": {
 				"headline": "Twórz projekty za pomocą szablonów",
 				"subHeadline": "Oszczędź czas i zadbaj o spójny branding. Twórz szablony z ulubionymi stylami i łatwo stosuj je do nowych kodów QR."
+			},
+			"customDomainFeature": {
+				"headline": "Zachowaj kontrolę dzięki własnej domenie",
+				"subHeadline": "Użyj własnej domeny dla dynamicznych kodów QR. Zachowaj kontrolę, pozostań markowy i posiadaj każdy link."
 			},
 			"teamFeature": {
 				"headline": "Współpracuj w zespole",
@@ -982,8 +989,8 @@
 		}
 	},
 	"plans": {
-		"title": "Wybierz odpowiedni plan dla siebie",
-		"subtitle": "QRcodly jest domyślnie darmowy. Większość funkcji zawsze będzie darmowa. Płacisz tylko za kosztowną infrastrukturę.",
+		"title": "Uczciwie. Przejrzyście. Bez ukrytych kosztów.",
+		"subtitle": "QRcodly jest darmowy – bez okresów próbnych, bez automatycznych subskrypcji. Plan Pro obejmuje tylko funkcje wymagające dodatkowej infrastruktury.",
 		"annual": "Roczny",
 		"monthly": "Miesięczny",
 		"perMonth": "/miesiąc",
@@ -1011,7 +1018,8 @@
 			},
 			"pro": {
 				"everythingInFree": "Wszystko z Darmowego",
-				"unlimitedBulk": "Nieograniczone masowe generowanie kodów QR",
+				"largerBulkImports": "Większe importy masowe (50 wierszy, 2MB)",
+				"customDomains": "Własna domena dla dynamicznych kodów QR",
 				"unlimitedApi": "Nieograniczony dostęp do API",
 				"prioritySupport": "Priorytetowe wsparcie",
 				"teamFeatures": "Funkcje zespołowe (wkrótce)"

@@ -26,7 +26,7 @@ export default async function Page({ params }: DefaultPageParams) {
 					<p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">{t('subtitle')}</p>
 				</div>
 
-				<div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-6 lg:grid-cols-2">
+				<div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
 					{plans.data.map((plan) => (
 						<PricingCard
 							key={plan.slug}

@@ -1,10 +1,18 @@
+'use client';
+
 import { AddCustomDomainDialog, CustomDomainList } from '@/components/dashboard/custom-domain';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
+import { useSubscription } from '@clerk/nextjs/experimental';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
+import { ProPlanRequiredBadge } from '@/components/ProPlanRequiredBadge';
 
 export default function Page() {
 	const t = useTranslations('settings.domains');
+	const { data } = useSubscription();
+
+	const subscriptionItem = data?.subscriptionItems[0];
+	const hasProPlan = subscriptionItem?.plan?.slug === 'pro';
 
 	// const daysLeftUntilDeactivation = 5;
 	return (
@@ -40,9 +48,7 @@ export default function Page() {
 								</CardDescription>
 							</div>
 						</div>
-						<div>
-							<AddCustomDomainDialog />
-						</div>
+						<div>{hasProPlan ? <AddCustomDomainDialog /> : <ProPlanRequiredBadge />}</div>
 					</div>
 				</CardContent>
 			</Card>

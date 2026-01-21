@@ -1,11 +1,13 @@
 import {
 	ChartBarIcon,
+	GlobeAltIcon,
 	QrCodeIcon,
 	RectangleStackIcon,
 	ShieldCheckIcon,
 	StarIcon,
 	UserGroupIcon,
 } from '@heroicons/react/24/outline';
+import { SparklesIcon } from '@heroicons/react/24/solid';
 import { useTranslations } from 'next-intl';
 import { Badge } from './ui/badge';
 import { AnimatedIcon } from './AnimatedIcon';
@@ -16,14 +18,32 @@ interface FeatureCardProps {
 	headlineKey: string;
 	subHeadlineKey: string;
 	badge?: string;
+	badgeVariant?: 'default' | 'pro';
 }
 
-const FeatureCard = ({ icon, headlineKey, subHeadlineKey, badge }: FeatureCardProps) => {
+const FeatureCard = ({
+	icon,
+	headlineKey,
+	subHeadlineKey,
+	badge,
+	badgeVariant = 'default',
+}: FeatureCardProps) => {
 	const t = useTranslations('contentElements.featuresCta');
 
 	return (
 		<div className="flex flex-col items-center rounded-2xl from-white to-white/60 bg-linear-to-br p-6 md:p-8 text-center relative">
-			{badge && <Badge className="absolute right-4 top-4">{badge}</Badge>}
+			{badge && (
+				<Badge
+					className={
+						badgeVariant === 'pro'
+							? 'absolute right-4 top-4 bg-teal-600 hover:bg-teal-700'
+							: 'absolute right-4 top-4'
+					}
+				>
+					{badgeVariant === 'pro' && <SparklesIcon className="h-3 w-3 mr-1" />}
+					{badge}
+				</Badge>
+			)}
 			{icon}
 			<h3 className="mb-3 text-xl font-medium text-slate-900">{t(headlineKey)}</h3>
 			<p className="text-slate-700">{t(subHeadlineKey)}</p>
@@ -97,12 +117,25 @@ export const Features = () => {
 				/>
 			</div>
 
-			{/* Team Feature (Coming Soon) */}
+			{/* Pro Features */}
 			<div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-				<div className="md:col-span-2 lg:col-start-2">
+				<div className="lg:col-span-2">
 					<FeatureCard
 						icon={
-							<AnimatedIcon>
+							<AnimatedIcon delay={0.5}>
+								<GlobeAltIcon className="h-8 w-8" />
+							</AnimatedIcon>
+						}
+						headlineKey="customDomainFeature.headline"
+						subHeadlineKey="customDomainFeature.subHeadline"
+						badge={t2('proRequired')}
+						badgeVariant="pro"
+					/>
+				</div>
+				<div className="lg:col-span-2">
+					<FeatureCard
+						icon={
+							<AnimatedIcon delay={0.6}>
 								<UserGroupIcon className="h-8 w-8" />
 							</AnimatedIcon>
 						}

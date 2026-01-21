@@ -41,7 +41,6 @@ function getVerificationStatusInfo(domain: TCustomDomainResponseDto) {
 
 	// Phase 2: Cloudflare SSL
 	if (domain.verificationPhase === 'cloudflare_ssl') {
-		// Check for SSL errors
 		if (
 			domain.sslStatus === 'validation_timed_out' ||
 			domain.sslStatus === 'expired' ||
