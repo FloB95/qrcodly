@@ -2,24 +2,18 @@
 	"general": {
 		"comingSoon": "demnächst verfügbar!",
 		"noName": "Kein Name",
-		"changesSaved": "Änderungen gespeichert",
 		"back": "Zurück",
 		"toCollection": "Zur Sammlung",
 		"backToOverview": "Zurück zur Sammlung",
 		"share": "Teilen",
-		"view": "Anzeigen",
 		"edit": "Bearbeiten",
 		"delete": "Löschen",
 		"notProvided": "Nicht angegeben",
-		"addName": "Namen eingeben",
 		"days": "Tage",
-		"changelogTooltip": "Die neuesten Updates",
-		"changelogSubheading": "Hier findest du die neuesten Updates und Verbesserungen von QRcodly.",
 		"newBadge": "Neu!",
 		"dynamicDescription": "Dynamische QR-Codes können nach der Erstellung bearbeitet werden, tracken jeden Scan und liefern detaillierte Statistiken – ohne den Code neu drucken zu müssen.",
 		"dynamicBadgeTooltip": "Ermöglicht das spätere Ändern der Inhalte ohne neuen QR-Code. <i>Hover für mehr Infos</i>"
 	},
-	"headline": "<span class=\"text-xl xs:text-2xl\">Kostenloser & Open Source</span> <br /> QR Code Generator",
 	"hero": {
 		"badge": "Open Source & Für Immer Kostenlos",
 		"title": "QR-Code Generator ohne Limits",
@@ -50,10 +44,6 @@
 			]
 		}
 	},
-	"doc": {
-		"title": "Dokumentation wird gerade aktualisiert",
-		"description": "Wir arbeiten derzeit daran, diesen Abschnitt zu aktualisieren, um dir besser zu dienen. Bitte schau bald wieder vorbei!"
-	},
 	"collection": {
 		"headline": "Deine Sammlung",
 		"subHeadline": "Hier findest du all deine QR-Codes und Vorlagen und kannst sie bearbeiten oder löschen.",
@@ -74,7 +64,6 @@
 		"visitorsInLastXDays": "{count} Besucher in den letzten {days}"
 	},
 	"chart": {
-		"visitors": "Besucher",
 		"title": {
 			"browserUsage": "Verwendete Browser",
 			"deviceUsage": "Verwendete Geräte",
@@ -188,7 +177,6 @@
 			"successTitle": "QR Code aktualisiert",
 			"successDescription": "Dein QR Code wurde erfolgreich aktualisiert.",
 			"errorTitle": "Fehler beim Aktualisieren des QR Codes",
-			"errorDescription": "Beim Aktualisieren deines QR Codes ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem so schnell wie möglich beheben.",
 			"infoDialog": {
 				"dialogHeadline": "Hinweis zum Aktualisieren eines QR Codes",
 				"dialogDescription": "Nur dynamische QR-Codes ändern ihr Aussehen nicht nach einer Bearbeitung. Bei statischen QR-Codes wird ein neuer Code erzeugt, sodass bereits gedruckte Versionen nicht mehr aktuell sind.",
@@ -197,7 +185,6 @@
 				"understandBtn": "Verstanden"
 			}
 		},
-		"updateQrCodeUrl": "Aktualisiere die URL",
 		"actionsMenu": {
 			"title": "Aktionen",
 			"view": "Anzeigen",
@@ -230,8 +217,7 @@
 	"nameDialog": {
 		"placeholder": "Name",
 		"cancelBtn": "Abbrechen",
-		"saveBtn": "Speichern",
-		"characters": "Zeichen"
+		"saveBtn": "Speichern"
 	},
 	"templates": {
 		"tabs": {
@@ -247,7 +233,6 @@
 		"templateCreatedTitle": "Neue Vorlage erstellt",
 		"templateCreatedDescription": "Deine Vorlage wurde erfolgreich erstellt.",
 		"templateCreatedErrorTitle": "Fehler beim Erstellen der Vorlage",
-		"templateCreatedErrorDescription": "Beim Erstellen deiner Vorlage ist ein Fehler aufgetreten. Wir wurden bereits benachrichtigt und beheben das Problem so schnell wie möglich.",
 		"saveAsBtn": "Als Vorlage speichern",
 		"updateBtn": "Vorlage aktualiseren",
 		"saveInfo": "Speichere das aktuelle Design als wiederverwendbare Vorlage.",
@@ -814,12 +799,10 @@
 			"revokeConfirmDescription": "Möchtest du den API-Schlüssel {name} wirklich widerrufen? Dieser Vorgang kann nicht rückgängig gemacht werden.",
 			"cancel": "Abbrechen",
 			"create": "API-Schlüssel erstellen",
-			"createDescription": "Erstelle einen neuen API-Schlüssel für externe Anwendungen.",
 			"copied": "Kopiert",
 			"copiedDescription": "Der API-Schlüssel wurde in die Zwischenablage kopiert.",
 			"unnamed": "Unbenannt",
 			"createdTitle": "API-Key erstellt",
-			"createdDescription": "Der API-Schlüssel wurde erfolgreich erstellt. Kopiere ihn jetzt, da er nur einmal angezeigt wird.",
 			"formTitle": "Neuen API-Key hinzufügen",
 			"formHint": "Geben Sie einen Namen an, um einen API-Key zu erstellen. Sie können ihn jederzeit widerrufen.",
 			"namePlaceholder": "Geben Sie einen Namen an",
@@ -915,9 +898,6 @@
 			"imageTooLarge": "Das Bild muss kleiner als 10MB sein.",
 			"connectedAccountsTitle": "Verbundene Konten",
 			"connectedAccountsDescription": "Verwalte deine Social-Login-Anbieter und verknüpften Konten.",
-			"connectAccount": "Verbinden",
-			"noConnectedAccounts": "Noch keine verbundenen Konten.",
-			"connectFirstAccount": "Konto verbinden",
 			"verified": "Verifiziert",
 			"unknownAccount": "Unbekanntes Konto",
 			"removeAccountTitle": "Verbundenes Konto entfernen?",
@@ -930,7 +910,6 @@
 			"changeEmail": "Ändern",
 			"changeEmailTitle": "E-Mail-Adresse ändern",
 			"changeEmailDescription": "Gib deine neue E-Mail-Adresse ein. Wir senden einen Bestätigungscode zur Verifizierung.",
-			"verifyEmailDescription": "Gib den Bestätigungscode ein, den wir an deine neue E-Mail-Adresse gesendet haben.",
 			"newEmail": "Neue E-Mail-Adresse",
 			"newEmailPlaceholder": "du@beispiel.de",
 			"sendVerificationCode": "Code senden",
@@ -942,11 +921,7 @@
 			"emailAddError": "E-Mail-Adresse konnte nicht hinzugefügt werden. Bitte versuche es erneut.",
 			"emailNotFound": "E-Mail-Adresse nicht gefunden. Bitte versuche es erneut.",
 			"verificationError": "Ungültiger Bestätigungscode. Bitte versuche es erneut.",
-			"reverificationRequired": "Zu deiner Sicherheit gib bitte dein Passwort ein, um diese Änderung zu bestätigen.",
-			"reverificationDescription": "Dies ist ein sensibler Vorgang. Bitte gib dein Passwort erneut ein, um fortzufahren.",
-			"currentPassword": "Aktuelles Passwort",
-			"confirmAndSave": "Bestätigen & speichern",
-			"reverificationError": "Passwortüberprüfung fehlgeschlagen. Bitte versuche es erneut."
+			"currentPassword": "Aktuelles Passwort"
 		},
 		"security": {
 			"title": "Sicherheit",
@@ -961,15 +936,9 @@
 			"passwordUpdatedDescription": "Dein Passwort wurde geändert. Du wurdest von allen anderen Sitzungen abgemeldet.",
 			"passwordUpdateError": "Passwort konnte nicht aktualisiert werden. Bitte versuche es erneut.",
 			"noPasswordAuth": "Du hast dich über einen Social-Anbieter angemeldet. Die Passwortverwaltung ist für dein Konto nicht verfügbar.",
-			"noEmailError": "Keine E-Mail-Adresse in deinem Konto gefunden. Bitte füge zuerst eine E-Mail-Adresse hinzu.",
 			"verificationTitle": "Bestätige deine Identität",
 			"verificationDescription": "Wir haben einen Bestätigungscode an {email} gesendet. Bitte gib ihn unten ein, um fortzufahren.",
-			"verificationSendError": "Der Bestätigungscode konnte nicht gesendet werden. Bitte versuche es erneut.",
 			"verificationError": "Verifizierung fehlgeschlagen. Bitte versuche es erneut.",
-			"verificationIncomplete": "Die Verifizierung wurde nicht abgeschlossen. Bitte versuche es erneut.",
-			"verificationCodeResent": "Ein neuer Bestätigungscode wurde an deine E-Mail gesendet.",
-			"verificationResendError": "Der Bestätigungscode konnte nicht erneut gesendet werden. Bitte versuche es erneut.",
-			"invalidCode": "Ungültiger Bestätigungscode. Bitte überprüfe ihn und versuche es erneut.",
 			"didNotReceiveCode": "Code nicht erhalten?",
 			"resendCode": "Code erneut senden",
 			"resendIn": "Erneut senden in {seconds}s",

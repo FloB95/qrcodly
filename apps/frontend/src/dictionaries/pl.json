@@ -2,24 +2,18 @@
 	"general": {
 		"comingSoon": "już wkrótce!",
 		"noName": "Brak nazwy",
-		"changesSaved": "Zmiany zapisane",
 		"back": "Wstecz",
 		"toCollection": "Do kolekcji",
 		"backToOverview": "Powrót do kolekcji",
 		"share": "Udostępnij",
-		"view": "Wyświetl",
 		"edit": "Edytuj",
 		"delete": "Usuń",
 		"notProvided": "Nie podano",
-		"addName": "Dodaj nazwę",
 		"days": "Dni",
-		"changelogTooltip": "Najnowsze aktualizacje",
-		"changelogSubheading": "Tutaj znajdziesz najnowsze aktualizacje i ulepszenia QRcodly.",
 		"newBadge": "Nowość!",
 		"dynamicDescription": "Dynamiczne kody QR można edytować po utworzeniu, śledzą każde skanowanie i dostarczają szczegółowych statystyk – bez konieczności ponownego drukowania kodu.",
 		"dynamicBadgeTooltip": "Umożliwia późniejszą zmianę treści bez nowego kodu QR. <i>Najedź kursorem, aby uzyskać więcej informacji</i>"
 	},
-	"headline": "<span class=\"text-xl xs:text-2xl\">Darmowy i Open Source</span> <br /> Generator Kodów QR",
 	"hero": {
 		"badge": "Open Source i Zawsze Za Darmo",
 		"title": "Generator Kodów QR Bez Ograniczeń",
@@ -50,10 +44,6 @@
 			]
 		}
 	},
-	"doc": {
-		"title": "Dokumentacja w trakcie aktualizacji",
-		"description": "Obecnie pracujemy nad aktualizacją tej sekcji, aby lepiej Ci służyć. Proszę, sprawdź ponownie wkrótce!"
-	},
 	"collection": {
 		"headline": "Twoja kolekcja",
 		"subHeadline": "Tutaj znajdziesz wszystkie swoje kody QR i szablony i możesz nimi zarządzać.",
@@ -74,7 +64,6 @@
 		"visitorsInLastXDays": "{count} odwiedzających w ciągu ostatnich {days} dni"
 	},
 	"chart": {
-		"visitors": "Odwiedzający",
 		"title": {
 			"browserUsage": "Używane przeglądarki",
 			"deviceUsage": "Używane urządzenia",
@@ -188,7 +177,6 @@
 			"successTitle": "Kod QR zaktualizowany",
 			"successDescription": "Twój kod QR został pomyślnie zaktualizowany.",
 			"errorTitle": "Błąd podczas aktualizacji kodu QR",
-			"errorDescription": "Wystąpił błąd podczas aktualizacji kodu QR. Zostaliśmy powiadomieni i naprawimy problem tak szybko, jak to możliwe.",
 			"infoDialog": {
 				"dialogHeadline": "Informacja dotycząca aktualizacji kodu QR",
 				"dialogDescription": "Tylko dynamiczne kody QR zachowują ten sam wygląd po edycji. W przypadku statycznych kodów QR tworzony jest nowy kod, dlatego już wydrukowane wersje nie są już aktualne.",
@@ -197,7 +185,6 @@
 				"understandBtn": "Rozumiem"
 			}
 		},
-		"updateQrCodeUrl": "Zaktualizuj URL",
 		"actionsMenu": {
 			"title": "Akcje",
 			"view": "Wyświetl",
@@ -230,8 +217,7 @@
 	"nameDialog": {
 		"placeholder": "Nazwa",
 		"cancelBtn": "Anuluj",
-		"saveBtn": "Zapisz",
-		"characters": "znaków"
+		"saveBtn": "Zapisz"
 	},
 	"templates": {
 		"tabs": {
@@ -247,7 +233,6 @@
 		"templateCreatedTitle": "Nowy szablon utworzony",
 		"templateCreatedDescription": "Twój szablon został pomyślnie utworzony.",
 		"templateCreatedErrorTitle": "Błąd tworzenia szablonu",
-		"templateCreatedErrorDescription": "Wystąpił błąd podczas tworzenia szablonu. Zostaliśmy już powiadomieni i rozwiążemy problem tak szybko, jak to możliwe.",
 		"saveAsBtn": "Zapisz jako szablon",
 		"updateBtn": "Aktualizuj szablon",
 		"saveInfo": "Zapisz aktualny projekt jako szablon wielokrotnego użytku.",
@@ -814,12 +799,10 @@
 			"revokeConfirmDescription": "Czy na pewno chcesz unieważnić klucz API {name}? Tej akcji nie można cofnąć.",
 			"cancel": "Anuluj",
 			"create": "Utwórz klucz API",
-			"createDescription": "Utwórz nowy klucz API dla zewnętrznych aplikacji.",
 			"copied": "Skopiowano",
 			"copiedDescription": "Klucz API został skopiowany do schowka.",
 			"unnamed": "Bez nazwy",
 			"createdTitle": "Klucz API Utworzony",
-			"createdDescription": "Klucz API został pomyślnie utworzony. Skopiuj go teraz, ponieważ zostanie wyświetlony tylko raz.",
 			"formTitle": "Dodaj Nowy Klucz API",
 			"formHint": "Wprowadź nazwę, aby utworzyć klucz API. Możesz go unieważnić w dowolnym momencie.",
 			"namePlaceholder": "Wprowadź nazwę",
@@ -915,9 +898,6 @@
 			"imageTooLarge": "Obraz musi być mniejszy niż 10MB.",
 			"connectedAccountsTitle": "Połączone Konta",
 			"connectedAccountsDescription": "Zarządzaj dostawcami logowania społecznościowego i połączonymi kontami.",
-			"connectAccount": "Połącz",
-			"noConnectedAccounts": "Brak połączonych kont.",
-			"connectFirstAccount": "Połącz konto",
 			"verified": "Zweryfikowane",
 			"unknownAccount": "Nieznane konto",
 			"removeAccountTitle": "Usunąć połączone konto?",
@@ -930,7 +910,6 @@
 			"changeEmail": "Zmień",
 			"changeEmailTitle": "Zmień Adres E-mail",
 			"changeEmailDescription": "Wprowadź nowy adres e-mail. Wyślemy kod weryfikacyjny, aby go potwierdzić.",
-			"verifyEmailDescription": "Wprowadź kod weryfikacyjny, który wysłaliśmy na nowy adres e-mail.",
 			"newEmail": "Nowy Adres E-mail",
 			"newEmailPlaceholder": "ty@przyklad.pl",
 			"sendVerificationCode": "Wyślij Kod",
@@ -942,11 +921,7 @@
 			"emailAddError": "Nie udało się dodać adresu e-mail. Spróbuj ponownie.",
 			"emailNotFound": "Adres e-mail nie znaleziony. Spróbuj ponownie.",
 			"verificationError": "Nieprawidłowy kod weryfikacyjny. Spróbuj ponownie.",
-			"reverificationRequired": "Dla bezpieczeństwa wprowadź hasło, aby potwierdzić tę zmianę.",
-			"reverificationDescription": "To jest operacja wrażliwa. Wprowadź ponownie hasło, aby kontynuować.",
-			"currentPassword": "Aktualne Hasło",
-			"confirmAndSave": "Potwierdź i Zapisz",
-			"reverificationError": "Weryfikacja hasła nie powiodła się. Spróbuj ponownie."
+			"currentPassword": "Aktualne Hasło"
 		},
 		"security": {
 			"title": "Bezpieczeństwo",
@@ -961,15 +936,9 @@
 			"passwordUpdatedDescription": "Twoje hasło zostało zmienione. Zostałeś wylogowany ze wszystkich innych sesji.",
 			"passwordUpdateError": "Nie udało się zaktualizować hasła. Spróbuj ponownie.",
 			"noPasswordAuth": "Zarejestrowałeś się przez dostawcę społecznościowego. Zarządzanie hasłem nie jest dostępne dla Twojego konta.",
-			"noEmailError": "Nie znaleziono adresu e-mail na koncie. Najpierw dodaj adres e-mail.",
 			"verificationTitle": "Zweryfikuj swoją tożsamość",
 			"verificationDescription": "Wysłaliśmy kod weryfikacyjny na {email}. Wprowadź go poniżej, aby kontynuować.",
-			"verificationSendError": "Nie udało się wysłać kodu weryfikacyjnego. Spróbuj ponownie.",
 			"verificationError": "Weryfikacja nie powiodła się. Spróbuj ponownie.",
-			"verificationIncomplete": "Weryfikacja nie została ukończona. Spróbuj ponownie.",
-			"verificationCodeResent": "Nowy kod weryfikacyjny został wysłany na e-mail.",
-			"verificationResendError": "Nie udało się ponownie wysłać kodu weryfikacyjnego. Spróbuj ponownie.",
-			"invalidCode": "Nieprawidłowy kod weryfikacyjny. Sprawdź i spróbuj ponownie.",
 			"didNotReceiveCode": "Nie otrzymałeś kodu?",
 			"resendCode": "Wyślij ponownie kod",
 			"resendIn": "Wyślij ponownie za {seconds}s",

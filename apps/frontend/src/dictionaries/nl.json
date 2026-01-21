@@ -2,24 +2,18 @@
 	"general": {
 		"comingSoon": "binnenkort beschikbaar!",
 		"noName": "Geen naam",
-		"changesSaved": "Wijzigingen opgeslagen",
 		"back": "Terug",
 		"toCollection": "Naar collectie",
 		"backToOverview": "Terug naar de collectie",
 		"share": "Delen",
-		"view": "Bekijken",
 		"edit": "Bewerken",
 		"delete": "Verwijderen",
 		"notProvided": "Niet opgegeven",
-		"addName": "Een naam toevoegen",
 		"days": "Dagen",
-		"changelogTooltip": "Laatste updates",
-		"changelogSubheading": "Hier vind je de nieuwste updates en verbeteringen van QRcodly.",
 		"newBadge": "Nieuw!",
 		"dynamicDescription": "Dynamische QR-codes kunnen na creatie bewerkt worden, tracken elke scan en bieden gedetailleerde statistieken – zonder de code opnieuw te hoeven afdrukken.",
 		"dynamicBadgeTooltip": "Maakt het mogelijk om de inhoud later te wijzigen zonder nieuwe QR-code. <i>Hover voor meer info</i>"
 	},
-	"headline": "<span class=\"text-xl xs:text-2xl\">Gratis & Open Source</span> <br /> QR Code Generator",
 	"hero": {
 		"badge": "Open Source & Voor Altijd Gratis",
 		"title": "De QR Code Generator Zonder Grenzen",
@@ -50,10 +44,6 @@
 			]
 		}
 	},
-	"doc": {
-		"title": "Documentatie wordt bijgewerkt",
-		"description": "We werken momenteel aan het bijwerken van dit gedeelte om u beter van dienst te zijn. Kom snel terug!"
-	},
 	"collection": {
 		"headline": "Je collectie",
 		"subHeadline": "Hier vind je al je QR-codes en sjablonen en kun je ze beheren.",
@@ -74,7 +64,6 @@
 		"visitorsInLastXDays": "{count} bezoekers in de afgelopen {days} dagen"
 	},
 	"chart": {
-		"visitors": "Bezoekers",
 		"title": {
 			"browserUsage": "Gebruikte browsers",
 			"deviceUsage": "Gebruikte apparaten",
@@ -188,7 +177,6 @@
 			"successTitle": "QR-code bijgewerkt",
 			"successDescription": "Je QR-code is succesvol bijgewerkt.",
 			"errorTitle": "Fout bij het bijwerken van QR-code",
-			"errorDescription": "Er is een fout opgetreden bij het bijwerken van je QR-code. We zijn op de hoogte gebracht en lossen het probleem zo snel mogelijk op.",
 			"infoDialog": {
 				"dialogHeadline": "Opmerking over het bijwerken van een QR-code",
 				"dialogDescription": "Alleen dynamische QR-codes behouden hetzelfde uiterlijk na een wijziging. Bij statische QR-codes wordt een nieuwe code gegenereerd, waardoor reeds gedrukte versies niet meer actueel zijn.",
@@ -197,7 +185,6 @@
 				"understandBtn": "Begrepen"
 			}
 		},
-		"updateQrCodeUrl": "URL bijwerken",
 		"actionsMenu": {
 			"title": "Acties",
 			"view": "Bekijken",
@@ -230,8 +217,7 @@
 	"nameDialog": {
 		"placeholder": "Naam",
 		"cancelBtn": "Annuleren",
-		"saveBtn": "Opslaan",
-		"characters": "tekens"
+		"saveBtn": "Opslaan"
 	},
 	"templates": {
 		"tabs": {
@@ -247,7 +233,6 @@
 		"templateCreatedTitle": "Nieuw sjabloon gemaakt",
 		"templateCreatedDescription": "Uw sjabloon is succesvol gemaakt.",
 		"templateCreatedErrorTitle": "Fout bij het maken van sjabloon",
-		"templateCreatedErrorDescription": "Er is een fout opgetreden bij het maken van uw sjabloon. We zijn hiervan al op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen.",
 		"saveAsBtn": "Opslaan als sjabloon",
 		"updateBtn": "Sjabloon bijwerken",
 		"saveInfo": "Sla het huidige ontwerp op als herbruikbaar sjabloon.",
@@ -814,12 +799,10 @@
 			"revokeConfirmDescription": "Weet je zeker dat je de API-sleutel {name} wilt intrekken? Deze actie kan niet ongedaan worden gemaakt.",
 			"cancel": "Annuleren",
 			"create": "API-sleutel aanmaken",
-			"createDescription": "Maak een nieuwe API-sleutel voor externe applicaties.",
 			"copied": "Gekopieerd",
 			"copiedDescription": "De API-sleutel is naar het klembord gekopieerd.",
 			"unnamed": "Naamloos",
 			"createdTitle": "API-sleutel Aangemaakt",
-			"createdDescription": "De API-sleutel is succesvol aangemaakt. Kopieer deze nu want hij wordt slechts één keer getoond.",
 			"formTitle": "Nieuwe API-sleutel Toevoegen",
 			"formHint": "Voer een naam in om een API-sleutel aan te maken. Je kunt deze op elk moment intrekken.",
 			"namePlaceholder": "Voer een naam in",
@@ -915,9 +898,6 @@
 			"imageTooLarge": "Afbeelding moet kleiner zijn dan 10MB.",
 			"connectedAccountsTitle": "Gekoppelde Accounts",
 			"connectedAccountsDescription": "Beheer je sociale login-providers en gekoppelde accounts.",
-			"connectAccount": "Koppelen",
-			"noConnectedAccounts": "Nog geen gekoppelde accounts.",
-			"connectFirstAccount": "Koppel een account",
 			"verified": "Geverifieerd",
 			"unknownAccount": "Onbekend account",
 			"removeAccountTitle": "Gekoppeld account verwijderen?",
@@ -930,7 +910,6 @@
 			"changeEmail": "Wijzigen",
 			"changeEmailTitle": "E-mailadres Wijzigen",
 			"changeEmailDescription": "Voer je nieuwe e-mailadres in. We sturen een verificatiecode om het te bevestigen.",
-			"verifyEmailDescription": "Voer de verificatiecode in die we naar je nieuwe e-mailadres hebben gestuurd.",
 			"newEmail": "Nieuw E-mailadres",
 			"newEmailPlaceholder": "jij@voorbeeld.nl",
 			"sendVerificationCode": "Code Versturen",
@@ -942,11 +921,7 @@
 			"emailAddError": "Toevoegen van e-mailadres mislukt. Probeer opnieuw.",
 			"emailNotFound": "E-mailadres niet gevonden. Probeer opnieuw.",
 			"verificationError": "Ongeldige verificatiecode. Probeer opnieuw.",
-			"reverificationRequired": "Voor je veiligheid, voer je wachtwoord in om deze wijziging te bevestigen.",
-			"reverificationDescription": "Dit is een gevoelige bewerking. Voer je wachtwoord opnieuw in om door te gaan.",
-			"currentPassword": "Huidig Wachtwoord",
-			"confirmAndSave": "Bevestigen & Opslaan",
-			"reverificationError": "Wachtwoordverificatie mislukt. Probeer opnieuw."
+			"currentPassword": "Huidig Wachtwoord"
 		},
 		"security": {
 			"title": "Beveiliging",
@@ -961,15 +936,9 @@
 			"passwordUpdatedDescription": "Je wachtwoord is gewijzigd. Je bent uitgelogd bij alle andere sessies.",
 			"passwordUpdateError": "Bijwerken van wachtwoord mislukt. Probeer opnieuw.",
 			"noPasswordAuth": "Je hebt je geregistreerd via een sociale provider. Wachtwoordbeheer is niet beschikbaar voor je account.",
-			"noEmailError": "Geen e-mailadres gevonden op je account. Voeg eerst een e-mailadres toe.",
 			"verificationTitle": "Verifieer je identiteit",
 			"verificationDescription": "We hebben een verificatiecode naar {email} gestuurd. Voer deze hieronder in om door te gaan.",
-			"verificationSendError": "Versturen van verificatiecode mislukt. Probeer opnieuw.",
 			"verificationError": "Verificatie mislukt. Probeer opnieuw.",
-			"verificationIncomplete": "Verificatie is niet voltooid. Probeer opnieuw.",
-			"verificationCodeResent": "Een nieuwe verificatiecode is naar je e-mail gestuurd.",
-			"verificationResendError": "Opnieuw versturen van verificatiecode mislukt. Probeer opnieuw.",
-			"invalidCode": "Ongeldige verificatiecode. Controleer en probeer opnieuw.",
 			"didNotReceiveCode": "Code niet ontvangen?",
 			"resendCode": "Code opnieuw versturen",
 			"resendIn": "Opnieuw versturen over {seconds}s",

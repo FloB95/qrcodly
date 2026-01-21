@@ -2,24 +2,18 @@
 	"general": {
 		"comingSoon": "¡próximamente!",
 		"noName": "Sin nombre",
-		"changesSaved": "Cambios guardados",
 		"back": "Volver",
 		"toCollection": "A la colección",
 		"backToOverview": "Volver a la colección",
 		"share": "Compartir",
-		"view": "Ver",
 		"edit": "Editar",
 		"delete": "Eliminar",
 		"notProvided": "No proporcionado",
-		"addName": "Añadir un nombre",
 		"days": "Días",
-		"changelogTooltip": "Últimas actualizaciones",
-		"changelogSubheading": "Aquí puedes encontrar las últimas actualizaciones y mejoras de QRcodly.",
 		"newBadge": "¡Nuevo!",
 		"dynamicDescription": "Los códigos QR dinámicos se pueden editar después de crearlos, rastrean cada escaneo y proporcionan estadísticas detalladas – sin necesidad de reimprimir el código.",
 		"dynamicBadgeTooltip": "Permite cambiar el contenido más tarde sin un nuevo código QR. <i>Pasa el cursor para más información</i>"
 	},
-	"headline": "<span class=\"text-xl xs:text-2xl\">Generador de Códigos QR</span> <br /> Gratuito y de Código Abierto",
 	"hero": {
 		"badge": "Open Source y Gratis Para Siempre",
 		"title": "El Generador de Códigos QR Sin Límites",
@@ -50,10 +44,6 @@
 			]
 		}
 	},
-	"doc": {
-		"title": "Documentación en Actualización",
-		"description": "Actualmente estamos trabajando para actualizar esta sección y poder servirte mejor. ¡Vuelve pronto!"
-	},
 	"collection": {
 		"headline": "Tu colección",
 		"subHeadline": "Aquí puedes encontrar todos tus códigos QR y plantillas y gestionarlos.",
@@ -74,7 +64,6 @@
 		"visitorsInLastXDays": "{count} visitantes en los últimos {days}"
 	},
 	"chart": {
-		"visitors": "Visitantes",
 		"title": {
 			"browserUsage": "Navegadores utilizados",
 			"deviceUsage": "Dispositivos utilizados",
@@ -188,7 +177,6 @@
 			"successTitle": "Código QR actualizado",
 			"successDescription": "Tu código QR se ha actualizado correctamente.",
 			"errorTitle": "Error al actualizar el código QR",
-			"errorDescription": "Se produjo un error al actualizar tu código QR. Hemos sido notificados y resolveremos el problema lo antes posible.",
 			"infoDialog": {
 				"dialogHeadline": "Nota sobre la actualización de un código QR",
 				"dialogDescription": "Solo los códigos QR dinámicos mantienen el mismo aspecto después de una edición. En el caso de los códigos QR estáticos, se genera un nuevo código, por lo que las versiones ya impresas dejan de estar actualizadas.",
@@ -197,7 +185,6 @@
 				"understandBtn": "Entendido"
 			}
 		},
-		"updateQrCodeUrl": "Actualizar la URL",
 		"actionsMenu": {
 			"title": "Acciones",
 			"view": "Ver",
@@ -230,8 +217,7 @@
 	"nameDialog": {
 		"placeholder": "Nombre",
 		"cancelBtn": "Cancelar",
-		"saveBtn": "Guardar",
-		"characters": "caracteres"
+		"saveBtn": "Guardar"
 	},
 	"templates": {
 		"tabs": {
@@ -247,7 +233,6 @@
 		"templateCreatedTitle": "Nueva plantilla creada",
 		"templateCreatedDescription": "Tu plantilla se ha creado correctamente.",
 		"templateCreatedErrorTitle": "Error al crear la plantilla",
-		"templateCreatedErrorDescription": "Se ha producido un error al crear tu plantilla. Ya hemos sido notificados y solucionaremos el problema lo antes posible.",
 		"saveAsBtn": "Guardar como plantilla",
 		"updateBtn": "Actualizar plantilla",
 		"saveInfo": "Guarda el diseño actual como una plantilla reutilizable.",
@@ -814,12 +799,10 @@
 			"revokeConfirmDescription": "¿Estás seguro de que deseas revocar la clave API {name}? Esta acción no se puede deshacer.",
 			"cancel": "Cancelar",
 			"create": "Crear clave API",
-			"createDescription": "Crea una nueva clave API para aplicaciones externas.",
 			"copied": "Copiado",
 			"copiedDescription": "La clave API ha sido copiada al portapapeles.",
 			"unnamed": "Sin nombre",
 			"createdTitle": "Clave API Creada",
-			"createdDescription": "La clave API ha sido creada exitosamente. Cópiala ahora ya que solo se mostrará una vez.",
 			"formTitle": "Añadir Nueva Clave API",
 			"formHint": "Introduce un nombre para crear una clave API. Puedes revocarla en cualquier momento.",
 			"namePlaceholder": "Introduce un nombre",
@@ -915,9 +898,6 @@
 			"imageTooLarge": "La imagen debe ser menor a 10MB.",
 			"connectedAccountsTitle": "Cuentas Conectadas",
 			"connectedAccountsDescription": "Administra tus proveedores de inicio de sesión social y cuentas vinculadas.",
-			"connectAccount": "Conectar",
-			"noConnectedAccounts": "Aún no hay cuentas conectadas.",
-			"connectFirstAccount": "Conectar una cuenta",
 			"verified": "Verificado",
 			"unknownAccount": "Cuenta desconocida",
 			"removeAccountTitle": "¿Eliminar cuenta conectada?",
@@ -930,7 +910,6 @@
 			"changeEmail": "Cambiar",
 			"changeEmailTitle": "Cambiar Dirección de Correo",
 			"changeEmailDescription": "Introduce tu nueva dirección de correo. Te enviaremos un código de verificación para confirmarla.",
-			"verifyEmailDescription": "Introduce el código de verificación que enviamos a tu nueva dirección de correo.",
 			"newEmail": "Nueva Dirección de Correo",
 			"newEmailPlaceholder": "tu@ejemplo.com",
 			"sendVerificationCode": "Enviar Código",
@@ -942,11 +921,7 @@
 			"emailAddError": "Error al añadir dirección de correo. Por favor intenta de nuevo.",
 			"emailNotFound": "Dirección de correo no encontrada. Por favor intenta de nuevo.",
 			"verificationError": "Código de verificación inválido. Por favor intenta de nuevo.",
-			"reverificationRequired": "Por tu seguridad, por favor introduce tu contraseña para confirmar este cambio.",
-			"reverificationDescription": "Esta es una operación sensible. Por favor re-introduce tu contraseña para continuar.",
-			"currentPassword": "Contraseña Actual",
-			"confirmAndSave": "Confirmar y Guardar",
-			"reverificationError": "Verificación de contraseña fallida. Por favor intenta de nuevo."
+			"currentPassword": "Contraseña Actual"
 		},
 		"security": {
 			"title": "Seguridad",
@@ -961,15 +936,9 @@
 			"passwordUpdatedDescription": "Tu contraseña ha sido cambiada. Has sido desconectado de todas las otras sesiones.",
 			"passwordUpdateError": "Error al actualizar contraseña. Por favor intenta de nuevo.",
 			"noPasswordAuth": "Te registraste usando un proveedor social. La gestión de contraseñas no está disponible para tu cuenta.",
-			"noEmailError": "No se encontró dirección de correo en tu cuenta. Por favor añade una dirección de correo primero.",
 			"verificationTitle": "Verifica tu identidad",
 			"verificationDescription": "Hemos enviado un código de verificación a {email}. Por favor introdúcelo a continuación para continuar.",
-			"verificationSendError": "Error al enviar código de verificación. Por favor intenta de nuevo.",
 			"verificationError": "Verificación fallida. Por favor intenta de nuevo.",
-			"verificationIncomplete": "La verificación no fue completada. Por favor intenta de nuevo.",
-			"verificationCodeResent": "Se ha enviado un nuevo código de verificación a tu correo.",
-			"verificationResendError": "Error al reenviar código de verificación. Por favor intenta de nuevo.",
-			"invalidCode": "Código de verificación inválido. Por favor verifica e intenta de nuevo.",
 			"didNotReceiveCode": "¿No recibiste el código?",
 			"resendCode": "Reenviar código",
 			"resendIn": "Reenviar en {seconds}s",

@@ -2,24 +2,18 @@
 	"general": {
 		"comingSoon": "coming soon!",
 		"noName": "No name",
-		"changesSaved": "Changes saved",
 		"back": "Back",
 		"toCollection": "To Collection",
 		"backToOverview": "Back to collection",
 		"share": "Share",
-		"view": "View",
 		"edit": "Edit",
 		"delete": "Delete",
 		"notProvided": "Not provided",
-		"addName": "Add a name",
 		"days": "Days",
-		"changelogTooltip": "Latest updates",
-		"changelogSubheading": "Here you can find the latest updates and improvements of QRcodly.",
 		"newBadge": "New!",
 		"dynamicDescription": "Dynamic QR codes can be edited after creation, track every scan, and provide detailed statistics – all without needing to reprint the code.",
 		"dynamicBadgeTooltip": "Enables changing content later without a new QR code. <i>Hover for more info</i>"
 	},
-	"headline": "<span class=\"text-xl xs:text-2xl\">Free & Open Source</span> <br /> QR Code Generator",
 	"hero": {
 		"badge": "Open Source & Free Forever",
 		"title": "QR Code Generator Without Limits",
@@ -50,10 +44,6 @@
 			]
 		}
 	},
-	"doc": {
-		"title": "Documentation Under Update",
-		"description": "We're currently working on updating this section to better serve you. Please check back soon!"
-	},
 	"collection": {
 		"headline": "Your Collection",
 		"subHeadline": "Here you can find all your QR codes and templates and manage them.",
@@ -74,7 +64,6 @@
 		"visitorsInLastXDays": "{count} Visitors in the last {days}"
 	},
 	"chart": {
-		"visitors": "Visitors",
 		"title": {
 			"browserUsage": "Used Browsers",
 			"deviceUsage": "Used Devices",
@@ -188,7 +177,6 @@
 			"successTitle": "QR code updated",
 			"successDescription": "Your QR code has been successfully updated.",
 			"errorTitle": "Error updating QR code",
-			"errorDescription": "An error occurred while updating your QR code. We have been notified and will fix the issue as soon as possible.",
 			"infoDialog": {
 				"dialogHeadline": "Note on updating a QR code",
 				"dialogDescription": "Only dynamic QR codes keep the same appearance after editing. For static QR codes, a new code is generated, so already printed versions will no longer be up to date.",
@@ -197,7 +185,6 @@
 				"understandBtn": "Understood"
 			}
 		},
-		"updateQrCodeUrl": "Update your URL",
 		"actionsMenu": {
 			"title": "Actions",
 			"view": "View",
@@ -230,8 +217,7 @@
 	"nameDialog": {
 		"placeholder": "Name",
 		"cancelBtn": "Cancel",
-		"saveBtn": "Save",
-		"characters": "characters"
+		"saveBtn": "Save"
 	},
 	"templates": {
 		"tabs": {
@@ -247,7 +233,6 @@
 		"templateCreatedTitle": "New Template Created",
 		"templateCreatedDescription": "Your template has been created successfully.",
 		"templateCreatedErrorTitle": "Error Creating Template",
-		"templateCreatedErrorDescription": "There was an error creating your template. We've been notified and will fix it as soon as possible.",
 		"saveAsBtn": "Save as template",
 		"updateBtn": "Update Template",
 		"saveInfo": "Save the current QR code style as a reusable template.",
@@ -814,12 +799,10 @@
 			"revokeConfirmDescription": "Are you sure you want to revoke the API key {name}? This action cannot be undone.",
 			"cancel": "Cancel",
 			"create": "Create API key",
-			"createDescription": "Create a new API key for external applications.",
 			"copied": "Copied",
 			"copiedDescription": "The API key has been copied to the clipboard.",
 			"unnamed": "Unnamed",
 			"createdTitle": "API Key Created",
-			"createdDescription": "The API key has been successfully created. Copy it now as it will only be shown once.",
 			"formTitle": "Add New API Key",
 			"formHint": "Enter a name to create an API key. You can revoke it at any time.",
 			"namePlaceholder": "Enter a name",
@@ -915,9 +898,6 @@
 			"imageTooLarge": "Image must be less than 10MB.",
 			"connectedAccountsTitle": "Connected Accounts",
 			"connectedAccountsDescription": "Manage your social login providers and linked accounts.",
-			"connectAccount": "Connect",
-			"noConnectedAccounts": "No connected accounts yet.",
-			"connectFirstAccount": "Connect an account",
 			"verified": "Verified",
 			"unknownAccount": "Unknown account",
 			"removeAccountTitle": "Remove connected account?",
@@ -930,7 +910,6 @@
 			"changeEmail": "Change",
 			"changeEmailTitle": "Change Email Address",
 			"changeEmailDescription": "Enter your new email address. We'll send a verification code to confirm it.",
-			"verifyEmailDescription": "Enter the verification code we sent to your new email address.",
 			"newEmail": "New Email Address",
 			"newEmailPlaceholder": "you@example.com",
 			"sendVerificationCode": "Send Code",
@@ -942,11 +921,7 @@
 			"emailAddError": "Failed to add email address. Please try again.",
 			"emailNotFound": "Email address not found. Please try again.",
 			"verificationError": "Invalid verification code. Please try again.",
-			"reverificationRequired": "For your security, please enter your password to confirm this change.",
-			"reverificationDescription": "This is a sensitive operation. Please re-enter your password to continue.",
-			"currentPassword": "Current Password",
-			"confirmAndSave": "Confirm & Save",
-			"reverificationError": "Password verification failed. Please try again."
+			"currentPassword": "Current Password"
 		},
 		"security": {
 			"title": "Security",
@@ -961,15 +936,9 @@
 			"passwordUpdatedDescription": "Your password has been changed. You've been signed out of all other sessions.",
 			"passwordUpdateError": "Failed to update password. Please try again.",
 			"noPasswordAuth": "You signed up using a social provider. Password management is not available for your account.",
-			"noEmailError": "No email address found on your account. Please add an email address first.",
 			"verificationTitle": "Verify your identity",
 			"verificationDescription": "We've sent a verification code to {email}. Please enter it below to continue.",
-			"verificationSendError": "Failed to send verification code. Please try again.",
 			"verificationError": "Verification failed. Please try again.",
-			"verificationIncomplete": "Verification was not completed. Please try again.",
-			"verificationCodeResent": "A new verification code has been sent to your email.",
-			"verificationResendError": "Failed to resend verification code. Please try again.",
-			"invalidCode": "Invalid verification code. Please check and try again.",
 			"didNotReceiveCode": "Didn't receive the code?",
 			"resendCode": "Resend code",
 			"resendIn": "Resend in {seconds}s",

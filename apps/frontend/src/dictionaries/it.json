@@ -2,24 +2,18 @@
 	"general": {
 		"comingSoon": "prossimamente!",
 		"noName": "Nessun nome",
-		"changesSaved": "Modifiche salvate",
 		"back": "Indietro",
 		"toCollection": "Alla collezione",
 		"backToOverview": "Torna alla collezione",
 		"share": "Condividi",
-		"view": "Visualizza",
 		"edit": "Modifica",
 		"delete": "Elimina",
 		"notProvided": "Non fornito",
-		"addName": "Aggiungi un nome",
 		"days": "Giorni",
-		"changelogTooltip": "Ultimi aggiornamenti",
-		"changelogSubheading": "Qui puoi trovare gli ultimi aggiornamenti e miglioramenti di QRcodly.",
 		"newBadge": "Nuovo!",
 		"dynamicDescription": "I codici QR dinamici possono essere modificati dopo la creazione, tracciano ogni scansione e forniscono statistiche dettagliate – senza dover ristampare il codice.",
 		"dynamicBadgeTooltip": "Consente di modificare il contenuto successivamente senza un nuovo codice QR. <i>Passa il mouse per maggiori informazioni</i>"
 	},
-	"headline": "<span class=\"text-xl xs:text-2xl\">Generatore di Codici QR</span> <br /> Gratuito e Open Source",
 	"hero": {
 		"badge": "Open Source e Gratis Per Sempre",
 		"title": "Il Generatore di Codici QR Senza Limiti",
@@ -50,10 +44,6 @@
 			]
 		}
 	},
-	"doc": {
-		"title": "Documentazione in aggiornamento",
-		"description": "Stiamo attualmente lavorando per aggiornare questa sezione per offrirti un servizio migliore. Torna presto a trovarci!"
-	},
 	"collection": {
 		"headline": "La tua collezione",
 		"subHeadline": "Qui puoi trovare tutti i tuoi codici QR e modelli e gestirli.",
@@ -74,7 +64,6 @@
 		"visitorsInLastXDays": "{count} visitatori negli ultimi {days} giorni"
 	},
 	"chart": {
-		"visitors": "Visitatori",
 		"title": {
 			"browserUsage": "Browser utilizzati",
 			"deviceUsage": "Dispositivi utilizzati",
@@ -188,7 +177,6 @@
 			"successTitle": "QR Code aggiornato",
 			"successDescription": "Il tuo QR Code è stato aggiornato con successo.",
 			"errorTitle": "Errore durante l'aggiornamento del QR Code",
-			"errorDescription": "Si è verificato un errore durante l'aggiornamento del tuo QR Code. Siamo stati avvisati e risolveremo il problema il prima possibile.",
 			"infoDialog": {
 				"dialogHeadline": "Nota sull'aggiornamento di un QR Code",
 				"dialogDescription": "Solo i codici QR dinamici mantengono lo stesso aspetto dopo una modifica. Per i codici QR statici viene generato un nuovo codice, quindi le versioni già stampate non sono più aggiornate.",
@@ -197,7 +185,6 @@
 				"understandBtn": "Capito"
 			}
 		},
-		"updateQrCodeUrl": "Aggiorna l'URL",
 		"actionsMenu": {
 			"title": "Azioni",
 			"view": "Visualizza",
@@ -230,8 +217,7 @@
 	"nameDialog": {
 		"placeholder": "Nome",
 		"cancelBtn": "Annulla",
-		"saveBtn": "Salva",
-		"characters": "caratteri"
+		"saveBtn": "Salva"
 	},
 	"templates": {
 		"tabs": {
@@ -247,7 +233,6 @@
 		"templateCreatedTitle": "Nuovo modello creato",
 		"templateCreatedDescription": "Il tuo modello è stato creato con successo.",
 		"templateCreatedErrorTitle": "Errore durante la creazione del modello",
-		"templateCreatedErrorDescription": "Si è verificato un errore durante la creazione del tuo modello. Siamo stati avvisati e risolveremo il problema il prima possibile.",
 		"saveAsBtn": "Salva come modello",
 		"updateBtn": "Aggiorna modello",
 		"saveInfo": "Salva il design attuale come modello riutilizzabile.",
@@ -814,12 +799,10 @@
 			"revokeConfirmDescription": "Sei sicuro di voler revocare la chiave API {name}? Questa azione non può essere annullata.",
 			"cancel": "Annulla",
 			"create": "Crea chiave API",
-			"createDescription": "Crea una nuova chiave API per applicazioni esterne.",
 			"copied": "Copiato",
 			"copiedDescription": "La chiave API è stata copiata negli appunti.",
 			"unnamed": "Senza nome",
 			"createdTitle": "Chiave API Creata",
-			"createdDescription": "La chiave API è stata creata con successo. Copiala ora perché verrà mostrata solo una volta.",
 			"formTitle": "Aggiungi Nuova Chiave API",
 			"formHint": "Inserisci un nome per creare una chiave API. Puoi revocarla in qualsiasi momento.",
 			"namePlaceholder": "Inserisci un nome",
@@ -915,9 +898,6 @@
 			"imageTooLarge": "L'immagine deve essere inferiore a 10MB.",
 			"connectedAccountsTitle": "Account Collegati",
 			"connectedAccountsDescription": "Gestisci i tuoi provider di login social e account collegati.",
-			"connectAccount": "Collega",
-			"noConnectedAccounts": "Nessun account collegato ancora.",
-			"connectFirstAccount": "Collega un account",
 			"verified": "Verificato",
 			"unknownAccount": "Account sconosciuto",
 			"removeAccountTitle": "Rimuovere account collegato?",
@@ -930,7 +910,6 @@
 			"changeEmail": "Cambia",
 			"changeEmailTitle": "Cambia Indirizzo Email",
 			"changeEmailDescription": "Inserisci il tuo nuovo indirizzo email. Ti invieremo un codice di verifica per confermarlo.",
-			"verifyEmailDescription": "Inserisci il codice di verifica che abbiamo inviato al tuo nuovo indirizzo email.",
 			"newEmail": "Nuovo Indirizzo Email",
 			"newEmailPlaceholder": "tu@esempio.com",
 			"sendVerificationCode": "Invia Codice",
@@ -942,11 +921,7 @@
 			"emailAddError": "Impossibile aggiungere l'indirizzo email. Riprova.",
 			"emailNotFound": "Indirizzo email non trovato. Riprova.",
 			"verificationError": "Codice di verifica non valido. Riprova.",
-			"reverificationRequired": "Per la tua sicurezza, inserisci la password per confermare questa modifica.",
-			"reverificationDescription": "Questa è un'operazione sensibile. Reinserisci la password per continuare.",
-			"currentPassword": "Password Attuale",
-			"confirmAndSave": "Conferma e Salva",
-			"reverificationError": "Verifica password fallita. Riprova."
+			"currentPassword": "Password Attuale"
 		},
 		"security": {
 			"title": "Sicurezza",
@@ -961,15 +936,9 @@
 			"passwordUpdatedDescription": "La tua password è stata cambiata. Sei stato disconnesso da tutte le altre sessioni.",
 			"passwordUpdateError": "Impossibile aggiornare la password. Riprova.",
 			"noPasswordAuth": "Ti sei registrato usando un provider social. La gestione password non è disponibile per il tuo account.",
-			"noEmailError": "Nessun indirizzo email trovato nel tuo account. Aggiungi prima un indirizzo email.",
 			"verificationTitle": "Verifica la tua identità",
 			"verificationDescription": "Abbiamo inviato un codice di verifica a {email}. Inseriscilo qui sotto per continuare.",
-			"verificationSendError": "Impossibile inviare il codice di verifica. Riprova.",
 			"verificationError": "Verifica fallita. Riprova.",
-			"verificationIncomplete": "La verifica non è stata completata. Riprova.",
-			"verificationCodeResent": "Un nuovo codice di verifica è stato inviato alla tua email.",
-			"verificationResendError": "Impossibile reinviare il codice di verifica. Riprova.",
-			"invalidCode": "Codice di verifica non valido. Controlla e riprova.",
 			"didNotReceiveCode": "Non hai ricevuto il codice?",
 			"resendCode": "Reinvia codice",
 			"resendIn": "Reinvia tra {seconds}s",
