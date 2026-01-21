@@ -31,7 +31,7 @@ export default function Page() {
 			<Card className="@container/card">
 				<CardContent className="relative px-4 sm:px-6">
 					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-						<div className="flex items-start justify-between gap-3">
+						<div className="flex items-start sm:items-center justify-between gap-3">
 							<div className="p-3 bg-primary/10 rounded-lg">
 								<GlobeAltIcon className="size-6 sm:size-8 stroke-1" />
 							</div>

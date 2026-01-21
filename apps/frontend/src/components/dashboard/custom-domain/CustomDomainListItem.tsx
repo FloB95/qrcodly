@@ -7,7 +7,7 @@ import { CustomDomainListItemActions } from './CustomDomainListItemActions';
 import { useCustomDomainMutations } from './hooks/useCustomDomainMutations';
 import type { TCustomDomainResponseDto } from '@shared/schemas';
 import { cn } from '@/lib/utils';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { StarIcon } from '@heroicons/react/24/solid';
 
@@ -15,23 +15,46 @@ interface CustomDomainListItemProps {
 	domain: TCustomDomainResponseDto;
 }
 
+/**
+ * Maps Cloudflare SSL status to display info.
+ */
+function getSslStatusInfo(sslStatus: string) {
+	switch (sslStatus) {
+		case 'active':
+			return { icon: CheckCircle, color: 'text-green-500', label: 'active' };
+		case 'pending_validation':
+		case 'pending_issuance':
+		case 'pending_deployment':
+		case 'initializing':
+			return { icon: Clock, color: 'text-yellow-500', label: 'pending' };
+		case 'validation_timed_out':
+		case 'expired':
+		case 'deleted':
+			return { icon: AlertCircle, color: 'text-red-500', label: 'error' };
+		default:
+			return { icon: Clock, color: 'text-muted-foreground', label: 'unknown' };
+	}
+}
+
 export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 	const t = useTranslations('settings.domains');
 	const {
 		isDeleting,
 		isVerifying,
-		isVerifyingCname,
 		isSettingDefault,
 		handleDelete,
 		handleVerify,
-		handleVerifyCname,
 		handleSetDefault,
 	} = useCustomDomainMutations(domain);
 
 	const formattedDate = new Date(domain.createdAt).toLocaleDateString();
 
-	// Domain is fully ready when both TXT and CNAME are verified
-	const isFullyVerified = domain.isVerified && domain.isCnameValid;
+	// Domain is fully ready when SSL is active
+	const isFullyVerified = domain.sslStatus === 'active';
+
+	const statusInfo = getSslStatusInfo(domain.sslStatus);
+	const StatusIcon = statusInfo.icon;
+	const hasValidationErrors = domain.validationErrors && domain.validationErrors.length > 0;
 
 	return (
 		<TableRow
@@ -41,49 +64,34 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 			)}
 		>
 			<TableCell className="font-medium">
-				<div className="flex items-center gap-2">
-					{domain.domain}
-					{domain.isDefault && (
-						<Badge variant="outline" className="text-xs gap-1">
-							<StarIcon className="h-3 w-3" />
-							{t('default')}
-						</Badge>
+				<div className="flex flex-col gap-1">
+					<div className="flex items-center gap-2">
+						{domain.domain}
+						{domain.isDefault && (
+							<Badge variant="outline" className="text-xs gap-1">
+								<StarIcon className="h-3 w-3" />
+								{t('default')}
+							</Badge>
+						)}
+					</div>
+					{hasValidationErrors && (
+						<div className="flex items-center gap-1 text-xs text-destructive">
+							<AlertCircle className="h-3 w-3" />
+							<span>{domain.validationErrors?.join(', ')}</span>
+						</div>
 					)}
 				</div>
 			</TableCell>
 			<TableCell>
-				<div className="flex items-center gap-2">
-					<Tooltip>
-						<TooltipTrigger>
-							<div className="flex items-center gap-1">
-								{domain.isVerified ? (
-									<CheckCircle className="h-4 w-4 text-green-500" />
-								) : (
-									<XCircle className="h-4 w-4 text-muted-foreground" />
-								)}
-								<span className="text-xs">TXT</span>
-							</div>
-						</TooltipTrigger>
-						<TooltipContent>
-							{domain.isVerified ? t('txtVerified') : t('txtPending')}
-						</TooltipContent>
-					</Tooltip>
-					<Tooltip>
-						<TooltipTrigger>
-							<div className="flex items-center gap-1">
-								{domain.isCnameValid ? (
-									<CheckCircle className="h-4 w-4 text-green-500" />
-								) : (
-									<XCircle className="h-4 w-4 text-muted-foreground" />
-								)}
-								<span className="text-xs">CNAME</span>
-							</div>
-						</TooltipTrigger>
-						<TooltipContent>
-							{domain.isCnameValid ? t('cnameVerified') : t('cnamePending')}
-						</TooltipContent>
-					</Tooltip>
-				</div>
+				<Tooltip>
+					<TooltipTrigger>
+						<div className="flex items-center gap-1">
+							<StatusIcon className={cn('h-4 w-4', statusInfo.color)} />
+							<span className="text-xs capitalize">{t(`sslStatus.${statusInfo.label}`)}</span>
+						</div>
+					</TooltipTrigger>
+					<TooltipContent>{t(`sslStatusTooltip.${domain.sslStatus}`)}</TooltipContent>
+				</Tooltip>
 			</TableCell>
 			<TableCell>
 				<Badge variant={isFullyVerified ? 'default' : 'secondary'}>
@@ -96,11 +104,9 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 					domain={domain}
 					isDeleting={isDeleting}
 					isVerifying={isVerifying}
-					isVerifyingCname={isVerifyingCname}
 					isSettingDefault={isSettingDefault}
 					onDelete={handleDelete}
 					onVerify={handleVerify}
-					onVerifyCname={handleVerifyCname}
 					onSetDefault={handleSetDefault}
 				/>
 			</TableCell>

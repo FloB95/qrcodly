@@ -12,16 +12,21 @@ import type {
 import { urlShortenerQueryKeys } from './url-shortener';
 
 /**
- * Full setup instructions type (TXT + CNAME records).
+ * Setup instructions type (Cloudflare-provided TXT records + CNAME).
  */
-export type TFullSetupInstructions = {
-	txtRecord: {
-		recordType: string;
+export type TSetupInstructions = {
+	sslValidationRecord: {
+		recordType: 'TXT';
 		recordHost: string;
 		recordValue: string;
-	};
+	} | null;
+	ownershipValidationRecord: {
+		recordType: 'TXT';
+		recordHost: string;
+		recordValue: string;
+	} | null;
 	cnameRecord: {
-		recordType: string;
+		recordType: 'CNAME';
 		recordHost: string;
 		recordValue: string;
 	};
@@ -36,7 +41,6 @@ export const customDomainQueryKeys = {
 	list: ['customDomains'] as const,
 	detail: (id: string) => ['customDomain', id] as const,
 	default: ['customDomainDefault'] as const,
-	verificationInstructions: (id: string) => ['customDomainVerification', id] as const,
 	setupInstructions: (id: string) => ['customDomainSetup', id] as const,
 };
 
@@ -130,34 +134,6 @@ export function useCustomDomainQuery(id: string) {
 			});
 		},
 		staleTime: 5 * 60 * 1000,
-		enabled: !!id,
-	});
-}
-
-/**
- * Hook to get verification instructions for a custom domain.
- */
-export function useVerificationInstructionsQuery(id: string) {
-	const { getToken } = useAuth();
-
-	return useQuery({
-		queryKey: customDomainQueryKeys.verificationInstructions(id),
-		queryFn: async () => {
-			const token = await getToken();
-			return apiRequest<{
-				recordType: string;
-				recordHost: string;
-				recordValue: string;
-				instructions: string;
-			}>(`/custom-domain/${id}/verification-instructions`, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-			});
-		},
-		staleTime: 60 * 60 * 1000, // 1 hour (token doesn't change)
 		enabled: !!id,
 	});
 }
@@ -284,16 +260,16 @@ export function useDefaultCustomDomainQuery() {
 }
 
 /**
- * Hook to get full setup instructions (TXT + CNAME) for a custom domain.
+ * Hook to get setup instructions (Cloudflare TXT records + CNAME) for a custom domain.
  */
 export function useSetupInstructionsQuery(id: string) {
 	const { getToken } = useAuth();
 
 	return useQuery({
 		queryKey: customDomainQueryKeys.setupInstructions(id),
-		queryFn: async (): Promise<TFullSetupInstructions> => {
+		queryFn: async (): Promise<TSetupInstructions> => {
 			const token = await getToken();
-			return apiRequest<TFullSetupInstructions>(`/custom-domain/${id}/setup-instructions`, {
+			return apiRequest<TSetupInstructions>(`/custom-domain/${id}/setup-instructions`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -301,40 +277,7 @@ export function useSetupInstructionsQuery(id: string) {
 				},
 			});
 		},
-		staleTime: 60 * 60 * 1000, // 1 hour (tokens don't change)
-	});
-}
-
-/**
- * Hook to verify CNAME record for a custom domain.
- */
-export function useVerifyCnameMutation() {
-	const queryClient = useQueryClient();
-	const { getToken } = useAuth();
-
-	return useMutation({
-		mutationFn: async (id: string): Promise<TCustomDomainResponseDto> => {
-			const token = await getToken();
-			return apiRequest<TCustomDomainResponseDto>(`/custom-domain/${id}/verify-cname`, {
-				method: 'POST',
-				body: JSON.stringify({}),
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-			});
-		},
-		onSuccess: (data) => {
-			void queryClient.refetchQueries({
-				queryKey: customDomainQueryKeys.list,
-			});
-			void queryClient.refetchQueries({
-				queryKey: customDomainQueryKeys.all,
-			});
-			void queryClient.refetchQueries({
-				queryKey: customDomainQueryKeys.detail(data.id),
-			});
-		},
+		staleTime: 60 * 60 * 1000, // 1 hour (tokens don't change frequently)
 	});
 }
 

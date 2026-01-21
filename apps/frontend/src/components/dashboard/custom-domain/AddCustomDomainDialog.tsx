@@ -31,15 +31,26 @@ import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
 
-const domainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+// Subdomain regex - requires at least 2 dot-separated segments before TLD
+const subdomainRegex = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.){2,}[a-zA-Z]{2,}$/;
+
+// Helper to check if a domain is a subdomain (not an apex domain)
+function isSubdomain(domain: string): boolean {
+	const parts = domain.split('.');
+	return parts.length >= 3;
+}
 
 const AddDomainSchema = z.object({
 	domain: z
 		.string()
 		.min(3, 'Domain must be at least 3 characters')
 		.max(255, 'Domain must be at most 255 characters')
-		.regex(domainRegex, 'Invalid domain format')
-		.transform((d) => d.toLowerCase().trim()),
+		.regex(subdomainRegex, 'Invalid subdomain format')
+		.transform((d) => d.toLowerCase().trim())
+		.refine(isSubdomain, {
+			message:
+				'Only subdomains are supported (e.g., links.example.com). Apex domains are not allowed.',
+		}),
 });
 
 type AddDomainFormData = z.infer<typeof AddDomainSchema>;

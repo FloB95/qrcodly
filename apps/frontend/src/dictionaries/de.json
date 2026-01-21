@@ -402,9 +402,29 @@
 					"label": "E-Mail-Adresse",
 					"placeholder": "Gib deine E-Mail ein"
 				},
+				"emailPrivate": {
+					"label": "E-Mail (Privat)",
+					"placeholder": "Private E-Mail-Adresse"
+				},
+				"emailBusiness": {
+					"label": "E-Mail (Geschäftlich)",
+					"placeholder": "Geschäftliche E-Mail-Adresse"
+				},
 				"phone": {
 					"label": "Telefon",
 					"placeholder": "Gib deine Telefonnummer ein"
+				},
+				"phonePrivate": {
+					"label": "Telefon (Privat)",
+					"placeholder": "Private Telefonnummer"
+				},
+				"phoneMobile": {
+					"label": "Telefon (Mobil)",
+					"placeholder": "Handynummer"
+				},
+				"phoneBusiness": {
+					"label": "Telefon (Geschäftlich)",
+					"placeholder": "Geschäftliche Telefonnummer"
 				},
 				"fax": {
 					"label": "Fax",
@@ -681,11 +701,18 @@
 			"txtVerifiedDescription": "TXT-Eintrag für {domain} wurde verifiziert.",
 			"cnameVerifiedDescription": "CNAME-Eintrag für {domain} wurde verifiziert. Deine Domain ist jetzt einsatzbereit.",
 			"verifyError": "Verifizierung fehlgeschlagen",
+			"checkingStatus": "Status wird geprüft...",
+			"statusUpdated": "Status aktualisiert",
+			"statusUpdatedDescription": "Aktueller SSL-Status: {status}. Fahre mit der DNS-Einrichtung fort, falls noch nicht abgeschlossen.",
+			"domainVerified": "Domain verifiziert!",
+			"domainVerifiedDescription": "SSL-Zertifikat für {domain} ist jetzt aktiv. Deine Domain ist einsatzbereit.",
 			"viewInstructions": "Einrichtungsanleitung",
 			"setupInstructions": "Domain-Einrichtungsanleitung",
 			"setupInstructionsDescription": "Führe diese Schritte aus, um deine eigene Domain {domain} zu aktivieren",
-			"txtRecordStep": "TXT-Eintrag (Verifizierung)",
+			"sslValidationStep": "SSL-Zertifikat-Validierung (TXT)",
+			"ownershipValidationStep": "Domain-Inhaberschaftsverifizierung (TXT)",
 			"cnameRecordStep": "CNAME-Eintrag (Weiterleitung)",
+			"checkStatus": "Status prüfen",
 			"recordType": "Eintragstyp",
 			"recordHost": "Host / Name",
 			"recordValue": "Wert",
@@ -693,6 +720,7 @@
 			"copied": "Kopiert",
 			"copiedTxtDescription": "Der TXT-Eintragswert wurde in die Zwischenablage kopiert.",
 			"copiedCnameDescription": "Das CNAME-Ziel wurde in die Zwischenablage kopiert.",
+			"copiedHostDescription": "Der Hostname wurde in die Zwischenablage kopiert.",
 			"dnsNote": "DNS-Änderungen können bis zu 48 Stunden dauern. Du kannst jeden Eintrag einzeln verifizieren, sobald er eingerichtet ist.",
 			"openMenu": "Menü öffnen",
 			"setAsDefault": "Als Standard festlegen",
@@ -703,7 +731,24 @@
 			"systemDomain": "System",
 			"systemDomainVerified": "System-Domain ist immer verifiziert",
 			"defaultCleared": "Standard wiederhergestellt",
-			"defaultClearedDescription": "Die System-Domain wird jetzt als Standard für neue dynamische QR-Codes verwendet."
+			"defaultClearedDescription": "Die System-Domain wird jetzt als Standard für neue dynamische QR-Codes verwendet.",
+			"sslStatus": {
+				"active": "Aktiv",
+				"pending": "Ausstehend",
+				"error": "Fehler",
+				"unknown": "Unbekannt"
+			},
+			"sslStatusTooltip": {
+				"initializing": "SSL-Zertifikat wird eingerichtet...",
+				"pending_validation": "Warte auf DNS-TXT-Eintrag-Validierung. Füge den in der Einrichtungsanleitung angezeigten TXT-Eintrag hinzu.",
+				"pending_issuance": "TXT-Eintrag verifiziert. SSL-Zertifikat wird ausgestellt.",
+				"pending_deployment": "SSL-Zertifikat ausgestellt. Wird auf Edge-Server verteilt...",
+				"active": "SSL-Zertifikat ist aktiv. Deine Domain ist einsatzbereit.",
+				"pending_expiration": "SSL-Zertifikat läuft bald ab. Es wird automatisch erneuert.",
+				"expired": "SSL-Zertifikat ist abgelaufen. Bitte kontaktiere den Support.",
+				"deleted": "SSL-Zertifikat wurde gelöscht.",
+				"validation_timed_out": "TXT-Eintrag-Validierung ist abgelaufen. Bitte überprüfe deine DNS-Einstellungen und versuche es erneut."
+			}
 		},
 		"apiKeys": {
 			"title": "API-Schlüssel",

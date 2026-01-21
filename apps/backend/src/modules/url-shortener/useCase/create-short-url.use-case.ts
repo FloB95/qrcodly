@@ -79,8 +79,10 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 			throw new ForbiddenError('You do not own this custom domain.');
 		}
 
-		if (!customDomain.isVerified) {
-			throw new BadRequestError('Custom domain is not verified. Please verify it first.');
+		if (customDomain.sslStatus !== 'active') {
+			throw new BadRequestError(
+				'Custom domain is not verified. Please complete DNS verification first.',
+			);
 		}
 	}
 }

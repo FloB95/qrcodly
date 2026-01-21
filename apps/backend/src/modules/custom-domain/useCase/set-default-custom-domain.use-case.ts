@@ -17,7 +17,7 @@ export class SetDefaultCustomDomainUseCase implements IBaseUseCase {
 
 	/**
 	 * Sets a custom domain as the user's default domain.
-	 * Only verified domains with valid CNAME records can be set as default.
+	 * Only domains with active SSL status can be set as default.
 	 * @param customDomain The Custom Domain to set as default.
 	 * @param userId The ID of the user.
 	 * @returns A promise that resolves with the updated Custom Domain entity.
@@ -28,17 +28,10 @@ export class SetDefaultCustomDomainUseCase implements IBaseUseCase {
 			throw new BadRequestError('You can only set your own domains as default.');
 		}
 
-		// Domain must be verified before it can be set as default
-		if (!customDomain.isVerified) {
+		// Domain must have active SSL status before it can be set as default
+		if (customDomain.sslStatus !== 'active') {
 			throw new BadRequestError(
-				'Domain must be verified before it can be set as default. Please complete the TXT record verification first.',
-			);
-		}
-
-		// Domain must have a valid CNAME record
-		if (!customDomain.isCnameValid) {
-			throw new BadRequestError(
-				'Domain must have a valid CNAME record pointing to our servers before it can be set as default.',
+				'Domain must be fully verified with active SSL before it can be set as default. Please complete DNS verification first.',
 			);
 		}
 
@@ -53,6 +46,7 @@ export class SetDefaultCustomDomainUseCase implements IBaseUseCase {
 			customDomain: {
 				id: updatedCustomDomain.id,
 				domain: updatedCustomDomain.domain,
+				sslStatus: updatedCustomDomain.sslStatus,
 			},
 			userId,
 		});

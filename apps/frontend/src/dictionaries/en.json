@@ -402,9 +402,29 @@
 					"label": "Email Address",
 					"placeholder": "Enter your email"
 				},
+				"emailPrivate": {
+					"label": "Email (Private)",
+					"placeholder": "Private email address"
+				},
+				"emailBusiness": {
+					"label": "Email (Business)",
+					"placeholder": "Business email address"
+				},
 				"phone": {
 					"label": "Phone",
 					"placeholder": "Enter your phone number"
+				},
+				"phonePrivate": {
+					"label": "Phone (Private)",
+					"placeholder": "Private phone number"
+				},
+				"phoneMobile": {
+					"label": "Phone (Mobile)",
+					"placeholder": "Mobile phone number"
+				},
+				"phoneBusiness": {
+					"label": "Phone (Business)",
+					"placeholder": "Business phone number"
 				},
 				"fax": {
 					"label": "Fax",
@@ -681,16 +701,24 @@
 			"txtVerifiedDescription": "TXT record for {domain} has been verified.",
 			"cnameVerifiedDescription": "CNAME record for {domain} has been verified. Your domain is now ready to use.",
 			"verifyError": "Verification failed",
+			"checkingStatus": "Checking status...",
+			"statusUpdated": "Status updated",
+			"statusUpdatedDescription": "Current SSL status: {status}. Continue with DNS setup if not yet complete.",
+			"domainVerified": "Domain verified!",
+			"domainVerifiedDescription": "SSL certificate for {domain} is now active. Your domain is ready to use.",
 			"viewInstructions": "Setup instructions",
 			"setupInstructions": "Domain setup instructions",
 			"setupInstructionsDescription": "Follow these steps to activate your custom domain {domain}",
-			"txtRecordStep": "TXT record (verification)",
+			"sslValidationStep": "SSL Certificate Validation (TXT)",
+			"ownershipValidationStep": "Domain Ownership Verification (TXT)",
 			"cnameRecordStep": "CNAME record (forwarding)",
+			"checkStatus": "Check Status",
 			"recordType": "Record type",
 			"recordHost": "Host / Name",
 			"recordValue": "Value",
 			"pointsTo": "Points to",
 			"copied": "Copied",
+			"copiedHostDescription": "The host name has been copied to the clipboard.",
 			"copiedTxtDescription": "The TXT record value has been copied to the clipboard.",
 			"copiedCnameDescription": "The CNAME target has been copied to the clipboard.",
 			"dnsNote": "DNS changes can take up to 48 hours. You can verify each record individually once it is configured.",
@@ -703,7 +731,24 @@
 			"systemDomain": "System",
 			"systemDomainVerified": "System domain is always verified",
 			"defaultCleared": "Default restored",
-			"defaultClearedDescription": "The system domain is now used as the default for new dynamic QR codes."
+			"defaultClearedDescription": "The system domain is now used as the default for new dynamic QR codes.",
+			"sslStatus": {
+				"active": "Active",
+				"pending": "Pending",
+				"error": "Error",
+				"unknown": "Unknown"
+			},
+			"sslStatusTooltip": {
+				"initializing": "Setting up SSL certificate...",
+				"pending_validation": "Waiting for DNS TXT record validation. Add the TXT record shown in setup instructions.",
+				"pending_issuance": "TXT record verified. SSL certificate is being issued.",
+				"pending_deployment": "SSL certificate issued. Deploying to edge servers...",
+				"active": "SSL certificate is active. Your domain is ready to use.",
+				"pending_expiration": "SSL certificate is about to expire. It will be renewed automatically.",
+				"expired": "SSL certificate has expired. Please contact support.",
+				"deleted": "SSL certificate has been deleted.",
+				"validation_timed_out": "TXT record validation timed out. Please check your DNS settings and try again."
+			}
 		},
 		"apiKeys": {
 			"title": "API Keys",

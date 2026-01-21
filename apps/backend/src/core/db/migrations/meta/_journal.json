@@ -64,6 +64,27 @@
 			"when": 1768569593134,
 			"tag": "0008_majestic_randall_flagg",
 			"breakpoints": true
+		},
+		{
+			"idx": 9,
+			"version": "5",
+			"when": 1768914556088,
+			"tag": "0009_bent_sentry",
+			"breakpoints": true
+		},
+		{
+			"idx": 10,
+			"version": "5",
+			"when": 1768916785922,
+			"tag": "0010_natural_maelstrom",
+			"breakpoints": true
+		},
+		{
+			"idx": 11,
+			"version": "5",
+			"when": 1768919341920,
+			"tag": "0011_productive_dust",
+			"breakpoints": true
 		}
 	]
 }

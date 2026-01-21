@@ -24,8 +24,8 @@ export function DomainSelector({ value, onChange, disabled }: DomainSelectorProp
 	const t = useTranslations('generator.domainSelector');
 	const { data, isLoading } = useListCustomDomainsQuery(1, 100);
 
-	// Filter only verified domains
-	const verifiedDomains = data?.data.filter((d) => d.isVerified) ?? [];
+	// Filter only verified domains (SSL must be active)
+	const verifiedDomains = data?.data.filter((d) => d.sslStatus === 'active') ?? [];
 
 	if (isLoading) {
 		return (

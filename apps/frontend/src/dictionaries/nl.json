@@ -401,9 +401,29 @@
 					"label": "E-mailadres",
 					"placeholder": "Voer uw e-mailadres in"
 				},
+				"emailPrivate": {
+					"label": "E-mail (Privé)",
+					"placeholder": "Privé e-mailadres"
+				},
+				"emailBusiness": {
+					"label": "E-mail (Zakelijk)",
+					"placeholder": "Zakelijk e-mailadres"
+				},
 				"phone": {
 					"label": "Telefoon",
 					"placeholder": "Voer uw telefoonnummer in"
+				},
+				"phonePrivate": {
+					"label": "Telefoon (Privé)",
+					"placeholder": "Privé nummer"
+				},
+				"phoneMobile": {
+					"label": "Telefoon (Mobiel)",
+					"placeholder": "Mobiel nummer"
+				},
+				"phoneBusiness": {
+					"label": "Telefoon (Zakelijk)",
+					"placeholder": "Zakelijk nummer"
 				},
 				"fax": {
 					"label": "Fax",

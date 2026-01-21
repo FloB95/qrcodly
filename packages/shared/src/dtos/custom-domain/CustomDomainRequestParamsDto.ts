@@ -4,7 +4,7 @@ import { z } from 'zod';
  * Request params for custom domain endpoints.
  */
 export const CustomDomainIdParamsDto = z.object({
-	id: z.string().uuid(),
+	id: z.uuid(),
 });
 
 export type TCustomDomainIdParamsDto = z.infer<typeof CustomDomainIdParamsDto>;

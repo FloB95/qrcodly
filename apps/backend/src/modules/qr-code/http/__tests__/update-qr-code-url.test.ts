@@ -285,7 +285,8 @@ describe('updateQrCode - URL Content Type', () => {
 
 			// Construct the self-referencing URL (same format as buildShortUrl)
 			// The qrCodeData contains the full short URL
-			const selfReferencingUrl = createdQrCode.qrCodeData;
+			expect(createdQrCode.qrCodeData).toBeDefined();
+			const selfReferencingUrl = createdQrCode.qrCodeData!;
 
 			// Try to update the QR code with the destination pointing to its own short URL
 			const response = await updateQrCodeRequest(

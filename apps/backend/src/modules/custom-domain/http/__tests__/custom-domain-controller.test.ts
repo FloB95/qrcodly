@@ -68,10 +68,10 @@ describe('CustomDomainController', () => {
 			headers: { Authorization: `Bearer ${token}` },
 		});
 
-	const getVerificationInstructions = async (id: string, token: string) =>
+	const getSetupInstructions = async (id: string, token: string) =>
 		testServer.inject({
 			method: 'GET',
-			url: `${CUSTOM_DOMAIN_API_PATH}/${id}/verification-instructions`,
+			url: `${CUSTOM_DOMAIN_API_PATH}/${id}/setup-instructions`,
 			headers: { Authorization: `Bearer ${token}` },
 		});
 
@@ -84,8 +84,8 @@ describe('CustomDomainController', () => {
 
 			const customDomain = JSON.parse(response.payload) as TCustomDomainResponseDto;
 			expect(customDomain.domain).toBe(dto.domain.toLowerCase());
-			expect(customDomain.isVerified).toBe(false);
-			expect(customDomain.verificationToken).toHaveLength(64);
+			expect(customDomain.sslStatus).toBe('pending');
+			expect(customDomain.ownershipStatus).toBe('pending');
 			expect(customDomain.createdBy).toBe(userId);
 		});
 
@@ -229,34 +229,33 @@ describe('CustomDomainController', () => {
 		});
 	});
 
-	describe('GET /:id/verification-instructions', () => {
-		it('should return verification instructions', async () => {
+	describe('GET /:id/setup-instructions', () => {
+		it('should return setup instructions with Cloudflare records', async () => {
 			const dto = generateCreateCustomDomainDto();
 			const createResponse = await createCustomDomain(dto, accessToken);
 			const created = JSON.parse(createResponse.payload) as TCustomDomainResponseDto;
 
-			const response = await getVerificationInstructions(created.id, accessToken);
+			const response = await getSetupInstructions(created.id, accessToken);
 			expect(response.statusCode).toBe(200);
 
 			const instructions = JSON.parse(response.payload) as {
-				recordType: string;
-				recordHost: string;
-				recordValue: string;
-				instructions: string;
+				domain: string;
+				sslValidation: { type: string; name: string; value: string } | null;
+				ownershipValidation: { type: string; name: string; value: string } | null;
+				cnameRecord: { type: string; name: string; value: string };
 			};
 
-			expect(instructions.recordType).toBe('TXT');
-			expect(instructions.recordHost).toBe(`_qrcodly-verify.${dto.domain.toLowerCase()}`);
-			expect(instructions.recordValue).toBe(`qrcodly-verify=${created.verificationToken}`);
-			expect(instructions.instructions).toContain('TXT record');
+			expect(instructions.domain).toBe(dto.domain.toLowerCase());
+			expect(instructions.cnameRecord.type).toBe('CNAME');
+			expect(instructions.cnameRecord.name).toBe(dto.domain.toLowerCase());
 		});
 
-		it('should return 403 for another user\s domain', async () => {
+		it("should return 403 for another user's domain", async () => {
 			const dto = generateCreateCustomDomainDto();
 			const createResponse = await createCustomDomain(dto, accessToken);
 			const created = JSON.parse(createResponse.payload) as TCustomDomainResponseDto;
 
-			const response = await getVerificationInstructions(created.id, accessToken2);
+			const response = await getSetupInstructions(created.id, accessToken2);
 			expect(response.statusCode).toBe(403);
 		});
 	});

@@ -3,7 +3,6 @@ import { and, count, desc, eq } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import customDomain, { TCustomDomain } from '../entities/custom-domain.entity';
-import crypto from 'crypto';
 
 /**
  * Repository for managing Custom Domain entities.
@@ -105,22 +104,20 @@ class CustomDomainRepository extends AbstractRepository<TCustomDomain> {
 			.values({
 				id: customDomain.id,
 				domain: customDomain.domain.toLowerCase(),
-				isVerified: customDomain.isVerified,
-				verificationToken: customDomain.verificationToken,
+				isDefault: customDomain.isDefault,
 				createdBy: customDomain.createdBy,
+				cloudflareHostnameId: customDomain.cloudflareHostnameId,
+				sslStatus: customDomain.sslStatus,
+				ownershipStatus: customDomain.ownershipStatus,
+				sslValidationTxtName: customDomain.sslValidationTxtName,
+				sslValidationTxtValue: customDomain.sslValidationTxtValue,
+				ownershipValidationTxtName: customDomain.ownershipValidationTxtName,
+				ownershipValidationTxtValue: customDomain.ownershipValidationTxtValue,
 				createdAt: new Date(),
 			})
 			.execute();
 
 		await this.clearCache();
-	}
-
-	/**
-	 * Generates a secure verification token.
-	 * @returns A 64-character hex string.
-	 */
-	generateVerificationToken(): string {
-		return crypto.randomBytes(32).toString('hex');
 	}
 
 	/**
@@ -166,6 +163,46 @@ class CustomDomainRepository extends AbstractRepository<TCustomDomain> {
 			.set({ isDefault: false, updatedAt: new Date() })
 			.where(and(eq(this.table.createdBy, userId), eq(this.table.isDefault, true)))
 			.execute();
+	}
+
+	/**
+	 * Disables all custom domains for a user.
+	 * Also clears the default domain.
+	 * @param userId - The user ID.
+	 */
+	async disableAllByUserId(userId: string): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({ isEnabled: false, isDefault: false, updatedAt: new Date() })
+			.where(eq(this.table.createdBy, userId))
+			.execute();
+	}
+
+	/**
+	 * Enables all custom domains for a user.
+	 * @param userId - The user ID.
+	 */
+	async enableAllByUserId(userId: string): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({ isEnabled: true, updatedAt: new Date() })
+			.where(eq(this.table.createdBy, userId))
+			.execute();
+	}
+
+	/**
+	 * Finds all custom domains for a user.
+	 * @param userId - The user ID.
+	 * @returns A promise that resolves to an array of Custom Domains.
+	 */
+	async findAllByUserId(userId: string): Promise<TCustomDomain[]> {
+		const result = await this.db
+			.select()
+			.from(this.table)
+			.where(eq(this.table.createdBy, userId))
+			.orderBy(desc(this.table.createdAt))
+			.execute();
+		return result;
 	}
 }
 
