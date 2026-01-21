@@ -719,7 +719,7 @@
 			"stepCompleted": "Ukończono",
 			"dcvDelegationStep": "Automatyczne Odnawianie SSL (CNAME)",
 			"dcvDelegationDescription": "Ten rekord umożliwia automatyczne wydawanie i odnawianie certyfikatu SSL. Wysoce zalecane, aby uniknąć wygaśnięcia certyfikatu.",
-			"step4PendingDns": "Ukończ kroki 1 i 2, następnie kliknij \"Sprawdź Status\", aby kontynuować.",
+			"step4PendingDns": "Ukończ kroki 1 - 3, następnie kliknij \"Sprawdź Status\", aby kontynuować.",
 			"step4LoadingSsl": "Ładowanie instrukcji certyfikatu SSL... Kliknij \"Sprawdź Status\", aby odświeżyć.",
 			"sslValidationStep": "Walidacja Certyfikatu SSL (TXT)",
 			"ownershipValidationStep": "Weryfikacja Własności Domeny (TXT)",

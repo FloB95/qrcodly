@@ -2,15 +2,25 @@ import { z } from 'zod';
 import { VerificationPhaseSchema } from '../types/verification-phase';
 
 /**
- * DNS record schema for setup instructions.
+ * TXT DNS record schema.
  */
-const DnsRecordSchema = z.object({
-	recordType: z.enum(['TXT', 'CNAME']),
+const TxtRecordSchema = z.object({
+	recordType: z.literal('TXT'),
 	recordHost: z.string(),
 	recordValue: z.string(),
 });
 
-export type TDnsRecord = z.infer<typeof DnsRecordSchema>;
+/**
+ * CNAME DNS record schema.
+ */
+const CnameRecordSchema = z.object({
+	recordType: z.literal('CNAME'),
+	recordHost: z.string(),
+	recordValue: z.string(),
+});
+
+export type TTxtRecord = z.infer<typeof TxtRecordSchema>;
+export type TCnameRecord = z.infer<typeof CnameRecordSchema>;
 
 /**
  * Response DTO for setup instructions (two-phase verification).
@@ -18,11 +28,13 @@ export type TDnsRecord = z.infer<typeof DnsRecordSchema>;
  */
 export const SetupInstructionsResponseDto = z.object({
 	phase: VerificationPhaseSchema,
-	ownershipValidationRecord: DnsRecordSchema.nullable(),
-	cnameRecord: DnsRecordSchema,
-	sslValidationRecord: DnsRecordSchema.nullable(),
+	ownershipValidationRecord: TxtRecordSchema.nullable(),
+	cnameRecord: CnameRecordSchema,
+	dcvDelegationRecord: CnameRecordSchema,
+	sslValidationRecord: TxtRecordSchema.nullable(),
 	ownershipTxtVerified: z.boolean(),
 	cnameVerified: z.boolean(),
+	dcvDelegationVerified: z.boolean(),
 	instructions: z.string(),
 });
 

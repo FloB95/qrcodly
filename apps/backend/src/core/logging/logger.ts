@@ -21,18 +21,18 @@ export class Logger implements ILogger {
 			targets: [pinoPrettyTransport],
 		};
 
-		// if (env.AXIOM_DATASET && env.AXIOM_TOKEN) {
-		// 	const axiomTransport = {
-		// 		target: '@axiomhq/pino',
-		// 		level: env.LOG_LEVEL,
-		// 		options: {
-		// 			dataset: process.env.AXIOM_DATASET,
-		// 			token: process.env.AXIOM_TOKEN,
-		// 		},
-		// 	};
+		if (env.AXIOM_DATASET && env.AXIOM_TOKEN) {
+			const axiomTransport = {
+				target: '@axiomhq/pino',
+				level: env.LOG_LEVEL,
+				options: {
+					dataset: process.env.AXIOM_DATASET,
+					token: process.env.AXIOM_TOKEN,
+				},
+			};
 
-		// 	transports.targets.push(axiomTransport);
-		// }
+			transports.targets.push(axiomTransport);
+		}
 
 		this.logger = pino({
 			level: env.LOG_LEVEL,

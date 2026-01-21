@@ -53,6 +53,6 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	[RateLimitPolicy.DOMAIN_VERIFY]: {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 0,
-		[RateLimitTier.PRO_PLAN]: 60,
+		[RateLimitTier.PRO_PLAN]: 20,
 	},
 } as const;

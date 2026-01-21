@@ -9,11 +9,17 @@ import {
 	CreateCustomDomainDto,
 	CustomDomainResponseDto,
 	CustomDomainListResponseDto,
+	SetupInstructionsResponseDto,
+	ResolveDomainResponseDto,
+	ResolveDomainQueryDto,
 	type TCreateCustomDomainDto,
 	type TCustomDomainResponseDto,
 	type TCustomDomainIdParamsDto,
 	type TCustomDomainListQueryDto,
 	type TCustomDomainListResponseDto,
+	type TSetupInstructionsResponseDto,
+	type TResolveDomainResponseDto,
+	type TResolveDomainQueryDto,
 	CustomDomainIdParamsDto,
 	CustomDomainListQueryDto,
 } from '@shared/schemas';
@@ -26,62 +32,11 @@ import { SetDefaultCustomDomainUseCase } from '../../useCase/set-default-custom-
 import { ClearDefaultCustomDomainUseCase } from '../../useCase/clear-default-custom-domain.use-case';
 import { GetDefaultCustomDomainUseCase } from '../../useCase/get-default-custom-domain.use-case';
 import { ResolveCustomDomainUseCase } from '../../useCase/resolve-custom-domain.use-case';
+import { GetSetupInstructionsUseCase } from '../../useCase/get-setup-instructions.use-case';
 import { TCustomDomain } from '../../domain/entities/custom-domain.entity';
 import { z } from 'zod';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
-import { env } from '@/core/config/env';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
-
-// Response schema for setup instructions (two-phase verification)
-const SetupInstructionsResponseDto = z.object({
-	phase: z.enum(['dns_verification', 'cloudflare_ssl']),
-	ownershipValidationRecord: z
-		.object({
-			recordType: z.literal('TXT'),
-			recordHost: z.string(),
-			recordValue: z.string(),
-		})
-		.nullable(),
-	cnameRecord: z.object({
-		recordType: z.literal('CNAME'),
-		recordHost: z.string(),
-		recordValue: z.string(),
-	}),
-	dcvDelegationRecord: z.object({
-		recordType: z.literal('CNAME'),
-		recordHost: z.string(),
-		recordValue: z.string(),
-	}),
-	sslValidationRecord: z
-		.object({
-			recordType: z.literal('TXT'),
-			recordHost: z.string(),
-			recordValue: z.string(),
-		})
-		.nullable(),
-	ownershipTxtVerified: z.boolean(),
-	cnameVerified: z.boolean(),
-	dcvDelegationVerified: z.boolean(),
-	instructions: z.string(),
-});
-
-type TSetupInstructionsResponseDto = z.infer<typeof SetupInstructionsResponseDto>;
-
-// Response schema for domain resolution (used by Cloudflare Worker)
-const ResolveDomainResponseDto = z.object({
-	domain: z.string(),
-	isValid: z.boolean(),
-	sslStatus: z.string(),
-});
-
-type TResolveDomainResponseDto = z.infer<typeof ResolveDomainResponseDto>;
-
-// Query schema for domain resolution
-const ResolveDomainQueryDto = z.object({
-	domain: z.string().min(1).max(255),
-});
-
-type TResolveDomainQueryDto = z.infer<typeof ResolveDomainQueryDto>;
 
 @injectable()
 export class CustomDomainController extends AbstractController {
@@ -104,6 +59,8 @@ export class CustomDomainController extends AbstractController {
 		private readonly getDefaultCustomDomainUseCase: GetDefaultCustomDomainUseCase,
 		@inject(ResolveCustomDomainUseCase)
 		private readonly resolveCustomDomainUseCase: ResolveCustomDomainUseCase,
+		@inject(GetSetupInstructionsUseCase)
+		private readonly getSetupInstructionsUseCase: GetSetupInstructionsUseCase,
 	) {
 		super();
 	}
@@ -116,6 +73,7 @@ export class CustomDomainController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			summary: 'List custom domains',
 			description: 'Lists all custom domains for the authenticated user with pagination support.',
 			operationId: 'custom-domain/list',
@@ -146,6 +104,7 @@ export class CustomDomainController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			summary: 'Resolve a custom domain',
 			description:
 				'Public endpoint for Cloudflare Worker to validate if a domain is registered, enabled, and has active SSL. Returns domain validity status.',
@@ -167,6 +126,7 @@ export class CustomDomainController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			summary: 'Get default domain',
 			description:
 				"Returns the user's default custom domain for dynamic QR codes, or null if no default is set.",
@@ -214,6 +174,7 @@ export class CustomDomainController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			summary: 'Get a custom domain',
 			description: 'Retrieves a custom domain by ID. Only the owner can access their domains.',
 			operationId: 'custom-domain/get',
@@ -240,6 +201,7 @@ export class CustomDomainController extends AbstractController {
 			rateLimitPolicy: RateLimitPolicy.DOMAIN_VERIFY,
 		},
 		schema: {
+			hide: true,
 			summary: 'Check domain verification status',
 			description:
 				'Polls Cloudflare for the current verification status. Returns updated SSL and ownership status.',
@@ -264,6 +226,7 @@ export class CustomDomainController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			summary: 'Get DNS setup instructions',
 			description:
 				'Returns the DNS records required for domain verification. Phase 1 shows ownership TXT and CNAME records. Phase 2 shows Cloudflare SSL TXT record.',
@@ -275,59 +238,7 @@ export class CustomDomainController extends AbstractController {
 	): Promise<IHttpResponse<TSetupInstructionsResponseDto>> {
 		const params = CustomDomainIdParamsDto.parse(request.params);
 		const customDomain = await this.fetchCustomDomain(params.id, request.user.id);
-
-		const phase = customDomain.verificationPhase;
-
-		// Extract subdomain for DNS record display (e.g., "links" from "links.example.com")
-		// DNS providers typically want just the host part, not the full domain
-		const domainParts = customDomain.domain.split('.');
-		const subdomain = domainParts.slice(0, -2).join('.');
-
-		// Build DCV delegation CNAME value: <hostname>.<dcv-delegation-target>
-		// This enables automatic SSL certificate issuance and renewal via Cloudflare
-		const dcvDelegationValue = `${customDomain.domain}.${env.CLOUDFLARE_DCV_DELEGATION_TARGET}`;
-
-		const instructions: TSetupInstructionsResponseDto = {
-			phase,
-			// Ownership TXT record (our verification token) - shown in Phase 1
-			ownershipValidationRecord:
-				customDomain.ownershipValidationTxtName && customDomain.ownershipValidationTxtValue
-					? {
-							recordType: 'TXT',
-							recordHost: customDomain.ownershipValidationTxtName,
-							recordValue: customDomain.ownershipValidationTxtValue,
-						}
-					: null,
-			// CNAME record - shown in Phase 1
-			cnameRecord: {
-				recordType: 'CNAME',
-				recordHost: subdomain,
-				recordValue: env.CUSTOM_DOMAIN_CNAME_TARGET,
-			},
-			// DCV delegation CNAME for automatic SSL certificate issuance/renewal
-			// This delegates the ACME challenge to Cloudflare, enabling automatic cert management
-			dcvDelegationRecord: {
-				recordType: 'CNAME',
-				recordHost: `_acme-challenge.${subdomain}`,
-				recordValue: dcvDelegationValue,
-			},
-			// SSL TXT record (from Cloudflare) - only available in Phase 2
-			sslValidationRecord:
-				phase === 'cloudflare_ssl' &&
-				customDomain.sslValidationTxtName &&
-				customDomain.sslValidationTxtValue
-					? {
-							recordType: 'TXT',
-							recordHost: customDomain.sslValidationTxtName,
-							recordValue: customDomain.sslValidationTxtValue,
-						}
-					: null,
-			ownershipTxtVerified: customDomain.ownershipTxtVerified ?? false,
-			cnameVerified: customDomain.cnameVerified ?? false,
-			dcvDelegationVerified: false, // Not tracked - this is optional for automatic renewals
-			instructions: this.buildSetupInstructions(customDomain),
-		};
-
+		const instructions = this.getSetupInstructionsUseCase.execute(customDomain);
 		return this.makeApiHttpResponse(200, SetupInstructionsResponseDto.parse(instructions));
 	}
 
@@ -341,6 +252,7 @@ export class CustomDomainController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			summary: 'Set as default domain',
 			description:
 				'Sets this domain as the default for all new dynamic QR codes. The domain must have active SSL status before it can be set as default.',
@@ -366,6 +278,7 @@ export class CustomDomainController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			summary: 'Clear default domain',
 			description:
 				'Removes the default domain setting. New dynamic QR codes will use the system default domain.',
@@ -386,6 +299,7 @@ export class CustomDomainController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			summary: 'Delete a custom domain',
 			description:
 				'Deletes a custom domain. Short URLs using this domain will fall back to the default domain.',
@@ -400,7 +314,6 @@ export class CustomDomainController extends AbstractController {
 	}
 
 	// Helper Methods
-
 	private async fetchCustomDomain(id: string, userId: string): Promise<TCustomDomain> {
 		const customDomain = await this.getCustomDomainUseCase.execute(id);
 
@@ -457,78 +370,5 @@ export class CustomDomainController extends AbstractController {
 					: null,
 			validationErrors,
 		});
-	}
-
-	/**
-	 * Builds human-readable setup instructions based on verification phase.
-	 */
-	private buildSetupInstructions(customDomain: TCustomDomain): string {
-		const phase = customDomain.verificationPhase || 'dns_verification';
-		const lines: string[] = [];
-
-		// Extract subdomain for DNS record display (e.g., "links" from "links.example.com")
-		const domainParts = customDomain.domain.split('.');
-		const subdomain = domainParts.slice(0, -2).join('.');
-
-		// Build DCV delegation CNAME value: <hostname>.<dcv-delegation-target>
-		const dcvDelegationValue = `${customDomain.domain}.${env.CLOUDFLARE_DCV_DELEGATION_TARGET}`;
-
-		if (phase === 'dns_verification') {
-			lines.push('Add the following DNS records to verify domain ownership:');
-			lines.push('');
-
-			// Step 1: Ownership TXT
-			const ownershipStatus = customDomain.ownershipTxtVerified ? ' ✓' : '';
-			lines.push(`1. Ownership Verification (TXT Record)${ownershipStatus}`);
-			if (customDomain.ownershipValidationTxtName && customDomain.ownershipValidationTxtValue) {
-				lines.push(`   Host: ${customDomain.ownershipValidationTxtName}`);
-				lines.push(`   Value: ${customDomain.ownershipValidationTxtValue}`);
-			}
-
-			lines.push('');
-
-			// Step 2: CNAME
-			const cnameStatus = customDomain.cnameVerified ? ' ✓' : '';
-			lines.push(`2. Routing (CNAME Record)${cnameStatus}`);
-			lines.push(`   Host: ${subdomain}`);
-			lines.push(`   Points to: ${env.CUSTOM_DOMAIN_CNAME_TARGET}`);
-
-			lines.push('');
-
-			// Step 3: DCV Delegation CNAME
-			lines.push('3. SSL Certificate Auto-Renewal (CNAME Record)');
-			lines.push(`   Host: _acme-challenge.${subdomain}`);
-			lines.push(`   Points to: ${dcvDelegationValue}`);
-			lines.push('   Note: This enables automatic SSL certificate issuance and renewal.');
-
-			lines.push('');
-			lines.push('Once records 1 and 2 are verified, SSL provisioning will begin automatically.');
-		} else {
-			// Phase 2: cloudflare_ssl
-			lines.push('DNS verified! Now add the SSL validation record:');
-			lines.push('');
-
-			// Steps 1-3 completed/shown
-			lines.push('1. Ownership Verification (TXT Record) ✓');
-			lines.push('2. Routing (CNAME Record) ✓');
-			lines.push('3. SSL Certificate Auto-Renewal (CNAME Record)');
-			lines.push(`   Host: _acme-challenge.${subdomain}`);
-			lines.push(`   Points to: ${dcvDelegationValue}`);
-
-			lines.push('');
-
-			// Step 4: SSL TXT
-			const sslStatus = customDomain.sslStatus === 'active' ? ' ✓' : '';
-			lines.push(`4. SSL Validation (TXT Record)${sslStatus}`);
-			if (customDomain.sslValidationTxtName && customDomain.sslValidationTxtValue) {
-				lines.push(`   Host: ${customDomain.sslValidationTxtName}`);
-				lines.push(`   Value: ${customDomain.sslValidationTxtValue}`);
-			}
-		}
-
-		lines.push('');
-		lines.push('Note: DNS changes may take up to 48 hours to propagate.');
-
-		return lines.join('\n');
 	}
 }

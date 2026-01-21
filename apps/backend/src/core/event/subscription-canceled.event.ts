@@ -1,11 +1,7 @@
 import { AbstractEvent } from '@/core/event/abstract.event';
+import { type BillingSubscriptionJSON } from '@clerk/fastify';
 
-export type SubscriptionCanceledEventData = {
-	userId: string;
-	email: string;
-	firstName?: string;
-	subscriptionId?: string;
-};
+export type SubscriptionCanceledEventData = BillingSubscriptionJSON;
 
 /**
  * Event triggered when a subscription is canceled.

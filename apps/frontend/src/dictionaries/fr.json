@@ -719,7 +719,7 @@
 			"stepCompleted": "Terminé",
 			"dcvDelegationStep": "Renouvellement SSL Auto (CNAME)",
 			"dcvDelegationDescription": "Cet enregistrement permet l'émission et le renouvellement automatiques du certificat SSL. Fortement recommandé pour éviter l'expiration du certificat.",
-			"step4PendingDns": "Complétez les étapes 1 et 2, puis cliquez sur \"Vérifier le Statut\" pour continuer.",
+			"step4PendingDns": "Complétez les étapes 1 - 3, puis cliquez sur \"Vérifier le Statut\" pour continuer.",
 			"step4LoadingSsl": "Chargement des instructions du certificat SSL... Veuillez cliquer sur \"Vérifier le Statut\" pour actualiser.",
 			"sslValidationStep": "Validation du Certificat SSL (TXT)",
 			"ownershipValidationStep": "Vérification de Propriété du Domaine (TXT)",

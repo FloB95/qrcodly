@@ -713,7 +713,7 @@
 			"stepCompleted": "Abgeschlossen",
 			"dcvDelegationStep": "SSL-Auto-Erneuerung (CNAME)",
 			"dcvDelegationDescription": "Dieser Eintrag ermöglicht die automatische Ausstellung und Erneuerung des SSL-Zertifikats. Dringend empfohlen, um den Ablauf des Zertifikats zu verhindern.",
-			"step4PendingDns": "Schließe Schritt 1 und 2 ab und klicke dann auf \"Status prüfen\", um fortzufahren.",
+			"step4PendingDns": "Schließe Schritt 1 - 3 ab und klicke dann auf \"Status prüfen\", um fortzufahren.",
 			"step4LoadingSsl": "SSL-Zertifikat-Anweisungen werden geladen... Bitte klicke auf \"Status prüfen\" zum Aktualisieren.",
 			"sslValidationStep": "SSL-Zertifikat-Validierung (TXT)",
 			"ownershipValidationStep": "Domain-Inhaberschaftsverifizierung (TXT)",

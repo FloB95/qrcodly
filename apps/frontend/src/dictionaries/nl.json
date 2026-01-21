@@ -719,7 +719,7 @@
 			"stepCompleted": "Voltooid",
 			"dcvDelegationStep": "SSL Auto-vernieuwing (CNAME)",
 			"dcvDelegationDescription": "Dit record maakt automatische uitgifte en vernieuwing van SSL-certificaten mogelijk. Sterk aanbevolen om certificaatvervaldatum te voorkomen.",
-			"step4PendingDns": "Voltooi stap 1 en 2, klik dan op \"Status Controleren\" om door te gaan.",
+			"step4PendingDns": "Voltooi stap 1 - 3, klik dan op \"Status Controleren\" om door te gaan.",
 			"step4LoadingSsl": "SSL-certificaat instructies laden... Klik op \"Status Controleren\" om te vernieuwen.",
 			"sslValidationStep": "SSL-certificaat Validatie (TXT)",
 			"ownershipValidationStep": "Domein Eigendomsverificatie (TXT)",
