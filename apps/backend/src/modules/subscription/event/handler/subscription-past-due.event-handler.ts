@@ -15,34 +15,51 @@ export class SubscriptionPastDueEventHandler extends AbstractEventHandler<Subscr
 	async handle(event: SubscriptionPastDueEvent): Promise<void> {
 		const logger = container.resolve(Logger);
 		const mailer = container.resolve(Mailer);
+		const payer = event.data.payer;
+
+		if (!payer) {
+			logger.error('error:subscription.pastDue.missingPayer', {
+				subscription: {
+					subscriptionId: event.data.id,
+				},
+			});
+			return;
+		}
 
 		logger.info('subscription.pastDue', {
-			userId: event.data.userId,
-			email: event.data.email,
+			subscription: {
+				userId: payer.id,
+				periodEnd: event.data.period_end,
+				pastDue: event.data.past_due_at,
+			},
 		});
 
 		try {
 			const template = await mailer.getTemplate('subscription-past-due');
 			const html = template({
-				firstName: event.data.firstName,
+				firstName: payer.first_name || 'there',
 				billingUrl: `${env.FRONTEND_URL}/settings/billing`,
 				year: new Date().getFullYear(),
 			});
 
 			await mailer.sendMail({
-				to: event.data.email,
+				to: payer.email,
 				subject: 'Action Required: Your QRcodly Payment is Past Due',
 				html,
 			});
 
 			logger.info('subscription.pastDueEmailSent', {
-				userId: event.data.userId,
-				email: event.data.email,
+				subscription: {
+					userId: payer.id,
+					email: payer.email,
+				},
 			});
 		} catch (error) {
 			logger.error('subscription.pastDueEmailFailed', {
-				userId: event.data.userId,
-				email: event.data.email,
+				subscription: {
+					userId: payer.id,
+					email: payer.email,
+				},
 				error: error as Error,
 			});
 		}

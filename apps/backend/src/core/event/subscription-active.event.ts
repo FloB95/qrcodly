@@ -1,7 +1,7 @@
 import { AbstractEvent } from '@/core/event/abstract.event';
-import { type BillingSubscriptionJSON } from '@clerk/fastify';
+import { type BillingSubscriptionItemWebhookEvent } from '@clerk/fastify';
 
-export type SubscriptionActiveEventData = BillingSubscriptionJSON;
+export type SubscriptionActiveEventData = BillingSubscriptionItemWebhookEvent['data'];
 
 /**
  * Event triggered when a subscription becomes active.

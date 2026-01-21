@@ -17,23 +17,37 @@ export class SubscriptionCanceledEventHandler extends AbstractEventHandler<Subsc
 		const logger = container.resolve(Logger);
 		const mailer = container.resolve(Mailer);
 		const createGracePeriodUseCase = container.resolve(CreateGracePeriodUseCase);
+		const payer = event.data.payer;
+
+		if (!payer) {
+			logger.error('error:subscription.canceled.missingPayer', {
+				subscription: {
+					subscriptionId: event.data.id,
+				},
+			});
+			return;
+		}
 
 		logger.info('subscription.canceled', {
-			userId: event.data.userId,
+			subscription: {
+				userId: payer.id,
+				periodEnd: event.data.period_end,
+				canceled_at: event.data.canceled_at,
+			},
 		});
 
 		try {
 			// Create grace period for the user
 			const gracePeriodEndDate = await createGracePeriodUseCase.execute({
-				userId: event.data.userId,
-				email: event.data.email,
-				firstName: event.data.firstName,
+				userId: payer.id,
+				email: payer.email,
+				firstName: payer.first_name,
 			});
 
 			// Send email notification
 			const template = await mailer.getTemplate('subscription-canceled');
 			const html = template({
-				firstName: event.data.firstName,
+				firstName: payer.first_name || 'there',
 				gracePeriodEndDate: gracePeriodEndDate.toLocaleDateString('en-US', {
 					weekday: 'long',
 					year: 'numeric',
@@ -46,20 +60,24 @@ export class SubscriptionCanceledEventHandler extends AbstractEventHandler<Subsc
 			});
 
 			await mailer.sendMail({
-				to: event.data.email,
+				to: payer.email,
 				subject: 'Your QRcodly Subscription Has Ended',
 				html,
 			});
 
 			logger.info('subscription.canceledEmailSent', {
-				userId: event.data.userId,
-				email: event.data.email,
-				gracePeriodEndDate: gracePeriodEndDate.toISOString(),
+				subscription: {
+					userId: payer.id,
+					email: payer.email,
+					gracePeriodEndDate: gracePeriodEndDate.toISOString(),
+				},
 			});
 		} catch (error) {
 			logger.error('subscription.canceledEmailFailed', {
-				userId: event.data.userId,
-				email: event.data.email,
+				subscription: {
+					userId: payer.id,
+					email: payer.email,
+				},
 				error: error as Error,
 			});
 		}

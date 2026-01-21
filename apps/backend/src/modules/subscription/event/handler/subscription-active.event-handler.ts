@@ -19,43 +19,58 @@ export class SubscriptionActiveEventHandler extends AbstractEventHandler<Subscri
 		const mailer = container.resolve(Mailer);
 		const enableUserDomainsUseCase = container.resolve(EnableUserDomainsUseCase);
 		const gracePeriodRepository = container.resolve(SubscriptionGracePeriodRepository);
+		const payer = event.data.payer;
+
+		if (!payer) {
+			logger.error('error:subscription.active.missingPayer', {
+				subscription: {
+					subscriptionId: event.data.id,
+				},
+			});
+			return;
+		}
 
 		logger.info('subscription.active', {
-			userId: event.data.userId,
-			email: event.data.email,
+			subscription: {
+				userId: payer.id,
+				periodEnd: event.data.period_end,
+			},
 		});
 
 		try {
 			// Check if user had a grace period or disabled domains
-			const existingGracePeriod = await gracePeriodRepository.findByUserId(event.data.userId);
+			const existingGracePeriod = await gracePeriodRepository.findByUserId(payer.id);
 
 			// Enable domains and remove grace period
-			await enableUserDomainsUseCase.execute(event.data.userId);
+			await enableUserDomainsUseCase.execute(payer.id);
 
 			// Only send reactivation email if user was in grace period or had domains disabled
 			if (existingGracePeriod) {
 				const template = await mailer.getTemplate('subscription-reactivated');
 				const html = template({
-					firstName: event.data.firstName,
+					firstName: payer.first_name || 'there',
 					dashboardUrl: `${env.FRONTEND_URL}/dashboard`,
 					year: new Date().getFullYear(),
 				});
 
 				await mailer.sendMail({
-					to: event.data.email,
+					to: payer.email,
 					subject: 'Welcome Back! Your QRcodly Subscription is Active',
 					html,
 				});
 
 				logger.info('subscription.reactivatedEmailSent', {
-					userId: event.data.userId,
-					email: event.data.email,
+					subscription: {
+						userId: payer.id,
+					},
 				});
 			}
 		} catch (error) {
 			logger.error('subscription.activeHandlerFailed', {
-				userId: event.data.userId,
-				email: event.data.email,
+				subscription: {
+					userId: payer.id,
+					email: payer.email,
+				},
 				error: error as Error,
 			});
 		}
