@@ -84,7 +84,8 @@
 	},
 	"header": {
 		"collectionBtn": "Moja kolekcja",
-		"signInBtn": "Zaloguj się"
+		"signInBtn": "Zaloguj się",
+		"settingsBtn": "Ustawienia"
 	},
 	"footer": {
 		"qrCodeCopyright": "QR Code jest zarejestrowanym znakiem towarowym DENSO WAVE INCORPORATED",
@@ -284,6 +285,14 @@
 	},
 	"generator": {
 		"labelName": "Nazwa",
+		"domainSelector": {
+			"label": "Domena krótkiego URL",
+			"placeholder": "Wybierz domenę",
+			"defaultDomain": "Domyślna (qrcodly.de)",
+			"description": "Wybierz, której domeny użyć dla krótkiego URL",
+			"noDomains": "Brak dostępnych domen niestandardowych.",
+			"addDomain": "Dodaj domenę"
+		},
 		"tabs": {
 			"content": "Treść",
 			"style": "Styl",

@@ -819,6 +819,7 @@
 			"copiedDescription": "Der API-Schlüssel wurde in die Zwischenablage kopiert.",
 			"unnamed": "Unbenannt",
 			"createdTitle": "API-Key erstellt",
+			"createdDescription": "Der API-Schlüssel wurde erfolgreich erstellt. Kopiere ihn jetzt, da er nur einmal angezeigt wird.",
 			"formTitle": "Neuen API-Key hinzufügen",
 			"formHint": "Geben Sie einen Namen an, um einen API-Key zu erstellen. Sie können ihn jederzeit widerrufen.",
 			"namePlaceholder": "Geben Sie einen Namen an",

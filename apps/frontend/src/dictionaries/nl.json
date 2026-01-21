@@ -84,7 +84,8 @@
 	},
 	"header": {
 		"collectionBtn": "Mijn collectie",
-		"signInBtn": "Inloggen"
+		"signInBtn": "Inloggen",
+		"settingsBtn": "Instellingen"
 	},
 	"footer": {
 		"qrCodeCopyright": "QR Code is een geregistreerd handelsmerk van DENSO WAVE INCORPORATED",
@@ -284,6 +285,14 @@
 	},
 	"generator": {
 		"labelName": "naam",
+		"domainSelector": {
+			"label": "Korte URL-domein",
+			"placeholder": "Selecteer een domein",
+			"defaultDomain": "Standaard (qrcodly.de)",
+			"description": "Kies welk domein je wilt gebruiken voor je korte URL",
+			"noDomains": "Geen aangepaste domeinen beschikbaar.",
+			"addDomain": "Domein toevoegen"
+		},
 		"tabs": {
 			"content": "Inhoud",
 			"style": "Stijl",
