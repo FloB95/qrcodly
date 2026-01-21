@@ -23,23 +23,29 @@ export const WifiInputSchema = z.object({
 });
 export type TWifiInput = z.infer<typeof WifiInputSchema>;
 
+const phoneSchema = emptyStringToUndefined(
+	z
+		.string()
+		.regex(/^(?:\+|0|\d)[0-9\-().]{6,19}$/, 'Invalid phone number')
+		.optional(),
+);
+
+const emailSchema = emptyStringToUndefined(z.email().max(100).optional());
+
 export const VCardInputSchema = z
 	.object({
 		firstName: emptyStringToUndefined(z.string().min(1).max(64).optional()),
 		lastName: emptyStringToUndefined(z.string().min(1).max(64).optional()),
-		email: emptyStringToUndefined(z.email().max(100).optional()),
-		phone: emptyStringToUndefined(
-			z
-				.string()
-				.regex(/^\+?\d{1,4}\d{6,15}$/)
-				.optional(),
-		),
-		fax: emptyStringToUndefined(
-			z
-				.string()
-				.regex(/^\+?\d{1,4}\d{6,15}$/)
-				.optional(),
-		),
+		/** @deprecated Use emailPrivate or emailBusiness instead. Kept for backwards compatibility with existing data. */
+		email: emailSchema,
+		emailPrivate: emailSchema,
+		emailBusiness: emailSchema,
+		/** @deprecated Use phoneMobile instead. Kept for backwards compatibility with existing data. */
+		phone: phoneSchema,
+		phonePrivate: phoneSchema,
+		phoneMobile: phoneSchema,
+		phoneBusiness: phoneSchema,
+		fax: phoneSchema,
 		company: emptyStringToUndefined(z.string().min(1).max(64).optional()),
 		job: emptyStringToUndefined(z.string().min(1).max(64).optional()),
 		street: emptyStringToUndefined(z.string().min(1).max(64).optional()),

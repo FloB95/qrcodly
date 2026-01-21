@@ -401,9 +401,29 @@
 					"label": "Indirizzo e-mail",
 					"placeholder": "Inserisci la tua e-mail"
 				},
+				"emailPrivate": {
+					"label": "E-mail (Privata)",
+					"placeholder": "Indirizzo e-mail privato"
+				},
+				"emailBusiness": {
+					"label": "E-mail (Aziendale)",
+					"placeholder": "Indirizzo e-mail aziendale"
+				},
 				"phone": {
 					"label": "Telefono",
 					"placeholder": "Inserisci il tuo numero di telefono"
+				},
+				"phonePrivate": {
+					"label": "Telefono (Privato)",
+					"placeholder": "Numero privato"
+				},
+				"phoneMobile": {
+					"label": "Telefono (Cellulare)",
+					"placeholder": "Numero cellulare"
+				},
+				"phoneBusiness": {
+					"label": "Telefono (Aziendale)",
+					"placeholder": "Numero aziendale"
 				},
 				"fax": {
 					"label": "Fax",

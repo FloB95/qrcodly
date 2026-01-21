@@ -6,17 +6,16 @@ import { Logger } from '@/core/logging';
 import { $ZodError } from 'zod/v4/core';
 import { ZodObject } from 'zod';
 import { BulkUrlCsvDto } from '../domain/dtos/BulkUrlCsvDto';
-import { BulkToManyQrCodesError } from '../error/http/bulk-to-many-qr-codes.error';
 import { parse } from 'csv-parse/sync';
-import { MAX_QR_CODE_CSV_UPLOADS } from '@/core/config/constants';
 import { sleep } from '@/utils/general';
 import { BulkTextCsvDto } from '../domain/dtos/BulkTextCsvDto';
 import { BulkWifiCsvDto } from '../domain/dtos/BulkWifiCsvDto';
 import { BulkVCardCsvDto } from '../domain/dtos/BulkVCardCsvDto';
-import { BadRequestError, CustomApiError } from '@/core/error/http';
+import { BadRequestError } from '@/core/error/http';
 import { TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
 import { TUser } from '@/core/domain/schema/UserSchema';
 import { BulkContentTypeNotSupported } from '../error/http/bulk-content-type-not-supported.error';
+import { BulkImportQrCodesPolicy } from '../policies/bulk-import-qr-codes.policy';
 
 @injectable()
 export class BulkImportQrCodesUseCase {
@@ -46,8 +45,11 @@ export class BulkImportQrCodesUseCase {
 				'name',
 				'firstName',
 				'lastName',
-				'email',
-				'phone',
+				'emailPrivate',
+				'emailBusiness',
+				'phonePrivate',
+				'phoneMobile',
+				'phoneBusiness',
 				'fax',
 				'company',
 				'job',
@@ -57,6 +59,7 @@ export class BulkImportQrCodesUseCase {
 				'state',
 				'country',
 				'website',
+				'isDynamic',
 			],
 			schema: BulkVCardCsvDto,
 		},
@@ -71,8 +74,19 @@ export class BulkImportQrCodesUseCase {
 		const createdQrCodes: TQrCodeWithRelations[] = [];
 		const { contentType, file, config } = dto;
 
+		if (!this.isBulkSupported(contentType)) {
+			throw new BulkContentTypeNotSupported(contentType);
+		}
+
 		const csvString = await this.readFile(file);
-		const { validRecords, validationErrors } = this.parseAndValidateCsv(csvString, contentType);
+		const rawRecords = this.parseCsv(csvString, contentType);
+
+		// check plan limits before validating rows
+		const policy = new BulkImportQrCodesPolicy(user, rawRecords.length, file.size);
+		policy.checkAccess();
+
+		// validate each row
+		const { validRecords, validationErrors } = this.validateRecords(rawRecords, contentType);
 
 		if (validationErrors.length) {
 			throw new BadRequestError(
@@ -116,56 +130,47 @@ export class BulkImportQrCodesUseCase {
 		return Buffer.from(buffer).toString('utf-8');
 	}
 
-	private parseAndValidateCsv(
-		csvString: string,
-		contentType: TQrCodeContentType,
-	): {
-		validRecords: any[];
-		validationErrors: { line: number; error: $ZodError }[];
-	} {
+	private parseCsv(csvString: string, contentType: TQrCodeContentType): any[] {
 		try {
-			if (!this.isBulkSupported(contentType)) {
-				throw new BulkContentTypeNotSupported(contentType);
-			}
-
-			const validRecords: any[] = [];
-			const errors: { line: number; error: $ZodError }[] = [];
-
-			const rawRecords = parse(csvString, {
+			return parse(csvString, {
 				from_line: 2,
 				skip_empty_lines: true,
 				delimiter: ';',
 				columns: this.columnMap[contentType]!.columns,
 			});
-
-			// TODO implement plan policy handling
-			if (rawRecords.length > MAX_QR_CODE_CSV_UPLOADS) {
-				throw new BulkToManyQrCodesError(rawRecords.length, MAX_QR_CODE_CSV_UPLOADS);
-			}
-
-			rawRecords.forEach((record, index) => {
-				try {
-					const parsed = this.columnMap[contentType]!.schema.parse(record);
-					validRecords.push(parsed);
-				} catch (error) {
-					if (error instanceof $ZodError) {
-						errors.push({
-							line: index + 2,
-							error,
-						});
-					} else {
-						throw error;
-					}
-				}
-			});
-
-			return { validRecords, validationErrors: errors };
 		} catch (error) {
-			if (error instanceof CustomApiError) throw error;
-
 			const e = error as any;
 			throw new BadRequestError(e.message);
 		}
+	}
+
+	private validateRecords(
+		rawRecords: any[],
+		contentType: TQrCodeContentType,
+	): {
+		validRecords: any[];
+		validationErrors: { line: number; error: $ZodError }[];
+	} {
+		const validRecords: any[] = [];
+		const errors: { line: number; error: $ZodError }[] = [];
+
+		rawRecords.forEach((record, index) => {
+			try {
+				const parsed = this.columnMap[contentType]!.schema.parse(record);
+				validRecords.push(parsed);
+			} catch (error) {
+				if (error instanceof $ZodError) {
+					errors.push({
+						line: index + 2,
+						error,
+					});
+				} else {
+					throw error;
+				}
+			}
+		});
+
+		return { validRecords, validationErrors: errors };
 	}
 
 	private isBulkSupported(type: TQrCodeContentType): type is keyof typeof this.columnMap {
