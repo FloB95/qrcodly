@@ -52,13 +52,17 @@ export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 				});
 
 				this.logger.info('subscription.gracePeriodExpired', {
-					userId: gracePeriod.userId,
-					gracePeriodId: gracePeriod.id,
+					gracePeriod: {
+						id: gracePeriod.id,
+						userId: gracePeriod.userId,
+					},
 				});
 			} catch (error) {
 				this.logger.error('subscription.gracePeriodProcessingFailed', {
-					userId: gracePeriod.userId,
-					gracePeriodId: gracePeriod.id,
+					gracePeriod: {
+						id: gracePeriod.id,
+						userId: gracePeriod.userId,
+					},
 					error: error as Error,
 				});
 			}

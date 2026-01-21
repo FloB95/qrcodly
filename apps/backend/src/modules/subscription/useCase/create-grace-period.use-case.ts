@@ -56,8 +56,10 @@ export class CreateGracePeriodUseCase implements IBaseUseCase {
 		});
 
 		this.logger.info('subscription.gracePeriodCreated', {
-			userId,
-			gracePeriodEndsAt: gracePeriodEndsAt.toISOString(),
+			gracePeriod: {
+				userId,
+				gracePeriodEndsAt: gracePeriodEndsAt.toISOString(),
+			},
 		});
 
 		return gracePeriodEndsAt;

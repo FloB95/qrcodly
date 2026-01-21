@@ -31,6 +31,6 @@ export class DisableUserDomainsUseCase implements IBaseUseCase {
 			await this.gracePeriodRepository.markAsProcessed(gracePeriodId);
 		}
 
-		this.logger.info('subscription.domainsDisabled', { userId });
+		this.logger.info('subscription.domainsDisabled', { subscription: { userId } });
 	}
 }

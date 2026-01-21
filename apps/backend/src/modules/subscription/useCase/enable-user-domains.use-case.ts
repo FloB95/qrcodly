@@ -28,6 +28,6 @@ export class EnableUserDomainsUseCase implements IBaseUseCase {
 		// Remove any pending grace period for this user
 		await this.gracePeriodRepository.deleteByUserId(userId);
 
-		this.logger.info('subscription.domainsEnabled', { userId });
+		this.logger.info('subscription.domainsEnabled', { subscription: { userId } });
 	}
 }

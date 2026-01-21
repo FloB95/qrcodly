@@ -40,11 +40,11 @@ export class DnsVerificationService {
 	async verifyTxtRecord(domain: string, expectedToken: string): Promise<boolean> {
 		const txtHost = `_qrcodly-verify.${domain}`;
 
-		this.logger.debug('dns.verify.txt.start', { txtHost, expectedToken });
+		this.logger.debug('dns.verify.txt.start', { dns: { txtHost, expectedToken } });
 
 		// In test environment, return mock result
 		if (this.isTestEnvironment) {
-			this.logger.debug('dns.verify.txt.mock', { txtHost });
+			this.logger.debug('dns.verify.txt.mock', { dns: { txtHost } });
 			return false; // Default to false in tests, can be overridden
 		}
 
@@ -55,28 +55,30 @@ export class DnsVerificationService {
 			for (const record of records) {
 				const value = record.join('');
 				if (value === expectedToken) {
-					this.logger.info('dns.verify.txt.success', { txtHost, found: true });
+					this.logger.info('dns.verify.txt.success', { dns: { txtHost, found: true } });
 					return true;
 				}
 			}
 
 			this.logger.info('dns.verify.txt.notFound', {
-				txtHost,
-				expectedToken,
-				foundRecords: records.map((r) => r.join('')),
+				dns: {
+					txtHost,
+					expectedToken,
+					foundRecords: records.map((r) => r.join('')),
+				},
 			});
 			return false;
 		} catch (error) {
 			// DNS errors (ENOTFOUND, ENODATA) mean the record doesn't exist
 			const dnsError = error as NodeJS.ErrnoException;
 			if (dnsError.code === 'ENOTFOUND' || dnsError.code === 'ENODATA') {
-				this.logger.debug('dns.verify.txt.notExists', { txtHost, code: dnsError.code });
+				this.logger.debug('dns.verify.txt.notExists', { dns: { txtHost, code: dnsError.code } });
 				return false;
 			}
 
 			// Other errors should be logged but not thrown
 			this.logger.error('dns.verify.txt.error', {
-				txtHost,
+				dns: { txtHost },
 				error: dnsError.message,
 				code: dnsError.code,
 			});
@@ -91,11 +93,13 @@ export class DnsVerificationService {
 	 * @returns true if the CNAME record points to the correct target
 	 */
 	async verifyCnameRecord(domain: string): Promise<boolean> {
-		this.logger.debug('dns.verify.cname.start', { domain, expectedTarget: this.cnameTarget });
+		this.logger.debug('dns.verify.cname.start', {
+			dns: { domain, expectedTarget: this.cnameTarget },
+		});
 
 		// In test environment, return mock result
 		if (this.isTestEnvironment) {
-			this.logger.debug('dns.verify.cname.mock', { domain });
+			this.logger.debug('dns.verify.cname.mock', { dns: { domain } });
 			return false; // Default to false in tests, can be overridden
 		}
 
@@ -109,28 +113,30 @@ export class DnsVerificationService {
 				const normalizedTarget = this.cnameTarget.toLowerCase().replace(/\.$/, '');
 
 				if (normalizedRecord === normalizedTarget) {
-					this.logger.info('dns.verify.cname.success', { domain, found: true });
+					this.logger.info('dns.verify.cname.success', { dns: { domain, found: true } });
 					return true;
 				}
 			}
 
 			this.logger.info('dns.verify.cname.notFound', {
-				domain,
-				expectedTarget: this.cnameTarget,
-				foundRecords: records,
+				dns: {
+					domain,
+					expectedTarget: this.cnameTarget,
+					foundRecords: records,
+				},
 			});
 			return false;
 		} catch (error) {
 			// DNS errors (ENOTFOUND, ENODATA) mean the record doesn't exist
 			const dnsError = error as NodeJS.ErrnoException;
 			if (dnsError.code === 'ENOTFOUND' || dnsError.code === 'ENODATA') {
-				this.logger.warn('dns.verify.cname.notExists', { domain, code: dnsError.code });
+				this.logger.warn('dns.verify.cname.notExists', { dns: { domain, code: dnsError.code } });
 				return false;
 			}
 
 			// Other errors should be logged but not thrown
 			this.logger.error('dns.verify.cname.error', {
-				domain,
+				dns: { domain },
 				error: dnsError.message,
 				code: dnsError.code,
 			});
@@ -149,7 +155,7 @@ export class DnsVerificationService {
 		domain: string,
 		verificationToken: string,
 	): Promise<IDnsVerificationResult> {
-		this.logger.info('dns.verify.start', { domain });
+		this.logger.info('dns.verify.start', { dns: { domain } });
 
 		// Run both verifications in parallel
 		const [ownershipTxtVerified, cnameVerified] = await Promise.all([
@@ -158,9 +164,11 @@ export class DnsVerificationService {
 		]);
 
 		this.logger.info('dns.verify.complete', {
-			domain,
-			ownershipTxtVerified,
-			cnameVerified,
+			dns: {
+				domain,
+				ownershipTxtVerified,
+				cnameVerified,
+			},
 		});
 
 		return {
