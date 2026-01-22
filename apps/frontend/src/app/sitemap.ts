@@ -5,7 +5,7 @@ import type { MetadataRoute } from 'next';
 const PAGES = [
 	'', // Home
 	'docs',
-	// 'plans',
+	'plans',
 	'imprint',
 	'privacy-policy',
 ];

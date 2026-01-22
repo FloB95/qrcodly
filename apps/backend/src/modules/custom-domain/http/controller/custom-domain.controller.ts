@@ -151,6 +151,7 @@ export class CustomDomainController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			summary: 'Add a custom domain',
 			description:
 				'Adds a new subdomain for the authenticated user. Only subdomains are supported (e.g., links.example.com). The domain is registered with Cloudflare and must be verified via DNS records before it can be used.',

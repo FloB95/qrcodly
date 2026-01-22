@@ -2,7 +2,13 @@
 
 import { QrCodeList } from '@/components/dashboard/qrCode/QrCodeList';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PlusIcon, QrCodeIcon, StarIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
+import {
+	PlusIcon,
+	QrCodeIcon,
+	StarIcon,
+	ArrowUpTrayIcon,
+	Cog6ToothIcon,
+} from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { TemplateList } from './templates/TemplateList';
 import Link from 'next/link';
@@ -101,10 +107,16 @@ export const ListSection = () => {
 							</DropdownMenuContent>
 						</DropdownMenu>
 						<Link href="/" className={cn(buttonVariants(), 'md:flex md:space-x-2')}>
-							<PlusIcon className="h-5 w-5" />
+							<PlusIcon className="size-5" />
 							<span className="sr-only md:not-sr-only md:whitespace-nowrap">
 								{t('addQrCodeBtn')}
 							</span>
+						</Link>
+						<Link
+							href="/settings/domains"
+							className={cn(buttonVariants({ variant: 'outline' }), 'md:flex md:space-x-2')}
+						>
+							<Cog6ToothIcon className="size-5" />
 						</Link>
 					</div>
 				</div>

@@ -1,0 +1,172 @@
+---
+title: Custom Domains
+description: Learn how to use your own domain for QR code short links
+---
+
+Use your own domain (like `links.yourbusiness.com`) instead of the default QRcodly domain for your dynamic QR codes. This keeps your brand consistent and gives you full control over your short URLs.
+
+<Callout type="info">
+	Custom domains require a **Pro Plan**. [View pricing](/pricing) to learn more about upgrading.
+</Callout>
+
+## Why Use a Custom Domain?
+
+- **Brand Recognition**: Your short URLs will use your own domain, making them instantly recognizable
+- **Trust**: People are more likely to scan QR codes that lead to familiar domains
+- **Full Control**: Keep ownership of your links even if you switch QR code providers
+- **Professional Look**: Perfect for business cards, marketing materials, and product packaging
+
+## Before You Start
+
+You'll need:
+
+1. A **Pro Plan** subscription
+2. Access to your domain's **DNS settings** (usually in your domain registrar like GoDaddy, Namecheap, Cloudflare, etc.)
+3. A **subdomain** to use (e.g., `links.yourdomain.com`, `qr.yourdomain.com`)
+
+<Callout type="warn">
+	Only subdomains are supported (like `links.example.com`). You cannot use a root domain (like
+	`example.com`) or multi-level subdomains (like `qr.links.example.com`).
+</Callout>
+
+## Step 1: Go to Domain Settings
+
+1. Log in to your QRcodly account
+2. Click on your **profile image** in the top right corner of the header
+3. Click on **Domains** in the settings sidebar
+
+Or simply go directly to [Settings → Domains](/settings/domains).
+
+You'll see the domains management page where you can add and manage your custom domains.
+
+## Step 2: Add Your Domain
+
+1. Click the **Add Domain** button
+2. Enter your subdomain (e.g., `links.yourbusiness.com`)
+3. Click **Add** to register the domain
+
+After adding your domain, QRcodly will provide you with DNS records that you need to configure.
+
+## Step 3: Configure DNS Records
+
+You'll need to add two DNS records in your domain registrar's DNS settings:
+
+### TXT Record (Ownership Verification)
+
+This record proves you own the domain.
+
+| Type | Name/Host        | Value                            |
+| ---- | ---------------- | -------------------------------- |
+| TXT  | `_qrcodly.links` | `qrcodly-verification=abc123...` |
+
+<Callout type="info">
+	The exact name and value will be shown in QRcodly after you add your domain. Copy them exactly as
+	displayed.
+</Callout>
+
+### CNAME Record (Traffic Routing)
+
+This record directs traffic from your subdomain to QRcodly's servers.
+
+| Type  | Name/Host | Value               |
+| ----- | --------- | ------------------- |
+| CNAME | `links`   | `custom.qrcodly.de` |
+
+<Callout type="warn">
+	The **Name/Host** field should only contain the subdomain part (e.g., `links`), not the full
+	domain. Some providers may require the full subdomain — check your provider's documentation.
+</Callout>
+
+### DNS Provider Examples
+
+#### Cloudflare
+
+1. Go to your domain in Cloudflare Dashboard
+2. Click **DNS** in the sidebar
+3. Click **Add Record**
+4. For the TXT record: Select "TXT", enter the name and value from QRcodly
+5. For the CNAME record: Select "CNAME", enter the subdomain name, set content to `custom.qrcodly.de`
+6. **Important**: Set the Proxy status to **DNS only** (grey cloud) for the CNAME record
+
+#### GoDaddy
+
+1. Go to your domain's DNS Management
+2. Click **Add** under the Records section
+3. For TXT: Select "TXT" type, enter the host and value from QRcodly
+4. For CNAME: Select "CNAME" type, enter the subdomain as host, and `custom.qrcodly.de` as the value
+5. Save your changes
+
+#### Namecheap
+
+1. Go to Domain List and click **Manage** next to your domain
+2. Click **Advanced DNS**
+3. Click **Add New Record**
+4. Add both TXT and CNAME records with the values from QRcodly
+5. Save all changes
+
+## Step 4: Verify Your Domain
+
+After configuring DNS records, go back to QRcodly:
+
+1. Find your domain in the list
+2. Click the **menu icon** (three dots)
+3. Select **Verify** or **Setup Instructions** to check the status
+
+QRcodly will check if your DNS records are correctly configured. This verification can take a few minutes to a few hours depending on DNS propagation.
+
+### Verification Phases
+
+| Phase            | Status        | What it means                                    |
+| ---------------- | ------------- | ------------------------------------------------ |
+| DNS Verification | Pending       | Waiting for TXT and CNAME records to be detected |
+| DNS Verification | Partial (1/2) | One record verified, one still pending           |
+| SSL Setup        | Pending       | DNS verified, now setting up SSL certificate     |
+| Ready            | Active        | Domain is fully configured and ready to use      |
+
+<Callout type="info">
+	DNS changes can take anywhere from a few minutes to 48 hours to propagate worldwide. If
+	verification fails, wait a bit and try again.
+</Callout>
+
+## Step 5: Set as Default
+
+Once your domain is verified, set it as your default domain so it will be used for all new dynamic QR codes:
+
+1. Click the **menu icon** next to your domain
+2. Select **Set as Default**
+
+<Callout type="warn">
+	This step is important! Only after setting your custom domain as default will new dynamic QR codes
+	automatically use it for their short URLs.
+</Callout>
+
+## Troubleshooting
+
+### DNS records not detected
+
+- **Wait longer**: DNS propagation can take up to 48 hours
+- **Check for typos**: Make sure you copied the values exactly as shown in QRcodly
+- **Verify record type**: Ensure you're using TXT (not A) and CNAME (not A or AAAA)
+- **Check the host field**: Some providers want just the subdomain (`links`), others want the full name (`links.example.com`)
+
+### SSL certificate pending
+
+- SSL certificates are automatically issued after DNS verification
+- This usually takes a few minutes but can occasionally take longer
+- If it's been more than an hour, try clicking **Verify** again
+
+### Domain shows error status
+
+- Check if your domain registrar has any restrictions on CNAME records
+- Make sure the CNAME record isn't proxied (Cloudflare users: use DNS-only mode)
+- Contact support if the issue persists
+
+### Existing QR codes not using new domain
+
+- QR codes created before adding your custom domain will keep their original URLs
+- To use your custom domain, edit the QR code and select your domain from the dropdown
+- Or create a new QR code with your custom domain selected
+
+## Need Help?
+
+If you're having trouble setting up your custom domain, [contact our support team](mailto:info@qrcodly.de) and we'll help you get everything working.
