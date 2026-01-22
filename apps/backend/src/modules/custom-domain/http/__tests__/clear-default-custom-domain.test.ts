@@ -1,7 +1,6 @@
 import type { TCustomDomainResponseDto } from '@shared/schemas';
 import {
 	getTestContext,
-	releaseTestContext,
 	createCustomDomainDirectly,
 	cleanupCreatedDomains,
 	clearDefaultDomain,
@@ -21,10 +20,6 @@ describe('POST /custom-domain/clear-default', () => {
 
 	afterEach(async () => {
 		await cleanupCreatedDomains(ctx);
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	it('should clear the default domain', async () => {

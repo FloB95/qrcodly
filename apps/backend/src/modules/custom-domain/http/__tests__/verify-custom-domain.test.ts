@@ -1,7 +1,6 @@
 import type { TCustomDomainResponseDto } from '@shared/schemas';
 import {
 	getTestContext,
-	releaseTestContext,
 	createCustomDomainDirectly,
 	cleanupCreatedDomains,
 	verifyCustomDomain,
@@ -20,10 +19,6 @@ describe('POST /custom-domain/:id/verify', () => {
 
 	afterEach(async () => {
 		await cleanupCreatedDomains(ctx);
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	it('should return 200 with unverified status when DNS records are not set up', async () => {

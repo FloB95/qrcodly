@@ -43,6 +43,8 @@ const jestConfig = {
 		],
 	},
 	testEnvironment: 'node',
+	globalSetup: '<rootDir>/src/tests/global-setup.ts',
+	globalTeardown: '<rootDir>/src/tests/global-teardown.ts',
 	setupFilesAfterEnv: ['<rootDir>/src/tests/setup.test.ts'],
 	testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 	testTimeout: 30000,

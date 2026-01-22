@@ -1,11 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/schemas';
-import {
-	generateLocationQrCodeDto,
-	getTestContext,
-	releaseTestContext,
-	QR_CODE_API_PATH,
-} from './utils';
+import { generateLocationQrCodeDto, getTestContext, QR_CODE_API_PATH } from './utils';
 
 describe('updateQrCode - Location Content Type', () => {
 	let testServer: FastifyInstance;
@@ -15,10 +10,6 @@ describe('updateQrCode - Location Content Type', () => {
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	const createQrCode = async (dto: object, token: string) => {

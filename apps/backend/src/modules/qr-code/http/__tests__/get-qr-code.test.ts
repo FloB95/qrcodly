@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { type TQrCodeResponseDto } from '@shared/schemas';
 import { container } from 'tsyringe';
@@ -32,15 +32,11 @@ describe('createQrCode', () => {
 		});
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
-		user = serverSetup.user;
-		user2 = serverSetup.user2;
-	});
-
-	afterAll(async () => {
-		await shutDownServer();
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
+		user = ctx.user;
+		user2 = ctx.user2;
 	});
 
 	it('should create a QR code and return status code 201', async () => {

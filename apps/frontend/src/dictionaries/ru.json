@@ -1,7 +1,8 @@
 {
 	"general": {
+		"signOut": "Выйти",
 		"proRequired": "Требуется план Pro",
-		"comingSoon": "скоро в продаже!",
+		"comingSoon": "скоро появится!",
 		"noName": "Без имени",
 		"back": "Назад",
 		"toCollection": "В коллекцию",
@@ -644,6 +645,14 @@
 		}
 	},
 	"settings": {
+		"nav": {
+			"title": "Настройки",
+			"profile": "Профиль",
+			"security": "Безопасность",
+			"billing": "Оплата",
+			"apiKeys": "API-ключи",
+			"domains": "Домены"
+		},
 		"domains": {
 			"title": "Пользовательские Домены",
 			"description": "Используйте собственный домен для динамических QR-кодов",

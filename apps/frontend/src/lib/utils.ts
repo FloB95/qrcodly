@@ -10,6 +10,7 @@ import type {
 	TShortUrlResponseDto,
 	TShortUrlWithCustomDomainResponseDto,
 } from '@shared/schemas';
+import type { useUser } from '@clerk/nextjs';
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
@@ -187,4 +188,16 @@ export async function apiRequest<T>(
 
 export function getQrCodeEditLink(lang: SupportedLanguages, qrCodeId: string) {
 	return `/${lang}/collection/qr-code/${qrCodeId}/edit`;
+}
+
+export type UserResource = ReturnType<typeof useUser>['user'];
+export function getUserInitials(user: UserResource) {
+	if (!user) return '';
+	const first = user.firstName?.[0] || '';
+	const last = user.lastName?.[0] || '';
+	return (
+		(first + last).toUpperCase() ||
+		user.primaryEmailAddress?.emailAddress?.[0]?.toUpperCase() ||
+		'?'
+	);
 }

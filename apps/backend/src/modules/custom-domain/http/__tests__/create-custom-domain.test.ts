@@ -1,7 +1,6 @@
 import type { TCustomDomainResponseDto } from '@shared/schemas';
 import {
 	getTestContext,
-	releaseTestContext,
 	createCustomDomainDirectly,
 	cleanupCreatedDomains,
 	createCustomDomainViaApi,
@@ -20,10 +19,6 @@ describe('POST /custom-domain (Create Custom Domain)', () => {
 
 	afterEach(async () => {
 		await cleanupCreatedDomains(ctx);
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	it('should create a custom domain successfully', async () => {

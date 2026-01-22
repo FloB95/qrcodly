@@ -1,5 +1,6 @@
 {
 	"general": {
+		"signOut": "Cerrar sesión",
 		"proRequired": "Se requiere Plan Pro",
 		"comingSoon": "¡próximamente!",
 		"noName": "Sin nombre",
@@ -644,6 +645,14 @@
 		}
 	},
 	"settings": {
+		"nav": {
+			"title": "Configuración",
+			"profile": "Perfil",
+			"security": "Seguridad",
+			"billing": "Facturación",
+			"apiKeys": "Claves API",
+			"domains": "Dominios"
+		},
 		"domains": {
 			"title": "Dominios Personalizados",
 			"description": "Usa tu propio dominio para códigos QR dinámicos",

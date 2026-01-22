@@ -1,6 +1,5 @@
 import {
 	getTestContext,
-	releaseTestContext,
 	createCustomDomainDirectly,
 	cleanupCreatedDomains,
 	deleteCustomDomainViaApi,
@@ -20,10 +19,6 @@ describe('DELETE /custom-domain/:id', () => {
 
 	afterEach(async () => {
 		await cleanupCreatedDomains(ctx);
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	it('should delete custom domain and return 200 with deleted flag', async () => {

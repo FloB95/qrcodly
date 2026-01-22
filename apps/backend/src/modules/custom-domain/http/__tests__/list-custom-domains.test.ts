@@ -1,7 +1,6 @@
 import type { TCustomDomainListResponseDto } from '@shared/schemas';
 import {
 	getTestContext,
-	releaseTestContext,
 	createCustomDomainDirectly,
 	cleanupCreatedDomains,
 	listCustomDomains,
@@ -20,10 +19,6 @@ describe('GET /custom-domain (List Custom Domains)', () => {
 
 	afterEach(async () => {
 		await cleanupCreatedDomains(ctx);
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	it('should list custom domains for authenticated user', async () => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-nocheck
 import 'reflect-metadata';
 import { EventUrlStrategy } from '../event.strategy';

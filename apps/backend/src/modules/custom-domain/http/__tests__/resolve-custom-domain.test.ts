@@ -1,7 +1,6 @@
 import type { TResolveDomainResponseDto } from '@shared/schemas';
 import {
 	getTestContext,
-	releaseTestContext,
 	createCustomDomainDirectly,
 	cleanupCreatedDomains,
 	resolveDomain,
@@ -19,10 +18,6 @@ describe('GET /custom-domain/resolve', () => {
 
 	afterEach(async () => {
 		await cleanupCreatedDomains(ctx);
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	it('should return isValid=true for fully verified domain', async () => {

@@ -1,5 +1,6 @@
 {
 	"general": {
+		"signOut": "Wyloguj się",
 		"proRequired": "Wymagany Plan Pro",
 		"comingSoon": "już wkrótce!",
 		"noName": "Brak nazwy",
@@ -644,6 +645,14 @@
 		}
 	},
 	"settings": {
+		"nav": {
+			"title": "Ustawienia",
+			"profile": "Profil",
+			"security": "Bezpieczeństwo",
+			"billing": "Płatności",
+			"apiKeys": "Klucze API",
+			"domains": "Domeny"
+		},
 		"domains": {
 			"title": "Własne Domeny",
 			"description": "Użyj własnej domeny dla dynamicznych kodów QR",

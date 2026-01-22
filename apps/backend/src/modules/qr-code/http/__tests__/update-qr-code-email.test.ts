@@ -1,11 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/schemas';
-import {
-	generateEmailQrCodeDto,
-	getTestContext,
-	releaseTestContext,
-	QR_CODE_API_PATH,
-} from './utils';
+import { generateEmailQrCodeDto, getTestContext, QR_CODE_API_PATH } from './utils';
 
 describe('updateQrCode - Email Content Type', () => {
 	let testServer: FastifyInstance;
@@ -15,10 +10,6 @@ describe('updateQrCode - Email Content Type', () => {
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	const createQrCode = async (dto: object, token: string) => {

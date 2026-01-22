@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import {
 	generateQrCodeDto,
@@ -43,16 +43,10 @@ describe('updateQrCode', () => {
 		});
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
-		accessToken2 = serverSetup.accessToken2;
-	});
-
-	afterAll(async () => {
-		// Small delay to ensure all async Redis operations complete
-		await new Promise((resolve) => setTimeout(resolve, 100));
-		await shutDownServer();
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
+		accessToken2 = ctx.accessToken2;
 	});
 
 	describe('PATCH /qr-code/:id - Basic Updates', () => {

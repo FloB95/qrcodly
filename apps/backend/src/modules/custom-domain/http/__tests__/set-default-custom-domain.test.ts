@@ -1,7 +1,6 @@
 import type { TCustomDomainResponseDto } from '@shared/schemas';
 import {
 	getTestContext,
-	releaseTestContext,
 	createCustomDomainDirectly,
 	cleanupCreatedDomains,
 	setDefaultDomain,
@@ -20,10 +19,6 @@ describe('POST /custom-domain/:id/set-default', () => {
 
 	afterEach(async () => {
 		await cleanupCreatedDomains(ctx);
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	it('should return 400 when trying to set non-verified domain as default', async () => {

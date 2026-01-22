@@ -1,5 +1,9 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import {
+	getTestContext as getGlobalTestContext,
+	TEST_USER_PRO_ID,
+	TEST_USER_2_ID,
+} from '@/tests/shared/test-context';
 import { generateCreateCustomDomainDto } from '@/tests/shared/factories/custom-domain.factory';
 import type { FastifyInstance } from 'fastify';
 import type { TCustomDomainResponseDto, TCreateCustomDomainDto } from '@shared/schemas';
@@ -11,9 +15,8 @@ import type { TCustomDomain } from '@/modules/custom-domain/domain/entities/cust
 
 export const CUSTOM_DOMAIN_API_PATH = `${API_BASE_PATH}/custom-domain`;
 
-// Pro user ID from test-server.ts
-export const TEST_USER_PRO_ID = 'user_2vxx4UoYRjT2mi1I4FMFEbpzbAA';
-export const TEST_USER_2_ID = 'user_36wbOOFSWfYDUf7zA4L2ucTZWYL';
+// Re-export for convenience in tests
+export { TEST_USER_PRO_ID, TEST_USER_2_ID };
 
 export interface TestContext {
 	testServer: FastifyInstance;
@@ -23,45 +26,28 @@ export interface TestContext {
 	createdDomainIds: string[];
 }
 
-let sharedContext: TestContext | null = null;
-let refCount = 0;
+const contextCreatedDomainIds: string[] = [];
 
 /**
- * Gets or creates a shared test context. Uses reference counting to manage lifecycle.
- * Call releaseTestContext() in afterAll to properly clean up.
+ * Gets the shared test context.
+ * The context is managed globally by test-context.ts.
  */
 export const getTestContext = async (): Promise<TestContext> => {
-	if (!sharedContext) {
-		const serverSetup = await getTestServerWithUserAuth();
-		sharedContext = {
-			testServer: serverSetup.testServer,
-			accessToken: serverSetup.accessToken,
-			accessToken2: serverSetup.accessToken2,
-			accessTokenPro: serverSetup.accessTokenPro,
-			createdDomainIds: [],
-		};
+	const ctx = await getGlobalTestContext();
 
-		// Clean up any existing domains from previous test runs
+	// Clean up any existing domains from previous test runs on first call
+	if (contextCreatedDomainIds.length === 0) {
 		await cleanupDomainsForUser(TEST_USER_PRO_ID);
 		await cleanupDomainsForUser(TEST_USER_2_ID);
 	}
-	refCount++;
-	return sharedContext;
-};
 
-/**
- * Releases the test context. When all references are released, shuts down the server.
- */
-export const releaseTestContext = async (): Promise<void> => {
-	refCount--;
-	if (refCount <= 0 && sharedContext) {
-		// Final cleanup
-		await cleanupDomainsForUser(TEST_USER_PRO_ID);
-		await cleanupDomainsForUser(TEST_USER_2_ID);
-		await shutDownServer();
-		sharedContext = null;
-		refCount = 0;
-	}
+	return {
+		testServer: ctx.testServer,
+		accessToken: ctx.accessToken,
+		accessToken2: ctx.accessToken2,
+		accessTokenPro: ctx.accessTokenPro,
+		createdDomainIds: contextCreatedDomainIds,
+	};
 };
 
 /**

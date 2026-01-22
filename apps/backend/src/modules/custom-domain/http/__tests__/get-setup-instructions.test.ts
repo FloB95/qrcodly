@@ -1,6 +1,5 @@
 import {
 	getTestContext,
-	releaseTestContext,
 	createCustomDomainDirectly,
 	cleanupCreatedDomains,
 	getSetupInstructions,
@@ -19,10 +18,6 @@ describe('GET /custom-domain/:id/setup-instructions', () => {
 
 	afterEach(async () => {
 		await cleanupCreatedDomains(ctx);
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	it('should return setup instructions for DNS verification phase', async () => {

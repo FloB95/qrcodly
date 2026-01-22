@@ -1,7 +1,6 @@
 import type { TCustomDomainResponseDto } from '@shared/schemas';
 import {
 	getTestContext,
-	releaseTestContext,
 	createCustomDomainDirectly,
 	cleanupCreatedDomains,
 	getCustomDomain,
@@ -20,10 +19,6 @@ describe('GET /custom-domain/:id (Get Custom Domain)', () => {
 
 	afterEach(async () => {
 		await cleanupCreatedDomains(ctx);
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	it('should return custom domain by ID', async () => {

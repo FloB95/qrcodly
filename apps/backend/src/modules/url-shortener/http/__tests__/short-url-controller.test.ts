@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import { generateUpdateShortUrlDto } from '@/tests/shared/factories/short-url.factory';
 import {
 	assertShortUrlResponse,
@@ -17,15 +17,11 @@ describe('ShortUrlController', () => {
 	let userId: string;
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
-		accessToken2 = serverSetup.accessToken2;
-		userId = serverSetup.user.id;
-	});
-
-	afterAll(async () => {
-		await shutDownServer();
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
+		accessToken2 = ctx.accessToken2;
+		userId = ctx.user.id;
 	});
 
 	describe('GET /:shortCode', () => {

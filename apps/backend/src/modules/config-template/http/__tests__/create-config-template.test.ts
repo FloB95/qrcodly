@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import {
 	QrCodeDefaults,
@@ -39,13 +39,9 @@ describe('createConfigTemplate', () => {
 		});
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
-	});
-
-	afterAll(async () => {
-		await shutDownServer();
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
 	});
 
 	it('should create a Config Template and return status code 201', async () => {

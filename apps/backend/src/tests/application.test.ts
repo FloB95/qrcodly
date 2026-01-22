@@ -1,6 +1,6 @@
 import { type FastifyInstance } from 'fastify';
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 
 /**
  * Create User API Tests
@@ -9,11 +9,8 @@ describe('test application', () => {
 	let testServer: FastifyInstance;
 
 	beforeAll(async () => {
-		({ testServer } = await getTestServerWithUserAuth());
-	});
-
-	afterAll(async () => {
-		await shutDownServer();
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
 	});
 
 	it('should start the server and make a healthcheck', async () => {

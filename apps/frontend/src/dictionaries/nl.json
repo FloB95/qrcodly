@@ -1,5 +1,6 @@
 {
 	"general": {
+		"signOut": "Uitloggen",
 		"proRequired": "Pro-abonnement vereist",
 		"comingSoon": "binnenkort beschikbaar!",
 		"noName": "Geen naam",
@@ -644,6 +645,14 @@
 		}
 	},
 	"settings": {
+		"nav": {
+			"title": "Instellingen",
+			"profile": "Profiel",
+			"security": "Beveiliging",
+			"billing": "Facturering",
+			"apiKeys": "API-sleutels",
+			"domains": "Domeinen"
+		},
 		"domains": {
 			"title": "Aangepaste Domeinen",
 			"description": "Gebruik je eigen domein voor dynamische QR-codes",

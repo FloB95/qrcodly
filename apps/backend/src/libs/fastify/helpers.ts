@@ -22,6 +22,7 @@ import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { $ZodError } from 'zod/v4/core';
 import { addUserToRequestMiddleware } from '@/core/http/middleware/add-user-to-request.middleware';
+import { IN_TEST } from '@/core/config/constants';
 
 /**
  * Parses a Fastify request into an IHttpRequest object.
@@ -68,16 +69,18 @@ export const fastifyErrorHandler = (
 			responsePayload.fieldErrors = mergedErrors;
 		}
 
-		logger.error('CustomApiError', {
-			request: createRequestLogObject(_request),
-			error: {
-				type: error.constructor.name,
-				message: error.message,
-				zodErrors: (error as BadRequestError)?.zodError
-					? (error as BadRequestError)?.zodError?.issues
-					: undefined,
-			},
-		});
+		if (!IN_TEST) {
+			logger.error('CustomApiError', {
+				request: createRequestLogObject(_request),
+				error: {
+					type: error.constructor.name,
+					message: error.message,
+					zodErrors: (error as BadRequestError)?.zodError
+						? (error as BadRequestError)?.zodError?.issues
+						: undefined,
+				},
+			});
+		}
 
 		return reply.status(error.statusCode).send(responsePayload);
 	}
@@ -139,14 +142,16 @@ const handleFastifyRequest = async (
 	}
 };
 
-export function parseJsonFields(body: Record<string, any>, fieldsToParse: string[] = ['config']) {
+function parseJsonFields(body: Record<string, any>, fieldsToParse: string[] = ['config']) {
 	const parsedBody: Record<string, any> = { ...body };
 
 	for (const key of fieldsToParse) {
 		if (parsedBody[key] && typeof parsedBody[key] === 'string') {
 			try {
 				parsedBody[key] = JSON.parse(parsedBody[key]);
-			} catch (e: any) {}
+			} catch (e: any) {
+				throw new BadRequestError(`Invalid JSON in field "${key}": ${e.message}`);
+			}
 		}
 	}
 

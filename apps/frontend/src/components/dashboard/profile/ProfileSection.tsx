@@ -31,6 +31,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+import { getUserInitials } from '@/lib/utils';
 
 const profileSchema = z.object({
 	firstName: z.string().min(1, 'First name is required'),
@@ -203,17 +204,6 @@ export function ProfileSection() {
 		}
 	};
 
-	const getInitials = () => {
-		if (!user) return '';
-		const first = user.firstName?.[0] || '';
-		const last = user.lastName?.[0] || '';
-		return (
-			(first + last).toUpperCase() ||
-			user.primaryEmailAddress?.emailAddress?.[0]?.toUpperCase() ||
-			'?'
-		);
-	};
-
 	const fullName = user ? [user.firstName, user.lastName].filter(Boolean).join(' ') : '';
 	const primaryEmail = user?.primaryEmailAddress?.emailAddress;
 
@@ -280,7 +270,7 @@ export function ProfileSection() {
 								<Avatar className="size-16 border-4 border-background shadow-lg">
 									<AvatarImage src={user?.imageUrl} alt={fullName || 'Profile'} />
 									<AvatarFallback className="text-xl font-medium bg-primary/10">
-										{getInitials()}
+										{getUserInitials(user)}
 									</AvatarFallback>
 								</Avatar>
 								<button

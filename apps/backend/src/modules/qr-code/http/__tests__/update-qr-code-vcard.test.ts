@@ -4,7 +4,6 @@ import {
 	generateVCardQrCodeDto,
 	generateDynamicVCardQrCodeDto,
 	getTestContext,
-	releaseTestContext,
 	QR_CODE_API_PATH,
 } from './utils';
 
@@ -16,10 +15,6 @@ describe('updateQrCode - vCard Content Type', () => {
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	const createQrCode = async (dto: object, token: string) => {

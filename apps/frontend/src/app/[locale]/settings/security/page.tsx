@@ -1,10 +1,6 @@
 import { ShieldCheckIcon } from '@heroicons/react/24/outline';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
-import {
-	PasswordSection,
-	SessionsSection,
-	DeleteAccountSection,
-} from '@/components/dashboard/security';
+import { PasswordSection, SessionsSection } from '@/components/dashboard/security';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 
@@ -35,8 +31,8 @@ export default async function Page({ params }: DefaultPageParams) {
 			{/* Sessions Section */}
 			<SessionsSection />
 
-			{/* Delete Account Section */}
-			<DeleteAccountSection />
+			{/* TODO: Implement delete account handling before re-enabling this section */}
+			{/* <DeleteAccountSection /> */}
 		</div>
 	);
 }

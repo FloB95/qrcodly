@@ -1,5 +1,6 @@
 {
 	"general": {
+		"signOut": "Abmelden",
 		"proRequired": "Pro-Abo erforderlich",
 		"comingSoon": "demnächst verfügbar!",
 		"noName": "Kein Name",
@@ -124,7 +125,7 @@
 			},
 			"customDomainFeature": {
 				"headline": "Behalte die Kontrolle mit deiner eigenen Domain",
-				"subHeadline": "Nutze deine eigene Domain für dynamische QR-Codes. Behalte die Kontrolle, bleib gebrandmarkt und besitze jeden Link."
+				"subHeadline": "Nutze deine eigene Domain für dynamische QR-Codes. Behalte die Kontrolle, stärke deine Marke und besitze jeden Link."
 			},
 			"teamFeature": {
 				"headline": "Im Team zusammenarbeiten",
@@ -644,6 +645,14 @@
 		}
 	},
 	"settings": {
+		"nav": {
+			"title": "Einstellungen",
+			"profile": "Profil",
+			"security": "Sicherheit",
+			"billing": "Abrechnung",
+			"apiKeys": "API-Schlüssel",
+			"domains": "Domains"
+		},
 		"domains": {
 			"title": "Eigene Domains",
 			"description": "Verwende deine eigene Domain für dynamische QR-Codes",

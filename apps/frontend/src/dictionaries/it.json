@@ -1,5 +1,6 @@
 {
 	"general": {
+		"signOut": "Disconnetti",
 		"proRequired": "Richiesto Piano Pro",
 		"comingSoon": "prossimamente!",
 		"noName": "Nessun nome",
@@ -644,6 +645,14 @@
 		}
 	},
 	"settings": {
+		"nav": {
+			"title": "Impostazioni",
+			"profile": "Profilo",
+			"security": "Sicurezza",
+			"billing": "Fatturazione",
+			"apiKeys": "Chiavi API",
+			"domains": "Domini"
+		},
 		"domains": {
 			"title": "Domini Personalizzati",
 			"description": "Usa il tuo dominio per i codici QR dinamici",

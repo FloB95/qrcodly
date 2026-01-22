@@ -1,110 +1,48 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
-import { API_BASE_PATH } from '@/core/config/constants';
 import {
 	generateEditableUrlQrCodeDto,
 	generateEventQrCodeDto,
 	generateDynamicVCardQrCodeDto,
 	getTestContext,
-	releaseTestContext,
 	createQrCodeRequest,
 } from './utils';
 import { generateCreateCustomDomainDto } from '@/tests/shared/factories/custom-domain.factory';
+import {
+	createCustomDomainDirectly,
+	deleteCustomDomainDirectly,
+	setDefaultDomain,
+	TEST_USER_PRO_ID,
+	type TestContext,
+} from '@/modules/custom-domain/http/__tests__/utils';
 import db from '@/core/db';
 import { customDomain } from '@/core/db/schemas';
 import { eq, and } from 'drizzle-orm';
-import { randomUUID } from 'crypto';
-import type { TCustomDomain } from '@/modules/custom-domain/domain/entities/custom-domain.entity';
-
-const CUSTOM_DOMAIN_API_PATH = `${API_BASE_PATH}/custom-domain`;
-
-// Pro user ID from test-server.ts
-const TEST_USER_PRO_ID = 'user_2vxx4UoYRjT2mi1I4FMFEbpzbAA';
 
 describe('QR Code Data - Custom Domain Integration', () => {
 	let testServer: FastifyInstance;
 	let accessTokenPro: string;
+	let ctx: TestContext;
 
 	beforeAll(async () => {
-		const ctx = await getTestContext();
-		testServer = ctx.testServer;
-		accessTokenPro = ctx.accessTokenPro;
+		const qrCtx = await getTestContext();
+		testServer = qrCtx.testServer;
+		accessTokenPro = qrCtx.accessTokenPro;
+
+		// Get custom domain context for cleanup tracking
+		const { getTestContext: getCustomDomainContext } =
+			await import('@/modules/custom-domain/http/__tests__/utils');
+		ctx = await getCustomDomainContext();
 	});
 
-	afterAll(async () => {
-		await releaseTestContext();
-	});
-
 	/**
-	 * Helper to directly create a custom domain in the database.
-	 * This bypasses the API policy check which requires Pro plan.
-	 * In tests we need to verify qrCodeData behavior, not plan restrictions.
-	 */
-	const createCustomDomainDirectly = async (
-		domain: string,
-		userId: string,
-		options: {
-			sslStatus?: TCustomDomain['sslStatus'];
-			isDefault?: boolean;
-			isFullyVerified?: boolean;
-		} = {},
-	): Promise<string> => {
-		const id = randomUUID();
-		const now = new Date();
-		const isFullyVerified = options.isFullyVerified ?? options.sslStatus === 'active';
-
-		await db.insert(customDomain).values({
-			id,
-			domain: domain.toLowerCase(),
-			sslStatus: options.sslStatus ?? 'initializing',
-			ownershipStatus: isFullyVerified ? 'verified' : 'pending',
-			isDefault: options.isDefault ?? false,
-			isEnabled: true,
-			ownershipTxtVerified: isFullyVerified,
-			cnameVerified: isFullyVerified,
-			cloudflareHostnameId: null,
-			sslValidationTxtName: null,
-			sslValidationTxtValue: null,
-			ownershipValidationTxtName: null,
-			ownershipValidationTxtValue: null,
-			createdBy: userId,
-			createdAt: now,
-			updatedAt: now,
-		});
-
-		return id;
-	};
-
-	/**
-	 * Helper to set a domain as the default for a user.
-	 * First clears any existing default, then sets the new one.
-	 */
-	const setDomainAsDefault = async (domainId: string, userId: string) => {
-		// Clear any existing default for this user
-		await db
-			.update(customDomain)
-			.set({ isDefault: false })
-			.where(and(eq(customDomain.createdBy, userId), eq(customDomain.isDefault, true)));
-
-		// Set this domain as default
-		await db.update(customDomain).set({ isDefault: true }).where(eq(customDomain.id, domainId));
-	};
-
-	/**
-	 * Helper to clear default domain for a user.
+	 * Helper to clear default domain for a user without deleting domains.
 	 */
 	const clearDefaultDomainForUser = async (userId: string) => {
 		await db
 			.update(customDomain)
 			.set({ isDefault: false })
 			.where(and(eq(customDomain.createdBy, userId), eq(customDomain.isDefault, true)));
-	};
-
-	/**
-	 * Helper to delete a custom domain from the database.
-	 */
-	const deleteCustomDomainDirectly = async (domainId: string) => {
-		await db.delete(customDomain).where(eq(customDomain.id, domainId));
 	};
 
 	describe('Dynamic QR codes with custom domain', () => {
@@ -116,9 +54,13 @@ describe('QR Code Data - Custom Domain Integration', () => {
 			const dto = generateCreateCustomDomainDto();
 			testDomainName = dto.domain.toLowerCase();
 
-			testDomainId = await createCustomDomainDirectly(testDomainName, TEST_USER_PRO_ID, {
+			testDomainId = await createCustomDomainDirectly(ctx, testDomainName, TEST_USER_PRO_ID, {
 				sslStatus: 'active',
+				ownershipStatus: 'verified',
 				isDefault: true,
+				isEnabled: true,
+				cnameVerified: true,
+				ownershipTxtVerified: true,
 			});
 		});
 
@@ -213,24 +155,18 @@ describe('QR Code Data - Custom Domain Integration', () => {
 	});
 
 	describe('Custom domain validation for qrCodeData', () => {
-		// Helper to call set-default API
-		const setDefaultDomain = async (id: string, token: string) =>
-			testServer.inject({
-				method: 'POST',
-				url: `${CUSTOM_DOMAIN_API_PATH}/${id}/set-default`,
-				headers: { Authorization: `Bearer ${token}` },
-			});
-
 		it('should reject setting unverified domain as default', async () => {
 			// Create an unverified domain directly in DB (initializing SSL)
 			const dto = generateCreateCustomDomainDto();
-			const domainId = await createCustomDomainDirectly(dto.domain, TEST_USER_PRO_ID, {
+			const domainId = await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID, {
 				sslStatus: 'initializing',
-				isFullyVerified: false,
+				ownershipStatus: 'pending',
+				cnameVerified: false,
+				ownershipTxtVerified: false,
 			});
 
 			// Attempt to set as default without being fully verified
-			const setDefaultResponse = await setDefaultDomain(domainId, accessTokenPro);
+			const setDefaultResponse = await setDefaultDomain(ctx, domainId, accessTokenPro);
 			expect(setDefaultResponse.statusCode).toBe(400);
 
 			const error = JSON.parse(setDefaultResponse.payload);
@@ -243,13 +179,15 @@ describe('QR Code Data - Custom Domain Integration', () => {
 		it('should reject setting domain with pending_validation SSL as default', async () => {
 			// Create a domain with pending SSL validation
 			const dto = generateCreateCustomDomainDto();
-			const domainId = await createCustomDomainDirectly(dto.domain, TEST_USER_PRO_ID, {
+			const domainId = await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID, {
 				sslStatus: 'pending_validation',
-				isFullyVerified: false,
+				ownershipStatus: 'pending',
+				cnameVerified: false,
+				ownershipTxtVerified: false,
 			});
 
 			// Attempt to set as default
-			const setDefaultResponse = await setDefaultDomain(domainId, accessTokenPro);
+			const setDefaultResponse = await setDefaultDomain(ctx, domainId, accessTokenPro);
 			expect(setDefaultResponse.statusCode).toBe(400);
 
 			const error = JSON.parse(setDefaultResponse.payload);

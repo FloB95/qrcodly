@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { QrCodeDefaults, type TCreateQrCodeDto } from '@shared/schemas';
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext as getGlobalTestContext } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 
 export const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
@@ -13,37 +13,18 @@ export interface TestContext {
 	accessTokenPro: string;
 }
 
-let sharedContext: TestContext | null = null;
-let refCount = 0;
-
 /**
- * Gets or creates a shared test context. Uses reference counting to manage lifecycle.
- * Call releaseTestContext() in afterAll to properly clean up.
+ * Gets the shared test context.
+ * The context is managed globally by test-context.ts.
  */
 export const getTestContext = async (): Promise<TestContext> => {
-	if (!sharedContext) {
-		const serverSetup = await getTestServerWithUserAuth();
-		sharedContext = {
-			testServer: serverSetup.testServer,
-			accessToken: serverSetup.accessToken,
-			accessToken2: serverSetup.accessToken2,
-			accessTokenPro: serverSetup.accessTokenPro,
-		};
-	}
-	refCount++;
-	return sharedContext;
-};
-
-/**
- * Releases the test context. When all references are released, shuts down the server.
- */
-export const releaseTestContext = async (): Promise<void> => {
-	refCount--;
-	if (refCount <= 0 && sharedContext) {
-		await shutDownServer();
-		sharedContext = null;
-		refCount = 0;
-	}
+	const ctx = await getGlobalTestContext();
+	return {
+		testServer: ctx.testServer,
+		accessToken: ctx.accessToken,
+		accessToken2: ctx.accessToken2,
+		accessTokenPro: ctx.accessTokenPro,
+	};
 };
 
 /**
