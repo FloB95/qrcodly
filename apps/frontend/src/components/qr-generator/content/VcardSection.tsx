@@ -81,7 +81,7 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 					control={form.control}
 					name="title"
 					render={({ field }) => (
-						<FormItem className="w-full sm:w-1/3">
+						<FormItem className="w-full sm:w-1/3 md:w-full lg:w-1/3">
 							<FormLabel>
 								<span translate="no" suppressHydrationWarning>
 									{t('title.label')}
