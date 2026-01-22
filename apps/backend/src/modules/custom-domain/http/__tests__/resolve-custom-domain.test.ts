@@ -25,11 +25,14 @@ describe('GET /custom-domain/resolve', () => {
 		await releaseTestContext();
 	});
 
-	it('should return isValid=true for verified domain with active SSL', async () => {
+	it('should return isValid=true for fully verified domain', async () => {
 		const dto = generateCreateCustomDomainDto();
 		await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID, {
 			sslStatus: 'active',
 			ownershipStatus: 'verified',
+			isEnabled: true,
+			ownershipTxtVerified: true,
+			cnameVerified: true,
 		});
 
 		const response = await resolveDomain(ctx, dto.domain);
@@ -38,7 +41,6 @@ describe('GET /custom-domain/resolve', () => {
 		const result = JSON.parse(response.payload) as TResolveDomainResponseDto;
 		expect(result.domain).toBe(dto.domain.toLowerCase());
 		expect(result.isValid).toBe(true);
-		expect(result.sslStatus).toBe('active');
 	});
 
 	it('should return isValid=false for domain with non-active SSL', async () => {
@@ -68,6 +70,9 @@ describe('GET /custom-domain/resolve', () => {
 		await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID, {
 			sslStatus: 'active',
 			ownershipStatus: 'verified',
+			isEnabled: true,
+			ownershipTxtVerified: true,
+			cnameVerified: true,
 		});
 
 		// No auth header - should still work

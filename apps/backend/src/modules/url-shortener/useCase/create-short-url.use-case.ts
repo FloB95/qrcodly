@@ -1,11 +1,10 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
-import { BadRequestError, ForbiddenError } from '@/core/error/http';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { TShortUrl, TShortUrlWithDomain } from '../domain/entities/short-url.entity';
 import { TCreateShortUrlDto } from '@shared/schemas';
-import CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
+import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 
 /**
  * Use case for creating a ShortUrl entity.
@@ -14,7 +13,8 @@ import CustomDomainRepository from '@/modules/custom-domain/domain/repository/cu
 export class CreateShortUrlUseCase implements IBaseUseCase {
 	constructor(
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
-		@inject(CustomDomainRepository) private customDomainRepository: CustomDomainRepository,
+		@inject(CustomDomainValidationService)
+		private customDomainValidationService: CustomDomainValidationService,
 		@inject(Logger) private logger: Logger,
 	) {}
 
@@ -25,9 +25,9 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 	 * @returns A promise that resolves with the newly created ShortUrl entity.
 	 */
 	async execute(dto: TCreateShortUrlDto, createdBy: string): Promise<TShortUrlWithDomain> {
-		// Validate custom domain ownership if provided
+		// Validate custom domain ownership and readiness if provided
 		if (dto.customDomainId) {
-			await this.validateCustomDomain(dto.customDomainId, createdBy);
+			await this.customDomainValidationService.validateForUserUse(dto.customDomainId, createdBy);
 		}
 
 		const newId = await this.shortUrlRepository.generateId();
@@ -63,26 +63,5 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 		});
 
 		return createdShortUrl;
-	}
-
-	/**
-	 * Validates that the custom domain exists, is owned by the user, and is verified.
-	 */
-	private async validateCustomDomain(customDomainId: string, userId: string): Promise<void> {
-		const customDomain = await this.customDomainRepository.findOneById(customDomainId);
-
-		if (!customDomain) {
-			throw new BadRequestError('Custom domain not found.');
-		}
-
-		if (customDomain.createdBy !== userId) {
-			throw new ForbiddenError('You do not own this custom domain.');
-		}
-
-		if (customDomain.sslStatus !== 'active') {
-			throw new BadRequestError(
-				'Custom domain is not verified. Please complete DNS verification first.',
-			);
-		}
 	}
 }

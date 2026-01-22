@@ -4,7 +4,7 @@ import { Logger } from '@/core/logging';
 import CustomDomainRepository from '../domain/repository/custom-domain.repository';
 import { TCustomDomain } from '../domain/entities/custom-domain.entity';
 import { BadRequestError } from '@/core/error/http';
-import { DomainSslNotActiveError } from '../error/http/domain-ssl-not-active.error';
+import { CustomDomainValidationService } from '../service/custom-domain-validation.service';
 
 /**
  * Use case for setting a Custom Domain as the user's default domain for dynamic QR codes.
@@ -13,12 +13,14 @@ import { DomainSslNotActiveError } from '../error/http/domain-ssl-not-active.err
 export class SetDefaultCustomDomainUseCase implements IBaseUseCase {
 	constructor(
 		@inject(CustomDomainRepository) private customDomainRepository: CustomDomainRepository,
+		@inject(CustomDomainValidationService)
+		private customDomainValidationService: CustomDomainValidationService,
 		@inject(Logger) private logger: Logger,
 	) {}
 
 	/**
 	 * Sets a custom domain as the user's default domain.
-	 * Only domains with active SSL status can be set as default.
+	 * Only fully verified domains can be set as default.
 	 * @param customDomain The Custom Domain to set as default.
 	 * @param userId The ID of the user.
 	 * @returns A promise that resolves with the updated Custom Domain entity.
@@ -29,10 +31,8 @@ export class SetDefaultCustomDomainUseCase implements IBaseUseCase {
 			throw new BadRequestError('You can only set your own domains as default.');
 		}
 
-		// Domain must have active SSL status before it can be set as default
-		if (customDomain.sslStatus !== 'active') {
-			throw new DomainSslNotActiveError(customDomain.domain);
-		}
+		// Domain must be fully verified before it can be set as default
+		this.customDomainValidationService.validateForUse(customDomain);
 
 		// Set this domain as the default (this will also unset any previous default)
 		await this.customDomainRepository.setDefault(customDomain.id, userId);

@@ -77,7 +77,10 @@ export const createCustomDomainDirectly = async (
 		sslStatus?: TCustomDomain['sslStatus'];
 		ownershipStatus?: TCustomDomain['ownershipStatus'];
 		isDefault?: boolean;
+		isEnabled?: boolean;
 		verificationPhase?: TCustomDomain['verificationPhase'];
+		ownershipTxtVerified?: boolean;
+		cnameVerified?: boolean;
 	} = {},
 ): Promise<string> => {
 	const id = randomUUID();
@@ -91,9 +94,9 @@ export const createCustomDomainDirectly = async (
 		ownershipStatus: options.ownershipStatus ?? 'pending',
 		isDefault: options.isDefault ?? false,
 		verificationPhase: options.verificationPhase ?? 'dns_verification',
-		ownershipTxtVerified: false,
-		cnameVerified: false,
-		isEnabled: true,
+		ownershipTxtVerified: options.ownershipTxtVerified ?? false,
+		cnameVerified: options.cnameVerified ?? false,
+		isEnabled: options.isEnabled ?? true,
 		cloudflareHostnameId: null,
 		sslValidationTxtName: null,
 		sslValidationTxtValue: null,

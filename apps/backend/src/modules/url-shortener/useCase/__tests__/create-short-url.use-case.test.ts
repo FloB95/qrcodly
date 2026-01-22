@@ -1,6 +1,6 @@
 import { CreateShortUrlUseCase } from '../create-short-url.use-case';
 import type ShortUrlRepository from '../../domain/repository/short-url.repository';
-import type CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
+import type { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 import { type Logger } from '@/core/logging';
 import { mock } from 'jest-mock-extended';
 import type { TShortUrlWithDomain } from '../../domain/entities/short-url.entity';
@@ -9,14 +9,18 @@ import type { TCreateShortUrlDto } from '@shared/schemas';
 describe('CreateShortUrlUseCase', () => {
 	let useCase: CreateShortUrlUseCase;
 	let mockRepository: jest.Mocked<ShortUrlRepository>;
-	let mockCustomDomainRepository: jest.Mocked<CustomDomainRepository>;
+	let mockCustomDomainValidationService: jest.Mocked<CustomDomainValidationService>;
 	let mockLogger: jest.Mocked<Logger>;
 
 	beforeEach(() => {
 		mockRepository = mock<ShortUrlRepository>();
-		mockCustomDomainRepository = mock<CustomDomainRepository>();
+		mockCustomDomainValidationService = mock<CustomDomainValidationService>();
 		mockLogger = mock<Logger>();
-		useCase = new CreateShortUrlUseCase(mockRepository, mockCustomDomainRepository, mockLogger);
+		useCase = new CreateShortUrlUseCase(
+			mockRepository,
+			mockCustomDomainValidationService,
+			mockLogger,
+		);
 	});
 
 	afterEach(() => {

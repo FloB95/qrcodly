@@ -11,8 +11,8 @@ jobs:
   test-backend:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: 'development'
-      LOG_LEVEL: 'debug'
+      NODE_ENV: 'test'
+      LOG_LEVEL: 'error'
       TZ: 'Europe/Berlin'
       COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}

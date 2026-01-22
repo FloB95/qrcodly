@@ -43,17 +43,25 @@ describe('QR Code Data - Custom Domain Integration', () => {
 	const createCustomDomainDirectly = async (
 		domain: string,
 		userId: string,
-		options: { sslStatus?: TCustomDomain['sslStatus']; isDefault?: boolean } = {},
+		options: {
+			sslStatus?: TCustomDomain['sslStatus'];
+			isDefault?: boolean;
+			isFullyVerified?: boolean;
+		} = {},
 	): Promise<string> => {
 		const id = randomUUID();
 		const now = new Date();
+		const isFullyVerified = options.isFullyVerified ?? options.sslStatus === 'active';
 
 		await db.insert(customDomain).values({
 			id,
 			domain: domain.toLowerCase(),
 			sslStatus: options.sslStatus ?? 'initializing',
-			ownershipStatus: options.sslStatus === 'active' ? 'verified' : 'pending',
+			ownershipStatus: isFullyVerified ? 'verified' : 'pending',
 			isDefault: options.isDefault ?? false,
+			isEnabled: true,
+			ownershipTxtVerified: isFullyVerified,
+			cnameVerified: isFullyVerified,
 			cloudflareHostnameId: null,
 			sslValidationTxtName: null,
 			sslValidationTxtValue: null,
@@ -218,14 +226,15 @@ describe('QR Code Data - Custom Domain Integration', () => {
 			const dto = generateCreateCustomDomainDto();
 			const domainId = await createCustomDomainDirectly(dto.domain, TEST_USER_PRO_ID, {
 				sslStatus: 'initializing',
+				isFullyVerified: false,
 			});
 
-			// Attempt to set as default without SSL being active
+			// Attempt to set as default without being fully verified
 			const setDefaultResponse = await setDefaultDomain(domainId, accessTokenPro);
 			expect(setDefaultResponse.statusCode).toBe(400);
 
 			const error = JSON.parse(setDefaultResponse.payload);
-			expect(error.message).toContain('SSL');
+			expect(error.message).toContain('not valid for use');
 
 			// Cleanup
 			await deleteCustomDomainDirectly(domainId);
@@ -236,6 +245,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 			const dto = generateCreateCustomDomainDto();
 			const domainId = await createCustomDomainDirectly(dto.domain, TEST_USER_PRO_ID, {
 				sslStatus: 'pending_validation',
+				isFullyVerified: false,
 			});
 
 			// Attempt to set as default
@@ -243,7 +253,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 			expect(setDefaultResponse.statusCode).toBe(400);
 
 			const error = JSON.parse(setDefaultResponse.payload);
-			expect(error.message).toContain('SSL');
+			expect(error.message).toContain('not valid for use');
 
 			// Cleanup
 			await deleteCustomDomainDirectly(domainId);

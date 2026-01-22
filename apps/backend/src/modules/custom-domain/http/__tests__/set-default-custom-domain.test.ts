@@ -32,12 +32,12 @@ describe('POST /custom-domain/:id/set-default', () => {
 			sslStatus: 'initializing',
 		});
 
-		// Should fail because SSL is not active
+		// Should fail because domain is not fully verified
 		const response = await setDefaultDomain(ctx, domainId, ctx.accessTokenPro);
 		expect(response.statusCode).toBe(400);
 
 		const error = JSON.parse(response.payload) as { message: string };
-		expect(error.message).toContain('SSL');
+		expect(error.message).toContain('not valid for use');
 	});
 
 	it("should return 403 when trying to set another user's domain as default", async () => {
@@ -57,11 +57,14 @@ describe('POST /custom-domain/:id/set-default', () => {
 		expect(response.statusCode).toBe(404);
 	});
 
-	it('should set domain as default when SSL is active', async () => {
+	it('should set domain as default when fully verified', async () => {
 		const dto = generateCreateCustomDomainDto();
 		const domainId = await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID, {
 			sslStatus: 'active',
 			ownershipStatus: 'verified',
+			isEnabled: true,
+			ownershipTxtVerified: true,
+			cnameVerified: true,
 		});
 
 		const response = await setDefaultDomain(ctx, domainId, ctx.accessTokenPro);

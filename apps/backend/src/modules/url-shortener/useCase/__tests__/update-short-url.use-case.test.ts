@@ -2,7 +2,7 @@
 import { UpdateShortUrlUseCase } from '../update-short-url.use-case';
 import type ShortUrlRepository from '../../domain/repository/short-url.repository';
 import type QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.repository';
-import type CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
+import type { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 import { type Logger } from '@/core/logging';
 import { type EventEmitter } from '@/core/event';
 import { mock } from 'jest-mock-extended';
@@ -20,20 +20,20 @@ jest.mock('../../utils', () => ({
 describe('UpdateShortUrlUseCase', () => {
 	let useCase: UpdateShortUrlUseCase;
 	let mockShortUrlRepository: jest.Mocked<ShortUrlRepository>;
-	let mockCustomDomainRepository: jest.Mocked<CustomDomainRepository>;
+	let mockCustomDomainValidationService: jest.Mocked<CustomDomainValidationService>;
 	let mockQrCodeRepository: jest.Mocked<QrCodeRepository>;
 	let mockLogger: jest.Mocked<Logger>;
 	let mockEventEmitter: jest.Mocked<EventEmitter>;
 
 	beforeEach(() => {
 		mockShortUrlRepository = mock<ShortUrlRepository>();
-		mockCustomDomainRepository = mock<CustomDomainRepository>();
+		mockCustomDomainValidationService = mock<CustomDomainValidationService>();
 		mockQrCodeRepository = mock<QrCodeRepository>();
 		mockLogger = mock<Logger>();
 		mockEventEmitter = mock<EventEmitter>();
 		useCase = new UpdateShortUrlUseCase(
 			mockShortUrlRepository,
-			mockCustomDomainRepository,
+			mockCustomDomainValidationService,
 			mockLogger,
 			mockQrCodeRepository,
 			mockEventEmitter,
