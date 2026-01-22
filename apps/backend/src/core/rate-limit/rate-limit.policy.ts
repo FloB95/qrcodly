@@ -32,13 +32,13 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	},
 	[RateLimitPolicy.QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 4,
-		[RateLimitTier.AUTHENTICATED]: 15,
-		[RateLimitTier.PRO_PLAN]: 30,
+		[RateLimitTier.AUTHENTICATED]: 30,
+		[RateLimitTier.PRO_PLAN]: 60,
 	},
 	[RateLimitPolicy.BULK_QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 2,
-		[RateLimitTier.PRO_PLAN]: 20,
+		[RateLimitTier.PRO_PLAN]: 10,
 	},
 	[RateLimitPolicy.TEMPLATE_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,
