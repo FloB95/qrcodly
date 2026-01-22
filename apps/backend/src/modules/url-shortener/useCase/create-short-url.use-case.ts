@@ -2,8 +2,9 @@ import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
-import { TShortUrl } from '../domain/entities/short-url.entity';
+import { TShortUrl, TShortUrlWithDomain } from '../domain/entities/short-url.entity';
 import { TCreateShortUrlDto } from '@shared/schemas';
+import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 
 /**
  * Use case for creating a ShortUrl entity.
@@ -12,6 +13,8 @@ import { TCreateShortUrlDto } from '@shared/schemas';
 export class CreateShortUrlUseCase implements IBaseUseCase {
 	constructor(
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
+		@inject(CustomDomainValidationService)
+		private customDomainValidationService: CustomDomainValidationService,
 		@inject(Logger) private logger: Logger,
 	) {}
 
@@ -21,7 +24,12 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 	 * @param createdBy The ID of the user who created the ShortUrl.
 	 * @returns A promise that resolves with the newly created ShortUrl entity.
 	 */
-	async execute(dto: TCreateShortUrlDto, createdBy: string): Promise<TShortUrl> {
+	async execute(dto: TCreateShortUrlDto, createdBy: string): Promise<TShortUrlWithDomain> {
+		// Validate custom domain ownership and readiness if provided
+		if (dto.customDomainId) {
+			await this.customDomainValidationService.validateForUserUse(dto.customDomainId, createdBy);
+		}
+
 		const newId = await this.shortUrlRepository.generateId();
 		const shortCode = await this.shortUrlRepository.generateShortCode();
 
@@ -29,7 +37,9 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 			id: newId,
 			shortCode,
 			qrCodeId: null,
-			...dto,
+			customDomainId: dto.customDomainId ?? null,
+			destinationUrl: dto.destinationUrl,
+			isActive: dto.isActive,
 			createdBy,
 		};
 
@@ -48,6 +58,7 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 			shortUrl: {
 				id: createdShortUrl.id,
 				createdBy: createdShortUrl.createdBy,
+				customDomainId: createdShortUrl.customDomainId,
 			},
 		});
 

@@ -22,6 +22,7 @@ export class ErrorReporter {
 			enabled: IN_PRODUCTION,
 			dsn: env.SENTRY_DSN,
 			profileSessionSampleRate: 1.0,
+			environment: env.SENTRY_ENVIRONMENT,
 		});
 	}
 

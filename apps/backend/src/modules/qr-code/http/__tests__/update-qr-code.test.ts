@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import {
 	generateQrCodeDto,
@@ -43,16 +43,10 @@ describe('updateQrCode', () => {
 		});
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
-		accessToken2 = serverSetup.accessToken2;
-	});
-
-	afterAll(async () => {
-		// Small delay to ensure all async Redis operations complete
-		await new Promise((resolve) => setTimeout(resolve, 100));
-		await shutDownServer();
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
+		accessToken2 = ctx.accessToken2;
 	});
 
 	describe('PATCH /qr-code/:id - Basic Updates', () => {
@@ -146,6 +140,9 @@ describe('updateQrCode', () => {
 				expect(updatedQrCode.content.data.url).toBe(newUrl);
 				expect(updatedQrCode.content.data.isEditable).toBe(false);
 			}
+
+			// Verify qrCodeData is updated to the new URL
+			expect(updatedQrCode.qrCodeData).toBe(newUrl);
 		});
 
 		it('should update editable URL content and update linked short URL', async () => {
@@ -236,6 +233,9 @@ describe('updateQrCode', () => {
 			if (updatedQrCode.content.type === 'text') {
 				expect(updatedQrCode.content.data).toBe(newText);
 			}
+
+			// Verify qrCodeData is updated to the new text
+			expect(updatedQrCode.qrCodeData).toBe(newText);
 		});
 
 		it('should update text content with name', async () => {
@@ -365,6 +365,11 @@ describe('updateQrCode', () => {
 				expect(updatedQrCode.content.data.password).toBe(newWifiData.password);
 				expect(updatedQrCode.content.data.encryption).toBe(newWifiData.encryption);
 			}
+
+			// Verify qrCodeData is updated to the new WiFi string
+			expect(updatedQrCode.qrCodeData).toBe(
+				`WIFI:T:${newWifiData.encryption};S:${newWifiData.ssid};P:${newWifiData.password};;`,
+			);
 		});
 
 		it('should update WiFi with name and config', async () => {

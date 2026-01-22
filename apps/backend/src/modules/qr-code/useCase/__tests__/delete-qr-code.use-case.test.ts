@@ -47,6 +47,7 @@ describe('DeleteQrCodeUseCase', () => {
 				...QrCodeDefaults,
 				image: 'https://example.com/image.png',
 			},
+			qrCodeData: 'https://example.com',
 			previewImage: 'https://example.com/preview.png',
 			createdBy: mockUserId,
 			createdAt: new Date(),
@@ -157,9 +158,11 @@ describe('DeleteQrCodeUseCase', () => {
 
 			await useCase.execute(mockQrCode, mockUserId);
 
-			expect(mockLogger.info).toHaveBeenCalledWith('QR code deleted successfully', {
-				id: mockQrCode.id,
-				deletedBy: mockUserId,
+			expect(mockLogger.info).toHaveBeenCalledWith('qrCode.deleted', {
+				qrCode: {
+					id: mockQrCode.id,
+					deletedBy: mockUserId,
+				},
 			});
 		});
 
@@ -169,8 +172,11 @@ describe('DeleteQrCodeUseCase', () => {
 
 			await useCase.execute(mockQrCode, mockUserId);
 
-			expect(mockLogger.warn).toHaveBeenCalledWith('Failed to delete QR code', {
-				id: mockQrCode.id,
+			expect(mockLogger.error).toHaveBeenCalledWith('error.qrCode.delete', {
+				qrCode: {
+					id: mockQrCode.id,
+					deletedBy: mockUserId,
+				},
 			});
 		});
 

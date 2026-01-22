@@ -1,13 +1,15 @@
-import { poolConnection } from '@/core/db';
-import { cleanUpMockData } from '@/core/db/mock';
 import '@/core/setup';
-import { ObjectStorage } from '@/core/storage';
-import { sleep } from '@/utils/general';
-import { container } from 'tsyringe';
+import { beforeAllTests, afterAllTests } from '@/tests/shared/test-context';
+
+/**
+ * Global test setup file.
+ *
+ * This file is configured in jest.config.js as setupFilesAfterEnv.
+ * The beforeAll/afterAll hooks here run once for the entire test suite.
+ */
 
 beforeAll(async () => {
-	// clean up the database
-	await cleanUpMockData();
+	await beforeAllTests();
 });
 
 describe('Fastify Application Setup', () => {
@@ -17,9 +19,5 @@ describe('Fastify Application Setup', () => {
 });
 
 afterAll(async () => {
-	// clean up the database
-	await cleanUpMockData();
-	await sleep(100);
-	await container.resolve(ObjectStorage).emptyS3Directory('test/');
-	await poolConnection.end();
+	await afterAllTests();
 });

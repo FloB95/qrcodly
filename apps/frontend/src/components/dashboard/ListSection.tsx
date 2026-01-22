@@ -31,9 +31,9 @@ export const ListSection = () => {
 	const tContent = useTranslations('generator.contentSwitch');
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [selectedContentType, setSelectedContentType] = useState<TQrCodeContentType | null>(null);
+	const [activeTab, setActiveTab] = useState('qrCodeList');
 
 	const { data: templates } = useListConfigTemplatesQuery(undefined, 1, 1);
-
 	const { data: qrCodes } = useListQrCodesQuery(1, 1);
 
 	const handleContentTypeSelect = (contentType: TQrCodeContentType) => {
@@ -44,8 +44,9 @@ export const ListSection = () => {
 	return (
 		<>
 			<Tabs
-				defaultValue="qrCodeList"
-				onValueChange={() => {
+				value={activeTab}
+				onValueChange={(value) => {
+					setActiveTab(value);
 					const url = new URL(window.location.href);
 					url.searchParams.delete('page');
 					router.replace(url.pathname + (url.search ? url.search : ''), { scroll: false });

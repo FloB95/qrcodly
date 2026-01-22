@@ -7,6 +7,7 @@ import { PostHogProvider } from './PostHogProvider';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { SupportedLanguages } from '@/i18n/routing';
 import { deDE, enUS, frFR, itIT, esES, nlNL, plPL, ruRU } from '@clerk/localizations';
+import { shadcn } from '@clerk/themes';
 
 export default function Providers({
 	locale,
@@ -31,7 +32,12 @@ export default function Providers({
 	const clerkLocale = locale ? localeMap[locale] || enUS : enUS;
 
 	return (
-		<ClerkProvider localization={clerkLocale}>
+		<ClerkProvider
+			localization={clerkLocale}
+			appearance={{
+				theme: shadcn,
+			}}
+		>
 			<QueryClientProvider client={queryClient}>
 				<PostHogProvider>
 					<TooltipProvider>{children}</TooltipProvider>

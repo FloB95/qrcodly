@@ -1,12 +1,14 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import {
 	QrCodeDefaults,
 	type TConfigTemplateResponseDto,
 	type TCreateConfigTemplateDto,
 } from '@shared/schemas';
+import { container } from 'tsyringe';
+import ConfigTemplateRepository from '../../domain/repository/config-template.repository';
 
 const CONFIG_TEMPLATE_API_PATH = `${API_BASE_PATH}/config-template`;
 
@@ -37,13 +39,9 @@ describe('createConfigTemplate', () => {
 		});
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
-	});
-
-	afterAll(async () => {
-		await shutDownServer();
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
 	});
 
 	it('should create a Config Template and return status code 201', async () => {
@@ -72,6 +70,24 @@ describe('createConfigTemplate', () => {
 
 		// @ts-expect-error - Ensure isPredefined is not set
 		expect(receivedConfigTemplate.isPredefined).toBeUndefined();
+	});
+
+	it('should create a Config Template and make sure isPredefined cannot be set by user', async () => {
+		const createConfigTemplateDto = {
+			...generateConfigTemplateDto(),
+			isPredefined: true,
+		};
+		const response = await createConfigTemplateRequest(createConfigTemplateDto, accessToken);
+
+		expect(response.statusCode).toBe(201);
+
+		const receivedConfigTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
+
+		const configTemplate = await container
+			.resolve(ConfigTemplateRepository)
+			.findOneById(receivedConfigTemplate.id);
+
+		expect(configTemplate?.isPredefined).toBe(false);
 	});
 
 	it('should return a 401 when not authenticated', async () => {

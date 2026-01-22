@@ -2,6 +2,7 @@
 import { UpdateShortUrlUseCase } from '../update-short-url.use-case';
 import type ShortUrlRepository from '../../domain/repository/short-url.repository';
 import type QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.repository';
+import type { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 import { type Logger } from '@/core/logging';
 import { type EventEmitter } from '@/core/event';
 import { mock } from 'jest-mock-extended';
@@ -19,17 +20,20 @@ jest.mock('../../utils', () => ({
 describe('UpdateShortUrlUseCase', () => {
 	let useCase: UpdateShortUrlUseCase;
 	let mockShortUrlRepository: jest.Mocked<ShortUrlRepository>;
+	let mockCustomDomainValidationService: jest.Mocked<CustomDomainValidationService>;
 	let mockQrCodeRepository: jest.Mocked<QrCodeRepository>;
 	let mockLogger: jest.Mocked<Logger>;
 	let mockEventEmitter: jest.Mocked<EventEmitter>;
 
 	beforeEach(() => {
 		mockShortUrlRepository = mock<ShortUrlRepository>();
+		mockCustomDomainValidationService = mock<CustomDomainValidationService>();
 		mockQrCodeRepository = mock<QrCodeRepository>();
 		mockLogger = mock<Logger>();
 		mockEventEmitter = mock<EventEmitter>();
 		useCase = new UpdateShortUrlUseCase(
 			mockShortUrlRepository,
+			mockCustomDomainValidationService,
 			mockLogger,
 			mockQrCodeRepository,
 			mockEventEmitter,
@@ -47,6 +51,7 @@ describe('UpdateShortUrlUseCase', () => {
 			id: 'short_url_123',
 			shortCode: 'ABC12',
 			destinationUrl: 'https://example.com',
+			customDomainId: null,
 			isActive: true,
 			qrCodeId: null,
 			createdBy: mockUserId,
@@ -154,14 +159,17 @@ describe('UpdateShortUrlUseCase', () => {
 
 			await useCase.execute(mockShortUrl, updateDto, mockUserId);
 
-			expect(mockLogger.info).toHaveBeenCalledWith('Short URL updated successfully', {
-				id: mockShortUrl.id,
-				qrCodeId: mockShortUrl.qrCodeId,
-				updates: expect.objectContaining({
-					destinationUrl: updateDto.destinationUrl,
-					updatedAt: expect.any(Date),
-				}),
-				updatedBy: mockUserId,
+			expect(mockLogger.info).toHaveBeenCalledWith('shortUrl.updated', {
+				shortUrl: {
+					id: mockShortUrl.id,
+					qrCodeId: mockShortUrl.qrCodeId,
+					customDomainId: mockShortUrl.customDomainId,
+					updates: expect.objectContaining({
+						destinationUrl: updateDto.destinationUrl,
+						updatedAt: expect.any(Date),
+					}),
+					updatedBy: mockUserId,
+				},
 			});
 		});
 
@@ -192,7 +200,7 @@ describe('UpdateShortUrlUseCase', () => {
 
 		it('should allow update when QR code type is not url', async () => {
 			const updateDto: TUpdateShortUrlDto = {
-				destinationUrl: 'https://short.url/ABC12',
+				destinationUrl: 'https://example.com/event-page',
 			};
 
 			const qrCodeId = 'qr_code_123';
@@ -371,9 +379,9 @@ describe('UpdateShortUrlUseCase', () => {
 			expect(result.qrCodeId).toBe(qrCodeId);
 		});
 
-		it('should not check for redirect loop when no linkedQrCodeId provided', async () => {
+		it('should not call qrCodeRepository when no linkedQrCodeId provided', async () => {
 			const updateDto: TUpdateShortUrlDto = {
-				destinationUrl: 'https://short.url/ABC12',
+				destinationUrl: 'https://new-example.com',
 			};
 
 			mockShortUrlRepository.update.mockResolvedValue();

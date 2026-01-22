@@ -5,7 +5,7 @@ import { processAnalyticsAndRedirect } from './middlewares/process-analytics-and
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 
-const isProtectedRoute = createRouteMatcher(['(.*)/collection(.*)']);
+const isProtectedRoute = createRouteMatcher(['(.*)/collection(.*)', '(.*)/settings(.*)']);
 
 // Create the next-intl middleware
 const intlMiddleware = createMiddleware(routing);

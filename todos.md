@@ -10,4 +10,4 @@
 - Add ICal download for events
 - Implement better context menu for collection list items
 - Implement QR Code Views Cache
-- Fix Page get param when switching tabs in dashboard view (qrcodes & templates)
+- Replace lucide-react with heroicons/react icons

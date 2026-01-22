@@ -1,8 +1,12 @@
-import pino, { type Logger as PinoLogger } from 'pino';
+import pino, {
+	TransportMultiOptions,
+	TransportTargetOptions,
+	type Logger as PinoLogger,
+} from 'pino';
 import { singleton } from 'tsyringe';
 import { env } from '@/core/config/env';
 import { type ILogger } from '../interface/logger.interface';
-import { LOGGER_REDACT_PATHS } from '../config/constants';
+import { IN_TEST, LOGGER_REDACT_PATHS } from '../config/constants';
 
 /**
  * Implementation of the ILogger interface using Pino.
@@ -12,32 +16,35 @@ export class Logger implements ILogger {
 	private logger: PinoLogger;
 
 	constructor() {
-		const pinoPrettyTransport = {
+		const pinoPrettyTransport: TransportTargetOptions = {
 			target: 'pino-pretty',
 			level: env.LOG_LEVEL,
 		};
 
-		const transports = {
-			targets: [pinoPrettyTransport],
-		};
+		const targets: TransportTargetOptions[] = [pinoPrettyTransport];
 
 		if (env.AXIOM_DATASET && env.AXIOM_TOKEN) {
-			const axiomTransport = {
+			const axiomTransport: TransportTargetOptions = {
 				target: '@axiomhq/pino',
 				level: env.LOG_LEVEL,
 				options: {
-					dataset: process.env.AXIOM_DATASET,
-					token: process.env.AXIOM_TOKEN,
+					dataset: env.AXIOM_DATASET,
+					token: env.AXIOM_TOKEN,
 				},
 			};
 
-			transports.targets.push(axiomTransport);
+			targets.push(axiomTransport);
 		}
+
+		const transports: TransportMultiOptions = {
+			targets: targets,
+		};
 
 		this.logger = pino({
 			level: env.LOG_LEVEL,
 			transport: transports,
 			name: 'backend-log',
+			enabled: !IN_TEST,
 			redact: {
 				paths: LOGGER_REDACT_PATHS,
 				censor: '***',

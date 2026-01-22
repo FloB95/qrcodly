@@ -11,8 +11,8 @@ jobs:
   test-backend:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: 'development'
-      LOG_LEVEL: 'debug'
+      NODE_ENV: 'test'
+      LOG_LEVEL: 'error'
       TZ: 'Europe/Berlin'
       COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
@@ -23,6 +23,7 @@ jobs:
       DB_USER: ${{ secrets.DB_USER }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       DB_NAME: ${{ secrets.DB_NAME }}
+      TEST_DB_NAME: ${{ secrets.DB_NAME }}
       DB_PORT: ${{ secrets.DB_PORT }}
       SMTP_HOST: ${{ secrets.SMTP_HOST }}
       SMTP_PORT: ${{ secrets.SMTP_PORT }}
@@ -34,12 +35,18 @@ jobs:
       S3_UPLOAD_SECRET: ${{ secrets.S3_UPLOAD_SECRET }}
       S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      SENTRY_ENVIRONMENT: 'development'
       CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
       UMAMI_HOST: ${{ secrets.UMAMI_HOST }}
       UMAMI_WEBSITE: ${{ secrets.UMAMI_WEBSITE }}
       UMAMI_USERNAME: ${{ secrets.UMAMI_USERNAME }}
       UMAMI_PASSWORD: ${{ secrets.UMAMI_PASSWORD }}
+      BACKEND_URL: 'http://localhost:5001'
+      CLERK_WEBHOOK_SECRET_KEY: 'NOT_USED_IN_TESTS'
+      CLOUDFLARE_API_TOKEN: 'NOT_USED_IN_TESTS'
+      CLOUDFLARE_ZONE_ID: 'NOT_USED_IN_TESTS'
+      CLOUDFLARE_DCV_DELEGATION_TARGET: 'NOT_USED_IN_TESTS'
 
     steps:
       - uses: actions/checkout@v5

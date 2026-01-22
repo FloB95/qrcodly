@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import { generateUpdateShortUrlDto } from '@/tests/shared/factories/short-url.factory';
 import {
 	assertShortUrlResponse,
@@ -17,15 +17,11 @@ describe('ShortUrlController', () => {
 	let userId: string;
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
-		accessToken2 = serverSetup.accessToken2;
-		userId = serverSetup.user.id;
-	});
-
-	afterAll(async () => {
-		await shutDownServer();
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
+		accessToken2 = ctx.accessToken2;
+		userId = ctx.user.id;
 	});
 
 	describe('GET /:shortCode', () => {
@@ -211,6 +207,47 @@ describe('ShortUrlController', () => {
 				accessToken,
 			);
 			expect(response.statusCode).toBe(400);
+		});
+
+		it('should return 400 when destinationUrl creates redirect loop (points to itself)', async () => {
+			const reserveResponse = await testServer.inject({
+				method: 'GET',
+				url: `${SHORT_URL_API_PATH}/reserved`,
+				headers: { Authorization: `Bearer ${accessToken}` },
+			});
+			const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
+
+			// Construct self-referencing URL (same format as buildShortUrl)
+			const selfReferencingUrl = `http://localhost:3000/u/${shortUrl.shortCode}`;
+
+			const response = await updateShortUrlRequest(
+				shortUrl.shortCode,
+				{ destinationUrl: selfReferencingUrl },
+				accessToken,
+			);
+
+			expect(response.statusCode).toBe(400);
+			const error = JSON.parse(response.payload);
+			expect(error.message).toContain('destination URL is not allowed');
+		});
+
+		it('should allow update when destinationUrl is different from own short URL', async () => {
+			const reserveResponse = await testServer.inject({
+				method: 'GET',
+				url: `${SHORT_URL_API_PATH}/reserved`,
+				headers: { Authorization: `Bearer ${accessToken}` },
+			});
+			const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
+
+			const response = await updateShortUrlRequest(
+				shortUrl.shortCode,
+				{ destinationUrl: 'https://completely-different-site.com' },
+				accessToken,
+			);
+
+			expect(response.statusCode).toBe(200);
+			const updated = JSON.parse(response.payload) as TShortUrlResponseDto;
+			expect(updated.destinationUrl).toBe('https://completely-different-site.com');
 		});
 	});
 

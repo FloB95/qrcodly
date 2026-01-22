@@ -43,8 +43,10 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 			});
 		} else {
 			this.logger.error('error.qrCode.delete', {
-				id: qrCode.id,
-				deletedBy: deletedBy,
+				qrCode: {
+					id: qrCode.id,
+					deletedBy: deletedBy,
+				},
 			});
 		}
 

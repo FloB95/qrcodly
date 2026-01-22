@@ -1,0 +1,1 @@
+ALTER TABLE `qr_code` ADD `qr_code_data` text;

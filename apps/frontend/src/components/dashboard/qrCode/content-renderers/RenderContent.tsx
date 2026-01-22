@@ -13,12 +13,7 @@ const renderUrlContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	const { url, isEditable } = qr.content.data;
 
 	if (isEditable && qr.shortUrl) {
-		return (
-			<ShortUrlDisplay
-				shortCode={qr.shortUrl.shortCode}
-				destinationUrl={qr.shortUrl.destinationUrl}
-			/>
-		);
+		return <ShortUrlDisplay shortUrl={qr.shortUrl} destinationUrl={qr.shortUrl.destinationUrl} />;
 	}
 
 	return url;
@@ -35,7 +30,7 @@ const renderEventContent = (qr: TQrCodeWithRelationsResponseDto) => {
 
 	return (
 		<ShortUrlDisplay
-			shortCode={qr.shortUrl.shortCode}
+			shortUrl={qr.shortUrl}
 			destinationUrl={qr.shortUrl.destinationUrl}
 			destinationContent={<EventDetailsCard event={eventData} trigger={eventData.title} />}
 		/>
@@ -53,7 +48,7 @@ const renderVCardContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	if (isDynamic && qr.shortUrl) {
 		return (
 			<ShortUrlDisplay
-				shortCode={qr.shortUrl.shortCode}
+				shortUrl={qr.shortUrl}
 				destinationUrl={qr.shortUrl.destinationUrl}
 				destinationContent={<VCardDetailsCard vcard={vcardData} trigger={displayName} />}
 			/>

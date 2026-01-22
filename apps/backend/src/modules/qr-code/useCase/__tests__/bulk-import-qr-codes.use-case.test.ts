@@ -8,7 +8,7 @@ import { type TUser } from '@/core/domain/schema/UserSchema';
 import { type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
 import { BadRequestError } from '@/core/error/http';
 import { BulkContentTypeNotSupported } from '../../error/http/bulk-content-type-not-supported.error';
-import { BulkToManyQrCodesError } from '../../error/http/bulk-to-many-qr-codes.error';
+import { BulkTooManyQrCodesError } from '../../error/http/bulk-too-many-qr-codes.error';
 import { PlanName } from '@/core/config/plan.config';
 
 // Mock sleep function
@@ -45,6 +45,7 @@ describe('BulkImportQrCodesUseCase', () => {
 		},
 		config: QrCodeDefaults,
 		createdBy: 'user-123',
+		qrCodeData: 'https://example.com',
 		previewImage: null,
 		createdAt: new Date(),
 		updatedAt: new Date(),
@@ -236,7 +237,7 @@ describe('BulkImportQrCodesUseCase', () => {
 			await expect(useCase.execute(dto, mockUser)).rejects.toThrow(BulkContentTypeNotSupported);
 		});
 
-		it('should throw BulkToManyQrCodesError when exceeding MAX_QR_CODE_CSV_UPLOADS', async () => {
+		it('should throw BulkTooManyQrCodesError when exceeding MAX_QR_CODE_CSV_UPLOADS', async () => {
 			// Create CSV with 101 rows (exceeds limit of 100)
 			const rows = Array.from({ length: 101 }, (_, i) => `https://example${i}.com;Test${i};0`).join(
 				'\n',
@@ -250,7 +251,7 @@ describe('BulkImportQrCodesUseCase', () => {
 				config: QrCodeDefaults,
 			};
 
-			await expect(useCase.execute(dto, mockUser)).rejects.toThrow(BulkToManyQrCodesError);
+			await expect(useCase.execute(dto, mockUser)).rejects.toThrow(BulkTooManyQrCodesError);
 		});
 
 		it('should call CreateQrCodeUseCase for each valid CSV row', async () => {
@@ -409,9 +410,11 @@ describe('BulkImportQrCodesUseCase', () => {
 			await useCase.execute(dto, mockUser);
 
 			expect(mockLogger.info).toHaveBeenCalledWith('bulk.import.records', {
-				contentType: 'url',
-				items: 2,
-				user: 'user-123',
+				bulkImport: {
+					contentType: 'url',
+					items: 2,
+					user: 'user-123',
+				},
 			});
 		});
 
@@ -442,8 +445,9 @@ describe('BulkImportQrCodesUseCase', () => {
 		});
 
 		it('should handle vCard CSV with all fields', async () => {
+			// Header: name;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;street;city;zip;state;country;website;isDynamic
 			const csvContent =
-				'Name;FirstName;LastName;Email;Phone;Fax;Company;Job;Street;City;ZIP;State;Country;Website\nJohn Doe;John;Doe;john@example.com;+1234567890;;ACME Inc;Developer;123 Main St;New York;10001;NY;USA;https://example.com';
+				'name;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;street;city;zip;state;country;website;isDynamic\nJohn Doe;John;Doe;john@example.com;;+1234567890;;;;ACME Inc;Developer;123 Main St;New York;10001;NY;USA;https://example.com;0';
 			const file = new File([csvContent], 'test.csv', { type: 'text/csv' });
 
 			const dto: TBulkImportQrCodeDto = {
@@ -462,7 +466,7 @@ describe('BulkImportQrCodesUseCase', () => {
 						data: expect.objectContaining({
 							firstName: 'John',
 							lastName: 'Doe',
-							email: 'john@example.com',
+							emailPrivate: 'john@example.com',
 						}),
 					},
 				}),

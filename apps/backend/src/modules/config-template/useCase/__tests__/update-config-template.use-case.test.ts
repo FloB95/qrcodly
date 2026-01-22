@@ -359,10 +359,12 @@ describe('UpdateConfigTemplateUseCase', () => {
 
 			await useCase.execute(baseTemplate, updates, 'user-123');
 
-			expect(mockLogger.info).toHaveBeenCalledWith('Config template updated successfully', {
-				id: 'template-123',
-				updates: expect.any(Object), // objDiff returns complex object with oldValue/newValue
-				updatedBy: 'user-123',
+			expect(mockLogger.info).toHaveBeenCalledWith('template.updated', {
+				template: {
+					id: 'template-123',
+					updates: expect.any(Object),
+					updatedBy: 'user-123',
+				},
 			});
 		});
 

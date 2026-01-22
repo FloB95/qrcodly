@@ -9,6 +9,7 @@ import QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.reposi
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
 import { RedirectLoopError } from '../error/http/redirect-loop.error';
 import { buildShortUrl } from '../utils';
+import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 
 /**
  * Use case for updating a ShortUrl entity.
@@ -17,6 +18,8 @@ import { buildShortUrl } from '../utils';
 export class UpdateShortUrlUseCase implements IBaseUseCase {
 	constructor(
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
+		@inject(CustomDomainValidationService)
+		private customDomainValidationService: CustomDomainValidationService,
 		@inject(Logger) private logger: Logger,
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
@@ -35,6 +38,14 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		updatedBy: string,
 		linkedQrCodeId?: string,
 	): Promise<TShortUrl> {
+		// Validate custom domain ownership and readiness if changing it
+		if (updatesDto.customDomainId !== undefined && updatesDto.customDomainId !== null) {
+			await this.customDomainValidationService.validateForUserUse(
+				updatesDto.customDomainId,
+				updatedBy,
+			);
+		}
+
 		const updates: Partial<TShortUrl> = {
 			...updatesDto,
 			updatedAt: new Date(),
@@ -70,6 +81,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 			shortUrl: {
 				id: shortUrl.id,
 				qrCodeId: shortUrl.qrCodeId,
+				customDomainId: result?.customDomainId,
 				updates,
 				updatedBy,
 			},

@@ -123,10 +123,9 @@ describe('UmamiAnalyticsService', () => {
 			await expect(service.getViewsForEndpoint('/test-url')).rejects.toThrow();
 
 			expect(mockLogger.error).toHaveBeenCalledWith(
-				expect.stringContaining('Umami API Error'),
+				'error.umamiApi.fetchToken',
 				expect.objectContaining({
-					status: 401,
-					body: 'Unauthorized',
+					error: expect.any(Error),
 				}),
 			);
 		});
@@ -379,10 +378,9 @@ describe('UmamiAnalyticsService', () => {
 			await expect(service.getAnalyticsForEndpoint('/test-url')).rejects.toThrow();
 
 			expect(mockLogger.error).toHaveBeenCalledWith(
-				expect.stringContaining('Umami API Error'),
+				'error.umamiApi.fetchData',
 				expect.objectContaining({
-					status: 500,
-					body: 'Internal Server Error',
+					error: expect.any(Error),
 				}),
 			);
 		});
@@ -417,7 +415,7 @@ describe('UmamiAnalyticsService', () => {
 			await expect(service.getAnalyticsForEndpoint('/test-url')).rejects.toThrow('Network error');
 
 			expect(mockLogger.error).toHaveBeenCalledWith(
-				'Error fetching data from Umami API',
+				'error.umamiApi.fetchData',
 				expect.objectContaining({
 					error: expect.any(Error),
 				}),

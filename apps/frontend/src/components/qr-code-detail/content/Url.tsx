@@ -1,4 +1,4 @@
-import { getShortUrlFromCode } from '@/lib/utils';
+import { createLinkFromShortUrl } from '@/lib/utils';
 import { ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import Link from 'next/link';
@@ -31,7 +31,7 @@ export const UrlContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResponseDto
 						className="text-muted-foreground pt-1 text-md"
 						prefetch={false}
 					>
-						{getShortUrlFromCode(qrCode.shortUrl.shortCode)}
+						{createLinkFromShortUrl(qrCode.shortUrl)}
 					</Link>
 				</div>
 			)}

@@ -1,10 +1,10 @@
 'use client';
 
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignInButton, UserAvatar } from '@clerk/nextjs';
 import Container from './ui/container';
 import { Button, buttonVariants } from './ui/button';
 import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { LanguageNav } from './LanguageNav';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
@@ -41,7 +41,11 @@ export default function Header({
 	hideLanguageNav = false,
 }) {
 	const t = useTranslations('header');
+	const pathname = usePathname();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+	const isDocsActive = pathname.startsWith('/docs');
+	const isPlansActive = pathname === '/plans';
 
 	return (
 		<header className="pt-10">
@@ -54,18 +58,27 @@ export default function Header({
 							</Link>
 						)}
 					</div>
-					<div className="flex space-x-4 sm:space-x-6 items-center">
+					<div className="flex space-x-2 xs:space-x-4 sm:space-x-6 items-center">
 						<Link
 							href="/docs"
 							target="blank"
 							locale={'en'}
-							className="hidden sm:block h-10 px-2 py-2"
+							className={cn(
+								'hidden sm:block h-10 px-2 py-2',
+								isDocsActive && 'font-semibold text-black',
+							)}
 						>
 							Docs
 						</Link>
-						{/* <Link href="/plans" className="hidden sm:block h-10 px-2 py-2">
-							Plans
-						</Link> */}
+						<Link
+							href="/plans"
+							className={cn(
+								'hidden sm:block h-10 px-2 py-2',
+								isPlansActive && 'font-semibold text-black',
+							)}
+						>
+							{t('plansBtn')}
+						</Link>
 						<SignedOut>
 							<SignInButton>
 								<Button>{t('signInBtn')}</Button>
@@ -73,7 +86,7 @@ export default function Header({
 						</SignedOut>
 						<SignedIn>
 							{!hideDashboardLink && (
-								<div>
+								<div className="flex items-center gap-2">
 									<Link
 										href="/collection"
 										className={cn(buttonVariants({ size: 'icon' }), 'sm:hidden')}
@@ -88,7 +101,9 @@ export default function Header({
 									</Link>
 								</div>
 							)}
-							<UserButton />
+							<Link href="/settings/profile">
+								<UserAvatar />
+							</Link>
 						</SignedIn>
 						{!hideLanguageNav && (
 							<div className="hidden sm:block">
@@ -97,7 +112,7 @@ export default function Header({
 						)}
 						{/* Mobile menu button */}
 						<div
-							className="flex items-center justify-center sm:hidden p-2 cursor-pointer"
+							className="flex items-center justify-center sm:hidden xs:p-2 cursor-pointer"
 							onClick={() => setMobileMenuOpen(true)}
 						>
 							<Bars3Icon className="h-8 w-8 text-black" />
@@ -130,17 +145,20 @@ export default function Header({
 						initial="hidden"
 						animate={mobileMenuOpen ? 'visible' : 'hidden'}
 					>
-						{/* <motion.div variants={itemVariants}>
+						<motion.div variants={itemVariants}>
 							<Link
-								href="/plan"
+								href="/plans"
 								className={buttonVariants({
 									variant: 'ghost',
-									className: 'w-full justify-start text-foreground font-semibold',
+									className: cn(
+										'w-full justify-start text-foreground font-semibold',
+										isPlansActive && 'bg-accent',
+									),
 								})}
 							>
-								Plan
+								{t('plansBtn')}
 							</Link>
-						</motion.div> */}
+						</motion.div>
 						<motion.div variants={itemVariants}>
 							<Link
 								href="/docs"
@@ -148,7 +166,10 @@ export default function Header({
 								locale={'en'}
 								className={buttonVariants({
 									variant: 'ghost',
-									className: 'w-full justify-start text-foreground font-semibold',
+									className: cn(
+										'w-full justify-start text-foreground font-semibold',
+										isDocsActive && 'bg-accent',
+									),
 								})}
 							>
 								Docs

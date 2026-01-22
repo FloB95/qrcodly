@@ -68,7 +68,7 @@ export const fastifyErrorHandler = (
 			responsePayload.fieldErrors = mergedErrors;
 		}
 
-		logger.info(`CustomApiError`, {
+		logger.error('CustomApiError', {
 			request: createRequestLogObject(_request),
 			error: {
 				type: error.constructor.name,
@@ -139,14 +139,16 @@ const handleFastifyRequest = async (
 	}
 };
 
-export function parseJsonFields(body: Record<string, any>, fieldsToParse: string[] = ['config']) {
+function parseJsonFields(body: Record<string, any>, fieldsToParse: string[] = ['config']) {
 	const parsedBody: Record<string, any> = { ...body };
 
 	for (const key of fieldsToParse) {
 		if (parsedBody[key] && typeof parsedBody[key] === 'string') {
 			try {
 				parsedBody[key] = JSON.parse(parsedBody[key]);
-			} catch (e: any) {}
+			} catch (e: any) {
+				throw new BadRequestError(`Invalid JSON in field "${key}": ${e.message}`);
+			}
 		}
 	}
 

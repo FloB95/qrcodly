@@ -1,0 +1,25 @@
+{
+	"mcpServers": {
+		"shadcn": {
+			"command": "npx",
+			"args": ["shadcn@latest", "mcp"]
+		},
+		"clerk": {
+			"type": "http",
+			"url": "https://mcp.clerk.com/mcp"
+		},
+		"filesystem": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
+			"env": {}
+		},
+		"next-devtools": {
+			"command": "npx",
+			"args": ["-y", "next-devtools-mcp@latest"]
+		},
+		"inkeepMcp": {
+			"command": "npx",
+			"args": ["-y", "mcp-remote", "https://mcp.inkeep.com/zod/mcp"]
+		}
+	}
+}

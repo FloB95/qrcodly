@@ -3,10 +3,12 @@ import { ShortUrlSchema } from '../../schemas/ShortUrl';
 
 /**
  * Schema for creating a short URL DTO.
+ * Optionally allows specifying a custom domain ID for the short URL.
  */
 export const CreateShortUrlDto = ShortUrlSchema.pick({
 	destinationUrl: true,
 	isActive: true,
+	customDomainId: true,
 });
 
 /**

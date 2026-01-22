@@ -13,6 +13,7 @@ import { UnitOfWork } from '@/core/db/unit-of-work';
 import { CreateQrCodePolicy } from '../policies/create-qr-code.policy';
 import { TUser } from '@/core/domain/schema/UserSchema';
 import { ShortUrlStrategyService } from '../service/short-url-strategy.service';
+import { QrCodeDataService } from '../service/qr-code-data.service';
 
 /**
  * Use case for creating a QrCode entity.
@@ -26,6 +27,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
 		@inject(ImageService) private imageService: ImageService,
 		@inject(ShortUrlStrategyService) private shortUrlStrategyService: ShortUrlStrategyService,
+		@inject(QrCodeDataService) private qrCodeDataService: QrCodeDataService,
 	) {}
 
 	/**
@@ -46,30 +48,41 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 			return await UnitOfWork.run<TQrCodeWithRelations>(async () => {
 				const newId = await this.qrCodeRepository.generateId();
 
-				const qrCodeData = {
+				const qrCodeEntity = {
 					id: newId,
 					...dto,
 					createdBy: user?.id ?? null,
+					qrCodeData: null as string | null,
 					previewImage: null,
 				};
 
 				// handle image upload
-				if (qrCodeData.config.image) {
+				if (qrCodeEntity.config.image) {
 					const uploaded = await this.imageService.uploadImage(
-						qrCodeData.config.image,
+						qrCodeEntity.config.image,
 						newId,
 						user?.id ?? undefined,
 					);
 					createdImage = uploaded;
-					qrCodeData.config.image = uploaded;
+					qrCodeEntity.config.image = uploaded;
 				}
 
-				await this.qrCodeRepository.create(qrCodeData);
+				await this.qrCodeRepository.create(qrCodeEntity);
 
 				// handle url shorting for different content types
-				if (qrCodeData.createdBy) {
-					await this.shortUrlStrategyService.handle(qrCodeData as TQrCode);
+				if (qrCodeEntity.createdBy) {
+					await this.shortUrlStrategyService.handle(qrCodeEntity as TQrCode);
 				}
+
+				// Compute and store qrCodeData (after short URL is created)
+				const computedQrCodeData = await this.qrCodeDataService.computeQrCodeData(
+					newId,
+					qrCodeEntity.content,
+				);
+				// Update with computed qrCodeData - only id is needed for the where clause
+				await this.qrCodeRepository.update({ id: newId } as never, {
+					qrCodeData: computedQrCodeData,
+				});
 
 				const finalQrCode = await this.qrCodeRepository.findOneById(newId);
 

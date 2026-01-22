@@ -37,6 +37,7 @@ const server = z.object({
 	S3_UPLOAD_SECRET: z.string(),
 	S3_BUCKET_NAME: z.string(),
 	SENTRY_DSN: z.url(),
+	SENTRY_ENVIRONMENT: z.enum(['development', 'production']).default('production'),
 	AXIOM_DATASET: z.string().optional(),
 	AXIOM_TOKEN: z.string().optional(),
 	CLERK_PUBLISHABLE_KEY: z.string(),
@@ -46,6 +47,10 @@ const server = z.object({
 	UMAMI_WEBSITE: z.string(),
 	UMAMI_USERNAME: z.string(),
 	UMAMI_PASSWORD: z.string(),
+	CUSTOM_DOMAIN_CNAME_TARGET: z.string().default('customers.qrcodly.de'),
+	CLOUDFLARE_API_TOKEN: z.string(),
+	CLOUDFLARE_ZONE_ID: z.string(),
+	CLOUDFLARE_DCV_DELEGATION_TARGET: z.string(), // Full DCV delegation target (e.g., d0a467ae32366c3f.dcv.cloudflare.com)
 });
 
 // Don't touch the part below
