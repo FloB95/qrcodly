@@ -391,6 +391,10 @@
 				}
 			},
 			"vCard": {
+				"title": {
+					"label": "Titel",
+					"placeholder": "bijv. Dr., Prof., Dhr., Mevr."
+				},
 				"firstName": {
 					"label": "Voornaam",
 					"placeholder": "Voer uw voornaam in"

@@ -30,8 +30,12 @@ export function convertVCardObjToString(vCardInput: TVCardInput): string {
 	const vCard = new VCF();
 	vCard.version = '3.0';
 
-	if (vCardInput.firstName || vCardInput.lastName) {
-		vCard.add('n', `${vCardInput.lastName || ''};${vCardInput.firstName || ''}`);
+	if (vCardInput.firstName || vCardInput.lastName || vCardInput.title) {
+		// N property format: Family;Given;Additional;Prefixes;Suffixes
+		vCard.add(
+			'n',
+			`${vCardInput.lastName || ''};${vCardInput.firstName || ''};;${vCardInput.title || ''};`,
+		);
 	}
 	// Email addresses - new fields take priority, legacy 'email' maps to private
 	if (vCardInput.emailPrivate) {
@@ -227,6 +231,7 @@ export const getDefaultContentByType = (
 			return {
 				type: 'vCard',
 				data: {
+					title: undefined,
 					firstName: undefined,
 					lastName: undefined,
 					emailPrivate: undefined,

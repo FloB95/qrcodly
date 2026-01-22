@@ -16,9 +16,16 @@ export default function VCardContent({ qrCode }: { qrCode: TQrCodeWithRelationsR
 	return (
 		<>
 			<h2 className="font-semibold text-2xl">
+				{data.title && `${data.title} `}
 				{data.firstName} {data.lastName}
 			</h2>
 			<div className="mt-6 space-y-6 text-sm/6">
+				{/* Title */}
+				<div>
+					<div className="font-medium mb-1">{t('title.label')}</div>
+					<div>{displayValue(data.title)}</div>
+				</div>
+
 				{/* First and Last Name */}
 				<div className="flex space-x-4">
 					<div className="w-full">

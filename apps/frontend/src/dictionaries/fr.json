@@ -391,6 +391,10 @@
 				}
 			},
 			"vCard": {
+				"title": {
+					"label": "Titre",
+					"placeholder": "ex. Dr., Prof., M., Mme"
+				},
 				"firstName": {
 					"label": "Prénom",
 					"placeholder": "Saisissez votre prénom"

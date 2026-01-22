@@ -391,6 +391,10 @@
 				}
 			},
 			"vCard": {
+				"title": {
+					"label": "Título",
+					"placeholder": "p.ej. Dr., Prof., Sr., Sra."
+				},
 				"firstName": {
 					"label": "Nombre",
 					"placeholder": "Introduce tu nombre"

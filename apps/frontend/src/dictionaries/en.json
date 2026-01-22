@@ -383,6 +383,10 @@
 				}
 			},
 			"vCard": {
+				"title": {
+					"label": "Title",
+					"placeholder": "e.g. Dr., Prof., Mr., Ms."
+				},
 				"firstName": {
 					"label": "First Name",
 					"placeholder": "Enter your first name"

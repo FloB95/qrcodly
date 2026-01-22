@@ -391,6 +391,10 @@
 				}
 			},
 			"vCard": {
+				"title": {
+					"label": "Титул",
+					"placeholder": "напр. Др., Проф., Г-н, Г-жа"
+				},
 				"firstName": {
 					"label": "Имя",
 					"placeholder": "Введите ваше имя"

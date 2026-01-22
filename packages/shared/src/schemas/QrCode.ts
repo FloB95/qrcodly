@@ -34,6 +34,7 @@ const emailSchema = emptyStringToUndefined(z.email().max(100).optional());
 
 export const VCardInputSchema = z
 	.object({
+		title: emptyStringToUndefined(z.string().min(1).max(32).optional()),
 		firstName: emptyStringToUndefined(z.string().min(1).max(64).optional()),
 		lastName: emptyStringToUndefined(z.string().min(1).max(64).optional()),
 		/** @deprecated Use emailPrivate or emailBusiness instead. Kept for backwards compatibility with existing data. */
