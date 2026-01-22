@@ -12,6 +12,8 @@ import {
 	type TShortUrlWithCustomDomainResponseDto,
 } from '@shared/schemas';
 import { DynamicBadge } from './DynamicBadge';
+import Link from 'next/link';
+import { PencilSquareIcon } from '@heroicons/react/24/solid';
 
 export type QrCodeProps = {
 	qrCode: Pick<TQrCode, 'config' | 'content'> & { qrCodeData?: TQrCode['qrCodeData'] };
@@ -88,9 +90,14 @@ function QrCode({ qrCode, additionalStyles = '', shortUrl }: QrCodeProps) {
 			/>
 
 			{shortUrl && isDynamic(qrCode.content) && (
-				<div className="mt-4 hidden sm:flex items-center justify-between">
+				<div className="mt-4 hidden flex-wrap xs:flex items-center justify-between">
 					<DynamicBadge />
-					<div className="text-xs ml-4">{createLinkFromShortUrl(shortUrl, { short: true })}</div>
+					<div className="text-xs ml-4 flex items-center gap-1">
+						<span className="pt-0.5">{createLinkFromShortUrl(shortUrl, { short: true })}</span>
+						<Link href="settings/domains">
+							<PencilSquareIcon className="size-4 text-black" />
+						</Link>
+					</div>
 				</div>
 			)}
 		</div>
