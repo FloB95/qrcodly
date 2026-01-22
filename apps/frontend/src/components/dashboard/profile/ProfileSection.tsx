@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -108,9 +110,14 @@ export function ProfileSection() {
 				firstName: data.firstName,
 				lastName: data.lastName || '',
 			});
+			posthog.capture('profile-update:success');
 			toast.success(t('profileUpdated'));
 			setIsEditing(false);
-		} catch {
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { action: 'profile-update' },
+			});
+			posthog.capture('error:profile-update');
 			toast.error(t('profileUpdateError'));
 		} finally {
 			setIsLoading(false);
@@ -125,8 +132,13 @@ export function ProfileSection() {
 			const emailAddress = await user.createEmailAddress({ email: data.email });
 			await emailAddress.prepareVerification({ strategy: 'email_code' });
 			setPendingEmailId(emailAddress.id);
+			posthog.capture('email-change:verification-sent');
 			toast.success(t('verificationCodeSent'));
-		} catch {
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { action: 'email-change' },
+			});
+			posthog.capture('error:email-change');
 			toast.error(t('emailAddError'));
 		} finally {
 			setIsLoading(false);
@@ -161,11 +173,16 @@ export function ProfileSection() {
 			// Set as primary email (with automatic reverification if needed)
 			await setPrimaryEmailWithReverification(pendingEmailId);
 
+			posthog.capture('email-verify:success');
 			toast.success(t('emailUpdated'));
 			setIsEditingEmail(false);
 			setPendingEmailId(null);
 			setVerificationCode('');
-		} catch {
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { action: 'email-verify' },
+			});
+			posthog.capture('error:email-verify');
 			toast.error(t('verificationError'));
 		} finally {
 			setIsVerifying(false);
@@ -193,8 +210,13 @@ export function ProfileSection() {
 		setIsUploadingImage(true);
 		try {
 			await user.setProfileImage({ file });
+			posthog.capture('profile-image:success');
 			toast.success(t('imageUpdated'));
-		} catch {
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { action: 'profile-image' },
+			});
+			posthog.capture('error:profile-image');
 			toast.error(t('imageUpdateError'));
 		} finally {
 			setIsUploadingImage(false);

@@ -5,12 +5,7 @@ import type { TShortUrl } from '@shared/schemas';
 import { NextResponse, type NextRequest } from 'next/server';
 import { UAParser } from 'ua-parser-js';
 
-/**
- * Process analytics and redirect for short URLs.
- * @param req - The incoming request
- * @param customDomain - Optional custom domain if the request came from a custom domain
- */
-export async function processAnalyticsAndRedirect(req: NextRequest, customDomain?: string) {
+export async function processAnalyticsAndRedirect(req: NextRequest) {
 	// Extract data from headers
 	const headers = req.headers;
 	const rawHostname = headers.get('host') ?? '';
@@ -52,12 +47,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest, customDomain
 
 	let shortUrl: TShortUrl;
 	try {
-		// Build the API URL with optional domain query parameter for validation
-		const apiUrl = customDomain
-			? `/short-url/${urlCode}?domain=${encodeURIComponent(customDomain)}`
-			: `/short-url/${urlCode}`;
-
-		const response = await apiRequest<TShortUrl>(apiUrl, {
+		const response = await apiRequest<TShortUrl>(`/short-url/${urlCode}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

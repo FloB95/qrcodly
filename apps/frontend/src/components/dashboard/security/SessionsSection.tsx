@@ -9,6 +9,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -178,9 +180,14 @@ export function SessionsSection() {
 			if (sessionToRevoke) {
 				await sessionToRevoke.revoke();
 				setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+				posthog.capture('session-revoke:success');
 				toast.success(t('sessionRevoked'));
 			}
-		} catch {
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { action: 'session-revoke' },
+			});
+			posthog.capture('error:session-revoke');
 			toast.error(t('sessionRevokeError'));
 		}
 	};
@@ -190,8 +197,13 @@ export function SessionsSection() {
 			const otherSessions = sessions.filter((s) => s.id !== currentSession?.id);
 			await Promise.all(otherSessions.map((s) => s.revoke()));
 			setSessions((prev) => prev.filter((s) => s.id === currentSession?.id));
+			posthog.capture('session-revoke-all:success', { count: otherSessions.length });
 			toast.success(t('allSessionsRevoked'));
-		} catch {
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { action: 'session-revoke-all' },
+			});
+			posthog.capture('error:session-revoke-all');
 			toast.error(t('sessionRevokeError'));
 		}
 	};
