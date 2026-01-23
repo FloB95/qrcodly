@@ -2,11 +2,8 @@ import Footer from '@/components/Footer';
 import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import Header from '@/components/Header';
 import Container from '@/components/ui/container';
-import { Cta } from '@/components/Cta';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
-import { Features } from '@/components/Features';
-import FAQSection from '@/components/Faq';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
 import Script from 'next/script';
 import { QrCodeDefaults } from '@shared/schemas';
@@ -14,6 +11,18 @@ import { auth } from '@clerk/nextjs/server';
 import { notFound } from 'next/navigation';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { Hero } from '@/components/Hero';
+import dynamic from 'next/dynamic';
+
+// Dynamic imports for below-the-fold components to reduce initial bundle size
+const Features = dynamic(() => import('@/components/Features').then((mod) => mod.Features), {
+	ssr: true,
+});
+const Cta = dynamic(() => import('@/components/Cta').then((mod) => mod.Cta), {
+	ssr: true,
+});
+const FAQSection = dynamic(() => import('@/components/Faq'), {
+	ssr: true,
+});
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;

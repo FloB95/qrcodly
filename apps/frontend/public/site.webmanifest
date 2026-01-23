@@ -1,11 +1,16 @@
 {
-	"name": "",
-	"short_name": "",
+	"name": "QRcodly - Free QR Code Generator",
+	"short_name": "QRcodly",
+	"description": "Create unlimited static and dynamic QR codes for free. No hidden costs, no restrictions.",
+	"start_url": "/",
+	"scope": "/",
 	"icons": [
 		{ "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
-		{ "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+		{ "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
 	],
 	"theme_color": "#ffffff",
-	"background_color": "#ffffff",
-	"display": "standalone"
+	"background_color": "#fddfbc",
+	"display": "standalone",
+	"orientation": "portrait-primary",
+	"categories": ["utilities", "productivity"]
 }

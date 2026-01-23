@@ -8,8 +8,13 @@ import { routing } from '@/i18n/routing';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { env } from '@/env';
+import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
 
-const openSans = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const inter = Inter({
+	subsets: ['latin'],
+	variable: '--font-sans',
+	display: 'swap',
+});
 
 export default async function RootLayout({
 	children,
@@ -52,6 +57,10 @@ export default async function RootLayout({
 	return (
 		<html lang={locale} className="light" suppressHydrationWarning>
 			<head>
+				{/* Preconnect to critical third-party domains for faster connections */}
+				<link rel="preconnect" href="https://clerk.qrcodly.de" crossOrigin="anonymous" />
+				<link rel="dns-prefetch" href="https://clerk.qrcodly.de" />
+
 				{/* Organization Structured Data */}
 				<script
 					type="application/ld+json"
@@ -108,7 +117,7 @@ export default async function RootLayout({
 				{alternateLinks}
 			</head>
 
-			<body className={`font-sans ${openSans.variable}`} suppressHydrationWarning>
+			<body className={`font-sans ${inter.variable}`} suppressHydrationWarning>
 				<NextIntlClientProvider>
 					<Providers locale={locale}>
 						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
@@ -117,6 +126,7 @@ export default async function RootLayout({
 					</Providers>
 				</NextIntlClientProvider>
 				<Toaster />
+				<ServiceWorkerRegistration />
 			</body>
 		</html>
 	);
