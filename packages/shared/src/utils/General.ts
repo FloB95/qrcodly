@@ -9,6 +9,7 @@ import {
 	type TEventInput,
 	type TLocationInput,
 	type TEmailInput,
+	type TEpcInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 import ical, { ICalCalendarMethod } from 'ical-generator';
@@ -154,6 +155,32 @@ export const convertEmailObjToString = (emailObj: TEmailInput) => {
 	return `mailto:${email}?subject=${encodedSubject}&body=${encodedBody}`;
 };
 
+/**
+ * Converts EPC (European Payments Council) data to EPC QR code string format.
+ * Follows the EPC069-12 specification for SEPA Credit Transfer.
+ */
+export const convertEpcObjToString = (epcInput: TEpcInput): string => {
+	if (!epcInput.name || !epcInput.iban) {
+		return '';
+	}
+
+	const lines = [
+		'BCD', // Service Tag
+		'002', // Version
+		'1', // Character set (UTF-8)
+		'SCT', // SEPA Credit Transfer
+		epcInput.bic || '', // BIC (optional)
+		epcInput.name, // Beneficiary name
+		epcInput.iban.replace(/\s/g, '').toUpperCase(), // IBAN
+		epcInput.amount ? `EUR${epcInput.amount.toFixed(2)}` : '',
+		'', // Purpose code (optional, not used)
+		epcInput.purpose || '', // Remittance information (unstructured)
+		'', // End marker (must exist)
+	];
+
+	return lines.join('\n');
+};
+
 export const convertQRCodeDataToStringByType = (
 	content: TQrCodeContent,
 	shortUrl?: string,
@@ -177,6 +204,8 @@ export const convertQRCodeDataToStringByType = (
 			return convertLocationObjToString(content.data);
 		case 'event':
 			return shortUrl ?? '';
+		case 'epc':
+			return convertEpcObjToString(content.data);
 		default:
 			throw new Error('Invalid content type');
 	}
@@ -274,6 +303,17 @@ export const getDefaultContentByType = (
 					endDate: '',
 					startDate: '',
 					title: '',
+				},
+			};
+		case 'epc':
+			return {
+				type: 'epc',
+				data: {
+					name: '',
+					iban: '',
+					bic: undefined,
+					amount: undefined,
+					purpose: undefined,
 				},
 			};
 		// case 'socials':

@@ -363,6 +363,7 @@
 				"email": "ПОЧТА",
 				"location": "МЕСТО",
 				"event": "СОБЫТИЕ",
+				"epc": "БАНК",
 				"socials": "СОЦСЕТИ"
 			},
 			"cancel": "Отмена",
@@ -520,6 +521,28 @@
 				},
 				"endDate": {
 					"label": "Дата окончания"
+				}
+			},
+			"epc": {
+				"name": {
+					"label": "Имя получателя",
+					"placeholder": "Имя получателя платежа"
+				},
+				"iban": {
+					"label": "IBAN",
+					"placeholder": "Напр. DE89370400440532013000"
+				},
+				"bic": {
+					"label": "BIC/SWIFT",
+					"placeholder": "Напр. COBADEFFXXX"
+				},
+				"amount": {
+					"label": "Сумма",
+					"placeholder": "0,00"
+				},
+				"purpose": {
+					"label": "Назначение платежа",
+					"placeholder": "Цель платежа"
 				}
 			},
 			"social": {

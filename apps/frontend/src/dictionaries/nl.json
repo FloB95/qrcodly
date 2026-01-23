@@ -363,6 +363,7 @@
 				"email": "EMAIL",
 				"location": "LOCATIE",
 				"event": "EVENT",
+				"epc": "BANK",
 				"socials": "SOCIALS"
 			},
 			"cancel": "Annuleren",
@@ -520,6 +521,28 @@
 				},
 				"endDate": {
 					"label": "Einddatum"
+				}
+			},
+			"epc": {
+				"name": {
+					"label": "Naam begunstigde",
+					"placeholder": "Naam van de betalingsontvanger"
+				},
+				"iban": {
+					"label": "IBAN",
+					"placeholder": "Bijv. NL91ABNA0417164300"
+				},
+				"bic": {
+					"label": "BIC/SWIFT",
+					"placeholder": "Bijv. ABNANL2AXXX"
+				},
+				"amount": {
+					"label": "Bedrag",
+					"placeholder": "0,00"
+				},
+				"purpose": {
+					"label": "Omschrijving",
+					"placeholder": "Doel van de betaling"
 				}
 			},
 			"social": {

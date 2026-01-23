@@ -355,6 +355,7 @@
 				"email": "E-MAIL",
 				"location": "STANDORT",
 				"event": "EVENT",
+				"epc": "BANK",
 				"socials": "SOCIALS"
 			},
 			"cancel": "Abbrechen",
@@ -512,6 +513,28 @@
 				},
 				"endDate": {
 					"label": "Enddatum"
+				}
+			},
+			"epc": {
+				"name": {
+					"label": "Empfängername",
+					"placeholder": "Name des Zahlungsempfängers"
+				},
+				"iban": {
+					"label": "IBAN",
+					"placeholder": "z.B. DE89370400440532013000"
+				},
+				"bic": {
+					"label": "BIC/SWIFT",
+					"placeholder": "z.B. COBADEFFXXX"
+				},
+				"amount": {
+					"label": "Betrag",
+					"placeholder": "0,00"
+				},
+				"purpose": {
+					"label": "Verwendungszweck",
+					"placeholder": "Zahlungsgrund"
 				}
 			},
 			"social": {

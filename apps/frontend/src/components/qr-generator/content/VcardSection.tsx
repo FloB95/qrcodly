@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 'use client';
 
 import { memo } from 'react';
@@ -39,6 +37,7 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	};
 
 	const form = useForm<FormValues>({
+		// @ts-ignore
 		resolver: zodResolver(VCardInputSchema),
 		defaultValues,
 		shouldFocusError: false,
