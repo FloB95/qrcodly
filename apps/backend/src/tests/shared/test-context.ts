@@ -8,6 +8,7 @@ import { poolConnection } from '@/core/db';
 import { KeyCache } from '@/core/cache';
 import { ObjectStorage } from '@/core/storage';
 import { cleanUpMockData } from '@/core/db/mock';
+import { sleep } from '@/utils/general';
 
 // Test user IDs - exported for use in module-specific test utilities
 export const TEST_USER_ID = 'user_2fTGlAmh9a1UhD5JYOD70Z4Y31T';
@@ -114,9 +115,7 @@ class TestContextManager {
 	 * Called once at the start of the test suite.
 	 */
 	async beforeAllTests(): Promise<void> {
-		// Clean up Redis cache
 		await container.resolve(KeyCache).flushAllCache();
-		// Clean up the database
 		await cleanUpMockData();
 	}
 
@@ -132,31 +131,26 @@ class TestContextManager {
 		this.isShuttingDown = true;
 
 		try {
-			// Clean up test data
 			await cleanUpMockData();
 
-			// Clean up S3 test directory
 			try {
 				await container.resolve(ObjectStorage).emptyS3Directory('test/');
 			} catch (error) {
-				// Ignore S3 cleanup errors in tests
 				console.warn('S3 cleanup warning:', error);
 			}
 
-			// Shutdown the server if it was initialized
-			if (this.context) {
-				const shutdownService = container.resolve(ShutdownService);
+			const shutdownService = container.resolve(ShutdownService);
+			if (!shutdownService.isShuttingDown()) {
 				shutdownService.shutdown();
 				await shutdownService.waitForShutdown();
 			}
 
-			// Close database connection pool LAST
-			// Add a small delay to ensure all pending queries complete
-			await new Promise((resolve) => setTimeout(resolve, 100));
 			await poolConnection.end();
+			await sleep(100);
 		} catch (error) {
 			console.error('Error during test cleanup:', error);
 		} finally {
+			container.clearInstances();
 			this.context = null;
 			this.isShuttingDown = false;
 		}

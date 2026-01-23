@@ -5,11 +5,20 @@ import { mock } from 'jest-mock-extended';
 
 describe('OnShutdown', () => {
 	let shutdownService: ShutdownService;
+	let originalShutdownService: ShutdownService;
 
 	beforeEach(() => {
+		// Save the original shutdown service to restore later
+		originalShutdownService = container.resolve(ShutdownService);
+
 		shutdownService = new ShutdownService(mock());
 		jest.spyOn(shutdownService, 'register');
 		container.registerInstance(ShutdownService, shutdownService);
+	});
+
+	afterEach(() => {
+		// Restore the original shutdown service so cleanup works properly
+		container.registerInstance(ShutdownService, originalShutdownService);
 	});
 
 	it('should register a methods that is decorated with OnShutdown', () => {

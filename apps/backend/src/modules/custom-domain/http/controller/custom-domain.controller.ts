@@ -103,6 +103,9 @@ export class CustomDomainController extends AbstractController {
 			200: ResolveDomainResponseDto,
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
+		config: {
+			rateLimitPolicy: RateLimitPolicy.DOMAIN_RESOLVE,
+		},
 		schema: {
 			hide: true,
 			summary: 'Resolve a custom domain',

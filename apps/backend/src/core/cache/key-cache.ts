@@ -58,8 +58,8 @@ export class KeyCache implements IKeyCache {
 		await this.client.del(tagKey);
 	}
 
-	disconnect() {
-		this.client.disconnect();
+	async disconnect() {
+		await this.client.quit();
 	}
 
 	async flushAllCache(): Promise<void> {
@@ -71,7 +71,7 @@ export class KeyCache implements IKeyCache {
 	}
 
 	@OnShutdown()
-	onShutdown() {
-		this.disconnect();
+	async onShutdown() {
+		await this.disconnect();
 	}
 }

@@ -48,7 +48,6 @@ const jestConfig = {
 	setupFilesAfterEnv: ['<rootDir>/src/tests/setup.test.ts'],
 	testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/build/'],
 	testTimeout: 30000,
-	forceExit: true,
 };
 
 export default jestConfig;
