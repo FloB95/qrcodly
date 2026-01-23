@@ -173,17 +173,15 @@ export const QrCodeListItemActions = ({
 				<DropdownMenuLabel>{t('qrCode.actionsMenu.title')}</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 
-				{qr.shortUrl && (
-					<DropdownMenuItem asChild>
-						<Link
-							className="cursor-pointer"
-							href={`/collection/qr-code/${qr.id}`}
-							onClick={(e) => e.stopPropagation()}
-						>
-							{t('qrCode.actionsMenu.view')}
-						</Link>
-					</DropdownMenuItem>
-				)}
+				<DropdownMenuItem asChild>
+					<Link
+						className="cursor-pointer"
+						href={`/collection/qr-code/${qr.id}`}
+						onClick={(e) => e.stopPropagation()}
+					>
+						{t('qrCode.actionsMenu.view')}
+					</Link>
+				</DropdownMenuItem>
 
 				<DropdownMenuItem asChild>
 					<Link

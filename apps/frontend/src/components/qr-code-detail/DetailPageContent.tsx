@@ -32,6 +32,8 @@ import VCardContent from './content/VCard';
 import EmailContent from './content/Email';
 import LocationContent from './content/Location';
 import EventContent from './content/Event';
+import EpcContent from './content/Epc';
+import TextContent from './content/Text';
 import Link from 'next/link';
 import { ChevronLeftIcon } from '@heroicons/react/24/solid';
 import { getQrCodeEditLink } from '@/lib/utils';
@@ -48,11 +50,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 			case 'url':
 				return <UrlContent qrCode={qrCode} />;
 			case 'text':
-				return (
-					<div>
-						<h2 className="mb-4 text-lg">{qrCode.content.data}</h2>
-					</div>
-				);
+				return <TextContent qrCode={qrCode} />;
 			case 'wifi':
 				return <WifiContent qrCode={qrCode} />;
 			case 'vCard':
@@ -63,6 +61,8 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 				return <LocationContent qrCode={qrCode} />;
 			case 'event':
 				return <EventContent qrCode={qrCode} />;
+			case 'epc':
+				return <EpcContent qrCode={qrCode} />;
 			default:
 				return <></>;
 		}

@@ -75,6 +75,17 @@ export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto
 			return qr.content.data.address || '';
 		case 'event':
 			return renderEventContent(qr);
+		case 'epc': {
+			const { name, iban, amount } = qr.content.data;
+			const formattedAmount = amount ? `€${amount.toFixed(2)}` : '';
+			const ibanLine = formattedAmount ? `${iban} · ${formattedAmount}` : iban;
+			return (
+				<div className="flex flex-col">
+					<span className="font-semibold truncate">{name}</span>
+					<span className="text-muted-foreground text-sm truncate">{ibanLine}</span>
+				</div>
+			);
+		}
 		default:
 			return 'Unknown';
 	}
