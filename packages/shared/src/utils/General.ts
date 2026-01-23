@@ -9,6 +9,7 @@ import {
 	type TEventInput,
 	type TLocationInput,
 	type TEmailInput,
+	type TEpcInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 import ical, { ICalCalendarMethod } from 'ical-generator';
@@ -154,6 +155,33 @@ export const convertEmailObjToString = (emailObj: TEmailInput) => {
 	return `mailto:${email}?subject=${encodedSubject}&body=${encodedBody}`;
 };
 
+/**
+ * Converts EPC (European Payments Council) data to EPC QR code string format.
+ * Follows the EPC069-12 specification for SEPA Credit Transfer.
+ */
+export const convertEpcObjToString = (epcInput: TEpcInput): string => {
+	if (!epcInput.name || !epcInput.iban) {
+		return '';
+	}
+
+	const lines = [
+		'BCD', // Service Tag
+		'002', // Version
+		'1', // Character set (1 = UTF-8)
+		'SCT', // Identification code (SEPA Credit Transfer)
+		epcInput.bic || '', // BIC (optional)
+		epcInput.name, // Beneficiary name
+		epcInput.iban.replace(/\s/g, '').toUpperCase(), // IBAN (normalized)
+		epcInput.amount ? `EUR${epcInput.amount.toFixed(2)}` : '', // Amount
+		'', // Purpose (AT-44, optional, usually empty)
+		epcInput.reference || '', // Remittance reference (AT-05)
+		epcInput.text || '', // Remittance text (AT-05)
+		'', // Beneficiary to originator information (optional)
+	];
+
+	return lines.join('\n');
+};
+
 export const convertQRCodeDataToStringByType = (
 	content: TQrCodeContent,
 	shortUrl?: string,
@@ -177,6 +205,8 @@ export const convertQRCodeDataToStringByType = (
 			return convertLocationObjToString(content.data);
 		case 'event':
 			return shortUrl ?? '';
+		case 'epc':
+			return convertEpcObjToString(content.data);
 		default:
 			throw new Error('Invalid content type');
 	}
@@ -274,6 +304,18 @@ export const getDefaultContentByType = (
 					endDate: '',
 					startDate: '',
 					title: '',
+				},
+			};
+		case 'epc':
+			return {
+				type: 'epc',
+				data: {
+					name: '',
+					iban: '',
+					bic: undefined,
+					amount: undefined,
+					reference: undefined,
+					text: undefined,
 				},
 			};
 		// case 'socials':

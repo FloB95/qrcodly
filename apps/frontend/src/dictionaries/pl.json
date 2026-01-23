@@ -363,6 +363,7 @@
 				"email": "EMAIL",
 				"location": "LOKALIZACJA",
 				"event": "WYDARZENIE",
+				"epc": "BANK",
 				"socials": "SOCIALS"
 			},
 			"cancel": "Anuluj",
@@ -520,6 +521,32 @@
 				},
 				"endDate": {
 					"label": "Data zakończenia"
+				}
+			},
+			"epc": {
+				"name": {
+					"label": "Nazwa odbiorcy",
+					"placeholder": "Nazwa odbiorcy płatności"
+				},
+				"iban": {
+					"label": "IBAN",
+					"placeholder": "Np. PL61109010140000071219812874"
+				},
+				"bic": {
+					"label": "BIC/SWIFT",
+					"placeholder": "Np. WBKPPLPPXXX"
+				},
+				"amount": {
+					"label": "Kwota",
+					"placeholder": "0,00"
+				},
+				"reference": {
+					"label": "Numer referencyjny",
+					"placeholder": "Numer faktury lub referencja"
+				},
+				"text": {
+					"label": "Tytuł przelewu",
+					"placeholder": "Cel płatności"
 				}
 			},
 			"social": {

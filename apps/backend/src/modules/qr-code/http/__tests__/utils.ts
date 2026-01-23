@@ -194,3 +194,22 @@ export const generateLocationQrCodeDto = (): TCreateQrCodeDto => ({
 	},
 	config: QrCodeDefaults,
 });
+
+/**
+ * Generates an EPC (SEPA bank transfer) QR code DTO.
+ */
+export const generateEpcQrCodeDto = (): TCreateQrCodeDto => ({
+	name: faker.lorem.words(3),
+	content: {
+		type: 'epc',
+		data: {
+			name: faker.person.fullName(),
+			iban: 'DE89370400440532013000',
+			bic: 'COBADEFFXXX',
+			amount: faker.number.float({ min: 1, max: 1000, fractionDigits: 2 }),
+			reference: faker.string.alphanumeric(10),
+			text: faker.lorem.sentence({ min: 2, max: 5 }),
+		},
+	},
+	config: QrCodeDefaults,
+});

@@ -137,6 +137,29 @@ export const EventInputSchema = z
 
 export type TEventInput = z.infer<typeof EventInputSchema>;
 
+// IBAN validation regex (basic format check - 2 letter country + 2 check digits + up to 30 alphanumeric)
+const ibanRegex = /^[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}$/;
+
+export const EpcInputSchema = z.object({
+	name: z.string().min(1).max(70).describe('Beneficiary name'),
+	iban: z
+		.string()
+		.min(15)
+		.max(34)
+		.refine((val) => ibanRegex.test(val.replace(/\s/g, '').toUpperCase()), {
+			message: 'Invalid IBAN format',
+		}),
+	bic: z
+		.string()
+		.regex(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i, 'Invalid BIC/SWIFT format')
+		.optional(),
+	amount: z.number().min(0.01).max(999999999.99).optional(),
+	reference: z.string().max(35).optional(),
+	text: z.string().max(140).optional(),
+});
+
+export type TEpcInput = z.infer<typeof EpcInputSchema>;
+
 // Alle Typen als Literal-Union
 export const QrCodeContentType = z.union([
 	z.literal('url'),
@@ -146,6 +169,7 @@ export const QrCodeContentType = z.union([
 	z.literal('email'),
 	z.literal('location'),
 	z.literal('event'),
+	z.literal('epc'),
 	// z.literal('socials'),
 ]);
 export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
@@ -158,6 +182,7 @@ const ContentSchemas = {
 	email: EmailInputSchema,
 	location: LocationInputSchema,
 	event: EventInputSchema,
+	epc: EpcInputSchema,
 	// socials: SocialInputSchema,
 } as const;
 
@@ -175,6 +200,7 @@ export const QrCodeContent = z.discriminatedUnion('type', [
 	createContentSchema('email'),
 	createContentSchema('location'),
 	createContentSchema('event'),
+	createContentSchema('epc'),
 	// createContentSchema('socials'),
 ]);
 

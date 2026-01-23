@@ -1,5 +1,6 @@
 import {
 	AtSymbolIcon,
+	BanknotesIcon,
 	CalendarDaysIcon,
 	DocumentTextIcon,
 	EnvelopeOpenIcon,
@@ -20,6 +21,7 @@ export const QrCodeIcon = memo(({ type }: { type: TQrCode['content']['type'] }) 
 		email: EnvelopeOpenIcon,
 		location: MapPinIcon,
 		event: CalendarDaysIcon,
+		epc: BanknotesIcon,
 		socials: AtSymbolIcon,
 	};
 	const Icon = icons[type] ?? (() => <>❓</>);

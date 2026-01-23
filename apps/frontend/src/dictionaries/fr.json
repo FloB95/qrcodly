@@ -363,6 +363,7 @@
 				"email": "EMAIL",
 				"location": "EMPLACEMENT",
 				"event": "ÉVÉNEMENT",
+				"epc": "BANQUE",
 				"socials": "RÉSEAUX"
 			},
 			"cancel": "Annuler",
@@ -520,6 +521,32 @@
 				},
 				"endDate": {
 					"label": "Date de fin"
+				}
+			},
+			"epc": {
+				"name": {
+					"label": "Nom du bénéficiaire",
+					"placeholder": "Nom du destinataire du paiement"
+				},
+				"iban": {
+					"label": "IBAN",
+					"placeholder": "Ex. FR7630006000011234567890189"
+				},
+				"bic": {
+					"label": "BIC/SWIFT",
+					"placeholder": "Ex. BNPAFRPPXXX"
+				},
+				"amount": {
+					"label": "Montant",
+					"placeholder": "0,00"
+				},
+				"reference": {
+					"label": "Référence de paiement",
+					"placeholder": "Numéro de facture ou référence"
+				},
+				"text": {
+					"label": "Motif du paiement",
+					"placeholder": "Objet du paiement"
 				}
 			},
 			"social": {

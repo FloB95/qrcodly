@@ -363,6 +363,7 @@
 				"email": "EMAIL",
 				"location": "POSIZIONE",
 				"event": "EVENTO",
+				"epc": "BANCA",
 				"socials": "SOCIAL"
 			},
 			"cancel": "Annulla",
@@ -520,6 +521,32 @@
 				},
 				"endDate": {
 					"label": "Data di fine"
+				}
+			},
+			"epc": {
+				"name": {
+					"label": "Nome del beneficiario",
+					"placeholder": "Nome del destinatario del pagamento"
+				},
+				"iban": {
+					"label": "IBAN",
+					"placeholder": "Es. IT60X0542811101000000123456"
+				},
+				"bic": {
+					"label": "BIC/SWIFT",
+					"placeholder": "Es. BCABORPPXXX"
+				},
+				"amount": {
+					"label": "Importo",
+					"placeholder": "0,00"
+				},
+				"reference": {
+					"label": "Riferimento pagamento",
+					"placeholder": "Numero fattura o riferimento"
+				},
+				"text": {
+					"label": "Causale",
+					"placeholder": "Motivo del pagamento"
 				}
 			},
 			"social": {

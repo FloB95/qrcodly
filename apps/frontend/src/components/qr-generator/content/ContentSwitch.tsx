@@ -18,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { EmailSection } from './EmailSection';
 import { LocationSection } from './LocationSection';
 import { EventSection } from './EventSection';
+import { EpcSection } from './EpcSection';
 import { CONTENT_TYPE_CONFIGS } from '@/lib/content-type.config';
 import { DynamicBadge } from '../DynamicBadge';
 import { useAuth } from '@clerk/nextjs';
@@ -44,6 +45,7 @@ const CONTENT_COMPONENTS = {
 	email: { edit: EmailSection, view: EmailSection },
 	location: { edit: LocationSection, view: LocationSection },
 	event: { edit: EventSection, view: EventSection },
+	epc: { edit: EpcSection, view: EpcSection },
 } as const;
 
 const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({

@@ -363,6 +363,7 @@
 				"email": "CORREO",
 				"location": "UBICACIÓN",
 				"event": "EVENTO",
+				"epc": "BANCO",
 				"socials": "REDES"
 			},
 			"cancel": "Cancelar",
@@ -520,6 +521,32 @@
 				},
 				"endDate": {
 					"label": "Fecha de fin"
+				}
+			},
+			"epc": {
+				"name": {
+					"label": "Nombre del beneficiario",
+					"placeholder": "Nombre del destinatario del pago"
+				},
+				"iban": {
+					"label": "IBAN",
+					"placeholder": "Ej. ES9121000418450200051332"
+				},
+				"bic": {
+					"label": "BIC/SWIFT",
+					"placeholder": "Ej. CAIXESBBXXX"
+				},
+				"amount": {
+					"label": "Importe",
+					"placeholder": "0,00"
+				},
+				"reference": {
+					"label": "Referencia de pago",
+					"placeholder": "Número de factura o referencia"
+				},
+				"text": {
+					"label": "Concepto",
+					"placeholder": "Motivo del pago"
 				}
 			},
 			"social": {
