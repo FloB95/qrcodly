@@ -49,7 +49,7 @@ describe('AppCache (Redis)', () => {
 	});
 
 	it('should disconnect from Redis', async () => {
-		appCache.disconnect();
+		await appCache.disconnect();
 		await expect(appCache.get('test-key')).rejects.toThrow(); // Redis should be disconnected
 	});
 });
