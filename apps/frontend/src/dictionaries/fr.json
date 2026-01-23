@@ -540,11 +540,7 @@
 					"label": "Montant",
 					"placeholder": "0,00"
 				},
-				"reference": {
-					"label": "Référence de paiement",
-					"placeholder": "Numéro de facture ou référence"
-				},
-				"text": {
+				"purpose": {
 					"label": "Motif du paiement",
 					"placeholder": "Objet du paiement"
 				}

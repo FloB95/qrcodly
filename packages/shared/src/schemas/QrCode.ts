@@ -154,8 +154,7 @@ export const EpcInputSchema = z.object({
 		.regex(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i, 'Invalid BIC/SWIFT format')
 		.optional(),
 	amount: z.number().min(0.01).max(999999999.99).optional(),
-	reference: z.string().max(35).optional(),
-	text: z.string().max(140).optional(),
+	purpose: z.string().max(140).optional(),
 });
 
 export type TEpcInput = z.infer<typeof EpcInputSchema>;

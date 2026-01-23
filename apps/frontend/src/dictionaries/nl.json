@@ -540,11 +540,7 @@
 					"label": "Bedrag",
 					"placeholder": "0,00"
 				},
-				"reference": {
-					"label": "Betalingsreferentie",
-					"placeholder": "Factuurnummer of referentie"
-				},
-				"text": {
+				"purpose": {
 					"label": "Omschrijving",
 					"placeholder": "Doel van de betaling"
 				}

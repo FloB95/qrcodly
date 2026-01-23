@@ -540,11 +540,7 @@
 					"label": "Сумма",
 					"placeholder": "0,00"
 				},
-				"reference": {
-					"label": "Номер платежа",
-					"placeholder": "Номер счёта или референс"
-				},
-				"text": {
+				"purpose": {
 					"label": "Назначение платежа",
 					"placeholder": "Цель платежа"
 				}

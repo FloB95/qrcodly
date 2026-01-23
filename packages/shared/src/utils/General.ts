@@ -167,16 +167,15 @@ export const convertEpcObjToString = (epcInput: TEpcInput): string => {
 	const lines = [
 		'BCD', // Service Tag
 		'002', // Version
-		'1', // Character set (1 = UTF-8)
-		'SCT', // Identification code (SEPA Credit Transfer)
+		'1', // Character set (UTF-8)
+		'SCT', // SEPA Credit Transfer
 		epcInput.bic || '', // BIC (optional)
 		epcInput.name, // Beneficiary name
-		epcInput.iban.replace(/\s/g, '').toUpperCase(), // IBAN (normalized)
-		epcInput.amount ? `EUR${epcInput.amount.toFixed(2)}` : '', // Amount
-		'', // Purpose (AT-44, optional, usually empty)
-		epcInput.reference || '', // Remittance reference (AT-05)
-		epcInput.text || '', // Remittance text (AT-05)
-		'', // Beneficiary to originator information (optional)
+		epcInput.iban.replace(/\s/g, '').toUpperCase(), // IBAN
+		epcInput.amount ? `EUR${epcInput.amount.toFixed(2)}` : '',
+		'', // Purpose code (optional, not used)
+		epcInput.purpose || '', // Remittance information (unstructured)
+		'', // End marker (must exist)
 	];
 
 	return lines.join('\n');
@@ -314,8 +313,7 @@ export const getDefaultContentByType = (
 					iban: '',
 					bic: undefined,
 					amount: undefined,
-					reference: undefined,
-					text: undefined,
+					purpose: undefined,
 				},
 			};
 		// case 'socials':

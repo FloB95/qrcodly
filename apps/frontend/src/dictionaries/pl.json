@@ -540,11 +540,7 @@
 					"label": "Kwota",
 					"placeholder": "0,00"
 				},
-				"reference": {
-					"label": "Numer referencyjny",
-					"placeholder": "Numer faktury lub referencja"
-				},
-				"text": {
+				"purpose": {
 					"label": "Tytuł przelewu",
 					"placeholder": "Cel płatności"
 				}

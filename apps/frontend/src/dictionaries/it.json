@@ -540,11 +540,7 @@
 					"label": "Importo",
 					"placeholder": "0,00"
 				},
-				"reference": {
-					"label": "Riferimento pagamento",
-					"placeholder": "Numero fattura o riferimento"
-				},
-				"text": {
+				"purpose": {
 					"label": "Causale",
 					"placeholder": "Motivo del pagamento"
 				}

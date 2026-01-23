@@ -532,12 +532,8 @@
 					"label": "Amount",
 					"placeholder": "0.00"
 				},
-				"reference": {
-					"label": "Payment Reference",
-					"placeholder": "Invoice or reference number"
-				},
-				"text": {
-					"label": "Payment Description",
+				"purpose": {
+					"label": "Purpose",
 					"placeholder": "Purpose of payment"
 				}
 			},

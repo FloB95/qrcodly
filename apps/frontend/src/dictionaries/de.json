@@ -532,11 +532,7 @@
 					"label": "Betrag",
 					"placeholder": "0,00"
 				},
-				"reference": {
-					"label": "Zahlungsreferenz",
-					"placeholder": "Rechnungs- oder Referenznummer"
-				},
-				"text": {
+				"purpose": {
 					"label": "Verwendungszweck",
 					"placeholder": "Zahlungsgrund"
 				}

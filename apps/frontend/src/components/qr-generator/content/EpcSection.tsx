@@ -182,7 +182,8 @@ const _EpcSection = ({ onChange, value }: EpcSectionProps) => {
 											value={field.value ?? ''}
 											onChange={(e) => {
 												const val = e.target.value;
-												field.onChange(val === '' ? undefined : parseFloat(val));
+												const normalized = val.replace(',', '.');
+												field.onChange(normalized === '' ? undefined : parseFloat(normalized));
 											}}
 										/>
 									</InputGroup>
@@ -193,15 +194,15 @@ const _EpcSection = ({ onChange, value }: EpcSectionProps) => {
 					/>
 				</div>
 
-				{/* Reference */}
+				{/* Purpose (Remittance Information) */}
 				<FormField
 					control={form.control}
-					name="reference"
+					name="purpose"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>
 								<span translate="no" suppressHydrationWarning>
-									{t('reference.label')}
+									{t('purpose.label')}
 								</span>
 							</FormLabel>
 							<FormControl>
@@ -210,38 +211,7 @@ const _EpcSection = ({ onChange, value }: EpcSectionProps) => {
 										{...field}
 										value={field.value ?? ''}
 										translate="no"
-										placeholder={t('reference.placeholder')}
-										maxLength={35}
-										className="pr-16"
-									/>
-									<InputGroupAddon align="inline-end">
-										<CharacterCounter current={field.value?.length || 0} max={35} />
-									</InputGroupAddon>
-								</InputGroup>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				{/* Text (Remittance Information) */}
-				<FormField
-					control={form.control}
-					name="text"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								<span translate="no" suppressHydrationWarning>
-									{t('text.label')}
-								</span>
-							</FormLabel>
-							<FormControl>
-								<InputGroup>
-									<InputGroupInput
-										{...field}
-										value={field.value ?? ''}
-										translate="no"
-										placeholder={t('text.placeholder')}
+										placeholder={t('purpose.placeholder')}
 										maxLength={140}
 										className="pr-16"
 									/>
