@@ -109,16 +109,16 @@ export const GeneratorQrCodeDownloadBtn = ({
 										},
 									},
 								});
-
-								posthog.capture('error:qr-code-created', {
-									qrCode: { config, content },
-									error: {
-										code: error.code,
-										message: error.message,
-										fieldErrors: error?.fieldErrors,
-									},
-								});
 							}
+
+							posthog.capture('error:qr-code-created', {
+								qrCode: { config, content },
+								error: {
+									code: error.code,
+									message: error.message,
+									fieldErrors: error?.fieldErrors,
+								},
+							});
 
 							if (isSignedIn) {
 								toast({

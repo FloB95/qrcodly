@@ -57,11 +57,12 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 									},
 								},
 							});
-
-							posthog.capture('error:config-template-created', {
-								templateName: templateName,
-							});
 						}
+
+						posthog.capture('error:config-template-created', {
+							templateName: templateName,
+							config,
+						});
 
 						toast({
 							variant: 'destructive',

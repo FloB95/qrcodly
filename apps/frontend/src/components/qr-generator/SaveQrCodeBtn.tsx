@@ -84,17 +84,17 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 									},
 								},
 							});
-
-							posthog.capture('error:qr-code-created', {
-								qrCodeName: qrCodeName,
-								qrCode,
-								error: {
-									code: error.code,
-									message: error.message,
-									fieldErrors: error?.fieldErrors,
-								},
-							});
 						}
+
+						posthog.capture('error:qr-code-created', {
+							qrCodeName: qrCodeName,
+							qrCode,
+							error: {
+								code: error.code,
+								message: error.message,
+								fieldErrors: error?.fieldErrors,
+							},
+						});
 
 						toast({
 							variant: 'destructive',

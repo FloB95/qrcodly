@@ -129,12 +129,12 @@ export const QrCodeListItemActions = ({
 									},
 								},
 							});
-
-							posthog.capture('error:config-template-created-from-qr', {
-								templateName: templateName,
-								qrCodeId: qr.id,
-							});
 						}
+
+						posthog.capture('error:config-template-created-from-qr', {
+							templateName: templateName,
+							qrCodeId: qr.id,
+						});
 
 						toast({
 							variant: 'destructive',

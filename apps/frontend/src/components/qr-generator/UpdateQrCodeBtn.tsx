@@ -86,15 +86,15 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 									},
 								},
 							});
-
-							posthog.capture('error:qr-code-updated', {
-								name: qrCode.name,
-								config: qrCode.config,
-								content: qrCode.content,
-								message: error.message,
-								fieldErrors: error?.fieldErrors,
-							});
 						}
+
+						posthog.capture('error:qr-code-updated', {
+							name: qrCode.name,
+							config: qrCode.config,
+							content: qrCode.content,
+							message: error.message,
+							fieldErrors: error?.fieldErrors,
+						});
 
 						toast({
 							variant: 'destructive',

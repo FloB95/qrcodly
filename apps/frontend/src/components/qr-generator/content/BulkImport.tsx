@@ -78,15 +78,15 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 									},
 								},
 							});
-
-							posthog.capture('error:qr-code-bulk-import', {
-								error: {
-									code: error.code,
-									message: error.message,
-									fieldErrors: error?.fieldErrors,
-								},
-							});
 						}
+
+						posthog.capture('error:qr-code-bulk-import', {
+							error: {
+								code: error.code,
+								message: error.message,
+								fieldErrors: error?.fieldErrors,
+							},
+						});
 
 						toast({
 							variant: 'destructive',
