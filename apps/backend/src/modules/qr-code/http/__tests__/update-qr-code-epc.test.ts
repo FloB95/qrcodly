@@ -122,13 +122,12 @@ describe('updateQrCode - EPC Content Type', () => {
 		expect(updatedQrCode.qrCodeData).toContain('EUR299.99');
 	});
 
-	it('should update EPC reference and text', async () => {
+	it('should update EPC purpose', async () => {
 		const createdQrCode = await createQrCode(generateEpcQrCodeDto(), accessToken);
 		const newEpcData = {
 			name: 'Service Provider',
 			iban: 'DE89370400440532013000',
-			reference: 'INV-2026-001',
-			text: 'January subscription',
+			purpose: 'January subscription',
 		};
 
 		const response = await updateQrCodeRequest(
@@ -145,8 +144,7 @@ describe('updateQrCode - EPC Content Type', () => {
 		expect(response.statusCode).toBe(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 
-		expect(updatedQrCode.qrCodeData).toContain(newEpcData.reference);
-		expect(updatedQrCode.qrCodeData).toContain(newEpcData.text);
+		expect(updatedQrCode.qrCodeData).toContain(newEpcData.purpose);
 	});
 
 	it('should handle different IBAN formats', async () => {
@@ -298,7 +296,7 @@ describe('updateQrCode - EPC Content Type', () => {
 			expect(response.statusCode).toBe(400);
 		});
 
-		it('should reject reference exceeding max length (35 chars)', async () => {
+		it('should reject purpose exceeding max length (140 chars)', async () => {
 			const createdQrCode = await createQrCode(generateEpcQrCodeDto(), accessToken);
 
 			const response = await updateQrCodeRequest(
@@ -309,28 +307,7 @@ describe('updateQrCode - EPC Content Type', () => {
 						data: {
 							name: 'Test User',
 							iban: 'DE89370400440532013000',
-							reference: 'a'.repeat(36),
-						},
-					},
-				},
-				accessToken,
-			);
-
-			expect(response.statusCode).toBe(400);
-		});
-
-		it('should reject text exceeding max length (140 chars)', async () => {
-			const createdQrCode = await createQrCode(generateEpcQrCodeDto(), accessToken);
-
-			const response = await updateQrCodeRequest(
-				createdQrCode.id,
-				{
-					content: {
-						type: 'epc',
-						data: {
-							name: 'Test User',
-							iban: 'DE89370400440532013000',
-							text: 'a'.repeat(141),
+							purpose: 'a'.repeat(141),
 						},
 					},
 				},

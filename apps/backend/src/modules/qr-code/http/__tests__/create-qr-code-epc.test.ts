@@ -220,7 +220,7 @@ describe('createQrCode - EPC Content Type', () => {
 		expect(response.statusCode).toBe(400);
 	});
 
-	it('should reject reference exceeding max length (35 chars)', async () => {
+	it('should reject purpose exceeding max length (140 chars)', async () => {
 		const invalidDto: TCreateQrCodeDto = {
 			...generateEpcQrCodeDto(),
 			content: {
@@ -228,23 +228,7 @@ describe('createQrCode - EPC Content Type', () => {
 				data: {
 					name: 'Test User',
 					iban: 'DE89370400440532013000',
-					reference: 'a'.repeat(36),
-				},
-			},
-		};
-		const response = await createRequest(invalidDto, accessToken);
-		expect(response.statusCode).toBe(400);
-	});
-
-	it('should reject text exceeding max length (140 chars)', async () => {
-		const invalidDto: TCreateQrCodeDto = {
-			...generateEpcQrCodeDto(),
-			content: {
-				type: 'epc' as const,
-				data: {
-					name: 'Test User',
-					iban: 'DE89370400440532013000',
-					text: 'a'.repeat(141),
+					purpose: 'a'.repeat(141),
 				},
 			},
 		};
