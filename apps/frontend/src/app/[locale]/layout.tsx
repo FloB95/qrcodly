@@ -8,7 +8,6 @@ import { routing } from '@/i18n/routing';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { env } from '@/env';
-import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -126,7 +125,6 @@ export default async function RootLayout({
 					</Providers>
 				</NextIntlClientProvider>
 				<Toaster />
-				<ServiceWorkerRegistration />
 			</body>
 		</html>
 	);
