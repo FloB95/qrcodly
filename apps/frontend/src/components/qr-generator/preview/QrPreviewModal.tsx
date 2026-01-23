@@ -23,6 +23,7 @@ import { BackgroundSelector } from './BackgroundSelector';
 import { useQrPosition } from './hooks/useQrPosition';
 import { useTranslations } from 'next-intl';
 import type { BackgroundSource } from './types';
+import { safeLocalStorage } from '@/lib/utils';
 
 interface QrPreviewModalProps {
 	open: boolean;
@@ -39,7 +40,7 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 	const [showInstructions, setShowInstructions] = useState(() => {
 		// Check localStorage to see if user has dismissed instructions
 		if (typeof window !== 'undefined') {
-			return localStorage.getItem('qr-preview-instructions-dismissed') !== 'true';
+			return safeLocalStorage.getItem('qr-preview-instructions-dismissed') !== 'true';
 		}
 		return true;
 	});
@@ -68,7 +69,7 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 	const handleDismissInstructions = () => {
 		setShowInstructions(false);
 		if (typeof window !== 'undefined') {
-			localStorage.setItem('qr-preview-instructions-dismissed', 'true');
+			safeLocalStorage.setItem('qr-preview-instructions-dismissed', 'true');
 		}
 	};
 

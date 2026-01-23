@@ -3,6 +3,7 @@
 import type { ApiError } from '@/lib/api/ApiError';
 import { type TQrCodeContent, type TQrCodeOptions, type TShortUrl } from '@shared/schemas';
 import { createStore } from 'zustand/vanilla';
+import { safeLocalStorage } from '@/lib/utils';
 
 export type QrCodeGeneratorState = {
 	id?: string;
@@ -46,7 +47,7 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState) => {
 	// Check if we're in a browser environment
 	if (typeof window !== 'undefined') {
 		// Check for unsavedQrConfig in localStorage
-		const savedConfig = localStorage.getItem('unsavedQrConfig');
+		const savedConfig = safeLocalStorage.getItem('unsavedQrConfig');
 		if (savedConfig) {
 			try {
 				const parsedConfig = JSON.parse(savedConfig) as Partial<TQrCodeOptions>;
@@ -55,13 +56,13 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState) => {
 					...parsedConfig,
 				};
 				// Clear the unsavedQrConfig from localStorage
-				localStorage.removeItem('unsavedQrConfig');
+				safeLocalStorage.removeItem('unsavedQrConfig');
 			} catch (error) {
 				console.error('Failed to parse unsavedQrConfig from localStorage:', error);
 			}
 		}
 
-		const savedContent = localStorage.getItem('unsavedQrContent');
+		const savedContent = safeLocalStorage.getItem('unsavedQrContent');
 		if (savedContent) {
 			try {
 				const parsedContent = JSON.parse(savedContent) as TQrCodeContent;
@@ -70,7 +71,7 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState) => {
 					...parsedContent,
 				};
 				// Clear the unsavedQrContent from localStorage
-				localStorage.removeItem('unsavedQrContent');
+				safeLocalStorage.removeItem('unsavedQrContent');
 			} catch (error) {
 				console.error('Failed to parse unsavedQrContent from localStorage:', error);
 			}

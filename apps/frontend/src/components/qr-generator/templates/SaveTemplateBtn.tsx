@@ -13,6 +13,7 @@ import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
+import { safeLocalStorage } from '@/lib/utils';
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 	const t = useTranslations('templates');
@@ -93,7 +94,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 						onClick={() => {
 							if (!isSignedIn) {
 								// Store the config in localStorage before prompting login
-								localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
+								safeLocalStorage.setItem('unsavedQrConfig', JSON.stringify(config));
 								setAlertOpen(true);
 								return;
 							}

@@ -201,3 +201,31 @@ export function getUserInitials(user: UserResource) {
 		'?'
 	);
 }
+
+/**
+ * Safe localStorage utilities that handle SecurityError in private/incognito mode
+ * and browsers with strict privacy settings.
+ */
+export const safeLocalStorage = {
+	getItem(key: string): string | null {
+		try {
+			return localStorage.getItem(key);
+		} catch {
+			return null;
+		}
+	},
+	setItem(key: string, value: string): void {
+		try {
+			localStorage.setItem(key, value);
+		} catch {
+			// localStorage unavailable
+		}
+	},
+	removeItem(key: string): void {
+		try {
+			localStorage.removeItem(key);
+		} catch {
+			// localStorage unavailable
+		}
+	},
+};

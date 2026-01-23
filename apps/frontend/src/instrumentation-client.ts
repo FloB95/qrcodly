@@ -28,6 +28,36 @@ Sentry.init({
 
 	// Setting this option to true will print useful information to the console while you're setting up Sentry.
 	debug: false,
+
+	// Filter out errors caused by browser extensions and third-party scripts
+	beforeSend(event) {
+		const errorMessage = event.exception?.values?.[0]?.value || '';
+
+		// Filter out DOM manipulation errors caused by browser extensions
+		// (Grammarly, translation tools, ad blockers, etc.)
+		if (
+			errorMessage.includes("Failed to execute 'removeChild' on 'Node'") ||
+			errorMessage.includes("Failed to execute 'insertBefore' on 'Node'") ||
+			errorMessage.includes("Failed to execute 'appendChild' on 'Node'") ||
+			errorMessage.includes('The node to be removed is not a child of this node')
+		) {
+			return null;
+		}
+
+		// Filter out errors from browser extensions
+		const frames = event.exception?.values?.[0]?.stacktrace?.frames || [];
+		const isFromExtension = frames.some(
+			(frame) =>
+				frame.filename?.includes('extension://') ||
+				frame.filename?.includes('moz-extension://') ||
+				frame.filename?.includes('chrome-extension://'),
+		);
+		if (isFromExtension) {
+			return null;
+		}
+
+		return event;
+	},
 });
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
