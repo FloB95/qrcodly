@@ -52,12 +52,14 @@ export function getQrCodeStylingOptions(
 	const { qrCodeData, shortUrl, customDomain } = options ?? {};
 
 	// Use pre-computed qrCodeData if available (from saved QR codes)
+	// Fallback to a default URL if data is empty to prevent "QR code is empty" errors
 	const data =
 		qrCodeData ??
-		convertQRCodeDataToStringByType(
+		(convertQRCodeDataToStringByType(
 			content,
 			getShortUrlForRendering(content, shortUrl, customDomain),
-		);
+		) ||
+			'https://qrcodly.de');
 
 	return {
 		...convertQrCodeOptionsToLibraryOptions(config),

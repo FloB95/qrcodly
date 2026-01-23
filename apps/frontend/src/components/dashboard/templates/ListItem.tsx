@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import posthog from 'posthog-js';
-import { fetchImageAsBase64, formatDate } from '@/lib/utils';
+import { fetchImageAsBase64, formatDate, safeLocalStorage } from '@/lib/utils';
 import type { TConfigTemplate, TQrCode } from '@shared/schemas';
 import * as Sentry from '@sentry/nextjs';
 import { TableCell, TableRow } from '@/components/ui/table';
@@ -121,7 +121,7 @@ export const TemplateListItem = ({
 		} catch (error) {
 			console.error('Failed to convert image to base64:', error);
 		}
-		localStorage.setItem('unsavedQrConfig', JSON.stringify(configToSave));
+		safeLocalStorage.setItem('unsavedQrConfig', JSON.stringify(configToSave));
 		router.push('/');
 	}, []);
 

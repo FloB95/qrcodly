@@ -23,7 +23,7 @@ import { useEffect, useState } from 'react';
 import { EventInputSchema, objDiff, type TEventInput } from '@shared/schemas/src';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { createLinkFromShortUrl } from '@/lib/utils';
+import { createLinkFromShortUrl, safeLocalStorage } from '@/lib/utils';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
@@ -53,14 +53,14 @@ const _EventSection = ({ onChange, value }: EventSectionProps) => {
 
 	function onSubmit(values: TEventInput) {
 		if (!isSignedIn) {
-			localStorage.setItem(
+			safeLocalStorage.setItem(
 				'unsavedQrContent',
 				JSON.stringify({
 					type: 'event',
 					data: values,
 				}),
 			);
-			localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
+			safeLocalStorage.setItem('unsavedQrConfig', JSON.stringify(config));
 			setAlertOpen(true);
 			return;
 		}

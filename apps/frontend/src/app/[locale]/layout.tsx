@@ -108,7 +108,7 @@ export default async function RootLayout({
 				{alternateLinks}
 			</head>
 
-			<body className={`font-sans ${openSans.variable}`}>
+			<body className={`font-sans ${openSans.variable}`} suppressHydrationWarning>
 				<NextIntlClientProvider>
 					<Providers locale={locale}>
 						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">

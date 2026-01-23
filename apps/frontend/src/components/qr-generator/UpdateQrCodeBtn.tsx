@@ -12,6 +12,7 @@ import { QrCodeUpdateDialog, UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY } from './QrCod
 import { useQueryClient } from '@tanstack/react-query';
 import type { ApiError } from '@/lib/api/ApiError';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
+import { safeLocalStorage } from '@/lib/utils';
 
 type UpdateBtnDto = Pick<
 	TQrCodeWithRelationsResponseDto,
@@ -34,7 +35,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 
 	useEffect(() => {
 		setHasMounted(true);
-		const saved = localStorage.getItem(UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY);
+		const saved = safeLocalStorage.getItem(UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY);
 		setShowInfoDialog(saved !== 'true' && !IS_DYNAMIC);
 	}, []);
 
