@@ -81,7 +81,7 @@
 		"jsdom": "^26.1.0",
 		"jsonwebtoken": "^9.0.3",
 		"mysql2": "^3.15.3",
-		"node-cron": "^3.0.3",
+		"node-cron": "^4.2.1",
 		"nodemailer": "^6.10.1",
 		"pino": "^9.14.0",
 		"pino-pretty": "^13.1.3",
