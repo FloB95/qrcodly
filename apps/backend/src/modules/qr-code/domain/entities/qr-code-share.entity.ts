@@ -17,7 +17,7 @@ const qrCodeShare = createTable(
 			.references(() => qrCode.id, { onDelete: 'cascade' })
 			.notNull()
 			.unique(), // Currently one share per QR code (can be removed later for multiple shares)
-		shareToken: varchar('share_token', { length: 21 }).notNull().unique(),
+		shareToken: varchar('share_token', { length: 36 }).notNull().unique(),
 		config: json().$type<TQrCodeShareConfig>().notNull(),
 		isActive: boolean('is_active').notNull().default(true),
 		createdBy: varchar('created_by', { length: 255 }).notNull(),
