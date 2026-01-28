@@ -29,6 +29,7 @@ import { Button } from '@/components/ui/button';
 import type { TQrCodeWithRelationsResponseDto, TFileExtension } from '@shared/schemas';
 import { objDiff, QrCodeDefaults } from '@shared/schemas';
 import { getQrCodeStylingOptions } from '@/lib/qr-code-helpers';
+import { fetchImageAsBase64 } from '@/lib/utils';
 import posthog from 'posthog-js';
 import { NameDialog } from '@/components/qr-generator/NameDialog';
 import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
@@ -97,9 +98,22 @@ export const QrCodeListItemActions = ({
 	const handleCreateTemplate = async (templateName: string) => {
 		setTemplateNameDialogOpen(false);
 		try {
+			// If the config has an image URL (S3), convert it to base64
+			let configToSave = qr.config;
+			if (qr.config.image && qr.config.image.startsWith('http')) {
+				try {
+					const base64 = await fetchImageAsBase64(qr.config.image);
+					configToSave = { ...qr.config, image: base64 };
+				} catch (imageError) {
+					console.error('Failed to convert image to base64:', imageError);
+					// Continue without the image if conversion fails
+					configToSave = { ...qr.config, image: undefined };
+				}
+			}
+
 			await createConfigTemplateMutation.mutateAsync(
 				{
-					config: qr.config,
+					config: configToSave,
 					name: templateName,
 				},
 				{

@@ -125,11 +125,15 @@ export class Server {
 						acceptsToken: ['session_token', 'api_key'],
 					}) as { userId: string | null };
 
-					return userId ? `user:${userId}` : `anon:${request.clientIp}`;
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-expect-error
+					const policy = request.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT;
+					const userKey = userId ? `user:${userId}` : `anon:${request.clientIp}`;
+					return `${userKey}:${policy}`;
 				},
 				max: (request) => {
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
+					// @ts-expect-error
 					const policy = request.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT;
 					return resolveRateLimit(request, policy);
 				},
