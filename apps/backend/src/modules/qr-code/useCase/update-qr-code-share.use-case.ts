@@ -1,7 +1,7 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
-import { TUpdateQrCodeShareDto } from '@shared/schemas';
+import { objDiff, TQrCodeShareConfig, TUpdateQrCodeShareDto } from '@shared/schemas';
 import QrCodeShareRepository from '../domain/repository/qr-code-share.repository';
 import { TQrCodeShare } from '../domain/entities/qr-code-share.entity';
 
@@ -22,15 +22,25 @@ export class UpdateQrCodeShareUseCase implements IBaseUseCase {
 	 * @returns The updated share entity.
 	 */
 	async execute(share: TQrCodeShare, dto: TUpdateQrCodeShareDto): Promise<TQrCodeShare> {
-		const updatedConfig = { ...share.config, ...dto };
+		const updatedConfig: TQrCodeShareConfig = { ...share.config, ...dto };
+
+		const diffs = objDiff(share.config, updatedConfig) as Partial<TQrCodeShareConfig>;
+
+		// Don't update if no changes
+		if (Object.keys(diffs).length < 1) {
+			return share;
+		}
 
 		await this.qrCodeShareRepository.update(share, {
 			config: updatedConfig,
 		});
 
 		this.logger.info('qrCodeShare.updated', {
-			shareId: share.id,
-			qrCodeId: share.qrCodeId,
+			sharedQrCode: {
+				shareId: share.id,
+				qrCodeId: share.qrCodeId,
+				updates: diffs,
+			},
 		});
 
 		const updatedShare = await this.qrCodeShareRepository.findByQrCodeId(share.qrCodeId);

@@ -46,8 +46,10 @@ export class GetPublicSharedQrCodeUseCase implements IBaseUseCase {
 		}
 
 		this.logger.debug('qrCodeShare.publicAccess', {
-			shareToken,
-			qrCodeId: qrCode.id,
+			sharedQrCode: {
+				shareToken,
+				qrCodeId: qrCode.id,
+			},
 		});
 
 		return {

@@ -10,6 +10,7 @@
 		"share": "Partager",
 		"edit": "Modifier",
 		"delete": "Supprimer",
+		"cancel": "Annuler",
 		"notProvided": "Non fourni",
 		"days": "Jours",
 		"newBadge": "Nouveau !",
@@ -133,7 +134,7 @@
 			},
 			"secureFeature": {
 				"headline": "Vos données restent chez nous",
-				"subHeadline": "Qrcodly héberge toutes les données localement en Allemagne – sans les partager avec des services externes. Nous utilisons uniquement Clerk pour l’authentification."
+				"subHeadline": "QRcodly héberge toutes les données localement en Allemagne – sans les partager avec des services externes. Nous utilisons uniquement Clerk pour l’authentification."
 			}
 		}
 	},
@@ -213,6 +214,44 @@
 		"savePopup": {
 			"title": "Enregistrer le code QR",
 			"placeholder": "Nom du code QR"
+		},
+		"share": {
+			"title": "Partager le code QR",
+			"description": "Créer un lien public pour partager ce code QR",
+			"warning": "Toute personne ayant ce lien peut voir votre code QR. Le lien reste actif jusqu'à sa suppression.",
+			"link": "Lien de partage",
+			"displayOptions": "Options d'affichage",
+			"showName": "Afficher le nom du code QR",
+			"showContent": "Afficher les détails du contenu",
+			"showQrCode": "Afficher l'image du code QR",
+			"showDownloadButton": "Afficher le bouton de téléchargement",
+			"createLink": "Créer un lien de partage",
+			"updateLink": "Mettre à jour les paramètres",
+			"deleteLink": "Supprimer le lien",
+			"linkCopied": {
+				"title": "Lien copié",
+				"description": "Le lien a été copié dans le presse-papiers"
+			},
+			"created": {
+				"title": "Lien créé",
+				"description": "Votre code QR est maintenant accessible publiquement"
+			},
+			"updated": {
+				"title": "Paramètres mis à jour",
+				"description": "Les paramètres du lien ont été mis à jour"
+			},
+			"deleted": {
+				"title": "Lien supprimé",
+				"description": "Le lien de partage a été supprimé"
+			},
+			"error": {
+				"title": "Erreur",
+				"description": "Une erreur s'est produite. Veuillez réessayer."
+			},
+			"copyError": {
+				"description": "Impossible de copier le lien dans le presse-papiers. Veuillez le copier manuellement."
+			},
+			"noVisibleContent": "Ce code QR partagé n'a pas de contenu visible."
 		}
 	},
 	"loginDialog": {
@@ -659,7 +698,7 @@
 		"question10": "Les Codes QR fonctionnent-ils également imprimés ?",
 		"answer10": "Absolument ! Les Codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, tant qu'ils restent clairs et intacts. Assurez une bonne qualité d'impression, et vos codes seront prêts à être utilisés partout !",
 		"question11": "Où sont hébergées mes données ?",
-		"answer11": "Toutes les données de Qrcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous ne partageons aucune donnée avec des tiers. Nous utilisons uniquement Clerk pour la connexion et l’authentification."
+		"answer11": "Toutes les données de QRcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous ne partageons aucune donnée avec des tiers. Nous utilisons uniquement Clerk pour la connexion et l’authentification."
 	},
 	"fileUpload": {
 		"maxFiles": "Maximum {maxFiles} fichiers autorisés",

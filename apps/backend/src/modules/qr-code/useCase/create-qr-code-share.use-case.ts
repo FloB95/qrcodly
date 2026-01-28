@@ -63,6 +63,7 @@ export class CreateQrCodeShareUseCase implements IBaseUseCase {
 			sharedQrCode: {
 				shareId: newId,
 				qrCodeId,
+				config,
 				createdBy: userId,
 			},
 		});

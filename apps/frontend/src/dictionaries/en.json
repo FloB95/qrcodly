@@ -134,7 +134,7 @@
 			},
 			"secureFeature": {
 				"headline": "Your data stays with us",
-				"subHeadline": "Qrcodly hosts all data locally in Germany – no sharing with external services. Only for authentication, we use Clerk."
+				"subHeadline": "QRcodly hosts all data locally in Germany – no sharing with external services. Only for authentication, we use Clerk."
 			}
 		}
 	},
@@ -698,7 +698,7 @@
 		"question10": "Do QR codes also work in print?",
 		"answer10": "Absolutely! QR codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
 		"question11": "Where is my data hosted?",
-		"answer11": "All data at Qrcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication."
+		"answer11": "All data at QRcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication."
 	},
 	"fileUpload": {
 		"maxFiles": "Maximum {maxFiles} files allowed",

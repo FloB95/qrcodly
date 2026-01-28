@@ -22,8 +22,10 @@ export class DeleteQrCodeShareUseCase implements IBaseUseCase {
 		await this.qrCodeShareRepository.delete(share);
 
 		this.logger.info('qrCodeShare.deleted', {
-			shareId: share.id,
-			qrCodeId: share.qrCodeId,
+			sharedQrCode: {
+				shareId: share.id,
+				qrCodeId: share.qrCodeId,
+			},
 		});
 	}
 }
