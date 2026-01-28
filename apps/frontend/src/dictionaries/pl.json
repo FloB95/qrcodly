@@ -10,6 +10,7 @@
 		"share": "Udostępnij",
 		"edit": "Edytuj",
 		"delete": "Usuń",
+		"cancel": "Anuluj",
 		"notProvided": "Nie podano",
 		"days": "Dni",
 		"newBadge": "Nowość!",
@@ -133,7 +134,7 @@
 			},
 			"secureFeature": {
 				"headline": "Twoje dane pozostają u nas",
-				"subHeadline": "Qrcodly przechowuje wszystkie dane lokalnie w Niemczech – bez udostępniania zewnętrznym usługom. Clerk używamy wyłącznie do uwierzytelniania."
+				"subHeadline": "QRcodly przechowuje wszystkie dane lokalnie w Niemczech – bez udostępniania zewnętrznym usługom. Clerk używamy wyłącznie do uwierzytelniania."
 			}
 		}
 	},
@@ -213,6 +214,44 @@
 		"savePopup": {
 			"title": "Zapisz kod QR",
 			"placeholder": "Nazwa kodu QR"
+		},
+		"share": {
+			"title": "Udostępnij kod QR",
+			"description": "Utwórz publiczny link do udostępnienia tego kodu QR",
+			"warning": "Każdy, kto ma ten link, może zobaczyć Twój kod QR. Link pozostaje aktywny do momentu usunięcia.",
+			"link": "Link do udostępnienia",
+			"displayOptions": "Opcje wyświetlania",
+			"showName": "Pokaż nazwę kodu QR",
+			"showContent": "Pokaż szczegóły zawartości",
+			"showQrCode": "Pokaż obraz kodu QR",
+			"showDownloadButton": "Pokaż przycisk pobierania",
+			"createLink": "Utwórz link do udostępnienia",
+			"updateLink": "Zaktualizuj ustawienia",
+			"deleteLink": "Usuń link",
+			"linkCopied": {
+				"title": "Link skopiowany",
+				"description": "Link został skopiowany do schowka"
+			},
+			"created": {
+				"title": "Link utworzony",
+				"description": "Twój kod QR jest teraz publicznie dostępny"
+			},
+			"updated": {
+				"title": "Ustawienia zaktualizowane",
+				"description": "Ustawienia linku zostały zaktualizowane"
+			},
+			"deleted": {
+				"title": "Link usunięty",
+				"description": "Link do udostępnienia został usunięty"
+			},
+			"error": {
+				"title": "Błąd",
+				"description": "Coś poszło nie tak. Spróbuj ponownie."
+			},
+			"copyError": {
+				"description": "Nie można skopiować linku do schowka. Skopiuj go ręcznie."
+			},
+			"noVisibleContent": "Ten udostępniony kod QR nie ma widocznej zawartości."
 		}
 	},
 	"loginDialog": {
@@ -659,7 +698,7 @@
 		"question10": "Czy kody QR działają również w formie drukowanej?",
 		"answer10": "Absolutnie! Kody QR są specjalnie zoptymalizowane do druku i działają niezawodnie na różnych materiałach, o ile pozostają wyraźne i nieuszkodzone. Zapewnij dobrą jakość druku, a Twoje kody będą gotowe do użycia w dowolnym miejscu!",
 		"question11": "Gdzie przechowywane są moje dane?",
-		"answer11": "Wszystkie dane w Qrcodly są przechowywane wyłącznie na serwerach znajdujących się w Niemczech. Nie przekazujemy danych osobom trzecim. Do logowania i uwierzytelniania używamy wyłącznie usługi Clerk."
+		"answer11": "Wszystkie dane w QRcodly są przechowywane wyłącznie na serwerach znajdujących się w Niemczech. Nie przekazujemy danych osobom trzecim. Do logowania i uwierzytelniania używamy wyłącznie usługi Clerk."
 	},
 	"fileUpload": {
 		"maxFiles": "Dozwolona maksymalnie {maxFiles} plików",

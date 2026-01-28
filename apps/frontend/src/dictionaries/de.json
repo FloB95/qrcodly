@@ -10,28 +10,29 @@
 		"share": "Teilen",
 		"edit": "Bearbeiten",
 		"delete": "Löschen",
+		"cancel": "Abbrechen",
 		"notProvided": "Nicht angegeben",
 		"days": "Tage",
 		"newBadge": "Neu!",
-		"dynamicDescription": "Dynamische QR-Codes können nach der Erstellung bearbeitet werden, tracken jeden Scan und liefern detaillierte Statistiken – ohne den Code neu drucken zu müssen.",
-		"dynamicBadgeTooltip": "Ermöglicht das spätere Ändern der Inhalte ohne neuen QR-Code. <i>Hover für mehr Infos</i>"
+		"dynamicDescription": "Dynamische QR Codes können nach der Erstellung bearbeitet werden, tracken jeden Scan und liefern detaillierte Statistiken – ohne den Code neu drucken zu müssen.",
+		"dynamicBadgeTooltip": "Ermöglicht das spätere Ändern der Inhalte ohne neuen QR Code. <i>Hover für mehr Infos</i>"
 	},
 	"hero": {
 		"badge": "Open Source & Für Immer Kostenlos",
-		"title": "QR-Code Generator ohne Limits",
-		"subtitle": "Erstelle unbegrenzt statische und dynamische QR-Codes kostenlos. Keine versteckten Kosten, keine Einschränkungen.",
+		"title": "QR Code Generator ohne Limits",
+		"subtitle": "Erstelle unbegrenzt statische und dynamische QR Codes kostenlos. Keine versteckten Kosten, keine Einschränkungen.",
 		"benefits": {
-			"unlimited": "Unbegrenzte QR-Codes",
-			"noSignup": "Kostenlose dynamische QR-Codes",
+			"unlimited": "Unbegrenzte QR Codes",
+			"noSignup": "Kostenlose dynamische QR Codes",
 			"noWatermark": "Keine Wasserzeichen"
 		}
 	},
 	"metadata": {
 		"title": "Kostenloser QR Code Generator - QR Codes Online Erstellen | QRcodly",
-		"description": "Erstelle kostenlos QR-Codes online mit eigenem Design, Logo & Vorlagen. Dynamische QR-Codes für URLs, WiFi, vCards, Events & mehr. Scan-Analytics inklusive. Keine Anmeldung!",
+		"description": "Erstelle kostenlos QR Codes online mit eigenem Design, Logo & Vorlagen. Dynamische QR Codes für URLs, WiFi, vCards, Events & mehr. Scan-Analytics inklusive. Keine Anmeldung!",
 		"keywords": "QR Code Generator, QR Code erstellen, QR Code generieren, kostenloser QR Code, QR Code mit Logo, eigener QR Code, dynamischer QR Code, QR Code Generator kostenlos, online QR Code erstellen, QR Code Maker, WiFi QR Code, vCard QR Code, QR Code Analytics, Massen QR Code Generator",
 		"structuredData": {
-			"description": "Kostenloser Online QR-Code Generator mit eigenem Design, Logo und Vorlagen. Erstelle dynamische QR-Codes für URLs, WiFi, vCards und mehr.",
+			"description": "Kostenloser Online QR Code Generator mit eigenem Design, Logo und Vorlagen. Erstelle dynamische QR Codes für URLs, WiFi, vCards und mehr.",
 			"features": [
 				"Kostenloser QR Code Generator",
 				"Eigenes QR Code Design",
@@ -48,7 +49,7 @@
 	},
 	"collection": {
 		"headline": "Deine Sammlung",
-		"subHeadline": "Hier findest du all deine QR-Codes und Vorlagen und kannst sie bearbeiten oder löschen.",
+		"subHeadline": "Hier findest du all deine QR Codes und Vorlagen und kannst sie bearbeiten oder löschen.",
 		"tabQrCode": "QR Codes",
 		"tabTemplates": "Vorlagen",
 		"addQrCodeBtn": "QR Code hinzufügen",
@@ -105,35 +106,35 @@
 		},
 		"featuresCta": {
 			"headline": "Übersicht der wichtigsten Funktionen",
-			"subHeadline": "Mit QRcodly kannst du QR-Codes kostenlos erstellen, bearbeiten, verwalten und analysieren – alles an einem Ort.",
+			"subHeadline": "Mit QRcodly kannst du QR Codes kostenlos erstellen, bearbeiten, verwalten und analysieren – alles an einem Ort.",
 			"emailBtn": "Email us",
 			"editFeature": {
-				"headline": "QR-Codes jederzeit bearbeiten",
-				"subHeadline": "Erstelle QR-Codes kostenlos und passe die Ziel-URL auch nach dem Druck jederzeit an."
+				"headline": "QR Codes jederzeit bearbeiten",
+				"subHeadline": "Erstelle QR Codes kostenlos und passe die Ziel-URL auch nach dem Druck jederzeit an."
 			},
 			"statisticFeature": {
-				"headline": "Detalierte QR-Code-Statistiken in Echtzeit",
-				"subHeadline": "Behalte im Blick, wie oft und von wo aus deine QR-Codes gescannt werden."
+				"headline": "Detalierte QR Code-Statistiken in Echtzeit",
+				"subHeadline": "Behalte im Blick, wie oft und von wo aus deine QR Codes gescannt werden."
 			},
 			"overviewFeature": {
-				"headline": "Übersichtliche QR-Code Sammlung",
-				"subHeadline": "Behalte den Überblick über alle deine generierten QR-Codes an einem zentralen Ort."
+				"headline": "Übersichtliche QR Code Sammlung",
+				"subHeadline": "Behalte den Überblick über alle deine generierten QR Codes an einem zentralen Ort."
 			},
 			"templateFeature": {
 				"headline": "Designs mit Vorlagen erstellen",
-				"subHeadline": "Spare Zeit und sorge für einheitliches Branding. Erstelle Vorlagen mit deinen bevorzugten Styles und wende diese einfach auf neue QR-Codes an."
+				"subHeadline": "Spare Zeit und sorge für einheitliches Branding. Erstelle Vorlagen mit deinen bevorzugten Styles und wende diese einfach auf neue QR Codes an."
 			},
 			"customDomainFeature": {
 				"headline": "Behalte die Kontrolle mit deiner eigenen Domain",
-				"subHeadline": "Nutze deine eigene Domain für dynamische QR-Codes. Behalte die Kontrolle, stärke deine Marke und besitze jeden Link."
+				"subHeadline": "Nutze deine eigene Domain für dynamische QR Codes. Behalte die Kontrolle, stärke deine Marke und besitze jeden Link."
 			},
 			"teamFeature": {
 				"headline": "Im Team zusammenarbeiten",
-				"subHeadline": "Lade Teammitglieder ein und arbeite gemeinsam an QR-Codes. Ideal für Unternehmen, Agenturen und Teams."
+				"subHeadline": "Lade Teammitglieder ein und arbeite gemeinsam an QR Codes. Ideal für Unternehmen, Agenturen und Teams."
 			},
 			"secureFeature": {
 				"headline": "Deine Daten bleiben bei uns",
-				"subHeadline": "Qrcodly hostet alle Daten lokal in Deutschland – keine Weitergabe an externe Dienste. Einzig für die Authentifizierung nutzen wir Clerk."
+				"subHeadline": "QRcodly hostet alle Daten lokal in Deutschland – keine Weitergabe an externe Dienste. Einzig für die Authentifizierung nutzen wir Clerk."
 			}
 		}
 	},
@@ -146,9 +147,9 @@
 		}
 	},
 	"qrCodeDisabled": {
-		"title": "QR-Code deaktiviert",
-		"description": "Dieser QR-Code ist leider nicht mehr aktiv. Das Ziel ist nicht mehr verfügbar.",
-		"note": "Wenn Sie glauben, dass es sich um einen Fehler handelt, kontaktieren Sie bitte den Eigentümer des QR-Codes oder versuchen Sie es später erneut.",
+		"title": "QR Code deaktiviert",
+		"description": "Dieser QR Code ist leider nicht mehr aktiv. Das Ziel ist nicht mehr verfügbar.",
+		"note": "Wenn Sie glauben, dass es sich um einen Fehler handelt, kontaktieren Sie bitte den Eigentümer des QR Codes oder versuchen Sie es später erneut.",
 		"button": "Zur Startseite"
 	},
 	"qrCode": {
@@ -164,7 +165,7 @@
 				"message": "Beim Aktualisieren deines QR Codes ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem so schnell wie möglich beheben."
 			},
 			"noFound": "Keine QR Codes gefunden",
-			"noFoundDescription": "Du hast noch keine QR-Codes erstellt? Starte jetzt damit, QR-Codes zu erstellen."
+			"noFoundDescription": "Du hast noch keine QR Codes erstellt? Starte jetzt damit, QR Codes zu erstellen."
 		},
 		"confirmDeletePopup": {
 			"title": "Bestätige das Löschen",
@@ -187,7 +188,7 @@
 			"errorTitle": "Fehler beim Aktualisieren des QR Codes",
 			"infoDialog": {
 				"dialogHeadline": "Hinweis zum Aktualisieren eines QR Codes",
-				"dialogDescription": "Nur dynamische QR-Codes ändern ihr Aussehen nicht nach einer Bearbeitung. Bei statischen QR-Codes wird ein neuer Code erzeugt, sodass bereits gedruckte Versionen nicht mehr aktuell sind.",
+				"dialogDescription": "Nur dynamische QR Codes ändern ihr Aussehen nicht nach einer Bearbeitung. Bei statischen QR Codes wird ein neuer Code erzeugt, sodass bereits gedruckte Versionen nicht mehr aktuell sind.",
 				"doNotShowAgain": "Diesen Hinweis nicht erneut anzeigen.",
 				"cancelBtn": "Abbrechen",
 				"understandBtn": "Verstanden"
@@ -209,10 +210,48 @@
 			"icsFile": "ICS-Datei",
 			"errorTitle": "Fehler beim Speichern des QR Codes"
 		},
-		"saveInfo": "Speichere den aktuellen QR-Code in deiner Sammlung.",
+		"saveInfo": "Speichere den aktuellen QR Code in deiner Sammlung.",
 		"savePopup": {
 			"title": "QR Code speichern",
 			"placeholder": "QR Code Name"
+		},
+		"share": {
+			"title": "QR Code teilen",
+			"description": "Erstelle einen öffentlichen Link zum Teilen dieses QR Codes",
+			"warning": "Jeder mit diesem Link kann deinen QR Code sehen. Der Link bleibt aktiv, bis er gelöscht wird.",
+			"link": "Teilen-Link",
+			"displayOptions": "Anzeigeoptionen",
+			"showName": "QR Code Name anzeigen",
+			"showContent": "Inhaltsdetails anzeigen",
+			"showQrCode": "QR Code Bild anzeigen",
+			"showDownloadButton": "Download-Button anzeigen",
+			"createLink": "Teilen-Link erstellen",
+			"updateLink": "Einstellungen aktualisieren",
+			"deleteLink": "Link löschen",
+			"linkCopied": {
+				"title": "Link kopiert",
+				"description": "Teilen-Link wurde in die Zwischenablage kopiert"
+			},
+			"created": {
+				"title": "Teilen-Link erstellt",
+				"description": "Dein QR Code ist jetzt öffentlich zugänglich"
+			},
+			"updated": {
+				"title": "Einstellungen aktualisiert",
+				"description": "Deine Teilen-Link Einstellungen wurden aktualisiert"
+			},
+			"deleted": {
+				"title": "Link gelöscht",
+				"description": "Der Teilen-Link wurde entfernt"
+			},
+			"error": {
+				"title": "Fehler",
+				"description": "Etwas ist schief gelaufen. Bitte versuche es erneut."
+			},
+			"copyError": {
+				"description": "Link konnte nicht kopiert werden. Bitte kopiere ihn manuell."
+			},
+			"noVisibleContent": "Dieser geteilte QR Code hat keinen sichtbaren Inhalt."
 		}
 	},
 	"loginDialog": {
@@ -273,7 +312,7 @@
 			"cancelBtn": "Abbrechen"
 		},
 		"actionsMenu": {
-			"qrCodeFromTemplate": "QR-Code aus Vorlage"
+			"qrCodeFromTemplate": "QR Code aus Vorlage"
 		}
 	},
 	"generator": {
@@ -286,7 +325,7 @@
 		"bulkImport": {
 			"title": "Mehrere {contentType} QR Codes erstellen",
 			"successTitle": "Import erfolgreich",
-			"successDescription": "Alle deine QR-Codes wurden erfolgreich importiert.",
+			"successDescription": "Alle deine QR Codes wurden erfolgreich importiert.",
 			"errorTitle": "Import fehlgeschlagen",
 			"step1": {
 				"title": "1. QR Code gestalten",
@@ -559,10 +598,10 @@
 		},
 		"preview": {
 			"button": "Vorschau öffnen",
-			"title": "QR-Code Hintergrund-Vorschau",
+			"title": "QR Code Hintergrund-Vorschau",
 			"selectTitle": "Hintergrund auswählen",
-			"selectDescription": "Teste, wie dein QR-Code auf verschiedenen Hintergründen aussieht, bevor du ihn druckst oder teilst.",
-			"selectBackground": "Wähle einen Hintergrund, um deinen QR-Code zu testen",
+			"selectDescription": "Teste, wie dein QR Code auf verschiedenen Hintergründen aussieht, bevor du ihn druckst oder teilst.",
+			"selectBackground": "Wähle einen Hintergrund, um deinen QR Code zu testen",
 			"changeBackground": "Hintergrund ändern",
 			"close": "Schließen",
 			"predefined": {
@@ -582,7 +621,7 @@
 				"loadingIframe": "Website wird geladen...",
 				"loadingScreenshot": "Screenshot wird erstellt...",
 				"capturingPreview": "Vorschau wird erfasst...",
-				"info": "Gib eine beliebige Website-URL ein, um sie als Hintergrund für deinen QR-Code zu verwenden",
+				"info": "Gib eine beliebige Website-URL ein, um sie als Hintergrund für deinen QR Code zu verwenden",
 				"errors": {
 					"invalidUrl": "Bitte gib eine gültige URL ein, die mit http:// oder https:// beginnt",
 					"loadFailed": "Website konnte nicht geladen werden. Bitte versuche es erneut.",
@@ -659,7 +698,7 @@
 		"question10": "Funktionieren QR Codes auch im Druck?",
 		"answer10": "Absolut! QR Codes sind speziell für den Druck optimiert und funktionieren zuverlässig auf verschiedensten Materialien, solange sie klar und unbeschädigt bleiben. Achte auf gute Druckqualität, dann sind deine Codes überall einsatzbereit!",
 		"question11": "Wo werden meine Daten gehostet?",
-		"answer11": "Alle Daten bei Qrcodly werden ausschließlich auf Servern in Deutschland gespeichert. Wir geben keine Daten an Dritte weiter. Lediglich für die Anmeldung und Authentifizierung nutzen wir den Dienst Clerk."
+		"answer11": "Alle Daten bei QRcodly werden ausschließlich auf Servern in Deutschland gespeichert. Wir geben keine Daten an Dritte weiter. Lediglich für die Anmeldung und Authentifizierung nutzen wir den Dienst Clerk."
 	},
 	"fileUpload": {
 		"maxFiles": "Es sind maximal {maxFiles} Dateien erlaubt",
@@ -682,15 +721,15 @@
 		},
 		"domains": {
 			"title": "Eigene Domains",
-			"description": "Verwende deine eigene Domain für dynamische QR-Codes",
+			"description": "Verwende deine eigene Domain für dynamische QR Codes",
 			"backToCollection": "Zurück zur Sammlung",
 			"howItWorks": "So funktioniert's",
 			"step1": "Füge deine Domain hinzu (z.B. links.beispiel.de)",
 			"step2": "Erstelle einen DNS-TXT-Eintrag zur Verifizierung",
 			"step3": "Nach der Verifizierung ist deine Domain aktiv",
-			"step4": "Nutze deine Domain beim Erstellen von QR-Codes",
+			"step4": "Nutze deine Domain beim Erstellen von QR Codes",
 			"emptyTitle": "Noch keine eigenen Domains",
-			"emptyDescription": "Füge deine erste eigene Domain für dynamische QR-Codes hinzu.",
+			"emptyDescription": "Füge deine erste eigene Domain für dynamische QR Codes hinzu.",
 			"errorTitle": "Fehler beim Laden der Domains",
 			"pageInfo": "Seite {current} von {total}",
 			"domain": "Domain",
@@ -707,7 +746,7 @@
 			"cnamePending": "CNAME-Eintrag ausstehend",
 			"addDomain": "Domain hinzufügen",
 			"addDomainTitle": "Eigene Domain hinzufügen",
-			"addDomainDescription": "Gib die Domain ein, die du für deine dynamischen QR-Codes verwenden möchtest. Du musst die Inhaberschaft verifizieren und DNS-Einträge einrichten.",
+			"addDomainDescription": "Gib die Domain ein, die du für deine dynamischen QR Codes verwenden möchtest. Du musst die Inhaberschaft verifizieren und DNS-Einträge einrichten.",
 			"domainHint": "Verwende eine Subdomain wie links.beispiel.de",
 			"cancel": "Abbrechen",
 			"add": "Hinzufügen",
@@ -717,7 +756,7 @@
 			"addError": "Domain konnte nicht hinzugefügt werden",
 			"delete": "Löschen",
 			"deleteConfirmTitle": "Domain löschen?",
-			"deleteConfirmDescription": "Bist du sicher, dass du {domain} löschen möchtest? Dynamische QR-Codes mit dieser Domain werden auf die Standard-Domain zurückgesetzt.",
+			"deleteConfirmDescription": "Bist du sicher, dass du {domain} löschen möchtest? Dynamische QR Codes mit dieser Domain werden auf die Standard-Domain zurückgesetzt.",
 			"deleting": "Domain wird gelöscht...",
 			"deleted": "Domain gelöscht",
 			"deletedDescription": "Domain {domain} wurde gelöscht.",
@@ -768,7 +807,7 @@
 			"setAsDefault": "Als Standard festlegen",
 			"settingDefault": "Wird als Standard festgelegt...",
 			"defaultSet": "Standard-Domain festgelegt",
-			"defaultSetDescription": "Domain {domain} ist jetzt deine Standard-Domain für dynamische QR-Codes.",
+			"defaultSetDescription": "Domain {domain} ist jetzt deine Standard-Domain für dynamische QR Codes.",
 			"setDefaultError": "Standard konnte nicht festgelegt werden",
 			"txtVerifiedCnamePending": "TXT-Eintrag verifiziert",
 			"txtVerifiedCnamePendingDescription": "Der Inhaberschafts-TXT-Eintrag wurde verifiziert. Der CNAME-Eintrag konnte noch nicht verifiziert werden. Bitte überprüfe deine DNS-Einstellungen und versuche es später erneut.",
@@ -779,7 +818,7 @@
 			"systemDomain": "System",
 			"systemDomainVerified": "System-Domain ist immer verifiziert",
 			"defaultCleared": "Standard wiederhergestellt",
-			"defaultClearedDescription": "Die System-Domain wird jetzt als Standard für neue dynamische QR-Codes verwendet.",
+			"defaultClearedDescription": "Die System-Domain wird jetzt als Standard für neue dynamische QR Codes verwendet.",
 			"sslStatus": {
 				"active": "Aktiv",
 				"pending": "Ausstehend",
@@ -865,7 +904,7 @@
 			"tabPaymentMethods": "Zahlungsmethoden",
 			"tabHistory": "Verlauf",
 			"currentPlan": "Aktueller Tarif",
-			"proDescription": "Du hast Zugriff auf alle Pro-Funktionen, einschließlich unbegrenzter QR-Codes und erweiterter Analysen.",
+			"proDescription": "Du hast Zugriff auf alle Pro-Funktionen, einschließlich unbegrenzter QR Codes und erweiterter Analysen.",
 			"freeDescription": "Upgrade auf Pro für eigene Domains, höhere API-Limits und Premium-Funktionen. <link>Tarife ansehen</link>",
 			"includedFeatures": "Enthaltene Funktionen",
 			"billingCycle": "Abrechnungszeitraum",
@@ -1012,11 +1051,11 @@
 			"deleteAccountDescription": "Lösche dein Konto und alle zugehörigen Daten dauerhaft.",
 			"deleteWarningTitle": "Diese Aktion kann nicht rückgängig gemacht werden. Dies wird:",
 			"deleteWarning1": "Dein Konto und Profil dauerhaft löschen",
-			"deleteWarning2": "Alle deine QR-Codes und Vorlagen entfernen",
+			"deleteWarning2": "Alle deine QR Codes und Vorlagen entfernen",
 			"deleteWarning3": "Alle aktiven Abonnements kündigen",
 			"deleteAccount": "Konto löschen",
 			"deleteConfirmTitle": "Bist du dir absolut sicher?",
-			"deleteConfirmDescription": "Diese Aktion kann nicht rückgängig gemacht werden. Dadurch werden dein Konto, alle deine QR-Codes, Vorlagen und alle zugehörigen Daten dauerhaft gelöscht.",
+			"deleteConfirmDescription": "Diese Aktion kann nicht rückgängig gemacht werden. Dadurch werden dein Konto, alle deine QR Codes, Vorlagen und alle zugehörigen Daten dauerhaft gelöscht.",
 			"deleteConfirmInstruction": "Gib \"{text}\" ein, um zu bestätigen",
 			"confirmationType": "Bestätigung",
 			"deleteAccountPermanently": "Konto dauerhaft löschen",
@@ -1036,26 +1075,26 @@
 		"subscriptionSuccess": "Erfolgreich Pro abonniert!",
 		"free": {
 			"name": "Free",
-			"description": "Komplett kostenlos. Zugang zu allen wesentlichen QR-Code-Funktionen ohne Limits oder Paywalls."
+			"description": "Komplett kostenlos. Zugang zu allen wesentlichen QR Code-Funktionen ohne Limits oder Paywalls."
 		},
 		"pro": {
 			"name": "Pro",
-			"description": "Unterstütze uns & schalte alle Funktionen für deine QR-Codes frei."
+			"description": "Unterstütze uns & schalte alle Funktionen für deine QR Codes frei."
 		},
 		"features": {
 			"free": {
-				"unlimitedQrCodes": "Unbegrenzte QR-Codes & Scans",
-				"staticDynamic": "Statische & dynamische QR-Codes",
+				"unlimitedQrCodes": "Unbegrenzte QR Codes & Scans",
+				"staticDynamic": "Statische & dynamische QR Codes",
 				"customStyling": "Individuelle Styles & Icons",
 				"detailedAnalytics": "Detaillierte Analysen",
 				"noCreditCard": "Keine Kreditkarte erforderlich",
 				"limitedApi": "Eingeschränkter API-Zugang",
-				"limitedBulk": "Eingeschränkte Massen-QR-Code-Erstellung"
+				"limitedBulk": "Eingeschränkte Massen-QR Code-Erstellung"
 			},
 			"pro": {
 				"everythingInFree": "Alles aus Free",
 				"largerBulkImports": "Größere Massenimporte (50 Zeilen, 2MB)",
-				"customDomains": "Eigene Domain für dynamische QR-Codes",
+				"customDomains": "Eigene Domain für dynamische QR Codes",
 				"unlimitedApi": "Unbegrenzter API-Zugang",
 				"prioritySupport": "Prioritäts-Support",
 				"teamFeatures": "Team-Funktionen (bald verfügbar)"

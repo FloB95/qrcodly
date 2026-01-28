@@ -10,6 +10,7 @@
 		"share": "Delen",
 		"edit": "Bewerken",
 		"delete": "Verwijderen",
+		"cancel": "Annuleren",
 		"notProvided": "Niet opgegeven",
 		"days": "Dagen",
 		"newBadge": "Nieuw!",
@@ -133,7 +134,7 @@
 			},
 			"secureFeature": {
 				"headline": "Je gegevens blijven bij ons",
-				"subHeadline": "Qrcodly host alle gegevens lokaal in Duitsland – geen doorsturing naar externe diensten. Alleen voor authenticatie gebruiken we Clerk."
+				"subHeadline": "QRcodly host alle gegevens lokaal in Duitsland – geen doorsturing naar externe diensten. Alleen voor authenticatie gebruiken we Clerk."
 			}
 		}
 	},
@@ -213,6 +214,44 @@
 		"savePopup": {
 			"title": "QR-code opslaan",
 			"placeholder": "Naam QR-code"
+		},
+		"share": {
+			"title": "QR-code delen",
+			"description": "Maak een openbare link om deze QR-code te delen",
+			"warning": "Iedereen met deze link kan uw QR-code bekijken. De link blijft actief totdat deze wordt verwijderd.",
+			"link": "Deellink",
+			"displayOptions": "Weergaveopties",
+			"showName": "QR-codenaam tonen",
+			"showContent": "Inhoudsdetails tonen",
+			"showQrCode": "QR-codeafbeelding tonen",
+			"showDownloadButton": "Downloadknop tonen",
+			"createLink": "Deellink maken",
+			"updateLink": "Instellingen bijwerken",
+			"deleteLink": "Link verwijderen",
+			"linkCopied": {
+				"title": "Link gekopieerd",
+				"description": "De deellink is naar het klembord gekopieerd"
+			},
+			"created": {
+				"title": "Link aangemaakt",
+				"description": "Uw QR-code is nu openbaar toegankelijk"
+			},
+			"updated": {
+				"title": "Instellingen bijgewerkt",
+				"description": "De instellingen van de deellink zijn bijgewerkt"
+			},
+			"deleted": {
+				"title": "Link verwijderd",
+				"description": "De deellink is verwijderd"
+			},
+			"error": {
+				"title": "Fout",
+				"description": "Er is iets misgegaan. Probeer het opnieuw."
+			},
+			"copyError": {
+				"description": "Kon de link niet naar het klembord kopiëren. Kopieer deze handmatig."
+			},
+			"noVisibleContent": "Deze gedeelde QR-code heeft geen zichtbare inhoud."
 		}
 	},
 	"loginDialog": {
@@ -559,7 +598,7 @@
 		},
 		"preview": {
 			"button": "Voorbeeld Openen",
-			"title": "QR-Code Achtergrond Voorbeeld",
+			"title": "QR Code Achtergrond Voorbeeld",
 			"selectTitle": "Achtergrond Selecteren",
 			"selectDescription": "Test hoe je QR-code eruitziet op verschillende achtergronden voordat je deze afdrukt of deelt.",
 			"selectBackground": "Selecteer een achtergrond om je QR-code te bekijken",
@@ -659,7 +698,7 @@
 		"question10": "Werken QR-codes ook in gedrukte vorm?",
 		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!",
 		"question11": "Waar worden mijn gegevens gehost?",
-		"answer11": "Alle gegevens bij Qrcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk."
+		"answer11": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk."
 	},
 	"fileUpload": {
 		"maxFiles": "Maximaal {maxFiles} bestanden toegestaan",

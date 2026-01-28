@@ -3,7 +3,7 @@
 import React, { Suspense, useCallback } from 'react';
 import Container from '../ui/container';
 import { Button, buttonVariants } from '../ui/button';
-import { ShareIcon } from '@heroicons/react/24/solid';
+import { ShareDialog } from '../qr-code-share/ShareDialog';
 import Image from 'next/image';
 import { DynamicQrCode } from '../qr-generator/DynamicQrCode';
 import { SavedQrCodeDownloadBtn } from '../qr-generator/download-buttons';
@@ -99,10 +99,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 						</Link>
 					</div>
 					<div className="flex space-x-2">
-						<Button variant="link" disabled className="hidden">
-							<ShareIcon className="h-6 w-6 mr-2" />
-							{t('general.share')}
-						</Button>
+						<ShareDialog qrCodeId={qrCode.id} />
 						<Link className={buttonVariants()} href={getQrCodeEditLink(locale, qrCode.id)}>
 							{t('general.edit')}
 						</Link>

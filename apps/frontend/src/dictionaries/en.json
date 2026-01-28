@@ -10,6 +10,7 @@
 		"share": "Share",
 		"edit": "Edit",
 		"delete": "Delete",
+		"cancel": "Cancel",
 		"notProvided": "Not provided",
 		"days": "Days",
 		"newBadge": "New!",
@@ -133,7 +134,7 @@
 			},
 			"secureFeature": {
 				"headline": "Your data stays with us",
-				"subHeadline": "Qrcodly hosts all data locally in Germany – no sharing with external services. Only for authentication, we use Clerk."
+				"subHeadline": "QRcodly hosts all data locally in Germany – no sharing with external services. Only for authentication, we use Clerk."
 			}
 		}
 	},
@@ -213,6 +214,44 @@
 		"savePopup": {
 			"title": "Save Current QR code",
 			"placeholder": "QR code Name"
+		},
+		"share": {
+			"title": "Share QR code",
+			"description": "Create a public link to share this QR code",
+			"warning": "Anyone with this link can view your QR code. The link remains active until deleted.",
+			"link": "Share Link",
+			"displayOptions": "Display Options",
+			"showName": "Show QR code name",
+			"showContent": "Show content details",
+			"showQrCode": "Show QR code image",
+			"showDownloadButton": "Show download button",
+			"createLink": "Create Share Link",
+			"updateLink": "Update Settings",
+			"deleteLink": "Delete Link",
+			"linkCopied": {
+				"title": "Link copied",
+				"description": "Share link copied to clipboard"
+			},
+			"created": {
+				"title": "Share link created",
+				"description": "Your QR code is now publicly accessible"
+			},
+			"updated": {
+				"title": "Settings updated",
+				"description": "Your share link settings have been updated"
+			},
+			"deleted": {
+				"title": "Link deleted",
+				"description": "The share link has been removed"
+			},
+			"error": {
+				"title": "Error",
+				"description": "Something went wrong. Please try again."
+			},
+			"copyError": {
+				"description": "Could not copy link to clipboard. Please copy it manually."
+			},
+			"noVisibleContent": "This shared QR code has no visible content."
 		}
 	},
 	"loginDialog": {
@@ -659,7 +698,7 @@
 		"question10": "Do QR codes also work in print?",
 		"answer10": "Absolutely! QR codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
 		"question11": "Where is my data hosted?",
-		"answer11": "All data at Qrcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication."
+		"answer11": "All data at QRcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication."
 	},
 	"fileUpload": {
 		"maxFiles": "Maximum {maxFiles} files allowed",
