@@ -1,6 +1,11 @@
-import { shortUrl } from '@/core/db/schemas';
+import { shortUrl, qrCodeShare } from '@/core/db/schemas';
 import { createTable } from '@/core/db/utils';
-import { type TShortUrl, type TQrCodeContent, type TQrCodeOptions } from '@shared/schemas';
+import {
+	type TShortUrl,
+	type TQrCodeContent,
+	type TQrCodeOptions,
+	type TQrCodeShare,
+} from '@shared/schemas';
 import { relations } from 'drizzle-orm';
 import { datetime, index, json, text, varchar } from 'drizzle-orm/mysql-core';
 
@@ -28,6 +33,7 @@ const qrCode = createTable(
 export type TQrCode = typeof qrCode.$inferSelect;
 export type TQrCodeWithRelations = TQrCode & {
 	shortUrl: TShortUrl | null;
+	share: TQrCodeShare | null;
 };
 export default qrCode;
 
@@ -36,5 +42,9 @@ export const qrCodeRelations = relations(qrCode, ({ one }) => ({
 	shortUrl: one(shortUrl, {
 		fields: [qrCode.id],
 		references: [shortUrl.qrCodeId],
+	}),
+	share: one(qrCodeShare, {
+		fields: [qrCode.id],
+		references: [qrCodeShare.qrCodeId],
 	}),
 }));

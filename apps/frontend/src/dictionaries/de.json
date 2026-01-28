@@ -10,6 +10,7 @@
 		"share": "Teilen",
 		"edit": "Bearbeiten",
 		"delete": "Löschen",
+		"cancel": "Abbrechen",
 		"notProvided": "Nicht angegeben",
 		"days": "Tage",
 		"newBadge": "Neu!",
@@ -213,6 +214,44 @@
 		"savePopup": {
 			"title": "QR Code speichern",
 			"placeholder": "QR Code Name"
+		},
+		"share": {
+			"title": "QR Code teilen",
+			"description": "Erstelle einen öffentlichen Link zum Teilen dieses QR Codes",
+			"warning": "Jeder mit diesem Link kann deinen QR Code sehen. Der Link bleibt aktiv, bis er gelöscht wird.",
+			"link": "Teilen-Link",
+			"displayOptions": "Anzeigeoptionen",
+			"showName": "QR Code Name anzeigen",
+			"showContent": "Inhaltsdetails anzeigen",
+			"showQrCode": "QR Code Bild anzeigen",
+			"showDownloadButton": "Download-Button anzeigen",
+			"createLink": "Teilen-Link erstellen",
+			"updateLink": "Einstellungen aktualisieren",
+			"deleteLink": "Link löschen",
+			"linkCopied": {
+				"title": "Link kopiert",
+				"description": "Teilen-Link wurde in die Zwischenablage kopiert"
+			},
+			"created": {
+				"title": "Teilen-Link erstellt",
+				"description": "Dein QR Code ist jetzt öffentlich zugänglich"
+			},
+			"updated": {
+				"title": "Einstellungen aktualisiert",
+				"description": "Deine Teilen-Link Einstellungen wurden aktualisiert"
+			},
+			"deleted": {
+				"title": "Link gelöscht",
+				"description": "Der Teilen-Link wurde entfernt"
+			},
+			"error": {
+				"title": "Fehler",
+				"description": "Etwas ist schief gelaufen. Bitte versuche es erneut."
+			},
+			"copyError": {
+				"description": "Link konnte nicht kopiert werden. Bitte kopiere ihn manuell."
+			},
+			"noVisibleContent": "Dieser geteilte QR Code hat keinen sichtbaren Inhalt."
 		}
 	},
 	"loginDialog": {

@@ -50,6 +50,7 @@ describe('BulkImportQrCodesUseCase', () => {
 		createdAt: new Date(),
 		updatedAt: new Date(),
 		shortUrl: null,
+		share: null,
 	};
 
 	beforeEach(() => {

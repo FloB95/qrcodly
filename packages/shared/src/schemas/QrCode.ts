@@ -159,18 +159,21 @@ export const EpcInputSchema = z.object({
 
 export type TEpcInput = z.infer<typeof EpcInputSchema>;
 
+// All content types as a constant array (single source of truth)
+export const ALL_QR_CODE_CONTENT_TYPES = [
+	'url',
+	'text',
+	'wifi',
+	'vCard',
+	'email',
+	'location',
+	'event',
+	'epc',
+	// 'socials',
+] as const;
+
 // Alle Typen als Literal-Union
-export const QrCodeContentType = z.union([
-	z.literal('url'),
-	z.literal('text'),
-	z.literal('wifi'),
-	z.literal('vCard'),
-	z.literal('email'),
-	z.literal('location'),
-	z.literal('event'),
-	z.literal('epc'),
-	// z.literal('socials'),
-]);
+export const QrCodeContentType = z.enum(ALL_QR_CODE_CONTENT_TYPES);
 export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
 
 const ContentSchemas = {

@@ -34,6 +34,7 @@ describe('ListQrCodesUseCase', () => {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 			shortUrl: null,
+			share: null,
 		},
 		{
 			id: 'qr-2',
@@ -49,6 +50,7 @@ describe('ListQrCodesUseCase', () => {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 			shortUrl: null,
+			share: null,
 		},
 	];
 

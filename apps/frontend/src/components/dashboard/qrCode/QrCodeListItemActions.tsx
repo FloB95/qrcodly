@@ -35,6 +35,7 @@ import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
+import { ShareDialog } from '@/components/qr-code-share/ShareDialog';
 
 let QRCodeStyling: any;
 
@@ -59,6 +60,7 @@ export const QrCodeListItemActions = ({
 	const tTemplates = useTranslations('templates');
 	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
 	const [templateNameDialogOpen, setTemplateNameDialogOpen] = useState(false);
+	const [shareDialogOpen, setShareDialogOpen] = useState(false);
 	const createConfigTemplateMutation = useCreateConfigTemplateMutation();
 
 	useEffect(() => {
@@ -191,6 +193,17 @@ export const QrCodeListItemActions = ({
 					>
 						{t('qrCode.actionsMenu.edit')}
 					</Link>
+				</DropdownMenuItem>
+
+				<DropdownMenuItem
+					onClick={(e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						setShareDialogOpen(true);
+					}}
+					className="cursor-pointer"
+				>
+					{t('general.share')}
 				</DropdownMenuItem>
 
 				{/* Download with submenu */}
@@ -333,6 +346,13 @@ export const QrCodeListItemActions = ({
 				isOpen={templateNameDialogOpen}
 				setIsOpen={setTemplateNameDialogOpen}
 				onSubmit={handleCreateTemplate}
+			/>
+
+			<ShareDialog
+				qrCodeId={qr.id}
+				trigger={null}
+				open={shareDialogOpen}
+				onOpenChange={setShareDialogOpen}
 			/>
 		</DropdownMenu>
 	);

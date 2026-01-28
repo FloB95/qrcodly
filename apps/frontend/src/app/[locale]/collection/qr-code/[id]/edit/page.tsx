@@ -1,7 +1,7 @@
 import { apiRequest } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import type { TQrCodeContentType, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import { ALL_QR_CODE_CONTENT_TYPES, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import type { SupportedLanguages } from '@/i18n/routing';
 import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
@@ -44,16 +44,9 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 		notFound();
 	}
 
-	const ALL_CONTENT_TYPES: TQrCodeContentType[] = [
-		'url',
-		'text',
-		'wifi',
-		'vCard',
-		'email',
-		'location',
-		'event',
-	];
-	const hiddenContentTypes = ALL_CONTENT_TYPES.filter((type) => type !== qrCode.content.type);
+	const hiddenContentTypes = ALL_QR_CODE_CONTENT_TYPES.filter(
+		(type) => type !== qrCode.content.type,
+	);
 
 	const backLink = (
 		<Link

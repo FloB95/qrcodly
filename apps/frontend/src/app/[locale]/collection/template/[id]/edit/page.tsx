@@ -1,7 +1,7 @@
 import { apiRequest } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import type { TConfigTemplate } from '@shared/schemas';
+import { ALL_QR_CODE_CONTENT_TYPES, type TConfigTemplate } from '@shared/schemas';
 import type { SupportedLanguages } from '@/i18n/routing';
 import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
@@ -80,7 +80,7 @@ export default async function ConfigTemplateEditPage({ params }: ConfigTemplateE
 				generatorType="QrCodeWithTemplateUpdateBtn"
 				isEditMode
 				hiddenTabs={['templates']}
-				hiddenContentTypes={['url', 'text', 'wifi', 'vCard', 'email', 'event', 'location']}
+				hiddenContentTypes={[...ALL_QR_CODE_CONTENT_TYPES]}
 				backLink={backLink}
 			/>
 		</QrCodeGeneratorStoreProvider>
