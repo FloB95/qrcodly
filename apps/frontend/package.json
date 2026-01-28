@@ -97,7 +97,7 @@
 		"@types/qs": "^6.14.0",
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
-		"eslint-config-next": "^16.1.1",
+		"eslint-config-next": "^16.1.6",
 		"postcss": "catalog:",
 		"prettier-plugin-tailwindcss": "^0.7.2",
 		"qrcodly-eslint-config": "workspace:*",
