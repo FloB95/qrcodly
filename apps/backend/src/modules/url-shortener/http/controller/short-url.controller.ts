@@ -80,7 +80,7 @@ export class ShortUrlController extends AbstractController {
 		);
 	}
 
-	@Post('/:shortCode/toggle-active-state', {
+	@Patch('/:shortCode/toggle-active-state', {
 		responseSchema: {
 			200: ShortUrlWithCustomDomainResponseDto,
 			401: DEFAULT_ERROR_RESPONSES[401],

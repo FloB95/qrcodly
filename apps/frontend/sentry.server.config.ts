@@ -14,4 +14,16 @@ Sentry.init({
 
 	// Setting this option to true will print useful information to the console while you're setting up Sentry.
 	debug: false,
+
+	// Filter out noise from bot traffic hitting non-existent routes
+	beforeSend(event) {
+		const message = event.exception?.values?.[0]?.value || '';
+
+		// Ignore FormData parse errors from bots probing non-existent API routes
+		if (message.includes('Failed to parse body as FormData')) {
+			return null;
+		}
+
+		return event;
+	},
 });

@@ -4,7 +4,6 @@ import { ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
 import { ImageService } from '@/core/services/image.service';
 import { TQrCode, TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
-import { KeyCache } from '@/core/cache';
 
 type ListResponse = {
 	total: number;
@@ -19,7 +18,6 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 	constructor(
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(ImageService) private imageService: ImageService,
-		@inject(KeyCache) private appCache: KeyCache,
 	) {}
 
 	/**
@@ -30,12 +28,6 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 	 * @returns An object containing the list of QR codes and the total count.
 	 */
 	async execute({ limit, page, where }: ISqlQueryFindBy<TQrCode>): Promise<ListResponse> {
-		// return cache if exists
-		const cache = await this.appCache.get(this.getCacheKey({ limit, page, where }));
-		if (cache) {
-			return JSON.parse(cache as string) as ListResponse;
-		}
-
 		// Retrieve QR codes based on the query parameters
 		const qrCodes = await this.qrCodeRepository.findAll({
 			limit,
@@ -58,33 +50,9 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 		// Count the total number of QR codes
 		const total = await this.qrCodeRepository.countTotal(where);
 
-		const tags =
-			where && typeof where === 'object' && 'createdBy' in where && where.createdBy?.eq
-				? [ListQrCodesUseCase.getTagKey(where.createdBy.eq as string)]
-				: [];
-
-		// add cache
-		await this.appCache.set(
-			this.getCacheKey({ limit, page, where }),
-			JSON.stringify({
-				qrCodes,
-				total,
-			}),
-			1 * 24 * 60 * 60,
-			tags,
-		);
-
 		return {
 			qrCodes,
 			total,
 		};
-	}
-
-	public static getTagKey(createdBy: string) {
-		return `qr-codes-list:user:${createdBy}`;
-	}
-
-	private getCacheKey({ limit, page, where }: ISqlQueryFindBy<TQrCode>): string {
-		return `qr-code-list:${limit}-${page}-${JSON.stringify(where)}`;
 	}
 }

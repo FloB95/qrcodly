@@ -44,11 +44,13 @@ export function useToggleActiveStateMutation() {
 		mutationFn: async (shortCode: string): Promise<TShortUrl> => {
 			const token = await getToken();
 			const headers: HeadersInit = {
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			};
 			return await apiRequest<TShortUrl>(`/short-url/${shortCode}/toggle-active-state`, {
-				method: 'POST',
+				method: 'PATCH',
 				headers,
+				body: JSON.stringify({}),
 			});
 		},
 		onSuccess: () => {

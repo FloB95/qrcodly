@@ -5,8 +5,6 @@ import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { Logger } from '@/core/logging';
 import { ImageService } from '@/core/services/image.service';
 import { QrCodeUpdatedEvent } from '../qr-code-updated.event';
-import { KeyCache } from '@/core/cache';
-import { ListQrCodesUseCase } from '../../useCase/list-qr-code.use-case';
 
 @EventHandler(QrCodeUpdatedEvent.eventName)
 export class QrCodeUpdatedEventHandler extends AbstractEventHandler<QrCodeUpdatedEvent> {
@@ -22,13 +20,6 @@ export class QrCodeUpdatedEventHandler extends AbstractEventHandler<QrCodeUpdate
 		const imageService = container.resolve(ImageService);
 		const qrCodeRepository = container.resolve(QrCodeRepository);
 		const logger = container.resolve(Logger);
-		const appCache = container.resolve(KeyCache);
-
-		// invalidate list cache
-		if (event.qrCode.createdBy) {
-			const tag = ListQrCodesUseCase.getTagKey(event.qrCode.createdBy);
-			await appCache.invalidateTag(tag);
-		}
 
 		// skip if QR code has an image CURRENTLY not supported or preview image already exists
 		if (event.qrCode.config.image || event.qrCode.previewImage) {

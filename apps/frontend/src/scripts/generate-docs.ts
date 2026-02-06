@@ -17,6 +17,7 @@ async function generate() {
 	await OpenAPI.generateFiles({
 		input: openapi,
 		output: out,
+		includeDescription: true,
 	});
 
 	// copy api index file to the docs folder
