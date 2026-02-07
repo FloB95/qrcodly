@@ -48,6 +48,7 @@ export class ShortUrlController extends AbstractController {
 	}
 
 	@Patch('/:shortCode', {
+		bodySchema: UpdateShortUrlDto,
 		responseSchema: {
 			200: ShortUrlWithCustomDomainResponseDto,
 			400: DEFAULT_ERROR_RESPONSES[400],
@@ -67,10 +68,9 @@ export class ShortUrlController extends AbstractController {
 		request: IHttpRequest<TUpdateShortUrlDto, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
-		const updateDto = UpdateShortUrlDto.parse(request.body);
 		const updatedShortUrl = await this.updateShortUrlUseCase.execute(
 			shortUrl,
-			updateDto,
+			request.body,
 			request.user.id,
 		);
 
