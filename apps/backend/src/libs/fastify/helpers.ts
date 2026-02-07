@@ -86,7 +86,10 @@ export const fastifyErrorHandler = (
 		throw new BadRequestError(error.message);
 	}
 
-	logger.error(`Unhandled Server error`, { error });
+	logger.error(`Unhandled Server error`, {
+		request: createRequestLogObject(_request),
+		error,
+	});
 
 	// report error to Analytics
 	container.resolve(ErrorReporter).error(error, {
@@ -328,6 +331,27 @@ export function resolveClientIp(request: FastifyRequest): string {
 	return request.ip;
 }
 
+const LOGGABLE_HEADERS = [
+	'host',
+	'user-agent',
+	'accept',
+	'accept-language',
+	'content-type',
+	'content-length',
+	'referer',
+	'origin',
+] as const;
+
+function sanitizeHeaders(headers: FastifyRequest['headers']) {
+	const sanitized: Record<string, string | string[] | undefined> = {};
+	for (const key of LOGGABLE_HEADERS) {
+		if (headers[key] !== undefined) {
+			sanitized[key] = headers[key];
+		}
+	}
+	return sanitized;
+}
+
 export function createRequestLogObject(request: FastifyRequest, additionalData = {}) {
 	return {
 		id: request.id,
@@ -335,6 +359,7 @@ export function createRequestLogObject(request: FastifyRequest, additionalData =
 		method: request.method,
 		path: request.url,
 		user: request.user?.id,
+		headers: sanitizeHeaders(request.headers),
 		...additionalData,
 	};
 }
