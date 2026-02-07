@@ -149,6 +149,16 @@ export class Server {
 			});
 		}
 
+		this.server.addContentTypeParser('*', function (request, payload, done) {
+			let data = '';
+			payload.on('data', (chunk) => {
+				data += chunk;
+			});
+			payload.on('end', () => {
+				done(null, data);
+			});
+		});
+
 		// register hooks
 		this.server.addHook('onRequest', (request, reply, done) => {
 			request.clientIp = resolveClientIp(request);

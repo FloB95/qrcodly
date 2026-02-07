@@ -251,10 +251,10 @@ describe('ShortUrlController', () => {
 		});
 	});
 
-	describe('POST /:shortCode/toggle-active-state', () => {
+	describe('PATCH /:shortCode/toggle-active-state', () => {
 		const toggleActiveStateRequest = async (shortCode: string, token: string) =>
 			testServer.inject({
-				method: 'POST',
+				method: 'PATCH',
 				url: `${SHORT_URL_API_PATH}/${shortCode}/toggle-active-state`,
 				headers: { Authorization: `Bearer ${token}` },
 			});
@@ -324,7 +324,7 @@ describe('ShortUrlController', () => {
 
 		it('should return 401 when not authenticated', async () => {
 			const response = await testServer.inject({
-				method: 'POST',
+				method: 'PATCH',
 				url: `${SHORT_URL_API_PATH}/XXXXX/toggle-active-state`,
 			});
 			expect(response.statusCode).toBe(401);
