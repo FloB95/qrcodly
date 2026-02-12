@@ -15,6 +15,11 @@ export function addUserToRequestMiddleware(
 		acceptsToken: ['session_token', 'api_key'],
 	}) as { userId: string | null; tokenType: TTokenType; has: any };
 
+	request.user = userId
+		? // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+			{ id: userId, tokenType, plan: has({ plan: PlanName.PRO }) ? PlanName.PRO : PlanName.FREE }
+		: undefined;
+
 	// don´t log health check & uptime kuma
 	if (request.clientIp !== '127.0.0.1' && request.clientIp !== '152.53.13.36') {
 		container.resolve(Logger).info('api.request', {
@@ -22,9 +27,5 @@ export function addUserToRequestMiddleware(
 		});
 	}
 
-	request.user = userId
-		? // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-			{ id: userId, tokenType, plan: has({ plan: PlanName.PRO }) ? PlanName.PRO : PlanName.FREE }
-		: undefined;
 	done();
 }
