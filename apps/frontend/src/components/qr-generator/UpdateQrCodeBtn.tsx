@@ -28,9 +28,10 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const { latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
 	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
 
-	// Check if valid changes were made by comparing current content with original
+	// Check if valid changes were made by comparing current state with original
 	const hasValidChanges =
 		Object.keys(objDiff(qrCode.content, latestQrCode?.content)).length > 0 ||
+		Object.keys(objDiff(qrCode.config, latestQrCode?.config)).length > 0 ||
 		qrCode.name !== latestQrCode?.name;
 
 	useEffect(() => {

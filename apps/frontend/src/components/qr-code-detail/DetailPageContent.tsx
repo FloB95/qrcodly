@@ -10,7 +10,6 @@ import { AnalyticsSection } from './analytics/AnalyticsSection';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { UrlContent } from './content/Url';
 import { useLocale, useTranslations } from 'next-intl';
-import { Badge } from '../ui/badge';
 import { toast } from '../ui/use-toast';
 import { QrCodeIcon } from '../dashboard/qrCode/QrCodeIcon';
 import { QrCodeTagBadges } from '../dashboard/qrCode/QrCodeTagBadges';
@@ -126,7 +125,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 										<span className="text-muted-foreground">{t('general.noName')}</span>
 									)}
 								</h1>
-								{qrCode.shortUrl && (
+								{/* {qrCode.shortUrl && (
 									<Badge
 										variant={qrCode.shortUrl.isActive ? 'default' : 'outline'}
 										className="mt-1"
@@ -135,7 +134,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 											? t('analytics.stateActive')
 											: t('analytics.stateInactive')}
 									</Badge>
-								)}
+								)} */}
 								<QrCodeTagBadges qrCodeId={qrCode.id} tags={qrCode.tags ?? []} />
 							</div>
 						</div>

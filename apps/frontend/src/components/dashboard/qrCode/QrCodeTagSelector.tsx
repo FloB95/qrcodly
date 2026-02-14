@@ -20,9 +20,15 @@ type QrCodeTagSelectorProps = {
 	qrCodeId: string;
 	currentTagIds: string[];
 	trigger?: React.ReactNode;
+	onTagsUpdated?: (tags: TTagResponseDto[]) => void;
 };
 
-export const QrCodeTagSelector = ({ qrCodeId, currentTagIds, trigger }: QrCodeTagSelectorProps) => {
+export const QrCodeTagSelector = ({
+	qrCodeId,
+	currentTagIds,
+	trigger,
+	onTagsUpdated,
+}: QrCodeTagSelectorProps) => {
 	const t = useTranslations('tags');
 	const [search, setSearch] = useState('');
 	const [debouncedSearch] = useDebouncedValue(search, 300);
@@ -58,7 +64,8 @@ export const QrCodeTagSelector = ({ qrCodeId, currentTagIds, trigger }: QrCodeTa
 			if (!changed) return;
 
 			try {
-				await setTagsMutation.mutateAsync({ qrCodeId, tagIds: localTagIds });
+				const updatedTags = await setTagsMutation.mutateAsync({ qrCodeId, tagIds: localTagIds });
+				onTagsUpdated?.(updatedTags);
 				posthog.capture('qr-code-tags-updated', { qrCodeId, tagIds: localTagIds });
 				toast({
 					title: t('toast.tagsUpdatedTitle'),
@@ -85,7 +92,7 @@ export const QrCodeTagSelector = ({ qrCodeId, currentTagIds, trigger }: QrCodeTa
 				});
 			}
 		},
-		[currentTagIds, localTagIds, qrCodeId, setTagsMutation],
+		[currentTagIds, localTagIds, qrCodeId, setTagsMutation, onTagsUpdated],
 	);
 
 	return (

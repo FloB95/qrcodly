@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { TagIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -13,7 +14,8 @@ type QrCodeTagBadgesProps = {
 	tags: TTagResponseDto[];
 };
 
-export const QrCodeTagBadges = ({ qrCodeId, tags }: QrCodeTagBadgesProps) => {
+export const QrCodeTagBadges = ({ qrCodeId, tags: initialTags }: QrCodeTagBadgesProps) => {
+	const [tags, setTags] = useState<TTagResponseDto[]>(initialTags);
 	const setTagsMutation = useSetQrCodeTagsMutation();
 
 	return (
@@ -37,10 +39,11 @@ export const QrCodeTagBadges = ({ qrCodeId, tags }: QrCodeTagBadgesProps) => {
 									e.stopPropagation();
 									const updatedTagIds = tags.filter((t) => t.id !== tag.id).map((t) => t.id);
 									try {
-										await setTagsMutation.mutateAsync({
+										const updatedTags = await setTagsMutation.mutateAsync({
 											qrCodeId,
 											tagIds: updatedTagIds,
 										});
+										setTags(updatedTags);
 									} catch {
 										toast({ title: 'Failed to remove tag', variant: 'destructive' });
 									}
@@ -53,7 +56,11 @@ export const QrCodeTagBadges = ({ qrCodeId, tags }: QrCodeTagBadgesProps) => {
 					<TooltipContent side="top">{tag.name}</TooltipContent>
 				</Tooltip>
 			))}
-			<QrCodeTagSelector qrCodeId={qrCodeId} currentTagIds={tags.map((t) => t.id)} />
+			<QrCodeTagSelector
+				qrCodeId={qrCodeId}
+				currentTagIds={tags.map((t) => t.id)}
+				onTagsUpdated={setTags}
+			/>
 		</div>
 	);
 };
