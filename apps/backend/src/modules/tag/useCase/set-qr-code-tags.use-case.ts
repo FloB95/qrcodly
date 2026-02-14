@@ -24,15 +24,10 @@ export class SetQrCodeTagsUseCase implements IBaseUseCase {
 		if (!qrCode) throw new QrCodeNotFoundError();
 		if (qrCode.createdBy !== user.id) throw new ForbiddenError();
 
-		// Verify all tags belong to the authenticated user
-		if (tagIds.length > 0) {
-			const userTags = await this.tagRepository.findAll({
-				where: { createdBy: { eq: user.id } },
-				limit: 100,
-				page: 1,
-			});
-			const userTagIds = new Set(userTags.map((t) => t.id));
-			if (!tagIds.every((id) => userTagIds.has(id))) throw new ForbiddenError();
+		// Verify all tags exist and belong to the authenticated user
+		for (const tagId of tagIds) {
+			const tag = await this.tagRepository.findOneById(tagId);
+			if (!tag || tag.createdBy !== user.id) throw new ForbiddenError();
 		}
 
 		// Check plan limits

@@ -32,6 +32,7 @@ type TagListItemProps = {
 
 export const TagListItem = ({ tag }: TagListItemProps) => {
 	const t = useTranslations('tags');
+	const tGeneral = useTranslations('general');
 	const [editOpen, setEditOpen] = useState(false);
 	const deleteMutation = useDeleteTagMutation();
 
@@ -117,12 +118,12 @@ export const TagListItem = ({ tag }: TagListItemProps) => {
 							</AlertDialogTrigger>
 							<AlertDialogContent>
 								<AlertDialogHeader>
-									<AlertDialogTitle>{t('deleteConfirm')}</AlertDialogTitle>
-									<AlertDialogDescription>{t('deleteConfirm')}</AlertDialogDescription>
+									<AlertDialogTitle>{t('deleteConfirmTitle')}</AlertDialogTitle>
+									<AlertDialogDescription>{t('deleteConfirmDescription')}</AlertDialogDescription>
 								</AlertDialogHeader>
 								<AlertDialogFooter>
-									<AlertDialogCancel>Cancel</AlertDialogCancel>
-									<AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+									<AlertDialogCancel>{tGeneral('cancel')}</AlertDialogCancel>
+									<AlertDialogAction onClick={handleDelete}>{tGeneral('delete')}</AlertDialogAction>
 								</AlertDialogFooter>
 							</AlertDialogContent>
 						</AlertDialog>

@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { MagnifyingGlassIcon, XMarkIcon, FunnelIcon } from '@heroicons/react/24/outline';
+import { CheckIcon } from '@heroicons/react/20/solid';
 import { useTranslations } from 'next-intl';
 import { CONTENT_TYPE_CONFIGS, getContentTypeConfig } from '@/lib/content-type.config';
 import type { TQrCodeContentType } from '@shared/schemas';
@@ -131,7 +132,7 @@ export const QrCodeFilters = ({
 						placeholder={t('searchPlaceholder')}
 						value={searchValue}
 						onChange={(e) => setSearchValue(e.target.value)}
-						className="pl-9 pr-9 h-9 bg-white"
+						className="pl-9 pr-9 h-9 bg-background"
 					/>
 					{searchValue && (
 						<button
@@ -185,17 +186,7 @@ export const QrCodeFilters = ({
 													: 'border-muted-foreground/30',
 											)}
 										>
-											{isSelected && (
-												<svg
-													className="h-3 w-3"
-													fill="none"
-													viewBox="0 0 24 24"
-													stroke="currentColor"
-													strokeWidth={3}
-												>
-													<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-												</svg>
-											)}
+											{isSelected && <CheckIcon className="h-3 w-3" />}
 										</div>
 										<Icon className="h-4 w-4 text-muted-foreground" />
 										<span>{tContent(`tab.${config.label}`)}</span>

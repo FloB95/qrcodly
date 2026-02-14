@@ -69,9 +69,9 @@ export function NavigationProgress() {
 	if (!visible) return null;
 
 	return (
-		<div className="absolute inset-x-0 top-0 z-50 h-0.75">
+		<div className="absolute inset-x-0 top-0 z-50 h-[3px]">
 			<div
-				className="h-full bg-gray-700 transition-all duration-200 ease-out"
+				className="h-full bg-primary transition-all duration-200 ease-out"
 				style={{ width: `${progress}%` }}
 			/>
 		</div>

@@ -28,6 +28,7 @@ import {
 } from '@shared/schemas';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
+import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { z } from 'zod';
 
 @injectable()
@@ -101,7 +102,7 @@ export class TagController extends AbstractController {
 			operationId: 'tag/create-tag',
 		},
 		config: {
-			// rateLimitPolicy: RateLimitPolicy.TAG_CREATE,
+			rateLimitPolicy: RateLimitPolicy.TAG_CREATE,
 		},
 	})
 	async create(request: IHttpRequest<TCreateTagDto>): Promise<IHttpResponse<TTagResponseDto>> {

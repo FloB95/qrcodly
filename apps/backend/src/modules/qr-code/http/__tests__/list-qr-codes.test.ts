@@ -14,6 +14,7 @@ import { PlanName } from '@/core/config/plan.config';
 import qs from 'qs';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
+const TAG_API_PATH = `${API_BASE_PATH}/tag`;
 
 /**
  * List QR Codes API Tests
@@ -250,6 +251,61 @@ describe('listQrCodes', () => {
 			expect(data).toHaveLength(1);
 			expect(total).toBe(2); // 2 URL QR codes total
 			expect(limit).toBe(1);
+		});
+	});
+
+	describe('tagIds filter', () => {
+		it('should filter QR codes by tag ID', async () => {
+			// Create a tag
+			const tagResponse = await testServer.inject({
+				method: 'POST',
+				url: TAG_API_PATH,
+				headers: { Authorization: `Bearer ${accessToken}` },
+				payload: { name: 'FilterTag ' + Date.now(), color: '#FF5733' },
+			});
+			expect(tagResponse.statusCode).toBe(201);
+			const tag = JSON.parse(tagResponse.payload);
+
+			// Create a QR code and assign the tag
+			const createUseCase = container.resolve(CreateQrCodeUseCase);
+			const qr = await createUseCase.execute(
+				{ ...generateTextQrCodeDto(), name: 'Tagged QR ' + Date.now() },
+				{ id: user.id, plan: PlanName.FREE, tokenType: 'session_token' },
+			);
+
+			await testServer.inject({
+				method: 'PUT',
+				url: `${TAG_API_PATH}/qr-code/${qr.id}`,
+				headers: { Authorization: `Bearer ${accessToken}` },
+				payload: { tagIds: [tag.id] },
+			});
+
+			// Filter by tagIds
+			const response = await listQrCodesRequest({ tagIds: [tag.id] }, accessToken);
+
+			expect(response.statusCode).toBe(200);
+			const { data, total } = JSON.parse(response.payload);
+			expect(total).toBe(1);
+			expect(data).toHaveLength(1);
+			expect(data[0].id).toBe(qr.id);
+		});
+
+		it('should return empty results for tag with no QR codes', async () => {
+			const tagResponse = await testServer.inject({
+				method: 'POST',
+				url: TAG_API_PATH,
+				headers: { Authorization: `Bearer ${accessToken}` },
+				payload: { name: 'EmptyTag ' + Date.now(), color: '#00FF00' },
+			});
+			expect(tagResponse.statusCode).toBe(201);
+			const tag = JSON.parse(tagResponse.payload);
+
+			const response = await listQrCodesRequest({ tagIds: [tag.id] }, accessToken);
+
+			expect(response.statusCode).toBe(200);
+			const { data, total } = JSON.parse(response.payload);
+			expect(total).toBe(0);
+			expect(data).toHaveLength(0);
 		});
 	});
 });

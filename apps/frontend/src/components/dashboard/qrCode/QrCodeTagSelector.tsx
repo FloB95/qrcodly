@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Input } from '@/components/ui/input';
 import { TagIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { CheckIcon } from '@heroicons/react/20/solid';
 import { useTranslations } from 'next-intl';
 import { useListTagsQuery, useSetQrCodeTagsMutation } from '@/lib/api/tag';
 import { cn } from '@/lib/utils';
@@ -133,17 +134,7 @@ export const QrCodeTagSelector = ({ qrCodeId, currentTagIds, trigger }: QrCodeTa
 												: 'border-muted-foreground/30',
 										)}
 									>
-										{isSelected && (
-											<svg
-												className="h-3 w-3"
-												fill="none"
-												viewBox="0 0 24 24"
-												stroke="currentColor"
-												strokeWidth={3}
-											>
-												<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-											</svg>
-										)}
+										{isSelected && <CheckIcon className="h-3 w-3" />}
 									</div>
 									<div
 										className="size-3 rounded-full shrink-0"
