@@ -1,6 +1,6 @@
 'use client';
 
-import { PencilIcon } from '@heroicons/react/24/solid';
+import { PencilIcon, TagIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { EyeIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -9,17 +9,20 @@ import { useState } from 'react';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { formatDate } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 import { useGetViewsFromShortCodeQuery } from '@/lib/api/url-shortener';
 import { DynamicQrCode } from '@/components/qr-generator/DynamicQrCode';
 import { isDynamic, type TQrCodeWithRelationsResponseDto, type TShortUrl } from '@shared/schemas';
 import { QrCodeIcon } from './QrCodeIcon';
 import { NameDialog } from '@/components/qr-generator/NameDialog';
 import { Skeleton } from '@/components/ui/skeleton';
-import { DynamicBadge } from '@/components/qr-generator/DynamicBadge';
 import { RenderContent } from './content-renderers/RenderContent';
 import { QrCodeListItemActions } from './QrCodeListItemActions';
 import { useQrCodeMutations } from './hooks/useQrCodeMutations';
+import { QrCodeTagSelector } from './QrCodeTagSelector';
+import { useSetQrCodeTagsMutation } from '@/lib/api/tag';
+import { toast } from 'sonner';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	const t = useTranslations();
@@ -30,9 +33,9 @@ const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>
-				<div className="flex items-center space-x-2">
+				<div className="flex items-center gap-1 text-sm">
+					<EyeIcon className="size-3.5 text-muted-foreground" />
 					<span>{data.views}</span>
-					<EyeIcon width={20} height={20} />
 				</div>
 			</TooltipTrigger>
 			<TooltipContent side="top">
@@ -42,89 +45,166 @@ const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	);
 };
 
-const getRowClassName = (isDeleting: boolean, isActive: boolean | undefined) => {
-	if (isDeleting) return 'rounded-2xl !bg-muted/70';
-	if (isActive === false) return 'rounded-2xl !bg-muted';
-	return 'rounded-2xl from-white to-white/70 bg-gradient-to-br';
-};
-
 export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
 	const t = useTranslations();
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
 
 	const { isDeleting, handleToggle, handleDelete, handleUpdateName } = useQrCodeMutations(qr);
+	const setTagsMutation = useSetQrCodeTagsMutation();
 
 	const isDynamicQr = !!qr.shortUrl && isDynamic(qr.content);
 
 	return (
 		<>
-			<TableRow className={getRowClassName(isDeleting, qr.shortUrl?.isActive)}>
+			<TableRow
+				className={cn(isDeleting && 'opacity-50', qr.shortUrl?.isActive === false && 'opacity-60')}
+			>
 				{/* QR Code Preview */}
-				<TableCell className="rounded-l-lg max-w-50 pr-2">
-					<div className="flex space-x-2 max-w-fit">
-						<div className="ml-2 hidden sm:flex items-center">
-							<QrCodeIcon type={qr.content.type} />
-						</div>
-						<div className="h-[100px] w-[100px] overflow-hidden">
-							{qr.previewImage ? (
-								<Image
-									src={qr.previewImage}
-									width={180}
-									height={180}
-									alt="QR code preview"
-									loading="lazy"
-								/>
-							) : (
-								<DynamicQrCode qrCode={qr} additionalStyles="max-h-[100px] max-w-[100px]" />
-							)}
-						</div>
-					</div>
+				<TableCell className="w-[72px] py-2 pr-2">
+					<HoverCard openDelay={200} closeDelay={100}>
+						<HoverCardTrigger asChild>
+							<div className="flex items-center gap-2">
+								<div className="size-14 shrink-0 overflow-hidden rounded">
+									{qr.previewImage ? (
+										<Image
+											src={qr.previewImage}
+											width={56}
+											height={56}
+											alt="QR code preview"
+											className="size-14 object-cover"
+											loading="lazy"
+										/>
+									) : (
+										<DynamicQrCode qrCode={qr} additionalStyles="max-h-14 max-w-14" />
+									)}
+								</div>
+							</div>
+						</HoverCardTrigger>
+						<HoverCardContent side="right" className="w-auto p-2">
+							<div className="h-[200px] w-[200px] overflow-hidden rounded">
+								{qr.previewImage ? (
+									<Image
+										src={qr.previewImage}
+										width={200}
+										height={200}
+										alt="QR code preview"
+										className="h-[200px] w-[200px] object-cover"
+									/>
+								) : (
+									<DynamicQrCode qrCode={qr} additionalStyles="max-h-[200px] max-w-[200px]" />
+								)}
+							</div>
+						</HoverCardContent>
+					</HoverCard>
 				</TableCell>
 
-				{/* Dynamic Badge */}
-				{isDynamicQr && (
-					<TableCell>
-						<DynamicBadge className="py-1" />
-					</TableCell>
-				)}
-
-				{/* Name */}
-				<TableCell colSpan={isDynamicQr ? 1 : 2} className="font-medium max-w-[400px] truncate">
-					<div
-						className="group relative pr-6 inline-block"
-						onClick={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-							setNameDialogOpen(true);
-						}}
-					>
-						{qr.name && qr.name !== '' ? (
-							qr.name
-						) : (
-							<span className="text-muted-foreground">{t('general.noName')}</span>
-						)}
-						<div className="ml-2 group-hover:block pointer-events-none group-hover:pointer-events-auto hidden">
-							<Button size="icon" variant="ghost" className="absolute right-0 top-0 w-4 h-4">
-								<PencilIcon className="w-full h-full" />
-							</Button>
+				{/* Name + type icon + dynamic badge + tags */}
+				<TableCell className="py-2">
+					<div className="flex items-center gap-2 min-w-0">
+						<QrCodeIcon type={qr.content.type} />
+						<div className="flex flex-col gap-1 min-w-0">
+							<div className="flex items-center gap-2 min-w-0">
+								<div
+									className="group relative min-w-0 cursor-pointer"
+									onClick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										setNameDialogOpen(true);
+									}}
+								>
+									<div className="flex items-center gap-2 min-w-0">
+										<span className="truncate text-sm font-medium max-w-[200px]">
+											{qr.name && qr.name !== '' ? (
+												qr.name
+											) : (
+												<span className="text-muted-foreground">{t('general.noName')}</span>
+											)}
+										</span>
+										<Button
+											size="icon"
+											variant="ghost"
+											className="hidden group-hover:inline-flex h-5 w-5 shrink-0"
+										>
+											<PencilIcon className="size-3" />
+										</Button>
+									</div>
+								</div>
+								{isDynamicQr && (
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<Badge
+												variant="outline"
+												className="shrink-0 border-teal-600 text-teal-700 text-[10px] px-1.5 py-0"
+											>
+												Dynamic
+											</Badge>
+										</TooltipTrigger>
+										<TooltipContent side="top">{t('general.dynamicDescription')}</TooltipContent>
+									</Tooltip>
+								)}
+							</div>
+							{/* Tag chips */}
+							<div className="flex flex-wrap items-center gap-1">
+								{qr.tags?.map((tag) => (
+									<Tooltip key={tag.id}>
+										<TooltipTrigger asChild>
+											<Badge
+												className="group/tag gap-1 text-[10px] px-1.5 py-0 h-5 border-0 max-w-[140px]"
+												style={{
+													backgroundColor: tag.color,
+													color: '#fff',
+												}}
+											>
+												<TagIcon className="size-3 shrink-0" />
+												<span className="truncate">{tag.name}</span>
+												<button
+													className="hidden group-hover/tag:flex items-center shrink-0 -mr-0.5 rounded-full hover:bg-white/25 cursor-pointer"
+													onClick={async (e) => {
+														e.preventDefault();
+														e.stopPropagation();
+														const updatedTagIds = (qr.tags ?? [])
+															.filter((t) => t.id !== tag.id)
+															.map((t) => t.id);
+														try {
+															await setTagsMutation.mutateAsync({
+																qrCodeId: qr.id,
+																tagIds: updatedTagIds,
+															});
+														} catch {
+															toast.error('Failed to remove tag');
+														}
+													}}
+												>
+													<XMarkIcon className="size-3" />
+												</button>
+											</Badge>
+										</TooltipTrigger>
+										<TooltipContent side="top">{tag.name}</TooltipContent>
+									</Tooltip>
+								))}
+								<QrCodeTagSelector
+									qrCodeId={qr.id}
+									currentTagIds={qr.tags?.map((t) => t.id) ?? []}
+								/>
+							</div>
 						</div>
 					</div>
 				</TableCell>
 
 				{/* Content */}
-				<TableCell className="font-medium max-w-[300px] truncate">
-					<div className="overflow-hidden">
+				<TableCell className="hidden lg:table-cell py-2 max-w-[250px]">
+					<div className="truncate text-sm text-muted-foreground">
 						<RenderContent qr={qr} />
 					</div>
 				</TableCell>
 
 				{/* Status Badge */}
-				<TableCell className="hidden sm:table-cell">
+				<TableCell className="py-2">
 					{qr.shortUrl && (
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Badge variant={qr.shortUrl.isActive ? 'default' : 'outline'}>
+								<Badge variant={qr.shortUrl.isActive ? 'default' : 'outline'} className="text-xs">
 									{qr.shortUrl.isActive ? t('analytics.stateActive') : t('analytics.stateInactive')}
 								</Badge>
 							</TooltipTrigger>
@@ -138,13 +218,17 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 				</TableCell>
 
 				{/* Views */}
-				<TableCell>{qr.shortUrl && <ViewComponent shortUrl={qr.shortUrl} />}</TableCell>
+				<TableCell className="py-2">
+					{qr.shortUrl && <ViewComponent shortUrl={qr.shortUrl} />}
+				</TableCell>
 
 				{/* Created Date */}
-				<TableCell className="hidden md:table-cell">{formatDate(qr.createdAt)}</TableCell>
+				<TableCell className="hidden md:table-cell py-2 text-sm text-muted-foreground">
+					{formatDate(qr.createdAt)}
+				</TableCell>
 
 				{/* Actions */}
-				<TableCell className="rounded-r-lg">
+				<TableCell className="w-[60px] py-2">
 					<QrCodeListItemActions
 						qr={qr}
 						isDeleting={isDeleting}
@@ -170,9 +254,27 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 
 export const SkeletonListItem = () => {
 	return (
-		<TableRow className="shadow">
-			<TableCell colSpan={6} className="rounded-l-lg p-0">
-				<Skeleton className="h-[122px] w-full bg-white/70" />
+		<TableRow>
+			<TableCell className="py-2">
+				<Skeleton className="h-10 w-10 rounded" />
+			</TableCell>
+			<TableCell className="py-2">
+				<Skeleton className="h-4 w-32" />
+			</TableCell>
+			<TableCell className="hidden lg:table-cell py-2">
+				<Skeleton className="h-4 w-40" />
+			</TableCell>
+			<TableCell className="hidden sm:table-cell py-2">
+				<Skeleton className="h-5 w-14 rounded-full" />
+			</TableCell>
+			<TableCell className="hidden sm:table-cell py-2">
+				<Skeleton className="h-4 w-8" />
+			</TableCell>
+			<TableCell className="hidden md:table-cell py-2">
+				<Skeleton className="h-4 w-20" />
+			</TableCell>
+			<TableCell className="py-2">
+				<Skeleton className="h-8 w-8 rounded" />
 			</TableCell>
 		</TableRow>
 	);

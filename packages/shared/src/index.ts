@@ -26,6 +26,13 @@ export * from './dtos/qr-code-share/QrCodeShareResponseDto';
 
 export * from './dtos/custom-domain';
 
+export * from './dtos/tag/CreateTagDto';
+export * from './dtos/tag/UpdateTagDto';
+export * from './dtos/tag/TagResponseDto';
+export * from './dtos/tag/TagPaginatedResponseDto';
+export * from './dtos/tag/TagRequestParamsDto';
+export * from './dtos/tag/SetQrCodeTagsDto';
+
 export * from './dtos/IdRequestQuery';
 export * from './dtos/ListRequestDto';
 export * from './dtos/PaginationDto';
@@ -41,6 +48,7 @@ export * from './schemas/ShortUrl';
 export * from './schemas/QrCodeShare';
 export * from './schemas/CustomDomain';
 export * from './schemas/AnalyticsSchema';
+export * from './schemas/Tag';
 
 /***************************
  * Utils

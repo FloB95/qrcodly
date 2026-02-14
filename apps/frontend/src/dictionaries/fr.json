@@ -1,4 +1,12 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Collection",
+			"qrCodes": "Codes QR",
+			"templates": "Modèles",
+			"tags": "Étiquettes"
+		}
+	},
 	"general": {
 		"signOut": "Se déconnecter",
 		"proRequired": "Abonnement Pro requis",
@@ -53,7 +61,28 @@
 		"tabQrCode": "QR codes",
 		"tabTemplates": "Modèles",
 		"addQrCodeBtn": "Ajouter un QR code",
-		"bulkImportLabel": "Sélectionner le type de contenu"
+		"bulkImportLabel": "Sélectionner le type de contenu",
+		"bulkExport": {
+			"title": "Exporter les codes QR",
+			"description": "Télécharger plusieurs codes QR dans un fichier ZIP.",
+			"format": "Format",
+			"noQrCodes": "Aucun code QR trouvé.",
+			"exportAllLabel": "Tout exporter ({count})",
+			"deselectAll": "Désélectionner la page",
+			"selectAll": "Sélectionner la page",
+			"selectedCount": "{count} sur {total} sélectionnés",
+			"errorTitle": "Échec de l'exportation",
+			"errorDescription": "Une erreur est survenue lors de l'exportation des codes QR.",
+			"success": "Exportation terminée",
+			"progress": "{current} sur {total} exportés",
+			"downloading": "Téléchargement…",
+			"downloadBtn": "Télécharger le ZIP"
+		},
+		"filters": {
+			"searchPlaceholder": "Rechercher des codes QR...",
+			"contentType": "Type de contenu",
+			"clearAll": "Effacer"
+		}
 	},
 	"analytics": {
 		"totalViews": "Nombre de vues",
@@ -153,6 +182,15 @@
 		"button": "Retour à la page d'accueil"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Aperçu",
+			"name": "Nom",
+			"content": "Contenu",
+			"status": "Statut",
+			"views": "Vues",
+			"created": "Créé",
+			"actions": "Actions"
+		},
 		"storeBtn": "Enregistrer dans la collection",
 		"updateBtn": "Mettre à jour le QR Code",
 		"error": {
@@ -267,6 +305,7 @@
 		"saveBtn": "Enregistrer"
 	},
 	"templates": {
+		"pageDescription": "Gérez et organisez vos modèles de code QR enregistrés.",
 		"tabs": {
 			"myTemplates": "Mes Modèles",
 			"predefinedTemplates": "Prédéfinis"
@@ -1099,6 +1138,31 @@
 				"prioritySupport": "Support prioritaire",
 				"teamFeatures": "Fonctionnalités d'équipe (bientôt)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Étiquettes",
+		"description": "Créez et gérez des étiquettes pour organiser vos codes QR.",
+		"createBtn": "Créer une étiquette",
+		"editBtn": "Enregistrer les modifications",
+		"deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Elle sera retirée de tous les codes QR.",
+		"nameLabel": "Nom",
+		"colorLabel": "Couleur",
+		"noTags": "Pas encore d'étiquettes",
+		"noTagsDescription": "Créez votre première étiquette pour commencer à organiser vos codes QR.",
+		"manageTags": "Gérer les étiquettes",
+		"toast": {
+			"created": "Étiquette créée",
+			"updated": "Étiquette mise à jour",
+			"deleted": "Étiquette supprimée",
+			"error": "Quelque chose s'est mal passé"
+		},
+		"table": {
+			"name": "Nom",
+			"color": "Couleur",
+			"created": "Créé",
+			"usage": "Utilisation",
+			"qrCodes": "Codes QR"
 		}
 	}
 }

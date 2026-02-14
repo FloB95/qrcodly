@@ -1,4 +1,4 @@
-import { Get, Patch, Post } from '@/core/decorators/route';
+import { Get, Patch } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';

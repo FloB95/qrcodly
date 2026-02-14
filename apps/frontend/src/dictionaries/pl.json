@@ -1,4 +1,12 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Kolekcja",
+			"qrCodes": "Kody QR",
+			"templates": "Szablony",
+			"tags": "Tagi"
+		}
+	},
 	"general": {
 		"signOut": "Wyloguj się",
 		"proRequired": "Wymagany Plan Pro",
@@ -53,7 +61,28 @@
 		"tabQrCode": "Kody QR",
 		"tabTemplates": "Szablony",
 		"addQrCodeBtn": "Dodaj kod QR",
-		"bulkImportLabel": "Wybierz typ treści"
+		"bulkImportLabel": "Wybierz typ treści",
+		"bulkExport": {
+			"title": "Eksportuj kody QR",
+			"description": "Pobierz wiele kodów QR jako plik ZIP.",
+			"format": "Format",
+			"noQrCodes": "Nie znaleziono kodów QR.",
+			"exportAllLabel": "Eksportuj wszystkie ({count})",
+			"deselectAll": "Odznacz stronę",
+			"selectAll": "Zaznacz stronę",
+			"selectedCount": "{count} z {total} zaznaczonych",
+			"errorTitle": "Eksport nie powiódł się",
+			"errorDescription": "Wystąpił błąd podczas eksportowania kodów QR.",
+			"success": "Eksport zakończony",
+			"progress": "{current} z {total} wyeksportowanych",
+			"downloading": "Pobieranie…",
+			"downloadBtn": "Pobierz ZIP"
+		},
+		"filters": {
+			"searchPlaceholder": "Szukaj kodów QR...",
+			"contentType": "Typ treści",
+			"clearAll": "Wyczyść"
+		}
 	},
 	"analytics": {
 		"totalViews": "Liczba wyświetleń",
@@ -153,6 +182,15 @@
 		"button": "Idź do strony głównej"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Podgląd",
+			"name": "Nazwa",
+			"content": "Treść",
+			"status": "Status",
+			"views": "Wyświetlenia",
+			"created": "Utworzono",
+			"actions": "Akcje"
+		},
 		"storeBtn": "Zapisz w kolekcji",
 		"updateBtn": "Zaktualizuj kod QR",
 		"error": {
@@ -267,6 +305,7 @@
 		"saveBtn": "Zapisz"
 	},
 	"templates": {
+		"pageDescription": "Zarządzaj i organizuj zapisane szablony kodów QR.",
 		"tabs": {
 			"myTemplates": "Moje szablony",
 			"predefinedTemplates": "Predefiniowane"
@@ -1099,6 +1138,31 @@
 				"prioritySupport": "Priorytetowe wsparcie",
 				"teamFeatures": "Funkcje zespołowe (wkrótce)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Tagi",
+		"description": "Twórz i zarządzaj tagami, aby organizować swoje kody QR.",
+		"createBtn": "Utwórz tag",
+		"editBtn": "Zapisz zmiany",
+		"deleteConfirm": "Czy na pewno chcesz usunąć ten tag? Zostanie usunięty ze wszystkich kodów QR.",
+		"nameLabel": "Nazwa",
+		"colorLabel": "Kolor",
+		"noTags": "Brak tagów",
+		"noTagsDescription": "Utwórz swój pierwszy tag, aby rozpocząć organizację kodów QR.",
+		"manageTags": "Zarządzaj tagami",
+		"toast": {
+			"created": "Tag utworzony",
+			"updated": "Tag zaktualizowany",
+			"deleted": "Tag usunięty",
+			"error": "Coś poszło nie tak"
+		},
+		"table": {
+			"name": "Nazwa",
+			"color": "Kolor",
+			"created": "Utworzono",
+			"usage": "Użycie",
+			"qrCodes": "Kody QR"
 		}
 	}
 }

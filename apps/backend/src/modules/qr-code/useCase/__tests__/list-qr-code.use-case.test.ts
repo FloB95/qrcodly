@@ -33,6 +33,7 @@ describe('ListQrCodesUseCase', () => {
 			updatedAt: new Date(),
 			shortUrl: null,
 			share: null,
+			tags: [],
 		},
 		{
 			id: 'qr-2',
@@ -49,6 +50,7 @@ describe('ListQrCodesUseCase', () => {
 			updatedAt: new Date(),
 			shortUrl: null,
 			share: null,
+			tags: [],
 		},
 	];
 
@@ -90,6 +92,8 @@ describe('ListQrCodesUseCase', () => {
 				where: {
 					createdBy: { eq: 'user-123' },
 				},
+				contentType: undefined,
+				tagIds: undefined,
 			});
 		});
 
@@ -139,9 +143,13 @@ describe('ListQrCodesUseCase', () => {
 				},
 			});
 
-			expect(mockRepository.countTotal).toHaveBeenCalledWith({
-				createdBy: { eq: 'user-123' },
-			});
+			expect(mockRepository.countTotal).toHaveBeenCalledWith(
+				{
+					createdBy: { eq: 'user-123' },
+				},
+				undefined,
+				undefined,
+			);
 		});
 
 		it('should return QR codes and total count', async () => {
@@ -165,8 +173,10 @@ describe('ListQrCodesUseCase', () => {
 			expect(mockRepository.findAll).toHaveBeenCalledWith({
 				limit: 10,
 				page: 1,
+				contentType: undefined,
+				tagIds: undefined,
 			});
-			expect(mockRepository.countTotal).toHaveBeenCalledWith(undefined);
+			expect(mockRepository.countTotal).toHaveBeenCalledWith(undefined, undefined, undefined);
 		});
 
 		it('should handle empty results', async () => {
@@ -232,6 +242,35 @@ describe('ListQrCodesUseCase', () => {
 			});
 
 			expect(result.qrCodes[0].previewImage).toBeNull();
+		});
+
+		it('should pass contentType filter to repository', async () => {
+			await useCase.execute({
+				limit: 10,
+				page: 1,
+				where: {
+					createdBy: { eq: 'user-123' },
+				},
+				contentType: ['url', 'text'],
+			});
+
+			expect(mockRepository.findAll).toHaveBeenCalledWith({
+				limit: 10,
+				page: 1,
+				where: {
+					createdBy: { eq: 'user-123' },
+				},
+				contentType: ['url', 'text'],
+				tagIds: undefined,
+			});
+
+			expect(mockRepository.countTotal).toHaveBeenCalledWith(
+				{
+					createdBy: { eq: 'user-123' },
+				},
+				['url', 'text'],
+				undefined,
+			);
 		});
 	});
 });

@@ -3,6 +3,7 @@ import { useAuth } from '@clerk/nextjs';
 import type {
 	TBulkImportQrCodeDto,
 	TCreateQrCodeDto,
+	TQrCodeContentType,
 	TQrCodeWithRelationsPaginatedResponseDto,
 	TQrCodeWithRelationsResponseDto,
 	TUpdateQrCodeDto,
@@ -17,29 +18,53 @@ export const qrCodeQueryKeys = {
 	listQrCodes: ['listQrCodes'],
 } as const;
 
+export type QrCodeFilters = {
+	search?: string;
+	contentType?: TQrCodeContentType[];
+	tagIds?: string[];
+};
+
+// Standalone fetch for a single page of QR codes (used by hook and export)
+export async function fetchQrCodesPage(
+	token: string | null,
+	page: number,
+	limit: number,
+	filters?: QrCodeFilters,
+): Promise<TQrCodeWithRelationsPaginatedResponseDto> {
+	const queryParams: Record<string, unknown> = { page, limit };
+
+	if (filters?.search) {
+		queryParams['where[name][like]'] = filters.search;
+	}
+	if (filters?.contentType && filters.contentType.length > 0) {
+		queryParams.contentType = filters.contentType;
+	}
+	if (filters?.tagIds && filters.tagIds.length > 0) {
+		queryParams.tagIds = filters.tagIds;
+	}
+
+	return apiRequest<TQrCodeWithRelationsPaginatedResponseDto>(
+		'/qr-code',
+		{
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		},
+		queryParams,
+	);
+}
+
 // Hook to fetch QR codes
-export function useListQrCodesQuery(page = 1, limit = 10) {
+export function useListQrCodesQuery(page = 1, limit = 10, filters?: QrCodeFilters) {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: [...qrCodeQueryKeys.listQrCodes, page, limit],
-		queryFn: async (): Promise<TQrCodeWithRelationsPaginatedResponseDto> => {
+		queryKey: [...qrCodeQueryKeys.listQrCodes, page, limit, filters],
+		queryFn: async () => {
 			const token = await getToken();
-
-			return apiRequest<TQrCodeWithRelationsPaginatedResponseDto>(
-				'/qr-code',
-				{
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
-					},
-				},
-				{
-					page,
-					limit,
-				},
-			);
+			return fetchQrCodesPage(token, page, limit, filters);
 		},
 		placeholderData: keepPreviousData,
 		refetchOnWindowFocus: false,

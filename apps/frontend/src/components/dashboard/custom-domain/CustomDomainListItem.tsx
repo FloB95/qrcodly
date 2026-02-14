@@ -122,7 +122,7 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 					<StatusIcon className={cn('h-4 w-4', statusInfo.color)} />
 					<span className="text-xs">
 						{statusInfo.label === 'dnsPartial' && 'count' in statusInfo
-							? t('verificationStatus.dnsPartial', { count: statusInfo.count as number })
+							? t('verificationStatus.dnsPartial', { count: statusInfo.count! })
 							: t(`verificationStatus.${statusInfo.label}`)}
 					</span>
 				</div>
@@ -130,7 +130,7 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 			<TableCell>
 				<Badge variant={isFullyVerified ? 'default' : 'secondary'}>
 					{statusInfo.badge === 'dnsPartial' && 'count' in statusInfo
-						? t('badge.dnsPartial', { count: statusInfo.count as number })
+						? t('badge.dnsPartial', { count: statusInfo.count! })
 						: t(`badge.${statusInfo.badge}`)}
 				</Badge>
 			</TableCell>

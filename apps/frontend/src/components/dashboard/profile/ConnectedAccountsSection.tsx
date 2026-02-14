@@ -120,7 +120,7 @@ function ConnectedAccountsSkeleton() {
 		<div className="space-y-3">
 			{[1, 2].map((i) => (
 				<div key={i} className="flex items-center justify-between p-4 rounded-lg border">
-					<div className="flex items-start gap-3">
+					<div className="flex items-center gap-3">
 						<Skeleton className="size-10 rounded-lg" />
 						<div className="space-y-2">
 							<Skeleton className="h-4 w-24" />
@@ -161,7 +161,7 @@ function AccountItem({ account, canRemove, onRemove, t }: AccountItemProps) {
 
 	return (
 		<div className="flex items-center justify-between p-4 rounded-lg border bg-card">
-			<div className="flex items-start gap-3">
+			<div className="flex items-center gap-3">
 				<div className="p-2 bg-muted rounded-lg">{getProviderIcon(account.provider)}</div>
 				<div>
 					<div className="flex items-center gap-2">
@@ -241,7 +241,7 @@ export function ConnectedAccountsSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex items-start gap-3">
+				<div className="flex items-center gap-3">
 					<div className="p-2 bg-primary/10 rounded-lg">
 						<LinkIcon className="size-5" />
 					</div>

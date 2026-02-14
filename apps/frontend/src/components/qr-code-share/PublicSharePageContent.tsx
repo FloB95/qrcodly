@@ -41,7 +41,7 @@ export function PublicSharePageContent({ sharedQrCode }: PublicSharePageContentP
 					{/* Name/Type label inside the white box */}
 					{shareConfig.showName && displayLabel && content && (
 						<div className="flex items-center mb-4">
-							<QrCodeIcon type={content.type} />
+							<QrCodeIcon type={content.type} className="h-5 w-5 mr-2" />
 							<span className="text-sm sm:text-lg font-medium">{displayLabel}</span>
 						</div>
 					)}

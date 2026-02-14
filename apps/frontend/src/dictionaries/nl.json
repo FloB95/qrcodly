@@ -1,4 +1,12 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Collectie",
+			"qrCodes": "QR Codes",
+			"templates": "Sjablonen",
+			"tags": "Tags"
+		}
+	},
 	"general": {
 		"signOut": "Uitloggen",
 		"proRequired": "Pro-abonnement vereist",
@@ -53,7 +61,28 @@
 		"tabQrCode": "QR-codes",
 		"tabTemplates": "Sjablonen",
 		"addQrCodeBtn": "QR-code toevoegen",
-		"bulkImportLabel": "Selecteer inhoudstype"
+		"bulkImportLabel": "Selecteer inhoudstype",
+		"bulkExport": {
+			"title": "QR-codes exporteren",
+			"description": "Download meerdere QR-codes als ZIP-bestand.",
+			"format": "Formaat",
+			"noQrCodes": "Geen QR-codes gevonden.",
+			"exportAllLabel": "Alles exporteren ({count})",
+			"deselectAll": "Pagina deselecteren",
+			"selectAll": "Pagina selecteren",
+			"selectedCount": "{count} van {total} geselecteerd",
+			"errorTitle": "Export mislukt",
+			"errorDescription": "Er is een fout opgetreden bij het exporteren van de QR-codes.",
+			"success": "Export voltooid",
+			"progress": "{current} van {total} geëxporteerd",
+			"downloading": "Downloaden…",
+			"downloadBtn": "ZIP downloaden"
+		},
+		"filters": {
+			"searchPlaceholder": "QR-codes zoeken...",
+			"contentType": "Inhoudstype",
+			"clearAll": "Wissen"
+		}
 	},
 	"analytics": {
 		"totalViews": "Aantal weergaven",
@@ -153,6 +182,15 @@
 		"button": "Naar de startpagina"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Voorbeeld",
+			"name": "Naam",
+			"content": "Inhoud",
+			"status": "Status",
+			"views": "Weergaven",
+			"created": "Aangemaakt",
+			"actions": "Acties"
+		},
 		"storeBtn": "Opslaan in collectie",
 		"updateBtn": "QR-code bijwerken",
 		"error": {
@@ -267,6 +305,7 @@
 		"saveBtn": "Opslaan"
 	},
 	"templates": {
+		"pageDescription": "Beheer en organiseer je opgeslagen QR-code sjablonen.",
 		"tabs": {
 			"myTemplates": "Mijn sjablonen",
 			"predefinedTemplates": "Vooraf gedefinieerd"
@@ -1099,6 +1138,31 @@
 				"prioritySupport": "Prioriteitsondersteuning",
 				"teamFeatures": "Teamfuncties (binnenkort)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Tags",
+		"description": "Maak en beheer tags om je QR-codes te organiseren.",
+		"createBtn": "Tag aanmaken",
+		"editBtn": "Wijzigingen opslaan",
+		"deleteConfirm": "Weet je zeker dat je deze tag wilt verwijderen? De tag wordt van alle QR-codes verwijderd.",
+		"nameLabel": "Naam",
+		"colorLabel": "Kleur",
+		"noTags": "Nog geen tags",
+		"noTagsDescription": "Maak je eerste tag aan om je QR-codes te organiseren.",
+		"manageTags": "Tags beheren",
+		"toast": {
+			"created": "Tag aangemaakt",
+			"updated": "Tag bijgewerkt",
+			"deleted": "Tag verwijderd",
+			"error": "Er is iets misgegaan"
+		},
+		"table": {
+			"name": "Naam",
+			"color": "Kleur",
+			"created": "Aangemaakt",
+			"usage": "Gebruik",
+			"qrCodes": "QR-codes"
 		}
 	}
 }

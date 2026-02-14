@@ -43,7 +43,7 @@ export function DomainSelector({ value, onChange, disabled }: DomainSelectorProp
 				<FormLabel>{t('label')}</FormLabel>
 				<FormDescription>
 					{t('noDomains')}{' '}
-					<Link href="/settings/domains" className="text-primary underline">
+					<Link href="/dashboard/settings/domains" className="text-primary underline">
 						{t('addDomain')}
 					</Link>
 				</FormDescription>

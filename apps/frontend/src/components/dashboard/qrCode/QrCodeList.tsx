@@ -1,8 +1,9 @@
 'use client';
 
 import { QrCodeListItem, SkeletonListItem } from './ListItem';
-import { Table, TableBody } from '../../ui/table';
-import { useListQrCodesQuery } from '@/lib/api/qr-code';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '../../ui/table';
+import { useListQrCodesQuery, type QrCodeFilters as QrCodeFiltersType } from '@/lib/api/qr-code';
+import { QrCodeFilters } from './QrCodeFilters';
 import { useTranslations } from 'next-intl';
 import {
 	Pagination,
@@ -13,7 +14,7 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from '../../ui/pagination';
-import { useState, useMemo, useEffect, Fragment } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { cn, getPageNumbers } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -34,8 +35,12 @@ export const QrCodeList = () => {
 	const searchParams = useSearchParams();
 
 	const pageParam = Number(searchParams.get('page')) || 1;
+	const tagParam = searchParams.get('tag');
 	const [currentPage, setCurrentPage] = useState(pageParam);
 	const [currentLimit] = useState(10);
+	const [filters, setFilters] = useState<QrCodeFiltersType>(() => ({
+		tagIds: tagParam ? [tagParam] : undefined,
+	}));
 
 	// Keep currentPage in sync with URL
 	useEffect(() => {
@@ -48,14 +53,28 @@ export const QrCodeList = () => {
 		router.replace(url.pathname + url.search, { scroll: false });
 	}, [currentPage, router]);
 
-	// If the URL changes (e.g., via back/forward), update currentPage
+	// If the URL changes (e.g., via back/forward), update currentPage and tag filter
 	useEffect(() => {
 		if (pageParam !== currentPage) {
 			setCurrentPage(pageParam);
 		}
 	}, [pageParam]);
 
-	const { data: qrCodes, isLoading, isFetching } = useListQrCodesQuery(currentPage, currentLimit);
+	useEffect(() => {
+		setFilters(tagParam ? { tagIds: [tagParam] } : {});
+		setCurrentPage(1);
+	}, [tagParam]);
+
+	const handleFiltersChange = (newFilters: QrCodeFiltersType) => {
+		setFilters(newFilters);
+		setCurrentPage(1);
+	};
+
+	const {
+		data: qrCodes,
+		isLoading,
+		isFetching,
+	} = useListQrCodesQuery(currentPage, currentLimit, filters);
 
 	const totalPages = useMemo(
 		() => (qrCodes ? Math.ceil(qrCodes.total / currentLimit) : 1),
@@ -70,62 +89,116 @@ export const QrCodeList = () => {
 
 	if (isLoading || !qrCodes) {
 		return (
-			<Table className="border-separate border-spacing-y-2">
-				<TableBody>
-					{Array.from({ length: 5 }).map((_, idx) => (
-						<SkeletonListItem key={idx} />
-					))}
-				</TableBody>
-			</Table>
+			<div className="overflow-hidden rounded-lg border">
+				<Table>
+					<TableHeader className="bg-muted sticky top-0 z-10">
+						<TableRow>
+							<TableHead className="w-[60px]">{t('qrCode.table.preview')}</TableHead>
+							<TableHead className="pl-[calc(1rem+18px+0.5rem)]">
+								{t('qrCode.table.name')}
+							</TableHead>
+							<TableHead className="hidden lg:table-cell">{t('qrCode.table.content')}</TableHead>
+							<TableHead>{t('qrCode.table.status')}</TableHead>
+							<TableHead>{t('qrCode.table.views')}</TableHead>
+							<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
+							<TableHead className="w-[60px]" />
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{Array.from({ length: 5 }).map((_, idx) => (
+							<SkeletonListItem key={idx} />
+						))}
+					</TableBody>
+				</Table>
+			</div>
 		);
 	}
 
 	if (isFetching) {
 		return (
-			<Table className="border-separate border-spacing-y-2">
-				<TableBody>
-					{qrCodes.data.length > 0
-						? qrCodes.data.map((qr) => <SkeletonListItem key={qr.id} />)
-						: Array.from({ length: 5 }).map((_, idx) => <SkeletonListItem key={idx} />)}
-				</TableBody>
-			</Table>
+			<div className="overflow-hidden rounded-lg border">
+				<Table>
+					<TableHeader className="bg-muted sticky top-0 z-10">
+						<TableRow>
+							<TableHead className="w-[60px]">{t('qrCode.table.preview')}</TableHead>
+							<TableHead className="pl-[calc(1rem+18px+0.5rem)]">
+								{t('qrCode.table.name')}
+							</TableHead>
+							<TableHead className="hidden lg:table-cell">{t('qrCode.table.content')}</TableHead>
+							<TableHead className="hidden sm:table-cell">{t('qrCode.table.status')}</TableHead>
+							<TableHead className="hidden sm:table-cell">{t('qrCode.table.views')}</TableHead>
+							<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
+							<TableHead className="w-[60px]" />
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{(qrCodes.data.length > 0 ? qrCodes.data : Array.from({ length: 5 })).map((_, idx) => (
+							<SkeletonListItem key={idx} />
+						))}
+					</TableBody>
+				</Table>
+			</div>
 		);
 	}
 
+	const hasActiveFilters =
+		!!filters.search || !!filters.contentType?.length || !!filters.tagIds?.length;
+
 	if (qrCodes.data.length === 0) {
 		return (
-			<Empty className="sm:my-12">
-				<EmptyHeader>
-					<EmptyMedia variant="default">
-						<QrCodeIcon className="w-12 h-12" />
-					</EmptyMedia>
-					<EmptyTitle>{t('qrCode.error.noFound')}</EmptyTitle>
-					<EmptyDescription>{t('qrCode.error.noFoundDescription')}</EmptyDescription>
-				</EmptyHeader>
-				<EmptyContent>
-					<Link href="/" className={cn(buttonVariants(), 'md:flex md:space-x-2')}>
-						<PlusIcon className="h-5 w-5" />
-						<span className="sr-only md:not-sr-only md:whitespace-nowrap">
-							{t('collection.addQrCodeBtn')}
-						</span>
-					</Link>
-				</EmptyContent>
-			</Empty>
+			<div className="space-y-4">
+				{hasActiveFilters && (
+					<QrCodeFilters filters={filters} onFiltersChange={handleFiltersChange} />
+				)}
+				<Empty className="sm:my-12">
+					<EmptyHeader>
+						<EmptyMedia variant="default">
+							<QrCodeIcon className="w-12 h-12" />
+						</EmptyMedia>
+						<EmptyTitle>{t('qrCode.error.noFound')}</EmptyTitle>
+						<EmptyDescription>{t('qrCode.error.noFoundDescription')}</EmptyDescription>
+					</EmptyHeader>
+					<EmptyContent>
+						<Link href="/" className={cn(buttonVariants(), 'md:flex md:space-x-2')}>
+							<PlusIcon className="h-5 w-5" />
+							<span className="sr-only md:not-sr-only md:whitespace-nowrap">
+								{t('collection.addQrCodeBtn')}
+							</span>
+						</Link>
+					</EmptyContent>
+				</Empty>
+			</div>
 		);
 	}
 
 	const pageNumbers = getPageNumbers(currentPage, totalPages);
 	return (
-		<Fragment>
-			<Table className="border-separate border-spacing-y-2">
-				<TableBody>
-					{qrCodes?.data.map((qr) => (
-						<QrCodeListItem key={qr.id} qr={qr} />
-					))}
-				</TableBody>
-			</Table>
+		<div className="space-y-4">
+			<QrCodeFilters filters={filters} onFiltersChange={handleFiltersChange} />
+			<div className="overflow-hidden rounded-lg border">
+				<Table>
+					<TableHeader className="bg-muted sticky top-0 z-10">
+						<TableRow>
+							<TableHead className="w-[60px]">{t('qrCode.table.preview')}</TableHead>
+							<TableHead className="pl-[calc(1rem+18px+0.5rem)]">
+								{t('qrCode.table.name')}
+							</TableHead>
+							<TableHead className="hidden lg:table-cell">{t('qrCode.table.content')}</TableHead>
+							<TableHead>{t('qrCode.table.status')}</TableHead>
+							<TableHead>{t('qrCode.table.views')}</TableHead>
+							<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
+							<TableHead className="w-[60px]" />
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{qrCodes?.data.map((qr) => (
+							<QrCodeListItem key={qr.id} qr={qr} />
+						))}
+					</TableBody>
+				</Table>
+			</div>
 			{totalPages > 1 && (
-				<Pagination className="mt-6">
+				<Pagination>
 					<PaginationContent>
 						<PaginationItem>
 							<PaginationPrevious
@@ -164,6 +237,6 @@ export const QrCodeList = () => {
 					</PaginationContent>
 				</Pagination>
 			)}
-		</Fragment>
+		</div>
 	);
 };

@@ -142,7 +142,7 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 						</h3>
 						<p className="mt-2 text-center">{t('generator.bulkImport.successDescription')}</p>
 						<div className="flex gap-2 mt-4">
-							<Link href="/collection" className={buttonVariants()}>
+							<Link href="/dashboard/qr-codes" className={buttonVariants()}>
 								{t('general.toCollection')}
 							</Link>
 							<Button

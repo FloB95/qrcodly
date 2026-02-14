@@ -137,7 +137,7 @@ function useStore<T>(selector: (state: StoreState) => T): T {
 		const state = store.getState();
 		const prevValue = lastValueRef.current;
 
-		if (prevValue && prevValue.state === state) {
+		if (prevValue?.state === state) {
 			return prevValue.value;
 		}
 

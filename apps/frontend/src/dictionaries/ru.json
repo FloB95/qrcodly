@@ -1,4 +1,12 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Коллекция",
+			"qrCodes": "QR Коды",
+			"templates": "Шаблоны",
+			"tags": "Теги"
+		}
+	},
 	"general": {
 		"signOut": "Выйти",
 		"proRequired": "Требуется план Pro",
@@ -53,7 +61,28 @@
 		"tabQrCode": "QR-коды",
 		"tabTemplates": "Шаблоны",
 		"addQrCodeBtn": "Добавить QR-код",
-		"bulkImportLabel": "Выберите тип контента"
+		"bulkImportLabel": "Выберите тип контента",
+		"bulkExport": {
+			"title": "Экспорт QR-кодов",
+			"description": "Скачать несколько QR-кодов в виде ZIP-файла.",
+			"format": "Формат",
+			"noQrCodes": "QR-коды не найдены.",
+			"exportAllLabel": "Экспортировать все ({count})",
+			"deselectAll": "Снять выделение страницы",
+			"selectAll": "Выделить страницу",
+			"selectedCount": "{count} из {total} выбрано",
+			"errorTitle": "Ошибка экспорта",
+			"errorDescription": "Произошла ошибка при экспорте QR-кодов.",
+			"success": "Экспорт завершён",
+			"progress": "{current} из {total} экспортировано",
+			"downloading": "Загрузка…",
+			"downloadBtn": "Скачать ZIP"
+		},
+		"filters": {
+			"searchPlaceholder": "Поиск QR-кодов...",
+			"contentType": "Тип контента",
+			"clearAll": "Очистить"
+		}
 	},
 	"analytics": {
 		"totalViews": "Количество просмотров",
@@ -153,6 +182,15 @@
 		"button": "Вернуться на главную страницу"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Превью",
+			"name": "Название",
+			"content": "Содержание",
+			"status": "Статус",
+			"views": "Просмотры",
+			"created": "Создано",
+			"actions": "Действия"
+		},
 		"storeBtn": "Сохранить в коллекцию",
 		"updateBtn": "Обновить QR-код",
 		"error": {
@@ -267,6 +305,7 @@
 		"saveBtn": "Сохранить"
 	},
 	"templates": {
+		"pageDescription": "Управляйте и организовывайте сохраненные шаблоны QR-кодов.",
 		"tabs": {
 			"myTemplates": "Мои шаблоны",
 			"predefinedTemplates": "Предопределенные"
@@ -1099,6 +1138,31 @@
 				"prioritySupport": "Приоритетная поддержка",
 				"teamFeatures": "Командные функции (скоро)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Теги",
+		"description": "Создавайте и управляйте тегами для организации ваших QR-кодов.",
+		"createBtn": "Создать тег",
+		"editBtn": "Сохранить изменения",
+		"deleteConfirm": "Вы уверены, что хотите удалить этот тег? Он будет удалён из всех QR-кодов.",
+		"nameLabel": "Название",
+		"colorLabel": "Цвет",
+		"noTags": "Тегов пока нет",
+		"noTagsDescription": "Создайте первый тег, чтобы начать организацию ваших QR-кодов.",
+		"manageTags": "Управление тегами",
+		"toast": {
+			"created": "Тег создан",
+			"updated": "Тег обновлён",
+			"deleted": "Тег удалён",
+			"error": "Что-то пошло не так"
+		},
+		"table": {
+			"name": "Название",
+			"color": "Цвет",
+			"created": "Создан",
+			"usage": "Использование",
+			"qrCodes": "QR-коды"
 		}
 	}
 }

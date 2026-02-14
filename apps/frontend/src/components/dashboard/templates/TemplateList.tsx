@@ -10,13 +10,21 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from '../../ui/pagination';
-import { useState, useMemo, useEffect, Fragment } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { getPageNumbers } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { SkeletonListItem } from '../qrCode/ListItem';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
-import { TemplateListItem } from './ListItem';
+import { TemplateListItem, SkeletonTemplateListItem } from './ListItem';
+import {
+	Empty,
+	EmptyContent,
+	EmptyDescription,
+	EmptyHeader,
+	EmptyMedia,
+	EmptyTitle,
+} from '@/components/ui/empty';
+import { StarIcon } from '@heroicons/react/24/outline';
 
 export const TemplateList = () => {
 	const t = useTranslations();
@@ -50,51 +58,80 @@ export const TemplateList = () => {
 		}
 	};
 
+	const tableHeader = (
+		<TableHeader className="bg-muted sticky top-0 z-10">
+			<TableRow>
+				<TableHead className="w-[72px]">{t('qrCode.table.preview')}</TableHead>
+				<TableHead>{t('qrCode.table.name')}</TableHead>
+				<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
+				<TableHead className="w-[60px]" />
+			</TableRow>
+		</TableHeader>
+	);
+
 	if (isLoading || !templates) {
 		return (
-			<Table className="border-separate border-spacing-y-2">
-				<TableBody>
-					{Array.from({ length: 5 }).map((_, idx) => (
-						<SkeletonListItem key={idx} />
-					))}
-				</TableBody>
-			</Table>
+			<div className="overflow-hidden rounded-lg border">
+				<Table>
+					{tableHeader}
+					<TableBody>
+						{Array.from({ length: 5 }).map((_, idx) => (
+							<SkeletonTemplateListItem key={idx} />
+						))}
+					</TableBody>
+				</Table>
+			</div>
 		);
 	}
 
 	if (isFetching) {
 		return (
-			<Table className="border-separate border-spacing-y-2">
-				<TableBody>
-					{templates.data.length > 0
-						? templates.data.map((qr) => <SkeletonListItem key={qr.id} />)
-						: Array.from({ length: 5 }).map((_, idx) => <SkeletonListItem key={idx} />)}
-				</TableBody>
-			</Table>
+			<div className="overflow-hidden rounded-lg border">
+				<Table>
+					{tableHeader}
+					<TableBody>
+						{(templates.data.length > 0 ? templates.data : Array.from({ length: 5 })).map(
+							(_, idx) => (
+								<SkeletonTemplateListItem key={idx} />
+							),
+						)}
+					</TableBody>
+				</Table>
+			</div>
+		);
+	}
+
+	if (templates.data.length === 0) {
+		return (
+			<Empty className="sm:my-12">
+				<EmptyHeader>
+					<EmptyMedia variant="default">
+						<StarIcon className="w-12 h-12" />
+					</EmptyMedia>
+					<EmptyTitle>{t('templates.noTemplates')}</EmptyTitle>
+					<EmptyDescription>{t('templates.pageDescription')}</EmptyDescription>
+				</EmptyHeader>
+				<EmptyContent />
+			</Empty>
 		);
 	}
 
 	const pageNumbers = getPageNumbers(currentPage, totalPages);
 
 	return (
-		<Fragment>
-			<Table className="border-separate border-spacing-y-2">
-				<TableBody>
-					{templates.data.length > 0 ? (
-						templates.data.map((template) => (
+		<div className="space-y-4">
+			<div className="overflow-hidden rounded-lg border">
+				<Table>
+					{tableHeader}
+					<TableBody>
+						{templates.data.map((template) => (
 							<TemplateListItem key={template.id} template={template} />
-						))
-					) : (
-						<TableRow className="hover:bg-transparent" key="no-data">
-							<TableCell colSpan={6} className="text-center">
-								<h2 className="my-10 text-2xl font-semibold">{t('templates.noTemplates')}</h2>
-							</TableCell>
-						</TableRow>
-					)}
-				</TableBody>
-			</Table>
+						))}
+					</TableBody>
+				</Table>
+			</div>
 			{totalPages > 1 && (
-				<Pagination className="mt-6">
+				<Pagination>
 					<PaginationContent>
 						<PaginationItem>
 							<PaginationPrevious
@@ -133,6 +170,6 @@ export const TemplateList = () => {
 					</PaginationContent>
 				</Pagination>
 			)}
-		</Fragment>
+		</div>
 	);
 };

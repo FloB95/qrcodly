@@ -1,4 +1,12 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Collection",
+			"qrCodes": "QR Codes",
+			"templates": "Templates",
+			"tags": "Tags"
+		}
+	},
 	"general": {
 		"signOut": "Sign Out",
 		"proRequired": "Pro Plan Required",
@@ -53,7 +61,28 @@
 		"tabQrCode": "QR codes",
 		"tabTemplates": "Templates",
 		"addQrCodeBtn": "Add QR code",
-		"bulkImportLabel": "Select Content Type"
+		"bulkImportLabel": "Select Content Type",
+		"bulkExport": {
+			"title": "Bulk Export QR Codes",
+			"description": "Download multiple QR codes as a ZIP file.",
+			"format": "Format",
+			"noQrCodes": "No QR codes found.",
+			"exportAllLabel": "Export all ({count})",
+			"deselectAll": "Deselect page",
+			"selectAll": "Select page",
+			"selectedCount": "{count} of {total} selected",
+			"errorTitle": "Export failed",
+			"errorDescription": "An error occurred while exporting QR codes.",
+			"success": "Export complete",
+			"progress": "{current} of {total} exported",
+			"downloading": "Downloading…",
+			"downloadBtn": "Download ZIP"
+		},
+		"filters": {
+			"searchPlaceholder": "Search QR codes...",
+			"contentType": "Content Type",
+			"clearAll": "Clear"
+		}
 	},
 	"analytics": {
 		"totalViews": "Total Views",
@@ -153,6 +182,15 @@
 		"button": "Go Back Home"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Preview",
+			"name": "Name",
+			"content": "Content",
+			"status": "Status",
+			"views": "Views",
+			"created": "Created",
+			"actions": "Actions"
+		},
 		"storeBtn": "Save in Collection",
 		"updateBtn": "Update QR code",
 		"error": {
@@ -267,6 +305,7 @@
 		"saveBtn": "Save"
 	},
 	"templates": {
+		"pageDescription": "Manage and organize your saved QR code templates.",
 		"tabs": {
 			"myTemplates": "My Templates",
 			"predefinedTemplates": "Predefined"
@@ -1099,6 +1138,31 @@
 				"prioritySupport": "Priority support",
 				"teamFeatures": "Team features (coming soon)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Tags",
+		"description": "Create and manage tags to organize your QR codes.",
+		"createBtn": "Create Tag",
+		"editBtn": "Save Changes",
+		"deleteConfirm": "Are you sure you want to delete this tag? It will be removed from all QR codes.",
+		"nameLabel": "Name",
+		"colorLabel": "Color",
+		"noTags": "No tags yet",
+		"noTagsDescription": "Create your first tag to start organizing your QR codes.",
+		"manageTags": "Manage Tags",
+		"toast": {
+			"created": "Tag created",
+			"updated": "Tag updated",
+			"deleted": "Tag deleted",
+			"error": "Something went wrong"
+		},
+		"table": {
+			"name": "Name",
+			"color": "Color",
+			"created": "Created",
+			"usage": "Usage",
+			"qrCodes": "QR Codes"
 		}
 	}
 }

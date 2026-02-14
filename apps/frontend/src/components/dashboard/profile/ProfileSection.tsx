@@ -273,7 +273,7 @@ export function ProfileSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex items-start gap-3">
+				<div className="flex items-center gap-3">
 					<div>
 						<CardTitle>{t('title')}</CardTitle>
 						<CardDescription>{t('description')}</CardDescription>
@@ -332,8 +332,8 @@ export function ProfileSection() {
 
 						{/* Email Section */}
 						<div className="border-t pt-6">
-							<div className="flex flex-col gap-3 flex-wrap sm:flex-row sm:items-center sm:justify-between">
-								<div className="flex items-start gap-3 flex-wrap">
+							<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+								<div className="flex items-center gap-3">
 									<div className="p-2 bg-muted rounded-lg">
 										<EnvelopeIcon className="size-5" />
 									</div>

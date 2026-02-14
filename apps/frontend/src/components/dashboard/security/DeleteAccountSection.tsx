@@ -31,7 +31,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 
-const CONFIRMATION_TEXT: string = 'DELETE';
+const CONFIRMATION_TEXT = 'DELETE';
 
 const deleteAccountSchema = z.object({
 	confirmation: z.string().refine((val) => val === CONFIRMATION_TEXT, {
@@ -98,7 +98,7 @@ export function DeleteAccountSection() {
 	return (
 		<Card className="border-destructive/50">
 			<CardHeader>
-				<div className="flex items-start gap-3">
+				<div className="flex items-center gap-3">
 					<div className="p-2 bg-destructive/10 rounded-lg">
 						<TrashIcon className="size-5 text-destructive" />
 					</div>

@@ -63,7 +63,7 @@ export const ProCTA = ({
 	if (hasProPlan) {
 		return (
 			<Button variant="secondary" asChild>
-				<Link href={`/${locale}/settings/billing`}>{t('manageSubscription')}</Link>
+				<Link href={`/${locale}/dashboard/settings/billing`}>{t('manageSubscription')}</Link>
 			</Button>
 		);
 	}
