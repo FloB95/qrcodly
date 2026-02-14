@@ -1,6 +1,6 @@
 'use client';
 
-import { PencilIcon, TagIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { PencilIcon } from '@heroicons/react/24/solid';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { EyeIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -19,10 +19,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { RenderContent } from './content-renderers/RenderContent';
 import { QrCodeListItemActions } from './QrCodeListItemActions';
 import { useQrCodeMutations } from './hooks/useQrCodeMutations';
+import { QrCodeTagBadges } from './QrCodeTagBadges';
 import { QrCodeTagSelector } from './QrCodeTagSelector';
-import { useSetQrCodeTagsMutation } from '@/lib/api/tag';
-import { toast } from 'sonner';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import type { QrCodeColumnVisibility } from './hooks/useQrCodeColumnVisibility';
 
 const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	const t = useTranslations();
@@ -45,15 +45,21 @@ const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	);
 };
 
-export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
+export const QrCodeListItem = ({
+	qr,
+	visibility,
+}: {
+	qr: TQrCodeWithRelationsResponseDto;
+	visibility: QrCodeColumnVisibility;
+}) => {
 	const t = useTranslations();
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
 
 	const { isDeleting, handleToggle, handleDelete, handleUpdateName } = useQrCodeMutations(qr);
-	const setTagsMutation = useSetQrCodeTagsMutation();
 
 	const isDynamicQr = !!qr.shortUrl && isDynamic(qr.content);
+	const hasTags = qr.tags ?? [];
 
 	return (
 		<>
@@ -143,89 +149,69 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 										<TooltipContent side="top">{t('general.dynamicDescription')}</TooltipContent>
 									</Tooltip>
 								)}
+								{visibility.tags && hasTags.length === 0 && (
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<span>
+												<QrCodeTagSelector qrCodeId={qr.id} currentTagIds={[]} />
+											</span>
+										</TooltipTrigger>
+										<TooltipContent side="top">{t('tags.manageTags')}</TooltipContent>
+									</Tooltip>
+								)}
 							</div>
 							{/* Tag chips */}
-							<div className="flex flex-wrap items-center gap-1">
-								{qr.tags?.map((tag) => (
-									<Tooltip key={tag.id}>
-										<TooltipTrigger asChild>
-											<Badge
-												className="group/tag gap-1 text-[10px] px-1.5 py-0 h-5 border-0 max-w-[140px]"
-												style={{
-													backgroundColor: tag.color,
-													color: '#fff',
-												}}
-											>
-												<TagIcon className="size-3 shrink-0" />
-												<span className="truncate">{tag.name}</span>
-												<button
-													className="hidden group-hover/tag:flex items-center shrink-0 -mr-0.5 rounded-full hover:bg-white/25 cursor-pointer"
-													onClick={async (e) => {
-														e.preventDefault();
-														e.stopPropagation();
-														const updatedTagIds = (qr.tags ?? [])
-															.filter((t) => t.id !== tag.id)
-															.map((t) => t.id);
-														try {
-															await setTagsMutation.mutateAsync({
-																qrCodeId: qr.id,
-																tagIds: updatedTagIds,
-															});
-														} catch {
-															toast.error('Failed to remove tag');
-														}
-													}}
-												>
-													<XMarkIcon className="size-3" />
-												</button>
-											</Badge>
-										</TooltipTrigger>
-										<TooltipContent side="top">{tag.name}</TooltipContent>
-									</Tooltip>
-								))}
-								<QrCodeTagSelector
-									qrCodeId={qr.id}
-									currentTagIds={qr.tags?.map((t) => t.id) ?? []}
-								/>
-							</div>
+							{visibility.tags && hasTags.length > 0 && (
+								<QrCodeTagBadges qrCodeId={qr.id} tags={hasTags} />
+							)}
 						</div>
 					</div>
 				</TableCell>
 
 				{/* Content */}
-				<TableCell className="hidden lg:table-cell py-2 max-w-[250px]">
-					<div className="truncate text-sm text-muted-foreground">
-						<RenderContent qr={qr} />
-					</div>
-				</TableCell>
+				{visibility.content && (
+					<TableCell className="hidden lg:table-cell py-2 max-w-[250px]">
+						<div className="truncate text-sm text-muted-foreground">
+							<RenderContent qr={qr} />
+						</div>
+					</TableCell>
+				)}
 
 				{/* Status Badge */}
-				<TableCell className="py-2">
-					{qr.shortUrl && (
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Badge variant={qr.shortUrl.isActive ? 'default' : 'outline'} className="text-xs">
-									{qr.shortUrl.isActive ? t('analytics.stateActive') : t('analytics.stateInactive')}
-								</Badge>
-							</TooltipTrigger>
-							<TooltipContent side="top">
-								{qr.shortUrl.isActive
-									? t('analytics.activeDescription')
-									: t('analytics.inactiveDescription')}
-							</TooltipContent>
-						</Tooltip>
-					)}
-				</TableCell>
+				{visibility.status && (
+					<TableCell className="py-2">
+						{qr.shortUrl && (
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Badge variant={qr.shortUrl.isActive ? 'default' : 'outline'} className="text-xs">
+										{qr.shortUrl.isActive
+											? t('analytics.stateActive')
+											: t('analytics.stateInactive')}
+									</Badge>
+								</TooltipTrigger>
+								<TooltipContent side="top">
+									{qr.shortUrl.isActive
+										? t('analytics.activeDescription')
+										: t('analytics.inactiveDescription')}
+								</TooltipContent>
+							</Tooltip>
+						)}
+					</TableCell>
+				)}
 
-				{/* Views */}
-				<TableCell className="py-2">
-					{qr.shortUrl && <ViewComponent shortUrl={qr.shortUrl} />}
-				</TableCell>
+				{/* Scans */}
+				{visibility.scans && (
+					<TableCell className="py-2">
+						{qr.shortUrl && <ViewComponent shortUrl={qr.shortUrl} />}
+					</TableCell>
+				)}
 
 				{/* Created Date */}
-				<TableCell className="hidden md:table-cell py-2 text-sm text-muted-foreground">
-					{formatDate(qr.createdAt)}
-				</TableCell>
+				{visibility.created && (
+					<TableCell className="hidden md:table-cell py-2 text-sm text-muted-foreground">
+						{formatDate(qr.createdAt)}
+					</TableCell>
+				)}
 
 				{/* Actions */}
 				<TableCell className="w-[60px] py-2">
@@ -252,7 +238,7 @@ export const QrCodeListItem = ({ qr }: { qr: TQrCodeWithRelationsResponseDto }) 
 	);
 };
 
-export const SkeletonListItem = () => {
+export const SkeletonListItem = ({ visibility }: { visibility: QrCodeColumnVisibility }) => {
 	return (
 		<TableRow>
 			<TableCell className="py-2">
@@ -261,18 +247,26 @@ export const SkeletonListItem = () => {
 			<TableCell className="py-2">
 				<Skeleton className="h-4 w-32" />
 			</TableCell>
-			<TableCell className="hidden lg:table-cell py-2">
-				<Skeleton className="h-4 w-40" />
-			</TableCell>
-			<TableCell className="hidden sm:table-cell py-2">
-				<Skeleton className="h-5 w-14 rounded-full" />
-			</TableCell>
-			<TableCell className="hidden sm:table-cell py-2">
-				<Skeleton className="h-4 w-8" />
-			</TableCell>
-			<TableCell className="hidden md:table-cell py-2">
-				<Skeleton className="h-4 w-20" />
-			</TableCell>
+			{visibility.content && (
+				<TableCell className="hidden lg:table-cell py-2">
+					<Skeleton className="h-4 w-40" />
+				</TableCell>
+			)}
+			{visibility.status && (
+				<TableCell className="hidden sm:table-cell py-2">
+					<Skeleton className="h-5 w-14 rounded-full" />
+				</TableCell>
+			)}
+			{visibility.scans && (
+				<TableCell className="hidden sm:table-cell py-2">
+					<Skeleton className="h-4 w-8" />
+				</TableCell>
+			)}
+			{visibility.created && (
+				<TableCell className="hidden md:table-cell py-2">
+					<Skeleton className="h-4 w-20" />
+				</TableCell>
+			)}
 			<TableCell className="py-2">
 				<Skeleton className="h-8 w-8 rounded" />
 			</TableCell>

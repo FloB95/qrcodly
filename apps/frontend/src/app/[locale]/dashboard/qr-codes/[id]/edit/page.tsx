@@ -7,6 +7,7 @@ import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
 import { getTranslations } from 'next-intl/server';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import { EditPageTagSection } from '@/components/qr-code-detail/EditPageTagSection';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -116,6 +117,7 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 						</div>
 						<div>
 							<h1 className="text-lg font-semibold">{t('qrCode.update.headline')}</h1>
+							<EditPageTagSection qrCodeId={qrCode.id} tags={qrCode.tags ?? []} />
 						</div>
 					</div>
 				</CardContent>

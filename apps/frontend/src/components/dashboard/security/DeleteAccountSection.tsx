@@ -8,7 +8,7 @@ import { useRouter } from '@/i18n/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,8 +34,14 @@ import {
 const CONFIRMATION_TEXT = 'DELETE';
 
 const deleteAccountSchema = z.object({
-	confirmation: z.string().refine((val) => val === CONFIRMATION_TEXT, {
-		message: `Please type "${CONFIRMATION_TEXT}" to confirm`,
+	confirmation: z.string().check((ctx) => {
+		if (ctx.value !== CONFIRMATION_TEXT) {
+			ctx.issues.push({
+				code: 'custom',
+				input: ctx.value,
+				message: `Please type "${CONFIRMATION_TEXT}" to confirm`,
+			});
+		}
 	}),
 });
 

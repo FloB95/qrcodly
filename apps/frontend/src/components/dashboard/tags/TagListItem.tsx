@@ -9,7 +9,10 @@ import { formatDate } from '@/lib/utils';
 import type { TTagResponseDto } from '@shared/schemas';
 import { TagEditDialog } from './TagEditDialog';
 import { useDeleteTagMutation } from '@/lib/api/tag';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
+import posthog from 'posthog-js';
+import * as Sentry from '@sentry/nextjs';
+import type { ApiError } from '@/lib/api/ApiError';
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -35,9 +38,30 @@ export const TagListItem = ({ tag }: TagListItemProps) => {
 	const handleDelete = async () => {
 		try {
 			await deleteMutation.mutateAsync(tag.id);
-			toast.success(t('toast.deleted'));
-		} catch {
-			toast.error(t('toast.error'));
+			posthog.capture('tag-deleted', { id: tag.id, name: tag.name });
+			toast({
+				title: t('toast.deletedTitle'),
+				description: t('toast.deletedDescription'),
+				duration: 5000,
+			});
+		} catch (e: unknown) {
+			const error = e as ApiError;
+
+			if (error.code >= 500) {
+				Sentry.captureException(error, { extra: { id: tag.id, name: tag.name } });
+			}
+
+			posthog.capture('error:tag-deleted', {
+				id: tag.id,
+				error: { code: error.code, message: error.message },
+			});
+
+			toast({
+				variant: 'destructive',
+				title: t('toast.deleteErrorTitle'),
+				description: error.message,
+				duration: 5000,
+			});
 		}
 	};
 

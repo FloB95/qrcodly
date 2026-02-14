@@ -1,7 +1,7 @@
 {
 	"dashboard": {
 		"nav": {
-			"collection": "Collectie",
+			"collection": "Collecties",
 			"qrCodes": "QR Codes",
 			"templates": "Sjablonen",
 			"tags": "Tags"
@@ -57,7 +57,7 @@
 	},
 	"collection": {
 		"headline": "Je collectie",
-		"subHeadline": "Hier vind je al je QR-codes en sjablonen en kun je ze beheren.",
+		"subHeadline": "Hier vind je al je QR-codes en kun je ze beheren.",
 		"tabQrCode": "QR-codes",
 		"tabTemplates": "Sjablonen",
 		"addQrCodeBtn": "QR-code toevoegen",
@@ -81,18 +81,21 @@
 		"filters": {
 			"searchPlaceholder": "QR-codes zoeken...",
 			"contentType": "Inhoudstype",
-			"clearAll": "Wissen"
+			"clearAll": "Wissen",
+			"customizeColumns": "Kolommen aanpassen",
+			"columns": "Kolommen",
+			"toggleColumns": "Kolommen in-/uitschakelen"
 		}
 	},
 	"analytics": {
-		"totalViews": "Aantal weergaven",
+		"totalViews": "Aantal scans",
 		"totalVisitors": "Aantal bezoekers",
 		"stateActive": "Actief",
 		"stateInactive": "Uitgeschakeld",
-		"activeDescription": "Actief: gebruikers hebben toegang tot de bestemmingspagina en weergaven worden geanalyseerd.",
+		"activeDescription": "Actief: gebruikers hebben toegang tot de bestemmingspagina en scans worden geregistreerd.",
 		"inactiveDescription": "Uitgeschakeld: toegang en analyse zijn gedeactiveerd.",
 		"noData": "Nog geen gegevens verzameld.",
-		"viewsInLastXDays": "{count} weergaven in de afgelopen {days} dagen",
+		"viewsInLastXDays": "{count} scans in de afgelopen {days} dagen",
 		"visitorsInLastXDays": "{count} bezoekers in de afgelopen {days} dagen"
 	},
 	"chart": {
@@ -187,9 +190,10 @@
 			"name": "Naam",
 			"content": "Inhoud",
 			"status": "Status",
-			"views": "Weergaven",
+			"scans": "Scans",
 			"created": "Aangemaakt",
-			"actions": "Acties"
+			"actions": "Acties",
+			"tags": "Tags"
 		},
 		"storeBtn": "Opslaan in collectie",
 		"updateBtn": "QR-code bijwerken",
@@ -1151,10 +1155,22 @@
 		"noTags": "Nog geen tags",
 		"noTagsDescription": "Maak je eerste tag aan om je QR-codes te organiseren.",
 		"manageTags": "Tags beheren",
+		"filterByTags": "Filteren op tags",
+		"searchTags": "Tags zoeken...",
+		"noSearchResults": "Geen tags gevonden voor \"{search}\"",
 		"toast": {
-			"created": "Tag aangemaakt",
-			"updated": "Tag bijgewerkt",
-			"deleted": "Tag verwijderd",
+			"createdTitle": "Tag aangemaakt",
+			"createdDescription": "Je tag is succesvol aangemaakt.",
+			"updatedTitle": "Tag bijgewerkt",
+			"updatedDescription": "Je tag is succesvol bijgewerkt.",
+			"deletedTitle": "Tag verwijderd",
+			"deletedDescription": "Je tag is succesvol verwijderd.",
+			"tagsUpdatedTitle": "Tags bijgewerkt",
+			"tagsUpdatedDescription": "De QR-code tags zijn succesvol bijgewerkt.",
+			"createErrorTitle": "Fout bij het aanmaken van tag",
+			"updateErrorTitle": "Fout bij het bijwerken van tag",
+			"deleteErrorTitle": "Fout bij het verwijderen van tag",
+			"assignErrorTitle": "Fout bij het bijwerken van tags",
 			"error": "Er is iets misgegaan"
 		},
 		"table": {

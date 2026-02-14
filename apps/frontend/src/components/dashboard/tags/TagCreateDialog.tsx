@@ -17,8 +17,11 @@ import { CharacterCounter } from '@/components/qr-generator/content/CharacterCou
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useCreateTagMutation } from '@/lib/api/tag';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
+import posthog from 'posthog-js';
+import * as Sentry from '@sentry/nextjs';
 import { TAG_NAME_MAX_LENGTH } from '@shared/schemas';
+import type { ApiError } from '@/lib/api/ApiError';
 
 const PRESET_COLORS: string[] = [
 	'#EF4444',
@@ -44,12 +47,32 @@ export const TagCreateDialog = () => {
 
 		try {
 			await createTag.mutateAsync({ name: name.trim(), color });
-			toast.success(t('toast.created'));
+			posthog.capture('tag-created', { name: name.trim(), color });
+			toast({
+				title: t('toast.createdTitle'),
+				description: t('toast.createdDescription'),
+				duration: 5000,
+			});
 			setOpen(false);
 			setName('');
 			setColor(PRESET_COLORS[0] ?? '#3B82F6');
-		} catch {
-			toast.error(t('toast.error'));
+		} catch (e: unknown) {
+			const error = e as ApiError;
+
+			if (error.code >= 500) {
+				Sentry.captureException(error, { extra: { name: name.trim(), color } });
+			}
+
+			posthog.capture('error:tag-created', {
+				error: { code: error.code, message: error.message },
+			});
+
+			toast({
+				variant: 'destructive',
+				title: t('toast.createErrorTitle'),
+				description: error.message,
+				duration: 5000,
+			});
 		}
 	};
 

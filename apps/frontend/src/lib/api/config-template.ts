@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/nextjs';
 import type {
 	TCreateConfigTemplateDto,
@@ -71,6 +71,7 @@ export function useListConfigTemplatesQuery(searchName?: string, page = 1, limit
 				queryParams,
 			);
 		},
+		placeholderData: keepPreviousData,
 		refetchOnMount: false,
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000, // 5 minutes

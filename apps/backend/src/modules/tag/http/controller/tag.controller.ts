@@ -28,6 +28,7 @@ import {
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { SetQrCodeTagsPolicy } from '../../policies/set-qr-code-tags.policy';
+import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { z } from 'zod';
 
 @injectable()
@@ -86,31 +87,6 @@ export class TagController extends AbstractController {
 		return this.makeApiHttpResponse(200, TagPaginatedResponseDto.parse(pagination));
 	}
 
-	@Get('/all', {
-		responseSchema: {
-			200: z.array(TagResponseDto),
-			401: DEFAULT_ERROR_RESPONSES[401],
-			429: DEFAULT_ERROR_RESPONSES[429],
-		},
-		schema: {
-			summary: 'List All Tags',
-			description:
-				'Fetches all tags for the authenticated user without pagination (for sidebar and dropdowns).',
-			operationId: 'tag/list-all-tags',
-		},
-	})
-	async listAll(request: IHttpRequest): Promise<IHttpResponse<TTagResponseDto[]>> {
-		const tags = await this.tagRepository.findAllByUser(request.user.id);
-		const counts = await this.tagRepository.getQrCodeCountsByTagId(request.user.id);
-
-		const data = tags.map((tag) => ({
-			...TagResponseDto.parse(tag),
-			qrCodeCount: counts.get(tag.id) ?? 0,
-		}));
-
-		return this.makeApiHttpResponse(200, data);
-	}
-
 	@Post('', {
 		bodySchema: CreateTagDto,
 		responseSchema: {
@@ -123,6 +99,9 @@ export class TagController extends AbstractController {
 			summary: 'Create a new tag',
 			description: 'Creates a new tag based on the provided data.',
 			operationId: 'tag/create-tag',
+		},
+		config: {
+			// rateLimitPolicy: RateLimitPolicy.TAG_CREATE,
 		},
 	})
 	async create(request: IHttpRequest<TCreateTagDto>): Promise<IHttpResponse<TTagResponseDto>> {

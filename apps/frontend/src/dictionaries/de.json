@@ -1,7 +1,7 @@
 {
 	"dashboard": {
 		"nav": {
-			"collection": "Sammlung",
+			"collection": "Sammlungen",
 			"qrCodes": "QR Codes",
 			"templates": "Vorlagen",
 			"tags": "Tags"
@@ -57,7 +57,7 @@
 	},
 	"collection": {
 		"headline": "Deine Sammlung",
-		"subHeadline": "Hier findest du all deine QR Codes und Vorlagen und kannst sie bearbeiten oder löschen.",
+		"subHeadline": "Hier findest du all deine QR Codes und kannst sie bearbeiten oder löschen.",
 		"tabQrCode": "QR Codes",
 		"tabTemplates": "Vorlagen",
 		"addQrCodeBtn": "QR Code hinzufügen",
@@ -81,18 +81,21 @@
 		"filters": {
 			"searchPlaceholder": "QR-Codes suchen...",
 			"contentType": "Inhaltstyp",
-			"clearAll": "Löschen"
+			"clearAll": "Löschen",
+			"customizeColumns": "Spalten anpassen",
+			"columns": "Spalten",
+			"toggleColumns": "Spalten ein-/ausblenden"
 		}
 	},
 	"analytics": {
-		"totalViews": "Anzahl der Aufrufe",
+		"totalViews": "Anzahl der Scans",
 		"totalVisitors": "Anzahl der Besucher",
 		"stateActive": "Aktiv",
 		"stateInactive": "Deaktiviert",
-		"activeDescription": "Aktiv: Benutzer können auf die Zielseite zugreifen und Aufrufe werden analysiert.",
+		"activeDescription": "Aktiv: Benutzer können auf die Zielseite zugreifen und Scans werden analysiert.",
 		"inactiveDescription": "Deaktiviert: Zugriff und Analyse sind deaktiviert.",
 		"noData": "Bislang wurden keine Daten erfasst.",
-		"viewsInLastXDays": "{count} Aufrufe in den letzten {days}",
+		"viewsInLastXDays": "{count} Scans in den letzten {days}",
 		"visitorsInLastXDays": "{count} Besucher in den letzten {days}"
 	},
 	"chart": {
@@ -187,9 +190,10 @@
 			"name": "Name",
 			"content": "Inhalt",
 			"status": "Status",
-			"views": "Aufrufe",
+			"scans": "Scans",
 			"created": "Erstellt",
-			"actions": "Aktionen"
+			"actions": "Aktionen",
+			"tags": "Tags"
 		},
 		"storeBtn": "In Sammlung speichern",
 		"updateBtn": "QR Code aktualisieren",
@@ -1151,10 +1155,22 @@
 		"noTags": "Noch keine Tags",
 		"noTagsDescription": "Erstellen Sie Ihr erstes Tag, um Ihre QR-Codes zu organisieren.",
 		"manageTags": "Tags verwalten",
+		"filterByTags": "Nach Tags filtern",
+		"searchTags": "Tags suchen...",
+		"noSearchResults": "Keine Tags gefunden für \"{search}\"",
 		"toast": {
-			"created": "Tag erstellt",
-			"updated": "Tag aktualisiert",
-			"deleted": "Tag gelöscht",
+			"createdTitle": "Tag erstellt",
+			"createdDescription": "Ihr Tag wurde erfolgreich erstellt.",
+			"updatedTitle": "Tag aktualisiert",
+			"updatedDescription": "Ihr Tag wurde erfolgreich aktualisiert.",
+			"deletedTitle": "Tag gelöscht",
+			"deletedDescription": "Ihr Tag wurde erfolgreich gelöscht.",
+			"tagsUpdatedTitle": "Tags aktualisiert",
+			"tagsUpdatedDescription": "Die QR-Code-Tags wurden erfolgreich aktualisiert.",
+			"createErrorTitle": "Fehler beim Erstellen des Tags",
+			"updateErrorTitle": "Fehler beim Aktualisieren des Tags",
+			"deleteErrorTitle": "Fehler beim Löschen des Tags",
+			"assignErrorTitle": "Fehler beim Aktualisieren der Tags",
 			"error": "Etwas ist schief gelaufen"
 		},
 		"table": {

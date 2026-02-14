@@ -1,7 +1,7 @@
 {
 	"dashboard": {
 		"nav": {
-			"collection": "Colección",
+			"collection": "Colecciones",
 			"qrCodes": "Códigos QR",
 			"templates": "Plantillas",
 			"tags": "Etiquetas"
@@ -57,7 +57,7 @@
 	},
 	"collection": {
 		"headline": "Tu colección",
-		"subHeadline": "Aquí puedes encontrar todos tus códigos QR y plantillas y gestionarlos.",
+		"subHeadline": "Aquí puedes encontrar todos tus códigos QR y gestionarlos.",
 		"tabQrCode": "Códigos QR",
 		"tabTemplates": "Plantillas",
 		"addQrCodeBtn": "Agregar código QR",
@@ -81,18 +81,21 @@
 		"filters": {
 			"searchPlaceholder": "Buscar códigos QR...",
 			"contentType": "Tipo de contenido",
-			"clearAll": "Borrar"
+			"clearAll": "Borrar",
+			"customizeColumns": "Personalizar columnas",
+			"columns": "Columnas",
+			"toggleColumns": "Alternar columnas"
 		}
 	},
 	"analytics": {
-		"totalViews": "Número de visitas",
+		"totalViews": "Número de escaneos",
 		"totalVisitors": "Número de visitantes",
 		"stateActive": "Activo",
 		"stateInactive": "Desactivado",
-		"activeDescription": "Activo: Los usuarios pueden acceder a la página de destino y se analizan las vistas.",
+		"activeDescription": "Activo: Los usuarios pueden acceder a la página de destino y se registran los escaneos.",
 		"inactiveDescription": "Desactivado: El acceso y el análisis están deshabilitados.",
 		"noData": "Aún no se han recopilado datos.",
-		"viewsInLastXDays": "{count} vistas en los últimos {days}",
+		"viewsInLastXDays": "{count} escaneos en los últimos {days}",
 		"visitorsInLastXDays": "{count} visitantes en los últimos {days}"
 	},
 	"chart": {
@@ -187,9 +190,10 @@
 			"name": "Nombre",
 			"content": "Contenido",
 			"status": "Estado",
-			"views": "Vistas",
+			"scans": "Escaneos",
 			"created": "Creado",
-			"actions": "Acciones"
+			"actions": "Acciones",
+			"tags": "Etiquetas"
 		},
 		"storeBtn": "Guardar en la colección",
 		"updateBtn": "Actualizar código QR",
@@ -1151,10 +1155,22 @@
 		"noTags": "Sin etiquetas aún",
 		"noTagsDescription": "Crea tu primera etiqueta para empezar a organizar tus códigos QR.",
 		"manageTags": "Gestionar etiquetas",
+		"filterByTags": "Filtrar por etiquetas",
+		"searchTags": "Buscar etiquetas...",
+		"noSearchResults": "No se encontraron etiquetas para \"{search}\"",
 		"toast": {
-			"created": "Etiqueta creada",
-			"updated": "Etiqueta actualizada",
-			"deleted": "Etiqueta eliminada",
+			"createdTitle": "Etiqueta creada",
+			"createdDescription": "Tu etiqueta se ha creado correctamente.",
+			"updatedTitle": "Etiqueta actualizada",
+			"updatedDescription": "Tu etiqueta se ha actualizado correctamente.",
+			"deletedTitle": "Etiqueta eliminada",
+			"deletedDescription": "Tu etiqueta se ha eliminado correctamente.",
+			"tagsUpdatedTitle": "Etiquetas actualizadas",
+			"tagsUpdatedDescription": "Las etiquetas del código QR se han actualizado correctamente.",
+			"createErrorTitle": "Error al crear la etiqueta",
+			"updateErrorTitle": "Error al actualizar la etiqueta",
+			"deleteErrorTitle": "Error al eliminar la etiqueta",
+			"assignErrorTitle": "Error al actualizar las etiquetas",
 			"error": "Algo salió mal"
 		},
 		"table": {

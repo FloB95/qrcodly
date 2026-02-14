@@ -1,7 +1,7 @@
 {
 	"dashboard": {
 		"nav": {
-			"collection": "Kolekcja",
+			"collection": "Kolekcje",
 			"qrCodes": "Kody QR",
 			"templates": "Szablony",
 			"tags": "Tagi"
@@ -57,7 +57,7 @@
 	},
 	"collection": {
 		"headline": "Twoja kolekcja",
-		"subHeadline": "Tutaj znajdziesz wszystkie swoje kody QR i szablony i możesz nimi zarządzać.",
+		"subHeadline": "Tutaj znajdziesz wszystkie swoje kody QR i możesz nimi zarządzać.",
 		"tabQrCode": "Kody QR",
 		"tabTemplates": "Szablony",
 		"addQrCodeBtn": "Dodaj kod QR",
@@ -81,18 +81,21 @@
 		"filters": {
 			"searchPlaceholder": "Szukaj kodów QR...",
 			"contentType": "Typ treści",
-			"clearAll": "Wyczyść"
+			"clearAll": "Wyczyść",
+			"customizeColumns": "Dostosuj kolumny",
+			"columns": "Kolumny",
+			"toggleColumns": "Przełącz kolumny"
 		}
 	},
 	"analytics": {
-		"totalViews": "Liczba wyświetleń",
+		"totalViews": "Liczba skanów",
 		"totalVisitors": "Liczba odwiedzających",
 		"stateActive": "Aktywny",
 		"stateInactive": "Wyłączony",
-		"activeDescription": "Aktywny: Użytkownicy mogą uzyskać dostęp do strony docelowej, a wyświetlenia są analizowane.",
+		"activeDescription": "Aktywny: Użytkownicy mogą uzyskać dostęp do strony docelowej, a skany są rejestrowane.",
 		"inactiveDescription": "Wyłączony: Dostęp i analiza są wyłączone.",
 		"noData": "Dotychczas nie zebrano żadnych danych.",
-		"viewsInLastXDays": "{count} wyświetleń w ciągu ostatnich {days} dni",
+		"viewsInLastXDays": "{count} skanów w ciągu ostatnich {days} dni",
 		"visitorsInLastXDays": "{count} odwiedzających w ciągu ostatnich {days} dni"
 	},
 	"chart": {
@@ -187,9 +190,10 @@
 			"name": "Nazwa",
 			"content": "Treść",
 			"status": "Status",
-			"views": "Wyświetlenia",
+			"scans": "Skany",
 			"created": "Utworzono",
-			"actions": "Akcje"
+			"actions": "Akcje",
+			"tags": "Tagi"
 		},
 		"storeBtn": "Zapisz w kolekcji",
 		"updateBtn": "Zaktualizuj kod QR",
@@ -1151,10 +1155,22 @@
 		"noTags": "Brak tagów",
 		"noTagsDescription": "Utwórz swój pierwszy tag, aby rozpocząć organizację kodów QR.",
 		"manageTags": "Zarządzaj tagami",
+		"filterByTags": "Filtruj wg tagów",
+		"searchTags": "Szukaj tagów...",
+		"noSearchResults": "Nie znaleziono tagów dla \"{search}\"",
 		"toast": {
-			"created": "Tag utworzony",
-			"updated": "Tag zaktualizowany",
-			"deleted": "Tag usunięty",
+			"createdTitle": "Tag utworzony",
+			"createdDescription": "Twój tag został pomyślnie utworzony.",
+			"updatedTitle": "Tag zaktualizowany",
+			"updatedDescription": "Twój tag został pomyślnie zaktualizowany.",
+			"deletedTitle": "Tag usunięty",
+			"deletedDescription": "Twój tag został pomyślnie usunięty.",
+			"tagsUpdatedTitle": "Tagi zaktualizowane",
+			"tagsUpdatedDescription": "Tagi kodu QR zostały pomyślnie zaktualizowane.",
+			"createErrorTitle": "Błąd podczas tworzenia tagu",
+			"updateErrorTitle": "Błąd podczas aktualizacji tagu",
+			"deleteErrorTitle": "Błąd podczas usuwania tagu",
+			"assignErrorTitle": "Błąd podczas aktualizacji tagów",
 			"error": "Coś poszło nie tak"
 		},
 		"table": {

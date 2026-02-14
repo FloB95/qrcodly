@@ -16,14 +16,16 @@ export function NavigationProgress() {
 			if (!anchor) return;
 
 			const href = anchor.getAttribute('href');
-			if (
-				!href ||
-				!href.startsWith('/') ||
-				anchor.target === '_blank' ||
-				e.metaKey ||
-				e.ctrlKey ||
-				previousPathname.current.endsWith(href)
-			) {
+			if (!href || !href.startsWith('/') || anchor.target === '_blank' || e.metaKey || e.ctrlKey) {
+				return;
+			}
+
+			// Parse the href to separate pathname and query params
+			const url = new URL(href, window.location.origin);
+			const targetPathname = url.pathname;
+
+			// Skip if only query params are changing (same pathname)
+			if (previousPathname.current.endsWith(targetPathname)) {
 				return;
 			}
 

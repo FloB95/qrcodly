@@ -129,20 +129,6 @@ describe('Tag Controller', () => {
 		});
 	});
 
-	describe('GET /tag/all', () => {
-		it('should return all tags for user without pagination', async () => {
-			const response = await makeRequest('GET', `${TAG_API_PATH}/all`, accessToken);
-
-			expect(response.statusCode).toBe(200);
-
-			const tags = JSON.parse(response.payload);
-			expect(Array.isArray(tags)).toBe(true);
-			tags.forEach((tag: any) => {
-				expect(tag.createdBy).toBe(user.id);
-			});
-		});
-	});
-
 	describe('PATCH /tag/:id', () => {
 		it('should update a tag', async () => {
 			// Create a tag first

@@ -8,7 +8,7 @@ import {
 	GlobeAltIcon,
 } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

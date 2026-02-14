@@ -14,6 +14,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { getPageNumbers } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
 import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
 import { TemplateListItem, SkeletonTemplateListItem } from './ListItem';
 import {
@@ -24,7 +25,8 @@ import {
 	EmptyMedia,
 	EmptyTitle,
 } from '@/components/ui/empty';
-import { StarIcon } from '@heroicons/react/24/outline';
+import { StarIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
 
 export const TemplateList = () => {
 	const t = useTranslations();
@@ -33,6 +35,8 @@ export const TemplateList = () => {
 	const pageParam = Number(searchParams.get('page')) || 1;
 	const [currentPage, setCurrentPage] = useState(pageParam);
 	const [currentLimit] = useState(10);
+	const [searchValue, setSearchValue] = useState('');
+	const [debouncedSearch] = useDebouncedValue(searchValue, 400);
 
 	// If the URL changes (e.g., via back/forward), update currentPage
 	useEffect(() => {
@@ -41,11 +45,16 @@ export const TemplateList = () => {
 		}
 	}, [pageParam]);
 
+	// Reset to page 1 when search changes
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [debouncedSearch]);
+
 	const {
 		data: templates,
 		isLoading,
 		isFetching,
-	} = useListConfigTemplatesQuery(undefined, currentPage, currentLimit);
+	} = useListConfigTemplatesQuery(debouncedSearch || undefined, currentPage, currentLimit);
 
 	const totalPages = useMemo(
 		() => (templates ? Math.ceil(templates.total / currentLimit) : 1),
@@ -84,24 +93,7 @@ export const TemplateList = () => {
 		);
 	}
 
-	if (isFetching) {
-		return (
-			<div className="overflow-hidden rounded-lg border">
-				<Table>
-					{tableHeader}
-					<TableBody>
-						{(templates.data.length > 0 ? templates.data : Array.from({ length: 5 })).map(
-							(_, idx) => (
-								<SkeletonTemplateListItem key={idx} />
-							),
-						)}
-					</TableBody>
-				</Table>
-			</div>
-		);
-	}
-
-	if (templates.data.length === 0) {
+	if (!isFetching && templates.data.length === 0 && !debouncedSearch) {
 		return (
 			<Empty className="sm:my-12">
 				<EmptyHeader>
@@ -116,21 +108,58 @@ export const TemplateList = () => {
 		);
 	}
 
+	const searchInput = (
+		<div className="relative max-w-sm">
+			<MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+			<Input
+				type="text"
+				placeholder={t('templates.search.placeholder')}
+				value={searchValue}
+				onChange={(e) => setSearchValue(e.target.value)}
+				className="pl-9 pr-9 h-9 bg-white"
+			/>
+			{searchValue && (
+				<button
+					onClick={() => setSearchValue('')}
+					className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+				>
+					<XMarkIcon className="h-4 w-4" />
+				</button>
+			)}
+		</div>
+	);
+
+	if (!isFetching && templates.data.length === 0 && debouncedSearch) {
+		return (
+			<div className="space-y-4">
+				{searchInput}
+				<div className="text-sm text-muted-foreground py-8 text-center">
+					{t('templates.search.noResults', { searchName: debouncedSearch })}
+				</div>
+			</div>
+		);
+	}
+
 	const pageNumbers = getPageNumbers(currentPage, totalPages);
 
 	return (
 		<div className="space-y-4">
+			{searchInput}
 			<div className="overflow-hidden rounded-lg border">
 				<Table>
 					{tableHeader}
 					<TableBody>
-						{templates.data.map((template) => (
-							<TemplateListItem key={template.id} template={template} />
-						))}
+						{isFetching
+							? (templates.data.length > 0 ? templates.data : Array.from({ length: 5 })).map(
+									(_, idx) => <SkeletonTemplateListItem key={idx} />,
+								)
+							: templates.data.map((template) => (
+									<TemplateListItem key={template.id} template={template} />
+								))}
 					</TableBody>
 				</Table>
 			</div>
-			{totalPages > 1 && (
+			{!isFetching && totalPages > 1 && (
 				<Pagination>
 					<PaginationContent>
 						<PaginationItem>

@@ -22,15 +22,6 @@ class TagRepository extends AbstractRepository<TTag> {
 		return await query.execute();
 	}
 
-	async findAllByUser(userId: string): Promise<TTag[]> {
-		return await this.db
-			.select()
-			.from(this.table)
-			.where(eq(this.table.createdBy, userId))
-			.orderBy(desc(this.table.createdAt))
-			.execute();
-	}
-
 	async findOneById(id: string): Promise<TTag | undefined> {
 		return await this.db.query.tag.findFirst({
 			where: eq(this.table.id, id),

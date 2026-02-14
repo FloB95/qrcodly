@@ -1,7 +1,7 @@
 {
 	"dashboard": {
 		"nav": {
-			"collection": "Collection",
+			"collection": "Collections",
 			"qrCodes": "Codes QR",
 			"templates": "Modèles",
 			"tags": "Étiquettes"
@@ -57,7 +57,7 @@
 	},
 	"collection": {
 		"headline": "Votre collection",
-		"subHeadline": "Ici, vous pouvez trouver tous vos QR codes et modèles et les gérer.",
+		"subHeadline": "Ici, vous pouvez trouver tous vos QR codes et les gérer.",
 		"tabQrCode": "QR codes",
 		"tabTemplates": "Modèles",
 		"addQrCodeBtn": "Ajouter un QR code",
@@ -81,18 +81,21 @@
 		"filters": {
 			"searchPlaceholder": "Rechercher des codes QR...",
 			"contentType": "Type de contenu",
-			"clearAll": "Effacer"
+			"clearAll": "Effacer",
+			"customizeColumns": "Personnaliser les colonnes",
+			"columns": "Colonnes",
+			"toggleColumns": "Afficher/masquer les colonnes"
 		}
 	},
 	"analytics": {
-		"totalViews": "Nombre de vues",
+		"totalViews": "Nombre de scans",
 		"totalVisitors": "Nombre de visiteurs",
 		"stateActive": "Actif",
 		"stateInactive": "Désactivé",
-		"activeDescription": "Actif : les utilisateurs peuvent accéder à la page de destination et les vues sont analysées.",
+		"activeDescription": "Actif : les utilisateurs peuvent accéder à la page de destination et les scans sont enregistrés.",
 		"inactiveDescription": "Désactivé : l'accès et l'analyse sont désactivés.",
 		"noData": "Aucune donnée n'a encore été collectée.",
-		"viewsInLastXDays": "{count} vues au cours des {days} derniers jours",
+		"viewsInLastXDays": "{count} scans au cours des {days} derniers jours",
 		"visitorsInLastXDays": "{count} visiteurs au cours des {days} derniers jours"
 	},
 	"chart": {
@@ -187,9 +190,10 @@
 			"name": "Nom",
 			"content": "Contenu",
 			"status": "Statut",
-			"views": "Vues",
+			"scans": "Scans",
 			"created": "Créé",
-			"actions": "Actions"
+			"actions": "Actions",
+			"tags": "Tags"
 		},
 		"storeBtn": "Enregistrer dans la collection",
 		"updateBtn": "Mettre à jour le QR Code",
@@ -1151,10 +1155,22 @@
 		"noTags": "Pas encore d'étiquettes",
 		"noTagsDescription": "Créez votre première étiquette pour commencer à organiser vos codes QR.",
 		"manageTags": "Gérer les étiquettes",
+		"filterByTags": "Filtrer par étiquettes",
+		"searchTags": "Rechercher des étiquettes...",
+		"noSearchResults": "Aucune étiquette trouvée pour \"{search}\"",
 		"toast": {
-			"created": "Étiquette créée",
-			"updated": "Étiquette mise à jour",
-			"deleted": "Étiquette supprimée",
+			"createdTitle": "Étiquette créée",
+			"createdDescription": "Votre étiquette a été créée avec succès.",
+			"updatedTitle": "Étiquette mise à jour",
+			"updatedDescription": "Votre étiquette a été mise à jour avec succès.",
+			"deletedTitle": "Étiquette supprimée",
+			"deletedDescription": "Votre étiquette a été supprimée avec succès.",
+			"tagsUpdatedTitle": "Étiquettes mises à jour",
+			"tagsUpdatedDescription": "Les étiquettes du code QR ont été mises à jour avec succès.",
+			"createErrorTitle": "Erreur lors de la création de l'étiquette",
+			"updateErrorTitle": "Erreur lors de la mise à jour de l'étiquette",
+			"deleteErrorTitle": "Erreur lors de la suppression de l'étiquette",
+			"assignErrorTitle": "Erreur lors de la mise à jour des étiquettes",
 			"error": "Quelque chose s'est mal passé"
 		},
 		"table": {

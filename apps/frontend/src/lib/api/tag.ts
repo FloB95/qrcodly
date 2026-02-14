@@ -13,16 +13,19 @@ import { qrCodeQueryKeys } from './qr-code';
 
 export const tagQueryKeys = {
 	listTags: ['listTags'],
-	allTags: ['allTags'],
 } as const;
 
-export function useListTagsQuery(page = 1, limit = 10) {
+export function useListTagsQuery(page = 1, limit = 10, search?: string) {
 	const { getToken } = useAuth();
 
 	return useQuery({
-		queryKey: [...tagQueryKeys.listTags, page, limit],
+		queryKey: [...tagQueryKeys.listTags, page, limit, search],
 		queryFn: async () => {
 			const token = await getToken();
+			const queryParams: Record<string, unknown> = { page, limit };
+			if (search) {
+				queryParams.where = { name: { like: search } };
+			}
 			return apiRequest<TTagPaginatedResponseDto>(
 				'/tag',
 				{
@@ -32,31 +35,10 @@ export function useListTagsQuery(page = 1, limit = 10) {
 						Authorization: `Bearer ${token}`,
 					},
 				},
-				{ page, limit },
+				queryParams,
 			);
 		},
 		placeholderData: keepPreviousData,
-		refetchOnWindowFocus: false,
-		staleTime: 5 * 60 * 1000,
-		retry: 2,
-	});
-}
-
-export function useAllTagsQuery() {
-	const { getToken } = useAuth();
-
-	return useQuery({
-		queryKey: tagQueryKeys.allTags,
-		queryFn: async () => {
-			const token = await getToken();
-			return apiRequest<TTagResponseDto[]>('/tag/all', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-			});
-		},
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000,
 		retry: 2,
@@ -81,7 +63,6 @@ export function useCreateTagMutation() {
 		},
 		onSuccess: () => {
 			void queryClient.refetchQueries({ queryKey: tagQueryKeys.listTags });
-			void queryClient.refetchQueries({ queryKey: tagQueryKeys.allTags });
 		},
 	});
 }
@@ -110,7 +91,6 @@ export function useUpdateTagMutation() {
 		},
 		onSuccess: () => {
 			void queryClient.invalidateQueries({ queryKey: tagQueryKeys.listTags });
-			void queryClient.invalidateQueries({ queryKey: tagQueryKeys.allTags });
 			void queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
 		},
 	});
@@ -132,7 +112,6 @@ export function useDeleteTagMutation() {
 		},
 		onSuccess: () => {
 			void queryClient.invalidateQueries({ queryKey: tagQueryKeys.listTags });
-			void queryClient.invalidateQueries({ queryKey: tagQueryKeys.allTags });
 			void queryClient.invalidateQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
 		},
 	});
@@ -162,7 +141,6 @@ export function useSetQrCodeTagsMutation() {
 		},
 		onSuccess: () => {
 			void queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
-			void queryClient.refetchQueries({ queryKey: tagQueryKeys.allTags });
 			void queryClient.refetchQueries({ queryKey: tagQueryKeys.listTags });
 		},
 	});

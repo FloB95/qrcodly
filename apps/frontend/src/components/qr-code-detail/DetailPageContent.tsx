@@ -13,6 +13,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Badge } from '../ui/badge';
 import { toast } from '../ui/use-toast';
 import { QrCodeIcon } from '../dashboard/qrCode/QrCodeIcon';
+import { QrCodeTagBadges } from '../dashboard/qrCode/QrCodeTagBadges';
 import { useDeleteQrCodeMutation } from '@/lib/api/qr-code';
 import * as Sentry from '@sentry/nextjs';
 import { useRouter } from 'next/navigation';
@@ -135,6 +136,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 											: t('analytics.stateInactive')}
 									</Badge>
 								)}
+								<QrCodeTagBadges qrCodeId={qrCode.id} tags={qrCode.tags ?? []} />
 							</div>
 						</div>
 						<div className="flex items-center gap-2">

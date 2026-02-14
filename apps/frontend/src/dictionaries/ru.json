@@ -1,7 +1,7 @@
 {
 	"dashboard": {
 		"nav": {
-			"collection": "Коллекция",
+			"collection": "Коллекции",
 			"qrCodes": "QR Коды",
 			"templates": "Шаблоны",
 			"tags": "Теги"
@@ -57,7 +57,7 @@
 	},
 	"collection": {
 		"headline": "Ваша коллекция",
-		"subHeadline": "Здесь вы можете найти все свои QR-коды и шаблоны и управлять ими.",
+		"subHeadline": "Здесь вы можете найти все свои QR-коды и управлять ими.",
 		"tabQrCode": "QR-коды",
 		"tabTemplates": "Шаблоны",
 		"addQrCodeBtn": "Добавить QR-код",
@@ -81,18 +81,21 @@
 		"filters": {
 			"searchPlaceholder": "Поиск QR-кодов...",
 			"contentType": "Тип контента",
-			"clearAll": "Очистить"
+			"clearAll": "Очистить",
+			"customizeColumns": "Настроить столбцы",
+			"columns": "Столбцы",
+			"toggleColumns": "Переключить столбцы"
 		}
 	},
 	"analytics": {
-		"totalViews": "Количество просмотров",
+		"totalViews": "Количество сканирований",
 		"totalVisitors": "Количество посетителей",
 		"stateActive": "Активно",
 		"stateInactive": "Отключено",
-		"activeDescription": "Активно: Пользователи могут получить доступ к целевой странице, и просмотры анализируются.",
+		"activeDescription": "Активно: Пользователи могут получить доступ к целевой странице, и сканирования регистрируются.",
 		"inactiveDescription": "Отключено: Доступ и анализ отключены.",
 		"noData": "Данные пока не собраны.",
-		"viewsInLastXDays": "{count} просмотров за последние {days} дней",
+		"viewsInLastXDays": "{count} сканирований за последние {days} дней",
 		"visitorsInLastXDays": "{count} посетителей за последние {days} дней"
 	},
 	"chart": {
@@ -187,9 +190,10 @@
 			"name": "Название",
 			"content": "Содержание",
 			"status": "Статус",
-			"views": "Просмотры",
+			"scans": "Сканирования",
 			"created": "Создано",
-			"actions": "Действия"
+			"actions": "Действия",
+			"tags": "Теги"
 		},
 		"storeBtn": "Сохранить в коллекцию",
 		"updateBtn": "Обновить QR-код",
@@ -1151,10 +1155,22 @@
 		"noTags": "Тегов пока нет",
 		"noTagsDescription": "Создайте первый тег, чтобы начать организацию ваших QR-кодов.",
 		"manageTags": "Управление тегами",
+		"filterByTags": "Фильтр по тегам",
+		"searchTags": "Поиск тегов...",
+		"noSearchResults": "Теги не найдены для \"{search}\"",
 		"toast": {
-			"created": "Тег создан",
-			"updated": "Тег обновлён",
-			"deleted": "Тег удалён",
+			"createdTitle": "Тег создан",
+			"createdDescription": "Ваш тег был успешно создан.",
+			"updatedTitle": "Тег обновлён",
+			"updatedDescription": "Ваш тег был успешно обновлён.",
+			"deletedTitle": "Тег удалён",
+			"deletedDescription": "Ваш тег был успешно удалён.",
+			"tagsUpdatedTitle": "Теги обновлены",
+			"tagsUpdatedDescription": "Теги QR-кода были успешно обновлены.",
+			"createErrorTitle": "Ошибка при создании тега",
+			"updateErrorTitle": "Ошибка при обновлении тега",
+			"deleteErrorTitle": "Ошибка при удалении тега",
+			"assignErrorTitle": "Ошибка при обновлении тегов",
 			"error": "Что-то пошло не так"
 		},
 		"table": {

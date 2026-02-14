@@ -1,6 +1,7 @@
 'use client';
 
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
 import { useListTagsQuery } from '@/lib/api/tag';
 import { useTranslations } from 'next-intl';
 import {
@@ -23,9 +24,10 @@ import {
 	EmptyMedia,
 	EmptyTitle,
 } from '@/components/ui/empty';
-import { TagIcon } from '@heroicons/react/24/outline';
+import { TagIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { TagListItem, SkeletonTagListItem } from './TagListItem';
 import { TagCreateDialog } from './TagCreateDialog';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
 
 export const TagList = () => {
 	const t = useTranslations('tags');
@@ -35,6 +37,8 @@ export const TagList = () => {
 	const pageParam = Number(searchParams.get('page')) || 1;
 	const [currentPage, setCurrentPage] = useState(pageParam);
 	const [currentLimit] = useState(10);
+	const [searchValue, setSearchValue] = useState('');
+	const [debouncedSearch] = useDebouncedValue(searchValue, 400);
 
 	useEffect(() => {
 		const url = new URL(window.location.href);
@@ -52,7 +56,16 @@ export const TagList = () => {
 		}
 	}, [pageParam]);
 
-	const { data: tags, isLoading, isFetching } = useListTagsQuery(currentPage, currentLimit);
+	// Reset to page 1 when search changes
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [debouncedSearch]);
+
+	const {
+		data: tags,
+		isLoading,
+		isFetching,
+	} = useListTagsQuery(currentPage, currentLimit, debouncedSearch || undefined);
 
 	const totalPages = useMemo(
 		() => (tags ? Math.ceil(tags.total / currentLimit) : 1),
@@ -92,22 +105,7 @@ export const TagList = () => {
 		);
 	}
 
-	if (isFetching) {
-		return (
-			<div className="overflow-hidden rounded-lg border">
-				<Table>
-					{renderTableHeader()}
-					<TableBody>
-						{(tags.data.length > 0 ? tags.data : Array.from({ length: 5 })).map((_, idx) => (
-							<SkeletonTagListItem key={idx} />
-						))}
-					</TableBody>
-				</Table>
-			</div>
-		);
-	}
-
-	if (tags.data.length === 0) {
+	if (!isFetching && tags.data.length === 0 && !debouncedSearch) {
 		return (
 			<Empty className="sm:my-12">
 				<EmptyHeader>
@@ -124,20 +122,55 @@ export const TagList = () => {
 		);
 	}
 
+	const searchInput = (
+		<div className="relative max-w-sm">
+			<MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+			<Input
+				type="text"
+				placeholder={t('searchTags')}
+				value={searchValue}
+				onChange={(e) => setSearchValue(e.target.value)}
+				className="pl-9 pr-9 h-9 bg-white"
+			/>
+			{searchValue && (
+				<button
+					onClick={() => setSearchValue('')}
+					className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+				>
+					<XMarkIcon className="h-4 w-4" />
+				</button>
+			)}
+		</div>
+	);
+
+	if (!isFetching && tags.data.length === 0 && debouncedSearch) {
+		return (
+			<div className="space-y-4">
+				{searchInput}
+				<div className="text-sm text-muted-foreground py-8 text-center">
+					{t('noSearchResults', { search: debouncedSearch })}
+				</div>
+			</div>
+		);
+	}
+
 	const pageNumbers = getPageNumbers(currentPage, totalPages);
 	return (
 		<div className="space-y-4">
+			{searchInput}
 			<div className="overflow-hidden rounded-lg border">
 				<Table>
 					{renderTableHeader()}
 					<TableBody>
-						{tags.data.map((tag) => (
-							<TagListItem key={tag.id} tag={tag} />
-						))}
+						{isFetching
+							? (tags.data.length > 0 ? tags.data : Array.from({ length: 5 })).map((_, idx) => (
+									<SkeletonTagListItem key={idx} />
+								))
+							: tags.data.map((tag) => <TagListItem key={tag.id} tag={tag} />)}
 					</TableBody>
 				</Table>
 			</div>
-			{totalPages > 1 && (
+			{!isFetching && totalPages > 1 && (
 				<Pagination>
 					<PaginationContent>
 						<PaginationItem>

@@ -41,7 +41,8 @@ import { getUserInitials } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useListQrCodesQuery } from '@/lib/api/qr-code';
 import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
-import { useAllTagsQuery } from '@/lib/api/tag';
+import { useListTagsQuery } from '@/lib/api/tag';
+import posthog from 'posthog-js';
 
 export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const tNav = useTranslations('dashboard.nav');
@@ -52,11 +53,15 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 	const { isLoaded, user } = useUser();
 	const { data: qrCodesData } = useListQrCodesQuery(1, 1);
 	const { data: templatesData } = useListConfigTemplatesQuery(undefined, 1, 1);
-	const { data: allTags } = useAllTagsQuery();
+	const { data: tagsData } = useListTagsQuery(1, 50);
 
 	const isQrCodesPage = pathname.includes('/dashboard/qr-codes');
 	const activeTagParam = searchParams.get('tag');
 	const [tagsOpen, setTagsOpen] = useState(true);
+	const usedTags = tagsData?.data
+		?.filter((tag) => (tag.qrCodeCount ?? 0) > 0)
+		.sort((a, b) => (b.qrCodeCount ?? 0) - (a.qrCodeCount ?? 0) || a.name.localeCompare(b.name))
+		.slice(0, 10);
 
 	useEffect(() => {
 		if (isQrCodesPage && activeTagParam) {
@@ -109,8 +114,15 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 					<SidebarGroupContent className="min-w-[200px]">
 						<SidebarMenu>
 							{/* QR Codes with collapsible tag sub-nav */}
-							{allTags && allTags.length > 0 ? (
-								<Collapsible open={tagsOpen} onOpenChange={setTagsOpen} asChild>
+							{usedTags && usedTags.length > 0 ? (
+								<Collapsible
+									open={tagsOpen}
+									onOpenChange={(open) => {
+										setTagsOpen(open);
+										posthog.capture('sidebar:tags-subnav-toggled', { open });
+									}}
+									asChild
+								>
 									<SidebarMenuItem>
 										<SidebarMenuButton isActive={isQrCodesPage && !activeTagParam} asChild>
 											<Link href="/dashboard/qr-codes">
@@ -129,7 +141,7 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 										</CollapsibleTrigger>
 										<CollapsibleContent>
 											<SidebarMenuSub>
-												{allTags.map((tag) => (
+												{usedTags.map((tag) => (
 													<SidebarMenuSubItem key={tag.id}>
 														<SidebarMenuSubButton isActive={activeTagParam === tag.id} asChild>
 															<Link href={`/dashboard/qr-codes?tag=${tag.id}`}>
@@ -191,6 +203,9 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 										<span>{tNav('tags')}</span>
 									</Link>
 								</SidebarMenuButton>
+								{tagsData && tagsData.total > 0 && (
+									<SidebarMenuBadge>{tagsData.total}</SidebarMenuBadge>
+								)}
 							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroupContent>

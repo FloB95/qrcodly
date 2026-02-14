@@ -11,22 +11,50 @@ import type { TQrCodeContentType } from '@shared/schemas';
 import type { QrCodeFilters as QrCodeFiltersType } from '@/lib/api/qr-code';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { useAllTagsQuery } from '@/lib/api/tag';
+import { useListTagsQuery } from '@/lib/api/tag';
 import { TagIcon } from '@heroicons/react/24/outline';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Settings2 } from 'lucide-react';
+import {
+	QR_CODE_COLUMNS,
+	type QrCodeColumn,
+	type QrCodeColumnVisibility,
+} from './hooks/useQrCodeColumnVisibility';
+import posthog from 'posthog-js';
 
 type QrCodeFiltersProps = {
 	filters: QrCodeFiltersType;
 	onFiltersChange: (filters: QrCodeFiltersType) => void;
+	columnVisibility: QrCodeColumnVisibility;
+	onToggleColumn: (column: QrCodeColumn) => void;
 	className?: string;
 };
 
-export const QrCodeFilters = ({ filters, onFiltersChange, className }: QrCodeFiltersProps) => {
+export const QrCodeFilters = ({
+	filters,
+	onFiltersChange,
+	columnVisibility,
+	onToggleColumn,
+	className,
+}: QrCodeFiltersProps) => {
 	const t = useTranslations('collection.filters');
 	const tContent = useTranslations('generator.contentSwitch');
 	const tTags = useTranslations('tags');
+	const tTable = useTranslations('qrCode.table');
 	const [searchValue, setSearchValue] = useState(filters.search ?? '');
 	const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-	const { data: allTags } = useAllTagsQuery();
+	const [tagSearch, setTagSearch] = useState('');
+	const [debouncedTagSearch] = useDebouncedValue(tagSearch, 300);
+	const { data: tagsData } = useListTagsQuery(1, 50, debouncedTagSearch || undefined);
+	const allTags = tagsData?.data;
 
 	// Debounce search input
 	useEffect(() => {
@@ -50,9 +78,9 @@ export const QrCodeFilters = ({ filters, onFiltersChange, className }: QrCodeFil
 	const handleContentTypeToggle = useCallback(
 		(type: TQrCodeContentType) => {
 			const current = filters.contentType ?? [];
-			const updated = current.includes(type)
-				? current.filter((t) => t !== type)
-				: [...current, type];
+			const isAdding = !current.includes(type);
+			const updated = isAdding ? [...current, type] : current.filter((t) => t !== type);
+			posthog.capture('qr-list:filter-content-type-toggled', { type, active: isAdding });
 			onFiltersChange({
 				...filters,
 				contentType: updated.length > 0 ? updated : undefined,
@@ -64,9 +92,9 @@ export const QrCodeFilters = ({ filters, onFiltersChange, className }: QrCodeFil
 	const handleTagToggle = useCallback(
 		(tagId: string) => {
 			const current = filters.tagIds ?? [];
-			const updated = current.includes(tagId)
-				? current.filter((id) => id !== tagId)
-				: [...current, tagId];
+			const isAdding = !current.includes(tagId);
+			const updated = isAdding ? [...current, tagId] : current.filter((id) => id !== tagId);
+			posthog.capture('qr-list:filter-tag-toggled', { tagId, active: isAdding });
 			onFiltersChange({
 				...filters,
 				tagIds: updated.length > 0 ? updated : undefined,
@@ -170,28 +198,44 @@ export const QrCodeFilters = ({ filters, onFiltersChange, className }: QrCodeFil
 				</Popover>
 
 				{/* Tag Filter */}
-				{allTags && allTags.length > 0 && (
-					<Popover>
-						<PopoverTrigger asChild>
-							<Button
-								variant="outline"
-								size="sm"
-								className={cn(
-									'h-9 gap-1.5',
-									filters.tagIds?.length && 'border-primary text-primary',
-								)}
-							>
-								<TagIcon className="h-4 w-4" />
-								<span className="hidden sm:inline">{tTags('title')}</span>
-								{filters.tagIds?.length ? (
-									<Badge variant="default" className="ml-1 px-1.5 py-0 text-[10px]">
-										{filters.tagIds.length}
-									</Badge>
-								) : null}
-							</Button>
-						</PopoverTrigger>
-						<PopoverContent className="w-52 p-2" align="start">
-							<div className="grid gap-1">
+				<Popover
+					onOpenChange={(open) => {
+						if (!open) setTagSearch('');
+					}}
+				>
+					<PopoverTrigger asChild>
+						<Button
+							variant="outline"
+							size="sm"
+							className={cn('h-9 gap-1.5', filters.tagIds?.length && 'border-primary text-primary')}
+						>
+							<TagIcon className="h-4 w-4" />
+							<span className="hidden sm:inline">{tTags('title')}</span>
+							{filters.tagIds?.length ? (
+								<Badge variant="default" className="ml-1 px-1.5 py-0 text-[10px]">
+									{filters.tagIds.length}
+								</Badge>
+							) : null}
+						</Button>
+					</PopoverTrigger>
+					<PopoverContent className="w-72 p-2" align="start">
+						<div className="text-xs font-medium text-muted-foreground px-2 py-1 mb-1">
+							{tTags('filterByTags')}
+						</div>
+						<div className="relative mb-2">
+							<MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+							<Input
+								type="text"
+								placeholder={tTags('searchTags')}
+								value={tagSearch}
+								onChange={(e) => setTagSearch(e.target.value)}
+								className="pl-8 h-8 text-xs"
+							/>
+						</div>
+						{!allTags || allTags.length === 0 ? (
+							<div className="text-xs text-muted-foreground px-2 py-2">{tTags('noTags')}</div>
+						) : (
+							<div className="grid gap-1 max-h-52 overflow-y-auto">
 								{allTags.map((tag) => {
 									const isSelected = filters.tagIds?.includes(tag.id) ?? false;
 									return (
@@ -199,13 +243,13 @@ export const QrCodeFilters = ({ filters, onFiltersChange, className }: QrCodeFil
 											key={tag.id}
 											onClick={() => handleTagToggle(tag.id)}
 											className={cn(
-												'flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-accent',
+												'flex items-center gap-2 rounded-md px-2 py-1.5 text-xs transition-colors hover:bg-accent min-w-0',
 												isSelected && 'bg-accent font-medium',
 											)}
 										>
 											<div
 												className={cn(
-													'flex h-4 w-4 items-center justify-center rounded border',
+													'flex h-4 w-4 shrink-0 items-center justify-center rounded border',
 													isSelected
 														? 'border-primary bg-primary text-primary-foreground'
 														: 'border-muted-foreground/30',
@@ -232,9 +276,9 @@ export const QrCodeFilters = ({ filters, onFiltersChange, className }: QrCodeFil
 									);
 								})}
 							</div>
-						</PopoverContent>
-					</Popover>
-				)}
+						)}
+					</PopoverContent>
+				</Popover>
 
 				{/* Clear All */}
 				{hasActiveFilters && (
@@ -243,6 +287,30 @@ export const QrCodeFilters = ({ filters, onFiltersChange, className }: QrCodeFil
 						<span className="hidden sm:inline">{t('clearAll')}</span>
 					</Button>
 				)}
+
+				{/* Column Visibility */}
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button variant="outline" size="sm" className="ml-auto h-9 gap-1.5">
+							<Settings2 className="h-4 w-4" />
+							<span className="hidden lg:inline">{t('customizeColumns')}</span>
+							<span className="lg:hidden">{t('columns')}</span>
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end" className="w-48">
+						<DropdownMenuLabel>{t('toggleColumns')}</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						{QR_CODE_COLUMNS.map((column) => (
+							<DropdownMenuCheckboxItem
+								key={column}
+								checked={columnVisibility[column]}
+								onCheckedChange={() => onToggleColumn(column)}
+							>
+								{tTable(column === 'tags' ? 'tags' : column)}
+							</DropdownMenuCheckboxItem>
+						))}
+					</DropdownMenuContent>
+				</DropdownMenu>
 			</div>
 
 			{/* Active tag filter badges */}

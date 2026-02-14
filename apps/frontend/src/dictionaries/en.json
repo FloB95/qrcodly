@@ -1,7 +1,7 @@
 {
 	"dashboard": {
 		"nav": {
-			"collection": "Collection",
+			"collection": "Collections",
 			"qrCodes": "QR Codes",
 			"templates": "Templates",
 			"tags": "Tags"
@@ -57,7 +57,7 @@
 	},
 	"collection": {
 		"headline": "Your Collection",
-		"subHeadline": "Here you can find all your QR codes and templates and manage them.",
+		"subHeadline": "Here you can find all your QR codes and manage them.",
 		"tabQrCode": "QR codes",
 		"tabTemplates": "Templates",
 		"addQrCodeBtn": "Add QR code",
@@ -81,18 +81,21 @@
 		"filters": {
 			"searchPlaceholder": "Search QR codes...",
 			"contentType": "Content Type",
-			"clearAll": "Clear"
+			"clearAll": "Clear",
+			"customizeColumns": "Customize Columns",
+			"columns": "Columns",
+			"toggleColumns": "Toggle columns"
 		}
 	},
 	"analytics": {
-		"totalViews": "Total Views",
+		"totalViews": "Total Scans",
 		"totalVisitors": "Total Visitors",
 		"stateActive": "Active",
 		"stateInactive": "Disabled",
-		"activeDescription": "Active: Users can access the destination page, and views are tracked.",
+		"activeDescription": "Active: Users can access the destination page, and scans are tracked.",
 		"inactiveDescription": "Inactive: Access and tracking are disabled.",
 		"noData": "No data has been recorded yet.",
-		"viewsInLastXDays": "{count} Views in the last {days}",
+		"viewsInLastXDays": "{count} Scans in the last {days}",
 		"visitorsInLastXDays": "{count} Visitors in the last {days}"
 	},
 	"chart": {
@@ -187,9 +190,10 @@
 			"name": "Name",
 			"content": "Content",
 			"status": "Status",
-			"views": "Views",
+			"scans": "Scans",
 			"created": "Created",
-			"actions": "Actions"
+			"actions": "Actions",
+			"tags": "Tags"
 		},
 		"storeBtn": "Save in Collection",
 		"updateBtn": "Update QR code",
@@ -1151,10 +1155,22 @@
 		"noTags": "No tags yet",
 		"noTagsDescription": "Create your first tag to start organizing your QR codes.",
 		"manageTags": "Manage Tags",
+		"filterByTags": "Filter by tags",
+		"searchTags": "Search tags...",
+		"noSearchResults": "No tags found for \"{search}\"",
 		"toast": {
-			"created": "Tag created",
-			"updated": "Tag updated",
-			"deleted": "Tag deleted",
+			"createdTitle": "Tag created",
+			"createdDescription": "Your tag has been created successfully.",
+			"updatedTitle": "Tag updated",
+			"updatedDescription": "Your tag has been updated successfully.",
+			"deletedTitle": "Tag deleted",
+			"deletedDescription": "Your tag has been deleted successfully.",
+			"tagsUpdatedTitle": "Tags updated",
+			"tagsUpdatedDescription": "QR code tags have been updated successfully.",
+			"createErrorTitle": "Error creating tag",
+			"updateErrorTitle": "Error updating tag",
+			"deleteErrorTitle": "Error deleting tag",
+			"assignErrorTitle": "Error updating tags",
 			"error": "Something went wrong"
 		},
 		"table": {

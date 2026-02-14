@@ -17,6 +17,7 @@ import {
 import { useState, useMemo, useEffect } from 'react';
 import { cn, getPageNumbers } from '@/lib/utils';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useQrCodeColumnVisibility } from './hooks/useQrCodeColumnVisibility';
 import {
 	Empty,
 	EmptyContent,
@@ -41,6 +42,7 @@ export const QrCodeList = () => {
 	const [filters, setFilters] = useState<QrCodeFiltersType>(() => ({
 		tagIds: tagParam ? [tagParam] : undefined,
 	}));
+	const { visibility, toggleColumn, isVisible } = useQrCodeColumnVisibility();
 
 	// Keep currentPage in sync with URL
 	useEffect(() => {
@@ -97,43 +99,20 @@ export const QrCodeList = () => {
 							<TableHead className="pl-[calc(1rem+18px+0.5rem)]">
 								{t('qrCode.table.name')}
 							</TableHead>
-							<TableHead className="hidden lg:table-cell">{t('qrCode.table.content')}</TableHead>
-							<TableHead>{t('qrCode.table.status')}</TableHead>
-							<TableHead>{t('qrCode.table.views')}</TableHead>
-							<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
+							{isVisible('content') && (
+								<TableHead className="hidden lg:table-cell">{t('qrCode.table.content')}</TableHead>
+							)}
+							{isVisible('status') && <TableHead>{t('qrCode.table.status')}</TableHead>}
+							{isVisible('scans') && <TableHead>{t('qrCode.table.scans')}</TableHead>}
+							{isVisible('created') && (
+								<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
+							)}
 							<TableHead className="w-[60px]" />
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{Array.from({ length: 5 }).map((_, idx) => (
-							<SkeletonListItem key={idx} />
-						))}
-					</TableBody>
-				</Table>
-			</div>
-		);
-	}
-
-	if (isFetching) {
-		return (
-			<div className="overflow-hidden rounded-lg border">
-				<Table>
-					<TableHeader className="bg-muted sticky top-0 z-10">
-						<TableRow>
-							<TableHead className="w-[60px]">{t('qrCode.table.preview')}</TableHead>
-							<TableHead className="pl-[calc(1rem+18px+0.5rem)]">
-								{t('qrCode.table.name')}
-							</TableHead>
-							<TableHead className="hidden lg:table-cell">{t('qrCode.table.content')}</TableHead>
-							<TableHead className="hidden sm:table-cell">{t('qrCode.table.status')}</TableHead>
-							<TableHead className="hidden sm:table-cell">{t('qrCode.table.views')}</TableHead>
-							<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
-							<TableHead className="w-[60px]" />
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{(qrCodes.data.length > 0 ? qrCodes.data : Array.from({ length: 5 })).map((_, idx) => (
-							<SkeletonListItem key={idx} />
+							<SkeletonListItem key={idx} visibility={visibility} />
 						))}
 					</TableBody>
 				</Table>
@@ -144,11 +123,16 @@ export const QrCodeList = () => {
 	const hasActiveFilters =
 		!!filters.search || !!filters.contentType?.length || !!filters.tagIds?.length;
 
-	if (qrCodes.data.length === 0) {
+	if (!isFetching && qrCodes.data.length === 0) {
 		return (
 			<div className="space-y-4">
 				{hasActiveFilters && (
-					<QrCodeFilters filters={filters} onFiltersChange={handleFiltersChange} />
+					<QrCodeFilters
+						filters={filters}
+						onFiltersChange={handleFiltersChange}
+						columnVisibility={visibility}
+						onToggleColumn={toggleColumn}
+					/>
 				)}
 				<Empty className="sm:my-12">
 					<EmptyHeader>
@@ -174,7 +158,12 @@ export const QrCodeList = () => {
 	const pageNumbers = getPageNumbers(currentPage, totalPages);
 	return (
 		<div className="space-y-4">
-			<QrCodeFilters filters={filters} onFiltersChange={handleFiltersChange} />
+			<QrCodeFilters
+				filters={filters}
+				onFiltersChange={handleFiltersChange}
+				columnVisibility={visibility}
+				onToggleColumn={toggleColumn}
+			/>
 			<div className="overflow-hidden rounded-lg border">
 				<Table>
 					<TableHeader className="bg-muted sticky top-0 z-10">
@@ -183,21 +172,29 @@ export const QrCodeList = () => {
 							<TableHead className="pl-[calc(1rem+18px+0.5rem)]">
 								{t('qrCode.table.name')}
 							</TableHead>
-							<TableHead className="hidden lg:table-cell">{t('qrCode.table.content')}</TableHead>
-							<TableHead>{t('qrCode.table.status')}</TableHead>
-							<TableHead>{t('qrCode.table.views')}</TableHead>
-							<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
+							{isVisible('content') && (
+								<TableHead className="hidden lg:table-cell">{t('qrCode.table.content')}</TableHead>
+							)}
+							{isVisible('status') && <TableHead>{t('qrCode.table.status')}</TableHead>}
+							{isVisible('scans') && <TableHead>{t('qrCode.table.scans')}</TableHead>}
+							{isVisible('created') && (
+								<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
+							)}
 							<TableHead className="w-[60px]" />
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{qrCodes?.data.map((qr) => (
-							<QrCodeListItem key={qr.id} qr={qr} />
-						))}
+						{isFetching
+							? (qrCodes.data.length > 0 ? qrCodes.data : Array.from({ length: 5 })).map(
+									(_, idx) => <SkeletonListItem key={idx} visibility={visibility} />,
+								)
+							: qrCodes.data.map((qr) => (
+									<QrCodeListItem key={qr.id} qr={qr} visibility={visibility} />
+								))}
 					</TableBody>
 				</Table>
 			</div>
-			{totalPages > 1 && (
+			{!isFetching && totalPages > 1 && (
 				<Pagination>
 					<PaginationContent>
 						<PaginationItem>
