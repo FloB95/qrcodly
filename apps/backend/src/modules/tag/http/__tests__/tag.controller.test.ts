@@ -6,6 +6,7 @@ import { QrCodeDefaults } from '@shared/schemas';
 import qs from 'qs';
 
 const TAG_API_PATH = `${API_BASE_PATH}/tag`;
+const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 
 describe('Tag Controller', () => {
 	let testServer: FastifyInstance;
@@ -13,7 +14,7 @@ describe('Tag Controller', () => {
 	let accessToken2: string;
 	let accessTokenPro: string;
 	let user: User;
-	let _user2: User;
+	let user2: User;
 	let _userPro: User;
 
 	const makeRequest = (
@@ -31,6 +32,22 @@ describe('Tag Controller', () => {
 			...(body ? { payload: body } : {}),
 		});
 
+	const createTag = async (token: string, name: string, color = '#FF5733') => {
+		const response = await makeRequest('POST', TAG_API_PATH, token, { name, color });
+		expect(response.statusCode).toBe(201);
+		return JSON.parse(response.payload);
+	};
+
+	const createQrCode = async (token: string, name: string) => {
+		const response = await makeRequest('POST', QR_CODE_API_PATH, token, {
+			name,
+			content: { type: 'text', data: `data-${name}` },
+			config: QrCodeDefaults,
+		});
+		expect(response.statusCode).toBe(201);
+		return JSON.parse(response.payload);
+	};
+
 	beforeAll(async () => {
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
@@ -38,10 +55,13 @@ describe('Tag Controller', () => {
 		accessToken2 = ctx.accessToken2;
 		accessTokenPro = ctx.accessTokenPro;
 		user = ctx.user;
-		_user2 = ctx.user2;
+		user2 = ctx.user2;
 		_userPro = ctx.userPro;
 	});
 
+	// ──────────────────────────────────────────────
+	// POST /tag
+	// ──────────────────────────────────────────────
 	describe('POST /tag', () => {
 		it('should create a tag and return 201', async () => {
 			const response = await makeRequest('POST', TAG_API_PATH, accessToken, {
@@ -84,6 +104,12 @@ describe('Tag Controller', () => {
 			expect(body.message).toContain('already exists');
 		});
 
+		it('should return 400 when missing required fields', async () => {
+			const response = await makeRequest('POST', TAG_API_PATH, accessToken, {});
+
+			expect(response.statusCode).toBe(400);
+		});
+
 		it('should allow different users to have tags with the same name', async () => {
 			const name = 'Shared Name ' + Date.now();
 			const res1 = await makeRequest('POST', TAG_API_PATH, accessToken, {
@@ -100,11 +126,14 @@ describe('Tag Controller', () => {
 		});
 	});
 
+	// ──────────────────────────────────────────────
+	// GET /tag
+	// ──────────────────────────────────────────────
 	describe('GET /tag', () => {
 		it('should list only the authenticated user tags', async () => {
 			// Create tags for user2
 			await makeRequest('POST', TAG_API_PATH, accessToken2, {
-				name: 'User2 Tag',
+				name: 'User2 Tag ' + Date.now(),
 				color: '#00FF00',
 			});
 
@@ -127,8 +156,41 @@ describe('Tag Controller', () => {
 			const response = await makeRequest('GET', TAG_API_PATH);
 			expect(response.statusCode).toBe(401);
 		});
+
+		it('should return paginated results', async () => {
+			const response = await makeRequest(
+				'GET',
+				`${TAG_API_PATH}?${qs.stringify({ page: 1, limit: 2 })}`,
+				accessToken,
+			);
+
+			expect(response.statusCode).toBe(200);
+			const body = JSON.parse(response.payload);
+			expect(body.data.length).toBeLessThanOrEqual(2);
+			expect(body.page).toBe(1);
+			expect(body.limit).toBe(2);
+			expect(typeof body.total).toBe('number');
+		});
+
+		it('should not leak other user tags', async () => {
+			const name = 'Secret Tag ' + Date.now();
+			await createTag(accessToken2, name);
+
+			const response = await makeRequest(
+				'GET',
+				`${TAG_API_PATH}?${qs.stringify({ page: 1, limit: 100 })}`,
+				accessToken,
+			);
+
+			const { data } = JSON.parse(response.payload);
+			const found = data.find((t: any) => t.name === name);
+			expect(found).toBeUndefined();
+		});
 	});
 
+	// ──────────────────────────────────────────────
+	// PATCH /tag/:id
+	// ──────────────────────────────────────────────
 	describe('PATCH /tag/:id', () => {
 		it('should update a tag', async () => {
 			// Create a tag first
@@ -150,6 +212,16 @@ describe('Tag Controller', () => {
 			expect(updated.color).toBe('#222222');
 		});
 
+		it('should return 401 without auth token', async () => {
+			const tag = await createTag(accessToken, 'Auth Test Patch ' + Date.now());
+
+			const response = await makeRequest('PATCH', `${TAG_API_PATH}/${tag.id}`, undefined, {
+				name: 'Hacked',
+			});
+
+			expect(response.statusCode).toBe(401);
+		});
+
 		it('should return 404 for non-existent tag', async () => {
 			const response = await makeRequest(
 				'PATCH',
@@ -163,7 +235,7 @@ describe('Tag Controller', () => {
 
 		it('should return 403 for another user tag', async () => {
 			const createResponse = await makeRequest('POST', TAG_API_PATH, accessToken2, {
-				name: 'Other User Tag',
+				name: 'OtherUser ' + Date.now(),
 				color: '#333333',
 			});
 			const created = JSON.parse(createResponse.payload);
@@ -201,6 +273,9 @@ describe('Tag Controller', () => {
 		});
 	});
 
+	// ──────────────────────────────────────────────
+	// DELETE /tag/:id
+	// ──────────────────────────────────────────────
 	describe('DELETE /tag/:id', () => {
 		it('should delete a tag', async () => {
 			const createResponse = await makeRequest('POST', TAG_API_PATH, accessToken, {
@@ -216,6 +291,14 @@ describe('Tag Controller', () => {
 			expect(body.deleted).toBe(true);
 		});
 
+		it('should return 401 without auth token', async () => {
+			const tag = await createTag(accessToken, 'Auth Test Delete ' + Date.now());
+
+			const response = await makeRequest('DELETE', `${TAG_API_PATH}/${tag.id}`);
+
+			expect(response.statusCode).toBe(401);
+		});
+
 		it('should return 404 for non-existent tag', async () => {
 			const response = await makeRequest(
 				'DELETE',
@@ -225,48 +308,49 @@ describe('Tag Controller', () => {
 
 			expect(response.statusCode).toBe(404);
 		});
+
+		it('should return 403 when deleting another user tag', async () => {
+			const tag = await createTag(accessToken2, 'DelCross ' + Date.now());
+
+			const response = await makeRequest('DELETE', `${TAG_API_PATH}/${tag.id}`, accessToken);
+
+			expect(response.statusCode).toBe(403);
+		});
+
+		it('should return 404 when deleting an already deleted tag', async () => {
+			const tag = await createTag(accessToken, 'Double Delete ' + Date.now());
+
+			await makeRequest('DELETE', `${TAG_API_PATH}/${tag.id}`, accessToken);
+			const response = await makeRequest('DELETE', `${TAG_API_PATH}/${tag.id}`, accessToken);
+
+			expect(response.statusCode).toBe(404);
+		});
 	});
 
+	// ──────────────────────────────────────────────
+	// PUT /tag/qr-code/:id - Set QR Code Tags
+	// ──────────────────────────────────────────────
 	describe('PUT /tag/qr-code/:id - Set QR Code Tags', () => {
 		it('should set tags on a QR code', async () => {
-			// Create a tag
-			const tagResponse = await makeRequest('POST', TAG_API_PATH, accessToken, {
-				name: 'QR Tag',
-				color: '#555555',
-			});
-			const createdTag = JSON.parse(tagResponse.payload);
+			const tag = await createTag(accessToken, 'QR Tag ' + Date.now());
+			const qrCode = await createQrCode(accessToken, 'Tag Test QR ' + Date.now());
 
-			// Create a QR code
-			const qrResponse = await makeRequest('POST', `${API_BASE_PATH}/qr-code`, accessToken, {
-				name: 'Tag Test QR',
-				content: { type: 'text', data: 'hello' },
-				config: QrCodeDefaults,
-			});
-			const qrCode = JSON.parse(qrResponse.payload);
-
-			// Set tags
 			const response = await makeRequest(
 				'PUT',
 				`${TAG_API_PATH}/qr-code/${qrCode.id}`,
 				accessToken,
-				{ tagIds: [createdTag.id] },
+				{ tagIds: [tag.id] },
 			);
 
 			expect(response.statusCode).toBe(200);
 			const tags = JSON.parse(response.payload);
 			expect(Array.isArray(tags)).toBe(true);
 			expect(tags.length).toBe(1);
-			expect(tags[0].id).toBe(createdTag.id);
+			expect(tags[0].id).toBe(tag.id);
 		});
 
 		it('should clear tags when empty array is passed', async () => {
-			// Create a QR code
-			const qrResponse = await makeRequest('POST', `${API_BASE_PATH}/qr-code`, accessToken, {
-				name: 'Clear Tag QR',
-				content: { type: 'text', data: 'hello clear' },
-				config: QrCodeDefaults,
-			});
-			const qrCode = JSON.parse(qrResponse.payload);
+			const qrCode = await createQrCode(accessToken, 'Clear Tag QR ' + Date.now());
 
 			const response = await makeRequest(
 				'PUT',
@@ -280,29 +364,60 @@ describe('Tag Controller', () => {
 			expect(tags).toHaveLength(0);
 		});
 
+		it('should return 401 without auth token', async () => {
+			const qrCode = await createQrCode(accessToken, 'No Auth QR ' + Date.now());
+
+			const response = await makeRequest('PUT', `${TAG_API_PATH}/qr-code/${qrCode.id}`, undefined, {
+				tagIds: [],
+			});
+
+			expect(response.statusCode).toBe(401);
+		});
+
+		it('should return 404 for non-existent QR code', async () => {
+			const response = await makeRequest(
+				'PUT',
+				`${TAG_API_PATH}/qr-code/00000000-0000-0000-0000-000000000000`,
+				accessToken,
+				{ tagIds: [] },
+			);
+
+			expect(response.statusCode).toBe(404);
+		});
+
+		it('should return 403 when setting tags on another user QR code', async () => {
+			const tag = await createTag(accessToken, 'IDOR Tag ' + Date.now());
+			const qrCode = await createQrCode(accessToken2, 'User2 QR ' + Date.now());
+
+			const response = await makeRequest(
+				'PUT',
+				`${TAG_API_PATH}/qr-code/${qrCode.id}`,
+				accessToken,
+				{ tagIds: [tag.id] },
+			);
+
+			expect(response.statusCode).toBe(403);
+		});
+
+		it('should return 403 when using another user tags', async () => {
+			const user2Tag = await createTag(accessToken2, 'User2 Tag IDOR ' + Date.now());
+			const qrCode = await createQrCode(accessToken, 'Own QR ' + Date.now());
+
+			const response = await makeRequest(
+				'PUT',
+				`${TAG_API_PATH}/qr-code/${qrCode.id}`,
+				accessToken,
+				{ tagIds: [user2Tag.id] },
+			);
+
+			expect(response.statusCode).toBe(403);
+		});
+
 		it('should return 403 when free user tries to set more than 1 tag', async () => {
-			// Create two tags
-			const tag1Res = await makeRequest('POST', TAG_API_PATH, accessToken, {
-				name: 'Limit Tag 1',
-				color: '#AA0000',
-			});
-			const tag1 = JSON.parse(tag1Res.payload);
+			const tag1 = await createTag(accessToken, 'Limit Tag A ' + Date.now());
+			const tag2 = await createTag(accessToken, 'Limit Tag B ' + Date.now());
+			const qrCode = await createQrCode(accessToken, 'Limit Test QR ' + Date.now());
 
-			const tag2Res = await makeRequest('POST', TAG_API_PATH, accessToken, {
-				name: 'Limit Tag 2',
-				color: '#BB0000',
-			});
-			const tag2 = JSON.parse(tag2Res.payload);
-
-			// Create a QR code
-			const qrResponse = await makeRequest('POST', `${API_BASE_PATH}/qr-code`, accessToken, {
-				name: 'Limit Test QR',
-				content: { type: 'text', data: 'limit test' },
-				config: QrCodeDefaults,
-			});
-			const qrCode = JSON.parse(qrResponse.payload);
-
-			// Try to set 2 tags as free user
 			const response = await makeRequest(
 				'PUT',
 				`${TAG_API_PATH}/qr-code/${qrCode.id}`,
@@ -316,28 +431,10 @@ describe('Tag Controller', () => {
 		});
 
 		it('should allow pro user to set multiple tags', async () => {
-			// Create tags as pro user
-			const tag1Res = await makeRequest('POST', TAG_API_PATH, accessTokenPro, {
-				name: 'Pro Tag 1',
-				color: '#CC0000',
-			});
-			const tag1 = JSON.parse(tag1Res.payload);
+			const tag1 = await createTag(accessTokenPro, 'Pro Tag A ' + Date.now());
+			const tag2 = await createTag(accessTokenPro, 'Pro Tag B ' + Date.now());
+			const qrCode = await createQrCode(accessTokenPro, 'Pro Tag QR ' + Date.now());
 
-			const tag2Res = await makeRequest('POST', TAG_API_PATH, accessTokenPro, {
-				name: 'Pro Tag 2',
-				color: '#DD0000',
-			});
-			const tag2 = JSON.parse(tag2Res.payload);
-
-			// Create a QR code as pro user
-			const qrResponse = await makeRequest('POST', `${API_BASE_PATH}/qr-code`, accessTokenPro, {
-				name: 'Pro Tag QR',
-				content: { type: 'text', data: 'pro tags' },
-				config: QrCodeDefaults,
-			});
-			const qrCode = JSON.parse(qrResponse.payload);
-
-			// Set 2 tags as pro user
 			const response = await makeRequest(
 				'PUT',
 				`${TAG_API_PATH}/qr-code/${qrCode.id}`,
@@ -354,6 +451,52 @@ describe('Tag Controller', () => {
 			expect(response.statusCode).toBe(200);
 			const tags = JSON.parse(response.payload);
 			expect(tags).toHaveLength(2);
+		});
+
+		it('should replace existing tags with new ones', async () => {
+			const tag1 = await createTag(accessToken, 'Replace A ' + Date.now());
+			const tag2 = await createTag(accessToken, 'Replace B ' + Date.now());
+			const qrCode = await createQrCode(accessToken, 'Replace QR ' + Date.now());
+
+			// Set first tag
+			await makeRequest('PUT', `${TAG_API_PATH}/qr-code/${qrCode.id}`, accessToken, {
+				tagIds: [tag1.id],
+			});
+
+			// Replace with second tag
+			const response = await makeRequest(
+				'PUT',
+				`${TAG_API_PATH}/qr-code/${qrCode.id}`,
+				accessToken,
+				{ tagIds: [tag2.id] },
+			);
+
+			expect(response.statusCode).toBe(200);
+			const tags = JSON.parse(response.payload);
+			expect(tags).toHaveLength(1);
+			expect(tags[0].id).toBe(tag2.id);
+		});
+
+		it('should default to empty tags when tagIds is omitted', async () => {
+			const tag = await createTag(accessToken, 'Default Tag ' + Date.now());
+			const qrCode = await createQrCode(accessToken, 'Default Body QR ' + Date.now());
+
+			// First set a tag
+			await makeRequest('PUT', `${TAG_API_PATH}/qr-code/${qrCode.id}`, accessToken, {
+				tagIds: [tag.id],
+			});
+
+			// Then send empty body (tagIds defaults to [])
+			const response = await makeRequest(
+				'PUT',
+				`${TAG_API_PATH}/qr-code/${qrCode.id}`,
+				accessToken,
+				{},
+			);
+
+			expect(response.statusCode).toBe(200);
+			const tags = JSON.parse(response.payload);
+			expect(tags).toHaveLength(0);
 		});
 	});
 });
