@@ -222,10 +222,10 @@ export function ConnectedAccountsSection() {
 			if (accountToRemove) {
 				await accountToRemove.destroy();
 				setAccounts((prev) => prev.filter((a) => a.id !== accountId));
-				toast.success(t('accountRemoved'));
+				toast({ title: t('accountRemoved') });
 			}
 		} catch {
-			toast.error(t('accountRemoveError'));
+			toast({ title: t('accountRemoveError'), variant: 'destructive' });
 		}
 	};
 

@@ -5,6 +5,7 @@ import { CreateTagUseCase } from '../../useCase/create-tag.use-case';
 import { UpdateTagUseCase } from '../../useCase/update-tag.use-case';
 import { DeleteTagUseCase } from '../../useCase/delete-tag.use-case';
 import { ListTagsUseCase } from '../../useCase/list-tags.use-case';
+import { SetQrCodeTagsUseCase } from '../../useCase/set-qr-code-tags.use-case';
 import TagRepository from '../../domain/repository/tag.repository';
 import { TagNotFoundError } from '../../error/http/tag-not-found.error';
 import { ForbiddenError } from '@/core/error/http';
@@ -27,8 +28,6 @@ import {
 } from '@shared/schemas';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
-import { SetQrCodeTagsPolicy } from '../../policies/set-qr-code-tags.policy';
-import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { z } from 'zod';
 
 @injectable()
@@ -38,6 +37,7 @@ export class TagController extends AbstractController {
 		@inject(CreateTagUseCase) private readonly createTagUseCase: CreateTagUseCase,
 		@inject(UpdateTagUseCase) private readonly updateTagUseCase: UpdateTagUseCase,
 		@inject(DeleteTagUseCase) private readonly deleteTagUseCase: DeleteTagUseCase,
+		@inject(SetQrCodeTagsUseCase) private readonly setQrCodeTagsUseCase: SetQrCodeTagsUseCase,
 		@inject(TagRepository) private readonly tagRepository: TagRepository,
 	) {
 		super();
@@ -168,6 +168,8 @@ export class TagController extends AbstractController {
 		responseSchema: {
 			200: z.array(TagResponseDto),
 			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
@@ -182,11 +184,7 @@ export class TagController extends AbstractController {
 		const { id: qrCodeId } = request.params;
 		const { tagIds } = request.body;
 
-		const policy = new SetQrCodeTagsPolicy(request.user, tagIds.length);
-		policy.checkAccess();
-
-		await this.tagRepository.setQrCodeTags(qrCodeId, tagIds);
-		const tags = await this.tagRepository.findTagsByQrCodeId(qrCodeId);
+		const tags = await this.setQrCodeTagsUseCase.execute(qrCodeId, tagIds, request.user);
 
 		return this.makeApiHttpResponse(
 			200,

@@ -51,10 +51,19 @@ export const QrCodeFilters = ({
 	const tTable = useTranslations('qrCode.table');
 	const [searchValue, setSearchValue] = useState(filters.search ?? '');
 	const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+	const filtersRef = useRef(filters);
+	const onFiltersChangeRef = useRef(onFiltersChange);
 	const [tagSearch, setTagSearch] = useState('');
 	const [debouncedTagSearch] = useDebouncedValue(tagSearch, 300);
 	const { data: tagsData } = useListTagsQuery(1, 50, debouncedTagSearch || undefined);
 	const allTags = tagsData?.data;
+
+	useEffect(() => {
+		filtersRef.current = filters;
+	}, [filters]);
+	useEffect(() => {
+		onFiltersChangeRef.current = onFiltersChange;
+	}, [onFiltersChange]);
 
 	// Debounce search input
 	useEffect(() => {
@@ -63,8 +72,8 @@ export const QrCodeFilters = ({
 		}
 		debounceRef.current = setTimeout(() => {
 			const trimmed = searchValue.trim();
-			if (trimmed !== (filters.search ?? '')) {
-				onFiltersChange({ ...filters, search: trimmed || undefined });
+			if (trimmed !== (filtersRef.current.search ?? '')) {
+				onFiltersChangeRef.current({ ...filtersRef.current, search: trimmed || undefined });
 			}
 		}, 400);
 

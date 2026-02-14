@@ -173,6 +173,8 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 										</AlertDialogCancel>
 										<Button
 											variant="destructive"
+											disabled={isDeleting}
+											isLoading={isDeleting}
 											onClick={() => {
 												handleDelete();
 											}}

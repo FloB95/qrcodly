@@ -120,9 +120,10 @@ export default function QrCodesPage() {
 
 			{/* Bulk Import Dialog */}
 			<Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
-				<DialogTitle hidden>{tContent('bulkModeBtn')}</DialogTitle>
 				<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-					<DialogHeader></DialogHeader>
+					<DialogHeader>
+						<DialogTitle hidden>{tContent('bulkModeBtn')}</DialogTitle>
+					</DialogHeader>
 					{selectedContentType && (
 						<BulkImport
 							contentType={selectedContentType}

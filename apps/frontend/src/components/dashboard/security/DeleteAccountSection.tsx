@@ -84,10 +84,10 @@ export function DeleteAccountSection() {
 		try {
 			await deleteUserWithReverification();
 			await signOut();
-			toast.success(t('accountDeleted'));
+			toast({ title: t('accountDeleted') });
 			router.push('/');
 		} catch {
-			toast.error(t('accountDeleteError'));
+			toast({ title: t('accountDeleteError'), variant: 'destructive' });
 			setIsDeleting(false);
 			// Reopen dialog if reverification was cancelled or failed
 			setIsOpen(true);

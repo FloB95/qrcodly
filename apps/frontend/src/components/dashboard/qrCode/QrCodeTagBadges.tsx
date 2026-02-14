@@ -42,7 +42,7 @@ export const QrCodeTagBadges = ({ qrCodeId, tags }: QrCodeTagBadgesProps) => {
 											tagIds: updatedTagIds,
 										});
 									} catch {
-										toast.error('Failed to remove tag');
+										toast({ title: 'Failed to remove tag', variant: 'destructive' });
 									}
 								}}
 							>

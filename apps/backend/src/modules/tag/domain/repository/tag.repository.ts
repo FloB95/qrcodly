@@ -45,6 +45,7 @@ class TagRepository extends AbstractRepository<TTag> {
 
 	async update(existingTag: TTag, updates: Partial<TTag>): Promise<void> {
 		await this.db.update(this.table).set(updates).where(eq(this.table.id, existingTag.id));
+		await this.clearCache();
 	}
 
 	async delete(existingTag: TTag): Promise<boolean> {

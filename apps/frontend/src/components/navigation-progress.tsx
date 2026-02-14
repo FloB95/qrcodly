@@ -25,7 +25,7 @@ export function NavigationProgress() {
 			const targetPathname = url.pathname;
 
 			// Skip if only query params are changing (same pathname)
-			if (previousPathname.current.endsWith(targetPathname)) {
+			if (previousPathname.current === targetPathname) {
 				return;
 			}
 
