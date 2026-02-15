@@ -8,41 +8,39 @@ Here you can see all recent updates, new features, improvements, and fixes — e
 
 <Callout type="info">Stay up-to-date with the latest features and improvements in QRcodly.</Callout>
 
-## Latest Release: 1.6.1 - 2026-01-08
+## Latest Release: 1.8.0 - 2026-02-14
 
 <Card
-  title="v1.6.1 Latest"
+  title="v1.8.0 Latest"
   description={
     <div>
-      <p>🚀 <strong>Release Notes – Version 1.6.1</strong></p>
-      <p>This release adds an exciting new way to preview your QR codes! You can now see how your QR code will look in real-world scenarios by placing it on website screenshots or choosing from beautiful background images. Perfect for presentations, marketing materials, or just seeing how your QR code will look before printing.</p>
+      <p>🚀 <strong>Release Notes – Version 1.8.0</strong></p>
+      <p>QRcodly gets a redesigned dashboard with powerful new organization tools! Manage your QR codes more efficiently with tags, advanced filtering, customizable views, and bulk export capabilities.</p>
 
       <h4>✨ New Features</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Website Preview:</strong> Upload any website URL and see your QR code placed on a screenshot of that website. Great for mockups and presentations!</li>
-        <li><strong>Background Image Gallery:</strong> Choose from a collection of professional background images to showcase your QR code.</li>
-        <li><strong>Enhanced Preview Modal:</strong> Improved preview window with better controls for positioning and sizing your QR code.</li>
-        <li><strong>Screenshot Service:</strong> Automatic website screenshot capture powered by a reliable screenshot API.</li>
+        <li><strong>Tag Management System:</strong> Organize and categorize your QR codes with custom tags for easy discovery and grouping.</li>
+        <li><strong>QR Code Filtering by Tags & Content Type:</strong> Quickly find the QR codes you need by filtering based on assigned tags or content type.</li>
+        <li><strong>Customizable Table Column Visibility:</strong> Personalize your QR code list view by showing or hiding columns to focus on what matters most.</li>
+        <li><strong>Bulk Export:</strong> Export multiple QR codes at once with support for various format options.</li>
       </ul>
 
-      <h4>🎨 Preview Improvements</h4>
+      <h4>🎨 UI & UX Improvements</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Background Selector:</strong> Easily switch between website screenshots and predefined backgrounds.</li>
-        <li><strong>Better Camera Controls:</strong> Smoother camera handling when using device camera for preview backgrounds.</li>
-        <li><strong>Improved QR Positioning:</strong> More intuitive controls to position and resize your QR code on backgrounds.</li>
+        <li><strong>Reorganized Dashboard Navigation:</strong> Improved routing structure and sidebar navigation for a cleaner, more intuitive dashboard experience.</li>
+        <li><strong>Enhanced Search & Filtering:</strong> More powerful search and filtering capabilities to manage large QR code collections with ease.</li>
+        <li><strong>Improved Layouts & Accessibility:</strong> Refined UI layouts and accessibility enhancements across all dashboard pages.</li>
+      </ul>
+
+      <h4>🛠 Technical Improvements</h4>
+      <ul className="list-disc ml-5 space-y-1">
+        <li><strong>PUT Request Support:</strong> Added support for PUT requests in API communications for more flexible data updates.</li>
       </ul>
 
       <h4>🌍 Translations</h4>
       <ul className="list-disc ml-5 space-y-1">
         <li>Updated translations across all supported languages (English, German, Spanish, French, Italian, Dutch, Polish, Russian).</li>
-        <li>Added new translation keys for preview features.</li>
-      </ul>
-
-      <h4>🛠 Technical Improvements</h4>
-      <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Logging:</strong> Added comprehensive logging to screenshot service for better monitoring and debugging.</li>
-        <li><strong>Code Quality:</strong> Removed unused contrast detection hook and cleaned up preview components.</li>
-        <li><strong>Type Safety:</strong> Improved TypeScript types for preview functionality.</li>
+        <li>Added new translation keys for tag management, filtering, and dashboard features.</li>
       </ul>
     </div>
 
@@ -52,6 +50,95 @@ Here you can see all recent updates, new features, improvements, and fixes — e
 ## Previous Releases
 
 <Cards>
+  <Card
+    title="v1.7.0 - 2026-01-20"
+    description={
+      <div>
+        <p>🚀 <strong>Release Notes – Version 1.7.0</strong></p>
+        <p>QRcodly now supports Custom Domains for your QR codes! Connect your own domain to serve QR code redirects, giving your links a professional, branded appearance that builds trust with your audience.</p>
+
+        <h4>✨ Custom Domain Features</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Custom Domain Configuration:</strong> Add and manage your own domains directly from the settings page.</li>
+          <li><strong>Cloudflare SSL Integration:</strong> Automatic SSL certificate verification through Cloudflare ensures your custom domains are secure.</li>
+          <li><strong>Domain Validation Workflow:</strong> Step-by-step domain verification process with clear status indicators and DNS configuration guidance.</li>
+          <li><strong>QR Code Domain Assignment:</strong> Assign custom domains to individual QR codes for maximum branding flexibility.</li>
+        </ul>
+
+        <h4>🔐 Security Enhancements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>New Security Profile Page:</strong> Dedicated security section in user profiles for managing account security settings.</li>
+          <li><strong>Enhanced Domain Controls:</strong> Secure validation and verification workflows for custom domain configurations.</li>
+        </ul>
+
+        <h4>💳 Subscription & Billing</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Subscription Management:</strong> New infrastructure for managing subscription plans and billing.</li>
+          <li><strong>Subscription Event Tracking:</strong> Improved lifecycle management and event tracking for subscriptions.</li>
+        </ul>
+
+        <h4>🎨 UI & UX Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Custom Settings Form:</strong> Intuitive form interface for configuring custom domain settings.</li>
+          <li><strong>Feature Cards:</strong> New UI components for showcasing features and capabilities.</li>
+          <li><strong>Responsive Design:</strong> Optimized layouts for better mobile and tablet experiences.</li>
+        </ul>
+
+        <h4>🌍 Translations</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li>Updated translations across all supported languages (English, German, Spanish, French, Italian, Dutch, Polish, Russian).</li>
+          <li>Added new translation keys for domain control validation and custom domain features.</li>
+        </ul>
+
+        <h4>🛠 Technical Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Optimized Logging:</strong> Standardized and optimized logging implementation across the application.</li>
+          <li><strong>Expanded Test Coverage:</strong> Comprehensive test coverage updates for QR code content types and custom domain functionality.</li>
+          <li><strong>TypeScript Fixes:</strong> Resolved TypeScript errors and improved type safety throughout the codebase.</li>
+        </ul>
+      </div>
+
+  }
+  />
+
+  <Card
+    title="v1.6.1 - 2026-01-08"
+    description={
+      <div>
+        <p>🚀 <strong>Release Notes – Version 1.6.1</strong></p>
+        <p>This release adds an exciting new way to preview your QR codes! You can now see how your QR code will look in real-world scenarios by placing it on website screenshots or choosing from beautiful background images.</p>
+
+        <h4>✨ New Features</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Website Preview:</strong> Upload any website URL and see your QR code placed on a screenshot of that website. Great for mockups and presentations!</li>
+          <li><strong>Background Image Gallery:</strong> Choose from a collection of professional background images to showcase your QR code.</li>
+          <li><strong>Enhanced Preview Modal:</strong> Improved preview window with better controls for positioning and sizing your QR code.</li>
+          <li><strong>Screenshot Service:</strong> Automatic website screenshot capture powered by a reliable screenshot API.</li>
+        </ul>
+
+        <h4>🎨 Preview Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Background Selector:</strong> Easily switch between website screenshots and predefined backgrounds.</li>
+          <li><strong>Better Camera Controls:</strong> Smoother camera handling when using device camera for preview backgrounds.</li>
+          <li><strong>Improved QR Positioning:</strong> More intuitive controls to position and resize your QR code on backgrounds.</li>
+        </ul>
+
+        <h4>🌍 Translations</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li>Updated translations across all supported languages (English, German, Spanish, French, Italian, Dutch, Polish, Russian).</li>
+          <li>Added new translation keys for preview features.</li>
+        </ul>
+
+        <h4>🛠 Technical Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Logging:</strong> Added comprehensive logging to screenshot service for better monitoring and debugging.</li>
+          <li><strong>Code Quality:</strong> Removed unused contrast detection hook and cleaned up preview components.</li>
+          <li><strong>Type Safety:</strong> Improved TypeScript types for preview functionality.</li>
+        </ul>
+      </div>
+
+  }
+  />
   <Card
     title="v1.6.0 - 2025-12-31"
     description={

@@ -88,20 +88,20 @@ export default function Header({
 							{!hideDashboardLink && (
 								<div className="flex items-center gap-2">
 									<Link
-										href="/collection"
+										href="/dashboard/qr-codes"
 										className={cn(buttonVariants({ size: 'icon' }), 'sm:hidden')}
 									>
 										<RectangleStackIcon className="h-6 w-6 text-white" />
 									</Link>
 									<Link
-										href="/collection"
+										href="/dashboard/qr-codes"
 										className={cn(buttonVariants(), 'hidden sm:inline-flex')}
 									>
 										{t('collectionBtn')}
 									</Link>
 								</div>
 							)}
-							<Link href="/settings/profile">
+							<Link href="/dashboard/settings/profile">
 								<UserAvatar />
 							</Link>
 						</SignedIn>
@@ -178,7 +178,7 @@ export default function Header({
 						<SignedIn>
 							<motion.div variants={itemVariants}>
 								<Link
-									href="/collection"
+									href="/dashboard/qr-codes"
 									className={buttonVariants({
 										className: 'ml-3 justify-start text-foreground font-semibold',
 									})}

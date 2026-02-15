@@ -97,7 +97,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 				});
 
 				if (user?.id) await policy.incrementUsage();
-				return finalQrCode as TQrCodeWithRelations;
+				return finalQrCode;
 			});
 		} catch (error: any) {
 			this.logger.error('qrCode.created.error', { error });

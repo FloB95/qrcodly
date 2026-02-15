@@ -1,6 +1,6 @@
 'use client';
 
-import { EllipsisVerticalIcon, StarIcon } from '@heroicons/react/24/outline';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
@@ -40,6 +40,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { NameDialog } from '@/components/qr-generator/NameDialog';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 export const TemplateListItem = ({
 	template,
@@ -127,59 +129,91 @@ export const TemplateListItem = ({
 
 	return (
 		<>
-			<TableRow
-				className={`cursor-default rounded-lg shadow ${isDeleting ? '!bg-muted/70' : 'bg-white'}`}
-			>
-				<TableCell className="rounded-l-lg max-w-52">
-					<div className="flex space-x-8 w-50">
-						<div className="ml-4 hidden sm:flex items-center">
-							<StarIcon className="mr-2 h-6 w-6" />
-						</div>
-						<div className="h-[90px] w-[90px] overflow-hidden">
-							{template.previewImage ? (
-								<Image
-									src={template.previewImage}
-									width={180}
-									height={180}
-									alt="Template preview"
-									loading="lazy"
-								/>
-							) : (
-								<DynamicQrCode qrCode={qrCodeData} additionalStyles="max-h-[100px] max-w-[100px]" />
-							)}
+			<TableRow className={cn(isDeleting && 'opacity-50')}>
+				{/* Template Preview */}
+				<TableCell className="w-[72px] py-2 pr-2">
+					<HoverCard openDelay={200} closeDelay={100}>
+						<HoverCardTrigger asChild>
+							<div className="flex items-center gap-2">
+								<div className="size-14 shrink-0 overflow-hidden rounded">
+									{template.previewImage ? (
+										<Image
+											src={template.previewImage}
+											width={56}
+											height={56}
+											alt="Template preview"
+											className="size-14 object-cover"
+											loading="lazy"
+										/>
+									) : (
+										<DynamicQrCode qrCode={qrCodeData} additionalStyles="max-h-14 max-w-14" />
+									)}
+								</div>
+							</div>
+						</HoverCardTrigger>
+						<HoverCardContent side="right" className="w-auto p-2">
+							<div className="h-[200px] w-[200px] overflow-hidden rounded">
+								{template.previewImage ? (
+									<Image
+										src={template.previewImage}
+										width={200}
+										height={200}
+										alt="Template preview"
+										className="h-[200px] w-[200px] object-cover"
+									/>
+								) : (
+									<DynamicQrCode
+										qrCode={qrCodeData}
+										additionalStyles="max-h-[200px] max-w-[200px]"
+									/>
+								)}
+							</div>
+						</HoverCardContent>
+					</HoverCard>
+				</TableCell>
+
+				{/* Name */}
+				<TableCell className="py-2">
+					<div className="flex items-center gap-2 min-w-0">
+						<div
+							className="group relative min-w-0 cursor-pointer"
+							onClick={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								setNameDialogOpen(true);
+							}}
+						>
+							<div className="flex items-center gap-2 min-w-0">
+								<span className="truncate text-sm font-medium max-w-[200px]">
+									{template.name && template.name !== '' ? (
+										template.name
+									) : (
+										<span className="text-muted-foreground">{t('general.noName')}</span>
+									)}
+								</span>
+								<Button
+									size="icon"
+									variant="ghost"
+									className="hidden group-hover:inline-flex h-5 w-5 shrink-0"
+								>
+									<PencilIcon className="size-3" />
+								</Button>
+							</div>
 						</div>
 					</div>
 				</TableCell>
 
-				<TableCell className="font-medium truncate w-full">
-					<div
-						className="group relative pr-6 inline-block"
-						onClick={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-							setNameDialogOpen(true);
-						}}
-					>
-						{template.name && template.name != '' ? (
-							template.name
-						) : (
-							<span className="text-muted-foreground">{t('general.noName')}</span>
-						)}
-						<div className="ml-2 group-hover:block pointer-events-none group-hover:pointer-events-auto hidden">
-							<Button size="icon" variant="ghost" className="absolute right-0 top-0 w-4 h-4">
-								<PencilIcon className="w-full h-full" />
-							</Button>
-						</div>
-					</div>
+				{/* Created Date */}
+				<TableCell className="hidden md:table-cell py-2 text-sm text-muted-foreground">
+					{formatDate(template.createdAt)}
 				</TableCell>
 
-				<TableCell className="hidden md:table-cell">{formatDate(template.createdAt)}</TableCell>
-
-				<TableCell className="rounded-r-lg">
+				{/* Actions */}
+				<TableCell className="w-[60px] py-2">
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<Button size="icon" variant="ghost" disabled={isDeleting}>
-								<EllipsisVerticalIcon width={28} height={28} />
+							<Button variant="ghost" className="h-8 w-8 p-0" disabled={isDeleting}>
+								<EllipsisVerticalIcon className="size-6" />
 								<span className="sr-only">Toggle menu</span>
 							</Button>
 						</DropdownMenuTrigger>
@@ -195,7 +229,7 @@ export const TemplateListItem = ({
 							</DropdownMenuItem>
 
 							<DropdownMenuItem asChild>
-								<Link className="cursor-pointer" href={`/collection/template/${template.id}/edit`}>
+								<Link className="cursor-pointer" href={`/dashboard/templates/${template.id}/edit`}>
 									{t('qrCode.actionsMenu.edit')}
 								</Link>
 							</DropdownMenuItem>
@@ -258,11 +292,20 @@ export const TemplateListItem = ({
 	);
 };
 
-export const SkeletonListItem = () => {
+export const SkeletonTemplateListItem = () => {
 	return (
-		<TableRow className="shadow">
-			<TableCell colSpan={6} className="rounded-l-lg p-0">
-				<Skeleton className="h-[122px] w-full bg-white/70" />
+		<TableRow>
+			<TableCell className="py-2">
+				<Skeleton className="size-14 rounded" />
+			</TableCell>
+			<TableCell className="py-2">
+				<Skeleton className="h-4 w-32" />
+			</TableCell>
+			<TableCell className="hidden md:table-cell py-2">
+				<Skeleton className="h-4 w-20" />
+			</TableCell>
+			<TableCell className="py-2">
+				<Skeleton className="h-8 w-8 rounded" />
 			</TableCell>
 		</TableRow>
 	);

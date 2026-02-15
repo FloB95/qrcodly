@@ -1,4 +1,12 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Collections",
+			"qrCodes": "QR Codes",
+			"templates": "Templates",
+			"tags": "Tags"
+		}
+	},
 	"general": {
 		"signOut": "Sign Out",
 		"proRequired": "Pro Plan Required",
@@ -49,21 +57,46 @@
 	},
 	"collection": {
 		"headline": "Your Collection",
-		"subHeadline": "Here you can find all your QR codes and templates and manage them.",
+		"subHeadline": "Here you can find all your QR codes and manage them.",
 		"tabQrCode": "QR codes",
 		"tabTemplates": "Templates",
 		"addQrCodeBtn": "Add QR code",
-		"bulkImportLabel": "Select Content Type"
+		"bulkImportLabel": "Select Content Type",
+		"exportBtn": "Export",
+		"bulkExport": {
+			"title": "Bulk Export QR Codes",
+			"description": "Download multiple QR codes as a ZIP file.",
+			"format": "Format",
+			"noQrCodes": "No QR codes found.",
+			"exportAllLabel": "Export all ({count})",
+			"deselectAll": "Deselect page",
+			"selectAll": "Select page",
+			"selectedCount": "{count} of {total} selected",
+			"errorTitle": "Export failed",
+			"errorDescription": "An error occurred while exporting QR codes.",
+			"success": "Export complete",
+			"progress": "{current} of {total} exported",
+			"downloading": "Downloading…",
+			"downloadBtn": "Download ZIP"
+		},
+		"filters": {
+			"searchPlaceholder": "Search QR codes...",
+			"contentType": "Content Type",
+			"clearAll": "Clear",
+			"customizeColumns": "Customize Columns",
+			"columns": "Columns",
+			"toggleColumns": "Toggle columns"
+		}
 	},
 	"analytics": {
-		"totalViews": "Total Views",
+		"totalViews": "Total Scans",
 		"totalVisitors": "Total Visitors",
 		"stateActive": "Active",
 		"stateInactive": "Disabled",
-		"activeDescription": "Active: Users can access the destination page, and views are tracked.",
+		"activeDescription": "Active: Users can access the destination page, and scans are tracked.",
 		"inactiveDescription": "Inactive: Access and tracking are disabled.",
 		"noData": "No data has been recorded yet.",
-		"viewsInLastXDays": "{count} Views in the last {days}",
+		"viewsInLastXDays": "{count} Scans in the last {days}",
 		"visitorsInLastXDays": "{count} Visitors in the last {days}"
 	},
 	"chart": {
@@ -153,6 +186,16 @@
 		"button": "Go Back Home"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Preview",
+			"name": "Name",
+			"content": "Content",
+			"status": "Status",
+			"scans": "Scans",
+			"created": "Created",
+			"actions": "Actions",
+			"tags": "Tags"
+		},
 		"storeBtn": "Save in Collection",
 		"updateBtn": "Update QR code",
 		"error": {
@@ -267,6 +310,7 @@
 		"saveBtn": "Save"
 	},
 	"templates": {
+		"pageDescription": "Manage and organize your saved QR code templates.",
 		"tabs": {
 			"myTemplates": "My Templates",
 			"predefinedTemplates": "Predefined"
@@ -1099,6 +1143,47 @@
 				"prioritySupport": "Priority support",
 				"teamFeatures": "Team features (coming soon)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Tags",
+		"description": "Create and manage tags to organize your QR codes.",
+		"createBtn": "Create Tag",
+		"editBtn": "Save Changes",
+		"deleteConfirmTitle": "Delete tag?",
+		"deleteConfirmDescription": "Are you sure you want to delete this tag? It will be removed from all QR codes.",
+		"nameLabel": "Name",
+		"colorLabel": "Color",
+		"noTags": "No tags yet",
+		"noTagsDescription": "Create your first tag to start organizing your QR codes.",
+		"manageTags": "Manage Tags",
+		"filterByTags": "Filter by tags",
+		"searchTags": "Search tags...",
+		"noSearchResults": "No tags found for \"{search}\"",
+		"toast": {
+			"createdTitle": "Tag created",
+			"createdDescription": "Your tag has been created successfully.",
+			"updatedTitle": "Tag updated",
+			"updatedDescription": "Your tag has been updated successfully.",
+			"deletedTitle": "Tag deleted",
+			"deletedDescription": "Your tag has been deleted successfully.",
+			"tagsUpdatedTitle": "Tags updated",
+			"tagsUpdatedDescription": "QR code tags have been updated successfully.",
+			"createErrorTitle": "Error creating tag",
+			"updateErrorTitle": "Error updating tag",
+			"deleteErrorTitle": "Error deleting tag",
+			"assignErrorTitle": "Error updating tags",
+			"error": "Something went wrong"
+		},
+		"actionsMenu": {
+			"title": "Actions"
+		},
+		"table": {
+			"name": "Name",
+			"color": "Color",
+			"created": "Created",
+			"usage": "Usage",
+			"qrCodes": "QR Codes"
 		}
 	}
 }

@@ -1,4 +1,12 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Collecties",
+			"qrCodes": "QR Codes",
+			"templates": "Sjablonen",
+			"tags": "Tags"
+		}
+	},
 	"general": {
 		"signOut": "Uitloggen",
 		"proRequired": "Pro-abonnement vereist",
@@ -49,21 +57,46 @@
 	},
 	"collection": {
 		"headline": "Je collectie",
-		"subHeadline": "Hier vind je al je QR-codes en sjablonen en kun je ze beheren.",
+		"subHeadline": "Hier vind je al je QR-codes en kun je ze beheren.",
 		"tabQrCode": "QR-codes",
 		"tabTemplates": "Sjablonen",
 		"addQrCodeBtn": "QR-code toevoegen",
-		"bulkImportLabel": "Selecteer inhoudstype"
+		"bulkImportLabel": "Selecteer inhoudstype",
+		"exportBtn": "Exporteren",
+		"bulkExport": {
+			"title": "QR-codes exporteren",
+			"description": "Download meerdere QR-codes als ZIP-bestand.",
+			"format": "Formaat",
+			"noQrCodes": "Geen QR-codes gevonden.",
+			"exportAllLabel": "Alles exporteren ({count})",
+			"deselectAll": "Pagina deselecteren",
+			"selectAll": "Pagina selecteren",
+			"selectedCount": "{count} van {total} geselecteerd",
+			"errorTitle": "Export mislukt",
+			"errorDescription": "Er is een fout opgetreden bij het exporteren van de QR-codes.",
+			"success": "Export voltooid",
+			"progress": "{current} van {total} geëxporteerd",
+			"downloading": "Downloaden…",
+			"downloadBtn": "ZIP downloaden"
+		},
+		"filters": {
+			"searchPlaceholder": "QR-codes zoeken...",
+			"contentType": "Inhoudstype",
+			"clearAll": "Wissen",
+			"customizeColumns": "Kolommen aanpassen",
+			"columns": "Kolommen",
+			"toggleColumns": "Kolommen in-/uitschakelen"
+		}
 	},
 	"analytics": {
-		"totalViews": "Aantal weergaven",
+		"totalViews": "Aantal scans",
 		"totalVisitors": "Aantal bezoekers",
 		"stateActive": "Actief",
 		"stateInactive": "Uitgeschakeld",
-		"activeDescription": "Actief: gebruikers hebben toegang tot de bestemmingspagina en weergaven worden geanalyseerd.",
+		"activeDescription": "Actief: gebruikers hebben toegang tot de bestemmingspagina en scans worden geregistreerd.",
 		"inactiveDescription": "Uitgeschakeld: toegang en analyse zijn gedeactiveerd.",
 		"noData": "Nog geen gegevens verzameld.",
-		"viewsInLastXDays": "{count} weergaven in de afgelopen {days} dagen",
+		"viewsInLastXDays": "{count} scans in de afgelopen {days} dagen",
 		"visitorsInLastXDays": "{count} bezoekers in de afgelopen {days} dagen"
 	},
 	"chart": {
@@ -153,6 +186,16 @@
 		"button": "Naar de startpagina"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Voorbeeld",
+			"name": "Naam",
+			"content": "Inhoud",
+			"status": "Status",
+			"scans": "Scans",
+			"created": "Aangemaakt",
+			"actions": "Acties",
+			"tags": "Tags"
+		},
 		"storeBtn": "Opslaan in collectie",
 		"updateBtn": "QR-code bijwerken",
 		"error": {
@@ -267,6 +310,7 @@
 		"saveBtn": "Opslaan"
 	},
 	"templates": {
+		"pageDescription": "Beheer en organiseer je opgeslagen QR-code sjablonen.",
 		"tabs": {
 			"myTemplates": "Mijn sjablonen",
 			"predefinedTemplates": "Vooraf gedefinieerd"
@@ -1099,6 +1143,47 @@
 				"prioritySupport": "Prioriteitsondersteuning",
 				"teamFeatures": "Teamfuncties (binnenkort)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Tags",
+		"description": "Maak en beheer tags om je QR-codes te organiseren.",
+		"createBtn": "Tag aanmaken",
+		"editBtn": "Wijzigingen opslaan",
+		"deleteConfirmTitle": "Tag verwijderen?",
+		"deleteConfirmDescription": "Weet je zeker dat je deze tag wilt verwijderen? De tag wordt van alle QR-codes verwijderd.",
+		"nameLabel": "Naam",
+		"colorLabel": "Kleur",
+		"noTags": "Nog geen tags",
+		"noTagsDescription": "Maak je eerste tag aan om je QR-codes te organiseren.",
+		"manageTags": "Tags beheren",
+		"filterByTags": "Filteren op tags",
+		"searchTags": "Tags zoeken...",
+		"noSearchResults": "Geen tags gevonden voor \"{search}\"",
+		"toast": {
+			"createdTitle": "Tag aangemaakt",
+			"createdDescription": "Je tag is succesvol aangemaakt.",
+			"updatedTitle": "Tag bijgewerkt",
+			"updatedDescription": "Je tag is succesvol bijgewerkt.",
+			"deletedTitle": "Tag verwijderd",
+			"deletedDescription": "Je tag is succesvol verwijderd.",
+			"tagsUpdatedTitle": "Tags bijgewerkt",
+			"tagsUpdatedDescription": "De QR-code tags zijn succesvol bijgewerkt.",
+			"createErrorTitle": "Fout bij het aanmaken van tag",
+			"updateErrorTitle": "Fout bij het bijwerken van tag",
+			"deleteErrorTitle": "Fout bij het verwijderen van tag",
+			"assignErrorTitle": "Fout bij het bijwerken van tags",
+			"error": "Er is iets misgegaan"
+		},
+		"actionsMenu": {
+			"title": "Acties"
+		},
+		"table": {
+			"name": "Naam",
+			"color": "Kleur",
+			"created": "Aangemaakt",
+			"usage": "Gebruik",
+			"qrCodes": "QR-codes"
 		}
 	}
 }

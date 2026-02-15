@@ -8,7 +8,12 @@ export default function Container({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className={cn('container relative mx-auto overflow-hidden sm:px-6 lg:px-8', className)}>
+		<div
+			className={cn(
+				'container relative mx-auto overflow-hidden sm:px-6 lg:px-8 lg:max-w-[1400px]',
+				className,
+			)}
+		>
 			{children}
 		</div>
 	);

@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { type LucideIcon } from 'lucide-react';
 
 import {
@@ -8,6 +9,7 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
+	useSidebar,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -29,9 +31,15 @@ export function NavMain({
 }) {
 	const { isLoaded, user } = useUser();
 	const t = useTranslations('general');
+	const pathname = usePathname();
+	const { setOpenMobile } = useSidebar();
+
+	// Close mobile sidebar on navigation
+	useEffect(() => {
+		setOpenMobile(false);
+	}, [pathname, setOpenMobile]);
 
 	function isActive(url: string) {
-		const pathname = usePathname();
 		if (pathname.includes(url)) return true;
 		return false;
 	}

@@ -1,4 +1,12 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Kolekcje",
+			"qrCodes": "Kody QR",
+			"templates": "Szablony",
+			"tags": "Tagi"
+		}
+	},
 	"general": {
 		"signOut": "Wyloguj się",
 		"proRequired": "Wymagany Plan Pro",
@@ -49,21 +57,46 @@
 	},
 	"collection": {
 		"headline": "Twoja kolekcja",
-		"subHeadline": "Tutaj znajdziesz wszystkie swoje kody QR i szablony i możesz nimi zarządzać.",
+		"subHeadline": "Tutaj znajdziesz wszystkie swoje kody QR i możesz nimi zarządzać.",
 		"tabQrCode": "Kody QR",
 		"tabTemplates": "Szablony",
 		"addQrCodeBtn": "Dodaj kod QR",
-		"bulkImportLabel": "Wybierz typ treści"
+		"bulkImportLabel": "Wybierz typ treści",
+		"exportBtn": "Eksportuj",
+		"bulkExport": {
+			"title": "Eksportuj kody QR",
+			"description": "Pobierz wiele kodów QR jako plik ZIP.",
+			"format": "Format",
+			"noQrCodes": "Nie znaleziono kodów QR.",
+			"exportAllLabel": "Eksportuj wszystkie ({count})",
+			"deselectAll": "Odznacz stronę",
+			"selectAll": "Zaznacz stronę",
+			"selectedCount": "{count} z {total} zaznaczonych",
+			"errorTitle": "Eksport nie powiódł się",
+			"errorDescription": "Wystąpił błąd podczas eksportowania kodów QR.",
+			"success": "Eksport zakończony",
+			"progress": "{current} z {total} wyeksportowanych",
+			"downloading": "Pobieranie…",
+			"downloadBtn": "Pobierz ZIP"
+		},
+		"filters": {
+			"searchPlaceholder": "Szukaj kodów QR...",
+			"contentType": "Typ treści",
+			"clearAll": "Wyczyść",
+			"customizeColumns": "Dostosuj kolumny",
+			"columns": "Kolumny",
+			"toggleColumns": "Przełącz kolumny"
+		}
 	},
 	"analytics": {
-		"totalViews": "Liczba wyświetleń",
+		"totalViews": "Liczba skanów",
 		"totalVisitors": "Liczba odwiedzających",
 		"stateActive": "Aktywny",
 		"stateInactive": "Wyłączony",
-		"activeDescription": "Aktywny: Użytkownicy mogą uzyskać dostęp do strony docelowej, a wyświetlenia są analizowane.",
+		"activeDescription": "Aktywny: Użytkownicy mogą uzyskać dostęp do strony docelowej, a skany są rejestrowane.",
 		"inactiveDescription": "Wyłączony: Dostęp i analiza są wyłączone.",
 		"noData": "Dotychczas nie zebrano żadnych danych.",
-		"viewsInLastXDays": "{count} wyświetleń w ciągu ostatnich {days} dni",
+		"viewsInLastXDays": "{count} skanów w ciągu ostatnich {days} dni",
 		"visitorsInLastXDays": "{count} odwiedzających w ciągu ostatnich {days} dni"
 	},
 	"chart": {
@@ -153,6 +186,16 @@
 		"button": "Idź do strony głównej"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Podgląd",
+			"name": "Nazwa",
+			"content": "Treść",
+			"status": "Status",
+			"scans": "Skany",
+			"created": "Utworzono",
+			"actions": "Akcje",
+			"tags": "Tagi"
+		},
 		"storeBtn": "Zapisz w kolekcji",
 		"updateBtn": "Zaktualizuj kod QR",
 		"error": {
@@ -267,6 +310,7 @@
 		"saveBtn": "Zapisz"
 	},
 	"templates": {
+		"pageDescription": "Zarządzaj i organizuj zapisane szablony kodów QR.",
 		"tabs": {
 			"myTemplates": "Moje szablony",
 			"predefinedTemplates": "Predefiniowane"
@@ -1099,6 +1143,47 @@
 				"prioritySupport": "Priorytetowe wsparcie",
 				"teamFeatures": "Funkcje zespołowe (wkrótce)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Tagi",
+		"description": "Twórz i zarządzaj tagami, aby organizować swoje kody QR.",
+		"createBtn": "Utwórz tag",
+		"editBtn": "Zapisz zmiany",
+		"deleteConfirmTitle": "Usunąć tag?",
+		"deleteConfirmDescription": "Czy na pewno chcesz usunąć ten tag? Zostanie usunięty ze wszystkich kodów QR.",
+		"nameLabel": "Nazwa",
+		"colorLabel": "Kolor",
+		"noTags": "Brak tagów",
+		"noTagsDescription": "Utwórz swój pierwszy tag, aby rozpocząć organizację kodów QR.",
+		"manageTags": "Zarządzaj tagami",
+		"filterByTags": "Filtruj wg tagów",
+		"searchTags": "Szukaj tagów...",
+		"noSearchResults": "Nie znaleziono tagów dla \"{search}\"",
+		"toast": {
+			"createdTitle": "Tag utworzony",
+			"createdDescription": "Twój tag został pomyślnie utworzony.",
+			"updatedTitle": "Tag zaktualizowany",
+			"updatedDescription": "Twój tag został pomyślnie zaktualizowany.",
+			"deletedTitle": "Tag usunięty",
+			"deletedDescription": "Twój tag został pomyślnie usunięty.",
+			"tagsUpdatedTitle": "Tagi zaktualizowane",
+			"tagsUpdatedDescription": "Tagi kodu QR zostały pomyślnie zaktualizowane.",
+			"createErrorTitle": "Błąd podczas tworzenia tagu",
+			"updateErrorTitle": "Błąd podczas aktualizacji tagu",
+			"deleteErrorTitle": "Błąd podczas usuwania tagu",
+			"assignErrorTitle": "Błąd podczas aktualizacji tagów",
+			"error": "Coś poszło nie tak"
+		},
+		"actionsMenu": {
+			"title": "Akcje"
+		},
+		"table": {
+			"name": "Nazwa",
+			"color": "Kolor",
+			"created": "Utworzono",
+			"usage": "Użycie",
+			"qrCodes": "Kody QR"
 		}
 	}
 }

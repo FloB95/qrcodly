@@ -140,12 +140,6 @@
 	z-index: 100;
 }
 
-@media (min-width: 1400px) {
-	.container {
-		max-width: 1400px;
-	}
-}
-
 /* Dynamic Badge Attention Animation */
 @keyframes badge-attention {
 	0%,

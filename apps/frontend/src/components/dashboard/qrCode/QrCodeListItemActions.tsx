@@ -100,7 +100,7 @@ export const QrCodeListItemActions = ({
 		try {
 			// If the config has an image URL (S3), convert it to base64
 			let configToSave = qr.config;
-			if (qr.config.image && qr.config.image.startsWith('http')) {
+			if (qr.config.image?.startsWith('http')) {
 				try {
 					const base64 = await fetchImageAsBase64(qr.config.image);
 					configToSave = { ...qr.config, image: base64 };
@@ -179,8 +179,8 @@ export const QrCodeListItemActions = ({
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button size="icon" variant="ghost" disabled={isDeleting}>
-					<EllipsisVerticalIcon width={28} height={28} />
+				<Button size="icon" variant="ghost" className="h-8 w-8 p-0" disabled={isDeleting}>
+					<EllipsisVerticalIcon className="size-6" />
 					<span className="sr-only">Toggle menu</span>
 				</Button>
 			</DropdownMenuTrigger>
@@ -192,7 +192,7 @@ export const QrCodeListItemActions = ({
 				<DropdownMenuItem asChild>
 					<Link
 						className="cursor-pointer"
-						href={`/collection/qr-code/${qr.id}`}
+						href={`/dashboard/qr-codes/${qr.id}`}
 						onClick={(e) => e.stopPropagation()}
 					>
 						{t('qrCode.actionsMenu.view')}
@@ -202,7 +202,7 @@ export const QrCodeListItemActions = ({
 				<DropdownMenuItem asChild>
 					<Link
 						className="cursor-pointer"
-						href={`/collection/qr-code/${qr.id}/edit`}
+						href={`/dashboard/qr-codes/${qr.id}/edit`}
 						onClick={(e) => e.stopPropagation()}
 					>
 						{t('qrCode.actionsMenu.edit')}

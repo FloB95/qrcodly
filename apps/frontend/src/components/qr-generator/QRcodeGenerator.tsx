@@ -15,6 +15,7 @@ import { QrCodeWithTemplateUpdateBtn } from './templates/QrCodeWithTemplateUpdat
 import type { TQrCodeContentType } from '@shared/schemas';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group';
 import { CharacterCounter } from './content/CharacterCounter';
+import { cn } from '@/lib/utils';
 
 type GeneratorTab = 'content' | 'style' | 'templates';
 type GeneratorTabConfig = {
@@ -51,6 +52,7 @@ type QRcodeGeneratorProps = {
 	hiddenContentTypes?: TQrCodeContentType[];
 	isEditMode?: boolean;
 	backLink?: React.ReactNode;
+	compact?: boolean;
 	generatorType: QrCodeGeneratorType;
 };
 
@@ -65,6 +67,7 @@ export const QRcodeGenerator = ({
 	hiddenContentTypes = [],
 	isEditMode,
 	backLink,
+	compact,
 	generatorType,
 }: QRcodeGeneratorProps) => {
 	const t = useTranslations('generator');
@@ -118,9 +121,21 @@ export const QRcodeGenerator = ({
 			</TabsList>
 
 			<div className="mt-4 flex">
-				<div className="mx-auto flex min-h-[500px] max-w-[1200px] flex-1 rounded-2xl from-white to-white/60 bg-gradient-to-br relative">
-					{backLink}
-					<div className="flex flex-1 flex-col p-6 md:flex-row md:gap-12">
+				<div
+					className={cn(
+						'mx-auto flex flex-1 relative',
+						compact
+							? ''
+							: 'min-h-[500px] max-w-[1200px] rounded-2xl from-white to-white/60 bg-gradient-to-br',
+					)}
+				>
+					{!compact && backLink}
+					<div
+						className={cn(
+							'flex flex-1 flex-col p-6 md:flex-row',
+							compact ? 'md:gap-8' : 'md:gap-12',
+						)}
+					>
 						<div className="flex-1 mb-10 md:mb-0">
 							{isEditMode && currentTab === 'content' && (
 								<div className="mb-8 max-w-md">

@@ -10,13 +10,23 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from '../../ui/pagination';
-import { useState, useMemo, useEffect, Fragment } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { getPageNumbers } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { SkeletonListItem } from '../qrCode/ListItem';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
 import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
-import { TemplateListItem } from './ListItem';
+import { TemplateListItem, SkeletonTemplateListItem } from './ListItem';
+import {
+	Empty,
+	EmptyContent,
+	EmptyDescription,
+	EmptyHeader,
+	EmptyMedia,
+	EmptyTitle,
+} from '@/components/ui/empty';
+import { StarIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
 
 export const TemplateList = () => {
 	const t = useTranslations();
@@ -25,6 +35,8 @@ export const TemplateList = () => {
 	const pageParam = Number(searchParams.get('page')) || 1;
 	const [currentPage, setCurrentPage] = useState(pageParam);
 	const [currentLimit] = useState(10);
+	const [searchValue, setSearchValue] = useState('');
+	const [debouncedSearch] = useDebouncedValue(searchValue, 400);
 
 	// If the URL changes (e.g., via back/forward), update currentPage
 	useEffect(() => {
@@ -33,11 +45,16 @@ export const TemplateList = () => {
 		}
 	}, [pageParam]);
 
+	// Reset to page 1 when search changes
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [debouncedSearch]);
+
 	const {
 		data: templates,
 		isLoading,
 		isFetching,
-	} = useListConfigTemplatesQuery(undefined, currentPage, currentLimit);
+	} = useListConfigTemplatesQuery(debouncedSearch || undefined, currentPage, currentLimit);
 
 	const totalPages = useMemo(
 		() => (templates ? Math.ceil(templates.total / currentLimit) : 1),
@@ -50,51 +67,100 @@ export const TemplateList = () => {
 		}
 	};
 
+	const tableHeader = (
+		<TableHeader className="bg-muted sticky top-0 z-10">
+			<TableRow>
+				<TableHead className="w-[72px]">{t('qrCode.table.preview')}</TableHead>
+				<TableHead>{t('qrCode.table.name')}</TableHead>
+				<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
+				<TableHead className="w-[60px]" />
+			</TableRow>
+		</TableHeader>
+	);
+
 	if (isLoading || !templates) {
 		return (
-			<Table className="border-separate border-spacing-y-2">
-				<TableBody>
-					{Array.from({ length: 5 }).map((_, idx) => (
-						<SkeletonListItem key={idx} />
-					))}
-				</TableBody>
-			</Table>
+			<div className="overflow-hidden rounded-lg border">
+				<Table>
+					{tableHeader}
+					<TableBody>
+						{Array.from({ length: 5 }).map((_, idx) => (
+							<SkeletonTemplateListItem key={idx} />
+						))}
+					</TableBody>
+				</Table>
+			</div>
 		);
 	}
 
-	if (isFetching) {
+	if (!isFetching && templates.data.length === 0 && !debouncedSearch) {
 		return (
-			<Table className="border-separate border-spacing-y-2">
-				<TableBody>
-					{templates.data.length > 0
-						? templates.data.map((qr) => <SkeletonListItem key={qr.id} />)
-						: Array.from({ length: 5 }).map((_, idx) => <SkeletonListItem key={idx} />)}
-				</TableBody>
-			</Table>
+			<Empty className="sm:my-12">
+				<EmptyHeader>
+					<EmptyMedia variant="default">
+						<StarIcon className="w-12 h-12" />
+					</EmptyMedia>
+					<EmptyTitle>{t('templates.noTemplates')}</EmptyTitle>
+					<EmptyDescription>{t('templates.pageDescription')}</EmptyDescription>
+				</EmptyHeader>
+				<EmptyContent />
+			</Empty>
+		);
+	}
+
+	const searchInput = (
+		<div className="relative max-w-sm">
+			<MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+			<Input
+				type="text"
+				placeholder={t('templates.search.placeholder')}
+				value={searchValue}
+				onChange={(e) => setSearchValue(e.target.value)}
+				className="pl-9 pr-9 h-9 bg-white"
+			/>
+			{searchValue && (
+				<button
+					onClick={() => setSearchValue('')}
+					className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+				>
+					<XMarkIcon className="h-4 w-4" />
+				</button>
+			)}
+		</div>
+	);
+
+	if (!isFetching && templates.data.length === 0 && debouncedSearch) {
+		return (
+			<div className="space-y-4">
+				{searchInput}
+				<div className="text-sm text-muted-foreground py-8 text-center">
+					{t('templates.search.noResults', { searchName: debouncedSearch })}
+				</div>
+			</div>
 		);
 	}
 
 	const pageNumbers = getPageNumbers(currentPage, totalPages);
 
 	return (
-		<Fragment>
-			<Table className="border-separate border-spacing-y-2">
-				<TableBody>
-					{templates.data.length > 0 ? (
-						templates.data.map((template) => (
-							<TemplateListItem key={template.id} template={template} />
-						))
-					) : (
-						<TableRow className="hover:bg-transparent" key="no-data">
-							<TableCell colSpan={6} className="text-center">
-								<h2 className="my-10 text-2xl font-semibold">{t('templates.noTemplates')}</h2>
-							</TableCell>
-						</TableRow>
-					)}
-				</TableBody>
-			</Table>
-			{totalPages > 1 && (
-				<Pagination className="mt-6">
+		<div className="space-y-4">
+			{searchInput}
+			<div className="overflow-hidden rounded-lg border">
+				<Table>
+					{tableHeader}
+					<TableBody>
+						{isFetching
+							? (templates.data.length > 0 ? templates.data : Array.from({ length: 5 })).map(
+									(_, idx) => <SkeletonTemplateListItem key={idx} />,
+								)
+							: templates.data.map((template) => (
+									<TemplateListItem key={template.id} template={template} />
+								))}
+					</TableBody>
+				</Table>
+			</div>
+			{!isFetching && totalPages > 1 && (
+				<Pagination>
 					<PaginationContent>
 						<PaginationItem>
 							<PaginationPrevious
@@ -133,6 +199,6 @@ export const TemplateList = () => {
 					</PaginationContent>
 				</Pagination>
 			)}
-		</Fragment>
+		</div>
 	);
 };

@@ -70,7 +70,7 @@ export class QrCodeController extends AbstractController {
 	async list(
 		request: IHttpRequest<unknown, unknown, TGetQrCodeQueryParamsDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsPaginatedResponseDto>> {
-		const { page, limit, where } = request.query;
+		const { page, limit, where, contentType, tagIds } = request.query;
 		const { qrCodes, total } = await this.listQrCodesUseCase.execute({
 			limit,
 			page,
@@ -80,6 +80,8 @@ export class QrCodeController extends AbstractController {
 					eq: request.user.id,
 				},
 			},
+			contentType,
+			tagIds,
 		});
 
 		// create pagination response object

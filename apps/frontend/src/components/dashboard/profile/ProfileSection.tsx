@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -111,14 +111,14 @@ export function ProfileSection() {
 				lastName: data.lastName || '',
 			});
 			posthog.capture('profile-update:success');
-			toast.success(t('profileUpdated'));
+			toast({ title: t('profileUpdated') });
 			setIsEditing(false);
 		} catch (error) {
 			Sentry.captureException(error, {
 				tags: { action: 'profile-update' },
 			});
 			posthog.capture('error:profile-update');
-			toast.error(t('profileUpdateError'));
+			toast({ title: t('profileUpdateError'), variant: 'destructive' });
 		} finally {
 			setIsLoading(false);
 		}
@@ -133,13 +133,13 @@ export function ProfileSection() {
 			await emailAddress.prepareVerification({ strategy: 'email_code' });
 			setPendingEmailId(emailAddress.id);
 			posthog.capture('email-change:verification-sent');
-			toast.success(t('verificationCodeSent'));
+			toast({ title: t('verificationCodeSent') });
 		} catch (error) {
 			Sentry.captureException(error, {
 				tags: { action: 'email-change' },
 			});
 			posthog.capture('error:email-change');
-			toast.error(t('emailAddError'));
+			toast({ title: t('emailAddError'), variant: 'destructive' });
 		} finally {
 			setIsLoading(false);
 		}
@@ -164,7 +164,7 @@ export function ProfileSection() {
 		try {
 			const emailAddress = user.emailAddresses.find((e) => e.id === pendingEmailId);
 			if (!emailAddress) {
-				toast.error(t('emailNotFound'));
+				toast({ title: t('emailNotFound'), variant: 'destructive' });
 				return;
 			}
 
@@ -174,7 +174,7 @@ export function ProfileSection() {
 			await setPrimaryEmailWithReverification(pendingEmailId);
 
 			posthog.capture('email-verify:success');
-			toast.success(t('emailUpdated'));
+			toast({ title: t('emailUpdated') });
 			setIsEditingEmail(false);
 			setPendingEmailId(null);
 			setVerificationCode('');
@@ -183,7 +183,7 @@ export function ProfileSection() {
 				tags: { action: 'email-verify' },
 			});
 			posthog.capture('error:email-verify');
-			toast.error(t('verificationError'));
+			toast({ title: t('verificationError'), variant: 'destructive' });
 		} finally {
 			setIsVerifying(false);
 		}
@@ -198,12 +198,12 @@ export function ProfileSection() {
 		if (!file || !user) return;
 
 		if (!file.type.startsWith('image/')) {
-			toast.error(t('invalidImageType'));
+			toast({ title: t('invalidImageType'), variant: 'destructive' });
 			return;
 		}
 
 		if (file.size > 10 * 1024 * 1024) {
-			toast.error(t('imageTooLarge'));
+			toast({ title: t('imageTooLarge'), variant: 'destructive' });
 			return;
 		}
 
@@ -211,13 +211,13 @@ export function ProfileSection() {
 		try {
 			await user.setProfileImage({ file });
 			posthog.capture('profile-image:success');
-			toast.success(t('imageUpdated'));
+			toast({ title: t('imageUpdated') });
 		} catch (error) {
 			Sentry.captureException(error, {
 				tags: { action: 'profile-image' },
 			});
 			posthog.capture('error:profile-image');
-			toast.error(t('imageUpdateError'));
+			toast({ title: t('imageUpdateError'), variant: 'destructive' });
 		} finally {
 			setIsUploadingImage(false);
 			if (fileInputRef.current) {
@@ -273,7 +273,7 @@ export function ProfileSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex items-start gap-3">
+				<div className="flex items-center gap-3">
 					<div>
 						<CardTitle>{t('title')}</CardTitle>
 						<CardDescription>{t('description')}</CardDescription>
@@ -332,8 +332,8 @@ export function ProfileSection() {
 
 						{/* Email Section */}
 						<div className="border-t pt-6">
-							<div className="flex flex-col gap-3 flex-wrap sm:flex-row sm:items-center sm:justify-between">
-								<div className="flex items-start gap-3 flex-wrap">
+							<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+								<div className="flex items-center gap-3">
 									<div className="p-2 bg-muted rounded-lg">
 										<EnvelopeIcon className="size-5" />
 									</div>

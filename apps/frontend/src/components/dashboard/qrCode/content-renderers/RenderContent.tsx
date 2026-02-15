@@ -1,6 +1,7 @@
 'use client';
 
 import { memo } from 'react';
+import Link from 'next/link';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { EventDetailsCard } from './EventDetailsCard';
 import { ShortUrlDisplay } from './ShortUrlDisplay';
@@ -16,7 +17,17 @@ const renderUrlContent = (qr: TQrCodeWithRelationsResponseDto) => {
 		return <ShortUrlDisplay shortUrl={qr.shortUrl} destinationUrl={qr.shortUrl.destinationUrl} />;
 	}
 
-	return url;
+	return (
+		<Link
+			href={url}
+			prefetch={false}
+			target="_blank"
+			onClick={(e) => e.stopPropagation()}
+			className="text-muted-foreground hover:underline"
+		>
+			{url}
+		</Link>
+	);
 };
 
 const renderEventContent = (qr: TQrCodeWithRelationsResponseDto) => {

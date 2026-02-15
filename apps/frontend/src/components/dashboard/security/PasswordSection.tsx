@@ -136,7 +136,7 @@ export function PasswordSection() {
 		return (
 			<Card>
 				<CardHeader>
-					<div className="flex items-start gap-3 flex-wrap">
+					<div className="flex items-center gap-3">
 						<div className="p-2 bg-primary/10 rounded-lg">
 							<KeyIcon className="size-5" />
 						</div>
@@ -156,7 +156,7 @@ export function PasswordSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex items-start gap-3 flex-wrap">
+				<div className="flex items-center gap-3">
 					<div className="p-2 bg-primary/10 rounded-lg">
 						<KeyIcon className="size-5" />
 					</div>

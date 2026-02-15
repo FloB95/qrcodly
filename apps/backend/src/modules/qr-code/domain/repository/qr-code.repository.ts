@@ -1,10 +1,17 @@
 import { singleton } from 'tsyringe';
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq, inArray, sql, SQL } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
-import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
+import { type ISqlQueryFindBy, type WhereConditions } from '@/core/interface/repository.interface';
 import qrCode, { TQrCode, TQrCodeWithRelations } from '../entities/qr-code.entity';
-import { shortUrl } from '@/core/db/schemas';
+import { shortUrl, qrCodeTag, tag } from '@/core/db/schemas';
 import { TShortUrl } from '@/modules/url-shortener/domain/entities/short-url.entity';
+import { TQrCodeContentType, type TTag } from '@shared/schemas';
+import { convertWhereConditionToDrizzle } from '@/core/db/utils';
+
+type FindAllParams = ISqlQueryFindBy<TQrCode> & {
+	contentType?: TQrCodeContentType[];
+	tagIds?: string[];
+};
 
 /**
  * Repository for managing QR Code entities.
@@ -17,20 +24,52 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 		super();
 	}
 
-	/**
-	 * Finds all QR codes based on the provided query parameters.
-	 * @param options - Query options.
-	 * @returns A promise that resolves to an array of QR codes.
-	 */
-	async findAll({ limit, page, where }: ISqlQueryFindBy<TQrCode>): Promise<TQrCodeWithRelations[]> {
+	private contentTypeCondition(contentTypes: TQrCodeContentType[]): SQL {
+		return inArray(sql`JSON_UNQUOTE(JSON_EXTRACT(${this.table.content}, '$.type'))`, contentTypes);
+	}
+
+	private tagIdsCondition(tagIds: string[]): SQL {
+		return inArray(
+			this.table.id,
+			this.db
+				.select({ qrCodeId: qrCodeTag.qrCodeId })
+				.from(qrCodeTag)
+				.where(inArray(qrCodeTag.tagId, tagIds)),
+		);
+	}
+
+	private toWhereSql(where: WhereConditions<TQrCode> | SQL<TQrCode>): SQL | undefined {
+		return where instanceof SQL
+			? where
+			: convertWhereConditionToDrizzle<TQrCode>(where, this.table);
+	}
+
+	async findAll({
+		limit,
+		page,
+		where,
+		contentType,
+		tagIds,
+	}: FindAllParams): Promise<TQrCodeWithRelations[]> {
 		const query = this.db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
 
 		query.leftJoin(shortUrl, eq(this.table.id, shortUrl.qrCodeId)).$dynamic();
 
-		// add where conditions
-		if (where) void this.withWhere(query, where);
+		const conditions: SQL[] = [];
+		if (where) {
+			const whereSql = this.toWhereSql(where);
+			if (whereSql) conditions.push(whereSql);
+		}
+		if (contentType?.length) {
+			conditions.push(this.contentTypeCondition(contentType));
+		}
+		if (tagIds?.length) {
+			conditions.push(this.tagIdsCondition(tagIds));
+		}
+		if (conditions.length > 0) {
+			query.where(and(...conditions));
+		}
 
-		// add pagination
 		void this.withPagination(query, page, limit);
 
 		const qrCodes = (await query.execute()) as unknown as {
@@ -38,14 +77,35 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 			short_url: TShortUrl | null;
 		}[];
 
-		const qrCodesWithShortUrl = qrCodes.map((row) => {
+		const qrCodeIds = qrCodes.map((row) => row.qr_code.id);
+		const tagsMap = qrCodeIds.length > 0 ? await this.getTagsForQrCodes(qrCodeIds) : new Map();
+
+		const qrCodesWithRelations = qrCodes.map((row) => {
 			return {
 				...row.qr_code,
 				shortUrl: row.short_url,
+				tags: tagsMap.get(row.qr_code.id) ?? [],
 			} as TQrCodeWithRelations;
 		});
 
-		return qrCodesWithShortUrl;
+		return qrCodesWithRelations;
+	}
+
+	private async getTagsForQrCodes(qrCodeIds: string[]): Promise<Map<string, TTag[]>> {
+		const rows = await this.db
+			.select({ qrCodeId: qrCodeTag.qrCodeId, tag })
+			.from(qrCodeTag)
+			.innerJoin(tag, eq(qrCodeTag.tagId, tag.id))
+			.where(inArray(qrCodeTag.qrCodeId, qrCodeIds))
+			.execute();
+
+		const map = new Map<string, TTag[]>();
+		for (const row of rows) {
+			const existing = map.get(row.qrCodeId) ?? [];
+			existing.push(row.tag as unknown as TTag);
+			map.set(row.qrCodeId, existing);
+		}
+		return map;
 	}
 
 	/**
@@ -53,14 +113,27 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	 * @param id - The ID of the QR code.
 	 * @returns A promise that resolves to the QR code if found, otherwise undefined.
 	 */
-	async findOneById(id: string): Promise<TQrCode | undefined> {
+	async findOneById(id: string): Promise<TQrCodeWithRelations | undefined> {
 		const qrCode = await this.db.query.qrCode.findFirst({
 			where: eq(this.table.id, id),
 			with: {
 				shortUrl: true,
+				share: true,
 			},
 		});
-		return qrCode;
+		if (!qrCode) return undefined;
+
+		const tagRows = await this.db
+			.select({ tag })
+			.from(qrCodeTag)
+			.innerJoin(tag, eq(qrCodeTag.tagId, tag.id))
+			.where(eq(qrCodeTag.qrCodeId, id))
+			.execute();
+
+		return {
+			...qrCode,
+			tags: tagRows.map((r) => r.tag as unknown as TTag),
+		} as unknown as TQrCodeWithRelations;
 	}
 
 	/**
@@ -102,6 +175,38 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 			.execute();
 
 		await this.clearCache();
+	}
+
+	async countTotal(
+		whereConditions?: WhereConditions<TQrCode> | SQL<TQrCode>,
+		contentType?: TQrCodeContentType[],
+		tagIds?: string[],
+	): Promise<number> {
+		if (!contentType?.length && !tagIds?.length) {
+			return super.countTotal(whereConditions);
+		}
+
+		const conditions: SQL[] = [];
+		if (whereConditions) {
+			const whereSql = this.toWhereSql(whereConditions);
+			if (whereSql) conditions.push(whereSql);
+		}
+		if (contentType?.length) {
+			conditions.push(this.contentTypeCondition(contentType));
+		}
+		if (tagIds?.length) {
+			conditions.push(this.tagIdsCondition(tagIds));
+		}
+
+		const query = this.db
+			.select({ count: sql<number>`count(${this.table.id})` })
+			.from(this.table)
+			.$dynamic();
+
+		query.where(and(...conditions));
+
+		const result = await query.execute();
+		return result[0]?.count || 0;
 	}
 }
 

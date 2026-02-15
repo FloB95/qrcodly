@@ -187,7 +187,7 @@ export async function apiRequest<T>(
 }
 
 export function getQrCodeEditLink(lang: SupportedLanguages, qrCodeId: string) {
-	return `/${lang}/collection/qr-code/${qrCodeId}/edit`;
+	return `/${lang}/dashboard/qr-codes/${qrCodeId}/edit`;
 }
 
 export type UserResource = ReturnType<typeof useUser>['user'];

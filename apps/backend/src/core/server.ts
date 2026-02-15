@@ -98,7 +98,7 @@ export class Server {
 		await this.server.register(fastifyCors, {
 			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
 			credentials: true,
-			methods: ['GET', 'POST', 'DELETE', 'PATCH'],
+			methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 			origin: true,
 		});
 

@@ -8,7 +8,7 @@ import {
 	GlobeAltIcon,
 } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -181,14 +181,14 @@ export function SessionsSection() {
 				await sessionToRevoke.revoke();
 				setSessions((prev) => prev.filter((s) => s.id !== sessionId));
 				posthog.capture('session-revoke:success');
-				toast.success(t('sessionRevoked'));
+				toast({ title: t('sessionRevoked') });
 			}
 		} catch (error) {
 			Sentry.captureException(error, {
 				tags: { action: 'session-revoke' },
 			});
 			posthog.capture('error:session-revoke');
-			toast.error(t('sessionRevokeError'));
+			toast({ title: t('sessionRevokeError'), variant: 'destructive' });
 		}
 	};
 
@@ -198,13 +198,13 @@ export function SessionsSection() {
 			await Promise.all(otherSessions.map((s) => s.revoke()));
 			setSessions((prev) => prev.filter((s) => s.id === currentSession?.id));
 			posthog.capture('session-revoke-all:success', { count: otherSessions.length });
-			toast.success(t('allSessionsRevoked'));
+			toast({ title: t('allSessionsRevoked') });
 		} catch (error) {
 			Sentry.captureException(error, {
 				tags: { action: 'session-revoke-all' },
 			});
 			posthog.capture('error:session-revoke-all');
-			toast.error(t('sessionRevokeError'));
+			toast({ title: t('sessionRevokeError'), variant: 'destructive' });
 		}
 	};
 
@@ -213,8 +213,8 @@ export function SessionsSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 flex-wrap">
-					<div className="flex items-start gap-3 flex-wrap">
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+					<div className="flex items-center gap-3">
 						<div className="p-2 bg-primary/10 rounded-lg">
 							<ComputerDesktopIcon className="size-5" />
 						</div>
@@ -226,7 +226,7 @@ export function SessionsSection() {
 					{otherSessionsCount > 0 && (
 						<AlertDialog>
 							<AlertDialogTrigger asChild>
-								<Button variant="outline" size="sm" className="whitespace-normal h-auto xs:h-9">
+								<Button variant="outline" size="sm" className="py-2 whitespace-normal h-auto">
 									{t('revokeAllOther')}
 								</Button>
 							</AlertDialogTrigger>

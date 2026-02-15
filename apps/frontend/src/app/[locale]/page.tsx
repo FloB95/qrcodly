@@ -26,7 +26,7 @@ const FAQSection = dynamic(() => import('@/components/Faq'), {
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
-	if (!SUPPORTED_LANGUAGES.includes(locale as (typeof SUPPORTED_LANGUAGES)[number])) {
+	if (!SUPPORTED_LANGUAGES.includes(locale)) {
 		notFound();
 	}
 
