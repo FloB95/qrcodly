@@ -58,6 +58,18 @@ export const QrCodeFilters = ({
 	const [debouncedTagSearch] = useDebouncedValue(tagSearch, 300);
 	const { data: tagsData } = useListTagsQuery(1, 50, debouncedTagSearch || undefined);
 	const allTags = tagsData?.data;
+	const selectedTagsCacheRef = useRef<Map<string, { id: string; name: string; color: string }>>(
+		new Map(),
+	);
+
+	// Keep cache of selected tags so badges persist during tag search
+	useEffect(() => {
+		if (allTags) {
+			for (const tag of allTags) {
+				selectedTagsCacheRef.current.set(tag.id, { id: tag.id, name: tag.name, color: tag.color });
+			}
+		}
+	}, [allTags]);
 
 	useEffect(() => {
 		filtersRef.current = filters;
@@ -65,6 +77,16 @@ export const QrCodeFilters = ({
 	useEffect(() => {
 		onFiltersChangeRef.current = onFiltersChange;
 	}, [onFiltersChange]);
+
+	// Sync local searchValue when filters.search changes externally (e.g., URL-driven reset)
+	useEffect(() => {
+		const externalSearch = filters.search ?? '';
+		if (externalSearch !== searchValue.trim()) {
+			setSearchValue(externalSearch);
+		}
+		// Only react to external filter changes, not local searchValue edits
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [filters.search]);
 
 	// Debounce search input
 	useEffect(() => {
@@ -314,10 +336,11 @@ export const QrCodeFilters = ({
 			</div>
 
 			{/* Active tag filter badges */}
-			{filters.tagIds && filters.tagIds.length > 0 && allTags && (
+			{filters.tagIds && filters.tagIds.length > 0 && (
 				<div className="flex flex-wrap gap-1.5">
 					{filters.tagIds.map((tagId) => {
-						const tag = allTags.find((t) => t.id === tagId);
+						const tag =
+							allTags?.find((t) => t.id === tagId) ?? selectedTagsCacheRef.current.get(tagId);
 						if (!tag) return null;
 						return (
 							<Badge

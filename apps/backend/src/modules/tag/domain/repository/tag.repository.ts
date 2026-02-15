@@ -67,14 +67,16 @@ class TagRepository extends AbstractRepository<TTag> {
 	}
 
 	async setQrCodeTags(qrCodeId: string, tagIds: string[]): Promise<void> {
-		await this.db.delete(qrCodeTag).where(eq(qrCodeTag.qrCodeId, qrCodeId)).execute();
+		await this.db.transaction(async (tx) => {
+			await tx.delete(qrCodeTag).where(eq(qrCodeTag.qrCodeId, qrCodeId)).execute();
 
-		if (tagIds.length > 0) {
-			await this.db
-				.insert(qrCodeTag)
-				.values(tagIds.map((tagId) => ({ qrCodeId, tagId })))
-				.execute();
-		}
+			if (tagIds.length > 0) {
+				await tx
+					.insert(qrCodeTag)
+					.values(tagIds.map((tagId) => ({ qrCodeId, tagId })))
+					.execute();
+			}
+		});
 	}
 
 	async getQrCodeCountsByTagId(userId: string): Promise<Map<string, number>> {

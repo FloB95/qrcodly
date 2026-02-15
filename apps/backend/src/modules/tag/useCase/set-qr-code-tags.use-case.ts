@@ -4,7 +4,6 @@ import TagRepository from '../domain/repository/tag.repository';
 import { Logger } from '@/core/logging';
 import { type TTag } from '../domain/entities/tag.entity';
 import { type TUser } from '@/core/domain/schema/UserSchema';
-import { UnitOfWork } from '@/core/db/unit-of-work';
 import { SetQrCodeTagsPolicy } from '../policies/set-qr-code-tags.policy';
 import QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
@@ -34,19 +33,17 @@ export class SetQrCodeTagsUseCase implements IBaseUseCase {
 		const policy = new SetQrCodeTagsPolicy(user, tagIds.length);
 		policy.checkAccess();
 
-		return await UnitOfWork.run<TTag[]>(async () => {
-			await this.tagRepository.setQrCodeTags(qrCodeId, tagIds);
-			const tags = await this.tagRepository.findTagsByQrCodeId(qrCodeId);
+		await this.tagRepository.setQrCodeTags(qrCodeId, tagIds);
+		const tags = await this.tagRepository.findTagsByQrCodeId(qrCodeId);
 
-			this.logger.info('tag.qr-code-tags-set', {
-				qrCodeTags: {
-					qrCodeId,
-					tagCount: tagIds.length,
-					userId: user.id,
-				},
-			});
-
-			return tags;
+		this.logger.info('tag.qr-code-tags-set', {
+			qrCodeTags: {
+				qrCodeId,
+				tagCount: tagIds.length,
+				userId: user.id,
+			},
 		});
+
+		return tags;
 	}
 }

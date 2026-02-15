@@ -107,7 +107,7 @@ export default function QrCodesPage() {
 										className="cursor-pointer gap-2"
 									>
 										<ArrowDownTrayIcon className="h-4 w-4" />
-										Export
+										{t('exportBtn')}
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>

@@ -62,6 +62,7 @@
 		"tabTemplates": "Sjablonen",
 		"addQrCodeBtn": "QR-code toevoegen",
 		"bulkImportLabel": "Selecteer inhoudstype",
+		"exportBtn": "Exporteren",
 		"bulkExport": {
 			"title": "QR-codes exporteren",
 			"description": "Download meerdere QR-codes als ZIP-bestand.",

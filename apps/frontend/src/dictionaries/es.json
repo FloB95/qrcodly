@@ -62,6 +62,7 @@
 		"tabTemplates": "Plantillas",
 		"addQrCodeBtn": "Agregar código QR",
 		"bulkImportLabel": "Seleccionar tipo de contenido",
+		"exportBtn": "Exportar",
 		"bulkExport": {
 			"title": "Exportar códigos QR",
 			"description": "Descargar varios códigos QR como archivo ZIP.",
@@ -95,8 +96,8 @@
 		"activeDescription": "Activo: Los usuarios pueden acceder a la página de destino y se registran los escaneos.",
 		"inactiveDescription": "Desactivado: El acceso y el análisis están deshabilitados.",
 		"noData": "Aún no se han recopilado datos.",
-		"viewsInLastXDays": "{count} escaneos en los últimos {days}",
-		"visitorsInLastXDays": "{count} visitantes en los últimos {days}"
+		"viewsInLastXDays": "{count} escaneos en los últimos {days} días",
+		"visitorsInLastXDays": "{count} visitantes en los últimos {days} días"
 	},
 	"chart": {
 		"title": {

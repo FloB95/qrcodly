@@ -62,6 +62,7 @@
 		"tabTemplates": "Шаблоны",
 		"addQrCodeBtn": "Добавить QR-код",
 		"bulkImportLabel": "Выберите тип контента",
+		"exportBtn": "Экспорт",
 		"bulkExport": {
 			"title": "Экспорт QR-кодов",
 			"description": "Скачать несколько QR-кодов в виде ZIP-файла.",

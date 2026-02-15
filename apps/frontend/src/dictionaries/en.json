@@ -62,6 +62,7 @@
 		"tabTemplates": "Templates",
 		"addQrCodeBtn": "Add QR code",
 		"bulkImportLabel": "Select Content Type",
+		"exportBtn": "Export",
 		"bulkExport": {
 			"title": "Bulk Export QR Codes",
 			"description": "Download multiple QR codes as a ZIP file.",

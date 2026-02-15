@@ -106,13 +106,19 @@ export const TagListItem = ({ tag }: TagListItemProps) => {
 							size="icon"
 							className="h-8 w-8"
 							onClick={() => setEditOpen(true)}
+							aria-label={tGeneral('edit')}
 						>
 							<PencilIcon className="size-4" />
 						</Button>
 
 						<AlertDialog>
 							<AlertDialogTrigger asChild>
-								<Button variant="ghost" size="icon" className="h-8 w-8 text-destructive">
+								<Button
+									variant="ghost"
+									size="icon"
+									className="h-8 w-8 text-destructive"
+									aria-label={tGeneral('delete')}
+								>
 									<TrashIcon className="size-4" />
 								</Button>
 							</AlertDialogTrigger>

@@ -62,6 +62,7 @@
 		"tabTemplates": "Modèles",
 		"addQrCodeBtn": "Ajouter un QR code",
 		"bulkImportLabel": "Sélectionner le type de contenu",
+		"exportBtn": "Exporter",
 		"bulkExport": {
 			"title": "Exporter les codes QR",
 			"description": "Télécharger plusieurs codes QR dans un fichier ZIP.",
@@ -193,7 +194,7 @@
 			"scans": "Scans",
 			"created": "Créé",
 			"actions": "Actions",
-			"tags": "Tags"
+			"tags": "Étiquettes"
 		},
 		"storeBtn": "Enregistrer dans la collection",
 		"updateBtn": "Mettre à jour le QR Code",

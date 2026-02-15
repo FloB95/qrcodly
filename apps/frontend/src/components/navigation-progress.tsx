@@ -43,7 +43,13 @@ export function NavigationProgress() {
 		}
 
 		document.addEventListener('click', handleClick, true);
-		return () => document.removeEventListener('click', handleClick, true);
+		return () => {
+			document.removeEventListener('click', handleClick, true);
+			if (intervalRef.current) {
+				clearInterval(intervalRef.current);
+				intervalRef.current = null;
+			}
+		};
 	}, []);
 
 	useEffect(() => {

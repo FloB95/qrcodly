@@ -2,7 +2,7 @@
 
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { EyeIcon } from 'lucide-react';
+import { EyeIcon, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -26,7 +26,16 @@ import type { QrCodeColumnVisibility } from './hooks/useQrCodeColumnVisibility';
 
 const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 	const t = useTranslations();
-	const { data } = useGetViewsFromShortCodeQuery(shortUrl.shortCode);
+	const { data, isLoading } = useGetViewsFromShortCodeQuery(shortUrl.shortCode);
+
+	if (isLoading) {
+		return (
+			<div className="flex items-center gap-1 text-sm">
+				<EyeIcon className="size-3.5 text-muted-foreground" />
+				<Loader2 className="size-3.5 animate-spin text-muted-foreground" />
+			</div>
+		);
+	}
 
 	if (data?.views === undefined) return null;
 
