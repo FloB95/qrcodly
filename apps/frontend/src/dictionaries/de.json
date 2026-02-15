@@ -1175,6 +1175,9 @@
 			"assignErrorTitle": "Fehler beim Aktualisieren der Tags",
 			"error": "Etwas ist schief gelaufen"
 		},
+		"actionsMenu": {
+			"title": "Aktionen"
+		},
 		"table": {
 			"name": "Name",
 			"color": "Farbe",

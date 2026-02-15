@@ -1175,6 +1175,9 @@
 			"assignErrorTitle": "Błąd podczas aktualizacji tagów",
 			"error": "Coś poszło nie tak"
 		},
+		"actionsMenu": {
+			"title": "Akcje"
+		},
 		"table": {
 			"name": "Nazwa",
 			"color": "Kolor",

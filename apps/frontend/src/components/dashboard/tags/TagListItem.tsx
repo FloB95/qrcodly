@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { PencilIcon, TrashIcon, QrCodeIcon } from '@heroicons/react/24/outline';
+import { EllipsisVerticalIcon, QrCodeIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { formatDate } from '@/lib/utils';
 import type { TTagResponseDto } from '@shared/schemas';
@@ -15,7 +15,6 @@ import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -24,6 +23,14 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type TagListItemProps = {
@@ -34,6 +41,7 @@ export const TagListItem = ({ tag }: TagListItemProps) => {
 	const t = useTranslations('tags');
 	const tGeneral = useTranslations('general');
 	const [editOpen, setEditOpen] = useState(false);
+	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 	const deleteMutation = useDeleteTagMutation();
 
 	const handleDelete = async () => {
@@ -99,41 +107,65 @@ export const TagListItem = ({ tag }: TagListItemProps) => {
 				</TableCell>
 
 				{/* Actions */}
-				<TableCell className="w-[100px] py-2">
-					<div className="flex items-center gap-1">
-						<Button
-							variant="ghost"
-							size="icon"
-							className="h-8 w-8"
-							onClick={() => setEditOpen(true)}
-							aria-label={tGeneral('edit')}
-						>
-							<PencilIcon className="size-4" />
-						</Button>
+				<TableCell className="w-[60px] py-2">
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="ghost" className="h-8 w-8 p-0">
+								<EllipsisVerticalIcon className="size-6" />
+								<span className="sr-only">Toggle menu</span>
+							</Button>
+						</DropdownMenuTrigger>
 
-						<AlertDialog>
-							<AlertDialogTrigger asChild>
-								<Button
-									variant="ghost"
-									size="icon"
-									className="h-8 w-8 text-destructive"
-									aria-label={tGeneral('delete')}
+						<DropdownMenuContent align="end">
+							<DropdownMenuLabel>{t('actionsMenu.title')}</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+
+							<DropdownMenuItem className="cursor-pointer" onSelect={() => setEditOpen(true)}>
+								{tGeneral('edit')}
+							</DropdownMenuItem>
+
+							<AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+								<AlertDialogTrigger
+									className="cursor-pointer"
+									asChild
+									onClick={(e) => e.stopPropagation()}
 								>
-									<TrashIcon className="size-4" />
-								</Button>
-							</AlertDialogTrigger>
-							<AlertDialogContent>
-								<AlertDialogHeader>
-									<AlertDialogTitle>{t('deleteConfirmTitle')}</AlertDialogTitle>
-									<AlertDialogDescription>{t('deleteConfirmDescription')}</AlertDialogDescription>
-								</AlertDialogHeader>
-								<AlertDialogFooter>
-									<AlertDialogCancel>{tGeneral('cancel')}</AlertDialogCancel>
-									<AlertDialogAction onClick={handleDelete}>{tGeneral('delete')}</AlertDialogAction>
-								</AlertDialogFooter>
-							</AlertDialogContent>
-						</AlertDialog>
-					</div>
+									<DropdownMenuItem
+										onSelect={(e) => {
+											e.preventDefault();
+											e.stopPropagation();
+										}}
+									>
+										{tGeneral('delete')}
+									</DropdownMenuItem>
+								</AlertDialogTrigger>
+								<AlertDialogContent onClick={(e) => e.stopPropagation()}>
+									<AlertDialogHeader>
+										<AlertDialogTitle>{t('deleteConfirmTitle')}</AlertDialogTitle>
+										<AlertDialogDescription>{t('deleteConfirmDescription')}</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel asChild>
+											<Button variant="secondary" onClick={(e) => e.stopPropagation()}>
+												{tGeneral('cancel')}
+											</Button>
+										</AlertDialogCancel>
+										<Button
+											variant="destructive"
+											onClick={(e) => {
+												e.preventDefault();
+												e.stopPropagation();
+												handleDelete();
+												setShowDeleteConfirm(false);
+											}}
+										>
+											{tGeneral('delete')}
+										</Button>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
+						</DropdownMenuContent>
+					</DropdownMenu>
 				</TableCell>
 			</TableRow>
 
@@ -158,7 +190,7 @@ export const SkeletonTagListItem = () => {
 				<Skeleton className="h-4 w-20" />
 			</TableCell>
 			<TableCell className="py-2">
-				<Skeleton className="h-8 w-16" />
+				<Skeleton className="h-8 w-8 rounded" />
 			</TableCell>
 		</TableRow>
 	);

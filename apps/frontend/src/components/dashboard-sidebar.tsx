@@ -18,6 +18,7 @@ import {
 	SidebarMenuSub,
 	SidebarMenuSubItem,
 	SidebarMenuSubButton,
+	useSidebar,
 } from '@/components/ui/sidebar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
@@ -55,6 +56,7 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 	const { data: templatesData } = useListConfigTemplatesQuery(undefined, 1, 1);
 	const { data: tagsData } = useListTagsQuery(1, 50);
 
+	const { setOpenMobile } = useSidebar();
 	const isQrCodesPage = pathname.includes('/dashboard/qr-codes');
 	const activeTagParam = searchParams.get('tag');
 	const [tagsOpen, setTagsOpen] = useState(true);
@@ -68,6 +70,11 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 			setTagsOpen(true);
 		}
 	}, [isQrCodesPage, activeTagParam]);
+
+	// Close mobile sidebar on navigation
+	useEffect(() => {
+		setOpenMobile(false);
+	}, [pathname, searchParams, setOpenMobile]);
 
 	function isActive(url: string) {
 		return pathname.includes(url);

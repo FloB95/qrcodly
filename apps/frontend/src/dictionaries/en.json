@@ -1175,6 +1175,9 @@
 			"assignErrorTitle": "Error updating tags",
 			"error": "Something went wrong"
 		},
+		"actionsMenu": {
+			"title": "Actions"
+		},
 		"table": {
 			"name": "Name",
 			"color": "Color",

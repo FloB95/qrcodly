@@ -1175,6 +1175,9 @@
 			"assignErrorTitle": "Fout bij het bijwerken van tags",
 			"error": "Er is iets misgegaan"
 		},
+		"actionsMenu": {
+			"title": "Acties"
+		},
 		"table": {
 			"name": "Naam",
 			"color": "Kleur",

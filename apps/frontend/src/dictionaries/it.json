@@ -1175,6 +1175,9 @@
 			"assignErrorTitle": "Errore nell'aggiornamento delle etichette",
 			"error": "Qualcosa è andato storto"
 		},
+		"actionsMenu": {
+			"title": "Azioni"
+		},
 		"table": {
 			"name": "Nome",
 			"color": "Colore",
