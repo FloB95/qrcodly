@@ -94,7 +94,7 @@ function QrCode({ qrCode, additionalStyles = '', shortUrl }: QrCodeProps) {
 					<DynamicBadge />
 					<div className="text-xs ml-4 flex items-center gap-1">
 						<span className="pt-0.5">{createLinkFromShortUrl(shortUrl, { short: true })}</span>
-						<Link href="dashboard/settings/domains">
+						<Link href="/dashboard/settings/domains">
 							<PencilSquareIcon className="size-4 text-black" />
 						</Link>
 					</div>
