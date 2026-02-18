@@ -208,7 +208,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 					/>
 				</div>
 
-				<div className="grid max-h-[400px] grid-cols-6 gap-4 overflow-y-auto mt-4">
+				<div className="grid max-h-[400px] grid-cols-4 gap-3 overflow-y-auto mt-4 xs:grid-cols-6 xs:gap-4">
 					{filteredIcons.map((icon) => (
 						<div
 							key={icon.key}
