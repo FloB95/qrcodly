@@ -17,6 +17,7 @@ import {
 	LinkIcon,
 	MapPinIcon,
 	QrCodeIcon,
+	ShareIcon,
 	ShieldCheckIcon,
 	Squares2X2Icon,
 	StarIcon,
@@ -366,35 +367,36 @@ function BulkOperationsMockup() {
 
 function ContentTypesMockup() {
 	const types = [
-		{ icon: <LinkIcon className="h-4 w-4" />, label: 'URL' },
-		{ icon: <DocumentTextIcon className="h-4 w-4" />, label: 'Text' },
-		{ icon: <WifiIcon className="h-4 w-4" />, label: 'WiFi' },
-		{ icon: <IdentificationIcon className="h-4 w-4" />, label: 'vCard' },
-		{ icon: <EnvelopeIcon className="h-4 w-4" />, label: 'Email' },
-		{ icon: <MapPinIcon className="h-4 w-4" />, label: 'Location' },
-		{ icon: <CalendarIcon className="h-4 w-4" />, label: 'Event' },
-		{ icon: <BanknotesIcon className="h-4 w-4" />, label: 'EPC' },
+		{ icon: <LinkIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, label: 'URL' },
+		{ icon: <DocumentTextIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, label: 'Text' },
+		{ icon: <WifiIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, label: 'WiFi' },
+		{ icon: <IdentificationIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, label: 'vCard' },
+		{ icon: <EnvelopeIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, label: 'Email' },
+		{ icon: <MapPinIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, label: 'Location' },
+		{ icon: <CalendarIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, label: 'Event' },
+		{ icon: <BanknotesIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, label: 'EPC' },
+		{ icon: <ShareIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />, label: 'Social' },
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 h-full flex flex-col">
-				<div className="flex items-center gap-2 mb-3 sm:mb-4">
+			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-3 sm:p-6 h-full flex flex-col">
+				<div className="flex items-center gap-2 mb-2 sm:mb-4">
 					<Squares2X2Icon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
 					<span className="text-xs sm:text-sm font-medium text-slate-600">Content Types</span>
 				</div>
 
-				<div className="flex-1 grid grid-cols-4 gap-2 sm:gap-3 content-center">
+				<div className="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2.5 content-center">
 					{types.map((type) => (
 						<motion.div
 							key={type.label}
-							className="flex flex-col items-center gap-1.5 bg-slate-50 rounded-lg sm:rounded-xl p-2 sm:p-3"
+							className="flex flex-col items-center justify-center gap-0.5 sm:gap-1.5 bg-slate-50 rounded-lg sm:rounded-xl p-1 sm:p-2.5"
 							initial={{ opacity: 0, scale: 0.9 }}
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.3 }}
 						>
 							<div className="text-slate-600">{type.icon}</div>
-							<span className="text-[9px] sm:text-[10px] font-medium text-slate-600">
+							<span className="text-[7px] sm:text-[10px] font-medium text-slate-600">
 								{type.label}
 							</span>
 						</motion.div>

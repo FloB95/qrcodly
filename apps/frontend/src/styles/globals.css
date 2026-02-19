@@ -9,9 +9,10 @@
 @utility scrollbar-hide {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
-	&::-webkit-scrollbar {
-		display: none;
-	}
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
 }
 
 @theme {
@@ -81,7 +82,7 @@
 	--ring: oklch(0.705 0.015 286.067);
 	--chart-1: #2563eb;
 	--chart-2: #60a5fa;
-	--sidebar: oklch(0.985 0 0);
+	--sidebar: oklch(1 0 0);
 	--sidebar-foreground: oklch(0.141 0.005 285.823);
 	--sidebar-primary: oklch(0.21 0.006 285.885);
 	--sidebar-primary-foreground: oklch(0.985 0 0);
@@ -123,6 +124,23 @@
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.552 0.016 285.938);
+}
+
+:root {
+	--color-fd-accent: hsl(0, 0%, 100%);
+	--color-fd-border: hsl(0, 0%, 0%);
+}
+
+#nd-page {
+	padding-bottom: 5rem;
+}
+
+#nd-page a {
+	--border: transparent;
+}
+
+#nd-page a:hover {
+	--border: hsl(0, 0%, 0%);
 }
 
 @layer base {

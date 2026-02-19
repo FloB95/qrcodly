@@ -70,6 +70,15 @@ export default function Header({
 							{t('featuresBtn')}
 						</Link>
 						<Link
+							href="/plans"
+							className={cn(
+								'hidden lg:block h-10 px-2 py-2',
+								isPlansActive && 'font-semibold text-black',
+							)}
+						>
+							{t('plansBtn')}
+						</Link>
+						<Link
 							href="/docs"
 							target="blank"
 							locale={'en'}
@@ -79,15 +88,6 @@ export default function Header({
 							)}
 						>
 							Docs
-						</Link>
-						<Link
-							href="/plans"
-							className={cn(
-								'hidden lg:block h-10 px-2 py-2',
-								isPlansActive && 'font-semibold text-black',
-							)}
-						>
-							{t('plansBtn')}
 						</Link>
 						<SignedOut>
 							<SignInButton>
@@ -171,20 +171,6 @@ export default function Header({
 						</motion.div>
 						<motion.div variants={itemVariants}>
 							<Link
-								href="/plans"
-								className={buttonVariants({
-									variant: 'ghost',
-									className: cn(
-										'w-full justify-start text-foreground font-semibold',
-										isPlansActive && 'bg-accent',
-									),
-								})}
-							>
-								{t('plansBtn')}
-							</Link>
-						</motion.div>
-						<motion.div variants={itemVariants}>
-							<Link
 								href="/docs"
 								target="blank"
 								locale={'en'}
@@ -197,6 +183,20 @@ export default function Header({
 								})}
 							>
 								Docs
+							</Link>
+						</motion.div>
+						<motion.div variants={itemVariants}>
+							<Link
+								href="/plans"
+								className={buttonVariants({
+									variant: 'ghost',
+									className: cn(
+										'w-full justify-start text-foreground font-semibold',
+										isPlansActive && 'bg-accent',
+									),
+								})}
+							>
+								{t('plansBtn')}
 							</Link>
 						</motion.div>
 						<SignedIn>

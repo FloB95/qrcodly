@@ -29,8 +29,14 @@ import {
 import { PlusIcon, QrCodeIcon } from '@heroicons/react/24/outline';
 import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
+import type { TQrCodeContentType } from '@shared/schemas';
 
-export const QrCodeList = () => {
+type QrCodeListProps = {
+	onBulkImport?: (contentType: TQrCodeContentType) => void;
+	onBulkExport?: () => void;
+};
+
+export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 	const t = useTranslations();
 	const router = useRouter();
 	const searchParams = useSearchParams();
@@ -132,6 +138,8 @@ export const QrCodeList = () => {
 						onFiltersChange={handleFiltersChange}
 						columnVisibility={visibility}
 						onToggleColumn={toggleColumn}
+						onBulkImport={onBulkImport}
+						onBulkExport={onBulkExport}
 					/>
 				)}
 				<Empty className="sm:my-12">
@@ -163,6 +171,8 @@ export const QrCodeList = () => {
 				onFiltersChange={handleFiltersChange}
 				columnVisibility={visibility}
 				onToggleColumn={toggleColumn}
+				onBulkImport={onBulkImport}
+				onBulkExport={onBulkExport}
 			/>
 			<div className="overflow-hidden rounded-lg border">
 				<Table>
