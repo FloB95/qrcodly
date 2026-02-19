@@ -1,4 +1,3 @@
-// app/docs/layout.tsx
 import '@/styles/globals.css';
 import Header from '@/components/Header';
 import { Inter } from 'next/font/google';
@@ -7,46 +6,32 @@ import { NextIntlClientProvider } from 'next-intl';
 import Footer from '@/components/Footer';
 import Container from '@/components/ui/container';
 import Providers from '@/components/provider';
+import type { Metadata } from 'next';
 
-const openSans = Inter({
+const inter = Inter({
 	subsets: ['latin'],
 	variable: '--font-sans',
 });
 
-export default function Layout({ children }: LayoutProps<'/docs'>) {
+export const metadata: Metadata = {
+	openGraph: {
+		images: ['https://www.qrcodly.de/og-image.webp'],
+		siteName: 'QRcodly',
+	},
+	icons: {
+		apple: '/apple-touch-icon.png',
+		icon: [
+			{ url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+			{ url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+		],
+	},
+	manifest: '/site.webmanifest',
+};
+
+export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en" className="light" suppressHydrationWarning>
-			<head>
-				{/* SEO Meta-Tags */}
-				<title>QRcodly Documentation – QR Code API & Integration Guide</title>
-				<meta
-					name="description"
-					content="Official QRcodly documentation for generating and managing QR codes via API. Learn how to create, customize, and integrate QR codes into your applications."
-				/>
-				<meta
-					name="keywords"
-					content="QR code API, QRcodly, generate QR codes, QR code integration, QR code documentation, API key, QR code tutorial, QR code developer guide"
-				/>
-
-				{/* OpenGraph */}
-				<meta
-					property="og:title"
-					content="QRcodly Documentation – QR Code API & Integration Guide"
-				/>
-				<meta
-					property="og:description"
-					content="Official QRcodly documentation for generating and managing QR codes via API. Learn how to create, customize, and integrate QR codes into your applications."
-				/>
-				<meta property="og:image" content="https://www.qrcodly.de/og-image.webp" />
-
-				{/* Favicons */}
-				<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-				<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-				<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-				<link rel="manifest" href="/site.webmanifest" />
-			</head>
-
-			<body className={`font-sans ${openSans.variable}`}>
+			<body className={`font-sans ${inter.variable}`}>
 				<NextIntlClientProvider>
 					<Providers locale={'en'}>
 						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">

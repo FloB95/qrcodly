@@ -83,13 +83,12 @@ export default function Footer() {
 								</Link>
 							</li>
 							<li>
-								<Link
+								<a
 									href="/docs"
-									locale={'en'}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('docs')}
-								</Link>
+								</a>
 							</li>
 							<li>
 								<a
@@ -109,20 +108,20 @@ export default function Footer() {
 						<h3 className="text-sm font-semibold text-black mb-4">{t('legal')}</h3>
 						<ul className="space-y-3">
 							<li>
-								<Link
+								<a
 									href="/imprint"
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('legalNotice')}
-								</Link>
+								</a>
 							</li>
 							<li>
-								<Link
+								<a
 									href="/privacy-policy"
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('privacyPolicy')}
-								</Link>
+								</a>
 							</li>
 							<li>
 								<a
