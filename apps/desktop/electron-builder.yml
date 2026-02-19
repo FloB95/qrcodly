@@ -1,0 +1,59 @@
+appId: de.qrcodly.desktop
+productName: QRcodly
+copyright: Copyright ${author}
+
+directories:
+  output: release
+  buildResources: resources
+
+files:
+  - out/**/*
+  - resources/**/*
+
+mac:
+  category: public.app-category.productivity
+  icon: resources/icon.icns
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: resources/entitlements.mac.plist
+  entitlementsInherit: resources/entitlements.mac.plist
+  target:
+    - target: dmg
+      arch:
+        - arm64
+        - x64
+    - target: zip
+      arch:
+        - arm64
+        - x64
+  artifactName: '${productName}-${version}-mac-${arch}.${ext}'
+
+afterSign: scripts/notarize.cjs
+
+dmg:
+  sign: false
+
+win:
+  icon: resources/icon.ico
+  target:
+    - target: nsis
+      arch:
+        - x64
+  artifactName: '${productName}-${version}-win-${arch}.${ext}'
+
+nsis:
+  oneClick: true
+  perMachine: false
+  allowToChangeInstallationDirectory: false
+  deleteAppDataOnUninstall: false
+
+protocols:
+  - name: QRcodly
+    schemes:
+      - qrcodly
+
+publish:
+  provider: github
+  owner: FloB95
+  repo: qrcodly
+  releaseType: release

@@ -9,7 +9,7 @@ import {
 	ArrowUpTrayIcon,
 	Cog6ToothIcon,
 } from '@heroicons/react/24/outline';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { TemplateList } from './templates/TemplateList';
 import Link from 'next/link';
 import { Button, buttonVariants } from '../ui/button';
@@ -33,6 +33,8 @@ import { BULK_ENABLED_CONTENT_TYPES, getContentTypeConfig } from '@/lib/content-
 
 export const ListSection = () => {
 	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
 	const t = useTranslations('collection');
 	const tContent = useTranslations('generator.contentSwitch');
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -53,9 +55,10 @@ export const ListSection = () => {
 				value={activeTab}
 				onValueChange={(value) => {
 					setActiveTab(value);
-					const url = new URL(window.location.href);
-					url.searchParams.delete('page');
-					router.replace(url.pathname + (url.search ? url.search : ''), { scroll: false });
+					const params = new URLSearchParams(searchParams.toString());
+					params.delete('page');
+					const search = params.toString();
+					router.replace(pathname + (search ? '?' + search : ''), { scroll: false });
 				}}
 			>
 				<div className="flex items-center">

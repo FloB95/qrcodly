@@ -20,7 +20,11 @@
 		"frontend:build": "pnpm run build:shared-package && cd apps/frontend && pnpm build",
 		"frontend:start": "cd apps/frontend && pnpm run start",
 		"frontend:dev": "cd apps/frontend && pnpm run dev",
-		"start:dev": "pnpm run backend:dev & pnpm run frontend:dev"
+		"start:dev": "pnpm run backend:dev & pnpm run frontend:dev",
+		"desktop:dev": "cd apps/desktop && pnpm run dev",
+		"desktop:build": "cd apps/desktop && pnpm run build",
+		"desktop:package": "cd apps/desktop && pnpm run build && pnpm run package",
+		"desktop:package:dir": "cd apps/desktop && pnpm run build && pnpm run package:dir"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.14",

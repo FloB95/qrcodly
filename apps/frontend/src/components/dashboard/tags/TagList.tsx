@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/pagination';
 import { useState, useMemo, useEffect } from 'react';
 import { getPageNumbers } from '@/lib/utils';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import {
 	Empty,
 	EmptyContent,
@@ -33,6 +33,7 @@ export const TagList = () => {
 	const t = useTranslations('tags');
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const pathname = usePathname();
 
 	const pageParam = Number(searchParams.get('page')) || 1;
 	const [currentPage, setCurrentPage] = useState(pageParam);
@@ -41,14 +42,18 @@ export const TagList = () => {
 	const [debouncedSearch] = useDebouncedValue(searchValue, 400);
 
 	useEffect(() => {
-		const url = new URL(window.location.href);
+		const pageInUrl = Number(searchParams.get('page')) || 1;
+		if (pageInUrl === currentPage) return;
+
+		const params = new URLSearchParams(searchParams.toString());
 		if (currentPage === 1) {
-			url.searchParams.delete('page');
+			params.delete('page');
 		} else {
-			url.searchParams.set('page', String(currentPage));
+			params.set('page', String(currentPage));
 		}
-		router.replace(url.pathname + url.search, { scroll: false });
-	}, [currentPage, router]);
+		const search = params.toString();
+		router.replace(pathname + (search ? '?' + search : ''), { scroll: false });
+	}, [currentPage, pathname, router, searchParams]);
 
 	useEffect(() => {
 		if (pageParam !== currentPage) {
