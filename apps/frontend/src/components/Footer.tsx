@@ -34,6 +34,8 @@ export default function Footer() {
 							href="https://github.com/FloB95/qrcodly"
 							target="_blank"
 							rel="noopener noreferrer"
+							title="QRcodly on GitHub"
+							aria-label="QRcodly on GitHub"
 							className="inline-block mt-4 text-gray-600 hover:text-gray-900 transition-colors"
 						>
 							<GitHubIcon className="h-5 w-5" aria-hidden="true" />
@@ -48,6 +50,8 @@ export default function Footer() {
 							<li>
 								<Link
 									href="/features"
+									title={t('features')}
+									aria-label={t('features')}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('features')}
@@ -56,6 +60,8 @@ export default function Footer() {
 							<li>
 								<Link
 									href="/plans"
+									title={t('pricing')}
+									aria-label={t('pricing')}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('pricing')}
@@ -71,6 +77,8 @@ export default function Footer() {
 							<li>
 								<Link
 									href="/#faq"
+									title={t('faqLink')}
+									aria-label={t('faqLink')}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 									onClick={(e) => {
 										if (pathname === '/') {
@@ -85,6 +93,8 @@ export default function Footer() {
 							<li>
 								<a
 									href="/docs"
+									title={t('docs')}
+									aria-label={t('docs')}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('docs')}
@@ -95,6 +105,8 @@ export default function Footer() {
 									href="https://github.com/FloB95/qrcodly"
 									target="_blank"
 									rel="noopener noreferrer"
+									title={t('github')}
+									aria-label={t('github')}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('github')}
@@ -110,6 +122,8 @@ export default function Footer() {
 							<li>
 								<a
 									href="/imprint"
+									title={t('legalNotice')}
+									aria-label={t('legalNotice')}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('legalNotice')}
@@ -118,6 +132,8 @@ export default function Footer() {
 							<li>
 								<a
 									href="/privacy-policy"
+									title={t('privacyPolicy')}
+									aria-label={t('privacyPolicy')}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('privacyPolicy')}
@@ -126,6 +142,8 @@ export default function Footer() {
 							<li>
 								<a
 									href="mailto:info@qrcodly.de"
+									title={t('contact')}
+									aria-label={t('contact')}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('contact')}

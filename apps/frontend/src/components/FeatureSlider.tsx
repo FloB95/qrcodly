@@ -214,11 +214,7 @@ export function FeatureSlider() {
 						<button
 							onClick={() => scroll('left')}
 							disabled={!canScrollLeft}
-							className={`flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all ${
-								canScrollLeft
-									? 'border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white cursor-pointer'
-									: 'border-slate-300 text-slate-300 cursor-default'
-							}`}
+							className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white cursor-pointer transition-all disabled:pointer-events-none disabled:opacity-50"
 							aria-label="Scroll left"
 						>
 							<ChevronLeftIcon className="h-5 w-5 stroke-2" />
@@ -226,11 +222,7 @@ export function FeatureSlider() {
 						<button
 							onClick={() => scroll('right')}
 							disabled={!canScrollRight}
-							className={`flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all ${
-								canScrollRight
-									? 'border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white cursor-pointer'
-									: 'border-slate-300 text-slate-300 cursor-default'
-							}`}
+							className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white cursor-pointer transition-all disabled:pointer-events-none disabled:opacity-50"
 							aria-label="Scroll right"
 						>
 							<ChevronRightIcon className="h-5 w-5 stroke-2" />

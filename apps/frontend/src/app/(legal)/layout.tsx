@@ -36,7 +36,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					<Providers locale={'en'}>
 						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
 							<Header hideLanguageNav />
-							<Container className="mt-22 px-6 sm:px-20 lg:px-40 mb-10">{children}</Container>
+							<Container className="mt-22 px-6 sm:px-20 lg:px-40 mb-20">{children}</Container>
 							<Footer />
 						</main>
 					</Providers>
