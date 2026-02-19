@@ -91,14 +91,16 @@ export default function Footer() {
 								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									href="/docs"
+									target="_blank"
+									locale={'en'}
 									title={t('docs')}
 									aria-label={t('docs')}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('docs')}
-								</a>
+								</Link>
 							</li>
 							<li>
 								<a

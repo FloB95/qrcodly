@@ -190,7 +190,9 @@
 			"secureFeature": {
 				"headline": "Twoje dane pozostają u nas",
 				"subHeadline": "QRcodly przechowuje wszystkie dane lokalnie w Niemczech – bez udostępniania zewnętrznym usługom. Clerk używamy wyłącznie do uwierzytelniania."
-			}
+			},
+			"scrollLeft": "Przewiń w lewo",
+			"scrollRight": "Przewiń w prawo"
 		}
 	},
 	"shortUrl": {

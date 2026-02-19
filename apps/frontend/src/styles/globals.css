@@ -126,21 +126,18 @@
 	--sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
-:root {
-	--color-fd-accent: hsl(0, 0%, 100%);
-	--color-fd-border: hsl(0, 0%, 0%);
-}
-
 #nd-page {
+	--color-fd-accent: oklch(1 0 0);
+	--color-fd-border: oklch(0 0 0);
 	padding-bottom: 5rem;
 }
 
 #nd-page a {
-	--border: transparent;
+	border-color: transparent;
 }
 
 #nd-page a:hover {
-	--border: hsl(0, 0%, 0%);
+	border-color: oklch(0 0 0);
 }
 
 @layer base {

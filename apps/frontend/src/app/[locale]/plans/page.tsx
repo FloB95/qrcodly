@@ -3,7 +3,8 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { PricingCard } from '@/components/plans/PricingCard';
 import Container from '@/components/ui/container';
-import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { env } from '@/env';
+import { routing, SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import type { PlanId } from '@/lib/plan.config';
 import type { DefaultPageParams } from '@/types/page';
 import { auth, clerkClient } from '@clerk/nextjs/server';
@@ -16,10 +17,20 @@ export async function generateMetadata({ params }: DefaultPageParams): Promise<M
 		return {};
 	}
 	const t = await getTranslations({ locale, namespace: 'plans' });
+	const baseUrl = env.NEXT_PUBLIC_FRONTEND_URL;
 
 	return {
 		title: t('metaTitle'),
 		description: t('metaDescription'),
+		alternates: {
+			canonical: `${baseUrl}/${locale}/plans`,
+			languages: {
+				'x-default': `${baseUrl}/plans`,
+				...Object.fromEntries(
+					routing.locales.filter((l) => l !== locale).map((l) => [l, `${baseUrl}/${l}/plans`]),
+				),
+			},
+		},
 	};
 }
 

@@ -128,7 +128,7 @@
 		"docs": "Документация",
 		"github": "GitHub",
 		"legal": "Правовая информация",
-		"legalNotice": "Правовая информация",
+		"legalNotice": "Правовое уведомление",
 		"privacyPolicy": "Политика конфиденциальности",
 		"contact": "Контакт",
 		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
@@ -190,7 +190,9 @@
 			"secureFeature": {
 				"headline": "Ваши данные остаются с нами",
 				"subHeadline": "QRcodly хранит все данные локально в Германии – без передачи внешним сервисам. Clerk используется только для аутентификации."
-			}
+			},
+			"scrollLeft": "Прокрутить влево",
+			"scrollRight": "Прокрутить вправо"
 		}
 	},
 	"shortUrl": {

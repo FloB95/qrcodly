@@ -190,7 +190,9 @@
 			"secureFeature": {
 				"headline": "Je gegevens blijven bij ons",
 				"subHeadline": "QRcodly host alle gegevens lokaal in Duitsland – geen doorsturing naar externe diensten. Alleen voor authenticatie gebruiken we Clerk."
-			}
+			},
+			"scrollLeft": "Naar links scrollen",
+			"scrollRight": "Naar rechts scrollen"
 		}
 	},
 	"shortUrl": {
@@ -1301,11 +1303,11 @@
 		"cta": {
 			"title": "Klaar om te beginnen?",
 			"subtitle": "Maak je eerste QR-code in seconden. Voor altijd gratis, geen creditcard nodig.",
-			"button": "Maak Nu een QR-code"
+			"button": "Maak nu een QR-code"
 		}
 	},
 	"notFound": {
 		"message": "Oeps! De pagina die je zoekt bestaat niet.",
-		"goHome": "Terug naar home"
+		"goHome": "Terug naar de startpagina"
 	}
 }

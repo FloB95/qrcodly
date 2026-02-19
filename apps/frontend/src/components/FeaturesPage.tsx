@@ -3,7 +3,7 @@ import { CheckIcon } from '@heroicons/react/24/outline';
 import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { CtaSection } from './CtaSection';
-import { AnimateOnLoad, AnimateOnScroll } from './features/AnimateOnScroll';
+import { AnimateOnLoad, AnimateOnScroll } from '@/components/features/AnimateOnScroll';
 import {
 	AnalyticsMockup,
 	BulkOperationsMockup,
@@ -14,7 +14,7 @@ import {
 	SecurityMockup,
 	TagsMockup,
 	TemplatesMockup,
-} from './features/FeatureMockups';
+} from '@/components/features/FeatureMockups';
 
 /* ─── Feature Detail Section ──────────────────────────── */
 

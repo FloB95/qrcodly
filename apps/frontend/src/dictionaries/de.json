@@ -131,7 +131,7 @@
 		"legalNotice": "Impressum",
 		"privacyPolicy": "Datenschutzrichtlinie",
 		"contact": "Kontakt",
-		"qrCodeCopyright": "QR Code ist eine eingetragene Marke von DENSO WAVE INCORPORATED"
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -154,13 +154,13 @@
 			"headline": "Übersicht der wichtigsten Funktionen",
 			"subHeadline": "Mit QRcodly kannst du QR Codes kostenlos erstellen, bearbeiten, verwalten und analysieren – alles an einem Ort.",
 			"allFeatures": "Alle Funktionen",
-			"emailBtn": "Email us",
+			"emailBtn": "Kontaktiere uns",
 			"editFeature": {
 				"headline": "QR Codes jederzeit bearbeiten",
 				"subHeadline": "Erstelle QR Codes kostenlos und passe die Ziel-URL auch nach dem Druck jederzeit an."
 			},
 			"statisticFeature": {
-				"headline": "Detalierte QR Code-Statistiken in Echtzeit",
+				"headline": "Detaillierte QR Code-Statistiken in Echtzeit",
 				"subHeadline": "Behalte im Blick, wie oft und von wo aus deine QR Codes gescannt werden."
 			},
 			"overviewFeature": {
@@ -190,7 +190,9 @@
 			"secureFeature": {
 				"headline": "Deine Daten bleiben bei uns",
 				"subHeadline": "QRcodly hostet alle Daten lokal in Deutschland – keine Weitergabe an externe Dienste. Einzig für die Authentifizierung nutzen wir Clerk."
-			}
+			},
+			"scrollLeft": "Nach links scrollen",
+			"scrollRight": "Nach rechts scrollen"
 		}
 	},
 	"shortUrl": {

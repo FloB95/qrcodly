@@ -80,7 +80,7 @@ export default function Header({
 						</Link>
 						<Link
 							href="/docs"
-							target="blank"
+							target="_blank"
 							locale={'en'}
 							className={cn(
 								'hidden lg:block h-10 px-2 py-2',
@@ -172,7 +172,7 @@ export default function Header({
 						<motion.div variants={itemVariants}>
 							<Link
 								href="/docs"
-								target="blank"
+								target="_blank"
 								locale={'en'}
 								className={buttonVariants({
 									variant: 'ghost',

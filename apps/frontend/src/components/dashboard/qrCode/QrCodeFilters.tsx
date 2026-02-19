@@ -357,7 +357,7 @@ export const QrCodeFilters = ({
 										return (
 											<DropdownMenuItem
 												key={contentType}
-												onClick={() => onBulkImport(contentType)}
+												onClick={() => onBulkImport?.(contentType)}
 												className="cursor-pointer"
 											>
 												{Icon && <Icon className="mr-2 h-4 w-4" />}
@@ -367,7 +367,7 @@ export const QrCodeFilters = ({
 									})}
 								</DropdownMenuSubContent>
 							</DropdownMenuSub>
-							<DropdownMenuItem onClick={onBulkExport} className="cursor-pointer gap-2">
+							<DropdownMenuItem onClick={() => onBulkExport?.()} className="cursor-pointer gap-2">
 								<ArrowDownTrayIcon className="h-4 w-4" />
 								{tCollection('exportBtn')}
 							</DropdownMenuItem>

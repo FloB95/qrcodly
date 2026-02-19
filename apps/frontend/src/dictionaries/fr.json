@@ -190,7 +190,9 @@
 			"secureFeature": {
 				"headline": "Vos données restent chez nous",
 				"subHeadline": "QRcodly héberge toutes les données localement en Allemagne – sans les partager avec des services externes. Nous utilisons uniquement Clerk pour l’authentification."
-			}
+			},
+			"scrollLeft": "Défiler vers la gauche",
+			"scrollRight": "Défiler vers la droite"
 		}
 	},
 	"shortUrl": {
