@@ -1,11 +1,27 @@
+import { CtaSection } from '@/components/CtaSection';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { PricingCard } from '@/components/plans/PricingCard';
 import Container from '@/components/ui/container';
+import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import type { PlanId } from '@/lib/plan.config';
 import type { DefaultPageParams } from '@/types/page';
 import { auth, clerkClient } from '@clerk/nextjs/server';
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+
+export async function generateMetadata({ params }: DefaultPageParams): Promise<Metadata> {
+	const { locale } = await params;
+	if (!SUPPORTED_LANGUAGES.includes(locale)) {
+		return {};
+	}
+	const t = await getTranslations({ locale, namespace: 'plans' });
+
+	return {
+		title: t('metaTitle'),
+		description: t('metaDescription'),
+	};
+}
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
@@ -39,6 +55,8 @@ export default async function Page({ params }: DefaultPageParams) {
 					))}
 				</div>
 			</Container>
+
+			<CtaSection />
 
 			<Footer />
 		</>

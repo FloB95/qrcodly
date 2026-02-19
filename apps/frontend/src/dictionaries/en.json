@@ -1138,6 +1138,8 @@
 		}
 	},
 	"plans": {
+		"metaTitle": "QR Code Generator Pricing - Free & Pro Plans",
+		"metaDescription": "Free QR code generator with unlimited codes, custom styling & analytics. Upgrade to Pro for custom domains, bulk imports & priority support. No hidden costs.",
 		"title": "Fair. Transparent. No hidden costs.",
 		"subtitle": "QRcodly is free to use – no trial periods, no automatic subscriptions. The Pro plan only covers features that require additional infrastructure.",
 		"annual": "Annual",
@@ -1217,6 +1219,8 @@
 		}
 	},
 	"featuresPage": {
+		"metaTitle": "Free QR Code Generator Features",
+		"metaDescription": "Explore all QR code generator features: dynamic QR codes, scan analytics, custom designs with logos, bulk creation, templates, and support for URLs, WiFi & vCards.",
 		"badge": "Features",
 		"title": "Everything You Need for Professional QR Codes",
 		"subtitle": "From creation to analytics — QRcodly gives you powerful tools to create, manage, and track your QR codes.",

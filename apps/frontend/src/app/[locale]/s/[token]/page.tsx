@@ -19,17 +19,17 @@ export async function generateMetadata({ params }: PublicSharePageProps): Promis
 
 	try {
 		const sharedQrCode = await getPublicSharedQrCode(token, env.NEXT_PUBLIC_API_URL);
-		const title = sharedQrCode.name
+		const titleText = sharedQrCode.name
 			? `Shared QR Code ${sharedQrCode.name} | QRcodly`
 			: 'Shared QR Code | QRcodly';
 
 		return {
-			title,
+			title: { absolute: titleText },
 			robots: 'noindex, nofollow',
 		};
 	} catch {
 		return {
-			title: 'Shared QR Code | QRcodly',
+			title: { absolute: 'Shared QR Code | QRcodly' },
 			robots: 'noindex, nofollow',
 		};
 	}

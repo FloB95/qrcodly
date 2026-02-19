@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: DefaultPageParams): Promise<M
 	const t = await getTranslations({ locale, namespace: 'featuresPage' });
 
 	return {
-		title: `${t('badge')} - QRcodly`,
-		description: t('subtitle'),
+		title: t('metaTitle'),
+		description: t('metaDescription'),
 	};
 }
 

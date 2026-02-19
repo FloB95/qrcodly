@@ -1142,6 +1142,8 @@
 		}
 	},
 	"plans": {
+		"metaTitle": "Générateur de QR Code Tarifs – Gratuit & Pro",
+		"metaDescription": "Générateur de QR codes gratuit avec codes illimités, design personnalisé & analyses. Pro pour domaines personnalisés, import en masse & support prioritaire. Sans frais cachés.",
 		"title": "Équitable. Transparent. Sans frais cachés.",
 		"subtitle": "QRcodly est gratuit – pas de période d'essai, pas d'abonnement automatique. Le plan Pro couvre uniquement les fonctionnalités nécessitant une infrastructure supplémentaire.",
 		"annual": "Annuel",
@@ -1221,6 +1223,8 @@
 		}
 	},
 	"featuresPage": {
+		"metaTitle": "Générateur de QR Code Gratuit – Fonctionnalités",
+		"metaDescription": "Découvrez toutes les fonctionnalités du générateur de QR codes : QR codes dynamiques, analyses de scans, designs personnalisés avec logo, création en masse, modèles et support pour URLs, WiFi & vCards.",
 		"badge": "Fonctionnalités",
 		"title": "Tout ce dont vous avez besoin pour des QR codes professionnels",
 		"subtitle": "De la création à l'analyse — QRcodly vous offre des outils puissants pour créer, gérer et suivre vos QR codes.",
