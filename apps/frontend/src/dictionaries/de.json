@@ -33,7 +33,9 @@
 			"unlimited": "Unbegrenzte QR Codes",
 			"noSignup": "Kostenlose dynamische QR Codes",
 			"noWatermark": "Keine Wasserzeichen"
-		}
+		},
+		"ctaPrimary": "QR Code erstellen",
+		"ctaSecondary": "Entdecke die Möglichkeiten"
 	},
 	"metadata": {
 		"title": "Kostenloser QR Code Generator - QR Codes Online Erstellen | QRcodly",
@@ -63,6 +65,7 @@
 		"addQrCodeBtn": "QR Code hinzufügen",
 		"bulkImportLabel": "Inhaltstyp auswählen",
 		"exportBtn": "Exportieren",
+		"importExportLabel": "Import & Export",
 		"bulkExport": {
 			"title": "QR Codes exportieren",
 			"description": "Mehrere QR Codes als ZIP-Datei herunterladen.",
@@ -85,7 +88,8 @@
 			"clearAll": "Löschen",
 			"customizeColumns": "Spalten anpassen",
 			"columns": "Spalten",
-			"toggleColumns": "Spalten ein-/ausblenden"
+			"toggleColumns": "Spalten ein-/ausblenden",
+			"actions": "Aktionen"
 		}
 	},
 	"analytics": {
@@ -111,13 +115,23 @@
 		"collectionBtn": "Meine Sammlung",
 		"signInBtn": "Anmelden",
 		"settingsBtn": "Einstellungen",
+		"featuresBtn": "Funktionen",
 		"plansBtn": "Preise"
 	},
 	"footer": {
-		"qrCodeCopyright": "QR Code ist eine eingetragene Marke von DENSO WAVE INCORPORATED",
+		"tagline": "Die Open-Source QR Code Plattform. Erstelle, verwalte und verfolge QR Codes mit Leichtigkeit.",
+		"product": "Produkt",
+		"features": "Funktionen",
+		"pricing": "Preise",
+		"resources": "Ressourcen",
+		"faqLink": "FAQ",
+		"docs": "Dokumentation",
+		"github": "GitHub",
+		"legal": "Rechtliches",
 		"legalNotice": "Impressum",
 		"privacyPolicy": "Datenschutzrichtlinie",
-		"contact": "Kontakt"
+		"contact": "Kontakt",
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -132,21 +146,21 @@
 			"loading": "Lädt..."
 		},
 		"feedbackCta": {
-			"headline": "Dein Feedback ist wichtig! 🚀",
-			"subHeadline1": "Wir arbeiten ständig daran, QRcodly zu verbessern.",
-			"subHeadline2": "Wenn du Feedback oder Fragen hast, lass es uns bitte wissen.",
-			"emailBtn": "E-Mail"
+			"headline": "Fragen oder Feedback?",
+			"subHeadline1": "Du hast eine Frage zu QRcodly oder möchtest Feedback teilen? Wir helfen gerne und arbeiten ständig daran, uns zu verbessern.",
+			"emailBtn": "Kontaktiere uns"
 		},
 		"featuresCta": {
 			"headline": "Übersicht der wichtigsten Funktionen",
 			"subHeadline": "Mit QRcodly kannst du QR Codes kostenlos erstellen, bearbeiten, verwalten und analysieren – alles an einem Ort.",
-			"emailBtn": "Email us",
+			"allFeatures": "Alle Funktionen",
+			"emailBtn": "Kontaktiere uns",
 			"editFeature": {
 				"headline": "QR Codes jederzeit bearbeiten",
 				"subHeadline": "Erstelle QR Codes kostenlos und passe die Ziel-URL auch nach dem Druck jederzeit an."
 			},
 			"statisticFeature": {
-				"headline": "Detalierte QR Code-Statistiken in Echtzeit",
+				"headline": "Detaillierte QR Code-Statistiken in Echtzeit",
 				"subHeadline": "Behalte im Blick, wie oft und von wo aus deine QR Codes gescannt werden."
 			},
 			"overviewFeature": {
@@ -161,6 +175,14 @@
 				"headline": "Behalte die Kontrolle mit deiner eigenen Domain",
 				"subHeadline": "Nutze deine eigene Domain für dynamische QR Codes. Behalte die Kontrolle, stärke deine Marke und besitze jeden Link."
 			},
+			"tagFeature": {
+				"headline": "Ordnung mit Tags",
+				"subHeadline": "Kategorisiere deine QR-Codes mit eigenen Tags. Filtere und finde, was du brauchst – in Sekunden."
+			},
+			"exportImportFeature": {
+				"headline": "QR-Codes exportieren & importieren",
+				"subHeadline": "Sichere, migriere oder verwalte deine QR-Codes in großen Mengen. Exportiere und importiere sie mit wenigen Klicks."
+			},
 			"teamFeature": {
 				"headline": "Im Team zusammenarbeiten",
 				"subHeadline": "Lade Teammitglieder ein und arbeite gemeinsam an QR Codes. Ideal für Unternehmen, Agenturen und Teams."
@@ -168,7 +190,9 @@
 			"secureFeature": {
 				"headline": "Deine Daten bleiben bei uns",
 				"subHeadline": "QRcodly hostet alle Daten lokal in Deutschland – keine Weitergabe an externe Dienste. Einzig für die Authentifizierung nutzen wir Clerk."
-			}
+			},
+			"scrollLeft": "Nach links scrollen",
+			"scrollRight": "Nach rechts scrollen"
 		}
 	},
 	"shortUrl": {
@@ -360,6 +384,8 @@
 		}
 	},
 	"generator": {
+		"sectionTitle": "Erstelle deinen QR Code",
+		"sectionSubtitle": "Wähle einen Inhaltstyp, passe das Design an und lade deinen QR Code sofort herunter.",
 		"labelName": "Name",
 		"tabs": {
 			"content": "Inhalt",
@@ -721,6 +747,7 @@
 	},
 	"faq": {
 		"headline": "Häufig gestellte Fragen",
+		"subtitle": "Alles, was du über QR Codes und QRcodly wissen musst.",
 		"question1": "Was ist ein QR Code?",
 		"answer1": "Ein QR Code (Quick Response Code) ist ein smarter, zweidimensionaler Barcode, der unterschiedlichste Informationen wie Website-Links, Texte oder Kontaktdaten speichern kann. Er lässt sich mühelos mit einem Smartphone oder speziellen Scanner erfassen und entschlüsseln.",
 		"question2": "Wie erstelle ich einen QR Code?",
@@ -743,6 +770,11 @@
 		"answer10": "Absolut! QR Codes sind speziell für den Druck optimiert und funktionieren zuverlässig auf verschiedensten Materialien, solange sie klar und unbeschädigt bleiben. Achte auf gute Druckqualität, dann sind deine Codes überall einsatzbereit!",
 		"question11": "Wo werden meine Daten gehostet?",
 		"answer11": "Alle Daten bei QRcodly werden ausschließlich auf Servern in Deutschland gespeichert. Wir geben keine Daten an Dritte weiter. Lediglich für die Anmeldung und Authentifizierung nutzen wir den Dienst Clerk."
+	},
+	"productShowcase": {
+		"headline": "Leistungsstarkes Dashboard.",
+		"subHeadline": "Schöne Oberfläche.",
+		"description": "Verwalte all deine QR Codes, verfolge Scans in Echtzeit und passe Designs an – alles über ein intuitives Dashboard."
 	},
 	"fileUpload": {
 		"maxFiles": "Es sind maximal {maxFiles} Dateien erlaubt",
@@ -1108,6 +1140,8 @@
 		}
 	},
 	"plans": {
+		"metaTitle": "QR Code Generator Preise – Kostenlos & Pro",
+		"metaDescription": "Kostenloser QR Code Generator mit unbegrenzten Codes, individuellem Design & Analysen. Pro für eigene Domains, Massenimport & Priority-Support. Keine versteckten Kosten.",
 		"title": "Fair. Transparent. Ohne versteckte Kosten.",
 		"subtitle": "QRcodly ist kostenlos nutzbar – keine Testphasen, keine automatischen Abos. Der Pro-Plan deckt ausschließlich Funktionen ab, die zusätzlichen Infrastrukturaufwand verursachen.",
 		"annual": "Jährlich",
@@ -1185,5 +1219,95 @@
 			"usage": "Verwendung",
 			"qrCodes": "QR-Codes"
 		}
+	},
+	"featuresPage": {
+		"metaTitle": "Kostenloser QR Code Generator – Funktionen",
+		"metaDescription": "Entdecke alle Funktionen des QR Code Generators: Dynamische QR Codes, Scan-Analysen, individuelle Designs mit Logo, Massenerstellung, Vorlagen und Unterstützung für URLs, WiFi & vCards.",
+		"badge": "Funktionen",
+		"title": "Alles, was du für professionelle QR Codes brauchst",
+		"subtitle": "Von der Erstellung bis zur Analyse – QRcodly bietet dir leistungsstarke Werkzeuge, um deine QR Codes zu erstellen, zu verwalten und zu tracken.",
+		"spotlight": {
+			"dynamicQr": {
+				"tag": "Kernfunktion",
+				"title": "Dynamische QR Codes – Jederzeit bearbeitbar",
+				"description": "Erstelle QR Codes, die sich auch nach dem Druck aktualisieren lassen. Ändere die Ziel-URL, aktiviere oder deaktiviere sie und verfolge jeden Scan – alles ohne einen neuen Code zu erstellen.",
+				"bullet1": "Inhalte jederzeit ändern, ohne neu zu drucken",
+				"bullet2": "Jeden Scan mit Echtzeit-Analysen verfolgen",
+				"bullet3": "QR Codes sofort aktivieren oder deaktivieren"
+			},
+			"analytics": {
+				"tag": "Einblicke",
+				"title": "Detaillierte Echtzeit-Analysen",
+				"description": "Verstehe, wie deine QR Codes performen – mit umfassenden Scan-Statistiken. Sieh, wer scannt, wann, wo und mit welchem Gerät.",
+				"bullet1": "Gesamtscans und eindeutige Besucher tracken",
+				"bullet2": "Aufschlüsselung nach Gerät, Browser und Betriebssystem",
+				"bullet3": "Geografische Verteilung nach Land"
+			},
+			"collection": {
+				"tag": "Verwaltung",
+				"title": "Dein zentrales QR Code Dashboard",
+				"description": "Behalte den Überblick über all deine QR Codes in einem leistungsstarken Dashboard. Suche, filtere, sortiere und verwalte alles an einem Ort.",
+				"bullet1": "Zentrales Dashboard für alle QR Codes",
+				"bullet2": "Erweiterte Suche und Filterung nach Inhaltstyp",
+				"bullet3": "Schnellaktionen: Bearbeiten, Teilen, Herunterladen, Löschen"
+			},
+			"templates": {
+				"tag": "Design",
+				"title": "Wiederverwendbare Design-Vorlagen",
+				"description": "Speichere deine liebsten QR Code Designs als Vorlagen und verwende sie in verschiedenen Kampagnen. Behalte ein einheitliches Branding, ohne Stile jedes Mal neu erstellen zu müssen.",
+				"bullet1": "Jedes QR Code Design als wiederverwendbare Vorlage speichern",
+				"bullet2": "Vorlagen mit einem Klick auf neue Codes anwenden",
+				"bullet3": "Einheitliches Branding über alle Kampagnen hinweg"
+			},
+			"customDomain": {
+				"tag": "Branding",
+				"title": "Eigene Domains für Kurz-URLs",
+				"description": "Nutze deine eigene Domain für QR Code Kurz-URLs statt unserer. Stärke deine Markenidentität und baue Vertrauen bei deiner Zielgruppe auf.",
+				"bullet1": "Eigene Domain in wenigen Minuten verbinden",
+				"bullet2": "Automatische SSL-Zertifikat-Bereitstellung",
+				"bullet3": "Vollständiges DNS-Management über Cloudflare-Integration"
+			},
+			"tags": {
+				"tag": "Organisation",
+				"title": "Farbige Tags für einfache Organisation",
+				"description": "Halte deine QR Code Bibliothek mit eigenen farbigen Tags organisiert. Erstelle Kategorien, filtere nach Tags und finde jeden Code sofort.",
+				"bullet1": "Unbegrenzt eigene farbige Tags erstellen",
+				"bullet2": "Mehrere Tags pro QR Code zuweisen",
+				"bullet3": "Sammlung nach Tags filtern und durchsuchen"
+			},
+			"bulkOperations": {
+				"tag": "Produktivität",
+				"title": "Massen-Export & -Import im großen Stil",
+				"description": "Arbeite effizient mit großen Mengen von QR Codes. Importiere per CSV, um viele auf einmal zu erstellen, oder exportiere deine gesamte Sammlung als ZIP-Archiv.",
+				"bullet1": "QR Codes per CSV-Upload massenhaft importieren",
+				"bullet2": "Alle QR Code Bilder als ZIP-Archiv exportieren",
+				"bullet3": "Ideal für große Druckkampagnen"
+			},
+			"contentTypes": {
+				"tag": "Vielseitigkeit",
+				"title": "Über 9 Inhaltstypen unterstützt",
+				"description": "Gehe über einfache URLs hinaus. Erstelle QR Codes für WLAN-Netzwerke, Visitenkarten, Kalendereinträge, E-Mail-Adressen, Standorte und mehr.",
+				"bullet1": "URL, WLAN, vCard, E-Mail und Text",
+				"bullet2": "Kalendereinträge mit vollständiger Detailunterstützung",
+				"bullet3": "Geografische Standorte und Zahlungslinks"
+			},
+			"security": {
+				"tag": "Datenschutz",
+				"title": "Datenschutz-orientiert & Open Source",
+				"description": "Deine Kerndaten werden auf Servern in Deutschland gehostet. Wir nutzen vertrauenswürdige Drittanbieter wie Clerk für die Authentifizierung und erheben minimale Analysen zur Produktverbesserung. QRcodly ist vollständig Open Source für maximale Transparenz.",
+				"bullet1": "Kerninfrastruktur auf deutschen Servern gehostet",
+				"bullet2": "Vollständig Open Source auf GitHub – jederzeit prüfbar",
+				"bullet3": "Transparenter Einsatz von Clerk, Sentry & PostHog"
+			}
+		},
+		"cta": {
+			"title": "Bereit loszulegen?",
+			"subtitle": "Erstelle deinen ersten QR Code in Sekunden. Für immer kostenlos, keine Kreditkarte erforderlich.",
+			"button": "Jetzt QR Code erstellen"
+		}
+	},
+	"notFound": {
+		"message": "Hoppla! Die Seite, die du suchst, existiert nicht.",
+		"goHome": "Zurück zur Startseite"
 	}
 }

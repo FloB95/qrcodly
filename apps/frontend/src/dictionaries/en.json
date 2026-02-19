@@ -33,7 +33,9 @@
 			"unlimited": "Unlimited QR Codes",
 			"noSignup": "Free Dynamic QR Codes",
 			"noWatermark": "No Watermarks"
-		}
+		},
+		"ctaPrimary": "Create Your QR Code",
+		"ctaSecondary": "See what's possible"
 	},
 	"metadata": {
 		"title": "Free QR Code Generator - Create Custom QR Codes Online | QRcodly",
@@ -63,6 +65,7 @@
 		"addQrCodeBtn": "Add QR code",
 		"bulkImportLabel": "Select Content Type",
 		"exportBtn": "Export",
+		"importExportLabel": "Import & Export",
 		"bulkExport": {
 			"title": "Bulk Export QR Codes",
 			"description": "Download multiple QR codes as a ZIP file.",
@@ -85,7 +88,8 @@
 			"clearAll": "Clear",
 			"customizeColumns": "Customize Columns",
 			"columns": "Columns",
-			"toggleColumns": "Toggle columns"
+			"toggleColumns": "Toggle columns",
+			"actions": "Actions"
 		}
 	},
 	"analytics": {
@@ -111,13 +115,23 @@
 		"collectionBtn": "My Collection",
 		"signInBtn": "Sign In",
 		"settingsBtn": "Settings",
+		"featuresBtn": "Features",
 		"plansBtn": "Pricing"
 	},
 	"footer": {
-		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED",
+		"tagline": "The open-source QR code platform. Create, manage, and track QR codes with ease.",
+		"product": "Product",
+		"features": "Features",
+		"pricing": "Pricing",
+		"resources": "Resources",
+		"faqLink": "FAQ",
+		"docs": "Documentation",
+		"github": "GitHub",
+		"legal": "Legal",
 		"legalNotice": "Legal Notice",
 		"privacyPolicy": "Privacy Policy",
-		"contact": "Contact"
+		"contact": "Contact",
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -132,14 +146,14 @@
 			"loading": "Loading..."
 		},
 		"feedbackCta": {
-			"headline": "Your feedback matters! 🚀",
-			"subHeadline1": "We are constantly working on improving QRcodly.",
-			"subHeadline2": "If you have any feedback or questions, please let us know.",
-			"emailBtn": "Email us"
+			"headline": "Questions or Feedback?",
+			"subHeadline1": "Have a question about QRcodly or want to share feedback? We're happy to help and always looking to improve.",
+			"emailBtn": "Contact Us"
 		},
 		"featuresCta": {
 			"headline": "Overview of Key Features",
 			"subHeadline": "With QRcodly you can create, edit, manage, and analyze QR codes – all in one place.",
+			"allFeatures": "All features",
 			"emailBtn": "Email us",
 			"editFeature": {
 				"headline": "Edit QR codes Anytime",
@@ -161,6 +175,14 @@
 				"headline": "Keep Control with Your Own Domain",
 				"subHeadline": "Use your own domain for dynamic QR codes. Keep control, stay branded, and own every link."
 			},
+			"tagFeature": {
+				"headline": "Organize with Tags",
+				"subHeadline": "Label and categorize your QR codes with custom tags. Filter and find what you need in seconds."
+			},
+			"exportImportFeature": {
+				"headline": "Export & Import QR Codes",
+				"subHeadline": "Back up, migrate, or bulk-manage your QR codes. Export and import them with just a few clicks."
+			},
 			"teamFeature": {
 				"headline": "Collaborate in Teams",
 				"subHeadline": "Invite team members and work together on QR codes. Perfect for companies, agencies, and teams."
@@ -168,7 +190,9 @@
 			"secureFeature": {
 				"headline": "Your data stays with us",
 				"subHeadline": "QRcodly hosts all data locally in Germany – no sharing with external services. Only for authentication, we use Clerk."
-			}
+			},
+			"scrollLeft": "Scroll left",
+			"scrollRight": "Scroll right"
 		}
 	},
 	"shortUrl": {
@@ -360,6 +384,8 @@
 		}
 	},
 	"generator": {
+		"sectionTitle": "Create Your QR Code",
+		"sectionSubtitle": "Choose a content type, customize the design, and download your QR code instantly.",
 		"labelName": "Name",
 		"tabs": {
 			"content": "Content",
@@ -721,6 +747,7 @@
 	},
 	"faq": {
 		"headline": "Frequently Asked Questions",
+		"subtitle": "Everything you need to know about QR codes and QRcodly.",
 		"question1": "What is a QR code?",
 		"answer1": "A QR code (Quick Response Code) is a smart, two-dimensional barcode that can store various types of information, such as website links, text, or contact details. It can be easily captured and deciphered using a smartphone or a dedicated scanner.",
 		"question2": "How do I create a QR code?",
@@ -743,6 +770,11 @@
 		"answer10": "Absolutely! QR codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
 		"question11": "Where is my data hosted?",
 		"answer11": "All data at QRcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication."
+	},
+	"productShowcase": {
+		"headline": "Powerful Dashboard.",
+		"subHeadline": "Beautiful Interface.",
+		"description": "Manage all your QR codes, track scans in real-time, and customize designs — all from one intuitive dashboard."
 	},
 	"fileUpload": {
 		"maxFiles": "Maximum {maxFiles} files allowed",
@@ -1108,6 +1140,8 @@
 		}
 	},
 	"plans": {
+		"metaTitle": "QR Code Generator Pricing - Free & Pro Plans",
+		"metaDescription": "Free QR code generator with unlimited codes, custom styling & analytics. Upgrade to Pro for custom domains, bulk imports & priority support. No hidden costs.",
 		"title": "Fair. Transparent. No hidden costs.",
 		"subtitle": "QRcodly is free to use – no trial periods, no automatic subscriptions. The Pro plan only covers features that require additional infrastructure.",
 		"annual": "Annual",
@@ -1185,5 +1219,95 @@
 			"usage": "Usage",
 			"qrCodes": "QR Codes"
 		}
+	},
+	"featuresPage": {
+		"metaTitle": "Free QR Code Generator Features",
+		"metaDescription": "Explore all QR code generator features: dynamic QR codes, scan analytics, custom designs with logos, bulk creation, templates, and support for URLs, WiFi & vCards.",
+		"badge": "Features",
+		"title": "Everything You Need for Professional QR Codes",
+		"subtitle": "From creation to analytics — QRcodly gives you powerful tools to create, manage, and track your QR codes.",
+		"spotlight": {
+			"dynamicQr": {
+				"tag": "Core Feature",
+				"title": "Dynamic QR Codes — Edit Anytime",
+				"description": "Create QR codes that can be updated after printing. Change the destination URL, toggle them on or off, and track every scan — all without generating a new code.",
+				"bullet1": "Update content anytime without reprinting",
+				"bullet2": "Track every scan with real-time analytics",
+				"bullet3": "Toggle QR codes on or off instantly"
+			},
+			"analytics": {
+				"tag": "Insights",
+				"title": "Detailed Real-Time Analytics",
+				"description": "Understand how your QR codes perform with comprehensive scan analytics. See who scans, when, where, and on what device.",
+				"bullet1": "Total scans and unique visitor tracking",
+				"bullet2": "Device, browser, and OS breakdown",
+				"bullet3": "Geographic distribution by country"
+			},
+			"collection": {
+				"tag": "Management",
+				"title": "Your Central QR Code Dashboard",
+				"description": "Keep all your QR codes organized in one powerful dashboard. Search, filter, sort, and manage everything from a single place.",
+				"bullet1": "Central dashboard for all QR codes",
+				"bullet2": "Advanced search and content type filtering",
+				"bullet3": "Quick actions: edit, share, download, delete"
+			},
+			"templates": {
+				"tag": "Design",
+				"title": "Reusable Design Templates",
+				"description": "Save your favorite QR code designs as templates and reuse them across campaigns. Keep your brand consistent without recreating styles every time.",
+				"bullet1": "Save any QR code design as a reusable template",
+				"bullet2": "Apply templates to new codes with one click",
+				"bullet3": "Keep consistent branding across all campaigns"
+			},
+			"customDomain": {
+				"tag": "Branding",
+				"title": "Custom Domains for Short URLs",
+				"description": "Use your own domain for QR code short URLs instead of ours. Strengthen your brand identity and build trust with your audience.",
+				"bullet1": "Connect your own domain in minutes",
+				"bullet2": "Automatic SSL certificate provisioning",
+				"bullet3": "Full DNS management via Cloudflare integration"
+			},
+			"tags": {
+				"tag": "Organization",
+				"title": "Color-Coded Tags for Easy Organization",
+				"description": "Keep your QR code library organized with custom colored tags. Create categories, filter by tag, and find any code instantly.",
+				"bullet1": "Create unlimited custom colored tags",
+				"bullet2": "Assign multiple tags per QR code",
+				"bullet3": "Filter and search your collection by tags"
+			},
+			"bulkOperations": {
+				"tag": "Productivity",
+				"title": "Bulk Export & Import at Scale",
+				"description": "Work with large numbers of QR codes efficiently. Import via CSV to create many at once, or export your entire collection as a ZIP archive.",
+				"bullet1": "Import QR codes in bulk via CSV upload",
+				"bullet2": "Export all QR code images as a ZIP archive",
+				"bullet3": "Ideal for large-scale print campaigns"
+			},
+			"contentTypes": {
+				"tag": "Versatility",
+				"title": "9+ Content Types Supported",
+				"description": "Go beyond simple URLs. Create QR codes for WiFi networks, contact cards, calendar events, email addresses, geographic locations, and more.",
+				"bullet1": "URL, WiFi, vCard, Email, and Text",
+				"bullet2": "Calendar events with full detail support",
+				"bullet3": "Geographic locations and payment links"
+			},
+			"security": {
+				"tag": "Privacy",
+				"title": "Privacy-Focused & Open Source",
+				"description": "Your core data is hosted on servers in Germany. We use trusted third-party services like Clerk for authentication, and collect minimal analytics to improve the product. QRcodly is fully open source for complete transparency.",
+				"bullet1": "Core infrastructure hosted on German servers",
+				"bullet2": "Fully open source on GitHub — audit anytime",
+				"bullet3": "Transparent use of Clerk, Sentry & PostHog"
+			}
+		},
+		"cta": {
+			"title": "Ready to get started?",
+			"subtitle": "Create your first QR code in seconds. Free forever, no credit card required.",
+			"button": "Create QR Code Now"
+		}
+	},
+	"notFound": {
+		"message": "Oops! The page you're looking for doesn't exist.",
+		"goHome": "Go Back Home"
 	}
 }

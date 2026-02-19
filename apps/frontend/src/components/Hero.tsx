@@ -38,11 +38,11 @@ export const Hero = () => {
 				{t('badge')}
 			</Badge>
 
-			<h1 className="text-3xl xs:text-4xl sm:text-5xl font-semibold text-slate-900 mb-6">
+			<h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 mb-6">
 				{t('title')}
 			</h1>
 
-			<p className="mx-auto max-w-2xl text-lg sm:text-xl text-slate-700 mb-8">{t('subtitle')}</p>
+			<p className="mx-auto max-w-2xl text-xl sm:text-2xl text-slate-700 mb-8">{t('subtitle')}</p>
 
 			<motion.div
 				className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-slate-700"

@@ -6,6 +6,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@utility scrollbar-hide {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+
 @theme {
 	--breakpoint-xs: 25rem;
 	--font-sans:
@@ -73,7 +82,7 @@
 	--ring: oklch(0.705 0.015 286.067);
 	--chart-1: #2563eb;
 	--chart-2: #60a5fa;
-	--sidebar: oklch(0.985 0 0);
+	--sidebar: oklch(1 0 0);
 	--sidebar-foreground: oklch(0.141 0.005 285.823);
 	--sidebar-primary: oklch(0.21 0.006 285.885);
 	--sidebar-primary-foreground: oklch(0.985 0 0);
@@ -117,9 +126,27 @@
 	--sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
+#nd-page {
+	--color-fd-accent: oklch(1 0 0);
+	--color-fd-border: oklch(0 0 0);
+
+	padding-bottom: 5rem;
+}
+
+#nd-page a {
+	border-color: transparent;
+}
+
+#nd-page a:hover {
+	border-color: oklch(0 0 0);
+}
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
+	}
+	html {
+		scroll-padding-top: 6rem;
 	}
 	body {
 		@apply bg-background text-foreground;

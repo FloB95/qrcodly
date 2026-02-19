@@ -5,6 +5,7 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { baseOptions } from '@/lib/layout.shared';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import Providers from '@/components/provider';
@@ -66,6 +67,7 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
 									</>
 								</DocsLayout>
 							</RootProvider>
+							<Footer />
 						</main>
 					</Providers>
 				</NextIntlClientProvider>

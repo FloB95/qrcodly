@@ -161,10 +161,10 @@ function AccountItem({ account, canRemove, onRemove, t }: AccountItemProps) {
 
 	return (
 		<div className="flex items-center justify-between p-4 rounded-lg border bg-card">
-			<div className="flex items-center gap-3">
-				<div className="p-2 bg-muted rounded-lg">{getProviderIcon(account.provider)}</div>
-				<div>
-					<div className="flex items-center gap-2">
+			<div className="flex items-center gap-3 min-w-0">
+				<div className="p-2 bg-muted rounded-lg shrink-0">{getProviderIcon(account.provider)}</div>
+				<div className="min-w-0">
+					<div className="flex items-center gap-2 flex-wrap">
 						<span className="font-medium">{getProviderName(account.provider)}</span>
 						{account.verification?.status === 'verified' && (
 							<Badge variant="secondary" className="text-xs">
@@ -172,7 +172,7 @@ function AccountItem({ account, canRemove, onRemove, t }: AccountItemProps) {
 							</Badge>
 						)}
 					</div>
-					<p className="text-sm text-muted-foreground">{displayName}</p>
+					<p className="text-sm text-muted-foreground break-all">{displayName}</p>
 				</div>
 			</div>
 

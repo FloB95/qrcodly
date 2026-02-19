@@ -45,6 +45,7 @@ export default function Header({
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 	const isDocsActive = pathname.startsWith('/docs');
+	const isFeaturesActive = pathname === '/features';
 	const isPlansActive = pathname === '/plans';
 
 	return (
@@ -60,24 +61,33 @@ export default function Header({
 					</div>
 					<div className="flex space-x-2 xs:space-x-4 sm:space-x-6 items-center">
 						<Link
-							href="/docs"
-							target="blank"
-							locale={'en'}
+							href="/features"
 							className={cn(
-								'hidden sm:block h-10 px-2 py-2',
-								isDocsActive && 'font-semibold text-black',
+								'hidden lg:block h-10 px-2 py-2',
+								isFeaturesActive && 'font-semibold text-black',
 							)}
 						>
-							Docs
+							{t('featuresBtn')}
 						</Link>
 						<Link
 							href="/plans"
 							className={cn(
-								'hidden sm:block h-10 px-2 py-2',
+								'hidden lg:block h-10 px-2 py-2',
 								isPlansActive && 'font-semibold text-black',
 							)}
 						>
 							{t('plansBtn')}
+						</Link>
+						<Link
+							href="/docs"
+							target="_blank"
+							locale={'en'}
+							className={cn(
+								'hidden lg:block h-10 px-2 py-2',
+								isDocsActive && 'font-semibold text-black',
+							)}
+						>
+							Docs
 						</Link>
 						<SignedOut>
 							<SignInButton>
@@ -89,13 +99,13 @@ export default function Header({
 								<div className="flex items-center gap-2">
 									<Link
 										href="/dashboard/qr-codes"
-										className={cn(buttonVariants({ size: 'icon' }), 'sm:hidden')}
+										className={cn(buttonVariants({ size: 'icon' }), 'lg:hidden')}
 									>
 										<RectangleStackIcon className="h-6 w-6 text-white" />
 									</Link>
 									<Link
 										href="/dashboard/qr-codes"
-										className={cn(buttonVariants(), 'hidden sm:inline-flex')}
+										className={cn(buttonVariants(), 'hidden lg:inline-flex')}
 									>
 										{t('collectionBtn')}
 									</Link>
@@ -106,13 +116,13 @@ export default function Header({
 							</Link>
 						</SignedIn>
 						{!hideLanguageNav && (
-							<div className="hidden sm:block">
+							<div className="hidden lg:block">
 								<LanguageNav />
 							</div>
 						)}
 						{/* Mobile menu button */}
 						<div
-							className="flex items-center justify-center sm:hidden xs:p-2 cursor-pointer"
+							className="flex items-center justify-center lg:hidden xs:p-2 cursor-pointer"
 							onClick={() => setMobileMenuOpen(true)}
 						>
 							<Bars3Icon className="h-8 w-8 text-black" />
@@ -128,7 +138,7 @@ export default function Header({
 					</DrawerHeader>
 					<div className="absolute top-8 left-4 right-4 flex items-center justify-between">
 						<div className="text-xl font-semibold  text-black">
-							<Link title="QRcodly" href="/de">
+							<Link title="QRcodly" href="/">
 								QRcodly
 							</Link>
 						</div>
@@ -147,22 +157,22 @@ export default function Header({
 					>
 						<motion.div variants={itemVariants}>
 							<Link
-								href="/plans"
+								href="/features"
 								className={buttonVariants({
 									variant: 'ghost',
 									className: cn(
 										'w-full justify-start text-foreground font-semibold',
-										isPlansActive && 'bg-accent',
+										isFeaturesActive && 'bg-accent',
 									),
 								})}
 							>
-								{t('plansBtn')}
+								{t('featuresBtn')}
 							</Link>
 						</motion.div>
 						<motion.div variants={itemVariants}>
 							<Link
 								href="/docs"
-								target="blank"
+								target="_blank"
 								locale={'en'}
 								className={buttonVariants({
 									variant: 'ghost',
@@ -173,6 +183,20 @@ export default function Header({
 								})}
 							>
 								Docs
+							</Link>
+						</motion.div>
+						<motion.div variants={itemVariants}>
+							<Link
+								href="/plans"
+								className={buttonVariants({
+									variant: 'ghost',
+									className: cn(
+										'w-full justify-start text-foreground font-semibold',
+										isPlansActive && 'bg-accent',
+									),
+								})}
+							>
+								{t('plansBtn')}
 							</Link>
 						</motion.div>
 						<SignedIn>

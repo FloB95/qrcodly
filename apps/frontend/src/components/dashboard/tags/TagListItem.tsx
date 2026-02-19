@@ -124,6 +124,7 @@ export const TagListItem = ({ tag }: TagListItemProps) => {
 								{tGeneral('edit')}
 							</DropdownMenuItem>
 
+							<DropdownMenuSeparator />
 							<AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
 								<AlertDialogTrigger
 									className="cursor-pointer"
@@ -131,6 +132,7 @@ export const TagListItem = ({ tag }: TagListItemProps) => {
 									onClick={(e) => e.stopPropagation()}
 								>
 									<DropdownMenuItem
+										className="text-destructive focus:text-destructive"
 										onSelect={(e) => {
 											e.preventDefault();
 											e.stopPropagation();

@@ -4,10 +4,21 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MagnifyingGlassIcon, XMarkIcon, FunnelIcon } from '@heroicons/react/24/outline';
+import {
+	MagnifyingGlassIcon,
+	XMarkIcon,
+	FunnelIcon,
+	EllipsisVerticalIcon,
+	ArrowUpTrayIcon,
+	ArrowDownTrayIcon,
+} from '@heroicons/react/24/outline';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { useTranslations } from 'next-intl';
-import { CONTENT_TYPE_CONFIGS, getContentTypeConfig } from '@/lib/content-type.config';
+import {
+	BULK_ENABLED_CONTENT_TYPES,
+	CONTENT_TYPE_CONFIGS,
+	getContentTypeConfig,
+} from '@/lib/content-type.config';
 import type { TQrCodeContentType } from '@shared/schemas';
 import type { QrCodeFilters as QrCodeFiltersType } from '@/lib/api/qr-code';
 import { cn } from '@/lib/utils';
@@ -19,8 +30,12 @@ import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
+	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Settings2 } from 'lucide-react';
@@ -36,6 +51,8 @@ type QrCodeFiltersProps = {
 	onFiltersChange: (filters: QrCodeFiltersType) => void;
 	columnVisibility: QrCodeColumnVisibility;
 	onToggleColumn: (column: QrCodeColumn) => void;
+	onBulkImport?: (contentType: TQrCodeContentType) => void;
+	onBulkExport?: () => void;
 	className?: string;
 };
 
@@ -44,9 +61,12 @@ export const QrCodeFilters = ({
 	onFiltersChange,
 	columnVisibility,
 	onToggleColumn,
+	onBulkImport,
+	onBulkExport,
 	className,
 }: QrCodeFiltersProps) => {
 	const t = useTranslations('collection.filters');
+	const tCollection = useTranslations('collection');
 	const tContent = useTranslations('generator.contentSwitch');
 	const tTags = useTranslations('tags');
 	const tTable = useTranslations('qrCode.table');
@@ -143,11 +163,13 @@ export const QrCodeFilters = ({
 		onFiltersChange({});
 	}, [onFiltersChange]);
 
+	const hasActions = !!(onBulkImport && onBulkExport);
+
 	return (
 		<div className={cn('flex flex-col gap-3', className)}>
 			<div className="flex flex-wrap items-center gap-2">
 				{/* Search Input */}
-				<div className="relative flex-1 min-w-[200px] max-w-sm">
+				<div className="relative w-full sm:flex-1 sm:w-auto sm:min-w-[200px] sm:max-w-sm">
 					<MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 					<Input
 						type="text"
@@ -178,7 +200,7 @@ export const QrCodeFilters = ({
 							)}
 						>
 							<FunnelIcon className="h-4 w-4" />
-							<span className="hidden sm:inline">{t('contentType')}</span>
+							<span className="hidden lg:inline">{t('contentType')}</span>
 							{filters.contentType?.length ? (
 								<Badge variant="default" className="ml-1 px-1.5 py-0 text-[10px]">
 									{filters.contentType.length}
@@ -232,7 +254,7 @@ export const QrCodeFilters = ({
 							className={cn('h-9 gap-1.5', filters.tagIds?.length && 'border-primary text-primary')}
 						>
 							<TagIcon className="h-4 w-4" />
-							<span className="hidden sm:inline">{tTags('title')}</span>
+							<span className="hidden lg:inline">{tTags('title')}</span>
 							{filters.tagIds?.length ? (
 								<Badge variant="default" className="ml-1 px-1.5 py-0 text-[10px]">
 									{filters.tagIds.length}
@@ -306,17 +328,63 @@ export const QrCodeFilters = ({
 				{hasActiveFilters && (
 					<Button variant="ghost" size="sm" onClick={handleClearAll} className="h-9 gap-1.5">
 						<XMarkIcon className="h-4 w-4" />
-						<span className="hidden sm:inline">{t('clearAll')}</span>
+						<span className="hidden lg:inline">{t('clearAll')}</span>
 					</Button>
+				)}
+
+				{/* Actions */}
+				{hasActions && (
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="outline" size="sm" className="ml-auto h-9 gap-1.5">
+								<EllipsisVerticalIcon className="size-5" />
+								<span className="hidden lg:inline">{t('actions')}</span>
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuLabel>{tCollection('importExportLabel')}</DropdownMenuLabel>
+							<DropdownMenuSub>
+								<DropdownMenuSubTrigger className="gap-2">
+									<ArrowUpTrayIcon className="size-4" />
+									{tContent('bulkModeBtn')}
+								</DropdownMenuSubTrigger>
+								<DropdownMenuSubContent>
+									<DropdownMenuLabel>{tCollection('bulkImportLabel')}</DropdownMenuLabel>
+									<DropdownMenuSeparator />
+									{BULK_ENABLED_CONTENT_TYPES.map((contentType) => {
+										const config = getContentTypeConfig(contentType);
+										const Icon = config?.icon;
+										return (
+											<DropdownMenuItem
+												key={contentType}
+												onClick={() => onBulkImport?.(contentType)}
+												className="cursor-pointer"
+											>
+												{Icon && <Icon className="mr-2 h-4 w-4" />}
+												{tContent(`tab.${config?.label || contentType}`)}
+											</DropdownMenuItem>
+										);
+									})}
+								</DropdownMenuSubContent>
+							</DropdownMenuSub>
+							<DropdownMenuItem onClick={() => onBulkExport?.()} className="cursor-pointer gap-2">
+								<ArrowDownTrayIcon className="h-4 w-4" />
+								{tCollection('exportBtn')}
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
 				)}
 
 				{/* Column Visibility */}
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
-						<Button variant="outline" size="sm" className="ml-auto h-9 gap-1.5">
+						<Button
+							variant="outline"
+							size="sm"
+							className={cn('h-9 gap-1.5', !hasActions && 'ml-auto')}
+						>
 							<Settings2 className="h-4 w-4" />
-							<span className="hidden lg:inline">{t('customizeColumns')}</span>
-							<span className="lg:hidden">{t('columns')}</span>
+							<span className="hidden sm:inline">{t('columns')}</span>
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end" className="w-48">
