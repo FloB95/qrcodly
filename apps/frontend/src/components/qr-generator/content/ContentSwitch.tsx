@@ -14,7 +14,6 @@ import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStore
 import { useTranslations } from 'next-intl';
 import { EditUrlSection } from './EditUrlSection';
 import { BulkImport } from './BulkImport';
-import { Badge } from '@/components/ui/badge';
 import { EmailSection } from './EmailSection';
 import { LocationSection } from './LocationSection';
 import { EventSection } from './EventSection';
@@ -57,7 +56,6 @@ const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({
 
 export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProps) => {
 	const t = useTranslations('generator.contentSwitch');
-	const t2 = useTranslations('general');
 	const { isSignedIn } = useAuth();
 
 	const { content, updateContent, bulkMode, updateBulkMode } = useQrCodeGeneratorStore(
@@ -155,7 +153,6 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 							<Button variant="link" className="p-0" onClick={() => updateBulkMode(true)}>
 								<DocumentArrowUpIcon className="sm:mr-1.5 h-8 w-8 sm:h-6 sm:w-6" />
 								<span>{t('bulkModeBtn')}</span>
-								<Badge className="ml-2">{t2('newBadge')}</Badge>
 							</Button>
 						)}
 					</div>

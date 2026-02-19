@@ -30,7 +30,7 @@ export default async function Page({ params }: DefaultPageParams) {
 		<>
 			<Header />
 			<article>
-				<FeaturesPage />
+				<FeaturesPage locale={locale} />
 			</article>
 			<Footer />
 		</>
