@@ -13,6 +13,7 @@ import {
 	TagIcon,
 } from '@heroicons/react/24/outline';
 import { Link } from '@/i18n/navigation';
+import Container from '@/components/ui/container';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect, useCallback } from 'react';
@@ -112,7 +113,7 @@ export function FeatureSlider() {
 	const scroll = (direction: 'left' | 'right') => {
 		const el = scrollRef.current;
 		if (!el) return;
-		const firstCard = el.querySelector<HTMLElement>(':scope > div > div');
+		const firstCard = el.querySelector<HTMLElement>('[data-feature-card]');
 		if (!firstCard) return;
 		const cardWidth = firstCard.offsetWidth + 20; // card width + gap (20px)
 		el.scrollBy({
@@ -124,7 +125,7 @@ export function FeatureSlider() {
 	return (
 		<div className="overflow-hidden">
 			{/* Headline — aligned with Container content edge */}
-			<div className="container relative mx-auto sm:px-6 lg:px-8 lg:max-w-[1400px] mb-10 sm:mb-14">
+			<Container disableOverflow className="mb-10 sm:mb-14">
 				<div className="sm:px-6 lg:px-8 flex items-end justify-between gap-4">
 					<h2
 						ref={headlineRef}
@@ -140,7 +141,7 @@ export function FeatureSlider() {
 						<span aria-hidden="true">&rsaquo;</span>
 					</Link>
 				</div>
-			</div>
+			</Container>
 
 			{/* Scroll container — outer div scrolls, inner div holds flex layout + padding */}
 			<div
@@ -161,6 +162,7 @@ export function FeatureSlider() {
 						<motion.div
 							key={feature.headlineKey}
 							className="flex-shrink-0 w-[280px] sm:w-[370px]"
+							data-feature-card
 							style={{ scrollSnapAlign: 'start' }}
 							initial={{ opacity: 0, y: 30 }}
 							whileInView={{ opacity: 1, y: 0 }}
@@ -206,7 +208,7 @@ export function FeatureSlider() {
 			</div>
 
 			{/* Navigation arrows — below cards, right-aligned with Container */}
-			<div className="container relative mx-auto sm:px-6 lg:px-8 lg:max-w-[1400px] mt-8 sm:mt-10">
+			<Container disableOverflow className="mt-8 sm:mt-10">
 				<div className="sm:px-6 lg:px-8 flex justify-end">
 					<div className="flex items-center gap-3">
 						<button
@@ -235,7 +237,7 @@ export function FeatureSlider() {
 						</button>
 					</div>
 				</div>
-			</div>
+			</Container>
 		</div>
 	);
 }

@@ -63,24 +63,7 @@ export default async function Page({ params }: DefaultPageParams) {
 	};
 
 	return (
-		<QrCodeGeneratorStoreProvider
-			initState={{
-				config: QrCodeDefaults,
-				content: {
-					type: 'url',
-					data: {
-						url: '',
-						isEditable: isSignedIn,
-					},
-				},
-				latestQrCode: undefined,
-				lastError: undefined,
-				bulkMode: {
-					file: undefined,
-					isBulkMode: false,
-				},
-			}}
-		>
+		<>
 			{/* WebApplication Structured Data */}
 			<Script
 				id="structured-data-app"
@@ -90,16 +73,35 @@ export default async function Page({ params }: DefaultPageParams) {
 
 			<Header />
 
-			<article className="pb-10 sm:pb-24">
-				<Container>
-					<Hero />
+			<QrCodeGeneratorStoreProvider
+				initState={{
+					config: QrCodeDefaults,
+					content: {
+						type: 'url',
+						data: {
+							url: '',
+							isEditable: isSignedIn,
+						},
+					},
+					latestQrCode: undefined,
+					lastError: undefined,
+					bulkMode: {
+						file: undefined,
+						isBulkMode: false,
+					},
+				}}
+			>
+				<article className="pb-10 sm:pb-24">
+					<Container>
+						<Hero />
 
-					{/* Main QR Code Generator Tool */}
-					<section id="generator" aria-label="QR Code Generator Tool">
-						<QRcodeGenerator generatorType="QrCodeWithDownloadBtn" />
-					</section>
-				</Container>
-			</article>
+						{/* Main QR Code Generator Tool */}
+						<section id="generator" aria-label="QR Code Generator Tool">
+							<QRcodeGenerator generatorType="QrCodeWithDownloadBtn" />
+						</section>
+					</Container>
+				</article>
+			</QrCodeGeneratorStoreProvider>
 
 			{/* Features Slider */}
 			<section id="features" aria-label="Features" className="py-10 sm:py-24">
@@ -122,6 +124,6 @@ export default async function Page({ params }: DefaultPageParams) {
 			</section>
 
 			<Footer />
-		</QrCodeGeneratorStoreProvider>
+		</>
 	);
 }

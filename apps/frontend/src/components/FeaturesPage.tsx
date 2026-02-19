@@ -6,11 +6,14 @@ import { Link } from '@/i18n/navigation';
 import {
 	ArrowDownTrayIcon,
 	ArrowsRightLeftIcon,
+	BanknotesIcon,
 	CalendarIcon,
 	ChartBarIcon,
 	CheckIcon,
+	DocumentTextIcon,
 	EnvelopeIcon,
 	GlobeAltIcon,
+	IdentificationIcon,
 	LinkIcon,
 	MapPinIcon,
 	QrCodeIcon,
@@ -150,7 +153,7 @@ function CollectionMockup() {
 						src="/images/dashboard-mockup.png"
 						alt="QRcodly Dashboard"
 						fill
-						className="object-cover object-top-left"
+						className="object-cover object-left-top"
 						sizes="(max-width: 768px) 100vw, 50vw"
 						loading="lazy"
 					/>
@@ -274,10 +277,10 @@ function CustomDomainMockup() {
 
 function TagsMockup() {
 	const tags = [
-		{ label: 'Marketing', color: 'bg-blue-500' },
-		{ label: 'Events', color: 'bg-purple-500' },
-		{ label: 'Products', color: 'bg-amber-500' },
-		{ label: 'Social', color: 'bg-pink-500' },
+		{ label: 'Marketing', color: 'bg-blue-500', count: 14 },
+		{ label: 'Events', color: 'bg-purple-500', count: 9 },
+		{ label: 'Products', color: 'bg-amber-500', count: 18 },
+		{ label: 'Social', color: 'bg-pink-500', count: 7 },
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
@@ -300,7 +303,7 @@ function TagsMockup() {
 							<div className={`w-3 h-3 rounded-full ${tag.color} flex-shrink-0`} />
 							<span className="text-[10px] sm:text-xs font-medium text-slate-700">{tag.label}</span>
 							<span className="ml-auto text-[9px] sm:text-[10px] text-slate-400 bg-white rounded-full px-2 py-0.5">
-								{Math.floor(Math.random() * 20 + 3)} codes
+								{tag.count} codes
 							</span>
 						</motion.div>
 					))}
@@ -364,11 +367,13 @@ function BulkOperationsMockup() {
 function ContentTypesMockup() {
 	const types = [
 		{ icon: <LinkIcon className="h-4 w-4" />, label: 'URL' },
+		{ icon: <DocumentTextIcon className="h-4 w-4" />, label: 'Text' },
 		{ icon: <WifiIcon className="h-4 w-4" />, label: 'WiFi' },
+		{ icon: <IdentificationIcon className="h-4 w-4" />, label: 'vCard' },
 		{ icon: <EnvelopeIcon className="h-4 w-4" />, label: 'Email' },
-		{ icon: <CalendarIcon className="h-4 w-4" />, label: 'Event' },
 		{ icon: <MapPinIcon className="h-4 w-4" />, label: 'Location' },
-		{ icon: <QrCodeIcon className="h-4 w-4" />, label: 'vCard' },
+		{ icon: <CalendarIcon className="h-4 w-4" />, label: 'Event' },
+		{ icon: <BanknotesIcon className="h-4 w-4" />, label: 'EPC' },
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
@@ -378,11 +383,11 @@ function ContentTypesMockup() {
 					<span className="text-xs sm:text-sm font-medium text-slate-600">Content Types</span>
 				</div>
 
-				<div className="flex-1 grid grid-cols-3 gap-2 sm:gap-3 content-center">
+				<div className="flex-1 grid grid-cols-4 gap-2 sm:gap-3 content-center">
 					{types.map((type) => (
 						<motion.div
 							key={type.label}
-							className="flex flex-col items-center gap-1.5 bg-slate-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3"
+							className="flex flex-col items-center gap-1.5 bg-slate-50 rounded-lg sm:rounded-xl p-2 sm:p-3"
 							initial={{ opacity: 0, scale: 0.9 }}
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}

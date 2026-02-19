@@ -34,8 +34,8 @@
 			"noSignup": "Códigos QR Dinámicos Gratis",
 			"noWatermark": "Sin Marcas de Agua"
 		},
-		"ctaPrimary": "Create Your QR Code",
-		"ctaSecondary": "See what's possible"
+		"ctaPrimary": "Crea tu código QR",
+		"ctaSecondary": "Descubre las posibilidades"
 	},
 	"metadata": {
 		"title": "QRcodly - Generador de Códigos QR Gratis",
@@ -65,6 +65,7 @@
 		"addQrCodeBtn": "Agregar código QR",
 		"bulkImportLabel": "Seleccionar tipo de contenido",
 		"exportBtn": "Exportar",
+		"importExportLabel": "Importar y Exportar",
 		"bulkExport": {
 			"title": "Exportar códigos QR",
 			"description": "Descargar varios códigos QR como archivo ZIP.",
@@ -87,7 +88,8 @@
 			"clearAll": "Borrar",
 			"customizeColumns": "Personalizar columnas",
 			"columns": "Columnas",
-			"toggleColumns": "Alternar columnas"
+			"toggleColumns": "Alternar columnas",
+			"actions": "Acciones"
 		}
 	},
 	"analytics": {
@@ -117,18 +119,18 @@
 		"plansBtn": "Precios"
 	},
 	"footer": {
-		"tagline": "The open-source QR code platform. Create, manage, and track QR codes with ease.",
-		"product": "Product",
-		"features": "Features",
-		"pricing": "Pricing",
-		"resources": "Resources",
+		"tagline": "La plataforma de códigos QR de código abierto. Crea, gestiona y rastrea códigos QR con facilidad.",
+		"product": "Producto",
+		"features": "Funciones",
+		"pricing": "Precios",
+		"resources": "Recursos",
 		"faqLink": "FAQ",
 		"docs": "Documentación",
 		"github": "GitHub",
 		"legal": "Legal",
-		"legalNotice": "Legal Notice",
-		"privacyPolicy": "Privacy Policy",
-		"contact": "Contact",
+		"legalNotice": "Aviso legal",
+		"privacyPolicy": "Política de privacidad",
+		"contact": "Contacto",
 		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},
 	"contentElements": {
@@ -380,8 +382,8 @@
 		}
 	},
 	"generator": {
-		"sectionTitle": "Create Your QR Code",
-		"sectionSubtitle": "Choose a content type, customize the design, and download your QR code instantly.",
+		"sectionTitle": "Crea tu código QR",
+		"sectionSubtitle": "Elige un tipo de contenido, personaliza el diseño y descarga tu código QR al instante.",
 		"labelName": "Nombre",
 		"domainSelector": {
 			"label": "Dominio de URL corta",
@@ -743,7 +745,7 @@
 	},
 	"faq": {
 		"headline": "Preguntas Frecuentes",
-		"subtitle": "Everything you need to know about QR codes and QRcodly.",
+		"subtitle": "Todo lo que necesitas saber sobre códigos QR y QRcodly.",
 		"question1": "¿Qué es un Código QR?",
 		"answer1": "Un Código QR (Código de Respuesta Rápida) es un código de barras inteligente y bidimensional que puede almacenar diversos tipos de información, como enlaces a sitios web, texto o datos de contacto. Se puede capturar y descifrar fácilmente usando un smartphone o un escáner dedicado.",
 		"question2": "¿Cómo creo un Código QR?",
@@ -768,9 +770,13 @@
 		"answer11": "Todos los datos de QRcodly se almacenan exclusivamente en servidores ubicados en Alemania. No compartimos tus datos con terceros. Solo utilizamos Clerk para el inicio de sesión y la autenticación."
 	},
 	"productShowcase": {
-		"headline": "Powerful Dashboard.",
-		"subHeadline": "Beautiful Interface.",
-		"description": "Manage all your QR codes, track scans in real-time, and customize designs — all from one intuitive dashboard."
+		"headline": "Panel de control potente.",
+		"subHeadline": "Interfaz elegante.",
+		"description": "Gestiona todos tus códigos QR, rastrea escaneos en tiempo real y personaliza diseños — todo desde un panel de control intuitivo."
+	},
+	"notFound": {
+		"message": "¡Ups! La página que buscas no existe.",
+		"goHome": "Volver al inicio"
 	},
 	"fileUpload": {
 		"maxFiles": "Se permiten como máximo {maxFiles} archivos",

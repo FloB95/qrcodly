@@ -138,7 +138,7 @@ export default function Header({
 					</DrawerHeader>
 					<div className="absolute top-8 left-4 right-4 flex items-center justify-between">
 						<div className="text-xl font-semibold  text-black">
-							<Link title="QRcodly" href="/de">
+							<Link title="QRcodly" href="/">
 								QRcodly
 							</Link>
 						</div>

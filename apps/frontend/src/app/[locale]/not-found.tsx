@@ -1,33 +1,26 @@
-import NoNavHeader from '@/components/NoNavHeader';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { buttonVariants } from '@/components/ui/button';
 import Container from '@/components/ui/container';
-import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
 
-export default function NotFoundPage() {
+export default async function NotFoundPage() {
+	const t = await getTranslations('notFound');
+
 	return (
 		<>
-			<NoNavHeader />
+			<Header />
 
-			<Container className="flex flex-col justify-center text-center">
-				<div>
-					<h1 className="mb-4 text-center text-6xl font-semibold">404</h1>
-					<p className="mb-6 text-center text-xl">
-						Oopsss! The page you&apos;re looking for doesn&apos;t exist.
-					</p>
-					<Link href="/" className={buttonVariants()}>
-						Go Back Home
-					</Link>
-				</div>
+			<Container className="flex flex-1 flex-col items-center justify-center text-center py-24">
+				<h1 className="mb-4 text-6xl font-semibold">404</h1>
+				<p className="mb-6 text-xl">{t('message')}</p>
+				<Link href="/" className={buttonVariants()}>
+					{t('goHome')}
+				</Link>
 			</Container>
 
-			<footer className="bg-[#1d1d1f] text-gray-300 py-8">
-				<div className="mx-auto max-w-7xl px-6 text-center">
-					<p className="text-xs text-gray-500">
-						&copy; FB Dev {new Date().getFullYear()} &mdash; QR code is a registered trademark of
-						DENSO WAVE INCORPORATED
-					</p>
-				</div>
-			</footer>
+			<Footer />
 		</>
 	);
 }

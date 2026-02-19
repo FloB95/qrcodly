@@ -1,11 +1,15 @@
 import '@/styles/globals.css';
-import NoNavHeader from '@/components/NoNavHeader';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { buttonVariants } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
+import { NextIntlClientProvider } from 'next-intl';
+import Providers from '@/components/provider';
+import messages from '@/dictionaries/en.json';
 
-const openSans = Inter({
+const inter = Inter({
 	subsets: ['latin'],
 	variable: '--font-sans',
 });
@@ -19,31 +23,26 @@ export default async function NotFoundPage() {
 				<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 				<link rel="manifest" href="/site.webmanifest" />
 			</head>
-			<body className={`font-sans ${openSans.variable}`}>
-				<main className="flex min-h-screen flex-col justify-between bg-white">
-					<NoNavHeader />
+			<body className={`font-sans ${inter.variable}`}>
+				<NextIntlClientProvider locale="en" messages={messages}>
+					<Providers locale="en">
+						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
+							<Header />
 
-					<Container className="flex flex-col justify-center text-center">
-						<div>
-							<h1 className="mb-4 text-center text-6xl font-semibold">404</h1>
-							<p className="mb-6 text-center text-xl">
-								Oops! The page you&apos;re looking for doesn&apos;t exist.
-							</p>
-							<Link href="/" className={buttonVariants()}>
-								Go Back Home
-							</Link>
-						</div>
-					</Container>
+							<Container className="flex flex-1 flex-col items-center justify-center text-center py-24">
+								<h1 className="mb-4 text-6xl font-semibold">404</h1>
+								<p className="mb-6 text-xl">
+									Oops! The page you&apos;re looking for doesn&apos;t exist.
+								</p>
+								<Link href="/" className={buttonVariants()}>
+									Go Back Home
+								</Link>
+							</Container>
 
-					<footer className="bg-[#1d1d1f] text-gray-300 py-8">
-						<div className="mx-auto max-w-7xl px-6 text-center">
-							<p className="text-xs text-gray-500">
-								&copy; FB Dev {new Date().getFullYear()} &mdash; QR code is a registered trademark
-								of DENSO WAVE INCORPORATED
-							</p>
-						</div>
-					</footer>
-				</main>
+							<Footer />
+						</main>
+					</Providers>
+				</NextIntlClientProvider>
 			</body>
 		</html>
 	);

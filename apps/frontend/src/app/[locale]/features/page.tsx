@@ -9,6 +9,9 @@ import type { Metadata } from 'next';
 
 export async function generateMetadata({ params }: DefaultPageParams): Promise<Metadata> {
 	const { locale } = await params;
+	if (!SUPPORTED_LANGUAGES.includes(locale)) {
+		return {};
+	}
 	const t = await getTranslations({ locale, namespace: 'featuresPage' });
 
 	return {

@@ -68,20 +68,21 @@ export default function Footer() {
 						<h3 className="text-sm font-semibold text-black mb-4">{t('resources')}</h3>
 						<ul className="space-y-3">
 							<li>
-								<a
-									href="#faq"
+								<Link
+									href="/#faq"
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('faqLink')}
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									href="/docs"
+									locale={'en'}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('docs')}
-								</a>
+								</Link>
 							</li>
 							<li>
 								<a

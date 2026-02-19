@@ -65,6 +65,7 @@
 		"addQrCodeBtn": "QR Code hinzufügen",
 		"bulkImportLabel": "Inhaltstyp auswählen",
 		"exportBtn": "Exportieren",
+		"importExportLabel": "Import & Export",
 		"bulkExport": {
 			"title": "QR Codes exportieren",
 			"description": "Mehrere QR Codes als ZIP-Datei herunterladen.",
@@ -87,7 +88,8 @@
 			"clearAll": "Löschen",
 			"customizeColumns": "Spalten anpassen",
 			"columns": "Spalten",
-			"toggleColumns": "Spalten ein-/ausblenden"
+			"toggleColumns": "Spalten ein-/ausblenden",
+			"actions": "Aktionen"
 		}
 	},
 	"analytics": {
@@ -1297,5 +1299,9 @@
 			"subtitle": "Erstelle deinen ersten QR Code in Sekunden. Für immer kostenlos, keine Kreditkarte erforderlich.",
 			"button": "Jetzt QR Code erstellen"
 		}
+	},
+	"notFound": {
+		"message": "Hoppla! Die Seite, die du suchst, existiert nicht.",
+		"goHome": "Zurück zur Startseite"
 	}
 }

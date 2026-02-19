@@ -34,8 +34,8 @@
 			"noSignup": "Gratis Dynamische QR-codes",
 			"noWatermark": "Geen Watermerken"
 		},
-		"ctaPrimary": "Create Your QR Code",
-		"ctaSecondary": "See what's possible"
+		"ctaPrimary": "Maak je QR-code",
+		"ctaSecondary": "Ontdek de mogelijkheden"
 	},
 	"metadata": {
 		"title": "QRcodly - Gratis QR-codegenerator",
@@ -65,6 +65,7 @@
 		"addQrCodeBtn": "QR-code toevoegen",
 		"bulkImportLabel": "Selecteer inhoudstype",
 		"exportBtn": "Exporteren",
+		"importExportLabel": "Importeren en Exporteren",
 		"bulkExport": {
 			"title": "QR-codes exporteren",
 			"description": "Download meerdere QR-codes als ZIP-bestand.",
@@ -87,7 +88,8 @@
 			"clearAll": "Wissen",
 			"customizeColumns": "Kolommen aanpassen",
 			"columns": "Kolommen",
-			"toggleColumns": "Kolommen in-/uitschakelen"
+			"toggleColumns": "Kolommen in-/uitschakelen",
+			"actions": "Acties"
 		}
 	},
 	"analytics": {
@@ -117,17 +119,17 @@
 		"plansBtn": "Prijzen"
 	},
 	"footer": {
-		"tagline": "The open-source QR code platform. Create, manage, and track QR codes with ease.",
+		"tagline": "Het open-source QR-codeplatform. Maak, beheer en volg QR-codes met gemak.",
 		"product": "Product",
-		"features": "Features",
-		"pricing": "Pricing",
-		"resources": "Resources",
+		"features": "Functies",
+		"pricing": "Prijzen",
+		"resources": "Bronnen",
 		"faqLink": "FAQ",
 		"docs": "Documentatie",
 		"github": "GitHub",
-		"legal": "Legal",
-		"legalNotice": "Legal Notice",
-		"privacyPolicy": "Privacy Policy",
+		"legal": "Juridisch",
+		"legalNotice": "Juridische kennisgeving",
+		"privacyPolicy": "Privacybeleid",
 		"contact": "Contact",
 		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},
@@ -380,8 +382,8 @@
 		}
 	},
 	"generator": {
-		"sectionTitle": "Create Your QR Code",
-		"sectionSubtitle": "Choose a content type, customize the design, and download your QR code instantly.",
+		"sectionTitle": "Maak je QR-code",
+		"sectionSubtitle": "Kies een inhoudstype, pas het ontwerp aan en download je QR-code direct.",
 		"labelName": "naam",
 		"domainSelector": {
 			"label": "Korte URL-domein",
@@ -743,7 +745,7 @@
 	},
 	"faq": {
 		"headline": "Veelgestelde Vragen",
-		"subtitle": "Everything you need to know about QR codes and QRcodly.",
+		"subtitle": "Alles wat je moet weten over QR-codes en QRcodly.",
 		"question1": "Wat is een QR-code?",
 		"answer1": "Een QR-code (Quick Response Code) is een slimme, tweedimensionale barcode die verschillende soorten informatie kan opslaan, zoals websitelinks, tekst of contactgegevens. Het kan eenvoudig worden vastgelegd en ontcijferd met een smartphone of een speciale scanner.",
 		"question2": "Hoe maak ik een QR-code aan?",
@@ -768,9 +770,9 @@
 		"answer11": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk."
 	},
 	"productShowcase": {
-		"headline": "Powerful Dashboard.",
-		"subHeadline": "Beautiful Interface.",
-		"description": "Manage all your QR codes, track scans in real-time, and customize designs — all from one intuitive dashboard."
+		"headline": "Krachtig dashboard.",
+		"subHeadline": "Prachtige interface.",
+		"description": "Beheer al je QR-codes, volg scans in realtime en pas ontwerpen aan — alles vanuit één intuïtief dashboard."
 	},
 	"fileUpload": {
 		"maxFiles": "Maximaal {maxFiles} bestanden toegestaan",
@@ -1297,5 +1299,9 @@
 			"subtitle": "Maak je eerste QR-code in seconden. Voor altijd gratis, geen creditcard nodig.",
 			"button": "Maak Nu een QR-code"
 		}
+	},
+	"notFound": {
+		"message": "Oeps! De pagina die je zoekt bestaat niet.",
+		"goHome": "Terug naar home"
 	}
 }

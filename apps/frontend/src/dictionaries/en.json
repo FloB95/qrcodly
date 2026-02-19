@@ -65,6 +65,7 @@
 		"addQrCodeBtn": "Add QR code",
 		"bulkImportLabel": "Select Content Type",
 		"exportBtn": "Export",
+		"importExportLabel": "Import & Export",
 		"bulkExport": {
 			"title": "Bulk Export QR Codes",
 			"description": "Download multiple QR codes as a ZIP file.",
@@ -87,7 +88,8 @@
 			"clearAll": "Clear",
 			"customizeColumns": "Customize Columns",
 			"columns": "Columns",
-			"toggleColumns": "Toggle columns"
+			"toggleColumns": "Toggle columns",
+			"actions": "Actions"
 		}
 	},
 	"analytics": {
@@ -1297,5 +1299,9 @@
 			"subtitle": "Create your first QR code in seconds. Free forever, no credit card required.",
 			"button": "Create QR Code Now"
 		}
+	},
+	"notFound": {
+		"message": "Oops! The page you're looking for doesn't exist.",
+		"goHome": "Go Back Home"
 	}
 }

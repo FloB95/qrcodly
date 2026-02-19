@@ -19,7 +19,6 @@ export function ProductShowcase() {
 					transition={{ duration: 0.5 }}
 				>
 					{t('headline')}
-					<br />
 				</motion.h2>
 				<motion.p
 					className="mt-6 text-xl sm:text-2xl text-slate-600 max-w-2xl mx-auto"

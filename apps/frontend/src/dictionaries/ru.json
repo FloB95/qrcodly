@@ -34,8 +34,8 @@
 			"noSignup": "Бесплатные динамические QR-коды",
 			"noWatermark": "Без водяных знаков"
 		},
-		"ctaPrimary": "Create Your QR Code",
-		"ctaSecondary": "See what's possible"
+		"ctaPrimary": "Создайте свой QR-код",
+		"ctaSecondary": "Узнайте возможности"
 	},
 	"metadata": {
 		"title": "QRcodly — Бесплатный генератор QR-кодов",
@@ -65,6 +65,7 @@
 		"addQrCodeBtn": "Добавить QR-код",
 		"bulkImportLabel": "Выберите тип контента",
 		"exportBtn": "Экспорт",
+		"importExportLabel": "Импорт и Экспорт",
 		"bulkExport": {
 			"title": "Экспорт QR-кодов",
 			"description": "Скачать несколько QR-кодов в виде ZIP-файла.",
@@ -87,7 +88,8 @@
 			"clearAll": "Очистить",
 			"customizeColumns": "Настроить столбцы",
 			"columns": "Столбцы",
-			"toggleColumns": "Переключить столбцы"
+			"toggleColumns": "Переключить столбцы",
+			"actions": "Действия"
 		}
 	},
 	"analytics": {
@@ -117,18 +119,18 @@
 		"plansBtn": "Цены"
 	},
 	"footer": {
-		"tagline": "The open-source QR code platform. Create, manage, and track QR codes with ease.",
-		"product": "Product",
-		"features": "Features",
-		"pricing": "Pricing",
-		"resources": "Resources",
+		"tagline": "Платформа QR-кодов с открытым исходным кодом. Создавайте, управляйте и отслеживайте QR-коды с лёгкостью.",
+		"product": "Продукт",
+		"features": "Возможности",
+		"pricing": "Тарифы",
+		"resources": "Ресурсы",
 		"faqLink": "FAQ",
 		"docs": "Документация",
 		"github": "GitHub",
-		"legal": "Legal",
-		"legalNotice": "Legal Notice",
-		"privacyPolicy": "Privacy Policy",
-		"contact": "Contact",
+		"legal": "Правовая информация",
+		"legalNotice": "Правовая информация",
+		"privacyPolicy": "Политика конфиденциальности",
+		"contact": "Контакт",
 		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},
 	"contentElements": {
@@ -380,8 +382,8 @@
 		}
 	},
 	"generator": {
-		"sectionTitle": "Create Your QR Code",
-		"sectionSubtitle": "Choose a content type, customize the design, and download your QR code instantly.",
+		"sectionTitle": "Создайте свой QR-код",
+		"sectionSubtitle": "Выберите тип контента, настройте дизайн и скачайте свой QR-код мгновенно.",
 		"labelName": "Название",
 		"domainSelector": {
 			"label": "Домен короткого URL",
@@ -743,7 +745,7 @@
 	},
 	"faq": {
 		"headline": "Часто задаваемые вопросы",
-		"subtitle": "Everything you need to know about QR codes and QRcodly.",
+		"subtitle": "Всё, что вам нужно знать о QR-кодах и QRcodly.",
 		"question1": "Что такое QR-код?",
 		"answer1": "QR-код (код быстрого ответа) — это интеллектуальный двухмерный штрих-код, который может хранить различные типы информации, такие как ссылки на веб-сайты, текст или контактные данные. Его можно легко считать и расшифровать с помощью смартфона или специального сканера.",
 		"question2": "Как создать QR-код?",
@@ -768,9 +770,9 @@
 		"answer11": "Все данные в QRcodly хранятся исключительно на серверах, расположенных в Германии. Мы не передаём данные третьим лицам. Для входа и аутентификации используется только сервис Clerk."
 	},
 	"productShowcase": {
-		"headline": "Powerful Dashboard.",
-		"subHeadline": "Beautiful Interface.",
-		"description": "Manage all your QR codes, track scans in real-time, and customize designs — all from one intuitive dashboard."
+		"headline": "Мощная панель управления.",
+		"subHeadline": "Красивый интерфейс.",
+		"description": "Управляйте всеми QR-кодами, отслеживайте сканирования в реальном времени и настраивайте дизайн — всё из одной интуитивной панели управления."
 	},
 	"fileUpload": {
 		"maxFiles": "Максимум {maxFiles} файлов",
@@ -1297,5 +1299,9 @@
 			"subtitle": "Создайте свой первый QR-код за секунды. Бесплатно навсегда, без кредитной карты.",
 			"button": "Создать QR-код Сейчас"
 		}
+	},
+	"notFound": {
+		"message": "Упс! Страница, которую вы ищете, не существует.",
+		"goHome": "Вернуться на главную"
 	}
 }
