@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import Container from '@/components/ui/container';
 import Providers from '@/components/provider';
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
 	manifest: '/site.webmanifest',
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en" className="light" suppressHydrationWarning>
 			<body className={`font-sans ${inter.variable}`}>

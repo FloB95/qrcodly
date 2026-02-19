@@ -1287,7 +1287,7 @@
 				"tag": "Veelzijdigheid",
 				"title": "Meer dan 9 Inhoudstypen Ondersteund",
 				"description": "Ga verder dan eenvoudige URL's. Maak QR-codes voor WiFi-netwerken, visitekaartjes, agenda-evenementen, e-mailadressen, geografische locaties en meer.",
-				"bullet1": "URL, WiFi, vCard, Email en Tekst",
+				"bullet1": "URL, WiFi, vCard, e-mail en Tekst",
 				"bullet2": "Agenda-evenementen met volledige detailondersteuning",
 				"bullet3": "Geografische locaties en betaallinks"
 			},
