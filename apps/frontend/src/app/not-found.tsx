@@ -1,5 +1,4 @@
 import '@/styles/globals.css';
-import Footer from '@/components/Footer';
 import NoNavHeader from '@/components/NoNavHeader';
 import { buttonVariants } from '@/components/ui/button';
 import Container from '@/components/ui/container';
@@ -21,7 +20,7 @@ export default async function NotFoundPage() {
 				<link rel="manifest" href="/site.webmanifest" />
 			</head>
 			<body className={`font-sans ${openSans.variable}`}>
-				<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
+				<main className="flex min-h-screen flex-col justify-between bg-white">
 					<NoNavHeader />
 
 					<Container className="flex flex-col justify-center text-center">
@@ -36,7 +35,14 @@ export default async function NotFoundPage() {
 						</div>
 					</Container>
 
-					<Footer />
+					<footer className="bg-[#1d1d1f] text-gray-300 py-8">
+						<div className="mx-auto max-w-7xl px-6 text-center">
+							<p className="text-xs text-gray-500">
+								&copy; FB Dev {new Date().getFullYear()} &mdash; QR code is a registered trademark
+								of DENSO WAVE INCORPORATED
+							</p>
+						</div>
+					</footer>
 				</main>
 			</body>
 		</html>

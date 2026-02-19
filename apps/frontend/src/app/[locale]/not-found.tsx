@@ -1,4 +1,3 @@
-import Footer from '@/components/Footer';
 import NoNavHeader from '@/components/NoNavHeader';
 import { buttonVariants } from '@/components/ui/button';
 import Container from '@/components/ui/container';
@@ -21,7 +20,14 @@ export default function NotFoundPage() {
 				</div>
 			</Container>
 
-			<Footer />
+			<footer className="bg-[#1d1d1f] text-gray-300 py-8">
+				<div className="mx-auto max-w-7xl px-6 text-center">
+					<p className="text-xs text-gray-500">
+						&copy; FB Dev {new Date().getFullYear()} &mdash; QR code is a registered trademark of
+						DENSO WAVE INCORPORATED
+					</p>
+				</div>
+			</footer>
 		</>
 	);
 }

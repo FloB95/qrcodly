@@ -6,6 +6,7 @@ const PAGES = [
 	'', // Home
 	'docs',
 	'plans',
+	'features',
 	'imprint',
 	'privacy-policy',
 ];

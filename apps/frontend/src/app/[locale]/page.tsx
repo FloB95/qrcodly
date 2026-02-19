@@ -14,9 +14,14 @@ import { Hero } from '@/components/Hero';
 import dynamic from 'next/dynamic';
 
 // Dynamic imports for below-the-fold components to reduce initial bundle size
-const Features = dynamic(() => import('@/components/Features').then((mod) => mod.Features), {
-	ssr: true,
-});
+const FeatureSlider = dynamic(
+	() => import('@/components/FeatureSlider').then((mod) => mod.FeatureSlider),
+	{ ssr: true },
+);
+const ProductShowcase = dynamic(
+	() => import('@/components/ProductShowcase').then((mod) => mod.ProductShowcase),
+	{ ssr: true },
+);
 const Cta = dynamic(() => import('@/components/Cta').then((mod) => mod.Cta), {
 	ssr: true,
 });
@@ -85,31 +90,36 @@ export default async function Page({ params }: DefaultPageParams) {
 
 			<Header />
 
-			<article>
+			<article className="pb-10 sm:pb-24">
 				<Container>
 					<Hero />
 
 					{/* Main QR Code Generator Tool */}
-					<section aria-label="QR Code Generator Tool" className="mb-2">
+					<section id="generator" aria-label="QR Code Generator Tool">
 						<QRcodeGenerator generatorType="QrCodeWithDownloadBtn" />
-					</section>
-
-					{/* Features Section */}
-					<section aria-label="Features" className="mt-16">
-						<Features />
-					</section>
-
-					{/* Call to Action */}
-					<section aria-label="Get Started" className="mt-16">
-						<Cta />
-					</section>
-
-					{/* FAQ Section */}
-					<section aria-label="Frequently Asked Questions" className="mt-16">
-						<FAQSection />
 					</section>
 				</Container>
 			</article>
+
+			{/* Features Slider */}
+			<section id="features" aria-label="Features" className="py-10 sm:py-24">
+				<FeatureSlider />
+			</section>
+
+			{/* Product Showcase */}
+			<section id="showcase" aria-label="Product Showcase" className="py-10 sm:py-24">
+				<ProductShowcase />
+			</section>
+
+			{/* FAQ Section */}
+			<section id="faq" aria-label="FAQ" className="py-10 sm:py-24">
+				<FAQSection />
+			</section>
+
+			{/* Contact CTA */}
+			<section id="cta" aria-label="Contact Us" className="py-10 sm:py-24">
+				<Cta />
+			</section>
 
 			<Footer />
 		</QrCodeGeneratorStoreProvider>

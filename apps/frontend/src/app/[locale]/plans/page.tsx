@@ -18,9 +18,9 @@ export default async function Page({ params }: DefaultPageParams) {
 		<>
 			<Header />
 
-			<Container className="py-24">
+			<Container className="pt-16 sm:pt-20 pb-10 sm:pb-24">
 				<div className="text-center">
-					<h1 className="mt-12 lg:mt-4 text-center text-2xl sm:text-4xl font-semibold">
+					<h1 className="mt-14 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900 max-w-2xl mx-auto">
 						{t('title')}
 					</h1>
 					<p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">{t('subtitle')}</p>

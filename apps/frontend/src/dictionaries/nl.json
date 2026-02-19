@@ -33,7 +33,9 @@
 			"unlimited": "Onbeperkte QR-codes",
 			"noSignup": "Gratis Dynamische QR-codes",
 			"noWatermark": "Geen Watermerken"
-		}
+		},
+		"ctaPrimary": "Create Your QR Code",
+		"ctaSecondary": "See what's possible"
 	},
 	"metadata": {
 		"title": "QRcodly - Gratis QR-codegenerator",
@@ -111,13 +113,23 @@
 		"collectionBtn": "Mijn collectie",
 		"signInBtn": "Inloggen",
 		"settingsBtn": "Instellingen",
+		"featuresBtn": "Functies",
 		"plansBtn": "Prijzen"
 	},
 	"footer": {
-		"qrCodeCopyright": "QR Code is een geregistreerd handelsmerk van DENSO WAVE INCORPORATED",
-		"legalNotice": "Wettelijke kennisgeving",
-		"privacyPolicy": "Privacybeleid",
-		"contact": "Contact"
+		"tagline": "The open-source QR code platform. Create, manage, and track QR codes with ease.",
+		"product": "Product",
+		"features": "Features",
+		"pricing": "Pricing",
+		"resources": "Resources",
+		"faqLink": "FAQ",
+		"docs": "Documentatie",
+		"github": "GitHub",
+		"legal": "Legal",
+		"legalNotice": "Legal Notice",
+		"privacyPolicy": "Privacy Policy",
+		"contact": "Contact",
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -132,14 +144,14 @@
 			"loading": "Laden..."
 		},
 		"feedbackCta": {
-			"headline": "Uw feedback is belangrijk! 🚀",
-			"subHeadline1": "We werken voortdurend aan het verbeteren van QRcodly.",
-			"subHeadline2": "Als u feedback of vragen heeft, laat het ons dan weten.",
-			"emailBtn": "E-mail ons"
+			"headline": "Vragen of feedback?",
+			"subHeadline1": "Heb je een vraag over QRcodly of wil je feedback delen? We helpen je graag en werken continu aan verbeteringen.",
+			"emailBtn": "Neem contact op"
 		},
 		"featuresCta": {
 			"headline": "Overzicht van de belangrijkste functies",
 			"subHeadline": "Met QRcodly kunt u gratis QR-codes maken, bewerken, beheren en analyseren - alles op één plek.",
+			"allFeatures": "Alle functies",
 			"emailBtn": "E-mail ons",
 			"editFeature": {
 				"headline": "QR-codes op elk moment bewerken",
@@ -160,6 +172,14 @@
 			"customDomainFeature": {
 				"headline": "Houd controle met je eigen domein",
 				"subHeadline": "Gebruik je eigen domein voor dynamische QR-codes. Houd controle, blijf gebrand en bezit elke link."
+			},
+			"tagFeature": {
+				"headline": "Organiseer met tags",
+				"subHeadline": "Label en categoriseer je QR-codes met aangepaste tags. Filter en vind wat je nodig hebt in een paar seconden."
+			},
+			"exportImportFeature": {
+				"headline": "Exporteer en importeer QR-codes",
+				"subHeadline": "Maak back-ups, migreer of beheer je QR-codes in bulk. Exporteer en importeer ze met slechts een paar klikken."
 			},
 			"teamFeature": {
 				"headline": "Samenwerken in een team",
@@ -360,6 +380,8 @@
 		}
 	},
 	"generator": {
+		"sectionTitle": "Create Your QR Code",
+		"sectionSubtitle": "Choose a content type, customize the design, and download your QR code instantly.",
 		"labelName": "naam",
 		"domainSelector": {
 			"label": "Korte URL-domein",
@@ -721,6 +743,7 @@
 	},
 	"faq": {
 		"headline": "Veelgestelde Vragen",
+		"subtitle": "Everything you need to know about QR codes and QRcodly.",
 		"question1": "Wat is een QR-code?",
 		"answer1": "Een QR-code (Quick Response Code) is een slimme, tweedimensionale barcode die verschillende soorten informatie kan opslaan, zoals websitelinks, tekst of contactgegevens. Het kan eenvoudig worden vastgelegd en ontcijferd met een smartphone of een speciale scanner.",
 		"question2": "Hoe maak ik een QR-code aan?",
@@ -743,6 +766,11 @@
 		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!",
 		"question11": "Waar worden mijn gegevens gehost?",
 		"answer11": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk."
+	},
+	"productShowcase": {
+		"headline": "Powerful Dashboard.",
+		"subHeadline": "Beautiful Interface.",
+		"description": "Manage all your QR codes, track scans in real-time, and customize designs — all from one intuitive dashboard."
 	},
 	"fileUpload": {
 		"maxFiles": "Maximaal {maxFiles} bestanden toegestaan",
@@ -1184,6 +1212,90 @@
 			"created": "Aangemaakt",
 			"usage": "Gebruik",
 			"qrCodes": "QR-codes"
+		}
+	},
+	"featuresPage": {
+		"badge": "Functies",
+		"title": "Alles wat je nodig hebt voor professionele QR-codes",
+		"subtitle": "Van creatie tot analyse — QRcodly biedt je krachtige tools om QR-codes te maken, beheren en volgen.",
+		"spotlight": {
+			"dynamicQr": {
+				"tag": "Kernfunctie",
+				"title": "Dynamische QR-codes — Altijd Bewerkbaar",
+				"description": "Maak QR-codes die na het afdrukken bijgewerkt kunnen worden. Wijzig de bestemmings-URL, schakel ze aan of uit en volg elke scan — allemaal zonder een nieuwe code te genereren.",
+				"bullet1": "Werk de inhoud bij zonder opnieuw af te drukken",
+				"bullet2": "Volg elke scan met realtime analyse",
+				"bullet3": "Schakel QR-codes direct aan of uit"
+			},
+			"analytics": {
+				"tag": "Inzichten",
+				"title": "Gedetailleerde Realtime Analyse",
+				"description": "Begrijp hoe je QR-codes presteren met uitgebreide scananalyse. Zie wie scant, wanneer, waar en met welk apparaat.",
+				"bullet1": "Totaal aantal scans en unieke bezoekers bijhouden",
+				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem",
+				"bullet3": "Geografische spreiding per land"
+			},
+			"collection": {
+				"tag": "Beheer",
+				"title": "Jouw Centrale QR-code Dashboard",
+				"description": "Houd al je QR-codes georganiseerd in een krachtig dashboard. Zoek, filter, sorteer en beheer alles vanaf een enkele plek.",
+				"bullet1": "Centraal dashboard voor alle QR-codes",
+				"bullet2": "Geavanceerd zoeken en filteren op inhoudstype",
+				"bullet3": "Snelle acties: bewerken, delen, downloaden, verwijderen"
+			},
+			"templates": {
+				"tag": "Design",
+				"title": "Herbruikbare Ontwerpsjablonen",
+				"description": "Sla je favoriete QR-codeontwerpen op als sjablonen en hergebruik ze in al je campagnes. Behoud een consistente branding zonder stijlen elke keer opnieuw te maken.",
+				"bullet1": "Sla elk QR-code ontwerp op als herbruikbaar sjabloon",
+				"bullet2": "Pas sjablonen toe op nieuwe codes met één klik",
+				"bullet3": "Behoud consistente branding in alle campagnes"
+			},
+			"customDomain": {
+				"tag": "Branding",
+				"title": "Aangepaste Domeinen voor Korte URL's",
+				"description": "Gebruik je eigen domein voor QR-code korte URL's in plaats van die van ons. Versterk je merkidentiteit en bouw vertrouwen op bij je publiek.",
+				"bullet1": "Verbind je eigen domein in enkele minuten",
+				"bullet2": "Automatische SSL-certificaat provisioning",
+				"bullet3": "Volledig DNS-beheer via Cloudflare-integratie"
+			},
+			"tags": {
+				"tag": "Organisatie",
+				"title": "Gekleurde Tags voor Eenvoudige Organisatie",
+				"description": "Houd je QR-codebibliotheek georganiseerd met aangepaste gekleurde tags. Maak categorieën, filter op tag en vind elke code direct.",
+				"bullet1": "Maak onbeperkt aangepaste gekleurde tags",
+				"bullet2": "Wijs meerdere tags toe per QR-code",
+				"bullet3": "Filter en doorzoek je collectie op tags"
+			},
+			"bulkOperations": {
+				"tag": "Productiviteit",
+				"title": "Bulk Export en Import op Grote Schaal",
+				"description": "Werk efficiënt met grote aantallen QR-codes. Importeer via CSV om er veel tegelijk aan te maken, of exporteer je hele collectie als ZIP-archief.",
+				"bullet1": "Importeer QR-codes in bulk via CSV-upload",
+				"bullet2": "Exporteer alle QR-codeafbeeldingen als ZIP-archief",
+				"bullet3": "Ideaal voor grootschalige printcampagnes"
+			},
+			"contentTypes": {
+				"tag": "Veelzijdigheid",
+				"title": "Meer dan 9 Inhoudstypen Ondersteund",
+				"description": "Ga verder dan eenvoudige URL's. Maak QR-codes voor WiFi-netwerken, visitekaartjes, agenda-evenementen, e-mailadressen, geografische locaties en meer.",
+				"bullet1": "URL, WiFi, vCard, Email en Tekst",
+				"bullet2": "Agenda-evenementen met volledige detailondersteuning",
+				"bullet3": "Geografische locaties en betaallinks"
+			},
+			"security": {
+				"tag": "Privacy",
+				"title": "Privacy-gericht & Open Source",
+				"description": "Je kerngegevens worden gehost op servers in Duitsland. We gebruiken vertrouwde diensten van derden zoals Clerk voor authenticatie en verzamelen minimale analyses om het product te verbeteren. QRcodly is volledig open source voor volledige transparantie.",
+				"bullet1": "Kerninfrastructuur gehost op Duitse servers",
+				"bullet2": "Volledig open source op GitHub — altijd controleerbaar",
+				"bullet3": "Transparant gebruik van Clerk, Sentry & PostHog"
+			}
+		},
+		"cta": {
+			"title": "Klaar om te beginnen?",
+			"subtitle": "Maak je eerste QR-code in seconden. Voor altijd gratis, geen creditcard nodig.",
+			"button": "Maak Nu een QR-code"
 		}
 	}
 }
