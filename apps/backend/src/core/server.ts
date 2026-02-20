@@ -37,6 +37,7 @@ export class Server {
 	constructor(@inject(Logger) private readonly logger: Logger) {
 		this.server = fastify({
 			logger: FASTIFY_LOGGING,
+			bodyLimit: 3 * 1024 * 1024, // 3 MB
 		});
 	}
 

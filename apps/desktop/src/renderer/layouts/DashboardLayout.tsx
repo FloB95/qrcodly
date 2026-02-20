@@ -6,7 +6,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 export default function DashboardLayout() {
 	return (
 		<div
-			className="min-h-screen"
+			className="min-h-screen bg-sidebar"
 			style={{
 				// Add padding for macOS traffic lights
 				paddingTop: window.electronAPI ? (navigator.platform.includes('Mac') ? 36 : 0) : 0,
