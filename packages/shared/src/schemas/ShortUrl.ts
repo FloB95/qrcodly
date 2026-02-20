@@ -10,6 +10,12 @@ export const ShortUrlSchema = AbstractEntitySchema.extend({
 	customDomainId: z.uuid().nullable().default(null),
 	isActive: z.boolean(),
 	createdBy: z.string(),
+	deletedAt: z
+		.preprocess((arg) => {
+			if (arg instanceof Date) return arg.toISOString();
+			return arg;
+		}, z.iso.datetime().nullable())
+		.default(null),
 });
 
 export type TShortUrl = z.infer<typeof ShortUrlSchema>;

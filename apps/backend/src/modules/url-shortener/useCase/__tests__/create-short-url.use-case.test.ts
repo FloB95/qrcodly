@@ -49,6 +49,7 @@ describe('CreateShortUrlUseCase', () => {
 			createdBy: mockUserId,
 			createdAt: new Date(),
 			updatedAt: new Date(),
+			deletedAt: null,
 		};
 
 		it('should generate unique shortCode for new short URL', async () => {
@@ -163,6 +164,7 @@ describe('CreateShortUrlUseCase', () => {
 				isActive: mockDto.isActive,
 				qrCodeId: null,
 				createdBy: mockUserId,
+				deletedAt: null,
 			});
 		});
 

@@ -27,7 +27,8 @@
 		"db:migrate": "DB_MIGRATING=true tsx src/core/db/migrate.ts",
 		"db:generate-migration": "drizzle-kit generate --config=drizzle.config.ts",
 		"studio": "drizzle-kit studio",
-		"cli:list": "npx tsx src/cli.ts list"
+		"cli:list": "npx tsx src/cli.ts list",
+		"script:find-orphaned-urls": "SKIP_ENV_VALIDATION=true tsx src/scripts/find-orphaned-short-urls.ts"
 	},
 	"devDependencies": {
 		"@aws-sdk/types": "^3.936.0",

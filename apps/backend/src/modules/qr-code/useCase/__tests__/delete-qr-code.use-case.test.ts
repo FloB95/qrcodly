@@ -1,5 +1,6 @@
 import { DeleteQrCodeUseCase } from '../delete-qr-code.use-case';
 import type QrCodeRepository from '../../domain/repository/qr-code.repository';
+import type ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
 import type { Logger } from '@/core/logging';
 import type { ImageService } from '@/core/services/image.service';
 import type { EventEmitter } from '@/core/event';
@@ -10,17 +11,20 @@ import { QrCodeDefaults } from '@shared/schemas';
 describe('DeleteQrCodeUseCase', () => {
 	let useCase: DeleteQrCodeUseCase;
 	let mockRepository: jest.Mocked<QrCodeRepository>;
+	let mockShortUrlRepository: jest.Mocked<ShortUrlRepository>;
 	let mockLogger: jest.Mocked<Logger>;
 	let mockImageService: jest.Mocked<ImageService>;
 	let mockEventEmitter: jest.Mocked<EventEmitter>;
 
 	beforeEach(() => {
 		mockRepository = mock<QrCodeRepository>();
+		mockShortUrlRepository = mock<ShortUrlRepository>();
 		mockLogger = mock<Logger>();
 		mockImageService = mock<ImageService>();
 		mockEventEmitter = mock<EventEmitter>();
 		useCase = new DeleteQrCodeUseCase(
 			mockRepository,
+			mockShortUrlRepository,
 			mockLogger,
 			mockImageService,
 			mockEventEmitter,

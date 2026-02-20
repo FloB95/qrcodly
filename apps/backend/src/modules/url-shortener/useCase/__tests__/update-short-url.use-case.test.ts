@@ -57,6 +57,7 @@ describe('UpdateShortUrlUseCase', () => {
 			createdBy: mockUserId,
 			createdAt: new Date(),
 			updatedAt: new Date(),
+			deletedAt: null,
 		};
 
 		it('should update destinationUrl successfully', async () => {

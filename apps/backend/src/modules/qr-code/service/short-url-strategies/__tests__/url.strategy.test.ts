@@ -112,6 +112,7 @@ describe('UrlStrategy', () => {
 			createdBy: 'user_123',
 			createdAt: new Date(),
 			updatedAt: new Date(),
+			deletedAt: null,
 		};
 
 		it('should call GetReservedShortCodeUseCase.execute() with createdBy', async () => {
