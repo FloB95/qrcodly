@@ -27,7 +27,10 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 	 * @returns A promise that resolves to true if the deletion was successful, otherwise false.
 	 */
 	async execute(qrCode: TQrCode, deletedBy: string): Promise<boolean> {
-		// Soft-delete the linked short URL before QR code deletion (FK SET NULL loses the reference)
+		await this.imageService.deleteImage(qrCode.config.image);
+		await this.imageService.deleteImage(qrCode.previewImage ?? undefined);
+
+		// Soft-delete immediately before QR deletion so FK SET NULL doesn't lose the reference
 		const linkedShortUrl = await this.shortUrlRepository.findOneByQrCodeId(qrCode.id);
 		if (linkedShortUrl) {
 			await this.shortUrlRepository.update(linkedShortUrl, {
@@ -37,8 +40,6 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 			});
 		}
 
-		await this.imageService.deleteImage(qrCode.config.image);
-		await this.imageService.deleteImage(qrCode.previewImage ?? undefined);
 		const res = await this.qrCodeRepository.delete(qrCode);
 
 		// log the deletion

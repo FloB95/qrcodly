@@ -58,26 +58,33 @@ async function main() {
 
 	const { token } = (await authRes.json()) as { token: string };
 
-	// 2. Fetch URL metrics from Umami
+	// 2. Fetch URL metrics from Umami (paginated, default limit is 500)
 	console.log('Fetching URL metrics from Umami...');
 	const startAt = new Date('2023-01-01').getTime();
 	const endAt = Date.now();
-	const params = new URLSearchParams({
-		type: 'path',
-		startAt: String(startAt),
-		endAt: String(endAt),
-	});
-	const metricsUrl = `${scriptEnv.UMAMI_HOST}/api/websites/${scriptEnv.UMAMI_WEBSITE}/metrics?${params}`;
-
-	const metricsRes = await fetch(metricsUrl, {
-		headers: { Authorization: `Bearer ${token}` },
-	});
-
-	if (!metricsRes.ok) {
-		throw new Error(`Umami metrics failed: ${metricsRes.status} ${await metricsRes.text()}`);
+	const PAGE_SIZE = 500;
+	const metrics: UmamiMetric[] = [];
+	let offset = 0;
+	while (true) {
+		const params = new URLSearchParams({
+			type: 'path',
+			startAt: String(startAt),
+			endAt: String(endAt),
+			limit: String(PAGE_SIZE),
+			offset: String(offset),
+		});
+		const metricsUrl = `${scriptEnv.UMAMI_HOST}/api/websites/${scriptEnv.UMAMI_WEBSITE}/metrics?${params}`;
+		const metricsRes = await fetch(metricsUrl, {
+			headers: { Authorization: `Bearer ${token}` },
+		});
+		if (!metricsRes.ok) {
+			throw new Error(`Umami metrics failed: ${metricsRes.status} ${await metricsRes.text()}`);
+		}
+		const page = (await metricsRes.json()) as UmamiMetric[];
+		metrics.push(...page);
+		if (page.length < PAGE_SIZE) break;
+		offset += PAGE_SIZE;
 	}
-
-	const metrics = (await metricsRes.json()) as UmamiMetric[];
 
 	// 3. Filter for /u/{code} paths and extract short codes
 	const shortUrlPattern = /^\/u\/([^/]+)$/;

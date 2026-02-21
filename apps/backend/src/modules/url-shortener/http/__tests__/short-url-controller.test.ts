@@ -560,7 +560,7 @@ describe('ShortUrlController', () => {
 
 	describe('Soft-deleted short URLs', () => {
 		const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
-		let deletedShortCode: string;
+		let deletedShortCode!: string;
 
 		beforeAll(async () => {
 			// Create a dynamic QR code (editable URL) which generates a linked short URL
