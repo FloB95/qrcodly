@@ -101,5 +101,10 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		console.error('Error sending request to logger:', error);
 	}
 
+	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}/clear-views-cache`, {
+		method: 'POST',
+		headers: { 'x-internal-api-key': env.INTERNAL_API_SECRET },
+	}).catch(() => {});
+
 	return NextResponse.redirect(new URL(shortUrl.destinationUrl));
 }

@@ -1,4 +1,4 @@
-import { Get, Patch } from '@/core/decorators/route';
+import { Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
@@ -20,6 +20,8 @@ import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { TShortUrl } from '../../domain/entities/short-url.entity';
 import { ForbiddenError } from '@/core/error/http';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
+import { KeyCache } from '@/core/cache';
+import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -30,8 +32,13 @@ export class ShortUrlController extends AbstractController {
 		@inject(UpdateShortUrlUseCase)
 		private readonly updateShortUrlUseCase: UpdateShortUrlUseCase,
 		@inject(UmamiAnalyticsService) private readonly umamiAnalyticsService: UmamiAnalyticsService,
+		@inject(KeyCache) private readonly keyCache: KeyCache,
 	) {
 		super();
+	}
+
+	private getViewsCacheKey(shortCode: string): string {
+		return `views:${shortCode}`;
 	}
 
 	@Get('/:shortCode', {
@@ -183,9 +190,28 @@ export class ShortUrlController extends AbstractController {
 		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<{ views: number }>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
+
+		const cacheKey = this.getViewsCacheKey(shortUrl.shortCode);
+		const cached = await this.keyCache.get(cacheKey);
+		if (cached !== null) {
+			return this.makeApiHttpResponse(200, { views: Number(cached) });
+		}
+
 		const views = await this.umamiAnalyticsService.getViewsForEndpoint(`/u/${shortUrl.shortCode}`);
+		await this.keyCache.set(cacheKey, views, 3600);
 
 		return this.makeApiHttpResponse(200, { views });
+	}
+
+	@Post('/:shortCode/clear-views-cache', {
+		authHandler: internalApiAuthHandler,
+		schema: { hide: true },
+	})
+	async clearViewsCache(
+		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto, unknown, false>,
+	): Promise<IHttpResponse<{ status: string }>> {
+		await this.keyCache.del(this.getViewsCacheKey(request.params.shortCode));
+		return this.makeApiHttpResponse(200, { status: 'ok' });
 	}
 
 	// Helper Method

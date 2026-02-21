@@ -12,6 +12,7 @@ export const env = createEnv({
 		AXIOM_DATASET: z.string(),
 		CLERK_SECRET_KEY: z.string(),
 		UMAMI_API_HOST: z.string().url(),
+		INTERNAL_API_SECRET: z.string().min(32),
 	},
 
 	/**
@@ -52,6 +53,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
 		NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
 		NEXT_PUBLIC_CLERK_PRO_PLAN_ID: process.env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID,
+		INTERNAL_API_SECRET: process.env.INTERNAL_API_SECRET,
 		NEXT_PUBLIC_GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
 	},
 	/**
