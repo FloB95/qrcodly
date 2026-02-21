@@ -17,7 +17,7 @@ const shortUrl = createTable(
 		qrCodeId: varchar({
 			length: 36,
 		})
-			.references(() => qrCode.id, { onDelete: 'cascade' })
+			.references(() => qrCode.id, { onDelete: 'set null' })
 			.unique(),
 		customDomainId: varchar({
 			length: 36,
@@ -26,6 +26,7 @@ const shortUrl = createTable(
 		createdBy: varchar({ length: 255 }).notNull(),
 		createdAt: datetime().notNull(),
 		updatedAt: datetime(),
+		deletedAt: datetime(),
 	},
 	(t) => [
 		// Composite index for list queries with sorting (ORDER BY createdAt DESC WHERE createdBy=?)

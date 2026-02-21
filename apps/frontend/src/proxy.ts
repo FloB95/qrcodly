@@ -18,7 +18,9 @@ export default clerkMiddleware(async (auth, req, event) => {
 	const pathname = new URL(req.url).pathname;
 
 	if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
-		return NextResponse.next();
+		const reqHeaders = new Headers(req.headers);
+		reqHeaders.set('x-pathname', pathname);
+		return NextResponse.next({ request: { headers: reqHeaders } });
 	}
 
 	const logger = new Logger({ source: 'middleware' });
@@ -46,10 +48,15 @@ export default clerkMiddleware(async (auth, req, event) => {
 		!pathname.startsWith('/qr/')
 	) {
 		const intlResponse = intlMiddleware(req);
-		if (intlResponse) return intlResponse;
+		if (intlResponse) {
+			intlResponse.headers.set('x-middleware-request-x-pathname', pathname);
+			return intlResponse;
+		}
 	}
 
-	return NextResponse.next();
+	const reqHeaders = new Headers(req.headers);
+	reqHeaders.set('x-pathname', pathname);
+	return NextResponse.next({ request: { headers: reqHeaders } });
 });
 
 export const config = {

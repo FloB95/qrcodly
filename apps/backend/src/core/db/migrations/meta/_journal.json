@@ -120,6 +120,13 @@
 			"when": 1771059614354,
 			"tag": "0016_opposite_warpath",
 			"breakpoints": true
+		},
+		{
+			"idx": 17,
+			"version": "5",
+			"when": 1771624751758,
+			"tag": "0017_panoramic_jane_foster",
+			"breakpoints": true
 		}
 	]
 }

@@ -62,10 +62,12 @@ export default async function Page({ params }: DefaultPageParams) {
 
 			<Container className="pt-16 sm:pt-20 pb-10 sm:pb-24">
 				<div className="text-center">
-					<h1 className="mt-14 text-center text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900 max-w-2xl mx-auto">
+					<h1 className="mt-14 text-center text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 max-w-2xl mx-auto">
 						{t('title')}
 					</h1>
-					<p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">{t('subtitle')}</p>
+					<p className="mx-auto mt-6 max-w-2xl text-lg sm:text-xl text-slate-700">
+						{t('subtitle')}
+					</p>
 				</div>
 
 				<div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">

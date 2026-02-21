@@ -191,7 +191,7 @@ export class ShortUrlController extends AbstractController {
 	// Helper Method
 	private async fetchShortUrl(shortCode: string, userId?: string): Promise<TShortUrl> {
 		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
-		if (!shortUrl) {
+		if (!shortUrl || shortUrl.deletedAt) {
 			throw new ShortUrlNotFoundError();
 		}
 

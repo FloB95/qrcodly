@@ -41,6 +41,7 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 			destinationUrl: dto.destinationUrl,
 			isActive: dto.isActive,
 			createdBy,
+			deletedAt: null,
 		};
 
 		// Create the ShortUrl entity in the database.

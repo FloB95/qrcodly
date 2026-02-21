@@ -56,7 +56,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 
 		shortUrl = response;
 
-		if (!shortUrl?.destinationUrl || !shortUrl.isActive) {
+		if (!shortUrl?.destinationUrl || !shortUrl.isActive || shortUrl.deletedAt) {
 			const acceptLanguage = headers.get('accept-language') ?? 'en';
 			const userLocale = acceptLanguage.split(',')[0]?.split('-')[0] ?? 'en';
 			const locale = SUPPORTED_LANGUAGES.includes(

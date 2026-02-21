@@ -8,6 +8,8 @@ import Link from 'next/link';
 import { NextIntlClientProvider } from 'next-intl';
 import Providers from '@/components/provider';
 import messages from '@/dictionaries/en.json';
+import { Logger } from 'next-axiom';
+import { headers } from 'next/headers';
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -15,6 +17,25 @@ const inter = Inter({
 });
 
 export default async function NotFoundPage() {
+	const headersList = await headers();
+	const path = headersList.get('x-pathname') || '/';
+	const host = headersList.get('host') || 'unknown';
+	const scheme = headersList.get('x-forwarded-proto') || 'http';
+	const userAgent = headersList.get('user-agent') || '';
+
+	const logger = new Logger({ source: 'not-found' });
+	logger.warn(`GET ${path}`, {
+		request: {
+			host,
+			method: 'GET',
+			path,
+			scheme,
+			userAgent,
+		},
+		status: 404,
+	});
+	await logger.flush();
+
 	return (
 		<html lang="en" className="light">
 			<head>

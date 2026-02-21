@@ -43,6 +43,7 @@ describe('GetReservedShortCodeUseCase', () => {
 			createdBy: mockUserId,
 			createdAt: new Date(),
 			updatedAt: new Date(),
+			deletedAt: null,
 		};
 
 		const mockReservedShortUrlWithDomain: TShortUrlWithDomain = {
@@ -78,6 +79,9 @@ describe('GetReservedShortCodeUseCase', () => {
 						eq: null,
 					},
 					qrCodeId: {
+						eq: null,
+					},
+					deletedAt: {
 						eq: null,
 					},
 				},
