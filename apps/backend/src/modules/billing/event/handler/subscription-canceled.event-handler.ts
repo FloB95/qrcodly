@@ -43,7 +43,7 @@ export class SubscriptionCanceledEventHandler extends AbstractEventHandler<Subsc
 				return;
 			}
 
-			const gracePeriodEndsAt = new Date();
+			const gracePeriodEndsAt = new Date(event.data.currentPeriodEnd);
 			gracePeriodEndsAt.setDate(gracePeriodEndsAt.getDate() + GRACE_PERIOD_DAYS);
 
 			await userSubscriptionRepository.update(subscription, { gracePeriodEndsAt });

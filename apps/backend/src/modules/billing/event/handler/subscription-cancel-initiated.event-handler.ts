@@ -46,9 +46,6 @@ export class SubscriptionCancelInitiatedEventHandler extends AbstractEventHandle
 				return;
 			}
 
-			// Mark as notified
-			await userSubscriptionRepository.markCancellationNotified(userId);
-
 			const gracePeriodEndDate = new Date(currentPeriodEnd);
 			gracePeriodEndDate.setDate(gracePeriodEndDate.getDate() + GRACE_PERIOD_DAYS);
 
@@ -76,6 +73,9 @@ export class SubscriptionCancelInitiatedEventHandler extends AbstractEventHandle
 				subject: "We're Sorry to See You Go - QRcodly Subscription",
 				html,
 			});
+
+			// Mark as notified after successful email send to allow retries on failure
+			await userSubscriptionRepository.markCancellationNotified(userId);
 
 			logger.info('subscription.cancelInitiatedEmailSent', {
 				subscription: {

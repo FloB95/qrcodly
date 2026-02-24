@@ -40,7 +40,7 @@ export class SubscriptionActiveEventHandler extends AbstractEventHandler<Subscri
 		try {
 			// Check if user had a grace period (was in cancellation flow)
 			const subscription = await userSubscriptionRepository.findByUserId(userId);
-			const wasInGracePeriod = subscription?.gracePeriodEndsAt !== null;
+			const wasInGracePeriod = subscription?.gracePeriodEndsAt != null;
 
 			// Enable domains and clear grace period
 			await enableUserDomainsUseCase.execute(userId);

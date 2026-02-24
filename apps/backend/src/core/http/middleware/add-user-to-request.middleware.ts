@@ -11,23 +11,28 @@ import UserSubscriptionRepository from '@/modules/billing/domain/repository/user
 const USER_PLAN_CACHE_TTL = 300; // 5 minutes
 
 async function resolveUserPlan(userId: string): Promise<PlanName> {
-	const cache = container.resolve(KeyCache);
-	const cacheKey = `user_plan:${userId}`;
+	try {
+		const cache = container.resolve(KeyCache);
+		const cacheKey = `user_plan:${userId}`;
 
-	const cached = await cache.get(cacheKey);
-	if (cached !== null) {
-		return cached === PlanName.PRO ? PlanName.PRO : PlanName.FREE;
+		const cached = await cache.get(cacheKey);
+		if (cached !== null) {
+			return cached === PlanName.PRO ? PlanName.PRO : PlanName.FREE;
+		}
+
+		const repo = container.resolve(UserSubscriptionRepository);
+		const subscription = await repo.findByUserId(userId);
+		const plan =
+			subscription && (subscription.status === 'active' || subscription.status === 'trialing')
+				? PlanName.PRO
+				: PlanName.FREE;
+
+		await cache.set(cacheKey, plan, USER_PLAN_CACHE_TTL);
+		return plan;
+	} catch (error) {
+		container.resolve(Logger).error('resolveUserPlan.failed', { error: error as Error, userId });
+		return PlanName.FREE;
 	}
-
-	const repo = container.resolve(UserSubscriptionRepository);
-	const subscription = await repo.findByUserId(userId);
-	const plan =
-		subscription && (subscription.status === 'active' || subscription.status === 'trialing')
-			? PlanName.PRO
-			: PlanName.FREE;
-
-	await cache.set(cacheKey, plan, USER_PLAN_CACHE_TTL);
-	return plan;
 }
 
 export async function addUserToRequestMiddleware(request: FastifyRequest, _reply: unknown) {

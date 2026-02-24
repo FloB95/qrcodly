@@ -71,10 +71,11 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 		const now = new Date();
 
 		if (existing) {
+			const { id: _id, ...updates } = data;
 			await this.db
 				.update(this.table)
 				.set({
-					...data,
+					...updates,
 					updatedAt: now,
 				})
 				.where(eq(this.table.stripeSubscriptionId, data.stripeSubscriptionId))

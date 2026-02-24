@@ -44,6 +44,19 @@ export class BillingController extends AbstractController {
 			throw new BadRequestError('Invalid price ID');
 		}
 
+		const frontendOrigin = new URL(env.FRONTEND_URL).origin;
+		const isAllowedRedirect = (url?: string) => {
+			if (!url) return true;
+			try {
+				return new URL(url).origin === frontendOrigin;
+			} catch {
+				return false;
+			}
+		};
+		if (!isAllowedRedirect(successUrl) || !isAllowedRedirect(cancelUrl)) {
+			throw new BadRequestError('Invalid redirect URL');
+		}
+
 		try {
 			const user = await this.clerkClient.users.getUser(request.user.id);
 			const email = user.emailAddresses[0]?.emailAddress ?? '';

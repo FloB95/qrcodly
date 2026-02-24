@@ -17,7 +17,7 @@ import { Mailer } from '@/core/mailer/mailer';
 @CronJob()
 export class CancellationReminderCronJob extends AbstractCronJob {
 	// Run every day at 2:00 AM
-	schedule = '* * * * *';
+	schedule = '0 2 * * *';
 
 	protected async execute(): Promise<void> {
 		const repository = container.resolve(UserSubscriptionRepository);

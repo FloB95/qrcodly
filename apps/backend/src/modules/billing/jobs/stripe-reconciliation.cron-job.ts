@@ -17,7 +17,7 @@ import UserSubscriptionRepository from '../domain/repository/user-subscription.r
 @CronJob()
 export class StripeReconciliationCronJob extends AbstractCronJob {
 	// Run every day at 4:00 AM
-	schedule = '* * * * *';
+	schedule = '0 4 * * *';
 
 	protected async execute(): Promise<void> {
 		const stripeService = container.resolve(StripeService);
