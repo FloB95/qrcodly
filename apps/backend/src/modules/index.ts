@@ -6,6 +6,7 @@ import configTemplate from './config-template/setup';
 import urlShortener from './url-shortener/setup';
 import customDomain from './custom-domain/setup';
 import tag from './tag/setup';
+import billing from './billing/setup';
 
 const modules: FastifyPluginCallback = (fastify: FastifyInstance, options, done) => {
 	qrCode(fastify, options, done);
@@ -13,6 +14,7 @@ const modules: FastifyPluginCallback = (fastify: FastifyInstance, options, done)
 	urlShortener(fastify, options, done);
 	customDomain(fastify, options, done);
 	tag(fastify, options, done);
+	billing(fastify, options, done);
 	done();
 };
 

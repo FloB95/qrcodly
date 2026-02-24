@@ -5,56 +5,56 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width" />
-	<style type="text/css">
-		body { margin: 0; padding: 0; background-color: #f4f4f4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-		.container { max-width: 600px; margin: 0 auto; background-color: #ffffff; }
-		.header { background-color: #0666EB; padding: 24px; text-align: center; }
-		.header img { height: 42px; width: auto; }
-		.content { padding: 32px 24px; }
-		.title { font-size: 24px; font-weight: 700; color: #141414; margin: 0 0 16px 0; }
-		.text { font-size: 16px; line-height: 24px; color: #4a4a4a; margin: 0 0 24px 0; }
-		.button { display: inline-block; background-color: #0666EB; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; }
-		.footer { padding: 24px; text-align: center; color: #888888; font-size: 14px; }
-		.info { background-color: #e7f3ff; border: 1px solid #0666EB; border-radius: 6px; padding: 16px; margin: 16px 0; }
-	</style>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
-<body>
-	<table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4; padding: 40px 0;">
+<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+	<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(to bottom right,#f4f4f5,#fddfbc);padding:48px 16px;">
 		<tr>
 			<td align="center">
-				<table class="container" cellpadding="0" cellspacing="0" style="border: 1px solid #e0e0e0; border-radius: 8px;">
+				<!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0" width="600"><tr><td><![endif]-->
+				<table cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+					<!-- Header -->
 					<tr>
-						<td class="header">
-							<img src="https://3062e33f-c6be-4b8c-bdbd-bc8108f6450e.b-cdn.net/e/d4c4c294-9ec1-4b6a-afe1-4b5bd00b5c63/807cd1aa-4624-448d-a76c-ba58bb2c0012.png" alt="QRcodly" />
+						<td style="padding:32px 32px 24px 32px;border-bottom:1px solid #f0f0f0;">
+							<span style="font-size:24px;font-weight:700;color:#000000;letter-spacing:-0.5px;">QRcodly</span>
 						</td>
 					</tr>
+					<!-- Content -->
 					<tr>
-						<td class="content">
-							<h1 class="title">Custom Domains Have Been Disabled</h1>
-							<p class="text">Hi{{#if firstName}} {{firstName}}{{/if}},</p>
-							<p class="text">Your grace period has ended and your custom domains have been disabled. Your QR codes are now using the default system domain.</p>
-							<div class="info">
-								<strong>What this means:</strong>
-								<ul style="margin: 8px 0; padding-left: 20px;">
-									<li>Your QR codes are still active and working</li>
-									<li>They now redirect through our system domain</li>
-									<li>Your custom domain settings have been preserved</li>
-									<li>Resubscribe anytime to restore custom domains</li>
-								</ul>
-							</div>
-							<p class="text">Want to restore your custom domains? Simply resubscribe and they will be automatically re-enabled.</p>
-							<p class="text">
-								<a href="{{subscribeUrl}}" class="button">Resubscribe Now</a>
-							</p>
-							<p class="text">If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
+						<td style="padding:32px;">
+							<h1 style="margin:0 0 8px 0;font-size:22px;font-weight:700;color:#0f172a;line-height:1.3;">Your Custom Domains Have Been Disabled</h1>
+							<p style="margin:0 0 24px 0;font-size:15px;line-height:1.6;color:#64748b;">Hi{{#if firstName}} {{firstName}}{{/if}},</p>
+							<p style="margin:0 0 24px 0;font-size:15px;line-height:1.6;color:#334155;">Your grace period has ended and your custom domains have been disabled.</p>
+							<!-- Alert Box -->
+							<table cellpadding="0" cellspacing="0" border="0" width="100%">
+								<tr>
+									<td style="background-color:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:20px;">
+										<p style="margin:0 0 8px 0;font-size:14px;font-weight:600;color:#991b1b;">What this means</p>
+										<p style="margin:0 0 12px 0;font-size:14px;line-height:1.6;color:#7f1d1d;"><strong>QR codes that use your custom domains will no longer work.</strong> Anyone scanning these QR codes will not be redirected to the intended destination.</p>
+										<p style="margin:0;font-size:14px;line-height:1.6;color:#7f1d1d;">Your QR code data and custom domain settings are still saved. Resubscribe anytime to restore everything instantly.</p>
+									</td>
+								</tr>
+							</table>
+							<p style="margin:24px 0;font-size:15px;line-height:1.6;color:#334155;">Want to get your custom domains working again? Simply resubscribe and they will be automatically re-enabled.</p>
+							<!-- Button -->
+							<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td style="border-radius:8px;background-color:#000000;" align="center">
+										<a href="{{subscribeUrl}}" style="display:inline-block;padding:12px 28px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">Resubscribe Now</a>
+									</td>
+								</tr>
+							</table>
+							<p style="margin:24px 0 0 0;font-size:14px;line-height:1.6;color:#94a3b8;">If you have any questions, please don't hesitate to contact our support team.</p>
 						</td>
 					</tr>
+					<!-- Footer -->
 					<tr>
-						<td class="footer">
-							<p>&copy; {{year}} QRcodly. All rights reserved.</p>
+						<td style="padding:24px 32px;border-top:1px solid #f0f0f0;">
+							<p style="margin:0;font-size:13px;color:#94a3b8;text-align:center;">&copy; {{year}} FB Dev. All rights reserved.</p>
 						</td>
 					</tr>
 				</table>
+				<!--[if mso]></td></tr></table><![endif]-->
 			</td>
 		</tr>
 	</table>

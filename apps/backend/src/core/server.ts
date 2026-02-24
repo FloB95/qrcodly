@@ -25,6 +25,7 @@ import { OnShutdown } from './decorators/on-shutdown.decorator';
 import { HealthController } from './http/controller/health.controller';
 import FastifySwagger from '@fastify/swagger';
 import { ClerkWebhookController } from './http/controller/clerk.webhook.controller';
+import { StripeWebhookController } from '@/modules/billing/http/controller/stripe-webhook.controller';
 import multipart from '@fastify/multipart';
 import { resolveRateLimit } from './rate-limit/rate-limit.resolver';
 import { RateLimitPolicy } from './rate-limit/rate-limit.policy';
@@ -174,6 +175,21 @@ export class Server {
 
 		// register webhook endpoints
 		registerRoutes(this.server, ClerkWebhookController, API_BASE_PATH);
+
+		// Stripe webhook needs the raw request body (string) for HMAC signature
+		// verification. Register it in an encapsulated scope that overrides the
+		// built-in JSON parser so the body stays as a raw string.
+		await this.server.register((instance) => {
+			instance.removeAllContentTypeParsers();
+			instance.addContentTypeParser(
+				'application/json',
+				{ parseAs: 'string' },
+				(_req, body, done) => {
+					done(null, body);
+				},
+			);
+			registerRoutes(instance, StripeWebhookController, API_BASE_PATH);
+		});
 
 		this.server.get(
 			`${API_BASE_PATH}/openapi.json`,

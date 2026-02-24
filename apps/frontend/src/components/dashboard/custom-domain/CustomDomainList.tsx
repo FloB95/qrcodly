@@ -21,7 +21,8 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from '@/components/ui/pagination';
-import { Globe } from 'lucide-react';
+import { AlertCircle, Globe } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { env } from '@/env';
 
 const ITEMS_PER_PAGE = 10;
@@ -82,67 +83,77 @@ export function CustomDomainList() {
 
 	const domains = data?.data ?? [];
 	const pagination = data?.pagination;
+	const hasDisabledDomains = domains.some((d) => !d.isEnabled);
 
 	return (
-		<div className="space-y-4 overflow-hidden rounded-lg border">
-			<Table>
-				<TableHeader className="bg-muted sticky top-0 z-10">
-					<TableRow>
-						<TableHead>{t('domain')}</TableHead>
-						<TableHead>{t('dnsStatus')}</TableHead>
-						<TableHead>{t('status')}</TableHead>
-						<TableHead>{t('createdAt')}</TableHead>
-						<TableHead className="w-[100px]">{t('actions')}</TableHead>
-					</TableRow>
-				</TableHeader>
-				<TableBody>
-					{/* System domain always shown first */}
-					<SystemDomainListItem systemDomain={systemDomain} isDefault={isSystemDomainDefault} />
-					{/* Custom domains */}
-					{domains.map((domain) => (
-						<CustomDomainListItem key={domain.id} domain={domain} />
-					))}
-				</TableBody>
-			</Table>
-
-			{pagination && pagination.totalPages > 1 && (
-				<Pagination>
-					<PaginationContent>
-						<PaginationItem>
-							<PaginationPrevious
-								href="#"
-								onClick={(e) => {
-									e.preventDefault();
-									if (currentPage > 1) handlePageChange(currentPage - 1);
-								}}
-								aria-disabled={currentPage <= 1}
-								className={currentPage <= 1 ? 'pointer-events-none opacity-50' : ''}
-							/>
-						</PaginationItem>
-						<PaginationItem>
-							<span className="px-4 py-2 text-sm">
-								{t('pageInfo', {
-									current: currentPage,
-									total: pagination.totalPages,
-								})}
-							</span>
-						</PaginationItem>
-						<PaginationItem>
-							<PaginationNext
-								href="#"
-								onClick={(e) => {
-									e.preventDefault();
-									if (currentPage < pagination.totalPages) handlePageChange(currentPage + 1);
-								}}
-								aria-disabled={currentPage >= pagination.totalPages}
-								className={
-									currentPage >= pagination.totalPages ? 'pointer-events-none opacity-50' : ''
-								}
-							/>
-						</PaginationItem>
-					</PaginationContent>
-				</Pagination>
+		<div className="space-y-4">
+			{hasDisabledDomains && (
+				<Alert variant="destructive">
+					<AlertCircle className="h-4 w-4" />
+					<AlertTitle>{t('domainsDisabledTitle')}</AlertTitle>
+					<AlertDescription>{t('domainsDisabledDescription')}</AlertDescription>
+				</Alert>
 			)}
+			<div className="overflow-hidden rounded-lg border">
+				<Table>
+					<TableHeader className="bg-muted sticky top-0 z-10">
+						<TableRow>
+							<TableHead>{t('domain')}</TableHead>
+							<TableHead>{t('dnsStatus')}</TableHead>
+							<TableHead>{t('status')}</TableHead>
+							<TableHead>{t('createdAt')}</TableHead>
+							<TableHead className="w-[100px]">{t('actions')}</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{/* System domain always shown first */}
+						<SystemDomainListItem systemDomain={systemDomain} isDefault={isSystemDomainDefault} />
+						{/* Custom domains */}
+						{domains.map((domain) => (
+							<CustomDomainListItem key={domain.id} domain={domain} />
+						))}
+					</TableBody>
+				</Table>
+
+				{pagination && pagination.totalPages > 1 && (
+					<Pagination>
+						<PaginationContent>
+							<PaginationItem>
+								<PaginationPrevious
+									href="#"
+									onClick={(e) => {
+										e.preventDefault();
+										if (currentPage > 1) handlePageChange(currentPage - 1);
+									}}
+									aria-disabled={currentPage <= 1}
+									className={currentPage <= 1 ? 'pointer-events-none opacity-50' : ''}
+								/>
+							</PaginationItem>
+							<PaginationItem>
+								<span className="px-4 py-2 text-sm">
+									{t('pageInfo', {
+										current: currentPage,
+										total: pagination.totalPages,
+									})}
+								</span>
+							</PaginationItem>
+							<PaginationItem>
+								<PaginationNext
+									href="#"
+									onClick={(e) => {
+										e.preventDefault();
+										if (currentPage < pagination.totalPages) handlePageChange(currentPage + 1);
+									}}
+									aria-disabled={currentPage >= pagination.totalPages}
+									className={
+										currentPage >= pagination.totalPages ? 'pointer-events-none opacity-50' : ''
+									}
+								/>
+							</PaginationItem>
+						</PaginationContent>
+					</Pagination>
+				)}
+			</div>
 		</div>
 	);
 }

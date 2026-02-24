@@ -1,14 +1,13 @@
 'use client';
 
 import { SignedIn, SignInButton } from '@clerk/nextjs';
-import { CheckoutButton, useSubscription } from '@clerk/nextjs/experimental';
 import { useTranslations } from 'next-intl';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import posthog from 'posthog-js';
 import { Button } from '../ui/button';
-import { toast } from '../ui/use-toast';
 import { env } from '@/env';
+import { useHasProPlan } from '@/hooks/useHasProPlan';
+import { useCreateCheckoutSession, useCreatePortalSession } from '@/lib/api/billing';
 
 export const ProCTA = ({
 	locale,
@@ -20,18 +19,18 @@ export const ProCTA = ({
 	planPeriod: 'month' | 'annual';
 }) => {
 	const t = useTranslations('plans');
-	const pathname = usePathname();
-	const { data } = useSubscription();
+	const { hasProPlan, isCanceled } = useHasProPlan();
+	const createCheckoutSession = useCreateCheckoutSession();
+	const createPortalSession = useCreatePortalSession();
 
-	const subscriptionItem = data?.subscriptionItems[0];
-	const hasProPlan = subscriptionItem?.plan?.slug === 'pro';
-	const isCanceled = hasProPlan && !!subscriptionItem?.canceledAt;
+	const priceId =
+		planPeriod === 'annual'
+			? env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL
+			: env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_MONTHLY;
 
-	const handleSubscriptionComplete = () => {
-		posthog.capture('subscription:created');
-		toast({
-			title: t('subscriptionSuccess'),
-		});
+	const handleUpgrade = () => {
+		posthog.capture('subscription:checkout_started');
+		createCheckoutSession.mutate({ priceId, locale });
 	};
 
 	// Not authenticated - show sign in button
@@ -43,18 +42,17 @@ export const ProCTA = ({
 		);
 	}
 
-	// Has Pro but canceled - show renew button
+	// Has Pro but canceled - open portal to reactivate
 	if (isCanceled) {
 		return (
 			<SignedIn>
-				<CheckoutButton
-					planId={env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID}
-					planPeriod={planPeriod}
-					onSubscriptionComplete={handleSubscriptionComplete}
-					newSubscriptionRedirectUrl={pathname}
+				<Button
+					variant="secondary"
+					onClick={() => createPortalSession.mutate({ locale })}
+					disabled={createPortalSession.isPending}
 				>
-					<Button variant="secondary">{t('renewSubscription')}</Button>
-				</CheckoutButton>
+					{t('renewSubscription')}
+				</Button>
 			</SignedIn>
 		);
 	}
@@ -71,14 +69,13 @@ export const ProCTA = ({
 	// No subscription - show upgrade button
 	return (
 		<SignedIn>
-			<CheckoutButton
-				planId={env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID}
-				planPeriod={planPeriod}
-				onSubscriptionComplete={handleSubscriptionComplete}
-				newSubscriptionRedirectUrl={pathname}
+			<Button
+				variant="secondary"
+				onClick={handleUpgrade}
+				disabled={createCheckoutSession.isPending}
 			>
-				<Button variant="secondary">{t('upgradeToPro')}</Button>
-			</CheckoutButton>
+				{t('upgradeToPro')}
+			</Button>
 		</SignedIn>
 	);
 };

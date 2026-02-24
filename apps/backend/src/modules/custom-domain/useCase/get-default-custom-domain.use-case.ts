@@ -14,10 +14,13 @@ export class GetDefaultCustomDomainUseCase implements IBaseUseCase {
 
 	/**
 	 * Gets the user's default custom domain.
+	 * Returns undefined if no default is set or if the default domain is disabled.
 	 * @param userId The user ID.
-	 * @returns The default custom domain or undefined if none is set.
+	 * @returns The default custom domain or undefined if none is set or domain is disabled.
 	 */
 	async execute(userId: string): Promise<TCustomDomain | undefined> {
-		return await this.customDomainRepository.findDefaultByUserId(userId);
+		const domain = await this.customDomainRepository.findDefaultByUserId(userId);
+		if (domain && !domain.isEnabled) return undefined;
+		return domain;
 	}
 }

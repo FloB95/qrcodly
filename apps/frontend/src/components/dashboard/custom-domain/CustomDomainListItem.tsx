@@ -91,17 +91,20 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 	const StatusIcon = statusInfo.icon;
 	const hasValidationErrors = domain.validationErrors && domain.validationErrors.length > 0;
 
+	const isDisabled = !domain.isEnabled;
+
 	return (
 		<TableRow
 			className={cn(
 				'transition-opacity duration-200 hover:bg-muted/40',
 				isDeleting && 'opacity-50 pointer-events-none',
+				isDisabled && 'opacity-50',
 			)}
 		>
 			<TableCell className="font-medium">
 				<div className="flex flex-col gap-1">
 					<div className="flex items-center gap-2">
-						{domain.domain}
+						<span className={cn(isDisabled && 'text-muted-foreground')}>{domain.domain}</span>
 						{domain.isDefault && (
 							<Badge variant="outline" className="text-xs gap-1">
 								<StarIcon className="h-3 w-3" />
@@ -118,35 +121,47 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 				</div>
 			</TableCell>
 			<TableCell>
-				<div className="flex items-center gap-1">
-					<StatusIcon className={cn('h-4 w-4', statusInfo.color)} />
-					<span className="text-xs">
-						{statusInfo.label === 'dnsPartial' && 'count' in statusInfo
-							? t('verificationStatus.dnsPartial', { count: statusInfo.count! })
-							: t(`verificationStatus.${statusInfo.label}`)}
-					</span>
-				</div>
+				{isDisabled ? (
+					<span className="text-xs text-muted-foreground">—</span>
+				) : (
+					<div className="flex items-center gap-1">
+						<StatusIcon className={cn('h-4 w-4', statusInfo.color)} />
+						<span className="text-xs">
+							{statusInfo.label === 'dnsPartial' && 'count' in statusInfo
+								? t('verificationStatus.dnsPartial', { count: statusInfo.count! })
+								: t(`verificationStatus.${statusInfo.label}`)}
+						</span>
+					</div>
+				)}
 			</TableCell>
 			<TableCell>
-				<Badge variant={isFullyVerified ? 'default' : 'secondary'}>
-					{statusInfo.badge === 'dnsPartial' && 'count' in statusInfo
-						? t('badge.dnsPartial', { count: statusInfo.count! })
-						: t(`badge.${statusInfo.badge}`)}
-				</Badge>
+				{isDisabled ? (
+					<Badge variant="secondary" className="text-muted-foreground">
+						{t('badge.disabled')}
+					</Badge>
+				) : (
+					<Badge variant={isFullyVerified ? 'default' : 'secondary'}>
+						{statusInfo.badge === 'dnsPartial' && 'count' in statusInfo
+							? t('badge.dnsPartial', { count: statusInfo.count! })
+							: t(`badge.${statusInfo.badge}`)}
+					</Badge>
+				)}
 			</TableCell>
 			<TableCell className="text-muted-foreground">{formattedDate}</TableCell>
 			<TableCell>
-				<CustomDomainListItemActions
-					domain={domain}
-					isDeleting={isDeleting}
-					isVerifying={isVerifying}
-					isSettingDefault={isSettingDefault}
-					onDelete={handleDelete}
-					onVerify={handleVerify}
-					onSetDefault={handleSetDefault}
-					autoShowInstructions={shouldAutoShowInstructions}
-					onInstructionsShown={clearShowInstructionsParam}
-				/>
+				{isDisabled ? null : (
+					<CustomDomainListItemActions
+						domain={domain}
+						isDeleting={isDeleting}
+						isVerifying={isVerifying}
+						isSettingDefault={isSettingDefault}
+						onDelete={handleDelete}
+						onVerify={handleVerify}
+						onSetDefault={handleSetDefault}
+						autoShowInstructions={shouldAutoShowInstructions}
+						onInstructionsShown={clearShowInstructionsParam}
+					/>
+				)}
 			</TableCell>
 		</TableRow>
 	);

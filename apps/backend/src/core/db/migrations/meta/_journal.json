@@ -127,6 +127,27 @@
 			"when": 1771624751758,
 			"tag": "0017_panoramic_jane_foster",
 			"breakpoints": true
+		},
+		{
+			"idx": 18,
+			"version": "5",
+			"when": 1771945413525,
+			"tag": "0018_mysterious_the_captain",
+			"breakpoints": true
+		},
+		{
+			"idx": 19,
+			"version": "5",
+			"when": 1771952783259,
+			"tag": "0019_gorgeous_juggernaut",
+			"breakpoints": true
+		},
+		{
+			"idx": 20,
+			"version": "5",
+			"when": 1771966747639,
+			"tag": "0020_ancient_cobalt_man",
+			"breakpoints": true
 		}
 	]
 }

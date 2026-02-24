@@ -5,51 +5,54 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width" />
-	<style type="text/css">
-		body { margin: 0; padding: 0; background-color: #f4f4f4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-		.container { max-width: 600px; margin: 0 auto; background-color: #ffffff; }
-		.header { background-color: #0666EB; padding: 24px; text-align: center; }
-		.header img { height: 42px; width: auto; }
-		.content { padding: 32px 24px; }
-		.title { font-size: 24px; font-weight: 700; color: #141414; margin: 0 0 16px 0; }
-		.text { font-size: 16px; line-height: 24px; color: #4a4a4a; margin: 0 0 24px 0; }
-		.button { display: inline-block; background-color: #0666EB; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; }
-		.footer { padding: 24px; text-align: center; color: #888888; font-size: 14px; }
-		.success { background-color: #d4edda; border: 1px solid #28a745; border-radius: 6px; padding: 16px; margin: 16px 0; }
-	</style>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </head>
-<body>
-	<table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4; padding: 40px 0;">
+<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+	<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(to bottom right,#f4f4f5,#fddfbc);padding:48px 16px;">
 		<tr>
 			<td align="center">
-				<table class="container" cellpadding="0" cellspacing="0" style="border: 1px solid #e0e0e0; border-radius: 8px;">
+				<!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0" width="600"><tr><td><![endif]-->
+				<table cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+					<!-- Header -->
 					<tr>
-						<td class="header">
-							<img src="https://3062e33f-c6be-4b8c-bdbd-bc8108f6450e.b-cdn.net/e/d4c4c294-9ec1-4b6a-afe1-4b5bd00b5c63/807cd1aa-4624-448d-a76c-ba58bb2c0012.png" alt="QRcodly" />
+						<td style="padding:32px 32px 24px 32px;border-bottom:1px solid #f0f0f0;">
+							<span style="font-size:24px;font-weight:700;color:#000000;letter-spacing:-0.5px;">QRcodly</span>
 						</td>
 					</tr>
+					<!-- Content -->
 					<tr>
-						<td class="content">
-							<h1 class="title">Welcome Back!</h1>
-							<p class="text">Hi{{#if firstName}} {{firstName}}{{/if}},</p>
-							<p class="text">Great news! Your QRcodly Pro subscription is now active.</p>
-							<div class="success">
-								<strong>Your custom domains have been re-enabled!</strong>
-								<br /><br />
-								All your custom domain settings have been restored and your QR codes are now using your custom domains again.
-							</div>
-							<p class="text">Thank you for continuing to use QRcodly. We're excited to have you back!</p>
-							<p class="text">
-								<a href="{{dashboardUrl}}" class="button">Go to Dashboard</a>
-							</p>
+						<td style="padding:32px;">
+							<h1 style="margin:0 0 8px 0;font-size:22px;font-weight:700;color:#0f172a;line-height:1.3;">Welcome Back!</h1>
+							<p style="margin:0 0 24px 0;font-size:15px;line-height:1.6;color:#64748b;">Hi{{#if firstName}} {{firstName}}{{/if}},</p>
+							<p style="margin:0 0 24px 0;font-size:15px;line-height:1.6;color:#334155;">Great news! Your QRcodly Pro subscription is now active.</p>
+							<!-- Success Box -->
+							<table cellpadding="0" cellspacing="0" border="0" width="100%">
+								<tr>
+									<td style="background-color:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:20px;">
+										<p style="margin:0 0 8px 0;font-size:14px;font-weight:600;color:#166534;">Custom domains re-enabled</p>
+										<p style="margin:0;font-size:14px;line-height:1.6;color:#15803d;">All your custom domain settings have been restored and your QR codes are now using your custom domains again.</p>
+									</td>
+								</tr>
+							</table>
+							<p style="margin:24px 0;font-size:15px;line-height:1.6;color:#334155;">Thank you for continuing to use QRcodly. We're excited to have you back!</p>
+							<!-- Button -->
+							<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td style="border-radius:8px;background-color:#000000;" align="center">
+										<a href="{{dashboardUrl}}" style="display:inline-block;padding:12px 28px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">Go to Dashboard</a>
+									</td>
+								</tr>
+							</table>
 						</td>
 					</tr>
+					<!-- Footer -->
 					<tr>
-						<td class="footer">
-							<p>&copy; {{year}} QRcodly. All rights reserved.</p>
+						<td style="padding:24px 32px;border-top:1px solid #f0f0f0;">
+							<p style="margin:0;font-size:13px;color:#94a3b8;text-align:center;">&copy; {{year}} FB Dev. All rights reserved.</p>
 						</td>
 					</tr>
 				</table>
+				<!--[if mso]></td></tr></table><![endif]-->
 			</td>
 		</tr>
 	</table>

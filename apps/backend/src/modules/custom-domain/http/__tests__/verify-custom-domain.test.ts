@@ -53,6 +53,19 @@ describe('POST /custom-domain/:id/verify', () => {
 		expect(response.statusCode).toBe(404);
 	});
 
+	it('should return 403 when domain is disabled', async () => {
+		const dto = generateCreateCustomDomainDto();
+		const domainId = await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID, {
+			isEnabled: false,
+		});
+
+		const response = await verifyCustomDomain(ctx, domainId, ctx.accessTokenPro);
+		expect(response.statusCode).toBe(403);
+
+		const error = JSON.parse(response.payload) as { message: string };
+		expect(error.message).toContain('disabled');
+	});
+
 	it('should return 401 when not authenticated', async () => {
 		const response = await ctx.testServer.inject({
 			method: 'POST',

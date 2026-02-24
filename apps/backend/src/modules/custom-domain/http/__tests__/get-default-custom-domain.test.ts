@@ -63,6 +63,22 @@ describe('GET /custom-domain/default', () => {
 		expect(result).toBeNull();
 	});
 
+	it('should return null when default domain is disabled', async () => {
+		const dto = generateCreateCustomDomainDto();
+		await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID, {
+			sslStatus: 'active',
+			ownershipStatus: 'verified',
+			isDefault: true,
+			isEnabled: false,
+		});
+
+		const response = await getDefaultDomain(ctx, ctx.accessTokenPro);
+		expect(response.statusCode).toBe(200);
+
+		const result = JSON.parse(response.payload);
+		expect(result).toBeNull();
+	});
+
 	it('should return 401 when not authenticated', async () => {
 		const response = await ctx.testServer.inject({
 			method: 'GET',

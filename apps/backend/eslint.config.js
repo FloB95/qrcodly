@@ -24,6 +24,7 @@ export default [
 			'**/prettier.config.cjs',
 			'**/artillery-setup.mjs',
 			'**/eslint.config.js',
+			'scripts/**',
 		],
 	},
 	...compat.extends('plugin:@typescript-eslint/recommended-type-checked'),
