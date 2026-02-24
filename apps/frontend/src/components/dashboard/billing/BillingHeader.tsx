@@ -32,7 +32,7 @@ export function BillingHeader() {
 					</div>
 					{hasProPlan && (
 						<Button
-							variant="outline"
+							variant="default"
 							size="sm"
 							className="w-full sm:w-auto shrink-0"
 							onClick={handleManageBilling}

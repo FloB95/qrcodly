@@ -1132,11 +1132,13 @@
 				"customStyling": "Estilos e iconos personalizados",
 				"detailedAnalytics": "Analíticas detalladas",
 				"noCreditCard": "Sin tarjeta de crédito requerida",
+				"unlimitedTags": "Etiquetas ilimitadas (1 por código QR)",
 				"limitedApi": "Acceso API limitado",
 				"limitedBulk": "Generación masiva de códigos QR limitada"
 			},
 			"pro": {
 				"everythingInFree": "Todo en Gratis",
+				"unlimitedTags": "Etiquetas ilimitadas (3 por código QR)",
 				"largerBulkImports": "Importaciones masivas más grandes (50 filas, 2MB)",
 				"customDomains": "Dominio personalizado para códigos QR dinámicos",
 				"unlimitedApi": "Acceso API ilimitado",

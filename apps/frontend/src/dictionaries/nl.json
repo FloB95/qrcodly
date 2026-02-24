@@ -1128,11 +1128,13 @@
 				"customStyling": "Aangepaste stijlen & pictogrammen",
 				"detailedAnalytics": "Gedetailleerde analyses",
 				"noCreditCard": "Geen creditcard vereist",
+				"unlimitedTags": "Onbeperkte tags (1 per QR-code)",
 				"limitedApi": "Beperkte API-toegang",
 				"limitedBulk": "Beperkte bulk QR-code generatie"
 			},
 			"pro": {
 				"everythingInFree": "Alles in Gratis",
+				"unlimitedTags": "Onbeperkte tags (3 per QR-code)",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
 				"customDomains": "Aangepast domein voor dynamische QR-codes",
 				"unlimitedApi": "Onbeperkte API-toegang",

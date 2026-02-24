@@ -1128,11 +1128,13 @@
 				"customStyling": "Пользовательские стили и иконки",
 				"detailedAnalytics": "Подробная аналитика",
 				"noCreditCard": "Кредитная карта не требуется",
+				"unlimitedTags": "Неограниченные теги (1 на QR-код)",
 				"limitedApi": "Ограниченный доступ к API",
 				"limitedBulk": "Ограниченная массовая генерация QR-кодов"
 			},
 			"pro": {
 				"everythingInFree": "Всё из Бесплатного",
+				"unlimitedTags": "Неограниченные теги (3 на QR-код)",
 				"largerBulkImports": "Большие массовые импорты (50 строк, 2МБ)",
 				"customDomains": "Собственный домен для динамических QR-кодов",
 				"unlimitedApi": "Неограниченный доступ к API",

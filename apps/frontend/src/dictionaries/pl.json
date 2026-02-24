@@ -1128,11 +1128,13 @@
 				"customStyling": "Własne style i ikony",
 				"detailedAnalytics": "Szczegółowe analizy",
 				"noCreditCard": "Karta kredytowa nie wymagana",
+				"unlimitedTags": "Nieograniczone tagi (1 na kod QR)",
 				"limitedApi": "Ograniczony dostęp do API",
 				"limitedBulk": "Ograniczone masowe generowanie kodów QR"
 			},
 			"pro": {
 				"everythingInFree": "Wszystko z Darmowego",
+				"unlimitedTags": "Nieograniczone tagi (3 na kod QR)",
 				"largerBulkImports": "Większe importy masowe (50 wierszy, 2MB)",
 				"customDomains": "Własna domena dla dynamicznych kodów QR",
 				"unlimitedApi": "Nieograniczony dostęp do API",

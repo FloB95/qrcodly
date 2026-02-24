@@ -1128,11 +1128,13 @@
 				"customStyling": "Custom styling & icons",
 				"detailedAnalytics": "Detailed analytics",
 				"noCreditCard": "No credit card required",
+				"unlimitedTags": "Unlimited tags (1 per QR code)",
 				"limitedApi": "Limited API access",
 				"limitedBulk": "Limited bulk QR code generation"
 			},
 			"pro": {
 				"everythingInFree": "Everything in Free",
+				"unlimitedTags": "Unlimited tags (3 per QR code)",
 				"largerBulkImports": "Larger bulk imports (50 rows, 2MB)",
 				"customDomains": "Custom domain for dynamic QR codes",
 				"unlimitedApi": "Unlimited API access",

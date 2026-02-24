@@ -104,7 +104,10 @@ export function CurrentPlanSection() {
 						</h3>
 						{hasProPlan && subscription?.currentPeriodEnd ? (
 							<span
-								className={cn('text-sm font-semibold', isCanceled ? 'text-red-400' : 'text-white')}
+								className={cn(
+									'text-sm font-semibold',
+									isCanceled ? 'text-red-500 brightness-125' : 'text-white',
+								)}
 							>
 								{isCanceled
 									? t('expiresOn', {
@@ -154,27 +157,27 @@ export function CurrentPlanSection() {
 						))}
 					</ul>
 
-					{hasProPlan ? (
-						<Button
-							variant="secondary"
-							className="w-full"
-							onClick={handleManageSubscription}
-							disabled={createPortalSession.isPending}
-						>
-							{isCanceled && <SparklesIcon className="size-4 mr-2" />}
-							{isCanceled ? t('renewSubscription') : t('manageSubscription')}
-						</Button>
-					) : (
-						<Button
-							variant="secondary"
-							className="w-full"
-							onClick={handleUpgrade}
-							disabled={createCheckoutSession.isPending}
-						>
-							<SparklesIcon className="size-4 mr-2" />
-							{t('upgradeToPro')}
-						</Button>
-					)}
+					<div className="pt-4">
+						{hasProPlan ? (
+							<Button
+								variant="secondary"
+								onClick={handleManageSubscription}
+								disabled={createPortalSession.isPending}
+							>
+								{isCanceled && <SparklesIcon className="size-4 mr-2" />}
+								{isCanceled ? t('renewSubscription') : t('manageSubscription')}
+							</Button>
+						) : (
+							<Button
+								variant="secondary"
+								onClick={handleUpgrade}
+								disabled={createCheckoutSession.isPending}
+							>
+								<SparklesIcon className="size-4 mr-2" />
+								{t('upgradeToPro')}
+							</Button>
+						)}
+					</div>
 				</CardContent>
 			</Card>
 		</div>
