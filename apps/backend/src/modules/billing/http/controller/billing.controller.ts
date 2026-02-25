@@ -87,21 +87,8 @@ export class BillingController extends AbstractController {
 
 	@Post('/portal-session', { bodySchema: CreatePortalSessionDto, schema: { hide: true } })
 	async createPortalSession(
-		request: IHttpRequest<{ locale?: string; returnUrl?: string }>,
+		request: IHttpRequest<{ locale?: string }>,
 	): Promise<IHttpResponse<{ url: string }>> {
-		const frontendOrigin = new URL(env.FRONTEND_URL).origin;
-		const isAllowedRedirect = (url?: string) => {
-			if (!url) return true;
-			try {
-				return new URL(url).origin === frontendOrigin;
-			} catch {
-				return false;
-			}
-		};
-		if (!isAllowedRedirect(request.body.returnUrl)) {
-			throw new BadRequestError('Invalid redirect URL');
-		}
-
 		const subscription = await this.userSubscriptionRepository.findByUserId(request.user.id);
 		if (!subscription) {
 			throw new NotFoundError('No subscription found');
@@ -109,7 +96,6 @@ export class BillingController extends AbstractController {
 
 		const session = await this.stripeService.createPortalSession(
 			subscription.stripeCustomerId,
-			request.body.returnUrl || `${env.FRONTEND_URL}/dashboard/settings/billing`,
 			request.body.locale,
 		);
 

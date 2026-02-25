@@ -65,12 +65,10 @@ export class StripeService {
 
 	async createPortalSession(
 		stripeCustomerId: string,
-		returnUrl: string,
 		locale?: string,
 	): Promise<Stripe.BillingPortal.Session> {
 		return this.stripe.billingPortal.sessions.create({
 			customer: stripeCustomerId,
-			return_url: returnUrl,
 			locale: (locale as Stripe.BillingPortal.SessionCreateParams.Locale) || 'auto',
 		});
 	}

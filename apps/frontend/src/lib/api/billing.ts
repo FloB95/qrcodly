@@ -74,9 +74,7 @@ export function useCreatePortalSession() {
 	const { getToken } = useAuth();
 
 	return useMutation({
-		mutationFn: async (
-			params: { locale?: string; returnUrl?: string } | void,
-		): Promise<{ url: string }> => {
+		mutationFn: async (params: { locale?: string } | void): Promise<{ url: string }> => {
 			const token = await getToken();
 			if (!token) {
 				throw new Error('Missing auth token');

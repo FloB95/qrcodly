@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { cn, formatDate } from '@/lib/utils';
 import { env } from '@/env';
 import { PLAN_CONFIGS } from '@/lib/plan.config';
-import { BillingSkeleton } from './BillingSkeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 import posthog from 'posthog-js';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
 import { useCreateCheckoutSession, useCreatePortalSession } from '@/lib/api/billing';
@@ -25,7 +25,12 @@ export function CurrentPlanSection() {
 	const [selectedPeriod, setSelectedPeriod] = useState<'annual' | 'month'>('annual');
 
 	if (isLoading) {
-		return <BillingSkeleton titleWidth="w-32" />;
+		return (
+			<div className="grid gap-6 lg:grid-cols-2">
+				<PlanCardSkeleton />
+				<PlanCardSkeleton />
+			</div>
+		);
 	}
 
 	const priceId =
@@ -181,5 +186,22 @@ export function CurrentPlanSection() {
 				</CardContent>
 			</Card>
 		</div>
+	);
+}
+
+function PlanCardSkeleton() {
+	return (
+		<Card>
+			<CardContent className="p-6 sm:p-8 space-y-5">
+				<Skeleton className="h-6 w-20" />
+				<Skeleton className="h-10 w-32" />
+				<Skeleton className="h-4 w-full" />
+				<div className="space-y-3">
+					{Array.from({ length: 5 }).map((_, i) => (
+						<Skeleton key={i} className="h-4 w-3/4" />
+					))}
+				</div>
+			</CardContent>
+		</Card>
 	);
 }

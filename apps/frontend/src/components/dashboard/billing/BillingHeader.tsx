@@ -4,13 +4,14 @@ import { ArrowTopRightOnSquareIcon, CreditCardIcon } from '@heroicons/react/24/o
 import { useLocale, useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
 import { useCreatePortalSession } from '@/lib/api/billing';
 
 export function BillingHeader() {
 	const t = useTranslations('settings.billing');
 	const locale = useLocale();
-	const { hasProPlan } = useHasProPlan();
+	const { hasProPlan, isLoading } = useHasProPlan();
 	const createPortalSession = useCreatePortalSession();
 
 	const handleManageBilling = () => {
@@ -30,17 +31,21 @@ export function BillingHeader() {
 							<CardDescription>{t('description')}</CardDescription>
 						</div>
 					</div>
-					{hasProPlan && (
-						<Button
-							variant="default"
-							size="sm"
-							className="w-full sm:w-auto shrink-0"
-							onClick={handleManageBilling}
-							disabled={createPortalSession.isPending}
-						>
-							{t('manageBilling')}
-							<ArrowTopRightOnSquareIcon className="size-4 ml-2" />
-						</Button>
+					{isLoading ? (
+						<Skeleton className="h-9 w-40 shrink-0" />
+					) : (
+						hasProPlan && (
+							<Button
+								variant="default"
+								size="sm"
+								className="w-full sm:w-auto shrink-0"
+								onClick={handleManageBilling}
+								disabled={createPortalSession.isPending}
+							>
+								{t('manageBilling')}
+								<ArrowTopRightOnSquareIcon className="size-4 ml-2" />
+							</Button>
+						)
 					)}
 				</div>
 			</CardContent>

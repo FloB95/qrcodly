@@ -3,7 +3,7 @@
 import { useSubscriptionStatus } from '@/lib/api/billing';
 
 export function useHasProPlan() {
-	const { data, isLoading } = useSubscriptionStatus();
+	const { data, isPending } = useSubscriptionStatus();
 	const subscription = data?.subscription ?? null;
 	const hasProPlan =
 		subscription !== null &&
@@ -13,7 +13,7 @@ export function useHasProPlan() {
 	return {
 		hasProPlan,
 		isCanceled,
-		isLoading,
+		isLoading: isPending,
 		subscription,
 	};
 }

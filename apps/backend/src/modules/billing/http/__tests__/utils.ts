@@ -135,7 +135,7 @@ export const createCheckoutSession = async (
 
 export const createPortalSession = async (
 	context: TestContext,
-	payload: { locale?: string; returnUrl?: string },
+	payload: { locale?: string },
 	token: string,
 ) =>
 	context.testServer.inject({
