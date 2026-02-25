@@ -43,7 +43,7 @@ export const PLAN_CONFIGS: Record<PlanId, PlanConfig> = {
 			'features.pro.largerBulkImports',
 			'features.pro.unlimitedApi',
 			'features.pro.prioritySupport',
-			// 'features.pro.teamFeatures',
+			'features.pro.teamFeatures',
 		],
 		featured: true,
 	},
