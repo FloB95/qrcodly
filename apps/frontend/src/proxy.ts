@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { Logger } from 'next-axiom';
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { processAnalyticsAndRedirect } from './middlewares/process-analytics-and-redirect.middleware';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
@@ -14,13 +14,32 @@ const isProtectedRoute = createRouteMatcher([
 // Create the next-intl middleware
 const intlMiddleware = createMiddleware(routing);
 
+function setRequestMetaCookie(response: NextResponse, req: NextRequest, pathname: string) {
+	const ip =
+		req.headers.get('cf-connecting-ip') ??
+		req.headers.get('x-real-ip') ??
+		req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+		'';
+	const host = req.headers.get('x-forwarded-host') ?? req.headers.get('host') ?? 'unknown';
+	const scheme = req.headers.get('x-forwarded-proto') ?? 'https';
+
+	response.cookies.set('__req_meta', JSON.stringify({ p: pathname, h: host, i: ip, s: scheme }), {
+		httpOnly: true,
+		sameSite: 'strict',
+		maxAge: 10,
+		path: '/',
+	});
+}
+
 export default clerkMiddleware(async (auth, req, event) => {
 	const pathname = new URL(req.url).pathname;
 
 	if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
 		const reqHeaders = new Headers(req.headers);
 		reqHeaders.set('x-pathname', pathname);
-		return NextResponse.next({ request: { headers: reqHeaders } });
+		const resp = NextResponse.next({ request: { headers: reqHeaders } });
+		setRequestMetaCookie(resp, req, pathname);
+		return resp;
 	}
 
 	const logger = new Logger({ source: 'middleware' });
@@ -82,13 +101,16 @@ export default clerkMiddleware(async (auth, req, event) => {
 				}
 			});
 
+			setRequestMetaCookie(response, req, pathname);
 			return response;
 		}
 	}
 
 	const reqHeaders = new Headers(req.headers);
 	reqHeaders.set('x-pathname', pathname);
-	return NextResponse.next({ request: { headers: reqHeaders } });
+	const resp = NextResponse.next({ request: { headers: reqHeaders } });
+	setRequestMetaCookie(resp, req, pathname);
+	return resp;
 });
 
 export const config = {

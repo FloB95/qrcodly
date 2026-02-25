@@ -12,6 +12,7 @@ import {
 	IdentificationIcon,
 	LinkIcon,
 	MapPinIcon,
+	PlusIcon,
 	QrCodeIcon,
 	ShareIcon,
 	ShieldCheckIcon,
@@ -19,6 +20,7 @@ import {
 	StarIcon,
 	SwatchIcon,
 	TagIcon,
+	UserGroupIcon,
 	WifiIcon,
 	BanknotesIcon,
 } from '@heroicons/react/24/outline';
@@ -399,6 +401,94 @@ export function ContentTypesMockup() {
 							</span>
 						</motion.div>
 					))}
+				</div>
+			</div>
+		</div>
+	);
+}
+
+export function TeamsMockup() {
+	const members = [
+		{
+			name: 'Sarah K.',
+			initials: 'SK',
+			role: 'Admin',
+			color: 'bg-indigo-500',
+			badge: 'bg-indigo-100 text-indigo-700',
+		},
+		{
+			name: 'Marco R.',
+			initials: 'MR',
+			role: 'Editor',
+			color: 'bg-emerald-500',
+			badge: 'bg-emerald-100 text-emerald-700',
+		},
+		{
+			name: 'Lisa M.',
+			initials: 'LM',
+			role: 'Viewer',
+			color: 'bg-amber-500',
+			badge: 'bg-amber-100 text-amber-700',
+		},
+	];
+	return (
+		<div className="relative bg-gradient-to-br from-indigo-50 to-violet-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
+			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 h-full flex flex-col">
+				<div className="flex items-center justify-between mb-3 sm:mb-4">
+					<div className="flex items-center gap-2">
+						<UserGroupIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
+						<span className="text-xs sm:text-sm font-medium text-slate-600">Team Workspace</span>
+					</div>
+					<span className="inline-flex items-center rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-indigo-700">
+						Coming Soon
+					</span>
+				</div>
+
+				<div className="bg-slate-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 mb-3 sm:mb-4">
+					<div className="text-[10px] sm:text-xs text-slate-400 mb-0.5">Organization</div>
+					<div className="text-xs sm:text-sm font-semibold text-slate-900">Acme Agency</div>
+				</div>
+
+				<div className="flex-1 flex flex-col gap-1.5 sm:gap-2">
+					{members.map((member) => (
+						<motion.div
+							key={member.name}
+							className="flex items-center gap-2.5 bg-slate-50 rounded-lg p-2 sm:p-2.5"
+							initial={{ opacity: 0, x: -20 }}
+							whileInView={{ opacity: 1, x: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.4 }}
+						>
+							<div
+								className={`w-6 h-6 sm:w-7 sm:h-7 ${member.color} rounded-full flex items-center justify-center flex-shrink-0`}
+							>
+								<span className="text-[8px] sm:text-[10px] font-bold text-white">
+									{member.initials}
+								</span>
+							</div>
+							<span className="text-[10px] sm:text-xs font-medium text-slate-700 flex-1">
+								{member.name}
+							</span>
+							<span
+								className={`text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full font-medium ${member.badge}`}
+							>
+								{member.role}
+							</span>
+						</motion.div>
+					))}
+
+					<motion.div
+						className="flex items-center gap-2.5 border-2 border-dashed border-slate-200 rounded-lg p-2 sm:p-2.5"
+						initial={{ opacity: 0 }}
+						whileInView={{ opacity: 1 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.4, delay: 0.3 }}
+					>
+						<div className="w-6 h-6 sm:w-7 sm:h-7 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
+							<PlusIcon className="h-3 w-3 text-slate-400" />
+						</div>
+						<span className="text-[10px] sm:text-xs text-slate-400">Invite team member...</span>
+					</motion.div>
 				</div>
 			</div>
 		</div>

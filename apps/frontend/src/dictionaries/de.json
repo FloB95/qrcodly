@@ -1262,6 +1262,14 @@
 				"bullet1": "Kerninfrastruktur auf deutschen Servern gehostet",
 				"bullet2": "Vollständig Open Source auf GitHub – jederzeit prüfbar",
 				"bullet3": "Transparenter Einsatz von Clerk, Sentry & PostHog"
+			},
+			"teams": {
+				"tag": "Demnächst",
+				"title": "Team Workspaces — Kommt noch dieses Jahr",
+				"description": "Verwalte QR Codes gemeinsam im Team. Erstelle Organisationen, lade Mitglieder ein und weise Rollen zu – perfekt für Agenturen, Marketing-Teams und Unternehmen jeder Größe.",
+				"bullet1": "Organisationen erstellen und Teammitglieder einladen",
+				"bullet2": "Rollenbasierter Zugriff: Admin, Editor und Betrachter",
+				"bullet3": "Gemeinsam an QR Codes im gesamten Team arbeiten"
 			}
 		},
 		"cta": {

@@ -13,6 +13,7 @@ import {
 	DynamicQrMockup,
 	SecurityMockup,
 	TagsMockup,
+	TeamsMockup,
 	TemplatesMockup,
 } from '@/components/features/FeatureMockups';
 
@@ -168,6 +169,16 @@ export async function FeaturesPage({ locale }: { locale: string }) {
 				t('spotlight.security.bullet3'),
 			],
 			visual: <SecurityMockup />,
+		},
+		{
+			title: t('spotlight.teams.title'),
+			description: t('spotlight.teams.description'),
+			bullets: [
+				t('spotlight.teams.bullet1'),
+				t('spotlight.teams.bullet2'),
+				t('spotlight.teams.bullet3'),
+			],
+			visual: <TeamsMockup />,
 		},
 	];
 

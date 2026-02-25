@@ -1262,6 +1262,14 @@
 				"bullet1": "Główna infrastruktura na serwerach w Niemczech",
 				"bullet2": "W pełni open source na GitHubie — zawsze do wglądu",
 				"bullet3": "Transparentne wykorzystanie Clerk, Sentry i PostHog"
+			},
+			"teams": {
+				"tag": "Wkrótce",
+				"title": "Team Workspaces — Pojawi się jeszcze w tym roku",
+				"description": "Zarządzaj kodami QR razem jako zespół. Twórz organizacje, zapraszaj członków i przydzielaj role — idealne dla agencji, zespołów marketingowych i firm każdej wielkości.",
+				"bullet1": "Tworzenie organizacji i zapraszanie członków zespołu",
+				"bullet2": "Dostęp oparty na rolach: Admin, Edytor i Przeglądający",
+				"bullet3": "Współpraca nad kodami QR w całym zespole"
 			}
 		},
 		"cta": {
