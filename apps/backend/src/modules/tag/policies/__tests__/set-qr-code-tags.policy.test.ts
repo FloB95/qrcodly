@@ -30,13 +30,13 @@ describe('SetQrCodeTagsPolicy', () => {
 			expect(() => policy.checkAccess()).toThrow(PlanLimitExceededError);
 		});
 
-		it('should allow pro user to set up to 5 tags', () => {
-			const policy = new SetQrCodeTagsPolicy(proUser, 5);
+		it('should allow pro user to set up to 3 tags', () => {
+			const policy = new SetQrCodeTagsPolicy(proUser, 3);
 			expect(policy.checkAccess()).toBe(true);
 		});
 
-		it('should throw PlanLimitExceededError when pro user tries to set > 5 tags', () => {
-			const policy = new SetQrCodeTagsPolicy(proUser, 6);
+		it('should throw PlanLimitExceededError when pro user tries to set > 3 tags', () => {
+			const policy = new SetQrCodeTagsPolicy(proUser, 4);
 			expect(() => policy.checkAccess()).toThrow(PlanLimitExceededError);
 		});
 
