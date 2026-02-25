@@ -69,7 +69,7 @@ export function AnalyticsMockup() {
 
 export function DynamicQrMockup() {
 	return (
-		<div className="relative bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
+		<div className="relative bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-4 sm:p-6 min-h-fit overflow-hidden">
 			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 h-full flex flex-col">
 				<div className="flex items-center justify-between mb-3 sm:mb-4">
 					<div className="flex items-center gap-2">
@@ -152,7 +152,7 @@ export function CollectionMockup() {
 
 export function SecurityMockup() {
 	return (
-		<div className="relative bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
+		<div className="relative bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-4 sm:p-6 min-h-fit overflow-hidden">
 			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 h-full flex flex-col items-center justify-center text-center">
 				<div className="w-14 h-14 sm:w-20 sm:h-20 bg-emerald-100 rounded-2xl sm:rounded-3xl flex items-center justify-center mb-3 sm:mb-4">
 					<ShieldCheckIcon className="h-8 w-8 sm:h-10 sm:w-10 text-emerald-600" />
@@ -188,7 +188,7 @@ export function TemplatesMockup() {
 		{ name: 'Forest', colors: ['bg-emerald-600', 'bg-green-400', 'bg-lime-300'] },
 	];
 	return (
-		<div className="relative bg-gradient-to-br from-violet-50 to-purple-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
+		<div className="relative bg-gradient-to-br from-violet-50 to-purple-50 rounded-3xl p-4 sm:p-6 min-h-fit overflow-hidden">
 			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 h-full flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
 					<StarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
@@ -224,7 +224,7 @@ export function TemplatesMockup() {
 
 export function CustomDomainMockup() {
 	return (
-		<div className="relative bg-gradient-to-br from-sky-50 to-blue-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
+		<div className="relative bg-gradient-to-br from-sky-50 to-blue-50 rounded-3xl p-4 sm:p-6 min-h-fit overflow-hidden">
 			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 h-full flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
 					<GlobeAltIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
@@ -265,7 +265,7 @@ export function TagsMockup() {
 		{ label: 'Social', color: 'bg-pink-500', count: 7 },
 	];
 	return (
-		<div className="relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
+		<div className="relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-3xl p-4 sm:p-6 min-h-fit overflow-hidden">
 			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 h-full flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
 					<TagIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
@@ -297,7 +297,7 @@ export function TagsMockup() {
 
 export function BulkOperationsMockup() {
 	return (
-		<div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
+		<div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-4 sm:p-6 min-h-fit overflow-hidden">
 			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 h-full flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
 					<ArrowsRightLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
@@ -378,7 +378,7 @@ export function ContentTypesMockup() {
 		},
 	];
 	return (
-		<div className="relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
+		<div className="relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl p-4 sm:p-6 min-h-fit overflow-hidden">
 			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-3 sm:p-6 h-full flex flex-col">
 				<div className="flex items-center gap-2 mb-2 sm:mb-4">
 					<Squares2X2Icon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
@@ -432,7 +432,7 @@ export function TeamsMockup() {
 		},
 	];
 	return (
-		<div className="relative bg-gradient-to-br from-indigo-50 to-violet-50 rounded-3xl p-4 sm:p-6 aspect-[4/3] overflow-hidden">
+		<div className="relative bg-gradient-to-br from-indigo-50 to-violet-50 rounded-3xl p-4 sm:p-6 min-h-fit overflow-hidden">
 			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 h-full flex flex-col">
 				<div className="flex items-center justify-between mb-3 sm:mb-4">
 					<div className="flex items-center gap-2">
