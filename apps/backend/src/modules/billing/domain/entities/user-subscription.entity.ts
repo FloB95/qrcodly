@@ -17,6 +17,7 @@ const userSubscription = createTable(
 		domainsDisabledAt: datetime(),
 		cancellationNotifiedAt: datetime(),
 		cancellationReminderSentAt: datetime(),
+		pastDueNotifiedAt: datetime(),
 		createdAt: datetime().notNull(),
 		updatedAt: datetime().notNull(),
 	},

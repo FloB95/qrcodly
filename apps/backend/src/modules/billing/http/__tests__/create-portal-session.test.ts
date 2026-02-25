@@ -34,6 +34,24 @@ describe('POST /billing/portal-session', () => {
 		expect(data.message).toContain('No subscription found');
 	});
 
+	it('should return 400 for invalid returnUrl', async () => {
+		await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID);
+
+		const response = await ctx.testServer.inject({
+			method: 'POST',
+			url: `${BILLING_API_PATH}/portal-session`,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${ctx.accessTokenPro}`,
+			},
+			payload: { returnUrl: 'https://evil.com/phishing' },
+		});
+
+		expect(response.statusCode).toBe(400);
+		const data = JSON.parse(response.payload) as { message: string };
+		expect(data.message).toContain('Invalid redirect URL');
+	});
+
 	it('should return 401 when not authenticated', async () => {
 		const response = await ctx.testServer.inject({
 			method: 'POST',

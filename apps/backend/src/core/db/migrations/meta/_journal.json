@@ -148,6 +148,13 @@
 			"when": 1771966747639,
 			"tag": "0020_ancient_cobalt_man",
 			"breakpoints": true
+		},
+		{
+			"idx": 21,
+			"version": "5",
+			"when": 1771979336119,
+			"tag": "0021_lucky_sunfire",
+			"breakpoints": true
 		}
 	]
 }

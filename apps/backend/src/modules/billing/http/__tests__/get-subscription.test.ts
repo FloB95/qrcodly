@@ -119,4 +119,19 @@ describe('GET /billing/subscription', () => {
 
 		expect(response.statusCode).toBe(401);
 	});
+
+	it("should not return another user's subscription", async () => {
+		// Create subscription for user PRO
+		await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID, {
+			status: 'active',
+			stripePriceId: 'price_test_monthly',
+		});
+
+		// Query with user 2's token — should get null, not user PRO's subscription
+		const response = await getSubscription(ctx, ctx.accessToken2);
+		expect(response.statusCode).toBe(200);
+
+		const data = JSON.parse(response.payload) as { subscription: null };
+		expect(data.subscription).toBeNull();
+	});
 });

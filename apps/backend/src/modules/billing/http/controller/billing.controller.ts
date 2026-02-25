@@ -9,6 +9,8 @@ import { Logger } from '@/core/logging';
 import { StripeService } from '../../services/stripe.service';
 import UserSubscriptionRepository from '../../domain/repository/user-subscription.repository';
 import { createClerkClient } from '@clerk/fastify';
+import { CreateCheckoutSessionDto } from '../../domain/dto/create-checkout-session.dto';
+import { CreatePortalSessionDto } from '../../domain/dto/create-portal-session.dto';
 
 const ALLOWED_PRICE_IDS = new Set([
 	env.STRIPE_PRO_PRICE_ID_MONTHLY,
@@ -29,7 +31,7 @@ export class BillingController extends AbstractController {
 		this.clerkClient = createClerkClient({ secretKey: env.CLERK_SECRET_KEY });
 	}
 
-	@Post('/checkout-session')
+	@Post('/checkout-session', { bodySchema: CreateCheckoutSessionDto, schema: { hide: true } })
 	async createCheckoutSession(
 		request: IHttpRequest<{
 			priceId: string;
@@ -83,10 +85,23 @@ export class BillingController extends AbstractController {
 		}
 	}
 
-	@Post('/portal-session')
+	@Post('/portal-session', { bodySchema: CreatePortalSessionDto, schema: { hide: true } })
 	async createPortalSession(
 		request: IHttpRequest<{ locale?: string; returnUrl?: string }>,
 	): Promise<IHttpResponse<{ url: string }>> {
+		const frontendOrigin = new URL(env.FRONTEND_URL).origin;
+		const isAllowedRedirect = (url?: string) => {
+			if (!url) return true;
+			try {
+				return new URL(url).origin === frontendOrigin;
+			} catch {
+				return false;
+			}
+		};
+		if (!isAllowedRedirect(request.body.returnUrl)) {
+			throw new BadRequestError('Invalid redirect URL');
+		}
+
 		const subscription = await this.userSubscriptionRepository.findByUserId(request.user.id);
 		if (!subscription) {
 			throw new NotFoundError('No subscription found');
@@ -101,7 +116,7 @@ export class BillingController extends AbstractController {
 		return this.makeApiHttpResponse(200, { url: session.url });
 	}
 
-	@Get('/subscription')
+	@Get('/subscription', { schema: { hide: true } })
 	async getSubscription(request: IHttpRequest): Promise<
 		IHttpResponse<{
 			subscription: {

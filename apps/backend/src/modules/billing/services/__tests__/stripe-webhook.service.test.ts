@@ -36,12 +36,21 @@ const mockTransitionService = {
 	emitPastDue: jest.fn(),
 } as unknown as jest.Mocked<SubscriptionStatusTransitionService>;
 
+// Mock KeyCache (for webhook event deduplication)
+const mockCache = {
+	getClient: jest.fn().mockReturnValue({
+		set: jest.fn().mockResolvedValue('OK'),
+	}),
+	del: jest.fn(),
+} as any;
+
 function createService(): StripeWebhookService {
 	return new StripeWebhookService(
 		mockLogger as any,
 		mockRepository as any,
 		mockStripeService as any,
 		mockTransitionService as any,
+		mockCache,
 	);
 }
 
@@ -70,6 +79,28 @@ describe('StripeWebhookService', () => {
 	});
 
 	describe('handleWebhookEvent', () => {
+		it('should skip duplicate events', async () => {
+			// Simulate cache.set returning null (key already existed)
+			mockCache.getClient().set.mockResolvedValueOnce(null);
+
+			const event = {
+				type: 'checkout.session.completed',
+				id: 'evt_duplicate',
+				data: { object: {} },
+			} as unknown as Stripe.Event;
+
+			await service.handleWebhookEvent(event);
+
+			expect(mockLogger.info).toHaveBeenCalledWith(
+				'stripe.webhook.duplicate',
+				expect.objectContaining({
+					stripe: { eventId: 'evt_duplicate' },
+				}),
+			);
+			// Should not have processed the event
+			expect(mockRepository.upsertByStripeSubscriptionId).not.toHaveBeenCalled();
+		});
+
 		it('should log unhandled event types', async () => {
 			const event = {
 				type: 'some.unhandled.event',

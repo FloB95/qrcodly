@@ -113,6 +113,23 @@ describe('UserSubscriptionRepository', () => {
 		});
 	});
 
+	describe('findByStripeCustomerId', () => {
+		it('should return subscription by stripe customer ID', async () => {
+			await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID, {
+				stripeCustomerId: 'cus_findtest_456',
+			});
+
+			const result = await repository.findByStripeCustomerId('cus_findtest_456');
+			expect(result).toBeDefined();
+			expect(result!.stripeCustomerId).toBe('cus_findtest_456');
+		});
+
+		it('should return undefined for non-existing stripe customer ID', async () => {
+			const result = await repository.findByStripeCustomerId('cus_nonexistent');
+			expect(result).toBeUndefined();
+		});
+	});
+
 	describe('findAllNonCanceled', () => {
 		it('should return only non-canceled subscriptions', async () => {
 			await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID, {
@@ -206,6 +223,7 @@ describe('UserSubscriptionRepository', () => {
 				domainsDisabledAt: new Date(),
 				cancellationNotifiedAt: new Date(),
 				cancellationReminderSentAt: new Date(),
+				pastDueNotifiedAt: new Date(),
 			});
 
 			await repository.clearGracePeriod(TEST_USER_PRO_ID);
@@ -215,6 +233,7 @@ describe('UserSubscriptionRepository', () => {
 			expect(subscription!.domainsDisabledAt).toBeNull();
 			expect(subscription!.cancellationNotifiedAt).toBeNull();
 			expect(subscription!.cancellationReminderSentAt).toBeNull();
+			expect(subscription!.pastDueNotifiedAt).toBeNull();
 		});
 	});
 
@@ -248,6 +267,28 @@ describe('UserSubscriptionRepository', () => {
 			const subscription = await repository.findByUserId(TEST_USER_PRO_ID);
 			expect(subscription!.cancellationNotifiedAt).toBeNull();
 			expect(subscription!.cancellationReminderSentAt).toBeNull();
+		});
+	});
+
+	describe('past-due notification operations', () => {
+		it('should mark past due notified', async () => {
+			await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID);
+
+			await repository.markPastDueNotified(TEST_USER_PRO_ID);
+
+			const subscription = await repository.findByUserId(TEST_USER_PRO_ID);
+			expect(subscription!.pastDueNotifiedAt).not.toBeNull();
+		});
+
+		it('should clear past due notification', async () => {
+			await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID, {
+				pastDueNotifiedAt: new Date(),
+			});
+
+			await repository.clearPastDueNotification(TEST_USER_PRO_ID);
+
+			const subscription = await repository.findByUserId(TEST_USER_PRO_ID);
+			expect(subscription!.pastDueNotifiedAt).toBeNull();
 		});
 	});
 

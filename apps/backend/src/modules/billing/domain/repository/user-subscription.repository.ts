@@ -65,32 +65,31 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 			| 'domainsDisabledAt'
 			| 'cancellationNotifiedAt'
 			| 'cancellationReminderSentAt'
+			| 'pastDueNotifiedAt'
 		>,
 	): Promise<void> {
-		const existing = await this.findByStripeSubscriptionId(data.stripeSubscriptionId);
 		const now = new Date();
 
-		if (existing) {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			const { id, ...updates } = data;
-			await this.db
-				.update(this.table)
-				.set({
-					...updates,
+		await this.db
+			.insert(this.table)
+			.values({
+				...data,
+				createdAt: now,
+				updatedAt: now,
+			})
+			.onDuplicateKeyUpdate({
+				set: {
+					userId: data.userId,
+					stripeCustomerId: data.stripeCustomerId,
+					stripePriceId: data.stripePriceId,
+					status: data.status,
+					currentPeriodStart: data.currentPeriodStart,
+					currentPeriodEnd: data.currentPeriodEnd,
+					cancelAtPeriodEnd: data.cancelAtPeriodEnd,
 					updatedAt: now,
-				})
-				.where(eq(this.table.stripeSubscriptionId, data.stripeSubscriptionId))
-				.execute();
-		} else {
-			await this.db
-				.insert(this.table)
-				.values({
-					...data,
-					createdAt: now,
-					updatedAt: now,
-				})
-				.execute();
-		}
+				},
+			})
+			.execute();
 	}
 
 	async create(subscription: Omit<TUserSubscription, 'createdAt' | 'updatedAt'>): Promise<void> {
@@ -148,6 +147,7 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 				domainsDisabledAt: null,
 				cancellationNotifiedAt: null,
 				cancellationReminderSentAt: null,
+				pastDueNotifiedAt: null,
 				updatedAt: new Date(),
 			})
 			.where(eq(this.table.userId, userId))
@@ -178,6 +178,22 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 				cancellationReminderSentAt: null,
 				updatedAt: new Date(),
 			})
+			.where(eq(this.table.userId, userId))
+			.execute();
+	}
+
+	async markPastDueNotified(userId: string): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({ pastDueNotifiedAt: new Date(), updatedAt: new Date() })
+			.where(eq(this.table.userId, userId))
+			.execute();
+	}
+
+	async clearPastDueNotification(userId: string): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({ pastDueNotifiedAt: null, updatedAt: new Date() })
 			.where(eq(this.table.userId, userId))
 			.execute();
 	}

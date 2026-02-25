@@ -1,9 +1,12 @@
 import { inject, injectable } from 'tsyringe';
 import Stripe from 'stripe';
 import { Logger } from '@/core/logging';
+import { KeyCache } from '@/core/cache';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
 import { StripeService } from './stripe.service';
 import { SubscriptionStatusTransitionService } from './subscription-status-transition.service';
+
+const WEBHOOK_EVENT_DEDUP_TTL = 86400; // 24 hours
 
 @injectable()
 export class StripeWebhookService {
@@ -14,12 +17,25 @@ export class StripeWebhookService {
 		@inject(StripeService) private readonly stripeService: StripeService,
 		@inject(SubscriptionStatusTransitionService)
 		private readonly transitionService: SubscriptionStatusTransitionService,
+		@inject(KeyCache) private readonly cache: KeyCache,
 	) {}
 
 	async handleWebhookEvent(event: Stripe.Event): Promise<void> {
 		this.logger.info('stripe.webhook.event', {
 			stripe: { eventType: event.type, eventId: event.id },
 		});
+
+		// Deduplicate re-delivered Stripe events
+		const dedupKey = `stripe_event:${event.id}`;
+		const alreadyProcessed = await this.cache
+			.getClient()
+			.set(dedupKey, '1', 'EX', WEBHOOK_EVENT_DEDUP_TTL, 'NX');
+		if (!alreadyProcessed) {
+			this.logger.info('stripe.webhook.duplicate', {
+				stripe: { eventId: event.id },
+			});
+			return;
+		}
 
 		try {
 			switch (event.type) {

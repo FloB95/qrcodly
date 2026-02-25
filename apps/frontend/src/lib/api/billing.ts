@@ -52,6 +52,9 @@ export function useCreateCheckoutSession() {
 			cancelUrl?: string;
 		}): Promise<{ url: string }> => {
 			const token = await getToken();
+			if (!token) {
+				throw new Error('Missing auth token');
+			}
 			return apiRequest<{ url: string }>('/billing/checkout-session', {
 				method: 'POST',
 				body: JSON.stringify(params),
@@ -75,6 +78,9 @@ export function useCreatePortalSession() {
 			params: { locale?: string; returnUrl?: string } | void,
 		): Promise<{ url: string }> => {
 			const token = await getToken();
+			if (!token) {
+				throw new Error('Missing auth token');
+			}
 			return apiRequest<{ url: string }>('/billing/portal-session', {
 				method: 'POST',
 				body: JSON.stringify(params || {}),
