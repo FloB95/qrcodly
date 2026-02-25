@@ -43,19 +43,28 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 					periodStart = full.current_period_start;
 					periodEnd = full.current_period_end;
 				}
+				if (!periodStart || !periodEnd) {
+					this.logger.warn('stripe.reconciliation.missingPeriod', {
+						stripe: { subscriptionId: local.stripeSubscriptionId, userId: local.userId },
+					});
+					continue;
+				}
+
+				const periodStartDate = new Date(periodStart * 1000);
+				const periodEndDate = new Date(periodEnd * 1000);
 
 				const needsUpdate =
 					local.status !== stripe.status ||
 					local.stripePriceId !== priceId ||
 					local.cancelAtPeriodEnd !== stripe.cancel_at_period_end ||
-					Math.abs(local.currentPeriodEnd.getTime() - (periodEnd || 0) * 1000) > 60_000;
+					Math.abs(local.currentPeriodEnd.getTime() - periodEnd * 1000) > 60_000;
 
 				if (needsUpdate) {
 					await repository.update(local, {
 						status: stripe.status,
 						stripePriceId: priceId,
-						currentPeriodStart: new Date((periodStart || 0) * 1000),
-						currentPeriodEnd: new Date((periodEnd || 0) * 1000),
+						currentPeriodStart: periodStartDate,
+						currentPeriodEnd: periodEndDate,
 						cancelAtPeriodEnd: stripe.cancel_at_period_end,
 					});
 
@@ -65,7 +74,7 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 						newStatus: stripe.status,
 						stripeSubscriptionId: local.stripeSubscriptionId,
 						stripePriceId: priceId,
-						currentPeriodEnd: new Date((periodEnd || 0) * 1000),
+						currentPeriodEnd: periodEndDate,
 					});
 
 					// Detect cancelAtPeriodEnd flip (mirrors webhook logic)
@@ -74,7 +83,7 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 							userId: local.userId,
 							stripeSubscriptionId: local.stripeSubscriptionId,
 							stripePriceId: priceId,
-							currentPeriodEnd: new Date((periodEnd || 0) * 1000),
+							currentPeriodEnd: periodEndDate,
 						});
 					}
 					if (!stripe.cancel_at_period_end && local.cancelAtPeriodEnd) {
@@ -137,7 +146,15 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 						periodStart = full.current_period_start;
 						periodEnd = full.current_period_end;
 					}
+					if (!periodStart || !periodEnd) {
+						this.logger.warn('stripe.reconciliation.missingPeriod', {
+							stripe: { subscriptionId: sub.id },
+						});
+						continue;
+					}
 
+					const periodStartDate = new Date(periodStart * 1000);
+					const periodEndDate = new Date(periodEnd * 1000);
 					const previousStatus = byUser?.status ?? '';
 
 					if (byUser) {
@@ -147,8 +164,8 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 							stripeSubscriptionId: sub.id,
 							stripePriceId: priceId,
 							status: sub.status,
-							currentPeriodStart: new Date((periodStart || 0) * 1000),
-							currentPeriodEnd: new Date((periodEnd || 0) * 1000),
+							currentPeriodStart: periodStartDate,
+							currentPeriodEnd: periodEndDate,
 							cancelAtPeriodEnd: sub.cancel_at_period_end,
 						});
 					} else {
@@ -159,8 +176,8 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 							stripeSubscriptionId: sub.id,
 							stripePriceId: priceId,
 							status: sub.status,
-							currentPeriodStart: new Date((periodStart || 0) * 1000),
-							currentPeriodEnd: new Date((periodEnd || 0) * 1000),
+							currentPeriodStart: periodStartDate,
+							currentPeriodEnd: periodEndDate,
 							cancelAtPeriodEnd: sub.cancel_at_period_end,
 							updatedAt: new Date(),
 						});
@@ -172,7 +189,7 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 						newStatus: sub.status,
 						stripeSubscriptionId: sub.id,
 						stripePriceId: priceId,
-						currentPeriodEnd: new Date((periodEnd || 0) * 1000),
+						currentPeriodEnd: periodEndDate,
 					});
 
 					created++;

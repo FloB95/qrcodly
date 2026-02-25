@@ -938,7 +938,7 @@
 				"disabled": "Deaktiviert"
 			},
 			"domainsDisabledTitle": "Benutzerdefinierte Domains deaktiviert",
-			"domainsDisabledDescription": "Ihre benutzerdefinierten Domains wurden deaktiviert, da Ihr Abonnement abgelaufen ist. QR-Codes mit benutzerdefinierten Domains funktionieren erst wieder, wenn Sie sich erneut anmelden."
+			"domainsDisabledDescription": "Deine benutzerdefinierten Domains wurden deaktiviert, da dein Abonnement abgelaufen ist. QR-Codes mit benutzerdefinierten Domains funktionieren erst wieder, wenn du dich erneut anmeldest."
 		},
 		"apiKeys": {
 			"title": "API-Schlüssel",

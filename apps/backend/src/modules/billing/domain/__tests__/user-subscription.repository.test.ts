@@ -2,7 +2,6 @@ import {
 	getTestContext,
 	cleanupCreatedSubscriptions,
 	createSubscriptionDirectly,
-	cleanupSubscriptionsForUser,
 	type TestContext,
 	TEST_USER_PRO_ID,
 	TEST_USER_2_ID,

@@ -18,12 +18,16 @@ export interface SubscriptionStatus {
 }
 
 export function useSubscriptionStatus() {
-	const { getToken } = useAuth();
+	const { getToken, isLoaded, isSignedIn, userId } = useAuth();
 
 	return useQuery({
-		queryKey: billingQueryKeys.subscription,
+		queryKey: [...billingQueryKeys.subscription, userId],
+		enabled: isLoaded && !!isSignedIn,
 		queryFn: async (): Promise<SubscriptionStatus> => {
 			const token = await getToken();
+			if (!token) {
+				throw new Error('Missing auth token');
+			}
 			return apiRequest<SubscriptionStatus>('/billing/subscription', {
 				method: 'GET',
 				headers: {

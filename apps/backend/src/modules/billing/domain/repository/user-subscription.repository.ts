@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { and, desc, eq, isNotNull, isNull, lte, ne } from 'drizzle-orm';
+import { and, desc, eq, gte, isNotNull, isNull, lte, ne } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import userSubscription, { type TUserSubscription } from '../entities/user-subscription.entity';
@@ -71,7 +71,8 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 		const now = new Date();
 
 		if (existing) {
-			const { id: _id, ...updates } = data;
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const { id, ...updates } = data;
 			await this.db
 				.update(this.table)
 				.set({
@@ -182,7 +183,8 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 	}
 
 	async findPendingCancellationReminders(daysBeforeEnd: number): Promise<TUserSubscription[]> {
-		const threshold = new Date();
+		const now = new Date();
+		const threshold = new Date(now);
 		threshold.setDate(threshold.getDate() + daysBeforeEnd);
 
 		return this.db
@@ -192,6 +194,7 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 				and(
 					eq(this.table.cancelAtPeriodEnd, true),
 					eq(this.table.status, 'active'),
+					gte(this.table.currentPeriodEnd, now),
 					lte(this.table.currentPeriodEnd, threshold),
 					isNull(this.table.cancellationReminderSentAt),
 				),

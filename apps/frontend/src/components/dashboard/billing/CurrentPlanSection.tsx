@@ -124,7 +124,7 @@ export function CurrentPlanSection() {
 						) : (
 							!hasProPlan && (
 								<div className="flex space-x-2 items-center">
-									<span className="text-s text-gray-200">{tPlans('annual')}</span>
+									<span className="text-sm text-gray-200">{tPlans('annual')}</span>
 									<Switch
 										checked={selectedPeriod === 'annual'}
 										className="data-[state=checked]:bg-teal-600!"

@@ -208,9 +208,7 @@ describe('SubscriptionStatusTransitionService', () => {
 		it('should return empty email on Clerk error', async () => {
 			// Create a service with a failing Clerk client
 			jest.resetModules();
-			const clerkMock = jest.requireMock('@clerk/fastify') as {
-				createClerkClient: jest.Mock;
-			};
+			const clerkMock = jest.requireMock('@clerk/fastify');
 			clerkMock.createClerkClient = () => ({
 				users: {
 					getUser: jest.fn().mockRejectedValue(new Error('Clerk error')),
