@@ -19,19 +19,15 @@ const inter = Inter({
 export default async function NotFoundPage() {
 	const headersList = await headers();
 	const path = headersList.get('x-pathname') || '/';
-	const host = headersList.get('host') || 'unknown';
-	const scheme = headersList.get('x-forwarded-proto') || 'http';
-	const userAgent = headersList.get('user-agent') || '';
 
 	const logger = new Logger({ source: 'not-found' });
-	logger.warn(`GET ${path}`, {
-		request: {
-			host,
-			method: 'GET',
-			path,
-			scheme,
-			userAgent,
-		},
+	logger.warn(`Page Not Found ${path}`, {
+		host: headersList.get('host') || 'unknown',
+		method: 'GET',
+		path,
+		scheme: headersList.get('x-forwarded-proto') || 'http',
+		userAgent: headersList.get('user-agent') || '',
+		ip: headersList.get('cf-connecting-ip') || headersList.get('x-forwarded-for') || '',
 		status: 404,
 	});
 	await logger.flush();
