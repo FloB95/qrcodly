@@ -36,11 +36,11 @@ export type BulkImportLimits = {
 /**
  * Plan limits for tags per QR code.
  * - free: 1 tag per QR code
- * - pro: 5 tags per QR code
+ * - pro: 3 tags per QR code
  */
 export const TAGS_PER_QR_CODE_PLAN_LIMITS: Record<PlanName, number> = {
 	free: 1,
-	pro: 5,
+	pro: 3,
 };
 
 export const BULK_IMPORT_PLAN_LIMITS: Record<PlanName, BulkImportLimits> = {
