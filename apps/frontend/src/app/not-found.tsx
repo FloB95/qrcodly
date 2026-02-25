@@ -8,57 +8,12 @@ import Link from 'next/link';
 import { NextIntlClientProvider } from 'next-intl';
 import Providers from '@/components/provider';
 import messages from '@/dictionaries/en.json';
-import { Logger } from 'next-axiom';
-import { cookies, headers } from 'next/headers';
-
 const inter = Inter({
 	subsets: ['latin'],
 	variable: '--font-sans',
 });
 
 export default async function NotFoundPage() {
-	const headersList = await headers();
-	const cookieStore = await cookies();
-
-	// Read request metadata from middleware cookie (most reliable source in not-found context)
-	let reqPath = '/unknown';
-	let reqHost = 'unknown';
-	let reqIp = '';
-	let reqScheme = 'https';
-
-	try {
-		const metaCookie = cookieStore.get('__req_meta');
-		if (metaCookie) {
-			const meta = JSON.parse(metaCookie.value) as Record<string, string>;
-			reqPath = meta.p || reqPath;
-			reqHost = meta.h || reqHost;
-			reqIp = meta.i || reqIp;
-			reqScheme = meta.s || reqScheme;
-		}
-	} catch {
-		// Fall back to headers if cookie is not available
-		reqPath = headersList.get('x-pathname') || reqPath;
-		reqHost = headersList.get('x-forwarded-host') || headersList.get('host') || reqHost;
-		reqIp =
-			headersList.get('cf-connecting-ip') ||
-			headersList.get('x-real-ip') ||
-			headersList.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-			reqIp;
-		reqScheme = headersList.get('x-forwarded-proto') || reqScheme;
-	}
-
-	const logger = new Logger({ source: 'not-found' });
-	logger.warn(`Page Not Found ${reqPath}`, {
-		host: reqHost,
-		method: 'GET',
-		path: reqPath,
-		scheme: reqScheme,
-		userAgent: headersList.get('user-agent') || '',
-		ip: reqIp,
-		status: 404,
-	});
-	await logger.flush();
-
 	return (
 		<html lang="en" className="light">
 			<head>
