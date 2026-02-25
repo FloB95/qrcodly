@@ -34,7 +34,7 @@ export const LOGGER_REDACT_PATHS: string[] = ['password', 'user.password'];
 // ---------------------------
 // MAILER CONSTANTS
 // ---------------------------
-export const DEFAULT_FROM_MAIL: string = 'info@qrcodly.de';
+export const DEFAULT_FROM_MAIL: string = '"QRcodly" <info@qrcodly.de>';
 
 // ---------------------------
 // DATABASE CONSTANTS

@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import { inArray } from 'drizzle-orm';
-import { createTable } from '../core/db/utils';
+import { createTable } from '../src/core/db/utils';
 import { boolean, datetime, text, varchar } from 'drizzle-orm/mysql-core';
 
 // Validate only the env vars this script needs
