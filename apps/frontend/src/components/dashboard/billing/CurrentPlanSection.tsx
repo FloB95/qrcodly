@@ -1,158 +1,185 @@
 'use client';
 
 import { useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { Link } from '@/i18n/navigation';
-import { CheckoutButton, useSubscription } from '@clerk/nextjs/experimental';
 import { CheckIcon, SparklesIcon } from '@heroicons/react/24/outline';
-import { useTranslations } from 'next-intl';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLocale, useTranslations } from 'next-intl';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
+import { cn, formatDate } from '@/lib/utils';
 import { env } from '@/env';
 import { PLAN_CONFIGS } from '@/lib/plan.config';
-import { CancelPlanDialog } from './CancelPlanDialog';
 import { BillingSkeleton } from './BillingSkeleton';
-import { formatCurrency, formatDate } from '@/lib/utils';
 import posthog from 'posthog-js';
+import { useHasProPlan } from '@/hooks/useHasProPlan';
+import { useCreateCheckoutSession, useCreatePortalSession } from '@/lib/api/billing';
 
 export function CurrentPlanSection() {
-	const pathname = usePathname();
 	const t = useTranslations('settings.billing');
 	const tPlans = useTranslations('plans');
-	const { isLoading, isFetching, data, revalidate } = useSubscription();
+	const locale = useLocale();
+	const { hasProPlan, isCanceled, isLoading, subscription } = useHasProPlan();
+	const createCheckoutSession = useCreateCheckoutSession();
+	const createPortalSession = useCreatePortalSession();
 	const [selectedPeriod, setSelectedPeriod] = useState<'annual' | 'month'>('annual');
 
-	if (isLoading || isFetching) {
+	if (isLoading) {
 		return <BillingSkeleton titleWidth="w-32" />;
 	}
 
-	const subscriptionItem = data?.subscriptionItems.filter((s) => s.status === 'active')[0];
+	const priceId =
+		selectedPeriod === 'annual'
+			? env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL
+			: env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_MONTHLY;
 
-	if (!subscriptionItem) {
-		return null;
-	}
+	const handleUpgrade = () => {
+		posthog.capture('subscription:checkout_started');
+		createCheckoutSession.mutate({ priceId, locale });
+	};
 
-	const currentPlan = subscriptionItem?.plan;
-	const planPeriod = (subscriptionItem?.planPeriod as 'annual' | 'month') || 'annual';
-	const hasProPlan = currentPlan?.slug === 'pro';
-	const planConfig = hasProPlan ? PLAN_CONFIGS.pro : PLAN_CONFIGS.free;
+	const handleManageSubscription = () => {
+		createPortalSession.mutate({ locale });
+	};
 
-	const fee = currentPlan?.[planPeriod === 'annual' ? 'annualFee' : 'annualMonthlyFee'];
-	const formattedPrice = fee ? formatCurrency(fee.amount, fee.currency) : '';
+	const isAnnualSubscription =
+		subscription?.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL;
 
-	if (!currentPlan) {
-		return null;
-	}
+	const proPrice = selectedPeriod === 'annual' ? '48,00' : '4,99';
+	const priceSuffix = selectedPeriod === 'annual' ? tPlans('perYear') : tPlans('perMonth');
+
+	const currentProPrice = isAnnualSubscription ? '48,00' : '4,99';
+	const currentProPriceSuffix = isAnnualSubscription ? tPlans('perYear') : tPlans('perMonth');
 
 	return (
-		<Card>
-			<CardHeader>
-				<div className="flex items-center justify-between">
+		<div className="grid gap-6 lg:grid-cols-2">
+			{/* Free Plan Card */}
+			<Card className={cn(hasProPlan && 'order-last')}>
+				<CardContent className="p-6 sm:p-8 space-y-5">
 					<div>
-						<CardTitle className="flex items-center gap-2">
-							{t('currentPlan')}
-							<Badge className="text-teal-500 text-md" variant="outline">
-								{hasProPlan ? 'Pro' : 'Free'}
-							</Badge>
-						</CardTitle>
-						<CardDescription className="mt-1">
-							{hasProPlan
-								? t('proDescription')
-								: t.rich('freeDescription', {
-										link: (chunks) => (
-											<Link href="/plans" className="underline hover:text-foreground">
-												{chunks}
-											</Link>
-										),
-									})}
-						</CardDescription>
-					</div>
-					{hasProPlan && (
-						<div className="flex items-center gap-2 text-primary">
-							<SparklesIcon className="size-5" />
-						</div>
-					)}
-				</div>
-			</CardHeader>
-			<CardContent className="space-y-6">
-				<div className="grid gap-4 md:grid-cols-2">
-					<div>
-						<h4 className="text-sm font-medium mb-3">{t('includedFeatures')}</h4>
-						<ul className="space-y-2">
-							{planConfig.featureKeys.map((featureKey) => (
-								<li key={featureKey} className="flex items-center gap-2 text-sm">
-									<CheckIcon className="size-4 stroke-2 text-teal-500" />
-									{tPlans(featureKey)}
-								</li>
-							))}
-						</ul>
-					</div>
-
-					{currentPlan && hasProPlan && (
-						<div className="border rounded-lg p-4 bg-muted/50">
-							<h4 className="text-sm font-medium mb-2">{t('billingCycle')}</h4>
-							<p className="text-2xl font-bold">
-								{formattedPrice}{' '}
-								<span className="text-sm font-normal text-muted-foreground">
-									/ {planPeriod === 'annual' ? t('billedAnnually') : t('perMonth')}
-								</span>
-							</p>
-							{subscriptionItem?.periodEnd && (
-								<p
-									className={`text-xs text-muted-foreground mt-2 ${subscriptionItem.canceledAt ? 'text-red-600' : ''}`}
-								>
-									{subscriptionItem.canceledAt
-										? t('expiresOn', {
-												date: formatDate(subscriptionItem.periodEnd, { hideTime: true }),
-											})
-										: t('renewsOn', {
-												date: formatDate(subscriptionItem.periodEnd, { hideTime: true }),
-											})}
-								</p>
+						<h3 className="text-lg font-semibold flex items-center gap-2 text-teal-700 dark:text-teal-500">
+							{tPlans('free.name')}
+							{!hasProPlan && (
+								<Badge className="bg-black text-white dark:bg-white dark:text-black">
+									{t('currentPlan')}
+								</Badge>
 							)}
-						</div>
-					)}
-				</div>
+						</h3>
+					</div>
 
-				<div className="flex flex-wrap items-center gap-6 pt-4 border-t">
-					{!hasProPlan || subscriptionItem?.canceledAt ? (
-						<>
-							<CheckoutButton
-								planId={env.NEXT_PUBLIC_CLERK_PRO_PLAN_ID}
-								planPeriod={selectedPeriod}
-								onSubscriptionComplete={() => {
-									revalidate();
-									posthog.capture('subscription:created');
-								}}
-								newSubscriptionRedirectUrl={pathname}
+					<p className="flex items-baseline gap-x-2">
+						<span className="text-3xl lg:text-4xl font-semibold">0 &euro;</span>
+						<span className="text-muted-foreground">{tPlans('perMonth')}</span>
+					</p>
+
+					<p className="text-sm text-muted-foreground">{tPlans('free.description')}</p>
+
+					<ul className="space-y-3 text-sm">
+						{PLAN_CONFIGS.free.featureKeys.map((featureKey) => (
+							<li key={featureKey} className="flex gap-x-3">
+								<CheckIcon className="h-5 w-5 flex-none text-teal-700 dark:text-teal-500" />
+								{tPlans(featureKey)}
+							</li>
+						))}
+					</ul>
+				</CardContent>
+			</Card>
+
+			{/* Pro Plan Card */}
+			<Card
+				className={cn(
+					'bg-black text-white shadow-2xl border-gray-800',
+					hasProPlan && 'order-first',
+				)}
+			>
+				<CardContent className="p-6 sm:p-8 space-y-5">
+					<div className="flex flex-wrap justify-between items-center gap-x-4 gap-y-1">
+						<h3 className="text-lg font-semibold text-teal-500 flex items-center gap-2">
+							{tPlans('pro.name')}
+							{hasProPlan && (
+								<Badge className="text-teal-400 border-teal-500/50 bg-teal-500/10">
+									{t('currentPlan')}
+								</Badge>
+							)}
+						</h3>
+						{hasProPlan && subscription?.currentPeriodEnd ? (
+							<span
+								className={cn(
+									'text-sm font-semibold',
+									isCanceled ? 'text-red-500 brightness-125' : 'text-white',
+								)}
 							>
-								<Button size="sm">
-									<SparklesIcon className="size-4 mr-2" />
-									{hasProPlan && subscriptionItem?.canceledAt
-										? t('renewSubscription')
-										: t('upgradeToPro')}
-								</Button>
-							</CheckoutButton>
-							<Label
-								htmlFor="billing-period"
-								className="text-sm text-muted-foreground cursor-pointer flex items-center gap-2"
-							>
-								{tPlans('annual')}
-								<Switch
-									id="billing-period"
-									checked={selectedPeriod === 'annual'}
-									onCheckedChange={(checked) => setSelectedPeriod(checked ? 'annual' : 'month')}
-								/>
-							</Label>
-						</>
-					) : (
-						<CancelPlanDialog subscriptionItem={subscriptionItem} revalidate={revalidate} />
+								{isCanceled
+									? t('expiresOn', {
+											date: formatDate(subscription.currentPeriodEnd, {
+												hideTime: true,
+											}),
+										})
+									: t('renewsOn', {
+											date: formatDate(subscription.currentPeriodEnd, {
+												hideTime: true,
+											}),
+										})}
+							</span>
+						) : (
+							!hasProPlan && (
+								<div className="flex space-x-2 items-center">
+									<span className="text-sm text-gray-200">{tPlans('annual')}</span>
+									<Switch
+										checked={selectedPeriod === 'annual'}
+										className="data-[state=checked]:bg-teal-600!"
+										onCheckedChange={(checked) => setSelectedPeriod(checked ? 'annual' : 'month')}
+									/>
+								</div>
+							)
+						)}
+					</div>
+
+					<p className="flex items-baseline gap-x-2">
+						<span className="text-3xl lg:text-4xl font-semibold">
+							{hasProPlan ? currentProPrice : proPrice} &euro;
+						</span>
+						<span className="text-gray-400">
+							{hasProPlan ? currentProPriceSuffix : priceSuffix}
+						</span>
+					</p>
+
+					{!hasProPlan && (
+						<p className="text-sm font-medium text-gray-400">{tPlans('pro.description')}</p>
 					)}
-				</div>
-			</CardContent>
-		</Card>
+
+					<ul className="space-y-3 text-sm">
+						{PLAN_CONFIGS.pro.featureKeys.map((featureKey) => (
+							<li key={featureKey} className="flex gap-x-3">
+								<CheckIcon className="h-5 w-5 flex-none text-teal-500" />
+								{tPlans(featureKey)}
+							</li>
+						))}
+					</ul>
+
+					<div className="pt-4">
+						{hasProPlan ? (
+							<Button
+								variant="secondary"
+								onClick={handleManageSubscription}
+								disabled={createPortalSession.isPending}
+							>
+								{isCanceled && <SparklesIcon className="size-4 mr-2" />}
+								{isCanceled ? t('renewSubscription') : t('manageSubscription')}
+							</Button>
+						) : (
+							<Button
+								variant="secondary"
+								onClick={handleUpgrade}
+								disabled={createCheckoutSession.isPending}
+							>
+								<SparklesIcon className="size-4 mr-2" />
+								{t('upgradeToPro')}
+							</Button>
+						)}
+					</div>
+				</CardContent>
+			</Card>
+		</div>
 	);
 }

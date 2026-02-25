@@ -1,0 +1,1 @@
+ALTER TABLE `user_subscription` ADD `past_due_notified_at` datetime;

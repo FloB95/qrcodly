@@ -52,6 +52,10 @@ const server = z.object({
 	CLOUDFLARE_ZONE_ID: z.string(),
 	CLOUDFLARE_DCV_DELEGATION_TARGET: z.string(), // Full DCV delegation target (e.g., d0a467ae32366c3f.dcv.cloudflare.com)
 	INTERNAL_API_SECRET: z.string().min(32),
+	STRIPE_SECRET_KEY: z.string(),
+	STRIPE_WEBHOOK_SECRET: z.string(),
+	STRIPE_PRO_PRICE_ID_MONTHLY: z.string(),
+	STRIPE_PRO_PRICE_ID_ANNUAL: z.string(),
 });
 
 // Don't touch the part below

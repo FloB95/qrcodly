@@ -15,7 +15,7 @@ export {
 	default as customDomain,
 	customDomainRelations,
 } from '@/modules/custom-domain/domain/entities/custom-domain.entity';
-export { default as subscriptionGracePeriod } from '@/modules/subscription/domain/entities/subscription-grace-period.entity';
+export { default as userSubscription } from '@/modules/billing/domain/entities/user-subscription.entity';
 export { default as tag, tagRelations } from '@/modules/tag/domain/entities/tag.entity';
 export {
 	default as qrCodeTag,

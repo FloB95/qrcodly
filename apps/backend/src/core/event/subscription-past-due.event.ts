@@ -1,7 +1,13 @@
 import { AbstractEvent } from '@/core/event/abstract.event';
-import { type BillingSubscriptionItemWebhookEvent } from '@clerk/fastify';
 
-export type SubscriptionPastDueEventData = BillingSubscriptionItemWebhookEvent['data'];
+export interface SubscriptionPastDueEventData {
+	userId: string;
+	email: string;
+	firstName?: string;
+	stripeSubscriptionId: string;
+	stripePriceId: string;
+	currentPeriodEnd: Date;
+}
 
 /**
  * Event triggered when a subscription payment is past due.

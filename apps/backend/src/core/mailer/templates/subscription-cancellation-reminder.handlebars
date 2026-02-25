@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<title>Subscription Ending Soon</title>
+	<meta charset="UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+	<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(to bottom right,#f4f4f5,#fddfbc);padding:48px 16px;">
+		<tr>
+			<td align="center">
+				<!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0" width="600"><tr><td><![endif]-->
+				<table cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+					<!-- Header -->
+					<tr>
+						<td style="padding:32px 32px 24px 32px;border-bottom:1px solid #f0f0f0;">
+							<span style="font-size:24px;font-weight:700;color:#000000;letter-spacing:-0.5px;">QRcodly</span>
+						</td>
+					</tr>
+					<!-- Content -->
+					<tr>
+						<td style="padding:32px;">
+							<h1 style="margin:0 0 8px 0;font-size:22px;font-weight:700;color:#0f172a;line-height:1.3;">Your Subscription Is Ending Soon</h1>
+							<p style="margin:0 0 24px 0;font-size:15px;line-height:1.6;color:#64748b;">Hi{{#if firstName}} {{firstName}}{{/if}},</p>
+							<p style="margin:0 0 24px 0;font-size:15px;line-height:1.6;color:#334155;">This is a friendly reminder that your QRcodly Pro subscription ends on <strong>{{periodEndDate}}</strong>.</p>
+							<!-- Warning Box -->
+							<table cellpadding="0" cellspacing="0" border="0" width="100%">
+								<tr>
+									<td style="background-color:#fef9f0;border:1px solid #fde0a8;border-radius:10px;padding:20px;">
+										<p style="margin:0 0 8px 0;font-size:14px;font-weight:600;color:#92400e;">Reminder</p>
+										<p style="margin:0 0 12px 0;font-size:14px;line-height:1.6;color:#78350f;">After your subscription ends, you'll have a <strong>{{gracePeriodDays}}-day grace period</strong> until <strong>{{gracePeriodEndDate}}</strong> to resubscribe.</p>
+										<p style="margin:0;font-size:14px;line-height:1.6;color:#78350f;">After that, your <strong>custom domains will be disabled</strong> and QR codes using them will no longer work.</p>
+									</td>
+								</tr>
+							</table>
+							<p style="margin:24px 0;font-size:15px;line-height:1.6;color:#334155;">Want to keep your custom domains working? Resubscribe now and your subscription will continue without any interruption.</p>
+							<!-- Button -->
+							<table cellpadding="0" cellspacing="0" border="0">
+								<tr>
+									<td style="border-radius:8px;background-color:#000000;" align="center">
+										<a href="{{subscribeUrl}}" style="display:inline-block;padding:12px 28px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">Keep My Subscription</a>
+									</td>
+								</tr>
+							</table>
+							<p style="margin:24px 0 0 0;font-size:14px;line-height:1.6;color:#94a3b8;">If you have any questions, please don't hesitate to contact our support team.</p>
+						</td>
+					</tr>
+					<!-- Footer -->
+					<tr>
+						<td style="padding:24px 32px;border-top:1px solid #f0f0f0;">
+							<p style="margin:0;font-size:13px;color:#94a3b8;text-align:center;">&copy; {{year}} FB Dev. All rights reserved.</p>
+						</td>
+					</tr>
+				</table>
+				<!--[if mso]></td></tr></table><![endif]-->
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

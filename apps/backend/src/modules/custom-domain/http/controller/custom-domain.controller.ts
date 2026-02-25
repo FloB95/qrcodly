@@ -138,7 +138,7 @@ export class CustomDomainController extends AbstractController {
 	})
 	async getDefault(request: IHttpRequest): Promise<IHttpResponse<TCustomDomainResponseDto | null>> {
 		const result = await this.getDefaultCustomDomainUseCase.execute(request.user.id);
-		if (!result) {
+		if (!result || !result.isEnabled) {
 			return this.makeApiHttpResponse(200, null);
 		}
 		return this.makeApiHttpResponse(200, this.mapToResponseDto(result));
@@ -217,6 +217,7 @@ export class CustomDomainController extends AbstractController {
 	): Promise<IHttpResponse<TCustomDomainResponseDto>> {
 		const params = CustomDomainIdParamsDto.parse(request.params);
 		const customDomain = await this.fetchCustomDomain(params.id, request.user.id);
+		this.ensureDomainEnabled(customDomain);
 		const verifiedDomain = await this.verifyCustomDomainUseCase.execute(customDomain);
 		return this.makeApiHttpResponse(200, this.mapToResponseDto(verifiedDomain));
 	}
@@ -242,6 +243,7 @@ export class CustomDomainController extends AbstractController {
 	): Promise<IHttpResponse<TSetupInstructionsResponseDto>> {
 		const params = CustomDomainIdParamsDto.parse(request.params);
 		const customDomain = await this.fetchCustomDomain(params.id, request.user.id);
+		this.ensureDomainEnabled(customDomain);
 		const instructions = this.getSetupInstructionsUseCase.execute(customDomain);
 		return this.makeApiHttpResponse(200, SetupInstructionsResponseDto.parse(instructions));
 	}
@@ -268,6 +270,7 @@ export class CustomDomainController extends AbstractController {
 	): Promise<IHttpResponse<TCustomDomainResponseDto>> {
 		const params = CustomDomainIdParamsDto.parse(request.params);
 		const customDomain = await this.fetchCustomDomain(params.id, request.user.id);
+		this.ensureDomainEnabled(customDomain);
 		const updatedDomain = await this.setDefaultCustomDomainUseCase.execute(
 			customDomain,
 			request.user.id,
@@ -326,6 +329,14 @@ export class CustomDomainController extends AbstractController {
 		}
 
 		return customDomain;
+	}
+
+	private ensureDomainEnabled(domain: TCustomDomain): void {
+		if (!domain.isEnabled) {
+			throw new ForbiddenError(
+				'This domain is disabled. Resubscribe to manage your custom domains.',
+			);
+		}
 	}
 
 	/**

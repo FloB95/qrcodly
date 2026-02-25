@@ -89,6 +89,7 @@
 		"qr-code-styling": "^1.9.2",
 		"qs": "^6.14.0",
 		"reflect-metadata": "^0.2.2",
+		"stripe": "^17",
 		"svix": "^1.82.0",
 		"tsyringe": "^4.10.0",
 		"uuid": "^11.1.0",

@@ -1,16 +1,13 @@
 import { AddCustomDomainDialog, CustomDomainList } from '@/components/dashboard/custom-domain';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
-import { useSubscription } from '@clerk/nextjs/experimental';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { ProPlanRequiredBadge } from '@/components/ProPlanRequiredBadge';
+import { useHasProPlan } from '@/hooks/useHasProPlan';
 
 export default function SettingsDomainsPage() {
 	const t = useTranslations('settings.domains');
-	const { data } = useSubscription();
-
-	const subscriptionItem = data?.subscriptionItems[0];
-	const hasProPlan = subscriptionItem?.plan?.slug === 'pro';
+	const { hasProPlan } = useHasProPlan();
 
 	return (
 		<>

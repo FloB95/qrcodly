@@ -11,7 +11,7 @@ import { Switch } from '../ui/switch';
 export type PricingCardProps = {
 	planId: PlanId;
 	priceMonthly: string;
-	priceAnnualPerMonth?: string;
+	priceAnnual?: string;
 	locale: string;
 	isAuthenticated: boolean;
 };
@@ -19,7 +19,7 @@ export type PricingCardProps = {
 export const PricingCard = ({
 	planId,
 	priceMonthly,
-	priceAnnualPerMonth,
+	priceAnnual,
 	locale,
 	isAuthenticated,
 }: PricingCardProps) => {
@@ -27,6 +27,9 @@ export const PricingCard = ({
 	const [planPeriod, setPlanPeriod] = useState<'month' | 'annual'>('annual');
 	const planConfig = PLAN_CONFIGS[planId];
 	const isPro = planConfig.featured;
+
+	const displayPrice = planPeriod === 'annual' && priceAnnual ? priceAnnual : priceMonthly;
+	const priceSuffix = planPeriod === 'annual' && priceAnnual ? t('perYear') : t('perMonth');
 
 	return (
 		<div
@@ -41,7 +44,7 @@ export const PricingCard = ({
 				<h3 className={cn('text-lg font-semibold', isPro ? 'text-teal-500' : 'text-teal-700')}>
 					{t(`${planId}.name`)}
 				</h3>
-				{priceAnnualPerMonth && (
+				{priceAnnual && (
 					<div className="flex space-x-2 align-middle items-center">
 						<span className="text-s text-gray-200">{t('annual')}</span>
 						<Switch
@@ -54,10 +57,8 @@ export const PricingCard = ({
 			</div>
 
 			<p className="mt-4 flex items-baseline gap-x-2">
-				<span className="text-5xl font-semibold">
-					${planPeriod === 'annual' && priceAnnualPerMonth ? priceAnnualPerMonth : priceMonthly}
-				</span>
-				<span className={isPro ? 'text-gray-400' : 'text-gray-500'}>{t('perMonth')}</span>
+				<span className="text-5xl font-semibold">{displayPrice} &euro;</span>
+				<span className={isPro ? 'text-gray-400' : 'text-gray-500'}>{priceSuffix}</span>
 			</p>
 
 			<p className={`mt-6 text-sm font-medium ${isPro ? 'text-gray-400' : 'text-gray-500'}`}>

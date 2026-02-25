@@ -5,27 +5,23 @@ import { PricingCard } from '@/components/plans/PricingCard';
 import Container from '@/components/ui/container';
 import { env } from '@/env';
 import { routing, SUPPORTED_LANGUAGES } from '@/i18n/routing';
-import type { PlanId } from '@/lib/plan.config';
 import type { DefaultPageParams } from '@/types/page';
-import { auth, clerkClient } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { unstable_cache } from 'next/cache';
 
-const getCachedPlanList = unstable_cache(
-	async () => {
-		const clerk = await clerkClient();
-		const plans = await clerk.billing.getPlanList();
-		return plans.data.map((plan) => ({
-			slug: plan.slug,
-			feeAmount: plan.fee?.amount ?? 0,
-			feeAmountFormatted: plan.fee?.amountFormatted?.toString() ?? '0',
-			annualMonthlyFeeFormatted: plan.annualMonthlyFee?.amountFormatted?.toString() ?? '',
-		}));
+const PLANS = [
+	{
+		slug: 'free' as const,
+		priceMonthly: '0',
+		priceAnnual: undefined,
 	},
-	['clerk-billing-plans'],
-	{ revalidate: 3600 },
-);
+	{
+		slug: 'pro' as const,
+		priceMonthly: '4,99',
+		priceAnnual: '48,00',
+	},
+];
 
 export async function generateMetadata({ params }: DefaultPageParams): Promise<Metadata> {
 	const { locale } = await params;
@@ -54,7 +50,6 @@ export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
 	const t = await getTranslations('plans');
 	const { isAuthenticated } = await auth();
-	const plans = await getCachedPlanList();
 
 	return (
 		<>
@@ -71,12 +66,12 @@ export default async function Page({ params }: DefaultPageParams) {
 				</div>
 
 				<div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
-					{plans.map((plan) => (
+					{PLANS.map((plan) => (
 						<PricingCard
 							key={plan.slug}
-							planId={plan.slug as PlanId}
-							priceMonthly={plan.feeAmount > 0 ? plan.feeAmountFormatted : '0'}
-							priceAnnualPerMonth={plan.annualMonthlyFeeFormatted}
+							planId={plan.slug}
+							priceMonthly={plan.priceMonthly}
+							priceAnnual={plan.priceAnnual}
 							locale={locale}
 							isAuthenticated={isAuthenticated}
 						/>
