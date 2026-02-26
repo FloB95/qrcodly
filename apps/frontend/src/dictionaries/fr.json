@@ -1281,5 +1281,27 @@
 			"subtitle": "Créez votre premier QR code en quelques secondes. Gratuit pour toujours, sans carte bancaire.",
 			"button": "Créer un QR Code maintenant"
 		}
+	},
+	"smartTips": {
+		"tipLabel": "Astuce",
+		"gotIt": "Compris",
+		"dontShowAgain": "Ne plus afficher",
+		"disableAll": "Désactiver tous les conseils",
+		"bulkExport": {
+			"title": "Exportez plusieurs QR codes à la fois",
+			"description": "Utilisez le menu Actions pour exporter tous vos QR codes en fichier ZIP au lieu de les télécharger un par un."
+		},
+		"bulkImport": {
+			"title": "Créez des QR codes en masse",
+			"description": "Utilisez le menu Actions pour importer un tableur et créer des dizaines de QR codes en une fois."
+		},
+		"customDomain": {
+			"title": "Utilisez votre propre domaine",
+			"description": "Connectez un domaine personnalisé pour que les liens courts de vos QR codes utilisent votre marque."
+		},
+		"organizeTags": {
+			"title": "Organisez avec des tags",
+			"description": "Ajoutez des tags à vos QR codes pour les regrouper, les filtrer et les retrouver plus facilement."
+		}
 	}
 }

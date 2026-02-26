@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { BulkImport } from '@/components/qr-generator/content/BulkImport';
 import { BulkExportDialog } from '@/components/dashboard/qrCode/BulkExportDialog';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
+import { SmartTipsBehaviorTrackerProvider } from '@/components/dashboard/smart-tips/SmartTipsBehaviorTracker';
 
 export default function QrCodesPage() {
 	const t = useTranslations('collection');
@@ -29,50 +30,52 @@ export default function QrCodesPage() {
 
 	return (
 		<QrCodeGeneratorStoreProvider>
-			<Card className="@container/card">
-				<CardContent className="relative px-4 sm:px-6">
-					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-						<div className="flex items-center gap-3">
-							<div className="p-3 bg-primary/10 rounded-lg">
-								<QrCodeIcon className="size-6 sm:size-8 stroke-1" />
+			<SmartTipsBehaviorTrackerProvider>
+				<Card className="@container/card">
+					<CardContent className="relative px-4 sm:px-6">
+						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+							<div className="flex items-center gap-3">
+								<div className="p-3 bg-primary/10 rounded-lg">
+									<QrCodeIcon className="size-6 sm:size-8 stroke-1" />
+								</div>
+								<div>
+									<CardTitle className="mb-0.5">{t('tabQrCode')}</CardTitle>
+									<CardDescription>{t('subHeadline')}</CardDescription>
+								</div>
 							</div>
-							<div>
-								<CardTitle className="mb-0.5">{t('tabQrCode')}</CardTitle>
-								<CardDescription>{t('subHeadline')}</CardDescription>
-							</div>
+							<Link href="/" className={cn(buttonVariants({ size: 'sm' }), 'gap-2')}>
+								<PlusIcon className="size-4" />
+								<span className="sr-only lg:not-sr-only lg:whitespace-nowrap">
+									{t('addQrCodeBtn')}
+								</span>
+							</Link>
 						</div>
-						<Link href="/" className={cn(buttonVariants({ size: 'sm' }), 'gap-2')}>
-							<PlusIcon className="size-4" />
-							<span className="sr-only lg:not-sr-only lg:whitespace-nowrap">
-								{t('addQrCodeBtn')}
-							</span>
-						</Link>
-					</div>
-				</CardContent>
-			</Card>
+					</CardContent>
+				</Card>
 
-			<QrCodeList
-				onBulkImport={handleContentTypeSelect}
-				onBulkExport={() => setExportDialogOpen(true)}
-			/>
+				<QrCodeList
+					onBulkImport={handleContentTypeSelect}
+					onBulkExport={() => setExportDialogOpen(true)}
+				/>
 
-			{/* Bulk Import Dialog */}
-			<Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
-				<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-					<DialogHeader>
-						<DialogTitle hidden>{tContent('bulkModeBtn')}</DialogTitle>
-					</DialogHeader>
-					{selectedContentType && (
-						<BulkImport
-							contentType={selectedContentType}
-							onComplete={() => setImportDialogOpen(false)}
-						/>
-					)}
-				</DialogContent>
-			</Dialog>
+				{/* Bulk Import Dialog */}
+				<Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
+					<DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+						<DialogHeader>
+							<DialogTitle hidden>{tContent('bulkModeBtn')}</DialogTitle>
+						</DialogHeader>
+						{selectedContentType && (
+							<BulkImport
+								contentType={selectedContentType}
+								onComplete={() => setImportDialogOpen(false)}
+							/>
+						)}
+					</DialogContent>
+				</Dialog>
 
-			{/* Bulk Export Dialog */}
-			<BulkExportDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} />
+				{/* Bulk Export Dialog */}
+				<BulkExportDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} />
+			</SmartTipsBehaviorTrackerProvider>
 		</QrCodeGeneratorStoreProvider>
 	);
 }

@@ -1281,5 +1281,27 @@
 	"notFound": {
 		"message": "Oeps! De pagina die je zoekt bestaat niet.",
 		"goHome": "Terug naar de startpagina"
+	},
+	"smartTips": {
+		"tipLabel": "Tip",
+		"gotIt": "Begrepen",
+		"dontShowAgain": "Niet meer tonen",
+		"disableAll": "Alle tips uitschakelen",
+		"bulkExport": {
+			"title": "Exporteer meerdere QR-codes tegelijk",
+			"description": "Gebruik het Acties-menu om al je QR-codes als ZIP-bestand te exporteren in plaats van ze één voor één te downloaden."
+		},
+		"bulkImport": {
+			"title": "Maak QR-codes in bulk",
+			"description": "Gebruik het Acties-menu om een spreadsheet te importeren en tientallen QR-codes tegelijk aan te maken."
+		},
+		"customDomain": {
+			"title": "Gebruik je eigen domein",
+			"description": "Koppel een eigen domein zodat je QR-code-kortlinks je merk gebruiken in plaats van het onze."
+		},
+		"organizeTags": {
+			"title": "Organiseer met tags",
+			"description": "Voeg tags toe aan je QR-codes om ze eenvoudiger te groeperen, filteren en vinden."
+		}
 	}
 }

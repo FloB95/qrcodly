@@ -1281,5 +1281,27 @@
 	"notFound": {
 		"message": "Hoppla! Die Seite, die du suchst, existiert nicht.",
 		"goHome": "Zurück zur Startseite"
+	},
+	"smartTips": {
+		"tipLabel": "Tipp",
+		"gotIt": "Verstanden",
+		"dontShowAgain": "Nicht mehr anzeigen",
+		"disableAll": "Alle Tipps deaktivieren",
+		"bulkExport": {
+			"title": "Mehrere QR-Codes auf einmal exportieren",
+			"description": "Nutze das Aktionen-Menü, um alle QR-Codes als ZIP-Datei herunterzuladen, anstatt sie einzeln zu speichern."
+		},
+		"bulkImport": {
+			"title": "QR-Codes in großen Mengen erstellen",
+			"description": "Nutze das Aktionen-Menü, um eine Tabelle zu importieren und viele QR-Codes auf einmal zu erstellen."
+		},
+		"customDomain": {
+			"title": "Eigene Domain verwenden",
+			"description": "Verbinde eine eigene Domain, damit deine QR-Code-Kurzlinks deine Marke verwenden."
+		},
+		"organizeTags": {
+			"title": "Mit Tags organisieren",
+			"description": "Füge deinen QR-Codes Tags hinzu, um sie einfacher zu gruppieren, filtern und finden."
+		}
 	}
 }

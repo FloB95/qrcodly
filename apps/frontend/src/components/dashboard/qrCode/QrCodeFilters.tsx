@@ -45,6 +45,7 @@ import {
 	type QrCodeColumnVisibility,
 } from './hooks/useQrCodeColumnVisibility';
 import posthog from 'posthog-js';
+import { SmartTipPopover } from '@/components/dashboard/smart-tips/SmartTipPopover';
 
 type QrCodeFiltersProps = {
 	filters: QrCodeFiltersType;
@@ -53,6 +54,7 @@ type QrCodeFiltersProps = {
 	onToggleColumn: (column: QrCodeColumn) => void;
 	onBulkImport?: (contentType: TQrCodeContentType) => void;
 	onBulkExport?: () => void;
+	totalQrCodes?: number;
 	className?: string;
 };
 
@@ -63,6 +65,7 @@ export const QrCodeFilters = ({
 	onToggleColumn,
 	onBulkImport,
 	onBulkExport,
+	totalQrCodes,
 	className,
 }: QrCodeFiltersProps) => {
 	const t = useTranslations('collection.filters');
@@ -334,45 +337,47 @@ export const QrCodeFilters = ({
 
 				{/* Actions */}
 				{hasActions && (
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="outline" size="sm" className="ml-auto h-9 gap-1.5">
-								<EllipsisVerticalIcon className="size-5" />
-								<span className="hidden lg:inline">{t('actions')}</span>
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>{tCollection('importExportLabel')}</DropdownMenuLabel>
-							<DropdownMenuSub>
-								<DropdownMenuSubTrigger className="gap-2">
-									<ArrowUpTrayIcon className="size-4" />
-									{tContent('bulkModeBtn')}
-								</DropdownMenuSubTrigger>
-								<DropdownMenuSubContent>
-									<DropdownMenuLabel>{tCollection('bulkImportLabel')}</DropdownMenuLabel>
-									<DropdownMenuSeparator />
-									{BULK_ENABLED_CONTENT_TYPES.map((contentType) => {
-										const config = getContentTypeConfig(contentType);
-										const Icon = config?.icon;
-										return (
-											<DropdownMenuItem
-												key={contentType}
-												onClick={() => onBulkImport?.(contentType)}
-												className="cursor-pointer"
-											>
-												{Icon && <Icon className="mr-2 h-4 w-4" />}
-												{tContent(`tab.${config?.label || contentType}`)}
-											</DropdownMenuItem>
-										);
-									})}
-								</DropdownMenuSubContent>
-							</DropdownMenuSub>
-							<DropdownMenuItem onClick={() => onBulkExport?.()} className="cursor-pointer gap-2">
-								<ArrowDownTrayIcon className="h-4 w-4" />
-								{tCollection('exportBtn')}
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
+					<SmartTipPopover anchor="actions-button" stateContext={{ totalQrCodes }}>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant="outline" size="sm" className="ml-auto h-9 gap-1.5">
+									<EllipsisVerticalIcon className="size-5" />
+									<span className="hidden lg:inline">{t('actions')}</span>
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end">
+								<DropdownMenuLabel>{tCollection('importExportLabel')}</DropdownMenuLabel>
+								<DropdownMenuSub>
+									<DropdownMenuSubTrigger className="gap-2">
+										<ArrowUpTrayIcon className="size-4" />
+										{tContent('bulkModeBtn')}
+									</DropdownMenuSubTrigger>
+									<DropdownMenuSubContent>
+										<DropdownMenuLabel>{tCollection('bulkImportLabel')}</DropdownMenuLabel>
+										<DropdownMenuSeparator />
+										{BULK_ENABLED_CONTENT_TYPES.map((contentType) => {
+											const config = getContentTypeConfig(contentType);
+											const Icon = config?.icon;
+											return (
+												<DropdownMenuItem
+													key={contentType}
+													onClick={() => onBulkImport?.(contentType)}
+													className="cursor-pointer"
+												>
+													{Icon && <Icon className="mr-2 h-4 w-4" />}
+													{tContent(`tab.${config?.label || contentType}`)}
+												</DropdownMenuItem>
+											);
+										})}
+									</DropdownMenuSubContent>
+								</DropdownMenuSub>
+								<DropdownMenuItem onClick={() => onBulkExport?.()} className="cursor-pointer gap-2">
+									<ArrowDownTrayIcon className="h-4 w-4" />
+									{tCollection('exportBtn')}
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					</SmartTipPopover>
 				)}
 
 				{/* Column Visibility */}

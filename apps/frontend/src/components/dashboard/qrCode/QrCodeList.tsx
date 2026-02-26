@@ -146,6 +146,7 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 						onToggleColumn={toggleColumn}
 						onBulkImport={onBulkImport}
 						onBulkExport={onBulkExport}
+						totalQrCodes={qrCodes?.total ?? 0}
 					/>
 				)}
 				<Empty className="sm:my-12">
@@ -179,6 +180,7 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 				onToggleColumn={toggleColumn}
 				onBulkImport={onBulkImport}
 				onBulkExport={onBulkExport}
+				totalQrCodes={qrCodes?.total ?? 0}
 			/>
 			<div className="overflow-hidden rounded-lg border">
 				<Table>

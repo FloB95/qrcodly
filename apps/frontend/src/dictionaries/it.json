@@ -1281,5 +1281,27 @@
 	"notFound": {
 		"message": "Ops! La pagina che stai cercando non esiste.",
 		"goHome": "Torna alla home"
+	},
+	"smartTips": {
+		"tipLabel": "Suggerimento",
+		"gotIt": "Capito",
+		"dontShowAgain": "Non mostrare più",
+		"disableAll": "Disattiva tutti i suggerimenti",
+		"bulkExport": {
+			"title": "Esporta più codici QR contemporaneamente",
+			"description": "Usa il menu Azioni per esportare tutti i tuoi codici QR come file ZIP invece di scaricarli uno alla volta."
+		},
+		"bulkImport": {
+			"title": "Crea codici QR in blocco",
+			"description": "Usa il menu Azioni per importare un foglio di calcolo e creare decine di codici QR contemporaneamente."
+		},
+		"customDomain": {
+			"title": "Usa il tuo dominio",
+			"description": "Collega un dominio personalizzato in modo che i link brevi dei tuoi codici QR utilizzino il tuo marchio."
+		},
+		"organizeTags": {
+			"title": "Organizza con i tag",
+			"description": "Aggiungi tag ai tuoi codici QR per raggrupparli, filtrarli e trovarli più facilmente."
+		}
 	}
 }

@@ -37,6 +37,7 @@ import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
 import { ShareDialog } from '@/components/qr-code-share/ShareDialog';
+import { useBehaviorTracker } from '@/components/dashboard/smart-tips/SmartTipsBehaviorTracker';
 
 let QRCodeStyling: any;
 
@@ -63,6 +64,7 @@ export const QrCodeListItemActions = ({
 	const [templateNameDialogOpen, setTemplateNameDialogOpen] = useState(false);
 	const [shareDialogOpen, setShareDialogOpen] = useState(false);
 	const createConfigTemplateMutation = useCreateConfigTemplateMutation();
+	const { trackAction } = useBehaviorTracker();
 
 	useEffect(() => {
 		import('qr-code-styling').then((module) => {
@@ -83,6 +85,7 @@ export const QrCodeListItemActions = ({
 			name: qr.name || 'qr-code',
 			extension: fileExt,
 		});
+		trackAction('qr-download');
 
 		await qrCodeInstance.download({
 			name: qr.name || 'qr-code',

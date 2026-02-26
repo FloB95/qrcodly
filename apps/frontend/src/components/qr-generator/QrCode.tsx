@@ -14,11 +14,13 @@ import {
 import { DynamicBadge } from './DynamicBadge';
 import Link from 'next/link';
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
+import { SmartTipPopover } from '@/components/dashboard/smart-tips/SmartTipPopover';
 
 export type QrCodeProps = {
 	qrCode: Pick<TQrCode, 'config' | 'content'> & { qrCodeData?: TQrCode['qrCodeData'] };
 	additionalStyles?: string;
 	shortUrl?: TShortUrlWithCustomDomainResponseDto | TShortUrlResponseDto;
+	hasProPlan?: boolean;
 };
 
 function getQrCodeData(props: QrCodeProps): string {
@@ -52,7 +54,7 @@ function areQrCodePropsEqual(prev: QrCodeProps, next: QrCodeProps) {
 	return JSON.stringify(optionsPrev) == JSON.stringify(optionsNext);
 }
 
-function QrCode({ qrCode, additionalStyles = '', shortUrl }: QrCodeProps) {
+function QrCode({ qrCode, additionalStyles = '', shortUrl, hasProPlan }: QrCodeProps) {
 	const options: Options = useMemo(
 		() => ({
 			...convertQrCodeOptionsToLibraryOptions(qrCode.config),
@@ -92,12 +94,21 @@ function QrCode({ qrCode, additionalStyles = '', shortUrl }: QrCodeProps) {
 			{shortUrl && isDynamic(qrCode.content) && (
 				<div className="mt-4 hidden flex-wrap xs:flex items-center justify-between">
 					<DynamicBadge />
-					<div className="text-xs ml-4 flex items-center gap-1">
-						<span className="pt-0.5">{createLinkFromShortUrl(shortUrl, { short: true })}</span>
-						<Link href="/dashboard/settings/domains">
-							<PencilSquareIcon className="size-4 text-black" />
-						</Link>
-					</div>
+					<SmartTipPopover
+						anchor="dynamic-url"
+						stateContext={{
+							hasDynamicQr: true,
+							hasCustomDomain: 'customDomain' in shortUrl && !!shortUrl.customDomain,
+							hasProPlan,
+						}}
+					>
+						<div className="text-xs ml-4 flex items-center gap-1">
+							<span className="pt-0.5">{createLinkFromShortUrl(shortUrl, { short: true })}</span>
+							<Link href="/dashboard/settings/domains">
+								<PencilSquareIcon className="size-4 text-black" />
+							</Link>
+						</div>
+					</SmartTipPopover>
 				</div>
 			)}
 		</div>

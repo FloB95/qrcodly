@@ -1281,5 +1281,27 @@
 	"notFound": {
 		"message": "Ups! Strona, której szukasz, nie istnieje.",
 		"goHome": "Wróć na stronę główną"
+	},
+	"smartTips": {
+		"tipLabel": "Wskazówka",
+		"gotIt": "Rozumiem",
+		"dontShowAgain": "Nie pokazuj ponownie",
+		"disableAll": "Wyłącz wszystkie wskazówki",
+		"bulkExport": {
+			"title": "Eksportuj wiele kodów QR naraz",
+			"description": "Użyj menu Akcje, aby wyeksportować wszystkie kody QR jako plik ZIP zamiast pobierać je pojedynczo."
+		},
+		"bulkImport": {
+			"title": "Twórz kody QR hurtowo",
+			"description": "Użyj menu Akcje, aby zaimportować arkusz kalkulacyjny i utworzyć dziesiątki kodów QR naraz."
+		},
+		"customDomain": {
+			"title": "Użyj własnej domeny",
+			"description": "Podłącz własną domenę, aby krótkie linki kodów QR używały Twojej marki."
+		},
+		"organizeTags": {
+			"title": "Organizuj za pomocą tagów",
+			"description": "Dodaj tagi do kodów QR, aby łatwiej je grupować, filtrować i znajdować."
+		}
 	}
 }
