@@ -1,14 +1,32 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function NavigationProgress() {
 	const pathname = usePathname();
 	const [progress, setProgress] = useState(0);
 	const [visible, setVisible] = useState(false);
 	const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 	const previousPathname = useRef(pathname);
+
+	const finishProgress = useCallback(() => {
+		if (intervalRef.current) {
+			clearInterval(intervalRef.current);
+			intervalRef.current = null;
+		}
+		if (timeoutRef.current) {
+			clearTimeout(timeoutRef.current);
+			timeoutRef.current = null;
+		}
+
+		setProgress(100);
+		setTimeout(() => {
+			setVisible(false);
+			setProgress(0);
+		}, 200);
+	}, []);
 
 	useEffect(() => {
 		function handleClick(e: MouseEvent) {
@@ -35,11 +53,24 @@ export function NavigationProgress() {
 
 			let current = 0;
 			if (intervalRef.current) clearInterval(intervalRef.current);
+			if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
 			intervalRef.current = setInterval(() => {
-				current += Math.random() * 15;
-				if (current > 90) current = 90;
+				if (current < 90) {
+					current += Math.random() * 15;
+					if (current > 90) current = 90;
+				} else {
+					// Slowly crawl past 90% instead of stopping
+					current += (100 - current) * 0.3;
+					if (current > 99.5) current = 99.5;
+				}
 				setProgress(current);
 			}, 200);
+
+			// Safety: force-complete after 3 seconds if pathname never changed
+			timeoutRef.current = setTimeout(() => {
+				finishProgress();
+			}, 3000);
 		}
 
 		document.addEventListener('click', handleClick, true);
@@ -49,28 +80,19 @@ export function NavigationProgress() {
 				clearInterval(intervalRef.current);
 				intervalRef.current = null;
 			}
+			if (timeoutRef.current) {
+				clearTimeout(timeoutRef.current);
+				timeoutRef.current = null;
+			}
 		};
-	}, []);
+	}, [finishProgress]);
 
 	useEffect(() => {
 		if (pathname !== previousPathname.current) {
 			previousPathname.current = pathname;
-
-			if (intervalRef.current) {
-				clearInterval(intervalRef.current);
-				intervalRef.current = null;
-			}
-
-			setProgress(100);
-			const timeout = setTimeout(() => {
-				setVisible(false);
-				setProgress(0);
-			}, 200);
-
-			return () => clearTimeout(timeout);
+			finishProgress();
 		}
-		return undefined;
-	}, [pathname]);
+	}, [pathname, finishProgress]);
 
 	if (!visible) return null;
 

@@ -20,11 +20,17 @@ export async function generateMetadata({ params }: DefaultPageParams): Promise<M
 		title: t('metaTitle'),
 		description: t('metaDescription'),
 		alternates: {
-			canonical: `${baseUrl}/${locale}/features`,
+			canonical:
+				locale === routing.defaultLocale ? `${baseUrl}/features` : `${baseUrl}/${locale}/features`,
 			languages: {
 				'x-default': `${baseUrl}/features`,
 				...Object.fromEntries(
-					routing.locales.filter((l) => l !== locale).map((l) => [l, `${baseUrl}/${l}/features`]),
+					routing.locales
+						.filter((l) => l !== locale)
+						.map((l) => [
+							l,
+							l === routing.defaultLocale ? `${baseUrl}/features` : `${baseUrl}/${l}/features`,
+						]),
 				),
 			},
 		},

@@ -14,16 +14,20 @@ const PAGES = [
 const NOT_TRANSLATED = ['docs', 'imprint', 'privacy-policy'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
+	const baseUrl = env.NEXT_PUBLIC_FRONTEND_URL;
+
 	return PAGES.map((page) => {
-		const url = `${env.NEXT_PUBLIC_FRONTEND_URL}${page ? `/${page}` : ''}`;
+		const url = `${baseUrl}${page ? `/${page}` : ''}`;
 
 		let alternates: Record<string, string> = {};
 
 		if (!NOT_TRANSLATED.includes(page)) {
 			alternates = Object.fromEntries(
-				SUPPORTED_LANGUAGES.filter((lang) => lang !== 'en').map((lang) => [
+				SUPPORTED_LANGUAGES.map((lang) => [
 					lang,
-					`${env.NEXT_PUBLIC_FRONTEND_URL}/${lang}${page ? `/${page}` : ''}`,
+					lang === 'en'
+						? `${baseUrl}${page ? `/${page}` : ''}`
+						: `${baseUrl}/${lang}${page ? `/${page}` : ''}`,
 				]),
 			);
 		}
