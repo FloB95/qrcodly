@@ -63,6 +63,7 @@
 		"tabQrCode": "QR Codes",
 		"tabTemplates": "Vorlagen",
 		"addQrCodeBtn": "QR Code hinzufügen",
+		"addTemplateBtn": "Vorlage erstellen",
 		"bulkImportLabel": "Inhaltstyp auswählen",
 		"exportBtn": "Exportieren",
 		"importExportLabel": "Import & Export",

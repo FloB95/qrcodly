@@ -81,7 +81,7 @@ export const TagCreateDialog = () => {
 			<DialogTrigger asChild>
 				<Button size="sm" className="gap-2">
 					<PlusIcon className="size-4" />
-					<span className="sr-only lg:not-sr-only lg:whitespace-nowrap">{t('createBtn')}</span>
+					<span className="sm:hidden lg:inline whitespace-nowrap">{t('createBtn')}</span>
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-md">

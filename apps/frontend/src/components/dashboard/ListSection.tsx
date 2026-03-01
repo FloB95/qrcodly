@@ -30,6 +30,7 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { BulkImport } from '../qr-generator/content/BulkImport';
 import { BULK_ENABLED_CONTENT_TYPES, getContentTypeConfig } from '@/lib/content-type.config';
+import { CreateTemplateDialog } from './templates/CreateTemplateDialog';
 
 export const ListSection = () => {
 	const router = useRouter();
@@ -40,6 +41,7 @@ export const ListSection = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [selectedContentType, setSelectedContentType] = useState<TQrCodeContentType | null>(null);
 	const [activeTab, setActiveTab] = useState('qrCodeList');
+	const [createTemplateOpen, setCreateTemplateOpen] = useState(false);
 
 	const { data: templates } = useListConfigTemplatesQuery(undefined, 1, 1);
 	const { data: qrCodes } = useListQrCodesQuery(1, 1);
@@ -81,40 +83,51 @@ export const ListSection = () => {
 						</TabsTrigger>
 					</TabsList>
 					<div className="ml-auto flex items-center gap-2">
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button variant="outline" className="gap-2">
-									<ArrowUpTrayIcon className="h-5 w-5" />
-									<span className="sr-only lg:not-sr-only sm:whitespace-nowrap">
-										{tContent('bulkModeBtn')}
-									</span>
-								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								<DropdownMenuLabel>{t('bulkImportLabel')}</DropdownMenuLabel>
-								<DropdownMenuSeparator />
-								{BULK_ENABLED_CONTENT_TYPES.map((contentType) => {
-									const config = getContentTypeConfig(contentType);
-									const Icon = config?.icon;
-									return (
-										<DropdownMenuItem
-											key={contentType}
-											onClick={() => handleContentTypeSelect(contentType)}
-											className="cursor-pointer"
-										>
-											{Icon && <Icon className="mr-2 h-4 w-4" />}
-											{tContent(`tab.${config?.label || contentType}`)}
-										</DropdownMenuItem>
-									);
-								})}
-							</DropdownMenuContent>
-						</DropdownMenu>
-						<Link href="/" className={cn(buttonVariants(), 'md:flex md:space-x-2')}>
-							<PlusIcon className="size-5" />
-							<span className="sr-only md:not-sr-only md:whitespace-nowrap">
-								{t('addQrCodeBtn')}
-							</span>
-						</Link>
+						{activeTab === 'qrCodeList' && (
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button variant="outline" className="gap-2">
+										<ArrowUpTrayIcon className="h-5 w-5" />
+										<span className="sr-only lg:not-sr-only sm:whitespace-nowrap">
+											{tContent('bulkModeBtn')}
+										</span>
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="end">
+									<DropdownMenuLabel>{t('bulkImportLabel')}</DropdownMenuLabel>
+									<DropdownMenuSeparator />
+									{BULK_ENABLED_CONTENT_TYPES.map((contentType) => {
+										const config = getContentTypeConfig(contentType);
+										const Icon = config?.icon;
+										return (
+											<DropdownMenuItem
+												key={contentType}
+												onClick={() => handleContentTypeSelect(contentType)}
+												className="cursor-pointer"
+											>
+												{Icon && <Icon className="mr-2 h-4 w-4" />}
+												{tContent(`tab.${config?.label || contentType}`)}
+											</DropdownMenuItem>
+										);
+									})}
+								</DropdownMenuContent>
+							</DropdownMenu>
+						)}
+						{activeTab === 'templateList' ? (
+							<Button onClick={() => setCreateTemplateOpen(true)} className="md:flex md:space-x-2">
+								<PlusIcon className="size-5" />
+								<span className="sr-only md:not-sr-only md:whitespace-nowrap">
+									{t('addTemplateBtn')}
+								</span>
+							</Button>
+						) : (
+							<Link href="/" className={cn(buttonVariants(), 'md:flex md:space-x-2')}>
+								<PlusIcon className="size-5" />
+								<span className="sr-only md:not-sr-only md:whitespace-nowrap">
+									{t('addQrCodeBtn')}
+								</span>
+							</Link>
+						)}
 						<Link
 							href="/settings/domains"
 							className={cn(buttonVariants({ variant: 'outline' }), 'md:flex md:space-x-2')}
@@ -128,7 +141,7 @@ export const ListSection = () => {
 						<QrCodeList />
 					</TabsContent>
 					<TabsContent value="templateList">
-						<TemplateList />
+						<TemplateList onCreateTemplate={() => setCreateTemplateOpen(true)} />
 					</TabsContent>
 				</div>
 			</Tabs>
@@ -142,6 +155,8 @@ export const ListSection = () => {
 					)}
 				</DialogContent>
 			</Dialog>
+
+			<CreateTemplateDialog open={createTemplateOpen} onOpenChange={setCreateTemplateOpen} />
 		</>
 	);
 };

@@ -23,6 +23,7 @@ const renderUrlContent = (qr: TQrCodeWithRelationsResponseDto) => {
 			prefetch={false}
 			target="_blank"
 			onClick={(e) => e.stopPropagation()}
+			onContextMenu={(e) => e.stopPropagation()}
 			className="text-muted-foreground hover:underline"
 		>
 			{url}

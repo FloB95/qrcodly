@@ -1,12 +1,16 @@
 'use client';
 
 import { TemplateList } from '@/components/dashboard/templates/TemplateList';
+import { CreateTemplateDialog } from '@/components/dashboard/templates/CreateTemplateDialog';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
-import { StarIcon } from '@heroicons/react/24/outline';
+import { Button } from '@/components/ui/button';
+import { StarIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 
 export default function TemplatesPage() {
 	const t = useTranslations();
+	const [createTemplateOpen, setCreateTemplateOpen] = useState(false);
 
 	return (
 		<>
@@ -22,11 +26,23 @@ export default function TemplatesPage() {
 								<CardDescription>{t('templates.pageDescription')}</CardDescription>
 							</div>
 						</div>
+						<Button
+							onClick={() => setCreateTemplateOpen(true)}
+							size="sm"
+							className="self-end sm:self-auto gap-2"
+						>
+							<PlusIcon className="size-4" />
+							<span className="sm:hidden lg:inline whitespace-nowrap">
+								{t('collection.addTemplateBtn')}
+							</span>
+						</Button>
 					</div>
 				</CardContent>
 			</Card>
 
-			<TemplateList />
+			<TemplateList onCreateTemplate={() => setCreateTemplateOpen(true)} />
+
+			<CreateTemplateDialog open={createTemplateOpen} onOpenChange={setCreateTemplateOpen} />
 		</>
 	);
 }

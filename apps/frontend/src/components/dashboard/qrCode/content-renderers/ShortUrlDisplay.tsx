@@ -31,6 +31,7 @@ export const ShortUrlDisplay = ({
 				prefetch={false}
 				target="_blank"
 				onClick={(e) => e.stopPropagation()}
+				onContextMenu={(e) => e.stopPropagation()}
 				className={className}
 			>
 				{shortUrl}
@@ -41,6 +42,7 @@ export const ShortUrlDisplay = ({
 					{destinationContent || (
 						<Link
 							onClick={(e) => e.stopPropagation()}
+							onContextMenu={(e) => e.stopPropagation()}
 							href={destinationUrl}
 							target="_blank"
 							className="pt-1 text-sm text-black hover:underline"

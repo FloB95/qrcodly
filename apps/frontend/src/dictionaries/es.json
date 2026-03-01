@@ -63,6 +63,7 @@
 		"tabQrCode": "Códigos QR",
 		"tabTemplates": "Plantillas",
 		"addQrCodeBtn": "Agregar código QR",
+		"addTemplateBtn": "Crear plantilla",
 		"bulkImportLabel": "Seleccionar tipo de contenido",
 		"exportBtn": "Exportar",
 		"importExportLabel": "Importar y Exportar",

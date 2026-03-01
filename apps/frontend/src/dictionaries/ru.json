@@ -63,6 +63,7 @@
 		"tabQrCode": "QR-коды",
 		"tabTemplates": "Шаблоны",
 		"addQrCodeBtn": "Добавить QR-код",
+		"addTemplateBtn": "Создать шаблон",
 		"bulkImportLabel": "Выберите тип контента",
 		"exportBtn": "Экспорт",
 		"importExportLabel": "Импорт и Экспорт",

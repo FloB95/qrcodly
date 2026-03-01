@@ -63,6 +63,7 @@
 		"tabQrCode": "QR-codes",
 		"tabTemplates": "Sjablonen",
 		"addQrCodeBtn": "QR-code toevoegen",
+		"addTemplateBtn": "Sjabloon maken",
 		"bulkImportLabel": "Selecteer inhoudstype",
 		"exportBtn": "Exporteren",
 		"importExportLabel": "Importeren en Exporteren",

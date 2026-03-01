@@ -25,10 +25,15 @@ import {
 	EmptyMedia,
 	EmptyTitle,
 } from '@/components/ui/empty';
-import { StarIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { StarIcon, MagnifyingGlassIcon, XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import { Button } from '@/components/ui/button';
 
-export const TemplateList = () => {
+type TemplateListProps = {
+	onCreateTemplate?: () => void;
+};
+
+export const TemplateList = ({ onCreateTemplate }: TemplateListProps) => {
 	const t = useTranslations();
 	const searchParams = useSearchParams();
 
@@ -103,7 +108,14 @@ export const TemplateList = () => {
 					<EmptyTitle>{t('templates.noTemplates')}</EmptyTitle>
 					<EmptyDescription>{t('templates.pageDescription')}</EmptyDescription>
 				</EmptyHeader>
-				<EmptyContent />
+				<EmptyContent>
+					{onCreateTemplate && (
+						<Button onClick={onCreateTemplate} className="md:flex md:space-x-2">
+							<PlusIcon className="h-5 w-5" />
+							<span>{t('collection.addTemplateBtn')}</span>
+						</Button>
+					)}
+				</EmptyContent>
 			</Empty>
 		);
 	}

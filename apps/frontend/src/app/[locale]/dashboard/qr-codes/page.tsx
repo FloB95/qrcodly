@@ -43,11 +43,12 @@ export default function QrCodesPage() {
 									<CardDescription>{t('subHeadline')}</CardDescription>
 								</div>
 							</div>
-							<Link href="/" className={cn(buttonVariants({ size: 'sm' }), 'gap-2')}>
+							<Link
+								href="/"
+								className={cn(buttonVariants({ size: 'sm' }), 'gap-2 self-end sm:self-auto')}
+							>
 								<PlusIcon className="size-4" />
-								<span className="sr-only lg:not-sr-only lg:whitespace-nowrap">
-									{t('addQrCodeBtn')}
-								</span>
+								<span className="sm:hidden lg:inline whitespace-nowrap">{t('addQrCodeBtn')}</span>
 							</Link>
 						</div>
 					</CardContent>
