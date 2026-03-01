@@ -191,6 +191,10 @@ export class Server {
 			registerRoutes(instance, StripeWebhookController, API_BASE_PATH);
 		});
 
+		this.server.get('/robots.txt', { schema: { hide: true } }, async (request, reply) => {
+			return reply.type('text/plain').send('User-agent: *\nDisallow: /\n');
+		});
+
 		this.server.get(
 			`${API_BASE_PATH}/openapi.json`,
 			{
