@@ -129,7 +129,7 @@ export const ListSection = () => {
 							</Link>
 						)}
 						<Link
-							href="/settings/domains"
+							href="/dashboard/settings/domains"
 							className={cn(buttonVariants({ variant: 'outline' }), 'md:flex md:space-x-2')}
 						>
 							<Cog6ToothIcon className="size-5" />
