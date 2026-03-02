@@ -3,6 +3,7 @@
 import { Link, usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { LanguageNav } from './LanguageNav';
+import { QrcodlyLogo } from './QrcodlyLogo';
 
 function GitHubIcon(props: React.SVGProps<SVGSVGElement>) {
 	return (
@@ -28,7 +29,9 @@ export default function Footer() {
 				<div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12 border-b border-gray-300">
 					{/* Logo + tagline */}
 					<div className="col-span-2 md:col-span-1">
-						<div className="text-xl font-bold text-black mb-3">QRcodly</div>
+						<div className="mb-3 text-black">
+							<QrcodlyLogo size="default" />
+						</div>
 						<p className="text-sm text-gray-600 leading-relaxed">{t('tagline')}</p>
 						<a
 							href="https://github.com/FloB95/qrcodly"

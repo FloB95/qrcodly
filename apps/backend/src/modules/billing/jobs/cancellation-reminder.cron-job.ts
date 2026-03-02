@@ -69,6 +69,7 @@ export class CancellationReminderCronJob extends AbstractCronJob {
 					gracePeriodDays: GRACE_PERIOD_DAYS,
 					gracePeriodEndDate: gracePeriodEndDate.toLocaleDateString('en-US', dateFormatOptions),
 					subscribeUrl: `${env.FRONTEND_URL}/plans`,
+					logoUrl: `${env.FRONTEND_URL}/email-logo.png`,
 					year: new Date().getFullYear(),
 				});
 

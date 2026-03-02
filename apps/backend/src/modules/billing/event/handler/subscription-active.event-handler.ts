@@ -51,6 +51,7 @@ export class SubscriptionActiveEventHandler extends AbstractEventHandler<Subscri
 				const html = template({
 					firstName: firstName || 'there',
 					dashboardUrl: `${env.FRONTEND_URL}/dashboard/qr-codes`,
+					logoUrl: `${env.FRONTEND_URL}/email-logo.png`,
 					year: new Date().getFullYear(),
 				});
 

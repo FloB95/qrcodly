@@ -51,6 +51,7 @@ export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 					const html = template({
 						firstName,
 						subscribeUrl: `${env.FRONTEND_URL}/plans`,
+						logoUrl: `${env.FRONTEND_URL}/email-logo.png`,
 						year: new Date().getFullYear(),
 					});
 

@@ -12,6 +12,7 @@ import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from '.
 import { RectangleStackIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { QrcodlyLogo } from './QrcodlyLogo';
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -52,10 +53,10 @@ export default function Header({
 		<header className="pt-10">
 			<Container>
 				<div className="flex justify-between pt-1 sm:px-6 lg:px-8">
-					<div className="text-2xl pt-2 sm:pt-0 sm:text-3xl font-bold">
+					<div className="pt-2 sm:pt-0">
 						{!hideLogo && (
 							<Link href="/" title="QRcodly">
-								QRcodly
+								<QrcodlyLogo size="lg" />
 							</Link>
 						)}
 					</div>
@@ -137,9 +138,9 @@ export default function Header({
 						<DrawerTitle>Navigation</DrawerTitle>
 					</DrawerHeader>
 					<div className="absolute top-8 left-4 right-4 flex items-center justify-between">
-						<div className="text-xl font-semibold  text-black">
+						<div className="text-black">
 							<Link title="QRcodly" href="/">
-								QRcodly
+								<QrcodlyLogo size="default" />
 							</Link>
 						</div>
 						<DrawerClose asChild>

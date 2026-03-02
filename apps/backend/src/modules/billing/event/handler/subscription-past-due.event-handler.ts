@@ -49,6 +49,7 @@ export class SubscriptionPastDueEventHandler extends AbstractEventHandler<Subscr
 			const html = template({
 				firstName: firstName || 'there',
 				billingUrl: `${env.FRONTEND_URL}/dashboard/settings/billing`,
+				logoUrl: `${env.FRONTEND_URL}/email-logo.png`,
 				year: new Date().getFullYear(),
 			});
 
