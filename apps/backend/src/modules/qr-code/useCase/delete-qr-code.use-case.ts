@@ -7,10 +7,8 @@ import ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-
 import { ImageService } from '@/core/services/image.service';
 import { QrCodeDeletedEvent } from '../event/qr-code-deleted.event';
 import { TQrCode } from '../domain/entities/qr-code.entity';
+import { UnitOfWork } from '@/core/db/unit-of-work';
 
-/**
- * Use case for deleting a QRcode entity.
- */
 @injectable()
 export class DeleteQrCodeUseCase implements IBaseUseCase {
 	constructor(
@@ -21,30 +19,25 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
 	) {}
 
-	/**
-	 * Executes the use case to delete a QRcode entity.
-	 * @param qrCode The QRcode entity to be deleted.
-	 * @returns A promise that resolves to true if the deletion was successful, otherwise false.
-	 */
 	async execute(qrCode: TQrCode, deletedBy: string): Promise<boolean> {
 		await this.imageService.deleteImage(qrCode.config.image);
 		await this.imageService.deleteImage(qrCode.previewImage ?? undefined);
 
-		// Soft-delete immediately before QR deletion so FK SET NULL doesn't lose the reference
-		const linkedShortUrl = await this.shortUrlRepository.findOneByQrCodeId(qrCode.id);
-		if (linkedShortUrl) {
-			await this.shortUrlRepository.update(linkedShortUrl, {
-				deletedAt: new Date(),
-				isActive: false,
-				updatedAt: new Date(),
-			});
-		}
+		const res = await UnitOfWork.run(async () => {
+			// Soft-delete immediately before QR deletion so FK SET NULL doesn't lose the reference
+			const linkedShortUrl = await this.shortUrlRepository.findOneByQrCodeId(qrCode.id);
+			if (linkedShortUrl) {
+				await this.shortUrlRepository.update(linkedShortUrl, {
+					deletedAt: new Date(),
+					isActive: false,
+					updatedAt: new Date(),
+				});
+			}
 
-		const res = await this.qrCodeRepository.delete(qrCode);
+			return this.qrCodeRepository.delete(qrCode);
+		});
 
-		// log the deletion
 		if (res) {
-			// Emit the QrCodeCreatedEvent.
 			const event = new QrCodeDeletedEvent(qrCode);
 			this.eventEmitter.emit(event);
 

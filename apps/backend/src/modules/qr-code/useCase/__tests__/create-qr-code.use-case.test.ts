@@ -111,7 +111,7 @@ describe('CreateQrCodeUseCase', () => {
 		mockPolicy.incrementUsage.mockResolvedValue();
 
 		// Default mock implementations
-		mockRepository.generateId.mockResolvedValue('qr-123');
+		mockRepository.generateId.mockReturnValue('qr-123');
 		mockRepository.create.mockResolvedValue();
 		mockRepository.findOneById.mockResolvedValue(mockCreatedQrCode);
 	});

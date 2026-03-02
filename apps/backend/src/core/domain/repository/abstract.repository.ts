@@ -1,4 +1,4 @@
-import { eq, SQL, sql } from 'drizzle-orm';
+import { SQL, sql } from 'drizzle-orm';
 import {
 	type MySqlSelect,
 	getTableConfig,
@@ -14,9 +14,6 @@ import { container } from 'tsyringe';
 import { KeyCache } from '@/core/cache';
 import { TransactionContext } from '@/core/db/transaction-context';
 
-/**
- * Abstract class for repositories.
- */
 export default abstract class AbstractRepository<T> {
 	protected appCache: KeyCache;
 
@@ -31,17 +28,10 @@ export default abstract class AbstractRepository<T> {
 	abstract update(item: T, updates: Partial<T>): Promise<void>;
 	abstract delete(item: T): Promise<boolean>;
 
-	/**
-	 * Use the current transaction if set, otherwise the default db
-	 */
 	protected get db() {
 		return TransactionContext.db;
 	}
 
-	/**
-	 * Counts the total number of items in the table.
-	 * @returns A promise that resolves to the total count.
-	 */
 	async countTotal(whereConditions?: WhereConditions<T> | SQL<T>): Promise<number> {
 		const cacheCount = (await this.appCache.get(this.getTotalCacheKey())) as string;
 
@@ -82,24 +72,8 @@ export default abstract class AbstractRepository<T> {
 		return `${name}_table_count_total`;
 	}
 
-	/**
-	 * Generates a new UUIDv4 ID.
-	 * @returns a promise that resolves to the generated ID.
-	 */
-	async generateId(): Promise<string> {
-		let newId: string;
-
-		while (true) {
-			newId = uuidv4();
-
-			const existing = await db.select().from(this.table).where(eq(this.table.id, newId)).execute();
-
-			if (existing.length === 0) {
-				break;
-			}
-		}
-
-		return newId;
+	generateId(): string {
+		return uuidv4();
 	}
 
 	withPagination<T extends MySqlSelect>(

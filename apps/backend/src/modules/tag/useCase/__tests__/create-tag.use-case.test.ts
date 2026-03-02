@@ -25,7 +25,7 @@ describe('CreateTagUseCase', () => {
 
 		useCase = new CreateTagUseCase(mockRepository, mockLogger);
 
-		mockRepository.generateId.mockResolvedValue('tag-1');
+		mockRepository.generateId.mockReturnValue('tag-1');
 		mockRepository.create.mockResolvedValue(undefined);
 		mockRepository.findOneById.mockResolvedValue(JSON.parse(JSON.stringify(mockTag)));
 	});

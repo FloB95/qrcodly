@@ -74,10 +74,8 @@ export class Server {
 			},
 		});
 
-		// catch all errors
 		this.setupErrorHandlers();
 
-		// disable build in validation and use custom validation
 		this.server.setValidatorCompiler(() => {
 			return () => ({});
 		});
@@ -88,7 +86,6 @@ export class Server {
 			};
 		});
 
-		// register file multipart handling
 		await this.server.register(multipart, {
 			attachFieldsToBody: true,
 			limits: {
@@ -96,7 +93,6 @@ export class Server {
 			},
 		});
 
-		// register security modules
 		await this.server.register(fastifyCors, {
 			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
 			credentials: true,
@@ -104,7 +100,6 @@ export class Server {
 			origin: true,
 		});
 
-		// register authentication provider
 		await this.server.register(clerkPlugin, {
 			secretKey: env.CLERK_SECRET_KEY,
 			publishableKey: env.CLERK_PUBLISHABLE_KEY,
@@ -113,12 +108,10 @@ export class Server {
 			},
 		});
 
-		// register cookie
 		await this.server.register(fastifyCookie, {
 			secret: env.COOKIE_SECRET,
 		});
 
-		// register rate limit
 		if (!IN_TEST) {
 			await this.server.register(fastifyRateLimit, {
 				hook: 'preHandler',
@@ -127,15 +120,11 @@ export class Server {
 						acceptsToken: ['session_token', 'api_key'],
 					}) as { userId: string | null };
 
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-expect-error
 					const policy = request.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT;
 					const userKey = userId ? `user:${userId}` : `anon:${request.clientIp}`;
 					return `${userKey}:${policy}`;
 				},
 				max: (request) => {
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-expect-error
 					const policy = request.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT;
 					return resolveRateLimit(request, policy);
 				},
@@ -161,19 +150,14 @@ export class Server {
 			});
 		});
 
-		// register hooks
 		this.server.addHook('onRequest', (request, reply, done) => {
 			request.clientIp = resolveClientIp(request);
 			done();
 		});
 
-		// register security modules
 		await this.server.register(fastifyHelmet);
 
-		// register health check endpoint
 		registerRoutes(this.server, HealthController, API_BASE_PATH);
-
-		// register webhook endpoints
 		registerRoutes(this.server, ClerkWebhookController, API_BASE_PATH);
 
 		// Stripe webhook needs the raw request body (string) for HMAC signature
@@ -208,7 +192,6 @@ export class Server {
 			},
 		);
 
-		// register api modules
 		const modules = await import('@/modules');
 		await this.server.register(modules.default, { prefix: API_BASE_PATH });
 
@@ -239,7 +222,6 @@ export class Server {
 	}
 
 	private setupErrorHandlers() {
-		// register error handler
 		this.server.setErrorHandler(fastifyErrorHandler);
 	}
 

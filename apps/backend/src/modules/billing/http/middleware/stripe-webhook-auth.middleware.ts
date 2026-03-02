@@ -3,7 +3,7 @@ import { UnauthorizedError } from '@/core/error/http';
 import { container } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { createRequestLogObject } from '@/libs/fastify/helpers';
-import { StripeService } from '../../services/stripe.service';
+import { StripeService } from '../../service/stripe.service';
 
 export function stripeWebhookAuthHandler(
 	request: FastifyRequest,

@@ -15,10 +15,9 @@ import {
 	UpdateShortUrlDto,
 } from '@shared/schemas';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
-import { UmamiAnalyticsService } from '../../services/umami-analytics.service';
+import { UmamiAnalyticsService } from '../../service/umami-analytics.service';
 import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { TShortUrl } from '../../domain/entities/short-url.entity';
-import { ForbiddenError } from '@/core/error/http';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { KeyCache } from '@/core/cache';
 import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
@@ -214,15 +213,14 @@ export class ShortUrlController extends AbstractController {
 		return this.makeApiHttpResponse(200, { status: 'ok' });
 	}
 
-	// Helper Method
 	private async fetchShortUrl(shortCode: string, userId?: string): Promise<TShortUrl> {
 		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
 		if (!shortUrl || shortUrl.deletedAt) {
 			throw new ShortUrlNotFoundError();
 		}
 
-		if (userId && shortUrl.createdBy !== userId) {
-			throw new ForbiddenError();
+		if (userId) {
+			this.ensureOwnership(shortUrl, userId);
 		}
 
 		return shortUrl;

@@ -7,8 +7,8 @@ import { DeleteTagUseCase } from '../../useCase/delete-tag.use-case';
 import { ListTagsUseCase } from '../../useCase/list-tags.use-case';
 import { SetQrCodeTagsUseCase } from '../../useCase/set-qr-code-tags.use-case';
 import TagRepository from '../../domain/repository/tag.repository';
+import { type TTag } from '../../domain/entities/tag.entity';
 import { TagNotFoundError } from '../../error/http/tag-not-found.error';
-import { ForbiddenError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import {
@@ -129,12 +129,7 @@ export class TagController extends AbstractController {
 	async update(
 		request: IHttpRequest<TUpdateTagDto, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TTagResponseDto>> {
-		const { id } = request.params;
-
-		const tag = await this.tagRepository.findOneById(id);
-		if (!tag) throw new TagNotFoundError();
-		if (tag.createdBy !== request.user.id) throw new ForbiddenError();
-
+		const tag = await this.fetchOwnedTag(request.params.id, request.user.id);
 		const updatedTag = await this.updateTagUseCase.execute(tag, request.body, request.user.id);
 		return this.makeApiHttpResponse(200, TagResponseDto.parse(updatedTag));
 	}
@@ -154,12 +149,7 @@ export class TagController extends AbstractController {
 		},
 	})
 	async deleteOneById(request: IHttpRequest<unknown, TIdRequestQueryDto>) {
-		const { id } = request.params;
-
-		const tag = await this.tagRepository.findOneById(id);
-		if (!tag) throw new TagNotFoundError();
-		if (tag.createdBy !== request.user.id) throw new ForbiddenError();
-
+		const tag = await this.fetchOwnedTag(request.params.id, request.user.id);
 		await this.deleteTagUseCase.execute(tag, request.user.id);
 		return this.makeApiHttpResponse(200, { deleted: true });
 	}
@@ -191,5 +181,12 @@ export class TagController extends AbstractController {
 			200,
 			tags.map((t) => TagResponseDto.parse(t)),
 		);
+	}
+
+	private async fetchOwnedTag(id: string, userId: string): Promise<TTag> {
+		const tag = await this.tagRepository.findOneById(id);
+		if (!tag) throw new TagNotFoundError();
+		this.ensureOwnership(tag, userId);
+		return tag;
 	}
 }

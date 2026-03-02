@@ -60,7 +60,7 @@ describe('CreateConfigTemplateUseCase', () => {
 		(UnitOfWork.run as jest.Mock).mockImplementation(async (callback: any) => callback());
 
 		// Default mocks
-		mockRepository.generateId.mockResolvedValue('template-123');
+		mockRepository.generateId.mockReturnValue('template-123');
 		mockRepository.create.mockResolvedValue();
 		mockRepository.findOneById.mockResolvedValue(mockCreatedTemplate);
 	});

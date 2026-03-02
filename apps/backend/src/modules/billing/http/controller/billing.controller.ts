@@ -6,7 +6,7 @@ import { type IHttpResponse } from '@/core/interface/response.interface';
 import { BadRequestError, NotFoundError } from '@/core/error/http';
 import { env } from '@/core/config/env';
 import { Logger } from '@/core/logging';
-import { StripeService } from '../../services/stripe.service';
+import { StripeService } from '../../service/stripe.service';
 import UserSubscriptionRepository from '../../domain/repository/user-subscription.repository';
 import { createClerkClient } from '@clerk/fastify';
 import { CreateCheckoutSessionDto } from '../../domain/dto/create-checkout-session.dto';

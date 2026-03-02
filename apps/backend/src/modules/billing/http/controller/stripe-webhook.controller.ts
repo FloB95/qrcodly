@@ -3,7 +3,7 @@ import AbstractController from '@/core/http/controller/abstract.controller';
 import { inject, injectable } from 'tsyringe';
 import { stripeWebhookAuthHandler } from '../middleware/stripe-webhook-auth.middleware';
 import { type FastifyRequest } from 'fastify';
-import { StripeWebhookService } from '../../services/stripe-webhook.service';
+import { StripeWebhookService } from '../../service/stripe-webhook.service';
 
 @injectable()
 export class StripeWebhookController extends AbstractController {

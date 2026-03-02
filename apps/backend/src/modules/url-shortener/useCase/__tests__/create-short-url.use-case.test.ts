@@ -53,7 +53,7 @@ describe('CreateShortUrlUseCase', () => {
 		};
 
 		it('should generate unique shortCode for new short URL', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(mockCreatedShortUrl);
@@ -64,7 +64,7 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should create short URL with provided destinationUrl', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(mockCreatedShortUrl);
@@ -87,7 +87,7 @@ describe('CreateShortUrlUseCase', () => {
 				isActive: false,
 			};
 
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(reservedShortUrl);
@@ -99,7 +99,7 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should set createdBy to provided userId', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(mockCreatedShortUrl);
@@ -110,7 +110,7 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should log successful creation', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(mockCreatedShortUrl);
@@ -127,7 +127,7 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should call repository.generateId() once', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(mockCreatedShortUrl);
@@ -138,7 +138,7 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should call repository.generateShortCode() once', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(mockCreatedShortUrl);
@@ -149,7 +149,7 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should call repository.create() with correct data', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(mockCreatedShortUrl);
@@ -169,7 +169,7 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should retrieve created entity after insertion', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(mockCreatedShortUrl);
@@ -180,7 +180,7 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should throw error when repository.create() fails', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockRejectedValue(new Error('Database error'));
 
@@ -188,7 +188,7 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should throw error when created entity cannot be retrieved', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(undefined);
@@ -199,7 +199,7 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should set qrCodeId to null initially', async () => {
-			mockRepository.generateId.mockResolvedValue(mockId);
+			mockRepository.generateId.mockReturnValue(mockId);
 			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
 			mockRepository.create.mockResolvedValue();
 			mockRepository.findOneById.mockResolvedValue(mockCreatedShortUrl);

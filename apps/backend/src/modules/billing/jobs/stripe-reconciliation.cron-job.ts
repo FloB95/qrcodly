@@ -2,8 +2,8 @@ import { injectable } from 'tsyringe';
 import { container } from 'tsyringe';
 import { CronJob } from '@/core/decorators/cron-job.decorator';
 import { AbstractCronJob } from '@/core/jobs/abstract.cron-job';
-import { StripeService } from '../services/stripe.service';
-import { SubscriptionStatusTransitionService } from '../services/subscription-status-transition.service';
+import { StripeService } from '../service/stripe.service';
+import { SubscriptionStatusTransitionService } from '../service/subscription-status-transition.service';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
 
 /**

@@ -44,4 +44,31 @@ export class ImageService {
 	constructFilePath(folder: string, userId: string | undefined, fileName: string): string {
 		return this.strategy.constructFilePath(folder, userId, fileName);
 	}
+
+	async handleImageUpdate(
+		currentImage: string | undefined,
+		newImage: string | undefined,
+		entityId: string,
+		userId: string,
+	): Promise<string | undefined> {
+		if (currentImage && newImage && !newImage.includes(currentImage)) {
+			await this.deleteImage(currentImage);
+			return this.uploadImage(newImage, entityId, userId);
+		}
+
+		if (!newImage && currentImage) {
+			await this.deleteImage(currentImage);
+			return undefined;
+		}
+
+		if (!currentImage && newImage) {
+			return this.uploadImage(newImage, entityId, userId);
+		}
+
+		if (currentImage && newImage && newImage.includes(currentImage)) {
+			return currentImage;
+		}
+
+		return undefined;
+	}
 }

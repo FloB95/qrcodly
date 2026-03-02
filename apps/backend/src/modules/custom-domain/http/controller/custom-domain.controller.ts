@@ -88,7 +88,6 @@ export class CustomDomainController extends AbstractController {
 			query.page,
 			query.limit,
 		);
-		// Map each domain to the response DTO format
 		const mappedData = result.data.map((domain) => this.mapToResponseDto(domain));
 		return this.makeApiHttpResponse(200, {
 			data: mappedData,
@@ -320,14 +319,9 @@ export class CustomDomainController extends AbstractController {
 		return this.makeApiHttpResponse(200, { deleted: true });
 	}
 
-	// Helper Methods
 	private async fetchCustomDomain(id: string, userId: string): Promise<TCustomDomain> {
 		const customDomain = await this.getCustomDomainUseCase.execute(id);
-
-		if (customDomain.createdBy !== userId) {
-			throw new ForbiddenError();
-		}
-
+		this.ensureOwnership(customDomain, userId);
 		return customDomain;
 	}
 
@@ -339,11 +333,7 @@ export class CustomDomainController extends AbstractController {
 		}
 	}
 
-	/**
-	 * Maps a database entity to the response DTO format.
-	 */
 	private mapToResponseDto(customDomain: TCustomDomain): TCustomDomainResponseDto {
-		// Parse validation errors from JSON string
 		let validationErrors: string[] | null = null;
 		if (customDomain.validationErrors) {
 			try {
@@ -361,11 +351,9 @@ export class CustomDomainController extends AbstractController {
 			createdBy: customDomain.createdBy,
 			createdAt: customDomain.createdAt,
 			updatedAt: customDomain.updatedAt,
-			// Two-phase verification fields
 			verificationPhase: customDomain.verificationPhase || 'dns_verification',
 			ownershipTxtVerified: customDomain.ownershipTxtVerified ?? false,
 			cnameVerified: customDomain.cnameVerified ?? false,
-			// Cloudflare fields
 			cloudflareHostnameId: customDomain.cloudflareHostnameId,
 			sslStatus: customDomain.sslStatus,
 			ownershipStatus: customDomain.ownershipStatus,

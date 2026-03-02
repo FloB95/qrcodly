@@ -3,7 +3,6 @@ import AbstractController from '@/core/http/controller/abstract.controller';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import { inject, injectable } from 'tsyringe';
-import { ForbiddenError } from '@/core/error/http';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import {
@@ -21,15 +20,13 @@ import {
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import QrCodeShareRepository from '../../domain/repository/qr-code-share.repository';
 import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
+import { type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
 import { QrCodeShareNotFoundError } from '../../error/http/qr-code-share-not-found.error';
 import { CreateQrCodeShareUseCase } from '../../useCase/create-qr-code-share.use-case';
 import { UpdateQrCodeShareUseCase } from '../../useCase/update-qr-code-share.use-case';
 import { DeleteQrCodeShareUseCase } from '../../useCase/delete-qr-code-share.use-case';
 import { GetPublicSharedQrCodeUseCase } from '../../useCase/get-public-shared-qr-code.use-case';
 
-/**
- * Controller for managing QR code share links (authenticated).
- */
 @injectable()
 export class QrCodeShareController extends AbstractController {
 	constructor(
@@ -62,17 +59,8 @@ export class QrCodeShareController extends AbstractController {
 		request: IHttpRequest<TCreateQrCodeShareDto, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeShareResponseDto>> {
 		const { id } = request.params;
+		await this.fetchOwnedQrCode(id, request.user.id);
 
-		const qrCode = await this.qrCodeRepository.findOneById(id);
-		if (!qrCode) {
-			throw new QrCodeNotFoundError();
-		}
-
-		if (qrCode.createdBy !== request.user.id) {
-			throw new ForbiddenError();
-		}
-
-		// Use case handles duplicate detection via database constraint
 		const share = await this.createShareUseCase.execute(id, request.user.id, request.body);
 
 		return this.makeApiHttpResponse(201, QrCodeShareResponseDto.parse(share));
@@ -95,15 +83,7 @@ export class QrCodeShareController extends AbstractController {
 		request: IHttpRequest<unknown, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeShareResponseDto>> {
 		const { id } = request.params;
-
-		const qrCode = await this.qrCodeRepository.findOneById(id);
-		if (!qrCode) {
-			throw new QrCodeNotFoundError();
-		}
-
-		if (qrCode.createdBy !== request.user.id) {
-			throw new ForbiddenError();
-		}
+		await this.fetchOwnedQrCode(id, request.user.id);
 
 		const share = await this.qrCodeShareRepository.findByQrCodeId(id);
 		if (!share) {
@@ -132,15 +112,7 @@ export class QrCodeShareController extends AbstractController {
 		request: IHttpRequest<TUpdateQrCodeShareDto, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeShareResponseDto>> {
 		const { id } = request.params;
-
-		const qrCode = await this.qrCodeRepository.findOneById(id);
-		if (!qrCode) {
-			throw new QrCodeNotFoundError();
-		}
-
-		if (qrCode.createdBy !== request.user.id) {
-			throw new ForbiddenError();
-		}
+		await this.fetchOwnedQrCode(id, request.user.id);
 
 		const share = await this.qrCodeShareRepository.findByQrCodeId(id);
 		if (!share) {
@@ -169,15 +141,7 @@ export class QrCodeShareController extends AbstractController {
 		request: IHttpRequest<unknown, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<{ deleted: boolean }>> {
 		const { id } = request.params;
-
-		const qrCode = await this.qrCodeRepository.findOneById(id);
-		if (!qrCode) {
-			throw new QrCodeNotFoundError();
-		}
-
-		if (qrCode.createdBy !== request.user.id) {
-			throw new ForbiddenError();
-		}
+		await this.fetchOwnedQrCode(id, request.user.id);
 
 		const share = await this.qrCodeShareRepository.findByQrCodeId(id);
 		if (!share) {
@@ -188,11 +152,17 @@ export class QrCodeShareController extends AbstractController {
 
 		return this.makeApiHttpResponse(200, { deleted: true });
 	}
+
+	private async fetchOwnedQrCode(id: string, userId: string): Promise<TQrCodeWithRelations> {
+		const qrCode = await this.qrCodeRepository.findOneById(id);
+		if (!qrCode) {
+			throw new QrCodeNotFoundError();
+		}
+		this.ensureOwnership(qrCode, userId);
+		return qrCode;
+	}
 }
 
-/**
- * Controller for public QR code share access (no authentication required).
- */
 @injectable()
 export class PublicQrCodeShareController extends AbstractController {
 	constructor(

@@ -6,7 +6,6 @@ import { CreateConfigTemplateUseCase } from '../../useCase/create-config-templat
 import { ListConfigTemplatesUseCase } from '../../useCase/list-config-templates.use-case';
 import { UpdateConfigTemplateUseCase } from '../../useCase/update-config-template.use-case';
 import { ConfigTemplateNotFoundError } from '../../error/http/config-template-not-found.error';
-import { ForbiddenError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import {
 	ConfigTemplatePaginatedResponseDto,
@@ -22,6 +21,7 @@ import {
 	UpdateConfigTemplateDto,
 } from '@shared/schemas';
 import { GetConfigTemplateUseCase } from '../../useCase/get-config-template.use-case';
+import { type TConfigTemplate } from '../../domain/entities/config-template.entity';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
@@ -74,7 +74,6 @@ export class ConfigTemplateController extends AbstractController {
 			},
 		});
 
-		// create pagination response object
 		const pagination = {
 			page: page,
 			limit: limit,
@@ -110,7 +109,6 @@ export class ConfigTemplateController extends AbstractController {
 			},
 		});
 
-		// create pagination response object
 		const pagination = {
 			page: page,
 			limit: limit,
@@ -141,8 +139,6 @@ export class ConfigTemplateController extends AbstractController {
 	async create(
 		request: IHttpRequest<TCreateConfigTemplateDto>,
 	): Promise<IHttpResponse<TConfigTemplateResponseDto>> {
-		// user can be logged in or not
-
 		const configTemplate = await this.createConfigTemplateUseCase.execute(
 			request.body,
 			request.user.id,
@@ -167,17 +163,7 @@ export class ConfigTemplateController extends AbstractController {
 	async getOneById(
 		request: IHttpRequest<unknown, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TConfigTemplateResponseDto>> {
-		const { id } = request.params;
-
-		const configTemplate = await this.getConfigTemplateUseCase.execute(id, true);
-		if (!configTemplate) {
-			throw new ConfigTemplateNotFoundError();
-		}
-
-		if (configTemplate.createdBy !== request.user.id) {
-			throw new ForbiddenError();
-		}
-
+		const configTemplate = await this.fetchOwnedTemplate(request.params.id, request.user.id, true);
 		return this.makeApiHttpResponse(200, ConfigTemplateResponseDto.parse(configTemplate));
 	}
 
@@ -200,16 +186,7 @@ export class ConfigTemplateController extends AbstractController {
 	async update(
 		request: IHttpRequest<TUpdateConfigTemplateDto, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TConfigTemplateResponseDto>> {
-		const { id } = request.params;
-
-		const configTemplate = await this.getConfigTemplateUseCase.execute(id);
-		if (!configTemplate) {
-			throw new ConfigTemplateNotFoundError();
-		}
-
-		if (configTemplate.createdBy !== request.user.id) {
-			throw new ForbiddenError();
-		}
+		const configTemplate = await this.fetchOwnedTemplate(request.params.id, request.user.id);
 
 		const updatedTemplate = await this.updateConfigTemplateUseCase.execute(
 			configTemplate,
@@ -235,18 +212,21 @@ export class ConfigTemplateController extends AbstractController {
 		},
 	})
 	async deleteOneById(request: IHttpRequest<unknown, TIdRequestQueryDto>) {
-		const { id } = request.params;
+		const configTemplate = await this.fetchOwnedTemplate(request.params.id, request.user.id);
+		await this.deleteConfigTemplateUseCase.execute(configTemplate, request.user.id);
+		return this.makeApiHttpResponse(200, { deleted: true });
+	}
 
-		const configTemplate = await this.getConfigTemplateUseCase.execute(id);
+	private async fetchOwnedTemplate(
+		id: string,
+		userId: string,
+		resolveImage = false,
+	): Promise<TConfigTemplate> {
+		const configTemplate = await this.getConfigTemplateUseCase.execute(id, resolveImage);
 		if (!configTemplate) {
 			throw new ConfigTemplateNotFoundError();
 		}
-
-		if (configTemplate.createdBy !== request.user.id) {
-			throw new ForbiddenError();
-		}
-
-		await this.deleteConfigTemplateUseCase.execute(configTemplate, request.user.id);
-		return this.makeApiHttpResponse(200, { deleted: true });
+		this.ensureOwnership(configTemplate, userId);
+		return configTemplate;
 	}
 }

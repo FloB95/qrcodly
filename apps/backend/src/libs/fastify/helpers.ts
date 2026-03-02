@@ -23,16 +23,10 @@ import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { $ZodError } from 'zod/v4/core';
 import { addUserToRequestMiddleware } from '@/core/http/middleware/add-user-to-request.middleware';
 
-/**
- * Parses a Fastify request into an IHttpRequest object.
- * @param request The Fastify request object.
- * @returns The parsed IHttpRequest object.
- */
 export const fastifyRequestParser = <T extends IHttpRequest>(
 	request: FastifyRequest & { user?: { id: string } },
 ): T => {
 	const { cookies } = request;
-	// unsign cookies
 	for (const key in cookies) {
 		if (cookies[key]) {
 			const c = request.unsignCookie(cookies[key]);
@@ -43,12 +37,6 @@ export const fastifyRequestParser = <T extends IHttpRequest>(
 	return Object.freeze({ ...request, cookies }) as T;
 };
 
-/**
- * Handles errors in Fastify routes.
- * @param error The error object.
- * @param request The Fastify request object.
- * @param reply The Fastify reply object.
- */
 export const fastifyErrorHandler = (
 	error: Error,
 	_request: FastifyRequest,
@@ -57,7 +45,6 @@ export const fastifyErrorHandler = (
 	const logger = container.resolve(Logger);
 
 	if (error instanceof CustomApiError) {
-		// if error is instance of BadRequestError attach zod errors
 		const responsePayload: any = {
 			message: error.message,
 			code: error.statusCode,
@@ -83,7 +70,7 @@ export const fastifyErrorHandler = (
 	}
 
 	if (error.name === 'SyntaxError') {
-		throw new BadRequestError(error.message);
+		return reply.status(400).send({ message: error.message, code: 400 });
 	}
 
 	logger.error(`Unhandled Server error`, {
@@ -91,7 +78,6 @@ export const fastifyErrorHandler = (
 		error,
 	});
 
-	// report error to Analytics
 	container.resolve(ErrorReporter).error(error, {
 		level: 'error',
 	});
@@ -109,15 +95,6 @@ export const getOptionsWithPrefix = (options: FastifyPluginOptions, prefix: stri
 	};
 };
 
-/**
- * Handles a Fastify request by resolving the specified controller and invoking its handle method.
- * The response from the controller is then used to set the status code, headers, and body of the reply.
- *
- * @param Controller - The injection token for the controller to handle the request.
- * @param request - The Fastify request object.
- * @param reply - The Fastify reply object.
- * @returns A promise that resolves when the reply has been sent.
- */
 const handleFastifyRequest = async (
 	handler: (request: IHttpRequest) => Promise<IHttpResponse>,
 	request: FastifyRequest,
@@ -158,14 +135,6 @@ function parseJsonFields(body: Record<string, any>, fieldsToParse: string[] = ['
 	return parsedBody;
 }
 
-/**
- * Registers routes for a Fastify instance based on metadata from the provided controller class.
- * The routes are registered with the specified prefix.
- *
- * @param fastify - The Fastify instance to register the routes with.
- * @param ControllerClass - The controller class containing route metadata.
- * @param prefix - The prefix to be added to the route paths (default is an empty string).
- */
 export function registerRoutes(
 	fastify: FastifyInstance,
 	ControllerClass: unknown,
@@ -240,10 +209,8 @@ export function registerRoutes(
 			schema: deepMerge(schema, routeMeta.options.schema as unknown as Partial<typeof schema>),
 		};
 
-		// add user to reuqest
 		routeOptions.preHandler = [addUserToRequestMiddleware];
 
-		// Add authentication preHandler
 		if (typeof routeMeta.options.authHandler === 'undefined') {
 			routeOptions.preHandler.push(defaultApiAuthMiddleware);
 		} else if (routeMeta.options.authHandler) {
@@ -253,40 +220,28 @@ export function registerRoutes(
 				routeOptions.preHandler.push(routeMeta.options.authHandler);
 			}
 		} else if (routeMeta.options.authHandler === false) {
-			// no authentication for this route
+			// no-op: skip authentication for this route
 		}
 
+		const preValidation: ReturnType<typeof createValidationHook>[] = [];
 		if (routeMeta.options.bodySchema) {
-			// Add request body validation
-			routeOptions.preValidation = createValidationHook(
-				routeMeta.options.bodySchema,
-				'Invalid request body',
-				'body',
+			preValidation.push(
+				createValidationHook(routeMeta.options.bodySchema, 'Invalid request body', 'body'),
 			);
 		}
-
-		// Add request query validation
 		if (routeMeta.options.querySchema) {
-			routeOptions.preValidation = createValidationHook(
-				routeMeta.options.querySchema,
-				'Invalid query params',
-				'query',
+			preValidation.push(
+				createValidationHook(routeMeta.options.querySchema, 'Invalid query params', 'query'),
 			);
+		}
+		if (preValidation.length > 0) {
+			routeOptions.preValidation = preValidation;
 		}
 
 		fastify.route(routeOptions);
 	});
 }
 
-/**
- * Creates a validation hook for Fastify request preprocessing.
- * Validates request body or query parameters against a Zod schema.
- *
- * @param schema - The Zod schema to validate against.
- * @param errorMessage - The error message to return if validation fails.
- * @param type - The type of data to validate: 'body' or 'query'.
- * @returns A Fastify preValidation hook function.
- */
 function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type: 'body' | 'query') {
 	return async (request: FastifyRequest, _reply: FastifyReply) => {
 		if (request.headers['content-type']?.startsWith('multipart/form-data')) {
@@ -299,7 +254,6 @@ function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type:
 		const dataToValidate = type === 'body' ? request.body : qs.parse(request.query as string);
 		const validationResult: ReturnType<typeof schema.safeParse> = schema.safeParse(dataToValidate);
 
-		// Throw error if validation fails
 		if (!validationResult.success) {
 			throw new BadRequestError(errorMessage, validationResult.error);
 		}
@@ -316,18 +270,14 @@ function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type:
 }
 
 export function resolveClientIp(request: FastifyRequest): string {
-	// Cloudflare IP Header
 	const cfIp = request.headers['cf-connecting-ip'] as string | undefined;
 	if (cfIp) return cfIp;
 
-	// Standard Forwarded Header (z. B. bei anderen Proxies)
 	const xForwardedFor = request.headers['x-forwarded-for'] as string | undefined;
 	if (xForwardedFor) {
-		// x-forwarded-for kann mehrere IPs enthalten, erste ist die echte Client-IP
 		return xForwardedFor.split(',')[0].trim();
 	}
 
-	// Fallback
 	return request.ip;
 }
 

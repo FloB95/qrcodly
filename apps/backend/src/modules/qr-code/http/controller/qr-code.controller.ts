@@ -4,8 +4,8 @@ import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
-import { ForbiddenError } from '@/core/error/http';
 import { type IHttpResponse } from '@/core/interface/response.interface';
+import { type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
 import {
 	BulkImportQrCodeDto,
 	CreateQrCodeDto,
@@ -84,7 +84,6 @@ export class QrCodeController extends AbstractController {
 			tagIds,
 		});
 
-		// create pagination response object
 		const pagination = {
 			page: page,
 			limit: limit,
@@ -164,18 +163,8 @@ export class QrCodeController extends AbstractController {
 	async getOneById(
 		request: IHttpRequest<unknown, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
-		const { id } = request.params;
+		const qrCode = await this.fetchOwnedQrCode(request.params.id, request.user.id);
 
-		const qrCode = await this.qrCodeRepository.findOneById(id);
-		if (!qrCode) {
-			throw new QrCodeNotFoundError();
-		}
-
-		if (qrCode.createdBy !== request.user.id) {
-			throw new ForbiddenError();
-		}
-
-		// Convert image path to presigned URL
 		await Promise.all([
 			(async () => {
 				if (qrCode.config.image) {
@@ -211,16 +200,7 @@ export class QrCodeController extends AbstractController {
 	async update(
 		request: IHttpRequest<TUpdateQrCodeDto, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
-		const { id } = request.params;
-
-		const qrCode = await this.qrCodeRepository.findOneById(id);
-		if (!qrCode) {
-			throw new QrCodeNotFoundError();
-		}
-
-		if (qrCode.createdBy !== request.user.id) {
-			throw new ForbiddenError();
-		}
+		const qrCode = await this.fetchOwnedQrCode(request.params.id, request.user.id);
 
 		const updatedQrCode = await this.updateQrCodeUseCase.execute(
 			qrCode,
@@ -246,16 +226,7 @@ export class QrCodeController extends AbstractController {
 		},
 	})
 	async deleteOneById(request: IHttpRequest<unknown, TIdRequestQueryDto>) {
-		const { id } = request.params;
-
-		const qrCode = await this.qrCodeRepository.findOneById(id);
-		if (!qrCode) {
-			throw new QrCodeNotFoundError();
-		}
-
-		if (qrCode.createdBy !== request.user.id) {
-			throw new ForbiddenError();
-		}
+		const qrCode = await this.fetchOwnedQrCode(request.params.id, request.user.id);
 
 		await this.deleteQrCodeUseCase.execute(qrCode, request.user.id);
 		return this.makeApiHttpResponse(200, { deleted: true });
@@ -320,5 +291,14 @@ export class QrCodeController extends AbstractController {
 				'Cache-Control': 'public, max-age=86400', // Cache for 24 hours
 			},
 		};
+	}
+
+	private async fetchOwnedQrCode(id: string, userId: string): Promise<TQrCodeWithRelations> {
+		const qrCode = await this.qrCodeRepository.findOneById(id);
+		if (!qrCode) {
+			throw new QrCodeNotFoundError();
+		}
+		this.ensureOwnership(qrCode, userId);
+		return qrCode;
 	}
 }
