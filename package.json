@@ -1,7 +1,23 @@
 {
 	"name": "qrcodly-monorepo",
 	"version": "1.0.0",
+	"description": "Open-source QR code generator and management platform",
 	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/FloB95/qrcodly.git"
+	},
+	"homepage": "https://qrcodly.com",
+	"license": "MIT",
+	"author": "Florian Breuer",
+	"keywords": [
+		"qr-code",
+		"qr-generator",
+		"url-shortener",
+		"nextjs",
+		"fastify",
+		"open-source"
+	],
 	"engines": {
 		"node": ">=22.11.0",
 		"pnpm": ">=9.15.9"
