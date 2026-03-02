@@ -798,7 +798,7 @@
 		},
 		"domains": {
 			"title": "Domini Personalizzati",
-			"description": "Usa il tuo dominio per i codici QR dinamici. Per le istruzioni di configurazione, consulta la nostra <link>documentazione</link>.",
+			"description": "Usa il tuo sottodominio per i codici QR dinamici. Per le istruzioni di configurazione, consulta la nostra <link>documentazione</link>.",
 			"backToCollection": "Torna alla Collezione",
 			"howItWorks": "Come funziona",
 			"step1": "Aggiungi il tuo dominio (es., links.esempio.com)",

@@ -798,7 +798,7 @@
 		},
 		"domains": {
 			"title": "Aangepaste Domeinen",
-			"description": "Gebruik je eigen domein voor dynamische QR-codes. Bekijk onze <link>documentatie</link> voor installatie-instructies.",
+			"description": "Gebruik je eigen subdomein voor dynamische QR-codes. Bekijk onze <link>documentatie</link> voor installatie-instructies.",
 			"backToCollection": "Terug naar Collectie",
 			"howItWorks": "Hoe het werkt",
 			"step1": "Voeg je domein toe (bijv. links.voorbeeld.nl)",

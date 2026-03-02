@@ -798,7 +798,7 @@
 		},
 		"domains": {
 			"title": "Eigene Domains",
-			"description": "Verwende deine eigene Domain für dynamische QR Codes. Eine Anleitung findest du in unserer <link>Dokumentation</link>.",
+			"description": "Verwende deine eigene Subdomain für dynamische QR Codes. Eine Anleitung findest du in unserer <link>Dokumentation</link>.",
 			"backToCollection": "Zurück zur Sammlung",
 			"howItWorks": "So funktioniert's",
 			"step1": "Füge deine Domain hinzu (z.B. links.beispiel.de)",
