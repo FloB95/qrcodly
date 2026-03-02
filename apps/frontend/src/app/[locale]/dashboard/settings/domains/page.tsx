@@ -2,6 +2,7 @@
 
 import { AddCustomDomainDialog, CustomDomainList } from '@/components/dashboard/custom-domain';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { ProPlanRequiredBadge } from '@/components/ProPlanRequiredBadge';
@@ -23,7 +24,19 @@ export default function Page() {
 							<div>
 								<CardTitle className="mb-0.5">{t('title')}</CardTitle>
 								<CardDescription>
-									<div>{t('description')}</div>
+									<div>
+										{t.rich('description', {
+											link: (chunks) => (
+												<Link
+													href="/docs/guides/custom-domains"
+													target="_blank"
+													className="underline hover:text-foreground"
+												>
+													{chunks}
+												</Link>
+											),
+										})}
+									</div>
 								</CardDescription>
 							</div>
 						</div>

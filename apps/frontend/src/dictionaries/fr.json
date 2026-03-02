@@ -802,7 +802,7 @@
 		},
 		"domains": {
 			"title": "Domaines Personnalisés",
-			"description": "Utilisez votre propre domaine pour les codes QR dynamiques",
+			"description": "Utilisez votre propre domaine pour les codes QR dynamiques. Pour les instructions de configuration, consultez notre <link>documentation</link>.",
 			"backToCollection": "Retour à la Collection",
 			"howItWorks": "Comment ça marche",
 			"step1": "Ajoutez votre domaine (ex., liens.exemple.com)",
