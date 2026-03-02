@@ -20,10 +20,6 @@ import { svgToBase64 } from '@/lib/utils';
 import type { TColorOrGradient } from '@shared/schemas';
 import { Input } from '@/components/ui/input';
 
-/* ------------------------------------------------------------------ */
-/* Custom Social Icons                                                 */
-/* ------------------------------------------------------------------ */
-
 const CUSTOM_ICONS = [
 	{ key: 'instagram', src: '/social-logos/instagram.svg' },
 	{ key: 'whatsapp', src: '/social-logos/whatsapp.svg' },
@@ -39,17 +35,9 @@ const CUSTOM_ICONS = [
 	{ key: 'patreon', src: '/social-logos/patreon.svg' },
 ] as const;
 
-/* ------------------------------------------------------------------ */
-/* Types                                                              */
-/* ------------------------------------------------------------------ */
-
 type PickerIcon =
 	| { type: 'hero'; key: keyof typeof Icons }
 	| { type: 'custom'; key: string; src: string };
-
-/* ------------------------------------------------------------------ */
-/* ALL_ICONS - Module scope to prevent recreation on every render     */
-/* ------------------------------------------------------------------ */
 
 const ALL_ICONS: PickerIcon[] = [
 	...CUSTOM_ICONS.map((icon) => ({
@@ -67,40 +55,27 @@ interface IconPickerProps {
 	onSelect: (iconBase64?: string) => void;
 }
 
-/* ------------------------------------------------------------------ */
-/* Helpers                                                            */
-/* ------------------------------------------------------------------ */
-
 const fetchSvgAsBase64 = async (src: string, color: string): Promise<string | undefined> => {
 	try {
 		const res = await fetch(src);
 
 		if (!res.ok) {
-			console.error(`Failed to fetch SVG: ${res.status} ${res.statusText}`);
 			return undefined;
 		}
 
 		let svg = await res.text();
 
-		// Validate that we got SVG content
 		if (!svg.trim().startsWith('<svg')) {
-			console.error('Invalid SVG content received');
 			return undefined;
 		}
 
-		// Enable color control if SVG uses currentColor
 		svg = svg.replace(/currentColor/g, color);
 
 		return svgToBase64(svg);
-	} catch (error) {
-		console.error('Error fetching or processing SVG:', error);
+	} catch {
 		return undefined;
 	}
 };
-
-/* ------------------------------------------------------------------ */
-/* Component                                                          */
-/* ------------------------------------------------------------------ */
 
 const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 	const t = useTranslations('contentElements.iconPicker');
@@ -112,10 +87,6 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 		type: 'hex',
 		value: '#000000',
 	});
-
-	/* ------------------------------------------------------------------ */
-	/* Icon Selection                                                     */
-	/* ------------------------------------------------------------------ */
 
 	const handleIconClick = useCallback(
 		async (icon?: PickerIcon) => {
@@ -154,7 +125,6 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 		[color, onSelect],
 	);
 
-	/* Re-apply color when color changes */
 	useEffect(() => {
 		if (!selectedIcon) return;
 
@@ -164,18 +134,10 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 		}
 	}, [color, selectedIcon]);
 
-	/* ------------------------------------------------------------------ */
-	/* Filter                                                            */
-	/* ------------------------------------------------------------------ */
-
 	const filteredIcons = useMemo(
 		() => ALL_ICONS.filter((icon) => icon.key.toLowerCase().includes(searchTerm.toLowerCase())),
 		[searchTerm],
 	);
-
-	/* ------------------------------------------------------------------ */
-	/* Render                                                            */
-	/* ------------------------------------------------------------------ */
 
 	return (
 		<Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>

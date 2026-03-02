@@ -37,7 +37,7 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	};
 
 	const form = useForm<FormValues>({
-		// @ts-ignore
+		// @ts-expect-error VCardInputSchema has optional fields that conflict with resolver generic
 		resolver: zodResolver(VCardInputSchema),
 		defaultValues,
 		shouldFocusError: false,

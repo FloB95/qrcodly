@@ -71,9 +71,7 @@ const CreateTemplateSaveSection = ({ onClose }: { onClose: () => void }) => {
 						},
 					},
 				);
-			} catch (error) {
-				console.error(error);
-			}
+			} catch {}
 		},
 		[config, createMutation, onClose, t],
 	);
@@ -109,7 +107,6 @@ export const CreateTemplateDialog = ({ open, onOpenChange }: CreateTemplateDialo
 	const t = useTranslations('collection');
 	const [providerKey, setProviderKey] = useState(0);
 
-	// Reset store when dialog opens
 	useEffect(() => {
 		if (open) {
 			setProviderKey((k) => k + 1);

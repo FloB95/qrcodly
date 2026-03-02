@@ -63,8 +63,7 @@ export function useQrCodeActionHandlers(qr: TQrCodeWithRelationsResponseDto) {
 				try {
 					const base64 = await fetchImageAsBase64(qr.config.image);
 					configToSave = { ...qr.config, image: base64 };
-				} catch (imageError) {
-					console.error('Failed to convert image to base64:', imageError);
+				} catch {
 					configToSave = { ...qr.config, image: undefined };
 				}
 			}
@@ -119,9 +118,7 @@ export function useQrCodeActionHandlers(qr: TQrCodeWithRelationsResponseDto) {
 					},
 				},
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch {}
 	};
 
 	const showContentFileDownload = qr.content.type === 'vCard' || qr.content.type === 'event';

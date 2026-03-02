@@ -74,9 +74,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 					},
 				},
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch {}
 	};
 
 	const isDisabled =
@@ -93,7 +91,6 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 						isLoading={createConfigTemplateMutation.isPending}
 						onClick={() => {
 							if (!isSignedIn) {
-								// Store the config in localStorage before prompting login
 								safeLocalStorage.setItem('unsavedQrConfig', JSON.stringify(config));
 								setAlertOpen(true);
 								return;

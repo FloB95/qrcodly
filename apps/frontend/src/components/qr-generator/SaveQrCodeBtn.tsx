@@ -106,9 +106,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 					},
 				},
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch {}
 	};
 
 	const isDisabled =
@@ -126,7 +124,6 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 						isLoading={createQrCodeMutation.isPending}
 						onClick={() => {
 							if (!isSignedIn) {
-								// Store the config in localStorage before prompting login
 								safeLocalStorage.setItem('unsavedQrContent', JSON.stringify(qrCode.content));
 								safeLocalStorage.setItem('unsavedQrConfig', JSON.stringify(qrCode.config));
 								setAlertOpen(true);

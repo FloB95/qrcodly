@@ -9,7 +9,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
 	const page = source.getPage(params.slug);
 	if (!page) notFound();
 
-	// @ts-ignore
+	// @ts-expect-error fumadocs page.data types not fully compatible
 	if (page.data.type === 'openapi') {
 		const { APIPage } = await import('@/components/docs/api-page');
 		return (
@@ -17,18 +17,16 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
 				<h1 className="text-[1.75em] font-semibold">{page.data.title}</h1>
 
 				<DocsBody>
-					{/* @ts-ignore */}
+					{/* @ts-expect-error fumadocs APIPage props type mismatch */}
 					<APIPage {...page.data.getAPIPageProps()} />
 				</DocsBody>
 			</DocsPage>
 		);
 	}
 
-	// @ts-ignore
 	const MDX = page.data.body;
 
 	return (
-		// @ts-ignore
 		<DocsPage full={page.data.full}>
 			<DocsTitle>{page.data.title}</DocsTitle>
 			<DocsDescription>{page.data.description}</DocsDescription>
@@ -36,7 +34,6 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
 				<MDX
 					components={getMDXComponents({
 						// this allows you to link to other pages with relative file paths
-						// @ts-ignore
 						a: createRelativeLink(source, page),
 					})}
 				/>

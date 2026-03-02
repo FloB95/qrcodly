@@ -6,10 +6,9 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { UAParser } from 'ua-parser-js';
 
 export async function processAnalyticsAndRedirect(req: NextRequest) {
-	// Extract data from headers
 	const headers = req.headers;
 	const rawHostname = headers.get('host') ?? '';
-	const cleanedHostname = rawHostname.split(':')[0]; // Remove the port if present
+	const cleanedHostname = rawHostname.split(':')[0];
 	const hostnameRegex =
 		/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
 	const hostname =
@@ -38,10 +37,8 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		},
 	};
 
-	// Extract short URL code from the request URL
 	const urlCode = new URL(req.url).pathname.split('/').pop();
 	if (!urlCode) {
-		console.error('No URL code found in the request URL');
 		return NextResponse.rewrite(new URL('/404', req.url));
 	}
 
@@ -71,7 +68,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 	}
 
 	try {
-		const res = await fetch(`${env.UMAMI_API_HOST}/api/send`, {
+		await fetch(`${env.UMAMI_API_HOST}/api/send`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -79,27 +76,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 			},
 			body: JSON.stringify(payload),
 		});
-
-		if (!res.ok) {
-			// Attempt to parse the response as JSON
-			const contentType = res.headers.get('content-type');
-			if (contentType?.includes('application/json')) {
-				const jsonResponse = (await res.json()) as Record<string, unknown>;
-				console.error('Response Analytics API:', {
-					error: jsonResponse,
-					body: payload,
-				});
-			} else {
-				const textResponse = await res.text();
-				console.error('Response Analytics API:', {
-					error: textResponse,
-					body: payload,
-				});
-			}
-		}
-	} catch (error) {
-		console.error('Error sending request to logger:', error);
-	}
+	} catch {}
 
 	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}/clear-views-cache`, {
 		method: 'POST',

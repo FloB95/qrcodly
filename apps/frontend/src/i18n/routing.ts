@@ -10,14 +10,11 @@ export const routing = defineRouting({
 	localePrefix: 'as-needed',
 });
 
-// Registering locales for i18n-iso-countries
 SUPPORTED_LANGUAGES.forEach((lang) => {
 	import(`i18n-iso-countries/langs/${lang}.json`)
 		.then((module) => {
 			const locale = module as { default: LocaleData };
 			registerLocale(locale.default);
 		})
-		.catch((error) => {
-			console.error(`Failed to load locale for language: ${lang}`, error);
-		});
+		.catch(() => {});
 });

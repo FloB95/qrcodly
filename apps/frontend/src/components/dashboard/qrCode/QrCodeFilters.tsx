@@ -74,18 +74,17 @@ export const QrCodeFilters = ({
 	const tTags = useTranslations('tags');
 	const tTable = useTranslations('qrCode.table');
 	const [searchValue, setSearchValue] = useState(filters.search ?? '');
-	const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-	const filtersRef = useRef(filters);
-	const onFiltersChangeRef = useRef(onFiltersChange);
+	const [debouncedSearch] = useDebouncedValue(searchValue, 400);
 	const [tagSearch, setTagSearch] = useState('');
 	const [debouncedTagSearch] = useDebouncedValue(tagSearch, 300);
 	const { data: tagsData } = useListTagsQuery(1, 50, debouncedTagSearch || undefined);
 	const allTags = tagsData?.data;
+	// Cache tag metadata so filter badges can still display tag names/colors
+	// even when those tags are filtered out of the current search results
 	const selectedTagsCacheRef = useRef<Map<string, { id: string; name: string; color: string }>>(
 		new Map(),
 	);
 
-	// Keep cache of selected tags so badges persist during tag search
 	useEffect(() => {
 		if (allTags) {
 			for (const tag of allTags) {
@@ -95,40 +94,19 @@ export const QrCodeFilters = ({
 	}, [allTags]);
 
 	useEffect(() => {
-		filtersRef.current = filters;
-	}, [filters]);
-	useEffect(() => {
-		onFiltersChangeRef.current = onFiltersChange;
-	}, [onFiltersChange]);
-
-	// Sync local searchValue when filters.search changes externally (e.g., URL-driven reset)
-	useEffect(() => {
 		const externalSearch = filters.search ?? '';
 		if (externalSearch !== searchValue.trim()) {
 			setSearchValue(externalSearch);
 		}
-		// Only react to external filter changes, not local searchValue edits
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filters.search]);
 
-	// Debounce search input
 	useEffect(() => {
-		if (debounceRef.current) {
-			clearTimeout(debounceRef.current);
+		const trimmed = debouncedSearch.trim();
+		if (trimmed !== (filters.search ?? '')) {
+			onFiltersChange({ ...filters, search: trimmed || undefined });
 		}
-		debounceRef.current = setTimeout(() => {
-			const trimmed = searchValue.trim();
-			if (trimmed !== (filtersRef.current.search ?? '')) {
-				onFiltersChangeRef.current({ ...filtersRef.current, search: trimmed || undefined });
-			}
-		}, 400);
-
-		return () => {
-			if (debounceRef.current) {
-				clearTimeout(debounceRef.current);
-			}
-		};
-	}, [searchValue]);
+	}, [debouncedSearch, filters, onFiltersChange]);
 
 	const handleContentTypeToggle = useCallback(
 		(type: TQrCodeContentType) => {
@@ -302,17 +280,7 @@ export const QrCodeFilters = ({
 														: 'border-muted-foreground/30',
 												)}
 											>
-												{isSelected && (
-													<svg
-														className="h-3 w-3"
-														fill="none"
-														viewBox="0 0 24 24"
-														stroke="currentColor"
-														strokeWidth={3}
-													>
-														<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-													</svg>
-												)}
+												{isSelected && <CheckIcon className="h-3 w-3" />}
 											</div>
 											<div
 												className="size-3 rounded-full shrink-0"

@@ -28,7 +28,6 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const { latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
 	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
 
-	// Check if valid changes were made by comparing current state with original
 	const hasValidChanges =
 		Object.keys(objDiff(qrCode.content, latestQrCode?.content)).length > 0 ||
 		Object.keys(objDiff(qrCode.config, latestQrCode?.config)).length > 0 ||
@@ -59,7 +58,6 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 							duration: 5000,
 						});
 
-						// Update latestQrCode to reflect the new saved state
 						updateLatestQrCode({
 							name: qrCode.name,
 							config: qrCode.config,
@@ -107,9 +105,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 					},
 				},
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch {}
 	};
 
 	return (

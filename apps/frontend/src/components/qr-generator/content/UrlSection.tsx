@@ -1,6 +1,6 @@
 'use client';
 
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
@@ -12,7 +12,6 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { useEffect, useState } from 'react';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
 import { useTranslations } from 'next-intl';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
@@ -30,7 +29,6 @@ type TUrlSectionProps = {
 const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
-	const [originalUrl, setOriginalUrl] = useState<string | null>(null);
 	const { lastError } = useQrCodeGeneratorStore((state) => state);
 
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
@@ -41,62 +39,51 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 			isEditable: value?.isEditable ?? true,
 		},
 	});
-	const [debounced] = useDebouncedValue<string | null>(originalUrl, 500);
 
-	function onSubmit(values: FormValues) {
-		if (!originalUrl) return;
-		const payload = {
-			...values,
-			url: originalUrl,
-			shortUrl: shortUrl ? createLinkFromShortUrl(shortUrl) : null,
-		};
-
-		onChange(payload);
-	}
+	// Debounce URL input so onChange only fires after the user stops typing.
+	// form.handleSubmit validates before calling onChange to prevent invalid URLs.
+	const watchedUrl = form.watch('url');
+	const [debouncedUrl] = useDebouncedValue(watchedUrl, 500);
 
 	useEffect(() => {
-		if (lastError?.fieldErrors) {
-			lastError.fieldErrors.forEach((e) => {
-				if (e.path.length === 0) return;
-				form.setError(e.path[e.path.length - 1] as any, {
-					message: e.message,
-				});
-			});
+		if (!debouncedUrl || debouncedUrl === value?.url) return;
+		void form.handleSubmit((values) => {
+			const payload = {
+				...values,
+				url: debouncedUrl,
+				shortUrl: shortUrl ? createLinkFromShortUrl(shortUrl) : null,
+			};
+			onChange(payload);
+		})();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [debouncedUrl]);
+
+	// Sync form fields when parent provides new values (e.g. loading a saved QR code)
+	useEffect(() => {
+		if (value?.url !== undefined && value.url !== form.getValues('url')) {
+			form.setValue('url', value.url, { shouldValidate: false });
 		}
-	}, [lastError]);
-
-	useEffect(() => {
-		if (
-			JSON.stringify(debounced) === '{}' ||
-			JSON.stringify(debounced) === JSON.stringify(value?.url) ||
-			debounced === null
-		) {
-			return;
-		}
-
-		void form.handleSubmit(onSubmit)();
-	}, [debounced]);
-
-	useEffect(() => {
-		form.reset();
-		setOriginalUrl(null);
-	}, [shortUrl]);
-
-	useEffect(() => {
-		if (value?.url) {
-			setOriginalUrl(value.url);
-		}
-	}, [value]);
-
-	useEffect(() => {
 		if (value?.isEditable !== undefined && value.isEditable !== form.getValues('isEditable')) {
 			form.setValue('isEditable', value.isEditable, { shouldValidate: false });
 		}
-	}, [value?.isEditable]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [value?.url, value?.isEditable, shortUrl]);
+
+	// Surface server-side validation errors (e.g. duplicate URL) in the form
+	useEffect(() => {
+		if (!lastError?.fieldErrors) return;
+		lastError.fieldErrors.forEach((e) => {
+			if (e.path.length === 0) return;
+			form.setError(e.path[e.path.length - 1] as any, {
+				message: e.message,
+			});
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [lastError]);
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+			<form onSubmit={form.handleSubmit(() => {})} className="space-y-8">
 				<FormField
 					control={form.control}
 					name="url"
@@ -110,12 +97,6 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 							<FormControl>
 								<Input
 									{...field}
-									value={originalUrl ?? field.value}
-									onChange={(e) => {
-										const val = e.target.value;
-										setOriginalUrl(val);
-										field.onChange(val);
-									}}
 									maxLength={1000}
 									placeholder={t('placeholder')}
 									onBlur={(e) => {
@@ -124,9 +105,7 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 											!e.target.value.startsWith('http://') &&
 											!e.target.value.startsWith('https://')
 										) {
-											const withHttps = `https://${e.target.value}`;
-											setOriginalUrl(withHttps);
-											field.onChange(withHttps);
+											field.onChange(`https://${e.target.value}`);
 										}
 									}}
 								/>
@@ -140,12 +119,10 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	);
 };
 
-// Custom equality function to prevent unnecessary re-renders
 function areUrlPropsEqual(prev: TUrlSectionProps, next: TUrlSectionProps) {
 	return (
 		JSON.stringify(prev.value) === JSON.stringify(next.value) && prev.onChange === next.onChange
 	);
 }
 
-// Export memoized component
 export const UrlSection = memo(_UrlSection, areUrlPropsEqual);

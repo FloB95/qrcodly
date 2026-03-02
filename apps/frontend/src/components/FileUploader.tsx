@@ -51,9 +51,7 @@ export const FileUploader = ({ value, onValueChange, maxFiles = 1, accept }: Fil
 				});
 
 				await Promise.all(uploadPromises);
-			} catch (error) {
-				console.error('Unexpected error during upload:', error);
-			}
+			} catch {}
 		},
 		[],
 	);
@@ -78,7 +76,7 @@ export const FileUploader = ({ value, onValueChange, maxFiles = 1, accept }: Fil
 			maxFiles={maxFiles}
 			accept={accept}
 			className="w-full"
-			maxSize={2 * 1024 * 1024} // 2MB
+			maxSize={2 * 1024 * 1024}
 		>
 			<FileUploadDropzone>
 				<div className="flex flex-col items-center gap-1 text-center">

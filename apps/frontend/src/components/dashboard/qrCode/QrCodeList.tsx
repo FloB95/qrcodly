@@ -2,7 +2,7 @@
 
 import { QrCodeListItem, SkeletonListItem } from './ListItem';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '../../ui/table';
-import { useListQrCodesQuery, type QrCodeFilters as QrCodeFiltersType } from '@/lib/api/qr-code';
+import { useListQrCodesQuery } from '@/lib/api/qr-code';
 import { QrCodeFilters } from './QrCodeFilters';
 import { useTranslations } from 'next-intl';
 import {
@@ -14,9 +14,8 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from '../../ui/pagination';
-import { useState, useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import { cn, getPageNumbers } from '@/lib/utils';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useQrCodeColumnVisibility } from './hooks/useQrCodeColumnVisibility';
 import {
 	Empty,
@@ -30,59 +29,43 @@ import { PlusIcon, QrCodeIcon } from '@heroicons/react/24/outline';
 import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 import type { TQrCodeContentType } from '@shared/schemas';
+import { useUrlPaginationSync } from '@/hooks/use-url-pagination-sync';
 
 type QrCodeListProps = {
 	onBulkImport?: (contentType: TQrCodeContentType) => void;
 	onBulkExport?: () => void;
 };
 
+const QrCodeTableHeader = ({
+	isVisible,
+}: {
+	isVisible: (col: 'content' | 'status' | 'scans' | 'created' | 'tags') => boolean;
+}) => {
+	const t = useTranslations('qrCode.table');
+	return (
+		<TableHeader className="bg-muted sticky top-0 z-10">
+			<TableRow>
+				<TableHead className="w-[60px]">{t('preview')}</TableHead>
+				<TableHead className="pl-[calc(1rem+18px+0.5rem)]">{t('name')}</TableHead>
+				{isVisible('content') && (
+					<TableHead className="hidden lg:table-cell">{t('content')}</TableHead>
+				)}
+				{isVisible('status') && <TableHead>{t('status')}</TableHead>}
+				{isVisible('scans') && <TableHead>{t('scans')}</TableHead>}
+				{isVisible('created') && (
+					<TableHead className="hidden md:table-cell">{t('created')}</TableHead>
+				)}
+				<TableHead className="w-[60px]" />
+			</TableRow>
+		</TableHeader>
+	);
+};
+
 export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 	const t = useTranslations();
-	const router = useRouter();
-	const searchParams = useSearchParams();
-	const pathname = usePathname();
-
-	const pageParam = Number(searchParams.get('page')) || 1;
-	const tagParam = searchParams.get('tag');
-	const [currentPage, setCurrentPage] = useState(pageParam);
-	const [currentLimit] = useState(10);
-	const [filters, setFilters] = useState<QrCodeFiltersType>(() => ({
-		tagIds: tagParam ? [tagParam] : undefined,
-	}));
+	const { currentPage, filters, handleFiltersChange, handlePageChange } = useUrlPaginationSync();
+	const currentLimit = 10;
 	const { visibility, toggleColumn, isVisible } = useQrCodeColumnVisibility();
-
-	// Keep currentPage in sync with URL
-	useEffect(() => {
-		// Skip if URL already reflects the current page (prevents infinite loop)
-		const pageInUrl = Number(searchParams.get('page')) || 1;
-		if (pageInUrl === currentPage) return;
-
-		const params = new URLSearchParams(searchParams.toString());
-		if (currentPage === 1) {
-			params.delete('page');
-		} else {
-			params.set('page', String(currentPage));
-		}
-		const search = params.toString();
-		router.replace(pathname + (search ? '?' + search : ''), { scroll: false });
-	}, [currentPage, pathname, router, searchParams]);
-
-	// If the URL changes (e.g., via back/forward), update currentPage and tag filter
-	useEffect(() => {
-		if (pageParam !== currentPage) {
-			setCurrentPage(pageParam);
-		}
-	}, [pageParam]);
-
-	useEffect(() => {
-		setFilters(tagParam ? { tagIds: [tagParam] } : {});
-		setCurrentPage(1);
-	}, [tagParam]);
-
-	const handleFiltersChange = (newFilters: QrCodeFiltersType) => {
-		setFilters(newFilters);
-		setCurrentPage(1);
-	};
 
 	const {
 		data: qrCodes,
@@ -95,33 +78,11 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 		[qrCodes, currentLimit],
 	);
 
-	const handlePageChange = (page: number) => {
-		if (page !== currentPage && page >= 1 && page <= totalPages) {
-			setCurrentPage(page);
-		}
-	};
-
 	if (isLoading || !qrCodes) {
 		return (
 			<div className="overflow-hidden rounded-lg border">
 				<Table>
-					<TableHeader className="bg-muted sticky top-0 z-10">
-						<TableRow>
-							<TableHead className="w-[60px]">{t('qrCode.table.preview')}</TableHead>
-							<TableHead className="pl-[calc(1rem+18px+0.5rem)]">
-								{t('qrCode.table.name')}
-							</TableHead>
-							{isVisible('content') && (
-								<TableHead className="hidden lg:table-cell">{t('qrCode.table.content')}</TableHead>
-							)}
-							{isVisible('status') && <TableHead>{t('qrCode.table.status')}</TableHead>}
-							{isVisible('scans') && <TableHead>{t('qrCode.table.scans')}</TableHead>}
-							{isVisible('created') && (
-								<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
-							)}
-							<TableHead className="w-[60px]" />
-						</TableRow>
-					</TableHeader>
+					<QrCodeTableHeader isVisible={isVisible} />
 					<TableBody>
 						{Array.from({ length: 5 }).map((_, idx) => (
 							<SkeletonListItem key={idx} visibility={visibility} />
@@ -184,23 +145,7 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 			/>
 			<div className="overflow-hidden rounded-lg border">
 				<Table>
-					<TableHeader className="bg-muted sticky top-0 z-10">
-						<TableRow>
-							<TableHead className="w-[60px]">{t('qrCode.table.preview')}</TableHead>
-							<TableHead className="pl-[calc(1rem+18px+0.5rem)]">
-								{t('qrCode.table.name')}
-							</TableHead>
-							{isVisible('content') && (
-								<TableHead className="hidden lg:table-cell">{t('qrCode.table.content')}</TableHead>
-							)}
-							{isVisible('status') && <TableHead>{t('qrCode.table.status')}</TableHead>}
-							{isVisible('scans') && <TableHead>{t('qrCode.table.scans')}</TableHead>}
-							{isVisible('created') && (
-								<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
-							)}
-							<TableHead className="w-[60px]" />
-						</TableRow>
-					</TableHeader>
+					<QrCodeTableHeader isVisible={isVisible} />
 					<TableBody>
 						{isFetching
 							? (qrCodes.data.length > 0 ? qrCodes.data : Array.from({ length: 5 })).map(
@@ -217,7 +162,11 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 					<PaginationContent>
 						<PaginationItem>
 							<PaginationPrevious
-								onClick={currentPage === 1 ? undefined : () => handlePageChange(currentPage - 1)}
+								onClick={
+									currentPage === 1
+										? undefined
+										: () => handlePageChange(currentPage - 1, totalPages)
+								}
 								aria-disabled={currentPage === 1}
 								tabIndex={currentPage === 1 ? -1 : 0}
 								className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
@@ -227,7 +176,7 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 							<PaginationItem key={pageNumber}>
 								<PaginationLink
 									isActive={currentPage === pageNumber}
-									onClick={() => handlePageChange(pageNumber)}
+									onClick={() => handlePageChange(pageNumber, totalPages)}
 								>
 									{pageNumber}
 								</PaginationLink>
@@ -242,7 +191,9 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 							<PaginationNext
 								href="#"
 								onClick={
-									currentPage === totalPages ? undefined : () => handlePageChange(currentPage + 1)
+									currentPage === totalPages
+										? undefined
+										: () => handlePageChange(currentPage + 1, totalPages)
 								}
 								aria-disabled={currentPage === totalPages}
 								tabIndex={currentPage === totalPages ? -1 : 0}

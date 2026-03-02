@@ -13,7 +13,6 @@ import { apiRequest } from '../utils';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import type { ApiError } from './ApiError';
 
-// Define query keys
 export const qrCodeQueryKeys = {
 	listQrCodes: ['listQrCodes'],
 } as const;
@@ -24,7 +23,6 @@ export type QrCodeFilters = {
 	tagIds?: string[];
 };
 
-// Standalone fetch for a single page of QR codes (used by hook and export)
 export async function fetchQrCodesPage(
 	token: string | null,
 	page: number,
@@ -56,7 +54,6 @@ export async function fetchQrCodesPage(
 	);
 }
 
-// Hook to fetch QR codes
 export function useListQrCodesQuery(page = 1, limit = 10, filters?: QrCodeFilters) {
 	const { getToken } = useAuth();
 
@@ -68,12 +65,11 @@ export function useListQrCodesQuery(page = 1, limit = 10, filters?: QrCodeFilter
 		},
 		placeholderData: keepPreviousData,
 		refetchOnWindowFocus: false,
-		staleTime: 5 * 60 * 1000, // 5 minutes
+		staleTime: 5 * 60 * 1000,
 		retry: 2,
 	});
 }
 
-// Function to create a QR code
 export function useCreateQrCodeMutation() {
 	const queryClient = useQueryClient();
 	const { updateLastError } = useQrCodeGeneratorStore((state) => state);
@@ -95,7 +91,6 @@ export function useCreateQrCodeMutation() {
 			});
 		},
 		onSuccess: () => {
-			// Invalidate the 'listQrCodes' query to refetch the updated data
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
@@ -139,7 +134,6 @@ export function useBulkCreateQrCodeMutation() {
 	});
 }
 
-// Function to update a QR code
 export function useUpdateQrCodeMutation() {
 	const queryClient = useQueryClient();
 	const { getToken } = useAuth();
@@ -164,18 +158,14 @@ export function useUpdateQrCodeMutation() {
 			});
 		},
 		onSuccess: () => {
-			// Invalidate the 'listQrCodes' query to refetch the updated data
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
-		onError: (error) => {
-			console.error('Error updating QR code:', error);
-		},
+		onError: () => {},
 	});
 }
 
-// Function to delete a QR code
 export function useDeleteQrCodeMutation() {
 	const queryClient = useQueryClient();
 	const { getToken } = useAuth();
@@ -192,13 +182,10 @@ export function useDeleteQrCodeMutation() {
 			});
 		},
 		onSuccess: () => {
-			// Invalidate the 'listQrCodes' query to refetch the updated data
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
-		onError: (error) => {
-			console.error('Error deleting QR code:', error);
-		},
+		onError: () => {},
 	});
 }

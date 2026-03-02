@@ -120,9 +120,7 @@ export const TemplateListItem = ({
 				id: template.id,
 				templateName: template.name,
 			});
-		} catch (error) {
-			console.error('Failed to convert image to base64:', error);
-		}
+		} catch {}
 		safeLocalStorage.setItem('unsavedQrConfig', JSON.stringify(configToSave));
 		router.push('/');
 	}, []);
@@ -130,7 +128,6 @@ export const TemplateListItem = ({
 	return (
 		<>
 			<TableRow className={cn(isDeleting && 'opacity-50')}>
-				{/* Template Preview */}
 				<TableCell className="w-[72px] py-2 pr-2">
 					<HoverCard openDelay={200} closeDelay={100}>
 						<HoverCardTrigger asChild>
@@ -172,7 +169,6 @@ export const TemplateListItem = ({
 					</HoverCard>
 				</TableCell>
 
-				{/* Name */}
 				<TableCell className="py-2">
 					<div className="flex items-center gap-2 min-w-0">
 						<div
@@ -203,12 +199,10 @@ export const TemplateListItem = ({
 					</div>
 				</TableCell>
 
-				{/* Created Date */}
 				<TableCell className="hidden md:table-cell py-2 text-sm text-muted-foreground">
 					{formatDate(template.createdAt)}
 				</TableCell>
 
-				{/* Actions */}
 				<TableCell className="w-[60px] py-2">
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
