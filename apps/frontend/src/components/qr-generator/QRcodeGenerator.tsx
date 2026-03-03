@@ -156,7 +156,11 @@ export const QRcodeGenerator = ({
 							)}
 
 							<TabsContent value="content">
-								<ContentSwitch hiddenTabs={hiddenContentTypes} isEditMode={isEditMode} />
+								<ContentSwitch
+									hiddenTabs={hiddenContentTypes}
+									isEditMode={isEditMode}
+									compact={compact}
+								/>
 							</TabsContent>
 
 							<TabsContent value="style">

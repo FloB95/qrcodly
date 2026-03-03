@@ -8,14 +8,16 @@
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"types": [],
-		"ignoreDeprecations": "6.0",
+		"types": ["chrome", "vite/client"],
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"],
+			"@/env": ["./src/shims/env.ts"],
+			"@/i18n/routing": ["./src/shims/i18n-routing.ts"],
+			"@/i18n/navigation": ["./src/shims/i18n-navigation.ts"],
+			"@/*": ["./../frontend/src/*"],
+			"@ext/*": ["./src/*"],
 			"@shared/schemas": ["./../../packages/shared/src"],
-			"@shared/schemas/*": ["./../../packages/shared/src/*"],
-			"@frontend/*": ["./../frontend/src/*"]
+			"@shared/schemas/*": ["./../../packages/shared/src/*"]
 		}
 	},
 	"include": ["src"]
