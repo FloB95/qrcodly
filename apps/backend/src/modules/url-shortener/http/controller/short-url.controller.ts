@@ -21,6 +21,7 @@ import { TShortUrl } from '../../domain/entities/short-url.entity';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { KeyCache } from '@/core/cache';
 import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
+import { DispatchTrackingEventUseCase } from '@/modules/analytics-integration/useCase/dispatch-tracking-event.use-case';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -32,6 +33,8 @@ export class ShortUrlController extends AbstractController {
 		private readonly updateShortUrlUseCase: UpdateShortUrlUseCase,
 		@inject(UmamiAnalyticsService) private readonly umamiAnalyticsService: UmamiAnalyticsService,
 		@inject(KeyCache) private readonly keyCache: KeyCache,
+		@inject(DispatchTrackingEventUseCase)
+		private readonly dispatchTrackingEventUseCase: DispatchTrackingEventUseCase,
 	) {
 		super();
 	}
@@ -210,6 +213,47 @@ export class ShortUrlController extends AbstractController {
 		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto, unknown, false>,
 	): Promise<IHttpResponse<{ status: string }>> {
 		await this.keyCache.del(this.getViewsCacheKey(request.params.shortCode));
+		return this.makeApiHttpResponse(200, { status: 'ok' });
+	}
+
+	@Post('/:shortCode/track-scan', {
+		authHandler: internalApiAuthHandler,
+		schema: { hide: true },
+	})
+	async trackScan(
+		request: IHttpRequest<
+			{
+				url: string;
+				userAgent: string;
+				hostname: string;
+				language: string;
+				referrer: string;
+				ip: string;
+				deviceType: string;
+				browserName: string;
+			},
+			TGetShortUrlRequestQueryDto,
+			unknown,
+			false
+		>,
+	): Promise<IHttpResponse<{ status: string }>> {
+		const shortUrl = await this.shortUrlRepository.findOneByShortCode(request.params.shortCode);
+		if (!shortUrl || !shortUrl.createdBy) {
+			return this.makeApiHttpResponse(200, { status: 'ok' });
+		}
+
+		this.dispatchTrackingEventUseCase.execute({
+			userId: shortUrl.createdBy,
+			url: request.body.url,
+			userAgent: request.body.userAgent,
+			hostname: request.body.hostname,
+			language: request.body.language,
+			referrer: request.body.referrer,
+			ip: request.body.ip,
+			deviceType: request.body.deviceType,
+			browserName: request.body.browserName,
+		});
+
 		return this.makeApiHttpResponse(200, { status: 'ok' });
 	}
 

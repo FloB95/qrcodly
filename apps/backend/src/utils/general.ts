@@ -134,3 +134,29 @@ export const streamToBuffer = async (stream: Readable): Promise<Buffer> => {
 export const debugConsole = (object: object): void => {
 	console.log(util.inspect(object, { depth: null, colors: true }));
 };
+
+export function anonymizeIp(ip: string): string {
+	if (!ip) return ip;
+
+	// IPv4: zero last octet
+	if (ip.includes('.') && !ip.includes(':')) {
+		const parts = ip.split('.');
+		if (parts.length === 4) {
+			parts[3] = '0';
+			return parts.join('.');
+		}
+	}
+
+	// IPv6: zero last 80 bits (last 5 groups)
+	if (ip.includes(':')) {
+		const parts = ip.split(':');
+		if (parts.length >= 6) {
+			for (let i = Math.max(parts.length - 5, 0); i < parts.length; i++) {
+				parts[i] = '0';
+			}
+			return parts.join(':');
+		}
+	}
+
+	return ip;
+}

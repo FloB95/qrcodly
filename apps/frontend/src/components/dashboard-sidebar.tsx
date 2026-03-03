@@ -25,6 +25,7 @@ import {
 	CodeBracketIcon,
 	CreditCardIcon,
 	GlobeAltIcon,
+	PuzzlePieceIcon,
 	QrCodeIcon,
 	ShieldCheckIcon,
 	StarIcon,
@@ -105,6 +106,11 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 			title: tSettings('domains'),
 			url: '/dashboard/settings/domains',
 			icon: GlobeAltIcon,
+		},
+		{
+			title: tSettings('integrations'),
+			url: '/dashboard/settings/integrations',
+			icon: PuzzlePieceIcon,
 		},
 	];
 

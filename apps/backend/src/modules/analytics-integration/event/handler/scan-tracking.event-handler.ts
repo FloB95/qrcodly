@@ -1,0 +1,99 @@
+import { EventHandler } from '@/core/decorators/event-handler.decorator';
+import { AbstractEventHandler } from '@/core/event/handler/abstract.event-handler';
+import { container } from 'tsyringe';
+import { Logger } from '@/core/logging';
+import { ScanTrackingEvent } from '../scan-tracking.event';
+import AnalyticsIntegrationRepository from '../../domain/repository/analytics-integration.repository';
+import { CredentialEncryptionService } from '../../service/credential-encryption.service';
+import { AnalyticsProviderRegistry } from '../../service/providers/analytics-provider.registry';
+import { MAX_CONSECUTIVE_FAILURES } from '../../config/constants';
+import { type IScanEventData } from '../../service/providers/analytics-provider.interface';
+
+@EventHandler(ScanTrackingEvent.eventName)
+export class ScanTrackingEventHandler extends AbstractEventHandler<ScanTrackingEvent> {
+	constructor() {
+		super();
+	}
+
+	async handle(event: ScanTrackingEvent): Promise<void> {
+		const logger = container.resolve(Logger);
+		const repository = container.resolve(AnalyticsIntegrationRepository);
+		const encryption = container.resolve(CredentialEncryptionService);
+		const providerRegistry = container.resolve(AnalyticsProviderRegistry);
+
+		let integrations;
+		try {
+			integrations = await repository.findEnabledByUserId(event.data.userId);
+		} catch (error) {
+			logger.error('analytics.integrations.fetch.failed', {
+				userId: event.data.userId,
+				error,
+			});
+			return;
+		}
+
+		if (integrations.length === 0) return;
+
+		const results = await Promise.allSettled(
+			integrations.map(async (integration) => {
+				try {
+					const credentials = encryption.decrypt(
+						integration.encryptedCredentials,
+						integration.encryptionIv,
+						integration.encryptionTag,
+					);
+
+					const eventData: IScanEventData = {
+						url: event.data.url,
+						userAgent: event.data.userAgent,
+						hostname: event.data.hostname,
+						language: event.data.language,
+						referrer: event.data.referrer,
+						ip: event.data.ip,
+						deviceType: event.data.deviceType,
+						browserName: event.data.browserName,
+					};
+
+					const provider = providerRegistry.getProvider(integration.providerType);
+					await provider.sendEvent(eventData, credentials);
+
+					// Reset failure counter on success
+					if (integration.consecutiveFailures > 0) {
+						await repository.update(integration, {
+							consecutiveFailures: 0,
+							lastError: null,
+							lastErrorAt: null,
+						});
+					}
+				} catch (error) {
+					const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+					const newFailureCount = integration.consecutiveFailures + 1;
+
+					await repository.update(integration, {
+						consecutiveFailures: newFailureCount,
+						lastError: errorMessage,
+						lastErrorAt: new Date(),
+						...(newFailureCount >= MAX_CONSECUTIVE_FAILURES ? { isEnabled: false } : {}),
+					});
+
+					logger.warn('analytics.provider.dispatch.failed', {
+						integrationId: integration.id,
+						providerType: integration.providerType,
+						consecutiveFailures: newFailureCount,
+						autoDisabled: newFailureCount >= MAX_CONSECUTIVE_FAILURES,
+						error: errorMessage,
+					});
+				}
+			}),
+		);
+
+		const failed = results.filter((r) => r.status === 'rejected').length;
+		if (failed > 0) {
+			logger.warn('analytics.dispatch.partial_failure', {
+				userId: event.data.userId,
+				total: integrations.length,
+				failed,
+			});
+		}
+	}
+}

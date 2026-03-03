@@ -155,6 +155,20 @@
 			"when": 1771979336119,
 			"tag": "0021_lucky_sunfire",
 			"breakpoints": true
+		},
+		{
+			"idx": 22,
+			"version": "5",
+			"when": 1772547983930,
+			"tag": "0022_far_emma_frost",
+			"breakpoints": true
+		},
+		{
+			"idx": 23,
+			"version": "5",
+			"when": 1772553671064,
+			"tag": "0023_aromatic_carlie_cooper",
+			"breakpoints": true
 		}
 	]
 }

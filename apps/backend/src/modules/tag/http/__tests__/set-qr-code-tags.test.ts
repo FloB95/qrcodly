@@ -1,6 +1,7 @@
 import { getTestContext } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { TAG_API_PATH, createTagRequest, createQrCodeForTest } from './utils';
+import { ensureProSubscription } from '@/tests/shared/helpers';
 
 describe('setQrCodeTags', () => {
 	let testServer: FastifyInstance;
@@ -24,6 +25,7 @@ describe('setQrCodeTags', () => {
 		accessToken = ctx.accessToken;
 		accessToken2 = ctx.accessToken2;
 		accessTokenPro = ctx.accessTokenPro;
+		await ensureProSubscription();
 	});
 
 	it('should set tags on a QR code', async () => {
@@ -141,12 +143,6 @@ describe('setQrCodeTags', () => {
 		const response = await setQrCodeTagsRequest(qrCode.id, accessTokenPro, {
 			tagIds: [tag1.id, tag2.id],
 		});
-
-		// If the pro user isn't configured as pro in Clerk, skip
-		if (response.statusCode === 403) {
-			console.log('Skipping pro tag test: Test user is not configured as pro in Clerk');
-			return;
-		}
 
 		expect(response.statusCode).toBe(200);
 		const tags = JSON.parse(response.payload);

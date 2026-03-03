@@ -7,6 +7,7 @@ import urlShortener from './url-shortener/setup';
 import customDomain from './custom-domain/setup';
 import tag from './tag/setup';
 import billing from './billing/setup';
+import analyticsIntegration from './analytics-integration/setup';
 
 const modules: FastifyPluginCallback = (fastify: FastifyInstance, _options, done) => {
 	fastify.register(qrCode);
@@ -15,6 +16,7 @@ const modules: FastifyPluginCallback = (fastify: FastifyInstance, _options, done
 	fastify.register(customDomain);
 	fastify.register(tag);
 	fastify.register(billing);
+	fastify.register(analyticsIntegration);
 	done();
 };
 
