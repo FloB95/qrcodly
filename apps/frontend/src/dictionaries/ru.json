@@ -987,6 +987,7 @@
 			"billingCycle": "Цикл Оплаты",
 			"perMonth": "месяц",
 			"billedAnnually": "Оплата ежегодно",
+			"billedMonthly": "Оплата ежемесячно",
 			"renewsOn": "Продление {date}",
 			"expiresOn": "Ваш план Pro истекает {date}",
 			"upgradeToPro": "Перейти на Pro",

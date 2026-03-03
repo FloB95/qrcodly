@@ -987,6 +987,7 @@
 			"billingCycle": "Billing Cycle",
 			"perMonth": "month",
 			"billedAnnually": "Billed annually",
+			"billedMonthly": "Billed monthly",
 			"renewsOn": "Renews on {date}",
 			"expiresOn": "Your Pro plan expires on {date}",
 			"upgradeToPro": "Upgrade to Pro",

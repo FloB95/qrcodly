@@ -987,6 +987,7 @@
 			"billingCycle": "Abrechnungszeitraum",
 			"perMonth": "Monat",
 			"billedAnnually": "Jährlich abgerechnet",
+			"billedMonthly": "Monatlich abgerechnet",
 			"renewsOn": "Verlängert sich am {date}",
 			"expiresOn": "Dein Pro-Abo läuft am {date} aus",
 			"upgradeToPro": "Auf Pro upgraden",

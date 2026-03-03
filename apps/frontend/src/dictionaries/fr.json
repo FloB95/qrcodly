@@ -991,6 +991,7 @@
 			"billingCycle": "Cycle de Facturation",
 			"perMonth": "mois",
 			"billedAnnually": "Facturé annuellement",
+			"billedMonthly": "Facturé mensuellement",
 			"renewsOn": "Renouvellement le {date}",
 			"expiresOn": "Votre plan Pro expire le {date}",
 			"upgradeToPro": "Passer à Pro",

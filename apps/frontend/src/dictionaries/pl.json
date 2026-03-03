@@ -987,6 +987,7 @@
 			"billingCycle": "Cykl Rozliczeniowy",
 			"perMonth": "miesiąc",
 			"billedAnnually": "Rozliczane rocznie",
+			"billedMonthly": "Rozliczane miesięcznie",
 			"renewsOn": "Odnawia się {date}",
 			"expiresOn": "Twój plan Pro wygasa {date}",
 			"upgradeToPro": "Przejdź na Pro",

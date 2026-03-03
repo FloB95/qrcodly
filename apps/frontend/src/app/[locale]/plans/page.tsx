@@ -19,7 +19,7 @@ const PLANS = [
 	{
 		slug: 'pro' as const,
 		priceMonthly: '4,99',
-		priceAnnual: '48,00',
+		priceAnnual: '4,00',
 	},
 ];
 

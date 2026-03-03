@@ -987,6 +987,7 @@
 			"billingCycle": "Factureringscyclus",
 			"perMonth": "maand",
 			"billedAnnually": "Jaarlijks gefactureerd",
+			"billedMonthly": "Maandelijks gefactureerd",
 			"renewsOn": "Vernieuwt op {date}",
 			"expiresOn": "Je Pro-plan verloopt op {date}",
 			"upgradeToPro": "Upgrade naar Pro",

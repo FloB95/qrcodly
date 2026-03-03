@@ -50,11 +50,10 @@ export function CurrentPlanSection() {
 	const isAnnualSubscription =
 		subscription?.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL;
 
-	const proPrice = selectedPeriod === 'annual' ? '48,00' : '4,99';
-	const priceSuffix = selectedPeriod === 'annual' ? tPlans('perYear') : tPlans('perMonth');
-
-	const currentProPrice = isAnnualSubscription ? '48,00' : '4,99';
-	const currentProPriceSuffix = isAnnualSubscription ? tPlans('perYear') : tPlans('perMonth');
+	const proPrice = selectedPeriod === 'annual' ? '4,00' : '4,99';
+	const billingNote = selectedPeriod === 'annual' ? t('billedAnnually') : t('billedMonthly');
+	const currentProPrice = isAnnualSubscription ? '4,00' : '4,99';
+	const currentBillingNote = isAnnualSubscription ? t('billedAnnually') : t('billedMonthly');
 
 	return (
 		<div className="grid gap-6 lg:grid-cols-2">
@@ -140,14 +139,17 @@ export function CurrentPlanSection() {
 						)}
 					</div>
 
-					<p className="flex items-baseline gap-x-2">
-						<span className="text-3xl lg:text-4xl font-semibold">
-							{hasProPlan ? currentProPrice : proPrice} &euro;
-						</span>
-						<span className="text-gray-400">
-							{hasProPlan ? currentProPriceSuffix : priceSuffix}
-						</span>
-					</p>
+					<div>
+						<p className="flex items-baseline gap-x-2">
+							<span className="text-3xl lg:text-4xl font-semibold">
+								{hasProPlan ? currentProPrice : proPrice} &euro;
+							</span>
+							<span className="text-gray-400">{tPlans('perMonth')}</span>
+						</p>
+						<p className="text-sm text-gray-400 mt-1">
+							{hasProPlan ? currentBillingNote : billingNote}
+						</p>
+					</div>
 
 					{!hasProPlan && (
 						<p className="text-sm font-medium text-gray-400">{tPlans('pro.description')}</p>
