@@ -22,10 +22,10 @@ export default function Page() {
 							</div>
 							<div>
 								<CardTitle className="mb-0.5">{t('title')}</CardTitle>
-								<CardDescription>{t('description')}</CardDescription>
+								<CardDescription className="lg:max-w-[80%]">{t('description')}</CardDescription>
 							</div>
 						</div>
-						<div>{!hasProPlan && <ProPlanRequiredBadge />}</div>
+						<div className="ml-[60px] sm:ml-0">{!hasProPlan && <ProPlanRequiredBadge />}</div>
 					</div>
 				</CardContent>
 			</Card>
