@@ -103,8 +103,6 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 		return callbacks;
 	}, [visibleTabs, handleContentUpdate]);
 
-	const ActiveIcon = activeTab?.icon;
-
 	return (
 		<Tabs
 			defaultValue={content.type}
