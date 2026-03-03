@@ -415,7 +415,16 @@
 				"title": "Observe limits",
 				"description": "You can create up to 15 QR codes at once with the CSV file. For more, you need the Pro plan."
 			},
-			"createButton": "Create QR codes"
+			"createButton": "Create QR codes",
+			"csvErrors": {
+				"title": "CSV errors found",
+				"description": "{count} error(s) found in your CSV file. Fix the issues and re-upload.",
+				"expectedFormat": "Expected format",
+				"delimiterHint": "Use semicolons (;) as column separators",
+				"lineHeader": "Line",
+				"retryButton": "Fix & Re-upload",
+				"backButton": "Back"
+			}
 		},
 		"settingsForm": {
 			"tabGeneral": "General",

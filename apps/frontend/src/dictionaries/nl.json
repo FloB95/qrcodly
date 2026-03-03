@@ -423,7 +423,16 @@
 				"title": "Houd rekening met limieten en inloggen",
 				"description": "Met het CSV-bestand kun je maximaal 15 QR-codes tegelijk maken. Voor meer heb je het Pro-plan nodig."
 			},
-			"createButton": "QR-codes maken"
+			"createButton": "QR-codes maken",
+			"csvErrors": {
+				"title": "CSV-fouten gevonden",
+				"description": "{count} fout(en) gevonden in je CSV-bestand. Los de problemen op en upload opnieuw.",
+				"expectedFormat": "Verwacht formaat",
+				"delimiterHint": "Gebruik puntkomma's (;) als kolomscheidingstekens",
+				"lineHeader": "Regel",
+				"retryButton": "Corrigeren & opnieuw uploaden",
+				"backButton": "Terug"
+			}
 		},
 		"settingsForm": {
 			"tabGeneral": "Algemeen",

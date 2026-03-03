@@ -423,7 +423,16 @@
 				"title": "Observa los límites y el inicio de sesión",
 				"description": "Con el archivo CSV puedes crear hasta 15 códigos QR a la vez. Para más, necesitas el plan Pro."
 			},
-			"createButton": "Crear códigos QR"
+			"createButton": "Crear códigos QR",
+			"csvErrors": {
+				"title": "Errores en el CSV",
+				"description": "Se encontraron {count} error(es) en tu archivo CSV. Corrige los problemas y vuelve a subir.",
+				"expectedFormat": "Formato esperado",
+				"delimiterHint": "Usa punto y coma (;) como separador de columnas",
+				"lineHeader": "Línea",
+				"retryButton": "Corregir y volver a subir",
+				"backButton": "Atrás"
+			}
 		},
 		"settingsForm": {
 			"tabGeneral": "General",

@@ -14,6 +14,8 @@ import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
 import { useState } from 'react';
 import type { ApiError } from '@/lib/api/ApiError';
+import { validateCsvFile, type CsvValidationResult } from '@/lib/csv-validation';
+import { CsvErrorDebugView } from './CsvErrorDebugView';
 import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
 import { useQueryClient } from '@tanstack/react-query';
@@ -29,6 +31,7 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [isUploaded, setIsUploaded] = useState(false);
+	const [csvErrors, setCsvErrors] = useState<CsvValidationResult | null>(null);
 	const { config, bulkMode, updateBulkMode } = useQrCodeGeneratorStore((state) => state);
 	const t = useTranslations();
 	const queryClient = useQueryClient();
@@ -159,7 +162,23 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 				)}
 			</AnimatePresence>
 
-			{!isUploaded && (
+			{!isUploaded && csvErrors && (
+				<CsvErrorDebugView
+					errors={csvErrors.errors}
+					expectedColumns={csvErrors.columns}
+					onRetry={() => {
+						setCsvErrors(null);
+						updateBulkMode(true, undefined);
+					}}
+					onBack={() => {
+						setCsvErrors(null);
+						updateBulkMode(false, undefined);
+						onComplete?.();
+					}}
+				/>
+			)}
+
+			{!isUploaded && !csvErrors && (
 				<>
 					<h3 className="font-semibold text-xl mb-4">
 						{t('generator.bulkImport.title', {
@@ -208,7 +227,18 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 
 						<FileUploader
 							value={bulkMode.file ? [bulkMode.file] : []}
-							onValueChange={(files) => updateBulkMode(true, files[0])}
+							onValueChange={async (files) => {
+								const file = files[0];
+								if (file) {
+									const result = await validateCsvFile(file, contentType);
+									if (result.errors.length > 0) {
+										setCsvErrors(result);
+										return;
+									}
+								}
+								setCsvErrors(null);
+								updateBulkMode(true, file);
+							}}
 							maxFiles={1}
 							accept="text/csv"
 						/>

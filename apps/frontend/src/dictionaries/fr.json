@@ -423,7 +423,16 @@
 				"title": "Respectez les limites et connectez-vous",
 				"description": "Avec le fichier CSV, vous pouvez créer jusqu'à 15 QR codes à la fois. Pour plus, vous avez besoin du plan Pro."
 			},
-			"createButton": "Créer les QR codes"
+			"createButton": "Créer les QR codes",
+			"csvErrors": {
+				"title": "Erreurs CSV trouvées",
+				"description": "{count} erreur(s) trouvée(s) dans votre fichier CSV. Corrigez les problèmes et rechargez.",
+				"expectedFormat": "Format attendu",
+				"delimiterHint": "Utilisez des points-virgules (;) comme séparateurs de colonnes",
+				"lineHeader": "Ligne",
+				"retryButton": "Corriger et recharger",
+				"backButton": "Retour"
+			}
 		},
 		"settingsForm": {
 			"tabGeneral": "Général",
