@@ -1,0 +1,1 @@
+ALTER TABLE `user_subscription` RENAME COLUMN `domains_disabled_at` TO `pro_features_disabled_at`;

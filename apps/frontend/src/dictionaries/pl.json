@@ -1163,7 +1163,9 @@
 			"deleteError": "Nie można usunąć integracji.",
 			"lastErrorTitle": "Ostatni błąd",
 			"autoDisabled": "Ta integracja została automatycznie wyłączona po 10 kolejnych błędach.",
-			"openMenu": "Otwórz menu"
+			"openMenu": "Otwórz menu",
+			"integrationDisabledTitle": "Integracja analityczna wyłączona",
+			"integrationDisabledDescription": "Twoja integracja analityczna została wyłączona, ponieważ Twój plan Pro wygasł. Odnów subskrypcję, aby ją ponownie włączyć."
 		}
 	},
 	"plans": {

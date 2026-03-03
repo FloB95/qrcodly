@@ -1163,7 +1163,9 @@
 			"deleteError": "Impossibile eliminare l'integrazione.",
 			"lastErrorTitle": "Ultimo errore",
 			"autoDisabled": "Questa integrazione è stata disattivata automaticamente dopo 10 errori consecutivi.",
-			"openMenu": "Apri menu"
+			"openMenu": "Apri menu",
+			"integrationDisabledTitle": "Integrazione analitica disattivata",
+			"integrationDisabledDescription": "La tua integrazione analitica è stata disattivata perché il tuo piano Pro è scaduto. Riabbonati per riattivarla."
 		}
 	},
 	"plans": {

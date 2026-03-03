@@ -5,6 +5,7 @@ import {
 	createIntegrationDirectly,
 	updateIntegrationViaApi,
 	findIntegrationById,
+	ensureProSubscription,
 	ANALYTICS_INTEGRATION_API_PATH,
 	TEST_USER_PRO_ID,
 	TEST_USER_ID,
@@ -17,6 +18,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 
 	beforeAll(async () => {
 		ctx = await getTestContext();
+		await ensureProSubscription();
 	});
 
 	afterEach(async () => {
@@ -100,6 +102,15 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 		const id = await createIntegrationDirectly(ctx, TEST_USER_PRO_ID);
 
 		const response = await updateIntegrationViaApi(ctx, id, { isEnabled: false }, ctx.accessToken2);
+
+		expect(response.statusCode).toBe(403);
+	});
+
+	it('should return 403 when user has no Pro plan', async () => {
+		// Create integration directly for the free user (bypassing API plan check)
+		const id = await createIntegrationDirectly(ctx, TEST_USER_ID);
+
+		const response = await updateIntegrationViaApi(ctx, id, { isEnabled: false }, ctx.accessToken);
 
 		expect(response.statusCode).toBe(403);
 	});

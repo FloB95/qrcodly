@@ -3,8 +3,10 @@ import {
 	cleanupCreatedIntegrations,
 	createIntegrationDirectly,
 	testIntegrationViaApi,
+	ensureProSubscription,
 	ANALYTICS_INTEGRATION_API_PATH,
 	TEST_USER_PRO_ID,
+	TEST_USER_ID,
 	type TestContext,
 } from './utils';
 import { randomUUID } from 'crypto';
@@ -14,6 +16,7 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 
 	beforeAll(async () => {
 		ctx = await getTestContext();
+		await ensureProSubscription();
 	});
 
 	afterEach(async () => {
@@ -34,7 +37,8 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 		expect(response.statusCode).toBe(200);
 
 		const result = JSON.parse(response.payload) as { valid: boolean };
-		// With fake credentials, GA4 debug endpoint should report invalid
+		// GA4 debug endpoint doesn't reliably reject fake measurement IDs,
+		// so we only verify the response shape, not the exact value
 		expect(typeof result.valid).toBe('boolean');
 	});
 
@@ -66,6 +70,14 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 		const id = await createIntegrationDirectly(ctx, TEST_USER_PRO_ID);
 
 		const response = await testIntegrationViaApi(ctx, id, ctx.accessToken2);
+
+		expect(response.statusCode).toBe(403);
+	});
+
+	it('should return 403 when user has no Pro plan', async () => {
+		const id = await createIntegrationDirectly(ctx, TEST_USER_ID);
+
+		const response = await testIntegrationViaApi(ctx, id, ctx.accessToken);
 
 		expect(response.statusCode).toBe(403);
 	});

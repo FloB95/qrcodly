@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
 	Dialog,
@@ -39,19 +39,27 @@ export function ConfigureIntegrationDialog({
 	const createMutation = useCreateAnalyticsIntegrationMutation();
 	const updateMutation = useUpdateAnalyticsIntegrationMutation();
 
-	// Pre-fill non-secret fields from displayIdentifier when editing
-	const parsedMatomo = existing?.displayIdentifier?.match(/^(.+) \(Site (.+)\)$/);
-
 	// GA4 fields
-	const [measurementId, setMeasurementId] = useState(
-		existing?.providerType === 'google_analytics' ? (existing.displayIdentifier ?? '') : '',
-	);
+	const [measurementId, setMeasurementId] = useState('');
 	const [apiSecret, setApiSecret] = useState('');
 
 	// Matomo fields
-	const [matomoUrl, setMatomoUrl] = useState(parsedMatomo?.[1] ?? '');
-	const [siteId, setSiteId] = useState(parsedMatomo?.[2] ?? '');
+	const [matomoUrl, setMatomoUrl] = useState('');
+	const [siteId, setSiteId] = useState('');
 	const [authToken, setAuthToken] = useState('');
+
+	// Reset form state when dialog opens or integration changes
+	useEffect(() => {
+		if (!open) return;
+		const parsedMatomo = existing?.displayIdentifier?.match(/^(.+) \(Site (.+)\)$/);
+		setMeasurementId(
+			existing?.providerType === 'google_analytics' ? (existing.displayIdentifier ?? '') : '',
+		);
+		setApiSecret('');
+		setMatomoUrl(parsedMatomo?.[1] ?? '');
+		setSiteId(parsedMatomo?.[2] ?? '');
+		setAuthToken('');
+	}, [open, existing, providerType]);
 
 	const isSubmitting = createMutation.isPending || updateMutation.isPending;
 

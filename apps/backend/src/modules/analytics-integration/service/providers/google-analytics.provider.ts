@@ -23,7 +23,10 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 			apiSecret: string;
 		};
 
-		const queryParams = `measurement_id=${measurementId}&api_secret=${apiSecret}`;
+		const queryParams = new URLSearchParams({
+			measurement_id: measurementId,
+			api_secret: apiSecret,
+		});
 		const payload = this.buildPayload(event);
 		const headers: Record<string, string> = {
 			'Content-Type': 'application/json',
@@ -51,7 +54,7 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 		}
 
 		// Step 2: Send to the real collect endpoint (only if validation passed)
-		const collectResponse = await fetch(`${this.GA_COLLECT_URL}?${queryParams}`, {
+		const collectResponse = await fetch(`${this.GA_COLLECT_URL}?${queryParams.toString()}`, {
 			method: 'POST',
 			headers,
 			body,
@@ -69,7 +72,11 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 			apiSecret: string;
 		};
 
-		const url = `${this.GA_DEBUG_URL}?measurement_id=${measurementId}&api_secret=${apiSecret}`;
+		const params = new URLSearchParams({
+			measurement_id: measurementId,
+			api_secret: apiSecret,
+		});
+		const url = `${this.GA_DEBUG_URL}?${params.toString()}`;
 		const body = {
 			client_id: 'test_validation',
 			events: [
@@ -83,17 +90,21 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 			],
 		};
 
-		const response = await fetch(url, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(body),
-			signal: AbortSignal.timeout(5000),
-		});
+		try {
+			const response = await fetch(url, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(body),
+				signal: AbortSignal.timeout(5000),
+			});
 
-		if (!response.ok) return false;
+			if (!response.ok) return false;
 
-		const result = (await response.json()) as GA4DebugResponse;
-		return !result.validationMessages || result.validationMessages.length === 0;
+			const result = (await response.json()) as GA4DebugResponse;
+			return !result.validationMessages || result.validationMessages.length === 0;
+		} catch {
+			return false;
+		}
 	}
 
 	private buildPayload(event: IScanEventData) {

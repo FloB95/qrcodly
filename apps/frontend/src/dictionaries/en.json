@@ -1163,7 +1163,9 @@
 			"deleteError": "Failed to delete the integration. Please try again.",
 			"lastErrorTitle": "Last Error",
 			"autoDisabled": "This integration has been automatically disabled after 10 consecutive failures. Re-enable it after fixing the issue.",
-			"openMenu": "Open menu"
+			"openMenu": "Open menu",
+			"integrationDisabledTitle": "Analytics integration disabled",
+			"integrationDisabledDescription": "Your analytics integration has been disabled because your Pro plan has expired. Resubscribe to re-enable it."
 		}
 	},
 	"plans": {

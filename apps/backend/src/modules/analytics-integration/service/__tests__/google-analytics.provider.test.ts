@@ -5,6 +5,7 @@ import type { IScanEventData } from '../providers/analytics-provider.interface';
 describe('GoogleAnalyticsProvider', () => {
 	let provider: GoogleAnalyticsProvider;
 	let mockFetch: jest.Mock;
+	const originalFetch = global.fetch;
 
 	const baseScanEvent: IScanEventData = {
 		url: 'https://example.com/landing',
@@ -29,6 +30,7 @@ describe('GoogleAnalyticsProvider', () => {
 	});
 
 	afterEach(() => {
+		global.fetch = originalFetch;
 		jest.restoreAllMocks();
 	});
 

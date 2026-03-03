@@ -1167,7 +1167,9 @@
 			"deleteError": "No se pudo eliminar la integración.",
 			"lastErrorTitle": "Último error",
 			"autoDisabled": "Esta integración se ha desactivado automáticamente después de 10 fallos consecutivos.",
-			"openMenu": "Abrir menú"
+			"openMenu": "Abrir menú",
+			"integrationDisabledTitle": "Integración de análisis desactivada",
+			"integrationDisabledDescription": "Su integración de análisis ha sido desactivada porque su plan Pro ha expirado. Vuelva a suscribirse para reactivarla."
 		}
 	},
 	"plans": {

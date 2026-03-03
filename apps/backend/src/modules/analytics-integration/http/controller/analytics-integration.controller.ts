@@ -27,6 +27,8 @@ import { TestAnalyticsIntegrationUseCase } from '../../useCase/test-analytics-in
 import { AnalyticsIntegrationNotFoundError } from '../../error';
 import { type TAnalyticsIntegration } from '../../domain/entities/analytics-integration.entity';
 import AnalyticsIntegrationRepository from '../../domain/repository/analytics-integration.repository';
+import { PlanLimitExceededError } from '@/core/error/http/plan-limit-exceeded.error';
+import { PlanName } from '@/core/config/plan.config';
 
 @injectable()
 export class AnalyticsIntegrationController extends AbstractController {
@@ -115,6 +117,7 @@ export class AnalyticsIntegrationController extends AbstractController {
 		const params = AnalyticsIntegrationIdParamsDto.parse(request.params);
 		const dto = UpdateAnalyticsIntegrationDto.parse(request.body);
 		const integration = await this.fetchIntegration(params.id, request.user.id);
+		this.ensureProPlan(request.user.plan);
 		const updated = await this.updateUseCase.execute(integration, dto);
 		return this.makeApiHttpResponse(200, this.mapToResponseDto(updated));
 	}
@@ -161,8 +164,15 @@ export class AnalyticsIntegrationController extends AbstractController {
 	): Promise<IHttpResponse<{ valid: boolean }>> {
 		const params = AnalyticsIntegrationIdParamsDto.parse(request.params);
 		const integration = await this.fetchIntegration(params.id, request.user.id);
+		this.ensureProPlan(request.user.plan);
 		const result = await this.testUseCase.execute(integration);
 		return this.makeApiHttpResponse(200, result);
+	}
+
+	private ensureProPlan(plan: PlanName): void {
+		if (plan !== PlanName.PRO) {
+			throw new PlanLimitExceededError('analytics integration', 0);
+		}
 	}
 
 	private async fetchIntegration(id: string, userId: string): Promise<TAnalyticsIntegration> {

@@ -1167,7 +1167,9 @@
 			"deleteError": "Impossible de supprimer l'intégration.",
 			"lastErrorTitle": "Dernière erreur",
 			"autoDisabled": "Cette intégration a été automatiquement désactivée après 10 échecs consécutifs.",
-			"openMenu": "Ouvrir le menu"
+			"openMenu": "Ouvrir le menu",
+			"integrationDisabledTitle": "Intégration analytique désactivée",
+			"integrationDisabledDescription": "Votre intégration analytique a été désactivée car votre plan Pro a expiré. Réabonnez-vous pour la réactiver."
 		}
 	},
 	"plans": {

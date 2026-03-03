@@ -7,6 +7,7 @@ import {
 	listIntegrations,
 	ANALYTICS_INTEGRATION_API_PATH,
 	TEST_USER_PRO_ID,
+	TEST_USER_ID,
 	type TestContext,
 } from './utils';
 import { randomUUID } from 'crypto';
@@ -66,6 +67,22 @@ describe('DELETE /analytics-integration/:id (Delete)', () => {
 		const response = await deleteIntegrationViaApi(ctx, id, ctx.accessToken2);
 
 		expect(response.statusCode).toBe(403);
+	});
+
+	it('should allow delete even without Pro plan', async () => {
+		const id = await createIntegrationDirectly(ctx, TEST_USER_ID);
+
+		const response = await deleteIntegrationViaApi(ctx, id, ctx.accessToken);
+
+		expect(response.statusCode).toBe(200);
+
+		const result = JSON.parse(response.payload) as { deleted: boolean };
+		expect(result.deleted).toBe(true);
+
+		const record = await findIntegrationById(id);
+		expect(record).toBeUndefined();
+
+		ctx.createdIntegrationIds = ctx.createdIntegrationIds.filter((i) => i !== id);
 	});
 
 	it('should return 401 when not authenticated', async () => {

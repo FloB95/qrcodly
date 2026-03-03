@@ -1163,7 +1163,9 @@
 			"deleteError": "Integration konnte nicht gelöscht werden.",
 			"lastErrorTitle": "Letzter Fehler",
 			"autoDisabled": "Diese Integration wurde nach 10 aufeinanderfolgenden Fehlern automatisch deaktiviert.",
-			"openMenu": "Menü öffnen"
+			"openMenu": "Menü öffnen",
+			"integrationDisabledTitle": "Analytics-Integration deaktiviert",
+			"integrationDisabledDescription": "Deine Analytics-Integration wurde deaktiviert, da dein Pro-Plan abgelaufen ist. Abonniere erneut, um sie wieder zu aktivieren."
 		}
 	},
 	"plans": {

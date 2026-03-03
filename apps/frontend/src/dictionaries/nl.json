@@ -1163,7 +1163,9 @@
 			"deleteError": "Kan de integratie niet verwijderen.",
 			"lastErrorTitle": "Laatste fout",
 			"autoDisabled": "Deze integratie is automatisch uitgeschakeld na 10 opeenvolgende fouten.",
-			"openMenu": "Menu openen"
+			"openMenu": "Menu openen",
+			"integrationDisabledTitle": "Analytics-integratie uitgeschakeld",
+			"integrationDisabledDescription": "Uw analytics-integratie is uitgeschakeld omdat uw Pro-plan is verlopen. Abonneer u opnieuw om deze weer in te schakelen."
 		}
 	},
 	"plans": {

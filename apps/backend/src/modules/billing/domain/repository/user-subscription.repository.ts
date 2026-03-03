@@ -62,7 +62,7 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 			TUserSubscription,
 			| 'createdAt'
 			| 'gracePeriodEndsAt'
-			| 'domainsDisabledAt'
+			| 'proFeaturesDisabledAt'
 			| 'cancellationNotifiedAt'
 			| 'cancellationReminderSentAt'
 			| 'pastDueNotifiedAt'
@@ -124,17 +124,17 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 				and(
 					isNotNull(this.table.gracePeriodEndsAt),
 					lte(this.table.gracePeriodEndsAt, now),
-					isNull(this.table.domainsDisabledAt),
+					isNull(this.table.proFeaturesDisabledAt),
 					eq(this.table.status, 'canceled'),
 				),
 			)
 			.execute();
 	}
 
-	async markDomainsDisabled(userId: string): Promise<void> {
+	async markProFeaturesDisabled(userId: string): Promise<void> {
 		await this.db
 			.update(this.table)
-			.set({ domainsDisabledAt: new Date(), updatedAt: new Date() })
+			.set({ proFeaturesDisabledAt: new Date(), updatedAt: new Date() })
 			.where(eq(this.table.userId, userId))
 			.execute();
 	}
@@ -144,7 +144,7 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 			.update(this.table)
 			.set({
 				gracePeriodEndsAt: null,
-				domainsDisabledAt: null,
+				proFeaturesDisabledAt: null,
 				cancellationNotifiedAt: null,
 				cancellationReminderSentAt: null,
 				pastDueNotifiedAt: null,

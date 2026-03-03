@@ -169,6 +169,13 @@
 			"when": 1772553671064,
 			"tag": "0023_aromatic_carlie_cooper",
 			"breakpoints": true
+		},
+		{
+			"idx": 24,
+			"version": "5",
+			"when": 1772573263224,
+			"tag": "0024_legal_sprite",
+			"breakpoints": true
 		}
 	]
 }

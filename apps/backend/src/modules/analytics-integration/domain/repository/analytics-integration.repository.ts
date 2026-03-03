@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import analyticsIntegration, {
@@ -73,6 +73,40 @@ class AnalyticsIntegrationRepository extends AbstractRepository<TAnalyticsIntegr
 			.update(this.table)
 			.set({ ...updates, updatedAt: new Date() })
 			.where(eq(this.table.id, item.id))
+			.execute();
+	}
+
+	async disableAllByUserId(userId: string): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({ isEnabled: false, updatedAt: new Date() })
+			.where(eq(this.table.createdBy, userId))
+			.execute();
+	}
+
+	async enableAllByUserId(userId: string): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({ isEnabled: true, updatedAt: new Date() })
+			.where(eq(this.table.createdBy, userId))
+			.execute();
+	}
+
+	async recordFailure(
+		integrationId: string,
+		errorMessage: string,
+		maxFailures: number,
+	): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({
+				consecutiveFailures: sql`${this.table.consecutiveFailures} + 1`,
+				lastError: errorMessage,
+				lastErrorAt: new Date(),
+				isEnabled: sql`CASE WHEN ${this.table.consecutiveFailures} + 1 >= ${maxFailures} THEN false ELSE ${this.table.isEnabled} END`,
+				updatedAt: new Date(),
+			})
+			.where(eq(this.table.id, integrationId))
 			.execute();
 	}
 

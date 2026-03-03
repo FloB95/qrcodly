@@ -75,7 +75,7 @@ export const createSubscriptionDirectly = async (
 			currentPeriodEnd: options.currentPeriodEnd ?? periodEnd,
 			cancelAtPeriodEnd: options.cancelAtPeriodEnd ?? false,
 			gracePeriodEndsAt: options.gracePeriodEndsAt ?? null,
-			domainsDisabledAt: options.domainsDisabledAt ?? null,
+			proFeaturesDisabledAt: options.proFeaturesDisabledAt ?? null,
 			cancellationNotifiedAt: options.cancellationNotifiedAt ?? null,
 			cancellationReminderSentAt: options.cancellationReminderSentAt ?? null,
 			pastDueNotifiedAt: options.pastDueNotifiedAt ?? null,

@@ -37,6 +37,7 @@ interface ProviderCardProps {
 	providerType: TProviderType;
 	canConfigure: boolean;
 	hasOtherIntegration: boolean;
+	isProExpired?: boolean;
 }
 
 export function ProviderCard({
@@ -44,6 +45,7 @@ export function ProviderCard({
 	providerType,
 	canConfigure,
 	hasOtherIntegration,
+	isProExpired,
 }: ProviderCardProps) {
 	const t = useTranslations('settings.integrations');
 	const { toast } = useToast();
@@ -101,7 +103,7 @@ export function ProviderCard({
 	if (integration) {
 		return (
 			<>
-				<Item variant="outline">
+				<Item variant="outline" className={isProExpired ? 'opacity-60' : undefined}>
 					<ProviderLogo providerType={providerType} className="size-8 shrink-0" />
 					<ItemContent>
 						<ItemTitle>
@@ -133,7 +135,7 @@ export function ProviderCard({
 							size="sm"
 							checked={integration.isEnabled}
 							onCheckedChange={handleToggle}
-							disabled={updateMutation.isPending}
+							disabled={updateMutation.isPending || isProExpired}
 						/>
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
@@ -143,11 +145,17 @@ export function ProviderCard({
 								</Button>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end">
-								<DropdownMenuItem onClick={() => setConfigOpen(true)}>{t('edit')}</DropdownMenuItem>
-								<DropdownMenuItem onClick={handleTest} disabled={testMutation.isPending}>
-									{testMutation.isPending ? t('testing') : t('test')}
-								</DropdownMenuItem>
-								<DropdownMenuSeparator />
+								{!isProExpired && (
+									<>
+										<DropdownMenuItem onClick={() => setConfigOpen(true)}>
+											{t('edit')}
+										</DropdownMenuItem>
+										<DropdownMenuItem onClick={handleTest} disabled={testMutation.isPending}>
+											{testMutation.isPending ? t('testing') : t('test')}
+										</DropdownMenuItem>
+										<DropdownMenuSeparator />
+									</>
+								)}
 								<DropdownMenuItem
 									onClick={() => setShowDeleteDialog(true)}
 									className="text-destructive focus:text-destructive"

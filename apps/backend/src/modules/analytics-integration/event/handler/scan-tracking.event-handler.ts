@@ -67,20 +67,13 @@ export class ScanTrackingEventHandler extends AbstractEventHandler<ScanTrackingE
 					}
 				} catch (error) {
 					const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-					const newFailureCount = integration.consecutiveFailures + 1;
 
-					await repository.update(integration, {
-						consecutiveFailures: newFailureCount,
-						lastError: errorMessage,
-						lastErrorAt: new Date(),
-						...(newFailureCount >= MAX_CONSECUTIVE_FAILURES ? { isEnabled: false } : {}),
-					});
+					await repository.recordFailure(integration.id, errorMessage, MAX_CONSECUTIVE_FAILURES);
 
 					logger.warn('analytics.provider.dispatch.failed', {
 						integrationId: integration.id,
 						providerType: integration.providerType,
-						consecutiveFailures: newFailureCount,
-						autoDisabled: newFailureCount >= MAX_CONSECUTIVE_FAILURES,
+						previousFailures: integration.consecutiveFailures,
 						error: errorMessage,
 					});
 				}
