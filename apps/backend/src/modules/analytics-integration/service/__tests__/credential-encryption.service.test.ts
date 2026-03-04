@@ -103,6 +103,7 @@ describe('CredentialEncryptionService (missing key)', () => {
 		}));
 
 		// Re-require to get fresh module with new mock
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- jest.requireActual needs cast after module reset
 		const { CredentialEncryptionService: FreshService } = jest.requireActual(
 			'../credential-encryption.service',
 		) as { CredentialEncryptionService: typeof CredentialEncryptionService };

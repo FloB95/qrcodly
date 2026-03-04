@@ -164,6 +164,7 @@ export class AnalyticsIntegrationController extends AbstractController {
 	): Promise<IHttpResponse<{ valid: boolean; credentialsVerified: boolean }>> {
 		const params = AnalyticsIntegrationIdParamsDto.parse(request.params);
 		const integration = await this.fetchIntegration(params.id, request.user.id);
+		this.ensureProPlan(request.user.plan);
 		const result = await this.testUseCase.execute(integration);
 		return this.makeApiHttpResponse(200, result);
 	}

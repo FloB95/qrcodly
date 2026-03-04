@@ -63,7 +63,7 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 			credentialsVerified: boolean;
 		};
 		expect(result.valid).toBe(false);
-		expect(result.credentialsVerified).toBe(true);
+		expect(result.credentialsVerified).toBe(false);
 	});
 
 	it('should return 404 for non-existent integration', async () => {

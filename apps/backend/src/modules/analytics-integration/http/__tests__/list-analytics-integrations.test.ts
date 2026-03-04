@@ -6,7 +6,6 @@ import {
 	listIntegrations,
 	ANALYTICS_INTEGRATION_API_PATH,
 	TEST_USER_PRO_ID,
-	TEST_USER_ID,
 	type TestContext,
 } from './utils';
 
