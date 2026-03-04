@@ -94,7 +94,9 @@
 		}
 	},
 	"analytics": {
-		"totalViews": "Número de escaneos",
+		"totalViews": "Escaneos totales",
+		"scansUnit": "Escaneos",
+		"viewDetailedAnalytics": "Ver análisis detallados",
 		"totalVisitors": "Número de visitantes",
 		"stateActive": "Activo",
 		"stateInactive": "Desactivado",
@@ -264,7 +266,7 @@
 		},
 		"actionsMenu": {
 			"title": "Acciones",
-			"view": "Ver",
+			"view": "Ver detalles",
 			"edit": "Editar",
 			"delete": "Eliminar",
 			"disableShortUrl": "Desactivar",

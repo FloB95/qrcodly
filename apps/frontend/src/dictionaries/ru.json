@@ -94,7 +94,9 @@
 		}
 	},
 	"analytics": {
-		"totalViews": "Количество сканирований",
+		"totalViews": "Всего сканирований",
+		"scansUnit": "Сканирований",
+		"viewDetailedAnalytics": "Посмотреть подробную аналитику",
 		"totalVisitors": "Количество посетителей",
 		"stateActive": "Активно",
 		"stateInactive": "Отключено",
@@ -264,7 +266,7 @@
 		},
 		"actionsMenu": {
 			"title": "Действия",
-			"view": "Просмотр",
+			"view": "Показать детали",
 			"edit": "Редактировать",
 			"delete": "Удалить",
 			"disableShortUrl": "Отключить",

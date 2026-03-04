@@ -94,7 +94,9 @@
 		}
 	},
 	"analytics": {
-		"totalViews": "Aantal scans",
+		"totalViews": "Totaal scans",
+		"scansUnit": "Scans",
+		"viewDetailedAnalytics": "Bekijk gedetailleerde analyses",
 		"totalVisitors": "Aantal bezoekers",
 		"stateActive": "Actief",
 		"stateInactive": "Uitgeschakeld",
@@ -264,7 +266,7 @@
 		},
 		"actionsMenu": {
 			"title": "Acties",
-			"view": "Bekijken",
+			"view": "Details bekijken",
 			"edit": "Bewerken",
 			"delete": "Verwijderen",
 			"disableShortUrl": "Uitschakelen",
