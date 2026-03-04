@@ -5,7 +5,7 @@ import { AbstractCronJob } from '@/core/jobs/abstract.cron-job';
 import { createClerkClient } from '@clerk/fastify';
 import { env } from '@/core/config/env';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
-import { DisableUserDomainsUseCase } from '../useCase/disable-user-domains.use-case';
+import { DisableProFeaturesUseCase } from '../useCase/disable-pro-features.use-case';
 import { Mailer } from '@/core/mailer/mailer';
 
 /**
@@ -20,7 +20,7 @@ export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 
 	protected async execute(): Promise<void> {
 		const userSubscriptionRepository = container.resolve(UserSubscriptionRepository);
-		const disableUserDomainsUseCase = container.resolve(DisableUserDomainsUseCase);
+		const disableProFeaturesUseCase = container.resolve(DisableProFeaturesUseCase);
 		const mailer = container.resolve(Mailer);
 		const clerkClient = createClerkClient({ secretKey: env.CLERK_SECRET_KEY });
 
@@ -37,8 +37,8 @@ export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 
 		for (const subscription of expiredSubscriptions) {
 			try {
-				// Disable the user's custom domains
-				await disableUserDomainsUseCase.execute(subscription.userId);
+				// Disable the user's Pro features (custom domains, analytics integrations)
+				await disableProFeaturesUseCase.execute(subscription.userId);
 
 				// Fetch user info from Clerk for email notification
 				const user = await clerkClient.users.getUser(subscription.userId);
@@ -46,8 +46,8 @@ export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 				const firstName = user.firstName;
 
 				if (email) {
-					// Send email notification about domains being disabled
-					const template = await mailer.getTemplate('subscription-domains-disabled');
+					// Send email notification about Pro features being disabled
+					const template = await mailer.getTemplate('subscription-pro-features-disabled');
 					const html = template({
 						firstName,
 						subscribeUrl: `${env.FRONTEND_URL}/plans`,
@@ -57,7 +57,7 @@ export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 
 					await mailer.sendMail({
 						to: email,
-						subject: 'Your QRcodly Custom Domains Have Been Disabled',
+						subject: 'Your QRcodly Pro Features Have Been Disabled',
 						html,
 					});
 				}

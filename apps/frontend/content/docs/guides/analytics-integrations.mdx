@@ -1,0 +1,132 @@
+---
+title: Analytics Integrations
+description: Connect Google Analytics 4 or Matomo to receive QR code scan data
+---
+
+Forward your QR code scan data to your own analytics tools. QRcodly supports **Google Analytics 4** and **Matomo**, so you can see scan activity right alongside your existing website traffic.
+
+<Callout type="info">
+	Analytics integrations require a **Pro Plan**. [View pricing](/plans) to learn more about upgrading.
+</Callout>
+
+## Supported Providers
+
+- **Google Analytics 4** — see QR code scans alongside your website traffic
+- **Matomo** — track scans in your own self-hosted analytics instance
+
+You can connect one provider at a time. Each scan event is forwarded to the configured provider.
+
+## What Data Is Sent
+
+QRcodly forwards a limited, privacy-safe subset of scan data. No raw user agents or full IP addresses are ever shared.
+
+| Data              | Google Analytics 4 | Matomo                   |
+| ----------------- | ------------------ | ------------------------ |
+| Page URL          | Yes                | Yes                      |
+| Referrer          | Yes                | Yes                      |
+| Language          | Yes                | Yes                      |
+| IP Address        | Anonymized         | Anonymized               |
+| Device Type       | No                 | Yes (custom variable)    |
+| Browser Name      | No                 | Yes (custom variable)    |
+| User Agent        | No                 | No                       |
+
+<Callout type="info">
+	All IP addresses are anonymized before being sent to any provider. The last octet of IPv4 addresses
+	is zeroed, and IPv6 addresses are truncated. This helps reduce identifiability and supports
+	privacy requirements such as GDPR.
+</Callout>
+
+## Setting Up Google Analytics 4
+
+### Step 1: Create a GA4 Measurement Protocol API Secret
+
+1. Open [Google Analytics](https://analytics.google.com) and navigate to **Admin**
+2. In the property column, go to **Data Streams** and select your web stream
+3. Scroll down and click **Measurement Protocol API secrets**
+4. Click **Create** to generate a new secret
+5. Copy the secret value — you'll need it in the next step
+
+### Step 2: Find Your Measurement ID
+
+1. In the same Data Stream details page, find the **Measurement ID** at the top
+2. It has the format `G-XXXXXXXXXX`
+3. Copy this ID
+
+### Step 3: Connect in QRcodly
+
+1. Go to [Settings → Integrations](/dashboard/settings/integrations)
+2. Click **Configure** on the Google Analytics 4 card
+3. Enter your **Measurement ID** and **API Secret**
+4. Click **Create**
+
+QRcodly validates the Measurement ID format immediately. Google Analytics credentials cannot be fully verified via API, so confirm delivery in your GA4 Realtime report after scanning a QR code. Once saved, scan events will start flowing to your GA4 property.
+
+## Setting Up Matomo
+
+### Step 1: Get Your Matomo URL and Site ID
+
+1. Log in to your Matomo instance
+2. Go to **Administration → Websites → Manage**
+3. Note your **Site ID** (a number like `1`, `2`, etc.)
+4. Copy your Matomo base URL (e.g., `https://analytics.example.com`)
+
+### Step 2: (Optional) Create an Auth Token
+
+An auth token allows QRcodly to attribute tracking data correctly and override the IP address with the anonymized visitor IP.
+
+1. Go to **Administration → Personal → Security**
+2. Click **Create new token**
+3. Give it a descriptive name (e.g., "QRcodly Integration")
+4. Copy the generated token
+
+<Callout type="info">
+	Without an auth token, Matomo will record the server's IP instead of the visitor's anonymized IP.
+	Adding a token is recommended for accurate geographic reporting.
+</Callout>
+
+### Step 3: Connect in QRcodly
+
+1. Go to [Settings → Integrations](/dashboard/settings/integrations)
+2. Click **Configure** on the Matomo card
+3. Enter your **Matomo URL**, **Site ID**, and optionally the **Auth Token**
+4. Click **Create**
+
+## Updating Credentials
+
+If you need to rotate a secret or change your configuration:
+
+1. Go to [Settings → Integrations](/dashboard/settings/integrations)
+2. Click **Edit** on the provider card
+3. Non-secret fields (Measurement ID, Matomo URL, Site ID) are pre-filled for convenience
+4. Secret fields (API Secret, Auth Token) must be re-entered for security — they are never returned from the server
+5. Click **Update** to save
+
+## Removing an Integration
+
+1. Go to [Settings → Integrations](/dashboard/settings/integrations)
+2. Click the **menu icon** (three dots) on the provider card
+3. Select **Delete** and confirm the removal
+
+Removing an integration stops all future data forwarding immediately. Historical data already sent to the provider is not affected.
+
+## Troubleshooting
+
+### Validation error when saving credentials
+
+- **Google Analytics 4**: Make sure the Measurement ID starts with `G-` and the API Secret is not empty
+- **Matomo**: Verify the URL is a valid HTTPS URL and the Site ID is a positive number
+
+### Data not appearing in my analytics tool
+
+- There is typically a short propagation delay (a few minutes for GA4, near-instant for Matomo)
+- For GA4, check the **Realtime** report to see if events are coming through
+- For Matomo, check the **Visitor Log** for recent entries
+
+### Matomo shows the wrong visitor location
+
+- This usually means no auth token is configured. Without it, Matomo records the server IP rather than the visitor's anonymized IP
+- Add an auth token to your Matomo integration to fix this
+
+## Need Help?
+
+If you're having trouble with analytics integrations, [contact our support team](mailto:info@qrcodly.de) and we'll help you get everything working.

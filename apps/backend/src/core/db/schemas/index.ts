@@ -21,3 +21,7 @@ export {
 	default as qrCodeTag,
 	qrCodeTagRelations,
 } from '@/modules/tag/domain/entities/qr-code-tag.entity';
+export {
+	default as analyticsIntegration,
+	analyticsIntegrationRelations,
+} from '@/modules/analytics-integration/domain/entities/analytics-integration.entity';

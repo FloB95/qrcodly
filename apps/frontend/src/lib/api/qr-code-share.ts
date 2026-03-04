@@ -126,15 +126,12 @@ export function useDeleteQrCodeShareMutation() {
 			await apiRequest<{ deleted: boolean }>(`/qr-code/${qrCodeId}/share`, {
 				method: 'DELETE',
 				headers: {
-					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`,
 				},
 			});
 		},
 		onSuccess: (_, qrCodeId) => {
-			void queryClient.invalidateQueries({
-				queryKey: qrCodeShareQueryKeys.share(qrCodeId),
-			});
+			queryClient.setQueryData(qrCodeShareQueryKeys.share(qrCodeId), null);
 		},
 	});
 }

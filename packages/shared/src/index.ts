@@ -26,6 +26,8 @@ export * from './dtos/qr-code-share/QrCodeShareResponseDto';
 
 export * from './dtos/custom-domain';
 
+export * from './dtos/analytics-integration';
+
 export * from './dtos/tag/CreateTagDto';
 export * from './dtos/tag/UpdateTagDto';
 export * from './dtos/tag/TagResponseDto';

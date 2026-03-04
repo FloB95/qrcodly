@@ -171,7 +171,7 @@ describe('UserSubscriptionRepository', () => {
 			await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID, {
 				status: 'canceled',
 				gracePeriodEndsAt: expiredDate,
-				domainsDisabledAt: null,
+				proFeaturesDisabledAt: null,
 			});
 
 			const results = await repository.findExpiredUnprocessedGracePeriods();
@@ -186,7 +186,7 @@ describe('UserSubscriptionRepository', () => {
 			await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID, {
 				status: 'canceled',
 				gracePeriodEndsAt: futureDate,
-				domainsDisabledAt: null,
+				proFeaturesDisabledAt: null,
 			});
 
 			const results = await repository.findExpiredUnprocessedGracePeriods();
@@ -200,27 +200,27 @@ describe('UserSubscriptionRepository', () => {
 			await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID, {
 				status: 'canceled',
 				gracePeriodEndsAt: expiredDate,
-				domainsDisabledAt: new Date(),
+				proFeaturesDisabledAt: new Date(),
 			});
 
 			const results = await repository.findExpiredUnprocessedGracePeriods();
 			expect(results.some((r) => r.userId === TEST_USER_PRO_ID)).toBe(false);
 		});
 
-		it('should mark domains as disabled', async () => {
+		it('should mark pro features as disabled', async () => {
 			await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID);
 
-			await repository.markDomainsDisabled(TEST_USER_PRO_ID);
+			await repository.markProFeaturesDisabled(TEST_USER_PRO_ID);
 
 			const subscription = await repository.findByUserId(TEST_USER_PRO_ID);
-			expect(subscription!.domainsDisabledAt).not.toBeNull();
+			expect(subscription!.proFeaturesDisabledAt).not.toBeNull();
 		});
 
 		it('should clear grace period fields', async () => {
 			const expiredDate = new Date();
 			await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID, {
 				gracePeriodEndsAt: expiredDate,
-				domainsDisabledAt: new Date(),
+				proFeaturesDisabledAt: new Date(),
 				cancellationNotifiedAt: new Date(),
 				cancellationReminderSentAt: new Date(),
 				pastDueNotifiedAt: new Date(),
@@ -230,7 +230,7 @@ describe('UserSubscriptionRepository', () => {
 
 			const subscription = await repository.findByUserId(TEST_USER_PRO_ID);
 			expect(subscription!.gracePeriodEndsAt).toBeNull();
-			expect(subscription!.domainsDisabledAt).toBeNull();
+			expect(subscription!.proFeaturesDisabledAt).toBeNull();
 			expect(subscription!.cancellationNotifiedAt).toBeNull();
 			expect(subscription!.cancellationReminderSentAt).toBeNull();
 			expect(subscription!.pastDueNotifiedAt).toBeNull();

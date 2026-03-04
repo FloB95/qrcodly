@@ -11,6 +11,7 @@ import {
 	ContentTypesMockup,
 	CustomDomainMockup,
 	DynamicQrMockup,
+	IntegrationsMockup,
 	SecurityMockup,
 	TagsMockup,
 	TeamsMockup,
@@ -169,6 +170,16 @@ export async function FeaturesPage({ locale }: { locale: string }) {
 				t('spotlight.security.bullet3'),
 			],
 			visual: <SecurityMockup />,
+		},
+		{
+			title: t('spotlight.integrations.title'),
+			description: t('spotlight.integrations.description'),
+			bullets: [
+				t('spotlight.integrations.bullet1'),
+				t('spotlight.integrations.bullet2'),
+				t('spotlight.integrations.bullet3'),
+			],
+			visual: <IntegrationsMockup />,
 		},
 		{
 			title: t('spotlight.teams.title'),

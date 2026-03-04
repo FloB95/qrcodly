@@ -14,7 +14,7 @@ const userSubscription = createTable(
 		currentPeriodEnd: datetime().notNull(),
 		cancelAtPeriodEnd: boolean().notNull().default(false),
 		gracePeriodEndsAt: datetime(),
-		domainsDisabledAt: datetime(),
+		proFeaturesDisabledAt: datetime(),
 		cancellationNotifiedAt: datetime(),
 		cancellationReminderSentAt: datetime(),
 		pastDueNotifiedAt: datetime(),

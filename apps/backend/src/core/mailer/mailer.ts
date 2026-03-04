@@ -17,7 +17,7 @@ type TemplateName =
 	| 'subscription-past-due'
 	| 'subscription-cancel-initiated'
 	| 'subscription-cancellation-reminder'
-	| 'subscription-domains-disabled'
+	| 'subscription-pro-features-disabled'
 	| 'subscription-reactivated';
 
 /**

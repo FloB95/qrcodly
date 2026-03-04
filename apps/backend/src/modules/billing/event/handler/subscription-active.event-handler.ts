@@ -5,7 +5,7 @@ import { container } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { Mailer } from '@/core/mailer/mailer';
 import { env } from '@/core/config/env';
-import { EnableUserDomainsUseCase } from '../../useCase/enable-user-domains.use-case';
+import { EnableProFeaturesUseCase } from '../../useCase/enable-pro-features.use-case';
 import UserSubscriptionRepository from '../../domain/repository/user-subscription.repository';
 
 @EventHandler(SubscriptionActiveEvent.eventName)
@@ -17,7 +17,7 @@ export class SubscriptionActiveEventHandler extends AbstractEventHandler<Subscri
 	async handle(event: SubscriptionActiveEvent): Promise<void> {
 		const logger = container.resolve(Logger);
 		const mailer = container.resolve(Mailer);
-		const enableUserDomainsUseCase = container.resolve(EnableUserDomainsUseCase);
+		const enableProFeaturesUseCase = container.resolve(EnableProFeaturesUseCase);
 		const userSubscriptionRepository = container.resolve(UserSubscriptionRepository);
 		const { userId, email, firstName } = event.data;
 
@@ -42,8 +42,8 @@ export class SubscriptionActiveEventHandler extends AbstractEventHandler<Subscri
 			const subscription = await userSubscriptionRepository.findByUserId(userId);
 			const wasInGracePeriod = subscription?.gracePeriodEndsAt != null;
 
-			// Enable domains and clear grace period
-			await enableUserDomainsUseCase.execute(userId);
+			// Enable Pro features and clear grace period
+			await enableProFeaturesUseCase.execute(userId);
 
 			// Only send reactivation email if user was in grace period
 			if (wasInGracePeriod) {

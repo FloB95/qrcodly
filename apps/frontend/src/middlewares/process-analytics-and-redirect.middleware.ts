@@ -83,5 +83,24 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		headers: { 'x-internal-api-key': env.INTERNAL_API_SECRET },
 	}).catch(() => {});
 
+	// Dispatch scan data to user-configured analytics integrations (GA4, Matomo)
+	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}/track-scan`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'x-internal-api-key': env.INTERNAL_API_SECRET,
+		},
+		body: JSON.stringify({
+			url: req.url,
+			userAgent,
+			hostname,
+			language: language ?? '',
+			referrer: headers.get('referer') ?? '',
+			ip: headers.get('x-forwarded-for') ?? '',
+			deviceType: device.type ?? '',
+			browserName: browser.name ?? '',
+		}),
+	}).catch(() => {});
+
 	return NextResponse.redirect(new URL(shortUrl.destinationUrl));
 }

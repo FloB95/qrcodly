@@ -40,7 +40,9 @@ export default function Page() {
 								</CardDescription>
 							</div>
 						</div>
-						<div>{hasProPlan ? <AddCustomDomainDialog /> : <ProPlanRequiredBadge />}</div>
+						<div className="ml-[60px] sm:ml-0">
+							{hasProPlan ? <AddCustomDomainDialog /> : <ProPlanRequiredBadge />}
+						</div>
 					</div>
 				</CardContent>
 			</Card>

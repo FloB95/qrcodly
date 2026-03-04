@@ -1,0 +1,1 @@
+ALTER TABLE `analytics_integration` DROP COLUMN `ip_anonymization`;

@@ -56,6 +56,10 @@ const server = z.object({
 	STRIPE_WEBHOOK_SECRET: z.string(),
 	STRIPE_PRO_PRICE_ID_MONTHLY: z.string(),
 	STRIPE_PRO_PRICE_ID_ANNUAL: z.string(),
+	ANALYTICS_ENCRYPTION_KEY: z
+		.string()
+		.length(64)
+		.regex(/^[0-9a-f]+$/i, 'Must be a hex string'),
 });
 
 // Don't touch the part below
