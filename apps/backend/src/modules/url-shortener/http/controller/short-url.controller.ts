@@ -11,7 +11,9 @@ import {
 	TAnalyticsResponseDto,
 	TGetShortUrlRequestQueryDto,
 	TShortUrlWithCustomDomainResponseDto,
+	TTrackScanDto,
 	TUpdateShortUrlDto,
+	TrackScanDto,
 	UpdateShortUrlDto,
 } from '@shared/schemas';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
@@ -218,24 +220,11 @@ export class ShortUrlController extends AbstractController {
 
 	@Post('/:shortCode/track-scan', {
 		authHandler: internalApiAuthHandler,
+		bodySchema: TrackScanDto,
 		schema: { hide: true },
 	})
 	async trackScan(
-		request: IHttpRequest<
-			{
-				url: string;
-				userAgent: string;
-				hostname: string;
-				language: string;
-				referrer: string;
-				ip: string;
-				deviceType: string;
-				browserName: string;
-			},
-			TGetShortUrlRequestQueryDto,
-			unknown,
-			false
-		>,
+		request: IHttpRequest<TTrackScanDto, TGetShortUrlRequestQueryDto, unknown, false>,
 	): Promise<IHttpResponse<{ status: string }>> {
 		const shortUrl = await this.shortUrlRepository.findOneByShortCode(request.params.shortCode);
 		if (!shortUrl || !shortUrl.createdBy) {

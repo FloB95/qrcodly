@@ -1,15 +1,6 @@
 import { createTable } from '@/core/db/utils';
 import { relations } from 'drizzle-orm';
-import {
-	boolean,
-	datetime,
-	index,
-	int,
-	mysqlEnum,
-	text,
-	uniqueIndex,
-	varchar,
-} from 'drizzle-orm/mysql-core';
+import { boolean, datetime, index, int, mysqlEnum, text, varchar } from 'drizzle-orm/mysql-core';
 
 export const PROVIDER_TYPES = ['google_analytics', 'matomo'] as const;
 export type TProviderType = (typeof PROVIDER_TYPES)[number];
@@ -31,7 +22,7 @@ const analyticsIntegration = createTable(
 		updatedAt: datetime('updated_at'),
 	},
 	(t) => [
-		uniqueIndex('i_analytics_integration_created_by').on(t.createdBy),
+		index('i_analytics_integration_created_by').on(t.createdBy),
 		index('i_analytics_integration_created_by_enabled').on(t.createdBy, t.isEnabled),
 	],
 );

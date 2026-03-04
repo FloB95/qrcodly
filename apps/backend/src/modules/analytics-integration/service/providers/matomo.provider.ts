@@ -7,7 +7,12 @@ import {
 import { anonymizeIp } from '@/utils/general';
 
 function validateMatomoUrl(raw: string): URL {
-	const url = new URL(raw);
+	let url: URL;
+	try {
+		url = new URL(raw);
+	} catch {
+		throw new Error('Invalid Matomo URL format');
+	}
 	if (url.protocol !== 'https:') {
 		throw new Error('Matomo URL must use HTTPS');
 	}

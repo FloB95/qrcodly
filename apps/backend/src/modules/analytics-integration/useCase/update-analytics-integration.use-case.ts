@@ -1,10 +1,15 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
-import { type TUpdateAnalyticsIntegrationDto } from '@shared/schemas';
+import {
+	GoogleAnalyticsCredentialsSchema,
+	MatomoCredentialsSchema,
+	type TUpdateAnalyticsIntegrationDto,
+} from '@shared/schemas';
 import AnalyticsIntegrationRepository from '../domain/repository/analytics-integration.repository';
 import { type TAnalyticsIntegration } from '../domain/entities/analytics-integration.entity';
 import { CredentialEncryptionService } from '../service/credential-encryption.service';
+import { BadRequestError } from '@/core/error/http/bad-request.error';
 
 @injectable()
 export class UpdateAnalyticsIntegrationUseCase implements IBaseUseCase {
@@ -39,6 +44,15 @@ export class UpdateAnalyticsIntegrationUseCase implements IBaseUseCase {
 				if (mergedCredentials[key] === '') {
 					delete mergedCredentials[key];
 				}
+			}
+			// Re-validate merged credentials against the provider schema
+			const credentialSchema =
+				integration.providerType === 'google_analytics'
+					? GoogleAnalyticsCredentialsSchema
+					: MatomoCredentialsSchema;
+			const validationResult = credentialSchema.safeParse(mergedCredentials);
+			if (!validationResult.success) {
+				throw new BadRequestError('Invalid credentials after merge.', validationResult.error);
 			}
 			const { encrypted, iv, tag } = this.encryptionService.encrypt(mergedCredentials);
 			updates.encryptedCredentials = encrypted;

@@ -176,6 +176,13 @@
 			"when": 1772573263224,
 			"tag": "0024_legal_sprite",
 			"breakpoints": true
+		},
+		{
+			"idx": 25,
+			"version": "5",
+			"when": 1772619966391,
+			"tag": "0025_aromatic_the_hood",
+			"breakpoints": true
 		}
 	]
 }
