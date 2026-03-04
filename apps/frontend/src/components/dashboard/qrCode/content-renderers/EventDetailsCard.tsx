@@ -1,6 +1,6 @@
 'use client';
 
-import { CalendarIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, MapPinIcon, LinkIcon } from '@heroicons/react/24/outline';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Separator } from '@/components/ui/separator';
 import { formatDate } from '@/lib/utils';
@@ -14,25 +14,41 @@ interface EventDetailsCardProps {
 export const EventDetailsCard = ({ event, trigger }: EventDetailsCardProps) => {
 	return (
 		<HoverCard>
-			<HoverCardTrigger>{trigger}</HoverCardTrigger>
-			<HoverCardContent className="w-80 py-15">
-				<div className="space-y-2 text-center">
-					<h4 className="text-sm font-semibold">{event.title}</h4>
-					{event.description && <p className="text-sm">{event.description}</p>}
-					<Separator className="max-w-20 my-4 mx-auto" />
-					{event.location && (
-						<div className="flex items-center justify-center space-x-2 text-sm">
-							<MapPinIcon className="w-5 h-5" />
-							<span className="max-w-xs">{event.location}</span>
+			<HoverCardTrigger className="cursor-default">{trigger}</HoverCardTrigger>
+			<HoverCardContent className="w-80">
+				<div className="space-y-3">
+					<div className="flex items-center gap-2">
+						<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-500/10">
+							<CalendarIcon className="h-4 w-4 text-orange-500" />
 						</div>
-					)}
-					<div className="text-sm flex space-x-2 justify-center">
-						<CalendarIcon className="w-5 h-5" />
-						<span>{formatDate(event.startDate)}</span>
+						<div className="min-w-0">
+							<p className="truncate text-sm font-semibold">{event.title}</p>
+							<p className="text-xs text-muted-foreground">Event</p>
+						</div>
 					</div>
-					<div className="text-sm flex space-x-2 justify-center">
-						<CalendarIcon className="w-5 h-5" />
-						<span>{formatDate(event.endDate)}</span>
+					<Separator />
+					<div className="space-y-2">
+						{event.description && (
+							<p className="line-clamp-2 text-sm text-muted-foreground">{event.description}</p>
+						)}
+						<div className="flex items-center gap-2 text-sm">
+							<CalendarIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
+							<span>
+								{formatDate(event.startDate)} &ndash; {formatDate(event.endDate)}
+							</span>
+						</div>
+						{event.location && (
+							<div className="flex items-center gap-2 text-sm">
+								<MapPinIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
+								<span className="truncate">{event.location}</span>
+							</div>
+						)}
+						{event.url && (
+							<div className="flex items-center gap-2 text-sm">
+								<LinkIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
+								<span className="truncate text-muted-foreground">{event.url}</span>
+							</div>
+						)}
 					</div>
 				</div>
 			</HoverCardContent>

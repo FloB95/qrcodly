@@ -7,6 +7,9 @@ import { EventDetailsCard } from './EventDetailsCard';
 import { ShortUrlDisplay } from './ShortUrlDisplay';
 import { EmailDetailsCard } from './EmailDetailsCard';
 import { VCardDetailsCard } from './VCardDetailsCard';
+import { WifiDetailsCard } from './WifiDetailsCard';
+import { EpcDetailsCard } from './EpcDetailsCard';
+import { LocationDetailsCard } from './LocationDetailsCard';
 
 const renderUrlContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	if (qr.content.type !== 'url') return null;
@@ -56,7 +59,6 @@ const renderVCardContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	const { firstName = '', lastName = '', isDynamic } = vcardData;
 	const displayName = `${firstName} ${lastName}`.trim() || 'Contact';
 
-	// If dynamic and has short URL, show with ShortUrlDisplay
 	if (isDynamic && qr.shortUrl) {
 		return (
 			<ShortUrlDisplay
@@ -67,8 +69,7 @@ const renderVCardContent = (qr: TQrCodeWithRelationsResponseDto) => {
 		);
 	}
 
-	// Static vCard or no short URL - show basic name
-	return displayName;
+	return <VCardDetailsCard vcard={vcardData} trigger={displayName} />;
 };
 
 export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
@@ -78,26 +79,17 @@ export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto
 		case 'text':
 			return qr.content.data;
 		case 'wifi':
-			return qr.content.data?.ssid || '';
+			return <WifiDetailsCard wifi={qr.content.data} />;
 		case 'vCard':
 			return renderVCardContent(qr);
 		case 'email':
 			return <EmailDetailsCard email={qr.content.data} />;
 		case 'location':
-			return qr.content.data.address || '';
+			return <LocationDetailsCard location={qr.content.data} />;
 		case 'event':
 			return renderEventContent(qr);
-		case 'epc': {
-			const { name, iban, amount } = qr.content.data;
-			const formattedAmount = amount ? `€${amount.toFixed(2)}` : '';
-			const ibanLine = formattedAmount ? `${iban} · ${formattedAmount}` : iban;
-			return (
-				<div className="flex flex-col">
-					<span className="font-semibold truncate">{name}</span>
-					<span className="text-muted-foreground text-sm truncate">{ibanLine}</span>
-				</div>
-			);
-		}
+		case 'epc':
+			return <EpcDetailsCard epc={qr.content.data} />;
 		default:
 			return 'Unknown';
 	}
