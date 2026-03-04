@@ -21,7 +21,7 @@ function PaginationContent({ className, ...props }: React.ComponentProps<'ul'>) 
 	return (
 		<ul
 			data-slot="pagination-content"
-			className={cn('flex flex-row items-center gap-2', className)}
+			className={cn('flex flex-row items-center gap-1', className)}
 			{...props}
 		/>
 	);
@@ -47,6 +47,7 @@ function PaginationLink({ className, isActive, size = 'icon', ...props }: Pagina
 					variant: isActive ? 'default' : 'white',
 					size,
 				}),
+				size === 'icon' ? 'h-8 w-8 text-sm' : 'h-8 text-sm',
 				className,
 			)}
 			{...props}
@@ -59,12 +60,12 @@ function PaginationPrevious({ className, ...props }: React.ComponentProps<typeof
 	return (
 		<PaginationLink
 			aria-label={t('pagination.previousAria', { defaultValue: 'Go to previous page' })}
-			size="default"
-			className={cn('gap-1 px-2.5 sm:pl-2.5', className)}
+			size="sm"
+			className={cn('gap-1 h-8 px-2 sm:pl-2', className)}
 			{...props}
 		>
-			<ChevronLeftIcon />
-			<span className="hidden sm:block">
+			<ChevronLeftIcon className="size-4" />
+			<span className="hidden sm:block text-sm">
 				{t('pagination.previous', { defaultValue: 'Previous' })}
 			</span>
 		</PaginationLink>
@@ -76,12 +77,14 @@ function PaginationNext({ className, ...props }: React.ComponentProps<typeof Pag
 	return (
 		<PaginationLink
 			aria-label={t('pagination.nextAria', { defaultValue: 'Go to next page' })}
-			size="default"
-			className={cn('gap-1 px-2.5 sm:pr-2.5', className)}
+			size="sm"
+			className={cn('gap-1 h-8 px-2 sm:pr-2', className)}
 			{...props}
 		>
-			<span className="hidden sm:block">{t('pagination.next', { defaultValue: 'Next' })}</span>
-			<ChevronRightIcon />
+			<span className="hidden sm:block text-sm">
+				{t('pagination.next', { defaultValue: 'Next' })}
+			</span>
+			<ChevronRightIcon className="size-4" />
 		</PaginationLink>
 	);
 }
@@ -92,7 +95,7 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<'span'
 		<span
 			aria-hidden
 			data-slot="pagination-ellipsis"
-			className={cn('flex size-9 items-center justify-center', className)}
+			className={cn('flex size-8 items-center justify-center', className)}
 			{...props}
 		>
 			<MoreHorizontalIcon className="size-4" />

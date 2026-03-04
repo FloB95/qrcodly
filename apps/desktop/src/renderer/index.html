@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="default-src 'self'; script-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev; connect-src 'self' http://localhost:* https://*.clerk.accounts.dev https://*.clerk.dev https://api.qrcodly.de https://ph.qrcodly.de wss://*.clerk.accounts.dev; img-src 'self' data: blob: http://localhost:* https://*.clerk.com https://img.clerk.com https://*.googleusercontent.com https://*.amazonaws.com https://*.qrcodly.de; font-src 'self' data:; frame-src https://*.clerk.accounts.dev;"
+		/>
+		<title>QRcodly</title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module" src="./main.tsx"></script>
+	</body>
+</html>

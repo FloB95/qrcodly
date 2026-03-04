@@ -14,10 +14,10 @@ import { type Address } from 'nodemailer/lib/mailer';
 
 type Template = HandlebarsTemplateDelegate<unknown>;
 type TemplateName =
-	| 'user-invited'
 	| 'subscription-past-due'
-	| 'subscription-canceled'
-	| 'subscription-domains-disabled'
+	| 'subscription-cancel-initiated'
+	| 'subscription-cancellation-reminder'
+	| 'subscription-pro-features-disabled'
 	| 'subscription-reactivated';
 
 /**

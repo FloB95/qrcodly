@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateConfigTemplateDto } from '@shared/schemas';
 import { container } from 'tsyringe';
@@ -37,15 +37,11 @@ describe('deleteConfigTemplate', () => {
 		});
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
-		user = serverSetup.user;
-		user2 = serverSetup.user2;
-	});
-
-	afterAll(async () => {
-		await shutDownServer();
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
+		user = ctx.user;
+		user2 = ctx.user2;
 	});
 
 	it('should delete a Config Template and return status code 200', async () => {

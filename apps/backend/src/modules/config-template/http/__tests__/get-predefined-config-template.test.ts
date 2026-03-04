@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateConfigTemplateDto } from '@shared/schemas';
 import { container } from 'tsyringe';
@@ -32,9 +32,9 @@ describe('list predefined templates', () => {
 		});
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		user = serverSetup.user;
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		user = ctx.user;
 
 		// Create Predefined Config Templates for user1
 		for (let i = 0; i < 3; i++) {
@@ -46,10 +46,6 @@ describe('list predefined templates', () => {
 				isPredefined: true,
 			});
 		}
-	});
-
-	afterAll(async () => {
-		await shutDownServer();
 	});
 
 	it('should list the predefined templates and return status code 200', async () => {

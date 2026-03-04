@@ -5,8 +5,13 @@ import createNextIntlPlugin from 'next-intl/plugin';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createMDX } from 'fumadocs-mdx/next';
+import bundleAnalyzer from '@next/bundle-analyzer';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const withBundleAnalyzer = bundleAnalyzer({
+	enabled: process.env.ANALYZE === 'true',
+});
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
@@ -18,6 +23,15 @@ await import('./src/env.js');
 const config = {
 	reactStrictMode: true,
 	productionBrowserSourceMaps: true,
+	experimental: {
+		optimizePackageImports: [
+			'@heroicons/react',
+			'lucide-react',
+			'framer-motion',
+			'@radix-ui/react-icons',
+			'recharts',
+		],
+	},
 	webpack: (config) => {
 		config.module.rules.push({
 			test: /\.svg$/,
@@ -76,7 +90,7 @@ const config = {
 				pathname: '/**',
 			},
 		],
-		formats: ['image/webp'],
+		formats: ['image/avif', 'image/webp'],
 	},
 };
 
@@ -99,4 +113,7 @@ const sentryOptions = {
 
 const withNextIntl = createNextIntlPlugin();
 const withMDX = createMDX();
-export default withAxiom(withNextIntl(withMDX(withSentryConfig(config, sentryOptions))));
+
+export default withBundleAnalyzer(
+	withAxiom(withNextIntl(withMDX(withSentryConfig(config, sentryOptions)))),
+);

@@ -1,28 +1,24 @@
 import 'reflect-metadata';
 import { UpdateQrCodeUseCase } from '../update-qr-code.use-case';
 import type QrCodeRepository from '../../domain/repository/qr-code.repository';
-import type ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
-import { type UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/update-short-url.use-case';
 import { type Logger } from '@/core/logging';
 import { type EventEmitter } from '@/core/event';
 import { type ImageService } from '@/core/services/image.service';
 import { type QrCodeDataService } from '../../service/qr-code-data.service';
+import { type ContentUpdateStrategyService } from '../../service/content-update-strategy.service';
 import { mock, type MockProxy } from 'jest-mock-extended';
 import { QrCodeDefaults, type TUpdateQrCodeDto } from '@shared/schemas';
 import { type TQrCode, type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
-import { type TShortUrlWithDomain } from '@/modules/url-shortener/domain/entities/short-url.entity';
 import { QrCodeUpdatedEvent } from '../../event/qr-code-updated.event';
-import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 
 describe('UpdateQrCodeUseCase', () => {
 	let useCase: UpdateQrCodeUseCase;
 	let mockQrCodeRepo: MockProxy<QrCodeRepository>;
-	let mockShortUrlRepo: MockProxy<ShortUrlRepository>;
-	let mockUpdateShortUrlUseCase: MockProxy<UpdateShortUrlUseCase>;
 	let mockLogger: MockProxy<Logger>;
 	let mockEventEmitter: MockProxy<EventEmitter>;
 	let mockImageService: MockProxy<ImageService>;
 	let mockQrCodeDataService: jest.Mocked<QrCodeDataService>;
+	let mockContentUpdateStrategyService: jest.Mocked<ContentUpdateStrategyService>;
 
 	const baseQrCode: TQrCode = {
 		id: 'qr-123',
@@ -42,38 +38,28 @@ describe('UpdateQrCodeUseCase', () => {
 		updatedAt: new Date('2024-01-01'),
 	};
 
-	const mockShortUrl: TShortUrlWithDomain = {
-		id: 'short-123',
-		shortCode: 'abc123',
-		destinationUrl: 'https://example.com',
-		customDomainId: null,
-		customDomain: null,
-		isActive: true,
-		qrCodeId: 'qr-123',
-		createdBy: 'user-123',
-		createdAt: new Date(),
-		updatedAt: new Date(),
-	};
-
 	beforeEach(() => {
 		mockQrCodeRepo = mock<QrCodeRepository>();
-		mockShortUrlRepo = mock<ShortUrlRepository>();
-		mockUpdateShortUrlUseCase = mock<UpdateShortUrlUseCase>();
 		mockLogger = mock<Logger>();
 		mockEventEmitter = mock<EventEmitter>();
 		mockImageService = mock<ImageService>();
 		mockQrCodeDataService = {
 			computeQrCodeData: jest.fn().mockResolvedValue('https://example.com'),
 		} as unknown as jest.Mocked<QrCodeDataService>;
+		mockContentUpdateStrategyService = {
+			resolve: jest.fn().mockReturnValue({
+				supports: jest.fn().mockReturnValue(true),
+				handleContentUpdate: jest.fn().mockResolvedValue(undefined),
+			}),
+		} as unknown as jest.Mocked<ContentUpdateStrategyService>;
 
 		useCase = new UpdateQrCodeUseCase(
 			mockQrCodeRepo,
 			mockLogger,
 			mockEventEmitter,
-			mockShortUrlRepo,
-			mockUpdateShortUrlUseCase,
 			mockImageService,
 			mockQrCodeDataService,
+			mockContentUpdateStrategyService,
 		);
 
 		// Default mock implementations
@@ -83,6 +69,7 @@ describe('UpdateQrCodeUseCase', () => {
 			updatedAt: new Date(),
 			shortUrl: null,
 		} as TQrCodeWithRelations);
+		mockImageService.handleImageUpdate.mockResolvedValue(undefined);
 	});
 
 	afterEach(() => {
@@ -132,41 +119,20 @@ describe('UpdateQrCodeUseCase', () => {
 			);
 		});
 
-		it('should update linked short URL when URL QR code is editable', async () => {
-			const editableQrCode: TQrCode = {
-				...baseQrCode,
-				content: {
-					type: 'url',
-					data: {
-						url: 'https://example.com',
-						isEditable: true,
-					},
-				},
-			};
-
+		it('should delegate to content update strategy when content changes', async () => {
 			const updates: TUpdateQrCodeDto = {
 				content: {
 					type: 'url',
 					data: {
 						url: 'https://newurl.com',
-						isEditable: true,
+						isEditable: false,
 					},
 				},
 			};
 
-			mockShortUrlRepo.findOneByQrCodeId.mockResolvedValue(mockShortUrl);
-			mockUpdateShortUrlUseCase.execute.mockResolvedValue(mockShortUrl);
+			await useCase.execute(baseQrCode, updates, 'user-123');
 
-			await useCase.execute(editableQrCode, updates, 'user-123');
-
-			expect(mockShortUrlRepo.findOneByQrCodeId).toHaveBeenCalledWith('qr-123');
-			expect(mockUpdateShortUrlUseCase.execute).toHaveBeenCalledWith(
-				mockShortUrl,
-				expect.objectContaining({
-					destinationUrl: 'https://newurl.com',
-				}),
-				'user-123',
-			);
+			expect(mockContentUpdateStrategyService.resolve).toHaveBeenCalledWith('url');
 		});
 
 		it('should update QR code content directly when URL is non-editable', async () => {
@@ -193,39 +159,9 @@ describe('UpdateQrCodeUseCase', () => {
 					}),
 				}),
 			);
-			expect(mockShortUrlRepo.findOneByQrCodeId).not.toHaveBeenCalled();
 		});
 
-		it('should throw ShortUrlNotFoundError when editable but no linked short URL', async () => {
-			const editableQrCode: TQrCode = {
-				...baseQrCode,
-				content: {
-					type: 'url',
-					data: {
-						url: 'https://example.com',
-						isEditable: true,
-					},
-				},
-			};
-
-			const updates: TUpdateQrCodeDto = {
-				content: {
-					type: 'url',
-					data: {
-						url: 'https://newurl.com',
-						isEditable: true,
-					},
-				},
-			};
-
-			mockShortUrlRepo.findOneByQrCodeId.mockResolvedValue(undefined);
-
-			await expect(useCase.execute(editableQrCode, updates, 'user-123')).rejects.toThrow(
-				ShortUrlNotFoundError,
-			);
-		});
-
-		it('should delete old image and upload new one when config.image changes', async () => {
+		it('should call handleImageUpdate when config.image changes', async () => {
 			const qrCodeWithImage: TQrCode = {
 				...baseQrCode,
 				config: {
@@ -241,88 +177,16 @@ describe('UpdateQrCodeUseCase', () => {
 				},
 			};
 
-			mockImageService.uploadImage.mockResolvedValue('https://cdn.example.com/new-image.png');
+			mockImageService.handleImageUpdate.mockResolvedValue('https://cdn.example.com/new-image.png');
 
 			await useCase.execute(qrCodeWithImage, updates, 'user-123');
 
-			expect(mockImageService.deleteImage).toHaveBeenCalledWith(
+			expect(mockImageService.handleImageUpdate).toHaveBeenCalledWith(
 				'https://cdn.example.com/old-image.png',
-			);
-			expect(mockImageService.uploadImage).toHaveBeenCalledWith(
 				'data:image/png;base64,newimage123',
 				'qr-123',
 				'user-123',
 			);
-		});
-
-		it('should delete old image when config changes', async () => {
-			const qrCodeWithImage: TQrCode = {
-				...baseQrCode,
-				config: {
-					...QrCodeDefaults,
-					image: 'https://cdn.example.com/old-image.png',
-				},
-			};
-
-			const updates: TUpdateQrCodeDto = {
-				config: {
-					...QrCodeDefaults,
-					margin: 10, // Change something in config
-				},
-			};
-
-			const updatedQrCode = {
-				...qrCodeWithImage,
-				config: { ...QrCodeDefaults, margin: 10 },
-				previewImage: null,
-			} as TQrCodeWithRelations;
-			mockQrCodeRepo.findOneById.mockResolvedValue(updatedQrCode);
-
-			await useCase.execute(qrCodeWithImage, updates, 'user-123');
-
-			// Preview should be deleted when config changes
-			expect(mockImageService.deleteImage).toHaveBeenCalled();
-		});
-
-		it('should upload new image when config.image added', async () => {
-			const updates: TUpdateQrCodeDto = {
-				config: {
-					...QrCodeDefaults,
-					image: 'data:image/png;base64,abc123',
-				},
-			};
-
-			mockImageService.uploadImage.mockResolvedValue('https://cdn.example.com/new-image.png');
-
-			await useCase.execute(baseQrCode, updates, 'user-123');
-
-			expect(mockImageService.uploadImage).toHaveBeenCalledWith(
-				'data:image/png;base64,abc123',
-				'qr-123',
-				'user-123',
-			);
-		});
-
-		it('should not re-upload image if same image URL provided', async () => {
-			const qrCodeWithImage: TQrCode = {
-				...baseQrCode,
-				config: {
-					...QrCodeDefaults,
-					image: 'https://cdn.example.com/image.png',
-				},
-			};
-
-			const updates: TUpdateQrCodeDto = {
-				config: {
-					...QrCodeDefaults,
-					image: 'https://cdn.example.com/image.png',
-				},
-			};
-
-			await useCase.execute(qrCodeWithImage, updates, 'user-123');
-
-			expect(mockImageService.deleteImage).not.toHaveBeenCalled();
-			expect(mockImageService.uploadImage).not.toHaveBeenCalled();
 		});
 
 		it('should delete preview image when config changes', async () => {
@@ -512,43 +376,6 @@ describe('UpdateQrCodeUseCase', () => {
 				textQrCode,
 				expect.objectContaining({
 					name: 'Updated Name',
-				}),
-			);
-			expect(mockShortUrlRepo.findOneByQrCodeId).not.toHaveBeenCalled();
-		});
-
-		it('should reset content to original when updating editable URL via short URL', async () => {
-			const editableQrCode: TQrCode = {
-				...baseQrCode,
-				content: {
-					type: 'url',
-					data: {
-						url: 'https://example.com',
-						isEditable: true,
-					},
-				},
-			};
-
-			const updates: TUpdateQrCodeDto = {
-				content: {
-					type: 'url',
-					data: {
-						url: 'https://newurl.com',
-						isEditable: true,
-					},
-				},
-			};
-
-			mockShortUrlRepo.findOneByQrCodeId.mockResolvedValue(mockShortUrl);
-			mockUpdateShortUrlUseCase.execute.mockResolvedValue(mockShortUrl);
-
-			await useCase.execute(editableQrCode, updates, 'user-123');
-
-			// Content should be reset to original after short URL update
-			expect(mockQrCodeRepo.update).toHaveBeenCalledWith(
-				editableQrCode,
-				expect.objectContaining({
-					content: editableQrCode.content,
 				}),
 			);
 		});

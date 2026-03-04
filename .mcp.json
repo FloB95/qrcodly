@@ -20,6 +20,10 @@
 		"inkeepMcp": {
 			"command": "npx",
 			"args": ["-y", "mcp-remote", "https://mcp.inkeep.com/zod/mcp"]
+		},
+		"puppeteer": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-puppeteer"]
 		}
 	}
 }

@@ -17,6 +17,7 @@ import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import type { ApiError } from '@/lib/api/ApiError';
 import { isContentAtDefault } from '@/lib/qr-code-helpers';
+import { safeLocalStorage } from '@/lib/utils';
 
 const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 	const t = useTranslations('qrCode');
@@ -84,17 +85,17 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 									},
 								},
 							});
-
-							posthog.capture('error:qr-code-created', {
-								qrCodeName: qrCodeName,
-								qrCode,
-								error: {
-									code: error.code,
-									message: error.message,
-									fieldErrors: error?.fieldErrors,
-								},
-							});
 						}
+
+						posthog.capture('error:qr-code-created', {
+							qrCodeName: qrCodeName,
+							qrCode,
+							error: {
+								code: error.code,
+								message: error.message,
+								fieldErrors: error?.fieldErrors,
+							},
+						});
 
 						toast({
 							variant: 'destructive',
@@ -105,9 +106,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 					},
 				},
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch {}
 	};
 
 	const isDisabled =
@@ -125,9 +124,8 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 						isLoading={createQrCodeMutation.isPending}
 						onClick={() => {
 							if (!isSignedIn) {
-								// Store the config in localStorage before prompting login
-								localStorage.setItem('unsavedQrContent', JSON.stringify(qrCode.content));
-								localStorage.setItem('unsavedQrConfig', JSON.stringify(qrCode.config));
+								safeLocalStorage.setItem('unsavedQrContent', JSON.stringify(qrCode.content));
+								safeLocalStorage.setItem('unsavedQrConfig', JSON.stringify(qrCode.config));
 								setAlertOpen(true);
 								return;
 							}

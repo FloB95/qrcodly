@@ -10,6 +10,7 @@ import type {
 	TShortUrlResponseDto,
 	TShortUrlWithCustomDomainResponseDto,
 } from '@shared/schemas';
+import type { useUser } from '@clerk/nextjs';
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
@@ -186,5 +187,45 @@ export async function apiRequest<T>(
 }
 
 export function getQrCodeEditLink(lang: SupportedLanguages, qrCodeId: string) {
-	return `/${lang}/collection/qr-code/${qrCodeId}/edit`;
+	return `/${lang}/dashboard/qr-codes/${qrCodeId}/edit`;
 }
+
+export type UserResource = ReturnType<typeof useUser>['user'];
+export function getUserInitials(user: UserResource) {
+	if (!user) return '';
+	const first = user.firstName?.[0] || '';
+	const last = user.lastName?.[0] || '';
+	return (
+		(first + last).toUpperCase() ||
+		user.primaryEmailAddress?.emailAddress?.[0]?.toUpperCase() ||
+		'?'
+	);
+}
+
+/**
+ * Safe localStorage utilities that handle SecurityError in private/incognito mode
+ * and browsers with strict privacy settings.
+ */
+export const safeLocalStorage = {
+	getItem(key: string): string | null {
+		try {
+			return localStorage.getItem(key);
+		} catch {
+			return null;
+		}
+	},
+	setItem(key: string, value: string): void {
+		try {
+			localStorage.setItem(key, value);
+		} catch {
+			// localStorage unavailable
+		}
+	},
+	removeItem(key: string): void {
+		try {
+			localStorage.removeItem(key);
+		} catch {
+			// localStorage unavailable
+		}
+	},
+};

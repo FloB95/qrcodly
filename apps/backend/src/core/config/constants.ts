@@ -34,7 +34,7 @@ export const LOGGER_REDACT_PATHS: string[] = ['password', 'user.password'];
 // ---------------------------
 // MAILER CONSTANTS
 // ---------------------------
-export const DEFAULT_FROM_MAIL: string = 'info@qrcodly.de';
+export const DEFAULT_FROM_MAIL: string = '"QRcodly" <info@qrcodly.de>';
 
 // ---------------------------
 // DATABASE CONSTANTS
@@ -48,3 +48,9 @@ export const DEFAULT_PAGE_SIZE: number = 10;
 // File Storage Constants
 // ---------------------------
 export const DEFAULT_PUBLIC_LINK_LIFETIME: number = 3600; // in seconds (1 Hour)
+
+// ---------------------------
+// BILLING CONSTANTS
+// ---------------------------
+export const GRACE_PERIOD_DAYS = 1;
+export const CANCELLATION_REMINDER_DAYS_BEFORE = 3;

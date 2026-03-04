@@ -26,12 +26,7 @@ export function ApiKeyListItem({ apiKey, handleRevalidate }: ApiKeyListItemProps
 	}
 
 	return (
-		<TableRow
-			className={cn(
-				'transition-opacity duration-200 hover:bg-muted/40',
-				isRevoking && 'opacity-50 pointer-events-none',
-			)}
-		>
+		<TableRow className={cn(isRevoking && 'opacity-50 pointer-events-none')}>
 			<TableCell className="font-medium">{apiKey.name ?? '—'}</TableCell>
 			<TableCell>{apiKey.description ?? ''}</TableCell>
 

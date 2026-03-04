@@ -7,6 +7,7 @@ import {
 	MapPinIcon,
 	CalendarDaysIcon,
 	EnvelopeOpenIcon,
+	BanknotesIcon,
 } from '@heroicons/react/24/outline';
 
 export type ContentTypeConfig = {
@@ -57,6 +58,12 @@ export const CONTENT_TYPE_CONFIGS: ContentTypeConfig[] = [
 		type: 'event',
 		label: 'event',
 		icon: CalendarDaysIcon,
+		enableBulk: false,
+	},
+	{
+		type: 'epc',
+		label: 'epc',
+		icon: BanknotesIcon,
 		enableBulk: false,
 	},
 ];

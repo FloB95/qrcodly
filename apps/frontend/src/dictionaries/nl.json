@@ -1,5 +1,14 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Collecties",
+			"qrCodes": "QR Codes",
+			"templates": "Sjablonen",
+			"tags": "Tags"
+		}
+	},
 	"general": {
+		"signOut": "Uitloggen",
 		"proRequired": "Pro-abonnement vereist",
 		"comingSoon": "binnenkort beschikbaar!",
 		"noName": "Geen naam",
@@ -9,6 +18,7 @@
 		"share": "Delen",
 		"edit": "Bewerken",
 		"delete": "Verwijderen",
+		"cancel": "Annuleren",
 		"notProvided": "Niet opgegeven",
 		"days": "Dagen",
 		"newBadge": "Nieuw!",
@@ -23,7 +33,9 @@
 			"unlimited": "Onbeperkte QR-codes",
 			"noSignup": "Gratis Dynamische QR-codes",
 			"noWatermark": "Geen Watermerken"
-		}
+		},
+		"ctaPrimary": "Maak je QR-code",
+		"ctaSecondary": "Ontdek de mogelijkheden"
 	},
 	"metadata": {
 		"title": "QRcodly - Gratis QR-codegenerator",
@@ -47,21 +59,49 @@
 	},
 	"collection": {
 		"headline": "Je collectie",
-		"subHeadline": "Hier vind je al je QR-codes en sjablonen en kun je ze beheren.",
+		"subHeadline": "Hier vind je al je QR-codes en kun je ze beheren.",
 		"tabQrCode": "QR-codes",
 		"tabTemplates": "Sjablonen",
 		"addQrCodeBtn": "QR-code toevoegen",
-		"bulkImportLabel": "Selecteer inhoudstype"
+		"addTemplateBtn": "Sjabloon maken",
+		"bulkImportLabel": "Selecteer inhoudstype",
+		"exportBtn": "Exporteren",
+		"importExportLabel": "Importeren en Exporteren",
+		"bulkExport": {
+			"title": "QR-codes exporteren",
+			"description": "Download meerdere QR-codes als ZIP-bestand.",
+			"format": "Formaat",
+			"noQrCodes": "Geen QR-codes gevonden.",
+			"exportAllLabel": "Alles exporteren ({count})",
+			"deselectAll": "Pagina deselecteren",
+			"selectAll": "Pagina selecteren",
+			"selectedCount": "{count} van {total} geselecteerd",
+			"errorTitle": "Export mislukt",
+			"errorDescription": "Er is een fout opgetreden bij het exporteren van de QR-codes.",
+			"success": "Export voltooid",
+			"progress": "{current} van {total} geëxporteerd",
+			"downloading": "Downloaden…",
+			"downloadBtn": "ZIP downloaden"
+		},
+		"filters": {
+			"searchPlaceholder": "QR-codes zoeken...",
+			"contentType": "Inhoudstype",
+			"clearAll": "Wissen",
+			"customizeColumns": "Kolommen aanpassen",
+			"columns": "Kolommen",
+			"toggleColumns": "Kolommen in-/uitschakelen",
+			"actions": "Acties"
+		}
 	},
 	"analytics": {
-		"totalViews": "Aantal weergaven",
+		"totalViews": "Aantal scans",
 		"totalVisitors": "Aantal bezoekers",
 		"stateActive": "Actief",
 		"stateInactive": "Uitgeschakeld",
-		"activeDescription": "Actief: gebruikers hebben toegang tot de bestemmingspagina en weergaven worden geanalyseerd.",
+		"activeDescription": "Actief: gebruikers hebben toegang tot de bestemmingspagina en scans worden geregistreerd.",
 		"inactiveDescription": "Uitgeschakeld: toegang en analyse zijn gedeactiveerd.",
 		"noData": "Nog geen gegevens verzameld.",
-		"viewsInLastXDays": "{count} weergaven in de afgelopen {days} dagen",
+		"viewsInLastXDays": "{count} scans in de afgelopen {days} dagen",
 		"visitorsInLastXDays": "{count} bezoekers in de afgelopen {days} dagen"
 	},
 	"chart": {
@@ -76,13 +116,23 @@
 		"collectionBtn": "Mijn collectie",
 		"signInBtn": "Inloggen",
 		"settingsBtn": "Instellingen",
+		"featuresBtn": "Functies",
 		"plansBtn": "Prijzen"
 	},
 	"footer": {
-		"qrCodeCopyright": "QR Code is een geregistreerd handelsmerk van DENSO WAVE INCORPORATED",
-		"legalNotice": "Wettelijke kennisgeving",
+		"tagline": "Het open-source QR-codeplatform. Maak, beheer en volg QR-codes met gemak.",
+		"product": "Product",
+		"features": "Functies",
+		"pricing": "Prijzen",
+		"resources": "Bronnen",
+		"faqLink": "FAQ",
+		"docs": "Documentatie",
+		"github": "GitHub",
+		"legal": "Juridisch",
+		"legalNotice": "Juridische kennisgeving",
 		"privacyPolicy": "Privacybeleid",
-		"contact": "Contact"
+		"contact": "Contact",
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -97,14 +147,14 @@
 			"loading": "Laden..."
 		},
 		"feedbackCta": {
-			"headline": "Uw feedback is belangrijk! 🚀",
-			"subHeadline1": "We werken voortdurend aan het verbeteren van QRcodly.",
-			"subHeadline2": "Als u feedback of vragen heeft, laat het ons dan weten.",
-			"emailBtn": "E-mail ons"
+			"headline": "Vragen of feedback?",
+			"subHeadline1": "Heb je een vraag over QRcodly of wil je feedback delen? We helpen je graag en werken continu aan verbeteringen.",
+			"emailBtn": "Neem contact op"
 		},
 		"featuresCta": {
 			"headline": "Overzicht van de belangrijkste functies",
 			"subHeadline": "Met QRcodly kunt u gratis QR-codes maken, bewerken, beheren en analyseren - alles op één plek.",
+			"allFeatures": "Alle functies",
 			"emailBtn": "E-mail ons",
 			"editFeature": {
 				"headline": "QR-codes op elk moment bewerken",
@@ -126,14 +176,24 @@
 				"headline": "Houd controle met je eigen domein",
 				"subHeadline": "Gebruik je eigen domein voor dynamische QR-codes. Houd controle, blijf gebrand en bezit elke link."
 			},
+			"tagFeature": {
+				"headline": "Organiseer met tags",
+				"subHeadline": "Label en categoriseer je QR-codes met aangepaste tags. Filter en vind wat je nodig hebt in een paar seconden."
+			},
+			"exportImportFeature": {
+				"headline": "Exporteer en importeer QR-codes",
+				"subHeadline": "Maak back-ups, migreer of beheer je QR-codes in bulk. Exporteer en importeer ze met slechts een paar klikken."
+			},
 			"teamFeature": {
 				"headline": "Samenwerken in een team",
 				"subHeadline": "Nodig teamleden uit en werk samen aan QR-codes. Ideaal voor bedrijven, bureaus en teams."
 			},
 			"secureFeature": {
 				"headline": "Je gegevens blijven bij ons",
-				"subHeadline": "Qrcodly host alle gegevens lokaal in Duitsland – geen doorsturing naar externe diensten. Alleen voor authenticatie gebruiken we Clerk."
-			}
+				"subHeadline": "QRcodly host alle gegevens lokaal in Duitsland – geen doorsturing naar externe diensten. Alleen voor authenticatie gebruiken we Clerk."
+			},
+			"scrollLeft": "Naar links scrollen",
+			"scrollRight": "Naar rechts scrollen"
 		}
 	},
 	"shortUrl": {
@@ -151,6 +211,16 @@
 		"button": "Naar de startpagina"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Voorbeeld",
+			"name": "Naam",
+			"content": "Inhoud",
+			"status": "Status",
+			"scans": "Scans",
+			"created": "Aangemaakt",
+			"actions": "Acties",
+			"tags": "Tags"
+		},
 		"storeBtn": "Opslaan in collectie",
 		"updateBtn": "QR-code bijwerken",
 		"error": {
@@ -212,6 +282,44 @@
 		"savePopup": {
 			"title": "QR-code opslaan",
 			"placeholder": "Naam QR-code"
+		},
+		"share": {
+			"title": "QR-code delen",
+			"description": "Maak een openbare link om deze QR-code te delen",
+			"warning": "Iedereen met deze link kan uw QR-code bekijken. De link blijft actief totdat deze wordt verwijderd.",
+			"link": "Deellink",
+			"displayOptions": "Weergaveopties",
+			"showName": "QR-codenaam tonen",
+			"showContent": "Inhoudsdetails tonen",
+			"showQrCode": "QR-codeafbeelding tonen",
+			"showDownloadButton": "Downloadknop tonen",
+			"createLink": "Deellink maken",
+			"updateLink": "Instellingen bijwerken",
+			"deleteLink": "Link verwijderen",
+			"linkCopied": {
+				"title": "Link gekopieerd",
+				"description": "De deellink is naar het klembord gekopieerd"
+			},
+			"created": {
+				"title": "Link aangemaakt",
+				"description": "Uw QR-code is nu openbaar toegankelijk"
+			},
+			"updated": {
+				"title": "Instellingen bijgewerkt",
+				"description": "De instellingen van de deellink zijn bijgewerkt"
+			},
+			"deleted": {
+				"title": "Link verwijderd",
+				"description": "De deellink is verwijderd"
+			},
+			"error": {
+				"title": "Fout",
+				"description": "Er is iets misgegaan. Probeer het opnieuw."
+			},
+			"copyError": {
+				"description": "Kon de link niet naar het klembord kopiëren. Kopieer deze handmatig."
+			},
+			"noVisibleContent": "Deze gedeelde QR-code heeft geen zichtbare inhoud."
 		}
 	},
 	"loginDialog": {
@@ -227,6 +335,7 @@
 		"saveBtn": "Opslaan"
 	},
 	"templates": {
+		"pageDescription": "Beheer en organiseer je opgeslagen QR-code sjablonen.",
 		"tabs": {
 			"myTemplates": "Mijn sjablonen",
 			"predefinedTemplates": "Vooraf gedefinieerd"
@@ -276,6 +385,8 @@
 		}
 	},
 	"generator": {
+		"sectionTitle": "Maak je QR-code",
+		"sectionSubtitle": "Kies een inhoudstype, pas het ontwerp aan en download je QR-code direct.",
 		"labelName": "naam",
 		"domainSelector": {
 			"label": "Korte URL-domein",
@@ -312,7 +423,16 @@
 				"title": "Houd rekening met limieten en inloggen",
 				"description": "Met het CSV-bestand kun je maximaal 15 QR-codes tegelijk maken. Voor meer heb je het Pro-plan nodig."
 			},
-			"createButton": "QR-codes maken"
+			"createButton": "QR-codes maken",
+			"csvErrors": {
+				"title": "CSV-fouten gevonden",
+				"description": "{count} fout(en) gevonden in je CSV-bestand. Los de problemen op en upload opnieuw.",
+				"expectedFormat": "Verwacht formaat",
+				"delimiterHint": "Gebruik puntkomma's (;) als kolomscheidingstekens",
+				"lineHeader": "Regel",
+				"retryButton": "Corrigeren & opnieuw uploaden",
+				"backButton": "Terug"
+			}
 		},
 		"settingsForm": {
 			"tabGeneral": "Algemeen",
@@ -362,6 +482,7 @@
 				"email": "EMAIL",
 				"location": "LOCATIE",
 				"event": "EVENT",
+				"epc": "BANK",
 				"socials": "SOCIALS"
 			},
 			"cancel": "Annuleren",
@@ -390,6 +511,10 @@
 				}
 			},
 			"vCard": {
+				"title": {
+					"label": "Titel",
+					"placeholder": "bijv. Dr., Prof., Dhr., Mevr."
+				},
 				"firstName": {
 					"label": "Voornaam",
 					"placeholder": "Voer uw voornaam in"
@@ -517,6 +642,28 @@
 					"label": "Einddatum"
 				}
 			},
+			"epc": {
+				"name": {
+					"label": "Naam begunstigde",
+					"placeholder": "Naam van de betalingsontvanger"
+				},
+				"iban": {
+					"label": "IBAN",
+					"placeholder": "Bijv. NL91ABNA0417164300"
+				},
+				"bic": {
+					"label": "BIC/SWIFT",
+					"placeholder": "Bijv. ABNANL2AXXX"
+				},
+				"amount": {
+					"label": "Bedrag",
+					"placeholder": "0,00"
+				},
+				"purpose": {
+					"label": "Omschrijving",
+					"placeholder": "Doel van de betaling"
+				}
+			},
 			"social": {
 				"title": {
 					"label": "Titel",
@@ -531,7 +678,7 @@
 		},
 		"preview": {
 			"button": "Voorbeeld Openen",
-			"title": "QR-Code Achtergrond Voorbeeld",
+			"title": "QR Code Achtergrond Voorbeeld",
 			"selectTitle": "Achtergrond Selecteren",
 			"selectDescription": "Test hoe je QR-code eruitziet op verschillende achtergronden voordat je deze afdrukt of deelt.",
 			"selectBackground": "Selecteer een achtergrond om je QR-code te bekijken",
@@ -610,6 +757,7 @@
 	},
 	"faq": {
 		"headline": "Veelgestelde Vragen",
+		"subtitle": "Alles wat je moet weten over QR-codes en QRcodly.",
 		"question1": "Wat is een QR-code?",
 		"answer1": "Een QR-code (Quick Response Code) is een slimme, tweedimensionale barcode die verschillende soorten informatie kan opslaan, zoals websitelinks, tekst of contactgegevens. Het kan eenvoudig worden vastgelegd en ontcijferd met een smartphone of een speciale scanner.",
 		"question2": "Hoe maak ik een QR-code aan?",
@@ -631,7 +779,12 @@
 		"question10": "Werken QR-codes ook in gedrukte vorm?",
 		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!",
 		"question11": "Waar worden mijn gegevens gehost?",
-		"answer11": "Alle gegevens bij Qrcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk."
+		"answer11": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk."
+	},
+	"productShowcase": {
+		"headline": "Krachtig dashboard.",
+		"subHeadline": "Prachtige interface.",
+		"description": "Beheer al je QR-codes, volg scans in realtime en pas ontwerpen aan — alles vanuit één intuïtief dashboard."
 	},
 	"fileUpload": {
 		"maxFiles": "Maximaal {maxFiles} bestanden toegestaan",
@@ -644,9 +797,18 @@
 		}
 	},
 	"settings": {
+		"nav": {
+			"title": "Instellingen",
+			"profile": "Profiel",
+			"security": "Beveiliging",
+			"billing": "Facturering",
+			"apiKeys": "API-sleutels",
+			"domains": "Domeinen",
+			"integrations": "Integraties"
+		},
 		"domains": {
 			"title": "Aangepaste Domeinen",
-			"description": "Gebruik je eigen domein voor dynamische QR-codes",
+			"description": "Gebruik je eigen subdomein voor dynamische QR-codes. Bekijk onze <link>documentatie</link> voor installatie-instructies.",
 			"backToCollection": "Terug naar Collectie",
 			"howItWorks": "Hoe het werkt",
 			"step1": "Voeg je domein toe (bijv. links.voorbeeld.nl)",
@@ -719,7 +881,7 @@
 			"stepCompleted": "Voltooid",
 			"dcvDelegationStep": "SSL Auto-vernieuwing (CNAME)",
 			"dcvDelegationDescription": "Dit record maakt automatische uitgifte en vernieuwing van SSL-certificaten mogelijk. Sterk aanbevolen om certificaatvervaldatum te voorkomen.",
-			"step4PendingDns": "Voltooi stap 1 en 2, klik dan op \"Status Controleren\" om door te gaan.",
+			"step4PendingDns": "Voltooi stap 1 - 3, klik dan op \"Status Controleren\" om door te gaan.",
 			"step4LoadingSsl": "SSL-certificaat instructies laden... Klik op \"Status Controleren\" om te vernieuwen.",
 			"sslValidationStep": "SSL-certificaat Validatie (TXT)",
 			"ownershipValidationStep": "Domein Eigendomsverificatie (TXT)",
@@ -783,8 +945,11 @@
 				"dnsPartial": "DNS {count}/2",
 				"sslPending": "SSL in afwachting",
 				"error": "Fout",
-				"setup": "Configuratie"
-			}
+				"setup": "Configuratie",
+				"disabled": "Uitgeschakeld"
+			},
+			"domainsDisabledTitle": "Aangepaste domeinen uitgeschakeld",
+			"domainsDisabledDescription": "Uw aangepaste domeinen zijn uitgeschakeld omdat uw abonnement is verlopen. QR-codes met aangepaste domeinen werken pas weer als u zich opnieuw abonneert."
 		},
 		"apiKeys": {
 			"title": "API-sleutels",
@@ -824,10 +989,7 @@
 		},
 		"billing": {
 			"title": "Facturering & Abonnement",
-			"description": "Beheer je abonnement, betaalmethoden en bekijk de betalingsgeschiedenis.",
-			"tabPlan": "Plan",
-			"tabPaymentMethods": "Betaalmethoden",
-			"tabHistory": "Geschiedenis",
+			"description": "Beheer je abonnement.",
 			"currentPlan": "Huidig Plan",
 			"proDescription": "Je hebt toegang tot alle Pro-functies inclusief onbeperkte QR-codes en geavanceerde analyses.",
 			"freeDescription": "Upgrade naar Pro om aangepaste domeinen, hogere API-limieten en premium functies te ontgrendelen. <link>Bekijk plannen</link>",
@@ -835,51 +997,13 @@
 			"billingCycle": "Factureringscyclus",
 			"perMonth": "maand",
 			"billedAnnually": "Jaarlijks gefactureerd",
+			"billedMonthly": "Maandelijks gefactureerd",
 			"renewsOn": "Vernieuwt op {date}",
 			"expiresOn": "Je Pro-plan verloopt op {date}",
 			"upgradeToPro": "Upgrade naar Pro",
 			"renewSubscription": "Abonnement Vernieuwen",
-			"cancelPlan": "Abonnement Opzeggen",
-			"cancelPlanConfirmTitle": "Abonnement opzeggen?",
-			"cancelPlanConfirmDescription": "Weet je zeker dat je je Pro-abonnement wilt opzeggen? Je verliest toegang tot Pro-functies aan het einde van je huidige factureringsperiode.",
-			"keepPlan": "Abonnement Behouden",
-			"proceedToCancel": "Abonnement Opzeggen",
-			"cancelling": "Opzeggen...",
-			"cancelSuccess": "Je abonnement is opgezegd",
-			"cancelError": "Opzeggen van abonnement mislukt. Probeer opnieuw.",
-			"paymentMethods": "Betaalmethoden",
-			"paymentMethodsDescription": "Beheer je opgeslagen betaalmethoden voor abonnementsfacturering.",
-			"addPaymentMethod": "Kaart Toevoegen",
-			"addPaymentMethodTitle": "Betaalmethode Toevoegen",
-			"addPaymentMethodDescription": "Voeg een nieuwe creditcard of betaalkaart toe voor abonnementsbetalingen.",
-			"noPaymentMethods": "Geen betaalmethoden",
-			"noPaymentMethodsDescription": "Je hebt nog geen betaalmethoden toegevoegd. Voeg een kaart toe om je abonnement te beheren.",
-			"default": "Standaard",
-			"expires": "Verloopt",
-			"removeCardTitle": "Betaalmethode verwijderen?",
-			"removeCardDescription": "Weet je zeker dat je de kaart eindigend op {last4} wilt verwijderen?",
-			"cancel": "Annuleren",
-			"remove": "Verwijderen",
-			"makeDefault": "Instellen als standaard",
-			"openMenu": "Menu openen",
-			"saveCard": "Kaart Opslaan",
-			"paymentValidationFailed": "Betalingsvalidatie mislukt. Controleer je gegevens.",
-			"unexpectedError": "Er is een onverwachte fout opgetreden.",
-			"paymentHistory": "Betalingsgeschiedenis",
-			"paymentHistoryDescription": "Bekijk je eerdere facturen en betalingstransacties.",
-			"noInvoices": "Nog geen facturen",
-			"noInvoicesDescription": "Je betalingsgeschiedenis verschijnt hier zodra je een aankoop doet.",
-			"invoiceDate": "Datum",
-			"invoiceDescription": "Beschrijving",
-			"invoiceAmount": "Bedrag",
-			"invoiceCard": "Kaart",
-			"invoiceActions": "Factuur",
-			"invoiceStatusLabel": "Status",
-			"invoiceStatus": {
-				"paid": "Betaald",
-				"pending": "In afwachting",
-				"failed": "Mislukt"
-			}
+			"manageSubscription": "Abonnement beheren",
+			"manageBilling": "Facturen & betaling"
 		},
 		"profile": {
 			"pageTitle": "Profiel",
@@ -986,14 +1110,82 @@
 			"deleteAccountPermanently": "Account Permanent Verwijderen",
 			"accountDeleted": "Je account is verwijderd.",
 			"accountDeleteError": "Verwijderen van account mislukt. Probeer opnieuw."
+		},
+		"integrations": {
+			"title": "Analytics-integraties",
+			"description": "Stuur scangegevens door naar uw eigen analysetools. De ingebouwde analyse van QRcodly blijft altijd actief en onaangetast. Alleen geanonimiseerde IP's en niet-identificerende gegevens worden gedeeld — nooit user agents of persoonlijke informatie.",
+			"docsLink": "Zie onze <link>documentatie</link> voor meer informatie.",
+			"configure": "Configureren",
+			"configureTitle": "Configureren",
+			"editTitle": "Bewerken",
+			"ga4Description": "Stuur je QR-code-scans rechtstreeks naar Google Analytics.",
+			"matomoDescription": "Stuur je QR-code-scans naar je eigen Matomo-instantie.",
+			"ga4Short": "Stuur je QR-code-scans rechtstreeks naar Google Analytics.",
+			"matomoShort": "Stuur je QR-code-scans naar je eigen Matomo-instantie.",
+			"measurementId": "Meet-ID",
+			"apiSecret": "API-geheim",
+			"apiSecretPlaceholder": "Voer uw Measurement Protocol API-geheim in",
+			"matomoUrl": "Matomo-URL",
+			"siteId": "Site-ID",
+			"authToken": "Auth-token",
+			"optional": "optioneel",
+			"authTokenWillBeRemoved": "Het authenticatietoken wordt verwijderd bij het opslaan.",
+			"clear": "Wissen",
+			"undo": "Ongedaan maken",
+			"ga4ManualVerificationTitle": "Handmatige verificatie vereist",
+			"ga4ManualVerificationDescription": "Google Analytics ondersteunt geen automatische verificatie van referenties. Controleer uw meet-ID en API-sleutel en verifieer dat gegevens worden ontvangen in uw Google Analytics-dashboard nadat een QR-code is gescand.",
+			"privacyNoticeTitle": "Privacy-eerst analyse",
+			"privacyNoticeDescription": "Alleen niet-identificerende gegevens worden verzonden: pagina-URL, verwijzer, taal, apparaattype en browsernaam. IP-adressen worden alleen in geanonimiseerde vorm doorgestuurd. User agents en persoonlijke informatie worden nooit gedeeld.",
+			"cancel": "Annuleren",
+			"save": "Opslaan",
+			"saving": "Opslaan...",
+			"create": "Aanmaken",
+			"created": "Integratie aangemaakt",
+			"createdDescription": "Uw analytics-integratie is succesvol geconfigureerd.",
+			"updated": "Integratie bijgewerkt",
+			"updatedDescription": "Uw analytics-integratie is succesvol bijgewerkt.",
+			"error": "Fout",
+			"saveError": "Kan de integratie niet opslaan.",
+			"active": "Actief",
+			"inactive": "Inactief",
+			"enabled": "Integratie ingeschakeld",
+			"enabledDescription": "Scangegevens worden nu naar deze provider gestuurd.",
+			"disabled": "Integratie uitgeschakeld",
+			"disabledDescription": "Scangegevens worden niet meer naar deze provider gestuurd.",
+			"toggleError": "Kan de integratie niet schakelen.",
+			"edit": "Bewerken",
+			"test": "Testen",
+			"testing": "Testen...",
+			"testSuccess": "Referenties geverifieerd",
+			"testSuccessDescription": "Succesvol verbonden met de analytics-provider.",
+			"testFailed": "Referenties ongeldig",
+			"testFailedDescription": "Kan niet verbinden met de opgegeven referenties.",
+			"testUnverifiable": "Verbinding mislukt",
+			"testUnverifiableDescription": "De analytics-server kon niet worden bereikt. Controleer of de URL correct is en de server bereikbaar is.",
+			"testError": "Kan referenties niet testen.",
+			"delete": "Verwijderen",
+			"deleteConfirmTitle": "Integratie verwijderen?",
+			"deleteConfirmDescription": "Weet u zeker dat u de {provider}-integratie wilt verwijderen?",
+			"deleted": "Integratie verwijderd",
+			"deletedDescription": "De analytics-integratie is verwijderd.",
+			"deleteError": "Kan de integratie niet verwijderen.",
+			"lastErrorTitle": "Laatste fout",
+			"autoDisabled": "Deze integratie is automatisch uitgeschakeld na 10 opeenvolgende fouten.",
+			"openMenu": "Menu openen",
+			"integrationDisabledTitle": "Analytics-integratie uitgeschakeld",
+			"integrationDisabledDescription": "Uw analytics-integratie is uitgeschakeld omdat uw Pro-plan is verlopen. Abonneer u opnieuw om deze weer in te schakelen.",
+			"moreIntegrationsTeaser": "Meer integraties met extra analytics-aanbieders zijn onderweg. <contact>Aanbieder voorstellen</contact>"
 		}
 	},
 	"plans": {
+		"metaTitle": "QR Code Generator Prijzen – Gratis & Pro",
+		"metaDescription": "Gratis QR code generator met onbeperkte codes, eigen design & analyses. Pro voor eigen domeinen, bulkimport & prioriteitsondersteuning. Geen verborgen kosten.",
 		"title": "Eerlijk. Transparant. Geen verborgen kosten.",
 		"subtitle": "QRcodly is gratis te gebruiken – geen proefperiodes, geen automatische abonnementen. Het Pro-plan dekt alleen functies die extra infrastructuur vereisen.",
 		"annual": "Jaarlijks",
 		"monthly": "Maandelijks",
 		"perMonth": "/maand",
+		"perYear": "/jaar",
 		"upgradeToPro": "Upgrade naar Pro",
 		"renewSubscription": "Abonnement Vernieuwen",
 		"manageSubscription": "Abonnement Beheren",
@@ -1013,17 +1205,189 @@
 				"customStyling": "Aangepaste stijlen & pictogrammen",
 				"detailedAnalytics": "Gedetailleerde analyses",
 				"noCreditCard": "Geen creditcard vereist",
+				"unlimitedTags": "Onbeperkte tags (1 per QR-code)",
 				"limitedApi": "Beperkte API-toegang",
 				"limitedBulk": "Beperkte bulk QR-code generatie"
 			},
 			"pro": {
 				"everythingInFree": "Alles in Gratis",
+				"unlimitedTags": "Onbeperkte tags (3 per QR-code)",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
 				"customDomains": "Aangepast domein voor dynamische QR-codes",
 				"unlimitedApi": "Onbeperkte API-toegang",
+				"analyticsIntegrations": "Analytics-integraties (Google Analytics, Matomo)",
 				"prioritySupport": "Prioriteitsondersteuning",
 				"teamFeatures": "Teamfuncties (binnenkort)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Tags",
+		"description": "Maak en beheer tags om je QR-codes te organiseren.",
+		"createBtn": "Tag aanmaken",
+		"editBtn": "Wijzigingen opslaan",
+		"deleteConfirmTitle": "Tag verwijderen?",
+		"deleteConfirmDescription": "Weet je zeker dat je deze tag wilt verwijderen? De tag wordt van alle QR-codes verwijderd.",
+		"nameLabel": "Naam",
+		"colorLabel": "Kleur",
+		"noTags": "Nog geen tags",
+		"noTagsDescription": "Maak je eerste tag aan om je QR-codes te organiseren.",
+		"manageTags": "Tags beheren",
+		"filterByTags": "Filteren op tags",
+		"searchTags": "Tags zoeken...",
+		"noSearchResults": "Geen tags gevonden voor \"{search}\"",
+		"toast": {
+			"createdTitle": "Tag aangemaakt",
+			"createdDescription": "Je tag is succesvol aangemaakt.",
+			"updatedTitle": "Tag bijgewerkt",
+			"updatedDescription": "Je tag is succesvol bijgewerkt.",
+			"deletedTitle": "Tag verwijderd",
+			"deletedDescription": "Je tag is succesvol verwijderd.",
+			"tagsUpdatedTitle": "Tags bijgewerkt",
+			"tagsUpdatedDescription": "De QR-code tags zijn succesvol bijgewerkt.",
+			"createErrorTitle": "Fout bij het aanmaken van tag",
+			"updateErrorTitle": "Fout bij het bijwerken van tag",
+			"deleteErrorTitle": "Fout bij het verwijderen van tag",
+			"assignErrorTitle": "Fout bij het bijwerken van tags",
+			"error": "Er is iets misgegaan"
+		},
+		"actionsMenu": {
+			"title": "Acties"
+		},
+		"table": {
+			"name": "Naam",
+			"color": "Kleur",
+			"created": "Aangemaakt",
+			"usage": "Gebruik",
+			"qrCodes": "QR-codes"
+		}
+	},
+	"featuresPage": {
+		"metaTitle": "Gratis QR Code Generator – Functies",
+		"metaDescription": "Ontdek alle functies van de QR code generator: dynamische QR codes, scananalyses, eigen designs met logo, bulkcreatie, sjablonen en ondersteuning voor URLs, WiFi & vCards.",
+		"badge": "Functies",
+		"title": "Alles wat je nodig hebt voor professionele QR-codes",
+		"subtitle": "Van creatie tot analyse — QRcodly biedt je krachtige tools om QR-codes te maken, beheren en volgen.",
+		"spotlight": {
+			"dynamicQr": {
+				"tag": "Kernfunctie",
+				"title": "Dynamische QR-codes — Altijd Bewerkbaar",
+				"description": "Maak QR-codes die na het afdrukken bijgewerkt kunnen worden. Wijzig de bestemmings-URL, schakel ze aan of uit en volg elke scan — allemaal zonder een nieuwe code te genereren.",
+				"bullet1": "Werk de inhoud bij zonder opnieuw af te drukken",
+				"bullet2": "Volg elke scan met realtime analyse",
+				"bullet3": "Schakel QR-codes direct aan of uit"
+			},
+			"analytics": {
+				"tag": "Inzichten",
+				"title": "Gedetailleerde Realtime Analyse",
+				"description": "Begrijp hoe je QR-codes presteren met uitgebreide scananalyse. Zie wie scant, wanneer, waar en met welk apparaat.",
+				"bullet1": "Totaal aantal scans en unieke bezoekers bijhouden",
+				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem",
+				"bullet3": "Geografische spreiding per land"
+			},
+			"collection": {
+				"tag": "Beheer",
+				"title": "Jouw Centrale QR-code Dashboard",
+				"description": "Houd al je QR-codes georganiseerd in een krachtig dashboard. Zoek, filter, sorteer en beheer alles vanaf een enkele plek.",
+				"bullet1": "Centraal dashboard voor alle QR-codes",
+				"bullet2": "Geavanceerd zoeken en filteren op inhoudstype",
+				"bullet3": "Snelle acties: bewerken, delen, downloaden, verwijderen"
+			},
+			"templates": {
+				"tag": "Design",
+				"title": "Herbruikbare Ontwerpsjablonen",
+				"description": "Sla je favoriete QR-codeontwerpen op als sjablonen en hergebruik ze in al je campagnes. Behoud een consistente branding zonder stijlen elke keer opnieuw te maken.",
+				"bullet1": "Sla elk QR-code ontwerp op als herbruikbaar sjabloon",
+				"bullet2": "Pas sjablonen toe op nieuwe codes met één klik",
+				"bullet3": "Behoud consistente branding in alle campagnes"
+			},
+			"customDomain": {
+				"tag": "Branding",
+				"title": "Aangepaste Domeinen voor Korte URL's",
+				"description": "Gebruik je eigen domein voor QR-code korte URL's in plaats van die van ons. Versterk je merkidentiteit en bouw vertrouwen op bij je publiek.",
+				"bullet1": "Verbind je eigen domein in enkele minuten",
+				"bullet2": "Automatische SSL-certificaat provisioning",
+				"bullet3": "Volledig DNS-beheer via Cloudflare-integratie"
+			},
+			"tags": {
+				"tag": "Organisatie",
+				"title": "Gekleurde Tags voor Eenvoudige Organisatie",
+				"description": "Houd je QR-codebibliotheek georganiseerd met aangepaste gekleurde tags. Maak categorieën, filter op tag en vind elke code direct.",
+				"bullet1": "Maak onbeperkt aangepaste gekleurde tags",
+				"bullet2": "Wijs meerdere tags toe per QR-code",
+				"bullet3": "Filter en doorzoek je collectie op tags"
+			},
+			"bulkOperations": {
+				"tag": "Productiviteit",
+				"title": "Bulk Export en Import op Grote Schaal",
+				"description": "Werk efficiënt met grote aantallen QR-codes. Importeer via CSV om er veel tegelijk aan te maken, of exporteer je hele collectie als ZIP-archief.",
+				"bullet1": "Importeer QR-codes in bulk via CSV-upload",
+				"bullet2": "Exporteer alle QR-codeafbeeldingen als ZIP-archief",
+				"bullet3": "Ideaal voor grootschalige printcampagnes"
+			},
+			"contentTypes": {
+				"tag": "Veelzijdigheid",
+				"title": "Meer dan 9 Inhoudstypen Ondersteund",
+				"description": "Ga verder dan eenvoudige URL's. Maak QR-codes voor WiFi-netwerken, visitekaartjes, agenda-evenementen, e-mailadressen, geografische locaties en meer.",
+				"bullet1": "URL, WiFi, vCard, e-mail en Tekst",
+				"bullet2": "Agenda-evenementen met volledige detailondersteuning",
+				"bullet3": "Geografische locaties en betaallinks"
+			},
+			"security": {
+				"tag": "Privacy",
+				"title": "Privacy-gericht & Open Source",
+				"description": "Je kerngegevens worden gehost op servers in Duitsland. We gebruiken vertrouwde diensten van derden zoals Clerk voor authenticatie en verzamelen minimale analyses om het product te verbeteren. QRcodly is volledig open source voor volledige transparantie.",
+				"bullet1": "Kerninfrastructuur gehost op Duitse servers",
+				"bullet2": "Volledig open source op GitHub — altijd controleerbaar",
+				"bullet3": "Transparant gebruik van Clerk, Sentry & PostHog"
+			},
+			"integrations": {
+				"tag": "Integraties",
+				"title": "Externe Analytics-integraties",
+				"description": "Stuur scangegevens door naar Google Analytics 4 of Matomo — je eigen analysetools. QRcodly deelt alleen geanonimiseerde, niet-identificeerbare gegevens en de ingebouwde analyse blijft volledig actief.",
+				"bullet1": "Verbind Google Analytics 4 of Matomo in enkele minuten",
+				"bullet2": "Alleen geanonimiseerde IP's en niet-persoonlijke gegevens worden gedeeld",
+				"bullet3": "De ingebouwde QRcodly-analyse blijft onaangetast"
+			},
+			"teams": {
+				"tag": "Binnenkort",
+				"title": "Team Workspaces — Komt later dit jaar",
+				"description": "Beheer QR-codes samen als team. Maak organisaties aan, nodig leden uit en wijs rollen toe — perfect voor bureaus, marketingteams en bedrijven van elke omvang.",
+				"bullet1": "Organisaties aanmaken en teamleden uitnodigen",
+				"bullet2": "Rolgebaseerde toegang: Admin, Editor en Kijker",
+				"bullet3": "Samenwerken aan QR-codes met je hele team"
+			}
+		},
+		"cta": {
+			"title": "Klaar om te beginnen?",
+			"subtitle": "Maak je eerste QR-code in seconden. Voor altijd gratis, geen creditcard nodig.",
+			"button": "Maak nu een QR-code"
+		}
+	},
+	"notFound": {
+		"message": "Oeps! De pagina die je zoekt bestaat niet.",
+		"goHome": "Terug naar de startpagina"
+	},
+	"smartTips": {
+		"tipLabel": "Tip",
+		"gotIt": "Begrepen",
+		"dontShowAgain": "Niet meer tonen",
+		"disableAll": "Alle tips uitschakelen",
+		"bulkExport": {
+			"title": "Exporteer meerdere QR-codes tegelijk",
+			"description": "Gebruik het Acties-menu om al je QR-codes als ZIP-bestand te exporteren in plaats van ze één voor één te downloaden."
+		},
+		"bulkImport": {
+			"title": "Maak QR-codes in bulk",
+			"description": "Gebruik het Acties-menu om een spreadsheet te importeren en tientallen QR-codes tegelijk aan te maken."
+		},
+		"customDomain": {
+			"title": "Gebruik je eigen domein",
+			"description": "Koppel een eigen domein zodat je QR-code-kortlinks je merk gebruiken in plaats van het onze."
+		},
+		"organizeTags": {
+			"title": "Organiseer met tags",
+			"description": "Voeg tags toe aan je QR-codes om ze eenvoudiger te groeperen, filteren en vinden."
 		}
 	}
 }

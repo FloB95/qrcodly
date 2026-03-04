@@ -1,125 +1,141 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import QRCodeStyling, {
-	DrawType,
-	TypeNumber,
-	Mode,
-	ErrorCorrectionLevel,
-	DotType,
-	CornerSquareType,
-	CornerDotType,
-	FileExtension,
-	Options,
-} from 'qr-code-styling';
+import { useEffect, useRef, useState } from 'react';
+import { ClerkProvider, SignedIn, SignedOut, useUser } from '@clerk/chrome-extension';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { IntlProvider } from 'use-intl';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from '@/components/ui/toaster';
+import { getQueryClient } from '@ext/lib/queryClient';
+import { loadMessages, getPreferredLocale } from '@ext/lib/i18n';
+import type { SupportedLanguages } from '@ext/shims/i18n-routing';
+import { deDE, enUS, frFR, itIT, esES, nlNL, plPL, ruRU } from '@clerk/localizations';
+import { ExtensionQrGenerator } from '@ext/components/ExtensionQrGenerator';
 
-const API_BASE = import.meta.env.VITE_API_BASE ?? 'https://qrcodly.de/api/qr?text=';
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL ?? 'https://www.qrcodly.de';
 
-const ext = (globalThis as any).chrome || (globalThis as any).browser;
+const queryClient = getQueryClient();
 
-export default function App() {
-	const [error, setError] = useState<string | null>(null);
-	console.log('init');
+const localeMap: Record<string, typeof enUS> = {
+	en: enUS,
+	de: deDE,
+	nl: nlNL,
+	fr: frFR,
+	it: itIT,
+	es: esES,
+	pl: plPL,
+	ru: ruRU,
+};
+
+function SignInPrompt() {
+	return (
+		<div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
+			<img src="./icon-48.png" alt="QRcodly" className="h-12 w-12" />
+			<h2 className="text-lg font-semibold">Sign in to QRcodly</h2>
+			<p className="text-sm text-muted-foreground">
+				Sign in at qrcodly.de first, then reopen this popup.
+			</p>
+			<button
+				onClick={() => chrome.tabs.create({ url: FRONTEND_URL })}
+				className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+			>
+				Open qrcodly.de
+			</button>
+		</div>
+	);
+}
+
+function ProfileAvatar() {
+	const { user } = useUser();
+	return (
+		<button
+			onClick={() => chrome.tabs.create({ url: `${FRONTEND_URL}/dashboard/settings/profile` })}
+			className="rounded-full overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all"
+			title="Open profile"
+		>
+			<img
+				src={user?.imageUrl}
+				alt={user?.fullName ?? 'Profile'}
+				className="h-7 w-7 rounded-full"
+			/>
+		</button>
+	);
+}
+
+function ExtensionLayout() {
+	return (
+		<div className="flex flex-col">
+			<header className="flex items-center justify-between border-b px-4 py-2">
+				<div className="flex items-center gap-2">
+					<img src="./icon-48.png" alt="QRcodly" className="h-6 w-6" />
+					<span className="text-sm font-semibold">QRcodly</span>
+				</div>
+				<ProfileAvatar />
+			</header>
+			<div className="overflow-y-auto p-4" style={{ maxHeight: 'calc(600px - 49px)' }}>
+				<ExtensionQrGenerator />
+			</div>
+		</div>
+	);
+}
+
+type AppProps = {
+	onReady?: () => void;
+};
+
+export default function App({ onReady }: AppProps) {
+	const [locale, setLocale] = useState<SupportedLanguages>(getPreferredLocale());
+	const [messages, setMessages] = useState<Record<string, unknown> | null>(null);
+	const calledReady = useRef(false);
 
 	useEffect(() => {
-		try {
-			ext.tabs.query({ active: true, currentWindow: true }, (tabs: any[]) => {
-				const tab = tabs?.[0];
-				if (tab?.url) {
-					setOptions((options) => ({
-						...options,
-						data: tab.url,
-					}));
-				}
-			});
-		} catch {
-			setError('Browser API nicht verfügbar');
+		void loadMessages(locale).then(setMessages);
+	}, [locale]);
+
+	useEffect(() => {
+		const stored = localStorage.getItem('qrcodly-locale') as SupportedLanguages | null;
+		if (stored) {
+			setLocale(stored);
 		}
 	}, []);
 
-	const [options, setOptions] = useState<Options>({
-		width: 300,
-		height: 300,
-		type: 'canvas' as DrawType,
-		data: 'https://www.qrcodly.de/de',
-		margin: 10,
-		qrOptions: {
-			typeNumber: 0 as TypeNumber,
-			mode: 'Byte' as Mode,
-			errorCorrectionLevel: 'Q' as ErrorCorrectionLevel,
-		},
-		imageOptions: {
-			hideBackgroundDots: true,
-			imageSize: 0.4,
-			margin: 20,
-			crossOrigin: 'anonymous',
-		},
-		dotsOptions: {
-			color: '#000000',
-			type: 'rounded' as DotType,
-		},
-		backgroundOptions: {
-			color: 'transparent',
-		},
-		cornersSquareOptions: {
-			color: '#000000',
-			type: 'extra-rounded' as CornerSquareType,
-		},
-		cornersDotOptions: {
-			color: '#000000',
-			type: 'dot' as CornerDotType,
-		},
-	});
-	const [fileExt, setFileExt] = useState<FileExtension>('svg');
-	const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));
-	const ref = useRef<HTMLDivElement>(null);
-
+	// Signal ready once messages are loaded
 	useEffect(() => {
-		if (ref.current) {
-			qrCode.append(ref.current);
+		if (messages && !calledReady.current) {
+			calledReady.current = true;
+			onReady?.();
 		}
-	}, [qrCode, ref]);
+	}, [messages, onReady]);
 
-	useEffect(() => {
-		if (!qrCode) return;
-		qrCode.update(options);
-	}, [qrCode, options]);
+	// Don't render anything until messages load — the HTML splash screen is visible
+	if (!messages) {
+		return null;
+	}
 
-	const onExtensionChange = (event: ChangeEvent<HTMLSelectElement>) => {
-		setFileExt(event.target.value as FileExtension);
-	};
-
-	const onDownloadClick = () => {
-		if (!qrCode) return;
-
-		qrCode.download({
-			extension: fileExt,
-		});
-	};
+	const clerkLocale = localeMap[locale] || enUS;
 
 	return (
-		<div className="w-[340px] bg-gradient-to-br from-zinc-50 to-orange-100 p-3 font-sans text-gray-800">
-			<h1 className="text-lg font-bold mb-3 text-center">QRcodly</h1>
-
-			<div className="mb-2">
-				<label className="text-xs text-gray-500">URL</label>
-				<input
-					className="w-full mt-1 rounded-lg border border-gray-200 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-black"
-					value={options.data}
-					disabled
-				/>
-			</div>
-
-			<div ref={ref} />
-			<div>
-				<select onChange={onExtensionChange} value={fileExt}>
-					<option value="svg">SVG</option>
-					<option value="png">PNG</option>
-					<option value="jpeg">JPEG</option>
-					<option value="webp">WEBP</option>
-				</select>
-				<button onClick={onDownloadClick}>Download</button>
-			</div>
-
-			{error && <div className="mt-2 text-xs text-red-600">{error}</div>}
-		</div>
+		<ClerkProvider
+			publishableKey={PUBLISHABLE_KEY}
+			syncSessionWithTab
+			afterSignOutUrl="/"
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			localization={clerkLocale as any}
+		>
+			<IntlProvider locale={locale} messages={messages}>
+				<QueryClientProvider client={queryClient}>
+					<TooltipProvider>
+						<div style={{ width: 470 }}>
+							<SignedIn>
+								<ExtensionLayout />
+							</SignedIn>
+							<SignedOut>
+								<SignInPrompt />
+							</SignedOut>
+						</div>
+						<Toaster />
+					</TooltipProvider>
+				</QueryClientProvider>
+			</IntlProvider>
+		</ClerkProvider>
 	);
 }

@@ -1,0 +1,40 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"target": "ESNext",
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"jsx": "react-jsx",
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitAny": false,
+		"noImplicitReturns": false,
+		"strictNullChecks": true,
+		"sourceMap": true,
+		"outDir": "./dist",
+		"paths": {
+			"@/env": ["./src/renderer/shims/env.ts"],
+			"@/i18n/routing": ["./src/renderer/shims/i18n-routing.ts"],
+			"@/i18n/navigation": ["./src/renderer/shims/i18n-navigation.ts"],
+			"@/*": ["./../frontend/src/*"],
+			"@clerk/nextjs": ["./src/renderer/shims/clerk.ts"],
+			"@clerk/nextjs/server": ["./src/renderer/shims/clerk-server.ts"],
+			"@clerk/nextjs/experimental": ["./src/renderer/shims/clerk-experimental.ts"],
+			"next-intl": ["./src/renderer/shims/next-intl.ts"],
+			"next-intl/server": ["./src/renderer/shims/next-intl-server.ts"],
+			"next-intl/routing": ["./src/renderer/shims/next-intl-routing.ts"],
+			"next/link": ["./src/renderer/shims/next-link.tsx"],
+			"next/navigation": ["./src/renderer/shims/next-navigation.ts"],
+			"next/image": ["./src/renderer/shims/next-image.tsx"],
+			"next/dynamic": ["./src/renderer/shims/next-dynamic.tsx"],
+			"@sentry/nextjs": ["./src/renderer/shims/sentry.ts"],
+			"@shared/schemas": ["./../../packages/shared/src"],
+			"@shared/schemas/*": ["./../../packages/shared/src/*"]
+		}
+	},
+	"include": ["src/renderer/**/*.ts", "src/renderer/**/*.tsx", "src/renderer/**/*.d.ts"],
+	"exclude": ["node_modules", "dist"]
+}

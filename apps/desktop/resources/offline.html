@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>QRcodly — Offline</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			body {
+				font-family:
+					-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+					sans-serif;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				background: #f8fafc;
+				color: #1e293b;
+			}
+			.container {
+				text-align: center;
+				padding: 2rem;
+				max-width: 420px;
+			}
+			.icon {
+				font-size: 4rem;
+				margin-bottom: 1.5rem;
+				opacity: 0.6;
+			}
+			h1 {
+				font-size: 1.5rem;
+				font-weight: 600;
+				margin-bottom: 0.75rem;
+			}
+			p {
+				color: #64748b;
+				line-height: 1.6;
+				margin-bottom: 2rem;
+			}
+			button {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.75rem 1.5rem;
+				background: #0f172a;
+				color: #fff;
+				border: none;
+				border-radius: 0.5rem;
+				font-size: 0.875rem;
+				font-weight: 500;
+				cursor: pointer;
+				transition: background 0.15s;
+			}
+			button:hover {
+				background: #1e293b;
+			}
+			button:active {
+				background: #334155;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="icon">&#x1F50C;</div>
+			<h1>You're offline</h1>
+			<p>
+				QRcodly needs an internet connection to load your dashboard. Check your connection and try
+				again.
+			</p>
+			<button onclick="window.location.reload()">Retry connection</button>
+		</div>
+	</body>
+</html>

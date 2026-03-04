@@ -1,0 +1,2 @@
+ALTER TABLE `analytics_integration` DROP INDEX `i_analytics_integration_created_by`;--> statement-breakpoint
+CREATE INDEX `i_analytics_integration_created_by` ON `analytics_integration` (`created_by`);

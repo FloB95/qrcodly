@@ -48,8 +48,10 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 		}
 
 		this.logger.info('customDomain.verification.dns.start', {
-			customDomainId: customDomain.id,
-			domain: customDomain.domain,
+			customDomain: {
+				id: customDomain.id,
+				domain: customDomain.domain,
+			},
 		});
 
 		// Verify DNS records using ownershipValidationTxtValue as the verification token
@@ -65,10 +67,12 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 		});
 
 		this.logger.info('customDomain.verification.dns.result', {
-			customDomainId: customDomain.id,
-			domain: customDomain.domain,
-			ownershipTxtVerified: dnsResult.ownershipTxtVerified,
-			cnameVerified: dnsResult.cnameVerified,
+			customDomain: {
+				id: customDomain.id,
+				domain: customDomain.domain,
+				ownershipTxtVerified: dnsResult.ownershipTxtVerified,
+				cnameVerified: dnsResult.cnameVerified,
+			},
 		});
 
 		// If both DNS records are verified, transition to Cloudflare phase
@@ -88,8 +92,10 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 	 */
 	private async transitionToCloudflarePhase(customDomain: TCustomDomain): Promise<TCustomDomain> {
 		this.logger.info('customDomain.verification.transition_to_cloudflare', {
-			customDomainId: customDomain.id,
-			domain: customDomain.domain,
+			customDomain: {
+				id: customDomain.id,
+				domain: customDomain.domain,
+			},
 		});
 
 		// Register with Cloudflare
@@ -99,7 +105,7 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 		} catch (error) {
 			if (error instanceof CloudflareApiError) {
 				this.logger.error('customDomain.cloudflare.create.failed', {
-					domain: customDomain.domain,
+					customDomain: { domain: customDomain.domain },
 					error: error.message,
 					statusCode: error.statusCode,
 				});
@@ -125,10 +131,12 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 		});
 
 		this.logger.info('customDomain.verification.cloudflare_registered', {
-			customDomainId: customDomain.id,
-			domain: customDomain.domain,
-			cloudflareHostnameId: cloudflareHostname.id,
-			sslStatus: cloudflareHostname.ssl.status,
+			customDomain: {
+				id: customDomain.id,
+				domain: customDomain.domain,
+				cloudflareHostnameId: cloudflareHostname.id,
+				sslStatus: cloudflareHostname.ssl.status,
+			},
 		});
 
 		const updatedDomain = await this.customDomainRepository.findOneById(customDomain.id);
@@ -143,8 +151,10 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 		// If already fully verified (SSL active), return as-is
 		if (customDomain.sslStatus === 'active') {
 			this.logger.info('customDomain.verification.already_active', {
-				customDomainId: customDomain.id,
-				domain: customDomain.domain,
+				customDomain: {
+					id: customDomain.id,
+					domain: customDomain.domain,
+				},
 			});
 			return customDomain;
 		}
@@ -163,7 +173,7 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 		} catch (error) {
 			if (error instanceof CloudflareApiError) {
 				this.logger.error('customDomain.cloudflare.verify.failed', {
-					domain: customDomain.domain,
+					customDomain: { domain: customDomain.domain },
 					error: error.message,
 					statusCode: error.statusCode,
 				});
@@ -186,7 +196,7 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 		const validationErrors = cloudflareHostname.ssl.validation_errors?.map((e) => e.message) ?? [];
 		if (validationErrors.length > 0) {
 			this.logger.warn('customDomain.cloudflare.validation_errors', {
-				domain: customDomain.domain,
+				customDomain: { domain: customDomain.domain },
 				errors: validationErrors,
 			});
 		}
@@ -227,8 +237,10 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 		// If already fully verified (SSL active), return as-is
 		if (customDomain.sslStatus === 'active') {
 			this.logger.info('customDomain.verification.already_active', {
-				customDomainId: customDomain.id,
-				domain: customDomain.domain,
+				customDomain: {
+					id: customDomain.id,
+					domain: customDomain.domain,
+				},
 			});
 			return customDomain;
 		}
@@ -244,9 +256,11 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 
 		// Default to DNS phase for domains without a phase set (shouldn't happen)
 		this.logger.warn('customDomain.verification.unknown_phase', {
-			customDomainId: customDomain.id,
-			domain: customDomain.domain,
-			verificationPhase: customDomain.verificationPhase,
+			customDomain: {
+				id: customDomain.id,
+				domain: customDomain.domain,
+				verificationPhase: customDomain.verificationPhase,
+			},
 		});
 		return this.verifyDnsPhase(customDomain);
 	}

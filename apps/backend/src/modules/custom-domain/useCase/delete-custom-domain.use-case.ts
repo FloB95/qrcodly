@@ -29,22 +29,28 @@ export class DeleteCustomDomainUseCase implements IBaseUseCase {
 			try {
 				await this.cloudflareService.deleteCustomHostname(customDomain.cloudflareHostnameId);
 				this.logger.info('customDomain.cloudflare.deleted', {
-					cloudflareHostnameId: customDomain.cloudflareHostnameId,
-					domain: customDomain.domain,
+					customDomain: {
+						cloudflareHostnameId: customDomain.cloudflareHostnameId,
+						domain: customDomain.domain,
+					},
 				});
 			} catch (error) {
 				// Log but don't fail - we still want to delete from our database
 				if (error instanceof CloudflareApiError) {
 					this.logger.warn('customDomain.cloudflare.delete.failed', {
-						cloudflareHostnameId: customDomain.cloudflareHostnameId,
-						domain: customDomain.domain,
+						customDomain: {
+							cloudflareHostnameId: customDomain.cloudflareHostnameId,
+							domain: customDomain.domain,
+						},
 						error: error.message,
 						statusCode: error.statusCode,
 					});
 				} else {
 					this.logger.error('customDomain.cloudflare.delete.error', {
-						cloudflareHostnameId: customDomain.cloudflareHostnameId,
-						domain: customDomain.domain,
+						customDomain: {
+							cloudflareHostnameId: customDomain.cloudflareHostnameId,
+							domain: customDomain.domain,
+						},
 						error,
 					});
 				}

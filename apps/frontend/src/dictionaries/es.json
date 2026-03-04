@@ -1,5 +1,14 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Colecciones",
+			"qrCodes": "Códigos QR",
+			"templates": "Plantillas",
+			"tags": "Etiquetas"
+		}
+	},
 	"general": {
+		"signOut": "Cerrar sesión",
 		"proRequired": "Se requiere Plan Pro",
 		"comingSoon": "¡próximamente!",
 		"noName": "Sin nombre",
@@ -9,6 +18,7 @@
 		"share": "Compartir",
 		"edit": "Editar",
 		"delete": "Eliminar",
+		"cancel": "Cancelar",
 		"notProvided": "No proporcionado",
 		"days": "Días",
 		"newBadge": "¡Nuevo!",
@@ -23,7 +33,9 @@
 			"unlimited": "Códigos QR Ilimitados",
 			"noSignup": "Códigos QR Dinámicos Gratis",
 			"noWatermark": "Sin Marcas de Agua"
-		}
+		},
+		"ctaPrimary": "Crea tu código QR",
+		"ctaSecondary": "Descubre las posibilidades"
 	},
 	"metadata": {
 		"title": "QRcodly - Generador de Códigos QR Gratis",
@@ -47,22 +59,50 @@
 	},
 	"collection": {
 		"headline": "Tu colección",
-		"subHeadline": "Aquí puedes encontrar todos tus códigos QR y plantillas y gestionarlos.",
+		"subHeadline": "Aquí puedes encontrar todos tus códigos QR y gestionarlos.",
 		"tabQrCode": "Códigos QR",
 		"tabTemplates": "Plantillas",
 		"addQrCodeBtn": "Agregar código QR",
-		"bulkImportLabel": "Seleccionar tipo de contenido"
+		"addTemplateBtn": "Crear plantilla",
+		"bulkImportLabel": "Seleccionar tipo de contenido",
+		"exportBtn": "Exportar",
+		"importExportLabel": "Importar y Exportar",
+		"bulkExport": {
+			"title": "Exportar códigos QR",
+			"description": "Descargar varios códigos QR como archivo ZIP.",
+			"format": "Formato",
+			"noQrCodes": "No se encontraron códigos QR.",
+			"exportAllLabel": "Exportar todos ({count})",
+			"deselectAll": "Deseleccionar página",
+			"selectAll": "Seleccionar página",
+			"selectedCount": "{count} de {total} seleccionados",
+			"errorTitle": "Error en la exportación",
+			"errorDescription": "Se produjo un error al exportar los códigos QR.",
+			"success": "Exportación completada",
+			"progress": "{current} de {total} exportados",
+			"downloading": "Descargando…",
+			"downloadBtn": "Descargar ZIP"
+		},
+		"filters": {
+			"searchPlaceholder": "Buscar códigos QR...",
+			"contentType": "Tipo de contenido",
+			"clearAll": "Borrar",
+			"customizeColumns": "Personalizar columnas",
+			"columns": "Columnas",
+			"toggleColumns": "Alternar columnas",
+			"actions": "Acciones"
+		}
 	},
 	"analytics": {
-		"totalViews": "Número de visitas",
+		"totalViews": "Número de escaneos",
 		"totalVisitors": "Número de visitantes",
 		"stateActive": "Activo",
 		"stateInactive": "Desactivado",
-		"activeDescription": "Activo: Los usuarios pueden acceder a la página de destino y se analizan las vistas.",
+		"activeDescription": "Activo: Los usuarios pueden acceder a la página de destino y se registran los escaneos.",
 		"inactiveDescription": "Desactivado: El acceso y el análisis están deshabilitados.",
 		"noData": "Aún no se han recopilado datos.",
-		"viewsInLastXDays": "{count} vistas en los últimos {days}",
-		"visitorsInLastXDays": "{count} visitantes en los últimos {days}"
+		"viewsInLastXDays": "{count} escaneos en los últimos {days} días",
+		"visitorsInLastXDays": "{count} visitantes en los últimos {days} días"
 	},
 	"chart": {
 		"title": {
@@ -76,13 +116,23 @@
 		"collectionBtn": "Mi Colección",
 		"signInBtn": "Iniciar Sesión",
 		"settingsBtn": "Configuración",
+		"featuresBtn": "Funcionalidades",
 		"plansBtn": "Precios"
 	},
 	"footer": {
-		"qrCodeCopyright": "QR Code es una marca registrada de DENSO WAVE INCORPORATED",
-		"legalNotice": "Aviso Legal",
-		"privacyPolicy": "Política de Privacidad",
-		"contact": "Contacto"
+		"tagline": "La plataforma de códigos QR de código abierto. Crea, gestiona y rastrea códigos QR con facilidad.",
+		"product": "Producto",
+		"features": "Funciones",
+		"pricing": "Precios",
+		"resources": "Recursos",
+		"faqLink": "FAQ",
+		"docs": "Documentación",
+		"github": "GitHub",
+		"legal": "Legal",
+		"legalNotice": "Aviso legal",
+		"privacyPolicy": "Política de privacidad",
+		"contact": "Contacto",
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -97,14 +147,14 @@
 			"loading": "Cargando..."
 		},
 		"feedbackCta": {
-			"headline": "¡Tu opinión importa! 🚀",
-			"subHeadline1": "Trabajamos constantemente para mejorar QRcodly.",
-			"subHeadline2": "Si tienes alguna opinión o pregunta, por favor, háznoslo saber.",
-			"emailBtn": "Envíanos un correo electrónico"
+			"headline": "¿Preguntas o comentarios?",
+			"subHeadline1": "¿Tienes alguna pregunta sobre QRcodly o quieres compartir tu opinión? Estamos encantados de ayudarte y siempre buscamos mejorar.",
+			"emailBtn": "Contáctanos"
 		},
 		"featuresCta": {
 			"headline": "Visión general de las características clave",
 			"subHeadline": "Con QRcodly puedes crear, editar, gestionar y analizar códigos QR de forma gratuita, todo en un solo lugar.",
+			"allFeatures": "Todas las funciones",
 			"emailBtn": "Envíanos un correo electrónico",
 			"editFeature": {
 				"headline": "Editar códigos QR en cualquier momento",
@@ -126,14 +176,24 @@
 				"headline": "Mantén el control con tu propio dominio",
 				"subHeadline": "Usa tu propio dominio para códigos QR dinámicos. Mantén el control, conserva tu marca y sé dueño de cada enlace."
 			},
+			"tagFeature": {
+				"headline": "Organiza con etiquetas",
+				"subHeadline": "Etiqueta y categoriza tus códigos QR con tags personalizados. Filtra y encuentra lo que necesitas en segundos."
+			},
+			"exportImportFeature": {
+				"headline": "Exporta e importa códigos QR",
+				"subHeadline": "Haz copias de seguridad, migra o gestiona tus códigos QR en masa. Expórtalos e impórtalos con solo unos clics."
+			},
 			"teamFeature": {
 				"headline": "Colaborar en equipo",
 				"subHeadline": "Invita a miembros del equipo y trabajen juntos en códigos QR. Ideal para empresas, agencias y equipos."
 			},
 			"secureFeature": {
 				"headline": "Tus datos permanecen con nosotros",
-				"subHeadline": "Qrcodly aloja todos los datos localmente en Alemania – sin compartirlos con servicios externos. Solo usamos Clerk para la autenticación."
-			}
+				"subHeadline": "QRcodly aloja todos los datos localmente en Alemania – sin compartirlos con servicios externos. Solo usamos Clerk para la autenticación."
+			},
+			"scrollLeft": "Desplazar a la izquierda",
+			"scrollRight": "Desplazar a la derecha"
 		}
 	},
 	"shortUrl": {
@@ -151,6 +211,16 @@
 		"button": "Ir a la página de inicio"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Vista previa",
+			"name": "Nombre",
+			"content": "Contenido",
+			"status": "Estado",
+			"scans": "Escaneos",
+			"created": "Creado",
+			"actions": "Acciones",
+			"tags": "Etiquetas"
+		},
 		"storeBtn": "Guardar en la colección",
 		"updateBtn": "Actualizar código QR",
 		"error": {
@@ -212,6 +282,44 @@
 		"savePopup": {
 			"title": "Guardar código QR",
 			"placeholder": "Nombre del código QR"
+		},
+		"share": {
+			"title": "Compartir código QR",
+			"description": "Crear un enlace público para compartir este código QR",
+			"warning": "Cualquier persona con este enlace puede ver tu código QR. El enlace permanece activo hasta que se elimine.",
+			"link": "Enlace para compartir",
+			"displayOptions": "Opciones de visualización",
+			"showName": "Mostrar nombre del código QR",
+			"showContent": "Mostrar detalles del contenido",
+			"showQrCode": "Mostrar imagen del código QR",
+			"showDownloadButton": "Mostrar botón de descarga",
+			"createLink": "Crear enlace para compartir",
+			"updateLink": "Actualizar configuración",
+			"deleteLink": "Eliminar enlace",
+			"linkCopied": {
+				"title": "Enlace copiado",
+				"description": "El enlace se copió al portapapeles"
+			},
+			"created": {
+				"title": "Enlace creado",
+				"description": "Tu código QR ahora es accesible públicamente"
+			},
+			"updated": {
+				"title": "Configuración actualizada",
+				"description": "La configuración del enlace ha sido actualizada"
+			},
+			"deleted": {
+				"title": "Enlace eliminado",
+				"description": "El enlace para compartir ha sido eliminado"
+			},
+			"error": {
+				"title": "Error",
+				"description": "Algo salió mal. Por favor, inténtalo de nuevo."
+			},
+			"copyError": {
+				"description": "No se pudo copiar el enlace al portapapeles. Por favor, cópialo manualmente."
+			},
+			"noVisibleContent": "Este código QR compartido no tiene contenido visible."
 		}
 	},
 	"loginDialog": {
@@ -227,6 +335,7 @@
 		"saveBtn": "Guardar"
 	},
 	"templates": {
+		"pageDescription": "Gestiona y organiza tus plantillas de código QR guardadas.",
 		"tabs": {
 			"myTemplates": "Mis Plantillas",
 			"predefinedTemplates": "Predefinidas"
@@ -276,6 +385,8 @@
 		}
 	},
 	"generator": {
+		"sectionTitle": "Crea tu código QR",
+		"sectionSubtitle": "Elige un tipo de contenido, personaliza el diseño y descarga tu código QR al instante.",
 		"labelName": "Nombre",
 		"domainSelector": {
 			"label": "Dominio de URL corta",
@@ -312,7 +423,16 @@
 				"title": "Observa los límites y el inicio de sesión",
 				"description": "Con el archivo CSV puedes crear hasta 15 códigos QR a la vez. Para más, necesitas el plan Pro."
 			},
-			"createButton": "Crear códigos QR"
+			"createButton": "Crear códigos QR",
+			"csvErrors": {
+				"title": "Errores en el CSV",
+				"description": "Se encontraron {count} error(es) en tu archivo CSV. Corrige los problemas y vuelve a subir.",
+				"expectedFormat": "Formato esperado",
+				"delimiterHint": "Usa punto y coma (;) como separador de columnas",
+				"lineHeader": "Línea",
+				"retryButton": "Corregir y volver a subir",
+				"backButton": "Atrás"
+			}
 		},
 		"settingsForm": {
 			"tabGeneral": "General",
@@ -362,6 +482,7 @@
 				"email": "CORREO",
 				"location": "UBICACIÓN",
 				"event": "EVENTO",
+				"epc": "BANCO",
 				"socials": "REDES"
 			},
 			"cancel": "Cancelar",
@@ -390,6 +511,10 @@
 				}
 			},
 			"vCard": {
+				"title": {
+					"label": "Título",
+					"placeholder": "p.ej. Dr., Prof., Sr., Sra."
+				},
 				"firstName": {
 					"label": "Nombre",
 					"placeholder": "Introduce tu nombre"
@@ -517,6 +642,28 @@
 					"label": "Fecha de fin"
 				}
 			},
+			"epc": {
+				"name": {
+					"label": "Nombre del beneficiario",
+					"placeholder": "Nombre del destinatario del pago"
+				},
+				"iban": {
+					"label": "IBAN",
+					"placeholder": "Ej. ES9121000418450200051332"
+				},
+				"bic": {
+					"label": "BIC/SWIFT",
+					"placeholder": "Ej. CAIXESBBXXX"
+				},
+				"amount": {
+					"label": "Importe",
+					"placeholder": "0,00"
+				},
+				"purpose": {
+					"label": "Concepto",
+					"placeholder": "Motivo del pago"
+				}
+			},
 			"social": {
 				"title": {
 					"label": "Título",
@@ -610,6 +757,7 @@
 	},
 	"faq": {
 		"headline": "Preguntas Frecuentes",
+		"subtitle": "Todo lo que necesitas saber sobre códigos QR y QRcodly.",
 		"question1": "¿Qué es un Código QR?",
 		"answer1": "Un Código QR (Código de Respuesta Rápida) es un código de barras inteligente y bidimensional que puede almacenar diversos tipos de información, como enlaces a sitios web, texto o datos de contacto. Se puede capturar y descifrar fácilmente usando un smartphone o un escáner dedicado.",
 		"question2": "¿Cómo creo un Código QR?",
@@ -631,7 +779,16 @@
 		"question10": "¿Funcionan los Códigos QR también en formato impreso?",
 		"answer10": "¡Absolutamente! Los Códigos QR están optimizados específicamente para la impresión y funcionan de manera fiable en diversos materiales, siempre que permanezcan claros y sin daños. ¡Asegura una buena calidad de impresión, y tus códigos estarán listos para usar en cualquier lugar!",
 		"question11": "¿Dónde se alojan mis datos?",
-		"answer11": "Todos los datos de Qrcodly se almacenan exclusivamente en servidores ubicados en Alemania. No compartimos tus datos con terceros. Solo utilizamos Clerk para el inicio de sesión y la autenticación."
+		"answer11": "Todos los datos de QRcodly se almacenan exclusivamente en servidores ubicados en Alemania. No compartimos tus datos con terceros. Solo utilizamos Clerk para el inicio de sesión y la autenticación."
+	},
+	"productShowcase": {
+		"headline": "Panel de control potente.",
+		"subHeadline": "Interfaz elegante.",
+		"description": "Gestiona todos tus códigos QR, rastrea escaneos en tiempo real y personaliza diseños — todo desde un panel de control intuitivo."
+	},
+	"notFound": {
+		"message": "¡Ups! La página que buscas no existe.",
+		"goHome": "Volver al inicio"
 	},
 	"fileUpload": {
 		"maxFiles": "Se permiten como máximo {maxFiles} archivos",
@@ -644,9 +801,18 @@
 		}
 	},
 	"settings": {
+		"nav": {
+			"title": "Configuración",
+			"profile": "Perfil",
+			"security": "Seguridad",
+			"billing": "Facturación",
+			"apiKeys": "Claves API",
+			"domains": "Dominios",
+			"integrations": "Integraciones"
+		},
 		"domains": {
 			"title": "Dominios Personalizados",
-			"description": "Usa tu propio dominio para códigos QR dinámicos",
+			"description": "Usa tu propio subdominio para códigos QR dinámicos. Para instrucciones de configuración, consulta nuestra <link>documentación</link>.",
 			"backToCollection": "Volver a la Colección",
 			"howItWorks": "Cómo funciona",
 			"step1": "Añade tu dominio (ej., links.ejemplo.com)",
@@ -719,7 +885,7 @@
 			"stepCompleted": "Completado",
 			"dcvDelegationStep": "Auto-renovación SSL (CNAME)",
 			"dcvDelegationDescription": "Este registro permite la emisión y renovación automática del certificado SSL. Altamente recomendado para evitar el vencimiento del certificado.",
-			"step4PendingDns": "Completa los pasos 1 y 2, luego haz clic en \"Verificar Estado\" para continuar.",
+			"step4PendingDns": "Completa los pasos 1 - 3, luego haz clic en \"Verificar Estado\" para continuar.",
 			"step4LoadingSsl": "Cargando instrucciones del certificado SSL... Por favor haz clic en \"Verificar Estado\" para actualizar.",
 			"sslValidationStep": "Validación del Certificado SSL (TXT)",
 			"ownershipValidationStep": "Verificación de Propiedad del Dominio (TXT)",
@@ -783,8 +949,11 @@
 				"dnsPartial": "DNS {count}/2",
 				"sslPending": "SSL Pendiente",
 				"error": "Error",
-				"setup": "Configuración"
-			}
+				"setup": "Configuración",
+				"disabled": "Desactivado"
+			},
+			"domainsDisabledTitle": "Dominios personalizados desactivados",
+			"domainsDisabledDescription": "Sus dominios personalizados han sido desactivados porque su suscripción ha finalizado. Los códigos QR con dominios personalizados no funcionarán hasta que se vuelva a suscribir."
 		},
 		"apiKeys": {
 			"title": "Claves API",
@@ -824,10 +993,7 @@
 		},
 		"billing": {
 			"title": "Facturación y Suscripción",
-			"description": "Administra tu plan de suscripción, métodos de pago y ve el historial de pagos.",
-			"tabPlan": "Plan",
-			"tabPaymentMethods": "Métodos de Pago",
-			"tabHistory": "Historial",
+			"description": "Administra tu plan de suscripción.",
 			"currentPlan": "Plan Actual",
 			"proDescription": "Tienes acceso a todas las funciones Pro incluyendo códigos QR ilimitados y analíticas avanzadas.",
 			"freeDescription": "Actualiza a Pro para desbloquear dominios personalizados, límites API más altos y funciones premium. <link>Ver planes</link>",
@@ -835,51 +1001,13 @@
 			"billingCycle": "Ciclo de Facturación",
 			"perMonth": "mes",
 			"billedAnnually": "Facturado anualmente",
+			"billedMonthly": "Facturado mensualmente",
 			"renewsOn": "Se renueva el {date}",
 			"expiresOn": "Tu plan Pro expira el {date}",
 			"upgradeToPro": "Actualizar a Pro",
 			"renewSubscription": "Renovar Suscripción",
-			"cancelPlan": "Cancelar Suscripción",
-			"cancelPlanConfirmTitle": "¿Cancelar tu suscripción?",
-			"cancelPlanConfirmDescription": "¿Estás seguro de que deseas cancelar tu suscripción Pro? Perderás acceso a las funciones Pro al final de tu período de facturación actual.",
-			"keepPlan": "Mantener Suscripción",
-			"proceedToCancel": "Cancelar Suscripción",
-			"cancelling": "Cancelando...",
-			"cancelSuccess": "Tu suscripción ha sido cancelada",
-			"cancelError": "Error al cancelar suscripción. Por favor intenta de nuevo.",
-			"paymentMethods": "Métodos de Pago",
-			"paymentMethodsDescription": "Administra tus métodos de pago guardados para facturación de suscripción.",
-			"addPaymentMethod": "Añadir Tarjeta",
-			"addPaymentMethodTitle": "Añadir Método de Pago",
-			"addPaymentMethodDescription": "Añade una nueva tarjeta de crédito o débito para pagos de suscripción.",
-			"noPaymentMethods": "Sin métodos de pago",
-			"noPaymentMethodsDescription": "Aún no has añadido ningún método de pago. Añade una tarjeta para administrar tu suscripción.",
-			"default": "Predeterminado",
-			"expires": "Expira",
-			"removeCardTitle": "¿Eliminar método de pago?",
-			"removeCardDescription": "¿Estás seguro de que deseas eliminar la tarjeta terminada en {last4}?",
-			"cancel": "Cancelar",
-			"remove": "Eliminar",
-			"makeDefault": "Establecer como predeterminado",
-			"openMenu": "Abrir menú",
-			"saveCard": "Guardar Tarjeta",
-			"paymentValidationFailed": "Validación de pago fallida. Por favor verifica tus datos.",
-			"unexpectedError": "Ocurrió un error inesperado.",
-			"paymentHistory": "Historial de Pagos",
-			"paymentHistoryDescription": "Ve tus facturas pasadas y transacciones de pago.",
-			"noInvoices": "Aún no hay facturas",
-			"noInvoicesDescription": "Tu historial de pagos aparecerá aquí una vez que realices una compra.",
-			"invoiceDate": "Fecha",
-			"invoiceDescription": "Descripción",
-			"invoiceAmount": "Monto",
-			"invoiceCard": "Tarjeta",
-			"invoiceActions": "Factura",
-			"invoiceStatusLabel": "Estado",
-			"invoiceStatus": {
-				"paid": "Pagado",
-				"pending": "Pendiente",
-				"failed": "Fallido"
-			}
+			"manageSubscription": "Gestionar suscripción",
+			"manageBilling": "Facturas y pago"
 		},
 		"profile": {
 			"pageTitle": "Perfil",
@@ -986,14 +1114,82 @@
 			"deleteAccountPermanently": "Eliminar Cuenta Permanentemente",
 			"accountDeleted": "Tu cuenta ha sido eliminada.",
 			"accountDeleteError": "Error al eliminar cuenta. Por favor intenta de nuevo."
+		},
+		"integrations": {
+			"title": "Integraciones de Analytics",
+			"description": "Reenvíe datos de escaneo a sus propias herramientas de análisis. El análisis integrado de QRcodly siempre está activo y no se ve afectado. Solo se comparten IPs anonimizadas y datos no identificativos — nunca user agents ni información personal.",
+			"docsLink": "Para más información, consulte nuestra <link>documentación</link>.",
+			"configure": "Configurar",
+			"configureTitle": "Configurar",
+			"editTitle": "Editar",
+			"ga4Description": "Envía los escaneos de tus códigos QR directamente a Google Analytics.",
+			"matomoDescription": "Envía los escaneos de tus códigos QR a tu propia instancia de Matomo.",
+			"ga4Short": "Envía los escaneos de tus códigos QR directamente a Google Analytics.",
+			"matomoShort": "Envía los escaneos de tus códigos QR a tu propia instancia de Matomo.",
+			"measurementId": "ID de medición",
+			"apiSecret": "Secreto API",
+			"apiSecretPlaceholder": "Ingrese su secreto API de Measurement Protocol",
+			"matomoUrl": "URL de Matomo",
+			"siteId": "ID del sitio",
+			"authToken": "Token de autenticación",
+			"optional": "opcional",
+			"authTokenWillBeRemoved": "El token de autenticación se eliminará al guardar.",
+			"clear": "Borrar",
+			"undo": "Deshacer",
+			"ga4ManualVerificationTitle": "Verificación manual requerida",
+			"ga4ManualVerificationDescription": "Google Analytics no admite la verificación automática de credenciales. Por favor, verifique su ID de medición y su clave API, y compruebe que los datos se reciben en su panel de Google Analytics después de escanear un código QR.",
+			"privacyNoticeTitle": "Análisis con privacidad primero",
+			"privacyNoticeDescription": "Solo se envían datos no identificativos: URL de la página, referente, idioma, tipo de dispositivo y nombre del navegador. Las direcciones IP solo se transmiten de forma anonimizada. Los agentes de usuario y la información personal nunca se comparten.",
+			"cancel": "Cancelar",
+			"save": "Guardar",
+			"saving": "Guardando...",
+			"create": "Crear",
+			"created": "Integración creada",
+			"createdDescription": "Su integración de analytics se ha configurado correctamente.",
+			"updated": "Integración actualizada",
+			"updatedDescription": "Su integración de analytics se ha actualizado correctamente.",
+			"error": "Error",
+			"saveError": "No se pudo guardar la integración.",
+			"active": "Activo",
+			"inactive": "Inactivo",
+			"enabled": "Integración activada",
+			"enabledDescription": "Los datos de escaneo se enviarán a este proveedor.",
+			"disabled": "Integración desactivada",
+			"disabledDescription": "Los datos de escaneo ya no se enviarán a este proveedor.",
+			"toggleError": "No se pudo cambiar la integración.",
+			"edit": "Editar",
+			"test": "Probar",
+			"testing": "Probando...",
+			"testSuccess": "Credenciales verificadas",
+			"testSuccessDescription": "Conexión exitosa con el proveedor de analytics.",
+			"testFailed": "Credenciales inválidas",
+			"testFailedDescription": "No se pudo conectar con las credenciales proporcionadas.",
+			"testUnverifiable": "Conexión fallida",
+			"testUnverifiableDescription": "No se pudo conectar con el servidor de analytics. Verifique que la URL sea correcta y que el servidor esté accesible.",
+			"testError": "No se pudieron probar las credenciales.",
+			"delete": "Eliminar",
+			"deleteConfirmTitle": "¿Eliminar integración?",
+			"deleteConfirmDescription": "¿Está seguro de que desea eliminar la integración de {provider}?",
+			"deleted": "Integración eliminada",
+			"deletedDescription": "La integración de analytics se ha eliminado.",
+			"deleteError": "No se pudo eliminar la integración.",
+			"lastErrorTitle": "Último error",
+			"autoDisabled": "Esta integración se ha desactivado automáticamente después de 10 fallos consecutivos.",
+			"openMenu": "Abrir menú",
+			"integrationDisabledTitle": "Integración de análisis desactivada",
+			"integrationDisabledDescription": "Su integración de análisis ha sido desactivada porque su plan Pro ha expirado. Vuelva a suscribirse para reactivarla.",
+			"moreIntegrationsTeaser": "Más integraciones con proveedores de analítica adicionales están en camino. <contact>Sugerir un proveedor</contact>"
 		}
 	},
 	"plans": {
+		"metaTitle": "Generador de Códigos QR Precios – Gratis y Pro",
+		"metaDescription": "Generador de códigos QR gratis con códigos ilimitados, diseño personalizado y análisis. Pro para dominios propios, importación masiva y soporte prioritario. Sin costos ocultos.",
 		"title": "Justo. Transparente. Sin costos ocultos.",
 		"subtitle": "QRcodly es gratuito – sin períodos de prueba, sin suscripciones automáticas. El plan Pro solo cubre funciones que requieren infraestructura adicional.",
 		"annual": "Anual",
 		"monthly": "Mensual",
 		"perMonth": "/mes",
+		"perYear": "/año",
 		"upgradeToPro": "Actualizar a Pro",
 		"renewSubscription": "Renovar Suscripción",
 		"manageSubscription": "Administrar Suscripción",
@@ -1013,17 +1209,185 @@
 				"customStyling": "Estilos e iconos personalizados",
 				"detailedAnalytics": "Analíticas detalladas",
 				"noCreditCard": "Sin tarjeta de crédito requerida",
+				"unlimitedTags": "Etiquetas ilimitadas (1 por código QR)",
 				"limitedApi": "Acceso API limitado",
 				"limitedBulk": "Generación masiva de códigos QR limitada"
 			},
 			"pro": {
 				"everythingInFree": "Todo en Gratis",
+				"unlimitedTags": "Etiquetas ilimitadas (3 por código QR)",
 				"largerBulkImports": "Importaciones masivas más grandes (50 filas, 2MB)",
 				"customDomains": "Dominio personalizado para códigos QR dinámicos",
 				"unlimitedApi": "Acceso API ilimitado",
+				"analyticsIntegrations": "Integraciones de analítica (Google Analytics, Matomo)",
 				"prioritySupport": "Soporte prioritario",
 				"teamFeatures": "Funciones de equipo (próximamente)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Etiquetas",
+		"description": "Crea y gestiona etiquetas para organizar tus códigos QR.",
+		"createBtn": "Crear etiqueta",
+		"editBtn": "Guardar cambios",
+		"deleteConfirmTitle": "¿Eliminar etiqueta?",
+		"deleteConfirmDescription": "¿Estás seguro de que quieres eliminar esta etiqueta? Se eliminará de todos los códigos QR.",
+		"nameLabel": "Nombre",
+		"colorLabel": "Color",
+		"noTags": "Sin etiquetas aún",
+		"noTagsDescription": "Crea tu primera etiqueta para empezar a organizar tus códigos QR.",
+		"manageTags": "Gestionar etiquetas",
+		"filterByTags": "Filtrar por etiquetas",
+		"searchTags": "Buscar etiquetas...",
+		"noSearchResults": "No se encontraron etiquetas para \"{search}\"",
+		"toast": {
+			"createdTitle": "Etiqueta creada",
+			"createdDescription": "Tu etiqueta se ha creado correctamente.",
+			"updatedTitle": "Etiqueta actualizada",
+			"updatedDescription": "Tu etiqueta se ha actualizado correctamente.",
+			"deletedTitle": "Etiqueta eliminada",
+			"deletedDescription": "Tu etiqueta se ha eliminado correctamente.",
+			"tagsUpdatedTitle": "Etiquetas actualizadas",
+			"tagsUpdatedDescription": "Las etiquetas del código QR se han actualizado correctamente.",
+			"createErrorTitle": "Error al crear la etiqueta",
+			"updateErrorTitle": "Error al actualizar la etiqueta",
+			"deleteErrorTitle": "Error al eliminar la etiqueta",
+			"assignErrorTitle": "Error al actualizar las etiquetas",
+			"error": "Algo salió mal"
+		},
+		"actionsMenu": {
+			"title": "Acciones"
+		},
+		"table": {
+			"name": "Nombre",
+			"color": "Color",
+			"created": "Creado",
+			"usage": "Uso",
+			"qrCodes": "Códigos QR"
+		}
+	},
+	"featuresPage": {
+		"metaTitle": "Generador de Códigos QR Gratis – Funcionalidades",
+		"metaDescription": "Explora todas las funciones del generador de códigos QR: códigos QR dinámicos, análisis de escaneos, diseños personalizados con logo, creación masiva, plantillas y soporte para URLs, WiFi y vCards.",
+		"badge": "Funcionalidades",
+		"title": "Todo lo que necesitas para QR codes profesionales",
+		"subtitle": "Desde la creación hasta el análisis — QRcodly te ofrece herramientas potentes para crear, gestionar y rastrear tus QR codes.",
+		"spotlight": {
+			"dynamicQr": {
+				"tag": "Función Principal",
+				"title": "Códigos QR Dinámicos — Edita en Cualquier Momento",
+				"description": "Crea códigos QR que se pueden actualizar después de imprimir. Cambia la URL de destino, actívalos o desactívalos y rastrea cada escaneo — todo sin generar un nuevo código.",
+				"bullet1": "Actualiza el contenido en cualquier momento sin reimprimir",
+				"bullet2": "Rastrea cada escaneo con analíticas en tiempo real",
+				"bullet3": "Activa o desactiva códigos QR al instante"
+			},
+			"analytics": {
+				"tag": "Información",
+				"title": "Analíticas Detalladas en Tiempo Real",
+				"description": "Comprende el rendimiento de tus códigos QR con analíticas completas de escaneo. Descubre quién escanea, cuándo, dónde y con qué dispositivo.",
+				"bullet1": "Seguimiento de escaneos totales y visitantes únicos",
+				"bullet2": "Desglose por dispositivo, navegador y sistema operativo",
+				"bullet3": "Distribución geográfica por país"
+			},
+			"collection": {
+				"tag": "Gestión",
+				"title": "Tu Panel Central de Códigos QR",
+				"description": "Mantén todos tus códigos QR organizados en un panel potente. Busca, filtra, ordena y gestiona todo desde un solo lugar.",
+				"bullet1": "Panel central para todos los códigos QR",
+				"bullet2": "Búsqueda avanzada y filtrado por tipo de contenido",
+				"bullet3": "Acciones rápidas: editar, compartir, descargar, eliminar"
+			},
+			"templates": {
+				"tag": "Diseño",
+				"title": "Plantillas de Diseño Reutilizables",
+				"description": "Guarda tus diseños de códigos QR favoritos como plantillas y reutilízalas en todas tus campañas. Mantén la coherencia de tu marca sin recrear estilos cada vez.",
+				"bullet1": "Guarda cualquier diseño de código QR como plantilla reutilizable",
+				"bullet2": "Aplica plantillas a nuevos códigos con un solo clic",
+				"bullet3": "Mantén un branding consistente en todas las campañas"
+			},
+			"customDomain": {
+				"tag": "Branding",
+				"title": "Dominios Personalizados para URLs Cortas",
+				"description": "Usa tu propio dominio para las URLs cortas de códigos QR en lugar del nuestro. Fortalece la identidad de tu marca y genera confianza con tu audiencia.",
+				"bullet1": "Conecta tu propio dominio en minutos",
+				"bullet2": "Provisión automática de certificado SSL",
+				"bullet3": "Gestión DNS completa mediante integración con Cloudflare"
+			},
+			"tags": {
+				"tag": "Organización",
+				"title": "Etiquetas de Colores para una Organización Fácil",
+				"description": "Mantén tu biblioteca de códigos QR organizada con etiquetas de colores personalizadas. Crea categorías, filtra por etiqueta y encuentra cualquier código al instante.",
+				"bullet1": "Crea etiquetas de colores personalizadas ilimitadas",
+				"bullet2": "Asigna múltiples etiquetas por código QR",
+				"bullet3": "Filtra y busca tu colección por etiquetas"
+			},
+			"bulkOperations": {
+				"tag": "Productividad",
+				"title": "Exportación e Importación Masiva a Gran Escala",
+				"description": "Trabaja con grandes cantidades de códigos QR de forma eficiente. Importa mediante CSV para crear muchos a la vez, o exporta toda tu colección como archivo ZIP.",
+				"bullet1": "Importa códigos QR en masa mediante carga CSV",
+				"bullet2": "Exporta todas las imágenes de códigos QR como archivo ZIP",
+				"bullet3": "Ideal para campañas de impresión a gran escala"
+			},
+			"contentTypes": {
+				"tag": "Versatilidad",
+				"title": "Más de 9 Tipos de Contenido Soportados",
+				"description": "Ve más allá de simples URLs. Crea códigos QR para redes WiFi, tarjetas de contacto, eventos de calendario, direcciones de correo electrónico, ubicaciones geográficas y más.",
+				"bullet1": "URL, WiFi, vCard, Email y Texto",
+				"bullet2": "Eventos de calendario con soporte completo de detalles",
+				"bullet3": "Ubicaciones geográficas y enlaces de pago"
+			},
+			"security": {
+				"tag": "Privacidad",
+				"title": "Enfocado en la Privacidad y Código Abierto",
+				"description": "Tus datos principales se alojan en servidores en Alemania. Utilizamos servicios de terceros de confianza como Clerk para la autenticación, y recopilamos analíticas mínimas para mejorar el producto. QRcodly es completamente de código abierto para total transparencia.",
+				"bullet1": "Infraestructura principal alojada en servidores alemanes",
+				"bullet2": "Totalmente de código abierto en GitHub — auditable en cualquier momento",
+				"bullet3": "Uso transparente de Clerk, Sentry y PostHog"
+			},
+			"integrations": {
+				"tag": "Integraciones",
+				"title": "Integraciones de Analítica de Terceros",
+				"description": "Reenvía los datos de escaneo a Google Analytics 4 o Matomo — tus propias herramientas de análisis. QRcodly solo envía datos anonimizados y no identificables, manteniendo su analítica integrada completamente activa.",
+				"bullet1": "Conecta Google Analytics 4 o Matomo en minutos",
+				"bullet2": "Solo se comparten IPs anonimizadas y datos no personales",
+				"bullet3": "La analítica integrada de QRcodly no se ve afectada"
+			},
+			"teams": {
+				"tag": "Próximamente",
+				"title": "Team Workspaces — Próximamente Este Año",
+				"description": "Gestiona códigos QR en equipo. Crea organizaciones, invita miembros y asigna roles — perfecto para agencias, equipos de marketing y empresas de cualquier tamaño.",
+				"bullet1": "Crear organizaciones e invitar miembros del equipo",
+				"bullet2": "Acceso basado en roles: Administrador, Editor y Visor",
+				"bullet3": "Colaborar en códigos QR con todo tu equipo"
+			}
+		},
+		"cta": {
+			"title": "¿Listo para empezar?",
+			"subtitle": "Crea tu primer código QR en segundos. Gratis para siempre, sin tarjeta de crédito.",
+			"button": "Crear Código QR Ahora"
+		}
+	},
+	"smartTips": {
+		"tipLabel": "Consejo",
+		"gotIt": "Entendido",
+		"dontShowAgain": "No mostrar de nuevo",
+		"disableAll": "Desactivar todos los consejos",
+		"bulkExport": {
+			"title": "Exporta varios códigos QR a la vez",
+			"description": "Usa el menú Acciones para exportar todos tus códigos QR como archivo ZIP en lugar de descargarlos uno por uno."
+		},
+		"bulkImport": {
+			"title": "Crea códigos QR en masa",
+			"description": "Usa el menú Acciones para importar una hoja de cálculo y crear decenas de códigos QR a la vez."
+		},
+		"customDomain": {
+			"title": "Usa tu propio dominio",
+			"description": "Conecta un dominio personalizado para que los enlaces cortos de tus códigos QR usen tu marca."
+		},
+		"organizeTags": {
+			"title": "Organiza con etiquetas",
+			"description": "Añade etiquetas a tus códigos QR para agruparlos, filtrarlos y encontrarlos más fácilmente."
 		}
 	}
 }

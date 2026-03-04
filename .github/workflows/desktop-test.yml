@@ -1,0 +1,33 @@
+name: Desktop Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'apps/desktop/**'
+
+jobs:
+  test-desktop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Lint
+        working-directory: apps/desktop
+        run: pnpm run lint
+      - name: Type check
+        working-directory: apps/desktop
+        run: pnpm run typecheck
+      - name: Build
+        working-directory: apps/desktop
+        run: pnpm run build
+      - name: Unit tests
+        working-directory: apps/desktop
+        run: pnpm run test

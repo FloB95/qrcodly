@@ -1,11 +1,13 @@
 import { AbstractEvent } from '@/core/event/abstract.event';
 
-export type SubscriptionPastDueEventData = {
+export interface SubscriptionPastDueEventData {
 	userId: string;
 	email: string;
 	firstName?: string;
-	subscriptionId?: string;
-};
+	stripeSubscriptionId: string;
+	stripePriceId: string;
+	currentPeriodEnd: Date;
+}
 
 /**
  * Event triggered when a subscription payment is past due.

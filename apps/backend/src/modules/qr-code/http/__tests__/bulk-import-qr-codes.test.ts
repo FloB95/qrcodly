@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestServerWithUserAuth } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import {
 	generateUrlCsv,
 	generateWifiCsv,
@@ -38,9 +38,9 @@ describe('bulkImportQrCodes', () => {
 	};
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
 	});
 
 	describe('POST /qr-code/bulk-import', () => {

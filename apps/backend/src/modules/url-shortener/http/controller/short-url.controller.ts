@@ -11,15 +11,19 @@ import {
 	TAnalyticsResponseDto,
 	TGetShortUrlRequestQueryDto,
 	TShortUrlWithCustomDomainResponseDto,
+	TTrackScanDto,
 	TUpdateShortUrlDto,
+	TrackScanDto,
 	UpdateShortUrlDto,
 } from '@shared/schemas';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
-import { UmamiAnalyticsService } from '../../services/umami-analytics.service';
+import { UmamiAnalyticsService } from '../../service/umami-analytics.service';
 import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { TShortUrl } from '../../domain/entities/short-url.entity';
-import { ForbiddenError } from '@/core/error/http';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
+import { KeyCache } from '@/core/cache';
+import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
+import { DispatchTrackingEventUseCase } from '@/modules/analytics-integration/useCase/dispatch-tracking-event.use-case';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -30,8 +34,15 @@ export class ShortUrlController extends AbstractController {
 		@inject(UpdateShortUrlUseCase)
 		private readonly updateShortUrlUseCase: UpdateShortUrlUseCase,
 		@inject(UmamiAnalyticsService) private readonly umamiAnalyticsService: UmamiAnalyticsService,
+		@inject(KeyCache) private readonly keyCache: KeyCache,
+		@inject(DispatchTrackingEventUseCase)
+		private readonly dispatchTrackingEventUseCase: DispatchTrackingEventUseCase,
 	) {
 		super();
+	}
+
+	private getViewsCacheKey(shortCode: string): string {
+		return `views:${shortCode}`;
 	}
 
 	@Get('/:shortCode', {
@@ -48,6 +59,7 @@ export class ShortUrlController extends AbstractController {
 	}
 
 	@Patch('/:shortCode', {
+		bodySchema: UpdateShortUrlDto,
 		responseSchema: {
 			200: ShortUrlWithCustomDomainResponseDto,
 			400: DEFAULT_ERROR_RESPONSES[400],
@@ -67,10 +79,9 @@ export class ShortUrlController extends AbstractController {
 		request: IHttpRequest<TUpdateShortUrlDto, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
-		const updateDto = UpdateShortUrlDto.parse(request.body);
 		const updatedShortUrl = await this.updateShortUrlUseCase.execute(
 			shortUrl,
-			updateDto,
+			request.body,
 			request.user.id,
 		);
 
@@ -80,7 +91,7 @@ export class ShortUrlController extends AbstractController {
 		);
 	}
 
-	@Post('/:shortCode/toggle-active-state', {
+	@Patch('/:shortCode/toggle-active-state', {
 		responseSchema: {
 			200: ShortUrlWithCustomDomainResponseDto,
 			401: DEFAULT_ERROR_RESPONSES[401],
@@ -183,20 +194,66 @@ export class ShortUrlController extends AbstractController {
 		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<{ views: number }>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
+
+		const cacheKey = this.getViewsCacheKey(shortUrl.shortCode);
+		const cached = await this.keyCache.get(cacheKey);
+		if (cached !== null) {
+			return this.makeApiHttpResponse(200, { views: Number(cached) });
+		}
+
 		const views = await this.umamiAnalyticsService.getViewsForEndpoint(`/u/${shortUrl.shortCode}`);
+		await this.keyCache.set(cacheKey, views, 3600);
 
 		return this.makeApiHttpResponse(200, { views });
 	}
 
-	// Helper Method
+	@Post('/:shortCode/clear-views-cache', {
+		authHandler: internalApiAuthHandler,
+		schema: { hide: true },
+	})
+	async clearViewsCache(
+		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto, unknown, false>,
+	): Promise<IHttpResponse<{ status: string }>> {
+		await this.keyCache.del(this.getViewsCacheKey(request.params.shortCode));
+		return this.makeApiHttpResponse(200, { status: 'ok' });
+	}
+
+	@Post('/:shortCode/track-scan', {
+		authHandler: internalApiAuthHandler,
+		bodySchema: TrackScanDto,
+		schema: { hide: true },
+	})
+	async trackScan(
+		request: IHttpRequest<TTrackScanDto, TGetShortUrlRequestQueryDto, unknown, false>,
+	): Promise<IHttpResponse<{ status: string }>> {
+		const shortUrl = await this.shortUrlRepository.findOneByShortCode(request.params.shortCode);
+		if (!shortUrl || !shortUrl.createdBy) {
+			return this.makeApiHttpResponse(200, { status: 'ok' });
+		}
+
+		this.dispatchTrackingEventUseCase.execute({
+			userId: shortUrl.createdBy,
+			url: request.body.url,
+			userAgent: request.body.userAgent,
+			hostname: request.body.hostname,
+			language: request.body.language,
+			referrer: request.body.referrer,
+			ip: request.body.ip,
+			deviceType: request.body.deviceType,
+			browserName: request.body.browserName,
+		});
+
+		return this.makeApiHttpResponse(200, { status: 'ok' });
+	}
+
 	private async fetchShortUrl(shortCode: string, userId?: string): Promise<TShortUrl> {
 		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
-		if (!shortUrl) {
+		if (!shortUrl || shortUrl.deletedAt) {
 			throw new ShortUrlNotFoundError();
 		}
 
-		if (userId && shortUrl.createdBy !== userId) {
-			throw new ForbiddenError();
+		if (userId) {
+			this.ensureOwnership(shortUrl, userId);
 		}
 
 		return shortUrl;

@@ -8,7 +8,7 @@ import { useRouter } from '@/i18n/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,11 +31,17 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 
-const CONFIRMATION_TEXT: string = 'DELETE';
+const CONFIRMATION_TEXT = 'DELETE';
 
 const deleteAccountSchema = z.object({
-	confirmation: z.string().refine((val) => val === CONFIRMATION_TEXT, {
-		message: `Please type "${CONFIRMATION_TEXT}" to confirm`,
+	confirmation: z.string().check((ctx) => {
+		if (ctx.value !== CONFIRMATION_TEXT) {
+			ctx.issues.push({
+				code: 'custom',
+				input: ctx.value,
+				message: `Please type "${CONFIRMATION_TEXT}" to confirm`,
+			});
+		}
 	}),
 });
 
@@ -78,10 +84,10 @@ export function DeleteAccountSection() {
 		try {
 			await deleteUserWithReverification();
 			await signOut();
-			toast.success(t('accountDeleted'));
+			toast({ title: t('accountDeleted') });
 			router.push('/');
 		} catch {
-			toast.error(t('accountDeleteError'));
+			toast({ title: t('accountDeleteError'), variant: 'destructive' });
 			setIsDeleting(false);
 			// Reopen dialog if reverification was cancelled or failed
 			setIsOpen(true);
@@ -98,7 +104,7 @@ export function DeleteAccountSection() {
 	return (
 		<Card className="border-destructive/50">
 			<CardHeader>
-				<div className="flex items-start gap-3">
+				<div className="flex items-center gap-3">
 					<div className="p-2 bg-destructive/10 rounded-lg">
 						<TrashIcon className="size-5 text-destructive" />
 					</div>

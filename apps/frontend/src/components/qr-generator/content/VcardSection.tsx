@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 'use client';
 
 import { memo } from 'react';
@@ -39,6 +37,7 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	};
 
 	const form = useForm<FormValues>({
+		// @ts-expect-error VCardInputSchema has optional fields that conflict with resolver generic
 		resolver: zodResolver(VCardInputSchema),
 		defaultValues,
 		shouldFocusError: false,
@@ -77,6 +76,34 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+				<FormField
+					control={form.control}
+					name="title"
+					render={({ field }) => (
+						<FormItem className="w-full sm:w-1/3 md:w-full lg:w-1/3">
+							<FormLabel>
+								<span translate="no" suppressHydrationWarning>
+									{t('title.label')}
+								</span>
+							</FormLabel>
+							<FormControl>
+								<InputGroup>
+									<InputGroupInput
+										{...field}
+										translate="no"
+										placeholder={t('title.placeholder')}
+										maxLength={32}
+										className="pr-16"
+									/>
+									<InputGroupAddon align="inline-end">
+										<CharacterCounter current={field.value?.length || 0} max={32} />
+									</InputGroupAddon>
+								</InputGroup>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
 					<FormField
 						control={form.control}

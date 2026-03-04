@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateConfigTemplateDto } from '@shared/schemas';
 import { container } from 'tsyringe';
@@ -41,12 +41,12 @@ describe('listConfigTemplates', () => {
 		});
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
-		accessToken2 = serverSetup.accessToken2;
-		user = serverSetup.user;
-		user2 = serverSetup.user2;
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
+		accessToken2 = ctx.accessToken2;
+		user = ctx.user;
+		user2 = ctx.user2;
 
 		// Create Config Templates for user1
 		for (let i = 0; i < 3; i++) {
@@ -63,10 +63,6 @@ describe('listConfigTemplates', () => {
 				.resolve(CreateConfigTemplateUseCase)
 				.execute(createConfigTemplateDto, user2.id);
 		}
-	});
-
-	afterAll(async () => {
-		await shutDownServer();
 	});
 
 	it('should fetch only the signed-in user’s Config Templates and return status code 200', async () => {

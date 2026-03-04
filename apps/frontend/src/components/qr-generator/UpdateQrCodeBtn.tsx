@@ -12,6 +12,7 @@ import { QrCodeUpdateDialog, UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY } from './QrCod
 import { useQueryClient } from '@tanstack/react-query';
 import type { ApiError } from '@/lib/api/ApiError';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
+import { safeLocalStorage } from '@/lib/utils';
 
 type UpdateBtnDto = Pick<
 	TQrCodeWithRelationsResponseDto,
@@ -27,14 +28,14 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const { latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
 	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
 
-	// Check if valid changes were made by comparing current content with original
 	const hasValidChanges =
 		Object.keys(objDiff(qrCode.content, latestQrCode?.content)).length > 0 ||
+		Object.keys(objDiff(qrCode.config, latestQrCode?.config)).length > 0 ||
 		qrCode.name !== latestQrCode?.name;
 
 	useEffect(() => {
 		setHasMounted(true);
-		const saved = localStorage.getItem(UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY);
+		const saved = safeLocalStorage.getItem(UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY);
 		setShowInfoDialog(saved !== 'true' && !IS_DYNAMIC);
 	}, []);
 
@@ -57,7 +58,6 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 							duration: 5000,
 						});
 
-						// Update latestQrCode to reflect the new saved state
 						updateLatestQrCode({
 							name: qrCode.name,
 							config: qrCode.config,
@@ -86,15 +86,15 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 									},
 								},
 							});
-
-							posthog.capture('error:qr-code-updated', {
-								name: qrCode.name,
-								config: qrCode.config,
-								content: qrCode.content,
-								message: error.message,
-								fieldErrors: error?.fieldErrors,
-							});
 						}
+
+						posthog.capture('error:qr-code-updated', {
+							name: qrCode.name,
+							config: qrCode.config,
+							content: qrCode.content,
+							message: error.message,
+							fieldErrors: error?.fieldErrors,
+						});
 
 						toast({
 							variant: 'destructive',
@@ -105,9 +105,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 					},
 				},
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch {}
 	};
 
 	return (

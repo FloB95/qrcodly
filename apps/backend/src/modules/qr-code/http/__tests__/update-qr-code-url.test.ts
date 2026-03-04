@@ -4,7 +4,6 @@ import {
 	generateQrCodeDto,
 	generateEditableUrlQrCodeDto,
 	getTestContext,
-	releaseTestContext,
 	QR_CODE_API_PATH,
 } from './utils';
 
@@ -16,10 +15,6 @@ describe('updateQrCode - URL Content Type', () => {
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	const createQrCode = async (dto: object, token: string) => {
@@ -281,7 +276,6 @@ describe('updateQrCode - URL Content Type', () => {
 
 			// Get the short URL that was created
 			expect(createdQrCode.shortUrl).toBeDefined();
-			const shortCode = createdQrCode.shortUrl!.shortCode;
 
 			// Construct the self-referencing URL (same format as buildShortUrl)
 			// The qrCodeData contains the full short URL

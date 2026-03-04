@@ -1,5 +1,14 @@
 {
+	"dashboard": {
+		"nav": {
+			"collection": "Kolekcje",
+			"qrCodes": "Kody QR",
+			"templates": "Szablony",
+			"tags": "Tagi"
+		}
+	},
 	"general": {
+		"signOut": "Wyloguj się",
 		"proRequired": "Wymagany Plan Pro",
 		"comingSoon": "już wkrótce!",
 		"noName": "Brak nazwy",
@@ -9,6 +18,7 @@
 		"share": "Udostępnij",
 		"edit": "Edytuj",
 		"delete": "Usuń",
+		"cancel": "Anuluj",
 		"notProvided": "Nie podano",
 		"days": "Dni",
 		"newBadge": "Nowość!",
@@ -23,7 +33,9 @@
 			"unlimited": "Nieograniczone Kody QR",
 			"noSignup": "Darmowe Dynamiczne Kody QR",
 			"noWatermark": "Bez Znaków Wodnych"
-		}
+		},
+		"ctaPrimary": "Stwórz swój kod QR",
+		"ctaSecondary": "Zobacz, co jest możliwe"
 	},
 	"metadata": {
 		"title": "QRcodly - Darmowy Generator Kodów QR",
@@ -47,21 +59,49 @@
 	},
 	"collection": {
 		"headline": "Twoja kolekcja",
-		"subHeadline": "Tutaj znajdziesz wszystkie swoje kody QR i szablony i możesz nimi zarządzać.",
+		"subHeadline": "Tutaj znajdziesz wszystkie swoje kody QR i możesz nimi zarządzać.",
 		"tabQrCode": "Kody QR",
 		"tabTemplates": "Szablony",
 		"addQrCodeBtn": "Dodaj kod QR",
-		"bulkImportLabel": "Wybierz typ treści"
+		"addTemplateBtn": "Utwórz szablon",
+		"bulkImportLabel": "Wybierz typ treści",
+		"exportBtn": "Eksportuj",
+		"importExportLabel": "Import i Eksport",
+		"bulkExport": {
+			"title": "Eksportuj kody QR",
+			"description": "Pobierz wiele kodów QR jako plik ZIP.",
+			"format": "Format",
+			"noQrCodes": "Nie znaleziono kodów QR.",
+			"exportAllLabel": "Eksportuj wszystkie ({count})",
+			"deselectAll": "Odznacz stronę",
+			"selectAll": "Zaznacz stronę",
+			"selectedCount": "{count} z {total} zaznaczonych",
+			"errorTitle": "Eksport nie powiódł się",
+			"errorDescription": "Wystąpił błąd podczas eksportowania kodów QR.",
+			"success": "Eksport zakończony",
+			"progress": "{current} z {total} wyeksportowanych",
+			"downloading": "Pobieranie…",
+			"downloadBtn": "Pobierz ZIP"
+		},
+		"filters": {
+			"searchPlaceholder": "Szukaj kodów QR...",
+			"contentType": "Typ treści",
+			"clearAll": "Wyczyść",
+			"customizeColumns": "Dostosuj kolumny",
+			"columns": "Kolumny",
+			"toggleColumns": "Przełącz kolumny",
+			"actions": "Akcje"
+		}
 	},
 	"analytics": {
-		"totalViews": "Liczba wyświetleń",
+		"totalViews": "Liczba skanów",
 		"totalVisitors": "Liczba odwiedzających",
 		"stateActive": "Aktywny",
 		"stateInactive": "Wyłączony",
-		"activeDescription": "Aktywny: Użytkownicy mogą uzyskać dostęp do strony docelowej, a wyświetlenia są analizowane.",
+		"activeDescription": "Aktywny: Użytkownicy mogą uzyskać dostęp do strony docelowej, a skany są rejestrowane.",
 		"inactiveDescription": "Wyłączony: Dostęp i analiza są wyłączone.",
 		"noData": "Dotychczas nie zebrano żadnych danych.",
-		"viewsInLastXDays": "{count} wyświetleń w ciągu ostatnich {days} dni",
+		"viewsInLastXDays": "{count} skanów w ciągu ostatnich {days} dni",
 		"visitorsInLastXDays": "{count} odwiedzających w ciągu ostatnich {days} dni"
 	},
 	"chart": {
@@ -76,13 +116,23 @@
 		"collectionBtn": "Moja kolekcja",
 		"signInBtn": "Zaloguj się",
 		"settingsBtn": "Ustawienia",
+		"featuresBtn": "Funkcje",
 		"plansBtn": "Cennik"
 	},
 	"footer": {
-		"qrCodeCopyright": "QR Code jest zarejestrowanym znakiem towarowym DENSO WAVE INCORPORATED",
+		"tagline": "Platforma kodów QR open source. Twórz, zarządzaj i śledź kody QR z łatwością.",
+		"product": "Produkt",
+		"features": "Funkcje",
+		"pricing": "Cennik",
+		"resources": "Zasoby",
+		"faqLink": "FAQ",
+		"docs": "Dokumentacja",
+		"github": "GitHub",
+		"legal": "Prawne",
 		"legalNotice": "Nota prawna",
 		"privacyPolicy": "Polityka prywatności",
-		"contact": "Kontakt"
+		"contact": "Kontakt",
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -97,14 +147,14 @@
 			"loading": "Ładowanie..."
 		},
 		"feedbackCta": {
-			"headline": "Twoja opinia ma znaczenie! 🚀",
-			"subHeadline1": "Nieustannie pracujemy nad ulepszaniem QRcodly.",
-			"subHeadline2": "Jeśli masz jakieś uwagi lub pytania, daj nam znać.",
-			"emailBtn": "Napisz do nas"
+			"headline": "Pytania lub uwagi?",
+			"subHeadline1": "Masz pytanie dotyczące QRcodly lub chcesz podzielić się opinią? Chętnie pomożemy i stale pracujemy nad ulepszeniami.",
+			"emailBtn": "Skontaktuj się"
 		},
 		"featuresCta": {
 			"headline": "Przegląd kluczowych funkcji",
 			"subHeadline": "Dzięki QRcodly możesz bezpłatnie tworzyć, edytować, zarządzać i analizować kody QR – wszystko w jednym miejscu.",
+			"allFeatures": "Wszystkie funkcje",
 			"emailBtn": "Napisz do nas",
 			"editFeature": {
 				"headline": "Edytuj kody QR w dowolnym momencie",
@@ -126,14 +176,24 @@
 				"headline": "Zachowaj kontrolę dzięki własnej domenie",
 				"subHeadline": "Użyj własnej domeny dla dynamicznych kodów QR. Zachowaj kontrolę, pozostań markowy i posiadaj każdy link."
 			},
+			"tagFeature": {
+				"headline": "Organizuj za pomocą tagów",
+				"subHeadline": "Oznaczaj i kategoryzuj swoje kody QR za pomocą własnych tagów. Filtruj i znajdź to, czego potrzebujesz w kilka sekund."
+			},
+			"exportImportFeature": {
+				"headline": "Eksportuj i importuj kody QR",
+				"subHeadline": "Twórz kopie zapasowe, migruj lub zarządzaj kodami QR hurtowo. Eksportuj i importuj je za pomocą kilku kliknięć."
+			},
 			"teamFeature": {
 				"headline": "Współpracuj w zespole",
 				"subHeadline": "Zapraszaj członków zespołu i wspólnie pracujcie nad kodami QR. Idealne dla firm, agencji i zespołów."
 			},
 			"secureFeature": {
 				"headline": "Twoje dane pozostają u nas",
-				"subHeadline": "Qrcodly przechowuje wszystkie dane lokalnie w Niemczech – bez udostępniania zewnętrznym usługom. Clerk używamy wyłącznie do uwierzytelniania."
-			}
+				"subHeadline": "QRcodly przechowuje wszystkie dane lokalnie w Niemczech – bez udostępniania zewnętrznym usługom. Clerk używamy wyłącznie do uwierzytelniania."
+			},
+			"scrollLeft": "Przewiń w lewo",
+			"scrollRight": "Przewiń w prawo"
 		}
 	},
 	"shortUrl": {
@@ -151,6 +211,16 @@
 		"button": "Idź do strony głównej"
 	},
 	"qrCode": {
+		"table": {
+			"preview": "Podgląd",
+			"name": "Nazwa",
+			"content": "Treść",
+			"status": "Status",
+			"scans": "Skany",
+			"created": "Utworzono",
+			"actions": "Akcje",
+			"tags": "Tagi"
+		},
 		"storeBtn": "Zapisz w kolekcji",
 		"updateBtn": "Zaktualizuj kod QR",
 		"error": {
@@ -212,6 +282,44 @@
 		"savePopup": {
 			"title": "Zapisz kod QR",
 			"placeholder": "Nazwa kodu QR"
+		},
+		"share": {
+			"title": "Udostępnij kod QR",
+			"description": "Utwórz publiczny link do udostępnienia tego kodu QR",
+			"warning": "Każdy, kto ma ten link, może zobaczyć Twój kod QR. Link pozostaje aktywny do momentu usunięcia.",
+			"link": "Link do udostępnienia",
+			"displayOptions": "Opcje wyświetlania",
+			"showName": "Pokaż nazwę kodu QR",
+			"showContent": "Pokaż szczegóły zawartości",
+			"showQrCode": "Pokaż obraz kodu QR",
+			"showDownloadButton": "Pokaż przycisk pobierania",
+			"createLink": "Utwórz link do udostępnienia",
+			"updateLink": "Zaktualizuj ustawienia",
+			"deleteLink": "Usuń link",
+			"linkCopied": {
+				"title": "Link skopiowany",
+				"description": "Link został skopiowany do schowka"
+			},
+			"created": {
+				"title": "Link utworzony",
+				"description": "Twój kod QR jest teraz publicznie dostępny"
+			},
+			"updated": {
+				"title": "Ustawienia zaktualizowane",
+				"description": "Ustawienia linku zostały zaktualizowane"
+			},
+			"deleted": {
+				"title": "Link usunięty",
+				"description": "Link do udostępnienia został usunięty"
+			},
+			"error": {
+				"title": "Błąd",
+				"description": "Coś poszło nie tak. Spróbuj ponownie."
+			},
+			"copyError": {
+				"description": "Nie można skopiować linku do schowka. Skopiuj go ręcznie."
+			},
+			"noVisibleContent": "Ten udostępniony kod QR nie ma widocznej zawartości."
 		}
 	},
 	"loginDialog": {
@@ -227,6 +335,7 @@
 		"saveBtn": "Zapisz"
 	},
 	"templates": {
+		"pageDescription": "Zarządzaj i organizuj zapisane szablony kodów QR.",
 		"tabs": {
 			"myTemplates": "Moje szablony",
 			"predefinedTemplates": "Predefiniowane"
@@ -276,6 +385,8 @@
 		}
 	},
 	"generator": {
+		"sectionTitle": "Stwórz swój kod QR",
+		"sectionSubtitle": "Wybierz typ treści, dostosuj wygląd i pobierz swój kod QR natychmiast.",
 		"labelName": "Nazwa",
 		"domainSelector": {
 			"label": "Domena krótkiego URL",
@@ -312,7 +423,16 @@
 				"title": "Przestrzegaj limitów i zaloguj się",
 				"description": "Za pomocą pliku CSV możesz utworzyć maksymalnie 15 kodów QR jednocześnie. Aby utworzyć więcej, potrzebny jest plan Pro."
 			},
-			"createButton": "Utwórz kody QR"
+			"createButton": "Utwórz kody QR",
+			"csvErrors": {
+				"title": "Znaleziono błędy CSV",
+				"description": "Znaleziono {count} błąd(ów) w pliku CSV. Popraw problemy i prześlij ponownie.",
+				"expectedFormat": "Oczekiwany format",
+				"delimiterHint": "Używaj średników (;) jako separatorów kolumn",
+				"lineHeader": "Wiersz",
+				"retryButton": "Popraw i prześlij ponownie",
+				"backButton": "Wstecz"
+			}
 		},
 		"settingsForm": {
 			"tabGeneral": "Ogólne",
@@ -362,6 +482,7 @@
 				"email": "EMAIL",
 				"location": "LOKALIZACJA",
 				"event": "WYDARZENIE",
+				"epc": "BANK",
 				"socials": "SOCIALS"
 			},
 			"cancel": "Anuluj",
@@ -390,6 +511,10 @@
 				}
 			},
 			"vCard": {
+				"title": {
+					"label": "Tytuł",
+					"placeholder": "np. Dr, Prof., Pan, Pani"
+				},
 				"firstName": {
 					"label": "Imię",
 					"placeholder": "Wpisz swoje imię"
@@ -517,6 +642,28 @@
 					"label": "Data zakończenia"
 				}
 			},
+			"epc": {
+				"name": {
+					"label": "Nazwa odbiorcy",
+					"placeholder": "Nazwa odbiorcy płatności"
+				},
+				"iban": {
+					"label": "IBAN",
+					"placeholder": "Np. PL61109010140000071219812874"
+				},
+				"bic": {
+					"label": "BIC/SWIFT",
+					"placeholder": "Np. WBKPPLPPXXX"
+				},
+				"amount": {
+					"label": "Kwota",
+					"placeholder": "0,00"
+				},
+				"purpose": {
+					"label": "Tytuł przelewu",
+					"placeholder": "Cel płatności"
+				}
+			},
 			"social": {
 				"title": {
 					"label": "Tytuł",
@@ -610,6 +757,7 @@
 	},
 	"faq": {
 		"headline": "Często Zadawane Pytania",
+		"subtitle": "Wszystko, co musisz wiedzieć o kodach QR i QRcodly.",
 		"question1": "Co to jest kod QR?",
 		"answer1": "Kod QR (Quick Response Code) to inteligentny, dwuwymiarowy kod kreskowy, który może przechowywać różne typy informacji, takie jak linki do stron internetowych, tekst lub dane kontaktowe. Można go łatwo przechwycić i rozszyfrować za pomocą smartfona lub dedykowanego skanera.",
 		"question2": "Jak stworzyć kod QR?",
@@ -631,7 +779,12 @@
 		"question10": "Czy kody QR działają również w formie drukowanej?",
 		"answer10": "Absolutnie! Kody QR są specjalnie zoptymalizowane do druku i działają niezawodnie na różnych materiałach, o ile pozostają wyraźne i nieuszkodzone. Zapewnij dobrą jakość druku, a Twoje kody będą gotowe do użycia w dowolnym miejscu!",
 		"question11": "Gdzie przechowywane są moje dane?",
-		"answer11": "Wszystkie dane w Qrcodly są przechowywane wyłącznie na serwerach znajdujących się w Niemczech. Nie przekazujemy danych osobom trzecim. Do logowania i uwierzytelniania używamy wyłącznie usługi Clerk."
+		"answer11": "Wszystkie dane w QRcodly są przechowywane wyłącznie na serwerach znajdujących się w Niemczech. Nie przekazujemy danych osobom trzecim. Do logowania i uwierzytelniania używamy wyłącznie usługi Clerk."
+	},
+	"productShowcase": {
+		"headline": "Potężny panel.",
+		"subHeadline": "Piękny interfejs.",
+		"description": "Zarządzaj wszystkimi kodami QR, śledź skany w czasie rzeczywistym i dostosowuj projekty — wszystko z jednego intuicyjnego panelu."
 	},
 	"fileUpload": {
 		"maxFiles": "Dozwolona maksymalnie {maxFiles} plików",
@@ -644,9 +797,18 @@
 		}
 	},
 	"settings": {
+		"nav": {
+			"title": "Ustawienia",
+			"profile": "Profil",
+			"security": "Bezpieczeństwo",
+			"billing": "Płatności",
+			"apiKeys": "Klucze API",
+			"domains": "Domeny",
+			"integrations": "Integracje"
+		},
 		"domains": {
 			"title": "Własne Domeny",
-			"description": "Użyj własnej domeny dla dynamicznych kodów QR",
+			"description": "Użyj własnej subdomeny dla dynamicznych kodów QR. Instrukcje konfiguracji znajdziesz w naszej <link>dokumentacji</link>.",
 			"backToCollection": "Powrót do Kolekcji",
 			"howItWorks": "Jak to działa",
 			"step1": "Dodaj swoją domenę (np. links.przyklad.pl)",
@@ -719,7 +881,7 @@
 			"stepCompleted": "Ukończono",
 			"dcvDelegationStep": "Automatyczne Odnawianie SSL (CNAME)",
 			"dcvDelegationDescription": "Ten rekord umożliwia automatyczne wydawanie i odnawianie certyfikatu SSL. Wysoce zalecane, aby uniknąć wygaśnięcia certyfikatu.",
-			"step4PendingDns": "Ukończ kroki 1 i 2, następnie kliknij \"Sprawdź Status\", aby kontynuować.",
+			"step4PendingDns": "Ukończ kroki 1 - 3, następnie kliknij \"Sprawdź Status\", aby kontynuować.",
 			"step4LoadingSsl": "Ładowanie instrukcji certyfikatu SSL... Kliknij \"Sprawdź Status\", aby odświeżyć.",
 			"sslValidationStep": "Walidacja Certyfikatu SSL (TXT)",
 			"ownershipValidationStep": "Weryfikacja Własności Domeny (TXT)",
@@ -783,8 +945,11 @@
 				"dnsPartial": "DNS {count}/2",
 				"sslPending": "SSL oczekuje",
 				"error": "Błąd",
-				"setup": "Konfiguracja"
-			}
+				"setup": "Konfiguracja",
+				"disabled": "Wyłączony"
+			},
+			"domainsDisabledTitle": "Domeny niestandardowe wyłączone",
+			"domainsDisabledDescription": "Twoje domeny niestandardowe zostały wyłączone, ponieważ Twoja subskrypcja wygasła. Kody QR z domenami niestandardowymi nie będą działać, dopóki nie odnowisz subskrypcji."
 		},
 		"apiKeys": {
 			"title": "Klucze API",
@@ -824,10 +989,7 @@
 		},
 		"billing": {
 			"title": "Rozliczenia i Subskrypcja",
-			"description": "Zarządzaj planem subskrypcji, metodami płatności i przeglądaj historię płatności.",
-			"tabPlan": "Plan",
-			"tabPaymentMethods": "Metody Płatności",
-			"tabHistory": "Historia",
+			"description": "Zarządzaj planem subskrypcji.",
 			"currentPlan": "Aktualny Plan",
 			"proDescription": "Masz dostęp do wszystkich funkcji Pro, w tym nieograniczonych kodów QR i zaawansowanych analiz.",
 			"freeDescription": "Przejdź na Pro, aby odblokować własne domeny, wyższe limity API i funkcje premium. <link>Zobacz plany</link>",
@@ -835,51 +997,13 @@
 			"billingCycle": "Cykl Rozliczeniowy",
 			"perMonth": "miesiąc",
 			"billedAnnually": "Rozliczane rocznie",
+			"billedMonthly": "Rozliczane miesięcznie",
 			"renewsOn": "Odnawia się {date}",
 			"expiresOn": "Twój plan Pro wygasa {date}",
 			"upgradeToPro": "Przejdź na Pro",
 			"renewSubscription": "Odnów Subskrypcję",
-			"cancelPlan": "Anuluj Subskrypcję",
-			"cancelPlanConfirmTitle": "Anulować subskrypcję?",
-			"cancelPlanConfirmDescription": "Czy na pewno chcesz anulować subskrypcję Pro? Stracisz dostęp do funkcji Pro na koniec bieżącego okresu rozliczeniowego.",
-			"keepPlan": "Zachowaj Subskrypcję",
-			"proceedToCancel": "Anuluj Subskrypcję",
-			"cancelling": "Anulowanie...",
-			"cancelSuccess": "Twoja subskrypcja została anulowana",
-			"cancelError": "Nie udało się anulować subskrypcji. Spróbuj ponownie.",
-			"paymentMethods": "Metody Płatności",
-			"paymentMethodsDescription": "Zarządzaj zapisanymi metodami płatności dla rozliczeń subskrypcji.",
-			"addPaymentMethod": "Dodaj Kartę",
-			"addPaymentMethodTitle": "Dodaj Metodę Płatności",
-			"addPaymentMethodDescription": "Dodaj nową kartę kredytową lub debetową dla płatności subskrypcji.",
-			"noPaymentMethods": "Brak metod płatności",
-			"noPaymentMethodsDescription": "Nie dodałeś jeszcze żadnych metod płatności. Dodaj kartę, aby zarządzać subskrypcją.",
-			"default": "Domyślna",
-			"expires": "Wygasa",
-			"removeCardTitle": "Usunąć metodę płatności?",
-			"removeCardDescription": "Czy na pewno chcesz usunąć kartę kończącą się na {last4}?",
-			"cancel": "Anuluj",
-			"remove": "Usuń",
-			"makeDefault": "Ustaw jako domyślną",
-			"openMenu": "Otwórz menu",
-			"saveCard": "Zapisz Kartę",
-			"paymentValidationFailed": "Walidacja płatności nie powiodła się. Sprawdź swoje dane.",
-			"unexpectedError": "Wystąpił nieoczekiwany błąd.",
-			"paymentHistory": "Historia Płatności",
-			"paymentHistoryDescription": "Przeglądaj poprzednie faktury i transakcje płatności.",
-			"noInvoices": "Brak faktur",
-			"noInvoicesDescription": "Historia płatności pojawi się tutaj po dokonaniu zakupu.",
-			"invoiceDate": "Data",
-			"invoiceDescription": "Opis",
-			"invoiceAmount": "Kwota",
-			"invoiceCard": "Karta",
-			"invoiceActions": "Faktura",
-			"invoiceStatusLabel": "Status",
-			"invoiceStatus": {
-				"paid": "Opłacona",
-				"pending": "Oczekuje",
-				"failed": "Nieudana"
-			}
+			"manageSubscription": "Zarządzaj subskrypcją",
+			"manageBilling": "Faktury i płatności"
 		},
 		"profile": {
 			"pageTitle": "Profil",
@@ -986,14 +1110,82 @@
 			"deleteAccountPermanently": "Usuń Konto Trwale",
 			"accountDeleted": "Twoje konto zostało usunięte.",
 			"accountDeleteError": "Nie udało się usunąć konta. Spróbuj ponownie."
+		},
+		"integrations": {
+			"title": "Integracje Analytics",
+			"description": "Przekazuj dane skanowania do własnych narzędzi analitycznych. Wbudowana analityka QRcodly jest zawsze aktywna i nienaruszona. Udostępniane są tylko zanonimizowane IP i dane nieidentyfikujące — nigdy user agenty ani informacje osobowe.",
+			"docsLink": "Więcej informacji znajdziesz w naszej <link>dokumentacji</link>.",
+			"configure": "Konfiguruj",
+			"configureTitle": "Konfiguruj",
+			"editTitle": "Edytuj",
+			"ga4Description": "Wysyłaj skany kodów QR prosto do Google Analytics.",
+			"matomoDescription": "Wysyłaj skany kodów QR do własnej instancji Matomo.",
+			"ga4Short": "Wysyłaj skany kodów QR prosto do Google Analytics.",
+			"matomoShort": "Wysyłaj skany kodów QR do własnej instancji Matomo.",
+			"measurementId": "ID pomiaru",
+			"apiSecret": "Sekret API",
+			"apiSecretPlaceholder": "Wprowadź sekret API Measurement Protocol",
+			"matomoUrl": "URL Matomo",
+			"siteId": "ID strony",
+			"authToken": "Token uwierzytelniania",
+			"optional": "opcjonalnie",
+			"authTokenWillBeRemoved": "Token uwierzytelniania zostanie usunięty przy zapisie.",
+			"clear": "Wyczyść",
+			"undo": "Cofnij",
+			"ga4ManualVerificationTitle": "Wymagana ręczna weryfikacja",
+			"ga4ManualVerificationDescription": "Google Analytics nie obsługuje automatycznej weryfikacji danych uwierzytelniających. Sprawdź swój identyfikator pomiaru i klucz API, a następnie upewnij się, że dane są odbierane w panelu Google Analytics po zeskanowaniu kodu QR.",
+			"privacyNoticeTitle": "Analityka z priorytetem prywatności",
+			"privacyNoticeDescription": "Wysyłane są tylko dane nieidentyfikujące: adres URL strony, referrer, język, typ urządzenia i nazwa przeglądarki. Adresy IP przekazywane są wyłącznie w zanonimizowanej formie. User agenty i dane osobowe nigdy nie są udostępniane.",
+			"cancel": "Anuluj",
+			"save": "Zapisz",
+			"saving": "Zapisywanie...",
+			"create": "Utwórz",
+			"created": "Integracja utworzona",
+			"createdDescription": "Twoja integracja analytics została pomyślnie skonfigurowana.",
+			"updated": "Integracja zaktualizowana",
+			"updatedDescription": "Twoja integracja analytics została pomyślnie zaktualizowana.",
+			"error": "Błąd",
+			"saveError": "Nie można zapisać integracji.",
+			"active": "Aktywna",
+			"inactive": "Nieaktywna",
+			"enabled": "Integracja włączona",
+			"enabledDescription": "Dane skanowania będą teraz wysyłane do tego dostawcy.",
+			"disabled": "Integracja wyłączona",
+			"disabledDescription": "Dane skanowania nie będą już wysyłane do tego dostawcy.",
+			"toggleError": "Nie można przełączyć integracji.",
+			"edit": "Edytuj",
+			"test": "Testuj",
+			"testing": "Testowanie...",
+			"testSuccess": "Dane uwierzytelniające zweryfikowane",
+			"testSuccessDescription": "Pomyślnie połączono z dostawcą analytics.",
+			"testFailed": "Dane uwierzytelniające nieprawidłowe",
+			"testFailedDescription": "Nie można połączyć się z podanymi danymi.",
+			"testUnverifiable": "Połączenie nieudane",
+			"testUnverifiableDescription": "Nie udało się połączyć z serwerem analytics. Sprawdź, czy adres URL jest poprawny i czy serwer jest dostępny.",
+			"testError": "Nie można przetestować danych uwierzytelniających.",
+			"delete": "Usuń",
+			"deleteConfirmTitle": "Usunąć integrację?",
+			"deleteConfirmDescription": "Czy na pewno chcesz usunąć integrację {provider}?",
+			"deleted": "Integracja usunięta",
+			"deletedDescription": "Integracja analytics została usunięta.",
+			"deleteError": "Nie można usunąć integracji.",
+			"lastErrorTitle": "Ostatni błąd",
+			"autoDisabled": "Ta integracja została automatycznie wyłączona po 10 kolejnych błędach.",
+			"openMenu": "Otwórz menu",
+			"integrationDisabledTitle": "Integracja analityczna wyłączona",
+			"integrationDisabledDescription": "Twoja integracja analityczna została wyłączona, ponieważ Twój plan Pro wygasł. Odnów subskrypcję, aby ją ponownie włączyć.",
+			"moreIntegrationsTeaser": "Więcej integracji z kolejnymi dostawcami analityki już wkrótce. <contact>Zaproponuj dostawcę</contact>"
 		}
 	},
 	"plans": {
+		"metaTitle": "Generator Kodów QR Cennik – Darmowy i Pro",
+		"metaDescription": "Darmowy generator kodów QR z nieograniczoną liczbą kodów, własnym designem i analityką. Pro dla własnych domen, importu masowego i priorytetowego wsparcia. Bez ukrytych kosztów.",
 		"title": "Uczciwie. Przejrzyście. Bez ukrytych kosztów.",
 		"subtitle": "QRcodly jest darmowy – bez okresów próbnych, bez automatycznych subskrypcji. Plan Pro obejmuje tylko funkcje wymagające dodatkowej infrastruktury.",
 		"annual": "Roczny",
 		"monthly": "Miesięczny",
 		"perMonth": "/miesiąc",
+		"perYear": "/rok",
 		"upgradeToPro": "Przejdź na Pro",
 		"renewSubscription": "Odnów Subskrypcję",
 		"manageSubscription": "Zarządzaj Subskrypcją",
@@ -1013,17 +1205,189 @@
 				"customStyling": "Własne style i ikony",
 				"detailedAnalytics": "Szczegółowe analizy",
 				"noCreditCard": "Karta kredytowa nie wymagana",
+				"unlimitedTags": "Nieograniczone tagi (1 na kod QR)",
 				"limitedApi": "Ograniczony dostęp do API",
 				"limitedBulk": "Ograniczone masowe generowanie kodów QR"
 			},
 			"pro": {
 				"everythingInFree": "Wszystko z Darmowego",
+				"unlimitedTags": "Nieograniczone tagi (3 na kod QR)",
 				"largerBulkImports": "Większe importy masowe (50 wierszy, 2MB)",
 				"customDomains": "Własna domena dla dynamicznych kodów QR",
 				"unlimitedApi": "Nieograniczony dostęp do API",
+				"analyticsIntegrations": "Integracje analityczne (Google Analytics, Matomo)",
 				"prioritySupport": "Priorytetowe wsparcie",
 				"teamFeatures": "Funkcje zespołowe (wkrótce)"
 			}
+		}
+	},
+	"tags": {
+		"title": "Tagi",
+		"description": "Twórz i zarządzaj tagami, aby organizować swoje kody QR.",
+		"createBtn": "Utwórz tag",
+		"editBtn": "Zapisz zmiany",
+		"deleteConfirmTitle": "Usunąć tag?",
+		"deleteConfirmDescription": "Czy na pewno chcesz usunąć ten tag? Zostanie usunięty ze wszystkich kodów QR.",
+		"nameLabel": "Nazwa",
+		"colorLabel": "Kolor",
+		"noTags": "Brak tagów",
+		"noTagsDescription": "Utwórz swój pierwszy tag, aby rozpocząć organizację kodów QR.",
+		"manageTags": "Zarządzaj tagami",
+		"filterByTags": "Filtruj wg tagów",
+		"searchTags": "Szukaj tagów...",
+		"noSearchResults": "Nie znaleziono tagów dla \"{search}\"",
+		"toast": {
+			"createdTitle": "Tag utworzony",
+			"createdDescription": "Twój tag został pomyślnie utworzony.",
+			"updatedTitle": "Tag zaktualizowany",
+			"updatedDescription": "Twój tag został pomyślnie zaktualizowany.",
+			"deletedTitle": "Tag usunięty",
+			"deletedDescription": "Twój tag został pomyślnie usunięty.",
+			"tagsUpdatedTitle": "Tagi zaktualizowane",
+			"tagsUpdatedDescription": "Tagi kodu QR zostały pomyślnie zaktualizowane.",
+			"createErrorTitle": "Błąd podczas tworzenia tagu",
+			"updateErrorTitle": "Błąd podczas aktualizacji tagu",
+			"deleteErrorTitle": "Błąd podczas usuwania tagu",
+			"assignErrorTitle": "Błąd podczas aktualizacji tagów",
+			"error": "Coś poszło nie tak"
+		},
+		"actionsMenu": {
+			"title": "Akcje"
+		},
+		"table": {
+			"name": "Nazwa",
+			"color": "Kolor",
+			"created": "Utworzono",
+			"usage": "Użycie",
+			"qrCodes": "Kody QR"
+		}
+	},
+	"featuresPage": {
+		"metaTitle": "Darmowy Generator Kodów QR – Funkcje",
+		"metaDescription": "Poznaj wszystkie funkcje generatora kodów QR: dynamiczne kody QR, analityka skanów, własne projekty z logo, tworzenie masowe, szablony oraz wsparcie dla URL, WiFi i vCard.",
+		"badge": "Funkcje",
+		"title": "Wszystko, czego potrzebujesz do profesjonalnych kodów QR",
+		"subtitle": "Od tworzenia po analitykę — QRcodly daje Ci potężne narzędzia do tworzenia, zarządzania i śledzenia kodów QR.",
+		"spotlight": {
+			"dynamicQr": {
+				"tag": "Główna Funkcja",
+				"title": "Dynamiczne Kody QR — Edytuj w Dowolnym Momencie",
+				"description": "Twórz kody QR, które można aktualizować po wydrukowaniu. Zmień docelowy URL, włączaj lub wyłączaj je i śledź każde skanowanie — bez konieczności generowania nowego kodu.",
+				"bullet1": "Aktualizuj treść w dowolnym momencie bez ponownego drukowania",
+				"bullet2": "Śledź każde skanowanie dzięki analityce w czasie rzeczywistym",
+				"bullet3": "Włączaj lub wyłączaj kody QR natychmiast"
+			},
+			"analytics": {
+				"tag": "Statystyki",
+				"title": "Szczegółowa Analityka w Czasie Rzeczywistym",
+				"description": "Dowiedz się, jak działają Twoje kody QR, dzięki kompleksowej analityce skanowań. Zobacz, kto skanuje, kiedy, gdzie i na jakim urządzeniu.",
+				"bullet1": "Śledzenie łącznej liczby skanowań i unikalnych odwiedzających",
+				"bullet2": "Podział wg urządzenia, przeglądarki i systemu operacyjnego",
+				"bullet3": "Rozkład geograficzny według kraju"
+			},
+			"collection": {
+				"tag": "Zarządzanie",
+				"title": "Twój Centralny Panel Kodów QR",
+				"description": "Utrzymuj wszystkie kody QR uporządkowane w jednym potężnym panelu. Wyszukuj, filtruj, sortuj i zarządzaj wszystkim z jednego miejsca.",
+				"bullet1": "Centralny panel dla wszystkich kodów QR",
+				"bullet2": "Zaawansowane wyszukiwanie i filtrowanie wg typu treści",
+				"bullet3": "Szybkie akcje: edytuj, udostępnij, pobierz, usuń"
+			},
+			"templates": {
+				"tag": "Design",
+				"title": "Szablony Projektów do Wielokrotnego Użytku",
+				"description": "Zapisz ulubione projekty kodów QR jako szablony i wykorzystuj je we wszystkich kampaniach. Zachowaj spójny branding bez konieczności tworzenia stylów od nowa za każdym razem.",
+				"bullet1": "Zapisz dowolny projekt kodu QR jako szablon wielokrotnego użytku",
+				"bullet2": "Zastosuj szablony do nowych kodów jednym kliknięciem",
+				"bullet3": "Zachowaj spójny branding we wszystkich kampaniach"
+			},
+			"customDomain": {
+				"tag": "Branding",
+				"title": "Własne Domeny dla Krótkich URL-i",
+				"description": "Użyj własnej domeny dla krótkich URL-i kodów QR zamiast naszej. Wzmocnij tożsamość swojej marki i buduj zaufanie u swojej publiczności.",
+				"bullet1": "Podłącz własną domenę w kilka minut",
+				"bullet2": "Automatyczne udostępnianie certyfikatu SSL",
+				"bullet3": "Pełne zarządzanie DNS przez integrację z Cloudflare"
+			},
+			"tags": {
+				"tag": "Organizacja",
+				"title": "Kolorowe Tagi dla Łatwej Organizacji",
+				"description": "Utrzymuj swoją bibliotekę kodów QR uporządkowaną za pomocą własnych kolorowych tagów. Twórz kategorie, filtruj po tagach i znajdź dowolny kod natychmiast.",
+				"bullet1": "Twórz nieograniczoną liczbę własnych kolorowych tagów",
+				"bullet2": "Przypisuj wiele tagów do jednego kodu QR",
+				"bullet3": "Filtruj i przeszukuj swoją kolekcję po tagach"
+			},
+			"bulkOperations": {
+				"tag": "Produktywność",
+				"title": "Masowy Eksport i Import na Dużą Skalę",
+				"description": "Pracuj efektywnie z dużą liczbą kodów QR. Importuj przez CSV, aby tworzyć wiele naraz, lub eksportuj całą kolekcję jako archiwum ZIP.",
+				"bullet1": "Importuj kody QR masowo przez przesyłanie CSV",
+				"bullet2": "Eksportuj wszystkie obrazy kodów QR jako archiwum ZIP",
+				"bullet3": "Idealny do kampanii drukowanych na dużą skalę"
+			},
+			"contentTypes": {
+				"tag": "Wszechstronność",
+				"title": "Ponad 9 Typów Treści Obsługiwanych",
+				"description": "Wykrocz poza proste URL-e. Twórz kody QR dla sieci WiFi, wizytówek, wydarzeń kalendarza, adresów e-mail, lokalizacji geograficznych i więcej.",
+				"bullet1": "URL, WiFi, vCard, Email i Tekst",
+				"bullet2": "Wydarzenia kalendarza z pełnym wsparciem szczegółów",
+				"bullet3": "Lokalizacje geograficzne i linki płatności"
+			},
+			"security": {
+				"tag": "Prywatność",
+				"title": "Zorientowane na Prywatność i Open Source",
+				"description": "Twoje główne dane są przechowywane na serwerach w Niemczech. Korzystamy z zaufanych usług zewnętrznych, takich jak Clerk do uwierzytelniania, i zbieramy minimalne dane analityczne w celu ulepszenia produktu. QRcodly jest w pełni open source dla pełnej przejrzystości.",
+				"bullet1": "Główna infrastruktura na serwerach w Niemczech",
+				"bullet2": "W pełni open source na GitHubie — zawsze do wglądu",
+				"bullet3": "Transparentne wykorzystanie Clerk, Sentry i PostHog"
+			},
+			"integrations": {
+				"tag": "Integracje",
+				"title": "Integracje z Zewnętrznymi Narzędziami Analitycznymi",
+				"description": "Przekazuj dane skanowania do Google Analytics 4 lub Matomo — swoich własnych narzędzi analitycznych. QRcodly wysyła tylko zanonimizowane, nieidentyfikujące dane, a wbudowana analityka pozostaje w pełni aktywna.",
+				"bullet1": "Połącz Google Analytics 4 lub Matomo w kilka minut",
+				"bullet2": "Udostępniane są tylko zanonimizowane IP i dane nieosobowe",
+				"bullet3": "Wbudowana analityka QRcodly pozostaje nienaruszona"
+			},
+			"teams": {
+				"tag": "Wkrótce",
+				"title": "Team Workspaces — Pojawi się jeszcze w tym roku",
+				"description": "Zarządzaj kodami QR razem jako zespół. Twórz organizacje, zapraszaj członków i przydzielaj role — idealne dla agencji, zespołów marketingowych i firm każdej wielkości.",
+				"bullet1": "Tworzenie organizacji i zapraszanie członków zespołu",
+				"bullet2": "Dostęp oparty na rolach: Admin, Edytor i Przeglądający",
+				"bullet3": "Współpraca nad kodami QR w całym zespole"
+			}
+		},
+		"cta": {
+			"title": "Gotowy, aby zacząć?",
+			"subtitle": "Stwórz swój pierwszy kod QR w kilka sekund. Zawsze za darmo, bez karty kredytowej.",
+			"button": "Stwórz Kod QR Teraz"
+		}
+	},
+	"notFound": {
+		"message": "Ups! Strona, której szukasz, nie istnieje.",
+		"goHome": "Wróć na stronę główną"
+	},
+	"smartTips": {
+		"tipLabel": "Wskazówka",
+		"gotIt": "Rozumiem",
+		"dontShowAgain": "Nie pokazuj ponownie",
+		"disableAll": "Wyłącz wszystkie wskazówki",
+		"bulkExport": {
+			"title": "Eksportuj wiele kodów QR naraz",
+			"description": "Użyj menu Akcje, aby wyeksportować wszystkie kody QR jako plik ZIP zamiast pobierać je pojedynczo."
+		},
+		"bulkImport": {
+			"title": "Twórz kody QR hurtowo",
+			"description": "Użyj menu Akcje, aby zaimportować arkusz kalkulacyjny i utworzyć dziesiątki kodów QR naraz."
+		},
+		"customDomain": {
+			"title": "Użyj własnej domeny",
+			"description": "Podłącz własną domenę, aby krótkie linki kodów QR używały Twojej marki."
+		},
+		"organizeTags": {
+			"title": "Organizuj za pomocą tagów",
+			"description": "Dodaj tagi do kodów QR, aby łatwiej je grupować, filtrować i znajdować."
 		}
 	}
 }

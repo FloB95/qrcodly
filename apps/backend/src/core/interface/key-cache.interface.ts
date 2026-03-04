@@ -40,8 +40,9 @@ export interface IKeyCache {
 
 	/**
 	 * Disconnects from the cache.
+	 * @returns A promise that resolves when the connection is closed.
 	 */
-	disconnect(): void;
+	disconnect(): Promise<void>;
 
 	/**
 	 * Returns the status of the cache.

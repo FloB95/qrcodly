@@ -7,7 +7,9 @@ import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +33,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+import { getUserInitials } from '@/lib/utils';
 
 const profileSchema = z.object({
 	firstName: z.string().min(1, 'First name is required'),
@@ -107,10 +110,15 @@ export function ProfileSection() {
 				firstName: data.firstName,
 				lastName: data.lastName || '',
 			});
-			toast.success(t('profileUpdated'));
+			posthog.capture('profile-update:success');
+			toast({ title: t('profileUpdated') });
 			setIsEditing(false);
-		} catch {
-			toast.error(t('profileUpdateError'));
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { action: 'profile-update' },
+			});
+			posthog.capture('error:profile-update');
+			toast({ title: t('profileUpdateError'), variant: 'destructive' });
 		} finally {
 			setIsLoading(false);
 		}
@@ -124,9 +132,14 @@ export function ProfileSection() {
 			const emailAddress = await user.createEmailAddress({ email: data.email });
 			await emailAddress.prepareVerification({ strategy: 'email_code' });
 			setPendingEmailId(emailAddress.id);
-			toast.success(t('verificationCodeSent'));
-		} catch {
-			toast.error(t('emailAddError'));
+			posthog.capture('email-change:verification-sent');
+			toast({ title: t('verificationCodeSent') });
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { action: 'email-change' },
+			});
+			posthog.capture('error:email-change');
+			toast({ title: t('emailAddError'), variant: 'destructive' });
 		} finally {
 			setIsLoading(false);
 		}
@@ -151,7 +164,7 @@ export function ProfileSection() {
 		try {
 			const emailAddress = user.emailAddresses.find((e) => e.id === pendingEmailId);
 			if (!emailAddress) {
-				toast.error(t('emailNotFound'));
+				toast({ title: t('emailNotFound'), variant: 'destructive' });
 				return;
 			}
 
@@ -160,12 +173,17 @@ export function ProfileSection() {
 			// Set as primary email (with automatic reverification if needed)
 			await setPrimaryEmailWithReverification(pendingEmailId);
 
-			toast.success(t('emailUpdated'));
+			posthog.capture('email-verify:success');
+			toast({ title: t('emailUpdated') });
 			setIsEditingEmail(false);
 			setPendingEmailId(null);
 			setVerificationCode('');
-		} catch {
-			toast.error(t('verificationError'));
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { action: 'email-verify' },
+			});
+			posthog.capture('error:email-verify');
+			toast({ title: t('verificationError'), variant: 'destructive' });
 		} finally {
 			setIsVerifying(false);
 		}
@@ -180,38 +198,32 @@ export function ProfileSection() {
 		if (!file || !user) return;
 
 		if (!file.type.startsWith('image/')) {
-			toast.error(t('invalidImageType'));
+			toast({ title: t('invalidImageType'), variant: 'destructive' });
 			return;
 		}
 
 		if (file.size > 10 * 1024 * 1024) {
-			toast.error(t('imageTooLarge'));
+			toast({ title: t('imageTooLarge'), variant: 'destructive' });
 			return;
 		}
 
 		setIsUploadingImage(true);
 		try {
 			await user.setProfileImage({ file });
-			toast.success(t('imageUpdated'));
-		} catch {
-			toast.error(t('imageUpdateError'));
+			posthog.capture('profile-image:success');
+			toast({ title: t('imageUpdated') });
+		} catch (error) {
+			Sentry.captureException(error, {
+				tags: { action: 'profile-image' },
+			});
+			posthog.capture('error:profile-image');
+			toast({ title: t('imageUpdateError'), variant: 'destructive' });
 		} finally {
 			setIsUploadingImage(false);
 			if (fileInputRef.current) {
 				fileInputRef.current.value = '';
 			}
 		}
-	};
-
-	const getInitials = () => {
-		if (!user) return '';
-		const first = user.firstName?.[0] || '';
-		const last = user.lastName?.[0] || '';
-		return (
-			(first + last).toUpperCase() ||
-			user.primaryEmailAddress?.emailAddress?.[0]?.toUpperCase() ||
-			'?'
-		);
 	};
 
 	const fullName = user ? [user.firstName, user.lastName].filter(Boolean).join(' ') : '';
@@ -261,7 +273,7 @@ export function ProfileSection() {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="flex items-start gap-3">
+				<div className="flex items-center gap-3">
 					<div>
 						<CardTitle>{t('title')}</CardTitle>
 						<CardDescription>{t('description')}</CardDescription>
@@ -280,7 +292,7 @@ export function ProfileSection() {
 								<Avatar className="size-16 border-4 border-background shadow-lg">
 									<AvatarImage src={user?.imageUrl} alt={fullName || 'Profile'} />
 									<AvatarFallback className="text-xl font-medium bg-primary/10">
-										{getInitials()}
+										{getUserInitials(user)}
 									</AvatarFallback>
 								</Avatar>
 								<button
@@ -320,8 +332,8 @@ export function ProfileSection() {
 
 						{/* Email Section */}
 						<div className="border-t pt-6">
-							<div className="flex flex-col gap-3 flex-wrap sm:flex-row sm:items-center sm:justify-between">
-								<div className="flex items-start gap-3 flex-wrap">
+							<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+								<div className="flex items-center gap-3">
 									<div className="p-2 bg-muted rounded-lg">
 										<EnvelopeIcon className="size-5" />
 									</div>

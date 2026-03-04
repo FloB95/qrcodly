@@ -32,6 +32,9 @@ export class GetReservedShortCodeUseCase {
 				qrCodeId: {
 					eq: null,
 				},
+				deletedAt: {
+					eq: null,
+				},
 			},
 		});
 

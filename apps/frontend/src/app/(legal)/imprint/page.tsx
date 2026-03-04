@@ -1,3 +1,11 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Imprint – Legal Notice | QRcodly',
+	description:
+		'Legal notice and imprint for QRcodly. Contact information and responsible party details for the QR code generator service.',
+};
+
 export default async function Page() {
 	return (
 		<div className="prose prose-neutral">

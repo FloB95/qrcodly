@@ -4,6 +4,13 @@ import { useMemo, useCallback } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { DocumentArrowUpIcon } from '@heroicons/react/24/outline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import { UrlSection } from './UrlSection';
 import { TextSection } from './TextSection';
 import { VCardSection } from './VcardSection';
@@ -14,10 +21,10 @@ import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStore
 import { useTranslations } from 'next-intl';
 import { EditUrlSection } from './EditUrlSection';
 import { BulkImport } from './BulkImport';
-import { Badge } from '@/components/ui/badge';
 import { EmailSection } from './EmailSection';
 import { LocationSection } from './LocationSection';
 import { EventSection } from './EventSection';
+import { EpcSection } from './EpcSection';
 import { CONTENT_TYPE_CONFIGS } from '@/lib/content-type.config';
 import { DynamicBadge } from '../DynamicBadge';
 import { useAuth } from '@clerk/nextjs';
@@ -25,6 +32,7 @@ import { useAuth } from '@clerk/nextjs';
 type ContentSwitchProps = {
 	hiddenTabs?: TQrCodeContentType[];
 	isEditMode?: boolean;
+	compact?: boolean;
 };
 
 type TabConfig<T extends TQrCodeContentType = TQrCodeContentType> = {
@@ -44,6 +52,7 @@ const CONTENT_COMPONENTS = {
 	email: { edit: EmailSection, view: EmailSection },
 	location: { edit: LocationSection, view: LocationSection },
 	event: { edit: EventSection, view: EventSection },
+	epc: { edit: EpcSection, view: EpcSection },
 } as const;
 
 const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({
@@ -53,9 +62,8 @@ const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({
 	enableBulk: config.enableBulk,
 }));
 
-export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProps) => {
+export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentSwitchProps) => {
 	const t = useTranslations('generator.contentSwitch');
-	const t2 = useTranslations('general');
 	const { isSignedIn } = useAuth();
 
 	const { content, updateContent, bulkMode, updateBulkMode } = useQrCodeGeneratorStore(
@@ -79,6 +87,13 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 		[updateContent],
 	);
 
+	const handleTabChange = useCallback(
+		(value: string) => {
+			updateContent(getDefaultContentByType(value as TQrCodeContentType, isSignedIn === true));
+		},
+		[updateContent, isSignedIn],
+	);
+
 	// Create stable onChange callbacks for each content type
 	const onChangeCallbacks = useMemo(() => {
 		const callbacks: Record<TQrCodeContentType, (data: any) => void> = {} as any;
@@ -91,24 +106,44 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 	return (
 		<Tabs
 			defaultValue={content.type}
+			value={content.type}
 			className="max-w-[650px]"
 			suppressHydrationWarning
-			onValueChange={(value) =>
-				updateContent(getDefaultContentByType(value as TQrCodeContentType, isSignedIn === true))
-			}
+			onValueChange={handleTabChange}
 		>
-			<TabsList
-				className={`mb-6 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4`}
-			>
-				{visibleTabs.map(({ type, icon: Icon, label }) => (
-					<TabsTrigger key={type} value={type} asChild>
-						<button className={buttonVariants({ variant: 'tab' })}>
-							<Icon className="mr-2 h-6 w-6 min-w-5" />
-							{t(`tab.${label}`)}
-						</button>
-					</TabsTrigger>
-				))}
-			</TabsList>
+			{/* Compact mode: select dropdown. Normal mode: tab grid */}
+			{compact ? (
+				<div className="mb-6">
+					<Select value={content.type} onValueChange={handleTabChange}>
+						<SelectTrigger className="w-full">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{visibleTabs.map(({ type, icon: Icon, label }) => (
+								<SelectItem key={type} value={type} className="pl-2 [&>span:first-child]:hidden">
+									<div className="flex items-center gap-2">
+										<Icon className="h-5 w-5" />
+										<span>{t(`tab.${label}`)}</span>
+									</div>
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
+				</div>
+			) : (
+				<TabsList
+					className={`mb-6 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4`}
+				>
+					{visibleTabs.map(({ type, icon: Icon, label }) => (
+						<TabsTrigger key={type} value={type} asChild>
+							<button className={buttonVariants({ variant: 'tab' })}>
+								<Icon className="mr-2 h-6 w-6 min-w-5" />
+								{t(`tab.${label}`)}
+							</button>
+						</TabsTrigger>
+					))}
+				</TabsList>
+			)}
 
 			{/* Bulk Header */}
 			{!isEditMode && bulkAllowed && (
@@ -153,7 +188,6 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode }: ContentSwitchProp
 							<Button variant="link" className="p-0" onClick={() => updateBulkMode(true)}>
 								<DocumentArrowUpIcon className="sm:mr-1.5 h-8 w-8 sm:h-6 sm:w-6" />
 								<span>{t('bulkModeBtn')}</span>
-								<Badge className="ml-2">{t2('newBadge')}</Badge>
 							</Button>
 						)}
 					</div>

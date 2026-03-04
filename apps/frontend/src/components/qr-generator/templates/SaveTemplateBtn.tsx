@@ -13,6 +13,7 @@ import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
+import { safeLocalStorage } from '@/lib/utils';
 
 const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 	const t = useTranslations('templates');
@@ -57,11 +58,12 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 									},
 								},
 							});
-
-							posthog.capture('error:config-template-created', {
-								templateName: templateName,
-							});
 						}
+
+						posthog.capture('error:config-template-created', {
+							templateName: templateName,
+							config,
+						});
 
 						toast({
 							variant: 'destructive',
@@ -72,9 +74,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 					},
 				},
 			);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch {}
 	};
 
 	const isDisabled =
@@ -91,8 +91,7 @@ const QrCodeSaveTemplateBtn = ({ config }: { config: TQrCodeOptions }) => {
 						isLoading={createConfigTemplateMutation.isPending}
 						onClick={() => {
 							if (!isSignedIn) {
-								// Store the config in localStorage before prompting login
-								localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
+								safeLocalStorage.setItem('unsavedQrConfig', JSON.stringify(config));
 								setAlertOpen(true);
 								return;
 							}

@@ -5,6 +5,7 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { baseOptions } from '@/lib/layout.shared';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import Providers from '@/components/provider';
@@ -43,6 +44,7 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
 
 				{/* Favicons */}
 				<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+				<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 				<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 				<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 				<link rel="manifest" href="/site.webmanifest" />
@@ -66,6 +68,7 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
 									</>
 								</DocsLayout>
 							</RootProvider>
+							<Footer />
 						</main>
 					</Providers>
 				</NextIntlClientProvider>

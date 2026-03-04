@@ -1,11 +1,3 @@
-/**
- * Interface for the Base Use Case.
- */
-export interface IBaseUseCase {
-	/**
-	 * Executes the Base Use Case.
-	 * @param args The arguments for the use case.
-	 * @returns The result of the use case execution.
-	 */
-	execute(...args: unknown[]): unknown;
+export interface IBaseUseCase<TArgs extends unknown[] = unknown[], TResult = unknown> {
+	execute(...args: TArgs): TResult | Promise<TResult>;
 }

@@ -11,7 +11,6 @@ import {
 	generateEmailQrCodeDto,
 	generateLocationQrCodeDto,
 	getTestContext,
-	releaseTestContext,
 	createQrCodeRequest,
 } from './utils';
 
@@ -23,10 +22,6 @@ describe('createQrCode - Core', () => {
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	const createRequest = async (payload?: TCreateQrCodeDto, token?: string) =>

@@ -2,7 +2,6 @@ import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { EventEmitter } from '@/core/event';
-import { BadRequestError, ForbiddenError } from '@/core/error/http';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { TShortUrl } from '../domain/entities/short-url.entity';
 import { TUpdateShortUrlDto } from '@shared/schemas';
@@ -10,7 +9,7 @@ import QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.reposi
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
 import { RedirectLoopError } from '../error/http/redirect-loop.error';
 import { buildShortUrl } from '../utils';
-import CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
+import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 
 /**
  * Use case for updating a ShortUrl entity.
@@ -19,7 +18,8 @@ import CustomDomainRepository from '@/modules/custom-domain/domain/repository/cu
 export class UpdateShortUrlUseCase implements IBaseUseCase {
 	constructor(
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
-		@inject(CustomDomainRepository) private customDomainRepository: CustomDomainRepository,
+		@inject(CustomDomainValidationService)
+		private customDomainValidationService: CustomDomainValidationService,
 		@inject(Logger) private logger: Logger,
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
@@ -38,9 +38,12 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		updatedBy: string,
 		linkedQrCodeId?: string,
 	): Promise<TShortUrl> {
-		// Validate custom domain ownership if changing it
+		// Validate custom domain ownership and readiness if changing it
 		if (updatesDto.customDomainId !== undefined && updatesDto.customDomainId !== null) {
-			await this.validateCustomDomain(updatesDto.customDomainId, updatedBy);
+			await this.customDomainValidationService.validateForUserUse(
+				updatesDto.customDomainId,
+				updatedBy,
+			);
 		}
 
 		const updates: Partial<TShortUrl> = {
@@ -85,26 +88,5 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		});
 
 		return result!;
-	}
-
-	/**
-	 * Validates that the custom domain exists, is owned by the user, and is verified.
-	 */
-	private async validateCustomDomain(customDomainId: string, userId: string): Promise<void> {
-		const customDomain = await this.customDomainRepository.findOneById(customDomainId);
-
-		if (!customDomain) {
-			throw new BadRequestError('Custom domain not found.');
-		}
-
-		if (customDomain.createdBy !== userId) {
-			throw new ForbiddenError('You do not own this custom domain.');
-		}
-
-		if (customDomain.sslStatus !== 'active') {
-			throw new BadRequestError(
-				'Custom domain is not verified. Please complete DNS verification first.',
-			);
-		}
 	}
 }

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/nextjs';
 import type {
 	TCreateConfigTemplateDto,
@@ -12,13 +12,11 @@ import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
 
-// Define query keys
 export const queryKeys = {
 	listConfigTemplates: ['listConfigTemplates'],
 	predefinedTemplates: ['predefinedTemplates'],
 } as const;
 
-// Hook to fetch predefined configuration templates
 export function usePredefinedTemplatesQuery() {
 	return useQuery({
 		queryKey: queryKeys.predefinedTemplates,
@@ -32,12 +30,11 @@ export function usePredefinedTemplatesQuery() {
 		},
 		refetchOnMount: false,
 		refetchOnWindowFocus: false,
-		staleTime: 5 * 60 * 1000, // 5 minutes
+		staleTime: 5 * 60 * 1000,
 		retry: 2,
 	});
 }
 
-// Hook to fetch configuration templates
 export function useListConfigTemplatesQuery(searchName?: string, page = 1, limit = 10) {
 	const { getToken } = useAuth();
 
@@ -71,14 +68,14 @@ export function useListConfigTemplatesQuery(searchName?: string, page = 1, limit
 				queryParams,
 			);
 		},
+		placeholderData: keepPreviousData,
 		refetchOnMount: false,
 		refetchOnWindowFocus: false,
-		staleTime: 5 * 60 * 1000, // 5 minutes
+		staleTime: 5 * 60 * 1000,
 		retry: 2,
 	});
 }
 
-// Function to create a configuration template
 export function useCreateConfigTemplateMutation() {
 	const queryClient = useQueryClient();
 	const { getToken } = useAuth();
@@ -100,14 +97,11 @@ export function useCreateConfigTemplateMutation() {
 			});
 		},
 		onSuccess: async () => {
-			// Invalidate the 'listConfigTemplates' query to refetch the updated data
 			await queryClient.refetchQueries({
 				queryKey: queryKeys.listConfigTemplates,
 			});
 		},
-		onError: (error) => {
-			console.error('Error creating configuration template:', error);
-		},
+		onError: () => {},
 	});
 }
 
@@ -164,7 +158,6 @@ export function useUpdateConfigTemplateMutation() {
 	});
 }
 
-// Function to delete a configuration template
 export function useDeleteConfigTemplateMutation() {
 	const queryClient = useQueryClient();
 	const { getToken } = useAuth();
@@ -186,8 +179,6 @@ export function useDeleteConfigTemplateMutation() {
 				queryKey: queryKeys.listConfigTemplates,
 			});
 		},
-		onError: (error) => {
-			console.error('Error deleting configuration template:', error);
-		},
+		onError: () => {},
 	});
 }

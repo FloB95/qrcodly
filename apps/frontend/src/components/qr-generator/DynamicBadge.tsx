@@ -5,7 +5,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card'
 import { Badge } from '../ui/badge';
 import { CheckBadgeIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
-import { cn } from '@/lib/utils';
+import { cn, safeLocalStorage } from '@/lib/utils';
 import { Switch } from '../ui/switch';
 import { useAuth } from '@clerk/nextjs';
 import { LoginRequiredDialog } from './LoginRequiredDialog';
@@ -62,8 +62,8 @@ export const DynamicBadge = ({ className = '', checked, onChange }: DynamicBadge
 			if (!onChange) return;
 
 			if (!isSignedIn) {
-				localStorage.setItem('unsavedQrContent', JSON.stringify(content));
-				localStorage.setItem('unsavedQrConfig', JSON.stringify(config));
+				safeLocalStorage.setItem('unsavedQrContent', JSON.stringify(content));
+				safeLocalStorage.setItem('unsavedQrConfig', JSON.stringify(config));
 				setAlertOpen(true);
 				return;
 			}

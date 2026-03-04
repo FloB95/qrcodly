@@ -1,11 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
-import {
-	generateTextQrCodeDto,
-	getTestContext,
-	releaseTestContext,
-	createQrCodeRequest,
-} from './utils';
+import { generateTextQrCodeDto, getTestContext, createQrCodeRequest } from './utils';
 
 describe('createQrCode - Text Content Type', () => {
 	let testServer: FastifyInstance;
@@ -15,10 +10,6 @@ describe('createQrCode - Text Content Type', () => {
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
-	});
-
-	afterAll(async () => {
-		await releaseTestContext();
 	});
 
 	const createRequest = async (payload?: TCreateQrCodeDto, token?: string) =>

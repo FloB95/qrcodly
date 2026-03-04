@@ -16,7 +16,7 @@ export const ShortUrlDisplay = ({
 	shortUrl: shortUrlData,
 	destinationUrl,
 	destinationContent,
-	className = 'text-muted-foreground',
+	className = 'text-muted-foreground hover:underline',
 }: ShortUrlDisplayProps) => {
 	const { link: shortUrl, isLoading } = useShortUrlLink(shortUrlData);
 
@@ -31,6 +31,7 @@ export const ShortUrlDisplay = ({
 				prefetch={false}
 				target="_blank"
 				onClick={(e) => e.stopPropagation()}
+				onContextMenu={(e) => e.stopPropagation()}
 				className={className}
 			>
 				{shortUrl}
@@ -41,9 +42,10 @@ export const ShortUrlDisplay = ({
 					{destinationContent || (
 						<Link
 							onClick={(e) => e.stopPropagation()}
+							onContextMenu={(e) => e.stopPropagation()}
 							href={destinationUrl}
 							target="_blank"
-							className="pt-1 text-sm text-black"
+							className="pt-1 text-sm text-black hover:underline"
 							prefetch={false}
 						>
 							{destinationUrl}

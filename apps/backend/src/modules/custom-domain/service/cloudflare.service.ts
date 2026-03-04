@@ -140,7 +140,7 @@ export class CloudflareService {
 	): Promise<T> {
 		const url = `${this.baseUrl}${endpoint}`;
 
-		this.logger.debug('cloudflare.api.request', { method, endpoint });
+		this.logger.debug('cloudflare.api.request', { api: { method, endpoint } });
 
 		try {
 			const response = await fetch(url, {
@@ -158,20 +158,22 @@ export class CloudflareService {
 				const errorMessage =
 					data.errors?.[0]?.message || `Cloudflare API error: ${response.status}`;
 				this.logger.error('cloudflare.api.error', {
-					status: response.status,
+					api: {
+						status: response.status,
+						endpoint,
+					},
 					errors: data.errors,
-					endpoint,
 				});
 				throw new CloudflareApiError(errorMessage, response.status, data.errors);
 			}
 
-			this.logger.debug('cloudflare.api.success', { endpoint });
+			this.logger.debug('cloudflare.api.success', { api: { endpoint } });
 			return data.result;
 		} catch (error) {
 			if (error instanceof CloudflareApiError) {
 				throw error;
 			}
-			this.logger.error('cloudflare.api.error', { error, endpoint });
+			this.logger.error('cloudflare.api.error', { api: { endpoint }, error });
 			throw new CloudflareApiError(
 				`Failed to connect to Cloudflare API: ${(error as Error).message}`,
 				500,
@@ -186,12 +188,12 @@ export class CloudflareService {
 	 * @returns The created custom hostname with SSL validation records
 	 */
 	async createCustomHostname(hostname: string): Promise<ICloudflareCustomHostname> {
-		this.logger.info('cloudflare.customHostname.create', { hostname });
+		this.logger.info('cloudflare.customHostname.create', { customHostname: { hostname } });
 
 		// Return mock response in test environment
 		if (this.isTestEnvironment) {
 			const mockResult = this.mockCustomHostname(hostname);
-			this.logger.debug('cloudflare.customHostname.mock', { hostname });
+			this.logger.debug('cloudflare.customHostname.mock', { customHostname: { hostname } });
 			return mockResult;
 		}
 
@@ -211,9 +213,11 @@ export class CloudflareService {
 		);
 
 		this.logger.info('cloudflare.customHostname.created', {
-			hostname,
-			cloudflareId: result.id,
-			sslStatus: result.ssl.status,
+			customHostname: {
+				hostname,
+				cloudflareId: result.id,
+				sslStatus: result.ssl.status,
+			},
 		});
 
 		return result;
@@ -226,12 +230,14 @@ export class CloudflareService {
 	 * @returns The custom hostname details including current SSL status
 	 */
 	async getCustomHostname(hostnameId: string): Promise<ICloudflareCustomHostname> {
-		this.logger.debug('cloudflare.customHostname.get', { hostnameId });
+		this.logger.debug('cloudflare.customHostname.get', { customHostname: { id: hostnameId } });
 
 		// Return mock response in test environment
 		if (this.isTestEnvironment) {
 			const mockResult = this.mockCustomHostname('test.example.com', hostnameId);
-			this.logger.debug('cloudflare.customHostname.mock.get', { hostnameId });
+			this.logger.debug('cloudflare.customHostname.mock.get', {
+				customHostname: { id: hostnameId },
+			});
 			return mockResult;
 		}
 
@@ -241,9 +247,11 @@ export class CloudflareService {
 		);
 
 		this.logger.debug('cloudflare.customHostname.status', {
-			hostnameId,
-			sslStatus: result.ssl.status,
-			status: result.status,
+			customHostname: {
+				hostnameId,
+				sslStatus: result.ssl.status,
+				status: result.status,
+			},
 		});
 
 		return result;
@@ -255,11 +263,13 @@ export class CloudflareService {
 	 * @param hostnameId - The Cloudflare custom hostname ID
 	 */
 	async deleteCustomHostname(hostnameId: string): Promise<void> {
-		this.logger.info('cloudflare.customHostname.delete', { hostnameId });
+		this.logger.info('cloudflare.customHostname.delete', { customHostname: { hostnameId } });
 
 		// Skip deletion in test environment
 		if (this.isTestEnvironment) {
-			this.logger.debug('cloudflare.customHostname.mock.delete', { hostnameId });
+			this.logger.debug('cloudflare.customHostname.mock.delete', {
+				customHostname: { hostnameId },
+			});
 			return;
 		}
 
@@ -268,7 +278,7 @@ export class CloudflareService {
 			`/zones/${this.zoneId}/custom_hostnames/${hostnameId}`,
 		);
 
-		this.logger.info('cloudflare.customHostname.deleted', { hostnameId });
+		this.logger.info('cloudflare.customHostname.deleted', { customHostname: { hostnameId } });
 	}
 
 	/**
@@ -279,12 +289,14 @@ export class CloudflareService {
 	 * @returns The updated custom hostname
 	 */
 	async refreshCustomHostname(hostnameId: string): Promise<ICloudflareCustomHostname> {
-		this.logger.info('cloudflare.customHostname.refresh', { hostnameId });
+		this.logger.info('cloudflare.customHostname.refresh', { customHostname: { hostnameId } });
 
 		// Return mock response in test environment
 		if (this.isTestEnvironment) {
 			const mockResult = this.mockCustomHostname('test.example.com', hostnameId);
-			this.logger.debug('cloudflare.customHostname.mock.refresh', { hostnameId });
+			this.logger.debug('cloudflare.customHostname.mock.refresh', {
+				customHostname: { hostnameId },
+			});
 			return mockResult;
 		}
 
@@ -300,8 +312,10 @@ export class CloudflareService {
 		);
 
 		this.logger.info('cloudflare.customHostname.refreshed', {
-			hostnameId,
-			sslStatus: result.ssl.status,
+			customHostname: {
+				hostnameId,
+				sslStatus: result.ssl.status,
+			},
 		});
 
 		return result;

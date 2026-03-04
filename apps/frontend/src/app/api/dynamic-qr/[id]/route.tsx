@@ -1,5 +1,3 @@
-import { notFound } from 'next/navigation';
-
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
 	const { id } = await params;
 
@@ -11,7 +9,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
 		if (!response.ok) {
 			if (response.status === 404) {
-				return notFound();
+				return new Response('QR code not found', { status: 404 });
 			}
 			throw new Error(`Failed to download QR code content: ${response.statusText}`);
 		}
@@ -28,7 +26,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 			},
 		});
 	} catch (err) {
-		console.error('Error downloading QR code content:', err);
-		return notFound();
+		console.error('Error downloading QR code content:', err, {
+			qrCodeId: id,
+		});
+		return new Response('QR code not found', { status: 404 });
 	}
 }

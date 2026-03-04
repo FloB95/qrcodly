@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import { ListQrCodesUseCase } from '../list-qr-code.use-case';
 import type QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { type ImageService } from '@/core/services/image.service';
-import { type KeyCache } from '@/core/cache';
 import { mock, type MockProxy } from 'jest-mock-extended';
 import { QrCodeDefaults } from '@shared/schemas';
 import { type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
@@ -11,7 +10,6 @@ describe('ListQrCodesUseCase', () => {
 	let useCase: ListQrCodesUseCase;
 	let mockRepository: MockProxy<QrCodeRepository>;
 	let mockImageService: MockProxy<ImageService>;
-	let mockCache: MockProxy<KeyCache>;
 
 	const mockQrCodes: TQrCodeWithRelations[] = [
 		{
@@ -34,6 +32,8 @@ describe('ListQrCodesUseCase', () => {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 			shortUrl: null,
+			share: null,
+			tags: [],
 		},
 		{
 			id: 'qr-2',
@@ -49,19 +49,18 @@ describe('ListQrCodesUseCase', () => {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 			shortUrl: null,
+			share: null,
+			tags: [],
 		},
 	];
 
 	beforeEach(() => {
 		mockRepository = mock<QrCodeRepository>();
 		mockImageService = mock<ImageService>();
-		mockCache = mock<KeyCache>();
 
-		useCase = new ListQrCodesUseCase(mockRepository, mockImageService, mockCache);
+		useCase = new ListQrCodesUseCase(mockRepository, mockImageService);
 
 		// Default mock implementations
-		mockCache.get.mockResolvedValue(null);
-		mockCache.set.mockResolvedValue();
 		// Return fresh copies to avoid mutation issues
 		mockRepository.findAll.mockImplementation(async () => JSON.parse(JSON.stringify(mockQrCodes)));
 		mockRepository.countTotal.mockResolvedValue(2);
@@ -78,26 +77,6 @@ describe('ListQrCodesUseCase', () => {
 	});
 
 	describe('execute', () => {
-		it('should return cached data if exists', async () => {
-			const cachedData = {
-				qrCodes: mockQrCodes,
-				total: 2,
-			};
-
-			mockCache.get.mockResolvedValue(JSON.stringify(cachedData));
-
-			const result = await useCase.execute({
-				limit: 10,
-				page: 1,
-			});
-
-			// Dates are stringified in cache, so parse and compare
-			const expectedResult = JSON.parse(JSON.stringify(cachedData));
-			expect(result).toEqual(expectedResult);
-			expect(mockRepository.findAll).not.toHaveBeenCalled();
-			expect(mockCache.get).toHaveBeenCalled();
-		});
-
 		it('should query repository with correct parameters', async () => {
 			await useCase.execute({
 				limit: 10,
@@ -113,6 +92,8 @@ describe('ListQrCodesUseCase', () => {
 				where: {
 					createdBy: { eq: 'user-123' },
 				},
+				contentType: undefined,
+				tagIds: undefined,
 			});
 		});
 
@@ -162,9 +143,13 @@ describe('ListQrCodesUseCase', () => {
 				},
 			});
 
-			expect(mockRepository.countTotal).toHaveBeenCalledWith({
-				createdBy: { eq: 'user-123' },
-			});
+			expect(mockRepository.countTotal).toHaveBeenCalledWith(
+				{
+					createdBy: { eq: 'user-123' },
+				},
+				undefined,
+				undefined,
+			);
 		});
 
 		it('should return QR codes and total count', async () => {
@@ -179,65 +164,6 @@ describe('ListQrCodesUseCase', () => {
 			expect(result.total).toBe(2);
 		});
 
-		it('should cache results with correct TTL', async () => {
-			await useCase.execute({
-				limit: 10,
-				page: 1,
-			});
-
-			expect(mockCache.set).toHaveBeenCalledWith(
-				expect.any(String),
-				expect.any(String),
-				1 * 24 * 60 * 60, // 1 day in seconds
-				expect.any(Array),
-			);
-		});
-
-		it('should cache results with user tag when createdBy filter is present', async () => {
-			await useCase.execute({
-				limit: 10,
-				page: 1,
-				where: {
-					createdBy: { eq: 'user-123' },
-				},
-			});
-
-			expect(mockCache.set).toHaveBeenCalledWith(
-				expect.any(String),
-				expect.any(String),
-				expect.any(Number),
-				['qr-codes-list:user:user-123'],
-			);
-		});
-
-		it('should cache results with empty tags when no createdBy filter', async () => {
-			await useCase.execute({
-				limit: 10,
-				page: 1,
-			});
-
-			expect(mockCache.set).toHaveBeenCalledWith(
-				expect.any(String),
-				expect.any(String),
-				expect.any(Number),
-				[],
-			);
-		});
-
-		it('should generate correct cache key', async () => {
-			await useCase.execute({
-				limit: 10,
-				page: 1,
-				where: {
-					createdBy: { eq: 'user-123' },
-				},
-			});
-
-			expect(mockCache.get).toHaveBeenCalledWith(
-				'qr-code-list:10-1-{"createdBy":{"eq":"user-123"}}',
-			);
-		});
-
 		it('should handle query without where clause', async () => {
 			await useCase.execute({
 				limit: 10,
@@ -247,23 +173,10 @@ describe('ListQrCodesUseCase', () => {
 			expect(mockRepository.findAll).toHaveBeenCalledWith({
 				limit: 10,
 				page: 1,
+				contentType: undefined,
+				tagIds: undefined,
 			});
-			expect(mockRepository.countTotal).toHaveBeenCalledWith(undefined);
-		});
-
-		it('should cache stringified results', async () => {
-			await useCase.execute({
-				limit: 10,
-				page: 1,
-			});
-
-			const cacheSetCall = (mockCache.set as jest.Mock).mock.calls[0];
-			const cachedValue = cacheSetCall[1];
-
-			expect(typeof cachedValue).toBe('string');
-			const parsed = JSON.parse(cachedValue);
-			expect(parsed).toHaveProperty('qrCodes');
-			expect(parsed).toHaveProperty('total');
+			expect(mockRepository.countTotal).toHaveBeenCalledWith(undefined, undefined, undefined);
 		});
 
 		it('should handle empty results', async () => {
@@ -294,18 +207,6 @@ describe('ListQrCodesUseCase', () => {
 
 			// All images should be processed
 			expect(mockImageService.getSignedUrl).toHaveBeenCalledTimes(20); // 10 config images + 10 preview images
-		});
-
-		it('should not modify original QR codes with signed URLs in cache', async () => {
-			await useCase.execute({
-				limit: 10,
-				page: 1,
-			});
-
-			const cacheSetCall = (mockCache.set as jest.Mock).mock.calls[0];
-			const cachedValue = JSON.parse(cacheSetCall[1]);
-
-			expect(cachedValue.qrCodes[0].config.image).toContain('https://cdn.example.com/');
 		});
 
 		it('should handle null image gracefully', async () => {
@@ -342,21 +243,34 @@ describe('ListQrCodesUseCase', () => {
 
 			expect(result.qrCodes[0].previewImage).toBeNull();
 		});
-	});
 
-	describe('getTagKey', () => {
-		it('should generate correct tag key for user', () => {
-			const tag = ListQrCodesUseCase.getTagKey('user-123');
+		it('should pass contentType filter to repository', async () => {
+			await useCase.execute({
+				limit: 10,
+				page: 1,
+				where: {
+					createdBy: { eq: 'user-123' },
+				},
+				contentType: ['url', 'text'],
+			});
 
-			expect(tag).toBe('qr-codes-list:user:user-123');
-		});
+			expect(mockRepository.findAll).toHaveBeenCalledWith({
+				limit: 10,
+				page: 1,
+				where: {
+					createdBy: { eq: 'user-123' },
+				},
+				contentType: ['url', 'text'],
+				tagIds: undefined,
+			});
 
-		it('should handle different user IDs', () => {
-			const tag1 = ListQrCodesUseCase.getTagKey('user-abc');
-			const tag2 = ListQrCodesUseCase.getTagKey('user-xyz');
-
-			expect(tag1).toBe('qr-codes-list:user:user-abc');
-			expect(tag2).toBe('qr-codes-list:user:user-xyz');
+			expect(mockRepository.countTotal).toHaveBeenCalledWith(
+				{
+					createdBy: { eq: 'user-123' },
+				},
+				['url', 'text'],
+				undefined,
+			);
 		});
 	});
 });

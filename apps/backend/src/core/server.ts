@@ -25,6 +25,7 @@ import { OnShutdown } from './decorators/on-shutdown.decorator';
 import { HealthController } from './http/controller/health.controller';
 import FastifySwagger from '@fastify/swagger';
 import { ClerkWebhookController } from './http/controller/clerk.webhook.controller';
+import { StripeWebhookController } from '@/modules/billing/http/controller/stripe-webhook.controller';
 import multipart from '@fastify/multipart';
 import { resolveRateLimit } from './rate-limit/rate-limit.resolver';
 import { RateLimitPolicy } from './rate-limit/rate-limit.policy';
@@ -37,6 +38,7 @@ export class Server {
 	constructor(@inject(Logger) private readonly logger: Logger) {
 		this.server = fastify({
 			logger: FASTIFY_LOGGING,
+			bodyLimit: 3 * 1024 * 1024, // 3 MB
 		});
 	}
 
@@ -72,10 +74,8 @@ export class Server {
 			},
 		});
 
-		// catch all errors
 		this.setupErrorHandlers();
 
-		// disable build in validation and use custom validation
 		this.server.setValidatorCompiler(() => {
 			return () => ({});
 		});
@@ -86,7 +86,6 @@ export class Server {
 			};
 		});
 
-		// register file multipart handling
 		await this.server.register(multipart, {
 			attachFieldsToBody: true,
 			limits: {
@@ -94,15 +93,13 @@ export class Server {
 			},
 		});
 
-		// register security modules
 		await this.server.register(fastifyCors, {
 			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
 			credentials: true,
-			methods: ['GET', 'POST', 'DELETE', 'PATCH'],
+			methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 			origin: true,
 		});
 
-		// register authentication provider
 		await this.server.register(clerkPlugin, {
 			secretKey: env.CLERK_SECRET_KEY,
 			publishableKey: env.CLERK_PUBLISHABLE_KEY,
@@ -111,12 +108,10 @@ export class Server {
 			},
 		});
 
-		// register cookie
 		await this.server.register(fastifyCookie, {
 			secret: env.COOKIE_SECRET,
 		});
 
-		// register rate limit
 		if (!IN_TEST) {
 			await this.server.register(fastifyRateLimit, {
 				hook: 'preHandler',
@@ -125,11 +120,11 @@ export class Server {
 						acceptsToken: ['session_token', 'api_key'],
 					}) as { userId: string | null };
 
-					return userId ? `user:${userId}` : `anon:${request.clientIp}`;
+					const policy = request.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT;
+					const userKey = userId ? `user:${userId}` : `anon:${request.clientIp}`;
+					return `${userKey}:${policy}`;
 				},
 				max: (request) => {
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
 					const policy = request.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT;
 					return resolveRateLimit(request, policy);
 				},
@@ -145,20 +140,44 @@ export class Server {
 			});
 		}
 
-		// register hooks
+		this.server.addContentTypeParser('*', function (request, payload, done) {
+			let data = '';
+			payload.on('data', (chunk) => {
+				data += chunk;
+			});
+			payload.on('end', () => {
+				done(null, data);
+			});
+		});
+
 		this.server.addHook('onRequest', (request, reply, done) => {
 			request.clientIp = resolveClientIp(request);
 			done();
 		});
 
-		// register security modules
 		await this.server.register(fastifyHelmet);
 
-		// register health check endpoint
 		registerRoutes(this.server, HealthController, API_BASE_PATH);
-
-		// register webhook endpoints
 		registerRoutes(this.server, ClerkWebhookController, API_BASE_PATH);
+
+		// Stripe webhook needs the raw request body (string) for HMAC signature
+		// verification. Register it in an encapsulated scope that overrides the
+		// built-in JSON parser so the body stays as a raw string.
+		await this.server.register((instance) => {
+			instance.removeAllContentTypeParsers();
+			instance.addContentTypeParser(
+				'application/json',
+				{ parseAs: 'string' },
+				(_req, body, done) => {
+					done(null, body);
+				},
+			);
+			registerRoutes(instance, StripeWebhookController, API_BASE_PATH);
+		});
+
+		this.server.get('/robots.txt', { schema: { hide: true } }, async (request, reply) => {
+			return reply.type('text/plain').send('User-agent: *\nDisallow: /\n');
+		});
 
 		this.server.get(
 			`${API_BASE_PATH}/openapi.json`,
@@ -173,7 +192,6 @@ export class Server {
 			},
 		);
 
-		// register api modules
 		const modules = await import('@/modules');
 		await this.server.register(modules.default, { prefix: API_BASE_PATH });
 
@@ -204,7 +222,6 @@ export class Server {
 	}
 
 	private setupErrorHandlers() {
-		// register error handler
 		this.server.setErrorHandler(fastifyErrorHandler);
 	}
 

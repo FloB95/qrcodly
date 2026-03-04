@@ -21,6 +21,6 @@ export class ClearDefaultCustomDomainUseCase implements IBaseUseCase {
 	async execute(userId: string): Promise<void> {
 		await this.customDomainRepository.clearDefault(userId);
 
-		this.logger.info('customDomain.clearDefault', { userId });
+		this.logger.info('customDomain.clearDefault', { customDomain: { userId } });
 	}
 }

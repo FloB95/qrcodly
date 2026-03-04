@@ -1,6 +1,7 @@
 'use client';
 
 import { memo } from 'react';
+import Link from 'next/link';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { EventDetailsCard } from './EventDetailsCard';
 import { ShortUrlDisplay } from './ShortUrlDisplay';
@@ -16,7 +17,18 @@ const renderUrlContent = (qr: TQrCodeWithRelationsResponseDto) => {
 		return <ShortUrlDisplay shortUrl={qr.shortUrl} destinationUrl={qr.shortUrl.destinationUrl} />;
 	}
 
-	return url;
+	return (
+		<Link
+			href={url}
+			prefetch={false}
+			target="_blank"
+			onClick={(e) => e.stopPropagation()}
+			onContextMenu={(e) => e.stopPropagation()}
+			className="text-muted-foreground hover:underline"
+		>
+			{url}
+		</Link>
+	);
 };
 
 const renderEventContent = (qr: TQrCodeWithRelationsResponseDto) => {
@@ -75,6 +87,17 @@ export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto
 			return qr.content.data.address || '';
 		case 'event':
 			return renderEventContent(qr);
+		case 'epc': {
+			const { name, iban, amount } = qr.content.data;
+			const formattedAmount = amount ? `€${amount.toFixed(2)}` : '';
+			const ibanLine = formattedAmount ? `${iban} · ${formattedAmount}` : iban;
+			return (
+				<div className="flex flex-col">
+					<span className="font-semibold truncate">{name}</span>
+					<span className="text-muted-foreground text-sm truncate">{ibanLine}</span>
+				</div>
+			);
+		}
 		default:
 			return 'Unknown';
 	}

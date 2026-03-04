@@ -5,16 +5,10 @@ import type { TShortUrl } from '@shared/schemas';
 import { NextResponse, type NextRequest } from 'next/server';
 import { UAParser } from 'ua-parser-js';
 
-/**
- * Process analytics and redirect for short URLs.
- * @param req - The incoming request
- * @param customDomain - Optional custom domain if the request came from a custom domain
- */
-export async function processAnalyticsAndRedirect(req: NextRequest, customDomain?: string) {
-	// Extract data from headers
+export async function processAnalyticsAndRedirect(req: NextRequest) {
 	const headers = req.headers;
 	const rawHostname = headers.get('host') ?? '';
-	const cleanedHostname = rawHostname.split(':')[0]; // Remove the port if present
+	const cleanedHostname = rawHostname.split(':')[0];
 	const hostnameRegex =
 		/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
 	const hostname =
@@ -43,21 +37,14 @@ export async function processAnalyticsAndRedirect(req: NextRequest, customDomain
 		},
 	};
 
-	// Extract short URL code from the request URL
 	const urlCode = new URL(req.url).pathname.split('/').pop();
 	if (!urlCode) {
-		console.error('No URL code found in the request URL');
 		return NextResponse.rewrite(new URL('/404', req.url));
 	}
 
 	let shortUrl: TShortUrl;
 	try {
-		// Build the API URL with optional domain query parameter for validation
-		const apiUrl = customDomain
-			? `/short-url/${urlCode}?domain=${encodeURIComponent(customDomain)}`
-			: `/short-url/${urlCode}`;
-
-		const response = await apiRequest<TShortUrl>(apiUrl, {
+		const response = await apiRequest<TShortUrl>(`/short-url/${urlCode}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -66,7 +53,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest, customDomain
 
 		shortUrl = response;
 
-		if (!shortUrl?.destinationUrl || !shortUrl.isActive) {
+		if (!shortUrl?.destinationUrl || !shortUrl.isActive || shortUrl.deletedAt) {
 			const acceptLanguage = headers.get('accept-language') ?? 'en';
 			const userLocale = acceptLanguage.split(',')[0]?.split('-')[0] ?? 'en';
 			const locale = SUPPORTED_LANGUAGES.includes(
@@ -81,7 +68,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest, customDomain
 	}
 
 	try {
-		const res = await fetch(`${env.UMAMI_API_HOST}/api/send`, {
+		await fetch(`${env.UMAMI_API_HOST}/api/send`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -89,27 +76,31 @@ export async function processAnalyticsAndRedirect(req: NextRequest, customDomain
 			},
 			body: JSON.stringify(payload),
 		});
+	} catch {}
 
-		if (!res.ok) {
-			// Attempt to parse the response as JSON
-			const contentType = res.headers.get('content-type');
-			if (contentType?.includes('application/json')) {
-				const jsonResponse = (await res.json()) as Record<string, unknown>;
-				console.error('Response Analytics API:', {
-					error: jsonResponse,
-					body: payload,
-				});
-			} else {
-				const textResponse = await res.text();
-				console.error('Response Analytics API:', {
-					error: textResponse,
-					body: payload,
-				});
-			}
-		}
-	} catch (error) {
-		console.error('Error sending request to logger:', error);
-	}
+	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}/clear-views-cache`, {
+		method: 'POST',
+		headers: { 'x-internal-api-key': env.INTERNAL_API_SECRET },
+	}).catch(() => {});
+
+	// Dispatch scan data to user-configured analytics integrations (GA4, Matomo)
+	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}/track-scan`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'x-internal-api-key': env.INTERNAL_API_SECRET,
+		},
+		body: JSON.stringify({
+			url: req.url,
+			userAgent,
+			hostname,
+			language: language ?? '',
+			referrer: headers.get('referer') ?? '',
+			ip: headers.get('x-forwarded-for') ?? '',
+			deviceType: device.type ?? '',
+			browserName: browser.name ?? '',
+		}),
+	}).catch(() => {});
 
 	return NextResponse.redirect(new URL(shortUrl.destinationUrl));
 }

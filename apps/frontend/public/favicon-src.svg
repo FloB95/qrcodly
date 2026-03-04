@@ -1,0 +1,29 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White rounded card -->
+  <rect width="512" height="512" rx="96" fill="#ffffff"/>
+
+  <!-- QR logo scaled and centered (32x32 viewBox → 352x352, offset 80,80 for padding) -->
+  <g transform="translate(80, 80) scale(11)">
+    <!-- Top-left finder pattern -->
+    <rect x="1" y="1" width="12" height="12" rx="2.5" stroke="#0a0a0a" stroke-width="2"/>
+    <rect x="4.5" y="4.5" width="5" height="5" rx="1.2" fill="#0a0a0a"/>
+
+    <!-- Top-right finder pattern -->
+    <rect x="19" y="1" width="12" height="12" rx="2.5" stroke="#0a0a0a" stroke-width="2"/>
+    <rect x="22.5" y="4.5" width="5" height="5" rx="1.2" fill="#0a0a0a"/>
+
+    <!-- Bottom-left finder pattern -->
+    <rect x="1" y="19" width="12" height="12" rx="2.5" stroke="#0a0a0a" stroke-width="2"/>
+    <rect x="4.5" y="22.5" width="5" height="5" rx="1.2" fill="#0a0a0a"/>
+
+    <!-- Data modules -->
+    <rect x="15" y="15" width="4" height="4" rx="1" fill="#0a0a0a"/>
+    <rect x="21" y="15" width="4" height="4" rx="1" fill="#0a0a0a" opacity="0.7"/>
+    <rect x="27" y="15" width="4" height="4" rx="1" fill="#0a0a0a" opacity="0.5"/>
+    <rect x="15" y="21" width="4" height="4" rx="1" fill="#0a0a0a" opacity="0.5"/>
+    <rect x="21" y="21" width="4" height="4" rx="1" fill="#0a0a0a" opacity="0.7"/>
+    <rect x="15" y="27" width="4" height="4" rx="1" fill="#0a0a0a" opacity="0.7"/>
+    <rect x="27" y="21" width="4" height="4" rx="1" fill="#0a0a0a"/>
+    <rect x="27" y="27" width="4" height="4" rx="1" fill="#0a0a0a" opacity="0.4"/>
+  </g>
+</svg>

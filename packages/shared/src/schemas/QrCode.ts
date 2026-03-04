@@ -34,6 +34,7 @@ const emailSchema = emptyStringToUndefined(z.email().max(100).optional());
 
 export const VCardInputSchema = z
 	.object({
+		title: emptyStringToUndefined(z.string().min(1).max(32).optional()),
 		firstName: emptyStringToUndefined(z.string().min(1).max(64).optional()),
 		lastName: emptyStringToUndefined(z.string().min(1).max(64).optional()),
 		/** @deprecated Use emailPrivate or emailBusiness instead. Kept for backwards compatibility with existing data. */
@@ -136,17 +137,43 @@ export const EventInputSchema = z
 
 export type TEventInput = z.infer<typeof EventInputSchema>;
 
+// IBAN validation regex (basic format check - 2 letter country + 2 check digits + up to 30 alphanumeric)
+const ibanRegex = /^[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}$/;
+
+export const EpcInputSchema = z.object({
+	name: z.string().min(1).max(70).describe('Beneficiary name'),
+	iban: z
+		.string()
+		.min(15)
+		.max(34)
+		.refine((val) => ibanRegex.test(val.replace(/\s/g, '').toUpperCase()), {
+			message: 'Invalid IBAN format',
+		}),
+	bic: z
+		.string()
+		.regex(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i, 'Invalid BIC/SWIFT format')
+		.optional(),
+	amount: z.number().min(0.01).max(999999999.99).optional(),
+	purpose: z.string().max(140).optional(),
+});
+
+export type TEpcInput = z.infer<typeof EpcInputSchema>;
+
+// All content types as a constant array (single source of truth)
+export const ALL_QR_CODE_CONTENT_TYPES = [
+	'url',
+	'text',
+	'wifi',
+	'vCard',
+	'email',
+	'location',
+	'event',
+	'epc',
+	// 'socials',
+] as const;
+
 // Alle Typen als Literal-Union
-export const QrCodeContentType = z.union([
-	z.literal('url'),
-	z.literal('text'),
-	z.literal('wifi'),
-	z.literal('vCard'),
-	z.literal('email'),
-	z.literal('location'),
-	z.literal('event'),
-	// z.literal('socials'),
-]);
+export const QrCodeContentType = z.enum(ALL_QR_CODE_CONTENT_TYPES);
 export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
 
 const ContentSchemas = {
@@ -157,6 +184,7 @@ const ContentSchemas = {
 	email: EmailInputSchema,
 	location: LocationInputSchema,
 	event: EventInputSchema,
+	epc: EpcInputSchema,
 	// socials: SocialInputSchema,
 } as const;
 
@@ -174,6 +202,7 @@ export const QrCodeContent = z.discriminatedUnion('type', [
 	createContentSchema('email'),
 	createContentSchema('location'),
 	createContentSchema('event'),
+	createContentSchema('epc'),
 	// createContentSchema('socials'),
 ]);
 

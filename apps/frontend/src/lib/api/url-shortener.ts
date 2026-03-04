@@ -47,7 +47,7 @@ export function useToggleActiveStateMutation() {
 				Authorization: `Bearer ${token}`,
 			};
 			return await apiRequest<TShortUrl>(`/short-url/${shortCode}/toggle-active-state`, {
-				method: 'POST',
+				method: 'PATCH',
 				headers,
 			});
 		},

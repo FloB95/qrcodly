@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestServerWithUserAuth, shutDownServer } from '@/tests/shared/test-server';
+import { getTestContext } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import {
 	QrCodeDefaults,
@@ -45,14 +45,10 @@ describe('updateConfigTemplate', () => {
 		});
 
 	beforeAll(async () => {
-		const serverSetup = await getTestServerWithUserAuth();
-		testServer = serverSetup.testServer;
-		accessToken = serverSetup.accessToken;
-		accessToken2 = serverSetup.accessToken2;
-	});
-
-	afterAll(async () => {
-		await shutDownServer();
+		const ctx = await getTestContext();
+		testServer = ctx.testServer;
+		accessToken = ctx.accessToken;
+		accessToken2 = ctx.accessToken2;
 	});
 
 	describe('PATCH /config-template/:id', () => {

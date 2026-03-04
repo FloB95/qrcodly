@@ -11,47 +11,48 @@ import {
 	ShieldCheckIcon,
 	UserIcon,
 } from '@heroicons/react/24/outline';
+import { useTranslations } from 'next-intl';
 
-const data = {
-	navMain: [
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const t = useTranslations('settings.nav');
+
+	const navMain = [
 		{
-			title: 'Profile',
+			title: t('profile'),
 			url: 'profile',
 			icon: UserIcon,
 		},
 		{
-			title: 'Security',
+			title: t('security'),
 			url: 'security',
 			icon: ShieldCheckIcon,
 		},
 		{
-			title: 'Billing',
+			title: t('billing'),
 			url: 'billing',
 			icon: CreditCardIcon,
 		},
 		{
-			title: 'API-Keys',
+			title: t('apiKeys'),
 			url: 'api-keys',
 			icon: CodeBracketIcon,
 		},
 		{
-			title: 'Domains',
+			title: t('domains'),
 			url: 'domains',
 			icon: GlobeAltIcon,
 		},
-	],
-};
+	];
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	return (
 		<Sidebar collapsible="offcanvas" className="min-w-64 pt-5" {...props}>
 			<SidebarHeader>
 				<SidebarMenu>
-					<div className="text-md ml-2 font-semibold">Settings</div>
+					<div className="text-md ml-2 font-semibold">{t('title')}</div>
 				</SidebarMenu>
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={data.navMain} />
+				<NavMain items={navMain} />
 			</SidebarContent>
 		</Sidebar>
 	);

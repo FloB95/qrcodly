@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-nocheck
 import 'reflect-metadata';
 import { VCardStrategy } from '../vcard.strategy';
@@ -135,6 +136,7 @@ describe('VCardStrategy', () => {
 			createdBy: 'user_123',
 			createdAt: new Date(),
 			updatedAt: new Date(),
+			deletedAt: null,
 		};
 
 		it('should call GetReservedShortCodeUseCase.execute() with createdBy', async () => {

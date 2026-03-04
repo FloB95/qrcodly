@@ -7,7 +7,6 @@ import { z } from 'zod';
 export const ResolveDomainResponseDto = z.object({
 	domain: z.string(),
 	isValid: z.boolean(),
-	sslStatus: z.string(),
 });
 
 export type TResolveDomainResponseDto = z.infer<typeof ResolveDomainResponseDto>;

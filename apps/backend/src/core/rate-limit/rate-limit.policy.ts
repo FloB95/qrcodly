@@ -6,8 +6,11 @@ export enum RateLimitPolicy {
 	// template limits
 	TEMPLATE_CREATE = 'template_create',
 	SCREENSHOT_CREATE = 'screenshot_create',
+	// tag limits
+	TAG_CREATE = 'tag_create',
 	// custom domain limits
 	DOMAIN_VERIFY = 'domain_verify',
+	DOMAIN_RESOLVE = 'domain_resolve',
 }
 
 export enum RateLimitTier {
@@ -26,9 +29,9 @@ type RateLimitPolicies = {
 
 export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	[RateLimitPolicy.DEFAULT]: {
-		[RateLimitTier.ANONYMOUS]: 20,
-		[RateLimitTier.AUTHENTICATED]: 80,
-		[RateLimitTier.PRO_PLAN]: 120,
+		[RateLimitTier.ANONYMOUS]: 30,
+		[RateLimitTier.AUTHENTICATED]: 120,
+		[RateLimitTier.PRO_PLAN]: 180,
 	},
 	[RateLimitPolicy.QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 4,
@@ -38,9 +41,14 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	[RateLimitPolicy.BULK_QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 2,
-		[RateLimitTier.PRO_PLAN]: 20,
+		[RateLimitTier.PRO_PLAN]: 10,
 	},
 	[RateLimitPolicy.TEMPLATE_CREATE]: {
+		[RateLimitTier.ANONYMOUS]: 0,
+		[RateLimitTier.AUTHENTICATED]: 5,
+		[RateLimitTier.PRO_PLAN]: 20,
+	},
+	[RateLimitPolicy.TAG_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 5,
 		[RateLimitTier.PRO_PLAN]: 20,
@@ -53,6 +61,11 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	[RateLimitPolicy.DOMAIN_VERIFY]: {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 0,
-		[RateLimitTier.PRO_PLAN]: 60,
+		[RateLimitTier.PRO_PLAN]: 20,
+	},
+	[RateLimitPolicy.DOMAIN_RESOLVE]: {
+		[RateLimitTier.ANONYMOUS]: 500,
+		[RateLimitTier.AUTHENTICATED]: 500,
+		[RateLimitTier.PRO_PLAN]: 500,
 	},
 } as const;

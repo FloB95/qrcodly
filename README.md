@@ -1,53 +1,115 @@
 # QRcodly
 
-**QRcodly** is an free open-source QR code generator that helps you quickly create QR codes for various purposes — from sharing URLs and contact details to Wi-Fi credentials and more.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22.11-green)](https://nodejs.org/)
+[![pnpm](https://img.shields.io/badge/pnpm-%3E%3D9.15-orange)](https://pnpm.io/)
 
----
+**QRcodly** is a free, open-source QR code generator and management platform. Create, customize, and track QR codes for URLs, contact details, Wi-Fi credentials, and more.
 
-## ✨ Features
+## Features
 
-- 📱 Support for various QR code types: URL, Contact, Wi-Fi, etc.
-- 🎨 Fully customizable: size, color, background and custom Icon upload
-- 📤 Export QR codes in multiple formats (PNG, JPEG, SVG)
-- 🔗 Url shortening and tracking
-- 🔧 Simple, developer-friendly API for generating QR codes
+- **Multiple QR code types** — URL, vCard, Wi-Fi, Email, Calendar Event, Location, Plain Text
+- **Full customization** — colors, sizes, backgrounds, and custom icon uploads
+- **Export formats** — PNG, JPEG, SVG
+- **URL shortening & analytics** — shorten links and track scans
+- **Templates** — save and reuse QR code configurations
+- **Custom domains** — use your own domain for short URLs (Cloudflare integration)
+- **Internationalization** — 8 languages (EN, DE, ES, FR, IT, NL, PL, RU)
+- **Authentication** — powered by Clerk
+- **Browser extension** — generate QR codes from any page
 
-> 📌 Check out the [Todos](todos.md) page for current status and future plans.
+## Monorepo Structure
 
----
+```
+qrcodly/
+├── apps/
+│   ├── backend/            # Fastify REST API
+│   ├── frontend/           # Next.js web application
+│   └── browser-extension/  # Vite-based browser extension
+├── packages/
+│   ├── shared/             # Zod schemas, DTOs, and shared utilities
+│   ├── eslint-config/      # Shared ESLint configuration
+│   └── typescript-config/  # Shared TypeScript configuration
+├── docker-compose.yaml     # Local development services
+└── turbo.json              # Turborepo pipeline configuration
+```
 
-## 🧱 Tech Stack
+See per-app READMEs for architecture details:
+[Backend](apps/backend/README.md) ·
+[Frontend](apps/frontend/README.md) ·
+[Browser Extension](apps/browser-extension/README.md) ·
+[Shared Package](packages/shared/README.md)
 
-### **Frontend**
+## Tech Stack
 
-- [Next.js](https://nextjs.org/) — React framework
-- [TypeScript](https://www.typescriptlang.org/) — Static typing
-- [Tailwind CSS](https://tailwindcss.com/) — Utility-first styling
-- [shadcn/ui](https://ui.shadcn.com/) — Accessible UI components
-- [QR Code Styling](https://qr-code-styling.com/) — QR generation library
-- [Zod](https://zod.dev/) — Type validation
-- [React Query](https://tanstack.com/query/latest) — Data fetching and caching
-- [zustand](https://zustand.docs.pmnd.rs/) — State management
-- [heroicons](https://heroicons.com/) — Icon library
-- [Clerk](https://clerk.com/) — Authentication
-- [PostHog](https://posthog.com/) — Analytics
-- [Fumadocs](https://www.fumadocs.dev/) — Documentation
+| Layer          | Technologies                                                                            |
+| -------------- | --------------------------------------------------------------------------------------- |
+| **Frontend**   | Next.js, React, TypeScript, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, next-intl |
+| **Backend**    | Fastify, TypeScript, Drizzle ORM, tsyringe (DI), Zod, Nodemailer, Handlebars            |
+| **Database**   | MySQL, Redis                                                                            |
+| **Storage**    | S3 / MinIO                                                                              |
+| **Auth**       | Clerk                                                                                   |
+| **Billing**    | Stripe                                                                                  |
+| **Analytics**  | Umami, PostHog                                                                          |
+| **Monitoring** | Axiom, Sentry                                                                           |
 
-### **Backend**
+## Prerequisites
 
-- [Fastify](https://www.fastify.io/) — Lightweight Node.js backend framework
-- [Drizzle ORM](https://drizzle.team/) — Type-safe database toolkit
-- [MySQL](https://www.mysql.com/) — Relational database
-- [Redis](https://redis.io/) — Caching + rate limiting (self-hosted)
-- [Clerk](https://clerk.com/) — Authentication
-- [Axiom](https://axiom.co/), [Sentry](https://sentry.io/) — Error monitoring
-- [QR Code Styling](https://qr-code-styling.com/) — QR generation library
-- [Zod](https://zod.dev/) — Type validation
-- [nodemailer](https://nodemailer.com/) — Email sending
-- [handlebars](https://handlebarsjs.com/) — Templating engine
-- [commander](https://github.com/tj/commander.js) — CLI framework
-- [tsyringe](https://github.com/microsoft/tsyringe) — Dependency injection
+- [Node.js](https://nodejs.org/) >= 22.11
+- [pnpm](https://pnpm.io/) >= 9.15
+- [Docker](https://www.docker.com/) (for local development services)
 
----
+## Quick Start
 
-Feel free to contribute, suggest features, or report issues. Let’s make QRcodly better together 💪
+```bash
+# 1. Clone the repository
+git clone https://github.com/FloB95/qrcodly.git
+cd qrcodly
+
+# 2. Install dependencies
+pnpm install
+
+# 3. Start local services (MySQL, Redis, MinIO, Umami)
+docker-compose up -d
+
+# 4. Set up environment variables
+cp apps/backend/.env.example apps/backend/.env
+cp apps/frontend/.env.example apps/frontend/.env
+# Edit both .env files with your configuration (Clerk keys, etc.)
+
+# 5. Start development servers
+pnpm run start:dev
+# Backend API → http://localhost:5001
+# Frontend   → http://localhost:3000
+```
+
+## Available Scripts
+
+| Script                          | Description                                    |
+| ------------------------------- | ---------------------------------------------- |
+| `pnpm run start:dev`            | Start backend and frontend in development mode |
+| `pnpm run backend:dev`          | Start backend only (runs migrations first)     |
+| `pnpm run frontend:dev`         | Start frontend only                            |
+| `pnpm run build`                | Build all apps via Turborepo                   |
+| `pnpm run build:shared-package` | Build the shared package only                  |
+| `pnpm run lint`                 | Lint all workspaces                            |
+| `pnpm run format`               | Format all files with Prettier                 |
+| `pnpm run clean`                | Clean build artifacts across all apps          |
+
+## Local Services (Docker Compose)
+
+| Service         | Port                       | Details                                           |
+| --------------- | -------------------------- | ------------------------------------------------- |
+| MySQL           | 3306                       | Credentials: `root` / `root`, database: `qrcodly` |
+| Redis           | 6379                       | —                                                 |
+| MinIO (S3)      | 9000 (API), 9001 (Console) | Credentials: `minio` / `testtest`                 |
+| phpMyAdmin      | 8081                       | —                                                 |
+| Umami Analytics | 3001                       | —                                                 |
+
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and setup instructions.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

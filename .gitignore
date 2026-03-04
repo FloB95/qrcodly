@@ -16,3 +16,10 @@ packages/**/.turbo
 *.swp
 CHANGELOG-*.md
 *.mdx
+
+# Desktop app build outputs
+apps/desktop/out/
+apps/desktop/release/
+*.dmg
+*.exe
+*.blockmap

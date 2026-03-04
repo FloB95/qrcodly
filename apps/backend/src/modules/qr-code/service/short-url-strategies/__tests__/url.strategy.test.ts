@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-nocheck
 import 'reflect-metadata';
 import { UrlStrategy } from '../url.strategy';
@@ -111,6 +112,7 @@ describe('UrlStrategy', () => {
 			createdBy: 'user_123',
 			createdAt: new Date(),
 			updatedAt: new Date(),
+			deletedAt: null,
 		};
 
 		it('should call GetReservedShortCodeUseCase.execute() with createdBy', async () => {
