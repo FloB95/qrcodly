@@ -23,7 +23,7 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 		await cleanupCreatedIntegrations(ctx);
 	});
 
-	it('should return valid: false for test GA4 credentials (not real)', async () => {
+	it('should return credentialsVerified: false for GA4 (cannot verify via API)', async () => {
 		const id = await createIntegrationDirectly(ctx, TEST_USER_PRO_ID, {
 			providerType: 'google_analytics',
 			credentials: {
@@ -36,13 +36,16 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 
 		expect(response.statusCode).toBe(200);
 
-		const result = JSON.parse(response.payload) as { valid: boolean };
-		// GA4 debug endpoint doesn't reliably reject fake measurement IDs,
-		// so we only verify the response shape, not the exact value
-		expect(typeof result.valid).toBe('boolean');
+		const result = JSON.parse(response.payload) as {
+			valid: boolean;
+			credentialsVerified: boolean;
+		};
+		// GA4 Measurement Protocol does not support credential verification,
+		// so credentialsVerified is always false regardless of credential validity
+		expect(result.credentialsVerified).toBe(false);
 	});
 
-	it('should return valid: false for test Matomo credentials (unreachable URL)', async () => {
+	it('should return valid: false with credentialsVerified: true for Matomo with unreachable URL', async () => {
 		const id = await createIntegrationDirectly(ctx, TEST_USER_PRO_ID, {
 			providerType: 'matomo',
 			credentials: {
@@ -55,8 +58,12 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 
 		expect(response.statusCode).toBe(200);
 
-		const result = JSON.parse(response.payload) as { valid: boolean };
+		const result = JSON.parse(response.payload) as {
+			valid: boolean;
+			credentialsVerified: boolean;
+		};
 		expect(result.valid).toBe(false);
+		expect(result.credentialsVerified).toBe(true);
 	});
 
 	it('should return 404 for non-existent integration', async () => {

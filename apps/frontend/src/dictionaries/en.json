@@ -1128,6 +1128,8 @@
 			"siteId": "Site ID",
 			"authToken": "Auth Token",
 			"optional": "optional",
+			"ga4ManualVerificationTitle": "Manual verification required",
+			"ga4ManualVerificationDescription": "Google Analytics does not support automatic credential verification. Please double-check your Measurement ID and API Secret, then verify that data is being received in your Google Analytics dashboard after a QR code is scanned.",
 			"privacyNoticeTitle": "Privacy-first analytics",
 			"privacyNoticeDescription": "Only non-identifying data is sent: page URL, referrer, language, device type, and browser name. IP addresses are only passed in anonymized form. User agents and personal information are never shared.",
 			"cancel": "Cancel",
@@ -1150,10 +1152,12 @@
 			"edit": "Edit",
 			"test": "Test",
 			"testing": "Testing...",
-			"testSuccess": "Credentials valid",
+			"testSuccess": "Credentials verified",
 			"testSuccessDescription": "Successfully connected to the analytics provider.",
 			"testFailed": "Credentials invalid",
 			"testFailedDescription": "Could not connect with the provided credentials. Please check and try again.",
+			"testUnverifiable": "Verification not available",
+			"testUnverifiableDescription": "GA4 does not support credential verification via API. Please ensure your Measurement ID and API Secret are correct. Credentials will be validated when QR codes are scanned.",
 			"testError": "Failed to test credentials. Please try again.",
 			"delete": "Delete",
 			"deleteConfirmTitle": "Delete integration?",
@@ -1165,7 +1169,8 @@
 			"autoDisabled": "This integration has been automatically disabled after 10 consecutive failures. Re-enable it after fixing the issue.",
 			"openMenu": "Open menu",
 			"integrationDisabledTitle": "Analytics integration disabled",
-			"integrationDisabledDescription": "Your analytics integration has been disabled because your Pro plan has expired. Resubscribe to re-enable it."
+			"integrationDisabledDescription": "Your analytics integration has been disabled because your Pro plan has expired. Resubscribe to re-enable it.",
+			"moreIntegrationsTeaser": "More integrations with additional analytics providers are on the way. <contact>Suggest a provider</contact>"
 		}
 	},
 	"plans": {
@@ -1206,6 +1211,7 @@
 				"largerBulkImports": "Larger bulk imports (50 rows, 2MB)",
 				"customDomains": "Custom domain for dynamic QR codes",
 				"unlimitedApi": "Unlimited API access",
+				"analyticsIntegrations": "Analytics integrations (Google Analytics, Matomo)",
 				"prioritySupport": "Priority support",
 				"teamFeatures": "Team features (coming soon)"
 			}

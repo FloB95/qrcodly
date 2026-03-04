@@ -1128,6 +1128,8 @@
 			"siteId": "ID del sito",
 			"authToken": "Token di autenticazione",
 			"optional": "opzionale",
+			"ga4ManualVerificationTitle": "Verifica manuale necessaria",
+			"ga4ManualVerificationDescription": "Google Analytics non supporta la verifica automatica delle credenziali. Controlla il tuo ID misurazione e la chiave API, quindi verifica che i dati vengano ricevuti nella dashboard di Google Analytics dopo la scansione di un codice QR.",
 			"privacyNoticeTitle": "Analisi orientata alla privacy",
 			"privacyNoticeDescription": "Vengono inviati solo dati non identificativi: URL della pagina, referrer, lingua, tipo di dispositivo e nome del browser. Gli indirizzi IP vengono trasmessi solo in forma anonimizzata. User agent e informazioni personali non vengono mai condivisi.",
 			"cancel": "Annulla",
@@ -1150,10 +1152,12 @@
 			"edit": "Modifica",
 			"test": "Test",
 			"testing": "Test in corso...",
-			"testSuccess": "Credenziali valide",
+			"testSuccess": "Credenziali verificate",
 			"testSuccessDescription": "Connessione riuscita al provider analytics.",
 			"testFailed": "Credenziali non valide",
 			"testFailedDescription": "Impossibile connettersi con le credenziali fornite.",
+			"testUnverifiable": "Verifica non disponibile",
+			"testUnverifiableDescription": "GA4 non supporta la verifica delle credenziali tramite API. Assicurati che il tuo ID misurazione e il tuo API Secret siano corretti. Le credenziali verranno validate durante la scansione dei codici QR.",
 			"testError": "Impossibile testare le credenziali.",
 			"delete": "Elimina",
 			"deleteConfirmTitle": "Eliminare l'integrazione?",
@@ -1165,7 +1169,8 @@
 			"autoDisabled": "Questa integrazione è stata disattivata automaticamente dopo 10 errori consecutivi.",
 			"openMenu": "Apri menu",
 			"integrationDisabledTitle": "Integrazione analitica disattivata",
-			"integrationDisabledDescription": "La tua integrazione analitica è stata disattivata perché il tuo piano Pro è scaduto. Riabbonati per riattivarla."
+			"integrationDisabledDescription": "La tua integrazione analitica è stata disattivata perché il tuo piano Pro è scaduto. Riabbonati per riattivarla.",
+			"moreIntegrationsTeaser": "Altre integrazioni con ulteriori fornitori di analisi sono in arrivo. <contact>Suggerisci un fornitore</contact>"
 		}
 	},
 	"plans": {
@@ -1206,6 +1211,7 @@
 				"largerBulkImports": "Importazioni in blocco più grandi (50 righe, 2MB)",
 				"customDomains": "Dominio personalizzato per codici QR dinamici",
 				"unlimitedApi": "Accesso API illimitato",
+				"analyticsIntegrations": "Integrazioni analitiche (Google Analytics, Matomo)",
 				"prioritySupport": "Supporto prioritario",
 				"teamFeatures": "Funzionalità team (in arrivo)"
 			}

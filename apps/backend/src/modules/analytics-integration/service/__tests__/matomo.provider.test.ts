@@ -95,7 +95,7 @@ describe('MatomoProvider', () => {
 			expect(parsed['2']).toEqual(['Browser', 'Chrome']);
 		});
 
-		it('should strip trailing slash from matomo URL', async () => {
+		it('should handle trailing slash in matomo URL', async () => {
 			mockFetch.mockResolvedValueOnce({ ok: true });
 
 			await provider.sendEvent(baseScanEvent, {
@@ -104,8 +104,30 @@ describe('MatomoProvider', () => {
 			});
 
 			const url = mockFetch.mock.calls[0][0] as string;
-			expect(url).toContain('https://matomo.example.com/matomo.php');
-			expect(url).not.toContain('//matomo.php');
+			expect(url).toContain('matomo.example.com/matomo.php');
+		});
+
+		it('should reject URLs pointing to private/internal addresses', async () => {
+			await expect(
+				provider.sendEvent(baseScanEvent, {
+					...validCredentials,
+					matomoUrl: 'https://localhost',
+				}),
+			).rejects.toThrow('private or internal');
+
+			await expect(
+				provider.sendEvent(baseScanEvent, {
+					...validCredentials,
+					matomoUrl: 'https://192.168.1.1',
+				}),
+			).rejects.toThrow('private or internal');
+
+			await expect(
+				provider.sendEvent(baseScanEvent, {
+					...validCredentials,
+					matomoUrl: 'https://169.254.169.254',
+				}),
+			).rejects.toThrow('private or internal');
 		});
 
 		it('should use GET method', async () => {
@@ -127,7 +149,7 @@ describe('MatomoProvider', () => {
 	});
 
 	describe('validateCredentials', () => {
-		it('should return true for valid credentials', async () => {
+		it('should return valid with credentialsVerified: true for valid credentials', async () => {
 			mockFetch.mockResolvedValueOnce({
 				ok: true,
 				json: () => Promise.resolve({ idsite: '5' }),
@@ -135,14 +157,14 @@ describe('MatomoProvider', () => {
 
 			const result = await provider.validateCredentials(validCredentials);
 
-			expect(result).toBe(true);
+			expect(result).toEqual({ valid: true, credentialsVerified: true });
 
 			const url = mockFetch.mock.calls[0][0] as string;
 			expect(url).toContain('SitesManager.getSiteFromId');
 			expect(url).toContain('idSite=5');
 		});
 
-		it('should return false when API returns error result', async () => {
+		it('should return valid: false with credentialsVerified: true when API returns error', async () => {
 			mockFetch.mockResolvedValueOnce({
 				ok: true,
 				json: () => Promise.resolve({ result: 'error', message: 'Invalid site ID' }),
@@ -150,23 +172,23 @@ describe('MatomoProvider', () => {
 
 			const result = await provider.validateCredentials(validCredentials);
 
-			expect(result).toBe(false);
+			expect(result).toEqual({ valid: false, credentialsVerified: true });
 		});
 
-		it('should return false when request fails', async () => {
+		it('should return valid: false with credentialsVerified: true when request fails', async () => {
 			mockFetch.mockResolvedValueOnce({ ok: false, status: 403 });
 
 			const result = await provider.validateCredentials(validCredentials);
 
-			expect(result).toBe(false);
+			expect(result).toEqual({ valid: false, credentialsVerified: true });
 		});
 
-		it('should return false when fetch throws', async () => {
+		it('should return valid: false with credentialsVerified: true when fetch throws', async () => {
 			mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
 			const result = await provider.validateCredentials(validCredentials);
 
-			expect(result).toBe(false);
+			expect(result).toEqual({ valid: false, credentialsVerified: true });
 		});
 
 		it('should include auth token in validation request when provided', async () => {

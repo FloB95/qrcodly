@@ -153,7 +153,7 @@ describe('GoogleAnalyticsProvider', () => {
 	});
 
 	describe('validateCredentials', () => {
-		it('should return true when debug endpoint reports no validation errors', async () => {
+		it('should return valid with credentialsVerified: false when debug endpoint passes', async () => {
 			mockFetch.mockResolvedValueOnce({
 				ok: true,
 				json: () => Promise.resolve({ validationMessages: [] }),
@@ -161,11 +161,11 @@ describe('GoogleAnalyticsProvider', () => {
 
 			const result = await provider.validateCredentials(validCredentials);
 
-			expect(result).toBe(true);
+			expect(result).toEqual({ valid: true, credentialsVerified: false });
 			expect(mockFetch.mock.calls[0][0]).toContain('/debug/mp/collect');
 		});
 
-		it('should return false when debug endpoint reports validation errors', async () => {
+		it('should always return credentialsVerified: false (GA4 cannot verify credentials)', async () => {
 			mockFetch.mockResolvedValueOnce({
 				ok: true,
 				json: () =>
@@ -182,15 +182,23 @@ describe('GoogleAnalyticsProvider', () => {
 
 			const result = await provider.validateCredentials(validCredentials);
 
-			expect(result).toBe(false);
+			expect(result).toEqual({ valid: false, credentialsVerified: false });
 		});
 
-		it('should return false when debug endpoint returns non-OK status', async () => {
+		it('should return valid: false when debug endpoint returns non-OK status', async () => {
 			mockFetch.mockResolvedValueOnce({ ok: false, status: 401 });
 
 			const result = await provider.validateCredentials(validCredentials);
 
-			expect(result).toBe(false);
+			expect(result).toEqual({ valid: false, credentialsVerified: false });
+		});
+
+		it('should return valid: false when fetch throws', async () => {
+			mockFetch.mockRejectedValueOnce(new Error('Network error'));
+
+			const result = await provider.validateCredentials(validCredentials);
+
+			expect(result).toEqual({ valid: false, credentialsVerified: false });
 		});
 
 		it('should send a page_view event for validation', async () => {

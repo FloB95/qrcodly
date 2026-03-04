@@ -9,7 +9,6 @@ import {
 import { DisableProFeaturesUseCase } from '../disable-pro-features.use-case';
 import { EnableProFeaturesUseCase } from '../enable-pro-features.use-case';
 import AnalyticsIntegrationRepository from '@/modules/analytics-integration/domain/repository/analytics-integration.repository';
-import CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
 import UserSubscriptionRepository from '../../domain/repository/user-subscription.repository';
 import db from '@/core/db';
 import analyticsIntegration from '@/modules/analytics-integration/domain/entities/analytics-integration.entity';

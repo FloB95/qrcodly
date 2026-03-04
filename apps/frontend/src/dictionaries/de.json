@@ -1128,6 +1128,8 @@
 			"siteId": "Website-ID",
 			"authToken": "Auth-Token",
 			"optional": "optional",
+			"ga4ManualVerificationTitle": "Manuelle Überprüfung erforderlich",
+			"ga4ManualVerificationDescription": "Google Analytics unterstützt keine automatische Überprüfung der Anmeldedaten. Bitte überprüfen Sie Ihre Mess-ID und Ihren API-Schlüssel und stellen Sie sicher, dass Daten in Ihrem Google Analytics-Dashboard eingehen, nachdem ein QR-Code gescannt wurde.",
 			"privacyNoticeTitle": "Datenschutzfreundliche Analyse",
 			"privacyNoticeDescription": "Es werden nur nicht-identifizierende Daten gesendet: Seiten-URL, Referrer, Sprache, Gerätetyp und Browsername. IP-Adressen werden nur in anonymisierter Form übermittelt. User Agents und persönliche Informationen werden niemals weitergegeben.",
 			"cancel": "Abbrechen",
@@ -1150,10 +1152,12 @@
 			"edit": "Bearbeiten",
 			"test": "Testen",
 			"testing": "Teste...",
-			"testSuccess": "Anmeldedaten gültig",
+			"testSuccess": "Anmeldedaten verifiziert",
 			"testSuccessDescription": "Verbindung zum Analytics-Anbieter erfolgreich.",
 			"testFailed": "Anmeldedaten ungültig",
 			"testFailedDescription": "Verbindung mit den angegebenen Daten nicht möglich.",
+			"testUnverifiable": "Verifizierung nicht verfügbar",
+			"testUnverifiableDescription": "GA4 unterstützt keine Überprüfung der Anmeldedaten über die API. Bitte stellen Sie sicher, dass Ihre Mess-ID und Ihr API-Secret korrekt sind. Die Anmeldedaten werden beim Scannen von QR-Codes validiert.",
 			"testError": "Test fehlgeschlagen. Bitte versuchen Sie es erneut.",
 			"delete": "Löschen",
 			"deleteConfirmTitle": "Integration löschen?",
@@ -1165,7 +1169,8 @@
 			"autoDisabled": "Diese Integration wurde nach 10 aufeinanderfolgenden Fehlern automatisch deaktiviert.",
 			"openMenu": "Menü öffnen",
 			"integrationDisabledTitle": "Analytics-Integration deaktiviert",
-			"integrationDisabledDescription": "Deine Analytics-Integration wurde deaktiviert, da dein Pro-Plan abgelaufen ist. Abonniere erneut, um sie wieder zu aktivieren."
+			"integrationDisabledDescription": "Deine Analytics-Integration wurde deaktiviert, da dein Pro-Plan abgelaufen ist. Abonniere erneut, um sie wieder zu aktivieren.",
+			"moreIntegrationsTeaser": "Weitere Integrationen mit zusätzlichen Analytics-Anbietern sind in Arbeit. <contact>Anbieter vorschlagen</contact>"
 		}
 	},
 	"plans": {
@@ -1206,6 +1211,7 @@
 				"largerBulkImports": "Größere Massenimporte (50 Zeilen, 2MB)",
 				"customDomains": "Eigene Domain für dynamische QR Codes",
 				"unlimitedApi": "Unbegrenzter API-Zugang",
+				"analyticsIntegrations": "Analytics-Integrationen (Google Analytics, Matomo)",
 				"prioritySupport": "Prioritäts-Support",
 				"teamFeatures": "Team-Funktionen (bald verfügbar)"
 			}

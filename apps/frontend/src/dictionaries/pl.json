@@ -1128,6 +1128,8 @@
 			"siteId": "ID strony",
 			"authToken": "Token uwierzytelniania",
 			"optional": "opcjonalnie",
+			"ga4ManualVerificationTitle": "Wymagana ręczna weryfikacja",
+			"ga4ManualVerificationDescription": "Google Analytics nie obsługuje automatycznej weryfikacji danych uwierzytelniających. Sprawdź swój identyfikator pomiaru i klucz API, a następnie upewnij się, że dane są odbierane w panelu Google Analytics po zeskanowaniu kodu QR.",
 			"privacyNoticeTitle": "Analityka z priorytetem prywatności",
 			"privacyNoticeDescription": "Wysyłane są tylko dane nieidentyfikujące: adres URL strony, referrer, język, typ urządzenia i nazwa przeglądarki. Adresy IP przekazywane są wyłącznie w zanonimizowanej formie. User agenty i dane osobowe nigdy nie są udostępniane.",
 			"cancel": "Anuluj",
@@ -1150,10 +1152,12 @@
 			"edit": "Edytuj",
 			"test": "Testuj",
 			"testing": "Testowanie...",
-			"testSuccess": "Dane uwierzytelniające prawidłowe",
+			"testSuccess": "Dane uwierzytelniające zweryfikowane",
 			"testSuccessDescription": "Pomyślnie połączono z dostawcą analytics.",
 			"testFailed": "Dane uwierzytelniające nieprawidłowe",
 			"testFailedDescription": "Nie można połączyć się z podanymi danymi.",
+			"testUnverifiable": "Weryfikacja niedostępna",
+			"testUnverifiableDescription": "GA4 nie obsługuje weryfikacji danych uwierzytelniających przez API. Upewnij się, że Twój identyfikator pomiaru i klucz API są poprawne. Dane uwierzytelniające zostaną zwalidowane podczas skanowania kodów QR.",
 			"testError": "Nie można przetestować danych uwierzytelniających.",
 			"delete": "Usuń",
 			"deleteConfirmTitle": "Usunąć integrację?",
@@ -1165,7 +1169,8 @@
 			"autoDisabled": "Ta integracja została automatycznie wyłączona po 10 kolejnych błędach.",
 			"openMenu": "Otwórz menu",
 			"integrationDisabledTitle": "Integracja analityczna wyłączona",
-			"integrationDisabledDescription": "Twoja integracja analityczna została wyłączona, ponieważ Twój plan Pro wygasł. Odnów subskrypcję, aby ją ponownie włączyć."
+			"integrationDisabledDescription": "Twoja integracja analityczna została wyłączona, ponieważ Twój plan Pro wygasł. Odnów subskrypcję, aby ją ponownie włączyć.",
+			"moreIntegrationsTeaser": "Więcej integracji z kolejnymi dostawcami analityki już wkrótce. <contact>Zaproponuj dostawcę</contact>"
 		}
 	},
 	"plans": {
@@ -1206,6 +1211,7 @@
 				"largerBulkImports": "Większe importy masowe (50 wierszy, 2MB)",
 				"customDomains": "Własna domena dla dynamicznych kodów QR",
 				"unlimitedApi": "Nieograniczony dostęp do API",
+				"analyticsIntegrations": "Integracje analityczne (Google Analytics, Matomo)",
 				"prioritySupport": "Priorytetowe wsparcie",
 				"teamFeatures": "Funkcje zespołowe (wkrótce)"
 			}

@@ -15,6 +15,7 @@ export interface SubscriptionStatus {
 		currentPeriodEnd: string;
 		cancelAtPeriodEnd: boolean;
 	} | null;
+	hasStripeCustomer: boolean;
 }
 
 export function useSubscriptionStatus() {

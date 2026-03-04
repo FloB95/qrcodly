@@ -146,7 +146,7 @@ export class AnalyticsIntegrationController extends AbstractController {
 
 	@Post('/:id/test', {
 		responseSchema: {
-			200: z.object({ valid: z.boolean() }),
+			200: z.object({ valid: z.boolean(), credentialsVerified: z.boolean() }),
 			401: DEFAULT_ERROR_RESPONSES[401],
 			403: DEFAULT_ERROR_RESPONSES[403],
 			404: DEFAULT_ERROR_RESPONSES[404],
@@ -161,7 +161,7 @@ export class AnalyticsIntegrationController extends AbstractController {
 	})
 	async test(
 		request: IHttpRequest<unknown, TAnalyticsIntegrationIdParamsDto>,
-	): Promise<IHttpResponse<{ valid: boolean }>> {
+	): Promise<IHttpResponse<{ valid: boolean; credentialsVerified: boolean }>> {
 		const params = AnalyticsIntegrationIdParamsDto.parse(request.params);
 		const integration = await this.fetchIntegration(params.id, request.user.id);
 		this.ensureProPlan(request.user.plan);

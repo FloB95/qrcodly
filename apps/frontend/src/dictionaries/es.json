@@ -1132,6 +1132,8 @@
 			"siteId": "ID del sitio",
 			"authToken": "Token de autenticación",
 			"optional": "opcional",
+			"ga4ManualVerificationTitle": "Verificación manual requerida",
+			"ga4ManualVerificationDescription": "Google Analytics no admite la verificación automática de credenciales. Por favor, verifique su ID de medición y su clave API, y compruebe que los datos se reciben en su panel de Google Analytics después de escanear un código QR.",
 			"privacyNoticeTitle": "Análisis con privacidad primero",
 			"privacyNoticeDescription": "Solo se envían datos no identificativos: URL de la página, referente, idioma, tipo de dispositivo y nombre del navegador. Las direcciones IP solo se transmiten de forma anonimizada. Los agentes de usuario y la información personal nunca se comparten.",
 			"cancel": "Cancelar",
@@ -1154,10 +1156,12 @@
 			"edit": "Editar",
 			"test": "Probar",
 			"testing": "Probando...",
-			"testSuccess": "Credenciales válidas",
+			"testSuccess": "Credenciales verificadas",
 			"testSuccessDescription": "Conexión exitosa con el proveedor de analytics.",
 			"testFailed": "Credenciales inválidas",
 			"testFailedDescription": "No se pudo conectar con las credenciales proporcionadas.",
+			"testUnverifiable": "Verificación no disponible",
+			"testUnverifiableDescription": "GA4 no admite la verificación de credenciales a través de la API. Asegúrese de que su ID de medición y su API Secret sean correctos. Las credenciales se validarán cuando se escaneen los códigos QR.",
 			"testError": "No se pudieron probar las credenciales.",
 			"delete": "Eliminar",
 			"deleteConfirmTitle": "¿Eliminar integración?",
@@ -1169,7 +1173,8 @@
 			"autoDisabled": "Esta integración se ha desactivado automáticamente después de 10 fallos consecutivos.",
 			"openMenu": "Abrir menú",
 			"integrationDisabledTitle": "Integración de análisis desactivada",
-			"integrationDisabledDescription": "Su integración de análisis ha sido desactivada porque su plan Pro ha expirado. Vuelva a suscribirse para reactivarla."
+			"integrationDisabledDescription": "Su integración de análisis ha sido desactivada porque su plan Pro ha expirado. Vuelva a suscribirse para reactivarla.",
+			"moreIntegrationsTeaser": "Más integraciones con proveedores de analítica adicionales están en camino. <contact>Sugerir un proveedor</contact>"
 		}
 	},
 	"plans": {
@@ -1210,6 +1215,7 @@
 				"largerBulkImports": "Importaciones masivas más grandes (50 filas, 2MB)",
 				"customDomains": "Dominio personalizado para códigos QR dinámicos",
 				"unlimitedApi": "Acceso API ilimitado",
+				"analyticsIntegrations": "Integraciones de analítica (Google Analytics, Matomo)",
 				"prioritySupport": "Soporte prioritario",
 				"teamFeatures": "Funciones de equipo (próximamente)"
 			}

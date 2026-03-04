@@ -11,7 +11,7 @@ import { useCreatePortalSession } from '@/lib/api/billing';
 export function BillingHeader() {
 	const t = useTranslations('settings.billing');
 	const locale = useLocale();
-	const { hasProPlan, isLoading } = useHasProPlan();
+	const { hasStripeCustomer, isLoading } = useHasProPlan();
 	const createPortalSession = useCreatePortalSession();
 
 	const handleManageBilling = () => {
@@ -34,7 +34,7 @@ export function BillingHeader() {
 					{isLoading ? (
 						<Skeleton className="h-9 w-40 shrink-0" />
 					) : (
-						hasProPlan && (
+						hasStripeCustomer && (
 							<Button
 								variant="default"
 								size="sm"

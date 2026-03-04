@@ -19,7 +19,6 @@ export class DeleteAnalyticsIntegrationUseCase implements IBaseUseCase {
 			analyticsIntegration: {
 				id: integration.id,
 				providerType: integration.providerType,
-				createdBy: integration.createdBy,
 			},
 		});
 	}

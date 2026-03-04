@@ -1,5 +1,9 @@
 import { singleton } from 'tsyringe';
-import { type IAnalyticsProvider, type IScanEventData } from './analytics-provider.interface';
+import {
+	type IAnalyticsProvider,
+	type IScanEventData,
+	type IValidationResult,
+} from './analytics-provider.interface';
 import { anonymizeIp } from '@/utils/general';
 
 interface GA4ValidationMessage {
@@ -66,12 +70,17 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 		}
 	}
 
-	async validateCredentials(credentials: Record<string, unknown>): Promise<boolean> {
+	async validateCredentials(credentials: Record<string, unknown>): Promise<IValidationResult> {
 		const { measurementId, apiSecret } = credentials as {
 			measurementId: string;
 			apiSecret: string;
 		};
 
+		// GA4 Measurement Protocol does not provide a public API to verify
+		// measurement_id or api_secret authenticity. The debug endpoint only
+		// validates event payload structure, not credentials. We validate the
+		// payload format and return credentialsVerified: false to indicate that
+		// actual credential verification is not possible.
 		const params = new URLSearchParams({
 			measurement_id: measurementId,
 			api_secret: apiSecret,
@@ -98,12 +107,13 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 				signal: AbortSignal.timeout(5000),
 			});
 
-			if (!response.ok) return false;
+			if (!response.ok) return { valid: false, credentialsVerified: false };
 
 			const result = (await response.json()) as GA4DebugResponse;
-			return !result.validationMessages || result.validationMessages.length === 0;
+			const formatValid = !result.validationMessages || result.validationMessages.length === 0;
+			return { valid: formatValid, credentialsVerified: false };
 		} catch {
-			return false;
+			return { valid: false, credentialsVerified: false };
 		}
 	}
 

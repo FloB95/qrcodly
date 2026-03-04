@@ -111,12 +111,14 @@ export class BillingController extends AbstractController {
 				currentPeriodEnd: string;
 				cancelAtPeriodEnd: boolean;
 			} | null;
+			hasStripeCustomer: boolean;
 		}>
 	> {
 		const subscription = await this.userSubscriptionRepository.findByUserId(request.user.id);
+		const hasStripeCustomer = !!subscription?.stripeCustomerId;
 
 		if (!subscription || subscription.status === 'canceled') {
-			return this.makeApiHttpResponse(200, { subscription: null });
+			return this.makeApiHttpResponse(200, { subscription: null, hasStripeCustomer });
 		}
 
 		return this.makeApiHttpResponse(200, {
@@ -126,6 +128,7 @@ export class BillingController extends AbstractController {
 				currentPeriodEnd: subscription.currentPeriodEnd.toISOString(),
 				cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
 			},
+			hasStripeCustomer,
 		});
 	}
 }

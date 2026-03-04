@@ -154,4 +154,66 @@ describe('POST /analytics-integration (Create)', () => {
 
 		expect(response.statusCode).toBe(400);
 	});
+
+	it('should return 400 for Matomo with a random string as URL', async () => {
+		const response = await createIntegrationViaApi(
+			ctx,
+			{ providerType: 'matomo', credentials: { matomoUrl: 'not-a-url', siteId: '1' } },
+			ctx.accessTokenPro,
+		);
+
+		expect(response.statusCode).toBe(400);
+	});
+
+	it('should return 400 for Matomo with a URL missing the protocol', async () => {
+		const response = await createIntegrationViaApi(
+			ctx,
+			{
+				providerType: 'matomo',
+				credentials: { matomoUrl: 'matomo.example.com', siteId: '1' },
+			},
+			ctx.accessTokenPro,
+		);
+
+		expect(response.statusCode).toBe(400);
+	});
+
+	it('should return 400 for Matomo with an empty site ID', async () => {
+		const response = await createIntegrationViaApi(
+			ctx,
+			{
+				providerType: 'matomo',
+				credentials: { matomoUrl: 'https://matomo.example.com', siteId: '' },
+			},
+			ctx.accessTokenPro,
+		);
+
+		expect(response.statusCode).toBe(400);
+	});
+
+	it('should return 400 for GA4 with an invalid measurement ID', async () => {
+		const response = await createIntegrationViaApi(
+			ctx,
+			{
+				providerType: 'google_analytics',
+				credentials: { measurementId: 'INVALID', apiSecret: 'secret' },
+			},
+			ctx.accessTokenPro,
+		);
+
+		expect(response.statusCode).toBe(400);
+	});
+
+	it('should return 400 for GA4 with an empty API secret', async () => {
+		const response = await createIntegrationViaApi(
+			ctx,
+			{
+				providerType: 'google_analytics',
+				credentials: { measurementId: 'G-TEST123456', apiSecret: '' },
+			},
+			ctx.accessTokenPro,
+		);
+
+		expect(response.statusCode).toBe(400);
+	});
 });

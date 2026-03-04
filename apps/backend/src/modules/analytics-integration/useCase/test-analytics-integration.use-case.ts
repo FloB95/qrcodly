@@ -5,6 +5,7 @@ import AnalyticsIntegrationRepository from '../domain/repository/analytics-integ
 import { type TAnalyticsIntegration } from '../domain/entities/analytics-integration.entity';
 import { CredentialEncryptionService } from '../service/credential-encryption.service';
 import { AnalyticsProviderRegistry } from '../service/providers/analytics-provider.registry';
+import { type IValidationResult } from '../service/providers/analytics-provider.interface';
 
 @injectable()
 export class TestAnalyticsIntegrationUseCase implements IBaseUseCase {
@@ -18,7 +19,7 @@ export class TestAnalyticsIntegrationUseCase implements IBaseUseCase {
 		@inject(Logger) private logger: Logger,
 	) {}
 
-	async execute(integration: TAnalyticsIntegration): Promise<{ valid: boolean }> {
+	async execute(integration: TAnalyticsIntegration): Promise<IValidationResult> {
 		const credentials = this.encryptionService.decrypt(
 			integration.encryptedCredentials,
 			integration.encryptionIv,
@@ -26,16 +27,16 @@ export class TestAnalyticsIntegrationUseCase implements IBaseUseCase {
 		);
 
 		const provider = this.providerRegistry.getProvider(integration.providerType);
-		const valid = await provider.validateCredentials(credentials);
+		const result = await provider.validateCredentials(credentials);
 
 		this.logger.info('analyticsIntegration.test', {
 			analyticsIntegration: {
 				id: integration.id,
 				providerType: integration.providerType,
-				valid,
+				...result,
 			},
 		});
 
-		return { valid };
+		return result;
 	}
 }

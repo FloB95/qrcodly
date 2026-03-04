@@ -9,7 +9,12 @@ export interface IScanEventData {
 	browserName: string;
 }
 
+export interface IValidationResult {
+	valid: boolean;
+	credentialsVerified: boolean;
+}
+
 export interface IAnalyticsProvider {
 	sendEvent(event: IScanEventData, credentials: Record<string, unknown>): Promise<void>;
-	validateCredentials(credentials: Record<string, unknown>): Promise<boolean>;
+	validateCredentials(credentials: Record<string, unknown>): Promise<IValidationResult>;
 }

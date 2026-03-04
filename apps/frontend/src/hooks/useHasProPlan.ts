@@ -9,11 +9,13 @@ export function useHasProPlan() {
 		subscription !== null &&
 		(subscription.status === 'active' || subscription.status === 'trialing');
 	const isCanceled = hasProPlan && subscription?.cancelAtPeriodEnd === true;
+	const hasStripeCustomer = data?.hasStripeCustomer ?? false;
 
 	return {
 		hasProPlan,
 		isCanceled,
 		isLoading: isPending,
 		subscription,
+		hasStripeCustomer,
 	};
 }

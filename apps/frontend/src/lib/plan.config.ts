@@ -42,6 +42,7 @@ export const PLAN_CONFIGS: Record<PlanId, PlanConfig> = {
 			'features.pro.customDomains',
 			'features.pro.largerBulkImports',
 			'features.pro.unlimitedApi',
+			'features.pro.analyticsIntegrations',
 			'features.pro.prioritySupport',
 			'features.pro.teamFeatures',
 		],

@@ -147,14 +147,19 @@ export function anonymizeIp(ip: string): string {
 		}
 	}
 
-	// IPv6: zero last 80 bits (last 5 groups)
+	// IPv6: expand compressed form and zero last 80 bits (last 5 groups)
 	if (ip.includes(':')) {
-		const parts = ip.split(':');
-		if (parts.length >= 6) {
-			for (let i = Math.max(parts.length - 5, 0); i < parts.length; i++) {
-				parts[i] = '0';
-			}
-			return parts.join(':');
+		const [left, right = ''] = ip.split('::');
+		const leftParts = left ? left.split(':') : [];
+		const rightParts = right ? right.split(':') : [];
+		const missing = 8 - (leftParts.length + rightParts.length);
+		const expanded = ip.includes('::')
+			? [...leftParts, ...Array(Math.max(missing, 0)).fill('0'), ...rightParts]
+			: leftParts;
+
+		if (expanded.length === 8) {
+			for (let i = 3; i < 8; i++) expanded[i] = '0';
+			return expanded.join(':');
 		}
 	}
 

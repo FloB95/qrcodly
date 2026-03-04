@@ -17,7 +17,7 @@ export function AnalyticsIntegrationPage() {
 	const { data: integrations, isLoading } = useListAnalyticsIntegrationsQuery();
 
 	const existingIntegration = integrations?.[0] ?? undefined;
-	const isProExpired = !hasProPlan && !!existingIntegration;
+	const isProExpired = !hasProPlan && !!existingIntegration && !existingIntegration.isEnabled;
 
 	if (isLoading) {
 		return (
@@ -52,6 +52,18 @@ export function AnalyticsIntegrationPage() {
 					/>
 				);
 			})}
+
+			<div className="mt-1 px-1">
+				<p className="text-sm text-muted-foreground">
+					{t.rich('moreIntegrationsTeaser', {
+						contact: (chunks) => (
+							<a href="mailto:info@qrcodly.de" className="underline hover:text-foreground">
+								{chunks}
+							</a>
+						),
+					})}
+				</p>
+			</div>
 		</div>
 	);
 }

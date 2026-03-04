@@ -1132,6 +1132,8 @@
 			"siteId": "ID du site",
 			"authToken": "Jeton d'authentification",
 			"optional": "optionnel",
+			"ga4ManualVerificationTitle": "Vérification manuelle requise",
+			"ga4ManualVerificationDescription": "Google Analytics ne prend pas en charge la vérification automatique des identifiants. Veuillez vérifier votre ID de mesure et votre clé API, puis confirmez que les données sont bien reçues dans votre tableau de bord Google Analytics après le scan d'un code QR.",
 			"privacyNoticeTitle": "Analyse respectueuse de la vie privée",
 			"privacyNoticeDescription": "Seules des données non identifiantes sont envoyées : URL de la page, référent, langue, type d'appareil et nom du navigateur. Les adresses IP ne sont transmises que sous forme anonymisée. Les agents utilisateur et informations personnelles ne sont jamais partagés.",
 			"cancel": "Annuler",
@@ -1154,10 +1156,12 @@
 			"edit": "Modifier",
 			"test": "Tester",
 			"testing": "Test en cours...",
-			"testSuccess": "Identifiants valides",
+			"testSuccess": "Identifiants vérifiés",
 			"testSuccessDescription": "Connexion réussie au fournisseur analytics.",
 			"testFailed": "Identifiants invalides",
 			"testFailedDescription": "Impossible de se connecter avec les identifiants fournis.",
+			"testUnverifiable": "Vérification non disponible",
+			"testUnverifiableDescription": "GA4 ne prend pas en charge la vérification des identifiants via l'API. Veuillez vous assurer que votre ID de mesure et votre secret API sont corrects. Les identifiants seront validés lors du scan des codes QR.",
 			"testError": "Impossible de tester les identifiants.",
 			"delete": "Supprimer",
 			"deleteConfirmTitle": "Supprimer l'intégration ?",
@@ -1169,7 +1173,8 @@
 			"autoDisabled": "Cette intégration a été automatiquement désactivée après 10 échecs consécutifs.",
 			"openMenu": "Ouvrir le menu",
 			"integrationDisabledTitle": "Intégration analytique désactivée",
-			"integrationDisabledDescription": "Votre intégration analytique a été désactivée car votre plan Pro a expiré. Réabonnez-vous pour la réactiver."
+			"integrationDisabledDescription": "Votre intégration analytique a été désactivée car votre plan Pro a expiré. Réabonnez-vous pour la réactiver.",
+			"moreIntegrationsTeaser": "D'autres intégrations avec des fournisseurs d'analytique supplémentaires arrivent bientôt. <contact>Suggérer un fournisseur</contact>"
 		}
 	},
 	"plans": {
@@ -1210,6 +1215,7 @@
 				"largerBulkImports": "Importations en masse plus grandes (50 lignes, 2Mo)",
 				"customDomains": "Domaine personnalisé pour codes QR dynamiques",
 				"unlimitedApi": "Accès API illimité",
+				"analyticsIntegrations": "Intégrations analytiques (Google Analytics, Matomo)",
 				"prioritySupport": "Support prioritaire",
 				"teamFeatures": "Fonctionnalités d'équipe (bientôt)"
 			}

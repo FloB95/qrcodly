@@ -25,8 +25,8 @@ export class ScanTrackingEventHandler extends AbstractEventHandler<ScanTrackingE
 		try {
 			integrations = await repository.findEnabledByUserId(event.data.userId);
 		} catch (error) {
-			logger.error('analytics.integrations.fetch.failed', {
-				userId: event.data.userId,
+			logger.error('analyticsIntegration.fetch.failed', {
+				analyticsIntegration: { userId: event.data.userId },
 				error,
 			});
 			return;
@@ -70,22 +70,27 @@ export class ScanTrackingEventHandler extends AbstractEventHandler<ScanTrackingE
 
 					await repository.recordFailure(integration.id, errorMessage, MAX_CONSECUTIVE_FAILURES);
 
-					logger.warn('analytics.provider.dispatch.failed', {
-						integrationId: integration.id,
-						providerType: integration.providerType,
-						previousFailures: integration.consecutiveFailures,
+					logger.error('analyticsIntegration.dispatch.failed', {
+						analyticsIntegration: {
+							id: integration.id,
+							providerType: integration.providerType,
+							previousFailures: integration.consecutiveFailures,
+						},
 						error: errorMessage,
 					});
+					throw error;
 				}
 			}),
 		);
 
 		const failed = results.filter((r) => r.status === 'rejected').length;
 		if (failed > 0) {
-			logger.warn('analytics.dispatch.partial_failure', {
-				userId: event.data.userId,
-				total: integrations.length,
-				failed,
+			logger.warn('analyticsIntegration.dispatch.partialFailure', {
+				analyticsIntegration: {
+					userId: event.data.userId,
+					total: integrations.length,
+					failed,
+				},
 			});
 		}
 	}

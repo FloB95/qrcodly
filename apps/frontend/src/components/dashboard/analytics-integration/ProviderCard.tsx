@@ -89,11 +89,23 @@ export function ProviderCard({
 		if (!integration) return;
 		try {
 			const result = await testMutation.mutateAsync(integration.id);
-			toast({
-				title: result.valid ? t('testSuccess') : t('testFailed'),
-				description: result.valid ? t('testSuccessDescription') : t('testFailedDescription'),
-				variant: result.valid ? 'default' : 'destructive',
-			});
+			if (!result.credentialsVerified) {
+				toast({
+					title: t('testUnverifiable'),
+					description: t('testUnverifiableDescription'),
+				});
+			} else if (result.valid) {
+				toast({
+					title: t('testSuccess'),
+					description: t('testSuccessDescription'),
+				});
+			} else {
+				toast({
+					title: t('testFailed'),
+					description: t('testFailedDescription'),
+					variant: 'destructive',
+				});
+			}
 		} catch {
 			toast({ title: t('error'), description: t('testError'), variant: 'destructive' });
 		}
@@ -103,20 +115,19 @@ export function ProviderCard({
 	if (integration) {
 		return (
 			<>
-				<Item variant="outline" className={isProExpired ? 'opacity-60' : undefined}>
+				<Item variant="outline">
 					<ProviderLogo providerType={providerType} className="size-8 shrink-0" />
 					<ItemContent>
 						<ItemTitle>
 							{providerName}
 							{integration.isEnabled ? (
-								<Badge
-									variant="secondary"
-									className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-								>
+								<Badge variant="default" className="text-xs">
 									{t('active')}
 								</Badge>
 							) : (
-								<Badge variant="secondary">{t('inactive')}</Badge>
+								<Badge variant="outline" className="text-xs">
+									{t('inactive')}
+								</Badge>
 							)}
 						</ItemTitle>
 						<ItemDescription>
@@ -126,13 +137,17 @@ export function ProviderCard({
 								<>{isGA ? t('ga4Short') : t('matomoShort')}</>
 							)}
 							{integration.lastError && (
-								<span className="text-destructive"> &middot; {t('lastErrorTitle')}</span>
+								<span className="text-destructive">
+									{' '}
+									&middot; {t('lastErrorTitle')}: {integration.lastError}
+								</span>
 							)}
 						</ItemDescription>
 					</ItemContent>
 					<ItemActions>
 						<Switch
 							size="sm"
+							aria-label={providerName}
 							checked={integration.isEnabled}
 							onCheckedChange={handleToggle}
 							disabled={updateMutation.isPending || isProExpired}
@@ -150,9 +165,11 @@ export function ProviderCard({
 										<DropdownMenuItem onClick={() => setConfigOpen(true)}>
 											{t('edit')}
 										</DropdownMenuItem>
-										<DropdownMenuItem onClick={handleTest} disabled={testMutation.isPending}>
-											{testMutation.isPending ? t('testing') : t('test')}
-										</DropdownMenuItem>
+										{!isGA && (
+											<DropdownMenuItem onClick={handleTest} disabled={testMutation.isPending}>
+												{testMutation.isPending ? t('testing') : t('test')}
+											</DropdownMenuItem>
+										)}
 										<DropdownMenuSeparator />
 									</>
 								)}
@@ -216,7 +233,7 @@ export function ProviderCard({
 						variant="outline"
 						size="sm"
 						onClick={() => setConfigOpen(true)}
-						disabled={!canConfigure || hasOtherIntegration}
+						disabled={!canConfigure || hasOtherIntegration || isProExpired}
 					>
 						{t('configure')}
 					</Button>

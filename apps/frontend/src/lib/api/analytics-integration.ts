@@ -115,16 +115,19 @@ export function useTestAnalyticsIntegrationMutation() {
 	const { getToken } = useAuth();
 
 	return useMutation({
-		mutationFn: async (id: string): Promise<{ valid: boolean }> => {
+		mutationFn: async (id: string): Promise<{ valid: boolean; credentialsVerified: boolean }> => {
 			const token = await getToken();
-			return apiRequest<{ valid: boolean }>(`/analytics-integration/${id}/test`, {
-				method: 'POST',
-				body: JSON.stringify({}),
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
+			return apiRequest<{ valid: boolean; credentialsVerified: boolean }>(
+				`/analytics-integration/${id}/test`,
+				{
+					method: 'POST',
+					body: JSON.stringify({}),
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
 				},
-			});
+			);
 		},
 	});
 }
