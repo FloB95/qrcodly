@@ -221,7 +221,9 @@
 			"scans": "Escaneos",
 			"created": "Creado",
 			"actions": "Acciones",
-			"tags": "Etiquetas"
+			"tags": "Etiquetas",
+			"copyUrl": "Copiar URL",
+			"urlCopied": "URL copiada al portapapeles"
 		},
 		"storeBtn": "Guardar en la colección",
 		"updateBtn": "Actualizar código QR",

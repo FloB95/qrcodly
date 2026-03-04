@@ -143,7 +143,7 @@ export const QrCodeListItem = ({
 					{/* Content */}
 					{visibility.content && (
 						<TableCell className="hidden lg:table-cell py-2 max-w-[250px]">
-							<div className="truncate text-sm text-muted-foreground">
+							<div className="truncate text-sm text-foreground">
 								<RenderContent qr={qr} />
 							</div>
 						</TableCell>

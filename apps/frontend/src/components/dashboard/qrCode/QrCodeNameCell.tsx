@@ -5,6 +5,7 @@ import { TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import { useIsTruncated } from '@/hooks/use-is-truncated';
 import { QrCodeIcon } from './QrCodeIcon';
 import { QrCodeTagBadges } from './QrCodeTagBadges';
 import { QrCodeTagSelector } from './QrCodeTagSelector';
@@ -27,9 +28,10 @@ export const QrCodeNameCell = ({
 }: QrCodeNameCellProps) => {
 	const t = useTranslations();
 	const hasTags = qr.tags ?? [];
+	const [nameRef, isNameTruncated, checkNameTruncation] = useIsTruncated<HTMLSpanElement>();
 
 	return (
-		<TableCell className="py-2">
+		<TableCell className="py-2 max-w-[280px]">
 			<div className="flex items-center gap-2 min-w-0">
 				<QrCodeIcon type={qr.content.type} />
 				<div className="flex flex-col gap-1 min-w-0">
@@ -44,13 +46,22 @@ export const QrCodeNameCell = ({
 							onContextMenu={stopContextMenu}
 						>
 							<div className="flex items-center gap-2 min-w-0">
-								<span className="truncate text-sm font-medium max-w-[200px]">
-									{qr.name && qr.name !== '' ? (
-										qr.name
-									) : (
-										<span className="text-muted-foreground">{t('general.noName')}</span>
-									)}
-								</span>
+								<Tooltip open={isNameTruncated ? undefined : false}>
+									<TooltipTrigger asChild>
+										<span
+											ref={nameRef}
+											onMouseEnter={checkNameTruncation}
+											className="truncate text-sm font-medium max-w-[200px]"
+										>
+											{qr.name && qr.name !== '' ? (
+												qr.name
+											) : (
+												<span className="text-muted-foreground">{t('general.noName')}</span>
+											)}
+										</span>
+									</TooltipTrigger>
+									<TooltipContent side="top">{qr.name}</TooltipContent>
+								</Tooltip>
 								<Button
 									size="icon"
 									variant="ghost"

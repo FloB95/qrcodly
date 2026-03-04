@@ -221,7 +221,9 @@
 			"scans": "Scans",
 			"created": "Créé",
 			"actions": "Actions",
-			"tags": "Étiquettes"
+			"tags": "Étiquettes",
+			"copyUrl": "Copier l'URL",
+			"urlCopied": "URL copiée dans le presse-papiers"
 		},
 		"storeBtn": "Enregistrer dans la collection",
 		"updateBtn": "Mettre à jour le QR Code",

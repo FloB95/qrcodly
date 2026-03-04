@@ -221,7 +221,9 @@
 			"scans": "Scans",
 			"created": "Erstellt",
 			"actions": "Aktionen",
-			"tags": "Tags"
+			"tags": "Tags",
+			"copyUrl": "URL kopieren",
+			"urlCopied": "URL in die Zwischenablage kopiert"
 		},
 		"storeBtn": "In Sammlung speichern",
 		"updateBtn": "QR Code aktualisieren",

@@ -1,7 +1,6 @@
 'use client';
 
 import { memo } from 'react';
-import Link from 'next/link';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { EventDetailsCard } from './EventDetailsCard';
 import { ShortUrlDisplay } from './ShortUrlDisplay';
@@ -10,6 +9,8 @@ import { VCardDetailsCard } from './VCardDetailsCard';
 import { WifiDetailsCard } from './WifiDetailsCard';
 import { EpcDetailsCard } from './EpcDetailsCard';
 import { LocationDetailsCard } from './LocationDetailsCard';
+import { CopyUrlButton } from './CopyUrlButton';
+import { TruncatedLink } from './TruncatedLink';
 
 const renderUrlContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	if (qr.content.type !== 'url') return null;
@@ -21,16 +22,10 @@ const renderUrlContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	}
 
 	return (
-		<Link
-			href={url}
-			prefetch={false}
-			target="_blank"
-			onClick={(e) => e.stopPropagation()}
-			onContextMenu={(e) => e.stopPropagation()}
-			className="text-muted-foreground hover:underline"
-		>
-			{url}
-		</Link>
+		<div className="group/url flex items-center gap-1">
+			<TruncatedLink href={url} className="truncate text-foreground hover:underline" />
+			<CopyUrlButton url={url} />
+		</div>
 	);
 };
 
