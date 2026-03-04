@@ -30,7 +30,10 @@ import {
 import { ConfigureIntegrationDialog } from './ConfigureIntegrationDialog';
 import { ProviderLogo } from './ProviderLogo';
 import type { TAnalyticsIntegrationResponseDto, TProviderType } from '@shared/schemas';
+import type { ApiError } from '@/lib/api/ApiError';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 
 interface ProviderCardProps {
 	integration?: TAnalyticsIntegrationResponseDto;
@@ -66,11 +69,20 @@ export function ProviderCard({
 				id: integration.id,
 				dto: { isEnabled: enabled },
 			});
+			posthog.capture('analytics-integration:toggled', { providerType, enabled });
 			toast({
 				title: enabled ? t('enabled') : t('disabled'),
 				description: enabled ? t('enabledDescription') : t('disabledDescription'),
 			});
-		} catch {
+		} catch (e: unknown) {
+			const error = e as ApiError;
+			if (error.code >= 500) {
+				Sentry.captureException(error, { extra: { providerType, enabled } });
+			}
+			posthog.capture('error:analytics-integration-toggle', {
+				providerType,
+				error: { code: error.code, message: error.message },
+			});
 			toast({ title: t('error'), description: t('toggleError'), variant: 'destructive' });
 		}
 	};
@@ -79,8 +91,17 @@ export function ProviderCard({
 		if (!integration) return;
 		try {
 			await deleteMutation.mutateAsync(integration.id);
+			posthog.capture('analytics-integration:deleted', { providerType });
 			toast({ title: t('deleted'), description: t('deletedDescription') });
-		} catch {
+		} catch (e: unknown) {
+			const error = e as ApiError;
+			if (error.code >= 500) {
+				Sentry.captureException(error, { extra: { providerType } });
+			}
+			posthog.capture('error:analytics-integration-delete', {
+				providerType,
+				error: { code: error.code, message: error.message },
+			});
 			toast({ title: t('error'), description: t('deleteError'), variant: 'destructive' });
 		}
 	};
@@ -89,6 +110,11 @@ export function ProviderCard({
 		if (!integration) return;
 		try {
 			const result = await testMutation.mutateAsync(integration.id);
+			posthog.capture('analytics-integration:tested', {
+				providerType,
+				valid: result.valid,
+				credentialsVerified: result.credentialsVerified,
+			});
 			if (!result.credentialsVerified) {
 				toast({
 					title: t('testUnverifiable'),
@@ -106,7 +132,15 @@ export function ProviderCard({
 					variant: 'destructive',
 				});
 			}
-		} catch {
+		} catch (e: unknown) {
+			const error = e as ApiError;
+			if (error.code >= 500) {
+				Sentry.captureException(error, { extra: { providerType } });
+			}
+			posthog.capture('error:analytics-integration-test', {
+				providerType,
+				error: { code: error.code, message: error.message },
+			});
 			toast({ title: t('error'), description: t('testError'), variant: 'destructive' });
 		}
 	};

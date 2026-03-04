@@ -23,7 +23,24 @@ export class UpdateAnalyticsIntegrationUseCase implements IBaseUseCase {
 		const updates: Partial<TAnalyticsIntegration> = {};
 
 		if (dto.credentials) {
-			const { encrypted, iv, tag } = this.encryptionService.encrypt(dto.credentials);
+			// Merge with existing credentials so optional fields (e.g. authToken)
+			// are preserved when not provided in the update
+			let mergedCredentials = dto.credentials;
+			if (integration.encryptedCredentials) {
+				const existing = this.encryptionService.decrypt(
+					integration.encryptedCredentials,
+					integration.encryptionIv,
+					integration.encryptionTag,
+				);
+				mergedCredentials = { ...existing, ...dto.credentials };
+			}
+			// Remove keys with empty string values (explicit clear)
+			for (const key of Object.keys(mergedCredentials)) {
+				if (mergedCredentials[key] === '') {
+					delete mergedCredentials[key];
+				}
+			}
+			const { encrypted, iv, tag } = this.encryptionService.encrypt(mergedCredentials);
 			updates.encryptedCredentials = encrypted;
 			updates.encryptionIv = iv;
 			updates.encryptionTag = tag;

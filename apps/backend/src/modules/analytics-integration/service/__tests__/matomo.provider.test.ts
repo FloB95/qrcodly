@@ -5,6 +5,7 @@ import type { IScanEventData } from '../providers/analytics-provider.interface';
 describe('MatomoProvider', () => {
 	let provider: MatomoProvider;
 	let mockFetch: jest.Mock;
+	const originalFetch = global.fetch;
 
 	const baseScanEvent: IScanEventData = {
 		url: 'https://example.com/landing',
@@ -34,6 +35,7 @@ describe('MatomoProvider', () => {
 	});
 
 	afterEach(() => {
+		global.fetch = originalFetch;
 		jest.restoreAllMocks();
 	});
 
@@ -62,22 +64,24 @@ describe('MatomoProvider', () => {
 			expect(url).toContain('lang=de-DE');
 		});
 
-		it('should include auth token when provided', async () => {
+		it('should include auth token and cip when auth token provided', async () => {
 			mockFetch.mockResolvedValueOnce({ ok: true });
 
 			await provider.sendEvent(baseScanEvent, credentialsWithAuth);
 
 			const url = mockFetch.mock.calls[0][0] as string;
 			expect(url).toContain('token_auth=abc123tokenxyz');
+			expect(url).toContain('cip=');
 		});
 
-		it('should not include auth token when not provided', async () => {
+		it('should not include auth token or cip when not provided', async () => {
 			mockFetch.mockResolvedValueOnce({ ok: true });
 
 			await provider.sendEvent(baseScanEvent, validCredentials);
 
 			const url = mockFetch.mock.calls[0][0] as string;
 			expect(url).not.toContain('token_auth');
+			expect(url).not.toContain('cip=');
 		});
 
 		it('should pass custom variables with device type and browser', async () => {
@@ -149,58 +153,84 @@ describe('MatomoProvider', () => {
 	});
 
 	describe('validateCredentials', () => {
-		it('should return valid with credentialsVerified: true for valid credentials', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () => Promise.resolve({ idsite: '5' }),
+		describe('with auth token (Reporting API)', () => {
+			it('should return valid with credentialsVerified: true for valid credentials', async () => {
+				mockFetch.mockResolvedValueOnce({
+					ok: true,
+					json: () => Promise.resolve({ idsite: '5' }),
+				});
+
+				const result = await provider.validateCredentials(credentialsWithAuth);
+
+				expect(result).toEqual({ valid: true, credentialsVerified: true });
+
+				const url = mockFetch.mock.calls[0][0] as string;
+				expect(url).toContain('SitesManager.getSiteFromId');
+				expect(url).toContain('idSite=5');
+				expect(url).toContain('token_auth=abc123tokenxyz');
 			});
 
-			const result = await provider.validateCredentials(validCredentials);
+			it('should return valid: false when API returns error', async () => {
+				mockFetch.mockResolvedValueOnce({
+					ok: true,
+					json: () => Promise.resolve({ result: 'error', message: 'Invalid site ID' }),
+				});
 
-			expect(result).toEqual({ valid: true, credentialsVerified: true });
+				const result = await provider.validateCredentials(credentialsWithAuth);
 
-			const url = mockFetch.mock.calls[0][0] as string;
-			expect(url).toContain('SitesManager.getSiteFromId');
-			expect(url).toContain('idSite=5');
-		});
-
-		it('should return valid: false with credentialsVerified: true when API returns error', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () => Promise.resolve({ result: 'error', message: 'Invalid site ID' }),
+				expect(result).toEqual({ valid: false, credentialsVerified: true });
 			});
 
-			const result = await provider.validateCredentials(validCredentials);
+			it('should return valid: false when Reporting API returns 401 (invalid token)', async () => {
+				mockFetch.mockResolvedValueOnce({ ok: false, status: 401 });
 
-			expect(result).toEqual({ valid: false, credentialsVerified: true });
-		});
+				const result = await provider.validateCredentials(credentialsWithAuth);
 
-		it('should return valid: false with credentialsVerified: true when request fails', async () => {
-			mockFetch.mockResolvedValueOnce({ ok: false, status: 403 });
-
-			const result = await provider.validateCredentials(validCredentials);
-
-			expect(result).toEqual({ valid: false, credentialsVerified: true });
-		});
-
-		it('should return valid: false with credentialsVerified: true when fetch throws', async () => {
-			mockFetch.mockRejectedValueOnce(new Error('Network error'));
-
-			const result = await provider.validateCredentials(validCredentials);
-
-			expect(result).toEqual({ valid: false, credentialsVerified: true });
-		});
-
-		it('should include auth token in validation request when provided', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () => Promise.resolve({ idsite: '5' }),
+				expect(result).toEqual({ valid: false, credentialsVerified: true });
+				expect(mockFetch).toHaveBeenCalledTimes(1);
 			});
 
-			await provider.validateCredentials(credentialsWithAuth);
+			it('should fall back to tracking endpoint on network error', async () => {
+				// Reporting API network error
+				mockFetch.mockRejectedValueOnce(new Error('Network error'));
+				// Tracking endpoint returns 200
+				mockFetch.mockResolvedValueOnce({ ok: true });
 
-			const url = mockFetch.mock.calls[0][0] as string;
-			expect(url).toContain('token_auth=abc123tokenxyz');
+				const result = await provider.validateCredentials(credentialsWithAuth);
+
+				expect(result).toEqual({ valid: true, credentialsVerified: true });
+				expect(mockFetch).toHaveBeenCalledTimes(2);
+			});
+		});
+
+		describe('without auth token (tracking endpoint fallback)', () => {
+			it('should validate via tracking endpoint and return valid: true', async () => {
+				mockFetch.mockResolvedValueOnce({ ok: true });
+
+				const result = await provider.validateCredentials(validCredentials);
+
+				expect(result).toEqual({ valid: true, credentialsVerified: true });
+
+				const url = mockFetch.mock.calls[0][0] as string;
+				expect(url).toContain('/matomo.php');
+				expect(url).toContain('idsite=5');
+			});
+
+			it('should return valid: false when tracking endpoint returns 400', async () => {
+				mockFetch.mockResolvedValueOnce({ ok: false, status: 400 });
+
+				const result = await provider.validateCredentials(validCredentials);
+
+				expect(result).toEqual({ valid: false, credentialsVerified: true });
+			});
+
+			it('should return valid: false when fetch throws', async () => {
+				mockFetch.mockRejectedValueOnce(new Error('Network error'));
+
+				const result = await provider.validateCredentials(validCredentials);
+
+				expect(result).toEqual({ valid: false, credentialsVerified: false });
+			});
 		});
 	});
 });

@@ -37,27 +37,8 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 		};
 		const body = JSON.stringify(payload);
 
-		// Step 1: Validate against the debug endpoint (returns actual error info)
-		const debugResponse = await fetch(`${this.GA_DEBUG_URL}?${queryParams}`, {
-			method: 'POST',
-			headers,
-			body,
-			signal: AbortSignal.timeout(5000),
-		});
-
-		if (!debugResponse.ok) {
-			throw new Error(`GA4 debug endpoint returned status ${debugResponse.status}`);
-		}
-
-		const debugResult = (await debugResponse.json()) as GA4DebugResponse;
-		if (debugResult.validationMessages && debugResult.validationMessages.length > 0) {
-			const errors = debugResult.validationMessages
-				.map((m) => `${m.fieldPath}: ${m.description} (${m.validationCode})`)
-				.join('; ');
-			throw new Error(`GA4 validation failed: ${errors}`);
-		}
-
-		// Step 2: Send to the real collect endpoint (only if validation passed)
+		// Send directly to collect endpoint (debug endpoint only validates payload
+		// structure, not credentials, and adds unnecessary latency/dependency)
 		const collectResponse = await fetch(`${this.GA_COLLECT_URL}?${queryParams.toString()}`, {
 			method: 'POST',
 			headers,

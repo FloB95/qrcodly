@@ -35,38 +35,21 @@ describe('GoogleAnalyticsProvider', () => {
 	});
 
 	describe('sendEvent', () => {
-		it('should validate via debug endpoint then send to collect endpoint', async () => {
-			// Debug endpoint returns success
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () => Promise.resolve({ validationMessages: [] }),
-			});
-			// Collect endpoint returns success
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-			});
+		it('should send directly to collect endpoint', async () => {
+			mockFetch.mockResolvedValueOnce({ ok: true });
 
 			await provider.sendEvent(baseScanEvent, validCredentials);
 
-			expect(mockFetch).toHaveBeenCalledTimes(2);
+			expect(mockFetch).toHaveBeenCalledTimes(1);
 
-			// First call should be to debug endpoint
-			const debugCall = mockFetch.mock.calls[0];
-			expect(debugCall[0]).toContain('/debug/mp/collect');
-			expect(debugCall[0]).toContain('measurement_id=G-ABCDEF1234');
-			expect(debugCall[0]).toContain('api_secret=test_api_secret');
-
-			// Second call should be to collect endpoint
-			const collectCall = mockFetch.mock.calls[1];
-			expect(collectCall[0]).toContain('/mp/collect');
-			expect(collectCall[0]).not.toContain('/debug/');
+			const call = mockFetch.mock.calls[0];
+			expect(call[0]).toContain('/mp/collect');
+			expect(call[0]).not.toContain('/debug/');
+			expect(call[0]).toContain('measurement_id=G-ABCDEF1234');
+			expect(call[0]).toContain('api_secret=test_api_secret');
 		});
 
 		it('should send page_view event with correct params', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () => Promise.resolve({ validationMessages: [] }),
-			});
 			mockFetch.mockResolvedValueOnce({ ok: true });
 
 			await provider.sendEvent(baseScanEvent, validCredentials);
@@ -81,10 +64,6 @@ describe('GoogleAnalyticsProvider', () => {
 		});
 
 		it('should not forward User-Agent header to protect privacy', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () => Promise.resolve({ validationMessages: [] }),
-			});
 			mockFetch.mockResolvedValueOnce({ ok: true });
 
 			await provider.sendEvent(baseScanEvent, validCredentials);
@@ -93,42 +72,7 @@ describe('GoogleAnalyticsProvider', () => {
 			expect(headers['User-Agent']).toBeUndefined();
 		});
 
-		it('should throw with validation details when debug endpoint reports errors', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () =>
-					Promise.resolve({
-						validationMessages: [
-							{
-								fieldPath: 'events[0].name',
-								description: 'Event name is reserved.',
-								validationCode: 'NAME_RESERVED',
-							},
-						],
-					}),
-			});
-
-			await expect(provider.sendEvent(baseScanEvent, validCredentials)).rejects.toThrow(
-				'GA4 validation failed',
-			);
-
-			// Should NOT have called the collect endpoint
-			expect(mockFetch).toHaveBeenCalledTimes(1);
-		});
-
-		it('should throw when debug endpoint returns non-OK status', async () => {
-			mockFetch.mockResolvedValueOnce({ ok: false, status: 500 });
-
-			await expect(provider.sendEvent(baseScanEvent, validCredentials)).rejects.toThrow(
-				'GA4 debug endpoint returned status 500',
-			);
-		});
-
 		it('should throw when collect endpoint returns non-OK status', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () => Promise.resolve({ validationMessages: [] }),
-			});
 			mockFetch.mockResolvedValueOnce({ ok: false, status: 503 });
 
 			await expect(provider.sendEvent(baseScanEvent, validCredentials)).rejects.toThrow(
@@ -137,10 +81,6 @@ describe('GoogleAnalyticsProvider', () => {
 		});
 
 		it('should generate a random client_id', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () => Promise.resolve({ validationMessages: [] }),
-			});
 			mockFetch.mockResolvedValueOnce({ ok: true });
 
 			await provider.sendEvent(baseScanEvent, validCredentials);

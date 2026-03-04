@@ -21,6 +21,9 @@ import {
 } from '@/lib/api/analytics-integration';
 import { GoogleAnalyticsCredentialsSchema, MatomoCredentialsSchema } from '@shared/schemas';
 import type { TProviderType, TAnalyticsIntegrationResponseDto } from '@shared/schemas';
+import type { ApiError } from '@/lib/api/ApiError';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 
 interface ConfigureIntegrationDialogProps {
 	open: boolean;
@@ -48,6 +51,7 @@ export function ConfigureIntegrationDialog({
 	const [matomoUrl, setMatomoUrl] = useState('');
 	const [siteId, setSiteId] = useState('');
 	const [authToken, setAuthToken] = useState('');
+	const [removeAuthToken, setRemoveAuthToken] = useState(false);
 
 	// Field errors
 	const [errors, setErrors] = useState<Record<string, string>>({});
@@ -63,16 +67,23 @@ export function ConfigureIntegrationDialog({
 		setMatomoUrl(parsedMatomo?.[1] ?? '');
 		setSiteId(parsedMatomo?.[2] ?? '');
 		setAuthToken('');
+		setRemoveAuthToken(false);
 		setErrors({});
 	}, [open, existing, providerType]);
 
 	const isSubmitting = createMutation.isPending || updateMutation.isPending;
 	const isGA = providerType === 'google_analytics';
 
+	const buildCredentials = () => {
+		if (isGA) return { measurementId, apiSecret };
+		// When removing token explicitly, send empty string to clear it on the backend.
+		// When field is empty and not removing, omit it to preserve existing token.
+		if (removeAuthToken) return { matomoUrl, siteId, authToken: '' };
+		return { matomoUrl, siteId, ...(authToken ? { authToken } : {}) };
+	};
+
 	const validate = (): boolean => {
-		const credentials = isGA
-			? { measurementId, apiSecret }
-			: { matomoUrl, siteId, ...(authToken ? { authToken } : {}) };
+		const credentials = buildCredentials();
 
 		const schema = isGA ? GoogleAnalyticsCredentialsSchema : MatomoCredentialsSchema;
 		const result = schema.safeParse(credentials);
@@ -96,9 +107,7 @@ export function ConfigureIntegrationDialog({
 	const handleSubmit = async () => {
 		if (!validate()) return;
 
-		const credentials = isGA
-			? { measurementId, apiSecret }
-			: { matomoUrl, siteId, ...(authToken ? { authToken } : {}) };
+		const credentials = buildCredentials();
 
 		try {
 			if (existing) {
@@ -106,16 +115,26 @@ export function ConfigureIntegrationDialog({
 					id: existing.id,
 					dto: { credentials },
 				});
+				posthog.capture('analytics-integration:updated', { providerType });
 				toast({ title: t('updated'), description: t('updatedDescription') });
 			} else {
 				await createMutation.mutateAsync({
 					providerType,
 					credentials,
 				});
+				posthog.capture('analytics-integration:created', { providerType });
 				toast({ title: t('created'), description: t('createdDescription') });
 			}
 			onOpenChange(false);
-		} catch {
+		} catch (e: unknown) {
+			const error = e as ApiError;
+			if (error.code >= 500) {
+				Sentry.captureException(error, { extra: { providerType } });
+			}
+			posthog.capture('error:analytics-integration-save', {
+				providerType,
+				error: { code: error.code, message: error.message },
+			});
 			toast({
 				title: t('error'),
 				description: t('saveError'),
@@ -194,12 +213,44 @@ export function ConfigureIntegrationDialog({
 								<Label htmlFor="authToken">
 									{t('authToken')} <span className="text-muted-foreground">({t('optional')})</span>
 								</Label>
-								<Input
-									id="authToken"
-									type="password"
-									value={authToken}
-									onChange={(e) => setAuthToken(e.target.value)}
-								/>
+								{removeAuthToken ? (
+									<div className="flex items-center gap-2">
+										<p className="text-sm text-muted-foreground">{t('authTokenWillBeRemoved')}</p>
+										<Button
+											type="button"
+											variant="link"
+											size="sm"
+											className="h-auto p-0"
+											onClick={() => setRemoveAuthToken(false)}
+										>
+											{t('undo')}
+										</Button>
+									</div>
+								) : (
+									<>
+										<div className="flex gap-2">
+											<Input
+												id="authToken"
+												type="password"
+												placeholder={existing?.hasAuthToken ? '••••••••••••••••' : undefined}
+												value={authToken}
+												onChange={(e) => setAuthToken(e.target.value)}
+												className="flex-1"
+											/>
+											{existing?.hasAuthToken && !authToken && (
+												<Button
+													type="button"
+													variant="outline"
+													size="sm"
+													className="shrink-0"
+													onClick={() => setRemoveAuthToken(true)}
+												>
+													{t('clear')}
+												</Button>
+											)}
+										</div>
+									</>
+								)}
 							</div>
 						</>
 					)}
@@ -212,11 +263,13 @@ export function ConfigureIntegrationDialog({
 						</Alert>
 					)}
 
-					<Alert>
-						<ShieldCheckIcon className="size-4" />
-						<AlertTitle>{t('privacyNoticeTitle')}</AlertTitle>
-						<AlertDescription>{t('privacyNoticeDescription')}</AlertDescription>
-					</Alert>
+					{!existing && (
+						<Alert>
+							<ShieldCheckIcon className="size-4" />
+							<AlertTitle>{t('privacyNoticeTitle')}</AlertTitle>
+							<AlertDescription>{t('privacyNoticeDescription')}</AlertDescription>
+						</Alert>
+					)}
 				</div>
 
 				<div className="flex justify-end gap-2 mt-4">

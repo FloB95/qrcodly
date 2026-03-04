@@ -92,6 +92,19 @@ class AnalyticsIntegrationRepository extends AbstractRepository<TAnalyticsIntegr
 			.execute();
 	}
 
+	async recordSuccess(integrationId: string): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({
+				consecutiveFailures: 0,
+				lastError: null,
+				lastErrorAt: null,
+				updatedAt: new Date(),
+			})
+			.where(and(eq(this.table.id, integrationId), sql`${this.table.consecutiveFailures} > 0`))
+			.execute();
+	}
+
 	async recordFailure(
 		integrationId: string,
 		errorMessage: string,

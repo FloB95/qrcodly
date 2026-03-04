@@ -57,13 +57,9 @@ export class ScanTrackingEventHandler extends AbstractEventHandler<ScanTrackingE
 					const provider = providerRegistry.getProvider(integration.providerType);
 					await provider.sendEvent(eventData, credentials);
 
-					// Reset failure counter on success
+					// Atomically reset failure counter on success
 					if (integration.consecutiveFailures > 0) {
-						await repository.update(integration, {
-							consecutiveFailures: 0,
-							lastError: null,
-							lastErrorAt: null,
-						});
+						await repository.recordSuccess(integration.id);
 					}
 				} catch (error) {
 					const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -85,7 +81,7 @@ export class ScanTrackingEventHandler extends AbstractEventHandler<ScanTrackingE
 
 		const failed = results.filter((r) => r.status === 'rejected').length;
 		if (failed > 0) {
-			logger.warn('analyticsIntegration.dispatch.partialFailure', {
+			logger.error('analyticsIntegration.dispatch.partialFailure', {
 				analyticsIntegration: {
 					userId: event.data.userId,
 					total: integrations.length,

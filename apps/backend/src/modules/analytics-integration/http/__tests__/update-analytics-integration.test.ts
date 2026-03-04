@@ -86,6 +86,91 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 		expect(updatedRecord!.encryptionIv).not.toBe(originalRecord!.encryptionIv);
 	});
 
+	it('should add authToken when updating Matomo credentials with a token', async () => {
+		const id = await createIntegrationDirectly(ctx, TEST_USER_PRO_ID, {
+			providerType: 'matomo',
+			credentials: { matomoUrl: 'https://matomo.example.com', siteId: '1' },
+		});
+
+		const response = await updateIntegrationViaApi(
+			ctx,
+			id,
+			{
+				credentials: {
+					matomoUrl: 'https://matomo.example.com',
+					siteId: '1',
+					authToken: 'my_secret_token',
+				},
+			},
+			ctx.accessTokenPro,
+		);
+
+		expect(response.statusCode).toBe(200);
+
+		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
+		expect(result.hasAuthToken).toBe(true);
+	});
+
+	it('should preserve existing authToken when updating Matomo without providing a token', async () => {
+		const id = await createIntegrationDirectly(ctx, TEST_USER_PRO_ID, {
+			providerType: 'matomo',
+			credentials: {
+				matomoUrl: 'https://matomo.example.com',
+				siteId: '1',
+				authToken: 'existing_token',
+			},
+		});
+
+		// Update only matomoUrl, omit authToken entirely
+		const response = await updateIntegrationViaApi(
+			ctx,
+			id,
+			{
+				credentials: {
+					matomoUrl: 'https://matomo.updated.com',
+					siteId: '1',
+				},
+			},
+			ctx.accessTokenPro,
+		);
+
+		expect(response.statusCode).toBe(200);
+
+		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
+		expect(result.hasAuthToken).toBe(true);
+		expect(result.displayIdentifier).toContain('matomo.updated.com');
+	});
+
+	it('should remove authToken when updating Matomo with an empty token string', async () => {
+		const id = await createIntegrationDirectly(ctx, TEST_USER_PRO_ID, {
+			providerType: 'matomo',
+			credentials: {
+				matomoUrl: 'https://matomo.example.com',
+				siteId: '1',
+				authToken: 'token_to_remove',
+			},
+		});
+
+		// Send empty string to explicitly clear the token
+		const response = await updateIntegrationViaApi(
+			ctx,
+			id,
+			{
+				credentials: {
+					matomoUrl: 'https://matomo.example.com',
+					siteId: '1',
+					authToken: '',
+				},
+			},
+			ctx.accessTokenPro,
+		);
+
+		expect(response.statusCode).toBe(200);
+
+		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
+		expect(result.hasAuthToken).toBe(false);
+	});
+
 	it('should return 404 for non-existent integration', async () => {
 		const fakeId = randomUUID();
 		const response = await updateIntegrationViaApi(

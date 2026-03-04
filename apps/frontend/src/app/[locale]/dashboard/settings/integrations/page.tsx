@@ -3,6 +3,7 @@
 import { AnalyticsIntegrationPage } from '@/components/dashboard/analytics-integration';
 import { PuzzlePieceIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { ProPlanRequiredBadge } from '@/components/ProPlanRequiredBadge';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
@@ -22,7 +23,20 @@ export default function Page() {
 							</div>
 							<div>
 								<CardTitle className="mb-0.5">{t('title')}</CardTitle>
-								<CardDescription className="lg:max-w-[80%]">{t('description')}</CardDescription>
+								<CardDescription className="lg:max-w-[80%]">
+									{t('description')}{' '}
+									{t.rich('docsLink', {
+										link: (chunks) => (
+											<Link
+												href="/docs/guides/analytics-integrations"
+												target="_blank"
+												className="underline hover:text-foreground"
+											>
+												{chunks}
+											</Link>
+										),
+									})}
+								</CardDescription>
 							</div>
 						</div>
 						<div className="ml-[60px] sm:ml-0">{!hasProPlan && <ProPlanRequiredBadge />}</div>

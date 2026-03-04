@@ -32,8 +32,8 @@ QRcodly forwards a limited, privacy-safe subset of scan data. No raw user agents
 
 <Callout type="info">
 	All IP addresses are anonymized before being sent to any provider. The last octet of IPv4 addresses
-	is zeroed, and IPv6 addresses are truncated. This ensures compliance with GDPR and other privacy
-	regulations.
+	is zeroed, and IPv6 addresses are truncated. This helps reduce identifiability and supports
+	privacy requirements such as GDPR.
 </Callout>
 
 ## Setting Up Google Analytics 4
@@ -59,7 +59,7 @@ QRcodly forwards a limited, privacy-safe subset of scan data. No raw user agents
 3. Enter your **Measurement ID** and **API Secret**
 4. Click **Create**
 
-QRcodly validates your credentials immediately. If the Measurement ID format is invalid, you'll see an error right away. Once saved, scan events will start flowing to your GA4 property.
+QRcodly validates the Measurement ID format immediately. Google Analytics credentials cannot be fully verified via API, so confirm delivery in your GA4 Realtime report after scanning a QR code. Once saved, scan events will start flowing to your GA4 property.
 
 ## Setting Up Matomo
 
