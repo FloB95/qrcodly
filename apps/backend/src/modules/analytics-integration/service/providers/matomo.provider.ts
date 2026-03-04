@@ -41,10 +41,13 @@ export class MatomoProvider implements IAnalyticsProvider {
 		const params = new URLSearchParams({
 			idsite: siteId,
 			rec: '1',
+			apiv: '1',
+			bots: '1',
 			action_name: 'QR Code Scan',
 			url: event.url,
 			urlref: event.referrer,
 			lang: event.language,
+			send_image: '0',
 			_cvar: JSON.stringify({
 				'1': ['Device Type', event.deviceType],
 				'2': ['Browser', event.browserName],
