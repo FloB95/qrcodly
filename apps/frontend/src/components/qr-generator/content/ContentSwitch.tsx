@@ -111,8 +111,8 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 			suppressHydrationWarning
 			onValueChange={handleTabChange}
 		>
-			{/* Compact mode: select dropdown. Normal mode: tab grid */}
-			{compact ? (
+			{/* Compact mode in edit: hide selector (type is fixed). Compact mode otherwise: select dropdown. Normal mode: tab grid */}
+			{compact && isEditMode ? null : compact ? (
 				<div className="mb-6">
 					<Select value={content.type} onValueChange={handleTabChange}>
 						<SelectTrigger className="w-full">
