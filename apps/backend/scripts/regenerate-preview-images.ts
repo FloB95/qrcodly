@@ -7,8 +7,12 @@ import mysql from 'mysql2/promise';
 import { GetObjectOutput, S3 } from '@aws-sdk/client-s3';
 import { createTable } from '../src/core/db/utils';
 import { datetime, json, text, varchar } from 'drizzle-orm/mysql-core';
-import { eq, isNull } from 'drizzle-orm';
-import { convertQrCodeOptionsToLibraryOptions } from '@shared/schemas';
+import { eq, isNull, isNotNull } from 'drizzle-orm';
+import {
+	convertQrCodeOptionsToLibraryOptions,
+	convertQRCodeDataToStringByType,
+	isDynamic,
+} from '@shared/schemas';
 import { generateQrCodeStylingInstance } from '../src/modules/qr-code/lib/styled-qr-code';
 
 // Validate only the env vars this script needs
@@ -24,6 +28,7 @@ const scriptEnv = z
 		S3_UPLOAD_KEY: z.string(),
 		S3_UPLOAD_SECRET: z.string(),
 		S3_BUCKET_NAME: z.string(),
+		FRONTEND_URL: z.string(),
 	})
 	.parse(process.env);
 
@@ -31,10 +36,23 @@ const scriptEnv = z
 const qrCode = createTable('qr_code', {
 	id: varchar('id', { length: 36 }).primaryKey(),
 	config: json().notNull(),
+	content: json().notNull(),
 	qrCodeData: text(),
 	previewImage: text(),
 	createdBy: varchar({ length: 255 }),
 	createdAt: datetime().notNull(),
+});
+
+const shortUrl = createTable('short_url', {
+	id: varchar('id', { length: 36 }).primaryKey(),
+	shortCode: varchar({ length: 5 }).notNull(),
+	qrCodeId: varchar({ length: 36 }),
+	customDomainId: varchar({ length: 36 }),
+});
+
+const customDomain = createTable('custom_domain', {
+	id: varchar('id', { length: 36 }).primaryKey(),
+	domain: varchar({ length: 255 }).notNull(),
 });
 
 const configTemplate = createTable('qr_code_config_template', {
@@ -106,7 +124,85 @@ async function main() {
 		forcePathStyle: true,
 	});
 
-	// 3. Fetch all QR codes with previewImage IS NULL
+	// 3. Backfill qrCodeData for QR codes that don't have it yet
+	console.log('--- Phase 1: Backfill qrCodeData ---');
+	console.log('Fetching QR codes with missing qrCodeData...');
+	const qrCodesWithoutData = await db
+		.select({
+			id: qrCode.id,
+			content: qrCode.content,
+		})
+		.from(qrCode)
+		.where(isNull(qrCode.qrCodeData));
+
+	console.log(`Found ${qrCodesWithoutData.length} QR codes needing qrCodeData backfill`);
+
+	// Pre-load all short URLs with their custom domains for efficient lookup
+	const shortUrls = await db
+		.select({
+			qrCodeId: shortUrl.qrCodeId,
+			shortCode: shortUrl.shortCode,
+			customDomainId: shortUrl.customDomainId,
+		})
+		.from(shortUrl)
+		.where(isNotNull(shortUrl.qrCodeId));
+
+	const customDomains = await db
+		.select({ id: customDomain.id, domain: customDomain.domain })
+		.from(customDomain);
+
+	const customDomainMap = new Map(customDomains.map((d) => [d.id, d.domain]));
+	const shortUrlByQrCodeId = new Map(shortUrls.map((s) => [s.qrCodeId, s]));
+
+	function buildShortUrl(code: string, customDomainHost?: string | null): string {
+		if (customDomainHost) {
+			return `https://${customDomainHost}/u/${code}`;
+		}
+		return `${scriptEnv.FRONTEND_URL}/u/${code}`;
+	}
+
+	let dataBackfillSuccess = 0;
+	let dataBackfillFail = 0;
+
+	for (let i = 0; i < qrCodesWithoutData.length; i++) {
+		const row = qrCodesWithoutData[i];
+		const progress = `[${i + 1}/${qrCodesWithoutData.length}]`;
+		const content = row.content as any;
+
+		try {
+			let computedData: string;
+
+			if (!isDynamic(content)) {
+				computedData = convertQRCodeDataToStringByType(content);
+			} else {
+				const su = shortUrlByQrCodeId.get(row.id);
+				if (su) {
+					const domainHost = su.customDomainId
+						? (customDomainMap.get(su.customDomainId) ?? null)
+						: null;
+					const fullShortUrl = buildShortUrl(su.shortCode, domainHost);
+					computedData = convertQRCodeDataToStringByType(content, fullShortUrl);
+				} else {
+					computedData = convertQRCodeDataToStringByType(content);
+				}
+			}
+
+			await db.update(qrCode).set({ qrCodeData: computedData }).where(eq(qrCode.id, row.id));
+
+			console.log(`${progress} QR code ${row.id}: qrCodeData OK`);
+			dataBackfillSuccess++;
+		} catch (error) {
+			console.error(`${progress} QR code ${row.id}: qrCodeData FAILED`, error);
+			dataBackfillFail++;
+		}
+	}
+
+	console.log(
+		`\nqrCodeData backfill: ${dataBackfillSuccess} success, ${dataBackfillFail} failed\n`,
+	);
+
+	// 4. Fetch all QR codes with previewImage IS NULL (now with qrCodeData populated)
+	console.log('--- Phase 2: Generate preview images ---');
 	console.log('Fetching QR codes with missing preview images...');
 	const qrCodes = await db
 		.select({
@@ -120,7 +216,7 @@ async function main() {
 
 	console.log(`Found ${qrCodes.length} QR codes to process`);
 
-	// 4. Fetch all config templates with previewImage IS NULL
+	// 5. Fetch all config templates with previewImage IS NULL
 	console.log('Fetching config templates with missing preview images...');
 	const templates = await db
 		.select({
@@ -138,7 +234,7 @@ async function main() {
 	let templateSuccess = 0;
 	let templateFail = 0;
 
-	// 5. Process QR codes
+	// 6. Process QR codes
 	for (let i = 0; i < qrCodes.length; i++) {
 		const row = qrCodes[i];
 		const progress = `[${i + 1}/${qrCodes.length}]`;
@@ -194,7 +290,7 @@ async function main() {
 		}
 	}
 
-	// 6. Process config templates
+	// 7. Process config templates
 	for (let i = 0; i < templates.length; i++) {
 		const row = templates[i];
 		const progress = `[${i + 1}/${templates.length}]`;
@@ -246,13 +342,16 @@ async function main() {
 		}
 	}
 
-	// 7. Print summary
+	// 8. Print summary
 	console.log('\n' + '='.repeat(50));
 	console.log('SUMMARY');
 	console.log('='.repeat(50));
-	console.log(`QR codes:         ${qrSuccess} success, ${qrFail} failed (of ${qrCodes.length})`);
 	console.log(
-		`Config templates: ${templateSuccess} success, ${templateFail} failed (of ${templates.length})`,
+		`qrCodeData backfill: ${dataBackfillSuccess} success, ${dataBackfillFail} failed (of ${qrCodesWithoutData.length})`,
+	);
+	console.log(`QR code previews:    ${qrSuccess} success, ${qrFail} failed (of ${qrCodes.length})`);
+	console.log(
+		`Template previews:   ${templateSuccess} success, ${templateFail} failed (of ${templates.length})`,
 	);
 	console.log('='.repeat(50));
 
