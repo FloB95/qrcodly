@@ -76,15 +76,10 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 				data: qrCodeData,
 			});
 
-			this.logger.info('instance', { image: instance._options.image });
 			const svg = await instance.getRawData('svg');
-			this.logger.info('svg', { svg });
 			if (!svg) return undefined;
 
 			const buffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
-
-			this.logger.info('generated QR code preview image, uploading to storage');
-
 			await this.objectStorage.upload(filePath, buffer, 'image/svg+xml');
 			return filePath;
 		} catch (error) {
