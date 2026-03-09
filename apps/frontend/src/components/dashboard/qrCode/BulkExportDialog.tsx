@@ -18,7 +18,6 @@ import { Loader } from '@/components/ui/loader';
 import { toast } from '@/components/ui/use-toast';
 import { fetchQrCodesPage, useListQrCodesQuery } from '@/lib/api/qr-code';
 import { getQrCodeStylingOptions } from '@/lib/qr-code-helpers';
-import { getContentTypeConfig } from '@/lib/content-type.config';
 import {
 	Select,
 	SelectContent,
@@ -35,6 +34,7 @@ import {
 	PaginationPrevious,
 } from '@/components/ui/pagination';
 import { getPageNumbers } from '@/lib/utils';
+import { DynamicQrCode } from '@/components/qr-generator/DynamicQrCode';
 import posthog from 'posthog-js';
 
 const EXPORT_PAGE_LIMIT = 50;
@@ -330,8 +330,6 @@ export function BulkExportDialog({ open, onOpenChange }: BulkExportDialogProps) 
 						{/* QR Code List */}
 						<div className="flex-1 overflow-y-auto max-h-[350px] space-y-1 pr-1">
 							{qrCodes.map((qr) => {
-								const config = getContentTypeConfig(qr.content.type);
-								const Icon = config?.icon;
 								const isChecked = exportAll || selectedIds.has(qr.id);
 								return (
 									<label
@@ -349,12 +347,10 @@ export function BulkExportDialog({ open, onOpenChange }: BulkExportDialogProps) 
 												alt=""
 												className="h-10 w-10 rounded object-cover"
 											/>
-										) : Icon ? (
-											<div className="flex h-10 w-10 items-center justify-center rounded bg-muted">
-												<Icon className="h-5 w-5 text-muted-foreground" />
-											</div>
 										) : (
-											<div className="h-10 w-10 rounded bg-muted" />
+											<div className="h-10 w-10 shrink-0 overflow-hidden rounded">
+												<DynamicQrCode qrCode={qr} additionalStyles="max-h-10 max-w-10" />
+											</div>
 										)}
 										<div className="min-w-0 flex-1">
 											<p className="text-sm font-medium truncate">{qr.name || qr.id}</p>
