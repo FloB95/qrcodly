@@ -210,6 +210,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 											qrCode={{
 												content: qrCode.content,
 												config: qrCode.config,
+												qrCodeData: qrCode.qrCodeData,
 											}}
 											shortUrl={qrCode.shortUrl || undefined}
 										/>

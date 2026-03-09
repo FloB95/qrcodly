@@ -62,6 +62,7 @@ export function PublicSharePageContent({ sharedQrCode }: PublicSharePageContentP
 									qrCode={{
 										content,
 										config,
+										qrCodeData,
 									}}
 								/>
 							)

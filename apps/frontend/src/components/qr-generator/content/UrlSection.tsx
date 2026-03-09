@@ -15,7 +15,7 @@ import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
 import { useTranslations } from 'next-intl';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
-import { createLinkFromShortUrl } from '@/lib/utils';
+import { useShortUrlLink } from '@/hooks/use-short-url-link';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { Input } from '@/components/ui/input';
 
@@ -29,6 +29,7 @@ type TUrlSectionProps = {
 const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
+	const { link: shortUrlLink } = useShortUrlLink(shortUrl);
 	const { lastError } = useQrCodeGeneratorStore((state) => state);
 
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
@@ -51,7 +52,7 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 			const payload = {
 				...values,
 				url: debouncedUrl,
-				shortUrl: shortUrl ? createLinkFromShortUrl(shortUrl) : null,
+				shortUrl: shortUrlLink,
 			};
 			onChange(payload);
 		})();

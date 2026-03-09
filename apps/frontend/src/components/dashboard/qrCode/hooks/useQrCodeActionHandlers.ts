@@ -28,12 +28,13 @@ export function useQrCodeActionHandlers(qr: TQrCodeWithRelationsResponseDto) {
 		import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
 			const options = getQrCodeStylingOptions(qr.config, qr.content, {
+				qrCodeData: qr.qrCodeData,
 				shortUrl: qr.shortUrl || undefined,
 			});
 			const instance = new QRCodeStyling(options);
 			setQrCodeInstance(instance);
 		});
-	}, [qr.config, qr.content, qr.shortUrl]);
+	}, [qr.config, qr.content, qr.qrCodeData, qr.shortUrl]);
 
 	const handleQrCodeDownload = async (fileExt: TFileExtension) => {
 		if (!qrCodeInstance) return;
