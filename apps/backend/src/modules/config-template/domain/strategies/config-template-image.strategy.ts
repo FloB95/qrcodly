@@ -57,8 +57,15 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 				fileName,
 			);
 
-			const instance = await generateQrCodeStylingInstance({
-				...convertQrCodeOptionsToLibraryOptions(config),
+			const libraryOptions = convertQrCodeOptionsToLibraryOptions(config);
+
+			// Convert S3 storage path to a base64 data URL so JSDOM can handle it
+			if (libraryOptions.image) {
+				libraryOptions.image = (await this.getImageAsDataUrl(libraryOptions.image)) ?? undefined;
+			}
+
+			const instance = generateQrCodeStylingInstance({
+				...libraryOptions,
 				data: 'https://www.qrcodly.de/',
 			});
 

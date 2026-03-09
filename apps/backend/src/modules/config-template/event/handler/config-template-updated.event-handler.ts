@@ -23,9 +23,9 @@ export class ConfigTemplateUpdatedEventHandler extends AbstractEventHandler<Conf
 		const configTemplateRepository = container.resolve(ConfigTemplateRepository);
 		const logger = container.resolve(Logger);
 
-		// skip if template has an image CURRENTLY not supported or preview image already exists
-		if (event.configTemplate.config.image || event.configTemplate.previewImage) {
-			logger.debug('Template has an image, skipping preview image generation', {
+		// skip if preview image already exists
+		if (event.configTemplate.previewImage) {
+			logger.debug('Template already has a preview image, skipping preview image generation', {
 				template: {
 					id: event.configTemplate.id,
 					createdBy: event.configTemplate.createdBy,
