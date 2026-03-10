@@ -160,11 +160,6 @@ export class Server {
 			const blocked = await container.resolve(IpAbuseTrackerService).isBlocked(request.clientIp);
 
 			if (blocked) {
-				this.logger.warn('ip.abuse.request.blocked', {
-					ip: request.clientIp,
-					method: request.method,
-					path: request.url,
-				});
 				return reply.status(403).send({ message: 'Access denied', code: 403 });
 			}
 		});

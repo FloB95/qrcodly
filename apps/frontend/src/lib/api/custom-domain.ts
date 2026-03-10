@@ -60,7 +60,7 @@ export const customDomainQueryKeys = {
  * Hook to list all custom domains for the authenticated user.
  */
 export function useListCustomDomainsQuery(page = 1, limit = 10) {
-	const { getToken } = useAuth();
+	const { getToken, isSignedIn } = useAuth();
 
 	return useQuery({
 		queryKey: [...customDomainQueryKeys.list, page, limit],
@@ -81,6 +81,7 @@ export function useListCustomDomainsQuery(page = 1, limit = 10) {
 		placeholderData: keepPreviousData,
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 2,
+		enabled: !!isSignedIn,
 	});
 }
 
@@ -89,7 +90,7 @@ export function useListCustomDomainsQuery(page = 1, limit = 10) {
  * Useful for populating lookups/dropdowns where you need all domains cached.
  */
 export function useAllCustomDomainsQuery() {
-	const { getToken } = useAuth();
+	const { getToken, isSignedIn } = useAuth();
 
 	return useQuery({
 		queryKey: customDomainQueryKeys.all,
@@ -109,6 +110,7 @@ export function useAllCustomDomainsQuery() {
 			return response.data;
 		},
 		staleTime: 5 * 60 * 1000, // 5 minutes
+		enabled: !!isSignedIn,
 	});
 }
 
@@ -256,7 +258,7 @@ export function useDeleteCustomDomainMutation() {
  * Hook to get the user's default custom domain.
  */
 export function useDefaultCustomDomainQuery() {
-	const { getToken } = useAuth();
+	const { getToken, isSignedIn } = useAuth();
 
 	return useQuery({
 		queryKey: customDomainQueryKeys.default,
@@ -271,6 +273,7 @@ export function useDefaultCustomDomainQuery() {
 			});
 		},
 		staleTime: 5 * 60 * 1000,
+		enabled: !!isSignedIn,
 	});
 }
 

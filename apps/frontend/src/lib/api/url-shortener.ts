@@ -13,7 +13,7 @@ export const urlShortenerQueryKeys = {
 
 // Function to delete a configuration template
 export function useGetReservedShortUrlQuery() {
-	const { getToken } = useAuth();
+	const { getToken, isSignedIn } = useAuth();
 
 	return useQuery<TShortUrl | null>({
 		queryKey: urlShortenerQueryKeys.reservedShortUrl,
@@ -33,6 +33,7 @@ export function useGetReservedShortUrlQuery() {
 		},
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		retry: 2,
+		enabled: !!isSignedIn,
 	});
 }
 
