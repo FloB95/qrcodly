@@ -8,6 +8,8 @@ yarn.lock
 .env
 .vscode/*
 !.vscode/settings.json
+.claude
+.claude-flow
 .idea
 **/package-lock.json
 packages/**/.turbo
