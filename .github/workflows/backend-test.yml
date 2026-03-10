@@ -1,12 +1,14 @@
 name: Backend Tests
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
     paths:
       - 'apps/backend/**'
       - 'packages/shared/**'
+      - '.github/workflows/backend-test.yml'
 
 jobs:
   test-backend:
