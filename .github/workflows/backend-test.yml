@@ -38,19 +38,6 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
-      minio:
-        image: bitnami/minio:latest
-        ports:
-          - 9000:9000
-        env:
-          MINIO_ROOT_USER: minio
-          MINIO_ROOT_PASSWORD: testtest1
-        options: >-
-          --health-cmd="curl -f http://localhost:9000/minio/health/live || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     env:
       NODE_ENV: 'test'
       LOG_LEVEL: 'error'
@@ -130,11 +117,19 @@ jobs:
       - name: Build shared package
         run: pnpm --filter @shared/schemas build
 
-      - name: Create MinIO bucket
+      - name: Start MinIO and create bucket
         run: |
-          # Wait for MinIO to be ready, then create the bucket via the S3 API
-          curl -sf http://127.0.0.1:9000/minio/health/live || sleep 2
-          # Install mc (MinIO Client)
+          docker run -d --name minio \
+            -p 9000:9000 \
+            -e MINIO_ROOT_USER=minio \
+            -e MINIO_ROOT_PASSWORD=testtest1 \
+            minio/minio:latest server /data
+          # Wait for MinIO to be ready
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:9000/minio/health/live && break
+            sleep 1
+          done
+          # Create bucket
           curl -sL https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/local/bin/mc
           chmod +x /usr/local/bin/mc
           mc alias set ci http://127.0.0.1:9000 minio testtest1
