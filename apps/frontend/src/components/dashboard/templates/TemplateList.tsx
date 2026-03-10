@@ -199,7 +199,6 @@ export const TemplateList = ({ onCreateTemplate }: TemplateListProps) => {
 						)}
 						<PaginationItem>
 							<PaginationNext
-								href="#"
 								onClick={
 									currentPage === totalPages ? undefined : () => handlePageChange(currentPage + 1)
 								}

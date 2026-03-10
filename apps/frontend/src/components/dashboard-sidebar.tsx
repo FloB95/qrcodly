@@ -25,6 +25,7 @@ import {
 	CodeBracketIcon,
 	CreditCardIcon,
 	GlobeAltIcon,
+	LinkIcon,
 	PuzzlePieceIcon,
 	QrCodeIcon,
 	ShieldCheckIcon,
@@ -44,6 +45,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { useListQrCodesQuery } from '@/lib/api/qr-code';
 import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
 import { useListTagsQuery } from '@/lib/api/tag';
+import { useListShortUrlsQuery } from '@/lib/api/url-shortener';
 import posthog from 'posthog-js';
 
 export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -54,6 +56,7 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 	const searchParams = useSearchParams();
 	const { isLoaded, user } = useUser();
 	const { data: qrCodesData } = useListQrCodesQuery(1, 1);
+	const { data: shortUrlsData } = useListShortUrlsQuery(1, 1);
 	const { data: templatesData } = useListConfigTemplatesQuery(undefined, 1, 1);
 	const { data: tagsData } = useListTagsQuery(1, 50);
 
@@ -194,6 +197,22 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 									)}
 								</SidebarMenuItem>
 							)}
+
+							{/* Short URLs */}
+							<SidebarMenuItem>
+								<SidebarMenuButton isActive={isActive('/dashboard/short-urls')} asChild>
+									<Link href="/dashboard/short-urls">
+										<LinkIcon />
+										<span>{tNav('shortUrls')}</span>
+										<span className="ml-1 rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground">
+											{tGeneral('newBadge')}
+										</span>
+									</Link>
+								</SidebarMenuButton>
+								{shortUrlsData?.total !== undefined && (
+									<SidebarMenuBadge>{shortUrlsData.total}</SidebarMenuBadge>
+								)}
+							</SidebarMenuItem>
 
 							{/* Templates */}
 							<SidebarMenuItem>

@@ -6,6 +6,7 @@ import {
 	ChevronLeftIcon,
 	ChevronRightIcon,
 	GlobeAltIcon,
+	LinkIcon,
 	QrCodeIcon,
 	RectangleStackIcon,
 	ShieldCheckIcon,
@@ -18,17 +19,22 @@ import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
+import { useAuth } from '@clerk/nextjs';
 
 interface FeatureCardData {
 	icon: ReactNode;
 	headlineKey: string;
 	subHeadlineKey: string;
 	badge?: string;
+	actionLabel?: string;
+	actionHref?: string;
+	authOnly?: boolean;
 }
 
 export function FeatureSlider() {
 	const t = useTranslations('contentElements.featuresCta');
 	const tGeneral = useTranslations('general');
+	const { isSignedIn } = useAuth();
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const headlineRef = useRef<HTMLHeadingElement>(null);
 	const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -36,6 +42,15 @@ export function FeatureSlider() {
 	const [contentLeft, setContentLeft] = useState(24);
 
 	const features: FeatureCardData[] = [
+		{
+			icon: <LinkIcon className="h-9 w-9 sm:h-11 sm:w-11" />,
+			headlineKey: 'shortUrlFeature.headline',
+			subHeadlineKey: 'shortUrlFeature.subHeadline',
+			badge: tGeneral('newBadge'),
+			actionLabel: t('shortUrlFeature.actionLabel'),
+			actionHref: '/dashboard/short-urls',
+			authOnly: true,
+		},
 		{
 			icon: <ShieldCheckIcon className="h-9 w-9 sm:h-11 sm:w-11" />,
 			headlineKey: 'secureFeature.headline',
@@ -50,6 +65,12 @@ export function FeatureSlider() {
 			icon: <ChartBarIcon className="h-9 w-9 sm:h-11 sm:w-11" />,
 			headlineKey: 'statisticFeature.headline',
 			subHeadlineKey: 'statisticFeature.subHeadline',
+		},
+		{
+			icon: <GlobeAltIcon className="h-9 w-9 sm:h-11 sm:w-11" />,
+			headlineKey: 'customDomainFeature.headline',
+			subHeadlineKey: 'customDomainFeature.subHeadline',
+			badge: tGeneral('proRequired'),
 		},
 		{
 			icon: <RectangleStackIcon className="h-9 w-9 sm:h-11 sm:w-11" />,
@@ -70,12 +91,6 @@ export function FeatureSlider() {
 			icon: <ArrowsRightLeftIcon className="h-9 w-9 sm:h-11 sm:w-11" />,
 			headlineKey: 'exportImportFeature.headline',
 			subHeadlineKey: 'exportImportFeature.subHeadline',
-		},
-		{
-			icon: <GlobeAltIcon className="h-9 w-9 sm:h-11 sm:w-11" />,
-			headlineKey: 'customDomainFeature.headline',
-			subHeadlineKey: 'customDomainFeature.subHeadline',
-			badge: tGeneral('proRequired'),
 		},
 	];
 
@@ -187,13 +202,24 @@ export function FeatureSlider() {
 								)}
 
 								{/* Title + description — fixed height so headlines align */}
-								<div className="h-[190px] sm:h-[170px]">
+								<div className="h-[190px] sm:h-[170px] flex flex-col">
 									<h3 className="text-lg sm:text-[22px] font-bold text-slate-900 mb-2 leading-tight">
 										{t(feature.headlineKey)}
 									</h3>
 									<p className="text-slate-500 text-[15px] leading-relaxed">
 										{t(feature.subHeadlineKey)}
 									</p>
+									{feature.actionHref &&
+										feature.actionLabel &&
+										(!feature.authOnly || isSignedIn) && (
+											<Link
+												href={feature.actionHref}
+												className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-slate-900 hover:underline transition-colors"
+											>
+												{feature.actionLabel}
+												<span aria-hidden="true">&rsaquo;</span>
+											</Link>
+										)}
 								</div>
 							</div>
 						</motion.div>

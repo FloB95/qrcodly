@@ -25,6 +25,10 @@ const ProductShowcase = dynamic(
 const Cta = dynamic(() => import('@/components/Cta').then((mod) => mod.Cta), {
 	ssr: true,
 });
+const BrowserExtensionTeaser = dynamic(
+	() => import('@/components/BrowserExtensionTeaser').then((mod) => mod.BrowserExtensionTeaser),
+	{ ssr: true },
+);
 const FAQSection = dynamic(() => import('@/components/Faq'), {
 	ssr: true,
 });
@@ -111,6 +115,11 @@ export default async function Page({ params }: DefaultPageParams) {
 			{/* Product Showcase */}
 			<section id="showcase" aria-label="Product Showcase" className="py-10 sm:py-24">
 				<ProductShowcase />
+			</section>
+
+			{/* Browser Extension Teaser */}
+			<section aria-label="Browser Extension" className="py-10 sm:py-24">
+				<BrowserExtensionTeaser />
 			</section>
 
 			{/* FAQ Section */}

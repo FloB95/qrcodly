@@ -3,8 +3,73 @@
 		"nav": {
 			"collection": "Collections",
 			"qrCodes": "QR Codes",
+			"shortUrls": "Short URLs",
 			"templates": "Templates",
 			"tags": "Tags"
+		}
+	},
+	"shortUrl": {
+		"title": "Short URLs",
+		"description": "Shorten, manage, and track your links with detailed analytics",
+		"createBtn": "Create Short URL",
+		"table": {
+			"shortUrl": "Short URL",
+			"destination": "Destination",
+			"status": "Status",
+			"views": "Views",
+			"created": "Created"
+		},
+		"create": {
+			"title": "Create Short URL",
+			"destinationLabel": "Destination URL",
+			"destinationPlaceholder": "https://example.com/long-url",
+			"domainLabel": "Custom Domain",
+			"submitBtn": "Create",
+			"success": "Short URL created successfully"
+		},
+		"edit": {
+			"title": "Edit Short URL",
+			"submitBtn": "Update",
+			"success": "Short URL updated successfully"
+		},
+		"viewDetails": "View Details",
+		"delete": {
+			"title": "Delete Short URL",
+			"confirm": "Are you sure you want to delete this short URL? This action cannot be undone.",
+			"success": "Short URL deleted successfully"
+		},
+		"empty": {
+			"title": "No short URLs yet",
+			"description": "Create your first short URL to get started"
+		},
+		"status": {
+			"active": "Active",
+			"inactive": "Disabled",
+			"enable": "Enable",
+			"disable": "Disable"
+		},
+		"error": {
+			"toggleActiveState": {
+				"title": "Error Changing State",
+				"message": "There was an error changing the state. We've been notified and will fix it as soon as possible."
+			},
+			"create": {
+				"title": "Error Creating Short URL",
+				"message": "There was an error creating the short URL. Please try again."
+			},
+			"update": {
+				"title": "Error Updating Short URL",
+				"message": "There was an error updating the short URL. Please try again."
+			},
+			"delete": {
+				"title": "Error Deleting Short URL",
+				"message": "There was an error deleting the short URL. Please try again."
+			}
+		},
+		"featureBanner": {
+			"title": "Introducing Short URLs",
+			"description": "You can now create and manage short URLs directly — shorten any link, track clicks, and view detailed analytics. No QR code needed.",
+			"cta": "Try it now"
 		}
 	},
 	"general": {
@@ -153,6 +218,11 @@
 			"subHeadline1": "Have a question about QRcodly or want to share feedback? We're happy to help and always looking to improve.",
 			"emailBtn": "Contact Us"
 		},
+		"browserExtensionTeaser": {
+			"badge": "Coming Soon",
+			"headline": "Browser Extension",
+			"description": "Create QR codes on the fly — right from your browser. Our upcoming extension lets you generate and manage QR codes for any page with just one click."
+		},
 		"featuresCta": {
 			"headline": "Overview of Key Features",
 			"subHeadline": "With QRcodly you can create, edit, manage, and analyze QR codes – all in one place.",
@@ -190,20 +260,17 @@
 				"headline": "Collaborate in Teams",
 				"subHeadline": "Invite team members and work together on QR codes. Perfect for companies, agencies, and teams."
 			},
+			"shortUrlFeature": {
+				"headline": "Standalone Short URLs",
+				"subHeadline": "Shorten, manage, and track your links with detailed analytics – no QR code required.",
+				"actionLabel": "Try it now"
+			},
 			"secureFeature": {
 				"headline": "Your data stays with us",
 				"subHeadline": "QRcodly hosts all data locally in Germany – no sharing with external services. Only for authentication, we use Clerk."
 			},
 			"scrollLeft": "Scroll left",
 			"scrollRight": "Scroll right"
-		}
-	},
-	"shortUrl": {
-		"error": {
-			"toggleActiveState": {
-				"title": "Error Changing State",
-				"message": "There was an error changing the state. We've been notified and will fix it as soon as possible."
-			}
 		}
 	},
 	"qrCodeDisabled": {
@@ -675,7 +742,6 @@
 		"domainSelector": {
 			"label": "Short URL Domain",
 			"placeholder": "Select a domain",
-			"defaultDomain": "Default (qrcodly.de)",
 			"description": "Choose which domain to use for your short URL",
 			"noDomains": "No custom domains available.",
 			"addDomain": "Add a domain"
@@ -1280,6 +1346,14 @@
 				"bullet1": "Update content anytime without reprinting",
 				"bullet2": "Track every scan with real-time analytics",
 				"bullet3": "Toggle QR codes on or off instantly"
+			},
+			"shortUrl": {
+				"tag": "New Feature",
+				"title": "Standalone Short URLs",
+				"description": "Create and manage short URLs independently — no QR code needed. Shorten any link, track clicks in real time, and gain insights with detailed analytics.",
+				"bullet1": "Shorten any URL with a single click",
+				"bullet2": "Track clicks with real-time analytics",
+				"bullet3": "Works with custom domains for branded links"
 			},
 			"analytics": {
 				"tag": "Insights",

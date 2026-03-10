@@ -3,8 +3,73 @@
 		"nav": {
 			"collection": "Collezioni",
 			"qrCodes": "Codici QR",
+			"shortUrls": "URL brevi",
 			"templates": "Modelli",
 			"tags": "Etichette"
+		}
+	},
+	"shortUrl": {
+		"title": "URL brevi",
+		"description": "Accorcia, gestisci e monitora i tuoi link con analisi dettagliate",
+		"createBtn": "Crea URL breve",
+		"table": {
+			"shortUrl": "URL breve",
+			"destination": "Destinazione",
+			"status": "Stato",
+			"views": "Visualizzazioni",
+			"created": "Creato"
+		},
+		"create": {
+			"title": "Crea URL breve",
+			"destinationLabel": "URL di destinazione",
+			"destinationPlaceholder": "https://example.com/long-url",
+			"domainLabel": "Dominio personalizzato",
+			"submitBtn": "Crea",
+			"success": "URL breve creato con successo"
+		},
+		"edit": {
+			"title": "Modifica URL breve",
+			"submitBtn": "Aggiorna",
+			"success": "URL breve aggiornato con successo"
+		},
+		"viewDetails": "Visualizza dettagli",
+		"delete": {
+			"title": "Elimina URL breve",
+			"confirm": "Sei sicuro di voler eliminare questo URL breve? Questa azione non può essere annullata.",
+			"success": "URL breve eliminato con successo"
+		},
+		"empty": {
+			"title": "Nessun URL breve ancora",
+			"description": "Crea il tuo primo URL breve per iniziare"
+		},
+		"status": {
+			"active": "Attivo",
+			"inactive": "Disattivato",
+			"enable": "Attiva",
+			"disable": "Disattiva"
+		},
+		"error": {
+			"toggleActiveState": {
+				"title": "Errore durante la modifica dello stato",
+				"message": "Si è verificato un errore durante la modifica dello stato. Siamo stati avvisati e risolveremo il problema il prima possibile."
+			},
+			"create": {
+				"title": "Errore nella creazione dell'URL breve",
+				"message": "Si è verificato un errore nella creazione dell'URL breve. Riprova."
+			},
+			"update": {
+				"title": "Errore nell'aggiornamento dell'URL breve",
+				"message": "Si è verificato un errore nell'aggiornamento dell'URL breve. Riprova."
+			},
+			"delete": {
+				"title": "Errore nell'eliminazione dell'URL breve",
+				"message": "Si è verificato un errore nell'eliminazione dell'URL breve. Riprova."
+			}
+		},
+		"featureBanner": {
+			"title": "Scopri gli URL brevi",
+			"description": "Ora puoi creare e gestire URL brevi direttamente — accorcia i link, monitora i clic e consulta analisi dettagliate. Nessun codice QR necessario.",
+			"cta": "Provalo ora"
 		}
 	},
 	"general": {
@@ -153,6 +218,11 @@
 			"subHeadline1": "Hai una domanda su QRcodly o vuoi condividere un feedback? Siamo felici di aiutarti e lavoriamo sempre per migliorare.",
 			"emailBtn": "Contattaci"
 		},
+		"browserExtensionTeaser": {
+			"badge": "In arrivo",
+			"headline": "Estensione Browser",
+			"description": "Crea codici QR al volo — direttamente dal tuo browser. La nostra prossima estensione ti permette di generare e gestire codici QR per qualsiasi pagina con un solo clic."
+		},
 		"featuresCta": {
 			"headline": "Panoramica delle funzionalità chiave",
 			"subHeadline": "Con QRcodly puoi creare, modificare, gestire e analizzare codici QR gratuitamente – tutto in un unico posto.",
@@ -190,20 +260,17 @@
 				"headline": "Collabora in team",
 				"subHeadline": "Invita i membri del team e lavora insieme sui codici QR. Ideale per aziende, agenzie e team."
 			},
+			"shortUrlFeature": {
+				"headline": "URL brevi indipendenti",
+				"subHeadline": "Accorcia, gestisci e monitora i tuoi link con analisi dettagliate – senza bisogno di un codice QR.",
+				"actionLabel": "Provalo ora"
+			},
 			"secureFeature": {
 				"headline": "I tuoi dati rimangono con noi",
 				"subHeadline": "QRcodly ospita tutti i dati localmente in Germania – nessuna condivisione con servizi esterni. Usiamo Clerk solo per l'autenticazione."
 			},
 			"scrollLeft": "Scorri a sinistra",
 			"scrollRight": "Scorri a destra"
-		}
-	},
-	"shortUrl": {
-		"error": {
-			"toggleActiveState": {
-				"title": "Errore durante la modifica dello stato",
-				"message": "Si è verificato un errore durante la modifica dello stato. Siamo stati avvisati e risolveremo il problema il prima possibile."
-			}
 		}
 	},
 	"qrCodeDisabled": {
@@ -395,7 +462,6 @@
 		"domainSelector": {
 			"label": "Dominio URL breve",
 			"placeholder": "Seleziona un dominio",
-			"defaultDomain": "Predefinito (qrcodly.de)",
 			"description": "Scegli quale dominio usare per il tuo URL breve",
 			"noDomains": "Nessun dominio personalizzato disponibile.",
 			"addDomain": "Aggiungi un dominio"
@@ -1280,6 +1346,14 @@
 				"bullet1": "Aggiorna il contenuto in qualsiasi momento senza ristampare",
 				"bullet2": "Monitora ogni scansione con analisi in tempo reale",
 				"bullet3": "Attiva o disattiva i QR code istantaneamente"
+			},
+			"shortUrl": {
+				"tag": "Nuova Funzione",
+				"title": "URL Brevi Indipendenti",
+				"description": "Crea e gestisci URL brevi in modo indipendente — senza bisogno di un codice QR. Accorcia qualsiasi link, monitora i clic in tempo reale e ottieni informazioni con analisi dettagliate.",
+				"bullet1": "Accorcia qualsiasi URL con un solo clic",
+				"bullet2": "Monitora i clic con analisi in tempo reale",
+				"bullet3": "Compatibile con domini personalizzati per link brandizzati"
 			},
 			"analytics": {
 				"tag": "Approfondimenti",

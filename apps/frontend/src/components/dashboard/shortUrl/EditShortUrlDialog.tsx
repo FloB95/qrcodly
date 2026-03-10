@@ -1,0 +1,138 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useTranslations } from 'next-intl';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod/v3';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
+import { toast } from '@/components/ui/use-toast';
+import { useUpdateShortUrlMutation } from '@/lib/api/url-shortener';
+import { DomainSelector } from '@/components/qr-generator/content/DomainSelector';
+import type { TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
+import posthog from 'posthog-js';
+import * as Sentry from '@sentry/nextjs';
+import type { ApiError } from '@/lib/api/ApiError';
+
+const editShortUrlSchema = z.object({
+	destinationUrl: z.string().url(),
+	customDomainId: z.string().nullable(),
+});
+
+type EditShortUrlForm = z.infer<typeof editShortUrlSchema>;
+
+interface EditShortUrlDialogProps {
+	shortUrl: TShortUrlWithCustomDomainResponseDto;
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
+}
+
+export function EditShortUrlDialog({ shortUrl, open, onOpenChange }: EditShortUrlDialogProps) {
+	const t = useTranslations('shortUrl');
+	const updateMutation = useUpdateShortUrlMutation();
+
+	const form = useForm<EditShortUrlForm>({
+		resolver: zodResolver(editShortUrlSchema),
+		defaultValues: {
+			destinationUrl: shortUrl.destinationUrl ?? '',
+			customDomainId: shortUrl.customDomain?.id ?? null,
+		},
+	});
+
+	useEffect(() => {
+		form.reset({
+			destinationUrl: shortUrl.destinationUrl ?? '',
+			customDomainId: shortUrl.customDomain?.id ?? null,
+		});
+	}, [form, shortUrl]);
+
+	const onSubmit = async (data: EditShortUrlForm) => {
+		try {
+			await updateMutation.mutateAsync({
+				shortCode: shortUrl.shortCode,
+				data: {
+					destinationUrl: data.destinationUrl,
+					customDomainId: data.customDomainId,
+				},
+			});
+			posthog.capture('short-url-updated', {
+				shortCode: shortUrl.shortCode,
+				destinationUrl: data.destinationUrl,
+			});
+			toast({ title: t('edit.success') });
+			onOpenChange(false);
+		} catch (e: unknown) {
+			const error = e as ApiError;
+			if (error.code >= 500) {
+				Sentry.captureException(error, {
+					extra: {
+						shortCode: shortUrl.shortCode,
+						error: { code: error.code, message: error.message },
+					},
+				});
+			}
+			posthog.capture('error:short-url-updated', {
+				shortCode: shortUrl.shortCode,
+				error: { code: error.code, message: error.message },
+			});
+			toast({
+				variant: 'destructive',
+				title: t('error.update.title'),
+				description: error.message,
+			});
+		}
+	};
+
+	return (
+		<Dialog open={open} onOpenChange={onOpenChange}>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>{t('edit.title')}</DialogTitle>
+				</DialogHeader>
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+						<FormField
+							control={form.control}
+							name="destinationUrl"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>{t('create.destinationLabel')}</FormLabel>
+									<FormControl>
+										<Input placeholder={t('create.destinationPlaceholder')} {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="customDomainId"
+							render={({ field }) => (
+								<DomainSelector value={field.value} onChange={field.onChange} />
+							)}
+						/>
+						<div className="flex justify-end">
+							<Button
+								type="submit"
+								disabled={updateMutation.isPending}
+								isLoading={updateMutation.isPending}
+							>
+								{t('edit.submitBtn')}
+							</Button>
+						</div>
+					</form>
+				</Form>
+			</DialogContent>
+		</Dialog>
+	);
+}

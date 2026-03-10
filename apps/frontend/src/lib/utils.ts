@@ -16,6 +16,18 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
+ * Extracts the system domain from NEXT_PUBLIC_FRONTEND_URL (e.g., "qrcodly.de" from "https://www.qrcodly.de").
+ */
+export function getSystemDomain(): string {
+	try {
+		const url = new URL(env.NEXT_PUBLIC_FRONTEND_URL);
+		return url.hostname.replace(/^www\./, '');
+	} catch {
+		return 'qrcodly.de';
+	}
+}
+
+/**
  * Creates a full URL from a short URL object.
  * Automatically uses the custom domain if set, otherwise falls back to system domain.
  * @param shortUrl - The short URL object containing shortCode and optional customDomain

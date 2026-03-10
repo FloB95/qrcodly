@@ -3,8 +3,73 @@
 		"nav": {
 			"collection": "Collecties",
 			"qrCodes": "QR Codes",
+			"shortUrls": "Korte URLs",
 			"templates": "Sjablonen",
 			"tags": "Tags"
+		}
+	},
+	"shortUrl": {
+		"title": "Korte URLs",
+		"description": "Verkort, beheer en volg je links met gedetailleerde analyses",
+		"createBtn": "Korte URL aanmaken",
+		"table": {
+			"shortUrl": "Korte URL",
+			"destination": "Bestemming",
+			"status": "Status",
+			"views": "Weergaven",
+			"created": "Aangemaakt"
+		},
+		"create": {
+			"title": "Korte URL aanmaken",
+			"destinationLabel": "Bestemmings-URL",
+			"destinationPlaceholder": "https://example.com/long-url",
+			"domainLabel": "Eigen domein",
+			"submitBtn": "Aanmaken",
+			"success": "Korte URL succesvol aangemaakt"
+		},
+		"edit": {
+			"title": "Korte URL bewerken",
+			"submitBtn": "Bijwerken",
+			"success": "Korte URL succesvol bijgewerkt"
+		},
+		"viewDetails": "Details bekijken",
+		"delete": {
+			"title": "Korte URL verwijderen",
+			"confirm": "Weet je zeker dat je deze korte URL wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+			"success": "Korte URL succesvol verwijderd"
+		},
+		"empty": {
+			"title": "Nog geen korte URLs",
+			"description": "Maak je eerste korte URL aan om te beginnen"
+		},
+		"status": {
+			"active": "Actief",
+			"inactive": "Uitgeschakeld",
+			"enable": "Activeren",
+			"disable": "Deactiveren"
+		},
+		"error": {
+			"toggleActiveState": {
+				"title": "Fout bij het wijzigen van de status",
+				"message": "Er is een fout opgetreden bij het wijzigen van de status. We zijn hiervan op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen."
+			},
+			"create": {
+				"title": "Fout bij het aanmaken van de korte URL",
+				"message": "Er is een fout opgetreden bij het aanmaken van de korte URL. Probeer het opnieuw."
+			},
+			"update": {
+				"title": "Fout bij het bijwerken van de korte URL",
+				"message": "Er is een fout opgetreden bij het bijwerken van de korte URL. Probeer het opnieuw."
+			},
+			"delete": {
+				"title": "Fout bij het verwijderen van de korte URL",
+				"message": "Er is een fout opgetreden bij het verwijderen van de korte URL. Probeer het opnieuw."
+			}
+		},
+		"featureBanner": {
+			"title": "Maak kennis met korte URLs",
+			"description": "Je kunt nu direct korte URLs aanmaken en beheren — verkort links, volg klikken en bekijk gedetailleerde analyses. Geen QR-code nodig.",
+			"cta": "Probeer het nu"
 		}
 	},
 	"general": {
@@ -153,6 +218,11 @@
 			"subHeadline1": "Heb je een vraag over QRcodly of wil je feedback delen? We helpen je graag en werken continu aan verbeteringen.",
 			"emailBtn": "Neem contact op"
 		},
+		"browserExtensionTeaser": {
+			"badge": "Binnenkort beschikbaar",
+			"headline": "Browser-extensie",
+			"description": "Maak QR-codes onderweg — rechtstreeks vanuit je browser. Onze aankomende extensie laat je QR-codes genereren en beheren voor elke pagina met slechts één klik."
+		},
 		"featuresCta": {
 			"headline": "Overzicht van de belangrijkste functies",
 			"subHeadline": "Met QRcodly kunt u gratis QR-codes maken, bewerken, beheren en analyseren - alles op één plek.",
@@ -190,20 +260,17 @@
 				"headline": "Samenwerken in een team",
 				"subHeadline": "Nodig teamleden uit en werk samen aan QR-codes. Ideaal voor bedrijven, bureaus en teams."
 			},
+			"shortUrlFeature": {
+				"headline": "Zelfstandige korte URLs",
+				"subHeadline": "Verkort, beheer en volg je links met gedetailleerde analyses – geen QR-code nodig.",
+				"actionLabel": "Nu uitproberen"
+			},
 			"secureFeature": {
 				"headline": "Je gegevens blijven bij ons",
 				"subHeadline": "QRcodly host alle gegevens lokaal in Duitsland – geen doorsturing naar externe diensten. Alleen voor authenticatie gebruiken we Clerk."
 			},
 			"scrollLeft": "Naar links scrollen",
 			"scrollRight": "Naar rechts scrollen"
-		}
-	},
-	"shortUrl": {
-		"error": {
-			"toggleActiveState": {
-				"title": "Fout bij het wijzigen van de status",
-				"message": "Er is een fout opgetreden bij het wijzigen van de status. We zijn hiervan op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen."
-			}
 		}
 	},
 	"qrCodeDisabled": {
@@ -395,7 +462,6 @@
 		"domainSelector": {
 			"label": "Korte URL-domein",
 			"placeholder": "Selecteer een domein",
-			"defaultDomain": "Standaard (qrcodly.de)",
 			"description": "Kies welk domein je wilt gebruiken voor je korte URL",
 			"noDomains": "Geen aangepaste domeinen beschikbaar.",
 			"addDomain": "Domein toevoegen"
@@ -1280,6 +1346,14 @@
 				"bullet1": "Werk de inhoud bij zonder opnieuw af te drukken",
 				"bullet2": "Volg elke scan met realtime analyse",
 				"bullet3": "Schakel QR-codes direct aan of uit"
+			},
+			"shortUrl": {
+				"tag": "Nieuwe Functie",
+				"title": "Zelfstandige Korte URLs",
+				"description": "Maak en beheer korte URLs onafhankelijk — geen QR-code nodig. Verkort elke link, volg klikken in realtime en krijg inzichten met gedetailleerde analyses.",
+				"bullet1": "Verkort elke URL met één klik",
+				"bullet2": "Volg klikken met realtime analyse",
+				"bullet3": "Werkt met eigen domeinen voor merkgebonden links"
 			},
 			"analytics": {
 				"tag": "Inzichten",

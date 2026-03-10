@@ -3,8 +3,73 @@
 		"nav": {
 			"collection": "Sammlungen",
 			"qrCodes": "QR Codes",
+			"shortUrls": "Kurz-URLs",
 			"templates": "Vorlagen",
 			"tags": "Tags"
+		}
+	},
+	"shortUrl": {
+		"title": "Kurz-URLs",
+		"description": "Kürze, verwalte und verfolge deine Links mit detaillierten Analysen",
+		"createBtn": "Kurz-URL erstellen",
+		"table": {
+			"shortUrl": "Kurz-URL",
+			"destination": "Ziel",
+			"status": "Status",
+			"views": "Aufrufe",
+			"created": "Erstellt"
+		},
+		"create": {
+			"title": "Kurz-URL erstellen",
+			"destinationLabel": "Ziel-URL",
+			"destinationPlaceholder": "https://example.com/long-url",
+			"domainLabel": "Eigene Domain",
+			"submitBtn": "Erstellen",
+			"success": "Kurz-URL erfolgreich erstellt"
+		},
+		"edit": {
+			"title": "Kurz-URL bearbeiten",
+			"submitBtn": "Aktualisieren",
+			"success": "Kurz-URL erfolgreich aktualisiert"
+		},
+		"viewDetails": "Details anzeigen",
+		"delete": {
+			"title": "Kurz-URL löschen",
+			"confirm": "Bist du sicher, dass du diese Kurz-URL löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+			"success": "Kurz-URL erfolgreich gelöscht"
+		},
+		"empty": {
+			"title": "Noch keine Kurz-URLs",
+			"description": "Erstelle deine erste Kurz-URL, um loszulegen"
+		},
+		"status": {
+			"active": "Aktiv",
+			"inactive": "Deaktiviert",
+			"enable": "Aktivieren",
+			"disable": "Deaktivieren"
+		},
+		"error": {
+			"toggleActiveState": {
+				"title": "Fehler beim Ändern des Status",
+				"message": "Beim Ändern des Status ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem so schnell wie möglich beheben."
+			},
+			"create": {
+				"title": "Fehler beim Erstellen der Kurz-URL",
+				"message": "Beim Erstellen der Kurz-URL ist ein Fehler aufgetreten. Bitte versuche es erneut."
+			},
+			"update": {
+				"title": "Fehler beim Aktualisieren der Kurz-URL",
+				"message": "Beim Aktualisieren der Kurz-URL ist ein Fehler aufgetreten. Bitte versuche es erneut."
+			},
+			"delete": {
+				"title": "Fehler beim Löschen der Kurz-URL",
+				"message": "Beim Löschen der Kurz-URL ist ein Fehler aufgetreten. Bitte versuche es erneut."
+			}
+		},
+		"featureBanner": {
+			"title": "Neu: Kurz-URLs",
+			"description": "Ab sofort kannst du Kurz-URLs direkt erstellen und verwalten — Links kürzen, Klicks tracken und detaillierte Analysen einsehen. Kein QR Code nötig.",
+			"cta": "Jetzt ausprobieren"
 		}
 	},
 	"general": {
@@ -153,6 +218,11 @@
 			"subHeadline1": "Du hast eine Frage zu QRcodly oder möchtest Feedback teilen? Wir helfen gerne und arbeiten ständig daran, uns zu verbessern.",
 			"emailBtn": "Kontaktiere uns"
 		},
+		"browserExtensionTeaser": {
+			"badge": "Demnächst verfügbar",
+			"headline": "Browser-Erweiterung",
+			"description": "Erstelle QR-Codes im Handumdrehen – direkt aus deinem Browser. Unsere kommende Erweiterung lässt dich QR-Codes für jede Seite mit nur einem Klick generieren und verwalten."
+		},
 		"featuresCta": {
 			"headline": "Übersicht der wichtigsten Funktionen",
 			"subHeadline": "Mit QRcodly kannst du QR Codes kostenlos erstellen, bearbeiten, verwalten und analysieren – alles an einem Ort.",
@@ -190,20 +260,17 @@
 				"headline": "Im Team zusammenarbeiten",
 				"subHeadline": "Lade Teammitglieder ein und arbeite gemeinsam an QR Codes. Ideal für Unternehmen, Agenturen und Teams."
 			},
+			"shortUrlFeature": {
+				"headline": "Eigenständige Kurzlinks",
+				"subHeadline": "Kürze, verwalte und verfolge deine Links mit detaillierten Analysen – ganz ohne QR-Code.",
+				"actionLabel": "Jetzt ausprobieren"
+			},
 			"secureFeature": {
 				"headline": "Deine Daten bleiben bei uns",
 				"subHeadline": "QRcodly hostet alle Daten lokal in Deutschland – keine Weitergabe an externe Dienste. Einzig für die Authentifizierung nutzen wir Clerk."
 			},
 			"scrollLeft": "Nach links scrollen",
 			"scrollRight": "Nach rechts scrollen"
-		}
-	},
-	"shortUrl": {
-		"error": {
-			"toggleActiveState": {
-				"title": "Fehler beim Ändern des Status",
-				"message": "Beim Ändern des Status ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem so schnell wie möglich beheben."
-			}
 		}
 	},
 	"qrCodeDisabled": {
@@ -675,7 +742,6 @@
 		"domainSelector": {
 			"label": "Kurz-URL Domain",
 			"placeholder": "Domain auswählen",
-			"defaultDomain": "Standard (qrcodly.de)",
 			"description": "Wähle die Domain für deine Kurz-URL",
 			"noDomains": "Keine eigenen Domains verfügbar.",
 			"addDomain": "Domain hinzufügen"
@@ -1280,6 +1346,14 @@
 				"bullet1": "Inhalte jederzeit ändern, ohne neu zu drucken",
 				"bullet2": "Jeden Scan mit Echtzeit-Analysen verfolgen",
 				"bullet3": "QR Codes sofort aktivieren oder deaktivieren"
+			},
+			"shortUrl": {
+				"tag": "Neue Funktion",
+				"title": "Eigenständige Kurzlinks",
+				"description": "Erstelle und verwalte Kurzlinks unabhängig – ganz ohne QR-Code. Kürze beliebige Links, verfolge Klicks in Echtzeit und gewinne Einblicke mit detaillierten Analysen.",
+				"bullet1": "Jede URL mit einem Klick kürzen",
+				"bullet2": "Klicks mit Echtzeit-Analysen verfolgen",
+				"bullet3": "Funktioniert mit eigenen Domains für gebrandete Links"
 			},
 			"analytics": {
 				"tag": "Einblicke",

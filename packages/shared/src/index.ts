@@ -16,6 +16,8 @@ export * from './dtos/qr-code-templates/ConfigTemplateRequestParamsDto';
 
 export * from './dtos/url-shortener/ShortUrlRequestParamsDto';
 export * from './dtos/url-shortener/ShortUrlResponseDto';
+export * from './dtos/url-shortener/ShortUrlPaginatedResponseDto';
+export * from './dtos/url-shortener/ShortUrlQueryParamsDto';
 export * from './dtos/url-shortener/CreateShortUrlDto';
 export * from './dtos/url-shortener/UpdateShortUrlDto';
 export * from './dtos/url-shortener/AnalyticsResponseDto';

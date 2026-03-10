@@ -10,6 +10,7 @@ yarn.lock
 !.vscode/settings.json
 .claude
 .claude-flow
+.swarm
 .idea
 **/package-lock.json
 packages/**/.turbo

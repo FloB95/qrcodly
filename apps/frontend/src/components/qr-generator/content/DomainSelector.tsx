@@ -13,6 +13,7 @@ import { FormControl, FormDescription, FormItem, FormLabel } from '@/components/
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import { Skeleton } from '@/components/ui/skeleton';
 import Link from 'next/link';
+import { getSystemDomain } from '@/lib/utils';
 
 interface DomainSelectorProps {
 	value: string | null | undefined;
@@ -68,7 +69,7 @@ export function DomainSelector({ value, onChange, disabled }: DomainSelectorProp
 					<SelectItem value="default">
 						<div className="flex items-center gap-2">
 							<GlobeAltIcon className="h-4 w-4" />
-							<span>{t('defaultDomain')}</span>
+							<span>{getSystemDomain()}</span>
 						</div>
 					</SelectItem>
 					{verifiedDomains.map((domain) => (

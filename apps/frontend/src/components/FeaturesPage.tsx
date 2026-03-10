@@ -13,6 +13,7 @@ import {
 	DynamicQrMockup,
 	IntegrationsMockup,
 	SecurityMockup,
+	ShortUrlMockup,
 	TagsMockup,
 	TeamsMockup,
 	TemplatesMockup,
@@ -180,6 +181,16 @@ export async function FeaturesPage({ locale }: { locale: string }) {
 				t('spotlight.integrations.bullet3'),
 			],
 			visual: <IntegrationsMockup />,
+		},
+		{
+			title: t('spotlight.shortUrl.title'),
+			description: t('spotlight.shortUrl.description'),
+			bullets: [
+				t('spotlight.shortUrl.bullet1'),
+				t('spotlight.shortUrl.bullet2'),
+				t('spotlight.shortUrl.bullet3'),
+			],
+			visual: <ShortUrlMockup />,
 		},
 		{
 			title: t('spotlight.teams.title'),
