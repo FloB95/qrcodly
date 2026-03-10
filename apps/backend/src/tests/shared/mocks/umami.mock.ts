@@ -74,12 +74,16 @@ export const mockFetchUmamiAnalytics = (data: Partial<TAnalyticsResponseDto> = {
 	});
 };
 
+let originalFetch: typeof global.fetch | null = null;
+
 /**
  * Mocks the global fetch function for the full Umami analytics flow
  * (auth login + multiple data endpoints).
- * Returns appropriate shaped data for each Umami API endpoint.
+ * Only intercepts requests to the Umami host; all other requests pass through.
  */
 export const mockFetchUmamiAllEndpoints = () => {
+	originalFetch = global.fetch;
+
 	const authResponse = createMockUmamiResponse();
 	const statsData = {
 		pageviews: 100,
@@ -103,24 +107,39 @@ export const mockFetchUmamiAllEndpoints = () => {
 		{ x: 'Firefox', y: 30 },
 	];
 
-	global.fetch = jest.fn().mockImplementation(async (url: string) => ({
-		ok: true,
-		status: 200,
-		json: async () => {
-			if (typeof url === 'string' && url.includes('/auth/login')) return authResponse;
-			if (typeof url === 'string' && url.includes('/pageviews')) return pageviewsData;
-			if (typeof url === 'string' && url.includes('/metrics')) return metricsData;
-			return statsData;
-		},
-		text: async () => '',
-	}));
+	global.fetch = jest
+		.fn()
+		.mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
+			const url =
+				typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
+
+			// Only intercept Umami API calls, pass through everything else
+			if (!url.includes('/api/auth/login') && !url.includes('/api/websites/')) {
+				return originalFetch!(input, init);
+			}
+
+			return {
+				ok: true,
+				status: 200,
+				json: async () => {
+					if (url.includes('/auth/login')) return authResponse;
+					if (url.includes('/pageviews')) return pageviewsData;
+					if (url.includes('/metrics')) return metricsData;
+					return statsData;
+				},
+				text: async () => '',
+			};
+		});
 };
 
 /**
- * Resets all fetch mocks.
+ * Resets all fetch mocks and restores original fetch.
  */
 export const resetFetchMocks = () => {
-	if (jest.isMockFunction(global.fetch)) {
+	if (originalFetch) {
+		global.fetch = originalFetch;
+		originalFetch = null;
+	} else if (jest.isMockFunction(global.fetch)) {
 		(global.fetch as jest.Mock).mockClear();
 	}
 };
