@@ -87,6 +87,7 @@ pnpm run studio                  # Open Drizzle Studio
 **Module Structure** (`src/modules/`): 7 modules — `qr-code`, `url-shortener`, `billing`, `custom-domain`, `config-template`, `tag`, `analytics-integration`
 
 Each module follows this layout:
+
 - `domain/entities/` — Drizzle table definitions + TypeScript types
 - `domain/repository/` — Data access extending `AbstractRepository`
 - `useCase/` — Business logic classes (`*.use-case.ts`)
@@ -97,6 +98,7 @@ Each module follows this layout:
 - `setup.ts` — Module registration via `registerRoutes()`
 
 **DI Conventions (tsyringe)**:
+
 - Controllers and UseCases: `@injectable()` (transient, new instance per resolution)
 - Repositories and Services: `@singleton()` (single shared instance)
 - All deps injected via `@inject(ClassName)` constructor params
@@ -106,6 +108,7 @@ Each module follows this layout:
 **API prefix**: `/api/v1` (e.g., `/api/v1/qr-code`, `/api/v1/short-url`, `/api/v1/billing`)
 
 **Core infrastructure** (`src/core/`):
+
 - `db/` — Connection, schema re-exports, migrations. All entity schemas centrally re-exported from `db/schemas/index.ts`
 - `cache/` — Redis caching (`KeyCache`)
 - `storage/` — S3/MinIO file uploads
@@ -134,6 +137,7 @@ Each module follows this layout:
 Published as `@shared/schemas`. Import via: `import { ... } from '@shared/schemas'`
 
 Uses **Zod v4** (from pnpm catalog). Contains:
+
 - `src/schemas/` — Source-of-truth Zod schemas (e.g., `QrCode.ts` with discriminated union for 8 content types: URL, Text, WiFi, vCard, Email, Location, Event, EPC)
 - `src/dtos/` — Request/response DTOs derived from schemas via `.pick()`, `.extend()`. Organized by feature domain.
 - `src/utils/` — QR code content converters, default styling options, deep diff utility
@@ -145,6 +149,7 @@ Build: `tsc` → `dist/` (CommonJS). Must be built before backend/frontend (`pnp
 ## Local Development Environment
 
 Docker Compose provides:
+
 - MySQL (3306) — root/root, database: qrcodly
 - Redis (6379)
 - MinIO S3 mock (9000 API, 9001 console) — minio/testtest
@@ -154,6 +159,7 @@ Docker Compose provides:
 ## Testing Patterns
 
 Backend tests use Jest with:
+
 - Global setup/teardown for test database isolation
 - `--runInBand` for sequential execution
 - 30 second timeout per test
