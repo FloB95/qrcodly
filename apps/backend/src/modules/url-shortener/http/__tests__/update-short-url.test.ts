@@ -3,6 +3,7 @@ import { generateUpdateShortUrlDto } from '@/tests/shared/factories/short-url.fa
 import type { FastifyInstance } from 'fastify';
 import type { TShortUrlResponseDto } from '@shared/schemas';
 import { SHORT_URL_API_PATH, reserveShortUrl } from './utils';
+import { env } from '@/core/config/env';
 
 describe('updateShortUrl', () => {
 	let testServer: FastifyInstance;
@@ -109,7 +110,7 @@ describe('updateShortUrl', () => {
 		const reserveResponse = await reserveShortUrl(testServer, accessToken);
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
-		const selfReferencingUrl = `http://localhost:3000/u/${shortUrl.shortCode}`;
+		const selfReferencingUrl = `${env.FRONTEND_URL}/u/${shortUrl.shortCode}`;
 
 		const response = await updateShortUrlRequest(
 			shortUrl.shortCode,

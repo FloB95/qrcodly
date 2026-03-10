@@ -28,6 +28,7 @@ describe('updateQrCode', () => {
 			payload: dto,
 			headers: { Authorization: `Bearer ${token}` },
 		});
+		expect(response.statusCode).toBe(201);
 		return JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 	};
 
