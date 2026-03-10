@@ -8,10 +8,11 @@ import {
 	type RouteOptions,
 } from 'fastify';
 import { deepMerge, mergeZodErrorObjects } from '@/utils/general';
-import { BadRequestError, CustomApiError } from '@/core/error/http';
+import { BadRequestError, CustomApiError, UnauthorizedError } from '@/core/error/http';
 import { container, type InjectionToken } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { ErrorReporter } from '@/core/error';
+import { IpAbuseTrackerService } from '@/core/ip-protection';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route';
 import { type IHttpResponse } from '@/core/interface/response.interface';
@@ -65,6 +66,13 @@ export const fastifyErrorHandler = (
 					: undefined,
 			},
 		});
+
+		if (error instanceof UnauthorizedError) {
+			container
+				.resolve(IpAbuseTrackerService)
+				.trackUnauthorizedAttempt(_request.clientIp)
+				.catch((err) => logger.error('ip.abuse.tracking.error', { error: err as Error }));
+		}
 
 		return reply.status(error.statusCode).send(responsePayload);
 	}

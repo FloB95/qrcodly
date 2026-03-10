@@ -30,6 +30,7 @@ import multipart from '@fastify/multipart';
 import { resolveRateLimit } from './rate-limit/rate-limit.resolver';
 import { RateLimitPolicy } from './rate-limit/rate-limit.policy';
 import { KeyCache } from './cache';
+import { IpAbuseTrackerService } from './ip-protection';
 
 @singleton()
 export class Server {
@@ -153,6 +154,19 @@ export class Server {
 		this.server.addHook('onRequest', (request, reply, done) => {
 			request.clientIp = resolveClientIp(request);
 			done();
+		});
+
+		this.server.addHook('onRequest', async (request, reply) => {
+			const blocked = await container.resolve(IpAbuseTrackerService).isBlocked(request.clientIp);
+
+			if (blocked) {
+				this.logger.warn('ip.abuse.request.blocked', {
+					ip: request.clientIp,
+					method: request.method,
+					path: request.url,
+				});
+				return reply.status(403).send({ message: 'Access denied', code: 403 });
+			}
 		});
 
 		await this.server.register(fastifyHelmet);
