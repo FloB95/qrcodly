@@ -75,6 +75,48 @@ export const mockFetchUmamiAnalytics = (data: Partial<TAnalyticsResponseDto> = {
 };
 
 /**
+ * Mocks the global fetch function for the full Umami analytics flow
+ * (auth login + multiple data endpoints).
+ * Returns appropriate shaped data for each Umami API endpoint.
+ */
+export const mockFetchUmamiAllEndpoints = () => {
+	const authResponse = createMockUmamiResponse();
+	const statsData = {
+		pageviews: 100,
+		visitors: 50,
+		visits: 75,
+		bounces: 10,
+		totaltime: 5000,
+	};
+	const pageviewsData = {
+		pageviews: [
+			{ x: '2025-01-01', y: 10 },
+			{ x: '2025-01-02', y: 15 },
+		],
+		sessions: [
+			{ x: '2025-01-01', y: 5 },
+			{ x: '2025-01-02', y: 8 },
+		],
+	};
+	const metricsData = [
+		{ x: 'Chrome', y: 50 },
+		{ x: 'Firefox', y: 30 },
+	];
+
+	global.fetch = jest.fn().mockImplementation(async (url: string) => ({
+		ok: true,
+		status: 200,
+		json: async () => {
+			if (typeof url === 'string' && url.includes('/auth/login')) return authResponse;
+			if (typeof url === 'string' && url.includes('/pageviews')) return pageviewsData;
+			if (typeof url === 'string' && url.includes('/metrics')) return metricsData;
+			return statsData;
+		},
+		text: async () => '',
+	}));
+};
+
+/**
  * Resets all fetch mocks.
  */
 export const resetFetchMocks = () => {
