@@ -40,6 +40,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { SignOutButton, useUser } from '@clerk/nextjs';
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { getUserInitials } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useListQrCodesQuery } from '@/lib/api/qr-code';
@@ -204,9 +205,9 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 									<Link href="/dashboard/short-urls">
 										<LinkIcon />
 										<span>{tNav('shortUrls')}</span>
-										<span className="ml-1 rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold leading-none text-primary-foreground">
+										<Badge variant="blue" className="ml-1 px-1.5 py-0.5 text-[10px] leading-none">
 											{tGeneral('newBadge')}
-										</span>
+										</Badge>
 									</Link>
 								</SidebarMenuButton>
 								{shortUrlsData?.total !== undefined && (

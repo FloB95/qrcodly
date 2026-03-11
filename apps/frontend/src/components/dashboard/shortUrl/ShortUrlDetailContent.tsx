@@ -84,8 +84,9 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 					error: { code: error.code, message: error.message },
 				});
 				toast({
-					title: t('shortUrl.delete.title'),
 					variant: 'destructive',
+					title: t('shortUrl.error.delete.title'),
+					description: error.message,
 				});
 			},
 		});
@@ -222,7 +223,12 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 			{/* Analytics */}
 			<AnalyticsSection shortCode={shortUrl.shortCode} />
 
-			<EditShortUrlDialog shortUrl={shortUrl} open={editOpen} onOpenChange={setEditOpen} />
+			<EditShortUrlDialog
+				shortUrl={shortUrl}
+				open={editOpen}
+				onOpenChange={setEditOpen}
+				onSuccess={() => router.refresh()}
+			/>
 		</>
 	);
 }

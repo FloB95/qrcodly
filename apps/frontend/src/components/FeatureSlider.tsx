@@ -14,6 +14,7 @@ import {
 	TagIcon,
 } from '@heroicons/react/24/outline';
 import { Link } from '@/i18n/navigation';
+import { Badge } from '@/components/ui/badge';
 import Container from '@/components/ui/container';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
@@ -196,9 +197,9 @@ export function FeatureSlider() {
 
 								{/* Badge */}
 								{feature.badge && (
-									<span className="absolute top-6 right-6 sm:top-7 sm:right-7 inline-flex items-center rounded-full bg-teal-600 px-2.5 py-0.5 text-xs font-medium text-white">
+									<Badge variant="blue" className="absolute top-6 right-6 sm:top-7 sm:right-7">
 										{feature.badge}
-									</span>
+									</Badge>
 								)}
 
 								{/* Title + description — fixed height so headlines align */}

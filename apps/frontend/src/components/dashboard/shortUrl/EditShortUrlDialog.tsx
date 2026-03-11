@@ -35,9 +35,15 @@ interface EditShortUrlDialogProps {
 	shortUrl: TShortUrlWithCustomDomainResponseDto;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
+	onSuccess?: () => void;
 }
 
-export function EditShortUrlDialog({ shortUrl, open, onOpenChange }: EditShortUrlDialogProps) {
+export function EditShortUrlDialog({
+	shortUrl,
+	open,
+	onOpenChange,
+	onSuccess,
+}: EditShortUrlDialogProps) {
 	const t = useTranslations('shortUrl');
 	const updateMutation = useUpdateShortUrlMutation();
 
@@ -73,6 +79,7 @@ export function EditShortUrlDialog({ shortUrl, open, onOpenChange }: EditShortUr
 			});
 			toast({ title: t('edit.success') });
 			onOpenChange(false);
+			onSuccess?.();
 		} catch (e: unknown) {
 			const error = e as ApiError;
 			if (error.code >= 500) {

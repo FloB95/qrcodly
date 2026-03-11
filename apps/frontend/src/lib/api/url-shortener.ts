@@ -9,7 +9,6 @@ import type {
 	TShortUrlWithCustomDomainResponseDto,
 	TUpdateShortUrlDto,
 } from '@shared/schemas';
-import { qrCodeQueryKeys } from './qr-code';
 
 // Define query keys
 export const urlShortenerQueryKeys = {
@@ -61,9 +60,6 @@ export function useToggleActiveStateMutation() {
 			});
 		},
 		onSuccess: () => {
-			void queryClient.refetchQueries({
-				queryKey: qrCodeQueryKeys.listQrCodes,
-			});
 			void queryClient.refetchQueries({
 				queryKey: urlShortenerQueryKeys.listShortUrls,
 			});

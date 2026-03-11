@@ -20,7 +20,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
 	ru: 'Русский',
 };
 
-export const LanguageNav = () => {
+export const LanguageNav = ({ variant = 'auto' }: { variant?: 'auto' | 'dropdown-up' }) => {
 	const locale = useLocale();
 	const currentPath = usePathname();
 	const [open, setOpen] = useState(false);
@@ -60,6 +60,77 @@ export const LanguageNav = () => {
 		}
 		return undefined;
 	}, [open]);
+
+	if (variant === 'dropdown-up') {
+		return (
+			<div ref={containerRef} className="relative">
+				<button
+					className={cn(
+						'flex items-center gap-1.5 w-full h-10 px-4 py-2 rounded-md cursor-pointer transition-all text-sm font-medium',
+						'hover:bg-gradient-to-r hover:from-slate-900 hover:via-slate-800 hover:to-slate-900 hover:text-white',
+						open
+							? 'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white'
+							: 'text-slate-700',
+					)}
+					onClick={() => setOpen((prev) => !prev)}
+				>
+					<GlobeAltIcon className="h-5 w-5" />
+					<span className="font-medium">{locale.toUpperCase()}</span>
+					<ChevronDownIcon
+						className={cn('h-3.5 w-3.5 transition-transform duration-200', open && 'rotate-180')}
+					/>
+				</button>
+
+				<AnimatePresence>
+					{open && (
+						<motion.div
+							initial={{ opacity: 0, y: -8 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -8 }}
+							transition={{ duration: 0.15 }}
+							className="absolute bottom-full left-0 right-0 z-[300]"
+						>
+							<div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-200 py-1.5 mb-2 max-h-[50vh] overflow-y-auto">
+								{languageLinks.map((link, idx) => {
+									const isActive = locale === link.lang;
+									return (
+										<React.Fragment key={link.lang}>
+											{idx > 0 && <div className="mx-3 border-t border-slate-100" />}
+											<Link
+												locale={link.lang}
+												href={link.path}
+												className={cn(
+													'flex items-center justify-between px-3 py-2 mx-1.5 rounded-lg text-sm transition-colors hover:bg-slate-100',
+													isActive && 'bg-slate-100',
+												)}
+											>
+												<span
+													className={cn(
+														'text-slate-700',
+														isActive && 'font-semibold text-slate-900',
+													)}
+												>
+													{LANGUAGE_NAMES[link.lang] ?? link.lang}
+												</span>
+												<span
+													className={cn(
+														'text-xs text-slate-400',
+														isActive && 'font-semibold text-slate-600',
+													)}
+												>
+													{link.lang.toUpperCase()}
+												</span>
+											</Link>
+										</React.Fragment>
+									);
+								})}
+							</div>
+						</motion.div>
+					)}
+				</AnimatePresence>
+			</div>
+		);
+	}
 
 	return (
 		<div suppressHydrationWarning>

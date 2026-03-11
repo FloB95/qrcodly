@@ -122,7 +122,7 @@ export default function Header({
 	return (
 		<header
 			className={cn(
-				'sticky top-0 z-[100] transition-all duration-300',
+				'sticky top-0 z-[100] transition-all duration-300 -mx-4 px-4 sm:mx-0 sm:px-0',
 				scrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm pt-5 pb-5' : 'pt-10 pb-0',
 			)}
 		>
@@ -237,7 +237,10 @@ export default function Header({
 								<div className="flex items-center gap-2">
 									<Link
 										href="/dashboard/qr-codes"
-										className={cn(buttonVariants({ size: 'icon' }), 'lg:hidden')}
+										className={cn(
+											buttonVariants({ size: 'icon' }),
+											'hidden sm:inline-flex lg:hidden',
+										)}
 									>
 										<RectangleStackIcon className="h-6 w-6 text-white" />
 									</Link>
@@ -270,11 +273,11 @@ export default function Header({
 			</Container>
 
 			<Drawer open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} direction="right">
-				<DrawerContent className="py-28 px-1">
+				<DrawerContent className="pt-20 pb-8 px-1 overflow-y-auto">
 					<DrawerHeader className="hidden">
 						<DrawerTitle>Navigation</DrawerTitle>
 					</DrawerHeader>
-					<div className="absolute top-8 left-4 right-4 flex items-center justify-between">
+					<div className="absolute top-6 left-8 right-4 flex items-center justify-between">
 						<div className="text-black">
 							<Link title="QRcodly" href="/">
 								<QrcodlyLogo size="default" />
@@ -288,13 +291,13 @@ export default function Header({
 					</div>
 
 					<motion.div
-						className="space-y-2"
+						className="space-y-2 flex-1 px-3"
 						variants={containerVariants}
 						initial="hidden"
 						animate={mobileMenuOpen ? 'visible' : 'hidden'}
 					>
 						<motion.div variants={itemVariants}>
-							<div className="px-4 pt-2 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+							<div className="px-4 pt-2 pb-1 text-xs font-semibold text-slate-900 uppercase tracking-wider">
 								{t('productsBtn')}
 							</div>
 						</motion.div>
@@ -348,7 +351,7 @@ export default function Header({
 								<Link
 									href="/dashboard/qr-codes"
 									className={buttonVariants({
-										className: 'ml-3 justify-start text-foreground font-semibold',
+										className: 'justify-start text-foreground font-semibold',
 									})}
 								>
 									{t('collectionBtn')}
@@ -357,7 +360,9 @@ export default function Header({
 						</SignedIn>
 						{!hideLanguageNav && (
 							<motion.div variants={itemVariants}>
-								<LanguageNav />
+								<div className="border-t border-slate-100 mt-2 pt-4">
+									<LanguageNav variant="dropdown-up" />
+								</div>
 							</motion.div>
 						)}
 					</motion.div>
