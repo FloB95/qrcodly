@@ -64,6 +64,9 @@ export function useToggleActiveStateMutation() {
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
+			void queryClient.refetchQueries({
+				queryKey: urlShortenerQueryKeys.listShortUrls,
+			});
 		},
 	});
 }

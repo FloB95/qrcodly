@@ -81,6 +81,7 @@ export function ShortUrlList() {
 	const {
 		data: shortUrls,
 		isLoading,
+		isError,
 		isFetching,
 	} = useListShortUrlsQuery(currentPage, currentLimit, filters);
 
@@ -100,7 +101,7 @@ export function ShortUrlList() {
 		}
 	};
 
-	if (isLoading || !shortUrls) {
+	if (isLoading) {
 		return (
 			<div className="overflow-hidden rounded-lg border">
 				<Table>
@@ -111,6 +112,14 @@ export function ShortUrlList() {
 						))}
 					</TableBody>
 				</Table>
+			</div>
+		);
+	}
+
+	if (isError || !shortUrls) {
+		return (
+			<div className="py-12 text-center text-muted-foreground">
+				<p>{t('error.load.title')}</p>
 			</div>
 		);
 	}

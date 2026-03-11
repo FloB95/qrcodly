@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import qs from 'qs';
 import type { SupportedLanguages } from '@/i18n/routing';
 import { ApiError } from './api/ApiError';
-import type { ZodIssue } from 'zod/v3';
+import type { z } from 'zod';
 import type {
 	TCustomDomainResponseDto,
 	TShortUrlResponseDto,
@@ -192,7 +192,7 @@ export async function apiRequest<T>(
 		throw new ApiError(
 			(errorBody?.message as string | undefined) ?? 'An error occurred while fetching data',
 			response.status,
-			errorBody.fieldErrors as ZodIssue[],
+			errorBody.fieldErrors as z.core.$ZodIssue[],
 		);
 	}
 	return (await response.json()) as T;

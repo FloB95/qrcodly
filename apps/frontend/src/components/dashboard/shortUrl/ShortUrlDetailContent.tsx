@@ -2,8 +2,7 @@
 
 import React, { useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { useLocale } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -37,8 +36,7 @@ import {
 import { createLinkFromShortUrl } from '@/lib/utils';
 import { EditShortUrlDialog } from './EditShortUrlDialog';
 import type { TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
-import Link from 'next/link';
-import type { SupportedLanguages } from '@/i18n/routing';
+import { Link } from '@/i18n/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
@@ -50,7 +48,6 @@ interface ShortUrlDetailContentProps {
 
 export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) {
 	const t = useTranslations();
-	const locale = useLocale() as SupportedLanguages;
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const [isDeleting, setIsDeleting] = React.useState(false);
@@ -69,7 +66,7 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 				posthog.capture('short-url-deleted', {
 					shortCode: shortUrl.shortCode,
 				});
-				router.push(`/${locale}/dashboard/short-urls`);
+				router.push('/dashboard/short-urls');
 			},
 			onError: (e) => {
 				const error = e as ApiError;
@@ -92,7 +89,7 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 				});
 			},
 		});
-	}, [shortUrl.shortCode, deleteMutation, router, locale, t]);
+	}, [shortUrl.shortCode, deleteMutation, router, t]);
 
 	const handleToggle = () => {
 		toggleMutation.mutate(shortUrl.shortCode, {
@@ -126,7 +123,7 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 						<BreadcrumbList>
 							<BreadcrumbItem>
 								<BreadcrumbLink asChild>
-									<Link href={`/${locale}/dashboard/short-urls`}>{t('shortUrl.title')}</Link>
+									<Link href="/dashboard/short-urls">{t('shortUrl.title')}</Link>
 								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
@@ -149,7 +146,12 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 							</div>
 						</div>
 						<div className="flex items-center gap-2">
-							<Button size="sm" variant="outline" onClick={handleToggle}>
+							<Button
+								size="sm"
+								variant="outline"
+								onClick={handleToggle}
+								disabled={toggleMutation.isPending}
+							>
 								{shortUrl.isActive ? t('shortUrl.status.disable') : t('shortUrl.status.enable')}
 							</Button>
 							<Button size="sm" onClick={() => setEditOpen(true)}>

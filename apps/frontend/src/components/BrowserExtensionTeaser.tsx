@@ -1,6 +1,7 @@
 'use client';
 
 import { PuzzlePieceIcon } from '@heroicons/react/24/outline';
+import { Heading } from '@/components/ui/heading';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import Container from './ui/container';
@@ -31,9 +32,9 @@ export function BrowserExtensionTeaser() {
 							<span className="inline-flex items-center rounded-full bg-slate-900 px-3 py-1 text-xs font-medium text-white mb-5">
 								{t('badge')}
 							</span>
-							<h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900">
+							<Heading as="h2" size="lg">
 								{t('headline')}
-							</h2>
+							</Heading>
 							<p className="text-slate-700 mt-3 md:text-lg max-w-xl">{t('description')}</p>
 						</div>
 					</div>

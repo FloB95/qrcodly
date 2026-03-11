@@ -3,7 +3,7 @@
 import { type ReactNode, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod/v3';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
 	Dialog,
@@ -57,7 +57,7 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 	});
 
 	useEffect(() => {
-		if (defaultDomain?.id) {
+		if (defaultDomain?.id && !form.getValues('customDomainId')) {
 			form.setValue('customDomainId', defaultDomain.id);
 		}
 	}, [defaultDomain, form]);

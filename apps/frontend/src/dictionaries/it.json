@@ -64,6 +64,9 @@
 			"delete": {
 				"title": "Errore nell'eliminazione dell'URL breve",
 				"message": "Si è verificato un errore nell'eliminazione dell'URL breve. Riprova."
+			},
+			"load": {
+				"title": "Errore durante il caricamento degli URL brevi. Riprova."
 			}
 		},
 		"featureBanner": {
@@ -101,6 +104,16 @@
 		},
 		"ctaPrimary": "Crea il tuo codice QR",
 		"ctaSecondary": "Scopri le possibilità"
+	},
+	"homeStats": {
+		"stat1Value": "100K+",
+		"stat1Label": "Codici QR creati",
+		"stat2Value": "1.000+",
+		"stat2Label": "Utenti attivi",
+		"stat3Value": "10K+",
+		"stat3Label": "Scansioni e clic al giorno",
+		"stat4Value": "< 50ms",
+		"stat4Label": "Velocità di reindirizzamento"
 	},
 	"metadata": {
 		"title": "QRcodly - Generatore di Codici QR Gratuito",
@@ -184,13 +197,23 @@
 		"signInBtn": "Accedi",
 		"settingsBtn": "Impostazioni",
 		"featuresBtn": "Funzionalità",
-		"plansBtn": "Prezzi"
+		"plansBtn": "Prezzi",
+		"productsBtn": "Prodotti",
+		"urlShortenerLink": "Accorciatore URL",
+		"qrCodesLink": "Codici QR",
+		"analyticsLink": "Analisi",
+		"urlShortenerDesc": "Accorcia, brandizza e monitora ogni link",
+		"qrCodesDesc": "Crea e personalizza codici QR dinamici",
+		"analyticsDesc": "Misura le prestazioni su tutti i canali"
 	},
 	"footer": {
 		"tagline": "La piattaforma open source per codici QR. Crea, gestisci e monitora i codici QR con facilità.",
-		"product": "Prodotto",
+		"product": "Piattaforma",
 		"features": "Funzionalità",
 		"pricing": "Prezzi",
+		"urlShortener": "Accorciatore URL",
+		"qrCodes": "Codici QR",
+		"analyticsProduct": "Analisi",
 		"resources": "Risorse",
 		"faqLink": "FAQ",
 		"docs": "Documentazione",
@@ -1388,12 +1411,12 @@
 				"bullet3": "Gestione DNS completa tramite integrazione Cloudflare"
 			},
 			"tags": {
-				"tag": "Organizzazione",
-				"title": "Tag Colorati per un'Organizzazione Facile",
-				"description": "Mantieni la tua libreria di QR code organizzata con tag colorati personalizzati. Crea categorie, filtra per tag e trova qualsiasi codice istantaneamente.",
-				"bullet1": "Crea tag colorati personalizzati illimitati",
-				"bullet2": "Assegna più tag per QR code",
-				"bullet3": "Filtra e cerca la tua collezione per tag"
+				"tag": "Organizzazione e analisi",
+				"title": "Tag per organizzare, raggruppare e analizzare",
+				"description": "Assegna tag colorati ai tuoi codici QR e URL brevi per raggrupparli per campagna, canale o qualsiasi categoria. Usa i tag per filtrare la tua collezione e analizzare le prestazioni per gruppo.",
+				"bullet1": "Tagga codici QR e URL brevi per raggruppare le campagne",
+				"bullet2": "Filtra, cerca e confronta per tag",
+				"bullet3": "Analizza le prestazioni di scansioni e clic per tag"
 			},
 			"bulkOperations": {
 				"tag": "Produttività",
@@ -1436,6 +1459,23 @@
 				"bullet3": "Collaborare sui codici QR con tutto il team"
 			}
 		},
+		"products": {
+			"qrCodes": {
+				"title": "Codici QR",
+				"description": "Crea codici QR dinamici completamente personalizzabili con loghi, colori e modelli. Monitora ogni scansione in tempo reale."
+			},
+			"urlShortener": {
+				"title": "Accorciatore URL",
+				"description": "Accorcia qualsiasi link, usa domini personalizzati brandizzati e monitora ogni clic con analisi in tempo reale."
+			},
+			"analytics": {
+				"title": "Analisi",
+				"description": "Monitora ogni scansione e clic su tutti i tuoi codici QR e URL brevi con approfondimenti dettagliati."
+			}
+		},
+		"moreFeatures": {
+			"title": "E Molto Altro Ancora"
+		},
 		"cta": {
 			"title": "Pronto per iniziare?",
 			"subtitle": "Crea il tuo primo QR code in pochi secondi. Gratis per sempre, senza carta di credito.",
@@ -1461,11 +1501,342 @@
 		},
 		"customDomain": {
 			"title": "Usa il tuo dominio",
-			"description": "Collega un dominio personalizzato in modo che i link brevi dei tuoi codici QR utilizzino il tuo marchio."
+			"description": "Collega un dominio personalizzato in modo che le URL brevi dei tuoi codici QR utilizzino il tuo marchio."
 		},
 		"organizeTags": {
 			"title": "Organizza con i tag",
 			"description": "Aggiungi tag ai tuoi codici QR per raggrupparli, filtrarli e trovarli più facilmente."
+		}
+	},
+	"productsUrlShortener": {
+		"metaTitle": "Accorciatore URL - Accorcia, Brandizza e Monitora i Link",
+		"metaDescription": "Accorcia qualsiasi URL, usa domini personalizzati brandizzati e monitora ogni clic con analisi in tempo reale. Accorciatore URL gratuito di QRcodly.",
+		"badge": "Accorciatore URL",
+		"hero": {
+			"title": "Accorcia i Link. Monitora i Clic. Cresci Più Velocemente.",
+			"subtitle": "Crea URL brevi brandizzati, monitora le prestazioni in tempo reale e gestisci tutti i tuoi link da un'unica potente dashboard.",
+			"ctaLabel": "Inizia ad Accorciare Gratis"
+		},
+		"stats": {
+			"stat1Value": "1.000+",
+			"stat1Label": "Utenti attivi",
+			"stat2Value": "10K+",
+			"stat2Label": "Click giornalieri",
+			"stat3Value": "< 50ms",
+			"stat3Label": "Velocità di redirect",
+			"stat4Value": "24/7",
+			"stat4Label": "Disponibilità"
+		},
+		"useCases": {
+			"title": "Progettato per Ogni Team",
+			"subtitle": "Dai creatori singoli ai dipartimenti marketing aziendali — l'accorciatore URL di QRcodly si adatta alle tue esigenze.",
+			"case1Title": "Team Marketing",
+			"case1Description": "Monitora le performance delle campagne su tutti i canali con link brandizzati e analisi dettagliate dei clic.",
+			"case2Title": "Social Media Manager",
+			"case2Description": "Crea link puliti e brandizzati per ogni post. Monitora l'engagement su tutte le piattaforme da un'unica dashboard.",
+			"case3Title": "Vendite e Partnership",
+			"case3Description": "Condividi link tracciabili nelle email di outreach e nelle proposte. Scopri chi clicca, quando e da dove.",
+			"case4Title": "E-Commerce",
+			"case4Description": "Accorcia i link dei prodotti per annunci e campagne email. Monitora le conversioni da ogni punto di contatto.",
+			"case5Title": "Sviluppatori e API",
+			"case5Description": "Integra l'accorciamento URL nelle tue app tramite la nostra API REST. Documentazione completa e supporto SDK.",
+			"case6Title": "Agenzie",
+			"case6Description": "Gestisci i link dei clienti con domini personalizzati. URL brevi white-label con il branding dei tuoi clienti."
+		},
+		"features": {
+			"brandedLinks": {
+				"title": "Link Brandizzati con Domini Personalizzati",
+				"description": "Sostituisci gli URL brevi generici con il dominio del tuo brand. Costruisci fiducia, aumenta i tassi di clic e rafforza la tua identità con ogni link che condividi.",
+				"bullet1": "Collega il tuo dominio in pochi minuti",
+				"bullet2": "Provisioning automatico del certificato SSL",
+				"bullet3": "Gestione DNS completa tramite Cloudflare"
+			},
+			"analytics": {
+				"title": "Analisi dei Clic in Tempo Reale",
+				"description": "Scopri esattamente come performano i tuoi link. Monitora i clic totali, i visitatori unici, la distribuzione geografica, i dispositivi e i browser — tutto aggiornato in tempo reale.",
+				"bullet1": "Monitoraggio dei clic totali e dei visitatori unici",
+				"bullet2": "Dettaglio per dispositivo, browser e sistema operativo",
+				"bullet3": "Distribuzione geografica per paese"
+			},
+			"management": {
+				"title": "Gestione Organizzata dei Link",
+				"description": "Mantieni tutti i tuoi URL brevi organizzati con tag, controlli di stato e una dashboard ricercabile. Attiva o disattiva i link istantaneamente e trova qualsiasi link in pochi secondi.",
+				"bullet1": "Tagga e categorizza i link per un filtraggio facile",
+				"bullet2": "Attiva o disattiva i link con un solo clic",
+				"bullet3": "Cerca e ordina l'intera libreria di link"
+			},
+			"bulkOperations": {
+				"title": "Operazioni Massive sui Link",
+				"comingSoon": "In arrivo",
+				"description": "Crea, esporta e gestisci centinaia di URL brevi in una volta sola. Perfetto per grandi campagne, cataloghi prodotti e workflow aziendali.",
+				"bullet1": "Creazione massiva tramite importazione CSV",
+				"bullet2": "Esporta tutti i link con metadati completi",
+				"bullet3": "Attiva, disattiva o tagga link in blocco"
+			},
+			"apiAccess": {
+				"title": "API REST e Integrazioni",
+				"description": "Integra l'accorciamento URL nelle tue app e nei tuoi workflow. La nostra API REST documentata rende semplice la gestione programmatica dei link.",
+				"bullet1": "API REST completa con autenticazione tramite chiave API",
+				"bullet2": "Crea, leggi, aggiorna ed elimina link in modo programmatico",
+				"bullet3": "Documentazione API completa",
+				"actionLabel": "Vedi documentazione API"
+			}
+		},
+		"crossProducts": {
+			"title": "Scopri Altri Prodotti QRcodly",
+			"qrCodes": {
+				"title": "Codici QR",
+				"description": "Crea codici QR dinamici completamente personalizzabili con loghi, colori e monitoraggio delle scansioni in tempo reale."
+			},
+			"analytics": {
+				"title": "Analisi",
+				"description": "Dashboard di analisi unificata per tutti i tuoi codici QR e URL brevi con informazioni su dispositivi, posizioni e browser."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "L'accorciatore URL è gratuito?",
+			"a1": "Sì! L'accorciatore URL di QRcodly è gratuito. Puoi creare URL brevi, monitorare i clic e gestire i tuoi link senza costi. I piani Pro sbloccano funzionalità avanzate come i domini personalizzati.",
+			"q2": "Posso usare il mio dominio per le URL brevi?",
+			"a2": "Assolutamente. Collega il tuo dominio per creare URL brevi brandizzate come go.tuobrand.com/u/x7k9m. I domini personalizzati sono disponibili nei piani Pro con provisioning SSL automatico.",
+			"q3": "Come funziona il monitoraggio dei clic?",
+			"a3": "Ogni volta che qualcuno clicca il tuo URL breve, QRcodly registra il clic insieme a metadati come tipo di dispositivo, browser, sistema operativo e posizione geografica — tutto in tempo reale.",
+			"q4": "Posso modificare un URL breve dopo averlo creato?",
+			"a4": "Sì. Puoi aggiornare l'URL di destinazione, attivare o disattivare l'URL breve e gestire i tag in qualsiasi momento dalla tua dashboard senza modificare l'URL breve stessa.",
+			"q5": "Gli URL brevi scadono?",
+			"a5": "No. Gli URL brevi creati con QRcodly non scadono mai. Rimangono attivi finché il tuo account esiste e puoi disattivarli manualmente se necessario.",
+			"q6": "Qual è la differenza tra URL brevi e codici QR?",
+			"a6": "Gli URL brevi sono link cliccabili da condividere digitalmente (email, social media, annunci). I codici QR sono immagini scannerizzabili per supporti fisici (stampa, packaging, segnaletica). Entrambi monitorano le analisi e possono utilizzare domini personalizzati."
+		},
+		"cta": {
+			"title": "Pronto ad accorciare il tuo primo link?",
+			"subtitle": "Crea URL brevi brandizzati con analisi complete. Gratis per sempre, senza carta di credito.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+	"productsQrCodes": {
+		"metaTitle": "Generatore di Codici QR - Crea Codici QR Dinamici Personalizzati",
+		"metaDescription": "Crea codici QR dinamici completamente personalizzabili con loghi, colori e modelli. Monitora ogni scansione con analisi in tempo reale. Generatore di codici QR gratuito.",
+		"badge": "Codici QR",
+		"hero": {
+			"title": "Crea Codici QR Che Lavorano di Più.",
+			"subtitle": "Progetta codici QR straordinari con colori personalizzati, loghi e stili. Aggiorna il contenuto in qualsiasi momento, monitora ogni scansione e gestisci tutto da un'unica dashboard.",
+			"ctaLabel": "Crea il Tuo Codice QR Gratis"
+		},
+		"stats": {
+			"stat1Value": "100K+",
+			"stat1Label": "Codici QR creati",
+			"stat2Value": "9+",
+			"stat2Label": "Tipi di contenuto",
+			"stat3Value": "10K+",
+			"stat3Label": "Scansioni al giorno",
+			"stat4Value": "1.000+",
+			"stat4Label": "Utenti attivi"
+		},
+		"useCases": {
+			"title": "Codici QR per Ogni Settore",
+			"subtitle": "Che tu sia una piccola impresa o un brand globale, i codici QR dinamici stimolano l'engagement nel mondo reale.",
+			"case1Title": "Ristoranti e Ospitalità",
+			"case1Description": "Menu digitali, accesso WiFi e ordini al tavolo — tutto con una semplice scansione. Aggiorna i contenuti senza ristampare.",
+			"case2Title": "Retail ed E-Commerce",
+			"case2Description": "Informazioni sui prodotti, promozioni e programmi fedeltà sulle confezioni. Monitora quali prodotti generano più scansioni.",
+			"case3Title": "Eventi e Conferenze",
+			"case3Description": "Biglietti, programmi e scambio di contatti tramite codici QR vCard. Perfetto per badge e materiali stampati.",
+			"case4Title": "Immobiliare",
+			"case4Description": "Annunci immobiliari, tour virtuali e contatti dell'agente sulla segnaletica. Monitora l'interesse per posizione.",
+			"case5Title": "Istruzione",
+			"case5Description": "Collega studenti a risorse, compiti e materiali didattici. Aggiorna le destinazioni in qualsiasi momento.",
+			"case6Title": "Marketing e Pubblicità",
+			"case6Description": "Collega campagne cartacee e digitali. Monitora i tassi di scansione su cartelloni, volantini e posta diretta."
+		},
+		"features": {
+			"customization": {
+				"title": "Design Completamente Personalizzabile",
+				"description": "Vai oltre i codici in bianco e nero. Personalizza colori, stili degli angoli e aggiungi il tuo logo per creare codici QR che si abbinano perfettamente all'identità del tuo brand.",
+				"bullet1": "Colori personalizzati per primo piano, sfondo e angoli",
+				"bullet2": "Molteplici stili per punti e quadrati degli angoli",
+				"bullet3": "Carica il tuo logo per codici QR brandizzati"
+			},
+			"analytics": {
+				"title": "Analisi e Monitoraggio delle Scansioni",
+				"description": "Ogni codice QR dinamico include analisi integrate. Scopri chi scansiona, quando, dove e con quale dispositivo — tutto in tempo reale dalla tua dashboard.",
+				"bullet1": "Monitoraggio delle scansioni e dei visitatori in tempo reale",
+				"bullet2": "Dettaglio per dispositivo, browser e sistema operativo",
+				"bullet3": "Distribuzione geografica per paese"
+			},
+			"contentTypes": {
+				"title": "Oltre 9 Tipi di Contenuto Supportati",
+				"description": "Crea codici QR per molto più che semplici URL. Supporto per reti WiFi, biglietti da visita, eventi calendario, email, posizioni, pagamenti e altro ancora.",
+				"bullet1": "URL, WiFi, vCard, Email e Testo",
+				"bullet2": "Eventi calendario con supporto completo dei dettagli",
+				"bullet3": "Posizioni geografiche e link di pagamento EPC"
+			},
+			"dynamicUpdates": {
+				"title": "Aggiornamenti Dinamici dei Contenuti",
+				"description": "Cambia la destinazione del tuo codice QR senza ristampare. Aggiorna URL, cambia tipo di contenuto o reindirizza a campagne stagionali — i tuoi codici QR stampati restano invariati.",
+				"bullet1": "Aggiorna gli URL di destinazione in qualsiasi momento",
+				"bullet2": "Cambia tipo di contenuto al volo",
+				"bullet3": "Nessuna ristampa necessaria — mai"
+			},
+			"bulkTemplates": {
+				"title": "Modelli e Creazione Massiva",
+				"description": "Salva il design del codice QR del tuo brand come modello riutilizzabile. Poi crea centinaia di codici QR in una volta tramite importazione CSV, tutti con uno stile coerente.",
+				"bullet1": "Salva e riutilizza modelli di design del brand",
+				"bullet2": "Creazione massiva tramite caricamento CSV",
+				"bullet3": "Branding coerente su tutti i codici QR"
+			},
+			"apiAccess": {
+				"title": "API REST e integrazioni",
+				"description": "Integra la generazione di codici QR nelle tue applicazioni e workflow. La nostra API REST documentata rende semplice la creazione e gestione programmatica dei codici QR.",
+				"bullet1": "API REST completa con autenticazione tramite chiave API",
+				"bullet2": "Crea, personalizza e gestisci codici QR in modo programmatico",
+				"bullet3": "Documentazione API completa",
+				"actionLabel": "Vedi documentazione API"
+			}
+		},
+		"crossProducts": {
+			"title": "Scopri Altri Prodotti QRcodly",
+			"urlShortener": {
+				"title": "Accorciatore URL",
+				"description": "Accorcia qualsiasi link, usa domini personalizzati e monitora ogni clic con analisi in tempo reale."
+			},
+			"analytics": {
+				"title": "Analisi",
+				"description": "Dashboard di analisi unificata per tutti i tuoi codici QR e URL brevi con informazioni su dispositivi, posizioni e browser."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Il generatore di codici QR è gratuito?",
+			"a1": "Sì! QRcodly ti permette di creare codici QR statici e dinamici illimitati gratuitamente. Nessun costo nascosto, nessun watermark e nessuna registrazione richiesta per i codici QR base.",
+			"q2": "Cosa sono i codici QR dinamici?",
+			"a2": "I codici QR dinamici ti permettono di cambiare l'URL di destinazione dopo la stampa del codice. Monitorano anche ogni scansione con analisi dettagliate — senza bisogno di ristampare quando il contenuto cambia.",
+			"q3": "Posso aggiungere il mio logo a un codice QR?",
+			"a3": "Assolutamente. Carica qualsiasi immagine come logo centrale per il tuo codice QR. Puoi anche personalizzare colori, stili degli angoli e salvare i design come modelli riutilizzabili.",
+			"q4": "Quali tipi di contenuto sono supportati?",
+			"a4": "QRcodly supporta oltre 9 tipi di contenuto: URL, Testo, WiFi, vCard (biglietti da visita), Email, Posizione, Eventi Calendario, EPC (pagamento) e profili Social Media.",
+			"q5": "Posso monitorare le scansioni dei codici QR?",
+			"a5": "Sì. Ogni codice QR dinamico monitora le scansioni in tempo reale, mostrando scansioni totali, visitatori unici, tipi di dispositivo, browser, sistemi operativi e posizioni geografiche.",
+			"q6": "I codici QR scadono?",
+			"a6": "No. I codici QR creati con QRcodly non scadono mai. I codici QR dinamici rimangono completamente funzionanti e monitorabili finché il tuo account esiste."
+		},
+		"cta": {
+			"title": "Pronto a creare il tuo primo codice QR?",
+			"subtitle": "Progetta codici QR personalizzati con monitoraggio completo delle analisi. Gratis per sempre, senza carta di credito.",
+			"ctaLabel": "Crea Codice QR Ora"
+		}
+	},
+	"productsAnalytics": {
+		"metaTitle": "Analisi - Monitora le Prestazioni di Codici QR e URL Brevi",
+		"metaDescription": "Monitora ogni scansione e clic su codici QR e URL brevi. Analisi in tempo reale con informazioni su dispositivi, browser, posizioni e canali. Analisi gratuite di QRcodly.",
+		"badge": "Analisi",
+		"hero": {
+			"title": "Scopri cosa fanno davvero i tuoi codici QR e link.",
+			"subtitle": "Monitora ogni scansione e clic su tutti i tuoi codici QR e URL brevi. Ottieni informazioni in tempo reale su dispositivi, posizioni, browser e prestazioni dei canali.",
+			"ctaLabel": "Inizia a Monitorare Gratis"
+		},
+		"stats": {
+			"stat1Value": "Tempo reale",
+			"stat1Label": "Aggiornamento dati",
+			"stat2Value": "10K+",
+			"stat2Label": "Eventi giornalieri",
+			"stat3Value": "2",
+			"stat3Label": "Integrazioni",
+			"stat4Value": "100%",
+			"stat4Label": "Privacy al primo posto"
+		},
+		"useCases": {
+			"title": "Analisi che Guidano le Decisioni",
+			"subtitle": "Trasforma i dati di scansioni e clic in informazioni utili per il tuo team.",
+			"case1Title": "Ottimizzazione delle Campagne",
+			"case1Description": "Confronta le prestazioni di codici QR e URL brevi fianco a fianco. Concentrati sui canali che convertono.",
+			"case2Title": "Targeting Geografico",
+			"case2Description": "Scopri da dove scannerizza il tuo pubblico. Ottimizza le campagne regionali sulla base di dati reali.",
+			"case3Title": "Intelligenza sui Dispositivi",
+			"case3Description": "Comprendi i dispositivi e i browser del tuo pubblico. Ottimizza le landing page per le piattaforme che contano.",
+			"case4Title": "Monitoraggio campagne",
+			"case4Description": "Usa i tag per raggruppare codici QR e URL brevi per campagna. Confronta i risultati tra canali e periodi.",
+			"case5Title": "Test A/B",
+			"case5Description": "Crea più codici QR o URL brevi per la stessa destinazione. Confronta quale design o posizionamento performa meglio.",
+			"case6Title": "Integrazione con Terze Parti",
+			"case6Description": "Inoltra i dati a Google Analytics 4 o Matomo. Mantieni aggiornato il tuo stack di analisi esistente."
+		},
+		"features": {
+			"realTime": {
+				"title": "Metriche di Prestazione in Tempo Reale",
+				"description": "Visualizza i tuoi dati nel momento in cui vengono generati. Monitora scansioni, clic e visitatori unici in tempo reale con dettagli per dispositivo, browser e sistema operativo.",
+				"bullet1": "Monitoraggio live di scansioni e clic",
+				"bullet2": "Dettaglio per dispositivo, browser e sistema operativo",
+				"bullet3": "Identificazione dei visitatori unici"
+			},
+			"channels": {
+				"title": "Monitoraggio campagne con tag",
+				"comingSoon": "In arrivo",
+				"description": "Raggruppa codici QR e URL brevi per campagna usando i tag. Confronta le prestazioni tra campagne, canali e periodi — tutto da un'unica dashboard.",
+				"bullet1": "Raggruppamento basato su tag per campagne e canali",
+				"bullet2": "Confronta le prestazioni di diversi tag fianco a fianco",
+				"bullet3": "Identifica le tue migliori campagne a colpo d'occhio"
+			},
+			"integrations": {
+				"title": "Integrazioni di Terze Parti",
+				"description": "Inoltra i dati di scansioni e clic a Google Analytics 4 o Matomo. Mantieni il tuo flusso di lavoro di analisi esistente mentre le analisi integrate di QRcodly rimangono completamente attive.",
+				"bullet1": "Collega Google Analytics 4 o Matomo in pochi minuti",
+				"bullet2": "Vengono condivisi solo dati anonimizzati e non personali",
+				"bullet3": "Le analisi integrate di QRcodly rimangono invariate"
+			},
+			"geographic": {
+				"title": "Approfondimenti Geografici",
+				"description": "Scopri esattamente dove si trova il tuo pubblico. I dati di posizione a livello di paese per ogni scansione e clic ti aiutano a comprendere i pattern di engagement regionali.",
+				"bullet1": "Monitoraggio della posizione a livello di paese",
+				"bullet2": "Identifica le regioni con le migliori prestazioni",
+				"bullet3": "Privacy al primo posto: gli indirizzi IP non vengono mai memorizzati"
+			},
+			"exportReporting": {
+				"title": "Esportazione dati e reporting",
+				"comingSoon": "In arrivo",
+				"description": "Esporta i tuoi dati analitici per report personalizzati e presentazioni. Filtra per intervallo di date, dispositivo o posizione e scarica tutto ciò di cui hai bisogno.",
+				"bullet1": "Esporta dati di scansioni e clic come CSV",
+				"bullet2": "Filtra per intervallo di date, dispositivo o posizione",
+				"bullet3": "Perfetto per report di team e presentazioni"
+			},
+			"privacy": {
+				"title": "Analisi rispettose della privacy",
+				"description": "Tutti i dati vengono raccolti in modo anonimo e senza identificatori personali. Gli indirizzi IP vengono troncati, i user agent ridotti alla categoria del dispositivo — senza cookie né fingerprinting.",
+				"bullet1": "Gli indirizzi IP vengono troncati — mai memorizzati per intero",
+				"bullet2": "I user agent vengono ridotti a tipo di dispositivo, SO e browser",
+				"bullet3": "Nessun cookie, nessun fingerprinting, nessun dato personale"
+			}
+		},
+		"crossProducts": {
+			"title": "Scopri Altri Prodotti QRcodly",
+			"urlShortener": {
+				"title": "Accorciatore URL",
+				"description": "Accorcia qualsiasi link, usa domini personalizzati e monitora ogni clic con analisi in tempo reale."
+			},
+			"qrCodes": {
+				"title": "Codici QR",
+				"description": "Crea codici QR dinamici completamente personalizzabili con loghi, colori e monitoraggio delle scansioni in tempo reale."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Quali analisi fornisce QRcodly?",
+			"a1": "QRcodly monitora scansioni/clic totali, visitatori unici, tipi di dispositivo, browser, sistemi operativi e posizioni geografiche sia per codici QR che per URL brevi — tutto in tempo reale.",
+			"q2": "Le analisi sono incluse gratuitamente?",
+			"a2": "Sì! Le analisi integrate sono incluse gratuitamente per tutti i codici QR dinamici e gli URL brevi. Ottieni monitoraggio delle scansioni/clic in tempo reale, dettagli sui dispositivi e informazioni geografiche senza costi.",
+			"q3": "Posso collegare Google Analytics?",
+			"a3": "Sì. Gli utenti del piano Pro possono inoltrare i dati di scansioni e clic a Google Analytics 4 o Matomo. Vengono condivisi solo dati anonimizzati e non identificabili, e le analisi integrate di QRcodly rimangono completamente attive.",
+			"q4": "Come vengono raccolti i dati geografici?",
+			"a4": "I dati geografici vengono derivati dall'indirizzo IP al momento della scansione o del clic. L'IP viene anonimizzato e mai memorizzato. Viene registrata solo la posizione a livello di paese.",
+			"q5": "Posso confrontare le prestazioni di codici QR e URL brevi?",
+			"a5": "Sì. La tua dashboard QRcodly mostra analisi unificate su tutti i codici QR e URL brevi, rendendo facile confrontare i canali e identificare i migliori performer.",
+			"q6": "I dati sono in tempo reale?",
+			"a6": "Sì. Tutti i dati analitici di QRcodly si aggiornano in tempo reale. Non appena qualcuno scansiona un codice QR o clicca un URL breve, i dati appaiono nella tua dashboard."
+		},
+		"cta": {
+			"title": "Pronto a scoprire cosa possono dirti i tuoi link?",
+			"subtitle": "Monitora ogni scansione e clic con analisi in tempo reale. Gratis per sempre, senza carta di credito.",
+			"ctaLabel": "Inizia a Monitorare Gratis"
 		}
 	}
 }

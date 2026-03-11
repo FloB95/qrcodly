@@ -11,6 +11,7 @@ import { auth } from '@clerk/nextjs/server';
 import { notFound } from 'next/navigation';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { Hero } from '@/components/Hero';
+import { ProductStatsBar } from '@/components/products/ProductStatsBar';
 import dynamic from 'next/dynamic';
 
 // Dynamic imports for below-the-fold components to reduce initial bundle size
@@ -40,6 +41,7 @@ export default async function Page({ params }: DefaultPageParams) {
 	}
 
 	const tMeta = await getTranslations({ locale, namespace: 'metadata' });
+	const tStats = await getTranslations({ locale, namespace: 'homeStats' });
 	const { userId } = await auth();
 	const isSignedIn = !!userId;
 
@@ -106,6 +108,14 @@ export default async function Page({ params }: DefaultPageParams) {
 					</Container>
 				</article>
 			</QrCodeGeneratorStoreProvider>
+
+			{/* Stats Bar */}
+			<ProductStatsBar
+				stats={Array.from({ length: 4 }, (_, i) => ({
+					value: tStats(`stat${i + 1}Value`),
+					label: tStats(`stat${i + 1}Label`),
+				}))}
+			/>
 
 			{/* Features Slider */}
 			<section id="features" aria-label="Features" className="py-10 sm:py-24">

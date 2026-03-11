@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod/v3';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -50,11 +50,12 @@ export function EditShortUrlDialog({ shortUrl, open, onOpenChange }: EditShortUr
 	});
 
 	useEffect(() => {
+		if (!open) return;
 		form.reset({
 			destinationUrl: shortUrl.destinationUrl ?? '',
 			customDomainId: shortUrl.customDomain?.id ?? null,
 		});
-	}, [form, shortUrl]);
+	}, [form, shortUrl, open]);
 
 	const onSubmit = async (data: EditShortUrlForm) => {
 		try {
@@ -67,7 +68,8 @@ export function EditShortUrlDialog({ shortUrl, open, onOpenChange }: EditShortUr
 			});
 			posthog.capture('short-url-updated', {
 				shortCode: shortUrl.shortCode,
-				destinationUrl: data.destinationUrl,
+				destinationChanged: data.destinationUrl !== shortUrl.destinationUrl,
+				hasCustomDomain: Boolean(data.customDomainId),
 			});
 			toast({ title: t('edit.success') });
 			onOpenChange(false);

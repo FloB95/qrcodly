@@ -7,6 +7,9 @@ const PAGES = [
 	'docs',
 	'plans',
 	'features',
+	'products/url-shortener',
+	'products/qr-codes',
+	'products/analytics',
 	'imprint',
 	'privacy-policy',
 ];
