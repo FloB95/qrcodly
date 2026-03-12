@@ -18,15 +18,13 @@ import {
 } from '@/components/ui/form';
 import { toast } from '@/components/ui/use-toast';
 import { useUpdateShortUrlMutation } from '@/lib/api/url-shortener';
-import { DomainSelector } from '@/components/qr-generator/content/DomainSelector';
 import type { TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
 import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
 
 const editShortUrlSchema = z.object({
-	destinationUrl: z.string().url(),
-	customDomainId: z.string().nullable(),
+	destinationUrl: z.httpUrl(),
 });
 
 type EditShortUrlForm = z.infer<typeof editShortUrlSchema>;
@@ -51,7 +49,6 @@ export function EditShortUrlDialog({
 		resolver: zodResolver(editShortUrlSchema),
 		defaultValues: {
 			destinationUrl: shortUrl.destinationUrl ?? '',
-			customDomainId: shortUrl.customDomain?.id ?? null,
 		},
 	});
 
@@ -59,7 +56,6 @@ export function EditShortUrlDialog({
 		if (!open) return;
 		form.reset({
 			destinationUrl: shortUrl.destinationUrl ?? '',
-			customDomainId: shortUrl.customDomain?.id ?? null,
 		});
 	}, [form, shortUrl, open]);
 
@@ -69,13 +65,11 @@ export function EditShortUrlDialog({
 				shortCode: shortUrl.shortCode,
 				data: {
 					destinationUrl: data.destinationUrl,
-					customDomainId: data.customDomainId,
 				},
 			});
 			posthog.capture('short-url-updated', {
 				shortCode: shortUrl.shortCode,
 				destinationChanged: data.destinationUrl !== shortUrl.destinationUrl,
-				hasCustomDomain: Boolean(data.customDomainId),
 			});
 			toast({ title: t('edit.success') });
 			onOpenChange(false);
@@ -121,13 +115,6 @@ export function EditShortUrlDialog({
 									</FormControl>
 									<FormMessage />
 								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="customDomainId"
-							render={({ field }) => (
-								<DomainSelector value={field.value} onChange={field.onChange} />
 							)}
 						/>
 						<div className="flex justify-end">

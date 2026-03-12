@@ -11,11 +11,13 @@ export function ProductHeroSection({
 	subtitle,
 	ctaLabel,
 	ctaHref,
+	children,
 }: {
 	title: string;
 	subtitle: string;
-	ctaLabel: string;
-	ctaHref: string;
+	ctaLabel?: string;
+	ctaHref?: string;
+	children?: React.ReactNode;
 }) {
 	return (
 		<Container>
@@ -27,9 +29,12 @@ export function ProductHeroSection({
 				</AnimateOnLoad>
 				<AnimateOnLoad delay={0.2}>
 					<p className="mx-auto max-w-2xl text-lg sm:text-xl text-slate-700 mb-8">{subtitle}</p>
-					<Link href={ctaHref} className={buttonVariants({ size: 'lg' })}>
-						{ctaLabel}
-					</Link>
+					{children ??
+						(ctaLabel && ctaHref ? (
+							<Link href={ctaHref} className={buttonVariants({ size: 'lg' })}>
+								{ctaLabel}
+							</Link>
+						) : null)}
 				</AnimateOnLoad>
 			</div>
 		</Container>

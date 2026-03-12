@@ -138,7 +138,7 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 
 				{/* Status */}
 				<TableCell className="py-2">
-					<Badge variant={shortUrl.isActive ? 'default' : 'outline'} className="text-xs">
+					<Badge variant={shortUrl.isActive ? 'blue' : 'outline'} className="text-xs">
 						{shortUrl.isActive ? t('status.active') : t('status.inactive')}
 					</Badge>
 				</TableCell>

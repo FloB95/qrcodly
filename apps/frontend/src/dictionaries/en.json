@@ -3,7 +3,7 @@
 		"nav": {
 			"collection": "Collections",
 			"qrCodes": "QR Codes",
-			"shortUrls": "Short URLs",
+			"shortUrls": "URL Shortener",
 			"templates": "Templates",
 			"tags": "Tags"
 		}
@@ -25,7 +25,8 @@
 			"destinationPlaceholder": "https://example.com/long-url",
 			"domainLabel": "Custom Domain",
 			"submitBtn": "Create",
-			"success": "Short URL created successfully"
+			"success": "Short URL created successfully",
+			"successDescription": "We saved your short URL in your collection for later use."
 		},
 		"edit": {
 			"title": "Edit Short URL",
@@ -91,7 +92,8 @@
 		"days": "Days",
 		"newBadge": "New!",
 		"dynamicDescription": "Dynamic QR codes can be edited after creation, track every scan, and provide detailed statistics – all without needing to reprint the code.",
-		"dynamicBadgeTooltip": "Enables changing content later without a new QR code. <i>Hover for more info</i>"
+		"dynamicBadgeTooltip": "Enables changing content later without a new QR code. <i>Hover for more info</i>",
+		"copyFailed": "Could not copy to clipboard. Please copy manually."
 	},
 	"hero": {
 		"badge": "Open Source & Free Forever",
@@ -1515,7 +1517,14 @@
 		"hero": {
 			"title": "Shorten Links. Track Clicks. Grow Faster.",
 			"subtitle": "Create branded short URLs, monitor performance in real time, and manage all your links from one powerful dashboard.",
-			"ctaLabel": "Start Shortening for Free"
+			"ctaLabel": "Start Shortening for Free",
+			"inputLabel": "Enter your URL here",
+			"inputPlaceholder": "https://example.com/my-long-url",
+			"submitBtn": "Shorten Link for Free",
+			"successMessage": "Your short link is ready!",
+			"copyBtn": "Copy",
+			"copiedBtn": "Copied!",
+			"createAnother": "Shorten another URL"
 		},
 		"stats": {
 			"stat1Value": "1,000+",
@@ -1607,11 +1616,6 @@
 			"a5": "No. Short URLs created with QRcodly never expire. They remain active as long as your account exists, and you can disable them manually if needed.",
 			"q6": "What's the difference between short URLs and QR codes?",
 			"a6": "Short URLs are clickable links you share digitally (email, social media, ads). QR codes are scannable images for physical media (print, packaging, signage). Both track analytics and can use custom domains."
-		},
-		"cta": {
-			"title": "Ready to shorten your first link?",
-			"subtitle": "Create branded short URLs with full analytics. Free forever, no credit card required.",
-			"ctaLabel": "Get Started Free"
 		}
 	},
 	"productsQrCodes": {

@@ -3,7 +3,7 @@
 		"nav": {
 			"collection": "Collections",
 			"qrCodes": "Codes QR",
-			"shortUrls": "URLs courtes",
+			"shortUrls": "Raccourcisseur d'URL",
 			"templates": "Modèles",
 			"tags": "Étiquettes"
 		}
@@ -25,7 +25,8 @@
 			"destinationPlaceholder": "https://example.com/long-url",
 			"domainLabel": "Domaine personnalisé",
 			"submitBtn": "Créer",
-			"success": "URL courte créée avec succès"
+			"success": "URL courte créée avec succès",
+			"successDescription": "Nous avons enregistré votre URL courte dans votre collection."
 		},
 		"edit": {
 			"title": "Modifier l'URL courte",
@@ -91,7 +92,8 @@
 		"days": "Jours",
 		"newBadge": "Nouveau !",
 		"dynamicDescription": "Les QR codes dynamiques peuvent être modifiés après création, suivent chaque scan et fournissent des statistiques détaillées – sans besoin de réimprimer le code.",
-		"dynamicBadgeTooltip": "Permet de modifier le contenu ultérieurement sans nouveau code QR. <i>Survolez pour plus d'infos</i>"
+		"dynamicBadgeTooltip": "Permet de modifier le contenu ultérieurement sans nouveau code QR. <i>Survolez pour plus d'infos</i>",
+		"copyFailed": "Impossible de copier dans le presse-papiers. Veuillez copier manuellement."
 	},
 	"hero": {
 		"badge": "Open Source et Gratuit Pour Toujours",
@@ -1515,7 +1517,14 @@
 		"hero": {
 			"title": "Raccourcissez vos liens. Suivez les clics. Grandissez plus vite.",
 			"subtitle": "Créez des URLs courtes de marque, surveillez les performances en temps réel et gérez tous vos liens depuis un tableau de bord puissant.",
-			"ctaLabel": "Commencer à raccourcir gratuitement"
+			"ctaLabel": "Commencer à raccourcir gratuitement",
+			"inputLabel": "Entrez votre URL ici",
+			"inputPlaceholder": "https://exemple.fr/mon-url-longue",
+			"submitBtn": "Raccourcir le lien gratuitement",
+			"successMessage": "Votre lien court est prêt !",
+			"copyBtn": "Copier",
+			"copiedBtn": "Copié !",
+			"createAnother": "Raccourcir une autre URL"
 		},
 		"stats": {
 			"stat1Value": "1 000+",
@@ -1607,11 +1616,6 @@
 			"a5": "Non. Les URLs courtes créées avec QRcodly n'expirent jamais. Elles restent actives tant que votre compte existe, et vous pouvez les désactiver manuellement si nécessaire.",
 			"q6": "Quelle est la différence entre les URLs courtes et les QR codes ?",
 			"a6": "Les URLs courtes sont des liens cliquables que vous partagez numériquement (e-mail, réseaux sociaux, publicités). Les QR codes sont des images scannables pour les supports physiques (impression, emballage, signalétique). Les deux suivent les analyses et peuvent utiliser des domaines personnalisés."
-		},
-		"cta": {
-			"title": "Prêt à raccourcir votre premier lien ?",
-			"subtitle": "Créez des URLs courtes de marque avec des analyses complètes. Gratuit pour toujours, sans carte bancaire.",
-			"ctaLabel": "Commencer gratuitement"
 		}
 	},
 	"productsQrCodes": {

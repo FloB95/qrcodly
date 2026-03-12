@@ -40,7 +40,7 @@ export function DomainSelector({ value, onChange, disabled }: DomainSelectorProp
 	// If no verified domains, show a link to settings
 	if (verifiedDomains.length === 0) {
 		return (
-			<FormItem>
+			<FormItem className="space-y-2">
 				<FormLabel>{t('label')}</FormLabel>
 				<FormDescription>
 					{t('noDomains')}{' '}

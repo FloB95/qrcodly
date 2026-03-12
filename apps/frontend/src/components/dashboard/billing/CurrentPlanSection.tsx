@@ -63,11 +63,7 @@ export function CurrentPlanSection() {
 					<div>
 						<h3 className="text-lg font-semibold flex items-center gap-2 text-teal-700 dark:text-teal-500">
 							{tPlans('free.name')}
-							{!hasProPlan && (
-								<Badge className="bg-black text-white dark:bg-white dark:text-black">
-									{t('currentPlan')}
-								</Badge>
-							)}
+							{!hasProPlan && <Badge variant="blue">{t('currentPlan')}</Badge>}
 						</h3>
 					</div>
 

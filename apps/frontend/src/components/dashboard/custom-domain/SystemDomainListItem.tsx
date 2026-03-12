@@ -66,7 +66,7 @@ export function SystemDomainListItem({ systemDomain, isDefault }: SystemDomainLi
 				</div>
 			</TableCell>
 			<TableCell>
-				<Badge variant="default">{t('ready')}</Badge>
+				<Badge variant="blue">{t('ready')}</Badge>
 			</TableCell>
 			<TableCell className="text-muted-foreground">-</TableCell>
 			<TableCell>

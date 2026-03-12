@@ -53,9 +53,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				{...props}
 			>
 				{isLoading ? (
-					<span className="flex space-x-2">
+					<span className="flex items-center space-x-2">
 						<Loader2 className="h-6 w-6 animate-spin" />
-						<span className="flex flex-col justify-center">{props.children}</span>
+						<span className="flex items-center gap-2">{props.children}</span>
 					</span>
 				) : (
 					props.children

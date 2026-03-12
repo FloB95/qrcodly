@@ -3,7 +3,7 @@
 		"nav": {
 			"collection": "Sammlungen",
 			"qrCodes": "QR Codes",
-			"shortUrls": "Kurz-URLs",
+			"shortUrls": "URL Shortener",
 			"templates": "Vorlagen",
 			"tags": "Tags"
 		}
@@ -25,7 +25,8 @@
 			"destinationPlaceholder": "https://example.com/long-url",
 			"domainLabel": "Eigene Domain",
 			"submitBtn": "Erstellen",
-			"success": "Kurz-URL erfolgreich erstellt"
+			"success": "Kurz-URL erfolgreich erstellt",
+			"successDescription": "Wir haben deine Kurz-URL in deiner Sammlung gespeichert."
 		},
 		"edit": {
 			"title": "Kurz-URL bearbeiten",
@@ -91,7 +92,8 @@
 		"days": "Tage",
 		"newBadge": "Neu!",
 		"dynamicDescription": "Dynamische QR Codes können nach der Erstellung bearbeitet werden, tracken jeden Scan und liefern detaillierte Statistiken – ohne den Code neu drucken zu müssen.",
-		"dynamicBadgeTooltip": "Ermöglicht das spätere Ändern der Inhalte ohne neuen QR Code. <i>Hover für mehr Infos</i>"
+		"dynamicBadgeTooltip": "Ermöglicht das spätere Ändern der Inhalte ohne neuen QR Code. <i>Hover für mehr Infos</i>",
+		"copyFailed": "Kopieren in die Zwischenablage fehlgeschlagen. Bitte manuell kopieren."
 	},
 	"hero": {
 		"badge": "Open Source & Für Immer Kostenlos",
@@ -199,7 +201,7 @@
 		"featuresBtn": "Funktionen",
 		"plansBtn": "Preise",
 		"productsBtn": "Produkte",
-		"urlShortenerLink": "URL-Shortener",
+		"urlShortenerLink": "URL Shortener",
 		"qrCodesLink": "QR Codes",
 		"analyticsLink": "Analysen",
 		"urlShortenerDesc": "Links kürzen, branden und tracken",
@@ -1515,7 +1517,14 @@
 		"hero": {
 			"title": "Links kürzen. Klicks tracken. Schneller wachsen.",
 			"subtitle": "Erstelle gebrandete Kurz-URLs, überwache die Performance in Echtzeit und verwalte alle deine Links von einem leistungsstarken Dashboard aus.",
-			"ctaLabel": "Jetzt kostenlos kürzen"
+			"ctaLabel": "Jetzt kostenlos kürzen",
+			"inputLabel": "Deine URL hier eingeben",
+			"inputPlaceholder": "https://beispiel.de/meine-lange-url",
+			"submitBtn": "Kostenlos Link kürzen",
+			"successMessage": "Dein Kurzlink ist bereit!",
+			"copyBtn": "Kopieren",
+			"copiedBtn": "Kopiert!",
+			"createAnother": "Weitere URL kürzen"
 		},
 		"stats": {
 			"stat1Value": "1.000+",
@@ -1607,11 +1616,6 @@
 			"a5": "Nein. Kurz-URLs, die mit QRcodly erstellt wurden, laufen niemals ab. Sie bleiben aktiv, solange dein Konto existiert, und du kannst sie bei Bedarf manuell deaktivieren.",
 			"q6": "Was ist der Unterschied zwischen Kurz-URLs und QR Codes?",
 			"a6": "Kurz-URLs sind klickbare Links, die du digital teilst (E-Mail, Social Media, Anzeigen). QR Codes sind scannbare Bilder für physische Medien (Druck, Verpackung, Beschilderung). Beide tracken Analysen und können eigene Domains verwenden."
-		},
-		"cta": {
-			"title": "Bereit, deinen ersten Link zu kürzen?",
-			"subtitle": "Erstelle gebrandete Kurz-URLs mit vollständigen Analysen. Für immer kostenlos, keine Kreditkarte erforderlich.",
-			"ctaLabel": "Jetzt kostenlos starten"
 		}
 	},
 	"productsQrCodes": {

@@ -3,7 +3,7 @@
 		"nav": {
 			"collection": "Collecties",
 			"qrCodes": "QR Codes",
-			"shortUrls": "Korte URLs",
+			"shortUrls": "URL Verkorten",
 			"templates": "Sjablonen",
 			"tags": "Tags"
 		}
@@ -25,7 +25,8 @@
 			"destinationPlaceholder": "https://example.com/long-url",
 			"domainLabel": "Eigen domein",
 			"submitBtn": "Aanmaken",
-			"success": "Korte URL succesvol aangemaakt"
+			"success": "Korte URL succesvol aangemaakt",
+			"successDescription": "We hebben je korte URL opgeslagen in je collectie voor later gebruik."
 		},
 		"edit": {
 			"title": "Korte URL bewerken",
@@ -91,7 +92,8 @@
 		"days": "Dagen",
 		"newBadge": "Nieuw!",
 		"dynamicDescription": "Dynamische QR-codes kunnen na creatie bewerkt worden, tracken elke scan en bieden gedetailleerde statistieken – zonder de code opnieuw te hoeven afdrukken.",
-		"dynamicBadgeTooltip": "Maakt het mogelijk om de inhoud later te wijzigen zonder nieuwe QR-code. <i>Hover voor meer info</i>"
+		"dynamicBadgeTooltip": "Maakt het mogelijk om de inhoud later te wijzigen zonder nieuwe QR-code. <i>Hover voor meer info</i>",
+		"copyFailed": "Kon niet naar klembord kopiëren. Kopieer het handmatig."
 	},
 	"hero": {
 		"badge": "Open Source & Voor Altijd Gratis",
@@ -1515,7 +1517,14 @@
 		"hero": {
 			"title": "Verkort Links. Volg Klikken. Groei Sneller.",
 			"subtitle": "Maak merkgebonden korte URL's, monitor prestaties in realtime en beheer al je links vanuit een krachtig dashboard.",
-			"ctaLabel": "Begin gratis met verkorten"
+			"ctaLabel": "Begin gratis met verkorten",
+			"inputLabel": "Voer je URL hier in",
+			"inputPlaceholder": "https://voorbeeld.nl/mijn-lange-url",
+			"submitBtn": "Gratis link inkorten",
+			"successMessage": "Je korte link is klaar!",
+			"copyBtn": "Kopiëren",
+			"copiedBtn": "Gekopieerd!",
+			"createAnother": "Nog een URL inkorten"
 		},
 		"stats": {
 			"stat1Value": "1.000+",
@@ -1607,11 +1616,6 @@
 			"a5": "Nee. Korte URL's aangemaakt met QRcodly verlopen nooit. Ze blijven actief zolang je account bestaat, en je kunt ze handmatig uitschakelen indien nodig.",
 			"q6": "Wat is het verschil tussen korte URL's en QR-codes?",
 			"a6": "Korte URL's zijn klikbare links die je digitaal deelt (e-mail, sociale media, advertenties). QR-codes zijn scanbare afbeeldingen voor fysieke media (print, verpakking, bewegwijzering). Beide volgen analyses en kunnen eigen domeinen gebruiken."
-		},
-		"cta": {
-			"title": "Klaar om je eerste link te verkorten?",
-			"subtitle": "Maak merkgebonden korte URL's met volledige analyse. Voor altijd gratis, geen creditcard nodig.",
-			"ctaLabel": "Gratis Beginnen"
 		}
 	},
 	"productsQrCodes": {

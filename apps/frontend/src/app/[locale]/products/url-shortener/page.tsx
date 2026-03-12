@@ -2,11 +2,12 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ProductHeroSection } from '@/components/products/ProductHeroSection';
 import { ProductFeatureSection } from '@/components/products/ProductFeatureSection';
+import { UrlShortenerHeroForm } from '@/components/products/UrlShortenerHeroForm';
 
 import { ProductUseCases } from '@/components/products/ProductUseCases';
 import { CrossProductCards } from '@/components/products/CrossProductCards';
 import { ProductFaqSection } from '@/components/products/ProductFaqSection';
-import { ProductCtaSection } from '@/components/products/ProductCtaSection';
+
 import {
 	BrandedLinksMockup,
 	LinkAnalyticsMockup,
@@ -153,12 +154,9 @@ export default async function Page({ params }: DefaultPageParams) {
 		<>
 			<Header />
 			<article>
-				<ProductHeroSection
-					title={t('hero.title')}
-					subtitle={t('hero.subtitle')}
-					ctaLabel={t('hero.ctaLabel')}
-					ctaHref="/#generator"
-				/>
+				<ProductHeroSection title={t('hero.title')} subtitle={t('hero.subtitle')}>
+					<UrlShortenerHeroForm />
+				</ProductHeroSection>
 
 				{features.map((feature, i) => (
 					<ProductFeatureSection
@@ -198,13 +196,6 @@ export default async function Page({ params }: DefaultPageParams) {
 				/>
 
 				<ProductFaqSection title={t('faq.title')} items={faqItems} />
-
-				<ProductCtaSection
-					title={t('cta.title')}
-					subtitle={t('cta.subtitle')}
-					ctaLabel={t('cta.ctaLabel')}
-					ctaHref="/#generator"
-				/>
 			</article>
 			<Footer />
 		</>

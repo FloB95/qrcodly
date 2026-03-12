@@ -84,4 +84,12 @@ describe('createShortUrl', () => {
 		);
 		expect(response.statusCode).toBe(400);
 	});
+
+	it('should return 400 when destinationUrl is null', async () => {
+		const response = await createShortUrlRequest(
+			{ destinationUrl: null, isActive: true, customDomainId: null },
+			accessToken,
+		);
+		expect(response.statusCode).toBe(400);
+	});
 });

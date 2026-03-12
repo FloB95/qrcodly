@@ -4,7 +4,6 @@ import type { CustomDomainValidationService } from '@/modules/custom-domain/serv
 import { type Logger } from '@/core/logging';
 import { mock } from 'jest-mock-extended';
 import type { TShortUrlWithDomain } from '../../domain/entities/short-url.entity';
-import type { TCreateShortUrlDto } from '@shared/schemas';
 
 describe('CreateShortUrlUseCase', () => {
 	let useCase: CreateShortUrlUseCase;
@@ -28,7 +27,7 @@ describe('CreateShortUrlUseCase', () => {
 	});
 
 	describe('execute', () => {
-		const mockDto: TCreateShortUrlDto = {
+		const mockDto = {
 			destinationUrl: 'https://example.com',
 			customDomainId: null,
 			isActive: true,
@@ -75,8 +74,8 @@ describe('CreateShortUrlUseCase', () => {
 		});
 
 		it('should create short URL with null destinationUrl for reserved URLs', async () => {
-			const reservedDto: TCreateShortUrlDto = {
-				destinationUrl: null,
+			const reservedDto = {
+				destinationUrl: null as string | null,
 				customDomainId: null,
 				isActive: false,
 			};

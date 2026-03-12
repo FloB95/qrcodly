@@ -24,7 +24,6 @@ interface WebsitePreviewProps {
 	className?: string;
 }
 
-// Zod schema for URL validation
 const websiteUrlSchema = z.object({
 	url: z.httpUrl(),
 });

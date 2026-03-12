@@ -3,8 +3,17 @@ import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { TShortUrl, TShortUrlWithDomain } from '../domain/entities/short-url.entity';
-import { TCreateShortUrlDto } from '@shared/schemas';
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
+
+/**
+ * Internal input type for creating a short URL.
+ * Broader than the API DTO — allows null destinationUrl for reserved URLs (QR code flow).
+ */
+type CreateShortUrlInput = {
+	destinationUrl: string | null;
+	isActive: boolean;
+	customDomainId?: string | null;
+};
 
 /**
  * Use case for creating a ShortUrl entity.
@@ -24,7 +33,7 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 	 * @param createdBy The ID of the user who created the ShortUrl.
 	 * @returns A promise that resolves with the newly created ShortUrl entity.
 	 */
-	async execute(dto: TCreateShortUrlDto, createdBy: string): Promise<TShortUrlWithDomain> {
+	async execute(dto: CreateShortUrlInput, createdBy: string): Promise<TShortUrlWithDomain> {
 		// Validate custom domain ownership and readiness if provided
 		if (dto.customDomainId) {
 			await this.customDomainValidationService.validateForUserUse(dto.customDomainId, createdBy);

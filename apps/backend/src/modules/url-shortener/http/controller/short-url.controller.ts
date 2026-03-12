@@ -5,6 +5,7 @@ import { inject, injectable } from 'tsyringe';
 import ShortUrlRepository from '../../domain/repository/short-url.repository';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import { ShortUrlNotFoundError } from '../../error/http/short-url-not-found.error';
+import { BadRequestError } from '@/core/error/http';
 import {
 	AnalyticsResponseDto,
 	CreateShortUrlDto,
@@ -207,6 +208,13 @@ export class ShortUrlController extends AbstractController {
 		request: IHttpRequest<TUpdateShortUrlDto, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
+
+		if (shortUrl.qrCodeId != null) {
+			throw new BadRequestError(
+				'Cannot update a short URL linked to a QR code. Update the QR code instead.',
+			);
+		}
+
 		const updatedShortUrl = await this.updateShortUrlUseCase.execute(
 			shortUrl,
 			request.body,

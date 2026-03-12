@@ -141,7 +141,7 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 							</div>
 							<div>
 								<h1 className="text-lg font-semibold">{displayLink}</h1>
-								<Badge variant={shortUrl.isActive ? 'default' : 'outline'} className="mt-1">
+								<Badge variant={shortUrl.isActive ? 'blue' : 'outline'} className="mt-1">
 									{shortUrl.isActive ? t('shortUrl.status.active') : t('shortUrl.status.inactive')}
 								</Badge>
 							</div>

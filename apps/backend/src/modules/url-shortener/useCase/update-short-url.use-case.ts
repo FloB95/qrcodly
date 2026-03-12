@@ -4,12 +4,21 @@ import { Logger } from '@/core/logging';
 import { EventEmitter } from '@/core/event';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { TShortUrl } from '../domain/entities/short-url.entity';
-import { TUpdateShortUrlDto } from '@shared/schemas';
 import QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
 import { RedirectLoopError } from '../error/http/redirect-loop.error';
 import { buildShortUrl } from '../utils';
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
+
+/**
+ * Internal input type for updating a short URL.
+ * Broader than the API DTO — allows customDomainId for internal flows (QR code strategies).
+ */
+type UpdateShortUrlInput = {
+	destinationUrl?: string | null;
+	isActive?: boolean;
+	customDomainId?: string | null;
+};
 
 /**
  * Use case for updating a ShortUrl entity.
@@ -34,7 +43,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 	 */
 	async execute(
 		shortUrl: TShortUrl,
-		updatesDto: TUpdateShortUrlDto,
+		updatesDto: UpdateShortUrlInput,
 		updatedBy: string,
 		linkedQrCodeId?: string,
 	): Promise<TShortUrl> {

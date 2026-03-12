@@ -32,7 +32,7 @@ import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
 
 const createShortUrlSchema = z.object({
-	destinationUrl: z.string().url(),
+	destinationUrl: z.httpUrl(),
 	customDomainId: z.string().nullable(),
 });
 
@@ -72,7 +72,7 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 			posthog.capture('short-url-created', {
 				destinationUrl: data.destinationUrl,
 			});
-			toast({ title: t('create.success') });
+			toast({ title: t('create.success'), description: t('create.successDescription') });
 			setOpen(false);
 			form.reset({ destinationUrl: '', customDomainId: defaultDomain?.id ?? null });
 		} catch (e: unknown) {

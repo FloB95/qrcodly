@@ -77,9 +77,10 @@ export default function Header({
 		closeTimeout.current = setTimeout(() => setProductsOpen(false), 200);
 	}, []);
 
-	// Close dropdown on route change
+	// Close dropdown and mobile drawer on route change
 	useEffect(() => {
 		setProductsOpen(false);
+		setMobileMenuOpen(false);
 	}, [pathname]);
 
 	// Close dropdown on click outside
@@ -237,6 +238,7 @@ export default function Header({
 								<div className="flex items-center gap-2">
 									<Link
 										href="/dashboard/qr-codes"
+										aria-label={t('collectionBtn')}
 										className={cn(
 											buttonVariants({ size: 'icon' }),
 											'hidden sm:inline-flex lg:hidden',

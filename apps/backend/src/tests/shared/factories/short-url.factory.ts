@@ -14,15 +14,6 @@ export const generateShortUrlDto = (
 });
 
 /**
- * Generates a reserved short URL DTO (no destination, inactive).
- */
-export const generateReservedShortUrlDto = (): TCreateShortUrlDto => ({
-	destinationUrl: null,
-	customDomainId: null,
-	isActive: false,
-});
-
-/**
  * Generates a short URL update DTO.
  */
 export const generateUpdateShortUrlDto = (

@@ -140,7 +140,7 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 						{t('badge.disabled')}
 					</Badge>
 				) : (
-					<Badge variant={isFullyVerified ? 'default' : 'secondary'}>
+					<Badge variant={isFullyVerified ? 'blue' : 'secondary'}>
 						{statusInfo.badge === 'dnsPartial' && 'count' in statusInfo
 							? t('badge.dnsPartial', { count: statusInfo.count! })
 							: t(`badge.${statusInfo.badge}`)}

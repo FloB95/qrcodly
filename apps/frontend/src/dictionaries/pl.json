@@ -3,7 +3,7 @@
 		"nav": {
 			"collection": "Kolekcje",
 			"qrCodes": "Kody QR",
-			"shortUrls": "Krótkie URLe",
+			"shortUrls": "Skracacz URL",
 			"templates": "Szablony",
 			"tags": "Tagi"
 		}
@@ -25,7 +25,8 @@
 			"destinationPlaceholder": "https://example.com/long-url",
 			"domainLabel": "Własna domena",
 			"submitBtn": "Utwórz",
-			"success": "Krótki URL utworzony pomyślnie"
+			"success": "Krótki URL utworzony pomyślnie",
+			"successDescription": "Zapisaliśmy Twój krótki URL w Twojej kolekcji do późniejszego użytku."
 		},
 		"edit": {
 			"title": "Edytuj krótki URL",
@@ -91,7 +92,8 @@
 		"days": "Dni",
 		"newBadge": "Nowość!",
 		"dynamicDescription": "Dynamiczne kody QR można edytować po utworzeniu, śledzą każde skanowanie i dostarczają szczegółowych statystyk – bez konieczności ponownego drukowania kodu.",
-		"dynamicBadgeTooltip": "Umożliwia późniejszą zmianę treści bez nowego kodu QR. <i>Najedź kursorem, aby uzyskać więcej informacji</i>"
+		"dynamicBadgeTooltip": "Umożliwia późniejszą zmianę treści bez nowego kodu QR. <i>Najedź kursorem, aby uzyskać więcej informacji</i>",
+		"copyFailed": "Nie udało się skopiować do schowka. Skopiuj ręcznie."
 	},
 	"hero": {
 		"badge": "Open Source i Zawsze Za Darmo",
@@ -1515,7 +1517,14 @@
 		"hero": {
 			"title": "Skracaj linki. Śledź kliknięcia. Rozwijaj się szybciej.",
 			"subtitle": "Twórz markowe krótkie URL-e, monitoruj wydajność w czasie rzeczywistym i zarządzaj wszystkimi linkami z jednego potężnego panelu.",
-			"ctaLabel": "Zacznij skracać za darmo"
+			"ctaLabel": "Zacznij skracać za darmo",
+			"inputLabel": "Wpisz swój URL tutaj",
+			"inputPlaceholder": "https://przyklad.pl/moj-dlugi-url",
+			"submitBtn": "Skróć link za darmo",
+			"successMessage": "Twój krótki link jest gotowy!",
+			"copyBtn": "Kopiuj",
+			"copiedBtn": "Skopiowano!",
+			"createAnother": "Skróć kolejny URL"
 		},
 		"stats": {
 			"stat1Value": "1 000+",
@@ -1607,11 +1616,6 @@
 			"a5": "Nie. Krótkie URL-e utworzone za pomocą QRcodly nigdy nie wygasają. Pozostają aktywne tak długo, jak istnieje Twoje konto, a w razie potrzeby możesz je ręcznie wyłączyć.",
 			"q6": "Jaka jest różnica między krótkimi URL-ami a kodami QR?",
 			"a6": "Krótkie URL-e to klikalne linki udostępniane cyfrowo (e-mail, media społecznościowe, reklamy). Kody QR to skanowalne obrazy do mediów fizycznych (druk, opakowania, oznakowanie). Oba śledzą analitykę i mogą korzystać z własnych domen."
-		},
-		"cta": {
-			"title": "Gotowy, aby skrócić swój pierwszy link?",
-			"subtitle": "Twórz markowe krótkie URL-e z pełną analityką. Zawsze za darmo, bez karty kredytowej.",
-			"ctaLabel": "Zacznij za darmo"
 		}
 	},
 	"productsQrCodes": {

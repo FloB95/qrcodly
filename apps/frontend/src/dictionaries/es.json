@@ -3,7 +3,7 @@
 		"nav": {
 			"collection": "Colecciones",
 			"qrCodes": "Códigos QR",
-			"shortUrls": "URLs cortas",
+			"shortUrls": "Acortador de URLs",
 			"templates": "Plantillas",
 			"tags": "Etiquetas"
 		}
@@ -25,7 +25,8 @@
 			"destinationPlaceholder": "https://example.com/long-url",
 			"domainLabel": "Dominio personalizado",
 			"submitBtn": "Crear",
-			"success": "URL corta creada correctamente"
+			"success": "URL corta creada correctamente",
+			"successDescription": "Hemos guardado tu URL corta en tu colección para uso posterior."
 		},
 		"edit": {
 			"title": "Editar URL corta",
@@ -91,7 +92,8 @@
 		"days": "Días",
 		"newBadge": "¡Nuevo!",
 		"dynamicDescription": "Los códigos QR dinámicos se pueden editar después de crearlos, rastrean cada escaneo y proporcionan estadísticas detalladas – sin necesidad de reimprimir el código.",
-		"dynamicBadgeTooltip": "Permite cambiar el contenido más tarde sin un nuevo código QR. <i>Pasa el cursor para más información</i>"
+		"dynamicBadgeTooltip": "Permite cambiar el contenido más tarde sin un nuevo código QR. <i>Pasa el cursor para más información</i>",
+		"copyFailed": "No se pudo copiar al portapapeles. Por favor, cópielo manualmente."
 	},
 	"hero": {
 		"badge": "Open Source y Gratis Para Siempre",
@@ -1515,7 +1517,14 @@
 		"hero": {
 			"title": "Acorta Enlaces. Rastrea Clics. Crece Más Rápido.",
 			"subtitle": "Crea URLs cortas de marca, monitoriza el rendimiento en tiempo real y gestiona todos tus enlaces desde un potente panel de control.",
-			"ctaLabel": "Empieza a Acortar Gratis"
+			"ctaLabel": "Empieza a Acortar Gratis",
+			"inputLabel": "Introduce tu URL aquí",
+			"inputPlaceholder": "https://ejemplo.com/mi-url-larga",
+			"submitBtn": "Acortar enlace gratis",
+			"successMessage": "¡Tu enlace corto está listo!",
+			"copyBtn": "Copiar",
+			"copiedBtn": "¡Copiado!",
+			"createAnother": "Acortar otra URL"
 		},
 		"stats": {
 			"stat1Value": "1.000+",
@@ -1607,11 +1616,6 @@
 			"a5": "No. Las URLs cortas creadas con QRcodly nunca caducan. Permanecen activas mientras exista tu cuenta, y puedes desactivarlas manualmente si lo necesitas.",
 			"q6": "¿Cuál es la diferencia entre URLs cortas y códigos QR?",
 			"a6": "Las URLs cortas son enlaces clicables que compartes digitalmente (email, redes sociales, anuncios). Los códigos QR son imágenes escaneables para medios físicos (impresión, embalaje, señalización). Ambos rastrean analíticas y pueden usar dominios personalizados."
-		},
-		"cta": {
-			"title": "¿Listo para acortar tu primer enlace?",
-			"subtitle": "Crea URLs cortas de marca con analíticas completas. Gratis para siempre, sin tarjeta de crédito.",
-			"ctaLabel": "Empieza Gratis"
 		}
 	},
 	"productsQrCodes": {

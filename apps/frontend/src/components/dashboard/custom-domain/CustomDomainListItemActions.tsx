@@ -48,6 +48,7 @@ export function CustomDomainListItemActions({
 	onInstructionsShown,
 }: CustomDomainListItemActionsProps) {
 	const t = useTranslations('settings.domains');
+	const tGeneral = useTranslations('general');
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
 	const [hasAutoShown, setHasAutoShown] = useState(false);
@@ -70,12 +71,19 @@ export function CustomDomainListItemActions({
 		}
 	}, [showInstructionsDialog, refetchInstructions]);
 
-	const handleCopy = (text: string, descriptionKey: string) => {
-		navigator.clipboard.writeText(text);
-		toast({
-			title: t('copied'),
-			description: t(descriptionKey),
-		});
+	const handleCopy = async (text: string, descriptionKey: string) => {
+		try {
+			await navigator.clipboard.writeText(text);
+			toast({
+				title: t('copied'),
+				description: t(descriptionKey),
+			});
+		} catch {
+			toast({
+				variant: 'destructive',
+				description: tGeneral('copyFailed'),
+			});
+		}
 	};
 
 	const handleCopySslHost = () => {
