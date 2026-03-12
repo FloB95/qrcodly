@@ -1,4 +1,4 @@
-import { BadRequestError } from './bad-request.error';
+import { BadRequestError } from '@/core/error/http/bad-request.error';
 
 export const MAX_TAGS_PER_RESOURCE = 3;
 

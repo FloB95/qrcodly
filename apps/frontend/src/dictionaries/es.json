@@ -1351,7 +1351,7 @@
 			"deletedTitle": "Etiqueta eliminada",
 			"deletedDescription": "Tu etiqueta se ha eliminado correctamente.",
 			"tagsUpdatedTitle": "Etiquetas actualizadas",
-			"tagsUpdatedDescription": "Las etiquetas del código QR se han actualizado correctamente.",
+			"tagsUpdatedDescription": "Las etiquetas se han actualizado correctamente.",
 			"createErrorTitle": "Error al crear la etiqueta",
 			"updateErrorTitle": "Error al actualizar la etiqueta",
 			"deleteErrorTitle": "Error al eliminar la etiqueta",

@@ -1347,7 +1347,7 @@
 			"deletedTitle": "Тег удалён",
 			"deletedDescription": "Ваш тег был успешно удалён.",
 			"tagsUpdatedTitle": "Теги обновлены",
-			"tagsUpdatedDescription": "Теги QR-кода были успешно обновлены.",
+			"tagsUpdatedDescription": "Теги были успешно обновлены.",
 			"createErrorTitle": "Ошибка при создании тега",
 			"updateErrorTitle": "Ошибка при обновлении тега",
 			"deleteErrorTitle": "Ошибка при удалении тега",

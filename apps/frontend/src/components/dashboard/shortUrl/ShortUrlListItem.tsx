@@ -29,7 +29,6 @@ import {
 	useToggleActiveStateMutation,
 	useUpdateShortUrlNameMutation,
 } from '@/lib/api/url-shortener';
-import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
 import { formatDate } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import { EditShortUrlDialog } from './EditShortUrlDialog';
@@ -37,7 +36,6 @@ import { DeleteShortUrlDialog } from './DeleteShortUrlDialog';
 import { ShortUrlNameCell } from './ShortUrlNameCell';
 import { NameDialog } from '@/components/qr-generator/NameDialog';
 import type { TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
-import { useQueryClient } from '@tanstack/react-query';
 import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
@@ -52,7 +50,6 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 	const t = useTranslations('shortUrl');
 	const tGeneral = useTranslations('general');
 	const router = useRouter();
-	const queryClient = useQueryClient();
 	const [editOpen, setEditOpen] = useState(false);
 	const [deleteOpen, setDeleteOpen] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
@@ -102,9 +99,6 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 				posthog.capture('short-url-toggled', {
 					shortCode: shortUrl.shortCode,
 					isActive: !shortUrl.isActive,
-				});
-				void queryClient.refetchQueries({
-					queryKey: urlShortenerQueryKeys.listShortUrls,
 				});
 			},
 			onError: (error) => {

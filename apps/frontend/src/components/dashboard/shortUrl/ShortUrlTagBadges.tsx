@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { TagIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -56,6 +57,7 @@ type ShortUrlTagBadgesProps = {
 };
 
 export const ShortUrlTagBadges = ({ shortUrlId, tags: initialTags }: ShortUrlTagBadgesProps) => {
+	const t = useTranslations('tags');
 	const [tags, setTags] = useState<TTagResponseDto[]>(initialTags);
 	const setTagsMutation = useSetShortUrlTagsMutation();
 
@@ -68,7 +70,7 @@ export const ShortUrlTagBadges = ({ shortUrlId, tags: initialTags }: ShortUrlTag
 			});
 			setTags(updatedTags);
 		} catch {
-			toast({ title: 'Failed to remove tag', variant: 'destructive' });
+			toast({ title: t('toast.assignErrorTitle'), variant: 'destructive' });
 		}
 	};
 

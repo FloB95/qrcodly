@@ -1,5 +1,5 @@
 import { SetQrCodeTagsPolicy } from '../set-qr-code-tags.policy';
-import { MaxTagsExceededError } from '@/core/error/http/max-tags-exceeded.error';
+import { MaxTagsExceededError } from '@/modules/tag/error/http/max-tags-exceeded.error';
 import { UnauthorizedError } from '@/core/error/http';
 import type { TUser } from '@/core/domain/schema/UserSchema';
 

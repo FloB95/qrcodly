@@ -3,7 +3,7 @@ import { UnauthorizedError } from '@/core/error/http';
 import {
 	MAX_TAGS_PER_RESOURCE,
 	MaxTagsExceededError,
-} from '@/core/error/http/max-tags-exceeded.error';
+} from '@/modules/tag/error/http/max-tags-exceeded.error';
 import { AbstractPolicy } from '@/core/policies/abstract.policy';
 
 export class SetQrCodeTagsPolicy extends AbstractPolicy {

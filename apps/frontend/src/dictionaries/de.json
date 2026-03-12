@@ -1347,7 +1347,7 @@
 			"deletedTitle": "Tag gelöscht",
 			"deletedDescription": "Dein Tag wurde erfolgreich gelöscht.",
 			"tagsUpdatedTitle": "Tags aktualisiert",
-			"tagsUpdatedDescription": "Die QR-Code-Tags wurden erfolgreich aktualisiert.",
+			"tagsUpdatedDescription": "Die Tags wurden erfolgreich aktualisiert.",
 			"createErrorTitle": "Fehler beim Erstellen des Tags",
 			"updateErrorTitle": "Fehler beim Aktualisieren des Tags",
 			"deleteErrorTitle": "Fehler beim Löschen des Tags",

@@ -1347,7 +1347,7 @@
 			"deletedTitle": "Tag verwijderd",
 			"deletedDescription": "Je tag is succesvol verwijderd.",
 			"tagsUpdatedTitle": "Tags bijgewerkt",
-			"tagsUpdatedDescription": "De QR-code tags zijn succesvol bijgewerkt.",
+			"tagsUpdatedDescription": "De tags zijn succesvol bijgewerkt.",
 			"createErrorTitle": "Fout bij het aanmaken van tag",
 			"updateErrorTitle": "Fout bij het bijwerken van tag",
 			"deleteErrorTitle": "Fout bij het verwijderen van tag",

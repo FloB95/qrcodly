@@ -1347,7 +1347,7 @@
 			"deletedTitle": "Tag usunięty",
 			"deletedDescription": "Twój tag został pomyślnie usunięty.",
 			"tagsUpdatedTitle": "Tagi zaktualizowane",
-			"tagsUpdatedDescription": "Tagi kodu QR zostały pomyślnie zaktualizowane.",
+			"tagsUpdatedDescription": "Tagi zostały pomyślnie zaktualizowane.",
 			"createErrorTitle": "Błąd podczas tworzenia tagu",
 			"updateErrorTitle": "Błąd podczas aktualizacji tagu",
 			"deleteErrorTitle": "Błąd podczas usuwania tagu",

@@ -1347,7 +1347,7 @@
 			"deletedTitle": "Etichetta eliminata",
 			"deletedDescription": "La tua etichetta è stata eliminata con successo.",
 			"tagsUpdatedTitle": "Etichette aggiornate",
-			"tagsUpdatedDescription": "Le etichette del codice QR sono state aggiornate con successo.",
+			"tagsUpdatedDescription": "Le etichette sono state aggiornate con successo.",
 			"createErrorTitle": "Errore nella creazione dell'etichetta",
 			"updateErrorTitle": "Errore nell'aggiornamento dell'etichetta",
 			"deleteErrorTitle": "Errore nell'eliminazione dell'etichetta",

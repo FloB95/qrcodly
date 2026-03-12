@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { AbstractEntitySchema } from './AbstractEntitySchema';
 
-export const ShortCodeSchema = z.string().max(5);
+export const ShortCodeSchema = z.string().length(5);
 
 export const ShortUrlSchema = AbstractEntitySchema.extend({
 	shortCode: ShortCodeSchema,
