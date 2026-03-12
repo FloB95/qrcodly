@@ -198,19 +198,6 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 								</SidebarMenuItem>
 							)}
 
-							{/* Short URLs */}
-							<SidebarMenuItem>
-								<SidebarMenuButton isActive={isActive('/dashboard/short-urls')} asChild>
-									<Link href="/dashboard/short-urls">
-										<LinkIcon />
-										<span>{tNav('shortUrls')}</span>
-									</Link>
-								</SidebarMenuButton>
-								{shortUrlsData?.total !== undefined && (
-									<SidebarMenuBadge>{shortUrlsData.total}</SidebarMenuBadge>
-								)}
-							</SidebarMenuItem>
-
 							{/* Templates */}
 							<SidebarMenuItem>
 								<SidebarMenuButton isActive={isActive('/dashboard/templates')} asChild>
@@ -221,6 +208,19 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 								</SidebarMenuButton>
 								{templatesData?.total !== undefined && (
 									<SidebarMenuBadge>{templatesData.total}</SidebarMenuBadge>
+								)}
+							</SidebarMenuItem>
+
+							{/* Short URLs */}
+							<SidebarMenuItem>
+								<SidebarMenuButton isActive={isActive('/dashboard/short-urls')} asChild>
+									<Link href="/dashboard/short-urls">
+										<LinkIcon />
+										<span>{tNav('shortUrls')}</span>
+									</Link>
+								</SidebarMenuButton>
+								{shortUrlsData?.total !== undefined && (
+									<SidebarMenuBadge>{shortUrlsData.total}</SidebarMenuBadge>
 								)}
 							</SidebarMenuItem>
 
