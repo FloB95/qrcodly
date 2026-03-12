@@ -2,15 +2,17 @@ import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
-import { TShortUrl, TShortUrlWithDomain } from '../domain/entities/short-url.entity';
+import { TShortUrl, TShortUrlWithDomainAndTags } from '../domain/entities/short-url.entity';
+import TagRepository from '@/modules/tag/domain/repository/tag.repository';
 
 type ListParams = ISqlQueryFindBy<TShortUrl> & {
 	standalone?: boolean;
+	tagIds?: string[];
 };
 
 type ListResponse = {
 	total: number;
-	shortUrls: TShortUrlWithDomain[];
+	shortUrls: TShortUrlWithDomainAndTags[];
 };
 
 /**
@@ -18,7 +20,10 @@ type ListResponse = {
  */
 @injectable()
 export class ListShortUrlsUseCase implements IBaseUseCase {
-	constructor(@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository) {}
+	constructor(
+		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
+		@inject(TagRepository) private tagRepository: TagRepository,
+	) {}
 
 	/**
 	 * Executes the use case to retrieve short URLs based on the provided query parameters.
@@ -27,7 +32,7 @@ export class ListShortUrlsUseCase implements IBaseUseCase {
 	 * @returns An object containing the list of short URLs and the total count.
 	 */
 	async execute(
-		{ limit, page, where, standalone }: ListParams,
+		{ limit, page, where, standalone, tagIds }: ListParams,
 		userId: string,
 	): Promise<ListResponse> {
 		const shortUrls = await this.shortUrlRepository.findAllWithDomain({
@@ -38,6 +43,7 @@ export class ListShortUrlsUseCase implements IBaseUseCase {
 				createdBy: { eq: userId },
 			},
 			standalone,
+			tagIds,
 		});
 
 		const total = await this.shortUrlRepository.countTotalFiltered(
@@ -46,8 +52,18 @@ export class ListShortUrlsUseCase implements IBaseUseCase {
 				createdBy: { eq: userId },
 			},
 			standalone,
+			tagIds,
 		);
 
-		return { shortUrls, total };
+		// Batch-fetch tags for all returned short URLs
+		const shortUrlIds = shortUrls.map((su) => su.id);
+		const tagsMap = await this.tagRepository.findTagsByShortUrlIds(shortUrlIds);
+
+		const shortUrlsWithTags: TShortUrlWithDomainAndTags[] = shortUrls.map((su) => ({
+			...su,
+			tags: tagsMap.get(su.id) ?? [],
+		}));
+
+		return { shortUrls: shortUrlsWithTags, total };
 	}
 }

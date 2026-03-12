@@ -39,6 +39,7 @@ describe('createShortUrl', () => {
 		expect(shortUrl.destinationUrl).toBe(dto.destinationUrl);
 		expect(shortUrl.isActive).toBe(true);
 		expect(shortUrl.qrCodeId).toBeNull();
+		expect(shortUrl.tags).toEqual([]);
 	});
 
 	it('should generate a 5-character lowercase alphanumeric short code', async () => {
@@ -50,13 +51,40 @@ describe('createShortUrl', () => {
 		expect(shortUrl.shortCode).toMatch(/^[a-z0-9]{5}$/);
 	});
 
-	it('should always set isActive to true regardless of body value', async () => {
+	it('should allow creating a short URL with isActive set to false', async () => {
 		const dto = generateShortUrlDto({ isActive: false });
 		const response = await createShortUrlRequest(dto, accessToken);
 		expect(response.statusCode).toBe(201);
 
 		const shortUrl = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
+		expect(shortUrl.isActive).toBe(false);
+	});
+
+	it('should default isActive to true when not provided', async () => {
+		const { isActive: _, ...dto } = generateShortUrlDto();
+		const response = await createShortUrlRequest(dto, accessToken);
+		expect(response.statusCode).toBe(201);
+
+		const shortUrl = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
 		expect(shortUrl.isActive).toBe(true);
+	});
+
+	it('should create a short URL with a name', async () => {
+		const dto = generateShortUrlDto({ name: 'My Campaign Link' });
+		const response = await createShortUrlRequest(dto, accessToken);
+		expect(response.statusCode).toBe(201);
+
+		const shortUrl = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
+		expect(shortUrl.name).toBe('My Campaign Link');
+	});
+
+	it('should create a short URL without a name (null)', async () => {
+		const dto = generateShortUrlDto({ name: null });
+		const response = await createShortUrlRequest(dto, accessToken);
+		expect(response.statusCode).toBe(201);
+
+		const shortUrl = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
+		expect(shortUrl.name).toBeNull();
 	});
 
 	it('should return 401 when not authenticated', async () => {

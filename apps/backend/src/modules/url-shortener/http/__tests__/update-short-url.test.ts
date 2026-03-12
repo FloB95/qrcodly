@@ -197,6 +197,36 @@ describe('updateShortUrl', () => {
 		expect(updated.customDomain).toBeNull();
 	});
 
+	it('should update name successfully', async () => {
+		const reserveResponse = await reserveShortUrl(testServer, accessToken);
+		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
+
+		const response = await updateShortUrlRequest(
+			shortUrl.shortCode,
+			{ name: 'My Updated Link' },
+			accessToken,
+		);
+		expect(response.statusCode).toBe(200);
+
+		const updated = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
+		expect(updated.name).toBe('My Updated Link');
+	});
+
+	it('should set name to null when updating with null', async () => {
+		const reserveResponse = await reserveShortUrl(testServer, accessToken);
+		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
+
+		// First set a name
+		await updateShortUrlRequest(shortUrl.shortCode, { name: 'Test Name' }, accessToken);
+
+		// Then clear it
+		const response = await updateShortUrlRequest(shortUrl.shortCode, { name: null }, accessToken);
+		expect(response.statusCode).toBe(200);
+
+		const updated = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
+		expect(updated.name).toBeNull();
+	});
+
 	it('should return 400 when trying to update a QR-code-linked short URL', async () => {
 		const createResponse = await testServer.inject({
 			method: 'POST',

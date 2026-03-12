@@ -32,6 +32,7 @@ import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
 
 const createShortUrlSchema = z.object({
+	name: z.string().max(255).optional(),
 	destinationUrl: z.httpUrl(),
 	customDomainId: z.string().nullable(),
 });
@@ -51,6 +52,7 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 	const form = useForm<CreateShortUrlForm>({
 		resolver: zodResolver(createShortUrlSchema),
 		defaultValues: {
+			name: '',
 			destinationUrl: '',
 			customDomainId: null,
 		},
@@ -65,6 +67,7 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 	const onSubmit = async (data: CreateShortUrlForm) => {
 		try {
 			await createMutation.mutateAsync({
+				name: data.name || null,
 				destinationUrl: data.destinationUrl,
 				isActive: true,
 				customDomainId: data.customDomainId,
@@ -74,7 +77,7 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 			});
 			toast({ title: t('create.success'), description: t('create.successDescription') });
 			setOpen(false);
-			form.reset({ destinationUrl: '', customDomainId: defaultDomain?.id ?? null });
+			form.reset({ name: '', destinationUrl: '', customDomainId: defaultDomain?.id ?? null });
 		} catch (e: unknown) {
 			const error = e as ApiError;
 			if (error.code >= 500) {
@@ -112,6 +115,19 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>{t('create.nameLabel')}</FormLabel>
+									<FormControl>
+										<Input placeholder={t('create.namePlaceholder')} {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<FormField
 							control={form.control}
 							name="destinationUrl"

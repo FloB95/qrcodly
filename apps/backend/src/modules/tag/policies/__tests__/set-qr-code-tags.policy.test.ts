@@ -1,5 +1,5 @@
 import { SetQrCodeTagsPolicy } from '../set-qr-code-tags.policy';
-import { PlanLimitExceededError } from '@/core/error/http/plan-limit-exceeded.error';
+import { MaxTagsExceededError } from '@/core/error/http/max-tags-exceeded.error';
 import { UnauthorizedError } from '@/core/error/http';
 import type { TUser } from '@/core/domain/schema/UserSchema';
 
@@ -20,24 +20,26 @@ describe('SetQrCodeTagsPolicy', () => {
 			expect(() => policy.checkAccess()).toThrow(UnauthorizedError);
 		});
 
-		it('should allow free user to set exactly 1 tag', () => {
-			const policy = new SetQrCodeTagsPolicy(freeUser, 1);
+		it('should allow any user to set up to 3 tags', () => {
+			const policy = new SetQrCodeTagsPolicy(freeUser, 3);
 			expect(policy.checkAccess()).toBe(true);
 		});
 
-		it('should throw PlanLimitExceededError when free user tries to set > 1 tag', () => {
-			const policy = new SetQrCodeTagsPolicy(freeUser, 2);
-			expect(() => policy.checkAccess()).toThrow(PlanLimitExceededError);
+		it('should throw MaxTagsExceededError when any user tries to set > 3 tags', () => {
+			const policy = new SetQrCodeTagsPolicy(freeUser, 4);
+			expect(() => policy.checkAccess()).toThrow(MaxTagsExceededError);
 		});
 
-		it('should allow pro user to set up to 3 tags', () => {
-			const policy = new SetQrCodeTagsPolicy(proUser, 3);
-			expect(policy.checkAccess()).toBe(true);
-		});
+		it('should apply the same limit regardless of plan', () => {
+			const freePolicy = new SetQrCodeTagsPolicy(freeUser, 3);
+			const proPolicy = new SetQrCodeTagsPolicy(proUser, 3);
+			expect(freePolicy.checkAccess()).toBe(true);
+			expect(proPolicy.checkAccess()).toBe(true);
 
-		it('should throw PlanLimitExceededError when pro user tries to set > 3 tags', () => {
-			const policy = new SetQrCodeTagsPolicy(proUser, 4);
-			expect(() => policy.checkAccess()).toThrow(PlanLimitExceededError);
+			const freePolicyOver = new SetQrCodeTagsPolicy(freeUser, 4);
+			const proPolicyOver = new SetQrCodeTagsPolicy(proUser, 4);
+			expect(() => freePolicyOver.checkAccess()).toThrow(MaxTagsExceededError);
+			expect(() => proPolicyOver.checkAccess()).toThrow(MaxTagsExceededError);
 		});
 
 		it('should allow setting 0 tags (clearing all tags)', () => {
@@ -45,10 +47,9 @@ describe('SetQrCodeTagsPolicy', () => {
 			expect(policy.checkAccess()).toBe(true);
 		});
 
-		it('should default to free plan limits when user.plan is undefined', () => {
-			const userNoPlan: TUser = { id: 'user_789' } as TUser;
-			const policy = new SetQrCodeTagsPolicy(userNoPlan, 2);
-			expect(() => policy.checkAccess()).toThrow(PlanLimitExceededError);
+		it('should include a descriptive error message', () => {
+			const policy = new SetQrCodeTagsPolicy(freeUser, 4);
+			expect(() => policy.checkAccess()).toThrow('You can add a maximum of 3 tags.');
 		});
 	});
 });

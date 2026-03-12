@@ -6,7 +6,7 @@ import { motion, useMotionValue, useTransform, animate, useInView } from 'framer
 import { useEffect, useRef } from 'react';
 
 function parseStatValue(value: string) {
-	const match = value.match(/^([^0-9]*?)(\d[\d,.\s]*\d|\d)(.*)$/);
+	const match = /^([^0-9]*?)(\d[\d,.\s]*\d|\d)(.*)$/.exec(value);
 	if (!match) return null;
 
 	const prefix = match[1] ?? '';
@@ -15,13 +15,19 @@ function parseStatValue(value: string) {
 	// Don't parse values like "24/7" where the suffix continues the number
 	if (/^\/\d/.test(suffix)) return null;
 
+	// Only animate whole numbers with optional thousands separators.
+	// Fall back to the raw value for decimals like `99.9%` or `1.5M`.
+	if (/[,.]/.test(numStr) && !/^\d{1,3}(?:([,.\s])\d{3})*$/.test(numStr)) {
+		return null;
+	}
+
 	const cleanNum = numStr.replace(/[,.\s]/g, '');
 	const number = parseInt(cleanNum, 10);
 	if (isNaN(number)) return null;
 
 	const formatNumber = (n: number): string => {
 		if (n < 1000) return String(n);
-		const separatorMatch = numStr.match(/\d([,.\s])\d{3}/);
+		const separatorMatch = /\d([,.\s])\d{3}/.exec(numStr);
 		if (separatorMatch) {
 			const sep = separatorMatch[1]!;
 			return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, sep);

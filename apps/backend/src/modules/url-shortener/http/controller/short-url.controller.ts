@@ -35,6 +35,7 @@ import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema'
 import { KeyCache } from '@/core/cache';
 import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
 import { DispatchTrackingEventUseCase } from '@/modules/analytics-integration/useCase/dispatch-tracking-event.use-case';
+import TagRepository from '@/modules/tag/domain/repository/tag.repository';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -54,6 +55,7 @@ export class ShortUrlController extends AbstractController {
 		@inject(KeyCache) private readonly keyCache: KeyCache,
 		@inject(DispatchTrackingEventUseCase)
 		private readonly dispatchTrackingEventUseCase: DispatchTrackingEventUseCase,
+		@inject(TagRepository) private readonly tagRepository: TagRepository,
 	) {
 		super();
 	}
@@ -80,9 +82,9 @@ export class ShortUrlController extends AbstractController {
 	async list(
 		request: IHttpRequest<unknown, unknown, TGetShortUrlQueryParamsDto>,
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainPaginatedResponseDto>> {
-		const { page, limit, where, standalone } = request.query;
+		const { page, limit, where, standalone, tagIds } = request.query;
 		const { shortUrls, total } = await this.listShortUrlsUseCase.execute(
-			{ limit, page, where, standalone },
+			{ limit, page, where, standalone, tagIds },
 			request.user.id,
 		);
 
@@ -117,15 +119,12 @@ export class ShortUrlController extends AbstractController {
 	async create(
 		request: IHttpRequest<TCreateShortUrlDto>,
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
-		const shortUrl = await this.createShortUrlUseCase.execute(
-			{
-				...request.body,
-				isActive: true,
-			},
-			request.user.id,
-		);
+		const shortUrl = await this.createShortUrlUseCase.execute(request.body, request.user.id);
 
-		return this.makeApiHttpResponse(201, ShortUrlWithCustomDomainResponseDto.parse(shortUrl));
+		return this.makeApiHttpResponse(
+			201,
+			ShortUrlWithCustomDomainResponseDto.parse({ ...shortUrl, tags: [] }),
+		);
 	}
 
 	@Delete('/:shortCode', {
@@ -171,7 +170,11 @@ export class ShortUrlController extends AbstractController {
 		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
-		return this.makeApiHttpResponse(200, ShortUrlWithCustomDomainResponseDto.parse(shortUrl));
+		const tags = await this.tagRepository.findTagsByShortUrlId(shortUrl.id);
+		return this.makeApiHttpResponse(
+			200,
+			ShortUrlWithCustomDomainResponseDto.parse({ ...shortUrl, tags }),
+		);
 	}
 
 	@Get('/:shortCode', {
@@ -221,9 +224,10 @@ export class ShortUrlController extends AbstractController {
 			request.user.id,
 		);
 
+		const tags = await this.tagRepository.findTagsByShortUrlId(updatedShortUrl.id);
 		return this.makeApiHttpResponse(
 			200,
-			ShortUrlWithCustomDomainResponseDto.parse(updatedShortUrl),
+			ShortUrlWithCustomDomainResponseDto.parse({ ...updatedShortUrl, tags }),
 		);
 	}
 
@@ -252,9 +256,10 @@ export class ShortUrlController extends AbstractController {
 			request.user.id,
 		);
 
+		const tags = await this.tagRepository.findTagsByShortUrlId(updatedShortUrl.id);
 		return this.makeApiHttpResponse(
 			200,
-			ShortUrlWithCustomDomainResponseDto.parse(updatedShortUrl),
+			ShortUrlWithCustomDomainResponseDto.parse({ ...updatedShortUrl, tags }),
 		);
 	}
 

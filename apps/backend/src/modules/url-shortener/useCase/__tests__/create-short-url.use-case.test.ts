@@ -40,6 +40,7 @@ describe('CreateShortUrlUseCase', () => {
 		const mockCreatedShortUrl: TShortUrlWithDomain = {
 			id: mockId,
 			shortCode: mockShortCode,
+			name: null,
 			destinationUrl: mockDto.destinationUrl,
 			customDomainId: null,
 			customDomain: null,
@@ -158,6 +159,7 @@ describe('CreateShortUrlUseCase', () => {
 			expect(mockRepository.create).toHaveBeenCalledWith({
 				id: mockId,
 				shortCode: mockShortCode,
+				name: null,
 				destinationUrl: mockDto.destinationUrl,
 				customDomainId: mockDto.customDomainId,
 				isActive: mockDto.isActive,

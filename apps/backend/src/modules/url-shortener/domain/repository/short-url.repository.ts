@@ -1,9 +1,10 @@
 import { singleton } from 'tsyringe';
-import { and, desc, eq, isNull, isNotNull, sql, SQL } from 'drizzle-orm';
+import { and, desc, eq, inArray, isNull, isNotNull, sql, SQL } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy, type WhereConditions } from '@/core/interface/repository.interface';
 import shortUrl, { TShortUrl, TShortUrlWithDomain } from '../entities/short-url.entity';
 import { convertWhereConditionToDrizzle } from '@/core/db/utils';
+import shortUrlTag from '../entities/short-url-tag.entity';
 
 /**
  * Repository for managing Short URL entities.
@@ -16,6 +17,16 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		super();
 	}
 
+	private tagIdsCondition(tagIds: string[]): SQL {
+		return inArray(
+			this.table.id,
+			this.db
+				.select({ shortUrlId: shortUrlTag.shortUrlId })
+				.from(shortUrlTag)
+				.where(inArray(shortUrlTag.tagId, tagIds)),
+		);
+	}
+
 	/**
 	 * Builds SQL conditions for filtering short URLs.
 	 * Splits search fields (shortCode, destinationUrl) into OR conditions,
@@ -24,6 +35,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	private buildFilterConditions(
 		where?: WhereConditions<TShortUrl> | SQL,
 		standalone?: boolean,
+		tagIds?: string[],
 	): SQL[] {
 		const conditions: SQL[] = [isNull(this.table.deletedAt)];
 
@@ -48,6 +60,10 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		if (standalone) {
 			conditions.push(isNull(this.table.qrCodeId));
 			conditions.push(isNotNull(this.table.destinationUrl));
+		}
+
+		if (tagIds?.length) {
+			conditions.push(this.tagIdsCondition(tagIds));
 		}
 
 		return conditions;
@@ -125,8 +141,11 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		page,
 		where,
 		standalone,
-	}: ISqlQueryFindBy<TShortUrl> & { standalone?: boolean }): Promise<TShortUrlWithDomain[]> {
-		const conditions = this.buildFilterConditions(where, standalone);
+		tagIds,
+	}: ISqlQueryFindBy<TShortUrl> & { standalone?: boolean; tagIds?: string[] }): Promise<
+		TShortUrlWithDomain[]
+	> {
+		const conditions = this.buildFilterConditions(where, standalone, tagIds);
 
 		const safePage = Math.max(0, (page || 1) - 1);
 		const results = await this.db.query.shortUrl.findMany({
@@ -149,8 +168,9 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	async countTotalFiltered(
 		where?: WhereConditions<TShortUrl>,
 		standalone?: boolean,
+		tagIds?: string[],
 	): Promise<number> {
-		const conditions = this.buildFilterConditions(where, standalone);
+		const conditions = this.buildFilterConditions(where, standalone, tagIds);
 
 		const result = await this.db
 			.select({ count: sql<number>`count(${this.table.id})` })
@@ -190,6 +210,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 			.insert(this.table)
 			.values({
 				id: shortUrl.id,
+				name: shortUrl.name,
 				destinationUrl: shortUrl.destinationUrl,
 				shortCode: shortUrl.shortCode,
 				isActive: shortUrl.isActive,

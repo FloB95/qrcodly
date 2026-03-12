@@ -13,6 +13,7 @@ type CreateShortUrlInput = {
 	destinationUrl: string | null;
 	isActive: boolean;
 	customDomainId?: string | null;
+	name?: string | null;
 };
 
 /**
@@ -45,6 +46,7 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 		const shortUrl: Omit<TShortUrl, 'createdAt' | 'updatedAt'> = {
 			id: newId,
 			shortCode,
+			name: dto.name ?? null,
 			qrCodeId: null,
 			customDomainId: dto.customDomainId ?? null,
 			destinationUrl: dto.destinationUrl,

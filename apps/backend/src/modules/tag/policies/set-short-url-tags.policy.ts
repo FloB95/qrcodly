@@ -6,7 +6,7 @@ import {
 } from '@/core/error/http/max-tags-exceeded.error';
 import { AbstractPolicy } from '@/core/policies/abstract.policy';
 
-export class SetQrCodeTagsPolicy extends AbstractPolicy {
+export class SetShortUrlTagsPolicy extends AbstractPolicy {
 	constructor(
 		private readonly user: TUser | undefined,
 		private readonly requestedTagCount: number,

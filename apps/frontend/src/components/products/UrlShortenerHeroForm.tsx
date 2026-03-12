@@ -13,6 +13,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useCreateShortUrlMutation } from '@/lib/api/url-shortener';
 import { createLinkFromShortUrl } from '@/lib/utils';
 import { ArrowRightIcon, ClipboardIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { useLocale } from 'next-intl';
 import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
@@ -28,6 +29,7 @@ export function UrlShortenerHeroForm() {
 	const t = useTranslations('productsUrlShortener.hero');
 	const tShortUrl = useTranslations('shortUrl');
 	const tGeneral = useTranslations('general');
+	const locale = useLocale();
 	const { isSignedIn } = useAuth();
 	const clerk = useClerk();
 	const createMutation = useCreateShortUrlMutation();
@@ -43,7 +45,7 @@ export function UrlShortenerHeroForm() {
 
 	const onSubmit = async (data: ShortenUrlForm) => {
 		if (!isSignedIn) {
-			clerk.openSignIn({ forceRedirectUrl: '/dashboard/short-urls' });
+			clerk.openSignIn({ forceRedirectUrl: `/${locale}/dashboard/short-urls` });
 			return;
 		}
 
@@ -52,10 +54,11 @@ export function UrlShortenerHeroForm() {
 				destinationUrl: data.destinationUrl,
 				isActive: true,
 				customDomainId: null,
+				name: null,
 			});
 			posthog.capture('short-url-created', {
 				source: 'hero-form',
-				destinationUrl: data.destinationUrl,
+				destinationDomain: new URL(data.destinationUrl).hostname,
 			});
 			toast({
 				title: tShortUrl('create.success'),
@@ -159,6 +162,7 @@ export function UrlShortenerHeroForm() {
 											placeholder={t('inputPlaceholder')}
 											className="h-12 text-base"
 											onBlur={(e) => {
+												field.onBlur();
 												if (e.target.value === '') return;
 												if (
 													!e.target.value.startsWith('http://') &&

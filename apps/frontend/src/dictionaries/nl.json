@@ -12,7 +12,10 @@
 		"title": "Korte URLs",
 		"description": "Verkort, beheer en volg je links met gedetailleerde analyses",
 		"createBtn": "Korte URL aanmaken",
+		"searchPlaceholder": "Korte URLs zoeken...",
 		"table": {
+			"name": "Naam",
+			"content": "Inhoud",
 			"shortUrl": "Korte URL",
 			"destination": "Bestemming",
 			"status": "Status",
@@ -21,15 +24,19 @@
 		},
 		"create": {
 			"title": "Korte URL aanmaken",
+			"nameLabel": "Naam",
+			"namePlaceholder": "bijv. Marketingcampagne",
 			"destinationLabel": "Bestemmings-URL",
 			"destinationPlaceholder": "https://example.com/long-url",
-			"domainLabel": "Eigen domein",
+			"domainLabel": "Kort URL-domein",
 			"submitBtn": "Aanmaken",
 			"success": "Korte URL succesvol aangemaakt",
 			"successDescription": "We hebben je korte URL opgeslagen in je collectie voor later gebruik."
 		},
 		"edit": {
 			"title": "Korte URL bewerken",
+			"nameLabel": "Naam",
+			"namePlaceholder": "bijv. Marketingcampagne",
 			"submitBtn": "Bijwerken",
 			"success": "Korte URL succesvol bijgewerkt"
 		},
@@ -1279,8 +1286,8 @@
 		"subtitle": "QRcodly is gratis te gebruiken – geen proefperiodes, geen automatische abonnementen. Het Pro-plan dekt alleen functies die extra infrastructuur vereisen.",
 		"annual": "Jaarlijks",
 		"monthly": "Maandelijks",
-		"perMonth": "/maand",
-		"perYear": "/jaar",
+		"perMonth": "maand",
+		"perYear": "jaar",
 		"upgradeToPro": "Upgrade naar Pro",
 		"renewSubscription": "Abonnement Vernieuwen",
 		"manageSubscription": "Abonnement Beheren",
@@ -1296,17 +1303,18 @@
 		"features": {
 			"free": {
 				"unlimitedQrCodes": "Onbeperkte QR-codes & scans",
+				"unlimitedShortUrls": "Onbeperkte korte URL's",
 				"staticDynamic": "Statische & dynamische QR-codes",
 				"customStyling": "Aangepaste stijlen & pictogrammen",
 				"detailedAnalytics": "Gedetailleerde analyses",
 				"noCreditCard": "Geen creditcard vereist",
-				"unlimitedTags": "Onbeperkte tags (1 per QR-code)",
+				"unlimitedTags": "Onbeperkte tags",
 				"limitedApi": "Beperkte API-toegang",
 				"limitedBulk": "Beperkte bulk QR-code generatie"
 			},
 			"pro": {
 				"everythingInFree": "Alles in Gratis",
-				"unlimitedTags": "Onbeperkte tags (3 per QR-code)",
+				"unlimitedTags": "Onbeperkte tags",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
 				"customDomains": "Aangepast domein voor dynamische QR-codes",
 				"unlimitedApi": "Onbeperkte API-toegang",
@@ -1604,8 +1612,8 @@
 		},
 		"faq": {
 			"title": "Veelgestelde Vragen",
-			"q1": "Is de URL-verkorten gratis?",
-			"a1": "Ja! De URL-verkorten van QRcodly is gratis te gebruiken. Je kunt korte URL's aanmaken, klikken volgen en je links beheren zonder kosten. Pro-abonnementen ontgrendelen geavanceerde functies zoals eigen domeinen.",
+			"q1": "Is de URL-verkorter gratis?",
+			"a1": "Ja! De URL-verkorter van QRcodly is gratis te gebruiken. Je kunt korte URL's aanmaken, klikken volgen en je links beheren zonder kosten. Pro-abonnementen ontgrendelen geavanceerde functies zoals eigen domeinen.",
 			"q2": "Kan ik mijn eigen domein gebruiken voor korte URLs?",
 			"a2": "Absoluut. Verbind je eigen domein om merkgebonden korte URL's te maken zoals ga.jouwmerk.nl/u/x7k9m. Eigen domeinen zijn beschikbaar in Pro-abonnementen met automatische SSL-provisioning.",
 			"q3": "Hoe werkt het bijhouden van klikken?",

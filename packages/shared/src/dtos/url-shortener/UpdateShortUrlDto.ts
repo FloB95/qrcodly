@@ -11,6 +11,7 @@ import { ShortUrlSchema } from '../../schemas/ShortUrl';
 export const UpdateShortUrlDto = ShortUrlSchema.pick({
 	destinationUrl: true,
 	isActive: true,
+	name: true,
 })
 	.extend({
 		destinationUrl: z.httpUrl(),

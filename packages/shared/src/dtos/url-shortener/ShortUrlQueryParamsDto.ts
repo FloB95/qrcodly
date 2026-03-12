@@ -14,6 +14,12 @@ export const GetShortUrlQueryParamsSchema = PaginationQueryParamsSchema(ShortUrl
 				return val;
 			}, z.boolean())
 			.optional(),
+		tagIds: z
+			.preprocess(
+				(val) => (typeof val === 'string' ? [val] : val),
+				z.array(z.string().uuid()).min(1),
+			)
+			.optional(),
 	},
 );
 

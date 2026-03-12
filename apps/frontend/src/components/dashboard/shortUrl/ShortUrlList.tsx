@@ -38,8 +38,8 @@ const ShortUrlTableHeader = () => {
 	return (
 		<TableHeader className="bg-muted sticky top-0 z-10">
 			<TableRow>
-				<TableHead>{t('shortUrl')}</TableHead>
-				<TableHead className="hidden md:table-cell">{t('destination')}</TableHead>
+				<TableHead>{t('name')}</TableHead>
+				<TableHead className="hidden md:table-cell">{t('content')}</TableHead>
 				<TableHead>{t('status')}</TableHead>
 				<TableHead className="hidden sm:table-cell">{t('views')}</TableHead>
 				<TableHead className="hidden lg:table-cell">{t('created')}</TableHead>

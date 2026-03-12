@@ -81,7 +81,6 @@ export function useSmartTips(anchor: string, stateContext?: SmartTipStateContext
 		}
 
 		return null;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		anchor,
 		isGloballyDisabled,

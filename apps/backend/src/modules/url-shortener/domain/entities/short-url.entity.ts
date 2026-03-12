@@ -2,9 +2,11 @@ import { qrCode } from '@/core/db/schemas';
 import customDomain, {
 	type TCustomDomain,
 } from '@/modules/custom-domain/domain/entities/custom-domain.entity';
+import { type TTag } from '@/modules/tag/domain/entities/tag.entity';
 import { createTable } from '@/core/db/utils';
 import { relations } from 'drizzle-orm';
 import { boolean, datetime, index, text, varchar } from 'drizzle-orm/mysql-core';
+import shortUrlTag from './short-url-tag.entity';
 
 const shortUrl = createTable(
 	'short_url',
@@ -13,6 +15,7 @@ const shortUrl = createTable(
 			length: 36,
 		}).primaryKey(),
 		shortCode: varchar({ length: 5 }).notNull().unique(),
+		name: varchar({ length: 255 }),
 		destinationUrl: text(),
 		qrCodeId: varchar({
 			length: 36,
@@ -44,10 +47,14 @@ export type TShortUrl = typeof shortUrl.$inferSelect;
 export type TShortUrlWithDomain = TShortUrl & {
 	customDomain: TCustomDomain | null;
 };
+// Extended type that includes custom domain and tags
+export type TShortUrlWithDomainAndTags = TShortUrlWithDomain & {
+	tags: TTag[];
+};
 export default shortUrl;
 
 // Relation Definition for shortUrl
-export const shortUrlRelations = relations(shortUrl, ({ one }) => ({
+export const shortUrlRelations = relations(shortUrl, ({ one, many }) => ({
 	qrCode: one(qrCode, {
 		fields: [shortUrl.qrCodeId],
 		references: [qrCode.id],
@@ -56,4 +63,5 @@ export const shortUrlRelations = relations(shortUrl, ({ one }) => ({
 		fields: [shortUrl.customDomainId],
 		references: [customDomain.id],
 	}),
+	shortUrlTags: many(shortUrlTag),
 }));

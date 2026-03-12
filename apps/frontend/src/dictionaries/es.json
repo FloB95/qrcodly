@@ -12,7 +12,10 @@
 		"title": "URLs cortas",
 		"description": "Acorta, gestiona y rastrea tus enlaces con analíticas detalladas",
 		"createBtn": "Crear URL corta",
+		"searchPlaceholder": "Buscar URLs cortas...",
 		"table": {
+			"name": "Nombre",
+			"content": "Contenido",
 			"shortUrl": "URL corta",
 			"destination": "Destino",
 			"status": "Estado",
@@ -21,15 +24,19 @@
 		},
 		"create": {
 			"title": "Crear URL corta",
+			"nameLabel": "Nombre",
+			"namePlaceholder": "p. ej. Campaña de marketing",
 			"destinationLabel": "URL de destino",
 			"destinationPlaceholder": "https://example.com/long-url",
-			"domainLabel": "Dominio personalizado",
+			"domainLabel": "Dominio de URL corta",
 			"submitBtn": "Crear",
 			"success": "URL corta creada correctamente",
 			"successDescription": "Hemos guardado tu URL corta en tu colección para uso posterior."
 		},
 		"edit": {
 			"title": "Editar URL corta",
+			"nameLabel": "Nombre",
+			"namePlaceholder": "p. ej. Campaña de marketing",
 			"submitBtn": "Actualizar",
 			"success": "URL corta actualizada correctamente"
 		},
@@ -45,7 +52,7 @@
 		},
 		"status": {
 			"active": "Activa",
-			"inactive": "Desactivado",
+			"inactive": "Inactiva",
 			"enable": "Activar",
 			"disable": "Desactivar"
 		},
@@ -1283,8 +1290,8 @@
 		"subtitle": "QRcodly es gratuito – sin períodos de prueba, sin suscripciones automáticas. El plan Pro solo cubre funciones que requieren infraestructura adicional.",
 		"annual": "Anual",
 		"monthly": "Mensual",
-		"perMonth": "/mes",
-		"perYear": "/año",
+		"perMonth": "mes",
+		"perYear": "año",
 		"upgradeToPro": "Actualizar a Pro",
 		"renewSubscription": "Renovar Suscripción",
 		"manageSubscription": "Administrar Suscripción",
@@ -1300,17 +1307,18 @@
 		"features": {
 			"free": {
 				"unlimitedQrCodes": "Códigos QR y escaneos ilimitados",
+				"unlimitedShortUrls": "URLs cortas ilimitadas",
 				"staticDynamic": "Códigos QR estáticos y dinámicos",
 				"customStyling": "Estilos e iconos personalizados",
 				"detailedAnalytics": "Analíticas detalladas",
 				"noCreditCard": "Sin tarjeta de crédito requerida",
-				"unlimitedTags": "Etiquetas ilimitadas (1 por código QR)",
+				"unlimitedTags": "Etiquetas ilimitadas",
 				"limitedApi": "Acceso API limitado",
 				"limitedBulk": "Generación masiva de códigos QR limitada"
 			},
 			"pro": {
 				"everythingInFree": "Todo en Gratis",
-				"unlimitedTags": "Etiquetas ilimitadas (3 por código QR)",
+				"unlimitedTags": "Etiquetas ilimitadas",
 				"largerBulkImports": "Importaciones masivas más grandes (50 filas, 2MB)",
 				"customDomains": "Dominio personalizado para códigos QR dinámicos",
 				"unlimitedApi": "Acceso API ilimitado",

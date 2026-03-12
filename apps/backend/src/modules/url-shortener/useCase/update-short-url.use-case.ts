@@ -18,6 +18,7 @@ type UpdateShortUrlInput = {
 	destinationUrl?: string | null;
 	isActive?: boolean;
 	customDomainId?: string | null;
+	name?: string | null;
 };
 
 /**

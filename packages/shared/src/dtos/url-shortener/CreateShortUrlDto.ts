@@ -10,8 +10,10 @@ export const CreateShortUrlDto = ShortUrlSchema.pick({
 	destinationUrl: true,
 	isActive: true,
 	customDomainId: true,
+	name: true,
 }).extend({
 	destinationUrl: z.httpUrl(),
+	isActive: z.boolean().default(true),
 });
 
 /**

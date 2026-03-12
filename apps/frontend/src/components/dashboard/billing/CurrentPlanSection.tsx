@@ -69,7 +69,7 @@ export function CurrentPlanSection() {
 
 					<p className="flex items-baseline gap-x-2">
 						<span className="text-3xl lg:text-4xl font-semibold">0 &euro;</span>
-						<span className="text-muted-foreground">{tPlans('perMonth')}</span>
+						<span className="text-muted-foreground">/{tPlans('perMonth')}</span>
 					</p>
 
 					<p className="text-sm text-muted-foreground">{tPlans('free.description')}</p>
@@ -140,7 +140,7 @@ export function CurrentPlanSection() {
 							<span className="text-3xl lg:text-4xl font-semibold">
 								{hasProPlan ? currentProPrice : proPrice} &euro;
 							</span>
-							<span className="text-gray-400">{tPlans('perMonth')}</span>
+							<span className="text-gray-400">/{tPlans('perMonth')}</span>
 						</p>
 						<p className="text-sm text-gray-400 mt-1">
 							{hasProPlan ? currentBillingNote : billingNote}

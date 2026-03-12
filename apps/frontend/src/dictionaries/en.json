@@ -12,7 +12,10 @@
 		"title": "Short URLs",
 		"description": "Shorten, manage, and track your links with detailed analytics",
 		"createBtn": "Create Short URL",
+		"searchPlaceholder": "Search short URLs...",
 		"table": {
+			"name": "Name",
+			"content": "Content",
 			"shortUrl": "Short URL",
 			"destination": "Destination",
 			"status": "Status",
@@ -21,15 +24,19 @@
 		},
 		"create": {
 			"title": "Create Short URL",
+			"nameLabel": "Name",
+			"namePlaceholder": "e.g. Marketing Campaign",
 			"destinationLabel": "Destination URL",
 			"destinationPlaceholder": "https://example.com/long-url",
-			"domainLabel": "Custom Domain",
+			"domainLabel": "Short URL Domain",
 			"submitBtn": "Create",
 			"success": "Short URL created successfully",
 			"successDescription": "We saved your short URL in your collection for later use."
 		},
 		"edit": {
 			"title": "Edit Short URL",
+			"nameLabel": "Name",
+			"namePlaceholder": "e.g. Marketing Campaign",
 			"submitBtn": "Update",
 			"success": "Short URL updated successfully"
 		},
@@ -1279,8 +1286,8 @@
 		"subtitle": "QRcodly is free to use – no trial periods, no automatic subscriptions. The Pro plan only covers features that require additional infrastructure.",
 		"annual": "Annual",
 		"monthly": "Monthly",
-		"perMonth": "/month",
-		"perYear": "/year",
+		"perMonth": "month",
+		"perYear": "year",
 		"upgradeToPro": "Upgrade to Pro",
 		"renewSubscription": "Renew Subscription",
 		"manageSubscription": "Manage Subscription",
@@ -1296,17 +1303,18 @@
 		"features": {
 			"free": {
 				"unlimitedQrCodes": "Unlimited QR codes & scans",
+				"unlimitedShortUrls": "Unlimited short URLs",
 				"staticDynamic": "Static & dynamic QR codes",
 				"customStyling": "Custom styling & icons",
 				"detailedAnalytics": "Detailed analytics",
 				"noCreditCard": "No credit card required",
-				"unlimitedTags": "Unlimited tags (1 per QR code)",
+				"unlimitedTags": "Unlimited tags",
 				"limitedApi": "Limited API access",
 				"limitedBulk": "Limited bulk QR code generation"
 			},
 			"pro": {
 				"everythingInFree": "Everything in Free",
-				"unlimitedTags": "Unlimited tags (3 per QR code)",
+				"unlimitedTags": "Unlimited tags",
 				"largerBulkImports": "Larger bulk imports (50 rows, 2MB)",
 				"customDomains": "Custom domain for dynamic QR codes",
 				"unlimitedApi": "Unlimited API access",

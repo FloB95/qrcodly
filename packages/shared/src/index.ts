@@ -36,6 +36,7 @@ export * from './dtos/tag/TagResponseDto';
 export * from './dtos/tag/TagPaginatedResponseDto';
 export * from './dtos/tag/TagRequestParamsDto';
 export * from './dtos/tag/SetQrCodeTagsDto';
+export * from './dtos/tag/SetShortUrlTagsDto';
 
 export * from './dtos/IdRequestQuery';
 export * from './dtos/ListRequestDto';

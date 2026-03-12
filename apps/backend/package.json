@@ -21,7 +21,7 @@
 		"dev-server": "docker-compose up -d",
 		"dev": "pnpm run db:migrate && TZ=Europe/Berlin tsx watch --include ./src  src/index.ts",
 		"test": "export NODE_ENV=test && export LOG_LEVEL=error && export FRONTEND_URL=https://test.qrcodly.de && pnpm run db:migrate && jest --runInBand",
-		"test:coverage": "NODE_ENV=test LOG_LEVEL=error pnpm run db:migrate && jest --runInBand --coverage",
+		"test:coverage": "export NODE_ENV=test && export LOG_LEVEL=error && export FRONTEND_URL=https://test.qrcodly.de && pnpm run db:migrate && jest --runInBand --coverage",
 		"test:detectOpenHandles": "jest --silent --runInBand --detectOpenHandles",
 		"db:push": "drizzle-kit push --config=drizzle.config.ts",
 		"db:migrate": "DB_MIGRATING=true tsx src/core/db/migrate.ts",

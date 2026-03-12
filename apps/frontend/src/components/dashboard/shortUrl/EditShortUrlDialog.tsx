@@ -24,6 +24,7 @@ import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
 
 const editShortUrlSchema = z.object({
+	name: z.string().max(255).optional(),
 	destinationUrl: z.httpUrl(),
 });
 
@@ -48,6 +49,7 @@ export function EditShortUrlDialog({
 	const form = useForm<EditShortUrlForm>({
 		resolver: zodResolver(editShortUrlSchema),
 		defaultValues: {
+			name: shortUrl.name ?? '',
 			destinationUrl: shortUrl.destinationUrl ?? '',
 		},
 	});
@@ -55,6 +57,7 @@ export function EditShortUrlDialog({
 	useEffect(() => {
 		if (!open) return;
 		form.reset({
+			name: shortUrl.name ?? '',
 			destinationUrl: shortUrl.destinationUrl ?? '',
 		});
 	}, [form, shortUrl, open]);
@@ -64,6 +67,7 @@ export function EditShortUrlDialog({
 			await updateMutation.mutateAsync({
 				shortCode: shortUrl.shortCode,
 				data: {
+					name: data.name || null,
 					destinationUrl: data.destinationUrl,
 				},
 			});
@@ -104,6 +108,19 @@ export function EditShortUrlDialog({
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>{t('edit.nameLabel')}</FormLabel>
+									<FormControl>
+										<Input placeholder={t('edit.namePlaceholder')} {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<FormField
 							control={form.control}
 							name="destinationUrl"

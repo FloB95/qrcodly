@@ -12,7 +12,10 @@
 		"title": "Короткие URL",
 		"description": "Сокращайте, управляйте и отслеживайте URL с подробной аналитикой",
 		"createBtn": "Создать короткий URL",
+		"searchPlaceholder": "Поиск коротких URL...",
 		"table": {
+			"name": "Название",
+			"content": "Содержание",
 			"shortUrl": "Короткий URL",
 			"destination": "Назначение",
 			"status": "Статус",
@@ -21,15 +24,19 @@
 		},
 		"create": {
 			"title": "Создать короткий URL",
+			"nameLabel": "Название",
+			"namePlaceholder": "напр. Маркетинговая кампания",
 			"destinationLabel": "URL назначения",
 			"destinationPlaceholder": "https://example.com/long-url",
-			"domainLabel": "Собственный домен",
+			"domainLabel": "Домен короткого URL",
 			"submitBtn": "Создать",
 			"success": "Короткий URL успешно создан",
 			"successDescription": "Мы сохранили вашу короткую ссылку в вашей коллекции."
 		},
 		"edit": {
 			"title": "Редактировать короткий URL",
+			"nameLabel": "Название",
+			"namePlaceholder": "напр. Маркетинговая кампания",
 			"submitBtn": "Обновить",
 			"success": "Короткий URL успешно обновлён"
 		},
@@ -1279,8 +1286,8 @@
 		"subtitle": "QRcodly бесплатен – без пробных периодов, без автоматических подписок. План Pro покрывает только функции, требующие дополнительной инфраструктуры.",
 		"annual": "Годовой",
 		"monthly": "Месячный",
-		"perMonth": "/месяц",
-		"perYear": "/год",
+		"perMonth": "месяц",
+		"perYear": "год",
 		"upgradeToPro": "Перейти на Pro",
 		"renewSubscription": "Продлить Подписку",
 		"manageSubscription": "Управлять Подпиской",
@@ -1296,17 +1303,18 @@
 		"features": {
 			"free": {
 				"unlimitedQrCodes": "Неограниченные QR-коды и сканирования",
+				"unlimitedShortUrls": "Неограниченные короткие ссылки",
 				"staticDynamic": "Статические и динамические QR-коды",
 				"customStyling": "Пользовательские стили и иконки",
 				"detailedAnalytics": "Подробная аналитика",
 				"noCreditCard": "Кредитная карта не требуется",
-				"unlimitedTags": "Неограниченные теги (1 на QR-код)",
+				"unlimitedTags": "Неограниченные теги",
 				"limitedApi": "Ограниченный доступ к API",
 				"limitedBulk": "Ограниченная массовая генерация QR-кодов"
 			},
 			"pro": {
 				"everythingInFree": "Всё из Бесплатного",
-				"unlimitedTags": "Неограниченные теги (3 на QR-код)",
+				"unlimitedTags": "Неограниченные теги",
 				"largerBulkImports": "Большие массовые импорты (50 строк, 2МБ)",
 				"customDomains": "Собственный домен для динамических QR-кодов",
 				"unlimitedApi": "Неограниченный доступ к API",

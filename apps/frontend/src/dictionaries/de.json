@@ -12,7 +12,10 @@
 		"title": "Kurz-URLs",
 		"description": "Kürze, verwalte und verfolge deine Links mit detaillierten Analysen",
 		"createBtn": "Kurz-URL erstellen",
+		"searchPlaceholder": "Kurz-URLs suchen...",
 		"table": {
+			"name": "Name",
+			"content": "Inhalt",
 			"shortUrl": "Kurz-URL",
 			"destination": "Ziel",
 			"status": "Status",
@@ -21,15 +24,19 @@
 		},
 		"create": {
 			"title": "Kurz-URL erstellen",
+			"nameLabel": "Name",
+			"namePlaceholder": "z.B. Marketing-Kampagne",
 			"destinationLabel": "Ziel-URL",
 			"destinationPlaceholder": "https://example.com/long-url",
-			"domainLabel": "Eigene Domain",
+			"domainLabel": "Kurz-URL Domain",
 			"submitBtn": "Erstellen",
 			"success": "Kurz-URL erfolgreich erstellt",
 			"successDescription": "Wir haben deine Kurz-URL in deiner Sammlung gespeichert."
 		},
 		"edit": {
 			"title": "Kurz-URL bearbeiten",
+			"nameLabel": "Name",
+			"namePlaceholder": "z.B. Marketing-Kampagne",
 			"submitBtn": "Aktualisieren",
 			"success": "Kurz-URL erfolgreich aktualisiert"
 		},
@@ -1279,8 +1286,8 @@
 		"subtitle": "QRcodly ist kostenlos nutzbar – keine Testphasen, keine automatischen Abos. Der Pro-Plan deckt ausschließlich Funktionen ab, die zusätzlichen Infrastrukturaufwand verursachen.",
 		"annual": "Jährlich",
 		"monthly": "Monatlich",
-		"perMonth": "/Monat",
-		"perYear": "/Jahr",
+		"perMonth": "Monat",
+		"perYear": "Jahr",
 		"upgradeToPro": "Auf Pro upgraden",
 		"renewSubscription": "Abo erneuern",
 		"manageSubscription": "Abo verwalten",
@@ -1296,17 +1303,18 @@
 		"features": {
 			"free": {
 				"unlimitedQrCodes": "Unbegrenzte QR Codes & Scans",
+				"unlimitedShortUrls": "Unbegrenzte Kurzlinks",
 				"staticDynamic": "Statische & dynamische QR Codes",
 				"customStyling": "Individuelle Styles & Icons",
 				"detailedAnalytics": "Detaillierte Analysen",
 				"noCreditCard": "Keine Kreditkarte erforderlich",
-				"unlimitedTags": "Unbegrenzte Tags (1 pro QR Code)",
+				"unlimitedTags": "Unbegrenzte Tags",
 				"limitedApi": "Eingeschränkter API-Zugang",
 				"limitedBulk": "Eingeschränkte Massen-QR Code-Erstellung"
 			},
 			"pro": {
 				"everythingInFree": "Alles aus Free",
-				"unlimitedTags": "Unbegrenzte Tags (3 pro QR Code)",
+				"unlimitedTags": "Unbegrenzte Tags",
 				"largerBulkImports": "Größere Massenimporte (50 Zeilen, 2MB)",
 				"customDomains": "Eigene Domain für dynamische QR Codes",
 				"unlimitedApi": "Unbegrenzter API-Zugang",
@@ -1691,7 +1699,7 @@
 			},
 			"apiAccess": {
 				"title": "REST-API & Integrationen",
-				"description": "Integrieren Sie die QR-Code-Generierung in Ihre eigenen Apps und Workflows. Unsere dokumentierte REST-API macht die programmatische Erstellung und Verwaltung von QR-Codes einfach.",
+				"description": "Integriere die QR-Code-Generierung in deine eigenen Apps und Workflows. Unsere dokumentierte REST-API macht die programmatische Erstellung und Verwaltung von QR-Codes einfach.",
 				"bullet1": "Vollständige REST-API mit API-Schlüssel-Authentifizierung",
 				"bullet2": "QR-Codes programmatisch erstellen, anpassen und verwalten",
 				"bullet3": "Umfassende API-Dokumentation",

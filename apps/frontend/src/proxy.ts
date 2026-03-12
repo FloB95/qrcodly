@@ -3,7 +3,7 @@ import { Logger } from 'next-axiom';
 import { NextResponse } from 'next/server';
 import { processAnalyticsAndRedirect } from './middlewares/process-analytics-and-redirect.middleware';
 import createMiddleware from 'next-intl/middleware';
-import { routing } from './i18n/routing';
+import { routing, SUPPORTED_LANGUAGES } from './i18n/routing';
 
 const isProtectedRoute = createRouteMatcher([
 	'(.*)/dashboard(.*)',
@@ -14,11 +14,25 @@ const isProtectedRoute = createRouteMatcher([
 // Create the next-intl middleware
 const intlMiddleware = createMiddleware(routing);
 
+// Matches locale-prefixed paths to non-translated routes (docs, imprint, privacy-policy)
+const localePrefix = SUPPORTED_LANGUAGES.filter((l) => l !== 'en').join('|');
+const localePrefixedNonTranslatedRoute = new RegExp(
+	`^/(${localePrefix})/(docs|doc|imprint|privacy-policy)(/.*)?$`,
+);
+
 export default clerkMiddleware(async (auth, req, event) => {
 	const pathname = new URL(req.url).pathname;
 
 	if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
 		return NextResponse.next();
+	}
+
+	// 301 redirect locale-prefixed non-translated routes (e.g. /de/docs/api → /docs/api)
+	const localeMatch = pathname.match(localePrefixedNonTranslatedRoute);
+	if (localeMatch) {
+		const pathWithoutLocale = pathname.replace(`/${localeMatch[1]}`, '');
+		const url = new URL(pathWithoutLocale, req.url);
+		return NextResponse.redirect(url, 301);
 	}
 
 	const logger = new Logger({ source: 'middleware' });

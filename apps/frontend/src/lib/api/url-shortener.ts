@@ -113,6 +113,7 @@ export function useGetAnalyticsFromShortCodeQuery(shortCode: string) {
 
 export type ShortUrlFilters = {
 	search?: string;
+	tagIds?: string[];
 };
 
 export function useListShortUrlsQuery(page = 1, limit = 10, filters?: ShortUrlFilters) {
@@ -127,6 +128,10 @@ export function useListShortUrlsQuery(page = 1, limit = 10, filters?: ShortUrlFi
 			if (filters?.search) {
 				queryParams['where[destinationUrl][like]'] = filters.search;
 				queryParams['where[shortCode][like]'] = filters.search;
+			}
+
+			if (filters?.tagIds && filters.tagIds.length > 0) {
+				queryParams.tagIds = filters.tagIds;
 			}
 
 			return apiRequest<TShortUrlWithCustomDomainPaginatedResponseDto>(
@@ -182,6 +187,36 @@ export function useDeleteShortUrlMutation() {
 			await apiRequest<{ deleted: boolean }>(`/short-url/${shortCode}`, {
 				method: 'DELETE',
 				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+		},
+		onSuccess: () => {
+			void queryClient.refetchQueries({
+				queryKey: urlShortenerQueryKeys.listShortUrls,
+			});
+		},
+	});
+}
+
+export function useUpdateShortUrlNameMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async ({
+			shortCode,
+			name,
+		}: {
+			shortCode: string;
+			name: string | null;
+		}): Promise<TShortUrlWithCustomDomainResponseDto> => {
+			const token = await getToken();
+			return apiRequest<TShortUrlWithCustomDomainResponseDto>(`/short-url/${shortCode}`, {
+				method: 'PATCH',
+				body: JSON.stringify({ name }),
+				headers: {
+					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`,
 				},
 			});
