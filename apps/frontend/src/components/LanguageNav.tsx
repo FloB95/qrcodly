@@ -20,7 +20,13 @@ const LANGUAGE_NAMES: Record<string, string> = {
 	ru: 'Русский',
 };
 
-export const LanguageNav = ({ variant = 'auto' }: { variant?: 'auto' | 'dropdown-up' }) => {
+export const LanguageNav = ({
+	variant = 'auto',
+	direction = 'down',
+}: {
+	variant?: 'auto' | 'dropdown-up';
+	direction?: 'down' | 'up';
+}) => {
 	const locale = useLocale();
 	const currentPath = usePathname();
 	const [open, setOpen] = useState(false);
@@ -161,15 +167,22 @@ export const LanguageNav = ({ variant = 'auto' }: { variant?: 'auto' | 'dropdown
 				<AnimatePresence>
 					{open && (
 						<motion.div
-							initial={{ opacity: 0, y: 8 }}
+							initial={{ opacity: 0, y: direction === 'up' ? -8 : 8 }}
 							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: 8 }}
+							exit={{ opacity: 0, y: direction === 'up' ? -8 : 8 }}
 							transition={{ duration: 0.15 }}
-							className="absolute top-full right-0 z-[200]"
+							className={cn(
+								'absolute right-0 z-[200]',
+								direction === 'up' ? 'bottom-full' : 'top-full',
+							)}
 						>
-							{/* Invisible bridge */}
-							<div className="h-2" />
-							<div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-200 py-1.5 w-[180px]">
+							{direction === 'down' && <div className="h-2" />}
+							<div
+								className={cn(
+									'bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-200 py-1.5 w-[180px]',
+									direction === 'up' && 'mb-2',
+								)}
+							>
 								{languageLinks.map((link, idx) => {
 									const isActive = locale === link.lang;
 									return (

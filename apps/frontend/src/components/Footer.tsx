@@ -194,7 +194,7 @@ export default function Footer() {
 					<p className="text-xs text-gray-500">
 						&copy; FB Dev {currentYear} &mdash; {t('qrCodeCopyright')}
 					</p>
-					<LanguageNav />
+					<LanguageNav direction="up" />
 				</div>
 			</div>
 		</footer>
