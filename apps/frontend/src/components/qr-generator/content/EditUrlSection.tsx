@@ -8,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect, useState } from 'react';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
+import { z } from 'zod';
 import { ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
@@ -26,8 +27,10 @@ const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const { link: shortUrlLink } = useShortUrlLink(shortUrl);
 	const [originalUrl, setOriginalUrl] = useState<string | null>(null);
 
+	const UrlFormSchema = UrlInputSchema.extend({ url: z.httpUrl().max(1000) });
+
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
-		resolver: standardSchemaResolver(UrlInputSchema),
+		resolver: standardSchemaResolver(UrlFormSchema),
 		defaultValues: {
 			url:
 				value.isEditable && shortUrl?.destinationUrl ? shortUrl.destinationUrl : (value?.url ?? ''),

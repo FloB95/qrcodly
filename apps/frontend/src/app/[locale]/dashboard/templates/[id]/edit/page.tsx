@@ -67,6 +67,17 @@ export default async function ConfigTemplateEditPage({ params }: ConfigTemplateE
 						isEditable: true,
 					},
 				},
+				latestQrCode: {
+					name: template.name ?? undefined,
+					config: template.config,
+					content: {
+						type: 'url',
+						data: {
+							url: env.NEXT_PUBLIC_FRONTEND_URL,
+							isEditable: true,
+						},
+					},
+				},
 				bulkMode: {
 					isBulkMode: false,
 					file: undefined,

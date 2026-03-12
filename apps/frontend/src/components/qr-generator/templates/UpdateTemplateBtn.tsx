@@ -1,16 +1,22 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { type TConfigTemplate } from '@shared/schemas';
+import { objDiff, type TConfigTemplate } from '@shared/schemas';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { useUpdateConfigTemplateMutation } from '@/lib/api/config-template';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 
 type UpdateDto = Pick<TConfigTemplate, 'id' | 'name' | 'config'>;
 const UpdateTemplateBtn = ({ configTemplate }: { configTemplate: UpdateDto }) => {
 	const t = useTranslations('templates');
 	const [hasMounted, setHasMounted] = useState(false);
 	const updateMutation = useUpdateConfigTemplateMutation();
+	const { latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
+
+	const hasValidChanges =
+		Object.keys(objDiff(configTemplate.config, latestQrCode?.config)).length > 0 ||
+		(configTemplate.name || null) !== (latestQrCode?.name || null);
 
 	useEffect(() => {
 		setHasMounted(true);
@@ -25,6 +31,12 @@ const UpdateTemplateBtn = ({ configTemplate }: { configTemplate: UpdateDto }) =>
 					name: configTemplate.name,
 				},
 			});
+
+			updateLatestQrCode({
+				name: configTemplate.name,
+				config: configTemplate.config,
+				content: latestQrCode!.content,
+			});
 		} catch (error) {}
 	};
 
@@ -34,7 +46,7 @@ const UpdateTemplateBtn = ({ configTemplate }: { configTemplate: UpdateDto }) =>
 				className="cursor-pointer"
 				isLoading={updateMutation.isPending}
 				onClick={() => handleUpdate()}
-				disabled={!hasMounted || updateMutation.isPending}
+				disabled={!hasMounted || !hasValidChanges || updateMutation.isPending}
 			>
 				{t('updateBtn')}
 			</Button>

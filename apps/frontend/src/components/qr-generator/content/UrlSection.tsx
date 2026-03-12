@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
+import { validateContentHttpUrls } from '@shared/schemas/dtos/qr-code/validateContentHttpUrls';
 import { useTranslations } from 'next-intl';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { useShortUrlLink } from '@/hooks/use-short-url-link';
@@ -33,7 +34,11 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const { lastError } = useQrCodeGeneratorStore((state) => state);
 
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
-		resolver: zodResolver(UrlInputSchema),
+		resolver: zodResolver(
+			UrlInputSchema.superRefine((data, ctx) => {
+				validateContentHttpUrls({ type: 'url', data }, ctx, []);
+			}),
+		),
 		criteriaMode: 'all',
 		defaultValues: {
 			url: value?.url ?? '',
@@ -105,6 +110,7 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 										) {
 											field.onChange(`https://${e.target.value}`);
 										}
+										void form.trigger('url');
 									}}
 								/>
 							</FormControl>

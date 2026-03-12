@@ -217,6 +217,16 @@ export function registerRoutes(
 		};
 
 		routeOptions.preHandler = [];
+		if (routeMeta.options.bodySchema) {
+			routeOptions.preHandler.push(
+				createValidationHook(routeMeta.options.bodySchema, 'Invalid request body', 'body'),
+			);
+		}
+		if (routeMeta.options.querySchema) {
+			routeOptions.preHandler.push(
+				createValidationHook(routeMeta.options.querySchema, 'Invalid query params', 'query'),
+			);
+		}
 
 		if (typeof routeMeta.options.authHandler === 'undefined') {
 			routeOptions.preHandler.push(defaultApiAuthMiddleware);
@@ -228,21 +238,6 @@ export function registerRoutes(
 			}
 		} else if (routeMeta.options.authHandler === false) {
 			// no-op: skip authentication for this route
-		}
-
-		const preValidation: ReturnType<typeof createValidationHook>[] = [];
-		if (routeMeta.options.bodySchema) {
-			preValidation.push(
-				createValidationHook(routeMeta.options.bodySchema, 'Invalid request body', 'body'),
-			);
-		}
-		if (routeMeta.options.querySchema) {
-			preValidation.push(
-				createValidationHook(routeMeta.options.querySchema, 'Invalid query params', 'query'),
-			);
-		}
-		if (preValidation.length > 0) {
-			routeOptions.preValidation = preValidation;
 		}
 
 		fastify.route(routeOptions);

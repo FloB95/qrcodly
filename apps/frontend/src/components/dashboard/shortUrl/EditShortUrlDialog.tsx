@@ -137,7 +137,7 @@ export function EditShortUrlDialog({
 						<div className="flex justify-end">
 							<Button
 								type="submit"
-								disabled={updateMutation.isPending}
+								disabled={!form.formState.isDirty || updateMutation.isPending}
 								isLoading={updateMutation.isPending}
 							>
 								{t('edit.submitBtn')}
