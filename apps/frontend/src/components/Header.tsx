@@ -149,7 +149,7 @@ export default function Header({
 									'flex items-center gap-1 h-10 px-2 py-2 cursor-pointer transition-colors',
 									(isProductsActive || productsOpen) && 'font-semibold text-black',
 								)}
-								onClick={() => setProductsOpen((prev) => !prev)}
+								onClick={openProducts}
 							>
 								{t('productsBtn')}
 								<ChevronDownIcon

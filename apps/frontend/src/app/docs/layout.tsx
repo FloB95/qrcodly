@@ -68,7 +68,7 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
 									</>
 								</DocsLayout>
 							</RootProvider>
-							<Footer />
+							<Footer hideLanguageNav />
 						</main>
 					</Providers>
 				</NextIntlClientProvider>

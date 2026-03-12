@@ -2,7 +2,7 @@ import { env } from '@/env';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import qs from 'qs';
-import type { SupportedLanguages } from '@/i18n/routing';
+
 import { ApiError } from './api/ApiError';
 import type { z } from 'zod';
 import type {
@@ -198,8 +198,8 @@ export async function apiRequest<T>(
 	return (await response.json()) as T;
 }
 
-export function getQrCodeEditLink(lang: SupportedLanguages, qrCodeId: string) {
-	return `/${lang}/dashboard/qr-codes/${qrCodeId}/edit`;
+export function getQrCodeEditLink(qrCodeId: string) {
+	return `/dashboard/qr-codes/${qrCodeId}/edit`;
 }
 
 export type UserResource = ReturnType<typeof useUser>['user'];

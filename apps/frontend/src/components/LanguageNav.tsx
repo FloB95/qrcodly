@@ -35,7 +35,7 @@ export const LanguageNav = ({
 
 	const languageLinks = SUPPORTED_LANGUAGES.map((lang) => ({
 		lang,
-		path: currentPath.replace(`/${locale}`, ''),
+		path: currentPath, // usePathname() from next-intl already returns locale-stripped path
 	})).sort((a, b) => a.lang.localeCompare(b.lang));
 
 	const openMenu = useCallback(() => {

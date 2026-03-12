@@ -8,7 +8,7 @@ import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfig
 import { getTranslations } from 'next-intl/server';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import { EditPageTagSection } from '@/components/qr-code-detail/EditPageTagSection';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import {
 	Breadcrumb,
@@ -93,13 +93,13 @@ export default async function QRCodeEditPage({ params }: QRCodeEditProps) {
 						<BreadcrumbList>
 							<BreadcrumbItem>
 								<BreadcrumbLink asChild>
-									<Link href={`/${locale}/dashboard/qr-codes`}>{t('collection.tabQrCode')}</Link>
+									<Link href="/dashboard/qr-codes">{t('collection.tabQrCode')}</Link>
 								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
 								<BreadcrumbLink asChild>
-									<Link href={`/${locale}/dashboard/qr-codes/${id}`}>
+									<Link href={`/dashboard/qr-codes/${id}`}>
 										{qrCode.name || t('general.noName')}
 									</Link>
 								</BreadcrumbLink>

@@ -32,6 +32,7 @@ const _EpcSection = ({ onChange, value }: EpcSectionProps) => {
 		resolver: zodResolver(EpcInputSchema),
 		defaultValues: value,
 		shouldFocusError: false,
+		mode: 'onTouched',
 	});
 
 	const watchedValues = useWatch({ control: form.control }) as FormValues;

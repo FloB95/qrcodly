@@ -22,7 +22,6 @@ import z, { type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { $ZodError } from 'zod/v4/core';
-import { addUserToRequestMiddleware } from '@/core/http/middleware/add-user-to-request.middleware';
 
 export const fastifyRequestParser = <T extends IHttpRequest>(
 	request: FastifyRequest & { user?: { id: string } },
@@ -217,7 +216,7 @@ export function registerRoutes(
 			schema: deepMerge(schema, routeMeta.options.schema as unknown as Partial<typeof schema>),
 		};
 
-		routeOptions.preHandler = [addUserToRequestMiddleware];
+		routeOptions.preHandler = [];
 
 		if (typeof routeMeta.options.authHandler === 'undefined') {
 			routeOptions.preHandler.push(defaultApiAuthMiddleware);

@@ -17,7 +17,7 @@ function GitHubIcon(props: React.SVGProps<SVGSVGElement>) {
 	);
 }
 
-export default function Footer() {
+export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean } = {}) {
 	const t = useTranslations('footer');
 	const pathname = usePathname();
 	const currentYear = new Date().getFullYear();
@@ -194,7 +194,7 @@ export default function Footer() {
 					<p className="text-xs text-gray-500">
 						&copy; FB Dev {currentYear} &mdash; {t('qrCodeCopyright')}
 					</p>
-					<LanguageNav direction="up" />
+					{!hideLanguageNav && <LanguageNav direction="up" />}
 				</div>
 			</div>
 		</footer>

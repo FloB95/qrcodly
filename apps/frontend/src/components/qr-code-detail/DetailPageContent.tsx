@@ -9,13 +9,13 @@ import { SavedQrCodeDownloadBtn } from '../qr-generator/download-buttons';
 import { AnalyticsSection } from './analytics/AnalyticsSection';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { UrlContent } from './content/Url';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { toast } from '../ui/use-toast';
 import { QrCodeIcon } from '../dashboard/qrCode/QrCodeIcon';
 import { QrCodeTagBadges } from '../dashboard/qrCode/QrCodeTagBadges';
 import { useDeleteQrCodeMutation } from '@/lib/api/qr-code';
 import * as Sentry from '@sentry/nextjs';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import {
 	AlertDialog,
 	AlertDialogTrigger,
@@ -33,9 +33,9 @@ import LocationContent from './content/Location';
 import EventContent from './content/Event';
 import EpcContent from './content/Epc';
 import TextContent from './content/Text';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { getQrCodeEditLink } from '@/lib/utils';
-import type { SupportedLanguages } from '@/i18n/routing';
+
 import { Card, CardContent } from '../ui/card';
 import {
 	Breadcrumb,
@@ -48,7 +48,7 @@ import {
 
 export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResponseDto }) => {
 	const t = useTranslations();
-	const locale = useLocale() as SupportedLanguages;
+
 	const [isDeleting, setIsDeleting] = React.useState(false);
 	const deleteMutation = useDeleteQrCodeMutation();
 
@@ -81,7 +81,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 		setIsDeleting(true);
 		deleteMutation.mutate(qrCode.id, {
 			onSuccess: () => {
-				router.push(`/${locale}/dashboard/qr-codes`);
+				router.push('/dashboard/qr-codes');
 			},
 			onError: (error) => {
 				setIsDeleting(false);
@@ -104,7 +104,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 						<BreadcrumbList>
 							<BreadcrumbItem>
 								<BreadcrumbLink asChild>
-									<Link href={`/${locale}/dashboard/qr-codes`}>{t('collection.tabQrCode')}</Link>
+									<Link href="/dashboard/qr-codes">{t('collection.tabQrCode')}</Link>
 								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
@@ -140,10 +140,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 						</div>
 						<div className="flex items-center gap-2">
 							<ShareDialog qrCodeId={qrCode.id} />
-							<Link
-								className={buttonVariants({ size: 'sm' })}
-								href={getQrCodeEditLink(locale, qrCode.id)}
-							>
+							<Link className={buttonVariants({ size: 'sm' })} href={getQrCodeEditLink(qrCode.id)}>
 								{t('general.edit')}
 							</Link>
 							<AlertDialog>

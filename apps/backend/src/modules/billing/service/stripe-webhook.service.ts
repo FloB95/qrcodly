@@ -109,7 +109,7 @@ export class StripeWebhookService {
 		const { periodStart, periodEnd } = await this.getSubscriptionPeriod(subscription);
 
 		await this.userSubscriptionRepository.upsertByStripeSubscriptionId({
-			id: crypto.randomUUID(),
+			id: this.userSubscriptionRepository.generateId(),
 			userId,
 			stripeCustomerId: customerId,
 			stripeSubscriptionId: subscriptionId,

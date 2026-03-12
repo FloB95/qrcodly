@@ -15,6 +15,7 @@ import {
 	registerRoutes,
 	resolveClientIp,
 } from '@/libs/fastify/helpers';
+import { addUserToRequestMiddleware } from '@/core/http/middleware/add-user-to-request.middleware';
 import { env } from './config/env';
 import fastifyHelmet from '@fastify/helmet';
 import { TooManyRequestsError } from './error/http/too-many-requests.error';
@@ -112,6 +113,9 @@ export class Server {
 		await this.server.register(fastifyCookie, {
 			secret: env.COOKIE_SECRET,
 		});
+
+		// Add middleware to attach user info to request before all handlers
+		this.server.addHook('preHandler', addUserToRequestMiddleware);
 
 		if (!IN_TEST) {
 			await this.server.register(fastifyRateLimit, {

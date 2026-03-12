@@ -20,6 +20,7 @@ const mockRepository = {
 	upsertByStripeSubscriptionId: jest.fn(),
 	update: jest.fn(),
 	clearCancellationNotifications: jest.fn(),
+	generateId: jest.fn().mockReturnValue('generated-test-id'),
 } as unknown as jest.Mocked<UserSubscriptionRepository>;
 
 // Mock StripeService
