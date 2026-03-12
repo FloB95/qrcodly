@@ -170,8 +170,8 @@ export function useSetShortUrlTagsMutation() {
 			});
 		},
 		onSuccess: () => {
-			void queryClient.refetchQueries({ queryKey: urlShortenerQueryKeys.listShortUrls });
-			void queryClient.refetchQueries({ queryKey: tagQueryKeys.listTags });
+			void queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.listShortUrls });
+			void queryClient.invalidateQueries({ queryKey: tagQueryKeys.listTags });
 		},
 	});
 }

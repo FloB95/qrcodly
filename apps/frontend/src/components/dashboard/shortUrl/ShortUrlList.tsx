@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -89,6 +89,12 @@ export function ShortUrlList() {
 		() => (shortUrls ? Math.ceil(shortUrls.total / currentLimit) : 1),
 		[shortUrls, currentLimit],
 	);
+
+	useEffect(() => {
+		if (!isLoading && currentPage > totalPages) {
+			setCurrentPage(Math.max(1, totalPages));
+		}
+	}, [currentPage, isLoading, totalPages]);
 
 	const handleFiltersChange = (newFilters: ShortUrlFiltersType) => {
 		setFilters(newFilters);

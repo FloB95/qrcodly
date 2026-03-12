@@ -17,7 +17,7 @@ const intlMiddleware = createMiddleware(routing);
 // Matches locale-prefixed paths to non-translated routes (docs, imprint, privacy-policy)
 const localePrefix = SUPPORTED_LANGUAGES.filter((l) => l !== 'en').join('|');
 const localePrefixedNonTranslatedRoute = new RegExp(
-	`^/(${localePrefix})/(docs|doc|imprint|privacy-policy)(/.*)?$`,
+	`^/(${localePrefix})/(docs|imprint|privacy-policy)(/.*)?$`,
 );
 
 export default clerkMiddleware(async (auth, req, event) => {

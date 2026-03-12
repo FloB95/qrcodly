@@ -1059,7 +1059,7 @@
 		},
 		"apiKeys": {
 			"title": "Clés API",
-			"description": "Gérez vos clés API pour les intégrations externes.",
+			"description": "Gérez vos clés API pour les intégrations externes. Consultez la <link>documentation de l'API</link> pour commencer.",
 			"name": "Nom",
 			"descriptionLabel": "Description",
 			"createdAt": "Créé le",

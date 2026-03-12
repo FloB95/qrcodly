@@ -1055,7 +1055,7 @@
 		},
 		"apiKeys": {
 			"title": "API-sleutels",
-			"description": "Beheer je API-sleutels voor externe integraties.",
+			"description": "Beheer je API-sleutels voor externe integraties. Bekijk de <link>API-documentatie</link> om aan de slag te gaan.",
 			"name": "Naam",
 			"descriptionLabel": "Beschrijving",
 			"createdAt": "Aangemaakt op",

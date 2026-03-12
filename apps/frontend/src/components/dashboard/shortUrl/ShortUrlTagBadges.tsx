@@ -62,6 +62,7 @@ export const ShortUrlTagBadges = ({ shortUrlId, tags: initialTags }: ShortUrlTag
 	const setTagsMutation = useSetShortUrlTagsMutation();
 
 	const handleRemove = async (tagId: string) => {
+		if (setTagsMutation.isPending) return;
 		const updatedTagIds = tags.filter((t) => t.id !== tagId).map((t) => t.id);
 		try {
 			const updatedTags = await setTagsMutation.mutateAsync({

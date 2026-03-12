@@ -1055,7 +1055,7 @@
 		},
 		"apiKeys": {
 			"title": "Klucze API",
-			"description": "Zarządzaj kluczami API dla zewnętrznych integracji.",
+			"description": "Zarządzaj kluczami API dla zewnętrznych integracji. Sprawdź <link>dokumentację API</link>, aby rozpocząć.",
 			"name": "Nazwa",
 			"descriptionLabel": "Opis",
 			"createdAt": "Utworzono",

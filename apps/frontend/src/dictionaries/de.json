@@ -1055,7 +1055,7 @@
 		},
 		"apiKeys": {
 			"title": "API-Schlüssel",
-			"description": "Verwalte deine API-Schlüssel für externe Integrationen.",
+			"description": "Verwalte deine API-Schlüssel für externe Integrationen. Sieh dir die <link>API-Dokumentation</link> an, um loszulegen.",
 			"name": "Name",
 			"descriptionLabel": "Beschreibung",
 			"createdAt": "Erstellt am",

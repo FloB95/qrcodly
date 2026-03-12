@@ -1055,7 +1055,7 @@
 		},
 		"apiKeys": {
 			"title": "API Keys",
-			"description": "Manage your API keys for external integrations.",
+			"description": "Manage your API keys for external integrations. Check out the <link>API documentation</link> to get started.",
 			"name": "Name",
 			"descriptionLabel": "Description",
 			"createdAt": "Created at",
