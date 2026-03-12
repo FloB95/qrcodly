@@ -1,6 +1,7 @@
 import { useAuth } from '@clerk/nextjs';
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
+import { qrCodeQueryKeys } from './qr-code';
 import type {
 	TAnalyticsResponseDto,
 	TCreateShortUrlDto,
@@ -62,6 +63,9 @@ export function useToggleActiveStateMutation() {
 		onSuccess: () => {
 			void queryClient.refetchQueries({
 				queryKey: urlShortenerQueryKeys.listShortUrls,
+			});
+			void queryClient.refetchQueries({
+				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
 		},
 	});

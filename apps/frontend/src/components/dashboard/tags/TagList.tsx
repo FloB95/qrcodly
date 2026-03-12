@@ -14,7 +14,7 @@ import {
 	PaginationPrevious,
 } from '@/components/ui/pagination';
 import { useState, useMemo, useEffect } from 'react';
-import { getPageNumbers } from '@/lib/utils';
+import { cn, getPageNumbers } from '@/lib/utils';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import {
 	Empty,
@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/empty';
 import { TagIcon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { TagListItem, SkeletonTagListItem } from './TagListItem';
+import { TableLoader } from '@/components/ui/table-loader';
 import { TagCreateDialog } from './TagCreateDialog';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 
@@ -71,6 +72,8 @@ export const TagList = () => {
 		isLoading,
 		isFetching,
 	} = useListTagsQuery(currentPage, currentLimit, debouncedSearch || undefined);
+
+	const isRefetching = isFetching && !isLoading;
 
 	const totalPages = useMemo(
 		() => (tags ? Math.ceil(tags.total / currentLimit) : 1),
@@ -163,20 +166,26 @@ export const TagList = () => {
 	return (
 		<div className="space-y-4">
 			{searchInput}
-			<div className="overflow-hidden rounded-lg border">
-				<Table>
-					{renderTableHeader()}
-					<TableBody>
-						{isFetching
-							? (tags.data.length > 0 ? tags.data : Array.from({ length: 5 })).map((_, idx) => (
-									<SkeletonTagListItem key={idx} />
-								))
-							: tags.data.map((tag) => <TagListItem key={tag.id} tag={tag} />)}
-					</TableBody>
-				</Table>
+			<div className={cn('relative')}>
+				{isRefetching && <TableLoader />}
+				<div className="overflow-hidden rounded-lg border">
+					<Table>
+						{renderTableHeader()}
+						<TableBody
+							className={cn(
+								isRefetching &&
+									'pointer-events-none opacity-50 blur-[0.6px] transition-all duration-200',
+							)}
+						>
+							{tags.data.map((tag) => (
+								<TagListItem key={tag.id} tag={tag} />
+							))}
+						</TableBody>
+					</Table>
+				</div>
 			</div>
-			{!isFetching && totalPages > 1 && (
-				<Pagination>
+			{totalPages > 1 && (
+				<Pagination className={cn(isRefetching && 'pointer-events-none opacity-50')}>
 					<PaginationContent>
 						<PaginationItem>
 							<PaginationPrevious

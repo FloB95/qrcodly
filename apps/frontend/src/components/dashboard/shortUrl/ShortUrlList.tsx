@@ -25,6 +25,7 @@ import {
 import { LinkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { buttonVariants } from '@/components/ui/button';
 import { cn, getPageNumbers } from '@/lib/utils';
+import { TableLoader } from '@/components/ui/table-loader';
 import {
 	useListShortUrlsQuery,
 	type ShortUrlFilters as ShortUrlFiltersType,
@@ -84,6 +85,8 @@ export function ShortUrlList() {
 		isError,
 		isFetching,
 	} = useListShortUrlsQuery(currentPage, currentLimit, filters);
+
+	const isRefetching = isFetching && !isLoading;
 
 	const totalPages = useMemo(
 		() => (shortUrls ? Math.ceil(shortUrls.total / currentLimit) : 1),
@@ -180,20 +183,26 @@ export function ShortUrlList() {
 	return (
 		<div className="space-y-4">
 			<ShortUrlFilters filters={filters} onFiltersChange={handleFiltersChange} />
-			<div className="overflow-hidden rounded-lg border">
-				<Table>
-					<ShortUrlTableHeader />
-					<TableBody>
-						{isFetching
-							? (shortUrls.data.length > 0 ? shortUrls.data : Array.from({ length: 5 })).map(
-									(_, idx) => <SkeletonRow key={idx} />,
-								)
-							: shortUrls.data.map((su) => <ShortUrlListItem key={su.id} shortUrl={su} />)}
-					</TableBody>
-				</Table>
+			<div className={cn('relative')}>
+				{isRefetching && <TableLoader />}
+				<div className="overflow-hidden rounded-lg border">
+					<Table>
+						<ShortUrlTableHeader />
+						<TableBody
+							className={cn(
+								isRefetching &&
+									'pointer-events-none opacity-50 blur-[0.6px] transition-all duration-200',
+							)}
+						>
+							{shortUrls.data.map((su) => (
+								<ShortUrlListItem key={su.id} shortUrl={su} />
+							))}
+						</TableBody>
+					</Table>
+				</div>
 			</div>
-			{!isFetching && totalPages > 1 && (
-				<Pagination>
+			{totalPages > 1 && (
+				<Pagination className={cn(isRefetching && 'pointer-events-none opacity-50')}>
 					<PaginationContent>
 						<PaginationItem>
 							<PaginationPrevious
