@@ -155,10 +155,7 @@ export const QrCodeListItem = ({
 							{qr.shortUrl && (
 								<Tooltip>
 									<TooltipTrigger asChild>
-										<Badge
-											variant={qr.shortUrl.isActive ? 'default' : 'outline'}
-											className="text-xs"
-										>
+										<Badge variant={qr.shortUrl.isActive ? 'blue' : 'outline'} className="text-xs">
 											{qr.shortUrl.isActive
 												? t('analytics.stateActive')
 												: t('analytics.stateInactive')}

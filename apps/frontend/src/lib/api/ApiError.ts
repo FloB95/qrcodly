@@ -1,10 +1,10 @@
-import type { ZodIssue } from 'zod/v3';
+import type { z } from 'zod';
 
 export class ApiError extends Error {
 	code: number;
-	fieldErrors?: ZodIssue[];
+	fieldErrors?: z.core.$ZodIssue[];
 
-	constructor(message: string, code: number, fieldErrors?: ZodIssue[]) {
+	constructor(message: string, code: number, fieldErrors?: z.core.$ZodIssue[]) {
 		super(message);
 
 		this.code = code;

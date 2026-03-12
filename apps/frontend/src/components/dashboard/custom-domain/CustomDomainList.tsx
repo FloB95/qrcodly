@@ -23,19 +23,9 @@ import {
 } from '@/components/ui/pagination';
 import { AlertCircle, Globe } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { env } from '@/env';
+import { getSystemDomain } from '@/lib/utils';
 
 const ITEMS_PER_PAGE = 10;
-
-// Extract domain from FRONTEND_URL (e.g., "qrcodly.de" from "https://www.qrcodly.de")
-const getSystemDomain = (): string => {
-	try {
-		const url = new URL(env.NEXT_PUBLIC_FRONTEND_URL);
-		return url.hostname.replace(/^www\./, '');
-	} catch {
-		return 'qrcodly.de';
-	}
-};
 
 export function CustomDomainList() {
 	const t = useTranslations('settings.domains');
@@ -139,7 +129,6 @@ export function CustomDomainList() {
 							</PaginationItem>
 							<PaginationItem>
 								<PaginationNext
-									href="#"
 									onClick={(e) => {
 										e.preventDefault();
 										if (currentPage < pagination.totalPages) handlePageChange(currentPage + 1);

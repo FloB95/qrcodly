@@ -1,13 +1,11 @@
 import { getTestContext } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { TAG_API_PATH, createTagRequest, createQrCodeForTest } from './utils';
-import { ensureProSubscription } from '@/tests/shared/helpers';
 
 describe('setQrCodeTags', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 	let accessToken2: string;
-	let accessTokenPro: string;
 
 	const setQrCodeTagsRequest = async (qrCodeId: string, token?: string, body?: any) =>
 		testServer.inject({
@@ -24,8 +22,6 @@ describe('setQrCodeTags', () => {
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
 		accessToken2 = ctx.accessToken2;
-		accessTokenPro = ctx.accessTokenPro;
-		await ensureProSubscription();
 	});
 
 	it('should set tags on a QR code', async () => {
@@ -97,16 +93,38 @@ describe('setQrCodeTags', () => {
 		expect(response.statusCode).toBe(403);
 	});
 
-	it('should return 403 when free user tries to set more than 1 tag', async () => {
+	it('should allow any user to set up to 3 tags', async () => {
 		const tag1 = await createTagRequest(
 			testServer,
-			{ name: 'Limit Tag A ' + Date.now() },
+			{ name: 'Multi Tag A ' + Date.now() },
 			accessToken,
 		);
 		const tag2 = await createTagRequest(
 			testServer,
-			{ name: 'Limit Tag B ' + Date.now() },
+			{ name: 'Multi Tag B ' + Date.now() },
 			accessToken,
+		);
+		const tag3 = await createTagRequest(
+			testServer,
+			{ name: 'Multi Tag C ' + Date.now() },
+			accessToken,
+		);
+		const qrCode = await createQrCodeForTest(testServer, accessToken, 'Multi Tag QR ' + Date.now());
+
+		const response = await setQrCodeTagsRequest(qrCode.id, accessToken, {
+			tagIds: [tag1.id, tag2.id, tag3.id],
+		});
+
+		expect(response.statusCode).toBe(200);
+		const tags = JSON.parse(response.payload);
+		expect(tags).toHaveLength(3);
+	});
+
+	it('should return 400 when trying to set more than 3 tags', async () => {
+		const tags = await Promise.all(
+			Array.from({ length: 4 }, (_, i) =>
+				createTagRequest(testServer, { name: `Limit Tag ${i} ` + Date.now() }, accessToken),
+			),
 		);
 		const qrCode = await createQrCodeForTest(
 			testServer,
@@ -115,38 +133,12 @@ describe('setQrCodeTags', () => {
 		);
 
 		const response = await setQrCodeTagsRequest(qrCode.id, accessToken, {
-			tagIds: [tag1.id, tag2.id],
+			tagIds: tags.map((t) => t.id),
 		});
 
-		expect(response.statusCode).toBe(403);
+		expect(response.statusCode).toBe(400);
 		const body = JSON.parse(response.payload);
-		expect(body.message).toContain('Plan limit exceeded');
-	});
-
-	it('should allow pro user to set multiple tags', async () => {
-		const tag1 = await createTagRequest(
-			testServer,
-			{ name: 'Pro Tag A ' + Date.now() },
-			accessTokenPro,
-		);
-		const tag2 = await createTagRequest(
-			testServer,
-			{ name: 'Pro Tag B ' + Date.now() },
-			accessTokenPro,
-		);
-		const qrCode = await createQrCodeForTest(
-			testServer,
-			accessTokenPro,
-			'Pro Tag QR ' + Date.now(),
-		);
-
-		const response = await setQrCodeTagsRequest(qrCode.id, accessTokenPro, {
-			tagIds: [tag1.id, tag2.id],
-		});
-
-		expect(response.statusCode).toBe(200);
-		const tags = JSON.parse(response.payload);
-		expect(tags).toHaveLength(2);
+		expect(body.message).toContain('You can add a maximum of 3 tags');
 	});
 
 	it('should replace existing tags with new ones', async () => {

@@ -1,21 +1,19 @@
 import Container from '@/components/ui/container';
+import { Heading } from '@/components/ui/heading';
 import { CheckIcon } from '@heroicons/react/24/outline';
 import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { CtaSection } from './CtaSection';
 import { AnimateOnLoad, AnimateOnScroll } from '@/components/features/AnimateOnScroll';
 import {
-	AnalyticsMockup,
-	BulkOperationsMockup,
-	CollectionMockup,
-	ContentTypesMockup,
-	CustomDomainMockup,
-	DynamicQrMockup,
-	IntegrationsMockup,
-	SecurityMockup,
-	TagsMockup,
-	TeamsMockup,
 	TemplatesMockup,
+	CustomDomainMockup,
+	TagsMockup,
+	BulkOperationsMockup,
+	SecurityMockup,
+	IntegrationsMockup,
+	ContentTypesMockup,
+	TeamsMockup,
 } from '@/components/features/FeatureMockups';
 
 /* ─── Feature Detail Section ──────────────────────────── */
@@ -39,15 +37,14 @@ function FeatureDetailSection({
 				<div
 					className={`flex flex-col ${reversed ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-10 sm:gap-12 lg:gap-16 sm:px-6 lg:px-8`}
 				>
-					{/* Text side */}
 					<AnimateOnScroll
 						className="flex-1 max-w-xl"
 						variant={reversed ? 'slideRight' : 'slideLeft'}
 						delay={0.1}
 					>
-						<h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+						<Heading as="h2" size="md" className="mb-4">
 							{title}
-						</h2>
+						</Heading>
 						<p className="text-slate-600 text-base sm:text-lg leading-relaxed mb-6">
 							{description}
 						</p>
@@ -61,7 +58,6 @@ function FeatureDetailSection({
 						</ul>
 					</AnimateOnScroll>
 
-					{/* Visual side */}
 					<AnimateOnScroll
 						className="flex-1 w-full max-w-lg lg:max-w-none"
 						variant={reversed ? 'slideLeft' : 'slideRight'}
@@ -81,36 +77,6 @@ export async function FeaturesPage({ locale }: { locale: string }) {
 	const t = await getTranslations({ locale, namespace: 'featuresPage' });
 
 	const spotlightSections = [
-		{
-			title: t('spotlight.dynamicQr.title'),
-			description: t('spotlight.dynamicQr.description'),
-			bullets: [
-				t('spotlight.dynamicQr.bullet1'),
-				t('spotlight.dynamicQr.bullet2'),
-				t('spotlight.dynamicQr.bullet3'),
-			],
-			visual: <DynamicQrMockup />,
-		},
-		{
-			title: t('spotlight.analytics.title'),
-			description: t('spotlight.analytics.description'),
-			bullets: [
-				t('spotlight.analytics.bullet1'),
-				t('spotlight.analytics.bullet2'),
-				t('spotlight.analytics.bullet3'),
-			],
-			visual: <AnalyticsMockup />,
-		},
-		{
-			title: t('spotlight.collection.title'),
-			description: t('spotlight.collection.description'),
-			bullets: [
-				t('spotlight.collection.bullet1'),
-				t('spotlight.collection.bullet2'),
-				t('spotlight.collection.bullet3'),
-			],
-			visual: <CollectionMockup />,
-		},
 		{
 			title: t('spotlight.templates.title'),
 			description: t('spotlight.templates.description'),
@@ -199,9 +165,9 @@ export async function FeaturesPage({ locale }: { locale: string }) {
 			<Container>
 				<div className="pt-16 sm:pt-20 pb-16 sm:pb-24 text-center sm:px-6 lg:px-8">
 					<AnimateOnLoad className="mt-14">
-						<h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 mb-6 max-w-4xl mx-auto">
+						<Heading as="h1" size="hero" className="mb-6 max-w-4xl mx-auto">
 							{t('title')}
-						</h1>
+						</Heading>
 					</AnimateOnLoad>
 
 					<AnimateOnLoad delay={0.2}>

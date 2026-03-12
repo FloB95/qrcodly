@@ -1,6 +1,7 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
+import { Heading } from '@/components/ui/heading';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
@@ -38,9 +39,9 @@ export const Hero = () => {
 				{t('badge')}
 			</Badge>
 
-			<h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 mb-6">
+			<Heading as="h1" size="hero" className="mb-6">
 				{t('title')}
-			</h1>
+			</Heading>
 
 			<p className="mx-auto max-w-2xl text-xl sm:text-2xl text-slate-700 mb-8">{t('subtitle')}</p>
 

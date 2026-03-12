@@ -10,6 +10,7 @@ import type {
 } from '@shared/schemas';
 import { apiRequest } from '../utils';
 import { qrCodeQueryKeys } from './qr-code';
+import { urlShortenerQueryKeys } from './url-shortener';
 
 export const tagQueryKeys = {
 	listTags: ['listTags'],
@@ -142,6 +143,35 @@ export function useSetQrCodeTagsMutation() {
 		onSuccess: () => {
 			void queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
 			void queryClient.refetchQueries({ queryKey: tagQueryKeys.listTags });
+		},
+	});
+}
+
+export function useSetShortUrlTagsMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async ({
+			shortUrlId,
+			tagIds,
+		}: {
+			shortUrlId: string;
+			tagIds: string[];
+		}): Promise<TTagResponseDto[]> => {
+			const token = await getToken();
+			return apiRequest<TTagResponseDto[]>(`/tag/short-url/${shortUrlId}`, {
+				method: 'PUT',
+				body: JSON.stringify({ tagIds }),
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			});
+		},
+		onSuccess: () => {
+			void queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.listShortUrls });
+			void queryClient.invalidateQueries({ queryKey: tagQueryKeys.listTags });
 		},
 	});
 }

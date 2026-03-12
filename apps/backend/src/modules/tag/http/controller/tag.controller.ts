@@ -6,6 +6,7 @@ import { UpdateTagUseCase } from '../../useCase/update-tag.use-case';
 import { DeleteTagUseCase } from '../../useCase/delete-tag.use-case';
 import { ListTagsUseCase } from '../../useCase/list-tags.use-case';
 import { SetQrCodeTagsUseCase } from '../../useCase/set-qr-code-tags.use-case';
+import { SetShortUrlTagsUseCase } from '../../useCase/set-short-url-tags.use-case';
 import TagRepository from '../../domain/repository/tag.repository';
 import { type TTag } from '../../domain/entities/tag.entity';
 import { TagNotFoundError } from '../../error/http/tag-not-found.error';
@@ -15,12 +16,14 @@ import {
 	CreateTagDto,
 	GetTagQueryParamsSchema,
 	SetQrCodeTagsDto,
+	SetShortUrlTagsDto,
 	TagPaginatedResponseDto,
 	TagResponseDto,
 	TCreateTagDto,
 	TGetTagQueryParamsDto,
 	TIdRequestQueryDto,
 	TSetQrCodeTagsDto,
+	TSetShortUrlTagsDto,
 	TTagPaginatedResponseDto,
 	TTagResponseDto,
 	TUpdateTagDto,
@@ -39,6 +42,8 @@ export class TagController extends AbstractController {
 		@inject(UpdateTagUseCase) private readonly updateTagUseCase: UpdateTagUseCase,
 		@inject(DeleteTagUseCase) private readonly deleteTagUseCase: DeleteTagUseCase,
 		@inject(SetQrCodeTagsUseCase) private readonly setQrCodeTagsUseCase: SetQrCodeTagsUseCase,
+		@inject(SetShortUrlTagsUseCase)
+		private readonly setShortUrlTagsUseCase: SetShortUrlTagsUseCase,
 		@inject(TagRepository) private readonly tagRepository: TagRepository,
 	) {
 		super();
@@ -176,6 +181,35 @@ export class TagController extends AbstractController {
 		const { tagIds } = request.body;
 
 		const tags = await this.setQrCodeTagsUseCase.execute(qrCodeId, tagIds, request.user);
+
+		return this.makeApiHttpResponse(
+			200,
+			tags.map((t) => TagResponseDto.parse(t)),
+		);
+	}
+
+	@Put('/short-url/:id', {
+		bodySchema: SetShortUrlTagsDto,
+		responseSchema: {
+			200: z.array(TagResponseDto),
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			summary: 'Set Short URL Tags',
+			description: 'Replace all tags for a short URL with the provided tag IDs.',
+			operationId: 'tag/set-short-url-tags',
+		},
+	})
+	async setShortUrlTags(
+		request: IHttpRequest<TSetShortUrlTagsDto, TIdRequestQueryDto>,
+	): Promise<IHttpResponse<TTagResponseDto[]>> {
+		const { id: shortUrlId } = request.params;
+		const { tagIds } = request.body;
+
+		const tags = await this.setShortUrlTagsUseCase.execute(shortUrlId, tagIds, request.user);
 
 		return this.makeApiHttpResponse(
 			200,

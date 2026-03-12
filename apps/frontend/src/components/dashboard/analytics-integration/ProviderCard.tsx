@@ -155,7 +155,7 @@ export function ProviderCard({
 						<ItemTitle>
 							{providerName}
 							{integration.isEnabled ? (
-								<Badge variant="default" className="text-xs">
+								<Badge variant="blue" className="text-xs">
 									{t('active')}
 								</Badge>
 							) : (

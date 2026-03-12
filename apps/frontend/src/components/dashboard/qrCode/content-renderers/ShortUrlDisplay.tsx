@@ -3,12 +3,12 @@
 import { ArrowTurnDownRightIcon } from '@heroicons/react/24/outline';
 import { useShortUrlLink } from '@/hooks/use-short-url-link';
 import { cn } from '@/lib/utils';
-import type { TShortUrlResponseDto } from '@shared/schemas';
+import type { TShortUrlResponseDto, TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
 import { CopyUrlButton } from './CopyUrlButton';
 import { TruncatedLink } from './TruncatedLink';
 
 interface ShortUrlDisplayProps {
-	shortUrl: TShortUrlResponseDto;
+	shortUrl: TShortUrlResponseDto | TShortUrlWithCustomDomainResponseDto;
 	destinationUrl?: string | null;
 	destinationContent?: React.ReactNode;
 	className?: string;

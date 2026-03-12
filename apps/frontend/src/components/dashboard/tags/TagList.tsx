@@ -203,7 +203,6 @@ export const TagList = () => {
 						)}
 						<PaginationItem>
 							<PaginationNext
-								href="#"
 								onClick={
 									currentPage === totalPages ? undefined : () => handlePageChange(currentPage + 1)
 								}

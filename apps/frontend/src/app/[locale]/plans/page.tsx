@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { PricingCard } from '@/components/plans/PricingCard';
 import Container from '@/components/ui/container';
+import { Heading } from '@/components/ui/heading';
 import { env } from '@/env';
 import { routing, SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import type { DefaultPageParams } from '@/types/page';
@@ -63,9 +64,9 @@ export default async function Page({ params }: DefaultPageParams) {
 
 			<Container className="pt-16 sm:pt-20 pb-10 sm:pb-24">
 				<div className="text-center">
-					<h1 className="mt-14 text-center text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 max-w-2xl mx-auto">
+					<Heading as="h1" size="hero" className="mt-14 text-center max-w-2xl mx-auto">
 						{t('title')}
-					</h1>
+					</Heading>
 					<p className="mx-auto mt-6 max-w-2xl text-lg sm:text-xl text-slate-700">
 						{t('subtitle')}
 					</p>

@@ -1,8 +1,12 @@
 import { getTestContext } from '@/tests/shared/test-context';
 import { generateUpdateShortUrlDto } from '@/tests/shared/factories/short-url.factory';
+import { generateEditableUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
+import { API_BASE_PATH } from '@/core/config/constants';
 import type { FastifyInstance } from 'fastify';
-import type { TShortUrlResponseDto } from '@shared/schemas';
+import type { TQrCodeWithRelationsResponseDto, TShortUrlResponseDto } from '@shared/schemas';
 import { SHORT_URL_API_PATH, reserveShortUrl } from './utils';
+
+const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 
 describe('toggleShortUrlActiveState', () => {
 	let testServer: FastifyInstance;
@@ -93,5 +97,27 @@ describe('toggleShortUrlActiveState', () => {
 	it('should return 404 when shortCode does not exist', async () => {
 		const response = await toggleActiveStateRequest('XXXXX', accessToken);
 		expect(response.statusCode).toBe(404);
+	});
+
+	it('should allow toggling active state of a QR-code-linked short URL', async () => {
+		const createResponse = await testServer.inject({
+			method: 'POST',
+			url: QR_CODE_API_PATH,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${accessToken}`,
+			},
+			payload: generateEditableUrlQrCodeDto(),
+		});
+		expect(createResponse.statusCode).toBe(201);
+		const qrCode = JSON.parse(createResponse.payload) as TQrCodeWithRelationsResponseDto;
+		expect(qrCode.shortUrl).not.toBeNull();
+
+		const initialActive = qrCode.shortUrl!.isActive;
+		const response = await toggleActiveStateRequest(qrCode.shortUrl!.shortCode, accessToken);
+		expect(response.statusCode).toBe(200);
+
+		const toggled = JSON.parse(response.payload) as TShortUrlResponseDto;
+		expect(toggled.isActive).toBe(!initialActive);
 	});
 });

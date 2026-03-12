@@ -1,15 +1,22 @@
-import { Get, Patch, Post } from '@/core/decorators/route';
+import { Delete, Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
 import ShortUrlRepository from '../../domain/repository/short-url.repository';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import { ShortUrlNotFoundError } from '../../error/http/short-url-not-found.error';
+import { BadRequestError } from '@/core/error/http';
 import {
 	AnalyticsResponseDto,
+	CreateShortUrlDto,
+	GetShortUrlQueryParamsSchema,
+	ShortUrlWithCustomDomainPaginatedResponseDto,
 	ShortUrlWithCustomDomainResponseDto,
 	TAnalyticsResponseDto,
+	TCreateShortUrlDto,
+	TGetShortUrlQueryParamsDto,
 	TGetShortUrlRequestQueryDto,
+	TShortUrlWithCustomDomainPaginatedResponseDto,
 	TShortUrlWithCustomDomainResponseDto,
 	TTrackScanDto,
 	TUpdateShortUrlDto,
@@ -19,11 +26,16 @@ import {
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
 import { UmamiAnalyticsService } from '../../service/umami-analytics.service';
 import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
+import { CreateShortUrlUseCase } from '../../useCase/create-short-url.use-case';
+import { ListShortUrlsUseCase } from '../../useCase/list-short-urls.use-case';
+import { DeleteShortUrlUseCase } from '../../useCase/delete-short-url.use-case';
 import { TShortUrl } from '../../domain/entities/short-url.entity';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
+import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { KeyCache } from '@/core/cache';
 import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
 import { DispatchTrackingEventUseCase } from '@/modules/analytics-integration/useCase/dispatch-tracking-event.use-case';
+import TagRepository from '@/modules/tag/domain/repository/tag.repository';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -33,16 +45,136 @@ export class ShortUrlController extends AbstractController {
 		private readonly getReservedShortCodeUseCase: GetReservedShortCodeUseCase,
 		@inject(UpdateShortUrlUseCase)
 		private readonly updateShortUrlUseCase: UpdateShortUrlUseCase,
+		@inject(CreateShortUrlUseCase)
+		private readonly createShortUrlUseCase: CreateShortUrlUseCase,
+		@inject(ListShortUrlsUseCase)
+		private readonly listShortUrlsUseCase: ListShortUrlsUseCase,
+		@inject(DeleteShortUrlUseCase)
+		private readonly deleteShortUrlUseCase: DeleteShortUrlUseCase,
 		@inject(UmamiAnalyticsService) private readonly umamiAnalyticsService: UmamiAnalyticsService,
 		@inject(KeyCache) private readonly keyCache: KeyCache,
 		@inject(DispatchTrackingEventUseCase)
 		private readonly dispatchTrackingEventUseCase: DispatchTrackingEventUseCase,
+		@inject(TagRepository) private readonly tagRepository: TagRepository,
 	) {
 		super();
 	}
 
 	private getViewsCacheKey(shortCode: string): string {
 		return `views:${shortCode}`;
+	}
+
+	@Get('', {
+		querySchema: GetShortUrlQueryParamsSchema,
+		responseSchema: {
+			200: ShortUrlWithCustomDomainPaginatedResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			summary: 'List short URLs',
+			description:
+				"Lists the authenticated user's short URLs with pagination and optional filtering. Use standalone=true to only show standalone short URLs (not linked to QR codes).",
+			operationId: 'short-url/list-short-urls',
+		},
+	})
+	async list(
+		request: IHttpRequest<unknown, unknown, TGetShortUrlQueryParamsDto>,
+	): Promise<IHttpResponse<TShortUrlWithCustomDomainPaginatedResponseDto>> {
+		const { page, limit, where, standalone, tagIds } = request.query;
+		const { shortUrls, total } = await this.listShortUrlsUseCase.execute(
+			{ limit, page, where, standalone, tagIds },
+			request.user.id,
+		);
+
+		const pagination = {
+			page,
+			limit,
+			total,
+			data: shortUrls,
+		};
+
+		return this.makeApiHttpResponse(
+			200,
+			ShortUrlWithCustomDomainPaginatedResponseDto.parse(pagination),
+		);
+	}
+
+	@Post('', {
+		bodySchema: CreateShortUrlDto,
+		responseSchema: {
+			201: ShortUrlWithCustomDomainResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			summary: 'Create a standalone short URL',
+			description:
+				'Creates a new standalone short URL (not linked to a QR code). Requires a destination URL. Returns the created short URL object.',
+			operationId: 'short-url/create-short-url',
+		},
+	})
+	async create(
+		request: IHttpRequest<TCreateShortUrlDto>,
+	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
+		const shortUrl = await this.createShortUrlUseCase.execute(request.body, request.user.id);
+
+		return this.makeApiHttpResponse(
+			201,
+			ShortUrlWithCustomDomainResponseDto.parse({ ...shortUrl, tags: [] }),
+		);
+	}
+
+	@Delete('/:shortCode', {
+		responseSchema: {
+			200: DeleteResponseSchema,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			summary: 'Delete a standalone short URL',
+			description:
+				'Soft-deletes a standalone short URL. Only standalone short URLs (not linked to QR codes) can be deleted via this endpoint.',
+			operationId: 'short-url/delete-short-url',
+		},
+	})
+	async deleteShortUrl(
+		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
+	): Promise<IHttpResponse<{ deleted: boolean }>> {
+		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
+		await this.deleteShortUrlUseCase.execute(shortUrl, request.user.id);
+		return this.makeApiHttpResponse(200, { deleted: true });
+	}
+
+	@Get('/:shortCode/detail', {
+		responseSchema: {
+			200: ShortUrlWithCustomDomainResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			summary: 'Get short URL details (authenticated)',
+			description:
+				'Fetches details for a short URL owned by the authenticated user. Only the owner can access this endpoint.',
+			operationId: 'short-url/get-short-url-detail',
+		},
+	})
+	async getDetail(
+		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
+	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
+		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
+		const tags = await this.tagRepository.findTagsByShortUrlId(shortUrl.id);
+		return this.makeApiHttpResponse(
+			200,
+			ShortUrlWithCustomDomainResponseDto.parse({ ...shortUrl, tags }),
+		);
 	}
 
 	@Get('/:shortCode', {
@@ -79,15 +211,23 @@ export class ShortUrlController extends AbstractController {
 		request: IHttpRequest<TUpdateShortUrlDto, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
+
+		if (shortUrl.qrCodeId != null) {
+			throw new BadRequestError(
+				'Cannot update a short URL linked to a QR code. Update the QR code instead.',
+			);
+		}
+
 		const updatedShortUrl = await this.updateShortUrlUseCase.execute(
 			shortUrl,
 			request.body,
 			request.user.id,
 		);
 
+		const tags = await this.tagRepository.findTagsByShortUrlId(updatedShortUrl.id);
 		return this.makeApiHttpResponse(
 			200,
-			ShortUrlWithCustomDomainResponseDto.parse(updatedShortUrl),
+			ShortUrlWithCustomDomainResponseDto.parse({ ...updatedShortUrl, tags }),
 		);
 	}
 
@@ -116,9 +256,10 @@ export class ShortUrlController extends AbstractController {
 			request.user.id,
 		);
 
+		const tags = await this.tagRepository.findTagsByShortUrlId(updatedShortUrl.id);
 		return this.makeApiHttpResponse(
 			200,
-			ShortUrlWithCustomDomainResponseDto.parse(updatedShortUrl),
+			ShortUrlWithCustomDomainResponseDto.parse({ ...updatedShortUrl, tags }),
 		);
 	}
 

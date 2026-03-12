@@ -98,7 +98,6 @@ export const QrCodeFilters = ({
 		if (externalSearch !== searchValue.trim()) {
 			setSearchValue(externalSearch);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filters.search]);
 
 	useEffect(() => {
@@ -183,7 +182,7 @@ export const QrCodeFilters = ({
 							<FunnelIcon className="h-4 w-4" />
 							<span className="hidden lg:inline">{t('contentType')}</span>
 							{filters.contentType?.length ? (
-								<Badge variant="default" className="ml-1 px-1.5 py-0 text-[10px]">
+								<Badge variant="blue" className="ml-1 px-1.5 py-0 text-[10px]">
 									{filters.contentType.length}
 								</Badge>
 							) : null}
@@ -237,7 +236,7 @@ export const QrCodeFilters = ({
 							<TagIcon className="h-4 w-4" />
 							<span className="hidden lg:inline">{tTags('title')}</span>
 							{filters.tagIds?.length ? (
-								<Badge variant="default" className="ml-1 px-1.5 py-0 text-[10px]">
+								<Badge variant="blue" className="ml-1 px-1.5 py-0 text-[10px]">
 									{filters.tagIds.length}
 								</Badge>
 							) : null}

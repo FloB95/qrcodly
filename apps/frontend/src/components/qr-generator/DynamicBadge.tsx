@@ -141,10 +141,11 @@ export const DynamicBadge = ({ className = '', checked, onChange }: DynamicBadge
 						</TooltipTrigger>
 						<TooltipContent side="right" className="max-w-xs">
 							<TooltipArrow className="fill-border" />
-							<p
-								className="text-sm"
-								dangerouslySetInnerHTML={{ __html: String(t.raw('general.dynamicBadgeTooltip')) }}
-							/>
+							<p className="text-sm">
+								{t.rich('general.dynamicBadgeTooltip', {
+									i: (chunks) => <i>{chunks}</i>,
+								})}
+							</p>
 						</TooltipContent>
 					</Tooltip>
 				</div>

@@ -11,6 +11,7 @@ import { auth } from '@clerk/nextjs/server';
 import { notFound } from 'next/navigation';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { Hero } from '@/components/Hero';
+import { ProductStatsBar } from '@/components/products/ProductStatsBar';
 import dynamic from 'next/dynamic';
 
 // Dynamic imports for below-the-fold components to reduce initial bundle size
@@ -25,6 +26,10 @@ const ProductShowcase = dynamic(
 const Cta = dynamic(() => import('@/components/Cta').then((mod) => mod.Cta), {
 	ssr: true,
 });
+const BrowserExtensionTeaser = dynamic(
+	() => import('@/components/BrowserExtensionTeaser').then((mod) => mod.BrowserExtensionTeaser),
+	{ ssr: true },
+);
 const FAQSection = dynamic(() => import('@/components/Faq'), {
 	ssr: true,
 });
@@ -36,6 +41,7 @@ export default async function Page({ params }: DefaultPageParams) {
 	}
 
 	const tMeta = await getTranslations({ locale, namespace: 'metadata' });
+	const tStats = await getTranslations({ locale, namespace: 'homeStats' });
 	const { userId } = await auth();
 	const isSignedIn = !!userId;
 
@@ -103,6 +109,14 @@ export default async function Page({ params }: DefaultPageParams) {
 				</article>
 			</QrCodeGeneratorStoreProvider>
 
+			{/* Stats Bar */}
+			<ProductStatsBar
+				stats={Array.from({ length: 4 }, (_, i) => ({
+					value: tStats(`stat${i + 1}Value`),
+					label: tStats(`stat${i + 1}Label`),
+				}))}
+			/>
+
 			{/* Features Slider */}
 			<section id="features" aria-label="Features" className="py-10 sm:py-24">
 				<FeatureSlider />
@@ -111,6 +125,11 @@ export default async function Page({ params }: DefaultPageParams) {
 			{/* Product Showcase */}
 			<section id="showcase" aria-label="Product Showcase" className="py-10 sm:py-24">
 				<ProductShowcase />
+			</section>
+
+			{/* Browser Extension Teaser */}
+			<section aria-label="Browser Extension" className="py-10 sm:py-24">
+				<BrowserExtensionTeaser />
 			</section>
 
 			{/* FAQ Section */}

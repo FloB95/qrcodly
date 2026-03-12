@@ -1,14 +1,19 @@
-import { type z } from 'zod';
+import { z } from 'zod';
 import { ShortUrlSchema } from '../../schemas/ShortUrl';
 
 /**
- * Schema for creating a short URL DTO.
- * Optionally allows specifying a custom domain ID for the short URL.
+ * Schema for creating a short URL DTO via the public API.
+ * Uses z.httpUrl() at the API boundary to enforce http/https protocol for user-provided URLs.
+ * destinationUrl is required (non-nullable) — only internal flows (reserved URLs) may set null.
  */
 export const CreateShortUrlDto = ShortUrlSchema.pick({
 	destinationUrl: true,
 	isActive: true,
 	customDomainId: true,
+	name: true,
+}).extend({
+	destinationUrl: z.httpUrl(),
+	isActive: z.boolean().default(true),
 });
 
 /**

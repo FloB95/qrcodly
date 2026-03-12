@@ -1,8 +1,10 @@
 import { singleton } from 'tsyringe';
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq, inArray, isNull, isNotNull, sql, SQL } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
-import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
+import { type ISqlQueryFindBy, type WhereConditions } from '@/core/interface/repository.interface';
 import shortUrl, { TShortUrl, TShortUrlWithDomain } from '../entities/short-url.entity';
+import { convertWhereConditionToDrizzle } from '@/core/db/utils';
+import shortUrlTag from '../entities/short-url-tag.entity';
 
 /**
  * Repository for managing Short URL entities.
@@ -13,6 +15,58 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 
 	constructor() {
 		super();
+	}
+
+	private tagIdsCondition(tagIds: string[]): SQL {
+		return inArray(
+			this.table.id,
+			this.db
+				.select({ shortUrlId: shortUrlTag.shortUrlId })
+				.from(shortUrlTag)
+				.where(inArray(shortUrlTag.tagId, tagIds)),
+		);
+	}
+
+	/**
+	 * Builds SQL conditions for filtering short URLs.
+	 * Splits search fields (shortCode, destinationUrl) into OR conditions,
+	 * and remaining fields into AND conditions.
+	 */
+	private buildFilterConditions(
+		where?: WhereConditions<TShortUrl> | SQL,
+		standalone?: boolean,
+		tagIds?: string[],
+	): SQL[] {
+		const conditions: SQL[] = [isNull(this.table.deletedAt)];
+
+		if (where && !(where instanceof SQL)) {
+			const { shortCode, destinationUrl, ...rest } = where;
+			const searchWhere: WhereConditions<TShortUrl> = {
+				...(shortCode && { shortCode }),
+				...(destinationUrl && { destinationUrl }),
+			};
+			const searchSql = Object.keys(searchWhere).length
+				? convertWhereConditionToDrizzle(searchWhere, this.table, 'or')
+				: undefined;
+			const restSql = Object.keys(rest).length
+				? convertWhereConditionToDrizzle(rest as WhereConditions<TShortUrl>, this.table)
+				: undefined;
+			if (searchSql) conditions.push(searchSql);
+			if (restSql) conditions.push(restSql);
+		} else if (where instanceof SQL) {
+			conditions.push(where);
+		}
+
+		if (standalone) {
+			conditions.push(isNull(this.table.qrCodeId));
+			conditions.push(isNotNull(this.table.destinationUrl));
+		}
+
+		if (tagIds?.length) {
+			conditions.push(this.tagIdsCondition(tagIds));
+		}
+
+		return conditions;
 	}
 
 	/**
@@ -78,6 +132,56 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	}
 
 	/**
+	 * Finds all Short URLs with custom domain, supporting standalone filter.
+	 * @param options - Query options including standalone flag.
+	 * @returns A promise that resolves to an array of Short URLs with domain info.
+	 */
+	async findAllWithDomain({
+		limit,
+		page,
+		where,
+		standalone,
+		tagIds,
+	}: ISqlQueryFindBy<TShortUrl> & { standalone?: boolean; tagIds?: string[] }): Promise<
+		TShortUrlWithDomain[]
+	> {
+		const conditions = this.buildFilterConditions(where, standalone, tagIds);
+
+		const safePage = Math.max(0, (page || 1) - 1);
+		const results = await this.db.query.shortUrl.findMany({
+			where: and(...conditions),
+			with: { customDomain: true },
+			orderBy: [desc(this.table.createdAt)],
+			limit: limit || 10,
+			offset: safePage * (limit || 10),
+		});
+
+		return results as TShortUrlWithDomain[];
+	}
+
+	/**
+	 * Counts total short URLs matching the given filters.
+	 * @param where - Where conditions.
+	 * @param standalone - If true, only count standalone short URLs.
+	 * @returns The count of matching short URLs.
+	 */
+	async countTotalFiltered(
+		where?: WhereConditions<TShortUrl>,
+		standalone?: boolean,
+		tagIds?: string[],
+	): Promise<number> {
+		const conditions = this.buildFilterConditions(where, standalone, tagIds);
+
+		const result = await this.db
+			.select({ count: sql<number>`count(${this.table.id})` })
+			.from(this.table)
+			.where(and(...conditions))
+			.execute();
+
+		return result[0]?.count || 0;
+	}
+
+	/**
 	 * Updates a Short URL with the provided updates.
 	 * @param shortUrl - The Short URL to update.
 	 * @param updates - The updates to apply to the Short URL.
@@ -106,10 +210,12 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 			.insert(this.table)
 			.values({
 				id: shortUrl.id,
+				name: shortUrl.name,
 				destinationUrl: shortUrl.destinationUrl,
 				shortCode: shortUrl.shortCode,
 				isActive: shortUrl.isActive,
 				customDomainId: shortUrl.customDomainId,
+				qrCodeId: shortUrl.qrCodeId,
 				createdAt: new Date(),
 				createdBy: shortUrl.createdBy,
 			})

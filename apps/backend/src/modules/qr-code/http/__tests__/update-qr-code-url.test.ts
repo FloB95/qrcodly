@@ -250,6 +250,26 @@ describe('updateQrCode - URL Content Type', () => {
 			expect(response.statusCode).toBe(400);
 		});
 
+		it('should reject URL with invalid hostname (no TLD)', async () => {
+			const createdQrCode = await createQrCode(generateQrCodeDto(), accessToken);
+
+			const response = await updateQrCodeRequest(
+				createdQrCode.id,
+				{
+					content: {
+						type: 'url',
+						data: {
+							url: 'https://abcde',
+							isEditable: false,
+						},
+					},
+				},
+				accessToken,
+			);
+
+			expect(response.statusCode).toBe(400);
+		});
+
 		it('should reject empty URL', async () => {
 			const createdQrCode = await createQrCode(generateQrCodeDto(), accessToken);
 

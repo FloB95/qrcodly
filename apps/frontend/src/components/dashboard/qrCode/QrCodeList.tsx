@@ -189,7 +189,6 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 						)}
 						<PaginationItem>
 							<PaginationNext
-								href="#"
 								onClick={
 									currentPage === totalPages
 										? undefined

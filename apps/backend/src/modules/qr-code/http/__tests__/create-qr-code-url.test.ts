@@ -75,6 +75,21 @@ describe('createQrCode - URL Content Type', () => {
 		expect(response.statusCode).toBe(400);
 	});
 
+	it('should reject URL with invalid hostname (no TLD)', async () => {
+		const invalidUrlDto: TCreateQrCodeDto = {
+			...generateQrCodeDto(),
+			content: {
+				type: 'url' as const,
+				data: {
+					url: 'https://abcde',
+					isEditable: false,
+				},
+			},
+		};
+		const response = await createRequest(invalidUrlDto, accessToken);
+		expect(response.statusCode).toBe(400);
+	});
+
 	it('should reject URL exceeding max length (1000 chars)', async () => {
 		const longUrl = 'https://example.com/' + 'a'.repeat(1000);
 		const invalidUrlDto: TCreateQrCodeDto = {

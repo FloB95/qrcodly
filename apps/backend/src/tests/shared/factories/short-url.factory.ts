@@ -7,19 +7,11 @@ import type { TCreateShortUrlDto, TUpdateShortUrlDto } from '@shared/schemas';
 export const generateShortUrlDto = (
 	overrides?: Partial<TCreateShortUrlDto>,
 ): TCreateShortUrlDto => ({
+	name: null,
 	destinationUrl: faker.internet.url(),
 	customDomainId: null,
 	isActive: true,
 	...overrides,
-});
-
-/**
- * Generates a reserved short URL DTO (no destination, inactive).
- */
-export const generateReservedShortUrlDto = (): TCreateShortUrlDto => ({
-	destinationUrl: null,
-	customDomainId: null,
-	isActive: false,
 });
 
 /**

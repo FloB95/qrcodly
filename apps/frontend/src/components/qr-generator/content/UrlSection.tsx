@@ -56,7 +56,6 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 			};
 			onChange(payload);
 		})();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedUrl]);
 
 	// Sync form fields when parent provides new values (e.g. loading a saved QR code)
@@ -67,7 +66,6 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		if (value?.isEditable !== undefined && value.isEditable !== form.getValues('isEditable')) {
 			form.setValue('isEditable', value.isEditable, { shouldValidate: false });
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [value?.url, value?.isEditable, shortUrl]);
 
 	// Surface server-side validation errors (e.g. duplicate URL) in the form
@@ -79,7 +77,6 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 				message: e.message,
 			});
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [lastError]);
 
 	return (
