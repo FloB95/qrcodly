@@ -117,7 +117,7 @@ export class Server {
 		// Add middleware to attach user info to request before all handlers
 		this.server.addHook('preHandler', addUserToRequestMiddleware);
 
-		if (!IN_TEST || env.DISABLE_RATE_LIMITING !== true) {
+		if (!IN_TEST && env.DISABLE_RATE_LIMITING !== true) {
 			await this.server.register(fastifyRateLimit, {
 				hook: 'preHandler',
 				keyGenerator: (request) => {
