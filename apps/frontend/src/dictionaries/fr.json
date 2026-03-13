@@ -191,14 +191,26 @@
 		"inactiveDescription": "Désactivé : l'accès et l'analyse sont désactivés.",
 		"noData": "Aucune donnée n'a encore été collectée.",
 		"viewsInLastXDays": "{count} scans au cours des {days} derniers jours",
-		"visitorsInLastXDays": "{count} visiteurs au cours des {days} derniers jours"
+		"visitorsInLastXDays": "{count} visiteurs au cours des {days} derniers jours",
+		"bounceRate": "Taux de rebond",
+		"avgTime": "Temps moy.",
+		"bounceRateHint": "Plus bas est meilleur",
+		"visitorsUnit": "Visiteurs",
+		"lastSevenDays": "7 derniers jours",
+		"topInsights": "Aperçus clés",
+		"topCountry": "Pays principal",
+		"topDevice": "Appareil principal",
+		"topBrowser": "Navigateur principal",
+		"ofTraffic": "{pct}% du trafic"
 	},
 	"chart": {
 		"title": {
 			"browserUsage": "Navigateurs utilisés",
 			"deviceUsage": "Appareils utilisés",
 			"osUsage": "Systèmes d'exploitation utilisés",
-			"countryDistribution": "Répartition par pays"
+			"countryDistribution": "Répartition par pays",
+			"activityOverTime": "Activité dans le temps",
+			"activityOverTimeDescription": "Scans quotidiens et visiteurs uniques"
 		}
 	},
 	"header": {

@@ -191,14 +191,26 @@
 		"inactiveDescription": "Inactive: Access and tracking are disabled.",
 		"noData": "No data has been recorded yet.",
 		"viewsInLastXDays": "{count} Scans in the last {days}",
-		"visitorsInLastXDays": "{count} Visitors in the last {days}"
+		"visitorsInLastXDays": "{count} Visitors in the last {days}",
+		"bounceRate": "Bounce Rate",
+		"avgTime": "Avg. Time",
+		"bounceRateHint": "Lower is better",
+		"visitorsUnit": "Visitors",
+		"lastSevenDays": "Last 7 days",
+		"topInsights": "Top Insights",
+		"topCountry": "Top Country",
+		"topDevice": "Top Device",
+		"topBrowser": "Top Browser",
+		"ofTraffic": "{pct}% of traffic"
 	},
 	"chart": {
 		"title": {
 			"browserUsage": "Used Browsers",
 			"deviceUsage": "Used Devices",
 			"osUsage": "Used Operating Systems",
-			"countryDistribution": "Distribution by country"
+			"countryDistribution": "Distribution by country",
+			"activityOverTime": "Activity Over Time",
+			"activityOverTimeDescription": "Daily scans and unique visitors"
 		}
 	},
 	"header": {

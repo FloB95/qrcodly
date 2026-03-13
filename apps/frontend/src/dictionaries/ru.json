@@ -191,14 +191,26 @@
 		"inactiveDescription": "Отключено: Доступ и анализ отключены.",
 		"noData": "Данные пока не собраны.",
 		"viewsInLastXDays": "{count} сканирований за последние {days} дней",
-		"visitorsInLastXDays": "{count} посетителей за последние {days} дней"
+		"visitorsInLastXDays": "{count} посетителей за последние {days} дней",
+		"bounceRate": "Показатель отказов",
+		"avgTime": "Ср. время",
+		"bounceRateHint": "Чем ниже, тем лучше",
+		"visitorsUnit": "Посетители",
+		"lastSevenDays": "Последние 7 дней",
+		"topInsights": "Ключевые данные",
+		"topCountry": "Топ-страна",
+		"topDevice": "Топ-устройство",
+		"topBrowser": "Топ-браузер",
+		"ofTraffic": "{pct}% трафика"
 	},
 	"chart": {
 		"title": {
 			"browserUsage": "Используемые браузеры",
 			"deviceUsage": "Используемые устройства",
 			"osUsage": "Используемые операционные системы",
-			"countryDistribution": "Распределение по странам"
+			"countryDistribution": "Распределение по странам",
+			"activityOverTime": "Активность во времени",
+			"activityOverTimeDescription": "Ежедневные сканирования и уникальные посетители"
 		}
 	},
 	"header": {

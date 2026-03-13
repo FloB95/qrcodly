@@ -1,136 +1,104 @@
 'use client';
 
 import { useGetAnalyticsFromShortCodeQuery } from '@/lib/api/url-shortener';
-import { useLocale, useTranslations } from 'next-intl';
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowTrendingDownIcon, ArrowTrendingUpIcon } from '@heroicons/react/24/solid';
+import { useLocale } from 'next-intl';
 import { getName } from 'i18n-iso-countries';
-import { AnalyticsCard, AnalyticsCardSkeleton } from './AnalyticsCard';
-import { AnimatedCounter } from './AnimatedCounter';
+import { useMemo } from 'react';
+import { AnalyticsSummaryCards } from './AnalyticsSummaryCards';
+import { AnalyticsTimeChart } from './AnalyticsTimeChart';
+import { AnalyticsDeviceChart } from './AnalyticsDeviceChart';
+import { AnalyticsBrowserChart } from './AnalyticsBrowserChart';
+import { AnalyticsCountryChart } from './AnalyticsCountryChart';
+import { AnalyticsOsChart } from './AnalyticsOsChart';
+import { AnalyticsSectionSkeleton } from './AnalyticsSectionSkeleton';
+
+function aggregateHourlyToDaily(
+	pageviews: { date: string; value: number }[],
+	sessions: { date: string; value: number }[],
+) {
+	const dailyMap = new Map<string, { scans: number; visitors: number }>();
+
+	for (const point of pageviews) {
+		const day = point.date.slice(0, 10);
+		const existing = dailyMap.get(day) ?? { scans: 0, visitors: 0 };
+		existing.scans += point.value;
+		dailyMap.set(day, existing);
+	}
+
+	for (const point of sessions) {
+		const day = point.date.slice(0, 10);
+		const existing = dailyMap.get(day) ?? { scans: 0, visitors: 0 };
+		existing.visitors += point.value;
+		dailyMap.set(day, existing);
+	}
+
+	return Array.from(dailyMap.entries())
+		.sort(([a], [b]) => a.localeCompare(b))
+		.map(([date, values]) => ({
+			date,
+			scans: values.scans,
+			visitors: values.visitors,
+		}));
+}
+
+function getLast7DaysSum(series: { date: string; value: number }[]) {
+	const oneWeekAgo = new Date();
+	oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+	return series
+		.filter((item) => new Date(item.date) >= oneWeekAgo)
+		.reduce((acc, item) => acc + item.value, 0);
+}
 
 export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 	const locale = useLocale();
-	const t = useTranslations();
-	const buildChartData = (metrics: { label: string; count: number }[], title: string) => {
-		const total = metrics.reduce((sum, item) => sum + item.count, 0);
-		const data = metrics.map((item) => ({
-			label: item.label,
-			data: item.count,
-			percentage: total > 0 ? ((item.count / total) * 100).toFixed(0) + '%' : '0%',
-		}));
-
-		return { data, title };
-	};
 	const { isLoading, data } = useGetAnalyticsFromShortCodeQuery(shortCode);
 
-	if (isLoading || !data) {
-		return (
-			<div className="grid flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 lg:grid-cols-3 pb-3">
-				<AnalyticsCardSkeleton />
-				<AnalyticsCardSkeleton />
-				<AnalyticsCardSkeleton />
-				<AnalyticsCardSkeleton />
-			</div>
-		);
+	const derived = useMemo(() => {
+		if (!data) return null;
+
+		const { viewsAndSessions, browserMetrics, deviceMetrics, countryMetrics, osMetrics } = data;
+
+		const dailyData = aggregateHourlyToDaily(viewsAndSessions.pageviews, viewsAndSessions.sessions);
+
+		const scansLast7Days = getLast7DaysSum(viewsAndSessions.pageviews);
+		const visitorsLast7Days = getLast7DaysSum(viewsAndSessions.sessions);
+
+		const resolvedCountryMetrics = (countryMetrics ?? []).map((item) => ({
+			...item,
+			label: getName(item.label.toLowerCase(), locale) ?? item.label,
+		}));
+
+		return {
+			dailyData,
+			scansLast7Days,
+			visitorsLast7Days,
+			browserMetrics: browserMetrics ?? [],
+			deviceMetrics: deviceMetrics ?? [],
+			countryMetrics: resolvedCountryMetrics,
+			osMetrics: osMetrics ?? [],
+		};
+	}, [data, locale]);
+
+	if (isLoading || !data || !derived) {
+		return <AnalyticsSectionSkeleton />;
 	}
-
-	const browserChart = buildChartData(data.browserMetrics ?? [], t('chart.title.browserUsage'));
-	const deviceChart = buildChartData(data.deviceMetrics ?? [], t('chart.title.deviceUsage'));
-	const countryChart = buildChartData(
-		data.countryMetrics ?? [],
-		t('chart.title.countryDistribution'),
-	);
-
-	const osChart = buildChartData(data.osMetrics ?? [], t('chart.title.osUsage'));
-
-	const viewsInLastWeek = data.viewsAndSessions.pageviews
-		.filter((item) => {
-			const oneWeekAgo = new Date();
-			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-			return new Date(item.date) >= oneWeekAgo;
-		})
-		.reduce((acc, item) => acc + item.value, 0);
-
-	const sessionsInLastWeek = data.viewsAndSessions.sessions
-		.filter((item) => {
-			const oneWeekAgo = new Date();
-			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-			return new Date(item.date) >= oneWeekAgo;
-		})
-		.reduce((acc, item) => acc + item.value, 0);
 
 	return (
 		<>
-			<div className="xs:flex mb-4 gap-5 items-center">
-				<Card className="h-full mb-4 xs:mb-0">
-					<CardHeader className="relative">
-						<CardDescription>{t('analytics.totalViews')}</CardDescription>
-						<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-							<AnimatedCounter value={data.shortUrlStats.pageviews} />
-						</CardTitle>
-					</CardHeader>
-					<CardFooter className="flex-col items-start gap-1 text-sm">
-						<div className="line-clamp-1 flex gap-2 font-medium text-muted-foreground items-center">
-							<span>
-								<span className="font-semibold text-black">
-									<AnimatedCounter value={viewsInLastWeek} />
-								</span>{' '}
-								{t('analytics.viewsInLastXDays', {
-									count: '',
-									days: '',
-								}).replace(/\s+/g, ' ')}{' '}
-								<span className="font-semibold text-black">7 {t('general.days')}</span>
-							</span>
-							{viewsInLastWeek > 0 ? (
-								<ArrowTrendingUpIcon className="size-5" />
-							) : (
-								<ArrowTrendingDownIcon className="size-5" />
-							)}
-						</div>
-					</CardFooter>
-				</Card>
-				<Card className="h-full">
-					<CardHeader className="relative">
-						<CardDescription>{t('analytics.totalVisitors')}</CardDescription>
-						<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-							<AnimatedCounter value={data.shortUrlStats.visitors} />
-						</CardTitle>
-					</CardHeader>
-					<CardFooter className="flex-col items-start gap-1 text-sm">
-						<div className="line-clamp-1 flex gap-2 font-medium text-muted-foreground items-center">
-							<span>
-								<span className="font-semibold text-black">
-									<AnimatedCounter value={sessionsInLastWeek} />
-								</span>{' '}
-								{t('analytics.visitorsInLastXDays', {
-									count: '',
-									days: '',
-								}).replace(/\s+/g, ' ')}{' '}
-								<span className="font-semibold text-black">7 {t('general.days')}</span>
-							</span>
-							{sessionsInLastWeek > 0 ? (
-								<ArrowTrendingUpIcon className="size-5" />
-							) : (
-								<ArrowTrendingDownIcon className="size-5" />
-							)}
-						</div>
-					</CardFooter>
-				</Card>
-			</div>
+			<AnalyticsSummaryCards
+				totalScans={data.shortUrlStats.pageviews}
+				totalVisitors={data.shortUrlStats.visitors}
+				scansLast7Days={derived.scansLast7Days}
+				visitorsLast7Days={derived.visitorsLast7Days}
+			/>
 
-			<div className="md:grid space-y-4 md:space-y-0 flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 pb-4">
-				<AnalyticsCard data={browserChart.data} title={browserChart.title} />
-				<AnalyticsCard data={deviceChart.data} title={deviceChart.title} />
-				<AnalyticsCard
-					data={countryChart.data.map((data) => {
-						return {
-							...data,
-							label: getName(data.label.toLowerCase(), locale) ?? data.label,
-						};
-					})}
-					title={countryChart.title}
-				/>
-				<AnalyticsCard data={osChart.data} title={osChart.title} />
+			<AnalyticsTimeChart data={derived.dailyData} locale={locale} />
+
+			<div className="md:grid space-y-4 md:space-y-0 flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 py-4">
+				<AnalyticsDeviceChart data={derived.deviceMetrics} />
+				<AnalyticsBrowserChart data={derived.browserMetrics} />
+				<AnalyticsCountryChart data={derived.countryMetrics} />
+				<AnalyticsOsChart data={derived.osMetrics} />
 			</div>
 		</>
 	);

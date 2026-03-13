@@ -205,10 +205,11 @@ export class UmamiAnalyticsService {
 			compare: 'false',
 		});
 
+		const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000;
 		const viewsAndSessions = this.mapSessionsAndPageviews(
 			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/pageviews`, {
 				...defaultParams,
-				startAt: '1746709200000',
+				startAt: thirtyDaysAgo,
 				unit: 'hour',
 			}),
 		);

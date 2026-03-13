@@ -191,14 +191,26 @@
 		"inactiveDescription": "Uitgeschakeld: toegang en analyse zijn gedeactiveerd.",
 		"noData": "Nog geen gegevens verzameld.",
 		"viewsInLastXDays": "{count} scans in de afgelopen {days} dagen",
-		"visitorsInLastXDays": "{count} bezoekers in de afgelopen {days} dagen"
+		"visitorsInLastXDays": "{count} bezoekers in de afgelopen {days} dagen",
+		"bounceRate": "Bouncepercentage",
+		"avgTime": "Gem. tijd",
+		"bounceRateHint": "Lager is beter",
+		"visitorsUnit": "Bezoekers",
+		"lastSevenDays": "Laatste 7 dagen",
+		"topInsights": "Topinzichten",
+		"topCountry": "Topland",
+		"topDevice": "Topapparaat",
+		"topBrowser": "Topbrowser",
+		"ofTraffic": "{pct}% van het verkeer"
 	},
 	"chart": {
 		"title": {
 			"browserUsage": "Gebruikte browsers",
 			"deviceUsage": "Gebruikte apparaten",
 			"osUsage": "Gebruikte besturingssystemen",
-			"countryDistribution": "Distributie per land"
+			"countryDistribution": "Distributie per land",
+			"activityOverTime": "Activiteit in de tijd",
+			"activityOverTimeDescription": "Dagelijkse scans en unieke bezoekers"
 		}
 	},
 	"header": {
