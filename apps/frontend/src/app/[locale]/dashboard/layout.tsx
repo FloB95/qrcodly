@@ -10,7 +10,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 	return (
 		<>
 			<Header />
-			<Container className="my-18 md:max-w-full lg:max-w-[1600px]">
+			<Container className="my-8 sm:my-18 md:max-w-full lg:max-w-[1600px]">
 				<SidebarProvider className="relative overflow-clip">
 					<NavigationProgress />
 					<DashboardSidebar variant="inset" />

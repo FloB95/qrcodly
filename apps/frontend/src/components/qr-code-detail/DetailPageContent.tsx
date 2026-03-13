@@ -138,7 +138,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 								<QrCodeTagBadges qrCodeId={qrCode.id} tags={qrCode.tags ?? []} />
 							</div>
 						</div>
-						<div className="flex items-center gap-2">
+						<div className="flex items-center gap-2 flex-wrap">
 							<ShareDialog qrCodeId={qrCode.id} />
 							<Link className={buttonVariants({ size: 'sm' })} href={getQrCodeEditLink(qrCode.id)}>
 								{t('general.edit')}

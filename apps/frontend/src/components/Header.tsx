@@ -124,7 +124,9 @@ export default function Header({
 		<header
 			className={cn(
 				'sticky top-0 z-[100] transition-all duration-300 -mx-4 px-4 sm:mx-0 sm:px-0',
-				scrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm pt-5 pb-5' : 'pt-10 pb-0',
+				scrolled
+					? 'bg-white/80 backdrop-blur-lg shadow-sm pt-2 pb-2 sm:pt-5 sm:pb-5'
+					: 'pt-6 pb-0 sm:pt-10',
 			)}
 		>
 			<Container disableOverflow>
