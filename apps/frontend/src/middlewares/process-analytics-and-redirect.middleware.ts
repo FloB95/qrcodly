@@ -1,9 +1,13 @@
 import { env } from '@/env';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
-import { apiRequest } from '@/lib/utils';
-import type { TShortUrl } from '@shared/schemas';
 import { NextResponse, type NextRequest } from 'next/server';
 import { UAParser } from 'ua-parser-js';
+
+type ScanLookupResponse = {
+	destinationUrl: string | null;
+	isActive: boolean;
+	deletedAt: string | null;
+};
 
 export async function processAnalyticsAndRedirect(req: NextRequest) {
 	const headers = req.headers;
@@ -21,37 +25,33 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		? headers.get('accept-language')?.split(',')[0]
 		: '';
 
-	const payload = {
-		type: 'event',
-		payload: {
-			website: env.NEXT_PUBLIC_UMAMI_WEBSITE,
-			url: req.url,
-			userAgent,
-			hostname,
-			language: language ?? '',
-			referrer: headers.get('referer') ?? '',
-			screen: headers.get('sec-ch-ua-platform') ?? '',
-			device: device.type,
-			browser: browser.name,
-			ip: headers.get('x-forwarded-for') ?? '',
-		},
-	};
+	const scannerIp = headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? '';
 
 	const urlCode = new URL(req.url).pathname.split('/').pop();
 	if (!urlCode) {
 		return NextResponse.rewrite(new URL('/404', req.url));
 	}
 
-	let shortUrl: TShortUrl;
+	const internalHeaders = {
+		'x-internal-api-key': env.INTERNAL_API_SECRET,
+		'x-scanner-ip': scannerIp,
+	};
+
+	let shortUrl: ScanLookupResponse;
 	try {
-		const response = await apiRequest<TShortUrl>(`/short-url/${urlCode}`, {
+		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
+				...internalHeaders,
 			},
 		});
 
-		shortUrl = response;
+		if (!response.ok) {
+			return NextResponse.rewrite(new URL('/404', req.url));
+		}
+
+		shortUrl = (await response.json()) as ScanLookupResponse;
 
 		if (!shortUrl?.destinationUrl || !shortUrl.isActive || shortUrl.deletedAt) {
 			const acceptLanguage = headers.get('accept-language') ?? 'en';
@@ -67,28 +67,12 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		return NextResponse.rewrite(new URL('/404', req.url));
 	}
 
-	try {
-		await fetch(`${env.UMAMI_API_HOST}/api/send`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'User-Agent': headers.get('user-agent') ?? '',
-			},
-			body: JSON.stringify(payload),
-		});
-	} catch {}
-
-	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}/clear-views-cache`, {
-		method: 'POST',
-		headers: { 'x-internal-api-key': env.INTERNAL_API_SECRET },
-	}).catch(() => {});
-
-	// Dispatch scan data to user-configured analytics integrations (GA4, Matomo)
-	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}/track-scan`, {
+	// Single consolidated call for all scan analytics
+	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}/record-scan`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			'x-internal-api-key': env.INTERNAL_API_SECRET,
+			...internalHeaders,
 		},
 		body: JSON.stringify({
 			url: req.url,
@@ -96,9 +80,10 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 			hostname,
 			language: language ?? '',
 			referrer: headers.get('referer') ?? '',
-			ip: headers.get('x-forwarded-for') ?? '',
+			ip: scannerIp,
 			deviceType: device.type ?? '',
 			browserName: browser.name ?? '',
+			screen: headers.get('sec-ch-ua-platform') ?? '',
 		}),
 	}).catch(() => {});
 

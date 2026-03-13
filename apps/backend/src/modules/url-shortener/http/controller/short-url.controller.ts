@@ -36,6 +36,7 @@ import { KeyCache } from '@/core/cache';
 import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
 import { DispatchTrackingEventUseCase } from '@/modules/analytics-integration/useCase/dispatch-tracking-event.use-case';
 import TagRepository from '@/modules/tag/domain/repository/tag.repository';
+import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -178,16 +179,25 @@ export class ShortUrlController extends AbstractController {
 	}
 
 	@Get('/:shortCode', {
-		authHandler: false,
+		authHandler: internalApiAuthHandler,
+		config: {
+			rateLimitPolicy: RateLimitPolicy.SCAN_LOOKUP,
+		},
 		schema: {
 			hide: true,
 		},
 	})
 	async getOneByShortCode(
 		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto, unknown, false>,
-	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
+	): Promise<
+		IHttpResponse<{ destinationUrl: string | null; isActive: boolean; deletedAt: Date | null }>
+	> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode);
-		return this.makeApiHttpResponse(200, ShortUrlWithCustomDomainResponseDto.parse(shortUrl));
+		return this.makeApiHttpResponse(200, {
+			destinationUrl: shortUrl.destinationUrl,
+			isActive: shortUrl.isActive,
+			deletedAt: shortUrl.deletedAt,
+		});
 	}
 
 	@Patch('/:shortCode', {
@@ -348,41 +358,51 @@ export class ShortUrlController extends AbstractController {
 		return this.makeApiHttpResponse(200, { views });
 	}
 
-	@Post('/:shortCode/clear-views-cache', {
-		authHandler: internalApiAuthHandler,
-		schema: { hide: true },
-	})
-	async clearViewsCache(
-		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto, unknown, false>,
-	): Promise<IHttpResponse<{ status: string }>> {
-		await this.keyCache.del(this.getViewsCacheKey(request.params.shortCode));
-		return this.makeApiHttpResponse(200, { status: 'ok' });
-	}
-
-	@Post('/:shortCode/track-scan', {
+	@Post('/:shortCode/record-scan', {
 		authHandler: internalApiAuthHandler,
 		bodySchema: TrackScanDto,
+		config: {
+			rateLimitPolicy: RateLimitPolicy.SCAN_RECORD,
+		},
 		schema: { hide: true },
 	})
-	async trackScan(
+	async recordScan(
 		request: IHttpRequest<TTrackScanDto, TGetShortUrlRequestQueryDto, unknown, false>,
 	): Promise<IHttpResponse<{ status: string }>> {
-		const shortUrl = await this.shortUrlRepository.findOneByShortCode(request.params.shortCode);
-		if (!shortUrl || !shortUrl.createdBy) {
-			return this.makeApiHttpResponse(200, { status: 'ok' });
-		}
+		const { shortCode } = request.params;
+		const body = request.body;
 
-		this.dispatchTrackingEventUseCase.execute({
-			userId: shortUrl.createdBy,
-			url: request.body.url,
-			userAgent: request.body.userAgent,
-			hostname: request.body.hostname,
-			language: request.body.language,
-			referrer: request.body.referrer,
-			ip: request.body.ip,
-			deviceType: request.body.deviceType,
-			browserName: request.body.browserName,
+		// 1. Clear views cache
+		void this.keyCache.del(this.getViewsCacheKey(shortCode));
+
+		// 2. Send to Umami
+		void this.umamiAnalyticsService.sendEvent({
+			url: body.url,
+			userAgent: body.userAgent,
+			hostname: body.hostname,
+			language: body.language,
+			referrer: body.referrer,
+			screen: body.screen,
+			deviceType: body.deviceType,
+			browserName: body.browserName,
+			ip: body.ip,
 		});
+
+		// 3. Dispatch to user analytics integrations (GA4, Matomo)
+		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
+		if (shortUrl?.createdBy) {
+			this.dispatchTrackingEventUseCase.execute({
+				userId: shortUrl.createdBy,
+				url: body.url,
+				userAgent: body.userAgent,
+				hostname: body.hostname,
+				language: body.language,
+				referrer: body.referrer,
+				ip: body.ip,
+				deviceType: body.deviceType,
+				browserName: body.browserName,
+			});
+		}
 
 		return this.makeApiHttpResponse(200, { status: 'ok' });
 	}

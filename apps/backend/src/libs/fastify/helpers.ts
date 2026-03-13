@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import crypto from 'node:crypto';
 import {
 	type FastifyInstance,
 	type RegisterOptions,
@@ -7,6 +8,7 @@ import {
 	type FastifyRequest,
 	type RouteOptions,
 } from 'fastify';
+import { env } from '@/core/config/env';
 import { deepMerge, mergeZodErrorObjects } from '@/utils/general';
 import { BadRequestError, CustomApiError, UnauthorizedError } from '@/core/error/http';
 import { container, type InjectionToken } from 'tsyringe';
@@ -274,6 +276,19 @@ function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type:
 export function resolveClientIp(request: FastifyRequest): string {
 	const cfIp = request.headers['cf-connecting-ip'] as string | undefined;
 	if (cfIp) return cfIp;
+
+	// When the frontend server forwards a scan request, it includes the real scanner IP
+	// in x-scanner-ip alongside a valid internal API key. We trust this header only after
+	// verifying the key, so external callers cannot spoof their IP.
+	const scannerIp = request.headers['x-scanner-ip'] as string | undefined;
+	const apiKey = request.headers['x-internal-api-key'] as string | undefined;
+	if (scannerIp && apiKey) {
+		const expected = Buffer.from(env.INTERNAL_API_SECRET);
+		const received = Buffer.from(apiKey);
+		if (expected.length === received.length && crypto.timingSafeEqual(expected, received)) {
+			return scannerIp;
+		}
+	}
 
 	const xForwardedFor = request.headers['x-forwarded-for'] as string | undefined;
 	if (xForwardedFor) {

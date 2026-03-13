@@ -126,6 +126,44 @@ export class UmamiAnalyticsService {
 		};
 	}
 
+	public async sendEvent(payload: {
+		url: string;
+		userAgent: string;
+		hostname: string;
+		language: string;
+		referrer: string;
+		screen: string;
+		deviceType: string;
+		browserName: string;
+		ip: string;
+	}): Promise<void> {
+		try {
+			await fetch(`${this.umamiHost}/api/send`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'User-Agent': payload.userAgent,
+				},
+				body: JSON.stringify({
+					type: 'event',
+					payload: {
+						website: this.umamiWebsiteId,
+						url: payload.url,
+						hostname: payload.hostname,
+						language: payload.language,
+						referrer: payload.referrer,
+						screen: payload.screen,
+						device: payload.deviceType,
+						browser: payload.browserName,
+						ip: payload.ip,
+					},
+				}),
+			});
+		} catch (error) {
+			this.logger.error('error.umamiApi.sendEvent', { error });
+		}
+	}
+
 	public async getViewsForEndpoint(url: string): Promise<number> {
 		const now = Date.now();
 		const defaultParams = {
