@@ -7,7 +7,7 @@ import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
 import { getTranslations } from 'next-intl/server';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { env } from '@/env';
 
 interface ConfigTemplateEditProps {
@@ -48,7 +48,7 @@ export default async function ConfigTemplateEditPage({ params }: ConfigTemplateE
 	const backLink = (
 		<Link
 			className="hidden lg:flex items-center space-x-2 px-2 -top-12 absolute"
-			href={`/${locale}/dashboard/templates`}
+			href="/dashboard/templates"
 		>
 			<ChevronLeftIcon className="w-5 h-5" /> <span>{t('general.backToOverview')}</span>
 		</Link>
@@ -65,6 +65,17 @@ export default async function ConfigTemplateEditPage({ params }: ConfigTemplateE
 					data: {
 						url: env.NEXT_PUBLIC_FRONTEND_URL,
 						isEditable: true,
+					},
+				},
+				latestQrCode: {
+					name: template.name ?? undefined,
+					config: template.config,
+					content: {
+						type: 'url',
+						data: {
+							url: env.NEXT_PUBLIC_FRONTEND_URL,
+							isEditable: true,
+						},
 					},
 				},
 				bulkMode: {

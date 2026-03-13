@@ -29,7 +29,7 @@ export const PricingCard = ({
 	const isPro = planConfig.featured;
 
 	const displayPrice = planPeriod === 'annual' && priceAnnual ? priceAnnual : priceMonthly;
-	const priceSuffix = t('perMonth');
+	const priceSuffix = `/${t('perMonth')}`;
 
 	return (
 		<div

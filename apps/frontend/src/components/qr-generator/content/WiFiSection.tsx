@@ -103,7 +103,6 @@ const _WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 					<FormField
 						control={form.control}
 						name="password"
-						disabled={form.getValues('encryption') === 'nopass'}
 						render={({ field }) => (
 							<FormItem className="w-full">
 								<FormLabel>
@@ -115,6 +114,7 @@ const _WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 									<InputGroup>
 										<InputGroupInput
 											{...field}
+											disabled={form.getValues('encryption') === 'nopass'}
 											translate="no"
 											autoCorrect="off"
 											autoComplete="off"

@@ -1,7 +1,13 @@
 import { singleton } from 'tsyringe';
 import { env } from '../config/env';
 import { OnShutdown } from '../decorators/on-shutdown.decorator';
-import { init, type NodeClient, captureException, isInitialized } from '@sentry/node';
+import {
+	init,
+	type NodeClient,
+	captureException,
+	isInitialized,
+	consoleLoggingIntegration,
+} from '@sentry/node';
 import { IN_PRODUCTION } from '../config/constants';
 
 export type TErrorLevel = 'fatal' | 'error' | 'warning' | 'info';
@@ -23,6 +29,8 @@ export class ErrorReporter {
 			dsn: env.SENTRY_DSN,
 			profileSessionSampleRate: 1.0,
 			environment: env.SENTRY_ENVIRONMENT,
+			enableLogs: true,
+			integrations: [consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] })],
 		});
 	}
 

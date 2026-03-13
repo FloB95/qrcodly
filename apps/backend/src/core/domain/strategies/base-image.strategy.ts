@@ -36,6 +36,32 @@ export abstract class BaseImageStrategy {
 		return userId ? `${folder}/${userId}/${fileName}` : `${folder}/${fileName}`;
 	}
 
+	private static readonly extensionToMimeType: Record<string, string> = {
+		jpg: 'image/jpeg',
+		jpeg: 'image/jpeg',
+		png: 'image/png',
+		svg: 'image/svg+xml',
+		webp: 'image/webp',
+	};
+
+	/**
+	 * Downloads an image from object storage and returns it as a base64 data URL.
+	 * Useful for server-side rendering where JSDOM cannot load images from URLs.
+	 */
+	async getImageAsDataUrl(storagePath: string): Promise<string | undefined> {
+		try {
+			const imageBuffer = await this.objectStorage.get(storagePath);
+			if (!imageBuffer) return undefined;
+
+			const ext = storagePath.split('.').pop()?.toLowerCase() ?? '';
+			const mimeType = BaseImageStrategy.extensionToMimeType[ext] ?? 'application/octet-stream';
+			return `data:${mimeType};base64,${imageBuffer.toString('base64')}`;
+		} catch (error) {
+			this.logger.error('error.image.getAsDataUrl', { storagePath, error: error as Error });
+			return undefined;
+		}
+	}
+
 	async getSignedUrl(imagePath: string): Promise<string | undefined> {
 		try {
 			return await this.objectStorage.getSignedUrl(imagePath, this.signedUrlExpirySeconds);

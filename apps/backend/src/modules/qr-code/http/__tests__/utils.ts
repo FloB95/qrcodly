@@ -49,7 +49,7 @@ export const createQrCodeRequest = async (
  * Generates a new random QR code DTO.
  */
 export const generateQrCodeDto = (): TCreateQrCodeDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'url',
 		data: {
@@ -68,7 +68,7 @@ export const generateEventQrCodeDto = (): TCreateQrCodeDto => {
 	const endDate = faker.date.future({ refDate: startDate });
 
 	return {
-		name: faker.lorem.words(3),
+		name: faker.lorem.words(3).substring(0, 32),
 		content: {
 			type: 'event',
 			data: {
@@ -87,7 +87,7 @@ export const generateEventQrCodeDto = (): TCreateQrCodeDto => {
  * Generates a WiFi QR code DTO.
  */
 export const generateWifiQrCodeDto = (): TCreateQrCodeDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'wifi',
 		data: {
@@ -103,7 +103,7 @@ export const generateWifiQrCodeDto = (): TCreateQrCodeDto => ({
  * Generates a vCard QR code DTO.
  */
 export const generateVCardQrCodeDto = (): TCreateQrCodeDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'vCard',
 		data: {
@@ -121,7 +121,7 @@ export const generateVCardQrCodeDto = (): TCreateQrCodeDto => ({
  * Generates a text QR code DTO.
  */
 export const generateTextQrCodeDto = (): TCreateQrCodeDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'text',
 		data: faker.lorem.paragraph(),
@@ -133,7 +133,7 @@ export const generateTextQrCodeDto = (): TCreateQrCodeDto => ({
  * Generates an editable URL QR code DTO.
  */
 export const generateEditableUrlQrCodeDto = (): TCreateQrCodeDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'url',
 		data: {
@@ -148,7 +148,7 @@ export const generateEditableUrlQrCodeDto = (): TCreateQrCodeDto => ({
  * Generates a dynamic vCard QR code DTO.
  */
 export const generateDynamicVCardQrCodeDto = (): TCreateQrCodeDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'vCard',
 		data: {
@@ -167,7 +167,7 @@ export const generateDynamicVCardQrCodeDto = (): TCreateQrCodeDto => ({
  * Generates an email QR code DTO.
  */
 export const generateEmailQrCodeDto = (): TCreateQrCodeDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'email',
 		data: {
@@ -183,7 +183,7 @@ export const generateEmailQrCodeDto = (): TCreateQrCodeDto => ({
  * Generates a location QR code DTO.
  */
 export const generateLocationQrCodeDto = (): TCreateQrCodeDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'location',
 		data: {
@@ -199,7 +199,7 @@ export const generateLocationQrCodeDto = (): TCreateQrCodeDto => ({
  * Generates an EPC (SEPA bank transfer) QR code DTO.
  */
 export const generateEpcQrCodeDto = (): TCreateQrCodeDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'epc',
 		data: {

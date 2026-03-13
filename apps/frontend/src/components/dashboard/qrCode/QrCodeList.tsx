@@ -1,6 +1,7 @@
 'use client';
 
 import { QrCodeListItem, SkeletonListItem } from './ListItem';
+import { TableLoader } from '@/components/ui/table-loader';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '../../ui/table';
 import { useListQrCodesQuery } from '@/lib/api/qr-code';
 import { QrCodeFilters } from './QrCodeFilters';
@@ -73,6 +74,8 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 		isFetching,
 	} = useListQrCodesQuery(currentPage, currentLimit, filters);
 
+	const isRefetching = isFetching && !isLoading;
+
 	const totalPages = useMemo(
 		() => (qrCodes ? Math.ceil(qrCodes.total / currentLimit) : 1),
 		[qrCodes, currentLimit],
@@ -143,22 +146,26 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 				onBulkExport={onBulkExport}
 				totalQrCodes={qrCodes?.total ?? 0}
 			/>
-			<div className="overflow-hidden rounded-lg border">
-				<Table>
-					<QrCodeTableHeader isVisible={isVisible} />
-					<TableBody>
-						{isFetching
-							? (qrCodes.data.length > 0 ? qrCodes.data : Array.from({ length: 5 })).map(
-									(_, idx) => <SkeletonListItem key={idx} visibility={visibility} />,
-								)
-							: qrCodes.data.map((qr) => (
-									<QrCodeListItem key={qr.id} qr={qr} visibility={visibility} />
-								))}
-					</TableBody>
-				</Table>
+			<div className={cn('relative')}>
+				{isRefetching && <TableLoader />}
+				<div className="overflow-hidden rounded-lg border">
+					<Table>
+						<QrCodeTableHeader isVisible={isVisible} />
+						<TableBody
+							className={cn(
+								isRefetching &&
+									'pointer-events-none opacity-50 blur-[0.6px] transition-all duration-200',
+							)}
+						>
+							{qrCodes.data.map((qr) => (
+								<QrCodeListItem key={qr.id} qr={qr} visibility={visibility} />
+							))}
+						</TableBody>
+					</Table>
+				</div>
 			</div>
-			{!isFetching && totalPages > 1 && (
-				<Pagination>
+			{totalPages > 1 && (
+				<Pagination className={cn(isRefetching && 'pointer-events-none opacity-50')}>
 					<PaginationContent>
 						<PaginationItem>
 							<PaginationPrevious
@@ -189,7 +196,6 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 						)}
 						<PaginationItem>
 							<PaginationNext
-								href="#"
 								onClick={
 									currentPage === totalPages
 										? undefined

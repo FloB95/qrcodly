@@ -8,10 +8,11 @@ import {
 	type RouteOptions,
 } from 'fastify';
 import { deepMerge, mergeZodErrorObjects } from '@/utils/general';
-import { BadRequestError, CustomApiError } from '@/core/error/http';
+import { BadRequestError, CustomApiError, UnauthorizedError } from '@/core/error/http';
 import { container, type InjectionToken } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { ErrorReporter } from '@/core/error';
+import { IpAbuseTrackerService } from '@/core/ip-protection';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route';
 import { type IHttpResponse } from '@/core/interface/response.interface';
@@ -21,7 +22,6 @@ import z, { type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { $ZodError } from 'zod/v4/core';
-import { addUserToRequestMiddleware } from '@/core/http/middleware/add-user-to-request.middleware';
 
 export const fastifyRequestParser = <T extends IHttpRequest>(
 	request: FastifyRequest & { user?: { id: string } },
@@ -65,6 +65,13 @@ export const fastifyErrorHandler = (
 					: undefined,
 			},
 		});
+
+		if (error instanceof UnauthorizedError) {
+			container
+				.resolve(IpAbuseTrackerService)
+				.trackUnauthorizedAttempt(_request.clientIp)
+				.catch((err) => logger.error('ip.abuse.tracking.error', { error: err as Error }));
+		}
 
 		return reply.status(error.statusCode).send(responsePayload);
 	}
@@ -209,7 +216,17 @@ export function registerRoutes(
 			schema: deepMerge(schema, routeMeta.options.schema as unknown as Partial<typeof schema>),
 		};
 
-		routeOptions.preHandler = [addUserToRequestMiddleware];
+		routeOptions.preHandler = [];
+		if (routeMeta.options.bodySchema) {
+			routeOptions.preHandler.push(
+				createValidationHook(routeMeta.options.bodySchema, 'Invalid request body', 'body'),
+			);
+		}
+		if (routeMeta.options.querySchema) {
+			routeOptions.preHandler.push(
+				createValidationHook(routeMeta.options.querySchema, 'Invalid query params', 'query'),
+			);
+		}
 
 		if (typeof routeMeta.options.authHandler === 'undefined') {
 			routeOptions.preHandler.push(defaultApiAuthMiddleware);
@@ -221,21 +238,6 @@ export function registerRoutes(
 			}
 		} else if (routeMeta.options.authHandler === false) {
 			// no-op: skip authentication for this route
-		}
-
-		const preValidation: ReturnType<typeof createValidationHook>[] = [];
-		if (routeMeta.options.bodySchema) {
-			preValidation.push(
-				createValidationHook(routeMeta.options.bodySchema, 'Invalid request body', 'body'),
-			);
-		}
-		if (routeMeta.options.querySchema) {
-			preValidation.push(
-				createValidationHook(routeMeta.options.querySchema, 'Invalid query params', 'query'),
-			);
-		}
-		if (preValidation.length > 0) {
-			routeOptions.preValidation = preValidation;
 		}
 
 		fastify.route(routeOptions);

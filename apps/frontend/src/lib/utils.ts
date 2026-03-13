@@ -2,9 +2,9 @@ import { env } from '@/env';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import qs from 'qs';
-import type { SupportedLanguages } from '@/i18n/routing';
+
 import { ApiError } from './api/ApiError';
-import type { ZodIssue } from 'zod/v3';
+import type { z } from 'zod';
 import type {
 	TCustomDomainResponseDto,
 	TShortUrlResponseDto,
@@ -13,6 +13,18 @@ import type {
 import type { useUser } from '@clerk/nextjs';
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
+}
+
+/**
+ * Extracts the system domain from NEXT_PUBLIC_FRONTEND_URL (e.g., "qrcodly.de" from "https://www.qrcodly.de").
+ */
+export function getSystemDomain(): string {
+	try {
+		const url = new URL(env.NEXT_PUBLIC_FRONTEND_URL);
+		return url.hostname.replace(/^www\./, '');
+	} catch {
+		return 'qrcodly.de';
+	}
 }
 
 /**
@@ -180,14 +192,14 @@ export async function apiRequest<T>(
 		throw new ApiError(
 			(errorBody?.message as string | undefined) ?? 'An error occurred while fetching data',
 			response.status,
-			errorBody.fieldErrors as ZodIssue[],
+			errorBody.fieldErrors as z.core.$ZodIssue[],
 		);
 	}
 	return (await response.json()) as T;
 }
 
-export function getQrCodeEditLink(lang: SupportedLanguages, qrCodeId: string) {
-	return `/${lang}/dashboard/qr-codes/${qrCodeId}/edit`;
+export function getQrCodeEditLink(qrCodeId: string) {
+	return `/dashboard/qr-codes/${qrCodeId}/edit`;
 }
 
 export type UserResource = ReturnType<typeof useUser>['user'];

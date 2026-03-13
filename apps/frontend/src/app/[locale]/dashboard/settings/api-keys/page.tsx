@@ -2,6 +2,7 @@ import { CodeBracketIcon } from '@heroicons/react/24/outline';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { currentUser } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
 import type { DefaultPageParams } from '@/types/page';
 import { ApiKeyList } from '@/components/dashboard/api-keys/ApiKeyList';
 import { CreateApiKeyDialog } from '@/components/dashboard/api-keys/CreateApiKeyDialog';
@@ -28,7 +29,19 @@ export default async function Page({ params }: DefaultPageParams) {
 							<div>
 								<CardTitle className="mb-0.5">{t('title')}</CardTitle>
 								<CardDescription>
-									<div>{t('description')}</div>
+									<div>
+										{t.rich('description', {
+											link: (chunks) => (
+												<Link
+													href="/docs/api"
+													target="_blank"
+													className="underline hover:text-foreground"
+												>
+													{chunks}
+												</Link>
+											),
+										})}
+									</div>
 								</CardDescription>
 							</div>
 						</div>

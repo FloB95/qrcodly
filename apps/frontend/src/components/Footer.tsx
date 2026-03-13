@@ -17,7 +17,7 @@ function GitHubIcon(props: React.SVGProps<SVGSVGElement>) {
 	);
 }
 
-export default function Footer() {
+export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean } = {}) {
 	const t = useTranslations('footer');
 	const pathname = usePathname();
 	const currentYear = new Date().getFullYear();
@@ -48,8 +48,8 @@ export default function Footer() {
 
 					{/* Product */}
 					<div>
-						<h3 className="text-sm font-semibold text-black mb-4">{t('product')}</h3>
-						<ul className="space-y-3">
+						<h3 className="text-base font-bold text-black mb-4">{t('product')}</h3>
+						<ul className="space-y-2.5">
 							<li>
 								<Link
 									href="/features"
@@ -70,13 +70,43 @@ export default function Footer() {
 									{t('pricing')}
 								</Link>
 							</li>
+							<li>
+								<Link
+									href="/products/url-shortener"
+									title={t('urlShortener')}
+									aria-label={t('urlShortener')}
+									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+								>
+									{t('urlShortener')}
+								</Link>
+							</li>
+							<li>
+								<Link
+									href="/products/qr-codes"
+									title={t('qrCodes')}
+									aria-label={t('qrCodes')}
+									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+								>
+									{t('qrCodes')}
+								</Link>
+							</li>
+							<li>
+								<Link
+									href="/products/analytics"
+									title={t('analyticsProduct')}
+									aria-label={t('analyticsProduct')}
+									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+								>
+									{t('analyticsProduct')}
+								</Link>
+							</li>
 						</ul>
 					</div>
 
 					{/* Resources */}
 					<div>
-						<h3 className="text-sm font-semibold text-black mb-4">{t('resources')}</h3>
-						<ul className="space-y-3">
+						<h3 className="text-base font-bold text-black mb-4">{t('resources')}</h3>
+						<ul className="space-y-2.5">
 							<li>
 								<Link
 									href="/#faq"
@@ -121,40 +151,41 @@ export default function Footer() {
 					</div>
 
 					{/* Legal */}
-					<div>
-						<h3 className="text-sm font-semibold text-black mb-4">{t('legal')}</h3>
-						<ul className="space-y-3">
-							<li>
-								<a
-									href="/imprint"
-									title={t('legalNotice')}
-									aria-label={t('legalNotice')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-								>
-									{t('legalNotice')}
-								</a>
-							</li>
-							<li>
-								<a
-									href="/privacy-policy"
-									title={t('privacyPolicy')}
-									aria-label={t('privacyPolicy')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-								>
-									{t('privacyPolicy')}
-								</a>
-							</li>
-							<li>
-								<a
-									href="mailto:info@qrcodly.de"
-									title={t('contact')}
-									aria-label={t('contact')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-								>
-									{t('contact')}
-								</a>
-							</li>
-						</ul>
+					<div className="space-y-8">
+						<div>
+							<h3 className="text-base font-bold text-black mb-4">{t('legal')}</h3>
+							<ul className="space-y-2.5">
+								<li>
+									<a
+										href="/imprint"
+										title={t('legalNotice')}
+										aria-label={t('legalNotice')}
+										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									>
+										{t('legalNotice')}
+									</a>
+								</li>
+								<li>
+									<a
+										href="/privacy-policy"
+										title={t('privacyPolicy')}
+										aria-label={t('privacyPolicy')}
+										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									>
+										{t('privacyPolicy')}
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div>
+							<a
+								href="mailto:info@qrcodly.de"
+								className="text-base font-bold text-black hover:text-gray-700 transition-colors"
+							>
+								{t('contact')}
+							</a>
+						</div>
 					</div>
 				</div>
 
@@ -163,7 +194,7 @@ export default function Footer() {
 					<p className="text-xs text-gray-500">
 						&copy; FB Dev {currentYear} &mdash; {t('qrCodeCopyright')}
 					</p>
-					<LanguageNav />
+					{!hideLanguageNav && <LanguageNav direction="up" />}
 				</div>
 			</div>
 		</footer>

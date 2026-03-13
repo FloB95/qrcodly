@@ -9,9 +9,10 @@ const buttonVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+				default:
+					'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white hover:from-slate-800 hover:via-slate-700 hover:to-slate-800',
 				white: 'bg-white text-accent-foreground hover:bg-accent hover:text-accent-foreground',
-				tab: 'bg-gray-200 text-primary hover:gray-200 data-[state=active]:bg-primary data-[state=active]:text-white data-[state=active]:shadow shadow',
+				tab: 'bg-gray-200 text-primary hover:bg-gray-200 data-[state=active]:bg-gradient-to-br data-[state=active]:from-slate-900 data-[state=active]:via-slate-800 data-[state=active]:to-slate-900 data-[state=active]:text-white data-[state=active]:shadow shadow',
 				destructive: 'bg-destructive text-white hover:bg-destructive/90',
 				outline: 'border bg-background hover:bg-accent hover:text-accent-foreground',
 				outlineStrong:
@@ -52,9 +53,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				{...props}
 			>
 				{isLoading ? (
-					<span className="flex space-x-2">
+					<span className="flex items-center space-x-2">
 						<Loader2 className="h-6 w-6 animate-spin" />
-						<span className="flex flex-col justify-center">{props.children}</span>
+						<span className="flex items-center gap-2">{props.children}</span>
 					</span>
 				) : (
 					props.children

@@ -1,18 +1,20 @@
 import { mysqlTableCreator, type MySqlTableWithColumns } from 'drizzle-orm/mysql-core';
 import { type WhereConditions, type WhereField } from '../interface/repository.interface';
-import { and, eq, gt, gte, isNotNull, isNull, like, lt, lte, not, type SQL } from 'drizzle-orm';
+import { and, eq, gt, gte, isNotNull, isNull, like, lt, lte, not, or, type SQL } from 'drizzle-orm';
 
 /**
  * Converts a where condition object to a Drizzle SQL object.
  * @param where The where condition object.
  * @param table The table schema.
+ * @param mode The combination mode: 'and' (default) combines conditions with AND, 'or' combines with OR.
  * @returns The Drizzle SQL object representing the where condition.
  */
 export function convertWhereConditionToDrizzle<T>(
 	where: WhereConditions<T>,
-
 	table: MySqlTableWithColumns<any>,
+	mode: 'and' | 'or' = 'and',
 ): SQL | undefined {
+	const combine = mode === 'or' ? or : and;
 	let sql: SQL<unknown> | undefined;
 
 	for (const [key, value] of Object.entries(where)) {
@@ -22,40 +24,40 @@ export function convertWhereConditionToDrizzle<T>(
 
 			if (whereField.eq !== undefined) {
 				if (whereField.eq === null) {
-					sql = sql ? and(sql, isNull(table[key])) : eq(table[key], null);
+					sql = sql ? combine(sql, isNull(table[key])) : isNull(table[key]);
 				} else {
-					sql = sql ? and(sql, eq(table[key], whereField.eq)) : eq(table[key], whereField.eq);
+					sql = sql ? combine(sql, eq(table[key], whereField.eq)) : eq(table[key], whereField.eq);
 				}
 			}
 			if (whereField.neq !== undefined) {
 				if (whereField.neq === null) {
-					sql = sql ? and(sql, isNotNull(table[key])) : not(eq(table[key], null));
+					sql = sql ? combine(sql, isNotNull(table[key])) : isNotNull(table[key]);
 				} else {
 					sql = sql
-						? and(sql, not(eq(table[key], whereField.neq)))
+						? combine(sql, not(eq(table[key], whereField.neq)))
 						: not(eq(table[key], whereField.neq));
 				}
 			}
 			if (whereField.like !== undefined) {
 				sql = sql
-					? and(sql, like(table[key] as unknown as SQL, `%${whereField.like}%`))
+					? combine(sql, like(table[key] as unknown as SQL, `%${whereField.like}%`))
 					: like(table[key] as unknown as SQL, `%${whereField.like}%`);
 			}
 			if (whereField.gt !== undefined) {
-				sql = sql ? and(sql, gt(table[key], whereField.gt)) : gt(table[key], whereField.gt);
+				sql = sql ? combine(sql, gt(table[key], whereField.gt)) : gt(table[key], whereField.gt);
 			}
 			if (whereField.gte !== undefined) {
-				sql = sql ? and(sql, gte(table[key], whereField.gte)) : gte(table[key], whereField.gte);
+				sql = sql ? combine(sql, gte(table[key], whereField.gte)) : gte(table[key], whereField.gte);
 			}
 			if (whereField.lt !== undefined) {
-				sql = sql ? and(sql, lt(table[key], whereField.lt)) : lt(table[key], whereField.lt);
+				sql = sql ? combine(sql, lt(table[key], whereField.lt)) : lt(table[key], whereField.lt);
 			}
 			if (whereField.lte !== undefined) {
-				sql = sql ? and(sql, lte(table[key], whereField.lte)) : lte(table[key], whereField.lte);
+				sql = sql ? combine(sql, lte(table[key], whereField.lte)) : lte(table[key], whereField.lte);
 			}
 		} else {
 			// If the value is not an object, it means it's a direct comparison value
-			sql = sql ? and(eq(table[key], value)) : eq(table[key], value);
+			sql = sql ? combine(sql, eq(table[key], value)) : eq(table[key], value);
 		}
 	}
 

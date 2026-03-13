@@ -2,6 +2,7 @@ import { createTable } from '@/core/db/utils';
 import { relations } from 'drizzle-orm';
 import { datetime, index, uniqueIndex, varchar } from 'drizzle-orm/mysql-core';
 import qrCodeTag from './qr-code-tag.entity';
+import shortUrlTag from '@/modules/url-shortener/domain/entities/short-url-tag.entity';
 
 const tag = createTable(
 	'tag',
@@ -26,4 +27,5 @@ export default tag;
 
 export const tagRelations = relations(tag, ({ many }) => ({
 	qrCodeTags: many(qrCodeTag),
+	shortUrlTags: many(shortUrlTag),
 }));

@@ -12,6 +12,10 @@ export {
 	shortUrlRelations,
 } from '@/modules/url-shortener/domain/entities/short-url.entity';
 export {
+	default as shortUrlTag,
+	shortUrlTagRelations,
+} from '@/modules/url-shortener/domain/entities/short-url-tag.entity';
+export {
 	default as customDomain,
 	customDomainRelations,
 } from '@/modules/custom-domain/domain/entities/custom-domain.entity';

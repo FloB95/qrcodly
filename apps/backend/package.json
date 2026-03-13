@@ -20,8 +20,8 @@
 		"start": "pnpm run db:migrate && TZ=Europe/Berlin node build/src/index.js",
 		"dev-server": "docker-compose up -d",
 		"dev": "pnpm run db:migrate && TZ=Europe/Berlin tsx watch --include ./src  src/index.ts",
-		"test": "NODE_ENV=test LOG_LEVEL=error pnpm run db:migrate && jest --runInBand",
-		"test:coverage": "NODE_ENV=test LOG_LEVEL=error pnpm run db:migrate && jest --runInBand --coverage",
+		"test": "export NODE_ENV=test && export LOG_LEVEL=error && export FRONTEND_URL=https://test.qrcodly.de && pnpm run db:migrate && jest --runInBand",
+		"test:coverage": "export NODE_ENV=test && export LOG_LEVEL=error && export FRONTEND_URL=https://test.qrcodly.de && pnpm run db:migrate && jest --runInBand --coverage",
 		"test:detectOpenHandles": "jest --silent --runInBand --detectOpenHandles",
 		"db:push": "drizzle-kit push --config=drizzle.config.ts",
 		"db:migrate": "DB_MIGRATING=true tsx src/core/db/migrate.ts",
@@ -29,7 +29,8 @@
 		"studio": "drizzle-kit studio",
 		"cli:list": "npx tsx src/cli.ts list",
 		"script:find-orphaned-urls": "SKIP_ENV_VALIDATION=true tsx scripts/find-orphaned-short-urls.ts",
-		"script:test-smtp": "tsx scripts/test-smtp.ts"
+		"script:test-smtp": "tsx scripts/test-smtp.ts",
+		"script:regenerate-previews": "SKIP_ENV_VALIDATION=true tsx scripts/regenerate-preview-images.ts"
 	},
 	"devDependencies": {
 		"@aws-sdk/types": "^3.936.0",
@@ -61,7 +62,7 @@
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.943.0",
 		"@aws-sdk/s3-request-presigner": "^3.943.0",
-		"@axiomhq/pino": "^1.3.1",
+		"@axiomhq/pino": "^1.4.0",
 		"@clerk/fastify": "^2.6.17",
 		"@fastify/cookie": "^11.0.2",
 		"@fastify/cors": "^11.1.0",

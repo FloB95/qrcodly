@@ -23,8 +23,9 @@ import { useEffect, useState } from 'react';
 import { EventInputSchema, objDiff, type TEventInput } from '@shared/schemas/src';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
-import { createLinkFromShortUrl, safeLocalStorage } from '@/lib/utils';
+import { safeLocalStorage } from '@/lib/utils';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
+import { useShortUrlLink } from '@/hooks/use-short-url-link';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
@@ -41,6 +42,7 @@ const _EventSection = ({ onChange, value }: EventSectionProps) => {
 	const { isSignedIn } = useAuth();
 	const { config } = useQrCodeGeneratorStore((state) => state);
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
+	const { link: shortUrlLink } = useShortUrlLink(shortUrl);
 
 	const form = useForm<TEventInput>({
 		resolver: zodResolver(EventInputSchema),
@@ -65,11 +67,11 @@ const _EventSection = ({ onChange, value }: EventSectionProps) => {
 			return;
 		}
 
-		if (!shortUrl) return;
+		if (!shortUrlLink) return;
 
 		const payload = {
 			...values,
-			shortUrl: createLinkFromShortUrl(shortUrl),
+			shortUrl: shortUrlLink,
 		};
 
 		onChange(payload);

@@ -8,58 +8,50 @@ Here you can see all recent updates, new features, improvements, and fixes — e
 
 <Callout type="info">Stay up-to-date with the latest features and improvements in QRcodly.</Callout>
 
-## Latest Release: 1.9.0 - 2026-03-04
+## Latest Release: 1.10.0 - 2026-03-12
 
 <Card
-  title="v1.9.0 Latest"
+  title="v1.10.0 Latest"
   description={
     <div>
-      <p>🚀 <strong>Release Notes – Version 1.9.0</strong></p>
+      <p>🚀 <strong>Release Notes – Version 1.10.0</strong></p>
       <h4>✨ New Features</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Analytics Integrations (Pro):</strong> Connect Google Analytics 4 or Matomo to receive QR code scan events directly in your own analytics dashboard. Configure your tracking credentials, test the connection, and enable or disable providers — all from the new Integrations settings page. Credentials are stored encrypted for security.</li>
-        <li><strong>Browser Extension Overhaul:</strong> Completely redesigned browser extension with built-in authentication, the full QR code generator, and a polished new look.</li>
-        <li><strong>Smart Tips:</strong> Contextual tips that help you discover features as you use the dashboard.</li>
-        <li><strong>Create Template Dialog:</strong> Save your current QR code design as a reusable template with one click.</li>
-        <li><strong>Client-Side CSV Validation:</strong> Bulk import now checks your CSV file before uploading, with a detailed error view to fix issues quickly.</li>
-        <li><strong>Analytics Integrations Guide:</strong> New documentation guide with setup instructions and troubleshooting tips for GA4 and Matomo.</li>
-      </ul>
-
-      <h4>💳 Billing & Subscription</h4>
-      <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Stripe Billing:</strong> Subscription management is now powered by Stripe for a more reliable and flexible experience.</li>
-        <li><strong>Improved Subscription Emails:</strong> Better email notifications for subscription events like welcome, renewal, and cancellation.</li>
-        <li><strong>Pro Feature Enforcement:</strong> Pro-only features (Custom Domains, Analytics Integrations) are automatically disabled when a subscription expires and re-enabled when reactivated.</li>
-        <li><strong>Unlimited Tags on Pro:</strong> Pro plan users can now create unlimited tags.</li>
+        <li><strong>Short URL Management:</strong> Full standalone short URL experience — create, edit, delete, and view short URLs with a dedicated dashboard, detail pages with analytics, paginated searchable lists, and a hero form for quick creation.</li>
+        <li><strong>Short URL Tagging:</strong> Full tagging system for short URLs — assign, remove, and filter by tags, with tag management integrated into the list and detail views.</li>
+        <li><strong>Product Pages:</strong> Dedicated product pages for URL Shortener, QR Codes, and Analytics with hero sections, feature details, mockups, FAQs, and CTAs.</li>
+        <li><strong>Products Navigation Dropdown:</strong> New products dropdown menu in the header for easy access to all product pages.</li>
+        <li><strong>URL Validation:</strong> HTTP URL validation for QR code and short URL creation, ensuring only valid URLs are accepted.</li>
       </ul>
 
       <h4>🎨 UI & UX Improvements</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Updated Pricing Page:</strong> Refreshed layout with clearer plan comparisons.</li>
-        <li><strong>New Logo & Branding:</strong> New QRcodly logo across the app, updated favicons, and logo in email templates.</li>
-        <li><strong>Dashboard Polish:</strong> Improved sidebar, header buttons, and QR code list actions.</li>
-        <li><strong>Team Workspaces Preview:</strong> Sneak peek at the upcoming Team Workspaces feature on the features page.</li>
+        <li><strong>Dashboard Polish:</strong> Reordered sidebar navigation, improved short URL list with search, sort, and tag filtering.</li>
+        <li><strong>Product Showcase:</strong> CrossProductCards and ProductUseCases components for cross-linking between product pages.</li>
+        <li><strong>Stats Bar:</strong> New stats bar on the home page showcasing key product metrics.</li>
+        <li><strong>Footer & Header:</strong> Language dropdown opens upward, refined header navigation with products dropdown.</li>
       </ul>
 
       <h4>🛠 Technical Improvements</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Backend & Frontend Refactoring:</strong> Cleaner code structure with extracted components and improved patterns.</li>
-        <li><strong>Short URL Soft-Delete:</strong> Deleted short URLs are now soft-deleted for safer data management.</li>
-        <li><strong>Performance:</strong> Added caching for scan counts and subscription plans for faster page loads.</li>
-        <li><strong>SEO:</strong> Fixed canonical URLs, added API robots.txt, and improved navigation.</li>
+        <li><strong>Backend Architecture:</strong> Full module structure for short URL management — entities, repositories, use cases, controllers, and event handlers.</li>
+        <li><strong>Expanded Test Coverage:</strong> Comprehensive backend tests for short URL CRUD, tag flows, URL validation, and edge cases.</li>
+        <li><strong>PostHog & Sentry:</strong> Event tracking and error reporting for short URL operations.</li>
       </ul>
 
-      <h4>🔐 Security</h4>
+      <h4>🐛 Bug Fixes</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>SSRF Hardening:</strong> Strengthened protections against server-side request forgery, including HTTPS enforcement and private IP range blocking.</li>
-        <li><strong>IPv6 Anonymization:</strong> Improved IP address anonymization for better privacy compliance.</li>
-        <li><strong>Encrypted Credentials:</strong> Analytics integration credentials are encrypted at rest.</li>
+        <li>Fixed delete error toast showing confirmation title instead of error message.</li>
+        <li>Fixed toggle mutation refetching wrong query key.</li>
+        <li>Fixed stale detail page after short URL edit.</li>
+        <li>Fixed tag update toast showing wrong label for short URL tags.</li>
+        <li>Fixed page clamping when result set shrinks after deletion.</li>
       </ul>
 
       <h4>🌍 Translations</h4>
       <ul className="list-disc ml-5 space-y-1">
         <li>Updated translations across all supported languages (English, German, Spanish, French, Italian, Dutch, Polish, Russian).</li>
-        <li>Added new translation keys for analytics integrations, billing, smart tips, and more.</li>
+        <li>Added new translation keys for short URL management, product pages, tagging, and dashboard features.</li>
       </ul>
     </div>
 
@@ -69,6 +61,61 @@ Here you can see all recent updates, new features, improvements, and fixes — e
 ## Previous Releases
 
 <Cards>
+  <Card
+    title="v1.9.0 - 2026-03-04"
+    description={
+      <div>
+        <p>🚀 <strong>Release Notes – Version 1.9.0</strong></p>
+        <h4>✨ New Features</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Analytics Integrations (Pro):</strong> Connect Google Analytics 4 or Matomo to receive QR code scan events directly in your own analytics dashboard. Configure your tracking credentials, test the connection, and enable or disable providers — all from the new Integrations settings page. Credentials are stored encrypted for security.</li>
+          <li><strong>Browser Extension Overhaul:</strong> Completely redesigned browser extension with built-in authentication, the full QR code generator, and a polished new look.</li>
+          <li><strong>Smart Tips:</strong> Contextual tips that help you discover features as you use the dashboard.</li>
+          <li><strong>Create Template Dialog:</strong> Save your current QR code design as a reusable template with one click.</li>
+          <li><strong>Client-Side CSV Validation:</strong> Bulk import now checks your CSV file before uploading, with a detailed error view to fix issues quickly.</li>
+          <li><strong>Analytics Integrations Guide:</strong> New documentation guide with setup instructions and troubleshooting tips for GA4 and Matomo.</li>
+        </ul>
+
+        <h4>💳 Billing & Subscription</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Stripe Billing:</strong> Subscription management is now powered by Stripe for a more reliable and flexible experience.</li>
+          <li><strong>Improved Subscription Emails:</strong> Better email notifications for subscription events like welcome, renewal, and cancellation.</li>
+          <li><strong>Pro Feature Enforcement:</strong> Pro-only features (Custom Domains, Analytics Integrations) are automatically disabled when a subscription expires and re-enabled when reactivated.</li>
+          <li><strong>Unlimited Tags on Pro:</strong> Pro plan users can now create unlimited tags.</li>
+        </ul>
+
+        <h4>🎨 UI & UX Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Updated Pricing Page:</strong> Refreshed layout with clearer plan comparisons.</li>
+          <li><strong>New Logo & Branding:</strong> New QRcodly logo across the app, updated favicons, and logo in email templates.</li>
+          <li><strong>Dashboard Polish:</strong> Improved sidebar, header buttons, and QR code list actions.</li>
+          <li><strong>Team Workspaces Preview:</strong> Sneak peek at the upcoming Team Workspaces feature on the features page.</li>
+        </ul>
+
+        <h4>🛠 Technical Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Backend & Frontend Refactoring:</strong> Cleaner code structure with extracted components and improved patterns.</li>
+          <li><strong>Short URL Soft-Delete:</strong> Deleted short URLs are now soft-deleted for safer data management.</li>
+          <li><strong>Performance:</strong> Added caching for scan counts and subscription plans for faster page loads.</li>
+          <li><strong>SEO:</strong> Fixed canonical URLs, added API robots.txt, and improved navigation.</li>
+        </ul>
+
+        <h4>🔐 Security</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>SSRF Hardening:</strong> Strengthened protections against server-side request forgery, including HTTPS enforcement and private IP range blocking.</li>
+          <li><strong>IPv6 Anonymization:</strong> Improved IP address anonymization for better privacy compliance.</li>
+          <li><strong>Encrypted Credentials:</strong> Analytics integration credentials are encrypted at rest.</li>
+        </ul>
+
+        <h4>🌍 Translations</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li>Updated translations across all supported languages (English, German, Spanish, French, Italian, Dutch, Polish, Russian).</li>
+          <li>Added new translation keys for analytics integrations, billing, smart tips, and more.</li>
+        </ul>
+      </div>
+
+    }
+  />
   <Card
     title="v1.8.1 - 2026-02-19"
     description={

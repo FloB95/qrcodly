@@ -2,7 +2,7 @@
 
 import { SignedIn, SignInButton } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import posthog from 'posthog-js';
 import { Button } from '../ui/button';
 import { env } from '@/env';
@@ -61,7 +61,7 @@ export const ProCTA = ({
 	if (hasProPlan) {
 		return (
 			<Button variant="secondary" asChild>
-				<Link href={`/${locale}/dashboard/settings/billing`}>{t('manageSubscription')}</Link>
+				<Link href="/dashboard/settings/billing">{t('manageSubscription')}</Link>
 			</Button>
 		);
 	}

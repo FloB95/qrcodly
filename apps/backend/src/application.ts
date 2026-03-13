@@ -1,6 +1,7 @@
 import './core/setup';
 import { container } from 'tsyringe';
 import { Logger } from './core/logging';
+import { ErrorReporter } from './core/error';
 import { ShutdownService } from './core/services/shutdown.service';
 import { Server } from './core/server';
 import { poolConnection } from './core/db';
@@ -8,6 +9,7 @@ import { sleep } from './utils/general';
 import { CronJobWorker } from './core/jobs/cron-job-worker';
 
 export class Application {
+	private errorReporter = container.resolve(ErrorReporter);
 	private logger = container.resolve(Logger);
 	private shutdownService = container.resolve(ShutdownService);
 	public server = container.resolve(Server);

@@ -22,20 +22,12 @@ import {
 	PaginationPrevious,
 } from '@/components/ui/pagination';
 import { AlertCircle, Globe } from 'lucide-react';
+import { TableLoader } from '@/components/ui/table-loader';
+import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { env } from '@/env';
+import { getSystemDomain } from '@/lib/utils';
 
 const ITEMS_PER_PAGE = 10;
-
-// Extract domain from FRONTEND_URL (e.g., "qrcodly.de" from "https://www.qrcodly.de")
-const getSystemDomain = (): string => {
-	try {
-		const url = new URL(env.NEXT_PUBLIC_FRONTEND_URL);
-		return url.hostname.replace(/^www\./, '');
-	} catch {
-		return 'qrcodly.de';
-	}
-};
 
 export function CustomDomainList() {
 	const t = useTranslations('settings.domains');
@@ -44,7 +36,11 @@ export function CustomDomainList() {
 	const pathname = usePathname();
 
 	const currentPage = Math.max(1, Number(searchParams.get('page')) || 1);
-	const { data, isLoading, error } = useListCustomDomainsQuery(currentPage, ITEMS_PER_PAGE);
+	const { data, isLoading, isFetching, error } = useListCustomDomainsQuery(
+		currentPage,
+		ITEMS_PER_PAGE,
+	);
+	const isRefetching = isFetching && !isLoading;
 	const { data: defaultDomain } = useDefaultCustomDomainQuery();
 
 	const systemDomain = getSystemDomain();
@@ -94,27 +90,34 @@ export function CustomDomainList() {
 					<AlertDescription>{t('domainsDisabledDescription')}</AlertDescription>
 				</Alert>
 			)}
-			<div className="overflow-hidden rounded-lg border">
-				<Table>
-					<TableHeader className="bg-muted sticky top-0 z-10">
-						<TableRow>
-							<TableHead>{t('domain')}</TableHead>
-							<TableHead>{t('dnsStatus')}</TableHead>
-							<TableHead>{t('status')}</TableHead>
-							<TableHead>{t('createdAt')}</TableHead>
-							<TableHead className="w-[100px]">{t('actions')}</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{/* System domain always shown first */}
-						<SystemDomainListItem systemDomain={systemDomain} isDefault={isSystemDomainDefault} />
-						{/* Custom domains */}
-						{domains.map((domain) => (
-							<CustomDomainListItem key={domain.id} domain={domain} />
-						))}
-					</TableBody>
-				</Table>
-
+			<div className={cn('relative')}>
+				{isRefetching && <TableLoader />}
+				<div className="overflow-hidden rounded-lg border">
+					<Table>
+						<TableHeader className="bg-muted sticky top-0 z-10">
+							<TableRow>
+								<TableHead>{t('domain')}</TableHead>
+								<TableHead>{t('dnsStatus')}</TableHead>
+								<TableHead>{t('status')}</TableHead>
+								<TableHead>{t('createdAt')}</TableHead>
+								<TableHead className="w-[100px]">{t('actions')}</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody
+							className={cn(
+								isRefetching &&
+									'pointer-events-none opacity-50 blur-[0.6px] transition-all duration-200',
+							)}
+						>
+							{/* System domain always shown first */}
+							<SystemDomainListItem systemDomain={systemDomain} isDefault={isSystemDomainDefault} />
+							{/* Custom domains */}
+							{domains.map((domain) => (
+								<CustomDomainListItem key={domain.id} domain={domain} />
+							))}
+						</TableBody>
+					</Table>
+				</div>
 				{pagination && pagination.totalPages > 1 && (
 					<Pagination>
 						<PaginationContent>
@@ -139,7 +142,6 @@ export function CustomDomainList() {
 							</PaginationItem>
 							<PaginationItem>
 								<PaginationNext
-									href="#"
 									onClick={(e) => {
 										e.preventDefault();
 										if (currentPage < pagination.totalPages) handlePageChange(currentPage + 1);

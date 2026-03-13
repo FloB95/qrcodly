@@ -486,6 +486,65 @@ export function ContentTypesMockup() {
 	);
 }
 
+export function ShortUrlMockup() {
+	const links = [
+		{ short: 'qrcodly.de/launch', clicks: 1284, trend: '+18%' },
+		{ short: 'qrcodly.de/promo', clicks: 847, trend: '+9%' },
+		{ short: 'qrcodly.de/docs', clicks: 531, trend: '+24%' },
+	];
+	return (
+		<div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+				<div className="flex items-center justify-between mb-3 sm:mb-4">
+					<div className="flex items-center gap-2">
+						<LinkIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
+						<span className="text-xs sm:text-sm font-medium text-slate-600">Short URLs</span>
+					</div>
+					<span className="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-teal-700">
+						3 Active
+					</span>
+				</div>
+
+				<div className="flex-1 flex flex-col gap-2 sm:gap-3">
+					{links.map((link, i) => (
+						<motion.div
+							key={link.short}
+							className="bg-slate-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3"
+							initial={{ opacity: 0, y: 15 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.4, delay: i * 0.1 }}
+						>
+							<div className="flex items-center justify-between mb-1">
+								<span className="text-[10px] sm:text-xs font-mono font-medium text-slate-800">
+									{link.short}
+								</span>
+								<span className="text-[9px] sm:text-[10px] text-emerald-600 font-medium">
+									{link.trend}
+								</span>
+							</div>
+							<div className="flex items-center gap-1.5">
+								<div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+									<motion.div
+										className="h-full bg-teal-500 rounded-full"
+										initial={{ width: 0 }}
+										whileInView={{ width: `${(link.clicks / 1284) * 100}%` }}
+										viewport={{ once: true }}
+										transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
+									/>
+								</div>
+								<span className="text-[9px] sm:text-[10px] text-slate-400 tabular-nums">
+									{link.clicks.toLocaleString()}
+								</span>
+							</div>
+						</motion.div>
+					))}
+				</div>
+			</div>
+		</div>
+	);
+}
+
 export function TeamsMockup() {
 	const members = [
 		{

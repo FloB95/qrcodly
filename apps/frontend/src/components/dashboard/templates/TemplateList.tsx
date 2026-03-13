@@ -11,12 +11,13 @@ import {
 	PaginationPrevious,
 } from '../../ui/pagination';
 import { useState, useMemo, useEffect } from 'react';
-import { getPageNumbers } from '@/lib/utils';
+import { cn, getPageNumbers } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
 import { TemplateListItem, SkeletonTemplateListItem } from './ListItem';
+import { TableLoader } from '@/components/ui/table-loader';
 import {
 	Empty,
 	EmptyContent,
@@ -60,6 +61,8 @@ export const TemplateList = ({ onCreateTemplate }: TemplateListProps) => {
 		isLoading,
 		isFetching,
 	} = useListConfigTemplatesQuery(debouncedSearch || undefined, currentPage, currentLimit);
+
+	const isRefetching = isFetching && !isLoading;
 
 	const totalPages = useMemo(
 		() => (templates ? Math.ceil(templates.total / currentLimit) : 1),
@@ -157,22 +160,26 @@ export const TemplateList = ({ onCreateTemplate }: TemplateListProps) => {
 	return (
 		<div className="space-y-4">
 			{searchInput}
-			<div className="overflow-hidden rounded-lg border">
-				<Table>
-					{tableHeader}
-					<TableBody>
-						{isFetching
-							? (templates.data.length > 0 ? templates.data : Array.from({ length: 5 })).map(
-									(_, idx) => <SkeletonTemplateListItem key={idx} />,
-								)
-							: templates.data.map((template) => (
-									<TemplateListItem key={template.id} template={template} />
-								))}
-					</TableBody>
-				</Table>
+			<div className={cn('relative')}>
+				{isRefetching && <TableLoader />}
+				<div className="overflow-hidden rounded-lg border">
+					<Table>
+						{tableHeader}
+						<TableBody
+							className={cn(
+								isRefetching &&
+									'pointer-events-none opacity-50 blur-[0.6px] transition-all duration-200',
+							)}
+						>
+							{templates.data.map((template) => (
+								<TemplateListItem key={template.id} template={template} />
+							))}
+						</TableBody>
+					</Table>
+				</div>
 			</div>
-			{!isFetching && totalPages > 1 && (
-				<Pagination>
+			{totalPages > 1 && (
+				<Pagination className={cn(isRefetching && 'pointer-events-none opacity-50')}>
 					<PaginationContent>
 						<PaginationItem>
 							<PaginationPrevious
@@ -199,7 +206,6 @@ export const TemplateList = ({ onCreateTemplate }: TemplateListProps) => {
 						)}
 						<PaginationItem>
 							<PaginationNext
-								href="#"
 								onClick={
 									currentPage === totalPages ? undefined : () => handlePageChange(currentPage + 1)
 								}

@@ -3,8 +3,84 @@
 		"nav": {
 			"collection": "Collecties",
 			"qrCodes": "QR Codes",
+			"shortUrls": "URL Verkorten",
 			"templates": "Sjablonen",
 			"tags": "Tags"
+		}
+	},
+	"shortUrl": {
+		"title": "Korte URLs",
+		"description": "Verkort, beheer en volg je links met gedetailleerde analyses",
+		"createBtn": "Korte URL aanmaken",
+		"searchPlaceholder": "Korte URLs zoeken...",
+		"table": {
+			"name": "Naam",
+			"content": "Inhoud",
+			"shortUrl": "Korte URL",
+			"destination": "Bestemming",
+			"status": "Status",
+			"views": "Weergaven",
+			"created": "Aangemaakt"
+		},
+		"create": {
+			"title": "Korte URL aanmaken",
+			"nameLabel": "Naam",
+			"namePlaceholder": "bijv. Marketingcampagne",
+			"destinationLabel": "Bestemmings-URL",
+			"destinationPlaceholder": "https://example.com/long-url",
+			"domainLabel": "Kort URL-domein",
+			"submitBtn": "Aanmaken",
+			"success": "Korte URL succesvol aangemaakt",
+			"successDescription": "We hebben je korte URL opgeslagen in je collectie voor later gebruik."
+		},
+		"edit": {
+			"title": "Korte URL bewerken",
+			"nameLabel": "Naam",
+			"namePlaceholder": "bijv. Marketingcampagne",
+			"submitBtn": "Bijwerken",
+			"success": "Korte URL succesvol bijgewerkt"
+		},
+		"viewDetails": "Details bekijken",
+		"delete": {
+			"title": "Korte URL verwijderen",
+			"confirm": "Weet je zeker dat je deze korte URL wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+			"success": "Korte URL succesvol verwijderd"
+		},
+		"empty": {
+			"title": "Nog geen korte URLs",
+			"description": "Maak je eerste korte URL aan om te beginnen"
+		},
+		"status": {
+			"active": "Actief",
+			"inactive": "Uitgeschakeld",
+			"enable": "Activeren",
+			"disable": "Deactiveren"
+		},
+		"error": {
+			"toggleActiveState": {
+				"title": "Fout bij het wijzigen van de status",
+				"message": "Er is een fout opgetreden bij het wijzigen van de status. We zijn hiervan op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen."
+			},
+			"create": {
+				"title": "Fout bij het aanmaken van de korte URL",
+				"message": "Er is een fout opgetreden bij het aanmaken van de korte URL. Probeer het opnieuw."
+			},
+			"update": {
+				"title": "Fout bij het bijwerken van de korte URL",
+				"message": "Er is een fout opgetreden bij het bijwerken van de korte URL. Probeer het opnieuw."
+			},
+			"delete": {
+				"title": "Fout bij het verwijderen van de korte URL",
+				"message": "Er is een fout opgetreden bij het verwijderen van de korte URL. Probeer het opnieuw."
+			},
+			"load": {
+				"title": "Fout bij het laden van korte URLs. Probeer het opnieuw."
+			}
+		},
+		"featureBanner": {
+			"title": "Maak kennis met korte URLs",
+			"description": "Je kunt nu direct korte URLs aanmaken en beheren — verkort links, volg klikken en bekijk gedetailleerde analyses. Geen QR-code nodig.",
+			"cta": "Probeer het nu"
 		}
 	},
 	"general": {
@@ -23,7 +99,8 @@
 		"days": "Dagen",
 		"newBadge": "Nieuw!",
 		"dynamicDescription": "Dynamische QR-codes kunnen na creatie bewerkt worden, tracken elke scan en bieden gedetailleerde statistieken – zonder de code opnieuw te hoeven afdrukken.",
-		"dynamicBadgeTooltip": "Maakt het mogelijk om de inhoud later te wijzigen zonder nieuwe QR-code. <i>Hover voor meer info</i>"
+		"dynamicBadgeTooltip": "Maakt het mogelijk om de inhoud later te wijzigen zonder nieuwe QR-code. <i>Hover voor meer info</i>",
+		"copyFailed": "Kon niet naar klembord kopiëren. Kopieer het handmatig."
 	},
 	"hero": {
 		"badge": "Open Source & Voor Altijd Gratis",
@@ -36,6 +113,16 @@
 		},
 		"ctaPrimary": "Maak je QR-code",
 		"ctaSecondary": "Ontdek de mogelijkheden"
+	},
+	"homeStats": {
+		"stat1Value": "100K+",
+		"stat1Label": "QR-codes aangemaakt",
+		"stat2Value": "1.000+",
+		"stat2Label": "Actieve gebruikers",
+		"stat3Value": "10K+",
+		"stat3Label": "Scans en klikken per dag",
+		"stat4Value": "< 50ms",
+		"stat4Label": "Doorverwijssnelheid"
 	},
 	"metadata": {
 		"title": "QRcodly - Gratis QR-codegenerator",
@@ -94,7 +181,9 @@
 		}
 	},
 	"analytics": {
-		"totalViews": "Aantal scans",
+		"totalViews": "Totaal scans",
+		"scansUnit": "Scans",
+		"viewDetailedAnalytics": "Bekijk gedetailleerde analyses",
 		"totalVisitors": "Aantal bezoekers",
 		"stateActive": "Actief",
 		"stateInactive": "Uitgeschakeld",
@@ -117,13 +206,23 @@
 		"signInBtn": "Inloggen",
 		"settingsBtn": "Instellingen",
 		"featuresBtn": "Functies",
-		"plansBtn": "Prijzen"
+		"plansBtn": "Prijzen",
+		"productsBtn": "Producten",
+		"urlShortenerLink": "URL Verkorten",
+		"qrCodesLink": "QR Codes",
+		"analyticsLink": "Analyse",
+		"urlShortenerDesc": "Verkort, brand en volg elke link",
+		"qrCodesDesc": "Maak en pas dynamische QR-codes aan",
+		"analyticsDesc": "Meet prestaties over alle kanalen"
 	},
 	"footer": {
 		"tagline": "Het open-source QR-codeplatform. Maak, beheer en volg QR-codes met gemak.",
-		"product": "Product",
+		"product": "Platform",
 		"features": "Functies",
 		"pricing": "Prijzen",
+		"urlShortener": "URL Verkorten",
+		"qrCodes": "QR Codes",
+		"analyticsProduct": "Analyse",
 		"resources": "Bronnen",
 		"faqLink": "FAQ",
 		"docs": "Documentatie",
@@ -150,6 +249,11 @@
 			"headline": "Vragen of feedback?",
 			"subHeadline1": "Heb je een vraag over QRcodly of wil je feedback delen? We helpen je graag en werken continu aan verbeteringen.",
 			"emailBtn": "Neem contact op"
+		},
+		"browserExtensionTeaser": {
+			"badge": "Binnenkort beschikbaar",
+			"headline": "Browser-extensie",
+			"description": "Maak QR-codes onderweg — rechtstreeks vanuit je browser. Onze aankomende extensie laat je QR-codes genereren en beheren voor elke pagina met slechts één klik."
 		},
 		"featuresCta": {
 			"headline": "Overzicht van de belangrijkste functies",
@@ -188,20 +292,17 @@
 				"headline": "Samenwerken in een team",
 				"subHeadline": "Nodig teamleden uit en werk samen aan QR-codes. Ideaal voor bedrijven, bureaus en teams."
 			},
+			"shortUrlFeature": {
+				"headline": "Zelfstandige korte URLs",
+				"subHeadline": "Verkort, beheer en volg je links met gedetailleerde analyses – geen QR-code nodig.",
+				"actionLabel": "Nu uitproberen"
+			},
 			"secureFeature": {
 				"headline": "Je gegevens blijven bij ons",
 				"subHeadline": "QRcodly host alle gegevens lokaal in Duitsland – geen doorsturing naar externe diensten. Alleen voor authenticatie gebruiken we Clerk."
 			},
 			"scrollLeft": "Naar links scrollen",
 			"scrollRight": "Naar rechts scrollen"
-		}
-	},
-	"shortUrl": {
-		"error": {
-			"toggleActiveState": {
-				"title": "Fout bij het wijzigen van de status",
-				"message": "Er is een fout opgetreden bij het wijzigen van de status. We zijn hiervan op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen."
-			}
 		}
 	},
 	"qrCodeDisabled": {
@@ -219,7 +320,9 @@
 			"scans": "Scans",
 			"created": "Aangemaakt",
 			"actions": "Acties",
-			"tags": "Tags"
+			"tags": "Tags",
+			"copyUrl": "URL kopiëren",
+			"urlCopied": "URL gekopieerd naar klembord"
 		},
 		"storeBtn": "Opslaan in collectie",
 		"updateBtn": "QR-code bijwerken",
@@ -264,7 +367,7 @@
 		},
 		"actionsMenu": {
 			"title": "Acties",
-			"view": "Bekijken",
+			"view": "Details bekijken",
 			"edit": "Bewerken",
 			"delete": "Verwijderen",
 			"disableShortUrl": "Uitschakelen",
@@ -391,7 +494,6 @@
 		"domainSelector": {
 			"label": "Korte URL-domein",
 			"placeholder": "Selecteer een domein",
-			"defaultDomain": "Standaard (qrcodly.de)",
 			"description": "Kies welk domein je wilt gebruiken voor je korte URL",
 			"noDomains": "Geen aangepaste domeinen beschikbaar.",
 			"addDomain": "Domein toevoegen"
@@ -953,7 +1055,7 @@
 		},
 		"apiKeys": {
 			"title": "API-sleutels",
-			"description": "Beheer je API-sleutels voor externe integraties.",
+			"description": "Beheer je API-sleutels voor externe integraties. Bekijk de <link>API-documentatie</link> om aan de slag te gaan.",
 			"name": "Naam",
 			"descriptionLabel": "Beschrijving",
 			"createdAt": "Aangemaakt op",
@@ -1184,8 +1286,8 @@
 		"subtitle": "QRcodly is gratis te gebruiken – geen proefperiodes, geen automatische abonnementen. Het Pro-plan dekt alleen functies die extra infrastructuur vereisen.",
 		"annual": "Jaarlijks",
 		"monthly": "Maandelijks",
-		"perMonth": "/maand",
-		"perYear": "/jaar",
+		"perMonth": "maand",
+		"perYear": "jaar",
 		"upgradeToPro": "Upgrade naar Pro",
 		"renewSubscription": "Abonnement Vernieuwen",
 		"manageSubscription": "Abonnement Beheren",
@@ -1201,17 +1303,18 @@
 		"features": {
 			"free": {
 				"unlimitedQrCodes": "Onbeperkte QR-codes & scans",
+				"unlimitedShortUrls": "Onbeperkte korte URL's",
 				"staticDynamic": "Statische & dynamische QR-codes",
 				"customStyling": "Aangepaste stijlen & pictogrammen",
 				"detailedAnalytics": "Gedetailleerde analyses",
 				"noCreditCard": "Geen creditcard vereist",
-				"unlimitedTags": "Onbeperkte tags (1 per QR-code)",
+				"unlimitedTags": "Onbeperkte tags",
 				"limitedApi": "Beperkte API-toegang",
 				"limitedBulk": "Beperkte bulk QR-code generatie"
 			},
 			"pro": {
 				"everythingInFree": "Alles in Gratis",
-				"unlimitedTags": "Onbeperkte tags (3 per QR-code)",
+				"unlimitedTags": "Onbeperkte tags",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
 				"customDomains": "Aangepast domein voor dynamische QR-codes",
 				"unlimitedApi": "Onbeperkte API-toegang",
@@ -1244,7 +1347,7 @@
 			"deletedTitle": "Tag verwijderd",
 			"deletedDescription": "Je tag is succesvol verwijderd.",
 			"tagsUpdatedTitle": "Tags bijgewerkt",
-			"tagsUpdatedDescription": "De QR-code tags zijn succesvol bijgewerkt.",
+			"tagsUpdatedDescription": "De tags zijn succesvol bijgewerkt.",
 			"createErrorTitle": "Fout bij het aanmaken van tag",
 			"updateErrorTitle": "Fout bij het bijwerken van tag",
 			"deleteErrorTitle": "Fout bij het verwijderen van tag",
@@ -1276,6 +1379,14 @@
 				"bullet1": "Werk de inhoud bij zonder opnieuw af te drukken",
 				"bullet2": "Volg elke scan met realtime analyse",
 				"bullet3": "Schakel QR-codes direct aan of uit"
+			},
+			"shortUrl": {
+				"tag": "Nieuwe Functie",
+				"title": "Zelfstandige Korte URLs",
+				"description": "Maak en beheer korte URLs onafhankelijk — geen QR-code nodig. Verkort elke link, volg klikken in realtime en krijg inzichten met gedetailleerde analyses.",
+				"bullet1": "Verkort elke URL met één klik",
+				"bullet2": "Volg klikken met realtime analyse",
+				"bullet3": "Werkt met eigen domeinen voor merkgebonden links"
 			},
 			"analytics": {
 				"tag": "Inzichten",
@@ -1310,12 +1421,12 @@
 				"bullet3": "Volledig DNS-beheer via Cloudflare-integratie"
 			},
 			"tags": {
-				"tag": "Organisatie",
-				"title": "Gekleurde Tags voor Eenvoudige Organisatie",
-				"description": "Houd je QR-codebibliotheek georganiseerd met aangepaste gekleurde tags. Maak categorieën, filter op tag en vind elke code direct.",
-				"bullet1": "Maak onbeperkt aangepaste gekleurde tags",
-				"bullet2": "Wijs meerdere tags toe per QR-code",
-				"bullet3": "Filter en doorzoek je collectie op tags"
+				"tag": "Organisatie en analyse",
+				"title": "Tags om te organiseren, groeperen en analyseren",
+				"description": "Wijs gekleurde tags toe aan je QR-codes en korte URL's om ze te groeperen per campagne, kanaal of categorie. Gebruik tags om je collectie te filteren en prestaties per groep te analyseren.",
+				"bullet1": "Tag QR-codes en korte URL's voor campagnegroeperingen",
+				"bullet2": "Filter, zoek en vergelijk op tag",
+				"bullet3": "Analyseer scan- en klikprestaties per tag"
 			},
 			"bulkOperations": {
 				"tag": "Productiviteit",
@@ -1358,6 +1469,23 @@
 				"bullet3": "Samenwerken aan QR-codes met je hele team"
 			}
 		},
+		"products": {
+			"qrCodes": {
+				"title": "QR Codes",
+				"description": "Maak volledig aanpasbare dynamische QR-codes met logo's, kleuren en sjablonen. Volg elke scan in realtime."
+			},
+			"urlShortener": {
+				"title": "URL Verkorten",
+				"description": "Verkort elke link, gebruik eigen merkdomeinen en volg elke klik met realtime analyse."
+			},
+			"analytics": {
+				"title": "Analyse",
+				"description": "Volg elke scan en klik van al je QR-codes en korte URL's met gedetailleerde inzichten."
+			}
+		},
+		"moreFeatures": {
+			"title": "En Nog Veel Meer"
+		},
 		"cta": {
 			"title": "Klaar om te beginnen?",
 			"subtitle": "Maak je eerste QR-code in seconden. Voor altijd gratis, geen creditcard nodig.",
@@ -1383,11 +1511,344 @@
 		},
 		"customDomain": {
 			"title": "Gebruik je eigen domein",
-			"description": "Koppel een eigen domein zodat je QR-code-kortlinks je merk gebruiken in plaats van het onze."
+			"description": "Koppel een eigen domein zodat de korte URLs van je QR-codes je merk gebruiken in plaats van het onze."
 		},
 		"organizeTags": {
 			"title": "Organiseer met tags",
 			"description": "Voeg tags toe aan je QR-codes om ze eenvoudiger te groeperen, filteren en vinden."
+		}
+	},
+	"productsUrlShortener": {
+		"metaTitle": "URL Verkorten - Verkort, Brand & Volg Links",
+		"metaDescription": "Verkort elke URL, gebruik eigen merkdomeinen en volg elke klik met realtime analyse. Gratis URL verkorten door QRcodly.",
+		"badge": "URL Verkorten",
+		"hero": {
+			"title": "Verkort Links. Volg Klikken. Groei Sneller.",
+			"subtitle": "Maak merkgebonden korte URL's, monitor prestaties in realtime en beheer al je links vanuit een krachtig dashboard.",
+			"ctaLabel": "Begin gratis met verkorten",
+			"inputLabel": "Voer je URL hier in",
+			"inputPlaceholder": "https://voorbeeld.nl/mijn-lange-url",
+			"submitBtn": "Gratis link inkorten",
+			"successMessage": "Je korte link is klaar!",
+			"copyBtn": "Kopiëren",
+			"copiedBtn": "Gekopieerd!",
+			"createAnother": "Nog een URL inkorten"
+		},
+		"stats": {
+			"stat1Value": "1.000+",
+			"stat1Label": "Actieve gebruikers",
+			"stat2Value": "10K+",
+			"stat2Label": "Dagelijkse klikken",
+			"stat3Value": "< 50ms",
+			"stat3Label": "Doorverwijssnelheid",
+			"stat4Value": "24/7",
+			"stat4Label": "Beschikbaarheid"
+		},
+		"useCases": {
+			"title": "Gebouwd voor Elk Team",
+			"subtitle": "Van solo-creators tot enterprise marketingafdelingen — de URL-verkorter van QRcodly schaalt mee met je behoeften.",
+			"case1Title": "Marketingteams",
+			"case1Description": "Volg campagneprestaties over alle kanalen met merkgebonden links en gedetailleerde klikanalyse.",
+			"case2Title": "Social Media Managers",
+			"case2Description": "Maak schone, merkgebonden links voor elke post. Monitor engagement over platforms heen vanuit een dashboard.",
+			"case3Title": "Sales & Partnerships",
+			"case3Description": "Deel traceerbare links in outreach-e-mails en voorstellen. Zie wie klikt, wanneer en vanwaar.",
+			"case4Title": "E-Commerce",
+			"case4Description": "Verkort productlinks voor advertenties en e-mailcampagnes. Volg conversies vanaf elk contactpunt.",
+			"case5Title": "Ontwikkelaars & APIs",
+			"case5Description": "Integreer URL-verkorting in je apps via onze REST API. Volledige documentatie en SDK-ondersteuning.",
+			"case6Title": "Bureaus",
+			"case6Description": "Beheer klantlinks met eigen domeinen. White-label korte URL's met de branding van je klanten."
+		},
+		"features": {
+			"brandedLinks": {
+				"title": "Merkgebonden Links met Eigen Domeinen",
+				"description": "Vervang generieke korte URL's door je eigen merkdomein. Bouw vertrouwen op, verhoog doorklikratio's en versterk je identiteit met elke link die je deelt.",
+				"bullet1": "Verbind je eigen domein in enkele minuten",
+				"bullet2": "Automatische SSL-certificaat provisioning",
+				"bullet3": "Volledig DNS-beheer via Cloudflare"
+			},
+			"analytics": {
+				"title": "Klikanalyse in Realtime",
+				"description": "Zie precies hoe je links presteren. Volg totale klikken, unieke bezoekers, geografische spreiding, apparaten en browsers — allemaal in realtime bijgewerkt.",
+				"bullet1": "Totale klikken en unieke bezoekers bijhouden",
+				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem",
+				"bullet3": "Geografische spreiding per land"
+			},
+			"management": {
+				"title": "Georganiseerd Linkbeheer",
+				"description": "Houd al je korte URL's georganiseerd met tags, statusbeheer en een doorzoekbaar dashboard. Schakel links direct in of uit en vind elke link in seconden.",
+				"bullet1": "Tag en categoriseer links voor eenvoudig filteren",
+				"bullet2": "Schakel links in of uit met één klik",
+				"bullet3": "Zoek en sorteer je volledige linkbibliotheek"
+			},
+			"bulkOperations": {
+				"title": "Bulk Linkbewerkingen",
+				"comingSoon": "Binnenkort beschikbaar",
+				"description": "Maak, exporteer en beheer honderden korte URL's tegelijk. Perfect voor grote campagnes, productcatalogi en enterprise workflows.",
+				"bullet1": "Bulk aanmaken via CSV-import",
+				"bullet2": "Exporteer alle links met volledige metadata",
+				"bullet3": "Links in bulk in- of uitschakelen of taggen"
+			},
+			"apiAccess": {
+				"title": "REST API & Integraties",
+				"description": "Integreer URL-verkorting in je eigen apps en workflows. Onze gedocumenteerde REST API maakt programmatisch linkbeheer eenvoudig.",
+				"bullet1": "Volledige REST API met API-sleutel authenticatie",
+				"bullet2": "Links programmatisch aanmaken, lezen, bijwerken en verwijderen",
+				"bullet3": "Uitgebreide API-documentatie",
+				"actionLabel": "API-documentatie bekijken"
+			}
+		},
+		"crossProducts": {
+			"title": "Ontdek Meer QRcodly Producten",
+			"qrCodes": {
+				"title": "QR Codes",
+				"description": "Maak volledig aanpasbare dynamische QR-codes met logo's, kleuren en realtime scantracking."
+			},
+			"analytics": {
+				"title": "Analyse",
+				"description": "Unified analyse-dashboard voor al je QR-codes en korte URL's met inzichten in apparaat, locatie en browser."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde Vragen",
+			"q1": "Is de URL-verkorter gratis?",
+			"a1": "Ja! De URL-verkorter van QRcodly is gratis te gebruiken. Je kunt korte URL's aanmaken, klikken volgen en je links beheren zonder kosten. Pro-abonnementen ontgrendelen geavanceerde functies zoals eigen domeinen.",
+			"q2": "Kan ik mijn eigen domein gebruiken voor korte URLs?",
+			"a2": "Absoluut. Verbind je eigen domein om merkgebonden korte URL's te maken zoals ga.jouwmerk.nl/u/x7k9m. Eigen domeinen zijn beschikbaar in Pro-abonnementen met automatische SSL-provisioning.",
+			"q3": "Hoe werkt het bijhouden van klikken?",
+			"a3": "Elke keer dat iemand op je korte URL klikt, registreert QRcodly de klik samen met metadata zoals apparaattype, browser, besturingssysteem en geografische locatie — allemaal in realtime.",
+			"q4": "Kan ik een korte URL bewerken na het aanmaken?",
+			"a4": "Ja. Je kunt de bestemmings-URL bijwerken, de link in- of uitschakelen en tags beheren op elk moment vanuit je dashboard zonder de korte URL zelf te wijzigen.",
+			"q5": "Verlopen korte URL's?",
+			"a5": "Nee. Korte URL's aangemaakt met QRcodly verlopen nooit. Ze blijven actief zolang je account bestaat, en je kunt ze handmatig uitschakelen indien nodig.",
+			"q6": "Wat is het verschil tussen korte URL's en QR-codes?",
+			"a6": "Korte URL's zijn klikbare links die je digitaal deelt (e-mail, sociale media, advertenties). QR-codes zijn scanbare afbeeldingen voor fysieke media (print, verpakking, bewegwijzering). Beide volgen analyses en kunnen eigen domeinen gebruiken."
+		}
+	},
+	"productsQrCodes": {
+		"metaTitle": "QR Code Generator - Maak Aangepaste Dynamische QR Codes",
+		"metaDescription": "Maak volledig aanpasbare dynamische QR-codes met logo's, kleuren en sjablonen. Volg elke scan met realtime analyse. Gratis QR code generator.",
+		"badge": "QR Codes",
+		"hero": {
+			"title": "Maak QR-codes die Harder Werken.",
+			"subtitle": "Ontwerp verbluffende QR-codes met aangepaste kleuren, logo's en stijlen. Werk de inhoud op elk moment bij, volg elke scan en beheer alles vanuit een dashboard.",
+			"ctaLabel": "Maak Gratis je QR Code"
+		},
+		"stats": {
+			"stat1Value": "100K+",
+			"stat1Label": "QR-codes aangemaakt",
+			"stat2Value": "9+",
+			"stat2Label": "Inhoudstypen",
+			"stat3Value": "10K+",
+			"stat3Label": "Scans per dag",
+			"stat4Value": "1.000+",
+			"stat4Label": "Actieve gebruikers"
+		},
+		"useCases": {
+			"title": "QR-codes voor Elke Branche",
+			"subtitle": "Of je nu een klein bedrijf of een wereldwijd merk bent, dynamische QR-codes stimuleren betrokkenheid in de echte wereld.",
+			"case1Title": "Restaurants & Horeca",
+			"case1Description": "Digitale menu's, WiFi-toegang en bestellen aan tafel — alles via een eenvoudige scan. Werk de inhoud bij zonder opnieuw te printen.",
+			"case2Title": "Retail & E-Commerce",
+			"case2Description": "Productinformatie, promoties en loyaliteitsprogramma's op verpakkingen. Volg welke producten de meeste scans genereren.",
+			"case3Title": "Evenementen & Conferenties",
+			"case3Description": "Tickets, programma's en contactuitwisseling via vCard QR-codes. Perfect voor badges en gedrukt materiaal.",
+			"case4Title": "Vastgoed",
+			"case4Description": "Woningaanbiedingen, virtuele rondleidingen en contactgegevens van makelaars op bewegwijzering. Volg interesse per locatie.",
+			"case5Title": "Onderwijs",
+			"case5Description": "Verwijs studenten naar bronnen, opdrachten en lesmateriaal. Werk bestemmingen op elk moment bij.",
+			"case6Title": "Marketing & Reclame",
+			"case6Description": "Verbind print- en digitale campagnes. Volg scanpercentages op billboards, flyers en direct mail."
+		},
+		"features": {
+			"customization": {
+				"title": "Volledig Aanpasbaar Design",
+				"description": "Ga verder dan standaard zwart-witte codes. Pas kleuren, hoekstijlen aan en voeg je logo toe om QR-codes te maken die perfect bij je merkidentiteit passen.",
+				"bullet1": "Aangepaste voorgrond-, achtergrond- en hoekkleuren",
+				"bullet2": "Meerdere hoekpunt- en vierkantstijlen",
+				"bullet3": "Upload je logo voor merkgebonden QR-codes"
+			},
+			"analytics": {
+				"title": "Scananalyse & Tracking",
+				"description": "Elke dynamische QR-code wordt geleverd met ingebouwde analyse. Zie wie scant, wanneer, waar en met welk apparaat — allemaal in realtime vanuit je dashboard.",
+				"bullet1": "Realtime scan- en bezoekersregistratie",
+				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem",
+				"bullet3": "Geografische spreiding per land"
+			},
+			"contentTypes": {
+				"title": "Meer dan 9 Inhoudstypen Ondersteund",
+				"description": "Maak QR-codes voor meer dan alleen URL's. Ondersteuning voor WiFi-netwerken, visitekaartjes, agenda-evenementen, e-mail, locaties, betalingen en meer.",
+				"bullet1": "URL, WiFi, vCard, e-mail en Tekst",
+				"bullet2": "Agenda-evenementen met volledige detailondersteuning",
+				"bullet3": "Geografische locaties en EPC-betaallinks"
+			},
+			"dynamicUpdates": {
+				"title": "Dynamische Inhoudupdates",
+				"description": "Verander waar je QR-code naartoe verwijst zonder opnieuw te printen. Werk URL's bij, wissel van inhoudstype of verwijs door naar seizoenscampagnes — je geprinte QR-codes blijven hetzelfde.",
+				"bullet1": "Werk bestemmings-URL's op elk moment bij",
+				"bullet2": "Wissel direct van inhoudstype",
+				"bullet3": "Nooit meer opnieuw printen"
+			},
+			"bulkTemplates": {
+				"title": "Sjablonen & Bulk Aanmaken",
+				"description": "Sla het QR-code-ontwerp van je merk op als herbruikbaar sjabloon. Maak vervolgens honderden QR-codes tegelijk aan via CSV-import, allemaal met consistente styling.",
+				"bullet1": "Sla merkontwerp-sjablonen op en hergebruik ze",
+				"bullet2": "Bulk aanmaken via CSV-upload",
+				"bullet3": "Consistente branding over alle QR-codes"
+			},
+			"apiAccess": {
+				"title": "REST API & integraties",
+				"description": "Integreer QR-codegeneratie in je eigen apps en workflows. Onze gedocumenteerde REST API maakt het programmatisch aanmaken en beheren van QR-codes eenvoudig.",
+				"bullet1": "Volledige REST API met API-sleutelauthenticatie",
+				"bullet2": "Maak, pas aan en beheer QR-codes programmatisch",
+				"bullet3": "Uitgebreide API-documentatie",
+				"actionLabel": "API-documentatie bekijken"
+			}
+		},
+		"crossProducts": {
+			"title": "Ontdek Meer QRcodly Producten",
+			"urlShortener": {
+				"title": "URL Verkorten",
+				"description": "Verkort elke link, gebruik eigen domeinen en volg elke klik met realtime analyse."
+			},
+			"analytics": {
+				"title": "Analyse",
+				"description": "Unified analyse-dashboard voor al je QR-codes en korte URL's met inzichten in apparaat, locatie en browser."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde Vragen",
+			"q1": "Is de QR code generator gratis?",
+			"a1": "Ja! Met QRcodly kun je onbeperkt statische en dynamische QR-codes gratis aanmaken. Geen verborgen kosten, geen watermerken en geen registratie nodig voor basis QR-codes.",
+			"q2": "Wat zijn dynamische QR-codes?",
+			"a2": "Dynamische QR-codes laten je de bestemmings-URL wijzigen nadat de code is afgedrukt. Ze volgen ook elke scan met gedetailleerde analyse — geen herdruk nodig wanneer de inhoud verandert.",
+			"q3": "Kan ik mijn logo toevoegen aan een QR-code?",
+			"a3": "Absoluut. Upload elk beeld als centraal logo voor je QR-code. Je kunt ook kleuren en hoekstijlen aanpassen en ontwerpen opslaan als herbruikbare sjablonen.",
+			"q4": "Welke inhoudstypen worden ondersteund?",
+			"a4": "QRcodly ondersteunt meer dan 9 inhoudstypen: URL, Tekst, WiFi, vCard (visitekaartjes), E-mail, Locatie, Agenda-evenementen, EPC (betaling) en Social Media-profielen.",
+			"q5": "Kan ik QR-code scans volgen?",
+			"a5": "Ja. Elke dynamische QR-code volgt scans in realtime met totale scans, unieke bezoekers, apparaattypen, browsers, besturingssystemen en geografische locaties.",
+			"q6": "Verlopen QR-codes?",
+			"a6": "Nee. QR-codes aangemaakt met QRcodly verlopen nooit. Dynamische QR-codes blijven volledig functioneel en traceerbaar zolang je account bestaat."
+		},
+		"cta": {
+			"title": "Klaar om je eerste QR-code te maken?",
+			"subtitle": "Ontwerp aangepaste QR-codes met volledige analysetracking. Voor altijd gratis, geen creditcard nodig.",
+			"ctaLabel": "Maak Nu een QR Code"
+		}
+	},
+	"productsAnalytics": {
+		"metaTitle": "Analyse - Volg Prestaties van QR Codes & Korte URL's",
+		"metaDescription": "Volg elke scan en klik van QR-codes en korte URL's. Realtime analyse met inzichten in apparaat, browser, locatie en kanaal. Gratis analyse door QRcodly.",
+		"badge": "Analyse",
+		"hero": {
+			"title": "Ontdek wat je QR-codes & links echt doen.",
+			"subtitle": "Volg elke scan en klik van al je QR-codes en korte URL's. Krijg realtime inzichten in apparaten, locaties, browsers en kanaalprestaties.",
+			"ctaLabel": "Begin Gratis met Tracken"
+		},
+		"stats": {
+			"stat1Value": "Realtime",
+			"stat1Label": "Data-updates",
+			"stat2Value": "10K+",
+			"stat2Label": "Dagelijkse events",
+			"stat3Value": "2",
+			"stat3Label": "Integraties",
+			"stat4Value": "100%",
+			"stat4Label": "Privacy-eerst"
+		},
+		"useCases": {
+			"title": "Analyses die Beslissingen Sturen",
+			"subtitle": "Zet scan- en klikgegevens om in bruikbare inzichten voor je team.",
+			"case1Title": "Campagne-optimalisatie",
+			"case1Description": "Vergelijk prestaties van QR-codes en korte URL's naast elkaar. Zet in op kanalen die converteren.",
+			"case2Title": "Geografische Targeting",
+			"case2Description": "Zie vanwaar je publiek scant. Optimaliseer regionale campagnes op basis van echte gegevens.",
+			"case3Title": "Apparaat-intelligence",
+			"case3Description": "Begrijp de apparaten en browsers van je doelgroep. Optimaliseer landingspagina's voor de platforms die ertoe doen.",
+			"case4Title": "Campagnetracking",
+			"case4Description": "Gebruik tags om QR-codes en korte URL's per campagne te groeperen. Vergelijk resultaten over kanalen en periodes.",
+			"case5Title": "A/B-testen",
+			"case5Description": "Maak meerdere QR-codes of korte URL's voor dezelfde bestemming. Vergelijk welk ontwerp of welke plaatsing het beste presteert.",
+			"case6Title": "Integratie met Derden",
+			"case6Description": "Stuur gegevens door naar Google Analytics 4 of Matomo. Houd je bestaande analyse-stack up-to-date."
+		},
+		"features": {
+			"realTime": {
+				"title": "Realtime Prestatiestatistieken",
+				"description": "Zie je gegevens op het moment dat ze binnenkomen. Volg scans, klikken en unieke bezoekers in realtime met uitsplitsingen naar apparaat, browser en besturingssysteem.",
+				"bullet1": "Live scan- en kliktracking",
+				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem",
+				"bullet3": "Identificatie van unieke bezoekers"
+			},
+			"channels": {
+				"title": "Campagnetracking met tags",
+				"comingSoon": "Binnenkort beschikbaar",
+				"description": "Groepeer QR-codes en korte URL's per campagne met tags. Vergelijk prestaties tussen campagnes, kanalen en periodes — alles vanuit één dashboard.",
+				"bullet1": "Tag-gebaseerde groepering voor campagnes en kanalen",
+				"bullet2": "Vergelijk prestaties van verschillende tags naast elkaar",
+				"bullet3": "Identificeer je beste campagnes in één oogopslag"
+			},
+			"integrations": {
+				"title": "Integraties met Derden",
+				"description": "Stuur scan- en klikgegevens door naar Google Analytics 4 of Matomo. Behoud je bestaande analyseworkflow terwijl de ingebouwde analyse van QRcodly volledig actief blijft.",
+				"bullet1": "Verbind Google Analytics 4 of Matomo in enkele minuten",
+				"bullet2": "Alleen geanonimiseerde, niet-persoonlijke gegevens worden gedeeld",
+				"bullet3": "De ingebouwde QRcodly-analyse blijft onaangetast"
+			},
+			"geographic": {
+				"title": "Geografische Inzichten",
+				"description": "Zie precies waar je publiek zich bevindt. Locatiegegevens op landniveau voor elke scan en klik helpen je regionale engagementpatronen te begrijpen.",
+				"bullet1": "Locatietracking op landniveau",
+				"bullet2": "Identificeer best presterende regio's",
+				"bullet3": "Privacy-eerst: IP-adressen worden nooit opgeslagen"
+			},
+			"exportReporting": {
+				"title": "Data-export & rapportage",
+				"comingSoon": "Binnenkort beschikbaar",
+				"description": "Exporteer je analysegegevens voor aangepaste rapporten en presentaties. Filter op datumbereik, apparaat of locatie en download alles wat je nodig hebt.",
+				"bullet1": "Exporteer scan- en klikgegevens als CSV",
+				"bullet2": "Filter op datumbereik, apparaat of locatie",
+				"bullet3": "Perfect voor teamrapporten en presentaties"
+			},
+			"privacy": {
+				"title": "Privacyvriendelijke analyses",
+				"description": "Alle gegevens worden anoniem en zonder persoonlijke identificatoren verzameld. IP-adressen worden ingekort, user agents gereduceerd tot apparaatcategorie — zonder cookies of fingerprinting.",
+				"bullet1": "IP-adressen worden ingekort — nooit volledig opgeslagen",
+				"bullet2": "User agents worden gereduceerd tot apparaattype, OS en browser",
+				"bullet3": "Geen cookies, geen fingerprinting, geen persoonlijke gegevens"
+			}
+		},
+		"crossProducts": {
+			"title": "Ontdek Meer QRcodly Producten",
+			"urlShortener": {
+				"title": "URL Verkorten",
+				"description": "Verkort elke link, gebruik eigen domeinen en volg elke klik met realtime analyse."
+			},
+			"qrCodes": {
+				"title": "QR Codes",
+				"description": "Maak volledig aanpasbare dynamische QR-codes met logo's, kleuren en realtime scantracking."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde Vragen",
+			"q1": "Welke analyse biedt QRcodly?",
+			"a1": "QRcodly volgt totale scans/klikken, unieke bezoekers, apparaattypen, browsers, besturingssystemen en geografische locaties voor zowel QR-codes als korte URL's — allemaal in realtime.",
+			"q2": "Is analyse inbegrepen bij het gratis abonnement?",
+			"a2": "Ja! Ingebouwde analyse is gratis inbegrepen voor alle dynamische QR-codes en korte URL's. Je krijgt realtime scan-/kliktracking, apparaatuitsplitsingen en geografische inzichten zonder kosten.",
+			"q3": "Kan ik Google Analytics koppelen?",
+			"a3": "Ja. Pro-abonnementgebruikers kunnen scan- en klikgegevens doorsturen naar Google Analytics 4 of Matomo. Alleen geanonimiseerde, niet-identificeerbare gegevens worden gedeeld, en de ingebouwde analyse van QRcodly blijft volledig actief.",
+			"q4": "Hoe worden geografische gegevens verzameld?",
+			"a4": "Geografische gegevens worden afgeleid van het IP-adres op het moment van scannen of klikken. Het IP-adres wordt geanonimiseerd en nooit opgeslagen. Alleen de locatie op landniveau wordt geregistreerd.",
+			"q5": "Kan ik de prestaties van QR-codes en korte URL's vergelijken?",
+			"a5": "Ja. Je QRcodly-dashboard toont uniforme analyse over alle QR-codes en korte URL's, waardoor het eenvoudig is om kanalen te vergelijken en de best presterende te identificeren.",
+			"q6": "Zijn de gegevens realtime?",
+			"a6": "Ja. Alle analysegegevens in QRcodly worden in realtime bijgewerkt. Zodra iemand een QR-code scant of op een korte URL klikt, verschijnen de gegevens in je dashboard."
+		},
+		"cta": {
+			"title": "Klaar om te zien wat je links je kunnen vertellen?",
+			"subtitle": "Volg elke scan en klik met realtime analyse. Voor altijd gratis, geen creditcard nodig.",
+			"ctaLabel": "Begin Gratis met Tracken"
 		}
 	}
 }

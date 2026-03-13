@@ -1,12 +1,14 @@
 'use client';
 
 import { ArrowTurnDownRightIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
 import { useShortUrlLink } from '@/hooks/use-short-url-link';
-import type { TShortUrlResponseDto } from '@shared/schemas';
+import { cn } from '@/lib/utils';
+import type { TShortUrlResponseDto, TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
+import { CopyUrlButton } from './CopyUrlButton';
+import { TruncatedLink } from './TruncatedLink';
 
 interface ShortUrlDisplayProps {
-	shortUrl: TShortUrlResponseDto;
+	shortUrl: TShortUrlResponseDto | TShortUrlWithCustomDomainResponseDto;
 	destinationUrl?: string | null;
 	destinationContent?: React.ReactNode;
 	className?: string;
@@ -25,31 +27,22 @@ export const ShortUrlDisplay = ({
 	}
 
 	return (
-		<div>
-			<Link
-				href={shortUrl}
-				prefetch={false}
-				target="_blank"
-				onClick={(e) => e.stopPropagation()}
-				onContextMenu={(e) => e.stopPropagation()}
-				className={className}
-			>
-				{shortUrl}
-			</Link>
+		<div className="min-w-0">
+			<div className="group/url flex min-w-0 items-center gap-1">
+				<TruncatedLink href={shortUrl} className={cn('truncate', className)} />
+				<CopyUrlButton url={shortUrl} />
+			</div>
 			{destinationUrl && (
-				<div className="mt-1 ml-2 flex items-center">
-					<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 font-semibold text-muted-foreground" />
+				<div className="mt-1 ml-2 flex min-w-0 items-center">
+					<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 shrink-0 font-semibold text-muted-foreground" />
 					{destinationContent || (
-						<Link
-							onClick={(e) => e.stopPropagation()}
-							onContextMenu={(e) => e.stopPropagation()}
-							href={destinationUrl}
-							target="_blank"
-							className="pt-1 text-sm text-black hover:underline"
-							prefetch={false}
-						>
-							{destinationUrl}
-						</Link>
+						<div className="group/url flex min-w-0 items-center gap-1">
+							<TruncatedLink
+								href={destinationUrl}
+								className="truncate pt-1 text-sm text-foreground hover:underline"
+							/>
+							<CopyUrlButton url={destinationUrl} />
+						</div>
 					)}
 				</div>
 			)}

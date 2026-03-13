@@ -133,7 +133,14 @@ export const TagEditDialog = ({ tag, open, onOpenChange }: TagEditDialogProps) =
 						</div>
 					</div>
 					<DialogFooter>
-						<Button type="submit" disabled={!name.trim() || updateTag.isPending}>
+						<Button
+							type="submit"
+							disabled={
+								!name.trim() ||
+								(name.trim() === tag.name && color === tag.color) ||
+								updateTag.isPending
+							}
+						>
 							{t('editBtn')}
 						</Button>
 					</DialogFooter>

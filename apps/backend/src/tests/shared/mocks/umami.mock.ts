@@ -74,11 +74,72 @@ export const mockFetchUmamiAnalytics = (data: Partial<TAnalyticsResponseDto> = {
 	});
 };
 
+let originalFetch: typeof global.fetch | null = null;
+
 /**
- * Resets all fetch mocks.
+ * Mocks the global fetch function for the full Umami analytics flow
+ * (auth login + multiple data endpoints).
+ * Only intercepts requests to the Umami host; all other requests pass through.
+ */
+export const mockFetchUmamiAllEndpoints = () => {
+	originalFetch = global.fetch;
+
+	const authResponse = createMockUmamiResponse();
+	const statsData = {
+		pageviews: 100,
+		visitors: 50,
+		visits: 75,
+		bounces: 10,
+		totaltime: 5000,
+	};
+	const pageviewsData = {
+		pageviews: [
+			{ x: '2025-01-01', y: 10 },
+			{ x: '2025-01-02', y: 15 },
+		],
+		sessions: [
+			{ x: '2025-01-01', y: 5 },
+			{ x: '2025-01-02', y: 8 },
+		],
+	};
+	const metricsData = [
+		{ x: 'Chrome', y: 50 },
+		{ x: 'Firefox', y: 30 },
+	];
+
+	global.fetch = jest
+		.fn()
+		.mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
+			const url =
+				typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
+
+			// Only intercept Umami API calls, pass through everything else
+			if (!url.includes('/api/auth/login') && !url.includes('/api/websites/')) {
+				return originalFetch!(input, init);
+			}
+
+			return {
+				ok: true,
+				status: 200,
+				json: async () => {
+					if (url.includes('/auth/login')) return authResponse;
+					if (url.includes('/pageviews')) return pageviewsData;
+					if (url.includes('/metrics')) return metricsData;
+					return statsData;
+				},
+				text: async () => '',
+			};
+		});
+};
+
+/**
+ * Resets all fetch mocks and restores original fetch.
  */
 export const resetFetchMocks = () => {
-	if (jest.isMockFunction(global.fetch)) {
+	if (originalFetch) {
+		global.fetch = originalFetch;
+		originalFetch = null;
+	} else if (jest.isMockFunction(global.fetch)) {
 		(global.fetch as jest.Mock).mockClear();
 	}
 };

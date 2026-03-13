@@ -8,10 +8,11 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect, useState } from 'react';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
+import { z } from 'zod';
 import { ArrowTurnLeftUpIcon } from '@heroicons/react/24/outline';
 import { useTranslations } from 'next-intl';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
-import { createLinkFromShortUrl } from '@/lib/utils';
+import { useShortUrlLink } from '@/hooks/use-short-url-link';
 
 type FormValues = TUrlInput;
 
@@ -23,10 +24,13 @@ type TUrlSectionProps = {
 const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
 	const { shortUrl } = useQrCodeGeneratorStore((state) => state);
+	const { link: shortUrlLink } = useShortUrlLink(shortUrl);
 	const [originalUrl, setOriginalUrl] = useState<string | null>(null);
 
+	const UrlFormSchema = UrlInputSchema.extend({ url: z.httpUrl().max(1000) });
+
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
-		resolver: standardSchemaResolver(UrlInputSchema),
+		resolver: standardSchemaResolver(UrlFormSchema),
 		defaultValues: {
 			url:
 				value.isEditable && shortUrl?.destinationUrl ? shortUrl.destinationUrl : (value?.url ?? ''),
@@ -41,7 +45,7 @@ const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		const payload = {
 			...values,
 			url: originalUrl,
-			shortUrl: shortUrl ? createLinkFromShortUrl(shortUrl) : null,
+			shortUrl: shortUrlLink,
 		};
 
 		onChange(payload);
@@ -93,11 +97,11 @@ const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 									/>
 								</FormControl>
 
-								{form.getValues().isEditable && shortUrl && (
-									<div className="-mt-1 ml-6 flex items-center opacity-100 transition-opacity duration-300 ease-in-out">
-										<ArrowTurnLeftUpIcon className="-mt-2 mr-2 h-6 w-6 font-semibold" />
-										<span className="text-muted-foreground pt-1 text-sm">
-											{createLinkFromShortUrl(shortUrl)}
+								{form.getValues().isEditable && shortUrlLink && (
+									<div className="-mt-1 ml-6 flex items-center min-w-0 opacity-100 transition-opacity duration-300 ease-in-out">
+										<ArrowTurnLeftUpIcon className="-mt-2 mr-2 h-6 w-6 shrink-0 font-semibold" />
+										<span className="text-muted-foreground truncate pt-1 text-sm">
+											{shortUrlLink}
 										</span>
 									</div>
 								)}

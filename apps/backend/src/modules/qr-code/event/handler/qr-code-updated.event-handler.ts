@@ -21,9 +21,9 @@ export class QrCodeUpdatedEventHandler extends AbstractEventHandler<QrCodeUpdate
 		const qrCodeRepository = container.resolve(QrCodeRepository);
 		const logger = container.resolve(Logger);
 
-		// skip if QR code has an image CURRENTLY not supported or preview image already exists
-		if (event.qrCode.config.image || event.qrCode.previewImage) {
-			logger.debug('QR code has an image, skipping preview image generation', {
+		// skip if preview image already exists
+		if (event.qrCode.previewImage) {
+			logger.debug('QR code already has a preview image, skipping preview image generation', {
 				qrCode: {
 					id: event.qrCode.id,
 					createdBy: event.qrCode.createdBy,

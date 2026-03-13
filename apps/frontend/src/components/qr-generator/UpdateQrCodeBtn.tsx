@@ -31,7 +31,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const hasValidChanges =
 		Object.keys(objDiff(qrCode.content, latestQrCode?.content)).length > 0 ||
 		Object.keys(objDiff(qrCode.config, latestQrCode?.config)).length > 0 ||
-		qrCode.name !== latestQrCode?.name;
+		(qrCode.name || null) !== (latestQrCode?.name || null);
 
 	useEffect(() => {
 		setHasMounted(true);

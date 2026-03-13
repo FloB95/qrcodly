@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { AbstractEntitySchema } from './AbstractEntitySchema';
 
-export const ShortCodeSchema = z.string().max(5);
+export const ShortCodeSchema = z.string().length(5);
 
 export const ShortUrlSchema = AbstractEntitySchema.extend({
 	shortCode: ShortCodeSchema,
+	name: z.string().max(255).nullable().default(null),
 	destinationUrl: z.url().nullable(),
 	qrCodeId: z.uuid().nullable(),
 	customDomainId: z.uuid().nullable().default(null),

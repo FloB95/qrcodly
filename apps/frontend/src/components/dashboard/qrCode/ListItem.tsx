@@ -2,6 +2,7 @@
 
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { EyeIcon, Loader2 } from 'lucide-react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { TableCell, TableRow } from '@/components/ui/table';
@@ -42,7 +43,7 @@ const contextMenuComponents: MenuComponents = {
 
 const stopContextMenu = (e: React.MouseEvent) => e.stopPropagation();
 
-const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
+const ViewComponent = ({ shortUrl, qrCodeId }: { shortUrl: TShortUrl; qrCodeId: string }) => {
 	const t = useTranslations();
 	const { data, isLoading } = useGetViewsFromShortCodeQuery(shortUrl.shortCode);
 
@@ -65,8 +66,16 @@ const ViewComponent = ({ shortUrl }: { shortUrl: TShortUrl }) => {
 					<span>{data.views}</span>
 				</div>
 			</TooltipTrigger>
-			<TooltipContent side="top">
-				{data.views} {t('analytics.totalViews')}
+			<TooltipContent side="top" className="flex flex-col items-center gap-1">
+				<span>
+					{data.views} {t('analytics.scansUnit')}
+				</span>
+				<Link
+					href={`/dashboard/qr-codes/${qrCodeId}`}
+					className="text-xs text-primary underline underline-offset-2 hover:text-primary/80"
+				>
+					{t('analytics.viewDetailedAnalytics')}
+				</Link>
 			</TooltipContent>
 		</Tooltip>
 	);
@@ -134,7 +143,7 @@ export const QrCodeListItem = ({
 					{/* Content */}
 					{visibility.content && (
 						<TableCell className="hidden lg:table-cell py-2 max-w-[250px]">
-							<div className="truncate text-sm text-muted-foreground">
+							<div className="truncate text-sm text-foreground">
 								<RenderContent qr={qr} />
 							</div>
 						</TableCell>
@@ -146,10 +155,7 @@ export const QrCodeListItem = ({
 							{qr.shortUrl && (
 								<Tooltip>
 									<TooltipTrigger asChild>
-										<Badge
-											variant={qr.shortUrl.isActive ? 'default' : 'outline'}
-											className="text-xs"
-										>
+										<Badge variant={qr.shortUrl.isActive ? 'blue' : 'outline'} className="text-xs">
 											{qr.shortUrl.isActive
 												? t('analytics.stateActive')
 												: t('analytics.stateInactive')}
@@ -168,7 +174,7 @@ export const QrCodeListItem = ({
 					{/* Scans */}
 					{visibility.scans && (
 						<TableCell className="py-2">
-							{qr.shortUrl && <ViewComponent shortUrl={qr.shortUrl} />}
+							{qr.shortUrl && <ViewComponent shortUrl={qr.shortUrl} qrCodeId={qr.id} />}
 						</TableCell>
 					)}
 

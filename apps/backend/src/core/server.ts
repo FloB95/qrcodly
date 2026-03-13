@@ -15,6 +15,7 @@ import {
 	registerRoutes,
 	resolveClientIp,
 } from '@/libs/fastify/helpers';
+import { addUserToRequestMiddleware } from '@/core/http/middleware/add-user-to-request.middleware';
 import { env } from './config/env';
 import fastifyHelmet from '@fastify/helmet';
 import { TooManyRequestsError } from './error/http/too-many-requests.error';
@@ -30,6 +31,7 @@ import multipart from '@fastify/multipart';
 import { resolveRateLimit } from './rate-limit/rate-limit.resolver';
 import { RateLimitPolicy } from './rate-limit/rate-limit.policy';
 import { KeyCache } from './cache';
+import { IpAbuseTrackerService } from './ip-protection';
 
 @singleton()
 export class Server {
@@ -112,6 +114,9 @@ export class Server {
 			secret: env.COOKIE_SECRET,
 		});
 
+		// Add middleware to attach user info to request before all handlers
+		this.server.addHook('preHandler', addUserToRequestMiddleware);
+
 		if (!IN_TEST) {
 			await this.server.register(fastifyRateLimit, {
 				hook: 'preHandler',
@@ -153,6 +158,14 @@ export class Server {
 		this.server.addHook('onRequest', (request, reply, done) => {
 			request.clientIp = resolveClientIp(request);
 			done();
+		});
+
+		this.server.addHook('onRequest', async (request, reply) => {
+			const blocked = await container.resolve(IpAbuseTrackerService).isBlocked(request.clientIp);
+
+			if (blocked) {
+				return reply.status(403).send({ message: 'Access denied', code: 403 });
+			}
 		});
 
 		await this.server.register(fastifyHelmet);

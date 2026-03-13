@@ -16,6 +16,7 @@ import type { TQrCodeContentType } from '@shared/schemas';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group';
 import { CharacterCounter } from './content/CharacterCounter';
 import { cn } from '@/lib/utils';
+import { getContentTypeConfig } from '@/lib/content-type.config';
 
 type GeneratorTab = 'content' | 'style' | 'templates';
 type GeneratorTabConfig = {
@@ -71,7 +72,7 @@ export const QRcodeGenerator = ({
 	generatorType,
 }: QRcodeGeneratorProps) => {
 	const t = useTranslations('generator');
-	const { name, updateName } = useQrCodeGeneratorStore((state) => state);
+	const { name, updateName, content } = useQrCodeGeneratorStore((state) => state);
 	const [currentTab, setCurrentTab] = useState<GeneratorTab>('content');
 
 	const visibleTabs = useMemo(
@@ -106,6 +107,7 @@ export const QRcodeGenerator = ({
 		[updateName],
 	);
 	const QrOutputComponent = QR_OUTPUT_MAP[generatorType];
+	const ContentTypeIcon = useMemo(() => getContentTypeConfig(content.type)?.icon, [content.type]);
 
 	return (
 		<Tabs defaultValue={currentTab} onValueChange={handleTabChange} value={currentTab}>
@@ -132,15 +134,20 @@ export const QRcodeGenerator = ({
 					{!compact && backLink}
 					<div
 						className={cn(
-							'flex flex-1 flex-col p-6 md:flex-row',
-							compact ? 'md:gap-8' : 'md:gap-12',
+							'flex flex-1 flex-col md:flex-row',
+							compact ? 'p-0 sm:p-6 md:gap-8' : 'p-6 md:gap-12',
 						)}
 					>
-						<div className="flex-1 mb-10 md:mb-0">
+						<div className="flex-1 mb-10 md:mb-0 min-w-0">
 							{isEditMode && currentTab === 'content' && (
 								<div className="mb-8 max-w-md">
 									<div className="text-sm font-medium mb-2">{t('labelName')}</div>
 									<InputGroup>
+										{ContentTypeIcon && (
+											<InputGroupAddon align="inline-start">
+												<ContentTypeIcon className="size-5 text-muted-foreground" />
+											</InputGroupAddon>
+										)}
 										<InputGroupInput
 											value={name}
 											maxLength={32}

@@ -1,10 +1,13 @@
 import { z } from 'zod';
 import { QrCodeContentType, QrCodeSchema } from '../../schemas/QrCode';
+import { validateContentHttpUrls } from './validateContentHttpUrls';
 
 export const CreateQrCodeDto = QrCodeSchema.pick({
 	name: true,
 	config: true,
 	content: true,
+}).superRefine((data, ctx) => {
+	validateContentHttpUrls(data.content, ctx);
 });
 
 export type TCreateQrCodeDto = z.infer<typeof CreateQrCodeDto>;

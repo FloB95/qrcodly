@@ -1,9 +1,10 @@
 import { singleton } from 'tsyringe';
-import { count, desc, eq } from 'drizzle-orm';
+import { count, desc, eq, inArray } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import tag, { type TTag } from '../entities/tag.entity';
 import qrCodeTag from '../entities/qr-code-tag.entity';
+import shortUrlTag from '@/modules/url-shortener/domain/entities/short-url-tag.entity';
 
 @singleton()
 class TagRepository extends AbstractRepository<TTag> {
@@ -74,6 +75,51 @@ class TagRepository extends AbstractRepository<TTag> {
 				await tx
 					.insert(qrCodeTag)
 					.values(tagIds.map((tagId) => ({ qrCodeId, tagId })))
+					.execute();
+			}
+		});
+	}
+
+	async findTagsByShortUrlId(shortUrlId: string): Promise<TTag[]> {
+		const rows = await this.db
+			.select({ tag: this.table })
+			.from(this.table)
+			.innerJoin(shortUrlTag, eq(this.table.id, shortUrlTag.tagId))
+			.where(eq(shortUrlTag.shortUrlId, shortUrlId))
+			.orderBy(desc(this.table.createdAt))
+			.execute();
+
+		return rows.map((row) => row.tag);
+	}
+
+	async findTagsByShortUrlIds(shortUrlIds: string[]): Promise<Map<string, TTag[]>> {
+		if (shortUrlIds.length === 0) return new Map();
+
+		const rows = await this.db
+			.select({ shortUrlId: shortUrlTag.shortUrlId, tag: this.table })
+			.from(this.table)
+			.innerJoin(shortUrlTag, eq(this.table.id, shortUrlTag.tagId))
+			.where(inArray(shortUrlTag.shortUrlId, shortUrlIds))
+			.orderBy(desc(this.table.createdAt))
+			.execute();
+
+		const map = new Map<string, TTag[]>();
+		for (const row of rows) {
+			const existing = map.get(row.shortUrlId) ?? [];
+			existing.push(row.tag);
+			map.set(row.shortUrlId, existing);
+		}
+		return map;
+	}
+
+	async setShortUrlTags(shortUrlId: string, tagIds: string[]): Promise<void> {
+		await this.db.transaction(async (tx) => {
+			await tx.delete(shortUrlTag).where(eq(shortUrlTag.shortUrlId, shortUrlId)).execute();
+
+			if (tagIds.length > 0) {
+				await tx
+					.insert(shortUrlTag)
+					.values(tagIds.map((tagId) => ({ shortUrlId, tagId })))
 					.execute();
 			}
 		});

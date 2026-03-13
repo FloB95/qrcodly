@@ -3,6 +3,7 @@ import pino, {
 	TransportTargetOptions,
 	type Logger as PinoLogger,
 } from 'pino';
+import { logger as sentryLogger } from '@sentry/node';
 import { singleton } from 'tsyringe';
 import { env } from '@/core/config/env';
 import { type ILogger } from '../interface/logger.interface';
@@ -58,21 +59,26 @@ export class Logger implements ILogger {
 
 	debug(message: string, obj?: object): void {
 		this.logger.debug(obj, message);
+		sentryLogger.debug(message, obj as Record<string, unknown>);
 	}
 
 	info(message: string, obj?: object): void {
 		this.logger.info(obj, message);
+		sentryLogger.info(message, obj as Record<string, unknown>);
 	}
 
 	warn(message: string, obj?: object): void {
 		this.logger.warn(obj, message);
+		sentryLogger.warn(message, obj as Record<string, unknown>);
 	}
 
 	error(message: string, obj?: object): void {
 		this.logger.error(obj, message);
+		sentryLogger.error(message, obj as Record<string, unknown>);
 	}
 
 	fatal(message: string, obj?: object): void {
 		this.logger.fatal(obj, message);
+		sentryLogger.fatal(message, obj as Record<string, unknown>);
 	}
 }

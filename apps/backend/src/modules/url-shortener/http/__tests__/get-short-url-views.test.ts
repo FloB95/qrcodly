@@ -2,6 +2,7 @@ import { getTestContext } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import type { TShortUrlResponseDto } from '@shared/schemas';
 import { SHORT_URL_API_PATH, reserveShortUrl } from './utils';
+import { mockFetchUmamiAllEndpoints, resetFetchMocks } from '@/tests/shared/mocks/umami.mock';
 
 describe('getShortUrlViews', () => {
 	let testServer: FastifyInstance;
@@ -13,6 +14,14 @@ describe('getShortUrlViews', () => {
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
 		accessToken2 = ctx.accessToken2;
+	});
+
+	beforeEach(() => {
+		mockFetchUmamiAllEndpoints();
+	});
+
+	afterEach(() => {
+		resetFetchMocks();
 	});
 
 	const getViewsRequest = async (shortCode: string, token: string) =>

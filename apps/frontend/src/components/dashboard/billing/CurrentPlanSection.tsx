@@ -63,17 +63,13 @@ export function CurrentPlanSection() {
 					<div>
 						<h3 className="text-lg font-semibold flex items-center gap-2 text-teal-700 dark:text-teal-500">
 							{tPlans('free.name')}
-							{!hasProPlan && (
-								<Badge className="bg-black text-white dark:bg-white dark:text-black">
-									{t('currentPlan')}
-								</Badge>
-							)}
+							{!hasProPlan && <Badge variant="blue">{t('currentPlan')}</Badge>}
 						</h3>
 					</div>
 
 					<p className="flex items-baseline gap-x-2">
 						<span className="text-3xl lg:text-4xl font-semibold">0 &euro;</span>
-						<span className="text-muted-foreground">{tPlans('perMonth')}</span>
+						<span className="text-muted-foreground">/{tPlans('perMonth')}</span>
 					</p>
 
 					<p className="text-sm text-muted-foreground">{tPlans('free.description')}</p>
@@ -144,7 +140,7 @@ export function CurrentPlanSection() {
 							<span className="text-3xl lg:text-4xl font-semibold">
 								{hasProPlan ? currentProPrice : proPrice} &euro;
 							</span>
-							<span className="text-gray-400">{tPlans('perMonth')}</span>
+							<span className="text-gray-400">/{tPlans('perMonth')}</span>
 						</p>
 						<p className="text-sm text-gray-400 mt-1">
 							{hasProPlan ? currentBillingNote : billingNote}

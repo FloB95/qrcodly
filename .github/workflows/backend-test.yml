@@ -1,52 +1,108 @@
 name: Backend Tests
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
     paths:
       - 'apps/backend/**'
+      - 'packages/shared/**'
+      - '.github/workflows/backend-test.yml'
 
 jobs:
   test-backend:
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: qrcodly_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     env:
       NODE_ENV: 'test'
       LOG_LEVEL: 'error'
       TZ: 'Europe/Berlin'
+
+      # Database — service container
+      DB_HOST: '127.0.0.1'
+      DB_USER: 'root'
+      DB_PASSWORD: 'root'
+      DB_NAME: 'qrcodly_test'
+      TEST_DB_NAME: 'qrcodly_test'
+      DB_PORT: '3306'
+
+      # Redis — service container
+      REDIS_URL: 'redis://127.0.0.1:6379'
+
+      # S3 — MinIO service container
+      S3_ENDPOINT: 'http://127.0.0.1:9000'
+      S3_REGION: 'us-east-1'
+      S3_UPLOAD_KEY: 'minio'
+      S3_UPLOAD_SECRET: 'testtest1'
+      S3_BUCKET_NAME: 'qrcodly'
+
+      # App config
+      BACKEND_URL: 'http://localhost:5001'
+      API_HOST: '127.0.0.1'
+      FRONTEND_URL: 'https://www.qrcodly.de'
       COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      REDIS_URL: ${{ secrets.REDIS_URL }}
-      API_HOST: ${{ secrets.API_HOST }}
-      FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME: ${{ secrets.DB_NAME }}
-      TEST_DB_NAME: ${{ secrets.DB_NAME }}
-      DB_PORT: ${{ secrets.DB_PORT }}
-      SMTP_HOST: ${{ secrets.SMTP_HOST }}
-      SMTP_PORT: ${{ secrets.SMTP_PORT }}
-      SMTP_USER: ${{ secrets.SMTP_USER }}
-      SMTP_PASS: ${{ secrets.SMTP_PASS }}
-      S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
-      S3_REGION: ${{ secrets.S3_REGION }}
-      S3_UPLOAD_KEY: ${{ secrets.S3_UPLOAD_KEY }}
-      S3_UPLOAD_SECRET: ${{ secrets.S3_UPLOAD_SECRET }}
-      S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
-      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-      SENTRY_ENVIRONMENT: 'development'
+      INTERNAL_API_SECRET: ${{ secrets.INTERNAL_API_SECRET }}
+
+      # Clerk — real API needed for test JWT tokens
       CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY }}
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-      UMAMI_HOST: ${{ secrets.UMAMI_HOST }}
-      UMAMI_WEBSITE: ${{ secrets.UMAMI_WEBSITE }}
-      UMAMI_USERNAME: ${{ secrets.UMAMI_USERNAME }}
-      UMAMI_PASSWORD: ${{ secrets.UMAMI_PASSWORD }}
-      BACKEND_URL: 'http://localhost:5001'
       CLERK_WEBHOOK_SECRET_KEY: 'NOT_USED_IN_TESTS'
+
+      # Stripe — real test API needed for billing tests
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+      STRIPE_PRO_PRICE_ID_MONTHLY: ${{ secrets.STRIPE_PRO_PRICE_ID_MONTHLY }}
+      STRIPE_PRO_PRICE_ID_ANNUAL: ${{ secrets.STRIPE_PRO_PRICE_ID_ANNUAL }}
+
+      # SMTP — not called in tests, dummy values
+      SMTP_HOST: 'localhost'
+      SMTP_PORT: '587'
+      SMTP_USER: 'test'
+      SMTP_PASS: 'test'
+
+      # Sentry — not called in tests, dummy DSN
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      SENTRY_ENVIRONMENT: 'development'
+
+      # Umami — mocked in tests, dummy values
+      UMAMI_HOST: 'http://localhost:3001'
+      UMAMI_WEBSITE: 'test-website-id'
+      UMAMI_USERNAME: 'test'
+      UMAMI_PASSWORD: 'test'
+
+      # Cloudflare — not called in tests
       CLOUDFLARE_API_TOKEN: 'NOT_USED_IN_TESTS'
       CLOUDFLARE_ZONE_ID: 'NOT_USED_IN_TESTS'
       CLOUDFLARE_DCV_DELEGATION_TARGET: 'NOT_USED_IN_TESTS'
+
+      # Analytics encryption
+      ANALYTICS_ENCRYPTION_KEY: ${{ secrets.ANALYTICS_ENCRYPTION_KEY }}
 
     steps:
       - uses: actions/checkout@v5
@@ -60,6 +116,24 @@ jobs:
 
       - name: Build shared package
         run: pnpm --filter @shared/schemas build
+
+      - name: Start MinIO and create bucket
+        run: |
+          docker run -d --name minio \
+            -p 9000:9000 \
+            -e MINIO_ROOT_USER=minio \
+            -e MINIO_ROOT_PASSWORD=testtest1 \
+            minio/minio:latest server /data
+          # Wait for MinIO to be ready
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:9000/minio/health/live && break
+            sleep 1
+          done
+          # Create bucket
+          curl -sL https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/local/bin/mc
+          chmod +x /usr/local/bin/mc
+          mc alias set ci http://127.0.0.1:9000 minio testtest1
+          mc mb ci/qrcodly --ignore-existing
 
       - name: Run Checks
         working-directory: apps/backend

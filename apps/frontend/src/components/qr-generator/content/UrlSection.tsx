@@ -13,9 +13,10 @@ import {
 } from '@/components/ui/form';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { UrlInputSchema, type TUrlInput } from '@shared/schemas';
+import { validateContentHttpUrls } from '@shared/schemas/dtos/qr-code/validateContentHttpUrls';
 import { useTranslations } from 'next-intl';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
-import { createLinkFromShortUrl } from '@/lib/utils';
+import { useShortUrlLink } from '@/hooks/use-short-url-link';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { Input } from '@/components/ui/input';
 
@@ -29,10 +30,15 @@ type TUrlSectionProps = {
 const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
+	const { link: shortUrlLink } = useShortUrlLink(shortUrl);
 	const { lastError } = useQrCodeGeneratorStore((state) => state);
 
 	const form = useForm<Omit<FormValues, 'shortUrl'>>({
-		resolver: zodResolver(UrlInputSchema),
+		resolver: zodResolver(
+			UrlInputSchema.superRefine((data, ctx) => {
+				validateContentHttpUrls({ type: 'url', data }, ctx, []);
+			}),
+		),
 		criteriaMode: 'all',
 		defaultValues: {
 			url: value?.url ?? '',
@@ -51,11 +57,10 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 			const payload = {
 				...values,
 				url: debouncedUrl,
-				shortUrl: shortUrl ? createLinkFromShortUrl(shortUrl) : null,
+				shortUrl: shortUrlLink,
 			};
 			onChange(payload);
 		})();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedUrl]);
 
 	// Sync form fields when parent provides new values (e.g. loading a saved QR code)
@@ -66,7 +71,6 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		if (value?.isEditable !== undefined && value.isEditable !== form.getValues('isEditable')) {
 			form.setValue('isEditable', value.isEditable, { shouldValidate: false });
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [value?.url, value?.isEditable, shortUrl]);
 
 	// Surface server-side validation errors (e.g. duplicate URL) in the form
@@ -78,7 +82,6 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 				message: e.message,
 			});
 		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [lastError]);
 
 	return (
@@ -107,6 +110,7 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 										) {
 											field.onChange(`https://${e.target.value}`);
 										}
+										void form.trigger('url');
 									}}
 								/>
 							</FormControl>

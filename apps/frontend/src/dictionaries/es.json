@@ -3,8 +3,84 @@
 		"nav": {
 			"collection": "Colecciones",
 			"qrCodes": "Códigos QR",
+			"shortUrls": "Acortador de URLs",
 			"templates": "Plantillas",
 			"tags": "Etiquetas"
+		}
+	},
+	"shortUrl": {
+		"title": "URLs cortas",
+		"description": "Acorta, gestiona y rastrea tus enlaces con analíticas detalladas",
+		"createBtn": "Crear URL corta",
+		"searchPlaceholder": "Buscar URLs cortas...",
+		"table": {
+			"name": "Nombre",
+			"content": "Contenido",
+			"shortUrl": "URL corta",
+			"destination": "Destino",
+			"status": "Estado",
+			"views": "Visitas",
+			"created": "Creado"
+		},
+		"create": {
+			"title": "Crear URL corta",
+			"nameLabel": "Nombre",
+			"namePlaceholder": "p. ej. Campaña de marketing",
+			"destinationLabel": "URL de destino",
+			"destinationPlaceholder": "https://example.com/long-url",
+			"domainLabel": "Dominio de URL corta",
+			"submitBtn": "Crear",
+			"success": "URL corta creada correctamente",
+			"successDescription": "Hemos guardado tu URL corta en tu colección para uso posterior."
+		},
+		"edit": {
+			"title": "Editar URL corta",
+			"nameLabel": "Nombre",
+			"namePlaceholder": "p. ej. Campaña de marketing",
+			"submitBtn": "Actualizar",
+			"success": "URL corta actualizada correctamente"
+		},
+		"viewDetails": "Ver detalles",
+		"delete": {
+			"title": "Eliminar URL corta",
+			"confirm": "¿Estás seguro de que quieres eliminar esta URL corta? Esta acción no se puede deshacer.",
+			"success": "URL corta eliminada correctamente"
+		},
+		"empty": {
+			"title": "Aún no hay URLs cortas",
+			"description": "Crea tu primera URL corta para empezar"
+		},
+		"status": {
+			"active": "Activa",
+			"inactive": "Inactiva",
+			"enable": "Activar",
+			"disable": "Desactivar"
+		},
+		"error": {
+			"toggleActiveState": {
+				"title": "Error al cambiar el estado",
+				"message": "Se ha producido un error al cambiar el estado. Hemos sido notificados y solucionaremos el problema lo antes posible."
+			},
+			"create": {
+				"title": "Error al crear la URL corta",
+				"message": "Hubo un error al crear la URL corta. Por favor, inténtelo de nuevo."
+			},
+			"update": {
+				"title": "Error al actualizar la URL corta",
+				"message": "Hubo un error al actualizar la URL corta. Por favor, inténtelo de nuevo."
+			},
+			"delete": {
+				"title": "Error al eliminar la URL corta",
+				"message": "Hubo un error al eliminar la URL corta. Por favor, inténtelo de nuevo."
+			},
+			"load": {
+				"title": "Error al cargar las URLs cortas. Por favor, inténtelo de nuevo."
+			}
+		},
+		"featureBanner": {
+			"title": "Presentamos URLs cortas",
+			"description": "Ahora puedes crear y gestionar URLs cortas directamente — acorta enlaces, rastrea clics y consulta analíticas detalladas. Sin necesidad de código QR.",
+			"cta": "Pruébalo ahora"
 		}
 	},
 	"general": {
@@ -23,7 +99,8 @@
 		"days": "Días",
 		"newBadge": "¡Nuevo!",
 		"dynamicDescription": "Los códigos QR dinámicos se pueden editar después de crearlos, rastrean cada escaneo y proporcionan estadísticas detalladas – sin necesidad de reimprimir el código.",
-		"dynamicBadgeTooltip": "Permite cambiar el contenido más tarde sin un nuevo código QR. <i>Pasa el cursor para más información</i>"
+		"dynamicBadgeTooltip": "Permite cambiar el contenido más tarde sin un nuevo código QR. <i>Pasa el cursor para más información</i>",
+		"copyFailed": "No se pudo copiar al portapapeles. Por favor, cópielo manualmente."
 	},
 	"hero": {
 		"badge": "Open Source y Gratis Para Siempre",
@@ -36,6 +113,16 @@
 		},
 		"ctaPrimary": "Crea tu código QR",
 		"ctaSecondary": "Descubre las posibilidades"
+	},
+	"homeStats": {
+		"stat1Value": "100K+",
+		"stat1Label": "Códigos QR creados",
+		"stat2Value": "1.000+",
+		"stat2Label": "Usuarios activos",
+		"stat3Value": "10K+",
+		"stat3Label": "Escaneos y clics diarios",
+		"stat4Value": "< 50ms",
+		"stat4Label": "Velocidad de redirección"
 	},
 	"metadata": {
 		"title": "QRcodly - Generador de Códigos QR Gratis",
@@ -94,7 +181,9 @@
 		}
 	},
 	"analytics": {
-		"totalViews": "Número de escaneos",
+		"totalViews": "Escaneos totales",
+		"scansUnit": "Escaneos",
+		"viewDetailedAnalytics": "Ver análisis detallados",
 		"totalVisitors": "Número de visitantes",
 		"stateActive": "Activo",
 		"stateInactive": "Desactivado",
@@ -117,13 +206,23 @@
 		"signInBtn": "Iniciar Sesión",
 		"settingsBtn": "Configuración",
 		"featuresBtn": "Funcionalidades",
-		"plansBtn": "Precios"
+		"plansBtn": "Precios",
+		"productsBtn": "Productos",
+		"urlShortenerLink": "Acortador de URLs",
+		"qrCodesLink": "Códigos QR",
+		"analyticsLink": "Analíticas",
+		"urlShortenerDesc": "Acorta, personaliza y rastrea cada enlace",
+		"qrCodesDesc": "Crea y personaliza códigos QR dinámicos",
+		"analyticsDesc": "Mide el rendimiento en todos los canales"
 	},
 	"footer": {
 		"tagline": "La plataforma de códigos QR de código abierto. Crea, gestiona y rastrea códigos QR con facilidad.",
-		"product": "Producto",
+		"product": "Plataforma",
 		"features": "Funciones",
 		"pricing": "Precios",
+		"urlShortener": "Acortador de URLs",
+		"qrCodes": "Códigos QR",
+		"analyticsProduct": "Analíticas",
 		"resources": "Recursos",
 		"faqLink": "FAQ",
 		"docs": "Documentación",
@@ -150,6 +249,11 @@
 			"headline": "¿Preguntas o comentarios?",
 			"subHeadline1": "¿Tienes alguna pregunta sobre QRcodly o quieres compartir tu opinión? Estamos encantados de ayudarte y siempre buscamos mejorar.",
 			"emailBtn": "Contáctanos"
+		},
+		"browserExtensionTeaser": {
+			"badge": "Próximamente",
+			"headline": "Extensión del Navegador",
+			"description": "Crea códigos QR sobre la marcha — directamente desde tu navegador. Nuestra próxima extensión te permite generar y gestionar códigos QR para cualquier página con un solo clic."
 		},
 		"featuresCta": {
 			"headline": "Visión general de las características clave",
@@ -188,20 +292,17 @@
 				"headline": "Colaborar en equipo",
 				"subHeadline": "Invita a miembros del equipo y trabajen juntos en códigos QR. Ideal para empresas, agencias y equipos."
 			},
+			"shortUrlFeature": {
+				"headline": "URLs cortas independientes",
+				"subHeadline": "Acorta, gestiona y rastrea tus enlaces con análisis detallados – sin necesidad de código QR.",
+				"actionLabel": "Pruébalo ahora"
+			},
 			"secureFeature": {
 				"headline": "Tus datos permanecen con nosotros",
 				"subHeadline": "QRcodly aloja todos los datos localmente en Alemania – sin compartirlos con servicios externos. Solo usamos Clerk para la autenticación."
 			},
 			"scrollLeft": "Desplazar a la izquierda",
 			"scrollRight": "Desplazar a la derecha"
-		}
-	},
-	"shortUrl": {
-		"error": {
-			"toggleActiveState": {
-				"title": "Error al cambiar el estado",
-				"message": "Se ha producido un error al cambiar el estado. Hemos sido notificados y solucionaremos el problema lo antes posible."
-			}
 		}
 	},
 	"qrCodeDisabled": {
@@ -219,7 +320,9 @@
 			"scans": "Escaneos",
 			"created": "Creado",
 			"actions": "Acciones",
-			"tags": "Etiquetas"
+			"tags": "Etiquetas",
+			"copyUrl": "Copiar URL",
+			"urlCopied": "URL copiada al portapapeles"
 		},
 		"storeBtn": "Guardar en la colección",
 		"updateBtn": "Actualizar código QR",
@@ -264,7 +367,7 @@
 		},
 		"actionsMenu": {
 			"title": "Acciones",
-			"view": "Ver",
+			"view": "Ver detalles",
 			"edit": "Editar",
 			"delete": "Eliminar",
 			"disableShortUrl": "Desactivar",
@@ -391,7 +494,6 @@
 		"domainSelector": {
 			"label": "Dominio de URL corta",
 			"placeholder": "Seleccionar un dominio",
-			"defaultDomain": "Predeterminado (qrcodly.de)",
 			"description": "Elige qué dominio usar para tu URL corta",
 			"noDomains": "No hay dominios personalizados disponibles.",
 			"addDomain": "Agregar un dominio"
@@ -957,7 +1059,7 @@
 		},
 		"apiKeys": {
 			"title": "Claves API",
-			"description": "Administra tus claves API para integraciones externas.",
+			"description": "Administra tus claves API para integraciones externas. Consulta la <link>documentación de la API</link> para comenzar.",
 			"name": "Nombre",
 			"descriptionLabel": "Descripción",
 			"createdAt": "Creado el",
@@ -1188,8 +1290,8 @@
 		"subtitle": "QRcodly es gratuito – sin períodos de prueba, sin suscripciones automáticas. El plan Pro solo cubre funciones que requieren infraestructura adicional.",
 		"annual": "Anual",
 		"monthly": "Mensual",
-		"perMonth": "/mes",
-		"perYear": "/año",
+		"perMonth": "mes",
+		"perYear": "año",
 		"upgradeToPro": "Actualizar a Pro",
 		"renewSubscription": "Renovar Suscripción",
 		"manageSubscription": "Administrar Suscripción",
@@ -1205,17 +1307,18 @@
 		"features": {
 			"free": {
 				"unlimitedQrCodes": "Códigos QR y escaneos ilimitados",
+				"unlimitedShortUrls": "URLs cortas ilimitadas",
 				"staticDynamic": "Códigos QR estáticos y dinámicos",
 				"customStyling": "Estilos e iconos personalizados",
 				"detailedAnalytics": "Analíticas detalladas",
 				"noCreditCard": "Sin tarjeta de crédito requerida",
-				"unlimitedTags": "Etiquetas ilimitadas (1 por código QR)",
+				"unlimitedTags": "Etiquetas ilimitadas",
 				"limitedApi": "Acceso API limitado",
 				"limitedBulk": "Generación masiva de códigos QR limitada"
 			},
 			"pro": {
 				"everythingInFree": "Todo en Gratis",
-				"unlimitedTags": "Etiquetas ilimitadas (3 por código QR)",
+				"unlimitedTags": "Etiquetas ilimitadas",
 				"largerBulkImports": "Importaciones masivas más grandes (50 filas, 2MB)",
 				"customDomains": "Dominio personalizado para códigos QR dinámicos",
 				"unlimitedApi": "Acceso API ilimitado",
@@ -1248,7 +1351,7 @@
 			"deletedTitle": "Etiqueta eliminada",
 			"deletedDescription": "Tu etiqueta se ha eliminado correctamente.",
 			"tagsUpdatedTitle": "Etiquetas actualizadas",
-			"tagsUpdatedDescription": "Las etiquetas del código QR se han actualizado correctamente.",
+			"tagsUpdatedDescription": "Las etiquetas se han actualizado correctamente.",
 			"createErrorTitle": "Error al crear la etiqueta",
 			"updateErrorTitle": "Error al actualizar la etiqueta",
 			"deleteErrorTitle": "Error al eliminar la etiqueta",
@@ -1280,6 +1383,14 @@
 				"bullet1": "Actualiza el contenido en cualquier momento sin reimprimir",
 				"bullet2": "Rastrea cada escaneo con analíticas en tiempo real",
 				"bullet3": "Activa o desactiva códigos QR al instante"
+			},
+			"shortUrl": {
+				"tag": "Nueva Función",
+				"title": "URLs Cortas Independientes",
+				"description": "Crea y gestiona URLs cortas de forma independiente — sin necesidad de código QR. Acorta cualquier enlace, rastrea clics en tiempo real y obtén información con análisis detallados.",
+				"bullet1": "Acorta cualquier URL con un solo clic",
+				"bullet2": "Rastrea clics con análisis en tiempo real",
+				"bullet3": "Compatible con dominios personalizados para enlaces de marca"
 			},
 			"analytics": {
 				"tag": "Información",
@@ -1314,12 +1425,12 @@
 				"bullet3": "Gestión DNS completa mediante integración con Cloudflare"
 			},
 			"tags": {
-				"tag": "Organización",
-				"title": "Etiquetas de Colores para una Organización Fácil",
-				"description": "Mantén tu biblioteca de códigos QR organizada con etiquetas de colores personalizadas. Crea categorías, filtra por etiqueta y encuentra cualquier código al instante.",
-				"bullet1": "Crea etiquetas de colores personalizadas ilimitadas",
-				"bullet2": "Asigna múltiples etiquetas por código QR",
-				"bullet3": "Filtra y busca tu colección por etiquetas"
+				"tag": "Organización y analíticas",
+				"title": "Etiquetas para organizar, agrupar y analizar",
+				"description": "Asigna etiquetas de colores a tus códigos QR y URLs cortas para agruparlos por campaña, canal o cualquier categoría. Usa etiquetas para filtrar tu colección y analizar el rendimiento por grupo.",
+				"bullet1": "Etiqueta códigos QR y URLs cortas para agrupar campañas",
+				"bullet2": "Filtra, busca y compara por etiqueta",
+				"bullet3": "Analiza el rendimiento de escaneos y clics por etiqueta"
 			},
 			"bulkOperations": {
 				"tag": "Productividad",
@@ -1362,6 +1473,23 @@
 				"bullet3": "Colaborar en códigos QR con todo tu equipo"
 			}
 		},
+		"products": {
+			"qrCodes": {
+				"title": "Códigos QR",
+				"description": "Crea códigos QR dinámicos totalmente personalizables con logos, colores y plantillas. Rastrea cada escaneo en tiempo real."
+			},
+			"urlShortener": {
+				"title": "Acortador de URLs",
+				"description": "Acorta cualquier enlace, usa dominios personalizados de marca y rastrea cada clic con analíticas en tiempo real."
+			},
+			"analytics": {
+				"title": "Analíticas",
+				"description": "Rastrea cada escaneo y clic en todos tus códigos QR y URLs cortas con información detallada."
+			}
+		},
+		"moreFeatures": {
+			"title": "Y Mucho Más"
+		},
 		"cta": {
 			"title": "¿Listo para empezar?",
 			"subtitle": "Crea tu primer código QR en segundos. Gratis para siempre, sin tarjeta de crédito.",
@@ -1383,11 +1511,344 @@
 		},
 		"customDomain": {
 			"title": "Usa tu propio dominio",
-			"description": "Conecta un dominio personalizado para que los enlaces cortos de tus códigos QR usen tu marca."
+			"description": "Conecta un dominio personalizado para que las URLs cortas de tus códigos QR usen tu marca."
 		},
 		"organizeTags": {
 			"title": "Organiza con etiquetas",
 			"description": "Añade etiquetas a tus códigos QR para agruparlos, filtrarlos y encontrarlos más fácilmente."
+		}
+	},
+	"productsUrlShortener": {
+		"metaTitle": "Acortador de URLs - Acorta, Personaliza y Rastrea Enlaces",
+		"metaDescription": "Acorta cualquier URL, usa dominios personalizados de marca y rastrea cada clic con analíticas en tiempo real. Acortador de URLs gratuito de QRcodly.",
+		"badge": "Acortador de URLs",
+		"hero": {
+			"title": "Acorta Enlaces. Rastrea Clics. Crece Más Rápido.",
+			"subtitle": "Crea URLs cortas de marca, monitoriza el rendimiento en tiempo real y gestiona todos tus enlaces desde un potente panel de control.",
+			"ctaLabel": "Empieza a Acortar Gratis",
+			"inputLabel": "Introduce tu URL aquí",
+			"inputPlaceholder": "https://ejemplo.com/mi-url-larga",
+			"submitBtn": "Acortar enlace gratis",
+			"successMessage": "¡Tu enlace corto está listo!",
+			"copyBtn": "Copiar",
+			"copiedBtn": "¡Copiado!",
+			"createAnother": "Acortar otra URL"
+		},
+		"stats": {
+			"stat1Value": "1.000+",
+			"stat1Label": "Usuarios activos",
+			"stat2Value": "10K+",
+			"stat2Label": "Clics diarios",
+			"stat3Value": "< 50ms",
+			"stat3Label": "Velocidad de redirección",
+			"stat4Value": "24/7",
+			"stat4Label": "Disponibilidad"
+		},
+		"useCases": {
+			"title": "Diseñado para Cada Equipo",
+			"subtitle": "Desde creadores independientes hasta departamentos de marketing empresarial — el acortador de URLs de QRcodly se adapta a tus necesidades.",
+			"case1Title": "Equipos de Marketing",
+			"case1Description": "Rastrea el rendimiento de campañas en todos los canales con enlaces de marca y analíticas de clics detalladas.",
+			"case2Title": "Gestores de Redes Sociales",
+			"case2Description": "Crea enlaces limpios y de marca para cada publicación. Monitoriza la interacción en todas las plataformas desde un solo panel.",
+			"case3Title": "Ventas y Alianzas",
+			"case3Description": "Comparte enlaces rastreables en emails de prospección y propuestas. Observa quién hace clic, cuándo y desde dónde.",
+			"case4Title": "E-Commerce",
+			"case4Description": "Acorta enlaces de productos para anuncios y campañas de email. Rastrea conversiones desde cada punto de contacto.",
+			"case5Title": "Desarrolladores y APIs",
+			"case5Description": "Integra el acortamiento de URLs en tus aplicaciones a través de nuestra API REST. Documentación completa y soporte de SDK.",
+			"case6Title": "Agencias",
+			"case6Description": "Gestiona enlaces de clientes con dominios personalizados. URLs cortas de marca blanca con la identidad de tus clientes."
+		},
+		"features": {
+			"brandedLinks": {
+				"title": "Enlaces de Marca con Dominios Personalizados",
+				"description": "Reemplaza las URLs cortas genéricas con tu propio dominio de marca. Genera confianza, aumenta las tasas de clics y refuerza tu identidad con cada enlace que compartas.",
+				"bullet1": "Conecta tu propio dominio en minutos",
+				"bullet2": "Provisión automática de certificado SSL",
+				"bullet3": "Gestión DNS completa mediante Cloudflare"
+			},
+			"analytics": {
+				"title": "Analíticas de Clics en Tiempo Real",
+				"description": "Observa exactamente cómo rinden tus enlaces. Rastrea clics totales, visitantes únicos, distribución geográfica, dispositivos y navegadores — todo actualizado en tiempo real.",
+				"bullet1": "Seguimiento de clics totales y visitantes únicos",
+				"bullet2": "Desglose por dispositivo, navegador y sistema operativo",
+				"bullet3": "Distribución geográfica por país"
+			},
+			"management": {
+				"title": "Gestión Organizada de Enlaces",
+				"description": "Mantén todas tus URLs cortas organizadas con etiquetas, controles de estado y un panel de búsqueda. Activa o desactiva enlaces al instante y encuentra cualquier enlace en segundos.",
+				"bullet1": "Etiqueta y categoriza enlaces para filtrado fácil",
+				"bullet2": "Activa o desactiva enlaces con un solo clic",
+				"bullet3": "Busca y ordena toda tu biblioteca de enlaces"
+			},
+			"bulkOperations": {
+				"title": "Operaciones Masivas de Enlaces",
+				"comingSoon": "Próximamente",
+				"description": "Crea, exporta y gestiona cientos de URLs cortas a la vez. Perfecto para grandes campañas, catálogos de productos y flujos de trabajo empresariales.",
+				"bullet1": "Creación masiva mediante importación CSV",
+				"bullet2": "Exporta todos los enlaces con metadatos completos",
+				"bullet3": "Activa, desactiva o etiqueta enlaces en lote"
+			},
+			"apiAccess": {
+				"title": "API REST e Integraciones",
+				"description": "Integra el acortamiento de URLs en tus propias aplicaciones y flujos de trabajo. Nuestra API REST documentada hace que la gestión programática de enlaces sea sencilla.",
+				"bullet1": "API REST completa con autenticación por clave API",
+				"bullet2": "Crea, lee, actualiza y elimina enlaces programáticamente",
+				"bullet3": "Documentación completa de la API",
+				"actionLabel": "Ver documentación de la API"
+			}
+		},
+		"crossProducts": {
+			"title": "Explora Más Productos de QRcodly",
+			"qrCodes": {
+				"title": "Códigos QR",
+				"description": "Crea códigos QR dinámicos totalmente personalizables con logos, colores y seguimiento de escaneos en tiempo real."
+			},
+			"analytics": {
+				"title": "Analíticas",
+				"description": "Panel de analíticas unificado para todos tus códigos QR y URLs cortas con información sobre dispositivos, ubicación y navegadores."
+			}
+		},
+		"faq": {
+			"title": "Preguntas Frecuentes",
+			"q1": "¿Es gratuito el acortador de URLs?",
+			"a1": "¡Sí! El acortador de URLs de QRcodly es gratuito. Puedes crear URLs cortas, rastrear clics y gestionar tus enlaces sin coste alguno. Los planes Pro desbloquean funciones avanzadas como dominios personalizados.",
+			"q2": "¿Puedo usar mi propio dominio para URLs cortas?",
+			"a2": "Por supuesto. Conecta tu propio dominio para crear URLs cortas de marca como go.tumarca.com/u/x7k9m. Los dominios personalizados están disponibles en los planes Pro con provisión automática de SSL.",
+			"q3": "¿Cómo funciona el seguimiento de clics?",
+			"a3": "Cada vez que alguien hace clic en tu URL corta, QRcodly registra el clic junto con metadatos como tipo de dispositivo, navegador, sistema operativo y ubicación geográfica — todo en tiempo real.",
+			"q4": "¿Puedo editar una URL corta después de crearla?",
+			"a4": "Sí. Puedes actualizar la URL de destino, activar o desactivar la URL corta y gestionar etiquetas en cualquier momento desde tu panel de control sin cambiar la URL corta en sí.",
+			"q5": "¿Las URLs cortas caducan?",
+			"a5": "No. Las URLs cortas creadas con QRcodly nunca caducan. Permanecen activas mientras exista tu cuenta, y puedes desactivarlas manualmente si lo necesitas.",
+			"q6": "¿Cuál es la diferencia entre URLs cortas y códigos QR?",
+			"a6": "Las URLs cortas son enlaces clicables que compartes digitalmente (email, redes sociales, anuncios). Los códigos QR son imágenes escaneables para medios físicos (impresión, embalaje, señalización). Ambos rastrean analíticas y pueden usar dominios personalizados."
+		}
+	},
+	"productsQrCodes": {
+		"metaTitle": "Generador de Códigos QR - Crea Códigos QR Dinámicos Personalizados",
+		"metaDescription": "Crea códigos QR dinámicos totalmente personalizables con logos, colores y plantillas. Rastrea cada escaneo con analíticas en tiempo real. Generador de códigos QR gratuito.",
+		"badge": "Códigos QR",
+		"hero": {
+			"title": "Crea Códigos QR Que Trabajan Más.",
+			"subtitle": "Diseña códigos QR impresionantes con colores personalizados, logos y estilos. Actualiza el contenido en cualquier momento, rastrea cada escaneo y gestiona todo desde un solo panel.",
+			"ctaLabel": "Crea Tu Código QR Gratis"
+		},
+		"stats": {
+			"stat1Value": "100K+",
+			"stat1Label": "Códigos QR creados",
+			"stat2Value": "9+",
+			"stat2Label": "Tipos de contenido",
+			"stat3Value": "10K+",
+			"stat3Label": "Escaneos por día",
+			"stat4Value": "1.000+",
+			"stat4Label": "Usuarios activos"
+		},
+		"useCases": {
+			"title": "Códigos QR para Cada Industria",
+			"subtitle": "Ya seas un pequeño negocio o una marca global, los códigos QR dinámicos impulsan la interacción en el mundo real.",
+			"case1Title": "Restaurantes y Hostelería",
+			"case1Description": "Menús digitales, acceso WiFi y pedidos en mesa — todo a través de un simple escaneo. Actualiza el contenido sin reimprimir.",
+			"case2Title": "Retail y E-Commerce",
+			"case2Description": "Información de productos, promociones y programas de fidelización en envases. Rastrea qué productos generan más escaneos.",
+			"case3Title": "Eventos y Conferencias",
+			"case3Description": "Entradas, programas e intercambio de contactos mediante códigos QR vCard. Perfecto para acreditaciones y materiales impresos.",
+			"case4Title": "Inmobiliario",
+			"case4Description": "Listados de propiedades, tours virtuales e información del agente en cartelería. Rastrea el interés por ubicación.",
+			"case5Title": "Educación",
+			"case5Description": "Conecta a los estudiantes con recursos, tareas y materiales de clase. Actualiza los destinos en cualquier momento.",
+			"case6Title": "Marketing y Publicidad",
+			"case6Description": "Conecta campañas impresas y digitales. Rastrea las tasas de escaneo en vallas, folletos y correo directo."
+		},
+		"features": {
+			"customization": {
+				"title": "Diseño Totalmente Personalizable",
+				"description": "Ve más allá de los códigos básicos en blanco y negro. Personaliza colores, estilos de esquinas y añade tu logo para crear códigos QR que se adapten perfectamente a la identidad de tu marca.",
+				"bullet1": "Colores personalizados de primer plano, fondo y esquinas",
+				"bullet2": "Múltiples estilos de puntos y cuadrados de esquina",
+				"bullet3": "Sube tu logo para códigos QR de marca"
+			},
+			"analytics": {
+				"title": "Analíticas y Seguimiento de Escaneos",
+				"description": "Cada código QR dinámico incluye analíticas integradas. Observa quién escanea, cuándo, dónde y con qué dispositivo — todo en tiempo real desde tu panel.",
+				"bullet1": "Seguimiento de escaneos y visitantes en tiempo real",
+				"bullet2": "Desglose por dispositivo, navegador y sistema operativo",
+				"bullet3": "Distribución geográfica por país"
+			},
+			"contentTypes": {
+				"title": "Más de 9 Tipos de Contenido Soportados",
+				"description": "Crea códigos QR para más que solo URLs. Soporte para redes WiFi, tarjetas de contacto, eventos de calendario, email, ubicaciones, pagos y más.",
+				"bullet1": "URL, WiFi, vCard, Email y Texto",
+				"bullet2": "Eventos de calendario con soporte completo de detalles",
+				"bullet3": "Ubicaciones geográficas y enlaces de pago EPC"
+			},
+			"dynamicUpdates": {
+				"title": "Actualizaciones de Contenido Dinámicas",
+				"description": "Cambia a dónde apunta tu código QR sin reimprimir. Actualiza URLs, cambia tipos de contenido o redirige a campañas estacionales — tus códigos QR impresos no cambian.",
+				"bullet1": "Actualiza las URLs de destino en cualquier momento",
+				"bullet2": "Cambia entre tipos de contenido sobre la marcha",
+				"bullet3": "Sin necesidad de reimprimir — nunca"
+			},
+			"bulkTemplates": {
+				"title": "Plantillas y Creación Masiva",
+				"description": "Guarda el diseño de código QR de tu marca como plantilla reutilizable. Luego crea cientos de códigos QR a la vez mediante importación CSV, todos con un estilo consistente.",
+				"bullet1": "Guarda y reutiliza plantillas de diseño de marca",
+				"bullet2": "Creación masiva mediante carga de CSV",
+				"bullet3": "Branding consistente en todos los códigos QR"
+			},
+			"apiAccess": {
+				"title": "API REST e integraciones",
+				"description": "Integra la generación de códigos QR en tus propias aplicaciones y flujos de trabajo. Nuestra API REST documentada facilita la creación y gestión programática de códigos QR.",
+				"bullet1": "API REST completa con autenticación por clave API",
+				"bullet2": "Crea, personaliza y gestiona códigos QR programáticamente",
+				"bullet3": "Documentación completa de la API",
+				"actionLabel": "Ver documentación de la API"
+			}
+		},
+		"crossProducts": {
+			"title": "Explora Más Productos de QRcodly",
+			"urlShortener": {
+				"title": "Acortador de URLs",
+				"description": "Acorta cualquier enlace, usa dominios personalizados y rastrea cada clic con analíticas en tiempo real."
+			},
+			"analytics": {
+				"title": "Analíticas",
+				"description": "Panel de analíticas unificado para todos tus códigos QR y URLs cortas con información sobre dispositivos, ubicación y navegadores."
+			}
+		},
+		"faq": {
+			"title": "Preguntas Frecuentes",
+			"q1": "¿Es gratuito el generador de códigos QR?",
+			"a1": "¡Sí! QRcodly te permite crear códigos QR estáticos y dinámicos ilimitados de forma gratuita. Sin costes ocultos, sin marcas de agua y sin necesidad de registro para códigos QR básicos.",
+			"q2": "¿Qué son los códigos QR dinámicos?",
+			"a2": "Los códigos QR dinámicos te permiten cambiar la URL de destino después de imprimir el código. También rastrean cada escaneo con analíticas detalladas — sin necesidad de reimprimir cuando cambia el contenido.",
+			"q3": "¿Puedo añadir mi logo a un código QR?",
+			"a3": "Por supuesto. Sube cualquier imagen como logo central para tu código QR. También puedes personalizar colores, estilos de esquinas y guardar diseños como plantillas reutilizables.",
+			"q4": "¿Qué tipos de contenido se soportan?",
+			"a4": "QRcodly soporta más de 9 tipos de contenido: URL, Texto, WiFi, vCard (tarjetas de contacto), Email, Ubicación, Eventos de Calendario, EPC (pagos) y perfiles de Redes Sociales.",
+			"q5": "¿Puedo rastrear los escaneos de códigos QR?",
+			"a5": "Sí. Cada código QR dinámico rastrea escaneos en tiempo real, mostrando escaneos totales, visitantes únicos, tipos de dispositivo, navegadores, sistemas operativos y ubicaciones geográficas.",
+			"q6": "¿Los códigos QR caducan?",
+			"a6": "No. Los códigos QR creados con QRcodly nunca caducan. Los códigos QR dinámicos permanecen totalmente funcionales y rastreables mientras exista tu cuenta."
+		},
+		"cta": {
+			"title": "¿Listo para crear tu primer código QR?",
+			"subtitle": "Diseña códigos QR personalizados con seguimiento analítico completo. Gratis para siempre, sin tarjeta de crédito.",
+			"ctaLabel": "Crear Código QR Ahora"
+		}
+	},
+	"productsAnalytics": {
+		"metaTitle": "Analíticas - Rastrea el Rendimiento de Códigos QR y URLs Cortas",
+		"metaDescription": "Rastrea cada escaneo y clic en códigos QR y URLs cortas. Analíticas en tiempo real con información sobre dispositivos, navegadores, ubicación y canales. Analíticas gratuitas de QRcodly.",
+		"badge": "Analíticas",
+		"hero": {
+			"title": "Descubre qué hacen realmente tus códigos QR y enlaces.",
+			"subtitle": "Rastrea cada escaneo y clic en todos tus códigos QR y URLs cortas. Obtén información en tiempo real sobre dispositivos, ubicaciones, navegadores y rendimiento por canal.",
+			"ctaLabel": "Empieza a Rastrear Gratis"
+		},
+		"stats": {
+			"stat1Value": "Tiempo real",
+			"stat1Label": "Actualización de datos",
+			"stat2Value": "10K+",
+			"stat2Label": "Eventos diarios",
+			"stat3Value": "2",
+			"stat3Label": "Integraciones",
+			"stat4Value": "100%",
+			"stat4Label": "Privacidad primero"
+		},
+		"useCases": {
+			"title": "Analíticas que Impulsan Decisiones",
+			"subtitle": "Convierte los datos de escaneos y clics en información práctica para tu equipo.",
+			"case1Title": "Optimización de Campañas",
+			"case1Description": "Compara el rendimiento de códigos QR y URLs cortas lado a lado. Refuerza los canales que convierten.",
+			"case2Title": "Segmentación Geográfica",
+			"case2Description": "Observa desde dónde escanea tu audiencia. Optimiza campañas regionales basándote en datos reales.",
+			"case3Title": "Inteligencia de Dispositivos",
+			"case3Description": "Conoce los dispositivos y navegadores de tu audiencia. Optimiza las páginas de destino para las plataformas que importan.",
+			"case4Title": "Seguimiento de campañas",
+			"case4Description": "Usa etiquetas para agrupar códigos QR y URLs cortas por campaña. Compara resultados entre canales y periodos.",
+			"case5Title": "Pruebas A/B",
+			"case5Description": "Crea múltiples códigos QR o URLs cortas para el mismo destino. Compara qué diseño o ubicación rinde mejor.",
+			"case6Title": "Integración con Terceros",
+			"case6Description": "Envía datos a Google Analytics 4 o Matomo. Mantén tu stack de analíticas existente actualizado."
+		},
+		"features": {
+			"realTime": {
+				"title": "Métricas de Rendimiento en Tiempo Real",
+				"description": "Observa tus datos en el momento en que ocurren. Rastrea escaneos, clics y visitantes únicos en tiempo real con desgloses por dispositivo, navegador y sistema operativo.",
+				"bullet1": "Seguimiento de escaneos y clics en vivo",
+				"bullet2": "Desglose por dispositivo, navegador y sistema operativo",
+				"bullet3": "Identificación de visitantes únicos"
+			},
+			"channels": {
+				"title": "Seguimiento de campañas con etiquetas",
+				"comingSoon": "Próximamente",
+				"description": "Agrupa códigos QR y URLs cortas por campaña usando etiquetas. Compara el rendimiento entre campañas, canales y periodos — todo desde un panel.",
+				"bullet1": "Agrupación por etiquetas para campañas y canales",
+				"bullet2": "Compara el rendimiento de diferentes etiquetas lado a lado",
+				"bullet3": "Identifica tus mejores campañas de un vistazo"
+			},
+			"integrations": {
+				"title": "Integraciones de Terceros",
+				"description": "Reenvía datos de escaneos y clics a Google Analytics 4 o Matomo. Mantén tu flujo de trabajo de analíticas existente mientras las analíticas integradas de QRcodly permanecen completamente activas.",
+				"bullet1": "Conecta Google Analytics 4 o Matomo en minutos",
+				"bullet2": "Solo se comparten datos anonimizados y no personales",
+				"bullet3": "Las analíticas integradas de QRcodly no se ven afectadas"
+			},
+			"geographic": {
+				"title": "Información Geográfica",
+				"description": "Observa exactamente dónde está tu audiencia. Los datos de ubicación a nivel de país para cada escaneo y clic te ayudan a comprender los patrones de interacción regional.",
+				"bullet1": "Seguimiento de ubicación a nivel de país",
+				"bullet2": "Identifica las regiones con mejor rendimiento",
+				"bullet3": "Privacidad primero: las direcciones IP nunca se almacenan"
+			},
+			"exportReporting": {
+				"title": "Exportación de datos e informes",
+				"comingSoon": "Próximamente",
+				"description": "Exporta tus datos analíticos para informes personalizados y presentaciones. Filtra por rango de fechas, dispositivo o ubicación y descarga todo lo que necesites.",
+				"bullet1": "Exporta datos de escaneos y clics como CSV",
+				"bullet2": "Filtra por rango de fechas, dispositivo o ubicación",
+				"bullet3": "Perfecto para informes de equipo y presentaciones"
+			},
+			"privacy": {
+				"title": "Analíticas con privacidad",
+				"description": "Todos los datos se recopilan de forma anónima y sin identificadores personales. Las direcciones IP se truncan, los user agents se reducen a la categoría del dispositivo y no se usan cookies ni fingerprinting.",
+				"bullet1": "Las direcciones IP se truncan — nunca se almacenan completas",
+				"bullet2": "Los user agents se reducen a tipo de dispositivo, SO y navegador",
+				"bullet3": "Sin cookies, sin fingerprinting, sin datos personales"
+			}
+		},
+		"crossProducts": {
+			"title": "Explora Más Productos de QRcodly",
+			"urlShortener": {
+				"title": "Acortador de URLs",
+				"description": "Acorta cualquier enlace, usa dominios personalizados y rastrea cada clic con analíticas en tiempo real."
+			},
+			"qrCodes": {
+				"title": "Códigos QR",
+				"description": "Crea códigos QR dinámicos totalmente personalizables con logos, colores y seguimiento de escaneos en tiempo real."
+			}
+		},
+		"faq": {
+			"title": "Preguntas Frecuentes",
+			"q1": "¿Qué analíticas proporciona QRcodly?",
+			"a1": "QRcodly rastrea escaneos/clics totales, visitantes únicos, tipos de dispositivo, navegadores, sistemas operativos y ubicaciones geográficas tanto para códigos QR como para URLs cortas — todo en tiempo real.",
+			"q2": "¿Las analíticas están incluidas gratis?",
+			"a2": "¡Sí! Las analíticas integradas están incluidas gratis para todos los códigos QR dinámicos y URLs cortas. Obtienes seguimiento de escaneos/clics en tiempo real, desgloses de dispositivos e información geográfica sin coste alguno.",
+			"q3": "¿Puedo conectar Google Analytics?",
+			"a3": "Sí. Los usuarios del plan Pro pueden reenviar datos de escaneos y clics a Google Analytics 4 o Matomo. Solo se comparten datos anonimizados y no identificables, y las analíticas integradas de QRcodly permanecen completamente activas.",
+			"q4": "¿Cómo se recopilan los datos geográficos?",
+			"a4": "Los datos geográficos se derivan de la dirección IP en el momento del escaneo o clic. La IP se anonimiza y nunca se almacena. Solo se registra la ubicación a nivel de país.",
+			"q5": "¿Puedo comparar el rendimiento de códigos QR y URLs cortas?",
+			"a5": "Sí. Tu panel de QRcodly muestra analíticas unificadas de todos los códigos QR y URLs cortas, facilitando la comparación de canales e identificación de los que mejor rinden.",
+			"q6": "¿Los datos son en tiempo real?",
+			"a6": "Sí. Todos los datos analíticos en QRcodly se actualizan en tiempo real. Tan pronto como alguien escanea un código QR o hace clic en una URL corta, los datos aparecen en tu panel."
+		},
+		"cta": {
+			"title": "¿Listo para ver lo que tus enlaces pueden decirte?",
+			"subtitle": "Rastrea cada escaneo y clic con analíticas en tiempo real. Gratis para siempre, sin tarjeta de crédito.",
+			"ctaLabel": "Empieza a Rastrear Gratis"
 		}
 	}
 }

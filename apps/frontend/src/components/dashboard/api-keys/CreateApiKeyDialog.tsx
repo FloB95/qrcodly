@@ -49,6 +49,7 @@ type CreateApiKeyFormData = z.infer<typeof CreateApiKeySchema>;
 
 export function CreateApiKeyDialog() {
 	const t = useTranslations('settings.apiKeys');
+	const tGeneral = useTranslations('general');
 	const [open, setOpen] = useState(false);
 	const [createdKey, setCreatedKey] = useState<string | null>(null);
 	const [isCreating, setIsCreating] = useState(false);
@@ -93,13 +94,20 @@ export function CreateApiKeyDialog() {
 		}
 	};
 
-	const handleCopy = () => {
+	const handleCopy = async () => {
 		if (createdKey) {
-			navigator.clipboard.writeText(createdKey);
-			toast({
-				title: t('copied'),
-				description: t('copiedDescription'),
-			});
+			try {
+				await navigator.clipboard.writeText(createdKey);
+				toast({
+					title: t('copied'),
+					description: t('copiedDescription'),
+				});
+			} catch {
+				toast({
+					variant: 'destructive',
+					description: tGeneral('copyFailed'),
+				});
+			}
 		}
 	};
 

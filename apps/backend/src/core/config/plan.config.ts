@@ -34,16 +34,6 @@ export type BulkImportLimits = {
 };
 
 /**
- * Plan limits for tags per QR code.
- * - free: 1 tag per QR code
- * - pro: 3 tags per QR code
- */
-export const TAGS_PER_QR_CODE_PLAN_LIMITS: Record<PlanName, number> = {
-	free: 1,
-	pro: 3,
-};
-
-/**
  * Plan limits for analytics integrations.
  * - free: 0 integrations (not available)
  * - pro: 1 integration (either GA4 or Matomo)
