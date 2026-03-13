@@ -6,6 +6,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: qrcodly
+    command:
+      - --max-connections=200
+      - --innodb-buffer-pool-size=512M
+      - --innodb-redo-log-capacity=256M
+      - --innodb-flush-log-at-trx-commit=2
+      - --innodb-flush-method=O_DIRECT
     volumes:
       - database:/var/lib/mysql
     ports:

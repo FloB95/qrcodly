@@ -17,6 +17,7 @@ const qrCodeTag = createTable(
 	(t) => [
 		primaryKey({ columns: [t.qrCodeId, t.tagId] }),
 		index('i_qr_code_tag_tag_id').on(t.tagId),
+		index('i_qr_code_tag_qr_code_id').on(t.qrCodeId),
 	],
 );
 

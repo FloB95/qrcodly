@@ -12,14 +12,19 @@
 // =============================================================================
 
 const CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY;
-const CLERK_API = 'https://api.clerk.com/v1';
-const JWT_TEMPLATE = 'QRcodly';
+const CLERK_API = process.env.CLERK_API || 'https://api.clerk.com/v1';
+const JWT_TEMPLATE = process.env.JWT_TEMPLATE;
 
 if (!CLERK_SECRET_KEY) {
 	console.error('Error: CLERK_SECRET_KEY env var is required');
 	console.error('');
 	console.error('Usage:');
 	console.error('  CLERK_SECRET_KEY=sk_test_... node load-tests/generate-tokens.mjs');
+	process.exit(1);
+}
+
+if (!JWT_TEMPLATE) {
+	console.error('Error: JWT_TEMPLATE env var is required');
 	process.exit(1);
 }
 

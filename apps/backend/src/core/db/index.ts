@@ -11,7 +11,9 @@ export const poolConnection = mysql.createPool({
 	password: env.DB_PASSWORD,
 	database: env.NODE_ENV === 'test' ? env.TEST_DB_NAME : env.DB_NAME,
 	port: Number(env.DB_PORT),
-	connectionLimit: env.DB_MIGRATING || env.DB_SEEDING ? 1 : undefined,
+	connectionLimit: env.DB_MIGRATING || env.DB_SEEDING ? 1 : 50,
+	waitForConnections: true,
+	queueLimit: 0,
 });
 
 const db = drizzle(poolConnection, {

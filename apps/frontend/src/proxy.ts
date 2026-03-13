@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { Logger } from 'next-axiom';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { processAnalyticsAndRedirect } from './middlewares/process-analytics-and-redirect.middleware';
 import createMiddleware from 'next-intl/middleware';
 import { routing, SUPPORTED_LANGUAGES } from './i18n/routing';
@@ -20,7 +20,10 @@ const localePrefixedNonTranslatedRoute = new RegExp(
 	`^/(${localePrefix})/(docs|imprint|privacy-policy)(/.*)?$`,
 );
 
-export default clerkMiddleware(async (auth, req, event) => {
+// Short URL scan pattern — no auth needed
+const scanPattern = /^\/u\/[a-z0-9]{5}$/;
+
+const clerkHandler = clerkMiddleware(async (auth, req, event) => {
 	const pathname = new URL(req.url).pathname;
 
 	if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
@@ -42,12 +45,6 @@ export default clerkMiddleware(async (auth, req, event) => {
 	// Handle protected routes
 	if (isProtectedRoute(req)) await auth.protect();
 
-	// Handle analytics for specific routes
-	const urlPattern = /^\/u\/[a-z0-9]{5}$/;
-	if (urlPattern.test(pathname)) {
-		return await processAnalyticsAndRedirect(req);
-	}
-
 	// Internationalization Middleware (exclude sitemap & api)
 	if (
 		!pathname.startsWith('/api') &&
@@ -67,6 +64,17 @@ export default clerkMiddleware(async (auth, req, event) => {
 
 	return NextResponse.next();
 });
+
+export default function middleware(req: NextRequest, event: any) {
+	const pathname = new URL(req.url).pathname;
+
+	// Scan routes bypass Clerk entirely — no auth needed
+	if (scanPattern.test(pathname)) {
+		return processAnalyticsAndRedirect(req);
+	}
+
+	return clerkHandler(req, event);
+}
 
 export const config = {
 	matcher: [

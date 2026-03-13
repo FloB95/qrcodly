@@ -8,6 +8,7 @@ import ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { BadRequestError, ForbiddenError } from '@/core/error/http';
 import { SetShortUrlTagsPolicy } from '../policies/set-short-url-tags.policy';
+import { DistributedLock } from '@/core/lock';
 
 @injectable()
 export class SetShortUrlTagsUseCase implements IBaseUseCase {
@@ -15,6 +16,7 @@ export class SetShortUrlTagsUseCase implements IBaseUseCase {
 		@inject(TagRepository) private tagRepository: TagRepository,
 		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
 		@inject(Logger) private logger: Logger,
+		@inject(DistributedLock) private lock: DistributedLock,
 	) {}
 
 	async execute(shortUrlId: string, tagIds: string[], user: TUser): Promise<TTag[]> {
@@ -40,17 +42,19 @@ export class SetShortUrlTagsUseCase implements IBaseUseCase {
 		const policy = new SetShortUrlTagsPolicy(user, tagIds.length);
 		policy.checkAccess();
 
-		await this.tagRepository.setShortUrlTags(shortUrlId, tagIds);
-		const tags = await this.tagRepository.findTagsByShortUrlId(shortUrlId);
+		return this.lock.withLock(`tag:shorturl:${shortUrlId}`, async () => {
+			await this.tagRepository.setShortUrlTags(shortUrlId, tagIds);
+			const tags = await this.tagRepository.findTagsByShortUrlId(shortUrlId);
 
-		this.logger.info('tag.short-url-tags-set', {
-			shortUrlTags: {
-				shortUrlId,
-				tagCount: tagIds.length,
-				userId: user.id,
-			},
+			this.logger.info('tag.short-url-tags-set', {
+				shortUrlTags: {
+					shortUrlId,
+					tagCount: tagIds.length,
+					userId: user.id,
+				},
+			});
+
+			return tags;
 		});
-
-		return tags;
 	}
 }

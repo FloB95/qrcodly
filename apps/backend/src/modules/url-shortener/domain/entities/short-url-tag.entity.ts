@@ -17,6 +17,7 @@ const shortUrlTag = createTable(
 	(t) => [
 		primaryKey({ columns: [t.shortUrlId, t.tagId] }),
 		index('i_short_url_tag_tag_id').on(t.tagId),
+		index('i_short_url_tag_short_url_id').on(t.shortUrlId),
 	],
 );
 

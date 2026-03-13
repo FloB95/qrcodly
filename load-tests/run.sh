@@ -50,8 +50,16 @@ fi
 
 # Build k6 env args
 K6_ENVS="-e PROFILE=$PROFILE"
-K6_ENVS="$K6_ENVS -e BASE_URL=${BASE_URL:-https://stage-api.qrcodly.de/api/v1}"
-K6_ENVS="$K6_ENVS -e FRONTEND_URL=${FRONTEND_URL:-https://stage.qrcodly.de}"
+if [ -z "${BASE_URL:-}" ]; then
+    echo -e "${RED}Error: BASE_URL is required. Set it in .env${NC}"
+    exit 1
+fi
+if [ -z "${FRONTEND_URL:-}" ]; then
+    echo -e "${RED}Error: FRONTEND_URL is required. Set it in .env${NC}"
+    exit 1
+fi
+K6_ENVS="$K6_ENVS -e BASE_URL=$BASE_URL"
+K6_ENVS="$K6_ENVS -e FRONTEND_URL=$FRONTEND_URL"
 K6_ENVS="$K6_ENVS -e MODE=${MODE:-full}"
 
 # HTAccess credentials
@@ -79,6 +87,7 @@ if [ -n "${CLERK_SECRET_KEY:-}" ]; then
 
         # Also pass the secret key for token refresh during test
         K6_ENVS="$K6_ENVS -e CLERK_SECRET_KEY=$CLERK_SECRET_KEY"
+        K6_ENVS="$K6_ENVS -e JWT_TEMPLATE=$JWT_TEMPLATE"
         K6_ENVS="$K6_ENVS -e TEST_USER_IDS=${TEST_USER_IDS:-}"
     else
         echo -e "${RED}Warning: Failed to generate tokens. CRUD tests will be skipped.${NC}"

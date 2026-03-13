@@ -20,7 +20,7 @@ import { randomScanProfile, getScanHeaders } from '../data/user-agents.js';
 import { randomItem, randomInt } from '../helpers.js';
 
 // Frontend URL for scan simulation (goes through Next.js middleware)
-const FRONTEND_URL = __ENV.FRONTEND_URL || 'https://stage.qrcodly.de';
+const FRONTEND_URL = __ENV.FRONTEND_URL || '';
 
 // HTAccess basic auth for staging frontend
 const HTACCESS_USER = __ENV.HTACCESS_USER || '';

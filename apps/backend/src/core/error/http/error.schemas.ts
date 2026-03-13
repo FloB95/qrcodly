@@ -25,6 +25,9 @@ export const NotFoundErrorResponseSchema = BaseErrorResponseSchema.describe(
 	'Not Found Error Response',
 );
 
+export const ConflictErrorResponseSchema =
+	BaseErrorResponseSchema.describe('Conflict Error Response');
+
 export const InternalServerErrorResponseSchema = BaseErrorResponseSchema.describe(
 	'Internal Server Error Response',
 );
@@ -34,6 +37,7 @@ export const DEFAULT_ERROR_RESPONSES = {
 	401: UnauthorizedErrorResponseSchema,
 	403: ForbiddenErrorResponseSchema,
 	404: NotFoundErrorResponseSchema,
+	409: ConflictErrorResponseSchema,
 	429: ToManyRequestErrorResponseSchema,
 	500: InternalServerErrorResponseSchema,
 } as const;

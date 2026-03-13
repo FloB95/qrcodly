@@ -3,12 +3,12 @@
 // =============================================================================
 
 // --- Environment ---
-export const BASE_URL = __ENV.BASE_URL || 'https://stage-api.qrcodly.de/api/v1';
+export const BASE_URL = __ENV.BASE_URL || '';
 
 // --- Clerk ---
 export const CLERK_SECRET_KEY = __ENV.CLERK_SECRET_KEY || '';
-export const CLERK_API = 'https://api.clerk.com/v1';
-export const JWT_TEMPLATE = 'QRcodly';
+export const CLERK_API = __ENV.CLERK_API || 'https://api.clerk.com/v1';
+export const JWT_TEMPLATE = __ENV.JWT_TEMPLATE || '';
 export const USER_IDS = __ENV.TEST_USER_IDS
 	? __ENV.TEST_USER_IDS.split(',').map((id) => id.trim())
 	: [];
@@ -47,11 +47,11 @@ export const PROFILES = {
 	// Heavy load - stress test
 	heavy: {
 		stages: [
-			{ duration: '1m', target: 100 },
-			{ duration: '2m', target: 500 },
-			{ duration: '3m', target: 1000 },
+			{ duration: '20s', target: 100 },
+			{ duration: '1m', target: 500 },
 			{ duration: '2m', target: 1000 },
-			{ duration: '1m', target: 0 },
+			{ duration: '1m', target: 1000 },
+			{ duration: '20s', target: 0 },
 		],
 	},
 
@@ -60,7 +60,7 @@ export const PROFILES = {
 		stages: [
 			{ duration: '30s', target: 50 },
 			{ duration: '10s', target: 1000 },
-			{ duration: '1m', target: 1000 },
+			{ duration: '1m', target: 1500 },
 			{ duration: '10s', target: 50 },
 			{ duration: '1m', target: 50 },
 			{ duration: '30s', target: 0 },

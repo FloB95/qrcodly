@@ -8,6 +8,7 @@ import { SetQrCodeTagsPolicy } from '../policies/set-qr-code-tags.policy';
 import QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
 import { ForbiddenError } from '@/core/error/http';
+import { DistributedLock } from '@/core/lock';
 
 @injectable()
 export class SetQrCodeTagsUseCase implements IBaseUseCase {
@@ -15,6 +16,7 @@ export class SetQrCodeTagsUseCase implements IBaseUseCase {
 		@inject(TagRepository) private tagRepository: TagRepository,
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(Logger) private logger: Logger,
+		@inject(DistributedLock) private lock: DistributedLock,
 	) {}
 
 	async execute(qrCodeId: string, tagIds: string[], user: TUser): Promise<TTag[]> {
@@ -33,17 +35,19 @@ export class SetQrCodeTagsUseCase implements IBaseUseCase {
 		const policy = new SetQrCodeTagsPolicy(user, tagIds.length);
 		policy.checkAccess();
 
-		await this.tagRepository.setQrCodeTags(qrCodeId, tagIds);
-		const tags = await this.tagRepository.findTagsByQrCodeId(qrCodeId);
+		return this.lock.withLock(`tag:qrcode:${qrCodeId}`, async () => {
+			await this.tagRepository.setQrCodeTags(qrCodeId, tagIds);
+			const tags = await this.tagRepository.findTagsByQrCodeId(qrCodeId);
 
-		this.logger.info('tag.qr-code-tags-set', {
-			qrCodeTags: {
-				qrCodeId,
-				tagCount: tagIds.length,
-				userId: user.id,
-			},
+			this.logger.info('tag.qr-code-tags-set', {
+				qrCodeTags: {
+					qrCodeId,
+					tagCount: tagIds.length,
+					userId: user.id,
+				},
+			});
+
+			return tags;
 		});
-
-		return tags;
 	}
 }

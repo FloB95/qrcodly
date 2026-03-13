@@ -2,6 +2,7 @@ import { singleton } from 'tsyringe';
 import { count, desc, eq, inArray } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
+import { withDeadlockRetry } from '@/core/db/with-deadlock-retry';
 import tag, { type TTag } from '../entities/tag.entity';
 import qrCodeTag from '../entities/qr-code-tag.entity';
 import shortUrlTag from '@/modules/url-shortener/domain/entities/short-url-tag.entity';
@@ -68,16 +69,18 @@ class TagRepository extends AbstractRepository<TTag> {
 	}
 
 	async setQrCodeTags(qrCodeId: string, tagIds: string[]): Promise<void> {
-		await this.db.transaction(async (tx) => {
-			await tx.delete(qrCodeTag).where(eq(qrCodeTag.qrCodeId, qrCodeId)).execute();
+		await withDeadlockRetry(() =>
+			this.db.transaction(async (tx) => {
+				await tx.delete(qrCodeTag).where(eq(qrCodeTag.qrCodeId, qrCodeId)).execute();
 
-			if (tagIds.length > 0) {
-				await tx
-					.insert(qrCodeTag)
-					.values(tagIds.map((tagId) => ({ qrCodeId, tagId })))
-					.execute();
-			}
-		});
+				if (tagIds.length > 0) {
+					await tx
+						.insert(qrCodeTag)
+						.values(tagIds.map((tagId) => ({ qrCodeId, tagId })))
+						.execute();
+				}
+			}),
+		);
 	}
 
 	async findTagsByShortUrlId(shortUrlId: string): Promise<TTag[]> {
@@ -113,16 +116,18 @@ class TagRepository extends AbstractRepository<TTag> {
 	}
 
 	async setShortUrlTags(shortUrlId: string, tagIds: string[]): Promise<void> {
-		await this.db.transaction(async (tx) => {
-			await tx.delete(shortUrlTag).where(eq(shortUrlTag.shortUrlId, shortUrlId)).execute();
+		await withDeadlockRetry(() =>
+			this.db.transaction(async (tx) => {
+				await tx.delete(shortUrlTag).where(eq(shortUrlTag.shortUrlId, shortUrlId)).execute();
 
-			if (tagIds.length > 0) {
-				await tx
-					.insert(shortUrlTag)
-					.values(tagIds.map((tagId) => ({ shortUrlId, tagId })))
-					.execute();
-			}
-		});
+				if (tagIds.length > 0) {
+					await tx
+						.insert(shortUrlTag)
+						.values(tagIds.map((tagId) => ({ shortUrlId, tagId })))
+						.execute();
+				}
+			}),
+		);
 	}
 
 	async getQrCodeCountsByTagId(userId: string): Promise<Map<string, number>> {

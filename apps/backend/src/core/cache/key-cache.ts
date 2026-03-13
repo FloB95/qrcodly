@@ -23,15 +23,18 @@ export class KeyCache implements IKeyCache {
 		expirationTimeSeconds?: number,
 		tags?: string[],
 	): Promise<void> {
-		await this.client.set(key, value);
 		if (expirationTimeSeconds) {
-			await this.client.expire(key, expirationTimeSeconds);
+			await this.client.set(key, value, 'EX', expirationTimeSeconds);
+		} else {
+			await this.client.set(key, value);
 		}
 
-		if (tags) {
+		if (tags && tags.length > 0) {
+			const pipeline = this.client.pipeline();
 			for (const tag of tags) {
-				await this.client.sadd(`tag:${tag}`, key);
+				pipeline.sadd(`tag:${tag}`, key);
 			}
+			await pipeline.exec();
 		}
 	}
 
