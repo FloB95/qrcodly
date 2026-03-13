@@ -190,6 +190,7 @@
 		"activeDescription": "Active: Users can access the destination page, and scans are tracked.",
 		"inactiveDescription": "Inactive: Access and tracking are disabled.",
 		"noData": "No data has been recorded yet.",
+		"unknownLabel": "Unknown",
 		"viewsInLastXDays": "{count} Scans in the last {days}",
 		"visitorsInLastXDays": "{count} Visitors in the last {days}",
 		"bounceRate": "Bounce Rate",
@@ -210,7 +211,7 @@
 			"osUsage": "Used Operating Systems",
 			"countryDistribution": "Distribution by country",
 			"activityOverTime": "Activity Over Time",
-			"activityOverTimeDescription": "Daily scans and unique visitors"
+			"activityOverTimeDescription": "Last 30 days"
 		}
 	},
 	"header": {

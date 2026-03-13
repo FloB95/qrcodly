@@ -190,6 +190,7 @@
 		"activeDescription": "Aktiv: Benutzer können auf die Zielseite zugreifen und Scans werden analysiert.",
 		"inactiveDescription": "Deaktiviert: Zugriff und Analyse sind deaktiviert.",
 		"noData": "Bislang wurden keine Daten erfasst.",
+		"unknownLabel": "Unbekannt",
 		"viewsInLastXDays": "{count} Scans in den letzten {days}",
 		"visitorsInLastXDays": "{count} Besucher in den letzten {days}",
 		"bounceRate": "Absprungrate",
@@ -210,7 +211,7 @@
 			"osUsage": "Verwendete Betriebssysteme",
 			"countryDistribution": "Länderübersicht",
 			"activityOverTime": "Aktivität im Zeitverlauf",
-			"activityOverTimeDescription": "Tägliche Scans und einzelne Besucher"
+			"activityOverTimeDescription": "Die letzten 30 Tage"
 		}
 	},
 	"header": {

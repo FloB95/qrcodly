@@ -22,7 +22,7 @@ export const AnalyticsBrowserChart = ({ data }: AnalyticsBrowserChartProps) => {
 	const maxCount = top7[0]?.count ?? 0;
 
 	return (
-		<Card className="h-full">
+		<Card>
 			<CardHeader>
 				<div className="flex items-center gap-2">
 					<div className="p-2 rounded-lg bg-primary/10 text-primary">

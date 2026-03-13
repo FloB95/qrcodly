@@ -190,6 +190,7 @@
 		"activeDescription": "Activo: Los usuarios pueden acceder a la página de destino y se registran los escaneos.",
 		"inactiveDescription": "Desactivado: El acceso y el análisis están deshabilitados.",
 		"noData": "Aún no se han recopilado datos.",
+		"unknownLabel": "Desconocido",
 		"viewsInLastXDays": "{count} escaneos en los últimos {days} días",
 		"visitorsInLastXDays": "{count} visitantes en los últimos {days} días",
 		"bounceRate": "Tasa de rebote",
@@ -210,7 +211,7 @@
 			"osUsage": "Sistemas operativos utilizados",
 			"countryDistribution": "Distribución por país",
 			"activityOverTime": "Actividad a lo largo del tiempo",
-			"activityOverTimeDescription": "Escaneos diarios y visitantes únicos"
+			"activityOverTimeDescription": "Últimos 30 días"
 		}
 	},
 	"header": {

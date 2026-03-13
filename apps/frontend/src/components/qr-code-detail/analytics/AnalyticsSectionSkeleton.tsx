@@ -5,9 +5,9 @@ export const AnalyticsSectionSkeleton = () => {
 	return (
 		<>
 			{/* Summary cards skeleton */}
-			<div className="xs:flex mb-4 gap-5 items-center">
+			<div className="xs:flex mb-4 gap-5 items-stretch">
 				{Array.from({ length: 2 }).map((_, i) => (
-					<Card key={i} className="h-full mb-4 xs:mb-0 flex-1">
+					<Card key={i} className="mb-4 xs:mb-0 flex-1">
 						<CardHeader>
 							<div className="flex items-center gap-2">
 								<Skeleton className="size-8 rounded-lg" />
@@ -34,9 +34,9 @@ export const AnalyticsSectionSkeleton = () => {
 			</Card>
 
 			{/* Metric charts skeleton */}
-			<div className="md:grid space-y-4 md:space-y-0 flex-1 items-start gap-5 md:grid-cols-2 pb-4">
+			<div className="lg:grid space-y-4 lg:space-y-0 gap-5 lg:grid-cols-2 pb-4">
 				{Array.from({ length: 4 }).map((_, i) => (
-					<Card key={i} className="h-full">
+					<Card key={i}>
 						<CardHeader>
 							<div className="flex items-center gap-2">
 								<Skeleton className="size-8 rounded-lg" />

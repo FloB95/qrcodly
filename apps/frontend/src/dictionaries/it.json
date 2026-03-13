@@ -190,6 +190,7 @@
 		"activeDescription": "Attivo: gli utenti possono accedere alla pagina di destinazione e le scansioni vengono registrate.",
 		"inactiveDescription": "Disattivato: l'accesso e l'analisi sono disabilitati.",
 		"noData": "Nessun dato è stato ancora registrato.",
+		"unknownLabel": "Sconosciuto",
 		"viewsInLastXDays": "{count} scansioni negli ultimi {days} giorni",
 		"visitorsInLastXDays": "{count} visitatori negli ultimi {days} giorni",
 		"bounceRate": "Frequenza di rimbalzo",
@@ -210,7 +211,7 @@
 			"osUsage": "Sistemi operativi utilizzati",
 			"countryDistribution": "Distribuzione per paese",
 			"activityOverTime": "Attività nel tempo",
-			"activityOverTimeDescription": "Scansioni giornaliere e visitatori unici"
+			"activityOverTimeDescription": "Ultimi 30 giorni"
 		}
 	},
 	"header": {

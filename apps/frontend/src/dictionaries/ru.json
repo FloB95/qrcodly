@@ -190,6 +190,7 @@
 		"activeDescription": "Активно: Пользователи могут получить доступ к целевой странице, и сканирования регистрируются.",
 		"inactiveDescription": "Отключено: Доступ и анализ отключены.",
 		"noData": "Данные пока не собраны.",
+		"unknownLabel": "Неизвестно",
 		"viewsInLastXDays": "{count} сканирований за последние {days} дней",
 		"visitorsInLastXDays": "{count} посетителей за последние {days} дней",
 		"bounceRate": "Показатель отказов",
@@ -210,7 +211,7 @@
 			"osUsage": "Используемые операционные системы",
 			"countryDistribution": "Распределение по странам",
 			"activityOverTime": "Активность во времени",
-			"activityOverTimeDescription": "Ежедневные сканирования и уникальные посетители"
+			"activityOverTimeDescription": "Последние 30 дней"
 		}
 	},
 	"header": {

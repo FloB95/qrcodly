@@ -190,6 +190,7 @@
 		"activeDescription": "Actief: gebruikers hebben toegang tot de bestemmingspagina en scans worden geregistreerd.",
 		"inactiveDescription": "Uitgeschakeld: toegang en analyse zijn gedeactiveerd.",
 		"noData": "Nog geen gegevens verzameld.",
+		"unknownLabel": "Onbekend",
 		"viewsInLastXDays": "{count} scans in de afgelopen {days} dagen",
 		"visitorsInLastXDays": "{count} bezoekers in de afgelopen {days} dagen",
 		"bounceRate": "Bouncepercentage",
@@ -210,7 +211,7 @@
 			"osUsage": "Gebruikte besturingssystemen",
 			"countryDistribution": "Distributie per land",
 			"activityOverTime": "Activiteit in de tijd",
-			"activityOverTimeDescription": "Dagelijkse scans en unieke bezoekers"
+			"activityOverTimeDescription": "Laatste 30 dagen"
 		}
 	},
 	"header": {

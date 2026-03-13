@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetAnalyticsFromShortCodeQuery } from '@/lib/api/url-shortener';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { getName } from 'i18n-iso-countries';
 import { useMemo } from 'react';
 import { AnalyticsSummaryCards } from './AnalyticsSummaryCards';
@@ -51,6 +51,7 @@ function getLast7DaysSum(series: { date: string; value: number }[]) {
 
 export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 	const locale = useLocale();
+	const t = useTranslations();
 	const { isLoading, data } = useGetAnalyticsFromShortCodeQuery(shortCode);
 
 	const derived = useMemo(() => {
@@ -68,16 +69,26 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 			label: getName(item.label.toLowerCase(), locale) ?? item.label,
 		}));
 
+		const unknownLabel = t('analytics.unknownLabel');
+		const replaceEmpty = (items: { label: string; count: number }[]) =>
+			items.map((item) => ({
+				...item,
+				label: item.label.trim() === '' ? unknownLabel : item.label,
+			}));
+
 		return {
 			dailyData,
 			scansLast7Days,
 			visitorsLast7Days,
-			browserMetrics: browserMetrics ?? [],
-			deviceMetrics: deviceMetrics ?? [],
-			countryMetrics: resolvedCountryMetrics,
-			osMetrics: osMetrics ?? [],
+			browserMetrics: replaceEmpty(browserMetrics ?? []),
+			deviceMetrics: replaceEmpty(deviceMetrics ?? []),
+			countryMetrics: resolvedCountryMetrics.map((item) => ({
+				...item,
+				label: item.label.trim() === '' ? unknownLabel : item.label,
+			})),
+			osMetrics: replaceEmpty(osMetrics ?? []),
 		};
-	}, [data, locale]);
+	}, [data, locale, t]);
 
 	if (isLoading || !data || !derived) {
 		return <AnalyticsSectionSkeleton />;
@@ -94,7 +105,7 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 
 			<AnalyticsTimeChart data={derived.dailyData} locale={locale} />
 
-			<div className="md:grid space-y-4 md:space-y-0 flex-1 scroll-mt-20 items-start gap-5 md:grid-cols-2 py-4">
+			<div className="lg:grid space-y-4 lg:space-y-0 scroll-mt-20 gap-5 lg:grid-cols-2 py-4">
 				<AnalyticsDeviceChart data={derived.deviceMetrics} />
 				<AnalyticsBrowserChart data={derived.browserMetrics} />
 				<AnalyticsCountryChart data={derived.countryMetrics} />

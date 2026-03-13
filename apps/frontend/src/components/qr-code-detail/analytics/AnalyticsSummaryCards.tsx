@@ -21,8 +21,8 @@ export const AnalyticsSummaryCards = ({
 	const t = useTranslations();
 
 	return (
-		<div className="xs:flex mb-4 gap-5 items-center">
-			<Card className="h-full mb-4 xs:mb-0">
+		<div className="xs:flex mb-4 gap-5 items-stretch">
+			<Card className="mb-4 xs:mb-0 flex-1">
 				<CardHeader className="relative">
 					<div className="flex items-center gap-2">
 						<div className="p-2 rounded-lg bg-primary/10 text-primary">
@@ -51,7 +51,7 @@ export const AnalyticsSummaryCards = ({
 					</div>
 				</CardFooter>
 			</Card>
-			<Card className="h-full">
+			<Card className="flex-1">
 				<CardHeader className="relative">
 					<div className="flex items-center gap-2">
 						<div className="p-2 rounded-lg bg-primary/10 text-primary">

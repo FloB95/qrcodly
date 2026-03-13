@@ -190,6 +190,7 @@
 		"activeDescription": "Aktywny: Użytkownicy mogą uzyskać dostęp do strony docelowej, a skany są rejestrowane.",
 		"inactiveDescription": "Wyłączony: Dostęp i analiza są wyłączone.",
 		"noData": "Dotychczas nie zebrano żadnych danych.",
+		"unknownLabel": "Nieznane",
 		"viewsInLastXDays": "{count} skanów w ciągu ostatnich {days} dni",
 		"visitorsInLastXDays": "{count} odwiedzających w ciągu ostatnich {days} dni",
 		"bounceRate": "Współczynnik odrzuceń",
@@ -210,7 +211,7 @@
 			"osUsage": "Używane systemy operacyjne",
 			"countryDistribution": "Rozkład według kraju",
 			"activityOverTime": "Aktywność w czasie",
-			"activityOverTimeDescription": "Dzienne skany i unikalni odwiedzający"
+			"activityOverTimeDescription": "Ostatnie 30 dni"
 		}
 	},
 	"header": {
