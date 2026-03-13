@@ -20,6 +20,11 @@ packages/**/.turbo
 CHANGELOG-*.md
 *.mdx
 
+# Load test results & secrets
+load-tests/results/*.json
+load-tests/results/*.csv
+load-tests/.env
+
 # Desktop app build outputs
 apps/desktop/out/
 apps/desktop/release/

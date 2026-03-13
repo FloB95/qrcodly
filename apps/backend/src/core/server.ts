@@ -117,7 +117,7 @@ export class Server {
 		// Add middleware to attach user info to request before all handlers
 		this.server.addHook('preHandler', addUserToRequestMiddleware);
 
-		if (!IN_TEST || env.DISABLE_RATE_LIMITING === true) {
+		if (!IN_TEST || env.DISABLE_RATE_LIMITING !== true) {
 			await this.server.register(fastifyRateLimit, {
 				hook: 'preHandler',
 				keyGenerator: (request) => {
@@ -143,6 +143,10 @@ export class Server {
 					throw new TooManyRequestsError();
 				},
 			});
+		} else {
+			this.logger.warn(
+				'Rate limiting is disabled. This should not be used in production environments.',
+			);
 		}
 
 		this.server.addContentTypeParser('*', function (request, payload, done) {
