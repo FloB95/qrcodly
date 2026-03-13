@@ -60,7 +60,9 @@ const server = z.object({
 		.string()
 		.length(64)
 		.regex(/^[0-9a-f]+$/i, 'Must be a hex string'),
-	DISABLE_RATE_LIMITING: z.boolean().default(false),
+	DISABLE_RATE_LIMITING: z
+		.union([z.boolean(), z.string().transform((val) => val === 'true')])
+		.default(false),
 });
 
 // Don't touch the part below
