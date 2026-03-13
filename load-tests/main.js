@@ -229,9 +229,7 @@ function buildPool(weights) {
 
 const hasTokens = CLERK_TOKENS.length > 0;
 const pool =
-	mode === 'scan-only' || !hasTokens
-		? buildPool(SCAN_ONLY_WEIGHTS)
-		: buildPool(FULL_WEIGHTS);
+	mode === 'scan-only' || !hasTokens ? buildPool(SCAN_ONLY_WEIGHTS) : buildPool(FULL_WEIGHTS);
 
 // --- Main VU Function ---
 export default function (setupData) {
