@@ -114,7 +114,11 @@ export const mockFetchUmamiAllEndpoints = () => {
 				typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
 
 			// Only intercept Umami API calls, pass through everything else
-			if (!url.includes('/api/auth/login') && !url.includes('/api/websites/')) {
+			if (
+				!url.includes('/api/auth/login') &&
+				!url.includes('/api/websites/') &&
+				!url.includes('/api/send')
+			) {
 				return originalFetch!(input, init);
 			}
 
@@ -122,6 +126,7 @@ export const mockFetchUmamiAllEndpoints = () => {
 				ok: true,
 				status: 200,
 				json: async () => {
+					if (url.includes('/api/send')) return {};
 					if (url.includes('/auth/login')) return authResponse;
 					if (url.includes('/pageviews')) return pageviewsData;
 					if (url.includes('/metrics')) return metricsData;

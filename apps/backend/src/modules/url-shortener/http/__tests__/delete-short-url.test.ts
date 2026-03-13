@@ -1,3 +1,4 @@
+import { env } from '@/core/config/env';
 import { getTestContext } from '@/tests/shared/test-context';
 import { generateEditableUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
 import { API_BASE_PATH } from '@/core/config/constants';
@@ -36,13 +37,14 @@ describe('deleteShortUrl', () => {
 		expect(body.deleted).toBe(true);
 	});
 
-	it('should return 404 when fetching a deleted short URL', async () => {
+	it('should return 404 when fetching a deleted short URL via internal API', async () => {
 		const shortUrl = await createShortUrl(testServer, accessToken);
 		await deleteShortUrlRequest(shortUrl.shortCode, accessToken);
 
 		const getResponse = await testServer.inject({
 			method: 'GET',
 			url: `${SHORT_URL_API_PATH}/${shortUrl.shortCode}`,
+			headers: { 'x-internal-api-key': env.INTERNAL_API_SECRET },
 		});
 		expect(getResponse.statusCode).toBe(404);
 	});

@@ -1,4 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
+import { env } from '@/core/config/env';
 import { getTestContext } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
@@ -41,10 +42,11 @@ describe('softDeletedShortUrl', () => {
 		expect(deleteResponse.statusCode).toBe(200);
 	});
 
-	it('should return 404 via public GET for a soft-deleted short URL', async () => {
+	it('should return 404 via internal API GET for a soft-deleted short URL', async () => {
 		const response = await testServer.inject({
 			method: 'GET',
 			url: `${SHORT_URL_API_PATH}/${deletedShortCode}`,
+			headers: { 'x-internal-api-key': env.INTERNAL_API_SECRET },
 		});
 		expect(response.statusCode).toBe(404);
 	});
