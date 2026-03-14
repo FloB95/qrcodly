@@ -10,6 +10,7 @@ const PAGES = [
 	'products/url-shortener',
 	'products/qr-codes',
 	'products/analytics',
+	'faq',
 	'imprint',
 	'privacy-policy',
 ];

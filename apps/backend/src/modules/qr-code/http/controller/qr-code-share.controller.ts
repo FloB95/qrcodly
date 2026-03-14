@@ -49,10 +49,22 @@ export class QrCodeShareController extends AbstractController {
 			404: DEFAULT_ERROR_RESPONSES[404],
 		},
 		schema: {
+			tags: ['QR Code Sharing'],
 			summary: 'Create share link for QR code',
 			description:
-				'Creates a shareable public link for a QR code with configurable display options.',
+				'Creates a shareable public link for a QR code. The share link allows anyone to view the QR code without authentication. ' +
+				'You can configure whether the QR code name and a download button are shown on the public page.',
 			operationId: 'qr-code/create-share-link',
+			params: {
+				type: 'object',
+				properties: {
+					id: {
+						type: 'string',
+						format: 'uuid',
+						description: 'QR code UUID to create a share link for',
+					},
+				},
+			},
 		},
 	})
 	async createShare(
@@ -74,9 +86,17 @@ export class QrCodeShareController extends AbstractController {
 			404: DEFAULT_ERROR_RESPONSES[404],
 		},
 		schema: {
+			tags: ['QR Code Sharing'],
 			summary: 'Get share link for QR code',
-			description: 'Retrieves the share link configuration for a QR code.',
+			description:
+				'Retrieves the share link and its display configuration for a QR code. Returns the share token and config options.',
 			operationId: 'qr-code/get-share-link',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'QR code UUID' },
+				},
+			},
 		},
 	})
 	async getShare(
@@ -103,9 +123,17 @@ export class QrCodeShareController extends AbstractController {
 			404: DEFAULT_ERROR_RESPONSES[404],
 		},
 		schema: {
+			tags: ['QR Code Sharing'],
 			summary: 'Update share link configuration',
-			description: 'Updates the display options for a shared QR code.',
+			description:
+				'Updates the display options (showName, showDownloadButton) for an existing share link.',
 			operationId: 'qr-code/update-share-link',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'QR code UUID' },
+				},
+			},
 		},
 	})
 	async updateShare(
@@ -132,9 +160,17 @@ export class QrCodeShareController extends AbstractController {
 			404: DEFAULT_ERROR_RESPONSES[404],
 		},
 		schema: {
+			tags: ['QR Code Sharing'],
 			summary: 'Delete share link',
-			description: 'Removes the share link for a QR code.',
+			description:
+				'Removes the share link for a QR code. The public URL will no longer be accessible after deletion.',
 			operationId: 'qr-code/delete-share-link',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'QR code UUID' },
+				},
+			},
 		},
 	})
 	async deleteShare(
@@ -179,9 +215,22 @@ export class PublicQrCodeShareController extends AbstractController {
 			404: DEFAULT_ERROR_RESPONSES[404],
 		},
 		schema: {
+			tags: ['Public', 'QR Code Sharing'],
 			summary: 'Get public shared QR code',
-			description: 'Publicly accessible endpoint to view a shared QR code.',
+			description:
+				'Publicly accessible endpoint (no authentication required) to view a shared QR code by its share token. ' +
+				'Returns the QR code image data, content, styling, and share display configuration.',
 			operationId: 'public/get-shared-qr-code',
+			params: {
+				type: 'object',
+				properties: {
+					shareToken: {
+						type: 'string',
+						format: 'uuid',
+						description: 'Unique share token from the share link URL',
+					},
+				},
+			},
 		},
 	})
 	async getPublicShare(

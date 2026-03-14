@@ -53,9 +53,11 @@ export class ConfigTemplateController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'List Templates',
+			tags: ['Templates'],
+			summary: 'List templates',
 			description:
-				'Fetches a paginated list of templates created by the authenticated user. Supports filtering via query parameters and returns pagination info including page, limit, total count, and template data.',
+				'Returns a paginated list of QR code styling templates created by the authenticated user. ' +
+				'Supports filtering by name and creation date.',
 			operationId: 'template/list-templates',
 		},
 	})
@@ -91,8 +93,11 @@ export class ConfigTemplateController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'List Predefined Templates',
-			description: 'Fetches a paginated list of predefined templates available for all users.',
+			tags: ['Templates', 'Public'],
+			summary: 'List predefined templates',
+			description:
+				'Returns a list of system-provided QR code styling templates available to all users. ' +
+				'No authentication required. Useful as starting points for custom designs.',
 			operationId: 'template/list-predefined-templates',
 		},
 	})
@@ -131,8 +136,11 @@ export class ConfigTemplateController extends AbstractController {
 			rateLimitPolicy: RateLimitPolicy.TEMPLATE_CREATE,
 		},
 		schema: {
-			summary: 'Create a new template',
-			description: 'Creates a new template based on the provided data.',
+			tags: ['Templates'],
+			summary: 'Create a template',
+			description:
+				'Saves a QR code styling configuration as a reusable template with a name. ' +
+				'Templates store colors, dot styles, corner styles, margins, and embedded images.',
 			operationId: 'template/create-template',
 		},
 	})
@@ -155,9 +163,17 @@ export class ConfigTemplateController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			description: 'Get Template by ID',
-			summary: 'Get Template',
+			tags: ['Templates'],
+			summary: 'Get template by ID',
+			description:
+				'Returns a single template with its full styling configuration. Only the owner can access their templates.',
 			operationId: 'template/get-template-by-id',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'Template UUID' },
+				},
+			},
 		},
 	})
 	async getOneById(
@@ -178,9 +194,17 @@ export class ConfigTemplateController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			description: 'Update Template by ID',
-			summary: 'Update Template',
+			tags: ['Templates'],
+			summary: 'Update a template',
+			description:
+				'Partially updates a template name and/or styling configuration. Only the owner can update their templates.',
 			operationId: 'template/update-template-by-id',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'Template UUID' },
+				},
+			},
 		},
 	})
 	async update(
@@ -206,9 +230,17 @@ export class ConfigTemplateController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			description: 'Delete Template by ID',
-			summary: 'Delete Template',
+			tags: ['Templates'],
+			summary: 'Delete a template',
+			description:
+				'Permanently deletes a QR code styling template. Only the owner can delete their templates.',
 			operationId: 'template/delete-template-id',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'Template UUID' },
+				},
+			},
 		},
 	})
 	async deleteOneById(request: IHttpRequest<unknown, TIdRequestQueryDto>) {

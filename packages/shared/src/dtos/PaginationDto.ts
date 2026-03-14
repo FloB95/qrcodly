@@ -7,10 +7,10 @@ import { type ZodSchema, z } from 'zod';
  */
 export const PaginationResponseDtoSchema = <T>(dataSchema: ZodSchema<T>) =>
 	z.object({
-		page: z.number(),
-		limit: z.number(),
-		total: z.number(),
-		data: z.array(dataSchema),
+		page: z.number().describe('Current page number (1-based)'),
+		limit: z.number().describe('Maximum number of items per page'),
+		total: z.number().describe('Total number of items matching the query across all pages'),
+		data: z.array(dataSchema).describe('Array of items for the current page'),
 	});
 
 /**

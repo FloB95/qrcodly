@@ -9,13 +9,17 @@ import {
 import Container from '@/components/ui/container';
 import { Heading } from '@/components/ui/heading';
 import { AnimateOnScroll } from '@/components/features/AnimateOnScroll';
+import { Link } from '@/i18n/navigation';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export function ProductFaqSection({
 	title,
 	items,
+	viewAllLabel,
 }: {
 	title: string;
 	items: Array<{ question: string; answer: string }>;
+	viewAllLabel?: string;
 }) {
 	return (
 		<div className="py-16 sm:py-24">
@@ -40,19 +44,28 @@ export function ProductFaqSection({
 									<AccordionTrigger>
 										<span itemProp="name">{item.question}</span>
 									</AccordionTrigger>
-									<AccordionContent
-										forceMount
-										itemScope
-										itemProp="acceptedAnswer"
-										itemType="https://schema.org/Answer"
-									>
-										<p itemProp="text" className="text-left">
-											{item.answer}
-										</p>
+									<AccordionContent>
+										<div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+											<p itemProp="text" className="text-left">
+												{item.answer}
+											</p>
+										</div>
 									</AccordionContent>
 								</AccordionItem>
 							))}
 						</Accordion>
+
+						{viewAllLabel && (
+							<div className="mt-8 text-center">
+								<Link
+									href="/faq"
+									className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+								>
+									{viewAllLabel}
+									<ArrowRightIcon className="h-4 w-4" />
+								</Link>
+							</div>
+						)}
 					</section>
 				</div>
 			</Container>

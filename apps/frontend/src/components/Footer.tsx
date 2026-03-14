@@ -1,6 +1,6 @@
 'use client';
 
-import { Link, usePathname } from '@/i18n/navigation';
+import { Link } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { LanguageNav } from './LanguageNav';
 import { QrcodlyLogo } from './QrcodlyLogo';
@@ -19,7 +19,6 @@ function GitHubIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean } = {}) {
 	const t = useTranslations('footer');
-	const pathname = usePathname();
 	const currentYear = new Date().getFullYear();
 
 	return (
@@ -109,16 +108,10 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 						<ul className="space-y-2.5">
 							<li>
 								<Link
-									href="/#faq"
+									href="/faq"
 									title={t('faqLink')}
 									aria-label={t('faqLink')}
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-									onClick={(e) => {
-										if (pathname === '/') {
-											e.preventDefault();
-											document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-										}
-									}}
 								>
 									{t('faqLink')}
 								</Link>

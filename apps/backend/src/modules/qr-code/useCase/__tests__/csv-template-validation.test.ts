@@ -67,7 +67,7 @@ const CONTENT_TYPE_CONFIG: Record<
 
 describe('CSV Template Validation', () => {
 	it('should have all expected template files present', () => {
-		for (const [contentType, config] of Object.entries(CONTENT_TYPE_CONFIG)) {
+		for (const [, config] of Object.entries(CONTENT_TYPE_CONFIG)) {
 			for (const locale of LOCALES) {
 				const filePath = path.join(CSV_TEMPLATES_DIR, `${config.filePrefix}-${locale}.csv`);
 				expect(fs.existsSync(filePath)).toBe(true);
@@ -89,12 +89,12 @@ describe('CSV Template Validation', () => {
 			const filePath = path.join(CSV_TEMPLATES_DIR, `${config.filePrefix}-${locale}.csv`);
 			const csvContent = fs.readFileSync(filePath, 'utf-8');
 
-			const records = parse(csvContent, {
+			const records: Record<string, string>[] = parse(csvContent, {
 				from_line: 2,
 				skip_empty_lines: true,
 				delimiter: ';',
 				columns: config.columns,
-			}) as Record<string, string>[];
+			});
 
 			expect(records.length).toBeGreaterThan(0);
 
@@ -114,12 +114,12 @@ describe('CSV Template Validation', () => {
 				const filePath = path.join(CSV_TEMPLATES_DIR, `${config.filePrefix}-${locale}.csv`);
 				const csvContent = fs.readFileSync(filePath, 'utf-8');
 
-				const records = parse(csvContent, {
+				const records: Record<string, string>[] = parse(csvContent, {
 					from_line: 2,
 					skip_empty_lines: true,
 					delimiter: ';',
 					columns: config.columns,
-				}) as Record<string, string>[];
+				});
 
 				for (const [index, record] of records.entries()) {
 					const parsed = config.schema.parse(record);
