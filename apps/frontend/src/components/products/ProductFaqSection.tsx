@@ -31,25 +31,13 @@ export function ProductFaqSection({
 						</Heading>
 					</AnimateOnScroll>
 
-					<section itemScope itemType="https://schema.org/FAQPage" className="max-w-3xl mx-auto">
+					<section className="max-w-3xl mx-auto">
 						<Accordion type="single" collapsible defaultValue="item-0">
 							{items.map((item, index) => (
-								<AccordionItem
-									key={index}
-									value={`item-${index}`}
-									itemScope
-									itemProp="mainEntity"
-									itemType="https://schema.org/Question"
-								>
-									<AccordionTrigger>
-										<span itemProp="name">{item.question}</span>
-									</AccordionTrigger>
+								<AccordionItem key={index} value={`item-${index}`}>
+									<AccordionTrigger>{item.question}</AccordionTrigger>
 									<AccordionContent>
-										<div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-											<p itemProp="text" className="text-left">
-												{item.answer}
-											</p>
-										</div>
+										<p className="text-left">{item.answer}</p>
 									</AccordionContent>
 								</AccordionItem>
 							))}

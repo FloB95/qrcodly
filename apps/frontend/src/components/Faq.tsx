@@ -18,7 +18,7 @@ export default function FAQSection() {
 		answerKey: `answer${index + 1}`,
 	}));
 	return (
-		<section itemScope itemType="https://schema.org/FAQPage" className="mx-auto text-center">
+		<section className="mx-auto text-center">
 			<Container>
 				<div className="px-4 sm:px-6">
 					<Heading as="h2" size="lg" className="mb-6 lg:mb-10">
@@ -26,22 +26,10 @@ export default function FAQSection() {
 					</Heading>
 					<Accordion type="single" collapsible defaultValue="item-1">
 						{faqItems.map((item, index) => (
-							<AccordionItem
-								key={index}
-								value={`item-${index + 1}`}
-								itemScope
-								itemProp="mainEntity"
-								itemType="https://schema.org/Question"
-							>
-								<AccordionTrigger>
-									<span itemProp="name">{t(item.questionKey)}</span>
-								</AccordionTrigger>
+							<AccordionItem key={index} value={`item-${index + 1}`}>
+								<AccordionTrigger>{t(item.questionKey)}</AccordionTrigger>
 								<AccordionContent>
-									<div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-										<p itemProp="text" className="text-left">
-											{t(item.answerKey)}
-										</p>
-									</div>
+									<p className="text-left">{t(item.answerKey)}</p>
 								</AccordionContent>
 							</AccordionItem>
 						))}
