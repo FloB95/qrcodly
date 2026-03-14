@@ -896,7 +896,7 @@
 		"question10": "Do QR codes also work in print?",
 		"answer10": "Absolutely! QR codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
 		"question11": "Where is my data hosted?",
-		"answer11": "All data at QRcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication.",
+		"answer11": "All data at QRcodly is stored exclusively on servers located in Germany. We use Clerk for authentication and privacy-friendly analytics to improve our service. Your data is not sold or shared for advertising purposes.",
 		"viewAll": "See all FAQs"
 	},
 	"productShowcase": {
@@ -1897,7 +1897,7 @@
 				"q4": "Do QR codes also work in print?",
 				"a4": "Absolutely! QR codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
 				"q5": "Where is my data hosted?",
-				"a5": "All data at QRcodly is stored exclusively on servers located in Germany. We do not share your data with third parties. We only use Clerk for login and authentication.",
+				"a5": "All data at QRcodly is stored exclusively on servers located in Germany. We use Clerk for authentication and privacy-friendly analytics to improve our service. Your data is not sold or shared for advertising purposes.",
 				"q6": "Is QRcodly open source?",
 				"a6": "Yes! QRcodly is fully open source and available on GitHub. You can inspect the code, contribute, or even self-host your own instance.",
 				"q7": "Can I use QRcodly for commercial purposes?",
@@ -1917,7 +1917,7 @@
 				"q6": "Do QR codes expire?",
 				"a6": "No. QR codes created with QRcodly never expire. Dynamic QR codes remain fully functional and trackable as long as your account exists.",
 				"q7": "Can I create QR codes in bulk?",
-				"a7": "Bulk QR code creation is coming soon. In the meantime, you can use QR code templates to quickly create multiple codes with consistent styling.",
+				"a7": "Yes! You can create QR codes in bulk using CSV import. Upload a CSV file with your content, and QRcodly generates all codes at once. You can also use templates for consistent styling across bulk-created codes.",
 				"q8": "What is a QR code template?",
 				"a8": "A QR code template saves your preferred design settings — colors, logo, corner style, and more — so you can instantly apply them to new QR codes without reconfiguring each time.",
 				"q9": "What image formats can I download QR codes in?",

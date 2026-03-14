@@ -896,7 +896,7 @@
 		"question10": "Werken QR-codes ook in gedrukte vorm?",
 		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!",
 		"question11": "Waar worden mijn gegevens gehost?",
-		"answer11": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk.",
+		"answer11": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. We gebruiken Clerk voor authenticatie en privacyvriendelijke analysetools om onze service te verbeteren. Je gegevens worden niet verkocht of gedeeld voor reclamedoeleinden.",
 		"viewAll": "Bekijk alle FAQ's"
 	},
 	"productShowcase": {
@@ -1897,7 +1897,7 @@
 				"q4": "Werken QR-codes ook in print?",
 				"a4": "Absoluut! QR-codes zijn specifiek geoptimaliseerd voor afdrukken en werken betrouwbaar op verschillende materialen, zolang ze duidelijk en onbeschadigd blijven.",
 				"q5": "Waar worden mijn gegevens gehost?",
-				"a5": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. We delen je gegevens niet met derden. We gebruiken alleen Clerk voor inloggen en authenticatie.",
+				"a5": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. We gebruiken Clerk voor authenticatie en privacyvriendelijke analysetools om onze service te verbeteren. Je gegevens worden niet verkocht of gedeeld voor reclamedoeleinden.",
 				"q6": "Is QRcodly open source?",
 				"a6": "Ja! QRcodly is volledig open source en beschikbaar op GitHub. Je kunt de code bekijken, bijdragen of zelfs je eigen instantie hosten.",
 				"q7": "Kan ik QRcodly voor commerciële doeleinden gebruiken?",
@@ -1917,7 +1917,7 @@
 				"q6": "Verlopen QR-codes?",
 				"a6": "Nee. QR-codes gemaakt met QRcodly verlopen nooit. Dynamische QR-codes blijven volledig functioneel en traceerbaar zolang je account bestaat.",
 				"q7": "Kan ik QR-codes in bulk aanmaken?",
-				"a7": "Het in bulk aanmaken van QR-codes komt binnenkort. In de tussentijd kun je QR-codesjablonen gebruiken om snel meerdere codes met een consistent ontwerp te maken.",
+				"a7": "Ja! Je kunt QR-codes in bulk aanmaken via CSV-import. Upload een CSV-bestand met je content, en QRcodly genereert alle codes in één keer. Je kunt ook sjablonen gebruiken voor een consistente stijl.",
 				"q8": "Wat is een QR-codesjabloon?",
 				"a8": "Een QR-codesjabloon slaat je favoriete ontwerpinstellingen op — kleuren, logo, hoekstijl en meer — zodat je ze direct op nieuwe QR-codes kunt toepassen zonder elke keer opnieuw te configureren.",
 				"q9": "In welke beeldformaten kan ik QR-codes downloaden?",

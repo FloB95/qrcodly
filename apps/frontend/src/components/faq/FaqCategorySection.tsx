@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import {
 	Accordion,
 	AccordionContent,
@@ -25,13 +26,19 @@ export function FaqCategorySection({
 	openItemId?: string;
 	delay?: number;
 }) {
+	const [value, setValue] = useState<string | undefined>(openItemId);
+
+	useEffect(() => {
+		if (openItemId) setValue(openItemId);
+	}, [openItemId]);
+
 	return (
 		<AnimateOnScroll delay={delay}>
 			<div className="rounded-2xl bg-white p-6 sm:p-8">
 				<h3 className="text-xs font-semibold tracking-widest uppercase text-slate-900 pb-4 border-b border-slate-200">
 					{title}
 				</h3>
-				<Accordion type="single" collapsible defaultValue={openItemId}>
+				<Accordion type="single" collapsible value={value} onValueChange={setValue}>
 					{items.map((item) => (
 						<AccordionItem
 							key={item.id}

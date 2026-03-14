@@ -896,7 +896,7 @@
 		"question10": "Les Codes QR fonctionnent-ils également imprimés ?",
 		"answer10": "Absolument ! Les Codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, tant qu'ils restent clairs et intacts. Assurez une bonne qualité d'impression, et vos codes seront prêts à être utilisés partout !",
 		"question11": "Où sont hébergées mes données ?",
-		"answer11": "Toutes les données de QRcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous ne partageons aucune donnée avec des tiers. Nous utilisons uniquement Clerk pour la connexion et l’authentification.",
+		"answer11": "Toutes les données de QRcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous utilisons Clerk pour l’authentification et des outils d’analyse respectueux de la vie privée pour améliorer notre service. Vos données ne sont ni vendues ni partagées à des fins publicitaires.",
 		"viewAll": "Voir toutes les FAQ"
 	},
 	"notFound": {
@@ -1897,7 +1897,7 @@
 				"q4": "Les codes QR fonctionnent-ils aussi en impression ?",
 				"a4": "Absolument ! Les codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, à condition qu'ils restent clairs et intacts.",
 				"q5": "Où sont hébergées mes données ?",
-				"a5": "Toutes les données chez QRcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous ne partageons pas vos données avec des tiers. Nous utilisons uniquement Clerk pour la connexion et l'authentification.",
+				"a5": "Toutes les données de QRcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous utilisons Clerk pour l'authentification et des outils d'analyse respectueux de la vie privée pour améliorer notre service. Vos données ne sont ni vendues ni partagées à des fins publicitaires.",
 				"q6": "QRcodly est-il open source ?",
 				"a6": "Oui ! QRcodly est entièrement open source et disponible sur GitHub. Vous pouvez inspecter le code, contribuer ou même héberger votre propre instance.",
 				"q7": "Puis-je utiliser QRcodly à des fins commerciales ?",
@@ -1917,7 +1917,7 @@
 				"q6": "Les codes QR expirent-ils ?",
 				"a6": "Non. Les codes QR créés avec QRcodly n'expirent jamais. Les codes QR dynamiques restent entièrement fonctionnels et traçables tant que votre compte existe.",
 				"q7": "Puis-je créer des codes QR en masse ?",
-				"a7": "La création en masse de codes QR arrive bientôt. En attendant, vous pouvez utiliser des modèles de codes QR pour créer rapidement plusieurs codes avec un style cohérent.",
+				"a7": "Oui ! Vous pouvez créer des codes QR en masse via l'importation CSV. Téléchargez un fichier CSV avec votre contenu, et QRcodly générera tous les codes en une fois. Vous pouvez également utiliser des modèles pour un style cohérent.",
 				"q8": "Qu'est-ce qu'un modèle de code QR ?",
 				"a8": "Un modèle de code QR enregistre vos paramètres de design préférés — couleurs, logo, style de coins et plus — pour que vous puissiez les appliquer instantanément à de nouveaux codes QR sans reconfigurer à chaque fois.",
 				"q9": "Dans quels formats d'image puis-je télécharger les codes QR ?",

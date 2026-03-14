@@ -80,7 +80,6 @@ export default async function Page({ params }: DefaultPageParams) {
 	}));
 
 	// Build JSON-LD FAQPage structured data with ALL FAQs
-	// Content is from our own translation files (trusted), not user input
 	const allFaqItems = categories.flatMap((cat) => cat.items);
 	const jsonLd = {
 		'@context': 'https://schema.org',
@@ -94,6 +93,7 @@ export default async function Page({ params }: DefaultPageParams) {
 			},
 		})),
 	};
+	const jsonLdHtml = JSON.stringify(jsonLd).replaceAll('<', '\\u003c');
 
 	return (
 		<>
@@ -102,7 +102,7 @@ export default async function Page({ params }: DefaultPageParams) {
 				<script
 					type="application/ld+json"
 					// eslint-disable-next-line react/no-danger
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+					dangerouslySetInnerHTML={{ __html: jsonLdHtml }}
 				/>
 
 				{/* Hero */}

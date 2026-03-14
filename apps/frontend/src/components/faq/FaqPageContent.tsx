@@ -74,6 +74,7 @@ export function FaqPageContent({
 				<Input
 					type="text"
 					placeholder={searchPlaceholder}
+					aria-label={searchPlaceholder}
 					value={search}
 					onChange={(e) => setSearch(e.target.value)}
 					className="pl-10"
