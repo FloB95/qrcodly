@@ -108,45 +108,39 @@ export default async function Page({ params }: DefaultPageParams) {
 				{/* Hero */}
 				<section className="pt-24 pb-12 sm:pt-32 sm:pb-16 text-center">
 					<Container>
-						<div className="px-4 sm:px-6">
-							<Heading as="h1" size="hero" className="mb-4">
-								{t('heroTitle')}
-							</Heading>
-							<p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('heroSubtitle')}</p>
-						</div>
+						<Heading as="h1" size="hero" className="mb-4">
+							{t('heroTitle')}
+						</Heading>
+						<p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t('heroSubtitle')}</p>
 					</Container>
 				</section>
 
 				{/* FAQ Content */}
 				<section className="pb-16 sm:pb-24">
 					<Container>
-						<div className="px-4 sm:px-6">
-							<FaqPageContent
-								categories={categories}
-								allLabel={t('allCategory')}
-								searchPlaceholder={t('searchPlaceholder')}
-								noResults={t('noResults')}
-							/>
-						</div>
+						<FaqPageContent
+							categories={categories}
+							allLabel={t('allCategory')}
+							searchPlaceholder={t('searchPlaceholder')}
+							noResults={t('noResults')}
+						/>
 					</Container>
 				</section>
 
 				{/* CTA */}
 				<section className="pb-16 sm:pb-24">
 					<Container>
-						<div className="sm:px-6 lg:px-8">
-							<div className="max-w-4xl mx-auto p-px rounded-2xl bg-gradient-to-r from-[#f4f4f5] to-[#fddfbc]">
-								<div className="flex flex-col items-center justify-center text-center py-12 px-5 xs:px-10 md:py-16 rounded-[15px] bg-gradient-to-r from-white to-[#fff3e6]">
-									<Heading as="h2" size="lg">
-										{t('ctaTitle')}
-									</Heading>
-									<p className="text-slate-700 mt-3 md:text-lg max-w-xl">{t('ctaDescription')}</p>
-									<div className="mt-8">
-										<a href="mailto:info@qrcodly.de" className={buttonVariants({ size: 'lg' })}>
-											<EnvelopeIcon className="mr-2 h-5 w-5" />
-											{t('ctaButton')}
-										</a>
-									</div>
+						<div className="max-w-4xl mx-auto p-px rounded-2xl bg-gradient-to-r from-[#f4f4f5] to-[#fddfbc]">
+							<div className="flex flex-col items-center justify-center text-center py-12 px-5 xs:px-10 md:py-16 rounded-[15px] bg-gradient-to-r from-white to-[#fff3e6]">
+								<Heading as="h2" size="lg">
+									{t('ctaTitle')}
+								</Heading>
+								<p className="text-slate-700 mt-3 md:text-lg max-w-xl">{t('ctaDescription')}</p>
+								<div className="mt-8">
+									<a href="mailto:info@qrcodly.de" className={buttonVariants({ size: 'lg' })}>
+										<EnvelopeIcon className="mr-2 h-5 w-5" />
+										{t('ctaButton')}
+									</a>
 								</div>
 							</div>
 						</div>
