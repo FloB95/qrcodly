@@ -98,7 +98,7 @@ export function FaqPageContent({
 			{totalResults === 0 ? (
 				<p className="text-center text-muted-foreground py-12">{noResults}</p>
 			) : (
-				<section className="flex flex-col gap-6">
+				<section itemScope itemType="https://schema.org/FAQPage" className="flex flex-col gap-6">
 					{filteredCategories.map((cat, i) => (
 						<FaqCategorySection
 							key={cat.key}
