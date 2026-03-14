@@ -70,14 +70,23 @@ export const PaginationQueryParamsSchema = (whereObj?: z.ZodObject<z.ZodRawShape
 				(val) => (typeof val === 'string' ? parseInt(val, 10) : val),
 				z.number().int().min(1).max(1000),
 			)
-			.default(1),
+			.default(1)
+			.describe('Page number to retrieve (1-based, default: 1)'),
 		limit: z
 			.preprocess(
 				(val) => (typeof val === 'string' ? parseInt(val, 10) : val),
 				z.number().int().min(1).max(100),
 			)
-			.default(10),
-		where: whereObj ? whereObj.partial().optional() : z.undefined(),
+			.default(10)
+			.describe('Number of items per page (1-100, default: 10)'),
+		where: whereObj
+			? whereObj
+					.partial()
+					.optional()
+					.describe(
+						'Filter conditions. Each field supports operators: eq (equals), neq (not equals), like (contains). Date fields also support gt, gte, lt, lte.',
+					)
+			: z.undefined(),
 	});
 
 /**

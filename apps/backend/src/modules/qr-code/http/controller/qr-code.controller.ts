@@ -62,8 +62,11 @@ export class QrCodeController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			description: 'List QR Codes',
+			tags: ['QR Codes'],
 			summary: 'List QR Codes',
+			description:
+				'Returns a paginated list of QR codes owned by the authenticated user. ' +
+				'Supports filtering by name, creation date, content type, and assigned tags.',
 			operationId: 'qr-code/list-qr-codes',
 		},
 	})
@@ -107,9 +110,12 @@ export class QrCodeController extends AbstractController {
 			rateLimitPolicy: RateLimitPolicy.QR_CREATE,
 		},
 		schema: {
+			tags: ['QR Codes', 'Public'],
 			summary: 'Create a new QR code',
 			description:
-				'Creates a new QR code based on the provided data. If the QR code is dynamic (contentType = URL and isEditable = true), a short URL is automatically generated, linked to the QR code, and returned in the response. Returns the full QR code object including any related entities.',
+				'Creates a new QR code based on the provided data. Supports 8 content types: URL, Text, WiFi, vCard, Email, Location, Event, and EPC. ' +
+				'If the QR code is dynamic (contentType=URL and isEditable=true), a short URL is automatically generated and linked so the destination can be changed later. ' +
+				'This endpoint is publicly accessible (no auth required) but rate-limited. Authenticated users get their QR codes saved to their account.',
 			operationId: 'qr-code/create-qr-code',
 		},
 	})
@@ -132,11 +138,12 @@ export class QrCodeController extends AbstractController {
 			rateLimitPolicy: RateLimitPolicy.BULK_QR_CREATE,
 		},
 		schema: {
-			summary: 'Create multiple QR codes from CSV',
+			tags: ['QR Codes'],
+			summary: 'Bulk-create QR codes from CSV',
 			description:
-				'Generates multiple QR codes at once using the provided CSV file and optional configuration. ' +
-				'Each row in the CSV corresponds to a single QR code. ' +
-				'Returns an array of QR code objects including any related entities.',
+				'Generates multiple QR codes at once from a CSV file upload. Each row in the CSV maps to one QR code. ' +
+				'All QR codes share the same styling configuration and content type. ' +
+				'Returns an array of created QR code objects including any related entities.',
 			operationId: 'qr-code/bulk-create-qr-codes',
 		},
 	})
@@ -155,9 +162,18 @@ export class QrCodeController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			description: 'Get a QR Code by ID',
-			summary: 'Get QR Code',
+			tags: ['QR Codes'],
+			summary: 'Get QR code by ID',
+			description:
+				'Returns a single QR code with its full configuration, content, linked short URL, and tags. ' +
+				'Only the owner can access their QR codes.',
 			operationId: 'qr-code/get-qr-code-by-id',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'QR code UUID' },
+				},
+			},
 		},
 	})
 	async getOneById(
@@ -192,9 +208,19 @@ export class QrCodeController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			description: 'Update a QR Code by ID',
-			summary: 'Update QR Code',
+			tags: ['QR Codes'],
+			summary: 'Update QR code',
+			description:
+				'Partially updates a QR code. You can change the name, content, or styling configuration. ' +
+				'For dynamic QR codes, updating the URL content also updates the linked short URL destination. ' +
+				'Only the owner can update their QR codes.',
 			operationId: 'qr-code/update-qr-code-by-id',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'QR code UUID' },
+				},
+			},
 		},
 	})
 	async update(
@@ -220,9 +246,17 @@ export class QrCodeController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			description: 'Delete a QR Code by ID',
-			summary: 'Delete QR Code',
+			tags: ['QR Codes'],
+			summary: 'Delete QR code',
+			description:
+				'Permanently deletes a QR code and its associated short URL (if any). Only the owner can delete their QR codes.',
 			operationId: 'qr-code/delete-qr-code-by-id',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'QR code UUID' },
+				},
+			},
 		},
 	})
 	async deleteOneById(request: IHttpRequest<unknown, TIdRequestQueryDto>) {

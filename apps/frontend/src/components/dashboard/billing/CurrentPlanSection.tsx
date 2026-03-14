@@ -88,7 +88,7 @@ export function CurrentPlanSection() {
 			{/* Pro Plan Card */}
 			<Card
 				className={cn(
-					'bg-black text-white shadow-2xl border-gray-800',
+					'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-800',
 					hasProPlan && 'order-first',
 				)}
 			>
@@ -140,15 +140,15 @@ export function CurrentPlanSection() {
 							<span className="text-3xl lg:text-4xl font-semibold">
 								{hasProPlan ? currentProPrice : proPrice} &euro;
 							</span>
-							<span className="text-gray-400">/{tPlans('perMonth')}</span>
+							<span className="text-slate-300">/{tPlans('perMonth')}</span>
 						</p>
-						<p className="text-sm text-gray-400 mt-1">
+						<p className="text-sm text-slate-300 mt-1">
 							{hasProPlan ? currentBillingNote : billingNote}
 						</p>
 					</div>
 
 					{!hasProPlan && (
-						<p className="text-sm font-medium text-gray-400">{tPlans('pro.description')}</p>
+						<p className="text-sm font-medium text-slate-300">{tPlans('pro.description')}</p>
 					)}
 
 					<ul className="space-y-3 text-sm">

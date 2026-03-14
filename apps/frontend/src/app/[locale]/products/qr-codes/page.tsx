@@ -206,7 +206,11 @@ export default async function Page({ params }: DefaultPageParams) {
 					]}
 				/>
 
-				<ProductFaqSection title={t('faq.title')} items={faqItems} />
+				<ProductFaqSection
+					title={t('faq.title')}
+					items={faqItems}
+					viewAllLabel={t('faq.viewAll')}
+				/>
 
 				<ProductCtaSection
 					title={t('cta.title')}

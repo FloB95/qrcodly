@@ -125,17 +125,19 @@
 		"stat4Label": "Doorverwijssnelheid"
 	},
 	"metadata": {
-		"title": "QRcodly - Gratis QR-codegenerator",
-		"description": "Gratis QR-codes maken met logo, eigen ontwerp of sjablonen – ideaal voor marketing, visitekaartjes & meer. Gebruik nu de QR-codegenerator!",
-		"keywords": "qr code generator, qr code maken, qr code genereren, gratis, free, qr code maken gratis, qr code generator gratis, vcard qr code, link qr code, qrgenerator",
+		"title": "Gratis QR-codegenerator & URL-verkorter | QRcodly",
+		"description": "Maak gratis QR-codes & korte links. Eigen ontwerp, logo en sjablonen. URL-verkorter voor gepersonaliseerde korte links. QR-codes voor WiFi, vCards en meer.",
+		"keywords": "qr code generator, qr code maken, qr code genereren, gratis, free, qr code maken gratis, qr code generator gratis, vcard qr code, link qr code, qrgenerator, URL-verkorter, link verkorten, korte link, gratis URL-verkorter",
 		"structuredData": {
-			"description": "Gratis online QR-codegenerator met eigen ontwerpen, logo's en sjablonen. Maak dynamische QR-codes voor URL's, WiFi, vCards en meer.",
+			"description": "Gratis online QR-codegenerator en URL-verkorter met eigen ontwerpen, logo's en sjablonen. Maak dynamische QR-codes en gepersonaliseerde korte links voor URL's, WiFi, vCards en meer.",
 			"features": [
 				"Gratis QR-codegenerator",
+				"URL-verkorter",
 				"Aangepast QR-code ontwerp",
 				"QR-code met logo",
 				"Dynamische QR-codes",
 				"QR-code analytics",
+				"Gepersonaliseerde korte links",
 				"Bulk QR-code aanmaak",
 				"QR-code sjablonen",
 				"WiFi QR-codes",
@@ -894,7 +896,8 @@
 		"question10": "Werken QR-codes ook in gedrukte vorm?",
 		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!",
 		"question11": "Waar worden mijn gegevens gehost?",
-		"answer11": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk."
+		"answer11": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. Wij delen geen gegevens met derden. Voor aanmelden en authenticatie gebruiken wij alleen Clerk.",
+		"viewAll": "Bekijk alle FAQ's"
 	},
 	"productShowcase": {
 		"headline": "Krachtig dashboard.",
@@ -1329,7 +1332,7 @@
 				"everythingInFree": "Alles in Gratis",
 				"unlimitedTags": "Onbeperkte tags",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
-				"customDomains": "Aangepast domein voor dynamische QR-codes",
+				"customDomains": "Eén aangepast domein voor QR-codes en korte URLs",
 				"unlimitedApi": "Onbeperkte API-toegang",
 				"analyticsIntegrations": "Analytics-integraties (Google Analytics, Matomo)",
 				"prioritySupport": "Prioriteitsondersteuning",
@@ -1636,7 +1639,8 @@
 			"q5": "Verlopen korte URL's?",
 			"a5": "Nee. Korte URL's aangemaakt met QRcodly verlopen nooit. Ze blijven actief zolang je account bestaat, en je kunt ze handmatig uitschakelen indien nodig.",
 			"q6": "Wat is het verschil tussen korte URL's en QR-codes?",
-			"a6": "Korte URL's zijn klikbare links die je digitaal deelt (e-mail, sociale media, advertenties). QR-codes zijn scanbare afbeeldingen voor fysieke media (print, verpakking, bewegwijzering). Beide volgen analyses en kunnen eigen domeinen gebruiken."
+			"a6": "Korte URL's zijn klikbare links die je digitaal deelt (e-mail, sociale media, advertenties). QR-codes zijn scanbare afbeeldingen voor fysieke media (print, verpakking, bewegwijzering). Beide volgen analyses en kunnen eigen domeinen gebruiken.",
+			"viewAll": "Meer vragen? Bekijk alle FAQ's"
 		}
 	},
 	"productsQrCodes": {
@@ -1743,7 +1747,8 @@
 			"q5": "Kan ik QR-code scans volgen?",
 			"a5": "Ja. Elke dynamische QR-code volgt scans in realtime met totale scans, unieke bezoekers, apparaattypen, browsers, besturingssystemen en geografische locaties.",
 			"q6": "Verlopen QR-codes?",
-			"a6": "Nee. QR-codes aangemaakt met QRcodly verlopen nooit. Dynamische QR-codes blijven volledig functioneel en traceerbaar zolang je account bestaat."
+			"a6": "Nee. QR-codes aangemaakt met QRcodly verlopen nooit. Dynamische QR-codes blijven volledig functioneel en traceerbaar zolang je account bestaat.",
+			"viewAll": "Meer vragen? Bekijk alle FAQ's"
 		},
 		"cta": {
 			"title": "Klaar om je eerste QR-code te maken?",
@@ -1856,12 +1861,112 @@
 			"q5": "Kan ik de prestaties van QR-codes en korte URL's vergelijken?",
 			"a5": "Ja. Je QRcodly-dashboard toont uniforme analyse over alle QR-codes en korte URL's, waardoor het eenvoudig is om kanalen te vergelijken en de best presterende te identificeren.",
 			"q6": "Zijn de gegevens realtime?",
-			"a6": "Ja. Alle analysegegevens in QRcodly worden in realtime bijgewerkt. Zodra iemand een QR-code scant of op een korte URL klikt, verschijnen de gegevens in je dashboard."
+			"a6": "Ja. Alle analysegegevens in QRcodly worden in realtime bijgewerkt. Zodra iemand een QR-code scant of op een korte URL klikt, verschijnen de gegevens in je dashboard.",
+			"viewAll": "Meer vragen? Bekijk alle FAQ's"
 		},
 		"cta": {
 			"title": "Klaar om te zien wat je links je kunnen vertellen?",
 			"subtitle": "Volg elke scan en klik met realtime analyse. Voor altijd gratis, geen creditcard nodig.",
 			"ctaLabel": "Begin Gratis met Tracken"
+		}
+	},
+	"faqPage": {
+		"metaTitle": "FAQ - Veelgestelde vragen",
+		"metaDescription": "Vind antwoorden op veelgestelde vragen over QR-codes, URL-verkorting, analyses en meer.",
+		"heroTitle": "Veelgestelde vragen",
+		"heroSubtitle": "Alles wat je moet weten over QRcodly",
+		"searchPlaceholder": "Zoek vragen...",
+		"noResults": "Geen vragen gevonden die overeenkomen met je zoekopdracht.",
+		"allCategory": "Alle",
+		"generalCategory": "Algemeen",
+		"qrCodesCategory": "QR-codes",
+		"urlShortenerCategory": "URL-verkorter",
+		"analyticsCategory": "Analyses",
+		"pricingCategory": "Prijzen & account",
+		"ctaTitle": "Nog vragen?",
+		"ctaDescription": "Neem gerust contact met ons op — we helpen je graag.",
+		"ctaButton": "Neem contact op",
+		"categories": {
+			"general": {
+				"q1": "Wat is een QR-code?",
+				"a1": "Een QR-code (Quick Response Code) is een slimme, tweedimensionale barcode die verschillende soorten informatie kan opslaan, zoals websitelinks, tekst of contactgegevens. Het kan eenvoudig worden vastgelegd en ontcijferd met een smartphone of een speciale scanner.",
+				"q2": "Hoe maak ik een QR-code?",
+				"a2": "Met QRcodly kun je in een handomdraai je eigen QR-code maken: voer gewoon de gewenste inhoud in en download je vers gegenereerde code direct. Snel en eenvoudig!",
+				"q3": "Heb ik een speciale app nodig om QR-codes te scannen?",
+				"a3": "Nee, in de meeste gevallen is dat niet nodig! De ingebouwde camerafunctie van moderne smartphones kan QR-codes direct herkennen en de ingesloten inhoud openen — geen extra app vereist.",
+				"q4": "Werken QR-codes ook in print?",
+				"a4": "Absoluut! QR-codes zijn specifiek geoptimaliseerd voor afdrukken en werken betrouwbaar op verschillende materialen, zolang ze duidelijk en onbeschadigd blijven.",
+				"q5": "Waar worden mijn gegevens gehost?",
+				"a5": "Alle gegevens bij QRcodly worden uitsluitend opgeslagen op servers in Duitsland. We delen je gegevens niet met derden. We gebruiken alleen Clerk voor inloggen en authenticatie.",
+				"q6": "Is QRcodly open source?",
+				"a6": "Ja! QRcodly is volledig open source en beschikbaar op GitHub. Je kunt de code bekijken, bijdragen of zelfs je eigen instantie hosten.",
+				"q7": "Kan ik QRcodly voor commerciële doeleinden gebruiken?",
+				"a7": "Absoluut. QRcodly is gratis voor zowel persoonlijk als commercieel gebruik. Maak QR-codes voor je bedrijf, marketingcampagnes, productverpakkingen of andere commerciële toepassingen."
+			},
+			"qrCodes": {
+				"q1": "Is de QR-codegenerator gratis?",
+				"a1": "Ja! QRcodly laat je onbeperkt statische en dynamische QR-codes gratis aanmaken. Geen verborgen kosten, geen watermerken en geen registratie vereist voor basis QR-codes.",
+				"q2": "Wat zijn dynamische QR-codes?",
+				"a2": "Dynamische QR-codes laten je de bestemmings-URL wijzigen nadat de code is afgedrukt. Ze volgen ook elke scan met gedetailleerde analyses — geen herdruk nodig wanneer de inhoud verandert.",
+				"q3": "Kan ik mijn logo toevoegen aan een QR-code?",
+				"a3": "Absoluut. Upload elk beeld als centraal logo voor je QR-code. Je kunt ook kleuren, hoekstijlen aanpassen en ontwerpen opslaan als herbruikbare sjablonen.",
+				"q4": "Welke inhoudstypen worden ondersteund?",
+				"a4": "QRcodly ondersteunt meer dan 9 inhoudstypen: URL, Tekst, WiFi, vCard (contactkaarten), E-mail, Locatie, Agenda-evenementen, EPC (betaling) en sociale media-profielen.",
+				"q5": "Kan ik QR-codescans volgen?",
+				"a5": "Ja. Elke dynamische QR-code volgt scans in realtime en toont totale scans, unieke bezoekers, apparaattypen, browsers, besturingssystemen en geografische locaties.",
+				"q6": "Verlopen QR-codes?",
+				"a6": "Nee. QR-codes gemaakt met QRcodly verlopen nooit. Dynamische QR-codes blijven volledig functioneel en traceerbaar zolang je account bestaat.",
+				"q7": "Kan ik QR-codes in bulk aanmaken?",
+				"a7": "Het in bulk aanmaken van QR-codes komt binnenkort. In de tussentijd kun je QR-codesjablonen gebruiken om snel meerdere codes met een consistent ontwerp te maken.",
+				"q8": "Wat is een QR-codesjabloon?",
+				"a8": "Een QR-codesjabloon slaat je favoriete ontwerpinstellingen op — kleuren, logo, hoekstijl en meer — zodat je ze direct op nieuwe QR-codes kunt toepassen zonder elke keer opnieuw te configureren.",
+				"q9": "In welke beeldformaten kan ik QR-codes downloaden?",
+				"a9": "Je kunt je QR-codes downloaden als PNG-, SVG- of WEBP-bestanden. SVG is ideaal voor drukwerk omdat het schaalt zonder kwaliteitsverlies."
+			},
+			"urlShortener": {
+				"q1": "Is de URL-verkorter gratis?",
+				"a1": "Ja! De URL-verkorter van QRcodly is gratis te gebruiken. Je kunt korte URL's maken, klikken volgen en je links beheren zonder kosten. Pro-plannen ontgrendelen geavanceerde functies zoals aangepaste domeinen.",
+				"q2": "Kan ik mijn eigen domein gebruiken voor korte URL's?",
+				"a2": "Absoluut. Verbind je eigen domein om merkgebonden korte URL's te maken zoals go.jouwmerk.com/u/x7k9m. Aangepaste domeinen zijn beschikbaar bij Pro-plannen met automatische SSL-provisioning.",
+				"q3": "Hoe werkt kliktracking?",
+				"a3": "Elke keer dat iemand op je korte URL klikt, registreert QRcodly de klik samen met metadata zoals apparaattype, browser, besturingssysteem en geografische locatie — allemaal in realtime.",
+				"q4": "Kan ik een korte URL bewerken na het aanmaken?",
+				"a4": "Ja. Je kunt de bestemmings-URL bijwerken, de korte URL in- of uitschakelen en tags op elk moment beheren vanuit je dashboard zonder de korte URL zelf te wijzigen.",
+				"q5": "Verlopen korte URL's?",
+				"a5": "Nee. Korte URL's gemaakt met QRcodly verlopen nooit. Ze blijven actief zolang je account bestaat, en je kunt ze handmatig deactiveren indien nodig.",
+				"q6": "Wat is het verschil tussen korte URL's en QR-codes?",
+				"a6": "Korte URL's zijn klikbare links die je digitaal deelt (e-mail, sociale media, advertenties). QR-codes zijn scanbare afbeeldingen voor fysieke media (print, verpakkingen, bewegwijzering). Beide volgen analyses en kunnen aangepaste domeinen gebruiken.",
+				"q7": "Wat gebeurt er als ik een korte URL verwijder?",
+				"a7": "Wanneer je een korte URL verwijdert, wordt deze permanent inactief. Iedereen die op de link klikt, ziet een 404-pagina. Deze actie kan niet ongedaan worden gemaakt, dus overweeg de URL te deactiveren als je deze later nog nodig zou kunnen hebben.",
+				"q8": "Kan ik korte URL's aanmaken via de API?",
+				"a8": "Ja. QRcodly biedt een REST API waarmee je korte URL's programmatisch kunt aanmaken, bijwerken en beheren. Raadpleeg de API-documentatie voor details en authenticatie-instellingen."
+			},
+			"analytics": {
+				"q1": "Welke analyses biedt QRcodly?",
+				"a1": "QRcodly volgt totale scans/klikken, unieke bezoekers, apparaattypen, browsers, besturingssystemen en geografische locaties voor zowel QR-codes als korte URL's — allemaal in realtime.",
+				"q2": "Zijn analyses gratis inbegrepen?",
+				"a2": "Ja! Ingebouwde analyses zijn gratis inbegrepen voor alle dynamische QR-codes en korte URL's. Je krijgt realtime scan/klik-tracking, apparaatoverzichten en geografische inzichten zonder kosten.",
+				"q3": "Kan ik Google Analytics koppelen?",
+				"a3": "Ja. Pro-plangebruikers kunnen scan- en klikgegevens doorsturen naar Google Analytics 4 of Matomo. Alleen geanonimiseerde, niet-identificeerbare gegevens worden gedeeld, en de ingebouwde analyses van QRcodly blijven volledig actief.",
+				"q4": "Hoe worden geografische gegevens verzameld?",
+				"a4": "Geografische gegevens worden afgeleid van het IP-adres op het moment van scan of klik. Het IP wordt geanonimiseerd en nooit opgeslagen. Alleen de locatie op landniveau wordt vastgelegd.",
+				"q5": "Zijn de gegevens realtime?",
+				"a5": "Ja. Alle analysegegevens in QRcodly worden in realtime bijgewerkt. Zodra iemand een QR-code scant of op een korte URL klikt, verschijnen de gegevens in je dashboard.",
+				"q6": "Kan ik mijn analysegegevens exporteren?",
+				"a6": "De export van analysegegevens komt binnenkort. In de tussentijd kun je al je analyses in realtime bekijken op je dashboard en Google Analytics of Matomo koppelen voor aanvullende rapportages."
+			},
+			"pricing": {
+				"q1": "Wat is inbegrepen in het gratis plan?",
+				"a1": "Het gratis plan omvat onbeperkte statische en dynamische QR-codes, een URL-verkorter met kliktracking, realtime analyses, aangepaste QR-codeontwerpen met logo's en QR-codesjablonen. Geen creditcard vereist.",
+				"q2": "Hoe upgrade ik naar Pro?",
+				"a2": "Je kunt rechtstreeks vanuit je dashboard upgraden naar Pro. Ga naar de Plannen-pagina, kies je gewenste factureringscyclus en voltooi de checkout. Je Pro-functies worden direct geactiveerd.",
+				"q3": "Kan ik mijn abonnement op elk moment opzeggen?",
+				"a3": "Ja. Je kunt je Pro-abonnement op elk moment opzeggen vanuit je dashboard. Je hebt nog toegang tot de Pro-functies tot het einde van je huidige factureringsperiode.",
+				"q4": "Heb ik een account nodig om QR-codes te maken?",
+				"a4": "Nee! Je kunt statische QR-codes maken en downloaden zonder account. Registratie (gratis) ontgrendelt echter dynamische QR-codes, analyses, URL-verkorting en dashboardbeheer.",
+				"q5": "Kan ik facturen krijgen voor mijn Pro-abonnement?",
+				"a5": "Ja. Na de aankoop van het Pro-plan worden alle facturen automatisch gegenereerd. Je kunt ze op elk moment bekijken en downloaden in je dashboard onder Instellingen → Facturering → Facturen en bonnen."
+			}
 		}
 	}
 }

@@ -16,7 +16,9 @@ export type TCreateQrCodeDto = z.infer<typeof CreateQrCodeDto>;
 export const BulkImportQrCodeDto = QrCodeSchema.pick({
 	config: true,
 }).extend({
-	contentType: QrCodeContentType,
+	contentType: QrCodeContentType.describe(
+		'Content type for all QR codes in the import: url, text, wifi, vCard, email, location, event, or epc',
+	),
 	file: z
 		.instanceof(File, { error: 'Input is no file. Please upload a binary file.' })
 		.refine((file) => ['text/csv'].includes(file.type), { error: 'Invalid document file type' })

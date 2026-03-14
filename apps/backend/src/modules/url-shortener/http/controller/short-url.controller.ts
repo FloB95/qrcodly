@@ -74,9 +74,12 @@ export class ShortUrlController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			tags: ['Short URLs'],
 			summary: 'List short URLs',
 			description:
-				"Lists the authenticated user's short URLs with pagination and optional filtering. Use standalone=true to only show standalone short URLs (not linked to QR codes).",
+				"Returns a paginated list of the authenticated user's short URLs. " +
+				'Supports filtering by destination URL, short code, and tags. ' +
+				'Set standalone=true to only return short URLs that are not linked to a QR code.',
 			operationId: 'short-url/list-short-urls',
 		},
 	})
@@ -111,9 +114,12 @@ export class ShortUrlController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			tags: ['Short URLs'],
 			summary: 'Create a standalone short URL',
 			description:
-				'Creates a new standalone short URL (not linked to a QR code). Requires a destination URL. Returns the created short URL object.',
+				'Creates a new standalone short URL (not linked to a QR code). ' +
+				'A unique 5-character short code is automatically generated. ' +
+				'Optionally assign a custom domain and set the active state.',
 			operationId: 'short-url/create-short-url',
 		},
 	})
@@ -138,10 +144,22 @@ export class ShortUrlController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			tags: ['Short URLs'],
 			summary: 'Delete a standalone short URL',
 			description:
-				'Soft-deletes a standalone short URL. Only standalone short URLs (not linked to QR codes) can be deleted via this endpoint.',
+				'Soft-deletes a standalone short URL by its short code. ' +
+				'Only standalone short URLs (not linked to QR codes) can be deleted via this endpoint. ' +
+				'Short URLs linked to QR codes must be deleted by deleting the QR code.',
 			operationId: 'short-url/delete-short-url',
+			params: {
+				type: 'object',
+				properties: {
+					shortCode: {
+						type: 'string',
+						description: 'The 5-character short URL code (e.g. "Ab3xZ")',
+					},
+				},
+			},
 		},
 	})
 	async deleteShortUrl(
@@ -161,10 +179,18 @@ export class ShortUrlController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Get short URL details (authenticated)',
+			tags: ['Short URLs'],
+			summary: 'Get short URL details',
 			description:
-				'Fetches details for a short URL owned by the authenticated user. Only the owner can access this endpoint.',
+				'Returns the full details of a short URL including its destination, custom domain, active state, and assigned tags. ' +
+				'Only the owner can access their short URLs.',
 			operationId: 'short-url/get-short-url-detail',
+			params: {
+				type: 'object',
+				properties: {
+					shortCode: { type: 'string', description: 'The 5-character short URL code' },
+				},
+			},
 		},
 	})
 	async getDetail(
@@ -211,10 +237,18 @@ export class ShortUrlController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			tags: ['Short URLs'],
 			summary: 'Update a short URL',
 			description:
-				'Updates the active state or the destination URL of the specified short URL. Requires authentication and can only be performed by the owner of the short URL. Returns the updated short URL object.',
+				'Partially updates a standalone short URL. You can change the destination URL, name, or active state. ' +
+				'Short URLs linked to a QR code cannot be updated directly — update the QR code instead.',
 			operationId: 'short-url/update-short-url',
+			params: {
+				type: 'object',
+				properties: {
+					shortCode: { type: 'string', description: 'The 5-character short URL code' },
+				},
+			},
 		},
 	})
 	async update(
@@ -250,10 +284,18 @@ export class ShortUrlController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Toggle Short URL Active State',
+			tags: ['Short URLs'],
+			summary: 'Toggle short URL active state',
 			description:
-				'Activates or deactivates a short URL by toggling its current active state. This endpoint can be used to enable or disable dynamic QR codes associated with the short URL. Returns the updated short URL object.',
+				'Flips the active/inactive state of a short URL. When inactive, the short URL stops redirecting visitors. ' +
+				'This also affects dynamic QR codes linked to this short URL.',
 			operationId: 'short-url/toggle-active-state',
+			params: {
+				type: 'object',
+				properties: {
+					shortCode: { type: 'string', description: 'The 5-character short URL code' },
+				},
+			},
 		},
 	})
 	async toggleActiveState(
@@ -280,9 +322,12 @@ export class ShortUrlController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Reserve a short URL',
+			tags: ['Short URLs'],
+			summary: 'Reserve a short URL code',
 			description:
-				'Generates and reserves a new short URL for the authenticated user. This ensures the short URL is unique and ready for use. Returns the reserved short URL object including its code, target URL (if set), and metadata.',
+				'Generates and reserves a unique 5-character short code for the authenticated user. ' +
+				'The reserved code can later be used when creating a QR code or short URL. ' +
+				'Useful for pre-allocating codes before the destination URL is known.',
 			operationId: 'short-url/reserve-short-url',
 		},
 	})
@@ -302,10 +347,19 @@ export class ShortUrlController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Get Analytics for short URL',
+			tags: ['Analytics'],
+			summary: 'Get analytics for a short URL',
 			description:
-				'Fetches analytics data for the specified short URL, including click counts, visitor statistics, and other tracking information. Requires authentication, and only the owner of the short URL can access its analytics.',
+				'Returns detailed analytics for a short URL: pageviews, unique visitors, sessions, bounce rate, ' +
+				'time-series data, and breakdowns by browser, operating system, device type, and country. ' +
+				'Only the owner can access analytics for their short URLs.',
 			operationId: 'short-url/get-analytics',
+			params: {
+				type: 'object',
+				properties: {
+					shortCode: { type: 'string', description: 'The 5-character short URL code' },
+				},
+			},
 		},
 	})
 	async getAnalytics(
@@ -327,15 +381,26 @@ export class ShortUrlController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Retrieve total views for a short URL',
+			tags: ['Analytics'],
+			summary: 'Get total views for a short URL',
 			description:
-				'Fetches the total number of views for the specified short URL. Requires authentication and only the owner of the short URL can access this information.',
+				'Returns the total view count for a short URL. Results are cached for 1 hour for performance. ' +
+				'Only the owner can access view counts for their short URLs.',
 			operationId: 'short-url/get-views',
+			params: {
+				type: 'object',
+				properties: {
+					shortCode: { type: 'string', description: 'The 5-character short URL code' },
+				},
+			},
 			response: {
 				200: {
 					type: 'object',
 					properties: {
-						views: { type: 'number', description: 'Total number of views for the short URL' },
+						views: {
+							type: 'number',
+							description: 'Total number of pageviews for this short URL',
+						},
 					},
 				},
 			},

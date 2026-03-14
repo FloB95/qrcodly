@@ -14,7 +14,9 @@ export const UpdateShortUrlDto = ShortUrlSchema.pick({
 	name: true,
 })
 	.extend({
-		destinationUrl: z.httpUrl(),
+		destinationUrl: z
+			.httpUrl()
+			.describe('New destination URL (must start with http:// or https://)'),
 	})
 	.partial();
 

@@ -207,7 +207,7 @@ export function FeatureSlider() {
 									<h3 className="text-lg sm:text-[22px] font-bold text-slate-900 mb-2 leading-tight">
 										{t(feature.headlineKey)}
 									</h3>
-									<p className="text-slate-500 text-[15px] leading-relaxed">
+									<p className="text-slate-500 text-md leading-relaxed">
 										{t(feature.subHeadlineKey)}
 									</p>
 									{feature.actionHref &&

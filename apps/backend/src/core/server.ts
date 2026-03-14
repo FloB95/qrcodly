@@ -49,13 +49,58 @@ export class Server {
 			openapi: {
 				openapi: '3.0.0',
 				info: {
-					title: 'My Fastify App',
+					title: 'QRcodly API',
 					version: '1.0.0',
+					description:
+						'The QRcodly REST API lets you create, manage, and track QR codes and short URLs programmatically. ' +
+						'Features include dynamic QR codes with editable destinations, customizable styling, ' +
+						'bulk CSV import, URL shortening with click analytics, tagging, shareable public links, and design templates. ' +
+						'All endpoints require Bearer token authentication unless marked as public.',
+					contact: {
+						name: 'QRcodly Support',
+						url: 'https://qrcodly.com',
+					},
 				},
 				servers: [
 					{
 						url: `${env.BACKEND_URL}/api/v1`,
 						description: 'API v1',
+					},
+				],
+				tags: [
+					{
+						name: 'QR Codes',
+						description:
+							'Create, read, update, and delete QR codes. Supports 8 content types: URL, Text, WiFi, vCard, Email, Location, Event, and EPC (SEPA payment). Dynamic QR codes (URL type with isEditable=true) automatically generate a linked short URL so the destination can be changed after printing.',
+					},
+					{
+						name: 'QR Code Sharing',
+						description:
+							'Manage shareable public links for QR codes. Create a share link to let anyone view and optionally download a QR code without authentication.',
+					},
+					{
+						name: 'Short URLs',
+						description:
+							'Create and manage standalone short URLs (not linked to QR codes). Each short URL gets a unique 5-character code and supports click analytics, custom domains, and active/inactive toggling.',
+					},
+					{
+						name: 'Analytics',
+						description:
+							'Retrieve click analytics for short URLs including pageviews, visitor counts, browser/OS/device/country breakdowns, and time-series data.',
+					},
+					{
+						name: 'Tags',
+						description:
+							'Organize QR codes and short URLs with colored tags. Tags can be assigned to both QR codes and short URLs for filtering and grouping.',
+					},
+					{
+						name: 'Templates',
+						description:
+							'Save and reuse QR code styling configurations as templates. Includes predefined templates available to all users and custom user-created templates.',
+					},
+					{
+						name: 'Public',
+						description: 'Publicly accessible endpoints that do not require authentication.',
 					},
 				],
 				components: {
@@ -64,7 +109,8 @@ export class Server {
 							type: 'http',
 							scheme: 'bearer',
 							bearerFormat: 'API_KEY',
-							description: 'Enter your API key to access this API',
+							description:
+								'Authenticate with a Bearer token. Pass your API key in the Authorization header: `Authorization: Bearer <your-api-key>`',
 						},
 					},
 				},

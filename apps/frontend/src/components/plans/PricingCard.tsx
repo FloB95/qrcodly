@@ -36,7 +36,7 @@ export const PricingCard = ({
 			className={cn(
 				'rounded-3xl p-8 ring-1 sm:p-10',
 				isPro
-					? 'bg-black text-white sm:shadow-2xl sm:ring-gray-800'
+					? 'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white sm:ring-slate-800'
 					: 'bg-white text-gray-900 ring-gray-200',
 			)}
 		>
@@ -61,7 +61,7 @@ export const PricingCard = ({
 				<span className={isPro ? 'text-gray-400' : 'text-gray-500'}>{priceSuffix}</span>
 			</p>
 
-			<p className={`mt-6 text-sm font-medium ${isPro ? 'text-gray-400' : 'text-gray-500'}`}>
+			<p className={`mt-6 text-sm font-medium ${isPro ? 'text-slate-300' : 'text-gray-500'}`}>
 				{t(`${planId}.description`)}
 			</p>
 

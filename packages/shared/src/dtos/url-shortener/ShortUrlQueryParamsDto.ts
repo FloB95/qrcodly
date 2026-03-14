@@ -13,13 +13,17 @@ export const GetShortUrlQueryParamsSchema = PaginationQueryParamsSchema(ShortUrl
 				if (typeof val === 'string') return val === 'true';
 				return val;
 			}, z.boolean())
-			.optional(),
+			.optional()
+			.describe('If true, only returns standalone short URLs (not linked to a QR code)'),
 		tagIds: z
 			.preprocess(
 				(val) => (typeof val === 'string' ? [val] : val),
 				z.array(z.string().uuid()).min(1),
 			)
-			.optional(),
+			.optional()
+			.describe(
+				'Filter by tag ID(s). Only returns short URLs that have at least one of the specified tags',
+			),
 	},
 );
 

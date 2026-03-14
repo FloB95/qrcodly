@@ -58,8 +58,11 @@ export class TagController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'List Tags',
-			description: 'Fetches a paginated list of tags created by the authenticated user.',
+			tags: ['Tags'],
+			summary: 'List tags',
+			description:
+				'Returns a paginated list of tags owned by the authenticated user, including the number of QR codes assigned to each tag. ' +
+				'Supports filtering by name and creation date.',
 			operationId: 'tag/list-tags',
 		},
 	})
@@ -102,8 +105,10 @@ export class TagController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Create a new tag',
-			description: 'Creates a new tag based on the provided data.',
+			tags: ['Tags'],
+			summary: 'Create a tag',
+			description:
+				'Creates a new tag with a name and hex color. Tags can be assigned to QR codes and short URLs for organization.',
 			operationId: 'tag/create-tag',
 		},
 		config: {
@@ -126,9 +131,17 @@ export class TagController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Update Tag',
-			description: 'Update a tag by ID.',
+			tags: ['Tags'],
+			summary: 'Update a tag',
+			description:
+				'Partially updates a tag name and/or color. Only the owner can update their tags.',
 			operationId: 'tag/update-tag',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'Tag UUID' },
+				},
+			},
 		},
 	})
 	async update(
@@ -148,9 +161,17 @@ export class TagController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Delete Tag',
-			description: 'Delete a tag by ID.',
+			tags: ['Tags'],
+			summary: 'Delete a tag',
+			description:
+				'Permanently deletes a tag. The tag is automatically unlinked from all QR codes and short URLs.',
 			operationId: 'tag/delete-tag',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'Tag UUID' },
+				},
+			},
 		},
 	})
 	async deleteOneById(request: IHttpRequest<unknown, TIdRequestQueryDto>) {
@@ -170,9 +191,18 @@ export class TagController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Set QR Code Tags',
-			description: 'Replace all tags for a QR code with the provided tag IDs.',
+			tags: ['Tags'],
+			summary: 'Set QR code tags',
+			description:
+				'Replaces all tags assigned to a QR code with the provided list of tag IDs. ' +
+				'Pass an empty array to remove all tags. Returns the updated list of tags.',
 			operationId: 'tag/set-qr-code-tags',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'QR code UUID to assign tags to' },
+				},
+			},
 		},
 	})
 	async setQrCodeTags(
@@ -200,9 +230,18 @@ export class TagController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
-			summary: 'Set Short URL Tags',
-			description: 'Replace all tags for a short URL with the provided tag IDs.',
+			tags: ['Tags'],
+			summary: 'Set short URL tags',
+			description:
+				'Replaces all tags assigned to a short URL with the provided list of tag IDs. ' +
+				'Pass an empty array to remove all tags. Returns the updated list of tags.',
 			operationId: 'tag/set-short-url-tags',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'Short URL UUID to assign tags to' },
+				},
+			},
 		},
 	})
 	async setShortUrlTags(

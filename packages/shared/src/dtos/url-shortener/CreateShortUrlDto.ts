@@ -12,8 +12,13 @@ export const CreateShortUrlDto = ShortUrlSchema.pick({
 	customDomainId: true,
 	name: true,
 }).extend({
-	destinationUrl: z.httpUrl(),
-	isActive: z.boolean().default(true),
+	destinationUrl: z
+		.httpUrl()
+		.describe('The destination URL to redirect to (must start with http:// or https://)'),
+	isActive: z
+		.boolean()
+		.default(true)
+		.describe('Whether the short URL should be active immediately (default: true)'),
 });
 
 /**

@@ -36,7 +36,7 @@ export function ProductUseCases({
 										{c.icon}
 									</div>
 									<h3 className="text-lg font-semibold text-white mb-2">{c.title}</h3>
-									<p className="text-slate-300 text-sm leading-relaxed">{c.description}</p>
+									<p className="text-slate-300 text-md leading-relaxed">{c.description}</p>
 								</div>
 							</AnimateOnScroll>
 						))}

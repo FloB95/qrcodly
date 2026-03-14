@@ -125,17 +125,19 @@
 		"stat4Label": "Vitesse de redirection"
 	},
 	"metadata": {
-		"title": "QRcodly - Générateur de Code QR Gratuit",
-		"description": "Créez des QR codes gratuits avec logo, design perso ou modèles – idéal pour marketing, cartes de visite & plus. Utilisez le générateur QR !",
-		"keywords": "générateur de code qr, créer code qr, générer code qr, gratuit, libre, créer code qr gratuit, générateur de code qr gratuit, code qr vcard, code qr lien, qrgenerator",
+		"title": "Générateur de Code QR & Raccourcisseur d'URL | QRcodly",
+		"description": "Créez des QR codes & liens courts gratuits. Design perso, logo et modèles. Raccourcisseur d'URL pour liens personnalisés. QR codes pour WiFi, vCards et plus.",
+		"keywords": "générateur de code qr, créer code qr, générer code qr, gratuit, libre, créer code qr gratuit, générateur de code qr gratuit, code qr vcard, code qr lien, qrgenerator, raccourcisseur d'URL, raccourcir lien, lien court, raccourcisseur de liens gratuit",
 		"structuredData": {
-			"description": "Générateur de QR code en ligne gratuit avec designs personnalisés, logos et modèles. Créez des QR codes dynamiques pour URLs, WiFi, vCards et plus.",
+			"description": "Générateur de QR code et raccourcisseur d'URL en ligne gratuit avec designs personnalisés, logos et modèles. Créez des QR codes dynamiques et des liens courts personnalisés pour URLs, WiFi, vCards et plus.",
 			"features": [
 				"Générateur de QR Code Gratuit",
+				"Raccourcisseur d'URL",
 				"Design de QR Code Personnalisé",
 				"QR Code avec Logo",
 				"QR Codes Dynamiques",
 				"Analyse de QR Code",
+				"Liens Courts Personnalisés",
 				"Création en Masse de QR Codes",
 				"Modèles de QR Code",
 				"QR Codes WiFi",
@@ -894,7 +896,8 @@
 		"question10": "Les Codes QR fonctionnent-ils également imprimés ?",
 		"answer10": "Absolument ! Les Codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, tant qu'ils restent clairs et intacts. Assurez une bonne qualité d'impression, et vos codes seront prêts à être utilisés partout !",
 		"question11": "Où sont hébergées mes données ?",
-		"answer11": "Toutes les données de QRcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous ne partageons aucune donnée avec des tiers. Nous utilisons uniquement Clerk pour la connexion et l’authentification."
+		"answer11": "Toutes les données de QRcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous ne partageons aucune donnée avec des tiers. Nous utilisons uniquement Clerk pour la connexion et l’authentification.",
+		"viewAll": "Voir toutes les FAQ"
 	},
 	"notFound": {
 		"message": "Oups ! La page que vous recherchez n'existe pas.",
@@ -1333,7 +1336,7 @@
 				"everythingInFree": "Tout dans Gratuit",
 				"unlimitedTags": "Tags illimités",
 				"largerBulkImports": "Importations en masse plus grandes (50 lignes, 2Mo)",
-				"customDomains": "Domaine personnalisé pour codes QR dynamiques",
+				"customDomains": "Un domaine personnalisé pour codes QR et URLs courtes",
 				"unlimitedApi": "Accès API illimité",
 				"analyticsIntegrations": "Intégrations analytiques (Google Analytics, Matomo)",
 				"prioritySupport": "Support prioritaire",
@@ -1636,7 +1639,8 @@
 			"q5": "Les URLs courtes expirent-elles ?",
 			"a5": "Non. Les URLs courtes créées avec QRcodly n'expirent jamais. Elles restent actives tant que votre compte existe, et vous pouvez les désactiver manuellement si nécessaire.",
 			"q6": "Quelle est la différence entre les URLs courtes et les QR codes ?",
-			"a6": "Les URLs courtes sont des liens cliquables que vous partagez numériquement (e-mail, réseaux sociaux, publicités). Les QR codes sont des images scannables pour les supports physiques (impression, emballage, signalétique). Les deux suivent les analyses et peuvent utiliser des domaines personnalisés."
+			"a6": "Les URLs courtes sont des liens cliquables que vous partagez numériquement (e-mail, réseaux sociaux, publicités). Les QR codes sont des images scannables pour les supports physiques (impression, emballage, signalétique). Les deux suivent les analyses et peuvent utiliser des domaines personnalisés.",
+			"viewAll": "D'autres questions ? Voir toutes les FAQ"
 		}
 	},
 	"productsQrCodes": {
@@ -1743,7 +1747,8 @@
 			"q5": "Puis-je suivre les scans de QR codes ?",
 			"a5": "Oui. Chaque QR code dynamique suit les scans en temps réel, affichant les scans totaux, les visiteurs uniques, les types d'appareils, les navigateurs, les systèmes d'exploitation et les localisations géographiques.",
 			"q6": "Les QR codes expirent-ils ?",
-			"a6": "Non. Les QR codes créés avec QRcodly n'expirent jamais. Les QR codes dynamiques restent entièrement fonctionnels et traçables tant que votre compte existe."
+			"a6": "Non. Les QR codes créés avec QRcodly n'expirent jamais. Les QR codes dynamiques restent entièrement fonctionnels et traçables tant que votre compte existe.",
+			"viewAll": "D'autres questions ? Voir toutes les FAQ"
 		},
 		"cta": {
 			"title": "Prêt à créer votre premier QR code ?",
@@ -1856,12 +1861,112 @@
 			"q5": "Puis-je comparer les performances des QR codes et des URLs courtes ?",
 			"a5": "Oui. Votre tableau de bord QRcodly affiche des analyses unifiées pour tous les QR codes et URLs courtes, ce qui facilite la comparaison des canaux et l'identification des plus performants.",
 			"q6": "Les données sont-elles en temps réel ?",
-			"a6": "Oui. Toutes les données d'analyse dans QRcodly se mettent à jour en temps réel. Dès que quelqu'un scanne un QR code ou clique sur une URL courte, les données apparaissent dans votre tableau de bord."
+			"a6": "Oui. Toutes les données d'analyse dans QRcodly se mettent à jour en temps réel. Dès que quelqu'un scanne un QR code ou clique sur une URL courte, les données apparaissent dans votre tableau de bord.",
+			"viewAll": "D'autres questions ? Voir toutes les FAQ"
 		},
 		"cta": {
 			"title": "Prêt à découvrir ce que vos liens peuvent vous apprendre ?",
 			"subtitle": "Suivez chaque scan et clic avec des analyses en temps réel. Gratuit pour toujours, sans carte bancaire.",
 			"ctaLabel": "Commencer le suivi gratuitement"
+		}
+	},
+	"faqPage": {
+		"metaTitle": "FAQ - Questions fréquemment posées",
+		"metaDescription": "Trouvez des réponses aux questions courantes sur les codes QR, le raccourcissement d'URL, l'analyse et plus encore.",
+		"heroTitle": "Questions fréquemment posées",
+		"heroSubtitle": "Tout ce que vous devez savoir sur QRcodly",
+		"searchPlaceholder": "Rechercher des questions...",
+		"noResults": "Aucune question trouvée correspondant à votre recherche.",
+		"allCategory": "Tous",
+		"generalCategory": "Général",
+		"qrCodesCategory": "Codes QR",
+		"urlShortenerCategory": "Raccourcisseur d'URL",
+		"analyticsCategory": "Analyse",
+		"pricingCategory": "Tarifs et compte",
+		"ctaTitle": "Encore des questions ?",
+		"ctaDescription": "N'hésitez pas à nous contacter — nous sommes là pour vous aider.",
+		"ctaButton": "Nous contacter",
+		"categories": {
+			"general": {
+				"q1": "Qu'est-ce qu'un code QR ?",
+				"a1": "Un code QR (Quick Response Code) est un code-barres bidimensionnel intelligent qui peut stocker divers types d'informations, comme des liens web, du texte ou des coordonnées. Il peut être facilement capturé et déchiffré à l'aide d'un smartphone ou d'un scanner dédié.",
+				"q2": "Comment créer un code QR ?",
+				"a2": "Avec QRcodly, vous pouvez créer votre code QR personnalisé en un rien de temps : saisissez simplement le contenu souhaité et téléchargez votre code fraîchement généré directement. Rapide et simple !",
+				"q3": "Ai-je besoin d'une application spéciale pour scanner les codes QR ?",
+				"a3": "Non, dans la plupart des cas, ce n'est pas nécessaire ! La fonction caméra intégrée des smartphones modernes peut reconnaître directement les codes QR et ouvrir le contenu intégré — aucune application supplémentaire requise.",
+				"q4": "Les codes QR fonctionnent-ils aussi en impression ?",
+				"a4": "Absolument ! Les codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, à condition qu'ils restent clairs et intacts.",
+				"q5": "Où sont hébergées mes données ?",
+				"a5": "Toutes les données chez QRcodly sont stockées exclusivement sur des serveurs situés en Allemagne. Nous ne partageons pas vos données avec des tiers. Nous utilisons uniquement Clerk pour la connexion et l'authentification.",
+				"q6": "QRcodly est-il open source ?",
+				"a6": "Oui ! QRcodly est entièrement open source et disponible sur GitHub. Vous pouvez inspecter le code, contribuer ou même héberger votre propre instance.",
+				"q7": "Puis-je utiliser QRcodly à des fins commerciales ?",
+				"a7": "Absolument. QRcodly est gratuit pour un usage personnel et commercial. Créez des codes QR pour votre entreprise, vos campagnes marketing, vos emballages ou toute autre application commerciale."
+			},
+			"qrCodes": {
+				"q1": "Le générateur de codes QR est-il gratuit ?",
+				"a1": "Oui ! QRcodly vous permet de créer des codes QR statiques et dynamiques illimités gratuitement. Pas de frais cachés, pas de filigranes et pas d'inscription nécessaire pour les codes QR basiques.",
+				"q2": "Que sont les codes QR dynamiques ?",
+				"a2": "Les codes QR dynamiques vous permettent de changer l'URL de destination après l'impression du code. Ils suivent également chaque scan avec des analyses détaillées — pas besoin de réimprimer quand le contenu change.",
+				"q3": "Puis-je ajouter mon logo à un code QR ?",
+				"a3": "Absolument. Téléchargez n'importe quelle image comme logo central pour votre code QR. Vous pouvez également personnaliser les couleurs, les styles de coins et enregistrer des designs comme modèles réutilisables.",
+				"q4": "Quels types de contenu sont pris en charge ?",
+				"a4": "QRcodly prend en charge plus de 9 types de contenu : URL, Texte, WiFi, vCard (cartes de contact), E-mail, Localisation, Événements de calendrier, EPC (paiement) et profils de réseaux sociaux.",
+				"q5": "Puis-je suivre les scans de codes QR ?",
+				"a5": "Oui. Chaque code QR dynamique suit les scans en temps réel, affichant les scans totaux, les visiteurs uniques, les types d'appareils, les navigateurs, les systèmes d'exploitation et les localisations géographiques.",
+				"q6": "Les codes QR expirent-ils ?",
+				"a6": "Non. Les codes QR créés avec QRcodly n'expirent jamais. Les codes QR dynamiques restent entièrement fonctionnels et traçables tant que votre compte existe.",
+				"q7": "Puis-je créer des codes QR en masse ?",
+				"a7": "La création en masse de codes QR arrive bientôt. En attendant, vous pouvez utiliser des modèles de codes QR pour créer rapidement plusieurs codes avec un style cohérent.",
+				"q8": "Qu'est-ce qu'un modèle de code QR ?",
+				"a8": "Un modèle de code QR enregistre vos paramètres de design préférés — couleurs, logo, style de coins et plus — pour que vous puissiez les appliquer instantanément à de nouveaux codes QR sans reconfigurer à chaque fois.",
+				"q9": "Dans quels formats d'image puis-je télécharger les codes QR ?",
+				"a9": "Vous pouvez télécharger vos codes QR au format PNG, SVG ou WEBP. Le SVG est idéal pour les supports imprimés car il s'adapte sans perte de qualité."
+			},
+			"urlShortener": {
+				"q1": "Le raccourcisseur d'URL est-il gratuit ?",
+				"a1": "Oui ! Le raccourcisseur d'URL de QRcodly est gratuit. Vous pouvez créer des URL courtes, suivre les clics et gérer vos liens sans frais. Les plans Pro débloquent des fonctionnalités avancées comme les domaines personnalisés.",
+				"q2": "Puis-je utiliser mon propre domaine pour les URL courtes ?",
+				"a2": "Absolument. Connectez votre propre domaine pour créer des URL courtes de marque comme go.votremarque.com/u/x7k9m. Les domaines personnalisés sont disponibles sur les plans Pro avec provisionnement SSL automatique.",
+				"q3": "Comment fonctionne le suivi des clics ?",
+				"a3": "Chaque fois que quelqu'un clique sur votre URL courte, QRcodly enregistre le clic avec des métadonnées comme le type d'appareil, le navigateur, le système d'exploitation et la localisation géographique — tout en temps réel.",
+				"q4": "Puis-je modifier une URL courte après l'avoir créée ?",
+				"a4": "Oui. Vous pouvez mettre à jour l'URL de destination, activer ou désactiver l'URL courte et gérer les étiquettes à tout moment depuis votre tableau de bord sans changer l'URL courte elle-même.",
+				"q5": "Les URL courtes expirent-elles ?",
+				"a5": "Non. Les URL courtes créées avec QRcodly n'expirent jamais. Elles restent actives tant que votre compte existe, et vous pouvez les désactiver manuellement si nécessaire.",
+				"q6": "Quelle est la différence entre les URL courtes et les codes QR ?",
+				"a6": "Les URL courtes sont des liens cliquables que vous partagez numériquement (e-mail, réseaux sociaux, publicités). Les codes QR sont des images scannables pour les médias physiques (impression, emballage, signalisation). Les deux suivent les analyses et peuvent utiliser des domaines personnalisés.",
+				"q7": "Que se passe-t-il si je supprime une URL courte ?",
+				"a7": "Lorsque vous supprimez une URL courte, elle devient définitivement inactive. Toute personne cliquant sur le lien verra une page 404. Cette action ne peut pas être annulée, alors envisagez de désactiver l'URL si vous pourriez en avoir besoin plus tard.",
+				"q8": "Puis-je créer des URL courtes via l'API ?",
+				"a8": "Oui. QRcodly fournit une API REST qui vous permet de créer, mettre à jour et gérer des URL courtes de manière programmatique. Consultez la documentation de l'API pour les détails et la configuration de l'authentification."
+			},
+			"analytics": {
+				"q1": "Quelles analyses QRcodly fournit-il ?",
+				"a1": "QRcodly suit les scans/clics totaux, les visiteurs uniques, les types d'appareils, les navigateurs, les systèmes d'exploitation et les localisations géographiques pour les codes QR et les URL courtes — tout en temps réel.",
+				"q2": "L'analyse est-elle incluse gratuitement ?",
+				"a2": "Oui ! Les analyses intégrées sont incluses gratuitement pour tous les codes QR dynamiques et les URL courtes. Vous bénéficiez du suivi des scans/clics en temps réel, de la répartition des appareils et des informations géographiques sans frais.",
+				"q3": "Puis-je connecter Google Analytics ?",
+				"a3": "Oui. Les utilisateurs du plan Pro peuvent transférer les données de scans et de clics vers Google Analytics 4 ou Matomo. Seules les données anonymisées et non identifiables sont partagées, et les analyses intégrées de QRcodly restent entièrement actives.",
+				"q4": "Comment les données géographiques sont-elles collectées ?",
+				"a4": "Les données géographiques sont dérivées de l'adresse IP au moment du scan ou du clic. L'IP est anonymisée et jamais stockée. Seule la localisation au niveau du pays est enregistrée.",
+				"q5": "Les données sont-elles en temps réel ?",
+				"a5": "Oui. Toutes les données d'analyse dans QRcodly sont mises à jour en temps réel. Dès que quelqu'un scanne un code QR ou clique sur une URL courte, les données apparaissent dans votre tableau de bord.",
+				"q6": "Puis-je exporter mes données d'analyse ?",
+				"a6": "L'export des données d'analyse arrive bientôt. En attendant, vous pouvez consulter toutes vos analyses en temps réel sur votre tableau de bord et connecter Google Analytics ou Matomo pour des rapports supplémentaires."
+			},
+			"pricing": {
+				"q1": "Qu'est-ce qui est inclus dans le plan gratuit ?",
+				"a1": "Le plan gratuit comprend des codes QR statiques et dynamiques illimités, un raccourcisseur d'URL avec suivi des clics, des analyses en temps réel, des designs personnalisés de codes QR avec logos et des modèles de codes QR. Aucune carte de crédit requise.",
+				"q2": "Comment passer au plan Pro ?",
+				"a2": "Vous pouvez passer au Pro directement depuis votre tableau de bord. Rendez-vous sur la page Plans, choisissez votre cycle de facturation préféré et finalisez le paiement. Vos fonctionnalités Pro s'activent instantanément.",
+				"q3": "Puis-je annuler mon abonnement à tout moment ?",
+				"a3": "Oui. Vous pouvez annuler votre abonnement Pro à tout moment depuis votre tableau de bord. Vous continuerez à avoir accès aux fonctionnalités Pro jusqu'à la fin de votre période de facturation en cours.",
+				"q4": "Ai-je besoin d'un compte pour créer des codes QR ?",
+				"a4": "Non ! Vous pouvez créer et télécharger des codes QR statiques sans compte. Cependant, l'inscription (gratuite) débloque les codes QR dynamiques, les analyses, le raccourcissement d'URL et la gestion du tableau de bord.",
+				"q5": "Puis-je obtenir des factures pour mon abonnement Pro ?",
+				"a5": "Oui. Après l'achat du plan Pro, toutes les factures sont générées automatiquement. Vous pouvez les consulter et les télécharger à tout moment dans votre tableau de bord sous Paramètres → Facturation → Factures et reçus."
+			}
 		}
 	}
 }
