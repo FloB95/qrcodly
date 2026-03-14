@@ -27,7 +27,7 @@ export const UrlContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResponseDto
 				>
 					<ArrowTurnLeftUpIcon className="mr-3 h-6 w-6 font-semibold" />
 					<Link
-						href={qrCode.content.data.url}
+						href={shortUrlLink}
 						target="_blank"
 						className="text-muted-foreground pt-1 text-md break-all"
 						prefetch={false}

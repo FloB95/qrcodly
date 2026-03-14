@@ -130,7 +130,7 @@ Each module follows this layout:
 
 **Env validation**: `@t3-oss/env-nextjs` in `src/env.js` — type-safe server/client env vars.
 
-**i18n**: 8 locales (en, de, es, fr, it, nl, pl, ru). Translation files in `src/dictionaries/`. Uses `localePrefix: 'as-needed'`.
+**i18n**: 9 locales (en, de, es, fr, it, nl, pl, pt, ru). Translation files in `src/dictionaries/`. Uses `localePrefix: 'as-needed'`.
 
 ### Shared Package (`packages/shared`)
 
@@ -171,4 +171,4 @@ Backend tests use Jest with:
 - **TypeScript**: Strict mode, path aliases (`@/*` for local, `@shared/schemas` or `@shared/schemas/*` for shared)
 - **Formatting**: Prettier with tabs, semicolons, 100 char width
 - **Git hooks**: lefthook runs Prettier on staged files at pre-commit
-- **Locale translations**: When adding/changing user-facing strings, update all 8 locale dictionaries
+- **Locale translations**: When adding/changing user-facing strings, update all 9 locale dictionaries

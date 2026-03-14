@@ -6,7 +6,7 @@ import { TooltipProvider } from '../ui/tooltip';
 import { PostHogProvider } from './PostHogProvider';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { SupportedLanguages } from '@/i18n/routing';
-import { deDE, enUS, frFR, itIT, esES, nlNL, plPL, ruRU } from '@clerk/localizations';
+import { deDE, enUS, frFR, itIT, esES, nlNL, plPL, ptBR, ruRU } from '@clerk/localizations';
 import { shadcn } from '@clerk/themes';
 
 export default function Providers({
@@ -26,6 +26,7 @@ export default function Providers({
 		it: itIT,
 		es: esES,
 		pl: plPL,
+		pt: ptBR,
 		ru: ruRU,
 	};
 

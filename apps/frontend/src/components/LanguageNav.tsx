@@ -17,6 +17,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
 	it: 'Italiano',
 	nl: 'Nederlands',
 	pl: 'Polski',
+	pt: 'Português',
 	ru: 'Русский',
 };
 

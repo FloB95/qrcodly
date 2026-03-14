@@ -133,6 +133,12 @@ export function pickerStringToColorType(
 		};
 	}
 
+	// Fallback: gradient string that wasn't parsed correctly by getGradientObject
+	if (color.includes('gradient(')) {
+		const hexMatch = color.match(/#[0-9a-fA-F]{3,8}/);
+		return { type: 'hex', value: hexMatch ? hexMatch[0] : '#000000' };
+	}
+
 	// Handle solid colors
 	if (color.startsWith('#')) {
 		return { type: 'hex', value: color };

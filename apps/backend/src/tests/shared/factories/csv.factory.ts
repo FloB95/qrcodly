@@ -41,11 +41,11 @@ export const generateWifiCsv = (rows: number = 3): string => {
  */
 export const generateVCardCsv = (rows: number = 3): string => {
 	const header =
-		'Name;FirstName;LastName;Email;Phone;Fax;Company;Job;Street;City;ZIP;State;Country;Website\n';
+		'QR Code Name;FirstName;LastName;EmailPrivate;EmailBusiness;PhonePrivate;PhoneMobile;PhoneBusiness;Fax;Company;Job;Street;City;ZIP;State;Country;Website;Dynamic (1 = true, 0 = false)\n';
 	const dataRows = Array.from({ length: rows }, () => {
 		const firstName = faker.person.firstName();
 		const lastName = faker.person.lastName();
-		return `${firstName} ${lastName};${firstName};${lastName};${faker.internet.email()};+1${faker.number.int({ min: 1000000000, max: 9999999999 })};;${faker.company.name()};${faker.person.jobTitle()};${faker.location.streetAddress()};${faker.location.city()};${faker.location.zipCode()};${faker.location.state()};${faker.location.country()};${faker.internet.url()}`;
+		return `${firstName} ${lastName};${firstName};${lastName};${faker.internet.email()};;+1${faker.number.int({ min: 1000000000, max: 9999999999 })};;;;${faker.company.name()};${faker.person.jobTitle()};${faker.location.streetAddress()};${faker.location.city()};${faker.location.zipCode()};${faker.location.state()};${faker.location.country()};${faker.internet.url()};0`;
 	}).join('\n');
 	return header + dataRows;
 };
