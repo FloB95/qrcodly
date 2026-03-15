@@ -1,7 +1,7 @@
 {
 	"version": "5",
 	"dialect": "mysql",
-	"id": "bf940a73-9eeb-43f3-9a2c-dc0b34396d00",
+	"id": "67f5ca5a-34bf-4b91-b712-3b122f69672e",
 	"prevId": "69ff1de1-96af-4c73-96ce-9d197b9162a6",
 	"tables": {
 		"analytics_integration": {
@@ -1060,7 +1060,7 @@
 					"name": "rating",
 					"type": "enum('up','down')",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
 					"autoincrement": false
 				},
 				"feedback": {

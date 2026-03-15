@@ -61,13 +61,13 @@ export default function SatisfactionSurvey() {
 	const markResponded = useCallback(() => {
 		localStorage.setItem(STORAGE_KEY, 'true');
 		localStorage.removeItem(STORAGE_KEY_SKIPPED);
-		setDismissed(true);
 	}, []);
 
 	// If the API says user has already responded, mark localStorage and skip
 	useEffect(() => {
 		if (statusData?.hasResponded) {
 			markResponded();
+			setDismissed(true);
 		}
 	}, [statusData?.hasResponded, markResponded]);
 
@@ -81,9 +81,15 @@ export default function SatisfactionSurvey() {
 
 	const handleThumbsUp = () => {
 		posthog.capture('survey:submitted', { rating: 'up' });
-		submitMutation.mutate({ rating: 'up' });
-		markResponded();
-		setStep('thankyou');
+		submitMutation.mutate(
+			{ rating: 'up' },
+			{
+				onSuccess: () => {
+					markResponded();
+					setStep('thankyou');
+				},
+			},
+		);
 	};
 
 	const handleThumbsDown = () => {
@@ -92,19 +98,28 @@ export default function SatisfactionSurvey() {
 
 	const handleSubmitFeedback = () => {
 		posthog.capture('survey:submitted', { rating: 'down', hasFeedback: !!feedback.trim() });
-		submitMutation.mutate({
-			rating: 'down',
-			feedback: feedback.trim() || null,
-		});
-		markResponded();
-		setStep('thankyou');
+		submitMutation.mutate(
+			{ rating: 'down', feedback: feedback.trim() || null },
+			{
+				onSuccess: () => {
+					markResponded();
+					setStep('thankyou');
+				},
+			},
+		);
 	};
 
 	const handleSkipFeedback = () => {
 		posthog.capture('survey:submitted', { rating: 'down', hasFeedback: false });
-		submitMutation.mutate({ rating: 'down', feedback: null });
-		markResponded();
-		setStep('thankyou');
+		submitMutation.mutate(
+			{ rating: 'down', feedback: null },
+			{
+				onSuccess: () => {
+					markResponded();
+					setStep('thankyou');
+				},
+			},
+		);
 	};
 
 	const handleDismiss = () => {
@@ -115,10 +130,13 @@ export default function SatisfactionSurvey() {
 		setOpen(false);
 	};
 
-	// Auto-close after thank you
+	// Auto-close after thank you, then fully dismiss
 	useEffect(() => {
 		if (step !== 'thankyou') return;
-		const timeout = setTimeout(() => setOpen(false), 2000);
+		const timeout = setTimeout(() => {
+			setOpen(false);
+			setDismissed(true);
+		}, 2000);
 		return () => clearTimeout(timeout);
 	}, [step]);
 

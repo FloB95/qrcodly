@@ -47,7 +47,7 @@ class UserSurveyRepository extends AbstractRepository<TUserSurvey> {
 	}
 
 	async update(item: TUserSurvey, updates: Partial<TUserSurvey>): Promise<void> {
-		await this.db.update(this.table).set(updates).where(eq(this.table.id, item.id));
+		await this.db.update(this.table).set(updates).where(eq(this.table.id, item.id)).execute();
 	}
 
 	async delete(item: TUserSurvey): Promise<boolean> {

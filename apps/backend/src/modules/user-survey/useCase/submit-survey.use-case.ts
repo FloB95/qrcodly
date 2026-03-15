@@ -22,7 +22,7 @@ export class SubmitSurveyUseCase implements IBaseUseCase {
 		await this.userSurveyRepository.create({
 			id: newId,
 			userId,
-			rating: dto.rating ?? null,
+			rating: dto.rating,
 			feedback: dto.feedback ?? null,
 		});
 

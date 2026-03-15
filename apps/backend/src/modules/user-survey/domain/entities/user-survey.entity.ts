@@ -6,7 +6,7 @@ const userSurvey = createTable(
 	{
 		id: varchar('id', { length: 36 }).primaryKey(),
 		userId: varchar('user_id', { length: 255 }).notNull(),
-		rating: mysqlEnum('rating', ['up', 'down']),
+		rating: mysqlEnum('rating', ['up', 'down']).notNull(),
 		feedback: text('feedback'),
 		createdAt: datetime('created_at').notNull(),
 	},

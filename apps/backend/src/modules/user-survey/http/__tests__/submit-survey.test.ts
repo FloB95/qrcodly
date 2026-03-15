@@ -142,7 +142,7 @@ describe('submitSurvey', () => {
 		expect(response.statusCode).toBe(400);
 	});
 
-	it('should truncate feedback to 1000 characters', async () => {
+	it('should return 400 when feedback exceeds 1000 characters', async () => {
 		const longFeedback = 'a'.repeat(1001);
 		const response = await submitSurveyRequest(accessToken, {
 			rating: 'down',
