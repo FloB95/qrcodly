@@ -115,7 +115,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 
 			if (icon.type === 'custom') {
 				const base64 = await fetchSvgAsBase64(icon.src, color.value);
-				onSelect(base64, icon.key);
+				onSelect(base64, base64 ? icon.key : undefined);
 
 				posthog.capture('custom-icon-selected', {
 					iconName: icon.key,

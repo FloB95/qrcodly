@@ -460,6 +460,7 @@ export const SettingsForm = () => {
 										</p>
 									</div>
 									<Button
+										type="button"
 										variant="ghost"
 										size="icon"
 										onClick={handleRemoveIcon}

@@ -293,8 +293,15 @@ export const QrCodeOptionsSchema = z.object({
 	margin: z.number().min(0).describe('Quiet zone margin around the QR code in pixels'),
 	image: z
 		.string()
-		.max(1 * 1024 * 1024, 'Image is too large! Max size is 1 MB.')
 		.optional()
+		.refine((value) => {
+			if (!value) return true;
+			const base64 = value.includes(',') ? value.split(',', 2)[1]! : value;
+			const normalized = base64.replace(/\s/g, '');
+			const padding = normalized.endsWith('==') ? 2 : normalized.endsWith('=') ? 1 : 0;
+			const bytes = Math.floor((normalized.length * 3) / 4) - padding;
+			return bytes <= 1 * 1024 * 1024;
+		}, 'Image is too large! Max size is 1 MB.')
 		.describe('Base64-encoded logo image to embed in the center of the QR code. Max size 1 MB.'),
 	imageOptions: z
 		.object({
