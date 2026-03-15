@@ -50,6 +50,7 @@ export const SettingsForm = () => {
 	const { toast } = useToast();
 	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
 	const [imageDisplayName, setImageDisplayName] = useState<string | undefined>();
+	const [uploadResetKey, setUploadResetKey] = useState(0);
 
 	// Memoize default values to prevent unnecessary re-renders
 	const defaultValues = useMemo<TQrCodeOptions>(
@@ -125,6 +126,7 @@ export const SettingsForm = () => {
 			updateConfig(updatedConfig);
 			setImageDisplayName(iconName);
 			form.setValue('image', iconBase64 ?? '');
+			setUploadResetKey((prev) => prev + 1);
 		},
 		[config, updateConfig, form],
 	);
@@ -137,6 +139,7 @@ export const SettingsForm = () => {
 		};
 		updateConfig(updatedConfig);
 		setImageDisplayName(undefined);
+		setUploadResetKey((prev) => prev + 1);
 	}, [config, updateConfig]);
 
 	// Handler for FileUpload component accepted files
@@ -151,6 +154,7 @@ export const SettingsForm = () => {
 				const base64 = reader.result as string;
 				updateConfig({ ...config, image: base64 });
 				setImageDisplayName(file.name);
+				setUploadResetKey((prev) => prev + 1);
 			};
 
 			reader.onerror = () => {
@@ -171,9 +175,10 @@ export const SettingsForm = () => {
 			toast({
 				variant: 'destructive',
 				title: message,
+				description: t('uploadFormats'),
 			});
 		},
-		[toast],
+		[toast, t],
 	);
 
 	// Memoized size change handler
@@ -473,6 +478,7 @@ export const SettingsForm = () => {
 										<FormLabel>{t('iconLabel')}</FormLabel>
 										<FormControl>
 											<FileUpload
+												key={uploadResetKey}
 												accept={ACCEPTED_FILE_TYPES}
 												maxSize={MAX_FILE_SIZE}
 												maxFiles={1}
