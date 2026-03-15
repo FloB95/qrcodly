@@ -588,7 +588,10 @@
 			"errorToLargeFile": "El archivo es demasiado grande. El tamaño máximo es de 1MB.",
 			"hideBackgroundDots": "Ocultar puntos de fondo",
 			"predefinedIconInfo": "También puedes elegir entre iconos predefinidos.",
-			"clearBtn": "Borrar icono"
+			"clearBtn": "Borrar icono",
+			"currentIcon": "Icono actual",
+			"uploadDragDrop": "Arrastra y suelta una imagen aquí, o haz clic para buscar",
+			"uploadFormats": "JPG, PNG, SVG, WebP (máx. 1 MB)"
 		},
 		"contentSwitch": {
 			"tab": {

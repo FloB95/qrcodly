@@ -581,7 +581,10 @@
 			"errorToLargeFile": "Die Datei ist zu groß. Maximale Größe ist 1MB.",
 			"hideBackgroundDots": "Hintergrundpunkte ausblenden",
 			"predefinedIconInfo": "Du kannst auch aus vordefinierten Symbolen wählen.",
-			"clearBtn": "Symbol löschen"
+			"clearBtn": "Symbol löschen",
+			"currentIcon": "Aktuelles Symbol",
+			"uploadDragDrop": "Bild hierher ziehen oder klicken zum Durchsuchen",
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)"
 		},
 		"contentSwitch": {
 			"tab": {

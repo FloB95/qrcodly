@@ -588,7 +588,10 @@
 			"errorToLargeFile": "Le fichier est trop volumineux. La taille maximale est de 1 Mo.",
 			"hideBackgroundDots": "Masquer les points d'arrière-plan",
 			"predefinedIconInfo": "Vous pouvez également choisir parmi des icônes prédéfinies.",
-			"clearBtn": "Effacer l'icône"
+			"clearBtn": "Effacer l'icône",
+			"currentIcon": "Icône actuelle",
+			"uploadDragDrop": "Glissez-déposez une image ici, ou cliquez pour parcourir",
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 Mo)"
 		},
 		"contentSwitch": {
 			"tab": {

@@ -293,9 +293,9 @@ export const QrCodeOptionsSchema = z.object({
 	margin: z.number().min(0).describe('Quiet zone margin around the QR code in pixels'),
 	image: z
 		.string()
-		.max(0.5 * 1024 * 1024, 'Image is to large! Max size is 0.5 MB.')
+		.max(1 * 1024 * 1024, 'Image is too large! Max size is 1 MB.')
 		.optional()
-		.describe('Base64-encoded logo image to embed in the center of the QR code. Max size 0.5 MB.'),
+		.describe('Base64-encoded logo image to embed in the center of the QR code. Max size 1 MB.'),
 	imageOptions: z
 		.object({
 			hideBackgroundDots: z

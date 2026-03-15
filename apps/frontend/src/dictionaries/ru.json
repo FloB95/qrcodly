@@ -588,7 +588,10 @@
 			"errorToLargeFile": "Файл слишком большой. Максимальный размер — 1 МБ.",
 			"hideBackgroundDots": "Скрыть фоновые точки",
 			"predefinedIconInfo": "Вы также можете выбрать из предопределенных иконок.",
-			"clearBtn": "Очистить иконку"
+			"clearBtn": "Очистить иконку",
+			"currentIcon": "Текущая иконка",
+			"uploadDragDrop": "Перетащите изображение сюда или нажмите для выбора",
+			"uploadFormats": "JPG, PNG, SVG, WebP (макс. 1 МБ)"
 		},
 		"contentSwitch": {
 			"tab": {

@@ -588,7 +588,10 @@
 			"errorToLargeFile": "Het bestand is te groot. Maximale grootte is 1MB.",
 			"hideBackgroundDots": "Achtergrondpunten verbergen",
 			"predefinedIconInfo": "U kunt ook kiezen uit vooraf gedefinieerde iconen.",
-			"clearBtn": "Icoon wissen"
+			"clearBtn": "Icoon wissen",
+			"currentIcon": "Huidig icoon",
+			"uploadDragDrop": "Sleep een afbeelding hierheen, of klik om te bladeren",
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)"
 		},
 		"contentSwitch": {
 			"tab": {

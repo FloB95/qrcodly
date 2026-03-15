@@ -588,7 +588,10 @@
 			"errorToLargeFile": "Plik jest za duży. Maksymalny rozmiar to 1MB.",
 			"hideBackgroundDots": "Ukryj kropki tła",
 			"predefinedIconInfo": "Możesz także wybrać spośród predefiniowanych ikon.",
-			"clearBtn": "Wyczyść ikonę"
+			"clearBtn": "Wyczyść ikonę",
+			"currentIcon": "Aktualna ikona",
+			"uploadDragDrop": "Przeciągnij i upuść obraz tutaj, lub kliknij aby przeglądać",
+			"uploadFormats": "JPG, PNG, SVG, WebP (maks. 1 MB)"
 		},
 		"contentSwitch": {
 			"tab": {
