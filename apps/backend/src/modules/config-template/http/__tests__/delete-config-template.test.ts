@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateConfigTemplateDto } from '@shared/schemas';
 import { container } from 'tsyringe';
@@ -37,6 +37,7 @@ describe('deleteConfigTemplate', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -52,7 +53,7 @@ describe('deleteConfigTemplate', () => {
 			.execute(createConfigTemplateDto, user.id);
 		const response = await deleteConfigTemplateRequest(createdConfigTemplate.id, accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		expect(JSON.parse(response.payload)).toMatchObject({
 			deleted: true,
 		});
@@ -66,7 +67,7 @@ describe('deleteConfigTemplate', () => {
 
 	it('should return a 401 when not authenticated', async () => {
 		const response = await deleteConfigTemplateRequest('createdConfigTemplate.id');
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
@@ -81,7 +82,7 @@ describe('deleteConfigTemplate', () => {
 
 		// Attempt to delete user2's Config Template with user1's token
 		const response = await deleteConfigTemplateRequest(otherConfigTemplate.id, accessToken);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
@@ -89,7 +90,7 @@ describe('deleteConfigTemplate', () => {
 
 	it('should return 404 when trying to delete a non-existent Config Template', async () => {
 		const response = await deleteConfigTemplateRequest('non-existent-id', accessToken);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();

@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { TAG_API_PATH, createTagRequest } from './utils';
 import { createShortUrl } from '@/modules/url-shortener/http/__tests__/utils';
@@ -22,6 +22,7 @@ describe('setShortUrlTags', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -36,7 +37,7 @@ describe('setShortUrlTags', () => {
 			tagIds: [tag.id],
 		});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const tags = JSON.parse(response.payload);
 		expect(Array.isArray(tags)).toBe(true);
 		expect(tags.length).toBe(1);
@@ -48,7 +49,7 @@ describe('setShortUrlTags', () => {
 
 		const response = await setShortUrlTagsRequest(shortUrl.id, accessToken, { tagIds: [] });
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const tags = JSON.parse(response.payload);
 		expect(tags).toHaveLength(0);
 	});
@@ -58,7 +59,7 @@ describe('setShortUrlTags', () => {
 
 		const response = await setShortUrlTagsRequest(shortUrl.id, undefined, { tagIds: [] });
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 404 for non-existent short URL', async () => {
@@ -68,7 +69,7 @@ describe('setShortUrlTags', () => {
 			{ tagIds: [] },
 		);
 
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 403 when setting tags on another user short URL', async () => {
@@ -83,7 +84,7 @@ describe('setShortUrlTags', () => {
 			tagIds: [tag.id],
 		});
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 403 when using another user tags', async () => {
@@ -98,7 +99,7 @@ describe('setShortUrlTags', () => {
 			tagIds: [user2Tag.id],
 		});
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should allow any user to set up to 3 tags', async () => {
@@ -123,7 +124,7 @@ describe('setShortUrlTags', () => {
 			tagIds: [tag1.id, tag2.id, tag3.id],
 		});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const tags = JSON.parse(response.payload);
 		expect(tags).toHaveLength(3);
 	});
@@ -140,7 +141,7 @@ describe('setShortUrlTags', () => {
 			tagIds: tags.map((t) => t.id),
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 		const body = JSON.parse(response.payload);
 		expect(body.message).toContain('You can add a maximum of 3 tags');
 	});
@@ -166,7 +167,7 @@ describe('setShortUrlTags', () => {
 			tagIds: [tag2.id],
 		});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const tags = JSON.parse(response.payload);
 		expect(tags).toHaveLength(1);
 		expect(tags[0].id).toBe(tag2.id);
@@ -186,7 +187,7 @@ describe('setShortUrlTags', () => {
 		// Then send empty body (tagIds defaults to [])
 		const response = await setShortUrlTagsRequest(shortUrl.id, accessToken, {});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const tags = JSON.parse(response.payload);
 		expect(tags).toHaveLength(0);
 	});
@@ -216,7 +217,7 @@ describe('setShortUrlTags', () => {
 			tagIds: [tag.id],
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 		const body = JSON.parse(response.payload);
 		expect(body.message).toContain('linked to a QR code');
 	});

@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	generateVCardQrCodeDto,
 	generateDynamicVCardQrCodeDto,
@@ -12,6 +13,7 @@ describe('createQrCode - vCard Content Type', () => {
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -23,7 +25,7 @@ describe('createQrCode - vCard Content Type', () => {
 	it('should create a static vCard QR code (isDynamic: false)', async () => {
 		const createQrCodeDto = generateVCardQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('vCard');
@@ -52,7 +54,7 @@ describe('createQrCode - vCard Content Type', () => {
 	it('should create a dynamic vCard QR code (isDynamic: true)', async () => {
 		const createQrCodeDto = generateDynamicVCardQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('vCard');
@@ -82,7 +84,7 @@ describe('createQrCode - vCard Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidEmailDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject vCard with no fields provided', async () => {
@@ -94,7 +96,7 @@ describe('createQrCode - vCard Content Type', () => {
 			},
 		};
 		const response = await createRequest(emptyVCardDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 
 		const error = JSON.parse(response.payload);
 		expect(error.message).toContain('At least one vCard field must be provided');
@@ -111,7 +113,7 @@ describe('createQrCode - vCard Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidVCardDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject invalid phone format in vCard', async () => {
@@ -126,7 +128,7 @@ describe('createQrCode - vCard Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidPhoneDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject firstName exceeding max length (64 chars)', async () => {
@@ -140,7 +142,7 @@ describe('createQrCode - vCard Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidVCardDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject invalid website URL in vCard', async () => {
@@ -155,6 +157,6 @@ describe('createQrCode - vCard Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidWebsiteDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 });

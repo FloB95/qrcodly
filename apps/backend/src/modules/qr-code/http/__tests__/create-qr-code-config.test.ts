@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { generateQrCodeDto, getTestContext, createQrCodeRequest } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('createQrCode - Name and Configuration', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -22,7 +24,7 @@ describe('createQrCode - Name and Configuration', () => {
 				name: 'My QR Code',
 			};
 			const response = await createRequest(dto, accessToken);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(receivedQrCode.name).toBe('My QR Code');
@@ -34,7 +36,7 @@ describe('createQrCode - Name and Configuration', () => {
 				name: null,
 			};
 			const response = await createRequest(dto, accessToken);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(receivedQrCode.name).toBeNull();
@@ -46,7 +48,7 @@ describe('createQrCode - Name and Configuration', () => {
 				name: 'a'.repeat(33),
 			};
 			const response = await createRequest(dto, accessToken);
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should accept name at max length (32 chars)', async () => {
@@ -55,7 +57,7 @@ describe('createQrCode - Name and Configuration', () => {
 				name: 'a'.repeat(32),
 			};
 			const response = await createRequest(dto, accessToken);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 		});
 	});
 
@@ -101,7 +103,7 @@ describe('createQrCode - Name and Configuration', () => {
 			};
 
 			const response = await createRequest(customConfig, accessToken);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(receivedQrCode.config.width).toBe(500);
@@ -120,7 +122,7 @@ describe('createQrCode - Name and Configuration', () => {
 				},
 			};
 			const response = await createRequest(invalidConfig, accessToken);
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject negative height', async () => {
@@ -132,7 +134,7 @@ describe('createQrCode - Name and Configuration', () => {
 				},
 			};
 			const response = await createRequest(invalidConfig, accessToken);
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject negative margin', async () => {
@@ -144,7 +146,7 @@ describe('createQrCode - Name and Configuration', () => {
 				},
 			};
 			const response = await createRequest(invalidConfig, accessToken);
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject invalid hex color format', async () => {
@@ -162,7 +164,7 @@ describe('createQrCode - Name and Configuration', () => {
 				},
 			};
 			const response = await createRequest(invalidColorConfig, accessToken);
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject invalid dot type', async () => {
@@ -180,7 +182,7 @@ describe('createQrCode - Name and Configuration', () => {
 				},
 			};
 			const response = await createRequest(invalidDotTypeConfig, accessToken);
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should accept gradient color style', async () => {
@@ -203,7 +205,7 @@ describe('createQrCode - Name and Configuration', () => {
 				},
 			};
 			const response = await createRequest(gradientConfig, accessToken);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 		});
 
 		it('should accept rgba color style', async () => {
@@ -220,7 +222,7 @@ describe('createQrCode - Name and Configuration', () => {
 				},
 			};
 			const response = await createRequest(rgbaConfig, accessToken);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 		});
 
 		it('should accept all valid dot types', async () => {
@@ -241,7 +243,7 @@ describe('createQrCode - Name and Configuration', () => {
 					},
 				};
 				const response = await createRequest(dto, accessToken);
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 			}
 		});
 
@@ -263,7 +265,7 @@ describe('createQrCode - Name and Configuration', () => {
 					},
 				};
 				const response = await createRequest(dto, accessToken);
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 			}
 		});
 
@@ -285,7 +287,7 @@ describe('createQrCode - Name and Configuration', () => {
 					},
 				};
 				const response = await createRequest(dto, accessToken);
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 			}
 		});
 	});

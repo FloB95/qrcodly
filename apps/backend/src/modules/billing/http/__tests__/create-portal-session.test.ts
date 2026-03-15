@@ -1,3 +1,4 @@
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	cleanupCreatedSubscriptions,
@@ -11,6 +12,7 @@ describe('POST /billing/portal-session', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -29,7 +31,7 @@ describe('POST /billing/portal-session', () => {
 			payload: {},
 		});
 
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 		const data = JSON.parse(response.payload) as { message: string };
 		expect(data.message).toContain('No subscription found');
 	});
@@ -42,7 +44,7 @@ describe('POST /billing/portal-session', () => {
 			payload: {},
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should create portal session when user has subscription', async () => {

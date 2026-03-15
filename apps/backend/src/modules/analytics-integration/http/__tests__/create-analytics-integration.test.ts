@@ -1,4 +1,5 @@
 import type { TAnalyticsIntegrationResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	cleanupIntegrationsForUser,
@@ -17,6 +18,7 @@ describe('POST /analytics-integration (Create)', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 		// Ensure pro user has an active subscription so plan checks pass
 		await ensureProSubscription();
@@ -32,7 +34,7 @@ describe('POST /analytics-integration (Create)', () => {
 		const dto = generateGA4CreateDto();
 		const response = await createIntegrationViaApi(ctx, dto, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
 		expect(result.id).toBeDefined();
@@ -51,7 +53,7 @@ describe('POST /analytics-integration (Create)', () => {
 		const dto = generateMatomoCreateDto();
 		const response = await createIntegrationViaApi(ctx, dto, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
 		expect(result.providerType).toBe('matomo');
@@ -65,7 +67,7 @@ describe('POST /analytics-integration (Create)', () => {
 		const dto = generateGA4CreateDto();
 		const response = await createIntegrationViaApi(ctx, dto, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
 		expect(result.displayIdentifier).toMatch(/^G-/);
@@ -77,7 +79,7 @@ describe('POST /analytics-integration (Create)', () => {
 		const dto = generateGA4CreateDto();
 		const response = await createIntegrationViaApi(ctx, dto, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const result = JSON.parse(response.payload) as Record<string, unknown>;
 		expect(result.hasCredentials).toBe(true);
@@ -98,14 +100,14 @@ describe('POST /analytics-integration (Create)', () => {
 		const dto = generateMatomoCreateDto();
 		const response = await createIntegrationViaApi(ctx, dto, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 403 for free plan users', async () => {
 		const dto = generateGA4CreateDto();
 		const response = await createIntegrationViaApi(ctx, dto, ctx.accessToken);
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 401 when not authenticated', async () => {
@@ -117,7 +119,7 @@ describe('POST /analytics-integration (Create)', () => {
 			payload: dto,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 400 for invalid provider type', async () => {
@@ -135,7 +137,7 @@ describe('POST /analytics-integration (Create)', () => {
 			payload: dto,
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 for missing credentials', async () => {
@@ -152,7 +154,7 @@ describe('POST /analytics-integration (Create)', () => {
 			payload: dto,
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 for Matomo with a random string as URL', async () => {
@@ -162,7 +164,7 @@ describe('POST /analytics-integration (Create)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 for Matomo with a URL missing the protocol', async () => {
@@ -175,7 +177,7 @@ describe('POST /analytics-integration (Create)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 for Matomo with an empty site ID', async () => {
@@ -188,7 +190,7 @@ describe('POST /analytics-integration (Create)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 for GA4 with an invalid measurement ID', async () => {
@@ -201,7 +203,7 @@ describe('POST /analytics-integration (Create)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 for GA4 with an empty API secret', async () => {
@@ -214,6 +216,6 @@ describe('POST /analytics-integration (Create)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 });

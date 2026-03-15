@@ -1,5 +1,5 @@
 import { env } from '@/core/config/env';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { generateEditableUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
 import { API_BASE_PATH } from '@/core/config/constants';
 import type { FastifyInstance } from 'fastify';
@@ -14,6 +14,7 @@ describe('deleteShortUrl', () => {
 	let accessToken2: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -31,7 +32,7 @@ describe('deleteShortUrl', () => {
 		const shortUrl = await createShortUrl(testServer, accessToken);
 
 		const response = await deleteShortUrlRequest(shortUrl.shortCode, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const body = JSON.parse(response.payload);
 		expect(body.deleted).toBe(true);
@@ -65,7 +66,7 @@ describe('deleteShortUrl', () => {
 		expect(qrCode.shortUrl).not.toBeNull();
 
 		const response = await deleteShortUrlRequest(qrCode.shortUrl!.shortCode, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 
 		const error = JSON.parse(response.payload);
 		expect(error.message).toContain('linked to a QR code');
@@ -76,19 +77,19 @@ describe('deleteShortUrl', () => {
 			method: 'DELETE',
 			url: `${SHORT_URL_API_PATH}/XXXXX`,
 		});
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it("should return 403 when trying to delete another user's short URL", async () => {
 		const shortUrl = await createShortUrl(testServer, accessToken);
 
 		const response = await deleteShortUrlRequest(shortUrl.shortCode, accessToken2);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 404 when shortCode does not exist', async () => {
 		const response = await deleteShortUrlRequest('XXXXX', accessToken);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 404 when trying to delete an already deleted short URL', async () => {
@@ -96,6 +97,6 @@ describe('deleteShortUrl', () => {
 		await deleteShortUrlRequest(shortUrl.shortCode, accessToken);
 
 		const response = await deleteShortUrlRequest(shortUrl.shortCode, accessToken);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 });

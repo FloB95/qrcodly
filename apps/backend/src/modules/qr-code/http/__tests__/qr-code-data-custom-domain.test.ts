@@ -18,6 +18,7 @@ import {
 import db from '@/core/db';
 import { customDomain } from '@/core/db/schemas';
 import { eq, and } from 'drizzle-orm';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('QR Code Data - Custom Domain Integration', () => {
 	let testServer: FastifyInstance;
@@ -25,6 +26,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const qrCtx = await getTestContext();
 		testServer = qrCtx.testServer;
 		accessTokenPro = qrCtx.accessTokenPro;
@@ -72,7 +74,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 		it('should use custom domain in qrCodeData for editable URL QR code', async () => {
 			const createQrCodeDto = generateEditableUrlQrCodeDto();
 			const response = await createQrCodeRequest(testServer, createQrCodeDto, accessTokenPro);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 
@@ -84,7 +86,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 		it('should use custom domain in qrCodeData for event QR code', async () => {
 			const createQrCodeDto = generateEventQrCodeDto();
 			const response = await createQrCodeRequest(testServer, createQrCodeDto, accessTokenPro);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 
@@ -96,7 +98,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 		it('should use custom domain in qrCodeData for dynamic vCard QR code', async () => {
 			const createQrCodeDto = generateDynamicVCardQrCodeDto();
 			const response = await createQrCodeRequest(testServer, createQrCodeDto, accessTokenPro);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 
@@ -115,7 +117,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 		it('should use FRONTEND_URL in qrCodeData for editable URL QR code when no custom domain', async () => {
 			const createQrCodeDto = generateEditableUrlQrCodeDto();
 			const response = await createQrCodeRequest(testServer, createQrCodeDto, accessTokenPro);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 
@@ -130,7 +132,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 		it('should use FRONTEND_URL in qrCodeData for event QR code when no custom domain', async () => {
 			const createQrCodeDto = generateEventQrCodeDto();
 			const response = await createQrCodeRequest(testServer, createQrCodeDto, accessTokenPro);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 
@@ -143,7 +145,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 		it('should use FRONTEND_URL in qrCodeData for dynamic vCard when no custom domain', async () => {
 			const createQrCodeDto = generateDynamicVCardQrCodeDto();
 			const response = await createQrCodeRequest(testServer, createQrCodeDto, accessTokenPro);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 

@@ -1,5 +1,5 @@
 import { env } from '@/core/config/env';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import { SHORT_URL_API_PATH, createShortUrl } from './utils';
 import { mockFetchUmamiAllEndpoints, resetFetchMocks } from '@/tests/shared/mocks/umami.mock';
@@ -21,6 +21,7 @@ describe('recordScan (POST /:shortCode/record-scan)', () => {
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -57,7 +58,7 @@ describe('recordScan (POST /:shortCode/record-scan)', () => {
 			SCAN_PAYLOAD,
 			env.INTERNAL_API_SECRET,
 		);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const body = JSON.parse(response.payload) as { status: string };
 		expect(body.status).toBe('ok');
@@ -65,7 +66,7 @@ describe('recordScan (POST /:shortCode/record-scan)', () => {
 
 	it('should return 200 for non-existent shortCode (still processes Umami + cache clear)', async () => {
 		const response = await recordScanRequest('XXXXX', SCAN_PAYLOAD, env.INTERNAL_API_SECRET);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const body = JSON.parse(response.payload) as { status: string };
 		expect(body.status).toBe('ok');
@@ -80,17 +81,17 @@ describe('recordScan (POST /:shortCode/record-scan)', () => {
 			payloadWithoutScreen,
 			env.INTERNAL_API_SECRET,
 		);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 	});
 
 	it('should return 401 without x-internal-api-key header', async () => {
 		const response = await recordScanRequest('XXXXX', SCAN_PAYLOAD);
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 401 with invalid API key', async () => {
 		const response = await recordScanRequest('XXXXX', SCAN_PAYLOAD, 'wrong-key');
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 401 when using Bearer token instead of internal API key', async () => {
@@ -105,7 +106,7 @@ describe('recordScan (POST /:shortCode/record-scan)', () => {
 			},
 			payload: SCAN_PAYLOAD,
 		});
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 400 when required body fields are missing', async () => {
@@ -114,6 +115,6 @@ describe('recordScan (POST /:shortCode/record-scan)', () => {
 			{ url: 'https://example.com' },
 			env.INTERNAL_API_SECRET,
 		);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 });

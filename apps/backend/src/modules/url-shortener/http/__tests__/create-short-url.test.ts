@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { generateShortUrlDto } from '@/tests/shared/factories/short-url.factory';
 import type { FastifyInstance } from 'fastify';
 import type { TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
@@ -10,6 +10,7 @@ describe('createShortUrl', () => {
 	let userId: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -30,7 +31,7 @@ describe('createShortUrl', () => {
 	it('should create a standalone short URL and return 201', async () => {
 		const dto = generateShortUrlDto();
 		const response = await createShortUrlRequest(dto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const shortUrl = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
 		expect(shortUrl.id).toEqual(expect.any(String));
@@ -54,7 +55,7 @@ describe('createShortUrl', () => {
 	it('should allow creating a short URL with isActive set to false', async () => {
 		const dto = generateShortUrlDto({ isActive: false });
 		const response = await createShortUrlRequest(dto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const shortUrl = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
 		expect(shortUrl.isActive).toBe(false);
@@ -63,7 +64,7 @@ describe('createShortUrl', () => {
 	it('should default isActive to true when not provided', async () => {
 		const { isActive: _, ...dto } = generateShortUrlDto();
 		const response = await createShortUrlRequest(dto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const shortUrl = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
 		expect(shortUrl.isActive).toBe(true);
@@ -72,7 +73,7 @@ describe('createShortUrl', () => {
 	it('should create a short URL with a name', async () => {
 		const dto = generateShortUrlDto({ name: 'My Campaign Link' });
 		const response = await createShortUrlRequest(dto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const shortUrl = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
 		expect(shortUrl.name).toBe('My Campaign Link');
@@ -81,7 +82,7 @@ describe('createShortUrl', () => {
 	it('should create a short URL without a name (null)', async () => {
 		const dto = generateShortUrlDto({ name: null });
 		const response = await createShortUrlRequest(dto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const shortUrl = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
 		expect(shortUrl.name).toBeNull();
@@ -94,7 +95,7 @@ describe('createShortUrl', () => {
 			headers: { 'Content-Type': 'application/json' },
 			payload: generateShortUrlDto(),
 		});
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 400 for invalid destinationUrl format', async () => {
@@ -102,7 +103,7 @@ describe('createShortUrl', () => {
 			{ destinationUrl: 'not-a-valid-url', isActive: true, customDomainId: null },
 			accessToken,
 		);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 when destinationUrl is missing', async () => {
@@ -110,7 +111,7 @@ describe('createShortUrl', () => {
 			{ isActive: true, customDomainId: null },
 			accessToken,
 		);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 when destinationUrl is null', async () => {
@@ -118,6 +119,6 @@ describe('createShortUrl', () => {
 			{ destinationUrl: null, isActive: true, customDomainId: null },
 			accessToken,
 		);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 });

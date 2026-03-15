@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { container } from 'tsyringe';
 import { type User } from '@clerk/fastify';
@@ -36,6 +36,7 @@ describe('listQrCodes', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -83,7 +84,7 @@ describe('listQrCodes', () => {
 	it('should fetch only the signed-in user\u2019s QR codes and return status code 200', async () => {
 		const response = await listQrCodesRequest({}, accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { data, total, page, limit } = JSON.parse(response.payload);
 		expect(Array.isArray(data)).toBe(true);
@@ -98,7 +99,7 @@ describe('listQrCodes', () => {
 	it('should respect pagination parameters', async () => {
 		const response = await listQrCodesRequest({ page: 1, limit: 2 }, accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { data, total, page, limit } = JSON.parse(response.payload);
 		expect(data.length).toBe(2); // Limit is 2
@@ -110,7 +111,7 @@ describe('listQrCodes', () => {
 	it('ensure the list works without page and limit parameters', async () => {
 		const response = await listQrCodesRequest({}, accessToken2);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { data, total } = JSON.parse(response.payload);
 		expect(Array.isArray(data)).toBe(true);
@@ -124,7 +125,7 @@ describe('listQrCodes', () => {
 	it('should return 401 if no authorization token is provided', async () => {
 		const response = await listQrCodesRequest();
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
@@ -134,7 +135,7 @@ describe('listQrCodes', () => {
 		it('should filter QR codes by name using like', async () => {
 			const response = await listQrCodesRequest({ where: { name: { like: 'WiFi' } } }, accessToken);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const { data, total } = JSON.parse(response.payload);
 			expect(total).toBe(1);
@@ -145,7 +146,7 @@ describe('listQrCodes', () => {
 		it('should return multiple results for partial name match', async () => {
 			const response = await listQrCodesRequest({ where: { name: { like: 'a' } } }, accessToken);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const { data, total } = JSON.parse(response.payload);
 			// 'My Website Link' does not contain 'a' but 'Landing Page URL', 'Welcome Message', 'Business Card' do
@@ -161,7 +162,7 @@ describe('listQrCodes', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const { data, total } = JSON.parse(response.payload);
 			expect(total).toBe(0);
@@ -173,7 +174,7 @@ describe('listQrCodes', () => {
 		it('should filter by single content type', async () => {
 			const response = await listQrCodesRequest({ contentType: ['text'] }, accessToken);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const { data, total } = JSON.parse(response.payload);
 			expect(total).toBe(1);
@@ -185,7 +186,7 @@ describe('listQrCodes', () => {
 		it('should filter by multiple content types', async () => {
 			const response = await listQrCodesRequest({ contentType: ['url', 'wifi'] }, accessToken);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const { data, total } = JSON.parse(response.payload);
 			expect(total).toBe(3); // 2 URL + 1 WiFi
@@ -198,7 +199,7 @@ describe('listQrCodes', () => {
 		it('should return empty results for content type with no matches', async () => {
 			const response = await listQrCodesRequest({ contentType: ['event'] }, accessToken);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const { data, total } = JSON.parse(response.payload);
 			expect(total).toBe(0);
@@ -208,7 +209,7 @@ describe('listQrCodes', () => {
 		it('should accept a single content type as string', async () => {
 			const response = await listQrCodesRequest({ contentType: 'vCard' }, accessToken);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const { data, total } = JSON.parse(response.payload);
 			expect(total).toBe(1);
@@ -226,7 +227,7 @@ describe('listQrCodes', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const { data, total } = JSON.parse(response.payload);
 			expect(total).toBe(1);
@@ -245,7 +246,7 @@ describe('listQrCodes', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const { data, total, limit } = JSON.parse(response.payload);
 			expect(data).toHaveLength(1);
@@ -283,7 +284,7 @@ describe('listQrCodes', () => {
 			// Filter by tagIds
 			const response = await listQrCodesRequest({ tagIds: [tag.id] }, accessToken);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const { data, total } = JSON.parse(response.payload);
 			expect(total).toBe(1);
 			expect(data).toHaveLength(1);
@@ -302,7 +303,7 @@ describe('listQrCodes', () => {
 
 			const response = await listQrCodesRequest({ tagIds: [tag.id] }, accessToken);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const { data, total } = JSON.parse(response.payload);
 			expect(total).toBe(0);
 			expect(data).toHaveLength(0);

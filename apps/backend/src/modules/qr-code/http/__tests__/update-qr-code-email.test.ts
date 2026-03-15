@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/schemas';
 import { generateEmailQrCodeDto, getTestContext, QR_CODE_API_PATH } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('updateQrCode - Email Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -52,7 +54,7 @@ describe('updateQrCode - Email Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.content.type).toBe('email');
 		if (updatedQrCode.content.type === 'email') {
@@ -87,7 +89,7 @@ describe('updateQrCode - Email Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.name).toBe(newName);
 		if (updatedQrCode.content.type === 'email') {
@@ -122,7 +124,7 @@ describe('updateQrCode - Email Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.name).toBe(newName);
 		expect(updatedQrCode.config.width).toBe(400);
@@ -149,7 +151,7 @@ describe('updateQrCode - Email Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 
 		// Verify qrCodeData for email-only
@@ -175,7 +177,7 @@ describe('updateQrCode - Email Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		if (updatedQrCode.content.type === 'email') {
 			expect(updatedQrCode.content.data.subject).toBe(newEmailData.subject);
@@ -204,7 +206,7 @@ describe('updateQrCode - Email Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject email address exceeding max length (100 chars)', async () => {
@@ -224,7 +226,7 @@ describe('updateQrCode - Email Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject subject exceeding max length (250 chars)', async () => {
@@ -244,7 +246,7 @@ describe('updateQrCode - Email Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject body exceeding max length (1000 chars)', async () => {
@@ -264,7 +266,7 @@ describe('updateQrCode - Email Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 	});
 });

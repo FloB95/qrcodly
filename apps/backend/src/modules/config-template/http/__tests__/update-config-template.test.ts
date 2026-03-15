@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import {
 	QrCodeDefaults,
@@ -45,6 +45,7 @@ describe('updateConfigTemplate', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -65,7 +66,7 @@ describe('updateConfigTemplate', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
 			expect(updatedTemplate.name).toBe(updateDto.name);
 		});
@@ -88,7 +89,7 @@ describe('updateConfigTemplate', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
 			expect(updatedTemplate.config.width).toBe(500);
 			expect(updatedTemplate.config.height).toBe(500);
@@ -112,7 +113,7 @@ describe('updateConfigTemplate', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
 			expect(updatedTemplate.name).toBe('New Name');
 			expect(updatedTemplate.config.width).toBe(600);
@@ -134,7 +135,7 @@ describe('updateConfigTemplate', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
 			expect(updatedTemplate.name).toBe('New Name');
 
@@ -152,7 +153,7 @@ describe('updateConfigTemplate', () => {
 				payload: { name: 'Test' },
 			});
 
-			expect(response.statusCode).toBe(401);
+			expect(response).toHaveStatusCode(401);
 		});
 
 		it("should return 403 when updating another user's template", async () => {
@@ -169,14 +170,14 @@ describe('updateConfigTemplate', () => {
 				accessToken2,
 			);
 
-			expect(response.statusCode).toBe(403);
+			expect(response).toHaveStatusCode(403);
 		});
 
 		it('should return 404 when template does not exist', async () => {
 			const updateDto = { name: 'Test' };
 			const response = await updateConfigTemplateRequest('non_existent_id', updateDto, accessToken);
 
-			expect(response.statusCode).toBe(404);
+			expect(response).toHaveStatusCode(404);
 		});
 
 		it('should return 400 for invalid config structure', async () => {
@@ -195,7 +196,7 @@ describe('updateConfigTemplate', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 	});
 });

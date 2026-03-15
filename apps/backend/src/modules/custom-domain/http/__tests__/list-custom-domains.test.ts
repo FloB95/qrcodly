@@ -1,4 +1,5 @@
 import type { TCustomDomainListResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	createCustomDomainDirectly,
@@ -14,6 +15,7 @@ describe('GET /custom-domain (List Custom Domains)', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -27,7 +29,7 @@ describe('GET /custom-domain (List Custom Domains)', () => {
 		await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID);
 
 		const response = await listCustomDomains(ctx, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TCustomDomainListResponseDto;
 		expect(result.data).toBeInstanceOf(Array);
@@ -37,7 +39,7 @@ describe('GET /custom-domain (List Custom Domains)', () => {
 
 	it('should support pagination', async () => {
 		const response = await listCustomDomains(ctx, ctx.accessTokenPro, 'page=1&limit=5');
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TCustomDomainListResponseDto;
 		expect(result.pagination.page).toBe(1);
@@ -50,7 +52,7 @@ describe('GET /custom-domain (List Custom Domains)', () => {
 			url: CUSTOM_DOMAIN_API_PATH,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should only return domains owned by the user', async () => {

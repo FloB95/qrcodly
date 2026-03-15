@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { type User } from '@clerk/fastify';
 import qs from 'qs';
@@ -20,6 +20,7 @@ describe('listTags', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -33,7 +34,7 @@ describe('listTags', () => {
 
 		const response = await listTagsRequest({ page: 1, limit: 10 }, accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { data } = JSON.parse(response.payload);
 		expect(Array.isArray(data)).toBe(true);
@@ -44,13 +45,13 @@ describe('listTags', () => {
 
 	it('should return 401 without auth token', async () => {
 		const response = await listTagsRequest();
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return paginated results', async () => {
 		const response = await listTagsRequest({ page: 1, limit: 2 }, accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const body = JSON.parse(response.payload);
 		expect(body.data.length).toBeLessThanOrEqual(2);
 		expect(body.page).toBe(1);

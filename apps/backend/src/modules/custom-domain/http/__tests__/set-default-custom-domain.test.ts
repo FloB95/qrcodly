@@ -1,4 +1,5 @@
 import type { TCustomDomainResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	createCustomDomainDirectly,
@@ -14,6 +15,7 @@ describe('POST /custom-domain/:id/set-default', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -29,7 +31,7 @@ describe('POST /custom-domain/:id/set-default', () => {
 
 		// Should fail because domain is not fully verified
 		const response = await setDefaultDomain(ctx, domainId, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 
 		const error = JSON.parse(response.payload) as { message: string };
 		expect(error.message).toContain('not valid for use');
@@ -40,7 +42,7 @@ describe('POST /custom-domain/:id/set-default', () => {
 		const domainId = await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID);
 
 		const response = await setDefaultDomain(ctx, domainId, ctx.accessToken2);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 404 for non-existent domain', async () => {
@@ -49,7 +51,7 @@ describe('POST /custom-domain/:id/set-default', () => {
 			'00000000-0000-0000-0000-000000000000',
 			ctx.accessTokenPro,
 		);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should set domain as default when fully verified', async () => {
@@ -63,7 +65,7 @@ describe('POST /custom-domain/:id/set-default', () => {
 		});
 
 		const response = await setDefaultDomain(ctx, domainId, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TCustomDomainResponseDto;
 		expect(result.isDefault).toBe(true);
@@ -78,7 +80,7 @@ describe('POST /custom-domain/:id/set-default', () => {
 		});
 
 		const response = await setDefaultDomain(ctx, domainId, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 
 		const error = JSON.parse(response.payload) as { message: string };
 		expect(error.message).toContain('disabled');
@@ -90,6 +92,6 @@ describe('POST /custom-domain/:id/set-default', () => {
 			url: `${CUSTOM_DOMAIN_API_PATH}/some-id/set-default`,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

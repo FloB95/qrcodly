@@ -1,4 +1,5 @@
 import type { TCustomDomainResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	createCustomDomainDirectly,
@@ -14,6 +15,7 @@ describe('POST /custom-domain/:id/verify', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -27,7 +29,7 @@ describe('POST /custom-domain/:id/verify', () => {
 
 		// Verifying without DNS records returns 200 with verification status still false
 		const response = await verifyCustomDomain(ctx, domainId, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const verifiedDomain = JSON.parse(response.payload) as TCustomDomainResponseDto;
 		// Still in dns_verification phase since DNS isn't set up
@@ -41,7 +43,7 @@ describe('POST /custom-domain/:id/verify', () => {
 		const domainId = await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID);
 
 		const response = await verifyCustomDomain(ctx, domainId, ctx.accessToken2);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 404 for non-existent domain', async () => {
@@ -50,7 +52,7 @@ describe('POST /custom-domain/:id/verify', () => {
 			'00000000-0000-0000-0000-000000000000',
 			ctx.accessTokenPro,
 		);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 403 when domain is disabled', async () => {
@@ -60,7 +62,7 @@ describe('POST /custom-domain/:id/verify', () => {
 		});
 
 		const response = await verifyCustomDomain(ctx, domainId, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 
 		const error = JSON.parse(response.payload) as { message: string };
 		expect(error.message).toContain('disabled');
@@ -72,6 +74,6 @@ describe('POST /custom-domain/:id/verify', () => {
 			url: `${CUSTOM_DOMAIN_API_PATH}/some-id/verify`,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

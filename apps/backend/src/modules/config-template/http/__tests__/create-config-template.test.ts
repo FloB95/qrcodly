@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import {
 	QrCodeDefaults,
@@ -39,6 +39,7 @@ describe('createConfigTemplate', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -48,7 +49,7 @@ describe('createConfigTemplate', () => {
 		const createConfigTemplateDto = generateConfigTemplateDto();
 		const response = await createConfigTemplateRequest(createConfigTemplateDto, accessToken);
 
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedConfigTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
 		expect(receivedConfigTemplate).toMatchObject({
@@ -79,7 +80,7 @@ describe('createConfigTemplate', () => {
 		};
 		const response = await createConfigTemplateRequest(createConfigTemplateDto, accessToken);
 
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedConfigTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
 
@@ -93,7 +94,7 @@ describe('createConfigTemplate', () => {
 	it('should return a 401 when not authenticated', async () => {
 		const createConfigTemplateDto = generateConfigTemplateDto();
 		const response = await createConfigTemplateRequest(createConfigTemplateDto);
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
@@ -101,7 +102,7 @@ describe('createConfigTemplate', () => {
 
 	it('should return 400 for invalid request body', async () => {
 		const response = await createConfigTemplateRequest({}, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 
 		const { message, code, fieldErrors } = JSON.parse(response.payload);
 		expect(message).toBeDefined();

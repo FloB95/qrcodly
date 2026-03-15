@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { type User } from '@clerk/fastify';
 import { USER_SURVEY_API_PATH } from './utils';
@@ -29,6 +29,7 @@ describe('submitSurvey', () => {
 	};
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -47,7 +48,7 @@ describe('submitSurvey', () => {
 			rating: 'up',
 		});
 
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 		const body = JSON.parse(response.payload);
 		expect(body.hasResponded).toBe(true);
 
@@ -66,7 +67,7 @@ describe('submitSurvey', () => {
 			feedback: 'Could improve the UI',
 		});
 
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 		const body = JSON.parse(response.payload);
 		expect(body.hasResponded).toBe(true);
 
@@ -83,7 +84,7 @@ describe('submitSurvey', () => {
 			rating: null,
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should be idempotent — second submission is silently ignored', async () => {
@@ -94,7 +95,7 @@ describe('submitSurvey', () => {
 			feedback: 'Changed my mind',
 		});
 
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		// Original rating should be preserved
 		const record = await db.query.userSurvey.findFirst({
@@ -125,7 +126,7 @@ describe('submitSurvey', () => {
 			rating: 'up',
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 400 with invalid rating value', async () => {
@@ -133,13 +134,13 @@ describe('submitSurvey', () => {
 			rating: 'invalid',
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 with empty body', async () => {
 		const response = await submitSurveyRequest(accessToken, {});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 when feedback exceeds 1000 characters', async () => {
@@ -149,6 +150,6 @@ describe('submitSurvey', () => {
 			feedback: longFeedback,
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 });

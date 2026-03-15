@@ -12,11 +12,13 @@ import {
 	type TestContext,
 } from './utils';
 import { randomUUID } from 'crypto';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('PATCH /analytics-integration/:id (Update)', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 		await ensureProSubscription();
 	});
@@ -35,7 +37,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
 		expect(result.isEnabled).toBe(false);
@@ -53,7 +55,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
 		expect(result.isEnabled).toBe(true);
@@ -77,7 +79,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		// Verify credentials were re-encrypted (different ciphertext)
 		const updatedRecord = await findIntegrationById(id);
@@ -105,7 +107,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
 		expect(result.hasAuthToken).toBe(true);
@@ -134,7 +136,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
 		expect(result.hasAuthToken).toBe(true);
@@ -165,7 +167,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
 		expect(result.hasAuthToken).toBe(false);
@@ -180,7 +182,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 			ctx.accessTokenPro,
 		);
 
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it("should return 403 when updating another user's integration", async () => {
@@ -188,7 +190,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 
 		const response = await updateIntegrationViaApi(ctx, id, { isEnabled: false }, ctx.accessToken2);
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 403 when user has no Pro plan', async () => {
@@ -197,7 +199,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 
 		const response = await updateIntegrationViaApi(ctx, id, { isEnabled: false }, ctx.accessToken);
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 401 when not authenticated', async () => {
@@ -210,6 +212,6 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 			payload: { isEnabled: false },
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

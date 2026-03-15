@@ -10,11 +10,13 @@ import {
 	type TestContext,
 } from './utils';
 import { randomUUID } from 'crypto';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 		await ensureProSubscription();
 	});
@@ -34,7 +36,7 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 
 		const response = await testIntegrationViaApi(ctx, id, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as {
 			valid: boolean;
@@ -56,7 +58,7 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 
 		const response = await testIntegrationViaApi(ctx, id, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as {
 			valid: boolean;
@@ -70,7 +72,7 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 		const fakeId = randomUUID();
 		const response = await testIntegrationViaApi(ctx, fakeId, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it("should return 403 when testing another user's integration", async () => {
@@ -78,7 +80,7 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 
 		const response = await testIntegrationViaApi(ctx, id, ctx.accessToken2);
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 403 when user has no Pro plan', async () => {
@@ -86,7 +88,7 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 
 		const response = await testIntegrationViaApi(ctx, id, ctx.accessToken);
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 401 when not authenticated', async () => {
@@ -97,6 +99,6 @@ describe('POST /analytics-integration/:id/test (Test Credentials)', () => {
 			url: `${ANALYTICS_INTEGRATION_API_PATH}/${id}/test`,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/schemas';
 import { generateEventQrCodeDto, getTestContext, QR_CODE_API_PATH } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('updateQrCode - Event Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -57,7 +59,7 @@ describe('updateQrCode - Event Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.content.type).toBe('event');
 		if (updatedQrCode.content.type === 'event') {
@@ -96,7 +98,7 @@ describe('updateQrCode - Event Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		// Short code should remain the same for dynamic QR codes
 		expect(updatedQrCode.shortUrl?.shortCode).toBe(originalShortCode);
@@ -130,7 +132,7 @@ describe('updateQrCode - Event Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.name).toBe(newName);
 		expect(updatedQrCode.config.width).toBe(550);
@@ -158,7 +160,7 @@ describe('updateQrCode - Event Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		if (updatedQrCode.content.type === 'event') {
 			expect(updatedQrCode.content.data.title).toBe(newEventData.title);
@@ -187,7 +189,7 @@ describe('updateQrCode - Event Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		if (updatedQrCode.content.type === 'event') {
 			expect(updatedQrCode.content.data.url).toBe(newEventData.url);
@@ -213,7 +215,7 @@ describe('updateQrCode - Event Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 			const error = JSON.parse(response.payload);
 			expect(error.message).toContain('End date must be after start date');
 		});
@@ -237,7 +239,7 @@ describe('updateQrCode - Event Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject invalid date format', async () => {
@@ -258,7 +260,7 @@ describe('updateQrCode - Event Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject empty event title', async () => {
@@ -279,7 +281,7 @@ describe('updateQrCode - Event Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject event title exceeding max length (200 chars)', async () => {
@@ -300,7 +302,7 @@ describe('updateQrCode - Event Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject event description exceeding max length (500 chars)', async () => {
@@ -322,7 +324,7 @@ describe('updateQrCode - Event Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject event location exceeding max length (200 chars)', async () => {
@@ -344,7 +346,7 @@ describe('updateQrCode - Event Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject event with invalid URL', async () => {
@@ -366,7 +368,7 @@ describe('updateQrCode - Event Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 	});
 });
