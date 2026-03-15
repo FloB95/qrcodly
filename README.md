@@ -30,8 +30,7 @@ qrcodly/
 │   ├── shared/             # Zod schemas, DTOs, and shared utilities
 │   ├── eslint-config/      # Shared ESLint configuration
 │   └── typescript-config/  # Shared TypeScript configuration
-├── docker-compose.yaml     # Local development services
-└── turbo.json              # Turborepo pipeline configuration
+└── docker-compose.yaml     # Local development services
 ```
 
 See per-app READMEs for architecture details:
@@ -90,7 +89,7 @@ pnpm run start:dev
 | `pnpm run start:dev`            | Start backend and frontend in development mode |
 | `pnpm run backend:dev`          | Start backend only (runs migrations first)     |
 | `pnpm run frontend:dev`         | Start frontend only                            |
-| `pnpm run build`                | Build all apps via Turborepo                   |
+| `pnpm run build`                | Build all apps                                 |
 | `pnpm run build:shared-package` | Build the shared package only                  |
 | `pnpm run lint`                 | Lint all workspaces                            |
 | `pnpm run format`               | Format all files with Prettier                 |

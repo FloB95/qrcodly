@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-QRcodly is a full-stack QR code generator and management platform. It's a pnpm monorepo with Turbo for task orchestration.
+QRcodly is a full-stack QR code generator and management platform. It's a pnpm monorepo.
 
 ## Monorepo Structure
 
@@ -33,13 +33,13 @@ pnpm run start:dev
 
 # Run individually
 pnpm run backend:dev     # Fastify API at :5001 (runs migrations first)
-pnpm run frontend:dev    # Next.js at :3000 (uses turbo)
+pnpm run frontend:dev    # Next.js at :3000 (uses Turbopack)
 ```
 
 ### Building
 
 ```bash
-pnpm run build                 # Build all apps via Turbo
+pnpm run build                 # Build all apps
 pnpm run build:shared-package  # Build shared package only (must run before app builds)
 pnpm run backend:build         # Build backend (builds shared first)
 pnpm run frontend:build        # Build frontend (builds shared first)
@@ -61,7 +61,7 @@ pnpm run pr:precheck             # lint + typecheck + test + build
 ### Linting & Type Checking
 
 ```bash
-pnpm run lint            # Lint all workspaces via Turbo
+pnpm run lint            # Lint all workspaces
 pnpm run format          # Prettier format entire repo
 
 # Per-app
@@ -118,7 +118,7 @@ Each module follows this layout:
 
 ### Frontend (`apps/frontend`)
 
-**Tech Stack**: Next.js 16 (App Router, Turbo dev), React 19, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, Clerk, next-intl
+**Tech Stack**: Next.js 16 (App Router, Turbopack), React 19, Tailwind CSS, shadcn/ui, Zustand, TanStack Query, Clerk, next-intl
 
 **Routing**: `src/app/[locale]/` — locale-prefixed routes. Dashboard routes under `/dashboard/` are protected via Clerk middleware.
 

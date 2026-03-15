@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { Logger } from 'next-axiom';
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { processAnalyticsAndRedirect } from './middlewares/process-analytics-and-redirect.middleware';
 import createMiddleware from 'next-intl/middleware';
 import { routing, SUPPORTED_LANGUAGES } from './i18n/routing';

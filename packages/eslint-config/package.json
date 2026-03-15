@@ -7,9 +7,6 @@
 		"./node": "./node.js",
 		"./shared": "./shared.js"
 	},
-	"scripts": {
-		"clean": "rimraf .turbo"
-	},
 	"type": "module",
 	"devDependencies": {
 		"@eslint/js": "^9.27.0",

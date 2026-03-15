@@ -13,8 +13,6 @@ yarn.lock
 .swarm
 .idea
 **/package-lock.json
-packages/**/.turbo
-.turbo
 *.tsbuildinfo
 *.swp
 CHANGELOG-*.md

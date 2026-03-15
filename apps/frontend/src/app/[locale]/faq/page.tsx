@@ -99,11 +99,7 @@ export default async function Page({ params }: DefaultPageParams) {
 		<>
 			<Header />
 			<article>
-				<script
-					type="application/ld+json"
-					// eslint-disable-next-line react/no-danger
-					dangerouslySetInnerHTML={{ __html: jsonLdHtml }}
-				/>
+				<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml }} />
 
 				{/* Hero */}
 				<section className="pt-24 pb-12 sm:pt-32 sm:pb-16 text-center">

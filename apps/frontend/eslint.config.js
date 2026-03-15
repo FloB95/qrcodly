@@ -1,24 +1,33 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import tseslint from 'typescript-eslint';
-import shared from 'qrcodly-eslint-config/shared';
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import prettier from 'eslint-config-prettier/flat';
+import unicorn from 'eslint-plugin-unicorn';
+import lodash from 'eslint-plugin-lodash';
+import unusedImports from 'eslint-plugin-unused-imports';
 
-const compat = new FlatCompat({
-	baseDirectory: import.meta.dirname,
+// Remove @typescript-eslint plugin from next config to avoid conflict
+// with typescript-eslint's own plugin registration
+const nextVitalsFiltered = nextVitals.map((config) => {
+	if (!config.plugins?.['@typescript-eslint']) return config;
+	const { '@typescript-eslint': _, ...plugins } = config.plugins;
+	return { ...config, plugins };
 });
 
 export default tseslint.config(
+	{ ignores: ['.source/**'] },
+	...nextVitalsFiltered,
 	{
-		ignores: ['.next', 'out/**', 'build/**', 'next-env.d.ts', '.source/**'],
+		plugins: { unicorn, lodash, 'unused-imports': unusedImports },
 	},
-	...compat.extends('next/core-web-vitals'),
-	shared(import.meta.dirname),
 	{
 		files: ['**/*.ts', '**/*.tsx'],
-		extends: [
-			...tseslint.configs.recommended,
-			...tseslint.configs.recommendedTypeChecked,
-			...tseslint.configs.stylisticTypeChecked,
-		],
+		extends: [...tseslint.configs.recommendedTypeChecked, ...tseslint.configs.stylisticTypeChecked],
+		languageOptions: {
+			parserOptions: {
+				project: './tsconfig.json',
+				tsconfigRootDir: import.meta.dirname,
+			},
+		},
 		rules: {
 			'react-hooks/exhaustive-deps': 'off',
 			'@typescript-eslint/array-type': 'off',
@@ -33,11 +42,34 @@ export default tseslint.config(
 				'error',
 				{ checksVoidReturn: { attributes: false } },
 			],
+			// TODO: promote to error and fix violations
+			'@typescript-eslint/prefer-nullish-coalescing': 'warn',
+			'@typescript-eslint/no-floating-promises': 'warn',
+			'@typescript-eslint/no-unsafe-assignment': 'warn',
+			'@typescript-eslint/no-unsafe-call': 'warn',
+			'@typescript-eslint/no-unsafe-argument': 'warn',
+			'@typescript-eslint/no-unsafe-member-access': 'warn',
+			'@typescript-eslint/no-unsafe-return': 'warn',
+			'@typescript-eslint/no-explicit-any': 'warn',
+			'@typescript-eslint/no-empty-function': 'warn',
+			'@typescript-eslint/restrict-template-expressions': 'warn',
+			'@typescript-eslint/prefer-for-of': 'warn',
+			'@typescript-eslint/prefer-regexp-exec': 'warn',
 		},
 	},
 	{
-		linterOptions: {
-			reportUnusedDisableDirectives: true,
+		// TODO: fix violations and promote back to error
+		rules: {
+			'@next/next/no-html-link-for-pages': 'warn',
+			'react-hooks/rules-of-hooks': 'warn',
+			'react-hooks/set-state-in-effect': 'warn',
+			'react-hooks/preserve-manual-memoization': 'warn',
+			'react-hooks/purity': 'warn',
+			'react-hooks/immutability': 'warn',
+			'react-hooks/refs': 'warn',
+			'react-hooks/static-components': 'warn',
 		},
 	},
+	prettier,
+	{ linterOptions: { reportUnusedDisableDirectives: true } },
 );

@@ -25,10 +25,10 @@
 	"packageManager": "pnpm@9.15.9",
 	"scripts": {
 		"setup": "pnpm install",
-		"build": "turbo run build",
+		"build": "pnpm -r run build",
 		"format": "prettier --config .prettierrc.json --write .",
-		"lint": "turbo run lint",
-		"clean": "turbo run clean --parallel",
+		"lint": "pnpm -r run lint",
+		"clean": "pnpm -r run clean",
 		"build:shared-package": "cd packages/shared && pnpm build",
 		"backend:build": "pnpm run build:shared-package && cd apps/backend && pnpm build",
 		"backend:start": "cd apps/backend && pnpm run start",
@@ -51,7 +51,6 @@
 		"prettier": "^3.8.1",
 		"qrcodly-eslint-config": "workspace:*",
 		"rimraf": "^6.1.2",
-		"turbo": "2.5.0",
 		"typescript": "^5.9.3"
 	}
 }
