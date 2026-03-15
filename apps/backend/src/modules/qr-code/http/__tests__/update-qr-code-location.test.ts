@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/schemas';
 import { generateLocationQrCodeDto, getTestContext, QR_CODE_API_PATH } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('updateQrCode - Location Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -52,7 +54,7 @@ describe('updateQrCode - Location Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.content.type).toBe('location');
 		if (updatedQrCode.content.type === 'location') {
@@ -89,7 +91,7 @@ describe('updateQrCode - Location Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.name).toBe(newName);
 		expect(updatedQrCode.config.width).toBe(380);
@@ -119,7 +121,7 @@ describe('updateQrCode - Location Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 
 		// Verify qrCodeData contains Google Maps URL for address-only
@@ -146,7 +148,7 @@ describe('updateQrCode - Location Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		if (updatedQrCode.content.type === 'location') {
 			expect(updatedQrCode.content.data.latitude).toBe(90);
@@ -173,7 +175,7 @@ describe('updateQrCode - Location Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		if (updatedQrCode.content.type === 'location') {
 			expect(updatedQrCode.content.data.latitude).toBe(newLocationData.latitude);
@@ -204,7 +206,7 @@ describe('updateQrCode - Location Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject latitude below minimum (-90)', async () => {
@@ -225,7 +227,7 @@ describe('updateQrCode - Location Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject longitude above maximum (180)', async () => {
@@ -246,7 +248,7 @@ describe('updateQrCode - Location Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject longitude below minimum (-180)', async () => {
@@ -267,7 +269,7 @@ describe('updateQrCode - Location Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject empty address', async () => {
@@ -288,7 +290,7 @@ describe('updateQrCode - Location Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject address exceeding max length (200 chars)', async () => {
@@ -309,7 +311,7 @@ describe('updateQrCode - Location Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 	});
 });

@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { TAG_API_PATH, createTagRequest, createQrCodeForTest } from './utils';
 
@@ -18,6 +18,7 @@ describe('setQrCodeTags', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -32,7 +33,7 @@ describe('setQrCodeTags', () => {
 			tagIds: [tag.id],
 		});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const tags = JSON.parse(response.payload);
 		expect(Array.isArray(tags)).toBe(true);
 		expect(tags.length).toBe(1);
@@ -44,7 +45,7 @@ describe('setQrCodeTags', () => {
 
 		const response = await setQrCodeTagsRequest(qrCode.id, accessToken, { tagIds: [] });
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const tags = JSON.parse(response.payload);
 		expect(tags).toHaveLength(0);
 	});
@@ -54,7 +55,7 @@ describe('setQrCodeTags', () => {
 
 		const response = await setQrCodeTagsRequest(qrCode.id, undefined, { tagIds: [] });
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 404 for non-existent QR code', async () => {
@@ -64,7 +65,7 @@ describe('setQrCodeTags', () => {
 			{ tagIds: [] },
 		);
 
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 403 when setting tags on another user QR code', async () => {
@@ -75,7 +76,7 @@ describe('setQrCodeTags', () => {
 			tagIds: [tag.id],
 		});
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 403 when using another user tags', async () => {
@@ -90,7 +91,7 @@ describe('setQrCodeTags', () => {
 			tagIds: [user2Tag.id],
 		});
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should allow any user to set up to 3 tags', async () => {
@@ -115,7 +116,7 @@ describe('setQrCodeTags', () => {
 			tagIds: [tag1.id, tag2.id, tag3.id],
 		});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const tags = JSON.parse(response.payload);
 		expect(tags).toHaveLength(3);
 	});
@@ -136,7 +137,7 @@ describe('setQrCodeTags', () => {
 			tagIds: tags.map((t) => t.id),
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 		const body = JSON.parse(response.payload);
 		expect(body.message).toContain('You can add a maximum of 3 tags');
 	});
@@ -162,7 +163,7 @@ describe('setQrCodeTags', () => {
 			tagIds: [tag2.id],
 		});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const tags = JSON.parse(response.payload);
 		expect(tags).toHaveLength(1);
 		expect(tags[0].id).toBe(tag2.id);
@@ -186,7 +187,7 @@ describe('setQrCodeTags', () => {
 		// Then send empty body (tagIds defaults to [])
 		const response = await setQrCodeTagsRequest(qrCode.id, accessToken, {});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const tags = JSON.parse(response.payload);
 		expect(tags).toHaveLength(0);
 	});

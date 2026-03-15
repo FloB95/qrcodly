@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { TAG_API_PATH, createTagRequest } from './utils';
 
@@ -18,6 +18,7 @@ describe('updateTag', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -36,7 +37,7 @@ describe('updateTag', () => {
 			color: '#222222',
 		});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const updated = JSON.parse(response.payload);
 		expect(updated.name).toBe('Updated Name');
@@ -54,7 +55,7 @@ describe('updateTag', () => {
 			name: 'Hacked',
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 404 for non-existent tag', async () => {
@@ -62,7 +63,7 @@ describe('updateTag', () => {
 			name: 'Nope',
 		});
 
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 403 for another user tag', async () => {
@@ -76,7 +77,7 @@ describe('updateTag', () => {
 			name: 'Stolen',
 		});
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 400 when renaming to a duplicate name', async () => {
@@ -91,7 +92,7 @@ describe('updateTag', () => {
 			name: name1,
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 		const body = JSON.parse(response.payload);
 		expect(body.message).toContain('already exists');
 	});

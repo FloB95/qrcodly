@@ -1,4 +1,5 @@
 import type { TCustomDomainResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	createCustomDomainDirectly,
@@ -14,6 +15,7 @@ describe('GET /custom-domain/:id (Get Custom Domain)', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -26,7 +28,7 @@ describe('GET /custom-domain/:id (Get Custom Domain)', () => {
 		const domainId = await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID);
 
 		const response = await getCustomDomain(ctx, domainId, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const customDomainResponse = JSON.parse(response.payload) as TCustomDomainResponseDto;
 		expect(customDomainResponse.id).toBe(domainId);
@@ -38,7 +40,7 @@ describe('GET /custom-domain/:id (Get Custom Domain)', () => {
 		const domainId = await createCustomDomainDirectly(ctx, dto.domain, TEST_USER_PRO_ID);
 
 		const response = await getCustomDomain(ctx, domainId, ctx.accessToken2);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 404 for non-existent domain', async () => {
@@ -47,7 +49,7 @@ describe('GET /custom-domain/:id (Get Custom Domain)', () => {
 			'00000000-0000-0000-0000-000000000000',
 			ctx.accessTokenPro,
 		);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 401 when not authenticated', async () => {
@@ -56,6 +58,6 @@ describe('GET /custom-domain/:id (Get Custom Domain)', () => {
 			url: `${CUSTOM_DOMAIN_API_PATH}/some-id`,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

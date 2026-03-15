@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import Container from '@/components/ui/container';
 import { Heading } from '@/components/ui/heading';
 import { FaqPageContent, type FaqCategory } from '@/components/faq/FaqPageContent';
+import { FaqJsonLd } from '@/components/seo/FaqJsonLd';
 import { buttonVariants } from '@/components/ui/button';
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import type { DefaultPageParams } from '@/types/page';
@@ -79,27 +80,13 @@ export default async function Page({ params }: DefaultPageParams) {
 		})),
 	}));
 
-	// Build JSON-LD FAQPage structured data with ALL FAQs
 	const allFaqItems = categories.flatMap((cat) => cat.items);
-	const jsonLd = {
-		'@context': 'https://schema.org',
-		'@type': 'FAQPage',
-		mainEntity: allFaqItems.map((item) => ({
-			'@type': 'Question',
-			name: item.question,
-			acceptedAnswer: {
-				'@type': 'Answer',
-				text: item.answer,
-			},
-		})),
-	};
-	const jsonLdHtml = JSON.stringify(jsonLd).replaceAll('<', '\\u003c');
 
 	return (
 		<>
 			<Header />
 			<article>
-				<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml }} />
+				<FaqJsonLd items={allFaqItems} />
 
 				{/* Hero */}
 				<section className="pt-24 pb-12 sm:pt-32 sm:pb-16 text-center">

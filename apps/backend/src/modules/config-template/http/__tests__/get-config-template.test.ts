@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import {
 	type TCreateConfigTemplateDto,
@@ -18,7 +18,7 @@ const CONFIG_TEMPLATE_API_PATH = `${API_BASE_PATH}/config-template`;
  * Generates a new random Config Template DTO.
  */
 const generateConfigTemplateDto = (): TCreateConfigTemplateDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	config: QrCodeDefaults,
 });
 
@@ -43,6 +43,7 @@ describe('getConfigTemplate', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -58,7 +59,7 @@ describe('getConfigTemplate', () => {
 		const response = await getConfigTemplateRequest(createConfigTemplate.id, accessToken);
 		const receivedConfigTemplate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		expect(receivedConfigTemplate.id).toBe(createConfigTemplate.id);
 		expect(receivedConfigTemplate.name).toBe(createConfigTemplateDto.name);
 		expect(receivedConfigTemplate.config).toEqual(createConfigTemplateDto.config);
@@ -69,7 +70,7 @@ describe('getConfigTemplate', () => {
 
 	it('should return a 401 when not authenticated', async () => {
 		const response = await getConfigTemplateRequest(createConfigTemplate.id);
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
@@ -83,7 +84,7 @@ describe('getConfigTemplate', () => {
 			.execute(createConfigTemplateDto, user2.id);
 
 		const response = await getConfigTemplateRequest(createConfigTemplate.id, accessToken);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
@@ -91,7 +92,7 @@ describe('getConfigTemplate', () => {
 
 	it('should return a 404 for an invalid ID', async () => {
 		const response = await getConfigTemplateRequest('invalid-id', accessToken);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();

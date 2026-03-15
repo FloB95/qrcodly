@@ -10,11 +10,13 @@ import {
 	type TestContext,
 } from './utils';
 import { ensureProSubscription } from '@/tests/shared/helpers';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('POST /custom-domain (Create Custom Domain)', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 		await ensureProSubscription();
 	});
@@ -27,7 +29,7 @@ describe('POST /custom-domain (Create Custom Domain)', () => {
 		const dto = generateCreateCustomDomainDto();
 		const response = await createCustomDomainViaApi(ctx, dto, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const result = JSON.parse(response.payload) as TCustomDomainResponseDto;
 		expect(result.id).toBeDefined();
@@ -42,7 +44,7 @@ describe('POST /custom-domain (Create Custom Domain)', () => {
 		const dto = { domain: 'invalid-domain' };
 		const response = await createCustomDomainViaApi(ctx, dto, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 for duplicate domain', async () => {
@@ -52,7 +54,7 @@ describe('POST /custom-domain (Create Custom Domain)', () => {
 
 		// Second creation with same domain via API should fail
 		const response = await createCustomDomainViaApi(ctx, dto, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 401 when not authenticated', async () => {
@@ -63,7 +65,7 @@ describe('POST /custom-domain (Create Custom Domain)', () => {
 			payload: dto,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	describe('Plan Limits', () => {
@@ -80,7 +82,7 @@ describe('POST /custom-domain (Create Custom Domain)', () => {
 				payload: dto,
 			});
 
-			expect(response.statusCode).toBe(403);
+			expect(response).toHaveStatusCode(403);
 			const error = JSON.parse(response.payload) as { message: string };
 			expect(error.message).toContain('Plan limit exceeded');
 		});

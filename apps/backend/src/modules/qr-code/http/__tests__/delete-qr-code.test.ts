@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { container } from 'tsyringe';
 import { type User } from '@clerk/fastify';
@@ -28,6 +28,7 @@ describe('deleteQrCode', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -45,7 +46,7 @@ describe('deleteQrCode', () => {
 		});
 		const response = await deleteQrCodeRequest(createdQrCode.id, accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		expect(JSON.parse(response.payload)).toMatchObject({
 			deleted: true,
 		});
@@ -53,7 +54,7 @@ describe('deleteQrCode', () => {
 
 	it('should return a 401 when not authenticated', async () => {
 		const response = await deleteQrCodeRequest('createQrCode.id');
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
@@ -70,7 +71,7 @@ describe('deleteQrCode', () => {
 
 		// Attempt to delete user2's QR code with user1's token
 		const response = await deleteQrCodeRequest(otherQrCode.id, accessToken);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
@@ -78,7 +79,7 @@ describe('deleteQrCode', () => {
 
 	it('should return 404 when trying to delete a non-existent QR code', async () => {
 		const response = await deleteQrCodeRequest('non-existent-id', accessToken);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();

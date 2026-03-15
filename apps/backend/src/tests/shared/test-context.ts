@@ -163,3 +163,12 @@ const manager = TestContextManager.getInstance();
 export const getTestContext = () => manager.getContext();
 export const beforeAllTests = () => manager.beforeAllTests();
 export const afterAllTests = () => manager.afterAllTests();
+
+/**
+ * Resets test state by flushing cache and cleaning up mock data.
+ * Call this at the start of each test file's beforeAll to ensure isolation.
+ */
+export const resetTestState = async () => {
+	await container.resolve(KeyCache).flushAllCache();
+	await cleanUpMockData();
+};

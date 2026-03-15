@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/schemas';
 import { generateTextQrCodeDto, getTestContext, QR_CODE_API_PATH } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('updateQrCode - Text Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -48,7 +50,7 @@ describe('updateQrCode - Text Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.content.type).toBe('text');
 		if (updatedQrCode.content.type === 'text') {
@@ -76,7 +78,7 @@ describe('updateQrCode - Text Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.name).toBe(newName);
 		if (updatedQrCode.content.type === 'text') {
@@ -104,7 +106,7 @@ describe('updateQrCode - Text Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.config.width).toBe(400);
 		expect(updatedQrCode.qrCodeData).toBe(newText);
@@ -129,7 +131,7 @@ describe('updateQrCode - Text Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.name).toBe(newName);
 		expect(updatedQrCode.config.width).toBe(550);
@@ -152,7 +154,7 @@ describe('updateQrCode - Text Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		if (updatedQrCode.content.type === 'text') {
 			expect(updatedQrCode.content.data).toBe(newText);
@@ -175,7 +177,7 @@ describe('updateQrCode - Text Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.qrCodeData).toBe(newText);
 	});
@@ -195,7 +197,7 @@ describe('updateQrCode - Text Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject text exceeding max length (2000 chars)', async () => {
@@ -212,7 +214,7 @@ describe('updateQrCode - Text Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 	});
 });

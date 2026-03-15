@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { type User } from '@clerk/fastify';
 import { USER_SURVEY_API_PATH } from './utils';
@@ -36,6 +36,7 @@ describe('getSurveyStatus', () => {
 	};
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -49,7 +50,7 @@ describe('getSurveyStatus', () => {
 	it('should return hasResponded false when user has not submitted', async () => {
 		const response = await getStatusRequest(accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const body = JSON.parse(response.payload);
 		expect(body.hasResponded).toBe(false);
 	});
@@ -59,7 +60,7 @@ describe('getSurveyStatus', () => {
 
 		const response = await getStatusRequest(accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const body = JSON.parse(response.payload);
 		expect(body.hasResponded).toBe(true);
 	});
@@ -69,7 +70,7 @@ describe('getSurveyStatus', () => {
 
 		const response = await getStatusRequest(accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const body = JSON.parse(response.payload);
 		expect(body.hasResponded).toBe(true);
 	});
@@ -77,6 +78,6 @@ describe('getSurveyStatus', () => {
 	it('should return 401 without auth token', async () => {
 		const response = await getStatusRequest();
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

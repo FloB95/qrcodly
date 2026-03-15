@@ -1,5 +1,5 @@
 import { env } from '@/core/config/env';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import type { TShortUrlResponseDto } from '@shared/schemas';
 import { SHORT_URL_API_PATH, createShortUrl, reserveShortUrl } from './utils';
@@ -15,6 +15,7 @@ describe('getShortUrl (internal API - scan lookup)', () => {
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -31,7 +32,7 @@ describe('getShortUrl (internal API - scan lookup)', () => {
 		const shortUrl = await createShortUrl(testServer, accessToken);
 
 		const response = await getShortUrlRequest(shortUrl.shortCode, env.INTERNAL_API_SECRET);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const body = JSON.parse(response.payload) as ScanLookupResponse;
 		expect(body.destinationUrl).toBe(shortUrl.destinationUrl);
@@ -43,7 +44,7 @@ describe('getShortUrl (internal API - scan lookup)', () => {
 		const shortUrl = await createShortUrl(testServer, accessToken);
 
 		const response = await getShortUrlRequest(shortUrl.shortCode, env.INTERNAL_API_SECRET);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const body = JSON.parse(response.payload) as Record<string, unknown>;
 		expect(body).not.toHaveProperty('createdBy');
@@ -63,7 +64,7 @@ describe('getShortUrl (internal API - scan lookup)', () => {
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
 		const response = await getShortUrlRequest(shortUrl.shortCode, env.INTERNAL_API_SECRET);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const body = JSON.parse(response.payload) as ScanLookupResponse;
 		expect(body.destinationUrl).toBeNull();
@@ -81,7 +82,7 @@ describe('getShortUrl (internal API - scan lookup)', () => {
 		});
 
 		const response = await getShortUrlRequest(shortUrl.shortCode, env.INTERNAL_API_SECRET);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const body = JSON.parse(response.payload) as ScanLookupResponse;
 		expect(body.isActive).toBe(false);
@@ -89,17 +90,17 @@ describe('getShortUrl (internal API - scan lookup)', () => {
 
 	it('should return 404 when shortCode does not exist', async () => {
 		const response = await getShortUrlRequest('XXXXX', env.INTERNAL_API_SECRET);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 401 without x-internal-api-key header', async () => {
 		const response = await getShortUrlRequest('XXXXX');
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 401 with invalid API key', async () => {
 		const response = await getShortUrlRequest('XXXXX', 'wrong-key');
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should return 401 when using a Bearer token instead of internal API key', async () => {
@@ -110,6 +111,6 @@ describe('getShortUrl (internal API - scan lookup)', () => {
 			url: `${SHORT_URL_API_PATH}/${shortUrl.shortCode}`,
 			headers: { Authorization: `Bearer ${accessToken}` },
 		});
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

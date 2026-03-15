@@ -1,5 +1,9 @@
 import '@/core/setup';
+import '@/tests/shared/matchers/jest.d';
 import { beforeAllTests, afterAllTests } from '@/tests/shared/test-context';
+import { toHaveStatusCode } from '@/tests/shared/matchers';
+
+expect.extend({ toHaveStatusCode });
 
 /**
  * Global test setup file.

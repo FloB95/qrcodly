@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import {
 	generateUrlCsv,
 	generateWifiCsv,
@@ -38,6 +38,7 @@ describe('bulkImportQrCodes', () => {
 	};
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -48,7 +49,7 @@ describe('bulkImportQrCodes', () => {
 			const csvContent = generateUrlCsv(3);
 			const response = await bulkImportRequest('url', csvContent, accessToken);
 
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 			const qrCodes = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto[];
 			expect(Array.isArray(qrCodes)).toBe(true);
 			expect(qrCodes.length).toBe(3);
@@ -59,7 +60,7 @@ describe('bulkImportQrCodes', () => {
 				'URL;Name;Enable Statistics and Editing (1 = true, 0 = false)\nhttps://example.com;Test QR;0';
 			const response = await bulkImportRequest('url', csvContent, accessToken);
 
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 			const qrCodes = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto[];
 			expect(qrCodes[0].name).toBe('Test QR');
 			if (qrCodes[0].content.type === 'url') {
@@ -72,7 +73,7 @@ describe('bulkImportQrCodes', () => {
 			const csvContent = generateUrlCsv(2);
 			const response = await bulkImportRequest('url', csvContent, accessToken);
 
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 			const qrCodes = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto[];
 			expect(Array.isArray(qrCodes)).toBe(true);
 			qrCodes.forEach((qrCode) => {
@@ -86,7 +87,7 @@ describe('bulkImportQrCodes', () => {
 			const csvContent = generateTextCsv(2);
 			const response = await bulkImportRequest('text', csvContent, accessToken);
 
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 			const qrCodes = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto[];
 			expect(qrCodes.length).toBe(2);
 			qrCodes.forEach((qrCode) => {
@@ -98,7 +99,7 @@ describe('bulkImportQrCodes', () => {
 			const csvContent = generateWifiCsv(2);
 			const response = await bulkImportRequest('wifi', csvContent, accessToken);
 
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 			const qrCodes = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto[];
 			expect(qrCodes.length).toBe(2);
 			qrCodes.forEach((qrCode) => {
@@ -110,7 +111,7 @@ describe('bulkImportQrCodes', () => {
 			const csvContent = generateInvalidCsv();
 			const response = await bulkImportRequest('url', csvContent, accessToken);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 			const error = JSON.parse(response.payload) as { message: string };
 			expect(error.message).toContain('line');
 		});
@@ -119,7 +120,7 @@ describe('bulkImportQrCodes', () => {
 			const csvContent = generateUrlCsv(1);
 			const response = await bulkImportRequest('event', csvContent, accessToken);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 			const error = JSON.parse(response.payload) as { message: string };
 			expect(error.message).toContain('not supported');
 		});
@@ -128,7 +129,7 @@ describe('bulkImportQrCodes', () => {
 			const invalidWifiCsv = 'ssid;password;encryption;name\n;somepassword;WPA;Test';
 			const response = await bulkImportRequest('wifi', invalidWifiCsv, accessToken);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should return 401 when not authenticated', async () => {
@@ -150,7 +151,7 @@ describe('bulkImportQrCodes', () => {
 				},
 			});
 
-			expect(response.statusCode).toBe(401);
+			expect(response).toHaveStatusCode(401);
 		});
 
 		it('should skip empty lines in CSV', async () => {
@@ -158,7 +159,7 @@ describe('bulkImportQrCodes', () => {
 				'URL;Name;Enable Statistics and Editing (1 = true, 0 = false)\nhttps://example.com;Test;0\n\n\nhttps://example2.com;Test2;0';
 			const response = await bulkImportRequest('url', csvContent, accessToken);
 
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 			const qrCodes = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto[];
 			expect(qrCodes.length).toBe(2);
 		});
@@ -182,14 +183,14 @@ describe('bulkImportQrCodes', () => {
 				},
 			});
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should handle malformed CSV gracefully', async () => {
 			const malformedCsv = 'url;name\nno_semicolons_here';
 			const response = await bulkImportRequest('url', malformedCsv, accessToken);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 	});
 });

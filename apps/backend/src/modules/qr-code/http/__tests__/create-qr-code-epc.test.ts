@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { generateEpcQrCodeDto, getTestContext, createQrCodeRequest } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('createQrCode - EPC Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -18,7 +20,7 @@ describe('createQrCode - EPC Content Type', () => {
 	it('should create an EPC QR code with all fields', async () => {
 		const createQrCodeDto = generateEpcQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('epc');
@@ -45,7 +47,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('epc');
@@ -69,7 +71,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.qrCodeData).toContain('COBADEFFXXX');
@@ -88,7 +90,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.qrCodeData).toContain('EUR150.50');
@@ -106,7 +108,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.qrCodeData).toContain('DE89370400440532013000');
@@ -124,7 +126,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject beneficiary name exceeding max length (70 chars)', async () => {
@@ -139,7 +141,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject invalid IBAN format', async () => {
@@ -154,7 +156,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject IBAN that is too short', async () => {
@@ -169,7 +171,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject invalid BIC format', async () => {
@@ -185,7 +187,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject amount below minimum (0.01)', async () => {
@@ -201,7 +203,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject amount exceeding max (999999999.99)', async () => {
@@ -217,7 +219,7 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject purpose exceeding max length (140 chars)', async () => {
@@ -233,6 +235,6 @@ describe('createQrCode - EPC Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 });

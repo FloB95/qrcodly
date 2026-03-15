@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/schemas';
 import { generateEpcQrCodeDto, getTestContext, QR_CODE_API_PATH } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('updateQrCode - EPC Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -52,7 +54,7 @@ describe('updateQrCode - EPC Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.content.type).toBe('epc');
 		if (updatedQrCode.content.type === 'epc') {
@@ -87,7 +89,7 @@ describe('updateQrCode - EPC Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(updatedQrCode.name).toBe(newName);
 		expect(updatedQrCode.config.width).toBe(350);
@@ -115,7 +117,7 @@ describe('updateQrCode - EPC Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 
 		// Verify qrCodeData includes the amount
@@ -141,7 +143,7 @@ describe('updateQrCode - EPC Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 
 		expect(updatedQrCode.qrCodeData).toContain(newEpcData.purpose);
@@ -165,7 +167,7 @@ describe('updateQrCode - EPC Content Type', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		if (updatedQrCode.content.type === 'epc') {
 			expect(updatedQrCode.content.data.iban).toBe(newEpcData.iban);
@@ -190,7 +192,7 @@ describe('updateQrCode - EPC Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject beneficiary name exceeding max length (70 chars)', async () => {
@@ -210,7 +212,7 @@ describe('updateQrCode - EPC Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject invalid IBAN format', async () => {
@@ -230,7 +232,7 @@ describe('updateQrCode - EPC Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject invalid BIC format', async () => {
@@ -251,7 +253,7 @@ describe('updateQrCode - EPC Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject amount below minimum', async () => {
@@ -272,7 +274,7 @@ describe('updateQrCode - EPC Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject amount exceeding maximum', async () => {
@@ -293,7 +295,7 @@ describe('updateQrCode - EPC Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject purpose exceeding max length (140 chars)', async () => {
@@ -314,7 +316,7 @@ describe('updateQrCode - EPC Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 	});
 });

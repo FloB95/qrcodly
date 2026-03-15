@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { generateWifiQrCodeDto, getTestContext, createQrCodeRequest } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('createQrCode - WiFi Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -18,7 +20,7 @@ describe('createQrCode - WiFi Content Type', () => {
 	it('should create a WiFi QR code with WPA encryption', async () => {
 		const createQrCodeDto = generateWifiQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('wifi');
@@ -47,7 +49,7 @@ describe('createQrCode - WiFi Content Type', () => {
 			},
 		};
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('wifi');
@@ -72,7 +74,7 @@ describe('createQrCode - WiFi Content Type', () => {
 			},
 		};
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		if (receivedQrCode.content.type === 'wifi') {
@@ -96,7 +98,7 @@ describe('createQrCode - WiFi Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidWifiDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject SSID exceeding max length (32 chars)', async () => {
@@ -112,7 +114,7 @@ describe('createQrCode - WiFi Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidWifiDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject password exceeding max length (64 chars)', async () => {
@@ -128,7 +130,7 @@ describe('createQrCode - WiFi Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidWifiDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject invalid encryption type', async () => {
@@ -144,6 +146,6 @@ describe('createQrCode - WiFi Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidWifiDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 });

@@ -1,4 +1,5 @@
 import type { TCustomDomainResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	createCustomDomainDirectly,
@@ -14,6 +15,7 @@ describe('GET /custom-domain/default', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -23,7 +25,7 @@ describe('GET /custom-domain/default', () => {
 
 	it('should return null when no default domain is set', async () => {
 		const response = await getDefaultDomain(ctx, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload);
 		expect(result).toBeNull();
@@ -38,7 +40,7 @@ describe('GET /custom-domain/default', () => {
 		});
 
 		const response = await getDefaultDomain(ctx, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TCustomDomainResponseDto;
 		expect(result).not.toBeNull();
@@ -57,7 +59,7 @@ describe('GET /custom-domain/default', () => {
 
 		// Free user (accessToken2) should not see pro user's default
 		const response = await getDefaultDomain(ctx, ctx.accessToken2);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload);
 		expect(result).toBeNull();
@@ -73,7 +75,7 @@ describe('GET /custom-domain/default', () => {
 		});
 
 		const response = await getDefaultDomain(ctx, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload);
 		expect(result).toBeNull();
@@ -85,6 +87,6 @@ describe('GET /custom-domain/default', () => {
 			url: `${CUSTOM_DOMAIN_API_PATH}/default`,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

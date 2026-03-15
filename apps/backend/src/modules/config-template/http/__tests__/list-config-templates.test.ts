@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateConfigTemplateDto } from '@shared/schemas';
 import { container } from 'tsyringe';
@@ -14,7 +14,7 @@ const CONFIG_TEMPLATE_API_PATH = `${API_BASE_PATH}/config-template`;
  * Generates a new random Config Template DTO.
  */
 const generateConfigTemplateDto = (): TCreateConfigTemplateDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	config: QrCodeDefaults,
 });
 
@@ -41,6 +41,7 @@ describe('listConfigTemplates', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -68,7 +69,7 @@ describe('listConfigTemplates', () => {
 	it('should fetch only the signed-in user’s Config Templates and return status code 200', async () => {
 		const response = await listConfigTemplatesRequest({}, accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { data, total, page, limit } = JSON.parse(response.payload);
 		expect(Array.isArray(data)).toBe(true);
@@ -84,7 +85,7 @@ describe('listConfigTemplates', () => {
 	it('should respect pagination parameters', async () => {
 		const response = await listConfigTemplatesRequest({ page: 1, limit: 2 }, accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { data, total, page, limit } = JSON.parse(response.payload);
 		expect(data.length).toBe(2);
@@ -109,7 +110,7 @@ describe('listConfigTemplates', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { data, total, page, limit } = JSON.parse(response.payload);
 		expect(Array.isArray(data)).toBe(true);
@@ -125,7 +126,7 @@ describe('listConfigTemplates', () => {
 	it('ensure the list works without page and limit parameters', async () => {
 		const response = await listConfigTemplatesRequest({}, accessToken2);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { data, total } = JSON.parse(response.payload);
 		expect(Array.isArray(data)).toBe(true);
@@ -140,7 +141,7 @@ describe('listConfigTemplates', () => {
 	it('should return 401 if no authorization token is provided', async () => {
 		const response = await listConfigTemplatesRequest();
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();

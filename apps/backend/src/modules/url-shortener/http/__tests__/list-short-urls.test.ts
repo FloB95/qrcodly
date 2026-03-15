@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import {
 	type TShortUrlWithCustomDomainPaginatedResponseDto,
@@ -19,6 +19,7 @@ describe('listShortUrls', () => {
 	let user2Id: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -42,7 +43,7 @@ describe('listShortUrls', () => {
 			headers: { Authorization: `Bearer ${token}` },
 			payload: { name, color: '#FF5733' },
 		});
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 		return JSON.parse(response.payload);
 	};
 
@@ -53,14 +54,14 @@ describe('listShortUrls', () => {
 			headers: { Authorization: `Bearer ${token}` },
 			payload: { tagIds },
 		});
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 	};
 
 	it('should return paginated list of standalone short URLs', async () => {
 		await createShortUrl(testServer, accessToken);
 
 		const response = await listShortUrlsRequest(accessToken, { standalone: true });
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const data = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
 		expect(data).toHaveProperty('page');
@@ -108,7 +109,7 @@ describe('listShortUrls', () => {
 			page: 1,
 			limit: 1,
 		});
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const data = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
 		expect(data.data.length).toBeLessThanOrEqual(1);
@@ -122,7 +123,7 @@ describe('listShortUrls', () => {
 			standalone: true,
 			where: { shortCode: { like: shortUrl.shortCode } },
 		});
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const data = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
 		expect(data.data.length).toBeGreaterThanOrEqual(1);
@@ -134,14 +135,14 @@ describe('listShortUrls', () => {
 			method: 'GET',
 			url: SHORT_URL_API_PATH,
 		});
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should include tags and name in list response items', async () => {
 		const shortUrl = await createShortUrl(testServer, accessToken, { name: 'List Tag Test' });
 
 		const response = await listShortUrlsRequest(accessToken, { standalone: true });
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const data = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
 		const found = data.data.find((su) => su.id === shortUrl.id);
@@ -212,7 +213,7 @@ describe('listShortUrls', () => {
 				tagIds: [tag.id],
 			});
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const data = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
 			expect(data.total).toBe(1);
 			expect(data.data).toHaveLength(1);
@@ -227,7 +228,7 @@ describe('listShortUrls', () => {
 				tagIds: [tag.id],
 			});
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const data = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
 			expect(data.total).toBe(0);
 			expect(data.data).toHaveLength(0);
@@ -250,7 +251,7 @@ describe('listShortUrls', () => {
 				tagIds: [tag1.id, tag2.id],
 			});
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const data = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
 			expect(data.total).toBe(2);
 			const ids = data.data.map((su) => su.id);
@@ -272,7 +273,7 @@ describe('listShortUrls', () => {
 				tagIds: [tag.id],
 			});
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const data = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
 			expect(data.total).toBe(2);
 			expect(data.data).toHaveLength(2);
@@ -291,7 +292,7 @@ describe('listShortUrls', () => {
 				where: { shortCode: { like: shortUrl.shortCode } },
 			});
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const data = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
 			expect(data.total).toBe(1);
 			expect(data.data[0].id).toBe(shortUrl.id);
@@ -307,7 +308,7 @@ describe('listShortUrls', () => {
 				tagIds: [tag.id],
 			});
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const data = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
 			const found = data.data.find((su) => su.id === shortUrl.id);
 			expect(found).toBeDefined();

@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	generateQrCodeDto,
 	generateEditableUrlQrCodeDto,
@@ -12,6 +13,7 @@ describe('createQrCode - URL Content Type', () => {
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -23,7 +25,7 @@ describe('createQrCode - URL Content Type', () => {
 	it('should create a static URL QR code (isEditable: false)', async () => {
 		const createQrCodeDto = generateQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('url');
@@ -41,7 +43,7 @@ describe('createQrCode - URL Content Type', () => {
 	it('should create a dynamic URL QR code (isEditable: true)', async () => {
 		const createQrCodeDto = generateEditableUrlQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('url');
@@ -72,7 +74,7 @@ describe('createQrCode - URL Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidUrlDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject URL with invalid hostname (no TLD)', async () => {
@@ -87,7 +89,7 @@ describe('createQrCode - URL Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidUrlDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject URL exceeding max length (1000 chars)', async () => {
@@ -103,6 +105,6 @@ describe('createQrCode - URL Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidUrlDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 });
