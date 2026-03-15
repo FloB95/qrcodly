@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { faker } from '@faker-js/faker';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { QrCodeDefaults, type TCreateConfigTemplateDto } from '@shared/schemas';
 import { container } from 'tsyringe';
@@ -14,7 +14,7 @@ const CONFIG_TEMPLATE_API_PATH = `${API_BASE_PATH}/config-template/predefined`;
  * Generates a new random Config Template DTO.
  */
 const generateConfigTemplateDto = (): TCreateConfigTemplateDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	config: QrCodeDefaults,
 });
 
@@ -32,6 +32,7 @@ describe('list predefined templates', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		user = ctx.user;
@@ -50,7 +51,7 @@ describe('list predefined templates', () => {
 
 	it('should list the predefined templates and return status code 200', async () => {
 		const response = await listPredefinedConfigTemplatesRequest();
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { data, total, page, limit } = JSON.parse(response.payload);
 		expect(Array.isArray(data)).toBe(true);

@@ -5,11 +5,13 @@ import {
 	type TestContext,
 } from './utils';
 import { env } from '@/core/config/env';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('POST /billing/checkout-session', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -28,7 +30,7 @@ describe('POST /billing/checkout-session', () => {
 			payload: {},
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 for invalid priceId', async () => {
@@ -42,7 +44,7 @@ describe('POST /billing/checkout-session', () => {
 			payload: { priceId: 'price_invalid_not_allowed' },
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 		const data = JSON.parse(response.payload) as { message: string };
 		expect(data.message).toContain('Invalid price ID');
 	});
@@ -55,7 +57,7 @@ describe('POST /billing/checkout-session', () => {
 			payload: { priceId: env.STRIPE_PRO_PRICE_ID_MONTHLY },
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should create checkout session with valid monthly price', async () => {
@@ -69,7 +71,7 @@ describe('POST /billing/checkout-session', () => {
 			payload: { priceId: env.STRIPE_PRO_PRICE_ID_MONTHLY },
 		});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const data = JSON.parse(response.payload) as { url: string };
 		expect(data.url).toBeDefined();
 		expect(data.url).toContain('stripe.com');
@@ -86,7 +88,7 @@ describe('POST /billing/checkout-session', () => {
 			payload: { priceId: env.STRIPE_PRO_PRICE_ID_ANNUAL },
 		});
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const data = JSON.parse(response.payload) as { url: string };
 		expect(data.url).toBeDefined();
 		expect(data.url).toContain('stripe.com');

@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { generateTextQrCodeDto, getTestContext, createQrCodeRequest } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('createQrCode - Text Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -18,7 +20,7 @@ describe('createQrCode - Text Content Type', () => {
 	it('should create a text QR code', async () => {
 		const createQrCodeDto = generateTextQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('text');
@@ -38,7 +40,7 @@ describe('createQrCode - Text Content Type', () => {
 			},
 		};
 		const response = await createRequest(emptyTextDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject text exceeding max length (1000 chars)', async () => {
@@ -51,6 +53,6 @@ describe('createQrCode - Text Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidTextDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 });

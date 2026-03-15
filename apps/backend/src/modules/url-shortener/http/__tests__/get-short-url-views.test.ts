@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import type { TShortUrlResponseDto } from '@shared/schemas';
 import { SHORT_URL_API_PATH, reserveShortUrl } from './utils';
@@ -10,6 +10,7 @@ describe('getShortUrlViews', () => {
 	let accessToken2: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -36,7 +37,7 @@ describe('getShortUrlViews', () => {
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
 		const response = await getViewsRequest(shortUrl.shortCode, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { views } = JSON.parse(response.payload) as { views: number };
 		expect(typeof views).toBe('number');
@@ -48,7 +49,7 @@ describe('getShortUrlViews', () => {
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
 		const response = await getViewsRequest(shortUrl.shortCode, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const { views } = JSON.parse(response.payload) as { views: number };
 		expect(Number.isInteger(views)).toBe(true);
@@ -59,7 +60,7 @@ describe('getShortUrlViews', () => {
 			method: 'GET',
 			url: `${SHORT_URL_API_PATH}/XXXXX/get-views`,
 		});
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it("should return 403 when requesting views for another user's short URL", async () => {
@@ -67,11 +68,11 @@ describe('getShortUrlViews', () => {
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
 		const response = await getViewsRequest(shortUrl.shortCode, accessToken2);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 404 when shortCode does not exist', async () => {
 		const response = await getViewsRequest('XXXXX', accessToken);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 });

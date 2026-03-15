@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import type { TShortUrlResponseDto, TAnalyticsResponseDto } from '@shared/schemas';
 import { SHORT_URL_API_PATH, reserveShortUrl } from './utils';
@@ -10,6 +10,7 @@ describe('getShortUrlAnalytics', () => {
 	let accessToken2: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -36,7 +37,7 @@ describe('getShortUrlAnalytics', () => {
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
 		const response = await getAnalyticsRequest(shortUrl.shortCode, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const analytics = JSON.parse(response.payload) as TAnalyticsResponseDto;
 		expect(analytics).toBeDefined();
@@ -48,7 +49,7 @@ describe('getShortUrlAnalytics', () => {
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
 		const response = await getAnalyticsRequest(shortUrl.shortCode, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const analytics = JSON.parse(response.payload) as TAnalyticsResponseDto;
 		expect(analytics.shortUrlStats).toBeDefined();
@@ -64,7 +65,7 @@ describe('getShortUrlAnalytics', () => {
 			method: 'GET',
 			url: `${SHORT_URL_API_PATH}/XXXXX/analytics`,
 		});
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it("should return 403 when requesting analytics for another user's short URL", async () => {
@@ -72,11 +73,11 @@ describe('getShortUrlAnalytics', () => {
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
 		const response = await getAnalyticsRequest(shortUrl.shortCode, accessToken2);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 404 when shortCode does not exist', async () => {
 		const response = await getAnalyticsRequest('XXXXX', accessToken);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 });

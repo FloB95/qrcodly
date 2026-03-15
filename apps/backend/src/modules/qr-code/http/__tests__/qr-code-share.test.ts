@@ -8,6 +8,7 @@ import type {
 } from '@shared/schemas';
 import { API_BASE_PATH } from '@/core/config/constants';
 import { generateQrCodeDto, getTestContext, createQrCodeRequest } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 const PUBLIC_SHARE_API_PATH = `${API_BASE_PATH}/s`;
@@ -18,6 +19,7 @@ describe('QR Code Share', () => {
 	let accessToken2: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -28,7 +30,7 @@ describe('QR Code Share', () => {
 	const createQrCode = async (token: string): Promise<TQrCodeWithRelationsResponseDto> => {
 		const dto = generateQrCodeDto();
 		const response = await createQrCodeRequest(testServer, dto, token);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 		return JSON.parse(response.payload);
 	};
 
@@ -100,7 +102,7 @@ describe('QR Code Share', () => {
 			const qrCode = await createQrCode(accessToken);
 
 			const response = await createShareRequest(qrCode.id, {}, accessToken);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const share = JSON.parse(response.payload) as TQrCodeShareResponseDto;
 			expect(share.id).toBeDefined();
@@ -120,7 +122,7 @@ describe('QR Code Share', () => {
 			};
 
 			const response = await createShareRequest(qrCode.id, customConfig, accessToken);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const share = JSON.parse(response.payload) as TQrCodeShareResponseDto;
 			expect(share.config.showName).toBe(false);
@@ -131,14 +133,14 @@ describe('QR Code Share', () => {
 			const qrCode = await createQrCode(accessToken);
 
 			const response = await createShareRequest(qrCode.id, {});
-			expect(response.statusCode).toBe(401);
+			expect(response).toHaveStatusCode(401);
 		});
 
 		it("should return 403 when trying to share another user's QR code", async () => {
 			const qrCode = await createQrCode(accessToken);
 
 			const response = await createShareRequest(qrCode.id, {}, accessToken2);
-			expect(response.statusCode).toBe(403);
+			expect(response).toHaveStatusCode(403);
 		});
 
 		it('should return 404 for non-existent QR code', async () => {
@@ -147,7 +149,7 @@ describe('QR Code Share', () => {
 				{},
 				accessToken,
 			);
-			expect(response.statusCode).toBe(404);
+			expect(response).toHaveStatusCode(404);
 		});
 
 		it('should return 400 when share already exists', async () => {
@@ -169,7 +171,7 @@ describe('QR Code Share', () => {
 			await createShareRequest(qrCode.id, {}, accessToken);
 
 			const response = await getShareRequest(qrCode.id, accessToken);
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const share = JSON.parse(response.payload) as TQrCodeShareResponseDto;
 			expect(share.qrCodeId).toBe(qrCode.id);
@@ -181,7 +183,7 @@ describe('QR Code Share', () => {
 			await createShareRequest(qrCode.id, {}, accessToken);
 
 			const response = await getShareRequest(qrCode.id);
-			expect(response.statusCode).toBe(401);
+			expect(response).toHaveStatusCode(401);
 		});
 
 		it("should return 403 when accessing another user's share", async () => {
@@ -189,19 +191,19 @@ describe('QR Code Share', () => {
 			await createShareRequest(qrCode.id, {}, accessToken);
 
 			const response = await getShareRequest(qrCode.id, accessToken2);
-			expect(response.statusCode).toBe(403);
+			expect(response).toHaveStatusCode(403);
 		});
 
 		it('should return 404 for non-existent QR code', async () => {
 			const response = await getShareRequest('00000000-0000-0000-0000-000000000000', accessToken);
-			expect(response.statusCode).toBe(404);
+			expect(response).toHaveStatusCode(404);
 		});
 
 		it('should return 404 when share does not exist', async () => {
 			const qrCode = await createQrCode(accessToken);
 
 			const response = await getShareRequest(qrCode.id, accessToken);
-			expect(response.statusCode).toBe(404);
+			expect(response).toHaveStatusCode(404);
 		});
 	});
 
@@ -216,7 +218,7 @@ describe('QR Code Share', () => {
 			};
 
 			const response = await updateShareRequest(qrCode.id, updatePayload, accessToken);
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const share = JSON.parse(response.payload) as TQrCodeShareResponseDto;
 			expect(share.config.showName).toBe(false);
@@ -236,7 +238,7 @@ describe('QR Code Share', () => {
 			};
 
 			const response = await updateShareRequest(qrCode.id, updatePayload, accessToken);
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const share = JSON.parse(response.payload) as TQrCodeShareResponseDto;
 			expect(share.config.showName).toBe(false);
@@ -248,7 +250,7 @@ describe('QR Code Share', () => {
 			await createShareRequest(qrCode.id, {}, accessToken);
 
 			const response = await updateShareRequest(qrCode.id, { showName: false });
-			expect(response.statusCode).toBe(401);
+			expect(response).toHaveStatusCode(401);
 		});
 
 		it("should return 403 when updating another user's share", async () => {
@@ -256,7 +258,7 @@ describe('QR Code Share', () => {
 			await createShareRequest(qrCode.id, {}, accessToken);
 
 			const response = await updateShareRequest(qrCode.id, { showName: false }, accessToken2);
-			expect(response.statusCode).toBe(403);
+			expect(response).toHaveStatusCode(403);
 		});
 
 		it('should return 404 for non-existent QR code', async () => {
@@ -265,14 +267,14 @@ describe('QR Code Share', () => {
 				{ showName: false },
 				accessToken,
 			);
-			expect(response.statusCode).toBe(404);
+			expect(response).toHaveStatusCode(404);
 		});
 
 		it('should return 404 when share does not exist', async () => {
 			const qrCode = await createQrCode(accessToken);
 
 			const response = await updateShareRequest(qrCode.id, { showName: false }, accessToken);
-			expect(response.statusCode).toBe(404);
+			expect(response).toHaveStatusCode(404);
 		});
 	});
 
@@ -282,7 +284,7 @@ describe('QR Code Share', () => {
 			await createShareRequest(qrCode.id, {}, accessToken);
 
 			const response = await deleteShareRequest(qrCode.id, accessToken);
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const result = JSON.parse(response.payload);
 			expect(result.deleted).toBe(true);
@@ -297,7 +299,7 @@ describe('QR Code Share', () => {
 			await createShareRequest(qrCode.id, {}, accessToken);
 
 			const response = await deleteShareRequest(qrCode.id);
-			expect(response.statusCode).toBe(401);
+			expect(response).toHaveStatusCode(401);
 		});
 
 		it("should return 403 when deleting another user's share", async () => {
@@ -305,7 +307,7 @@ describe('QR Code Share', () => {
 			await createShareRequest(qrCode.id, {}, accessToken);
 
 			const response = await deleteShareRequest(qrCode.id, accessToken2);
-			expect(response.statusCode).toBe(403);
+			expect(response).toHaveStatusCode(403);
 		});
 
 		it('should return 404 for non-existent QR code', async () => {
@@ -313,14 +315,14 @@ describe('QR Code Share', () => {
 				'00000000-0000-0000-0000-000000000000',
 				accessToken,
 			);
-			expect(response.statusCode).toBe(404);
+			expect(response).toHaveStatusCode(404);
 		});
 
 		it('should return 404 when share does not exist', async () => {
 			const qrCode = await createQrCode(accessToken);
 
 			const response = await deleteShareRequest(qrCode.id, accessToken);
-			expect(response.statusCode).toBe(404);
+			expect(response).toHaveStatusCode(404);
 		});
 	});
 
@@ -335,7 +337,7 @@ describe('QR Code Share', () => {
 			const share = JSON.parse(createResponse.payload) as TQrCodeShareResponseDto;
 
 			const response = await getPublicShareRequest(share.shareToken);
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const publicShare = JSON.parse(response.payload) as TPublicSharedQrCodeResponseDto;
 			expect(publicShare.name).toBe(qrCode.name);
@@ -356,7 +358,7 @@ describe('QR Code Share', () => {
 			const share = JSON.parse(createResponse.payload) as TQrCodeShareResponseDto;
 
 			const response = await getPublicShareRequest(share.shareToken);
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const publicShare = JSON.parse(response.payload) as TPublicSharedQrCodeResponseDto;
 			expect(publicShare.name).toBeNull();
@@ -373,7 +375,7 @@ describe('QR Code Share', () => {
 			const share = JSON.parse(createResponse.payload) as TQrCodeShareResponseDto;
 
 			const response = await getPublicShareRequest(share.shareToken);
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 
 			const publicShare = JSON.parse(response.payload) as TPublicSharedQrCodeResponseDto;
 			expect(publicShare.shareConfig.showDownloadButton).toBe(false);
@@ -381,7 +383,7 @@ describe('QR Code Share', () => {
 
 		it('should return 404 for non-existent share token', async () => {
 			const response = await getPublicShareRequest('00000000-0000-0000-0000-000000000000');
-			expect(response.statusCode).toBe(404);
+			expect(response).toHaveStatusCode(404);
 		});
 
 		it('should return 404 after share is deleted', async () => {
@@ -411,7 +413,7 @@ describe('QR Code Share', () => {
 				method: 'GET',
 				url: `${PUBLIC_SHARE_API_PATH}/${share.shareToken}`,
 			});
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 		});
 	});
 

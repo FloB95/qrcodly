@@ -1,3 +1,4 @@
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	cleanupCreatedSubscriptions,
@@ -13,6 +14,7 @@ describe('GET /billing/subscription', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -22,7 +24,7 @@ describe('GET /billing/subscription', () => {
 
 	it('should return null when user has no subscription', async () => {
 		const response = await getSubscription(ctx, ctx.accessToken2);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const data = JSON.parse(response.payload) as { subscription: null };
 		expect(data.subscription).toBeNull();
@@ -40,7 +42,7 @@ describe('GET /billing/subscription', () => {
 		});
 
 		const response = await getSubscription(ctx, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const data = JSON.parse(response.payload) as {
 			subscription: {
@@ -64,7 +66,7 @@ describe('GET /billing/subscription', () => {
 		});
 
 		const response = await getSubscription(ctx, ctx.accessToken2);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const data = JSON.parse(response.payload) as { subscription: null };
 		expect(data.subscription).toBeNull();
@@ -81,7 +83,7 @@ describe('GET /billing/subscription', () => {
 		});
 
 		const response = await getSubscription(ctx, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const data = JSON.parse(response.payload) as {
 			subscription: {
@@ -101,7 +103,7 @@ describe('GET /billing/subscription', () => {
 		});
 
 		const response = await getSubscription(ctx, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const data = JSON.parse(response.payload) as {
 			subscription: { status: string };
@@ -117,7 +119,7 @@ describe('GET /billing/subscription', () => {
 			url: `${BILLING_API_PATH}/subscription`,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it("should not return another user's subscription", async () => {
@@ -129,7 +131,7 @@ describe('GET /billing/subscription', () => {
 
 		// Query with user 2's token — should get null, not user PRO's subscription
 		const response = await getSubscription(ctx, ctx.accessToken2);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const data = JSON.parse(response.payload) as { subscription: null };
 		expect(data.subscription).toBeNull();

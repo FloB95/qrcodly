@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	generateQrCodeDto,
 	generateEditableUrlQrCodeDto,
@@ -19,6 +20,7 @@ describe('createQrCode - Core', () => {
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -56,7 +58,7 @@ describe('createQrCode - Core', () => {
 		it('should create a QR code and return status code 201', async () => {
 			const createQrCodeDto = generateQrCodeDto();
 			const response = await createRequest(createQrCodeDto, accessToken);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			assertQrCodeResponse(receivedQrCode);
@@ -65,7 +67,7 @@ describe('createQrCode - Core', () => {
 		it('should create a QR code without user and not store it', async () => {
 			const createQrCodeDto = generateQrCodeDto();
 			const response = await createRequest(createQrCodeDto);
-			expect(response.statusCode).toBe(201);
+			expect(response).toHaveStatusCode(201);
 
 			const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			assertQrCodeResponse(receivedQrCode);
@@ -76,7 +78,7 @@ describe('createQrCode - Core', () => {
 		it('should return 400 for invalid request body', async () => {
 			// @ts-expect-error - Testing invalid request body
 			const response = await createRequest({}, accessToken);
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 
 			const { message, code, fieldErrors } = JSON.parse(response.payload);
 			expect(message).toBeDefined();
@@ -92,7 +94,7 @@ describe('createQrCode - Core', () => {
 			};
 			// @ts-expect-error - Testing invalid request body
 			const response = await createRequest(invalidDto, accessToken);
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should return 400 when config is missing', async () => {
@@ -102,7 +104,7 @@ describe('createQrCode - Core', () => {
 			};
 			// @ts-expect-error - Testing invalid request body
 			const response = await createRequest(invalidDto, accessToken);
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should return 400 for invalid content type', async () => {
@@ -114,7 +116,7 @@ describe('createQrCode - Core', () => {
 				},
 			};
 			const response = await createRequest(invalidDto as any, accessToken);
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 	});
 
@@ -124,7 +126,7 @@ describe('createQrCode - Core', () => {
 				const dto = generateEditableUrlQrCodeDto();
 				const response = await createRequest(dto); // No token
 
-				expect(response.statusCode).toBe(401);
+				expect(response).toHaveStatusCode(401);
 				const error = JSON.parse(response.payload);
 				expect(error.message).toContain('dynamic QR codes');
 			});
@@ -133,7 +135,7 @@ describe('createQrCode - Core', () => {
 				const dto = generateDynamicVCardQrCodeDto();
 				const response = await createRequest(dto); // No token
 
-				expect(response.statusCode).toBe(401);
+				expect(response).toHaveStatusCode(401);
 				const error = JSON.parse(response.payload);
 				expect(error.message).toContain('dynamic QR codes');
 			});
@@ -142,7 +144,7 @@ describe('createQrCode - Core', () => {
 				const dto = generateEventQrCodeDto();
 				const response = await createRequest(dto); // No token
 
-				expect(response.statusCode).toBe(401);
+				expect(response).toHaveStatusCode(401);
 				const error = JSON.parse(response.payload);
 				expect(error.message).toContain('dynamic QR codes');
 			});
@@ -153,42 +155,42 @@ describe('createQrCode - Core', () => {
 				const dto = generateQrCodeDto(); // Static URL (isEditable: false)
 				const response = await createRequest(dto); // No token
 
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 			});
 
 			it('should allow text QR code without authentication', async () => {
 				const dto = generateTextQrCodeDto();
 				const response = await createRequest(dto); // No token
 
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 			});
 
 			it('should allow WiFi QR code without authentication', async () => {
 				const dto = generateWifiQrCodeDto();
 				const response = await createRequest(dto); // No token
 
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 			});
 
 			it('should allow static vCard QR code without authentication', async () => {
 				const dto = generateVCardQrCodeDto(); // Static vCard (isDynamic: false/undefined)
 				const response = await createRequest(dto); // No token
 
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 			});
 
 			it('should allow email QR code without authentication', async () => {
 				const dto = generateEmailQrCodeDto();
 				const response = await createRequest(dto); // No token
 
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 			});
 
 			it('should allow location QR code without authentication', async () => {
 				const dto = generateLocationQrCodeDto();
 				const response = await createRequest(dto); // No token
 
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 			});
 		});
 
@@ -197,7 +199,7 @@ describe('createQrCode - Core', () => {
 				const dto = generateEditableUrlQrCodeDto();
 				const response = await createRequest(dto, accessToken);
 
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 				const qrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 				expect(qrCode.shortUrl).toBeDefined();
 			});
@@ -206,7 +208,7 @@ describe('createQrCode - Core', () => {
 				const dto = generateDynamicVCardQrCodeDto();
 				const response = await createRequest(dto, accessToken);
 
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 				const qrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 				expect(qrCode.shortUrl).toBeDefined();
 			});
@@ -215,7 +217,7 @@ describe('createQrCode - Core', () => {
 				const dto = generateEventQrCodeDto();
 				const response = await createRequest(dto, accessToken);
 
-				expect(response.statusCode).toBe(201);
+				expect(response).toHaveStatusCode(201);
 				const qrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 				expect(qrCode.shortUrl).toBeDefined();
 			});

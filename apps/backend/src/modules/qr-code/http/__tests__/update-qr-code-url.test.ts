@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	generateQrCodeDto,
 	generateEditableUrlQrCodeDto,
@@ -12,6 +13,7 @@ describe('updateQrCode - URL Content Type', () => {
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -57,7 +59,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('url');
 			if (updatedQrCode.content.type === 'url') {
@@ -89,7 +91,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.shortUrl).toBeNull();
 
@@ -119,7 +121,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			expect(updatedQrCode.config.width).toBe(500);
@@ -150,7 +152,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('url');
 			if (updatedQrCode.content.type === 'url') {
@@ -184,7 +186,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			// Short code should remain the same
 			expect(updatedQrCode.shortUrl?.shortCode).toBe(originalShortCode);
@@ -217,7 +219,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			expect(updatedQrCode.config.width).toBe(450);
@@ -247,7 +249,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject URL with invalid hostname (no TLD)', async () => {
@@ -267,7 +269,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject empty URL', async () => {
@@ -287,7 +289,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject dynamic URL update that creates redirect loop (destination = own short URL)', async () => {
@@ -317,7 +319,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 			const error = JSON.parse(response.payload);
 			expect(error.message).toContain('destination URL is not allowed');
 		});
@@ -340,7 +342,7 @@ describe('updateQrCode - URL Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.shortUrl?.destinationUrl).toBe(
 				'https://completely-different-domain.com/page',

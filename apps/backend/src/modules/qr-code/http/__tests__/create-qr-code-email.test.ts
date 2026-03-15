@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { generateEmailQrCodeDto, getTestContext, createQrCodeRequest } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('createQrCode - Email Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -18,7 +20,7 @@ describe('createQrCode - Email Content Type', () => {
 	it('should create an email QR code', async () => {
 		const createQrCodeDto = generateEmailQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('email');
@@ -50,7 +52,7 @@ describe('createQrCode - Email Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidEmailDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject email address exceeding max length (100 chars)', async () => {
@@ -65,7 +67,7 @@ describe('createQrCode - Email Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidEmailDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject subject exceeding max length (250 chars)', async () => {
@@ -80,7 +82,7 @@ describe('createQrCode - Email Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidEmailDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject body exceeding max length (1000 chars)', async () => {
@@ -95,7 +97,7 @@ describe('createQrCode - Email Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidEmailDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should create email QR code with optional fields omitted', async () => {
@@ -109,7 +111,7 @@ describe('createQrCode - Email Content Type', () => {
 			},
 		};
 		const response = await createRequest(minimalEmailDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		// Verify qrCodeData for email-only (no subject/body)

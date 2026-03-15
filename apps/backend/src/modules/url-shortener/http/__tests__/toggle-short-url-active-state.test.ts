@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { generateUpdateShortUrlDto } from '@/tests/shared/factories/short-url.factory';
 import { generateEditableUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
 import { API_BASE_PATH } from '@/core/config/constants';
@@ -14,6 +14,7 @@ describe('toggleShortUrlActiveState', () => {
 	let accessToken2: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -33,7 +34,7 @@ describe('toggleShortUrlActiveState', () => {
 		expect(shortUrl.isActive).toBe(false);
 
 		const response = await toggleActiveStateRequest(shortUrl.shortCode, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const toggled = JSON.parse(response.payload) as TShortUrlResponseDto;
 		expect(toggled.isActive).toBe(true);
@@ -51,7 +52,7 @@ describe('toggleShortUrlActiveState', () => {
 
 		// Now toggle from true to false
 		const response = await toggleActiveStateRequest(shortUrl.shortCode, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const toggled = JSON.parse(response.payload) as TShortUrlResponseDto;
 		expect(toggled.isActive).toBe(false);
@@ -72,7 +73,7 @@ describe('toggleShortUrlActiveState', () => {
 
 		// Toggle active state
 		const response = await toggleActiveStateRequest(shortUrl.shortCode, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const toggled = JSON.parse(response.payload) as TShortUrlResponseDto;
 		expect(toggled.destinationUrl).toBe(updateDto.destinationUrl);
@@ -83,7 +84,7 @@ describe('toggleShortUrlActiveState', () => {
 			method: 'PATCH',
 			url: `${SHORT_URL_API_PATH}/XXXXX/toggle-active-state`,
 		});
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it("should return 403 when toggling another user's short URL", async () => {
@@ -91,12 +92,12 @@ describe('toggleShortUrlActiveState', () => {
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
 		const response = await toggleActiveStateRequest(shortUrl.shortCode, accessToken2);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 404 when shortCode does not exist', async () => {
 		const response = await toggleActiveStateRequest('XXXXX', accessToken);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should allow toggling active state of a QR-code-linked short URL', async () => {
@@ -115,7 +116,7 @@ describe('toggleShortUrlActiveState', () => {
 
 		const initialActive = qrCode.shortUrl!.isActive;
 		const response = await toggleActiveStateRequest(qrCode.shortUrl!.shortCode, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const toggled = JSON.parse(response.payload) as TShortUrlResponseDto;
 		expect(toggled.isActive).toBe(!initialActive);

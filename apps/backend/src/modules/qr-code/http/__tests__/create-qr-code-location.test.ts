@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { generateLocationQrCodeDto, getTestContext, createQrCodeRequest } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('createQrCode - Location Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -18,7 +20,7 @@ describe('createQrCode - Location Content Type', () => {
 	it('should create a location QR code', async () => {
 		const createQrCodeDto = generateLocationQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('location');
@@ -50,7 +52,7 @@ describe('createQrCode - Location Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidLatDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should validate longitude range (-180 to 180) - above max', async () => {
@@ -66,7 +68,7 @@ describe('createQrCode - Location Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidLngDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject latitude below minimum (-90)', async () => {
@@ -82,7 +84,7 @@ describe('createQrCode - Location Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidLatDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject longitude below minimum (-180)', async () => {
@@ -98,7 +100,7 @@ describe('createQrCode - Location Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidLngDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject empty address', async () => {
@@ -114,7 +116,7 @@ describe('createQrCode - Location Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidAddressDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject address exceeding max length (200 chars)', async () => {
@@ -130,7 +132,7 @@ describe('createQrCode - Location Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidAddressDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should create location QR code without coordinates (address only)', async () => {
@@ -144,7 +146,7 @@ describe('createQrCode - Location Content Type', () => {
 			},
 		};
 		const response = await createRequest(addressOnlyDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		// Verify qrCodeData contains Google Maps URL for address-only location

@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import {
 	generateQrCodeDto,
@@ -28,7 +28,7 @@ describe('updateQrCode', () => {
 			payload: dto,
 			headers: { Authorization: `Bearer ${token}` },
 		});
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 		return JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 	};
 
@@ -44,6 +44,7 @@ describe('updateQrCode', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -57,7 +58,7 @@ describe('updateQrCode', () => {
 
 			const response = await updateQrCodeRequest(createdQrCode.id, { name: newName }, accessToken);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			expect(updatedQrCode.id).toBe(createdQrCode.id);
@@ -85,7 +86,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.config.width).toBe(500);
 			expect(updatedQrCode.config.height).toBe(500);
@@ -108,7 +109,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			expect(updatedQrCode.config.width).toBe(600);
@@ -134,7 +135,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('url');
 			if (updatedQrCode.content.type === 'url') {
@@ -168,7 +169,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('url');
 			if (updatedQrCode.content.type === 'url') {
@@ -200,7 +201,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			expect(updatedQrCode.config.width).toBe(450);
@@ -228,7 +229,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('text');
 			if (updatedQrCode.content.type === 'text') {
@@ -256,7 +257,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			if (updatedQrCode.content.type === 'text') {
@@ -290,7 +291,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('event');
 			if (updatedQrCode.content.type === 'event') {
@@ -328,7 +329,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			expect(updatedQrCode.config.width).toBe(550);
@@ -358,7 +359,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('wifi');
 			if (updatedQrCode.content.type === 'wifi') {
@@ -396,7 +397,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			expect(updatedQrCode.config.width).toBe(350);
@@ -428,7 +429,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('vCard');
 			if (updatedQrCode.content.type === 'vCard') {
@@ -465,7 +466,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('vCard');
 			if (updatedQrCode.content.type === 'vCard') {
@@ -502,7 +503,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			expect(updatedQrCode.config.width).toBe(400);
@@ -532,7 +533,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('email');
 			if (updatedQrCode.content.type === 'email') {
@@ -563,7 +564,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			if (updatedQrCode.content.type === 'email') {
@@ -592,7 +593,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('location');
 			if (updatedQrCode.content.type === 'location') {
@@ -625,7 +626,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			expect(updatedQrCode.config.width).toBe(380);
@@ -650,7 +651,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 			const error = JSON.parse(response.payload) as { message: string };
 			expect(error.message).toContain('content type');
 		});
@@ -662,7 +663,7 @@ describe('updateQrCode', () => {
 				payload: { name: 'Test' },
 			});
 
-			expect(response.statusCode).toBe(401);
+			expect(response).toHaveStatusCode(401);
 		});
 
 		it("should return 403 when updating another user's QR code", async () => {
@@ -674,13 +675,13 @@ describe('updateQrCode', () => {
 				accessToken2,
 			);
 
-			expect(response.statusCode).toBe(403);
+			expect(response).toHaveStatusCode(403);
 		});
 
 		it('should return 404 when QR code does not exist', async () => {
 			const response = await updateQrCodeRequest('non_existent_id', { name: 'Test' }, accessToken);
 
-			expect(response.statusCode).toBe(404);
+			expect(response).toHaveStatusCode(404);
 		});
 
 		// TODO: Re-enable when backend implements config validation for negative values
@@ -701,7 +702,7 @@ describe('updateQrCode', () => {
 			);
 
 			// Backend should validate config values and reject negative dimensions
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should handle empty update payload gracefully', async () => {
@@ -709,7 +710,7 @@ describe('updateQrCode', () => {
 
 			const response = await updateQrCodeRequest(createdQrCode.id, {}, accessToken);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 		});
 	});
 
@@ -734,7 +735,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.shortUrl).toBeNull();
 		});
@@ -759,7 +760,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			// Short code should remain the same
 			expect(updatedQrCode.shortUrl?.shortCode).toBe(originalShortCode);
@@ -789,7 +790,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			// Short code should remain the same for dynamic QR codes
 			expect(updatedQrCode.shortUrl?.shortCode).toBe(originalShortCode);
@@ -819,7 +820,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.shortUrl?.shortCode).toBe(originalShortCode);
 		});
@@ -846,7 +847,7 @@ describe('updateQrCode', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.shortUrl).toBeNull();
 		});

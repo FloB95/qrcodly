@@ -1,4 +1,5 @@
 import type { TResolveDomainResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	createCustomDomainDirectly,
@@ -13,6 +14,7 @@ describe('GET /custom-domain/resolve', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -31,7 +33,7 @@ describe('GET /custom-domain/resolve', () => {
 		});
 
 		const response = await resolveDomain(ctx, dto.domain);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TResolveDomainResponseDto;
 		expect(result.domain).toBe(dto.domain.toLowerCase());
@@ -46,7 +48,7 @@ describe('GET /custom-domain/resolve', () => {
 		});
 
 		const response = await resolveDomain(ctx, dto.domain);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TResolveDomainResponseDto;
 		expect(result.isValid).toBe(false);
@@ -54,7 +56,7 @@ describe('GET /custom-domain/resolve', () => {
 
 	it('should return isValid=false for non-existent domain', async () => {
 		const response = await resolveDomain(ctx, 'non-existent.example.com');
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TResolveDomainResponseDto;
 		expect(result.isValid).toBe(false);
@@ -72,7 +74,7 @@ describe('GET /custom-domain/resolve', () => {
 
 		// No auth header - should still work
 		const response = await resolveDomain(ctx, dto.domain);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 	});
 
 	it('should return 400 for missing domain query parameter', async () => {
@@ -81,6 +83,6 @@ describe('GET /custom-domain/resolve', () => {
 			url: '/api/v1/custom-domain/resolve',
 		});
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 });

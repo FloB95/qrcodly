@@ -43,7 +43,7 @@ export const createTagRequest = async (
 		},
 		payload: { color: '#FF5733', ...payload },
 	});
-	expect(response.statusCode).toBe(201);
+	expect(response).toHaveStatusCode(201);
 	return JSON.parse(response.payload);
 };
 
@@ -67,6 +67,6 @@ export const createQrCodeForTest = async (
 			config: QrCodeDefaults,
 		},
 	});
-	expect(response.statusCode).toBe(201);
+	expect(response).toHaveStatusCode(201);
 	return JSON.parse(response.payload);
 };

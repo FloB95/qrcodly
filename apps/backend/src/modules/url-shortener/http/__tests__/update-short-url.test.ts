@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { generateUpdateShortUrlDto } from '@/tests/shared/factories/short-url.factory';
 import { generateEditableUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
 import { API_BASE_PATH } from '@/core/config/constants';
@@ -19,6 +19,7 @@ describe('updateShortUrl', () => {
 	let accessToken2: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -42,7 +43,7 @@ describe('updateShortUrl', () => {
 
 		const updateDto = generateUpdateShortUrlDto();
 		const response = await updateShortUrlRequest(shortUrl.shortCode, updateDto, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const updated = JSON.parse(response.payload) as TShortUrlResponseDto;
 		expect(updated.destinationUrl).toBe(updateDto.destinationUrl);
@@ -57,7 +58,7 @@ describe('updateShortUrl', () => {
 			{ isActive: true },
 			accessToken,
 		);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const updated = JSON.parse(response.payload) as TShortUrlResponseDto;
 		expect(updated.isActive).toBe(true);
@@ -69,7 +70,7 @@ describe('updateShortUrl', () => {
 
 		const updateDto = generateUpdateShortUrlDto({ isActive: true });
 		const response = await updateShortUrlRequest(shortUrl.shortCode, updateDto, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const updated = JSON.parse(response.payload) as TShortUrlResponseDto;
 		expect(updated.destinationUrl).toBe(updateDto.destinationUrl);
@@ -82,7 +83,7 @@ describe('updateShortUrl', () => {
 			url: `${SHORT_URL_API_PATH}/XXXXX`,
 			payload: { isActive: true },
 		});
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it("should return 403 when user tries to update another user's short URL", async () => {
@@ -94,12 +95,12 @@ describe('updateShortUrl', () => {
 			{ isActive: true },
 			accessToken2,
 		);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should return 404 when shortCode does not exist', async () => {
 		const response = await updateShortUrlRequest('XXXXX', { isActive: true }, accessToken);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 400 for invalid destinationUrl format', async () => {
@@ -111,7 +112,7 @@ describe('updateShortUrl', () => {
 			{ destinationUrl: 'not-a-valid-url' },
 			accessToken,
 		);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 when destinationUrl creates redirect loop (points to itself)', async () => {
@@ -126,7 +127,7 @@ describe('updateShortUrl', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 		const error = JSON.parse(response.payload);
 		expect(error.message).toContain('destination URL is not allowed');
 	});
@@ -141,7 +142,7 @@ describe('updateShortUrl', () => {
 			accessToken,
 		);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updated = JSON.parse(response.payload) as TShortUrlResponseDto;
 		expect(updated.destinationUrl).toBe('https://completely-different-site.com');
 	});
@@ -163,7 +164,7 @@ describe('updateShortUrl', () => {
 			{ destinationUrl: null },
 			accessToken,
 		);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should return 400 when destinationUrl is set to empty string', async () => {
@@ -175,7 +176,7 @@ describe('updateShortUrl', () => {
 			{ destinationUrl: '' },
 			accessToken,
 		);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should ignore customDomainId when sent in update payload', async () => {
@@ -192,7 +193,7 @@ describe('updateShortUrl', () => {
 		);
 
 		// Should succeed but strip customDomainId (Zod strips unknown keys)
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		const updated = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
 		expect(updated.customDomain).toBeNull();
 	});
@@ -206,7 +207,7 @@ describe('updateShortUrl', () => {
 			{ name: 'My Updated Link' },
 			accessToken,
 		);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const updated = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
 		expect(updated.name).toBe('My Updated Link');
@@ -221,7 +222,7 @@ describe('updateShortUrl', () => {
 
 		// Then clear it
 		const response = await updateShortUrlRequest(shortUrl.shortCode, { name: null }, accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const updated = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
 		expect(updated.name).toBeNull();
@@ -246,7 +247,7 @@ describe('updateShortUrl', () => {
 			{ destinationUrl: 'https://new-destination.com' },
 			accessToken,
 		);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 
 		const error = JSON.parse(response.payload);
 		expect(error.message).toContain('linked to a QR code');

@@ -1,6 +1,6 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { env } from '@/core/config/env';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { generateEditableUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
@@ -14,6 +14,7 @@ describe('softDeletedShortUrl', () => {
 	let deletedShortCode!: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -48,7 +49,7 @@ describe('softDeletedShortUrl', () => {
 			url: `${SHORT_URL_API_PATH}/${deletedShortCode}`,
 			headers: { 'x-internal-api-key': env.INTERNAL_API_SECRET },
 		});
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 404 when trying to update a soft-deleted short URL', async () => {
@@ -61,7 +62,7 @@ describe('softDeletedShortUrl', () => {
 			},
 			payload: { destinationUrl: 'https://should-not-work.com' },
 		});
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 404 when trying to toggle active state of a soft-deleted short URL', async () => {
@@ -70,7 +71,7 @@ describe('softDeletedShortUrl', () => {
 			url: `${SHORT_URL_API_PATH}/${deletedShortCode}/toggle-active-state`,
 			headers: { Authorization: `Bearer ${accessToken}` },
 		});
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 404 when trying to get analytics of a soft-deleted short URL', async () => {
@@ -79,7 +80,7 @@ describe('softDeletedShortUrl', () => {
 			url: `${SHORT_URL_API_PATH}/${deletedShortCode}/analytics`,
 			headers: { Authorization: `Bearer ${accessToken}` },
 		});
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it('should return 404 when trying to get views of a soft-deleted short URL', async () => {
@@ -88,6 +89,6 @@ describe('softDeletedShortUrl', () => {
 			url: `${SHORT_URL_API_PATH}/${deletedShortCode}/get-views`,
 			headers: { Authorization: `Bearer ${accessToken}` },
 		});
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 });

@@ -1,4 +1,5 @@
 import type { TCustomDomainResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	createCustomDomainDirectly,
@@ -15,6 +16,7 @@ describe('POST /custom-domain/clear-default', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -53,7 +55,7 @@ describe('POST /custom-domain/clear-default', () => {
 	it('should return success even when no default is set', async () => {
 		// No default domain exists
 		const response = await clearDefaultDomain(ctx, ctx.accessTokenPro);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as { success: boolean };
 		expect(result.success).toBe(true);
@@ -65,6 +67,6 @@ describe('POST /custom-domain/clear-default', () => {
 			url: `${CUSTOM_DOMAIN_API_PATH}/clear-default`,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

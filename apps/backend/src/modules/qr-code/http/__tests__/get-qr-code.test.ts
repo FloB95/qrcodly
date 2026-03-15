@@ -1,5 +1,5 @@
 import { API_BASE_PATH } from '@/core/config/constants';
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { type TQrCodeResponseDto } from '@shared/schemas';
 import { container } from 'tsyringe';
@@ -32,6 +32,7 @@ describe('createQrCode', () => {
 		});
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -49,13 +50,13 @@ describe('createQrCode', () => {
 		const response = await getQrCodeRequest(createQrCode.id, accessToken);
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeResponseDto;
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 		expect(receivedQrCode.id).toMatch(createQrCode.id);
 	});
 
 	it('should return a 401 when no authenticated', async () => {
 		const response = await getQrCodeRequest(createQrCode.id);
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
@@ -71,7 +72,7 @@ describe('createQrCode', () => {
 		});
 
 		const response = await getQrCodeRequest(createQrCode.id, accessToken);
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();
@@ -79,7 +80,7 @@ describe('createQrCode', () => {
 
 	it('should return a 404 on invalid-id', async () => {
 		const response = await getQrCodeRequest('invalid-id', accessToken);
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 
 		const { message } = JSON.parse(response.payload);
 		expect(message).toBeDefined();

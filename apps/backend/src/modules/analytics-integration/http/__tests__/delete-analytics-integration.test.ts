@@ -11,11 +11,13 @@ import {
 	type TestContext,
 } from './utils';
 import { randomUUID } from 'crypto';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('DELETE /analytics-integration/:id (Delete)', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -28,7 +30,7 @@ describe('DELETE /analytics-integration/:id (Delete)', () => {
 
 		const response = await deleteIntegrationViaApi(ctx, id, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as { deleted: boolean };
 		expect(result.deleted).toBe(true);
@@ -58,7 +60,7 @@ describe('DELETE /analytics-integration/:id (Delete)', () => {
 		const fakeId = randomUUID();
 		const response = await deleteIntegrationViaApi(ctx, fakeId, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(404);
+		expect(response).toHaveStatusCode(404);
 	});
 
 	it("should return 403 when deleting another user's integration", async () => {
@@ -66,7 +68,7 @@ describe('DELETE /analytics-integration/:id (Delete)', () => {
 
 		const response = await deleteIntegrationViaApi(ctx, id, ctx.accessToken2);
 
-		expect(response.statusCode).toBe(403);
+		expect(response).toHaveStatusCode(403);
 	});
 
 	it('should allow delete even without Pro plan', async () => {
@@ -74,7 +76,7 @@ describe('DELETE /analytics-integration/:id (Delete)', () => {
 
 		const response = await deleteIntegrationViaApi(ctx, id, ctx.accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as { deleted: boolean };
 		expect(result.deleted).toBe(true);
@@ -93,6 +95,6 @@ describe('DELETE /analytics-integration/:id (Delete)', () => {
 			url: `${ANALYTICS_INTEGRATION_API_PATH}/${id}`,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

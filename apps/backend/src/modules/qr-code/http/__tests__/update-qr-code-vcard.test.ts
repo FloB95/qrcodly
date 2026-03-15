@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	generateVCardQrCodeDto,
 	generateDynamicVCardQrCodeDto,
@@ -12,6 +13,7 @@ describe('updateQrCode - vCard Content Type', () => {
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -60,7 +62,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('vCard');
 			if (updatedQrCode.content.type === 'vCard') {
@@ -102,7 +104,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.shortUrl).toBeNull();
 
@@ -137,7 +139,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			if (updatedQrCode.content.type === 'vCard') {
 				expect(updatedQrCode.content.data.job).toBe(newVCardData.job);
@@ -176,7 +178,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.content.type).toBe('vCard');
 			if (updatedQrCode.content.type === 'vCard') {
@@ -215,7 +217,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.shortUrl?.shortCode).toBe(originalShortCode);
 
@@ -249,7 +251,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(200);
+			expect(response).toHaveStatusCode(200);
 			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 			expect(updatedQrCode.name).toBe(newName);
 			expect(updatedQrCode.config.width).toBe(400);
@@ -274,7 +276,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject invalid email format in vCard', async () => {
@@ -295,7 +297,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject invalid phone format in vCard', async () => {
@@ -315,7 +317,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject firstName exceeding max length (64 chars)', async () => {
@@ -334,7 +336,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should reject invalid website URL in vCard', async () => {
@@ -354,7 +356,7 @@ describe('updateQrCode - vCard Content Type', () => {
 				accessToken,
 			);
 
-			expect(response.statusCode).toBe(400);
+			expect(response).toHaveStatusCode(400);
 		});
 	});
 });

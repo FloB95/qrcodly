@@ -1,4 +1,5 @@
 import type { TAnalyticsIntegrationResponseDto } from '@shared/schemas';
+import { resetTestState } from '@/tests/shared/test-context';
 import {
 	getTestContext,
 	cleanupCreatedIntegrations,
@@ -13,6 +14,7 @@ describe('GET /analytics-integration (List)', () => {
 	let ctx: TestContext;
 
 	beforeAll(async () => {
+		await resetTestState();
 		ctx = await getTestContext();
 	});
 
@@ -23,7 +25,7 @@ describe('GET /analytics-integration (List)', () => {
 	it('should return empty array when user has no integrations', async () => {
 		const response = await listIntegrations(ctx, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto[];
 		expect(result).toEqual([]);
@@ -36,7 +38,7 @@ describe('GET /analytics-integration (List)', () => {
 
 		const response = await listIntegrations(ctx, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto[];
 		expect(result).toHaveLength(1);
@@ -53,7 +55,7 @@ describe('GET /analytics-integration (List)', () => {
 		// User 1 (non-pro, but listing should still work - it returns empty)
 		const response = await listIntegrations(ctx, ctx.accessToken);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto[];
 		expect(result).toHaveLength(0);
@@ -64,7 +66,7 @@ describe('GET /analytics-integration (List)', () => {
 
 		const response = await listIntegrations(ctx, ctx.accessTokenPro);
 
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const result = JSON.parse(response.payload) as Record<string, unknown>[];
 		expect(result).toHaveLength(1);
@@ -81,6 +83,6 @@ describe('GET /analytics-integration (List)', () => {
 			url: ANALYTICS_INTEGRATION_API_PATH,
 		});
 
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 });

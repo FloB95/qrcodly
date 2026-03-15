@@ -1,4 +1,4 @@
-import { getTestContext } from '@/tests/shared/test-context';
+import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import {
 	assertShortUrlResponse,
 	assertReservedShortUrl,
@@ -14,6 +14,7 @@ describe('reserveShortUrl', () => {
 	let userId: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -30,7 +31,7 @@ describe('reserveShortUrl', () => {
 
 	it('should create and return new reserved short URL for user', async () => {
 		const response = await reserveShortUrlRequest(accessToken);
-		expect(response.statusCode).toBe(200);
+		expect(response).toHaveStatusCode(200);
 
 		const shortUrl = JSON.parse(response.payload) as TShortUrlResponseDto;
 		assertShortUrlResponse(shortUrl, userId);
@@ -74,7 +75,7 @@ describe('reserveShortUrl', () => {
 			method: 'GET',
 			url: `${SHORT_URL_API_PATH}/reserved`,
 		});
-		expect(response.statusCode).toBe(401);
+		expect(response).toHaveStatusCode(401);
 	});
 
 	it('should generate unique shortCode for each reservation', async () => {

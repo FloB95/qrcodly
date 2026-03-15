@@ -1,12 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { generateEventQrCodeDto, getTestContext, createQrCodeRequest } from './utils';
+import { resetTestState } from '@/tests/shared/test-context';
 
 describe('createQrCode - Event Content Type', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 
 	beforeAll(async () => {
+		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
@@ -18,7 +20,7 @@ describe('createQrCode - Event Content Type', () => {
 	it('should create an event QR code (always dynamic)', async () => {
 		const createQrCodeDto = generateEventQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('event');
@@ -54,7 +56,7 @@ describe('createQrCode - Event Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDateDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject event when endDate is before startDate', async () => {
@@ -70,7 +72,7 @@ describe('createQrCode - Event Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDateOrderDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 
 		const error = JSON.parse(response.payload);
 		expect(error.message).toContain('End date must be after start date');
@@ -90,7 +92,7 @@ describe('createQrCode - Event Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDateOrderDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject empty event title', async () => {
@@ -108,7 +110,7 @@ describe('createQrCode - Event Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidTitleDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject event title exceeding max length (200 chars)', async () => {
@@ -126,7 +128,7 @@ describe('createQrCode - Event Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidTitleDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject event description exceeding max length (500 chars)', async () => {
@@ -145,7 +147,7 @@ describe('createQrCode - Event Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidDescDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject event location exceeding max length (200 chars)', async () => {
@@ -164,7 +166,7 @@ describe('createQrCode - Event Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidLocationDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should reject event with invalid URL', async () => {
@@ -183,7 +185,7 @@ describe('createQrCode - Event Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidUrlDto, accessToken);
-		expect(response.statusCode).toBe(400);
+		expect(response).toHaveStatusCode(400);
 	});
 
 	it('should create event with valid URL', async () => {
@@ -202,7 +204,7 @@ describe('createQrCode - Event Content Type', () => {
 			},
 		};
 		const response = await createRequest(validUrlDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 	});
 
 	it('should create event with minimal required fields', async () => {
@@ -220,6 +222,6 @@ describe('createQrCode - Event Content Type', () => {
 			},
 		};
 		const response = await createRequest(minimalEventDto, accessToken);
-		expect(response.statusCode).toBe(201);
+		expect(response).toHaveStatusCode(201);
 	});
 });

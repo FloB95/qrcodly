@@ -26,6 +26,6 @@ export const createShortUrl = async (
 		},
 		payload: generateShortUrlDto(overrides),
 	});
-	expect(response.statusCode).toBe(201);
+	expect(response).toHaveStatusCode(201);
 	return JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
 };
