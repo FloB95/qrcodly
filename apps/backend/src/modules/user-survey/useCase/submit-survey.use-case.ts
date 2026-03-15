@@ -12,19 +12,20 @@ export class SubmitSurveyUseCase implements IBaseUseCase {
 	) {}
 
 	async execute(dto: TSubmitUserSurveyDto, userId: string): Promise<void> {
-		const existing = await this.userSurveyRepository.findByUserId(userId);
-		if (existing) {
-			return;
-		}
-
 		const newId = this.userSurveyRepository.generateId();
 
-		await this.userSurveyRepository.create({
-			id: newId,
-			userId,
-			rating: dto.rating,
-			feedback: dto.feedback ?? null,
-		});
+		try {
+			await this.userSurveyRepository.create({
+				id: newId,
+				userId,
+				rating: dto.rating,
+				feedback: dto.feedback ?? null,
+			});
+		} catch (error) {
+			const existing = await this.userSurveyRepository.findByUserId(userId);
+			if (existing) return;
+			throw error;
+		}
 
 		this.logger.info('user-survey.submitted', {
 			survey: { userId, rating: dto.rating },

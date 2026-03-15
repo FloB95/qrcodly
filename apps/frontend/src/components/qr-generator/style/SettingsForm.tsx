@@ -152,7 +152,7 @@ export const SettingsForm = () => {
 
 			reader.onload = () => {
 				const base64 = reader.result as string;
-				updateConfig({ ...config, image: base64 });
+				updateConfig({ image: base64 });
 				setImageDisplayName(file.name);
 				setUploadResetKey((prev) => prev + 1);
 			};
@@ -166,7 +166,7 @@ export const SettingsForm = () => {
 
 			reader.readAsDataURL(file);
 		},
-		[config, updateConfig, t, toast],
+		[updateConfig, t, toast],
 	);
 
 	// Handler for FileUpload component rejected files
