@@ -1,14 +1,8 @@
-import nodeConfig from 'qrcodly-eslint-config/node';
-import sharedConfig from 'qrcodly-eslint-config/shared';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import base from 'qrcodly-eslint-config/base';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-	...nodeConfig,
-	sharedConfig(__dirname),
+	...base(import.meta.dirname),
 	{
 		files: ['src/**/*.ts'],
 		rules: {
@@ -23,7 +17,7 @@ export default [
 		languageOptions: {
 			parserOptions: {
 				project: './tsconfig.web.json',
-				tsconfigRootDir: __dirname,
+				tsconfigRootDir: import.meta.dirname,
 			},
 		},
 	},

@@ -239,6 +239,7 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 									<div className="flex justify-center flex-col h-fit">
 										{/* SHRINK-WRAP container */}
 										<motion.div ref={containerRef} className="relative inline-block h-fit">
+											{/* eslint-disable-next-line @next/next/no-img-element -- dynamic background from user input */}
 											<img
 												ref={imageRef}
 												src={backgroundImage}

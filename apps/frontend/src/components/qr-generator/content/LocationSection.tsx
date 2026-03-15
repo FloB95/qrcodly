@@ -29,7 +29,7 @@ type LocationSectionProps = {
 
 const GOOGLE_MAPS_LIBRARIES: Libraries = ['places'];
 
-const _LocationSection = ({ onChange, value }: LocationSectionProps) => {
+const LocationSectionBase = ({ onChange, value }: LocationSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.location');
 	const locale = useLocale();
 
@@ -56,6 +56,7 @@ const _LocationSection = ({ onChange, value }: LocationSectionProps) => {
 
 		// Use handleSubmit to trigger validation before updating
 		void form.handleSubmit(onSubmit)();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounced]);
 
 	// -----------------------------
@@ -170,4 +171,4 @@ function areLocationPropsEqual(prev: LocationSectionProps, next: LocationSection
 }
 
 // Export memoized component
-export const LocationSection = memo(_LocationSection, areLocationPropsEqual);
+export const LocationSection = memo(LocationSectionBase, areLocationPropsEqual);

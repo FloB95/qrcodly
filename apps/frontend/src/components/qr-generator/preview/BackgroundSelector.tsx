@@ -61,7 +61,7 @@ export function BackgroundSelector({
 		e.stopPropagation();
 		setIsDragging(false);
 
-		handleFileUpload(e.dataTransfer.files);
+		void handleFileUpload(e.dataTransfer.files);
 	};
 
 	const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {

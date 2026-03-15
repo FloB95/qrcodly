@@ -30,7 +30,7 @@ const BulkWifiCsvSchema = z.object({
 	...WifiInputSchema.shape,
 });
 
-const { isDynamic: _, ...vCardShapeWithoutDynamic } = VCardInputSchema.shape;
+const { isDynamic: _isDynamic, ...vCardShapeWithoutDynamic } = VCardInputSchema.shape;
 const BulkVCardCsvSchema = z.object({
 	...QrCodeSchema.pick({ name: true }).shape,
 	...vCardShapeWithoutDynamic,

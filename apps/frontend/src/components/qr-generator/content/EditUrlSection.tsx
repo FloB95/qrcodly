@@ -21,7 +21,7 @@ type TUrlSectionProps = {
 	value: FormValues;
 };
 
-const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
+const EditUrlSectionBase = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
 	const { shortUrl } = useQrCodeGeneratorStore((state) => state);
 	const { link: shortUrlLink } = useShortUrlLink(shortUrl);
@@ -60,6 +60,7 @@ const _EditUrlSection = ({ value, onChange }: TUrlSectionProps) => {
 			return;
 		}
 		void form.handleSubmit(onSubmit)();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounced]);
 
 	return (
@@ -124,4 +125,4 @@ function areEditUrlPropsEqual(prev: TUrlSectionProps, next: TUrlSectionProps) {
 }
 
 // Export memoized component
-export const EditUrlSection = memo(_EditUrlSection, areEditUrlPropsEqual);
+export const EditUrlSection = memo(EditUrlSectionBase, areEditUrlPropsEqual);

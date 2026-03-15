@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
 import type { TFileExtension, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import type QRCodeStyling from 'qr-code-styling';
 import {
 	Dialog,
 	DialogContent,
@@ -75,7 +76,7 @@ function getUniqueFileName(existingNames: Set<string>, baseName: string, ext: st
 async function generateQrCodeBlob(
 	qr: TQrCodeWithRelationsResponseDto,
 	fileExtension: TFileExtension,
-	QRCodeStylingModule: any,
+	QRCodeStylingModule: typeof QRCodeStyling,
 ): Promise<Blob | null> {
 	const options = getQrCodeStylingOptions(qr.config, qr.content, {
 		qrCodeData: qr.qrCodeData,
@@ -97,7 +98,7 @@ export function BulkExportDialog({ open, onOpenChange }: BulkExportDialogProps) 
 	const [progress, setProgress] = useState(0);
 
 	const { data: qrCodeData, isLoading } = useListQrCodesQuery(page, EXPORT_PAGE_LIMIT);
-	const qrCodes = qrCodeData?.data ?? [];
+	const qrCodes = useMemo(() => qrCodeData?.data ?? [], [qrCodeData?.data]);
 	const total = qrCodeData?.total ?? 0;
 	const totalPages = useMemo(() => Math.max(1, Math.ceil(total / EXPORT_PAGE_LIMIT)), [total]);
 
@@ -342,6 +343,7 @@ export function BulkExportDialog({ open, onOpenChange }: BulkExportDialogProps) 
 											disabled={exporting || exportAll}
 										/>
 										{qr.previewImage ? (
+											// eslint-disable-next-line @next/next/no-img-element -- dynamic preview image
 											<img
 												src={qr.previewImage}
 												alt=""

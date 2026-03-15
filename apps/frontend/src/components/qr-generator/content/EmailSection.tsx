@@ -29,7 +29,7 @@ type EmailSectionProps = {
 	value: TEmailInput;
 };
 
-const _EmailSection = ({ onChange, value }: EmailSectionProps) => {
+const EmailSectionBase = ({ onChange, value }: EmailSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.email');
 
 	const form = useForm<TEmailInput>({
@@ -47,6 +47,7 @@ const _EmailSection = ({ onChange, value }: EmailSectionProps) => {
 		}
 
 		void form.handleSubmit(onSubmit)();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounced]);
 
 	function onSubmit(values: TEmailInput) {
@@ -140,4 +141,4 @@ function areEmailPropsEqual(prev: EmailSectionProps, next: EmailSectionProps) {
 }
 
 // Export memoized component
-export const EmailSection = memo(_EmailSection, areEmailPropsEqual);
+export const EmailSection = memo(EmailSectionBase, areEmailPropsEqual);

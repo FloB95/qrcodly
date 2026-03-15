@@ -148,6 +148,7 @@ export function PredefinedBackgrounds({ onSelect, className = '' }: PredefinedBa
 						`}
 					>
 						{/* Background Image */}
+						{/* eslint-disable-next-line @next/next/no-img-element -- external Unsplash URLs */}
 						<img
 							src={image.url}
 							alt={image.alt}

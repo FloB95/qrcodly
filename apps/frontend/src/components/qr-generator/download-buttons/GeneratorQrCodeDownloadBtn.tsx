@@ -25,8 +25,9 @@ import {
 	isContentAtDefault,
 	hasQrCodeChanged,
 } from '@/lib/qr-code-helpers';
+import type QRCodeStylingType from 'qr-code-styling';
 
-let QRCodeStyling: any;
+let QRCodeStyling: typeof QRCodeStylingType;
 
 /**
  * Download button for GENERATOR (creating new QR codes)
@@ -44,7 +45,7 @@ export const GeneratorQrCodeDownloadBtn = ({
 	const { name, config, content, shortUrl, latestQrCode, updateLatestQrCode, resetStore } =
 		useQrCodeGeneratorStore((state) => state);
 
-	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
+	const [qrCodeInstance, setQrCodeInstance] = useState<QRCodeStylingType | null>(null);
 	const [hasMounted, setHasMounted] = useState(false);
 	const createQrCodeMutation = useCreateQrCodeMutation();
 	const queryClient = useQueryClient();
@@ -52,7 +53,7 @@ export const GeneratorQrCodeDownloadBtn = ({
 	useEffect(() => {
 		setHasMounted(true);
 
-		import('qr-code-styling').then((module) => {
+		void import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
 			// For generator (new QR codes), compute on the fly since there's no stored qrCodeData yet
 			const options = getQrCodeStylingOptions(config, content, { shortUrl });

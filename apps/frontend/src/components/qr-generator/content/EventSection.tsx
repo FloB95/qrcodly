@@ -36,7 +36,7 @@ type EventSectionProps = {
 	value: TEventInput;
 };
 
-const _EventSection = ({ onChange, value }: EventSectionProps) => {
+const EventSectionBase = ({ onChange, value }: EventSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.event');
 	const [alertOpen, setAlertOpen] = useState(false);
 	const { isSignedIn } = useAuth();
@@ -88,10 +88,12 @@ const _EventSection = ({ onChange, value }: EventSectionProps) => {
 		}
 
 		void form.handleSubmit(onSubmit)();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounced]);
 
 	useEffect(() => {
 		form.reset();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [shortUrl]);
 
 	const isoToDatetimeLocal = (iso?: string) => {
@@ -254,4 +256,4 @@ function areEventPropsEqual(prev: EventSectionProps, next: EventSectionProps) {
 }
 
 // Export memoized component
-export const EventSection = memo(_EventSection, areEventPropsEqual);
+export const EventSection = memo(EventSectionBase, areEventPropsEqual);

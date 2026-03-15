@@ -13,7 +13,6 @@ export class StripeWebhookController extends AbstractController {
 
 	@Post('/webhook/stripe', { schema: { hide: true }, authHandler: stripeWebhookAuthHandler })
 	async handleWebhook(request: FastifyRequest) {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 		await this.webhookService.handleWebhookEvent((request as any).stripeEvent);
 		return this.makeApiHttpResponse(200, { status: 'ok' });
 	}

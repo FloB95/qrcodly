@@ -438,10 +438,10 @@ function FileUpload(props: FileUploadProps) {
 				if (propsRef.current.onUpload) {
 					await propsRef.current.onUpload(files, {
 						onProgress,
-						onSuccess: (file: any) => {
+						onSuccess: (file: File) => {
 							store.dispatch({ type: 'SET_SUCCESS', file });
 						},
-						onError: (file: any, error: any) => {
+						onError: (file: File, error: Error) => {
 							store.dispatch({
 								type: 'SET_ERROR',
 								file,
@@ -576,11 +576,12 @@ function FileUpload(props: FileUploadProps) {
 
 				if (propsRef.current.onUpload) {
 					requestAnimationFrame(() => {
-						onFilesUpload(acceptedFiles);
+						void onFilesUpload(acceptedFiles);
 					});
 				}
 			}
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[store, isControlled, propsRef, onFilesUpload, maxFiles, acceptTypes, maxSize, disabled],
 	);
 
@@ -818,6 +819,7 @@ function FileUploadDropzone(props: FileUploadDropzoneProps) {
 	const DropzonePrimitive = asChild ? Slot : 'div';
 
 	return (
+		// eslint-disable-next-line jsx-a11y/role-supports-aria-props -- intentional for dropzone UX
 		<DropzonePrimitive
 			role="region"
 			id={context.dropzoneId}
@@ -903,6 +905,7 @@ function FileUploadList(props: FileUploadListProps) {
 	const ListPrimitive = asChild ? Slot : 'div';
 
 	return (
+		// eslint-disable-next-line jsx-a11y/role-supports-aria-props -- intentional for list orientation
 		<ListPrimitive
 			role="list"
 			id={context.listId}
@@ -1030,7 +1033,7 @@ function FileUploadItemPreview(props: FileUploadItemPreviewProps) {
 				}
 
 				return (
-					// biome-ignore lint/performance/noImgElement: dynamic file URLs from user uploads don't work well with Next.js Image optimization
+					// eslint-disable-next-line @next/next/no-img-element -- dynamic blob URLs from user uploads
 					<img src={url} alt={file.name} className="size-full object-cover" />
 				);
 			}

@@ -56,7 +56,7 @@ export function WebsitePreview({ onSelect, className = '' }: WebsitePreviewProps
 				const dataUrl = await screenshotMutation.mutateAsync({ url: websiteUrl });
 				onSelect(dataUrl);
 				setIsLoading(false);
-			} catch (err) {
+			} catch {
 				setError(
 					t('errors.screenshotFailed', {
 						default:
@@ -77,7 +77,7 @@ export function WebsitePreview({ onSelect, className = '' }: WebsitePreviewProps
 
 			try {
 				await captureWithScreenshotApi(data.url);
-			} catch (err) {
+			} catch {
 				setError(
 					t('errors.loadFailed', {
 						default: 'Failed to load website. Please try again.',
@@ -167,7 +167,7 @@ export function WebsitePreview({ onSelect, className = '' }: WebsitePreviewProps
 							size="sm"
 							onClick={() => {
 								setError(null);
-								handleSubmit(onSubmit)();
+								void handleSubmit(onSubmit)();
 							}}
 							className="shrink-0"
 						>

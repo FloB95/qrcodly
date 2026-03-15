@@ -88,49 +88,49 @@ export function CustomDomainListItemActions({
 
 	const handleCopySslHost = () => {
 		if (instructions?.sslValidationRecord) {
-			handleCopy(instructions.sslValidationRecord.recordHost, 'copiedHostDescription');
+			void handleCopy(instructions.sslValidationRecord.recordHost, 'copiedHostDescription');
 		}
 	};
 
 	const handleCopySslValue = () => {
 		if (instructions?.sslValidationRecord) {
-			handleCopy(instructions.sslValidationRecord.recordValue, 'copiedTxtDescription');
+			void handleCopy(instructions.sslValidationRecord.recordValue, 'copiedTxtDescription');
 		}
 	};
 
 	const handleCopyOwnershipHost = () => {
 		if (instructions?.ownershipValidationRecord) {
-			handleCopy(instructions.ownershipValidationRecord.recordHost, 'copiedHostDescription');
+			void handleCopy(instructions.ownershipValidationRecord.recordHost, 'copiedHostDescription');
 		}
 	};
 
 	const handleCopyOwnershipValue = () => {
 		if (instructions?.ownershipValidationRecord) {
-			handleCopy(instructions.ownershipValidationRecord.recordValue, 'copiedTxtDescription');
+			void handleCopy(instructions.ownershipValidationRecord.recordValue, 'copiedTxtDescription');
 		}
 	};
 
 	const handleCopyCnameHost = () => {
 		if (instructions) {
-			handleCopy(instructions.cnameRecord.recordHost, 'copiedHostDescription');
+			void handleCopy(instructions.cnameRecord.recordHost, 'copiedHostDescription');
 		}
 	};
 
 	const handleCopyCnameValue = () => {
 		if (instructions) {
-			handleCopy(instructions.cnameRecord.recordValue, 'copiedCnameDescription');
+			void handleCopy(instructions.cnameRecord.recordValue, 'copiedCnameDescription');
 		}
 	};
 
 	const handleCopyDcvHost = () => {
 		if (instructions) {
-			handleCopy(instructions.dcvDelegationRecord.recordHost, 'copiedHostDescription');
+			void handleCopy(instructions.dcvDelegationRecord.recordHost, 'copiedHostDescription');
 		}
 	};
 
 	const handleCopyDcvValue = () => {
 		if (instructions) {
-			handleCopy(instructions.dcvDelegationRecord.recordValue, 'copiedCnameDescription');
+			void handleCopy(instructions.dcvDelegationRecord.recordValue, 'copiedCnameDescription');
 		}
 	};
 

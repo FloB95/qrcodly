@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { inject, injectable } from 'tsyringe';
 import { QrCodeContent, TBulkImportQrCodeDto, TQrCodeContentType } from '@shared/schemas';
 import { CreateQrCodeUseCase } from './create-qr-code.use-case';

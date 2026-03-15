@@ -92,6 +92,7 @@ export const QrCodeTagSelector = ({
 				});
 			}
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[currentTagIds, localTagIds, qrCodeId, setTagsMutation, onTagsUpdated],
 	);
 
