@@ -118,8 +118,8 @@ export function createLocationQrCode() {
 			type: 'location',
 			data: {
 				address: `${randomInt(1, 999)} Test Street, Berlin`,
-				latitude: 52.52 + Math.random() * 0.1,
-				longitude: 13.405 + Math.random() * 0.1,
+				latitude: 52.52 + randomInt(0, 100) / 1000,
+				longitude: 13.405 + randomInt(0, 100) / 1000,
 			},
 		},
 	};

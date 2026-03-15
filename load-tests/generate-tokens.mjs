@@ -71,7 +71,7 @@ async function generateToken(userId) {
 
 		return { userId, token: tokenRes.jwt, sessionId: session.id };
 	} catch (error) {
-		console.error(`  ✗ ${userId}: ${error.message}`);
+		console.error(`  ✗ ${userId}: Failed to generate token (${error.message.split(':')[0]})`);
 		return null;
 	}
 }

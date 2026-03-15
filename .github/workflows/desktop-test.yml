@@ -7,6 +7,9 @@ on:
     paths:
       - 'apps/desktop/**'
 
+permissions:
+  contents: read
+
 jobs:
   test-desktop:
     runs-on: ubuntu-latest
