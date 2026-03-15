@@ -14,7 +14,7 @@ const CONFIG_TEMPLATE_API_PATH = `${API_BASE_PATH}/config-template`;
  * Generates a new random Config Template DTO.
  */
 const generateConfigTemplateDto = (): TCreateConfigTemplateDto => ({
-	name: faker.lorem.words(3),
+	name: faker.lorem.words(3).substring(0, 32),
 	config: QrCodeDefaults,
 });
 
