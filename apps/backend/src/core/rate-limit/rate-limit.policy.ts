@@ -11,6 +11,8 @@ export enum RateLimitPolicy {
 	// custom domain limits
 	DOMAIN_VERIFY = 'domain_verify',
 	DOMAIN_RESOLVE = 'domain_resolve',
+	// survey limits
+	SURVEY_SUBMIT = 'survey_submit',
 	// scan limits
 	SCAN_LOOKUP = 'scan_lookup',
 	SCAN_RECORD = 'scan_record',
@@ -60,6 +62,11 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 3,
 		[RateLimitTier.PRO_PLAN]: 10,
+	},
+	[RateLimitPolicy.SURVEY_SUBMIT]: {
+		[RateLimitTier.ANONYMOUS]: 0,
+		[RateLimitTier.AUTHENTICATED]: 5,
+		[RateLimitTier.PRO_PLAN]: 5,
 	},
 	[RateLimitPolicy.DOMAIN_VERIFY]: {
 		[RateLimitTier.ANONYMOUS]: 0,

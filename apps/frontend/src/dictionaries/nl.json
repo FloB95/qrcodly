@@ -1968,5 +1968,17 @@
 				"a5": "Ja. Na de aankoop van het Pro-plan worden alle facturen automatisch gegenereerd. Je kunt ze op elk moment bekijken en downloaden in je dashboard onder Instellingen → Facturering → Facturen en bonnen."
 			}
 		}
+	},
+	"satisfactionSurvey": {
+		"title": "Hoe bevalt QRcodly?",
+		"subtitle": "Je feedback helpt ons verbeteren",
+		"thumbsUp": "Geweldig!",
+		"thumbsDown": "Kan beter",
+		"feedbackTitle": "We willen graag verbeteren",
+		"feedbackPlaceholder": "Vertel ons wat je ervan vindt...",
+		"submit": "Feedback verzenden",
+		"skip": "Overslaan",
+		"thankYouTitle": "Bedankt!",
+		"thankYouMessage": "Je feedback helpt ons een beter product te maken."
 	}
 }

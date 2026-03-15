@@ -1968,5 +1968,17 @@
 				"a5": "Oui. Après l'achat du plan Pro, toutes les factures sont générées automatiquement. Vous pouvez les consulter et les télécharger à tout moment dans votre tableau de bord sous Paramètres → Facturation → Factures et reçus."
 			}
 		}
+	},
+	"satisfactionSurvey": {
+		"title": "Comment trouvez-vous QRcodly ?",
+		"subtitle": "Vos retours nous aident à nous améliorer",
+		"thumbsUp": "Super !",
+		"thumbsDown": "Peut mieux faire",
+		"feedbackTitle": "Nous aimerions nous améliorer",
+		"feedbackPlaceholder": "Dites-nous ce que vous en pensez...",
+		"submit": "Envoyer",
+		"skip": "Passer",
+		"thankYouTitle": "Merci !",
+		"thankYouMessage": "Vos retours nous aident à créer un meilleur produit."
 	}
 }

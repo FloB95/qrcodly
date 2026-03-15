@@ -1968,5 +1968,17 @@
 				"a5": "Yes. After purchasing the Pro plan, all invoices are automatically generated. You can view and download them anytime in your dashboard under Settings → Billing → Invoices & Receipts."
 			}
 		}
+	},
+	"satisfactionSurvey": {
+		"title": "How's your experience with QRcodly?",
+		"subtitle": "Your feedback helps us improve",
+		"thumbsUp": "Great!",
+		"thumbsDown": "Could be better",
+		"feedbackTitle": "We'd love to improve",
+		"feedbackPlaceholder": "Tell us what you think...",
+		"submit": "Submit feedback",
+		"skip": "Skip",
+		"thankYouTitle": "Thank you!",
+		"thankYouMessage": "Your feedback helps us build a better product."
 	}
 }

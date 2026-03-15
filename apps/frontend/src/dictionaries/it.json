@@ -1968,5 +1968,17 @@
 				"a5": "Sì. Dopo l'acquisto del piano Pro, tutte le fatture vengono generate automaticamente. Puoi visualizzarle e scaricarle in qualsiasi momento nella tua dashboard in Impostazioni → Fatturazione → Fatture e ricevute."
 			}
 		}
+	},
+	"satisfactionSurvey": {
+		"title": "Come ti trovi con QRcodly?",
+		"subtitle": "Il tuo feedback ci aiuta a migliorare",
+		"thumbsUp": "Ottimo!",
+		"thumbsDown": "Potrebbe migliorare",
+		"feedbackTitle": "Vorremmo migliorare",
+		"feedbackPlaceholder": "Dicci cosa ne pensi...",
+		"submit": "Invia feedback",
+		"skip": "Salta",
+		"thankYouTitle": "Grazie!",
+		"thankYouMessage": "Il tuo feedback ci aiuta a creare un prodotto migliore."
 	}
 }

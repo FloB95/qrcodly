@@ -1968,5 +1968,17 @@
 				"a5": "Tak. Po zakupie planu Pro wszystkie faktury są generowane automatycznie. Możesz je przeglądać i pobierać w dowolnym momencie w panelu w Ustawienia → Rozliczenia → Faktury i paragony."
 			}
 		}
+	},
+	"satisfactionSurvey": {
+		"title": "Jak oceniasz QRcodly?",
+		"subtitle": "Twoja opinia pomaga nam się rozwijać",
+		"thumbsUp": "Świetnie!",
+		"thumbsDown": "Mogłoby być lepiej",
+		"feedbackTitle": "Chcemy się poprawić",
+		"feedbackPlaceholder": "Powiedz nam, co myślisz...",
+		"submit": "Wyślij opinię",
+		"skip": "Pomiń",
+		"thankYouTitle": "Dziękujemy!",
+		"thankYouMessage": "Twoja opinia pomaga nam tworzyć lepszy produkt."
 	}
 }

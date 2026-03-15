@@ -197,6 +197,13 @@
 			"when": 1773402597296,
 			"tag": "0027_supreme_landau",
 			"breakpoints": true
+		},
+		{
+			"idx": 28,
+			"version": "5",
+			"when": 1773566132718,
+			"tag": "0028_friendly_fantastic_four",
+			"breakpoints": true
 		}
 	]
 }

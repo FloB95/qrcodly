@@ -2,6 +2,7 @@ import { DashboardSidebar } from '@/components/dashboard-sidebar';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { NavigationProgress } from '@/components/navigation-progress';
+import SatisfactionSurvey from '@/components/dashboard/satisfaction-survey/SatisfactionSurvey';
 import { SiteHeader } from '@/components/site-header';
 import Container from '@/components/ui/container';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
@@ -27,6 +28,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 				</SidebarProvider>
 			</Container>
 			<Footer />
+			<SatisfactionSurvey />
 		</>
 	);
 }
