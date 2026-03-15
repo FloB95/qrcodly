@@ -28,7 +28,7 @@ export function CameraCapture({ onCapture, onError, className = '' }: CameraCapt
 	useEffect(() => {
 		// Small delay to ensure component is mounted
 		const timer = setTimeout(() => {
-			startCamera();
+			void startCamera();
 		}, 100);
 
 		return () => {

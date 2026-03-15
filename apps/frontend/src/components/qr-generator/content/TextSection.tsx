@@ -29,7 +29,7 @@ const formSchema = z.object({
 
 import { useWatch } from 'react-hook-form';
 
-const _TextSection = ({ value, onChange }: TTextSectionProps) => {
+const TextSectionBase = ({ value, onChange }: TTextSectionProps) => {
 	const t = useTranslations('generator.contentSwitch');
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -56,6 +56,7 @@ const _TextSection = ({ value, onChange }: TTextSectionProps) => {
 
 		// Use handleSubmit to trigger validation before updating
 		void form.handleSubmit(onSubmit)();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounced]);
 
 	return (
@@ -98,4 +99,4 @@ function areTextPropsEqual(prev: TTextSectionProps, next: TTextSectionProps) {
 }
 
 // Export memoized component
-export const TextSection = memo(_TextSection, areTextPropsEqual);
+export const TextSection = memo(TextSectionBase, areTextPropsEqual);

@@ -234,7 +234,7 @@ export function ProviderCard({
 								variant="destructive"
 								onClick={() => {
 									setShowDeleteDialog(false);
-									handleDelete();
+									void handleDelete();
 								}}
 							>
 								{t('delete')}

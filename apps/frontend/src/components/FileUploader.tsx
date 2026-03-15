@@ -56,16 +56,13 @@ export const FileUploader = ({ value, onValueChange, maxFiles = 1, accept }: Fil
 		[],
 	);
 
-	const onFileReject = React.useCallback(
-		(message: string) => {
-			toast({
-				title: message,
-				variant: 'destructive',
-				duration: 5000,
-			});
-		},
-		[t],
-	);
+	const onFileReject = React.useCallback((message: string) => {
+		toast({
+			title: message,
+			variant: 'destructive',
+			duration: 5000,
+		});
+	}, []);
 
 	return (
 		<FileUpload

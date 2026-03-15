@@ -65,6 +65,7 @@ function AnimatedStatValue({
 			delay,
 		});
 		return controls.stop;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isInView, count, parsed?.number, delay]);
 
 	if (!parsed) {

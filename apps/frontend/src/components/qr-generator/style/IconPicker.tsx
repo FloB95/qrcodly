@@ -132,6 +132,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 		if (icon) {
 			void handleIconClick(icon);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [color, selectedIcon]);
 
 	const filteredIcons = useMemo(
@@ -187,6 +188,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 									);
 								})()
 							) : (
+								// eslint-disable-next-line @next/next/no-img-element -- local SVG icons
 								<img src={icon.src} alt={icon.key} className="mx-auto h-7 w-7" />
 							)}
 						</div>
@@ -198,7 +200,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 						variant="secondary"
 						onClick={() => {
 							setDialogIsOpen(false);
-							handleIconClick(undefined);
+							void handleIconClick(undefined);
 						}}
 					>
 						{t('clearBtn')}

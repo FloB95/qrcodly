@@ -68,7 +68,7 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 							file: bulkMode.file?.name,
 						});
 					},
-					onError: (e: any) => {
+					onError: (e: Error) => {
 						const error = e as ApiError;
 
 						if (error.code >= 500) {
@@ -100,7 +100,9 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 					},
 				},
 			);
-		} catch (error) {}
+		} catch {
+			// Error is already handled by onError callback
+		}
 	};
 
 	return (
@@ -260,7 +262,7 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 										setAlertOpen(true);
 										return;
 									}
-									handleSave();
+									void handleSave();
 								}}
 							>
 								{t('generator.bulkImport.createButton')}

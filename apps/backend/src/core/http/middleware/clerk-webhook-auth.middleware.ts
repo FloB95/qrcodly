@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Webhook } from 'svix';
 import type { FastifyRequest } from 'fastify';
 import { UnauthorizedError } from '@/core/error/http';

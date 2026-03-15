@@ -41,6 +41,7 @@ export function useUrlPaginationSync() {
 		if (pageParam !== currentPage) {
 			setCurrentPage(pageParam);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pageParam]);
 
 	// URL → state: sync tag filter from ?tag= param (e.g. clicking a tag badge)

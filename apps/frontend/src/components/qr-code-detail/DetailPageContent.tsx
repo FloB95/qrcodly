@@ -93,6 +93,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 				});
 			},
 		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [qrCode]);
 
 	return (

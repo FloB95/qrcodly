@@ -13,8 +13,9 @@ import { type TFileExtension, type TQrCodeWithRelationsResponseDto } from '@shar
 import { useTranslations } from 'next-intl';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { getQrCodeStylingOptions } from '@/lib/qr-code-helpers';
+import type QRCodeStylingType from 'qr-code-styling';
 
-let QRCodeStyling: any;
+let QRCodeStyling: typeof QRCodeStylingType;
 
 /**
  * Download button for EDITOR (editing existing QR codes)
@@ -31,13 +32,13 @@ export const EditorQrCodeDownloadBtn = ({
 	const t = useTranslations('qrCode.download');
 	const { config, content } = useQrCodeGeneratorStore((state) => state);
 
-	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
+	const [qrCodeInstance, setQrCodeInstance] = useState<QRCodeStylingType | null>(null);
 	const [hasMounted, setHasMounted] = useState(false);
 
 	useEffect(() => {
 		setHasMounted(true);
 
-		import('qr-code-styling').then((module) => {
+		void import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
 			// Use stored qrCodeData from the saved QR code (has correct custom domain baked in)
 			// Config/styling comes from context store for live preview

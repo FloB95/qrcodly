@@ -81,7 +81,7 @@ export function VerificationCodeDialog({
 		(e: React.FormEvent) => {
 			e.preventDefault();
 			if (code.length === 6 && !isVerifying) {
-				onVerify(code);
+				void onVerify(code);
 			}
 		},
 		[code, isVerifying, onVerify],

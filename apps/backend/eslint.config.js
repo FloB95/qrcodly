@@ -1,19 +1,7 @@
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
+import tseslint from 'typescript-eslint';
+import base from 'qrcodly-eslint-config/base';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-	baseDirectory: __dirname,
-	recommendedConfig: js.configs.recommended,
-	allConfig: js.configs.all,
-});
-
-export default [
+export default tseslint.config(
 	{
 		ignores: [
 			'**/node_modules',
@@ -27,68 +15,25 @@ export default [
 			'scripts/**',
 		],
 	},
-	...compat.extends('plugin:@typescript-eslint/recommended-type-checked'),
-	{
-		plugins: {
-			'@typescript-eslint': typescriptEslint,
-		},
-
-		languageOptions: {
-			parser: tsParser,
-			ecmaVersion: 5,
-			sourceType: 'script',
-			parserOptions: {
-				project: './tsconfig.json',
-				tsconfigRootDir: __dirname,
-			},
-		},
-	},
-	...compat
-		.extends('plugin:@typescript-eslint/recommended-requiring-type-checking')
-		.map((config) => ({
-			...config,
-			files: ['./src/**/*.ts'],
-		})),
+	...base(import.meta.dirname),
 	{
 		files: ['./src/**/*.ts'],
 		rules: {
 			'@typescript-eslint/await-thenable': 'off',
 			'@typescript-eslint/no-explicit-any': 'off',
-			'@typescript-eslint/no-unsafe-argument': 'off',
 			'@typescript-eslint/no-misused-promises': 'off',
-			'@typescript-eslint/no-unsafe-assignment': 'off',
-			'@typescript-eslint/consistent-type-imports': [
-				'warn',
-				{
-					prefer: 'type-imports',
-					fixStyle: 'inline-type-imports',
-				},
-			],
-
-			'@typescript-eslint/no-unused-vars': [
-				'warn',
-				{
-					argsIgnorePattern: '^_',
-				},
-			],
 		},
 	},
 	{
 		files: ['**/__tests__/**/*.ts', '**/*.test.ts', '**/*.spec.ts'],
 		rules: {
 			'@typescript-eslint/unbound-method': 'off',
-			'@typescript-eslint/no-unsafe-member-access': 'off',
-			'@typescript-eslint/no-unsafe-return': 'off',
-			'@typescript-eslint/no-unsafe-call': 'off',
 			'@typescript-eslint/require-await': 'off',
 			'@typescript-eslint/ban-ts-comment': 'off',
 			'@typescript-eslint/no-unused-vars': [
 				'warn',
-				{
-					argsIgnorePattern: '^_',
-					varsIgnorePattern: '^_',
-				},
+				{ argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
 			],
 		},
 	},
-];
+);

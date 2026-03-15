@@ -60,6 +60,7 @@ export const TagList = () => {
 		if (pageParam !== currentPage) {
 			setCurrentPage(pageParam);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pageParam]);
 
 	// Reset to page 1 when search changes

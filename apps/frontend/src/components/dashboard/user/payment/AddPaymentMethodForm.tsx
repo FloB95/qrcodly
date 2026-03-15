@@ -35,8 +35,8 @@ export function AddPaymentMethodForm() {
 
 			// 3. Handle success (e.g., show a confirmation, clear the form)
 			alert('Payment method added successfully!');
-		} catch (err: any) {
-			setError(err.message || 'An unexpected error occurred.');
+		} catch (err: unknown) {
+			setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
 		} finally {
 			setIsSubmitting(false);
 		}

@@ -7,7 +7,7 @@ import { useBehaviorTracker } from '../SmartTipsBehaviorTracker';
 import { useSmartTipStorage } from './useSmartTipStorage';
 
 export function useSmartTips(anchor: string, stateContext?: SmartTipStateContext) {
-	const { getActionCount, actionVersion } = useBehaviorTracker();
+	const { getActionCount } = useBehaviorTracker();
 	const { getTipRecord, markShown, markDismissed, isGloballyDisabled, setGloballyDisabled } =
 		useSmartTipStorage();
 
@@ -30,7 +30,7 @@ export function useSmartTips(anchor: string, stateContext?: SmartTipStateContext
 	const [displayedTip, setDisplayedTip] = useState<TipDefinition | null>(null);
 
 	// For delay-based tips, re-evaluate periodically
-	const [tick, setTick] = useState(0);
+	const [, setTick] = useState(0);
 
 	useEffect(() => {
 		// Check if any tip for this anchor uses a delay
@@ -85,12 +85,10 @@ export function useSmartTips(anchor: string, stateContext?: SmartTipStateContext
 		anchor,
 		isGloballyDisabled,
 		displayedTip,
-		actionVersion,
 		stateContext,
 		getTipRecord,
 		getActionCount,
 		getProbabilityRoll,
-		tick,
 	]);
 
 	// When evaluation finds a tip, lock it in and record the show

@@ -78,6 +78,7 @@ function QrCode({ qrCode, additionalStyles = '', shortUrl, hasProPlan }: QrCodeP
 
 	useEffect(() => {
 		setQrCode(new QRCodeStyling(options));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {

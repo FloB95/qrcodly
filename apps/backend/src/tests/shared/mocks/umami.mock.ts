@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await */
 import type { TAnalyticsResponseDto } from '@shared/schemas';
 
 /**

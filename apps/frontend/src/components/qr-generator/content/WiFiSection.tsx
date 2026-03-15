@@ -32,7 +32,7 @@ type WiFiSectionProps = {
 	value: FormValues;
 };
 
-const _WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
+const WiFiSectionBase = ({ onChange, value }: WiFiSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.wifi');
 	const form = useForm<FormValues>({
 		resolver: zodResolver(WifiInputSchema),
@@ -66,6 +66,7 @@ const _WiFiSection = ({ onChange, value }: WiFiSectionProps) => {
 
 		// Use handleSubmit to trigger validation before updating
 		void form.handleSubmit(onSubmit)();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounced]);
 
 	return (
@@ -182,4 +183,4 @@ function areWiFiPropsEqual(prev: WiFiSectionProps, next: WiFiSectionProps) {
 }
 
 // Export memoized component
-export const WiFiSection = memo(_WiFiSection, areWiFiPropsEqual);
+export const WiFiSection = memo(WiFiSectionBase, areWiFiPropsEqual);

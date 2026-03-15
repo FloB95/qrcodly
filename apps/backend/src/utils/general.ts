@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type Readable } from 'stream';
 import { type z } from 'zod';
 import util from 'util';

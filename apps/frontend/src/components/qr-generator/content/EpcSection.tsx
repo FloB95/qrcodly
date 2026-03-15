@@ -25,7 +25,7 @@ type EpcSectionProps = {
 	value: FormValues;
 };
 
-const _EpcSection = ({ onChange, value }: EpcSectionProps) => {
+const EpcSectionBase = ({ onChange, value }: EpcSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.epc');
 
 	const form = useForm<FormValues>({
@@ -47,6 +47,7 @@ const _EpcSection = ({ onChange, value }: EpcSectionProps) => {
 		if (!debounced?.iban || debounced.iban.length < 15) return;
 
 		void form.handleSubmit(onSubmit)();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounced]);
 
 	function onSubmit(values: FormValues) {
@@ -238,4 +239,4 @@ function areEpcPropsEqual(prev: EpcSectionProps, next: EpcSectionProps) {
 }
 
 // Export memoized component
-export const EpcSection = memo(_EpcSection, areEpcPropsEqual);
+export const EpcSection = memo(EpcSectionBase, areEpcPropsEqual);

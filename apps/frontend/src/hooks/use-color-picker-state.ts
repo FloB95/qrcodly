@@ -83,6 +83,7 @@ export function useColorPickerState({
 	useEffect(() => {
 		const colorObject = pickerStringToColorType(debouncedColor, getGradientObject);
 		onChangeRef.current(colorObject);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedColor]);
 
 	const handleColorChange = useCallback(
