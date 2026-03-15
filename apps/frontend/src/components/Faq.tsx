@@ -13,12 +13,13 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 export default function FAQSection() {
 	const t = useTranslations('faq');
 
-	const faqItems = Array.from({ length: 11 }).map((_, index) => ({
-		questionKey: `question${index + 1}`,
-		answerKey: `answer${index + 1}`,
+	const faqItems = Array.from({ length: 11 }, (_, index) => ({
+		question: t(`question${index + 1}`),
+		answer: t(`answer${index + 1}`),
 	}));
+
 	return (
-		<section itemScope itemType="https://schema.org/FAQPage" className="mx-auto text-center">
+		<section className="mx-auto text-center">
 			<Container>
 				<div className="px-4 sm:px-6">
 					<Heading as="h2" size="lg" className="mb-6 lg:mb-10">
@@ -26,22 +27,12 @@ export default function FAQSection() {
 					</Heading>
 					<Accordion type="single" collapsible defaultValue="item-1">
 						{faqItems.map((item, index) => (
-							<AccordionItem
-								key={index}
-								value={`item-${index + 1}`}
-								itemScope
-								itemProp="mainEntity"
-								itemType="https://schema.org/Question"
-							>
+							<AccordionItem key={index} value={`item-${index + 1}`}>
 								<AccordionTrigger>
-									<span itemProp="name">{t(item.questionKey)}</span>
+									<span>{item.question}</span>
 								</AccordionTrigger>
 								<AccordionContent>
-									<div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-										<p itemProp="text" className="text-left">
-											{t(item.answerKey)}
-										</p>
-									</div>
+									<p className="text-left">{item.answer}</p>
 								</AccordionContent>
 							</AccordionItem>
 						))}

@@ -40,23 +40,12 @@ export function FaqCategorySection({
 				</h3>
 				<Accordion type="single" collapsible value={value} onValueChange={setValue}>
 					{items.map((item) => (
-						<AccordionItem
-							key={item.id}
-							value={item.id}
-							id={item.id}
-							itemScope
-							itemProp="mainEntity"
-							itemType="https://schema.org/Question"
-						>
+						<AccordionItem key={item.id} value={item.id} id={item.id}>
 							<AccordionTrigger>
-								<span itemProp="name">{item.question}</span>
+								<span>{item.question}</span>
 							</AccordionTrigger>
 							<AccordionContent>
-								<div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-									<p itemProp="text" className="text-left text-muted-foreground leading-relaxed">
-										{item.answer}
-									</p>
-								</div>
+								<p className="text-left text-muted-foreground leading-relaxed">{item.answer}</p>
 							</AccordionContent>
 						</AccordionItem>
 					))}
