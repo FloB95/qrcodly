@@ -29,3 +29,4 @@ export {
 	default as analyticsIntegration,
 	analyticsIntegrationRelations,
 } from '@/modules/analytics-integration/domain/entities/analytics-integration.entity';
+export { default as userSurvey } from '@/modules/user-survey/domain/entities/user-survey.entity';

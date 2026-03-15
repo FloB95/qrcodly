@@ -581,7 +581,10 @@
 			"errorToLargeFile": "Die Datei ist zu groß. Maximale Größe ist 1MB.",
 			"hideBackgroundDots": "Hintergrundpunkte ausblenden",
 			"predefinedIconInfo": "Du kannst auch aus vordefinierten Symbolen wählen.",
-			"clearBtn": "Symbol löschen"
+			"clearBtn": "Symbol löschen",
+			"currentIcon": "Aktuelles Symbol",
+			"uploadDragDrop": "Bild hierher ziehen oder klicken zum Durchsuchen",
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)"
 		},
 		"contentSwitch": {
 			"tab": {
@@ -1968,5 +1971,17 @@
 				"a5": "Ja. Nach dem Kauf des Pro-Plans werden alle Rechnungen automatisch erstellt. Du kannst diese jederzeit in deinem Dashboard unter Einstellungen → Abrechnung → Rechnungen & Belege einsehen und herunterladen."
 			}
 		}
+	},
+	"satisfactionSurvey": {
+		"title": "Wie gefällt dir QRcodly?",
+		"subtitle": "Dein Feedback hilft uns, besser zu werden",
+		"thumbsUp": "Super!",
+		"thumbsDown": "Könnte besser sein",
+		"feedbackTitle": "Wir möchten uns verbessern",
+		"feedbackPlaceholder": "Sag uns, was du denkst...",
+		"submit": "Feedback senden",
+		"skip": "Überspringen",
+		"thankYouTitle": "Vielen Dank!",
+		"thankYouMessage": "Dein Feedback hilft uns, ein besseres Produkt zu entwickeln."
 	}
 }

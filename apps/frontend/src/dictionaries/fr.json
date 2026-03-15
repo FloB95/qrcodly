@@ -588,7 +588,10 @@
 			"errorToLargeFile": "Le fichier est trop volumineux. La taille maximale est de 1 Mo.",
 			"hideBackgroundDots": "Masquer les points d'arrière-plan",
 			"predefinedIconInfo": "Vous pouvez également choisir parmi des icônes prédéfinies.",
-			"clearBtn": "Effacer l'icône"
+			"clearBtn": "Effacer l'icône",
+			"currentIcon": "Icône actuelle",
+			"uploadDragDrop": "Glissez-déposez une image ici, ou cliquez pour parcourir",
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 Mo)"
 		},
 		"contentSwitch": {
 			"tab": {
@@ -1968,5 +1971,17 @@
 				"a5": "Oui. Après l'achat du plan Pro, toutes les factures sont générées automatiquement. Vous pouvez les consulter et les télécharger à tout moment dans votre tableau de bord sous Paramètres → Facturation → Factures et reçus."
 			}
 		}
+	},
+	"satisfactionSurvey": {
+		"title": "Comment trouvez-vous QRcodly ?",
+		"subtitle": "Vos retours nous aident à nous améliorer",
+		"thumbsUp": "Super !",
+		"thumbsDown": "Peut mieux faire",
+		"feedbackTitle": "Nous aimerions nous améliorer",
+		"feedbackPlaceholder": "Dites-nous ce que vous en pensez...",
+		"submit": "Envoyer",
+		"skip": "Passer",
+		"thankYouTitle": "Merci !",
+		"thankYouMessage": "Vos retours nous aident à créer un meilleur produit."
 	}
 }

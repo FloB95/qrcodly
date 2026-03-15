@@ -52,7 +52,7 @@ const ALL_ICONS: PickerIcon[] = [
 ];
 
 interface IconPickerProps {
-	onSelect: (iconBase64?: string) => void;
+	onSelect: (iconBase64?: string, iconName?: string) => void;
 }
 
 const fetchSvgAsBase64 = async (src: string, color: string): Promise<string | undefined> => {
@@ -92,7 +92,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 		async (icon?: PickerIcon) => {
 			if (!icon) {
 				setSelectedIcon(undefined);
-				onSelect(undefined);
+				onSelect(undefined, undefined);
 				return;
 			}
 
@@ -106,7 +106,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 					</svg>,
 				);
 
-				onSelect(svgToBase64(svgString));
+				onSelect(svgToBase64(svgString), icon.key);
 
 				posthog.capture('predefined-icon-selected', {
 					iconName: icon.key,
@@ -115,7 +115,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 
 			if (icon.type === 'custom') {
 				const base64 = await fetchSvgAsBase64(icon.src, color.value);
-				onSelect(base64);
+				onSelect(base64, base64 ? icon.key : undefined);
 
 				posthog.capture('custom-icon-selected', {
 					iconName: icon.key,

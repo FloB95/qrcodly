@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { TrashIcon } from 'lucide-react';
+import { TrashIcon, UploadIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { TQrCodeOptions, TColorOrGradient } from '@shared/schemas';
 import {
@@ -24,8 +24,8 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { FileUpload, FileUploadDropzone } from '@/components/ui/file-upload';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { ColorPicker } from './ColorPicker';
 import IconPicker from './IconPicker';
@@ -49,6 +49,8 @@ export const SettingsForm = () => {
 	const t = useTranslations('generator.settingsForm');
 	const { toast } = useToast();
 	const { config, updateConfig } = useQrCodeGeneratorStore((state) => state);
+	const [imageDisplayName, setImageDisplayName] = useState<string | undefined>();
+	const [uploadResetKey, setUploadResetKey] = useState(0);
 
 	// Memoize default values to prevent unnecessary re-renders
 	const defaultValues = useMemo<TQrCodeOptions>(
@@ -116,13 +118,15 @@ export const SettingsForm = () => {
 
 	// Memoized icon selection handler
 	const handleIconSelect = useCallback(
-		(iconName?: string) => {
+		(iconBase64?: string, iconName?: string) => {
 			const updatedConfig = {
 				...config,
-				image: iconName,
+				image: iconBase64,
 			};
 			updateConfig(updatedConfig);
-			form.setValue('image', iconName ?? '');
+			setImageDisplayName(iconName);
+			form.setValue('image', iconBase64 ?? '');
+			setUploadResetKey((prev) => prev + 1);
 		},
 		[config, updateConfig, form],
 	);
@@ -134,46 +138,47 @@ export const SettingsForm = () => {
 			image: '',
 		};
 		updateConfig(updatedConfig);
+		setImageDisplayName(undefined);
+		setUploadResetKey((prev) => prev + 1);
 	}, [config, updateConfig]);
 
-	// Memoized file upload handler with proper error handling
-	const handleFileUpload = useCallback(
-		(event: React.ChangeEvent<HTMLInputElement>) => {
-			const file = event.target.files?.[0];
+	// Handler for FileUpload component accepted files
+	const handleFileAccept = useCallback(
+		(files: File[]) => {
+			const file = files[0];
 			if (!file) return;
-
-			// Validate file size
-			if (file.size > MAX_FILE_SIZE) {
-				toast({
-					variant: 'destructive',
-					title: t('errorToLargeFile'),
-				});
-				event.target.value = '';
-				return;
-			}
 
 			const reader = new FileReader();
 
 			reader.onload = () => {
 				const base64 = reader.result as string;
-				const updatedConfig = {
-					...config,
-					image: base64,
-				};
-				updateConfig(updatedConfig);
+				updateConfig({ image: base64 });
+				setImageDisplayName(file.name);
+				setUploadResetKey((prev) => prev + 1);
 			};
 
 			reader.onerror = () => {
 				toast({
 					variant: 'destructive',
-					title: 'Failed to read file',
+					title: t('errorToLargeFile'),
 				});
-				event.target.value = '';
 			};
 
 			reader.readAsDataURL(file);
 		},
-		[config, updateConfig, t, toast],
+		[updateConfig, t, toast],
+	);
+
+	// Handler for FileUpload component rejected files
+	const handleFileReject = useCallback(
+		(_file: File, message: string) => {
+			toast({
+				variant: 'destructive',
+				title: message,
+				description: t('uploadFormats'),
+			});
+		},
+		[toast, t],
 	);
 
 	// Memoized size change handler
@@ -440,6 +445,32 @@ export const SettingsForm = () => {
 
 					<TabsContent value="image" className="mt-0">
 						<div className="flex flex-col flex-wrap space-y-6 p-2">
+							{config.image ? (
+								<div className="flex items-center gap-4 rounded-lg border p-4">
+									{/* eslint-disable-next-line @next/next/no-img-element */}
+									<img
+										src={config.image}
+										alt={t('iconLabel')}
+										className="size-14 shrink-0 rounded-md border object-contain bg-accent/50 p-1"
+									/>
+									<div className="min-w-0 flex-1">
+										<p className="text-sm font-medium">{t('currentIcon')}</p>
+										<p className="truncate text-xs text-muted-foreground">
+											{imageDisplayName ?? t('iconLabel')}
+										</p>
+									</div>
+									<Button
+										type="button"
+										variant="ghost"
+										size="icon"
+										onClick={handleRemoveIcon}
+										aria-label={t('clearBtn')}
+									>
+										<TrashIcon className="size-4 text-destructive" />
+									</Button>
+								</div>
+							) : null}
+
 							<FormField
 								control={form.control}
 								name="image"
@@ -447,13 +478,22 @@ export const SettingsForm = () => {
 									<FormItem>
 										<FormLabel>{t('iconLabel')}</FormLabel>
 										<FormControl>
-											<div className="grid w-full max-w-sm items-center gap-1.5">
-												<Input
-													type="file"
-													accept={ACCEPTED_FILE_TYPES}
-													onChange={handleFileUpload}
-												/>
-											</div>
+											<FileUpload
+												key={uploadResetKey}
+												accept={ACCEPTED_FILE_TYPES}
+												maxSize={MAX_FILE_SIZE}
+												maxFiles={1}
+												onAccept={handleFileAccept}
+												onFileReject={handleFileReject}
+											>
+												<FileUploadDropzone className="min-h-[120px] cursor-pointer flex-col gap-2">
+													<UploadIcon className="size-6 text-muted-foreground" />
+													<div className="text-center">
+														<p className="text-sm font-medium">{t('uploadDragDrop')}</p>
+														<p className="text-xs text-muted-foreground">{t('uploadFormats')}</p>
+													</div>
+												</FileUploadDropzone>
+											</FileUpload>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -474,19 +514,9 @@ export const SettingsForm = () => {
 								)}
 							/>
 
-							<div className="flex justify-between">
-								<div>
-									<p className="mb-4 text-sm leading-none font-medium">{t('predefinedIconInfo')}</p>
-									<IconPicker onSelect={handleIconSelect} />
-								</div>
-								{config.image && (
-									<div className="flex flex-col justify-end">
-										<Button variant="destructive" onClick={handleRemoveIcon}>
-											<TrashIcon color="white" width={24} height={24} className="sm:mr-2" />
-											<span className="hidden sm:block">{t('clearBtn')}</span>
-										</Button>
-									</div>
-								)}
+							<div>
+								<p className="mb-4 text-sm leading-none font-medium">{t('predefinedIconInfo')}</p>
+								<IconPicker onSelect={handleIconSelect} />
 							</div>
 						</div>
 					</TabsContent>

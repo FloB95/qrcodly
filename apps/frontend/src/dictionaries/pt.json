@@ -581,7 +581,10 @@
 			"errorToLargeFile": "O arquivo é muito grande. O tamanho máximo é 1MB.",
 			"hideBackgroundDots": "Ocultar Pontos do Fundo",
 			"predefinedIconInfo": "Você também pode escolher entre ícones predefinidos.",
-			"clearBtn": "Limpar Ícone"
+			"clearBtn": "Limpar Ícone",
+			"currentIcon": "Ícone atual",
+			"uploadDragDrop": "Arraste e solte uma imagem aqui, ou clique para procurar",
+			"uploadFormats": "JPG, PNG, SVG, WebP (máx. 1 MB)"
 		},
 		"contentSwitch": {
 			"tab": {
@@ -1968,5 +1971,17 @@
 				"a5": "Sim. Após a compra do plano Pro, todas as faturas são geradas automaticamente. Você pode visualizá-las e baixá-las a qualquer momento no seu painel em Configurações → Faturamento → Faturas e recibos."
 			}
 		}
+	},
+	"satisfactionSurvey": {
+		"title": "Como está sua experiência com o QRcodly?",
+		"subtitle": "Seu feedback nos ajuda a melhorar",
+		"thumbsUp": "Ótimo!",
+		"thumbsDown": "Poderia melhorar",
+		"feedbackTitle": "Queremos melhorar",
+		"feedbackPlaceholder": "Conte-nos o que você pensa...",
+		"submit": "Enviar feedback",
+		"skip": "Pular",
+		"thankYouTitle": "Obrigado!",
+		"thankYouMessage": "Seu feedback nos ajuda a construir um produto melhor."
 	}
 }

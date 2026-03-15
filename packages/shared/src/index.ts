@@ -38,6 +38,9 @@ export * from './dtos/tag/TagRequestParamsDto';
 export * from './dtos/tag/SetQrCodeTagsDto';
 export * from './dtos/tag/SetShortUrlTagsDto';
 
+export * from './dtos/user-survey/SubmitUserSurveyDto';
+export * from './dtos/user-survey/UserSurveyStatusResponseDto';
+
 export * from './dtos/IdRequestQuery';
 export * from './dtos/ListRequestDto';
 export * from './dtos/PaginationDto';
