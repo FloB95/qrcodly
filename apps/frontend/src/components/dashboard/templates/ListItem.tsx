@@ -105,11 +105,10 @@ export const TemplateListItem = ({
 
 	const handleUpdate = useCallback(
 		(newName: string) => {
-			template.name = newName;
 			updateMutation.mutate({ configTemplateId: template.id, data: { name: newName } });
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[template.id, template.name, updateMutation],
+		[template.id, updateMutation],
 	);
 
 	const qrCodeFromTemplate = useCallback(async () => {

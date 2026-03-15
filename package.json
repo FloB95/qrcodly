@@ -25,10 +25,10 @@
 	"packageManager": "pnpm@9.15.9",
 	"scripts": {
 		"setup": "pnpm install",
-		"build": "pnpm -r run build",
+		"build": "pnpm -r --if-present run build",
 		"format": "prettier --config .prettierrc.json --write .",
-		"lint": "pnpm -r run lint",
-		"clean": "pnpm -r run clean",
+		"lint": "pnpm -r --if-present run lint",
+		"clean": "pnpm -r --if-present run clean",
 		"build:shared-package": "cd packages/shared && pnpm build",
 		"backend:build": "pnpm run build:shared-package && cd apps/backend && pnpm build",
 		"backend:start": "cd apps/backend && pnpm run start",
