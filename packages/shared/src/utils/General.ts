@@ -369,7 +369,7 @@ export function convertQrCodeOptionsToLibraryOptions(options: TQrCodeOptions): O
 		},
 		imageOptions: {
 			hideBackgroundDots: options.imageOptions.hideBackgroundDots,
-			margin: 30,
+			margin: Math.round(options.width * 0.03),
 			crossOrigin: 'anonymous',
 			saveAsBlob: true,
 		},

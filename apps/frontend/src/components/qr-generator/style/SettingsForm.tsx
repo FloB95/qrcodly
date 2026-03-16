@@ -37,7 +37,7 @@ const ACCEPTED_FILE_TYPES = '.jpg,.jpeg,.png,.svg,.webp';
 const SIZE_CONFIG = {
 	MIN: 300,
 	MAX: 2000,
-	STEP: 25,
+	STEP: 100,
 } as const;
 const MARGIN_CONFIG = {
 	MIN: 0,
@@ -57,7 +57,7 @@ export const SettingsForm = () => {
 		() => ({
 			width: config.width,
 			height: config.height,
-			margin: config.margin,
+			margin: config.width > 0 ? Math.round((config.margin / config.width) * 100) : 0,
 			dotsOptions: {
 				type: config.dotsOptions.type,
 				style: config.dotsOptions.style,
@@ -91,7 +91,7 @@ export const SettingsForm = () => {
 				...config,
 				width: Number(data.width),
 				height: Number(data.height),
-				margin: (Number(data.width) / 100) * data.margin,
+				margin: Math.round((Number(data.width) / 100) * data.margin),
 				dotsOptions: {
 					type: data.dotsOptions.type,
 					style: data.dotsOptions.style,
@@ -257,7 +257,7 @@ export const SettingsForm = () => {
 												max={MARGIN_CONFIG.MAX}
 												min={MARGIN_CONFIG.MIN}
 												step={MARGIN_CONFIG.STEP}
-												onValueChange={field.onChange}
+												onValueChange={(values) => field.onChange(values[0])}
 											/>
 										</FormControl>
 										<FormDescription className="pt-1 text-center">{field.value} %</FormDescription>
