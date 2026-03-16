@@ -1,33 +1,52 @@
-import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import unicorn from 'eslint-plugin-unicorn';
-import importPlugin from 'eslint-plugin-import';
-import lodash from 'eslint-plugin-lodash';
-import unusedImports from 'eslint-plugin-unused-imports';
+import prettier from 'eslint-config-prettier/flat';
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
-	{
-		ignores: [
-			'node_modules/**',
-			'dist/**',
-			'**/jest.config.js',
-			'**/eslint.config.js',
-			'**/drizzle.config.ts',
-		],
-	},
-	js.configs.recommended,
-	...tseslint.configs.recommended,
-	...tseslint.configs.recommendedTypeChecked,
-	{
-		plugins: {
-			import: importPlugin,
-			unicorn,
-			lodash,
-			'unused-imports': unusedImports,
+/**
+ * Shared ESLint base config for all workspace apps.
+ * Provides TypeScript type-checked rules, common plugins, and Prettier.
+ * Each app extends this and adds its own framework-specific config.
+ *
+ * @param {string} tsconfigRootDir - absolute path to the app root (use import.meta.dirname)
+ * @returns {import('typescript-eslint').ConfigArray}
+ */
+export default function base(tsconfigRootDir) {
+	return tseslint.config(
+		{
+			files: ['**/*.ts', '**/*.tsx'],
+			extends: [...tseslint.configs.recommendedTypeChecked],
+			languageOptions: {
+				parserOptions: {
+					project: './tsconfig.json',
+					tsconfigRootDir,
+				},
+			},
+			rules: {
+				'@typescript-eslint/consistent-type-imports': [
+					'warn',
+					{ prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+				],
+				'@typescript-eslint/no-unused-vars': [
+					'warn',
+					{ argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+				],
+				'@typescript-eslint/no-floating-promises': 'error',
+				'@typescript-eslint/no-misused-promises': [
+					'error',
+					{ checksVoidReturn: { attributes: false } },
+				],
+				'@typescript-eslint/require-await': 'off',
+				'@typescript-eslint/no-explicit-any': 'warn',
+				'@typescript-eslint/no-unsafe-assignment': 'off',
+				'@typescript-eslint/no-unsafe-call': 'off',
+				'@typescript-eslint/no-unsafe-argument': 'off',
+				'@typescript-eslint/no-unsafe-member-access': 'off',
+				'@typescript-eslint/no-unsafe-return': 'off',
+				'@typescript-eslint/no-empty-function': 'off',
+				'@typescript-eslint/restrict-template-expressions': 'off',
+				'@typescript-eslint/prefer-nullish-coalescing': 'off',
+			},
 		},
-		rules: {
-			'@typescript-eslint/await-thenable': 'warn',
-		},
-	},
-];
+		prettier,
+		{ linterOptions: { reportUnusedDisableDirectives: true } },
+	);
+}

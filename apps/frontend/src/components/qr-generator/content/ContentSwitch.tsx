@@ -81,6 +81,7 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 
 	// Stable callback for content updates
 	const handleContentUpdate = useCallback(
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any -- discriminated union data varies by type
 		(type: TQrCodeContentType, data: any) => {
 			updateContent({ type, data });
 		},
@@ -96,9 +97,9 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 
 	// Create stable onChange callbacks for each content type
 	const onChangeCallbacks = useMemo(() => {
-		const callbacks: Record<TQrCodeContentType, (data: any) => void> = {} as any;
+		const callbacks = {} as Record<TQrCodeContentType, (data: unknown) => void>;
 		visibleTabs.forEach((tab) => {
-			callbacks[tab.type] = (data: any) => handleContentUpdate(tab.type, data);
+			callbacks[tab.type] = (data: unknown) => handleContentUpdate(tab.type, data);
 		});
 		return callbacks;
 	}, [visibleTabs, handleContentUpdate]);
@@ -202,6 +203,7 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 					const Component = CONTENT_COMPONENTS[tab.type][isEditMode ? 'edit' : 'view'];
 					return (
 						<TabsContent key={tab.type} value={tab.type} className="pt-2">
+							{/* eslint-disable-next-line @typescript-eslint/no-explicit-any -- discriminated union data varies by content type */}
 							<Component value={content.data as any} onChange={onChangeCallbacks[tab.type]} />
 						</TabsContent>
 					);

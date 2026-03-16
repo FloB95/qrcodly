@@ -95,6 +95,7 @@ export const ShortUrlTagSelector = ({
 				});
 			}
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[currentTagIds, localTagIds, shortUrlId, setTagsMutation, onTagsUpdated],
 	);
 

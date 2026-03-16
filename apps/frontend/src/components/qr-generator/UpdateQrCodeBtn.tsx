@@ -37,6 +37,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 		setHasMounted(true);
 		const saved = safeLocalStorage.getItem(UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY);
 		setShowInfoDialog(saved !== 'true' && !IS_DYNAMIC);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleUpdate = async () => {
@@ -64,7 +65,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 							content: qrCode.content,
 						});
 
-						queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
+						void queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
 						posthog.capture('qr-code-updated', {
 							name: qrCode.name,
 							config: qrCode.config,
@@ -117,7 +118,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 					if (showInfoDialog) {
 						setInfoDialogIsOpen(true);
 					} else {
-						handleUpdate();
+						void handleUpdate();
 					}
 				}}
 				disabled={!hasMounted || !hasValidChanges || updateQrCodeMutation.isPending}

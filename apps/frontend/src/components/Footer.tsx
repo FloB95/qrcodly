@@ -149,24 +149,26 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 							<h3 className="text-base font-bold text-black mb-4">{t('legal')}</h3>
 							<ul className="space-y-2.5">
 								<li>
-									<a
+									<Link
+										locale="en"
 										href="/imprint"
 										title={t('legalNotice')}
 										aria-label={t('legalNotice')}
 										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 									>
 										{t('legalNotice')}
-									</a>
+									</Link>
 								</li>
 								<li>
-									<a
+									<Link
+										locale="en"
 										href="/privacy-policy"
 										title={t('privacyPolicy')}
 										aria-label={t('privacyPolicy')}
 										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 									>
 										{t('privacyPolicy')}
-									</a>
+									</Link>
 								</li>
 							</ul>
 						</div>

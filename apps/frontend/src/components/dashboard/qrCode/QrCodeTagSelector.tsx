@@ -92,7 +92,7 @@ export const QrCodeTagSelector = ({
 				});
 			}
 		},
-		[currentTagIds, localTagIds, qrCodeId, setTagsMutation, onTagsUpdated],
+		[currentTagIds, localTagIds, qrCodeId, setTagsMutation, onTagsUpdated, t],
 	);
 
 	return (

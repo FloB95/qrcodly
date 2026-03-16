@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import type { QrCodeFilters as QrCodeFiltersType } from '@/lib/api/qr-code';
 
@@ -21,8 +21,26 @@ export function useUrlPaginationSync() {
 		tagIds: tagParam ? [tagParam] : undefined,
 	}));
 
-	// State → URL: push currentPage into the URL when it changes
+	const isInitialMount = useRef(true);
+	// Prevents state→URL effect from pushing back when the change came from URL navigation
+	const syncingFromUrl = useRef(false);
+
+	// URL → state (must run before state→URL to set the flag)
 	useEffect(() => {
+		if (pageParam !== currentPage) {
+			syncingFromUrl.current = true;
+			setCurrentPage(pageParam);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pageParam]);
+
+	// State → URL
+	useEffect(() => {
+		if (syncingFromUrl.current) {
+			syncingFromUrl.current = false;
+			return;
+		}
+
 		const pageInUrl = Number(searchParams.get('page')) || 1;
 		if (pageInUrl === currentPage) return;
 
@@ -36,17 +54,16 @@ export function useUrlPaginationSync() {
 		router.replace(pathname + (search ? '?' + search : ''), { scroll: false });
 	}, [currentPage, pathname, router, searchParams]);
 
-	// URL → state: sync page from URL (browser back/forward)
-	useEffect(() => {
-		if (pageParam !== currentPage) {
-			setCurrentPage(pageParam);
-		}
-	}, [pageParam]);
-
 	// URL → state: sync tag filter from ?tag= param (e.g. clicking a tag badge)
 	useEffect(() => {
 		setFilters(tagParam ? { tagIds: [tagParam] } : {});
-		setCurrentPage(1);
+		// Only reset page to 1 when tag changes after initial mount,
+		// so ?page=3&tag=abc deep links preserve the page number
+		if (isInitialMount.current) {
+			isInitialMount.current = false;
+		} else {
+			setCurrentPage(1);
+		}
 	}, [tagParam]);
 
 	const handleFiltersChange = (newFilters: QrCodeFiltersType) => {

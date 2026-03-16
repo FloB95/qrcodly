@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { Logger } from 'next-axiom';
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextFetchEvent, type NextRequest, NextResponse } from 'next/server';
 import { processAnalyticsAndRedirect } from './middlewares/process-analytics-and-redirect.middleware';
 import createMiddleware from 'next-intl/middleware';
 import { routing, SUPPORTED_LANGUAGES } from './i18n/routing';
@@ -65,7 +65,7 @@ const clerkHandler = clerkMiddleware(async (auth, req, event) => {
 	return NextResponse.next();
 });
 
-export default function middleware(req: NextRequest, event: any) {
+export default function middleware(req: NextRequest, event: NextFetchEvent) {
 	const pathname = new URL(req.url).pathname;
 
 	// Scan routes bypass Clerk entirely — no auth needed

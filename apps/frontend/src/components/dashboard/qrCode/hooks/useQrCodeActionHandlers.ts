@@ -12,20 +12,21 @@ import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
 import type { ApiError } from '@/lib/api/ApiError';
 import { useBehaviorTracker } from '@/components/dashboard/smart-tips/SmartTipsBehaviorTracker';
+import type QRCodeStylingType from 'qr-code-styling';
 
-let QRCodeStyling: any;
+let QRCodeStyling: typeof QRCodeStylingType;
 
 export function useQrCodeActionHandlers(qr: TQrCodeWithRelationsResponseDto) {
 	const t = useTranslations();
 	const tTemplates = useTranslations('templates');
-	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
+	const [qrCodeInstance, setQrCodeInstance] = useState<QRCodeStylingType | null>(null);
 	const [templateNameDialogOpen, setTemplateNameDialogOpen] = useState(false);
 	const [shareDialogOpen, setShareDialogOpen] = useState(false);
 	const createConfigTemplateMutation = useCreateConfigTemplateMutation();
 	const { trackAction } = useBehaviorTracker();
 
 	useEffect(() => {
-		import('qr-code-styling').then((module) => {
+		void import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
 			const options = getQrCodeStylingOptions(qr.config, qr.content, {
 				qrCodeData: qr.qrCodeData,

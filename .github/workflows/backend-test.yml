@@ -10,6 +10,9 @@ on:
       - 'packages/shared/**'
       - '.github/workflows/backend-test.yml'
 
+permissions:
+  contents: read
+
 jobs:
   test-backend:
     runs-on: ubuntu-latest

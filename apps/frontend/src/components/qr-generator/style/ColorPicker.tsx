@@ -53,6 +53,7 @@ export function ColorPicker({ defaultColor, onChange, withGradient = true }: Col
 		if (!color) return 'Pick a color';
 		const colorObject = pickerStringToColorType(color, getGradientObject);
 		return colorToButtonText(colorObject);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [color]);
 
 	return (

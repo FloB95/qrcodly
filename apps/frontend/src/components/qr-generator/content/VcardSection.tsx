@@ -26,7 +26,7 @@ type VCardSectionProps = {
 	value: FormValues;
 };
 
-const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
+const VCardSectionBase = ({ onChange, value }: VCardSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.vCard');
 
 	// Map legacy fields to new fields for backwards compatibility
@@ -71,6 +71,7 @@ const _VCardSection = ({ onChange, value }: VCardSectionProps) => {
 
 		// Use handleSubmit to trigger validation before updating
 		void form.handleSubmit(onSubmit)();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounced]);
 
 	return (
@@ -534,4 +535,4 @@ function areVCardPropsEqual(prev: VCardSectionProps, next: VCardSectionProps) {
 }
 
 // Export memoized component
-export const VCardSection = memo(_VCardSection, areVCardPropsEqual);
+export const VCardSection = memo(VCardSectionBase, areVCardPropsEqual);

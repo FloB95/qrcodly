@@ -2,6 +2,7 @@ import type {
 	TQrCodeWithRelationsResponseDto,
 	TQrCodeOptions,
 	TQrCodeContent,
+	TShortUrl,
 } from '@shared/schemas';
 
 /**
@@ -34,5 +35,5 @@ export type QrCodeRenderData =
 			source: 'context';
 			config: TQrCodeOptions;
 			content: TQrCodeContent;
-			shortUrl?: import('@shared/schemas').TShortUrl;
+			shortUrl?: TShortUrl;
 	  };

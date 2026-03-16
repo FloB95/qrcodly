@@ -160,6 +160,7 @@ export const TemplatesList = ({ templates, onSelect, deletable }: TemplateListPr
 				setSelectedTemplate(null);
 			},
 		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedTemplate, isDeleting]);
 
 	return (

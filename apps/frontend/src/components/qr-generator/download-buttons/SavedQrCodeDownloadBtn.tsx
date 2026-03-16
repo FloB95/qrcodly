@@ -12,8 +12,9 @@ import { useEffect, useState } from 'react';
 import { type TFileExtension, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { useTranslations } from 'next-intl';
 import { getQrCodeStylingOptions } from '@/lib/qr-code-helpers';
+import type QRCodeStylingType from 'qr-code-styling';
 
-let QRCodeStyling: any;
+let QRCodeStyling: typeof QRCodeStylingType;
 
 /**
  * Download button for SAVED QR codes (from database)
@@ -29,13 +30,13 @@ export const SavedQrCodeDownloadBtn = ({
 	noStyling?: boolean;
 }) => {
 	const t = useTranslations('qrCode.download');
-	const [qrCodeInstance, setQrCodeInstance] = useState<any>(null);
+	const [qrCodeInstance, setQrCodeInstance] = useState<QRCodeStylingType | null>(null);
 	const [hasMounted, setHasMounted] = useState(false);
 
 	useEffect(() => {
 		setHasMounted(true);
 
-		import('qr-code-styling').then((module) => {
+		void import('qr-code-styling').then((module) => {
 			QRCodeStyling = module.default;
 			const options = getQrCodeStylingOptions(qrCode.config, qrCode.content, {
 				qrCodeData: qrCode.qrCodeData,

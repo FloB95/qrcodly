@@ -66,6 +66,7 @@ function deepMergeConfig(current: TQrCodeOptions, update: Partial<TQrCodeOptions
 	const merged = { ...current, ...update };
 	for (const key of NESTED_CONFIG_KEYS) {
 		if (update[key] !== undefined) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- spread of dynamic nested config key requires assertion
 			merged[key] = { ...current[key], ...update[key] } as any;
 		}
 	}

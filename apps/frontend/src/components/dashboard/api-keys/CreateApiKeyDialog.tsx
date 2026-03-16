@@ -78,7 +78,7 @@ export function CreateApiKeyDialog() {
 			setCreatedKey(key.secret ?? null);
 			form.reset();
 
-			apiKeys.revalidate();
+			void apiKeys.revalidate();
 			posthog.capture('api-key:created', { name: data.name });
 		} catch (err: unknown) {
 			const errorMessage = err instanceof Error ? err.message : t('errorDescription');
@@ -119,6 +119,7 @@ export function CreateApiKeyDialog() {
 				setIsCreating(false);
 			}, 200);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open]);
 
 	return (

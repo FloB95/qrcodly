@@ -46,6 +46,7 @@ export function ShortUrlFilters({ filters, onFiltersChange }: ShortUrlFiltersPro
 		if (externalSearch !== searchValue.trim()) {
 			setSearchValue(externalSearch);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [filters.search]);
 
 	useEffect(() => {

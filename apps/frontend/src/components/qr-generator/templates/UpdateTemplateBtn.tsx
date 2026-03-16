@@ -37,7 +37,9 @@ const UpdateTemplateBtn = ({ configTemplate }: { configTemplate: UpdateDto }) =>
 				config: configTemplate.config,
 				content: latestQrCode!.content,
 			});
-		} catch (error) {}
+		} catch {
+			// Mutation error is handled by TanStack Query
+		}
 	};
 
 	return (

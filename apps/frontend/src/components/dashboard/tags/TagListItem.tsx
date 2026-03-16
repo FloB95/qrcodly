@@ -157,7 +157,7 @@ export const TagListItem = ({ tag }: TagListItemProps) => {
 											onClick={(e) => {
 												e.preventDefault();
 												e.stopPropagation();
-												handleDelete();
+												void handleDelete();
 												setShowDeleteConfirm(false);
 											}}
 										>

@@ -39,12 +39,12 @@ export function ApiKeyProvider({ userId, children }: ApiKeyProviderProps) {
 				description: data.description,
 				secondsUntilExpiration: data.expiresInDays ? data.expiresInDays * 86400 : undefined,
 			});
-			apiKeys.revalidate();
+			void apiKeys.revalidate();
 			return key.secret ?? null;
-		} catch (err: any) {
+		} catch (err: unknown) {
 			toast({
 				title: t('errorTitle'),
-				description: err.message || t('errorDescription'),
+				description: err instanceof Error ? err.message : t('errorDescription'),
 				variant: 'destructive',
 			});
 			return null;
@@ -54,12 +54,12 @@ export function ApiKeyProvider({ userId, children }: ApiKeyProviderProps) {
 	const revokeApiKey = async (id: string) => {
 		try {
 			await clerk.apiKeys.revoke({ apiKeyID: id });
-			apiKeys.revalidate();
+			void apiKeys.revalidate();
 			toast({ title: t('revoked'), description: t('revokedDescription') });
-		} catch (err: any) {
+		} catch (err: unknown) {
 			toast({
 				title: t('errorTitle'),
-				description: err.message || t('errorDescription'),
+				description: err instanceof Error ? err.message : t('errorDescription'),
 				variant: 'destructive',
 			});
 		}

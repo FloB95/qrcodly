@@ -27,7 +27,7 @@ type TUrlSectionProps = {
 	value: FormValues;
 };
 
-const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
+const UrlSectionBase = ({ value, onChange }: TUrlSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.url');
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
 	const { link: shortUrlLink } = useShortUrlLink(shortUrl);
@@ -61,6 +61,7 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 			};
 			onChange(payload);
 		})();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedUrl]);
 
 	// Sync form fields when parent provides new values (e.g. loading a saved QR code)
@@ -71,6 +72,7 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		if (value?.isEditable !== undefined && value.isEditable !== form.getValues('isEditable')) {
 			form.setValue('isEditable', value.isEditable, { shouldValidate: false });
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [value?.url, value?.isEditable, shortUrl]);
 
 	// Surface server-side validation errors (e.g. duplicate URL) in the form
@@ -78,10 +80,12 @@ const _UrlSection = ({ value, onChange }: TUrlSectionProps) => {
 		if (!lastError?.fieldErrors) return;
 		lastError.fieldErrors.forEach((e) => {
 			if (e.path.length === 0) return;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic field path from server validation
 			form.setError(e.path[e.path.length - 1] as any, {
 				message: e.message,
 			});
 		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [lastError]);
 
 	return (
@@ -129,4 +133,4 @@ function areUrlPropsEqual(prev: TUrlSectionProps, next: TUrlSectionProps) {
 	);
 }
 
-export const UrlSection = memo(_UrlSection, areUrlPropsEqual);
+export const UrlSection = memo(UrlSectionBase, areUrlPropsEqual);
