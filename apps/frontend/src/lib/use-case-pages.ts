@@ -30,7 +30,7 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 		featureImages: [
 			`${IMG}/qr-restaurant-menu.jpg`,
 			`${IMG}/qr-restaurant-wifi.jpg`,
-			`${IMG}/analytics-dashboard.jpg`,
+			`${IMG}/analytics-dashboard.png`,
 		],
 	},
 	{
@@ -41,7 +41,7 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 		featureImages: [
 			`${IMG}/qr-retail-packaging.jpg`,
 			`${IMG}/qr-retail-promo.jpg`,
-			`${IMG}/analytics-dashboard.jpg`,
+			`${IMG}/analytics-dashboard.png`,
 		],
 	},
 	{
@@ -99,7 +99,7 @@ export const URL_SHORTENER_USE_CASES: UseCaseDef[] = [
 		featureImages: [
 			`${IMG}/url-marketing-campaign.jpg`,
 			`${IMG}/url-marketing-branded.jpg`,
-			`${IMG}/analytics-dashboard.jpg`,
+			`${IMG}/analytics-dashboard.png`,
 		],
 	},
 	{
@@ -121,7 +121,7 @@ export const URL_SHORTENER_USE_CASES: UseCaseDef[] = [
 		featureImages: [
 			`${IMG}/url-sales-outreach.jpg`,
 			`${IMG}/url-sales-branded.jpg`,
-			`${IMG}/analytics-dashboard.jpg`,
+			`${IMG}/analytics-dashboard.png`,
 		],
 	},
 	{
@@ -153,7 +153,7 @@ export const URL_SHORTENER_USE_CASES: UseCaseDef[] = [
 		parentPath: '/products/url-shortener',
 		featureImages: [
 			`${IMG}/url-agency-domains.jpg`,
-			`${IMG}/analytics-dashboard.jpg`,
+			`${IMG}/analytics-dashboard.png`,
 			`${IMG}/url-agency-workspace.jpg`,
 		],
 	},
