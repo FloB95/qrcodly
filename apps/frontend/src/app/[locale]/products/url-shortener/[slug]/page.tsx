@@ -156,7 +156,7 @@ export default async function Page({ params }: PageParams) {
 					title={t('hero.title')}
 					subtitle={t('hero.subtitle')}
 					ctaLabel={t('hero.ctaLabel')}
-					ctaHref="/#generator"
+					ctaHref="/dashboard/short-urls"
 				/>
 
 				{features.map((feature, i) => (
@@ -205,7 +205,7 @@ export default async function Page({ params }: PageParams) {
 					title={t('cta.title')}
 					subtitle={t('cta.subtitle')}
 					ctaLabel={t('cta.ctaLabel')}
-					ctaHref="/#generator"
+					ctaHref="/dashboard/short-urls"
 				/>
 			</article>
 			<Footer />

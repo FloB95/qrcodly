@@ -1577,7 +1577,8 @@
 			"case5Title": "Entwickler & APIs",
 			"case5Description": "Integriere URL-Shortening über unsere REST-API in deine Apps. Vollständige Dokumentation und SDK-Unterstützung.",
 			"case6Title": "Agenturen",
-			"case6Description": "Verwalte Kunden-Links mit eigenen Domains. White-Label-Kurz-URLs mit dem Branding deiner Kunden."
+			"case6Description": "Verwalte Kunden-Links mit eigenen Domains. White-Label-Kurz-URLs mit dem Branding deiner Kunden.",
+			"learnMore": "Mehr erfahren"
 		},
 		"features": {
 			"brandedLinks": {
@@ -1679,7 +1680,8 @@
 			"case5Title": "Bildung",
 			"case5Description": "Verlinke Schüler und Studenten zu Ressourcen, Aufgaben und Unterrichtsmaterialien. Ziele jederzeit aktualisieren.",
 			"case6Title": "Marketing & Werbung",
-			"case6Description": "Verbinde Print- und Digitalkampagnen. Verfolge Scan-Raten auf Plakatwänden, Flyern und Postsendungen."
+			"case6Description": "Verbinde Print- und Digitalkampagnen. Verfolge Scan-Raten auf Plakatwänden, Flyern und Postsendungen.",
+			"learnMore": "Mehr erfahren"
 		},
 		"features": {
 			"customization": {
@@ -1984,7 +1986,6 @@
 		"thankYouTitle": "Vielen Dank!",
 		"thankYouMessage": "Dein Feedback hilft uns, ein besseres Produkt zu entwickeln."
 	},
-
 	"qrCodesRestaurants": {
 		"metaTitle": "QR-Codes für Restaurants – Digitale Speisekarten, WLAN & mehr | QRcodly",
 		"metaDescription": "Erstellen Sie QR-Codes für Ihr Restaurant. Bieten Sie digitale Speisekarten, einfachen WLAN-Zugang und Engagement-Tracking — alles auf einer Plattform.",
@@ -2054,7 +2055,6 @@
 			"ctaLabel": "Kostenlos starten"
 		}
 	},
-
 	"qrCodesRetail": {
 		"metaTitle": "QR-Codes für den Einzelhandel – Produktinfos, Aktionen & Tracking | QRcodly",
 		"metaDescription": "Nutzen Sie QR-Codes im Einzelhandel für Produktdetails, Werbeaktionen und Kundenbindung. Verfolgen Sie Scans und aktualisieren Sie Inhalte jederzeit.",
@@ -2124,7 +2124,6 @@
 			"ctaLabel": "Kostenlos starten"
 		}
 	},
-
 	"qrCodesEvents": {
 		"metaTitle": "QR-Codes für Veranstaltungen – Check-in, Zeitpläne & Networking | QRcodly",
 		"metaDescription": "Optimieren Sie Veranstaltungen mit QR-Codes für Check-in, Zeitpläne und Teilnehmer-Engagement. QR-Codes einfach erstellen und verfolgen.",
@@ -2194,7 +2193,6 @@
 			"ctaLabel": "Kostenlos starten"
 		}
 	},
-
 	"qrCodesRealEstate": {
 		"metaTitle": "QR-Codes für Immobilien – Objektangebote, virtuelle Touren & mehr | QRcodly",
 		"metaDescription": "Nutzen Sie QR-Codes im Immobilienbereich für Objektangebote, virtuelle Rundgänge und Besichtigungsanmeldungen. Verfolgen Sie das Käuferinteresse einfach.",
@@ -2264,7 +2262,6 @@
 			"ctaLabel": "Kostenlos starten"
 		}
 	},
-
 	"qrCodesEducation": {
 		"metaTitle": "QR-Codes für Bildung – Unterrichtsmaterialien, Aufgaben & mehr | QRcodly",
 		"metaDescription": "Nutzen Sie QR-Codes im Bildungsbereich, um Ressourcen, Aufgaben und Unterrichtsmaterialien zu teilen. Binden Sie Schüler mit einem einfachen Scan ein.",
@@ -2334,7 +2331,6 @@
 			"ctaLabel": "Kostenlos starten"
 		}
 	},
-
 	"qrCodesMarketing": {
 		"metaTitle": "QR-Codes für Marketing – Printkampagnen, A/B-Tests & Branding | QRcodly",
 		"metaDescription": "Verbinden Sie Print- und Digitalmarketing mit QR-Codes. Verfolgen Sie Kampagnenleistung, passen Sie Designs an und aktualisieren Sie Ziele jederzeit.",
@@ -2404,7 +2400,6 @@
 			"ctaLabel": "Kostenlos starten"
 		}
 	},
-
 	"urlShortenerMarketingTeams": {
 		"metaTitle": "URL-Shortener für Marketing-Teams – Gebrandete Links & Kampagnen-Tracking | QRcodly",
 		"metaDescription": "Kürzen und branden Sie Ihre Marketing-Links. Verfolgen Sie Klicks, verwalten Sie Kampagnen und nutzen Sie eigene Domains — alles auf einer Plattform.",
@@ -2474,7 +2469,6 @@
 			"ctaLabel": "Kostenlos starten"
 		}
 	},
-
 	"urlShortenerSocialMedia": {
 		"metaTitle": "URL-Shortener für Social Media – Saubere Links & Klick-Tracking | QRcodly",
 		"metaDescription": "Erstellen Sie kurze, saubere Links für Social-Media-Beiträge. Verfolgen Sie Klicks und sehen Sie, welche Inhalte das meiste Engagement erzielen.",
@@ -2544,7 +2538,6 @@
 			"ctaLabel": "Kostenlos starten"
 		}
 	},
-
 	"urlShortenerSales": {
 		"metaTitle": "URL-Shortener für Vertriebsteams – Nachverfolgbare Links für die Akquise | QRcodly",
 		"metaDescription": "Erstellen Sie nachverfolgbare Kurzlinks für die Vertriebsakquise. Sehen Sie, wann Interessenten klicken, und messen Sie das Engagement über Kampagnen hinweg.",
@@ -2614,7 +2607,6 @@
 			"ctaLabel": "Kostenlos starten"
 		}
 	},
-
 	"urlShortenerEcommerce": {
 		"metaTitle": "URL-Shortener für E-Commerce – Produktlinks & Kanal-Tracking | QRcodly",
 		"metaDescription": "Erstellen Sie Kurzlinks für Produktseiten, verfolgen Sie Klicks über Vertriebskanäle und verwalten Sie saisonale Kampagnen-URLs mit Leichtigkeit.",
@@ -2684,7 +2676,6 @@
 			"ctaLabel": "Kostenlos starten"
 		}
 	},
-
 	"urlShortenerDevelopers": {
 		"metaTitle": "URL-Shortener-API für Entwickler – REST API & eigene Domains | QRcodly",
 		"metaDescription": "Integrieren Sie URL-Kürzung in Ihre Apps mit unserer REST API. Erstellen, verwalten und verfolgen Sie Kurzlinks programmatisch.",
@@ -2754,7 +2745,6 @@
 			"ctaLabel": "API-Dokumentation ansehen"
 		}
 	},
-
 	"urlShortenerAgencies": {
 		"metaTitle": "URL-Shortener für Agenturen – Kunden-Domains, gebrandete Links & Analysen | QRcodly",
 		"metaDescription": "Verwalten Sie Kurzlinks für mehrere Kunden mit eigenen Domains, gebrandeten URLs und Link-bezogenen Analysen. Entwickelt für Agenturen.",

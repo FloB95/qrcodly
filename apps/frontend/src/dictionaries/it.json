@@ -1577,7 +1577,8 @@
 			"case5Title": "Sviluppatori e API",
 			"case5Description": "Integra l'accorciamento URL nelle tue app tramite la nostra API REST. Documentazione completa e supporto SDK.",
 			"case6Title": "Agenzie",
-			"case6Description": "Gestisci i link dei clienti con domini personalizzati. URL brevi white-label con il branding dei tuoi clienti."
+			"case6Description": "Gestisci i link dei clienti con domini personalizzati. URL brevi white-label con il branding dei tuoi clienti.",
+			"learnMore": "Scopri di più"
 		},
 		"features": {
 			"brandedLinks": {
@@ -1679,7 +1680,8 @@
 			"case5Title": "Istruzione",
 			"case5Description": "Collega studenti a risorse, compiti e materiali didattici. Aggiorna le destinazioni in qualsiasi momento.",
 			"case6Title": "Marketing e Pubblicità",
-			"case6Description": "Collega campagne cartacee e digitali. Monitora i tassi di scansione su cartelloni, volantini e posta diretta."
+			"case6Description": "Collega campagne cartacee e digitali. Monitora i tassi di scansione su cartelloni, volantini e posta diretta.",
+			"learnMore": "Scopri di più"
 		},
 		"features": {
 			"customization": {
@@ -1984,7 +1986,6 @@
 		"thankYouTitle": "Grazie!",
 		"thankYouMessage": "Il tuo feedback ci aiuta a creare un prodotto migliore."
 	},
-
 	"qrCodesRestaurants": {
 		"metaTitle": "Codici QR per Ristoranti – Menu Digitali, WiFi e Altro | QRcodly",
 		"metaDescription": "Crea codici QR per il tuo ristorante. Offri menu digitali, accesso WiFi semplice e monitora il coinvolgimento — tutto da un'unica piattaforma.",
@@ -2054,7 +2055,6 @@
 			"ctaLabel": "Inizia Gratis"
 		}
 	},
-
 	"qrCodesRetail": {
 		"metaTitle": "Codici QR per il Retail – Info Prodotto, Promozioni e Tracciamento | QRcodly",
 		"metaDescription": "Utilizza i codici QR nel retail per dettagli sui prodotti, promozioni e coinvolgimento dei clienti. Monitora le scansioni e aggiorna i contenuti in qualsiasi momento.",
@@ -2124,7 +2124,6 @@
 			"ctaLabel": "Inizia Gratis"
 		}
 	},
-
 	"qrCodesEvents": {
 		"metaTitle": "Codici QR per Eventi – Check-in, Programmi e Networking | QRcodly",
 		"metaDescription": "Semplifica gli eventi con codici QR per check-in, programmi e coinvolgimento dei partecipanti. Crea e monitora facilmente i codici QR per eventi.",
@@ -2194,7 +2193,6 @@
 			"ctaLabel": "Inizia Gratis"
 		}
 	},
-
 	"qrCodesRealEstate": {
 		"metaTitle": "Codici QR per l'Immobiliare – Annunci, Tour Virtuali e Altro | QRcodly",
 		"metaDescription": "Utilizza i codici QR nel settore immobiliare per annunci, tour virtuali e iscrizioni agli open house. Monitora facilmente il coinvolgimento degli acquirenti.",
@@ -2264,7 +2262,6 @@
 			"ctaLabel": "Inizia Gratis"
 		}
 	},
-
 	"qrCodesEducation": {
 		"metaTitle": "Codici QR per l'Istruzione – Risorse Didattiche, Compiti e Altro | QRcodly",
 		"metaDescription": "Utilizza i codici QR nell'istruzione per condividere risorse, compiti e materiali didattici. Coinvolgi gli studenti con una semplice scansione.",
@@ -2334,7 +2331,6 @@
 			"ctaLabel": "Inizia Gratis"
 		}
 	},
-
 	"qrCodesMarketing": {
 		"metaTitle": "Codici QR per il Marketing – Campagne Stampate, A/B Testing e Branding | QRcodly",
 		"metaDescription": "Collega il marketing cartaceo a quello digitale con i codici QR. Monitora le prestazioni delle campagne, personalizza i design e aggiorna le destinazioni in qualsiasi momento.",
@@ -2404,7 +2400,6 @@
 			"ctaLabel": "Inizia Gratis"
 		}
 	},
-
 	"urlShortenerMarketingTeams": {
 		"metaTitle": "Accorciatore di URL per Team di Marketing – Link Personalizzati e Tracciamento Campagne | QRcodly",
 		"metaDescription": "Accorcia e personalizza i tuoi link di marketing. Monitora i clic, gestisci le campagne e usa domini personalizzati — tutto in un'unica piattaforma.",
@@ -2474,7 +2469,6 @@
 			"ctaLabel": "Inizia Gratis"
 		}
 	},
-
 	"urlShortenerSocialMedia": {
 		"metaTitle": "Accorciatore di URL per i Social Media – Link Puliti e Tracciamento Clic | QRcodly",
 		"metaDescription": "Crea link brevi e puliti per i post sui social media. Monitora i clic e scopri quali contenuti generano il maggior coinvolgimento.",
@@ -2544,7 +2538,6 @@
 			"ctaLabel": "Inizia Gratis"
 		}
 	},
-
 	"urlShortenerSales": {
 		"metaTitle": "Accorciatore di URL per Team di Vendita – Link Tracciabili per l'Outreach | QRcodly",
 		"metaDescription": "Crea link brevi tracciabili per l'outreach commerciale. Scopri quando i prospect cliccano e misura il coinvolgimento tra le campagne.",
@@ -2614,7 +2607,6 @@
 			"ctaLabel": "Inizia Gratis"
 		}
 	},
-
 	"urlShortenerEcommerce": {
 		"metaTitle": "Accorciatore di URL per l'E-Commerce – Link Prodotto e Tracciamento Canali | QRcodly",
 		"metaDescription": "Crea link brevi per le pagine prodotto, monitora i clic attraverso i canali di vendita e gestisci facilmente gli URL delle campagne stagionali.",
@@ -2684,7 +2676,6 @@
 			"ctaLabel": "Inizia Gratis"
 		}
 	},
-
 	"urlShortenerDevelopers": {
 		"metaTitle": "API Accorciatore di URL per Sviluppatori – REST API e Domini Personalizzati | QRcodly",
 		"metaDescription": "Integra l'accorciamento degli URL nelle tue app con la nostra REST API. Crea, gestisci e monitora i link brevi in modo programmatico.",
@@ -2754,7 +2745,6 @@
 			"ctaLabel": "Consulta la Documentazione API"
 		}
 	},
-
 	"urlShortenerAgencies": {
 		"metaTitle": "Accorciatore di URL per Agenzie – Domini Cliente, Link Personalizzati e Analisi | QRcodly",
 		"metaDescription": "Gestisci link brevi per più clienti con domini personalizzati, URL personalizzati e analisi per singolo link. Pensato per le agenzie.",

@@ -1577,7 +1577,8 @@
 			"case5Title": "Ontwikkelaars & APIs",
 			"case5Description": "Integreer URL-verkorting in je apps via onze REST API. Volledige documentatie en SDK-ondersteuning.",
 			"case6Title": "Bureaus",
-			"case6Description": "Beheer klantlinks met eigen domeinen. White-label korte URL's met de branding van je klanten."
+			"case6Description": "Beheer klantlinks met eigen domeinen. White-label korte URL's met de branding van je klanten.",
+			"learnMore": "Meer informatie"
 		},
 		"features": {
 			"brandedLinks": {
@@ -1679,7 +1680,8 @@
 			"case5Title": "Onderwijs",
 			"case5Description": "Verwijs studenten naar bronnen, opdrachten en lesmateriaal. Werk bestemmingen op elk moment bij.",
 			"case6Title": "Marketing & Reclame",
-			"case6Description": "Verbind print- en digitale campagnes. Volg scanpercentages op billboards, flyers en direct mail."
+			"case6Description": "Verbind print- en digitale campagnes. Volg scanpercentages op billboards, flyers en direct mail.",
+			"learnMore": "Meer informatie"
 		},
 		"features": {
 			"customization": {
@@ -1984,7 +1986,6 @@
 		"thankYouTitle": "Bedankt!",
 		"thankYouMessage": "Je feedback helpt ons een beter product te maken."
 	},
-
 	"qrCodesRestaurants": {
 		"metaTitle": "QR-codes voor restaurants – Digitale menu's, WiFi en meer | QRcodly",
 		"metaDescription": "Maak QR-codes voor uw restaurant. Bied digitale menu's, eenvoudige WiFi-toegang en volg betrokkenheid — alles vanuit één platform.",
@@ -2054,7 +2055,6 @@
 			"ctaLabel": "Gratis beginnen"
 		}
 	},
-
 	"qrCodesRetail": {
 		"metaTitle": "QR-codes voor retail – Productinformatie, promoties en tracking | QRcodly",
 		"metaDescription": "Gebruik QR-codes in de retail voor productdetails, promoties en klantbetrokkenheid. Volg scans en werk inhoud op elk moment bij.",
@@ -2124,7 +2124,6 @@
 			"ctaLabel": "Gratis beginnen"
 		}
 	},
-
 	"qrCodesEvents": {
 		"metaTitle": "QR-codes voor evenementen – Inchecken, programma's en netwerken | QRcodly",
 		"metaDescription": "Stroomlijn evenementen met QR-codes voor inchecken, programma's en deelnemersbetrokkenheid. Maak en volg QR-codes voor evenementen eenvoudig.",
@@ -2194,7 +2193,6 @@
 			"ctaLabel": "Gratis beginnen"
 		}
 	},
-
 	"qrCodesRealEstate": {
 		"metaTitle": "QR-codes voor vastgoed – Woningaanbiedingen, virtuele rondleidingen en meer | QRcodly",
 		"metaDescription": "Gebruik QR-codes in vastgoed voor woningaanbiedingen, virtuele rondleidingen en open-huisregistraties. Volg de betrokkenheid van kopers eenvoudig.",
@@ -2264,7 +2262,6 @@
 			"ctaLabel": "Gratis beginnen"
 		}
 	},
-
 	"qrCodesEducation": {
 		"metaTitle": "QR-codes voor onderwijs – Lesmaterialen, opdrachten en meer | QRcodly",
 		"metaDescription": "Gebruik QR-codes in het onderwijs om bronnen, opdrachten en lesmateriaal te delen. Betrek studenten met een eenvoudige scan.",
@@ -2334,7 +2331,6 @@
 			"ctaLabel": "Gratis beginnen"
 		}
 	},
-
 	"qrCodesMarketing": {
 		"metaTitle": "QR-codes voor marketing – Printcampagnes, A/B-testen en branding | QRcodly",
 		"metaDescription": "Overbrugde print en digitale marketing met QR-codes. Volg campagneprestaties, pas ontwerpen aan en werk bestemmingen op elk moment bij.",
@@ -2404,7 +2400,6 @@
 			"ctaLabel": "Gratis beginnen"
 		}
 	},
-
 	"urlShortenerMarketingTeams": {
 		"metaTitle": "URL-verkorter voor marketingteams – Merkgebonden links en campagnetracking | QRcodly",
 		"metaDescription": "Verkort en brand uw marketinglinks. Volg klikken, beheer campagnes en gebruik aangepaste domeinen — alles in één platform.",
@@ -2474,7 +2469,6 @@
 			"ctaLabel": "Gratis beginnen"
 		}
 	},
-
 	"urlShortenerSocialMedia": {
 		"metaTitle": "URL-verkorter voor social media – Nette links en kliktracking | QRcodly",
 		"metaDescription": "Maak korte, nette links voor social media-berichten. Volg klikken en ontdek welke inhoud de meeste betrokkenheid genereert.",
@@ -2544,7 +2538,6 @@
 			"ctaLabel": "Gratis beginnen"
 		}
 	},
-
 	"urlShortenerSales": {
 		"metaTitle": "URL-verkorter voor salesteams – Traceerbare links voor outreach | QRcodly",
 		"metaDescription": "Maak traceerbare korte links voor salesoutreach. Zie wanneer prospects klikken en meet betrokkenheid over campagnes.",
@@ -2614,7 +2607,6 @@
 			"ctaLabel": "Gratis beginnen"
 		}
 	},
-
 	"urlShortenerEcommerce": {
 		"metaTitle": "URL-verkorter voor e-commerce – Productlinks en kanaaltracking | QRcodly",
 		"metaDescription": "Maak korte links voor productpagina's, volg klikken over verkoopkanalen en beheer seizoenscampagne-URL's met gemak.",
@@ -2684,7 +2676,6 @@
 			"ctaLabel": "Gratis beginnen"
 		}
 	},
-
 	"urlShortenerDevelopers": {
 		"metaTitle": "URL-verkorter API voor ontwikkelaars – REST API en aangepaste domeinen | QRcodly",
 		"metaDescription": "Integreer URL-verkorting in uw apps met onze REST API. Maak, beheer en volg korte links programmatisch.",
@@ -2754,7 +2745,6 @@
 			"ctaLabel": "Bekijk API-documentatie"
 		}
 	},
-
 	"urlShortenerAgencies": {
 		"metaTitle": "URL-verkorter voor bureaus – Klantdomeinen, merkgebonden links en analyses | QRcodly",
 		"metaDescription": "Beheer korte links voor meerdere klanten met aangepaste domeinen, merkgebonden URL's en analyses per link. Gebouwd voor bureaus.",
