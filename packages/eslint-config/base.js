@@ -1,8 +1,5 @@
 import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier/flat';
-import unicorn from 'eslint-plugin-unicorn';
-import lodash from 'eslint-plugin-lodash';
-import unusedImports from 'eslint-plugin-unused-imports';
 
 /**
  * Shared ESLint base config for all workspace apps.
@@ -14,9 +11,6 @@ import unusedImports from 'eslint-plugin-unused-imports';
  */
 export default function base(tsconfigRootDir) {
 	return tseslint.config(
-		{
-			plugins: { unicorn, lodash, 'unused-imports': unusedImports },
-		},
 		{
 			files: ['**/*.ts', '**/*.tsx'],
 			extends: [...tseslint.configs.recommendedTypeChecked],

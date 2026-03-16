@@ -150,6 +150,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 							<ul className="space-y-2.5">
 								<li>
 									<Link
+										locale="en"
 										href="/imprint"
 										title={t('legalNotice')}
 										aria-label={t('legalNotice')}
@@ -160,6 +161,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 								</li>
 								<li>
 									<Link
+										locale="en"
 										href="/privacy-policy"
 										title={t('privacyPolicy')}
 										aria-label={t('privacyPolicy')}

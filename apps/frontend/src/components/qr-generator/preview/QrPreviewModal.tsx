@@ -91,6 +91,11 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 		return () => window.removeEventListener('resize', handleResize);
 	}, [open, onOpenChange]);
 
+	// Track position in a ref so the resize handler always has the latest value
+	// without needing position in the effect dependency array
+	const positionRef = useRef(position);
+	positionRef.current = position;
+
 	// Handle window resize - adjust QR position proportionally
 	useEffect(() => {
 		if (!containerRef.current || !backgroundImage) return;
@@ -122,13 +127,14 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 			// Ensure ratios are valid finite numbers
 			if (!Number.isFinite(widthRatio) || !Number.isFinite(heightRatio)) return;
 
+			const pos = positionRef.current;
 			// Adjust QR position proportionally
 			setPosition({
-				x: position.x * widthRatio,
-				y: position.y * heightRatio,
-				width: position.width,
-				height: position.height,
-				rotation: position.rotation,
+				x: pos.x * widthRatio,
+				y: pos.y * heightRatio,
+				width: pos.width,
+				height: pos.height,
+				rotation: pos.rotation,
 			});
 
 			previousWidth = newWidth;
@@ -137,7 +143,7 @@ export function QrPreviewModal({ open, onOpenChange }: QrPreviewModalProps) {
 
 		window.addEventListener('resize', handleResize);
 		return () => window.removeEventListener('resize', handleResize);
-	}, [backgroundImage, position, setPosition]);
+	}, [backgroundImage, setPosition]);
 
 	// Trigger pulse animation when entering preview step
 	useEffect(() => {

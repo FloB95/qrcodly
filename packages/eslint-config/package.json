@@ -9,9 +9,6 @@
 	"devDependencies": {
 		"eslint": "^9.27.0",
 		"eslint-config-prettier": "^10.1.2",
-		"eslint-plugin-lodash": "^8.0.0",
-		"eslint-plugin-unicorn": "^58.0.0",
-		"eslint-plugin-unused-imports": "^4.1.4",
 		"typescript-eslint": "^8.31.1"
 	}
 }

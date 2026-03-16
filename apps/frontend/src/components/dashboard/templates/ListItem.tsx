@@ -107,7 +107,6 @@ export const TemplateListItem = ({
 		(newName: string) => {
 			updateMutation.mutate({ configTemplateId: template.id, data: { name: newName } });
 		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[template.id, updateMutation],
 	);
 
