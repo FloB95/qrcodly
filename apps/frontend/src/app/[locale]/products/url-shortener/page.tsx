@@ -139,10 +139,20 @@ export default async function Page({ params }: DefaultPageParams) {
 		<BuildingOffice2Icon key="6" className="h-5 w-5" />,
 	];
 
+	const useCaseSlugs = [
+		'marketing-teams',
+		'social-media',
+		'sales',
+		'e-commerce',
+		'developers',
+		'agencies',
+	];
+
 	const useCases = Array.from({ length: 6 }, (_, i) => ({
 		icon: useCaseIcons[i],
 		title: t(`useCases.case${i + 1}Title`),
 		description: t(`useCases.case${i + 1}Description`),
+		href: `/products/url-shortener/${useCaseSlugs[i]}`,
 	}));
 
 	const faqItems = Array.from({ length: 6 }, (_, i) => ({
@@ -175,6 +185,7 @@ export default async function Page({ params }: DefaultPageParams) {
 					title={t('useCases.title')}
 					subtitle={t('useCases.subtitle')}
 					cases={useCases}
+					learnMoreLabel={t('useCases.learnMore')}
 				/>
 
 				<CrossProductCards

@@ -148,10 +148,13 @@ export default async function Page({ params }: DefaultPageParams) {
 		<MegaphoneIcon key="6" className="h-5 w-5" />,
 	];
 
+	const useCaseSlugs = ['restaurants', 'retail', 'events', 'real-estate', 'education', 'marketing'];
+
 	const useCases = Array.from({ length: 6 }, (_, i) => ({
 		icon: useCaseIcons[i],
 		title: t(`useCases.case${i + 1}Title`),
 		description: t(`useCases.case${i + 1}Description`),
+		href: `/products/qr-codes/${useCaseSlugs[i]}`,
 	}));
 
 	const faqItems = Array.from({ length: 6 }, (_, i) => ({
@@ -186,6 +189,7 @@ export default async function Page({ params }: DefaultPageParams) {
 					title={t('useCases.title')}
 					subtitle={t('useCases.subtitle')}
 					cases={useCases}
+					learnMoreLabel={t('useCases.learnMore')}
 				/>
 
 				<CrossProductCards

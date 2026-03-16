@@ -1983,5 +1983,845 @@
 		"skip": "Overslaan",
 		"thankYouTitle": "Bedankt!",
 		"thankYouMessage": "Je feedback helpt ons een beter product te maken."
+	},
+
+	"qrCodesRestaurants": {
+		"metaTitle": "QR-codes voor restaurants – Digitale menu's, WiFi en meer | QRcodly",
+		"metaDescription": "Maak QR-codes voor uw restaurant. Bied digitale menu's, eenvoudige WiFi-toegang en volg betrokkenheid — alles vanuit één platform.",
+		"hero": {
+			"title": "QR-codes speciaal voor restaurants",
+			"subtitle": "Geef gasten direct toegang tot menu's, WiFi en aanbiedingen. Werk de inhoud op elk moment bij zonder opnieuw te printen.",
+			"ctaLabel": "Maak uw restaurant-QR-code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Digitale menu's die direct bijwerken",
+				"description": "Koppel een QR-code aan uw online menu. Wijzig prijzen, voeg seizoensgerechten toe of werk aanbiedingen bij — gasten zien altijd de nieuwste versie.",
+				"bullet1": "Werk menu-items bij zonder opnieuw te printen",
+				"bullet2": "Link naar PDF, webpagina of bestelsysteem",
+				"bullet3": "Werkt op elke smartphone — geen app nodig"
+			},
+			"feature2": {
+				"title": "WiFi-toegang met één scan",
+				"description": "Laat gasten direct verbinding maken met uw WiFi door een QR-code te scannen. Geen wachtwoorden meer vragen of lange inloggegevens intypen.",
+				"bullet1": "Codeer uw WiFi-netwerknaam en wachtwoord",
+				"bullet2": "Gasten verbinden met één tik na het scannen",
+				"bullet3": "Plaats op tafels, muren of bij de receptie"
+			},
+			"feature3": {
+				"title": "Volg hoe gasten interacteren",
+				"description": "Bekijk hoeveel gasten uw codes scannen, welke locaties het beste presteren en wanneer de piekuren zijn.",
+				"bullet1": "Bekijk het aantal scans per QR-code",
+				"bullet2": "Zie apparaat- en locatiegegevens",
+				"bullet3": "Identificeer uw drukste tijden en locaties"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR-codes voor andere sectoren",
+			"subtitle": "Ontdek hoe bedrijven in andere sectoren QR-codes gebruiken om hun publiek te bereiken.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"urlShortener": {
+				"title": "URL-verkorter",
+				"description": "Maak korte, merkgebonden links voor online bestellingen, reserveringspagina's en sociale profielen van uw restaurant."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Duik dieper in scangegevens met onze volledige analysesuite. Begrijp het gedrag van gasten en optimaliseer plaatsingen."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kan ik mijn restaurantmenu bijwerken zonder een nieuwe QR-code te maken?",
+			"a1": "Ja. Met een dynamische QR-code kunt u de gekoppelde menu-URL op elk moment wijzigen. De geprinte QR-code blijft hetzelfde — gasten zien altijd uw nieuwste menu.",
+			"q2": "Naar welke soorten inhoud kan ik linken?",
+			"a2": "U kunt linken naar elke URL — een PDF-menu, een online bestelpagina, uw Google Maps-vermelding, een reserveringssysteem of uw website.",
+			"q3": "Hoe werken WiFi-QR-codes?",
+			"a3": "WiFi-QR-codes coderen uw netwerknaam, wachtwoord en versleutelingstype. Wanneer een gast scant, biedt de telefoon automatisch aan om verbinding te maken — geen typen nodig.",
+			"q4": "Kan ik de QR-code aanpassen aan mijn restauranthuisstijl?",
+			"a4": "Absoluut. U kunt kleuren wijzigen, uw restaurantlogo toevoegen en kiezen uit verschillende QR-codestijlen die bij uw merkidentiteit passen.",
+			"q5": "Hoe kan ik bijhouden hoeveel gasten mijn QR-codes scannen?",
+			"a5": "Elke dynamische QR-code volgt automatisch het aantal scans. U kunt het totale aantal scans, scans in de loop van de tijd en apparaatinformatie bekijken in uw dashboard.",
+			"q6": "Is er een limiet aan het aantal QR-codes dat ik kan maken?",
+			"a6": "Gratis accounts kunnen QR-codes maken met basisfuncties. Pro-accounts ontgrendelen dynamische QR-codes, analyses en aangepaste branding met hogere limieten.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Klaar om uw restaurant te moderniseren?",
+			"subtitle": "Maak uw eerste restaurant-QR-code in enkele minuten. Digitale menu's, WiFi-toegang en analyses — allemaal gratis om te beginnen.",
+			"ctaLabel": "Gratis beginnen"
+		}
+	},
+
+	"qrCodesRetail": {
+		"metaTitle": "QR-codes voor retail – Productinformatie, promoties en tracking | QRcodly",
+		"metaDescription": "Gebruik QR-codes in de retail voor productdetails, promoties en klantbetrokkenheid. Volg scans en werk inhoud op elk moment bij.",
+		"hero": {
+			"title": "QR-codes speciaal voor retail",
+			"subtitle": "Verbind fysieke producten met digitale ervaringen. Deel productinformatie, voer promoties uit en volg betrokkenheid.",
+			"ctaLabel": "Maak uw retail-QR-code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Productinformatie in één oogopslag",
+				"description": "Voeg QR-codes toe aan verpakkingen of schaplabels. Klanten scannen om gedetailleerde specificaties, reviews, instructievideo's of ingrediëntenlijsten te bekijken.",
+				"bullet1": "Link naar productpagina's of landingspagina's",
+				"bullet2": "Deel maatgidsen, verzorgingsinstructies of tutorials",
+				"bullet3": "Werk gekoppelde inhoud bij zonder de verpakking te wijzigen"
+			},
+			"feature2": {
+				"title": "Voer promoties uit in de winkel",
+				"description": "Stimuleer betrokkenheid met QR-codes die linken naar exclusieve kortingen, loyaliteitsprogramma's of seizoensaanbiedingen.",
+				"bullet1": "Link naar couponpagina's of kortingscodes",
+				"bullet2": "Promoot loyaliteitsregistraties of app-downloads",
+				"bullet3": "Wijzig aanbiedingen in realtime met dynamische codes"
+			},
+			"feature3": {
+				"title": "Meet de betrokkenheid in de winkel",
+				"description": "Volg welke producten en displays de meeste scans krijgen. Begrijp wat de aandacht van uw klanten trekt.",
+				"bullet1": "Bekijk het aantal scans per product of display",
+				"bullet2": "Vergelijk betrokkenheid tussen winkellocaties",
+				"bullet3": "Identificeer piekuren in de winkel aan de hand van scangegevens"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR-codes voor andere sectoren",
+			"subtitle": "Ontdek hoe andere sectoren QR-codes inzetten om met hun publiek in contact te komen.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"urlShortener": {
+				"title": "URL-verkorter",
+				"description": "Maak korte links voor productpagina's, promotie-landingspagina's en klanttevredenheidsonderzoeken."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Krijg gedetailleerde inzichten in scanpatronen, apparaattypen en klantbetrokkenheidsstatistieken."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kan ik QR-codes toevoegen aan productverpakkingen?",
+			"a1": "Ja. Genereer een QR-code, download deze als PNG of SVG en neem deze op in uw verpakkingsontwerp. Dynamische codes laten u de bestemming bijwerken na het printen.",
+			"q2": "Hoe kan ik QR-codes gebruiken voor promoties?",
+			"a2": "Koppel uw QR-code aan een couponpagina, kortingslandingspagina of loyaliteitsregistratieformulier. Met dynamische codes kunt u de bestemming op elk moment wijzigen voor nieuwe promoties.",
+			"q3": "Kan ik bijhouden welke producten de meeste scans krijgen?",
+			"a3": "Ja. Maak een aparte QR-code voor elk product of display. Uw dashboard toont het aantal scans, timing en apparaatgegevens voor elke code afzonderlijk.",
+			"q4": "Welke bestandsformaten zijn beschikbaar voor download?",
+			"a4": "U kunt QR-codes downloaden als PNG of SVG. SVG is ideaal voor drukwerk omdat het naar elk formaat schaalt zonder kwaliteitsverlies.",
+			"q5": "Kan ik de QR-code afstemmen op mijn merkkleuren?",
+			"a5": "Ja. Pas kleuren aan, voeg uw logo toe en kies verschillende patronen en hoekstijlen om bij uw merkidentiteit te passen.",
+			"q6": "Hebben klanten een app nodig om te scannen?",
+			"a6": "Nee. Moderne smartphones scannen QR-codes direct met de ingebouwde camera-app. Er is geen extra app nodig.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Verbeter uw retailervaring",
+			"subtitle": "Verbind producten met digitale inhoud via QR-codes. Eenvoudig te maken, simpel bij te werken, gratis om te beginnen.",
+			"ctaLabel": "Gratis beginnen"
+		}
+	},
+
+	"qrCodesEvents": {
+		"metaTitle": "QR-codes voor evenementen – Inchecken, programma's en netwerken | QRcodly",
+		"metaDescription": "Stroomlijn evenementen met QR-codes voor inchecken, programma's en deelnemersbetrokkenheid. Maak en volg QR-codes voor evenementen eenvoudig.",
+		"hero": {
+			"title": "QR-codes speciaal voor evenementen",
+			"subtitle": "Vereenvoudig het inchecken, deel programma's en verbind deelnemers. Eén scan doet het allemaal.",
+			"ctaLabel": "Maak uw evenement-QR-code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Sneller inchecken voor deelnemers",
+				"description": "Stuur gepersonaliseerde QR-codes naar deelnemers. Personeel scant ze bij de deur voor snel, contactloos inchecken.",
+				"bullet1": "Genereer unieke codes per deelnemer of ticket",
+				"bullet2": "Versnel de wachtrijen bij elke locatiegrootte",
+				"bullet3": "Werkt met elke smartphone of tabletscanner"
+			},
+			"feature2": {
+				"title": "Live programma's en updates",
+				"description": "Koppel QR-codes aan uw evenementprogramma. Werk sessietijden, zaalwijzigingen of sprekersinformatie bij — deelnemers hebben altijd het laatste nieuws.",
+				"bullet1": "Link naar een live programma- of agendapagina",
+				"bullet2": "Deel last-minute wijzigingen zonder opnieuw te printen",
+				"bullet3": "Plaats op badges, bewegwijzering of gedrukte programma's"
+			},
+			"feature3": {
+				"title": "Netwerken tussen deelnemers eenvoudig gemaakt",
+				"description": "Laat deelnemers contactgegevens delen door vCard-QR-codes op hun badges te scannen. Geen visitekaartjes nodig.",
+				"bullet1": "Maak vCard-QR-codes met contactinformatie",
+				"bullet2": "Deelnemers slaan contacten direct op in hun telefoon",
+				"bullet3": "Ideaal voor conferenties, beurzen en meetups"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR-codes voor andere sectoren",
+			"subtitle": "Ontdek hoe andere sectoren QR-codes gebruiken om hun publiek te bereiken.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"urlShortener": {
+				"title": "URL-verkorter",
+				"description": "Maak korte links voor evenementregistratiepagina's, feedbackformulieren en enquêtes na afloop."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Volg de scanactiviteit op uw evenement. Bekijk welke sessies, stands of materialen de meeste betrokkenheid genereren."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kan ik unieke QR-codes maken voor elke deelnemer?",
+			"a1": "Ja. U kunt individuele QR-codes genereren die linken naar gepersonaliseerde incheckpagina's, tickets of contactkaarten voor elke deelnemer.",
+			"q2": "Hoe gebruik ik QR-codes voor evenementprogramma's?",
+			"a2": "Maak een dynamische QR-code die linkt naar uw programmapagina. Wanneer het programma wijzigt, werkt u de link bij — de geprinte QR-code blijft hetzelfde.",
+			"q3": "Wat is een vCard-QR-code?",
+			"a3": "Een vCard-QR-code bevat contactinformatie (naam, e-mail, telefoon, bedrijf). Bij het scannen biedt de telefoon aan om het contact direct op te slaan in het adresboek.",
+			"q4": "Kan ik bijhouden hoeveel mensen op mijn evenement hebben gescand?",
+			"a4": "Ja. Dynamische QR-codes volgen elke scan. U kunt het totale aantal scans, scans per code en wanneer de scanactiviteit piekte tijdens uw evenement bekijken.",
+			"q5": "Waar moet ik QR-codes plaatsen op evenementen?",
+			"a5": "Veelvoorkomende plaatsen zijn deelnemersbadges, registratiebalies, sessieborden, standdisplays en gedrukte programma's of flyers.",
+			"q6": "Hebben deelnemers een speciale app nodig?",
+			"a6": "Nee. Alle moderne smartphones kunnen QR-codes scannen met de ingebouwde camera. Er is geen extra app nodig.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Maak uw volgende evenement naadloos",
+			"subtitle": "QR-codes voor inchecken, programma's en netwerken. Maak ze in enkele minuten — gratis om te beginnen.",
+			"ctaLabel": "Gratis beginnen"
+		}
+	},
+
+	"qrCodesRealEstate": {
+		"metaTitle": "QR-codes voor vastgoed – Woningaanbiedingen, virtuele rondleidingen en meer | QRcodly",
+		"metaDescription": "Gebruik QR-codes in vastgoed voor woningaanbiedingen, virtuele rondleidingen en open-huisregistraties. Volg de betrokkenheid van kopers eenvoudig.",
+		"hero": {
+			"title": "QR-codes speciaal voor vastgoed",
+			"subtitle": "Geef kopers direct toegang tot woningdetails, virtuele rondleidingen en contactinformatie — direct vanaf het tuinbord.",
+			"ctaLabel": "Maak uw vastgoed-QR-code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Woningdetails op elk bord",
+				"description": "Voeg een QR-code toe aan uw tuinborden, flyers of brochures. Kopers scannen om de volledige vermelding, foto's en belangrijke details te bekijken.",
+				"bullet1": "Link naar uw vermeldingspagina of woningwebsite",
+				"bullet2": "Voeg foto's, plattegronden en prijzen toe",
+				"bullet3": "Werk vermeldingsdetails bij zonder borden opnieuw te printen"
+			},
+			"feature2": {
+				"title": "Virtuele rondleidingen met één scan",
+				"description": "Koppel QR-codes aan virtuele rondleidingsvideo's of 3D-walkthroughs. Laat kopers woningen verkennen vanuit elke locatie.",
+				"bullet1": "Link naar Matterport, YouTube of elk rondleidingsplatform",
+				"bullet2": "Plaats op printadvertenties, mailings en open-huisbladen",
+				"bullet3": "Wissel rondleidingslinks wanneer woningen veranderen"
+			},
+			"feature3": {
+				"title": "Volg de interesse van kopers",
+				"description": "Bekijk hoeveel mensen de QR-code van elke woning scannen. Begrijp welke vermeldingen de meeste aandacht trekken.",
+				"bullet1": "Bekijk het aantal scans per woningvermelding",
+				"bullet2": "Zie wanneer en waar scans plaatsvinden",
+				"bullet3": "Vergelijk interesse tussen woningen"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR-codes voor andere sectoren",
+			"subtitle": "Ontdek hoe andere sectoren QR-codes gebruiken om met hun publiek in contact te komen.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"urlShortener": {
+				"title": "URL-verkorter",
+				"description": "Maak nette, korte links voor woningvermeldingen, open-huisregistraties en contactpagina's van makelaars."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Krijg gedetailleerde inzichten in de betrokkenheid van kopers, scanlocaties en apparaatgegevens voor elke woning."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kan ik de vermelding bijwerken zonder de QR-code op het bord te wijzigen?",
+			"a1": "Ja. Dynamische QR-codes laten u de bestemmings-URL op elk moment wijzigen. Werk de vermelding bij, wissel de link — de geprinte code blijft hetzelfde.",
+			"q2": "Waar moet ik naar linken vanuit een vastgoed-QR-code?",
+			"a2": "Veelvoorkomende bestemmingen zijn uw MLS-vermeldingspagina, een virtuele rondleiding, een woningwebsite, een planningspagina voor bezichtigingen of uw makelaarcontactkaart.",
+			"q3": "Kan ik mijn makelaarslogo toevoegen aan de QR-code?",
+			"a3": "Ja. Upload uw logo en pas kleuren aan om bij uw makelaarshuisstijl te passen. De QR-code blijft scanbaar met uw branding in het midden.",
+			"q4": "Hoe kan ik bijhouden welke woningen de meeste interesse krijgen?",
+			"a4": "Maak een aparte QR-code voor elke vermelding. Uw dashboard toont het aantal scans, timing en locatiegegevens voor elke code.",
+			"q5": "Kan ik QR-codes gebruiken op geprinte mailings?",
+			"a5": "Absoluut. Download uw QR-code als SVG voor afdrukken in hoge resolutie. Het werkt uitstekend op ansichtkaarten, flyers, brochures en deurhanger.",
+			"q6": "Is het gratis om vastgoed-QR-codes te maken?",
+			"a6": "Ja. U kunt gratis QR-codes maken. Pro-accounts voegen dynamische codes, analyses en aangepaste branding toe voor professioneler gebruik.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Geef elke vermelding een digitaal voordeel",
+			"subtitle": "QR-codes die kopers verbinden met woningdetails, rondleidingen en uw contactinformatie. Gratis om te beginnen.",
+			"ctaLabel": "Gratis beginnen"
+		}
+	},
+
+	"qrCodesEducation": {
+		"metaTitle": "QR-codes voor onderwijs – Lesmaterialen, opdrachten en meer | QRcodly",
+		"metaDescription": "Gebruik QR-codes in het onderwijs om bronnen, opdrachten en lesmateriaal te delen. Betrek studenten met een eenvoudige scan.",
+		"hero": {
+			"title": "QR-codes speciaal voor onderwijs",
+			"subtitle": "Verbind studenten met bronnen, opdrachten en interactieve inhoud met een eenvoudige scan.",
+			"ctaLabel": "Maak uw onderwijs-QR-code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Direct toegang tot lesmaterialen",
+				"description": "Plaats QR-codes op werkbladen, posters of lesboeken. Studenten scannen om video's, artikelen of interactieve oefeningen te openen.",
+				"bullet1": "Link naar educatieve video's, PDF's of websites",
+				"bullet2": "Plaats op geprinte werkbladen of klasposters",
+				"bullet3": "Werk bronnen bij zonder materialen opnieuw te printen"
+			},
+			"feature2": {
+				"title": "Vereenvoudig de distributie van opdrachten",
+				"description": "Deel opdrachten, leeslijsten en studiegidsen via QR-codes. Studenten scannen en gaan — geen lange URL's intypen.",
+				"bullet1": "Link naar Google Docs, LMS-pagina's of gedeelde schijven",
+				"bullet2": "Studenten openen materialen vanaf elk apparaat",
+				"bullet3": "Wijzig links wanneer opdrachten worden bijgewerkt"
+			},
+			"feature3": {
+				"title": "Verhoog de betrokkenheid van studenten",
+				"description": "Maak het leren interactief met QR-codes die leiden naar quizzen, polls of augmented reality-inhoud.",
+				"bullet1": "Link naar Kahoot, Google Forms of quizplatforms",
+				"bullet2": "Volg welke bronnen studenten het meest raadplegen",
+				"bullet3": "Maak speurtochten en interactieve lessen"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR-codes voor andere sectoren",
+			"subtitle": "Ontdek hoe andere sectoren QR-codes gebruiken om met hun publiek in contact te komen.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"urlShortener": {
+				"title": "URL-verkorter",
+				"description": "Maak korte, eenvoudig te typen links voor studenten die liever URL's intypen dan scannen."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Bekijk welke leermaterialen de meeste betrokkenheid genereren en begrijp de toegangspatronen van studenten."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kunnen studenten QR-codes scannen met hun telefoon?",
+			"a1": "Ja. Alle moderne smartphones kunnen QR-codes scannen met de ingebouwde camera-app. Er is geen extra app nodig.",
+			"q2": "Kan ik wijzigen waar een QR-code naar linkt na het printen?",
+			"a2": "Ja. Dynamische QR-codes laten u de bestemming op elk moment wijzigen. Ideaal voor het bijwerken van opdrachten of het wisselen van bronnen tussen semesters.",
+			"q3": "Zijn QR-codes gratis voor docenten?",
+			"a3": "Ja. U kunt gratis QR-codes maken met QRcodly. Pro-accounts voegen dynamische codes en analyses toe voor geavanceerder klasgebruik.",
+			"q4": "Hoe kan ik QR-codes gebruiken in de klas?",
+			"a4": "Populaire toepassingen zijn linken naar video's vanuit werkbladen, WiFi-toegang delen, opdrachten distribueren, interactieve speurtochten maken en feedback verzamelen via formulieren.",
+			"q5": "Kan ik bijhouden welke studenten een bron raadplegen?",
+			"a5": "QR-codeanalyses tonen het totale aantal scans, timing en apparaatgegevens. Individuele gebruikersregistratie is niet beschikbaar — scans zijn anoniem.",
+			"q6": "Welke bestandsformaten kan ik downloaden?",
+			"a6": "QR-codes zijn beschikbaar als PNG en SVG. SVG is ideaal voor afdrukken op werkbladen en posters omdat het schaalt zonder kwaliteitsverlies.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Breng QR-codes naar uw klaslokaal",
+			"subtitle": "Deel bronnen, opdrachten en interactieve inhoud met een eenvoudige scan. Gratis voor docenten.",
+			"ctaLabel": "Gratis beginnen"
+		}
+	},
+
+	"qrCodesMarketing": {
+		"metaTitle": "QR-codes voor marketing – Printcampagnes, A/B-testen en branding | QRcodly",
+		"metaDescription": "Overbrugde print en digitale marketing met QR-codes. Volg campagneprestaties, pas ontwerpen aan en werk bestemmingen op elk moment bij.",
+		"hero": {
+			"title": "QR-codes speciaal voor marketing",
+			"subtitle": "Verbind drukwerk met digitale campagnes. Volg prestaties, pas ontwerpen aan en werk inhoud bij in realtime.",
+			"ctaLabel": "Maak uw marketing-QR-code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Overburg print en digitaal",
+				"description": "Voeg QR-codes toe aan flyers, posters, visitekaartjes en verpakkingen. Elke scan is een meetbaar contactpunt in uw campagne.",
+				"bullet1": "Koppel drukwerk aan elke landingspagina",
+				"bullet2": "Volg scanpercentages op billboards, mailings en advertenties",
+				"bullet3": "Meet de ROI van printcampagnes met echte data"
+			},
+			"feature2": {
+				"title": "Test en optimaliseer campagnes",
+				"description": "Maak meerdere QR-codes voor verschillende plaatsingen of ontwerpen. Vergelijk scanpercentages om te vinden wat het beste werkt.",
+				"bullet1": "Maak aparte codes voor elke plaatsing",
+				"bullet2": "Vergelijk prestaties tussen kanalen",
+				"bullet3": "Wissel bestemmingen om verschillende landingspagina's te testen"
+			},
+			"feature3": {
+				"title": "QR-codes passend bij uw merk",
+				"description": "Pas elk aspect van uw QR-code aan. Stem af op uw merkkleuren, voeg uw logo toe en kies uit meerdere stijlen.",
+				"bullet1": "Volledige kleuraanpassing voor voorgrond en achtergrond",
+				"bullet2": "Voeg uw bedrijfslogo toe aan het midden",
+				"bullet3": "Kies uit verschillende patronen en hoekstijlen"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR-codes voor andere sectoren",
+			"subtitle": "Ontdek hoe andere sectoren QR-codes gebruiken om hun publiek te bereiken.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"urlShortener": {
+				"title": "URL-verkorter",
+				"description": "Maak merkgebonden korte links voor campagnes. Combineer met QR-codes voor een complete offline-naar-online trackingstrategie."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Duik diep in campagneanalyses. Bekijk scans per locatie, apparaat, tijd en meer om uw marketing te optimaliseren."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kan ik bijhouden hoeveel mensen mijn marketing-QR-codes scannen?",
+			"a1": "Ja. Dynamische QR-codes volgen elke scan. U kunt het totale aantal scans, scans in de loop van de tijd, apparaattypen en locatiegegevens bekijken in uw dashboard.",
+			"q2": "Kan ik wijzigen waarnaar de QR-code verwijst na het printen?",
+			"a2": "Ja. Dynamische QR-codes laten u de bestemmings-URL op elk moment bijwerken. Wissel landingspagina's, verwijs door naar nieuwe campagnes of repareer gebroken links — allemaal zonder opnieuw te printen.",
+			"q3": "Hoe voeg ik mijn merklogo toe aan een QR-code?",
+			"a3": "Upload uw logo in de QR-code-editor. Het wordt in het midden van de code geplaatst. U kunt ook kleuren en patronen aanpassen aan uw merkrichtlijnen.",
+			"q4": "Wat is het beste formaat voor drukwerk?",
+			"a4": "Download als SVG voor de beste afdrukkwaliteit. SVG-bestanden schalen naar elk formaat — van visitekaartjes tot billboards — zonder scherpte te verliezen.",
+			"q5": "Kan ik QR-codes maken voor meerdere campagnes tegelijk?",
+			"a5": "Ja. Maak zoveel QR-codes als u nodig heeft, elk met een eigen bestemming en tracking. Organiseer ze in uw dashboard voor eenvoudig beheer.",
+			"q6": "Hoe meet ik de ROI van printcampagnes?",
+			"a6": "Gebruik aparte QR-codes voor elke plaatsing of campagne. Vergelijk het aantal scans en de timing om te zien welke materialen de meeste betrokkenheid genereren.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Maak elk drukwerk meetbaar",
+			"subtitle": "Voeg QR-codes toe aan uw marketingmaterialen en volg elke scan. Begin gratis.",
+			"ctaLabel": "Gratis beginnen"
+		}
+	},
+
+	"urlShortenerMarketingTeams": {
+		"metaTitle": "URL-verkorter voor marketingteams – Merkgebonden links en campagnetracking | QRcodly",
+		"metaDescription": "Verkort en brand uw marketinglinks. Volg klikken, beheer campagnes en gebruik aangepaste domeinen — alles in één platform.",
+		"hero": {
+			"title": "Korte links speciaal voor marketingteams",
+			"subtitle": "Maak merkgebonden links die vertrouwen opbouwen, volg klikken over campagnes en beheer al uw URL's op één plek.",
+			"ctaLabel": "Verkort uw eerste link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Merkgebonden links die vertrouwen opbouwen",
+				"description": "Gebruik uw eigen aangepaste domein voor korte links. Merkgebonden URL's krijgen meer klikken en versterken uw merkidentiteit in elk kanaal.",
+				"bullet1": "Koppel uw eigen domein voor merkgebonden korte URL's",
+				"bullet2": "Merkgebonden links verhogen de doorklikratio",
+				"bullet3": "Consistente branding over e-mail, social media en advertenties"
+			},
+			"feature2": {
+				"title": "Kliktracking voor campagnes",
+				"description": "Bekijk hoe uw links presteren over kanalen. Volg klikken, geografische gegevens en apparaattypen voor elke korte link.",
+				"bullet1": "Realtime kliktracking voor elke link",
+				"bullet2": "Filter analyses op datumbereik",
+				"bullet3": "Bekijk geografische en apparaatgegevens"
+			},
+			"feature3": {
+				"title": "Organiseer links per campagne",
+				"description": "Tag en categoriseer uw korte links per campagne, kanaal of team. Vind elke link direct met zoeken en filteren.",
+				"bullet1": "Voeg tags toe om links per project te organiseren",
+				"bullet2": "Zoek en filter door al uw links",
+				"bullet3": "Houd uw linkbibliotheek netjes en overzichtelijk"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL-verkorter voor andere teams",
+			"subtitle": "Ontdek hoe andere teams korte links gebruiken om effectiever te werken.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"qrCodes": {
+				"title": "QR-codegenerator",
+				"description": "Combineer korte links met QR-codes voor printcampagnes. Volg scans en klikken vanuit één dashboard."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Duik dieper in linkprestaties met gedetailleerde klikanalyses, verwijzingsgegevens en geografische inzichten."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kan ik mijn eigen domein gebruiken voor korte links?",
+			"a1": "Ja. Koppel uw aangepaste domein in de instellingen. Alle nieuwe korte links gebruiken uw domein, waardoor ze er professioneel en merkgebonden uitzien.",
+			"q2": "Hoe volg ik campagneprestaties?",
+			"a2": "Elke korte link volgt automatisch klikken. Bekijk het aantal klikken, geografische gegevens, apparaattypen en verwijzingsinformatie in uw dashboard.",
+			"q3": "Kan ik links organiseren per campagne?",
+			"a3": "Ja. Gebruik tags om links te categoriseren per campagne, kanaal of elk systeem dat u verkiest. Filter en zoek om elke link snel te vinden.",
+			"q4": "Kan ik wijzigen waarnaar een korte link doorverwijst?",
+			"a4": "Ja. U kunt de bestemmings-URL van elke korte link op elk moment bijwerken. De korte URL blijft hetzelfde — alleen het doel verandert.",
+			"q5": "Is er een limiet aan het aantal links dat ik kan maken?",
+			"a5": "Gratis accounts hebben een maandelijkse linklimiet. Pro-accounts ontgrendelen hogere limieten en extra functies zoals aangepaste domeinen en geavanceerde analyses.",
+			"q6": "Kan ik zien welke kanalen de meeste klikken genereren?",
+			"a6": "Ja. Maak aparte korte links voor elk kanaal (e-mail, social media, advertenties) en vergelijk hun klikprestaties in uw dashboard.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Versterk uw marketinglinks",
+			"subtitle": "Merkgebonden korte links met kliktracking en campagne-organisatie. Gratis om te beginnen.",
+			"ctaLabel": "Gratis beginnen"
+		}
+	},
+
+	"urlShortenerSocialMedia": {
+		"metaTitle": "URL-verkorter voor social media – Nette links en kliktracking | QRcodly",
+		"metaDescription": "Maak korte, nette links voor social media-berichten. Volg klikken en ontdek welke inhoud de meeste betrokkenheid genereert.",
+		"hero": {
+			"title": "Korte links speciaal voor social media",
+			"subtitle": "Nette, merkgebonden links die er geweldig uitzien in berichten en verhalen. Volg klikken om te zien welke inhoud aanslaat.",
+			"ctaLabel": "Verkort uw eerste link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Nette links voor elk bericht",
+				"description": "Vervang lange, onaantrekkelijke URL's door korte, merkgebonden links. Ze zien er beter uit in berichten, bio's en verhalen — en zijn makkelijker te delen.",
+				"bullet1": "Korte links zien er netter uit in sociale berichten",
+				"bullet2": "Merkgebonden domeinen bouwen vertrouwen op bij volgers",
+				"bullet3": "Werkt op elk social media-platform"
+			},
+			"feature2": {
+				"title": "Volg sociale betrokkenheid",
+				"description": "Bekijk hoeveel klikken elke link krijgt. Vergelijk prestaties tussen platforms en berichten om te begrijpen wat uw publiek interesseert.",
+				"bullet1": "Realtime kliktracking voor elke link",
+				"bullet2": "Bekijk welke platforms het meeste verkeer genereren",
+				"bullet3": "Begrijp uw publiek met apparaatgegevens"
+			},
+			"feature3": {
+				"title": "Dynamische links die u kunt bijwerken",
+				"description": "Wijzig waar uw link naartoe verwijst — zelfs na het plaatsen. Verwijs volgers door naar nieuwe inhoud zonder uw bericht te bewerken.",
+				"bullet1": "Werk bestemmings-URL's bij na publicatie",
+				"bullet2": "Verwijs seizoens- of tijdgebonden campagnes door",
+				"bullet3": "Repareer gebroken links zonder opnieuw te posten"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL-verkorter voor andere teams",
+			"subtitle": "Ontdek hoe andere teams korte links gebruiken om hun workflow te verbeteren.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"qrCodes": {
+				"title": "QR-codegenerator",
+				"description": "Maak QR-codes voor uw sociale profielen of campagne-landingspagina's. Ideaal voor cross-promotie tussen print en digitaal."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Krijg gedetailleerde klikanalyses voor al uw sociale links. Bekijk verwijzingsgegevens, locaties en apparaatgegevens."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kan ik korte links gebruiken op alle sociale platforms?",
+			"a1": "Ja. Korte links werken op elk platform — Instagram, Twitter/X, LinkedIn, Facebook, TikTok en meer. Ze werken in berichten, bio's, verhalen en reacties.",
+			"q2": "Hoe volg ik welke berichten de meeste klikken krijgen?",
+			"a2": "Maak een unieke korte link voor elk bericht. Vergelijk het aantal klikken in uw dashboard om te zien welke inhoud de meeste betrokkenheid genereert.",
+			"q3": "Kan ik mijn korte links branden met een aangepast domein?",
+			"a3": "Ja. Koppel uw aangepaste domein om merkgebonden korte URL's te gebruiken. Dit bouwt vertrouwen op en laat uw links er professioneler uitzien.",
+			"q4": "Kan ik wijzigen waar een link naartoe gaat na het plaatsen?",
+			"a4": "Ja. U kunt de bestemmings-URL op elk moment bijwerken. De korte link blijft hetzelfde — volgers worden doorverwezen naar het nieuwe doel.",
+			"q5": "Beïnvloeden korte links de SEO?",
+			"a5": "Korte links gebruiken 301-doorverwijzingen, die SEO-waarde doorgeven aan de bestemmings-URL. Ze hebben geen negatief effect op uw zoekresultaten.",
+			"q6": "Is er een gratis abonnement?",
+			"a6": "Ja. U kunt gratis korte links maken met basis kliktracking. Pro-accounts voegen aangepaste domeinen, hogere limieten en geavanceerde analyses toe.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Verbeter uw sociale links",
+			"subtitle": "Korte, merkgebonden links met kliktracking voor al uw sociale inhoud. Begin gratis.",
+			"ctaLabel": "Gratis beginnen"
+		}
+	},
+
+	"urlShortenerSales": {
+		"metaTitle": "URL-verkorter voor salesteams – Traceerbare links voor outreach | QRcodly",
+		"metaDescription": "Maak traceerbare korte links voor salesoutreach. Zie wanneer prospects klikken en meet betrokkenheid over campagnes.",
+		"hero": {
+			"title": "Korte links speciaal voor salesteams",
+			"subtitle": "Verstuur traceerbare links in outreach-e-mails en offertes. Weet wanneer prospects zich met uw inhoud bezighouden.",
+			"ctaLabel": "Verkort uw eerste link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Traceerbare links voor outreach",
+				"description": "Voeg korte links toe aan e-mails, offertes en presentaties. Volg elke klik om te zien welke prospects betrokken zijn.",
+				"bullet1": "Bekijk het aantal klikken voor elke link die u deelt",
+				"bullet2": "Volg de timing en frequentie van betrokkenheid",
+				"bullet3": "Gebruik merkgebonden domeinen voor een professionele uitstraling"
+			},
+			"feature2": {
+				"title": "Merkgebonden links bouwen geloofwaardigheid op",
+				"description": "Gebruik uw bedrijfsdomein voor korte links. Prospects vertrouwen merkgebonden URL's meer dan generieke verkortingsdiensten.",
+				"bullet1": "Koppel uw aangepaste domein",
+				"bullet2": "Professionele uitstraling in e-mails en offertes",
+				"bullet3": "Consistente branding over alle contactpunten"
+			},
+			"feature3": {
+				"title": "Meet outreachprestaties",
+				"description": "Vergelijk klikpercentages over campagnes en kanalen. Begrijp welke berichten en inhoud de meeste betrokkenheid genereren.",
+				"bullet1": "Vergelijk klikken over campagnes en kanalen",
+				"bullet2": "Bekijk geografische en apparaatgegevens",
+				"bullet3": "Identificeer welke inhoud aanslaat bij prospects"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL-verkorter voor andere teams",
+			"subtitle": "Ontdek hoe andere teams korte links gebruiken om hun resultaten te verbeteren.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"qrCodes": {
+				"title": "QR-codegenerator",
+				"description": "Voeg QR-codes toe aan geprinte offertes, brochures en achterlaatstukken. Volg scans naast linkklikken."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Gedetailleerde klikanalyses voor elke link. Bekijk wanneer prospects klikken, vanwaar en op welk apparaat."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kan ik zien wanneer een prospect op mijn link klikt?",
+			"a1": "Ja. Elke korte link registreert klik-tijdstempels. U kunt zien wanneer klikken plaatsvinden en hoe vaak een link in de loop van de tijd wordt geklikt.",
+			"q2": "Kan ik mijn bedrijfsdomein gebruiken?",
+			"a2": "Ja. Koppel uw aangepaste domein in de instellingen. Alle korte links gebruiken uw domein, waardoor ze er merkgebonden en professioneel uitzien.",
+			"q3": "Kan ik de bestemming wijzigen na verzending?",
+			"a3": "Ja. Werk de bestemmings-URL op elk moment bij. Als u een prospect naar bijgewerkte inhoud wilt doorverwijzen, wijzig dan gewoon het doel — de link blijft hetzelfde.",
+			"q4": "Hoe vergelijk ik prestaties over campagnes?",
+			"a4": "Gebruik tags om links te categoriseren per campagne of kanaal. Filter uw dashboard om klikpercentages te vergelijken en te vinden wat het beste werkt.",
+			"q5": "Is er een limiet op links?",
+			"a5": "Gratis accounts hebben een maandelijkse limiet. Pro-accounts ontgrendelen hogere limieten, aangepaste domeinen en geavanceerde analysefuncties.",
+			"q6": "Zijn klikanalyses realtime?",
+			"a6": "Ja. Klikgegevens verschijnen in uw dashboard zodra ze plaatsvinden. Geen vertragingen — u ziet betrokkenheid zodra prospects met uw links interacteren.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Volg elke klik in uw outreach",
+			"subtitle": "Merkgebonden korte links met realtime kliktracking. Weet wanneer prospects betrokken zijn. Begin gratis.",
+			"ctaLabel": "Gratis beginnen"
+		}
+	},
+
+	"urlShortenerEcommerce": {
+		"metaTitle": "URL-verkorter voor e-commerce – Productlinks en kanaaltracking | QRcodly",
+		"metaDescription": "Maak korte links voor productpagina's, volg klikken over verkoopkanalen en beheer seizoenscampagne-URL's met gemak.",
+		"hero": {
+			"title": "Korte links speciaal voor e-commerce",
+			"subtitle": "Nette productlinks voor elk kanaal. Volg klikken, beheer campagnes en houd uw URL's georganiseerd.",
+			"ctaLabel": "Verkort uw eerste link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Korte links voor productpagina's",
+				"description": "Verander lange product-URL's in nette, deelbare links. Ideaal voor sociale berichten, e-mailcampagnes en advertenties.",
+				"bullet1": "Nette URL's voor productpagina's en collecties",
+				"bullet2": "Eenvoudig te delen over alle verkoopkanalen",
+				"bullet3": "Aangepaste domeinbranding voor een professionele uitstraling"
+			},
+			"feature2": {
+				"title": "Volg klikken over kanalen",
+				"description": "Bekijk welke kanalen het meeste verkeer naar uw producten sturen. Vergelijk klikprestaties over e-mail, social media, advertenties en meer.",
+				"bullet1": "Aparte links per kanaal voor duidelijke attributie",
+				"bullet2": "Realtime kliktracking en rapportage",
+				"bullet3": "Geografische en apparaatgegevens"
+			},
+			"feature3": {
+				"title": "Beheer seizoenscampagnes",
+				"description": "Maak korte links voor uitverkopen, lanceringen en seizoenspromoties. Werk bestemmingen bij wanneer campagnes veranderen.",
+				"bullet1": "Verwijs links op elk moment door naar nieuwe promoties",
+				"bullet2": "Hergebruik korte URL's over seizoenen",
+				"bullet3": "Tag en organiseer links per campagne of seizoen"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL-verkorter voor andere teams",
+			"subtitle": "Ontdek hoe andere teams korte links inzetten voor betere resultaten.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"qrCodes": {
+				"title": "QR-codegenerator",
+				"description": "Voeg QR-codes toe aan productverpakkingen, bijsluiters en drukwerk. Koppel klanten aan productpagina's, reviews of ondersteuning."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Diepgaande analyses voor elke productlink. Begrijp welke producten de meeste klikken krijgen en vanuit welke kanalen."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kan ik korte links maken voor individuele producten?",
+			"a1": "Ja. Maak een korte link voor elke productpagina, collectie of landingspagina. Deel ze overal — social media, e-mail, advertenties of print.",
+			"q2": "Hoe volg ik welk kanaal de meeste verkopen genereert?",
+			"a2": "Maak aparte korte links voor elk kanaal. Vergelijk het aantal klikken in uw dashboard om te zien waar uw verkeer vandaan komt.",
+			"q3": "Kan ik het domein van mijn winkel gebruiken?",
+			"a3": "Ja. Koppel uw aangepaste domein om alle korte links te branden met uw winkel-URL. Dit bouwt vertrouwen op bij klanten.",
+			"q4": "Kan ik links hergebruiken voor seizoenspromoties?",
+			"a4": "Ja. Werk de bestemmings-URL van elke korte link op elk moment bij. Hergebruik dezelfde korte URL voor verschillende seizoenscampagnes.",
+			"q5": "Vertragen korte links het laden van pagina's?",
+			"a5": "Nee. Korte links verwijzen direct door (onder 50ms). Klanten merken geen vertraging bij het doorklikken naar uw winkel.",
+			"q6": "Is er een optie voor bulkcreatie?",
+			"a6": "Pro-accounts kunnen links aanmaken via de REST API, waarmee bulkcreatie en automatisering mogelijk is voor grote productcatalogi.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Vereenvoudig uw e-commercelinks",
+			"subtitle": "Nette, traceerbare korte links voor elk product en elke campagne. Gratis om te beginnen.",
+			"ctaLabel": "Gratis beginnen"
+		}
+	},
+
+	"urlShortenerDevelopers": {
+		"metaTitle": "URL-verkorter API voor ontwikkelaars – REST API en aangepaste domeinen | QRcodly",
+		"metaDescription": "Integreer URL-verkorting in uw apps met onze REST API. Maak, beheer en volg korte links programmatisch.",
+		"hero": {
+			"title": "URL-verkorter API voor ontwikkelaars",
+			"subtitle": "Integreer het maken van korte links in uw apps en workflows met onze REST API. Volledige documentatie inbegrepen.",
+			"ctaLabel": "Bekijk API-documentatie"
+		},
+		"features": {
+			"feature1": {
+				"title": "Eenvoudige REST API",
+				"description": "Maak, werk bij en beheer korte links programmatisch. Onze REST API is eenvoudig met duidelijke documentatie en codevoorbeelden.",
+				"bullet1": "RESTful endpoints voor CRUD-operaties",
+				"bullet2": "JSON-verzoek- en antwoordformaat",
+				"bullet3": "Uitgebreide API-documentatie"
+			},
+			"feature2": {
+				"title": "API-sleutelauthenticatie",
+				"description": "Authenticeer met API-sleutels voor server-naar-server-integratie. Genereer en beheer sleutels vanuit uw dashboard.",
+				"bullet1": "Genereer API-sleutels vanuit uw dashboard",
+				"bullet2": "Veilige server-naar-server-authenticatie",
+				"bullet3": "Ingebouwde snelheidslimiet voor eerlijk gebruik"
+			},
+			"feature3": {
+				"title": "Integratie met aangepaste domeinen",
+				"description": "Gebruik uw eigen domein voor via de API gemaakte korte links. Aangepaste domeinbranding voor een naadloze gebruikerservaring.",
+				"bullet1": "Alle via de API gemaakte links gebruiken uw aangepaste domein",
+				"bullet2": "Configureer domeinen via het dashboard of de API",
+				"bullet3": "DNS-installatiehandleidingen opgenomen in documentatie"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL-verkorter voor andere teams",
+			"subtitle": "Ontdek hoe niet-technische teams korte links gebruiken in hun werk.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"qrCodes": {
+				"title": "QR-codegenerator",
+				"description": "Genereer ook QR-codes via de API. Maak dynamische QR-codes programmatisch voor apps, tickets of verpakkingen."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Toegang tot klikanalyses voor via de API gemaakte links. Bekijk prestatiegegevens in het dashboard of haal ze op via de API."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Hoe authenticeer ik met de API?",
+			"a1": "Genereer een API-sleutel in uw dashboardinstellingen. Voeg deze toe als Bearer-token in de Authorization-header van uw verzoeken.",
+			"q2": "Is er een snelheidslimiet?",
+			"a2": "Ja. De API heeft een ingebouwde snelheidslimiet om eerlijk gebruik te garanderen. Limieten variëren per abonnement — Pro-accounts krijgen hogere verzoeklimieten.",
+			"q3": "Kan ik korte links maken met aangepaste domeinen via de API?",
+			"a3": "Ja. Zodra u een aangepast domein heeft geconfigureerd in uw dashboard, gebruiken alle via de API gemaakte links automatisch dat domein.",
+			"q4": "Waar kan ik de API-documentatie vinden?",
+			"a4": "Volledige API-documentatie is beschikbaar op /docs/api. Het behandelt alle endpoints, verzoekformaten, antwoordschema's en codevoorbeelden.",
+			"q5": "Welke programmeertalen worden ondersteund?",
+			"a5": "De API is taalonafhankelijk — elke taal die HTTP-verzoeken kan maken, werkt. Documentatie bevat codevoorbeelden in veelgebruikte talen.",
+			"q6": "Is de API beschikbaar op het gratis abonnement?",
+			"a6": "API-toegang is beschikbaar op Pro-abonnementen. Gratis accounts kunnen het webdashboard gebruiken om korte links te maken en te beheren.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Begin met bouwen met onze API",
+			"subtitle": "REST API voor korte links met volledige documentatie. Integreer URL-verkorting in uw apps vandaag nog.",
+			"ctaLabel": "Bekijk API-documentatie"
+		}
+	},
+
+	"urlShortenerAgencies": {
+		"metaTitle": "URL-verkorter voor bureaus – Klantdomeinen, merkgebonden links en analyses | QRcodly",
+		"metaDescription": "Beheer korte links voor meerdere klanten met aangepaste domeinen, merkgebonden URL's en analyses per link. Gebouwd voor bureaus.",
+		"hero": {
+			"title": "Korte links speciaal voor bureaus",
+			"subtitle": "Beheer merkgebonden links voor al uw klanten. Gebruik aangepaste domeinen, volg prestaties en lever resultaten.",
+			"ctaLabel": "Verkort uw eerste link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Aangepaste domeinen voor elke klant",
+				"description": "Koppel meerdere aangepaste domeinen — één voor elke klant. Elke korte link draagt de branding van de klant.",
+				"bullet1": "Koppel aangepaste domeinen per klant",
+				"bullet2": "Merkgebonden korte URL's voor professionele oplevering",
+				"bullet3": "Eenvoudige DNS-installatie met begeleide instructies"
+			},
+			"feature2": {
+				"title": "Analyses per link",
+				"description": "Volg klikprestaties voor elke link. Bespreek analysegegevens met klanten en toon campagneresultaten.",
+				"bullet1": "Kliktracking voor elke aangemaakte link",
+				"bullet2": "Analyses per link die u met klanten kunt bespreken",
+				"bullet3": "Geografische en apparaatgegevens"
+			},
+			"feature3": {
+				"title": "Georganiseerd linkbeheer",
+				"description": "Tag en organiseer links per klant, campagne of kanaal. Zoek en filter om elke link direct te vinden.",
+				"bullet1": "Tag links per klant of project",
+				"bullet2": "Zoek en filter door alle links",
+				"bullet3": "Houd klantwerk gescheiden en georganiseerd"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL-verkorter voor andere teams",
+			"subtitle": "Ontdek hoe andere teams korte links gebruiken om hun doelen te bereiken.",
+			"learnMore": "Meer informatie"
+		},
+		"crossProducts": {
+			"title": "Ontdek meer tools",
+			"qrCodes": {
+				"title": "QR-codegenerator",
+				"description": "Maak merkgebonden QR-codes voor klantcampagnes. Combineer met korte links voor volledige offline-naar-online tracking."
+			},
+			"analytics": {
+				"title": "Analysedashboard",
+				"description": "Uitgebreide klikanalyses voor alle klantlinks. Filter per klant, campagne of tijdsperiode."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"q1": "Kan ik verschillende domeinen gebruiken voor verschillende klanten?",
+			"a1": "Ja. Koppel meerdere aangepaste domeinen aan uw account. Wijs elke klant een eigen domein toe zodat korte links hun branding dragen.",
+			"q2": "Hoe volg ik prestaties voor een specifieke klant?",
+			"a2": "Gebruik tags om links per klant te organiseren. Filter uw dashboardanalyses om klikgegevens te bekijken voor de links van een specifieke klant.",
+			"q3": "Kan ik analyses delen met klanten?",
+			"a3": "U kunt dashboardanalyses exporteren of screenshotten om met klanten te delen. De prestatiegegevens van elke link zijn beschikbaar in uw dashboard.",
+			"q4": "Kan ik QR-codes ook branden voor klanten?",
+			"a4": "Ja. Maak QR-codes met klantlogo's en merkkleuren. Combineer ze met merkgebonden korte links voor een complete oplossing.",
+			"q5": "Is er een limiet op aangepaste domeinen?",
+			"a5": "Pro-accounts kunnen meerdere aangepaste domeinen koppelen. De exacte limiet hangt af van uw abonnement — bekijk onze prijzenpagina voor details.",
+			"q6": "Kan ik alles beheren vanuit één dashboard?",
+			"a6": "Ja. Alle links, domeinen en analyses van klanten worden beheerd vanuit één dashboard. Gebruik tags en filters om tussen klantweergaven te schakelen.",
+			"viewAll": "Bekijk alle veelgestelde vragen"
+		},
+		"cta": {
+			"title": "Schaal het linkbeheer van uw bureau",
+			"subtitle": "Aangepaste domeinen, merkgebonden links en analyses voor elke klant. Gratis om te beginnen.",
+			"ctaLabel": "Gratis beginnen"
+		}
 	}
 }

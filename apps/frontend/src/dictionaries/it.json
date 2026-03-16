@@ -1983,5 +1983,845 @@
 		"skip": "Salta",
 		"thankYouTitle": "Grazie!",
 		"thankYouMessage": "Il tuo feedback ci aiuta a creare un prodotto migliore."
+	},
+
+	"qrCodesRestaurants": {
+		"metaTitle": "Codici QR per Ristoranti – Menu Digitali, WiFi e Altro | QRcodly",
+		"metaDescription": "Crea codici QR per il tuo ristorante. Offri menu digitali, accesso WiFi semplice e monitora il coinvolgimento — tutto da un'unica piattaforma.",
+		"hero": {
+			"title": "Codici QR Pensati per i Ristoranti",
+			"subtitle": "Offri ai clienti accesso immediato a menu, WiFi e offerte speciali. Aggiorna i contenuti in qualsiasi momento senza ristampare.",
+			"ctaLabel": "Crea il Tuo Codice QR per Ristorante"
+		},
+		"features": {
+			"feature1": {
+				"title": "Menu Digitali Aggiornati Istantaneamente",
+				"description": "Collega un codice QR al tuo menu online. Modifica i prezzi, aggiungi piatti stagionali o aggiorna le offerte speciali — i clienti vedono sempre la versione più recente.",
+				"bullet1": "Aggiorna le voci del menu senza ristampare",
+				"bullet2": "Collega a PDF, pagina web o sistema di ordinazione",
+				"bullet3": "Funziona su qualsiasi smartphone — nessuna app necessaria"
+			},
+			"feature2": {
+				"title": "Accesso WiFi con una Sola Scansione",
+				"description": "Permetti ai clienti di connettersi al WiFi istantaneamente scansionando un codice QR. Niente più richieste di password o digitazione di credenziali lunghe.",
+				"bullet1": "Codifica il nome della rete WiFi e la password",
+				"bullet2": "I clienti si connettono con un solo tocco dopo la scansione",
+				"bullet3": "Posiziona su tavoli, pareti o banconi di accoglienza"
+			},
+			"feature3": {
+				"title": "Monitora il Coinvolgimento dei Clienti",
+				"description": "Scopri quanti clienti scansionano i tuoi codici, quali posizioni funzionano meglio e quando si verificano i picchi di scansione.",
+				"bullet1": "Visualizza il conteggio delle scansioni per codice QR",
+				"bullet2": "Consulta i dati per dispositivo e posizione",
+				"bullet3": "Identifica gli orari e le posizioni più frequentate"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Codici QR per Altri Settori",
+			"subtitle": "Scopri come le aziende di altri settori utilizzano i codici QR per coinvolgere il loro pubblico.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"urlShortener": {
+				"title": "Accorciatore di URL",
+				"description": "Crea link brevi e personalizzati per le ordinazioni online del tuo ristorante, le pagine di prenotazione e i profili social."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Approfondisci i dati di scansione con la nostra suite analitica completa. Comprendi il comportamento dei clienti e ottimizza i posizionamenti."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Posso aggiornare il menu del ristorante senza creare un nuovo codice QR?",
+			"a1": "Sì. Con un codice QR dinamico, puoi modificare l'URL del menu collegato in qualsiasi momento. Il codice QR stampato rimane invariato — i clienti vedono sempre il menu più recente.",
+			"q2": "A quali tipi di contenuto posso collegarmi?",
+			"a2": "Puoi collegarti a qualsiasi URL — un menu PDF, una pagina di ordinazione online, la tua scheda su Google Maps, un sistema di prenotazione o il tuo sito web.",
+			"q3": "Come funzionano i codici QR per il WiFi?",
+			"a3": "I codici QR per il WiFi codificano il nome della rete, la password e il tipo di crittografia. Quando un cliente scansiona, il telefono propone la connessione automatica — senza bisogno di digitare.",
+			"q4": "Posso personalizzare il codice QR con il branding del mio ristorante?",
+			"a4": "Assolutamente. Puoi modificare i colori, aggiungere il logo del tuo ristorante e scegliere tra diversi stili di codice QR per abbinarlo alla tua identità di brand.",
+			"q5": "Come faccio a monitorare quanti clienti scansionano i miei codici QR?",
+			"a5": "Ogni codice QR dinamico traccia automaticamente il conteggio delle scansioni. Puoi visualizzare le scansioni totali, le scansioni nel tempo e le informazioni sul dispositivo nella tua dashboard.",
+			"q6": "C'è un limite al numero di codici QR che posso creare?",
+			"a6": "Gli account gratuiti possono creare codici QR con funzionalità di base. Gli account Pro sbloccano codici QR dinamici, analisi e branding personalizzato con limiti più elevati.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Pronto a Modernizzare il Tuo Ristorante?",
+			"subtitle": "Crea il tuo primo codice QR per ristorante in pochi minuti. Menu digitali, accesso WiFi e analisi — tutto gratis per iniziare.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+
+	"qrCodesRetail": {
+		"metaTitle": "Codici QR per il Retail – Info Prodotto, Promozioni e Tracciamento | QRcodly",
+		"metaDescription": "Utilizza i codici QR nel retail per dettagli sui prodotti, promozioni e coinvolgimento dei clienti. Monitora le scansioni e aggiorna i contenuti in qualsiasi momento.",
+		"hero": {
+			"title": "Codici QR Pensati per il Retail",
+			"subtitle": "Collega i prodotti fisici alle esperienze digitali. Condividi informazioni sui prodotti, lancia promozioni e monitora il coinvolgimento.",
+			"ctaLabel": "Crea il Tuo Codice QR per il Retail"
+		},
+		"features": {
+			"feature1": {
+				"title": "Informazioni sul Prodotto a Colpo d'Occhio",
+				"description": "Aggiungi codici QR al packaging o alle etichette a scaffale. I clienti scansionano per vedere specifiche dettagliate, recensioni, video tutorial o elenchi degli ingredienti.",
+				"bullet1": "Collega a pagine prodotto o landing page",
+				"bullet2": "Condividi guide alle taglie, istruzioni per la cura o tutorial",
+				"bullet3": "Aggiorna i contenuti collegati senza modificare il packaging"
+			},
+			"feature2": {
+				"title": "Lancia Promozioni In-Store",
+				"description": "Stimola il coinvolgimento con codici QR che rimandano a sconti esclusivi, programmi fedeltà o offerte stagionali.",
+				"bullet1": "Collega a pagine coupon o codici sconto",
+				"bullet2": "Promuovi iscrizioni al programma fedeltà o download dell'app",
+				"bullet3": "Modifica le offerte in tempo reale con codici dinamici"
+			},
+			"feature3": {
+				"title": "Misura il Coinvolgimento In-Store",
+				"description": "Monitora quali prodotti ed espositori ottengono il maggior numero di scansioni. Comprendi cosa cattura l'attenzione dei tuoi clienti.",
+				"bullet1": "Visualizza il conteggio scansioni per prodotto o espositore",
+				"bullet2": "Confronta il coinvolgimento tra i diversi punti vendita",
+				"bullet3": "Identifica gli orari di punta dagli acquisti tramite i dati di scansione"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Codici QR per Altri Settori",
+			"subtitle": "Scopri come altri settori sfruttano i codici QR per connettersi con il loro pubblico.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"urlShortener": {
+				"title": "Accorciatore di URL",
+				"description": "Crea link brevi per pagine prodotto, landing page promozionali e sondaggi per i clienti."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Ottieni informazioni dettagliate su pattern di scansione, tipi di dispositivo e metriche di coinvolgimento dei clienti."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Posso aggiungere codici QR al packaging dei prodotti?",
+			"a1": "Sì. Genera un codice QR, scaricalo come PNG o SVG e includilo nel design del packaging. I codici dinamici ti permettono di aggiornare la destinazione dopo la stampa.",
+			"q2": "Come posso usare i codici QR per le promozioni?",
+			"a2": "Collega il tuo codice QR a una pagina coupon, una landing page con sconto o un modulo di iscrizione al programma fedeltà. Con i codici dinamici, puoi cambiare la destinazione per nuove promozioni in qualsiasi momento.",
+			"q3": "Posso monitorare quali prodotti ricevono più scansioni?",
+			"a3": "Sì. Crea un codice QR separato per ogni prodotto o espositore. La tua dashboard mostra il conteggio delle scansioni, i tempi e i dati del dispositivo per ogni codice individualmente.",
+			"q4": "Quali formati di file sono disponibili per il download?",
+			"a4": "Puoi scaricare i codici QR come PNG o SVG. SVG è ideale per i materiali stampati poiché si adatta a qualsiasi dimensione senza perdita di qualità.",
+			"q5": "Posso abbinare il codice QR ai colori del mio brand?",
+			"a5": "Sì. Personalizza i colori, aggiungi il tuo logo e seleziona diversi pattern e stili degli angoli per abbinarlo alla tua identità di brand.",
+			"q6": "I clienti hanno bisogno di un'app per scansionare?",
+			"a6": "No. Gli smartphone moderni scansionano i codici QR direttamente con l'app fotocamera integrata. Non è necessaria nessuna app aggiuntiva.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Migliora la Tua Esperienza Retail",
+			"subtitle": "Collega i prodotti ai contenuti digitali con i codici QR. Facile da creare, semplice da aggiornare, gratis per iniziare.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+
+	"qrCodesEvents": {
+		"metaTitle": "Codici QR per Eventi – Check-in, Programmi e Networking | QRcodly",
+		"metaDescription": "Semplifica gli eventi con codici QR per check-in, programmi e coinvolgimento dei partecipanti. Crea e monitora facilmente i codici QR per eventi.",
+		"hero": {
+			"title": "Codici QR Pensati per gli Eventi",
+			"subtitle": "Semplifica il check-in, condividi i programmi e metti in contatto i partecipanti. Una sola scansione fa tutto.",
+			"ctaLabel": "Crea il Tuo Codice QR per Eventi"
+		},
+		"features": {
+			"feature1": {
+				"title": "Check-In più Rapido per i Partecipanti",
+				"description": "Invia codici QR personalizzati ai partecipanti. Lo staff li scansiona all'ingresso per un check-in rapido e contactless.",
+				"bullet1": "Genera codici unici per partecipante o biglietto",
+				"bullet2": "Velocizza le code di ingresso per qualsiasi dimensione della sede",
+				"bullet3": "Funziona con qualsiasi smartphone o scanner tablet"
+			},
+			"feature2": {
+				"title": "Programmi e Aggiornamenti in Tempo Reale",
+				"description": "Collega i codici QR al programma dell'evento. Aggiorna gli orari delle sessioni, i cambi di sala o le informazioni sugli speaker — i partecipanti hanno sempre i dati più recenti.",
+				"bullet1": "Collega a un programma o agenda live",
+				"bullet2": "Pubblica modifiche dell'ultimo minuto senza ristampare",
+				"bullet3": "Posiziona su badge, segnaletica o programmi stampati"
+			},
+			"feature3": {
+				"title": "Networking tra Partecipanti Semplificato",
+				"description": "Permetti ai partecipanti di condividere i contatti scansionando i codici QR vCard sui loro badge. Niente più biglietti da visita.",
+				"bullet1": "Crea codici QR vCard con le informazioni di contatto",
+				"bullet2": "I partecipanti salvano i contatti direttamente sul telefono",
+				"bullet3": "Ideale per conferenze, fiere e meetup"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Codici QR per Altri Settori",
+			"subtitle": "Esplora come altri settori utilizzano i codici QR per coinvolgere il loro pubblico.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"urlShortener": {
+				"title": "Accorciatore di URL",
+				"description": "Crea link brevi per le pagine di registrazione all'evento, i moduli di feedback e i sondaggi post-evento."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Monitora l'attività di scansione durante il tuo evento. Scopri quali sessioni, stand o materiali ottengono il maggior coinvolgimento."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Posso creare codici QR unici per ogni partecipante?",
+			"a1": "Sì. Puoi generare codici QR individuali che rimandano a pagine di check-in personalizzate, biglietti o schede contatto per ogni partecipante.",
+			"q2": "Come uso i codici QR per i programmi degli eventi?",
+			"a2": "Crea un codice QR dinamico collegato alla pagina del programma. Quando il programma cambia, aggiorna il link — il codice QR stampato rimane invariato.",
+			"q3": "Cos'è un codice QR vCard?",
+			"a3": "Un codice QR vCard contiene informazioni di contatto (nome, email, telefono, azienda). Quando scansionato, il telefono propone di salvare il contatto direttamente nella rubrica.",
+			"q4": "Posso monitorare quante persone hanno scansionato al mio evento?",
+			"a4": "Sì. I codici QR dinamici tracciano ogni scansione. Puoi vedere le scansioni totali, le scansioni per codice e quando l'attività di scansione ha raggiunto il picco durante l'evento.",
+			"q5": "Dove dovrei posizionare i codici QR durante gli eventi?",
+			"a5": "I posizionamenti più comuni includono badge dei partecipanti, desk di registrazione, segnaletica delle sessioni, espositori degli stand e programmi o volantini stampati.",
+			"q6": "I partecipanti hanno bisogno di un'app speciale?",
+			"a6": "No. Tutti gli smartphone moderni possono scansionare i codici QR con la fotocamera integrata. Non è necessaria nessuna app aggiuntiva.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Rendi il Tuo Prossimo Evento Impeccabile",
+			"subtitle": "Codici QR per check-in, programmi e networking. Creali in pochi minuti — gratis per iniziare.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+
+	"qrCodesRealEstate": {
+		"metaTitle": "Codici QR per l'Immobiliare – Annunci, Tour Virtuali e Altro | QRcodly",
+		"metaDescription": "Utilizza i codici QR nel settore immobiliare per annunci, tour virtuali e iscrizioni agli open house. Monitora facilmente il coinvolgimento degli acquirenti.",
+		"hero": {
+			"title": "Codici QR Pensati per l'Immobiliare",
+			"subtitle": "Offri agli acquirenti accesso immediato ai dettagli dell'immobile, tour virtuali e informazioni di contatto — direttamente dal cartello.",
+			"ctaLabel": "Crea il Tuo Codice QR Immobiliare"
+		},
+		"features": {
+			"feature1": {
+				"title": "Dettagli dell'Immobile su Ogni Cartello",
+				"description": "Aggiungi un codice QR ai tuoi cartelli, volantini o brochure. Gli acquirenti scansionano per vedere l'annuncio completo, le foto e i dettagli principali.",
+				"bullet1": "Collega alla pagina dell'annuncio o al sito web dell'immobile",
+				"bullet2": "Includi foto, planimetrie e prezzi",
+				"bullet3": "Aggiorna i dettagli dell'annuncio senza ristampare i cartelli"
+			},
+			"feature2": {
+				"title": "Tour Virtuali con una Sola Scansione",
+				"description": "Collega i codici QR a video di tour virtuali o walkthrough 3D. Permetti agli acquirenti di esplorare gli immobili da qualsiasi luogo.",
+				"bullet1": "Collega a Matterport, YouTube o qualsiasi piattaforma di tour",
+				"bullet2": "Posiziona su annunci stampati, mailing e schede open house",
+				"bullet3": "Cambia i link dei tour quando cambiano gli immobili"
+			},
+			"feature3": {
+				"title": "Monitora l'Interesse degli Acquirenti",
+				"description": "Scopri quante persone scansionano il codice QR di ogni immobile. Comprendi quali annunci attirano la maggiore attenzione.",
+				"bullet1": "Visualizza il conteggio scansioni per annuncio",
+				"bullet2": "Scopri quando e dove avvengono le scansioni",
+				"bullet3": "Confronta l'interesse tra i diversi immobili"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Codici QR per Altri Settori",
+			"subtitle": "Scopri come altri settori utilizzano i codici QR per connettersi con il loro pubblico.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"urlShortener": {
+				"title": "Accorciatore di URL",
+				"description": "Crea link brevi e puliti per annunci immobiliari, iscrizioni agli open house e pagine di contatto dell'agente."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Ottieni informazioni dettagliate sul coinvolgimento degli acquirenti, le posizioni di scansione e i dati per dispositivo per ogni immobile."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Posso aggiornare l'annuncio senza cambiare il codice QR sul cartello?",
+			"a1": "Sì. I codici QR dinamici ti permettono di cambiare l'URL di destinazione in qualsiasi momento. Aggiorna l'annuncio, cambia il link — il codice stampato rimane invariato.",
+			"q2": "A cosa dovrei collegarmi da un codice QR immobiliare?",
+			"a2": "Le destinazioni più comuni includono la pagina dell'annuncio, un tour virtuale, un sito web dell'immobile, una pagina per prenotare le visite o la scheda contatto dell'agente.",
+			"q3": "Posso aggiungere il logo della mia agenzia al codice QR?",
+			"a3": "Sì. Carica il tuo logo e personalizza i colori per abbinarlo al branding della tua agenzia. Il codice QR rimane scansionabile con il tuo logo al centro.",
+			"q4": "Come faccio a monitorare quali immobili suscitano più interesse?",
+			"a4": "Crea un codice QR separato per ogni annuncio. La tua dashboard mostra il conteggio delle scansioni, i tempi e i dati sulla posizione per ogni codice.",
+			"q5": "Posso usare i codici QR su materiale stampato inviato per posta?",
+			"a5": "Assolutamente. Scarica il tuo codice QR come SVG per la stampa in alta risoluzione. Funziona perfettamente su cartoline, volantini, brochure e appendini per le porte.",
+			"q6": "È gratis creare codici QR per l'immobiliare?",
+			"a6": "Sì. Puoi creare codici QR gratuitamente. Gli account Pro aggiungono codici dinamici, analisi e branding personalizzato per un uso più professionale.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Dai a Ogni Annuncio un Vantaggio Digitale",
+			"subtitle": "Codici QR che collegano gli acquirenti ai dettagli dell'immobile, ai tour e alle tue informazioni di contatto. Gratis per iniziare.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+
+	"qrCodesEducation": {
+		"metaTitle": "Codici QR per l'Istruzione – Risorse Didattiche, Compiti e Altro | QRcodly",
+		"metaDescription": "Utilizza i codici QR nell'istruzione per condividere risorse, compiti e materiali didattici. Coinvolgi gli studenti con una semplice scansione.",
+		"hero": {
+			"title": "Codici QR Pensati per l'Istruzione",
+			"subtitle": "Collega gli studenti a risorse, compiti e contenuti interattivi con una semplice scansione.",
+			"ctaLabel": "Crea il Tuo Codice QR per l'Istruzione"
+		},
+		"features": {
+			"feature1": {
+				"title": "Accesso Immediato ai Materiali Didattici",
+				"description": "Posiziona codici QR su schede di lavoro, poster o libri di testo. Gli studenti scansionano per accedere a video, articoli o esercizi interattivi.",
+				"bullet1": "Collega a video educativi, PDF o siti web",
+				"bullet2": "Posiziona su schede di lavoro stampate o poster in aula",
+				"bullet3": "Aggiorna le risorse senza ristampare i materiali"
+			},
+			"feature2": {
+				"title": "Semplifica la Distribuzione dei Compiti",
+				"description": "Condividi compiti, liste di lettura e guide allo studio tramite codici QR. Gli studenti scansionano e accedono — senza digitare URL lunghi.",
+				"bullet1": "Collega a Google Docs, pagine LMS o drive condivisi",
+				"bullet2": "Gli studenti accedono ai materiali da qualsiasi dispositivo",
+				"bullet3": "Modifica i link quando i compiti vengono aggiornati"
+			},
+			"feature3": {
+				"title": "Aumenta il Coinvolgimento degli Studenti",
+				"description": "Rendi l'apprendimento interattivo con codici QR che rimandano a quiz, sondaggi o contenuti di realtà aumentata.",
+				"bullet1": "Collega a Kahoot, Google Forms o piattaforme di quiz",
+				"bullet2": "Monitora quali risorse gli studenti accedono di più",
+				"bullet3": "Crea cacce al tesoro e lezioni interattive"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Codici QR per Altri Settori",
+			"subtitle": "Scopri come altri settori utilizzano i codici QR per connettersi con il loro pubblico.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"urlShortener": {
+				"title": "Accorciatore di URL",
+				"description": "Crea link brevi e facili da digitare per gli studenti che preferiscono scrivere gli URL invece di scansionare."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Scopri quali risorse didattiche ottengono il maggior coinvolgimento e comprendi i pattern di accesso degli studenti."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Gli studenti possono scansionare i codici QR con i loro telefoni?",
+			"a1": "Sì. Tutti gli smartphone moderni possono scansionare i codici QR con l'app fotocamera integrata. Non è necessaria nessuna app aggiuntiva.",
+			"q2": "Posso aggiornare il collegamento di un codice QR dopo la stampa?",
+			"a2": "Sì. I codici QR dinamici ti permettono di cambiare la destinazione in qualsiasi momento. Perfetto per aggiornare i compiti o sostituire le risorse tra i semestri.",
+			"q3": "I codici QR sono gratuiti per gli insegnanti?",
+			"a3": "Sì. Puoi creare codici QR gratuitamente con QRcodly. Gli account Pro aggiungono codici dinamici e analisi per un uso didattico più avanzato.",
+			"q4": "Come posso usare i codici QR in aula?",
+			"a4": "Gli usi più comuni includono il collegamento a video da schede di lavoro, la condivisione dell'accesso WiFi, la distribuzione dei compiti, la creazione di cacce al tesoro interattive e la raccolta di feedback tramite moduli.",
+			"q5": "Posso monitorare quali studenti accedono a una risorsa?",
+			"a5": "Le analisi dei codici QR mostrano il conteggio totale delle scansioni, i tempi e i dati del dispositivo. Il tracciamento dei singoli utenti non è disponibile — le scansioni sono anonime.",
+			"q6": "Quali formati di file posso scaricare?",
+			"a6": "I codici QR sono disponibili come PNG e SVG. SVG è ideale per la stampa su schede di lavoro e poster poiché si adatta senza perdita di qualità.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Porta i Codici QR nella Tua Classe",
+			"subtitle": "Condividi risorse, compiti e contenuti interattivi con una semplice scansione. Gratis per gli educatori.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+
+	"qrCodesMarketing": {
+		"metaTitle": "Codici QR per il Marketing – Campagne Stampate, A/B Testing e Branding | QRcodly",
+		"metaDescription": "Collega il marketing cartaceo a quello digitale con i codici QR. Monitora le prestazioni delle campagne, personalizza i design e aggiorna le destinazioni in qualsiasi momento.",
+		"hero": {
+			"title": "Codici QR Pensati per il Marketing",
+			"subtitle": "Collega i materiali stampati alle campagne digitali. Monitora le prestazioni, personalizza i design e aggiorna i contenuti in tempo reale.",
+			"ctaLabel": "Crea il Tuo Codice QR per il Marketing"
+		},
+		"features": {
+			"feature1": {
+				"title": "Collega Stampa e Digitale",
+				"description": "Aggiungi codici QR a volantini, poster, biglietti da visita e packaging. Ogni scansione è un punto di contatto misurabile nella tua campagna.",
+				"bullet1": "Collega i materiali stampati a qualsiasi landing page",
+				"bullet2": "Monitora i tassi di scansione su cartelloni, mailing e annunci",
+				"bullet3": "Misura il ROI delle campagne stampate con dati reali"
+			},
+			"feature2": {
+				"title": "Testa e Ottimizza le Campagne",
+				"description": "Crea più codici QR per diversi posizionamenti o design. Confronta i tassi di scansione per trovare ciò che funziona meglio.",
+				"bullet1": "Crea codici separati per ogni posizionamento",
+				"bullet2": "Confronta le prestazioni tra i diversi canali",
+				"bullet3": "Cambia le destinazioni per testare diverse landing page"
+			},
+			"feature3": {
+				"title": "Codici QR in Linea con il Brand",
+				"description": "Personalizza ogni aspetto del tuo codice QR. Abbina i colori del tuo brand, aggiungi il logo e scegli tra diversi stili.",
+				"bullet1": "Personalizzazione completa dei colori per primo piano e sfondo",
+				"bullet2": "Aggiungi il logo della tua azienda al centro",
+				"bullet3": "Scegli tra diversi pattern e stili degli angoli"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Codici QR per Altri Settori",
+			"subtitle": "Scopri come altri settori utilizzano i codici QR per coinvolgere il loro pubblico.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"urlShortener": {
+				"title": "Accorciatore di URL",
+				"description": "Crea link brevi personalizzati per le campagne. Abbinali ai codici QR per una strategia completa di tracciamento offline-online."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Approfondisci le analisi delle campagne. Visualizza le scansioni per posizione, dispositivo, orario e altro per ottimizzare il tuo marketing."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Posso monitorare quante persone scansionano i miei codici QR di marketing?",
+			"a1": "Sì. I codici QR dinamici tracciano ogni scansione. Puoi visualizzare le scansioni totali, le scansioni nel tempo, i tipi di dispositivo e i dati sulla posizione nella tua dashboard.",
+			"q2": "Posso cambiare la destinazione del codice QR dopo la stampa?",
+			"a2": "Sì. I codici QR dinamici ti permettono di aggiornare l'URL di destinazione in qualsiasi momento. Cambia landing page, reindirizza verso nuove campagne o correggi link non funzionanti — tutto senza ristampare.",
+			"q3": "Come aggiungo il logo del mio brand a un codice QR?",
+			"a3": "Carica il tuo logo nell'editor del codice QR. Verrà posizionato al centro del codice. Puoi anche personalizzare colori e pattern per rispettare le linee guida del tuo brand.",
+			"q4": "Qual è il formato migliore per i materiali stampati?",
+			"a4": "Scarica come SVG per la migliore qualità di stampa. I file SVG si adattano a qualsiasi dimensione — dai biglietti da visita ai cartelloni pubblicitari — senza perdere nitidezza.",
+			"q5": "Posso creare codici QR per più campagne contemporaneamente?",
+			"a5": "Sì. Crea tutti i codici QR di cui hai bisogno, ciascuno con la propria destinazione e il proprio tracciamento. Organizzali nella tua dashboard per una gestione semplice.",
+			"q6": "Come misuro il ROI delle campagne stampate?",
+			"a6": "Usa codici QR separati per ogni posizionamento o campagna. Confronta i conteggi e i tempi delle scansioni per vedere quali materiali generano il maggior coinvolgimento.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Rendi Ogni Materiale Stampato Misurabile",
+			"subtitle": "Aggiungi codici QR ai tuoi materiali di marketing e monitora ogni scansione. Inizia gratis.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+
+	"urlShortenerMarketingTeams": {
+		"metaTitle": "Accorciatore di URL per Team di Marketing – Link Personalizzati e Tracciamento Campagne | QRcodly",
+		"metaDescription": "Accorcia e personalizza i tuoi link di marketing. Monitora i clic, gestisci le campagne e usa domini personalizzati — tutto in un'unica piattaforma.",
+		"hero": {
+			"title": "Link Brevi Pensati per i Team di Marketing",
+			"subtitle": "Crea link personalizzati che ispirano fiducia, monitora i clic tra le campagne e gestisci tutti i tuoi URL in un unico posto.",
+			"ctaLabel": "Accorcia il Tuo Primo Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Link Personalizzati che Ispirano Fiducia",
+				"description": "Usa il tuo dominio personalizzato per i link brevi. Gli URL personalizzati ottengono più clic e rafforzano l'identità del tuo brand in ogni canale.",
+				"bullet1": "Collega il tuo dominio per URL brevi personalizzati",
+				"bullet2": "I link personalizzati aumentano i tassi di clic",
+				"bullet3": "Branding coerente su email, social e annunci"
+			},
+			"feature2": {
+				"title": "Tracciamento Clic delle Campagne",
+				"description": "Scopri come i tuoi link performano nei vari canali. Monitora clic, dati geografici e tipi di dispositivo per ogni link breve.",
+				"bullet1": "Tracciamento clic in tempo reale per ogni link",
+				"bullet2": "Filtra le analisi per intervallo di date",
+				"bullet3": "Visualizza i dati geografici e per dispositivo"
+			},
+			"feature3": {
+				"title": "Organizza i Link per Campagna",
+				"description": "Tagga e categorizza i tuoi link brevi per campagna, canale o team. Trova qualsiasi link istantaneamente con ricerca e filtri.",
+				"bullet1": "Aggiungi tag per organizzare i link per progetto",
+				"bullet2": "Cerca e filtra tra tutti i tuoi link",
+				"bullet3": "Mantieni la tua libreria di link pulita e organizzata"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Accorciatore di URL per Altri Team",
+			"subtitle": "Scopri come altri team utilizzano i link brevi per lavorare in modo più efficace.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"qrCodes": {
+				"title": "Generatore di Codici QR",
+				"description": "Abbina i link brevi ai codici QR per le campagne stampate. Monitora scansioni e clic da un'unica dashboard."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Approfondisci le prestazioni dei link con analisi dettagliate sui clic, dati sui referrer e informazioni geografiche."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Posso usare il mio dominio per i link brevi?",
+			"a1": "Sì. Collega il tuo dominio personalizzato nelle impostazioni. Tutti i nuovi link brevi utilizzeranno il tuo dominio, conferendo un aspetto professionale e personalizzato.",
+			"q2": "Come monitoro le prestazioni delle campagne?",
+			"a2": "Ogni link breve traccia automaticamente i clic. Visualizza il conteggio dei clic, i dati geografici, i tipi di dispositivo e le informazioni sui referrer nella tua dashboard.",
+			"q3": "Posso organizzare i link per campagna?",
+			"a3": "Sì. Usa i tag per categorizzare i link per campagna, canale o qualsiasi sistema tu preferisca. Filtra e cerca per trovare qualsiasi link rapidamente.",
+			"q4": "Posso cambiare la destinazione di un link breve?",
+			"a4": "Sì. Puoi aggiornare l'URL di destinazione di qualsiasi link breve in qualsiasi momento. L'URL breve rimane invariato — cambia solo la destinazione.",
+			"q5": "C'è un limite al numero di link che posso creare?",
+			"a5": "Gli account gratuiti hanno un limite mensile di link. Gli account Pro sbloccano limiti più elevati e funzionalità aggiuntive come domini personalizzati e analisi avanzate.",
+			"q6": "Posso vedere quali canali generano più clic?",
+			"a6": "Sì. Crea link brevi separati per ogni canale (email, social, annunci) e confronta le prestazioni dei clic nella tua dashboard.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Potenzia i Tuoi Link di Marketing",
+			"subtitle": "Link brevi personalizzati con tracciamento clic e organizzazione delle campagne. Gratis per iniziare.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+
+	"urlShortenerSocialMedia": {
+		"metaTitle": "Accorciatore di URL per i Social Media – Link Puliti e Tracciamento Clic | QRcodly",
+		"metaDescription": "Crea link brevi e puliti per i post sui social media. Monitora i clic e scopri quali contenuti generano il maggior coinvolgimento.",
+		"hero": {
+			"title": "Link Brevi Pensati per i Social Media",
+			"subtitle": "Link puliti e personalizzati che stanno benissimo nei post e nelle storie. Monitora i clic per scoprire quali contenuti funzionano.",
+			"ctaLabel": "Accorcia il Tuo Primo Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Link Puliti per Ogni Post",
+				"description": "Sostituisci URL lunghi e poco eleganti con link brevi e personalizzati. Appaiono meglio nei post, nelle bio e nelle storie — e sono più facili da condividere.",
+				"bullet1": "I link brevi appaiono più puliti nei post social",
+				"bullet2": "I domini personalizzati creano fiducia nei follower",
+				"bullet3": "Funziona su ogni piattaforma social"
+			},
+			"feature2": {
+				"title": "Monitora il Coinvolgimento Social",
+				"description": "Scopri quanti clic ottiene ogni link. Confronta le prestazioni tra piattaforme e post per capire cosa interessa al tuo pubblico.",
+				"bullet1": "Tracciamento clic in tempo reale per ogni link",
+				"bullet2": "Scopri quali piattaforme generano più traffico",
+				"bullet3": "Comprendi il tuo pubblico con i dati sui dispositivi"
+			},
+			"feature3": {
+				"title": "Link Dinamici che Puoi Aggiornare",
+				"description": "Cambia la destinazione del tuo link — anche dopo la pubblicazione. Reindirizza i follower verso nuovi contenuti senza modificare il post.",
+				"bullet1": "Aggiorna gli URL di destinazione dopo la pubblicazione",
+				"bullet2": "Reindirizza campagne stagionali o a tempo limitato",
+				"bullet3": "Correggi link non funzionanti senza ripubblicare"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Accorciatore di URL per Altri Team",
+			"subtitle": "Scopri come altri team utilizzano i link brevi per migliorare il loro flusso di lavoro.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"qrCodes": {
+				"title": "Generatore di Codici QR",
+				"description": "Crea codici QR per i tuoi profili social o le landing page delle campagne. Ideale per la promozione incrociata tra stampa e digitale."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Ottieni analisi dettagliate sui clic per tutti i tuoi link social. Visualizza dati sui referrer, posizioni e dispositivi."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Posso usare link brevi su tutte le piattaforme social?",
+			"a1": "Sì. I link brevi funzionano su qualsiasi piattaforma — Instagram, Twitter/X, LinkedIn, Facebook, TikTok e altre. Funzionano nei post, nelle bio, nelle storie e nei commenti.",
+			"q2": "Come monitoro quali post ottengono più clic?",
+			"a2": "Crea un link breve unico per ogni post. Confronta i conteggi dei clic nella tua dashboard per scoprire quali contenuti generano il maggior coinvolgimento.",
+			"q3": "Posso personalizzare i miei link brevi con un dominio personalizzato?",
+			"a3": "Sì. Collega il tuo dominio personalizzato per utilizzare URL brevi personalizzati. Questo crea fiducia e rende i tuoi link più professionali.",
+			"q4": "Posso cambiare la destinazione di un link dopo la pubblicazione?",
+			"a4": "Sì. Puoi aggiornare l'URL di destinazione in qualsiasi momento. Il link breve rimane invariato — i follower vengono reindirizzati alla nuova destinazione.",
+			"q5": "I link brevi influenzano la SEO?",
+			"a5": "I link brevi utilizzano redirect 301, che trasferiscono il valore SEO all'URL di destinazione. Non influenzano negativamente il posizionamento nei motori di ricerca.",
+			"q6": "Esiste un piano gratuito?",
+			"a6": "Sì. Puoi creare link brevi gratuitamente con tracciamento clic di base. Gli account Pro aggiungono domini personalizzati, limiti più elevati e analisi avanzate.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Migliora i Tuoi Link Social",
+			"subtitle": "Link brevi e personalizzati con tracciamento clic per tutti i tuoi contenuti social. Inizia gratis.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+
+	"urlShortenerSales": {
+		"metaTitle": "Accorciatore di URL per Team di Vendita – Link Tracciabili per l'Outreach | QRcodly",
+		"metaDescription": "Crea link brevi tracciabili per l'outreach commerciale. Scopri quando i prospect cliccano e misura il coinvolgimento tra le campagne.",
+		"hero": {
+			"title": "Link Brevi Pensati per i Team di Vendita",
+			"subtitle": "Invia link tracciabili nelle email e nelle proposte commerciali. Scopri quando i prospect interagiscono con i tuoi contenuti.",
+			"ctaLabel": "Accorcia il Tuo Primo Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Link Tracciabili per l'Outreach",
+				"description": "Aggiungi link brevi a email, proposte e presentazioni. Monitora ogni clic per scoprire quali prospect sono coinvolti.",
+				"bullet1": "Visualizza il conteggio clic per ogni link condiviso",
+				"bullet2": "Monitora i tempi e la frequenza del coinvolgimento",
+				"bullet3": "Usa domini personalizzati per un aspetto professionale"
+			},
+			"feature2": {
+				"title": "Link Personalizzati che Creano Credibilità",
+				"description": "Usa il dominio della tua azienda per i link brevi. I prospect si fidano di più degli URL personalizzati rispetto agli accorciatori generici.",
+				"bullet1": "Collega il tuo dominio personalizzato",
+				"bullet2": "Aspetto professionale in email e proposte",
+				"bullet3": "Branding coerente su tutti i touchpoint"
+			},
+			"feature3": {
+				"title": "Misura le Prestazioni dell'Outreach",
+				"description": "Confronta i tassi di clic tra campagne e canali. Comprendi quali messaggi e contenuti generano il maggior coinvolgimento.",
+				"bullet1": "Confronta i clic tra campagne e canali",
+				"bullet2": "Visualizza i dati geografici e per dispositivo",
+				"bullet3": "Identifica quali contenuti coinvolgono i prospect"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Accorciatore di URL per Altri Team",
+			"subtitle": "Scopri come altri team utilizzano i link brevi per migliorare i loro risultati.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"qrCodes": {
+				"title": "Generatore di Codici QR",
+				"description": "Aggiungi codici QR a proposte stampate, brochure e materiali promozionali. Monitora le scansioni insieme ai clic sui link."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Analisi dettagliate dei clic per ogni link. Scopri quando i prospect cliccano, da dove e su quale dispositivo."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Posso vedere quando un prospect clicca sul mio link?",
+			"a1": "Sì. Ogni link breve traccia i timestamp dei clic. Puoi vedere quando avvengono i clic e con quale frequenza un link viene cliccato nel tempo.",
+			"q2": "Posso usare il dominio della mia azienda?",
+			"a2": "Sì. Collega il tuo dominio personalizzato nelle impostazioni. Tutti i link brevi utilizzeranno il tuo dominio, conferendo un aspetto personalizzato e professionale.",
+			"q3": "Posso cambiare la destinazione dopo l'invio?",
+			"a3": "Sì. Aggiorna l'URL di destinazione in qualsiasi momento. Se devi reindirizzare un prospect verso contenuti aggiornati, cambia semplicemente la destinazione — il link rimane invariato.",
+			"q4": "Come confronto le prestazioni tra le campagne?",
+			"a4": "Usa i tag per categorizzare i link per campagna o canale. Filtra la tua dashboard per confrontare i tassi di clic e trovare ciò che funziona meglio.",
+			"q5": "C'è un limite ai link?",
+			"a5": "Gli account gratuiti hanno un limite mensile. Gli account Pro sbloccano limiti più elevati, domini personalizzati e funzionalità di analisi avanzate.",
+			"q6": "Le analisi dei clic sono in tempo reale?",
+			"a6": "Sì. I dati sui clic appaiono nella tua dashboard in tempo reale. Nessun ritardo — vedi il coinvolgimento nel momento in cui i prospect interagiscono con i tuoi link.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Monitora Ogni Clic nel Tuo Outreach",
+			"subtitle": "Link brevi personalizzati con tracciamento clic in tempo reale. Scopri quando i prospect interagiscono. Inizia gratis.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+
+	"urlShortenerEcommerce": {
+		"metaTitle": "Accorciatore di URL per l'E-Commerce – Link Prodotto e Tracciamento Canali | QRcodly",
+		"metaDescription": "Crea link brevi per le pagine prodotto, monitora i clic attraverso i canali di vendita e gestisci facilmente gli URL delle campagne stagionali.",
+		"hero": {
+			"title": "Link Brevi Pensati per l'E-Commerce",
+			"subtitle": "Link prodotto puliti per ogni canale. Monitora i clic, gestisci le campagne e mantieni i tuoi URL organizzati.",
+			"ctaLabel": "Accorcia il Tuo Primo Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Link Brevi per le Pagine Prodotto",
+				"description": "Trasforma URL prodotto lunghi in link puliti e condivisibili. Perfetti per post social, campagne email e annunci.",
+				"bullet1": "URL puliti per pagine prodotto e collezioni",
+				"bullet2": "Facili da condividere su tutti i canali di vendita",
+				"bullet3": "Branding con dominio personalizzato per un aspetto professionale"
+			},
+			"feature2": {
+				"title": "Monitora i Clic tra i Canali",
+				"description": "Scopri quali canali portano più traffico ai tuoi prodotti. Confronta le prestazioni dei clic tra email, social, annunci e altro.",
+				"bullet1": "Link separati per canale per un'attribuzione chiara",
+				"bullet2": "Tracciamento e reportistica clic in tempo reale",
+				"bullet3": "Dati geografici e per dispositivo"
+			},
+			"feature3": {
+				"title": "Gestisci le Campagne Stagionali",
+				"description": "Crea link brevi per saldi, lanci e promozioni stagionali. Aggiorna le destinazioni quando le campagne cambiano.",
+				"bullet1": "Reindirizza i link verso nuove promozioni in qualsiasi momento",
+				"bullet2": "Riutilizza gli URL brevi tra le diverse stagioni",
+				"bullet3": "Tagga e organizza i link per campagna o stagione"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Accorciatore di URL per Altri Team",
+			"subtitle": "Scopri come altri team sfruttano i link brevi per risultati migliori.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"qrCodes": {
+				"title": "Generatore di Codici QR",
+				"description": "Aggiungi codici QR al packaging dei prodotti, agli inserti e ai materiali stampati. Collega i clienti a pagine prodotto, recensioni o assistenza."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Analisi approfondite per ogni link prodotto. Comprendi quali prodotti ricevono più clic e da quali canali."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Posso creare link brevi per singoli prodotti?",
+			"a1": "Sì. Crea un link breve per ogni pagina prodotto, collezione o landing page. Condividili ovunque — social, email, annunci o stampa.",
+			"q2": "Come monitoro quale canale genera più vendite?",
+			"a2": "Crea link brevi separati per ogni canale. Confronta i conteggi dei clic nella tua dashboard per scoprire da dove proviene il tuo traffico.",
+			"q3": "Posso usare il dominio del mio negozio?",
+			"a3": "Sì. Collega il tuo dominio personalizzato per personalizzare tutti i link brevi con l'URL del tuo negozio. Questo crea fiducia nei clienti.",
+			"q4": "Posso riutilizzare i link per le promozioni stagionali?",
+			"a4": "Sì. Aggiorna l'URL di destinazione di qualsiasi link breve in qualsiasi momento. Riutilizza lo stesso URL breve per diverse campagne stagionali.",
+			"q5": "I link brevi rallentano il caricamento della pagina?",
+			"a5": "No. I link brevi reindirizzano istantaneamente (meno di 50ms). I clienti non noteranno alcun ritardo quando cliccano per accedere al tuo negozio.",
+			"q6": "Esiste un'opzione di creazione in blocco?",
+			"a6": "Gli account Pro possono creare link tramite REST API, che consente la creazione in blocco e l'automazione per cataloghi prodotto di grandi dimensioni.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Semplifica i Link del Tuo E-Commerce",
+			"subtitle": "Link brevi puliti e tracciabili per ogni prodotto e campagna. Gratis per iniziare.",
+			"ctaLabel": "Inizia Gratis"
+		}
+	},
+
+	"urlShortenerDevelopers": {
+		"metaTitle": "API Accorciatore di URL per Sviluppatori – REST API e Domini Personalizzati | QRcodly",
+		"metaDescription": "Integra l'accorciamento degli URL nelle tue app con la nostra REST API. Crea, gestisci e monitora i link brevi in modo programmatico.",
+		"hero": {
+			"title": "API Accorciatore di URL per Sviluppatori",
+			"subtitle": "Integra la creazione di link brevi nelle tue app e nei tuoi flussi di lavoro con la nostra REST API. Documentazione completa inclusa.",
+			"ctaLabel": "Consulta la Documentazione API"
+		},
+		"features": {
+			"feature1": {
+				"title": "REST API Semplice",
+				"description": "Crea, aggiorna e gestisci link brevi in modo programmatico. La nostra REST API è intuitiva con documentazione chiara ed esempi di codice.",
+				"bullet1": "Endpoint RESTful per operazioni CRUD",
+				"bullet2": "Formato richiesta e risposta JSON",
+				"bullet3": "Documentazione API completa"
+			},
+			"feature2": {
+				"title": "Autenticazione con API Key",
+				"description": "Autenticati con API key per l'integrazione server-to-server. Genera e gestisci le chiavi dalla tua dashboard.",
+				"bullet1": "Genera API key dalla tua dashboard",
+				"bullet2": "Autenticazione server-to-server sicura",
+				"bullet3": "Rate limiting integrato per un utilizzo equo"
+			},
+			"feature3": {
+				"title": "Integrazione con Domini Personalizzati",
+				"description": "Usa il tuo dominio per i link brevi creati tramite API. Branding con dominio personalizzato per un'esperienza utente fluida.",
+				"bullet1": "Tutti i link creati tramite API usano il tuo dominio personalizzato",
+				"bullet2": "Configura i domini tramite dashboard o API",
+				"bullet3": "Guide alla configurazione DNS incluse nella documentazione"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Accorciatore di URL per Altri Team",
+			"subtitle": "Scopri come i team non tecnici utilizzano i link brevi nel loro lavoro.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"qrCodes": {
+				"title": "Generatore di Codici QR",
+				"description": "Genera codici QR anche tramite API. Crea codici QR dinamici in modo programmatico per app, biglietti o packaging."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Accedi alle analisi dei clic per i link creati tramite API. Visualizza i dati sulle prestazioni nella dashboard o recuperali tramite API."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Come mi autentico con l'API?",
+			"a1": "Genera una API key dalle impostazioni della tua dashboard. Includila come Bearer token nell'header Authorization delle tue richieste.",
+			"q2": "Esiste un rate limiting?",
+			"a2": "Sì. L'API ha un rate limiting integrato per garantire un utilizzo equo. I limiti variano in base al piano — gli account Pro ottengono quote di richieste più elevate.",
+			"q3": "Posso creare link brevi con domini personalizzati tramite API?",
+			"a3": "Sì. Una volta configurato un dominio personalizzato nella tua dashboard, tutti i link creati tramite API utilizzeranno automaticamente quel dominio.",
+			"q4": "Dove posso trovare la documentazione API?",
+			"a4": "La documentazione API completa è disponibile su /docs/api. Copre tutti gli endpoint, i formati delle richieste, gli schemi delle risposte e gli esempi di codice.",
+			"q5": "Quali linguaggi di programmazione sono supportati?",
+			"a5": "L'API è indipendente dal linguaggio — qualsiasi linguaggio in grado di effettuare richieste HTTP funziona. La documentazione include esempi di codice nei linguaggi più comuni.",
+			"q6": "L'API è disponibile nel piano gratuito?",
+			"a6": "L'accesso all'API è disponibile nei piani Pro. Gli account gratuiti possono utilizzare la dashboard web per creare e gestire i link brevi.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Inizia a Sviluppare con la Nostra API",
+			"subtitle": "REST API per link brevi con documentazione completa. Integra l'accorciamento degli URL nelle tue app oggi stesso.",
+			"ctaLabel": "Consulta la Documentazione API"
+		}
+	},
+
+	"urlShortenerAgencies": {
+		"metaTitle": "Accorciatore di URL per Agenzie – Domini Cliente, Link Personalizzati e Analisi | QRcodly",
+		"metaDescription": "Gestisci link brevi per più clienti con domini personalizzati, URL personalizzati e analisi per singolo link. Pensato per le agenzie.",
+		"hero": {
+			"title": "Link Brevi Pensati per le Agenzie",
+			"subtitle": "Gestisci link personalizzati per tutti i clienti. Usa domini personalizzati, monitora le prestazioni e ottieni risultati.",
+			"ctaLabel": "Accorcia il Tuo Primo Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Domini Personalizzati per Ogni Cliente",
+				"description": "Collega più domini personalizzati — uno per ogni cliente. Ogni link breve porta il branding del cliente.",
+				"bullet1": "Collega domini personalizzati per cliente",
+				"bullet2": "URL brevi personalizzati per una consegna professionale",
+				"bullet3": "Configurazione DNS semplice con istruzioni guidate"
+			},
+			"feature2": {
+				"title": "Analisi per Singolo Link",
+				"description": "Monitora le prestazioni dei clic per ogni link. Esamina i dati analitici con i clienti e dimostra i risultati delle campagne.",
+				"bullet1": "Tracciamento clic per ogni link creato",
+				"bullet2": "Analisi per singolo link da condividere con i clienti",
+				"bullet3": "Dati geografici e per dispositivo"
+			},
+			"feature3": {
+				"title": "Gestione Link Organizzata",
+				"description": "Tagga e organizza i link per cliente, campagna o canale. Cerca e filtra per trovare qualsiasi link istantaneamente.",
+				"bullet1": "Tagga i link per cliente o progetto",
+				"bullet2": "Cerca e filtra tra tutti i link",
+				"bullet3": "Mantieni il lavoro dei clienti separato e organizzato"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Accorciatore di URL per Altri Team",
+			"subtitle": "Scopri come altri team utilizzano i link brevi per raggiungere i loro obiettivi.",
+			"learnMore": "Scopri di più"
+		},
+		"crossProducts": {
+			"title": "Esplora Altri Strumenti",
+			"qrCodes": {
+				"title": "Generatore di Codici QR",
+				"description": "Crea codici QR personalizzati per le campagne dei clienti. Abbinali ai link brevi per un tracciamento completo offline-online."
+			},
+			"analytics": {
+				"title": "Dashboard Analitica",
+				"description": "Analisi complete dei clic per tutti i link dei clienti. Filtra per cliente, campagna o periodo di tempo."
+			}
+		},
+		"faq": {
+			"title": "Domande Frequenti",
+			"q1": "Posso usare domini diversi per clienti diversi?",
+			"a1": "Sì. Collega più domini personalizzati al tuo account. Assegna a ogni cliente il proprio dominio in modo che i link brevi portino il loro branding.",
+			"q2": "Come monitoro le prestazioni per un cliente specifico?",
+			"a2": "Usa i tag per organizzare i link per cliente. Filtra le analisi della tua dashboard per visualizzare i dati sui clic dei link di un cliente specifico.",
+			"q3": "Posso condividere le analisi con i clienti?",
+			"a3": "Puoi esportare o fare screenshot delle analisi della dashboard per condividerle con i clienti. I dati sulle prestazioni di ogni link sono disponibili nella tua dashboard.",
+			"q4": "Posso personalizzare anche i codici QR per i clienti?",
+			"a4": "Sì. Crea codici QR con i loghi e i colori del brand dei clienti. Abbinali ai link brevi personalizzati per una soluzione completa.",
+			"q5": "C'è un limite ai domini personalizzati?",
+			"a5": "Gli account Pro possono collegare più domini personalizzati. Il limite esatto dipende dal piano — consulta la nostra pagina prezzi per i dettagli.",
+			"q6": "Posso gestire tutto da un'unica dashboard?",
+			"a6": "Sì. Tutti i link, i domini e le analisi dei clienti sono gestiti da un'unica dashboard. Usa tag e filtri per passare tra le viste dei diversi clienti.",
+			"viewAll": "Vedi tutte le FAQ"
+		},
+		"cta": {
+			"title": "Scala la Gestione dei Link della Tua Agenzia",
+			"subtitle": "Domini personalizzati, link personalizzati e analisi per ogni cliente. Gratis per iniziare.",
+			"ctaLabel": "Inizia Gratis"
+		}
 	}
 }
