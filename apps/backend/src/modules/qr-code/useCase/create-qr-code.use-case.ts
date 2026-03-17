@@ -51,6 +51,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 				const qrCodeEntity = {
 					id: newId,
 					...dto,
+					config: { ...dto.config },
 					createdBy: user?.id ?? null,
 					qrCodeData: null as string | null,
 					previewImage: null,
