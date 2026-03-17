@@ -2,11 +2,15 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ProductHeroSection } from '@/components/products/ProductHeroSection';
 import { ProductFeatureSection } from '@/components/products/ProductFeatureSection';
+import { ProductStatsBar } from '@/components/products/ProductStatsBar';
+import { ProductStepByStep } from '@/components/products/ProductStepByStep';
+import { ProductTipGrid } from '@/components/products/ProductTipGrid';
 import { ProductUseCases } from '@/components/products/ProductUseCases';
 import { CrossProductCards } from '@/components/products/CrossProductCards';
 import { ProductFaqSection } from '@/components/products/ProductFaqSection';
 import { ProductCtaSection } from '@/components/products/ProductCtaSection';
 import { FaqJsonLd } from '@/components/seo/FaqJsonLd';
+import { HowToJsonLd } from '@/components/seo/HowToJsonLd';
 import { UseCaseVisual } from '@/components/products/mockups/UseCaseVisual';
 import type { ColorTheme } from '@/components/products/mockups/UseCaseVisual';
 import {
@@ -102,23 +106,27 @@ export default async function Page({ params }: PageParams) {
 	if (!useCase) notFound();
 
 	const t = await getTranslations({ locale, namespace: useCase.namespace });
+	const { layoutTemplate, featureCount, hasStats, hasTips } = useCase;
 
-	const features = [1, 2, 3].map((n) => ({
-		title: t(`features.feature${n}.title`),
-		description: t(`features.feature${n}.description`),
-		bullets: [
-			t(`features.feature${n}.bullet1`),
-			t(`features.feature${n}.bullet2`),
-			t(`features.feature${n}.bullet3`),
-		],
-		visual: (
-			<UseCaseVisual
-				imageUrl={useCase.featureImages[n - 1]!}
-				alt={t(`features.feature${n}.title`)}
-				theme={FEATURE_THEMES[(n - 1) % FEATURE_THEMES.length]}
-			/>
-		),
-	}));
+	const features = Array.from({ length: featureCount }, (_, i) => {
+		const n = i + 1;
+		return {
+			title: t(`features.feature${n}.title`),
+			description: t(`features.feature${n}.description`),
+			bullets: [
+				t(`features.feature${n}.bullet1`),
+				t(`features.feature${n}.bullet2`),
+				t(`features.feature${n}.bullet3`),
+			],
+			visual: (
+				<UseCaseVisual
+					imageUrl={useCase.featureImages[i]!}
+					alt={t(`features.feature${n}.title`)}
+					theme={FEATURE_THEMES[i % FEATURE_THEMES.length]}
+				/>
+			),
+		};
+	});
 
 	const siblings = getSiblingUseCases(slug, URL_SHORTENER_USE_CASES);
 
@@ -141,16 +149,86 @@ export default async function Page({ params }: PageParams) {
 		};
 	});
 
-	const faqItems = Array.from({ length: 6 }, (_, i) => ({
+	const faqItems = Array.from({ length: 4 }, (_, i) => ({
 		question: t(`faq.q${i + 1}`),
 		answer: t(`faq.a${i + 1}`),
 	}));
+
+	// Steps data (all templates have it)
+	const stepKeys = ['step1', 'step2', 'step3', 'step4', 'step5'] as const;
+	const steps = stepKeys
+		.filter((key) => t.has(`steps.${key}.title`))
+		.map((key) => ({
+			title: t(`steps.${key}.title`),
+			description: t(`steps.${key}.description`),
+		}));
+
+	const howToSteps = steps.map((s) => ({ name: s.title, text: s.description }));
+
+	// Stats data (only for data-driven)
+	const stats = hasStats
+		? [1, 2, 3, 4].map((n) => ({
+				value: t(`stats.stat${n}Value`),
+				label: t(`stats.stat${n}Label`),
+			}))
+		: null;
+
+	// Tips data (only for data-driven)
+	const tips = hasTips
+		? [1, 2, 3, 4].map((n) => ({
+				title: t(`tips.tip${n}.title`),
+				description: t(`tips.tip${n}.description`),
+			}))
+		: null;
+
+	const crossProducts = (
+		<CrossProductCards
+			title={t('crossProducts.title')}
+			cards={[
+				{
+					title: t('crossProducts.qrCodes.title'),
+					description: t('crossProducts.qrCodes.description'),
+					href: '/products/qr-codes',
+					icon: <QrCodeIcon className="h-5 w-5 sm:h-6 sm:w-6" />,
+				},
+				{
+					title: t('crossProducts.analytics.title'),
+					description: t('crossProducts.analytics.description'),
+					href: '/products/analytics',
+					icon: <ChartBarIcon className="h-5 w-5 sm:h-6 sm:w-6" />,
+				},
+			]}
+		/>
+	);
+
+	const useCasesSection = (
+		<ProductUseCases
+			title={t('relatedUseCases.title')}
+			subtitle={t('relatedUseCases.subtitle')}
+			cases={siblingCases}
+			learnMoreLabel={t('relatedUseCases.learnMore')}
+		/>
+	);
+
+	const faqSection = (
+		<ProductFaqSection title={t('faq.title')} items={faqItems} viewAllLabel={t('faq.viewAll')} />
+	);
+
+	const ctaSection = (
+		<ProductCtaSection
+			title={t('cta.title')}
+			subtitle={t('cta.subtitle')}
+			ctaLabel={t('cta.ctaLabel')}
+			ctaHref="/dashboard/short-urls"
+		/>
+	);
 
 	return (
 		<>
 			<Header />
 			<article>
 				<FaqJsonLd items={faqItems} />
+				<HowToJsonLd name={t('steps.title')} steps={howToSteps} />
 
 				<ProductHeroSection
 					title={t('hero.title')}
@@ -159,54 +237,81 @@ export default async function Page({ params }: PageParams) {
 					ctaHref="/dashboard/short-urls"
 				/>
 
-				{features.map((feature, i) => (
-					<ProductFeatureSection
-						key={feature.title}
-						title={feature.title}
-						description={feature.description}
-						bullets={feature.bullets}
-						visual={feature.visual}
-						reversed={i % 2 === 1}
-					/>
-				))}
+				{layoutTemplate === 'hands-on' && (
+					<>
+						{stats && <ProductStatsBar stats={stats} />}
+						<ProductStepByStep
+							title={t('steps.title')}
+							subtitle={t('steps.subtitle')}
+							steps={steps}
+						/>
+						{features.map((f, i) => (
+							<ProductFeatureSection
+								key={f.title}
+								title={f.title}
+								description={f.description}
+								bullets={f.bullets}
+								visual={f.visual}
+								reversed={i % 2 === 1}
+							/>
+						))}
+						{tips && <ProductTipGrid title={t('tips.title')} tips={tips} />}
+						{useCasesSection}
+						{crossProducts}
+						{faqSection}
+						{ctaSection}
+					</>
+				)}
 
-				<ProductUseCases
-					title={t('relatedUseCases.title')}
-					subtitle={t('relatedUseCases.subtitle')}
-					cases={siblingCases}
-					learnMoreLabel={t('relatedUseCases.learnMore')}
-				/>
+				{layoutTemplate === 'data-driven' && (
+					<>
+						{features.map((f, i) => (
+							<ProductFeatureSection
+								key={f.title}
+								title={f.title}
+								description={f.description}
+								bullets={f.bullets}
+								visual={f.visual}
+								reversed={i % 2 === 1}
+							/>
+						))}
+						{stats && <ProductStatsBar stats={stats} />}
+						<ProductStepByStep
+							title={t('steps.title')}
+							subtitle={t('steps.subtitle')}
+							steps={steps}
+						/>
+						{tips && <ProductTipGrid title={t('tips.title')} tips={tips} />}
+						{useCasesSection}
+						{crossProducts}
+						{faqSection}
+						{ctaSection}
+					</>
+				)}
 
-				<CrossProductCards
-					title={t('crossProducts.title')}
-					cards={[
-						{
-							title: t('crossProducts.qrCodes.title'),
-							description: t('crossProducts.qrCodes.description'),
-							href: '/products/qr-codes',
-							icon: <QrCodeIcon className="h-5 w-5 sm:h-6 sm:w-6" />,
-						},
-						{
-							title: t('crossProducts.analytics.title'),
-							description: t('crossProducts.analytics.description'),
-							href: '/products/analytics',
-							icon: <ChartBarIcon className="h-5 w-5 sm:h-6 sm:w-6" />,
-						},
-					]}
-				/>
-
-				<ProductFaqSection
-					title={t('faq.title')}
-					items={faqItems}
-					viewAllLabel={t('faq.viewAll')}
-				/>
-
-				<ProductCtaSection
-					title={t('cta.title')}
-					subtitle={t('cta.subtitle')}
-					ctaLabel={t('cta.ctaLabel')}
-					ctaHref="/dashboard/short-urls"
-				/>
+				{layoutTemplate === 'technical' && (
+					<>
+						{features.map((f, i) => (
+							<ProductFeatureSection
+								key={f.title}
+								title={f.title}
+								description={f.description}
+								bullets={f.bullets}
+								visual={f.visual}
+								reversed={i % 2 === 1}
+							/>
+						))}
+						<ProductStepByStep
+							title={t('steps.title')}
+							subtitle={t('steps.subtitle')}
+							steps={steps}
+						/>
+						{useCasesSection}
+						{crossProducts}
+						{faqSection}
+						{ctaSection}
+					</>
+				)}
 			</article>
 			<Footer />
 		</>

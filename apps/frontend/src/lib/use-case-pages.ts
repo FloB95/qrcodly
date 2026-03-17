@@ -11,12 +11,18 @@ export type UseCaseIconName =
 	| 'CodeBracketIcon'
 	| 'BuildingOffice2Icon';
 
+export type LayoutTemplate = 'hands-on' | 'data-driven' | 'technical';
+
 export type UseCaseDef = {
 	slug: string;
 	namespace: string;
 	iconName: UseCaseIconName;
 	parentPath: string;
 	featureImages: [string, string, string];
+	layoutTemplate: LayoutTemplate;
+	featureCount: 2 | 3;
+	hasStats: boolean;
+	hasTips: boolean;
 };
 
 const IMG = '/images/use-cases';
@@ -32,6 +38,10 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 			`${IMG}/qr-restaurant-wifi.jpg`,
 			`${IMG}/analytics-dashboard.png`,
 		],
+		layoutTemplate: 'hands-on',
+		featureCount: 2,
+		hasStats: true,
+		hasTips: true,
 	},
 	{
 		slug: 'retail',
@@ -43,6 +53,10 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 			`${IMG}/qr-retail-promo.jpg`,
 			`${IMG}/analytics-dashboard.png`,
 		],
+		layoutTemplate: 'data-driven',
+		featureCount: 2,
+		hasStats: true,
+		hasTips: true,
 	},
 	{
 		slug: 'events',
@@ -54,6 +68,10 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 			`${IMG}/qr-events-schedule.jpg`,
 			`${IMG}/qr-events-networking.jpg`,
 		],
+		layoutTemplate: 'hands-on',
+		featureCount: 2,
+		hasStats: true,
+		hasTips: true,
 	},
 	{
 		slug: 'real-estate',
@@ -65,6 +83,10 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 			`${IMG}/qr-realestate-tour.jpg`,
 			`${IMG}/qr-realestate-tracking.jpg`,
 		],
+		layoutTemplate: 'hands-on',
+		featureCount: 2,
+		hasStats: true,
+		hasTips: true,
 	},
 	{
 		slug: 'education',
@@ -76,6 +98,10 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 			`${IMG}/qr-education-assignment.jpg`,
 			`${IMG}/qr-education-engagement.jpg`,
 		],
+		layoutTemplate: 'hands-on',
+		featureCount: 2,
+		hasStats: true,
+		hasTips: true,
 	},
 	{
 		slug: 'marketing',
@@ -87,6 +113,10 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 			`${IMG}/qr-marketing-abtest.jpg`,
 			`${IMG}/qr-marketing-branding.jpg`,
 		],
+		layoutTemplate: 'data-driven',
+		featureCount: 2,
+		hasStats: true,
+		hasTips: true,
 	},
 ];
 
@@ -101,6 +131,10 @@ export const URL_SHORTENER_USE_CASES: UseCaseDef[] = [
 			`${IMG}/url-marketing-branded.jpg`,
 			`${IMG}/analytics-dashboard.png`,
 		],
+		layoutTemplate: 'data-driven',
+		featureCount: 2,
+		hasStats: true,
+		hasTips: true,
 	},
 	{
 		slug: 'social-media',
@@ -112,6 +146,10 @@ export const URL_SHORTENER_USE_CASES: UseCaseDef[] = [
 			`${IMG}/url-social-tracking.jpg`,
 			`${IMG}/url-social-dynamic.jpg`,
 		],
+		layoutTemplate: 'technical',
+		featureCount: 3,
+		hasStats: false,
+		hasTips: false,
 	},
 	{
 		slug: 'sales',
@@ -123,6 +161,10 @@ export const URL_SHORTENER_USE_CASES: UseCaseDef[] = [
 			`${IMG}/url-sales-branded.jpg`,
 			`${IMG}/analytics-dashboard.png`,
 		],
+		layoutTemplate: 'technical',
+		featureCount: 3,
+		hasStats: false,
+		hasTips: false,
 	},
 	{
 		slug: 'e-commerce',
@@ -134,6 +176,10 @@ export const URL_SHORTENER_USE_CASES: UseCaseDef[] = [
 			`${IMG}/url-ecommerce-channels.jpg`,
 			`${IMG}/url-ecommerce-seasonal.jpg`,
 		],
+		layoutTemplate: 'data-driven',
+		featureCount: 2,
+		hasStats: true,
+		hasTips: true,
 	},
 	{
 		slug: 'developers',
@@ -145,6 +191,10 @@ export const URL_SHORTENER_USE_CASES: UseCaseDef[] = [
 			`${IMG}/url-dev-auth.jpg`,
 			`${IMG}/url-dev-integration.jpg`,
 		],
+		layoutTemplate: 'technical',
+		featureCount: 3,
+		hasStats: false,
+		hasTips: false,
 	},
 	{
 		slug: 'agencies',
@@ -156,6 +206,10 @@ export const URL_SHORTENER_USE_CASES: UseCaseDef[] = [
 			`${IMG}/analytics-dashboard.png`,
 			`${IMG}/url-agency-workspace.jpg`,
 		],
+		layoutTemplate: 'technical',
+		featureCount: 3,
+		hasStats: false,
+		hasTips: false,
 	},
 ];
 
