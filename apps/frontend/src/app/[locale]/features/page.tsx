@@ -25,12 +25,10 @@ export async function generateMetadata({ params }: DefaultPageParams): Promise<M
 			languages: {
 				'x-default': `${baseUrl}/features`,
 				...Object.fromEntries(
-					routing.locales
-						.filter((l) => l !== locale)
-						.map((l) => [
-							l,
-							l === routing.defaultLocale ? `${baseUrl}/features` : `${baseUrl}/${l}/features`,
-						]),
+					routing.locales.map((l) => [
+						l,
+						l === routing.defaultLocale ? `${baseUrl}/features` : `${baseUrl}/${l}/features`,
+					]),
 				),
 			},
 		},
