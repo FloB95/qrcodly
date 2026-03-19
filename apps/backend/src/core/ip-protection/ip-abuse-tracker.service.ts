@@ -14,7 +14,7 @@ interface IpAbuseTrackerConfig {
 }
 
 const DEFAULT_CONFIG: IpAbuseTrackerConfig = {
-	maxAttempts: 5,
+	maxAttempts: 30,
 	windowSeconds: 3600, // 1 hour
 	blockTtlSeconds: 7 * 24 * 3600, // 7 days
 	redisPrefix: 'ip_abuse:',
