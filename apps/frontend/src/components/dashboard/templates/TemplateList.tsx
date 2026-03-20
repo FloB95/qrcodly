@@ -82,7 +82,7 @@ export const TemplateList = ({ onCreateTemplate }: TemplateListProps) => {
 				<TableHead className="w-[72px]">{t('qrCode.table.preview')}</TableHead>
 				<TableHead>{t('qrCode.table.name')}</TableHead>
 				<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
-				<TableHead className="w-[60px]" />
+				<TableHead className="w-[60px] sticky right-0 bg-muted z-20 px-2" />
 			</TableRow>
 		</TableHeader>
 	);

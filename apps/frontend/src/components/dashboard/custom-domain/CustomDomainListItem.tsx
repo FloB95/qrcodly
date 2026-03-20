@@ -148,7 +148,7 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 				)}
 			</TableCell>
 			<TableCell className="text-muted-foreground">{formattedDate}</TableCell>
-			<TableCell>
+			<TableCell className="px-2 sticky right-0 sticky-action-cell">
 				{isDisabled ? null : (
 					<CustomDomainListItemActions
 						domain={domain}

@@ -34,7 +34,7 @@ export function ApiKeyListItem({ apiKey, handleRevalidate }: ApiKeyListItemProps
 			<TableCell className="text-muted-foreground">{lastUsedAt}</TableCell>
 			<TableCell className="text-muted-foreground">{createdAt}</TableCell>
 
-			<TableCell>
+			<TableCell className="px-2 sticky right-0 sticky-action-cell">
 				<ApiKeyListItemActions apiKey={apiKey} isRevoking={isRevoking} onRevoke={onRevoke} />
 			</TableCell>
 		</TableRow>

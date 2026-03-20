@@ -94,7 +94,7 @@ export const TagList = () => {
 				<TableHead>{t('table.name')}</TableHead>
 				<TableHead>{t('table.usage')}</TableHead>
 				<TableHead className="hidden md:table-cell">{t('table.created')}</TableHead>
-				<TableHead className="w-[60px]" />
+				<TableHead className="w-[60px] sticky right-0 bg-muted z-20 px-2" />
 			</TableRow>
 		</TableHeader>
 	);

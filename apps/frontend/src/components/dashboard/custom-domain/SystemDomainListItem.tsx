@@ -69,7 +69,7 @@ export function SystemDomainListItem({ systemDomain, isDefault }: SystemDomainLi
 				<Badge variant="blue">{t('ready')}</Badge>
 			</TableCell>
 			<TableCell className="text-muted-foreground">-</TableCell>
-			<TableCell>
+			<TableCell className="px-2 sticky right-0 sticky-action-cell bg-muted/20">
 				{!isDefault && (
 					<Button
 						variant="ghost"

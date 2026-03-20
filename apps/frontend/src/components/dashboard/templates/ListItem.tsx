@@ -204,7 +204,7 @@ export const TemplateListItem = ({
 					{formatDate(template.createdAt)}
 				</TableCell>
 
-				<TableCell className="w-[60px] py-2">
+				<TableCell className="w-[60px] py-2 px-2 sticky right-0 sticky-action-cell">
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="ghost" className="h-8 w-8 p-0" disabled={isDeleting}>
@@ -301,7 +301,7 @@ export const SkeletonTemplateListItem = () => {
 			<TableCell className="hidden md:table-cell py-2">
 				<Skeleton className="h-4 w-20" />
 			</TableCell>
-			<TableCell className="py-2">
+			<TableCell className="py-2 px-2 sticky right-0 bg-background">
 				<Skeleton className="h-8 w-8 rounded" />
 			</TableCell>
 		</TableRow>

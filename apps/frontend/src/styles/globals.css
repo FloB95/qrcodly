@@ -242,3 +242,16 @@
 .animate-fade-in {
 	animation: fade-in 0.25s ease-out;
 }
+
+/* Sticky action column — keeps row actions visible on horizontal scroll */
+.sticky-action-cell {
+	background-color: var(--color-background);
+}
+
+tr:hover > .sticky-action-cell {
+	background-color: oklch(from var(--color-muted) l c h / 0.4);
+}
+
+tr[data-state='selected'] > .sticky-action-cell {
+	background-color: var(--color-muted);
+}

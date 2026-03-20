@@ -44,7 +44,7 @@ const ShortUrlTableHeader = () => {
 				<TableHead>{t('status')}</TableHead>
 				<TableHead className="hidden sm:table-cell">{t('views')}</TableHead>
 				<TableHead className="hidden lg:table-cell">{t('created')}</TableHead>
-				<TableHead className="w-[60px]" />
+				<TableHead className="w-[60px] sticky right-0 bg-muted z-20 px-2" />
 			</TableRow>
 		</TableHeader>
 	);
@@ -67,7 +67,7 @@ const SkeletonRow = () => (
 		<TableCell className="hidden lg:table-cell py-2">
 			<Skeleton className="h-4 w-20" />
 		</TableCell>
-		<TableCell className="py-2">
+		<TableCell className="py-2 px-2 sticky right-0 bg-background">
 			<Skeleton className="h-8 w-8 rounded" />
 		</TableCell>
 	</TableRow>

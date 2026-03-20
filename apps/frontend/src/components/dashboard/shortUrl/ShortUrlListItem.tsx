@@ -198,7 +198,10 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 					</TableCell>
 
 					{/* Actions */}
-					<TableCell className="w-[60px] py-2" onContextMenu={stopContextMenu}>
+					<TableCell
+						className="w-[60px] py-2 px-2 sticky right-0 sticky-action-cell"
+						onContextMenu={stopContextMenu}
+					>
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
 								<Button variant="ghost" size="icon" className="h-8 w-8">

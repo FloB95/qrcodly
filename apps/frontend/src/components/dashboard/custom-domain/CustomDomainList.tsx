@@ -100,7 +100,9 @@ export function CustomDomainList() {
 								<TableHead>{t('dnsStatus')}</TableHead>
 								<TableHead>{t('status')}</TableHead>
 								<TableHead>{t('createdAt')}</TableHead>
-								<TableHead className="w-[100px]">{t('actions')}</TableHead>
+								<TableHead className="w-[100px] sticky right-0 bg-muted z-20 px-2">
+									{t('actions')}
+								</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody
