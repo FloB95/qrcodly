@@ -1983,5 +1983,1250 @@
 		"skip": "Pular",
 		"thankYouTitle": "Obrigado!",
 		"thankYouMessage": "Seu feedback nos ajuda a construir um produto melhor."
+	},
+	"qrCodesRestaurants": {
+		"metaTitle": "QR Codes para Restaurantes – Cardápios Digitais, WiFi e Mais | QRcodly",
+		"metaDescription": "Crie QR codes para o seu restaurante. Ofereça cardápios digitais, acesso fácil ao WiFi e acompanhe o engajamento — tudo em uma plataforma.",
+		"hero": {
+			"title": "QR Codes Feitos para Restaurantes",
+			"subtitle": "Dê aos clientes acesso instantâneo a cardápios, WiFi e promoções. Atualize o conteúdo a qualquer momento sem reimprimir.",
+			"ctaLabel": "Crie Seu QR Code para Restaurante"
+		},
+		"features": {
+			"feature1": {
+				"title": "Cardápios Digitais com Atualização Instantânea",
+				"description": "Vincule um QR code ao seu cardápio online. Altere preços, adicione pratos sazonais ou atualize promoções — os clientes sempre veem a versão mais recente.",
+				"bullet1": "Atualize itens do cardápio sem reimprimir",
+				"bullet2": "Vincule a PDF, página web ou sistema de pedidos",
+				"bullet3": "Funciona em qualquer smartphone — sem necessidade de aplicativo"
+			},
+			"feature2": {
+				"title": "Acesso ao WiFi em Uma Leitura",
+				"description": "Permita que os clientes se conectem ao WiFi instantaneamente ao escanear um QR code. Sem mais perguntas sobre senhas ou digitação de credenciais longas.",
+				"bullet1": "Codifique o nome e a senha da sua rede WiFi",
+				"bullet2": "Clientes se conectam com um único toque após escanear",
+				"bullet3": "Coloque em mesas, paredes ou balcões de recepção"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes para Outros Setores",
+			"subtitle": "Veja como empresas de outros setores usam QR codes para engajar seu público.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"urlShortener": {
+				"title": "Encurtador de URL",
+				"description": "Crie links curtos e personalizados para pedidos online, páginas de reserva e perfis sociais do seu restaurante."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Aprofunde-se nos dados de escaneamento com nosso conjunto completo de análises. Entenda o comportamento dos clientes e otimize posicionamentos."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Qual tamanho devo imprimir os QR codes para mesas?",
+			"a1": "No mínimo 2x2 cm (aproximadamente 0,8x0,8 pol). Para suportes de mesa, 3x3 cm funciona melhor. Sempre teste no tamanho real antes de encomendar uma grande tiragem.",
+			"q2": "Um único QR code pode servir para cardápio e WiFi?",
+			"a2": "Não — cada tipo de conteúdo precisa do seu próprio QR code. Mas você pode colocá-los lado a lado no mesmo cartão de mesa: um para a URL do cardápio e um QR code de WiFi.",
+			"q3": "Como gerencio várias unidades com cardápios diferentes?",
+			"a3": "Crie QR codes separados para cada unidade, cada um apontando para a página do cardápio daquela filial. Use tags no seu painel para organizar os códigos por localização do restaurante.",
+			"q4": "Os clientes podem deixar uma avaliação após escanear?",
+			"a4": "Sim — vincule seu QR code à sua página de avaliação do Google Meu Negócio ou a um formulário de feedback. Com um código dinâmico, você pode alternar entre cardápio e página de avaliação sazonalmente.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Pronto para Modernizar Seu Restaurante?",
+			"subtitle": "Crie seu primeiro QR code para restaurante em minutos. Cardápios digitais, acesso WiFi e análises — tudo gratuito para começar.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Criar QR Codes para Seu Restaurante",
+			"subtitle": "Desde escolher um tipo de conteúdo até posicionar os códigos nas mesas — aqui está o passo a passo completo.",
+			"step1": {
+				"title": "Escolha Seu Tipo de Conteúdo",
+				"description": "Decida o que os clientes devem ver após escanear: uma URL de cardápio, credenciais de WiFi ou sua localização no mapa."
+			},
+			"step2": {
+				"title": "Adicione Seu Cardápio ou Link",
+				"description": "Envie um cardápio em PDF ou cole o link da sua página de pedidos online. Códigos de WiFi precisam apenas do nome da rede e senha."
+			},
+			"step3": {
+				"title": "Combine com a Identidade do Restaurante",
+				"description": "Personalize cores, adicione o logo do seu restaurante e escolha um estilo que combine com a identidade da sua marca."
+			},
+			"step4": {
+				"title": "Baixe para Impressão",
+				"description": "Exporte como SVG para saída nítida e pronta para impressão — perfeito para cartões de mesa, cartazes e adesivos de vitrine."
+			},
+			"step5": {
+				"title": "Posicione e Acompanhe",
+				"description": "Coloque os códigos em mesas, cardápios e displays. Monitore quais locais recebem mais escaneamentos no seu painel."
+			}
+		},
+		"tips": {
+			"title": "Melhores Práticas para QR Codes em Restaurantes",
+			"tip1": {
+				"title": "Imprima no Mínimo 2x2 cm",
+				"description": "Códigos menores são mais difíceis de escanear de forma confiável. Para cartões e suportes de mesa, 3x3 cm é o tamanho ideal."
+			},
+			"tip2": {
+				"title": "Posicione na Altura dos Olhos",
+				"description": "Use suportes de mesa ou fixações na parede em vez de superfícies planas. Códigos na altura dos olhos são escaneados 2x mais."
+			},
+			"tip3": {
+				"title": "Teste Antes de Imprimir",
+				"description": "Escaneie com 3 celulares diferentes no tamanho real de impressão antes de encomendar um lote. Identifique problemas cedo."
+			},
+			"tip4": {
+				"title": "Atualize Cardápios Antes dos Horários de Pico",
+				"description": "Publique alterações no cardápio na sexta-feira à tarde para pegar o movimento do fim de semana — sua janela de escaneamento mais movimentada."
+			}
+		},
+		"stats": {
+			"stat1Value": "73%",
+			"stat1Label": "dos clientes preferem cardápios digitais",
+			"stat2Value": "3×",
+			"stat2Label": "pedidos mais rápidos na mesa",
+			"stat3Value": "45%",
+			"stat3Label": "menos custos com impressão",
+			"stat4Value": "< 2 seg",
+			"stat4Label": "tempo médio de escaneamento"
+		}
+	},
+	"qrCodesRetail": {
+		"metaTitle": "QR Codes para Varejo – Informações de Produtos, Promoções e Rastreamento | QRcodly",
+		"metaDescription": "Use QR codes no varejo para detalhes de produtos, promoções e engajamento de clientes. Acompanhe escaneamentos e atualize o conteúdo a qualquer momento.",
+		"hero": {
+			"title": "QR Codes Feitos para o Varejo",
+			"subtitle": "Conecte produtos físicos a experiências digitais. Compartilhe informações de produtos, execute promoções e acompanhe o engajamento.",
+			"ctaLabel": "Crie Seu QR Code para Varejo"
+		},
+		"features": {
+			"feature1": {
+				"title": "Informações do Produto em um Instante",
+				"description": "Adicione QR codes às embalagens ou etiquetas de prateleira. Os clientes escaneiam para ver especificações detalhadas, avaliações, vídeos explicativos ou listas de ingredientes.",
+				"bullet1": "Vincule a páginas de produtos ou landing pages",
+				"bullet2": "Compartilhe guias de tamanho, instruções de cuidado ou tutoriais",
+				"bullet3": "Atualize o conteúdo vinculado sem alterar a embalagem"
+			},
+			"feature2": {
+				"title": "Execute Promoções na Loja",
+				"description": "Impulsione o engajamento com QR codes que vinculam a descontos exclusivos, programas de fidelidade ou ofertas sazonais.",
+				"bullet1": "Vincule a páginas de cupons ou códigos de desconto",
+				"bullet2": "Promova inscrições de fidelidade ou downloads de aplicativos",
+				"bullet3": "Altere ofertas em tempo real com códigos dinâmicos"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes para Outros Setores",
+			"subtitle": "Descubra como outros setores aproveitam QR codes para se conectar com seu público.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"urlShortener": {
+				"title": "Encurtador de URL",
+				"description": "Crie links curtos para páginas de produtos, landing pages promocionais e pesquisas com clientes."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Obtenha insights detalhados sobre padrões de escaneamento, tipos de dispositivos e métricas de engajamento de clientes."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Como rastreio quais produtos recebem mais escaneamentos?",
+			"a1": "Crie um QR code separado para cada produto ou display. Seu painel mostra contagens de escaneamento, horários e dados de dispositivos para cada código individualmente.",
+			"q2": "Qual o melhor posicionamento para QR codes no varejo?",
+			"a2": "Etiquetas na borda da prateleira e embalagens de produtos funcionam melhor. Certifique-se de que o código esteja visível, não obstruído por outros itens, e adicione um texto de call-to-action curto próximo.",
+			"q3": "Posso fazer promoções por tempo limitado com QR codes?",
+			"a3": "Sim. Use QR codes dinâmicos e atualize a URL de destino quando a promoção terminar. Redirecione para uma nova oferta ou sua página padrão de produto — sem necessidade de reimprimir.",
+			"q4": "Como conecto QR codes ao meu programa de fidelidade?",
+			"a4": "Vincule QR codes à sua página de cadastro de fidelidade ou link de download do aplicativo. Os clientes escaneiam, se cadastram e começam a ganhar recompensas — sem entrada manual necessária.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Melhore Sua Experiência no Varejo",
+			"subtitle": "Conecte produtos a conteúdo digital com QR codes. Fácil de criar, simples de atualizar, gratuito para começar.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Usar QR Codes na Sua Loja",
+			"subtitle": "Das etiquetas de prateleira ao caixa — um guia passo a passo para equipes de varejo.",
+			"step1": {
+				"title": "Planeje Seus Posicionamentos",
+				"description": "Decida onde os códigos vão: embalagens de produtos, etiquetas de prateleira, vitrines ou sinalização interna da loja."
+			},
+			"step2": {
+				"title": "Crie Códigos de Produto ou Promoção",
+				"description": "Vincule cada QR code a uma página de detalhes do produto, landing page promocional ou formulário de cadastro de fidelidade."
+			},
+			"step3": {
+				"title": "Personalize com Sua Marca",
+				"description": "Combine com as cores da sua marca, adicione seu logo e escolha um estilo que se encaixe na identidade visual da sua loja."
+			},
+			"step4": {
+				"title": "Imprima em Alta Qualidade",
+				"description": "Baixe como SVG para saída ultra-nítida em etiquetas, embalagens e sinalização em qualquer tamanho."
+			},
+			"step5": {
+				"title": "Analise o Engajamento na Loja",
+				"description": "Acompanhe quais produtos e displays recebem mais escaneamentos. Use os dados para otimizar layouts e promoções."
+			}
+		},
+		"tips": {
+			"title": "Melhores Práticas para QR Codes no Varejo",
+			"tip1": {
+				"title": "Um Código por SKU",
+				"description": "Use um QR code dedicado para cada produto para rastrear o engajamento no nível do item — não apenas no nível do display."
+			},
+			"tip2": {
+				"title": "Adicione um Call-to-Action",
+				"description": "Imprima uma frase curta perto do código como 'Escaneie e ganhe 10% off' ou 'Escaneie para guia de tamanhos.' Códigos com CTAs recebem 3x mais escaneamentos."
+			},
+			"tip3": {
+				"title": "Posicione na Borda da Prateleira",
+				"description": "Posicione códigos nas etiquetas de prateleira onde estejam visíveis, não escondidos atrás de produtos. Clientes escaneiam o que podem ver."
+			},
+			"tip4": {
+				"title": "Rotacione Promoções Semanalmente",
+				"description": "Use códigos dinâmicos e troque destinos regularmente. Ofertas novas mantêm os clientes escaneando."
+			}
+		},
+		"stats": {
+			"stat1Value": "58%",
+			"stat1Label": "dos compradores escaneiam códigos na loja",
+			"stat2Value": "2.4×",
+			"stat2Label": "maior engajamento vs. apenas impresso",
+			"stat3Value": "40%",
+			"stat3Label": "taxa de resgate de cupons",
+			"stat4Value": "12 seg",
+			"stat4Label": "tempo médio de interação"
+		}
+	},
+	"qrCodesEvents": {
+		"metaTitle": "QR Codes para Eventos – Check-in, Programações e Networking | QRcodly",
+		"metaDescription": "Simplifique eventos com QR codes para check-in, programações e engajamento de participantes. Crie e acompanhe QR codes para eventos facilmente.",
+		"hero": {
+			"title": "QR Codes Feitos para Eventos",
+			"subtitle": "Simplifique o check-in, compartilhe programações e conecte participantes. Uma leitura faz tudo.",
+			"ctaLabel": "Crie Seu QR Code para Evento"
+		},
+		"features": {
+			"feature1": {
+				"title": "Check-in Mais Rápido para Participantes",
+				"description": "Envie QR codes personalizados aos participantes. A equipe escaneia na entrada para um check-in rápido e sem contato.",
+				"bullet1": "Gere códigos únicos por participante ou ingresso",
+				"bullet2": "Agilize filas de entrada em qualquer tamanho de local",
+				"bullet3": "Funciona com qualquer smartphone ou tablet como scanner"
+			},
+			"feature2": {
+				"title": "Programações e Atualizações ao Vivo",
+				"description": "Vincule QR codes à programação do evento. Atualize horários de sessões, mudanças de sala ou informações de palestrantes — os participantes sempre têm as informações mais recentes.",
+				"bullet1": "Vincule a uma programação ou agenda ao vivo",
+				"bullet2": "Envie alterações de última hora sem reimprimir",
+				"bullet3": "Coloque em crachás, sinalização ou programas impressos"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes para Outros Setores",
+			"subtitle": "Explore como outros setores usam QR codes para engajar seu público.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"urlShortener": {
+				"title": "Encurtador de URL",
+				"description": "Crie links curtos para páginas de inscrição em eventos, formulários de feedback e pesquisas pós-evento."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Acompanhe a atividade de escaneamento durante seu evento. Veja quais sessões, estandes ou materiais recebem mais engajamento."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Como uso QR codes para check-in de eventos?",
+			"a1": "Gere um QR code único por ingresso ou participante. A equipe escaneia o código na entrada usando qualquer smartphone — ele direciona para uma página de check-in que registra a presença instantaneamente.",
+			"q2": "Posso atualizar a programação do evento após imprimir os crachás?",
+			"a2": "Sim. Use QR codes dinâmicos que apontam para sua página de programação online. Quando as sessões mudarem, atualize a página — todos os crachás impressos continuam funcionando.",
+			"q3": "Como funcionam QR codes vCard para networking?",
+			"a3": "Um QR code vCard contém dados de contato (nome, email, telefone, empresa). Quando escaneado, o celular oferece salvar o contato diretamente — substituindo cartões de visita tradicionais.",
+			"q4": "Posso medir quais sessões foram mais populares?",
+			"a4": "Crie QR codes separados para cada sessão ou palestra. Compare as contagens de escaneamento no seu painel para ver quais sessões atraíram mais participantes.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Torne Seu Próximo Evento Impecável",
+			"subtitle": "QR codes para check-in, programações e networking. Crie em minutos — gratuito para começar.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Configurar QR Codes para Seu Evento",
+			"subtitle": "De crachás a sinalização — tudo que você precisa para uma experiência de evento fluida.",
+			"step1": {
+				"title": "Defina Seu Caso de Uso",
+				"description": "Escolha o que o QR code faz: check-in, link para a programação do evento ou compartilhar um vCard para networking."
+			},
+			"step2": {
+				"title": "Crie Seus Códigos",
+				"description": "Gere QR codes que apontam para sua página de agenda, URL de check-in ou cartão de contato do participante."
+			},
+			"step3": {
+				"title": "Aplique a Identidade do Evento",
+				"description": "Personalize cores e adicione o logo do evento para que os códigos combinem com crachás, sinalização e programas."
+			},
+			"step4": {
+				"title": "Imprima nos Materiais",
+				"description": "Adicione códigos a crachás de participantes, sinalização de salas e programas impressos. Use SVG para resultados nítidos."
+			},
+			"step5": {
+				"title": "Acompanhe o Engajamento ao Vivo",
+				"description": "Monitore escaneamentos em tempo real durante o evento. Veja quais sessões e estandes recebem mais atividade."
+			}
+		},
+		"tips": {
+			"title": "Melhores Práticas para QR Codes em Eventos",
+			"tip1": {
+				"title": "Códigos Únicos por Sessão",
+				"description": "Crie um QR code separado para cada palestra ou workshop. Compare contagens de escaneamento para medir o interesse por sessão."
+			},
+			"tip2": {
+				"title": "Imprima Grande nos Crachás",
+				"description": "Use no mínimo 3x3 cm nos crachás para escaneamento rápido e confiável — mesmo em iluminação fraca de conferências."
+			},
+			"tip3": {
+				"title": "Coloque Programações nas Entradas",
+				"description": "Posicione QR codes de programação na entrada de cada sala para que participantes possam verificar rapidamente os detalhes da sessão."
+			},
+			"tip4": {
+				"title": "Envie Crachás Digitais com Antecedência",
+				"description": "Envie um crachá digital com QR code por email antes do evento. Entrada mais rápida e menos impressão."
+			}
+		},
+		"stats": {
+			"stat1Value": "67%",
+			"stat1Label": "mais rápido no check-in",
+			"stat2Value": "4×",
+			"stat2Label": "mais contatos de networking",
+			"stat3Value": "85%",
+			"stat3Label": "taxa de adoção dos participantes",
+			"stat4Value": "30 seg",
+			"stat4Label": "economizados por entrada"
+		}
+	},
+	"qrCodesRealEstate": {
+		"metaTitle": "QR Codes para Imóveis – Listagens de Propriedades, Tours Virtuais e Mais | QRcodly",
+		"metaDescription": "Use QR codes no setor imobiliário para listagens de propriedades, tours virtuais e inscrições em visitas. Acompanhe o interesse dos compradores facilmente.",
+		"hero": {
+			"title": "QR Codes Feitos para o Mercado Imobiliário",
+			"subtitle": "Dê aos compradores acesso instantâneo a detalhes do imóvel, tours virtuais e informações de contato — direto da placa de venda.",
+			"ctaLabel": "Crie Seu QR Code Imobiliário"
+		},
+		"features": {
+			"feature1": {
+				"title": "Detalhes do Imóvel em Cada Placa",
+				"description": "Adicione um QR code às suas placas, folhetos ou brochuras. Os compradores escaneiam para ver a listagem completa, fotos e detalhes principais.",
+				"bullet1": "Vincule à página de listagem ou site do imóvel",
+				"bullet2": "Inclua fotos, plantas e preços",
+				"bullet3": "Atualize detalhes da listagem sem reimprimir placas"
+			},
+			"feature2": {
+				"title": "Tours Virtuais em Uma Leitura",
+				"description": "Vincule QR codes a vídeos de tours virtuais ou visitas 3D. Permita que compradores explorem propriedades de qualquer lugar.",
+				"bullet1": "Vincule a Matterport, YouTube ou qualquer plataforma de tour",
+				"bullet2": "Coloque em anúncios impressos, malas diretas e folhas de visita",
+				"bullet3": "Troque links de tour quando as propriedades mudarem"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes para Outros Setores",
+			"subtitle": "Veja como outros setores usam QR codes para se conectar com seu público.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"urlShortener": {
+				"title": "Encurtador de URL",
+				"description": "Crie links curtos e limpos para listagens de propriedades, inscrições em visitas e páginas de contato do corretor."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Obtenha insights detalhados sobre o engajamento dos compradores, localizações de escaneamento e detalhamentos de dispositivos para cada propriedade."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Posso alterar a listagem sem trocar a placa?",
+			"a1": "Sim. QR codes dinâmicos permitem atualizar a URL de destino a qualquer momento. Altere a listagem, troque o link — a placa impressa permanece exatamente a mesma.",
+			"q2": "Para o que um QR code imobiliário deve apontar?",
+			"a2": "Melhores opções: sua página de listagem, um tour virtual, um site dedicado do imóvel ou uma página de agendamento de visitas. Escolha o que ajuda os compradores a dar o próximo passo.",
+			"q3": "Como gerencio várias listagens de uma vez?",
+			"a3": "Crie um QR code por imóvel. Use tags no seu painel (ex.: 'centro', 'zona oeste') para organizar e filtrar rapidamente suas listagens ativas.",
+			"q4": "Qual tamanho funciona melhor para placas de venda?",
+			"a4": "No mínimo 5x5 cm (2x2 pol) em placas de venda. Garanta alto contraste entre o código e o fundo da placa, e teste escaneando a 2 metros de distância antes de imprimir.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Dê a Cada Listagem uma Vantagem Digital",
+			"subtitle": "QR codes que conectam compradores a detalhes do imóvel, tours e suas informações de contato. Gratuito para começar.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Adicionar QR Codes às Suas Listagens",
+			"subtitle": "Conecte sinalização física a detalhes digitais do imóvel em cinco passos simples.",
+			"step1": {
+				"title": "Escolha Seu Conteúdo",
+				"description": "Vincule à sua página de listagem, um vídeo de tour virtual ou seu vCard de corretor com dados de contato."
+			},
+			"step2": {
+				"title": "Crie um QR Code Dinâmico",
+				"description": "Use um código dinâmico para poder atualizar o link da listagem depois — mesmo após a placa ser impressa."
+			},
+			"step3": {
+				"title": "Adicione a Identidade da Imobiliária",
+				"description": "Envie o logo da imobiliária e combine com as cores da marca para uma aparência profissional e consistente."
+			},
+			"step4": {
+				"title": "Imprima para Placas e Folhetos",
+				"description": "Baixe como SVG para placas de venda, folhetos, brochuras e cartões postais. Escala para qualquer tamanho."
+			},
+			"step5": {
+				"title": "Acompanhe o Interesse dos Compradores",
+				"description": "Veja quantas pessoas escaneiam o código de cada imóvel. Compare o interesse entre listagens no seu painel."
+			}
+		},
+		"tips": {
+			"title": "Melhores Práticas para QR Codes Imobiliários",
+			"tip1": {
+				"title": "Um Código por Listagem",
+				"description": "Acompanhe o interesse no nível do imóvel criando um código único para cada listagem. Veja exatamente quais casas atraem compradores."
+			},
+			"tip2": {
+				"title": "Vincule a Páginas Otimizadas para Mobile",
+				"description": "A maioria dos compradores escaneia pelo celular. Certifique-se de que sua página de listagem, tour ou formulário de contato funcione bem no mobile."
+			},
+			"tip3": {
+				"title": "Adicione um CTA Claro nas Placas",
+				"description": "Imprima 'Escaneie para Tour Virtual' ou 'Escaneie para Detalhes' ao lado do código. Uma chamada aumenta significativamente os escaneamentos."
+			},
+			"tip4": {
+				"title": "Redirecione Quando Vendido",
+				"description": "Quando um imóvel for vendido, atualize o código dinâmico para apontar para uma página de 'Vendido' ou uma listagem semelhante próxima."
+			}
+		},
+		"stats": {
+			"stat1Value": "62%",
+			"stat1Label": "dos compradores escaneiam códigos em placas",
+			"stat2Value": "3×",
+			"stat2Label": "mais visualizações da listagem",
+			"stat3Value": "35%",
+			"stat3Label": "mais solicitações de visita",
+			"stat4Value": "< 2 seg",
+			"stat4Label": "para detalhes completos da listagem"
+		}
+	},
+	"qrCodesEducation": {
+		"metaTitle": "QR Codes para Educação – Recursos de Sala de Aula, Tarefas e Mais | QRcodly",
+		"metaDescription": "Use QR codes na educação para compartilhar recursos, tarefas e materiais de sala de aula. Engaje alunos com uma simples leitura.",
+		"hero": {
+			"title": "QR Codes Feitos para a Educação",
+			"subtitle": "Conecte alunos a recursos, tarefas e conteúdo interativo com uma simples leitura.",
+			"ctaLabel": "Crie Seu QR Code Educacional"
+		},
+		"features": {
+			"feature1": {
+				"title": "Acesso Instantâneo a Materiais de Aprendizagem",
+				"description": "Coloque QR codes em folhas de exercícios, cartazes ou livros didáticos. Os alunos escaneiam para acessar vídeos, artigos ou exercícios interativos.",
+				"bullet1": "Vincule a vídeos educacionais, PDFs ou sites",
+				"bullet2": "Coloque em folhas de exercícios impressas ou cartazes de sala",
+				"bullet3": "Atualize recursos sem reimprimir materiais"
+			},
+			"feature2": {
+				"title": "Simplifique a Distribuição de Tarefas",
+				"description": "Compartilhe tarefas, listas de leitura e guias de estudo via QR codes. Os alunos escaneiam e pronto — sem digitar URLs longos.",
+				"bullet1": "Vincule a Google Docs, páginas do LMS ou drives compartilhados",
+				"bullet2": "Alunos acessam materiais de qualquer dispositivo",
+				"bullet3": "Altere links quando as tarefas forem atualizadas"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes para Outros Setores",
+			"subtitle": "Descubra como outros setores usam QR codes para se conectar com seu público.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"urlShortener": {
+				"title": "Encurtador de URL",
+				"description": "Crie links curtos e fáceis de digitar para alunos que preferem digitar URLs em vez de escanear."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Veja quais recursos de aprendizagem recebem mais engajamento e entenda os padrões de acesso dos alunos."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Os alunos precisam de um aplicativo especial para escanear QR codes?",
+			"a1": "Não. Todos os smartphones modernos escaneiam QR codes usando a câmera integrada. Os alunos só precisam apontar a câmera para o código e tocar no link que aparece.",
+			"q2": "Posso atualizar o recurso vinculado sem reimprimir?",
+			"a2": "Sim. QR codes dinâmicos permitem alterar a URL de destino a qualquer momento. Reutilize a mesma folha de exercícios impressa no próximo semestre com links completamente atualizados.",
+			"q3": "Como posso usar QR codes para uma caça ao tesouro na sala de aula?",
+			"a3": "Crie vários QR codes, cada um apontando para uma pista ou página de tarefa. Espalhe-os pela escola. Os alunos escaneiam cada código para avançar na atividade.",
+			"q4": "QR codes são acessíveis para alunos com deficiências?",
+			"a4": "QR codes são visuais, então combine-os com uma URL curta impressa abaixo para alunos que usam leitores de tela. A página vinculada deve seguir as melhores práticas de acessibilidade.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Leve QR Codes para Sua Sala de Aula",
+			"subtitle": "Compartilhe recursos, tarefas e conteúdo interativo com uma simples leitura. Gratuito para educadores.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Usar QR Codes na Sua Sala de Aula",
+			"subtitle": "Um guia prático para professores que querem conectar materiais impressos a recursos digitais.",
+			"step1": {
+				"title": "Escolha Seu Recurso",
+				"description": "Escolha o que vincular: um vídeo, folha de exercícios em PDF, URL de quiz, exercício interativo ou capítulo de livro didático online."
+			},
+			"step2": {
+				"title": "Crie o QR Code",
+				"description": "Cole a URL do recurso e gere um QR code. Use um código dinâmico se planeja atualizar o link depois."
+			},
+			"step3": {
+				"title": "Adicione Cores Divertidas",
+				"description": "Personalize com cores amigáveis para estudantes e o logo da escola. Torne visualmente atraente."
+			},
+			"step4": {
+				"title": "Imprima nos Materiais",
+				"description": "Adicione códigos a folhas de exercícios, cartazes de sala, cartões de projetos ou etiquetas de livros da biblioteca."
+			},
+			"step5": {
+				"title": "Verifique o Engajamento",
+				"description": "Veja dados de escaneamento para saber quais recursos os alunos mais usam. Ajuste seus materiais com base no uso real."
+			}
+		},
+		"tips": {
+			"title": "Melhores Práticas para QR Codes na Educação",
+			"tip1": {
+				"title": "Teste nos Dispositivos dos Alunos Primeiro",
+				"description": "Antes de distribuir folhas de exercícios, escaneie cada código com um celular semelhante ao que os alunos usam. Identifique problemas cedo."
+			},
+			"tip2": {
+				"title": "Imprima Grande o Suficiente",
+				"description": "Use códigos de pelo menos 3x3 cm — maiores para alunos mais novos. Códigos pequenos frustram e desperdiçam tempo de aula."
+			},
+			"tip3": {
+				"title": "Adicione uma Etiqueta Curta",
+				"description": "Imprima 'Escaneie para vídeo' ou 'Escaneie para quiz' ao lado de cada código. Etiquetas informam os alunos do que esperar e aumentam o engajamento."
+			},
+			"tip4": {
+				"title": "Reutilize Folhas de Exercícios Entre Semestres",
+				"description": "Com códigos dinâmicos, você pode atualizar o recurso vinculado sem reimprimir. Mesma folha, conteúdo novo a cada semestre."
+			}
+		},
+		"stats": {
+			"stat1Value": "89%",
+			"stat1Label": "dos alunos possuem smartphones",
+			"stat2Value": "2×",
+			"stat2Label": "acesso mais rápido a recursos",
+			"stat3Value": "70%",
+			"stat3Label": "preferem escanear a digitar URLs",
+			"stat4Value": "5 min",
+			"stat4Label": "economizados por aula"
+		}
+	},
+	"qrCodesMarketing": {
+		"metaTitle": "QR Codes para Marketing – Campanhas Impressas, Testes A/B e Branding | QRcodly",
+		"metaDescription": "Conecte marketing impresso e digital com QR codes. Acompanhe o desempenho de campanhas, personalize designs e atualize destinos a qualquer momento.",
+		"hero": {
+			"title": "QR Codes Feitos para Marketing",
+			"subtitle": "Conecte materiais impressos a campanhas digitais. Acompanhe o desempenho, personalize designs e atualize conteúdo em tempo real.",
+			"ctaLabel": "Crie Seu QR Code de Marketing"
+		},
+		"features": {
+			"feature1": {
+				"title": "Conecte o Impresso ao Digital",
+				"description": "Adicione QR codes a folhetos, cartazes, cartões de visita e embalagens. Cada escaneamento é um ponto de contato mensurável na sua campanha.",
+				"bullet1": "Vincule materiais impressos a qualquer landing page",
+				"bullet2": "Acompanhe taxas de escaneamento em outdoors, malas diretas e anúncios",
+				"bullet3": "Meça o ROI de campanhas impressas com dados reais"
+			},
+			"feature2": {
+				"title": "Teste e Otimize Campanhas",
+				"description": "Crie múltiplos QR codes para diferentes posicionamentos ou designs. Compare taxas de escaneamento para encontrar o que funciona melhor.",
+				"bullet1": "Crie códigos separados para cada posicionamento",
+				"bullet2": "Compare o desempenho entre canais",
+				"bullet3": "Troque destinos para testar diferentes landing pages"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes para Outros Setores",
+			"subtitle": "Veja como outros setores usam QR codes para engajar seu público.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"urlShortener": {
+				"title": "Encurtador de URL",
+				"description": "Crie links curtos personalizados para campanhas. Combine com QR codes para uma estratégia completa de rastreamento offline-para-online."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Aprofunde-se nas análises de campanha. Veja escaneamentos por localização, dispositivo, horário e mais para otimizar seu marketing."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Como meço o ROI de campanhas impressas com QR codes?",
+			"a1": "Crie um QR code único por posicionamento (outdoor, folheto, mala direta). Compare contagens de escaneamento com o custo por posicionamento. Adicione parâmetros UTM para vincular escaneamentos a conversões no Google Analytics.",
+			"q2": "Posso fazer teste A/B com diferentes landing pages?",
+			"a2": "Sim. Crie dois QR codes apontando para landing pages diferentes. Coloque-os em versões alternativas do seu material impresso e compare as taxas de conversão por escaneamento.",
+			"q3": "Qual o tamanho mínimo de impressão para QR codes de marketing?",
+			"a3": "2x2 cm para materiais de curta distância (folhetos, cartões de visita). Para outdoors ou cartazes vistos de longe, aumente — um código de 15 cm funciona bem a 3 metros.",
+			"q4": "Como rastreio a conversão offline-para-online?",
+			"a4": "Cada QR code dinâmico rastreia escaneamentos automaticamente. Combine com parâmetros UTM na URL de destino e você terá visibilidade completa do funil, do escaneamento físico à conversão digital.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Torne Cada Peça Impressa Mensurável",
+			"subtitle": "Adicione QR codes aos seus materiais de marketing e acompanhe cada escaneamento. Comece gratuitamente.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Adicionar QR Codes à Sua Campanha",
+			"subtitle": "Conecte marketing impresso e digital com QR codes rastreáveis em cinco passos.",
+			"step1": {
+				"title": "Defina o Objetivo da Campanha",
+				"description": "Decida o que quer medir: visitas à landing page, downloads de aplicativo, envios de formulário ou resgates de cupom."
+			},
+			"step2": {
+				"title": "Crie um QR Code Dinâmico",
+				"description": "Vincule à URL da campanha. Use um código dinâmico para poder trocar destinos ou adicionar parâmetros UTM depois."
+			},
+			"step3": {
+				"title": "Combine com o Design da Campanha",
+				"description": "Personalize cores, adicione seu logo e escolha um estilo que se integre perfeitamente ao seu material impresso."
+			},
+			"step4": {
+				"title": "Adicione aos Materiais Impressos",
+				"description": "Coloque o código em folhetos, cartazes, embalagens ou mala direta. Sempre inclua um CTA como 'Escaneie para resgatar sua oferta.'"
+			},
+			"step5": {
+				"title": "Compare o Desempenho por Posicionamento",
+				"description": "Crie códigos únicos por posicionamento. Compare dados de escaneamento entre canais para otimizar o ROI."
+			}
+		},
+		"tips": {
+			"title": "Melhores Práticas para QR Codes de Marketing",
+			"tip1": {
+				"title": "Um Código por Posicionamento",
+				"description": "Use códigos únicos para cada canal (outdoor, folheto, mala direta) para isolar o desempenho e medir o ROI por canal."
+			},
+			"tip2": {
+				"title": "Adicione Parâmetros UTM",
+				"description": "Anexe tags UTM às suas URLs de destino para atribuição completa no Google Analytics — do escaneamento à conversão."
+			},
+			"tip3": {
+				"title": "Teste no Tamanho Real de Impressão",
+				"description": "Escaneie seu código no tamanho final de impressão antes da tiragem completa. O que funciona na tela pode falhar em um cartão de visita pequeno."
+			},
+			"tip4": {
+				"title": "Sempre Inclua um CTA",
+				"description": "Coloque um call-to-action claro perto do código: 'Escaneie para resgatar sua oferta' ou 'Escaneie para acesso exclusivo.' Códigos sem CTAs são frequentemente ignorados."
+			}
+		},
+		"stats": {
+			"stat1Value": "76%",
+			"stat1Label": "dos consumidores já escanearam um QR code",
+			"stat2Value": "2×",
+			"stat2Label": "maior lembrança vs. anúncios só com URL",
+			"stat3Value": "34%",
+			"stat3Label": "conversão do impresso para digital",
+			"stat4Value": "5×",
+			"stat4Label": "ROI em campanhas impressas"
+		}
+	},
+	"urlShortenerMarketingTeams": {
+		"metaTitle": "Encurtador de URL para Equipes de Marketing – Links Personalizados e Rastreamento de Campanhas | QRcodly",
+		"metaDescription": "Encurte e personalize seus links de marketing. Acompanhe cliques, gerencie campanhas e use domínios personalizados — tudo em uma plataforma.",
+		"hero": {
+			"title": "Links Curtos Feitos para Equipes de Marketing",
+			"subtitle": "Crie links personalizados que geram confiança, acompanhe cliques entre campanhas e gerencie todos os seus URLs em um só lugar.",
+			"ctaLabel": "Encurte Seu Primeiro Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Links Personalizados que Geram Confiança",
+				"description": "Use seu próprio domínio personalizado para links curtos. URLs personalizados recebem mais cliques e reforçam a identidade da sua marca em todos os canais.",
+				"bullet1": "Conecte seu próprio domínio para URLs curtos personalizados",
+				"bullet2": "Links personalizados aumentam as taxas de cliques",
+				"bullet3": "Marca consistente em email, redes sociais e anúncios"
+			},
+			"feature2": {
+				"title": "Rastreamento de Cliques por Campanha",
+				"description": "Veja como seus links performam em diferentes canais. Acompanhe cliques, dados geográficos e tipos de dispositivos para cada link curto.",
+				"bullet1": "Rastreamento de cliques em tempo real para cada link",
+				"bullet2": "Filtre análises por período",
+				"bullet3": "Veja detalhamentos geográficos e por dispositivo"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Encurtador de URL para Outras Equipes",
+			"subtitle": "Veja como outras equipes usam links curtos para trabalhar de forma mais eficaz.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"qrCodes": {
+				"title": "Gerador de QR Code",
+				"description": "Combine links curtos com QR codes para campanhas impressas. Acompanhe escaneamentos e cliques em um único painel."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Aprofunde-se no desempenho dos links com análises detalhadas de cliques, dados de referência e insights geográficos."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Como links com marca melhoram a taxa de cliques?",
+			"a1": "Links com marca mostram seu domínio em vez de um encurtador genérico. Isso gera confiança — os destinatários reconhecem o remetente, resultando em taxas de cliques mensuravelmente maiores.",
+			"q2": "Posso rastrear cliques de diferentes campanhas separadamente?",
+			"a2": "Sim. Crie um link curto único para cada campanha ou canal. Use tags para organizá-los e filtre seu painel para comparar o desempenho lado a lado.",
+			"q3": "Como configuro um domínio personalizado para minha equipe?",
+			"a3": "Vá em Configurações → Domínios Personalizados, adicione seu domínio e configure os registros DNS mostrados. O SSL é provisionado automaticamente. Todos os novos links usarão seu domínio.",
+			"q4": "Posso alterar o destino de um link após compartilhá-lo?",
+			"a4": "Sim. Edite a URL de destino a qualquer momento pelo seu painel. O link curto permanece o mesmo — destinatários que já o possuem serão redirecionados para a página atualizada.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Potencialize Seus Links de Marketing",
+			"subtitle": "Links curtos personalizados com rastreamento de cliques e organização de campanhas. Gratuito para começar.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Configurar Links de Campanha",
+			"subtitle": "De encurtar sua primeira URL a comparar desempenho entre canais — feito em minutos.",
+			"step1": {
+				"title": "Cole a URL da Campanha",
+				"description": "Copie a URL longa da sua landing page, formulário ou listagem de app store e cole no encurtador."
+			},
+			"step2": {
+				"title": "Personalize o Link Curto",
+				"description": "Edite o slug para reconhecimento de marca (ex.: /promo-verao-email). Use seu domínio personalizado para marca consistente."
+			},
+			"step3": {
+				"title": "Adicione Tags para Rastreamento",
+				"description": "Etiquete o link por campanha, canal ou equipe. Tags permitem filtrar e comparar desempenho depois."
+			},
+			"step4": {
+				"title": "Compartilhe em Todos os Canais",
+				"description": "Coloque o link com marca em campanhas de email, publicações sociais, anúncios pagos ou comunicações com parceiros."
+			},
+			"step5": {
+				"title": "Monitore e Otimize",
+				"description": "Confira dados de cliques em tempo real no seu painel. Compare canais para ver onde seu orçamento rende mais."
+			}
+		},
+		"tips": {
+			"title": "Melhores Práticas para Links de Marketing",
+			"tip1": {
+				"title": "Um Link por Canal",
+				"description": "Crie um link curto único para cada canal (email, Instagram, anúncios) para isolar o desempenho e atribuir cliques com precisão."
+			},
+			"tip2": {
+				"title": "Use Slugs Descritivos",
+				"description": "Nomeie links de forma significativa — 'promo-verao-email' diz mais que 'link1.' Sua equipe agradecerá na hora do relatório."
+			},
+			"tip3": {
+				"title": "Configure o Domínio Personalizado Primeiro",
+				"description": "Configure seu domínio com marca antes de criar links de campanha. Marca consistente desde o primeiro dia gera confiança e CTR."
+			},
+			"tip4": {
+				"title": "Revise os Dados Semanalmente",
+				"description": "Confira dados de cliques toda semana para realocar orçamento de canais com baixo desempenho para os melhores."
+			}
+		},
+		"stats": {
+			"stat1Value": "34%",
+			"stat1Label": "maior CTR com links de marca",
+			"stat2Value": "3×",
+			"stat2Label": "configuração de campanha mais rápida",
+			"stat3Value": "87%",
+			"stat3Label": "dos profissionais de marketing usam rastreamento de links",
+			"stat4Value": "< 50 ms",
+			"stat4Label": "velocidade de redirecionamento"
+		}
+	},
+	"urlShortenerSocialMedia": {
+		"metaTitle": "Encurtador de URL para Redes Sociais – Links Limpos e Rastreamento de Cliques | QRcodly",
+		"metaDescription": "Crie links curtos e limpos para publicações em redes sociais. Acompanhe cliques e veja qual conteúdo gera mais engajamento.",
+		"hero": {
+			"title": "Links Curtos Feitos para Redes Sociais",
+			"subtitle": "Links limpos e personalizados que ficam ótimos em publicações e stories. Acompanhe cliques para ver qual conteúdo ressoa.",
+			"ctaLabel": "Encurte Seu Primeiro Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Links Limpos para Cada Publicação",
+				"description": "Substitua URLs longas e desagradáveis por links curtos e personalizados. Ficam melhores em publicações, biografias e stories — e são mais fáceis de compartilhar.",
+				"bullet1": "Links curtos ficam mais limpos em publicações sociais",
+				"bullet2": "Domínios personalizados geram confiança nos seguidores",
+				"bullet3": "Funciona em todas as plataformas sociais"
+			},
+			"feature2": {
+				"title": "Acompanhe o Engajamento Social",
+				"description": "Veja quantos cliques cada link recebe. Compare o desempenho entre plataformas e publicações para entender o que seu público valoriza.",
+				"bullet1": "Rastreamento de cliques em tempo real para cada link",
+				"bullet2": "Veja quais plataformas geram mais tráfego",
+				"bullet3": "Entenda seu público com dados de dispositivos"
+			},
+			"feature3": {
+				"title": "Links Dinâmicos que Você Pode Atualizar",
+				"description": "Altere para onde seu link aponta — mesmo após publicar. Redirecione seguidores para novo conteúdo sem editar sua publicação.",
+				"bullet1": "Atualize URLs de destino após publicar",
+				"bullet2": "Redirecione campanhas sazonais ou urgentes",
+				"bullet3": "Corrija links quebrados sem republicar"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Encurtador de URL para Outras Equipes",
+			"subtitle": "Descubra como outras equipes usam links curtos para melhorar seu fluxo de trabalho.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"qrCodes": {
+				"title": "Gerador de QR Code",
+				"description": "Crie QR codes para seus perfis sociais ou landing pages de campanha. Ótimo para promoção cruzada entre impresso e digital."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Obtenha análises detalhadas de cliques para todos os seus links sociais. Veja dados de referência, localizações e detalhamentos de dispositivos."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Links curtos funcionam em bios e stories do Instagram?",
+			"a1": "Sim. Links curtos funcionam em todos os lugares — bios, stories, legendas e comentários. São especialmente úteis em bios onde o espaço de caracteres é limitado.",
+			"q2": "Consigo ver qual plataforma gera mais cliques?",
+			"a2": "Crie um link curto único para cada plataforma (um para Instagram, um para Twitter/X, um para LinkedIn). Compare contagens de cliques no seu painel para encontrar o melhor desempenho.",
+			"q3": "Links curtos serão marcados como spam nas redes sociais?",
+			"a3": "Não. Os links do QRcodly usam redirecionamentos limpos e não estão em nenhuma lista de bloqueio. Usar seu próprio domínio personalizado elimina ainda mais qualquer preocupação com spam.",
+			"q4": "Posso alterar para onde um link vai após publicar?",
+			"a4": "Sim. Atualize a URL de destino a qualquer momento sem editar sua publicação. Seguidores clicando no mesmo link serão redirecionados para o novo conteúdo.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Eleve Seus Links Sociais",
+			"subtitle": "Links curtos e personalizados com rastreamento de cliques para todo o seu conteúdo social. Comece gratuitamente.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Criar Links para Redes Sociais",
+			"subtitle": "Links limpos e rastreáveis para cada publicação e bio — prontos em segundos.",
+			"step1": {
+				"title": "Cole Sua URL Longa",
+				"description": "Copie a URL que quer compartilhar — post de blog, página de produto ou landing page — e cole no encurtador."
+			},
+			"step2": {
+				"title": "Personalize o Slug",
+				"description": "Edite o slug do link curto para uma URL limpa e memorável que fica ótima em bios e legendas."
+			},
+			"step3": {
+				"title": "Copie e Publique",
+				"description": "Copie o link curto e adicione à sua publicação social, story, bio ou comentário. Funciona em todas as plataformas."
+			},
+			"step4": {
+				"title": "Acompanhe Cliques por Publicação",
+				"description": "Confira seu painel para ver quais publicações geram mais cliques. Compare desempenho entre plataformas."
+			}
+		}
+	},
+	"urlShortenerSales": {
+		"metaTitle": "Encurtador de URL para Equipes de Vendas – Links Rastreáveis para Prospecção | QRcodly",
+		"metaDescription": "Crie links curtos rastreáveis para prospecção de vendas. Veja quando prospects clicam e meça o engajamento entre campanhas.",
+		"hero": {
+			"title": "Links Curtos Feitos para Equipes de Vendas",
+			"subtitle": "Envie links rastreáveis em emails e propostas de prospecção. Saiba quando os prospects interagem com seu conteúdo.",
+			"ctaLabel": "Encurte Seu Primeiro Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Links Rastreáveis para Prospecção",
+				"description": "Adicione links curtos a emails, propostas e apresentações. Acompanhe cada clique para ver quais prospects estão engajando.",
+				"bullet1": "Veja contagens de cliques para cada link compartilhado",
+				"bullet2": "Acompanhe horários e frequência de engajamento",
+				"bullet3": "Use domínios personalizados para aparência profissional"
+			},
+			"feature2": {
+				"title": "Links Personalizados Geram Credibilidade",
+				"description": "Use o domínio da sua empresa para links curtos. Prospects confiam mais em URLs personalizados do que em encurtadores genéricos.",
+				"bullet1": "Conecte seu domínio personalizado",
+				"bullet2": "Aparência profissional em emails e propostas",
+				"bullet3": "Marca consistente em todos os pontos de contato"
+			},
+			"feature3": {
+				"title": "Meça o Desempenho da Prospecção",
+				"description": "Compare taxas de cliques entre campanhas e canais. Entenda qual mensagem e conteúdo geram mais engajamento.",
+				"bullet1": "Compare cliques entre campanhas e canais",
+				"bullet2": "Veja detalhamentos geográficos e por dispositivo",
+				"bullet3": "Identifique qual conteúdo ressoa com os prospects"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Encurtador de URL para Outras Equipes",
+			"subtitle": "Veja como outras equipes usam links curtos para melhorar seus resultados.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"qrCodes": {
+				"title": "Gerador de QR Code",
+				"description": "Adicione QR codes a propostas impressas, brochuras e materiais de apresentação. Acompanhe escaneamentos junto com cliques em links."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Análises detalhadas de cliques para cada link. Veja quando prospects clicam, de onde e em qual dispositivo."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Consigo saber quando um prospect específico clica no meu link?",
+			"a1": "Timestamps de cliques e informações de dispositivo são rastreados por link. Se você enviar um link curto único para cada prospect, verá exatamente quando eles interagem com seu conteúdo.",
+			"q2": "Como links com marca ajudam na prospecção de vendas?",
+			"a2": "Links de encurtadores genéricos parecem suspeitos em emails profissionais. Um link no domínio da sua empresa (ex.: go.suaempresa.com/proposta) gera confiança e recebe significativamente mais cliques.",
+			"q3": "Posso rastrear engajamento em toda a equipe de vendas?",
+			"a3": "Sim. Todos os links criados na sua conta ficam visíveis em um único painel. Use tags (ex.: nome do representante, estágio do negócio) para filtrar e comparar desempenho da equipe.",
+			"q4": "O que acontece se eu precisar atualizar uma proposta compartilhada?",
+			"a4": "Altere a URL de destino no seu painel. O link curto já enviado ao prospect permanece o mesmo — eles verão a proposta atualizada quando clicarem.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Acompanhe Cada Clique na Sua Prospecção",
+			"subtitle": "Links curtos personalizados com rastreamento de cliques em tempo real. Saiba quando prospects engajam. Comece gratuitamente.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Usar Links Rastreáveis na Prospecção",
+			"subtitle": "Saiba exatamente quando prospects interagem com seu conteúdo.",
+			"step1": {
+				"title": "Crie um Link para Seu Conteúdo",
+				"description": "Encurte a URL da sua proposta, estudo de caso, página de preços ou formulário de agendamento de demo."
+			},
+			"step2": {
+				"title": "Use o Domínio da Sua Empresa",
+				"description": "Configure seu domínio personalizado para que os links tenham aparência profissional — ex.: go.suaempresa.com/proposta."
+			},
+			"step3": {
+				"title": "Adicione a Emails e Mensagens",
+				"description": "Coloque o link curto com marca no seu email de prospecção, mensagem do LinkedIn ou apresentação."
+			},
+			"step4": {
+				"title": "Monitore o Engajamento do Prospect",
+				"description": "Confira seu painel para ver timestamps de cliques e dados de dispositivo. Veja exatamente quando um prospect abre seu link."
+			}
+		}
+	},
+	"urlShortenerEcommerce": {
+		"metaTitle": "Encurtador de URL para E-Commerce – Links de Produtos e Rastreamento por Canal | QRcodly",
+		"metaDescription": "Crie links curtos para páginas de produtos, acompanhe cliques entre canais de venda e gerencie URLs de campanhas sazonais com facilidade.",
+		"hero": {
+			"title": "Links Curtos Feitos para E-Commerce",
+			"subtitle": "Links de produtos limpos para cada canal. Acompanhe cliques, gerencie campanhas e mantenha seus URLs organizados.",
+			"ctaLabel": "Encurte Seu Primeiro Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Links Curtos para Páginas de Produtos",
+				"description": "Transforme URLs longas de produtos em links limpos e compartilháveis. Perfeito para publicações sociais, campanhas de email e anúncios.",
+				"bullet1": "URLs limpos para páginas de produtos e coleções",
+				"bullet2": "Fácil de compartilhar em todos os canais de venda",
+				"bullet3": "Domínio personalizado para aparência profissional"
+			},
+			"feature2": {
+				"title": "Acompanhe Cliques Entre Canais",
+				"description": "Veja quais canais geram mais tráfego para seus produtos. Compare o desempenho de cliques entre email, redes sociais, anúncios e mais.",
+				"bullet1": "Links separados por canal para atribuição clara",
+				"bullet2": "Rastreamento e relatórios de cliques em tempo real",
+				"bullet3": "Detalhamentos geográficos e por dispositivo"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Encurtador de URL para Outras Equipes",
+			"subtitle": "Descubra como outras equipes aproveitam links curtos para melhores resultados.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"qrCodes": {
+				"title": "Gerador de QR Code",
+				"description": "Adicione QR codes a embalagens de produtos, encartes e materiais impressos. Vincule clientes a páginas de produtos, avaliações ou suporte."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Análises profundas para cada link de produto. Entenda quais produtos recebem mais cliques e de quais canais."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Consigo rastrear qual canal gera mais cliques em produtos?",
+			"a1": "Sim. Crie links curtos separados para cada canal (email, Instagram, anúncios). Compare contagens de cliques no seu painel para identificar sua melhor fonte de tráfego.",
+			"q2": "Como lido com links de produtos sazonais?",
+			"a2": "Use links curtos e atualize o destino quando a temporada mudar. Seu link de Black Friday pode redirecionar para uma página de Promoção de Verão depois — mesma URL, conteúdo novo.",
+			"q3": "Posso encurtar links do Shopify, WooCommerce ou Amazon?",
+			"a3": "Sim. O encurtador de URL funciona com qualquer URL. Cole seu link de produto de qualquer plataforma e crie um link curto com marca instantaneamente.",
+			"q4": "Links curtos afetam o SEO da minha loja?",
+			"a4": "Não. Links curtos usam redirecionamentos 301, que passam o valor total de SEO para a página de destino. Seus rankings de busca não são afetados.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Simplifique Seus Links de E-Commerce",
+			"subtitle": "Links curtos limpos e rastreáveis para cada produto e campanha. Gratuito para começar.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Encurtar Links de Produtos",
+			"subtitle": "Links limpos e rastreáveis para cada produto e campanha — configurados em minutos.",
+			"step1": {
+				"title": "Copie a URL do Produto",
+				"description": "Pegue a URL longa da página de produto no Shopify, WooCommerce, Amazon ou qualquer outra loja."
+			},
+			"step2": {
+				"title": "Crie um Link Curto com Marca",
+				"description": "Encurte a URL e personalize o slug para legibilidade (ex.: /vestido-verao ou /black-friday)."
+			},
+			"step3": {
+				"title": "Etiquete e Organize",
+				"description": "Adicione tags por categoria, temporada ou campanha. Tags facilitam filtrar e gerenciar centenas de links de produtos."
+			},
+			"step4": {
+				"title": "Compartilhe em Todos os Canais",
+				"description": "Use o link curto em campanhas de email, publicações sociais, anúncios pagos e parcerias com influenciadores."
+			},
+			"step5": {
+				"title": "Otimize por Canal",
+				"description": "Compare taxas de cliques por canal. Redirecione investimento em anúncios para onde seus links performam melhor."
+			}
+		},
+		"tips": {
+			"title": "Melhores Práticas para Links de E-Commerce",
+			"tip1": {
+				"title": "Use Slugs Descritivos",
+				"description": "Slugs memoráveis como /black-friday ou /promo-verao são mais fáceis de reconhecer e geram mais confiança do que caracteres aleatórios."
+			},
+			"tip2": {
+				"title": "Um Link por Produto por Canal",
+				"description": "Crie links separados para Instagram, email e anúncios. Isso fornece dados precisos de atribuição por canal."
+			},
+			"tip3": {
+				"title": "Etiquete por Temporada ou Coleção",
+				"description": "Organize links com tags como 'Q4-natal' ou 'verao-2026.' Encontre e gerencie links de campanha rapidamente depois."
+			},
+			"tip4": {
+				"title": "Redirecione Promoções Expiradas",
+				"description": "Quando uma promoção terminar, redirecione o link curto para sua homepage ou um produto relacionado — nunca deixe apontando para um 404."
+			}
+		},
+		"stats": {
+			"stat1Value": "28%",
+			"stat1Label": "maior CTR vs. URLs brutas",
+			"stat2Value": "2×",
+			"stat2Label": "mais compartilhamentos sociais",
+			"stat3Value": "45%",
+			"stat3Label": "dos cliques vêm do mobile",
+			"stat4Value": "99.9%",
+			"stat4Label": "garantia de uptime"
+		}
+	},
+	"urlShortenerDevelopers": {
+		"metaTitle": "API de Encurtador de URL para Desenvolvedores – REST API e Domínios Personalizados | QRcodly",
+		"metaDescription": "Integre encurtamento de URL nos seus aplicativos com nossa REST API. Crie, gerencie e acompanhe links curtos programaticamente.",
+		"hero": {
+			"title": "API de Encurtador de URL para Desenvolvedores",
+			"subtitle": "Integre a criação de links curtos nos seus aplicativos e fluxos de trabalho com nossa REST API. Documentação completa incluída.",
+			"ctaLabel": "Ver Documentação da API"
+		},
+		"features": {
+			"feature1": {
+				"title": "REST API Simples",
+				"description": "Crie, atualize e gerencie links curtos programaticamente. Nossa REST API é direta com documentação clara e exemplos de código.",
+				"bullet1": "Endpoints RESTful para operações CRUD",
+				"bullet2": "Formato de requisição e resposta em JSON",
+				"bullet3": "Documentação abrangente da API"
+			},
+			"feature2": {
+				"title": "Autenticação por Chave de API",
+				"description": "Autentique com chaves de API para integração servidor-a-servidor. Gere e gerencie chaves pelo seu painel.",
+				"bullet1": "Gere chaves de API pelo seu painel",
+				"bullet2": "Autenticação segura servidor-a-servidor",
+				"bullet3": "Rate limiting integrado para uso justo"
+			},
+			"feature3": {
+				"title": "Integração com Domínio Personalizado",
+				"description": "Use seu próprio domínio para links curtos criados via API. Marca com domínio personalizado para uma experiência de usuário perfeita.",
+				"bullet1": "Todos os links criados via API usam seu domínio personalizado",
+				"bullet2": "Configure domínios via painel ou API",
+				"bullet3": "Guias de configuração DNS incluídos na documentação"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Encurtador de URL para Outras Equipes",
+			"subtitle": "Veja como equipes não-técnicas usam links curtos no trabalho.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"qrCodes": {
+				"title": "Gerador de QR Code",
+				"description": "Gere QR codes via API também. Crie QR codes dinâmicos programaticamente para aplicativos, ingressos ou embalagens."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Acesse análises de cliques para links criados via API. Visualize dados de desempenho no painel ou recupere via API."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Qual método de autenticação a API usa?",
+			"a1": "Autenticação por Bearer token. Gere uma chave de API no seu painel e inclua-a no header Authorization: Authorization: Bearer SUA_CHAVE_API.",
+			"q2": "Posso definir um slug personalizado via API?",
+			"a2": "Sim. Inclua o campo customSlug no body da requisição. Se omitido, um código curto aleatório é gerado automaticamente.",
+			"q3": "Existe rate limit nas requisições da API?",
+			"a3": "Sim. Rate limits dependem do seu plano. Contas gratuitas têm limites mais restritos; contas Pro recebem maior throughput. Verifique os headers da resposta para seu uso atual.",
+			"q4": "Posso recuperar análises de cliques via API?",
+			"a4": "Sim. Os endpoints de analytics retornam contagens de cliques, timestamps, dados de dispositivo e informações geográficas para cada link curto programaticamente.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Comece a Construir com Nossa API",
+			"subtitle": "REST API para links curtos com documentação completa. Integre encurtamento de URL nos seus aplicativos hoje.",
+			"ctaLabel": "Ver Documentação da API"
+		},
+		"steps": {
+			"title": "Como Integrar a API de Encurtador de URL",
+			"subtitle": "Da chave de API ao seu primeiro link curto — em quatro passos.",
+			"step1": {
+				"title": "Gere uma Chave de API",
+				"description": "Acesse as configurações do seu painel e crie uma chave de API. Este é seu Bearer token para todas as requisições à API."
+			},
+			"step2": {
+				"title": "Envie uma Requisição POST",
+				"description": "Faça uma requisição para o endpoint /api/v1/short-url com sua URL longa e um slug personalizado opcional no body JSON."
+			},
+			"step3": {
+				"title": "Receba o Link Curto",
+				"description": "A API retorna uma resposta JSON com a URL curta, timestamp de criação e ID do link para referência futura."
+			},
+			"step4": {
+				"title": "Consulte Análises de Cliques",
+				"description": "Use os endpoints de analytics para buscar contagens de cliques, timestamps, dados de dispositivo e informações geográficas por link."
+			}
+		}
+	},
+	"urlShortenerAgencies": {
+		"metaTitle": "Encurtador de URL para Agências – Domínios de Clientes, Links Personalizados e Análises | QRcodly",
+		"metaDescription": "Gerencie links curtos para múltiplos clientes com domínios personalizados, URLs com marca e análises por link. Feito para agências.",
+		"hero": {
+			"title": "Links Curtos Feitos para Agências",
+			"subtitle": "Gerencie links personalizados entre clientes. Use domínios personalizados, acompanhe o desempenho e entregue resultados.",
+			"ctaLabel": "Encurte Seu Primeiro Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Domínios Personalizados para Cada Cliente",
+				"description": "Conecte múltiplos domínios personalizados — um para cada cliente. Cada link curto carrega a marca do cliente.",
+				"bullet1": "Conecte domínios personalizados por cliente",
+				"bullet2": "URLs curtos com marca para entrega profissional",
+				"bullet3": "Configuração DNS fácil com instruções guiadas"
+			},
+			"feature2": {
+				"title": "Análises por Link",
+				"description": "Acompanhe o desempenho de cliques para cada link. Revise dados de análise com clientes e demonstre resultados de campanha.",
+				"bullet1": "Rastreamento de cliques para cada link criado",
+				"bullet2": "Análises por link que você pode revisar com clientes",
+				"bullet3": "Detalhamentos geográficos e por dispositivo"
+			},
+			"feature3": {
+				"title": "Gerenciamento Organizado de Links",
+				"description": "Etiquete e organize links por cliente, campanha ou canal. Pesquise e filtre para encontrar qualquer link instantaneamente.",
+				"bullet1": "Etiquete links por cliente ou projeto",
+				"bullet2": "Pesquise e filtre em todos os links",
+				"bullet3": "Mantenha o trabalho dos clientes separado e organizado"
+			}
+		},
+		"relatedUseCases": {
+			"title": "Encurtador de URL para Outras Equipes",
+			"subtitle": "Veja como outras equipes usam links curtos para alcançar seus objetivos.",
+			"learnMore": "Saiba mais"
+		},
+		"crossProducts": {
+			"title": "Explore Mais Ferramentas",
+			"qrCodes": {
+				"title": "Gerador de QR Code",
+				"description": "Crie QR codes com marca para campanhas de clientes. Combine com links curtos para rastreamento completo offline-para-online."
+			},
+			"analytics": {
+				"title": "Painel de Análises",
+				"description": "Análises abrangentes de cliques para todos os links de clientes. Filtre por cliente, campanha ou período."
+			}
+		},
+		"faq": {
+			"title": "Perguntas Frequentes",
+			"q1": "Posso conectar um domínio diferente para cada cliente?",
+			"a1": "Sim. Adicione múltiplos domínios personalizados nas configurações. Ao criar um link, selecione qual domínio usar. Cada cliente recebe seus próprios URLs curtos com marca.",
+			"q2": "Como mantenho os links dos clientes organizados?",
+			"a2": "Use tags para etiquetar cada link por cliente, projeto e campanha. Filtre o painel para visualizar apenas os links de um cliente de cada vez para gerenciamento focado.",
+			"q3": "Posso compartilhar dados de cliques com clientes?",
+			"a3": "Sim. Exporte análises de links ou compartilhe capturas de tela do painel. Cada link mostra contagens de cliques, dados geográficos e detalhamentos de dispositivos.",
+			"q4": "Existe um limite de quantos domínios personalizados posso adicionar?",
+			"a4": "Contas Pro suportam múltiplos domínios personalizados. O limite exato depende do tier do seu plano — consulte a página de preços para detalhes.",
+			"viewAll": "Ver todas as perguntas"
+		},
+		"cta": {
+			"title": "Escale o Gerenciamento de Links da Sua Agência",
+			"subtitle": "Domínios personalizados, links com marca e análises para cada cliente. Gratuito para começar.",
+			"ctaLabel": "Comece Gratuitamente"
+		},
+		"steps": {
+			"title": "Como Gerenciar Links de Clientes em Escala",
+			"subtitle": "Domínios personalizados, painéis organizados e análises compartilháveis para cada cliente.",
+			"step1": {
+				"title": "Conecte Domínios dos Clientes",
+				"description": "Adicione o domínio personalizado de cada cliente nas configurações do painel. Siga o guia de configuração DNS para configuração rápida."
+			},
+			"step2": {
+				"title": "Crie Links Curtos com Marca",
+				"description": "Ao criar um link, selecione o domínio do cliente. A URL curta carrega automaticamente a marca dele."
+			},
+			"step3": {
+				"title": "Etiquete por Cliente e Campanha",
+				"description": "Adicione tags como o nome do cliente e título da campanha. Isso permite filtrar o painel para ver os links de um cliente instantaneamente."
+			},
+			"step4": {
+				"title": "Compartilhe Relatórios de Desempenho",
+				"description": "Exporte análises de cliques por cliente. Revise dados de desempenho juntos e use para planejar a próxima campanha."
+			}
+		}
+	},
+	"helpSupport": {
+		"fabLabel": "Ajuda e Suporte",
+		"title": "Precisa de ajuda?",
+		"description": "Estamos aqui para ajudá-lo a aproveitar ao máximo o QRcodly.",
+		"faq": {
+			"title": "FAQ",
+			"subtitle": "Consulte as perguntas frequentes"
+		},
+		"docs": {
+			"title": "Documentação",
+			"subtitle": "Guias, referência de API e mais"
+		},
+		"email": {
+			"title": "Suporte por e-mail",
+			"subtitle": "Entre em contato com nossa equipe"
+		}
 	}
 }

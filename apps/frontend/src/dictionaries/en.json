@@ -1983,5 +1983,1250 @@
 		"skip": "Skip",
 		"thankYouTitle": "Thank you!",
 		"thankYouMessage": "Your feedback helps us build a better product."
+	},
+	"qrCodesRestaurants": {
+		"metaTitle": "QR Codes for Restaurants – Digital Menus, WiFi & More | QRcodly",
+		"metaDescription": "Create QR codes for your restaurant. Offer digital menus, easy WiFi access, and track engagement — all from one platform.",
+		"hero": {
+			"title": "QR Codes Built for Restaurants",
+			"subtitle": "Give guests instant access to menus, WiFi, and specials. Update content anytime without reprinting.",
+			"ctaLabel": "Create Your Restaurant QR Code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Digital Menus That Update Instantly",
+				"description": "Link a QR code to your online menu. Change prices, add seasonal dishes, or update specials — guests always see the latest version.",
+				"bullet1": "Update menu items without reprinting",
+				"bullet2": "Link to PDF, webpage, or ordering system",
+				"bullet3": "Works on any smartphone — no app needed"
+			},
+			"feature2": {
+				"title": "WiFi Access in One Scan",
+				"description": "Let guests connect to your WiFi instantly by scanning a QR code. No more asking for passwords or typing long credentials.",
+				"bullet1": "Encode your WiFi network name and password",
+				"bullet2": "Guests connect with a single tap after scanning",
+				"bullet3": "Place on tables, walls, or check-in counters"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes for Other Industries",
+			"subtitle": "See how businesses in other sectors use QR codes to engage their audience.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"urlShortener": {
+				"title": "URL Shortener",
+				"description": "Create short, branded links for your restaurant's online ordering, reservation pages, and social profiles."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Dive deeper into scan data with our full analytics suite. Understand guest behavior and optimize placements."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "What size should I print table QR codes?",
+			"a1": "At least 2×2 cm (roughly 0.8×0.8 in). For table stands, 3×3 cm works best. Always test at the actual size before ordering a large print run.",
+			"q2": "Can one QR code handle both my menu and WiFi?",
+			"a2": "No — each content type needs its own QR code. But you can place them side by side on the same table card: one for your menu URL and one WiFi QR code.",
+			"q3": "How do I manage multiple locations with different menus?",
+			"a3": "Create separate QR codes for each location, each linking to that branch's menu page. Use tags in your dashboard to organize codes by restaurant location.",
+			"q4": "Can guests leave a review after scanning?",
+			"a4": "Yes — link your QR code to your Google Business review page or a feedback form. With a dynamic code, you can swap between your menu and review page seasonally.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Ready to Modernize Your Restaurant?",
+			"subtitle": "Create your first restaurant QR code in minutes. Digital menus, WiFi access, and analytics — all free to start.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Create QR Codes for Your Restaurant",
+			"subtitle": "From choosing a content type to placing codes on tables — here's the full walkthrough.",
+			"step1": {
+				"title": "Choose Your Content Type",
+				"description": "Decide what guests should see after scanning: a menu URL, WiFi credentials, or your location on a map."
+			},
+			"step2": {
+				"title": "Add Your Menu or Link",
+				"description": "Upload a PDF menu or paste the link to your online ordering page. WiFi codes just need your network name and password."
+			},
+			"step3": {
+				"title": "Match Your Restaurant Branding",
+				"description": "Customize colors, add your restaurant logo, and pick a style that fits your brand identity."
+			},
+			"step4": {
+				"title": "Download for Print",
+				"description": "Export as SVG for sharp, print-ready output — perfect for table cards, posters, and window stickers."
+			},
+			"step5": {
+				"title": "Place and Track",
+				"description": "Put codes on tables, menus, and displays. Monitor which locations get the most scans in your dashboard."
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Restaurant QR Codes",
+			"tip1": {
+				"title": "Print at Least 2×2 cm",
+				"description": "Smaller codes are harder to scan reliably. For table cards and stands, 3×3 cm is the sweet spot."
+			},
+			"tip2": {
+				"title": "Place at Eye Level",
+				"description": "Use table stands or wall mounts instead of flat surfaces. Codes at eye level get scanned 2× more often."
+			},
+			"tip3": {
+				"title": "Test Before You Print",
+				"description": "Scan with 3 different phones at the actual print size before ordering a batch. Catch issues early."
+			},
+			"tip4": {
+				"title": "Update Menus Before Peak Hours",
+				"description": "Push menu changes on Friday afternoon to catch weekend traffic — your busiest scanning window."
+			}
+		},
+		"stats": {
+			"stat1Value": "73%",
+			"stat1Label": "of diners prefer digital menus",
+			"stat2Value": "3×",
+			"stat2Label": "faster table ordering",
+			"stat3Value": "45%",
+			"stat3Label": "less printing costs",
+			"stat4Value": "< 2 sec",
+			"stat4Label": "average scan time"
+		}
+	},
+	"qrCodesRetail": {
+		"metaTitle": "QR Codes for Retail – Product Info, Promotions & Tracking | QRcodly",
+		"metaDescription": "Use QR codes in retail for product details, promotions, and customer engagement. Track scans and update content anytime.",
+		"hero": {
+			"title": "QR Codes Built for Retail",
+			"subtitle": "Connect physical products to digital experiences. Share product info, run promotions, and track engagement.",
+			"ctaLabel": "Create Your Retail QR Code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Product Information at a Glance",
+				"description": "Add QR codes to packaging or shelf tags. Customers scan to see detailed specs, reviews, how-to videos, or ingredient lists.",
+				"bullet1": "Link to product pages or landing pages",
+				"bullet2": "Share size guides, care instructions, or tutorials",
+				"bullet3": "Update linked content without changing packaging"
+			},
+			"feature2": {
+				"title": "Run In-Store Promotions",
+				"description": "Drive engagement with QR codes that link to exclusive discounts, loyalty programs, or seasonal offers.",
+				"bullet1": "Link to coupon pages or discount codes",
+				"bullet2": "Promote loyalty sign-ups or app downloads",
+				"bullet3": "Change offers in real-time with dynamic codes"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes for Other Industries",
+			"subtitle": "Discover how other sectors leverage QR codes to connect with their audience.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"urlShortener": {
+				"title": "URL Shortener",
+				"description": "Create short links for product pages, promo landing pages, and customer surveys."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Get detailed insights into scan patterns, device types, and customer engagement metrics."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "How do I track which products get the most scans?",
+			"a1": "Create a separate QR code for each product or display. Your dashboard shows scan counts, timing, and device data for each code individually.",
+			"q2": "What's the best placement for retail QR codes?",
+			"a2": "Shelf-edge labels and product packaging work best. Ensure the code is visible, not obscured by other items, and add a short call-to-action text nearby.",
+			"q3": "Can I run time-limited promotions with QR codes?",
+			"a3": "Yes. Use dynamic QR codes and update the destination URL when the promotion ends. Redirect to a new offer or your standard product page — no reprinting needed.",
+			"q4": "How do I connect QR codes to my loyalty program?",
+			"a4": "Link QR codes to your loyalty sign-up page or app download link. Customers scan, sign up, and start earning rewards — no manual entry needed.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Boost Your Retail Experience",
+			"subtitle": "Connect products to digital content with QR codes. Easy to create, simple to update, free to start.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Use QR Codes in Your Store",
+			"subtitle": "From shelf tags to checkout — a step-by-step guide for retail teams.",
+			"step1": {
+				"title": "Plan Your Placements",
+				"description": "Decide where codes go: product packaging, shelf-edge labels, window displays, or in-store signage."
+			},
+			"step2": {
+				"title": "Create Product or Promo Codes",
+				"description": "Link each QR code to a product detail page, promotional landing page, or loyalty sign-up form."
+			},
+			"step3": {
+				"title": "Customize to Your Brand",
+				"description": "Match your brand colors, add your logo, and choose a style that fits your store's visual identity."
+			},
+			"step4": {
+				"title": "Print in High Quality",
+				"description": "Download as SVG for razor-sharp output on labels, packaging, and signage at any size."
+			},
+			"step5": {
+				"title": "Analyze In-Store Engagement",
+				"description": "Track which products and displays get the most scans. Use data to optimize layouts and promotions."
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Retail QR Codes",
+			"tip1": {
+				"title": "One Code per SKU",
+				"description": "Use a dedicated QR code for each product to track engagement at the item level — not just the display level."
+			},
+			"tip2": {
+				"title": "Add a Call-to-Action",
+				"description": "Print a short prompt near the code like 'Scan for 10% off' or 'Scan for size guide.' Codes with CTAs get 3× more scans."
+			},
+			"tip3": {
+				"title": "Place at Shelf Edge",
+				"description": "Position codes on shelf labels where they're visible, not hidden behind products. Customers scan what they can see."
+			},
+			"tip4": {
+				"title": "Rotate Promotions Weekly",
+				"description": "Use dynamic codes and swap destinations regularly. Fresh offers keep customers scanning."
+			}
+		},
+		"stats": {
+			"stat1Value": "58%",
+			"stat1Label": "of shoppers scan in-store codes",
+			"stat2Value": "2.4×",
+			"stat2Label": "higher engagement vs. print-only",
+			"stat3Value": "40%",
+			"stat3Label": "coupon redemption rate",
+			"stat4Value": "12 sec",
+			"stat4Label": "average interaction time"
+		}
+	},
+	"qrCodesEvents": {
+		"metaTitle": "QR Codes for Events – Check-in, Schedules & Networking | QRcodly",
+		"metaDescription": "Streamline events with QR codes for check-in, schedules, and attendee engagement. Create and track event QR codes easily.",
+		"hero": {
+			"title": "QR Codes Built for Events",
+			"subtitle": "Simplify check-in, share schedules, and connect attendees. One scan does it all.",
+			"ctaLabel": "Create Your Event QR Code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Faster Check-In for Attendees",
+				"description": "Send personalized QR codes to attendees. Staff scans them at the door for quick, contactless check-in.",
+				"bullet1": "Generate unique codes per attendee or ticket",
+				"bullet2": "Speed up entry lines at any venue size",
+				"bullet3": "Works with any smartphone or tablet scanner"
+			},
+			"feature2": {
+				"title": "Live Schedules and Updates",
+				"description": "Link QR codes to your event schedule. Update session times, room changes, or speaker info — attendees always have the latest.",
+				"bullet1": "Link to a live schedule or agenda page",
+				"bullet2": "Push last-minute changes without reprinting",
+				"bullet3": "Place on badges, signage, or printed programs"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes for Other Industries",
+			"subtitle": "Explore how other industries use QR codes to engage their audience.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"urlShortener": {
+				"title": "URL Shortener",
+				"description": "Create short links for event registration pages, feedback forms, and post-event surveys."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Track scan activity across your event. See which sessions, booths, or materials get the most engagement."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "How do I use QR codes for event check-in?",
+			"a1": "Generate a unique QR code per ticket or attendee. Staff scans the code at entry using any smartphone — it links to a check-in page that marks attendance instantly.",
+			"q2": "Can I update the event schedule after printing badges?",
+			"a2": "Yes. Use dynamic QR codes that link to your online schedule page. When sessions change, update the page — all printed badge codes still work.",
+			"q3": "How do vCard QR codes work for networking?",
+			"a3": "A vCard QR code contains contact details (name, email, phone, company). When scanned, the phone offers to save the contact directly — replacing traditional business cards.",
+			"q4": "Can I measure which sessions were most popular?",
+			"a4": "Create separate QR codes for each session or talk. Compare scan counts in your dashboard to see which sessions attracted the most attendees.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Make Your Next Event Seamless",
+			"subtitle": "QR codes for check-in, schedules, and networking. Create them in minutes — free to get started.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Set Up QR Codes for Your Event",
+			"subtitle": "From badges to signage — everything you need for a smooth event experience.",
+			"step1": {
+				"title": "Define Your Use Case",
+				"description": "Choose what the QR code does: check-in, link to the event schedule, or share a vCard for networking."
+			},
+			"step2": {
+				"title": "Create Your Codes",
+				"description": "Generate QR codes linking to your agenda page, check-in URL, or attendee contact card."
+			},
+			"step3": {
+				"title": "Apply Event Branding",
+				"description": "Customize colors and add your event logo so codes match your badges, signage, and programs."
+			},
+			"step4": {
+				"title": "Print on Materials",
+				"description": "Add codes to attendee badges, room signage, and printed programs. Use SVG for sharp results."
+			},
+			"step5": {
+				"title": "Track Engagement Live",
+				"description": "Monitor scans in real time during the event. See which sessions and booths get the most activity."
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Event QR Codes",
+			"tip1": {
+				"title": "Unique Codes per Session",
+				"description": "Create a separate QR code for each talk or workshop. Compare scan counts to measure interest per session."
+			},
+			"tip2": {
+				"title": "Print Large on Badges",
+				"description": "Use at least 3×3 cm on badges for fast, reliable scanning — even in dim conference lighting."
+			},
+			"tip3": {
+				"title": "Place Schedules at Entrances",
+				"description": "Put schedule QR codes at every room entrance so attendees can quickly check session details."
+			},
+			"tip4": {
+				"title": "Send Digital Badges Early",
+				"description": "Email a digital badge with a QR code before the event. Faster entry and less printing."
+			}
+		},
+		"stats": {
+			"stat1Value": "67%",
+			"stat1Label": "faster check-in",
+			"stat2Value": "4×",
+			"stat2Label": "more networking contacts",
+			"stat3Value": "85%",
+			"stat3Label": "attendee adoption rate",
+			"stat4Value": "30 sec",
+			"stat4Label": "saved per entry"
+		}
+	},
+	"qrCodesRealEstate": {
+		"metaTitle": "QR Codes for Real Estate – Property Listings, Virtual Tours & More | QRcodly",
+		"metaDescription": "Use QR codes in real estate for property listings, virtual tours, and open house sign-ups. Track buyer engagement easily.",
+		"hero": {
+			"title": "QR Codes Built for Real Estate",
+			"subtitle": "Give buyers instant access to property details, virtual tours, and contact info — right from the yard sign.",
+			"ctaLabel": "Create Your Real Estate QR Code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Property Details on Every Sign",
+				"description": "Add a QR code to your yard signs, flyers, or brochures. Buyers scan to see the full listing, photos, and key details.",
+				"bullet1": "Link to your listing page or property website",
+				"bullet2": "Include photos, floor plans, and pricing",
+				"bullet3": "Update listing details without reprinting signs"
+			},
+			"feature2": {
+				"title": "Virtual Tours in One Scan",
+				"description": "Link QR codes to virtual tour videos or 3D walkthroughs. Let buyers explore properties from anywhere.",
+				"bullet1": "Link to Matterport, YouTube, or any tour platform",
+				"bullet2": "Place on print ads, mailers, and open house sheets",
+				"bullet3": "Swap tour links when properties change"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes for Other Industries",
+			"subtitle": "See how other industries use QR codes to connect with their audience.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"urlShortener": {
+				"title": "URL Shortener",
+				"description": "Create clean, short links for property listings, open house sign-ups, and agent contact pages."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Get detailed insights into buyer engagement, scan locations, and device breakdowns for each property."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "Can I change the listing without replacing the sign?",
+			"a1": "Yes. Dynamic QR codes let you update the destination URL anytime. Change the listing, swap the link — the printed yard sign stays exactly the same.",
+			"q2": "What should a real estate QR code link to?",
+			"a2": "Best options: your MLS listing page, a virtual tour, a dedicated property website, or a scheduling page for showings. Pick what helps buyers take the next step.",
+			"q3": "How do I handle multiple listings at once?",
+			"a3": "Create one QR code per property. Use tags in your dashboard (e.g., 'downtown', 'west side') to organize and quickly filter your active listings.",
+			"q4": "What size works best for yard signs?",
+			"a4": "At least 5×5 cm (2×2 in) on yard signs. Ensure high contrast between the code and sign background, and test by scanning from 2 meters away before printing.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Give Every Listing a Digital Edge",
+			"subtitle": "QR codes that connect buyers to property details, tours, and your contact info. Free to start.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Add QR Codes to Your Listings",
+			"subtitle": "Connect physical signage to digital property details in five simple steps.",
+			"step1": {
+				"title": "Choose Your Content",
+				"description": "Link to your listing page, a virtual tour video, or your agent vCard with contact details."
+			},
+			"step2": {
+				"title": "Create a Dynamic QR Code",
+				"description": "Use a dynamic code so you can update the listing link later — even after the sign is printed."
+			},
+			"step3": {
+				"title": "Add Your Brokerage Branding",
+				"description": "Upload your brokerage logo and match brand colors for a professional, on-brand appearance."
+			},
+			"step4": {
+				"title": "Print for Signs and Flyers",
+				"description": "Download as SVG for yard signs, flyers, brochures, and postcards. Scales to any size."
+			},
+			"step5": {
+				"title": "Track Buyer Interest",
+				"description": "See how many people scan each property's code. Compare interest across listings in your dashboard."
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Real Estate QR Codes",
+			"tip1": {
+				"title": "One Code per Listing",
+				"description": "Track property-level interest by creating a unique code for each listing. See exactly which homes attract buyers."
+			},
+			"tip2": {
+				"title": "Link to Mobile-Optimized Pages",
+				"description": "Most buyers scan on their phones. Make sure your listing page, tour, or contact form works well on mobile."
+			},
+			"tip3": {
+				"title": "Add a Clear CTA on Signs",
+				"description": "Print 'Scan for Virtual Tour' or 'Scan for Details' next to the code. A prompt increases scans significantly."
+			},
+			"tip4": {
+				"title": "Redirect When Sold",
+				"description": "When a property closes, update the dynamic code to link to a 'Sold' page or a similar listing nearby."
+			}
+		},
+		"stats": {
+			"stat1Value": "62%",
+			"stat1Label": "of buyers scan yard sign codes",
+			"stat2Value": "3×",
+			"stat2Label": "more listing views",
+			"stat3Value": "35%",
+			"stat3Label": "more showing requests",
+			"stat4Value": "< 2 sec",
+			"stat4Label": "to full listing details"
+		}
+	},
+	"qrCodesEducation": {
+		"metaTitle": "QR Codes for Education – Classroom Resources, Assignments & More | QRcodly",
+		"metaDescription": "Use QR codes in education to share resources, assignments, and classroom materials. Engage students with a simple scan.",
+		"hero": {
+			"title": "QR Codes Built for Education",
+			"subtitle": "Connect students to resources, assignments, and interactive content with a simple scan.",
+			"ctaLabel": "Create Your Education QR Code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Instant Access to Learning Materials",
+				"description": "Place QR codes on worksheets, posters, or textbooks. Students scan to access videos, articles, or interactive exercises.",
+				"bullet1": "Link to educational videos, PDFs, or websites",
+				"bullet2": "Place on printed worksheets or classroom posters",
+				"bullet3": "Update resources without reprinting materials"
+			},
+			"feature2": {
+				"title": "Simplify Assignment Distribution",
+				"description": "Share assignments, reading lists, and study guides via QR codes. Students scan and go — no typing long URLs.",
+				"bullet1": "Link to Google Docs, LMS pages, or shared drives",
+				"bullet2": "Students access materials from any device",
+				"bullet3": "Change links when assignments are updated"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes for Other Industries",
+			"subtitle": "Discover how other sectors use QR codes to connect with their audience.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"urlShortener": {
+				"title": "URL Shortener",
+				"description": "Create short, easy-to-type links for students who prefer typing URLs instead of scanning."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "See which learning resources get the most engagement and understand student access patterns."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "Do students need a special app to scan QR codes?",
+			"a1": "No. All modern smartphones scan QR codes using the built-in camera. Students just point their camera at the code and tap the link that appears.",
+			"q2": "Can I update the linked resource without reprinting?",
+			"a2": "Yes. Dynamic QR codes let you change the destination URL anytime. Reuse the same printed worksheet next semester with completely updated links.",
+			"q3": "How can I use QR codes for a classroom scavenger hunt?",
+			"a3": "Create multiple QR codes, each linking to a clue or task page. Place them around the school. Students scan each code to progress through the activity.",
+			"q4": "Are QR codes accessible for students with disabilities?",
+			"a4": "QR codes are visual, so pair them with a short URL printed below for students who use screen readers. The linked page should follow accessibility best practices.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Bring QR Codes Into Your Classroom",
+			"subtitle": "Share resources, assignments, and interactive content with a simple scan. Free for educators.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Use QR Codes in Your Classroom",
+			"subtitle": "A practical guide for teachers who want to connect print materials to digital resources.",
+			"step1": {
+				"title": "Pick Your Resource",
+				"description": "Choose what to link: a video, PDF worksheet, quiz URL, interactive exercise, or online textbook chapter."
+			},
+			"step2": {
+				"title": "Create the QR Code",
+				"description": "Paste the resource URL and generate a QR code. Use a dynamic code if you plan to update the link later."
+			},
+			"step3": {
+				"title": "Add Friendly Colors",
+				"description": "Customize with student-friendly colors and your school logo. Make it visually engaging."
+			},
+			"step4": {
+				"title": "Print on Materials",
+				"description": "Add codes to worksheets, classroom posters, project cards, or library book labels."
+			},
+			"step5": {
+				"title": "Check Engagement",
+				"description": "View scan data to see which resources students use most. Adjust your materials based on real usage."
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Education QR Codes",
+			"tip1": {
+				"title": "Test on Student Devices First",
+				"description": "Before distributing worksheets, scan every code with a phone similar to what students use. Catch issues early."
+			},
+			"tip2": {
+				"title": "Print Large Enough",
+				"description": "Use at least 3×3 cm codes — larger for younger students. Small codes frustrate and waste classroom time."
+			},
+			"tip3": {
+				"title": "Add a Short Label",
+				"description": "Print 'Scan for video' or 'Scan for quiz' next to each code. Labels tell students what to expect and boost engagement."
+			},
+			"tip4": {
+				"title": "Reuse Worksheets Across Semesters",
+				"description": "With dynamic codes, you can update the linked resource without reprinting. Same worksheet, fresh content every term."
+			}
+		},
+		"stats": {
+			"stat1Value": "89%",
+			"stat1Label": "of students own smartphones",
+			"stat2Value": "2×",
+			"stat2Label": "faster resource access",
+			"stat3Value": "70%",
+			"stat3Label": "prefer scanning over typing URLs",
+			"stat4Value": "5 min",
+			"stat4Label": "saved per lesson"
+		}
+	},
+	"qrCodesMarketing": {
+		"metaTitle": "QR Codes for Marketing – Print Campaigns, A/B Testing & Branding | QRcodly",
+		"metaDescription": "Bridge print and digital marketing with QR codes. Track campaign performance, customize designs, and update destinations anytime.",
+		"hero": {
+			"title": "QR Codes Built for Marketing",
+			"subtitle": "Connect print materials to digital campaigns. Track performance, customize designs, and update content in real-time.",
+			"ctaLabel": "Create Your Marketing QR Code"
+		},
+		"features": {
+			"feature1": {
+				"title": "Bridge Print and Digital",
+				"description": "Add QR codes to flyers, posters, business cards, and packaging. Every scan is a measurable touchpoint in your campaign.",
+				"bullet1": "Link print materials to any landing page",
+				"bullet2": "Track scan rates on billboards, mailers, and ads",
+				"bullet3": "Measure ROI on print campaigns with real data"
+			},
+			"feature2": {
+				"title": "Test and Optimize Campaigns",
+				"description": "Create multiple QR codes for different placements or designs. Compare scan rates to find what works best.",
+				"bullet1": "Create separate codes for each placement",
+				"bullet2": "Compare performance across channels",
+				"bullet3": "Swap destinations to test different landing pages"
+			}
+		},
+		"relatedUseCases": {
+			"title": "QR Codes for Other Industries",
+			"subtitle": "See how other industries use QR codes to engage their audience.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"urlShortener": {
+				"title": "URL Shortener",
+				"description": "Create branded short links for campaigns. Pair with QR codes for a complete offline-to-online tracking strategy."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Deep-dive into campaign analytics. See scans by location, device, time, and more to optimize your marketing."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "How do I measure print campaign ROI with QR codes?",
+			"a1": "Create a unique QR code per placement (billboard, flyer, mailer). Compare scan counts to cost per placement. Add UTM parameters to tie scans to conversions in Google Analytics.",
+			"q2": "Can I A/B test different landing pages?",
+			"a2": "Yes. Create two QR codes pointing to different landing pages. Place them on alternate versions of your print material and compare scan-to-conversion rates.",
+			"q3": "What's the minimum print size for marketing QR codes?",
+			"a3": "2×2 cm for close-range materials (flyers, business cards). For billboards or posters viewed from a distance, scale up — a 15 cm code works well at 3 meters.",
+			"q4": "How do I track offline-to-online conversion?",
+			"a4": "Each dynamic QR code tracks scans automatically. Pair this with UTM parameters on the destination URL, and you get full funnel visibility from physical scan to digital conversion.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Make Every Print Piece Measurable",
+			"subtitle": "Add QR codes to your marketing materials and track every scan. Start for free.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Add QR Codes to Your Campaign",
+			"subtitle": "Bridge print and digital marketing with trackable QR codes in five steps.",
+			"step1": {
+				"title": "Define Your Campaign Goal",
+				"description": "Decide what you want to measure: landing page visits, app downloads, form submissions, or coupon redemptions."
+			},
+			"step2": {
+				"title": "Create a Dynamic QR Code",
+				"description": "Link to your campaign URL. Use a dynamic code so you can swap destinations or add UTM parameters later."
+			},
+			"step3": {
+				"title": "Match Your Campaign Design",
+				"description": "Customize colors, add your logo, and choose a style that integrates seamlessly with your print creative."
+			},
+			"step4": {
+				"title": "Add to Print Materials",
+				"description": "Place the code on flyers, posters, packaging, or direct mail. Always include a CTA like 'Scan to claim your offer.'"
+			},
+			"step5": {
+				"title": "Compare Placement Performance",
+				"description": "Create unique codes per placement. Compare scan data across channels to optimize ROI."
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Marketing QR Codes",
+			"tip1": {
+				"title": "One Code per Placement",
+				"description": "Use unique codes for each channel (billboard, flyer, mailer) to isolate performance and measure channel ROI."
+			},
+			"tip2": {
+				"title": "Add UTM Parameters",
+				"description": "Append UTM tags to your destination URLs for full attribution in Google Analytics — from scan to conversion."
+			},
+			"tip3": {
+				"title": "Test at Actual Print Size",
+				"description": "Scan your code at the final print size before the full run. What works on screen may fail on a small business card."
+			},
+			"tip4": {
+				"title": "Always Include a CTA",
+				"description": "Place a clear call-to-action near the code: 'Scan to claim your offer' or 'Scan for exclusive access.' Codes without CTAs are often ignored."
+			}
+		},
+		"stats": {
+			"stat1Value": "76%",
+			"stat1Label": "of consumers have scanned a QR code",
+			"stat2Value": "2×",
+			"stat2Label": "higher recall vs. URL-only ads",
+			"stat3Value": "34%",
+			"stat3Label": "print-to-digital conversion",
+			"stat4Value": "5×",
+			"stat4Label": "ROI on print campaigns"
+		}
+	},
+	"urlShortenerMarketingTeams": {
+		"metaTitle": "URL Shortener for Marketing Teams – Branded Links & Campaign Tracking | QRcodly",
+		"metaDescription": "Shorten and brand your marketing links. Track clicks, manage campaigns, and use custom domains — all in one platform.",
+		"hero": {
+			"title": "Short Links Built for Marketing Teams",
+			"subtitle": "Create branded links that build trust, track clicks across campaigns, and manage all your URLs in one place.",
+			"ctaLabel": "Shorten Your First Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Branded Links That Build Trust",
+				"description": "Use your own custom domain for short links. Branded URLs get more clicks and reinforce your brand identity in every channel.",
+				"bullet1": "Connect your own domain for branded short URLs",
+				"bullet2": "Branded links increase click-through rates",
+				"bullet3": "Consistent branding across email, social, and ads"
+			},
+			"feature2": {
+				"title": "Campaign Click Tracking",
+				"description": "See how your links perform across channels. Track clicks, geographic data, and device types for every short link.",
+				"bullet1": "Real-time click tracking for every link",
+				"bullet2": "Filter analytics by date range",
+				"bullet3": "See geographic and device breakdowns"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL Shortener for Other Teams",
+			"subtitle": "See how other teams use short links to work more effectively.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"qrCodes": {
+				"title": "QR Code Generator",
+				"description": "Pair short links with QR codes for print campaigns. Track scans and clicks from a single dashboard."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Dive deeper into link performance with detailed click analytics, referrer data, and geographic insights."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "How do branded links improve click-through rates?",
+			"a1": "Branded links show your domain instead of a generic shortener. This builds trust — recipients recognize the sender, leading to measurably higher click-through rates.",
+			"q2": "Can I track clicks from different campaigns separately?",
+			"a2": "Yes. Create a unique short link for each campaign or channel. Use tags to organize them, and filter your dashboard to compare performance side by side.",
+			"q3": "How do I set up a custom domain for my team?",
+			"a3": "Go to Settings → Custom Domains, add your domain, and configure the DNS records shown. SSL is provisioned automatically. All new links will use your domain.",
+			"q4": "Can I change a link's destination after sharing it?",
+			"a4": "Yes. Edit the destination URL anytime from your dashboard. The short link stays the same — recipients who already have it will be redirected to the updated page.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Power Up Your Marketing Links",
+			"subtitle": "Branded short links with click tracking and campaign organization. Free to get started.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Set Up Campaign Links",
+			"subtitle": "From shortening your first URL to comparing channel performance — done in minutes.",
+			"step1": {
+				"title": "Paste Your Campaign URL",
+				"description": "Copy the long URL from your landing page, form, or app store listing and paste it into the shortener."
+			},
+			"step2": {
+				"title": "Customize the Short Link",
+				"description": "Edit the slug for brand recognition (e.g., /spring-sale-email). Use your custom domain for consistent branding."
+			},
+			"step3": {
+				"title": "Add Tags for Tracking",
+				"description": "Tag the link by campaign, channel, or team. Tags let you filter and compare performance later."
+			},
+			"step4": {
+				"title": "Share Across Channels",
+				"description": "Drop the branded link into email campaigns, social posts, paid ads, or partner communications."
+			},
+			"step5": {
+				"title": "Monitor and Optimize",
+				"description": "Check real-time click data in your dashboard. Compare channels to see where your budget works hardest."
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Marketing Links",
+			"tip1": {
+				"title": "One Link per Channel",
+				"description": "Create a unique short link for each channel (email, Instagram, ads) to isolate performance and attribute clicks accurately."
+			},
+			"tip2": {
+				"title": "Use Descriptive Slugs",
+				"description": "Name links meaningfully — 'spring-sale-email' tells you more than 'link1.' Your team will thank you during reporting."
+			},
+			"tip3": {
+				"title": "Set Up Custom Domain First",
+				"description": "Configure your branded domain before creating campaign links. Consistent branding from day one builds trust and CTR."
+			},
+			"tip4": {
+				"title": "Review Data Weekly",
+				"description": "Check click data every week to reallocate budget from underperforming channels to your best-performing ones."
+			}
+		},
+		"stats": {
+			"stat1Value": "34%",
+			"stat1Label": "higher CTR with branded links",
+			"stat2Value": "3×",
+			"stat2Label": "faster campaign setup",
+			"stat3Value": "87%",
+			"stat3Label": "of marketers use link tracking",
+			"stat4Value": "< 50 ms",
+			"stat4Label": "redirect speed"
+		}
+	},
+	"urlShortenerSocialMedia": {
+		"metaTitle": "URL Shortener for Social Media – Clean Links & Click Tracking | QRcodly",
+		"metaDescription": "Create short, clean links for social media posts. Track clicks and see which content drives the most engagement.",
+		"hero": {
+			"title": "Short Links Built for Social Media",
+			"subtitle": "Clean, branded links that look great in posts and stories. Track clicks to see what content resonates.",
+			"ctaLabel": "Shorten Your First Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Clean Links for Every Post",
+				"description": "Replace long, ugly URLs with short, branded links. They look better in posts, bios, and stories — and they're easier to share.",
+				"bullet1": "Short links look cleaner in social posts",
+				"bullet2": "Branded domains build trust with followers",
+				"bullet3": "Works on every social platform"
+			},
+			"feature2": {
+				"title": "Track Social Engagement",
+				"description": "See how many clicks each link gets. Compare performance across platforms and posts to understand what your audience cares about.",
+				"bullet1": "Real-time click tracking for every link",
+				"bullet2": "See which platforms drive the most traffic",
+				"bullet3": "Understand your audience with device data"
+			},
+			"feature3": {
+				"title": "Dynamic Links You Can Update",
+				"description": "Change where your link points — even after posting. Redirect followers to new content without editing your post.",
+				"bullet1": "Update destination URLs after publishing",
+				"bullet2": "Redirect seasonal or time-sensitive campaigns",
+				"bullet3": "Fix broken links without reposting"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL Shortener for Other Teams",
+			"subtitle": "Discover how other teams use short links to improve their workflow.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"qrCodes": {
+				"title": "QR Code Generator",
+				"description": "Create QR codes for your social profiles or campaign landing pages. Great for cross-promoting across print and digital."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Get detailed click analytics for all your social links. See referrer data, locations, and device breakdowns."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "Do short links work in Instagram bios and stories?",
+			"a1": "Yes. Short links work everywhere — bios, stories, captions, and comments. They're especially useful in bios where character space is limited.",
+			"q2": "Can I see which platform drives the most clicks?",
+			"a2": "Create a unique short link for each platform (one for Instagram, one for Twitter/X, one for LinkedIn). Compare click counts in your dashboard to find your top performer.",
+			"q3": "Will short links get flagged as spam on social platforms?",
+			"a3": "No. QRcodly links use clean redirects and are not on any blocklists. Using your own custom domain further eliminates any spam concerns.",
+			"q4": "Can I change where a link goes after posting?",
+			"a4": "Yes. Update the destination URL anytime without editing your post. Followers clicking the same link will be redirected to the new content.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Level Up Your Social Links",
+			"subtitle": "Short, branded links with click tracking for all your social content. Start free.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Create Links for Social Media",
+			"subtitle": "Clean, trackable links for every post and bio — ready in seconds.",
+			"step1": {
+				"title": "Paste Your Long URL",
+				"description": "Copy the URL you want to share — blog post, product page, or landing page — and paste it into the shortener."
+			},
+			"step2": {
+				"title": "Customize the Slug",
+				"description": "Edit the short link slug for a clean, memorable URL that looks great in bios and captions."
+			},
+			"step3": {
+				"title": "Copy and Post",
+				"description": "Copy the short link and add it to your social post, story, bio, or comment. Works on every platform."
+			},
+			"step4": {
+				"title": "Track Per-Post Clicks",
+				"description": "Check your dashboard to see which posts drive the most clicks. Compare performance across platforms."
+			}
+		}
+	},
+	"urlShortenerSales": {
+		"metaTitle": "URL Shortener for Sales Teams – Trackable Links for Outreach | QRcodly",
+		"metaDescription": "Create trackable short links for sales outreach. See when prospects click and measure engagement across campaigns.",
+		"hero": {
+			"title": "Short Links Built for Sales Teams",
+			"subtitle": "Send trackable links in outreach emails and proposals. Know when prospects engage with your content.",
+			"ctaLabel": "Shorten Your First Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Trackable Links for Outreach",
+				"description": "Add short links to emails, proposals, and presentations. Track every click to see which prospects are engaging.",
+				"bullet1": "See click counts for every link you share",
+				"bullet2": "Track engagement timing and frequency",
+				"bullet3": "Use branded domains for a professional look"
+			},
+			"feature2": {
+				"title": "Branded Links Build Credibility",
+				"description": "Use your company domain for short links. Prospects trust branded URLs more than generic shorteners.",
+				"bullet1": "Connect your custom domain",
+				"bullet2": "Professional appearance in emails and proposals",
+				"bullet3": "Consistent branding across all touchpoints"
+			},
+			"feature3": {
+				"title": "Measure Outreach Performance",
+				"description": "Compare click rates across campaigns and channels. Understand what messaging and content drives the most engagement.",
+				"bullet1": "Compare clicks across campaigns and channels",
+				"bullet2": "See geographic and device breakdowns",
+				"bullet3": "Identify which content resonates with prospects"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL Shortener for Other Teams",
+			"subtitle": "See how other teams use short links to improve their results.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"qrCodes": {
+				"title": "QR Code Generator",
+				"description": "Add QR codes to printed proposals, brochures, and leave-behinds. Track scans alongside link clicks."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Detailed click analytics for every link. See when prospects click, from where, and on what device."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "Can I tell when a specific prospect clicks my link?",
+			"a1": "Click timestamps and device info are tracked per link. If you send a unique short link to each prospect, you'll see exactly when they engage with your content.",
+			"q2": "How do branded links help in sales outreach?",
+			"a2": "Generic shortener links look suspicious in professional emails. A link on your company's domain (e.g., go.yourco.com/proposal) builds trust and gets significantly more clicks.",
+			"q3": "Can I track engagement across my whole sales team?",
+			"a3": "Yes. All links created under your account are visible in one dashboard. Use tags (e.g., rep name, deal stage) to filter and compare performance across the team.",
+			"q4": "What happens if I need to update a shared proposal?",
+			"a4": "Change the destination URL in your dashboard. The short link already sent to the prospect stays the same — they'll see the updated proposal when they click.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Track Every Click in Your Outreach",
+			"subtitle": "Branded short links with real-time click tracking. Know when prospects engage. Start free.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Use Trackable Links in Outreach",
+			"subtitle": "Know exactly when prospects engage with your content.",
+			"step1": {
+				"title": "Create a Link for Your Content",
+				"description": "Shorten the URL to your proposal, case study, pricing page, or demo booking form."
+			},
+			"step2": {
+				"title": "Use Your Company Domain",
+				"description": "Set up your custom domain so links look professional — e.g., go.yourco.com/proposal."
+			},
+			"step3": {
+				"title": "Add to Emails and Messages",
+				"description": "Drop the branded short link into your outreach email, LinkedIn message, or presentation deck."
+			},
+			"step4": {
+				"title": "Monitor Prospect Engagement",
+				"description": "Check your dashboard for click timestamps and device data. See exactly when a prospect opens your link."
+			}
+		}
+	},
+	"urlShortenerEcommerce": {
+		"metaTitle": "URL Shortener for E-Commerce – Product Links & Channel Tracking | QRcodly",
+		"metaDescription": "Create short links for product pages, track clicks across sales channels, and manage seasonal campaign URLs with ease.",
+		"hero": {
+			"title": "Short Links Built for E-Commerce",
+			"subtitle": "Clean product links for every channel. Track clicks, manage campaigns, and keep your URLs organized.",
+			"ctaLabel": "Shorten Your First Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Short Links for Product Pages",
+				"description": "Turn long product URLs into clean, shareable links. Perfect for social posts, email campaigns, and ads.",
+				"bullet1": "Clean URLs for product pages and collections",
+				"bullet2": "Easy to share across all sales channels",
+				"bullet3": "Custom domain branding for a professional look"
+			},
+			"feature2": {
+				"title": "Track Clicks Across Channels",
+				"description": "See which channels drive the most traffic to your products. Compare click performance across email, social, ads, and more.",
+				"bullet1": "Separate links per channel for clear attribution",
+				"bullet2": "Real-time click tracking and reporting",
+				"bullet3": "Geographic and device breakdowns"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL Shortener for Other Teams",
+			"subtitle": "Discover how other teams leverage short links for better results.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"qrCodes": {
+				"title": "QR Code Generator",
+				"description": "Add QR codes to product packaging, inserts, and print materials. Link customers to product pages, reviews, or support."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Deep analytics for every product link. Understand which products get the most clicks and from which channels."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "Can I track which channel drives the most product clicks?",
+			"a1": "Yes. Create separate short links for each channel (email, Instagram, ads). Compare click counts in your dashboard to identify your highest-performing traffic source.",
+			"q2": "How do I handle seasonal product links?",
+			"a2": "Use short links and update the destination when the season changes. Your Black Friday link can redirect to a Spring Sale page later — same URL, fresh content.",
+			"q3": "Can I shorten links from Shopify, WooCommerce, or Amazon?",
+			"a3": "Yes. The URL shortener works with any URL. Paste your product link from any platform and create a branded short link instantly.",
+			"q4": "Do short links affect my store's SEO?",
+			"a4": "No. Short links use 301 redirects, which pass full SEO value to the destination page. Your search rankings are not affected.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Simplify Your E-Commerce Links",
+			"subtitle": "Clean, trackable short links for every product and campaign. Free to start.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Shorten Product Links",
+			"subtitle": "Clean, trackable links for every product and campaign — set up in minutes.",
+			"step1": {
+				"title": "Copy Your Product URL",
+				"description": "Grab the long URL from your Shopify, WooCommerce, Amazon, or any other store's product page."
+			},
+			"step2": {
+				"title": "Create a Branded Short Link",
+				"description": "Shorten the URL and customize the slug for readability (e.g., /summer-dress or /black-friday)."
+			},
+			"step3": {
+				"title": "Tag and Organize",
+				"description": "Add tags by category, season, or campaign. Tags make it easy to filter and manage hundreds of product links."
+			},
+			"step4": {
+				"title": "Share Across Channels",
+				"description": "Use the short link in email campaigns, social posts, paid ads, and influencer partnerships."
+			},
+			"step5": {
+				"title": "Optimize by Channel",
+				"description": "Compare click-through rates per channel. Shift ad spend to where your links perform best."
+			}
+		},
+		"tips": {
+			"title": "Best Practices for E-Commerce Links",
+			"tip1": {
+				"title": "Use Descriptive Slugs",
+				"description": "Memorable slugs like /black-friday or /summer-sale are easier for customers to recognize and trust than random characters."
+			},
+			"tip2": {
+				"title": "One Link per Product per Channel",
+				"description": "Create separate links for Instagram, email, and ads. This gives you precise channel attribution data."
+			},
+			"tip3": {
+				"title": "Tag by Season or Collection",
+				"description": "Organize links with tags like 'Q4-holiday' or 'spring-2026.' Quickly find and manage campaign links later."
+			},
+			"tip4": {
+				"title": "Redirect Expired Promos",
+				"description": "When a promotion ends, redirect the short link to your homepage or a related product — never leave it pointing to a 404."
+			}
+		},
+		"stats": {
+			"stat1Value": "28%",
+			"stat1Label": "higher CTR vs. raw URLs",
+			"stat2Value": "2×",
+			"stat2Label": "more social shares",
+			"stat3Value": "45%",
+			"stat3Label": "of clicks come from mobile",
+			"stat4Value": "99.9%",
+			"stat4Label": "uptime guarantee"
+		}
+	},
+	"urlShortenerDevelopers": {
+		"metaTitle": "URL Shortener API for Developers – REST API & Custom Domains | QRcodly",
+		"metaDescription": "Integrate URL shortening into your apps with our REST API. Create, manage, and track short links programmatically.",
+		"hero": {
+			"title": "URL Shortener API for Developers",
+			"subtitle": "Integrate short link creation into your apps and workflows with our REST API. Full documentation included.",
+			"ctaLabel": "View API Documentation"
+		},
+		"features": {
+			"feature1": {
+				"title": "Simple REST API",
+				"description": "Create, update, and manage short links programmatically. Our REST API is straightforward with clear documentation and code examples.",
+				"bullet1": "RESTful endpoints for CRUD operations",
+				"bullet2": "JSON request and response format",
+				"bullet3": "Comprehensive API documentation"
+			},
+			"feature2": {
+				"title": "API Key Authentication",
+				"description": "Authenticate with API keys for server-to-server integration. Generate and manage keys from your dashboard.",
+				"bullet1": "Generate API keys from your dashboard",
+				"bullet2": "Secure server-to-server authentication",
+				"bullet3": "Built-in rate limiting for fair usage"
+			},
+			"feature3": {
+				"title": "Custom Domain Integration",
+				"description": "Use your own domain for API-created short links. Custom domain branding for a seamless user experience.",
+				"bullet1": "All API-created links use your custom domain",
+				"bullet2": "Configure domains via dashboard or API",
+				"bullet3": "DNS setup guides included in documentation"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL Shortener for Other Teams",
+			"subtitle": "See how non-technical teams use short links in their work.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"qrCodes": {
+				"title": "QR Code Generator",
+				"description": "Generate QR codes via API too. Create dynamic QR codes programmatically for apps, tickets, or packaging."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Access click analytics for API-created links. View performance data in the dashboard or retrieve it via API."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "What authentication method does the API use?",
+			"a1": "Bearer token authentication. Generate an API key from your dashboard and include it in the Authorization header: Authorization: Bearer YOUR_API_KEY.",
+			"q2": "Can I set a custom slug via the API?",
+			"a2": "Yes. Include a customSlug field in the request body. If omitted, a random short code is generated automatically.",
+			"q3": "Is there a rate limit on API requests?",
+			"a3": "Yes. Rate limits depend on your plan. Free accounts have stricter limits; Pro accounts get higher throughput. Check the response headers for your current usage.",
+			"q4": "Can I retrieve click analytics via the API?",
+			"a4": "Yes. The analytics endpoints return click counts, timestamps, device data, and geographic information for each short link programmatically.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Start Building with Our API",
+			"subtitle": "REST API for short links with full documentation. Integrate URL shortening into your apps today.",
+			"ctaLabel": "View API Docs"
+		},
+		"steps": {
+			"title": "How to Integrate the URL Shortener API",
+			"subtitle": "From API key to your first short link — in four steps.",
+			"step1": {
+				"title": "Generate an API Key",
+				"description": "Go to your dashboard settings and create an API key. This is your Bearer token for all API requests."
+			},
+			"step2": {
+				"title": "Send a POST Request",
+				"description": "Hit the /api/v1/short-url endpoint with your long URL and an optional custom slug in the JSON body."
+			},
+			"step3": {
+				"title": "Receive the Short Link",
+				"description": "The API returns a JSON response with the short URL, creation timestamp, and link ID for future reference."
+			},
+			"step4": {
+				"title": "Retrieve Click Analytics",
+				"description": "Use the analytics endpoints to fetch click counts, timestamps, device data, and geographic info per link."
+			}
+		}
+	},
+	"urlShortenerAgencies": {
+		"metaTitle": "URL Shortener for Agencies – Client Domains, Branded Links & Analytics | QRcodly",
+		"metaDescription": "Manage short links for multiple clients with custom domains, branded URLs, and per-link analytics. Built for agencies.",
+		"hero": {
+			"title": "Short Links Built for Agencies",
+			"subtitle": "Manage branded links across clients. Use custom domains, track performance, and deliver results.",
+			"ctaLabel": "Shorten Your First Link"
+		},
+		"features": {
+			"feature1": {
+				"title": "Custom Domains for Every Client",
+				"description": "Connect multiple custom domains — one for each client. Every short link carries the client's branding.",
+				"bullet1": "Connect custom domains per client",
+				"bullet2": "Branded short URLs for professional delivery",
+				"bullet3": "Easy DNS setup with guided instructions"
+			},
+			"feature2": {
+				"title": "Per-Link Analytics",
+				"description": "Track click performance for every link. Review analytics data with clients and demonstrate campaign results.",
+				"bullet1": "Click tracking for every link created",
+				"bullet2": "Per-link analytics you can review with clients",
+				"bullet3": "Geographic and device breakdowns"
+			},
+			"feature3": {
+				"title": "Organized Link Management",
+				"description": "Tag and organize links by client, campaign, or channel. Search and filter to find any link instantly.",
+				"bullet1": "Tag links by client or project",
+				"bullet2": "Search and filter across all links",
+				"bullet3": "Keep client work separated and organized"
+			}
+		},
+		"relatedUseCases": {
+			"title": "URL Shortener for Other Teams",
+			"subtitle": "See how other teams use short links to achieve their goals.",
+			"learnMore": "Learn more"
+		},
+		"crossProducts": {
+			"title": "Explore More Tools",
+			"qrCodes": {
+				"title": "QR Code Generator",
+				"description": "Create branded QR codes for client campaigns. Pair with short links for complete offline-to-online tracking."
+			},
+			"analytics": {
+				"title": "Analytics Dashboard",
+				"description": "Comprehensive click analytics for all client links. Filter by client, campaign, or time period."
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"q1": "Can I connect a different domain for each client?",
+			"a1": "Yes. Add multiple custom domains in your settings. When creating a link, select which domain to use. Each client gets their own branded short URLs.",
+			"q2": "How do I keep client links organized?",
+			"a2": "Use tags to label each link by client, project, and campaign. Filter the dashboard to view only one client's links at a time for focused management.",
+			"q3": "Can I share click data with clients?",
+			"a3": "Yes. Export link analytics or share screenshots from the dashboard. Each link shows click counts, geographic data, and device breakdowns.",
+			"q4": "Is there a limit on how many custom domains I can add?",
+			"a4": "Pro accounts support multiple custom domains. The exact limit depends on your plan tier — check the pricing page for details.",
+			"viewAll": "View all FAQs"
+		},
+		"cta": {
+			"title": "Scale Your Agency's Link Management",
+			"subtitle": "Custom domains, branded links, and analytics for every client. Free to get started.",
+			"ctaLabel": "Get Started Free"
+		},
+		"steps": {
+			"title": "How to Manage Client Links at Scale",
+			"subtitle": "Custom domains, organized dashboards, and shareable analytics for every client.",
+			"step1": {
+				"title": "Connect Client Domains",
+				"description": "Add each client's custom domain in the dashboard settings. Follow the DNS setup guide for quick configuration."
+			},
+			"step2": {
+				"title": "Create Branded Short Links",
+				"description": "When creating a link, select the client's domain. The short URL automatically carries their branding."
+			},
+			"step3": {
+				"title": "Tag by Client and Campaign",
+				"description": "Add tags like the client name and campaign title. This lets you filter the dashboard to one client's links instantly."
+			},
+			"step4": {
+				"title": "Share Performance Reports",
+				"description": "Export click analytics per client. Review performance data together and use it to plan the next campaign."
+			}
+		}
+	},
+	"helpSupport": {
+		"fabLabel": "Help & Support",
+		"title": "Need Help?",
+		"description": "We're here to help you get the most out of QRcodly.",
+		"faq": {
+			"title": "FAQ",
+			"subtitle": "Browse frequently asked questions"
+		},
+		"docs": {
+			"title": "Documentation",
+			"subtitle": "Guides, API reference & more"
+		},
+		"email": {
+			"title": "Email Support",
+			"subtitle": "Get in touch with our team"
+		}
 	}
 }
