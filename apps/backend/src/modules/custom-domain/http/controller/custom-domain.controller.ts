@@ -199,6 +199,7 @@ export class CustomDomainController extends AbstractController {
 			403: DEFAULT_ERROR_RESPONSES[403],
 			404: DEFAULT_ERROR_RESPONSES[404],
 			429: DEFAULT_ERROR_RESPONSES[429],
+			503: DEFAULT_ERROR_RESPONSES[503],
 		},
 		config: {
 			rateLimitPolicy: RateLimitPolicy.DOMAIN_VERIFY,

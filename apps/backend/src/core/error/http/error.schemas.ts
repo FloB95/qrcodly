@@ -36,6 +36,10 @@ export const InternalServerErrorResponseSchema = BaseErrorResponseSchema.describ
 	'Internal Server Error — an unexpected error occurred.',
 );
 
+export const ServiceUnavailableErrorResponseSchema = BaseErrorResponseSchema.describe(
+	'Service Unavailable — an upstream service is temporarily unavailable. Retry after a short delay.',
+);
+
 export const DEFAULT_ERROR_RESPONSES = {
 	400: BadRequestErrorResponseSchema,
 	401: UnauthorizedErrorResponseSchema,
@@ -44,4 +48,5 @@ export const DEFAULT_ERROR_RESPONSES = {
 	409: ConflictErrorResponseSchema,
 	429: ToManyRequestErrorResponseSchema,
 	500: InternalServerErrorResponseSchema,
+	503: ServiceUnavailableErrorResponseSchema,
 } as const;

@@ -1,6 +1,7 @@
 import { inject, singleton } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { env } from '@/core/config/env';
+import { withRetry } from '@/core/utils/with-retry';
 
 /**
  * Cloudflare Custom Hostname SSL validation record.
@@ -78,6 +79,13 @@ export class CloudflareApiError extends Error {
 		super(message);
 		this.name = 'CloudflareApiError';
 	}
+}
+
+export function isRetryableCloudflareError(error: unknown): boolean {
+	if (!(error instanceof CloudflareApiError)) return false;
+	if (error.statusCode >= 500) return true;
+	if (error.errors.some((e) => e.code === 10001)) return true;
+	return false;
 }
 
 /**
@@ -197,18 +205,23 @@ export class CloudflareService {
 			return mockResult;
 		}
 
-		const result = await this.request<ICloudflareCustomHostname>(
-			'POST',
-			`/zones/${this.zoneId}/custom_hostnames`,
-			{
-				hostname,
-				ssl: {
-					method: 'txt',
-					type: 'dv',
-					settings: {
-						min_tls_version: '1.2',
+		const result = await withRetry(
+			() =>
+				this.request<ICloudflareCustomHostname>('POST', `/zones/${this.zoneId}/custom_hostnames`, {
+					hostname,
+					ssl: {
+						method: 'txt',
+						type: 'dv',
+						settings: {
+							min_tls_version: '1.2',
+						},
 					},
-				},
+				}),
+			{
+				maxRetries: 2,
+				baseDelayMs: 500,
+				maxDelayMs: 3000,
+				isRetryable: isRetryableCloudflareError,
 			},
 		);
 
@@ -241,9 +254,18 @@ export class CloudflareService {
 			return mockResult;
 		}
 
-		const result = await this.request<ICloudflareCustomHostname>(
-			'GET',
-			`/zones/${this.zoneId}/custom_hostnames/${hostnameId}`,
+		const result = await withRetry(
+			() =>
+				this.request<ICloudflareCustomHostname>(
+					'GET',
+					`/zones/${this.zoneId}/custom_hostnames/${hostnameId}`,
+				),
+			{
+				maxRetries: 2,
+				baseDelayMs: 500,
+				maxDelayMs: 3000,
+				isRetryable: isRetryableCloudflareError,
+			},
 		);
 
 		this.logger.debug('cloudflare.customHostname.status', {

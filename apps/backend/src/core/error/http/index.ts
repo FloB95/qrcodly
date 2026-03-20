@@ -4,6 +4,7 @@ import { CustomApiError } from './custom-api.error';
 import { NotFoundError } from './not-found.error';
 import { UnauthorizedError } from './unauthorized.error';
 import { ForbiddenError } from './forbidden.error';
+import { ServiceUnavailableError } from './service-unavailable.error';
 
 export {
 	CustomApiError,
@@ -12,4 +13,5 @@ export {
 	NotFoundError,
 	UnauthorizedError,
 	ForbiddenError,
+	ServiceUnavailableError,
 };

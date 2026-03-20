@@ -14,7 +14,7 @@ import {
 } from '../service/cloudflare.service';
 import { DnsVerificationService } from '../service/dns-verification.service';
 import { DomainVerificationFailedError } from '../error/http/domain-verification-failed.error';
-import { BadRequestError } from '@/core/error/http';
+import { BadRequestError, ServiceUnavailableError } from '@/core/error/http';
 
 /**
  * Use case for verifying a Custom Domain through the two-phase verification process.
@@ -109,9 +109,14 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 					error: error.message,
 					statusCode: error.statusCode,
 				});
+				if (error.statusCode >= 500) {
+					throw new ServiceUnavailableError(
+						'Domain verification is temporarily unavailable. Please try again in a few minutes.',
+					);
+				}
 				throw new DomainVerificationFailedError(
 					customDomain.domain,
-					`Failed to register domain with Cloudflare: ${error.message}`,
+					`Failed to register domain: ${error.message}`,
 				);
 			}
 			throw error;
@@ -177,6 +182,11 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 					error: error.message,
 					statusCode: error.statusCode,
 				});
+				if (error.statusCode >= 500) {
+					throw new ServiceUnavailableError(
+						'Domain verification is temporarily unavailable. Please try again in a few minutes.',
+					);
+				}
 				throw new DomainVerificationFailedError(
 					customDomain.domain,
 					`Failed to check domain status: ${error.message}`,
