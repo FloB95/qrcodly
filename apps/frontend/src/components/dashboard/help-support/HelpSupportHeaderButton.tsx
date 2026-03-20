@@ -24,7 +24,7 @@ export function HelpSupportHeaderButton() {
 			className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground cursor-pointer"
 			aria-label={t('fabLabel')}
 		>
-			<span className="hidden sm:inline">{t('fabLabel')}</span>
+			<span className="text-xs xs:text-sm">{t('fabLabel')}</span>
 			<QuestionMarkCircleIcon className="size-4" />
 		</button>
 	);
