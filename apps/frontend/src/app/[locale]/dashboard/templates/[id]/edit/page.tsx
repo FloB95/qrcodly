@@ -64,7 +64,7 @@ export default async function ConfigTemplateEditPage({ params }: ConfigTemplateE
 					type: 'url',
 					data: {
 						url: env.NEXT_PUBLIC_FRONTEND_URL,
-						isEditable: true,
+						isDynamic: true,
 					},
 				},
 				latestQrCode: {
@@ -74,7 +74,7 @@ export default async function ConfigTemplateEditPage({ params }: ConfigTemplateE
 						type: 'url',
 						data: {
 							url: env.NEXT_PUBLIC_FRONTEND_URL,
-							isEditable: true,
+							isDynamic: true,
 						},
 					},
 				},

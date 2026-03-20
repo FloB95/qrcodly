@@ -25,7 +25,7 @@ const CONTENT_TYPE_CONFIG: Record<
 	}
 > = {
 	url: {
-		columns: ['url', 'name', 'isEditable'],
+		columns: ['url', 'name', 'isDynamic'],
 		schema: BulkUrlCsvDto,
 		filePrefix: 'qrcodly-import-url',
 	},

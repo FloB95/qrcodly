@@ -114,7 +114,7 @@ export class QrCodeController extends AbstractController {
 			summary: 'Create a new QR code',
 			description:
 				'Creates a new QR code based on the provided data. Supports 8 content types: URL, Text, WiFi, vCard, Email, Location, Event, and EPC. ' +
-				'If the QR code is dynamic (contentType=URL and isEditable=true), a short URL is automatically generated and linked so the destination can be changed later. ' +
+				'If the QR code is dynamic (contentType=URL and isDynamic=true), a short URL is automatically generated and linked so the destination can be changed later. ' +
 				'This endpoint is publicly accessible (no auth required) but rate-limited. Authenticated users get their QR codes saved to their account.',
 			operationId: 'qr-code/create-qr-code',
 		},

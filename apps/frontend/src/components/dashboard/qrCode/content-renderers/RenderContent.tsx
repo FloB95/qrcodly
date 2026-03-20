@@ -15,9 +15,9 @@ import { TruncatedLink } from './TruncatedLink';
 const renderUrlContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	if (qr.content.type !== 'url') return null;
 
-	const { url, isEditable } = qr.content.data;
+	const { url, isDynamic } = qr.content.data;
 
-	if (isEditable && qr.shortUrl) {
+	if (isDynamic && qr.shortUrl) {
 		return <ShortUrlDisplay shortUrl={qr.shortUrl} destinationUrl={qr.shortUrl.destinationUrl} />;
 	}
 

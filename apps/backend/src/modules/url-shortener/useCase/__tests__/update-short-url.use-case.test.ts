@@ -187,7 +187,7 @@ describe('UpdateShortUrlUseCase', () => {
 					type: 'url' as const,
 					data: {
 						url: 'https://example.com',
-						isEditable: true,
+						isDynamic: true,
 					},
 				},
 			} as TQrCode;
@@ -234,7 +234,7 @@ describe('UpdateShortUrlUseCase', () => {
 					type: 'url' as const,
 					data: {
 						url: 'https://example.com',
-						isEditable: true,
+						isDynamic: true,
 					},
 				},
 			} as TQrCode;
@@ -260,7 +260,7 @@ describe('UpdateShortUrlUseCase', () => {
 					type: 'url' as const,
 					data: {
 						url: 'https://example.com',
-						isEditable: true,
+						isDynamic: true,
 					},
 				},
 			} as TQrCode;

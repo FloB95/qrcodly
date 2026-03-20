@@ -88,7 +88,7 @@ export const GeneratorQrCodeDownloadBtn = ({
 									}),
 								]);
 
-								if (content.type === 'url' && content.data.isEditable) {
+								if (content.type === 'url' && content.data.isDynamic) {
 									resetStore();
 								}
 

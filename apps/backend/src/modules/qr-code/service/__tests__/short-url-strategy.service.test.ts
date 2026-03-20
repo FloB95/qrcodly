@@ -43,7 +43,7 @@ describe('ShortUrlStrategyService', () => {
 				type: 'url',
 				data: {
 					url: 'https://example.com',
-					isEditable: true,
+					isDynamic: true,
 				},
 			},
 			config: {} as any,
@@ -95,7 +95,7 @@ describe('ShortUrlStrategyService', () => {
 			expect(EventUrlStrategy).toHaveBeenCalled();
 		});
 
-		it('should execute UrlStrategy when content.type=url and isEditable=true', async () => {
+		it('should execute UrlStrategy when content.type=url and isDynamic=true', async () => {
 			mockUrlStrategy.appliesTo.mockReturnValue(true);
 			mockUrlStrategy.handle.mockResolvedValue(mockShortUrl as any);
 			mockEventStrategy.appliesTo.mockReturnValue(false);

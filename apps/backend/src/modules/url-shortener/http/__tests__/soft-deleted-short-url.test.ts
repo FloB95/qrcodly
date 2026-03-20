@@ -3,7 +3,7 @@ import { env } from '@/core/config/env';
 import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
-import { generateEditableUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
+import { generateDynamicUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
 import { SHORT_URL_API_PATH } from './utils';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
@@ -27,7 +27,7 @@ describe('softDeletedShortUrl', () => {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${accessToken}`,
 			},
-			payload: generateEditableUrlQrCodeDto(),
+			payload: generateDynamicUrlQrCodeDto(),
 		});
 		expect(createResponse.statusCode).toBe(201);
 		const qrCode = JSON.parse(createResponse.payload) as TQrCodeWithRelationsResponseDto;

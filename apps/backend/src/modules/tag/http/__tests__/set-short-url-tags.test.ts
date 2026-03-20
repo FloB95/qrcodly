@@ -2,7 +2,7 @@ import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { type FastifyInstance } from 'fastify';
 import { TAG_API_PATH, createTagRequest } from './utils';
 import { createShortUrl } from '@/modules/url-shortener/http/__tests__/utils';
-import { generateEditableUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
+import { generateDynamicUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
 import { API_BASE_PATH } from '@/core/config/constants';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 
@@ -207,7 +207,7 @@ describe('setShortUrlTags', () => {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${accessToken}`,
 			},
-			payload: generateEditableUrlQrCodeDto(),
+			payload: generateDynamicUrlQrCodeDto(),
 		});
 		expect(createResponse.statusCode).toBe(201);
 		const qrCode = JSON.parse(createResponse.payload) as TQrCodeWithRelationsResponseDto;

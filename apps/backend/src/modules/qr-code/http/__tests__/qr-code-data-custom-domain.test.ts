@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import {
-	generateEditableUrlQrCodeDto,
+	generateDynamicUrlQrCodeDto,
 	generateEventQrCodeDto,
 	generateDynamicVCardQrCodeDto,
 	getTestContext,
@@ -72,7 +72,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 		});
 
 		it('should use custom domain in qrCodeData for editable URL QR code', async () => {
-			const createQrCodeDto = generateEditableUrlQrCodeDto();
+			const createQrCodeDto = generateDynamicUrlQrCodeDto();
 			const response = await createQrCodeRequest(testServer, createQrCodeDto, accessTokenPro);
 			expect(response).toHaveStatusCode(201);
 
@@ -115,7 +115,7 @@ describe('QR Code Data - Custom Domain Integration', () => {
 		});
 
 		it('should use FRONTEND_URL in qrCodeData for editable URL QR code when no custom domain', async () => {
-			const createQrCodeDto = generateEditableUrlQrCodeDto();
+			const createQrCodeDto = generateDynamicUrlQrCodeDto();
 			const response = await createQrCodeRequest(testServer, createQrCodeDto, accessTokenPro);
 			expect(response).toHaveStatusCode(201);
 

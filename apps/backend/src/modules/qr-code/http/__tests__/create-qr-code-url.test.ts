@@ -3,7 +3,7 @@ import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/
 import { resetTestState } from '@/tests/shared/test-context';
 import {
 	generateQrCodeDto,
-	generateEditableUrlQrCodeDto,
+	generateDynamicUrlQrCodeDto,
 	getTestContext,
 	createQrCodeRequest,
 } from './utils';
@@ -22,7 +22,7 @@ describe('createQrCode - URL Content Type', () => {
 	const createRequest = async (payload?: TCreateQrCodeDto, token?: string) =>
 		createQrCodeRequest(testServer, payload, token);
 
-	it('should create a static URL QR code (isEditable: false)', async () => {
+	it('should create a static URL QR code (isDynamic: false)', async () => {
 		const createQrCodeDto = generateQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
 		expect(response).toHaveStatusCode(201);
@@ -30,7 +30,7 @@ describe('createQrCode - URL Content Type', () => {
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('url');
 		if (receivedQrCode.content.type === 'url') {
-			expect(receivedQrCode.content.data.isEditable).toBe(false);
+			expect(receivedQrCode.content.data.isDynamic).toBe(false);
 		}
 		expect(receivedQrCode.shortUrl).toBeNull();
 
@@ -40,15 +40,15 @@ describe('createQrCode - URL Content Type', () => {
 		}
 	});
 
-	it('should create a dynamic URL QR code (isEditable: true)', async () => {
-		const createQrCodeDto = generateEditableUrlQrCodeDto();
+	it('should create a dynamic URL QR code (isDynamic: true)', async () => {
+		const createQrCodeDto = generateDynamicUrlQrCodeDto();
 		const response = await createRequest(createQrCodeDto, accessToken);
 		expect(response).toHaveStatusCode(201);
 
 		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 		expect(receivedQrCode.content.type).toBe('url');
 		if (receivedQrCode.content.type === 'url') {
-			expect(receivedQrCode.content.data.isEditable).toBe(true);
+			expect(receivedQrCode.content.data.isDynamic).toBe(true);
 		}
 		expect(receivedQrCode.shortUrl).toBeDefined();
 		expect(receivedQrCode.shortUrl?.shortCode).toEqual(expect.any(String));
@@ -69,7 +69,7 @@ describe('createQrCode - URL Content Type', () => {
 				type: 'url' as const,
 				data: {
 					url: 'not-a-valid-url',
-					isEditable: false,
+					isDynamic: false,
 				},
 			},
 		};
@@ -84,7 +84,7 @@ describe('createQrCode - URL Content Type', () => {
 				type: 'url' as const,
 				data: {
 					url: 'https://abcde',
-					isEditable: false,
+					isDynamic: false,
 				},
 			},
 		};
@@ -100,7 +100,7 @@ describe('createQrCode - URL Content Type', () => {
 				type: 'url' as const,
 				data: {
 					url: longUrl,
-					isEditable: false,
+					isDynamic: false,
 				},
 			},
 		};

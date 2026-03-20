@@ -40,7 +40,7 @@ describe('BulkImportQrCodesUseCase', () => {
 			type: 'url',
 			data: {
 				url: 'https://example.com',
-				isEditable: false,
+				isDynamic: false,
 			},
 		},
 		config: QrCodeDefaults,
@@ -150,7 +150,7 @@ describe('BulkImportQrCodesUseCase', () => {
 						type: 'url',
 						data: {
 							url: 'https://example.com',
-							isEditable: true,
+							isDynamic: true,
 						},
 					},
 				}),

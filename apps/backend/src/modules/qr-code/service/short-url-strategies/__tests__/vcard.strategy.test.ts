@@ -98,7 +98,7 @@ describe('VCardStrategy', () => {
 				type: 'url',
 				data: {
 					url: 'https://example.com',
-					isEditable: false,
+					isDynamic: false,
 				},
 			};
 
@@ -233,7 +233,7 @@ describe('VCardStrategy', () => {
 					type: 'url',
 					data: {
 						url: 'https://example.com',
-						isEditable: false,
+						isDynamic: false,
 					},
 				},
 			};

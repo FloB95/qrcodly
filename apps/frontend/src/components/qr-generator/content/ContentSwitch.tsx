@@ -152,13 +152,13 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 					{/* Dynamic Badge - For URL and vCard types */}
 					{content.type === 'url' ? (
 						<DynamicBadge
-							checked={content.data.isEditable ?? true}
+							checked={content.data.isDynamic ?? true}
 							onChange={(checked) => {
 								updateContent({
 									type: 'url',
 									data: {
 										...content.data,
-										isEditable: checked,
+										isDynamic: checked,
 									},
 								});
 							}}

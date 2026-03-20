@@ -54,7 +54,7 @@ export const generateQrCodeDto = (): TCreateQrCodeDto => ({
 		type: 'url',
 		data: {
 			url: faker.internet.url(),
-			isEditable: false, // TODO add as param
+			isDynamic: false, // TODO add as param
 		},
 	},
 	config: QrCodeDefaults,
@@ -132,13 +132,13 @@ export const generateTextQrCodeDto = (): TCreateQrCodeDto => ({
 /**
  * Generates an editable URL QR code DTO.
  */
-export const generateEditableUrlQrCodeDto = (): TCreateQrCodeDto => ({
+export const generateDynamicUrlQrCodeDto = (): TCreateQrCodeDto => ({
 	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'url',
 		data: {
 			url: faker.internet.url(),
-			isEditable: true,
+			isDynamic: true,
 		},
 	},
 	config: QrCodeDefaults,

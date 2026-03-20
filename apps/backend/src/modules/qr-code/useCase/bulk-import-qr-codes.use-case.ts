@@ -28,7 +28,7 @@ export class BulkImportQrCodesUseCase {
 		>
 	> = {
 		url: {
-			columns: ['url', 'name', 'isEditable'],
+			columns: ['url', 'name', 'isDynamic'],
 			schema: BulkUrlCsvDto,
 		},
 		text: {

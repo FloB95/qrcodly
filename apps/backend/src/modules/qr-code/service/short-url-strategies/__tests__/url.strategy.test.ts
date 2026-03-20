@@ -51,24 +51,24 @@ describe('UrlStrategy', () => {
 	});
 
 	describe('appliesTo', () => {
-		it('should apply when content.type=url and data.isEditable=true', () => {
+		it('should apply when content.type=url and data.isDynamic=true', () => {
 			const content: TQrCodeContent = {
 				type: 'url',
 				data: {
 					url: 'https://example.com',
-					isEditable: true,
+					isDynamic: true,
 				},
 			};
 
 			expect(strategy.appliesTo(content)).toBe(true);
 		});
 
-		it('should not apply when content.type=url and data.isEditable=false', () => {
+		it('should not apply when content.type=url and data.isDynamic=false', () => {
 			const content: TQrCodeContent = {
 				type: 'url',
 				data: {
 					url: 'https://example.com',
-					isEditable: false,
+					isDynamic: false,
 				},
 			};
 
@@ -93,7 +93,7 @@ describe('UrlStrategy', () => {
 				type: 'url',
 				data: {
 					url: 'https://example.com',
-					isEditable: true,
+					isDynamic: true,
 				},
 			},
 			config: {} as any,

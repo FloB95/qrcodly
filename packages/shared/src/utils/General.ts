@@ -187,8 +187,8 @@ export const convertQRCodeDataToStringByType = (
 ): string => {
 	switch (content.type) {
 		case 'url': {
-			const { url, isEditable } = content.data as unknown as any;
-			return shortUrl && isEditable ? shortUrl : url;
+			const { url, isDynamic } = content.data as unknown as any;
+			return shortUrl && isDynamic ? shortUrl : url;
 		}
 		case 'text':
 			return content.data;
@@ -219,7 +219,7 @@ export const isDynamic = (content: TQrCodeContent): boolean => {
 	}
 
 	if (content.type === 'url') {
-		return content.data.isEditable === true;
+		return content.data.isDynamic === true;
 	}
 
 	if (content.type === 'vCard') {
@@ -239,7 +239,7 @@ export const getDefaultContentByType = (
 				type: 'url',
 				data: {
 					url: '',
-					isEditable: isSignedIn,
+					isDynamic: isSignedIn,
 				},
 			};
 		case 'text':
