@@ -19,7 +19,7 @@ describe('ListQrCodesUseCase', () => {
 				type: 'url',
 				data: {
 					url: 'https://example.com',
-					isEditable: false,
+					isDynamic: false,
 				},
 			},
 			config: {

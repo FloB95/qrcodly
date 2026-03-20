@@ -3,7 +3,7 @@ import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/
 import { resetTestState } from '@/tests/shared/test-context';
 import {
 	generateQrCodeDto,
-	generateEditableUrlQrCodeDto,
+	generateDynamicUrlQrCodeDto,
 	generateDynamicVCardQrCodeDto,
 	generateEventQrCodeDto,
 	generateTextQrCodeDto,
@@ -123,7 +123,7 @@ describe('createQrCode - Core', () => {
 	describe('Dynamic QR Code Authentication', () => {
 		describe('should reject unauthenticated users for dynamic QR codes', () => {
 			it('should reject editable URL QR code without authentication', async () => {
-				const dto = generateEditableUrlQrCodeDto();
+				const dto = generateDynamicUrlQrCodeDto();
 				const response = await createRequest(dto); // No token
 
 				expect(response).toHaveStatusCode(401);
@@ -152,7 +152,7 @@ describe('createQrCode - Core', () => {
 
 		describe('should allow unauthenticated users for static QR codes', () => {
 			it('should allow static URL QR code without authentication', async () => {
-				const dto = generateQrCodeDto(); // Static URL (isEditable: false)
+				const dto = generateQrCodeDto(); // Static URL (isDynamic: false)
 				const response = await createRequest(dto); // No token
 
 				expect(response).toHaveStatusCode(201);
@@ -196,7 +196,7 @@ describe('createQrCode - Core', () => {
 
 		describe('should allow authenticated users for dynamic QR codes', () => {
 			it('should allow editable URL QR code with authentication', async () => {
-				const dto = generateEditableUrlQrCodeDto();
+				const dto = generateDynamicUrlQrCodeDto();
 				const response = await createRequest(dto, accessToken);
 
 				expect(response).toHaveStatusCode(201);

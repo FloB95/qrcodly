@@ -55,7 +55,7 @@ describe('CreateQrCodeUseCase', () => {
 			type: 'url',
 			data: {
 				url: 'https://example.com',
-				isEditable: false,
+				isDynamic: false,
 			},
 		},
 		config: QrCodeDefaults,
@@ -68,7 +68,7 @@ describe('CreateQrCodeUseCase', () => {
 			type: 'url',
 			data: {
 				url: 'https://example.com',
-				isEditable: false,
+				isDynamic: false,
 			},
 		},
 		config: QrCodeDefaults,

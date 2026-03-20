@@ -1,6 +1,6 @@
 import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import { generateUpdateShortUrlDto } from '@/tests/shared/factories/short-url.factory';
-import { generateEditableUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
+import { generateDynamicUrlQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
 import { API_BASE_PATH } from '@/core/config/constants';
 import type { FastifyInstance } from 'fastify';
 import type {
@@ -236,7 +236,7 @@ describe('updateShortUrl', () => {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${accessToken}`,
 			},
-			payload: generateEditableUrlQrCodeDto(),
+			payload: generateDynamicUrlQrCodeDto(),
 		});
 		expect(createResponse.statusCode).toBe(201);
 		const qrCode = JSON.parse(createResponse.payload) as TQrCodeWithRelationsResponseDto;

@@ -74,7 +74,7 @@ describe('bulkImportQrCodes', () => {
 			expect(qrCodes[0].name).toBe('Test QR');
 			if (qrCodes[0].content.type === 'url') {
 				expect(qrCodes[0].content.data.url).toBe('https://example.com');
-				expect(qrCodes[0].content.data.isEditable).toBe(false);
+				expect(qrCodes[0].content.data.isDynamic).toBe(false);
 			}
 		});
 

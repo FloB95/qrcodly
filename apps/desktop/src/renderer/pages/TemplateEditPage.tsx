@@ -63,7 +63,7 @@ export default function TemplateEditPage() {
 					type: 'url',
 					data: {
 						url: env.NEXT_PUBLIC_FRONTEND_URL,
-						isEditable: true,
+						isDynamic: true,
 					},
 				},
 				bulkMode: {

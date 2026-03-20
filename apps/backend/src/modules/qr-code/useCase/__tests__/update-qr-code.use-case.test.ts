@@ -27,7 +27,7 @@ describe('UpdateQrCodeUseCase', () => {
 			type: 'url',
 			data: {
 				url: 'https://example.com',
-				isEditable: false,
+				isDynamic: false,
 			},
 		},
 		config: QrCodeDefaults,
@@ -125,7 +125,7 @@ describe('UpdateQrCodeUseCase', () => {
 					type: 'url',
 					data: {
 						url: 'https://newurl.com',
-						isEditable: false,
+						isDynamic: false,
 					},
 				},
 			};
@@ -141,7 +141,7 @@ describe('UpdateQrCodeUseCase', () => {
 					type: 'url',
 					data: {
 						url: 'https://newurl.com',
-						isEditable: false,
+						isDynamic: false,
 					},
 				},
 			};
@@ -154,7 +154,7 @@ describe('UpdateQrCodeUseCase', () => {
 					content: expect.objectContaining({
 						data: expect.objectContaining({
 							url: 'https://newurl.com',
-							isEditable: false,
+							isDynamic: false,
 						}),
 					}),
 				}),
@@ -226,7 +226,7 @@ describe('UpdateQrCodeUseCase', () => {
 					type: 'url',
 					data: {
 						url: 'https://newurl.com',
-						isEditable: false,
+						isDynamic: false,
 					},
 				},
 			};

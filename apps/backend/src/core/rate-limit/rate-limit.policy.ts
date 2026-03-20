@@ -74,9 +74,9 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.PRO_PLAN]: 20,
 	},
 	[RateLimitPolicy.DOMAIN_RESOLVE]: {
-		[RateLimitTier.ANONYMOUS]: 500,
-		[RateLimitTier.AUTHENTICATED]: 500,
-		[RateLimitTier.PRO_PLAN]: 500,
+		[RateLimitTier.ANONYMOUS]: 2000,
+		[RateLimitTier.AUTHENTICATED]: 2000,
+		[RateLimitTier.PRO_PLAN]: 2000,
 	},
 	[RateLimitPolicy.SCAN_LOOKUP]: {
 		[RateLimitTier.ANONYMOUS]: 300,

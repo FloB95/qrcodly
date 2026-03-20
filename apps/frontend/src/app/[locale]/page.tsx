@@ -86,7 +86,7 @@ export default async function Page({ params }: DefaultPageParams) {
 						type: 'url',
 						data: {
 							url: '',
-							isEditable: isSignedIn,
+							isDynamic: isSignedIn,
 						},
 					},
 					latestQrCode: undefined,

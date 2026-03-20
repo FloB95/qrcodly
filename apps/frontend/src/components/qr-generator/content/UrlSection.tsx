@@ -42,7 +42,7 @@ const UrlSectionBase = ({ value, onChange }: TUrlSectionProps) => {
 		criteriaMode: 'all',
 		defaultValues: {
 			url: value?.url ?? '',
-			isEditable: value?.isEditable ?? true,
+			isDynamic: value?.isDynamic ?? true,
 		},
 	});
 
@@ -69,11 +69,11 @@ const UrlSectionBase = ({ value, onChange }: TUrlSectionProps) => {
 		if (value?.url !== undefined && value.url !== form.getValues('url')) {
 			form.setValue('url', value.url, { shouldValidate: false });
 		}
-		if (value?.isEditable !== undefined && value.isEditable !== form.getValues('isEditable')) {
-			form.setValue('isEditable', value.isEditable, { shouldValidate: false });
+		if (value?.isDynamic !== undefined && value.isDynamic !== form.getValues('isDynamic')) {
+			form.setValue('isDynamic', value.isDynamic, { shouldValidate: false });
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [value?.url, value?.isEditable, shortUrl]);
+	}, [value?.url, value?.isDynamic, shortUrl]);
 
 	// Surface server-side validation errors (e.g. duplicate URL) in the form
 	useEffect(() => {

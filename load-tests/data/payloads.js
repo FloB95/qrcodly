@@ -46,7 +46,7 @@ export function createUrlQrCode() {
 			type: 'url',
 			data: {
 				url: `https://example.com/${randomString(10)}`,
-				isEditable: Math.random() > 0.5,
+				isDynamic: Math.random() > 0.5,
 			},
 		},
 	};

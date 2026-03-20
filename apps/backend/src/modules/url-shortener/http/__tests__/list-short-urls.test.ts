@@ -182,7 +182,7 @@ describe('listShortUrls', () => {
 					name: 'QR for standalone test',
 					content: {
 						type: 'url',
-						data: { url: 'https://example.com/standalone-test', isEditable: true },
+						data: { url: 'https://example.com/standalone-test', isDynamic: true },
 					},
 					config: QrCodeDefaults,
 				},

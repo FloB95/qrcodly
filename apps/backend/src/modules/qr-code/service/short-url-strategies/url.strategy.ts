@@ -9,7 +9,7 @@ import { GetDefaultCustomDomainUseCase } from '@/modules/custom-domain/useCase/g
 
 export class UrlStrategy implements IShortUrlStrategy {
 	appliesTo(content: TQrCodeContent) {
-		return (content.type === 'url' && content.data.isEditable) || false;
+		return (content.type === 'url' && content.data.isDynamic) || false;
 	}
 
 	async handle(qrCode: TQrCode) {

@@ -33,8 +33,8 @@ const EditUrlSectionBase = ({ value, onChange }: TUrlSectionProps) => {
 		resolver: standardSchemaResolver(UrlFormSchema),
 		defaultValues: {
 			url:
-				value.isEditable && shortUrl?.destinationUrl ? shortUrl.destinationUrl : (value?.url ?? ''),
-			isEditable: value?.isEditable ?? false,
+				value.isDynamic && shortUrl?.destinationUrl ? shortUrl.destinationUrl : (value?.url ?? ''),
+			isDynamic: value?.isDynamic ?? false,
 		},
 	});
 
@@ -98,7 +98,7 @@ const EditUrlSectionBase = ({ value, onChange }: TUrlSectionProps) => {
 									/>
 								</FormControl>
 
-								{form.getValues().isEditable && shortUrlLink && (
+								{form.getValues().isDynamic && shortUrlLink && (
 									<div className="-mt-1 ml-6 flex items-center min-w-0 opacity-100 transition-opacity duration-300 ease-in-out">
 										<ArrowTurnLeftUpIcon className="-mt-2 mr-2 h-6 w-6 shrink-0 font-semibold" />
 										<span className="text-muted-foreground truncate pt-1 text-sm">

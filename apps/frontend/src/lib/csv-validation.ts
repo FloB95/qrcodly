@@ -17,7 +17,7 @@ const booleanPreprocess = z.preprocess((value) => {
 const BulkUrlCsvSchema = z.object({
 	...QrCodeSchema.pick({ name: true }).shape,
 	...UrlInputSchema.pick({ url: true }).shape,
-	isEditable: booleanPreprocess,
+	isDynamic: booleanPreprocess,
 });
 
 const BulkTextCsvSchema = z.object({
@@ -39,7 +39,7 @@ const BulkVCardCsvSchema = z.object({
 
 const columnMap: Partial<Record<TQrCodeContentType, { columns: string[]; schema: z.ZodObject }>> = {
 	url: {
-		columns: ['url', 'name', 'isEditable'],
+		columns: ['url', 'name', 'isDynamic'],
 		schema: BulkUrlCsvSchema,
 	},
 	text: {

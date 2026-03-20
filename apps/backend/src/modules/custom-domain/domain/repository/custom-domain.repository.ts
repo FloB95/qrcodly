@@ -11,8 +11,20 @@ import customDomain, { TCustomDomain } from '../entities/custom-domain.entity';
 class CustomDomainRepository extends AbstractRepository<TCustomDomain> {
 	table = customDomain;
 
+	private static readonly RESOLVE_CACHE_TTL = 300; // 5 minutes for found domains
+	private static readonly RESOLVE_NOT_FOUND_TTL = 60; // 1 minute for not-found domains
+	private static readonly NOT_FOUND_SENTINEL = '__NOT_FOUND__';
+
 	constructor() {
 		super();
+	}
+
+	private getResolveCacheKey(domain: string): string {
+		return `custom_domain_resolve:${domain.toLowerCase()}`;
+	}
+
+	async invalidateResolveCache(domain: string): Promise<void> {
+		await this.appCache.del(this.getResolveCacheKey(domain));
 	}
 
 	/**
@@ -46,13 +58,39 @@ class CustomDomainRepository extends AbstractRepository<TCustomDomain> {
 
 	/**
 	 * Finds a Custom Domain by its domain name.
+	 * Uses Redis cache to reduce DB load from Cloudflare Worker resolve requests.
 	 * @param domain - The domain name.
 	 * @returns A promise that resolves to the Custom Domain if found, otherwise undefined.
 	 */
 	async findOneByDomain(domain: string): Promise<TCustomDomain | undefined> {
+		const cacheKey = this.getResolveCacheKey(domain);
+		const cached = await this.appCache.get(cacheKey);
+
+		if (cached !== null) {
+			if (cached === CustomDomainRepository.NOT_FOUND_SENTINEL) {
+				return undefined;
+			}
+			return JSON.parse(cached as string) as TCustomDomain;
+		}
+
 		const result = await this.db.query.customDomain.findFirst({
 			where: eq(this.table.domain, domain.toLowerCase()),
 		});
+
+		if (result) {
+			await this.appCache.set(
+				cacheKey,
+				JSON.stringify(result),
+				CustomDomainRepository.RESOLVE_CACHE_TTL,
+			);
+		} else {
+			await this.appCache.set(
+				cacheKey,
+				CustomDomainRepository.NOT_FOUND_SENTINEL,
+				CustomDomainRepository.RESOLVE_NOT_FOUND_TTL,
+			);
+		}
+
 		return result;
 	}
 
@@ -81,6 +119,7 @@ class CustomDomainRepository extends AbstractRepository<TCustomDomain> {
 			.set({ ...updates, updatedAt: new Date() })
 			.where(eq(this.table.id, customDomain.id))
 			.execute();
+		await this.invalidateResolveCache(customDomain.domain);
 	}
 
 	/**
@@ -91,6 +130,7 @@ class CustomDomainRepository extends AbstractRepository<TCustomDomain> {
 	async delete(customDomain: TCustomDomain): Promise<boolean> {
 		await this.db.delete(this.table).where(eq(this.table.id, customDomain.id)).execute();
 		await this.clearCache();
+		await this.invalidateResolveCache(customDomain.domain);
 		return true;
 	}
 
@@ -118,6 +158,7 @@ class CustomDomainRepository extends AbstractRepository<TCustomDomain> {
 			.execute();
 
 		await this.clearCache();
+		await this.invalidateResolveCache(customDomain.domain);
 	}
 
 	/**
@@ -171,11 +212,15 @@ class CustomDomainRepository extends AbstractRepository<TCustomDomain> {
 	 * @param userId - The user ID.
 	 */
 	async disableAllByUserId(userId: string): Promise<void> {
+		const domains = await this.findAllByUserId(userId);
 		await this.db
 			.update(this.table)
 			.set({ isEnabled: false, isDefault: false, updatedAt: new Date() })
 			.where(eq(this.table.createdBy, userId))
 			.execute();
+		for (const d of domains) {
+			await this.invalidateResolveCache(d.domain);
+		}
 	}
 
 	/**
@@ -183,11 +228,15 @@ class CustomDomainRepository extends AbstractRepository<TCustomDomain> {
 	 * @param userId - The user ID.
 	 */
 	async enableAllByUserId(userId: string): Promise<void> {
+		const domains = await this.findAllByUserId(userId);
 		await this.db
 			.update(this.table)
 			.set({ isEnabled: true, updatedAt: new Date() })
 			.where(eq(this.table.createdBy, userId))
 			.execute();
+		for (const d of domains) {
+			await this.invalidateResolveCache(d.domain);
+		}
 	}
 
 	/**

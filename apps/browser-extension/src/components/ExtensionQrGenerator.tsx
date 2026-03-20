@@ -16,7 +16,7 @@ export function ExtensionQrGenerator() {
 					type: 'url',
 					data: {
 						url: currentUrl,
-						isEditable: false,
+						isDynamic: false,
 					},
 				},
 				latestQrCode: undefined,

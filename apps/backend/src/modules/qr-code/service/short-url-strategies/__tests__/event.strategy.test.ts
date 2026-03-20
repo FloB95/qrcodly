@@ -70,7 +70,7 @@ describe('EventUrlStrategy', () => {
 				type: 'url',
 				data: {
 					url: 'https://example.com',
-					isEditable: false,
+					isDynamic: false,
 				},
 			};
 
@@ -203,7 +203,7 @@ describe('EventUrlStrategy', () => {
 					type: 'url',
 					data: {
 						url: 'https://example.com',
-						isEditable: false,
+						isDynamic: false,
 					},
 				},
 			};

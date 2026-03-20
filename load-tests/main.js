@@ -101,11 +101,11 @@ export function setup() {
 	const token = CLERK_TOKENS[0];
 	const headers = getHeaders(token);
 
-	// 2. Create dynamic QR codes (isEditable: true → generates a short URL)
+	// 2. Create dynamic QR codes (isDynamic: true → generates a short URL)
 	console.log(`Creating ${SETUP_QR_CODES} dynamic QR codes...`);
 	for (let i = 0; i < SETUP_QR_CODES; i++) {
 		const payload = createUrlQrCode();
-		payload.content.data.isEditable = true;
+		payload.content.data.isDynamic = true;
 
 		const res = http.post(`${BASE_URL}/qr-code`, JSON.stringify(payload), {
 			headers,

@@ -6,7 +6,7 @@ const emptyStringToUndefined = <T extends z.ZodTypeAny>(schema: T) =>
 
 export const UrlInputSchema = z.object({
 	url: z.url().max(1000).describe('The target URL that the QR code points to'),
-	isEditable: z
+	isDynamic: z
 		.boolean()
 		.optional()
 		.describe(

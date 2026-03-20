@@ -58,7 +58,7 @@ describe('CreateQrCodePolicy', () => {
 				type: 'url',
 				data: {
 					url: 'https://example.com',
-					isEditable: false,
+					isDynamic: false,
 				},
 			},
 			config: QrCodeDefaults,
@@ -130,7 +130,7 @@ describe('CreateQrCodePolicy', () => {
 				...mockDto,
 				content: {
 					type: 'url',
-					data: { url: 'https://example.com', isEditable: false },
+					data: { url: 'https://example.com', isDynamic: false },
 				},
 			};
 
@@ -155,7 +155,7 @@ describe('CreateQrCodePolicy', () => {
 		it('should check correct limit based on content type', async () => {
 			const urlDto: TCreateQrCodeDto = {
 				...mockDto,
-				content: { type: 'url', data: { url: 'https://example.com', isEditable: false } },
+				content: { type: 'url', data: { url: 'https://example.com', isDynamic: false } },
 			};
 
 			mockUsageService.count.mockResolvedValue(5);
@@ -216,7 +216,7 @@ describe('CreateQrCodePolicy', () => {
 					type: 'url',
 					data: {
 						url: 'https://example.com',
-						isEditable: true,
+						isDynamic: true,
 					},
 				},
 			};
@@ -268,7 +268,7 @@ describe('CreateQrCodePolicy', () => {
 					type: 'url',
 					data: {
 						url: 'https://example.com',
-						isEditable: false,
+						isDynamic: false,
 					},
 				},
 			};
@@ -314,7 +314,7 @@ describe('CreateQrCodePolicy', () => {
 				type: 'url',
 				data: {
 					url: 'https://example.com',
-					isEditable: false,
+					isDynamic: false,
 				},
 			},
 			config: QrCodeDefaults,

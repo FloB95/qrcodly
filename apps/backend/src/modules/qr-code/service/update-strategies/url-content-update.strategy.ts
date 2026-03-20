@@ -20,7 +20,7 @@ export class UrlContentUpdateStrategy implements IContentUpdateStrategy {
 	async handleContentUpdate(qrCode: TQrCode, updates: Partial<TQrCode>): Promise<void> {
 		if (!updates.content || updates.content.type !== 'url') return;
 
-		if (qrCode.content.type === 'url' && qrCode.content.data.isEditable) {
+		if (qrCode.content.type === 'url' && qrCode.content.data.isDynamic) {
 			const shortUrl = await this.shortUrlRepository.findOneByQrCodeId(qrCode.id);
 			if (!shortUrl) {
 				throw new ShortUrlNotFoundError();
@@ -34,7 +34,7 @@ export class UrlContentUpdateStrategy implements IContentUpdateStrategy {
 
 			updates.content = qrCode.content;
 		} else {
-			updates.content.data.isEditable = false;
+			updates.content.data.isDynamic = false;
 		}
 	}
 }

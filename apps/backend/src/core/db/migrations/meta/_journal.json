@@ -204,6 +204,13 @@
 			"when": 1773569698390,
 			"tag": "0028_crazy_robbie_robertson",
 			"breakpoints": true
+		},
+		{
+			"idx": 29,
+			"version": "5",
+			"when": 1774006916598,
+			"tag": "0029_rename-is-editable-to-is-dynamic",
+			"breakpoints": true
 		}
 	]
 }

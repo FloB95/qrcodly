@@ -49,7 +49,7 @@ const TemplateCard = React.memo(
 					type: 'url',
 					data: {
 						url: 'https://www.qrcodly.de/',
-						isEditable: false,
+						isDynamic: false,
 					},
 				},
 			}),

@@ -64,7 +64,7 @@ export const TemplateListItem = ({
 				type: 'url',
 				data: {
 					url: 'https://www.qrcodly.de/',
-					isEditable: false,
+					isDynamic: false,
 				},
 			},
 		}),

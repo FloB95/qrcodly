@@ -57,7 +57,7 @@ const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
 							queryClient.refetchQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
 						]);
 
-						if (qrCode.content.type === 'url' && qrCode.content.data.isEditable) {
+						if (qrCode.content.type === 'url' && qrCode.content.data.isDynamic) {
 							resetStore();
 						}
 

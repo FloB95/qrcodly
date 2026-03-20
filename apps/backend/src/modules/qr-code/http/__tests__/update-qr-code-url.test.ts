@@ -3,7 +3,7 @@ import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/
 import { resetTestState } from '@/tests/shared/test-context';
 import {
 	generateQrCodeDto,
-	generateEditableUrlQrCodeDto,
+	generateDynamicUrlQrCodeDto,
 	getTestContext,
 	QR_CODE_API_PATH,
 } from './utils';
@@ -40,7 +40,7 @@ describe('updateQrCode - URL Content Type', () => {
 			},
 		});
 
-	describe('Static URL (isEditable: false)', () => {
+	describe('Static URL (isDynamic: false)', () => {
 		it('should update non-editable URL content', async () => {
 			const createdQrCode = await createQrCode(generateQrCodeDto(), accessToken);
 			const newUrl = 'https://updated-example.com';
@@ -52,7 +52,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: newUrl,
-							isEditable: false,
+							isDynamic: false,
 						},
 					},
 				},
@@ -64,7 +64,7 @@ describe('updateQrCode - URL Content Type', () => {
 			expect(updatedQrCode.content.type).toBe('url');
 			if (updatedQrCode.content.type === 'url') {
 				expect(updatedQrCode.content.data.url).toBe(newUrl);
-				expect(updatedQrCode.content.data.isEditable).toBe(false);
+				expect(updatedQrCode.content.data.isDynamic).toBe(false);
 			}
 
 			// Verify qrCodeData is updated to the new URL
@@ -84,7 +84,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: 'https://another-static.com',
-							isEditable: false,
+							isDynamic: false,
 						},
 					},
 				},
@@ -114,7 +114,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: newUrl,
-							isEditable: false,
+							isDynamic: false,
 						},
 					},
 				},
@@ -129,9 +129,9 @@ describe('updateQrCode - URL Content Type', () => {
 		});
 	});
 
-	describe('Dynamic URL (isEditable: true)', () => {
+	describe('Dynamic URL (isDynamic: true)', () => {
 		it('should update editable URL content and update linked short URL', async () => {
-			const createdQrCode = await createQrCode(generateEditableUrlQrCodeDto(), accessToken);
+			const createdQrCode = await createQrCode(generateDynamicUrlQrCodeDto(), accessToken);
 			const newUrl = 'https://new-destination.com';
 
 			// Verify short URL exists
@@ -145,7 +145,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: newUrl,
-							isEditable: true,
+							isDynamic: true,
 						},
 					},
 				},
@@ -158,7 +158,7 @@ describe('updateQrCode - URL Content Type', () => {
 			if (updatedQrCode.content.type === 'url') {
 				// For editable URLs, the actual URL is stored in shortUrl.destinationUrl
 				expect(updatedQrCode.shortUrl?.destinationUrl).toBe(newUrl);
-				expect(updatedQrCode.content.data.isEditable).toBe(true);
+				expect(updatedQrCode.content.data.isDynamic).toBe(true);
 			}
 
 			// qrCodeData should contain the short URL
@@ -167,7 +167,7 @@ describe('updateQrCode - URL Content Type', () => {
 		});
 
 		it('should verify dynamic URL QR code maintains short URL after update', async () => {
-			const createdQrCode = await createQrCode(generateEditableUrlQrCodeDto(), accessToken);
+			const createdQrCode = await createQrCode(generateDynamicUrlQrCodeDto(), accessToken);
 			const originalShortCode = createdQrCode.shortUrl?.shortCode;
 
 			expect(originalShortCode).toBeDefined();
@@ -179,7 +179,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: 'https://updated-dynamic.com',
-							isEditable: true,
+							isDynamic: true,
 						},
 					},
 				},
@@ -198,7 +198,7 @@ describe('updateQrCode - URL Content Type', () => {
 		});
 
 		it('should update editable URL with name and config together', async () => {
-			const createdQrCode = await createQrCode(generateEditableUrlQrCodeDto(), accessToken);
+			const createdQrCode = await createQrCode(generateDynamicUrlQrCodeDto(), accessToken);
 			const newUrl = 'https://comprehensive-update.com';
 			const newName = 'Fully Updated QR';
 			const newConfig = { ...createdQrCode.config, width: 450 };
@@ -212,7 +212,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: newUrl,
-							isEditable: true,
+							isDynamic: true,
 						},
 					},
 				},
@@ -226,7 +226,7 @@ describe('updateQrCode - URL Content Type', () => {
 			if (updatedQrCode.content.type === 'url') {
 				// For editable URLs, verify short URL destination was updated
 				expect(updatedQrCode.shortUrl?.destinationUrl).toBe(newUrl);
-				expect(updatedQrCode.content.data.isEditable).toBe(true);
+				expect(updatedQrCode.content.data.isDynamic).toBe(true);
 			}
 		});
 	});
@@ -242,7 +242,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: 'not-a-valid-url',
-							isEditable: false,
+							isDynamic: false,
 						},
 					},
 				},
@@ -262,7 +262,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: 'https://abcde',
-							isEditable: false,
+							isDynamic: false,
 						},
 					},
 				},
@@ -282,7 +282,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: '',
-							isEditable: false,
+							isDynamic: false,
 						},
 					},
 				},
@@ -294,7 +294,7 @@ describe('updateQrCode - URL Content Type', () => {
 
 		it('should reject dynamic URL update that creates redirect loop (destination = own short URL)', async () => {
 			// Create an editable/dynamic URL QR code
-			const createdQrCode = await createQrCode(generateEditableUrlQrCodeDto(), accessToken);
+			const createdQrCode = await createQrCode(generateDynamicUrlQrCodeDto(), accessToken);
 
 			// Get the short URL that was created
 			expect(createdQrCode.shortUrl).toBeDefined();
@@ -312,7 +312,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: selfReferencingUrl,
-							isEditable: true,
+							isDynamic: true,
 						},
 					},
 				},
@@ -325,7 +325,7 @@ describe('updateQrCode - URL Content Type', () => {
 		});
 
 		it('should allow dynamic URL update when destination is different from own short URL', async () => {
-			const createdQrCode = await createQrCode(generateEditableUrlQrCodeDto(), accessToken);
+			const createdQrCode = await createQrCode(generateDynamicUrlQrCodeDto(), accessToken);
 
 			// Update with a completely different URL
 			const response = await updateQrCodeRequest(
@@ -335,7 +335,7 @@ describe('updateQrCode - URL Content Type', () => {
 						type: 'url',
 						data: {
 							url: 'https://completely-different-domain.com/page',
-							isEditable: true,
+							isDynamic: true,
 						},
 					},
 				},
