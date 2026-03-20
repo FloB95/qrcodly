@@ -79,7 +79,7 @@ describe('GET /custom-domain/resolve - Redis Cache Invalidation', () => {
 			expect(result1.isValid).toBe(true);
 
 			// Delete directly from DB (bypassing repository, so cache is NOT invalidated)
-			const domainId = ctx.createdDomainIds[0]!;
+			const domainId = ctx.createdDomainIds[0];
 			await deleteCustomDomainDirectly(domainId);
 			ctx.createdDomainIds.length = 0;
 
