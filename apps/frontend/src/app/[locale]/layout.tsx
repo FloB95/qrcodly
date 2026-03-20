@@ -52,9 +52,10 @@ export async function generateMetadata({
 			languages: {
 				'x-default': baseUrl,
 				...Object.fromEntries(
-					routing.locales
-						.filter((l) => l !== locale)
-						.map((l) => [l, l === routing.defaultLocale ? baseUrl : `${baseUrl}/${l}`]),
+					routing.locales.map((l) => [
+						l,
+						l === routing.defaultLocale ? baseUrl : `${baseUrl}/${l}`,
+					]),
 				),
 			},
 		},
