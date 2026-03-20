@@ -179,10 +179,14 @@ export default function SatisfactionSurvey() {
 								</span>
 							</button>
 						</div>
-						<div className="flex justify-end">
-							<Button variant="ghost" size="sm" onClick={handleDismiss}>
+						<div className="flex justify-end pt-1">
+							<button
+								type="button"
+								onClick={handleDismiss}
+								className="cursor-pointer text-xs text-muted-foreground/50 transition-colors hover:text-muted-foreground"
+							>
 								{t('skip')}
-							</Button>
+							</button>
 						</div>
 					</>
 				)}
@@ -206,10 +210,14 @@ export default function SatisfactionSurvey() {
 								</InputGroupText>
 							</InputGroupAddon>
 						</InputGroup>
-						<div className="flex justify-end gap-2">
-							<Button variant="ghost" size="sm" onClick={handleSkipFeedback}>
+						<div className="flex items-center justify-end gap-3">
+							<button
+								type="button"
+								onClick={handleSkipFeedback}
+								className="cursor-pointer text-xs text-muted-foreground/50 transition-colors hover:text-muted-foreground"
+							>
 								{t('skip')}
-							</Button>
+							</button>
 							<Button size="sm" onClick={handleSubmitFeedback}>
 								{t('submit')}
 							</Button>
