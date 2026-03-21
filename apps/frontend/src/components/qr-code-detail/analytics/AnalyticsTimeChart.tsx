@@ -22,6 +22,7 @@ interface TimeChartDataPoint {
 interface AnalyticsTimeChartProps {
 	data: TimeChartDataPoint[];
 	locale: string;
+	variant?: 'scan' | 'click';
 }
 
 const chartConfig = {
@@ -35,16 +36,18 @@ const chartConfig = {
 	},
 } satisfies ChartConfig;
 
-export const AnalyticsTimeChart = ({ data, locale }: AnalyticsTimeChartProps) => {
+export const AnalyticsTimeChart = ({ data, locale, variant = 'scan' }: AnalyticsTimeChartProps) => {
 	const id = useId();
 	const fillScansId = `fillScans-${id.replace(/:/g, '')}`;
 	const fillVisitorsId = `fillVisitors-${id.replace(/:/g, '')}`;
 	const t = useTranslations();
 
+	const unitLabel = variant === 'scan' ? t('analytics.scansUnit') : t('analytics.clicksUnit');
+
 	const configWithLabels = {
 		scans: {
 			...chartConfig.scans,
-			label: t('analytics.scansUnit'),
+			label: unitLabel,
 		},
 		visitors: {
 			...chartConfig.visitors,

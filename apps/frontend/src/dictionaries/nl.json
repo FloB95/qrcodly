@@ -100,7 +100,9 @@
 		"newBadge": "Nieuw!",
 		"dynamicDescription": "Dynamische QR-codes kunnen na creatie bewerkt worden, tracken elke scan en bieden gedetailleerde statistieken – zonder de code opnieuw te hoeven afdrukken.",
 		"dynamicBadgeTooltip": "Maakt het mogelijk om de inhoud later te wijzigen zonder nieuwe QR-code. <i>Hover voor meer info</i>",
-		"copyFailed": "Kon niet naar klembord kopiëren. Kopieer het handmatig."
+		"copyFailed": "Kon niet naar klembord kopiëren. Kopieer het handmatig.",
+		"showMore": "Meer tonen",
+		"showLess": "Minder tonen"
 	},
 	"hero": {
 		"badge": "Open Source & Voor Altijd Gratis",
@@ -184,7 +186,9 @@
 	},
 	"analytics": {
 		"totalViews": "Totaal scans",
+		"totalClicks": "Totaal klikken",
 		"scansUnit": "Scans",
+		"clicksUnit": "Klikken",
 		"viewDetailedAnalytics": "Bekijk gedetailleerde analyses",
 		"totalVisitors": "Aantal bezoekers",
 		"stateActive": "Actief",

@@ -49,7 +49,15 @@ function getLast7DaysSum(series: { date: string; value: number }[]) {
 		.reduce((acc, item) => acc + item.value, 0);
 }
 
-export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
+export type AnalyticsVariant = 'scan' | 'click';
+
+export const AnalyticsSection = ({
+	shortCode,
+	variant = 'scan',
+}: {
+	shortCode: string;
+	variant?: AnalyticsVariant;
+}) => {
 	const locale = useLocale();
 	const t = useTranslations();
 	const { isLoading, data } = useGetAnalyticsFromShortCodeQuery(shortCode);
@@ -66,6 +74,7 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 
 		const resolvedCountryMetrics = (countryMetrics ?? []).map((item) => ({
 			...item,
+			code: item.label.toUpperCase(),
 			label: getName(item.label.toLowerCase(), locale) ?? item.label,
 		}));
 
@@ -76,17 +85,39 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 				label: item.label.trim() === '' ? unknownLabel : item.label,
 			}));
 
+		const processedCountryMetrics = resolvedCountryMetrics.map((item) => ({
+			...item,
+			label: item.label.trim() === '' ? unknownLabel : item.label,
+		}));
+		const processedDeviceMetrics = replaceEmpty(deviceMetrics ?? []);
+
+		const sortedCountries = [...processedCountryMetrics].sort((a, b) => b.count - a.count);
+		const countryTotal = processedCountryMetrics.reduce((sum, item) => sum + item.count, 0);
+
+		const sortedDevices = [...processedDeviceMetrics].sort((a, b) => b.count - a.count);
+		const deviceTotal = processedDeviceMetrics.reduce((sum, item) => sum + item.count, 0);
+
 		return {
 			dailyData,
 			scansLast7Days,
 			visitorsLast7Days,
 			browserMetrics: replaceEmpty(browserMetrics ?? []),
-			deviceMetrics: replaceEmpty(deviceMetrics ?? []),
-			countryMetrics: resolvedCountryMetrics.map((item) => ({
-				...item,
-				label: item.label.trim() === '' ? unknownLabel : item.label,
-			})),
+			deviceMetrics: processedDeviceMetrics,
+			countryMetrics: processedCountryMetrics,
 			osMetrics: replaceEmpty(osMetrics ?? []),
+			topCountry: sortedCountries[0]
+				? {
+						label: sortedCountries[0].label,
+						share:
+							countryTotal > 0 ? Math.round((sortedCountries[0].count / countryTotal) * 100) : 0,
+					}
+				: null,
+			topDevice: sortedDevices[0]
+				? {
+						label: sortedDevices[0].label,
+						share: deviceTotal > 0 ? Math.round((sortedDevices[0].count / deviceTotal) * 100) : 0,
+					}
+				: null,
 		};
 	}, [data, locale, t]);
 
@@ -101,14 +132,22 @@ export const AnalyticsSection = ({ shortCode }: { shortCode: string }) => {
 				totalVisitors={data.shortUrlStats.visitors}
 				scansLast7Days={derived.scansLast7Days}
 				visitorsLast7Days={derived.visitorsLast7Days}
+				topCountry={derived.topCountry}
+				topDevice={derived.topDevice}
+				variant={variant}
 			/>
 
-			<AnalyticsTimeChart data={derived.dailyData} locale={locale} />
+			<AnalyticsTimeChart data={derived.dailyData} locale={locale} variant={variant} />
 
-			<div className="lg:grid space-y-4 lg:space-y-0 scroll-mt-20 gap-5 lg:grid-cols-2 py-4">
-				<AnalyticsDeviceChart data={derived.deviceMetrics} />
-				<AnalyticsBrowserChart data={derived.browserMetrics} />
+			<div className="grid grid-cols-1 lg:grid-cols-2 items-stretch gap-5 py-4">
 				<AnalyticsCountryChart data={derived.countryMetrics} />
+				<div className="flex flex-col gap-5">
+					<AnalyticsDeviceChart data={derived.deviceMetrics} variant={variant} />
+					<AnalyticsBrowserChart data={derived.browserMetrics} />
+				</div>
+			</div>
+
+			<div className="pb-4">
 				<AnalyticsOsChart data={derived.osMetrics} />
 			</div>
 		</>

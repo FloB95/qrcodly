@@ -100,7 +100,9 @@
 		"newBadge": "Nowość!",
 		"dynamicDescription": "Dynamiczne kody QR można edytować po utworzeniu, śledzą każde skanowanie i dostarczają szczegółowych statystyk – bez konieczności ponownego drukowania kodu.",
 		"dynamicBadgeTooltip": "Umożliwia późniejszą zmianę treści bez nowego kodu QR. <i>Najedź kursorem, aby uzyskać więcej informacji</i>",
-		"copyFailed": "Nie udało się skopiować do schowka. Skopiuj ręcznie."
+		"copyFailed": "Nie udało się skopiować do schowka. Skopiuj ręcznie.",
+		"showMore": "Pokaż więcej",
+		"showLess": "Pokaż mniej"
 	},
 	"hero": {
 		"badge": "Open Source i Zawsze Za Darmo",
@@ -184,7 +186,9 @@
 	},
 	"analytics": {
 		"totalViews": "Łączna liczba skanów",
+		"totalClicks": "Łączne kliknięcia",
 		"scansUnit": "Skanów",
+		"clicksUnit": "Kliknięcia",
 		"viewDetailedAnalytics": "Zobacz szczegółowe analizy",
 		"totalVisitors": "Liczba odwiedzających",
 		"stateActive": "Aktywny",

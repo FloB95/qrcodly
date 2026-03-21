@@ -18,13 +18,12 @@ export const AnalyticsOsChart = ({ data }: AnalyticsOsChartProps) => {
 	const t = useTranslations();
 	const sorted = [...data].sort((a, b) => b.count - a.count);
 	const total = data.reduce((sum, item) => sum + item.count, 0);
-	const maxCount = sorted[0]?.count ?? 0;
 
 	return (
 		<Card>
 			<CardHeader>
 				<div className="flex items-center gap-2">
-					<div className="p-2 rounded-lg bg-primary/10 text-primary">
+					<div className="p-1.5 rounded-md bg-primary/10 text-primary">
 						<CpuChipIcon className="size-4" />
 					</div>
 					<CardTitle className="text-lg">{t('chart.title.osUsage')}</CardTitle>
@@ -34,28 +33,27 @@ export const AnalyticsOsChart = ({ data }: AnalyticsOsChartProps) => {
 				{data.length === 0 ? (
 					<p className="text-muted-foreground text-sm">{t('analytics.noData')}</p>
 				) : (
-					<div className="space-y-3">
+					<div className="space-y-4">
 						{sorted.map((item, index) => {
-							const percentage = maxCount > 0 ? (item.count / maxCount) * 100 : 0;
 							const share = total > 0 ? Math.round((item.count / total) * 100) : 0;
 							return (
 								<motion.div
-									key={item.label}
+									key={`${item.label}-${index}`}
 									initial={{ opacity: 0, x: -15 }}
 									animate={{ opacity: 1, x: 0 }}
 									transition={{ delay: index * 0.05, duration: 0.3 }}
 								>
-									<div className="flex items-center justify-between mb-1">
+									<div className="flex items-center justify-between mb-1.5">
 										<span className="text-sm font-medium">{item.label}</span>
 										<span className="text-sm text-muted-foreground tabular-nums">
-											{item.count} · {share}%
+											{item.count} · {share === 0 && item.count > 0 ? '<1' : share}%
 										</span>
 									</div>
-									<div className="h-2 w-full rounded-full bg-muted overflow-hidden">
+									<div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
 										<motion.div
-											className="h-full rounded-full bg-gradient-to-r from-indigo-600 to-indigo-500"
+											className="h-full rounded-full bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800"
 											initial={{ width: 0 }}
-											animate={{ width: `${percentage}%` }}
+											animate={{ width: `${share}%` }}
 											transition={{
 												delay: index * 0.05 + 0.1,
 												duration: 0.5,
