@@ -35,6 +35,7 @@ import EpcContent from './content/Epc';
 import TextContent from './content/Text';
 import { Link } from '@/i18n/navigation';
 import { getQrCodeEditLink } from '@/lib/utils';
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 import { Card, CardContent } from '../ui/card';
 import {
@@ -115,13 +116,13 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 						</BreadcrumbList>
 					</Breadcrumb>
 
-					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+					<div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 						<div className="flex items-center gap-3">
-							<div className="p-3 bg-primary/10 rounded-lg">
-								<QrCodeIcon type={qrCode.content.type} className="size-6 sm:size-8 stroke-1" />
+							<div className="p-2.5 sm:p-3 bg-primary/10 rounded-lg shrink-0">
+								<QrCodeIcon type={qrCode.content.type} className="size-5 sm:size-8 stroke-1" />
 							</div>
 							<div>
-								<h1 className="text-lg font-semibold">
+								<h1 className="text-base sm:text-lg font-semibold break-words leading-snug">
 									{qrCode.name || (
 										<span className="text-muted-foreground">{t('general.noName')}</span>
 									)}
@@ -139,10 +140,11 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 								<QrCodeTagBadges qrCodeId={qrCode.id} tags={qrCode.tags ?? []} />
 							</div>
 						</div>
-						<div className="flex items-center gap-2 flex-wrap">
+						<div className="flex items-center gap-2">
 							<ShareDialog qrCodeId={qrCode.id} />
 							<Link className={buttonVariants({ size: 'sm' })} href={getQrCodeEditLink(qrCode.id)}>
-								{t('general.edit')}
+								<PencilIcon className="size-4 lg:hidden" />
+								<span className="hidden lg:inline">{t('general.edit')}</span>
 							</Link>
 							<AlertDialog>
 								<AlertDialogTrigger className="cursor-pointer" asChild>
@@ -152,7 +154,8 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 										variant="destructive"
 										size="sm"
 									>
-										{t('general.delete')}
+										<TrashIcon className="size-4 lg:hidden" />
+										<span className="hidden lg:inline">{t('general.delete')}</span>
 									</Button>
 								</AlertDialogTrigger>
 								<AlertDialogContent>

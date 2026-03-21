@@ -24,7 +24,7 @@ import {
 	BreadcrumbSeparator,
 	BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
-import { LinkIcon } from '@heroicons/react/24/outline';
+import { LinkIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { toast } from '@/components/ui/use-toast';
 import { CopyUrlButton } from '../qrCode/content-renderers/CopyUrlButton';
 import { AnalyticsSection } from '@/components/qr-code-detail/analytics/AnalyticsSection';
@@ -134,19 +134,21 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 						</BreadcrumbList>
 					</Breadcrumb>
 
-					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-						<div className="flex items-center gap-3">
-							<div className="p-3 bg-primary/10 rounded-lg">
-								<LinkIcon className="size-6 sm:size-8 stroke-1" />
+					<div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+						<div className="flex items-start sm:items-center gap-3 min-w-0">
+							<div className="p-2.5 sm:p-3 bg-primary/10 rounded-lg shrink-0">
+								<LinkIcon className="size-5 sm:size-8 stroke-1" />
 							</div>
-							<div>
-								<h1 className="text-lg font-semibold">{displayLink}</h1>
-								<Badge variant={shortUrl.isActive ? 'blue' : 'outline'} className="mt-1">
+							<div className="min-w-0">
+								<h1 className="text-base sm:text-lg font-semibold break-words leading-snug">
+									{displayLink}
+								</h1>
+								<Badge variant={shortUrl.isActive ? 'blue' : 'outline'} className="mt-1.5">
 									{shortUrl.isActive ? t('shortUrl.status.active') : t('shortUrl.status.inactive')}
 								</Badge>
 							</div>
 						</div>
-						<div className="flex items-center gap-2 flex-wrap">
+						<div className="flex items-center gap-2">
 							<Button
 								size="sm"
 								variant="outline"
@@ -156,7 +158,8 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 								{shortUrl.isActive ? t('shortUrl.status.disable') : t('shortUrl.status.enable')}
 							</Button>
 							<Button size="sm" onClick={() => setEditOpen(true)}>
-								{t('general.edit')}
+								<PencilIcon className="size-4 lg:hidden" />
+								<span className="hidden lg:inline">{t('general.edit')}</span>
 							</Button>
 							<AlertDialog>
 								<AlertDialogTrigger className="cursor-pointer" asChild>
@@ -166,7 +169,8 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 										variant="destructive"
 										size="sm"
 									>
-										{t('general.delete')}
+										<TrashIcon className="size-4 lg:hidden" />
+										<span className="hidden lg:inline">{t('general.delete')}</span>
 									</Button>
 								</AlertDialogTrigger>
 								<AlertDialogContent>
@@ -221,7 +225,7 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 			</Card>
 
 			{/* Analytics */}
-			<AnalyticsSection shortCode={shortUrl.shortCode} />
+			<AnalyticsSection shortCode={shortUrl.shortCode} variant="click" />
 
 			<EditShortUrlDialog
 				shortUrl={shortUrl}

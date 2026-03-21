@@ -11,7 +11,6 @@ export const env = createEnv({
 		AXIOM_TOKEN: z.string(),
 		AXIOM_DATASET: z.string(),
 		CLERK_SECRET_KEY: z.string(),
-		UMAMI_API_HOST: z.string().url(),
 		INTERNAL_API_SECRET: z.string().min(32),
 	},
 
@@ -28,7 +27,6 @@ export const env = createEnv({
 		NEXT_PUBLIC_POSTHOG_HOST: z.string().optional(),
 		NEXT_PUBLIC_SENTRY_DSN: z.string(),
 		NEXT_PUBLIC_SENTRY_ENVIRONMENT: z.string().default('production'),
-		NEXT_PUBLIC_UMAMI_WEBSITE: z.string(),
 		NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_MONTHLY: z.string(),
 		NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL: z.string(),
 		NEXT_PUBLIC_GOOGLE_API_KEY: z.string(),
@@ -44,8 +42,6 @@ export const env = createEnv({
 		AXIOM_TOKEN: process.env.AXIOM_TOKEN,
 		AXIOM_DATASET: process.env.AXIOM_DATASET,
 		CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
-		UMAMI_API_HOST: process.env.UMAMI_API_HOST,
-		NEXT_PUBLIC_UMAMI_WEBSITE: process.env.NEXT_PUBLIC_UMAMI_WEBSITE,
 
 		NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL,
 		NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,

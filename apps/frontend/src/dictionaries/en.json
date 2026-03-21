@@ -100,7 +100,9 @@
 		"newBadge": "New!",
 		"dynamicDescription": "Dynamic QR codes can be edited after creation, track every scan, and provide detailed statistics – all without needing to reprint the code.",
 		"dynamicBadgeTooltip": "Enables changing content later without a new QR code. <i>Hover for more info</i>",
-		"copyFailed": "Could not copy to clipboard. Please copy manually."
+		"copyFailed": "Could not copy to clipboard. Please copy manually.",
+		"showMore": "Show more",
+		"showLess": "Show less"
 	},
 	"hero": {
 		"badge": "Open Source & Free Forever",
@@ -184,7 +186,9 @@
 	},
 	"analytics": {
 		"totalViews": "Total Scans",
+		"totalClicks": "Total Clicks",
 		"scansUnit": "Scans",
+		"clicksUnit": "Clicks",
 		"viewDetailedAnalytics": "View detailed analytics",
 		"totalVisitors": "Total Visitors",
 		"stateActive": "Active",

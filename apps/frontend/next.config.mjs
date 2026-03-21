@@ -63,18 +63,6 @@ const config = {
 		config.resolve.fallback = { fs: false };
 		return config;
 	},
-	async rewrites() {
-		return [
-			// {
-			// 	source: '/umami.js',
-			// 	destination: `${env.UMAMI_API_HOST}/script.js`,
-			// },
-			{
-				source: '/api/umami',
-				destination: `${env.UMAMI_API_HOST}/api/send`,
-			},
-		];
-	},
 	// This is required to support PostHog trailing slash API requests
 	skipTrailingSlashRedirect: true,
 	images: {
