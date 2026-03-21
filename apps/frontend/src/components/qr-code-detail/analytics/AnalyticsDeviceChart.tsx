@@ -14,7 +14,6 @@ interface MetricItem {
 
 interface AnalyticsDeviceChartProps {
 	data: MetricItem[];
-	variant?: 'scan' | 'click';
 }
 
 const COLORS = [

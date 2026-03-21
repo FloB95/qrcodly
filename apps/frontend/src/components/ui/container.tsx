@@ -12,7 +12,7 @@ export default function Container({
 	return (
 		<div
 			className={cn(
-				'container relative mx-auto sm:px-6 lg:px-8 xl:max-w-[1400px]',
+				'container relative mx-auto sm:px-6 lg:px-8 lg:max-w-[1400px]',
 				!disableOverflow && 'overflow-hidden',
 				className,
 			)}

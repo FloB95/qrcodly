@@ -87,7 +87,8 @@ export const AnalyticsBrowserChart = ({ data }: AnalyticsBrowserChartProps) => {
 									className="max-h-[250px] overflow-y-auto pr-1 space-y-4 scroll-smooth"
 								>
 									{rest.map((item, index) => {
-										const share = total > 0 ? Math.round((item.count / total) * 100) : 0;
+										const rawShare = total > 0 ? (item.count / total) * 100 : 0;
+										const share = Math.round(rawShare);
 										return (
 											<motion.div
 												key={`${item.label}-${index}`}
@@ -109,7 +110,7 @@ export const AnalyticsBrowserChart = ({ data }: AnalyticsBrowserChartProps) => {
 														className="h-full rounded-full bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800"
 														initial={{ width: 0 }}
 														animate={{
-															width: `${share}%`,
+															width: `${Math.max(rawShare, item.count > 0 ? 1 : 0)}%`,
 														}}
 														transition={{
 															delay: index * 0.05 + 0.1,

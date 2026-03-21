@@ -57,14 +57,15 @@ export const AnalyticsCountryChart = ({ data }: AnalyticsCountryChartProps) => {
 					<p className="text-muted-foreground text-sm">{t('analytics.noData')}</p>
 				) : (
 					<>
-						<WorldMap data={sorted} />
+						<WorldMap data={sorted.filter((item) => item.code.trim() !== '')} />
 						<div className="relative flex-1 min-h-[250px] lg:min-h-0">
 							<div
 								ref={listRef}
 								className="flex-1 overflow-y-auto pr-1 space-y-4 scroll-smooth absolute inset-0"
 							>
 								{sorted.map((item, index) => {
-									const share = total > 0 ? Math.round((item.count / total) * 100) : 0;
+									const rawShare = total > 0 ? (item.count / total) * 100 : 0;
+									const share = Math.round(rawShare);
 									return (
 										<motion.div
 											key={`${item.label}-${index}`}
@@ -86,7 +87,7 @@ export const AnalyticsCountryChart = ({ data }: AnalyticsCountryChartProps) => {
 													className="h-full rounded-full bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800"
 													initial={{ width: 0 }}
 													animate={{
-														width: `${share}%`,
+														width: `${Math.max(rawShare, item.count > 0 ? 1 : 0)}%`,
 													}}
 													transition={{
 														delay: index * 0.05 + 0.1,

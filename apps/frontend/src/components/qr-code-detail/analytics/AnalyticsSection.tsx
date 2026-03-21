@@ -142,7 +142,7 @@ export const AnalyticsSection = ({
 			<div className="grid grid-cols-1 lg:grid-cols-2 items-stretch gap-5 py-4">
 				<AnalyticsCountryChart data={derived.countryMetrics} />
 				<div className="flex flex-col gap-5">
-					<AnalyticsDeviceChart data={derived.deviceMetrics} variant={variant} />
+					<AnalyticsDeviceChart data={derived.deviceMetrics} />
 					<AnalyticsBrowserChart data={derived.browserMetrics} />
 				</div>
 			</div>
