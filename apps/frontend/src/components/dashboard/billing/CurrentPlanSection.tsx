@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CheckIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { useLocale, useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -20,9 +21,24 @@ export function CurrentPlanSection() {
 	const tPlans = useTranslations('plans');
 	const locale = useLocale();
 	const { hasProPlan, isCanceled, isLoading, subscription } = useHasProPlan();
+	const searchParams = useSearchParams();
 	const createCheckoutSession = useCreateCheckoutSession();
 	const createPortalSession = useCreatePortalSession();
 	const [selectedPeriod, setSelectedPeriod] = useState<'annual' | 'month'>('annual');
+	const conversionTracked = useRef(false);
+
+	// Google Ads: Subscription conversion tracking
+	useEffect(() => {
+		if (conversionTracked.current) return;
+		if (searchParams.get('checkout') === 'success' && typeof window.gtag === 'function') {
+			window.gtag('event', 'conversion', {
+				send_to: 'AW-10838865201/Stq3CL_pnY0cELHqr7Ao',
+				value: 1.0,
+				currency: 'EUR',
+			});
+			conversionTracked.current = true;
+		}
+	}, [searchParams]);
 
 	if (isLoading) {
 		return (
