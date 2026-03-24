@@ -55,6 +55,7 @@ export function PublicSharePageContent({ sharedQrCode }: PublicSharePageContentP
 								className="h-full w-full object-contain"
 								alt="QR code"
 								priority
+								unoptimized
 							/>
 						) : (
 							content && (

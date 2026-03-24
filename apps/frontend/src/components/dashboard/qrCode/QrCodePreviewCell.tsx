@@ -19,6 +19,7 @@ export const QrCodePreviewCell = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 									alt="QR code preview"
 									className="size-14 object-cover"
 									loading="lazy"
+									unoptimized
 								/>
 							) : (
 								<DynamicQrCode qrCode={qr} additionalStyles="max-h-14 max-w-14" />
@@ -35,6 +36,7 @@ export const QrCodePreviewCell = ({ qr }: { qr: TQrCodeWithRelationsResponseDto 
 								height={200}
 								alt="QR code preview"
 								className="h-[200px] w-[200px] object-cover"
+								unoptimized
 							/>
 						) : (
 							<DynamicQrCode qrCode={qr} additionalStyles="max-h-[200px] max-w-[200px]" />

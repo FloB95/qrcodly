@@ -72,6 +72,7 @@ const TemplateCard = React.memo(
 							src={template.previewImage}
 							alt="QR code preview"
 							loading="lazy"
+							unoptimized
 						/>
 					) : (
 						<DynamicQrCode qrCode={qrCodeData} />

@@ -5,13 +5,20 @@ import { z } from 'zod';
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import { GetObjectOutput, S3 } from '@aws-sdk/client-s3';
+import sharp from 'sharp';
 import { createTable } from '../src/core/db/utils';
 import { datetime, json, text, varchar } from 'drizzle-orm/mysql-core';
 import { eq, isNull } from 'drizzle-orm';
 import { convertQrCodeOptionsToLibraryOptions } from '@shared/schemas';
 import { generateQrCodeStylingInstance } from '../src/modules/qr-code/lib/styled-qr-code';
 
-const CONCURRENCY = 20;
+const PREVIEW_SIZE = 800;
+const PREVIEW_ICON_MAX_SIZE = 400;
+const BATCH_SIZE = 1000;
+
+const forceMode = process.argv.includes('--force');
+const concurrencyArg = process.argv.find((arg) => arg.startsWith('--concurrency='));
+const CONCURRENCY = concurrencyArg ? Number(concurrencyArg.split('=')[1]) : 10;
 
 const scriptEnv = z
 	.object({
@@ -50,15 +57,10 @@ const configTemplate = createTable('qr_code_config_template', {
 const QR_CODE_PREVIEW_IMAGE_FOLDER = 'qr-codes/images/previews';
 const CONFIG_TEMPLATE_PREVIEW_IMAGE_FOLDER = 'config-templates/images/previews';
 
-const extensionToMimeType: Record<string, string> = {
-	jpg: 'image/jpeg',
-	jpeg: 'image/jpeg',
-	png: 'image/png',
-	svg: 'image/svg+xml',
-	webp: 'image/webp',
-};
-
-async function getImageAsDataUrl(s3: S3, storagePath: string): Promise<string | undefined> {
+async function getOptimizedImageAsDataUrl(
+	s3: S3,
+	storagePath: string,
+): Promise<string | undefined> {
 	try {
 		const response: GetObjectOutput = await s3.getObject({
 			Bucket: scriptEnv.S3_BUCKET_NAME,
@@ -68,11 +70,34 @@ async function getImageAsDataUrl(s3: S3, storagePath: string): Promise<string | 
 
 		const bytes = await response.Body.transformToByteArray();
 		const buffer = Buffer.from(bytes);
-		const ext = storagePath.split('.').pop()?.toLowerCase() ?? '';
-		const mimeType = extensionToMimeType[ext] ?? 'application/octet-stream';
-		return `data:${mimeType};base64,${buffer.toString('base64')}`;
+
+		const optimized = await sharp(buffer)
+			.resize(PREVIEW_ICON_MAX_SIZE, PREVIEW_ICON_MAX_SIZE, {
+				fit: 'inside',
+				withoutEnlargement: true,
+			})
+			.png({ quality: 80 })
+			.toBuffer();
+
+		return `data:image/png;base64,${optimized.toString('base64')}`;
 	} catch {
 		return undefined;
+	}
+}
+
+async function convertSvgToWebp(svgBuffer: Buffer): Promise<Buffer> {
+	return sharp(svgBuffer, { density: 300 })
+		.resize(PREVIEW_SIZE, PREVIEW_SIZE, { fit: 'inside' })
+		.webp({ quality: 80 })
+		.toBuffer();
+}
+
+function scaleLibraryOptions(libraryOptions: any): void {
+	const scale = PREVIEW_SIZE / (libraryOptions.width ?? 1000);
+	libraryOptions.width = PREVIEW_SIZE;
+	libraryOptions.height = PREVIEW_SIZE;
+	if (libraryOptions.imageOptions?.margin) {
+		libraryOptions.imageOptions.margin = Math.round(libraryOptions.imageOptions.margin * scale);
 	}
 }
 
@@ -80,14 +105,23 @@ function constructFilePath(folder: string, userId: string | undefined, fileName:
 	return userId ? `${folder}/${userId}/${fileName}` : `${folder}/${fileName}`;
 }
 
+async function deleteFromS3(s3: S3, key: string): Promise<void> {
+	try {
+		await s3.deleteObject({ Bucket: scriptEnv.S3_BUCKET_NAME, Key: key });
+	} catch {
+		// Ignore deletion errors (file may not exist)
+	}
+}
+
 async function processInParallel<T>(
 	items: T[],
 	concurrency: number,
 	label: string,
 	fn: (item: T, index: number) => Promise<boolean>,
-): Promise<{ success: number; fail: number }> {
+): Promise<{ success: number; fail: number; skipped: number }> {
 	let success = 0;
 	let fail = 0;
+	let skipped = 0;
 	let nextIndex = 0;
 	const total = items.length;
 
@@ -95,15 +129,15 @@ async function processInParallel<T>(
 		while (nextIndex < total) {
 			const i = nextIndex++;
 			try {
-				const ok = await fn(items[i], i);
-				if (ok) success++;
-				else fail++;
+				const result = await fn(items[i], i);
+				if (result) success++;
+				else skipped++;
 			} catch {
 				fail++;
 			}
-			if ((success + fail) % 500 === 0) {
+			if ((success + fail + skipped) % 100 === 0) {
 				console.log(
-					`  ${label}: ${success + fail}/${total} processed (${success} ok, ${fail} failed)`,
+					`  ${label}: ${success + fail + skipped}/${total} processed (${success} ok, ${fail} failed, ${skipped} skipped)`,
 				);
 			}
 		}
@@ -112,11 +146,14 @@ async function processInParallel<T>(
 	const workers = Array.from({ length: Math.min(concurrency, total) }, () => worker());
 	await Promise.all(workers);
 
-	return { success, fail };
+	return { success, fail, skipped };
 }
 
 async function main() {
-	console.log('=== Regenerate Preview Images ===\n');
+	console.log('=== Regenerate Preview Images (WebP) ===');
+	console.log(`Mode: ${forceMode ? 'FORCE (all rows)' : 'default (missing only)'}`);
+	console.log(`Concurrency: ${CONCURRENCY}`);
+	console.log(`Preview size: ${PREVIEW_SIZE}px\n`);
 
 	const poolConnection = mysql.createPool({
 		host: scriptEnv.DB_HOST,
@@ -139,30 +176,32 @@ async function main() {
 		forcePathStyle: true,
 	});
 
-	// 1. Fetch QR codes with missing preview images
-	console.log('Fetching QR codes with missing preview images...');
+	// 1. Fetch QR codes
+	console.log('Fetching QR codes...');
 	const qrCodes = await db
 		.select({
 			id: qrCode.id,
 			createdBy: qrCode.createdBy,
 			config: qrCode.config,
 			qrCodeData: qrCode.qrCodeData,
+			previewImage: qrCode.previewImage,
 		})
 		.from(qrCode)
-		.where(isNull(qrCode.previewImage));
+		.where(forceMode ? undefined : isNull(qrCode.previewImage));
 
 	console.log(`Found ${qrCodes.length} QR codes to process`);
 
-	// 2. Fetch config templates with missing preview images
-	console.log('Fetching config templates with missing preview images...');
+	// 2. Fetch config templates
+	console.log('Fetching config templates...');
 	const templates = await db
 		.select({
 			id: configTemplate.id,
 			createdBy: configTemplate.createdBy,
 			config: configTemplate.config,
+			previewImage: configTemplate.previewImage,
 		})
 		.from(configTemplate)
-		.where(isNull(configTemplate.previewImage));
+		.where(forceMode ? undefined : isNull(configTemplate.previewImage));
 
 	console.log(`Found ${templates.length} config templates to process\n`);
 
@@ -172,9 +211,11 @@ async function main() {
 		if (!row.qrCodeData) return false;
 
 		const libraryOptions = convertQrCodeOptionsToLibraryOptions(row.config as any);
+		scaleLibraryOptions(libraryOptions);
 
 		if (libraryOptions.image) {
-			libraryOptions.image = (await getImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
+			libraryOptions.image =
+				(await getOptimizedImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
 		}
 
 		const instance = generateQrCodeStylingInstance({
@@ -185,19 +226,26 @@ async function main() {
 		const svg = await instance.getRawData('svg');
 		if (!svg) return false;
 
-		const buffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
-		const fileName = `${row.id}.svg`;
+		const svgBuffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
+		const webpBuffer = await convertSvgToWebp(svgBuffer);
+
+		const fileName = `${row.id}.webp`;
 		const filePath = constructFilePath(
 			QR_CODE_PREVIEW_IMAGE_FOLDER,
 			row.createdBy ?? undefined,
 			fileName,
 		);
 
+		// Delete old preview if it exists
+		if (row.previewImage && row.previewImage !== filePath) {
+			await deleteFromS3(s3, row.previewImage);
+		}
+
 		await s3.putObject({
 			Bucket: scriptEnv.S3_BUCKET_NAME,
 			Key: filePath,
-			Body: buffer,
-			ContentType: 'image/svg+xml',
+			Body: webpBuffer,
+			ContentType: 'image/webp',
 		});
 
 		await db.update(qrCode).set({ previewImage: filePath }).where(eq(qrCode.id, row.id));
@@ -213,9 +261,11 @@ async function main() {
 		'Templates',
 		async (row) => {
 			const libraryOptions = convertQrCodeOptionsToLibraryOptions(row.config as any);
+			scaleLibraryOptions(libraryOptions);
 
 			if (libraryOptions.image) {
-				libraryOptions.image = (await getImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
+				libraryOptions.image =
+					(await getOptimizedImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
 			}
 
 			const instance = generateQrCodeStylingInstance({
@@ -226,19 +276,26 @@ async function main() {
 			const svg = await instance.getRawData('svg');
 			if (!svg) return false;
 
-			const buffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
-			const fileName = `${row.id}.svg`;
+			const svgBuffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
+			const webpBuffer = await convertSvgToWebp(svgBuffer);
+
+			const fileName = `${row.id}.webp`;
 			const filePath = constructFilePath(
 				CONFIG_TEMPLATE_PREVIEW_IMAGE_FOLDER,
 				row.createdBy ?? undefined,
 				fileName,
 			);
 
+			// Delete old preview if it exists
+			if (row.previewImage && row.previewImage !== filePath) {
+				await deleteFromS3(s3, row.previewImage);
+			}
+
 			await s3.putObject({
 				Bucket: scriptEnv.S3_BUCKET_NAME,
 				Key: filePath,
-				Body: buffer,
-				ContentType: 'image/svg+xml',
+				Body: webpBuffer,
+				ContentType: 'image/webp',
 			});
 
 			await db
@@ -251,16 +308,16 @@ async function main() {
 	);
 
 	// 5. Summary
-	console.log('\n' + '='.repeat(50));
+	console.log('\n' + '='.repeat(60));
 	console.log('SUMMARY');
-	console.log('='.repeat(50));
+	console.log('='.repeat(60));
 	console.log(
-		`QR code previews:    ${qrResult.success} success, ${qrResult.fail} failed (of ${qrCodes.length})`,
+		`QR code previews:    ${qrResult.success} success, ${qrResult.fail} failed, ${qrResult.skipped} skipped (of ${qrCodes.length})`,
 	);
 	console.log(
-		`Template previews:   ${templateResult.success} success, ${templateResult.fail} failed (of ${templates.length})`,
+		`Template previews:   ${templateResult.success} success, ${templateResult.fail} failed, ${templateResult.skipped} skipped (of ${templates.length})`,
 	);
-	console.log('='.repeat(50));
+	console.log('='.repeat(60));
 
 	await poolConnection.end();
 	console.log('\nDone.');

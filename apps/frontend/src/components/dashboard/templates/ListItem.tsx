@@ -142,6 +142,7 @@ export const TemplateListItem = ({
 											alt="Template preview"
 											className="size-14 object-cover"
 											loading="lazy"
+											unoptimized
 										/>
 									) : (
 										<DynamicQrCode qrCode={qrCodeData} additionalStyles="max-h-14 max-w-14" />
@@ -158,6 +159,7 @@ export const TemplateListItem = ({
 										height={200}
 										alt="Template preview"
 										className="h-[200px] w-[200px] object-cover"
+										unoptimized
 									/>
 								) : (
 									<DynamicQrCode

@@ -2,6 +2,7 @@ import { BadRequestError } from '@/core/error/http';
 import { ObjectStorage } from '@/core/storage';
 import { Logger } from '@/core/logging';
 import { container } from 'tsyringe';
+import sharp from 'sharp';
 
 export abstract class BaseImageStrategy {
 	protected readonly validMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
@@ -60,6 +61,43 @@ export abstract class BaseImageStrategy {
 			this.logger.error('error.image.getAsDataUrl', { storagePath, error: error as Error });
 			return undefined;
 		}
+	}
+
+	protected static readonly PREVIEW_SIZE = 800;
+	private static readonly PREVIEW_ICON_MAX_SIZE = 400;
+
+	/**
+	 * Downloads an image from object storage, resizes it, and returns as a PNG base64 data URL.
+	 * Used for preview generation to keep embedded icons small.
+	 */
+	protected async getOptimizedImageAsDataUrl(storagePath: string): Promise<string | undefined> {
+		try {
+			const imageBuffer = await this.objectStorage.get(storagePath);
+			if (!imageBuffer) return undefined;
+
+			const optimized = await sharp(imageBuffer)
+				.resize(BaseImageStrategy.PREVIEW_ICON_MAX_SIZE, BaseImageStrategy.PREVIEW_ICON_MAX_SIZE, {
+					fit: 'inside',
+					withoutEnlargement: true,
+				})
+				.png({ quality: 80 })
+				.toBuffer();
+
+			return `data:image/png;base64,${optimized.toString('base64')}`;
+		} catch (error) {
+			this.logger.error('error.image.getOptimizedAsDataUrl', {
+				storagePath,
+				error: error as Error,
+			});
+			return undefined;
+		}
+	}
+
+	protected async convertSvgToWebp(svgBuffer: Buffer): Promise<Buffer> {
+		return sharp(svgBuffer, { density: 300 })
+			.resize(BaseImageStrategy.PREVIEW_SIZE, BaseImageStrategy.PREVIEW_SIZE, { fit: 'inside' })
+			.webp({ quality: 80 })
+			.toBuffer();
 	}
 
 	async getSignedUrl(imagePath: string): Promise<string | undefined> {

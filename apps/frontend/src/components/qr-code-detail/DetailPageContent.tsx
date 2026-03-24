@@ -205,6 +205,7 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 											className="max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]"
 											alt="QR code preview"
 											loading="lazy"
+											unoptimized
 										/>
 									) : (
 										<DynamicQrCode
