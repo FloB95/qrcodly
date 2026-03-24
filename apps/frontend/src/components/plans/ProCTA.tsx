@@ -36,7 +36,10 @@ export const ProCTA = ({
 	// Not authenticated - show sign in button
 	if (!isAuthenticated) {
 		return (
-			<SignInButton forceRedirectUrl={`/${locale}/plans`}>
+			<SignInButton
+				forceRedirectUrl={`/${locale}/plans`}
+				signUpForceRedirectUrl={`/${locale}/signup-success`}
+			>
 				<Button variant="secondary">{t('upgradeToPro')}</Button>
 			</SignInButton>
 		);

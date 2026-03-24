@@ -3,7 +3,7 @@
 import { SignedIn, SignedOut, SignInButton, UserAvatar } from '@clerk/nextjs';
 import Container from './ui/container';
 import { Button, buttonVariants } from './ui/button';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 import { LanguageNav } from './LanguageNav';
 import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/solid';
@@ -47,6 +47,7 @@ export default function Header({
 	hideLanguageNav = false,
 }) {
 	const t = useTranslations('header');
+	const locale = useLocale();
 	const pathname = usePathname();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [productsOpen, setProductsOpen] = useState(false);
@@ -231,7 +232,7 @@ export default function Header({
 							{t('plansBtn')}
 						</Link>
 						<SignedOut>
-							<SignInButton>
+							<SignInButton signUpForceRedirectUrl={`/${locale}/signup-success`}>
 								<Button>{t('signInBtn')}</Button>
 							</SignInButton>
 						</SignedOut>

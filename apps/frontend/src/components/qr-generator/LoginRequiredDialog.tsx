@@ -1,4 +1,5 @@
 import { SignInButton } from '@clerk/nextjs';
+import { useLocale } from 'next-intl';
 import React from 'react';
 import {
 	AlertDialog,
@@ -20,6 +21,7 @@ export const LoginRequiredDialog = ({
 	setAlertOpen: (open: boolean) => void;
 }) => {
 	const t = useTranslations('loginDialog');
+	const locale = useLocale();
 	return (
 		<AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
 			<AlertDialogContent>
@@ -33,7 +35,7 @@ export const LoginRequiredDialog = ({
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>{t('cancelBtn')}</AlertDialogCancel>
-					<SignInButton>
+					<SignInButton signUpForceRedirectUrl={`/${locale}/signup-success`}>
 						<AlertDialogAction>{t('loginBtn')}</AlertDialogAction>
 					</SignInButton>
 				</AlertDialogFooter>
