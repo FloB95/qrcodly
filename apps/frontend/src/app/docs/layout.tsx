@@ -4,6 +4,7 @@ import { source } from '@/lib/source';
 import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { baseOptions } from '@/lib/layout.shared';
 import { RootProvider } from 'fumadocs-ui/provider/next';
+import Script from 'next/script';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Inter } from 'next/font/google';
@@ -49,6 +50,20 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
 				<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 				<link rel="manifest" href="/site.webmanifest" />
 			</head>
+
+			{/* Google tag (gtag.js) — Google Ads Conversion Tracking */}
+			<Script
+				src="https://www.googletagmanager.com/gtag/js?id=AW-10838865201"
+				strategy="afterInteractive"
+			/>
+			<Script id="google-ads-gtag" strategy="afterInteractive">
+				{`
+					window.dataLayer = window.dataLayer || [];
+					function gtag(){dataLayer.push(arguments);}
+					gtag('js', new Date());
+					gtag('config', 'AW-10838865201');
+				`}
+			</Script>
 
 			<body className={`font-sans ${openSans.variable}`}>
 				<NextIntlClientProvider>

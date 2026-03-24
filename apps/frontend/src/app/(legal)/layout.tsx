@@ -1,5 +1,6 @@
 import '@/styles/globals.css';
 import Header from '@/components/Header';
+import Script from 'next/script';
 import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import { NextIntlClientProvider } from 'next-intl';
@@ -33,6 +34,20 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en" className="light" suppressHydrationWarning>
+			{/* Google tag (gtag.js) — Google Ads Conversion Tracking */}
+			<Script
+				src="https://www.googletagmanager.com/gtag/js?id=AW-10838865201"
+				strategy="afterInteractive"
+			/>
+			<Script id="google-ads-gtag" strategy="afterInteractive">
+				{`
+					window.dataLayer = window.dataLayer || [];
+					function gtag(){dataLayer.push(arguments);}
+					gtag('js', new Date());
+					gtag('config', 'AW-10838865201');
+				`}
+			</Script>
+
 			<body className={`font-sans ${inter.variable}`}>
 				<NextIntlClientProvider>
 					<Providers locale={'en'}>
