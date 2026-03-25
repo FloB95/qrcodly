@@ -10,6 +10,7 @@ import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { env } from '@/env';
 import type { Metadata } from 'next';
+import { AxiomWebVitals } from 'next-axiom';
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -145,6 +146,7 @@ export default async function RootLayout({
 			</Script>
 
 			<body className={`font-sans ${inter.variable}`} suppressHydrationWarning>
+				<AxiomWebVitals />
 				<NextIntlClientProvider>
 					<Providers locale={locale}>
 						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">

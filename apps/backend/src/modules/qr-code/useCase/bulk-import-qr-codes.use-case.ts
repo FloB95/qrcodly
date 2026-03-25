@@ -15,6 +15,7 @@ import { TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
 import { TUser } from '@/core/domain/schema/UserSchema';
 import { BulkContentTypeNotSupported } from '../error/http/bulk-content-type-not-supported.error';
 import { BulkImportQrCodesPolicy } from '../policies/bulk-import-qr-codes.policy';
+import { qrCodesBulkImported } from '@/core/metrics';
 
 @injectable()
 export class BulkImportQrCodesUseCase {
@@ -101,6 +102,7 @@ export class BulkImportQrCodesUseCase {
 				user: user.id,
 			},
 		});
+		qrCodesBulkImported.add(validRecords.length);
 
 		for (const record of validRecords) {
 			createdQrCodes.push(

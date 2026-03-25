@@ -6,6 +6,7 @@ declare module 'fastify' {
 	interface FastifyRequest {
 		clientIp?: string;
 		user?: TUser;
+		startTime?: bigint;
 	}
 
 	interface FastifyContextConfig {

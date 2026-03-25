@@ -49,8 +49,11 @@ export class Application {
 
 		this.logger.debug('Shutdown database');
 		await poolConnection.end();
-		this.logger.info('Shutdown complete');
 
+		const { shutdownOtel } = await import('./instrumentation');
+		await shutdownOtel();
+
+		this.logger.info('Shutdown complete');
 		process.exit();
 	}
 

@@ -37,6 +37,7 @@ import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth
 import { DispatchTrackingEventUseCase } from '@/modules/analytics-integration/useCase/dispatch-tracking-event.use-case';
 import TagRepository from '@/modules/tag/domain/repository/tag.repository';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
+import { shortUrlScans } from '@/core/metrics';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -436,6 +437,8 @@ export class ShortUrlController extends AbstractController {
 	): Promise<IHttpResponse<{ status: string }>> {
 		const { shortCode } = request.params;
 		const body = request.body;
+
+		shortUrlScans.add(1);
 
 		// 1. Clear views cache
 		void this.keyCache.del(this.getViewsCacheKey(shortCode));

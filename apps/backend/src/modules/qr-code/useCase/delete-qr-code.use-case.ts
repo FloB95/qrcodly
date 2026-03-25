@@ -8,6 +8,7 @@ import { ImageService } from '@/core/services/image.service';
 import { QrCodeDeletedEvent } from '../event/qr-code-deleted.event';
 import { TQrCode } from '../domain/entities/qr-code.entity';
 import { UnitOfWork } from '@/core/db/unit-of-work';
+import { qrCodesDeleted } from '@/core/metrics';
 
 @injectable()
 export class DeleteQrCodeUseCase implements IBaseUseCase {
@@ -47,6 +48,7 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 					deletedBy: deletedBy,
 				},
 			});
+			qrCodesDeleted.add(1);
 		} else {
 			this.logger.error('error.qrCode.delete', {
 				qrCode: {

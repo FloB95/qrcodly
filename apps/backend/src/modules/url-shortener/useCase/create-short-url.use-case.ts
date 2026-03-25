@@ -4,6 +4,7 @@ import { Logger } from '@/core/logging';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { TShortUrl, TShortUrlWithDomain } from '../domain/entities/short-url.entity';
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
+import { shortUrlsCreated } from '@/core/metrics';
 
 /**
  * Internal input type for creating a short URL.
@@ -73,6 +74,7 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 				customDomainId: createdShortUrl.customDomainId,
 			},
 		});
+		shortUrlsCreated.add(1);
 
 		return createdShortUrl;
 	}

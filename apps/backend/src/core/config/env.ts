@@ -63,6 +63,11 @@ const server = z.object({
 	DISABLE_RATE_LIMITING: z
 		.union([z.boolean(), z.string().transform((val) => val === 'true')])
 		.default(false),
+
+	// OpenTelemetry — set the dataset name to enable, leave empty to disable
+	OTEL_METRICS_DATASET: z.string().optional(),
+	OTEL_METRICS_INTERVAL_MS: z.coerce.number().default(60000),
+	OTEL_TRACES_DATASET: z.string().optional(),
 });
 
 // Don't touch the part below

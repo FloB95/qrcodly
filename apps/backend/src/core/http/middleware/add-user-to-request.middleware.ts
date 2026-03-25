@@ -7,6 +7,7 @@ import { getAuth } from '@clerk/fastify';
 import { type FastifyRequest } from 'fastify';
 import { container } from 'tsyringe';
 import UserSubscriptionRepository from '@/modules/billing/domain/repository/user-subscription.repository';
+import { trackActiveSession } from '@/core/metrics';
 
 const USER_PLAN_CACHE_TTL = 300; // 5 minutes
 
@@ -43,6 +44,7 @@ export async function addUserToRequestMiddleware(request: FastifyRequest, _reply
 	if (userId) {
 		const plan = await resolveUserPlan(userId);
 		request.user = { id: userId, tokenType, plan };
+		void trackActiveSession(container.resolve(KeyCache).getClient(), userId);
 	} else {
 		request.user = undefined;
 	}

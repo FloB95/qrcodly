@@ -14,6 +14,7 @@ import { CreateQrCodePolicy } from '../policies/create-qr-code.policy';
 import { TUser } from '@/core/domain/schema/UserSchema';
 import { ShortUrlStrategyService } from '../service/short-url-strategy.service';
 import { QrCodeDataService } from '../service/qr-code-data.service';
+import { qrCodesCreated } from '@/core/metrics';
 
 /**
  * Use case for creating a QrCode entity.
@@ -96,6 +97,7 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 						createdBy: finalQrCode.createdBy,
 					},
 				});
+				qrCodesCreated.add(1, { 'content.type': dto.content.type });
 
 				if (user?.id) await policy.incrementUsage();
 				return finalQrCode;

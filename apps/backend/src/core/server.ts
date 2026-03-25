@@ -32,6 +32,14 @@ import { resolveRateLimit } from './rate-limit/rate-limit.resolver';
 import { RateLimitPolicy } from './rate-limit/rate-limit.policy';
 import { KeyCache } from './cache';
 import { IpAbuseTrackerService } from './ip-protection';
+import {
+	httpRequestDuration,
+	httpRequestsTotal,
+	httpErrorsTotal,
+	httpActiveRequests,
+	rateLimitHits,
+	registerActiveSessionsGauge,
+} from './metrics';
 
 @singleton()
 export class Server {
@@ -45,6 +53,31 @@ export class Server {
 	}
 
 	async build() {
+		// OTel request metrics hooks
+		this.server.addHook('onRequest', (request, _reply, done) => {
+			request.startTime = process.hrtime.bigint();
+			httpActiveRequests.add(1);
+			done();
+		});
+
+		this.server.addHook('onResponse', (request, reply, done) => {
+			if (request.startTime) {
+				const durationMs = Number(process.hrtime.bigint() - request.startTime) / 1e6;
+				const attrs = {
+					'http.method': request.method,
+					'http.route': request.routeOptions?.url || request.url,
+					'http.status_code': reply.statusCode,
+				};
+				httpRequestDuration.record(durationMs, attrs);
+				httpRequestsTotal.add(1, attrs);
+				httpActiveRequests.add(-1);
+				if (reply.statusCode >= 400) {
+					httpErrorsTotal.add(1, attrs);
+				}
+			}
+			done();
+		});
+
 		await this.server.register(FastifySwagger, {
 			openapi: {
 				openapi: '3.0.0',
@@ -186,6 +219,7 @@ export class Server {
 					container.resolve(Logger).warn('request.rate.limit.hit', {
 						request: createRequestLogObject(req, { rateLimit: context.max }),
 					});
+					rateLimitHits.add(1);
 					throw new TooManyRequestsError();
 				},
 			});
@@ -257,6 +291,9 @@ export class Server {
 
 		const modules = await import('@/modules');
 		await this.server.register(modules.default, { prefix: API_BASE_PATH });
+
+		// Register active sessions gauge (needs Redis client)
+		registerActiveSessionsGauge(container.resolve(KeyCache).getClient());
 
 		return this;
 	}

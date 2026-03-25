@@ -4,6 +4,7 @@ import { Logger } from '@/core/logging';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { TShortUrl } from '../domain/entities/short-url.entity';
 import { BadRequestError } from '@/core/error/http';
+import { shortUrlsDeleted } from '@/core/metrics';
 
 /**
  * Use case for soft-deleting a standalone short URL.
@@ -39,5 +40,6 @@ export class DeleteShortUrlUseCase implements IBaseUseCase {
 				deletedBy: userId,
 			},
 		});
+		shortUrlsDeleted.add(1);
 	}
 }
