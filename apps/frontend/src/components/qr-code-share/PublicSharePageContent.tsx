@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { DynamicQrCode } from '../qr-generator/DynamicQrCode';
 import type {
 	TPublicSharedQrCodeResponseDto,
@@ -17,7 +16,7 @@ interface PublicSharePageContentProps {
 
 export function PublicSharePageContent({ sharedQrCode }: PublicSharePageContentProps) {
 	const tContent = useTranslations('generator.contentSwitch.tab');
-	const { name, content, config, shareConfig, previewImage, qrCodeData } = sharedQrCode;
+	const { name, content, config, shareConfig, qrCodeData } = sharedQrCode;
 
 	// Create a compatible object for SavedQrCodeDownloadBtn
 	const qrCodeCompat =
@@ -47,26 +46,14 @@ export function PublicSharePageContent({ sharedQrCode }: PublicSharePageContentP
 					)}
 
 					<div className="max-h-[300px] max-w-[300px]">
-						{previewImage ? (
-							<Image
-								src={previewImage}
-								width={300}
-								height={300}
-								className="h-full w-full object-contain"
-								alt="QR code"
-								priority
-								unoptimized
+						{content && (
+							<DynamicQrCode
+								qrCode={{
+									content,
+									config,
+									qrCodeData,
+								}}
 							/>
-						) : (
-							content && (
-								<DynamicQrCode
-									qrCode={{
-										content,
-										config,
-										qrCodeData,
-									}}
-								/>
-							)
 						)}
 					</div>
 

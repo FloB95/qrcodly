@@ -4,7 +4,7 @@ import {
 	QR_CODE_PREVIEW_IMAGE_FOLDER,
 	QR_CODE_UPLOAD_FOLDER,
 } from '../../config/constants';
-import { generateQrCodeStylingInstance } from '../../lib/styled-qr-code';
+import { generateQrCodePreviewBuffer } from '../../lib/styled-qr-code';
 import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
 
 export class QrCodeImageStrategy extends BaseImageStrategy {
@@ -74,23 +74,18 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 				libraryOptions.imageOptions.margin = Math.round(libraryOptions.imageOptions.margin * scale);
 			}
 
-			// Optimize icon before embedding (resize to keep SVG small)
+			// Load icon as base64 data URL for server-side Canvas rendering
 			if (libraryOptions.image) {
-				libraryOptions.image =
-					(await this.getOptimizedImageAsDataUrl(libraryOptions.image)) ?? undefined;
+				libraryOptions.image = (await this.getImageAsDataUrl(libraryOptions.image)) ?? undefined;
 			}
 
-			const instance = generateQrCodeStylingInstance({
+			const pngBuffer = await generateQrCodePreviewBuffer({
 				...libraryOptions,
 				data: qrCodeData,
 			});
+			if (!pngBuffer) return undefined;
 
-			const svg = await instance.getRawData('svg');
-			if (!svg) return undefined;
-
-			const svgBuffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
-			const webpBuffer = await this.convertSvgToWebp(svgBuffer);
-
+			const webpBuffer = await this.convertToWebp(pngBuffer);
 			await this.objectStorage.upload(filePath, webpBuffer, 'image/webp');
 			return filePath;
 		} catch (error) {

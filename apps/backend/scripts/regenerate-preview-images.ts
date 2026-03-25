@@ -10,10 +10,9 @@ import { createTable } from '../src/core/db/utils';
 import { datetime, json, text, varchar } from 'drizzle-orm/mysql-core';
 import { eq, isNull } from 'drizzle-orm';
 import { convertQrCodeOptionsToLibraryOptions } from '@shared/schemas';
-import { generateQrCodeStylingInstance } from '../src/modules/qr-code/lib/styled-qr-code';
+import { generateQrCodePreviewBuffer } from '../src/modules/qr-code/lib/styled-qr-code';
 
 const PREVIEW_SIZE = 800;
-const PREVIEW_ICON_MAX_SIZE = 400;
 const BATCH_SIZE = 1000;
 
 const forceMode = process.argv.includes('--force');
@@ -57,10 +56,15 @@ const configTemplate = createTable('qr_code_config_template', {
 const QR_CODE_PREVIEW_IMAGE_FOLDER = 'qr-codes/images/previews';
 const CONFIG_TEMPLATE_PREVIEW_IMAGE_FOLDER = 'config-templates/images/previews';
 
-async function getOptimizedImageAsDataUrl(
-	s3: S3,
-	storagePath: string,
-): Promise<string | undefined> {
+const extensionToMimeType: Record<string, string> = {
+	jpg: 'image/jpeg',
+	jpeg: 'image/jpeg',
+	png: 'image/png',
+	svg: 'image/svg+xml',
+	webp: 'image/webp',
+};
+
+async function getImageAsDataUrl(s3: S3, storagePath: string): Promise<string | undefined> {
 	try {
 		const response: GetObjectOutput = await s3.getObject({
 			Bucket: scriptEnv.S3_BUCKET_NAME,
@@ -70,26 +74,16 @@ async function getOptimizedImageAsDataUrl(
 
 		const bytes = await response.Body.transformToByteArray();
 		const buffer = Buffer.from(bytes);
-
-		const optimized = await sharp(buffer)
-			.resize(PREVIEW_ICON_MAX_SIZE, PREVIEW_ICON_MAX_SIZE, {
-				fit: 'inside',
-				withoutEnlargement: true,
-			})
-			.png({ quality: 80 })
-			.toBuffer();
-
-		return `data:image/png;base64,${optimized.toString('base64')}`;
+		const ext = storagePath.split('.').pop()?.toLowerCase() ?? '';
+		const mimeType = extensionToMimeType[ext] ?? 'application/octet-stream';
+		return `data:${mimeType};base64,${buffer.toString('base64')}`;
 	} catch {
 		return undefined;
 	}
 }
 
-async function convertSvgToWebp(svgBuffer: Buffer): Promise<Buffer> {
-	return sharp(svgBuffer, { density: 300 })
-		.resize(PREVIEW_SIZE, PREVIEW_SIZE, { fit: 'inside' })
-		.webp({ quality: 80 })
-		.toBuffer();
+async function convertToWebp(pngBuffer: Buffer): Promise<Buffer> {
+	return sharp(pngBuffer).webp({ quality: 85 }).toBuffer();
 }
 
 function scaleLibraryOptions(libraryOptions: any): void {
@@ -150,7 +144,7 @@ async function processInParallel<T>(
 }
 
 async function main() {
-	console.log('=== Regenerate Preview Images (WebP) ===');
+	console.log('=== Regenerate Preview Images (SVG) ===');
 	console.log(`Mode: ${forceMode ? 'FORCE (all rows)' : 'default (missing only)'}`);
 	console.log(`Concurrency: ${CONCURRENCY}`);
 	console.log(`Preview size: ${PREVIEW_SIZE}px\n`);
@@ -214,20 +208,16 @@ async function main() {
 		scaleLibraryOptions(libraryOptions);
 
 		if (libraryOptions.image) {
-			libraryOptions.image =
-				(await getOptimizedImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
+			libraryOptions.image = (await getImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
 		}
 
-		const instance = generateQrCodeStylingInstance({
+		const pngBuffer = await generateQrCodePreviewBuffer({
 			...libraryOptions,
 			data: row.qrCodeData,
 		});
+		if (!pngBuffer) return false;
 
-		const svg = await instance.getRawData('svg');
-		if (!svg) return false;
-
-		const svgBuffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
-		const webpBuffer = await convertSvgToWebp(svgBuffer);
+		const webpBuffer = await convertToWebp(pngBuffer);
 
 		const fileName = `${row.id}.webp`;
 		const filePath = constructFilePath(
@@ -264,20 +254,16 @@ async function main() {
 			scaleLibraryOptions(libraryOptions);
 
 			if (libraryOptions.image) {
-				libraryOptions.image =
-					(await getOptimizedImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
+				libraryOptions.image = (await getImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
 			}
 
-			const instance = generateQrCodeStylingInstance({
+			const pngBuffer = await generateQrCodePreviewBuffer({
 				...libraryOptions,
 				data: 'https://www.qrcodly.de/',
 			});
+			if (!pngBuffer) return false;
 
-			const svg = await instance.getRawData('svg');
-			if (!svg) return false;
-
-			const svgBuffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
-			const webpBuffer = await convertSvgToWebp(svgBuffer);
+			const webpBuffer = await convertToWebp(pngBuffer);
 
 			const fileName = `${row.id}.webp`;
 			const filePath = constructFilePath(

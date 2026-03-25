@@ -1,26 +1,43 @@
 import QRCodeStyling, { type Options } from 'qr-code-styling';
 import { JSDOM } from 'jsdom';
+import { createCanvas, loadImage } from 'canvas';
 
-// Minimal nodeCanvas implementation for server-side image loading.
-// JSDOM's Image element never fires onload (it can't decode images),
-// which causes qr-code-styling's loadImage() promise to hang forever.
-// Providing nodeCanvas.loadImage makes the library use this path instead.
-const nodeCanvas = {
-	loadImage: (src: string) => Promise.resolve({ width: 100, height: 100, src } as any),
-	createCanvas: () => null,
-};
+const nodeCanvas = { createCanvas, loadImage };
 
+/**
+ * Generates a QR code as SVG (used for existing SVG-based flows).
+ */
 export function generateQrCodeStylingInstance(options: Options) {
 	return new QRCodeStyling({
 		jsdom: JSDOM,
 		nodeCanvas: nodeCanvas as any,
 		...options,
 		type: 'svg',
-		// Disable saveAsBlob for server-side rendering. When enabled, qr-code-styling
-		// uses JSDOM's XMLHttpRequest with responseType="blob" which JSDOM doesn't support.
 		imageOptions: {
 			...options.imageOptions,
 			saveAsBlob: false,
 		},
 	});
+}
+
+/**
+ * Generates a QR code preview as a PNG buffer using a real Canvas.
+ * This renders embedded images at full quality, unlike SVG→raster conversion.
+ */
+export async function generateQrCodePreviewBuffer(options: Options): Promise<Buffer | undefined> {
+	const instance = new QRCodeStyling({
+		jsdom: JSDOM,
+		nodeCanvas: nodeCanvas as any,
+		...options,
+		type: 'canvas',
+		imageOptions: {
+			...options.imageOptions,
+			saveAsBlob: false,
+		},
+	});
+
+	const rawData = await instance.getRawData('png');
+	if (!rawData) return undefined;
+
+	return Buffer.isBuffer(rawData) ? rawData : Buffer.from(await rawData.arrayBuffer());
 }

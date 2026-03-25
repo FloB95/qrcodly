@@ -3,7 +3,6 @@
 import React, { Suspense, useCallback } from 'react';
 import { Button, buttonVariants } from '../ui/button';
 import { ShareDialog } from '../qr-code-share/ShareDialog';
-import Image from 'next/image';
 import { DynamicQrCode } from '../qr-generator/DynamicQrCode';
 import { SavedQrCodeDownloadBtn } from '../qr-generator/download-buttons';
 import { AnalyticsSection } from './analytics/AnalyticsSection';
@@ -197,26 +196,14 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 						<div className="shrink-0">
 							<Suspense fallback={null}>
 								<div className="flex justify-center space-y-6 lg:flex-col lg:justify-start">
-									{qrCode.previewImage ? (
-										<Image
-											src={qrCode.previewImage}
-											width={300}
-											height={300}
-											className="max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]"
-											alt="QR code preview"
-											loading="lazy"
-											unoptimized
-										/>
-									) : (
-										<DynamicQrCode
-											qrCode={{
-												content: qrCode.content,
-												config: qrCode.config,
-												qrCodeData: qrCode.qrCodeData,
-											}}
-											shortUrl={qrCode.shortUrl || undefined}
-										/>
-									)}
+									<DynamicQrCode
+										qrCode={{
+											content: qrCode.content,
+											config: qrCode.config,
+											qrCodeData: qrCode.qrCodeData,
+										}}
+										shortUrl={qrCode.shortUrl || undefined}
+									/>
 								</div>
 								<div className="mt-4 flex justify-center">
 									<SavedQrCodeDownloadBtn qrCode={qrCode} />
