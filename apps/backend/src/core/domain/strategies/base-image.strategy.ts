@@ -2,7 +2,6 @@ import { BadRequestError } from '@/core/error/http';
 import { ObjectStorage } from '@/core/storage';
 import { Logger } from '@/core/logging';
 import { container } from 'tsyringe';
-import sharp from 'sharp';
 
 export abstract class BaseImageStrategy {
 	protected readonly validMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
@@ -61,12 +60,6 @@ export abstract class BaseImageStrategy {
 			this.logger.error('error.image.getAsDataUrl', { storagePath, error: error as Error });
 			return undefined;
 		}
-	}
-
-	protected static readonly PREVIEW_SIZE = 800;
-
-	protected async convertToWebp(pngBuffer: Buffer): Promise<Buffer> {
-		return sharp(pngBuffer).webp({ quality: 85 }).toBuffer();
 	}
 
 	async getSignedUrl(imagePath: string): Promise<string | undefined> {

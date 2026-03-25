@@ -6,7 +6,7 @@ import {
 	QR_CODE_TEMPLATE_UPLOAD_FOLDER,
 } from '../../config/constants';
 import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
-import { generateQrCodePreviewBuffer } from '@/modules/qr-code/lib/styled-qr-code';
+import { generateQrCodeStylingInstance } from '@/modules/qr-code/lib/styled-qr-code';
 
 export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 	constructor() {
@@ -50,7 +50,7 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 		const { id, createdBy, config } = ConfigTemplate;
 
 		try {
-			const fileName = `${id}.webp`;
+			const fileName = `${id}.svg`;
 			const filePath = this.constructFilePath(
 				QR_CODE_TEMPLATE_PREVIEW_IMAGE_FOLDER,
 				createdBy ?? undefined,
@@ -59,27 +59,22 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 
 			const libraryOptions = convertQrCodeOptionsToLibraryOptions(config);
 
-			// Scale down for preview generation
-			const scale = BaseImageStrategy.PREVIEW_SIZE / (libraryOptions.width ?? 1000);
-			libraryOptions.width = BaseImageStrategy.PREVIEW_SIZE;
-			libraryOptions.height = BaseImageStrategy.PREVIEW_SIZE;
-			if (libraryOptions.imageOptions?.margin) {
-				libraryOptions.imageOptions.margin = Math.round(libraryOptions.imageOptions.margin * scale);
-			}
-
-			// Load icon as base64 data URL for server-side Canvas rendering
+			// Convert S3 storage path to a base64 data URL so JSDOM can handle it
 			if (libraryOptions.image) {
 				libraryOptions.image = (await this.getImageAsDataUrl(libraryOptions.image)) ?? undefined;
 			}
 
-			const pngBuffer = await generateQrCodePreviewBuffer({
+			const instance = generateQrCodeStylingInstance({
 				...libraryOptions,
 				data: 'https://www.qrcodly.de/',
 			});
-			if (!pngBuffer) return undefined;
 
-			const webpBuffer = await this.convertToWebp(pngBuffer);
-			await this.objectStorage.upload(filePath, webpBuffer, 'image/webp');
+			const svg = await instance.getRawData('svg');
+			if (!svg) return undefined;
+
+			const buffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
+
+			await this.objectStorage.upload(filePath, buffer, 'image/svg+xml');
 			return filePath;
 		} catch (error: any) {
 			this.logger.error('error.template.previewImage.create', {

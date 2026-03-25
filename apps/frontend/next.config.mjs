@@ -70,7 +70,7 @@ const config = {
 			{
 				protocol: 'http',
 				hostname: 'localhost',
-				port: '3000',
+				port: '9000',
 			},
 			{
 				protocol: 'https',

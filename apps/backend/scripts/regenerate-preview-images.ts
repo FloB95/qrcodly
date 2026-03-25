@@ -5,14 +5,12 @@ import { z } from 'zod';
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import { GetObjectOutput, S3 } from '@aws-sdk/client-s3';
-import sharp from 'sharp';
 import { createTable } from '../src/core/db/utils';
 import { datetime, json, text, varchar } from 'drizzle-orm/mysql-core';
 import { eq, isNull } from 'drizzle-orm';
 import { convertQrCodeOptionsToLibraryOptions } from '@shared/schemas';
-import { generateQrCodePreviewBuffer } from '../src/modules/qr-code/lib/styled-qr-code';
+import { generateQrCodeStylingInstance } from '../src/modules/qr-code/lib/styled-qr-code';
 
-const PREVIEW_SIZE = 800;
 const BATCH_SIZE = 1000;
 
 const forceMode = process.argv.includes('--force');
@@ -82,19 +80,6 @@ async function getImageAsDataUrl(s3: S3, storagePath: string): Promise<string | 
 	}
 }
 
-async function convertToWebp(pngBuffer: Buffer): Promise<Buffer> {
-	return sharp(pngBuffer).webp({ quality: 85 }).toBuffer();
-}
-
-function scaleLibraryOptions(libraryOptions: any): void {
-	const scale = PREVIEW_SIZE / (libraryOptions.width ?? 1000);
-	libraryOptions.width = PREVIEW_SIZE;
-	libraryOptions.height = PREVIEW_SIZE;
-	if (libraryOptions.imageOptions?.margin) {
-		libraryOptions.imageOptions.margin = Math.round(libraryOptions.imageOptions.margin * scale);
-	}
-}
-
 function constructFilePath(folder: string, userId: string | undefined, fileName: string): string {
 	return userId ? `${folder}/${userId}/${fileName}` : `${folder}/${fileName}`;
 }
@@ -147,7 +132,7 @@ async function main() {
 	console.log('=== Regenerate Preview Images (SVG) ===');
 	console.log(`Mode: ${forceMode ? 'FORCE (all rows)' : 'default (missing only)'}`);
 	console.log(`Concurrency: ${CONCURRENCY}`);
-	console.log(`Preview size: ${PREVIEW_SIZE}px\n`);
+	console.log('');
 
 	const poolConnection = mysql.createPool({
 		host: scriptEnv.DB_HOST,
@@ -205,21 +190,21 @@ async function main() {
 		if (!row.qrCodeData) return false;
 
 		const libraryOptions = convertQrCodeOptionsToLibraryOptions(row.config as any);
-		scaleLibraryOptions(libraryOptions);
 
 		if (libraryOptions.image) {
 			libraryOptions.image = (await getImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
 		}
 
-		const pngBuffer = await generateQrCodePreviewBuffer({
+		const instance = generateQrCodeStylingInstance({
 			...libraryOptions,
 			data: row.qrCodeData,
 		});
-		if (!pngBuffer) return false;
 
-		const webpBuffer = await convertToWebp(pngBuffer);
+		const svg = await instance.getRawData('svg');
+		if (!svg) return false;
 
-		const fileName = `${row.id}.webp`;
+		const buffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
+		const fileName = `${row.id}.svg`;
 		const filePath = constructFilePath(
 			QR_CODE_PREVIEW_IMAGE_FOLDER,
 			row.createdBy ?? undefined,
@@ -234,8 +219,8 @@ async function main() {
 		await s3.putObject({
 			Bucket: scriptEnv.S3_BUCKET_NAME,
 			Key: filePath,
-			Body: webpBuffer,
-			ContentType: 'image/webp',
+			Body: buffer,
+			ContentType: 'image/svg+xml',
 		});
 
 		await db.update(qrCode).set({ previewImage: filePath }).where(eq(qrCode.id, row.id));
@@ -251,21 +236,21 @@ async function main() {
 		'Templates',
 		async (row) => {
 			const libraryOptions = convertQrCodeOptionsToLibraryOptions(row.config as any);
-			scaleLibraryOptions(libraryOptions);
 
 			if (libraryOptions.image) {
 				libraryOptions.image = (await getImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
 			}
 
-			const pngBuffer = await generateQrCodePreviewBuffer({
+			const instance = generateQrCodeStylingInstance({
 				...libraryOptions,
 				data: 'https://www.qrcodly.de/',
 			});
-			if (!pngBuffer) return false;
 
-			const webpBuffer = await convertToWebp(pngBuffer);
+			const svg = await instance.getRawData('svg');
+			if (!svg) return false;
 
-			const fileName = `${row.id}.webp`;
+			const buffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
+			const fileName = `${row.id}.svg`;
 			const filePath = constructFilePath(
 				CONFIG_TEMPLATE_PREVIEW_IMAGE_FOLDER,
 				row.createdBy ?? undefined,
@@ -280,8 +265,8 @@ async function main() {
 			await s3.putObject({
 				Bucket: scriptEnv.S3_BUCKET_NAME,
 				Key: filePath,
-				Body: webpBuffer,
-				ContentType: 'image/webp',
+				Body: buffer,
+				ContentType: 'image/svg+xml',
 			});
 
 			await db
