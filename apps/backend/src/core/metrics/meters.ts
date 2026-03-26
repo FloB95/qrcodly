@@ -1,4 +1,4 @@
-import { metrics, type ObservableResult } from '@opentelemetry/api';
+import { metrics } from '@opentelemetry/api';
 import type Redis from 'ioredis';
 
 const meter = metrics.getMeter('qrcodly-backend', '1.0.0');
@@ -54,32 +54,26 @@ export const shortUrlScans = meter.createCounter('business.short_urls.scans', {
 
 // --- Active Sessions ---
 
+const activeSessionsGauge = meter.createGauge('business.active_sessions', {
+	description: 'Number of unique users active in the last 5 minutes',
+});
+
+let lastCleanup = 0;
+
 /**
- * Records a user as active in Redis (sorted set with timestamp as score).
- * Call this on each authenticated request.
+ * Records a user as active in Redis and reports the absolute count.
+ * Cleanup of stale entries runs at most once per minute.
  */
 export async function trackActiveSession(redis: Redis, userId: string): Promise<void> {
 	const now = Date.now();
 	await redis.zadd(ACTIVE_SESSIONS_KEY, now, userId);
-}
 
-/**
- * Registers an observable gauge that reports the number of active sessions.
- * Must be called once after Redis is available (e.g., during server build).
- */
-export function registerActiveSessionsGauge(redis: Redis): void {
-	meter
-		.createObservableGauge('business.active_sessions', {
-			description: 'Number of unique users active in the last 5 minutes',
-		})
-		.addCallback(async (result: ObservableResult) => {
-			const cutoff = Date.now() - ACTIVE_SESSIONS_TTL_MS;
-			// Remove stale entries
-			await redis.zremrangebyscore(ACTIVE_SESSIONS_KEY, '-inf', cutoff);
-			// Count remaining
-			const count = await redis.zcard(ACTIVE_SESSIONS_KEY);
-			result.observe(count);
-		});
+	if (now - lastCleanup > 60_000) {
+		lastCleanup = now;
+		await redis.zremrangebyscore(ACTIVE_SESSIONS_KEY, '-inf', now - ACTIVE_SESSIONS_TTL_MS);
+		const count = await redis.zcard(ACTIVE_SESSIONS_KEY);
+		activeSessionsGauge.record(count);
+	}
 }
 
 // --- Rate Limiting ---

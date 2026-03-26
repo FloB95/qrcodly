@@ -38,7 +38,6 @@ import {
 	httpErrorsTotal,
 	httpActiveRequests,
 	rateLimitHits,
-	registerActiveSessionsGauge,
 } from './metrics';
 
 @singleton()
@@ -291,9 +290,6 @@ export class Server {
 
 		const modules = await import('@/modules');
 		await this.server.register(modules.default, { prefix: API_BASE_PATH });
-
-		// Register active sessions gauge (needs Redis client)
-		registerActiveSessionsGauge(container.resolve(KeyCache).getClient());
 
 		return this;
 	}

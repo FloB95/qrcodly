@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { resourceFromAttributes } from '@opentelemetry/resources';
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
+import { AggregationTemporality, PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
@@ -36,6 +36,7 @@ if (metricsEnabled || tracesEnabled) {
 							Authorization: `Bearer ${axiomToken}`,
 							'X-Axiom-Dataset': metricsDataset,
 						},
+						temporalityPreference: AggregationTemporality.DELTA,
 					}),
 					exportIntervalMillis: Number(process.env.OTEL_METRICS_INTERVAL_MS) || 60000,
 				})
