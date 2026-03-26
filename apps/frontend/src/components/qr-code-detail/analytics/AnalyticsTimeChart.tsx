@@ -55,8 +55,8 @@ export const AnalyticsTimeChart = ({ data, locale, variant = 'scan' }: Analytics
 		},
 	} satisfies ChartConfig;
 
-	const formatDate = (dateStr: string) => {
-		const date = new Date(dateStr);
+	const formatDate = (value: unknown) => {
+		const date = new Date(String(value));
 		return date.toLocaleDateString(locale, { month: 'short', day: 'numeric' });
 	};
 

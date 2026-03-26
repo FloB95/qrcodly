@@ -1,6 +1,6 @@
 'use client';
 
-import { SignedIn, SignedOut, SignInButton, UserAvatar } from '@clerk/nextjs';
+import { Show, SignInButton, UserAvatar } from '@clerk/nextjs';
 import Container from './ui/container';
 import { Button, buttonVariants } from './ui/button';
 import { useLocale, useTranslations } from 'next-intl';
@@ -231,12 +231,12 @@ export default function Header({
 						>
 							{t('plansBtn')}
 						</Link>
-						<SignedOut>
+						<Show when="signed-out">
 							<SignInButton signUpForceRedirectUrl={`/${locale}/signup-success`}>
 								<Button>{t('signInBtn')}</Button>
 							</SignInButton>
-						</SignedOut>
-						<SignedIn>
+						</Show>
+						<Show when="signed-in">
 							{!hideDashboardLink && (
 								<div className="flex items-center gap-2">
 									<Link
@@ -260,7 +260,7 @@ export default function Header({
 							<Link href="/dashboard/settings/profile">
 								<UserAvatar />
 							</Link>
-						</SignedIn>
+						</Show>
 						{!hideLanguageNav && (
 							<div className="hidden lg:block">
 								<LanguageNav />
@@ -276,7 +276,6 @@ export default function Header({
 					</div>
 				</div>
 			</Container>
-
 			<Drawer open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} direction="right">
 				<DrawerContent className="pt-20 pb-8 px-1 overflow-y-auto">
 					<DrawerHeader className="hidden">
@@ -351,7 +350,7 @@ export default function Header({
 								{t('plansBtn')}
 							</Link>
 						</motion.div>
-						<SignedIn>
+						<Show when="signed-in">
 							<motion.div variants={itemVariants}>
 								<Link
 									href="/dashboard/qr-codes"
@@ -362,7 +361,7 @@ export default function Header({
 									{t('collectionBtn')}
 								</Link>
 							</motion.div>
-						</SignedIn>
+						</Show>
 						{!hideLanguageNav && (
 							<motion.div variants={itemVariants}>
 								<div className="border-t border-slate-100 mt-2 pt-4">

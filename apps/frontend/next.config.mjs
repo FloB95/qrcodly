@@ -69,7 +69,11 @@ const config = {
 		return [
 			{
 				source: '/__clerk-js/:path*',
-				destination: 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/:path*',
+				destination: 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@6/:path*',
+			},
+			{
+				source: '/__clerk/:path*',
+				destination: 'https://clerk.qrcodly.de/:path*',
 			},
 		];
 	},

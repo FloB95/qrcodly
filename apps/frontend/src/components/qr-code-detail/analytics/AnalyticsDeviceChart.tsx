@@ -82,7 +82,6 @@ export const AnalyticsDeviceChart = ({ data }: AnalyticsDeviceChartProps) => {
 										dataKey="value"
 										nameKey="name"
 										strokeWidth={0}
-										activeIndex={activeIndex}
 										activeShape={({ outerRadius = 0, ...props }: PieSectorDataItem) => (
 											<Sector {...props} outerRadius={outerRadius + 5} />
 										)}

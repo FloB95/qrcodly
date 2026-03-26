@@ -7,7 +7,8 @@ import { PostHogProvider } from './PostHogProvider';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { SupportedLanguages } from '@/i18n/routing';
 import { deDE, enUS, frFR, itIT, esES, nlNL, plPL, ptBR, ruRU } from '@clerk/localizations';
-import { shadcn } from '@clerk/themes';
+import { shadcn } from '@clerk/ui/themes';
+import { env } from '@/env';
 
 export default function Providers({
 	locale,
@@ -38,7 +39,7 @@ export default function Providers({
 			appearance={{
 				theme: shadcn,
 			}}
-			clerkJSUrl="/__clerk-js/dist/clerk.browser.js"
+			proxyUrl={`${env.NEXT_PUBLIC_FRONTEND_URL}/__clerk`}
 		>
 			<QueryClientProvider client={queryClient}>
 				<PostHogProvider>

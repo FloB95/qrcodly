@@ -36,12 +36,12 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 				const stripe = await stripeService.getSubscription(local.stripeSubscriptionId);
 				const priceId = stripe.items.data[0]?.price.id ?? local.stripePriceId;
 
-				let periodStart = stripe.current_period_start;
-				let periodEnd = stripe.current_period_end;
+				let periodStart = stripe.items?.data?.[0]?.current_period_start;
+				let periodEnd = stripe.items?.data?.[0]?.current_period_end;
 				if (!periodStart || !periodEnd) {
 					const full = await stripeService.getSubscription(stripe.id);
-					periodStart = full.current_period_start;
-					periodEnd = full.current_period_end;
+					periodStart = full.items?.data?.[0]?.current_period_start;
+					periodEnd = full.items?.data?.[0]?.current_period_end;
 				}
 				if (!periodStart || !periodEnd) {
 					this.logger.warn('stripe.reconciliation.missingPeriod', {
@@ -139,12 +139,12 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 					const priceId = sub.items.data[0]?.price.id ?? '';
 					const customerId = typeof sub.customer === 'string' ? sub.customer : sub.customer.id;
 
-					let periodStart = sub.current_period_start;
-					let periodEnd = sub.current_period_end;
+					let periodStart = sub.items?.data?.[0]?.current_period_start;
+					let periodEnd = sub.items?.data?.[0]?.current_period_end;
 					if (!periodStart || !periodEnd) {
 						const full = await stripeService.getSubscription(sub.id);
-						periodStart = full.current_period_start;
-						periodEnd = full.current_period_end;
+						periodStart = full.items?.data?.[0]?.current_period_start;
+						periodEnd = full.items?.data?.[0]?.current_period_end;
 					}
 					if (!periodStart || !periodEnd) {
 						this.logger.warn('stripe.reconciliation.missingPeriod', {

@@ -1,6 +1,6 @@
 'use client';
 
-import { SignedIn, SignInButton } from '@clerk/nextjs';
+import { Show, SignInButton } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import posthog from 'posthog-js';
@@ -48,7 +48,7 @@ export const ProCTA = ({
 	// Has Pro but canceled - open portal to reactivate
 	if (isCanceled) {
 		return (
-			<SignedIn>
+			<Show when="signed-in">
 				<Button
 					variant="secondary"
 					onClick={() => createPortalSession.mutate({ locale })}
@@ -56,7 +56,7 @@ export const ProCTA = ({
 				>
 					{t('renewSubscription')}
 				</Button>
-			</SignedIn>
+			</Show>
 		);
 	}
 
@@ -71,7 +71,7 @@ export const ProCTA = ({
 
 	// No subscription - show upgrade button
 	return (
-		<SignedIn>
+		<Show when="signed-in">
 			<Button
 				variant="secondary"
 				onClick={handleUpgrade}
@@ -79,6 +79,6 @@ export const ProCTA = ({
 			>
 				{t('upgradeToPro')}
 			</Button>
-		</SignedIn>
+		</Show>
 	);
 };

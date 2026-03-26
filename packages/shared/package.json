@@ -7,7 +7,7 @@
 		"build": "tsc"
 	},
 	"dependencies": {
-		"ical-generator": "^10.0.0",
+		"ical-generator": "^10.1.0",
 		"qr-code-styling": "^1.9.2",
 		"vcf": "^2.1.2"
 	},

@@ -56,15 +56,20 @@ function createService(): StripeWebhookService {
 }
 
 function makeStripeSubscription(overrides: Partial<Stripe.Subscription> = {}): Stripe.Subscription {
+	const now = Math.floor(Date.now() / 1000);
 	return {
 		id: 'sub_test_123',
 		customer: 'cus_test_123',
 		status: 'active',
 		items: {
-			data: [{ price: { id: 'price_monthly' } }],
+			data: [
+				{
+					price: { id: 'price_monthly' },
+					current_period_start: now,
+					current_period_end: now + 30 * 24 * 3600,
+				},
+			],
 		} as any,
-		current_period_start: Math.floor(Date.now() / 1000),
-		current_period_end: Math.floor(Date.now() / 1000) + 30 * 24 * 3600,
 		cancel_at_period_end: false,
 		metadata: { clerkUserId: 'user_test_123' },
 		...overrides,
@@ -460,7 +465,9 @@ describe('StripeWebhookService', () => {
 			mockRepository.findByStripeSubscriptionId.mockResolvedValue(existing as any);
 
 			const invoice = {
-				subscription: 'sub_test_123',
+				parent: {
+					subscription_details: { subscription: 'sub_test_123' },
+				},
 			} as unknown as Stripe.Invoice;
 
 			const event = {
@@ -481,7 +488,7 @@ describe('StripeWebhookService', () => {
 
 		it('should skip when no subscription ID on invoice', async () => {
 			const invoice = {
-				subscription: null,
+				parent: null,
 			} as unknown as Stripe.Invoice;
 
 			const event = {
@@ -499,7 +506,9 @@ describe('StripeWebhookService', () => {
 			mockRepository.findByStripeSubscriptionId.mockResolvedValue(undefined);
 
 			const invoice = {
-				subscription: 'sub_nonexistent',
+				parent: {
+					subscription_details: { subscription: 'sub_nonexistent' },
+				},
 			} as unknown as Stripe.Invoice;
 
 			const event = {
@@ -523,7 +532,9 @@ describe('StripeWebhookService', () => {
 			mockRepository.findByStripeSubscriptionId.mockResolvedValue(existing as any);
 
 			const invoice = {
-				subscription: { id: 'sub_test_obj' },
+				parent: {
+					subscription_details: { subscription: { id: 'sub_test_obj' } },
+				},
 			} as unknown as Stripe.Invoice;
 
 			const event = {
@@ -549,18 +560,13 @@ describe('StripeWebhookService', () => {
 			};
 			mockRepository.findByStripeSubscriptionId.mockResolvedValue(existing as any);
 
-			const now = Math.floor(Date.now() / 1000);
-			const fullSubscription = makeStripeSubscription({
-				current_period_start: now,
-				current_period_end: now + 30 * 24 * 3600,
-			});
+			const fullSubscription = makeStripeSubscription();
 			mockStripeService.getSubscription.mockResolvedValue(fullSubscription);
 
-			// Subscription with missing period dates
-			const subscription = makeStripeSubscription({
-				current_period_start: undefined as any,
-				current_period_end: undefined as any,
-			});
+			// Subscription with missing period dates on items
+			const subscription = makeStripeSubscription();
+			(subscription.items.data[0] as any).current_period_start = undefined;
+			(subscription.items.data[0] as any).current_period_end = undefined;
 
 			const event = {
 				type: 'customer.subscription.updated',

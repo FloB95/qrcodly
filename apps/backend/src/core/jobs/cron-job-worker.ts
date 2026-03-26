@@ -26,13 +26,12 @@ export class CronJobWorker {
 
 	public registerJob(job: AbstractCronJob): void {
 		this.logger.debug(`🗓  Registering cron job: ${job.name}`);
-		const scheduledTask = cron.schedule(
+		const scheduledTask = cron.createTask(
 			job.schedule,
 			() => {
 				void job.start();
 			},
 			{
-				scheduled: false,
 				timezone: DEFAULT_TIME_ZONE,
 			},
 		);
@@ -47,7 +46,7 @@ export class CronJobWorker {
 		this.logger.info('Stopping cron jobs...');
 		this.jobs.forEach((job) => {
 			this.logger.info(`Stopping job ${job.jobClass.name}...`);
-			job.task.stop();
+			void job.task.stop();
 		});
 		this.logger.info('All cron jobs stopped.');
 	}

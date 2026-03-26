@@ -8,16 +8,15 @@ import { cn } from '@/lib/utils';
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: '', dark: '.dark' } as const;
 
-export type ChartConfig = Record<
-	string,
-	{
+export type ChartConfig = {
+	[k in string]: {
 		label?: React.ReactNode;
 		icon?: React.ComponentType;
 	} & (
 		| { color?: string; theme?: never }
 		| { color?: never; theme: Record<keyof typeof THEMES, string> }
-	)
->;
+	);
+};
 
 type ChartContextProps = {
 	config: ChartConfig;
@@ -97,7 +96,7 @@ const ChartTooltip = RechartsPrimitive.Tooltip;
 
 const ChartTooltipContent = React.forwardRef<
 	HTMLDivElement,
-	React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
+	Partial<React.ComponentProps<typeof RechartsPrimitive.Tooltip>> &
 		React.ComponentProps<'div'> & {
 			hideLabel?: boolean;
 			hideIndicator?: boolean;
@@ -244,7 +243,8 @@ const ChartLegend = RechartsPrimitive.Legend;
 const ChartLegendContent = React.forwardRef<
 	HTMLDivElement,
 	React.ComponentProps<'div'> &
-		Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
+		Partial<Pick<RechartsPrimitive.LegendProps, 'payload'>> &
+		Pick<RechartsPrimitive.LegendProps, 'verticalAlign'> & {
 			hideIcon?: boolean;
 			nameKey?: string;
 		}

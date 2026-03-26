@@ -6,7 +6,8 @@ description: Connect Google Analytics 4 or Matomo to receive QR code scan data
 Forward your QR code scan data to your own analytics tools. QRcodly supports **Google Analytics 4** and **Matomo**, so you can see scan activity right alongside your existing website traffic.
 
 <Callout type="info">
-	Analytics integrations require a **Pro Plan**. [View pricing](/plans) to learn more about upgrading.
+	Analytics integrations require a **Pro Plan**. [View pricing](/plans) to learn more about
+	upgrading.
 </Callout>
 
 ## Supported Providers
@@ -20,20 +21,20 @@ You can connect one provider at a time. Each scan event is forwarded to the conf
 
 QRcodly forwards a limited, privacy-safe subset of scan data. No raw user agents or full IP addresses are ever shared.
 
-| Data              | Google Analytics 4 | Matomo                   |
-| ----------------- | ------------------ | ------------------------ |
-| Page URL          | Yes                | Yes                      |
-| Referrer          | Yes                | Yes                      |
-| Language          | Yes                | Yes                      |
-| IP Address        | Anonymized         | Anonymized               |
-| Device Type       | No                 | Yes (custom variable)    |
-| Browser Name      | No                 | Yes (custom variable)    |
-| User Agent        | No                 | No                       |
+| Data         | Google Analytics 4 | Matomo                |
+| ------------ | ------------------ | --------------------- |
+| Page URL     | Yes                | Yes                   |
+| Referrer     | Yes                | Yes                   |
+| Language     | Yes                | Yes                   |
+| IP Address   | Anonymized         | Anonymized            |
+| Device Type  | No                 | Yes (custom variable) |
+| Browser Name | No                 | Yes (custom variable) |
+| User Agent   | No                 | No                    |
 
 <Callout type="info">
-	All IP addresses are anonymized before being sent to any provider. The last octet of IPv4 addresses
-	is zeroed, and IPv6 addresses are truncated. This helps reduce identifiability and supports
-	privacy requirements such as GDPR.
+	All IP addresses are anonymized before being sent to any provider. The last octet of IPv4
+	addresses is zeroed, and IPv6 addresses are truncated. This helps reduce identifiability and
+	supports privacy requirements such as GDPR.
 </Callout>
 
 ## Setting Up Google Analytics 4

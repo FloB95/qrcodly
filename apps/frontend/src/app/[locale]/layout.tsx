@@ -120,10 +120,6 @@ export default async function RootLayout({
 	return (
 		<html lang={locale} className="light" suppressHydrationWarning>
 			<head>
-				{/* Preconnect to critical third-party domains for faster connections */}
-				<link rel="preconnect" href="https://clerk.qrcodly.de" crossOrigin="anonymous" />
-				<link rel="dns-prefetch" href="https://clerk.qrcodly.de" />
-
 				{/* Organization Structured Data */}
 				<script
 					type="application/ld+json"
