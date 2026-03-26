@@ -65,6 +65,14 @@ const config = {
 	},
 	// This is required to support PostHog trailing slash API requests
 	skipTrailingSlashRedirect: true,
+	async rewrites() {
+		return [
+			{
+				source: '/__clerk-js/:path*',
+				destination: 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/:path*',
+			},
+		];
+	},
 	images: {
 		remotePatterns: [
 			{
