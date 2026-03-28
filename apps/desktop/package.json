@@ -80,7 +80,7 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.52.0",
-		"@tailwindcss/vite": "^4.1.10",
+		"@tailwindcss/vite": "^4.2.2",
 		"@types/jest": "^29.5.14",
 		"@types/node": "^22.19.9",
 		"@types/qs": "^6.14.0",
