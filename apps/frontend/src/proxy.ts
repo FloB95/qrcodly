@@ -67,6 +67,11 @@ const clerkHandler = clerkMiddleware(async (auth, req, event) => {
 export default function middleware(req: NextRequest, event: NextFetchEvent) {
 	const pathname = new URL(req.url).pathname;
 
+	// .well-known paths bypass all middleware (MCP registry auth, etc.)
+	if (pathname.startsWith('/.well-known/')) {
+		return NextResponse.next();
+	}
+
 	// Scan routes bypass Clerk entirely — no auth needed
 	if (scanPattern.test(pathname)) {
 		return processAnalyticsAndRedirect(req);
