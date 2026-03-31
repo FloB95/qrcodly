@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"target": "ES2022",
+		"sourceMap": true,
+		"outDir": "./build",
+		"rootDir": "./src",
+		"incremental": true,
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"declaration": false
+	},
+	"include": ["eslint.config.js", "./src/**/*.ts"],
+	"exclude": ["node_modules", "build"]
+}
