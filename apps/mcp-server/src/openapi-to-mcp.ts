@@ -67,9 +67,7 @@ interface ToolOverride {
 	removeFromRequired?: string[];
 }
 
-const TOOL_OVERRIDES: Record<string, ToolOverride> = {
-	create_qr_code: { removeFromRequired: ['config'] },
-};
+const TOOL_OVERRIDES: Record<string, ToolOverride> = {};
 
 const TOOL_NAME_OVERRIDES: Record<string, string> = {
 	'qr-code/get-qr-code-by-id': 'get_qr_code',

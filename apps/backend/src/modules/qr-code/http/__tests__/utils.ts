@@ -48,7 +48,9 @@ export const createQrCodeRequest = async (
 /**
  * Generates a new random QR code DTO.
  */
-export const generateQrCodeDto = (): TCreateQrCodeDto => ({
+export const generateQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
 	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'url',
@@ -86,7 +88,9 @@ export const generateEventQrCodeDto = (): TCreateQrCodeDto => {
 /**
  * Generates a WiFi QR code DTO.
  */
-export const generateWifiQrCodeDto = (): TCreateQrCodeDto => ({
+export const generateWifiQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
 	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'wifi',
@@ -102,7 +106,9 @@ export const generateWifiQrCodeDto = (): TCreateQrCodeDto => ({
 /**
  * Generates a vCard QR code DTO.
  */
-export const generateVCardQrCodeDto = (): TCreateQrCodeDto => ({
+export const generateVCardQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
 	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'vCard',
@@ -120,7 +126,9 @@ export const generateVCardQrCodeDto = (): TCreateQrCodeDto => ({
 /**
  * Generates a text QR code DTO.
  */
-export const generateTextQrCodeDto = (): TCreateQrCodeDto => ({
+export const generateTextQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
 	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'text',
@@ -132,7 +140,9 @@ export const generateTextQrCodeDto = (): TCreateQrCodeDto => ({
 /**
  * Generates an editable URL QR code DTO.
  */
-export const generateDynamicUrlQrCodeDto = (): TCreateQrCodeDto => ({
+export const generateDynamicUrlQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
 	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'url',
@@ -147,7 +157,9 @@ export const generateDynamicUrlQrCodeDto = (): TCreateQrCodeDto => ({
 /**
  * Generates a dynamic vCard QR code DTO.
  */
-export const generateDynamicVCardQrCodeDto = (): TCreateQrCodeDto => ({
+export const generateDynamicVCardQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
 	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'vCard',
@@ -166,7 +178,9 @@ export const generateDynamicVCardQrCodeDto = (): TCreateQrCodeDto => ({
 /**
  * Generates an email QR code DTO.
  */
-export const generateEmailQrCodeDto = (): TCreateQrCodeDto => ({
+export const generateEmailQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
 	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'email',
@@ -182,7 +196,9 @@ export const generateEmailQrCodeDto = (): TCreateQrCodeDto => ({
 /**
  * Generates a location QR code DTO.
  */
-export const generateLocationQrCodeDto = (): TCreateQrCodeDto => ({
+export const generateLocationQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
 	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'location',
@@ -198,7 +214,9 @@ export const generateLocationQrCodeDto = (): TCreateQrCodeDto => ({
 /**
  * Generates an EPC (SEPA bank transfer) QR code DTO.
  */
-export const generateEpcQrCodeDto = (): TCreateQrCodeDto => ({
+export const generateEpcQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
 	name: faker.lorem.words(3).substring(0, 32),
 	content: {
 		type: 'epc',

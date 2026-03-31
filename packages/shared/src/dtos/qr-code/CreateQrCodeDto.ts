@@ -1,14 +1,26 @@
 import { z } from 'zod';
-import { QrCodeContentType, QrCodeSchema } from '../../schemas/QrCode';
+import { QrCodeContentType, QrCodeOptionsSchema, QrCodeSchema } from '../../schemas/QrCode';
 import { validateContentHttpUrls } from './validateContentHttpUrls';
 
 export const CreateQrCodeDto = QrCodeSchema.pick({
 	name: true,
-	config: true,
 	content: true,
-}).superRefine((data, ctx) => {
-	validateContentHttpUrls(data.content, ctx);
-});
+})
+	.extend({
+		config: QrCodeOptionsSchema.optional().describe(
+			'QR code visual styling configuration. Optional when templateId is provided — the template styling will be used as the base. Any fields provided here override the template values.',
+		),
+		templateId: z
+			.string()
+			.uuid()
+			.optional()
+			.describe(
+				'ID of a saved design template to apply. The template styling (colors, shapes, logo) is used as the base config. You can override individual fields via the config parameter.',
+			),
+	})
+	.superRefine((data, ctx) => {
+		validateContentHttpUrls(data.content, ctx);
+	});
 
 export type TCreateQrCodeDto = z.infer<typeof CreateQrCodeDto>;
 

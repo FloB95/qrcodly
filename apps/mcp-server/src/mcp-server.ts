@@ -2,11 +2,6 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { ListToolsRequestSchema, CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { type McpToolDefinition, type EndpointMeta, splitArgs } from './openapi-to-mcp.js';
 import { ApiClient, ApiError } from './api-client.js';
-import { DEFAULT_QR_CONFIG } from './config.js';
-
-const TOOL_DEFAULTS: Record<string, Record<string, unknown>> = {
-	create_qr_code: { config: DEFAULT_QR_CONFIG },
-};
 
 export function createMcpServer(
 	apiKey: string,
@@ -31,8 +26,7 @@ export function createMcpServer(
 		}
 
 		try {
-			const resolvedArgs = applyDefaults(name, args);
-			const { pathParams, queryParams, body } = splitArgs(resolvedArgs, endpoint);
+			const { pathParams, queryParams, body } = splitArgs(args, endpoint);
 
 			const result = await client.request(endpoint.method, endpoint.path, {
 				pathParams,
@@ -59,20 +53,4 @@ export function createMcpServer(
 	});
 
 	return server;
-}
-
-function applyDefaults(
-	toolName: string,
-	args: Record<string, unknown> | undefined,
-): Record<string, unknown> {
-	const resolved = { ...(args || {}) };
-	const defaults = TOOL_DEFAULTS[toolName];
-	if (!defaults) return resolved;
-
-	for (const [key, value] of Object.entries(defaults)) {
-		if (!(key in resolved)) {
-			resolved[key] = value;
-		}
-	}
-	return resolved;
 }
