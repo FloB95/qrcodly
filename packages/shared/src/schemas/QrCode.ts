@@ -68,6 +68,9 @@ export const VCardInputSchema = z
 		),
 		country: emptyStringToUndefined(z.string().min(1).max(64).optional().describe('Country')),
 		website: emptyStringToUndefined(z.url().optional().describe('Personal or company website URL')),
+		note: emptyStringToUndefined(
+			z.string().min(1).max(300).optional().describe('Free-form note or additional information'),
+		),
 		isDynamic: z
 			.boolean()
 			.optional()

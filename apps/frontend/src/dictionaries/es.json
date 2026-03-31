@@ -710,6 +710,10 @@
 				"website": {
 					"label": "Sitio web",
 					"placeholder": "Introduce la URL de tu sitio web"
+				},
+				"note": {
+					"label": "Nota",
+					"placeholder": "Información adicional o notas"
 				}
 			},
 			"email": {

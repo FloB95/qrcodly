@@ -703,6 +703,10 @@
 				"website": {
 					"label": "Webseite",
 					"placeholder": "Gib deine Webseiten-URL ein"
+				},
+				"note": {
+					"label": "Notiz",
+					"placeholder": "Zusätzliche Informationen oder Anmerkungen"
 				}
 			},
 			"email": {

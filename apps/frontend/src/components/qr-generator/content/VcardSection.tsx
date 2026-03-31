@@ -13,6 +13,7 @@ import {
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/input-group';
 import { VCardInputSchema, type TVCardInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
@@ -517,6 +518,35 @@ const VCardSectionBase = ({ onChange, value }: VCardSectionProps) => {
 										}
 									}}
 								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="note"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>
+								<span translate="no" suppressHydrationWarning>
+									{t('note.label')}
+								</span>
+							</FormLabel>
+							<FormControl>
+								<div className="relative">
+									<Textarea
+										{...field}
+										translate="no"
+										placeholder={t('note.placeholder')}
+										maxLength={300}
+										className="resize-none pr-16"
+										rows={3}
+									/>
+									<div className="absolute bottom-2 right-3">
+										<CharacterCounter current={field.value?.length || 0} max={300} />
+									</div>
+								</div>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
