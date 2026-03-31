@@ -5,7 +5,7 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
 import { type McpToolDefinition, type EndpointMeta } from './openapi-to-mcp.js';
 import { createMcpServer } from './mcp-server.js';
-import { BASE_URL, PORT, HOST } from './config.js';
+import { env } from './env.js';
 
 const SESSION_TTL_MS = 30 * 60 * 1000; // 30 minutes
 const SESSION_CLEANUP_INTERVAL_MS = 5 * 60 * 1000; // check every 5 minutes
@@ -100,7 +100,7 @@ export async function startServer(
 				if (sid) sessions.delete(sid);
 			};
 
-			const server = createMcpServer(apiKey, BASE_URL, tools, toolMap);
+			const server = createMcpServer(apiKey, env.QRCODLY_API_BASE_URL, tools, toolMap);
 			await server.connect(transport);
 		} else if (sessionId) {
 			return reply.status(404).send({
@@ -158,7 +158,7 @@ export async function startServer(
 		}
 	}, SESSION_CLEANUP_INTERVAL_MS);
 
-	await app.listen({ port: PORT, host: HOST });
+	await app.listen({ port: env.PORT, host: env.HOST });
 
 	process.once('SIGTERM', () => void shutdown(app, cleanupInterval));
 	process.once('SIGINT', () => void shutdown(app, cleanupInterval));

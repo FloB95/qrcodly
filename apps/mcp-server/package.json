@@ -20,17 +20,17 @@
 		"update-openapi": "curl -s -o src/openapi.json https://api.qrcodly.de/api/v1/openapi.json"
 	},
 	"dependencies": {
+		"@fastify/cors": "^11.1.0",
 		"@modelcontextprotocol/sdk": "^1.29.0",
-		"@fastify/cors": "^11.0.0",
-		"fastify": "^5.3.3"
+		"fastify": "^5.6.2",
+		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@types/node": "^22.19.9",
 		"@typescript-eslint/eslint-plugin": "^8.48.1",
 		"@typescript-eslint/parser": "^8.48.1",
 		"qrcodly-eslint-config": "workspace:*",
 		"qrcodly-typescript-config": "workspace:*",
-		"tsx": "^4.20.3",
+		"tsx": "^4.21.0",
 		"typescript": "catalog:"
 	}
 }
