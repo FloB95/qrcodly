@@ -1,0 +1,285 @@
+---
+title: MCP Server — Use QRcodly with AI
+description: Connect QRcodly to AI assistants like Claude, ChatGPT, Cursor, and more using the MCP server
+---
+
+Use **AI assistants** to create and manage QR codes — just by chatting. The QRcodly MCP server lets tools like Claude, ChatGPT, Cursor, and VS Code Copilot work directly with your QRcodly account.
+
+**Example**: Simply tell your AI assistant _"Create a QR code for my website https://example.com"_ and it will do the rest.
+
+## What is MCP?
+
+MCP (Model Context Protocol) is an open standard that lets AI assistants connect to external services. Think of it as a bridge between your AI tool and QRcodly. Once connected, the AI can:
+
+- **Create** QR codes (URLs, WiFi, vCards, events, and more)
+- **List** and **search** your existing QR codes
+- **Update** or **delete** QR codes
+- **Manage** short URLs, tags, and design templates
+- **View analytics** for your short URLs
+
+## Before You Start
+
+You'll need:
+
+1. A **QRcodly account** — [Sign up for free](https://qrcodly.com)
+2. An **API key** from your QRcodly dashboard
+3. One of the supported AI tools (see setup guides below)
+
+## Step 1: Get Your API Key
+
+1. Log in to your QRcodly account
+2. Go to **Settings** → **API Keys** in the dashboard
+3. Click **Create API Key**
+4. Give it a name (e.g., "Claude Desktop") and click **Create**
+5. **Copy the key** — you'll need it in the next step
+
+<Callout type="warn">
+	Keep your API key secret. Anyone with your key can access your QRcodly account. Never share it publicly or commit it to a repository.
+</Callout>
+
+## Step 2: Connect Your AI Tool
+
+Choose your AI tool below and follow the instructions.
+
+### Claude Code (CLI)
+
+Run this command in your terminal (replace `YOUR_API_KEY` with your actual key):
+
+```bash
+claude mcp add qrcodly --transport http https://mcp.qrcodly.de/mcp \
+  --header "Authorization: Bearer YOUR_API_KEY"
+```
+
+That's it! You can now ask Claude Code to manage your QR codes.
+
+---
+
+### Claude Desktop
+
+1. Open the Claude Desktop app
+2. Go to **Settings** → **Developer** → **Edit Config**
+3. Add the following to your configuration file:
+
+```json
+{
+	"mcpServers": {
+		"qrcodly": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"mcp-remote",
+				"https://mcp.qrcodly.de/mcp",
+				"--header",
+				"Authorization:Bearer YOUR_API_KEY"
+			]
+		}
+	}
+}
+```
+
+4. Replace `YOUR_API_KEY` with your actual API key
+5. Save the file and **restart Claude Desktop**
+
+<Callout type="info">
+	Claude Desktop uses a small helper tool called `mcp-remote` to connect to remote MCP servers. It will be downloaded automatically the first time you start Claude.
+</Callout>
+
+---
+
+### Cursor
+
+1. Open Cursor
+2. Go to **Settings** → **MCP Servers**
+3. Click **Add Server** and enter:
+   - **Name**: `qrcodly`
+   - **URL**: `https://mcp.qrcodly.de/mcp`
+4. Add a custom header:
+   - **Key**: `Authorization`
+   - **Value**: `Bearer YOUR_API_KEY`
+5. Click **Save**
+
+Or add it manually to your `.cursor/mcp.json`:
+
+```json
+{
+	"mcpServers": {
+		"qrcodly": {
+			"url": "https://mcp.qrcodly.de/mcp",
+			"headers": {
+				"Authorization": "Bearer YOUR_API_KEY"
+			}
+		}
+	}
+}
+```
+
+---
+
+### VS Code (GitHub Copilot)
+
+1. Open VS Code
+2. Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+3. Search for **"MCP: Add Server"**
+4. Enter the URL: `https://mcp.qrcodly.de/mcp`
+5. When prompted for headers, add: `Authorization: Bearer YOUR_API_KEY`
+
+Or add it to your VS Code `settings.json`:
+
+```json
+{
+	"mcp": {
+		"servers": {
+			"qrcodly": {
+				"url": "https://mcp.qrcodly.de/mcp",
+				"headers": {
+					"Authorization": "Bearer YOUR_API_KEY"
+				}
+			}
+		}
+	}
+}
+```
+
+---
+
+### ChatGPT / OpenAI
+
+If you're using the OpenAI Agents SDK, configure the MCP server like this:
+
+```python
+from agents import Agent
+from agents.mcp import MCPServerStreamableHttp
+
+mcp_server = MCPServerStreamableHttp(
+    url="https://mcp.qrcodly.de/mcp",
+    headers={"Authorization": "Bearer YOUR_API_KEY"}
+)
+
+agent = Agent(
+    name="qr-assistant",
+    instructions="You help users create and manage QR codes.",
+    mcp_servers=[mcp_server]
+)
+```
+
+---
+
+### Windsurf
+
+Add to your Windsurf MCP configuration:
+
+```json
+{
+	"mcpServers": {
+		"qrcodly": {
+			"serverUrl": "https://mcp.qrcodly.de/mcp",
+			"headers": {
+				"Authorization": "Bearer YOUR_API_KEY"
+			}
+		}
+	}
+}
+```
+
+## What You Can Do
+
+Once connected, try asking your AI assistant things like:
+
+### Create QR Codes
+
+> _"Create a QR code for https://example.com"_
+
+> _"Create a WiFi QR code for my network. SSID: MyWifi, Password: secret123, Encryption: WPA"_
+
+> _"Create a vCard QR code for John Doe, email john@example.com, phone +49123456789"_
+
+> _"Create an event QR code for our team meeting on June 15th at 2pm"_
+
+### Manage QR Codes
+
+> _"List all my QR codes"_
+
+> _"Show me the details of my latest QR code"_
+
+> _"Update the URL of QR code 'My Website' to https://new-url.com"_
+
+> _"Delete the QR code named 'Test'"_
+
+### Use Templates
+
+> _"Show me my saved templates"_
+
+> _"Create a QR code for https://example.com using my 'Corporate' template"_
+
+The AI will first look up your templates, then apply the design when creating the QR code.
+
+### Short URLs & Analytics
+
+> _"List my short URLs"_
+
+> _"Show analytics for my short URL 'abc123'"_
+
+> _"Create a short URL for https://example.com/very-long-path"_
+
+### Tags
+
+> _"Show all my tags"_
+
+> _"Create a tag called 'Marketing' with color red"_
+
+> _"Tag my QR code 'Website' with the 'Marketing' tag"_
+
+## Available Tools
+
+The MCP server provides **31 tools** in total:
+
+| Category | Tools | What they do |
+| --- | --- | --- |
+| **QR Codes** | 5 | Create, list, get, update, delete QR codes |
+| **QR Code Sharing** | 4 | Create and manage public share links |
+| **Short URLs** | 9 | Create, manage, and analyze short URLs |
+| **Tags** | 6 | Create tags and assign them to QR codes or short URLs |
+| **Templates** | 6 | Save and reuse QR code design templates |
+
+### Supported QR Code Types
+
+| Type | Description | Example |
+| --- | --- | --- |
+| **URL** | Link to a website | `https://example.com` |
+| **Text** | Plain text message | Any text up to 1000 characters |
+| **WiFi** | Connect to a WiFi network | SSID, password, encryption type |
+| **vCard** | Digital business card | Name, email, phone, company, address |
+| **Email** | Pre-filled email | Recipient, subject, body |
+| **Location** | Map location | Address or GPS coordinates |
+| **Event** | Calendar event | Title, date, time, location |
+| **EPC** | SEPA bank transfer | Recipient name, IBAN, amount |
+
+## Troubleshooting
+
+### "Invalid or expired API key"
+
+- Check that you copied the full API key (starts with `ak_`)
+- Make sure there are no extra spaces
+- Verify the key is still active in your QRcodly dashboard
+
+### "Connection refused" or "Server not responding"
+
+- Check your internet connection
+- The MCP server URL must be exactly: `https://mcp.qrcodly.de/mcp`
+- If the issue persists, try again in a few minutes
+
+### AI tool doesn't show QRcodly tools
+
+- Restart your AI tool after adding the MCP server configuration
+- Check the configuration file for JSON syntax errors
+- Verify the API key is correctly set in the `Authorization` header
+
+### "Rate limit exceeded"
+
+- The API has rate limits to prevent abuse
+- Wait a moment and try again
+- If you consistently hit limits, contact support
+
+## Need Help?
+
+If you're having trouble connecting, [contact our support team](mailto:info@qrcodly.de) and we'll help you get started.
