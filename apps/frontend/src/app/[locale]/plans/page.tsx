@@ -11,18 +11,7 @@ import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 
-const PLANS = [
-	{
-		slug: 'free' as const,
-		priceMonthly: '0',
-		priceAnnual: undefined,
-	},
-	{
-		slug: 'pro' as const,
-		priceMonthly: '4,99',
-		priceAnnual: '4,00',
-	},
-];
+const PROMO_END = new Date('2026-04-30T23:59:59+02:00');
 
 export async function generateMetadata({ params }: DefaultPageParams): Promise<Metadata> {
 	const { locale } = await params;
@@ -55,6 +44,22 @@ export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
 	const t = await getTranslations('plans');
 	const { isAuthenticated } = await auth();
+	const isPromoActive = new Date() <= PROMO_END;
+
+	const plans = [
+		{
+			slug: 'free' as const,
+			priceMonthly: '0',
+			priceAnnual: undefined,
+		},
+		{
+			slug: 'pro' as const,
+			priceMonthly: isPromoActive ? '4,99' : '8,99',
+			priceAnnual: isPromoActive ? '4,00' : '6,99',
+			futureMonthly: isPromoActive ? '8,99' : undefined,
+			futureAnnual: isPromoActive ? '6,99' : undefined,
+		},
+	];
 
 	return (
 		<>
@@ -71,12 +76,14 @@ export default async function Page({ params }: DefaultPageParams) {
 				</div>
 
 				<div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
-					{PLANS.map((plan) => (
+					{plans.map((plan) => (
 						<PricingCard
 							key={plan.slug}
 							planId={plan.slug}
 							priceMonthly={plan.priceMonthly}
 							priceAnnual={plan.priceAnnual}
+							futureMonthly={plan.futureMonthly}
+							futureAnnual={plan.futureAnnual}
 							locale={locale}
 							isAuthenticated={isAuthenticated}
 						/>
