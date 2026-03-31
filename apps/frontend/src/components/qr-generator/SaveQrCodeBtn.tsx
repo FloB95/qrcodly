@@ -19,7 +19,11 @@ import type { ApiError } from '@/lib/api/ApiError';
 import { isContentAtDefault } from '@/lib/qr-code-helpers';
 import { safeLocalStorage } from '@/lib/utils';
 
-const SaveQrCodeBtn = ({ qrCode }: { qrCode: TCreateQrCodeDto }) => {
+const SaveQrCodeBtn = ({
+	qrCode,
+}: {
+	qrCode: TCreateQrCodeDto & { config: NonNullable<TCreateQrCodeDto['config']> };
+}) => {
 	const t = useTranslations('qrCode');
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
