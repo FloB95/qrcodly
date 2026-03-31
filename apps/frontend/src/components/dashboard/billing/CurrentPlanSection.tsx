@@ -16,6 +16,8 @@ import posthog from 'posthog-js';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
 import { useCreateCheckoutSession, useCreatePortalSession } from '@/lib/api/billing';
 
+const PROMO_END = new Date('2026-04-30T23:59:59+02:00');
+
 export function CurrentPlanSection() {
 	const t = useTranslations('settings.billing');
 	const tPlans = useTranslations('plans');
@@ -71,7 +73,19 @@ export function CurrentPlanSection() {
 	const isAnnualSubscription =
 		subscription?.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL;
 
-	const proPrice = selectedPeriod === 'annual' ? '4,00' : '4,99';
+	const isPromoActive = new Date() <= PROMO_END;
+	const proPrice = isPromoActive
+		? selectedPeriod === 'annual'
+			? '4,00'
+			: '4,99'
+		: selectedPeriod === 'annual'
+			? '6,99'
+			: '8,99';
+	const futureProPrice = isPromoActive
+		? selectedPeriod === 'annual'
+			? '6,99'
+			: '8,99'
+		: undefined;
 	const billingNote = selectedPeriod === 'annual' ? t('billedAnnually') : t('billedMonthly');
 	const currentProPrice = isAnnualSubscription ? '4,00' : '4,99';
 	const currentBillingNote = isAnnualSubscription ? t('billedAnnually') : t('billedMonthly');
@@ -157,7 +171,14 @@ export function CurrentPlanSection() {
 					</div>
 
 					<div>
-						<p className="flex items-baseline gap-x-2">
+						{!hasProPlan && futureProPrice && (
+							<p className="relative inline-block text-xl font-semibold text-slate-400 after:content-[''] after:absolute after:left-[-4px] after:right-[-4px] after:top-1/2 after:h-[3px] after:bg-red-400/90 after:-rotate-12">
+								{futureProPrice} &euro;
+							</p>
+						)}
+						<p
+							className={cn('flex items-baseline gap-x-2', !hasProPlan && futureProPrice && 'mb-3')}
+						>
 							<span className="text-3xl lg:text-4xl font-semibold">
 								{hasProPlan ? currentProPrice : proPrice} &euro;
 							</span>
@@ -166,6 +187,13 @@ export function CurrentPlanSection() {
 						<p className="text-sm text-slate-300 mt-1">
 							{hasProPlan ? currentBillingNote : billingNote}
 						</p>
+						{!hasProPlan && futureProPrice && (
+							<p className="mt-2">
+								<span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 border border-amber-500/25 px-3 py-1 text-sm font-medium text-amber-300">
+									{tPlans('priceIncreaseNotice')}
+								</span>
+							</p>
+						)}
 					</div>
 
 					{!hasProPlan && (
