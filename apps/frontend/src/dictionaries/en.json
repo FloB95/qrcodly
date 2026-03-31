@@ -703,6 +703,10 @@
 				"website": {
 					"label": "Website",
 					"placeholder": "Enter your website URL"
+				},
+				"note": {
+					"label": "Note",
+					"placeholder": "Additional information or notes"
 				}
 			},
 			"email": {

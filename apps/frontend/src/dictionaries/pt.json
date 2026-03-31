@@ -703,6 +703,10 @@
 				"website": {
 					"label": "Website",
 					"placeholder": "Digite a URL do seu website"
+				},
+				"note": {
+					"label": "Nota",
+					"placeholder": "Informações adicionais ou notas"
 				}
 			},
 			"email": {

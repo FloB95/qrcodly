@@ -89,6 +89,9 @@ export function convertVCardObjToString(vCardInput: TVCardInput): string {
 	if (vCardInput.website) {
 		vCard.add('url', vCardInput.website);
 	}
+	if (vCardInput.note) {
+		vCard.add('note', vCardInput.note);
+	}
 
 	return vCard.toString();
 }
@@ -277,6 +280,7 @@ export const getDefaultContentByType = (
 					state: undefined,
 					country: undefined,
 					website: undefined,
+					note: undefined,
 					isDynamic: isSignedIn,
 				},
 			};

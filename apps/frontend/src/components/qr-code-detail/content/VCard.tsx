@@ -119,6 +119,12 @@ export default function VCardContent({ qrCode }: { qrCode: TQrCodeWithRelationsR
 					<div className="font-medium mb-1">{t('website.label')}</div>
 					<div>{displayValue(data.website)}</div>
 				</div>
+
+				{/* Note */}
+				<div>
+					<div className="font-medium mb-1">{t('note.label')}</div>
+					<div className="whitespace-pre-line">{displayValue(data.note)}</div>
+				</div>
 			</div>
 		</>
 	);

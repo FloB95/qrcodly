@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { CreateQrCodeUseCase } from '../create-qr-code.use-case';
 import type QrCodeRepository from '../../domain/repository/qr-code.repository';
+import type ConfigTemplateRepository from '@/modules/config-template/domain/repository/config-template.repository';
 import { type Logger } from '@/core/logging';
 import { type EventEmitter } from '@/core/event';
 import { type ImageService } from '@/core/services/image.service';
@@ -93,6 +94,7 @@ describe('CreateQrCodeUseCase', () => {
 
 		useCase = new CreateQrCodeUseCase(
 			mockRepository,
+			mock<ConfigTemplateRepository>(),
 			mockLogger,
 			mockEventEmitter,
 			mockImageService,

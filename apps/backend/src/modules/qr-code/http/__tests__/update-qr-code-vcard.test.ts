@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { faker } from '@faker-js/faker';
 import type { TQrCodeWithRelationsResponseDto, TUpdateQrCodeDto } from '@shared/schemas';
 import { resetTestState } from '@/tests/shared/test-context';
 import {
@@ -357,6 +358,82 @@ describe('updateQrCode - vCard Content Type', () => {
 			);
 
 			expect(response).toHaveStatusCode(400);
+		});
+
+		it('should reject note exceeding max length (300 chars)', async () => {
+			const createdQrCode = await createQrCode(generateVCardQrCodeDto(), accessToken);
+
+			const response = await updateQrCodeRequest(
+				createdQrCode.id,
+				{
+					content: {
+						type: 'vCard',
+						data: {
+							firstName: faker.person.firstName(),
+							note: faker.string.alpha(301),
+						},
+					},
+				},
+				accessToken,
+			);
+
+			expect(response).toHaveStatusCode(400);
+		});
+	});
+
+	describe('Note field', () => {
+		it('should update static vCard with a note', async () => {
+			const createdQrCode = await createQrCode(generateVCardQrCodeDto(), accessToken);
+			const noteText = faker.lorem.lines(3);
+
+			const response = await updateQrCodeRequest(
+				createdQrCode.id,
+				{
+					content: {
+						type: 'vCard',
+						data: {
+							firstName: faker.person.firstName(),
+							note: noteText,
+						},
+					},
+				},
+				accessToken,
+			);
+
+			expect(response).toHaveStatusCode(200);
+			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
+			if (updatedQrCode.content.type === 'vCard') {
+				expect(updatedQrCode.content.data.note).toBe(noteText);
+			}
+			expect(updatedQrCode.qrCodeData).toContain('NOTE:');
+		});
+
+		it('should update dynamic vCard with a note', async () => {
+			const createdQrCode = await createQrCode(generateDynamicVCardQrCodeDto(), accessToken);
+			const noteText = faker.lorem.lines(2);
+
+			const response = await updateQrCodeRequest(
+				createdQrCode.id,
+				{
+					content: {
+						type: 'vCard',
+						data: {
+							firstName: faker.person.firstName(),
+							note: noteText,
+							isDynamic: true,
+						},
+					},
+				},
+				accessToken,
+			);
+
+			expect(response).toHaveStatusCode(200);
+			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
+			if (updatedQrCode.content.type === 'vCard') {
+				expect(updatedQrCode.content.data.note).toBe(noteText);
+			}
+			// Dynamic vCard should still use short URL
+			expect(updatedQrCode.shortUrl).toBeDefined();
 		});
 	});
 });

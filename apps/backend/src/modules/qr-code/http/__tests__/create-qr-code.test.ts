@@ -97,14 +97,13 @@ describe('createQrCode - Core', () => {
 			expect(response).toHaveStatusCode(400);
 		});
 
-		it('should return 400 when config is missing', async () => {
-			const invalidDto = {
+		it('should use default config when config is omitted', async () => {
+			const dtoWithoutConfig = {
 				name: 'Test',
 				content: generateQrCodeDto().content,
 			};
-			// @ts-expect-error - Testing invalid request body
-			const response = await createRequest(invalidDto, accessToken);
-			expect(response).toHaveStatusCode(400);
+			const response = await createRequest(dtoWithoutConfig as TCreateQrCodeDto, accessToken);
+			expect(response).toHaveStatusCode(201);
 		});
 
 		it('should return 400 for invalid content type', async () => {

@@ -1,0 +1,36 @@
+{
+	"name": "@apps/mcp-server",
+	"version": "0.1.0",
+	"description": "Remote MCP server for the QRcodly API",
+	"main": "src/index.ts",
+	"type": "module",
+	"private": true,
+	"author": "Florian Breuer",
+	"license": "MIT",
+	"engines": {
+		"node": ">=22.11.0"
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"typecheck": "tsc --noEmit -p tsconfig.json",
+		"pr:precheck": "pnpm run lint && pnpm run typecheck && pnpm run build",
+		"build": "tsc -p tsconfig.json",
+		"start": "node build/index.js",
+		"dev": "tsx watch src/index.ts",
+		"update-openapi": "curl -s -o src/openapi.json https://api.qrcodly.de/api/v1/openapi.json"
+	},
+	"dependencies": {
+		"@fastify/cors": "catalog:",
+		"@modelcontextprotocol/sdk": "^1.29.0",
+		"fastify": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "catalog:",
+		"@typescript-eslint/parser": "catalog:",
+		"qrcodly-eslint-config": "workspace:*",
+		"qrcodly-typescript-config": "workspace:*",
+		"tsx": "catalog:",
+		"typescript": "catalog:"
+	}
+}

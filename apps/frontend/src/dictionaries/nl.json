@@ -710,6 +710,10 @@
 				"website": {
 					"label": "Website",
 					"placeholder": "Voer de URL van uw website in"
+				},
+				"note": {
+					"label": "Notitie",
+					"placeholder": "Extra informatie of notities"
 				}
 			},
 			"email": {

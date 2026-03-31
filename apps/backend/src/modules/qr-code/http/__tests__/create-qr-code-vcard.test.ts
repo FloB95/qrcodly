@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { faker } from '@faker-js/faker';
 import type { TCreateQrCodeDto, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { resetTestState } from '@/tests/shared/test-context';
 import {
@@ -157,6 +158,59 @@ describe('createQrCode - vCard Content Type', () => {
 			},
 		};
 		const response = await createRequest(invalidWebsiteDto, accessToken);
+		expect(response).toHaveStatusCode(400);
+	});
+
+	it('should create a static vCard with a note field', async () => {
+		const noteText = faker.lorem.lines(3);
+		const createQrCodeDto = {
+			...generateVCardQrCodeDto(),
+			content: {
+				type: 'vCard' as const,
+				data: {
+					firstName: faker.person.firstName(),
+					lastName: faker.person.lastName(),
+					note: noteText,
+				},
+			},
+		};
+		const response = await createRequest(createQrCodeDto, accessToken);
+		expect(response).toHaveStatusCode(201);
+
+		const receivedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
+		expect(receivedQrCode.content.type).toBe('vCard');
+		if (receivedQrCode.content.type === 'vCard') {
+			expect(receivedQrCode.content.data.note).toBe(noteText);
+		}
+		expect(receivedQrCode.qrCodeData).toContain('NOTE:');
+	});
+
+	it('should create a vCard with only the note field', async () => {
+		const createQrCodeDto = {
+			...generateVCardQrCodeDto(),
+			content: {
+				type: 'vCard' as const,
+				data: {
+					note: faker.lorem.sentence(),
+				},
+			},
+		};
+		const response = await createRequest(createQrCodeDto, accessToken);
+		expect(response).toHaveStatusCode(201);
+	});
+
+	it('should reject note exceeding max length (300 chars)', async () => {
+		const invalidNoteDto = {
+			...generateVCardQrCodeDto(),
+			content: {
+				type: 'vCard' as const,
+				data: {
+					firstName: faker.person.firstName(),
+					note: faker.string.alpha(301),
+				},
+			},
+		};
+		const response = await createRequest(invalidNoteDto, accessToken);
 		expect(response).toHaveStatusCode(400);
 	});
 });

@@ -2,16 +2,22 @@ import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { EventEmitter } from '@/core/event';
-import { TCreateQrCodeDto, TQrCode } from '@shared/schemas';
+import {
+	type TCreateQrCodeDto,
+	type TQrCode,
+	type TQrCodeOptions,
+	QrCodeDefaults,
+} from '@shared/schemas';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
+import ConfigTemplateRepository from '@/modules/config-template/domain/repository/config-template.repository';
 import { ImageService } from '@/core/services/image.service';
 import { QrCodeCreatedEvent } from '../event/qr-code-created.event';
-import { TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
+import { type TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
-import { CustomApiError } from '@/core/error/http';
+import { CustomApiError, NotFoundError } from '@/core/error/http';
 import { UnitOfWork } from '@/core/db/unit-of-work';
 import { CreateQrCodePolicy } from '../policies/create-qr-code.policy';
-import { TUser } from '@/core/domain/schema/UserSchema';
+import { type TUser } from '@/core/domain/schema/UserSchema';
 import { ShortUrlStrategyService } from '../service/short-url-strategy.service';
 import { QrCodeDataService } from '../service/qr-code-data.service';
 import { qrCodesCreated } from '@/core/metrics';
@@ -24,6 +30,7 @@ import { qrCodesCreated } from '@/core/metrics';
 export class CreateQrCodeUseCase implements IBaseUseCase {
 	constructor(
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
+		@inject(ConfigTemplateRepository) private configTemplateRepository: ConfigTemplateRepository,
 		@inject(Logger) private logger: Logger,
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
 		@inject(ImageService) private imageService: ImageService,
@@ -43,6 +50,8 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 		const policy = new CreateQrCodePolicy(user, dto);
 		await policy.checkAccess();
 
+		const resolvedConfig = await this.resolveConfig(dto, user);
+
 		let createdImage: string | undefined;
 
 		try {
@@ -51,15 +60,16 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 
 				const qrCodeEntity = {
 					id: newId,
-					...dto,
-					config: { ...dto.config },
+					name: dto.name,
+					content: dto.content,
+					config: { ...resolvedConfig },
 					createdBy: user?.id ?? null,
 					qrCodeData: null as string | null,
 					previewImage: null,
 				};
 
-				// handle image upload
-				if (qrCodeEntity.config.image) {
+				// Handle image: only upload if it's new base64 data (not an existing S3 path from a template)
+				if (qrCodeEntity.config.image && !this.isS3Path(qrCodeEntity.config.image)) {
 					const uploaded = await this.imageService.uploadImage(
 						qrCodeEntity.config.image,
 						newId,
@@ -114,5 +124,29 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 
 			throw new UnhandledServerError(error as Error, 'QR code creation transaction failed.');
 		}
+	}
+
+	private async resolveConfig(
+		dto: TCreateQrCodeDto,
+		user: TUser | undefined,
+	): Promise<TQrCodeOptions> {
+		if (dto.templateId) {
+			const template = await this.configTemplateRepository.findOneById(dto.templateId);
+			if (!template) throw new NotFoundError('Template not found');
+
+			// Only allow access to own templates or predefined ones
+			if (!template.isPredefined && template.createdBy !== user?.id) {
+				throw new NotFoundError('Template not found');
+			}
+
+			// Merge: user-provided config fields override template values
+			return dto.config ? { ...template.config, ...dto.config } : template.config;
+		}
+
+		return dto.config ?? QrCodeDefaults;
+	}
+
+	private isS3Path(value: string): boolean {
+		return value.includes('/') && !value.startsWith('data:');
 	}
 }
