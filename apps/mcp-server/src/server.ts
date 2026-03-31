@@ -13,6 +13,7 @@ const SESSION_CLEANUP_INTERVAL_MS = 5 * 60 * 1000; // check every 5 minutes
 interface SessionEntry {
 	transport: StreamableHTTPServerTransport;
 	lastActivity: number;
+	apiKey: string;
 }
 
 const sessions = new Map<string, SessionEntry>();
@@ -85,13 +86,20 @@ export async function startServer(
 
 		if (sessionId && sessions.has(sessionId)) {
 			const entry = sessions.get(sessionId)!;
+			if (entry.apiKey !== apiKey) {
+				return reply.status(401).send({
+					jsonrpc: '2.0',
+					error: { code: -32_001, message: 'Unauthorized: API key does not match session' },
+					id: null,
+				});
+			}
 			entry.lastActivity = Date.now();
 			transport = entry.transport;
 		} else if (!sessionId && isInitializeRequest(request.body)) {
 			transport = new StreamableHTTPServerTransport({
 				sessionIdGenerator: () => randomUUID(),
 				onsessioninitialized: (sid) => {
-					sessions.set(sid, { transport, lastActivity: Date.now() });
+					sessions.set(sid, { transport, lastActivity: Date.now(), apiKey });
 				},
 			});
 
@@ -131,8 +139,17 @@ export async function startServer(
 				id: null,
 			});
 		}
-		sessions.get(sessionId)!.lastActivity = Date.now();
-		await sessions.get(sessionId)!.transport.handleRequest(request.raw, reply.raw);
+		const entry = sessions.get(sessionId)!;
+		const apiKey = extractBearerToken(request.headers);
+		if (entry.apiKey !== apiKey) {
+			return reply.status(401).send({
+				jsonrpc: '2.0',
+				error: { code: -32_001, message: 'Unauthorized: API key does not match session' },
+				id: null,
+			});
+		}
+		entry.lastActivity = Date.now();
+		await entry.transport.handleRequest(request.raw, reply.raw);
 	});
 
 	app.delete('/mcp', async (request, reply) => {
@@ -144,7 +161,16 @@ export async function startServer(
 				id: null,
 			});
 		}
-		await sessions.get(sessionId)!.transport.handleRequest(request.raw, reply.raw);
+		const entry = sessions.get(sessionId)!;
+		const apiKey = extractBearerToken(request.headers);
+		if (entry.apiKey !== apiKey) {
+			return reply.status(401).send({
+				jsonrpc: '2.0',
+				error: { code: -32_001, message: 'Unauthorized: API key does not match session' },
+				id: null,
+			});
+		}
+		await entry.transport.handleRequest(request.raw, reply.raw);
 	});
 
 	// Clean up stale sessions to prevent memory leaks
