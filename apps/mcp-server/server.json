@@ -1,0 +1,26 @@
+{
+	"$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+	"name": "de.qrcodly/mcp-server",
+	"title": "QRcodly",
+	"description": "Create, manage, and share QR codes and short URLs",
+	"repository": {
+		"url": "https://github.com/FloB95/qrcodly",
+		"source": "github"
+	},
+	"websiteUrl": "https://www.qrcodly.de",
+	"version": "1.0.0",
+	"remotes": [
+		{
+			"type": "streamable-http",
+			"url": "https://mcp.qrcodly.de/mcp",
+			"headers": [
+				{
+					"name": "Authorization",
+					"description": "Bearer token for API authentication (format: Bearer <your-api-key>)",
+					"isRequired": true,
+					"isSecret": true
+				}
+			]
+		}
+	]
+}

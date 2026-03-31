@@ -26,6 +26,7 @@ export async function startServer(
 
 	await app.register(cors, {
 		origin: true,
+		methods: ['GET', 'HEAD', 'POST', 'DELETE'],
 		exposedHeaders: ['Mcp-Session-Id', 'Last-Event-Id', 'Mcp-Protocol-Version'],
 	});
 
@@ -52,7 +53,7 @@ export async function startServer(
 	<div class="endpoint">
 		<strong>MCP Endpoint:</strong> <code>https://mcp.qrcodly.de/mcp</code>
 	</div>
-	<p><a href="https://qrcodly.com/docs/guides/mcp-server">Setup Guide &rarr;</a></p>
+	<p><a href="https://www.qrcodly.de/docs/guides/mcp-server">Setup Guide &rarr;</a></p>
 </body>
 </html>`);
 	});
