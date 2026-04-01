@@ -72,7 +72,7 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 			},
 			onError: (e) => {
 				const error = e as ApiError;
-				if (error.code >= 500) {
+				if (error.code === 0 || error.code >= 500) {
 					Sentry.captureException(error, {
 						extra: {
 							shortCode: shortUrl.shortCode,

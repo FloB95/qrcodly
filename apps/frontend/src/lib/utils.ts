@@ -185,7 +185,16 @@ export async function apiRequest<T>(
 ): Promise<T> {
 	// Construct query string if queryParams are provided
 	const queryString = queryParams ? `?${qs.stringify(queryParams)}` : '';
-	const response = await fetch(`${env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`, options);
+
+	let response: Response;
+	try {
+		response = await fetch(`${env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`, options);
+	} catch {
+		throw new ApiError(
+			'Could not connect to the server. Please check your internet connection or disable any ad blockers and try again.',
+			0,
+		);
+	}
 
 	if (!response.ok) {
 		const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;

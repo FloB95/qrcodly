@@ -67,7 +67,7 @@ export const TagEditDialog = ({ tag, open, onOpenChange }: TagEditDialogProps) =
 		} catch (e: unknown) {
 			const error = e as ApiError;
 
-			if (error.code >= 500) {
+			if (error.code === 0 || error.code >= 500) {
 				Sentry.captureException(error, { extra: { id: tag.id, name: name.trim(), color } });
 			}
 

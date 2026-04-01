@@ -91,7 +91,7 @@ export function useQrCodeActionHandlers(qr: TQrCodeWithRelationsResponseDto) {
 					onError: (e: Error) => {
 						const error = e as ApiError;
 
-						if (error.code >= 500) {
+						if (error.code === 0 || error.code >= 500) {
 							Sentry.captureException(error, {
 								extra: {
 									templateName: templateName,

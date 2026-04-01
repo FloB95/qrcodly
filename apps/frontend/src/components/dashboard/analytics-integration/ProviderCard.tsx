@@ -76,7 +76,7 @@ export function ProviderCard({
 			});
 		} catch (e: unknown) {
 			const error = e as ApiError;
-			if (error.code >= 500) {
+			if (error.code === 0 || error.code >= 500) {
 				Sentry.captureException(error, { extra: { providerType, enabled } });
 			}
 			posthog.capture('error:analytics-integration-toggle', {
@@ -95,7 +95,7 @@ export function ProviderCard({
 			toast({ title: t('deleted'), description: t('deletedDescription') });
 		} catch (e: unknown) {
 			const error = e as ApiError;
-			if (error.code >= 500) {
+			if (error.code === 0 || error.code >= 500) {
 				Sentry.captureException(error, { extra: { providerType } });
 			}
 			posthog.capture('error:analytics-integration-delete', {
@@ -134,7 +134,7 @@ export function ProviderCard({
 			}
 		} catch (e: unknown) {
 			const error = e as ApiError;
-			if (error.code >= 500) {
+			if (error.code === 0 || error.code >= 500) {
 				Sentry.captureException(error, { extra: { providerType } });
 			}
 			posthog.capture('error:analytics-integration-test', {

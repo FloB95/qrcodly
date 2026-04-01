@@ -20,15 +20,23 @@ export function useScreenshotMutation() {
 
 			// We need to handle the blob response differently from JSON
 			// So we use fetch directly but follow the same error pattern as apiRequest
-			const response = await fetch(
-				`${env.NEXT_PUBLIC_API_URL}/qr-code/screenshot?url=${encodeURIComponent(dto.url)}`,
-				{
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${token}`,
+			let response: Response;
+			try {
+				response = await fetch(
+					`${env.NEXT_PUBLIC_API_URL}/qr-code/screenshot?url=${encodeURIComponent(dto.url)}`,
+					{
+						method: 'GET',
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
 					},
-				},
-			);
+				);
+			} catch {
+				throw new ApiError(
+					'Could not connect to the server. Please check your internet connection or disable any ad blockers and try again.',
+					0,
+				);
+			}
 
 			if (!response.ok) {
 				const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;

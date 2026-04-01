@@ -71,7 +71,7 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 					onError: (e: Error) => {
 						const error = e as ApiError;
 
-						if (error.code >= 500) {
+						if (error.code === 0 || error.code >= 500) {
 							Sentry.captureException(error, {
 								extra: {
 									error: {
