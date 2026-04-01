@@ -197,6 +197,88 @@ describe('updateQrCode - URL Content Type', () => {
 			expect(updatedQrCode.qrCodeData).toContain(originalShortCode);
 		});
 
+		it('should update content.data.url in QR code record when dynamic URL is updated', async () => {
+			const initialUrl = 'https://initial-target.com';
+			const createdQrCode = await createQrCode(
+				{
+					...generateDynamicUrlQrCodeDto(),
+					content: { type: 'url', data: { url: initialUrl, isDynamic: true } },
+				},
+				accessToken,
+			);
+
+			// Verify initial state
+			expect(createdQrCode.shortUrl).toBeDefined();
+			expect(createdQrCode.shortUrl?.destinationUrl).toBe(initialUrl);
+			if (createdQrCode.content.type === 'url') {
+				expect(createdQrCode.content.data.url).toBe(initialUrl);
+			}
+
+			const updatedUrl = 'https://updated-target.com';
+			const response = await updateQrCodeRequest(
+				createdQrCode.id,
+				{
+					content: {
+						type: 'url',
+						data: { url: updatedUrl, isDynamic: true },
+					},
+				},
+				accessToken,
+			);
+
+			expect(response).toHaveStatusCode(200);
+			const updatedQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
+
+			// Both content.data.url AND shortUrl.destinationUrl must reflect the new URL
+			expect(updatedQrCode.content.type).toBe('url');
+			if (updatedQrCode.content.type === 'url') {
+				expect(updatedQrCode.content.data.url).toBe(updatedUrl);
+				expect(updatedQrCode.content.data.isDynamic).toBe(true);
+			}
+			expect(updatedQrCode.shortUrl?.destinationUrl).toBe(updatedUrl);
+
+			// Short code and qrCodeData should remain unchanged
+			expect(updatedQrCode.shortUrl?.shortCode).toBe(createdQrCode.shortUrl?.shortCode);
+			expect(updatedQrCode.qrCodeData).toContain(createdQrCode.shortUrl?.shortCode);
+		});
+
+		it('should keep content.data.url in sync after multiple sequential updates', async () => {
+			const createdQrCode = await createQrCode(generateDynamicUrlQrCodeDto(), accessToken);
+			const originalShortCode = createdQrCode.shortUrl?.shortCode;
+
+			const urls = [
+				'https://first-update.com',
+				'https://second-update.com',
+				'https://third-update.com',
+			];
+
+			let lastQrCode = createdQrCode;
+			for (const url of urls) {
+				const response = await updateQrCodeRequest(
+					lastQrCode.id,
+					{
+						content: {
+							type: 'url',
+							data: { url, isDynamic: true },
+						},
+					},
+					accessToken,
+				);
+
+				expect(response).toHaveStatusCode(200);
+				lastQrCode = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
+
+				// After each update, both fields must be in sync
+				if (lastQrCode.content.type === 'url') {
+					expect(lastQrCode.content.data.url).toBe(url);
+				}
+				expect(lastQrCode.shortUrl?.destinationUrl).toBe(url);
+			}
+
+			// Short code must stay the same through all updates
+			expect(lastQrCode.shortUrl?.shortCode).toBe(originalShortCode);
+		});
+
 		it('should update editable URL with name and config together', async () => {
 			const createdQrCode = await createQrCode(generateDynamicUrlQrCodeDto(), accessToken);
 			const newUrl = 'https://comprehensive-update.com';

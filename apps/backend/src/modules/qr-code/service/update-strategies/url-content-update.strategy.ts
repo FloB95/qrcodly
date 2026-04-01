@@ -31,8 +31,6 @@ export class UrlContentUpdateStrategy implements IContentUpdateStrategy {
 			});
 
 			await this.updateShortUrlUseCase.execute(shortUrl, updateDto, qrCode.createdBy!);
-
-			updates.content = qrCode.content;
 		} else {
 			updates.content.data.isDynamic = false;
 		}
