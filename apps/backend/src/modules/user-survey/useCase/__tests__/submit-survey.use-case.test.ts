@@ -57,9 +57,7 @@ describe('SubmitSurveyUseCase', () => {
 
 		await useCase.execute(dtoNoFeedback, userId);
 
-		expect(mockRepository.create).toHaveBeenCalledWith(
-			expect.objectContaining({ feedback: null }),
-		);
+		expect(mockRepository.create).toHaveBeenCalledWith(expect.objectContaining({ feedback: null }));
 	});
 
 	it('should log successful submission', async () => {

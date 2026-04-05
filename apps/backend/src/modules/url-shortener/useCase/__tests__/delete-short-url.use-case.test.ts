@@ -90,6 +90,8 @@ describe('DeleteShortUrlUseCase', () => {
 		expect((updates as { deletedAt: Date }).deletedAt.getTime()).toBeGreaterThanOrEqual(
 			before.getTime(),
 		);
-		expect((updates as { deletedAt: Date }).deletedAt.getTime()).toBeLessThanOrEqual(after.getTime());
+		expect((updates as { deletedAt: Date }).deletedAt.getTime()).toBeLessThanOrEqual(
+			after.getTime(),
+		);
 	});
 });

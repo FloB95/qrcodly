@@ -122,7 +122,9 @@ describe('CreateCustomDomainUseCase', () => {
 	it('should throw if domain cannot be retrieved after creation', async () => {
 		mockRepository.findOneById.mockResolvedValue(undefined);
 
-		await expect(useCase.execute(mockDto, mockUser)).rejects.toThrow('Failed to create Custom Domain');
+		await expect(useCase.execute(mockDto, mockUser)).rejects.toThrow(
+			'Failed to create Custom Domain',
+		);
 	});
 
 	it('should enforce plan limits', async () => {

@@ -42,11 +42,7 @@ describe('SetDefaultCustomDomainUseCase', () => {
 		mockValidationService = mock<CustomDomainValidationService>();
 		mockLogger = mock<Logger>();
 
-		useCase = new SetDefaultCustomDomainUseCase(
-			mockRepository,
-			mockValidationService,
-			mockLogger,
-		);
+		useCase = new SetDefaultCustomDomainUseCase(mockRepository, mockValidationService, mockLogger);
 
 		mockValidationService.validateForUse.mockReturnValue(undefined);
 		mockRepository.setDefault.mockResolvedValue(undefined);
@@ -65,9 +61,9 @@ describe('SetDefaultCustomDomainUseCase', () => {
 	});
 
 	it('should throw BadRequestError when domain belongs to another user', async () => {
-		await expect(
-			useCase.execute(mockVerifiedDomain, 'other-user'),
-		).rejects.toThrow(BadRequestError);
+		await expect(useCase.execute(mockVerifiedDomain, 'other-user')).rejects.toThrow(
+			BadRequestError,
+		);
 	});
 
 	it('should validate that domain is fully verified before setting as default', async () => {

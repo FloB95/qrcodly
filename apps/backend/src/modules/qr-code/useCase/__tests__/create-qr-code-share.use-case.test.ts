@@ -73,9 +73,7 @@ describe('CreateQrCodeShareUseCase', () => {
 	it('should create share as active', async () => {
 		await useCase.execute(qrCodeId, userId);
 
-		expect(mockRepository.create).toHaveBeenCalledWith(
-			expect.objectContaining({ isActive: true }),
-		);
+		expect(mockRepository.create).toHaveBeenCalledWith(expect.objectContaining({ isActive: true }));
 	});
 
 	it('should set createdBy to userId', async () => {
@@ -104,9 +102,7 @@ describe('CreateQrCodeShareUseCase', () => {
 		const duplicateError = Object.assign(new Error('Duplicate'), { code: 'ER_DUP_ENTRY' });
 		mockRepository.create.mockRejectedValue(duplicateError);
 
-		await expect(useCase.execute(qrCodeId, userId)).rejects.toThrow(
-			QrCodeShareAlreadyExistsError,
-		);
+		await expect(useCase.execute(qrCodeId, userId)).rejects.toThrow(QrCodeShareAlreadyExistsError);
 	});
 
 	it('should rethrow non-duplicate errors', async () => {
