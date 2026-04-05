@@ -75,7 +75,7 @@ describe('UpdateQrCodeShareUseCase', () => {
 			sharedQrCode: {
 				shareId: mockShare.id,
 				qrCodeId: mockShare.qrCodeId,
-				updates: { showName: false },
+				updates: { showName: { oldValue: true, newValue: false } },
 			},
 		});
 	});

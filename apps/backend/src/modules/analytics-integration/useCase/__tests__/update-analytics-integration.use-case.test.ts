@@ -140,19 +140,13 @@ describe('UpdateAnalyticsIntegrationUseCase', () => {
 
 		const dto = { credentials: { measurementId: '' } };
 
-		await expect(
-			useCase.execute(mockIntegration, dto),
-		).rejects.toThrow(BadRequestError);
+		await expect(useCase.execute(mockIntegration, dto)).rejects.toThrow(BadRequestError);
 	});
 
-	it('should remove keys with empty string values from merged credentials', async () => {
+	it('should throw BadRequestError when clearing a required credential via empty string', async () => {
+		// apiSecret is required by GoogleAnalyticsCredentialsSchema, so clearing it should fail validation
 		const dto = { credentials: { apiSecret: '' } };
 
-		await useCase.execute(mockIntegration, dto);
-
-		// apiSecret should be removed (empty string = explicit clear), so merged only has measurementId
-		expect(mockEncryptionService.encrypt).toHaveBeenCalledWith(
-			expect.not.objectContaining({ apiSecret: '' }),
-		);
+		await expect(useCase.execute(mockIntegration, dto)).rejects.toThrow(BadRequestError);
 	});
 });
