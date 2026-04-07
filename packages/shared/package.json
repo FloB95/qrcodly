@@ -4,7 +4,8 @@
 	"types": "dist/index.d.ts",
 	"main": "dist/index.js",
 	"scripts": {
-		"build": "tsc"
+		"build": "pnpm run clean && tsc",
+		"clean": "rimraf dist tsconfig.tsbuildinfo"
 	},
 	"dependencies": {
 		"ical-generator": "^10.0.0",
@@ -16,6 +17,7 @@
 	},
 	"devDependencies": {
 		"@types/vcf": "^2.0.7",
+		"rimraf": "^6.1.2",
 		"tsc-alias": "^1.8.16",
 		"tsc-esm-fix": "^3.1.2",
 		"tsconfig-paths": "^4.2.0",
