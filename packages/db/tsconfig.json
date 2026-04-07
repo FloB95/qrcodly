@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"composite": true,
+		"target": "ES2020",
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"declaration": true,
+		"declarationMap": true,
+		"outDir": "dist",
+		"rootDir": "src",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"baseUrl": ".",
+		"paths": {
+			"@shared/schemas": ["./../shared/dist"],
+			"@shared/schemas/*": ["./../shared/dist/*"]
+		}
+	},
+	"include": ["src"],
+	"exclude": ["node_modules", "dist"],
+	"references": [{ "path": "../shared/tsconfig.json" }]
+}

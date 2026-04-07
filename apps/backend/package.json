@@ -82,6 +82,7 @@
 		"@opentelemetry/sdk-node": "^0.214.0",
 		"@opentelemetry/semantic-conventions": "^1.40.0",
 		"@sentry/node": "catalog:",
+		"@qrcodly/db": "workspace:*",
 		"@shared/schemas": "workspace:^",
 		"commander": "^13.1.0",
 		"csv-parse": "^6.1.0",

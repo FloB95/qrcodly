@@ -1,6 +1,9 @@
-import { mysqlTableCreator, type MySqlTableWithColumns } from 'drizzle-orm/mysql-core';
+import { type MySqlTableWithColumns } from 'drizzle-orm/mysql-core';
 import { type WhereConditions, type WhereField } from '../interface/repository.interface';
 import { and, eq, gt, gte, isNotNull, isNull, like, lt, lte, not, or, type SQL } from 'drizzle-orm';
+
+// Re-exported from @qrcodly/db for backwards compatibility with existing imports.
+export { createTable } from '@qrcodly/db';
 
 /**
  * Converts a where condition object to a Drizzle SQL object.
@@ -63,11 +66,3 @@ export function convertWhereConditionToDrizzle<T>(
 
 	return sql;
 }
-
-/**
- * Multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
-export const createTable = mysqlTableCreator((name) => `${name}`);

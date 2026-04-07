@@ -1,0 +1,22 @@
+{
+	"name": "@qrcodly/db",
+	"version": "1.0.0",
+	"description": "Shared Drizzle ORM schema for QRcodly",
+	"types": "dist/index.d.ts",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "tsc",
+		"clean": "rimraf dist tsconfig.tsbuildinfo"
+	},
+	"peerDependencies": {
+		"drizzle-orm": "^0.42.0"
+	},
+	"dependencies": {
+		"@shared/schemas": "workspace:*"
+	},
+	"devDependencies": {
+		"drizzle-orm": "^0.42.0",
+		"rimraf": "^6.1.2",
+		"typescript": "catalog:"
+	}
+}

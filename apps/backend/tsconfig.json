@@ -20,7 +20,9 @@
 		"paths": {
 			"@/*": ["./src/*"],
 			"@shared/schemas": ["./../../packages/shared/dist"],
-			"@shared/schemas/*": ["./../../packages/shared/dist/*"]
+			"@shared/schemas/*": ["./../../packages/shared/dist/*"],
+			"@qrcodly/db": ["./../../packages/db/dist"],
+			"@qrcodly/db/*": ["./../../packages/db/dist/*"]
 		}
 	},
 	"include": ["eslint.config.js", "./src/**/*.ts", "**/*.cjs", "**/*.mjs", "setup.test.ts"],
@@ -29,5 +31,8 @@
 	"ts-node": {
 		"require": ["tsconfig-paths/register"]
 	},
-	"references": [{ "path": "../../packages/shared/tsconfig.json" }]
+	"references": [
+		{ "path": "../../packages/shared/tsconfig.json" },
+		{ "path": "../../packages/db/tsconfig.json" }
+	]
 }
