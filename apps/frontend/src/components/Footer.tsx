@@ -150,7 +150,6 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 							<ul className="space-y-2.5">
 								<li>
 									<Link
-										locale="en"
 										href="/imprint"
 										title={t('legalNotice')}
 										aria-label={t('legalNotice')}
@@ -161,13 +160,32 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 								</li>
 								<li>
 									<Link
-										locale="en"
 										href="/privacy-policy"
 										title={t('privacyPolicy')}
 										aria-label={t('privacyPolicy')}
 										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 									>
 										{t('privacyPolicy')}
+									</Link>
+								</li>
+								<li>
+									<Link
+										href="/terms-of-service"
+										title={t('termsOfService')}
+										aria-label={t('termsOfService')}
+										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									>
+										{t('termsOfService')}
+									</Link>
+								</li>
+								<li>
+									<Link
+										href="/dpa"
+										title={t('dpa')}
+										aria-label={t('dpa')}
+										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									>
+										{t('dpa')}
 									</Link>
 								</li>
 							</ul>

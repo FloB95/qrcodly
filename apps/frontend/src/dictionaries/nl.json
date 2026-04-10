@@ -234,6 +234,9 @@
 		"qrCodesDesc": "Maak en pas dynamische QR-codes aan",
 		"analyticsDesc": "Meet prestaties over alle kanalen"
 	},
+	"legal": {
+		"printButton": "Save as PDF / Print"
+	},
 	"footer": {
 		"tagline": "Het open-source QR-codeplatform. Maak, beheer en volg QR-codes met gemak.",
 		"product": "Platform",
@@ -249,6 +252,8 @@
 		"legal": "Juridisch",
 		"legalNotice": "Juridische kennisgeving",
 		"privacyPolicy": "Privacybeleid",
+		"termsOfService": "Algemene voorwaarden",
+		"dpa": "Verwerkersovereenkomst",
 		"contact": "Contact",
 		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},

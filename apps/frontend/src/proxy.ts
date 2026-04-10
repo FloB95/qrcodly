@@ -14,11 +14,9 @@ const isProtectedRoute = createRouteMatcher([
 // Create the next-intl middleware
 const intlMiddleware = createMiddleware(routing);
 
-// Matches locale-prefixed paths to non-translated routes (docs, imprint, privacy-policy)
+// Matches locale-prefixed paths to non-translated routes (docs only)
 const localePrefix = SUPPORTED_LANGUAGES.filter((l) => l !== 'en').join('|');
-const localePrefixedNonTranslatedRoute = new RegExp(
-	`^/(${localePrefix})/(docs|imprint|privacy-policy)(/.*)?$`,
-);
+const localePrefixedNonTranslatedRoute = new RegExp(`^/(${localePrefix})/(docs)(/.*)?$`);
 
 // Short URL scan pattern — no auth needed
 const scanPattern = /^\/u\/[a-z0-9]{5}$/;
@@ -51,8 +49,6 @@ const clerkHandler = clerkMiddleware(async (auth, req, event) => {
 		!pathname.startsWith('/monitoring') &&
 		!pathname.startsWith('/docs') &&
 		!pathname.startsWith('/ingest') &&
-		!pathname.startsWith('/privacy-policy') &&
-		!pathname.startsWith('/imprint') &&
 		!pathname.startsWith('/qr/')
 	) {
 		const intlResponse = intlMiddleware(req);

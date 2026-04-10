@@ -234,6 +234,9 @@
 		"qrCodesDesc": "Twórz i dostosowuj dynamiczne kody QR",
 		"analyticsDesc": "Mierz wydajność we wszystkich kanałach"
 	},
+	"legal": {
+		"printButton": "Save as PDF / Print"
+	},
 	"footer": {
 		"tagline": "Platforma kodów QR open source. Twórz, zarządzaj i śledź kody QR z łatwością.",
 		"product": "Platforma",
@@ -249,6 +252,8 @@
 		"legal": "Prawne",
 		"legalNotice": "Nota prawna",
 		"privacyPolicy": "Polityka prywatności",
+		"termsOfService": "Regulamin",
+		"dpa": "Umowa powierzenia danych",
 		"contact": "Kontakt",
 		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
 	},

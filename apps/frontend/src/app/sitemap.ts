@@ -13,9 +13,11 @@ const PAGES = [
 	'faq',
 	'imprint',
 	'privacy-policy',
+	'terms-of-service',
+	'dpa',
 ];
 
-const NOT_TRANSLATED = ['docs', 'imprint', 'privacy-policy'];
+const NOT_TRANSLATED = ['docs'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	const baseUrl = env.NEXT_PUBLIC_FRONTEND_URL;

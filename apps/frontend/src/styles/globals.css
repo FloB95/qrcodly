@@ -243,6 +243,123 @@
 	animation: fade-in 0.25s ease-out;
 }
 
+/* Print styles for legal pages */
+@media print {
+	/* Page setup */
+	@page {
+		size: A4;
+		margin: 20mm 25mm 25mm 25mm;
+
+		@bottom-center {
+			content: 'QRcodly — qrcodly.de';
+			font-size: 8pt;
+			color: #999;
+		}
+
+		@bottom-right {
+			content: 'Seite ' counter(page) ' von ' counter(pages);
+			font-size: 8pt;
+			color: #999;
+		}
+	}
+
+	/* Hide web UI elements */
+	header,
+	footer,
+	nav {
+		display: none !important;
+	}
+
+	/* Reset backgrounds and layout */
+	html,
+	body,
+	main {
+		background: white !important;
+		color: black !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		font-size: 10.5pt !important;
+		line-height: 1.5 !important;
+	}
+
+	/* Typography */
+	.prose {
+		max-width: none !important;
+		font-size: 10.5pt !important;
+	}
+
+	.prose h1 {
+		font-size: 18pt !important;
+		margin-bottom: 4pt !important;
+		page-break-after: avoid;
+	}
+
+	.prose h2 {
+		font-size: 14pt !important;
+		margin-top: 18pt !important;
+		margin-bottom: 6pt !important;
+		page-break-after: avoid;
+	}
+
+	.prose h3 {
+		font-size: 12pt !important;
+		margin-top: 14pt !important;
+		page-break-after: avoid;
+	}
+
+	.prose h4 {
+		font-size: 11pt !important;
+		page-break-after: avoid;
+	}
+
+	.prose p,
+	.prose li {
+		font-size: 10.5pt !important;
+		line-height: 1.5 !important;
+		orphans: 3;
+		widows: 3;
+	}
+
+	/* Links: show as text, no decoration */
+	a[href] {
+		color: black !important;
+		text-decoration: none !important;
+	}
+
+	a[href]::after {
+		content: none !important;
+	}
+
+	/* Tables */
+	.prose table {
+		font-size: 9pt !important;
+		page-break-inside: avoid;
+	}
+
+	.prose th,
+	.prose td {
+		padding: 4pt 8pt !important;
+	}
+
+	/* Page breaks for Anlagen sections */
+	.prose h2[class*='border-t'] {
+		page-break-before: always;
+		border-top: none !important;
+		padding-top: 0 !important;
+	}
+
+	/* Avoid breaking inside list items and table rows */
+	li,
+	tr {
+		page-break-inside: avoid;
+	}
+
+	/* Muted text */
+	.text-muted-foreground {
+		color: #666 !important;
+	}
+}
+
 /* Sticky action column — keeps row actions visible on horizontal scroll */
 .sticky-action-cell {
 	background-color: var(--color-background);

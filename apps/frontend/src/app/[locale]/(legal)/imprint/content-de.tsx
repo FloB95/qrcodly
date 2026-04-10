@@ -1,15 +1,7 @@
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-	title: 'Imprint – Legal Notice | QRcodly',
-	description:
-		'Legal notice and imprint for QRcodly. Contact information and responsible party details for the QR code generator service.',
-};
-
-export default async function Page() {
+export default function ImprintContentDe() {
 	return (
 		<div className="prose prose-neutral">
-			<h1 className="text-3xl font-semibold mb-6">Imprint</h1>
+			<h1 className="text-3xl font-semibold mb-6">Impressum</h1>
 
 			<p className="text-base leading-relaxed">
 				Florian Breuer
@@ -18,27 +10,27 @@ export default async function Page() {
 				<br />
 				33378 Rheda-Wiedenbrück
 				<br />
-				Germany
+				Deutschland
 			</p>
 
-			<h2 className="text-2xl font-semibold mt-10 mb-4">Contact</h2>
+			<h2 className="text-2xl font-semibold mt-10 mb-4">Kontakt</h2>
 			<p className="text-base leading-relaxed">
-				Email:{' '}
+				E-Mail:{' '}
 				<a href="mailto:info@qrcodly.de" className="text-primary underline">
 					info@qrcodly.de
 				</a>
 			</p>
 
 			<h2 className="text-2xl font-semibold mt-10 mb-4">
-				Consumer Dispute Resolution / Universal Arbitration Body
+				Verbraucherstreitbeilegung / Universalschlichtungsstelle
 			</h2>
 			<p className="text-base leading-relaxed">
-				We are not willing or obligated to participate in dispute resolution proceedings before a
-				consumer arbitration board.
+				Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+				Verbraucherschlichtungsstelle teilzunehmen.
 			</p>
 
 			<p className="mt-10 text-sm text-muted-foreground">
-				Source:{' '}
+				Quelle:{' '}
 				<a
 					href="https://www.e-recht24.de"
 					target="_blank"
