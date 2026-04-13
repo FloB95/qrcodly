@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export default function PrivacyPolicyContentEn() {
 	return (
 		<div className="prose prose-neutral">
@@ -295,11 +293,7 @@ export default function PrivacyPolicyContentEn() {
 			<p className="text-base leading-relaxed">
 				Where you use the platform to process personal data of third parties (e.g. contact data in
 				vCard QR codes, scan data of end users), we act as a data processor within the meaning of
-				Art. 28 GDPR. The details are set out in our{' '}
-				<Link href="/dpa" className="text-primary underline">
-					Data Processing Agreement (DPA)
-				</Link>{' '}
-				.
+				Art. 28 GDPR. The details are set out in our Data Processing Agreement (DPA) .
 			</p>
 
 			{/* ========== 14. Your Rights ========== */}
@@ -382,11 +376,7 @@ export default function PrivacyPolicyContentEn() {
 				Some of the service providers we use are based in the USA (Clerk, Stripe, Cloudflare,
 				Sentry, Axiom, PostHog). Data transfers to the USA are carried out on the basis of EU
 				Standard Contractual Clauses (SCCs) pursuant to Art. 46(2)(c) GDPR. A complete overview of
-				the service providers we use can be found in our{' '}
-				<Link href="/dpa" className="text-primary underline">
-					DPA (Annex 2: Sub-processors)
-				</Link>
-				.
+				the service providers we use can be found in our DPA (Annex 2: Sub-processors) .
 			</p>
 
 			{/* ========== 17. Changes ========== */}

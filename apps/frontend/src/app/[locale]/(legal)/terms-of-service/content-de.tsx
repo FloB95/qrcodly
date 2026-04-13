@@ -320,11 +320,7 @@ export default function AgbContentDe() {
 					Soweit der Nutzer die Plattform nutzt, um personenbezogene Daten Dritter zu verarbeiten
 					(z.&thinsp;B. vCard-Kontaktdaten in QR-Codes, Scan-Daten von Endnutzern), handelt der
 					Anbieter als Auftragsverarbeiter im Sinne des Art. 28 DSGVO. Die Einzelheiten der
-					Auftragsverarbeitung sind in der{' '}
-					<Link href="/dpa" className="text-primary underline">
-						Auftragsverarbeitungsvereinbarung (AVV)
-					</Link>{' '}
-					geregelt.
+					Auftragsverarbeitung sind in der Auftragsverarbeitungsvereinbarung (AVV) geregelt.
 				</li>
 			</ol>
 

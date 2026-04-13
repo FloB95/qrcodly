@@ -310,11 +310,7 @@ export default function AgbContentEn() {
 					Insofar as the User uses the Platform to process personal data of third parties
 					(e.g.&thinsp;vCard contact data in QR codes, scan data of end users), the Provider acts as
 					a data processor within the meaning of Art. 28 GDPR. The details of data processing are
-					set out in the{' '}
-					<Link href="/dpa" className="text-primary underline">
-						Data Processing Agreement (DPA)
-					</Link>{' '}
-					.
+					set out in the Data Processing Agreement (DPA) .
 				</li>
 			</ol>
 

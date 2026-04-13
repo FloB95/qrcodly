@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export default function PrivacyPolicyContentDe() {
 	return (
 		<div className="prose prose-neutral">
@@ -308,10 +306,7 @@ export default function PrivacyPolicyContentDe() {
 				Soweit Sie die Plattform nutzen, um personenbezogene Daten Dritter zu verarbeiten
 				(z.&thinsp;B. Kontaktdaten in vCard-QR-Codes, Scan-Daten von Endnutzern), handeln wir als
 				Auftragsverarbeiter im Sinne des Art. 28 DSGVO. Die Einzelheiten sind in unserer{' '}
-				<Link href="/dpa" className="text-primary underline">
-					Auftragsverarbeitungsvereinbarung (AVV)
-				</Link>{' '}
-				geregelt.
+				Auftragsverarbeitungsvereinbarung (AVV) geregelt.
 			</p>
 
 			{/* ========== 14. Rechte ========== */}
@@ -395,11 +390,7 @@ export default function PrivacyPolicyContentDe() {
 				Cloudflare, Sentry, Axiom, PostHog). Die Daten&uuml;bermittlung in die USA erfolgt auf
 				Grundlage von EU-Standardvertragsklauseln (SCCs) gem&auml;&szlig; Art. 46 Abs. 2 lit. c
 				DSGVO. Eine vollst&auml;ndige &Uuml;bersicht der eingesetzten Dienstleister finden Sie in
-				unserer{' '}
-				<Link href="/dpa" className="text-primary underline">
-					AVV (Anlage 2: Unterauftragnehmer)
-				</Link>
-				.
+				unserer AVV (Anlage 2: Unterauftragnehmer) .
 			</p>
 
 			{/* ========== 17. &Auml;nderungen ========== */}

@@ -178,16 +178,6 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 										{t('termsOfService')}
 									</Link>
 								</li>
-								<li>
-									<Link
-										href="/dpa"
-										title={t('dpa')}
-										aria-label={t('dpa')}
-										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-									>
-										{t('dpa')}
-									</Link>
-								</li>
 							</ul>
 						</div>
 
