@@ -118,8 +118,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build shared package
-        run: pnpm --filter @shared/schemas build
+      - name: Build shared packages
+        run: pnpm run build:shared-packages
 
       - name: Start MinIO and create bucket
         run: |
