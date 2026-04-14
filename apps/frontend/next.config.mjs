@@ -82,7 +82,12 @@ const config = {
 			},
 			{
 				protocol: 'https',
-				hostname: 's3.fr-par.scw.cloud',
+				hostname: 'cdn.qrcodly.de',
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
+				hostname: 'cdn-stage.qrcodly.de',
 				pathname: '/**',
 			},
 		],

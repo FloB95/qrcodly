@@ -36,16 +36,12 @@ export class GetConfigTemplateUseCase implements IBaseUseCase {
 			return null;
 		}
 
-		// Optionally replace stored image paths with presigned URLs for client access.
 		if (convertImagePathToUrl) {
 			if (configTemplate.config.image) {
-				configTemplate.config.image = await this.imageService.getSignedUrl(
-					configTemplate.config.image,
-				);
+				configTemplate.config.image = this.imageService.getPublicUrl(configTemplate.config.image);
 			}
 			if (configTemplate.previewImage) {
-				configTemplate.previewImage =
-					(await this.imageService.getSignedUrl(configTemplate.previewImage)) ?? null;
+				configTemplate.previewImage = this.imageService.getPublicUrl(configTemplate.previewImage);
 			}
 		}
 

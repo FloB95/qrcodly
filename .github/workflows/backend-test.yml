@@ -63,6 +63,7 @@ jobs:
       S3_UPLOAD_KEY: 'minio'
       S3_UPLOAD_SECRET: 'testtest1'
       S3_BUCKET_NAME: 'qrcodly'
+      S3_PUBLIC_URL: 'http://127.0.0.1:9000/qrcodly'
 
       # App config
       BACKEND_URL: 'http://localhost:5001'
@@ -137,6 +138,7 @@ jobs:
           chmod +x /usr/local/bin/mc
           mc alias set ci http://127.0.0.1:9000 minio testtest1
           mc mb ci/qrcodly --ignore-existing
+          mc anonymous set download ci/qrcodly
 
       - name: Run Checks
         working-directory: apps/backend

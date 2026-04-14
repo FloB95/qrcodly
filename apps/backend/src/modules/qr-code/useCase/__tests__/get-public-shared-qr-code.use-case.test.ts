@@ -52,7 +52,7 @@ describe('GetPublicSharedQrCodeUseCase', () => {
 		useCase = new GetPublicSharedQrCodeUseCase(mockRepository, mockImageService, mockLogger);
 
 		mockRepository.findByShareToken.mockResolvedValue(mockShareWithQrCode);
-		mockImageService.getSignedUrl.mockResolvedValue('https://signed-url.example.com/image.png');
+		mockImageService.getPublicUrl.mockReturnValue('https://cdn.example.com/image.png');
 	});
 
 	afterEach(() => {
@@ -118,8 +118,8 @@ describe('GetPublicSharedQrCodeUseCase', () => {
 
 		const result = await useCase.execute('share-token-abc');
 
-		expect(mockImageService.getSignedUrl).toHaveBeenCalledWith('s3://bucket/preview.png');
-		expect(result.previewImage).toBe('https://signed-url.example.com/image.png');
+		expect(mockImageService.getPublicUrl).toHaveBeenCalledWith('s3://bucket/preview.png');
+		expect(result.previewImage).toBe('https://cdn.example.com/image.png');
 	});
 
 	it('should return null previewImage when no preview exists', async () => {

@@ -181,18 +181,12 @@ export class QrCodeController extends AbstractController {
 	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
 		const qrCode = await this.fetchOwnedQrCode(request.params.id, request.user.id);
 
-		await Promise.all([
-			(async () => {
-				if (qrCode.config.image) {
-					qrCode.config.image = await this.imageService.getSignedUrl(qrCode.config.image);
-				}
-			})(),
-			(async () => {
-				if (qrCode.previewImage) {
-					qrCode.previewImage = (await this.imageService.getSignedUrl(qrCode.previewImage)) ?? null;
-				}
-			})(),
-		]);
+		if (qrCode.config.image) {
+			qrCode.config.image = this.imageService.getPublicUrl(qrCode.config.image);
+		}
+		if (qrCode.previewImage) {
+			qrCode.previewImage = this.imageService.getPublicUrl(qrCode.previewImage);
+		}
 
 		return this.makeApiHttpResponse(200, QrCodeWithRelationsResponseDto.parse(qrCode));
 	}

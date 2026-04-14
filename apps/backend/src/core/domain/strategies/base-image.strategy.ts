@@ -62,6 +62,10 @@ export abstract class BaseImageStrategy {
 		}
 	}
 
+	getPublicUrl(imagePath: string): string {
+		return this.objectStorage.getPublicUrl(imagePath);
+	}
+
 	async getSignedUrl(imagePath: string): Promise<string | undefined> {
 		try {
 			return await this.objectStorage.getSignedUrl(imagePath, this.signedUrlExpirySeconds);

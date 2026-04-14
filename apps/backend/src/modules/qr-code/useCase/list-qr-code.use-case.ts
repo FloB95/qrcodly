@@ -44,17 +44,14 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 			tagIds,
 		});
 
-		// Convert image path to presigned URL
-		await Promise.all(
-			qrCodes.map(async (qrCode) => {
-				if (qrCode.config.image) {
-					qrCode.config.image = await this.imageService.getSignedUrl(qrCode.config.image);
-				}
-				if (qrCode.previewImage) {
-					qrCode.previewImage = (await this.imageService.getSignedUrl(qrCode.previewImage)) ?? null;
-				}
-			}),
-		);
+		for (const qrCode of qrCodes) {
+			if (qrCode.config.image) {
+				qrCode.config.image = this.imageService.getPublicUrl(qrCode.config.image);
+			}
+			if (qrCode.previewImage) {
+				qrCode.previewImage = this.imageService.getPublicUrl(qrCode.previewImage);
+			}
+		}
 
 		// Count the total number of QR codes
 		const total = await this.qrCodeRepository.countTotal(where, contentType, tagIds);
