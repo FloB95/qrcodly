@@ -33,20 +33,14 @@ export class ListConfigTemplatesUseCase implements IBaseUseCase {
 			where,
 		});
 
-		// Convert image path to presigned URL
-		await Promise.all(
-			configTemplates.map(async (configTemplate) => {
-				if (configTemplate.config.image) {
-					configTemplate.config.image = await this.imageService.getSignedUrl(
-						configTemplate.config.image,
-					);
-				}
-				if (configTemplate.previewImage) {
-					configTemplate.previewImage =
-						(await this.imageService.getSignedUrl(configTemplate.previewImage)) ?? null;
-				}
-			}),
-		);
+		for (const configTemplate of configTemplates) {
+			if (configTemplate.config.image) {
+				configTemplate.config.image = this.imageService.getPublicUrl(configTemplate.config.image);
+			}
+			if (configTemplate.previewImage) {
+				configTemplate.previewImage = this.imageService.getPublicUrl(configTemplate.previewImage);
+			}
+		}
 
 		// Count the total number of Config Templates
 		const total = await this.configTemplateRepository.countTotal(where);

@@ -41,9 +41,7 @@ describe('GetConfigTemplateUseCase', () => {
 		mockRepository.findOneById.mockImplementation(async () =>
 			JSON.parse(JSON.stringify(mockTemplate)),
 		);
-		mockImageService.getSignedUrl.mockImplementation(async (path) => {
-			if (!path) return undefined;
-			// Extract filename from s3:// path
+		mockImageService.getPublicUrl.mockImplementation((path) => {
 			const filename = path.replace('s3://bucket/', '');
 			return `https://cdn.example.com/${filename}`;
 		});
@@ -75,21 +73,21 @@ describe('GetConfigTemplateUseCase', () => {
 		it('should convert config image to signed URL when convertImagePathToUrl is true', async () => {
 			const result = await useCase.execute('template-123', true);
 
-			expect(mockImageService.getSignedUrl).toHaveBeenCalledWith('s3://bucket/config-image.png');
+			expect(mockImageService.getPublicUrl).toHaveBeenCalledWith('s3://bucket/config-image.png');
 			expect(result?.config.image).toContain('https://cdn.example.com/');
 		});
 
 		it('should convert preview image to signed URL when convertImagePathToUrl is true', async () => {
 			const result = await useCase.execute('template-123', true);
 
-			expect(mockImageService.getSignedUrl).toHaveBeenCalledWith('s3://bucket/preview.png');
+			expect(mockImageService.getPublicUrl).toHaveBeenCalledWith('s3://bucket/preview.png');
 			expect(result?.previewImage).toContain('https://cdn.example.com/');
 		});
 
 		it('should not convert images when convertImagePathToUrl is false', async () => {
 			const result = await useCase.execute('template-123', false);
 
-			expect(mockImageService.getSignedUrl).not.toHaveBeenCalled();
+			expect(mockImageService.getPublicUrl).not.toHaveBeenCalled();
 			expect(result?.config.image).toBe('s3://bucket/config-image.png');
 			expect(result?.previewImage).toBe('s3://bucket/preview.png');
 		});
@@ -97,7 +95,7 @@ describe('GetConfigTemplateUseCase', () => {
 		it('should not convert images when convertImagePathToUrl is not provided', async () => {
 			const result = await useCase.execute('template-123');
 
-			expect(mockImageService.getSignedUrl).not.toHaveBeenCalled();
+			expect(mockImageService.getPublicUrl).not.toHaveBeenCalled();
 			expect(result?.config.image).toBe('s3://bucket/config-image.png');
 		});
 
@@ -125,15 +123,6 @@ describe('GetConfigTemplateUseCase', () => {
 			};
 
 			mockRepository.findOneById.mockResolvedValue(templateWithoutPreview);
-
-			const result = await useCase.execute('template-123', true);
-
-			expect(result?.previewImage).toBeNull();
-		});
-
-		it('should return null preview when signed URL is null', async () => {
-			// @ts-ignore expecting this to test null behavior
-			mockImageService.getSignedUrl.mockResolvedValue(null);
 
 			const result = await useCase.execute('template-123', true);
 

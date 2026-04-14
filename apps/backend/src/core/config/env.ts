@@ -36,6 +36,7 @@ const server = z.object({
 	S3_UPLOAD_KEY: z.string(),
 	S3_UPLOAD_SECRET: z.string(),
 	S3_BUCKET_NAME: z.string(),
+	S3_PUBLIC_URL: z.url(),
 	SENTRY_DSN: z.url(),
 	SENTRY_ENVIRONMENT: z.enum(['development', 'production']).default('production'),
 	AXIOM_DATASET: z.string().optional(),

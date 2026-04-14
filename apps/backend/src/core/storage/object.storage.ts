@@ -165,6 +165,12 @@ export class ObjectStorage implements IFileStorage {
 		if (listedObjects.IsTruncated) await this.emptyS3Directory(dir);
 	}
 
+	getPublicUrl(key: string): string {
+		const k = this.prefix + key;
+		const base = env.S3_PUBLIC_URL.replace(/\/$/, '');
+		return `${base}/${k}`;
+	}
+
 	async getSignedUrl(
 		key: string,
 		expiresIn: number | undefined = DEFAULT_PUBLIC_LINK_LIFETIME,

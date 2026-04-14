@@ -41,6 +41,10 @@ export class ImageService {
 		return this.strategy.getSignedUrl(imagePath);
 	}
 
+	getPublicUrl(imagePath: string): string {
+		return this.strategy.getPublicUrl(imagePath);
+	}
+
 	constructFilePath(folder: string, userId: string | undefined, fileName: string): string {
 		return this.strategy.constructFilePath(folder, userId, fileName);
 	}

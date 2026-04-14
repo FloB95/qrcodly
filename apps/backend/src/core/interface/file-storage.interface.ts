@@ -29,4 +29,13 @@ export interface IFileStorage {
 	 * @returns A signed URL string.
 	 */
 	getSignedUrl(key: string, expiresIn?: number): Promise<string>;
+
+	/**
+	 * Build the public CDN URL for a key. Assumes the bucket is fronted by a
+	 * public custom domain (e.g. cdn.qrcodly.de) and the key filename carries
+	 * enough entropy to be unguessable.
+	 * @param key The file path or key.
+	 * @returns The public URL string.
+	 */
+	getPublicUrl(key: string): string;
 }

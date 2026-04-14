@@ -35,14 +35,13 @@ export class GetPublicSharedQrCodeUseCase implements IBaseUseCase {
 			throw new QrCodeShareNotFoundError();
 		}
 
-		// Convert S3 image paths to presigned URLs
 		if (qrCode.config.image) {
-			qrCode.config.image = await this.imageService.getSignedUrl(qrCode.config.image);
+			qrCode.config.image = this.imageService.getPublicUrl(qrCode.config.image);
 		}
 
 		let previewImage = qrCode.previewImage;
 		if (previewImage) {
-			previewImage = (await this.imageService.getSignedUrl(previewImage)) ?? null;
+			previewImage = this.imageService.getPublicUrl(previewImage);
 		}
 
 		this.logger.debug('qrCodeShare.publicAccess', {

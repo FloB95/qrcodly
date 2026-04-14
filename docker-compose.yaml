@@ -85,6 +85,20 @@ services:
       - 9001:9001
     command: server /data --console-address ":9001"
 
+  minio-setup:
+    container_name: qrcodly-minio-setup
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    restart: 'no'
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc alias set local http://minio:9000 minio testtest) do sleep 1; done;
+      /usr/bin/mc mb --ignore-existing local/qrcodly;
+      /usr/bin/mc anonymous set download local/qrcodly;
+      exit 0;
+      "
+
 volumes:
   database:
   minio-data:

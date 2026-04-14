@@ -55,9 +55,7 @@ describe('ListConfigTemplatesUseCase', () => {
 			JSON.parse(JSON.stringify(mockTemplates)),
 		);
 		mockRepository.countTotal.mockResolvedValue(2);
-		mockImageService.getSignedUrl.mockImplementation(async (path) => {
-			if (!path) return undefined;
-			// Extract filename from s3:// path
+		mockImageService.getPublicUrl.mockImplementation((path) => {
 			const filename = path.replace('s3://bucket/', '');
 			return `https://cdn.example.com/${filename}`;
 		});
@@ -92,7 +90,7 @@ describe('ListConfigTemplatesUseCase', () => {
 				page: 1,
 			});
 
-			expect(mockImageService.getSignedUrl).toHaveBeenCalledWith('s3://bucket/image1.png');
+			expect(mockImageService.getPublicUrl).toHaveBeenCalledWith('s3://bucket/image1.png');
 		});
 
 		it('should convert preview image paths to signed URLs', async () => {
@@ -101,7 +99,7 @@ describe('ListConfigTemplatesUseCase', () => {
 				page: 1,
 			});
 
-			expect(mockImageService.getSignedUrl).toHaveBeenCalledWith('s3://bucket/preview1.png');
+			expect(mockImageService.getPublicUrl).toHaveBeenCalledWith('s3://bucket/preview1.png');
 		});
 
 		it('should not attempt to convert null preview images', async () => {
@@ -120,7 +118,7 @@ describe('ListConfigTemplatesUseCase', () => {
 			});
 
 			// Should only be called for config.image, not previewImage
-			expect(mockImageService.getSignedUrl).not.toHaveBeenCalledWith(null);
+			expect(mockImageService.getPublicUrl).not.toHaveBeenCalledWith(null);
 		});
 
 		it('should count total config templates', async () => {
@@ -189,7 +187,7 @@ describe('ListConfigTemplatesUseCase', () => {
 			});
 
 			// All images should be processed
-			expect(mockImageService.getSignedUrl).toHaveBeenCalledTimes(20); // 10 config images + 10 preview images
+			expect(mockImageService.getPublicUrl).toHaveBeenCalledTimes(20); // 10 config images + 10 preview images
 		});
 
 		it('should convert images to signed URLs in results', async () => {
@@ -222,19 +220,7 @@ describe('ListConfigTemplatesUseCase', () => {
 			});
 
 			// Should complete without errors
-			expect(mockImageService.getSignedUrl).not.toHaveBeenCalledWith(null);
-		});
-
-		it('should return null preview image when signed URL is null', async () => {
-			// @ts-ignore expecting this to test null behavior
-			mockImageService.getSignedUrl.mockResolvedValue(null);
-
-			const result = await useCase.execute({
-				limit: 10,
-				page: 1,
-			});
-
-			expect(result.configTemplates[0].previewImage).toBeNull();
+			expect(mockImageService.getPublicUrl).not.toHaveBeenCalledWith(null);
 		});
 
 		it('should filter by isPredefined', async () => {
