@@ -172,3 +172,37 @@ Backend tests use Jest with:
 - **Formatting**: Prettier with tabs, semicolons, 100 char width
 - **Git hooks**: lefthook runs Prettier on staged files at pre-commit
 - **Locale translations**: When adding/changing user-facing strings, update all 9 locale dictionaries
+
+## Git Conventions
+
+### Commit messages — Conventional Commits
+
+Format: `<type>(<optional scope>): <short imperative subject>`
+
+- **Types**: `feat`, `fix`, `chore`, `refactor`, `style`, `docs`, `test`, `perf`, `build`, `ci`
+- **Scope** (optional, lowercase): area of the codebase — e.g. `ui`, `db`, `backend`, `frontend`, `billing`, `qr-code`, `mcp-server`, `build`
+- **Subject**: imperative mood ("add", not "added"), lowercase first letter, no trailing period, ≤ 72 chars
+- **Body** (optional, blank line after subject, wrap ~72 chars): explain the _why_, not the _what_ — the diff already shows what changed
+- **Breaking changes**: add `!` after type/scope (`feat(api)!: drop v1 endpoints`) or a `BREAKING CHANGE: <desc>` footer
+
+Good examples:
+
+- `feat(billing): add Stripe checkout session endpoint`
+- `fix(ui): prevent Select dropdown clipping inside modal`
+- `chore(deps): bump drizzle-orm to 0.36`
+- `refactor(db): extract Drizzle tables to @qrcodly/db package`
+- `test(qr-code): cover vCard note field serialization`
+
+Avoid: vague subjects (`updated stuff`), past tense, capitalized subjects, trailing periods, missing type.
+
+### Branch names
+
+Format: `<type>/<short-kebab-description>`
+
+- Types: same set as commits, plus `hotfix/` for urgent prod fixes
+- Description: kebab-case, ≤ ~50 chars, descriptive but compact
+- Optional ticket suffix: `feat/stripe-checkout-#412`
+
+Good examples: `fix/select-zindex-in-modals`, `feat/mcp-server`, `refactor/db-package-extract`
+
+Avoid: no-type branches (`my-changes`), username-only branches (`flo-fix`), dates without context.
