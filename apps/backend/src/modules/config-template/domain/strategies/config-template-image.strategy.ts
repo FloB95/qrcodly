@@ -50,7 +50,7 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 		const { id, createdBy, config } = ConfigTemplate;
 
 		try {
-			const fileName = `${id}.svg`;
+			const fileName = `${id}-${Date.now()}.svg`;
 			const filePath = this.constructFilePath(
 				QR_CODE_TEMPLATE_PREVIEW_IMAGE_FOLDER,
 				createdBy ?? undefined,

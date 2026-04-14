@@ -57,7 +57,7 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 		}
 
 		try {
-			const fileName = `${id}.svg`;
+			const fileName = `${id}-${Date.now()}.svg`;
 			const filePath = this.constructFilePath(
 				QR_CODE_PREVIEW_IMAGE_FOLDER,
 				createdBy ?? undefined,
