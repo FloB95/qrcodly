@@ -21,7 +21,7 @@ declare module 'react-simple-maps' {
 
 	export const ComposableMap: ComponentType<{
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		projection?: string | any;
+		projection?: string | ((...args: any[]) => unknown);
 		projectionConfig?: ProjectionConfig;
 		width?: number;
 		height?: number;
