@@ -15,7 +15,7 @@ import { InputGroup, InputGroupInput, InputGroupAddon } from '@/components/ui/in
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { useEffect, useState } from 'react';
 import { LocationInputSchema, objDiff, type TLocationInput } from '@shared/schemas/src';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { StandaloneSearchBox, useJsApiLoader, type Libraries } from '@react-google-maps/api';
 import { Loader2 } from 'lucide-react';
@@ -31,7 +31,6 @@ const GOOGLE_MAPS_LIBRARIES: Libraries = ['places'];
 
 const LocationSectionBase = ({ onChange, value }: LocationSectionProps) => {
 	const t = useTranslations('generator.contentSwitch.location');
-	const locale = useLocale();
 
 	const form = useForm<TLocationInput>({
 		resolver: zodResolver(LocationInputSchema),
@@ -68,7 +67,6 @@ const LocationSectionBase = ({ onChange, value }: LocationSectionProps) => {
 		id: 'google-maps-script',
 		googleMapsApiKey: env.NEXT_PUBLIC_GOOGLE_API_KEY,
 		libraries: GOOGLE_MAPS_LIBRARIES,
-		language: locale,
 	});
 
 	const handlePlacesChanged = () => {
