@@ -6,7 +6,9 @@
 	"scripts": {
 		"dev": "vite build --watch",
 		"build": "tsc --noEmit && vite build",
-		"preview": "vite preview --port 5174"
+		"preview": "vite preview --port 5174",
+		"test": "vitest run",
+		"test:watch": "vitest"
 	},
 	"dependencies": {
 		"@clerk/chrome-extension": "^1.3.14",
@@ -49,9 +51,11 @@
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"@vitejs/plugin-react": "^5.1.2",
+		"jsdom": "^26.1.0",
 		"tailwindcss": "catalog:",
 		"tw-animate-css": "^1.3.4",
 		"typescript": "catalog:",
-		"vite": "^5.0.0"
+		"vite": "^5.0.0",
+		"vitest": "^2.1.0"
 	}
 }

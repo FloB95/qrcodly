@@ -7,7 +7,7 @@
 		<style>
 			body {
 				margin: 0;
-				background: #fafafa;
+				background: #ffffff;
 				font-family:
 					-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 			}
@@ -15,130 +15,45 @@
 				width: 470px;
 				height: 600px;
 				display: flex;
-				flex-direction: column;
 				align-items: center;
 				justify-content: center;
-				gap: 32px;
-				background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+				background: #ffffff;
 			}
 			#splash.hidden {
 				opacity: 0;
 				transition: opacity 0.3s ease-out;
 				pointer-events: none;
 			}
-			/* QR code container with subtle shadow */
-			#splash .qr-wrap {
-				padding: 24px;
-				background: #fff;
-				border-radius: 20px;
-				box-shadow:
-					0 4px 24px rgba(0, 0, 0, 0.06),
-					0 1px 4px rgba(0, 0, 0, 0.04);
+			#splash .loader-card {
+				padding: 12px;
+				border-radius: 14px;
+				background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+				box-shadow: 0 10px 30px -12px rgba(15, 23, 42, 0.45);
+				animation: splash-fade-in 0.25s ease-out;
 			}
-			#splash .qr-grid {
-				display: grid;
-				grid-template-columns: repeat(7, 1fr);
-				gap: 4px;
-				width: 154px;
-				height: 154px;
-				position: relative;
+			#splash svg {
+				display: block;
+				width: 44px;
+				height: 44px;
 			}
-			#splash .qr-cell {
-				border-radius: 3px;
-				animation: qr-wave 2.4s ease-in-out infinite;
+			#splash .pulse {
+				animation: splash-qr-dot-pulse 3s ease-in-out infinite;
 			}
-			#splash .qr-cell.on {
-				background: #0f172a;
-			}
-			#splash .qr-cell.off {
-				background: #e2e8f0;
-			}
-			#splash .scan-line {
-				position: absolute;
-				left: -4px;
-				right: -4px;
-				height: 3px;
-				border-radius: 2px;
-				background: linear-gradient(
-					90deg,
-					transparent 0%,
-					#3b82f6 30%,
-					#6366f1 50%,
-					#3b82f6 70%,
-					transparent 100%
-				);
-				opacity: 0.8;
-				animation: qr-scan 2.2s ease-in-out infinite;
-			}
-			/* Brand section */
-			#splash .brand {
-				display: flex;
-				align-items: center;
-				gap: 10px;
-				color: #94a3b8;
-				font-size: 14px;
-				font-weight: 500;
-				letter-spacing: 0.02em;
-			}
-			#splash .brand img {
-				width: 24px;
-				height: 24px;
-			}
-			/* Shimmer dots */
-			#splash .dots {
-				display: flex;
-				gap: 6px;
-			}
-			#splash .dot {
-				width: 6px;
-				height: 6px;
-				border-radius: 50%;
-				background: #cbd5e1;
-				animation: dot-pulse 1.4s ease-in-out infinite;
-			}
-			#splash .dot:nth-child(2) {
-				animation-delay: 0.2s;
-			}
-			#splash .dot:nth-child(3) {
-				animation-delay: 0.4s;
-			}
-			@keyframes qr-wave {
+			@keyframes splash-qr-dot-pulse {
 				0%,
 				100% {
-					opacity: 0.35;
-					transform: scale(0.92);
+					opacity: 0.12;
 				}
 				50% {
 					opacity: 1;
-					transform: scale(1);
 				}
 			}
-			@keyframes qr-scan {
-				0%,
-				8% {
-					top: -2px;
+			@keyframes splash-fade-in {
+				from {
 					opacity: 0;
+					transform: scale(0.9);
 				}
-				15% {
-					opacity: 0.8;
-				}
-				50% {
-					top: calc(100% + 2px);
-					opacity: 0.8;
-				}
-				58%,
-				100% {
-					top: calc(100% + 2px);
-					opacity: 0;
-				}
-			}
-			@keyframes dot-pulse {
-				0%,
-				100% {
-					opacity: 0.3;
-					transform: scale(0.8);
-				}
-				50% {
+				to {
 					opacity: 1;
 					transform: scale(1);
 				}
@@ -153,21 +68,26 @@
 	</head>
 	<body>
 		<div id="splash">
-			<div class="qr-wrap">
-				<div class="qr-grid" id="qr-grid"></div>
-			</div>
-			<div class="brand">
-				<img src="./icon-48.png" alt="" />
-				<span>QRcodly</span>
-			</div>
-			<div class="dots">
-				<div class="dot"></div>
-				<div class="dot"></div>
-				<div class="dot"></div>
+			<div class="loader-card">
+				<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+					<rect x="1" y="1" width="12" height="12" rx="2.5" stroke="white" stroke-width="2" opacity="0.9" />
+					<rect x="4.5" y="4.5" width="5" height="5" rx="1.2" fill="white" opacity="0.9" />
+					<rect x="19" y="1" width="12" height="12" rx="2.5" stroke="white" stroke-width="2" opacity="0.9" />
+					<rect x="22.5" y="4.5" width="5" height="5" rx="1.2" fill="white" opacity="0.9" />
+					<rect x="1" y="19" width="12" height="12" rx="2.5" stroke="white" stroke-width="2" opacity="0.9" />
+					<rect x="4.5" y="22.5" width="5" height="5" rx="1.2" fill="white" opacity="0.9" />
+					<rect class="pulse" x="15" y="15" width="4" height="4" rx="1" fill="white" style="animation-delay: 0s" />
+					<rect class="pulse" x="21" y="15" width="4" height="4" rx="1" fill="white" style="animation-delay: 0.2s" />
+					<rect class="pulse" x="27" y="15" width="4" height="4" rx="1" fill="white" style="animation-delay: 0.4s" />
+					<rect class="pulse" x="15" y="21" width="4" height="4" rx="1" fill="white" style="animation-delay: 0.6s" />
+					<rect class="pulse" x="21" y="21" width="4" height="4" rx="1" fill="white" style="animation-delay: 0.8s" />
+					<rect class="pulse" x="15" y="27" width="4" height="4" rx="1" fill="white" style="animation-delay: 1.0s" />
+					<rect class="pulse" x="27" y="21" width="4" height="4" rx="1" fill="white" style="animation-delay: 1.2s" />
+					<rect class="pulse" x="27" y="27" width="4" height="4" rx="1" fill="white" style="animation-delay: 1.4s" />
+				</svg>
 			</div>
 		</div>
 		<div id="root"></div>
-		<script src="./splash.js"></script>
 		<script type="module" src="/src/main.tsx"></script>
 	</body>
 </html>

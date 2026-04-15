@@ -4,6 +4,8 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from 'use-intl';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/toaster';
+import { Button } from '@/components/ui/button';
+import { QrcodlyLogo } from '@/components/QrcodlyLogo';
 import { getQueryClient } from '@ext/lib/queryClient';
 import { loadMessages, getPreferredLocale } from '@ext/lib/i18n';
 import type { SupportedLanguages } from '@ext/shims/i18n-routing';
@@ -28,18 +30,15 @@ const localeMap: Record<string, typeof enUS> = {
 
 function SignInPrompt() {
 	return (
-		<div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
-			<img src="./icon-48.png" alt="QRcodly" className="h-12 w-12" />
-			<h2 className="text-lg font-semibold">Sign in to QRcodly</h2>
-			<p className="text-sm text-muted-foreground">
-				Sign in at qrcodly.de first, then reopen this popup.
-			</p>
-			<button
-				onClick={() => chrome.tabs.create({ url: FRONTEND_URL })}
-				className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-			>
-				Open qrcodly.de
-			</button>
+		<div className="flex min-h-[400px] flex-col items-center justify-center gap-5 p-8 text-center">
+			<QrcodlyLogo size="lg" showText={false} />
+			<div className="space-y-1.5">
+				<h2 className="text-lg font-semibold tracking-tight">Sign in to QRcodly</h2>
+				<p className="text-sm text-muted-foreground">
+					Sign in at qrcodly.de first, then reopen this popup.
+				</p>
+			</div>
+			<Button onClick={() => chrome.tabs.create({ url: FRONTEND_URL })}>Open qrcodly.de</Button>
 		</div>
 	);
 }
@@ -64,11 +63,8 @@ function ProfileAvatar() {
 function ExtensionLayout() {
 	return (
 		<div className="flex flex-col">
-			<header className="flex items-center justify-between border-b px-4 py-2">
-				<div className="flex items-center gap-2">
-					<img src="./icon-48.png" alt="QRcodly" className="h-6 w-6" />
-					<span className="text-sm font-semibold">QRcodly</span>
-				</div>
+			<header className="flex items-center justify-between border-b bg-white/90 px-4 py-2 backdrop-blur">
+				<QrcodlyLogo size="sm" />
 				<ProfileAvatar />
 			</header>
 			<div className="overflow-y-auto p-4" style={{ maxHeight: 'calc(600px - 49px)' }}>
