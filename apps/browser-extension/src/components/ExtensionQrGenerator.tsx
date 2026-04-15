@@ -3,6 +3,7 @@ import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfig
 import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import type { QrCodeGeneratorState } from '@/store/useQrCodeStore';
 import { QrCodeDefaults } from '@shared/schemas';
+import { TableLoader } from '@/components/ui/table-loader';
 
 export function ExtensionQrGenerator() {
 	const [initState, setInitState] = useState<QrCodeGeneratorState | null>(null);
@@ -31,8 +32,8 @@ export function ExtensionQrGenerator() {
 
 	if (!initState) {
 		return (
-			<div className="flex items-center justify-center py-12">
-				<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+			<div className="relative min-h-[400px]">
+				<TableLoader />
 			</div>
 		);
 	}
