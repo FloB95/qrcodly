@@ -1249,9 +1249,8 @@
 			"accountDeleteError": "Échec de la suppression du compte. Veuillez réessayer."
 		},
 		"integrations": {
-			"title": "Intégrations Analytics",
-			"description": "Transmettez les données de scan à vos propres outils d'analyse. L'analyse intégrée de QRcodly reste toujours active et inchangée. Seules des IPs anonymisées et des données non identifiantes sont partagées — jamais d'agents utilisateur ni d'informations personnelles.",
-			"docsLink": "Pour plus d'informations, consultez notre <link>documentation</link>.",
+			"title": "Intégrations",
+			"description": "Étendez QRcodly avec des outils tiers. Connectez des fournisseurs d'analytics, installez des extensions de navigateur et bien plus encore.",
 			"configure": "Configurer",
 			"configureTitle": "Configurer",
 			"editTitle": "Modifier",
@@ -1311,7 +1310,33 @@
 			"openMenu": "Ouvrir le menu",
 			"integrationDisabledTitle": "Intégration analytique désactivée",
 			"integrationDisabledDescription": "Votre intégration analytique a été désactivée car votre plan Pro a expiré. Réabonnez-vous pour la réactiver.",
-			"moreIntegrationsTeaser": "D'autres intégrations avec des fournisseurs d'analytique supplémentaires arrivent bientôt. <contact>Suggérer un fournisseur</contact>"
+			"catalog": {
+				"tagAll": "Toutes",
+				"tag": {
+					"analytics": "Analytique",
+					"browser": "Navigateur",
+					"ai": "IA"
+				},
+				"installCta": "Installer",
+				"comingSoonCta": "Bientôt disponible",
+				"googleAnalytics": {
+					"name": "Google Analytics 4",
+					"description": "Envoyez les données de scan des QR codes directement à Google Analytics."
+				},
+				"matomo": {
+					"name": "Matomo",
+					"description": "Transférez les événements de scan vers votre instance Matomo auto-hébergée."
+				},
+				"browserExtensionChrome": {
+					"name": "Extension Chrome",
+					"description": "Générez et gérez des QR codes directement depuis votre navigateur en un clic."
+				},
+				"chatgpt": {
+					"name": "ChatGPT",
+					"description": "Générez des QR codes à partir de prompts de chat. Bientôt disponible."
+				}
+			},
+			"moreIntegrationsTeaser": "D'autres intégrations arrivent. <contact>Proposer une intégration</contact>"
 		}
 	},
 	"plans": {

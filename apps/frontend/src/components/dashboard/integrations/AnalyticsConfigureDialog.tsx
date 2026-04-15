@@ -25,19 +25,19 @@ import type { ApiError } from '@/lib/api/ApiError';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
 
-interface ConfigureIntegrationDialogProps {
+interface AnalyticsConfigureDialogProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	providerType: TProviderType;
 	existing?: TAnalyticsIntegrationResponseDto;
 }
 
-export function ConfigureIntegrationDialog({
+export function AnalyticsConfigureDialog({
 	open,
 	onOpenChange,
 	providerType,
 	existing,
-}: ConfigureIntegrationDialogProps) {
+}: AnalyticsConfigureDialogProps) {
 	const t = useTranslations('settings.integrations');
 	const { toast } = useToast();
 	const createMutation = useCreateAnalyticsIntegrationMutation();

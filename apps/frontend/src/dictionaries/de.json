@@ -1245,9 +1245,8 @@
 			"accountDeleteError": "Konto konnte nicht gelöscht werden. Bitte versuche es erneut."
 		},
 		"integrations": {
-			"title": "Analytics-Integrationen",
-			"description": "Leite Scandaten an deine eigenen Analysetools weiter. QRcodlys eingebaute Analyse bleibt immer aktiv und unberührt. Nur anonymisierte IPs und nicht-identifizierende Daten werden geteilt — niemals User-Agents oder persönliche Informationen.",
-			"docsLink": "Weitere Informationen findest du in unserer <link>Dokumentation</link>.",
+			"title": "Integrationen",
+			"description": "Erweitere QRcodly mit Tools von Drittanbietern. Verbinde Analytics-Provider, installiere Browser-Erweiterungen und mehr.",
 			"configure": "Konfigurieren",
 			"configureTitle": "Konfigurieren",
 			"editTitle": "Bearbeiten",
@@ -1307,7 +1306,33 @@
 			"openMenu": "Menü öffnen",
 			"integrationDisabledTitle": "Analytics-Integration deaktiviert",
 			"integrationDisabledDescription": "Deine Analytics-Integration wurde deaktiviert, da dein Pro-Plan abgelaufen ist. Abonniere erneut, um sie wieder zu aktivieren.",
-			"moreIntegrationsTeaser": "Weitere Integrationen mit zusätzlichen Analytics-Anbietern sind in Arbeit. <contact>Anbieter vorschlagen</contact>"
+			"catalog": {
+				"tagAll": "Alle",
+				"tag": {
+					"analytics": "Analytics",
+					"browser": "Browser",
+					"ai": "KI"
+				},
+				"installCta": "Installieren",
+				"comingSoonCta": "Bald verfügbar",
+				"googleAnalytics": {
+					"name": "Google Analytics 4",
+					"description": "Sende QR-Code-Scandaten direkt an Google Analytics."
+				},
+				"matomo": {
+					"name": "Matomo",
+					"description": "Leite Scan-Events an deine selbst gehostete Matomo-Instanz weiter."
+				},
+				"browserExtensionChrome": {
+					"name": "Chrome-Erweiterung",
+					"description": "Generiere und verwalte QR-Codes direkt aus deinem Browser mit einem Klick."
+				},
+				"chatgpt": {
+					"name": "ChatGPT",
+					"description": "QR-Codes aus Chat-Prompts generieren. Bald verfügbar."
+				}
+			},
+			"moreIntegrationsTeaser": "Weitere Integrationen sind in Arbeit. <contact>Eine Integration vorschlagen</contact>"
 		}
 	},
 	"plans": {

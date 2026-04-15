@@ -1245,9 +1245,8 @@
 			"accountDeleteError": "Impossibile eliminare l'account. Riprova."
 		},
 		"integrations": {
-			"title": "Integrazioni Analytics",
-			"description": "Inoltra i dati di scansione ai tuoi strumenti di analisi. L'analisi integrata di QRcodly rimane sempre attiva e invariata. Vengono condivisi solo IP anonimizzati e dati non identificativi — mai user agent o informazioni personali.",
-			"docsLink": "Per maggiori informazioni, consulta la nostra <link>documentazione</link>.",
+			"title": "Integrazioni",
+			"description": "Estendi QRcodly con strumenti di terze parti. Collega provider di analytics, installa estensioni del browser e altro ancora.",
 			"configure": "Configura",
 			"configureTitle": "Configura",
 			"editTitle": "Modifica",
@@ -1307,7 +1306,33 @@
 			"openMenu": "Apri menu",
 			"integrationDisabledTitle": "Integrazione analitica disattivata",
 			"integrationDisabledDescription": "La tua integrazione analitica è stata disattivata perché il tuo piano Pro è scaduto. Riabbonati per riattivarla.",
-			"moreIntegrationsTeaser": "Altre integrazioni con ulteriori fornitori di analisi sono in arrivo. <contact>Suggerisci un fornitore</contact>"
+			"catalog": {
+				"tagAll": "Tutte",
+				"tag": {
+					"analytics": "Analytics",
+					"browser": "Browser",
+					"ai": "IA"
+				},
+				"installCta": "Installa",
+				"comingSoonCta": "In arrivo",
+				"googleAnalytics": {
+					"name": "Google Analytics 4",
+					"description": "Invia i dati delle scansioni dei QR code direttamente a Google Analytics."
+				},
+				"matomo": {
+					"name": "Matomo",
+					"description": "Inoltra gli eventi di scansione alla tua istanza Matomo self-hosted."
+				},
+				"browserExtensionChrome": {
+					"name": "Estensione Chrome",
+					"description": "Genera e gestisci QR code direttamente dal tuo browser con un clic."
+				},
+				"chatgpt": {
+					"name": "ChatGPT",
+					"description": "Genera QR code da prompt di chat. In arrivo."
+				}
+			},
+			"moreIntegrationsTeaser": "Altre integrazioni in arrivo. <contact>Suggerisci un'integrazione</contact>"
 		}
 	},
 	"plans": {

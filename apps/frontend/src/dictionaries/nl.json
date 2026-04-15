@@ -1245,9 +1245,8 @@
 			"accountDeleteError": "Verwijderen van account mislukt. Probeer opnieuw."
 		},
 		"integrations": {
-			"title": "Analytics-integraties",
-			"description": "Stuur scangegevens door naar uw eigen analysetools. De ingebouwde analyse van QRcodly blijft altijd actief en onaangetast. Alleen geanonimiseerde IP's en niet-identificerende gegevens worden gedeeld — nooit user agents of persoonlijke informatie.",
-			"docsLink": "Zie onze <link>documentatie</link> voor meer informatie.",
+			"title": "Integraties",
+			"description": "Breid QRcodly uit met tools van derden. Verbind analytics-providers, installeer browser-extensies en meer.",
 			"configure": "Configureren",
 			"configureTitle": "Configureren",
 			"editTitle": "Bewerken",
@@ -1307,7 +1306,33 @@
 			"openMenu": "Menu openen",
 			"integrationDisabledTitle": "Analytics-integratie uitgeschakeld",
 			"integrationDisabledDescription": "Uw analytics-integratie is uitgeschakeld omdat uw Pro-plan is verlopen. Abonneer u opnieuw om deze weer in te schakelen.",
-			"moreIntegrationsTeaser": "Meer integraties met extra analytics-aanbieders zijn onderweg. <contact>Aanbieder voorstellen</contact>"
+			"catalog": {
+				"tagAll": "Alle",
+				"tag": {
+					"analytics": "Analytics",
+					"browser": "Browser",
+					"ai": "AI"
+				},
+				"installCta": "Installeren",
+				"comingSoonCta": "Binnenkort beschikbaar",
+				"googleAnalytics": {
+					"name": "Google Analytics 4",
+					"description": "Stuur QR-code-scangegevens rechtstreeks naar Google Analytics."
+				},
+				"matomo": {
+					"name": "Matomo",
+					"description": "Stuur scan-events door naar je zelfgehoste Matomo-installatie."
+				},
+				"browserExtensionChrome": {
+					"name": "Chrome-extensie",
+					"description": "Genereer en beheer QR-codes direct vanuit je browser met één klik."
+				},
+				"chatgpt": {
+					"name": "ChatGPT",
+					"description": "Genereer QR-codes vanuit chat-prompts. Binnenkort beschikbaar."
+				}
+			},
+			"moreIntegrationsTeaser": "Meer integraties zijn onderweg. <contact>Stel een integratie voor</contact>"
 		}
 	},
 	"plans": {
