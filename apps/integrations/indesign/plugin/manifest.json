@@ -6,7 +6,7 @@
 	"manifestVersion": 5,
 	"host": {
 		"app": "ID",
-		"minVersion": "18.0"
+		"minVersion": "18.5.0"
 	},
 	"entrypoints": [
 		{
