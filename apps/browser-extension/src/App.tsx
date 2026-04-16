@@ -112,7 +112,7 @@ export default function App({ onReady }: AppProps) {
 	return (
 		<ClerkProvider
 			publishableKey={PUBLISHABLE_KEY}
-			syncSessionWithTab
+			syncHost="https://www.qrcodly.de"
 			afterSignOutUrl="/"
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			localization={clerkLocale as any}

@@ -27,15 +27,21 @@ import {
 	useDeleteAnalyticsIntegrationMutation,
 	useTestAnalyticsIntegrationMutation,
 } from '@/lib/api/analytics-integration';
-import { ConfigureIntegrationDialog } from './ConfigureIntegrationDialog';
-import { ProviderLogo } from './ProviderLogo';
+import { AnalyticsConfigureDialog } from './AnalyticsConfigureDialog';
+import { IntegrationLogo } from './IntegrationLogo';
 import type { TAnalyticsIntegrationResponseDto, TProviderType } from '@shared/schemas';
+
+const INTEGRATION_ID_BY_PROVIDER: Record<TProviderType, string> = {
+	google_analytics: 'google-analytics',
+	matomo: 'matomo',
+};
 import type { ApiError } from '@/lib/api/ApiError';
-import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import { EllipsisVerticalIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
 
-interface ProviderCardProps {
+interface AnalyticsProviderCardProps {
 	integration?: TAnalyticsIntegrationResponseDto;
 	providerType: TProviderType;
 	canConfigure: boolean;
@@ -43,14 +49,15 @@ interface ProviderCardProps {
 	isProExpired?: boolean;
 }
 
-export function ProviderCard({
+export function AnalyticsProviderCard({
 	integration,
 	providerType,
 	canConfigure,
 	hasOtherIntegration,
 	isProExpired,
-}: ProviderCardProps) {
+}: AnalyticsProviderCardProps) {
 	const t = useTranslations('settings.integrations');
+	const tGeneral = useTranslations('general');
 	const { toast } = useToast();
 	const [configOpen, setConfigOpen] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -150,7 +157,10 @@ export function ProviderCard({
 		return (
 			<>
 				<Item variant="outline">
-					<ProviderLogo providerType={providerType} className="size-8 shrink-0" />
+					<IntegrationLogo
+						integrationId={INTEGRATION_ID_BY_PROVIDER[providerType]}
+						className="size-8"
+					/>
 					<ItemContent>
 						<ItemTitle>
 							{providerName}
@@ -243,7 +253,7 @@ export function ProviderCard({
 					</DialogContent>
 				</Dialog>
 
-				<ConfigureIntegrationDialog
+				<AnalyticsConfigureDialog
 					open={configOpen}
 					onOpenChange={setConfigOpen}
 					providerType={providerType}
@@ -257,9 +267,25 @@ export function ProviderCard({
 	return (
 		<>
 			<Item variant="outline">
-				<ProviderLogo providerType={providerType} className="size-8 shrink-0" />
+				<IntegrationLogo
+					integrationId={INTEGRATION_ID_BY_PROVIDER[providerType]}
+					className="size-8"
+				/>
 				<ItemContent>
-					<ItemTitle>{providerName}</ItemTitle>
+					<ItemTitle className="flex flex-wrap items-center gap-2">
+						{providerName}
+						{!canConfigure && (
+							<Link href="/dashboard/settings/billing">
+								<Badge
+									variant="secondary"
+									className="bg-teal-600 hover:bg-teal-700 text-white text-xs"
+								>
+									<SparklesIcon className="size-3 mr-1" />
+									{tGeneral('proRequired')}
+								</Badge>
+							</Link>
+						)}
+					</ItemTitle>
 					<ItemDescription>{isGA ? t('ga4Short') : t('matomoShort')}</ItemDescription>
 				</ItemContent>
 				<ItemActions>
@@ -274,7 +300,7 @@ export function ProviderCard({
 				</ItemActions>
 			</Item>
 
-			<ConfigureIntegrationDialog
+			<AnalyticsConfigureDialog
 				open={configOpen}
 				onOpenChange={setConfigOpen}
 				providerType={providerType}

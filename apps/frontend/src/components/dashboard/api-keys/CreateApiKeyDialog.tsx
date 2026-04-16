@@ -5,7 +5,9 @@ import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useClerk } from '@clerk/nextjs';
+import Link from 'next/link';
+import { useHasProPlan } from '@/hooks/useHasProPlan';
+import { useCreateApiKeyMutation } from '@/lib/api/api-key';
 import {
 	Dialog,
 	DialogContent,
@@ -37,7 +39,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { useApiKeysContext } from './ApiKeyContext';
 
 const CreateApiKeySchema = z.object({
 	name: z.string().min(1).max(100).trim(),
@@ -52,9 +53,9 @@ export function CreateApiKeyDialog() {
 	const tGeneral = useTranslations('general');
 	const [open, setOpen] = useState(false);
 	const [createdKey, setCreatedKey] = useState<string | null>(null);
-	const [isCreating, setIsCreating] = useState(false);
-	const clerk = useClerk();
-	const { apiKeys } = useApiKeysContext(); // global context
+	const createMutation = useCreateApiKeyMutation();
+	const isCreating = createMutation.isPending;
+	const { hasProPlan, isLoading: isPlanLoading } = useHasProPlan();
 
 	const form = useForm<CreateApiKeyFormData>({
 		resolver: zodResolver(CreateApiKeySchema),
@@ -67,18 +68,13 @@ export function CreateApiKeyDialog() {
 
 	const onSubmit = async (data: CreateApiKeyFormData) => {
 		try {
-			setIsCreating(true);
-
-			const key = await clerk.apiKeys.create({
+			const key = await createMutation.mutateAsync({
 				name: data.name,
-				description: data.description,
-				secondsUntilExpiration: data.expiresInDays ? data.expiresInDays * 86400 : undefined,
+				description: data.description || undefined,
+				expiresInDays: data.expiresInDays ?? null,
 			});
-
-			setCreatedKey(key.secret ?? null);
+			setCreatedKey(key.secret);
 			form.reset();
-
-			void apiKeys.revalidate();
 			posthog.capture('api-key:created', { name: data.name });
 		} catch (err: unknown) {
 			const errorMessage = err instanceof Error ? err.message : t('errorDescription');
@@ -89,8 +85,6 @@ export function CreateApiKeyDialog() {
 			});
 			Sentry.captureException(err);
 			posthog.capture('error:api-key-create', { error: err });
-		} finally {
-			setIsCreating(false);
 		}
 	};
 
@@ -116,11 +110,18 @@ export function CreateApiKeyDialog() {
 			setTimeout(() => {
 				setCreatedKey(null);
 				form.reset();
-				setIsCreating(false);
 			}, 200);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open]);
+
+	if (!isPlanLoading && !hasProPlan) {
+		return (
+			<Button asChild size="sm" variant="outline">
+				<Link href="/dashboard/settings/billing">{t('upgradeCta')}</Link>
+			</Button>
+		);
+	}
 
 	return (
 		<Dialog
@@ -130,7 +131,9 @@ export function CreateApiKeyDialog() {
 			}}
 		>
 			<DialogTrigger asChild>
-				<Button size="sm">{t('create')}</Button>
+				<Button size="sm" disabled={isPlanLoading}>
+					{t('create')}
+				</Button>
 			</DialogTrigger>
 
 			<DialogContent className="sm:max-w-md">

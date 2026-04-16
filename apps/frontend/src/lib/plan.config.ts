@@ -29,7 +29,6 @@ export const PLAN_CONFIGS: Record<PlanId, PlanConfig> = {
 			'features.free.customStyling',
 			'features.free.detailedAnalytics',
 			'features.free.noCreditCard',
-			'features.free.limitedApi',
 			'features.free.limitedBulk',
 		],
 		featured: false,
@@ -41,13 +40,22 @@ export const PLAN_CONFIGS: Record<PlanId, PlanConfig> = {
 			'features.pro.everythingInFree',
 			'features.pro.customDomains',
 			'features.pro.largerBulkImports',
-			'features.pro.unlimitedApi',
-			'features.pro.analyticsIntegrations',
+			'features.pro.apiAccess',
+			'features.pro.marketplaceIntegrations',
 			'features.pro.prioritySupport',
 			'features.pro.teamFeatures',
 		],
 		featured: true,
 	},
+};
+
+/**
+ * Per-feature info link. Rendered as a small info icon next to the feature
+ * label that deep-links to the relevant docs / dashboard section.
+ */
+export const FEATURE_INFO_LINKS: Record<string, string> = {
+	'features.pro.apiAccess': '/docs/api',
+	'features.pro.marketplaceIntegrations': '/dashboard/settings/integrations',
 };
 
 /**

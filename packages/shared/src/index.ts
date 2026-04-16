@@ -7,6 +7,7 @@ export * from './dtos/qr-code/QrCodeListRequestDto';
 export * from './dtos/qr-code/QrCodePaginatedResponseDto';
 export * from './dtos/qr-code/QrCodeRequestParamsDto';
 export * from './dtos/qr-code/QrCodeResponseDto';
+export * from './dtos/qr-code/RenderQrCodeDto';
 
 export * from './dtos/qr-code-templates/ConfigTemplatePaginatedResponseDto';
 export * from './dtos/qr-code-templates/ConfigTemplateResponseDto';
@@ -37,6 +38,11 @@ export * from './dtos/tag/TagPaginatedResponseDto';
 export * from './dtos/tag/TagRequestParamsDto';
 export * from './dtos/tag/SetQrCodeTagsDto';
 export * from './dtos/tag/SetShortUrlTagsDto';
+
+export * from './dtos/api-key/CreateApiKeyDto';
+export * from './dtos/api-key/ApiKeyResponseDto';
+export * from './dtos/api-key/CreateApiKeyResponseDto';
+export * from './dtos/api-key/ApiKeyListResponseDto';
 
 export * from './dtos/user-survey/SubmitUserSurveyDto';
 export * from './dtos/user-survey/UserSurveyStatusResponseDto';

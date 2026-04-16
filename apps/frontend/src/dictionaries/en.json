@@ -1118,7 +1118,8 @@
 			"never": "Never",
 			"day": "Day",
 			"days": "Days",
-			"year": "Year"
+			"year": "Year",
+			"upgradeCta": "Upgrade to Pro"
 		},
 		"billing": {
 			"title": "Billing & Subscription",
@@ -1245,9 +1246,8 @@
 			"accountDeleteError": "Failed to delete account. Please try again."
 		},
 		"integrations": {
-			"title": "Analytics Integrations",
-			"description": "Forward scan data to your own analytics tools. QRcodly's built-in analytics are always active and unaffected. Only anonymized IPs and non-identifying data are shared — never user agents or personal information.",
-			"docsLink": "For more information, see our <link>documentation</link>.",
+			"title": "Integrations",
+			"description": "Extend QRcodly with third-party tools. Connect analytics providers, install browser extensions, and more.",
 			"configure": "Configure",
 			"configureTitle": "Configure",
 			"editTitle": "Edit",
@@ -1307,7 +1307,38 @@
 			"openMenu": "Open menu",
 			"integrationDisabledTitle": "Analytics integration disabled",
 			"integrationDisabledDescription": "Your analytics integration has been disabled because your Pro plan has expired. Resubscribe to re-enable it.",
-			"moreIntegrationsTeaser": "More integrations with additional analytics providers are on the way. <contact>Suggest a provider</contact>"
+			"catalog": {
+				"tagAll": "All",
+				"tag": {
+					"analytics": "Analytics",
+					"browser": "Browser",
+					"ai": "AI",
+					"design": "Design"
+				},
+				"installCta": "Install",
+				"comingSoonCta": "Coming Soon",
+				"googleAnalytics": {
+					"name": "Google Analytics 4",
+					"description": "Send QR code scan data directly to Google Analytics."
+				},
+				"matomo": {
+					"name": "Matomo",
+					"description": "Forward scan events to your self-hosted Matomo instance."
+				},
+				"browserExtensionChrome": {
+					"name": "Chrome Extension",
+					"description": "Generate and manage QR codes directly from your browser with one click."
+				},
+				"chatgpt": {
+					"name": "ChatGPT",
+					"description": "Generate QR codes from chat prompts. Coming soon."
+				},
+				"adobeIndesign": {
+					"name": "Adobe InDesign",
+					"description": "Browse and insert QR codes directly into your InDesign layouts. Coming soon."
+				}
+			},
+			"moreIntegrationsTeaser": "More integrations are on the way. <contact>Suggest an integration</contact>"
 		}
 	},
 	"plans": {
@@ -1341,7 +1372,6 @@
 				"detailedAnalytics": "Detailed analytics",
 				"noCreditCard": "No credit card required",
 				"unlimitedTags": "Unlimited tags",
-				"limitedApi": "Limited API access",
 				"limitedBulk": "Limited bulk QR code generation"
 			},
 			"pro": {
@@ -1349,12 +1379,13 @@
 				"unlimitedTags": "Unlimited tags",
 				"largerBulkImports": "Larger bulk imports (50 rows, 2MB)",
 				"customDomains": "One custom domain for QR codes & short URLs",
-				"unlimitedApi": "Unlimited API access",
-				"analyticsIntegrations": "Analytics integrations (Google Analytics, Matomo)",
 				"prioritySupport": "Priority support",
-				"teamFeatures": "Team features (coming soon)"
+				"teamFeatures": "Team features (coming soon)",
+				"apiAccess": "REST API access",
+				"marketplaceIntegrations": "Third-party integrations"
 			}
-		}
+		},
+		"featureInfoAriaLabel": "More information"
 	},
 	"tags": {
 		"title": "Tags",

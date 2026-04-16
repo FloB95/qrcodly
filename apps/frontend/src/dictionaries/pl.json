@@ -1118,7 +1118,8 @@
 			"never": "Nigdy",
 			"day": "Dzień",
 			"days": "Dni",
-			"year": "Rok"
+			"year": "Rok",
+			"upgradeCta": "Przejdź na Pro"
 		},
 		"billing": {
 			"title": "Rozliczenia i Subskrypcja",
@@ -1245,9 +1246,8 @@
 			"accountDeleteError": "Nie udało się usunąć konta. Spróbuj ponownie."
 		},
 		"integrations": {
-			"title": "Integracje Analytics",
-			"description": "Przekazuj dane skanowania do własnych narzędzi analitycznych. Wbudowana analityka QRcodly jest zawsze aktywna i nienaruszona. Udostępniane są tylko zanonimizowane IP i dane nieidentyfikujące — nigdy user agenty ani informacje osobowe.",
-			"docsLink": "Więcej informacji znajdziesz w naszej <link>dokumentacji</link>.",
+			"title": "Integracje",
+			"description": "Rozszerz QRcodly o narzędzia innych firm. Połącz dostawców analityki, zainstaluj rozszerzenia przeglądarki i więcej.",
 			"configure": "Konfiguruj",
 			"configureTitle": "Konfiguruj",
 			"editTitle": "Edytuj",
@@ -1307,7 +1307,38 @@
 			"openMenu": "Otwórz menu",
 			"integrationDisabledTitle": "Integracja analityczna wyłączona",
 			"integrationDisabledDescription": "Twoja integracja analityczna została wyłączona, ponieważ Twój plan Pro wygasł. Odnów subskrypcję, aby ją ponownie włączyć.",
-			"moreIntegrationsTeaser": "Więcej integracji z kolejnymi dostawcami analityki już wkrótce. <contact>Zaproponuj dostawcę</contact>"
+			"catalog": {
+				"tagAll": "Wszystkie",
+				"tag": {
+					"analytics": "Analityka",
+					"browser": "Przeglądarka",
+					"ai": "SI",
+					"design": "Design"
+				},
+				"installCta": "Zainstaluj",
+				"comingSoonCta": "Wkrótce",
+				"googleAnalytics": {
+					"name": "Google Analytics 4",
+					"description": "Wysyłaj dane skanowania kodów QR bezpośrednio do Google Analytics."
+				},
+				"matomo": {
+					"name": "Matomo",
+					"description": "Przekazuj zdarzenia skanowania do własnej instancji Matomo."
+				},
+				"browserExtensionChrome": {
+					"name": "Rozszerzenie Chrome",
+					"description": "Twórz i zarządzaj kodami QR bezpośrednio z przeglądarki jednym kliknięciem."
+				},
+				"chatgpt": {
+					"name": "ChatGPT",
+					"description": "Generuj kody QR z promptów czatu. Wkrótce."
+				},
+				"adobeIndesign": {
+					"name": "Adobe InDesign",
+					"description": "Przeglądaj i wstawiaj kody QR bezpośrednio w swoich projektach InDesign. Wkrótce."
+				}
+			},
+			"moreIntegrationsTeaser": "Więcej integracji w przygotowaniu. <contact>Zaproponuj integrację</contact>"
 		}
 	},
 	"plans": {
@@ -1341,7 +1372,6 @@
 				"detailedAnalytics": "Szczegółowe analizy",
 				"noCreditCard": "Karta kredytowa nie wymagana",
 				"unlimitedTags": "Nieograniczone tagi",
-				"limitedApi": "Ograniczony dostęp do API",
 				"limitedBulk": "Ograniczone masowe generowanie kodów QR"
 			},
 			"pro": {
@@ -1349,12 +1379,13 @@
 				"unlimitedTags": "Nieograniczone tagi",
 				"largerBulkImports": "Większe importy masowe (50 wierszy, 2MB)",
 				"customDomains": "Jedna własna domena dla kodów QR i krótkich URL-i",
-				"unlimitedApi": "Nieograniczony dostęp do API",
-				"analyticsIntegrations": "Integracje analityczne (Google Analytics, Matomo)",
 				"prioritySupport": "Priorytetowe wsparcie",
-				"teamFeatures": "Funkcje zespołowe (wkrótce)"
+				"teamFeatures": "Funkcje zespołowe (wkrótce)",
+				"apiAccess": "Dostęp do REST API",
+				"marketplaceIntegrations": "Integracje zewnętrzne"
 			}
-		}
+		},
+		"featureInfoAriaLabel": "Więcej informacji"
 	},
 	"tags": {
 		"title": "Tagi",

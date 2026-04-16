@@ -1,0 +1,29 @@
+{
+	"id": "7b62450e",
+	"name": "QRcodly",
+	"version": "0.1.0",
+	"main": "index.html",
+	"manifestVersion": 5,
+	"host": {
+		"app": "ID",
+		"minVersion": "18.5.0"
+	},
+	"entrypoints": [
+		{
+			"type": "panel",
+			"id": "qrcodly",
+			"label": {
+				"default": "QRcodly"
+			},
+			"minimumSize": { "width": 320, "height": 480 },
+			"preferredDockedSize": { "width": 360, "height": 640 }
+		}
+	],
+	"requiredPermissions": {
+		"network": {
+			"domains": ["https://qrcodly.de", "https://*.qrcodly.de"]
+		},
+		"localFileSystem": "plugin",
+		"clipboard": "readAndWrite"
+	}
+}

@@ -1118,7 +1118,8 @@
 			"never": "Nooit",
 			"day": "Dag",
 			"days": "Dagen",
-			"year": "Jaar"
+			"year": "Jaar",
+			"upgradeCta": "Upgraden naar Pro"
 		},
 		"billing": {
 			"title": "Facturering & Abonnement",
@@ -1245,9 +1246,8 @@
 			"accountDeleteError": "Verwijderen van account mislukt. Probeer opnieuw."
 		},
 		"integrations": {
-			"title": "Analytics-integraties",
-			"description": "Stuur scangegevens door naar uw eigen analysetools. De ingebouwde analyse van QRcodly blijft altijd actief en onaangetast. Alleen geanonimiseerde IP's en niet-identificerende gegevens worden gedeeld — nooit user agents of persoonlijke informatie.",
-			"docsLink": "Zie onze <link>documentatie</link> voor meer informatie.",
+			"title": "Integraties",
+			"description": "Breid QRcodly uit met tools van derden. Verbind analytics-providers, installeer browser-extensies en meer.",
 			"configure": "Configureren",
 			"configureTitle": "Configureren",
 			"editTitle": "Bewerken",
@@ -1307,7 +1307,38 @@
 			"openMenu": "Menu openen",
 			"integrationDisabledTitle": "Analytics-integratie uitgeschakeld",
 			"integrationDisabledDescription": "Uw analytics-integratie is uitgeschakeld omdat uw Pro-plan is verlopen. Abonneer u opnieuw om deze weer in te schakelen.",
-			"moreIntegrationsTeaser": "Meer integraties met extra analytics-aanbieders zijn onderweg. <contact>Aanbieder voorstellen</contact>"
+			"catalog": {
+				"tagAll": "Alle",
+				"tag": {
+					"analytics": "Analytics",
+					"browser": "Browser",
+					"ai": "AI",
+					"design": "Ontwerp"
+				},
+				"installCta": "Installeren",
+				"comingSoonCta": "Binnenkort beschikbaar",
+				"googleAnalytics": {
+					"name": "Google Analytics 4",
+					"description": "Stuur QR-code-scangegevens rechtstreeks naar Google Analytics."
+				},
+				"matomo": {
+					"name": "Matomo",
+					"description": "Stuur scan-events door naar je zelfgehoste Matomo-installatie."
+				},
+				"browserExtensionChrome": {
+					"name": "Chrome-extensie",
+					"description": "Genereer en beheer QR-codes direct vanuit je browser met één klik."
+				},
+				"chatgpt": {
+					"name": "ChatGPT",
+					"description": "Genereer QR-codes vanuit chat-prompts. Binnenkort beschikbaar."
+				},
+				"adobeIndesign": {
+					"name": "Adobe InDesign",
+					"description": "Blader door QR-codes en voeg ze direct toe aan je InDesign-ontwerpen. Binnenkort beschikbaar."
+				}
+			},
+			"moreIntegrationsTeaser": "Meer integraties zijn onderweg. <contact>Stel een integratie voor</contact>"
 		}
 	},
 	"plans": {
@@ -1341,7 +1372,6 @@
 				"detailedAnalytics": "Gedetailleerde analyses",
 				"noCreditCard": "Geen creditcard vereist",
 				"unlimitedTags": "Onbeperkte tags",
-				"limitedApi": "Beperkte API-toegang",
 				"limitedBulk": "Beperkte bulk QR-code generatie"
 			},
 			"pro": {
@@ -1349,12 +1379,13 @@
 				"unlimitedTags": "Onbeperkte tags",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
 				"customDomains": "Eén aangepast domein voor QR-codes en korte URLs",
-				"unlimitedApi": "Onbeperkte API-toegang",
-				"analyticsIntegrations": "Analytics-integraties (Google Analytics, Matomo)",
 				"prioritySupport": "Prioriteitsondersteuning",
-				"teamFeatures": "Teamfuncties (binnenkort)"
+				"teamFeatures": "Teamfuncties (binnenkort)",
+				"apiAccess": "REST API-toegang",
+				"marketplaceIntegrations": "Integraties van derden"
 			}
-		}
+		},
+		"featureInfoAriaLabel": "Meer informatie"
 	},
 	"tags": {
 		"title": "Tags",

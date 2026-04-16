@@ -6,6 +6,7 @@ export enum RateLimitPolicy {
 	// template limits
 	TEMPLATE_CREATE = 'template_create',
 	SCREENSHOT_CREATE = 'screenshot_create',
+	QR_RENDER = 'qr_render',
 	// tag limits
 	TAG_CREATE = 'tag_create',
 	// custom domain limits
@@ -62,6 +63,11 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 3,
 		[RateLimitTier.PRO_PLAN]: 10,
+	},
+	[RateLimitPolicy.QR_RENDER]: {
+		[RateLimitTier.ANONYMOUS]: 0,
+		[RateLimitTier.AUTHENTICATED]: 50,
+		[RateLimitTier.PRO_PLAN]: 200,
 	},
 	[RateLimitPolicy.SURVEY_SUBMIT]: {
 		[RateLimitTier.ANONYMOUS]: 0,

@@ -1,6 +1,7 @@
 packages:
   - packages/*
   - apps/*
+  - apps/integrations/*
 
 catalog:
   zod: 4.3.5

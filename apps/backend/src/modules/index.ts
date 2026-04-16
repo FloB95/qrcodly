@@ -9,6 +9,7 @@ import tag from './tag/setup';
 import billing from './billing/setup';
 import analyticsIntegration from './analytics-integration/setup';
 import userSurvey from './user-survey/setup';
+import apiKey from './api-key/setup';
 
 const modules: FastifyPluginCallback = (fastify: FastifyInstance, _options, done) => {
 	fastify.register(qrCode);
@@ -19,6 +20,7 @@ const modules: FastifyPluginCallback = (fastify: FastifyInstance, _options, done
 	fastify.register(billing);
 	fastify.register(analyticsIntegration);
 	fastify.register(userSurvey);
+	fastify.register(apiKey);
 	done();
 };
 

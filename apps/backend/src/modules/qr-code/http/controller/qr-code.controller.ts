@@ -12,12 +12,14 @@ import {
 	GetQrCodeQueryParamsSchema,
 	QrCodeWithRelationsPaginatedResponseDto,
 	QrCodeWithRelationsResponseDto,
+	RenderQrCodeDto,
 	TBulkImportQrCodeDto,
 	TCreateQrCodeDto,
 	TGetQrCodeQueryParamsDto,
 	TIdRequestQueryDto,
 	TQrCodeWithRelationsPaginatedResponseDto,
 	TQrCodeWithRelationsResponseDto,
+	TRenderQrCodeDto,
 	TUpdateQrCodeDto,
 	TWebsiteScreenshotDto,
 	UpdateQrCodeDto,
@@ -31,6 +33,7 @@ import { UpdateQrCodeUseCase } from '../../useCase/update-qr-code.use-case';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { BulkImportQrCodesUseCase } from '../../useCase/bulk-import-qr-codes.use-case';
+import { RenderQrCodeUseCase } from '../../useCase/render-qr-code.use-case';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { DownloadService } from '../../service/download.service';
 import { BadRequestError } from '@/core/error/http';
@@ -45,6 +48,7 @@ export class QrCodeController extends AbstractController {
 		@inject(DeleteQrCodeUseCase) private readonly deleteQrCodeUseCase: DeleteQrCodeUseCase,
 		@inject(BulkImportQrCodesUseCase)
 		private readonly bulkImportQrCodesUseCase: BulkImportQrCodesUseCase,
+		@inject(RenderQrCodeUseCase) private readonly renderQrCodeUseCase: RenderQrCodeUseCase,
 		@inject(QrCodeRepository) private readonly qrCodeRepository: QrCodeRepository,
 		@inject(ImageService) private readonly imageService: ImageService,
 		@inject(DownloadService) private readonly downloadService: DownloadService,
@@ -317,6 +321,47 @@ export class QrCodeController extends AbstractController {
 			headers: {
 				'Content-Type': 'image/jpeg',
 				'Cache-Control': 'public, max-age=86400', // Cache for 24 hours
+			},
+		};
+	}
+
+	@Post('/render', {
+		bodySchema: RenderQrCodeDto,
+		schema: {
+			tags: ['QR Codes'],
+			summary: 'Render a QR code to an image buffer',
+			description:
+				'Returns a fully rendered QR code in PNG, WebP, JPEG or SVG. Supports ETag-based caching. Intended for third-party clients (design plugins) that cannot render complex QR-styling output themselves.',
+			operationId: 'qr-code/render',
+			hide: true,
+		},
+		config: {
+			rateLimitPolicy: RateLimitPolicy.QR_RENDER,
+		},
+	})
+	async render(request: IHttpRequest<TRenderQrCodeDto>): Promise<IHttpResponse<Buffer>> {
+		const incomingEtag = request.headers?.['if-none-match'];
+		const result = await this.renderQrCodeUseCase.execute(request.body);
+
+		if (incomingEtag && incomingEtag === result.etag) {
+			return {
+				statusCode: 304,
+				data: Buffer.alloc(0),
+				headers: {
+					ETag: result.etag,
+					'Cache-Control': 'private, max-age=86400',
+				},
+			};
+		}
+
+		return {
+			statusCode: 200,
+			data: result.buffer,
+			headers: {
+				'Content-Type': result.contentType,
+				'Content-Length': String(result.buffer.length),
+				ETag: result.etag,
+				'Cache-Control': 'private, max-age=86400',
 			},
 		};
 	}

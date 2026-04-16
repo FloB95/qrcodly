@@ -1,0 +1,324 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--bg: #1f1f1f;
+	--bg-elevated: #2a2a2a;
+	--border: #3a3a3a;
+	--text: #e3e3e3;
+	--text-muted: #9a9a9a;
+	--accent: #3b82f6;
+	--accent-hover: #2563eb;
+	--danger: #ef4444;
+	color-scheme: dark;
+}
+
+html,
+body,
+#root {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-size: 12px;
+	line-height: 1.5;
+	overflow: hidden;
+}
+
+.app {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: 16px;
+}
+
+/* headings & paragraphs — reset native UXP defaults */
+h1,
+h2,
+h3,
+h4,
+p {
+	margin: 0;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 16px;
+}
+
+.brand {
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+	font-size: 14px;
+	color: var(--text);
+}
+
+.brand > svg {
+	margin-right: 8px;
+	flex-shrink: 0;
+}
+
+.lead {
+	color: var(--text-muted);
+	margin-bottom: 16px;
+}
+
+.stack > * + * {
+	margin-top: 12px;
+}
+
+/* Buttons — implemented as <div role="button"> to avoid UXP's host-themed
+   native Spectrum button styling which overrides CSS in panels. */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 7px 12px;
+	border: 1px solid var(--border);
+	background: var(--bg-elevated);
+	color: var(--text);
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1;
+	min-height: 28px;
+	font-family: inherit;
+	user-select: none;
+}
+.btn:hover {
+	border-color: #4a4a4a;
+}
+.btn:focus {
+	outline: none;
+	border-color: var(--accent);
+}
+.btn.primary {
+	background: var(--accent);
+	border-color: var(--accent);
+	color: #fff;
+}
+.btn.primary:hover {
+	background: var(--accent-hover);
+	border-color: var(--accent-hover);
+}
+.btn.danger {
+	color: var(--danger);
+}
+.btn.is-disabled,
+.btn[aria-disabled='true'] {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+.btn + .btn {
+	margin-left: 6px;
+}
+
+.ml-6 {
+	margin-left: 6px;
+}
+
+/* Inputs — explicit margin:0 because UXP may otherwise apply a user-agent
+   default margin that offsets the border left-edge relative to sibling flex
+   containers (the visible "the search bar sits slightly further in than the
+   logo" artefact). */
+.input,
+select.input {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 7px 10px;
+	background: var(--bg-elevated);
+	border: 1px solid var(--border);
+	color: var(--text);
+	border-radius: 4px;
+	font-size: 12px;
+	line-height: 1.4;
+	min-height: 28px;
+	-webkit-appearance: none;
+	appearance: none;
+	font-family: inherit;
+}
+.input:focus,
+select.input:focus {
+	outline: none;
+	border-color: var(--accent);
+	box-shadow: none;
+}
+.input::placeholder {
+	color: #6b6b6b;
+	font-style: normal;
+}
+
+/* Field wrapper */
+.field {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 14px;
+}
+.field > label {
+	display: block;
+	font-size: 11px;
+	color: var(--text-muted);
+	margin-bottom: 5px;
+	font-weight: 500;
+}
+
+/* Tag filter — reuses .btn styling for visual consistency with header actions */
+.tag-row {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 12px;
+	/* negate the .tag-btn left margin on the first item */
+	margin-left: -6px;
+}
+.tag-btn {
+	margin-left: 6px;
+	margin-bottom: 6px;
+	min-height: 24px;
+	padding: 4px 10px;
+	font-size: 11px;
+}
+
+/* QR list */
+.qr-row {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	cursor: pointer;
+	margin-bottom: 6px;
+}
+.qr-row:hover {
+	border-color: var(--accent);
+}
+.qr-row .preview {
+	width: 65px;
+	height: 65px;
+	background: #fff;
+	border-radius: 3px;
+	flex-shrink: 0;
+	margin-right: 10px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.qr-row .preview img,
+.qr-row .preview .qr-preview-img,
+.qr-row .preview .qr-preview-svg,
+.qr-row .preview svg {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	display: block;
+}
+/* Inline SVG lives inside a wrapper div. object-fit applies only to <img>,
+   so we scale the inner <svg> element explicitly. */
+.qr-preview-img {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+.qr-preview-img > svg {
+	width: 100% !important;
+	height: 100% !important;
+	display: block;
+}
+
+.live-preview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	border-radius: 4px;
+	width: 140px;
+	height: 140px;
+	margin: 0 auto 14px;
+}
+.live-preview .qr-preview-img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	display: block;
+}
+.live-preview.empty {
+	background: var(--bg-elevated);
+	border: 1px dashed var(--border);
+	color: var(--text-muted);
+	font-size: 10px;
+	padding: 8px;
+	text-align: center;
+}
+.short-url-display {
+	font-size: 11px;
+	color: var(--text-muted);
+	word-break: break-all;
+	margin: -8px 0 14px;
+}
+.toggle-row {
+	display: flex;
+	align-items: center;
+	margin-bottom: 6px;
+	cursor: pointer;
+	user-select: none;
+}
+.toggle-row input[type='checkbox'] {
+	margin: 0 8px 0 0;
+}
+.toggle-row .label {
+	font-size: 12px;
+	color: var(--text);
+	line-height: 1;
+}
+.qr-row .meta {
+	flex: 1;
+	min-width: 0;
+}
+.qr-row .name {
+	font-size: 12px;
+	font-weight: 500;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: var(--text);
+}
+.qr-row .type {
+	font-size: 10px;
+	color: var(--text-muted);
+	text-transform: uppercase;
+	margin-top: 2px;
+	letter-spacing: 0.04em;
+}
+
+.scroll {
+	flex: 1;
+	overflow-y: auto;
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+}
+
+.error {
+	color: var(--danger);
+	font-size: 11px;
+	margin-bottom: 12px;
+}
+
+.muted {
+	color: var(--text-muted);
+	font-size: 11px;
+}

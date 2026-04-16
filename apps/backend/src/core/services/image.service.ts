@@ -37,6 +37,10 @@ export class ImageService {
 		return this.strategy.generatePreview(...args);
 	}
 
+	async getImageAsDataUrl(imagePath: string): Promise<string | undefined> {
+		return this.strategy.getImageAsDataUrl(imagePath);
+	}
+
 	async getSignedUrl(imagePath: string): Promise<string | undefined> {
 		return this.strategy.getSignedUrl(imagePath);
 	}
