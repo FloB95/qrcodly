@@ -10,6 +10,7 @@ import {
 } from '@shared/schemas';
 import { type IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { ImageService } from '@/core/services/image.service';
+import { env } from '@/core/config/env';
 import { generateQrCodeStylingInstance } from '../lib/styled-qr-code';
 
 export type RenderQrCodeResult = {
@@ -50,9 +51,8 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 	private async generateSvg(dto: TRenderQrCodeDto): Promise<string> {
 		const libraryOptions = convertQrCodeOptionsToLibraryOptions(dto.config);
 
-		if (libraryOptions.image && !libraryOptions.image.startsWith('data:')) {
-			libraryOptions.image =
-				(await this.imageService.getImageAsDataUrl(libraryOptions.image)) ?? undefined;
+		if (libraryOptions.image) {
+			libraryOptions.image = (await this.resolveImage(libraryOptions.image)) ?? undefined;
 		}
 
 		const instance = generateQrCodeStylingInstance({ ...libraryOptions, data: dto.data });
@@ -76,5 +76,19 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 			.update(JSON.stringify({ config: dto.config, data: dto.data, format, sizePx }))
 			.digest('hex');
 		return `"${hash.slice(0, 16)}"`;
+	}
+
+	private async resolveImage(image: string): Promise<string | undefined> {
+		if (image.startsWith('data:')) return image;
+
+		const publicBase = env.S3_PUBLIC_URL.replace(/\/$/, '');
+		if (image.startsWith(`${publicBase}/`)) {
+			const storageKey = image.slice(publicBase.length + 1);
+			return this.imageService.getImageAsDataUrl(storageKey);
+		}
+
+		if (/^https?:\/\//i.test(image)) return undefined;
+
+		return this.imageService.getImageAsDataUrl(image);
 	}
 }
