@@ -14,12 +14,12 @@ Logos were obtained from the official brand resources pages of each
 provider and are used to identify third-party integrations (nominative
 use). Follow each provider's brand guidelines when updating.
 
-| File | Source |
-| --- | --- |
+| File                   | Source                                                     |
+| ---------------------- | ---------------------------------------------------------- |
 | `google-analytics.svg` | official GA brand mark, simplified inline SVG kept in repo |
-| `matomo.svg` | https://matomo.org/media-resources/ |
-| `chrome.png` | https://www.google.com/chrome/brand-guidelines/ |
-| `chatgpt.webp` | https://openai.com/brand/ |
+| `matomo.svg`           | https://matomo.org/media-resources/                        |
+| `chrome.png`           | https://www.google.com/chrome/brand-guidelines/            |
+| `chatgpt.webp`         | https://openai.com/brand/                                  |
 
 ## Adding a new integration
 

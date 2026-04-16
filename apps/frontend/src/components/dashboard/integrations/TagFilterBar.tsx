@@ -21,6 +21,7 @@ export function TagFilterBar({ activeTag, onTagChange, availableTags }: TagFilte
 		<div className="flex flex-wrap gap-2">
 			<Button
 				type="button"
+				aria-pressed={activeTag === null}
 				variant={activeTag === null ? 'default' : 'outline'}
 				size="sm"
 				onClick={() => onTagChange(null)}
@@ -31,6 +32,7 @@ export function TagFilterBar({ activeTag, onTagChange, availableTags }: TagFilte
 				<Button
 					key={tag}
 					type="button"
+					aria-pressed={activeTag === tag}
 					variant={activeTag === tag ? 'default' : 'outline'}
 					size="sm"
 					onClick={() => onTagChange(activeTag === tag ? null : tag)}
