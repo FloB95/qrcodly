@@ -9,12 +9,24 @@ type Screen = 'loading' | 'settings' | 'list' | 'create';
 export default function App() {
 	const [screen, setScreen] = useState<Screen>('loading');
 	const [apiKey, setApiKey] = useState<string | null>(null);
+	const [loadError, setLoadError] = useState<string | null>(null);
 
 	useEffect(() => {
-		getStoredApiKey().then((key) => {
-			setApiKey(key);
-			setScreen(key ? 'list' : 'settings');
-		});
+		getStoredApiKey()
+			.then((key) => {
+				setApiKey(key);
+				setScreen(key ? 'list' : 'settings');
+			})
+			.catch((err) => {
+				// Any failure reading secureStorage must not trap the panel on
+				// the loading screen — fall through to settings so the user can
+				// at least enter a fresh key.
+				// eslint-disable-next-line no-console
+				console.error('qrcodly: failed to read stored api key', err);
+				setLoadError(err instanceof Error ? err.message : String(err));
+				setApiKey(null);
+				setScreen('settings');
+			});
 	}, []);
 
 	const onSaveKey = useCallback(async (key: string) => {
@@ -31,7 +43,8 @@ export default function App() {
 
 	if (screen === 'loading') return <div className="app muted">Loading…</div>;
 
-	if (screen === 'settings') return <SettingsScreen onSave={onSaveKey} initialKey={apiKey} />;
+	if (screen === 'settings')
+		return <SettingsScreen onSave={onSaveKey} initialKey={apiKey} loadError={loadError} />;
 
 	if (!apiKey) return null;
 

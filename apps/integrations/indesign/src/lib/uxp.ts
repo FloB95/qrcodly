@@ -27,17 +27,72 @@ function getUxp(): UxpModule | null {
 	}
 }
 
+// Hand-rolled UTF-8 encode/decode. UXP's runtime does expose TextEncoder on
+// InDesign 18.5+ in practice, but older hosts do not, and any runtime gap
+// here silently rejects getStoredApiKey() and leaves the panel stuck on the
+// loading screen. Doing it by hand keeps API keys with non-ASCII characters
+// intact without depending on whichever runtime APIs the host ships.
 function stringToBytes(value: string): Uint8Array {
-	return new TextEncoder().encode(value);
+	const bytes: number[] = [];
+	for (let i = 0; i < value.length; i++) {
+		let code = value.charCodeAt(i);
+		if (code >= 0xd800 && code <= 0xdbff && i + 1 < value.length) {
+			const low = value.charCodeAt(i + 1);
+			if (low >= 0xdc00 && low <= 0xdfff) {
+				code = 0x10000 + ((code - 0xd800) << 10) + (low - 0xdc00);
+				i++;
+			}
+		}
+		if (code < 0x80) {
+			bytes.push(code);
+		} else if (code < 0x800) {
+			bytes.push(0xc0 | (code >> 6), 0x80 | (code & 0x3f));
+		} else if (code < 0x10000) {
+			bytes.push(0xe0 | (code >> 12), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f));
+		} else {
+			bytes.push(
+				0xf0 | (code >> 18),
+				0x80 | ((code >> 12) & 0x3f),
+				0x80 | ((code >> 6) & 0x3f),
+				0x80 | (code & 0x3f),
+			);
+		}
+	}
+	return new Uint8Array(bytes);
 }
 
 function bytesToString(bytes: Uint8Array): string {
-	return new TextDecoder().decode(bytes);
+	let out = '';
+	for (let i = 0; i < bytes.length; ) {
+		const b1 = bytes[i++];
+		if (b1 < 0x80) {
+			out += String.fromCharCode(b1);
+		} else if (b1 < 0xe0) {
+			const b2 = bytes[i++] ?? 0;
+			out += String.fromCharCode(((b1 & 0x1f) << 6) | (b2 & 0x3f));
+		} else if (b1 < 0xf0) {
+			const b2 = bytes[i++] ?? 0;
+			const b3 = bytes[i++] ?? 0;
+			out += String.fromCharCode(((b1 & 0x0f) << 12) | ((b2 & 0x3f) << 6) | (b3 & 0x3f));
+		} else {
+			const b2 = bytes[i++] ?? 0;
+			const b3 = bytes[i++] ?? 0;
+			const b4 = bytes[i++] ?? 0;
+			const cp = ((b1 & 0x07) << 18) | ((b2 & 0x3f) << 12) | ((b3 & 0x3f) << 6) | (b4 & 0x3f);
+			const offset = cp - 0x10000;
+			out += String.fromCharCode(0xd800 + (offset >> 10), 0xdc00 + (offset & 0x3ff));
+		}
+	}
+	return out;
+}
+
+function hasLocalStorage(): boolean {
+	return typeof localStorage !== 'undefined' && localStorage !== null;
 }
 
 export async function getStoredApiKey(): Promise<string | null> {
 	const uxp = getUxp();
-	if (!uxp) return localStorage.getItem('qrcodly.apiKey');
+	if (!uxp) return hasLocalStorage() ? localStorage.getItem('qrcodly.apiKey') : null;
 	const bytes = await uxp.storage.secureStorage.getItem('qrcodly.apiKey');
 	if (!bytes) return null;
 	return bytesToString(bytes);
@@ -46,7 +101,7 @@ export async function getStoredApiKey(): Promise<string | null> {
 export async function storeApiKey(key: string): Promise<void> {
 	const uxp = getUxp();
 	if (!uxp) {
-		localStorage.setItem('qrcodly.apiKey', key);
+		if (hasLocalStorage()) localStorage.setItem('qrcodly.apiKey', key);
 		return;
 	}
 	await uxp.storage.secureStorage.setItem('qrcodly.apiKey', stringToBytes(key));
@@ -55,7 +110,7 @@ export async function storeApiKey(key: string): Promise<void> {
 export async function clearApiKey(): Promise<void> {
 	const uxp = getUxp();
 	if (!uxp) {
-		localStorage.removeItem('qrcodly.apiKey');
+		if (hasLocalStorage()) localStorage.removeItem('qrcodly.apiKey');
 		return;
 	}
 	await uxp.storage.secureStorage.removeItem('qrcodly.apiKey');

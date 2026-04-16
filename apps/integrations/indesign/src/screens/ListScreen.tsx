@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { TQrCodeWithRelationsResponseDto, TTagResponseDto } from '@shared/schemas';
-import { ApiError, blobToDataUrl, QrcodlyApi } from '../lib/api-client';
-import { placePngInActiveDocument } from '../lib/indesign';
+import { ApiError, QrcodlyApi } from '../lib/api-client';
+import { placeSvgInActiveDocument } from '../lib/indesign';
 import { BrandHeader } from '../components/Logo';
 import { Button } from '../components/Button';
 import { QrPreview } from '../components/QrPreview';
@@ -110,13 +110,11 @@ export function ListScreen({ apiKey, onSignOut, onCreate }: Props) {
 		setInsertingId(qr.id);
 		setError(null);
 		try {
-			const blob = await api.renderQrPng({
+			const svg = await api.renderQrSvg({
 				config: qr.config,
 				data: qr.qrCodeData,
-				sizePx: 1024,
 			});
-			const pngDataUrl = await blobToDataUrl(blob);
-			await placePngInActiveDocument(pngDataUrl, qr.name ?? qr.id);
+			await placeSvgInActiveDocument(svg, qr.name ?? qr.id);
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'Insert failed');
 		} finally {

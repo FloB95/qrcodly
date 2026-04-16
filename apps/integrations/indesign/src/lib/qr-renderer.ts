@@ -6,13 +6,16 @@ type QrCodeLike = Pick<TQrCode, 'config' | 'content'> & {
 	shortUrl?: { shortCode: string } | null;
 };
 
-function blobToDataUrl(blob: Blob): Promise<string> {
-	return new Promise((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onload = () => resolve(String(reader.result));
-		reader.onerror = () => reject(new Error('FileReader failed'));
-		reader.readAsDataURL(blob);
-	});
+async function blobToDataUrl(blob: Blob): Promise<string> {
+	const buffer = await blob.arrayBuffer();
+	const bytes = new Uint8Array(buffer);
+	let binary = '';
+	const chunkSize = 0x8000;
+	for (let i = 0; i < bytes.length; i += chunkSize) {
+		binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + chunkSize)));
+	}
+	const mime = blob.type || 'application/octet-stream';
+	return `data:${mime};base64,${btoa(binary)}`;
 }
 
 function contentToPayload(content: TQrCodeContent, fallbackShortCode?: string): string {

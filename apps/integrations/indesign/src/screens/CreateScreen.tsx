@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { TConfigTemplateResponseDto } from '@shared/schemas';
-import { ApiError, blobToDataUrl, QrcodlyApi } from '../lib/api-client';
-import { placePngInActiveDocument } from '../lib/indesign';
+import { ApiError, QrcodlyApi } from '../lib/api-client';
+import { placeSvgInActiveDocument } from '../lib/indesign';
 import { BrandHeader } from '../components/Logo';
 import { Button } from '../components/Button';
 import { QrPreview } from '../components/QrPreview';
@@ -118,13 +118,11 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 
 		if (newQr.qrCodeData) {
 			try {
-				const blob = await api.renderQrPng({
+				const svg = await api.renderQrSvg({
 					config: newQr.config,
 					data: newQr.qrCodeData,
-					sizePx: 1024,
 				});
-				const pngDataUrl = await blobToDataUrl(blob);
-				await placePngInActiveDocument(pngDataUrl, newQr.name ?? newQr.id);
+				await placeSvgInActiveDocument(svg, newQr.name ?? newQr.id);
 			} catch (err) {
 				// The QR was created successfully server-side — only placement failed.
 				// Surface the error but still return the user to the list so they can

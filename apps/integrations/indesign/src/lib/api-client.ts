@@ -99,6 +99,17 @@ export class QrcodlyApi {
 		data: string;
 		sizePx?: number;
 	}): Promise<Blob> {
+		return this.renderQr({ ...payload, format: 'png' }, (r) => r.blob());
+	}
+
+	async renderQrSvg(payload: { config: TQrCodeOptions; data: string }): Promise<string> {
+		return this.renderQr({ ...payload, format: 'svg' }, (r) => r.text());
+	}
+
+	private async renderQr<T>(
+		payload: { config: TQrCodeOptions; data: string; sizePx?: number; format: 'png' | 'svg' },
+		extract: (r: Response) => Promise<T>,
+	): Promise<T> {
 		const response = await fetch(`${this.baseUrl}/qr-code/render`, {
 			method: 'POST',
 			headers: {
@@ -110,22 +121,27 @@ export class QrcodlyApi {
 		if (!response.ok) {
 			let message = `Render failed: ${response.status}`;
 			try {
-				const payload = (await response.json()) as { message?: string };
-				if (payload.message) message = payload.message;
+				const errPayload = (await response.json()) as { message?: string };
+				if (errPayload.message) message = errPayload.message;
 			} catch {
 				/* binary response body, ignore */
 			}
 			throw new ApiError(message, response.status);
 		}
-		return await response.blob();
+		return extract(response);
 	}
 }
 
-export function blobToDataUrl(blob: Blob): Promise<string> {
-	return new Promise((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onload = () => resolve(String(reader.result));
-		reader.onerror = () => reject(new Error('FileReader failed'));
-		reader.readAsDataURL(blob);
-	});
+// UXP's runtime does not expose FileReader, so we read the blob via
+// arrayBuffer() and base64-encode the bytes ourselves.
+export async function blobToDataUrl(blob: Blob): Promise<string> {
+	const buffer = await blob.arrayBuffer();
+	const bytes = new Uint8Array(buffer);
+	let binary = '';
+	const chunkSize = 0x8000;
+	for (let i = 0; i < bytes.length; i += chunkSize) {
+		binary += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, i + chunkSize)));
+	}
+	const mime = blob.type || 'application/octet-stream';
+	return `data:${mime};base64,${btoa(binary)}`;
 }

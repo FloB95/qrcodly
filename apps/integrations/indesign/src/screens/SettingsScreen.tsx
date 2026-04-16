@@ -5,9 +5,10 @@ import { Button } from '../components/Button';
 type Props = {
 	initialKey: string | null;
 	onSave: (key: string) => Promise<void>;
+	loadError?: string | null;
 };
 
-export function SettingsScreen({ initialKey, onSave }: Props) {
+export function SettingsScreen({ initialKey, onSave, loadError }: Props) {
 	const [input, setInput] = useState(initialKey ?? '');
 	const [saving, setSaving] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -48,6 +49,7 @@ export function SettingsScreen({ initialKey, onSave }: Props) {
 					autoFocus
 				/>
 			</div>
+			{loadError && !error && <p className="error">Could not read stored key: {loadError}</p>}
 			{error && <p className="error">{error}</p>}
 			<Button variant="primary" onClick={save} disabled={saving}>
 				{saving ? 'Saving…' : 'Connect'}
