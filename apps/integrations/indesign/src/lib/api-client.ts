@@ -8,7 +8,7 @@ import type {
 } from '@shared/schemas';
 import qs from 'qs';
 
-const DEFAULT_BASE_URL = 'http://localhost:5001/api/v1';
+const DEFAULT_BASE_URL = 'https://api.qrcodly.de/api/v1';
 
 export class ApiError extends Error {
 	constructor(
@@ -98,7 +98,6 @@ export class QrcodlyApi {
 		config: TQrCodeOptions;
 		data: string;
 		sizePx?: number;
-		format?: 'png' | 'webp' | 'jpeg' | 'svg';
 	}): Promise<Blob> {
 		const response = await fetch(`${this.baseUrl}/qr-code/render`, {
 			method: 'POST',
@@ -111,10 +110,10 @@ export class QrcodlyApi {
 		if (!response.ok) {
 			let message = `Render failed: ${response.status}`;
 			try {
-				const err = (await response.json()) as { message?: string };
-				if (err.message) message = err.message;
+				const payload = (await response.json()) as { message?: string };
+				if (payload.message) message = payload.message;
 			} catch {
-				// binary response body
+				/* binary response body, ignore */
 			}
 			throw new ApiError(message, response.status);
 		}
@@ -122,21 +121,11 @@ export class QrcodlyApi {
 	}
 }
 
-// UXP's runtime ships neither FileReader nor URL.createObjectURL in a usable
-// form, so we read the blob bytes ourselves and build the data URL manually.
-function bytesToBase64(bytes: Uint8Array): string {
-	let binary = '';
-	const chunk = 0x8000;
-	for (let i = 0; i < bytes.length; i += chunk) {
-		const slice = bytes.subarray(i, i + chunk);
-		binary += String.fromCharCode.apply(null, Array.from(slice));
-	}
-	return btoa(binary);
-}
-
-export async function blobToDataUrl(blob: Blob): Promise<string> {
-	const buf = await blob.arrayBuffer();
-	const bytes = new Uint8Array(buf);
-	const mime = blob.type || 'image/png';
-	return `data:${mime};base64,${bytesToBase64(bytes)}`;
+export function blobToDataUrl(blob: Blob): Promise<string> {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onload = () => resolve(String(reader.result));
+		reader.onerror = () => reject(new Error('FileReader failed'));
+		reader.readAsDataURL(blob);
+	});
 }
