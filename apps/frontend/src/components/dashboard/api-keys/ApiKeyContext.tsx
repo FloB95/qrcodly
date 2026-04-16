@@ -1,75 +1,22 @@
 'use client';
 
 import { createContext, useContext } from 'react';
-import { useAPIKeys } from '@clerk/nextjs/experimental';
-import { useClerk } from '@clerk/nextjs';
-import { toast } from '@/components/ui/use-toast';
-import { useTranslations } from 'next-intl';
+import { useListApiKeysQuery } from '@/lib/api/api-key';
 
-interface ApiKeyContextType {
-	apiKeys: ReturnType<typeof useAPIKeys>;
-	createApiKey: (data: {
-		name: string;
-		description?: string;
-		expiresInDays?: number | null;
-	}) => Promise<string | null>;
-	revokeApiKey: (id: string) => Promise<void>;
-}
+type ApiKeyContextType = {
+	apiKeys: ReturnType<typeof useListApiKeysQuery>;
+};
 
 const ApiKeyContext = createContext<ApiKeyContextType | undefined>(undefined);
 
-interface ApiKeyProviderProps {
+type ApiKeyProviderProps = {
 	userId: string;
 	children: React.ReactNode;
-}
+};
 
-export function ApiKeyProvider({ userId, children }: ApiKeyProviderProps) {
-	const t = useTranslations('dashboard.apiKeys');
-	const clerk = useClerk();
-	const apiKeys = useAPIKeys({ subject: userId });
-
-	const createApiKey = async (data: {
-		name: string;
-		description?: string;
-		expiresInDays?: number | null;
-	}) => {
-		try {
-			const key = await clerk.apiKeys.create({
-				name: data.name,
-				description: data.description,
-				secondsUntilExpiration: data.expiresInDays ? data.expiresInDays * 86400 : undefined,
-			});
-			void apiKeys.revalidate();
-			return key.secret ?? null;
-		} catch (err: unknown) {
-			toast({
-				title: t('errorTitle'),
-				description: err instanceof Error ? err.message : t('errorDescription'),
-				variant: 'destructive',
-			});
-			return null;
-		}
-	};
-
-	const revokeApiKey = async (id: string) => {
-		try {
-			await clerk.apiKeys.revoke({ apiKeyID: id });
-			void apiKeys.revalidate();
-			toast({ title: t('revoked'), description: t('revokedDescription') });
-		} catch (err: unknown) {
-			toast({
-				title: t('errorTitle'),
-				description: err instanceof Error ? err.message : t('errorDescription'),
-				variant: 'destructive',
-			});
-		}
-	};
-
-	return (
-		<ApiKeyContext.Provider value={{ apiKeys, createApiKey, revokeApiKey }}>
-			{children}
-		</ApiKeyContext.Provider>
-	);
+export function ApiKeyProvider({ children }: ApiKeyProviderProps) {
+	const apiKeys = useListApiKeysQuery();
+	return <ApiKeyContext.Provider value={{ apiKeys }}>{children}</ApiKeyContext.Provider>;
 }
 
 export function useApiKeysContext() {

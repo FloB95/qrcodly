@@ -1,3 +1,3 @@
-import type { useAPIKeys } from '@clerk/nextjs/experimental';
+import type { TApiKeyResponseDto } from '@shared/schemas';
 
-export type ApiKey = NonNullable<ReturnType<typeof useAPIKeys>['data']>[number];
+export type ApiKey = TApiKeyResponseDto;

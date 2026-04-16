@@ -1118,7 +1118,8 @@
 			"never": "Nooit",
 			"day": "Dag",
 			"days": "Dagen",
-			"year": "Jaar"
+			"year": "Jaar",
+			"upgradeCta": "Upgraden naar Pro"
 		},
 		"billing": {
 			"title": "Facturering & Abonnement",
@@ -1311,7 +1312,8 @@
 				"tag": {
 					"analytics": "Analytics",
 					"browser": "Browser",
-					"ai": "AI"
+					"ai": "AI",
+					"design": "Ontwerp"
 				},
 				"installCta": "Installeren",
 				"comingSoonCta": "Binnenkort beschikbaar",
@@ -1330,6 +1332,10 @@
 				"chatgpt": {
 					"name": "ChatGPT",
 					"description": "Genereer QR-codes vanuit chat-prompts. Binnenkort beschikbaar."
+				},
+				"adobeIndesign": {
+					"name": "Adobe InDesign",
+					"description": "Blader door QR-codes en voeg ze direct toe aan je InDesign-ontwerpen. Binnenkort beschikbaar."
 				}
 			},
 			"moreIntegrationsTeaser": "Meer integraties zijn onderweg. <contact>Stel een integratie voor</contact>"
@@ -1366,7 +1372,6 @@
 				"detailedAnalytics": "Gedetailleerde analyses",
 				"noCreditCard": "Geen creditcard vereist",
 				"unlimitedTags": "Onbeperkte tags",
-				"limitedApi": "Beperkte API-toegang",
 				"limitedBulk": "Beperkte bulk QR-code generatie"
 			},
 			"pro": {
@@ -1374,12 +1379,13 @@
 				"unlimitedTags": "Onbeperkte tags",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
 				"customDomains": "Eén aangepast domein voor QR-codes en korte URLs",
-				"unlimitedApi": "Onbeperkte API-toegang",
-				"analyticsIntegrations": "Analytics-integraties (Google Analytics, Matomo)",
 				"prioritySupport": "Prioriteitsondersteuning",
-				"teamFeatures": "Teamfuncties (binnenkort)"
+				"teamFeatures": "Teamfuncties (binnenkort)",
+				"apiAccess": "REST API-toegang",
+				"marketplaceIntegrations": "Integraties van derden"
 			}
-		}
+		},
+		"featureInfoAriaLabel": "Meer informatie"
 	},
 	"tags": {
 		"title": "Tags",

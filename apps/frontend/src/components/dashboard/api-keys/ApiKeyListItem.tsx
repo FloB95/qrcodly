@@ -16,9 +16,11 @@ export function ApiKeyListItem({ apiKey, handleRevalidate }: ApiKeyListItemProps
 	const { isRevoking, handleRevoke } = useApiKeyMutations(apiKey.id);
 	const t = useTranslations('settings.apiKeys');
 
-	const createdAt = apiKey.createdAt.toLocaleDateString();
-	const lastUsedAt = apiKey.lastUsedAt ? apiKey.lastUsedAt.toLocaleDateString() : '-';
-	const expiresAt = apiKey.expiration ? apiKey.expiration.toLocaleDateString() : t('neverExpires');
+	const formatDate = (ms: number | null | undefined) =>
+		ms ? new Date(ms).toLocaleDateString() : null;
+	const createdAt = formatDate(apiKey.createdAt) ?? '-';
+	const lastUsedAt = formatDate(apiKey.lastUsedAt) ?? '-';
+	const expiresAt = formatDate(apiKey.expiration) ?? t('neverExpires');
 
 	async function onRevoke() {
 		await handleRevoke();

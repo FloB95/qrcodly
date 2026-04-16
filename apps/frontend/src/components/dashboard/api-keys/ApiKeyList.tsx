@@ -18,7 +18,7 @@ export function ApiKeyList() {
 	const t = useTranslations('settings.apiKeys');
 	const { apiKeys } = useApiKeysContext();
 
-	const handleRevalidate = () => apiKeys.revalidate();
+	const handleRevalidate = () => apiKeys.refetch();
 
 	if (apiKeys.isLoading) {
 		return (
@@ -44,7 +44,9 @@ export function ApiKeyList() {
 		);
 	}
 
-	if (!apiKeys.data || apiKeys.data.length === 0) {
+	const keys = apiKeys.data?.data ?? [];
+
+	if (keys.length === 0) {
 		return (
 			<Empty>
 				<EmptyHeader>
@@ -74,7 +76,7 @@ export function ApiKeyList() {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{apiKeys.data.map((apiKey) => (
+					{keys.map((apiKey) => (
 						<ApiKeyListItem key={apiKey.id} apiKey={apiKey} handleRevalidate={handleRevalidate} />
 					))}
 				</TableBody>

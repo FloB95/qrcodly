@@ -1118,7 +1118,8 @@
 			"never": "Никогда",
 			"day": "День",
 			"days": "Дней",
-			"year": "Год"
+			"year": "Год",
+			"upgradeCta": "Перейти на Pro"
 		},
 		"billing": {
 			"title": "Оплата и Подписка",
@@ -1311,7 +1312,8 @@
 				"tag": {
 					"analytics": "Аналитика",
 					"browser": "Браузер",
-					"ai": "ИИ"
+					"ai": "ИИ",
+					"design": "Дизайн"
 				},
 				"installCta": "Установить",
 				"comingSoonCta": "Скоро",
@@ -1330,6 +1332,10 @@
 				"chatgpt": {
 					"name": "ChatGPT",
 					"description": "Генерируйте QR-коды из чат-промптов. Скоро."
+				},
+				"adobeIndesign": {
+					"name": "Adobe InDesign",
+					"description": "Просматривайте и вставляйте QR-коды прямо в макеты InDesign. Скоро."
 				}
 			},
 			"moreIntegrationsTeaser": "В разработке ещё больше интеграций. <contact>Предложить интеграцию</contact>"
@@ -1366,7 +1372,6 @@
 				"detailedAnalytics": "Подробная аналитика",
 				"noCreditCard": "Кредитная карта не требуется",
 				"unlimitedTags": "Неограниченные теги",
-				"limitedApi": "Ограниченный доступ к API",
 				"limitedBulk": "Ограниченная массовая генерация QR-кодов"
 			},
 			"pro": {
@@ -1374,12 +1379,13 @@
 				"unlimitedTags": "Неограниченные теги",
 				"largerBulkImports": "Большие массовые импорты (50 строк, 2МБ)",
 				"customDomains": "Один собственный домен для QR-кодов и коротких URL",
-				"unlimitedApi": "Неограниченный доступ к API",
-				"analyticsIntegrations": "Интеграции аналитики (Google Analytics, Matomo)",
 				"prioritySupport": "Приоритетная поддержка",
-				"teamFeatures": "Командные функции (скоро)"
+				"teamFeatures": "Командные функции (скоро)",
+				"apiAccess": "Доступ к REST API",
+				"marketplaceIntegrations": "Сторонние интеграции"
 			}
-		}
+		},
+		"featureInfoAriaLabel": "Подробнее"
 	},
 	"tags": {
 		"title": "Теги",

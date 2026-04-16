@@ -1,8 +1,9 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { PLAN_CONFIGS, type PlanId } from '@/lib/plan.config';
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { FEATURE_INFO_LINKS, PLAN_CONFIGS, type PlanId } from '@/lib/plan.config';
+import { CheckIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import React, { useState } from 'react';
 import { ProCTA } from './ProCTA';
@@ -83,14 +84,29 @@ export const PricingCard = ({
 			</p>
 
 			<ul className="mt-8 space-y-3 text-sm">
-				{planConfig.featureKeys.map((featureKey) => (
-					<li key={featureKey} className="flex gap-x-3">
-						<CheckIcon
-							className={cn('h-5 w-5 flex-none', isPro ? 'text-teal-500' : 'text-teal-700')}
-						/>
-						{t(featureKey)}
-					</li>
-				))}
+				{planConfig.featureKeys.map((featureKey) => {
+					const infoHref = FEATURE_INFO_LINKS[featureKey];
+					return (
+						<li key={featureKey} className="flex items-center gap-x-3">
+							<CheckIcon
+								className={cn('h-5 w-5 flex-none', isPro ? 'text-teal-500' : 'text-teal-700')}
+							/>
+							<span>{t(featureKey)}</span>
+							{infoHref && (
+								<Link
+									href={infoHref}
+									aria-label={t('featureInfoAriaLabel')}
+									className={cn(
+										'inline-flex items-center',
+										isPro ? 'text-slate-400 hover:text-white' : 'text-gray-400 hover:text-gray-600',
+									)}
+								>
+									<InformationCircleIcon className="h-4 w-4" />
+								</Link>
+							)}
+						</li>
+					);
+				})}
 			</ul>
 
 			{isPro && (

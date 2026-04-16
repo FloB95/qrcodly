@@ -1122,7 +1122,8 @@
 			"never": "Nunca",
 			"day": "Día",
 			"days": "Días",
-			"year": "Año"
+			"year": "Año",
+			"upgradeCta": "Actualizar a Pro"
 		},
 		"billing": {
 			"title": "Facturación y Suscripción",
@@ -1315,7 +1316,8 @@
 				"tag": {
 					"analytics": "Analítica",
 					"browser": "Navegador",
-					"ai": "IA"
+					"ai": "IA",
+					"design": "Diseño"
 				},
 				"installCta": "Instalar",
 				"comingSoonCta": "Próximamente",
@@ -1334,6 +1336,10 @@
 				"chatgpt": {
 					"name": "ChatGPT",
 					"description": "Genera códigos QR a partir de prompts de chat. Próximamente."
+				},
+				"adobeIndesign": {
+					"name": "Adobe InDesign",
+					"description": "Explora e inserta códigos QR directamente en tus diseños de InDesign. Próximamente."
 				}
 			},
 			"moreIntegrationsTeaser": "Más integraciones en camino. <contact>Sugerir una integración</contact>"
@@ -1370,7 +1376,6 @@
 				"detailedAnalytics": "Analíticas detalladas",
 				"noCreditCard": "Sin tarjeta de crédito requerida",
 				"unlimitedTags": "Etiquetas ilimitadas",
-				"limitedApi": "Acceso API limitado",
 				"limitedBulk": "Generación masiva de códigos QR limitada"
 			},
 			"pro": {
@@ -1378,12 +1383,13 @@
 				"unlimitedTags": "Etiquetas ilimitadas",
 				"largerBulkImports": "Importaciones masivas más grandes (50 filas, 2MB)",
 				"customDomains": "Un dominio personalizado para códigos QR y URLs cortas",
-				"unlimitedApi": "Acceso API ilimitado",
-				"analyticsIntegrations": "Integraciones de analítica (Google Analytics, Matomo)",
 				"prioritySupport": "Soporte prioritario",
-				"teamFeatures": "Funciones de equipo (próximamente)"
+				"teamFeatures": "Funciones de equipo (próximamente)",
+				"apiAccess": "Acceso a la API REST",
+				"marketplaceIntegrations": "Integraciones de terceros"
 			}
-		}
+		},
+		"featureInfoAriaLabel": "Más información"
 	},
 	"tags": {
 		"title": "Etiquetas",

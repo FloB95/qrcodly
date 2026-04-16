@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { CheckIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, InformationCircleIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { cn, formatDate } from '@/lib/utils';
 import { env } from '@/env';
-import { PLAN_CONFIGS } from '@/lib/plan.config';
+import { FEATURE_INFO_LINKS, PLAN_CONFIGS } from '@/lib/plan.config';
 import { Skeleton } from '@/components/ui/skeleton';
 import posthog from 'posthog-js';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
@@ -110,12 +111,24 @@ export function CurrentPlanSection() {
 					<p className="text-sm text-muted-foreground">{tPlans('free.description')}</p>
 
 					<ul className="space-y-3 text-sm">
-						{PLAN_CONFIGS.free.featureKeys.map((featureKey) => (
-							<li key={featureKey} className="flex gap-x-3">
-								<CheckIcon className="h-5 w-5 flex-none text-teal-700 dark:text-teal-500" />
-								{tPlans(featureKey)}
-							</li>
-						))}
+						{PLAN_CONFIGS.free.featureKeys.map((featureKey) => {
+							const infoHref = FEATURE_INFO_LINKS[featureKey];
+							return (
+								<li key={featureKey} className="flex items-center gap-x-3">
+									<CheckIcon className="h-5 w-5 flex-none text-teal-700 dark:text-teal-500" />
+									<span>{tPlans(featureKey)}</span>
+									{infoHref && (
+										<Link
+											href={infoHref}
+											aria-label={tPlans('featureInfoAriaLabel')}
+											className="text-muted-foreground hover:text-foreground"
+										>
+											<InformationCircleIcon className="h-4 w-4" />
+										</Link>
+									)}
+								</li>
+							);
+						})}
 					</ul>
 				</CardContent>
 			</Card>
@@ -201,12 +214,24 @@ export function CurrentPlanSection() {
 					)}
 
 					<ul className="space-y-3 text-sm">
-						{PLAN_CONFIGS.pro.featureKeys.map((featureKey) => (
-							<li key={featureKey} className="flex gap-x-3">
-								<CheckIcon className="h-5 w-5 flex-none text-teal-500" />
-								{tPlans(featureKey)}
-							</li>
-						))}
+						{PLAN_CONFIGS.pro.featureKeys.map((featureKey) => {
+							const infoHref = FEATURE_INFO_LINKS[featureKey];
+							return (
+								<li key={featureKey} className="flex items-center gap-x-3">
+									<CheckIcon className="h-5 w-5 flex-none text-teal-500" />
+									<span>{tPlans(featureKey)}</span>
+									{infoHref && (
+										<Link
+											href={infoHref}
+											aria-label={tPlans('featureInfoAriaLabel')}
+											className="text-slate-400 hover:text-white"
+										>
+											<InformationCircleIcon className="h-4 w-4" />
+										</Link>
+									)}
+								</li>
+							);
+						})}
 					</ul>
 
 					<div className="pt-4">

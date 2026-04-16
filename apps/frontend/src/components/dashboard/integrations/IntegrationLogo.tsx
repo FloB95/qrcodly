@@ -11,6 +11,7 @@ const LOGO_FILE_BY_ID: Record<string, string> = {
 	matomo: 'matomo.svg',
 	'browser-extension-chrome': 'chrome.png',
 	chatgpt: 'chatgpt.webp',
+	'adobe-indesign': 'adobe-indesign.png',
 };
 
 type IntegrationLogoProps = {

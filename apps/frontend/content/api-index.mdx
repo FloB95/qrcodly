@@ -13,6 +13,11 @@ It is designed to be simple, fast, and scalable for both small projects and prod
 
 The API is fully documented using **OpenAPI** and can be integrated into any modern backend or frontend stack.
 
+<Callout type="warning">
+	API access is a **Pro plan feature**. A Pro subscription is required to create and use API
+	keys.
+</Callout>
+
 ---
 
 ## Step 1: Download the OpenAPI Specification
@@ -40,27 +45,25 @@ https://api.qrcodly.de/api/v1/openapi.json
 
 ## Step 2: Create an API Key
 
-To authenticate requests, you need an **API key**.
+To authenticate requests, you need an **API key**. A Pro plan is required.
 
 ### How to create an API key
 
 1. Log in to your QRcodly account
-2. Click on the **profile icon** in the top-right corner
-3. Select **Manage account**
-4. Navigate to **API Keys**
-5. Create a new API key
+2. Open **Dashboard → Settings → API Keys**
+3. Click **Create API Key**, give it a name and optional expiration
+4. Copy the secret **immediately** — it is shown only once
 
 <Callout type="warning">
 	<p>Keep your API key secret. Do not expose it in public repositories or client-side code.</p>
 
     <p>
     	Your API key is shown <strong>only once</strong> during creation and cannot be viewed again.
-    	Make sure to store it securely (for example in a password manager or environment variables). If
-    	the key is lost or compromised, you must generate a new one.
+    	Store it in a password manager or environment variable. If the key is lost or compromised,
+    	revoke it and generate a new one from the same settings page.
     </p>
 
 </Callout>
-Once created, include the API key in your requests as required by the API documentation.
 
 ---
 
@@ -78,18 +81,18 @@ Authorization: Bearer YOUR_API_KEY
 
 ## Rate Limits & Plans
 
-QRcodly offers different limits depending on your subscription plan.
+The API is available exclusively on the **Pro plan**.
+
+### Pro Plan
+
+- Generous per-user rate limits suitable for production workloads
+- Access to all REST endpoints (QR codes, templates, tags, analytics integrations)
+- Priority support for integration issues
 
 ### Free Plan
 
-- Limited number of API requests
-- **Strict rate limiting**
-
-### Pro Plan (coming soon)
-
-- **Unlimited API requests**
-- Much more relaxed rate limiting
-- Ideal for production use and high-traffic applications
+- API keys cannot be created on the Free plan
+- [Upgrade to Pro](/plans) to unlock API access
 
 ---
 

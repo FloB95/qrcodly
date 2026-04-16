@@ -2,7 +2,7 @@ import type { TProviderType } from '@shared/schemas';
 
 export type IntegrationKind = 'analytics' | 'external-link' | 'coming-soon';
 
-export type IntegrationTag = 'analytics' | 'browser' | 'ai';
+export type IntegrationTag = 'analytics' | 'browser' | 'ai' | 'design';
 
 type BaseIntegrationEntry = {
 	id: string;
@@ -72,5 +72,13 @@ export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 		tags: ['ai'],
 		nameKey: 'chatgpt.name',
 		descriptionKey: 'chatgpt.description',
+	},
+	{
+		id: 'adobe-indesign',
+		slug: 'adobe-indesign',
+		kind: 'coming-soon',
+		tags: ['design'],
+		nameKey: 'adobeIndesign.name',
+		descriptionKey: 'adobeIndesign.description',
 	},
 ];
