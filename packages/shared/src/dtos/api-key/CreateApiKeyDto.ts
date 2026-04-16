@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 export const API_KEY_NAME_MAX_LENGTH = 64;
-export const API_KEY_DESCRIPTION_MAX_LENGTH = 256;
+// Clerk's API-key description field rejects anything above 255 characters.
+export const API_KEY_DESCRIPTION_MAX_LENGTH = 255;
 
 export const CreateApiKeyDto = z.object({
 	name: z.string().min(1).max(API_KEY_NAME_MAX_LENGTH),

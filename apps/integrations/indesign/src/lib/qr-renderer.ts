@@ -6,18 +6,6 @@ type QrCodeLike = Pick<TQrCode, 'config' | 'content'> & {
 	shortUrl?: { shortCode: string } | null;
 };
 
-export async function fetchRemoteSvg(url: string): Promise<string | null> {
-	try {
-		const res = await fetch(url);
-		if (!res.ok) return null;
-		const text = await res.text();
-		if (!text.trim().startsWith('<')) return null;
-		return text;
-	} catch {
-		return null;
-	}
-}
-
 function blobToDataUrl(blob: Blob): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader();

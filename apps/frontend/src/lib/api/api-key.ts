@@ -10,14 +10,14 @@ import type {
 import { apiRequest } from '../utils';
 
 export const apiKeyQueryKeys = {
-	list: ['listApiKeys'],
+	list: (userId: string | null | undefined) => ['listApiKeys', userId ?? 'anon'] as const,
 } as const;
 
 export function useListApiKeysQuery() {
-	const { getToken } = useAuth();
+	const { getToken, userId } = useAuth();
 
 	return useQuery({
-		queryKey: apiKeyQueryKeys.list,
+		queryKey: apiKeyQueryKeys.list(userId),
 		queryFn: async () => {
 			const token = await getToken();
 			return apiRequest<{ data: TApiKeyResponseDto[] }>('/api-key', {
@@ -28,12 +28,13 @@ export function useListApiKeysQuery() {
 				},
 			});
 		},
+		enabled: !!userId,
 		staleTime: 60 * 1000,
 	});
 }
 
 export function useCreateApiKeyMutation() {
-	const { getToken } = useAuth();
+	const { getToken, userId } = useAuth();
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -49,13 +50,13 @@ export function useCreateApiKeyMutation() {
 			});
 		},
 		onSuccess: () => {
-			void queryClient.invalidateQueries({ queryKey: apiKeyQueryKeys.list });
+			void queryClient.invalidateQueries({ queryKey: apiKeyQueryKeys.list(userId) });
 		},
 	});
 }
 
 export function useRevokeApiKeyMutation() {
-	const { getToken } = useAuth();
+	const { getToken, userId } = useAuth();
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -70,7 +71,7 @@ export function useRevokeApiKeyMutation() {
 			});
 		},
 		onSuccess: () => {
-			void queryClient.invalidateQueries({ queryKey: apiKeyQueryKeys.list });
+			void queryClient.invalidateQueries({ queryKey: apiKeyQueryKeys.list(userId) });
 		},
 	});
 }

@@ -9,7 +9,6 @@ import {
 	type TRenderQrCodeFormat,
 } from '@shared/schemas';
 import { type IBaseUseCase } from '@/core/interface/base-use-case.interface';
-import { Logger } from '@/core/logging';
 import { ImageService } from '@/core/services/image.service';
 import { generateQrCodeStylingInstance } from '../lib/styled-qr-code';
 
@@ -21,10 +20,7 @@ export type RenderQrCodeResult = {
 
 @injectable()
 export class RenderQrCodeUseCase implements IBaseUseCase {
-	constructor(
-		@inject(Logger) private readonly logger: Logger,
-		@inject(ImageService) private readonly imageService: ImageService,
-	) {}
+	constructor(@inject(ImageService) private readonly imageService: ImageService) {}
 
 	async execute(dto: TRenderQrCodeDto): Promise<RenderQrCodeResult> {
 		const format: TRenderQrCodeFormat = dto.format ?? 'png';
@@ -55,7 +51,8 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 		const libraryOptions = convertQrCodeOptionsToLibraryOptions(dto.config);
 
 		if (libraryOptions.image && !libraryOptions.image.startsWith('data:')) {
-			libraryOptions.image = (await this.resolveImageToDataUrl(libraryOptions.image)) ?? undefined;
+			libraryOptions.image =
+				(await this.imageService.getImageAsDataUrl(libraryOptions.image)) ?? undefined;
 		}
 
 		const instance = generateQrCodeStylingInstance({ ...libraryOptions, data: dto.data });
@@ -79,24 +76,5 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 			.update(JSON.stringify({ config: dto.config, data: dto.data, format, sizePx }))
 			.digest('hex');
 		return `"${hash.slice(0, 16)}"`;
-	}
-
-	private async resolveImageToDataUrl(image: string): Promise<string | undefined> {
-		if (/^https?:\/\//i.test(image)) {
-			try {
-				const res = await fetch(image);
-				if (!res.ok) return undefined;
-				const mime = res.headers.get('content-type') ?? 'application/octet-stream';
-				const buffer = Buffer.from(await res.arrayBuffer());
-				return `data:${mime};base64,${buffer.toString('base64')}`;
-			} catch (err) {
-				this.logger.warn('qr-code.render.image.http-fetch-failed', {
-					image,
-					error: (err as Error).message,
-				});
-				return undefined;
-			}
-		}
-		return this.imageService.getImageAsDataUrl(image);
 	}
 }

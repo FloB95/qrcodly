@@ -21,7 +21,7 @@
 	],
 	"requiredPermissions": {
 		"network": {
-			"domains": ["https://qrcodly.de", "https://*.qrcodly.de", "http://localhost:5001"]
+			"domains": ["https://qrcodly.de", "https://*.qrcodly.de"]
 		},
 		"localFileSystem": "plugin",
 		"clipboard": "readAndWrite"

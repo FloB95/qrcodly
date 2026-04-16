@@ -18,7 +18,7 @@ export default async function Page({ params }: DefaultPageParams) {
 	}
 
 	return (
-		<ApiKeyProvider userId={user.id}>
+		<ApiKeyProvider>
 			<Card className="@container/card">
 				<CardContent className="relative px-4 sm:px-6">
 					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">

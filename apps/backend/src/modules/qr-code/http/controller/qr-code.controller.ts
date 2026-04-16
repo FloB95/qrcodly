@@ -339,10 +339,8 @@ export class QrCodeController extends AbstractController {
 			rateLimitPolicy: RateLimitPolicy.QR_RENDER,
 		},
 	})
-	async render(
-		request: IHttpRequest<TRenderQrCodeDto, unknown, unknown, false>,
-	): Promise<IHttpResponse<Buffer>> {
-		const incomingEtag = (request.headers?.['if-none-match'] as string | undefined) ?? undefined;
+	async render(request: IHttpRequest<TRenderQrCodeDto>): Promise<IHttpResponse<Buffer>> {
+		const incomingEtag = request.headers?.['if-none-match'];
 		const result = await this.renderQrCodeUseCase.execute(request.body);
 
 		if (incomingEtag && incomingEtag === result.etag) {

@@ -10,7 +10,6 @@ type ApiKeyContextType = {
 const ApiKeyContext = createContext<ApiKeyContextType | undefined>(undefined);
 
 type ApiKeyProviderProps = {
-	userId: string;
 	children: React.ReactNode;
 };
 

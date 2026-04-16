@@ -116,10 +116,7 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 			return;
 		}
 
-		setSubmitting(false);
-
-		void (async () => {
-			if (!newQr.qrCodeData) return;
+		if (newQr.qrCodeData) {
 			try {
 				const blob = await api.renderQrPng({
 					config: newQr.config,
@@ -128,11 +125,17 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 				});
 				const pngDataUrl = await blobToDataUrl(blob);
 				await placePngInActiveDocument(pngDataUrl, newQr.name ?? newQr.id);
-			} catch {
-				// swallow — user sees the created QR in the list and can click to place
+			} catch (err) {
+				// The QR was created successfully server-side — only placement failed.
+				// Surface the error but still return the user to the list so they can
+				// click the saved QR to retry insertion.
+				setError(err instanceof Error ? err.message : 'Failed to place QR code');
+				setSubmitting(false);
+				return;
 			}
-		})();
+		}
 
+		setSubmitting(false);
 		onDone();
 	};
 

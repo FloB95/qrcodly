@@ -2,10 +2,12 @@
 
 import { TableCell, TableRow } from '@/components/ui/table';
 import { ApiKeyListItemActions } from './ApiKeyListItemActions';
-import { useApiKeyMutations } from './hooks/useApiKeyMutations';
+import { useRevokeApiKeyMutation } from '@/lib/api/api-key';
 import { cn } from '@/lib/utils';
 import type { ApiKey } from './types';
 import { useTranslations } from 'next-intl';
+import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 
 interface ApiKeyListItemProps {
 	apiKey: ApiKey;
@@ -13,7 +15,8 @@ interface ApiKeyListItemProps {
 }
 
 export function ApiKeyListItem({ apiKey, handleRevalidate }: ApiKeyListItemProps) {
-	const { isRevoking, handleRevoke } = useApiKeyMutations(apiKey.id);
+	const revoke = useRevokeApiKeyMutation();
+	const isRevoking = revoke.isPending;
 	const t = useTranslations('settings.apiKeys');
 
 	const formatDate = (ms: number | null | undefined) =>
@@ -23,8 +26,15 @@ export function ApiKeyListItem({ apiKey, handleRevalidate }: ApiKeyListItemProps
 	const expiresAt = formatDate(apiKey.expiration) ?? t('neverExpires');
 
 	async function onRevoke() {
-		await handleRevoke();
-		handleRevalidate();
+		try {
+			await revoke.mutateAsync(apiKey.id);
+			posthog.capture('api-key:revoked', { apiKeyId: apiKey.id });
+			handleRevalidate();
+		} catch (error) {
+			Sentry.captureException(error);
+			posthog.capture('error:api-key-revoke', { error, apiKeyId: apiKey.id });
+			throw error;
+		}
 	}
 
 	return (

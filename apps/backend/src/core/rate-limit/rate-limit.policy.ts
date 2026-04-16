@@ -66,8 +66,8 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	},
 	[RateLimitPolicy.QR_RENDER]: {
 		[RateLimitTier.ANONYMOUS]: 0,
-		[RateLimitTier.AUTHENTICATED]: 400,
-		[RateLimitTier.PRO_PLAN]: 600,
+		[RateLimitTier.AUTHENTICATED]: 50,
+		[RateLimitTier.PRO_PLAN]: 200,
 	},
 	[RateLimitPolicy.SURVEY_SUBMIT]: {
 		[RateLimitTier.ANONYMOUS]: 0,

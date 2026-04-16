@@ -28,19 +28,11 @@ function getUxp(): UxpModule | null {
 }
 
 function stringToBytes(value: string): Uint8Array {
-	const bytes = new Uint8Array(value.length);
-	for (let i = 0; i < value.length; i++) {
-		bytes[i] = value.charCodeAt(i) & 0xff;
-	}
-	return bytes;
+	return new TextEncoder().encode(value);
 }
 
 function bytesToString(bytes: Uint8Array): string {
-	let out = '';
-	for (let i = 0; i < bytes.length; i++) {
-		out += String.fromCharCode(bytes[i]);
-	}
-	return out;
+	return new TextDecoder().decode(bytes);
 }
 
 export async function getStoredApiKey(): Promise<string | null> {

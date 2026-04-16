@@ -1,7 +1,12 @@
 import { container } from 'tsyringe';
 import { type FastifyInstance } from 'fastify';
-import { resetTestState } from '@/tests/shared/test-context';
+import { resetTestState, TEST_USER_PRO_ID } from '@/tests/shared/test-context';
 import { ClerkApiKeysService } from '../../service/clerk-api-keys.service';
+import db from '@/core/db';
+import userSubscription from '@/modules/billing/domain/entities/user-subscription.entity';
+import { eq } from 'drizzle-orm';
+import { randomUUID } from 'crypto';
+import { KeyCache } from '@/core/cache';
 import {
 	API_KEY_API_PATH,
 	QR_CODE_API_PATH,
@@ -17,6 +22,7 @@ describe('api-key endpoints', () => {
 	let accessToken2Free: string;
 	let accessTokenPro: string;
 	const createdApiKeyIds: string[] = [];
+	let proSubscriptionId: string | null = null;
 
 	beforeAll(async () => {
 		await resetTestState();
@@ -25,12 +31,67 @@ describe('api-key endpoints', () => {
 		accessTokenFree = ctx.accessToken;
 		accessToken2Free = ctx.accessToken2;
 		accessTokenPro = ctx.accessTokenPro;
+
+		// Seed an active Pro subscription for the Pro test user so plan gating
+		// resolves to PRO. The middleware caches plan lookups, so also flush the
+		// cache to make sure subsequent requests see the seeded state.
+		await db
+			.delete(userSubscription)
+			.where(eq(userSubscription.userId, TEST_USER_PRO_ID))
+			.execute();
+
+		proSubscriptionId = randomUUID();
+		const now = new Date();
+		const periodEnd = new Date();
+		periodEnd.setDate(periodEnd.getDate() + 30);
+		await db
+			.insert(userSubscription)
+			.values({
+				id: proSubscriptionId,
+				userId: TEST_USER_PRO_ID,
+				stripeCustomerId: `cus_test_${randomUUID().slice(0, 8)}`,
+				stripeSubscriptionId: `sub_test_${randomUUID().slice(0, 8)}`,
+				stripePriceId: 'price_test_monthly',
+				status: 'active',
+				currentPeriodStart: now,
+				currentPeriodEnd: periodEnd,
+				cancelAtPeriodEnd: false,
+				gracePeriodEndsAt: null,
+				proFeaturesDisabledAt: null,
+				cancellationNotifiedAt: null,
+				cancellationReminderSentAt: null,
+				pastDueNotifiedAt: null,
+				createdAt: now,
+				updatedAt: now,
+			})
+			.execute();
+
+		await container.resolve(KeyCache).flushAllCache();
+
+		// Delete any pre-existing keys (active or revoked) from previous runs.
+		// Clerk keeps revoked keys and blocks re-creating a key with the same
+		// name + subject ("token_creation_conflict" 409), so we must fully
+		// delete — not just revoke — to keep the tests hermetic across runs.
+		const clerk = container.resolve(ClerkApiKeysService);
+		try {
+			const existing = await clerk.apiKeys.list({
+				subject: TEST_USER_PRO_ID,
+				includeInvalid: true,
+			});
+			await Promise.allSettled(existing.data.map((k) => clerk.apiKeys.delete(k.id)));
+		} catch {
+			// best-effort cleanup — proceed
+		}
 	});
 
 	afterAll(async () => {
-		// Clean up any keys left in Clerk so repeated test runs stay hermetic.
+		// Hard-delete any keys created in this run so the next run starts clean.
 		const clerk = container.resolve(ClerkApiKeysService);
-		await Promise.allSettled(createdApiKeyIds.map((id) => clerk.apiKeys.revoke({ apiKeyId: id })));
+		await Promise.allSettled(createdApiKeyIds.map((id) => clerk.apiKeys.delete(id)));
+
+		if (proSubscriptionId) {
+			await db.delete(userSubscription).where(eq(userSubscription.id, proSubscriptionId)).execute();
+		}
 	});
 
 	describe('POST /api-key', () => {
@@ -273,10 +334,10 @@ describe('api-key endpoints', () => {
 			expect(response.statusCode).toBe(400);
 		});
 
-		it('rejects a description longer than 256 chars', async () => {
+		it('rejects a description longer than 255 chars', async () => {
 			const response = await createApiKeyRequest(
 				testServer,
-				{ name: 'Bad desc', description: 'x'.repeat(257) },
+				{ name: 'Bad desc', description: 'x'.repeat(256) },
 				accessTokenPro,
 			);
 			expect(response.statusCode).toBe(400);
@@ -296,7 +357,7 @@ describe('api-key endpoints', () => {
 				testServer,
 				{
 					name: 'x'.repeat(64),
-					description: 'y'.repeat(256),
+					description: 'y'.repeat(255),
 					expiresInDays: 365,
 				},
 				accessTokenPro,
@@ -304,7 +365,7 @@ describe('api-key endpoints', () => {
 			expect(response.statusCode).toBe(201);
 			const body = JSON.parse(response.payload);
 			expect(body.name.length).toBe(64);
-			expect(body.description.length).toBe(256);
+			expect(body.description.length).toBe(255);
 			createdApiKeyIds.push(body.id);
 		});
 

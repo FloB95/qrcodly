@@ -35,7 +35,7 @@ export const fastifyRequestParser = <T extends IHttpRequest>(
 		}
 	}
 
-	return Object.freeze({ ...request, cookies }) as T;
+	return Object.freeze({ ...request, cookies, headers: request.headers }) as T;
 };
 
 export const fastifyErrorHandler = (

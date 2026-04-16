@@ -32,10 +32,6 @@ export type IntegrationCatalogEntry =
 	| ExternalLinkIntegrationEntry
 	| ComingSoonIntegrationEntry;
 
-// Chrome Web Store listing — replace `TODO_EXTENSION_ID` with the real ID
-// once the extension has been published and Google assigned its store ID.
-const CHROME_EXTENSION_URL = 'https://chromewebstore.google.com/detail/qrcodly/TODO_EXTENSION_ID';
-
 export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 	{
 		id: 'google-analytics',
@@ -58,9 +54,7 @@ export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 	{
 		id: 'browser-extension-chrome',
 		slug: 'browser-extension-chrome',
-		kind: 'external-link',
-		href: CHROME_EXTENSION_URL,
-		ctaKey: 'installCta',
+		kind: 'coming-soon',
 		tags: ['browser'],
 		nameKey: 'browserExtensionChrome.name',
 		descriptionKey: 'browserExtensionChrome.description',
