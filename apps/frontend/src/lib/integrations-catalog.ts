@@ -21,6 +21,7 @@ export type ExternalLinkIntegrationEntry = BaseIntegrationEntry & {
 	kind: 'external-link';
 	href: string;
 	ctaKey: string;
+	requiresApiKey?: boolean;
 };
 
 export type ComingSoonIntegrationEntry = BaseIntegrationEntry & {
@@ -76,5 +77,6 @@ export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 		descriptionKey: 'adobeIndesign.description',
 		href: 'https://exchange.adobe.com/apps/cc/7b62450e',
 		ctaKey: 'adobeIndesign.cta',
+		requiresApiKey: true,
 	},
 ];

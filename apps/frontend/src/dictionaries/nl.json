@@ -102,7 +102,8 @@
 		"dynamicBadgeTooltip": "Maakt het mogelijk om de inhoud later te wijzigen zonder nieuwe QR-code. <i>Hover voor meer info</i>",
 		"copyFailed": "Kon niet naar klembord kopiëren. Kopieer het handmatig.",
 		"showMore": "Meer tonen",
-		"showLess": "Minder tonen"
+		"showLess": "Minder tonen",
+		"apiKeyRequired": "API-sleutel vereist"
 	},
 	"hero": {
 		"badge": "Open Source & Voor Altijd Gratis",
@@ -1335,7 +1336,7 @@
 				},
 				"adobeIndesign": {
 					"name": "Adobe InDesign",
-					"description": "Plaats QR-codes direct in je InDesign-ontwerpen, maak nieuwe aan en beheer bestaande — allemaal zonder InDesign te verlaten. Vereist een Pro-abonnement en een API-sleutel.",
+					"description": "Plaats QR-codes direct in je InDesign-ontwerpen, maak nieuwe aan en beheer bestaande — allemaal zonder InDesign te verlaten.",
 					"cta": "Plugin ophalen"
 				}
 			},

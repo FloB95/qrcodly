@@ -102,7 +102,8 @@
 		"dynamicBadgeTooltip": "Umożliwia późniejszą zmianę treści bez nowego kodu QR. <i>Najedź kursorem, aby uzyskać więcej informacji</i>",
 		"copyFailed": "Nie udało się skopiować do schowka. Skopiuj ręcznie.",
 		"showMore": "Pokaż więcej",
-		"showLess": "Pokaż mniej"
+		"showLess": "Pokaż mniej",
+		"apiKeyRequired": "Klucz API wymagany"
 	},
 	"hero": {
 		"badge": "Open Source i Zawsze Za Darmo",
@@ -1335,7 +1336,7 @@
 				},
 				"adobeIndesign": {
 					"name": "Adobe InDesign",
-					"description": "Umieszczaj kody QR bezpośrednio w swoich projektach InDesign, twórz nowe i zarządzaj istniejącymi — wszystko bez opuszczania InDesign. Wymaga planu Pro i klucza API.",
+					"description": "Umieszczaj kody QR bezpośrednio w swoich projektach InDesign, twórz nowe i zarządzaj istniejącymi — wszystko bez opuszczania InDesign.",
 					"cta": "Pobierz plugin"
 				}
 			},

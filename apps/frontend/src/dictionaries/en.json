@@ -102,7 +102,8 @@
 		"dynamicBadgeTooltip": "Enables changing content later without a new QR code. <i>Hover for more info</i>",
 		"copyFailed": "Could not copy to clipboard. Please copy manually.",
 		"showMore": "Show more",
-		"showLess": "Show less"
+		"showLess": "Show less",
+		"apiKeyRequired": "API Key Required"
 	},
 	"hero": {
 		"badge": "Open Source & Free Forever",
@@ -1335,7 +1336,7 @@
 				},
 				"adobeIndesign": {
 					"name": "Adobe InDesign",
-					"description": "Place QR codes directly into your InDesign layouts, create new ones, and manage existing codes — all without leaving InDesign. Requires a Pro plan and an API key.",
+					"description": "Place QR codes directly into your InDesign layouts, create new ones, and manage existing codes — all without leaving InDesign.",
 					"cta": "Get Plugin"
 				}
 			},
