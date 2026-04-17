@@ -8,6 +8,24 @@
 		"app": "ID",
 		"minVersion": "18.5.0"
 	},
+	"icons": [
+		{
+			"width": 48,
+			"height": 48,
+			"path": "icons/plugin-dark.png",
+			"scale": [1, 2],
+			"theme": ["darkest", "dark", "medium"],
+			"species": ["pluginList"]
+		},
+		{
+			"width": 48,
+			"height": 48,
+			"path": "icons/plugin-light.png",
+			"scale": [1, 2],
+			"theme": ["lightest", "light"],
+			"species": ["pluginList"]
+		}
+	],
 	"entrypoints": [
 		{
 			"type": "panel",
@@ -15,6 +33,22 @@
 			"label": {
 				"default": "QRcodly"
 			},
+			"icons": [
+				{
+					"width": 23,
+					"height": 23,
+					"path": "icons/dark.png",
+					"scale": [1, 2],
+					"theme": ["darkest", "dark", "medium"]
+				},
+				{
+					"width": 23,
+					"height": 23,
+					"path": "icons/light.png",
+					"scale": [1, 2],
+					"theme": ["lightest", "light"]
+				}
+			],
 			"minimumSize": { "width": 320, "height": 480 },
 			"preferredDockedSize": { "width": 360, "height": 640 }
 		}
