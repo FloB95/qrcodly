@@ -1339,7 +1339,8 @@
 				},
 				"adobeIndesign": {
 					"name": "Adobe InDesign",
-					"description": "Parcourez et insérez des QR codes directement dans vos maquettes InDesign. Bientôt disponible."
+					"description": "Placez des QR codes directement dans vos maquettes InDesign, créez-en de nouveaux et gérez les existants — le tout sans quitter InDesign. Nécessite un plan Pro et une clé API.",
+					"cta": "Obtenir le plugin"
 				}
 			},
 			"moreIntegrationsTeaser": "D'autres intégrations arrivent. <contact>Proposer une intégration</contact>"

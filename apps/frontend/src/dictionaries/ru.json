@@ -1335,7 +1335,8 @@
 				},
 				"adobeIndesign": {
 					"name": "Adobe InDesign",
-					"description": "Просматривайте и вставляйте QR-коды прямо в макеты InDesign. Скоро."
+					"description": "Размещайте QR-коды прямо в макетах InDesign, создавайте новые и управляйте существующими — всё не выходя из InDesign. Требуется план Pro и API-ключ.",
+					"cta": "Получить плагин"
 				}
 			},
 			"moreIntegrationsTeaser": "В разработке ещё больше интеграций. <contact>Предложить интеграцию</contact>"

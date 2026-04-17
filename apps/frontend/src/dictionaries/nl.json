@@ -1335,7 +1335,8 @@
 				},
 				"adobeIndesign": {
 					"name": "Adobe InDesign",
-					"description": "Blader door QR-codes en voeg ze direct toe aan je InDesign-ontwerpen. Binnenkort beschikbaar."
+					"description": "Plaats QR-codes direct in je InDesign-ontwerpen, maak nieuwe aan en beheer bestaande — allemaal zonder InDesign te verlaten. Vereist een Pro-abonnement en een API-sleutel.",
+					"cta": "Plugin ophalen"
 				}
 			},
 			"moreIntegrationsTeaser": "Meer integraties zijn onderweg. <contact>Stel een integratie voor</contact>"

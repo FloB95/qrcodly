@@ -1339,7 +1339,8 @@
 				},
 				"adobeIndesign": {
 					"name": "Adobe InDesign",
-					"description": "Explora e inserta códigos QR directamente en tus diseños de InDesign. Próximamente."
+					"description": "Coloca códigos QR directamente en tus diseños de InDesign, crea nuevos y gestiona los existentes — todo sin salir de InDesign. Requiere un plan Pro y una clave API.",
+					"cta": "Obtener plugin"
 				}
 			},
 			"moreIntegrationsTeaser": "Más integraciones en camino. <contact>Sugerir una integración</contact>"

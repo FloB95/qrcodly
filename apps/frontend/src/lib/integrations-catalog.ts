@@ -70,9 +70,11 @@ export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 	{
 		id: 'adobe-indesign',
 		slug: 'adobe-indesign',
-		kind: 'coming-soon',
+		kind: 'external-link',
 		tags: ['design'],
 		nameKey: 'adobeIndesign.name',
 		descriptionKey: 'adobeIndesign.description',
+		href: 'https://exchange.adobe.com/apps/cc/7b62450e',
+		ctaKey: 'adobeIndesign.cta',
 	},
 ];

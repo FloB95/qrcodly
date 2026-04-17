@@ -1335,7 +1335,8 @@
 				},
 				"adobeIndesign": {
 					"name": "Adobe InDesign",
-					"description": "QR-Codes direkt in deinen InDesign-Layouts durchsuchen und einfügen. Demnächst verfügbar."
+					"description": "QR-Codes direkt in deinen InDesign-Layouts platzieren, neue erstellen und bestehende verwalten — alles ohne InDesign zu verlassen. Erfordert einen Pro-Plan und einen API-Key.",
+					"cta": "Plugin holen"
 				}
 			},
 			"moreIntegrationsTeaser": "Weitere Integrationen sind in Arbeit. <contact>Eine Integration vorschlagen</contact>"
