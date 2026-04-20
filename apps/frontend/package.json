@@ -63,7 +63,7 @@
 		"fs": "0.0.1-security",
 		"fumadocs-core": "^16.5.0",
 		"fumadocs-mdx": "^14.2.6",
-		"fumadocs-openapi": "^10.3.1",
+		"fumadocs-openapi": "^10.7.1",
 		"fumadocs-ui": "^16.5.0",
 		"i18n-iso-countries": "^7.14.0",
 		"input-otp": "^1.4.2",
