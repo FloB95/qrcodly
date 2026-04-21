@@ -22,6 +22,7 @@ export type QrCodeProps = {
 	additionalStyles?: string;
 	shortUrl?: TShortUrlWithCustomDomainResponseDto | TShortUrlResponseDto;
 	hasProPlan?: boolean;
+	hideDomainEdit?: boolean;
 };
 
 function getQrCodeData(props: QrCodeProps): string {
@@ -55,7 +56,13 @@ function areQrCodePropsEqual(prev: QrCodeProps, next: QrCodeProps) {
 	return JSON.stringify(optionsPrev) == JSON.stringify(optionsNext);
 }
 
-function QrCode({ qrCode, additionalStyles = '', shortUrl, hasProPlan }: QrCodeProps) {
+function QrCode({
+	qrCode,
+	additionalStyles = '',
+	shortUrl,
+	hasProPlan,
+	hideDomainEdit,
+}: QrCodeProps) {
 	const { link: resolvedShortUrl } = useShortUrlLink(shortUrl);
 	const { link: shortUrlDisplay } = useShortUrlLink(shortUrl, true);
 
@@ -118,9 +125,11 @@ function QrCode({ qrCode, additionalStyles = '', shortUrl, hasProPlan }: QrCodeP
 					>
 						<div className="text-xs ml-4 flex items-center gap-1">
 							<span className="pt-0.5">{shortUrlDisplay}</span>
-							<Link href="/dashboard/settings/domains">
-								<PencilSquareIcon className="size-4 text-black" />
-							</Link>
+							{!hideDomainEdit && (
+								<Link href="/dashboard/settings/domains">
+									<PencilSquareIcon className="size-4 text-black" />
+								</Link>
+							)}
 						</div>
 					</SmartTipPopover>
 				</div>
