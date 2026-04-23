@@ -235,9 +235,6 @@
 		"qrCodesDesc": "Dynamische QR Codes erstellen und anpassen",
 		"analyticsDesc": "Performance über alle Kanäle hinweg messen"
 	},
-	"legal": {
-		"printButton": "Als PDF speichern / Drucken"
-	},
 	"footer": {
 		"tagline": "Die Open-Source QR Code Plattform. Erstelle, verwalte und verfolge QR Codes mit Leichtigkeit.",
 		"product": "Plattform",

@@ -235,9 +235,6 @@
 		"qrCodesDesc": "Create and customize dynamic QR codes",
 		"analyticsDesc": "Measure performance across all channels"
 	},
-	"legal": {
-		"printButton": "Save as PDF / Print"
-	},
 	"footer": {
 		"tagline": "The open-source QR code platform. Create, manage, and track QR codes with ease.",
 		"product": "Platform",
