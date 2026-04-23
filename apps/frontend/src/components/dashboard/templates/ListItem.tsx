@@ -132,7 +132,10 @@ export const TemplateListItem = ({
 				<TableCell className="w-[72px] py-2 pr-2">
 					<HoverCard openDelay={200} closeDelay={100}>
 						<HoverCardTrigger asChild>
-							<div className="flex items-center gap-2">
+							<Link
+								href={`/dashboard/templates/${template.id}/edit`}
+								className="flex items-center gap-2"
+							>
 								<div className="size-14 shrink-0 overflow-hidden rounded">
 									{template.previewImage ? (
 										<Image
@@ -148,26 +151,28 @@ export const TemplateListItem = ({
 										<DynamicQrCode qrCode={qrCodeData} additionalStyles="max-h-14 max-w-14" />
 									)}
 								</div>
-							</div>
+							</Link>
 						</HoverCardTrigger>
 						<HoverCardContent side="right" className="w-auto p-2">
-							<div className="h-[200px] w-[200px] overflow-hidden rounded">
-								{template.previewImage ? (
-									<Image
-										src={template.previewImage}
-										width={200}
-										height={200}
-										alt="Template preview"
-										className="h-[200px] w-[200px] object-cover"
-										unoptimized
-									/>
-								) : (
-									<DynamicQrCode
-										qrCode={qrCodeData}
-										additionalStyles="max-h-[200px] max-w-[200px]"
-									/>
-								)}
-							</div>
+							<Link href={`/dashboard/templates/${template.id}/edit`}>
+								<div className="h-[200px] w-[200px] overflow-hidden rounded">
+									{template.previewImage ? (
+										<Image
+											src={template.previewImage}
+											width={200}
+											height={200}
+											alt="Template preview"
+											className="h-[200px] w-[200px] object-cover"
+											unoptimized
+										/>
+									) : (
+										<DynamicQrCode
+											qrCode={qrCodeData}
+											additionalStyles="max-h-[200px] max-w-[200px]"
+										/>
+									)}
+								</div>
+							</Link>
 						</HoverCardContent>
 					</HoverCard>
 				</TableCell>
