@@ -9,6 +9,6 @@
 	"devDependencies": {
 		"eslint": "^9.27.0",
 		"eslint-config-prettier": "^10.1.2",
-		"typescript-eslint": "^8.31.1"
+		"typescript-eslint": "^8.58.2"
 	}
 }
