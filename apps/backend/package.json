@@ -71,7 +71,7 @@
 		"@fastify/multipart": "^9.3.0",
 		"@fastify/otel": "^0.17.1",
 		"@fastify/rate-limit": "^10.3.0",
-		"@fastify/swagger": "^9.6.1",
+		"@fastify/swagger": "^9.7.0",
 		"@opentelemetry/api": "^1.9.1",
 		"@opentelemetry/exporter-metrics-otlp-proto": "^0.214.0",
 		"@opentelemetry/exporter-trace-otlp-proto": "^0.214.0",
