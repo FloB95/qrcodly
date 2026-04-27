@@ -249,7 +249,7 @@
 		"github": "GitHub",
 		"legal": "Rechtliches",
 		"legalNotice": "Impressum",
-		"privacyPolicy": "Datenschutzrichtlinie",
+		"privacyPolicy": "Datenschutzerklärung",
 		"termsOfService": "AGB",
 		"contact": "Kontakt",
 		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
@@ -1334,7 +1334,7 @@
 				"adobeIndesign": {
 					"name": "Adobe InDesign",
 					"description": "QR-Codes direkt in deinen InDesign-Layouts platzieren, neue erstellen und bestehende verwalten — alles ohne InDesign zu verlassen.",
-					"cta": "Plugin holen"
+					"cta": "Plugin installieren"
 				}
 			},
 			"moreIntegrationsTeaser": "Weitere Integrationen sind in Arbeit. <contact>Eine Integration vorschlagen</contact>"
