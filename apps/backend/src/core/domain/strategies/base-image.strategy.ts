@@ -2,6 +2,7 @@ import { BadRequestError } from '@/core/error/http';
 import { ObjectStorage } from '@/core/storage';
 import { Logger } from '@/core/logging';
 import { container } from 'tsyringe';
+import { v4 as uuidv4 } from 'uuid';
 
 export abstract class BaseImageStrategy {
 	protected readonly validMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
@@ -29,7 +30,7 @@ export abstract class BaseImageStrategy {
 		const buffer = Buffer.from(base64Data, 'base64');
 		const extension = mimeType === 'image/svg+xml' ? 'svg' : mimeType.split('/')[1];
 
-		return { buffer, fileName: `${fileName}.${extension}`, mimeType };
+		return { buffer, fileName: `${fileName}-${uuidv4()}.${extension}`, mimeType };
 	}
 
 	constructFilePath(folder: string, userId: string | undefined, fileName: string): string {
