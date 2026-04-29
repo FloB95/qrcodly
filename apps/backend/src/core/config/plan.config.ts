@@ -26,7 +26,7 @@ export const CUSTOM_DOMAIN_PLAN_LIMITS: Record<PlanName, number> = {
 /**
  * Plan limits for Bulk imports
  *  - free: 10 CSV Lines and 0.5 MB filesize
- *  - pro: 50 CSV Lines and 2 MB filesize
+ *  - pro: 50 CSV Lines and 1 MB filesize
  */
 export type BulkImportLimits = {
 	maxRows: number;
@@ -50,6 +50,6 @@ export const BULK_IMPORT_PLAN_LIMITS: Record<PlanName, BulkImportLimits> = {
 	},
 	pro: {
 		maxRows: 50,
-		maxFileSizeBytes: 2 * 1024 * 1024, // 2MB
+		maxFileSizeBytes: 1024 * 1024, // 1MB
 	},
 };
