@@ -53,6 +53,7 @@ const columnMap: Partial<Record<TQrCodeContentType, { columns: string[]; schema:
 	vCard: {
 		columns: [
 			'name',
+			'title',
 			'firstName',
 			'lastName',
 			'emailPrivate',
@@ -69,6 +70,7 @@ const columnMap: Partial<Record<TQrCodeContentType, { columns: string[]; schema:
 			'state',
 			'country',
 			'website',
+			'note',
 			'isDynamic',
 		],
 		schema: BulkVCardCsvSchema,
@@ -91,16 +93,26 @@ export type CsvValidationResult = {
 	columns: string[];
 };
 
-function parseCsvLine(line: string, delimiter: string): string[] {
-	const fields: string[] = [];
+function parseCsv(text: string, delimiter: string): string[][] {
+	const rows: string[][] = [];
+	let row: string[] = [];
 	let current = '';
 	let inQuotes = false;
 
-	for (let i = 0; i < line.length; i++) {
-		const char = line[i];
+	const pushRow = () => {
+		row.push(current);
+		current = '';
+		if (!(row.length === 1 && row[0] === '')) {
+			rows.push(row);
+		}
+		row = [];
+	};
+
+	for (let i = 0; i < text.length; i++) {
+		const char = text[i];
 
 		if (inQuotes) {
-			if (char === '"' && line[i + 1] === '"') {
+			if (char === '"' && text[i + 1] === '"') {
 				current += '"';
 				i++;
 			} else if (char === '"') {
@@ -108,19 +120,29 @@ function parseCsvLine(line: string, delimiter: string): string[] {
 			} else {
 				current += char;
 			}
+			continue;
+		}
+
+		if (char === '"') {
+			inQuotes = true;
+		} else if (char === delimiter) {
+			row.push(current);
+			current = '';
+		} else if (char === '\n') {
+			pushRow();
+		} else if (char === '\r') {
+			pushRow();
+			if (text[i + 1] === '\n') i++;
 		} else {
-			if (char === '"') {
-				inQuotes = true;
-			} else if (char === delimiter) {
-				fields.push(current);
-				current = '';
-			} else {
-				current += char;
-			}
+			current += char;
 		}
 	}
-	fields.push(current);
-	return fields;
+
+	if (current !== '' || row.length > 0) {
+		pushRow();
+	}
+
+	return rows;
 }
 
 export function getColumnsForContentType(contentType: TQrCodeContentType): string[] | null {
@@ -138,16 +160,16 @@ export async function validateCsvFile(
 
 	const { columns, schema } = mapping;
 	const text = await file.text();
-	const lines = text.split(/\r?\n/).filter((line) => line.trim() !== '');
+	const rows = parseCsv(text, ';');
 
-	if (lines.length === 0) {
+	if (rows.length === 0) {
 		return {
 			errors: [{ line: 1, rawValues: [], fieldErrors: [{ column: '', message: 'File is empty' }] }],
 			columns,
 		};
 	}
 
-	if (lines.length === 1) {
+	if (rows.length === 1) {
 		return {
 			errors: [
 				{
@@ -162,10 +184,9 @@ export async function validateCsvFile(
 
 	const errors: CsvRowError[] = [];
 
-	// Skip header (line 1), validate data rows starting from line 2
-	for (let i = 1; i < lines.length; i++) {
-		const rawValues = parseCsvLine(lines[i]!, ';');
-		const lineNumber = i + 1; // 1-indexed, header is line 1
+	for (let i = 1; i < rows.length; i++) {
+		const rawValues = rows[i]!;
+		const lineNumber = i + 1;
 
 		if (rawValues.length !== columns.length) {
 			errors.push({
@@ -181,7 +202,6 @@ export async function validateCsvFile(
 			continue;
 		}
 
-		// Build record from column names
 		const record: Record<string, string> = {};
 		columns.forEach((col, idx) => {
 			record[col] = rawValues[idx]!;

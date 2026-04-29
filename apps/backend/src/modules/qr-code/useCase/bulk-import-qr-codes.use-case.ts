@@ -43,6 +43,7 @@ export class BulkImportQrCodesUseCase {
 		vCard: {
 			columns: [
 				'name',
+				'title',
 				'firstName',
 				'lastName',
 				'emailPrivate',
@@ -59,6 +60,7 @@ export class BulkImportQrCodesUseCase {
 				'state',
 				'country',
 				'website',
+				'note',
 				'isDynamic',
 			],
 			schema: BulkVCardCsvDto,

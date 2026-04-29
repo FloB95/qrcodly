@@ -2,12 +2,12 @@ import 'reflect-metadata';
 import * as fs from 'fs';
 import * as path from 'path';
 import { parse } from 'csv-parse/sync';
-import { BulkUrlCsvDto } from '../../domain/dtos/BulkUrlCsvDto';
-import { BulkTextCsvDto } from '../../domain/dtos/BulkTextCsvDto';
-import { BulkWifiCsvDto } from '../../domain/dtos/BulkWifiCsvDto';
-import { BulkVCardCsvDto } from '../../domain/dtos/BulkVCardCsvDto';
-import { QrCodeContent } from '@shared/schemas';
+import { mock } from 'jest-mock-extended';
+import { QrCodeContent, type TQrCodeContentType } from '@shared/schemas';
 import type { ZodObject } from 'zod';
+import { BulkImportQrCodesUseCase } from '../bulk-import-qr-codes.use-case';
+import { type CreateQrCodeUseCase } from '../create-qr-code.use-case';
+import { type Logger } from '@/core/logging';
 
 const CSV_TEMPLATES_DIR = path.resolve(
 	__dirname,
@@ -16,54 +16,34 @@ const CSV_TEMPLATES_DIR = path.resolve(
 
 const LOCALES = ['en', 'de', 'es', 'fr', 'it', 'nl', 'pl', 'ru'] as const;
 
-const CONTENT_TYPE_CONFIG: Record<
-	string,
-	{
-		columns: string[];
-		schema: ZodObject;
-		filePrefix: string;
-	}
-> = {
-	url: {
-		columns: ['url', 'name', 'isDynamic'],
-		schema: BulkUrlCsvDto,
-		filePrefix: 'qrcodly-import-url',
-	},
-	text: {
-		columns: ['text', 'name'],
-		schema: BulkTextCsvDto,
-		filePrefix: 'qrcodly-import-text',
-	},
-	wifi: {
-		columns: ['ssid', 'password', 'encryption', 'name'],
-		schema: BulkWifiCsvDto,
-		filePrefix: 'qrcodly-import-wifi',
-	},
-	vCard: {
-		columns: [
-			'name',
-			'firstName',
-			'lastName',
-			'emailPrivate',
-			'emailBusiness',
-			'phonePrivate',
-			'phoneMobile',
-			'phoneBusiness',
-			'fax',
-			'company',
-			'job',
-			'street',
-			'city',
-			'zip',
-			'state',
-			'country',
-			'website',
-			'isDynamic',
-		],
-		schema: BulkVCardCsvDto,
-		filePrefix: 'qrcodly-import-vcard',
-	},
+const FILE_PREFIXES: Record<TQrCodeContentType, string> = {
+	url: 'qrcodly-import-url',
+	text: 'qrcodly-import-text',
+	wifi: 'qrcodly-import-wifi',
+	vCard: 'qrcodly-import-vcard',
+	email: '',
+	location: '',
+	event: '',
+	epc: '',
 };
+
+const useCaseInstance = new BulkImportQrCodesUseCase(mock<CreateQrCodeUseCase>(), mock<Logger>());
+const useCaseColumnMap = (
+	useCaseInstance as unknown as {
+		columnMap: Partial<Record<TQrCodeContentType, { columns: string[]; schema: ZodObject }>>;
+	}
+).columnMap;
+
+const CONTENT_TYPE_CONFIG = Object.fromEntries(
+	Object.entries(useCaseColumnMap).map(([contentType, entry]) => [
+		contentType,
+		{
+			columns: entry.columns,
+			schema: entry.schema,
+			filePrefix: FILE_PREFIXES[contentType as TQrCodeContentType],
+		},
+	]),
+) as Record<string, { columns: string[]; schema: ZodObject; filePrefix: string }>;
 
 describe('CSV Template Validation', () => {
 	it('should have all expected template files present', () => {

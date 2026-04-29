@@ -19,6 +19,11 @@ function areAllPropertiesUndefined(obj: Record<string, any>): boolean {
 	return Object.values(obj).every((value) => value === undefined);
 }
 
+// vcf library silently strips real newlines; encode them per RFC 6350 §3.4.
+function escapeVCardText(value: string): string {
+	return value.replace(/\\/g, '\\\\').replace(/\r\n|\r|\n/g, '\\n');
+}
+
 export function convertVCardObjToString(vCardInput: TVCardInput): string {
 	const t = {
 		...vCardInput,
@@ -90,7 +95,7 @@ export function convertVCardObjToString(vCardInput: TVCardInput): string {
 		vCard.add('url', vCardInput.website);
 	}
 	if (vCardInput.note) {
-		vCard.add('note', vCardInput.note);
+		vCard.add('note', escapeVCardText(vCardInput.note));
 	}
 
 	return vCard.toString();

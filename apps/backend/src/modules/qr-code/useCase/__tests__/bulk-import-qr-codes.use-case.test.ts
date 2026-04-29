@@ -447,9 +447,8 @@ describe('BulkImportQrCodesUseCase', () => {
 		});
 
 		it('should handle vCard CSV with all fields', async () => {
-			// Header: name;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;street;city;zip;state;country;website;isDynamic
 			const csvContent =
-				'name;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;street;city;zip;state;country;website;isDynamic\nJohn Doe;John;Doe;john@example.com;;+1234567890;;;;ACME Inc;Developer;123 Main St;New York;10001;NY;USA;https://example.com;0';
+				'name;title;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;street;city;zip;state;country;website;note;isDynamic\nJohn Doe;Dr.;John;Doe;john@example.com;;+1234567890;;;;ACME Inc;Developer;123 Main St;New York;10001;NY;USA;https://example.com;Key account since 2020;0';
 			const file = new File([csvContent], 'test.csv', { type: 'text/csv' });
 
 			const dto: TBulkImportQrCodeDto = {
@@ -466,11 +465,62 @@ describe('BulkImportQrCodesUseCase', () => {
 					content: {
 						type: 'vCard',
 						data: expect.objectContaining({
+							title: 'Dr.',
 							firstName: 'John',
 							lastName: 'Doe',
 							emailPrivate: 'john@example.com',
+							note: 'Key account since 2020',
 						}),
 					},
+				}),
+				mockUser,
+			);
+		});
+
+		it('should preserve newlines in a quoted multi-line note', async () => {
+			const csvContent =
+				'name;title;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;street;city;zip;state;country;website;note;isDynamic\n' +
+				'John Doe;;John;Doe;john@example.com;;;;;;;;;;;;;;"Erste Zeile\nZweite Zeile\nDritte Zeile";0';
+			const file = new File([csvContent], 'test.csv', { type: 'text/csv' });
+
+			const dto: TBulkImportQrCodeDto = {
+				contentType: 'vCard',
+				file,
+				config: QrCodeDefaults,
+			};
+
+			await useCase.execute(dto, mockUser);
+
+			expect(mockCreateQrCodeUseCase.execute).toHaveBeenCalledWith(
+				expect.objectContaining({
+					content: {
+						type: 'vCard',
+						data: expect.objectContaining({
+							note: 'Erste Zeile\nZweite Zeile\nDritte Zeile',
+						}),
+					},
+				}),
+				mockUser,
+			);
+		});
+
+		it('should accept vCard CSV with empty note field', async () => {
+			const csvContent =
+				'name;title;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;street;city;zip;state;country;website;note;isDynamic\nJane Doe;;Jane;Doe;jane@example.com;;;;;;;;;;;;;;;0';
+			const file = new File([csvContent], 'test.csv', { type: 'text/csv' });
+
+			const dto: TBulkImportQrCodeDto = {
+				contentType: 'vCard',
+				file,
+				config: QrCodeDefaults,
+			};
+
+			await useCase.execute(dto, mockUser);
+
+			expect(mockCreateQrCodeUseCase.execute).toHaveBeenCalledWith(
+				expect.objectContaining({
+					name: 'Jane Doe',
+					content: expect.objectContaining({ type: 'vCard' }),
 				}),
 				mockUser,
 			);
