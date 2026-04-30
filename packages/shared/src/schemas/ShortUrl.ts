@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { AbstractEntitySchema } from './AbstractEntitySchema';
 
+export const SHORT_URL_NAME_MAX_LENGTH = 50;
+
 export const ShortCodeSchema = z
 	.string()
 	.length(5)
@@ -10,10 +12,10 @@ export const ShortUrlSchema = AbstractEntitySchema.extend({
 	shortCode: ShortCodeSchema,
 	name: z
 		.string()
-		.max(255)
+		.max(SHORT_URL_NAME_MAX_LENGTH)
 		.nullable()
 		.default(null)
-		.describe('User-defined name for the short URL'),
+		.describe('User-defined name for the short URL (max 50 characters)'),
 	destinationUrl: z.url().nullable().describe('The target URL that the short URL redirects to'),
 	qrCodeId: z
 		.uuid()

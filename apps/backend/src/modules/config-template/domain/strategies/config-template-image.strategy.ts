@@ -13,6 +13,10 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 		super();
 	}
 
+	getUploadFolder(): string {
+		return QR_CODE_TEMPLATE_UPLOAD_FOLDER;
+	}
+
 	async upload(
 		file: { buffer: Buffer; fileName: string; mimeType: string },
 		userId?: string,

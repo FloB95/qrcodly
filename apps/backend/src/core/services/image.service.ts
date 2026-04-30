@@ -26,6 +26,10 @@ export class ImageService {
 		return this.strategy.upload(file, userId);
 	}
 
+	async copyImage(sourcePath: string, newEntityId: string, userId: string): Promise<string> {
+		return this.strategy.copyImage(sourcePath, newEntityId, userId);
+	}
+
 	async deleteImage(imagePath?: string): Promise<void> {
 		return this.strategy.delete(imagePath);
 	}

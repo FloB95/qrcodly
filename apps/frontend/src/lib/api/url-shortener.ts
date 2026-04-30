@@ -181,6 +181,26 @@ export function useCreateShortUrlMutation() {
 	});
 }
 
+export function useDuplicateShortUrlMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async (shortCode: string): Promise<TShortUrlWithCustomDomainResponseDto> => {
+			const token = await getToken();
+			return apiRequest<TShortUrlWithCustomDomainResponseDto>(`/short-url/${shortCode}/duplicate`, {
+				method: 'POST',
+				headers: { Authorization: `Bearer ${token}` },
+			});
+		},
+		onSuccess: () => {
+			void queryClient.refetchQueries({
+				queryKey: urlShortenerQueryKeys.listShortUrls,
+			});
+		},
+	});
+}
+
 export function useDeleteShortUrlMutation() {
 	const queryClient = useQueryClient();
 	const { getToken } = useAuth();

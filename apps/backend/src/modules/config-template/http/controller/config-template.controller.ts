@@ -26,6 +26,7 @@ import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { type IHttpRequest } from '@/core/interface/request.interface';
+import { DuplicateConfigTemplateUseCase } from '../../useCase/duplicate-config-template.use-case';
 
 @injectable()
 export class ConfigTemplateController extends AbstractController {
@@ -40,6 +41,8 @@ export class ConfigTemplateController extends AbstractController {
 		private readonly updateConfigTemplateUseCase: UpdateConfigTemplateUseCase,
 		@inject(DeleteConfigTemplateUseCase)
 		private readonly deleteConfigTemplateUseCase: DeleteConfigTemplateUseCase,
+		@inject(DuplicateConfigTemplateUseCase)
+		private readonly duplicateConfigTemplateUseCase: DuplicateConfigTemplateUseCase,
 	) {
 		super();
 	}
@@ -219,6 +222,37 @@ export class ConfigTemplateController extends AbstractController {
 		);
 
 		return this.makeApiHttpResponse(200, ConfigTemplateResponseDto.parse(updatedTemplate));
+	}
+
+	@Post('/:id/duplicate', {
+		responseSchema: {
+			201: ConfigTemplateResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['Templates'],
+			summary: 'Duplicate a template',
+			description:
+				'Creates a full copy of an existing template with a new ID. ' +
+				'Images are copied independently. Only the owner can duplicate their templates.',
+			operationId: 'template/duplicate',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'Template UUID to duplicate' },
+				},
+			},
+		},
+	})
+	async duplicate(
+		request: IHttpRequest<unknown, TIdRequestQueryDto>,
+	): Promise<IHttpResponse<TConfigTemplateResponseDto>> {
+		const source = await this.fetchOwnedTemplate(request.params.id, request.user.id);
+		const duplicated = await this.duplicateConfigTemplateUseCase.execute(source, request.user.id);
+		return this.makeApiHttpResponse(201, ConfigTemplateResponseDto.parse(duplicated));
 	}
 
 	@Delete('/:id', {

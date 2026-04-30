@@ -92,7 +92,8 @@ export const QrCodeListItem = ({
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
 
-	const { isDeleting, handleToggle, handleDelete, handleUpdateName } = useQrCodeMutations(qr);
+	const { isDeleting, handleToggle, handleDuplicate, handleDelete, handleUpdateName } =
+		useQrCodeMutations(qr);
 
 	const {
 		templateNameDialogOpen,
@@ -116,6 +117,7 @@ export const QrCodeListItem = ({
 		onDownloadContentFile: handleContentFileDownload,
 		onToggle: handleToggle,
 		onSaveAsTemplate: () => setTemplateNameDialogOpen(true),
+		onDuplicate: handleDuplicate,
 		onDelete: () => setShowDeleteConfirm(true),
 		showContentFileDownload,
 		contentFileLabel,

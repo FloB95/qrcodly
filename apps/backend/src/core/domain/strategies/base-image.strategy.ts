@@ -79,6 +79,16 @@ export abstract class BaseImageStrategy {
 		}
 	}
 
+	abstract getUploadFolder(): string;
+
+	async copyImage(sourcePath: string, newEntityId: string, userId: string): Promise<string> {
+		const ext = sourcePath.split('.').pop() ?? 'png';
+		const newFileName = `${newEntityId}-${uuidv4()}.${ext}`;
+		const newPath = this.constructFilePath(this.getUploadFolder(), userId, newFileName);
+		await this.objectStorage.copy(sourcePath, newPath);
+		return newPath;
+	}
+
 	abstract upload(
 		file: { buffer: Buffer; fileName: string; mimeType: string },
 		userId?: string,

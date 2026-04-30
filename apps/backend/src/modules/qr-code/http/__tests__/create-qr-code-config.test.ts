@@ -42,19 +42,19 @@ describe('createQrCode - Name and Configuration', () => {
 			expect(receivedQrCode.name).toBeNull();
 		});
 
-		it('should reject name exceeding max length (32 chars)', async () => {
+		it('should reject name exceeding max length (50 chars)', async () => {
 			const dto: TCreateQrCodeDto = {
 				...generateQrCodeDto(),
-				name: 'a'.repeat(33),
+				name: 'a'.repeat(51),
 			};
 			const response = await createRequest(dto, accessToken);
 			expect(response).toHaveStatusCode(400);
 		});
 
-		it('should accept name at max length (32 chars)', async () => {
+		it('should accept name at max length (50 chars)', async () => {
 			const dto: TCreateQrCodeDto = {
 				...generateQrCodeDto(),
-				name: 'a'.repeat(32),
+				name: 'a'.repeat(50),
 			};
 			const response = await createRequest(dto, accessToken);
 			expect(response).toHaveStatusCode(201);

@@ -23,6 +23,7 @@ export interface QrCodeMenuItemsActionProps {
 	onDownloadContentFile: () => void;
 	onToggle: () => void;
 	onSaveAsTemplate: () => void;
+	onDuplicate: () => void;
 	onDelete: () => void;
 	showContentFileDownload: boolean;
 	contentFileLabel: string;
@@ -41,6 +42,7 @@ export const QrCodeMenuItems = ({
 	onDownloadContentFile,
 	onToggle,
 	onSaveAsTemplate,
+	onDuplicate,
 	onDelete,
 	showContentFileDownload,
 	contentFileLabel,
@@ -66,15 +68,9 @@ export const QrCodeMenuItems = ({
 				</Link>
 			</Item>
 
-			<Item onClick={() => onShare()} className="cursor-pointer">
-				{t('general.share')}
-			</Item>
-
-			{/* Download with submenu */}
 			<Sub>
 				<SubTrigger>{t('qrCode.download.downloadBtn')}</SubTrigger>
 				<SubContent>
-					{/* QR Code formats - nested submenu */}
 					<Sub>
 						<SubTrigger>QR Code</SubTrigger>
 						<SubContent>
@@ -93,7 +89,6 @@ export const QrCodeMenuItems = ({
 						</SubContent>
 					</Sub>
 
-					{/* Content file download for vCard/Event */}
 					{showContentFileDownload && (
 						<Item className="cursor-pointer" onClick={() => onDownloadContentFile()}>
 							{contentFileLabel}
@@ -101,6 +96,14 @@ export const QrCodeMenuItems = ({
 					)}
 				</SubContent>
 			</Sub>
+
+			<Item onClick={() => onShare()} className="cursor-pointer">
+				{t('general.share')}
+			</Item>
+
+			<Item onClick={() => onDuplicate()} className="cursor-pointer">
+				{t('general.duplicate')}
+			</Item>
 
 			{qr.shortUrl && (
 				<Item onClick={() => onToggle()} className="cursor-pointer">

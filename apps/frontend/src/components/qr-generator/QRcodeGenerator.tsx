@@ -150,13 +150,13 @@ export const QRcodeGenerator = ({
 										)}
 										<InputGroupInput
 											value={name}
-											maxLength={32}
+											maxLength={50}
 											onChange={handleNameChange}
 											placeholder={t('labelName')}
 											className="pr-16"
 										/>
 										<InputGroupAddon align="inline-end">
-											<CharacterCounter current={name?.length || 0} max={32} />
+											<CharacterCounter current={name?.length || 0} max={50} />
 										</InputGroupAddon>
 									</InputGroup>
 								</div>

@@ -228,6 +228,33 @@ describe('updateShortUrl', () => {
 		expect(updated.name).toBeNull();
 	});
 
+	it('should update name at max length (50 chars)', async () => {
+		const reserveResponse = await reserveShortUrl(testServer, accessToken);
+		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
+
+		const response = await updateShortUrlRequest(
+			shortUrl.shortCode,
+			{ name: 'A'.repeat(50) },
+			accessToken,
+		);
+		expect(response).toHaveStatusCode(200);
+
+		const updated = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
+		expect(updated.name).toHaveLength(50);
+	});
+
+	it('should return 400 when updating name exceeds max length (51 chars)', async () => {
+		const reserveResponse = await reserveShortUrl(testServer, accessToken);
+		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
+
+		const response = await updateShortUrlRequest(
+			shortUrl.shortCode,
+			{ name: 'A'.repeat(51) },
+			accessToken,
+		);
+		expect(response).toHaveStatusCode(400);
+	});
+
 	it('should return 400 when trying to update a QR-code-linked short URL', async () => {
 		const createResponse = await testServer.inject({
 			method: 'POST',

@@ -1,6 +1,6 @@
 import * as schemas from './schemas';
 import db from '.';
-import { getTableName, sql } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { MySqlTable } from 'drizzle-orm/mysql-core';
 
 export const cleanUpMockData = async () => {

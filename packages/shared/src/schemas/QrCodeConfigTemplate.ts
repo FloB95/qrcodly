@@ -2,10 +2,15 @@ import { z } from 'zod';
 import { QrCodeOptionsSchema } from './QrCode';
 import { AbstractEntitySchema } from './AbstractEntitySchema';
 
+export const CONFIG_TEMPLATE_NAME_MAX_LENGTH = 50;
+
 export const ConfigTemplateSchema = AbstractEntitySchema.extend({
 	config: QrCodeOptionsSchema.describe('QR code styling configuration stored in this template'),
 	createdBy: z.string().describe('User ID of the template owner'),
-	name: z.string().max(32).describe('Template name (max 32 characters)'),
+	name: z
+		.string()
+		.max(CONFIG_TEMPLATE_NAME_MAX_LENGTH)
+		.describe('Template name (max 50 characters)'),
 	previewImage: z
 		.string()
 		.nullable()

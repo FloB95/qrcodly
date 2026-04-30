@@ -1,6 +1,6 @@
 import { inject, singleton } from 'tsyringe';
 import { type IFileStorage } from '../interface/file-storage.interface';
-import { GetObjectCommand, S3, type GetObjectOutput } from '@aws-sdk/client-s3';
+import { CopyObjectCommand, GetObjectCommand, S3, type GetObjectOutput } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { env } from '../config/env';
 import { DEFAULT_PUBLIC_LINK_LIFETIME, IN_TEST } from '../config/constants';
@@ -122,6 +122,33 @@ export class ObjectStorage implements IFileStorage {
 				error,
 			});
 			throw new S3UploadError('File upload failed', error as Error);
+		}
+	}
+
+	async copy(sourceKey: string, destinationKey: string): Promise<void> {
+		const src = this.prefix + sourceKey;
+		const dest = this.prefix + destinationKey;
+		try {
+			await withRetry(
+				() =>
+					this.s3Client.send(
+						new CopyObjectCommand({
+							Bucket: this.bucketName,
+							CopySource: `${this.bucketName}/${src}`,
+							Key: dest,
+						}),
+					),
+				{ maxRetries: 3, isRetryable: isRetryableS3Error },
+			);
+			this.logger.info('file.copied', {
+				file: { sourceKey: src, destinationKey: dest },
+			});
+		} catch (error: unknown) {
+			this.logger.error('error.file.copied', {
+				file: { sourceKey: src, destinationKey: dest },
+				error,
+			});
+			throw new S3UploadError('File copy failed', error as Error);
 		}
 	}
 

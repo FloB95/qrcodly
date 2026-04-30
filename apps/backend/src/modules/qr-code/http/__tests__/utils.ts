@@ -51,7 +51,7 @@ export const createQrCodeRequest = async (
 export const generateQrCodeDto = (): TCreateQrCodeDto & {
 	config: NonNullable<TCreateQrCodeDto['config']>;
 } => ({
-	name: faker.lorem.words(3).substring(0, 32),
+	name: faker.lorem.words(3).substring(0, 50),
 	content: {
 		type: 'url',
 		data: {
@@ -70,7 +70,7 @@ export const generateEventQrCodeDto = (): TCreateQrCodeDto => {
 	const endDate = faker.date.future({ refDate: startDate });
 
 	return {
-		name: faker.lorem.words(3).substring(0, 32),
+		name: faker.lorem.words(3).substring(0, 50),
 		content: {
 			type: 'event',
 			data: {
@@ -91,7 +91,7 @@ export const generateEventQrCodeDto = (): TCreateQrCodeDto => {
 export const generateWifiQrCodeDto = (): TCreateQrCodeDto & {
 	config: NonNullable<TCreateQrCodeDto['config']>;
 } => ({
-	name: faker.lorem.words(3).substring(0, 32),
+	name: faker.lorem.words(3).substring(0, 50),
 	content: {
 		type: 'wifi',
 		data: {
@@ -109,7 +109,7 @@ export const generateWifiQrCodeDto = (): TCreateQrCodeDto & {
 export const generateVCardQrCodeDto = (): TCreateQrCodeDto & {
 	config: NonNullable<TCreateQrCodeDto['config']>;
 } => ({
-	name: faker.lorem.words(3).substring(0, 32),
+	name: faker.lorem.words(3).substring(0, 50),
 	content: {
 		type: 'vCard',
 		data: {
@@ -129,7 +129,7 @@ export const generateVCardQrCodeDto = (): TCreateQrCodeDto & {
 export const generateTextQrCodeDto = (): TCreateQrCodeDto & {
 	config: NonNullable<TCreateQrCodeDto['config']>;
 } => ({
-	name: faker.lorem.words(3).substring(0, 32),
+	name: faker.lorem.words(3).substring(0, 50),
 	content: {
 		type: 'text',
 		data: faker.lorem.paragraph(),
@@ -143,7 +143,7 @@ export const generateTextQrCodeDto = (): TCreateQrCodeDto & {
 export const generateDynamicUrlQrCodeDto = (): TCreateQrCodeDto & {
 	config: NonNullable<TCreateQrCodeDto['config']>;
 } => ({
-	name: faker.lorem.words(3).substring(0, 32),
+	name: faker.lorem.words(3).substring(0, 50),
 	content: {
 		type: 'url',
 		data: {
@@ -160,7 +160,7 @@ export const generateDynamicUrlQrCodeDto = (): TCreateQrCodeDto & {
 export const generateDynamicVCardQrCodeDto = (): TCreateQrCodeDto & {
 	config: NonNullable<TCreateQrCodeDto['config']>;
 } => ({
-	name: faker.lorem.words(3).substring(0, 32),
+	name: faker.lorem.words(3).substring(0, 50),
 	content: {
 		type: 'vCard',
 		data: {
@@ -181,7 +181,7 @@ export const generateDynamicVCardQrCodeDto = (): TCreateQrCodeDto & {
 export const generateEmailQrCodeDto = (): TCreateQrCodeDto & {
 	config: NonNullable<TCreateQrCodeDto['config']>;
 } => ({
-	name: faker.lorem.words(3).substring(0, 32),
+	name: faker.lorem.words(3).substring(0, 50),
 	content: {
 		type: 'email',
 		data: {
@@ -199,7 +199,7 @@ export const generateEmailQrCodeDto = (): TCreateQrCodeDto & {
 export const generateLocationQrCodeDto = (): TCreateQrCodeDto & {
 	config: NonNullable<TCreateQrCodeDto['config']>;
 } => ({
-	name: faker.lorem.words(3).substring(0, 32),
+	name: faker.lorem.words(3).substring(0, 50),
 	content: {
 		type: 'location',
 		data: {
@@ -217,7 +217,7 @@ export const generateLocationQrCodeDto = (): TCreateQrCodeDto & {
 export const generateEpcQrCodeDto = (): TCreateQrCodeDto & {
 	config: NonNullable<TCreateQrCodeDto['config']>;
 } => ({
-	name: faker.lorem.words(3).substring(0, 32),
+	name: faker.lorem.words(3).substring(0, 50),
 	content: {
 		type: 'epc',
 		data: {

@@ -158,6 +158,29 @@ export function useUpdateConfigTemplateMutation() {
 	});
 }
 
+export function useDuplicateConfigTemplateMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async (configTemplateId: string): Promise<TConfigTemplateResponseDto> => {
+			const token = await getToken();
+			return apiRequest<TConfigTemplateResponseDto>(
+				`/config-template/${configTemplateId}/duplicate`,
+				{
+					method: 'POST',
+					headers: { Authorization: `Bearer ${token}` },
+				},
+			);
+		},
+		onSuccess: () => {
+			void queryClient.refetchQueries({
+				queryKey: queryKeys.listConfigTemplates,
+			});
+		},
+	});
+}
+
 export function useDeleteConfigTemplateMutation() {
 	const queryClient = useQueryClient();
 	const { getToken } = useAuth();
