@@ -17,8 +17,6 @@ import posthog from 'posthog-js';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
 import { useCreateCheckoutSession, useCreatePortalSession } from '@/lib/api/billing';
 
-const PROMO_END = new Date('2026-04-30T23:59:59+02:00');
-
 export function CurrentPlanSection() {
 	const t = useTranslations('settings.billing');
 	const tPlans = useTranslations('plans');
@@ -38,7 +36,7 @@ export function CurrentPlanSection() {
 		if (typeof window.gtag !== 'function') return;
 
 		const isAnnual = subscription.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL;
-		const value = isAnnual ? 48.0 : 4.99;
+		const value = isAnnual ? 83.88 : 8.99;
 
 		window.gtag('event', 'conversion', {
 			send_to: 'AW-10838865201/Stq3CL_pnY0cELHqr7Ao',
@@ -71,24 +69,26 @@ export function CurrentPlanSection() {
 		createPortalSession.mutate({ locale });
 	};
 
-	const isAnnualSubscription =
-		subscription?.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL;
+	const legacyPriceIds = [
+		env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_MONTHLY_LEGACY,
+		env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL_LEGACY,
+	].filter(Boolean);
+	const isLegacySubscription = legacyPriceIds.includes(subscription?.stripePriceId ?? '');
+	const annualPriceIds = [
+		env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL,
+		env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL_LEGACY,
+	].filter(Boolean);
+	const isAnnualSubscription = annualPriceIds.includes(subscription?.stripePriceId ?? '');
 
-	const isPromoActive = new Date() <= PROMO_END;
-	const proPrice = isPromoActive
-		? selectedPeriod === 'annual'
+	const proPrice = selectedPeriod === 'annual' ? '6,99' : '8,99';
+	const billingNote = selectedPeriod === 'annual' ? t('billedAnnually') : t('billedMonthly');
+	const currentProPrice = isLegacySubscription
+		? isAnnualSubscription
 			? '4,00'
 			: '4,99'
-		: selectedPeriod === 'annual'
+		: isAnnualSubscription
 			? '6,99'
 			: '8,99';
-	const futureProPrice = isPromoActive
-		? selectedPeriod === 'annual'
-			? '6,99'
-			: '8,99'
-		: undefined;
-	const billingNote = selectedPeriod === 'annual' ? t('billedAnnually') : t('billedMonthly');
-	const currentProPrice = isAnnualSubscription ? '4,00' : '4,99';
 	const currentBillingNote = isAnnualSubscription ? t('billedAnnually') : t('billedMonthly');
 
 	return (
@@ -184,14 +184,7 @@ export function CurrentPlanSection() {
 					</div>
 
 					<div>
-						{!hasProPlan && futureProPrice && (
-							<p className="relative inline-block text-xl font-semibold text-slate-400 after:content-[''] after:absolute after:left-[-4px] after:right-[-4px] after:top-1/2 after:h-[3px] after:bg-red-400/90 after:-rotate-12">
-								{futureProPrice} &euro;
-							</p>
-						)}
-						<p
-							className={cn('flex items-baseline gap-x-2', !hasProPlan && futureProPrice && 'mb-3')}
-						>
+						<p className="flex items-baseline gap-x-2">
 							<span className="text-3xl lg:text-4xl font-semibold">
 								{hasProPlan ? currentProPrice : proPrice} &euro;
 							</span>
@@ -200,13 +193,6 @@ export function CurrentPlanSection() {
 						<p className="text-sm text-slate-300 mt-1">
 							{hasProPlan ? currentBillingNote : billingNote}
 						</p>
-						{!hasProPlan && futureProPrice && (
-							<p className="mt-2">
-								<span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 border border-amber-500/25 px-3 py-1 text-sm font-medium text-amber-300">
-									{tPlans('priceIncreaseNotice')}
-								</span>
-							</p>
-						)}
 					</div>
 
 					{!hasProPlan && (

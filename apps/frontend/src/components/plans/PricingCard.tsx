@@ -13,8 +13,6 @@ export type PricingCardProps = {
 	planId: PlanId;
 	priceMonthly: string;
 	priceAnnual?: string;
-	futureMonthly?: string;
-	futureAnnual?: string;
 	locale: string;
 	isAuthenticated: boolean;
 };
@@ -23,8 +21,6 @@ export const PricingCard = ({
 	planId,
 	priceMonthly,
 	priceAnnual,
-	futureMonthly,
-	futureAnnual,
 	locale,
 	isAuthenticated,
 }: PricingCardProps) => {
@@ -34,7 +30,6 @@ export const PricingCard = ({
 	const isPro = planConfig.featured;
 
 	const displayPrice = planPeriod === 'annual' && priceAnnual ? priceAnnual : priceMonthly;
-	const displayFuturePrice = planPeriod === 'annual' && futureAnnual ? futureAnnual : futureMonthly;
 	const priceSuffix = `/${t('perMonth')}`;
 
 	return (
@@ -62,22 +57,10 @@ export const PricingCard = ({
 				)}
 			</div>
 
-			{displayFuturePrice && (
-				<p className="mt-4 relative inline-block text-2xl font-semibold text-slate-400 after:content-[''] after:absolute after:left-[-4px] after:right-[-4px] after:top-1/2 after:h-[3px] after:bg-red-400/90 after:-rotate-12">
-					{displayFuturePrice} &euro;
-				</p>
-			)}
-			<p className={cn('flex items-baseline gap-x-2', !displayFuturePrice ? 'mt-4' : 'mb-3')}>
+			<p className="mt-4 flex items-baseline gap-x-2">
 				<span className="text-5xl font-semibold">{displayPrice} &euro;</span>
 				<span className={isPro ? 'text-gray-400' : 'text-gray-500'}>{priceSuffix}</span>
 			</p>
-			{displayFuturePrice && (
-				<p className="mt-2">
-					<span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 border border-amber-500/25 px-3 py-1 text-sm font-medium text-amber-300">
-						{t('priceIncreaseNotice')}
-					</span>
-				</p>
-			)}
 
 			<p className={`mt-5 text-sm font-medium ${isPro ? 'text-slate-300' : 'text-gray-500'}`}>
 				{t(`${planId}.description`)}
