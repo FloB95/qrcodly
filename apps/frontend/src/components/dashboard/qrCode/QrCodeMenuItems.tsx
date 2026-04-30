@@ -105,17 +105,17 @@ export const QrCodeMenuItems = ({
 				{t('general.duplicate')}
 			</Item>
 
+			{!isConfigDefault && (
+				<Item onClick={() => onSaveAsTemplate()} className="cursor-pointer">
+					{tTemplates('saveAsBtn')}
+				</Item>
+			)}
+
 			{qr.shortUrl && (
 				<Item onClick={() => onToggle()} className="cursor-pointer">
 					{qr.shortUrl.isActive
 						? t('qrCode.actionsMenu.disableShortUrl')
 						: t('qrCode.actionsMenu.enableShortUrl')}
-				</Item>
-			)}
-
-			{!isConfigDefault && (
-				<Item onClick={() => onSaveAsTemplate()} className="cursor-pointer">
-					{tTemplates('saveAsBtn')}
 				</Item>
 			)}
 
