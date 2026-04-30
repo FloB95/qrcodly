@@ -8,7 +8,9 @@ import { ConfigTemplateCreatedEvent } from '../event/config-template-created.eve
 import { ImageService } from '@/core/services/image.service';
 import { ConfigTemplateImageStrategy } from '../domain/strategies/config-template-image.strategy';
 import { UnitOfWork } from '@/core/db/unit-of-work';
-import { CONFIG_TEMPLATE_NAME_MAX_LENGTH } from '@shared/schemas';
+import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
+import { CustomApiError } from '@/core/error/http';
+import { CONFIG_TEMPLATE_NAME_MAX_LENGTH, buildCopyName } from '@shared/schemas';
 
 @injectable()
 export class DuplicateConfigTemplateUseCase implements IBaseUseCase {
@@ -34,7 +36,7 @@ export class DuplicateConfigTemplateUseCase implements IBaseUseCase {
 					config.image = copiedImage;
 				}
 
-				const name = this.buildCopyName(source.name);
+				const name = buildCopyName(source.name, CONFIG_TEMPLATE_NAME_MAX_LENGTH);
 
 				const configTemplate: Omit<TConfigTemplate, 'createdAt' | 'updatedAt'> = {
 					id: newId,
@@ -63,18 +65,17 @@ export class DuplicateConfigTemplateUseCase implements IBaseUseCase {
 			if (copiedImage) {
 				try {
 					await this.imageService.deleteImage(copiedImage);
-				} catch {}
+				} catch (cleanupError) {
+					this.logger.warn('template.duplicated.cleanup.failed', {
+						copiedImage,
+						sourceId: source.id,
+						cleanupError,
+					});
+				}
 			}
-			throw error;
-		}
-	}
 
-	private buildCopyName(originalName: string): string {
-		const prefix = '(Copy) ';
-		const maxLength = CONFIG_TEMPLATE_NAME_MAX_LENGTH;
-		if (prefix.length + originalName.length > maxLength) {
-			return prefix + originalName.slice(0, maxLength - prefix.length);
+			if (error instanceof CustomApiError) throw error;
+			throw new UnhandledServerError(error as Error, 'Config template duplication failed.');
 		}
-		return `${prefix}${originalName}`.trim();
 	}
 }

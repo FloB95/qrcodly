@@ -2,6 +2,9 @@ import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import type { TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
 import { SHORT_URL_API_PATH, createShortUrl } from './utils';
+import { API_BASE_PATH } from '@/core/config/constants';
+
+const TAG_API_PATH = `${API_BASE_PATH}/tag`;
 
 describe('duplicateShortUrl', () => {
 	let testServer: FastifyInstance;
@@ -55,5 +58,46 @@ describe('duplicateShortUrl', () => {
 
 		const response = await duplicateRequest(source.shortCode, accessToken2);
 		expect(response).toHaveStatusCode(403);
+	});
+
+	it('should carry over tags to the duplicated short URL', async () => {
+		const tagResponse = await testServer.inject({
+			method: 'POST',
+			url: TAG_API_PATH,
+			headers: { Authorization: `Bearer ${accessToken}` },
+			payload: { name: `DupShortTag ${Date.now()}`, color: '#33FF99' },
+		});
+		expect(tagResponse).toHaveStatusCode(201);
+		const tag = JSON.parse(tagResponse.payload) as { id: string; name: string };
+
+		const source = await createShortUrl(testServer, accessToken);
+
+		const assignResponse = await testServer.inject({
+			method: 'PUT',
+			url: `${TAG_API_PATH}/short-url/${source.id}`,
+			headers: { Authorization: `Bearer ${accessToken}` },
+			payload: { tagIds: [tag.id] },
+		});
+		expect(assignResponse).toHaveStatusCode(200);
+
+		const response = await duplicateRequest(source.shortCode, accessToken);
+		expect(response).toHaveStatusCode(201);
+
+		const duplicate = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
+		expect(duplicate.tags.map((t) => t.id)).toEqual([tag.id]);
+	});
+
+	it('should increment counter when duplicating an already-copied short URL', async () => {
+		const source = await createShortUrl(testServer, accessToken, { name: 'My Link' });
+
+		const firstResponse = await duplicateRequest(source.shortCode, accessToken);
+		expect(firstResponse).toHaveStatusCode(201);
+		const firstCopy = JSON.parse(firstResponse.payload) as TShortUrlWithCustomDomainResponseDto;
+		expect(firstCopy.name).toBe('(Copy) My Link');
+
+		const secondResponse = await duplicateRequest(firstCopy.shortCode, accessToken);
+		expect(secondResponse).toHaveStatusCode(201);
+		const secondCopy = JSON.parse(secondResponse.payload) as TShortUrlWithCustomDomainResponseDto;
+		expect(secondCopy.name).toBe('(Copy 2) My Link');
 	});
 });

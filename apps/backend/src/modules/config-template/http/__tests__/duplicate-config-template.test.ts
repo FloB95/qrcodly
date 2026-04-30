@@ -9,6 +9,8 @@ import {
 } from '@shared/schemas';
 
 const CONFIG_TEMPLATE_API_PATH = `${API_BASE_PATH}/config-template`;
+const TEST_BASE64_IMAGE =
+	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 
 const generateConfigTemplateDto = (): TCreateConfigTemplateDto => ({
 	name: faker.lorem.words(3).substring(0, 50),
@@ -86,6 +88,29 @@ describe('duplicateConfigTemplate', () => {
 	it('should return 404 for non-existent template', async () => {
 		const response = await duplicateRequest('non-existent-id', accessToken);
 		expect(response).toHaveStatusCode(404);
+	});
+
+	it('should copy the embedded image to the config-template upload folder', async () => {
+		const dto: TCreateConfigTemplateDto = {
+			...generateConfigTemplateDto(),
+			config: { ...QrCodeDefaults, image: TEST_BASE64_IMAGE },
+		};
+		const createResponse = await createTemplateRequest(dto, accessToken);
+		expect(createResponse).toHaveStatusCode(201);
+		const source = JSON.parse(createResponse.payload) as TConfigTemplateResponseDto;
+		expect(source.config.image).toBeTruthy();
+		expect(source.config.image).not.toContain('base64');
+
+		const response = await duplicateRequest(source.id, accessToken);
+		expect(response).toHaveStatusCode(201);
+
+		const duplicate = JSON.parse(response.payload) as TConfigTemplateResponseDto;
+		const duplicatedImage = duplicate.config.image!;
+		expect(duplicatedImage).toBeTruthy();
+		expect(duplicatedImage).not.toContain('base64');
+		expect(duplicatedImage).not.toBe(source.config.image);
+		expect(duplicatedImage).toContain('config-templates/images/uploads/');
+		expect(duplicatedImage).not.toContain('qr-codes/');
 	});
 
 	it("should return 403 when duplicating another user's template", async () => {

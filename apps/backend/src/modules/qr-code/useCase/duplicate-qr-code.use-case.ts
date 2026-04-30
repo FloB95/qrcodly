@@ -15,7 +15,13 @@ import { CreateQrCodePolicy } from '../policies/create-qr-code.policy';
 import { ShortUrlStrategyService } from '../service/short-url-strategy.service';
 import { QrCodeDataService } from '../service/qr-code-data.service';
 import TagRepository from '@/modules/tag/domain/repository/tag.repository';
-import { QR_CODE_NAME_MAX_LENGTH, type TQrCode, type TCreateQrCodeDto } from '@shared/schemas';
+import {
+	QR_CODE_NAME_MAX_LENGTH,
+	buildCopyName,
+	type TQrCode,
+	type TCreateQrCodeDto,
+} from '@shared/schemas';
+import { QrCodeImageStrategy } from '../domain/strategies/qr-code-image.strategy';
 
 @injectable()
 export class DuplicateQrCodeUseCase implements IBaseUseCase {
@@ -27,7 +33,9 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 		@inject(ShortUrlStrategyService) private shortUrlStrategyService: ShortUrlStrategyService,
 		@inject(QrCodeDataService) private qrCodeDataService: QrCodeDataService,
 		@inject(TagRepository) private tagRepository: TagRepository,
-	) {}
+	) {
+		this.imageService.setStrategy(new QrCodeImageStrategy());
+	}
 
 	async execute(source: TQrCodeWithRelations, user: TUser): Promise<TQrCodeWithRelations> {
 		const syntheticDto = {
@@ -49,7 +57,7 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 					config.image = copiedImage;
 				}
 
-				const name = this.buildCopyName(source.name);
+				const name = buildCopyName(source.name, QR_CODE_NAME_MAX_LENGTH);
 
 				const qrCodeEntity = {
 					id: newId,
@@ -98,21 +106,17 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 			if (copiedImage) {
 				try {
 					await this.imageService.deleteImage(copiedImage);
-				} catch {}
+				} catch (cleanupError) {
+					this.logger.warn('qrCode.duplicated.cleanup.failed', {
+						copiedImage,
+						sourceId: source.id,
+						cleanupError,
+					});
+				}
 			}
 
 			if (error instanceof CustomApiError) throw error;
 			throw new UnhandledServerError(error as Error, 'QR code duplication failed.');
 		}
-	}
-
-	private buildCopyName(originalName: string | null): string {
-		const prefix = '(Copy) ';
-		const maxLength = QR_CODE_NAME_MAX_LENGTH;
-		const base = originalName ?? '';
-		if (prefix.length + base.length > maxLength) {
-			return prefix + base.slice(0, maxLength - prefix.length);
-		}
-		return `${prefix}${base}`.trim();
 	}
 }
