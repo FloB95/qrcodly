@@ -95,7 +95,11 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 		} catch (error: any) {
 			this.logger.error('qrCode.duplicated.error', { error, sourceId: source.id });
 
-			if (copiedImage) await this.imageService.deleteImage(copiedImage);
+			if (copiedImage) {
+				try {
+					await this.imageService.deleteImage(copiedImage);
+				} catch {}
+			}
 
 			if (error instanceof CustomApiError) throw error;
 			throw new UnhandledServerError(error as Error, 'QR code duplication failed.');

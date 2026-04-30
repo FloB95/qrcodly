@@ -60,7 +60,11 @@ export class DuplicateConfigTemplateUseCase implements IBaseUseCase {
 		} catch (error) {
 			this.logger.error('error.template.duplicated', { error, sourceId: source.id });
 
-			if (copiedImage) await this.imageService.deleteImage(copiedImage);
+			if (copiedImage) {
+				try {
+					await this.imageService.deleteImage(copiedImage);
+				} catch {}
+			}
 			throw error;
 		}
 	}
