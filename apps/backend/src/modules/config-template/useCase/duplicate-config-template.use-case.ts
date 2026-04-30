@@ -27,7 +27,7 @@ export class DuplicateConfigTemplateUseCase implements IBaseUseCase {
 		let copiedImage: string | undefined;
 
 		try {
-			return await UnitOfWork.run<TConfigTemplate>(async () => {
+			const finalTemplate = await UnitOfWork.run<TConfigTemplate>(async () => {
 				const newId = this.configTemplateRepository.generateId();
 				const config = structuredClone(source.config);
 
@@ -49,16 +49,18 @@ export class DuplicateConfigTemplateUseCase implements IBaseUseCase {
 
 				await this.configTemplateRepository.create(configTemplate);
 
-				const finalTemplate = await this.configTemplateRepository.findOneById(newId);
-				if (!finalTemplate) throw new Error('Failed to retrieve duplicated config template.');
+				const created = await this.configTemplateRepository.findOneById(newId);
+				if (!created) throw new Error('Failed to retrieve duplicated config template.');
 
-				this.eventEmitter.emit(new ConfigTemplateCreatedEvent(finalTemplate));
-				this.logger.info('template.duplicated', {
-					template: { id: finalTemplate.id, sourceId: source.id, createdBy: userId },
-				});
-
-				return finalTemplate;
+				return created;
 			});
+
+			this.eventEmitter.emit(new ConfigTemplateCreatedEvent(finalTemplate));
+			this.logger.info('template.duplicated', {
+				template: { id: finalTemplate.id, sourceId: source.id, createdBy: userId },
+			});
+
+			return finalTemplate;
 		} catch (error) {
 			this.logger.error('error.template.duplicated', { error, sourceId: source.id });
 

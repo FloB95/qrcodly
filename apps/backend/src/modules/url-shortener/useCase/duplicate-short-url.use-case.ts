@@ -27,7 +27,7 @@ export class DuplicateShortUrlUseCase implements IBaseUseCase {
 			await this.customDomainValidationService.validateForUserUse(source.customDomainId, userId);
 		}
 
-		return await UnitOfWork.run<TShortUrlWithDomainAndTags>(async () => {
+		const result = await UnitOfWork.run<TShortUrlWithDomainAndTags>(async () => {
 			const newId = this.shortUrlRepository.generateId();
 			const shortCode = await this.shortUrlRepository.generateShortCode();
 			const name = buildCopyName(source.name, SHORT_URL_NAME_MAX_LENGTH);
@@ -56,12 +56,14 @@ export class DuplicateShortUrlUseCase implements IBaseUseCase {
 
 			const tagsMap = await this.tagRepository.findTagsByShortUrlIds([newId]);
 
-			this.logger.info('shortUrl.duplicated', {
-				shortUrl: { id: newId, sourceId: source.id, createdBy: userId },
-			});
-			shortUrlsCreated.add(1);
-
 			return { ...createdShortUrl, tags: tagsMap.get(newId) ?? [] };
 		});
+
+		this.logger.info('shortUrl.duplicated', {
+			shortUrl: { id: result.id, sourceId: source.id, createdBy: userId },
+		});
+		shortUrlsCreated.add(1);
+
+		return result;
 	}
 }

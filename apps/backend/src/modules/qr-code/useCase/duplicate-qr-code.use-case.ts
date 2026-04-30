@@ -48,7 +48,7 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 		let copiedImage: string | undefined;
 
 		try {
-			return await UnitOfWork.run<TQrCodeWithRelations>(async () => {
+			const finalQrCode = await UnitOfWork.run<TQrCodeWithRelations>(async () => {
 				const newId = this.qrCodeRepository.generateId();
 				const config = structuredClone(source.config);
 
@@ -88,18 +88,20 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 					);
 				}
 
-				const finalQrCode = await this.qrCodeRepository.findOneById(newId);
-				if (!finalQrCode) throw new Error('Failed to retrieve duplicated QR code.');
-
-				this.eventEmitter.emit(new QrCodeCreatedEvent(finalQrCode));
-				this.logger.info('qrCode.duplicated', {
-					qrCode: { id: finalQrCode.id, sourceId: source.id, createdBy: user.id },
-				});
-				qrCodesCreated.add(1, { 'content.type': source.content.type });
+				const created = await this.qrCodeRepository.findOneById(newId);
+				if (!created) throw new Error('Failed to retrieve duplicated QR code.');
 
 				await policy.incrementUsage();
-				return finalQrCode;
+				return created;
 			});
+
+			this.eventEmitter.emit(new QrCodeCreatedEvent(finalQrCode));
+			this.logger.info('qrCode.duplicated', {
+				qrCode: { id: finalQrCode.id, sourceId: source.id, createdBy: user.id },
+			});
+			qrCodesCreated.add(1, { 'content.type': source.content.type });
+
+			return finalQrCode;
 		} catch (error: any) {
 			this.logger.error('qrCode.duplicated.error', { error, sourceId: source.id });
 
