@@ -19,6 +19,7 @@ import { VCardInputSchema, type TVCardInput } from '@shared/schemas/src';
 import { useTranslations } from 'next-intl';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CharacterCounter } from './CharacterCounter';
+import { HomeIcon, BuildingOffice2Icon } from '@heroicons/react/24/outline';
 
 type FormValues = TVCardInput;
 
@@ -351,43 +352,23 @@ const VCardSectionBase = ({ onChange, value }: VCardSectionProps) => {
 						)}
 					/>
 				</div>
-				<FormField
-					control={form.control}
-					name="street"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								<span translate="no" suppressHydrationWarning>
-									{t('street.label')}
-								</span>
-							</FormLabel>
-							<FormControl>
-								<InputGroup>
-									<InputGroupInput
-										{...field}
-										translate="no"
-										placeholder={t('street.placeholder')}
-										maxLength={64}
-										className="pr-16"
-									/>
-									<InputGroupAddon align="inline-end">
-										<CharacterCounter current={field.value?.length || 0} max={64} />
-									</InputGroupAddon>
-								</InputGroup>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<div className="block sm:flex sm:space-x-4 sm:flex-row space-y-6 sm:space-y-0">
+				<div className="rounded-lg border border-border bg-muted/30 p-4 space-y-4">
+					<div className="flex items-center gap-2">
+						<HomeIcon className="h-4 w-4 text-muted-foreground" />
+						<h3 className="text-sm font-semibold">
+							<span translate="no" suppressHydrationWarning>
+								{t('addressPrivate.title')}
+							</span>
+						</h3>
+					</div>
 					<FormField
 						control={form.control}
-						name="city"
+						name="streetPrivate"
 						render={({ field }) => (
-							<FormItem className="w-full">
+							<FormItem>
 								<FormLabel>
 									<span translate="no" suppressHydrationWarning>
-										{t('city.label')}
+										{t('streetPrivate.label')}
 									</span>
 								</FormLabel>
 								<FormControl>
@@ -395,7 +376,7 @@ const VCardSectionBase = ({ onChange, value }: VCardSectionProps) => {
 										<InputGroupInput
 											{...field}
 											translate="no"
-											placeholder={t('city.placeholder')}
+											placeholder={t('streetPrivate.placeholder')}
 											maxLength={64}
 											className="pr-16"
 										/>
@@ -408,14 +389,140 @@ const VCardSectionBase = ({ onChange, value }: VCardSectionProps) => {
 							</FormItem>
 						)}
 					/>
+					<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+						<FormField
+							control={form.control}
+							name="cityPrivate"
+							render={({ field }) => (
+								<FormItem className="sm:col-span-2">
+									<FormLabel>
+										<span translate="no" suppressHydrationWarning>
+											{t('cityPrivate.label')}
+										</span>
+									</FormLabel>
+									<FormControl>
+										<InputGroup>
+											<InputGroupInput
+												{...field}
+												translate="no"
+												placeholder={t('cityPrivate.placeholder')}
+												maxLength={64}
+												className="pr-16"
+											/>
+											<InputGroupAddon align="inline-end">
+												<CharacterCounter current={field.value?.length || 0} max={64} />
+											</InputGroupAddon>
+										</InputGroup>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="zipPrivate"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										<span translate="no" suppressHydrationWarning>
+											{t('zipPrivate.label')}
+										</span>
+									</FormLabel>
+									<FormControl>
+										<InputGroup>
+											<InputGroupInput
+												{...field}
+												translate="no"
+												placeholder={t('zipPrivate.placeholder')}
+												maxLength={10}
+												className="pr-12"
+											/>
+											<InputGroupAddon align="inline-end">
+												<CharacterCounter current={field.value?.length || 0} max={10} />
+											</InputGroupAddon>
+										</InputGroup>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						<FormField
+							control={form.control}
+							name="statePrivate"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										<span translate="no" suppressHydrationWarning>
+											{t('statePrivate.label')}
+										</span>
+									</FormLabel>
+									<FormControl>
+										<InputGroup>
+											<InputGroupInput
+												{...field}
+												translate="no"
+												placeholder={t('statePrivate.placeholder')}
+												maxLength={64}
+												className="pr-16"
+											/>
+											<InputGroupAddon align="inline-end">
+												<CharacterCounter current={field.value?.length || 0} max={64} />
+											</InputGroupAddon>
+										</InputGroup>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="countryPrivate"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										<span translate="no" suppressHydrationWarning>
+											{t('countryPrivate.label')}
+										</span>
+									</FormLabel>
+									<FormControl>
+										<InputGroup>
+											<InputGroupInput
+												{...field}
+												translate="no"
+												placeholder={t('countryPrivate.placeholder')}
+												maxLength={64}
+												className="pr-16"
+											/>
+											<InputGroupAddon align="inline-end">
+												<CharacterCounter current={field.value?.length || 0} max={64} />
+											</InputGroupAddon>
+										</InputGroup>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+				</div>
+				<div className="rounded-lg border border-border bg-muted/30 p-4 space-y-4">
+					<div className="flex items-center gap-2">
+						<BuildingOffice2Icon className="h-4 w-4 text-muted-foreground" />
+						<h3 className="text-sm font-semibold">
+							<span translate="no" suppressHydrationWarning>
+								{t('addressBusiness.title')}
+							</span>
+						</h3>
+					</div>
 					<FormField
 						control={form.control}
-						name="zip"
+						name="streetBusiness"
 						render={({ field }) => (
-							<FormItem className="w-full">
+							<FormItem>
 								<FormLabel>
 									<span translate="no" suppressHydrationWarning>
-										{t('zipCode.label')}
+										{t('streetBusiness.label')}
 									</span>
 								</FormLabel>
 								<FormControl>
@@ -423,12 +530,12 @@ const VCardSectionBase = ({ onChange, value }: VCardSectionProps) => {
 										<InputGroupInput
 											{...field}
 											translate="no"
-											placeholder={t('zipCode.placeholder')}
-											maxLength={10}
+											placeholder={t('streetBusiness.placeholder')}
+											maxLength={64}
 											className="pr-16"
 										/>
 										<InputGroupAddon align="inline-end">
-											<CharacterCounter current={field.value?.length || 0} max={10} />
+											<CharacterCounter current={field.value?.length || 0} max={64} />
 										</InputGroupAddon>
 									</InputGroup>
 								</FormControl>
@@ -436,63 +543,123 @@ const VCardSectionBase = ({ onChange, value }: VCardSectionProps) => {
 							</FormItem>
 						)}
 					/>
+					<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+						<FormField
+							control={form.control}
+							name="cityBusiness"
+							render={({ field }) => (
+								<FormItem className="sm:col-span-2">
+									<FormLabel>
+										<span translate="no" suppressHydrationWarning>
+											{t('cityBusiness.label')}
+										</span>
+									</FormLabel>
+									<FormControl>
+										<InputGroup>
+											<InputGroupInput
+												{...field}
+												translate="no"
+												placeholder={t('cityBusiness.placeholder')}
+												maxLength={64}
+												className="pr-16"
+											/>
+											<InputGroupAddon align="inline-end">
+												<CharacterCounter current={field.value?.length || 0} max={64} />
+											</InputGroupAddon>
+										</InputGroup>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="zipBusiness"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										<span translate="no" suppressHydrationWarning>
+											{t('zipBusiness.label')}
+										</span>
+									</FormLabel>
+									<FormControl>
+										<InputGroup>
+											<InputGroupInput
+												{...field}
+												translate="no"
+												placeholder={t('zipBusiness.placeholder')}
+												maxLength={10}
+												className="pr-12"
+											/>
+											<InputGroupAddon align="inline-end">
+												<CharacterCounter current={field.value?.length || 0} max={10} />
+											</InputGroupAddon>
+										</InputGroup>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						<FormField
+							control={form.control}
+							name="stateBusiness"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										<span translate="no" suppressHydrationWarning>
+											{t('stateBusiness.label')}
+										</span>
+									</FormLabel>
+									<FormControl>
+										<InputGroup>
+											<InputGroupInput
+												{...field}
+												translate="no"
+												placeholder={t('stateBusiness.placeholder')}
+												maxLength={64}
+												className="pr-16"
+											/>
+											<InputGroupAddon align="inline-end">
+												<CharacterCounter current={field.value?.length || 0} max={64} />
+											</InputGroupAddon>
+										</InputGroup>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="countryBusiness"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>
+										<span translate="no" suppressHydrationWarning>
+											{t('countryBusiness.label')}
+										</span>
+									</FormLabel>
+									<FormControl>
+										<InputGroup>
+											<InputGroupInput
+												{...field}
+												translate="no"
+												placeholder={t('countryBusiness.placeholder')}
+												maxLength={64}
+												className="pr-16"
+											/>
+											<InputGroupAddon align="inline-end">
+												<CharacterCounter current={field.value?.length || 0} max={64} />
+											</InputGroupAddon>
+										</InputGroup>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 				</div>
-				<FormField
-					control={form.control}
-					name="state"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								<span translate="no" suppressHydrationWarning>
-									{t('state.label')}
-								</span>
-							</FormLabel>
-							<FormControl>
-								<InputGroup>
-									<InputGroupInput
-										{...field}
-										translate="no"
-										placeholder={t('state.placeholder')}
-										maxLength={64}
-										className="pr-16"
-									/>
-									<InputGroupAddon align="inline-end">
-										<CharacterCounter current={field.value?.length || 0} max={64} />
-									</InputGroupAddon>
-								</InputGroup>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="country"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>
-								<span translate="no" suppressHydrationWarning>
-									{t('country.label')}
-								</span>
-							</FormLabel>
-							<FormControl>
-								<InputGroup>
-									<InputGroupInput
-										{...field}
-										translate="no"
-										placeholder={t('country.placeholder')}
-										maxLength={64}
-										className="pr-16"
-									/>
-									<InputGroupAddon align="inline-end">
-										<CharacterCounter current={field.value?.length || 0} max={64} />
-									</InputGroupAddon>
-								</InputGroup>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
 				<FormField
 					control={form.control}
 					name="website"

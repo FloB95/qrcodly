@@ -693,25 +693,51 @@
 					"label": "Titre du poste",
 					"placeholder": "Saisissez votre titre de poste"
 				},
-				"street": {
+				"addressPrivate": {
+					"title": "Adresse Privée"
+				},
+				"streetPrivate": {
 					"label": "Rue",
-					"placeholder": "Saisissez votre adresse et numéro de maison"
+					"placeholder": "Entrez votre rue"
 				},
-				"city": {
+				"cityPrivate": {
 					"label": "Ville",
-					"placeholder": "Saisissez votre ville"
+					"placeholder": "Entrez votre ville"
 				},
-				"zipCode": {
-					"label": "Code postal",
-					"placeholder": "Saisissez votre code postal"
+				"zipPrivate": {
+					"label": "Code Postal",
+					"placeholder": "Entrez votre code postal"
 				},
-				"state": {
-					"label": "État/Province",
-					"placeholder": "Saisissez votre état/province"
+				"statePrivate": {
+					"label": "État",
+					"placeholder": "Entrez votre état"
 				},
-				"country": {
+				"countryPrivate": {
 					"label": "Pays",
-					"placeholder": "Saisissez votre pays"
+					"placeholder": "Entrez votre pays"
+				},
+				"addressBusiness": {
+					"title": "Adresse Professionnelle"
+				},
+				"streetBusiness": {
+					"label": "Rue",
+					"placeholder": "Entrez votre rue"
+				},
+				"cityBusiness": {
+					"label": "Ville",
+					"placeholder": "Entrez votre ville"
+				},
+				"zipBusiness": {
+					"label": "Code Postal",
+					"placeholder": "Entrez votre code postal"
+				},
+				"stateBusiness": {
+					"label": "État",
+					"placeholder": "Entrez votre état"
+				},
+				"countryBusiness": {
+					"label": "Pays",
+					"placeholder": "Entrez votre pays"
 				},
 				"website": {
 					"label": "Site web",

@@ -693,25 +693,51 @@
 					"label": "Должность",
 					"placeholder": "Введите вашу должность"
 				},
-				"street": {
+				"addressPrivate": {
+					"title": "Личный адрес"
+				},
+				"streetPrivate": {
 					"label": "Улица",
-					"placeholder": "Введите ваш адрес и номер дома"
+					"placeholder": "Введите улицу"
 				},
-				"city": {
+				"cityPrivate": {
 					"label": "Город",
-					"placeholder": "Введите ваш город"
+					"placeholder": "Введите город"
 				},
-				"zipCode": {
-					"label": "Почтовый индекс",
-					"placeholder": "Введите ваш почтовый индекс"
+				"zipPrivate": {
+					"label": "Индекс",
+					"placeholder": "Введите индекс"
 				},
-				"state": {
-					"label": "Штат/Регион",
-					"placeholder": "Введите ваш штат/регион"
+				"statePrivate": {
+					"label": "Регион",
+					"placeholder": "Введите регион"
 				},
-				"country": {
+				"countryPrivate": {
 					"label": "Страна",
-					"placeholder": "Введите вашу страну"
+					"placeholder": "Введите страну"
+				},
+				"addressBusiness": {
+					"title": "Рабочий адрес"
+				},
+				"streetBusiness": {
+					"label": "Улица",
+					"placeholder": "Введите улицу"
+				},
+				"cityBusiness": {
+					"label": "Город",
+					"placeholder": "Введите город"
+				},
+				"zipBusiness": {
+					"label": "Индекс",
+					"placeholder": "Введите индекс"
+				},
+				"stateBusiness": {
+					"label": "Регион",
+					"placeholder": "Введите регион"
+				},
+				"countryBusiness": {
+					"label": "Страна",
+					"placeholder": "Введите страну"
 				},
 				"website": {
 					"label": "Веб-сайт",

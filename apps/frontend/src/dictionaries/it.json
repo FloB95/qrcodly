@@ -693,25 +693,51 @@
 					"label": "Qualifica professionale",
 					"placeholder": "Inserisci la tua qualifica professionale"
 				},
-				"street": {
+				"addressPrivate": {
+					"title": "Indirizzo Privato"
+				},
+				"streetPrivate": {
 					"label": "Via",
-					"placeholder": "Inserisci la tua via e numero civico"
+					"placeholder": "Inserisci la via"
 				},
-				"city": {
+				"cityPrivate": {
 					"label": "Città",
-					"placeholder": "Inserisci la tua città"
+					"placeholder": "Inserisci la città"
 				},
-				"zipCode": {
+				"zipPrivate": {
 					"label": "CAP",
-					"placeholder": "Inserisci il tuo CAP"
+					"placeholder": "Inserisci il CAP"
 				},
-				"state": {
-					"label": "Stato/Regione",
-					"placeholder": "Inserisci il tuo stato/regione"
+				"statePrivate": {
+					"label": "Regione",
+					"placeholder": "Inserisci la regione"
 				},
-				"country": {
+				"countryPrivate": {
 					"label": "Paese",
-					"placeholder": "Inserisci il tuo paese"
+					"placeholder": "Inserisci il paese"
+				},
+				"addressBusiness": {
+					"title": "Indirizzo Aziendale"
+				},
+				"streetBusiness": {
+					"label": "Via",
+					"placeholder": "Inserisci la via"
+				},
+				"cityBusiness": {
+					"label": "Città",
+					"placeholder": "Inserisci la città"
+				},
+				"zipBusiness": {
+					"label": "CAP",
+					"placeholder": "Inserisci il CAP"
+				},
+				"stateBusiness": {
+					"label": "Regione",
+					"placeholder": "Inserisci la regione"
+				},
+				"countryBusiness": {
+					"label": "Paese",
+					"placeholder": "Inserisci il paese"
 				},
 				"website": {
 					"label": "Sito web",

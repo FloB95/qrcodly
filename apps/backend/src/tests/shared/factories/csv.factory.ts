@@ -41,11 +41,11 @@ export const generateWifiCsv = (rows: number = 3): string => {
  */
 export const generateVCardCsv = (rows: number = 3): string => {
 	const header =
-		'QR Code Name;Title;FirstName;LastName;EmailPrivate;EmailBusiness;PhonePrivate;PhoneMobile;PhoneBusiness;Fax;Company;Job;Street;City;ZIP;State;Country;Website;Note;Dynamic (1 = true, 0 = false)\n';
+		'QR Code Name;Title;FirstName;LastName;EmailPrivate;EmailBusiness;PhonePrivate;PhoneMobile;PhoneBusiness;Fax;Company;Job;StreetPrivate;CityPrivate;ZIPPrivate;StatePrivate;CountryPrivate;StreetBusiness;CityBusiness;ZIPBusiness;StateBusiness;CountryBusiness;Website;Note;Dynamic (1 = true, 0 = false)\n';
 	const dataRows = Array.from({ length: rows }, () => {
 		const firstName = faker.person.firstName();
 		const lastName = faker.person.lastName();
-		return `${firstName} ${lastName};Dr.;${firstName};${lastName};${faker.internet.email()};;+1${faker.number.int({ min: 1000000000, max: 9999999999 })};;;;${faker.company.name()};${faker.person.jobTitle()};${faker.location.streetAddress()};${faker.location.city()};${faker.location.zipCode()};${faker.location.state()};${faker.location.country()};${faker.internet.url()};${faker.lorem.sentence()};0`;
+		return `${firstName} ${lastName};Dr.;${firstName};${lastName};${faker.internet.email()};;+1${faker.number.int({ min: 1000000000, max: 9999999999 })};;;;${faker.company.name()};${faker.person.jobTitle()};${faker.location.streetAddress()};${faker.location.city()};${faker.location.zipCode()};${faker.location.state()};${faker.location.country()};${faker.location.streetAddress()};${faker.location.city()};${faker.location.zipCode()};${faker.location.state()};${faker.location.country()};${faker.internet.url()};${faker.lorem.sentence()};0`;
 	}).join('\n');
 	return header + dataRows;
 };

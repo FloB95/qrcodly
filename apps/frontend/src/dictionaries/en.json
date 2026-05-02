@@ -686,23 +686,49 @@
 					"label": "Job Title",
 					"placeholder": "Enter your job title"
 				},
-				"street": {
+				"addressPrivate": {
+					"title": "Private Address"
+				},
+				"streetPrivate": {
 					"label": "Street",
 					"placeholder": "Enter your street address"
 				},
-				"city": {
+				"cityPrivate": {
 					"label": "City",
 					"placeholder": "Enter your city"
 				},
-				"zipCode": {
+				"zipPrivate": {
 					"label": "Zip Code",
 					"placeholder": "Enter your zip code"
 				},
-				"state": {
+				"statePrivate": {
 					"label": "State",
 					"placeholder": "Enter your state"
 				},
-				"country": {
+				"countryPrivate": {
+					"label": "Country",
+					"placeholder": "Enter your country"
+				},
+				"addressBusiness": {
+					"title": "Business Address"
+				},
+				"streetBusiness": {
+					"label": "Street",
+					"placeholder": "Enter your street address"
+				},
+				"cityBusiness": {
+					"label": "City",
+					"placeholder": "Enter your city"
+				},
+				"zipBusiness": {
+					"label": "Zip Code",
+					"placeholder": "Enter your zip code"
+				},
+				"stateBusiness": {
+					"label": "State",
+					"placeholder": "Enter your state"
+				},
+				"countryBusiness": {
 					"label": "Country",
 					"placeholder": "Enter your country"
 				},

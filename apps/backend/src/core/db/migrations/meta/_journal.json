@@ -211,6 +211,13 @@
 			"when": 1774006916598,
 			"tag": "0029_rename-is-editable-to-is-dynamic",
 			"breakpoints": true
+		},
+		{
+			"idx": 30,
+			"version": "5",
+			"when": 1777728301765,
+			"tag": "0030_split-vcard-addresses",
+			"breakpoints": true
 		}
 	]
 }

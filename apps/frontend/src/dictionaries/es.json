@@ -693,25 +693,51 @@
 					"label": "Cargo",
 					"placeholder": "Introduce tu cargo"
 				},
-				"street": {
+				"addressPrivate": {
+					"title": "Dirección Privada"
+				},
+				"streetPrivate": {
 					"label": "Calle",
-					"placeholder": "Introduce tu dirección y número de casa"
+					"placeholder": "Ingrese su calle"
 				},
-				"city": {
+				"cityPrivate": {
 					"label": "Ciudad",
-					"placeholder": "Introduce tu ciudad"
+					"placeholder": "Ingrese su ciudad"
 				},
-				"zipCode": {
+				"zipPrivate": {
 					"label": "Código Postal",
-					"placeholder": "Introduce tu código postal"
+					"placeholder": "Ingrese su código postal"
 				},
-				"state": {
-					"label": "Provincia/Estado",
-					"placeholder": "Introduce tu provincia/estado"
+				"statePrivate": {
+					"label": "Provincia",
+					"placeholder": "Ingrese su provincia"
 				},
-				"country": {
+				"countryPrivate": {
 					"label": "País",
-					"placeholder": "Introduce tu país"
+					"placeholder": "Ingrese su país"
+				},
+				"addressBusiness": {
+					"title": "Dirección Comercial"
+				},
+				"streetBusiness": {
+					"label": "Calle",
+					"placeholder": "Ingrese su calle"
+				},
+				"cityBusiness": {
+					"label": "Ciudad",
+					"placeholder": "Ingrese su ciudad"
+				},
+				"zipBusiness": {
+					"label": "Código Postal",
+					"placeholder": "Ingrese su código postal"
+				},
+				"stateBusiness": {
+					"label": "Provincia",
+					"placeholder": "Ingrese su provincia"
+				},
+				"countryBusiness": {
+					"label": "País",
+					"placeholder": "Ingrese su país"
 				},
 				"website": {
 					"label": "Sitio web",

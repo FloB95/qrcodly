@@ -4,8 +4,9 @@ import {
 	EnvelopeIcon,
 	PhoneIcon,
 	BuildingOfficeIcon,
+	BuildingOffice2Icon,
 	GlobeAltIcon,
-	MapPinIcon,
+	HomeIcon,
 	UserIcon,
 } from '@heroicons/react/24/outline';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
@@ -21,10 +22,22 @@ export const VCardDetailsCard = ({ vcard, trigger }: VCardDetailsCardProps) => {
 	const fullName = `${vcard.firstName || ''} ${vcard.lastName || ''}`.trim() || 'Contact';
 	const email = vcard.emailPrivate || vcard.emailBusiness || vcard.email;
 	const phone = vcard.phoneMobile || vcard.phone || vcard.phonePrivate || vcard.phoneBusiness;
-	const addressParts = [vcard.street, vcard.zip, vcard.city, vcard.state, vcard.country].filter(
-		Boolean,
-	);
-	const address = addressParts.length > 0 ? addressParts.join(', ') : null;
+	const privateAddressParts = [
+		vcard.streetPrivate,
+		vcard.zipPrivate,
+		vcard.cityPrivate,
+		vcard.statePrivate,
+		vcard.countryPrivate,
+	].filter(Boolean);
+	const businessAddressParts = [
+		vcard.streetBusiness,
+		vcard.zipBusiness,
+		vcard.cityBusiness,
+		vcard.stateBusiness,
+		vcard.countryBusiness,
+	].filter(Boolean);
+	const privateAddress = privateAddressParts.length > 0 ? privateAddressParts.join(', ') : null;
+	const businessAddress = businessAddressParts.length > 0 ? businessAddressParts.join(', ') : null;
 
 	const rows: { icon: React.ElementType; value: string }[] = [];
 	if (vcard.job || vcard.company) {
@@ -34,7 +47,8 @@ export const VCardDetailsCard = ({ vcard, trigger }: VCardDetailsCardProps) => {
 	if (email) rows.push({ icon: EnvelopeIcon, value: email });
 	if (phone) rows.push({ icon: PhoneIcon, value: phone });
 	if (vcard.website) rows.push({ icon: GlobeAltIcon, value: vcard.website });
-	if (address) rows.push({ icon: MapPinIcon, value: address });
+	if (privateAddress) rows.push({ icon: HomeIcon, value: privateAddress });
+	if (businessAddress) rows.push({ icon: BuildingOffice2Icon, value: businessAddress });
 
 	return (
 		<HoverCard>

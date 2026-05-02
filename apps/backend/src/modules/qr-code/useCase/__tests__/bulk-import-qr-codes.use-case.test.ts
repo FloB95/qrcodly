@@ -448,7 +448,7 @@ describe('BulkImportQrCodesUseCase', () => {
 
 		it('should handle vCard CSV with all fields', async () => {
 			const csvContent =
-				'name;title;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;street;city;zip;state;country;website;note;isDynamic\nJohn Doe;Dr.;John;Doe;john@example.com;;+1234567890;;;;ACME Inc;Developer;123 Main St;New York;10001;NY;USA;https://example.com;Key account since 2020;0';
+				'name;title;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;streetPrivate;cityPrivate;zipPrivate;statePrivate;countryPrivate;streetBusiness;cityBusiness;zipBusiness;stateBusiness;countryBusiness;website;note;isDynamic\nJohn Doe;Dr.;John;Doe;john@example.com;;+1234567890;;;;ACME Inc;Developer;123 Main St;New York;10001;NY;USA;500 Office Pkwy;Brooklyn;11201;NY;USA;https://example.com;Key account since 2020;0';
 			const file = new File([csvContent], 'test.csv', { type: 'text/csv' });
 
 			const dto: TBulkImportQrCodeDto = {
@@ -469,6 +469,10 @@ describe('BulkImportQrCodesUseCase', () => {
 							firstName: 'John',
 							lastName: 'Doe',
 							emailPrivate: 'john@example.com',
+							streetPrivate: '123 Main St',
+							cityPrivate: 'New York',
+							streetBusiness: '500 Office Pkwy',
+							cityBusiness: 'Brooklyn',
 							note: 'Key account since 2020',
 						}),
 					},
@@ -479,8 +483,8 @@ describe('BulkImportQrCodesUseCase', () => {
 
 		it('should preserve newlines in a quoted multi-line note', async () => {
 			const csvContent =
-				'name;title;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;street;city;zip;state;country;website;note;isDynamic\n' +
-				'John Doe;;John;Doe;john@example.com;;;;;;;;;;;;;;"Erste Zeile\nZweite Zeile\nDritte Zeile";0';
+				'name;title;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;streetPrivate;cityPrivate;zipPrivate;statePrivate;countryPrivate;streetBusiness;cityBusiness;zipBusiness;stateBusiness;countryBusiness;website;note;isDynamic\n' +
+				'John Doe;;John;Doe;john@example.com;;;;;;;;;;;;;;;;;;;"Erste Zeile\nZweite Zeile\nDritte Zeile";0';
 			const file = new File([csvContent], 'test.csv', { type: 'text/csv' });
 
 			const dto: TBulkImportQrCodeDto = {
@@ -506,7 +510,7 @@ describe('BulkImportQrCodesUseCase', () => {
 
 		it('should accept vCard CSV with empty note field', async () => {
 			const csvContent =
-				'name;title;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;street;city;zip;state;country;website;note;isDynamic\nJane Doe;;Jane;Doe;jane@example.com;;;;;;;;;;;;;;;0';
+				'name;title;firstName;lastName;emailPrivate;emailBusiness;phonePrivate;phoneMobile;phoneBusiness;fax;company;job;streetPrivate;cityPrivate;zipPrivate;statePrivate;countryPrivate;streetBusiness;cityBusiness;zipBusiness;stateBusiness;countryBusiness;website;note;isDynamic\nJane Doe;;Jane;Doe;jane@example.com;;;;;;;;;;;;;;;;;;;;0';
 			const file = new File([csvContent], 'test.csv', { type: 'text/csv' });
 
 			const dto: TBulkImportQrCodeDto = {

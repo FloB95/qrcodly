@@ -74,22 +74,40 @@ export function convertVCardObjToString(vCardInput: TVCardInput): string {
 		vCard.add('title', vCardInput.job);
 	}
 	if (
-		vCardInput.street ||
-		vCardInput.city ||
-		vCardInput.zip ||
-		vCardInput.state ||
-		vCardInput.country
+		vCardInput.streetPrivate ||
+		vCardInput.cityPrivate ||
+		vCardInput.zipPrivate ||
+		vCardInput.statePrivate ||
+		vCardInput.countryPrivate
 	) {
-		const address = [
+		const privateAddress = [
 			'',
 			'',
-			vCardInput.street || '',
-			vCardInput.city || '',
-			vCardInput.state || '',
-			vCardInput.zip || '',
-			vCardInput.country || '',
+			vCardInput.streetPrivate || '',
+			vCardInput.cityPrivate || '',
+			vCardInput.statePrivate || '',
+			vCardInput.zipPrivate || '',
+			vCardInput.countryPrivate || '',
 		].join(';');
-		vCard.add('adr', address);
+		vCard.add('adr', privateAddress, { type: 'home' });
+	}
+	if (
+		vCardInput.streetBusiness ||
+		vCardInput.cityBusiness ||
+		vCardInput.zipBusiness ||
+		vCardInput.stateBusiness ||
+		vCardInput.countryBusiness
+	) {
+		const businessAddress = [
+			'',
+			'',
+			vCardInput.streetBusiness || '',
+			vCardInput.cityBusiness || '',
+			vCardInput.stateBusiness || '',
+			vCardInput.zipBusiness || '',
+			vCardInput.countryBusiness || '',
+		].join(';');
+		vCard.add('adr', businessAddress, { type: 'work' });
 	}
 	if (vCardInput.website) {
 		vCard.add('url', vCardInput.website);
@@ -279,11 +297,16 @@ export const getDefaultContentByType = (
 					fax: undefined,
 					company: undefined,
 					job: undefined,
-					street: undefined,
-					city: undefined,
-					zip: undefined,
-					state: undefined,
-					country: undefined,
+					streetPrivate: undefined,
+					cityPrivate: undefined,
+					zipPrivate: undefined,
+					statePrivate: undefined,
+					countryPrivate: undefined,
+					streetBusiness: undefined,
+					cityBusiness: undefined,
+					zipBusiness: undefined,
+					stateBusiness: undefined,
+					countryBusiness: undefined,
 					website: undefined,
 					note: undefined,
 					isDynamic: isSignedIn,

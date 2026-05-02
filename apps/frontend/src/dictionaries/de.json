@@ -686,25 +686,51 @@
 					"label": "Berufsbezeichnung",
 					"placeholder": "Gib deine Berufsbezeichnung ein"
 				},
-				"street": {
+				"addressPrivate": {
+					"title": "Private Adresse"
+				},
+				"streetPrivate": {
 					"label": "Straße",
-					"placeholder": "Gib deine Straße und Hausnummer ein"
+					"placeholder": "Straße eingeben"
 				},
-				"city": {
+				"cityPrivate": {
 					"label": "Stadt",
-					"placeholder": "Gib deine Stadt ein"
+					"placeholder": "Stadt eingeben"
 				},
-				"zipCode": {
-					"label": "Postleitzahl",
-					"placeholder": "Gib deine Postleitzahl ein"
+				"zipPrivate": {
+					"label": "PLZ",
+					"placeholder": "PLZ eingeben"
 				},
-				"state": {
+				"statePrivate": {
 					"label": "Bundesland",
-					"placeholder": "Gib dein Bundesland ein"
+					"placeholder": "Bundesland eingeben"
 				},
-				"country": {
+				"countryPrivate": {
 					"label": "Land",
-					"placeholder": "Gib dein Land ein"
+					"placeholder": "Land eingeben"
+				},
+				"addressBusiness": {
+					"title": "Geschäftliche Adresse"
+				},
+				"streetBusiness": {
+					"label": "Straße",
+					"placeholder": "Straße eingeben"
+				},
+				"cityBusiness": {
+					"label": "Stadt",
+					"placeholder": "Stadt eingeben"
+				},
+				"zipBusiness": {
+					"label": "PLZ",
+					"placeholder": "PLZ eingeben"
+				},
+				"stateBusiness": {
+					"label": "Bundesland",
+					"placeholder": "Bundesland eingeben"
+				},
+				"countryBusiness": {
+					"label": "Land",
+					"placeholder": "Land eingeben"
 				},
 				"website": {
 					"label": "Webseite",

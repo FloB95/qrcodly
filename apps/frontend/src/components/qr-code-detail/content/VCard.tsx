@@ -84,34 +84,58 @@ export default function VCardContent({ qrCode }: { qrCode: TQrCodeWithRelationsR
 					</div>
 				</div>
 
-				{/* Street */}
+				{/* Private Address */}
+				<h3 className="text-sm font-semibold text-muted-foreground pt-2">
+					{t('addressPrivate.title')}
+				</h3>
 				<div>
-					<div className="font-medium mb-1">{t('street.label')}</div>
-					<div>{displayValue(data.street)}</div>
+					<div className="font-medium mb-1">{t('streetPrivate.label')}</div>
+					<div>{displayValue(data.streetPrivate)}</div>
 				</div>
-
-				{/* City and Zip */}
 				<div className="flex space-x-4">
 					<div className="w-full">
-						<div className="font-medium mb-1">{t('city.label')}</div>
-						<div>{displayValue(data.city)}</div>
+						<div className="font-medium mb-1">{t('cityPrivate.label')}</div>
+						<div>{displayValue(data.cityPrivate)}</div>
 					</div>
 					<div className="w-full">
-						<div className="font-medium mb-1">{t('zipCode.label')}</div>
-						<div>{displayValue(data.zip)}</div>
+						<div className="font-medium mb-1">{t('zipPrivate.label')}</div>
+						<div>{displayValue(data.zipPrivate)}</div>
 					</div>
 				</div>
-
-				{/* State */}
 				<div>
-					<div className="font-medium mb-1">{t('state.label')}</div>
-					<div>{displayValue(data.state)}</div>
+					<div className="font-medium mb-1">{t('statePrivate.label')}</div>
+					<div>{displayValue(data.statePrivate)}</div>
+				</div>
+				<div>
+					<div className="font-medium mb-1">{t('countryPrivate.label')}</div>
+					<div>{displayValue(data.countryPrivate)}</div>
 				</div>
 
-				{/* Country */}
+				{/* Business Address */}
+				<h3 className="text-sm font-semibold text-muted-foreground pt-2">
+					{t('addressBusiness.title')}
+				</h3>
 				<div>
-					<div className="font-medium mb-1">{t('country.label')}</div>
-					<div>{displayValue(data.country)}</div>
+					<div className="font-medium mb-1">{t('streetBusiness.label')}</div>
+					<div>{displayValue(data.streetBusiness)}</div>
+				</div>
+				<div className="flex space-x-4">
+					<div className="w-full">
+						<div className="font-medium mb-1">{t('cityBusiness.label')}</div>
+						<div>{displayValue(data.cityBusiness)}</div>
+					</div>
+					<div className="w-full">
+						<div className="font-medium mb-1">{t('zipBusiness.label')}</div>
+						<div>{displayValue(data.zipBusiness)}</div>
+					</div>
+				</div>
+				<div>
+					<div className="font-medium mb-1">{t('stateBusiness.label')}</div>
+					<div>{displayValue(data.stateBusiness)}</div>
+				</div>
+				<div>
+					<div className="font-medium mb-1">{t('countryBusiness.label')}</div>
+					<div>{displayValue(data.countryBusiness)}</div>
 				</div>
 
 				{/* Website */}

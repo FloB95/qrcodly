@@ -62,13 +62,36 @@ export const VCardInputSchema = z
 		job: emptyStringToUndefined(
 			z.string().min(1).max(64).optional().describe('Job title or position'),
 		),
-		street: emptyStringToUndefined(z.string().min(1).max(64).optional().describe('Street address')),
-		city: emptyStringToUndefined(z.string().min(1).max(64).optional().describe('City')),
-		zip: emptyStringToUndefined(z.string().min(1).max(10).optional().describe('Postal / ZIP code')),
-		state: emptyStringToUndefined(
-			z.string().min(1).max(64).optional().describe('State or province'),
+		streetPrivate: emptyStringToUndefined(
+			z.string().min(1).max(64).optional().describe('Private street address'),
 		),
-		country: emptyStringToUndefined(z.string().min(1).max(64).optional().describe('Country')),
+		cityPrivate: emptyStringToUndefined(
+			z.string().min(1).max(64).optional().describe('Private city'),
+		),
+		zipPrivate: emptyStringToUndefined(
+			z.string().min(1).max(10).optional().describe('Private postal / ZIP code'),
+		),
+		statePrivate: emptyStringToUndefined(
+			z.string().min(1).max(64).optional().describe('Private state or province'),
+		),
+		countryPrivate: emptyStringToUndefined(
+			z.string().min(1).max(64).optional().describe('Private country'),
+		),
+		streetBusiness: emptyStringToUndefined(
+			z.string().min(1).max(64).optional().describe('Business street address'),
+		),
+		cityBusiness: emptyStringToUndefined(
+			z.string().min(1).max(64).optional().describe('Business city'),
+		),
+		zipBusiness: emptyStringToUndefined(
+			z.string().min(1).max(10).optional().describe('Business postal / ZIP code'),
+		),
+		stateBusiness: emptyStringToUndefined(
+			z.string().min(1).max(64).optional().describe('Business state or province'),
+		),
+		countryBusiness: emptyStringToUndefined(
+			z.string().min(1).max(64).optional().describe('Business country'),
+		),
 		website: emptyStringToUndefined(z.url().optional().describe('Personal or company website URL')),
 		note: emptyStringToUndefined(
 			z.string().min(1).max(300).optional().describe('Free-form note or additional information'),

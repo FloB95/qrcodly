@@ -123,10 +123,14 @@ describe('updateQrCode - vCard Content Type', () => {
 				company: 'Acme Inc',
 				job: 'CEO',
 				website: 'https://example.com',
-				street: '123 Main St',
-				city: 'New York',
-				zip: '10001',
-				country: 'USA',
+				streetPrivate: '123 Main St',
+				cityPrivate: 'New York',
+				zipPrivate: '10001',
+				countryPrivate: 'USA',
+				streetBusiness: '500 Office Pkwy',
+				cityBusiness: 'Brooklyn',
+				zipBusiness: '11201',
+				countryBusiness: 'USA',
 			};
 
 			const response = await updateQrCodeRequest(
@@ -145,7 +149,8 @@ describe('updateQrCode - vCard Content Type', () => {
 			if (updatedQrCode.content.type === 'vCard') {
 				expect(updatedQrCode.content.data.job).toBe(newVCardData.job);
 				expect(updatedQrCode.content.data.website).toBe(newVCardData.website);
-				expect(updatedQrCode.content.data.city).toBe(newVCardData.city);
+				expect(updatedQrCode.content.data.cityPrivate).toBe(newVCardData.cityPrivate);
+				expect(updatedQrCode.content.data.cityBusiness).toBe(newVCardData.cityBusiness);
 			}
 
 			// Verify VCF format includes address

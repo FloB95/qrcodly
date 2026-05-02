@@ -686,25 +686,51 @@
 					"label": "Cargo",
 					"placeholder": "Digite seu cargo"
 				},
-				"street": {
+				"addressPrivate": {
+					"title": "Endereço Privado"
+				},
+				"streetPrivate": {
 					"label": "Rua",
-					"placeholder": "Digite seu endereço"
+					"placeholder": "Insira sua rua"
 				},
-				"city": {
+				"cityPrivate": {
 					"label": "Cidade",
-					"placeholder": "Digite sua cidade"
+					"placeholder": "Insira sua cidade"
 				},
-				"zipCode": {
+				"zipPrivate": {
 					"label": "CEP",
-					"placeholder": "Digite seu CEP"
+					"placeholder": "Insira seu CEP"
 				},
-				"state": {
+				"statePrivate": {
 					"label": "Estado",
-					"placeholder": "Digite seu estado"
+					"placeholder": "Insira seu estado"
 				},
-				"country": {
+				"countryPrivate": {
 					"label": "País",
-					"placeholder": "Digite seu país"
+					"placeholder": "Insira seu país"
+				},
+				"addressBusiness": {
+					"title": "Endereço Comercial"
+				},
+				"streetBusiness": {
+					"label": "Rua",
+					"placeholder": "Insira sua rua"
+				},
+				"cityBusiness": {
+					"label": "Cidade",
+					"placeholder": "Insira sua cidade"
+				},
+				"zipBusiness": {
+					"label": "CEP",
+					"placeholder": "Insira seu CEP"
+				},
+				"stateBusiness": {
+					"label": "Estado",
+					"placeholder": "Insira seu estado"
+				},
+				"countryBusiness": {
+					"label": "País",
+					"placeholder": "Insira seu país"
 				},
 				"website": {
 					"label": "Website",

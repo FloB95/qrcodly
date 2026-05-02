@@ -693,23 +693,49 @@
 					"label": "Functietitel",
 					"placeholder": "Voer uw functietitel in"
 				},
-				"street": {
-					"label": "Straat",
-					"placeholder": "Voer uw straat en huisnummer in"
+				"addressPrivate": {
+					"title": "Privéadres"
 				},
-				"city": {
+				"streetPrivate": {
+					"label": "Straat",
+					"placeholder": "Voer uw straat in"
+				},
+				"cityPrivate": {
 					"label": "Stad",
 					"placeholder": "Voer uw stad in"
 				},
-				"zipCode": {
+				"zipPrivate": {
 					"label": "Postcode",
 					"placeholder": "Voer uw postcode in"
 				},
-				"state": {
+				"statePrivate": {
 					"label": "Provincie",
 					"placeholder": "Voer uw provincie in"
 				},
-				"country": {
+				"countryPrivate": {
+					"label": "Land",
+					"placeholder": "Voer uw land in"
+				},
+				"addressBusiness": {
+					"title": "Zakelijk Adres"
+				},
+				"streetBusiness": {
+					"label": "Straat",
+					"placeholder": "Voer uw straat in"
+				},
+				"cityBusiness": {
+					"label": "Stad",
+					"placeholder": "Voer uw stad in"
+				},
+				"zipBusiness": {
+					"label": "Postcode",
+					"placeholder": "Voer uw postcode in"
+				},
+				"stateBusiness": {
+					"label": "Provincie",
+					"placeholder": "Voer uw provincie in"
+				},
+				"countryBusiness": {
 					"label": "Land",
 					"placeholder": "Voer uw land in"
 				},
