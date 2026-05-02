@@ -25,6 +25,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { ShortUrlDisplay } from '../qrCode/content-renderers/ShortUrlDisplay';
 import {
 	useDeleteShortUrlMutation,
+	useDuplicateShortUrlMutation,
 	useGetViewsFromShortCodeQuery,
 	useToggleActiveStateMutation,
 	useUpdateShortUrlNameMutation,
@@ -55,6 +56,7 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
 
 	const deleteMutation = useDeleteShortUrlMutation();
+	const duplicateMutation = useDuplicateShortUrlMutation();
 	const toggleMutation = useToggleActiveStateMutation();
 	const updateNameMutation = useUpdateShortUrlNameMutation();
 	const { data: viewsData, isLoading: viewsLoading } = useGetViewsFromShortCodeQuery(
@@ -112,6 +114,27 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 		});
 	};
 
+	const handleDuplicate = () => {
+		duplicateMutation.mutate(shortUrl.shortCode, {
+			onSuccess: () => {
+				posthog.capture('short-url-duplicated', { shortCode: shortUrl.shortCode });
+				toast({ title: tGeneral('duplicated'), duration: 3000 });
+			},
+			onError: (error) => {
+				Sentry.captureException(error);
+				posthog.capture('error:short-url-duplicated', {
+					shortCode: shortUrl.shortCode,
+					error,
+				});
+				toast({
+					title: tGeneral('duplicateError'),
+					variant: 'destructive',
+					duration: 5000,
+				});
+			},
+		});
+	};
+
 	const handleUpdateName = (name: string) => {
 		updateNameMutation.mutate(
 			{ shortCode: shortUrl.shortCode, name: name || null },
@@ -137,6 +160,9 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 			</Component>
 			<Component onClick={() => setEditOpen(true)} className="cursor-pointer">
 				{tGeneral('edit')}
+			</Component>
+			<Component onClick={handleDuplicate} className="cursor-pointer">
+				{tGeneral('duplicate')}
 			</Component>
 			<Component onClick={handleToggle} className="cursor-pointer">
 				{shortUrl.isActive ? t('status.disable') : t('status.enable')}

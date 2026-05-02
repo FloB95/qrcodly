@@ -4,7 +4,11 @@ import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
 import { Loader2 } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
-import { useDeleteQrCodeMutation, useUpdateQrCodeMutation } from '@/lib/api/qr-code';
+import {
+	useDeleteQrCodeMutation,
+	useDuplicateQrCodeMutation,
+	useUpdateQrCodeMutation,
+} from '@/lib/api/qr-code';
 import { useToggleActiveStateMutation } from '@/lib/api/url-shortener';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 
@@ -13,6 +17,7 @@ export const useQrCodeMutations = (qr: TQrCodeWithRelationsResponseDto) => {
 	const [isDeleting, setIsDeleting] = useState(false);
 
 	const deleteMutation = useDeleteQrCodeMutation();
+	const duplicateMutation = useDuplicateQrCodeMutation();
 	const toggleMutation = useToggleActiveStateMutation();
 	const updateQrCodeMutation = useUpdateQrCodeMutation();
 
@@ -37,6 +42,27 @@ export const useQrCodeMutations = (qr: TQrCodeWithRelationsResponseDto) => {
 			},
 		});
 	}, [qr.shortUrl, toggleMutation, t]);
+
+	const handleDuplicate = useCallback(() => {
+		duplicateMutation.mutate(qr.id, {
+			onSuccess: () => {
+				posthog.capture('qr-code-duplicated', { id: qr.id });
+				toast({
+					title: t('general.duplicated'),
+					duration: 3000,
+				});
+			},
+			onError: (error) => {
+				Sentry.captureException(error);
+				posthog.capture('error:qr-code-duplicated', { id: qr.id, error });
+				toast({
+					title: t('general.duplicateError'),
+					variant: 'destructive',
+					duration: 5000,
+				});
+			},
+		});
+	}, [qr.id, duplicateMutation, t]);
 
 	const handleDelete = useCallback(() => {
 		setIsDeleting(true);
@@ -99,6 +125,7 @@ export const useQrCodeMutations = (qr: TQrCodeWithRelationsResponseDto) => {
 	return {
 		isDeleting,
 		handleToggle,
+		handleDuplicate,
 		handleDelete,
 		handleUpdateName,
 	};

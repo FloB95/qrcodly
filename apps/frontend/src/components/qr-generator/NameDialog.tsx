@@ -50,13 +50,13 @@ export function NameDialog({
 							placeholder={placeholder ?? t('placeholder')}
 							id="name"
 							value={name}
-							onChange={(e) => setName(e.target.value.slice(0, 40))}
+							onChange={(e) => setName(e.target.value.slice(0, 50))}
 							onKeyDown={handleKeyDown}
-							maxLength={32}
+							maxLength={50}
 							className="pr-16"
 						/>
 						<InputGroupAddon align="inline-end">
-							<CharacterCounter current={name.length} max={32} />
+							<CharacterCounter current={name.length} max={50} />
 						</InputGroupAddon>
 					</InputGroup>
 				</div>

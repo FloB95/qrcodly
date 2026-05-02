@@ -13,7 +13,7 @@ const shortUrl = createTable(
 			length: 36,
 		}).primaryKey(),
 		shortCode: varchar({ length: 5 }).notNull().unique(),
-		name: varchar({ length: 255 }),
+		name: varchar({ length: 50 }),
 		destinationUrl: text(),
 		qrCodeId: varchar({
 			length: 36,

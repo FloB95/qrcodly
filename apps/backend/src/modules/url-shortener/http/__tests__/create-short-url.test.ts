@@ -88,6 +88,21 @@ describe('createShortUrl', () => {
 		expect(shortUrl.name).toBeNull();
 	});
 
+	it('should create a short URL with a name at max length (50 chars)', async () => {
+		const dto = generateShortUrlDto({ name: 'A'.repeat(50) });
+		const response = await createShortUrlRequest(dto, accessToken);
+		expect(response).toHaveStatusCode(201);
+
+		const shortUrl = JSON.parse(response.payload) as TShortUrlWithCustomDomainResponseDto;
+		expect(shortUrl.name).toHaveLength(50);
+	});
+
+	it('should return 400 when name exceeds max length (51 chars)', async () => {
+		const dto = generateShortUrlDto({ name: 'A'.repeat(51) });
+		const response = await createShortUrlRequest(dto, accessToken);
+		expect(response).toHaveStatusCode(400);
+	});
+
 	it('should return 401 when not authenticated', async () => {
 		const response = await testServer.inject({
 			method: 'POST',

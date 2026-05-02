@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { AbstractEntitySchema } from './AbstractEntitySchema'; // Stelle sicher, dass der Pfad korrekt ist
 
+export const QR_CODE_NAME_MAX_LENGTH = 50;
+
 const emptyStringToUndefined = <T extends z.ZodTypeAny>(schema: T) =>
 	z.preprocess((value) => (value === '' ? undefined : value), schema);
 
@@ -347,9 +349,9 @@ export type TQrCodeOptions = z.infer<typeof QrCodeOptionsSchema>;
 export const QrCodeSchema = AbstractEntitySchema.extend({
 	name: z
 		.string()
-		.max(32)
+		.max(QR_CODE_NAME_MAX_LENGTH)
 		.nullable()
-		.describe('User-defined name for the QR code (max 32 characters)'),
+		.describe('User-defined name for the QR code (max 50 characters)'),
 	config: QrCodeOptionsSchema.describe(
 		'QR code visual styling configuration (colors, shapes, dimensions, embedded image)',
 	),

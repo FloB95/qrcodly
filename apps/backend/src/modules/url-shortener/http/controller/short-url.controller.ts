@@ -38,6 +38,7 @@ import { DispatchTrackingEventUseCase } from '@/modules/analytics-integration/us
 import TagRepository from '@/modules/tag/domain/repository/tag.repository';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { shortUrlScans } from '@/core/metrics';
+import { DuplicateShortUrlUseCase } from '../../useCase/duplicate-short-url.use-case';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -58,6 +59,8 @@ export class ShortUrlController extends AbstractController {
 		@inject(DispatchTrackingEventUseCase)
 		private readonly dispatchTrackingEventUseCase: DispatchTrackingEventUseCase,
 		@inject(TagRepository) private readonly tagRepository: TagRepository,
+		@inject(DuplicateShortUrlUseCase)
+		private readonly duplicateShortUrlUseCase: DuplicateShortUrlUseCase,
 	) {
 		super();
 	}
@@ -133,6 +136,46 @@ export class ShortUrlController extends AbstractController {
 			201,
 			ShortUrlWithCustomDomainResponseDto.parse({ ...shortUrl, tags: [] }),
 		);
+	}
+
+	@Post('/:shortCode/duplicate', {
+		responseSchema: {
+			201: ShortUrlWithCustomDomainResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['Short URLs'],
+			summary: 'Duplicate a short URL',
+			description:
+				'Creates a full copy of an existing standalone short URL with a new short code. ' +
+				'Tags are carried over. Only the owner can duplicate their short URLs.',
+			operationId: 'short-url/duplicate',
+			params: {
+				type: 'object',
+				properties: {
+					shortCode: {
+						type: 'string',
+						description: 'The 5-character short URL code to duplicate',
+					},
+				},
+			},
+		},
+	})
+	async duplicate(
+		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
+	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
+		const source = await this.fetchShortUrl(request.params.shortCode, request.user.id);
+		const sourceWithDomain = await this.shortUrlRepository.findOneByShortCode(source.shortCode);
+		if (!sourceWithDomain) throw new ShortUrlNotFoundError();
+		const tags = await this.tagRepository.findTagsByShortUrlId(source.id);
+		const duplicated = await this.duplicateShortUrlUseCase.execute(
+			{ ...sourceWithDomain, tags },
+			request.user.id,
+		);
+		return this.makeApiHttpResponse(201, ShortUrlWithCustomDomainResponseDto.parse(duplicated));
 	}
 
 	@Delete('/:shortCode', {

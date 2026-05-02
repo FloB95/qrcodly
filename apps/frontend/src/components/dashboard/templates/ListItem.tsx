@@ -14,6 +14,7 @@ import { TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import {
 	useDeleteConfigTemplateMutation,
+	useDuplicateConfigTemplateMutation,
 	useUpdateConfigTemplateMutation,
 } from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
@@ -55,6 +56,7 @@ export const TemplateListItem = ({
 	const router = useRouter();
 
 	const deleteMutation = useDeleteConfigTemplateMutation();
+	const duplicateMutation = useDuplicateConfigTemplateMutation();
 	const updateMutation = useUpdateConfigTemplateMutation();
 
 	const qrCodeData = useMemo<Pick<TQrCode, 'config' | 'content'>>(
@@ -102,6 +104,24 @@ export const TemplateListItem = ({
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [template]);
+
+	const handleDuplicate = useCallback(() => {
+		duplicateMutation.mutate(template.id, {
+			onSuccess: () => {
+				posthog.capture('config-template-duplicated', { id: template.id });
+				toast({ title: t('general.duplicated'), duration: 3000 });
+			},
+			onError: (error) => {
+				Sentry.captureException(error);
+				posthog.capture('error:config-template-duplicated', { id: template.id, error });
+				toast({
+					title: t('general.duplicateError'),
+					variant: 'destructive',
+					duration: 5000,
+				});
+			},
+		});
+	}, [template.id, duplicateMutation, t]);
 
 	const handleUpdate = useCallback(
 		(newName: string) => {
@@ -234,6 +254,10 @@ export const TemplateListItem = ({
 								<Link className="cursor-pointer" href={`/dashboard/templates/${template.id}/edit`}>
 									{t('qrCode.actionsMenu.edit')}
 								</Link>
+							</DropdownMenuItem>
+
+							<DropdownMenuItem onClick={handleDuplicate} className="cursor-pointer">
+								{t('general.duplicate')}
 							</DropdownMenuItem>
 
 							<DropdownMenuSeparator />

@@ -166,6 +166,26 @@ export function useUpdateQrCodeMutation() {
 	});
 }
 
+export function useDuplicateQrCodeMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async (qrCodeId: string): Promise<TQrCodeWithRelationsResponseDto> => {
+			const token = await getToken();
+			return apiRequest<TQrCodeWithRelationsResponseDto>(`/qr-code/${qrCodeId}/duplicate`, {
+				method: 'POST',
+				headers: { Authorization: `Bearer ${token}` },
+			});
+		},
+		onSuccess: () => {
+			void queryClient.refetchQueries({
+				queryKey: qrCodeQueryKeys.listQrCodes,
+			});
+		},
+	});
+}
+
 export function useDeleteQrCodeMutation() {
 	const queryClient = useQueryClient();
 	const { getToken } = useAuth();

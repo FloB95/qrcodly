@@ -8,7 +8,7 @@ const configTemplate = createTable(
 		id: varchar('id', {
 			length: 36,
 		}).primaryKey(),
-		name: varchar({ length: 255 }).notNull(),
+		name: varchar({ length: 50 }).notNull(),
 		config: json().$type<TQrCodeOptions>().notNull(),
 		previewImage: text(),
 		isPredefined: boolean().default(false).notNull(),

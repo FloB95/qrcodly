@@ -34,6 +34,7 @@ import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { BulkImportQrCodesUseCase } from '../../useCase/bulk-import-qr-codes.use-case';
 import { RenderQrCodeUseCase } from '../../useCase/render-qr-code.use-case';
+import { DuplicateQrCodeUseCase } from '../../useCase/duplicate-qr-code.use-case';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { DownloadService } from '../../service/download.service';
 import { BadRequestError } from '@/core/error/http';
@@ -53,6 +54,8 @@ export class QrCodeController extends AbstractController {
 		@inject(ImageService) private readonly imageService: ImageService,
 		@inject(DownloadService) private readonly downloadService: DownloadService,
 		@inject(ScreenshotService) private readonly screenshotService: ScreenshotService,
+		@inject(DuplicateQrCodeUseCase)
+		private readonly duplicateQrCodeUseCase: DuplicateQrCodeUseCase,
 	) {
 		super();
 	}
@@ -262,6 +265,46 @@ export class QrCodeController extends AbstractController {
 
 		await this.deleteQrCodeUseCase.execute(qrCode, request.user.id);
 		return this.makeApiHttpResponse(200, { deleted: true });
+	}
+
+	@Post('/:id/duplicate', {
+		responseSchema: {
+			201: QrCodeWithRelationsResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['QR Codes'],
+			summary: 'Duplicate a QR code',
+			description:
+				'Creates a full copy of an existing QR code with a new ID. ' +
+				'Images are copied independently, a new short URL is generated for dynamic QR codes, ' +
+				'and all tags are carried over. Only the owner can duplicate their QR codes.',
+			operationId: 'qr-code/duplicate',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', format: 'uuid', description: 'QR code UUID to duplicate' },
+				},
+			},
+		},
+	})
+	async duplicate(
+		request: IHttpRequest<unknown, TIdRequestQueryDto>,
+	): Promise<IHttpResponse<TQrCodeWithRelationsResponseDto>> {
+		const source = await this.fetchOwnedQrCode(request.params.id, request.user.id);
+		const duplicated = await this.duplicateQrCodeUseCase.execute(source, request.user);
+
+		if (duplicated.config.image) {
+			duplicated.config.image = this.imageService.getPublicUrl(duplicated.config.image);
+		}
+		if (duplicated.previewImage) {
+			duplicated.previewImage = this.imageService.getPublicUrl(duplicated.previewImage);
+		}
+
+		return this.makeApiHttpResponse(201, QrCodeWithRelationsResponseDto.parse(duplicated));
 	}
 
 	@Get('/:id/download', {
