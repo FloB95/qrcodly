@@ -25,9 +25,10 @@ export class DuplicateConfigTemplateUseCase implements IBaseUseCase {
 
 	async execute(source: TConfigTemplate, userId: string): Promise<TConfigTemplate> {
 		let copiedImage: string | undefined;
+		let finalTemplate: TConfigTemplate;
 
 		try {
-			const finalTemplate = await UnitOfWork.run<TConfigTemplate>(async () => {
+			finalTemplate = await UnitOfWork.run<TConfigTemplate>(async () => {
 				const newId = this.configTemplateRepository.generateId();
 				const config = structuredClone(source.config);
 
@@ -54,13 +55,6 @@ export class DuplicateConfigTemplateUseCase implements IBaseUseCase {
 
 				return created;
 			});
-
-			this.eventEmitter.emit(new ConfigTemplateCreatedEvent(finalTemplate));
-			this.logger.info('template.duplicated', {
-				template: { id: finalTemplate.id, sourceId: source.id, createdBy: userId },
-			});
-
-			return finalTemplate;
 		} catch (error) {
 			this.logger.error('error.template.duplicated', { error, sourceId: source.id });
 
@@ -79,5 +73,19 @@ export class DuplicateConfigTemplateUseCase implements IBaseUseCase {
 			if (error instanceof CustomApiError) throw error;
 			throw new UnhandledServerError(error as Error, 'Config template duplication failed.');
 		}
+
+		try {
+			this.eventEmitter.emit(new ConfigTemplateCreatedEvent(finalTemplate));
+			this.logger.info('template.duplicated', {
+				template: { id: finalTemplate.id, sourceId: source.id, createdBy: userId },
+			});
+		} catch (telemetryError) {
+			this.logger.warn('template.duplicated.telemetry.failed', {
+				templateId: finalTemplate.id,
+				telemetryError,
+			});
+		}
+
+		return finalTemplate;
 	}
 }

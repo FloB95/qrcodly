@@ -46,9 +46,10 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 		await policy.checkAccess();
 
 		let copiedImage: string | undefined;
+		let finalQrCode: TQrCodeWithRelations;
 
 		try {
-			const finalQrCode = await UnitOfWork.run<TQrCodeWithRelations>(async () => {
+			finalQrCode = await UnitOfWork.run<TQrCodeWithRelations>(async () => {
 				const newId = this.qrCodeRepository.generateId();
 				const config = structuredClone(source.config);
 
@@ -94,14 +95,6 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 				await policy.incrementUsage();
 				return created;
 			});
-
-			this.eventEmitter.emit(new QrCodeCreatedEvent(finalQrCode));
-			this.logger.info('qrCode.duplicated', {
-				qrCode: { id: finalQrCode.id, sourceId: source.id, createdBy: user.id },
-			});
-			qrCodesCreated.add(1, { 'content.type': source.content.type });
-
-			return finalQrCode;
 		} catch (error: any) {
 			this.logger.error('qrCode.duplicated.error', { error, sourceId: source.id });
 
@@ -120,5 +113,20 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 			if (error instanceof CustomApiError) throw error;
 			throw new UnhandledServerError(error as Error, 'QR code duplication failed.');
 		}
+
+		try {
+			this.eventEmitter.emit(new QrCodeCreatedEvent(finalQrCode));
+			this.logger.info('qrCode.duplicated', {
+				qrCode: { id: finalQrCode.id, sourceId: source.id, createdBy: user.id },
+			});
+			qrCodesCreated.add(1, { 'content.type': source.content.type });
+		} catch (telemetryError) {
+			this.logger.warn('qrCode.duplicated.telemetry.failed', {
+				qrCodeId: finalQrCode.id,
+				telemetryError,
+			});
+		}
+
+		return finalQrCode;
 	}
 }

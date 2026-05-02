@@ -59,10 +59,17 @@ export class DuplicateShortUrlUseCase implements IBaseUseCase {
 			return { ...createdShortUrl, tags: tagsMap.get(newId) ?? [] };
 		});
 
-		this.logger.info('shortUrl.duplicated', {
-			shortUrl: { id: result.id, sourceId: source.id, createdBy: userId },
-		});
-		shortUrlsCreated.add(1);
+		try {
+			this.logger.info('shortUrl.duplicated', {
+				shortUrl: { id: result.id, sourceId: source.id, createdBy: userId },
+			});
+			shortUrlsCreated.add(1);
+		} catch (telemetryError) {
+			this.logger.warn('shortUrl.duplicated.telemetry.failed', {
+				shortUrlId: result.id,
+				telemetryError,
+			});
+		}
 
 		return result;
 	}
