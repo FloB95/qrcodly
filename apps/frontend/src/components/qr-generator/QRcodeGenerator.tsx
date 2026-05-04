@@ -111,9 +111,9 @@ export const QRcodeGenerator = ({
 
 	return (
 		<Tabs defaultValue={currentTab} onValueChange={handleTabChange} value={currentTab}>
-			<TabsList className={`mx-auto grid h-auto max-w-[450px] ${gridColsClass} bg-white p-2`}>
+			<TabsList className={`mx-auto grid h-auto max-w-[450px] ${gridColsClass} bg-card p-2`}>
 				{visibleTabs.map(({ type, labelKey, icon: Icon }) => (
-					<TabsTrigger key={type} value={type} className="data-[state=active]:bg-gray-200">
+					<TabsTrigger key={type} value={type} className="data-[state=active]:bg-muted">
 						<div className="flex items-center gap-2">
 							<Icon className="hidden h-6 w-6 xs:block" />
 							<span>{t(labelKey)}</span>
@@ -128,7 +128,7 @@ export const QRcodeGenerator = ({
 						'mx-auto flex flex-1 relative',
 						compact
 							? ''
-							: 'min-h-[500px] max-w-[1200px] rounded-2xl from-white to-white/60 bg-gradient-to-br',
+							: 'min-h-[500px] max-w-[1200px] rounded-2xl from-white to-white/60 dark:from-card dark:to-card bg-gradient-to-br',
 					)}
 				>
 					{!compact && backLink}

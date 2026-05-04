@@ -22,23 +22,23 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 	const currentYear = new Date().getFullYear();
 
 	return (
-		<footer className="-mx-4 sm:mx-0 from-white to-white/60 bg-linear-to-br text-black">
+		<footer className="-mx-4 sm:mx-0 from-white to-white/60 dark:from-card dark:to-card bg-linear-to-br text-foreground">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 pt-16 pb-8">
 				{/* Main grid */}
-				<div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12 border-b border-gray-300">
+				<div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12 border-b border-border">
 					{/* Logo + tagline */}
 					<div className="col-span-2 md:col-span-1">
-						<div className="mb-3 text-black">
+						<div className="mb-3 text-foreground">
 							<QrcodlyLogo size="default" />
 						</div>
-						<p className="text-sm text-gray-600 leading-relaxed">{t('tagline')}</p>
+						<p className="text-sm text-muted-foreground leading-relaxed">{t('tagline')}</p>
 						<a
 							href="https://github.com/FloB95/qrcodly"
 							target="_blank"
 							rel="noopener noreferrer"
 							title="QRcodly on GitHub"
 							aria-label="QRcodly on GitHub"
-							className="inline-block mt-4 text-gray-600 hover:text-gray-900 transition-colors"
+							className="inline-block mt-4 text-muted-foreground hover:text-foreground transition-colors"
 						>
 							<GitHubIcon className="h-5 w-5" aria-hidden="true" />
 							<span className="sr-only">GitHub</span>
@@ -47,14 +47,14 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 
 					{/* Product */}
 					<div>
-						<h3 className="text-base font-bold text-black mb-4">{t('product')}</h3>
+						<h3 className="text-base font-bold text-foreground mb-4">{t('product')}</h3>
 						<ul className="space-y-2.5">
 							<li>
 								<Link
 									href="/features"
 									title={t('features')}
 									aria-label={t('features')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 								>
 									{t('features')}
 								</Link>
@@ -64,7 +64,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 									href="/plans"
 									title={t('pricing')}
 									aria-label={t('pricing')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 								>
 									{t('pricing')}
 								</Link>
@@ -74,7 +74,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 									href="/products/url-shortener"
 									title={t('urlShortener')}
 									aria-label={t('urlShortener')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 								>
 									{t('urlShortener')}
 								</Link>
@@ -84,7 +84,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 									href="/products/qr-codes"
 									title={t('qrCodes')}
 									aria-label={t('qrCodes')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 								>
 									{t('qrCodes')}
 								</Link>
@@ -94,7 +94,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 									href="/products/analytics"
 									title={t('analyticsProduct')}
 									aria-label={t('analyticsProduct')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 								>
 									{t('analyticsProduct')}
 								</Link>
@@ -104,14 +104,14 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 
 					{/* Resources */}
 					<div>
-						<h3 className="text-base font-bold text-black mb-4">{t('resources')}</h3>
+						<h3 className="text-base font-bold text-foreground mb-4">{t('resources')}</h3>
 						<ul className="space-y-2.5">
 							<li>
 								<Link
 									href="/faq"
 									title={t('faqLink')}
 									aria-label={t('faqLink')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 								>
 									{t('faqLink')}
 								</Link>
@@ -123,7 +123,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 									locale={'en'}
 									title={t('docs')}
 									aria-label={t('docs')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 								>
 									{t('docs')}
 								</Link>
@@ -135,7 +135,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 									rel="noopener noreferrer"
 									title={t('github')}
 									aria-label={t('github')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+									className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 								>
 									{t('github')}
 								</a>
@@ -146,14 +146,14 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 					{/* Legal */}
 					<div className="space-y-8">
 						<div>
-							<h3 className="text-base font-bold text-black mb-4">{t('legal')}</h3>
+							<h3 className="text-base font-bold text-foreground mb-4">{t('legal')}</h3>
 							<ul className="space-y-2.5">
 								<li>
 									<Link
 										href="/imprint"
 										title={t('legalNotice')}
 										aria-label={t('legalNotice')}
-										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+										className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 									>
 										{t('legalNotice')}
 									</Link>
@@ -163,7 +163,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 										href="/privacy-policy"
 										title={t('privacyPolicy')}
 										aria-label={t('privacyPolicy')}
-										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+										className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 									>
 										{t('privacyPolicy')}
 									</Link>
@@ -173,7 +173,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 										href="/terms-of-service"
 										title={t('termsOfService')}
 										aria-label={t('termsOfService')}
-										className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+										className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 									>
 										{t('termsOfService')}
 									</Link>
@@ -184,7 +184,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 						<div>
 							<a
 								href="mailto:info@qrcodly.de"
-								className="text-base font-bold text-black hover:text-gray-700 transition-colors"
+								className="text-base font-bold text-foreground hover:text-foreground transition-colors"
 							>
 								{t('contact')}
 							</a>
@@ -194,7 +194,7 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 
 				{/* Bottom bar */}
 				<div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8">
-					<p className="text-xs text-gray-500">
+					<p className="text-xs text-muted-foreground">
 						&copy; FB Dev {currentYear} &mdash; {t('qrCodeCopyright')}
 					</p>
 					{!hideLanguageNav && <LanguageNav direction="up" />}

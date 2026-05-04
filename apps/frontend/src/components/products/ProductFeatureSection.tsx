@@ -43,14 +43,14 @@ export function ProductFeatureSection({
 						<Heading as="h2" size="md" className="mb-4">
 							{title}
 						</Heading>
-						<p className="text-slate-600 text-base sm:text-lg leading-relaxed mb-6">
+						<p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-6">
 							{description}
 						</p>
 						<ul className="space-y-3">
 							{bullets.map((bullet) => (
 								<li key={bullet} className="flex items-start gap-3">
-									<CheckIcon className="h-5 w-5 text-black flex-shrink-0 mt-0.5" />
-									<span className="text-slate-700 text-sm sm:text-base">{bullet}</span>
+									<CheckIcon className="h-5 w-5 text-foreground flex-shrink-0 mt-0.5" />
+									<span className="text-muted-foreground text-sm sm:text-base">{bullet}</span>
 								</li>
 							))}
 						</ul>
@@ -59,7 +59,7 @@ export function ProductFeatureSection({
 								href={actionButton.href}
 								target={actionButton.external ? '_blank' : undefined}
 								rel={actionButton.external ? 'noopener noreferrer' : undefined}
-								className="inline-flex items-center gap-2 mt-6 text-sm font-semibold text-slate-900 hover:text-slate-700 transition-colors group"
+								className="inline-flex items-center gap-2 mt-6 text-sm font-semibold text-foreground hover:text-muted-foreground transition-colors group"
 							>
 								{actionButton.label}
 								<ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />

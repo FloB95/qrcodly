@@ -176,7 +176,7 @@ const IconPicker: React.FC<IconPickerProps> = ({ onSelect }) => {
 						<div
 							key={icon.key}
 							className={`cursor-pointer rounded border p-2 ${
-								selectedIcon === icon.key ? 'border-black border-2' : 'border-gray-300'
+								selectedIcon === icon.key ? 'border-foreground border-2' : 'border-border'
 							}`}
 							onClick={() => handleIconClick(icon)}
 						>

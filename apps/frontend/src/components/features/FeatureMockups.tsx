@@ -30,22 +30,24 @@ import Image from 'next/image';
 export function AnalyticsMockup() {
 	const bars = [40, 65, 45, 80, 55, 90, 70, 85, 60, 95, 75, 88];
 	return (
-		<div className="relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+		<div className="relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ChartBarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Analytics Overview</span>
+					<ChartBarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Analytics Overview
+					</span>
 				</div>
 
 				<div className="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-5">
-					<div className="bg-slate-50 rounded-lg sm:rounded-xl p-2 sm:p-3">
-						<div className="text-[10px] sm:text-xs text-slate-400">Total Scans</div>
-						<div className="text-base sm:text-lg font-bold text-slate-900">2,847</div>
+					<div className="bg-slate-50 dark:bg-muted rounded-lg sm:rounded-xl p-2 sm:p-3">
+						<div className="text-[10px] sm:text-xs text-muted-foreground">Total Scans</div>
+						<div className="text-base sm:text-lg font-bold text-foreground">2,847</div>
 						<div className="text-[10px] sm:text-xs text-emerald-600 font-medium">+12.5%</div>
 					</div>
-					<div className="bg-slate-50 rounded-lg sm:rounded-xl p-2 sm:p-3">
-						<div className="text-[10px] sm:text-xs text-slate-400">Visitors</div>
-						<div className="text-base sm:text-lg font-bold text-slate-900">1,523</div>
+					<div className="bg-slate-50 dark:bg-muted rounded-lg sm:rounded-xl p-2 sm:p-3">
+						<div className="text-[10px] sm:text-xs text-muted-foreground">Visitors</div>
+						<div className="text-base sm:text-lg font-bold text-foreground">1,523</div>
 						<div className="text-[10px] sm:text-xs text-emerald-600 font-medium">+8.3%</div>
 					</div>
 				</div>
@@ -54,7 +56,7 @@ export function AnalyticsMockup() {
 					{bars.map((h, i) => (
 						<motion.div
 							key={i}
-							className="flex-1 bg-slate-900 rounded-t-sm"
+							className="flex-1 bg-slate-900 dark:bg-primary rounded-t-sm"
 							initial={{ height: 0 }}
 							whileInView={{ height: `${h}%` }}
 							viewport={{ once: true }}
@@ -69,12 +71,14 @@ export function AnalyticsMockup() {
 
 export function DynamicQrMockup() {
 	return (
-		<div className="relative bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+		<div className="relative bg-gradient-to-br from-amber-50 to-orange-50 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center justify-between mb-3 sm:mb-4">
 					<div className="flex items-center gap-2">
-						<QrCodeIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-						<span className="text-xs sm:text-sm font-medium text-slate-600">Dynamic QR Code</span>
+						<QrCodeIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+						<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+							Dynamic QR Code
+						</span>
 					</div>
 					<span className="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-emerald-700">
 						Active
@@ -82,14 +86,14 @@ export function DynamicQrMockup() {
 				</div>
 
 				<div className="flex-1 flex items-center justify-center gap-4 sm:gap-6">
-					<div className="w-20 h-20 sm:w-28 sm:h-28 bg-slate-900 rounded-xl sm:rounded-2xl p-2 sm:p-3 flex-shrink-0">
+					<div className="w-20 h-20 sm:w-28 sm:h-28 bg-slate-900 dark:bg-primary rounded-xl sm:rounded-2xl p-2 sm:p-3 flex-shrink-0">
 						<div className="w-full h-full grid grid-cols-5 grid-rows-5 gap-0.5">
 							{Array.from({ length: 25 }).map((_, i) => (
 								<div
 									key={i}
 									className={`rounded-[1px] ${
 										[0, 1, 2, 4, 5, 6, 10, 14, 15, 16, 18, 19, 20, 22, 24].includes(i)
-											? 'bg-white'
+											? 'bg-card'
 											: 'bg-slate-700'
 									}`}
 								/>
@@ -98,12 +102,12 @@ export function DynamicQrMockup() {
 					</div>
 
 					<div className="flex flex-col gap-2 sm:gap-3">
-						<div className="bg-slate-50 rounded-lg p-2 sm:p-3">
-							<div className="text-[10px] sm:text-xs text-slate-400 mb-1">Destination</div>
-							<div className="text-[10px] sm:text-xs font-mono text-slate-600 line-through">
+						<div className="bg-slate-50 dark:bg-muted rounded-lg p-2 sm:p-3">
+							<div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Destination</div>
+							<div className="text-[10px] sm:text-xs font-mono text-muted-foreground line-through">
 								example.com/old
 							</div>
-							<div className="text-[10px] sm:text-xs font-mono text-slate-900 font-medium">
+							<div className="text-[10px] sm:text-xs font-mono text-foreground font-medium">
 								example.com/new
 							</div>
 						</div>
@@ -121,21 +125,21 @@ export function DynamicQrMockup() {
 
 export function CollectionMockup() {
 	return (
-		<div className="relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-2 sm:p-4 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-slate-200/60 overflow-hidden flex-1 flex flex-col">
-				<div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-gray-100 border-b border-gray-200">
+		<div className="relative bg-gradient-to-br from-slate-50 to-slate-100 dark:from-card dark:to-card rounded-3xl p-2 sm:p-4 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-xl sm:rounded-2xl shadow-xl border border-border/60 overflow-hidden flex-1 flex flex-col">
+				<div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-3 bg-muted border-b border-border">
 					<div className="flex gap-1 sm:gap-1.5">
 						<div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-red-400" />
 						<div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-400" />
 						<div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-400" />
 					</div>
 					<div className="flex-1 flex justify-center">
-						<div className="bg-white rounded-md border border-gray-200 px-3 sm:px-4 py-0.5 sm:py-1 text-[9px] sm:text-xs text-gray-500">
+						<div className="bg-card rounded-md border border-border px-3 sm:px-4 py-0.5 sm:py-1 text-[9px] sm:text-xs text-muted-foreground">
 							app.qrcodly.de/dashboard
 						</div>
 					</div>
 				</div>
-				<div className="relative flex-1 bg-gradient-to-br from-slate-50 to-slate-100">
+				<div className="relative flex-1 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-card dark:to-card">
 					<Image
 						src="/images/dashboard-mockup.png"
 						alt="QRcodly Dashboard"
@@ -152,26 +156,26 @@ export function CollectionMockup() {
 
 export function SecurityMockup() {
 	return (
-		<div className="relative bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col items-center justify-center text-center">
+		<div className="relative bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col items-center justify-center text-center">
 				<div className="w-14 h-14 sm:w-20 sm:h-20 bg-emerald-100 rounded-2xl sm:rounded-3xl flex items-center justify-center mb-3 sm:mb-4">
 					<ShieldCheckIcon className="h-8 w-8 sm:h-10 sm:w-10 text-emerald-600" />
 				</div>
 
-				<div className="text-xs sm:text-sm font-semibold text-slate-900 mb-2 sm:mb-3">
+				<div className="text-xs sm:text-sm font-semibold text-foreground mb-2 sm:mb-3">
 					Privacy-Focused & Open Source
 				</div>
 
 				<div className="flex flex-wrap justify-center gap-1.5 sm:gap-2">
-					<span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 sm:px-3 py-1 text-[10px] sm:text-xs text-slate-600">
+					<span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 sm:px-3 py-1 text-[10px] sm:text-xs text-muted-foreground">
 						<CheckIcon className="h-3 w-3 text-emerald-500" />
 						GDPR
 					</span>
-					<span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 sm:px-3 py-1 text-[10px] sm:text-xs text-slate-600">
+					<span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 sm:px-3 py-1 text-[10px] sm:text-xs text-muted-foreground">
 						<CheckIcon className="h-3 w-3 text-emerald-500" />
 						Open Source
 					</span>
-					<span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 sm:px-3 py-1 text-[10px] sm:text-xs text-slate-600">
+					<span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 sm:px-3 py-1 text-[10px] sm:text-xs text-muted-foreground">
 						<CheckIcon className="h-3 w-3 text-emerald-500" />
 						German Hosting
 					</span>
@@ -202,18 +206,18 @@ export function IntegrationsMockup() {
 	];
 
 	return (
-		<div className="relative bg-gradient-to-br from-indigo-50 to-blue-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+		<div className="relative bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ArrowsRightLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Integrations</span>
+					<ArrowsRightLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">Integrations</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-3 sm:gap-4">
 					{providers.map((provider, i) => (
 						<motion.div
 							key={provider.name}
-							className="bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4"
+							className="bg-slate-50 dark:bg-muted rounded-lg sm:rounded-xl p-3 sm:p-4"
 							initial={{ opacity: 0, y: 15 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true }}
@@ -226,10 +230,10 @@ export function IntegrationsMockup() {
 									{provider.icon}
 								</div>
 								<div className="flex-1 min-w-0">
-									<div className="text-[10px] sm:text-xs font-medium text-slate-700">
+									<div className="text-[10px] sm:text-xs font-medium text-muted-foreground">
 										{provider.name}
 									</div>
-									<div className="text-[9px] sm:text-[10px] font-mono text-slate-400 truncate">
+									<div className="text-[9px] sm:text-[10px] font-mono text-muted-foreground truncate">
 										{provider.detail}
 									</div>
 								</div>
@@ -267,18 +271,18 @@ export function TemplatesMockup() {
 		{ name: 'Forest', colors: ['bg-emerald-600', 'bg-green-400', 'bg-lime-300'] },
 	];
 	return (
-		<div className="relative bg-gradient-to-br from-violet-50 to-purple-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+		<div className="relative bg-gradient-to-br from-violet-50 to-purple-50 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<StarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">My Templates</span>
+					<StarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">My Templates</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-2 sm:gap-3">
 					{templates.map((tpl) => (
 						<motion.div
 							key={tpl.name}
-							className="flex items-center gap-3 bg-slate-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3"
+							className="flex items-center gap-3 bg-slate-50 dark:bg-muted rounded-lg sm:rounded-xl p-2.5 sm:p-3"
 							initial={{ opacity: 0, x: -20 }}
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
@@ -289,10 +293,10 @@ export function TemplatesMockup() {
 									<div key={color} className={`w-4 h-4 sm:w-5 sm:h-5 rounded-md ${color}`} />
 								))}
 							</div>
-							<span className="text-[10px] sm:text-xs font-medium text-slate-700 flex-1">
+							<span className="text-[10px] sm:text-xs font-medium text-muted-foreground flex-1">
 								{tpl.name}
 							</span>
-							<SwatchIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-400" />
+							<SwatchIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
 						</motion.div>
 					))}
 				</div>
@@ -303,21 +307,25 @@ export function TemplatesMockup() {
 
 export function CustomDomainMockup() {
 	return (
-		<div className="relative bg-gradient-to-br from-sky-50 to-blue-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+		<div className="relative bg-gradient-to-br from-sky-50 to-blue-50 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<GlobeAltIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Custom Domain</span>
+					<GlobeAltIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Custom Domain
+					</span>
 				</div>
 
 				<div className="flex-1 flex flex-col justify-center gap-3 sm:gap-4">
-					<div className="bg-slate-50 rounded-lg p-2.5 sm:p-3">
-						<div className="text-[10px] sm:text-xs text-slate-400 mb-1">Default</div>
-						<div className="text-[10px] sm:text-xs font-mono text-slate-500">qrcodly.de/abc123</div>
+					<div className="bg-slate-50 dark:bg-muted rounded-lg p-2.5 sm:p-3">
+						<div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Default</div>
+						<div className="text-[10px] sm:text-xs font-mono text-muted-foreground">
+							qrcodly.de/abc123
+						</div>
 					</div>
 
 					<div className="flex justify-center">
-						<ArrowsRightLeftIcon className="h-4 w-4 text-slate-300" />
+						<ArrowsRightLeftIcon className="h-4 w-4 text-muted-foreground" />
 					</div>
 
 					<div className="bg-blue-50 rounded-lg p-2.5 sm:p-3 border border-blue-200">
@@ -344,26 +352,28 @@ export function TagsMockup() {
 		{ label: 'Social', color: 'bg-pink-500', count: 7 },
 	];
 	return (
-		<div className="relative bg-gradient-to-br from-pink-50 to-rose-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+		<div className="relative bg-gradient-to-br from-pink-50 to-rose-50 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<TagIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Tags</span>
+					<TagIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">Tags</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-2 sm:gap-2.5">
 					{tags.map((tag) => (
 						<motion.div
 							key={tag.label}
-							className="flex items-center gap-2.5 bg-slate-50 rounded-lg p-2 sm:p-2.5"
+							className="flex items-center gap-2.5 bg-slate-50 dark:bg-muted rounded-lg p-2 sm:p-2.5"
 							initial={{ opacity: 0, scale: 0.95 }}
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.3 }}
 						>
 							<div className={`w-3 h-3 rounded-full ${tag.color} flex-shrink-0`} />
-							<span className="text-[10px] sm:text-xs font-medium text-slate-700">{tag.label}</span>
-							<span className="ml-auto text-[9px] sm:text-[10px] text-slate-400 bg-white rounded-full px-2 py-0.5">
+							<span className="text-[10px] sm:text-xs font-medium text-muted-foreground">
+								{tag.label}
+							</span>
+							<span className="ml-auto text-[9px] sm:text-[10px] text-muted-foreground bg-card rounded-full px-2 py-0.5">
 								{tag.count} codes
 							</span>
 						</motion.div>
@@ -376,16 +386,18 @@ export function TagsMockup() {
 
 export function BulkOperationsMockup() {
 	return (
-		<div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+		<div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ArrowsRightLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Bulk Operations</span>
+					<ArrowsRightLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Bulk Operations
+					</span>
 				</div>
 
 				<div className="flex-1 flex flex-col justify-center gap-3 sm:gap-4">
 					<motion.div
-						className="flex items-center gap-3 bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4"
+						className="flex items-center gap-3 bg-slate-50 dark:bg-muted rounded-lg sm:rounded-xl p-3 sm:p-4"
 						initial={{ opacity: 0, y: 10 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
@@ -395,13 +407,17 @@ export function BulkOperationsMockup() {
 							<LinkIcon className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
 						</div>
 						<div>
-							<div className="text-[10px] sm:text-xs font-medium text-slate-700">CSV Import</div>
-							<div className="text-[9px] sm:text-[10px] text-slate-400">Upload URLs in bulk</div>
+							<div className="text-[10px] sm:text-xs font-medium text-muted-foreground">
+								CSV Import
+							</div>
+							<div className="text-[9px] sm:text-[10px] text-muted-foreground">
+								Upload URLs in bulk
+							</div>
 						</div>
 					</motion.div>
 
 					<motion.div
-						className="flex items-center gap-3 bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4"
+						className="flex items-center gap-3 bg-slate-50 dark:bg-muted rounded-lg sm:rounded-xl p-3 sm:p-4"
 						initial={{ opacity: 0, y: 10 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
@@ -411,8 +427,10 @@ export function BulkOperationsMockup() {
 							<ArrowDownTrayIcon className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
 						</div>
 						<div>
-							<div className="text-[10px] sm:text-xs font-medium text-slate-700">ZIP Export</div>
-							<div className="text-[9px] sm:text-[10px] text-slate-400">
+							<div className="text-[10px] sm:text-xs font-medium text-muted-foreground">
+								ZIP Export
+							</div>
+							<div className="text-[9px] sm:text-[10px] text-muted-foreground">
 								Download all as archive
 							</div>
 						</div>
@@ -457,25 +475,27 @@ export function ContentTypesMockup() {
 		},
 	];
 	return (
-		<div className="relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-3 sm:p-6 flex-1 flex flex-col">
+		<div className="relative bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-3 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-2 sm:mb-4">
-					<Squares2X2Icon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Content Types</span>
+					<Squares2X2Icon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Content Types
+					</span>
 				</div>
 
 				<div className="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2.5 content-center">
 					{types.map((type) => (
 						<motion.div
 							key={type.label}
-							className="flex flex-col items-center justify-center gap-0.5 sm:gap-1.5 bg-slate-50 rounded-lg sm:rounded-xl p-1 sm:p-2.5"
+							className="flex flex-col items-center justify-center gap-0.5 sm:gap-1.5 bg-slate-50 dark:bg-muted rounded-lg sm:rounded-xl p-1 sm:p-2.5"
 							initial={{ opacity: 0, scale: 0.9 }}
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.3 }}
 						>
-							<div className="text-slate-600">{type.icon}</div>
-							<span className="text-[7px] sm:text-[10px] font-medium text-slate-600">
+							<div className="text-muted-foreground">{type.icon}</div>
+							<span className="text-[7px] sm:text-[10px] font-medium text-muted-foreground">
 								{type.label}
 							</span>
 						</motion.div>
@@ -493,12 +513,12 @@ export function ShortUrlMockup() {
 		{ short: 'qrcodly.de/docs', clicks: 531, trend: '+24%' },
 	];
 	return (
-		<div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+		<div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center justify-between mb-3 sm:mb-4">
 					<div className="flex items-center gap-2">
-						<LinkIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-						<span className="text-xs sm:text-sm font-medium text-slate-600">Short URLs</span>
+						<LinkIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+						<span className="text-xs sm:text-sm font-medium text-muted-foreground">Short URLs</span>
 					</div>
 					<span className="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-teal-700">
 						3 Active
@@ -509,14 +529,14 @@ export function ShortUrlMockup() {
 					{links.map((link, i) => (
 						<motion.div
 							key={link.short}
-							className="bg-slate-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3"
+							className="bg-slate-50 dark:bg-muted rounded-lg sm:rounded-xl p-2.5 sm:p-3"
 							initial={{ opacity: 0, y: 15 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.4, delay: i * 0.1 }}
 						>
 							<div className="flex items-center justify-between mb-1">
-								<span className="text-[10px] sm:text-xs font-mono font-medium text-slate-800">
+								<span className="text-[10px] sm:text-xs font-mono font-medium text-foreground">
 									{link.short}
 								</span>
 								<span className="text-[9px] sm:text-[10px] text-emerald-600 font-medium">
@@ -524,7 +544,7 @@ export function ShortUrlMockup() {
 								</span>
 							</div>
 							<div className="flex items-center gap-1.5">
-								<div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+								<div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
 									<motion.div
 										className="h-full bg-teal-500 rounded-full"
 										initial={{ width: 0 }}
@@ -533,7 +553,7 @@ export function ShortUrlMockup() {
 										transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
 									/>
 								</div>
-								<span className="text-[9px] sm:text-[10px] text-slate-400 tabular-nums">
+								<span className="text-[9px] sm:text-[10px] text-muted-foreground tabular-nums">
 									{link.clicks.toLocaleString()}
 								</span>
 							</div>
@@ -570,28 +590,30 @@ export function TeamsMockup() {
 		},
 	];
 	return (
-		<div className="relative bg-gradient-to-br from-indigo-50 to-violet-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+		<div className="relative bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-card dark:to-card rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center justify-between mb-3 sm:mb-4">
 					<div className="flex items-center gap-2">
-						<UserGroupIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-						<span className="text-xs sm:text-sm font-medium text-slate-600">Team Workspace</span>
+						<UserGroupIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+						<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+							Team Workspace
+						</span>
 					</div>
 					<span className="inline-flex items-center rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-indigo-700">
 						Coming Soon
 					</span>
 				</div>
 
-				<div className="bg-slate-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 mb-3 sm:mb-4">
-					<div className="text-[10px] sm:text-xs text-slate-400 mb-0.5">Organization</div>
-					<div className="text-xs sm:text-sm font-semibold text-slate-900">Acme Agency</div>
+				<div className="bg-slate-50 dark:bg-muted rounded-lg sm:rounded-xl p-2.5 sm:p-3 mb-3 sm:mb-4">
+					<div className="text-[10px] sm:text-xs text-muted-foreground mb-0.5">Organization</div>
+					<div className="text-xs sm:text-sm font-semibold text-foreground">Acme Agency</div>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-1.5 sm:gap-2">
 					{members.map((member) => (
 						<motion.div
 							key={member.name}
-							className="flex items-center gap-2.5 bg-slate-50 rounded-lg p-2 sm:p-2.5"
+							className="flex items-center gap-2.5 bg-slate-50 dark:bg-muted rounded-lg p-2 sm:p-2.5"
 							initial={{ opacity: 0, x: -20 }}
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
@@ -604,7 +626,7 @@ export function TeamsMockup() {
 									{member.initials}
 								</span>
 							</div>
-							<span className="text-[10px] sm:text-xs font-medium text-slate-700 flex-1">
+							<span className="text-[10px] sm:text-xs font-medium text-muted-foreground flex-1">
 								{member.name}
 							</span>
 							<span
@@ -616,16 +638,18 @@ export function TeamsMockup() {
 					))}
 
 					<motion.div
-						className="flex items-center gap-2.5 border-2 border-dashed border-slate-200 rounded-lg p-2 sm:p-2.5"
+						className="flex items-center gap-2.5 border-2 border-dashed border-border rounded-lg p-2 sm:p-2.5"
 						initial={{ opacity: 0 }}
 						whileInView={{ opacity: 1 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: 0.3 }}
 					>
-						<div className="w-6 h-6 sm:w-7 sm:h-7 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
-							<PlusIcon className="h-3 w-3 text-slate-400" />
+						<div className="w-6 h-6 sm:w-7 sm:h-7 bg-muted rounded-full flex items-center justify-center flex-shrink-0">
+							<PlusIcon className="h-3 w-3 text-muted-foreground" />
 						</div>
-						<span className="text-[10px] sm:text-xs text-slate-400">Invite team member...</span>
+						<span className="text-[10px] sm:text-xs text-muted-foreground">
+							Invite team member...
+						</span>
 					</motion.div>
 				</div>
 			</div>

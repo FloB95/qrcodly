@@ -29,18 +29,20 @@ export function CrossProductCards({
 							<AnimateOnScroll key={card.href} delay={i * 0.1}>
 								<Link
 									href={card.href}
-									className="group block bg-white rounded-[20px] sm:rounded-[28px] p-7 sm:p-8 hover:-translate-y-0.5 transition-all duration-300"
+									className="group block bg-card rounded-[20px] sm:rounded-[28px] p-7 sm:p-8 hover:-translate-y-0.5 transition-all duration-300"
 								>
 									<div className="flex items-start gap-4">
-										<div className="w-11 h-11 rounded-xl bg-slate-100 flex items-center justify-center flex-shrink-0 text-slate-500 transition-colors duration-300 group-hover:bg-gradient-to-r group-hover:from-slate-900 group-hover:via-slate-800 group-hover:to-slate-900 group-hover:text-white">
+										<div className="w-11 h-11 rounded-xl bg-muted flex items-center justify-center flex-shrink-0 text-muted-foreground transition-colors duration-300 group-hover:bg-gradient-to-r group-hover:from-slate-900 group-hover:via-slate-800 group-hover:to-slate-900 group-hover:text-white">
 											{card.icon}
 										</div>
 										<div className="flex-1">
-											<h3 className="text-lg font-semibold text-slate-900 mb-2 flex items-center gap-2">
+											<h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
 												{card.title}
-												<ArrowRightIcon className="h-4 w-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+												<ArrowRightIcon className="h-4 w-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
 											</h3>
-											<p className="text-slate-500 text-sm leading-relaxed">{card.description}</p>
+											<p className="text-muted-foreground text-sm leading-relaxed">
+												{card.description}
+											</p>
 										</div>
 									</div>
 								</Link>

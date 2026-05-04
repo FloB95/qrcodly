@@ -40,7 +40,7 @@ export function HelpSupportContent({ onClose }: HelpSupportContentProps) {
 					const Icon = action.icon;
 					const content = (
 						<div className="flex items-center gap-3.5 rounded-xl p-3 hover:bg-slate-100 dark:hover:bg-muted transition-colors cursor-pointer group">
-							<div className="w-10 h-10 bg-slate-100 dark:bg-muted rounded-xl flex items-center justify-center flex-shrink-0 text-slate-500 group-hover:bg-gradient-to-br group-hover:from-slate-900 group-hover:via-slate-800 group-hover:to-slate-900 group-hover:text-white transition-colors">
+							<div className="w-10 h-10 bg-slate-100 dark:bg-muted rounded-xl flex items-center justify-center flex-shrink-0 text-muted-foreground group-hover:bg-gradient-to-br group-hover:from-slate-900 group-hover:via-slate-800 group-hover:to-slate-900 group-hover:text-white transition-colors">
 								<Icon className="h-5 w-5" />
 							</div>
 							<div>

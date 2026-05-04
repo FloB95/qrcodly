@@ -26,7 +26,7 @@ export function Heading({
 }: HeadingProps) {
 	return (
 		<Tag
-			className={cn('font-semibold tracking-tight text-slate-900', sizeClasses[size], className)}
+			className={cn('font-semibold tracking-tight text-foreground', sizeClasses[size], className)}
 			{...props}
 		>
 			{children}

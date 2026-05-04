@@ -16,16 +16,18 @@ import { motion } from 'framer-motion';
 export function UrlShortenerHeroMockup() {
 	return (
 		<div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<LinkIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Shorten URL</span>
+					<LinkIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">Shorten URL</span>
 				</div>
 
 				<div className="flex-1 flex flex-col justify-center gap-4">
 					<div className="bg-slate-50 rounded-xl p-3 sm:p-4">
-						<div className="text-[10px] sm:text-xs text-slate-400 mb-2">Paste your long URL</div>
-						<div className="text-[10px] sm:text-xs font-mono text-slate-500 break-all">
+						<div className="text-[10px] sm:text-xs text-muted-foreground mb-2">
+							Paste your long URL
+						</div>
+						<div className="text-[10px] sm:text-xs font-mono text-muted-foreground break-all">
 							https://example.com/very/long/marketing/campaign/url?utm_source=...
 						</div>
 					</div>
@@ -70,10 +72,12 @@ export function BrandedLinksMockup() {
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-sky-50 to-blue-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<GlobeAltIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Branded Links</span>
+					<GlobeAltIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Branded Links
+					</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-3 sm:gap-4">
@@ -104,7 +108,7 @@ export function BrandedLinksMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: 0.35 }}
 					>
-						<span className="text-[10px] sm:text-xs text-slate-500">
+						<span className="text-[10px] sm:text-xs text-muted-foreground">
 							Connect your domain in minutes
 						</span>
 					</motion.div>
@@ -118,21 +122,23 @@ export function LinkAnalyticsMockup() {
 	const bars = [35, 55, 40, 70, 50, 85, 65, 80, 55, 90, 70, 82];
 	return (
 		<div className="relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ChartBarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Click Analytics</span>
+					<ChartBarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Click Analytics
+					</span>
 				</div>
 
 				<div className="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-5">
 					<div className="bg-slate-50 rounded-lg sm:rounded-xl p-2 sm:p-3">
-						<div className="text-[10px] sm:text-xs text-slate-400">Total Clicks</div>
-						<div className="text-base sm:text-lg font-bold text-slate-900">4,218</div>
+						<div className="text-[10px] sm:text-xs text-muted-foreground">Total Clicks</div>
+						<div className="text-base sm:text-lg font-bold text-foreground">4,218</div>
 						<div className="text-[10px] sm:text-xs text-emerald-600 font-medium">+15.2%</div>
 					</div>
 					<div className="bg-slate-50 rounded-lg sm:rounded-xl p-2 sm:p-3">
-						<div className="text-[10px] sm:text-xs text-slate-400">Unique Visitors</div>
-						<div className="text-base sm:text-lg font-bold text-slate-900">2,891</div>
+						<div className="text-[10px] sm:text-xs text-muted-foreground">Unique Visitors</div>
+						<div className="text-base sm:text-lg font-bold text-foreground">2,891</div>
 						<div className="text-[10px] sm:text-xs text-emerald-600 font-medium">+10.7%</div>
 					</div>
 				</div>
@@ -162,11 +168,11 @@ export function LinkManagementMockup() {
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center justify-between mb-3 sm:mb-4">
 					<div className="flex items-center gap-2">
-						<LinkIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-						<span className="text-xs sm:text-sm font-medium text-slate-600">All Links</span>
+						<LinkIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+						<span className="text-xs sm:text-sm font-medium text-muted-foreground">All Links</span>
 					</div>
 					<span className="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-teal-700">
 						{links.length} Active
@@ -184,7 +190,7 @@ export function LinkManagementMockup() {
 							transition={{ duration: 0.4, delay: i * 0.1 }}
 						>
 							<div className="flex items-center justify-between mb-1.5">
-								<span className="text-[10px] sm:text-xs font-mono font-medium text-slate-800">
+								<span className="text-[10px] sm:text-xs font-mono font-medium text-foreground">
 									{link.short}
 								</span>
 								<span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-medium text-emerald-700">
@@ -193,11 +199,11 @@ export function LinkManagementMockup() {
 								</span>
 							</div>
 							<div className="flex items-center justify-between">
-								<span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] text-slate-500">
+								<span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] text-muted-foreground">
 									<TagIcon className="h-3 w-3" />
 									{link.tag}
 								</span>
-								<span className="text-[9px] sm:text-[10px] text-slate-400">
+								<span className="text-[9px] sm:text-[10px] text-muted-foreground">
 									{link.clicks.toLocaleString('en-US')} clicks
 								</span>
 							</div>
@@ -218,11 +224,13 @@ export function BulkOperationsMockup() {
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-cyan-50 to-sky-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center justify-between mb-3 sm:mb-4">
 					<div className="flex items-center gap-2">
-						<DocumentArrowUpIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-						<span className="text-xs sm:text-sm font-medium text-slate-600">Bulk Import</span>
+						<DocumentArrowUpIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+						<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+							Bulk Import
+						</span>
 					</div>
 					<span className="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-blue-700">
 						4 of 248
@@ -240,17 +248,17 @@ export function BulkOperationsMockup() {
 							transition={{ duration: 0.3, delay: i * 0.08 }}
 						>
 							<div
-								className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${item.status === 'created' ? 'bg-emerald-100' : 'bg-slate-200'}`}
+								className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${item.status === 'created' ? 'bg-emerald-100' : 'bg-muted'}`}
 							>
 								{item.status === 'created' && (
 									<CheckIcon className="h-2.5 w-2.5 text-emerald-600" />
 								)}
 							</div>
-							<span className="text-[10px] sm:text-xs font-mono text-slate-700 flex-1">
+							<span className="text-[10px] sm:text-xs font-mono text-muted-foreground flex-1">
 								{item.url}
 							</span>
 							<span
-								className={`text-[9px] sm:text-[10px] font-medium ${item.status === 'created' ? 'text-emerald-600' : 'text-slate-400'}`}
+								className={`text-[9px] sm:text-[10px] font-medium ${item.status === 'created' ? 'text-emerald-600' : 'text-muted-foreground'}`}
 							>
 								{item.status === 'created' ? 'Created' : 'Pending'}
 							</span>
@@ -266,10 +274,10 @@ export function BulkOperationsMockup() {
 					transition={{ duration: 0.4, delay: 0.4 }}
 				>
 					<div className="flex items-center justify-between mb-1.5">
-						<span className="text-[10px] sm:text-xs text-slate-500">Progress</span>
-						<span className="text-[10px] sm:text-xs font-medium text-slate-700">75%</span>
+						<span className="text-[10px] sm:text-xs text-muted-foreground">Progress</span>
+						<span className="text-[10px] sm:text-xs font-medium text-muted-foreground">75%</span>
 					</div>
-					<div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+					<div className="h-2 bg-muted rounded-full overflow-hidden">
 						<motion.div
 							className="h-full bg-teal-500 rounded-full"
 							initial={{ width: 0 }}
@@ -289,8 +297,8 @@ export function ApiAccessMockup() {
 		<div className="relative bg-gradient-to-br from-slate-100 to-zinc-100 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
 			<div className="bg-slate-900 rounded-2xl shadow-xl border border-slate-700/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<CommandLineIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-500" />
-					<span className="text-xs sm:text-sm font-medium text-slate-400">REST API</span>
+					<CommandLineIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">REST API</span>
 					<span className="ml-auto inline-flex items-center rounded-full bg-emerald-900/50 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-emerald-400">
 						201 Created
 					</span>
@@ -304,7 +312,7 @@ export function ApiAccessMockup() {
 						transition={{ duration: 0.3 }}
 					>
 						<span className="text-emerald-400">POST</span>
-						<span className="text-slate-500"> /api/v1/short-url</span>
+						<span className="text-muted-foreground"> /api/v1/short-url</span>
 					</motion.div>
 
 					<motion.div
@@ -314,13 +322,13 @@ export function ApiAccessMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: 0.15 }}
 					>
-						<div className="text-slate-500">{'{'}</div>
+						<div className="text-muted-foreground">{'{'}</div>
 						<div className="pl-3">
 							<span className="text-blue-400">&quot;destinationUrl&quot;</span>
-							<span className="text-slate-500">: </span>
+							<span className="text-muted-foreground">: </span>
 							<span className="text-amber-300">&quot;https://example.com/...&quot;</span>
 						</div>
-						<div className="text-slate-500">{'}'}</div>
+						<div className="text-muted-foreground">{'}'}</div>
 					</motion.div>
 
 					<motion.div
@@ -330,23 +338,23 @@ export function ApiAccessMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: 0.3 }}
 					>
-						<div className="text-slate-500">{'{'}</div>
+						<div className="text-muted-foreground">{'{'}</div>
 						<div className="pl-3">
 							<span className="text-blue-400">&quot;shortCode&quot;</span>
-							<span className="text-slate-500">: </span>
+							<span className="text-muted-foreground">: </span>
 							<span className="text-emerald-400">&quot;x7k9m&quot;</span>
 						</div>
 						<div className="pl-3">
 							<span className="text-blue-400">&quot;destinationUrl&quot;</span>
-							<span className="text-slate-500">: </span>
+							<span className="text-muted-foreground">: </span>
 							<span className="text-emerald-400">&quot;https://example.com/...&quot;</span>
 						</div>
 						<div className="pl-3">
 							<span className="text-blue-400">&quot;isActive&quot;</span>
-							<span className="text-slate-500">: </span>
+							<span className="text-muted-foreground">: </span>
 							<span className="text-emerald-400">true</span>
 						</div>
-						<div className="text-slate-500">{'}'}</div>
+						<div className="text-muted-foreground">{'}'}</div>
 					</motion.div>
 				</div>
 			</div>

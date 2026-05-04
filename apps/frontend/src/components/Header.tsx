@@ -18,6 +18,7 @@ import {
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QrcodlyLogo } from './QrcodlyLogo';
+import { ThemeToggle } from './ThemeToggle';
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -126,7 +127,7 @@ export default function Header({
 			className={cn(
 				'sticky top-0 z-[100] transition-all duration-300 -mx-4 px-4 sm:mx-0 sm:px-0',
 				scrolled
-					? 'bg-white/80 backdrop-blur-lg shadow-sm pt-2 pb-2 sm:pt-5 sm:pb-5'
+					? 'bg-white/80 dark:bg-background/80 backdrop-blur-lg shadow-sm pt-2 pb-2 sm:pt-5 sm:pb-5'
 					: 'pt-6 pb-0 sm:pt-10',
 			)}
 		>
@@ -150,7 +151,7 @@ export default function Header({
 							<button
 								className={cn(
 									'flex items-center gap-1 h-10 px-2 py-2 cursor-pointer transition-colors',
-									(isProductsActive || productsOpen) && 'font-semibold text-black',
+									(isProductsActive || productsOpen) && 'font-semibold text-foreground',
 								)}
 								onClick={openProducts}
 							>
@@ -174,7 +175,7 @@ export default function Header({
 									>
 										{/* Invisible bridge to prevent gap hover loss */}
 										<div className="h-2" />
-										<div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-200 p-2 w-[340px]">
+										<div className="bg-popover text-popover-foreground rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-border p-2 w-[340px]">
 											<div className="space-y-0.5">
 												{productLinks.map((link) => {
 													const isActive = pathname.startsWith(link.href);
@@ -183,24 +184,24 @@ export default function Header({
 															key={link.href}
 															href={link.href}
 															className={cn(
-																'flex items-center gap-3.5 rounded-xl p-3 hover:bg-slate-100 transition-colors group',
-																isActive && 'bg-slate-100',
+																'flex items-center gap-3.5 rounded-xl p-3 hover:bg-muted transition-colors group',
+																isActive && 'bg-muted',
 															)}
 														>
 															<div
 																className={cn(
-																	'w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center flex-shrink-0 text-slate-500 group-hover:bg-gradient-to-br group-hover:from-slate-900 group-hover:via-slate-800 group-hover:to-slate-900 group-hover:text-white transition-colors',
+																	'w-10 h-10 bg-muted rounded-xl flex items-center justify-center flex-shrink-0 text-muted-foreground group-hover:bg-gradient-to-br group-hover:from-slate-900 group-hover:via-slate-800 group-hover:to-slate-900 group-hover:text-white dark:group-hover:bg-none dark:group-hover:bg-primary dark:group-hover:text-primary-foreground transition-colors',
 																	isActive &&
-																		'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white',
+																		'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white dark:bg-none dark:bg-primary dark:text-primary-foreground',
 																)}
 															>
 																{link.icon}
 															</div>
 															<div>
-																<div className="text-sm font-semibold text-slate-900">
+																<div className="text-sm font-semibold text-foreground">
 																	{link.title}
 																</div>
-																<div className="text-xs text-slate-500 leading-snug">
+																<div className="text-xs text-muted-foreground leading-snug">
 																	{link.description}
 																</div>
 															</div>
@@ -217,7 +218,7 @@ export default function Header({
 							href="/features"
 							className={cn(
 								'hidden lg:block h-10 px-2 py-2',
-								isFeaturesActive && 'font-semibold text-black',
+								isFeaturesActive && 'font-semibold text-foreground',
 							)}
 						>
 							{t('featuresBtn')}
@@ -226,7 +227,7 @@ export default function Header({
 							href="/plans"
 							className={cn(
 								'hidden lg:block h-10 px-2 py-2',
-								isPlansActive && 'font-semibold text-black',
+								isPlansActive && 'font-semibold text-foreground',
 							)}
 						>
 							{t('plansBtn')}
@@ -261,6 +262,9 @@ export default function Header({
 								<UserAvatar />
 							</Link>
 						</SignedIn>
+						<div className="hidden lg:block">
+							<ThemeToggle />
+						</div>
 						{!hideLanguageNav && (
 							<div className="hidden lg:block">
 								<LanguageNav />
@@ -271,7 +275,7 @@ export default function Header({
 							className="flex items-center justify-center lg:hidden xs:p-2 cursor-pointer"
 							onClick={() => setMobileMenuOpen(true)}
 						>
-							<Bars3Icon className="h-8 w-8 text-black" />
+							<Bars3Icon className="h-8 w-8 text-foreground" />
 						</div>
 					</div>
 				</div>
@@ -283,7 +287,7 @@ export default function Header({
 						<DrawerTitle>Navigation</DrawerTitle>
 					</DrawerHeader>
 					<div className="absolute top-6 left-8 right-4 flex items-center justify-between">
-						<div className="text-black">
+						<div className="text-foreground">
 							<Link title="QRcodly" href="/">
 								<QrcodlyLogo size="default" />
 							</Link>
@@ -302,7 +306,7 @@ export default function Header({
 						animate={mobileMenuOpen ? 'visible' : 'hidden'}
 					>
 						<motion.div variants={itemVariants}>
-							<div className="px-4 pt-2 pb-1 text-xs font-semibold text-slate-900 uppercase tracking-wider">
+							<div className="px-4 pt-2 pb-1 text-xs font-semibold text-foreground uppercase tracking-wider">
 								{t('productsBtn')}
 							</div>
 						</motion.div>
@@ -318,7 +322,7 @@ export default function Header({
 										),
 									})}
 								>
-									<span className="mr-2 text-slate-400">{link.icon}</span>
+									<span className="mr-2 text-muted-foreground">{link.icon}</span>
 									{link.title}
 								</Link>
 							</motion.div>
@@ -363,9 +367,14 @@ export default function Header({
 								</Link>
 							</motion.div>
 						</SignedIn>
+						<motion.div variants={itemVariants}>
+							<div className="border-t border-border mt-2 pt-4 px-2">
+								<ThemeToggle align="start" />
+							</div>
+						</motion.div>
 						{!hideLanguageNav && (
 							<motion.div variants={itemVariants}>
-								<div className="border-t border-slate-100 mt-2 pt-4">
+								<div className="px-2">
 									<LanguageNav variant="dropdown-up" />
 								</div>
 							</motion.div>

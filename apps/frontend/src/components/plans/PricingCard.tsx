@@ -37,8 +37,8 @@ export const PricingCard = ({
 			className={cn(
 				'rounded-3xl p-8 ring-1 sm:p-10',
 				isPro
-					? 'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white sm:ring-slate-800'
-					: 'bg-white text-gray-900 ring-gray-200',
+					? 'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white sm:ring-slate-800 dark:bg-none dark:bg-card dark:text-foreground dark:ring-2 dark:ring-teal-600'
+					: 'bg-card text-foreground ring-border',
 			)}
 		>
 			<div className="flex justify-between">
@@ -47,7 +47,7 @@ export const PricingCard = ({
 				</h3>
 				{priceAnnual && (
 					<div className="flex space-x-2 align-middle items-center">
-						<span className="text-s text-gray-200">{t('annual')}</span>
+						<span className="text-s text-muted-foreground">{t('annual')}</span>
 						<Switch
 							checked={planPeriod === 'annual'}
 							className="data-[state=checked]:bg-teal-600!"
@@ -59,12 +59,10 @@ export const PricingCard = ({
 
 			<p className="mt-4 flex items-baseline gap-x-2">
 				<span className="text-5xl font-semibold">{displayPrice} &euro;</span>
-				<span className={isPro ? 'text-gray-400' : 'text-gray-500'}>{priceSuffix}</span>
+				<span className="text-muted-foreground">{priceSuffix}</span>
 			</p>
 
-			<p className={`mt-5 text-sm font-medium ${isPro ? 'text-slate-300' : 'text-gray-500'}`}>
-				{t(`${planId}.description`)}
-			</p>
+			<p className="mt-5 text-sm font-medium text-muted-foreground">{t(`${planId}.description`)}</p>
 
 			<ul className="mt-8 space-y-3 text-sm">
 				{planConfig.featureKeys.map((featureKey) => {
@@ -81,7 +79,9 @@ export const PricingCard = ({
 									aria-label={t('featureInfoAriaLabel')}
 									className={cn(
 										'inline-flex items-center',
-										isPro ? 'text-slate-400 hover:text-white' : 'text-gray-400 hover:text-gray-600',
+										isPro
+											? 'text-muted-foreground hover:text-white dark:hover:text-foreground'
+											: 'text-muted-foreground hover:text-foreground',
 									)}
 								>
 									<InformationCircleIcon className="h-4 w-4" />

@@ -139,7 +139,7 @@ export const TagList = () => {
 				placeholder={t('searchTags')}
 				value={searchValue}
 				onChange={(e) => setSearchValue(e.target.value)}
-				className="pl-9 pr-9 h-9 bg-white"
+				className="pl-9 pr-9 h-9"
 			/>
 			{searchValue && (
 				<button

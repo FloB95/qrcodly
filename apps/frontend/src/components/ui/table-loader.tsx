@@ -2,7 +2,7 @@
 
 export const TableLoader = () => (
 	<div className="absolute inset-0 z-20 flex min-h-[40vh] items-center justify-center">
-		<div className="animate-fade-in rounded-lg bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-2.5 shadow-lg sm:rounded-xl sm:p-3">
+		<div className="animate-fade-in rounded-lg bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-card dark:via-card dark:to-card dark:ring-1 dark:ring-border p-2.5 shadow-lg sm:rounded-xl sm:p-3">
 			<svg
 				className="h-8 w-8 sm:h-11 sm:w-11"
 				viewBox="0 0 32 32"

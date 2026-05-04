@@ -111,7 +111,7 @@ export function UrlShortenerHeroForm() {
 		const displayLink = createLinkFromShortUrl(result, { short: true });
 		return (
 			<div className="w-full max-w-2xl mx-auto">
-				<div className="rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-4 sm:p-6">
+				<div className="rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-card dark:via-card dark:to-card dark:ring-1 dark:ring-border p-4 sm:p-6">
 					<p className="mb-3 text-sm text-white/80">{t('successMessage')}</p>
 					<div className="flex items-center gap-3">
 						<div className="min-w-0 flex-1">
@@ -128,7 +128,7 @@ export function UrlShortenerHeroForm() {
 							onClick={handleCopy}
 							variant="outline"
 							size="sm"
-							className="shrink-0 gap-2 border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+							className="shrink-0 gap-2 border-white/30 bg-card/10 text-white hover:bg-card/20 hover:text-white"
 						>
 							{copied ? <CheckIcon className="size-4" /> : <ClipboardIcon className="size-4" />}
 							{copied ? t('copiedBtn') : t('copyBtn')}

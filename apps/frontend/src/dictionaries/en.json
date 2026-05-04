@@ -3301,5 +3301,11 @@
 			"title": "Email Support",
 			"subtitle": "Get in touch with our team"
 		}
+	},
+	"theme": {
+		"light": "Light",
+		"dark": "Dark",
+		"system": "System",
+		"toggle": "Toggle theme"
 	}
 }

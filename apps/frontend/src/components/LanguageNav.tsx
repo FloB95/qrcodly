@@ -74,10 +74,10 @@ export const LanguageNav = ({
 				<button
 					className={cn(
 						'flex items-center gap-1.5 w-full h-10 px-4 py-2 rounded-md cursor-pointer transition-all text-sm font-medium',
-						'hover:bg-gradient-to-r hover:from-slate-900 hover:via-slate-800 hover:to-slate-900 hover:text-white',
+						'hover:bg-gradient-to-r hover:from-slate-900 hover:via-slate-800 hover:to-slate-900 hover:text-white dark:hover:bg-none dark:hover:bg-primary dark:hover:text-primary-foreground',
 						open
-							? 'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white'
-							: 'text-slate-700',
+							? 'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white dark:bg-none dark:bg-primary dark:text-primary-foreground'
+							: 'text-muted-foreground',
 					)}
 					onClick={() => setOpen((prev) => !prev)}
 				>
@@ -97,32 +97,32 @@ export const LanguageNav = ({
 							transition={{ duration: 0.15 }}
 							className="absolute bottom-full left-0 right-0 z-[300]"
 						>
-							<div className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-200 py-1.5 mb-2 max-h-[50vh] overflow-y-auto">
+							<div className="bg-card rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-border py-1.5 mb-2 max-h-[50vh] overflow-y-auto">
 								{languageLinks.map((link, idx) => {
 									const isActive = locale === link.lang;
 									return (
 										<React.Fragment key={link.lang}>
-											{idx > 0 && <div className="mx-3 border-t border-slate-100" />}
+											{idx > 0 && <div className="mx-3 border-t border-border" />}
 											<Link
 												locale={link.lang}
 												href={link.path}
 												className={cn(
-													'flex items-center justify-between px-3 py-2 mx-1.5 rounded-lg text-sm transition-colors hover:bg-slate-100',
-													isActive && 'bg-slate-100',
+													'flex items-center justify-between px-3 py-2 mx-1.5 rounded-lg text-sm transition-colors hover:bg-muted',
+													isActive && 'bg-muted',
 												)}
 											>
 												<span
 													className={cn(
-														'text-slate-700',
-														isActive && 'font-semibold text-slate-900',
+														'text-muted-foreground',
+														isActive && 'font-semibold text-foreground',
 													)}
 												>
 													{LANGUAGE_NAMES[link.lang] ?? link.lang}
 												</span>
 												<span
 													className={cn(
-														'text-xs text-slate-400',
-														isActive && 'font-semibold text-slate-600',
+														'text-xs text-muted-foreground',
+														isActive && 'font-semibold text-muted-foreground',
 													)}
 												>
 													{link.lang.toUpperCase()}
@@ -151,10 +151,10 @@ export const LanguageNav = ({
 				<button
 					className={cn(
 						'flex items-center gap-1.5 h-10 px-4 py-2 rounded-md cursor-pointer transition-all text-sm font-medium',
-						'hover:bg-gradient-to-r hover:from-slate-900 hover:via-slate-800 hover:to-slate-900 hover:text-white',
+						'hover:bg-gradient-to-r hover:from-slate-900 hover:via-slate-800 hover:to-slate-900 hover:text-white dark:hover:bg-none dark:hover:bg-primary dark:hover:text-primary-foreground',
 						open
-							? 'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white'
-							: 'text-slate-700',
+							? 'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white dark:bg-none dark:bg-primary dark:text-primary-foreground'
+							: 'text-muted-foreground',
 					)}
 					onClick={() => setOpen((prev) => !prev)}
 				>
@@ -180,7 +180,7 @@ export const LanguageNav = ({
 							{direction === 'down' && <div className="h-2" />}
 							<div
 								className={cn(
-									'bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-200 py-1.5 w-[180px]',
+									'bg-card rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-border py-1.5 w-[180px]',
 									direction === 'up' && 'mb-2',
 								)}
 							>
@@ -188,27 +188,27 @@ export const LanguageNav = ({
 									const isActive = locale === link.lang;
 									return (
 										<React.Fragment key={link.lang}>
-											{idx > 0 && <div className="mx-3 border-t border-slate-100" />}
+											{idx > 0 && <div className="mx-3 border-t border-border" />}
 											<Link
 												locale={link.lang}
 												href={link.path}
 												className={cn(
-													'flex items-center justify-between px-3 py-2 mx-1.5 rounded-lg text-sm transition-colors hover:bg-slate-100',
-													isActive && 'bg-slate-100',
+													'flex items-center justify-between px-3 py-2 mx-1.5 rounded-lg text-sm transition-colors hover:bg-muted',
+													isActive && 'bg-muted',
 												)}
 											>
 												<span
 													className={cn(
-														'text-slate-700',
-														isActive && 'font-semibold text-slate-900',
+														'text-muted-foreground',
+														isActive && 'font-semibold text-foreground',
 													)}
 												>
 													{LANGUAGE_NAMES[link.lang] ?? link.lang}
 												</span>
 												<span
 													className={cn(
-														'text-xs text-slate-400',
-														isActive && 'font-semibold text-slate-600',
+														'text-xs text-muted-foreground',
+														isActive && 'font-semibold text-muted-foreground',
 													)}
 												>
 													{link.lang.toUpperCase()}

@@ -10,13 +10,14 @@ const buttonVariants = cva(
 		variants: {
 			variant: {
 				default:
-					'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white hover:from-slate-800 hover:via-slate-700 hover:to-slate-800',
-				white: 'bg-white text-accent-foreground hover:bg-accent hover:text-accent-foreground',
-				tab: 'bg-gray-200 text-primary hover:bg-gray-200 data-[state=active]:bg-gradient-to-br data-[state=active]:from-slate-900 data-[state=active]:via-slate-800 data-[state=active]:to-slate-900 data-[state=active]:text-white data-[state=active]:shadow shadow',
+					'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white hover:from-slate-800 hover:via-slate-700 hover:to-slate-800 dark:bg-none dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90',
+				white:
+					'bg-white text-accent-foreground hover:bg-accent hover:text-accent-foreground dark:bg-card dark:text-card-foreground dark:hover:bg-accent dark:hover:text-accent-foreground',
+				tab: 'bg-gray-200 text-primary hover:bg-gray-200 data-[state=active]:bg-gradient-to-br data-[state=active]:from-slate-900 data-[state=active]:via-slate-800 data-[state=active]:to-slate-900 data-[state=active]:text-white data-[state=active]:shadow shadow dark:bg-muted dark:hover:bg-muted dark:data-[state=active]:bg-none dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground',
 				destructive: 'bg-destructive text-white hover:bg-destructive/90',
 				outline: 'border bg-background hover:bg-accent hover:text-accent-foreground',
 				outlineStrong:
-					'border-2 border-black bg-background hover:bg-accent hover:text-accent-foreground',
+					'border-2 border-black bg-background hover:bg-accent hover:text-accent-foreground dark:border-foreground',
 				secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
 				ghost: 'hover:bg-accent hover:text-accent-foreground',
 				link: 'text-primary underline-offset-4 hover:underline',

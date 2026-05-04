@@ -13,8 +13,12 @@ export default async function QrCodeDisabledPage({ params }: DefaultPageParams) 
 				<h1 className="mt-8 mb-6 text-center text-2xl sm:text-4xl font-semibold">
 					{t('qrCodeDisabled.title')}
 				</h1>
-				<p className="mb-2 text-center text-lg text-gray-700">{t('qrCodeDisabled.description')}</p>
-				<p className="mb-10 text-center text-md text-gray-500">{t('qrCodeDisabled.note')}</p>
+				<p className="mb-2 text-center text-lg text-foreground">
+					{t('qrCodeDisabled.description')}
+				</p>
+				<p className="mb-10 text-center text-md text-muted-foreground">
+					{t('qrCodeDisabled.note')}
+				</p>
 				<div className="flex justify-center">
 					<Link href="/" className={buttonVariants()}>
 						{t('qrCodeDisabled.button')}

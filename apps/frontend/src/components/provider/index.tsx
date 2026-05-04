@@ -2,6 +2,7 @@
 import { getQueryClient } from '@/lib/queryClient';
 import { QueryClientProvider } from '@tanstack/react-query';
 import type * as React from 'react';
+import { ThemeProvider } from 'next-themes';
 import { TooltipProvider } from '../ui/tooltip';
 import { PostHogProvider } from './PostHogProvider';
 import { ClerkProvider } from '@clerk/nextjs';
@@ -33,18 +34,20 @@ export default function Providers({
 	const clerkLocale = locale ? localeMap[locale] || enUS : enUS;
 
 	return (
-		<ClerkProvider
-			localization={clerkLocale}
-			appearance={{
-				theme: shadcn,
-			}}
-			clerkJSUrl="/__clerk-js/dist/clerk.browser.js"
-		>
-			<QueryClientProvider client={queryClient}>
-				<PostHogProvider>
-					<TooltipProvider>{children}</TooltipProvider>
-				</PostHogProvider>
-			</QueryClientProvider>
-		</ClerkProvider>
+		<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+			<ClerkProvider
+				localization={clerkLocale}
+				appearance={{
+					theme: shadcn,
+				}}
+				clerkJSUrl="/__clerk-js/dist/clerk.browser.js"
+			>
+				<QueryClientProvider client={queryClient}>
+					<PostHogProvider>
+						<TooltipProvider>{children}</TooltipProvider>
+					</PostHogProvider>
+				</QueryClientProvider>
+			</ClerkProvider>
+		</ThemeProvider>
 	);
 }

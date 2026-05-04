@@ -145,13 +145,13 @@ export function FeatureSlider() {
 				<div className="sm:px-6 lg:px-8 flex items-end justify-between gap-4">
 					<h2
 						ref={headlineRef}
-						className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900 max-w-xl leading-tight"
+						className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground max-w-xl leading-tight"
 					>
 						{t('headline')}
 					</h2>
 					<Link
 						href="/features"
-						className="hidden sm:inline-flex items-center gap-1 text-md font-medium text-black hover:underline transition-colors whitespace-nowrap shrink-0"
+						className="hidden sm:inline-flex items-center gap-1 text-md font-medium text-foreground hover:underline transition-colors whitespace-nowrap shrink-0"
 					>
 						{t('allFeatures')}
 						<span aria-hidden="true">&rsaquo;</span>
@@ -189,9 +189,9 @@ export function FeatureSlider() {
 								delay: index * 0.1,
 							}}
 						>
-							<div className="relative flex flex-col justify-end bg-white rounded-[20px] sm:rounded-[28px] p-7 sm:p-8 h-[300px] sm:h-[310px]">
+							<div className="relative flex flex-col justify-end bg-card rounded-[20px] sm:rounded-[28px] p-7 sm:p-8 h-[300px] sm:h-[310px]">
 								{/* Icon — absolute so it doesn't affect text position */}
-								<div className="absolute top-7 left-7 sm:top-7 sm:left-8 text-slate-900">
+								<div className="absolute top-7 left-7 sm:top-7 sm:left-8 text-foreground">
 									{feature.icon}
 								</div>
 
@@ -204,10 +204,10 @@ export function FeatureSlider() {
 
 								{/* Title + description — fixed height so headlines align */}
 								<div className="h-[190px] sm:h-[170px] flex flex-col">
-									<h3 className="text-lg sm:text-[22px] font-bold text-slate-900 mb-2 leading-tight">
+									<h3 className="text-lg sm:text-[22px] font-bold text-foreground mb-2 leading-tight">
 										{t(feature.headlineKey)}
 									</h3>
-									<p className="text-slate-500 text-md leading-relaxed">
+									<p className="text-muted-foreground text-md leading-relaxed">
 										{t(feature.subHeadlineKey)}
 									</p>
 									{feature.actionHref &&
@@ -215,7 +215,7 @@ export function FeatureSlider() {
 										(!feature.authOnly || isSignedIn) && (
 											<Link
 												href={feature.actionHref}
-												className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-slate-900 hover:underline transition-colors"
+												className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-foreground hover:underline transition-colors"
 											>
 												{feature.actionLabel}
 												<span aria-hidden="true">&rsaquo;</span>
@@ -241,7 +241,7 @@ export function FeatureSlider() {
 						<button
 							onClick={() => scroll('left')}
 							disabled={!canScrollLeft}
-							className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white cursor-pointer transition-all disabled:pointer-events-none disabled:opacity-50"
+							className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-foreground text-foreground hover:bg-foreground hover:text-background cursor-pointer transition-all disabled:pointer-events-none disabled:opacity-50"
 							aria-label={t('scrollLeft')}
 						>
 							<ChevronLeftIcon className="h-5 w-5 stroke-2" />
@@ -249,7 +249,7 @@ export function FeatureSlider() {
 						<button
 							onClick={() => scroll('right')}
 							disabled={!canScrollRight}
-							className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white cursor-pointer transition-all disabled:pointer-events-none disabled:opacity-50"
+							className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-foreground text-foreground hover:bg-foreground hover:text-background cursor-pointer transition-all disabled:pointer-events-none disabled:opacity-50"
 							aria-label={t('scrollRight')}
 						>
 							<ChevronRightIcon className="h-5 w-5 stroke-2" />

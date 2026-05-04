@@ -133,11 +133,7 @@ export function BackgroundSelector({
 						className={`
 							relative flex min-h-[200px] cursor-pointer flex-col items-center justify-center
 							rounded-lg border-2 border-dashed p-8 transition-colors
-							${
-								isDragging
-									? 'border-primary bg-primary/5'
-									: 'border-gray-300 hover:border-primary hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-900'
-							}
+							${isDragging ? 'border-primary bg-primary/5' : 'border-border hover:border-primary hover:bg-muted'}
 						`}
 					>
 						<input
@@ -146,14 +142,14 @@ export function BackgroundSelector({
 							onChange={(e) => handleFileUpload(e.target.files)}
 							className="absolute inset-0 cursor-pointer opacity-0"
 						/>
-						<ArrowUpTrayIcon className="mb-3 h-12 w-12 text-gray-400" />
-						<p className="mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+						<ArrowUpTrayIcon className="mb-3 h-12 w-12 text-muted-foreground" />
+						<p className="mb-1 text-sm font-medium text-foreground">
 							{t('upload.dragDrop', { default: 'Drag and drop an image here' })}
 						</p>
-						<p className="text-xs text-gray-500">
+						<p className="text-xs text-muted-foreground">
 							{t('upload.orClick', { default: 'or click to browse' })}
 						</p>
-						<p className="mt-2 text-xs text-gray-400">
+						<p className="mt-2 text-xs text-muted-foreground">
 							{t('upload.formats', { default: 'JPG, PNG, WEBP (max 5MB)' })}
 						</p>
 					</div>

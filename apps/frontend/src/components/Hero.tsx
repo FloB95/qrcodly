@@ -35,7 +35,7 @@ export const Hero = () => {
 
 	return (
 		<div className="mt-16 sm:mt-20 mb-14 text-center">
-			<Badge variant="outline" className="mb-6 px-4 py-1.5 text-sm font-medium bg-white">
+			<Badge variant="outline" className="mb-6 px-4 py-1.5 text-sm font-medium bg-card">
 				{t('badge')}
 			</Badge>
 
@@ -43,17 +43,19 @@ export const Hero = () => {
 				{t('title')}
 			</Heading>
 
-			<p className="mx-auto max-w-2xl text-xl sm:text-2xl text-slate-700 mb-8">{t('subtitle')}</p>
+			<p className="mx-auto max-w-2xl text-xl sm:text-2xl text-muted-foreground mb-8">
+				{t('subtitle')}
+			</p>
 
 			<motion.div
-				className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-slate-700"
+				className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-muted-foreground"
 				variants={containerVariants}
 				initial="hidden"
 				animate="visible"
 			>
 				{benefits.map((benefit) => (
 					<motion.div key={benefit} className="flex items-center gap-2" variants={itemVariants}>
-						<CheckCircleIcon className="h-6 w-6 text-black" />
+						<CheckCircleIcon className="h-6 w-6 text-foreground" />
 						<span>{benefit}</span>
 					</motion.div>
 				))}

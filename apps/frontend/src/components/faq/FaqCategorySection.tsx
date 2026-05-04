@@ -34,8 +34,8 @@ export function FaqCategorySection({
 
 	return (
 		<AnimateOnScroll delay={delay}>
-			<div className="rounded-2xl bg-white p-6 sm:p-8">
-				<h3 className="text-xs font-semibold tracking-widest uppercase text-slate-900 pb-4 border-b border-slate-200">
+			<div className="rounded-2xl bg-card p-6 sm:p-8">
+				<h3 className="text-xs font-semibold tracking-widest uppercase text-foreground pb-4 border-b border-border">
 					{title}
 				</h3>
 				<Accordion type="single" collapsible value={value} onValueChange={setValue}>

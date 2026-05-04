@@ -3301,5 +3301,11 @@
 			"title": "Suporte por e-mail",
 			"subtitle": "Entre em contato com nossa equipe"
 		}
+	},
+	"theme": {
+		"light": "Claro",
+		"dark": "Escuro",
+		"system": "Sistema",
+		"toggle": "Alternar tema"
 	}
 }

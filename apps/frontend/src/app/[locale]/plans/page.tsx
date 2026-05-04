@@ -65,7 +65,7 @@ export default async function Page({ params }: DefaultPageParams) {
 					<Heading as="h1" size="hero" className="mt-14 text-center max-w-2xl mx-auto">
 						{t('title')}
 					</Heading>
-					<p className="mx-auto mt-6 max-w-2xl text-lg sm:text-xl text-slate-700">
+					<p className="mx-auto mt-6 max-w-2xl text-lg sm:text-xl text-muted-foreground">
 						{t('subtitle')}
 					</p>
 				</div>

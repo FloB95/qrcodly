@@ -47,7 +47,7 @@ export function HelpSupportHeaderButton() {
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>{trigger}</PopoverTrigger>
 			<PopoverContent
-				className="w-[340px] p-0 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-slate-200"
+				className="w-[340px] p-0 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-border"
 				side="bottom"
 				align="end"
 				sideOffset={8}

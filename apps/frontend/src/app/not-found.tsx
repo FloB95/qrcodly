@@ -26,7 +26,7 @@ export default async function NotFoundPage() {
 			<body className={`font-sans ${inter.variable}`}>
 				<NextIntlClientProvider locale="en" messages={messages}>
 					<Providers locale="en">
-						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
+						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] dark:bg-none dark:bg-background px-4 sm:px-0">
 							<Header />
 
 							<Container className="flex flex-1 flex-col items-center justify-center text-center py-24">

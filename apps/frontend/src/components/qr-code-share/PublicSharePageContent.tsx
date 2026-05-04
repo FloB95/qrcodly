@@ -35,7 +35,7 @@ export function PublicSharePageContent({ sharedQrCode }: PublicSharePageContentP
 	return (
 		<div className="flex flex-col items-center justify-center">
 			{/* White Box with QR Code - Always displayed */}
-			<div className="w-full max-w-2xl rounded-2xl from-white to-white/60 bg-gradient-to-br relative p-6 sm:p-8">
+			<div className="w-full max-w-2xl rounded-2xl from-white to-white/60 dark:from-card dark:to-card bg-gradient-to-br relative p-6 sm:p-8">
 				<div className="flex flex-col items-center">
 					{/* Name/Type label inside the white box */}
 					{shareConfig.showName && displayLabel && content && (

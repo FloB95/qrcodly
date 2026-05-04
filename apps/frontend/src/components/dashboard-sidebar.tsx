@@ -42,6 +42,7 @@ import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getUserInitials } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { useListQrCodesQuery } from '@/lib/api/qr-code';
 import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
 import { useListTagsQuery } from '@/lib/api/tag';
@@ -276,18 +277,21 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 												{user?.primaryEmailAddress?.emailAddress}
 											</span>
 										</div>
-										<Tooltip>
-											<TooltipTrigger asChild>
-												<SignOutButton>
-													<div className="cursor-pointer pl-1 align-middle items-center flex-col flex justify-center">
-														<ArrowRightStartOnRectangleIcon className="size-5" />
-													</div>
-												</SignOutButton>
-											</TooltipTrigger>
-											<TooltipContent side="left">
-												<div>{tGeneral('signOut')}</div>
-											</TooltipContent>
-										</Tooltip>
+										<div className="flex items-center gap-1">
+											<ThemeToggle align="end" className="h-8 w-8" />
+											<Tooltip>
+												<TooltipTrigger asChild>
+													<SignOutButton>
+														<div className="cursor-pointer pl-1 align-middle items-center flex-col flex justify-center">
+															<ArrowRightStartOnRectangleIcon className="size-5" />
+														</div>
+													</SignOutButton>
+												</TooltipTrigger>
+												<TooltipContent side="left">
+													<div>{tGeneral('signOut')}</div>
+												</TooltipContent>
+											</Tooltip>
+										</div>
 									</div>
 								</SidebarMenuItem>
 							)}

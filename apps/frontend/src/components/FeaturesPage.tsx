@@ -45,14 +45,14 @@ function FeatureDetailSection({
 						<Heading as="h2" size="md" className="mb-4">
 							{title}
 						</Heading>
-						<p className="text-slate-600 text-base sm:text-lg leading-relaxed mb-6">
+						<p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-6">
 							{description}
 						</p>
 						<ul className="space-y-3">
 							{bullets.map((bullet) => (
 								<li key={bullet} className="flex items-start gap-3">
-									<CheckIcon className="h-5 w-5 text-black flex-shrink-0 mt-0.5" />
-									<span className="text-slate-700 text-sm sm:text-base">{bullet}</span>
+									<CheckIcon className="h-5 w-5 text-foreground flex-shrink-0 mt-0.5" />
+									<span className="text-muted-foreground text-sm sm:text-base">{bullet}</span>
 								</li>
 							))}
 						</ul>
@@ -171,7 +171,9 @@ export async function FeaturesPage({ locale }: { locale: string }) {
 					</AnimateOnLoad>
 
 					<AnimateOnLoad delay={0.2}>
-						<p className="mx-auto max-w-2xl text-lg sm:text-xl text-slate-700">{t('subtitle')}</p>
+						<p className="mx-auto max-w-2xl text-lg sm:text-xl text-muted-foreground">
+							{t('subtitle')}
+						</p>
 					</AnimateOnLoad>
 				</div>
 			</Container>

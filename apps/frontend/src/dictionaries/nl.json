@@ -3301,5 +3301,11 @@
 			"title": "E-mailondersteuning",
 			"subtitle": "Neem contact op met ons team"
 		}
+	},
+	"theme": {
+		"light": "Licht",
+		"dark": "Donker",
+		"system": "Systeem",
+		"toggle": "Thema wisselen"
 	}
 }

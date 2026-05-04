@@ -25,11 +25,13 @@ import { motion } from 'framer-motion';
 export function QrCodesHeroMockup() {
 	return (
 		<div className="relative bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center justify-between mb-3 sm:mb-4">
 					<div className="flex items-center gap-2">
-						<QrCodeIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-						<span className="text-xs sm:text-sm font-medium text-slate-600">QR Code Generator</span>
+						<QrCodeIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+						<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+							QR Code Generator
+						</span>
 					</div>
 					<span className="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-emerald-700">
 						Dynamic
@@ -50,7 +52,7 @@ export function QrCodesHeroMockup() {
 									key={i}
 									className={`rounded-[1px] ${
 										[0, 1, 2, 4, 5, 6, 10, 14, 15, 16, 18, 19, 20, 22, 24].includes(i)
-											? 'bg-white'
+											? 'bg-card'
 											: 'bg-slate-700'
 									}`}
 								/>
@@ -67,8 +69,8 @@ export function QrCodesHeroMockup() {
 							transition={{ duration: 0.4, delay: 0.2 }}
 						>
 							<div className="flex items-center gap-1.5 mb-1">
-								<SwatchIcon className="h-3 w-3 text-slate-400" />
-								<span className="text-[10px] sm:text-xs text-slate-400">Style</span>
+								<SwatchIcon className="h-3 w-3 text-muted-foreground" />
+								<span className="text-[10px] sm:text-xs text-muted-foreground">Style</span>
 							</div>
 							<div className="flex gap-1">
 								<div className="w-4 h-4 rounded-full bg-slate-900" />
@@ -380,20 +382,22 @@ export function QrCustomizationMockup() {
 
 	return (
 		<div className="relative bg-gradient-to-br from-violet-50 to-purple-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center justify-between mb-3 sm:mb-4">
 					<div className="flex items-center gap-2">
-						<SwatchIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-						<span className="text-xs sm:text-sm font-medium text-slate-600">Design Styles</span>
+						<SwatchIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+						<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+							Design Styles
+						</span>
 					</div>
-					<span className="text-[10px] sm:text-xs text-slate-400">Fully customizable</span>
+					<span className="text-[10px] sm:text-xs text-muted-foreground">Fully customizable</span>
 				</div>
 
 				<div className="flex-1 grid grid-cols-3 gap-2 sm:gap-3 content-center">
 					{designs.map((d, i) => (
 						<motion.div
 							key={d.label}
-							className="flex flex-col items-center gap-1.5 sm:gap-2 bg-white rounded-xl p-2 sm:p-3 border border-slate-100 shadow-sm"
+							className="flex flex-col items-center gap-1.5 sm:gap-2 bg-card rounded-xl p-2 sm:p-3 border border-border shadow-sm"
 							initial={{ opacity: 0, scale: 0.8 }}
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}
@@ -408,7 +412,7 @@ export function QrCustomizationMockup() {
 									hasLogo={d.hasLogo}
 								/>
 							</div>
-							<span className="text-[8px] sm:text-[10px] font-medium text-slate-500">
+							<span className="text-[8px] sm:text-[10px] font-medium text-muted-foreground">
 								{d.label}
 							</span>
 						</motion.div>
@@ -422,10 +426,10 @@ export function QrCustomizationMockup() {
 					viewport={{ once: true }}
 					transition={{ duration: 0.4, delay: 0.5 }}
 				>
-					<span className="text-[10px] sm:text-xs text-slate-500">
+					<span className="text-[10px] sm:text-xs text-muted-foreground">
 						Colors, shapes, logos & more
 					</span>
-					<SwatchIcon className="h-3.5 w-3.5 text-slate-400" />
+					<SwatchIcon className="h-3.5 w-3.5 text-muted-foreground" />
 				</motion.div>
 			</div>
 		</div>
@@ -453,22 +457,24 @@ export function QrScanAnalyticsMockup() {
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-3 sm:p-5 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-3 sm:p-5 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-2.5 sm:mb-3">
-					<ChartBarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Scan Analytics</span>
+					<ChartBarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Scan Analytics
+					</span>
 				</div>
 
 				{/* Scans + Visitors */}
 				<div className="grid grid-cols-2 gap-1.5 sm:gap-2 mb-2.5 sm:mb-3">
 					<div className="bg-slate-50 rounded-lg p-1.5 sm:p-2.5">
-						<div className="text-[9px] sm:text-[10px] text-slate-400">Total Scans</div>
-						<div className="text-sm sm:text-base font-bold text-slate-900">2,847</div>
+						<div className="text-[9px] sm:text-[10px] text-muted-foreground">Total Scans</div>
+						<div className="text-sm sm:text-base font-bold text-foreground">2,847</div>
 						<div className="text-[9px] sm:text-[10px] text-emerald-600 font-medium">+12.5%</div>
 					</div>
 					<div className="bg-slate-50 rounded-lg p-1.5 sm:p-2.5">
-						<div className="text-[9px] sm:text-[10px] text-slate-400">Visitors</div>
-						<div className="text-sm sm:text-base font-bold text-slate-900">1,523</div>
+						<div className="text-[9px] sm:text-[10px] text-muted-foreground">Visitors</div>
+						<div className="text-sm sm:text-base font-bold text-foreground">1,523</div>
 						<div className="text-[9px] sm:text-[10px] text-emerald-600 font-medium">+8.3%</div>
 					</div>
 				</div>
@@ -490,7 +496,10 @@ export function QrScanAnalyticsMockup() {
 					</div>
 					<div className="flex gap-[3px] sm:gap-1 mt-1">
 						{months.map((m, i) => (
-							<div key={i} className="flex-1 text-center text-[7px] sm:text-[9px] text-slate-400">
+							<div
+								key={i}
+								className="flex-1 text-center text-[7px] sm:text-[9px] text-muted-foreground"
+							>
 								{m}
 							</div>
 						))}
@@ -507,7 +516,9 @@ export function QrScanAnalyticsMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: 0.6 }}
 					>
-						<div className="text-[8px] sm:text-[10px] text-slate-400 mb-1 sm:mb-1.5">Devices</div>
+						<div className="text-[8px] sm:text-[10px] text-muted-foreground mb-1 sm:mb-1.5">
+							Devices
+						</div>
 						<div className="flex gap-[2px] h-1 sm:h-1.5 rounded-full overflow-hidden mb-1 sm:mb-1.5">
 							{devices.map((d) => (
 								<motion.div
@@ -524,7 +535,7 @@ export function QrScanAnalyticsMockup() {
 							{devices.map((d) => (
 								<div key={d.label} className="flex items-center gap-1">
 									<div className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full ${d.color}`} />
-									<span className="text-[7px] sm:text-[8px] text-slate-500 truncate">
+									<span className="text-[7px] sm:text-[8px] text-muted-foreground truncate">
 										{d.pct}% {d.label}
 									</span>
 								</div>
@@ -540,12 +551,14 @@ export function QrScanAnalyticsMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: 0.7 }}
 					>
-						<div className="text-[8px] sm:text-[10px] text-slate-400 mb-1 sm:mb-1.5">Countries</div>
+						<div className="text-[8px] sm:text-[10px] text-muted-foreground mb-1 sm:mb-1.5">
+							Countries
+						</div>
 						<div className="flex flex-col gap-0.5 sm:gap-1">
 							{countries.map((c) => (
 								<div key={c.flag} className="flex items-center gap-1">
 									<span className="text-[8px] sm:text-[10px] leading-none">{c.flag}</span>
-									<div className="flex-1 h-1 sm:h-1.5 bg-slate-200 rounded-full overflow-hidden">
+									<div className="flex-1 h-1 sm:h-1.5 bg-muted rounded-full overflow-hidden">
 										<motion.div
 											className="h-full bg-slate-700 rounded-full"
 											initial={{ width: 0 }}
@@ -554,7 +567,7 @@ export function QrScanAnalyticsMockup() {
 											transition={{ duration: 0.5, delay: 0.8 }}
 										/>
 									</div>
-									<span className="text-[7px] sm:text-[8px] text-slate-500 tabular-nums">
+									<span className="text-[7px] sm:text-[8px] text-muted-foreground tabular-nums">
 										{c.pct}%
 									</span>
 								</div>
@@ -570,19 +583,21 @@ export function QrScanAnalyticsMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: 0.8 }}
 					>
-						<div className="text-[8px] sm:text-[10px] text-slate-400 mb-1 sm:mb-1.5">Browsers</div>
+						<div className="text-[8px] sm:text-[10px] text-muted-foreground mb-1 sm:mb-1.5">
+							Browsers
+						</div>
 						<div className="flex flex-col gap-0.5 sm:gap-1">
 							{browsers.map((b) => (
 								<div key={b.label} className="flex flex-col gap-0.5">
 									<div className="flex items-center justify-between">
-										<span className="text-[7px] sm:text-[8px] text-slate-600 truncate">
+										<span className="text-[7px] sm:text-[8px] text-muted-foreground truncate">
 											{b.label}
 										</span>
-										<span className="text-[7px] sm:text-[8px] text-slate-400 tabular-nums">
+										<span className="text-[7px] sm:text-[8px] text-muted-foreground tabular-nums">
 											{b.pct}%
 										</span>
 									</div>
-									<div className="h-1 sm:h-1.5 bg-slate-200 rounded-full overflow-hidden">
+									<div className="h-1 sm:h-1.5 bg-muted rounded-full overflow-hidden">
 										<motion.div
 											className="h-full bg-slate-500 rounded-full"
 											initial={{ width: 0 }}
@@ -615,10 +630,12 @@ export function QrContentTypesMockup() {
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-amber-50 to-yellow-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-3 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-3 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-2 sm:mb-4">
-					<Squares2X2Icon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Content Types</span>
+					<Squares2X2Icon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Content Types
+					</span>
 				</div>
 
 				<div className="flex-1 grid grid-cols-3 gap-1.5 sm:gap-2.5 content-center">
@@ -631,8 +648,8 @@ export function QrContentTypesMockup() {
 							viewport={{ once: true }}
 							transition={{ duration: 0.3 }}
 						>
-							<div className="text-slate-600">{type.icon}</div>
-							<span className="text-[7px] sm:text-[10px] font-medium text-slate-600">
+							<div className="text-muted-foreground">{type.icon}</div>
+							<span className="text-[7px] sm:text-[10px] font-medium text-muted-foreground">
 								{type.label}
 							</span>
 						</motion.div>
@@ -646,24 +663,26 @@ export function QrContentTypesMockup() {
 export function QrDynamicUpdatesMockup() {
 	return (
 		<div className="relative bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ArrowPathIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Dynamic Updates</span>
+					<ArrowPathIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Dynamic Updates
+					</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-3 sm:gap-4 justify-center">
 					<motion.div
-						className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-slate-200/60 mb-1"
+						className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-border/60 mb-1"
 						initial={{ opacity: 0, y: -10 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.4 }}
 					>
-						<div className="text-[10px] sm:text-xs text-slate-400 mb-1">
+						<div className="text-[10px] sm:text-xs text-muted-foreground mb-1">
 							Short URL (stays the same)
 						</div>
-						<div className="text-xs sm:text-sm font-mono font-semibold text-slate-800">
+						<div className="text-xs sm:text-sm font-mono font-semibold text-foreground">
 							qrcodly.de/u/x7k9m
 						</div>
 					</motion.div>
@@ -713,7 +732,7 @@ export function QrDynamicUpdatesMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: 0.5 }}
 					>
-						<span className="text-[10px] sm:text-xs text-slate-500 font-medium">
+						<span className="text-[10px] sm:text-xs text-muted-foreground font-medium">
 							Same QR code — no reprinting needed
 						</span>
 					</motion.div>
@@ -731,10 +750,12 @@ export function QrBulkTemplatesMockup() {
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-violet-50 to-purple-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<RectangleStackIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Templates & Bulk</span>
+					<RectangleStackIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Templates & Bulk
+					</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-2.5 sm:gap-3">
@@ -752,8 +773,10 @@ export function QrBulkTemplatesMockup() {
 									<div key={color} className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full ${color}`} />
 								))}
 							</div>
-							<span className="text-[10px] sm:text-xs font-medium text-slate-700">{tpl.name}</span>
-							<DocumentDuplicateIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-slate-300 ml-auto" />
+							<span className="text-[10px] sm:text-xs font-medium text-muted-foreground">
+								{tpl.name}
+							</span>
+							<DocumentDuplicateIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-muted-foreground ml-auto" />
 						</motion.div>
 					))}
 
@@ -785,8 +808,8 @@ export function QrApiAccessMockup() {
 		<div className="relative bg-gradient-to-br from-slate-100 to-zinc-100 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
 			<div className="bg-slate-900 rounded-2xl shadow-xl border border-slate-700/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<CommandLineIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-500" />
-					<span className="text-xs sm:text-sm font-medium text-slate-400">REST API</span>
+					<CommandLineIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">REST API</span>
 					<span className="ml-auto inline-flex items-center rounded-full bg-emerald-900/50 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-emerald-400">
 						201 Created
 					</span>
@@ -800,7 +823,7 @@ export function QrApiAccessMockup() {
 						transition={{ duration: 0.3 }}
 					>
 						<span className="text-emerald-400">POST</span>
-						<span className="text-slate-500"> /api/v1/qr-code</span>
+						<span className="text-muted-foreground"> /api/v1/qr-code</span>
 					</motion.div>
 
 					<motion.div
@@ -810,18 +833,18 @@ export function QrApiAccessMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: 0.15 }}
 					>
-						<div className="text-slate-500">{'{'}</div>
+						<div className="text-muted-foreground">{'{'}</div>
 						<div className="pl-3">
 							<span className="text-blue-400">&quot;type&quot;</span>
-							<span className="text-slate-500">: </span>
+							<span className="text-muted-foreground">: </span>
 							<span className="text-amber-300">&quot;url&quot;</span>
 						</div>
 						<div className="pl-3">
 							<span className="text-blue-400">&quot;url&quot;</span>
-							<span className="text-slate-500">: </span>
+							<span className="text-muted-foreground">: </span>
 							<span className="text-amber-300">&quot;https://example.com&quot;</span>
 						</div>
-						<div className="text-slate-500">{'}'}</div>
+						<div className="text-muted-foreground">{'}'}</div>
 					</motion.div>
 
 					<motion.div
@@ -831,23 +854,23 @@ export function QrApiAccessMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: 0.3 }}
 					>
-						<div className="text-slate-500">{'{'}</div>
+						<div className="text-muted-foreground">{'{'}</div>
 						<div className="pl-3">
 							<span className="text-blue-400">&quot;id&quot;</span>
-							<span className="text-slate-500">: </span>
+							<span className="text-muted-foreground">: </span>
 							<span className="text-emerald-400">&quot;qr_8f3k...&quot;</span>
 						</div>
 						<div className="pl-3">
 							<span className="text-blue-400">&quot;type&quot;</span>
-							<span className="text-slate-500">: </span>
+							<span className="text-muted-foreground">: </span>
 							<span className="text-emerald-400">&quot;url&quot;</span>
 						</div>
 						<div className="pl-3">
 							<span className="text-blue-400">&quot;imageUrl&quot;</span>
-							<span className="text-slate-500">: </span>
+							<span className="text-muted-foreground">: </span>
 							<span className="text-emerald-400">&quot;https://cdn.qrcodly.de/...&quot;</span>
 						</div>
-						<div className="text-slate-500">{'}'}</div>
+						<div className="text-muted-foreground">{'}'}</div>
 					</motion.div>
 				</div>
 			</div>

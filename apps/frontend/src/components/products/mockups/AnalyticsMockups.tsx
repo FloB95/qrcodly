@@ -20,26 +20,28 @@ export function AnalyticsHeroMockup() {
 	const bars = [45, 60, 50, 75, 55, 85, 70, 90, 65, 95, 80, 88];
 	return (
 		<div className="relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ChartBarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Analytics Dashboard</span>
+					<ChartBarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Analytics Dashboard
+					</span>
 				</div>
 
 				<div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-5">
 					<div className="bg-slate-50 rounded-lg sm:rounded-xl p-2 sm:p-3">
-						<div className="text-[10px] sm:text-xs text-slate-400">Scans</div>
-						<div className="text-sm sm:text-lg font-bold text-slate-900">12.4K</div>
+						<div className="text-[10px] sm:text-xs text-muted-foreground">Scans</div>
+						<div className="text-sm sm:text-lg font-bold text-foreground">12.4K</div>
 						<div className="text-[10px] sm:text-xs text-emerald-600 font-medium">+18%</div>
 					</div>
 					<div className="bg-slate-50 rounded-lg sm:rounded-xl p-2 sm:p-3">
-						<div className="text-[10px] sm:text-xs text-slate-400">Clicks</div>
-						<div className="text-sm sm:text-lg font-bold text-slate-900">8.7K</div>
+						<div className="text-[10px] sm:text-xs text-muted-foreground">Clicks</div>
+						<div className="text-sm sm:text-lg font-bold text-foreground">8.7K</div>
 						<div className="text-[10px] sm:text-xs text-emerald-600 font-medium">+12%</div>
 					</div>
 					<div className="bg-slate-50 rounded-lg sm:rounded-xl p-2 sm:p-3">
-						<div className="text-[10px] sm:text-xs text-slate-400">Visitors</div>
-						<div className="text-sm sm:text-lg font-bold text-slate-900">6.2K</div>
+						<div className="text-[10px] sm:text-xs text-muted-foreground">Visitors</div>
+						<div className="text-sm sm:text-lg font-bold text-foreground">6.2K</div>
 						<div className="text-[10px] sm:text-xs text-emerald-600 font-medium">+9%</div>
 					</div>
 				</div>
@@ -87,10 +89,12 @@ export function RealTimeMetricsMockup() {
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-indigo-50 to-blue-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ClockIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Real-Time Insights</span>
+					<ClockIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Real-Time Insights
+					</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-3 sm:gap-4">
@@ -110,12 +114,14 @@ export function RealTimeMetricsMockup() {
 									{metric.icon}
 								</div>
 								<div className="flex-1 min-w-0">
-									<div className="text-[10px] sm:text-xs text-slate-400">{metric.label}</div>
-									<div className="text-xs sm:text-sm font-semibold text-slate-900">
+									<div className="text-[10px] sm:text-xs text-muted-foreground">{metric.label}</div>
+									<div className="text-xs sm:text-sm font-semibold text-foreground">
 										{metric.value}
 									</div>
 								</div>
-								<span className="text-[9px] sm:text-[10px] text-slate-500">{metric.detail}</span>
+								<span className="text-[9px] sm:text-[10px] text-muted-foreground">
+									{metric.detail}
+								</span>
 							</div>
 						</motion.div>
 					))}
@@ -132,10 +138,12 @@ export function ChannelComparisonMockup() {
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ChartBarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Channel Comparison</span>
+					<ChartBarIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Channel Comparison
+					</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-4 sm:gap-5 justify-center">
@@ -148,12 +156,12 @@ export function ChannelComparisonMockup() {
 							transition={{ duration: 0.4, delay: i * 0.15 }}
 						>
 							<div className="flex items-center justify-between mb-1.5">
-								<span className="text-[10px] sm:text-xs font-medium text-slate-700">
+								<span className="text-[10px] sm:text-xs font-medium text-muted-foreground">
 									{ch.label}
 								</span>
-								<span className="text-[10px] sm:text-xs text-slate-500">{ch.pct}%</span>
+								<span className="text-[10px] sm:text-xs text-muted-foreground">{ch.pct}%</span>
 							</div>
-							<div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+							<div className="h-3 bg-muted rounded-full overflow-hidden">
 								<motion.div
 									className={`h-full rounded-full ${i === 0 ? 'bg-emerald-500' : 'bg-teal-500'}`}
 									initial={{ width: 0 }}
@@ -204,10 +212,10 @@ export function IntegrationsDashboardMockup() {
 
 	return (
 		<div className="relative bg-gradient-to-br from-indigo-50 to-blue-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ArrowsRightLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Integrations</span>
+					<ArrowsRightLeftIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">Integrations</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-3 sm:gap-4">
@@ -227,10 +235,10 @@ export function IntegrationsDashboardMockup() {
 									{provider.icon}
 								</div>
 								<div className="flex-1 min-w-0">
-									<div className="text-[10px] sm:text-xs font-medium text-slate-700">
+									<div className="text-[10px] sm:text-xs font-medium text-muted-foreground">
 										{provider.name}
 									</div>
-									<div className="text-[9px] sm:text-[10px] font-mono text-slate-400 truncate">
+									<div className="text-[9px] sm:text-[10px] font-mono text-muted-foreground truncate">
 										{provider.detail}
 									</div>
 								</div>
@@ -271,10 +279,12 @@ export function GeographicInsightsMockup() {
 	];
 	return (
 		<div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<MapPinIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Geographic Insights</span>
+					<MapPinIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Geographic Insights
+					</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-2 sm:gap-2.5">
@@ -288,10 +298,10 @@ export function GeographicInsightsMockup() {
 							transition={{ duration: 0.3, delay: i * 0.08 }}
 						>
 							<span className="text-sm sm:text-base w-6 text-center">{country.flag}</span>
-							<span className="text-[10px] sm:text-xs font-medium text-slate-700 w-24 sm:w-28">
+							<span className="text-[10px] sm:text-xs font-medium text-muted-foreground w-24 sm:w-28">
 								{country.name}
 							</span>
-							<div className="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden">
+							<div className="flex-1 h-2.5 bg-muted rounded-full overflow-hidden">
 								<motion.div
 									className="h-full bg-indigo-500 rounded-full"
 									initial={{ width: 0 }}
@@ -300,7 +310,7 @@ export function GeographicInsightsMockup() {
 									transition={{ duration: 0.6, delay: 0.2 + i * 0.08 }}
 								/>
 							</div>
-							<span className="text-[10px] sm:text-xs text-slate-500 w-8 text-right">
+							<span className="text-[10px] sm:text-xs text-muted-foreground w-8 text-right">
 								{country.pct}%
 							</span>
 						</motion.div>
@@ -338,10 +348,12 @@ export function PrivacyFirstMockup() {
 
 	return (
 		<div className="relative bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ShieldCheckIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Privacy Processing</span>
+					<ShieldCheckIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Privacy Processing
+					</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-3 sm:gap-4">
@@ -360,15 +372,15 @@ export function PrivacyFirstMockup() {
 								>
 									{item.icon}
 								</div>
-								<span className="text-[10px] sm:text-xs font-medium text-slate-700">
+								<span className="text-[10px] sm:text-xs font-medium text-muted-foreground">
 									{item.label}
 								</span>
 							</div>
 							<div className="flex items-center gap-2">
-								<span className="text-[9px] sm:text-[10px] text-slate-400 line-through truncate flex-1">
+								<span className="text-[9px] sm:text-[10px] text-muted-foreground line-through truncate flex-1">
 									{item.raw}
 								</span>
-								<span className="text-[10px] sm:text-xs text-slate-300">{'\u2192'}</span>
+								<span className="text-[10px] sm:text-xs text-muted-foreground">{'\u2192'}</span>
 								<span className="text-[9px] sm:text-[10px] font-medium text-emerald-700 truncate flex-1 text-right">
 									{item.anonymized}
 								</span>
@@ -397,10 +409,12 @@ export function PrivacyFirstMockup() {
 export function ExportReportingMockup() {
 	return (
 		<div className="relative bg-gradient-to-br from-slate-50 to-zinc-100 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
+			<div className="bg-card rounded-2xl shadow-xl border border-border/60 p-4 sm:p-6 flex-1 flex flex-col">
 				<div className="flex items-center gap-2 mb-3 sm:mb-4">
-					<ArrowDownTrayIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-					<span className="text-xs sm:text-sm font-medium text-slate-600">Export & Reports</span>
+					<ArrowDownTrayIcon className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
+					<span className="text-xs sm:text-sm font-medium text-muted-foreground">
+						Export & Reports
+					</span>
 				</div>
 
 				<div className="flex-1 flex flex-col gap-3 sm:gap-4">
@@ -411,13 +425,15 @@ export function ExportReportingMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.3 }}
 					>
-						<div className="text-[10px] sm:text-xs text-slate-400 mb-2">Date Range</div>
+						<div className="text-[10px] sm:text-xs text-muted-foreground mb-2">Date Range</div>
 						<div className="flex gap-2">
-							<div className="bg-white rounded-md px-2 py-1 text-[10px] sm:text-xs text-slate-700 border border-slate-200">
+							<div className="bg-card rounded-md px-2 py-1 text-[10px] sm:text-xs text-muted-foreground border border-border">
 								Mar 1, 2026
 							</div>
-							<span className="text-[10px] sm:text-xs text-slate-300 self-center">{'\u2192'}</span>
-							<div className="bg-white rounded-md px-2 py-1 text-[10px] sm:text-xs text-slate-700 border border-slate-200">
+							<span className="text-[10px] sm:text-xs text-muted-foreground self-center">
+								{'\u2192'}
+							</span>
+							<div className="bg-card rounded-md px-2 py-1 text-[10px] sm:text-xs text-muted-foreground border border-border">
 								Mar 11, 2026
 							</div>
 						</div>
@@ -430,7 +446,7 @@ export function ExportReportingMockup() {
 						viewport={{ once: true }}
 						transition={{ duration: 0.3, delay: 0.1 }}
 					>
-						<div className="text-[10px] sm:text-xs text-slate-400 mb-2">Include</div>
+						<div className="text-[10px] sm:text-xs text-muted-foreground mb-2">Include</div>
 						<div className="flex flex-wrap gap-1.5">
 							{['Scans', 'Clicks', 'Devices', 'Locations'].map((item) => (
 								<span

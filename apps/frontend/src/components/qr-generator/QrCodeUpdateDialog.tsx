@@ -41,14 +41,14 @@ export function QrCodeUpdateDialog({ isOpen, setIsOpen, onSubmit }: TNameDialogP
 				<DialogHeader>
 					<DialogTitle>{t('dialogHeadline')}</DialogTitle>
 				</DialogHeader>
-				<p className="mb-2 sm:max-w-[400px] text-gray-600">{t('dialogDescription')}</p>
+				<p className="mb-2 sm:max-w-[400px] text-muted-foreground">{t('dialogDescription')}</p>
 				<label className="flex flex-row items-start space-x-3 cursor-pointer">
 					<Checkbox
 						value={String(doNotShowAgain)}
 						onCheckedChange={(checked) => setDoNotShowAgain(Boolean(checked))}
 						className="cursor-pointer"
 					/>
-					<span className="text-sm text-gray-600 -mt-0.5">{t('doNotShowAgain')}</span>
+					<span className="text-sm text-muted-foreground -mt-0.5">{t('doNotShowAgain')}</span>
 				</label>
 				<DialogFooter>
 					<DialogClose asChild>

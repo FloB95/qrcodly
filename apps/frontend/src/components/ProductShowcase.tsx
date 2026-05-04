@@ -12,7 +12,7 @@ export function ProductShowcase() {
 		<Container className="overflow-visible">
 			<div className="text-center mb-12 sm:mb-16 px-4 sm:px-6">
 				<motion.h2
-					className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900"
+					className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground"
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
@@ -21,7 +21,7 @@ export function ProductShowcase() {
 					{t('headline')}
 				</motion.h2>
 				<motion.p
-					className="mt-6 text-xl sm:text-2xl text-slate-600 max-w-2xl mx-auto"
+					className="mt-6 text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto"
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
@@ -40,22 +40,22 @@ export function ProductShowcase() {
 				transition={{ duration: 0.6, delay: 0.2 }}
 				style={{ perspective: 1000 }}
 			>
-				<div className="rounded-xl border border-gray-200 bg-white shadow-xl overflow-hidden">
+				<div className="rounded-xl border border-border bg-card shadow-xl overflow-hidden">
 					{/* Browser chrome */}
-					<div className="flex items-center gap-2 px-4 py-3 bg-gray-100 border-b border-gray-200">
+					<div className="flex items-center gap-2 px-4 py-3 bg-muted border-b border-border">
 						<div className="flex gap-1.5">
 							<div className="w-3 h-3 rounded-full bg-red-400" />
 							<div className="w-3 h-3 rounded-full bg-yellow-400" />
 							<div className="w-3 h-3 rounded-full bg-green-400" />
 						</div>
 						<div className="flex-1 flex justify-center">
-							<div className="bg-white rounded-md border border-gray-200 px-4 py-1 text-xs text-gray-500 min-w-[200px] text-center">
+							<div className="bg-card rounded-md border border-border px-4 py-1 text-xs text-muted-foreground min-w-[200px] text-center">
 								app.qrcodly.de/dashboard
 							</div>
 						</div>
 					</div>
 					{/* Screenshot */}
-					<div className="relative aspect-[16/9] bg-gradient-to-br from-slate-50 to-slate-100">
+					<div className="relative aspect-[16/9] bg-gradient-to-br from-slate-50 to-slate-100 dark:from-muted dark:to-muted">
 						<Image
 							src="/images/dashboard-mockup.png"
 							alt="QRcodly Dashboard showing QR code management interface"

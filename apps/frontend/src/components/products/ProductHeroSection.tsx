@@ -28,7 +28,9 @@ export function ProductHeroSection({
 					</Heading>
 				</AnimateOnLoad>
 				<AnimateOnLoad delay={0.2}>
-					<p className="mx-auto max-w-2xl text-lg sm:text-xl text-slate-700 mb-8">{subtitle}</p>
+					<p className="mx-auto max-w-2xl text-lg sm:text-xl text-muted-foreground mb-8">
+						{subtitle}
+					</p>
 					{children ??
 						(ctaLabel && ctaHref ? (
 							<Link href={ctaHref} className={buttonVariants({ size: 'lg' })}>

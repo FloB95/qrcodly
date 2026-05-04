@@ -127,7 +127,7 @@ function QrCode({
 							<span className="pt-0.5">{shortUrlDisplay}</span>
 							{!hideDomainEdit && (
 								<Link href="/dashboard/settings/domains">
-									<PencilSquareIcon className="size-4 text-black" />
+									<PencilSquareIcon className="size-4 text-foreground" />
 								</Link>
 							)}
 						</div>

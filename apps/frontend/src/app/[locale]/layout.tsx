@@ -118,7 +118,7 @@ export default async function RootLayout({
 	};
 
 	return (
-		<html lang={locale} className="light" suppressHydrationWarning>
+		<html lang={locale} suppressHydrationWarning>
 			<head>
 				{/* Preconnect to critical third-party domains for faster connections */}
 				<link rel="preconnect" href="https://clerk.qrcodly.de" crossOrigin="anonymous" />
@@ -149,7 +149,7 @@ export default async function RootLayout({
 				<AxiomWebVitals />
 				<NextIntlClientProvider>
 					<Providers locale={locale}>
-						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
+						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] dark:bg-none dark:bg-background px-4 sm:px-0">
 							{children}
 						</main>
 					</Providers>

@@ -64,8 +64,8 @@ export const ListSection = () => {
 				}}
 			>
 				<div className="flex items-center">
-					<TabsList className="bg-white p-2 shadow h-auto md:min-w-[300px] grid-cols-2 grid">
-						<TabsTrigger value="qrCodeList" className="data-[state=active]:bg-gray-200">
+					<TabsList className="bg-card p-2 shadow h-auto md:min-w-[300px] grid-cols-2 grid">
+						<TabsTrigger value="qrCodeList" className="data-[state=active]:bg-muted">
 							<div className="sm:flex sm:space-x-2">
 								<QrCodeIcon width={20} height={20} />{' '}
 								<span className="hidden sm:block">
@@ -73,7 +73,7 @@ export const ListSection = () => {
 								</span>
 							</div>
 						</TabsTrigger>
-						<TabsTrigger value="templateList" className="data-[state=active]:bg-gray-200">
+						<TabsTrigger value="templateList" className="data-[state=active]:bg-muted">
 							<div className="sm:flex sm:space-x-2">
 								<StarIcon width={20} height={20} />{' '}
 								<span className="hidden sm:block">
