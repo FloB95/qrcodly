@@ -55,7 +55,7 @@
 		"lefthook": "^1.13.6",
 		"prettier": "^3.8.1",
 		"qrcodly-eslint-config": "workspace:*",
-		"rimraf": "^6.1.2",
+		"rimraf": "^6.1.3",
 		"typescript": "^5.9.3"
 	}
 }
