@@ -1,18 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { TConfigTemplateResponseDto } from '@shared/schemas';
-import { ApiError, QrcodlyApi } from '../lib/api-client';
-import { placeSvgInActiveDocument } from '../lib/indesign';
+import { ApiError, blobToDataUrl, QrcodlyApi } from '../lib/api-client';
+import { getAutoPlaceSizeMm, placePngInActiveDocument, PRINT_QR_PX } from '../lib/indesign';
 import { BrandHeader } from '../components/Logo';
 import { Button } from '../components/Button';
 import { QrPreview } from '../components/QrPreview';
-
-// UXP can't host qr-code-styling reliably (SVG hangs, PNG needs canvas). So the
-// plugin relies exclusively on server-rendered preview images:
-//   - Create screen "preview" = the chosen template's previewImage (style only)
-//   - Placement of saved QRs   = that QR's previewImage from the CDN
-// Newly created QRs need ~1s for the server to generate their previewImage —
-// we therefore return to the list after create and let the user click to
-// insert, rather than client-rendering on the fly.
 
 type Props = {
 	apiKey: string;
@@ -28,7 +20,7 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 	const api = useMemo(() => new QrcodlyApi(apiKey), [apiKey]);
 
 	const [templates, setTemplates] = useState<TConfigTemplateResponseDto[]>([]);
-	const [templateId, setTemplateId] = useState<string | ''>('');
+	const [templateId, setTemplateId] = useState<string>('');
 	const [contentType, setContentType] = useState<ContentType>('url');
 	const [value, setValue] = useState('');
 	const [name, setName] = useState('');
@@ -90,7 +82,6 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 
 		let newQr;
 		try {
-			const template = templates.find((t) => t.id === templateId);
 			const content =
 				contentType === 'url'
 					? {
@@ -103,10 +94,11 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 						}
 					: { type: 'text' as const, data: value.trim() };
 
+			// Send templateId only; sending config too would replace the raw
+			// image storage key with the public URL and break the embed.
 			newQr = await api.createQrCode({
 				name: name.trim() || null,
 				content,
-				config: template?.config,
 				templateId: templateId || undefined,
 			});
 		} catch (err) {
@@ -118,11 +110,14 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 
 		if (newQr.qrCodeData) {
 			try {
-				const svg = await api.renderQrSvg({
+				const blob = await api.renderQrPng({
 					config: newQr.config,
 					data: newQr.qrCodeData,
+					sizePx: PRINT_QR_PX,
+					printSizeMm: getAutoPlaceSizeMm(),
 				});
-				await placeSvgInActiveDocument(svg, newQr.name ?? newQr.id);
+				const dataUrl = await blobToDataUrl(blob);
+				await placePngInActiveDocument(dataUrl, newQr.name ?? newQr.id);
 			} catch (err) {
 				// The QR was created successfully server-side — only placement failed.
 				// Surface the error but still return the user to the list so they can

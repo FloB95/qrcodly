@@ -1,16 +1,16 @@
 {
 	"name": "@integrations/indesign",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"private": true,
 	"type": "module",
 	"scripts": {
 		"dev": "webpack --watch --mode=development",
 		"build": "webpack --mode=production",
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc --noEmit",
+		"lint": "eslint src/"
 	},
 	"dependencies": {
 		"@shared/schemas": "workspace:*",
-		"qr-code-styling": "catalog:",
 		"qs": "^6.14.0",
 		"react": "catalog:",
 		"react-dom": "catalog:"
@@ -21,6 +21,8 @@
 		"@types/react-dom": "catalog:",
 		"copy-webpack-plugin": "^12.0.2",
 		"css-loader": "^7.1.2",
+		"eslint": "^9.39.2",
+		"qrcodly-eslint-config": "workspace:*",
 		"style-loader": "^4.0.0",
 		"ts-loader": "^9.5.1",
 		"typescript": "catalog:",

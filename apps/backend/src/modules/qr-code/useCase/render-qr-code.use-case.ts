@@ -26,7 +26,7 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 	async execute(dto: TRenderQrCodeDto): Promise<RenderQrCodeResult> {
 		const format: TRenderQrCodeFormat = dto.format ?? 'png';
 		const sizePx = dto.sizePx ?? 512;
-		const etag = this.computeEtag(dto, format, sizePx);
+		const etag = this.computeEtag(dto, format, sizePx, dto.printSizeMm);
 		const contentType = RENDER_QR_CODE_MIME_TYPES[format];
 
 		const svgText = await this.generateSvg(dto);
@@ -38,6 +38,14 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 		const pngBuffer = this.rasterize(svgText, sizePx);
 
 		if (format === 'png') {
+			if (dto.printSizeMm) {
+				// Embed DPI metadata so layout apps place the PNG at the
+				// requested physical size. density = px / inch, so:
+				// dpi = sizePx / (sizeMm / 25.4) = sizePx * 25.4 / sizeMm.
+				const density = Math.round((sizePx * 25.4) / dto.printSizeMm);
+				const tagged = await sharp(pngBuffer).withMetadata({ density }).png().toBuffer();
+				return { buffer: tagged, contentType, etag };
+			}
 			return { buffer: pngBuffer, contentType, etag };
 		}
 
@@ -71,9 +79,14 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 		return Buffer.from(resvg.render().asPng());
 	}
 
-	private computeEtag(dto: TRenderQrCodeDto, format: string, sizePx: number): string {
+	private computeEtag(
+		dto: TRenderQrCodeDto,
+		format: string,
+		sizePx: number,
+		printSizeMm: number | undefined,
+	): string {
 		const hash = createHash('sha1')
-			.update(JSON.stringify({ config: dto.config, data: dto.data, format, sizePx }))
+			.update(JSON.stringify({ config: dto.config, data: dto.data, format, sizePx, printSizeMm }))
 			.digest('hex');
 		return `"${hash.slice(0, 16)}"`;
 	}
