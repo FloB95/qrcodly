@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route';
 import { resolveScopeForMethod } from '@/libs/fastify/helpers';
 
-// Controllers that participate in API-key auth (not webhooks, not health)
 import { ApiKeyController } from '@/modules/api-key/http/controller/api-key.controller';
 import { AnalyticsIntegrationController } from '@/modules/analytics-integration/http/controller/analytics-integration.controller';
 import { QrCodeController } from '@/modules/qr-code/http/controller/qr-code.controller';
@@ -102,8 +101,6 @@ describe('scope-coverage-matrix', () => {
 
 	it('api-key management routes are session-only', () => {
 		const apiKeyRoutes = rows.filter((r) => r.controller === 'ApiKeyController');
-		// Session-token-only restriction is non-negotiable here: an API key must
-		// never be able to mint, list, update, or revoke other API keys.
 		const violations = apiKeyRoutes.filter(
 			(r) => !r.allowedTokenTypes?.includes('session_token') || r.allowedTokenTypes.length !== 1,
 		);

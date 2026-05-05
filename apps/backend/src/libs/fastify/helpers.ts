@@ -165,14 +165,7 @@ function parseJsonFields(body: Record<string, any>, fieldsToParse: string[] = ['
 }
 
 /**
- * Maps an HTTP method to its default API-key scope.
- *
- * - GET / HEAD     → 'read'
- * - POST           → 'write'
- * - PUT / PATCH    → 'update'
- * - DELETE         → 'delete'
- * - OPTIONS        → null (CORS preflights — no auth, no scope check)
- *
+ * Default API-key scope per HTTP method. Null for OPTIONS (CORS preflights, no auth).
  * Exported so the scope-coverage matrix test can assert the same mapping.
  */
 export function resolveScopeForMethod(method: string): ApiKeyScope | null {
@@ -290,14 +283,9 @@ export function registerRoutes(
 			// no-op: skip authentication for this route
 		}
 
-		// Token-type and scope enforcement run after auth so they see the populated
-		// request.user. Skipped when the route opts out of auth (webhooks, health) —
-		// there's no user to check against.
+		// Token-type and scope checks run after auth; skipped when authHandler is false.
 		if (routeMeta.options.authHandler !== false) {
-			// Default rule: hidden routes (schema.hide === true) are session-only.
-			// They are not part of the public API contract, so an API key has no
-			// legitimate reason to call them. Override via `config.allowedTokenTypes`
-			// when a hidden route deliberately needs API-key access.
+			// Hidden routes default to session-only; override via config.allowedTokenTypes.
 			const explicitAllowed = routeMeta.options.config?.allowedTokenTypes;
 			const isHidden = (routeMeta.options.schema as { hide?: boolean } | undefined)?.hide === true;
 			const effectiveAllowed = explicitAllowed ?? (isHidden ? ['session_token' as const] : null);

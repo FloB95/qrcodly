@@ -20,29 +20,9 @@ interface CustomRouteOptions {
 	responseSchema?: Record<number, ZodSchema>;
 	config?: {
 		rateLimitPolicy?: RateLimitPolicy;
-		/**
-		 * API-key scope required to call this route.
-		 *
-		 * When omitted, defaults are derived from the HTTP method:
-		 *   GET, HEAD       → 'read'
-		 *   POST            → 'write'
-		 *   PUT, PATCH      → 'update'
-		 *   DELETE          → 'delete'
-		 *
-		 * Override per route when the default doesn't match the operation's
-		 * semantic intent (e.g. a POST that's actually a read like "verify domain").
-		 *
-		 * Session-token requests are unaffected — scopes only apply to API keys.
-		 */
+		/** Override the method-default scope (e.g. a POST that's a read). */
 		scope?: ApiKeyScope;
-		/**
-		 * Restricts which authentication token types may call this route.
-		 *
-		 * When omitted, any token type the auth middleware accepts is allowed.
-		 * Set to `['session_token']` to lock a route to web-UI users — useful for
-		 * security-critical endpoints (e.g. API-key management) that must NOT be
-		 * callable using an API key, regardless of its scopes.
-		 */
+		/** Lock a route to specific token types — e.g. `['session_token']` for API-key management. */
 		allowedTokenTypes?: TTokenType[];
 	};
 }

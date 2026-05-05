@@ -9,8 +9,7 @@ export class ListApiKeysUseCase implements IBaseUseCase {
 	constructor(@inject(ClerkApiKeysService) private readonly clerkApiKeys: ClerkApiKeysService) {}
 
 	async execute(userId: string): Promise<TApiKeyResponseDto[]> {
-		// Clerk's default page size is small; lift it to 100 so users with many
-		// keys see them all in a single list response. The UI never paginates.
+		// UI never paginates — fetch a generous page so all keys show up.
 		const { data } = await this.clerkApiKeys.apiKeys.list({ subject: userId, limit: 100 });
 
 		return data

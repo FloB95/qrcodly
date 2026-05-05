@@ -411,9 +411,7 @@ describe('api-key endpoints', () => {
 			};
 			createdApiKeyIds.push(id);
 
-			// POST /tag is a documented authenticated write endpoint with a simple body —
-			// good fixture for asserting the scope check fires (returns 403, not a 400
-			// from validation or 401 from auth).
+			// POST /tag — documented write endpoint with a simple body, good scope-check fixture.
 			const tagCreate = await testServer.inject({
 				method: 'POST',
 				url: '/api/v1/tag',
@@ -482,8 +480,7 @@ describe('api-key endpoints', () => {
 			};
 			createdApiKeyIds.push(id);
 
-			// Hidden routes (e.g. POST /custom-domain/clear-default) are session-only
-			// by default — even a fully-scoped API key is rejected.
+			// Hidden routes default to session-only — a fully-scoped API key still gets 403.
 			const response = await testServer.inject({
 				method: 'POST',
 				url: '/api/v1/custom-domain/clear-default',
@@ -620,7 +617,7 @@ describe('api-key endpoints', () => {
 			const { id } = JSON.parse(createResponse.payload) as { id: string };
 			createdApiKeyIds.push(id);
 
-			// Free user (different subject) tries to update Pro user's key — must fail.
+			// Free user tries to update Pro user's key — must fail.
 			const attempt = await updateApiKeyRequest(
 				testServer,
 				id,
