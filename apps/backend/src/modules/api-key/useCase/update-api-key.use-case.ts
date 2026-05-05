@@ -34,17 +34,23 @@ export class UpdateApiKeyUseCase implements IBaseUseCase {
 
 		if (existing.subject !== userId) throw new ApiKeyNotFoundError();
 
-		const updated = await this.clerkApiKeys.apiKeys.update({
-			apiKeyId,
-			subject: userId,
-			...(dto.description !== undefined ? { description: dto.description } : {}),
-			...(dto.scopes !== undefined ? { scopes: dto.scopes } : {}),
-			...(dto.expiresInDays !== undefined
-				? {
-						secondsUntilExpiration: dto.expiresInDays === null ? null : dto.expiresInDays * 86400,
-					}
-				: {}),
-		});
+		let updated;
+		try {
+			updated = await this.clerkApiKeys.apiKeys.update({
+				apiKeyId,
+				subject: userId,
+				...(dto.description !== undefined ? { description: dto.description } : {}),
+				...(dto.scopes !== undefined ? { scopes: dto.scopes } : {}),
+				...(dto.expiresInDays !== undefined
+					? {
+							secondsUntilExpiration: dto.expiresInDays === null ? null : dto.expiresInDays * 86400,
+						}
+					: {}),
+			});
+		} catch (err) {
+			if (isClerkClientError(err)) throw new ApiKeyNotFoundError();
+			throw err;
+		}
 
 		this.logger.info('api-key.updated', { apiKey: { id: apiKeyId, userId } });
 

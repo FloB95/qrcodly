@@ -81,7 +81,10 @@ export function CreateApiKeyDialog() {
 				variant: 'destructive',
 			});
 			Sentry.captureException(err);
-			posthog.capture('error:api-key-create', { error: err });
+			posthog.capture('error:api-key-create', {
+				errorName: err instanceof Error ? err.name : 'UnknownError',
+				errorMessage: err instanceof Error ? err.message : String(err),
+			});
 		}
 	};
 

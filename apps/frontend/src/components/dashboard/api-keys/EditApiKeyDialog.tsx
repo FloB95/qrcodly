@@ -75,7 +75,11 @@ export function EditApiKeyDialog({ apiKey, open, onOpenChange }: EditApiKeyDialo
 				variant: 'destructive',
 			});
 			Sentry.captureException(err);
-			posthog.capture('error:api-key-update', { error: err, apiKeyId: apiKey.id });
+			posthog.capture('error:api-key-update', {
+				errorName: err instanceof Error ? err.name : 'UnknownError',
+				errorMessage: err instanceof Error ? err.message : String(err),
+				apiKeyId: apiKey.id,
+			});
 		}
 	};
 

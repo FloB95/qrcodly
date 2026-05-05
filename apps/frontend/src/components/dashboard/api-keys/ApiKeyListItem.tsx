@@ -41,7 +41,11 @@ export function ApiKeyListItem({ apiKey, handleRevalidate }: ApiKeyListItemProps
 			handleRevalidate();
 		} catch (error) {
 			Sentry.captureException(error);
-			posthog.capture('error:api-key-revoke', { error, apiKeyId: apiKey.id });
+			posthog.capture('error:api-key-revoke', {
+				errorName: error instanceof Error ? error.name : 'UnknownError',
+				errorMessage: error instanceof Error ? error.message : String(error),
+				apiKeyId: apiKey.id,
+			});
 			throw error;
 		}
 	}
