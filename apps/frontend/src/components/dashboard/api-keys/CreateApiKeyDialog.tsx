@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import Link from 'next/link';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
 import { useCreateApiKeyMutation } from '@/lib/api/api-key';
+import { API_KEY_SCOPES, CreateApiKeyDto, type TCreateApiKeyDto } from '@shared/schemas';
 import {
 	Dialog,
 	DialogContent,
@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
 	Form,
 	FormControl,
@@ -40,13 +41,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 
-const CreateApiKeySchema = z.object({
-	name: z.string().min(1).max(100).trim(),
-	description: z.string().max(64).default('').optional(),
-	expiresInDays: z.number().int().positive().optional().or(z.literal(null)),
-});
-
-type CreateApiKeyFormData = z.infer<typeof CreateApiKeySchema>;
+type CreateApiKeyFormData = TCreateApiKeyDto;
 
 export function CreateApiKeyDialog() {
 	const t = useTranslations('settings.apiKeys');
@@ -58,11 +53,12 @@ export function CreateApiKeyDialog() {
 	const { hasProPlan, isLoading: isPlanLoading } = useHasProPlan();
 
 	const form = useForm<CreateApiKeyFormData>({
-		resolver: zodResolver(CreateApiKeySchema),
+		resolver: zodResolver(CreateApiKeyDto),
 		defaultValues: {
 			name: '',
 			description: '',
 			expiresInDays: null,
+			scopes: [...API_KEY_SCOPES],
 		},
 	});
 
@@ -72,6 +68,7 @@ export function CreateApiKeyDialog() {
 				name: data.name,
 				description: data.description || undefined,
 				expiresInDays: data.expiresInDays ?? null,
+				scopes: data.scopes,
 			});
 			setCreatedKey(key.secret);
 			form.reset();
@@ -84,7 +81,10 @@ export function CreateApiKeyDialog() {
 				variant: 'destructive',
 			});
 			Sentry.captureException(err);
-			posthog.capture('error:api-key-create', { error: err });
+			posthog.capture('error:api-key-create', {
+				errorName: err instanceof Error ? err.name : 'UnknownError',
+				errorMessage: err instanceof Error ? err.message : String(err),
+			});
 		}
 	};
 
@@ -137,14 +137,18 @@ export function CreateApiKeyDialog() {
 			</DialogTrigger>
 
 			<DialogContent className="sm:max-w-md">
-				<DialogHeader>
+				<DialogHeader className="mb-2">
 					<DialogTitle>{createdKey ? t('createdTitle') : t('formTitle')}</DialogTitle>
-					{!createdKey && <DialogDescription>{t('formHint')}</DialogDescription>}
+					{!createdKey && (
+						<DialogDescription className="text-destructive font-medium">
+							{t('securityNote')}
+						</DialogDescription>
+					)}
 				</DialogHeader>
 
 				{!createdKey ? (
 					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 							<FormField
 								control={form.control}
 								name="name"
@@ -165,7 +169,11 @@ export function CreateApiKeyDialog() {
 									<FormItem>
 										<FormLabel>{t('descriptionLabel')}</FormLabel>
 										<FormControl>
-											<Input placeholder={t('descriptionLabel')} {...field} disabled={isCreating} />
+											<Input
+												placeholder={t('descriptionPlaceholder')}
+												{...field}
+												disabled={isCreating}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>
@@ -176,14 +184,14 @@ export function CreateApiKeyDialog() {
 								name="expiresInDays"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>{t('expiresAt')}</FormLabel>
+										<FormLabel>{t('expiresAt')}*</FormLabel>
 										<FormControl>
 											<Select
 												value={field.value?.toString() ?? 'null'}
 												onValueChange={(val) => field.onChange(val === 'null' ? null : Number(val))}
 												disabled={isCreating}
 											>
-												<SelectTrigger>
+												<SelectTrigger className="mb-0">
 													<SelectValue placeholder={t('expiresAtPlaceholder')} />
 												</SelectTrigger>
 												<SelectContent>
@@ -198,7 +206,56 @@ export function CreateApiKeyDialog() {
 												</SelectContent>
 											</Select>
 										</FormControl>
-										<FormDescription>{t('expiresAtDescription')}</FormDescription>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name="scopes"
+								render={({ field }) => (
+									<FormItem className="space-y-3">
+										<div className="space-y-1">
+											<FormLabel>{t('scopesLabel')}</FormLabel>
+											<FormDescription>{t('scopesDescription')}</FormDescription>
+										</div>
+										<div className="space-y-2" role="group" aria-label={t('scopesLabel')}>
+											{API_KEY_SCOPES.map((scope) => {
+												const checked = field.value?.includes(scope) ?? false;
+												const cap = `${scope.charAt(0).toUpperCase()}${scope.slice(1)}`;
+												const labelKey = `scope${cap}` as
+													| 'scopeRead'
+													| 'scopeWrite'
+													| 'scopeUpdate'
+													| 'scopeDelete';
+												const hintKey:
+													| 'scopeReadHint'
+													| 'scopeWriteHint'
+													| 'scopeUpdateHint'
+													| 'scopeDeleteHint' = `${labelKey}Hint`;
+												return (
+													<label
+														key={scope}
+														className="flex cursor-pointer items-center gap-2 text-sm"
+													>
+														<Checkbox
+															checked={checked}
+															disabled={isCreating}
+															onCheckedChange={(next) => {
+																const current = field.value ?? [];
+																if (next) field.onChange([...current, scope]);
+																else field.onChange(current.filter((s) => s !== scope));
+															}}
+														/>
+														<span>
+															<span className="font-medium">{t(labelKey)}</span>{' '}
+															<span className="text-muted-foreground">{t(hintKey)}</span>
+														</span>
+													</label>
+												);
+											})}
+										</div>
 										<FormMessage />
 									</FormItem>
 								)}

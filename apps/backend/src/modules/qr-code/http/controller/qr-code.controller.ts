@@ -380,6 +380,7 @@ export class QrCodeController extends AbstractController {
 		},
 		config: {
 			rateLimitPolicy: RateLimitPolicy.QR_RENDER,
+			scope: 'read',
 		},
 	})
 	async render(request: IHttpRequest<TRenderQrCodeDto>): Promise<IHttpResponse<Buffer>> {

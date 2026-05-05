@@ -27,12 +27,14 @@ interface ApiKeyListItemActionsProps {
 	};
 	isRevoking: boolean;
 	onRevoke: () => void;
+	onEdit: () => void;
 }
 
 export function ApiKeyListItemActions({
 	apiKey,
 	isRevoking,
 	onRevoke,
+	onEdit,
 }: ApiKeyListItemActionsProps) {
 	const t = useTranslations('settings.apiKeys');
 	const [showRevokeDialog, setShowRevokeDialog] = useState(false);
@@ -49,6 +51,7 @@ export function ApiKeyListItemActions({
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
+					<DropdownMenuItem onClick={onEdit}>{t('edit')}</DropdownMenuItem>
 					<DropdownMenuItem
 						onClick={() => setShowRevokeDialog(true)}
 						className="text-destructive focus:text-destructive"

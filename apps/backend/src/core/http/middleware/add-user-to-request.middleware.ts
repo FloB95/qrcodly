@@ -37,13 +37,20 @@ async function resolveUserPlan(userId: string): Promise<PlanName> {
 }
 
 export async function addUserToRequestMiddleware(request: FastifyRequest, _reply: unknown) {
-	const { userId, tokenType } = getAuth(request, {
+	const auth = getAuth(request, {
 		acceptsToken: ['session_token', 'api_key'],
-	}) as { userId: string | null; tokenType: TTokenType };
+	}) as {
+		userId: string | null;
+		tokenType: TTokenType;
+		scopes?: string[];
+	};
+
+	const { userId, tokenType } = auth;
 
 	if (userId) {
 		const plan = await resolveUserPlan(userId);
-		request.user = { id: userId, tokenType, plan };
+		const scopes = tokenType === 'api_key' ? (auth.scopes ?? []) : undefined;
+		request.user = { id: userId, tokenType, plan, scopes };
 		void trackActiveSession(container.resolve(KeyCache).getClient(), userId);
 	} else {
 		request.user = undefined;

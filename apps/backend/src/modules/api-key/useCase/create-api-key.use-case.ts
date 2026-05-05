@@ -5,6 +5,7 @@ import { PlanName } from '@/core/config/plan.config';
 import { type TCreateApiKeyDto, type TCreateApiKeyResponseDto } from '@shared/schemas';
 import { ClerkApiKeysService } from '../service/clerk-api-keys.service';
 import { ProPlanRequiredError } from '../error/http/pro-plan-required.error';
+import { filterKnownScopes } from '../util/filter-known-scopes';
 
 @injectable()
 export class CreateApiKeyUseCase implements IBaseUseCase {
@@ -26,6 +27,7 @@ export class CreateApiKeyUseCase implements IBaseUseCase {
 			createdBy: userId,
 			description: dto.description ?? null,
 			secondsUntilExpiration: dto.expiresInDays ? dto.expiresInDays * 86400 : null,
+			scopes: dto.scopes,
 		});
 
 		if (!apiKey.secret) {
@@ -42,6 +44,7 @@ export class CreateApiKeyUseCase implements IBaseUseCase {
 			lastUsedAt: apiKey.lastUsedAt,
 			expiration: apiKey.expiration,
 			revoked: apiKey.revoked,
+			scopes: filterKnownScopes(apiKey.scopes),
 			secret: apiKey.secret,
 		};
 	}

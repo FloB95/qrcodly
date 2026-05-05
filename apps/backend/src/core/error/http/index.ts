@@ -4,7 +4,9 @@ import { CustomApiError } from './custom-api.error';
 import { NotFoundError } from './not-found.error';
 import { UnauthorizedError } from './unauthorized.error';
 import { ForbiddenError } from './forbidden.error';
+import { InsufficientScopeError } from './insufficient-scope.error';
 import { ServiceUnavailableError } from './service-unavailable.error';
+import { TokenTypeNotAllowedError } from './token-type-not-allowed.error';
 
 export {
 	CustomApiError,
@@ -13,5 +15,7 @@ export {
 	NotFoundError,
 	UnauthorizedError,
 	ForbiddenError,
+	InsufficientScopeError,
 	ServiceUnavailableError,
+	TokenTypeNotAllowedError,
 };
