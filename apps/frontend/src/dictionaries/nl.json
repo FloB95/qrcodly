@@ -84,7 +84,12 @@
 		}
 	},
 	"general": {
+		"signIn": "Inloggen",
 		"signOut": "Uitloggen",
+		"openProfile": "Profiel openen",
+		"signInToContinue": "Log in op qrcodly.de — de extensie pikt je sessie automatisch op.",
+		"reopenAfterSignIn": "Heropen dit popup nadat je bent ingelogd.",
+		"signInSuccess": "Succesvol ingelogd. Dit venster wordt zo gesloten…",
 		"proRequired": "Pro-abonnement vereist",
 		"comingSoon": "binnenkort beschikbaar!",
 		"noName": "Geen naam",

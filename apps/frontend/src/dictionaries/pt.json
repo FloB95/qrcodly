@@ -84,7 +84,12 @@
 		}
 	},
 	"general": {
+		"signIn": "Entrar",
 		"signOut": "Sair",
+		"openProfile": "Abrir perfil",
+		"signInToContinue": "Inicia sessão em qrcodly.de — a extensão deteta a tua sessão automaticamente.",
+		"reopenAfterSignIn": "Reabre este popup após iniciares sessão.",
+		"signInSuccess": "Início de sessão efetuado. Esta janela vai fechar-se…",
 		"proRequired": "Plano Pro Necessário",
 		"comingSoon": "em breve!",
 		"noName": "Sem nome",

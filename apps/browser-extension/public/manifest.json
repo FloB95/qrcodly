@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "QRcodly",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Generate and save QR codes directly from your browser",
 	"action": {
 		"default_popup": "index.html",
@@ -14,6 +14,7 @@
 		"https://*.clerk.accounts.dev/*",
 		"https://accounts.qrcodly.de/*",
 		"https://www.qrcodly.de/*",
+		"https://qrcodly.de/*",
 		"https://s3.fr-par.scw.cloud/*"
 	],
 	"icons": { "48": "icon-48.png", "128": "icon-128.png" }

@@ -84,7 +84,12 @@
 		}
 	},
 	"general": {
+		"signIn": "Zaloguj się",
 		"signOut": "Wyloguj się",
+		"openProfile": "Otwórz profil",
+		"signInToContinue": "Zaloguj się na qrcodly.de — rozszerzenie wykryje sesję automatycznie.",
+		"reopenAfterSignIn": "Po zalogowaniu otwórz to okno ponownie.",
+		"signInSuccess": "Zalogowano pomyślnie. To okno zostanie wkrótce zamknięte…",
 		"proRequired": "Wymagany Plan Pro",
 		"comingSoon": "już wkrótce!",
 		"noName": "Brak nazwy",

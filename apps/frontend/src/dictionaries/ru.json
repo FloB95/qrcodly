@@ -84,7 +84,12 @@
 		}
 	},
 	"general": {
+		"signIn": "Войти",
 		"signOut": "Выйти",
+		"openProfile": "Открыть профиль",
+		"signInToContinue": "Войдите на qrcodly.de — расширение подхватит сессию автоматически.",
+		"reopenAfterSignIn": "После входа откройте это окно ещё раз.",
+		"signInSuccess": "Вход выполнен. Это окно скоро закроется…",
 		"proRequired": "Требуется план Pro",
 		"comingSoon": "скоро появится!",
 		"noName": "Без имени",

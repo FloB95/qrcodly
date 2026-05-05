@@ -1,10 +1,11 @@
 // Re-export everything from @clerk/chrome-extension as a drop-in for @clerk/nextjs
+import { Show, type ShowProps } from '@clerk/chrome-extension';
+import type { ReactNode } from 'react';
+
 export {
 	ClerkProvider,
 	SignIn,
 	SignUp,
-	SignedIn,
-	SignedOut,
 	SignInButton,
 	SignUpButton,
 	SignOutButton,
@@ -20,6 +21,17 @@ export {
 	useOrganization,
 	useOrganizationList,
 } from '@clerk/chrome-extension';
+
+// v3 of @clerk/chrome-extension removed <SignedIn> and <SignedOut> in favor of <Show when="...">.
+// The frontend still uses these names (it's a Next.js app on @clerk/nextjs), so shim them.
+export function SignedIn({ children }: { children: ReactNode }) {
+	const props = { when: 'signed-in', children } as unknown as ShowProps;
+	return <Show {...props} />;
+}
+export function SignedOut({ children }: { children: ReactNode }) {
+	const props = { when: 'signed-out', children } as unknown as ShowProps;
+	return <Show {...props} />;
+}
 
 // useReverification is not available in @clerk/chrome-extension — provide a no-op
 export function useReverification() {

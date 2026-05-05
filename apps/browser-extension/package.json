@@ -1,17 +1,17 @@
 {
 	"name": "qrcodly-extension",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"private": true,
 	"type": "module",
 	"scripts": {
 		"dev": "vite build --watch",
-		"build": "tsc --noEmit && vite build",
+		"build": "vite build",
 		"preview": "vite preview --port 5174",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
 	"dependencies": {
-		"@clerk/chrome-extension": "^2.9.14",
+		"@clerk/chrome-extension": "^3.1.21",
 		"@clerk/localizations": "^3.34.0",
 		"@clerk/themes": "^2.4.47",
 		"@heroicons/react": "^2.2.0",

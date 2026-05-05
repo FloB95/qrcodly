@@ -84,7 +84,12 @@
 		}
 	},
 	"general": {
+		"signIn": "Sign In",
 		"signOut": "Sign Out",
+		"openProfile": "Open Profile",
+		"signInToContinue": "Sign in on qrcodly.de — the extension will pick up your session automatically.",
+		"reopenAfterSignIn": "Reopen this popup once you're signed in.",
+		"signInSuccess": "Signed in successfully. Closing this window…",
 		"proRequired": "Pro Plan Required",
 		"comingSoon": "coming soon!",
 		"noName": "No name",

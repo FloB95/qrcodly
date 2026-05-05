@@ -84,7 +84,12 @@
 		}
 	},
 	"general": {
+		"signIn": "Se connecter",
 		"signOut": "Se déconnecter",
+		"openProfile": "Ouvrir le profil",
+		"signInToContinue": "Connectez-vous sur qrcodly.de — l'extension récupèrera automatiquement votre session.",
+		"reopenAfterSignIn": "Rouvrez ce popup une fois connecté.",
+		"signInSuccess": "Connexion réussie. Cette fenêtre va se fermer…",
 		"proRequired": "Abonnement Pro requis",
 		"comingSoon": "bientôt disponible !",
 		"noName": "Sans nom",

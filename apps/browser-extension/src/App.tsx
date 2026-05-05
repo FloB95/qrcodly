@@ -1,5 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { ClerkProvider, SignedIn, SignedOut, useUser } from '@clerk/chrome-extension';
+import { ClerkProvider, Show, useAuth, useClerk, useUser } from '@clerk/chrome-extension';
+import { LogOut, UserCircle2 } from 'lucide-react';
+import { useTranslations } from 'use-intl';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from 'use-intl';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -14,6 +24,9 @@ import { ExtensionQrGenerator } from '@ext/components/ExtensionQrGenerator';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL ?? 'https://www.qrcodly.de';
+const ACCOUNT_PORTAL_URL =
+	import.meta.env.VITE_CLERK_ACCOUNT_PORTAL_URL ?? 'https://accounts.qrcodly.de';
+const SIGN_IN_URL = `${ACCOUNT_PORTAL_URL}/sign-in?redirect_url=${encodeURIComponent(FRONTEND_URL)}`;
 
 const queryClient = getQueryClient();
 
@@ -29,34 +42,62 @@ const localeMap: Record<string, typeof enUS> = {
 };
 
 function SignInPrompt() {
+	const t = useTranslations('general');
 	return (
 		<div className="flex min-h-[400px] flex-col items-center justify-center gap-5 p-8 text-center">
 			<QrcodlyLogo size="lg" showText={false} />
 			<div className="space-y-1.5">
-				<h2 className="text-lg font-semibold tracking-tight">Sign in to QRcodly</h2>
-				<p className="text-sm text-muted-foreground">
-					Sign in at qrcodly.de first, then reopen this popup.
-				</p>
+				<h2 className="text-lg font-semibold tracking-tight">QRcodly</h2>
+				<p className="text-sm text-muted-foreground">{t('signInToContinue')}</p>
 			</div>
-			<Button onClick={() => chrome.tabs.create({ url: FRONTEND_URL })}>Open qrcodly.de</Button>
+			<Button onClick={() => chrome.tabs.create({ url: SIGN_IN_URL })} className="w-full">
+				{t('signIn')}
+			</Button>
+			<p className="text-xs text-muted-foreground">{t('reopenAfterSignIn')}</p>
 		</div>
 	);
 }
 
 function ProfileAvatar() {
 	const { user } = useUser();
+	const { signOut } = useClerk();
+	const t = useTranslations('general');
+
+	const displayName = user?.fullName ?? user?.primaryEmailAddress?.emailAddress ?? '';
+
 	return (
-		<button
-			onClick={() => chrome.tabs.create({ url: `${FRONTEND_URL}/dashboard/settings/profile` })}
-			className="rounded-full overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all"
-			title="Open profile"
-		>
-			<img
-				src={user?.imageUrl}
-				alt={user?.fullName ?? 'Profile'}
-				className="h-7 w-7 rounded-full"
-			/>
-		</button>
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<button
+					className="rounded-full overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all"
+					title={displayName}
+				>
+					<img
+						src={user?.imageUrl}
+						alt={displayName || 'Profile'}
+						className="h-7 w-7 rounded-full"
+					/>
+				</button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent align="end" className="w-56">
+				{displayName ? (
+					<>
+						<DropdownMenuLabel className="truncate">{displayName}</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+					</>
+				) : null}
+				<DropdownMenuItem
+					onClick={() => chrome.tabs.create({ url: `${FRONTEND_URL}/dashboard/settings/profile` })}
+				>
+					<UserCircle2 className="mr-2 h-4 w-4" />
+					{t('openProfile')}
+				</DropdownMenuItem>
+				<DropdownMenuItem onClick={() => void signOut()}>
+					<LogOut className="mr-2 h-4 w-4" />
+					{t('signOut')}
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
 	);
 }
 
@@ -78,10 +119,21 @@ type AppProps = {
 	onReady?: () => void;
 };
 
+function ClerkReadySignal({ onReady }: { onReady?: () => void }) {
+	const { isLoaded } = useAuth();
+	const called = useRef(false);
+	useEffect(() => {
+		if (isLoaded && !called.current) {
+			called.current = true;
+			onReady?.();
+		}
+	}, [isLoaded, onReady]);
+	return null;
+}
+
 export default function App({ onReady }: AppProps) {
 	const [locale, setLocale] = useState<SupportedLanguages>(getPreferredLocale());
 	const [messages, setMessages] = useState<Record<string, unknown> | null>(null);
-	const calledReady = useRef(false);
 
 	useEffect(() => {
 		void loadMessages(locale).then(setMessages);
@@ -94,15 +146,6 @@ export default function App({ onReady }: AppProps) {
 		}
 	}, []);
 
-	// Signal ready once messages are loaded
-	useEffect(() => {
-		if (messages && !calledReady.current) {
-			calledReady.current = true;
-			onReady?.();
-		}
-	}, [messages, onReady]);
-
-	// Don't render anything until messages load — the HTML splash screen is visible
 	if (!messages) {
 		return null;
 	}
@@ -112,7 +155,7 @@ export default function App({ onReady }: AppProps) {
 	return (
 		<ClerkProvider
 			publishableKey={PUBLISHABLE_KEY}
-			syncHost="https://www.qrcodly.de"
+			syncHost={FRONTEND_URL}
 			afterSignOutUrl="/"
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			localization={clerkLocale as any}
@@ -120,13 +163,14 @@ export default function App({ onReady }: AppProps) {
 			<IntlProvider locale={locale} messages={messages}>
 				<QueryClientProvider client={queryClient}>
 					<TooltipProvider>
+						<ClerkReadySignal onReady={onReady} />
 						<div style={{ width: 470 }}>
-							<SignedIn>
+							<Show when="signed-in">
 								<ExtensionLayout />
-							</SignedIn>
-							<SignedOut>
+							</Show>
+							<Show when="signed-out">
 								<SignInPrompt />
-							</SignedOut>
+							</Show>
 						</div>
 						<Toaster />
 					</TooltipProvider>

@@ -36,7 +36,7 @@ function extensionAliasPlugin(): Plugin {
 		'@/i18n/navigation': resolve(shimDir, 'i18n-navigation.ts'),
 		'@clerk/nextjs/server': resolve(shimDir, 'clerk-server.ts'),
 		'@clerk/nextjs/experimental': resolve(shimDir, 'clerk-experimental.ts'),
-		'@clerk/nextjs': resolve(shimDir, 'clerk.ts'),
+		'@clerk/nextjs': resolve(shimDir, 'clerk.tsx'),
 		'next-intl/server': resolve(shimDir, 'next-intl-server.ts'),
 		'next-intl/routing': resolve(shimDir, 'next-intl-routing.ts'),
 		'next-intl': resolve(shimDir, 'next-intl.ts'),
@@ -97,9 +97,42 @@ function stripCrossOrigin(): Plugin {
 	};
 }
 
+// Replace dynamic-eval polyfill patterns ('Function("return this")()') with `globalThis` —
+// MV3 forbids unsafe-eval in extension_pages CSP, so any string-eval at load time is blocked.
+// These patterns come from older deps (e.g. via @solana/web3.js pulled in by @clerk/chrome-extension v3).
+function stripEvalPolyfills(): Plugin {
+	return {
+		name: 'strip-eval-polyfills',
+		enforce: 'post',
+		generateBundle(_options, bundle) {
+			for (const file of Object.values(bundle)) {
+				if (file.type !== 'chunk') continue;
+				let code = file.code;
+				code = code.replace(
+					/(?:new\s+)?Function\(\s*["']return this["']\s*\)\s*\(\s*\)/g,
+					'globalThis',
+				);
+				// function-bind polyfill: matches Function("binder","return function (" + <expr> + "){ return binder.apply(this,arguments); }")
+				// Replace with CSP-safe wrapper. Drops dynamic-arity preservation but keeps call semantics.
+				code = code.replace(
+					/(?:new\s+)?Function\(\s*["']binder["']\s*,\s*["']return function \(["']\s*\+\s*[^+]+\+\s*["']\)\{\s*return binder\.apply\(this,\s*arguments\);\s*\}["']\s*\)/g,
+					'(function(binder){return function(){return binder.apply(this,arguments)}})',
+				);
+				file.code = code;
+			}
+		},
+	};
+}
+
 export default defineConfig({
 	base: '',
-	plugins: [extensionAliasPlugin(), react(), tailwindcss(), stripCrossOrigin()],
+	plugins: [
+		extensionAliasPlugin(),
+		react(),
+		tailwindcss(),
+		stripCrossOrigin(),
+		stripEvalPolyfills(),
+	],
 	build: {
 		outDir: 'dist',
 		emptyOutDir: true,

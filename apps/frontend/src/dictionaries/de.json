@@ -84,7 +84,12 @@
 		}
 	},
 	"general": {
+		"signIn": "Anmelden",
 		"signOut": "Abmelden",
+		"openProfile": "Profil öffnen",
+		"signInToContinue": "Melde dich auf qrcodly.de an, dann steht dir die Extension automatisch zur Verfügung.",
+		"reopenAfterSignIn": "Öffne dieses Popup nach dem Login einfach nochmal.",
+		"signInSuccess": "Anmeldung erfolgreich. Dieses Fenster schließt sich gleich…",
 		"proRequired": "Pro-Abo erforderlich",
 		"comingSoon": "demnächst verfügbar!",
 		"noName": "Kein Name",

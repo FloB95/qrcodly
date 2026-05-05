@@ -84,7 +84,12 @@
 		}
 	},
 	"general": {
+		"signIn": "Accedi",
 		"signOut": "Disconnetti",
+		"openProfile": "Apri profilo",
+		"signInToContinue": "Accedi su qrcodly.de — l'estensione rileverà la sessione automaticamente.",
+		"reopenAfterSignIn": "Riapri questo popup dopo l'accesso.",
+		"signInSuccess": "Accesso eseguito. Questa finestra si chiuderà…",
 		"proRequired": "Richiesto Piano Pro",
 		"comingSoon": "prossimamente!",
 		"noName": "Nessun nome",
