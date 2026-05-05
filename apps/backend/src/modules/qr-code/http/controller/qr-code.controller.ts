@@ -376,28 +376,31 @@ export class QrCodeController extends AbstractController {
 			description:
 				'Returns a fully rendered QR code in PNG, WebP, JPEG or SVG. Supports ETag-based caching. Intended for third-party clients (design plugins) that cannot render complex QR-styling output themselves.',
 			operationId: 'qr-code/render',
-			hide: true,
 		},
 		config: {
 			rateLimitPolicy: RateLimitPolicy.QR_RENDER,
 			scope: 'read',
+			allowedTokenTypes: ['api_key'],
 		},
 	})
 	async render(request: IHttpRequest<TRenderQrCodeDto>): Promise<IHttpResponse<Buffer>> {
+		const dto = request.body;
+		const format = dto.format ?? 'png';
+		const sizePx = dto.sizePx ?? 512;
 		const incomingEtag = request.headers?.['if-none-match'];
-		const result = await this.renderQrCodeUseCase.execute(request.body);
 
-		if (incomingEtag && incomingEtag === result.etag) {
+		// Etag is derived purely from the request body — short-circuit before
+		// the use case runs so a matching If-None-Match never costs CPU.
+		const etag = this.renderQrCodeUseCase.computeEtag(dto, format, sizePx, dto.printSizeMm);
+		if (incomingEtag && incomingEtag === etag) {
 			return {
 				statusCode: 304,
 				data: Buffer.alloc(0),
-				headers: {
-					ETag: result.etag,
-					'Cache-Control': 'private, max-age=86400',
-				},
+				headers: { ETag: etag, 'Cache-Control': 'private, max-age=86400' },
 			};
 		}
 
+		const result = await this.renderQrCodeUseCase.execute(dto);
 		return {
 			statusCode: 200,
 			data: result.buffer,

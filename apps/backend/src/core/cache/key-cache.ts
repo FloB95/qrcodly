@@ -46,6 +46,10 @@ export class KeyCache implements IKeyCache {
 		return await this.client.get(key);
 	}
 
+	async getBuffer(key: string): Promise<Buffer | null> {
+		return await this.client.getBuffer(key);
+	}
+
 	async del(key: string): Promise<void> {
 		await this.client.del(key);
 	}
