@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { Delete, Get, Post } from '@/core/decorators/route';
+import { Delete, Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { type IHttpResponse } from '@/core/interface/response.interface';
@@ -8,16 +8,21 @@ import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema'
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import {
 	ApiKeyListResponseDto,
+	ApiKeyResponseDto,
 	CreateApiKeyDto,
 	CreateApiKeyResponseDto,
+	UpdateApiKeyDto,
 	type TApiKeyListResponseDto,
+	type TApiKeyResponseDto,
 	type TCreateApiKeyDto,
 	type TCreateApiKeyResponseDto,
 	type TIdRequestQueryDto,
+	type TUpdateApiKeyDto,
 } from '@shared/schemas';
 import { CreateApiKeyUseCase } from '../../useCase/create-api-key.use-case';
 import { ListApiKeysUseCase } from '../../useCase/list-api-keys.use-case';
 import { RevokeApiKeyUseCase } from '../../useCase/revoke-api-key.use-case';
+import { UpdateApiKeyUseCase } from '../../useCase/update-api-key.use-case';
 
 @injectable()
 export class ApiKeyController extends AbstractController {
@@ -25,6 +30,7 @@ export class ApiKeyController extends AbstractController {
 		@inject(CreateApiKeyUseCase) private readonly createApiKeyUseCase: CreateApiKeyUseCase,
 		@inject(ListApiKeysUseCase) private readonly listApiKeysUseCase: ListApiKeysUseCase,
 		@inject(RevokeApiKeyUseCase) private readonly revokeApiKeyUseCase: RevokeApiKeyUseCase,
+		@inject(UpdateApiKeyUseCase) private readonly updateApiKeyUseCase: UpdateApiKeyUseCase,
 	) {
 		super();
 	}
@@ -33,14 +39,19 @@ export class ApiKeyController extends AbstractController {
 		responseSchema: {
 			200: ApiKeyListResponseDto,
 			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			tags: ['API Keys'],
 			summary: 'List API keys',
 			description:
-				'Returns all active API keys owned by the authenticated user. Secrets are never returned here — only at creation time.',
+				'Returns all active API keys owned by the authenticated user. Secrets are never returned here — only at creation time. Session-token only.',
 			operationId: 'api-key/list',
+		},
+		config: {
+			allowedTokenTypes: ['session_token'],
 		},
 	})
 	async list(
@@ -60,14 +71,16 @@ export class ApiKeyController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
 			tags: ['API Keys'],
 			summary: 'Create an API key',
 			description:
-				'Creates a new personal API key for the authenticated user. The plaintext secret is returned only once in this response — store it securely. Requires a Pro plan.',
+				'Creates a new personal API key for the authenticated user. The plaintext secret is returned only once in this response — store it securely. Requires a Pro plan. Session-token only.',
 			operationId: 'api-key/create',
 		},
 		config: {
 			rateLimitPolicy: RateLimitPolicy.TAG_CREATE,
+			allowedTokenTypes: ['session_token'],
 		},
 	})
 	async create(
@@ -81,18 +94,59 @@ export class ApiKeyController extends AbstractController {
 		return this.makeApiHttpResponse(201, CreateApiKeyResponseDto.parse(apiKey));
 	}
 
-	@Delete('/:id', {
+	@Patch('/:id', {
+		bodySchema: UpdateApiKeyDto,
 		responseSchema: {
-			200: DeleteResponseSchema,
+			200: ApiKeyResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
 			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
 			404: DEFAULT_ERROR_RESPONSES[404],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		schema: {
+			hide: true,
+			tags: ['API Keys'],
+			summary: 'Update an API key',
+			description:
+				'Updates the description, scopes, or expiration of an existing API key. The plaintext secret cannot be re-issued. Session-token only.',
+			operationId: 'api-key/update',
+			params: {
+				type: 'object',
+				properties: {
+					id: { type: 'string', description: 'Clerk API key ID' },
+				},
+			},
+		},
+		config: {
+			allowedTokenTypes: ['session_token'],
+		},
+	})
+	async update(
+		request: IHttpRequest<TUpdateApiKeyDto, TIdRequestQueryDto>,
+	): Promise<IHttpResponse<TApiKeyResponseDto>> {
+		const apiKey = await this.updateApiKeyUseCase.execute(
+			request.params.id,
+			request.body,
+			request.user.id,
+		);
+		return this.makeApiHttpResponse(200, ApiKeyResponseDto.parse(apiKey));
+	}
+
+	@Delete('/:id', {
+		responseSchema: {
+			200: DeleteResponseSchema,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			hide: true,
 			tags: ['API Keys'],
 			summary: 'Revoke an API key',
 			description:
-				'Revokes an API key. Any future requests authenticated with this key will be rejected.',
+				'Revokes an API key. Any future requests authenticated with this key will be rejected. Session-token only.',
 			operationId: 'api-key/revoke',
 			params: {
 				type: 'object',
@@ -100,6 +154,9 @@ export class ApiKeyController extends AbstractController {
 					id: { type: 'string', description: 'Clerk API key ID' },
 				},
 			},
+		},
+		config: {
+			allowedTokenTypes: ['session_token'],
 		},
 	})
 	async revoke(request: IHttpRequest<unknown, TIdRequestQueryDto>) {

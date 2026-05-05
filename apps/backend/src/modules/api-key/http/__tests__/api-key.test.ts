@@ -8,12 +8,14 @@ import { eq } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
 import { KeyCache } from '@/core/cache';
 import {
+	ALL_API_KEY_SCOPES,
 	API_KEY_API_PATH,
 	QR_CODE_API_PATH,
 	createApiKeyRequest,
 	getTestContext,
 	listApiKeysRequest,
 	revokeApiKeyRequest,
+	updateApiKeyRequest,
 } from './utils';
 
 describe('api-key endpoints', () => {
@@ -99,7 +101,7 @@ describe('api-key endpoints', () => {
 			const response = await testServer.inject({
 				method: 'POST',
 				url: API_KEY_API_PATH,
-				payload: { name: 'No auth' },
+				payload: { name: 'No auth', scopes: ALL_API_KEY_SCOPES },
 			});
 			expect(response.statusCode).toBe(401);
 		});
@@ -149,7 +151,17 @@ describe('api-key endpoints', () => {
 				method: 'POST',
 				url: API_KEY_API_PATH,
 				headers: { Authorization: `Bearer ${accessTokenPro}` },
-				payload: { name: '' },
+				payload: { name: '', scopes: ALL_API_KEY_SCOPES },
+			});
+			expect(response.statusCode).toBe(400);
+		});
+
+		it('rejects creation without scopes (min 1 enforced)', async () => {
+			const response = await testServer.inject({
+				method: 'POST',
+				url: API_KEY_API_PATH,
+				headers: { Authorization: `Bearer ${accessTokenPro}` },
+				payload: { name: 'Empty-scopes' },
 			});
 			expect(response.statusCode).toBe(400);
 		});
@@ -383,6 +395,265 @@ describe('api-key endpoints', () => {
 				accessTokenFree,
 			);
 			expect(createResponse.statusCode).toBe(403); // …but cannot create API keys
+		});
+	});
+
+	describe('Scope enforcement', () => {
+		it('rejects a write call when the key only has read', async () => {
+			const createResponse = await createApiKeyRequest(
+				testServer,
+				{ name: 'Read-only key', scopes: ['read'] },
+				accessTokenPro,
+			);
+			const { id, secret } = JSON.parse(createResponse.payload) as {
+				id: string;
+				secret: string;
+			};
+			createdApiKeyIds.push(id);
+
+			// POST /tag is a documented authenticated write endpoint with a simple body —
+			// good fixture for asserting the scope check fires (returns 403, not a 400
+			// from validation or 401 from auth).
+			const tagCreate = await testServer.inject({
+				method: 'POST',
+				url: '/api/v1/tag',
+				headers: { Authorization: `Bearer ${secret}`, 'Content-Type': 'application/json' },
+				payload: { name: 'Test tag', color: '#ff0000' },
+			});
+			expect(tagCreate.statusCode).toBe(403);
+			const body = JSON.parse(tagCreate.payload);
+			expect(body.errorCode).toBe('INSUFFICIENT_SCOPE');
+			expect(body.requiredScope).toBe('write');
+			expect(body.grantedScopes).toEqual(['read']);
+		});
+
+		it('allows a read call when the key has read', async () => {
+			const createResponse = await createApiKeyRequest(
+				testServer,
+				{ name: 'Read-only listing', scopes: ['read'] },
+				accessTokenPro,
+			);
+			const { id, secret } = JSON.parse(createResponse.payload) as {
+				id: string;
+				secret: string;
+			};
+			createdApiKeyIds.push(id);
+
+			const listResponse = await testServer.inject({
+				method: 'GET',
+				url: `${QR_CODE_API_PATH}?page=1&limit=1`,
+				headers: { Authorization: `Bearer ${secret}` },
+			});
+			expect(listResponse.statusCode).toBe(200);
+		});
+
+		it('rejects a delete call when the key has read+write+update but not delete', async () => {
+			const createResponse = await createApiKeyRequest(
+				testServer,
+				{ name: 'No-delete key', scopes: ['read', 'write', 'update'] },
+				accessTokenPro,
+			);
+			const { id, secret } = JSON.parse(createResponse.payload) as {
+				id: string;
+				secret: string;
+			};
+			createdApiKeyIds.push(id);
+
+			const deleteResponse = await testServer.inject({
+				method: 'DELETE',
+				url: `${QR_CODE_API_PATH}/some-id-that-doesnt-matter`,
+				headers: { Authorization: `Bearer ${secret}` },
+			});
+			expect(deleteResponse.statusCode).toBe(403);
+			const body = JSON.parse(deleteResponse.payload);
+			expect(body.errorCode).toBe('INSUFFICIENT_SCOPE');
+			expect(body.requiredScope).toBe('delete');
+		});
+
+		it('hidden routes reject api_key auth with TOKEN_TYPE_NOT_ALLOWED', async () => {
+			const createResponse = await createApiKeyRequest(
+				testServer,
+				{ name: 'Hidden-route probe', scopes: ALL_API_KEY_SCOPES },
+				accessTokenPro,
+			);
+			const { id, secret } = JSON.parse(createResponse.payload) as {
+				id: string;
+				secret: string;
+			};
+			createdApiKeyIds.push(id);
+
+			// Hidden routes (e.g. POST /custom-domain/clear-default) are session-only
+			// by default — even a fully-scoped API key is rejected.
+			const response = await testServer.inject({
+				method: 'POST',
+				url: '/api/v1/custom-domain/clear-default',
+				headers: { Authorization: `Bearer ${secret}` },
+			});
+			expect(response.statusCode).toBe(403);
+			expect(JSON.parse(response.payload).errorCode).toBe('TOKEN_TYPE_NOT_ALLOWED');
+		});
+	});
+
+	describe('Token-type restriction (api_key cannot manage other keys)', () => {
+		it('rejects api_key auth when calling POST /api-key', async () => {
+			const createResponse = await createApiKeyRequest(
+				testServer,
+				{ name: 'Self-replicating attempt', scopes: ALL_API_KEY_SCOPES },
+				accessTokenPro,
+			);
+			const { id, secret } = JSON.parse(createResponse.payload) as {
+				id: string;
+				secret: string;
+			};
+			createdApiKeyIds.push(id);
+
+			const attempt = await testServer.inject({
+				method: 'POST',
+				url: API_KEY_API_PATH,
+				headers: { Authorization: `Bearer ${secret}`, 'Content-Type': 'application/json' },
+				payload: {
+					name: 'Should not exist',
+					scopes: ALL_API_KEY_SCOPES,
+				},
+			});
+			expect(attempt.statusCode).toBe(403);
+			const body = JSON.parse(attempt.payload);
+			expect(body.errorCode).toBe('TOKEN_TYPE_NOT_ALLOWED');
+			expect(body.providedTokenType).toBe('api_key');
+			expect(body.allowedTokenTypes).toEqual(['session_token']);
+		});
+
+		it('rejects api_key auth when calling GET /api-key (list)', async () => {
+			const createResponse = await createApiKeyRequest(
+				testServer,
+				{ name: 'List-attempt key', scopes: ALL_API_KEY_SCOPES },
+				accessTokenPro,
+			);
+			const { id, secret } = JSON.parse(createResponse.payload) as {
+				id: string;
+				secret: string;
+			};
+			createdApiKeyIds.push(id);
+
+			const attempt = await listApiKeysRequest(testServer, secret);
+			expect(attempt.statusCode).toBe(403);
+			expect(JSON.parse(attempt.payload).errorCode).toBe('TOKEN_TYPE_NOT_ALLOWED');
+		});
+
+		it('rejects api_key auth when calling DELETE /api-key/:id (revoke)', async () => {
+			const createA = await createApiKeyRequest(
+				testServer,
+				{ name: 'Mutual revoke A', scopes: ALL_API_KEY_SCOPES },
+				accessTokenPro,
+			);
+			const { id: idA, secret: secretA } = JSON.parse(createA.payload) as {
+				id: string;
+				secret: string;
+			};
+			createdApiKeyIds.push(idA);
+
+			const createB = await createApiKeyRequest(
+				testServer,
+				{ name: 'Mutual revoke B', scopes: ALL_API_KEY_SCOPES },
+				accessTokenPro,
+			);
+			const { id: idB } = JSON.parse(createB.payload) as { id: string; secret: string };
+			createdApiKeyIds.push(idB);
+
+			const attempt = await revokeApiKeyRequest(testServer, idB, secretA);
+			expect(attempt.statusCode).toBe(403);
+			expect(JSON.parse(attempt.payload).errorCode).toBe('TOKEN_TYPE_NOT_ALLOWED');
+		});
+
+		it('rejects api_key auth when calling PATCH /api-key/:id (update)', async () => {
+			const createA = await createApiKeyRequest(
+				testServer,
+				{ name: 'Self-update attempt', scopes: ALL_API_KEY_SCOPES },
+				accessTokenPro,
+			);
+			const { id, secret } = JSON.parse(createA.payload) as {
+				id: string;
+				secret: string;
+			};
+			createdApiKeyIds.push(id);
+
+			const attempt = await updateApiKeyRequest(testServer, id, { scopes: ['read'] }, secret);
+			expect(attempt.statusCode).toBe(403);
+			expect(JSON.parse(attempt.payload).errorCode).toBe('TOKEN_TYPE_NOT_ALLOWED');
+		});
+	});
+
+	describe('PATCH /api-key/:id (update flow)', () => {
+		it('updates scopes, description, and reflects them in the list response', async () => {
+			const createResponse = await createApiKeyRequest(
+				testServer,
+				{ name: 'Updatable key', scopes: ['read'], description: 'before' },
+				accessTokenPro,
+			);
+			const { id } = JSON.parse(createResponse.payload) as { id: string };
+			createdApiKeyIds.push(id);
+
+			const update = await updateApiKeyRequest(
+				testServer,
+				id,
+				{ scopes: ['read', 'write', 'update'], description: 'after' },
+				accessTokenPro,
+			);
+			expect(update.statusCode).toBe(200);
+			const updated = JSON.parse(update.payload);
+			expect(updated.scopes).toEqual(['read', 'write', 'update']);
+			expect(updated.description).toBe('after');
+
+			const list = await listApiKeysRequest(testServer, accessTokenPro);
+			const found = (JSON.parse(list.payload).data as Array<{ id: string; scopes: string[] }>).find(
+				(k) => k.id === id,
+			);
+			expect(found?.scopes).toEqual(['read', 'write', 'update']);
+		});
+
+		it('returns 404 when updating a key that belongs to another user', async () => {
+			const createResponse = await createApiKeyRequest(
+				testServer,
+				{ name: 'Cross-user probe', scopes: ALL_API_KEY_SCOPES },
+				accessTokenPro,
+			);
+			const { id } = JSON.parse(createResponse.payload) as { id: string };
+			createdApiKeyIds.push(id);
+
+			// Free user (different subject) tries to update Pro user's key — must fail.
+			const attempt = await updateApiKeyRequest(
+				testServer,
+				id,
+				{ scopes: ['read'] },
+				accessTokenFree,
+			);
+			expect(attempt.statusCode).toBe(404);
+		});
+
+		it('rejects updating to empty scopes (min 1 enforced)', async () => {
+			const createResponse = await createApiKeyRequest(
+				testServer,
+				{ name: 'Empty-scopes probe', scopes: ALL_API_KEY_SCOPES },
+				accessTokenPro,
+			);
+			const { id } = JSON.parse(createResponse.payload) as { id: string };
+			createdApiKeyIds.push(id);
+
+			const attempt = await updateApiKeyRequest(testServer, id, { scopes: [] }, accessTokenPro);
+			expect(attempt.statusCode).toBe(400);
+		});
+
+		it('rejects an update with no fields', async () => {
+			const createResponse = await createApiKeyRequest(
+				testServer,
+				{ name: 'No-op update probe', scopes: ALL_API_KEY_SCOPES },
+				accessTokenPro,
+			);
+			const { id } = JSON.parse(createResponse.payload) as { id: string };
+			createdApiKeyIds.push(id);
+
+			const attempt = await updateApiKeyRequest(testServer, id, {}, accessTokenPro);
+			expect(attempt.statusCode).toBe(400);
 		});
 	});
 });

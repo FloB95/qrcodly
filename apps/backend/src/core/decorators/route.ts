@@ -1,6 +1,8 @@
 import { type HTTPMethods, type RouteShorthandOptions } from 'fastify';
 import { type ZodSchema } from 'zod';
+import { type ApiKeyScope } from '@shared/schemas';
 import { type RateLimitPolicy } from '../rate-limit/rate-limit.policy';
+import { type TTokenType } from '../domain/schema/UserSchema';
 
 export type HandlerName = string;
 export type Constructable<T = unknown> = new (...args: unknown[]) => T;
@@ -18,6 +20,30 @@ interface CustomRouteOptions {
 	responseSchema?: Record<number, ZodSchema>;
 	config?: {
 		rateLimitPolicy?: RateLimitPolicy;
+		/**
+		 * API-key scope required to call this route.
+		 *
+		 * When omitted, defaults are derived from the HTTP method:
+		 *   GET, HEAD       → 'read'
+		 *   POST            → 'write'
+		 *   PUT, PATCH      → 'update'
+		 *   DELETE          → 'delete'
+		 *
+		 * Override per route when the default doesn't match the operation's
+		 * semantic intent (e.g. a POST that's actually a read like "verify domain").
+		 *
+		 * Session-token requests are unaffected — scopes only apply to API keys.
+		 */
+		scope?: ApiKeyScope;
+		/**
+		 * Restricts which authentication token types may call this route.
+		 *
+		 * When omitted, any token type the auth middleware accepts is allowed.
+		 * Set to `['session_token']` to lock a route to web-UI users — useful for
+		 * security-critical endpoints (e.g. API-key management) that must NOT be
+		 * callable using an API key, regardless of its scopes.
+		 */
+		allowedTokenTypes?: TTokenType[];
 	};
 }
 

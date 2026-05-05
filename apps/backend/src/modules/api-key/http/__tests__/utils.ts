@@ -1,9 +1,12 @@
 import { API_BASE_PATH } from '@/core/config/constants';
 import { getTestContext as getGlobalTestContext } from '@/tests/shared/test-context';
+import { type ApiKeyScope } from '@shared/schemas';
 import type { FastifyInstance } from 'fastify';
 
 export const API_KEY_API_PATH = `${API_BASE_PATH}/api-key`;
 export const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
+
+export const ALL_API_KEY_SCOPES: ApiKeyScope[] = ['read', 'write', 'update', 'delete'];
 
 export interface TestContext {
 	testServer: FastifyInstance;
@@ -24,13 +27,38 @@ export const getTestContext = async (): Promise<TestContext> => {
 
 export const createApiKeyRequest = async (
 	testServer: FastifyInstance,
-	payload: { name: string; description?: string; expiresInDays?: number | null },
+	payload: {
+		name: string;
+		description?: string;
+		expiresInDays?: number | null;
+		scopes?: ApiKeyScope[];
+	},
 	token: string,
 ) =>
 	testServer.inject({
 		method: 'POST',
 		url: API_KEY_API_PATH,
 		headers: { Authorization: `Bearer ${token}` },
+		payload: {
+			scopes: ALL_API_KEY_SCOPES,
+			...payload,
+		},
+	});
+
+export const updateApiKeyRequest = async (
+	testServer: FastifyInstance,
+	apiKeyId: string,
+	payload: {
+		description?: string | null;
+		scopes?: ApiKeyScope[];
+		expiresInDays?: number | null;
+	},
+	token?: string,
+) =>
+	testServer.inject({
+		method: 'PATCH',
+		url: `${API_KEY_API_PATH}/${apiKeyId}`,
+		headers: { Authorization: token ? `Bearer ${token}` : '' },
 		payload,
 	});
 

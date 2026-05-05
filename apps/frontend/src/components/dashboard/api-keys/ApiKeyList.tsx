@@ -67,6 +67,7 @@ export function ApiKeyList() {
 					<TableRow>
 						<TableHead>{t('name')}</TableHead>
 						<TableHead>{t('descriptionLabel')}</TableHead>
+						<TableHead>{t('scopesLabel')}</TableHead>
 						<TableHead>{t('expiresAt')}</TableHead>
 						<TableHead>{t('lastUsedAt')}</TableHead>
 						<TableHead>{t('createdAt')}</TableHead>

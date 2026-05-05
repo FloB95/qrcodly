@@ -39,7 +39,9 @@ export * from './dtos/tag/TagRequestParamsDto';
 export * from './dtos/tag/SetQrCodeTagsDto';
 export * from './dtos/tag/SetShortUrlTagsDto';
 
+export * from './dtos/api-key/ApiKeyScope';
 export * from './dtos/api-key/CreateApiKeyDto';
+export * from './dtos/api-key/UpdateApiKeyDto';
 export * from './dtos/api-key/ApiKeyResponseDto';
 export * from './dtos/api-key/CreateApiKeyResponseDto';
 export * from './dtos/api-key/ApiKeyListResponseDto';

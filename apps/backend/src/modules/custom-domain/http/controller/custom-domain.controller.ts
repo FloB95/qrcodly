@@ -203,6 +203,7 @@ export class CustomDomainController extends AbstractController {
 		},
 		config: {
 			rateLimitPolicy: RateLimitPolicy.DOMAIN_VERIFY,
+			scope: 'update',
 		},
 		schema: {
 			hide: true,
@@ -264,6 +265,7 @@ export class CustomDomainController extends AbstractController {
 				'Sets this domain as the default for all new dynamic QR codes. The domain must have active SSL status before it can be set as default.',
 			operationId: 'custom-domain/set-default',
 		},
+		config: { scope: 'update' },
 	})
 	async setDefault(
 		request: IHttpRequest<unknown, TCustomDomainIdParamsDto>,
@@ -291,6 +293,7 @@ export class CustomDomainController extends AbstractController {
 				'Removes the default domain setting. New dynamic QR codes will use the system default domain.',
 			operationId: 'custom-domain/clear-default',
 		},
+		config: { scope: 'update' },
 	})
 	async clearDefault(request: IHttpRequest): Promise<IHttpResponse<{ success: boolean }>> {
 		await this.clearDefaultCustomDomainUseCase.execute(request.user.id);

@@ -9,7 +9,13 @@ import {
 } from 'fastify';
 import { env } from '@/core/config/env';
 import { deepMerge, mergeZodErrorObjects } from '@/utils/general';
-import { BadRequestError, CustomApiError, UnauthorizedError } from '@/core/error/http';
+import {
+	BadRequestError,
+	CustomApiError,
+	InsufficientScopeError,
+	TokenTypeNotAllowedError,
+	UnauthorizedError,
+} from '@/core/error/http';
 import { container, type InjectionToken } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { ErrorReporter } from '@/core/error';
@@ -19,6 +25,9 @@ import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route'
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import type AbstractController from '@/core/http/controller/abstract.controller';
 import { defaultApiAuthMiddleware } from '@/core/http/middleware/default-api-auth.middleware';
+import { enforceScope } from '@/core/http/middleware/enforce-scope.middleware';
+import { enforceTokenType } from '@/core/http/middleware/enforce-token-type.middleware';
+import { type ApiKeyScope } from '@shared/schemas';
 import z, { type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
@@ -54,6 +63,18 @@ export const fastifyErrorHandler = (
 		if (error instanceof BadRequestError && error.zodError) {
 			const mergedErrors = mergeZodErrorObjects(error.zodError.issues);
 			responsePayload.fieldErrors = mergedErrors;
+		}
+
+		if (error instanceof InsufficientScopeError) {
+			responsePayload.errorCode = error.errorCode;
+			responsePayload.requiredScope = error.requiredScope;
+			responsePayload.grantedScopes = error.grantedScopes;
+		}
+
+		if (error instanceof TokenTypeNotAllowedError) {
+			responsePayload.errorCode = error.errorCode;
+			responsePayload.providedTokenType = error.providedTokenType;
+			responsePayload.allowedTokenTypes = error.allowedTokenTypes;
 		}
 
 		logger.error('CustomApiError', {
@@ -141,6 +162,34 @@ function parseJsonFields(body: Record<string, any>, fieldsToParse: string[] = ['
 	}
 
 	return parsedBody;
+}
+
+/**
+ * Maps an HTTP method to its default API-key scope.
+ *
+ * - GET / HEAD     → 'read'
+ * - POST           → 'write'
+ * - PUT / PATCH    → 'update'
+ * - DELETE         → 'delete'
+ * - OPTIONS        → null (CORS preflights — no auth, no scope check)
+ *
+ * Exported so the scope-coverage matrix test can assert the same mapping.
+ */
+export function resolveScopeForMethod(method: string): ApiKeyScope | null {
+	switch (method.toUpperCase()) {
+		case 'GET':
+		case 'HEAD':
+			return 'read';
+		case 'POST':
+			return 'write';
+		case 'PUT':
+		case 'PATCH':
+			return 'update';
+		case 'DELETE':
+			return 'delete';
+		default:
+			return null;
+	}
 }
 
 export function registerRoutes(
@@ -239,6 +288,28 @@ export function registerRoutes(
 			}
 		} else if (routeMeta.options.authHandler === false) {
 			// no-op: skip authentication for this route
+		}
+
+		// Token-type and scope enforcement run after auth so they see the populated
+		// request.user. Skipped when the route opts out of auth (webhooks, health) —
+		// there's no user to check against.
+		if (routeMeta.options.authHandler !== false) {
+			// Default rule: hidden routes (schema.hide === true) are session-only.
+			// They are not part of the public API contract, so an API key has no
+			// legitimate reason to call them. Override via `config.allowedTokenTypes`
+			// when a hidden route deliberately needs API-key access.
+			const explicitAllowed = routeMeta.options.config?.allowedTokenTypes;
+			const isHidden = (routeMeta.options.schema as { hide?: boolean } | undefined)?.hide === true;
+			const effectiveAllowed = explicitAllowed ?? (isHidden ? ['session_token' as const] : null);
+			if (effectiveAllowed) {
+				routeOptions.preHandler.push(enforceTokenType(effectiveAllowed));
+			}
+
+			const requiredScope =
+				routeMeta.options.config?.scope ?? resolveScopeForMethod(routeMeta.method);
+			if (requiredScope) {
+				routeOptions.preHandler.push(enforceScope(requiredScope));
+			}
 		}
 
 		fastify.route(routeOptions);

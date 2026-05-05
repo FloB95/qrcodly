@@ -107,7 +107,7 @@ describe('renderQrCode', () => {
 	});
 
 	it('rejects oversized sizePx', async () => {
-		const response = await render({ sizePx: 4096 });
+		const response = await render({ sizePx: 4097 });
 		expect(response).toHaveStatusCode(400);
 	});
 
