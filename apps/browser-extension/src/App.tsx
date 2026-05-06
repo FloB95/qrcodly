@@ -24,9 +24,10 @@ import { ExtensionQrGenerator } from '@ext/components/ExtensionQrGenerator';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL ?? 'https://www.qrcodly.de';
-const ACCOUNT_PORTAL_URL =
-	import.meta.env.VITE_CLERK_ACCOUNT_PORTAL_URL ?? 'https://accounts.qrcodly.de';
-const SIGN_IN_URL = `${ACCOUNT_PORTAL_URL}/sign-in?redirect_url=${encodeURIComponent(FRONTEND_URL)}`;
+
+const EXTENSION_URL =
+	typeof chrome !== 'undefined' && chrome.runtime?.getURL ? chrome.runtime.getURL('.') : '/';
+const POPUP_URL = `${EXTENSION_URL}index.html`;
 
 const queryClient = getQueryClient();
 
@@ -42,6 +43,7 @@ const localeMap: Record<string, typeof enUS> = {
 };
 
 function SignInPrompt() {
+	const clerk = useClerk();
 	const t = useTranslations('general');
 	return (
 		<div className="flex min-h-[400px] flex-col items-center justify-center gap-5 p-8 text-center">
@@ -50,10 +52,9 @@ function SignInPrompt() {
 				<h2 className="text-lg font-semibold tracking-tight">QRcodly</h2>
 				<p className="text-sm text-muted-foreground">{t('signInToContinue')}</p>
 			</div>
-			<Button onClick={() => chrome.tabs.create({ url: SIGN_IN_URL })} className="w-full">
+			<Button onClick={() => clerk.openSignIn({})} className="w-full">
 				{t('signIn')}
 			</Button>
-			<p className="text-xs text-muted-foreground">{t('reopenAfterSignIn')}</p>
 		</div>
 	);
 }
@@ -155,8 +156,12 @@ export default function App({ onReady }: AppProps) {
 	return (
 		<ClerkProvider
 			publishableKey={PUBLISHABLE_KEY}
-			syncHost={FRONTEND_URL}
-			afterSignOutUrl="/"
+			afterSignOutUrl={POPUP_URL}
+			signInForceRedirectUrl={POPUP_URL}
+			signUpForceRedirectUrl={POPUP_URL}
+			signInFallbackRedirectUrl={POPUP_URL}
+			signUpFallbackRedirectUrl={POPUP_URL}
+			allowedRedirectProtocols={['chrome-extension:']}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			localization={clerkLocale as any}
 		>
