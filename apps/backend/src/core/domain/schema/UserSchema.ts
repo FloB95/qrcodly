@@ -8,5 +8,6 @@ export const UserSchema = z.object({
 	id: z.string(),
 	tokenType: TokenTypeSchema,
 	plan: z.enum(PlanName),
+	scopes: z.array(z.string()).optional(),
 });
 export type TUser = z.infer<typeof UserSchema>;

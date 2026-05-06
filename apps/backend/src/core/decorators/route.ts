@@ -1,6 +1,8 @@
 import { type HTTPMethods, type RouteShorthandOptions } from 'fastify';
 import { type ZodSchema } from 'zod';
+import { type ApiKeyScope } from '@shared/schemas';
 import { type RateLimitPolicy } from '../rate-limit/rate-limit.policy';
+import { type TTokenType } from '../domain/schema/UserSchema';
 
 export type HandlerName = string;
 export type Constructable<T = unknown> = new (...args: unknown[]) => T;
@@ -18,6 +20,10 @@ interface CustomRouteOptions {
 	responseSchema?: Record<number, ZodSchema>;
 	config?: {
 		rateLimitPolicy?: RateLimitPolicy;
+		/** Override the method-default scope (e.g. a POST that's a read). */
+		scope?: ApiKeyScope;
+		/** Lock a route to specific token types — e.g. `['session_token']` for API-key management. */
+		allowedTokenTypes?: TTokenType[];
 	};
 }
 

@@ -1,26 +1,24 @@
-import { writeTempSvg, writeTempPngFromDataUrl } from './uxp';
-import { sanitizeQrSvg } from './svg-sanitize';
+import { writeTempPngFromDataUrl } from './uxp';
 
-// UXP injects `require` into the module scope as a host-level CommonJS loader.
-// Declaring it locally (plus the `indesign` external in webpack.config) keeps
-// the call literal so webpack does not try to resolve it from node_modules.
 declare const require: ((id: string) => unknown) | undefined;
+
+type ScriptPreferences = { measurementUnit: unknown };
+type DocumentPreferences = { pageWidth: unknown; pageHeight: unknown };
 
 type IndesignApp = {
 	activeDocument?: {
 		selection: Array<{ isValid: boolean; place: (path: string) => void }>;
 		placeBehavior?: { place: (path: string) => void };
-		pages: { itemByRange: (start: number, end: number) => unknown };
+		documentPreferences?: DocumentPreferences;
 	};
+	scriptPreferences?: ScriptPreferences;
+	MeasurementUnits?: { MILLIMETERS: unknown };
 	place: (path: string) => void;
 };
 
 type GetIndesignResult = { app: IndesignApp } | { error: string };
 
 function getIndesign(): GetIndesignResult {
-	// Prefer the module-scope `require` that webpack preserves through the
-	// `indesign` external; fall back to `globalThis.require` for older UXP
-	// builds where the global is populated but the injected local is not.
 	const req: ((id: string) => unknown) | undefined =
 		typeof require === 'function'
 			? require
@@ -44,13 +42,9 @@ function getIndesign(): GetIndesignResult {
 	}
 
 	const candidate = mod as { app?: unknown; activeDocument?: unknown };
-
-	if (candidate.app && typeof candidate.app === 'object') {
+	if (candidate.app && typeof candidate.app === 'object')
 		return { app: candidate.app as IndesignApp };
-	}
-	if (candidate.activeDocument !== undefined) {
-		return { app: candidate as unknown as IndesignApp };
-	}
+	if (candidate.activeDocument !== undefined) return { app: candidate as unknown as IndesignApp };
 
 	return {
 		error: `InDesign module has no .app and no .activeDocument (keys: ${Object.keys(candidate)
@@ -65,51 +59,50 @@ function resolveApp(): IndesignApp {
 	return result.app;
 }
 
-/**
- * InDesign's click-to-place reads the SVG's intrinsic width/height attributes.
- * qr-code-styling emits those as unit-less pixel counts (e.g. 300), which
- * InDesign interprets as points → ~10cm, far too large for a typical print QR.
- *
- * We rewrite the root <svg> to a sensible print default (30×30 mm) while
- * preserving the viewBox so the vector stays crisp at any rescale.
- */
-const DEFAULT_QR_PRINT_SIZE_MM = 30;
+// Backend embeds DPI metadata so InDesign places the PNG at the requested mm.
+export const PRINT_QR_PX = 4096;
 
-function normalizeSvgDimensions(svg: string, sizeMm = DEFAULT_QR_PRINT_SIZE_MM): string {
-	let normalized = svg
-		.replace(/<svg\b([^>]*?)\s+width="[^"]*"/i, '<svg$1')
-		.replace(/<svg\b([^>]*?)\s+height="[^"]*"/i, '<svg$1');
-	normalized = normalized.replace(
-		/<svg\b([^>]*)>/i,
-		`<svg$1 width="${sizeMm}mm" height="${sizeMm}mm">`,
-	);
-	return normalized;
+const PAGE_FRACTION = 0.18;
+const MIN_QR_MM = 20;
+const MAX_QR_MM = 200;
+const FALLBACK_QR_MM = 50;
+
+function readPageSizeMm(app: IndesignApp): { widthMm: number; heightMm: number } | null {
+	const docPrefs = app.activeDocument?.documentPreferences;
+	const scriptPrefs = app.scriptPreferences;
+	const mmUnit = app.MeasurementUnits?.MILLIMETERS;
+	if (!docPrefs || !scriptPrefs || mmUnit === undefined) return null;
+
+	const previousUnit = scriptPrefs.measurementUnit;
+	try {
+		scriptPrefs.measurementUnit = mmUnit;
+		const widthMm = Number(docPrefs.pageWidth);
+		const heightMm = Number(docPrefs.pageHeight);
+		if (!Number.isFinite(widthMm) || !Number.isFinite(heightMm)) return null;
+		return { widthMm, heightMm };
+	} catch {
+		return null;
+	} finally {
+		try {
+			scriptPrefs.measurementUnit = previousUnit;
+		} catch {
+			/* ignore */
+		}
+	}
 }
 
-export async function placeSvgInActiveDocument(svg: string, name: string): Promise<void> {
+// Auto-size QR to ~18% of the active page's shorter side, clamped to a
+// printable range. Falls back to FALLBACK_QR_MM if the page can't be read.
+export function getAutoPlaceSizeMm(): number {
 	const app = resolveApp();
-
-	const normalized = normalizeSvgDimensions(sanitizeQrSvg(svg));
-	const filename = `${name.replace(/[^a-zA-Z0-9_-]/g, '_')}.svg`;
-	const nativePath = await writeTempSvg(filename, normalized);
-
-	const doc = app.activeDocument;
-	if (!doc) throw new Error('Open a document in InDesign first.');
-
-	if (doc.selection.length === 1 && doc.selection[0]?.isValid) {
-		doc.selection[0].place(nativePath);
-		return;
-	}
-	if (doc.placeBehavior?.place) {
-		doc.placeBehavior.place(nativePath);
-		return;
-	}
-	app.place(nativePath);
+	const size = readPageSizeMm(app);
+	if (!size) return FALLBACK_QR_MM;
+	const target = Math.min(size.widthMm, size.heightMm) * PAGE_FRACTION;
+	return Math.max(MIN_QR_MM, Math.min(MAX_QR_MM, target));
 }
 
 export async function placePngInActiveDocument(pngDataUrl: string, name: string): Promise<void> {
 	const app = resolveApp();
-
 	const filename = `${name.replace(/[^a-zA-Z0-9_-]/g, '_')}.png`;
 	const nativePath = await writeTempPngFromDataUrl(filename, pngDataUrl);
 

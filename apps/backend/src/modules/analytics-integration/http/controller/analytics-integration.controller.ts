@@ -158,6 +158,7 @@ export class AnalyticsIntegrationController extends AbstractController {
 			description: 'Validates the stored credentials against the analytics provider.',
 			operationId: 'analytics-integration/test',
 		},
+		config: { scope: 'read' },
 	})
 	async test(
 		request: IHttpRequest<unknown, TAnalyticsIntegrationIdParamsDto>,

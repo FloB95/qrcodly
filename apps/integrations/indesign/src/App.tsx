@@ -18,10 +18,8 @@ export default function App() {
 				setScreen(key ? 'list' : 'settings');
 			})
 			.catch((err) => {
-				// Any failure reading secureStorage must not trap the panel on
-				// the loading screen — fall through to settings so the user can
-				// at least enter a fresh key.
-				// eslint-disable-next-line no-console
+				// Don't trap the panel on the loading screen if secureStorage
+				// errors — fall through to settings so the user can re-enter.
 				console.error('qrcodly: failed to read stored api key', err);
 				setLoadError(err instanceof Error ? err.message : String(err));
 				setApiKey(null);

@@ -8,7 +8,11 @@ import type {
 } from '@shared/schemas';
 import qs from 'qs';
 
-const DEFAULT_BASE_URL = 'https://api.qrcodly.de/api/v1';
+// Injected at build time by webpack.config.cjs (DefinePlugin). Production
+// → live API; dev → http://localhost:5001/api/v1; override via env var
+// QRCODLY_API_URL when running `pnpm run build` / `pnpm run dev`.
+declare const __QRCODLY_API_URL__: string;
+const DEFAULT_BASE_URL = __QRCODLY_API_URL__;
 
 export class ApiError extends Error {
 	constructor(
@@ -98,37 +102,27 @@ export class QrcodlyApi {
 		config: TQrCodeOptions;
 		data: string;
 		sizePx?: number;
+		printSizeMm?: number;
 	}): Promise<Blob> {
-		return this.renderQr({ ...payload, format: 'png' }, (r) => r.blob());
-	}
-
-	async renderQrSvg(payload: { config: TQrCodeOptions; data: string }): Promise<string> {
-		return this.renderQr({ ...payload, format: 'svg' }, (r) => r.text());
-	}
-
-	private async renderQr<T>(
-		payload: { config: TQrCodeOptions; data: string; sizePx?: number; format: 'png' | 'svg' },
-		extract: (r: Response) => Promise<T>,
-	): Promise<T> {
 		const response = await fetch(`${this.baseUrl}/qr-code/render`, {
 			method: 'POST',
 			headers: {
 				Authorization: `Bearer ${this.apiKey}`,
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(payload),
+			body: JSON.stringify({ ...payload, format: 'png' }),
 		});
 		if (!response.ok) {
 			let message = `Render failed: ${response.status}`;
 			try {
-				const errPayload = (await response.json()) as { message?: string };
-				if (errPayload.message) message = errPayload.message;
+				const err = (await response.json()) as { message?: string };
+				if (err.message) message = err.message;
 			} catch {
-				/* binary response body, ignore */
+				/* binary response body */
 			}
 			throw new ApiError(message, response.status);
 		}
-		return extract(response);
+		return response.blob();
 	}
 }
 

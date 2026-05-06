@@ -1,3 +1,9 @@
+type WriteOptions = { format?: unknown };
+type UxpFile = {
+	write: (data: ArrayBuffer | Uint8Array | string, options?: WriteOptions) => Promise<void>;
+	nativePath: string;
+};
+
 export type UxpStorage = {
 	secureStorage: {
 		getItem: (key: string) => Promise<Uint8Array | null>;
@@ -6,19 +12,16 @@ export type UxpStorage = {
 	};
 	localFileSystem: {
 		getTemporaryFolder: () => Promise<{
-			createFile: (
-				name: string,
-				options?: { overwrite?: boolean },
-			) => Promise<{ write: (data: string) => Promise<void>; nativePath: string }>;
+			createFile: (name: string, options?: { overwrite?: boolean }) => Promise<UxpFile>;
 		}>;
 	};
+	formats?: { binary: unknown };
 };
 
 type UxpModule = { storage: UxpStorage };
 
 function getUxp(): UxpModule | null {
 	try {
-		// eslint-disable-next-line @typescript-eslint/no-require-imports
 		return (
 			(globalThis as unknown as { require?: (id: string) => UxpModule }).require?.('uxp') ?? null
 		);
@@ -27,11 +30,8 @@ function getUxp(): UxpModule | null {
 	}
 }
 
-// Hand-rolled UTF-8 encode/decode. UXP's runtime does expose TextEncoder on
-// InDesign 18.5+ in practice, but older hosts do not, and any runtime gap
-// here silently rejects getStoredApiKey() and leaves the panel stuck on the
-// loading screen. Doing it by hand keeps API keys with non-ASCII characters
-// intact without depending on whichever runtime APIs the host ships.
+// Hand-rolled UTF-8 codec — older UXP hosts don't ship TextEncoder, and a
+// runtime gap silently breaks getStoredApiKey() for non-ASCII keys.
 function stringToBytes(value: string): Uint8Array {
 	const bytes: number[] = [];
 	for (let i = 0; i < value.length; i++) {
@@ -43,20 +43,17 @@ function stringToBytes(value: string): Uint8Array {
 				i++;
 			}
 		}
-		if (code < 0x80) {
-			bytes.push(code);
-		} else if (code < 0x800) {
-			bytes.push(0xc0 | (code >> 6), 0x80 | (code & 0x3f));
-		} else if (code < 0x10000) {
+		if (code < 0x80) bytes.push(code);
+		else if (code < 0x800) bytes.push(0xc0 | (code >> 6), 0x80 | (code & 0x3f));
+		else if (code < 0x10000)
 			bytes.push(0xe0 | (code >> 12), 0x80 | ((code >> 6) & 0x3f), 0x80 | (code & 0x3f));
-		} else {
+		else
 			bytes.push(
 				0xf0 | (code >> 18),
 				0x80 | ((code >> 12) & 0x3f),
 				0x80 | ((code >> 6) & 0x3f),
 				0x80 | (code & 0x3f),
 			);
-		}
 	}
 	return new Uint8Array(bytes);
 }
@@ -65,9 +62,8 @@ function bytesToString(bytes: Uint8Array): string {
 	let out = '';
 	for (let i = 0; i < bytes.length; ) {
 		const b1 = bytes[i++];
-		if (b1 < 0x80) {
-			out += String.fromCharCode(b1);
-		} else if (b1 < 0xe0) {
+		if (b1 < 0x80) out += String.fromCharCode(b1);
+		else if (b1 < 0xe0) {
 			const b2 = bytes[i++] ?? 0;
 			out += String.fromCharCode(((b1 & 0x1f) << 6) | (b2 & 0x3f));
 		} else if (b1 < 0xf0) {
@@ -94,8 +90,7 @@ export async function getStoredApiKey(): Promise<string | null> {
 	const uxp = getUxp();
 	if (!uxp) return hasLocalStorage() ? localStorage.getItem('qrcodly.apiKey') : null;
 	const bytes = await uxp.storage.secureStorage.getItem('qrcodly.apiKey');
-	if (!bytes) return null;
-	return bytesToString(bytes);
+	return bytes ? bytesToString(bytes) : null;
 }
 
 export async function storeApiKey(key: string): Promise<void> {
@@ -116,21 +111,10 @@ export async function clearApiKey(): Promise<void> {
 	await uxp.storage.secureStorage.removeItem('qrcodly.apiKey');
 }
 
-export async function writeTempSvg(filename: string, svg: string): Promise<string> {
-	const uxp = getUxp();
-	if (!uxp) throw new Error('UXP storage not available');
-	const folder = await uxp.storage.localFileSystem.getTemporaryFolder();
-	const file = await folder.createFile(filename, { overwrite: true });
-	await file.write(svg);
-	return file.nativePath;
-}
-
 function base64ToBytes(b64: string): Uint8Array {
 	const binary = atob(b64);
 	const bytes = new Uint8Array(binary.length);
-	for (let i = 0; i < binary.length; i++) {
-		bytes[i] = binary.charCodeAt(i);
-	}
+	for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
 	return bytes;
 }
 
@@ -142,22 +126,11 @@ export async function writeTempPngFromDataUrl(
 	if (!match) throw new Error('invalid PNG data URL');
 	const bytes = base64ToBytes(match[1]);
 
-	const uxpGlobal = (
-		globalThis as unknown as {
-			require?: (id: string) => { storage: { formats?: { binary: unknown } } };
-		}
-	).require?.('uxp');
-	const binaryFormat = uxpGlobal?.storage?.formats?.binary;
-
 	const uxp = getUxp();
 	if (!uxp) throw new Error('UXP storage not available');
 	const folder = await uxp.storage.localFileSystem.getTemporaryFolder();
-	const file = (await folder.createFile(filename, { overwrite: true })) as {
-		write: (data: ArrayBuffer | Uint8Array, options?: unknown) => Promise<void>;
-		nativePath: string;
-	};
-	await file.write(bytes.buffer, binaryFormat ? { format: binaryFormat } : undefined);
+	const file = await folder.createFile(filename, { overwrite: true });
+	const binaryFormat = uxp.storage.formats?.binary;
+	await file.write(bytes, binaryFormat ? { format: binaryFormat } : undefined);
 	return file.nativePath;
 }
-
-export const _internal = { stringToBytes, bytesToString };

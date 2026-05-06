@@ -6,6 +6,7 @@ import type {
 	TApiKeyResponseDto,
 	TCreateApiKeyDto,
 	TCreateApiKeyResponseDto,
+	TUpdateApiKeyDto,
 } from '@shared/schemas';
 import { apiRequest } from '../utils';
 
@@ -42,6 +43,28 @@ export function useCreateApiKeyMutation() {
 			const token = await getToken();
 			return apiRequest<TCreateApiKeyResponseDto>('/api-key', {
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(dto),
+			});
+		},
+		onSuccess: () => {
+			void queryClient.invalidateQueries({ queryKey: apiKeyQueryKeys.list(userId) });
+		},
+	});
+}
+
+export function useUpdateApiKeyMutation() {
+	const { getToken, userId } = useAuth();
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async ({ id, dto }: { id: string; dto: TUpdateApiKeyDto }) => {
+			const token = await getToken();
+			return apiRequest<TApiKeyResponseDto>(`/api-key/${id}`, {
+				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`,

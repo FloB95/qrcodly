@@ -25,6 +25,12 @@ export interface IKeyCache {
 	get(key: string): Promise<string | Buffer | number | null>;
 
 	/**
+	 * Retrieves a value from the cache as a raw Buffer (for binary payloads
+	 * like rendered images). Returns null if the key is missing.
+	 */
+	getBuffer(key: string): Promise<Buffer | null>;
+
+	/**
 	 * Deletes a value from the cache.
 	 * @param key The key to delete.
 	 * @returns A promise that resolves when the value is deleted.

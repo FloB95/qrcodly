@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { TQrCodeOptions } from '@shared/schemas';
-import { blobToDataUrl, QrcodlyApi } from '../lib/api-client';
+import { blobToDataUrl, type QrcodlyApi } from '../lib/api-client';
 
 type Props = {
 	api: QrcodlyApi;

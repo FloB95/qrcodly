@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { TQrCodeWithRelationsResponseDto, TTagResponseDto } from '@shared/schemas';
-import { ApiError, QrcodlyApi } from '../lib/api-client';
-import { placeSvgInActiveDocument } from '../lib/indesign';
+import { ApiError, blobToDataUrl, QrcodlyApi } from '../lib/api-client';
+import { getAutoPlaceSizeMm, placePngInActiveDocument, PRINT_QR_PX } from '../lib/indesign';
 import { BrandHeader } from '../components/Logo';
 import { Button } from '../components/Button';
 import { QrPreview } from '../components/QrPreview';
@@ -110,11 +110,14 @@ export function ListScreen({ apiKey, onSignOut, onCreate }: Props) {
 		setInsertingId(qr.id);
 		setError(null);
 		try {
-			const svg = await api.renderQrSvg({
+			const blob = await api.renderQrPng({
 				config: qr.config,
 				data: qr.qrCodeData,
+				sizePx: PRINT_QR_PX,
+				printSizeMm: getAutoPlaceSizeMm(),
 			});
-			await placeSvgInActiveDocument(svg, qr.name ?? qr.id);
+			const dataUrl = await blobToDataUrl(blob);
+			await placePngInActiveDocument(dataUrl, qr.name ?? qr.id);
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'Insert failed');
 		} finally {
@@ -185,6 +188,10 @@ export function ListScreen({ apiKey, onSignOut, onCreate }: Props) {
 			)}
 
 			{error && <p className="error">{error}</p>}
+
+			<p className="muted hint">
+				Click a QR to auto-size it to your page, or pre-select a frame to fit it.
+			</p>
 
 			<div className="scroll" ref={scrollRef}>
 				{loading ? (

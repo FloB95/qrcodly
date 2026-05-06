@@ -1,8 +1,15 @@
 const path = require('path');
+const webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = (_env, argv) => {
 	const isProduction = argv.mode === 'production';
+
+	// Pin the API endpoint at build time. Production always points at the live
+	// API; local dev defaults to localhost:5001 unless QRCODLY_API_URL is set.
+	const apiBaseUrl =
+		process.env.QRCODLY_API_URL ||
+		(isProduction ? 'https://api.qrcodly.de/api/v1' : 'http://localhost:5001/api/v1');
 
 	return {
 		entry: './src/index.tsx',
@@ -40,6 +47,9 @@ module.exports = (_env, argv) => {
 			],
 		},
 		plugins: [
+			new webpack.DefinePlugin({
+				__QRCODLY_API_URL__: JSON.stringify(apiBaseUrl),
+			}),
 			new CopyPlugin({
 				patterns: [{ from: 'plugin', to: '.' }],
 			}),
