@@ -15,6 +15,7 @@ export default function robots(): MetadataRoute.Robots {
 					'/tag',
 					'/config-template/',
 					'/short-url/',
+					'/u/',
 				],
 			},
 		],

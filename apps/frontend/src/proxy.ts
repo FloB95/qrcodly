@@ -18,8 +18,9 @@ const intlMiddleware = createMiddleware(routing);
 const localePrefix = SUPPORTED_LANGUAGES.filter((l) => l !== 'en').join('|');
 const localePrefixedNonTranslatedRoute = new RegExp(`^/(${localePrefix})/(docs)(/.*)?$`);
 
-// Short URL scan pattern — no auth needed
-const scanPattern = /^\/u\/[a-z0-9]{5}$/;
+// Short URL scan pattern — system 5-char codes or 3–50-char custom slugs.
+// Allowed: lowercase letters, digits, hyphens (no leading/trailing hyphen).
+const scanPattern = /^\/u\/(?:[a-z0-9]{5}|[a-z0-9][a-z0-9-]{1,48}[a-z0-9])$/;
 
 const clerkHandler = clerkMiddleware(async (auth, req, event) => {
 	const pathname = new URL(req.url).pathname;
@@ -68,9 +69,14 @@ export default function middleware(req: NextRequest, event: NextFetchEvent) {
 		return NextResponse.next();
 	}
 
-	// Scan routes bypass Clerk entirely — no auth needed
+	// Scan routes bypass Clerk entirely — no auth needed.
+	// Tag /u/* responses noindex so phishing/abuse short URLs cannot be picked
+	// up by search engines even when linked externally (stronger than robots.txt).
 	if (scanPattern.test(pathname)) {
-		return processAnalyticsAndRedirect(req);
+		return processAnalyticsAndRedirect(req).then((response) => {
+			response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+			return response;
+		});
 	}
 
 	return clerkHandler(req, event);
