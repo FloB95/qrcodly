@@ -330,6 +330,12 @@
 			"scrollRight": "Rolar para a direita"
 		}
 	},
+	"accountBanned": {
+		"title": "Conta suspensa",
+		"description": "A sua conta foi suspensa por violação dos nossos termos de serviço.",
+		"note": "A sua sessão foi terminada. Se acha que isto é um erro, contacte-nos através de:",
+		"button": "Voltar ao início"
+	},
 	"qrCodeDisabled": {
 		"title": "QR code Desativado",
 		"description": "Desculpe, este QR code não está mais ativo. O destino para o qual ele apontava está indisponível.",

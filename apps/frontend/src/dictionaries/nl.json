@@ -330,6 +330,12 @@
 			"scrollRight": "Naar rechts scrollen"
 		}
 	},
+	"accountBanned": {
+		"title": "Account geschorst",
+		"description": "Je account is geschorst wegens schending van onze servicevoorwaarden.",
+		"note": "Je bent uitgelogd. Als je denkt dat dit een vergissing is, neem contact met ons op via:",
+		"button": "Terug naar home"
+	},
 	"qrCodeDisabled": {
 		"title": "QR-code uitgeschakeld",
 		"description": "Deze QR-code is helaas niet meer actief. De bestemming is niet meer beschikbaar.",

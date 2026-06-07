@@ -198,10 +198,30 @@ export async function apiRequest<T>(
 
 	if (!response.ok) {
 		const errorBody = (await response.json().catch(() => ({}))) as Record<string, unknown>;
+		const errorCode = errorBody.errorCode as string | undefined;
+
+		// Banned users: the backend is the single source of truth and rejects every
+		// authenticated call with ACCOUNT_BANNED. Sign the user out once and send
+		// them to the public /banned page — after sign-out there is no session, so
+		// they are no longer trapped redirecting through protected routes.
+		if (errorCode === 'ACCOUNT_BANNED' && typeof window !== 'undefined') {
+			const clerk = (
+				window as unknown as {
+					Clerk?: { signOut: (opts?: { redirectUrl?: string }) => Promise<void> };
+				}
+			).Clerk;
+			if (clerk?.signOut) {
+				void clerk.signOut({ redirectUrl: '/banned' });
+			} else {
+				window.location.href = '/banned';
+			}
+		}
+
 		throw new ApiError(
 			(errorBody?.message as string | undefined) ?? 'An error occurred while fetching data',
 			response.status,
 			errorBody.fieldErrors as z.core.$ZodIssue[],
+			errorCode,
 		);
 	}
 	return (await response.json()) as T;

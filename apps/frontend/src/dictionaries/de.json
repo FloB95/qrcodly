@@ -330,6 +330,12 @@
 			"scrollRight": "Nach rechts scrollen"
 		}
 	},
+	"accountBanned": {
+		"title": "Konto gesperrt",
+		"description": "Dein Konto wurde gesperrt, weil gegen unsere Nutzungsbedingungen verstoßen wurde.",
+		"note": "Du wurdest abgemeldet. Falls du glaubst, dass das ein Fehler ist, kontaktiere uns unter:",
+		"button": "Zurück zur Startseite"
+	},
 	"qrCodeDisabled": {
 		"title": "QR Code deaktiviert",
 		"description": "Dieser QR Code ist leider nicht mehr aktiv. Das Ziel ist nicht mehr verfügbar.",

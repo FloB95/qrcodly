@@ -330,6 +330,12 @@
 			"scrollRight": "Desplazar a la derecha"
 		}
 	},
+	"accountBanned": {
+		"title": "Cuenta suspendida",
+		"description": "Tu cuenta ha sido suspendida por incumplir nuestras condiciones de servicio.",
+		"note": "Se ha cerrado tu sesión. Si crees que es un error, contáctanos en:",
+		"button": "Volver al inicio"
+	},
 	"qrCodeDisabled": {
 		"title": "Código QR deshabilitado",
 		"description": "Lamentablemente, este código QR ya no está activo. El destino ya no está disponible.",

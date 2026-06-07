@@ -330,6 +330,12 @@
 			"scrollRight": "Przewiń w prawo"
 		}
 	},
+	"accountBanned": {
+		"title": "Konto zawieszone",
+		"description": "Twoje konto zostało zawieszone za naruszenie naszego regulaminu.",
+		"note": "Zostałeś wylogowany. Jeśli uważasz, że to pomyłka, skontaktuj się z nami pod adresem:",
+		"button": "Powrót do strony głównej"
+	},
 	"qrCodeDisabled": {
 		"title": "Kod QR wyłączony",
 		"description": "Niestety, ten kod QR nie jest już aktywny. Cel nie jest już dostępny.",
