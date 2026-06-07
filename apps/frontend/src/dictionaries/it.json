@@ -31,7 +31,21 @@
 			"domainLabel": "Dominio URL breve",
 			"submitBtn": "Crea",
 			"success": "URL breve creato con successo",
-			"successDescription": "Abbiamo salvato il tuo URL breve nella tua raccolta per un uso futuro."
+			"successDescription": "Abbiamo salvato il tuo URL breve nella tua raccolta per un uso futuro.",
+			"customSlug": {
+				"label": "Percorso personalizzato (opzionale)",
+				"placeholder": "es. saldi-estate",
+				"help": "Minuscole, cifre e trattini. Da 3 a 50 caratteri.",
+				"proRequired": "I percorsi personalizzati sono una funzione Pro.",
+				"requiresDomain": "Scegli un dominio personalizzato sopra per usare un percorso.",
+				"preview": "Anteprima",
+				"checking": "Verifica disponibilità…",
+				"available": "Il percorso è disponibile",
+				"taken": "Questo percorso è già in uso su questo dominio.",
+				"reserved": "Questo percorso è riservato e non può essere usato.",
+				"invalid": "Formato non valido — solo minuscole, cifre e trattini.",
+				"notAvailable": "Scegli un percorso disponibile prima di creare il link."
+			}
 		},
 		"edit": {
 			"title": "Modifica URL breve",
@@ -107,7 +121,8 @@
 		"copyFailed": "Impossibile copiare negli appunti. Si prega di copiare manualmente.",
 		"showMore": "Mostra di più",
 		"showLess": "Mostra meno",
-		"apiKeyRequired": "Chiave API richiesta"
+		"apiKeyRequired": "Chiave API richiesta",
+		"save": "Salva"
 	},
 	"hero": {
 		"badge": "Open Source e Gratis Per Sempre",
@@ -448,6 +463,10 @@
 				"description": "Impossibile copiare il link negli appunti. Copialo manualmente."
 			},
 			"noVisibleContent": "Questo codice QR condiviso non ha contenuto visibile."
+		},
+		"dynamicSettings": {
+			"title": "Impostazioni QR Code dinamico",
+			"description": "Scegli il dominio del tuo URL breve e, facoltativamente, un percorso personalizzato."
 		}
 	},
 	"loginDialog": {

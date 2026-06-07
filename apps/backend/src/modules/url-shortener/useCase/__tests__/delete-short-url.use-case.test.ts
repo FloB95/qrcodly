@@ -14,6 +14,8 @@ describe('DeleteShortUrlUseCase', () => {
 	const mockStandaloneShortUrl: TShortUrl = {
 		id: 'short-url-1',
 		shortCode: 'ABC12',
+		customSlug: null,
+		customSlugKey: 'short-url-1',
 		name: null,
 		destinationUrl: 'https://example.com',
 		customDomainId: null,

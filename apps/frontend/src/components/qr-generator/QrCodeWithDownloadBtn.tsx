@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 import { DynamicQrCode } from './DynamicQrCode';
 import QrCodeSaveTemplateBtn from './templates/SaveTemplateBtn';
 import { GeneratorQrCodeDownloadBtn } from './download-buttons';
@@ -8,9 +8,22 @@ import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
 
 export const QrCodeWithDownloadBtn = () => {
-	const { config, content, bulkMode } = useQrCodeGeneratorStore((state) => state);
+	const { config, content, bulkMode, customDomainId, customSlug } = useQrCodeGeneratorStore(
+		(state) => state,
+	);
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
 	const { hasProPlan } = useHasProPlan();
+
+	// Apply the user's pre-save overrides (from the dynamic-QR settings dialog)
+	// to the displayed short URL so the preview shows what the user is about to
+	// commit. The actual write happens in SaveQrCodeBtn.
+	const previewShortUrl = useMemo(() => {
+		if (!shortUrl) return undefined;
+		const overrideDomainId =
+			customDomainId === undefined ? shortUrl.customDomainId : customDomainId;
+		const overrideSlug = customSlug ?? shortUrl.customSlug ?? null;
+		return { ...shortUrl, customDomainId: overrideDomainId, customSlug: overrideSlug };
+	}, [shortUrl, customDomainId, customSlug]);
 
 	return (
 		<div>
@@ -21,7 +34,7 @@ export const QrCodeWithDownloadBtn = () => {
 							content,
 							config,
 						}}
-						shortUrl={shortUrl || undefined}
+						shortUrl={previewShortUrl}
 						hasProPlan={hasProPlan}
 					/>
 				</div>

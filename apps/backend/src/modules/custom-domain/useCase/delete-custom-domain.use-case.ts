@@ -4,6 +4,7 @@ import { Logger } from '@/core/logging';
 import CustomDomainRepository from '../domain/repository/custom-domain.repository';
 import { TCustomDomain } from '../domain/entities/custom-domain.entity';
 import { CloudflareService, CloudflareApiError } from '../service/cloudflare.service';
+import ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
 
 /**
  * Use case for deleting a Custom Domain.
@@ -13,6 +14,7 @@ import { CloudflareService, CloudflareApiError } from '../service/cloudflare.ser
 export class DeleteCustomDomainUseCase implements IBaseUseCase {
 	constructor(
 		@inject(CustomDomainRepository) private customDomainRepository: CustomDomainRepository,
+		@inject(ShortUrlRepository) private shortUrlRepository: ShortUrlRepository,
 		@inject(CloudflareService) private cloudflareService: CloudflareService,
 		@inject(Logger) private logger: Logger,
 	) {}
@@ -57,7 +59,16 @@ export class DeleteCustomDomainUseCase implements IBaseUseCase {
 			}
 		}
 
-		// Delete from database
+		// Cascade soft-delete dependent short URLs first. This frees their
+		// custom slugs (set to NULL) so other users / domains can reuse them,
+		// while keeping each shortCode permanently reserved for Umami history.
+		// Done BEFORE the FK SET NULL fires so no UNIQUE collision can occur on
+		// the customSlugKey VIRTUAL index during the cascade.
+		const cascaded = await this.shortUrlRepository.softDeleteByCustomDomainId(customDomain.id);
+
+		// Hard-delete the custom_domain row. The FK on short_url.customDomainId
+		// has ON DELETE SET NULL — harmless because customSlug is already NULL
+		// for the cascaded rows.
 		await this.customDomainRepository.delete(customDomain);
 
 		this.logger.info('customDomain.deleted', {
@@ -65,6 +76,7 @@ export class DeleteCustomDomainUseCase implements IBaseUseCase {
 				id: customDomain.id,
 				domain: customDomain.domain,
 				createdBy: customDomain.createdBy,
+				cascadedShortUrls: cascaded.length,
 			},
 		});
 	}

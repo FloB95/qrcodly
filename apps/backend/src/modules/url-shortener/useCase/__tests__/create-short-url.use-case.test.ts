@@ -40,6 +40,8 @@ describe('CreateShortUrlUseCase', () => {
 		const mockCreatedShortUrl: TShortUrlWithDomain = {
 			id: mockId,
 			shortCode: mockShortCode,
+			customSlug: null,
+			customSlugKey: mockId,
 			name: null,
 			destinationUrl: mockDto.destinationUrl,
 			customDomainId: null,
@@ -122,6 +124,7 @@ describe('CreateShortUrlUseCase', () => {
 					id: mockId,
 					createdBy: mockUserId,
 					customDomainId: mockDto.customDomainId,
+					hasCustomSlug: false,
 				},
 			});
 		});
@@ -159,6 +162,7 @@ describe('CreateShortUrlUseCase', () => {
 			expect(mockRepository.create).toHaveBeenCalledWith({
 				id: mockId,
 				shortCode: mockShortCode,
+				customSlug: null,
 				name: null,
 				destinationUrl: mockDto.destinationUrl,
 				customDomainId: mockDto.customDomainId,

@@ -31,7 +31,21 @@
 			"domainLabel": "Domena krótkiego URL",
 			"submitBtn": "Utwórz",
 			"success": "Krótki URL utworzony pomyślnie",
-			"successDescription": "Zapisaliśmy Twój krótki URL w Twojej kolekcji do późniejszego użytku."
+			"successDescription": "Zapisaliśmy Twój krótki URL w Twojej kolekcji do późniejszego użytku.",
+			"customSlug": {
+				"label": "Własna ścieżka (opcjonalnie)",
+				"placeholder": "np. letnia-wyprzedaz",
+				"help": "Małe litery, cyfry i myślniki. Od 3 do 50 znaków.",
+				"proRequired": "Własne ścieżki są funkcją Pro.",
+				"requiresDomain": "Wybierz powyżej własną domenę, aby użyć ścieżki.",
+				"preview": "Podgląd",
+				"checking": "Sprawdzanie dostępności…",
+				"available": "Ścieżka jest dostępna",
+				"taken": "Ta ścieżka jest już zajęta w tej domenie.",
+				"reserved": "Ta ścieżka jest zarezerwowana i nie można jej użyć.",
+				"invalid": "Nieprawidłowy format — tylko małe litery, cyfry, myślniki.",
+				"notAvailable": "Wybierz dostępną ścieżkę przed utworzeniem linku."
+			}
 		},
 		"edit": {
 			"title": "Edytuj krótki URL",
@@ -107,7 +121,8 @@
 		"copyFailed": "Nie udało się skopiować do schowka. Skopiuj ręcznie.",
 		"showMore": "Pokaż więcej",
 		"showLess": "Pokaż mniej",
-		"apiKeyRequired": "Klucz API wymagany"
+		"apiKeyRequired": "Klucz API wymagany",
+		"save": "Zapisz"
 	},
 	"hero": {
 		"badge": "Open Source i Zawsze Za Darmo",
@@ -448,6 +463,10 @@
 				"description": "Nie można skopiować linku do schowka. Skopiuj go ręcznie."
 			},
 			"noVisibleContent": "Ten udostępniony kod QR nie ma widocznej zawartości."
+		},
+		"dynamicSettings": {
+			"title": "Ustawienia dynamicznego kodu QR",
+			"description": "Wybierz domenę dla swojego krótkiego URL i opcjonalnie własną ścieżkę."
 		}
 	},
 	"loginDialog": {

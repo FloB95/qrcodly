@@ -3,13 +3,42 @@ import { AbstractEntitySchema } from './AbstractEntitySchema';
 
 export const SHORT_URL_NAME_MAX_LENGTH = 50;
 
+/**
+ * Internal, system-generated short code. Always exactly 5 lowercase
+ * alphanumeric characters. Globally unique. Used as the Umami tracking
+ * path so analytics never collide across customers.
+ */
 export const ShortCodeSchema = z
 	.string()
 	.length(5)
-	.describe('Unique 5-character short code (e.g. "Ab3xZ")');
+	.describe('Unique 5-character short code (e.g. "ab3xz")');
+
+export const CUSTOM_SLUG_MIN_LENGTH = 3;
+export const CUSTOM_SLUG_MAX_LENGTH = 50;
+
+const CUSTOM_SLUG_PATTERN = /^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$/;
+
+/**
+ * Optional user-chosen "pretty path" for a short URL. Pro-only and only
+ * available for shortUrls on a custom domain. Lives alongside `shortCode`
+ * (which is internal); the visitor URL is `/u/{customSlug}`. Unique per
+ * custom domain among ACTIVE rows — once a row is soft-deleted, the slug
+ * is freed for reuse, and Umami tracking remains tied to `shortCode`.
+ */
+export const CustomSlugSchema = z
+	.string()
+	.min(CUSTOM_SLUG_MIN_LENGTH)
+	.max(CUSTOM_SLUG_MAX_LENGTH)
+	.regex(CUSTOM_SLUG_PATTERN, {
+		message: 'lowercase letters, digits, hyphens; no leading/trailing hyphen',
+	})
+	.refine((v) => !v.includes('--'), { message: 'no consecutive hyphens' });
 
 export const ShortUrlSchema = AbstractEntitySchema.extend({
 	shortCode: ShortCodeSchema,
+	customSlug: CustomSlugSchema.nullable()
+		.default(null)
+		.describe('Pro-only display path; falls back to shortCode when absent'),
 	name: z
 		.string()
 		.max(SHORT_URL_NAME_MAX_LENGTH)

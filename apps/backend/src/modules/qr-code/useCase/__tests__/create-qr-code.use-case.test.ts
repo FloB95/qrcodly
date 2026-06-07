@@ -210,6 +210,7 @@ describe('CreateQrCodeUseCase', () => {
 					id: 'qr-123',
 					createdBy: 'user-123',
 				}),
+				{ customSlug: null, user: mockUser },
 			);
 		});
 

@@ -1,18 +1,21 @@
 import { GetReservedShortCodeUseCase } from '@/modules/url-shortener/useCase/get-reserved-short-url.use-case';
-import { type IShortUrlStrategy } from './short-url-strategy.interface';
+import {
+	type IShortUrlStrategy,
+	type IShortUrlStrategyContext,
+} from './short-url-strategy.interface';
 import { UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/update-short-url.use-case';
 import { type TQrCode, type TQrCodeContent } from '@shared/schemas';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { container } from 'tsyringe';
 import { LinkShortUrlContentTypeError } from '../../error/http/link-short-url-content-type.error';
-import { GetDefaultCustomDomainUseCase } from '@/modules/custom-domain/useCase/get-default-custom-domain.use-case';
+import { resolveStrategyDomainId } from './resolve-strategy-domain';
 
 export class UrlStrategy implements IShortUrlStrategy {
 	appliesTo(content: TQrCodeContent) {
 		return (content.type === 'url' && content.data.isDynamic) || false;
 	}
 
-	async handle(qrCode: TQrCode) {
+	async handle(qrCode: TQrCode, ctx?: IShortUrlStrategyContext) {
 		if (qrCode.content.type !== 'url') {
 			throw new LinkShortUrlContentTypeError(qrCode.content.type);
 		}
@@ -22,20 +25,19 @@ export class UrlStrategy implements IShortUrlStrategy {
 			.execute(qrCode.createdBy!);
 		if (!reserved) throw new ShortUrlNotFoundError();
 
-		// Get user's default custom domain (if any)
-		const defaultDomain = await container
-			.resolve(GetDefaultCustomDomainUseCase)
-			.execute(qrCode.createdBy!);
+		const customDomainId = await resolveStrategyDomainId(qrCode.createdBy!, ctx);
 
 		await container.resolve(UpdateShortUrlUseCase).execute(
 			reserved,
 			{
 				destinationUrl: qrCode.content.data.url,
 				isActive: true,
-				customDomainId: defaultDomain?.id ?? null,
+				customDomainId,
+				customSlug: ctx?.customSlug ?? undefined,
 			},
 			qrCode.createdBy!,
 			qrCode.id,
+			ctx?.user,
 		);
 
 		return reserved;

@@ -17,6 +17,13 @@ export type QrCodeGeneratorState = {
 	config: TQrCodeOptions;
 	content: TQrCodeContent;
 	shortUrl?: TShortUrl;
+	// Pro-only overrides for the linked short URL of a dynamic QR. Wired
+	// through to the backend at create time; not persisted on their own.
+	// `customDomainId`: undefined = backend picks the user's default; null =
+	// explicitly the system domain (qrcodly.de); string = a specific custom
+	// domain owned by the user. `customSlug`: undefined/empty = no slug.
+	customDomainId?: string | null;
+	customSlug?: string;
 	latestQrCode?: {
 		name?: string | null;
 		config: TQrCodeOptions;
@@ -33,6 +40,8 @@ export type QrCodeGeneratorActions = {
 	updateName: (name: string) => void;
 	updateConfig: (config: Partial<TQrCodeOptions>) => void;
 	updateContent: (content: TQrCodeContent) => void;
+	updateCustomSlug: (customSlug: string | undefined) => void;
+	updateCustomDomainId: (customDomainId: string | null | undefined) => void;
 	updateLatestQrCode: (
 		latestQrCode:
 			| {
@@ -111,6 +120,8 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState) => {
 			}));
 		},
 		updateContent: (content) => set({ content }),
+		updateCustomSlug: (customSlug) => set({ customSlug }),
+		updateCustomDomainId: (customDomainId) => set({ customDomainId }),
 		updateLatestQrCode: (latestQrCode) => set({ latestQrCode }),
 		updateLastError: (lastError) => set({ lastError }),
 		updateBulkMode: (isBulkMode, file) =>

@@ -31,7 +31,21 @@
 			"domainLabel": "Kort URL-domein",
 			"submitBtn": "Aanmaken",
 			"success": "Korte URL succesvol aangemaakt",
-			"successDescription": "We hebben je korte URL opgeslagen in je collectie voor later gebruik."
+			"successDescription": "We hebben je korte URL opgeslagen in je collectie voor later gebruik.",
+			"customSlug": {
+				"label": "Aangepast pad (optioneel)",
+				"placeholder": "bijv. zomer-uitverkoop",
+				"help": "Kleine letters, cijfers en koppeltekens. 3–50 tekens.",
+				"proRequired": "Aangepaste paden zijn een Pro-functie.",
+				"requiresDomain": "Kies hierboven een aangepast domein om een pad te gebruiken.",
+				"preview": "Voorbeeld",
+				"checking": "Beschikbaarheid controleren…",
+				"available": "Pad is beschikbaar",
+				"taken": "Dit pad is al in gebruik op dit domein.",
+				"reserved": "Dit pad is gereserveerd en kan niet worden gebruikt.",
+				"invalid": "Ongeldig formaat — alleen kleine letters, cijfers, koppeltekens.",
+				"notAvailable": "Kies een beschikbaar pad voordat je de link aanmaakt."
+			}
 		},
 		"edit": {
 			"title": "Korte URL bewerken",
@@ -107,7 +121,8 @@
 		"copyFailed": "Kon niet naar klembord kopiëren. Kopieer het handmatig.",
 		"showMore": "Meer tonen",
 		"showLess": "Minder tonen",
-		"apiKeyRequired": "API-sleutel vereist"
+		"apiKeyRequired": "API-sleutel vereist",
+		"save": "Opslaan"
 	},
 	"hero": {
 		"badge": "Open Source & Voor Altijd Gratis",
@@ -448,6 +463,10 @@
 				"description": "Kon de link niet naar het klembord kopiëren. Kopieer deze handmatig."
 			},
 			"noVisibleContent": "Deze gedeelde QR-code heeft geen zichtbare inhoud."
+		},
+		"dynamicSettings": {
+			"title": "Instellingen voor dynamische QR-code",
+			"description": "Kies het domein voor je korte URL en optioneel een aangepast pad."
 		}
 	},
 	"loginDialog": {

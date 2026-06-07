@@ -8,11 +8,16 @@ import { ShortUrlNotFoundError } from '../../error/http/short-url-not-found.erro
 import { BadRequestError } from '@/core/error/http';
 import {
 	AnalyticsResponseDto,
+	CheckSlugAvailabilityQueryDto,
+	CheckSlugAvailabilityResponseDto,
 	CreateShortUrlDto,
+	CustomSlugSchema,
 	GetShortUrlQueryParamsSchema,
 	ShortUrlWithCustomDomainPaginatedResponseDto,
 	ShortUrlWithCustomDomainResponseDto,
 	TAnalyticsResponseDto,
+	TCheckSlugAvailabilityQueryDto,
+	TCheckSlugAvailabilityResponseDto,
 	TCreateShortUrlDto,
 	TGetShortUrlQueryParamsDto,
 	TGetShortUrlRequestQueryDto,
@@ -22,6 +27,7 @@ import {
 	TUpdateShortUrlDto,
 	TrackScanDto,
 	UpdateShortUrlDto,
+	isReservedSlug,
 } from '@shared/schemas';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
 import { UmamiAnalyticsService } from '../../service/umami-analytics.service';
@@ -39,6 +45,10 @@ import TagRepository from '@/modules/tag/domain/repository/tag.repository';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { shortUrlScans } from '@/core/metrics';
 import { DuplicateShortUrlUseCase } from '../../useCase/duplicate-short-url.use-case';
+import CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
+import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
+import { CreateCustomSlugPolicy } from '../../policies/create-custom-slug.policy';
+import { z } from 'zod';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -61,12 +71,24 @@ export class ShortUrlController extends AbstractController {
 		@inject(TagRepository) private readonly tagRepository: TagRepository,
 		@inject(DuplicateShortUrlUseCase)
 		private readonly duplicateShortUrlUseCase: DuplicateShortUrlUseCase,
+		@inject(CustomDomainRepository)
+		private readonly customDomainRepository: CustomDomainRepository,
+		@inject(CustomDomainValidationService)
+		private readonly customDomainValidationService: CustomDomainValidationService,
 	) {
 		super();
 	}
 
 	private getViewsCacheKey(shortCode: string): string {
 		return `views:${shortCode}`;
+	}
+
+	private async resolveHostnameToCustomDomainId(host: string | undefined): Promise<string | null> {
+		if (!host) return null;
+		const cleaned = host.split(':')[0]?.toLowerCase();
+		if (!cleaned) return null;
+		const domain = await this.customDomainRepository.findOneByDomain(cleaned);
+		return domain?.id ?? null;
 	}
 
 	@Get('', {
@@ -130,7 +152,11 @@ export class ShortUrlController extends AbstractController {
 	async create(
 		request: IHttpRequest<TCreateShortUrlDto>,
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
-		const shortUrl = await this.createShortUrlUseCase.execute(request.body, request.user.id);
+		const shortUrl = await this.createShortUrlUseCase.execute(
+			request.body,
+			request.user.id,
+			request.user,
+		);
 
 		return this.makeApiHttpResponse(
 			201,
@@ -250,23 +276,38 @@ export class ShortUrlController extends AbstractController {
 
 	@Get('/:shortCode', {
 		authHandler: internalApiAuthHandler,
+		querySchema: z.object({ host: z.string().optional() }),
 		config: {
 			rateLimitPolicy: RateLimitPolicy.SCAN_LOOKUP,
 		},
-		schema: {
-			hide: true,
-		},
+		schema: { hide: true },
 	})
 	async getOneByShortCode(
-		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto, unknown, false>,
+		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto, { host?: string }, false>,
 	): Promise<
-		IHttpResponse<{ destinationUrl: string | null; isActive: boolean; deletedAt: Date | null }>
+		IHttpResponse<{
+			destinationUrl: string | null;
+			isActive: boolean;
+			deletedAt: Date | null;
+			shortCode: string;
+		}>
 	> {
-		const shortUrl = await this.fetchShortUrl(request.params.shortCode);
+		// `shortCode` here is actually the URL path segment — could be the system
+		// shortCode or a Pro user's customSlug. Resolution is scoped to the host's
+		// custom domain (or the system domain when host doesn't match any).
+		const customDomainId = await this.resolveHostnameToCustomDomainId(request.query?.host);
+		const shortUrl = await this.shortUrlRepository.findOneByPathAndDomain(
+			request.params.shortCode,
+			customDomainId,
+		);
+		if (!shortUrl || shortUrl.deletedAt) {
+			throw new ShortUrlNotFoundError();
+		}
 		return this.makeApiHttpResponse(200, {
 			destinationUrl: shortUrl.destinationUrl,
 			isActive: shortUrl.isActive,
 			deletedAt: shortUrl.deletedAt,
+			shortCode: shortUrl.shortCode,
 		});
 	}
 
@@ -516,6 +557,53 @@ export class ShortUrlController extends AbstractController {
 		}
 
 		return this.makeApiHttpResponse(200, { status: 'ok' });
+	}
+
+	@Get('/check-slug', {
+		querySchema: CheckSlugAvailabilityQueryDto,
+		responseSchema: {
+			200: CheckSlugAvailabilityResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['Short URLs'],
+			summary: 'Check custom-slug availability',
+			description:
+				'Pro-only. Returns whether a slug is available for a given custom domain. ' +
+				'Reasons: invalid (format), reserved, taken (active row owns it).',
+			operationId: 'short-url/check-slug',
+		},
+	})
+	async checkSlugAvailability(
+		request: IHttpRequest<unknown, unknown, TCheckSlugAvailabilityQueryDto>,
+	): Promise<IHttpResponse<TCheckSlugAvailabilityResponseDto>> {
+		new CreateCustomSlugPolicy(request.user).checkAccess();
+
+		const slug = request.query.slug.toLowerCase();
+		const parsed = CustomSlugSchema.safeParse(slug);
+		if (!parsed.success) {
+			return this.makeApiHttpResponse(200, { available: false, reason: 'invalid' });
+		}
+		if (isReservedSlug(slug)) {
+			return this.makeApiHttpResponse(200, { available: false, reason: 'reserved' });
+		}
+
+		await this.customDomainValidationService.validateForUserUse(
+			request.query.customDomainId,
+			request.user.id,
+		);
+
+		const taken = await this.shortUrlRepository.findOneActiveByCustomSlugAndDomain(
+			slug,
+			request.query.customDomainId,
+		);
+		if (taken) {
+			return this.makeApiHttpResponse(200, { available: false, reason: 'taken' });
+		}
+
+		return this.makeApiHttpResponse(200, { available: true });
 	}
 
 	private async fetchShortUrl(shortCode: string, userId?: string): Promise<TShortUrl> {

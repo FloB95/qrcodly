@@ -35,6 +35,7 @@ export class DuplicateShortUrlUseCase implements IBaseUseCase {
 			await this.shortUrlRepository.create({
 				id: newId,
 				shortCode,
+				customSlug: null,
 				name,
 				destinationUrl: source.destinationUrl,
 				qrCodeId: null,

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { QrCodeContentType, QrCodeOptionsSchema, QrCodeSchema } from '../../schemas/QrCode';
 import { validateContentHttpUrls } from './validateContentHttpUrls';
+import { CustomSlugSchema } from '../../schemas/ShortUrl';
 
 export const CreateQrCodeDto = QrCodeSchema.pick({
 	name: true,
@@ -16,6 +17,20 @@ export const CreateQrCodeDto = QrCodeSchema.pick({
 			.optional()
 			.describe(
 				'ID of a saved design template to apply. The template styling (colors, shapes, logo) is used as the base config. You can override individual fields via the config parameter.',
+			),
+		customSlug: CustomSlugSchema.nullable()
+			.optional()
+			.describe(
+				'Pro-only: pretty path for the linked short URL of a dynamic QR code. Requires a custom domain (either the override below or the user default). Ignored for static QR codes.',
+			),
+		customDomainId: z
+			.uuid()
+			.nullable()
+			.optional()
+			.describe(
+				"Pro-only override for the linked short URL's custom domain. " +
+					'undefined → backend uses the user default; null → system domain (qrcodly.de); ' +
+					'string → a specific custom domain owned by the user. Ignored for static QR codes.',
 			),
 	})
 	.superRefine((data, ctx) => {

@@ -31,7 +31,21 @@
 			"domainLabel": "Short URL Domain",
 			"submitBtn": "Create",
 			"success": "Short URL created successfully",
-			"successDescription": "We saved your short URL in your collection for later use."
+			"successDescription": "We saved your short URL in your collection for later use.",
+			"customSlug": {
+				"label": "Custom Path (optional)",
+				"placeholder": "e.g. summer-sale",
+				"help": "Lowercase letters, digits, and hyphens. 3–50 characters.",
+				"proRequired": "Custom paths are a Pro feature. Upgrade to set memorable URLs.",
+				"requiresDomain": "Choose a Custom Domain above to set a custom path.",
+				"preview": "Preview",
+				"checking": "Checking availability…",
+				"available": "Path is available",
+				"taken": "This path is already taken on this domain.",
+				"reserved": "This path is reserved and cannot be used.",
+				"invalid": "Invalid format — use lowercase letters, digits, hyphens.",
+				"notAvailable": "Pick an available path before creating the short URL."
+			}
 		},
 		"edit": {
 			"title": "Edit Short URL",
@@ -107,7 +121,8 @@
 		"copyFailed": "Could not copy to clipboard. Please copy manually.",
 		"showMore": "Show more",
 		"showLess": "Show less",
-		"apiKeyRequired": "API Key Required"
+		"apiKeyRequired": "API Key Required",
+		"save": "Save"
 	},
 	"hero": {
 		"badge": "Open Source & Free Forever",
@@ -448,6 +463,10 @@
 				"description": "Could not copy link to clipboard. Please copy it manually."
 			},
 			"noVisibleContent": "This shared QR code has no visible content."
+		},
+		"dynamicSettings": {
+			"title": "Dynamic QR Code Settings",
+			"description": "Pick the domain for your short URL and optionally set a custom path."
 		}
 	},
 	"loginDialog": {

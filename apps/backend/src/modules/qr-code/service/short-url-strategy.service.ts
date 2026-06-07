@@ -1,5 +1,8 @@
 import { injectable } from 'tsyringe';
-import { IShortUrlStrategy } from './short-url-strategies/short-url-strategy.interface';
+import {
+	IShortUrlStrategy,
+	type IShortUrlStrategyContext,
+} from './short-url-strategies/short-url-strategy.interface';
 import { TQrCode } from '@shared/schemas';
 import { UrlStrategy } from './short-url-strategies/url.strategy';
 import { EventUrlStrategy } from './short-url-strategies/event.strategy';
@@ -13,10 +16,10 @@ export class ShortUrlStrategyService {
 		this.strategies = [new UrlStrategy(), new EventUrlStrategy(), new VCardStrategy()];
 	}
 
-	async handle(qrCode: TQrCode) {
+	async handle(qrCode: TQrCode, ctx?: IShortUrlStrategyContext) {
 		for (const strategy of this.strategies) {
 			if (strategy.appliesTo(qrCode.content)) {
-				return strategy.handle(qrCode);
+				return strategy.handle(qrCode, ctx);
 			}
 		}
 		return null;

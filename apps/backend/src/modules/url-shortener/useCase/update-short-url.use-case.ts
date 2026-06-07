@@ -9,6 +9,11 @@ import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-fo
 import { RedirectLoopError } from '../error/http/redirect-loop.error';
 import { buildShortUrl } from '../utils';
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
+import { type TUser } from '@/core/domain/schema/UserSchema';
+import { BadRequestError } from '@/core/error/http';
+import { ConflictError } from '@/core/error/http/conflict.error';
+import { isReservedSlug } from '@shared/schemas';
+import { CreateCustomSlugPolicy } from '../policies/create-custom-slug.policy';
 
 /**
  * Internal input type for updating a short URL.
@@ -18,6 +23,7 @@ type UpdateShortUrlInput = {
 	destinationUrl?: string | null;
 	isActive?: boolean;
 	customDomainId?: string | null;
+	customSlug?: string | null;
 	name?: string | null;
 };
 
@@ -47,6 +53,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		updatesDto: UpdateShortUrlInput,
 		updatedBy: string,
 		linkedQrCodeId?: string,
+		user?: TUser,
 	): Promise<TShortUrl> {
 		// Validate custom domain ownership and readiness if changing it
 		if (updatesDto.customDomainId !== undefined && updatesDto.customDomainId !== null) {
@@ -56,8 +63,14 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 			);
 		}
 
+		// customSlug is one-shot: it can be set ONCE on a row whose slug is null
+		// (typically a "reserved" shortUrl getting wired up to a fresh QR-Code).
+		// Once set, it is immutable — changing it would break printed QR-Codes.
+		const desiredCustomSlug = await this.resolveCustomSlugUpdate(shortUrl, updatesDto, user);
+
 		const updates: Partial<TShortUrl> = {
 			...updatesDto,
+			...(desiredCustomSlug !== undefined ? { customSlug: desiredCustomSlug } : {}),
 			updatedAt: new Date(),
 		};
 
@@ -99,5 +112,46 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		});
 
 		return result!;
+	}
+
+	private async resolveCustomSlugUpdate(
+		shortUrl: TShortUrl,
+		updatesDto: UpdateShortUrlInput,
+		user?: TUser,
+	): Promise<string | null | undefined> {
+		if (updatesDto.customSlug === undefined) return undefined; // no change requested
+		if (updatesDto.customSlug === null) {
+			// Explicit clear is allowed (used by the cascade-soft-delete path).
+			return null;
+		}
+
+		// Setting a slug once → immutable thereafter.
+		if (shortUrl.customSlug !== null) {
+			throw new BadRequestError(
+				'A custom slug cannot be changed after it is set. Create a new short URL instead.',
+			);
+		}
+
+		// Slugs require a custom domain; pick the requested or the existing one.
+		const targetDomainId =
+			updatesDto.customDomainId !== undefined ? updatesDto.customDomainId : shortUrl.customDomainId;
+		if (!targetDomainId) {
+			throw new BadRequestError('A custom slug requires a custom domain.');
+		}
+
+		new CreateCustomSlugPolicy(user).checkAccess();
+
+		const slug = updatesDto.customSlug.toLowerCase();
+		if (isReservedSlug(slug)) {
+			throw new ConflictError(`Slug "${slug}" is reserved.`);
+		}
+		const taken = await this.shortUrlRepository.findOneActiveByCustomSlugAndDomain(
+			slug,
+			targetDomainId,
+		);
+		if (taken && taken.id !== shortUrl.id) {
+			throw new ConflictError(`Slug "${slug}" is already taken on this domain.`);
+		}
+		return slug;
 	}
 }

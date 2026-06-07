@@ -47,12 +47,16 @@ export function createLinkFromShortUrl(
 	const customDomain =
 		'customDomain' in shortUrl ? shortUrl.customDomain : (providedDomain ?? undefined);
 
+	// Display the custom slug when present — visitor URLs use the pretty path,
+	// internally we still resolve via the system shortCode (Umami stays clean).
+	const path = ('customSlug' in shortUrl && shortUrl.customSlug) || shortCode;
+
 	let url: string;
 	if (customDomain) {
-		url = `https://${customDomain.domain}/u/${shortCode}`;
+		url = `https://${customDomain.domain}/u/${path}`;
 	} else {
 		// System domain uses /u/ prefix (e.g., qrcodly.de/u/abc12)
-		url = `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${shortCode}`;
+		url = `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${path}`;
 	}
 
 	if (!short) return url;

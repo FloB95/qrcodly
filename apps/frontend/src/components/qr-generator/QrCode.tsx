@@ -16,6 +16,8 @@ import Link from 'next/link';
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
 import { SmartTipPopover } from '@/components/dashboard/smart-tips/SmartTipPopover';
 import { useShortUrlLink } from '@/hooks/use-short-url-link';
+import { useListCustomDomainsQuery } from '@/lib/api/custom-domain';
+import { DynamicQrCodeSettingsDialog } from './DynamicQrCodeSettingsDialog';
 
 export type QrCodeProps = {
 	qrCode: Pick<TQrCode, 'config' | 'content'> & { qrCodeData?: TQrCode['qrCodeData'] };
@@ -65,6 +67,15 @@ function QrCode({
 }: QrCodeProps) {
 	const { link: resolvedShortUrl } = useShortUrlLink(shortUrl);
 	const { link: shortUrlDisplay } = useShortUrlLink(shortUrl, true);
+	// Pencil opens an in-place settings dialog only when the user has at least
+	// one verified custom domain (which implies a Pro plan today). Otherwise it
+	// falls back to the existing link to /dashboard/settings/domains so the
+	// user can either upgrade or set up their first custom domain.
+	const { data: customDomainsList } = useListCustomDomainsQuery(1, 100);
+	const hasVerifiedCustomDomain = (customDomainsList?.data ?? []).some(
+		(d) => d.sslStatus === 'active',
+	);
+	const canOpenInPlaceDialog = !!hasProPlan && hasVerifiedCustomDomain;
 
 	const options: Options = useMemo(() => {
 		// Use stored qrCodeData if available (has correct custom domain baked in)
@@ -125,11 +136,24 @@ function QrCode({
 					>
 						<div className="text-xs ml-4 flex items-center gap-1">
 							<span className="pt-0.5">{shortUrlDisplay}</span>
-							{!hideDomainEdit && (
-								<Link href="/dashboard/settings/domains">
-									<PencilSquareIcon className="size-4 text-black" />
-								</Link>
-							)}
+							{!hideDomainEdit &&
+								(canOpenInPlaceDialog ? (
+									<DynamicQrCodeSettingsDialog
+										trigger={
+											<button
+												type="button"
+												aria-label="Edit dynamic QR settings"
+												className="cursor-pointer"
+											>
+												<PencilSquareIcon className="size-4 text-black" />
+											</button>
+										}
+									/>
+								) : (
+									<Link href="/dashboard/settings/domains">
+										<PencilSquareIcon className="size-4 text-black" />
+									</Link>
+								))}
 						</div>
 					</SmartTipPopover>
 				</div>

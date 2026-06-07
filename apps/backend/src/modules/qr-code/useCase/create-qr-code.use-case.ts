@@ -83,7 +83,11 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 
 				// handle url shorting for different content types
 				if (qrCodeEntity.createdBy) {
-					await this.shortUrlStrategyService.handle(qrCodeEntity as TQrCode);
+					await this.shortUrlStrategyService.handle(qrCodeEntity as TQrCode, {
+						customSlug: dto.customSlug ?? null,
+						customDomainId: dto.customDomainId,
+						user,
+					});
 				}
 
 				// Compute and store qrCodeData (after short URL is created)

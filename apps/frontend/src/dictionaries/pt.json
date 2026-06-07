@@ -31,7 +31,21 @@
 			"domainLabel": "Domínio da URL Curta",
 			"submitBtn": "Criar",
 			"success": "URL curta criada com sucesso",
-			"successDescription": "Salvamos sua URL curta na sua coleção para uso posterior."
+			"successDescription": "Salvamos sua URL curta na sua coleção para uso posterior.",
+			"customSlug": {
+				"label": "Caminho personalizado (opcional)",
+				"placeholder": "ex. promo-verao",
+				"help": "Minúsculas, dígitos e hífens. De 3 a 50 caracteres.",
+				"proRequired": "Caminhos personalizados são uma função Pro.",
+				"requiresDomain": "Escolha um domínio personalizado acima para usar um caminho.",
+				"preview": "Pré-visualização",
+				"checking": "Verificando disponibilidade…",
+				"available": "O caminho está disponível",
+				"taken": "Este caminho já está em uso neste domínio.",
+				"reserved": "Este caminho é reservado e não pode ser usado.",
+				"invalid": "Formato inválido — apenas minúsculas, dígitos e hífens.",
+				"notAvailable": "Escolha um caminho disponível antes de criar o link."
+			}
 		},
 		"edit": {
 			"title": "Editar URL Curta",
@@ -107,7 +121,8 @@
 		"copyFailed": "Não foi possível copiar para a área de transferência. Por favor, copie manualmente.",
 		"showMore": "Mostrar mais",
 		"showLess": "Mostrar menos",
-		"apiKeyRequired": "Chave de API necessária"
+		"apiKeyRequired": "Chave de API necessária",
+		"save": "Salvar"
 	},
 	"hero": {
 		"badge": "Open Source e Gratuito para Sempre",
@@ -448,6 +463,10 @@
 				"description": "Não foi possível copiar o link para a área de transferência. Por favor, copie manualmente."
 			},
 			"noVisibleContent": "Este QR code compartilhado não possui conteúdo visível."
+		},
+		"dynamicSettings": {
+			"title": "Configurações de QR Code dinâmico",
+			"description": "Escolha o domínio do seu URL curto e, opcionalmente, um caminho personalizado."
 		}
 	},
 	"loginDialog": {

@@ -144,6 +144,7 @@ describe('UrlStrategy', () => {
 				}),
 				'user_123',
 				'qr_code_123',
+				undefined,
 			);
 		});
 
@@ -160,6 +161,7 @@ describe('UrlStrategy', () => {
 				}),
 				expect.anything(),
 				expect.anything(),
+				undefined,
 			);
 		});
 
@@ -176,6 +178,7 @@ describe('UrlStrategy', () => {
 				}),
 				expect.anything(),
 				expect.anything(),
+				undefined,
 			);
 		});
 
@@ -190,6 +193,7 @@ describe('UrlStrategy', () => {
 				expect.anything(),
 				expect.anything(),
 				'qr_code_123',
+				undefined,
 			);
 		});
 

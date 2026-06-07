@@ -31,7 +31,21 @@
 			"domainLabel": "Dominio de URL corta",
 			"submitBtn": "Crear",
 			"success": "URL corta creada correctamente",
-			"successDescription": "Hemos guardado tu URL corta en tu colección para uso posterior."
+			"successDescription": "Hemos guardado tu URL corta en tu colección para uso posterior.",
+			"customSlug": {
+				"label": "Ruta personalizada (opcional)",
+				"placeholder": "p. ej. oferta-verano",
+				"help": "Minúsculas, dígitos y guiones. De 3 a 50 caracteres.",
+				"proRequired": "Las rutas personalizadas son una función Pro. Mejora tu plan.",
+				"requiresDomain": "Elige un dominio personalizado arriba para usar una ruta.",
+				"preview": "Vista previa",
+				"checking": "Comprobando disponibilidad…",
+				"available": "La ruta está disponible",
+				"taken": "Esta ruta ya está en uso en este dominio.",
+				"reserved": "Esta ruta está reservada y no se puede usar.",
+				"invalid": "Formato inválido — solo minúsculas, dígitos y guiones.",
+				"notAvailable": "Elige una ruta disponible antes de crear el enlace."
+			}
 		},
 		"edit": {
 			"title": "Editar URL corta",
@@ -107,7 +121,8 @@
 		"copyFailed": "No se pudo copiar al portapapeles. Por favor, cópielo manualmente.",
 		"showMore": "Mostrar más",
 		"showLess": "Mostrar menos",
-		"apiKeyRequired": "Clave API requerida"
+		"apiKeyRequired": "Clave API requerida",
+		"save": "Guardar"
 	},
 	"hero": {
 		"badge": "Open Source y Gratis Para Siempre",
@@ -448,6 +463,10 @@
 				"description": "No se pudo copiar el enlace al portapapeles. Por favor, cópialo manualmente."
 			},
 			"noVisibleContent": "Este código QR compartido no tiene contenido visible."
+		},
+		"dynamicSettings": {
+			"title": "Configuración del QR dinámico",
+			"description": "Elige el dominio de tu URL corta y, opcionalmente, una ruta personalizada."
 		}
 	},
 	"loginDialog": {

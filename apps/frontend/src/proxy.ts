@@ -18,9 +18,8 @@ const intlMiddleware = createMiddleware(routing);
 const localePrefix = SUPPORTED_LANGUAGES.filter((l) => l !== 'en').join('|');
 const localePrefixedNonTranslatedRoute = new RegExp(`^/(${localePrefix})/(docs)(/.*)?$`);
 
-// Short URL scan pattern — system 5-char codes or 3–50-char custom slugs.
-// Allowed: lowercase letters, digits, hyphens (no leading/trailing hyphen).
-const scanPattern = /^\/u\/(?:[a-z0-9]{5}|[a-z0-9][a-z0-9-]{1,48}[a-z0-9])$/;
+// Short URL scan pattern — no auth needed
+const scanPattern = /^\/u\/[a-z0-9]{5}$/;
 
 const clerkHandler = clerkMiddleware(async (auth, req, event) => {
 	const pathname = new URL(req.url).pathname;

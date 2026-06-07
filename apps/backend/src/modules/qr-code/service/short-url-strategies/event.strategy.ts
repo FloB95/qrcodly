@@ -1,19 +1,22 @@
 import { GetReservedShortCodeUseCase } from '@/modules/url-shortener/useCase/get-reserved-short-url.use-case';
-import { type IShortUrlStrategy } from './short-url-strategy.interface';
+import {
+	type IShortUrlStrategy,
+	type IShortUrlStrategyContext,
+} from './short-url-strategy.interface';
 import { type TQrCode, type TQrCodeContent } from '@shared/schemas';
 import { container } from 'tsyringe';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { UpdateShortUrlUseCase } from '@/modules/url-shortener/useCase/update-short-url.use-case';
 import { DYNAMIC_QR_BASE_URL } from '@/modules/url-shortener/config/constants';
 import { LinkShortUrlContentTypeError } from '../../error/http/link-short-url-content-type.error';
-import { GetDefaultCustomDomainUseCase } from '@/modules/custom-domain/useCase/get-default-custom-domain.use-case';
+import { resolveStrategyDomainId } from './resolve-strategy-domain';
 
 export class EventUrlStrategy implements IShortUrlStrategy {
 	appliesTo(content: TQrCodeContent) {
 		return content.type === 'event';
 	}
 
-	async handle(qrCode: TQrCode) {
+	async handle(qrCode: TQrCode, ctx?: IShortUrlStrategyContext) {
 		if (qrCode.content.type !== 'event') {
 			throw new LinkShortUrlContentTypeError(qrCode.content.type);
 		}
@@ -24,20 +27,19 @@ export class EventUrlStrategy implements IShortUrlStrategy {
 
 		if (!reserved) throw new ShortUrlNotFoundError();
 
-		// Get user's default custom domain (if any)
-		const defaultDomain = await container
-			.resolve(GetDefaultCustomDomainUseCase)
-			.execute(qrCode.createdBy!);
+		const customDomainId = await resolveStrategyDomainId(qrCode.createdBy!, ctx);
 
 		await container.resolve(UpdateShortUrlUseCase).execute(
 			reserved,
 			{
 				destinationUrl: `${DYNAMIC_QR_BASE_URL}${qrCode.id}`,
 				isActive: true,
-				customDomainId: defaultDomain?.id ?? null,
+				customDomainId,
+				customSlug: ctx?.customSlug ?? undefined,
 			},
 			qrCode.createdBy!,
 			qrCode.id,
+			ctx?.user,
 		);
 
 		return reserved;

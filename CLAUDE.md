@@ -1,5 +1,21 @@
 # CLAUDE.md
 
+> ## ⛔ HARD RULE — NEVER commit or push without explicit instruction
+>
+> **Do not run `git add`, `git commit`, `git push`, `gh pr create`, or any other operation
+> that writes to git history or the remote, unless the user's most recent message
+> explicitly authorizes THIS specific operation.**
+>
+> - Per-commit authorization. Earlier "commit and push" approvals do **not** carry over.
+> - Implementation work being "done" is not authorization.
+> - Auto-mode is **not** a license for git operations.
+> - "Mach alles" / "do everything" does **not** include git.
+> - Pre-commit hook formatting fallout → fix and re-commit only if the original commit was authorized.
+> - If unsure → **ASK**, do not act.
+>
+> When work is finished: stop, summarize changes, **wait**.
+> Violating this rule has caused repeated, severe frustration. Zero exceptions.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview

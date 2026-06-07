@@ -30,7 +30,9 @@ const SaveQrCodeBtn = ({
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
 	const [hasMounted, setHasMounted] = useState(false);
 	const queryClient = useQueryClient();
-	const { resetStore, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
+	const { resetStore, updateLatestQrCode, customSlug, customDomainId } = useQrCodeGeneratorStore(
+		(state) => state,
+	);
 
 	const createQrCodeMutation = useCreateQrCodeMutation();
 
@@ -42,11 +44,19 @@ const SaveQrCodeBtn = ({
 		setNameDialogOpen(false);
 
 		try {
+			// customSlug + customDomainId are only meaningful for dynamic QR codes
+			// (URL/vCard/event); for static QR codes the backend ignores them.
+			const isDynamicQr =
+				(qrCode.content.type === 'url' && qrCode.content.data.isDynamic === true) ||
+				(qrCode.content.type === 'vCard' && qrCode.content.data.isDynamic === true) ||
+				qrCode.content.type === 'event';
 			await createQrCodeMutation.mutateAsync(
 				{
 					config: qrCode.config,
 					content: qrCode.content,
 					name: qrCodeName,
+					customSlug: isDynamicQr && customSlug?.trim() ? customSlug.trim() : null,
+					customDomainId: isDynamicQr ? (customDomainId ?? undefined) : undefined,
 				},
 				{
 					onSuccess: () => {

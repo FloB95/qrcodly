@@ -31,7 +31,21 @@
 			"domainLabel": "Kurz-URL Domain",
 			"submitBtn": "Erstellen",
 			"success": "Kurz-URL erfolgreich erstellt",
-			"successDescription": "Wir haben deine Kurz-URL in deiner Sammlung gespeichert."
+			"successDescription": "Wir haben deine Kurz-URL in deiner Sammlung gespeichert.",
+			"customSlug": {
+				"label": "Eigener Pfad (optional)",
+				"placeholder": "z. B. sommer-aktion",
+				"help": "Kleinbuchstaben, Ziffern und Bindestriche. 3–50 Zeichen.",
+				"proRequired": "Eigene Pfade sind ein Pro-Feature. Upgrade, um sprechende URLs zu vergeben.",
+				"requiresDomain": "Wähle oben eine Custom Domain, um einen eigenen Pfad zu vergeben.",
+				"preview": "Vorschau",
+				"checking": "Verfügbarkeit wird geprüft…",
+				"available": "Pfad ist verfügbar",
+				"taken": "Dieser Pfad ist auf dieser Domain bereits vergeben.",
+				"reserved": "Dieser Pfad ist reserviert und kann nicht verwendet werden.",
+				"invalid": "Ungültiges Format – nur Kleinbuchstaben, Ziffern und Bindestriche.",
+				"notAvailable": "Wähle einen verfügbaren Pfad, bevor du den Short Link erstellst."
+			}
 		},
 		"edit": {
 			"title": "Kurz-URL bearbeiten",
@@ -107,7 +121,8 @@
 		"copyFailed": "Kopieren in die Zwischenablage fehlgeschlagen. Bitte manuell kopieren.",
 		"showMore": "Mehr anzeigen",
 		"showLess": "Weniger anzeigen",
-		"apiKeyRequired": "API-Key erforderlich"
+		"apiKeyRequired": "API-Key erforderlich",
+		"save": "Speichern"
 	},
 	"hero": {
 		"badge": "Open Source & Für Immer Kostenlos",
@@ -448,6 +463,10 @@
 				"description": "Link konnte nicht kopiert werden. Bitte kopiere ihn manuell."
 			},
 			"noVisibleContent": "Dieser geteilte QR Code hat keinen sichtbaren Inhalt."
+		},
+		"dynamicSettings": {
+			"title": "Einstellungen für dynamischen QR-Code",
+			"description": "Wähle die Domain deiner Kurz-URL und optional einen eigenen Pfad."
 		}
 	},
 	"loginDialog": {

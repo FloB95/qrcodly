@@ -7,6 +7,7 @@ type ScanLookupResponse = {
 	destinationUrl: string | null;
 	isActive: boolean;
 	deletedAt: string | null;
+	shortCode: string;
 };
 
 export async function processAnalyticsAndRedirect(req: NextRequest) {
@@ -39,7 +40,13 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 
 	let shortUrl: ScanLookupResponse;
 	try {
-		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}`, {
+		// Pass the visitor's host so the backend can scope custom-slug resolution
+		// to the right custom domain (slugs are unique per-domain, not globally).
+		const lookupUrl = new URL(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}`);
+		if (hostname && hostname !== 'unknown') {
+			lookupUrl.searchParams.set('host', hostname);
+		}
+		const response = await fetch(lookupUrl, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -67,15 +74,28 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		return NextResponse.rewrite(new URL('/404', req.url));
 	}
 
-	// Single consolidated call for all scan analytics
-	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}/record-scan`, {
+	// Rewrite the visitor URL so the path uses the canonical shortCode (the
+	// system-generated 5-char unique key), not the customSlug. This keeps Umami
+	// analytics tied to the stable shortCode — when a slug is freed and reused
+	// later, its history doesn't bleed into the new owner's events.
+	const canonicalUrl = (() => {
+		try {
+			const u = new URL(req.url);
+			u.pathname = `/u/${shortUrl.shortCode}`;
+			return u.toString();
+		} catch {
+			return req.url;
+		}
+	})();
+
+	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${shortUrl.shortCode}/record-scan`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			...internalHeaders,
 		},
 		body: JSON.stringify({
-			url: req.url,
+			url: canonicalUrl,
 			userAgent,
 			hostname,
 			language: language ?? '',

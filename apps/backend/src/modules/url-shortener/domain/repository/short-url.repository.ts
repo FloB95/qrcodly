@@ -2,7 +2,11 @@ import { singleton } from 'tsyringe';
 import { and, desc, eq, inArray, isNull, isNotNull, sql, SQL } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy, type WhereConditions } from '@/core/interface/repository.interface';
-import shortUrl, { TShortUrl, TShortUrlWithDomain } from '../entities/short-url.entity';
+import shortUrl, {
+	TShortUrl,
+	TShortUrlInsert,
+	TShortUrlWithDomain,
+} from '../entities/short-url.entity';
 import { convertWhereConditionToDrizzle } from '@/core/db/utils';
 import shortUrlTag from '../entities/short-url-tag.entity';
 
@@ -103,8 +107,8 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 
 	/**
 	 * Finds a Short URL by its short code, including the custom domain name.
-	 * @param shortCode - The short code of the Short URL.
-	 * @returns A promise that resolves to the Short URL if found, otherwise undefined.
+	 * shortCode is globally unique (system-generated), so this works for any
+	 * owner-scoped operation.
 	 */
 	async findOneByShortCode(shortCode: string): Promise<TShortUrlWithDomain | undefined> {
 		const result = await this.db.query.shortUrl.findFirst({
@@ -114,6 +118,78 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 			},
 		});
 		return result;
+	}
+
+	/**
+	 * Public scan resolution. Tries customSlug first (only on a custom domain),
+	 * then falls back to shortCode — both scoped to the same domain. Soft-deleted
+	 * rows are excluded so historical Umami slugs don't redirect anywhere.
+	 */
+	async findOneByPathAndDomain(
+		path: string,
+		customDomainId: string | null,
+	): Promise<TShortUrlWithDomain | undefined> {
+		if (customDomainId) {
+			const bySlug = await this.db.query.shortUrl.findFirst({
+				where: and(
+					eq(this.table.customSlug, path),
+					eq(this.table.customDomainId, customDomainId),
+					isNull(this.table.deletedAt),
+				),
+				with: { customDomain: true },
+			});
+			if (bySlug) return bySlug;
+		}
+
+		return this.db.query.shortUrl.findFirst({
+			where: and(
+				eq(this.table.shortCode, path),
+				customDomainId
+					? eq(this.table.customDomainId, customDomainId)
+					: isNull(this.table.customDomainId),
+				isNull(this.table.deletedAt),
+			),
+			with: { customDomain: true },
+		});
+	}
+
+	/**
+	 * Slug-availability lookup: returns the active row owning a given (slug, domain).
+	 * Soft-deleted rows are excluded — they free their slug on delete.
+	 */
+	async findOneActiveByCustomSlugAndDomain(
+		customSlug: string,
+		customDomainId: string,
+	): Promise<TShortUrl | undefined> {
+		return this.db.query.shortUrl.findFirst({
+			where: and(
+				eq(this.table.customSlug, customSlug),
+				eq(this.table.customDomainId, customDomainId),
+				isNull(this.table.deletedAt),
+			),
+		});
+	}
+
+	/**
+	 * Cascade soft-delete used when a custom domain itself is being removed.
+	 * Sets deletedAt + clears customSlug so the slug becomes free for reuse on
+	 * other domains. Returns the soft-deleted shortUrls (for cache invalidation).
+	 */
+	async softDeleteByCustomDomainId(customDomainId: string): Promise<TShortUrl[]> {
+		const affected = await this.db
+			.select()
+			.from(this.table)
+			.where(and(eq(this.table.customDomainId, customDomainId), isNull(this.table.deletedAt)))
+			.execute();
+		if (affected.length === 0) return [];
+		const now = new Date();
+		await this.db
+			.update(this.table)
+			.set({ deletedAt: now, customSlug: null, isActive: false, updatedAt: now })
+			.where(and(eq(this.table.customDomainId, customDomainId), isNull(this.table.deletedAt)))
+			.execute();
+		await this.clearCache();
+		return affected;
 	}
 
 	/**
@@ -205,7 +281,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * Creates a new Short URL.
 	 * @param shortUrl - The Short URL to create.
 	 */
-	async create(shortUrl: Omit<TShortUrl, 'createdAt' | 'updatedAt'>): Promise<void> {
+	async create(shortUrl: TShortUrlInsert): Promise<void> {
 		await this.db
 			.insert(this.table)
 			.values({
@@ -213,6 +289,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 				name: shortUrl.name,
 				destinationUrl: shortUrl.destinationUrl,
 				shortCode: shortUrl.shortCode,
+				customSlug: shortUrl.customSlug ?? null,
 				isActive: shortUrl.isActive,
 				customDomainId: shortUrl.customDomainId,
 				qrCodeId: shortUrl.qrCodeId,

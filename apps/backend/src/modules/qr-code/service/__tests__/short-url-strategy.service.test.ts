@@ -103,7 +103,7 @@ describe('ShortUrlStrategyService', () => {
 			const result = await service.handle(mockEditableUrlQrCode);
 
 			expect(mockUrlStrategy.appliesTo).toHaveBeenCalledWith(mockEditableUrlQrCode.content);
-			expect(mockUrlStrategy.handle).toHaveBeenCalledWith(mockEditableUrlQrCode);
+			expect(mockUrlStrategy.handle).toHaveBeenCalledWith(mockEditableUrlQrCode, undefined);
 			expect(result).toEqual(mockShortUrl);
 		});
 
@@ -116,7 +116,7 @@ describe('ShortUrlStrategyService', () => {
 
 			expect(mockEventStrategy.appliesTo).toHaveBeenCalledWith(mockEventQrCode.content);
 
-			expect(mockEventStrategy.handle).toHaveBeenCalledWith(mockEventQrCode);
+			expect(mockEventStrategy.handle).toHaveBeenCalledWith(mockEventQrCode, undefined);
 			expect(result).toEqual(mockShortUrl);
 		});
 
@@ -156,7 +156,7 @@ describe('ShortUrlStrategyService', () => {
 
 			await service.handle(mockEditableUrlQrCode);
 
-			expect(mockUrlStrategy.handle).toHaveBeenCalledWith(mockEditableUrlQrCode);
+			expect(mockUrlStrategy.handle).toHaveBeenCalledWith(mockEditableUrlQrCode, undefined);
 		});
 
 		it('should only execute first matching strategy', async () => {

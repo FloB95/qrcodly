@@ -168,6 +168,7 @@ describe('VCardStrategy', () => {
 				}),
 				'user_123',
 				'qr_code_123',
+				undefined,
 			);
 		});
 
@@ -184,6 +185,7 @@ describe('VCardStrategy', () => {
 				}),
 				expect.anything(),
 				expect.anything(),
+				undefined,
 			);
 		});
 
@@ -200,6 +202,7 @@ describe('VCardStrategy', () => {
 				}),
 				expect.anything(),
 				expect.anything(),
+				undefined,
 			);
 		});
 
@@ -214,6 +217,7 @@ describe('VCardStrategy', () => {
 				expect.anything(),
 				expect.anything(),
 				'qr_code_123',
+				undefined,
 			);
 		});
 

@@ -4,6 +4,7 @@ import { apiRequest } from '../utils';
 import { qrCodeQueryKeys } from './qr-code';
 import type {
 	TAnalyticsResponseDto,
+	TCheckSlugAvailabilityResponseDto,
 	TCreateShortUrlDto,
 	TShortUrl,
 	TShortUrlWithCustomDomainPaginatedResponseDto,
@@ -17,7 +18,37 @@ export const urlShortenerQueryKeys = {
 	shortCodeAnalytics: ['shortCodeAnalytics'],
 	reservedShortUrl: ['reservedShortUrl'],
 	listShortUrls: ['listShortUrls'],
+	checkSlug: ['checkSlug'],
 } as const;
+
+export function useCheckSlugAvailabilityQuery(slug: string, customDomainId: string | null) {
+	const { getToken, isSignedIn } = useAuth();
+	const trimmed = slug.trim().toLowerCase();
+
+	return useQuery<TCheckSlugAvailabilityResponseDto>({
+		queryKey: [...urlShortenerQueryKeys.checkSlug, customDomainId, trimmed],
+		queryFn: async () => {
+			const token = await getToken();
+			const params = new URLSearchParams({
+				slug: trimmed,
+				customDomainId: customDomainId ?? '',
+			});
+			return apiRequest<TCheckSlugAvailabilityResponseDto>(
+				`/short-url/check-slug?${params.toString()}`,
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
+		},
+		enabled: !!isSignedIn && !!customDomainId && trimmed.length >= 3,
+		staleTime: 0,
+		retry: false,
+	});
+}
 
 // Function to delete a configuration template
 export function useGetReservedShortUrlQuery() {

@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { DeleteCustomDomainUseCase } from '../delete-custom-domain.use-case';
 import type CustomDomainRepository from '../../domain/repository/custom-domain.repository';
+import type ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
 import { type CloudflareService } from '../../service/cloudflare.service';
 import { type Logger } from '@/core/logging';
 import { mock, type MockProxy } from 'jest-mock-extended';
@@ -10,6 +11,7 @@ import { CloudflareApiError } from '../../service/cloudflare.service';
 describe('DeleteCustomDomainUseCase', () => {
 	let useCase: DeleteCustomDomainUseCase;
 	let mockRepository: MockProxy<CustomDomainRepository>;
+	let mockShortUrlRepository: MockProxy<ShortUrlRepository>;
 	let mockCloudflareService: MockProxy<CloudflareService>;
 	let mockLogger: MockProxy<Logger>;
 
@@ -42,12 +44,19 @@ describe('DeleteCustomDomainUseCase', () => {
 
 	beforeEach(() => {
 		mockRepository = mock<CustomDomainRepository>();
+		mockShortUrlRepository = mock<ShortUrlRepository>();
 		mockCloudflareService = mock<CloudflareService>();
 		mockLogger = mock<Logger>();
-		useCase = new DeleteCustomDomainUseCase(mockRepository, mockCloudflareService, mockLogger);
+		useCase = new DeleteCustomDomainUseCase(
+			mockRepository,
+			mockShortUrlRepository,
+			mockCloudflareService,
+			mockLogger,
+		);
 
 		mockCloudflareService.deleteCustomHostname.mockResolvedValue(undefined);
 		mockRepository.delete.mockResolvedValue(true);
+		mockShortUrlRepository.softDeleteByCustomDomainId.mockResolvedValue([]);
 	});
 
 	afterEach(() => {
@@ -99,6 +108,7 @@ describe('DeleteCustomDomainUseCase', () => {
 				id: mockDomainWithCloudflare.id,
 				domain: mockDomainWithCloudflare.domain,
 				createdBy: mockDomainWithCloudflare.createdBy,
+				cascadedShortUrls: 0,
 			},
 		});
 	});

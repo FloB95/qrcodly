@@ -52,11 +52,17 @@ describe('getShortUrl (internal API - scan lookup)', () => {
 		expect(body).not.toHaveProperty('customDomain');
 		expect(body).not.toHaveProperty('customDomainId');
 		expect(body).not.toHaveProperty('id');
-		expect(body).not.toHaveProperty('shortCode');
 		expect(body).not.toHaveProperty('name');
 
-		// Only expected fields
-		expect(Object.keys(body).sort()).toEqual(['deletedAt', 'destinationUrl', 'isActive']);
+		// shortCode is intentionally exposed: the visitor URL may use a customSlug,
+		// and the proxy needs the canonical shortCode to rewrite the path before
+		// forwarding analytics to Umami (so reused slugs don't pollute history).
+		expect(Object.keys(body).sort()).toEqual([
+			'deletedAt',
+			'destinationUrl',
+			'isActive',
+			'shortCode',
+		]);
 	});
 
 	it('should return null destinationUrl for reserved URLs', async () => {
