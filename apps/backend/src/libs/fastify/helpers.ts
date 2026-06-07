@@ -10,6 +10,7 @@ import {
 import { env } from '@/core/config/env';
 import { deepMerge, mergeZodErrorObjects } from '@/utils/general';
 import {
+	AccountBannedError,
 	BadRequestError,
 	CustomApiError,
 	InsufficientScopeError,
@@ -63,6 +64,10 @@ export const fastifyErrorHandler = (
 		if (error instanceof BadRequestError && error.zodError) {
 			const mergedErrors = mergeZodErrorObjects(error.zodError.issues);
 			responsePayload.fieldErrors = mergedErrors;
+		}
+
+		if (error instanceof AccountBannedError) {
+			responsePayload.errorCode = error.errorCode;
 		}
 
 		if (error instanceof InsufficientScopeError) {

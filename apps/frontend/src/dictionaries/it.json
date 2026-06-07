@@ -330,6 +330,12 @@
 			"scrollRight": "Scorri a destra"
 		}
 	},
+	"accountBanned": {
+		"title": "Account sospeso",
+		"description": "Il tuo account è stato sospeso per violazione dei nostri termini di servizio.",
+		"note": "Sei stato disconnesso. Se ritieni che si tratti di un errore, contattaci a:",
+		"button": "Torna alla home"
+	},
 	"qrCodeDisabled": {
 		"title": "Codice QR disabilitato",
 		"description": "Spiacenti, questo codice QR non è più attivo. La destinazione non è più disponibile.",

@@ -330,6 +330,12 @@
 			"scrollRight": "Scroll right"
 		}
 	},
+	"accountBanned": {
+		"title": "Account Suspended",
+		"description": "Your account has been suspended for violating our terms of service.",
+		"note": "You have been signed out. If you believe this is a mistake, contact us at:",
+		"button": "Go Back Home"
+	},
 	"qrCodeDisabled": {
 		"title": "QR code Disabled",
 		"description": "Sorry, this QR code is no longer active. The destination it pointed to is unavailable.",

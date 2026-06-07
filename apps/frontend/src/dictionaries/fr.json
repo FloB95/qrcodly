@@ -330,6 +330,12 @@
 			"scrollRight": "Défiler vers la droite"
 		}
 	},
+	"accountBanned": {
+		"title": "Compte suspendu",
+		"description": "Votre compte a été suspendu pour non-respect de nos conditions d'utilisation.",
+		"note": "Vous avez été déconnecté. Si vous pensez qu'il s'agit d'une erreur, contactez-nous à :",
+		"button": "Retour à l'accueil"
+	},
 	"qrCodeDisabled": {
 		"title": "Code QR désactivé",
 		"description": "Désolé, ce code QR n'est plus actif. La destination n'est plus disponible.",
