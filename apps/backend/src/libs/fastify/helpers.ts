@@ -87,6 +87,7 @@ export const fastifyErrorHandler = (
 			error: {
 				type: error.constructor.name,
 				message: error.message,
+				userId: error instanceof AccountBannedError ? error.userId : undefined,
 				zodErrors: (error as BadRequestError)?.zodError
 					? (error as BadRequestError)?.zodError?.issues
 					: undefined,

@@ -81,7 +81,7 @@ export async function addUserToRequestMiddleware(request: FastifyRequest, _reply
 
 	if (userId) {
 		if (await resolveUserBanStatus(userId)) {
-			throw new AccountBannedError();
+			throw new AccountBannedError(userId);
 		}
 
 		const plan = await resolveUserPlan(userId);
