@@ -98,7 +98,7 @@ export default async function Page({ params }: DefaultPageParams) {
 				}}
 			>
 				<article className="pb-10 sm:pb-24">
-					<Container>
+					<Container disableOverflow>
 						<Hero />
 
 						{/* Main QR Code Generator Tool */}

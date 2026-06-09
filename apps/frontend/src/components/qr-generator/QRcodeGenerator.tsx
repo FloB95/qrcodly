@@ -179,7 +179,9 @@ export const QRcodeGenerator = ({
 							</TabsContent>
 						</div>
 
-						<QrOutputComponent />
+						<div className="md:sticky md:top-28 md:self-start">
+							<QrOutputComponent />
+						</div>
 					</div>
 				</div>
 			</div>
