@@ -57,6 +57,10 @@
 			"disable": "Deactiveren"
 		},
 		"error": {
+			"maliciousDestination": {
+				"title": "Schadelijke bestemmings-URL",
+				"message": "Deze bestemmings-URL is gemarkeerd als mogelijk schadelijk en kan niet worden gebruikt. Als je denkt dat dit een vergissing is, neem dan contact op met de ondersteuning."
+			},
 			"toggleActiveState": {
 				"title": "Fout bij het wijzigen van de status",
 				"message": "Er is een fout opgetreden bij het wijzigen van de status. We zijn hiervan op de hoogte gesteld en zullen het probleem zo snel mogelijk oplossen."

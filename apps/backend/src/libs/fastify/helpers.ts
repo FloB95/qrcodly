@@ -61,6 +61,12 @@ export const fastifyErrorHandler = (
 			code: error.statusCode,
 		};
 
+		// Expose a machine-readable errorCode for any error that defines one (frontend mapping).
+		const maybeErrorCode = (error as { errorCode?: unknown }).errorCode;
+		if (typeof maybeErrorCode === 'string') {
+			responsePayload.errorCode = maybeErrorCode;
+		}
+
 		if (error instanceof BadRequestError && error.zodError) {
 			const mergedErrors = mergeZodErrorObjects(error.zodError.issues);
 			responsePayload.fieldErrors = mergedErrors;

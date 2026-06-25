@@ -57,6 +57,10 @@
 			"disable": "Désactiver"
 		},
 		"error": {
+			"maliciousDestination": {
+				"title": "URL de destination malveillante",
+				"message": "Cette URL de destination a été signalée comme potentiellement malveillante et ne peut pas être utilisée. Si vous pensez qu'il s'agit d'une erreur, veuillez contacter le support."
+			},
 			"toggleActiveState": {
 				"title": "Erreur lors du changement d'état",
 				"message": "Une erreur s'est produite lors du changement d'état. Nous avons été informés et résoudrons le problème dès que possible."

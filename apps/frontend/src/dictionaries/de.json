@@ -57,6 +57,10 @@
 			"disable": "Deaktivieren"
 		},
 		"error": {
+			"maliciousDestination": {
+				"title": "Schädliche Ziel-URL",
+				"message": "Diese Ziel-URL wurde als möglicherweise schädlich eingestuft und kann nicht verwendet werden. Falls dies ein Irrtum ist, kontaktiere bitte den Support."
+			},
 			"toggleActiveState": {
 				"title": "Fehler beim Ändern des Status",
 				"message": "Beim Ändern des Status ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem so schnell wie möglich beheben."
