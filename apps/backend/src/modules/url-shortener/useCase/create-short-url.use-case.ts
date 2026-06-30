@@ -5,6 +5,7 @@ import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { TShortUrl, TShortUrlWithDomain } from '../domain/entities/short-url.entity';
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 import { shortUrlsCreated } from '@/core/metrics';
+import { DestinationUrlSafetyService } from '../service/destination-url-safety.service';
 
 /**
  * Internal input type for creating a short URL.
@@ -27,6 +28,8 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 		@inject(CustomDomainValidationService)
 		private customDomainValidationService: CustomDomainValidationService,
 		@inject(Logger) private logger: Logger,
+		@inject(DestinationUrlSafetyService)
+		private destinationUrlSafetyService: DestinationUrlSafetyService,
 	) {}
 
 	/**
@@ -36,6 +39,12 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 	 * @returns A promise that resolves with the newly created ShortUrl entity.
 	 */
 	async execute(dto: CreateShortUrlInput, createdBy: string): Promise<TShortUrlWithDomain> {
+		await this.destinationUrlSafetyService.assertDestinationUrlSafe(
+			dto.destinationUrl,
+			createdBy,
+			'create',
+		);
+
 		// Validate custom domain ownership and readiness if provided
 		if (dto.customDomainId) {
 			await this.customDomainValidationService.validateForUserUse(dto.customDomainId, createdBy);

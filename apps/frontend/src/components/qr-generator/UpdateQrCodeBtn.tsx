@@ -20,6 +20,7 @@ type UpdateBtnDto = Pick<
 >;
 const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const t = useTranslations('qrCode');
+	const tSafety = useTranslations('shortUrl');
 	const [hasMounted, setHasMounted] = useState(false);
 	const [showInfoDialog, setShowInfoDialog] = useState(false);
 	const [infoDialogIsOpen, setInfoDialogIsOpen] = useState(false);
@@ -97,10 +98,15 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 							fieldErrors: error?.fieldErrors,
 						});
 
+						const isMaliciousUrl = error.errorCode === 'MALICIOUS_DESTINATION_URL';
 						toast({
 							variant: 'destructive',
-							title: t('update.errorTitle'),
-							description: error.message,
+							title: isMaliciousUrl
+								? tSafety('error.maliciousDestination.title')
+								: t('update.errorTitle'),
+							description: isMaliciousUrl
+								? tSafety('error.maliciousDestination.message')
+								: error.message,
 							duration: 5000,
 						});
 					},

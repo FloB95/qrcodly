@@ -91,10 +91,13 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 			posthog.capture('error:short-url-created', {
 				error: { code: error.code, message: error.message },
 			});
+			const isMaliciousUrl = error.errorCode === 'MALICIOUS_DESTINATION_URL';
 			toast({
 				variant: 'destructive',
-				title: t('error.create.title'),
-				description: error.message,
+				title: isMaliciousUrl ? t('error.maliciousDestination.title') : t('error.create.title'),
+				description: isMaliciousUrl
+					? t('error.maliciousDestination.message')
+					: t('error.create.message'),
 			});
 		}
 	};

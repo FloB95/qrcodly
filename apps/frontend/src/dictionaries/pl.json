@@ -57,6 +57,10 @@
 			"disable": "Wyłącz"
 		},
 		"error": {
+			"maliciousDestination": {
+				"title": "Złośliwy docelowy adres URL",
+				"message": "Ten docelowy adres URL został oznaczony jako potencjalnie złośliwy i nie może zostać użyty. Jeśli uważasz, że to pomyłka, skontaktuj się z pomocą techniczną."
+			},
 			"toggleActiveState": {
 				"title": "Błąd zmiany statusu",
 				"message": "Wystąpił błąd podczas zmiany statusu. Zostaliśmy powiadomieni i rozwiążemy problem tak szybko, jak to możliwe."

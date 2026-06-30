@@ -57,6 +57,10 @@
 			"disable": "Disattiva"
 		},
 		"error": {
+			"maliciousDestination": {
+				"title": "URL di destinazione dannoso",
+				"message": "Questo URL di destinazione è stato contrassegnato come potenzialmente dannoso e non può essere utilizzato. Se ritieni che sia un errore, contatta l'assistenza."
+			},
 			"toggleActiveState": {
 				"title": "Errore durante la modifica dello stato",
 				"message": "Si è verificato un errore durante la modifica dello stato. Siamo stati avvisati e risolveremo il problema il prima possibile."

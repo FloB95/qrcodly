@@ -9,6 +9,7 @@ import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-fo
 import { RedirectLoopError } from '../error/http/redirect-loop.error';
 import { buildShortUrl } from '../utils';
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
+import { DestinationUrlSafetyService } from '../service/destination-url-safety.service';
 
 /**
  * Internal input type for updating a short URL.
@@ -33,6 +34,8 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		@inject(Logger) private logger: Logger,
 		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
+		@inject(DestinationUrlSafetyService)
+		private destinationUrlSafetyService: DestinationUrlSafetyService,
 	) {}
 
 	/**
@@ -64,6 +67,17 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		// prevent linking if qr code points to same url to avoid redirect loops
 		if (updatesDto?.destinationUrl === buildShortUrl(shortUrl.shortCode)) {
 			throw new RedirectLoopError();
+		}
+
+		if (
+			updatesDto.destinationUrl !== undefined &&
+			updatesDto.destinationUrl !== shortUrl.destinationUrl
+		) {
+			await this.destinationUrlSafetyService.assertDestinationUrlSafe(
+				updatesDto.destinationUrl,
+				updatedBy,
+				'update',
+			);
 		}
 
 		if (linkedQrCodeId) {

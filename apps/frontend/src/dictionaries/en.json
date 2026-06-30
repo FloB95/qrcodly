@@ -57,6 +57,10 @@
 			"disable": "Disable"
 		},
 		"error": {
+			"maliciousDestination": {
+				"title": "Malicious destination URL",
+				"message": "This destination URL was flagged as potentially malicious and can't be used. If you believe this is a mistake, please contact support."
+			},
 			"toggleActiveState": {
 				"title": "Error Changing State",
 				"message": "There was an error changing the state. We've been notified and will fix it as soon as possible."

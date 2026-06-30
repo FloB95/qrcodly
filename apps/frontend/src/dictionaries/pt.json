@@ -57,6 +57,10 @@
 			"disable": "Desativar"
 		},
 		"error": {
+			"maliciousDestination": {
+				"title": "URL de destino maliciosa",
+				"message": "Esta URL de destino foi sinalizada como potencialmente maliciosa e não pode ser usada. Se você acredita que isto é um engano, entre em contato com o suporte."
+			},
 			"toggleActiveState": {
 				"title": "Erro ao Alterar Estado",
 				"message": "Ocorreu um erro ao alterar o estado. Fomos notificados e corrigiremos o mais rápido possível."

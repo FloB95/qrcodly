@@ -1,23 +1,97 @@
 import type { FastifyInstance } from 'fastify';
 import { container } from 'tsyringe';
+import { randomUUID } from 'crypto';
+import { eq } from 'drizzle-orm';
 import { QrCodeDefaults, type TRenderQrCodeDto } from '@shared/schemas';
 import { QR_CODE_API_PATH, getTestContext } from './utils';
-import { resetTestState } from '@/tests/shared/test-context';
+import { resetTestState, TEST_USER_PRO_ID } from '@/tests/shared/test-context';
 import { KeyCache } from '@/core/cache/key-cache';
 import { RenderQrCodeUseCase } from '../../useCase/render-qr-code.use-case';
+import { createApiKeyRequest } from '@/modules/api-key/http/__tests__/utils';
+import { ClerkApiKeysService } from '@/modules/api-key/service/clerk-api-keys.service';
+import db from '@/core/db';
+import userSubscription from '@/modules/billing/domain/entities/user-subscription.entity';
 
 describe('renderQrCode', () => {
 	let testServer: FastifyInstance;
-	let accessToken: string;
+	// /qr-code/render is api_key-only (third-party plugins) — auth via API key, not session token
+	let apiKeySecret: string;
+	let createdApiKeyId: string | null = null;
+	let proSubscriptionId: string | null = null;
 
 	beforeAll(async () => {
 		await resetTestState();
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
-		accessToken = ctx.accessToken;
+
+		// minting an API key requires Pro — seed a Pro subscription, then flush the plan cache
+		await db
+			.delete(userSubscription)
+			.where(eq(userSubscription.userId, TEST_USER_PRO_ID))
+			.execute();
+		proSubscriptionId = randomUUID();
+		const now = new Date();
+		const periodEnd = new Date();
+		periodEnd.setDate(periodEnd.getDate() + 30);
+		await db
+			.insert(userSubscription)
+			.values({
+				id: proSubscriptionId,
+				userId: TEST_USER_PRO_ID,
+				stripeCustomerId: `cus_test_${randomUUID().slice(0, 8)}`,
+				stripeSubscriptionId: `sub_test_${randomUUID().slice(0, 8)}`,
+				stripePriceId: 'price_test_monthly',
+				status: 'active',
+				currentPeriodStart: now,
+				currentPeriodEnd: periodEnd,
+				cancelAtPeriodEnd: false,
+				gracePeriodEndsAt: null,
+				proFeaturesDisabledAt: null,
+				cancellationNotifiedAt: null,
+				cancellationReminderSentAt: null,
+				pastDueNotifiedAt: null,
+				createdAt: now,
+				updatedAt: now,
+			})
+			.execute();
+
+		await container.resolve(KeyCache).flushAllCache();
+
+		// Clerk blocks reusing a key name+subject — clear leftovers before minting
+		const clerk = container.resolve(ClerkApiKeysService);
+		try {
+			const existing = await clerk.apiKeys.list({
+				subject: TEST_USER_PRO_ID,
+				includeInvalid: true,
+			});
+			await Promise.allSettled(existing.data.map((k) => clerk.apiKeys.delete(k.id)));
+		} catch {
+			// best-effort cleanup — proceed
+		}
+
+		const createResponse = await createApiKeyRequest(
+			testServer,
+			{ name: `render-test-${randomUUID().slice(0, 8)}`, scopes: ['read'] },
+			ctx.accessTokenPro,
+		);
+		expect(createResponse.statusCode).toBe(201);
+		const created = JSON.parse(createResponse.payload) as { id: string; secret: string };
+		createdApiKeyId = created.id;
+		apiKeySecret = created.secret;
 	});
 
-	const render = async (body: Partial<TRenderQrCodeDto>, token = accessToken) =>
+	afterAll(async () => {
+		const clerk = container.resolve(ClerkApiKeysService);
+		if (createdApiKeyId) {
+			await Promise.allSettled([clerk.apiKeys.delete(createdApiKeyId)]);
+		}
+		if (proSubscriptionId) {
+			await db.delete(userSubscription).where(eq(userSubscription.id, proSubscriptionId)).execute();
+		}
+		await resetTestState();
+	});
+
+	const render = async (body: Partial<TRenderQrCodeDto>, token = apiKeySecret) =>
 		testServer.inject({
 			method: 'POST',
 			url: `${QR_CODE_API_PATH}/render`,
@@ -89,7 +163,7 @@ describe('renderQrCode', () => {
 			method: 'POST',
 			url: `${QR_CODE_API_PATH}/render`,
 			headers: {
-				Authorization: `Bearer ${accessToken}`,
+				Authorization: `Bearer ${apiKeySecret}`,
 				'Content-Type': 'application/json',
 				'If-None-Match': etag,
 			},
@@ -169,7 +243,7 @@ describe('renderQrCode', () => {
 				method: 'POST',
 				url: `${QR_CODE_API_PATH}/render`,
 				headers: {
-					Authorization: `Bearer ${accessToken}`,
+					Authorization: `Bearer ${apiKeySecret}`,
 					'Content-Type': 'application/json',
 					'If-None-Match': etag,
 				},

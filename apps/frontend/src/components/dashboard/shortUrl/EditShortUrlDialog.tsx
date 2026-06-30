@@ -92,10 +92,13 @@ export function EditShortUrlDialog({
 				shortCode: shortUrl.shortCode,
 				error: { code: error.code, message: error.message },
 			});
+			const isMaliciousUrl = error.errorCode === 'MALICIOUS_DESTINATION_URL';
 			toast({
 				variant: 'destructive',
-				title: t('error.update.title'),
-				description: error.message,
+				title: isMaliciousUrl ? t('error.maliciousDestination.title') : t('error.update.title'),
+				description: isMaliciousUrl
+					? t('error.maliciousDestination.message')
+					: t('error.update.message'),
 			});
 		}
 	};

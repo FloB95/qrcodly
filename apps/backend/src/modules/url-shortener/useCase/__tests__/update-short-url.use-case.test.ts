@@ -12,6 +12,7 @@ import type { TQrCode } from '@shared/schemas';
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
 import { RedirectLoopError } from '../../error/http/redirect-loop.error';
 import { buildShortUrl } from '../../utils';
+import type { DestinationUrlSafetyService } from '../../service/destination-url-safety.service';
 
 jest.mock('../../utils', () => ({
 	buildShortUrl: jest.fn((shortCode: string) => `https://short.url/${shortCode}`),
@@ -24,6 +25,7 @@ describe('UpdateShortUrlUseCase', () => {
 	let mockQrCodeRepository: jest.Mocked<QrCodeRepository>;
 	let mockLogger: jest.Mocked<Logger>;
 	let mockEventEmitter: jest.Mocked<EventEmitter>;
+	let mockDestinationUrlSafetyService: jest.Mocked<DestinationUrlSafetyService>;
 
 	beforeEach(() => {
 		mockShortUrlRepository = mock<ShortUrlRepository>();
@@ -31,12 +33,14 @@ describe('UpdateShortUrlUseCase', () => {
 		mockQrCodeRepository = mock<QrCodeRepository>();
 		mockLogger = mock<Logger>();
 		mockEventEmitter = mock<EventEmitter>();
+		mockDestinationUrlSafetyService = mock<DestinationUrlSafetyService>();
 		useCase = new UpdateShortUrlUseCase(
 			mockShortUrlRepository,
 			mockCustomDomainValidationService,
 			mockLogger,
 			mockQrCodeRepository,
 			mockEventEmitter,
+			mockDestinationUrlSafetyService,
 		);
 		jest.clearAllMocks();
 	});

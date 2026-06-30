@@ -25,6 +25,7 @@ const SaveQrCodeBtn = ({
 	qrCode: TCreateQrCodeDto & { config: NonNullable<TCreateQrCodeDto['config']> };
 }) => {
 	const t = useTranslations('qrCode');
+	const tSafety = useTranslations('shortUrl');
 	const { isSignedIn } = useAuth();
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
@@ -101,10 +102,15 @@ const SaveQrCodeBtn = ({
 							},
 						});
 
+						const isMaliciousUrl = error.errorCode === 'MALICIOUS_DESTINATION_URL';
 						toast({
 							variant: 'destructive',
-							title: t('download.errorTitle'),
-							description: error.message,
+							title: isMaliciousUrl
+								? tSafety('error.maliciousDestination.title')
+								: t('download.errorTitle'),
+							description: isMaliciousUrl
+								? tSafety('error.maliciousDestination.message')
+								: error.message,
 							duration: 5000,
 						});
 					},
