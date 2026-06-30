@@ -96,7 +96,9 @@ export function EditShortUrlDialog({
 			toast({
 				variant: 'destructive',
 				title: isMaliciousUrl ? t('error.maliciousDestination.title') : t('error.update.title'),
-				description: isMaliciousUrl ? t('error.maliciousDestination.message') : error.message,
+				description: isMaliciousUrl
+					? t('error.maliciousDestination.message')
+					: t('error.update.message'),
 			});
 		}
 	};

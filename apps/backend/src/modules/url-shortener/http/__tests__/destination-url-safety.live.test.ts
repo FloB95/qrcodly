@@ -2,6 +2,7 @@
 // GOOGLE_WEB_RISK_API_KEY (skipped without it); per-test Redis reset avoids banning the shared user.
 import { container } from 'tsyringe';
 import { getTestContext, resetTestState, TEST_USER_ID } from '@/tests/shared/test-context';
+import { UserBanService } from '@/core/auth';
 import { KeyCache } from '@/core/cache';
 import { env } from '@/core/config/env';
 import type { FastifyInstance } from 'fastify';
@@ -23,6 +24,8 @@ describeLive('destinationUrl safety — live Web Risk', () => {
 		const ctx = await getTestContext();
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
+		// clear any persisted ban for the shared user so leftover state can't fail the suite
+		await container.resolve(UserBanService).unban(TEST_USER_ID);
 	});
 
 	// Drop the violation counter before each test so a flagged attempt never

@@ -95,7 +95,9 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 			toast({
 				variant: 'destructive',
 				title: isMaliciousUrl ? t('error.maliciousDestination.title') : t('error.create.title'),
-				description: isMaliciousUrl ? t('error.maliciousDestination.message') : error.message,
+				description: isMaliciousUrl
+					? t('error.maliciousDestination.message')
+					: t('error.create.message'),
 			});
 		}
 	};

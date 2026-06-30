@@ -7,7 +7,7 @@ import { env } from '@/core/config/env';
 const WEB_RISK_ENDPOINT = 'https://webrisk.googleapis.com/v1/uris:search';
 const THREAT_TYPES = ['MALWARE', 'SOCIAL_ENGINEERING', 'UNWANTED_SOFTWARE'] as const;
 const REQUEST_TIMEOUT_MS = 4000;
-const SAFE_CACHE_TTL_SECONDS = 12 * 3600; // cache "safe" verdicts for 12h to save quota/latency
+const SAFE_CACHE_TTL_SECONDS = 5 * 60; // short TTL so a newly-listed threat isn't allow-cached for long
 const CACHE_PREFIX = 'url_safety:lookup:';
 
 export interface UrlSafetyVerdict {

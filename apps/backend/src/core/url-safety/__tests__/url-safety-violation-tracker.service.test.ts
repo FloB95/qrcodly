@@ -63,7 +63,7 @@ describe('UrlSafetyViolationTracker', () => {
 		expect(result).toEqual({ banned: false, violationCount: 1 });
 	});
 
-	it('does not reset the counter TTL on the second violation and does not ban', async () => {
+	it('refreshes the counter TTL on every violation and does not ban', async () => {
 		mockRedis.incr.mockResolvedValue(2);
 
 		const result = await tracker.recordViolation(
@@ -73,8 +73,8 @@ describe('UrlSafetyViolationTracker', () => {
 			'update',
 		);
 
-		// The counter key TTL is only set on the first increment; the URL trail still gets its own TTL.
-		expect(mockRedis.expire).not.toHaveBeenCalledWith(COUNT_KEY, expect.any(Number));
+		// TTL is refreshed on every hit so the counter is never left without an expiry.
+		expect(mockRedis.expire).toHaveBeenCalledWith(COUNT_KEY, expect.any(Number));
 		expect(mockUserBanService.ban).not.toHaveBeenCalled();
 		expect(result).toEqual({ banned: false, violationCount: 2 });
 	});
@@ -82,14 +82,14 @@ describe('UrlSafetyViolationTracker', () => {
 	it('bans the user on the third violation with an auditable reason and URL trail', async () => {
 		mockRedis.incr.mockResolvedValue(3);
 		mockRedis.lrange.mockResolvedValue([
-			JSON.stringify({ url: 'https://a.example.com', threatTypes: ['MALWARE'], context: 'create' }),
+			JSON.stringify({ host: 'a.example.com', threatTypes: ['MALWARE'], context: 'create' }),
 			JSON.stringify({
-				url: 'https://b.example.com',
+				host: 'b.example.com',
 				threatTypes: ['SOCIAL_ENGINEERING'],
 				context: 'create',
 			}),
 			JSON.stringify({
-				url: 'https://c.example.com',
+				host: 'c.example.com',
 				threatTypes: ['UNWANTED_SOFTWARE'],
 				context: 'update',
 			}),
@@ -109,8 +109,8 @@ describe('UrlSafetyViolationTracker', () => {
 				source: 'system:web-risk',
 				details: expect.objectContaining({
 					violationCount: 3,
-					flaggedUrls: expect.arrayContaining([
-						expect.objectContaining({ url: 'https://a.example.com' }),
+					flaggedHosts: expect.arrayContaining([
+						expect.objectContaining({ host: 'a.example.com' }),
 					]),
 				}),
 			}),
@@ -130,7 +130,7 @@ describe('UrlSafetyViolationTracker', () => {
 			'url_safety.violation',
 			expect.objectContaining({
 				userId,
-				destinationUrl: 'https://bad.example.com',
+				destinationHost: 'bad.example.com',
 				threatTypes: ['MALWARE'],
 				violationCount: 1,
 				context: 'create',

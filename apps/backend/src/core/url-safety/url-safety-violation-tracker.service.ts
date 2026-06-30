@@ -35,32 +35,41 @@ export class UrlSafetyViolationTracker {
 		const urlsKey = `${URLS_PREFIX}${userId}`;
 
 		const violationCount = await client.incr(countKey);
-		if (violationCount === 1) {
-			await client.expire(countKey, WINDOW_SECONDS);
-		}
+		// refresh the TTL on every hit so the counter is never left without an expiry
+		await client.expire(countKey, WINDOW_SECONDS);
 
-		// audit trail of offending URLs (capped, expiring)
-		await client.rpush(urlsKey, JSON.stringify({ url, threatTypes, context }));
+		// audit trail of offending hosts (capped, expiring) — redacted, never full URLs
+		await client.rpush(
+			urlsKey,
+			JSON.stringify({ host: this.redactUrl(url), threatTypes, context }),
+		);
 		await client.ltrim(urlsKey, -MAX_TRACKED_URLS, -1);
 		await client.expire(urlsKey, WINDOW_SECONDS);
 
 		this.logger.warn('url_safety.violation', {
 			userId,
-			destinationUrl: url,
+			destinationHost: this.redactUrl(url),
 			threatTypes,
 			violationCount,
 			context,
 		});
 
 		if (violationCount > MAX_VIOLATIONS) {
-			const flaggedUrls = await this.readTrail(urlsKey);
+			const flaggedHosts = await this.readTrail(urlsKey);
 			await this.userBanService.ban(userId, {
 				reason: 'repeated-malicious-destination-urls',
 				source: 'system:web-risk',
-				details: { violationCount, flaggedUrls },
+				details: { violationCount, flaggedHosts },
 			});
 			// clear on ban so a later unban starts fresh, not instantly re-banned
-			await this.clearViolations(userId);
+			try {
+				await this.clearViolations(userId);
+			} catch (error) {
+				this.logger.error('url_safety.clear_violations_failed', {
+					userId,
+					error: error as Error,
+				});
+			}
 			return { banned: true, violationCount };
 		}
 
@@ -72,6 +81,15 @@ export class UrlSafetyViolationTracker {
 		const client = this.cache.getClient();
 		await client.del(`${COUNT_PREFIX}${userId}`);
 		await client.del(`${URLS_PREFIX}${userId}`);
+	}
+
+	// hostname only — never persist/log full user-supplied URLs (paths/queries may carry secrets/PII)
+	private redactUrl(url: string): string {
+		try {
+			return new URL(url).hostname;
+		} catch {
+			return '[invalid-url]';
+		}
 	}
 
 	private async readTrail(urlsKey: string): Promise<unknown[]> {

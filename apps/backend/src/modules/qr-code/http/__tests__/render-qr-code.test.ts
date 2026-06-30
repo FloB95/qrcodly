@@ -74,6 +74,7 @@ describe('renderQrCode', () => {
 			{ name: `render-test-${randomUUID().slice(0, 8)}`, scopes: ['read'] },
 			ctx.accessTokenPro,
 		);
+		expect(createResponse.statusCode).toBe(201);
 		const created = JSON.parse(createResponse.payload) as { id: string; secret: string };
 		createdApiKeyId = created.id;
 		apiKeySecret = created.secret;
@@ -87,6 +88,7 @@ describe('renderQrCode', () => {
 		if (proSubscriptionId) {
 			await db.delete(userSubscription).where(eq(userSubscription.id, proSubscriptionId)).execute();
 		}
+		await resetTestState();
 	});
 
 	const render = async (body: Partial<TRenderQrCodeDto>, token = apiKeySecret) =>
