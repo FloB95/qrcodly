@@ -95,7 +95,7 @@
 	},
 	"devDependencies": {
 		"@next/bundle-analyzer": "^16.1.4",
-		"@radix-ui/react-direction": "1.1.1",
+		"@radix-ui/react-direction": "1.1.2",
 		"@radix-ui/react-slot": "^1.2.4",
 		"@svgr/webpack": "^8.1.0",
 		"@tailwindcss/postcss": "^4.1.18",
@@ -121,7 +121,7 @@
 	},
 	"packageManager": "pnpm@10.2.1",
 	"peerDependencies": {
-		"@radix-ui/react-direction": "1.1.1",
+		"@radix-ui/react-direction": "1.1.2",
 		"@radix-ui/react-slot": "^1.2.4"
 	}
 }
