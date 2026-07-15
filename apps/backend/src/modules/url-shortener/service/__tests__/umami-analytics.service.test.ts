@@ -131,6 +131,44 @@ describe('UmamiAnalyticsService', () => {
 		});
 	});
 
+	describe('sendEvent', () => {
+		const payload = {
+			url: 'https://qrco.ly/u/abc12',
+			userAgent: 'Mozilla/5.0',
+			hostname: 'qrco.ly',
+			language: 'en-GB',
+			referrer: '',
+			screen: '',
+			deviceType: 'mobile',
+			browserName: 'chrome',
+			ip: '203.0.113.7',
+		};
+
+		it('forwards the scanner IP via X-Client-Real-IP so Umami geolocates the visitor', async () => {
+			mockFetch.mockResolvedValue({ ok: true, json: async () => ({}) });
+
+			await service.sendEvent(payload);
+
+			expect(mockFetch).toHaveBeenCalledWith(
+				'https://umami.example.com/api/send',
+				expect.objectContaining({
+					method: 'POST',
+					headers: expect.objectContaining({
+						'User-Agent': payload.userAgent,
+						'X-Client-Real-IP': payload.ip,
+					}),
+				}),
+			);
+		});
+
+		it('does not throw and logs when the Umami request fails', async () => {
+			mockFetch.mockRejectedValue(new Error('network'));
+
+			await expect(service.sendEvent(payload)).resolves.toBeUndefined();
+			expect(mockLogger.error).toHaveBeenCalledWith('error.umamiApi.sendEvent', expect.anything());
+		});
+	});
+
 	describe('getViewsForEndpoint', () => {
 		beforeEach(() => {
 			// Mock successful auth
