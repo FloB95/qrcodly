@@ -143,6 +143,7 @@ export class UmamiAnalyticsService {
 				headers: {
 					'Content-Type': 'application/json',
 					'User-Agent': payload.userAgent,
+					'X-Client-Real-IP': payload.ip,
 				},
 				body: JSON.stringify({
 					type: 'event',
