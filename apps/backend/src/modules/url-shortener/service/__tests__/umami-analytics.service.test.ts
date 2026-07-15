@@ -251,6 +251,8 @@ describe('UmamiAnalyticsService', () => {
 			expect(statsCall![0]).toContain('path=%2Fcustom-path');
 			expect(statsCall![0]).toContain('timezone=Europe%2FBerlin');
 			expect(statsCall![0]).toContain('unit=day');
+			// Umami 3.1+ rejects compare values other than 'prev'|'yoy' — must not be sent.
+			expect(statsCall![0]).not.toContain('compare');
 		});
 	});
 

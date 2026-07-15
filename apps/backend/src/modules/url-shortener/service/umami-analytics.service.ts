@@ -172,7 +172,6 @@ export class UmamiAnalyticsService {
 			endAt: now,
 			unit: 'day',
 			path: url,
-			compare: 'false',
 			timezone: 'Europe/Berlin',
 		};
 		interface WebsiteStats {
@@ -201,10 +200,10 @@ export class UmamiAnalyticsService {
 			timezone: 'Europe/Berlin',
 		};
 
-		const websiteStats = await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/stats`, {
-			...defaultParams,
-			compare: 'false',
-		});
+		const websiteStats = await this.fetchUmamiData(
+			`websites/${this.umamiWebsiteId}/stats`,
+			defaultParams,
+		);
 
 		const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000;
 		const viewsAndSessions = this.mapSessionsAndPageviews(
