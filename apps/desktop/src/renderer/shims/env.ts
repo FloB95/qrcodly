@@ -1,6 +1,8 @@
 // Shim for @/env — replaces @t3-oss/env-nextjs with plain Vite env vars
 export const env = {
 	NEXT_PUBLIC_FRONTEND_URL: import.meta.env.VITE_FRONTEND_URL ?? 'https://www.qrcodly.de',
+	// Left undefined when unset so the shared builder falls back to FRONTEND_URL (web-app semantics).
+	NEXT_PUBLIC_SHORT_URL_DOMAIN: import.meta.env.VITE_SHORT_URL_DOMAIN,
 	NEXT_PUBLIC_API_URL: import.meta.env.VITE_API_URL ?? 'https://api.qrcodly.de',
 	NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY ?? '',
 	NEXT_PUBLIC_POSTHOG_KEY: import.meta.env.VITE_POSTHOG_KEY ?? '',

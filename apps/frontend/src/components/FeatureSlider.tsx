@@ -47,7 +47,6 @@ export function FeatureSlider() {
 			icon: <LinkIcon className="h-9 w-9 sm:h-11 sm:w-11" />,
 			headlineKey: 'shortUrlFeature.headline',
 			subHeadlineKey: 'shortUrlFeature.subHeadline',
-			badge: tGeneral('newBadge'),
 			actionLabel: t('shortUrlFeature.actionLabel'),
 			actionHref: '/dashboard/short-urls',
 			authOnly: true,

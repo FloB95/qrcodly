@@ -10,12 +10,14 @@ import {
 	AnalyticsResponseDto,
 	CreateShortUrlDto,
 	GetShortUrlQueryParamsSchema,
+	ReservedShortUrlResponseDto,
 	ShortUrlWithCustomDomainPaginatedResponseDto,
 	ShortUrlWithCustomDomainResponseDto,
 	TAnalyticsResponseDto,
 	TCreateShortUrlDto,
 	TGetShortUrlQueryParamsDto,
 	TGetShortUrlRequestQueryDto,
+	TReservedShortUrlResponseDto,
 	TShortUrlWithCustomDomainPaginatedResponseDto,
 	TShortUrlWithCustomDomainResponseDto,
 	TTrackScanDto,
@@ -24,6 +26,7 @@ import {
 	UpdateShortUrlDto,
 } from '@shared/schemas';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
+import { buildShortUrl } from '../../utils';
 import { UmamiAnalyticsService } from '../../service/umami-analytics.service';
 import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { CreateShortUrlUseCase } from '../../useCase/create-short-url.use-case';
@@ -361,7 +364,7 @@ export class ShortUrlController extends AbstractController {
 
 	@Get('/reserved', {
 		responseSchema: {
-			200: ShortUrlWithCustomDomainResponseDto,
+			200: ReservedShortUrlResponseDto,
 			401: DEFAULT_ERROR_RESPONSES[401],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
@@ -377,9 +380,13 @@ export class ShortUrlController extends AbstractController {
 	})
 	async reserveShortUrl(
 		request: IHttpRequest,
-	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
+	): Promise<IHttpResponse<TReservedShortUrlResponseDto>> {
 		const shortUrl = await this.getReservedShortCodeUseCase.execute(request.user.id);
-		return this.makeApiHttpResponse(200, ShortUrlWithCustomDomainResponseDto.parse(shortUrl));
+		const fullShortUrl = buildShortUrl(shortUrl.shortCode, shortUrl.customDomain?.domain ?? null);
+		return this.makeApiHttpResponse(
+			200,
+			ReservedShortUrlResponseDto.parse({ ...shortUrl, shortUrl: fullShortUrl }),
+		);
 	}
 
 	@Get('/:shortCode/analytics', {

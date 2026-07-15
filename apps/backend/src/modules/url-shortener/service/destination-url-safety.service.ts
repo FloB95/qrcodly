@@ -17,7 +17,7 @@ export class DestinationUrlSafetyService {
 		private readonly violationTracker: UrlSafetyViolationTracker,
 	) {
 		this.internalHostnames = new Set(
-			[env.FRONTEND_URL, env.BASE_URL, env.BACKEND_URL]
+			[env.FRONTEND_URL, env.BASE_URL, env.BACKEND_URL, env.SHORT_URL_BASE_URL]
 				.map((url) => this.safeHostname(url))
 				.filter((hostname): hostname is string => hostname !== null),
 		);
@@ -49,7 +49,8 @@ export class DestinationUrlSafetyService {
 		return hostname !== null && this.internalHostnames.has(hostname);
 	}
 
-	private safeHostname(url: string): string | null {
+	private safeHostname(url: string | undefined): string | null {
+		if (!url) return null;
 		try {
 			return new URL(url).hostname;
 		} catch {

@@ -7,7 +7,7 @@ import { TShortUrl } from '../domain/entities/short-url.entity';
 import QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
 import { RedirectLoopError } from '../error/http/redirect-loop.error';
-import { buildShortUrl } from '../utils';
+import { isSelfReferencingShortUrl } from '../utils';
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 import { DestinationUrlSafetyService } from '../service/destination-url-safety.service';
 
@@ -64,8 +64,9 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 			updatedAt: new Date(),
 		};
 
-		// prevent linking if qr code points to same url to avoid redirect loops
-		if (updatesDto?.destinationUrl === buildShortUrl(shortUrl.shortCode)) {
+		// prevent linking a destination that points back at this short URL (redirect loop) —
+		// matched on any host we serve it on: redirect domain, legacy brand domain, or custom domain
+		if (isSelfReferencingShortUrl(updatesDto?.destinationUrl, shortUrl.shortCode)) {
 			throw new RedirectLoopError();
 		}
 
