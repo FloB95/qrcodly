@@ -1,6 +1,8 @@
 import { env } from '@/core/config/env';
 
-export const SHORT_BASE_URL = `${env.FRONTEND_URL}/u/`;
+const SHORT_URL_ORIGIN = env.SHORT_URL_BASE_URL ?? env.FRONTEND_URL;
+
+export const SHORT_BASE_URL = `${SHORT_URL_ORIGIN}/u/`;
 export const DYNAMIC_QR_BASE_URL = `${env.FRONTEND_URL}/api/dynamic-qr/`;
 
 export const DESKTOP_OS = [

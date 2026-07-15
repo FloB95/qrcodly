@@ -16,11 +16,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Extracts the system domain from NEXT_PUBLIC_FRONTEND_URL (e.g., "qrcodly.de" from "https://www.qrcodly.de").
+ * Extracts the system short-link domain (e.g., "qrco.ly"). Prefers the dedicated redirect
+ * domain (NEXT_PUBLIC_SHORT_URL_DOMAIN) and falls back to NEXT_PUBLIC_FRONTEND_URL when unset.
  */
 export function getSystemDomain(): string {
 	try {
-		const url = new URL(env.NEXT_PUBLIC_FRONTEND_URL);
+		const url = new URL(env.NEXT_PUBLIC_SHORT_URL_DOMAIN ?? env.NEXT_PUBLIC_FRONTEND_URL);
 		return url.hostname.replace(/^www\./, '');
 	} catch {
 		return 'qrcodly.de';
@@ -51,8 +52,10 @@ export function createLinkFromShortUrl(
 	if (customDomain) {
 		url = `https://${customDomain.domain}/u/${shortCode}`;
 	} else {
-		// System domain uses /u/ prefix (e.g., qrcodly.de/u/abc12)
-		url = `${env.NEXT_PUBLIC_FRONTEND_URL}/u/${shortCode}`;
+		// System short links live on the dedicated redirect domain (falls back to the app
+		// domain), using the /u/ prefix (e.g. qrco.ly/u/abc12).
+		const systemOrigin = env.NEXT_PUBLIC_SHORT_URL_DOMAIN ?? env.NEXT_PUBLIC_FRONTEND_URL;
+		url = `${systemOrigin}/u/${shortCode}`;
 	}
 
 	if (!short) return url;

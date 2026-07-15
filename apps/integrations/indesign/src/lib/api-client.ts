@@ -94,7 +94,7 @@ export class QrcodlyApi {
 		return this.request('/config-template');
 	}
 
-	getReservedShortCode(): Promise<{ shortCode: string }> {
+	getReservedShortCode(): Promise<{ shortCode: string; shortUrl: string }> {
 		return this.request('/short-url/reserved');
 	}
 

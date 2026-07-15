@@ -14,8 +14,6 @@ type Props = {
 
 type ContentType = 'url' | 'text';
 
-const SHORT_URL_BASE = 'https://qrcodly.de/u/';
-
 export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 	const api = useMemo(() => new QrcodlyApi(apiKey), [apiKey]);
 
@@ -26,14 +24,15 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 	const [name, setName] = useState('');
 	const [isDynamic, setIsDynamic] = useState(true);
 	const [reservedShortCode, setReservedShortCode] = useState<string | null>(null);
+	const [reservedShortUrl, setReservedShortUrl] = useState<string | null>(null);
 	const [submitting, setSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
 	const selectedTemplate = templates.find((t) => t.id === templateId);
 	const trimmed = value.trim();
 	const livePayload = trimmed
-		? contentType === 'url' && isDynamic && reservedShortCode
-			? `${SHORT_URL_BASE}${reservedShortCode}`
+		? contentType === 'url' && isDynamic && reservedShortUrl
+			? reservedShortUrl
 			: trimmed
 		: null;
 
@@ -55,6 +54,7 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 	useEffect(() => {
 		if (contentType !== 'url' || !isDynamic) {
 			setReservedShortCode(null);
+			setReservedShortUrl(null);
 			return;
 		}
 		if (reservedShortCode) return;
@@ -62,7 +62,10 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 		void api
 			.getReservedShortCode()
 			.then((res) => {
-				if (!cancelled) setReservedShortCode(res.shortCode);
+				if (!cancelled) {
+					setReservedShortCode(res.shortCode);
+					setReservedShortUrl(res.shortUrl);
+				}
 			})
 			.catch(() => {
 				/* non-fatal — render without it */
@@ -132,7 +135,7 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 		onDone();
 	};
 
-	const showShortUrlHint = contentType === 'url' && isDynamic && reservedShortCode;
+	const showShortUrlHint = contentType === 'url' && isDynamic && reservedShortUrl;
 
 	return (
 		<div className="app">
@@ -192,9 +195,7 @@ export function CreateScreen({ apiKey, onDone, onCancel }: Props) {
 				</label>
 			)}
 
-			{showShortUrlHint && (
-				<div className="short-url-display">{`${SHORT_URL_BASE}${reservedShortCode}`}</div>
-			)}
+			{showShortUrlHint && <div className="short-url-display">{reservedShortUrl}</div>}
 
 			{templates.length > 0 && (
 				<div className="field">

@@ -21,6 +21,7 @@ export const env = createEnv({
 	 */
 	client: {
 		NEXT_PUBLIC_FRONTEND_URL: z.string().url(),
+		NEXT_PUBLIC_SHORT_URL_DOMAIN: z.string().url().optional(),
 		NEXT_PUBLIC_API_URL: z.string().url(),
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
 		NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
@@ -46,6 +47,7 @@ export const env = createEnv({
 		CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
 
 		NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL,
+		NEXT_PUBLIC_SHORT_URL_DOMAIN: process.env.NEXT_PUBLIC_SHORT_URL_DOMAIN,
 		NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
 		NEXT_PUBLIC_SENTRY_ENVIRONMENT: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,

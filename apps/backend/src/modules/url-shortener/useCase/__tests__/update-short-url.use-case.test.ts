@@ -11,11 +11,14 @@ import type { TUpdateShortUrlDto } from '@shared/schemas';
 import type { TQrCode } from '@shared/schemas';
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
 import { RedirectLoopError } from '../../error/http/redirect-loop.error';
-import { buildShortUrl } from '../../utils';
+import { isSelfReferencingShortUrl } from '../../utils';
 import type { DestinationUrlSafetyService } from '../../service/destination-url-safety.service';
 
 jest.mock('../../utils', () => ({
-	buildShortUrl: jest.fn((shortCode: string) => `https://short.url/${shortCode}`),
+	isSelfReferencingShortUrl: jest.fn(
+		(destinationUrl: string | null | undefined, shortCode: string) =>
+			destinationUrl === `https://short.url/${shortCode}`,
+	),
 }));
 
 describe('UpdateShortUrlUseCase', () => {
@@ -252,7 +255,7 @@ describe('UpdateShortUrlUseCase', () => {
 			).resolves.toBeDefined();
 		});
 
-		it('should build short URL correctly using buildShortUrl()', async () => {
+		it('should check self-reference via isSelfReferencingShortUrl()', async () => {
 			const updateDto: TUpdateShortUrlDto = {
 				destinationUrl: 'https://short.url/ABC12',
 			};
@@ -275,7 +278,10 @@ describe('UpdateShortUrlUseCase', () => {
 				RedirectLoopError,
 			);
 
-			expect(buildShortUrl).toHaveBeenCalledWith(mockShortUrl.shortCode);
+			expect(isSelfReferencingShortUrl).toHaveBeenCalledWith(
+				'https://short.url/ABC12',
+				mockShortUrl.shortCode,
+			);
 		});
 
 		it('should throw QrCodeNotFoundError when linkedQrCodeId provided but QR code does not exist', async () => {

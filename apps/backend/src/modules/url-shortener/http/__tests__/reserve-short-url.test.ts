@@ -4,7 +4,7 @@ import {
 	assertReservedShortUrl,
 } from '@/tests/shared/assertions/short-url.assertions';
 import type { FastifyInstance } from 'fastify';
-import type { TShortUrlResponseDto } from '@shared/schemas';
+import type { TShortUrlResponseDto, TReservedShortUrlResponseDto } from '@shared/schemas';
 import { SHORT_URL_API_PATH } from './utils';
 
 describe('reserveShortUrl', () => {
@@ -37,6 +37,14 @@ describe('reserveShortUrl', () => {
 		assertShortUrlResponse(shortUrl, userId);
 		assertReservedShortUrl(shortUrl);
 		expect(shortUrl.shortCode).toHaveLength(5);
+	});
+
+	it('should include a fully-built shortUrl for the reserved code', async () => {
+		const response = await reserveShortUrlRequest(accessToken);
+		const shortUrl = JSON.parse(response.payload) as TReservedShortUrlResponseDto;
+
+		expect(shortUrl.shortUrl).toEqual(expect.any(String));
+		expect(shortUrl.shortUrl).toMatch(new RegExp(`/u/${shortUrl.shortCode}$`));
 	});
 
 	it('should return existing reserved short URL if user already has one', async () => {
