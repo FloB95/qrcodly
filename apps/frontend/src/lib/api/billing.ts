@@ -66,7 +66,9 @@ export function useCreateCheckoutSession() {
 			});
 		},
 		onSuccess: (data) => {
-			window.open(data.url, '_blank', 'noopener,noreferrer');
+			// Same-tab redirect keeps ad-click attribution and returns the user
+			// to ?checkout=success in the tab where tracking is armed
+			window.location.href = data.url;
 		},
 	});
 }
@@ -90,7 +92,7 @@ export function useCreatePortalSession() {
 			});
 		},
 		onSuccess: (data) => {
-			window.open(data.url, '_blank', 'noopener,noreferrer');
+			window.location.href = data.url;
 		},
 	});
 }

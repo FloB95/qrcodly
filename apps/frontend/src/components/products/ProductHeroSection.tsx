@@ -11,12 +11,16 @@ export function ProductHeroSection({
 	subtitle,
 	ctaLabel,
 	ctaHref,
+	secondaryCtaLabel,
+	secondaryCtaHref,
 	children,
 }: {
 	title: string;
 	subtitle: string;
 	ctaLabel?: string;
 	ctaHref?: string;
+	secondaryCtaLabel?: string;
+	secondaryCtaHref?: string;
 	children?: React.ReactNode;
 }) {
 	return (
@@ -31,9 +35,19 @@ export function ProductHeroSection({
 					<p className="mx-auto max-w-2xl text-lg sm:text-xl text-slate-700 mb-8">{subtitle}</p>
 					{children ??
 						(ctaLabel && ctaHref ? (
-							<Link href={ctaHref} className={buttonVariants({ size: 'lg' })}>
-								{ctaLabel}
-							</Link>
+							<div className="flex flex-wrap items-center justify-center gap-3">
+								<Link href={ctaHref} className={buttonVariants({ size: 'lg' })}>
+									{ctaLabel}
+								</Link>
+								{secondaryCtaLabel && secondaryCtaHref && (
+									<Link
+										href={secondaryCtaHref}
+										className={buttonVariants({ size: 'lg', variant: 'outline' })}
+									>
+										{secondaryCtaLabel}
+									</Link>
+								)}
+							</div>
 						) : null)}
 				</AnimateOnLoad>
 			</div>

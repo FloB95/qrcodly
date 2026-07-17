@@ -562,6 +562,11 @@
 				"lineHeader": "Line",
 				"retryButton": "Fix & Re-upload",
 				"backButton": "Back"
+			},
+			"limit": {
+				"title": "This file exceeds your plan's import limit",
+				"description": "Your file has {rows} rows ({size} MB). Your plan imports up to {maxRows} rows and {maxSize} MB at once.",
+				"upgradeCta": "Unlock 50 rows & 2 MB with Pro"
 			}
 		},
 		"settingsForm": {
@@ -1404,7 +1409,7 @@
 		"metaTitle": "QR Code Generator Pricing - Free & Pro Plans",
 		"metaDescription": "Free QR code generator with unlimited codes, custom styling & analytics. Upgrade to Pro for custom domains, bulk imports & priority support. No hidden costs.",
 		"title": "Fair. Transparent. No hidden costs.",
-		"subtitle": "QRcodly is free to use – no trial periods, no automatic subscriptions. The Pro plan only covers features that require additional infrastructure.",
+		"subtitle": "The Free plan is free forever — unlimited QR codes, scans and analytics. Pro adds the business toolkit: your own domain, API access and bulk workflows. Cancel anytime.",
 		"annual": "Annual",
 		"monthly": "Monthly",
 		"perMonth": "month",
@@ -1419,7 +1424,7 @@
 		},
 		"pro": {
 			"name": "Pro",
-			"description": "Support us & unlock all features for your QR codes."
+			"description": "Built for business: your own domain on every short link, REST API automation, bulk imports and analytics integrations."
 		},
 		"features": {
 			"free": {
@@ -1444,7 +1449,13 @@
 				"marketplaceIntegrations": "Third-party integrations"
 			}
 		},
-		"featureInfoAriaLabel": "More information"
+		"featureInfoAriaLabel": "More information",
+		"checkoutRedirect": {
+			"title": "Taking you to secure checkout…",
+			"description": "Your account is ready — redirecting you to Stripe to complete your Pro upgrade.",
+			"cta": "Continue to checkout",
+			"backToPlans": "Back to plans"
+		}
 	},
 	"tags": {
 		"title": "Tags",
@@ -1756,7 +1767,8 @@
 		"hero": {
 			"title": "Create QR Codes That Work Harder.",
 			"subtitle": "Design stunning QR codes with custom colors, logos, and styles. Update content anytime, track every scan, and manage everything from one dashboard.",
-			"ctaLabel": "Create Your QR Code Free"
+			"ctaLabel": "Create Your QR Code Free",
+			"viewPricing": "Compare plans"
 		},
 		"stats": {
 			"stat1Value": "100K+",

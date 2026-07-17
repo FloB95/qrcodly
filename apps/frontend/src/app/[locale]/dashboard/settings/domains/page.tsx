@@ -41,7 +41,11 @@ export default function Page() {
 							</div>
 						</div>
 						<div className="ml-[60px] sm:ml-0">
-							{hasProPlan ? <AddCustomDomainDialog /> : <ProPlanRequiredBadge />}
+							{hasProPlan ? (
+								<AddCustomDomainDialog />
+							) : (
+								<ProPlanRequiredBadge source="custom_domains" />
+							)}
 						</div>
 					</div>
 				</CardContent>

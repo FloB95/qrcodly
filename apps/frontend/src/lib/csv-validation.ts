@@ -96,6 +96,8 @@ export type CsvRowError = {
 export type CsvValidationResult = {
 	errors: CsvRowError[];
 	columns: string[];
+	/** Number of data rows (excluding the header row). */
+	rowCount: number;
 };
 
 function parseCsv(text: string, delimiter: string): string[][] {
@@ -160,7 +162,7 @@ export async function validateCsvFile(
 ): Promise<CsvValidationResult> {
 	const mapping = columnMap[contentType];
 	if (!mapping) {
-		return { errors: [], columns: [] };
+		return { errors: [], columns: [], rowCount: 0 };
 	}
 
 	const { columns, schema } = mapping;
@@ -171,6 +173,7 @@ export async function validateCsvFile(
 		return {
 			errors: [{ line: 1, rawValues: [], fieldErrors: [{ column: '', message: 'File is empty' }] }],
 			columns,
+			rowCount: 0,
 		};
 	}
 
@@ -184,6 +187,7 @@ export async function validateCsvFile(
 				},
 			],
 			columns,
+			rowCount: 0,
 		};
 	}
 
@@ -222,5 +226,5 @@ export async function validateCsvFile(
 		}
 	}
 
-	return { errors, columns };
+	return { errors, columns, rowCount: rows.length - 1 };
 }

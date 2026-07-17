@@ -569,6 +569,11 @@
 				"lineHeader": "Ligne",
 				"retryButton": "Corriger et recharger",
 				"backButton": "Retour"
+			},
+			"limit": {
+				"title": "Ce fichier dépasse la limite d'import de votre offre",
+				"description": "Votre fichier contient {rows} lignes ({size} Mo). Votre offre permet d'importer jusqu'à {maxRows} lignes et {maxSize} Mo à la fois.",
+				"upgradeCta": "Débloquez 50 lignes et 2 Mo avec Pro"
 			}
 		},
 		"settingsForm": {
@@ -1408,7 +1413,7 @@
 		"metaTitle": "Générateur de QR Code Tarifs – Gratuit & Pro",
 		"metaDescription": "Générateur de QR codes gratuit avec codes illimités, design personnalisé & analyses. Pro pour domaines personnalisés, import en masse & support prioritaire. Sans frais cachés.",
 		"title": "Équitable. Transparent. Sans frais cachés.",
-		"subtitle": "QRcodly est gratuit – pas de période d'essai, pas d'abonnement automatique. Le plan Pro couvre uniquement les fonctionnalités nécessitant une infrastructure supplémentaire.",
+		"subtitle": "Le plan Free reste gratuit pour toujours : QR codes, scans et statistiques illimités. Pro ajoute la boîte à outils business : votre propre domaine, l'accès API et l'import en masse. Résiliable à tout moment.",
 		"annual": "Annuel",
 		"monthly": "Mensuel",
 		"perMonth": "mois",
@@ -1423,7 +1428,7 @@
 		},
 		"pro": {
 			"name": "Pro",
-			"description": "Soutenez-nous et débloquez toutes les fonctionnalités pour vos codes QR."
+			"description": "Conçu pour les pros : votre domaine sur chaque lien court, l'automatisation via l'API REST, l'import en masse et les intégrations analytics."
 		},
 		"features": {
 			"free": {
@@ -1448,7 +1453,13 @@
 				"marketplaceIntegrations": "Intégrations tierces"
 			}
 		},
-		"featureInfoAriaLabel": "Plus d'informations"
+		"featureInfoAriaLabel": "Plus d'informations",
+		"checkoutRedirect": {
+			"title": "Direction le paiement sécurisé…",
+			"description": "Votre compte est prêt — nous vous redirigeons vers Stripe pour finaliser votre passage à Pro.",
+			"cta": "Continuer vers le paiement",
+			"backToPlans": "Retour aux offres"
+		}
 	},
 	"tags": {
 		"title": "Étiquettes",
@@ -1756,7 +1767,8 @@
 		"hero": {
 			"title": "Créez des QR codes qui travaillent plus dur.",
 			"subtitle": "Concevez des QR codes époustouflants avec des couleurs, logos et styles personnalisés. Mettez à jour le contenu à tout moment, suivez chaque scan et gérez tout depuis un seul tableau de bord.",
-			"ctaLabel": "Créer votre QR Code gratuitement"
+			"ctaLabel": "Créer votre QR Code gratuitement",
+			"viewPricing": "Comparer les offres"
 		},
 		"stats": {
 			"stat1Value": "100K+",

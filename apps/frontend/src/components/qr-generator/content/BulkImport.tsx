@@ -2,7 +2,11 @@
 
 import { Button, buttonVariants } from '@/components/ui/button';
 import type { TQrCodeContentType } from '@shared/schemas';
-import { ArrowDownTrayIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
+import {
+	ArrowDownTrayIcon,
+	ExclamationTriangleIcon,
+	InformationCircleIcon,
+} from '@heroicons/react/24/solid';
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { useLocale, useTranslations } from 'next-intl';
@@ -10,6 +14,8 @@ import { FileUploader } from '@/components/FileUploader';
 import { qrCodeQueryKeys, useBulkCreateQrCodeMutation } from '@/lib/api/qr-code';
 import { toast } from '@/components/ui/use-toast';
 import Link from 'next/link';
+import { Link as LocaleLink } from '@/i18n/navigation';
+import { useHasProPlan } from '@/hooks/useHasProPlan';
 import { LoginRequiredDialog } from '../LoginRequiredDialog';
 import { useAuth } from '@clerk/nextjs';
 import { useState } from 'react';
@@ -27,11 +33,26 @@ type BulkImportProps = {
 	onComplete?: () => void;
 };
 
+// Mirrors BULK_IMPORT_PLAN_LIMITS in apps/backend/src/core/config/plan.config.ts
+const BULK_IMPORT_LIMITS = {
+	free: { maxRows: 10, maxFileSizeBytes: 0.5 * 1024 * 1024 },
+	pro: { maxRows: 50, maxFileSizeBytes: 2 * 1024 * 1024 },
+} as const;
+
+type LimitExceededInfo = {
+	rows: number;
+	sizeMb: string;
+	maxRows: number;
+	maxSizeMb: number;
+};
+
 export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 	const { isSignedIn } = useAuth();
+	const { hasProPlan } = useHasProPlan();
 	const [alertOpen, setAlertOpen] = useState(false);
 	const [isUploaded, setIsUploaded] = useState(false);
 	const [csvErrors, setCsvErrors] = useState<CsvValidationResult | null>(null);
+	const [limitExceeded, setLimitExceeded] = useState<LimitExceededInfo | null>(null);
 	const { config, bulkMode, updateBulkMode } = useQrCodeGeneratorStore((state) => state);
 	const t = useTranslations();
 	const queryClient = useQueryClient();
@@ -231,10 +252,29 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 							value={bulkMode.file ? [bulkMode.file] : []}
 							onValueChange={async (files) => {
 								const file = files[0];
+								setLimitExceeded(null);
 								if (file) {
 									const result = await validateCsvFile(file, contentType);
 									if (result.errors.length > 0) {
 										setCsvErrors(result);
+										return;
+									}
+
+									const limits = hasProPlan ? BULK_IMPORT_LIMITS.pro : BULK_IMPORT_LIMITS.free;
+									if (result.rowCount > limits.maxRows || file.size > limits.maxFileSizeBytes) {
+										if (!hasProPlan) {
+											posthog.capture('pro_gate_viewed', {
+												source: 'bulk_import_limit',
+												rows: result.rowCount,
+												fileSizeBytes: file.size,
+											});
+										}
+										setLimitExceeded({
+											rows: result.rowCount,
+											sizeMb: (file.size / (1024 * 1024)).toFixed(2),
+											maxRows: limits.maxRows,
+											maxSizeMb: limits.maxFileSizeBytes / (1024 * 1024),
+										});
 										return;
 									}
 								}
@@ -244,6 +284,36 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 							maxFiles={1}
 							accept="text/csv"
 						/>
+
+						{limitExceeded && (
+							<Item variant="outline">
+								<ExclamationTriangleIcon className="w-8 h-8 text-amber-500" />
+								<ItemContent>
+									<ItemTitle>{t('generator.bulkImport.limit.title')}</ItemTitle>
+									<ItemDescription>
+										{t('generator.bulkImport.limit.description', {
+											rows: limitExceeded.rows,
+											size: limitExceeded.sizeMb,
+											maxRows: limitExceeded.maxRows,
+											maxSize: limitExceeded.maxSizeMb,
+										})}
+									</ItemDescription>
+								</ItemContent>
+								{!hasProPlan && (
+									<ItemActions>
+										<LocaleLink
+											href="/plans"
+											onClick={() =>
+												posthog.capture('pro_gate_clicked', { source: 'bulk_import_limit' })
+											}
+											className={buttonVariants({ size: 'sm' })}
+										>
+											{t('generator.bulkImport.limit.upgradeCta')}
+										</LocaleLink>
+									</ItemActions>
+								)}
+							</Item>
+						)}
 
 						<Item variant="outline">
 							<InformationCircleIcon className="w-8 h-8 text-blue-500" />
@@ -270,6 +340,7 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 							<Button
 								variant="outlineStrong"
 								onClick={() => {
+									setLimitExceeded(null);
 									updateBulkMode(false, undefined);
 									onComplete?.();
 								}}
