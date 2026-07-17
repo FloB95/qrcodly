@@ -69,9 +69,7 @@ export class ApiError extends Error {
 
 function formatErrorMessage(status: number, body: unknown): string {
 	const bodyMessage =
-		typeof body === 'object' && body !== null && 'message' in body
-			? String((body as { message: unknown }).message)
-			: '';
+		typeof body === 'object' && body !== null && 'message' in body ? String(body.message) : '';
 
 	switch (status) {
 		case 400:
@@ -110,10 +108,8 @@ function serializeQueryParams(params: Record<string, unknown>): string {
 			for (const [key, value] of Object.entries(obj)) {
 				flatten(value, prefix ? `${prefix}[${key}]` : key);
 			}
-		} else {
-			parts.push(
-				`${encodeURIComponent(prefix)}=${encodeURIComponent(String(obj as string | number | boolean))}`,
-			);
+		} else if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean') {
+			parts.push(`${encodeURIComponent(prefix)}=${encodeURIComponent(String(obj))}`);
 		}
 	}
 

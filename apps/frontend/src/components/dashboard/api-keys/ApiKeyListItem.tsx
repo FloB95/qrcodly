@@ -63,10 +63,7 @@ export function ApiKeyListItem({ apiKey, handleRevalidate }: ApiKeyListItemProps
 						<div className="flex flex-wrap gap-1">
 							{scopes.map((s) => {
 								const labelKey = `scope${s.charAt(0).toUpperCase()}${s.slice(1)}` as
-									| 'scopeRead'
-									| 'scopeWrite'
-									| 'scopeUpdate'
-									| 'scopeDelete';
+									'scopeRead' | 'scopeWrite' | 'scopeUpdate' | 'scopeDelete';
 								return <Badge key={s}>{t(labelKey)}</Badge>;
 							})}
 						</div>

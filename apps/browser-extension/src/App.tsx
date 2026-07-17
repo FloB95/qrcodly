@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ClerkProvider, SignedIn, SignedOut, useUser } from '@clerk/chrome-extension';
+import { ClerkProvider, Show, useUser } from '@clerk/chrome-extension';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from 'use-intl';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -121,12 +121,12 @@ export default function App({ onReady }: AppProps) {
 				<QueryClientProvider client={queryClient}>
 					<TooltipProvider>
 						<div style={{ width: 470 }}>
-							<SignedIn>
+							<Show when="signed-in">
 								<ExtensionLayout />
-							</SignedIn>
-							<SignedOut>
+							</Show>
+							<Show when="signed-out">
 								<SignInPrompt />
-							</SignedOut>
+							</Show>
 						</div>
 						<Toaster />
 					</TooltipProvider>

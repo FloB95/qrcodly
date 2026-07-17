@@ -125,7 +125,7 @@ describe('SetShortUrlTagsUseCase', () => {
 		mockTagRepository.findOneById.mockResolvedValue({
 			...mockTags[0],
 			createdBy: 'other-user',
-		} as TTag);
+		});
 
 		await expect(useCase.execute(shortUrlId, ['tag-1'], mockUser)).rejects.toThrow(ForbiddenError);
 	});

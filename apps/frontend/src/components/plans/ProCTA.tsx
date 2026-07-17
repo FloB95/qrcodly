@@ -1,6 +1,6 @@
 'use client';
 
-import { SignedIn, SignInButton } from '@clerk/nextjs';
+import { Show, SignInButton } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import posthog from 'posthog-js';
@@ -29,16 +29,17 @@ export const ProCTA = ({
 			: env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_MONTHLY;
 
 	const handleUpgrade = () => {
-		posthog.capture('subscription:checkout_started');
+		posthog.capture('subscription:checkout_started', { source: 'plans_page', period: planPeriod });
 		createCheckoutSession.mutate({ priceId, locale });
 	};
 
-	// Not authenticated - show sign in button
+	// Not authenticated - carry the Pro intent through auth so users land in
+	// checkout instead of on the dashboard after signing in/up
 	if (!isAuthenticated) {
 		return (
 			<SignInButton
-				forceRedirectUrl={`/${locale}/plans`}
-				signUpForceRedirectUrl={`/${locale}/signup-success`}
+				forceRedirectUrl={`/${locale}/upgrade?period=${planPeriod}`}
+				signUpForceRedirectUrl={`/${locale}/upgrade?period=${planPeriod}&signup=1`}
 			>
 				<Button variant="secondary">{t('upgradeToPro')}</Button>
 			</SignInButton>
@@ -48,7 +49,7 @@ export const ProCTA = ({
 	// Has Pro but canceled - open portal to reactivate
 	if (isCanceled) {
 		return (
-			<SignedIn>
+			<Show when="signed-in">
 				<Button
 					variant="secondary"
 					onClick={() => createPortalSession.mutate({ locale })}
@@ -56,7 +57,7 @@ export const ProCTA = ({
 				>
 					{t('renewSubscription')}
 				</Button>
-			</SignedIn>
+			</Show>
 		);
 	}
 
@@ -71,7 +72,7 @@ export const ProCTA = ({
 
 	// No subscription - show upgrade button
 	return (
-		<SignedIn>
+		<Show when="signed-in">
 			<Button
 				variant="secondary"
 				onClick={handleUpgrade}
@@ -79,6 +80,6 @@ export const ProCTA = ({
 			>
 				{t('upgradeToPro')}
 			</Button>
-		</SignedIn>
+		</Show>
 	);
 };

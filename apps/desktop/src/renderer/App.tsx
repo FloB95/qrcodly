@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { HashRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { ClerkProvider, SignedIn, SignedOut, SignIn } from '@clerk/clerk-react';
+import { ClerkProvider, Show, SignIn } from '@clerk/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from 'use-intl';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -92,7 +92,7 @@ export default function App() {
 					<TooltipProvider>
 						<HashRouter>
 							<NavigationListener />
-							<SignedIn>
+							<Show when="signed-in">
 								<Routes>
 									<Route path="/dashboard" element={<DashboardLayout />}>
 										<Route index element={<></>} />
@@ -112,12 +112,12 @@ export default function App() {
 									<Route path="/" element={<Navigate to="/dashboard/qr-codes" replace />} />
 									<Route path="*" element={<NotFoundPage />} />
 								</Routes>
-							</SignedIn>
-							<SignedOut>
+							</Show>
+							<Show when="signed-out">
 								<div className="flex items-center justify-center min-h-screen bg-background">
 									<SignIn routing="hash" />
 								</div>
-							</SignedOut>
+							</Show>
 						</HashRouter>
 						<Toaster />
 					</TooltipProvider>

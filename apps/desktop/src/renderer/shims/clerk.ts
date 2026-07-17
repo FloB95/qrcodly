@@ -1,10 +1,9 @@
-// Re-export everything from @clerk/clerk-react as a drop-in for @clerk/nextjs
+// Re-export everything from @clerk/react as a drop-in for @clerk/nextjs
 export {
 	ClerkProvider,
 	SignIn,
 	SignUp,
-	SignedIn,
-	SignedOut,
+	Show,
 	SignInButton,
 	SignUpButton,
 	SignOutButton,
@@ -20,7 +19,7 @@ export {
 	useOrganization,
 	useOrganizationList,
 	useReverification,
-} from '@clerk/clerk-react';
+} from '@clerk/react';
 
 // Also re-export the UserAvatar-like components if they exist
-export { UserButton as UserAvatar } from '@clerk/clerk-react';
+export { UserButton as UserAvatar } from '@clerk/react';

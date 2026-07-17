@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, type ReactNode, type RefObject } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
 import { Popover, PopoverContent, PopoverAnchor } from '@/components/ui/popover';
@@ -61,9 +61,7 @@ function SmartTipPopoverInner({
 				}
 			}}
 		>
-			<PopoverAnchor
-				virtualRef={buttonEl ? ({ current: buttonEl } as RefObject<HTMLElement>) : undefined}
-			/>
+			<PopoverAnchor virtualRef={buttonEl ? { current: buttonEl } : undefined} />
 			<div ref={containerRef} style={{ display: 'contents' }}>
 				{children}
 			</div>

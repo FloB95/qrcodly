@@ -36,8 +36,7 @@ const CUSTOM_ICONS = [
 ] as const;
 
 type PickerIcon =
-	| { type: 'hero'; key: keyof typeof Icons }
-	| { type: 'custom'; key: string; src: string };
+	{ type: 'hero'; key: keyof typeof Icons } | { type: 'custom'; key: string; src: string };
 
 const ALL_ICONS: PickerIcon[] = [
 	...CUSTOM_ICONS.map((icon) => ({

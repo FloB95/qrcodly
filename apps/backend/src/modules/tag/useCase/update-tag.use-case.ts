@@ -5,6 +5,7 @@ import { Logger } from '@/core/logging';
 import { type TTag } from '../domain/entities/tag.entity';
 import { type TUpdateTagDto, UpdateTagDto } from '@shared/schemas';
 import { TagAlreadyExistsError } from '../error/http/tag-already-exists.error';
+import { isDuplicateEntryError } from '@/core/db/utils';
 
 @injectable()
 export class UpdateTagUseCase implements IBaseUseCase {
@@ -20,7 +21,7 @@ export class UpdateTagUseCase implements IBaseUseCase {
 		try {
 			await this.tagRepository.update(existingTag, validatedUpdates);
 		} catch (error) {
-			if (error instanceof Error && 'code' in error && error.code === 'ER_DUP_ENTRY') {
+			if (isDuplicateEntryError(error)) {
 				throw new TagAlreadyExistsError();
 			}
 			throw error;

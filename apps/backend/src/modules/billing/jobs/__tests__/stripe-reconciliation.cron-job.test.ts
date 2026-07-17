@@ -92,9 +92,15 @@ describe('StripeReconciliationCronJob', () => {
 			id: 'sub_123',
 			status: 'past_due',
 			cancel_at_period_end: false,
-			current_period_start: periodStart,
-			current_period_end: periodEnd,
-			items: { data: [{ price: { id: 'price_new' } }] },
+			items: {
+				data: [
+					{
+						price: { id: 'price_new' },
+						current_period_start: periodStart,
+						current_period_end: periodEnd,
+					},
+				],
+			},
 		} as unknown as Stripe.Subscription);
 
 		await (job as unknown as { execute: () => Promise<void> }).execute();
@@ -120,9 +126,15 @@ describe('StripeReconciliationCronJob', () => {
 			id: 'sub_123',
 			status: 'active',
 			cancel_at_period_end: true,
-			current_period_start: periodStart,
-			current_period_end: periodEnd,
-			items: { data: [{ price: { id: 'price_old' } }] },
+			items: {
+				data: [
+					{
+						price: { id: 'price_old' },
+						current_period_start: periodStart,
+						current_period_end: periodEnd,
+					},
+				],
+			},
 		} as unknown as Stripe.Subscription);
 
 		await (job as unknown as { execute: () => Promise<void> }).execute();
@@ -142,9 +154,15 @@ describe('StripeReconciliationCronJob', () => {
 			id: 'sub_123',
 			status: 'active',
 			cancel_at_period_end: false,
-			current_period_start: periodStart,
-			current_period_end: periodEnd,
-			items: { data: [{ price: { id: 'price_old' } }] },
+			items: {
+				data: [
+					{
+						price: { id: 'price_old' },
+						current_period_start: periodStart,
+						current_period_end: periodEnd,
+					},
+				],
+			},
 		} as unknown as Stripe.Subscription);
 
 		await (job as unknown as { execute: () => Promise<void> }).execute();
@@ -158,11 +176,17 @@ describe('StripeReconciliationCronJob', () => {
 				id: 'sub_new',
 				status: 'active',
 				cancel_at_period_end: false,
-				current_period_start: periodStart,
-				current_period_end: periodEnd,
 				customer: 'cus_123',
 				metadata: { clerkUserId: 'user-456' },
-				items: { data: [{ price: { id: 'price_123' } }] },
+				items: {
+					data: [
+						{
+							price: { id: 'price_123' },
+							current_period_start: periodStart,
+							current_period_end: periodEnd,
+						},
+					],
+				},
 			} as unknown as Stripe.Subscription,
 		]);
 		mockRepository.findByStripeSubscriptionId.mockResolvedValue(undefined);
@@ -185,9 +209,15 @@ describe('StripeReconciliationCronJob', () => {
 				id: 'sub_orphan',
 				status: 'active',
 				metadata: {},
-				items: { data: [{ price: { id: 'price_123' } }] },
-				current_period_start: periodStart,
-				current_period_end: periodEnd,
+				items: {
+					data: [
+						{
+							price: { id: 'price_123' },
+							current_period_start: periodStart,
+							current_period_end: periodEnd,
+						},
+					],
+				},
 				customer: 'cus_123',
 				cancel_at_period_end: false,
 			} as unknown as Stripe.Subscription,

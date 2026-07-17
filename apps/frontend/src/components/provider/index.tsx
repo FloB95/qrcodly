@@ -38,7 +38,6 @@ export default function Providers({
 			appearance={{
 				theme: shadcn,
 			}}
-			clerkJSUrl="/__clerk-js/dist/clerk.browser.js"
 		>
 			<QueryClientProvider client={queryClient}>
 				<PostHogProvider>

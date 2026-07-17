@@ -34,15 +34,11 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 		for (const local of localSubscriptions) {
 			try {
 				const stripe = await stripeService.getSubscription(local.stripeSubscriptionId);
-				const priceId = stripe.items.data[0]?.price.id ?? local.stripePriceId;
+				const stripeItem = stripe.items.data[0];
+				const priceId = stripeItem?.price.id ?? local.stripePriceId;
 
-				let periodStart = stripe.current_period_start;
-				let periodEnd = stripe.current_period_end;
-				if (!periodStart || !periodEnd) {
-					const full = await stripeService.getSubscription(stripe.id);
-					periodStart = full.current_period_start;
-					periodEnd = full.current_period_end;
-				}
+				const periodStart = stripeItem?.current_period_start;
+				const periodEnd = stripeItem?.current_period_end;
 				if (!periodStart || !periodEnd) {
 					this.logger.warn('stripe.reconciliation.missingPeriod', {
 						stripe: { subscriptionId: local.stripeSubscriptionId, userId: local.userId },
@@ -136,16 +132,12 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 					const byUser = await repository.findByUserId(userId);
 					if (byUser && byUser.status !== 'canceled') continue;
 
-					const priceId = sub.items.data[0]?.price.id ?? '';
+					const subItem = sub.items.data[0];
+					const priceId = subItem?.price.id ?? '';
 					const customerId = typeof sub.customer === 'string' ? sub.customer : sub.customer.id;
 
-					let periodStart = sub.current_period_start;
-					let periodEnd = sub.current_period_end;
-					if (!periodStart || !periodEnd) {
-						const full = await stripeService.getSubscription(sub.id);
-						periodStart = full.current_period_start;
-						periodEnd = full.current_period_end;
-					}
+					const periodStart = subItem?.current_period_start;
+					const periodEnd = subItem?.current_period_end;
 					if (!periodStart || !periodEnd) {
 						this.logger.warn('stripe.reconciliation.missingPeriod', {
 							stripe: { subscriptionId: sub.id },
