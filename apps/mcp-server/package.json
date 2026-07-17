@@ -31,6 +31,7 @@
 		"qrcodly-eslint-config": "workspace:*",
 		"qrcodly-typescript-config": "workspace:*",
 		"tsx": "catalog:",
-		"typescript": "catalog:"
+		"typescript": "catalog:",
+		"typescript-eslint": "^8.64.0"
 	}
 }

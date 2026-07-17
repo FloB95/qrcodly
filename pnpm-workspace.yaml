@@ -3,20 +3,89 @@ packages:
   - apps/*
   - apps/integrations/*
 
+allowBuilds:
+  '@clerk/shared': true
+  '@parcel/watcher': true
+  '@sentry/cli': true
+  '@swc/core': true
+  browser-tabs-lock: true
+  bufferutil: true
+  core-js: true
+  electron-winstaller: true
+  esbuild: true
+  lefthook: true
+  protobufjs: true
+  sharp: true
+  unrs-resolver: true
+  utf-8-validate: true
+
 catalog:
-  zod: 4.3.5
-  '@sentry/node': 10.22.0
-  dotenv: 17.2.3
+  zod: 4.4.3
+  '@sentry/node': 10.66.0
+  dotenv: 17.4.2
   react: '^19.2.1'
   react-dom: '^19.2.1'
   typescript: ^5.9.3
   '@types/react': '^19.2.7'
   '@types/react-dom': '^19.2.3'
   postcss: '^8.5.6'
-  tailwindcss: '^4.1.17'
+  tailwindcss: '^4.3.3'
   qr-code-styling: '^1.9.2'
   fastify: '^5.6.2'
   '@fastify/cors': '^11.1.0'
   tsx: '^4.21.0'
   '@typescript-eslint/eslint-plugin': '^8.48.1'
   '@typescript-eslint/parser': '^8.48.1'
+
+minimumReleaseAgeExclude:
+  - '@clerk/backend@3.11.6'
+  - '@clerk/chrome-extension@3.1.53'
+  - '@clerk/clerk-js@6.25.4'
+  - '@clerk/fastify@3.1.52'
+  - '@clerk/localizations@4.13.4'
+  - '@clerk/nextjs@7.5.19'
+  - '@clerk/react@6.12.4'
+  - '@clerk/shared@4.25.4'
+  - '@clerk/ui@1.25.4'
+  - '@fastify/cookie@11.1.2'
+  - '@fumadocs/api-docs@0.2.1'
+  - '@posthog/core@1.43.0'
+  - '@posthog/types@1.396.0'
+  - '@sentry/browser-utils@10.66.0'
+  - '@sentry/browser@10.66.0'
+  - '@sentry/core@10.66.0'
+  - '@sentry/feedback@10.66.0'
+  - '@sentry/nextjs@10.66.0'
+  - '@sentry/node-core@10.66.0'
+  - '@sentry/node@10.66.0'
+  - '@sentry/opentelemetry@10.66.0'
+  - '@sentry/react@10.66.0'
+  - '@sentry/replay-canvas@10.66.0'
+  - '@sentry/replay@10.66.0'
+  - '@sentry/server-utils@10.66.0'
+  - '@sentry/vercel-edge@10.66.0'
+  - '@tailwindcss/node@4.3.3'
+  - '@tailwindcss/oxide-android-arm64@4.3.3'
+  - '@tailwindcss/oxide-darwin-arm64@4.3.3'
+  - '@tailwindcss/oxide-darwin-x64@4.3.3'
+  - '@tailwindcss/oxide-freebsd-x64@4.3.3'
+  - '@tailwindcss/oxide-linux-arm-gnueabihf@4.3.3'
+  - '@tailwindcss/oxide-linux-arm64-gnu@4.3.3'
+  - '@tailwindcss/oxide-linux-arm64-musl@4.3.3'
+  - '@tailwindcss/oxide-linux-x64-gnu@4.3.3'
+  - '@tailwindcss/oxide-linux-x64-musl@4.3.3'
+  - '@tailwindcss/oxide-wasm32-wasi@4.3.3'
+  - '@tailwindcss/oxide-win32-arm64-msvc@4.3.3'
+  - '@tailwindcss/oxide-win32-x64-msvc@4.3.3'
+  - '@tailwindcss/oxide@4.3.3'
+  - '@tailwindcss/postcss@4.3.3'
+  - '@tailwindcss/vite@4.3.3'
+  - fumadocs-openapi@11.2.2
+  - posthog-js@1.403.0
+  - stripe@22.3.2
+  - tailwindcss@4.3.3
+  - vite@8.1.5
+
+patchedDependencies:
+  '@fumadocs/api-docs@0.2.1': patches/@fumadocs__api-docs@0.2.1.patch
+  fumadocs-openapi@11.2.2: patches/fumadocs-openapi@11.2.2.patch

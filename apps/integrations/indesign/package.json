@@ -11,22 +11,22 @@
 	},
 	"dependencies": {
 		"@shared/schemas": "workspace:*",
-		"qs": "^6.14.0",
+		"qs": "^6.15.3",
 		"react": "catalog:",
 		"react-dom": "catalog:"
 	},
 	"devDependencies": {
-		"@types/qs": "^6.14.0",
+		"@types/qs": "^6.15.1",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
-		"copy-webpack-plugin": "^12.0.2",
-		"css-loader": "^7.1.2",
+		"copy-webpack-plugin": "^14.0.0",
+		"css-loader": "^7.1.4",
 		"eslint": "^9.39.2",
 		"qrcodly-eslint-config": "workspace:*",
 		"style-loader": "^4.0.0",
-		"ts-loader": "^9.5.1",
+		"ts-loader": "^9.6.2",
 		"typescript": "catalog:",
-		"webpack": "^5.95.0",
-		"webpack-cli": "^5.1.4"
+		"webpack": "^5.108.4",
+		"webpack-cli": "^7.2.1"
 	}
 }

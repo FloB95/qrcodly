@@ -1,0 +1,128 @@
+diff --git a/dist/playground/components/result-display.js b/dist/playground/components/result-display.js
+index e00b2926b501d9b85e2c63cc58454c16055e3c28..e3beb53b01841f17fb56fe7e1b1fac9ef1e5e58d 100644
+--- a/dist/playground/components/result-display.js
++++ b/dist/playground/components/result-display.js
+@@ -2,7 +2,7 @@
+ import { useStatusInfo } from "../status-info.js";
+ import { cn } from "../../utils/cn.js";
+ import { ClientCodeBlock } from "../../ui/components/codeblock.js";
+-import { require_fast_content_type_parse } from "../../node_modules/.pnpm/fast-content-type-parse@3.0.0/node_modules/fast-content-type-parse/index.js";
++import { require_fast_content_type_parse } from "../../vendor/fast-content-type-parse/index.js";
+ import { useEffect, useMemo, useState } from "react";
+ import { jsx, jsxs } from "react/jsx-runtime";
+ import { CircleX } from "lucide-react";
+diff --git a/dist/requests/media/adapter.js b/dist/requests/media/adapter.js
+index 0cf3fa572daad64f1ffda97ac2591738466c3a51..939a4c4ef0bc49db7315c4df5655f5b661bd4a8b 100644
+--- a/dist/requests/media/adapter.js
++++ b/dist/requests/media/adapter.js
+@@ -1,5 +1,5 @@
+ import { __toESM } from "../../_virtual/_rolldown/runtime.js";
+-import { require_js2xml } from "../../node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/js2xml.js";
++import { require_js2xml } from "../../vendor/xml-js/lib/js2xml.js";
+ import { backtickQuote, inputToString, rustRawStringLiteral, tripleDoubleQuote } from "../string-utils.js";
+ import { isMediaTypeSupported, resolveMediaAdapter } from "./resolve-adapter.js";
+ //#region src/requests/media/adapter.ts
+diff --git a/dist/requests/string-utils.js b/dist/requests/string-utils.js
+index 2964c6560362065c960c2d7ec9f932a35003e6f9..d3d58b212990f712905321324963a2e49bf92989 100644
+--- a/dist/requests/string-utils.js
++++ b/dist/requests/string-utils.js
+@@ -1,5 +1,5 @@
+ import { __toESM } from "../_virtual/_rolldown/runtime.js";
+-import { require_js2xml } from "../node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/js2xml.js";
++import { require_js2xml } from "../vendor/xml-js/lib/js2xml.js";
+ //#region src/requests/string-utils.ts
+ var import_js2xml = /* @__PURE__ */ __toESM(require_js2xml(), 1);
+ /**
+diff --git a/dist/utils/document/load.js b/dist/utils/document/load.js
+index 8fa1a94fcac5409483b05b4091781d8ff9d833a8..afd9eccad242717ceb3184a82f976d7bed2a0f78 100644
+--- a/dist/utils/document/load.js
++++ b/dist/utils/document/load.js
+@@ -1,4 +1,4 @@
+-import { upgrade } from "../../node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/upgrade.js";
++import { upgrade } from "../../vendor/scalar-openapi-upgrader/dist/upgrade.js";
+ import { bundle } from "@fumadocs/api-docs/schema/bundle";
+ //#region src/utils/document/load.ts
+ /**
+diff --git a/dist/node_modules/.pnpm/fast-content-type-parse@3.0.0/node_modules/fast-content-type-parse/index.js b/dist/vendor/fast-content-type-parse/index.js
+similarity index 95%
+rename from dist/node_modules/.pnpm/fast-content-type-parse@3.0.0/node_modules/fast-content-type-parse/index.js
+rename to dist/vendor/fast-content-type-parse/index.js
+index 803f787a83b8895c8841fc58c7b859963cb68098..4d40403749e47186743ed4b365c11c2be039e12d 100644
+--- a/dist/node_modules/.pnpm/fast-content-type-parse@3.0.0/node_modules/fast-content-type-parse/index.js
++++ b/dist/vendor/fast-content-type-parse/index.js
+@@ -1,5 +1,5 @@
+-import { __commonJSMin } from "../../../../../_virtual/_rolldown/runtime.js";
+-//#region ../../node_modules/.pnpm/fast-content-type-parse@3.0.0/node_modules/fast-content-type-parse/index.js
++import { __commonJSMin } from "../../_virtual/_rolldown/runtime.js";
++//#region ../../vendor/fast-content-type-parse/index.js
+ var require_fast_content_type_parse = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+ 	const NullObject = function NullObject() {};
+ 	NullObject.prototype = Object.create(null);
+diff --git a/dist/node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/2.0-to-3.0/upgrade-from-two-to-three.js b/dist/vendor/scalar-openapi-upgrader/dist/2.0-to-3.0/upgrade-from-two-to-three.js
+similarity index 100%
+rename from dist/node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/2.0-to-3.0/upgrade-from-two-to-three.js
+rename to dist/vendor/scalar-openapi-upgrader/dist/2.0-to-3.0/upgrade-from-two-to-three.js
+diff --git a/dist/node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/3.0-to-3.1/upgrade-from-three-to-three-one.js b/dist/vendor/scalar-openapi-upgrader/dist/3.0-to-3.1/upgrade-from-three-to-three-one.js
+similarity index 100%
+rename from dist/node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/3.0-to-3.1/upgrade-from-three-to-three-one.js
+rename to dist/vendor/scalar-openapi-upgrader/dist/3.0-to-3.1/upgrade-from-three-to-three-one.js
+diff --git a/dist/node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/3.1-to-3.2/upgrade-from-three-one-to-three-two.js b/dist/vendor/scalar-openapi-upgrader/dist/3.1-to-3.2/upgrade-from-three-one-to-three-two.js
+similarity index 100%
+rename from dist/node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/3.1-to-3.2/upgrade-from-three-one-to-three-two.js
+rename to dist/vendor/scalar-openapi-upgrader/dist/3.1-to-3.2/upgrade-from-three-one-to-three-two.js
+diff --git a/dist/node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/helpers/traverse.js b/dist/vendor/scalar-openapi-upgrader/dist/helpers/traverse.js
+similarity index 100%
+rename from dist/node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/helpers/traverse.js
+rename to dist/vendor/scalar-openapi-upgrader/dist/helpers/traverse.js
+diff --git a/dist/node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/upgrade.js b/dist/vendor/scalar-openapi-upgrader/dist/upgrade.js
+similarity index 100%
+rename from dist/node_modules/.pnpm/@scalar_openapi-upgrader@0.2.9/node_modules/@scalar/openapi-upgrader/dist/upgrade.js
+rename to dist/vendor/scalar-openapi-upgrader/dist/upgrade.js
+diff --git a/dist/node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/array-helper.js b/dist/vendor/xml-js/lib/array-helper.js
+similarity index 66%
+rename from dist/node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/array-helper.js
+rename to dist/vendor/xml-js/lib/array-helper.js
+index f7403706d2f7b3d6ae355f3ea0c0ef5558154c4e..50611258000b1f8e678aa9f12a295a0407223594 100644
+--- a/dist/node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/array-helper.js
++++ b/dist/vendor/xml-js/lib/array-helper.js
+@@ -1,5 +1,5 @@
+-import { __commonJSMin } from "../../../../../../_virtual/_rolldown/runtime.js";
+-//#region ../../node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/array-helper.js
++import { __commonJSMin } from "../../../_virtual/_rolldown/runtime.js";
++//#region ../../vendor/xml-js/lib/array-helper.js
+ var require_array_helper = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+ 	module.exports = { isArray: function(value) {
+ 		if (Array.isArray) return Array.isArray(value);
+diff --git a/dist/node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/js2xml.js b/dist/vendor/xml-js/lib/js2xml.js
+similarity index 98%
+rename from dist/node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/js2xml.js
+rename to dist/vendor/xml-js/lib/js2xml.js
+index 4656e89774ad289a6025b9051f2d211a2a75d602..0d78f8b26a71ef0f6113552a77b62d3337dd8f7e 100644
+--- a/dist/node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/js2xml.js
++++ b/dist/vendor/xml-js/lib/js2xml.js
+@@ -1,7 +1,7 @@
+-import { __commonJSMin } from "../../../../../../_virtual/_rolldown/runtime.js";
++import { __commonJSMin } from "../../../_virtual/_rolldown/runtime.js";
+ import { require_array_helper } from "./array-helper.js";
+ import { require_options_helper } from "./options-helper.js";
+-//#region ../../node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/js2xml.js
++//#region ../../vendor/xml-js/lib/js2xml.js
+ var require_js2xml = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+ 	var helper = require_options_helper();
+ 	var isArray = require_array_helper().isArray;
+diff --git a/dist/node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/options-helper.js b/dist/vendor/xml-js/lib/options-helper.js
+similarity index 87%
+rename from dist/node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/options-helper.js
+rename to dist/vendor/xml-js/lib/options-helper.js
+index 56c21061bb7525a862d72793b5aa5d541d9fbc74..309434f07d37ef851e7c984d76f5acbb5d3edf6b 100644
+--- a/dist/node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/options-helper.js
++++ b/dist/vendor/xml-js/lib/options-helper.js
+@@ -1,6 +1,6 @@
+-import { __commonJSMin } from "../../../../../../_virtual/_rolldown/runtime.js";
++import { __commonJSMin } from "../../../_virtual/_rolldown/runtime.js";
+ import { require_array_helper } from "./array-helper.js";
+-//#region ../../node_modules/.pnpm/xml-js@1.6.11/node_modules/xml-js/lib/options-helper.js
++//#region ../../vendor/xml-js/lib/options-helper.js
+ var require_options_helper = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+ 	var isArray = require_array_helper().isArray;
+ 	module.exports = {
