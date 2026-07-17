@@ -95,7 +95,11 @@ export const AnalyticsTimeChart = ({ data, locale, variant = 'scan' }: Analytics
 								tickMargin={8}
 								tickFormatter={formatDate}
 							/>
-							<ChartTooltip content={<ChartTooltipContent labelFormatter={formatDate} />} />
+							<ChartTooltip
+								content={
+									<ChartTooltipContent labelFormatter={(label) => formatDate(String(label))} />
+								}
+							/>
 							<ChartLegend content={<ChartLegendContent />} />
 							<Area
 								dataKey="scans"

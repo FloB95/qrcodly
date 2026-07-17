@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { type TQrCodeContent, type TVCardInput, convertVCardObjToString } from '@shared/schemas';
+import { type TQrCodeContent, convertVCardObjToString } from '@shared/schemas';
 import { type IDownloadResponse, type IDownloadStrategy } from './download-strategy.interface';
 import { type TQrCode } from '@/modules/qr-code/domain/entities/qr-code.entity';
 
@@ -14,7 +14,7 @@ export class VCardDownloadStrategy implements IDownloadStrategy {
 			throw new Error('VCardDownloadStrategy can only handle vCard type QR codes');
 		}
 
-		const vCardData = qrCode.content.data as TVCardInput;
+		const vCardData = qrCode.content.data;
 		const vCardString = convertVCardObjToString(vCardData);
 
 		const firstName = vCardData.firstName || '';

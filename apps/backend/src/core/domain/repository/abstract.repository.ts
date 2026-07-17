@@ -5,7 +5,7 @@ import {
 	type MySqlTableWithColumns,
 	type MySqlSelectDynamic,
 } from 'drizzle-orm/mysql-core';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'node:crypto';
 import db from '@/core/db';
 import { type ISqlQueryFindBy, type WhereConditions } from '@/core/interface/repository.interface';
 import { convertWhereConditionToDrizzle } from '@/core/db/utils';
@@ -73,7 +73,7 @@ export default abstract class AbstractRepository<T> {
 	}
 
 	generateId(): string {
-		return uuidv4();
+		return randomUUID();
 	}
 
 	withPagination<T extends MySqlSelect>(

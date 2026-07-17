@@ -7,8 +7,8 @@
 	},
 	"type": "module",
 	"devDependencies": {
-		"eslint": "^9.27.0",
-		"eslint-config-prettier": "^10.1.2",
-		"typescript-eslint": "^8.31.1"
+		"eslint": "^9.39.2",
+		"eslint-config-prettier": "^10.1.8",
+		"typescript-eslint": "^8.64.0"
 	}
 }

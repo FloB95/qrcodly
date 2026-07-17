@@ -6,6 +6,17 @@ import { and, eq, gt, gte, isNotNull, isNull, like, lt, lte, not, or, type SQL }
 export { createTable } from '@qrcodly/db';
 
 /**
+ * Detects a MySQL duplicate-key violation (ER_DUP_ENTRY / 1062).
+ * Drizzle >= 0.44 wraps driver errors in DrizzleQueryError, so the
+ * MySQL error code may live on `error.cause` instead of the error itself.
+ */
+export function isDuplicateEntryError(error: unknown): boolean {
+	const hasDupCode = (e: unknown): boolean =>
+		e instanceof Error && 'code' in e && (e as { code?: unknown }).code === 'ER_DUP_ENTRY';
+	return hasDupCode(error) || hasDupCode((error as { cause?: unknown } | null)?.cause);
+}
+
+/**
  * Converts a where condition object to a Drizzle SQL object.
  * @param where The where condition object.
  * @param table The table schema.
@@ -43,8 +54,8 @@ export function convertWhereConditionToDrizzle<T>(
 			}
 			if (whereField.like !== undefined) {
 				sql = sql
-					? combine(sql, like(table[key] as unknown as SQL, `%${whereField.like}%`))
-					: like(table[key] as unknown as SQL, `%${whereField.like}%`);
+					? combine(sql, like(table[key], `%${whereField.like}%`))
+					: like(table[key], `%${whereField.like}%`);
 			}
 			if (whereField.gt !== undefined) {
 				sql = sql ? combine(sql, gt(table[key], whereField.gt)) : gt(table[key], whereField.gt);

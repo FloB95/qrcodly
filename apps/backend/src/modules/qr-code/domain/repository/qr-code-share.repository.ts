@@ -68,7 +68,7 @@ class QrCodeShareRepository extends AbstractRepository<TQrCodeShare> {
 				qrCode: true,
 			},
 		});
-		return result as TQrCodeShareWithQrCode | undefined;
+		return result;
 	}
 
 	/**

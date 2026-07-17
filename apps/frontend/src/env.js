@@ -33,6 +33,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_MONTHLY_LEGACY: z.string().optional(),
 		NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL_LEGACY: z.string().optional(),
 		NEXT_PUBLIC_GOOGLE_API_KEY: z.string(),
+		NEXT_PUBLIC_CLERK_JS_URL: z.string(),
 	},
 
 	/**
@@ -61,6 +62,7 @@ export const env = createEnv({
 			process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL_LEGACY,
 		INTERNAL_API_SECRET: process.env.INTERNAL_API_SECRET,
 		NEXT_PUBLIC_GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+		NEXT_PUBLIC_CLERK_JS_URL: process.env.NEXT_PUBLIC_CLERK_JS_URL,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

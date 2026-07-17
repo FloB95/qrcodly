@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { type TQrCodeContent, type TEventInput, convertEventObjToString } from '@shared/schemas';
+import { type TQrCodeContent, convertEventObjToString } from '@shared/schemas';
 import { type IDownloadResponse, type IDownloadStrategy } from './download-strategy.interface';
 import { type TQrCode } from '@/modules/qr-code/domain/entities/qr-code.entity';
 
@@ -14,7 +14,7 @@ export class EventDownloadStrategy implements IDownloadStrategy {
 			throw new Error('EventDownloadStrategy can only handle event type QR codes');
 		}
 
-		const eventData = qrCode.content.data as TEventInput;
+		const eventData = qrCode.content.data;
 		const iCalString = convertEventObjToString(eventData);
 
 		return {

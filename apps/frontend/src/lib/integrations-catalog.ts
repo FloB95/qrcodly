@@ -29,9 +29,7 @@ export type ComingSoonIntegrationEntry = BaseIntegrationEntry & {
 };
 
 export type IntegrationCatalogEntry =
-	| AnalyticsIntegrationEntry
-	| ExternalLinkIntegrationEntry
-	| ComingSoonIntegrationEntry;
+	AnalyticsIntegrationEntry | ExternalLinkIntegrationEntry | ComingSoonIntegrationEntry;
 
 export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 	{

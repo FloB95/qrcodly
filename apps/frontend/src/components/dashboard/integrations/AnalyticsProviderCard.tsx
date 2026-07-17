@@ -37,7 +37,7 @@ const INTEGRATION_ID_BY_PROVIDER: Record<TProviderType, string> = {
 };
 import type { ApiError } from '@/lib/api/ApiError';
 import { EllipsisVerticalIcon, SparklesIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import * as Sentry from '@sentry/nextjs';
 import posthog from 'posthog-js';
 
@@ -275,7 +275,12 @@ export function AnalyticsProviderCard({
 					<ItemTitle className="flex flex-wrap items-center gap-2">
 						{providerName}
 						{!canConfigure && (
-							<Link href="/dashboard/settings/billing">
+							<Link
+								href="/plans"
+								onClick={() =>
+									posthog.capture('pro_gate_clicked', { source: 'analytics_integrations' })
+								}
+							>
 								<Badge
 									variant="secondary"
 									className="bg-teal-600 hover:bg-teal-700 text-white text-xs"

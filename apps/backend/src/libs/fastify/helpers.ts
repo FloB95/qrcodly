@@ -299,7 +299,7 @@ export function registerRoutes(
 		if (routeMeta.options.authHandler !== false) {
 			// Hidden routes default to session-only; override via config.allowedTokenTypes.
 			const explicitAllowed = routeMeta.options.config?.allowedTokenTypes;
-			const isHidden = (routeMeta.options.schema as { hide?: boolean } | undefined)?.hide === true;
+			const isHidden = routeMeta.options.schema?.hide === true;
 			const effectiveAllowed = explicitAllowed ?? (isHidden ? ['session_token' as const] : null);
 			if (effectiveAllowed) {
 				routeOptions.preHandler.push(enforceTokenType(effectiveAllowed));

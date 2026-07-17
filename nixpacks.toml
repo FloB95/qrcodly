@@ -1,0 +1,22 @@
+# Nixpacks (Coolify) ships pnpm 9 as its newest nix package, but the workspace
+# requires pnpm >= 11 (see engines/packageManager in package.json).
+#
+# - pnpm lives in the SETUP phase because Coolify force-overrides the install
+#   command via CLI flag (--install-cmd), discarding custom install cmds.
+# - The binary is fetched straight from GitHub releases. Do NOT use the
+#   get.pnpm.io install script: it ends with `pnpm setup`, which pnpm 11
+#   resolves to our root package.json script named "setup" and crashes.
+# - libatomic1 is required by the standalone pnpm binary.
+# Keep the version in sync with "packageManager" in package.json.
+providers = ['node']
+
+[phases.setup]
+nixPkgs = ['nodejs_22', 'openssl', 'curl', 'wget']
+aptPkgs = ['curl', 'wget', 'libatomic1']
+cmds = [
+	'ARCH=$(uname -m) && case "$ARCH" in x86_64) PNPM_ARCH=x64 ;; aarch64|arm64) PNPM_ARCH=arm64 ;; *) echo "unsupported arch: $ARCH" && exit 1 ;; esac && mkdir -p /usr/local/share/pnpm && curl -fsSL "https://github.com/pnpm/pnpm/releases/download/v11.13.1/pnpm-linux-${PNPM_ARCH}.tar.gz" | tar -xz -C /usr/local/share/pnpm',
+	# /usr/bin, not /usr/local/bin: nixpacks runs every phase as a login shell
+	# whose PATH does not include /usr/local/bin
+	'ln -sf /usr/local/share/pnpm/pnpm /usr/bin/pnpm',
+	'pnpm --version',
+]

@@ -1,16 +1,10 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkMiddleware } from '@clerk/nextjs/server';
 import { Logger } from 'next-axiom';
 import { type NextFetchEvent, type NextRequest, NextResponse } from 'next/server';
 import { processAnalyticsAndRedirect } from './middlewares/process-analytics-and-redirect.middleware';
 import createMiddleware from 'next-intl/middleware';
 import { routing, SUPPORTED_LANGUAGES } from './i18n/routing';
 import { env } from '@/env';
-
-const isProtectedRoute = createRouteMatcher([
-	'(.*)/dashboard(.*)',
-	'(.*)/collection(.*)',
-	'(.*)/settings(.*)',
-]);
 
 // Create the next-intl middleware
 const intlMiddleware = createMiddleware(routing);
@@ -49,7 +43,9 @@ function scanResponse(req: NextRequest) {
 	});
 }
 
-const clerkHandler = clerkMiddleware(async (auth, req, event) => {
+// Auth checks live in the protected layouts (resource-based, see dashboard/layout.tsx);
+// clerkMiddleware only provides the auth context here.
+const clerkHandler = clerkMiddleware(async (_auth, req, event) => {
 	const pathname = new URL(req.url).pathname;
 
 	if (pathname === '/sitemap.xml' || pathname === '/robots.txt') {
@@ -67,9 +63,6 @@ const clerkHandler = clerkMiddleware(async (auth, req, event) => {
 	const logger = new Logger({ source: 'middleware' });
 	logger.middleware(req);
 	event.waitUntil(logger.flush());
-
-	// Handle protected routes
-	if (isProtectedRoute(req)) await auth.protect();
 
 	// Internationalization Middleware (exclude sitemap & api)
 	if (

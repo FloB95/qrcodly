@@ -28,21 +28,27 @@ export function CurrentPlanSection() {
 	const [selectedPeriod, setSelectedPeriod] = useState<'annual' | 'month'>('annual');
 	const conversionTracked = useRef(false);
 
-	// Google Ads: Subscription conversion tracking
+	// Conversion tracking (Google Ads + PostHog) after successful checkout
 	useEffect(() => {
 		if (conversionTracked.current) return;
 		if (searchParams.get('checkout') !== 'success') return;
 		if (!subscription?.stripePriceId) return;
-		if (typeof window.gtag !== 'function') return;
 
 		const isAnnual = subscription.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL;
 		const value = isAnnual ? 83.88 : 8.99;
 
-		window.gtag('event', 'conversion', {
-			send_to: 'AW-10838865201/Stq3CL_pnY0cELHqr7Ao',
+		posthog.capture('subscription:checkout_completed', {
+			period: isAnnual ? 'annual' : 'month',
 			value,
-			currency: 'EUR',
 		});
+
+		if (typeof window.gtag === 'function') {
+			window.gtag('event', 'conversion', {
+				send_to: 'AW-10838865201/Stq3CL_pnY0cELHqr7Ao',
+				value,
+				currency: 'EUR',
+			});
+		}
 		conversionTracked.current = true;
 	}, [searchParams, subscription?.stripePriceId]);
 

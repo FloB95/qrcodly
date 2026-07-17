@@ -1,7 +1,7 @@
 import { CodeBracketIcon } from '@heroicons/react/24/outline';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { useTranslations } from 'next-intl';
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/react';
 import { ApiKeyList } from '@/components/dashboard/api-keys/ApiKeyList';
 import { CreateApiKeyDialog } from '@/components/dashboard/api-keys/CreateApiKeyDialog';
 import { ApiKeyProvider } from '@/components/dashboard/api-keys/ApiKeyContext';

@@ -6,8 +6,15 @@ import SatisfactionSurvey from '@/components/dashboard/satisfaction-survey/Satis
 import { SiteHeader } from '@/components/site-header';
 import Container from '@/components/ui/container';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { auth } from '@clerk/nextjs/server';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+	// Resource-based auth check (replaces the deprecated createRouteMatcher middleware guard)
+	const { userId, redirectToSignIn } = await auth();
+	if (!userId) {
+		return redirectToSignIn();
+	}
+
 	return (
 		<>
 			<Header />

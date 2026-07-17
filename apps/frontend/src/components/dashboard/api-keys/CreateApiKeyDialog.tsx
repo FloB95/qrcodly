@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
 import { useCreateApiKeyMutation } from '@/lib/api/api-key';
 import { API_KEY_SCOPES, CreateApiKeyDto, type TCreateApiKeyDto } from '@shared/schemas';
@@ -118,7 +118,12 @@ export function CreateApiKeyDialog() {
 	if (!isPlanLoading && !hasProPlan) {
 		return (
 			<Button asChild size="sm" variant="outline">
-				<Link href="/dashboard/settings/billing">{t('upgradeCta')}</Link>
+				<Link
+					href="/plans"
+					onClick={() => posthog.capture('pro_gate_clicked', { source: 'api_keys' })}
+				>
+					{t('upgradeCta')}
+				</Link>
 			</Button>
 		);
 	}
@@ -225,10 +230,7 @@ export function CreateApiKeyDialog() {
 												const checked = field.value?.includes(scope) ?? false;
 												const cap = `${scope.charAt(0).toUpperCase()}${scope.slice(1)}`;
 												const labelKey = `scope${cap}` as
-													| 'scopeRead'
-													| 'scopeWrite'
-													| 'scopeUpdate'
-													| 'scopeDelete';
+													'scopeRead' | 'scopeWrite' | 'scopeUpdate' | 'scopeDelete';
 												const hintKey:
 													| 'scopeReadHint'
 													| 'scopeWriteHint'

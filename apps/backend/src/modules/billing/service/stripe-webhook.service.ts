@@ -68,26 +68,24 @@ export class StripeWebhookService {
 
 	/**
 	 * Extract current period dates from a Stripe subscription.
-	 * Webhook payloads may omit `current_period_start/end` depending on
-	 * the API version configured in the Stripe dashboard, so we fall back
-	 * to retrieving the full subscription via the API when they are missing.
+	 * Since API version 2025-03 the period lives on the subscription items;
+	 * webhook payloads may omit them, so we fall back to retrieving the full
+	 * subscription via the API when they are missing.
 	 */
 	private async getSubscriptionPeriod(subscription: Stripe.Subscription): Promise<{
 		periodStart: Date;
 		periodEnd: Date;
 	}> {
-		let start = subscription.current_period_start;
-		let end = subscription.current_period_end;
+		let item = subscription.items?.data?.[0];
 
-		if (!start || !end) {
+		if (!item?.current_period_start || !item?.current_period_end) {
 			const full = await this.stripeService.getSubscription(subscription.id);
-			start = full.current_period_start;
-			end = full.current_period_end;
+			item = full.items?.data?.[0];
 		}
 
 		return {
-			periodStart: new Date((start || 0) * 1000),
-			periodEnd: new Date((end || 0) * 1000),
+			periodStart: new Date((item?.current_period_start || 0) * 1000),
+			periodEnd: new Date((item?.current_period_end || 0) * 1000),
 		};
 	}
 
@@ -229,8 +227,9 @@ export class StripeWebhookService {
 	}
 
 	private async handlePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
+		const subscriptionRef = invoice.parent?.subscription_details?.subscription;
 		const subscriptionId =
-			typeof invoice.subscription === 'string' ? invoice.subscription : invoice.subscription?.id;
+			typeof subscriptionRef === 'string' ? subscriptionRef : subscriptionRef?.id;
 
 		if (!subscriptionId) {
 			return;

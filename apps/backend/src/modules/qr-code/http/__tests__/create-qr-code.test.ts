@@ -102,7 +102,7 @@ describe('createQrCode - Core', () => {
 				name: 'Test',
 				content: generateQrCodeDto().content,
 			};
-			const response = await createRequest(dtoWithoutConfig as TCreateQrCodeDto, accessToken);
+			const response = await createRequest(dtoWithoutConfig, accessToken);
 			expect(response).toHaveStatusCode(201);
 		});
 

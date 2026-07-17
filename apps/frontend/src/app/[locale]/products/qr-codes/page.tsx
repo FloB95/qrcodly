@@ -166,6 +166,8 @@ export default async function Page({ params }: DefaultPageParams) {
 					subtitle={t('hero.subtitle')}
 					ctaLabel={t('hero.ctaLabel')}
 					ctaHref="/#generator"
+					secondaryCtaLabel={t('hero.viewPricing')}
+					secondaryCtaHref="/plans"
 				/>
 
 				{features.map((feature, i) => (

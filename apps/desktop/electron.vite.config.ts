@@ -36,7 +36,6 @@ function frontendAliasPlugin(): Plugin {
 		'@/i18n/routing': resolve(shimDir, 'i18n-routing.ts'),
 		'@/i18n/navigation': resolve(shimDir, 'i18n-navigation.ts'),
 		'@clerk/nextjs/server': resolve(shimDir, 'clerk-server.ts'),
-		'@clerk/nextjs/experimental': resolve(shimDir, 'clerk-experimental.ts'),
 		'@clerk/nextjs': resolve(shimDir, 'clerk.ts'),
 		'next-intl/server': resolve(shimDir, 'next-intl-server.ts'),
 		'next-intl/routing': resolve(shimDir, 'next-intl-routing.ts'),

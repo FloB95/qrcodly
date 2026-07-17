@@ -24,7 +24,7 @@ describe('WebRiskService', () => {
 		mockCache.get.mockResolvedValue(null);
 		mockCache.set.mockResolvedValue();
 		mockFetch = jest.fn();
-		global.fetch = mockFetch as unknown as typeof fetch;
+		global.fetch = mockFetch;
 		service = new WebRiskService(mockCache, mockLogger);
 	});
 

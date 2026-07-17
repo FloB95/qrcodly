@@ -2,7 +2,7 @@ import { BadRequestError } from '@/core/error/http';
 import { ObjectStorage } from '@/core/storage';
 import { Logger } from '@/core/logging';
 import { container } from 'tsyringe';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'node:crypto';
 
 export abstract class BaseImageStrategy {
 	protected readonly validMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
@@ -30,7 +30,7 @@ export abstract class BaseImageStrategy {
 		const buffer = Buffer.from(base64Data, 'base64');
 		const extension = mimeType === 'image/svg+xml' ? 'svg' : mimeType.split('/')[1];
 
-		return { buffer, fileName: `${fileName}-${uuidv4()}.${extension}`, mimeType };
+		return { buffer, fileName: `${fileName}-${randomUUID()}.${extension}`, mimeType };
 	}
 
 	constructFilePath(folder: string, userId: string | undefined, fileName: string): string {
@@ -85,7 +85,7 @@ export abstract class BaseImageStrategy {
 		const dotIdx = sourcePath.lastIndexOf('.');
 		const slashIdx = sourcePath.lastIndexOf('/');
 		const ext = dotIdx > slashIdx ? sourcePath.slice(dotIdx + 1) : 'png';
-		const newFileName = `${newEntityId}-${uuidv4()}.${ext}`;
+		const newFileName = `${newEntityId}-${randomUUID()}.${ext}`;
 		const newPath = this.constructFilePath(this.getUploadFolder(), userId, newFileName);
 		await this.objectStorage.copy(sourcePath, newPath);
 		return newPath;

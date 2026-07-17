@@ -2,11 +2,7 @@ import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import CustomDomainRepository from '../domain/repository/custom-domain.repository';
-import {
-	TCustomDomain,
-	TOwnershipStatus,
-	TVerificationPhase,
-} from '../domain/entities/custom-domain.entity';
+import { TCustomDomain, TOwnershipStatus } from '../domain/entities/custom-domain.entity';
 import {
 	CloudflareService,
 	CloudflareApiError,
@@ -127,7 +123,7 @@ export class VerifyCustomDomainUseCase implements IBaseUseCase {
 
 		// Update domain to Phase 2
 		await this.customDomainRepository.update(customDomain, {
-			verificationPhase: 'cloudflare_ssl' as TVerificationPhase,
+			verificationPhase: 'cloudflare_ssl',
 			ownershipStatus: 'verified',
 			cloudflareHostnameId: cloudflareHostname.id,
 			sslStatus: cloudflareHostname.ssl.status,

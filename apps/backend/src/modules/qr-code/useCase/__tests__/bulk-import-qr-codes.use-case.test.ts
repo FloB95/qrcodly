@@ -231,7 +231,7 @@ describe('BulkImportQrCodesUseCase', () => {
 			const file = new File([csvContent], 'test.csv', { type: 'text/csv' });
 
 			const dto: TBulkImportQrCodeDto = {
-				contentType: 'event' as any,
+				contentType: 'event',
 				file,
 				config: QrCodeDefaults,
 			};

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/react';
 import { useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/utils';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';

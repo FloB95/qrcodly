@@ -60,7 +60,7 @@ function stringToBytes(value: string): Uint8Array {
 
 function bytesToString(bytes: Uint8Array): string {
 	let out = '';
-	for (let i = 0; i < bytes.length; ) {
+	for (let i = 0; i < bytes.length;) {
 		const b1 = bytes[i++];
 		if (b1 < 0x80) out += String.fromCharCode(b1);
 		else if (b1 < 0xe0) {

@@ -569,6 +569,11 @@
 				"lineHeader": "Riga",
 				"retryButton": "Correggi e ricarica",
 				"backButton": "Indietro"
+			},
+			"limit": {
+				"title": "Questo file supera il limite di importazione del tuo piano",
+				"description": "Il tuo file contiene {rows} righe ({size} MB). Il tuo piano importa fino a {maxRows} righe e {maxSize} MB alla volta.",
+				"upgradeCta": "Sblocca 50 righe e 2 MB con Pro"
 			}
 		},
 		"settingsForm": {
@@ -1404,7 +1409,7 @@
 		"metaTitle": "Generatore di Codici QR Prezzi – Gratis e Pro",
 		"metaDescription": "Generatore di codici QR gratuito con codici illimitati, design personalizzato e analisi. Pro per domini personalizzati, importazione in blocco e supporto prioritario. Senza costi nascosti.",
 		"title": "Equo. Trasparente. Senza costi nascosti.",
-		"subtitle": "QRcodly è gratuito – nessun periodo di prova, nessun abbonamento automatico. Il piano Pro copre solo le funzionalità che richiedono infrastrutture aggiuntive.",
+		"subtitle": "Il piano Free è gratuito per sempre: codici QR, scansioni e statistiche illimitati. Pro aggiunge gli strumenti business: il tuo dominio, l'accesso API e le importazioni in blocco. Disdici quando vuoi.",
 		"annual": "Annuale",
 		"monthly": "Mensile",
 		"perMonth": "mese",
@@ -1419,7 +1424,7 @@
 		},
 		"pro": {
 			"name": "Pro",
-			"description": "Supportaci e sblocca tutte le funzionalità per i tuoi codici QR."
+			"description": "Pensato per il business: il tuo dominio su ogni link breve, automazione via API REST, importazioni in blocco e integrazioni di analytics."
 		},
 		"features": {
 			"free": {
@@ -1444,7 +1449,13 @@
 				"marketplaceIntegrations": "Integrazioni di terze parti"
 			}
 		},
-		"featureInfoAriaLabel": "Maggiori informazioni"
+		"featureInfoAriaLabel": "Maggiori informazioni",
+		"checkoutRedirect": {
+			"title": "Ti portiamo al pagamento sicuro…",
+			"description": "Il tuo account è pronto: ti reindirizziamo a Stripe per completare l'upgrade a Pro.",
+			"cta": "Continua al pagamento",
+			"backToPlans": "Torna ai piani"
+		}
 	},
 	"tags": {
 		"title": "Etichette",
@@ -1756,7 +1767,8 @@
 		"hero": {
 			"title": "Crea Codici QR Che Lavorano di Più.",
 			"subtitle": "Progetta codici QR straordinari con colori personalizzati, loghi e stili. Aggiorna il contenuto in qualsiasi momento, monitora ogni scansione e gestisci tutto da un'unica dashboard.",
-			"ctaLabel": "Crea il Tuo Codice QR Gratis"
+			"ctaLabel": "Crea il Tuo Codice QR Gratis",
+			"viewPricing": "Confronta i piani"
 		},
 		"stats": {
 			"stat1Value": "100K+",

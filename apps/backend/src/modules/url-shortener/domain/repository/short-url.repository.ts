@@ -156,7 +156,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 			offset: safePage * (limit || 10),
 		});
 
-		return results as TShortUrlWithDomain[];
+		return results;
 	}
 
 	/**

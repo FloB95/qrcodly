@@ -5,7 +5,8 @@ import { TCreateQrCodeShareDto, TQrCodeShareConfig } from '@shared/schemas';
 import QrCodeShareRepository from '../domain/repository/qr-code-share.repository';
 import { TQrCodeShare } from '../domain/entities/qr-code-share.entity';
 import { QrCodeShareAlreadyExistsError } from '../error/http/qr-code-share-already-exists.error';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'node:crypto';
+import { isDuplicateEntryError } from '@/core/db/utils';
 
 /**
  * Use case for creating a QR Code share link.
@@ -30,7 +31,7 @@ export class CreateQrCodeShareUseCase implements IBaseUseCase {
 		userId: string,
 		dto?: TCreateQrCodeShareDto,
 	): Promise<TQrCodeShare> {
-		const shareToken = uuidv4();
+		const shareToken = randomUUID();
 		const newId = await this.qrCodeShareRepository.generateId();
 
 		const defaultConfig: TQrCodeShareConfig = {
@@ -52,8 +53,7 @@ export class CreateQrCodeShareUseCase implements IBaseUseCase {
 		try {
 			await this.qrCodeShareRepository.create(share);
 		} catch (error) {
-			// MySQL error code 1062 = ER_DUP_ENTRY (duplicate key violation)
-			if (error instanceof Error && 'code' in error && error.code === 'ER_DUP_ENTRY') {
+			if (isDuplicateEntryError(error)) {
 				throw new QrCodeShareAlreadyExistsError();
 			}
 			throw error;

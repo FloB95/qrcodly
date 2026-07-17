@@ -569,6 +569,11 @@
 				"lineHeader": "Regel",
 				"retryButton": "Corrigeren & opnieuw uploaden",
 				"backButton": "Terug"
+			},
+			"limit": {
+				"title": "Dit bestand overschrijdt de importlimiet van je abonnement",
+				"description": "Je bestand bevat {rows} rijen ({size} MB). Je abonnement importeert maximaal {maxRows} rijen en {maxSize} MB per keer.",
+				"upgradeCta": "Ontgrendel 50 rijen & 2 MB met Pro"
 			}
 		},
 		"settingsForm": {
@@ -1404,7 +1409,7 @@
 		"metaTitle": "QR Code Generator Prijzen – Gratis & Pro",
 		"metaDescription": "Gratis QR code generator met onbeperkte codes, eigen design & analyses. Pro voor eigen domeinen, bulkimport & prioriteitsondersteuning. Geen verborgen kosten.",
 		"title": "Eerlijk. Transparant. Geen verborgen kosten.",
-		"subtitle": "QRcodly is gratis te gebruiken – geen proefperiodes, geen automatische abonnementen. Het Pro-plan dekt alleen functies die extra infrastructuur vereisen.",
+		"subtitle": "Het Free-abonnement blijft voor altijd gratis – onbeperkte QR-codes, scans en statistieken. Pro voegt de business-toolkit toe: je eigen domein, API-toegang en bulkimport. Altijd opzegbaar.",
 		"annual": "Jaarlijks",
 		"monthly": "Maandelijks",
 		"perMonth": "maand",
@@ -1419,7 +1424,7 @@
 		},
 		"pro": {
 			"name": "Pro",
-			"description": "Steun ons & ontgrendel alle functies voor je QR-codes."
+			"description": "Gemaakt voor zakelijk gebruik: je eigen domein op elke korte link, REST API-automatisering, bulkimport en analytics-integraties."
 		},
 		"features": {
 			"free": {
@@ -1444,7 +1449,13 @@
 				"marketplaceIntegrations": "Integraties van derden"
 			}
 		},
-		"featureInfoAriaLabel": "Meer informatie"
+		"featureInfoAriaLabel": "Meer informatie",
+		"checkoutRedirect": {
+			"title": "We brengen je naar de beveiligde checkout…",
+			"description": "Je account is klaar – we sturen je door naar Stripe om je Pro-upgrade af te ronden.",
+			"cta": "Doorgaan naar checkout",
+			"backToPlans": "Terug naar abonnementen"
+		}
 	},
 	"tags": {
 		"title": "Tags",
@@ -1756,7 +1767,8 @@
 		"hero": {
 			"title": "Maak QR-codes die Harder Werken.",
 			"subtitle": "Ontwerp verbluffende QR-codes met aangepaste kleuren, logo's en stijlen. Werk de inhoud op elk moment bij, volg elke scan en beheer alles vanuit een dashboard.",
-			"ctaLabel": "Maak Gratis je QR Code"
+			"ctaLabel": "Maak Gratis je QR Code",
+			"viewPricing": "Abonnementen vergelijken"
 		},
 		"stats": {
 			"stat1Value": "100K+",

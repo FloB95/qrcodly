@@ -5,6 +5,7 @@ import { Logger } from '@/core/logging';
 import { type TTag } from '../domain/entities/tag.entity';
 import { type TCreateTagDto } from '@shared/schemas';
 import { TagAlreadyExistsError } from '../error/http/tag-already-exists.error';
+import { isDuplicateEntryError } from '@/core/db/utils';
 
 @injectable()
 export class CreateTagUseCase implements IBaseUseCase {
@@ -26,7 +27,7 @@ export class CreateTagUseCase implements IBaseUseCase {
 		try {
 			await this.tagRepository.create(newTag);
 		} catch (error) {
-			if (error instanceof Error && 'code' in error && error.code === 'ER_DUP_ENTRY') {
+			if (isDuplicateEntryError(error)) {
 				throw new TagAlreadyExistsError();
 			}
 			throw error;

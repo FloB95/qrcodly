@@ -100,7 +100,7 @@ describe('SetQrCodeTagsUseCase', () => {
 		mockQrCodeRepository.findOneById.mockResolvedValue({
 			...mockQrCode,
 			createdBy: 'other-user',
-		} as TQrCodeWithRelations);
+		});
 
 		await expect(useCase.execute(qrCodeId, ['tag-1'], mockUser)).rejects.toThrow(ForbiddenError);
 	});
@@ -115,7 +115,7 @@ describe('SetQrCodeTagsUseCase', () => {
 		mockTagRepository.findOneById.mockResolvedValue({
 			...mockTags[0],
 			createdBy: 'other-user',
-		} as TTag);
+		});
 
 		await expect(useCase.execute(qrCodeId, ['tag-1'], mockUser)).rejects.toThrow(ForbiddenError);
 	});

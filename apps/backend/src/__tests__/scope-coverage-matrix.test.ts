@@ -50,7 +50,7 @@ function gatherRoutes(): RouteRow[] {
 			if (r.options.authHandler === false) authSetting = 'disabled';
 			else if (typeof r.options.authHandler !== 'undefined') authSetting = 'custom';
 			const explicitAllowed = r.options.config?.allowedTokenTypes;
-			const hidden = (r.options.schema as { hide?: boolean } | undefined)?.hide === true;
+			const hidden = r.options.schema?.hide === true;
 			const effectiveAllowed =
 				authSetting === 'disabled'
 					? null

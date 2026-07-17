@@ -562,6 +562,11 @@
 				"lineHeader": "Linha",
 				"retryButton": "Corrigir e Reenviar",
 				"backButton": "Voltar"
+			},
+			"limit": {
+				"title": "Este ficheiro excede o limite de importação do seu plano",
+				"description": "O seu ficheiro tem {rows} linhas ({size} MB). O seu plano importa até {maxRows} linhas e {maxSize} MB de cada vez.",
+				"upgradeCta": "Desbloqueie 50 linhas e 2 MB com o Pro"
 			}
 		},
 		"settingsForm": {
@@ -1404,7 +1409,7 @@
 		"metaTitle": "Preços do Gerador de QR Code - Planos Gratuito e Pro",
 		"metaDescription": "Gerador de QR code gratuito com códigos ilimitados, estilização personalizada e análises. Faça upgrade para Pro para domínios personalizados, importações em massa e suporte prioritário. Sem custos ocultos.",
 		"title": "Justo. Transparente. Sem custos ocultos.",
-		"subtitle": "O QRcodly é gratuito para usar – sem períodos de teste, sem assinaturas automáticas. O plano Pro cobre apenas funcionalidades que requerem infraestrutura adicional.",
+		"subtitle": "O plano Free é gratuito para sempre: códigos QR, leituras e estatísticas ilimitados. O Pro adiciona as ferramentas de negócio: o seu próprio domínio, acesso à API e importações em massa. Cancele quando quiser.",
 		"annual": "Anual",
 		"monthly": "Mensal",
 		"perMonth": "mês",
@@ -1419,7 +1424,7 @@
 		},
 		"pro": {
 			"name": "Pro",
-			"description": "Nos apoie e desbloqueie todos os recursos para seus QR codes."
+			"description": "Feito para empresas: o seu domínio em cada link curto, automatização via API REST, importações em massa e integrações de análise."
 		},
 		"features": {
 			"free": {
@@ -1444,7 +1449,13 @@
 				"marketplaceIntegrations": "Integrações de terceiros"
 			}
 		},
-		"featureInfoAriaLabel": "Mais informações"
+		"featureInfoAriaLabel": "Mais informações",
+		"checkoutRedirect": {
+			"title": "A levá-lo para o pagamento seguro…",
+			"description": "A sua conta está pronta — vamos redirecioná-lo para o Stripe para concluir o upgrade para Pro.",
+			"cta": "Continuar para o pagamento",
+			"backToPlans": "Voltar aos planos"
+		}
 	},
 	"tags": {
 		"title": "Tags",
@@ -1756,7 +1767,8 @@
 		"hero": {
 			"title": "Crie QR Codes que Trabalham Mais.",
 			"subtitle": "Crie QR codes impressionantes com cores personalizadas, logos e estilos. Atualize o conteúdo a qualquer momento, rastreie cada leitura e gerencie tudo em um único painel.",
-			"ctaLabel": "Crie Seu QR Code Gratuitamente"
+			"ctaLabel": "Crie Seu QR Code Gratuitamente",
+			"viewPricing": "Comparar planos"
 		},
 		"stats": {
 			"stat1Value": "100K+",

@@ -1,0 +1,24 @@
+diff --git a/dist/utils/deep-merge.js b/dist/utils/deep-merge.js
+index 516e774f0a2b660cbc2ce7e785bdad0b8759b47a..bc878a7bdcd93bc42083ba2ff01a5ad388fa1285 100644
+--- a/dist/utils/deep-merge.js
++++ b/dist/utils/deep-merge.js
+@@ -1,5 +1,5 @@
+ import { isPlainObject } from "./is-plain-object.js";
+-import { require_deepmerge } from "../node_modules/.pnpm/@fastify_deepmerge@3.2.1/node_modules/@fastify/deepmerge/index.js";
++import { require_deepmerge } from "../vendor/fastify-deepmerge/index.js";
+ const mergeDeep = (0, require_deepmerge().deepmerge)({
+ 	all: true,
+ 	isMergeableObject: isPlainObject
+diff --git a/dist/node_modules/.pnpm/@fastify_deepmerge@3.2.1/node_modules/@fastify/deepmerge/index.js b/dist/vendor/fastify-deepmerge/index.js
+similarity index 98%
+rename from dist/node_modules/.pnpm/@fastify_deepmerge@3.2.1/node_modules/@fastify/deepmerge/index.js
+rename to dist/vendor/fastify-deepmerge/index.js
+index 401f0c625d143458249dfca2927e2f0f03ef304b..2b7cd30666d4941866bc096d00bfd81ce9e3874e 100644
+--- a/dist/node_modules/.pnpm/@fastify_deepmerge@3.2.1/node_modules/@fastify/deepmerge/index.js
++++ b/dist/vendor/fastify-deepmerge/index.js
+@@ -1,4 +1,4 @@
+-import { __commonJSMin } from "../../../../../../_virtual/_rolldown/runtime.js";
++import { __commonJSMin } from "../../_virtual/_rolldown/runtime.js";
+ //#region ../../node_modules/.pnpm/@fastify+deepmerge@3.2.1/node_modules/@fastify/deepmerge/index.js
+ var require_deepmerge = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+ 	const JSON_PROTO = Object.getPrototypeOf({});

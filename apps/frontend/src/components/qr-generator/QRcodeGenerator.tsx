@@ -44,9 +44,7 @@ const GENERATOR_TABS: GeneratorTabConfig[] = [
 ];
 
 type QrCodeGeneratorType =
-	| 'QrCodeWithDownloadBtn'
-	| 'QrCodeWithUpdateBtn'
-	| 'QrCodeWithTemplateUpdateBtn';
+	'QrCodeWithDownloadBtn' | 'QrCodeWithUpdateBtn' | 'QrCodeWithTemplateUpdateBtn';
 
 type QRcodeGeneratorProps = {
 	hiddenTabs?: GeneratorTab[];
