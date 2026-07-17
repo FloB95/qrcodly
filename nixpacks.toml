@@ -1,0 +1,11 @@
+# Nixpacks (Coolify) ships pnpm 9 as its newest nix package, but the workspace
+# requires pnpm >= 11 (see engines/packageManager in package.json). Install
+# pnpm via npm instead and keep the nix-provided pnpm out of the image.
+# Keep the version in sync with "packageManager" in package.json.
+providers = ['node']
+
+[phases.setup]
+nixPkgs = ['nodejs_22', 'openssl', 'curl', 'wget']
+
+[phases.install]
+cmds = ['npm install -g pnpm@11.13.1', 'pnpm install --frozen-lockfile']
