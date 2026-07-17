@@ -15,6 +15,8 @@ nixPkgs = ['nodejs_22', 'openssl', 'curl', 'wget']
 aptPkgs = ['curl', 'wget', 'libatomic1']
 cmds = [
 	'ARCH=$(uname -m) && case "$ARCH" in x86_64) PNPM_ARCH=x64 ;; aarch64|arm64) PNPM_ARCH=arm64 ;; *) echo "unsupported arch: $ARCH" && exit 1 ;; esac && mkdir -p /usr/local/share/pnpm && curl -fsSL "https://github.com/pnpm/pnpm/releases/download/v11.13.1/pnpm-linux-${PNPM_ARCH}.tar.gz" | tar -xz -C /usr/local/share/pnpm',
-	'ln -sf /usr/local/share/pnpm/pnpm /usr/local/bin/pnpm',
+	# /usr/bin, not /usr/local/bin: nixpacks runs every phase as a login shell
+	# whose PATH does not include /usr/local/bin
+	'ln -sf /usr/local/share/pnpm/pnpm /usr/bin/pnpm',
 	'pnpm --version',
 ]
