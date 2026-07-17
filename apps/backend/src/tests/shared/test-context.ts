@@ -9,7 +9,7 @@ import { KeyCache } from '@/core/cache';
 import { ObjectStorage } from '@/core/storage';
 import { cleanUpMockData } from '@/core/db/mock';
 import { sleep } from '@/utils/general';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -129,8 +129,17 @@ class TestContextManager {
 					clerkClient.sessions.getToken(sessionId!, CLERK_JWT_TEMPLATE),
 				);
 				jwt = tokenResponse?.jwt;
-			} catch {
-				sessionId = undefined;
+			} catch (error) {
+				// Only discard the cached session when Clerk says it is actually
+				// gone/invalid. On transient failures (exhausted 429 retries, 5xx,
+				// network) rethrow instead of creating a fresh session, so we don't
+				// pile more load onto Clerk during an outage or rate limit.
+				const status = (error as { status?: number })?.status;
+				if (status === 401 || status === 403 || status === 404 || status === 410) {
+					sessionId = undefined;
+				} else {
+					throw error;
+				}
 			}
 		}
 
@@ -237,7 +246,10 @@ function writeTokenCache(userId: string, entry: CachedToken): void {
 	try {
 		const cache = readTokenCache();
 		cache[userId] = entry;
-		writeFileSync(TOKEN_CACHE_FILE, JSON.stringify(cache));
+		// Owner-only: the file holds live JWTs and session IDs. writeFileSync only
+		// applies mode when creating, so chmod an existing file to tighten it too.
+		writeFileSync(TOKEN_CACHE_FILE, JSON.stringify(cache), { mode: 0o600 });
+		chmodSync(TOKEN_CACHE_FILE, 0o600);
 	} catch {
 		// cache is an optimization only - never fail a test because of it
 	}

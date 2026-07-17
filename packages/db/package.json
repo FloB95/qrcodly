@@ -9,7 +9,7 @@
 		"clean": "rimraf dist tsconfig.tsbuildinfo"
 	},
 	"peerDependencies": {
-		"drizzle-orm": "^0.42.0"
+		"drizzle-orm": ">=0.42.0"
 	},
 	"dependencies": {
 		"@shared/schemas": "workspace:*"

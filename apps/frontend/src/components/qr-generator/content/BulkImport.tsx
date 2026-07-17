@@ -255,11 +255,9 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 								setLimitExceeded(null);
 								if (file) {
 									const result = await validateCsvFile(file, contentType);
-									if (result.errors.length > 0) {
-										setCsvErrors(result);
-										return;
-									}
 
+									// Check the plan limit before surfacing row-level format errors,
+									// so a free user isn't asked to fix data they can't import anyway.
 									const limits = hasProPlan ? BULK_IMPORT_LIMITS.pro : BULK_IMPORT_LIMITS.free;
 									if (result.rowCount > limits.maxRows || file.size > limits.maxFileSizeBytes) {
 										if (!hasProPlan) {
@@ -275,6 +273,11 @@ export const BulkImport = ({ contentType, onComplete }: BulkImportProps) => {
 											maxRows: limits.maxRows,
 											maxSizeMb: limits.maxFileSizeBytes / (1024 * 1024),
 										});
+										return;
+									}
+
+									if (result.errors.length > 0) {
+										setCsvErrors(result);
 										return;
 									}
 								}

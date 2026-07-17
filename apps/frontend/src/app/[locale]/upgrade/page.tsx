@@ -44,6 +44,14 @@ function UpgradeRedirect() {
 			router.replace('/dashboard/settings/billing');
 			return;
 		}
+
+		// Guard against a back-button loop: returning from Stripe re-mounts this
+		// page, which would otherwise immediately push the user back to checkout.
+		if (sessionStorage.getItem('upgrade_checkout_started')) {
+			sessionStorage.removeItem('upgrade_checkout_started');
+			router.replace('/plans');
+			return;
+		}
 		if (startedRef.current) return;
 		startedRef.current = true;
 
@@ -60,6 +68,7 @@ function UpgradeRedirect() {
 			source: isNewSignup ? 'signup_pro_intent' : 'signin_pro_intent',
 			period,
 		});
+		sessionStorage.setItem('upgrade_checkout_started', 'true');
 		createCheckoutSession.mutate({ priceId, locale });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isLoaded, isSignedIn, isLoading, hasProPlan, isNewSignup, period, priceId, locale]);
