@@ -128,7 +128,7 @@
 	"homeStats": {
 		"stat1Value": "100K+",
 		"stat1Label": "Codes QR créés",
-		"stat2Value": "1 000+",
+		"stat2Value": "5 000+",
 		"stat2Label": "Utilisateurs actifs",
 		"stat3Value": "10K+",
 		"stat3Label": "Scans et clics par jour",
@@ -1667,16 +1667,6 @@
 			"copiedBtn": "Copié !",
 			"createAnother": "Raccourcir une autre URL"
 		},
-		"stats": {
-			"stat1Value": "1 000+",
-			"stat1Label": "Utilisateurs actifs",
-			"stat2Value": "10K+",
-			"stat2Label": "Clics quotidiens",
-			"stat3Value": "< 50ms",
-			"stat3Label": "Vitesse de redirection",
-			"stat4Value": "24/7",
-			"stat4Label": "Disponibilité"
-		},
 		"useCases": {
 			"title": "Conçu pour chaque équipe",
 			"subtitle": "Des créateurs indépendants aux départements marketing d'entreprise — le raccourcisseur d'URL de QRcodly s'adapte à vos besoins.",
@@ -1691,7 +1681,8 @@
 			"case5Title": "Développeurs et APIs",
 			"case5Description": "Intégrez le raccourcissement d'URL dans vos applications via notre API REST. Documentation complète et support SDK.",
 			"case6Title": "Agences",
-			"case6Description": "Gérez les liens de vos clients avec des domaines personnalisés. URLs courtes en marque blanche avec l'identité de vos clients."
+			"case6Description": "Gérez les liens de vos clients avec des domaines personnalisés. URLs courtes en marque blanche avec l'identité de vos clients.",
+			"learnMore": "En savoir plus"
 		},
 		"features": {
 			"brandedLinks": {
@@ -1745,19 +1736,49 @@
 		},
 		"faq": {
 			"title": "Questions fréquemment posées",
-			"q1": "Le raccourcisseur d'URL est-il gratuit ?",
-			"a1": "Oui ! Le raccourcisseur d'URL de QRcodly est gratuit. Vous pouvez créer des URLs courtes, suivre les clics et gérer vos liens sans aucun coût. Les forfaits Pro débloquent des fonctionnalités avancées comme les domaines personnalisés.",
-			"q2": "Puis-je utiliser mon propre domaine pour les URLs courtes ?",
-			"a2": "Absolument. Connectez votre propre domaine pour créer des URLs courtes de marque comme go.votremarque.com/u/x7k9m. Les domaines personnalisés sont disponibles avec les forfaits Pro avec provisionnement SSL automatique.",
-			"q3": "Comment fonctionne le suivi des clics ?",
-			"a3": "Chaque fois que quelqu'un clique sur votre URL courte, QRcodly enregistre le clic ainsi que des métadonnées comme le type d'appareil, le navigateur, le système d'exploitation et la localisation géographique — le tout en temps réel.",
-			"q4": "Puis-je modifier une URL courte après sa création ?",
-			"a4": "Oui. Vous pouvez mettre à jour l'URL de destination, activer ou désactiver l'URL courte et gérer les tags à tout moment depuis votre tableau de bord sans changer l'URL courte elle-même.",
-			"q5": "Les URLs courtes expirent-elles ?",
-			"a5": "Non. Les URLs courtes créées avec QRcodly n'expirent jamais. Elles restent actives tant que votre compte existe, et vous pouvez les désactiver manuellement si nécessaire.",
-			"q6": "Quelle est la différence entre les URLs courtes et les QR codes ?",
-			"a6": "Les URLs courtes sont des liens cliquables que vous partagez numériquement (e-mail, réseaux sociaux, publicités). Les QR codes sont des images scannables pour les supports physiques (impression, emballage, signalétique). Les deux suivent les analyses et peuvent utiliser des domaines personnalisés.",
+			"q1": "Comment fonctionnent les domaines personnalisés avec les liens courts ?",
+			"a1": "Connecte ton propre domaine (par ex. go.tamarque.com) dans les paramètres du tableau de bord. Configure les enregistrements DNS affichés, et le SSL est provisionné automatiquement. Tous les nouveaux liens utilisent ton domaine.",
+			"q2": "Puis-je configurer une expiration ou des règles d'accès pour les liens ?",
+			"a2": "Actuellement, les liens restent actifs indéfiniment. Tu peux désactiver manuellement n'importe quel lien à tout moment depuis le tableau de bord. Les dates d'expiration automatiques sont sur la feuille de route.",
+			"q3": "Que se passe-t-il quand je désactive un lien court ?",
+			"a3": "Les visiteurs voient une page « lien non disponible ». Le lien n'est pas supprimé — tu peux le réactiver à tout moment et toutes les données analytiques précédentes sont conservées.",
+			"q4": "Comment les redirections sont-elles gérées techniquement ?",
+			"a4": "Les liens courts utilisent des redirections HTTP 301 (permanentes). La redirection se fait côté serveur en moins de 50 ms, donc les utilisateurs ne ressentent pratiquement aucun délai.",
+			"q5": "Puis-je organiser les liens avec des tags ?",
+			"a5": "Oui. Ajoute un ou plusieurs tags à n'importe quel lien. Ensuite, filtre ton tableau de bord par tag pour voir les liens regroupés par campagne, client ou toute catégorie que tu définis.",
+			"q6": "Comment l'API gère-t-elle la création de liens en masse ?",
+			"a6": "Envoie des requêtes POST à l'endpoint /api/v1/short-url pour chaque lien. Pour des workflows en masse plus importants, scripte plusieurs requêtes ou utilise la fonctionnalité d'import CSV dans le tableau de bord.",
 			"viewAll": "D'autres questions ? Voir toutes les FAQ"
+		},
+		"facts": {
+			"fact1Value": "∞",
+			"fact1Label": "Liens courts et clics",
+			"fact2Value": "0",
+			"fact2Label": "Carte bancaire requise",
+			"fact3Value": "REST",
+			"fact3Label": "API pour automatiser",
+			"fact4Value": "MIT",
+			"fact4Label": "Licence open source"
+		},
+		"dynamic": {
+			"title": "Un lien que tu ne peux pas changer est une décision que tu ne peux pas défaire",
+			"subtitle": "Une fois qu’une URL est publiée, imprimée ou envoyée, la seule chose que tu contrôles encore, c’est où elle mène.",
+			"staticLabel": "URL de destination brute",
+			"staticTitle": "L’adresse part exactement telle quelle",
+			"staticPoint1": "Un mauvais lien dans un e-mail envoyé ou une publication reste mauvais.",
+			"staticPoint2": "Restructure ton site et tous les liens que tu as partagés cassent d’un coup.",
+			"staticPoint3": "Les longues URL font peu fiables et se font tronquer.",
+			"dynamicLabel": "Lien court que tu contrôles",
+			"dynamicTitle": "Une adresse, une destination que tu peux déplacer",
+			"dynamicPoint1": "Redirige un lien bien après sa publication.",
+			"dynamicPoint2": "Retire les campagnes terminées vers une page de suivi plutôt qu’un 404.",
+			"dynamicPoint3": "Consulte les clics par lien, canal et campagne.",
+			"lockInTitle": "La partie que la plupart des raccourcisseurs passent sous silence",
+			"lockInDescription": "Un lien court ne fonctionne que tant que quelqu’un fait tourner la redirection derrière, ce qui fait de chaque lien que tu as publié un moyen de pression. C’est pourquoi certains raccourcisseurs limitent les offres gratuites à une poignée de liens par mois, plafonnent les clics ou glissent une publicité intermédiaire avant ta page. QRcodly est conçu pour que ce moyen de pression n’existe jamais.",
+			"lockInPill1": "Clics illimités — sans plafond",
+			"lockInPill2": "Aucune période d’essai qui coupe tes liens",
+			"lockInPill3": "Sous licence MIT — audite-le ou héberge-le",
+			"lockInCtaLabel": "Voir ce qu’inclut l’offre gratuite"
 		}
 	},
 	"productsQrCodes": {
@@ -1769,16 +1790,6 @@
 			"subtitle": "Concevez des QR codes époustouflants avec des couleurs, logos et styles personnalisés. Mettez à jour le contenu à tout moment, suivez chaque scan et gérez tout depuis un seul tableau de bord.",
 			"ctaLabel": "Créer votre QR Code gratuitement",
 			"viewPricing": "Comparer les offres"
-		},
-		"stats": {
-			"stat1Value": "100K+",
-			"stat1Label": "QR codes créés",
-			"stat2Value": "9+",
-			"stat2Label": "Types de contenu",
-			"stat3Value": "10K+",
-			"stat3Label": "Scans par jour",
-			"stat4Value": "1 000+",
-			"stat4Label": "Utilisateurs actifs"
 		},
 		"useCases": {
 			"title": "Des QR codes pour chaque industrie",
@@ -1794,7 +1805,8 @@
 			"case5Title": "Éducation",
 			"case5Description": "Dirigez les étudiants vers des ressources, devoirs et supports de cours. Mettez à jour les destinations à tout moment.",
 			"case6Title": "Marketing et publicité",
-			"case6Description": "Reliez vos campagnes print et numériques. Suivez les taux de scan sur les affiches, flyers et courriers."
+			"case6Description": "Reliez vos campagnes print et numériques. Suivez les taux de scan sur les affiches, flyers et courriers.",
+			"learnMore": "En savoir plus"
 		},
 		"features": {
 			"customization": {
@@ -1854,24 +1866,57 @@
 		},
 		"faq": {
 			"title": "Questions fréquemment posées",
-			"q1": "Le générateur de QR codes est-il gratuit ?",
-			"a1": "Oui ! QRcodly vous permet de créer un nombre illimité de QR codes statiques et dynamiques gratuitement. Pas de frais cachés, pas de filigranes et pas d'inscription requise pour les QR codes de base.",
-			"q2": "Qu'est-ce qu'un QR code dynamique ?",
-			"a2": "Les QR codes dynamiques vous permettent de changer l'URL de destination après l'impression du code. Ils suivent également chaque scan avec des analyses détaillées — pas besoin de réimprimer quand le contenu change.",
-			"q3": "Puis-je ajouter mon logo à un QR code ?",
-			"a3": "Absolument. Téléchargez n'importe quelle image comme logo central pour votre QR code. Vous pouvez également personnaliser les couleurs, les styles de coins et enregistrer les designs comme modèles réutilisables.",
-			"q4": "Quels types de contenu sont supportés ?",
-			"a4": "QRcodly supporte plus de 9 types de contenu : URL, Texte, WiFi, vCard (cartes de visite), Email, Localisation, Événements calendrier, EPC (paiement) et profils de réseaux sociaux.",
-			"q5": "Puis-je suivre les scans de QR codes ?",
-			"a5": "Oui. Chaque QR code dynamique suit les scans en temps réel, affichant les scans totaux, les visiteurs uniques, les types d'appareils, les navigateurs, les systèmes d'exploitation et les localisations géographiques.",
-			"q6": "Les QR codes expirent-ils ?",
-			"a6": "Non. Les QR codes créés avec QRcodly n'expirent jamais. Les QR codes dynamiques restent entièrement fonctionnels et traçables tant que votre compte existe.",
+			"q1": "Quelle est la différence entre les QR codes statiques et dynamiques ?",
+			"a1": "Les codes statiques intègrent les données directement — ils ne peuvent pas être modifiés ni suivis après création. Les codes dynamiques utilisent une URL de redirection courte, ce qui te permet de changer la destination et de suivre les scans à tout moment.",
+			"q2": "Puis-je créer des QR codes en masse ?",
+			"a2": "Oui. Utilise l'import CSV pour créer des centaines de QR codes en une seule fois. Applique un modèle de design enregistré pour un branding cohérent sur tous les codes du lot.",
+			"q3": "Comment enregistrer un design de QR code comme modèle ?",
+			"a3": "Personnalise ton QR code (couleurs, logo, style), puis enregistre-le comme modèle. La prochaine fois, sélectionne ton modèle et change uniquement le contenu — ton design s'applique automatiquement.",
+			"q4": "Quel niveau de correction d'erreur dois-je utiliser ?",
+			"a4": "Moyen (M) convient à la plupart des cas. Si tu ajoutes un logo par-dessus, utilise Élevé (H) pour que le code reste lisible même avec une partie couverte par le logo.",
+			"q5": "Puis-je utiliser des QR codes hors ligne sans internet ?",
+			"a5": "Les QR codes WiFi, vCard et Texte fonctionnent entièrement hors ligne — les données sont encodées dans le code lui-même. Les codes basés sur une URL nécessitent internet pour ouvrir la page liée après le scan.",
+			"q6": "Comment intégrer la génération de QR codes dans ma propre application ?",
+			"a6": "Utilise la REST API de QRcodly. Authentifie-toi avec une clé API et envoie une requête POST pour créer, personnaliser et gérer des QR codes de manière programmatique.",
 			"viewAll": "D'autres questions ? Voir toutes les FAQ"
 		},
 		"cta": {
 			"title": "Prêt à créer votre premier QR code ?",
 			"subtitle": "Concevez des QR codes personnalisés avec un suivi analytique complet. Gratuit pour toujours, sans carte bancaire.",
 			"ctaLabel": "Créer un QR Code maintenant"
+		},
+		"facts": {
+			"fact1Value": "8",
+			"fact1Label": "Types de contenu QR",
+			"fact2Value": "∞",
+			"fact2Label": "Codes et scans inclus",
+			"fact3Value": "0",
+			"fact3Label": "Carte bancaire requise",
+			"fact4Value": "MIT",
+			"fact4Label": "Licence open source"
+		},
+		"dynamic": {
+			"title": "Statique ou dynamique ? Décide avant d’imprimer.",
+			"subtitle": "C’est la seule décision d’un QR code que tu ne peux pas annuler après le tirage.",
+			"staticLabel": "QR code statique",
+			"staticTitle": "La destination est encodée dans le motif imprimé",
+			"staticPoint1": "Change où il doit mener et tout est à réimprimer.",
+			"staticPoint2": "Une page déplacée ou une faute de frappe subsiste dans chaque copie déjà distribuée.",
+			"staticPoint3": "Aucune donnée de scan : tu ne sais jamais si ça a marché.",
+			"dynamicLabel": "QR code dynamique",
+			"dynamicTitle": "Le code imprimé reste, la destination bouge",
+			"dynamicPoint1": "Redirige-le quand tu veux — le motif imprimé ne change jamais.",
+			"dynamicPoint2": "Corrige les erreurs après le tirage au lieu de recommander.",
+			"dynamicPoint3": "Vois à quelle fréquence, où et quand le code est scanné.",
+			"lockInTitle": "La partie que la plupart des fournisseurs de QR passent sous silence",
+			"lockInDescription": "Un code dynamique ne fonctionne que tant que quelqu’un fait tourner la redirection derrière, et un tirage imprimé ne peut pas être rappelé. C’est cette dépendance qui pousse certains fournisseurs à couper les codes à la fin d’un essai, à plafonner le nombre de scans ou à afficher des publicités avant ta page. QRcodly est conçu pour que ce moyen de pression n’existe jamais.",
+			"lockInPill1": "Scans illimités — sans plafond",
+			"lockInPill2": "Aucune période d’essai qui coupe tes codes",
+			"lockInPill3": "Sous licence MIT — audite-le ou héberge-le",
+			"lockInCtaLabel": "Voir ce qu’inclut l’offre gratuite"
+		},
+		"testimonial": {
+			"eyebrow": "Ce que disent nos clients"
 		}
 	},
 	"productsAnalytics": {
@@ -2149,7 +2194,9 @@
 			"a3": "Crée des QR codes séparés pour chaque établissement, chacun pointant vers la page menu de cette adresse. Utilise des tags dans ton tableau de bord pour organiser les codes par emplacement.",
 			"q4": "Les clients peuvent-ils laisser un avis après avoir scanné ?",
 			"a4": "Oui — lie ton QR code à ta page d'avis Google Business ou à un formulaire de feedback. Avec un code dynamique, tu peux alterner entre ton menu et ta page d'avis selon la saison.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Qu’arrive-t-il à mes codes imprimés si j’arrête de payer ?",
+			"a5": "Rien. QRcodly ne désactive pas les QR codes à la fin d’un abonnement — les codes et scans illimités font partie de l’offre gratuite, donc un code imprimé continue de rediriger. Seuls les extras Pro, comme le domaine personnalisé et les intégrations analytiques, sont coupés. C’est délibéré : un support imprimé ne devrait jamais servir d’otage."
 		},
 		"cta": {
 			"title": "Prêt à moderniser votre restaurant ?",
@@ -2187,8 +2234,8 @@
 				"description": "Les codes plus petits sont plus difficiles à scanner de manière fiable. Pour les chevalets et supports de table, 3×3 cm est le format idéal."
 			},
 			"tip2": {
-				"title": "Place à hauteur des yeux",
-				"description": "Utilise des chevalets de table ou des supports muraux plutôt que des surfaces plates. Les codes à hauteur des yeux sont scannés 2× plus souvent."
+				"title": "Place-le à hauteur des yeux",
+				"description": "Les chevalets et les supports muraux valent mieux que les surfaces planes : un code posé à plat accroche les reflets et oblige les clients à se pencher dessus."
 			},
 			"tip3": {
 				"title": "Teste avant d'imprimer",
@@ -2199,15 +2246,26 @@
 				"description": "Pousse les changements de menu le vendredi après-midi pour capter le trafic du week-end — ta fenêtre de scan la plus active."
 			}
 		},
-		"stats": {
-			"stat1Value": "73%",
-			"stat1Label": "des clients préfèrent les menus digitaux",
-			"stat2Value": "3×",
-			"stat2Label": "commande à table plus rapide",
-			"stat3Value": "45%",
-			"stat3Label": "de coûts d'impression en moins",
-			"stat4Value": "< 2 sec",
-			"stat4Label": "temps de scan moyen"
+		"visuals": {
+			"v1": {
+				"label": "Vue du client",
+				"badge": "Dynamique",
+				"aria": "Téléphone affichant un menu de restaurant ouvert via un QR code",
+				"screenTitle": "Menu du midi",
+				"row1Name": "Soupe du jour",
+				"row1Meta": "4,90",
+				"row2Name": "Pasta al forno",
+				"row2Meta": "11,50",
+				"row3Name": "Tiramisu",
+				"row3Meta": "5,20"
+			},
+			"v2": {
+				"label": "Chevalet de table",
+				"aria": "Chevalet de table avec un QR code pour le Wi-Fi des clients",
+				"mediumLabel": "Chevalet",
+				"headline": "Scanne pour le Wi-Fi",
+				"caption": "Connecté sans saisir de mot de passe"
+			}
 		}
 	},
 	"qrCodesRetail": {
@@ -2260,7 +2318,9 @@
 			"a3": "Oui. Utilise des QR codes dynamiques et mets à jour l'URL de destination quand la promotion se termine. Redirige vers une nouvelle offre ou ta page produit standard — pas besoin de réimprimer.",
 			"q4": "Comment connecter les QR codes à mon programme de fidélité ?",
 			"a4": "Lie les QR codes à ta page d'inscription fidélité ou au lien de téléchargement de ton appli. Les clients scannent, s'inscrivent et commencent à gagner des récompenses — sans saisie manuelle.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Qu’arrive-t-il aux codes déjà imprimés sur les emballages si j’arrête de payer ?",
+			"a5": "Ils continuent de fonctionner. Les codes et scans illimités font partie de l’offre gratuite et QRcodly ne désactive jamais un code à la fin d’un abonnement — seuls les extras Pro, comme le domaine personnalisé, sont coupés. Les emballages en circulation ne peuvent pas être rappelés, s’en servir comme moyen de pression serait indéfendable."
 		},
 		"cta": {
 			"title": "Améliorez votre expérience commerce",
@@ -2298,8 +2358,8 @@
 				"description": "Utilise un QR code dédié pour chaque produit afin de suivre l'engagement au niveau de l'article — pas seulement du présentoir."
 			},
 			"tip2": {
-				"title": "Ajoute un appel à l'action",
-				"description": "Imprime un court message à côté du code comme « Scanne pour -10 % » ou « Scanne pour le guide des tailles ». Les codes avec un CTA obtiennent 3× plus de scans."
+				"title": "Dis ce que le scan apporte",
+				"description": "Un code nu ne donne à personne une raison de sortir son téléphone. Un court message à côté — « Scanne pour le guide des tailles » — leur dit ce qu’ils obtiennent."
 			},
 			"tip3": {
 				"title": "Place en bord de rayon",
@@ -2310,15 +2370,28 @@
 				"description": "Utilise des codes dynamiques et change les destinations régulièrement. Des offres fraîches incitent les clients à scanner."
 			}
 		},
-		"stats": {
-			"stat1Value": "58%",
-			"stat1Label": "des acheteurs scannent les codes en magasin",
-			"stat2Value": "2.4×",
-			"stat2Label": "d'engagement en plus vs. print seul",
-			"stat3Value": "40%",
-			"stat3Label": "de taux d'utilisation de coupons",
-			"stat4Value": "12 sec",
-			"stat4Label": "durée moyenne d'interaction"
+		"visuals": {
+			"v1": {
+				"label": "Scan en rayon",
+				"badge": "Dynamique",
+				"aria": "Téléphone affichant les détails d’un produit après le scan d’une étiquette de rayon",
+				"screenTitle": "Détails du produit",
+				"row1Name": "Matière",
+				"row1Meta": "Coton bio",
+				"row2Name": "Entretien",
+				"row2Meta": "Lavage à 30 °C",
+				"row3Name": "Disponibilité",
+				"row3Meta": "En stock"
+			},
+			"v2": {
+				"label": "Promo hebdomadaire",
+				"badge": "Même étiquette",
+				"aria": "Une étiquette de rayon imprimée est redirigée de la campagne de printemps à celle d’été",
+				"printedLabel": "Étiquette imprimée une fois",
+				"oldDestination": "/promo/printemps",
+				"newDestination": "/promo/ete",
+				"footnote": "Nouvelle campagne, même étiquette en rayon — rien n’est réimprimé."
+			}
 		}
 	},
 	"qrCodesEvents": {
@@ -2371,7 +2444,9 @@
 			"a3": "Un QR code vCard contient les coordonnées (nom, e-mail, téléphone, entreprise). Quand il est scanné, le téléphone propose d'enregistrer le contact directement — remplaçant les cartes de visite traditionnelles.",
 			"q4": "Puis-je mesurer quelles sessions étaient les plus populaires ?",
 			"a4": "Crée des QR codes séparés pour chaque session ou conférence. Compare le nombre de scans dans ton tableau de bord pour voir quelles sessions ont attiré le plus de participants.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Puis-je réutiliser le même code pour l’événement de l’an prochain ?",
+			"a5": "Oui. Un code dynamique n’est qu’une adresse fixe que tu rediriges, donc la signalétique de l’an dernier peut pointer vers le programme de cette année. Et si tu arrêtes de payer entre-temps, le code reste actif : les codes et scans illimités font partie de l’offre gratuite et QRcodly ne désactive pas les codes à la fin d’un abonnement."
 		},
 		"cta": {
 			"title": "Rendez votre prochain événement fluide",
@@ -2421,15 +2496,23 @@
 				"description": "Envoie par e-mail un badge numérique avec un QR code avant l'événement. Entrée plus rapide et moins d'impressions."
 			}
 		},
-		"stats": {
-			"stat1Value": "67%",
-			"stat1Label": "d'enregistrement plus rapide",
-			"stat2Value": "4×",
-			"stat2Label": "plus de contacts networking",
-			"stat3Value": "85%",
-			"stat3Label": "de taux d'adoption par les participants",
-			"stat4Value": "30 sec",
-			"stat4Label": "gagnées par entrée"
+		"visuals": {
+			"v1": {
+				"label": "Badge participant",
+				"aria": "Badge d’événement avec un QR code pour l’enregistrement à l’entrée",
+				"mediumLabel": "Badge",
+				"headline": "Scanne pour t’enregistrer",
+				"caption": "Enregistré à l’entrée"
+			},
+			"v2": {
+				"label": "Programme en direct",
+				"badge": "Même badge",
+				"aria": "Un badge imprimé est redirigé du jour un au jour deux du programme",
+				"printedLabel": "Imprimé sur chaque badge",
+				"oldDestination": "/programme/jour-1",
+				"newDestination": "/programme/jour-2",
+				"footnote": "Changement de salle de dernière minute ? Mets à jour une fois, chaque badge suit."
+			}
 		}
 	},
 	"qrCodesRealEstate": {
@@ -2482,7 +2565,9 @@
 			"a3": "Crée un QR code par bien. Utilise des tags dans ton tableau de bord (par ex. « centre-ville », « ouest ») pour organiser et filtrer rapidement tes annonces actives.",
 			"q4": "Quelle taille fonctionne le mieux pour les panneaux ?",
 			"a4": "Au moins 5×5 cm (2×2 pouces) sur les panneaux. Assure un bon contraste entre le code et le fond du panneau, et teste en scannant à 2 mètres de distance avant d'imprimer.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Puis-je réutiliser un panneau après la vente du bien ?",
+			"a5": "C’est exactement à ça que sert un code dynamique : redirige-le vers ton prochain bien et le panneau imprimé continue de travailler. Le code reste actif même sans abonnement, car les codes et scans illimités font partie de l’offre gratuite et QRcodly ne désactive pas les codes à la fin d’une offre."
 		},
 		"cta": {
 			"title": "Donnez un avantage digital à chaque annonce",
@@ -2532,15 +2617,26 @@
 				"description": "Quand un bien est vendu, mets à jour le code dynamique pour pointer vers une page « Vendu » ou une annonce similaire à proximité."
 			}
 		},
-		"stats": {
-			"stat1Value": "62%",
-			"stat1Label": "des acheteurs scannent les codes sur les panneaux",
-			"stat2Value": "3×",
-			"stat2Label": "plus de vues sur les annonces",
-			"stat3Value": "35%",
-			"stat3Label": "de demandes de visite en plus",
-			"stat4Value": "< 2 sec",
-			"stat4Label": "pour accéder aux détails du bien"
+		"visuals": {
+			"v1": {
+				"label": "Panneau",
+				"aria": "Panneau immobilier avec un QR code menant à l’annonce complète",
+				"mediumLabel": "Panneau",
+				"headline": "Scanne pour l’annonce complète",
+				"caption": "Demande de visite reçue"
+			},
+			"v2": {
+				"label": "Vue de l’acheteur",
+				"badge": "Dynamique",
+				"aria": "Téléphone affichant les détails d’un bien après le scan d’un panneau",
+				"screenTitle": "Rue de l’Érable 14",
+				"row1Name": "Surface",
+				"row1Meta": "128 m²",
+				"row2Name": "Pièces",
+				"row2Meta": "4",
+				"row3Name": "Disponible dès",
+				"row3Meta": "1er sept."
+			}
 		}
 	},
 	"qrCodesEducation": {
@@ -2593,7 +2689,9 @@
 			"a3": "Crée plusieurs QR codes, chacun pointant vers une page d'indice ou de tâche. Place-les dans l'école. Les élèves scannent chaque code pour progresser dans l'activité.",
 			"q4": "Les QR codes sont-ils accessibles pour les élèves en situation de handicap ?",
 			"a4": "Les QR codes sont visuels, donc associe-les à une URL courte imprimée en dessous pour les élèves utilisant des lecteurs d'écran. La page liée doit suivre les bonnes pratiques d'accessibilité.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Ai-je besoin d’une offre payante pour utiliser des QR codes en classe ?",
+			"a5": "Non. Les QR codes illimités, les scans illimités et les statistiques associées font partie de l’offre gratuite, sans carte bancaire — c’est justement ce qui compte pour un budget scolaire. Pro ajoute le domaine personnalisé, les imports en masse et l’accès à l’API, mais rien de ce dont une classe a besoin ne se trouve derrière."
 		},
 		"cta": {
 			"title": "Intégrez les QR codes dans votre classe",
@@ -2643,15 +2741,28 @@
 				"description": "Avec les codes dynamiques, tu peux mettre à jour la ressource liée sans réimprimer. Même feuille de travail, contenu frais à chaque trimestre."
 			}
 		},
-		"stats": {
-			"stat1Value": "89%",
-			"stat1Label": "des élèves possèdent un smartphone",
-			"stat2Value": "2×",
-			"stat2Label": "accès aux ressources plus rapide",
-			"stat3Value": "70%",
-			"stat3Label": "préfèrent scanner plutôt que taper les URL",
-			"stat4Value": "5 min",
-			"stat4Label": "gagnées par cours"
+		"visuals": {
+			"v1": {
+				"label": "Vue de l’élève",
+				"badge": "Dynamique",
+				"aria": "Téléphone affichant les supports de cours après le scan d’une fiche",
+				"screenTitle": "Supports semaine 6",
+				"row1Name": "Diapositives",
+				"row1Meta": "PDF",
+				"row2Name": "Lectures",
+				"row2Meta": "4 textes",
+				"row3Name": "Devoir",
+				"row3Meta": "Pour ven."
+			},
+			"v2": {
+				"label": "Fiche de cours",
+				"badge": "Même feuille",
+				"aria": "Une fiche imprimée est redirigée du support de l’an dernier vers celui de cette année",
+				"printedLabel": "Fiche imprimée",
+				"oldDestination": "/cours/2025/semaine-6",
+				"newDestination": "/cours/2026/semaine-6",
+				"footnote": "Nouveau semestre, même fiche — redirige au lieu de réimprimer."
+			}
 		}
 	},
 	"qrCodesMarketing": {
@@ -2704,7 +2815,9 @@
 			"a3": "2×2 cm pour les supports vus de près (flyers, cartes de visite). Pour les panneaux d'affichage ou les affiches vues à distance, agrandis — un code de 15 cm fonctionne bien à 3 mètres.",
 			"q4": "Comment suivre la conversion offline-vers-online ?",
 			"a4": "Chaque QR code dynamique suit les scans automatiquement. Associe cela aux paramètres UTM sur l'URL de destination, et tu obtiens une visibilité complète du funnel, du scan physique à la conversion digitale.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Puis-je comparer les emplacements imprimés entre eux ?",
+			"a5": "Donne à chaque emplacement son propre code dynamique et le tableau de bord les affiche côte à côte : affiche, flyer et annonce reçoivent chacun leur nombre de scans, et l’emplacement qui se rentabilise devient visible. Tout cela est inclus dans l’offre gratuite."
 		},
 		"cta": {
 			"title": "Rendez chaque support imprimé mesurable",
@@ -2754,15 +2867,25 @@
 				"description": "Place un appel à l'action clair à côté du code : « Scanne pour profiter de l'offre » ou « Scanne pour un accès exclusif ». Les codes sans CTA sont souvent ignorés."
 			}
 		},
-		"stats": {
-			"stat1Value": "76%",
-			"stat1Label": "des consommateurs ont scanné un QR code",
-			"stat2Value": "2×",
-			"stat2Label": "meilleure mémorisation vs. pubs URL seule",
-			"stat3Value": "34%",
-			"stat3Label": "de conversion print-vers-digital",
-			"stat4Value": "5×",
-			"stat4Label": "de ROI sur les campagnes print"
+		"visuals": {
+			"v1": {
+				"label": "Campagne imprimée",
+				"aria": "Affiche de campagne avec un QR code menant à la page de destination",
+				"mediumLabel": "Affiche",
+				"headline": "Scanne pour participer",
+				"caption": "Scan enregistré"
+			},
+			"v2": {
+				"label": "Performance de campagne",
+				"badge": "En direct",
+				"aria": "Tableau comparant les scans entre affiche, flyer et annonce",
+				"metricValue": "1 284",
+				"metricLabel": "Scans ce mois-ci",
+				"trend": "En direct",
+				"b1Name": "Affiche — gare",
+				"b2Name": "Flyer — salon",
+				"b3Name": "Annonce magazine"
+			}
 		}
 	},
 	"urlShortenerMarketingTeams": {
@@ -2815,7 +2938,9 @@
 			"a3": "Va dans Paramètres → Domaines personnalisés, ajoute ton domaine et configure les enregistrements DNS affichés. Le SSL est provisionné automatiquement. Tous les nouveaux liens utiliseront ton domaine.",
 			"q4": "Puis-je changer la destination d'un lien après l'avoir partagé ?",
 			"a4": "Oui. Modifie l'URL de destination à tout moment depuis ton tableau de bord. Le lien court reste le même — les destinataires qui l'ont déjà seront redirigés vers la page mise à jour.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Qu’arrive-t-il aux liens que j’ai déjà envoyés si j’arrête de payer ?",
+			"a5": "Ils continuent de rediriger. Les liens courts et les clics illimités font partie de l’offre gratuite et QRcodly ne coupe pas les liens à la fin d’un abonnement — seuls les extras Pro, comme ton domaine personnalisé, cessent d’être servis. Les liens déjà dans les boîtes de réception ne devraient pas être quelque chose qu’un fournisseur puisse retenir contre toi."
 		},
 		"cta": {
 			"title": "Boostez vos liens marketing",
@@ -2865,15 +2990,27 @@
 				"description": "Vérifie les données de clics chaque semaine pour réallouer le budget des canaux sous-performants vers les plus performants."
 			}
 		},
-		"stats": {
-			"stat1Value": "34%",
-			"stat1Label": "de CTR en plus avec les liens de marque",
-			"stat2Value": "3×",
-			"stat2Label": "plus rapide pour créer les campagnes",
-			"stat3Value": "87%",
-			"stat3Label": "des marketeurs utilisent le suivi de liens",
-			"stat4Value": "< 50 ms",
-			"stat4Label": "vitesse de redirection"
+		"visuals": {
+			"v1": {
+				"label": "Lien de campagne",
+				"badge": "Pro",
+				"aria": "Comparaison d’un lien court générique et d’un lien sur ton propre domaine",
+				"genericLink": "bit.ly/3xKf9Qa",
+				"brandedLink": "go.tamarque.com/printemps",
+				"genericNote": "Le destinataire ne sait pas où il mène",
+				"brandedNote": "Ton domaine, ta réputation"
+			},
+			"v2": {
+				"label": "Clics de campagne",
+				"badge": "En direct",
+				"aria": "Tableau des clics répartis entre newsletter, réseaux et imprimé",
+				"metricValue": "8 412",
+				"metricLabel": "Clics sur cette campagne",
+				"trend": "En direct",
+				"b1Name": "Newsletter",
+				"b2Name": "LinkedIn",
+				"b3Name": "Annonce imprimée"
+			}
 		}
 	},
 	"urlShortenerSocialMedia": {
@@ -2933,7 +3070,9 @@
 			"a3": "Non. Les liens QRcodly utilisent des redirections propres et ne figurent sur aucune liste noire. Utiliser ton propre domaine personnalisé élimine encore davantage tout souci de spam.",
 			"q4": "Puis-je changer la destination d'un lien après publication ?",
 			"a4": "Oui. Mets à jour l'URL de destination à tout moment sans modifier ta publication. Les abonnés qui cliquent sur le même lien seront redirigés vers le nouveau contenu.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Puis-je changer un lien après la publication ?",
+			"a5": "Oui — c’est justement la raison d’en utiliser un. Le lien court dans la légende reste identique pendant que tu le rediriges depuis le tableau de bord, donc une destination cassée ou obsolète se répare sans supprimer la publication ni perdre son engagement."
 		},
 		"cta": {
 			"title": "Passez au niveau supérieur pour vos liens sociaux",
@@ -2958,6 +3097,56 @@
 			"step4": {
 				"title": "Suis les clics par publication",
 				"description": "Consulte ton tableau de bord pour voir quelles publications génèrent le plus de clics. Compare les performances entre les plateformes."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Lien dans la publication",
+				"badge": "Pro",
+				"aria": "Comparaison d’une longue URL de tracking et d’un lien court de marque",
+				"genericLink": "example.com/produits/collection-ete?utm_source=ig",
+				"brandedLink": "tm.link/ete",
+				"genericNote": "Tronqué au milieu de la légende",
+				"brandedNote": "Tient dans toute légende et reste lisible"
+			},
+			"v2": {
+				"label": "Engagement",
+				"badge": "En direct",
+				"aria": "Tableau des clics par plateforme sociale",
+				"metricValue": "3 940",
+				"metricLabel": "Clics depuis les réseaux",
+				"trend": "En direct",
+				"b1Name": "Instagram",
+				"b2Name": "TikTok",
+				"b3Name": "LinkedIn"
+			},
+			"v3": {
+				"label": "Lien en bio",
+				"badge": "Même lien",
+				"aria": "Un lien de bio est redirigé de la sortie de printemps à celle d’été",
+				"printedLabel": "Même lien en bio",
+				"oldDestination": "/drop/printemps",
+				"newDestination": "/drop/ete",
+				"footnote": "Les légendes ne se modifient pas. Leur destination, si."
+			}
+		},
+		"tips": {
+			"title": "Bonnes pratiques pour les liens sur les réseaux sociaux",
+			"tip1": {
+				"title": "Garde un seul lien en bio",
+				"description": "Fais pointer un unique lien court vers ce qui est d’actualité, au lieu de modifier ton profil à chaque fois. Une adresse, gérée depuis le tableau de bord."
+			},
+			"tip2": {
+				"title": "Utilise un slug lisible",
+				"description": "« tm.link/ete » récolte plus de clics qu’une chaîne aléatoire, parce qu’on voit où il mène avant de le toucher."
+			},
+			"tip3": {
+				"title": "Un lien propre par plateforme",
+				"description": "La même destination derrière des liens distincts par plateforme est le seul moyen fiable de savoir quel canal livre vraiment."
+			},
+			"tip4": {
+				"title": "Vérifie le lien avant de programmer",
+				"description": "Les publications programmées partent sans surveillance. Ouvre le lien court une fois avant de le mettre en file — une faute de frappe part d’un coup à toute l’audience."
 			}
 		}
 	},
@@ -3018,7 +3207,9 @@
 			"a3": "Oui. Tous les liens créés sous ton compte sont visibles dans un seul tableau de bord. Utilise des tags (par ex. nom du commercial, étape du deal) pour filtrer et comparer les performances de l'équipe.",
 			"q4": "Que se passe-t-il si je dois mettre à jour une proposition partagée ?",
 			"a4": "Change l'URL de destination dans ton tableau de bord. Le lien court déjà envoyé au prospect reste le même — il verra la proposition mise à jour quand il cliquera.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Puis-je voir si un prospect a ouvert ma proposition ?",
+			"a5": "Le tableau de bord affiche les clics par lien, donc un lien par affaire transforme l’intérêt en signal concret, y compris quand il repart des semaines plus tard. Il mesure les ouvertures de lien, pas les identités : prends-le comme un signal de timing, pas comme un pixel de tracking."
 		},
 		"cta": {
 			"title": "Suivez chaque clic de votre prospection",
@@ -3043,6 +3234,60 @@
 			"step4": {
 				"title": "Surveille l'engagement des prospects",
 				"description": "Consulte ton tableau de bord pour les horodatages de clics et les données d'appareil. Vois exactement quand un prospect ouvre ton lien."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Liens de prospection",
+				"aria": "Liste de liens courts par affaire avec le nombre de clics",
+				"r1Link": "tm.link/acme-presentation",
+				"r1Tag": "Acme Corp · Proposition",
+				"r1Clicks": "14",
+				"r2Link": "tm.link/globex-demo",
+				"r2Tag": "Globex · Enregistrement démo",
+				"r2Clicks": "7",
+				"r3Link": "tm.link/initech-contrat",
+				"r3Tag": "Initech · Contrat",
+				"r3Clicks": "3"
+			},
+			"v2": {
+				"label": "Crédibilité",
+				"badge": "Pro",
+				"aria": "Comparaison d’un lien court anonyme et d’un lien sur le domaine de ton entreprise",
+				"genericLink": "tinyurl.com/y7k2n9q",
+				"brandedLink": "go.tonentreprise.com/proposition",
+				"genericNote": "Ressemble à du spam dans une boîte de réception",
+				"brandedNote": "Le domaine de ton entreprise, reconnaissable au premier coup d’œil"
+			},
+			"v3": {
+				"label": "Performance de prospection",
+				"badge": "En direct",
+				"aria": "Tableau comparant l’engagement au fil des étapes de prospection",
+				"metricValue": "1 204",
+				"metricLabel": "Ouvertures de lien ce trimestre",
+				"trend": "En direct",
+				"b1Name": "Premier contact",
+				"b2Name": "Relance",
+				"b3Name": "Proposition envoyée"
+			}
+		},
+		"tips": {
+			"title": "Bonnes pratiques pour la prospection commerciale",
+			"tip1": {
+				"title": "Un lien par affaire",
+				"description": "Un lien propre par prospect transforme un clic en un signal nommé, au lieu d’un chiffre anonyme."
+			},
+			"tip2": {
+				"title": "Envoie depuis ton propre domaine",
+				"description": "Un lien sur le domaine de ton entreprise survit aux filtres anti-spam et au scepticisme de la boîte bien mieux qu’un raccourcisseur anonyme."
+			},
+			"tip3": {
+				"title": "Garde le slug lisible",
+				"description": "« go.tonentreprise.com/acme-proposition » dit au destinataire ce qu’il ouvre. Une chaîne aléatoire lui demande de faire confiance à l’aveugle."
+			},
+			"tip4": {
+				"title": "Mets à jour au lieu de renvoyer",
+				"description": "Une erreur repérée dans une proposition envoyée ? Redirige le lien vers le fichier corrigé plutôt que d’envoyer une relance embarrassante."
 			}
 		}
 	},
@@ -3096,7 +3341,9 @@
 			"a3": "Oui. Le raccourcisseur d'URL fonctionne avec n'importe quelle URL. Colle ton lien produit de n'importe quelle plateforme et crée un lien court de marque instantanément.",
 			"q4": "Les liens courts affectent-ils le SEO de ma boutique ?",
 			"a4": "Non. Les liens courts utilisent des redirections 301, qui transmettent toute la valeur SEO à la page de destination. Ton référencement n'est pas affecté.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Qu’arrive-t-il à mes liens si je change de système de boutique ?",
+			"a5": "Redirige-les et tout ce que tu as publié reste valable. Comme le lien court est l’adresse que la clientèle possède réellement, une migration qui réécrit chaque URL produit devient un changement dans le tableau de bord au lieu d’une chasse à travers d’anciennes publications, e-mails et annonces."
 		},
 		"cta": {
 			"title": "Simplifiez vos liens e-commerce",
@@ -3146,15 +3393,31 @@
 				"description": "Quand une promotion se termine, redirige le lien court vers ta page d'accueil ou un produit similaire — ne le laisse jamais pointer vers une page 404."
 			}
 		},
-		"stats": {
-			"stat1Value": "28%",
-			"stat1Label": "de CTR en plus vs. URL brutes",
-			"stat2Value": "2×",
-			"stat2Label": "plus de partages sociaux",
-			"stat3Value": "45%",
-			"stat3Label": "des clics proviennent du mobile",
-			"stat4Value": "99.9%",
-			"stat4Label": "de disponibilité garantie"
+		"visuals": {
+			"v1": {
+				"label": "Liens produit",
+				"aria": "Liste de liens courts produit par canal avec le nombre de clics",
+				"r1Link": "tm.link/robe-ete",
+				"r1Tag": "Produit · Instagram",
+				"r1Clicks": "1 204",
+				"r2Link": "tm.link/soldes-40",
+				"r2Tag": "Campagne · Newsletter",
+				"r2Clicks": "892",
+				"r3Link": "tm.link/guide-cadeaux",
+				"r3Tag": "Saison · Pinterest",
+				"r3Clicks": "431"
+			},
+			"v2": {
+				"label": "Performance par canal",
+				"badge": "En direct",
+				"aria": "Tableau comparant les clics entre canaux de vente",
+				"metricValue": "12 480",
+				"metricLabel": "Clics tous canaux confondus",
+				"trend": "En direct",
+				"b1Name": "Instagram",
+				"b2Name": "Newsletter",
+				"b3Name": "Pinterest"
+			}
 		}
 	},
 	"urlShortenerDevelopers": {
@@ -3214,7 +3477,9 @@
 			"a3": "Oui. Les limites de débit dépendent de ton plan. Les comptes gratuits ont des limites plus strictes ; les comptes Pro ont un débit plus élevé. Vérifie les en-têtes de réponse pour ton utilisation actuelle.",
 			"q4": "Puis-je récupérer les analyses de clics via l'API ?",
 			"a4": "Oui. Les endpoints d'analyse retournent le nombre de clics, les horodatages, les données d'appareil et les informations géographiques pour chaque lien court de manière programmatique.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Puis-je héberger QRcodly moi-même ?",
+			"a5": "Oui. Toute la stack est publique sous licence MIT, donc si une redirection tierce est inacceptable pour des raisons de conformité, ou si tu ne veux tout simplement aucune dépendance, tu peux la faire tourner toi-même. C’est cette issue de secours qui fait que le service hébergé n’a pas besoin de plafonds de scans ni de désactivation en fin d’essai pour te retenir."
 		},
 		"cta": {
 			"title": "Commencez à construire avec notre API",
@@ -3240,23 +3505,77 @@
 				"title": "Récupère les analyses de clics",
 				"description": "Utilise les endpoints d'analyse pour obtenir le nombre de clics, les horodatages, les données d'appareil et les infos géographiques par lien."
 			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Créer un lien court",
+				"badge": "REST",
+				"aria": "Exemple de code créant un lien court via l’API REST",
+				"method": "POST",
+				"endpoint": "/api/v1/short-url",
+				"line1": "curl -X POST https://api.qrcodly.de/api/v1/short-url \\",
+				"line2": "  -H \"Authorization: Bearer $API_KEY\" \\",
+				"line3": "  -H \"Content-Type: application/json\" \\",
+				"line4": "  -d '{\"destinationUrl\":\"https://example.com\"}'",
+				"responseLabel": "Réponse",
+				"responseValue": "201 Created"
+			},
+			"v2": {
+				"label": "Authentification",
+				"badge": "Clé API",
+				"aria": "Exemple de code authentifiant une requête avec un jeton bearer",
+				"method": "GET",
+				"endpoint": "/api/v1/short-url",
+				"line1": "curl https://api.qrcodly.de/api/v1/short-url \\",
+				"line2": "  -H \"Authorization: Bearer $API_KEY\"",
+				"responseLabel": "Statut",
+				"responseValue": "200 OK"
+			},
+			"v3": {
+				"label": "Domaine personnalisé",
+				"badge": "Pro",
+				"aria": "Comparaison du domaine de redirection partagé et d’un domaine propre",
+				"genericLink": "qrcodly.de/u/a1B2c3",
+				"brandedLink": "go.tonapp.dev/a1B2c3",
+				"genericNote": "Domaine de redirection partagé",
+				"brandedNote": "Ton propre domaine via CNAME"
+			}
+		},
+		"tips": {
+			"title": "Bonnes pratiques pour les développeurs",
+			"tip1": {
+				"title": "Traite les liens comme de la configuration",
+				"description": "Garde le lien court stable et laisse la destination être ce qui change. C’est tout l’intérêt d’une couche d’indirection."
+			},
+			"tip2": {
+				"title": "Génère les liens en CI",
+				"description": "Avec l’API REST, les liens de version sont créés par ton pipeline au lieu d’être faits à la main avant chaque lancement."
+			},
+			"tip3": {
+				"title": "Restreins tes clés d’API",
+				"description": "Émets une clé par intégration. En faire tourner une ne signifie plus auditer chaque script que tu as écrit."
+			},
+			"tip4": {
+				"title": "Héberge-le toi-même si besoin",
+				"description": "La stack est sous licence MIT et publique. Si tes règles de conformité n’autorisent pas une redirection tierce, fais tourner la tienne."
+			}
 		}
 	},
 	"urlShortenerAgencies": {
 		"metaTitle": "Raccourcisseur d'URL pour les agences – Domaines clients, liens personnalisés et analyses | QRcodly",
-		"metaDescription": "Gérez les liens courts pour plusieurs clients avec des domaines personnalisés, des URL à leur image et des analyses par lien. Conçu pour les agences.",
+		"metaDescription": "Gère les liens courts de tous tes clients depuis un seul endroit : ton domaine d’agence, des étiquettes par client et des statistiques par lien. Conçu pour les agences.",
 		"hero": {
 			"title": "Liens courts conçus pour les agences",
-			"subtitle": "Gérez des liens personnalisés pour tous vos clients. Utilisez des domaines personnalisés, suivez les performances et livrez des résultats.",
+			"subtitle": "Mets le domaine de ton agence sur chaque lien client, garde les campagnes ordonnées avec des étiquettes et rends compte des performances depuis un tableau de bord unique.",
 			"ctaLabel": "Raccourcissez votre premier lien"
 		},
 		"features": {
 			"feature1": {
-				"title": "Domaines personnalisés pour chaque client",
-				"description": "Connectez plusieurs domaines personnalisés — un pour chaque client. Chaque lien court porte l'image de marque du client.",
-				"bullet1": "Connectez des domaines personnalisés par client",
-				"bullet2": "URL courtes personnalisées pour une livraison professionnelle",
-				"bullet3": "Configuration DNS facile avec des instructions guidées"
+				"title": "Le domaine de ton agence sur chaque lien client",
+				"description": "Pro comprend un domaine personnalisé. Mets-y la marque de ton agence et donne à chaque client son propre slug lisible : chaque livrable part avec un lien qui a l’air d’avoir été fait par toi.",
+				"bullet1": "Un domaine personnalisé par offre Pro, configuré via CNAME",
+				"bullet2": "Des slugs lisibles par client au lieu de caractères aléatoires",
+				"bullet3": "Configuration DNS guidée avec vérification"
 			},
 			"feature2": {
 				"title": "Analyses par lien",
@@ -3299,7 +3618,9 @@
 			"a3": "Oui. Exporte les analyses de liens ou partage des captures d'écran du tableau de bord. Chaque lien affiche le nombre de clics, les données géographiques et les détails par appareil.",
 			"q4": "Y a-t-il une limite au nombre de domaines personnalisés que je peux ajouter ?",
 			"a4": "Les comptes Pro supportent plusieurs domaines personnalisés. La limite exacte dépend de ton plan — consulte la page de tarification pour les détails.",
-			"viewAll": "Voir toutes les FAQ"
+			"viewAll": "Voir toutes les FAQ",
+			"q5": "Puis-je connecter un domaine personnalisé pour chaque client ?",
+			"a5": "Pas au sein d’une même offre : Pro comprend un domaine personnalisé par compte. La plupart des agences mettent leur propre marque sur ce domaine et séparent les clients par des slugs et des étiquettes. Si un client a besoin de liens sur son propre domaine, la solution propre est une offre sur son compte, et ainsi les liens restent les siens s’il part un jour."
 		},
 		"cta": {
 			"title": "Développez la gestion de liens de votre agence",
@@ -3324,6 +3645,60 @@
 			"step4": {
 				"title": "Partage les rapports de performance",
 				"description": "Exporte les analyses de clics par client. Revois ensemble les données de performance et utilise-les pour planifier la prochaine campagne."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Domaine de l’agence",
+				"badge": "Pro",
+				"aria": "Comparaison d’un lien court générique et d’un lien sur le domaine de ton agence",
+				"genericLink": "short.io/xY9k",
+				"brandedLink": "go.tonagence.com/lancement",
+				"genericNote": "Domaine anonyme sur les livrables",
+				"brandedNote": "Le domaine de ton agence sur chaque campagne"
+			},
+			"v2": {
+				"label": "Statistiques par lien",
+				"badge": "En direct",
+				"aria": "Tableau comparant le volume de clics entre campagnes clients",
+				"metricValue": "24 910",
+				"metricLabel": "Clics tous clients confondus",
+				"trend": "En direct",
+				"b1Name": "Client A — lancement",
+				"b2Name": "Client B — permanent",
+				"b3Name": "Client C — événement"
+			},
+			"v3": {
+				"label": "Classé par client",
+				"aria": "Liste de liens clients groupés par étiquette avec le nombre de clics",
+				"r1Link": "go.tonagence.com/acme-lancement",
+				"r1Tag": "Acme · Lancement",
+				"r1Clicks": "9 140",
+				"r2Link": "go.tonagence.com/globex-webinaire",
+				"r2Tag": "Globex · Webinaire",
+				"r2Clicks": "3 802",
+				"r3Link": "go.tonagence.com/initech-emploi",
+				"r3Tag": "Initech · Marque employeur",
+				"r3Clicks": "1 477"
+			}
+		},
+		"tips": {
+			"title": "Bonnes pratiques pour la gestion des liens d’agence",
+			"tip1": {
+				"title": "Étiquette chaque lien par client",
+				"description": "Les étiquettes transforment un pool de liens partagé en rapports par client. Convenez d’une convention de nommage avant la première campagne, pas après la cinquantième."
+			},
+			"tip2": {
+				"title": "Utilise des slugs de campagne lisibles",
+				"description": "« acme-lancement » l’emporte sur « x7k2 » dans un point d’avancement, dans un rapport et lors de la passation à la personne qui reprend le compte."
+			},
+			"tip3": {
+				"title": "Fais des passations propres",
+				"description": "Quand un client s’en va, il devrait pouvoir emporter ses destinations. Des liens que tu peux rediriger font de ça une conversation plutôt qu’une prise d’otage."
+			},
+			"tip4": {
+				"title": "Un domaine, plusieurs clients",
+				"description": "Une offre Pro comprend un domaine personnalisé. Mets-y la marque de ton agence et sépare les clients par des slugs — ou laisse chaque client avoir sa propre offre si le domaine doit être le sien."
 			}
 		}
 	},

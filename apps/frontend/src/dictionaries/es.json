@@ -128,7 +128,7 @@
 	"homeStats": {
 		"stat1Value": "100K+",
 		"stat1Label": "Códigos QR creados",
-		"stat2Value": "1.000+",
+		"stat2Value": "5.000+",
 		"stat2Label": "Usuarios activos",
 		"stat3Value": "10K+",
 		"stat3Label": "Escaneos y clics diarios",
@@ -1667,16 +1667,6 @@
 			"copiedBtn": "¡Copiado!",
 			"createAnother": "Acortar otra URL"
 		},
-		"stats": {
-			"stat1Value": "1.000+",
-			"stat1Label": "Usuarios activos",
-			"stat2Value": "10K+",
-			"stat2Label": "Clics diarios",
-			"stat3Value": "< 50ms",
-			"stat3Label": "Velocidad de redirección",
-			"stat4Value": "24/7",
-			"stat4Label": "Disponibilidad"
-		},
 		"useCases": {
 			"title": "Diseñado para Cada Equipo",
 			"subtitle": "Desde creadores independientes hasta departamentos de marketing empresarial — el acortador de URLs de QRcodly se adapta a tus necesidades.",
@@ -1691,7 +1681,8 @@
 			"case5Title": "Desarrolladores y APIs",
 			"case5Description": "Integra el acortamiento de URLs en tus aplicaciones a través de nuestra API REST. Documentación completa y soporte de SDK.",
 			"case6Title": "Agencias",
-			"case6Description": "Gestiona enlaces de clientes con dominios personalizados. URLs cortas de marca blanca con la identidad de tus clientes."
+			"case6Description": "Gestiona enlaces de clientes con dominios personalizados. URLs cortas de marca blanca con la identidad de tus clientes.",
+			"learnMore": "Más información"
 		},
 		"features": {
 			"brandedLinks": {
@@ -1745,19 +1736,49 @@
 		},
 		"faq": {
 			"title": "Preguntas Frecuentes",
-			"q1": "¿Es gratuito el acortador de URLs?",
-			"a1": "¡Sí! El acortador de URLs de QRcodly es gratuito. Puedes crear URLs cortas, rastrear clics y gestionar tus enlaces sin coste alguno. Los planes Pro desbloquean funciones avanzadas como dominios personalizados.",
-			"q2": "¿Puedo usar mi propio dominio para URLs cortas?",
-			"a2": "Por supuesto. Conecta tu propio dominio para crear URLs cortas de marca como go.tumarca.com/u/x7k9m. Los dominios personalizados están disponibles en los planes Pro con provisión automática de SSL.",
-			"q3": "¿Cómo funciona el seguimiento de clics?",
-			"a3": "Cada vez que alguien hace clic en tu URL corta, QRcodly registra el clic junto con metadatos como tipo de dispositivo, navegador, sistema operativo y ubicación geográfica — todo en tiempo real.",
-			"q4": "¿Puedo editar una URL corta después de crearla?",
-			"a4": "Sí. Puedes actualizar la URL de destino, activar o desactivar la URL corta y gestionar etiquetas en cualquier momento desde tu panel de control sin cambiar la URL corta en sí.",
-			"q5": "¿Las URLs cortas caducan?",
-			"a5": "No. Las URLs cortas creadas con QRcodly nunca caducan. Permanecen activas mientras exista tu cuenta, y puedes desactivarlas manualmente si lo necesitas.",
-			"q6": "¿Cuál es la diferencia entre URLs cortas y códigos QR?",
-			"a6": "Las URLs cortas son enlaces clicables que compartes digitalmente (email, redes sociales, anuncios). Los códigos QR son imágenes escaneables para medios físicos (impresión, embalaje, señalización). Ambos rastrean analíticas y pueden usar dominios personalizados.",
+			"q1": "¿Cómo funcionan los dominios personalizados con los enlaces cortos?",
+			"a1": "Conecta tu propio dominio (p. ej., go.tumarca.com) en la configuración del panel. Configura los registros DNS que se muestran, y el SSL se provisiona automáticamente. Todos los enlaces nuevos usarán tu dominio.",
+			"q2": "¿Puedo configurar expiración o reglas de acceso para los enlaces?",
+			"a2": "Actualmente, los enlaces permanecen activos indefinidamente. Puedes desactivar cualquier enlace manualmente en cualquier momento desde el panel. Las fechas de expiración automática están en la hoja de ruta.",
+			"q3": "¿Qué pasa cuando desactivo un enlace corto?",
+			"a3": "Los visitantes ven una página de 'enlace no disponible'. El enlace no se elimina — puedes reactivarlo en cualquier momento y todos los datos analíticos anteriores se conservan.",
+			"q4": "¿Cómo se manejan las redirecciones técnicamente?",
+			"a4": "Los enlaces cortos usan redirecciones HTTP 301 (permanentes). La redirección ocurre del lado del servidor en menos de 50 ms, por lo que los usuarios no experimentan prácticamente ningún retraso.",
+			"q5": "¿Puedo organizar los enlaces con etiquetas?",
+			"a5": "Sí. Añade una o más etiquetas a cualquier enlace. Luego filtra tu panel por etiqueta para ver enlaces agrupados por campaña, cliente o cualquier categoría que definas.",
+			"q6": "¿Cómo maneja la API la creación masiva de enlaces?",
+			"a6": "Envía solicitudes POST al endpoint /api/v1/short-url para cada enlace. Para flujos de trabajo masivos más grandes, automatiza múltiples solicitudes o usa la función de importación CSV en el panel.",
 			"viewAll": "¿Más preguntas? Ver todas las FAQs"
+		},
+		"facts": {
+			"fact1Value": "∞",
+			"fact1Label": "Enlaces cortos y clics",
+			"fact2Value": "0",
+			"fact2Label": "Tarjetas de crédito necesarias",
+			"fact3Value": "REST",
+			"fact3Label": "API para automatizar",
+			"fact4Value": "MIT",
+			"fact4Label": "Licencia de código abierto"
+		},
+		"dynamic": {
+			"title": "Un enlace que no puedes cambiar es una decisión que no puedes deshacer",
+			"subtitle": "Una vez que una URL está publicada, impresa o enviada, lo único que sigues controlando es adónde lleva.",
+			"staticLabel": "URL de destino sin acortar",
+			"staticTitle": "La dirección sale exactamente tal cual",
+			"staticPoint1": "Un enlace equivocado en un correo enviado o una publicación sigue equivocado.",
+			"staticPoint2": "Reestructura tu web y se rompen a la vez todos los enlaces que compartiste.",
+			"staticPoint3": "Las URLs largas parecen poco fiables y se cortan.",
+			"dynamicLabel": "Enlace corto que controlas",
+			"dynamicTitle": "Una dirección, un destino que puedes mover",
+			"dynamicPoint1": "Redirige un enlace mucho después de haberlo publicado.",
+			"dynamicPoint2": "Retira campañas terminadas a una página de continuación en vez de a un 404.",
+			"dynamicPoint3": "Consulta los clics por enlace, canal y campaña.",
+			"lockInTitle": "La parte que la mayoría de acortadores omite",
+			"lockInDescription": "Un enlace corto solo funciona mientras alguien mantenga la redirección detrás, lo que convierte en palanca cada enlace que hayas publicado. Por eso algunos acortadores limitan los planes gratuitos a un puñado de enlaces al mes, restringen los clics o colocan un anuncio intermedio antes de tu página. QRcodly está construido para que esa palanca no exista.",
+			"lockInPill1": "Clics ilimitados — sin tope",
+			"lockInPill2": "Ninguna prueba que apague tus enlaces",
+			"lockInPill3": "Licencia MIT — audítalo o aloja el tuyo",
+			"lockInCtaLabel": "Ver qué incluye el plan gratuito"
 		}
 	},
 	"productsQrCodes": {
@@ -1769,16 +1790,6 @@
 			"subtitle": "Diseña códigos QR impresionantes con colores personalizados, logos y estilos. Actualiza el contenido en cualquier momento, rastrea cada escaneo y gestiona todo desde un solo panel.",
 			"ctaLabel": "Crea Tu Código QR Gratis",
 			"viewPricing": "Comparar planes"
-		},
-		"stats": {
-			"stat1Value": "100K+",
-			"stat1Label": "Códigos QR creados",
-			"stat2Value": "9+",
-			"stat2Label": "Tipos de contenido",
-			"stat3Value": "10K+",
-			"stat3Label": "Escaneos por día",
-			"stat4Value": "1.000+",
-			"stat4Label": "Usuarios activos"
 		},
 		"useCases": {
 			"title": "Códigos QR para Cada Industria",
@@ -1794,7 +1805,8 @@
 			"case5Title": "Educación",
 			"case5Description": "Conecta a los estudiantes con recursos, tareas y materiales de clase. Actualiza los destinos en cualquier momento.",
 			"case6Title": "Marketing y Publicidad",
-			"case6Description": "Conecta campañas impresas y digitales. Rastrea las tasas de escaneo en vallas, folletos y correo directo."
+			"case6Description": "Conecta campañas impresas y digitales. Rastrea las tasas de escaneo en vallas, folletos y correo directo.",
+			"learnMore": "Más información"
 		},
 		"features": {
 			"customization": {
@@ -1854,24 +1866,57 @@
 		},
 		"faq": {
 			"title": "Preguntas Frecuentes",
-			"q1": "¿Es gratuito el generador de códigos QR?",
-			"a1": "¡Sí! QRcodly te permite crear códigos QR estáticos y dinámicos ilimitados de forma gratuita. Sin costes ocultos, sin marcas de agua y sin necesidad de registro para códigos QR básicos.",
-			"q2": "¿Qué son los códigos QR dinámicos?",
-			"a2": "Los códigos QR dinámicos te permiten cambiar la URL de destino después de imprimir el código. También rastrean cada escaneo con analíticas detalladas — sin necesidad de reimprimir cuando cambia el contenido.",
-			"q3": "¿Puedo añadir mi logo a un código QR?",
-			"a3": "Por supuesto. Sube cualquier imagen como logo central para tu código QR. También puedes personalizar colores, estilos de esquinas y guardar diseños como plantillas reutilizables.",
-			"q4": "¿Qué tipos de contenido se soportan?",
-			"a4": "QRcodly soporta más de 9 tipos de contenido: URL, Texto, WiFi, vCard (tarjetas de contacto), Email, Ubicación, Eventos de Calendario, EPC (pagos) y perfiles de Redes Sociales.",
-			"q5": "¿Puedo rastrear los escaneos de códigos QR?",
-			"a5": "Sí. Cada código QR dinámico rastrea escaneos en tiempo real, mostrando escaneos totales, visitantes únicos, tipos de dispositivo, navegadores, sistemas operativos y ubicaciones geográficas.",
-			"q6": "¿Los códigos QR caducan?",
-			"a6": "No. Los códigos QR creados con QRcodly nunca caducan. Los códigos QR dinámicos permanecen totalmente funcionales y rastreables mientras exista tu cuenta.",
+			"q1": "¿Cuál es la diferencia entre códigos QR estáticos y dinámicos?",
+			"a1": "Los códigos estáticos codifican los datos directamente — no se pueden editar ni rastrear después de crearlos. Los códigos dinámicos usan una URL corta de redirección, para que puedas cambiar el destino y rastrear escaneos en cualquier momento.",
+			"q2": "¿Puedo crear códigos QR de forma masiva?",
+			"a2": "Sí. Usa la importación CSV para crear cientos de códigos QR a la vez. Aplica una plantilla de diseño guardada para un branding consistente en todos los códigos del lote.",
+			"q3": "¿Cómo guardo un diseño de código QR como plantilla?",
+			"a3": "Personaliza tu código QR (colores, logo, estilo), luego guárdalo como plantilla. La próxima vez, selecciona tu plantilla y solo cambia el contenido — tu diseño se aplica automáticamente.",
+			"q4": "¿Qué nivel de corrección de errores debo usar?",
+			"a4": "Medio (M) funciona para la mayoría de los casos. Si vas a añadir un logo superpuesto, usa Alto (H) para que el código siga siendo escaneable incluso con parte cubierta por el logo.",
+			"q5": "¿Puedo usar códigos QR sin internet?",
+			"a5": "Los códigos QR de WiFi, vCard y Texto funcionan completamente sin internet — los datos están codificados en el propio código. Los códigos basados en URL requieren internet para abrir la página vinculada después de escanear.",
+			"q6": "¿Cómo integro la generación de códigos QR en mi propia app?",
+			"a6": "Usa la REST API de QRcodly. Autentícate con una API key y envía una solicitud POST para crear, personalizar y gestionar códigos QR de forma programática.",
 			"viewAll": "¿Más preguntas? Ver todas las FAQs"
 		},
 		"cta": {
 			"title": "¿Listo para crear tu primer código QR?",
 			"subtitle": "Diseña códigos QR personalizados con seguimiento analítico completo. Gratis para siempre, sin tarjeta de crédito.",
 			"ctaLabel": "Crear Código QR Ahora"
+		},
+		"facts": {
+			"fact1Value": "8",
+			"fact1Label": "Tipos de contenido QR",
+			"fact2Value": "∞",
+			"fact2Label": "Códigos y escaneos incluidos",
+			"fact3Value": "0",
+			"fact3Label": "Tarjetas de crédito necesarias",
+			"fact4Value": "MIT",
+			"fact4Label": "Licencia de código abierto"
+		},
+		"dynamic": {
+			"title": "¿Estático o dinámico? Decide antes de imprimir.",
+			"subtitle": "Es la única decisión de un código QR que no puedes revertir después de la tirada.",
+			"staticLabel": "Código QR estático",
+			"staticTitle": "El destino queda codificado en el patrón impreso",
+			"staticPoint1": "Cambia adónde debe llevar y hay que reimprimirlo todo.",
+			"staticPoint2": "Una página movida o una errata perdura en cada copia ya distribuida.",
+			"staticPoint3": "Sin datos de escaneo: nunca sabes si funcionó.",
+			"dynamicLabel": "Código QR dinámico",
+			"dynamicTitle": "El código impreso se queda, el destino se mueve",
+			"dynamicPoint1": "Redirígelo cuando quieras — el patrón impreso nunca cambia.",
+			"dynamicPoint2": "Corrige errores después de la tirada en vez de volver a encargar.",
+			"dynamicPoint3": "Descubre con qué frecuencia, dónde y cuándo se escanea el código.",
+			"lockInTitle": "La parte que la mayoría de proveedores de QR omite",
+			"lockInDescription": "Un código dinámico solo funciona mientras alguien mantenga la redirección detrás, y una tirada impresa no se puede retirar. Esa dependencia es la razón por la que algunos proveedores apagan los códigos al terminar una prueba, limitan cuántas veces puede escanearse un código o muestran anuncios antes de tu página. QRcodly está construido para que esa palanca no exista.",
+			"lockInPill1": "Escaneos ilimitados — sin tope",
+			"lockInPill2": "Ninguna prueba que apague tus códigos",
+			"lockInPill3": "Licencia MIT — audítalo o aloja el tuyo",
+			"lockInCtaLabel": "Ver qué incluye el plan gratuito"
+		},
+		"testimonial": {
+			"eyebrow": "Lo que dicen nuestros clientes"
 		}
 	},
 	"productsAnalytics": {
@@ -2149,7 +2194,9 @@
 			"a3": "Crea códigos QR separados para cada ubicación, cada uno vinculado a la página del menú de esa sucursal. Usa etiquetas en tu panel para organizar los códigos por ubicación del restaurante.",
 			"q4": "¿Los comensales pueden dejar una reseña después de escanear?",
 			"a4": "Sí — vincula tu código QR a tu página de reseñas de Google Business o a un formulario de feedback. Con un código dinámico, puedes alternar entre tu menú y la página de reseñas según la temporada.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Qué pasa con mis códigos impresos si dejo de pagar?",
+			"a5": "Nada. QRcodly no desactiva códigos QR cuando termina una suscripción — los códigos y escaneos ilimitados forman parte del plan gratuito, así que un código impreso sigue resolviendo. Solo se apagan los extras de Pro, como el dominio propio y las integraciones de analítica. Es deliberado: el material impreso nunca debería ser un rehén."
 		},
 		"cta": {
 			"title": "¿Listo para Modernizar tu Restaurante?",
@@ -2187,8 +2234,8 @@
 				"description": "Los códigos más pequeños son más difíciles de escanear con fiabilidad. Para tarjetas y soportes de mesa, 3×3 cm es el punto ideal."
 			},
 			"tip2": {
-				"title": "Coloca a la Altura de los Ojos",
-				"description": "Usa soportes de mesa o montajes en la pared en lugar de superficies planas. Los códigos a la altura de los ojos se escanean 2× más a menudo."
+				"title": "Colócalo a la altura de los ojos",
+				"description": "Los soportes de mesa y los montajes en pared superan a las superficies planas: un código tumbado refleja la luz y obliga a los comensales a inclinarse sobre él."
 			},
 			"tip3": {
 				"title": "Prueba Antes de Imprimir",
@@ -2199,15 +2246,26 @@
 				"description": "Publica los cambios del menú el viernes por la tarde para captar el tráfico del fin de semana — tu ventana de escaneo más activa."
 			}
 		},
-		"stats": {
-			"stat1Value": "73%",
-			"stat1Label": "de los comensales prefieren menús digitales",
-			"stat2Value": "3×",
-			"stat2Label": "pedidos en mesa más rápidos",
-			"stat3Value": "45%",
-			"stat3Label": "menos costes de impresión",
-			"stat4Value": "< 2 seg",
-			"stat4Label": "tiempo promedio de escaneo"
+		"visuals": {
+			"v1": {
+				"label": "Vista del comensal",
+				"badge": "Dinámico",
+				"aria": "Móvil mostrando una carta de restaurante abierta con un código QR",
+				"screenTitle": "Menú del mediodía",
+				"row1Name": "Sopa del día",
+				"row1Meta": "4,90",
+				"row2Name": "Pasta al forno",
+				"row2Meta": "11,50",
+				"row3Name": "Tiramisú",
+				"row3Meta": "5,20"
+			},
+			"v2": {
+				"label": "Tarjeta de mesa",
+				"aria": "Tarjeta de mesa con código QR para el WiFi de invitados",
+				"mediumLabel": "Tarjeta de mesa",
+				"headline": "Escanea para el WiFi",
+				"caption": "Conectado sin escribir contraseña"
+			}
 		}
 	},
 	"qrCodesRetail": {
@@ -2260,7 +2318,9 @@
 			"a3": "Sí. Usa códigos QR dinámicos y actualiza la URL de destino cuando la promoción termine. Redirige a una nueva oferta o a tu página de producto estándar — sin necesidad de reimprimir.",
 			"q4": "¿Cómo conecto los códigos QR a mi programa de fidelización?",
 			"a4": "Vincula los códigos QR a tu página de registro de fidelización o enlace de descarga de la app. Los clientes escanean, se registran y empiezan a ganar recompensas — sin entrada manual necesaria.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Qué pasa con los códigos ya impresos en envases si dejo de pagar?",
+			"a5": "Siguen funcionando. Los códigos y escaneos ilimitados forman parte del plan gratuito y QRcodly nunca desactiva un código al terminar una suscripción — solo se apagan los extras de Pro, como el dominio propio. Los envases en circulación no se pueden retirar, así que usarlos como palanca sería indefendible."
 		},
 		"cta": {
 			"title": "Mejora tu Experiencia de Comercio Minorista",
@@ -2298,8 +2358,8 @@
 				"description": "Usa un código QR dedicado para cada producto para rastrear la interacción a nivel de artículo — no solo a nivel de expositor."
 			},
 			"tip2": {
-				"title": "Añade una Llamada a la Acción",
-				"description": "Imprime un texto breve cerca del código como 'Escanea para 10% de descuento' o 'Escanea para guía de tallas.' Los códigos con CTAs reciben 3× más escaneos."
+				"title": "Di qué aporta el escaneo",
+				"description": "Un código a secas no le da a nadie un motivo para sacar el móvil. Un texto corto al lado — «Escanea para ver la guía de tallas» — les dice qué obtienen."
 			},
 			"tip3": {
 				"title": "Coloca en el Borde de la Estantería",
@@ -2310,15 +2370,28 @@
 				"description": "Usa códigos dinámicos e intercambia destinos regularmente. Las ofertas frescas mantienen a los clientes escaneando."
 			}
 		},
-		"stats": {
-			"stat1Value": "58%",
-			"stat1Label": "de los compradores escanean códigos en tienda",
-			"stat2Value": "2.4×",
-			"stat2Label": "mayor interacción vs. solo impreso",
-			"stat3Value": "40%",
-			"stat3Label": "tasa de canje de cupones",
-			"stat4Value": "12 seg",
-			"stat4Label": "tiempo promedio de interacción"
+		"visuals": {
+			"v1": {
+				"label": "Escaneo en el estante",
+				"badge": "Dinámico",
+				"aria": "Móvil mostrando detalles de producto tras escanear una etiqueta de estante",
+				"screenTitle": "Detalles del producto",
+				"row1Name": "Material",
+				"row1Meta": "Algodón orgánico",
+				"row2Name": "Cuidado",
+				"row2Meta": "Lavado a 30 °C",
+				"row3Name": "Disponibilidad",
+				"row3Meta": "En stock"
+			},
+			"v2": {
+				"label": "Promoción semanal",
+				"badge": "Misma etiqueta",
+				"aria": "Una etiqueta de estante impresa se redirige de la campaña de primavera a la de verano",
+				"printedLabel": "Etiqueta impresa una vez",
+				"oldDestination": "/promo/primavera",
+				"newDestination": "/promo/verano",
+				"footnote": "Campaña nueva, misma etiqueta en el estante — no se reimprime nada."
+			}
 		}
 	},
 	"qrCodesEvents": {
@@ -2371,7 +2444,9 @@
 			"a3": "Un código QR vCard contiene los datos de contacto (nombre, email, teléfono, empresa). Al escanearlo, el teléfono ofrece guardar el contacto directamente — reemplazando las tarjetas de visita tradicionales.",
 			"q4": "¿Puedo medir qué sesiones fueron las más populares?",
 			"a4": "Crea códigos QR separados para cada sesión o conferencia. Compara los conteos de escaneos en tu panel para ver qué sesiones atrajeron a más asistentes.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Puedo reutilizar el mismo código para el evento del año que viene?",
+			"a5": "Sí. Un código dinámico es solo una dirección fija que rediriges, así que la señalética del año pasado puede apuntar al programa de este año. Y si dejas de pagar entretanto, el código sigue vivo: los códigos y escaneos ilimitados forman parte del plan gratuito y QRcodly no desactiva códigos al terminar una suscripción."
 		},
 		"cta": {
 			"title": "Haz que tu Próximo Evento sea Impecable",
@@ -2421,15 +2496,23 @@
 				"description": "Envía por email una credencial digital con un código QR antes del evento. Entrada más rápida y menos impresión."
 			}
 		},
-		"stats": {
-			"stat1Value": "67%",
-			"stat1Label": "más rápido en el check-in",
-			"stat2Value": "4×",
-			"stat2Label": "más contactos de networking",
-			"stat3Value": "85%",
-			"stat3Label": "tasa de adopción de asistentes",
-			"stat4Value": "30 seg",
-			"stat4Label": "ahorrados por entrada"
+		"visuals": {
+			"v1": {
+				"label": "Acreditación",
+				"aria": "Acreditación de evento con código QR para el registro de entrada",
+				"mediumLabel": "Acreditación",
+				"headline": "Escanea para registrarte",
+				"caption": "Registrado en la puerta"
+			},
+			"v2": {
+				"label": "Programa en vivo",
+				"badge": "Misma acreditación",
+				"aria": "Una acreditación impresa se redirige del día uno al día dos del programa",
+				"printedLabel": "Impreso en cada acreditación",
+				"oldDestination": "/programa/dia-1",
+				"newDestination": "/programa/dia-2",
+				"footnote": "¿Cambio de sala de última hora? Actualiza una vez y todas las acreditaciones lo siguen."
+			}
 		}
 	},
 	"qrCodesRealEstate": {
@@ -2482,7 +2565,9 @@
 			"a3": "Crea un código QR por propiedad. Usa etiquetas en tu panel (p. ej., 'centro', 'zona oeste') para organizar y filtrar rápidamente tus listados activos.",
 			"q4": "¿Qué tamaño funciona mejor para los carteles de venta?",
 			"a4": "Al menos 5×5 cm (2×2 pulgadas) en carteles de venta. Asegura un alto contraste entre el código y el fondo del cartel, y prueba escaneando desde 2 metros de distancia antes de imprimir.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Puedo reutilizar un cartel después de vender el inmueble?",
+			"a5": "Para eso sirve exactamente un código dinámico: redirígelo a tu siguiente inmueble y el cartel impreso sigue trabajando. El código permanece activo incluso sin suscripción, porque los códigos y escaneos ilimitados forman parte del plan gratuito y QRcodly no desactiva códigos cuando termina un plan."
 		},
 		"cta": {
 			"title": "Dale a Cada Listado una Ventaja Digital",
@@ -2532,15 +2617,26 @@
 				"description": "Cuando una propiedad se cierre, actualiza el código dinámico para enlazar a una página de 'Vendido' o a un listado similar cercano."
 			}
 		},
-		"stats": {
-			"stat1Value": "62%",
-			"stat1Label": "de los compradores escanean códigos de carteles",
-			"stat2Value": "3×",
-			"stat2Label": "más vistas de listados",
-			"stat3Value": "35%",
-			"stat3Label": "más solicitudes de visitas",
-			"stat4Value": "< 2 seg",
-			"stat4Label": "a los detalles completos del listado"
+		"visuals": {
+			"v1": {
+				"label": "Cartel",
+				"aria": "Cartel inmobiliario con código QR que lleva a la ficha completa",
+				"mediumLabel": "Cartel",
+				"headline": "Escanea para ver la ficha completa",
+				"caption": "Solicitud de visita recibida"
+			},
+			"v2": {
+				"label": "Vista del comprador",
+				"badge": "Dinámico",
+				"aria": "Móvil mostrando detalles del inmueble tras escanear un cartel",
+				"screenTitle": "Calle Arce 14",
+				"row1Name": "Superficie",
+				"row1Meta": "128 m²",
+				"row2Name": "Habitaciones",
+				"row2Meta": "4",
+				"row3Name": "Disponible desde",
+				"row3Meta": "1 sept."
+			}
 		}
 	},
 	"qrCodesEducation": {
@@ -2593,7 +2689,9 @@
 			"a3": "Crea múltiples códigos QR, cada uno enlazando a una página de pista o tarea. Colócalos por la escuela. Los estudiantes escanean cada código para avanzar en la actividad.",
 			"q4": "¿Los códigos QR son accesibles para estudiantes con discapacidades?",
 			"a4": "Los códigos QR son visuales, así que combínalos con una URL corta impresa debajo para estudiantes que usan lectores de pantalla. La página enlazada debe seguir las mejores prácticas de accesibilidad.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Necesito un plan de pago para usar códigos QR en clase?",
+			"a5": "No. Los códigos QR ilimitados, los escaneos ilimitados y la analítica que los acompaña forman parte del plan gratuito, sin tarjeta de crédito — que es justo lo que importa con un presupuesto escolar. Pro añade dominio propio, importaciones masivas y acceso a la API, pero nada de lo que necesita un aula está detrás de eso."
 		},
 		"cta": {
 			"title": "Lleva los Códigos QR a Tu Aula",
@@ -2643,15 +2741,28 @@
 				"description": "Con códigos dinámicos, puedes actualizar el recurso vinculado sin reimprimir. Misma hoja de trabajo, contenido fresco cada trimestre."
 			}
 		},
-		"stats": {
-			"stat1Value": "89%",
-			"stat1Label": "de los estudiantes tienen smartphone",
-			"stat2Value": "2×",
-			"stat2Label": "acceso más rápido a los recursos",
-			"stat3Value": "70%",
-			"stat3Label": "prefieren escanear a escribir URLs",
-			"stat4Value": "5 min",
-			"stat4Label": "ahorrados por lección"
+		"visuals": {
+			"v1": {
+				"label": "Vista del alumnado",
+				"badge": "Dinámico",
+				"aria": "Móvil mostrando materiales del curso tras escanear una ficha",
+				"screenTitle": "Materiales semana 6",
+				"row1Name": "Diapositivas",
+				"row1Meta": "PDF",
+				"row2Name": "Lecturas",
+				"row2Meta": "4 textos",
+				"row3Name": "Tarea",
+				"row3Meta": "Hasta el vie."
+			},
+			"v2": {
+				"label": "Ficha del curso",
+				"badge": "Misma hoja",
+				"aria": "Una ficha impresa se redirige del material del año pasado al de este año",
+				"printedLabel": "Ficha impresa",
+				"oldDestination": "/curso/2025/semana-6",
+				"newDestination": "/curso/2026/semana-6",
+				"footnote": "Semestre nuevo, misma ficha — redirige en lugar de reimprimir."
+			}
 		}
 	},
 	"qrCodesMarketing": {
@@ -2704,7 +2815,9 @@
 			"a3": "2×2 cm para materiales de corta distancia (folletos, tarjetas de visita). Para vallas o pósters vistos a distancia, agranda — un código de 15 cm funciona bien a 3 metros.",
 			"q4": "¿Cómo monitoreo la conversión de offline a online?",
 			"a4": "Cada código QR dinámico rastrea escaneos automáticamente. Combínalo con parámetros UTM en la URL de destino, y obtendrás visibilidad completa del embudo desde el escaneo físico hasta la conversión digital.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Puedo comparar emplazamientos impresos entre sí?",
+			"a5": "Dale a cada emplazamiento su propio código dinámico y el panel los muestra uno junto a otro: cartel, folleto y anuncio reciben cada uno su recuento de escaneos, y así se ve cuál se paga solo. Todo ello está incluido en el plan gratuito."
 		},
 		"cta": {
 			"title": "Haz que Cada Pieza Impresa sea Medible",
@@ -2754,15 +2867,25 @@
 				"description": "Coloca una llamada a la acción clara cerca del código: 'Escanea para reclamar tu oferta' o 'Escanea para acceso exclusivo.' Los códigos sin CTAs suelen ignorarse."
 			}
 		},
-		"stats": {
-			"stat1Value": "76%",
-			"stat1Label": "de los consumidores han escaneado un código QR",
-			"stat2Value": "2×",
-			"stat2Label": "mayor recuerdo vs. anuncios solo con URL",
-			"stat3Value": "34%",
-			"stat3Label": "conversión de impreso a digital",
-			"stat4Value": "5×",
-			"stat4Label": "ROI en campañas impresas"
+		"visuals": {
+			"v1": {
+				"label": "Campaña impresa",
+				"aria": "Cartel de campaña con código QR que lleva a la página de destino",
+				"mediumLabel": "Cartel",
+				"headline": "Escanea para participar",
+				"caption": "Escaneo registrado"
+			},
+			"v2": {
+				"label": "Rendimiento de campaña",
+				"badge": "En vivo",
+				"aria": "Panel que compara escaneos entre cartel, folleto y anuncio",
+				"metricValue": "1.284",
+				"metricLabel": "Escaneos este mes",
+				"trend": "En vivo",
+				"b1Name": "Cartel — estación",
+				"b2Name": "Folleto — feria",
+				"b3Name": "Anuncio en revista"
+			}
 		}
 	},
 	"urlShortenerMarketingTeams": {
@@ -2815,7 +2938,9 @@
 			"a3": "Ve a Configuración → Dominios Personalizados, añade tu dominio y configura los registros DNS que se muestran. El SSL se provisiona automáticamente. Todos los enlaces nuevos usarán tu dominio.",
 			"q4": "¿Puedo cambiar el destino de un enlace después de compartirlo?",
 			"a4": "Sí. Edita la URL de destino en cualquier momento desde tu panel. El enlace corto permanece igual — los destinatarios que ya lo tienen serán redirigidos a la página actualizada.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Qué pasa con los enlaces que ya he enviado si dejo de pagar?",
+			"a5": "Siguen resolviendo. Los enlaces cortos y los clics ilimitados forman parte del plan gratuito y QRcodly no apaga enlaces cuando termina una suscripción — solo dejan de servirse los extras de Pro, como tu dominio propio. Los enlaces que ya están en bandejas de entrada no deberían ser algo que un proveedor pueda usar contra ti."
 		},
 		"cta": {
 			"title": "Potencia tus Enlaces de Marketing",
@@ -2865,15 +2990,27 @@
 				"description": "Revisa los datos de clics cada semana para reasignar presupuesto de canales con bajo rendimiento a los que mejor funcionan."
 			}
 		},
-		"stats": {
-			"stat1Value": "34%",
-			"stat1Label": "mayor CTR con enlaces de marca",
-			"stat2Value": "3×",
-			"stat2Label": "configuración de campaña más rápida",
-			"stat3Value": "87%",
-			"stat3Label": "de los marketers usan seguimiento de enlaces",
-			"stat4Value": "< 50 ms",
-			"stat4Label": "velocidad de redirección"
+		"visuals": {
+			"v1": {
+				"label": "Enlace de campaña",
+				"badge": "Pro",
+				"aria": "Comparación de un enlace corto genérico con otro en tu propio dominio",
+				"genericLink": "bit.ly/3xKf9Qa",
+				"brandedLink": "go.tumarca.com/primavera",
+				"genericNote": "Quien lo recibe no sabe adónde lleva",
+				"brandedNote": "Tu dominio, tu reputación"
+			},
+			"v2": {
+				"label": "Clics de campaña",
+				"badge": "En vivo",
+				"aria": "Panel con los clics repartidos entre newsletter, redes y papel",
+				"metricValue": "8.412",
+				"metricLabel": "Clics en esta campaña",
+				"trend": "En vivo",
+				"b1Name": "Newsletter",
+				"b2Name": "LinkedIn",
+				"b3Name": "Anuncio impreso"
+			}
 		}
 	},
 	"urlShortenerSocialMedia": {
@@ -2933,7 +3070,9 @@
 			"a3": "No. Los enlaces de QRcodly usan redirecciones limpias y no están en ninguna lista de bloqueo. Usar tu propio dominio personalizado elimina aún más cualquier preocupación de spam.",
 			"q4": "¿Puedo cambiar a dónde va un enlace después de publicar?",
 			"a4": "Sí. Actualiza la URL de destino en cualquier momento sin editar tu publicación. Los seguidores que hagan clic en el mismo enlace serán redirigidos al nuevo contenido.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Puedo cambiar un enlace después de publicar?",
+			"a5": "Sí, y es justo la razón para usar uno. El enlace corto del texto se mantiene igual mientras lo rediriges desde el panel, así que un destino roto u obsoleto se arregla sin borrar la publicación ni perder su interacción."
 		},
 		"cta": {
 			"title": "Mejora tus Enlaces Sociales",
@@ -2958,6 +3097,56 @@
 			"step4": {
 				"title": "Monitorea los Clics por Publicación",
 				"description": "Revisa tu panel para ver qué publicaciones generan más clics. Compara el rendimiento entre plataformas."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Enlace en la publicación",
+				"badge": "Pro",
+				"aria": "Comparación de una URL larga de seguimiento con un enlace corto de marca",
+				"genericLink": "example.com/productos/coleccion-verano?utm_source=ig",
+				"brandedLink": "tm.link/verano",
+				"genericNote": "Se corta a mitad del texto",
+				"brandedNote": "Cabe en cualquier texto y se lee bien"
+			},
+			"v2": {
+				"label": "Interacción",
+				"badge": "En vivo",
+				"aria": "Panel con los clics por plataforma social",
+				"metricValue": "3.940",
+				"metricLabel": "Clics desde redes",
+				"trend": "En vivo",
+				"b1Name": "Instagram",
+				"b2Name": "TikTok",
+				"b3Name": "LinkedIn"
+			},
+			"v3": {
+				"label": "Enlace en la biografía",
+				"badge": "Mismo enlace",
+				"aria": "Un enlace de biografía se redirige del lanzamiento de primavera al de verano",
+				"printedLabel": "Mismo enlace en la biografía",
+				"oldDestination": "/drop/primavera",
+				"newDestination": "/drop/verano",
+				"footnote": "Los textos no se pueden editar. Su destino sí."
+			}
+		},
+		"tips": {
+			"title": "Buenas prácticas para enlaces en redes sociales",
+			"tip1": {
+				"title": "Manténlo en un solo enlace de biografía",
+				"description": "Haz que un único enlace corto apunte a lo que esté vigente, en vez de editar tu perfil cada vez. Una dirección, gestionada desde el panel."
+			},
+			"tip2": {
+				"title": "Usa un slug legible",
+				"description": "«tm.link/verano» consigue más clics que una cadena aleatoria, porque se ve adónde lleva antes de tocarlo."
+			},
+			"tip3": {
+				"title": "Un enlace propio por plataforma",
+				"description": "El mismo destino tras enlaces separados por plataforma es la única forma fiable de saber qué canal rinde de verdad."
+			},
+			"tip4": {
+				"title": "Comprueba el enlace antes de programar",
+				"description": "Las publicaciones programadas salen sin supervisión. Abre el enlace corto una vez antes de encolarlo: una errata llega de golpe a toda la audiencia."
 			}
 		}
 	},
@@ -3018,7 +3207,9 @@
 			"a3": "Sí. Todos los enlaces creados en tu cuenta son visibles en un solo panel. Usa etiquetas (p. ej., nombre del representante, etapa del negocio) para filtrar y comparar el rendimiento del equipo.",
 			"q4": "¿Qué pasa si necesito actualizar una propuesta compartida?",
 			"a4": "Cambia la URL de destino en tu panel. El enlace corto ya enviado al prospecto permanece igual — verán la propuesta actualizada cuando hagan clic.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Puedo ver si un contacto abrió mi propuesta?",
+			"a5": "El panel muestra los clics por enlace, así que un enlace por operación convierte el interés en una señal concreta, incluso cuando repunta semanas después. Mide aperturas de enlace, no identidades: tómalo como una señal de oportunidad, no como un píxel de seguimiento."
 		},
 		"cta": {
 			"title": "Monitorea Cada Clic en tu Prospección",
@@ -3043,6 +3234,60 @@
 			"step4": {
 				"title": "Monitorea la Interacción de Prospectos",
 				"description": "Revisa tu panel para ver las marcas de tiempo de clics y datos de dispositivo. Mira exactamente cuándo un prospecto abre tu enlace."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Enlaces de prospección",
+				"aria": "Lista de enlaces cortos por operación con recuento de clics",
+				"r1Link": "tm.link/acme-propuesta",
+				"r1Tag": "Acme Corp · Propuesta",
+				"r1Clicks": "14",
+				"r2Link": "tm.link/globex-demo",
+				"r2Tag": "Globex · Grabación de demo",
+				"r2Clicks": "7",
+				"r3Link": "tm.link/initech-contrato",
+				"r3Tag": "Initech · Contrato",
+				"r3Clicks": "3"
+			},
+			"v2": {
+				"label": "Credibilidad",
+				"badge": "Pro",
+				"aria": "Comparación de un enlace corto anónimo con otro en el dominio de tu empresa",
+				"genericLink": "tinyurl.com/y7k2n9q",
+				"brandedLink": "go.tuempresa.com/propuesta",
+				"genericNote": "Parece spam en una bandeja de entrada",
+				"brandedNote": "El dominio de tu empresa, reconocible al instante"
+			},
+			"v3": {
+				"label": "Rendimiento de la prospección",
+				"badge": "En vivo",
+				"aria": "Panel que compara la interacción a lo largo de las fases de prospección",
+				"metricValue": "1.204",
+				"metricLabel": "Aperturas de enlace este trimestre",
+				"trend": "En vivo",
+				"b1Name": "Primer contacto",
+				"b2Name": "Seguimiento",
+				"b3Name": "Propuesta enviada"
+			}
+		},
+		"tips": {
+			"title": "Buenas prácticas para la prospección comercial",
+			"tip1": {
+				"title": "Un enlace por operación",
+				"description": "Un enlace propio por contacto convierte un clic en una señal con nombre, en lugar de en un número anónimo."
+			},
+			"tip2": {
+				"title": "Envía desde tu propio dominio",
+				"description": "Un enlace en el dominio de tu empresa supera los filtros de spam y el escepticismo de la bandeja mucho mejor que un acortador anónimo."
+			},
+			"tip3": {
+				"title": "Mantén el slug legible",
+				"description": "«go.tuempresa.com/acme-propuesta» le dice a quien lo recibe qué va a abrir. Una cadena aleatoria le pide confiar a ciegas."
+			},
+			"tip4": {
+				"title": "Actualiza en vez de reenviar",
+				"description": "¿Has visto un error en una propuesta enviada? Redirige el enlace al archivo corregido en lugar de mandar un seguimiento incómodo."
 			}
 		}
 	},
@@ -3096,7 +3341,9 @@
 			"a3": "Sí. El acortador de URLs funciona con cualquier URL. Pega tu enlace de producto de cualquier plataforma y crea un enlace corto de marca al instante.",
 			"q4": "¿Los enlaces cortos afectan el SEO de mi tienda?",
 			"a4": "No. Los enlaces cortos usan redirecciones 301, que transmiten el valor SEO completo a la página de destino. Tu posicionamiento en buscadores no se ve afectado.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Qué pasa con mis enlaces si cambio de plataforma de tienda?",
+			"a5": "Redirígelos y todo lo publicado sigue siendo válido. Como el enlace corto es la dirección que la clientela tiene de verdad, una migración que reescribe cada URL de producto se convierte en un cambio en el panel en vez de en una búsqueda entre publicaciones, correos y anuncios antiguos."
 		},
 		"cta": {
 			"title": "Simplifica tus Enlaces de E-Commerce",
@@ -3146,15 +3393,31 @@
 				"description": "Cuando una promoción termine, redirige el enlace corto a tu página principal o a un producto relacionado — nunca lo dejes apuntando a un 404."
 			}
 		},
-		"stats": {
-			"stat1Value": "28%",
-			"stat1Label": "mayor CTR vs. URLs sin acortar",
-			"stat2Value": "2×",
-			"stat2Label": "más compartidos en redes sociales",
-			"stat3Value": "45%",
-			"stat3Label": "de los clics vienen de móvil",
-			"stat4Value": "99.9%",
-			"stat4Label": "garantía de disponibilidad"
+		"visuals": {
+			"v1": {
+				"label": "Enlaces de producto",
+				"aria": "Lista de enlaces cortos de producto por canal con recuento de clics",
+				"r1Link": "tm.link/vestido-verano",
+				"r1Tag": "Producto · Instagram",
+				"r1Clicks": "1.204",
+				"r2Link": "tm.link/rebajas-40",
+				"r2Tag": "Campaña · Newsletter",
+				"r2Clicks": "892",
+				"r3Link": "tm.link/guia-regalos",
+				"r3Tag": "Temporada · Pinterest",
+				"r3Clicks": "431"
+			},
+			"v2": {
+				"label": "Rendimiento por canal",
+				"badge": "En vivo",
+				"aria": "Panel que compara los clics entre canales de venta",
+				"metricValue": "12.480",
+				"metricLabel": "Clics en todos los canales",
+				"trend": "En vivo",
+				"b1Name": "Instagram",
+				"b2Name": "Newsletter",
+				"b3Name": "Pinterest"
+			}
 		}
 	},
 	"urlShortenerDevelopers": {
@@ -3214,7 +3477,9 @@
 			"a3": "Sí. Los límites de tasa dependen de tu plan. Las cuentas gratuitas tienen límites más estrictos; las cuentas Pro obtienen mayor capacidad. Consulta los encabezados de respuesta para ver tu uso actual.",
 			"q4": "¿Puedo obtener analíticas de clics a través de la API?",
 			"a4": "Sí. Los endpoints de analíticas devuelven conteos de clics, marcas de tiempo, datos de dispositivo e información geográfica para cada enlace corto de forma programática.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Puedo alojar QRcodly por mi cuenta?",
+			"a5": "Sí. Todo el stack es público bajo licencia MIT, así que si una redirección de terceros es inaceptable por cumplimiento normativo, o simplemente no quieres ninguna dependencia, puedes montarlo tú. Esa salida de emergencia es la razón por la que el servicio alojado no necesita topes de escaneo ni desactivaciones por fin de prueba para retenerte."
 		},
 		"cta": {
 			"title": "Comienza a Construir con Nuestra API",
@@ -3240,23 +3505,77 @@
 				"title": "Consulta las Analíticas de Clics",
 				"description": "Usa los endpoints de analíticas para obtener conteos de clics, marcas de tiempo, datos de dispositivo e información geográfica por enlace."
 			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Crear un enlace corto",
+				"badge": "REST",
+				"aria": "Ejemplo de código que crea un enlace corto mediante la API REST",
+				"method": "POST",
+				"endpoint": "/api/v1/short-url",
+				"line1": "curl -X POST https://api.qrcodly.de/api/v1/short-url \\",
+				"line2": "  -H \"Authorization: Bearer $API_KEY\" \\",
+				"line3": "  -H \"Content-Type: application/json\" \\",
+				"line4": "  -d '{\"destinationUrl\":\"https://example.com\"}'",
+				"responseLabel": "Respuesta",
+				"responseValue": "201 Created"
+			},
+			"v2": {
+				"label": "Autenticación",
+				"badge": "Clave API",
+				"aria": "Ejemplo de código que autentica una petición con un token bearer",
+				"method": "GET",
+				"endpoint": "/api/v1/short-url",
+				"line1": "curl https://api.qrcodly.de/api/v1/short-url \\",
+				"line2": "  -H \"Authorization: Bearer $API_KEY\"",
+				"responseLabel": "Estado",
+				"responseValue": "200 OK"
+			},
+			"v3": {
+				"label": "Dominio propio",
+				"badge": "Pro",
+				"aria": "Comparación del dominio de redirección compartido con un dominio propio",
+				"genericLink": "qrcodly.de/u/a1B2c3",
+				"brandedLink": "go.tuapp.dev/a1B2c3",
+				"genericNote": "Dominio de redirección compartido",
+				"brandedNote": "Tu propio dominio vía CNAME"
+			}
+		},
+		"tips": {
+			"title": "Buenas prácticas para desarrolladores",
+			"tip1": {
+				"title": "Trata los enlaces como configuración",
+				"description": "Mantén estable el enlace corto y deja que el destino sea lo que cambia. Para eso existe una capa de indirección."
+			},
+			"tip2": {
+				"title": "Genera enlaces en CI",
+				"description": "Con la API REST, los enlaces de cada versión los crea tu pipeline en vez de hacerlo a mano antes de cada lanzamiento."
+			},
+			"tip3": {
+				"title": "Acota tus claves de API",
+				"description": "Emite una clave por integración. Rotar una deja de significar auditar cada script que hayas escrito."
+			},
+			"tip4": {
+				"title": "Aloja el tuyo si hace falta",
+				"description": "El stack tiene licencia MIT y es público. Si tus normas de cumplimiento no admiten una redirección de terceros, monta la tuya."
+			}
 		}
 	},
 	"urlShortenerAgencies": {
 		"metaTitle": "Acortador de URL para Agencias – Dominios de Clientes, Enlaces Personalizados y Analíticas | QRcodly",
-		"metaDescription": "Gestione enlaces cortos para múltiples clientes con dominios personalizados, URLs personalizadas y analíticas por enlace. Diseñado para agencias.",
+		"metaDescription": "Gestiona los enlaces cortos de todos tus clientes desde un solo sitio: tu dominio de agencia, etiquetas por cliente y analítica por enlace. Hecho para agencias.",
 		"hero": {
 			"title": "Enlaces Cortos Diseñados para Agencias",
-			"subtitle": "Gestione enlaces personalizados para todos sus clientes. Use dominios personalizados, monitorice el rendimiento y entregue resultados.",
+			"subtitle": "Pon el dominio de tu agencia en cada enlace de cliente, mantén las campañas ordenadas con etiquetas e informa del rendimiento desde un único panel.",
 			"ctaLabel": "Acorte su Primer Enlace"
 		},
 		"features": {
 			"feature1": {
-				"title": "Dominios Personalizados para Cada Cliente",
-				"description": "Conecte múltiples dominios personalizados — uno para cada cliente. Cada enlace corto lleva la marca del cliente.",
-				"bullet1": "Conecte dominios personalizados por cliente",
-				"bullet2": "URLs cortas personalizadas para una entrega profesional",
-				"bullet3": "Configuración DNS sencilla con instrucciones guiadas"
+				"title": "El dominio de tu agencia en cada enlace de cliente",
+				"description": "Pro incluye un dominio propio. Pon en él la marca de tu agencia y dale a cada cliente su propio slug legible: cada entregable sale con un enlace que se nota que lo hiciste tú.",
+				"bullet1": "Un dominio propio por plan Pro, configurado vía CNAME",
+				"bullet2": "Slugs legibles por cliente en vez de caracteres aleatorios",
+				"bullet3": "Configuración DNS guiada con verificación"
 			},
 			"feature2": {
 				"title": "Analíticas por Enlace",
@@ -3299,7 +3618,9 @@
 			"a3": "Sí. Exporta las analíticas de enlaces o comparte capturas de pantalla del panel. Cada enlace muestra conteos de clics, datos geográficos y desgloses de dispositivos.",
 			"q4": "¿Hay un límite en cuántos dominios personalizados puedo añadir?",
 			"a4": "Las cuentas Pro soportan múltiples dominios personalizados. El límite exacto depende de tu nivel de plan — consulta la página de precios para más detalles.",
-			"viewAll": "Ver todas las FAQs"
+			"viewAll": "Ver todas las FAQs",
+			"q5": "¿Puedo conectar un dominio propio para cada cliente?",
+			"a5": "No dentro de un mismo plan: Pro incluye un dominio propio por cuenta. La mayoría de agencias ponen su propia marca en ese dominio y separan a los clientes con slugs y etiquetas. Si un cliente necesita enlaces en su propio dominio, la solución limpia es un plan en su cuenta, y así los enlaces siguen siendo suyos si algún día se marcha."
 		},
 		"cta": {
 			"title": "Escala la Gestión de Enlaces de tu Agencia",
@@ -3324,6 +3645,60 @@
 			"step4": {
 				"title": "Comparte Informes de Rendimiento",
 				"description": "Exporta las analíticas de clics por cliente. Revisa los datos de rendimiento juntos y úsalos para planificar la próxima campaña."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Dominio de la agencia",
+				"badge": "Pro",
+				"aria": "Comparación de un enlace corto genérico con otro en el dominio de tu agencia",
+				"genericLink": "short.io/xY9k",
+				"brandedLink": "go.tuagencia.com/lanzamiento",
+				"genericNote": "Dominio anónimo en los entregables",
+				"brandedNote": "El dominio de tu agencia en cada campaña"
+			},
+			"v2": {
+				"label": "Analítica por enlace",
+				"badge": "En vivo",
+				"aria": "Panel que compara el volumen de clics entre campañas de clientes",
+				"metricValue": "24.910",
+				"metricLabel": "Clics de todos los clientes",
+				"trend": "En vivo",
+				"b1Name": "Cliente A — lanzamiento",
+				"b2Name": "Cliente B — continuo",
+				"b3Name": "Cliente C — evento"
+			},
+			"v3": {
+				"label": "Ordenado por cliente",
+				"aria": "Lista de enlaces de cliente agrupados por etiqueta con recuento de clics",
+				"r1Link": "go.tuagencia.com/acme-lanzamiento",
+				"r1Tag": "Acme · Lanzamiento",
+				"r1Clicks": "9.140",
+				"r2Link": "go.tuagencia.com/globex-webinar",
+				"r2Tag": "Globex · Webinar",
+				"r2Clicks": "3.802",
+				"r3Link": "go.tuagencia.com/initech-empleo",
+				"r3Tag": "Initech · Marca empleadora",
+				"r3Clicks": "1.477"
+			}
+		},
+		"tips": {
+			"title": "Buenas prácticas para la gestión de enlaces de agencia",
+			"tip1": {
+				"title": "Etiqueta cada enlace por cliente",
+				"description": "Las etiquetas son lo que convierte un fondo común de enlaces en informes por cliente. Acordad un esquema de nombres antes de la primera campaña, no después de la número cincuenta."
+			},
+			"tip2": {
+				"title": "Usa slugs de campaña legibles",
+				"description": "«acme-lanzamiento» gana a «x7k2» en una reunión de estado, en un informe y en el traspaso a quien recoja la cuenta después."
+			},
+			"tip3": {
+				"title": "Haz traspasos limpios",
+				"description": "Cuando un cliente se va, debería poder llevarse sus destinos. Los enlaces que puedes redirigir convierten eso en una conversación y no en un secuestro."
+			},
+			"tip4": {
+				"title": "Un dominio, muchos clientes",
+				"description": "Un plan Pro incluye un dominio propio. Pon en él la marca de tu agencia y separa a los clientes con slugs, o deja que cada cliente tenga su propio plan si el dominio debe ser suyo."
 			}
 		}
 	},

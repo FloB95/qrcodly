@@ -5,6 +5,8 @@ import { ProductFeatureSection } from '@/components/products/ProductFeatureSecti
 import { UrlShortenerHeroForm } from '@/components/products/UrlShortenerHeroForm';
 
 import { ProductUseCases } from '@/components/products/ProductUseCases';
+import { ProductStatsBar } from '@/components/products/ProductStatsBar';
+import { DynamicVsStatic } from '@/components/products/DynamicVsStatic';
 import { CrossProductCards } from '@/components/products/CrossProductCards';
 import { ProductFaqSection } from '@/components/products/ProductFaqSection';
 
@@ -137,10 +139,20 @@ export default async function Page({ params }: DefaultPageParams) {
 		<BuildingOffice2Icon key="6" className="h-5 w-5" />,
 	];
 
+	const useCaseSlugs = [
+		'marketing-teams',
+		'social-media',
+		'sales',
+		'e-commerce',
+		'developers',
+		'agencies',
+	];
+
 	const useCases = Array.from({ length: 6 }, (_, i) => ({
 		icon: useCaseIcons[i],
 		title: t(`useCases.case${i + 1}Title`),
 		description: t(`useCases.case${i + 1}Description`),
+		href: `/products/url-shortener/${useCaseSlugs[i]}`,
 	}));
 
 	const faqItems = Array.from({ length: 6 }, (_, i) => ({
@@ -156,6 +168,13 @@ export default async function Page({ params }: DefaultPageParams) {
 					<UrlShortenerHeroForm />
 				</ProductHeroSection>
 
+				<ProductStatsBar
+					stats={[1, 2, 3, 4].map((n) => ({
+						value: t(`facts.fact${n}Value`),
+						label: t(`facts.fact${n}Label`),
+					}))}
+				/>
+
 				{features.map((feature, i) => (
 					<ProductFeatureSection
 						key={feature.title}
@@ -169,10 +188,26 @@ export default async function Page({ params }: DefaultPageParams) {
 					/>
 				))}
 
+				<DynamicVsStatic
+					title={t('dynamic.title')}
+					subtitle={t('dynamic.subtitle')}
+					staticLabel={t('dynamic.staticLabel')}
+					staticTitle={t('dynamic.staticTitle')}
+					staticPoints={[1, 2, 3].map((n) => t(`dynamic.staticPoint${n}`))}
+					dynamicLabel={t('dynamic.dynamicLabel')}
+					dynamicTitle={t('dynamic.dynamicTitle')}
+					dynamicPoints={[1, 2, 3].map((n) => t(`dynamic.dynamicPoint${n}`))}
+					lockInTitle={t('dynamic.lockInTitle')}
+					lockInDescription={t('dynamic.lockInDescription')}
+					lockInPills={[1, 2, 3].map((n) => t(`dynamic.lockInPill${n}`))}
+					lockInCtaLabel={t('dynamic.lockInCtaLabel')}
+				/>
+
 				<ProductUseCases
 					title={t('useCases.title')}
 					subtitle={t('useCases.subtitle')}
 					cases={useCases}
+					learnMoreLabel={t('useCases.learnMore')}
 				/>
 
 				<CrossProductCards

@@ -128,7 +128,7 @@
 	"homeStats": {
 		"stat1Value": "100K+",
 		"stat1Label": "QR codes created",
-		"stat2Value": "1,000+",
+		"stat2Value": "5,000+",
 		"stat2Label": "Active users",
 		"stat3Value": "10K+",
 		"stat3Label": "Scans & clicks daily",
@@ -1667,16 +1667,6 @@
 			"copiedBtn": "Copied!",
 			"createAnother": "Shorten another URL"
 		},
-		"stats": {
-			"stat1Value": "1,000+",
-			"stat1Label": "Active users",
-			"stat2Value": "10K+",
-			"stat2Label": "Daily clicks",
-			"stat3Value": "< 50ms",
-			"stat3Label": "Redirect speed",
-			"stat4Value": "24/7",
-			"stat4Label": "Availability"
-		},
 		"useCases": {
 			"title": "Built for Every Team",
 			"subtitle": "From solo creators to enterprise marketing departments — QRcodly's URL shortener scales with your needs.",
@@ -1691,7 +1681,8 @@
 			"case5Title": "Developers & APIs",
 			"case5Description": "Integrate URL shortening into your apps via our REST API. Full documentation and SDK support.",
 			"case6Title": "Agencies",
-			"case6Description": "Manage client links with custom domains. White-label short URLs with your clients' branding."
+			"case6Description": "Manage client links with custom domains. White-label short URLs with your clients' branding.",
+			"learnMore": "Learn more"
 		},
 		"features": {
 			"brandedLinks": {
@@ -1745,19 +1736,49 @@
 		},
 		"faq": {
 			"title": "Frequently Asked Questions",
-			"q1": "Is the URL shortener free?",
-			"a1": "Yes! QRcodly's URL shortener is free to use. You can create short URLs, track clicks, and manage your links at no cost. Pro plans unlock advanced features like custom domains.",
-			"q2": "Can I use my own domain for short URLs?",
-			"a2": "Absolutely. Connect your own domain to create branded short URLs like go.yourbrand.com/u/x7k9m. Custom domains are available on Pro plans with automatic SSL provisioning.",
-			"q3": "How does click tracking work?",
-			"a3": "Every time someone clicks your short URL, QRcodly records the click along with metadata like device type, browser, operating system, and geographic location — all in real time.",
-			"q4": "Can I edit a short URL after creating it?",
-			"a4": "Yes. You can update the destination URL, toggle the short URL on or off, and manage tags at any time from your dashboard without changing the short URL itself.",
-			"q5": "Do short URLs expire?",
-			"a5": "No. Short URLs created with QRcodly never expire. They remain active as long as your account exists, and you can disable them manually if needed.",
-			"q6": "What's the difference between short URLs and QR codes?",
-			"a6": "Short URLs are clickable links you share digitally (email, social media, ads). QR codes are scannable images for physical media (print, packaging, signage). Both track analytics and can use custom domains.",
+			"q1": "How do custom domains work with short links?",
+			"a1": "Connect your own domain (e.g., go.yourbrand.com) in the dashboard settings. Configure the DNS records shown, and SSL is provisioned automatically. All new links use your domain.",
+			"q2": "Can I set up link expiration or access rules?",
+			"a2": "Currently, links stay active indefinitely. You can manually disable any link at any time from the dashboard. Automatic expiration dates are on the roadmap.",
+			"q3": "What happens when I disable a short link?",
+			"a3": "Visitors see a 'link not available' page. The link isn't deleted — you can re-enable it anytime and all previous analytics data is preserved.",
+			"q4": "How are redirects handled technically?",
+			"a4": "Short links use HTTP 301 (permanent) redirects. The redirect happens server-side in under 50 ms, so users experience virtually no delay.",
+			"q5": "Can I organize links with tags?",
+			"a5": "Yes. Add one or more tags to any link. Then filter your dashboard by tag to view links grouped by campaign, client, or any category you define.",
+			"q6": "How does the API handle bulk link creation?",
+			"a6": "Send POST requests to the /api/v1/short-url endpoint for each link. For larger bulk workflows, script multiple requests or use the CSV import feature in the dashboard.",
 			"viewAll": "Have more questions? View all FAQs"
+		},
+		"facts": {
+			"fact1Value": "∞",
+			"fact1Label": "Short links and clicks",
+			"fact2Value": "0",
+			"fact2Label": "Credit cards required",
+			"fact3Value": "REST",
+			"fact3Label": "API for automation",
+			"fact4Value": "MIT",
+			"fact4Label": "Open source licence"
+		},
+		"dynamic": {
+			"title": "A link you cannot change is a decision you cannot undo",
+			"subtitle": "Once a URL is published, printed or sent, the only thing still under your control is where it points.",
+			"staticLabel": "Raw destination URL",
+			"staticTitle": "The address goes out exactly as it is",
+			"staticPoint1": "A wrong link in a sent email or a published post stays wrong.",
+			"staticPoint2": "Restructure your site and every link you ever shared breaks at once.",
+			"staticPoint3": "Long URLs look untrustworthy and get truncated.",
+			"dynamicLabel": "Short link you control",
+			"dynamicTitle": "One address, a destination you can move",
+			"dynamicPoint1": "Repoint a link long after it was published.",
+			"dynamicPoint2": "Retire finished campaigns to a follow-up page instead of a 404.",
+			"dynamicPoint3": "See clicks per link, channel and campaign.",
+			"lockInTitle": "The part most link shorteners leave out",
+			"lockInDescription": "A short link only keeps working as long as somebody runs the redirect behind it — which makes every link you have ever published leverage. That is why some shorteners cap free plans at a handful of links a month, limit clicks, or put an interstitial ad in front of your landing page. QRcodly is built so that leverage never exists.",
+			"lockInPill1": "Unlimited clicks — no volume cap",
+			"lockInPill2": "No trial that switches your links off",
+			"lockInPill3": "MIT-licensed — audit it or self-host it",
+			"lockInCtaLabel": "See what the free plan includes"
 		}
 	},
 	"productsQrCodes": {
@@ -1769,16 +1790,6 @@
 			"subtitle": "Design stunning QR codes with custom colors, logos, and styles. Update content anytime, track every scan, and manage everything from one dashboard.",
 			"ctaLabel": "Create Your QR Code Free",
 			"viewPricing": "Compare plans"
-		},
-		"stats": {
-			"stat1Value": "100K+",
-			"stat1Label": "QR codes created",
-			"stat2Value": "9+",
-			"stat2Label": "Content types",
-			"stat3Value": "10K+",
-			"stat3Label": "Scans per day",
-			"stat4Value": "1,000+",
-			"stat4Label": "Active users"
 		},
 		"useCases": {
 			"title": "QR Codes for Every Industry",
@@ -1794,7 +1805,8 @@
 			"case5Title": "Education",
 			"case5Description": "Link students to resources, assignments, and classroom materials. Update destinations anytime.",
 			"case6Title": "Marketing & Advertising",
-			"case6Description": "Bridge print and digital campaigns. Track scan rates on billboards, flyers, and direct mail."
+			"case6Description": "Bridge print and digital campaigns. Track scan rates on billboards, flyers, and direct mail.",
+			"learnMore": "Learn more"
 		},
 		"features": {
 			"customization": {
@@ -1854,24 +1866,57 @@
 		},
 		"faq": {
 			"title": "Frequently Asked Questions",
-			"q1": "Is the QR code generator free?",
-			"a1": "Yes! QRcodly lets you create unlimited static and dynamic QR codes for free. No hidden fees, no watermarks, and no signup required for basic QR codes.",
-			"q2": "What are dynamic QR codes?",
-			"a2": "Dynamic QR codes let you change the destination URL after the code is printed. They also track every scan with detailed analytics — no need to reprint when content changes.",
-			"q3": "Can I add my logo to a QR code?",
-			"a3": "Absolutely. Upload any image as a center logo for your QR code. You can also customize colors, corner styles, and save designs as reusable templates.",
-			"q4": "What content types are supported?",
-			"a4": "QRcodly supports 9+ content types: URL, Text, WiFi, vCard (contact cards), Email, Location, Calendar Events, EPC (payment), and Social Media profiles.",
-			"q5": "Can I track QR code scans?",
-			"a5": "Yes. Every dynamic QR code tracks scans in real time, showing total scans, unique visitors, device types, browsers, operating systems, and geographic locations.",
-			"q6": "Do QR codes expire?",
-			"a6": "No. QR codes created with QRcodly never expire. Dynamic QR codes remain fully functional and trackable as long as your account exists.",
+			"q1": "What's the difference between static and dynamic QR codes?",
+			"a1": "Static codes encode data directly — they can't be edited or tracked after creation. Dynamic codes use a short redirect URL, so you can change the destination and track scans anytime.",
+			"q2": "Can I create QR codes in bulk?",
+			"a2": "Yes. Use CSV import to create hundreds of QR codes at once. Apply a saved design template for consistent branding across all codes in the batch.",
+			"q3": "How do I save a QR code design as a template?",
+			"a3": "Customize your QR code (colors, logo, style), then save it as a template. Next time, select your template and only change the content — your design is applied automatically.",
+			"q4": "What error correction level should I use?",
+			"a4": "Medium (M) works for most use cases. If you're adding a logo overlay, use High (H) so the code stays scannable even with part of it covered by the logo.",
+			"q5": "Can I use QR codes offline without internet?",
+			"a5": "WiFi, vCard, and Text QR codes work fully offline — the data is encoded in the code itself. URL-based codes require internet to open the linked page after scanning.",
+			"q6": "How do I integrate QR code generation into my own app?",
+			"a6": "Use the QRcodly REST API. Authenticate with an API key and send a POST request to create, customize, and manage QR codes programmatically.",
 			"viewAll": "Have more questions? View all FAQs"
 		},
 		"cta": {
 			"title": "Ready to create your first QR code?",
 			"subtitle": "Design custom QR codes with full analytics tracking. Free forever, no credit card required.",
 			"ctaLabel": "Create QR Code Now"
+		},
+		"facts": {
+			"fact1Value": "8",
+			"fact1Label": "QR code content types",
+			"fact2Value": "∞",
+			"fact2Label": "Codes and scans included",
+			"fact3Value": "0",
+			"fact3Label": "Credit cards required",
+			"fact4Value": "MIT",
+			"fact4Label": "Open source licence"
+		},
+		"dynamic": {
+			"title": "Static or dynamic? Decide before you print.",
+			"subtitle": "It is the one QR code decision you cannot reverse after the print run.",
+			"staticLabel": "Static QR code",
+			"staticTitle": "The destination is encoded in the printed pattern",
+			"staticPoint1": "Change where it should lead and everything gets reprinted.",
+			"staticPoint2": "A moved page or a typo lives on in every copy already out there.",
+			"staticPoint3": "No scan data — you never learn whether it worked.",
+			"dynamicLabel": "Dynamic QR code",
+			"dynamicTitle": "The printed code stays, the destination moves",
+			"dynamicPoint1": "Repoint it whenever you like — the printed pattern never changes.",
+			"dynamicPoint2": "Correct mistakes after the print run instead of reordering.",
+			"dynamicPoint3": "See how often, where and when the code gets scanned.",
+			"lockInTitle": "The part most QR providers leave out",
+			"lockInDescription": "A dynamic code only keeps working as long as somebody runs the redirect behind it — and a printed run cannot be recalled. That dependency is why some providers switch codes off once a trial ends, cap how often a code may be scanned, or show ads before your page loads. QRcodly is built so that leverage never exists.",
+			"lockInPill1": "Unlimited scans — no volume cap",
+			"lockInPill2": "No trial that switches your codes off",
+			"lockInPill3": "MIT-licensed — audit it or self-host it",
+			"lockInCtaLabel": "See what the free plan includes"
+		},
+		"testimonial": {
+			"eyebrow": "What our customers say"
 		}
 	},
 	"productsAnalytics": {
@@ -2149,7 +2194,9 @@
 			"a3": "Create separate QR codes for each location, each linking to that branch's menu page. Use tags in your dashboard to organize codes by restaurant location.",
 			"q4": "Can guests leave a review after scanning?",
 			"a4": "Yes — link your QR code to your Google Business review page or a feedback form. With a dynamic code, you can swap between your menu and review page seasonally.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "What happens to my printed codes if I stop paying?",
+			"a5": "Nothing. QRcodly does not deactivate QR codes when a subscription ends — unlimited codes and scans are part of the free plan, so a code you printed keeps resolving. Only Pro extras such as a custom domain and analytics integrations switch off. That is deliberate: printed material should never be a hostage."
 		},
 		"cta": {
 			"title": "Ready to Modernize Your Restaurant?",
@@ -2188,7 +2235,7 @@
 			},
 			"tip2": {
 				"title": "Place at Eye Level",
-				"description": "Use table stands or wall mounts instead of flat surfaces. Codes at eye level get scanned 2× more often."
+				"description": "Table stands and wall mounts beat flat surfaces — a code lying flat on a table catches glare and forces guests to lean over it."
 			},
 			"tip3": {
 				"title": "Test Before You Print",
@@ -2199,15 +2246,26 @@
 				"description": "Push menu changes on Friday afternoon to catch weekend traffic — your busiest scanning window."
 			}
 		},
-		"stats": {
-			"stat1Value": "73%",
-			"stat1Label": "of diners prefer digital menus",
-			"stat2Value": "3×",
-			"stat2Label": "faster table ordering",
-			"stat3Value": "45%",
-			"stat3Label": "less printing costs",
-			"stat4Value": "< 2 sec",
-			"stat4Label": "average scan time"
+		"visuals": {
+			"v1": {
+				"label": "Guest view",
+				"badge": "Dynamic",
+				"aria": "Phone showing a restaurant menu opened by scanning a QR code",
+				"screenTitle": "Lunch menu",
+				"row1Name": "Soup of the day",
+				"row1Meta": "4.90",
+				"row2Name": "Pasta al forno",
+				"row2Meta": "11.50",
+				"row3Name": "Tiramisu",
+				"row3Meta": "5.20"
+			},
+			"v2": {
+				"label": "Table card",
+				"aria": "Table tent card with a QR code for guest WiFi access",
+				"mediumLabel": "Table tent",
+				"headline": "Scan for guest WiFi",
+				"caption": "Connected without typing a password"
+			}
 		}
 	},
 	"qrCodesRetail": {
@@ -2260,7 +2318,9 @@
 			"a3": "Yes. Use dynamic QR codes and update the destination URL when the promotion ends. Redirect to a new offer or your standard product page — no reprinting needed.",
 			"q4": "How do I connect QR codes to my loyalty program?",
 			"a4": "Link QR codes to your loyalty sign-up page or app download link. Customers scan, sign up, and start earning rewards — no manual entry needed.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "What happens to codes already printed on packaging if I stop paying?",
+			"a5": "They keep working. Unlimited codes and scans are part of the free plan and QRcodly never deactivates a code when a subscription ends — only Pro extras such as a custom domain switch off. Packaging in circulation cannot be recalled, so treating it as leverage would be indefensible."
 		},
 		"cta": {
 			"title": "Boost Your Retail Experience",
@@ -2298,8 +2358,8 @@
 				"description": "Use a dedicated QR code for each product to track engagement at the item level — not just the display level."
 			},
 			"tip2": {
-				"title": "Add a Call-to-Action",
-				"description": "Print a short prompt near the code like 'Scan for 10% off' or 'Scan for size guide.' Codes with CTAs get 3× more scans."
+				"title": "Say What the Scan Delivers",
+				"description": "A bare code gives shoppers no reason to lift their phone. A short prompt next to it — \"Scan for the size guide\" — tells them what they get."
 			},
 			"tip3": {
 				"title": "Place at Shelf Edge",
@@ -2310,15 +2370,28 @@
 				"description": "Use dynamic codes and swap destinations regularly. Fresh offers keep customers scanning."
 			}
 		},
-		"stats": {
-			"stat1Value": "58%",
-			"stat1Label": "of shoppers scan in-store codes",
-			"stat2Value": "2.4×",
-			"stat2Label": "higher engagement vs. print-only",
-			"stat3Value": "40%",
-			"stat3Label": "coupon redemption rate",
-			"stat4Value": "12 sec",
-			"stat4Label": "average interaction time"
+		"visuals": {
+			"v1": {
+				"label": "Shelf scan",
+				"badge": "Dynamic",
+				"aria": "Phone showing product details opened by scanning a shelf label",
+				"screenTitle": "Product details",
+				"row1Name": "Material",
+				"row1Meta": "Organic cotton",
+				"row2Name": "Care",
+				"row2Meta": "30 °C wash",
+				"row3Name": "Availability",
+				"row3Meta": "In stock"
+			},
+			"v2": {
+				"label": "Weekly promotion",
+				"badge": "Same label",
+				"aria": "A printed shelf label being repointed from a spring to a summer campaign",
+				"printedLabel": "Shelf label, printed once",
+				"oldDestination": "/promo/spring-sale",
+				"newDestination": "/promo/summer-sale",
+				"footnote": "New campaign, same label on the shelf — nothing gets reprinted."
+			}
 		}
 	},
 	"qrCodesEvents": {
@@ -2371,7 +2444,9 @@
 			"a3": "A vCard QR code contains contact details (name, email, phone, company). When scanned, the phone offers to save the contact directly — replacing traditional business cards.",
 			"q4": "Can I measure which sessions were most popular?",
 			"a4": "Create separate QR codes for each session or talk. Compare scan counts in your dashboard to see which sessions attracted the most attendees.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "Can I reuse the same code for next year’s event?",
+			"a5": "Yes. A dynamic code is just a fixed address that you repoint, so last year’s signage can be aimed at this year’s programme. And if you stop paying in between, the code stays live — unlimited codes and scans are part of the free plan, and QRcodly never deactivates codes when a subscription ends."
 		},
 		"cta": {
 			"title": "Make Your Next Event Seamless",
@@ -2421,15 +2496,23 @@
 				"description": "Email a digital badge with a QR code before the event. Faster entry and less printing."
 			}
 		},
-		"stats": {
-			"stat1Value": "67%",
-			"stat1Label": "faster check-in",
-			"stat2Value": "4×",
-			"stat2Label": "more networking contacts",
-			"stat3Value": "85%",
-			"stat3Label": "attendee adoption rate",
-			"stat4Value": "30 sec",
-			"stat4Label": "saved per entry"
+		"visuals": {
+			"v1": {
+				"label": "Attendee badge",
+				"aria": "Event badge with a QR code used for check-in",
+				"mediumLabel": "Badge",
+				"headline": "Scan to check in",
+				"caption": "Checked in at the door"
+			},
+			"v2": {
+				"label": "Live schedule",
+				"badge": "Same badge",
+				"aria": "A printed badge being repointed from day one to day two of the schedule",
+				"printedLabel": "Printed on every badge",
+				"oldDestination": "/schedule/day-1",
+				"newDestination": "/schedule/day-2",
+				"footnote": "Room moved at short notice? Update once — every badge follows."
+			}
 		}
 	},
 	"qrCodesRealEstate": {
@@ -2482,7 +2565,9 @@
 			"a3": "Create one QR code per property. Use tags in your dashboard (e.g., 'downtown', 'west side') to organize and quickly filter your active listings.",
 			"q4": "What size works best for yard signs?",
 			"a4": "At least 5×5 cm (2×2 in) on yard signs. Ensure high contrast between the code and sign background, and test by scanning from 2 meters away before printing.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "Can I reuse a sign after the property is sold?",
+			"a5": "That is exactly what a dynamic code is for — repoint it to your next listing and the printed sign keeps earning. The code stays live even without a subscription, since unlimited codes and scans are part of the free plan and QRcodly does not deactivate codes when a plan ends."
 		},
 		"cta": {
 			"title": "Give Every Listing a Digital Edge",
@@ -2532,15 +2617,26 @@
 				"description": "When a property closes, update the dynamic code to link to a 'Sold' page or a similar listing nearby."
 			}
 		},
-		"stats": {
-			"stat1Value": "62%",
-			"stat1Label": "of buyers scan yard sign codes",
-			"stat2Value": "3×",
-			"stat2Label": "more listing views",
-			"stat3Value": "35%",
-			"stat3Label": "more showing requests",
-			"stat4Value": "< 2 sec",
-			"stat4Label": "to full listing details"
+		"visuals": {
+			"v1": {
+				"label": "Yard sign",
+				"aria": "Property yard sign with a QR code leading to the full listing",
+				"mediumLabel": "Yard sign",
+				"headline": "Scan for the full listing",
+				"caption": "Viewing request received"
+			},
+			"v2": {
+				"label": "Buyer view",
+				"badge": "Dynamic",
+				"aria": "Phone showing property details opened by scanning a yard sign",
+				"screenTitle": "Maple Street 14",
+				"row1Name": "Living space",
+				"row1Meta": "128 m²",
+				"row2Name": "Rooms",
+				"row2Meta": "4",
+				"row3Name": "Available from",
+				"row3Meta": "1 Sep"
+			}
 		}
 	},
 	"qrCodesEducation": {
@@ -2593,7 +2689,9 @@
 			"a3": "Create multiple QR codes, each linking to a clue or task page. Place them around the school. Students scan each code to progress through the activity.",
 			"q4": "Are QR codes accessible for students with disabilities?",
 			"a4": "QR codes are visual, so pair them with a short URL printed below for students who use screen readers. The linked page should follow accessibility best practices.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "Do I need a paid plan to use QR codes in class?",
+			"a5": "No. Unlimited QR codes, unlimited scans and the analytics behind them are part of the free plan, with no credit card required — which is the point for a school budget. Pro adds a custom domain, bulk imports and API access, but nothing a classroom needs sits behind it."
 		},
 		"cta": {
 			"title": "Bring QR Codes Into Your Classroom",
@@ -2643,15 +2741,28 @@
 				"description": "With dynamic codes, you can update the linked resource without reprinting. Same worksheet, fresh content every term."
 			}
 		},
-		"stats": {
-			"stat1Value": "89%",
-			"stat1Label": "of students own smartphones",
-			"stat2Value": "2×",
-			"stat2Label": "faster resource access",
-			"stat3Value": "70%",
-			"stat3Label": "prefer scanning over typing URLs",
-			"stat4Value": "5 min",
-			"stat4Label": "saved per lesson"
+		"visuals": {
+			"v1": {
+				"label": "Student view",
+				"badge": "Dynamic",
+				"aria": "Phone showing course materials opened by scanning a worksheet",
+				"screenTitle": "Week 6 materials",
+				"row1Name": "Lecture slides",
+				"row1Meta": "PDF",
+				"row2Name": "Reading list",
+				"row2Meta": "4 texts",
+				"row3Name": "Assignment",
+				"row3Meta": "Due Fri"
+			},
+			"v2": {
+				"label": "Course handout",
+				"badge": "Same sheet",
+				"aria": "A printed worksheet being repointed from last year’s material to this year’s",
+				"printedLabel": "Printed worksheet",
+				"oldDestination": "/course/2025/week-6",
+				"newDestination": "/course/2026/week-6",
+				"footnote": "New semester, same handout — repoint instead of reprint."
+			}
 		}
 	},
 	"qrCodesMarketing": {
@@ -2704,7 +2815,9 @@
 			"a3": "2×2 cm for close-range materials (flyers, business cards). For billboards or posters viewed from a distance, scale up — a 15 cm code works well at 3 meters.",
 			"q4": "How do I track offline-to-online conversion?",
 			"a4": "Each dynamic QR code tracks scans automatically. Pair this with UTM parameters on the destination URL, and you get full funnel visibility from physical scan to digital conversion.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "Can I compare print placements against each other?",
+			"a5": "Give each placement its own dynamic code and the dashboard shows them side by side — poster, flyer and ad each get their own scan count, so the placement that pays for itself becomes visible. All of it is included on the free plan."
 		},
 		"cta": {
 			"title": "Make Every Print Piece Measurable",
@@ -2754,15 +2867,25 @@
 				"description": "Place a clear call-to-action near the code: 'Scan to claim your offer' or 'Scan for exclusive access.' Codes without CTAs are often ignored."
 			}
 		},
-		"stats": {
-			"stat1Value": "76%",
-			"stat1Label": "of consumers have scanned a QR code",
-			"stat2Value": "2×",
-			"stat2Label": "higher recall vs. URL-only ads",
-			"stat3Value": "34%",
-			"stat3Label": "print-to-digital conversion",
-			"stat4Value": "5×",
-			"stat4Label": "ROI on print campaigns"
+		"visuals": {
+			"v1": {
+				"label": "Print campaign",
+				"aria": "Campaign poster with a QR code linking to the campaign landing page",
+				"mediumLabel": "Poster",
+				"headline": "Scan to enter",
+				"caption": "Scan registered"
+			},
+			"v2": {
+				"label": "Campaign performance",
+				"badge": "Live",
+				"aria": "Analytics panel comparing scans across poster, flyer and magazine placements",
+				"metricValue": "1,284",
+				"metricLabel": "Scans this month",
+				"trend": "Live",
+				"b1Name": "Poster — station",
+				"b2Name": "Flyer — event",
+				"b3Name": "Magazine ad"
+			}
 		}
 	},
 	"urlShortenerMarketingTeams": {
@@ -2815,7 +2938,9 @@
 			"a3": "Go to Settings → Custom Domains, add your domain, and configure the DNS records shown. SSL is provisioned automatically. All new links will use your domain.",
 			"q4": "Can I change a link's destination after sharing it?",
 			"a4": "Yes. Edit the destination URL anytime from your dashboard. The short link stays the same — recipients who already have it will be redirected to the updated page.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "What happens to links I have already sent if I stop paying?",
+			"a5": "They keep resolving. Unlimited short links and clicks are part of the free plan and QRcodly does not switch links off when a subscription ends — only Pro extras such as your custom domain stop being served. Links already in inboxes are not something a provider should be able to hold over you."
 		},
 		"cta": {
 			"title": "Power Up Your Marketing Links",
@@ -2865,15 +2990,27 @@
 				"description": "Check click data every week to reallocate budget from underperforming channels to your best-performing ones."
 			}
 		},
-		"stats": {
-			"stat1Value": "34%",
-			"stat1Label": "higher CTR with branded links",
-			"stat2Value": "3×",
-			"stat2Label": "faster campaign setup",
-			"stat3Value": "87%",
-			"stat3Label": "of marketers use link tracking",
-			"stat4Value": "< 50 ms",
-			"stat4Label": "redirect speed"
+		"visuals": {
+			"v1": {
+				"label": "Campaign link",
+				"badge": "Pro",
+				"aria": "Comparison of a generic short link and one on your own domain",
+				"genericLink": "bit.ly/3xKf9Qa",
+				"brandedLink": "go.yourbrand.com/spring",
+				"genericNote": "Recipients cannot tell where it leads",
+				"brandedNote": "Your domain, your reputation"
+			},
+			"v2": {
+				"label": "Campaign clicks",
+				"badge": "Live",
+				"aria": "Analytics panel showing clicks split across newsletter, social and print",
+				"metricValue": "8,412",
+				"metricLabel": "Clicks this campaign",
+				"trend": "Live",
+				"b1Name": "Newsletter",
+				"b2Name": "LinkedIn",
+				"b3Name": "Print ad"
+			}
 		}
 	},
 	"urlShortenerSocialMedia": {
@@ -2933,7 +3070,9 @@
 			"a3": "No. QRcodly links use clean redirects and are not on any blocklists. Using your own custom domain further eliminates any spam concerns.",
 			"q4": "Can I change where a link goes after posting?",
 			"a4": "Yes. Update the destination URL anytime without editing your post. Followers clicking the same link will be redirected to the new content.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "Can I change a link after the post is published?",
+			"a5": "Yes — that is the reason to use one. The short link in the caption stays the same while you repoint it in the dashboard, so a broken or outdated destination is fixed without deleting the post and losing its engagement."
 		},
 		"cta": {
 			"title": "Level Up Your Social Links",
@@ -2958,6 +3097,56 @@
 			"step4": {
 				"title": "Track Per-Post Clicks",
 				"description": "Check your dashboard to see which posts drive the most clicks. Compare performance across platforms."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Post link",
+				"badge": "Pro",
+				"aria": "Comparison of a long tracking URL and a short branded link",
+				"genericLink": "example.com/products/summer-collection?utm_source=ig",
+				"brandedLink": "yb.link/summer",
+				"genericNote": "Truncated mid-caption",
+				"brandedNote": "Fits any caption and stays readable"
+			},
+			"v2": {
+				"label": "Engagement",
+				"badge": "Live",
+				"aria": "Analytics panel showing clicks by social platform",
+				"metricValue": "3,940",
+				"metricLabel": "Clicks from social",
+				"trend": "Live",
+				"b1Name": "Instagram",
+				"b2Name": "TikTok",
+				"b3Name": "LinkedIn"
+			},
+			"v3": {
+				"label": "Link in bio",
+				"badge": "Same link",
+				"aria": "A bio link being repointed from a spring drop to a summer drop",
+				"printedLabel": "Same link in bio",
+				"oldDestination": "/drop/spring",
+				"newDestination": "/drop/summer",
+				"footnote": "Captions cannot be edited. What they point to can."
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Social Media Links",
+			"tip1": {
+				"title": "Keep One Link in Bio",
+				"description": "Point a single short link at whatever is current instead of editing your profile every time. One address, updated from the dashboard."
+			},
+			"tip2": {
+				"title": "Use a Readable Slug",
+				"description": "\"yb.link/summer\" earns more clicks than a random string because people can see where it goes before they tap."
+			},
+			"tip3": {
+				"title": "Give Each Platform Its Own Link",
+				"description": "The same destination behind separate links per platform is the only reliable way to tell which channel actually delivers."
+			},
+			"tip4": {
+				"title": "Check the Link Before You Schedule",
+				"description": "Scheduled posts publish unattended. Open the short link once before it queues — a typo goes out to the whole audience at once."
 			}
 		}
 	},
@@ -3018,7 +3207,9 @@
 			"a3": "Yes. All links created under your account are visible in one dashboard. Use tags (e.g., rep name, deal stage) to filter and compare performance across the team.",
 			"q4": "What happens if I need to update a shared proposal?",
 			"a4": "Change the destination URL in your dashboard. The short link already sent to the prospect stays the same — they'll see the updated proposal when they click.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "Can I see whether a prospect opened my proposal?",
+			"a5": "The dashboard shows clicks per link, so one link per deal turns engagement into a concrete signal — including when interest picks up again weeks later. It measures link opens, not identities, so treat it as a timing signal rather than a tracking pixel."
 		},
 		"cta": {
 			"title": "Track Every Click in Your Outreach",
@@ -3043,6 +3234,60 @@
 			"step4": {
 				"title": "Monitor Prospect Engagement",
 				"description": "Check your dashboard for click timestamps and device data. See exactly when a prospect opens your link."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Outreach links",
+				"aria": "List of per-deal short links with click counts",
+				"r1Link": "yb.link/acme-deck",
+				"r1Tag": "Acme Corp · Proposal",
+				"r1Clicks": "14",
+				"r2Link": "yb.link/globex-demo",
+				"r2Tag": "Globex · Demo recording",
+				"r2Clicks": "7",
+				"r3Link": "yb.link/initech-terms",
+				"r3Tag": "Initech · Contract",
+				"r3Clicks": "3"
+			},
+			"v2": {
+				"label": "Sender credibility",
+				"badge": "Pro",
+				"aria": "Comparison of an anonymous short link and one on your company domain",
+				"genericLink": "tinyurl.com/y7k2n9q",
+				"brandedLink": "go.yourcompany.com/proposal",
+				"genericNote": "Reads like spam in an inbox",
+				"brandedNote": "Your company domain, recognisable at a glance"
+			},
+			"v3": {
+				"label": "Outreach performance",
+				"badge": "Live",
+				"aria": "Analytics panel comparing engagement across outreach stages",
+				"metricValue": "1,204",
+				"metricLabel": "Link opens this quarter",
+				"trend": "Live",
+				"b1Name": "First touch",
+				"b2Name": "Follow-up",
+				"b3Name": "Proposal sent"
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Sales Outreach",
+			"tip1": {
+				"title": "One Link per Deal",
+				"description": "A separate link for each prospect turns a click into a named signal instead of an anonymous number."
+			},
+			"tip2": {
+				"title": "Send From Your Own Domain",
+				"description": "A link on your company domain survives spam filters and inbox scepticism far better than an anonymous shortener."
+			},
+			"tip3": {
+				"title": "Keep the Slug Human",
+				"description": "\"go.yourcompany.com/acme-proposal\" tells the recipient what they are opening. A random string asks them to trust you blindly."
+			},
+			"tip4": {
+				"title": "Update Instead of Resending",
+				"description": "Spotted a mistake in a sent proposal? Repoint the link to the corrected file rather than sending an awkward follow-up."
 			}
 		}
 	},
@@ -3096,7 +3341,9 @@
 			"a3": "Yes. The URL shortener works with any URL. Paste your product link from any platform and create a branded short link instantly.",
 			"q4": "Do short links affect my store's SEO?",
 			"a4": "No. Short links use 301 redirects, which pass full SEO value to the destination page. Your search rankings are not affected.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "What happens to my links if I move to a different shop system?",
+			"a5": "Repoint them and everything you published stays valid. Because the short link is the address customers actually have, a replatform that rewrites every product URL becomes a dashboard change instead of a hunt through old posts, emails and ads."
 		},
 		"cta": {
 			"title": "Simplify Your E-Commerce Links",
@@ -3146,15 +3393,31 @@
 				"description": "When a promotion ends, redirect the short link to your homepage or a related product — never leave it pointing to a 404."
 			}
 		},
-		"stats": {
-			"stat1Value": "28%",
-			"stat1Label": "higher CTR vs. raw URLs",
-			"stat2Value": "2×",
-			"stat2Label": "more social shares",
-			"stat3Value": "45%",
-			"stat3Label": "of clicks come from mobile",
-			"stat4Value": "99.9%",
-			"stat4Label": "uptime guarantee"
+		"visuals": {
+			"v1": {
+				"label": "Product links",
+				"aria": "List of product short links grouped by channel with click counts",
+				"r1Link": "yb.link/summer-dress",
+				"r1Tag": "Product · Instagram",
+				"r1Clicks": "1,204",
+				"r2Link": "yb.link/sale-40",
+				"r2Tag": "Campaign · Newsletter",
+				"r2Clicks": "892",
+				"r3Link": "yb.link/gift-guide",
+				"r3Tag": "Seasonal · Pinterest",
+				"r3Clicks": "431"
+			},
+			"v2": {
+				"label": "Channel performance",
+				"badge": "Live",
+				"aria": "Analytics panel comparing clicks across sales channels",
+				"metricValue": "12,480",
+				"metricLabel": "Clicks across channels",
+				"trend": "Live",
+				"b1Name": "Instagram",
+				"b2Name": "Newsletter",
+				"b3Name": "Pinterest"
+			}
 		}
 	},
 	"urlShortenerDevelopers": {
@@ -3214,7 +3477,9 @@
 			"a3": "Yes. Rate limits depend on your plan. Free accounts have stricter limits; Pro accounts get higher throughput. Check the response headers for your current usage.",
 			"q4": "Can I retrieve click analytics via the API?",
 			"a4": "Yes. The analytics endpoints return click counts, timestamps, device data, and geographic information for each short link programmatically.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "Can I self-host QRcodly?",
+			"a5": "Yes. The whole stack is public under the MIT licence, so if a third-party redirect is unacceptable for compliance reasons, or you simply want no dependency at all, you can run it yourself. That escape hatch is the reason the hosted service does not need scan caps or trial deactivation to keep you."
 		},
 		"cta": {
 			"title": "Start Building with Our API",
@@ -3240,23 +3505,77 @@
 				"title": "Retrieve Click Analytics",
 				"description": "Use the analytics endpoints to fetch click counts, timestamps, device data, and geographic info per link."
 			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Create a short link",
+				"badge": "REST",
+				"aria": "Code example creating a short link through the REST API",
+				"method": "POST",
+				"endpoint": "/api/v1/short-url",
+				"line1": "curl -X POST https://api.qrcodly.de/api/v1/short-url \\",
+				"line2": "  -H \"Authorization: Bearer $API_KEY\" \\",
+				"line3": "  -H \"Content-Type: application/json\" \\",
+				"line4": "  -d '{\"destinationUrl\":\"https://example.com\"}'",
+				"responseLabel": "Response",
+				"responseValue": "201 Created"
+			},
+			"v2": {
+				"label": "Authentication",
+				"badge": "API key",
+				"aria": "Code example authenticating an API request with a bearer token",
+				"method": "GET",
+				"endpoint": "/api/v1/short-url",
+				"line1": "curl https://api.qrcodly.de/api/v1/short-url \\",
+				"line2": "  -H \"Authorization: Bearer $API_KEY\"",
+				"responseLabel": "Status",
+				"responseValue": "200 OK"
+			},
+			"v3": {
+				"label": "Custom domain",
+				"badge": "Pro",
+				"aria": "Comparison of the shared redirect domain and your own domain",
+				"genericLink": "qrcodly.de/u/a1B2c3",
+				"brandedLink": "go.yourapp.dev/a1B2c3",
+				"genericNote": "Shared redirect domain",
+				"brandedNote": "Your own domain via CNAME"
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Developers",
+			"tip1": {
+				"title": "Treat Links as Configuration",
+				"description": "Keep the short link stable and let the destination be the thing that changes. That is the whole point of an indirection layer."
+			},
+			"tip2": {
+				"title": "Generate Links in CI",
+				"description": "The REST API means release links can be created by your pipeline instead of by hand before every launch."
+			},
+			"tip3": {
+				"title": "Scope Your API Keys",
+				"description": "Issue a separate key per integration. Rotating one then never means auditing every script you have ever written."
+			},
+			"tip4": {
+				"title": "Self-Host if You Must",
+				"description": "The stack is MIT-licensed and public. If your compliance rules will not allow a third-party redirect, run your own."
+			}
 		}
 	},
 	"urlShortenerAgencies": {
 		"metaTitle": "URL Shortener for Agencies – Client Domains, Branded Links & Analytics | QRcodly",
-		"metaDescription": "Manage short links for multiple clients with custom domains, branded URLs, and per-link analytics. Built for agencies.",
+		"metaDescription": "Manage short links for every client from one place: your agency domain, per-client tags, and per-link analytics. Built for agencies.",
 		"hero": {
 			"title": "Short Links Built for Agencies",
-			"subtitle": "Manage branded links across clients. Use custom domains, track performance, and deliver results.",
+			"subtitle": "Put your agency domain on every client link, keep campaigns organised with tags, and report on performance from one dashboard.",
 			"ctaLabel": "Shorten Your First Link"
 		},
 		"features": {
 			"feature1": {
-				"title": "Custom Domains for Every Client",
-				"description": "Connect multiple custom domains — one for each client. Every short link carries the client's branding.",
-				"bullet1": "Connect custom domains per client",
-				"bullet2": "Branded short URLs for professional delivery",
-				"bullet3": "Easy DNS setup with guided instructions"
+				"title": "Your Agency Domain on Every Client Link",
+				"description": "Pro includes one custom domain. Put your agency brand on it and give each client their own readable slug — every deliverable ships with a link that looks like you built it.",
+				"bullet1": "One custom domain per Pro plan, set up via CNAME",
+				"bullet2": "Readable per-client slugs instead of random characters",
+				"bullet3": "Guided DNS setup with verification"
 			},
 			"feature2": {
 				"title": "Per-Link Analytics",
@@ -3299,7 +3618,9 @@
 			"a3": "Yes. Export link analytics or share screenshots from the dashboard. Each link shows click counts, geographic data, and device breakdowns.",
 			"q4": "Is there a limit on how many custom domains I can add?",
 			"a4": "Pro accounts support multiple custom domains. The exact limit depends on your plan tier — check the pricing page for details.",
-			"viewAll": "View all FAQs"
+			"viewAll": "View all FAQs",
+			"q5": "Can I connect a separate custom domain for each client?",
+			"a5": "Not on a single plan — Pro includes one custom domain per account. Most agencies put their own brand on that domain and separate clients through slugs and tags. If a client needs links on their own domain, the clean solution is a plan on their account, which also means the links stay theirs if they ever move on."
 		},
 		"cta": {
 			"title": "Scale Your Agency's Link Management",
@@ -3324,6 +3645,60 @@
 			"step4": {
 				"title": "Share Performance Reports",
 				"description": "Export click analytics per client. Review performance data together and use it to plan the next campaign."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Agency domain",
+				"badge": "Pro",
+				"aria": "Comparison of a generic short link and one on your agency domain",
+				"genericLink": "short.io/xY9k",
+				"brandedLink": "go.youragency.com/launch",
+				"genericNote": "Anonymous domain on client deliverables",
+				"brandedNote": "Your agency domain on every campaign"
+			},
+			"v2": {
+				"label": "Per-link analytics",
+				"badge": "Live",
+				"aria": "Analytics panel comparing click volume across client campaigns",
+				"metricValue": "24,910",
+				"metricLabel": "Clicks across clients",
+				"trend": "Live",
+				"b1Name": "Client A — launch",
+				"b2Name": "Client B — always-on",
+				"b3Name": "Client C — event"
+			},
+			"v3": {
+				"label": "Organised by client",
+				"aria": "List of client links grouped by tag with click counts",
+				"r1Link": "go.youragency.com/acme-launch",
+				"r1Tag": "Acme · Product launch",
+				"r1Clicks": "9,140",
+				"r2Link": "go.youragency.com/globex-webinar",
+				"r2Tag": "Globex · Webinar",
+				"r2Clicks": "3,802",
+				"r3Link": "go.youragency.com/initech-hiring",
+				"r3Tag": "Initech · Employer brand",
+				"r3Clicks": "1,477"
+			}
+		},
+		"tips": {
+			"title": "Best Practices for Agency Link Management",
+			"tip1": {
+				"title": "Tag Every Link by Client",
+				"description": "Tags are what turn a shared link pool into per-client reporting. Agree on a naming scheme before the first campaign, not after the fiftieth."
+			},
+			"tip2": {
+				"title": "Use Readable Campaign Slugs",
+				"description": "\"acme-launch\" beats \"x7k2\" in a status call, in a report and in a handover to whoever picks the account up next."
+			},
+			"tip3": {
+				"title": "Hand Over Cleanly",
+				"description": "When a client leaves, they should be able to take their destinations with them. Links you can repoint make that a conversation instead of a hostage negotiation."
+			},
+			"tip4": {
+				"title": "One Domain, Many Clients",
+				"description": "A Pro plan carries one custom domain. Put your agency brand on it and use slugs per client — or have each client run their own plan if the domain must be theirs."
 			}
 		}
 	},

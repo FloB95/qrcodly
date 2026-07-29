@@ -1,5 +1,6 @@
 import { env } from '@/env';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { QR_CODE_USE_CASES, URL_SHORTENER_USE_CASES } from '@/lib/use-case-pages';
 import type { MetadataRoute } from 'next';
 
 const PAGES = [
@@ -15,6 +16,8 @@ const PAGES = [
 	'privacy-policy',
 	'terms-of-service',
 	'dpa',
+	...QR_CODE_USE_CASES.map((uc) => `${uc.parentPath.slice(1)}/${uc.slug}`),
+	...URL_SHORTENER_USE_CASES.map((uc) => `${uc.parentPath.slice(1)}/${uc.slug}`),
 ];
 
 const NOT_TRANSLATED = ['docs'];

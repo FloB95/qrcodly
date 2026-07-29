@@ -4,6 +4,10 @@ import { ProductHeroSection } from '@/components/products/ProductHeroSection';
 import { ProductFeatureSection } from '@/components/products/ProductFeatureSection';
 
 import { ProductUseCases } from '@/components/products/ProductUseCases';
+import { ProductStatsBar } from '@/components/products/ProductStatsBar';
+import { DynamicVsStatic } from '@/components/products/DynamicVsStatic';
+import { ProductTestimonial } from '@/components/products/ProductTestimonial';
+import { INHOTEL_TESTIMONIAL } from '@/lib/testimonials';
 import { CrossProductCards } from '@/components/products/CrossProductCards';
 import { ProductFaqSection } from '@/components/products/ProductFaqSection';
 import { ProductCtaSection } from '@/components/products/ProductCtaSection';
@@ -146,10 +150,13 @@ export default async function Page({ params }: DefaultPageParams) {
 		<MegaphoneIcon key="6" className="h-5 w-5" />,
 	];
 
+	const useCaseSlugs = ['restaurants', 'retail', 'events', 'real-estate', 'education', 'marketing'];
+
 	const useCases = Array.from({ length: 6 }, (_, i) => ({
 		icon: useCaseIcons[i],
 		title: t(`useCases.case${i + 1}Title`),
 		description: t(`useCases.case${i + 1}Description`),
+		href: `/products/qr-codes/${useCaseSlugs[i]}`,
 	}));
 
 	const faqItems = Array.from({ length: 6 }, (_, i) => ({
@@ -170,6 +177,13 @@ export default async function Page({ params }: DefaultPageParams) {
 					secondaryCtaHref="/plans"
 				/>
 
+				<ProductStatsBar
+					stats={[1, 2, 3, 4].map((n) => ({
+						value: t(`facts.fact${n}Value`),
+						label: t(`facts.fact${n}Label`),
+					}))}
+				/>
+
 				{features.map((feature, i) => (
 					<ProductFeatureSection
 						key={feature.title}
@@ -182,10 +196,28 @@ export default async function Page({ params }: DefaultPageParams) {
 					/>
 				))}
 
+				<DynamicVsStatic
+					title={t('dynamic.title')}
+					subtitle={t('dynamic.subtitle')}
+					staticLabel={t('dynamic.staticLabel')}
+					staticTitle={t('dynamic.staticTitle')}
+					staticPoints={[1, 2, 3].map((n) => t(`dynamic.staticPoint${n}`))}
+					dynamicLabel={t('dynamic.dynamicLabel')}
+					dynamicTitle={t('dynamic.dynamicTitle')}
+					dynamicPoints={[1, 2, 3].map((n) => t(`dynamic.dynamicPoint${n}`))}
+					lockInTitle={t('dynamic.lockInTitle')}
+					lockInDescription={t('dynamic.lockInDescription')}
+					lockInPills={[1, 2, 3].map((n) => t(`dynamic.lockInPill${n}`))}
+					lockInCtaLabel={t('dynamic.lockInCtaLabel')}
+				/>
+
+				<ProductTestimonial eyebrow={t('testimonial.eyebrow')} testimonial={INHOTEL_TESTIMONIAL} />
+
 				<ProductUseCases
 					title={t('useCases.title')}
 					subtitle={t('useCases.subtitle')}
 					cases={useCases}
+					learnMoreLabel={t('useCases.learnMore')}
 				/>
 
 				<CrossProductCards

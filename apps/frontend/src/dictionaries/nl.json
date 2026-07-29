@@ -128,7 +128,7 @@
 	"homeStats": {
 		"stat1Value": "100K+",
 		"stat1Label": "QR-codes aangemaakt",
-		"stat2Value": "1.000+",
+		"stat2Value": "5.000+",
 		"stat2Label": "Actieve gebruikers",
 		"stat3Value": "10K+",
 		"stat3Label": "Scans en klikken per dag",
@@ -1667,16 +1667,6 @@
 			"copiedBtn": "Gekopieerd!",
 			"createAnother": "Nog een URL inkorten"
 		},
-		"stats": {
-			"stat1Value": "1.000+",
-			"stat1Label": "Actieve gebruikers",
-			"stat2Value": "10K+",
-			"stat2Label": "Dagelijkse klikken",
-			"stat3Value": "< 50ms",
-			"stat3Label": "Doorverwijssnelheid",
-			"stat4Value": "24/7",
-			"stat4Label": "Beschikbaarheid"
-		},
 		"useCases": {
 			"title": "Gebouwd voor Elk Team",
 			"subtitle": "Van solo-creators tot enterprise marketingafdelingen — de URL-verkorter van QRcodly schaalt mee met je behoeften.",
@@ -1691,7 +1681,8 @@
 			"case5Title": "Ontwikkelaars & APIs",
 			"case5Description": "Integreer URL-verkorting in je apps via onze REST API. Volledige documentatie en SDK-ondersteuning.",
 			"case6Title": "Bureaus",
-			"case6Description": "Beheer klantlinks met eigen domeinen. White-label korte URL's met de branding van je klanten."
+			"case6Description": "Beheer klantlinks met eigen domeinen. White-label korte URL's met de branding van je klanten.",
+			"learnMore": "Meer informatie"
 		},
 		"features": {
 			"brandedLinks": {
@@ -1745,19 +1736,49 @@
 		},
 		"faq": {
 			"title": "Veelgestelde Vragen",
-			"q1": "Is de URL-verkorter gratis?",
-			"a1": "Ja! De URL-verkorter van QRcodly is gratis te gebruiken. Je kunt korte URL's aanmaken, klikken volgen en je links beheren zonder kosten. Pro-abonnementen ontgrendelen geavanceerde functies zoals eigen domeinen.",
-			"q2": "Kan ik mijn eigen domein gebruiken voor korte URLs?",
-			"a2": "Absoluut. Verbind je eigen domein om merkgebonden korte URL's te maken zoals ga.jouwmerk.nl/u/x7k9m. Eigen domeinen zijn beschikbaar in Pro-abonnementen met automatische SSL-provisioning.",
-			"q3": "Hoe werkt het bijhouden van klikken?",
-			"a3": "Elke keer dat iemand op je korte URL klikt, registreert QRcodly de klik samen met metadata zoals apparaattype, browser, besturingssysteem en geografische locatie — allemaal in realtime.",
-			"q4": "Kan ik een korte URL bewerken na het aanmaken?",
-			"a4": "Ja. Je kunt de bestemmings-URL bijwerken, de link in- of uitschakelen en tags beheren op elk moment vanuit je dashboard zonder de korte URL zelf te wijzigen.",
-			"q5": "Verlopen korte URL's?",
-			"a5": "Nee. Korte URL's aangemaakt met QRcodly verlopen nooit. Ze blijven actief zolang je account bestaat, en je kunt ze handmatig uitschakelen indien nodig.",
-			"q6": "Wat is het verschil tussen korte URL's en QR-codes?",
-			"a6": "Korte URL's zijn klikbare links die je digitaal deelt (e-mail, sociale media, advertenties). QR-codes zijn scanbare afbeeldingen voor fysieke media (print, verpakking, bewegwijzering). Beide volgen analyses en kunnen eigen domeinen gebruiken.",
+			"q1": "Hoe werken eigen domeinen met korte links?",
+			"a1": "Koppel je eigen domein (bijv. go.jouwmerk.nl) in de dashboardinstellingen. Configureer de getoonde DNS-records en SSL wordt automatisch geconfigureerd. Alle nieuwe links gebruiken je domein.",
+			"q2": "Kan ik linkverloopdatums of toegangsregels instellen?",
+			"a2": "Op dit moment blijven links onbeperkt actief. Je kunt elke link op elk moment handmatig uitschakelen vanuit het dashboard. Automatische verloopdatums staan op de roadmap.",
+			"q3": "Wat gebeurt er als ik een korte link uitschakel?",
+			"a3": "Bezoekers zien een 'link niet beschikbaar'-pagina. De link wordt niet verwijderd — je kunt hem op elk moment opnieuw inschakelen en alle eerdere analysegegevens blijven bewaard.",
+			"q4": "Hoe worden doorverwijzingen technisch afgehandeld?",
+			"a4": "Korte links gebruiken HTTP 301 (permanent) doorverwijzingen. De doorverwijzing gebeurt server-side in minder dan 50 ms, waardoor gebruikers vrijwel geen vertraging ervaren.",
+			"q5": "Kan ik links organiseren met tags?",
+			"a5": "Ja. Voeg één of meer tags toe aan elke link. Filter vervolgens je dashboard op tag om links te bekijken gegroepeerd per campagne, klant of elke categorie die je definieert.",
+			"q6": "Hoe verwerkt de API het aanmaken van links in bulk?",
+			"a6": "Stuur POST-verzoeken naar het /api/v1/short-url endpoint voor elke link. Voor grotere bulkworkflows kun je meerdere verzoeken scripten of de CSV-importfunctie in het dashboard gebruiken.",
 			"viewAll": "Meer vragen? Bekijk alle FAQ's"
+		},
+		"facts": {
+			"fact1Value": "∞",
+			"fact1Label": "Korte links en klikken",
+			"fact2Value": "0",
+			"fact2Label": "Creditcards nodig",
+			"fact3Value": "REST",
+			"fact3Label": "API om te automatiseren",
+			"fact4Value": "MIT",
+			"fact4Label": "Open-source­licentie"
+		},
+		"dynamic": {
+			"title": "Een link die je niet kunt wijzigen is een beslissing die je niet kunt terugdraaien",
+			"subtitle": "Zodra een URL gepubliceerd, gedrukt of verstuurd is, beheer je nog maar één ding: waar hij heen leidt.",
+			"staticLabel": "Kale bestemmings-URL",
+			"staticTitle": "Het adres gaat er precies zo uit",
+			"staticPoint1": "Een verkeerde link in een verzonden e-mail of een post blijft verkeerd.",
+			"staticPoint2": "Herstructureer je site en alle links die je ooit deelde breken tegelijk.",
+			"staticPoint3": "Lange URL’s ogen onbetrouwbaar en worden afgekapt.",
+			"dynamicLabel": "Korte link die jij beheert",
+			"dynamicTitle": "Eén adres, een bestemming die je kunt verplaatsen",
+			"dynamicPoint1": "Verwijs een link door lang nadat hij gepubliceerd is.",
+			"dynamicPoint2": "Trek afgeronde campagnes terug naar een vervolgpagina in plaats van een 404.",
+			"dynamicPoint3": "Bekijk klikken per link, kanaal en campagne.",
+			"lockInTitle": "Het stuk dat de meeste linkverkorters weglaten",
+			"lockInDescription": "Een korte link werkt alleen zolang iemand de doorverwijzing erachter draaiend houdt, waardoor elke link die je ooit publiceerde een drukmiddel wordt. Daarom beperken sommige verkorters gratis abonnementen tot een handvol links per maand, toppen ze klikken af of zetten ze een tussenadvertentie vóór je pagina. QRcodly is zo gebouwd dat dat drukmiddel nooit ontstaat.",
+			"lockInPill1": "Onbeperkt klikken — geen limiet",
+			"lockInPill2": "Geen proefperiode die je links uitschakelt",
+			"lockInPill3": "MIT-licentie — controleer of host het zelf",
+			"lockInCtaLabel": "Bekijk wat het gratis abonnement bevat"
 		}
 	},
 	"productsQrCodes": {
@@ -1769,16 +1790,6 @@
 			"subtitle": "Ontwerp verbluffende QR-codes met aangepaste kleuren, logo's en stijlen. Werk de inhoud op elk moment bij, volg elke scan en beheer alles vanuit een dashboard.",
 			"ctaLabel": "Maak Gratis je QR Code",
 			"viewPricing": "Abonnementen vergelijken"
-		},
-		"stats": {
-			"stat1Value": "100K+",
-			"stat1Label": "QR-codes aangemaakt",
-			"stat2Value": "9+",
-			"stat2Label": "Inhoudstypen",
-			"stat3Value": "10K+",
-			"stat3Label": "Scans per dag",
-			"stat4Value": "1.000+",
-			"stat4Label": "Actieve gebruikers"
 		},
 		"useCases": {
 			"title": "QR-codes voor Elke Branche",
@@ -1794,7 +1805,8 @@
 			"case5Title": "Onderwijs",
 			"case5Description": "Verwijs studenten naar bronnen, opdrachten en lesmateriaal. Werk bestemmingen op elk moment bij.",
 			"case6Title": "Marketing & Reclame",
-			"case6Description": "Verbind print- en digitale campagnes. Volg scanpercentages op billboards, flyers en direct mail."
+			"case6Description": "Verbind print- en digitale campagnes. Volg scanpercentages op billboards, flyers en direct mail.",
+			"learnMore": "Meer informatie"
 		},
 		"features": {
 			"customization": {
@@ -1854,24 +1866,57 @@
 		},
 		"faq": {
 			"title": "Veelgestelde Vragen",
-			"q1": "Is de QR code generator gratis?",
-			"a1": "Ja! Met QRcodly kun je onbeperkt statische en dynamische QR-codes gratis aanmaken. Geen verborgen kosten, geen watermerken en geen registratie nodig voor basis QR-codes.",
-			"q2": "Wat zijn dynamische QR-codes?",
-			"a2": "Dynamische QR-codes laten je de bestemmings-URL wijzigen nadat de code is afgedrukt. Ze volgen ook elke scan met gedetailleerde analyse — geen herdruk nodig wanneer de inhoud verandert.",
-			"q3": "Kan ik mijn logo toevoegen aan een QR-code?",
-			"a3": "Absoluut. Upload elk beeld als centraal logo voor je QR-code. Je kunt ook kleuren en hoekstijlen aanpassen en ontwerpen opslaan als herbruikbare sjablonen.",
-			"q4": "Welke inhoudstypen worden ondersteund?",
-			"a4": "QRcodly ondersteunt meer dan 9 inhoudstypen: URL, Tekst, WiFi, vCard (visitekaartjes), E-mail, Locatie, Agenda-evenementen, EPC (betaling) en Social Media-profielen.",
-			"q5": "Kan ik QR-code scans volgen?",
-			"a5": "Ja. Elke dynamische QR-code volgt scans in realtime met totale scans, unieke bezoekers, apparaattypen, browsers, besturingssystemen en geografische locaties.",
-			"q6": "Verlopen QR-codes?",
-			"a6": "Nee. QR-codes aangemaakt met QRcodly verlopen nooit. Dynamische QR-codes blijven volledig functioneel en traceerbaar zolang je account bestaat.",
+			"q1": "Wat is het verschil tussen statische en dynamische QR-codes?",
+			"a1": "Statische codes slaan gegevens direct op — ze kunnen na aanmaak niet worden bewerkt of gevolgd. Dynamische codes gebruiken een korte doorverwijs-URL, zodat je de bestemming kunt wijzigen en scans op elk moment kunt volgen.",
+			"q2": "Kan ik QR-codes in bulk aanmaken?",
+			"a2": "Ja. Gebruik CSV-import om honderden QR-codes tegelijk te maken. Pas een opgeslagen ontwerpsjabloon toe voor consistente branding over alle codes in de batch.",
+			"q3": "Hoe sla ik een QR-code-ontwerp op als sjabloon?",
+			"a3": "Pas je QR-code aan (kleuren, logo, stijl) en sla het op als sjabloon. De volgende keer selecteer je je sjabloon en wijzig je alleen de inhoud — je ontwerp wordt automatisch toegepast.",
+			"q4": "Welk foutcorrectieniveau moet ik gebruiken?",
+			"a4": "Medium (M) werkt voor de meeste toepassingen. Als je een logo-overlay toevoegt, gebruik dan Hoog (H) zodat de code scanbaar blijft, zelfs als een deel bedekt is door het logo.",
+			"q5": "Kan ik QR-codes offline gebruiken zonder internet?",
+			"a5": "WiFi-, vCard- en Tekst-QR-codes werken volledig offline — de gegevens zitten in de code zelf. URL-gebaseerde codes hebben internet nodig om de gelinkte pagina te openen na het scannen.",
+			"q6": "Hoe integreer ik QR-codegeneratie in mijn eigen app?",
+			"a6": "Gebruik de QRcodly REST API. Authenticeer met een API-sleutel en stuur een POST-verzoek om QR-codes programmatisch aan te maken, aan te passen en te beheren.",
 			"viewAll": "Meer vragen? Bekijk alle FAQ's"
 		},
 		"cta": {
 			"title": "Klaar om je eerste QR-code te maken?",
 			"subtitle": "Ontwerp aangepaste QR-codes met volledige analysetracking. Voor altijd gratis, geen creditcard nodig.",
 			"ctaLabel": "Maak Nu een QR Code"
+		},
+		"facts": {
+			"fact1Value": "8",
+			"fact1Label": "QR-inhoudstypen",
+			"fact2Value": "∞",
+			"fact2Label": "Codes en scans inbegrepen",
+			"fact3Value": "0",
+			"fact3Label": "Creditcards nodig",
+			"fact4Value": "MIT",
+			"fact4Label": "Open-source­licentie"
+		},
+		"dynamic": {
+			"title": "Statisch of dynamisch? Beslis vóór je drukt.",
+			"subtitle": "Het is de enige QR-code-beslissing die je na de oplage niet meer kunt terugdraaien.",
+			"staticLabel": "Statische QR-code",
+			"staticTitle": "De bestemming zit gecodeerd in het gedrukte patroon",
+			"staticPoint1": "Verander waar hij heen moet en alles moet opnieuw gedrukt.",
+			"staticPoint2": "Een verplaatste pagina of typfout leeft voort in elke al verspreide kopie.",
+			"staticPoint3": "Geen scangegevens: je weet nooit of het werkte.",
+			"dynamicLabel": "Dynamische QR-code",
+			"dynamicTitle": "De gedrukte code blijft, de bestemming verschuift",
+			"dynamicPoint1": "Verwijs hem door wanneer je wilt — het gedrukte patroon verandert nooit.",
+			"dynamicPoint2": "Corrigeer fouten na de oplage in plaats van opnieuw te bestellen.",
+			"dynamicPoint3": "Zie hoe vaak, waar en wanneer de code gescand wordt.",
+			"lockInTitle": "Het stuk dat de meeste QR-aanbieders weglaten",
+			"lockInDescription": "Een dynamische code werkt alleen zolang iemand de doorverwijzing erachter draaiend houdt, en een gedrukte oplage kun je niet terugroepen. Die afhankelijkheid is de reden dat sommige aanbieders codes uitschakelen zodra een proefperiode afloopt, het aantal scans aftoppen of advertenties tonen vóór je pagina. QRcodly is zo gebouwd dat dat drukmiddel nooit ontstaat.",
+			"lockInPill1": "Onbeperkt scannen — geen limiet",
+			"lockInPill2": "Geen proefperiode die je codes uitschakelt",
+			"lockInPill3": "MIT-licentie — controleer of host het zelf",
+			"lockInCtaLabel": "Bekijk wat het gratis abonnement bevat"
+		},
+		"testimonial": {
+			"eyebrow": "Wat onze klanten zeggen"
 		}
 	},
 	"productsAnalytics": {
@@ -2149,7 +2194,9 @@
 			"a3": "Maak aparte QR-codes per locatie, elk gelinkt aan het menu van die vestiging. Gebruik tags in je dashboard om codes per restaurantlocatie te organiseren.",
 			"q4": "Kunnen gasten een review achterlaten na het scannen?",
 			"a4": "Ja — link je QR-code aan je Google Bedrijf-reviewpagina of een feedbackformulier. Met een dynamische code kun je seizoensgebonden wisselen tussen je menu en reviewpagina.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Wat gebeurt er met mijn gedrukte codes als ik stop met betalen?",
+			"a5": "Niets. QRcodly schakelt geen QR-codes uit als een abonnement eindigt — onbeperkte codes en scans horen bij het gratis abonnement, dus een gedrukte code blijft doorverwijzen. Alleen Pro-extra’s zoals een eigen domein en analyse-integraties worden uitgeschakeld. Dat is bewust: gedrukt materiaal mag nooit een gijzelaar zijn."
 		},
 		"cta": {
 			"title": "Klaar om uw restaurant te moderniseren?",
@@ -2188,7 +2235,7 @@
 			},
 			"tip2": {
 				"title": "Plaats op ooghoogte",
-				"description": "Gebruik tafelstandaards of wandbevestigingen in plaats van platte oppervlakken. Codes op ooghoogte worden 2× vaker gescand."
+				"description": "Tafelstandaards en wandhouders verslaan platte oppervlakken: een plat liggende code vangt weerschijn en dwingt gasten zich eroverheen te buigen."
 			},
 			"tip3": {
 				"title": "Test voor je print",
@@ -2199,15 +2246,26 @@
 				"description": "Voer menuwijzigingen door op vrijdagmiddag om het weekendverkeer te vangen — je drukste scanperiode."
 			}
 		},
-		"stats": {
-			"stat1Value": "73%",
-			"stat1Label": "van de gasten verkiest digitale menu's",
-			"stat2Value": "3×",
-			"stat2Label": "sneller bestellen aan tafel",
-			"stat3Value": "45%",
-			"stat3Label": "minder drukkosten",
-			"stat4Value": "< 2 sec",
-			"stat4Label": "gemiddelde scantijd"
+		"visuals": {
+			"v1": {
+				"label": "Weergave voor de gast",
+				"badge": "Dynamisch",
+				"aria": "Telefoon die een restaurantmenu toont, geopend via een QR-code",
+				"screenTitle": "Lunchkaart",
+				"row1Name": "Soep van de dag",
+				"row1Meta": "4,90",
+				"row2Name": "Pasta al forno",
+				"row2Meta": "11,50",
+				"row3Name": "Tiramisu",
+				"row3Meta": "5,20"
+			},
+			"v2": {
+				"label": "Tafelkaart",
+				"aria": "Tafelstandaard met QR-code voor de wifi voor gasten",
+				"mediumLabel": "Tafelstandaard",
+				"headline": "Scan voor de wifi",
+				"caption": "Verbonden zonder wachtwoord te typen"
+			}
 		}
 	},
 	"qrCodesRetail": {
@@ -2260,7 +2318,9 @@
 			"a3": "Ja. Gebruik dynamische QR-codes en werk de bestemmings-URL bij wanneer de promotie afloopt. Verwijs door naar een nieuwe aanbieding of je standaard productpagina — zonder herdruk.",
 			"q4": "Hoe koppel ik QR-codes aan mijn loyaliteitsprogramma?",
 			"a4": "Link QR-codes aan je loyaliteitsregistratiepagina of app-downloadlink. Klanten scannen, registreren en beginnen met het sparen van beloningen — zonder handmatige invoer.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Wat gebeurt er met codes die al op verpakkingen gedrukt zijn als ik stop met betalen?",
+			"a5": "Ze blijven werken. Onbeperkte codes en scans horen bij het gratis abonnement en QRcodly schakelt nooit een code uit als een abonnement eindigt — alleen Pro-extra’s zoals een eigen domein worden uitgezet. Verpakkingen in omloop kun je niet terugroepen, ze als drukmiddel gebruiken zou onverdedigbaar zijn."
 		},
 		"cta": {
 			"title": "Verbeter uw retailervaring",
@@ -2298,8 +2358,8 @@
 				"description": "Gebruik een aparte QR-code per product om engagement op artikelniveau te meten — niet alleen op display-niveau."
 			},
 			"tip2": {
-				"title": "Voeg een call-to-action toe",
-				"description": "Print een korte tekst bij de code zoals 'Scan voor 10% korting' of 'Scan voor maatgids.' Codes met CTA's worden 3× vaker gescand."
+				"title": "Zeg wat de scan oplevert",
+				"description": "Een kale code geeft niemand een reden om de telefoon te pakken. Een korte tekst ernaast — „Scan voor de maattabel” — vertelt wat ze krijgen."
 			},
 			"tip3": {
 				"title": "Plaats op de schaprand",
@@ -2310,15 +2370,28 @@
 				"description": "Gebruik dynamische codes en wissel regelmatig van bestemming. Verse aanbiedingen houden klanten aan het scannen."
 			}
 		},
-		"stats": {
-			"stat1Value": "58%",
-			"stat1Label": "van de shoppers scant codes in de winkel",
-			"stat2Value": "2.4×",
-			"stat2Label": "hogere betrokkenheid vs. alleen print",
-			"stat3Value": "40%",
-			"stat3Label": "couponinwisselingspercentage",
-			"stat4Value": "12 sec",
-			"stat4Label": "gemiddelde interactietijd"
+		"visuals": {
+			"v1": {
+				"label": "Scan bij het schap",
+				"badge": "Dynamisch",
+				"aria": "Telefoon die productdetails toont na het scannen van een schaplabel",
+				"screenTitle": "Productdetails",
+				"row1Name": "Materiaal",
+				"row1Meta": "Biokatoen",
+				"row2Name": "Onderhoud",
+				"row2Meta": "Wassen op 30 °C",
+				"row3Name": "Beschikbaarheid",
+				"row3Meta": "Op voorraad"
+			},
+			"v2": {
+				"label": "Weekactie",
+				"badge": "Zelfde label",
+				"aria": "Een gedrukt schaplabel wordt van de lente- naar de zomeractie doorverwezen",
+				"printedLabel": "Label, één keer gedrukt",
+				"oldDestination": "/actie/lente",
+				"newDestination": "/actie/zomer",
+				"footnote": "Nieuwe campagne, zelfde label op het schap — er wordt niets herdrukt."
+			}
 		}
 	},
 	"qrCodesEvents": {
@@ -2371,7 +2444,9 @@
 			"a3": "Een vCard-QR-code bevat contactgegevens (naam, e-mail, telefoon, bedrijf). Bij het scannen biedt de telefoon aan om het contact direct op te slaan — ter vervanging van traditionele visitekaartjes.",
 			"q4": "Kan ik meten welke sessies het populairst waren?",
 			"a4": "Maak aparte QR-codes per sessie of lezing. Vergelijk het aantal scans in je dashboard om te zien welke sessies de meeste deelnemers trokken.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Kan ik dezelfde code volgend jaar opnieuw gebruiken?",
+			"a5": "Ja. Een dynamische code is gewoon een vast adres dat je doorverwijst, dus de bewegwijzering van vorig jaar kan naar het programma van dit jaar wijzen. En stop je tussentijds met betalen, dan blijft de code live: onbeperkte codes en scans horen bij het gratis abonnement en QRcodly schakelt geen codes uit als een abonnement eindigt."
 		},
 		"cta": {
 			"title": "Maak uw volgende evenement naadloos",
@@ -2421,15 +2496,23 @@
 				"description": "E-mail een digitale badge met QR-code voor het evenement. Snellere entree en minder printwerk."
 			}
 		},
-		"stats": {
-			"stat1Value": "67%",
-			"stat1Label": "sneller inchecken",
-			"stat2Value": "4×",
-			"stat2Label": "meer netwerkcontacten",
-			"stat3Value": "85%",
-			"stat3Label": "adoptiegraad onder deelnemers",
-			"stat4Value": "30 sec",
-			"stat4Label": "bespaard per entree"
+		"visuals": {
+			"v1": {
+				"label": "Deelnemersbadge",
+				"aria": "Evenementbadge met QR-code voor de check-in bij de ingang",
+				"mediumLabel": "Badge",
+				"headline": "Scan om in te checken",
+				"caption": "Ingecheckt bij de deur"
+			},
+			"v2": {
+				"label": "Live programma",
+				"badge": "Zelfde badge",
+				"aria": "Een gedrukte badge wordt van dag één naar dag twee van het programma doorverwezen",
+				"printedLabel": "Op elke badge gedrukt",
+				"oldDestination": "/programma/dag-1",
+				"newDestination": "/programma/dag-2",
+				"footnote": "Last-minute zaalwissel? Werk één keer bij en elke badge volgt."
+			}
 		}
 	},
 	"qrCodesRealEstate": {
@@ -2482,7 +2565,9 @@
 			"a3": "Maak één QR-code per woning. Gebruik tags in je dashboard (bijv. 'centrum', 'westzijde') om je actieve vermeldingen te organiseren en snel te filteren.",
 			"q4": "Welk formaat werkt het beste voor tuinborden?",
 			"a4": "Minimaal 5×5 cm (2×2 inch) op tuinborden. Zorg voor hoog contrast tussen de code en de bordachtergrond, en test door te scannen vanaf 2 meter afstand voor het printen.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Kan ik een bord hergebruiken nadat het pand verkocht is?",
+			"a5": "Daar dient een dynamische code precies voor: verwijs hem naar je volgende pand en het gedrukte bord blijft werken. De code blijft actief, ook zonder abonnement, want onbeperkte codes en scans horen bij het gratis abonnement en QRcodly schakelt geen codes uit als een abonnement eindigt."
 		},
 		"cta": {
 			"title": "Geef elke vermelding een digitaal voordeel",
@@ -2532,15 +2617,26 @@
 				"description": "Wanneer een woning is verkocht, werk je de dynamische code bij naar een 'Verkocht'-pagina of een vergelijkbare vermelding in de buurt."
 			}
 		},
-		"stats": {
-			"stat1Value": "62%",
-			"stat1Label": "van de kopers scant tuinbordcodes",
-			"stat2Value": "3×",
-			"stat2Label": "meer vermeldingsweergaven",
-			"stat3Value": "35%",
-			"stat3Label": "meer bezichtigingsaanvragen",
-			"stat4Value": "< 2 sec",
-			"stat4Label": "naar volledige woningdetails"
+		"visuals": {
+			"v1": {
+				"label": "Bord",
+				"aria": "Makelaarsbord met QR-code die naar de volledige advertentie leidt",
+				"mediumLabel": "Bord",
+				"headline": "Scan voor de volledige advertentie",
+				"caption": "Bezichtigingsaanvraag ontvangen"
+			},
+			"v2": {
+				"label": "Weergave voor de koper",
+				"badge": "Dynamisch",
+				"aria": "Telefoon die pandgegevens toont na het scannen van een bord",
+				"screenTitle": "Esdoornstraat 14",
+				"row1Name": "Woonoppervlak",
+				"row1Meta": "128 m²",
+				"row2Name": "Kamers",
+				"row2Meta": "4",
+				"row3Name": "Beschikbaar vanaf",
+				"row3Meta": "1 sep."
+			}
 		}
 	},
 	"qrCodesEducation": {
@@ -2593,7 +2689,9 @@
 			"a3": "Maak meerdere QR-codes, elk linkend naar een aanwijzing of taakpagina. Plaats ze door de school. Studenten scannen elke code om door de activiteit te gaan.",
 			"q4": "Zijn QR-codes toegankelijk voor studenten met een beperking?",
 			"a4": "QR-codes zijn visueel, dus combineer ze met een korte URL eronder voor studenten die schermlezers gebruiken. De gelinkte pagina moet voldoen aan toegankelijkheidsrichtlijnen.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Heb ik een betaald abonnement nodig om QR-codes in de klas te gebruiken?",
+			"a5": "Nee. Onbeperkte QR-codes, onbeperkte scans en de bijbehorende statistieken horen bij het gratis abonnement, zonder creditcard — precies wat telt voor een schoolbudget. Pro voegt een eigen domein, bulkimports en API-toegang toe, maar niets wat een klas nodig heeft zit daarachter."
 		},
 		"cta": {
 			"title": "Breng QR-codes naar uw klaslokaal",
@@ -2643,15 +2741,28 @@
 				"description": "Met dynamische codes kun je de gelinkte bron bijwerken zonder opnieuw te printen. Zelfde werkblad, verse inhoud elk trimester."
 			}
 		},
-		"stats": {
-			"stat1Value": "89%",
-			"stat1Label": "van de studenten bezit een smartphone",
-			"stat2Value": "2×",
-			"stat2Label": "snellere toegang tot bronnen",
-			"stat3Value": "70%",
-			"stat3Label": "verkiest scannen boven URL's typen",
-			"stat4Value": "5 min",
-			"stat4Label": "bespaard per les"
+		"visuals": {
+			"v1": {
+				"label": "Weergave voor de leerling",
+				"badge": "Dynamisch",
+				"aria": "Telefoon die lesmateriaal toont na het scannen van een werkblad",
+				"screenTitle": "Materiaal week 6",
+				"row1Name": "Collegeslides",
+				"row1Meta": "PDF",
+				"row2Name": "Leeslijst",
+				"row2Meta": "4 teksten",
+				"row3Name": "Opdracht",
+				"row3Meta": "Voor vr."
+			},
+			"v2": {
+				"label": "Cursuswerkblad",
+				"badge": "Zelfde blad",
+				"aria": "Een gedrukt werkblad wordt van het materiaal van vorig jaar naar dat van dit jaar doorverwezen",
+				"printedLabel": "Gedrukt werkblad",
+				"oldDestination": "/cursus/2025/week-6",
+				"newDestination": "/cursus/2026/week-6",
+				"footnote": "Nieuw semester, zelfde werkblad — doorverwijzen in plaats van herdrukken."
+			}
 		}
 	},
 	"qrCodesMarketing": {
@@ -2704,7 +2815,9 @@
 			"a3": "2×2 cm voor materiaal op korte afstand (flyers, visitekaartjes). Voor billboards of posters op afstand, vergroot — een code van 15 cm werkt goed op 3 meter.",
 			"q4": "Hoe volg ik offline-naar-online conversie?",
 			"a4": "Elke dynamische QR-code volgt scans automatisch. Combineer dit met UTM-parameters op de bestemmings-URL en je hebt volledige funnel-zichtbaarheid van fysieke scan tot digitale conversie.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Kan ik printplaatsingen onderling vergelijken?",
+			"a5": "Geef elke plaatsing een eigen dynamische code en het dashboard toont ze naast elkaar: poster, flyer en advertentie krijgen elk hun eigen scanaantal, zodat de plaatsing die zichzelf terugverdient zichtbaar wordt. Dat alles zit in het gratis abonnement."
 		},
 		"cta": {
 			"title": "Maak elk drukwerk meetbaar",
@@ -2754,15 +2867,25 @@
 				"description": "Plaats een duidelijke call-to-action bij de code: 'Scan om je aanbieding te claimen' of 'Scan voor exclusieve toegang.' Codes zonder CTA worden vaak genegeerd."
 			}
 		},
-		"stats": {
-			"stat1Value": "76%",
-			"stat1Label": "van de consumenten heeft een QR-code gescand",
-			"stat2Value": "2×",
-			"stat2Label": "hogere herinnering vs. advertenties met alleen URL",
-			"stat3Value": "34%",
-			"stat3Label": "print-naar-digitaal conversie",
-			"stat4Value": "5×",
-			"stat4Label": "ROI op printcampagnes"
+		"visuals": {
+			"v1": {
+				"label": "Printcampagne",
+				"aria": "Campagneposter met QR-code die naar de bestemmingspagina leidt",
+				"mediumLabel": "Poster",
+				"headline": "Scan om mee te doen",
+				"caption": "Scan geregistreerd"
+			},
+			"v2": {
+				"label": "Campagneprestaties",
+				"badge": "Live",
+				"aria": "Paneel dat scans vergelijkt over poster, flyer en advertentie",
+				"metricValue": "1.284",
+				"metricLabel": "Scans deze maand",
+				"trend": "Live",
+				"b1Name": "Poster — station",
+				"b2Name": "Flyer — beurs",
+				"b3Name": "Tijdschriftadvertentie"
+			}
 		}
 	},
 	"urlShortenerMarketingTeams": {
@@ -2815,7 +2938,9 @@
 			"a3": "Ga naar Instellingen → Eigen domeinen, voeg je domein toe en configureer de getoonde DNS-records. SSL wordt automatisch geconfigureerd. Alle nieuwe links gebruiken je domein.",
 			"q4": "Kan ik de bestemming van een link wijzigen na het delen?",
 			"a4": "Ja. Bewerk de bestemmings-URL op elk moment vanuit je dashboard. De korte link blijft hetzelfde — ontvangers die hem al hebben worden doorverwezen naar de bijgewerkte pagina.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Wat gebeurt er met links die ik al verstuurd heb als ik stop met betalen?",
+			"a5": "Ze blijven doorverwijzen. Onbeperkte korte links en klikken horen bij het gratis abonnement en QRcodly schakelt geen links uit als een abonnement eindigt — alleen Pro-extra’s zoals je eigen domein worden niet meer geserveerd. Links die al in inboxen liggen, mag een aanbieder niet als drukmiddel tegen je gebruiken."
 		},
 		"cta": {
 			"title": "Versterk uw marketinglinks",
@@ -2865,15 +2990,27 @@
 				"description": "Check klikgegevens elke week om budget te verschuiven van onderpresterende kanalen naar je best presterende."
 			}
 		},
-		"stats": {
-			"stat1Value": "34%",
-			"stat1Label": "hogere CTR met merkgebonden links",
-			"stat2Value": "3×",
-			"stat2Label": "snellere campagne-setup",
-			"stat3Value": "87%",
-			"stat3Label": "van de marketeers gebruikt linktracking",
-			"stat4Value": "< 50 ms",
-			"stat4Label": "doorverwijssnelheid"
+		"visuals": {
+			"v1": {
+				"label": "Campagnelink",
+				"badge": "Pro",
+				"aria": "Vergelijking van een generieke korte link en een op je eigen domein",
+				"genericLink": "bit.ly/3xKf9Qa",
+				"brandedLink": "go.jouwmerk.nl/lente",
+				"genericNote": "De ontvanger ziet niet waar hij heen leidt",
+				"brandedNote": "Jouw domein, jouw reputatie"
+			},
+			"v2": {
+				"label": "Campagneklikken",
+				"badge": "Live",
+				"aria": "Paneel met klikken verdeeld over nieuwsbrief, social en print",
+				"metricValue": "8.412",
+				"metricLabel": "Klikken in deze campagne",
+				"trend": "Live",
+				"b1Name": "Nieuwsbrief",
+				"b2Name": "LinkedIn",
+				"b3Name": "Printadvertentie"
+			}
 		}
 	},
 	"urlShortenerSocialMedia": {
@@ -2933,7 +3070,9 @@
 			"a3": "Nee. QRcodly-links gebruiken schone doorverwijzingen en staan niet op blokkeerlijsten. Het gebruik van je eigen domein elimineert eventuele spamzorgen verder.",
 			"q4": "Kan ik wijzigen waar een link naartoe gaat na het plaatsen?",
 			"a4": "Ja. Werk de bestemmings-URL op elk moment bij zonder je bericht te bewerken. Volgers die op dezelfde link klikken worden doorverwezen naar de nieuwe inhoud.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Kan ik een link wijzigen nadat de post geplaatst is?",
+			"a5": "Ja — en dat is precies de reden om er een te gebruiken. De korte link in het bijschrift blijft hetzelfde terwijl je hem in het dashboard doorverwijst, dus een kapotte of verouderde bestemming repareer je zonder de post te verwijderen en zijn betrokkenheid te verliezen."
 		},
 		"cta": {
 			"title": "Verbeter uw sociale links",
@@ -2958,6 +3097,56 @@
 			"step4": {
 				"title": "Volg klikken per bericht",
 				"description": "Check je dashboard om te zien welke berichten de meeste klikken genereren. Vergelijk prestaties over platforms."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Link in de post",
+				"badge": "Pro",
+				"aria": "Vergelijking van een lange trackings-URL en een korte merklink",
+				"genericLink": "example.com/producten/zomercollectie?utm_source=ig",
+				"brandedLink": "jm.link/zomer",
+				"genericNote": "Afgekapt midden in het bijschrift",
+				"brandedNote": "Past in elk bijschrift en blijft leesbaar"
+			},
+			"v2": {
+				"label": "Betrokkenheid",
+				"badge": "Live",
+				"aria": "Paneel met klikken per social platform",
+				"metricValue": "3.940",
+				"metricLabel": "Klikken vanaf social",
+				"trend": "Live",
+				"b1Name": "Instagram",
+				"b2Name": "TikTok",
+				"b3Name": "LinkedIn"
+			},
+			"v3": {
+				"label": "Link in bio",
+				"badge": "Zelfde link",
+				"aria": "Een biolink wordt van de lente-drop naar de zomer-drop doorverwezen",
+				"printedLabel": "Zelfde link in bio",
+				"oldDestination": "/drop/lente",
+				"newDestination": "/drop/zomer",
+				"footnote": "Bijschriften kun je niet bewerken. Hun bestemming wel."
+			}
+		},
+		"tips": {
+			"title": "Best practices voor social-medialinks",
+			"tip1": {
+				"title": "Houd één link in je bio",
+				"description": "Laat één korte link naar het actuele wijzen in plaats van je profiel elke keer te bewerken. Eén adres, beheerd vanuit het dashboard."
+			},
+			"tip2": {
+				"title": "Gebruik een leesbare slug",
+				"description": "„jm.link/zomer” haalt meer klikken dan een willekeurige reeks, omdat je ziet waar hij heen leidt voordat je erop tikt."
+			},
+			"tip3": {
+				"title": "Geef elk platform een eigen link",
+				"description": "Dezelfde bestemming achter aparte links per platform is de enige betrouwbare manier om te weten welk kanaal echt levert."
+			},
+			"tip4": {
+				"title": "Controleer de link voor je inplant",
+				"description": "Ingeplande posts gaan onbeheerd de deur uit. Open de korte link één keer voordat hij in de wachtrij gaat — een typfout gaat in één keer naar het hele publiek."
 			}
 		}
 	},
@@ -3018,7 +3207,9 @@
 			"a3": "Ja. Alle links aangemaakt onder je account zijn zichtbaar in één dashboard. Gebruik tags (bijv. naam vertegenwoordiger, dealfase) om prestaties over het team te filteren en vergelijken.",
 			"q4": "Wat als ik een gedeelde offerte moet bijwerken?",
 			"a4": "Wijzig de bestemmings-URL in je dashboard. De korte link die al naar de prospect is gestuurd blijft hetzelfde — ze zien de bijgewerkte offerte wanneer ze klikken.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Kan ik zien of een prospect mijn voorstel opende?",
+			"a5": "Het dashboard toont klikken per link, dus één link per deal maakt van belangstelling een concreet signaal, ook als het weken later weer aantrekt. Het meet linkopeningen, geen identiteiten: zie het als een timingsignaal, niet als een trackingpixel."
 		},
 		"cta": {
 			"title": "Volg elke klik in uw outreach",
@@ -3043,6 +3234,60 @@
 			"step4": {
 				"title": "Monitor de betrokkenheid van prospects",
 				"description": "Check je dashboard voor kliktijdstempels en apparaatgegevens. Zie precies wanneer een prospect je link opent."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Acquisitielinks",
+				"aria": "Lijst met korte links per deal met het aantal klikken",
+				"r1Link": "jm.link/acme-deck",
+				"r1Tag": "Acme Corp · Voorstel",
+				"r1Clicks": "14",
+				"r2Link": "jm.link/globex-demo",
+				"r2Tag": "Globex · Demo-opname",
+				"r2Clicks": "7",
+				"r3Link": "jm.link/initech-contract",
+				"r3Tag": "Initech · Contract",
+				"r3Clicks": "3"
+			},
+			"v2": {
+				"label": "Geloofwaardigheid",
+				"badge": "Pro",
+				"aria": "Vergelijking van een anonieme korte link en een op je bedrijfsdomein",
+				"genericLink": "tinyurl.com/y7k2n9q",
+				"brandedLink": "go.jouwbedrijf.nl/voorstel",
+				"genericNote": "Leest als spam in een inbox",
+				"brandedNote": "Je bedrijfsdomein, in één oogopslag herkenbaar"
+			},
+			"v3": {
+				"label": "Acquisitieprestaties",
+				"badge": "Live",
+				"aria": "Paneel dat betrokkenheid over de acquisitiefasen vergelijkt",
+				"metricValue": "1.204",
+				"metricLabel": "Linkopeningen dit kwartaal",
+				"trend": "Live",
+				"b1Name": "Eerste contact",
+				"b2Name": "Opvolging",
+				"b3Name": "Voorstel verstuurd"
+			}
+		},
+		"tips": {
+			"title": "Best practices voor sales-acquisitie",
+			"tip1": {
+				"title": "Eén link per deal",
+				"description": "Een eigen link per prospect maakt van een klik een benoemd signaal in plaats van een anoniem getal."
+			},
+			"tip2": {
+				"title": "Verstuur vanaf je eigen domein",
+				"description": "Een link op je bedrijfsdomein overleeft spamfilters en inbox-scepsis veel beter dan een anonieme verkorter."
+			},
+			"tip3": {
+				"title": "Houd de slug leesbaar",
+				"description": "„go.jouwbedrijf.nl/acme-voorstel” vertelt de ontvanger wat hij opent. Een willekeurige reeks vraagt om blind vertrouwen."
+			},
+			"tip4": {
+				"title": "Werk bij in plaats van opnieuw te sturen",
+				"description": "Een fout gezien in een verstuurd voorstel? Verwijs de link naar het gecorrigeerde bestand in plaats van een ongemakkelijke opvolging te sturen."
 			}
 		}
 	},
@@ -3096,7 +3341,9 @@
 			"a3": "Ja. De URL-verkorter werkt met elke URL. Plak je productlink van elk platform en maak direct een merkgebonden korte link.",
 			"q4": "Beïnvloeden korte links de SEO van mijn winkel?",
 			"a4": "Nee. Korte links gebruiken 301-doorverwijzingen, die volledige SEO-waarde doorgeven aan de bestemmingspagina. Je zoekrangschikking wordt niet beïnvloed.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Wat gebeurt er met mijn links als ik naar een ander winkelsysteem overstap?",
+			"a5": "Verwijs ze door en alles wat je publiceerde blijft geldig. Omdat de korte link het adres is dat klanten echt hebben, wordt een migratie die elke product-URL herschrijft een wijziging in het dashboard in plaats van een zoektocht door oude posts, e-mails en advertenties."
 		},
 		"cta": {
 			"title": "Vereenvoudig uw e-commercelinks",
@@ -3146,15 +3393,31 @@
 				"description": "Wanneer een promotie afloopt, verwijs de korte link door naar je homepage of een gerelateerd product — laat hem nooit naar een 404 wijzen."
 			}
 		},
-		"stats": {
-			"stat1Value": "28%",
-			"stat1Label": "hogere CTR vs. rauwe URL's",
-			"stat2Value": "2×",
-			"stat2Label": "meer social shares",
-			"stat3Value": "45%",
-			"stat3Label": "van de klikken komt van mobiel",
-			"stat4Value": "99.9%",
-			"stat4Label": "uptime-garantie"
+		"visuals": {
+			"v1": {
+				"label": "Productlinks",
+				"aria": "Lijst met korte productlinks per kanaal met het aantal klikken",
+				"r1Link": "jm.link/zomerjurk",
+				"r1Tag": "Product · Instagram",
+				"r1Clicks": "1.204",
+				"r2Link": "jm.link/sale-40",
+				"r2Tag": "Campagne · Nieuwsbrief",
+				"r2Clicks": "892",
+				"r3Link": "jm.link/cadeaugids",
+				"r3Tag": "Seizoen · Pinterest",
+				"r3Clicks": "431"
+			},
+			"v2": {
+				"label": "Kanaalprestaties",
+				"badge": "Live",
+				"aria": "Paneel dat klikken over verkoopkanalen vergelijkt",
+				"metricValue": "12.480",
+				"metricLabel": "Klikken over alle kanalen",
+				"trend": "Live",
+				"b1Name": "Instagram",
+				"b2Name": "Nieuwsbrief",
+				"b3Name": "Pinterest"
+			}
 		}
 	},
 	"urlShortenerDevelopers": {
@@ -3214,7 +3477,9 @@
 			"a3": "Ja. Snelheidslimieten zijn afhankelijk van je abonnement. Gratis accounts hebben strengere limieten; Pro-accounts krijgen hogere doorvoer. Controleer de response headers voor je huidige gebruik.",
 			"q4": "Kan ik klikanalyses ophalen via de API?",
 			"a4": "Ja. De analyse-endpoints retourneren het aantal klikken, tijdstempels, apparaatgegevens en geografische informatie per korte link programmatisch.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Kan ik QRcodly zelf hosten?",
+			"a5": "Ja. De hele stack is publiek onder MIT-licentie, dus als een doorverwijzing van derden onaanvaardbaar is om nalevingsredenen, of je gewoon geen enkele afhankelijkheid wilt, kun je het zelf draaien. Die nooduitgang is de reden dat de gehoste dienst geen scanlimieten of uitschakeling na de proef nodig heeft om je te houden."
 		},
 		"cta": {
 			"title": "Begin met bouwen met onze API",
@@ -3240,23 +3505,77 @@
 				"title": "Haal klikanalyses op",
 				"description": "Gebruik de analyse-endpoints om het aantal klikken, tijdstempels, apparaatgegevens en geografische info per link op te halen."
 			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Een korte link maken",
+				"badge": "REST",
+				"aria": "Codevoorbeeld dat een korte link maakt via de REST-API",
+				"method": "POST",
+				"endpoint": "/api/v1/short-url",
+				"line1": "curl -X POST https://api.qrcodly.de/api/v1/short-url \\",
+				"line2": "  -H \"Authorization: Bearer $API_KEY\" \\",
+				"line3": "  -H \"Content-Type: application/json\" \\",
+				"line4": "  -d '{\"destinationUrl\":\"https://example.com\"}'",
+				"responseLabel": "Antwoord",
+				"responseValue": "201 Created"
+			},
+			"v2": {
+				"label": "Authenticatie",
+				"badge": "API-sleutel",
+				"aria": "Codevoorbeeld dat een verzoek authenticeert met een bearer-token",
+				"method": "GET",
+				"endpoint": "/api/v1/short-url",
+				"line1": "curl https://api.qrcodly.de/api/v1/short-url \\",
+				"line2": "  -H \"Authorization: Bearer $API_KEY\"",
+				"responseLabel": "Status",
+				"responseValue": "200 OK"
+			},
+			"v3": {
+				"label": "Eigen domein",
+				"badge": "Pro",
+				"aria": "Vergelijking van het gedeelde doorverwijsdomein en een eigen domein",
+				"genericLink": "qrcodly.de/u/a1B2c3",
+				"brandedLink": "go.jouwapp.dev/a1B2c3",
+				"genericNote": "Gedeeld doorverwijsdomein",
+				"brandedNote": "Je eigen domein via CNAME"
+			}
+		},
+		"tips": {
+			"title": "Best practices voor ontwikkelaars",
+			"tip1": {
+				"title": "Behandel links als configuratie",
+				"description": "Houd de korte link stabiel en laat de bestemming het veranderlijke zijn. Dat is de hele bedoeling van een indirectielaag."
+			},
+			"tip2": {
+				"title": "Genereer links in CI",
+				"description": "Met de REST-API maakt je pipeline release-links in plaats van ze met de hand vóór elke lancering te maken."
+			},
+			"tip3": {
+				"title": "Beperk je API-sleutels",
+				"description": "Geef één sleutel per integratie uit. Er één roteren betekent dan niet meer elk script auditen dat je ooit schreef."
+			},
+			"tip4": {
+				"title": "Host het zelf als het moet",
+				"description": "De stack staat onder MIT-licentie en is publiek. Als je nalevingsregels geen doorverwijzing van derden toestaan, draai dan je eigen."
+			}
 		}
 	},
 	"urlShortenerAgencies": {
 		"metaTitle": "URL-verkorter voor bureaus – Klantdomeinen, merkgebonden links en analyses | QRcodly",
-		"metaDescription": "Beheer korte links voor meerdere klanten met aangepaste domeinen, merkgebonden URL's en analyses per link. Gebouwd voor bureaus.",
+		"metaDescription": "Beheer de korte links van al je klanten vanaf één plek: je bureaudomein, labels per klant en statistieken per link. Gemaakt voor bureaus.",
 		"hero": {
 			"title": "Korte links speciaal voor bureaus",
-			"subtitle": "Beheer merkgebonden links voor al uw klanten. Gebruik aangepaste domeinen, volg prestaties en lever resultaten.",
+			"subtitle": "Zet je bureaudomein op elke klantlink, houd campagnes geordend met labels en rapporteer prestaties vanuit één dashboard.",
 			"ctaLabel": "Verkort uw eerste link"
 		},
 		"features": {
 			"feature1": {
-				"title": "Aangepaste domeinen voor elke klant",
-				"description": "Koppel meerdere aangepaste domeinen — één voor elke klant. Elke korte link draagt de branding van de klant.",
-				"bullet1": "Koppel aangepaste domeinen per klant",
-				"bullet2": "Merkgebonden korte URL's voor professionele oplevering",
-				"bullet3": "Eenvoudige DNS-installatie met begeleide instructies"
+				"title": "Je bureaudomein op elke klantlink",
+				"description": "Pro bevat één eigen domein. Zet je bureaumerk erop en geef elke klant zijn eigen leesbare slug: elk opgeleverd stuk gaat de deur uit met een link waaraan te zien is dat jij hem bouwde.",
+				"bullet1": "Eén eigen domein per Pro-abonnement, ingesteld via CNAME",
+				"bullet2": "Leesbare slugs per klant in plaats van willekeurige tekens",
+				"bullet3": "Begeleide DNS-instelling met verificatie"
 			},
 			"feature2": {
 				"title": "Analyses per link",
@@ -3299,7 +3618,9 @@
 			"a3": "Ja. Exporteer linkanalyses of deel screenshots vanuit het dashboard. Elke link toont het aantal klikken, geografische gegevens en apparaatoverzichten.",
 			"q4": "Is er een limiet op het aantal eigen domeinen dat ik kan toevoegen?",
 			"a4": "Pro-accounts ondersteunen meerdere eigen domeinen. De exacte limiet hangt af van je abonnement — bekijk de prijspagina voor details.",
-			"viewAll": "Bekijk alle veelgestelde vragen"
+			"viewAll": "Bekijk alle veelgestelde vragen",
+			"q5": "Kan ik voor elke klant een eigen domein koppelen?",
+			"a5": "Niet in één abonnement: Pro bevat één eigen domein per account. De meeste bureaus zetten hun eigen merk op dat domein en scheiden klanten met slugs en labels. Heeft een klant links op zijn eigen domein nodig, dan is een abonnement op zijn account de schone oplossing — zo blijven de links ook van hem als hij ooit vertrekt."
 		},
 		"cta": {
 			"title": "Schaal het linkbeheer van uw bureau",
@@ -3324,6 +3645,60 @@
 			"step4": {
 				"title": "Deel prestatierapporten",
 				"description": "Exporteer klikanalyses per klant. Bespreek prestatiegegevens samen en gebruik ze om de volgende campagne te plannen."
+			}
+		},
+		"visuals": {
+			"v1": {
+				"label": "Bureaudomein",
+				"badge": "Pro",
+				"aria": "Vergelijking van een generieke korte link en een op het domein van je bureau",
+				"genericLink": "short.io/xY9k",
+				"brandedLink": "go.jouwbureau.nl/lancering",
+				"genericNote": "Anoniem domein op opgeleverde stukken",
+				"brandedNote": "Het domein van je bureau op elke campagne"
+			},
+			"v2": {
+				"label": "Statistieken per link",
+				"badge": "Live",
+				"aria": "Paneel dat klikvolume tussen klantcampagnes vergelijkt",
+				"metricValue": "24.910",
+				"metricLabel": "Klikken over alle klanten",
+				"trend": "Live",
+				"b1Name": "Klant A — lancering",
+				"b2Name": "Klant B — doorlopend",
+				"b3Name": "Klant C — evenement"
+			},
+			"v3": {
+				"label": "Geordend per klant",
+				"aria": "Lijst met klantlinks gegroepeerd per label met het aantal klikken",
+				"r1Link": "go.jouwbureau.nl/acme-lancering",
+				"r1Tag": "Acme · Lancering",
+				"r1Clicks": "9.140",
+				"r2Link": "go.jouwbureau.nl/globex-webinar",
+				"r2Tag": "Globex · Webinar",
+				"r2Clicks": "3.802",
+				"r3Link": "go.jouwbureau.nl/initech-werken",
+				"r3Tag": "Initech · Employer branding",
+				"r3Clicks": "1.477"
+			}
+		},
+		"tips": {
+			"title": "Best practices voor bureau-linkbeheer",
+			"tip1": {
+				"title": "Label elke link per klant",
+				"description": "Labels maken van een gedeelde linkpool rapportage per klant. Spreek een naamgevingsschema af vóór de eerste campagne, niet na de vijftigste."
+			},
+			"tip2": {
+				"title": "Gebruik leesbare campagne-slugs",
+				"description": "„acme-lancering” wint van „x7k2” in een statusgesprek, in een rapport en bij de overdracht aan wie de account daarna oppakt."
+			},
+			"tip3": {
+				"title": "Draag netjes over",
+				"description": "Vertrekt een klant, dan zou hij zijn bestemmingen mee moeten kunnen nemen. Links die je kunt doorverwijzen maken daar een gesprek van in plaats van een gijzeling."
+			},
+			"tip4": {
+				"title": "Eén domein, veel klanten",
+				"description": "Een Pro-abonnement bevat één eigen domein. Zet je bureaumerk erop en scheid klanten met slugs — of laat elke klant een eigen abonnement voeren als het domein van hem moet zijn."
 			}
 		}
 	},
