@@ -145,7 +145,7 @@ describe('UmamiAnalyticsService', () => {
 		};
 
 		it('forwards the scanner IP via X-Client-Real-IP so Umami geolocates the visitor', async () => {
-			mockFetch.mockResolvedValue({ ok: true, json: async () => ({}) });
+			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
 
 			await service.sendEvent(payload);
 
@@ -161,11 +161,50 @@ describe('UmamiAnalyticsService', () => {
 			);
 		});
 
+		it('reports accepted when Umami echoes a cache token', async () => {
+			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
+
+			await expect(service.sendEvent(payload)).resolves.toBe('accepted');
+			expect(mockLogger.warn).not.toHaveBeenCalled();
+			expect(mockLogger.error).not.toHaveBeenCalled();
+		});
+
+		it('reports discarded when Umami answers 200 with an empty body', async () => {
+			mockFetch.mockResolvedValue({ ok: true, text: async () => '' });
+
+			await expect(service.sendEvent(payload)).resolves.toBe('discarded');
+			expect(mockLogger.warn).toHaveBeenCalledWith(
+				'umami.event.discarded',
+				expect.objectContaining({ userAgent: payload.userAgent }),
+			);
+		});
+
+		it('reports rejected and logs the status when Umami returns an error response', async () => {
+			mockFetch.mockResolvedValue({ ok: false, status: 400, text: async () => 'bad payload' });
+
+			await expect(service.sendEvent(payload)).resolves.toBe('rejected');
+			expect(mockLogger.error).toHaveBeenCalledWith(
+				'error.umamiApi.sendEvent',
+				expect.objectContaining({ status: 400, body: 'bad payload' }),
+			);
+		});
+
 		it('does not throw and logs when the Umami request fails', async () => {
 			mockFetch.mockRejectedValue(new Error('network'));
 
-			await expect(service.sendEvent(payload)).resolves.toBeUndefined();
+			await expect(service.sendEvent(payload)).resolves.toBe('error');
 			expect(mockLogger.error).toHaveBeenCalledWith('error.umamiApi.sendEvent', expect.anything());
+		});
+
+		it('aborts the request instead of hanging when Umami is unresponsive', async () => {
+			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
+
+			await service.sendEvent(payload);
+
+			expect(mockFetch).toHaveBeenCalledWith(
+				'https://umami.example.com/api/send',
+				expect.objectContaining({ signal: expect.any(AbortSignal) }),
+			);
 		});
 	});
 

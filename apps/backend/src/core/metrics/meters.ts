@@ -52,6 +52,17 @@ export const shortUrlScans = meter.createCounter('business.short_urls.scans', {
 	description: 'Total short URL / QR code scans',
 });
 
+// --- Analytics Forwarding ---
+
+/**
+ * Scan events handed to Umami, split by what Umami actually did with them.
+ * The gap between this and `shortUrlScans` is the reason dashboard numbers
+ * disagree with the scan count — see UmamiAnalyticsService.sendEvent.
+ */
+export const umamiEventsTotal = meter.createCounter('analytics.umami.events.total', {
+	description: 'Scan events forwarded to Umami, by outcome',
+});
+
 // --- Active Sessions ---
 
 const activeSessionsGauge = meter.createGauge('business.active_sessions', {

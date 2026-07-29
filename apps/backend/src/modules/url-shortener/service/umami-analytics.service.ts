@@ -4,6 +4,12 @@ import { env } from '@/core/config/env';
 import QueryString from 'qs';
 import { TAnalyticsMetric, TAnalyticsResponseDto, TTimeSeries } from '@shared/schemas';
 import { BROWSERS, DEVICES } from '../config/constants';
+import { umamiEventsTotal } from '@/core/metrics';
+
+const UMAMI_SEND_TIMEOUT_MS = 5_000;
+const UMAMI_ERROR_BODY_LIMIT = 500;
+
+export type UmamiSendOutcome = 'accepted' | 'discarded' | 'rejected' | 'error';
 
 @singleton()
 export class UmamiAnalyticsService {
@@ -126,6 +132,14 @@ export class UmamiAnalyticsService {
 		};
 	}
 
+	/**
+	 * Forwards a scan to Umami and reports what Umami did with it.
+	 *
+	 * Umami answers 200 in two very different cases: when it stores the event, and when its
+	 * bot filter silently discards it. Only the storing path echoes a cache token in the body,
+	 * so an empty 200 means the event never landed. Without that distinction the scan counter
+	 * and the Umami dashboard drift apart with nothing in the logs to explain it.
+	 */
 	public async sendEvent(payload: {
 		url: string;
 		userAgent: string;
@@ -136,10 +150,11 @@ export class UmamiAnalyticsService {
 		deviceType: string;
 		browserName: string;
 		ip: string;
-	}): Promise<void> {
+	}): Promise<UmamiSendOutcome> {
 		try {
-			await fetch(`${this.umamiHost}/api/send`, {
+			const response = await fetch(`${this.umamiHost}/api/send`, {
 				method: 'POST',
+				signal: AbortSignal.timeout(UMAMI_SEND_TIMEOUT_MS),
 				headers: {
 					'Content-Type': 'application/json',
 					'User-Agent': payload.userAgent,
@@ -160,8 +175,35 @@ export class UmamiAnalyticsService {
 					},
 				}),
 			});
+
+			const body = await response.text().catch(() => '');
+
+			if (!response.ok) {
+				this.logger.error('error.umamiApi.sendEvent', {
+					status: response.status,
+					body: body.slice(0, UMAMI_ERROR_BODY_LIMIT),
+					userAgent: payload.userAgent,
+				});
+				umamiEventsTotal.add(1, { outcome: 'rejected', status: response.status });
+				return 'rejected';
+			}
+
+			if (body.trim().length === 0) {
+				this.logger.warn('umami.event.discarded', {
+					reason: 'empty_200_response',
+					userAgent: payload.userAgent,
+					hostname: payload.hostname,
+				});
+				umamiEventsTotal.add(1, { outcome: 'discarded' });
+				return 'discarded';
+			}
+
+			umamiEventsTotal.add(1, { outcome: 'accepted' });
+			return 'accepted';
 		} catch (error) {
-			this.logger.error('error.umamiApi.sendEvent', { error });
+			this.logger.error('error.umamiApi.sendEvent', { error, userAgent: payload.userAgent });
+			umamiEventsTotal.add(1, { outcome: 'error' });
+			return 'error';
 		}
 	}
 

@@ -42,6 +42,7 @@ import TagRepository from '@/modules/tag/domain/repository/tag.repository';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { shortUrlScans } from '@/core/metrics';
 import { DuplicateShortUrlUseCase } from '../../useCase/duplicate-short-url.use-case';
+import { Logger } from '@/core/logging';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -64,6 +65,7 @@ export class ShortUrlController extends AbstractController {
 		@inject(TagRepository) private readonly tagRepository: TagRepository,
 		@inject(DuplicateShortUrlUseCase)
 		private readonly duplicateShortUrlUseCase: DuplicateShortUrlUseCase,
+		@inject(Logger) private readonly logger: Logger,
 	) {
 		super();
 	}
@@ -489,6 +491,16 @@ export class ShortUrlController extends AbstractController {
 		const body = request.body;
 
 		shortUrlScans.add(1);
+
+		// Logged per scan so the scan count can be broken down by client in Axiom — the
+		// forwarded user agent only exists in the body here, never on the request itself.
+		this.logger.info('short_url.scan', {
+			shortCode,
+			userAgent: body.userAgent,
+			browserName: body.browserName,
+			deviceType: body.deviceType,
+			referrer: body.referrer,
+		});
 
 		// 1. Clear views cache
 		void this.keyCache.del(this.getViewsCacheKey(shortCode));

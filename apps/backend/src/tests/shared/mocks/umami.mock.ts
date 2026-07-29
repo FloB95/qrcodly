@@ -121,6 +121,8 @@ export const mockFetchUmamiAllEndpoints = () => {
 				return originalFetch!(input, init);
 			}
 
+			// /api/send echoes a cache token when it stores the event; an empty body
+			// there means Umami discarded it, so the mock has to return one.
 			return {
 				ok: true,
 				status: 200,
@@ -131,7 +133,7 @@ export const mockFetchUmamiAllEndpoints = () => {
 					if (url.includes('/metrics')) return metricsData;
 					return statsData;
 				},
-				text: async () => '',
+				text: async () => (url.includes('/api/send') ? 'mock-cache-token' : ''),
 			};
 		});
 };

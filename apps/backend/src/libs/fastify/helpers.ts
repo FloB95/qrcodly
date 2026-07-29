@@ -344,12 +344,13 @@ function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type:
 }
 
 export function resolveClientIp(request: FastifyRequest): string {
-	const cfIp = request.headers['cf-connecting-ip'] as string | undefined;
-	if (cfIp) return cfIp;
-
 	// When the frontend server forwards a scan request, it includes the real scanner IP
 	// in x-scanner-ip alongside a valid internal API key. We trust this header only after
 	// verifying the key, so external callers cannot spoof their IP.
+	//
+	// This is checked before cf-connecting-ip on purpose: these are server-to-server calls,
+	// so every proxy header on them carries the frontend server's IP, not the scanner's.
+	// Preferring those would collapse all scans onto one rate-limit bucket and one geo origin.
 	const scannerIp = request.headers['x-scanner-ip'] as string | undefined;
 	const apiKey = request.headers['x-internal-api-key'] as string | undefined;
 	if (scannerIp && apiKey) {
@@ -359,6 +360,9 @@ export function resolveClientIp(request: FastifyRequest): string {
 			return scannerIp;
 		}
 	}
+
+	const cfIp = request.headers['cf-connecting-ip'] as string | undefined;
+	if (cfIp) return cfIp;
 
 	const xForwardedFor = request.headers['x-forwarded-for'] as string | undefined;
 	if (xForwardedFor) {
