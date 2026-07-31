@@ -1,10 +1,17 @@
 import { singleton } from 'tsyringe';
-import { and, desc, eq, inArray, isNull, isNotNull, sql, SQL } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, isNull, isNotNull, lte, ne, sql, SQL } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy, type WhereConditions } from '@/core/interface/repository.interface';
-import shortUrl, { TShortUrl, TShortUrlWithDomain } from '../entities/short-url.entity';
+import shortUrl, {
+	TShortUrl,
+	TShortUrlCreateInput,
+	TShortUrlWithDomain,
+} from '../entities/short-url.entity';
 import { convertWhereConditionToDrizzle } from '@/core/db/utils';
 import shortUrlTag from '../entities/short-url-tag.entity';
+import { hoursFromNow } from '@/core/utils/date';
+import { URL_SAFETY_RECHECK_NEW_HOURS } from '../../config/constants';
+import type { TShortUrlSafetyStatus, TShortUrlStatusFilter } from '@shared/schemas';
 
 /**
  * Repository for managing Short URL entities.
@@ -36,6 +43,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		where?: WhereConditions<TShortUrl> | SQL,
 		standalone?: boolean,
 		tagIds?: string[],
+		status?: TShortUrlStatusFilter,
 	): SQL[] {
 		const conditions: SQL[] = [isNull(this.table.deletedAt)];
 
@@ -64,6 +72,16 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 
 		if (tagIds?.length) {
 			conditions.push(this.tagIdsCondition(tagIds));
+		}
+
+		// "disabled" is the owner's own choice; "blocked" is ours and they cannot undo it
+		if (status === 'active') {
+			conditions.push(eq(this.table.isActive, true));
+		} else if (status === 'disabled') {
+			conditions.push(eq(this.table.isActive, false));
+			conditions.push(ne(this.table.safetyStatus, 'blocked'));
+		} else if (status === 'blocked') {
+			conditions.push(eq(this.table.safetyStatus, 'blocked'));
 		}
 
 		return conditions;
@@ -142,10 +160,13 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		where,
 		standalone,
 		tagIds,
-	}: ISqlQueryFindBy<TShortUrl> & { standalone?: boolean; tagIds?: string[] }): Promise<
-		TShortUrlWithDomain[]
-	> {
-		const conditions = this.buildFilterConditions(where, standalone, tagIds);
+		status,
+	}: ISqlQueryFindBy<TShortUrl> & {
+		standalone?: boolean;
+		tagIds?: string[];
+		status?: TShortUrlStatusFilter;
+	}): Promise<TShortUrlWithDomain[]> {
+		const conditions = this.buildFilterConditions(where, standalone, tagIds, status);
 
 		const safePage = Math.max(0, (page || 1) - 1);
 		const results = await this.db.query.shortUrl.findMany({
@@ -169,8 +190,9 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		where?: WhereConditions<TShortUrl>,
 		standalone?: boolean,
 		tagIds?: string[],
+		status?: TShortUrlStatusFilter,
 	): Promise<number> {
-		const conditions = this.buildFilterConditions(where, standalone, tagIds);
+		const conditions = this.buildFilterConditions(where, standalone, tagIds, status);
 
 		const result = await this.db
 			.select({ count: sql<number>`count(${this.table.id})` })
@@ -203,9 +225,15 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 
 	/**
 	 * Creates a new Short URL.
+	 *
+	 * `nextSafetyCheckAt` is derived here rather than taken from the caller: this insert lists its
+	 * columns explicitly, so anything a call site forgets is silently dropped, and a link that never
+	 * gets a due date would never be re-screened. Reserved codes have no destination yet and stay
+	 * NULL until an update gives them one.
+	 *
 	 * @param shortUrl - The Short URL to create.
 	 */
-	async create(shortUrl: Omit<TShortUrl, 'createdAt' | 'updatedAt'>): Promise<void> {
+	async create(shortUrl: TShortUrlCreateInput): Promise<void> {
 		await this.db
 			.insert(this.table)
 			.values({
@@ -218,6 +246,9 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 				qrCodeId: shortUrl.qrCodeId,
 				createdAt: new Date(),
 				createdBy: shortUrl.createdBy,
+				nextSafetyCheckAt: shortUrl.destinationUrl
+					? hoursFromNow(URL_SAFETY_RECHECK_NEW_HOURS)
+					: null,
 			})
 			.execute();
 
@@ -249,6 +280,161 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		}
 
 		return shortCode;
+	}
+
+	// ---------------------------------------------------------------------------
+	// URL safety re-check queue
+	// ---------------------------------------------------------------------------
+
+	/**
+	 * Claims the next batch of links whose safety re-check is due, oldest due date first.
+	 *
+	 * Reserved codes are excluded: they have no destination to screen. Soft-deleted rows are too —
+	 * a deleted link no longer redirects, so there is nothing to protect anyone from.
+	 */
+	async findDueForSafetyCheck(limit: number, now: Date = new Date()): Promise<TShortUrl[]> {
+		return this.db
+			.select()
+			.from(this.table)
+			.where(
+				and(
+					isNull(this.table.deletedAt),
+					isNotNull(this.table.destinationUrl),
+					isNotNull(this.table.nextSafetyCheckAt),
+					lte(this.table.nextSafetyCheckAt, now),
+				),
+			)
+			.orderBy(asc(this.table.nextSafetyCheckAt))
+			.limit(limit)
+			.execute();
+	}
+
+	/** Same predicate as {@link findDueForSafetyCheck}, for the backlog gauge. */
+	async countDueForSafetyCheck(now: Date = new Date()): Promise<number> {
+		const [row] = await this.db
+			.select({ count: sql<number>`count(${this.table.id})` })
+			.from(this.table)
+			.where(
+				and(
+					isNull(this.table.deletedAt),
+					isNotNull(this.table.destinationUrl),
+					isNotNull(this.table.nextSafetyCheckAt),
+					lte(this.table.nextSafetyCheckAt, now),
+				),
+			)
+			.execute();
+		return Number(row?.count ?? 0);
+	}
+
+	/**
+	 * Pushes the due date forward for a whole batch *before* any lookup runs.
+	 *
+	 * AbstractCronJob releases its Redis lock without checking ownership, so a run that outlives the
+	 * 600s TTL can overlap with its successor. Claiming up front means the two runs see disjoint
+	 * batches instead of screening — and double-blocking — the same links.
+	 */
+	async claimForSafetyCheck(ids: string[], claimUntil: Date): Promise<void> {
+		if (!ids.length) return;
+		await this.db
+			.update(this.table)
+			.set({ nextSafetyCheckAt: claimUntil })
+			.where(inArray(this.table.id, ids))
+			.execute();
+	}
+
+	/** Records the outcome of a completed lookup and schedules the next one. */
+	async markSafetyChecked(
+		id: string,
+		updates: {
+			safetyStatus?: TShortUrlSafetyStatus;
+			nextSafetyCheckAt: Date;
+			safetyCheckFailures?: number;
+			safetyPendingSince?: Date | null;
+			safetyThreatTypes?: string | null;
+		},
+	): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({ ...updates, lastSafetyCheckAt: new Date() })
+			.where(eq(this.table.id, id))
+			.execute();
+	}
+
+	/**
+	 * Blocks a link: disables the redirect and marks it as ours to unblock.
+	 *
+	 * `isActive` and `safetyStatus` are set in one statement so a link can never be left flagged but
+	 * still redirecting.
+	 */
+	async blockForSafety(id: string, threatTypes: string[], nextSafetyCheckAt: Date): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({
+				isActive: false,
+				safetyStatus: 'blocked',
+				safetyBlockedAt: new Date(),
+				safetyThreatTypes: threatTypes.length ? threatTypes.join(',') : null,
+				safetyPendingSince: null,
+				safetyCheckFailures: 0,
+				lastSafetyCheckAt: new Date(),
+				nextSafetyCheckAt,
+				updatedAt: new Date(),
+			})
+			.where(eq(this.table.id, id))
+			.execute();
+	}
+
+	/**
+	 * Lifts a block. `isActive` deliberately stays false: the owner has to consciously switch the
+	 * link back on rather than have traffic silently resume.
+	 */
+	async clearSafetyBlock(id: string, nextSafetyCheckAt: Date): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({
+				safetyStatus: 'clean',
+				safetyBlockedAt: null,
+				safetyThreatTypes: null,
+				safetyPendingSince: null,
+				safetyCheckFailures: 0,
+				lastSafetyCheckAt: new Date(),
+				nextSafetyCheckAt,
+				updatedAt: new Date(),
+			})
+			.where(eq(this.table.id, id))
+			.execute();
+	}
+
+	/**
+	 * Blocked links split by where the user can actually find them.
+	 *
+	 * A short URL owned by a dynamic QR code never appears in the short-URL list — that list is
+	 * always queried with `standalone: true`, by design. Reporting one combined number would promise
+	 * more rows than the list can show, so the two are counted separately and surfaced separately.
+	 */
+	async countBlockedForUser(userId: string): Promise<{
+		standalone: number;
+		qrLinked: number;
+		total: number;
+	}> {
+		const [row] = await this.db
+			.select({
+				standalone: sql<number>`sum(case when ${this.table.qrCodeId} is null then 1 else 0 end)`,
+				qrLinked: sql<number>`sum(case when ${this.table.qrCodeId} is not null then 1 else 0 end)`,
+			})
+			.from(this.table)
+			.where(
+				and(
+					eq(this.table.createdBy, userId),
+					eq(this.table.safetyStatus, 'blocked'),
+					isNull(this.table.deletedAt),
+				),
+			)
+			.execute();
+
+		const standalone = Number(row?.standalone ?? 0);
+		const qrLinked = Number(row?.qrLinked ?? 0);
+		return { standalone, qrLinked, total: standalone + qrLinked };
 	}
 }
 

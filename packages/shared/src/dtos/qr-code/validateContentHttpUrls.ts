@@ -1,12 +1,13 @@
 import { z } from 'zod';
 import type { TQrCodeContent } from '../../schemas/QrCode';
+import { safeHttpUrl } from '../../schemas/SafeUrl';
 
-const httpUrlSchema = z.httpUrl().max(1000);
+const httpUrlSchema = safeHttpUrl(1000);
 
 /**
- * Validates that URL fields in QR code content use proper HTTP/HTTPS URLs.
+ * Validates that URL fields in QR code content use proper HTTP/HTTPS URLs without credentials.
  * The entity schema uses lenient z.url() for backwards compatibility with existing data,
- * but input DTOs (Create/Update) enforce z.httpUrl() at the API boundary.
+ * but input DTOs (Create/Update) enforce it at the API boundary.
  */
 export function validateContentHttpUrls(
 	content: TQrCodeContent | undefined,

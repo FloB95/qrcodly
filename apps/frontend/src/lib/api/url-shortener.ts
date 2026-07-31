@@ -3,9 +3,12 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import { apiRequest } from '../utils';
 import { qrCodeQueryKeys } from './qr-code';
 import type {
+	TAcknowledgeSafetyIncidentsResponseDto,
 	TAnalyticsResponseDto,
 	TCreateShortUrlDto,
+	TSafetyIncidentListResponseDto,
 	TShortUrl,
+	TShortUrlStatusFilter,
 	TShortUrlWithCustomDomainPaginatedResponseDto,
 	TShortUrlWithCustomDomainResponseDto,
 	TUpdateShortUrlDto,
@@ -17,7 +20,60 @@ export const urlShortenerQueryKeys = {
 	shortCodeAnalytics: ['shortCodeAnalytics'],
 	reservedShortUrl: ['reservedShortUrl'],
 	listShortUrls: ['listShortUrls'],
+	safetyIncidents: ['safetyIncidents'],
 } as const;
+
+/**
+ * Open URL-safety findings for the signed-in user.
+ *
+ * Mounted in the dashboard layout, so this runs on every dashboard page — the 5-minute staleTime is
+ * what keeps it to roughly one request per session per window. Do not add a refetchInterval.
+ */
+export function useSafetyIncidentsQuery(enabled = true) {
+	const { getToken, isSignedIn } = useAuth();
+
+	return useQuery({
+		queryKey: urlShortenerQueryKeys.safetyIncidents,
+		queryFn: async (): Promise<TSafetyIncidentListResponseDto> => {
+			const token = await getToken();
+			return apiRequest<TSafetyIncidentListResponseDto>('/short-url/safety-incidents', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			});
+		},
+		staleTime: 5 * 60 * 1000,
+		refetchOnWindowFocus: false,
+		retry: 1,
+		enabled: enabled && !!isSignedIn,
+	});
+}
+
+export function useAcknowledgeSafetyIncidentsMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async (): Promise<TAcknowledgeSafetyIncidentsResponseDto> => {
+			const token = await getToken();
+			return apiRequest<TAcknowledgeSafetyIncidentsResponseDto>(
+				'/short-url/safety-incidents/acknowledge',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
+		},
+		onSuccess: () => {
+			void queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.safetyIncidents });
+		},
+	});
+}
 
 // Function to delete a configuration template
 export function useGetReservedShortUrlQuery() {
@@ -118,6 +174,7 @@ export function useGetAnalyticsFromShortCodeQuery(shortCode: string) {
 export type ShortUrlFilters = {
 	search?: string;
 	tagIds?: string[];
+	status?: TShortUrlStatusFilter;
 };
 
 export function useListShortUrlsQuery(page = 1, limit = 10, filters?: ShortUrlFilters) {
@@ -136,6 +193,10 @@ export function useListShortUrlsQuery(page = 1, limit = 10, filters?: ShortUrlFi
 
 			if (filters?.tagIds && filters.tagIds.length > 0) {
 				queryParams.tagIds = filters.tagIds;
+			}
+
+			if (filters?.status && filters.status !== 'all') {
+				queryParams.status = filters.status;
 			}
 
 			return apiRequest<TShortUrlWithCustomDomainPaginatedResponseDto>(

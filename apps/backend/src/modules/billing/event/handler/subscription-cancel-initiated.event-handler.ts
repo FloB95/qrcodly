@@ -73,6 +73,7 @@ export class SubscriptionCancelInitiatedEventHandler extends AbstractEventHandle
 				to: email,
 				subject: "We're Sorry to See You Go - QRcodly Subscription",
 				html,
+				template: 'subscription-cancel-initiated',
 			});
 
 			// Mark as notified after successful email send to allow retries on failure

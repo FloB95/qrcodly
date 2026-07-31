@@ -4,7 +4,7 @@ import { env } from '@/core/config/env';
 import QueryString from 'qs';
 import { TAnalyticsMetric, TAnalyticsResponseDto, TTimeSeries } from '@shared/schemas';
 import { BROWSERS, DEVICES } from '../config/constants';
-import { umamiEventsTotal } from '@/core/metrics';
+import { trackExternal, umamiEventsTotal } from '@/core/metrics';
 
 const UMAMI_SEND_TIMEOUT_MS = 5_000;
 const UMAMI_ERROR_BODY_LIMIT = 500;
@@ -37,13 +37,15 @@ export class UmamiAnalyticsService {
 		};
 
 		try {
-			const response = await fetch(url, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(body),
-			});
+			const response = await trackExternal('umami', 'auth_token', () =>
+				fetch(url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(body),
+				}),
+			);
 
 			if (!response.ok) {
 				const errorBody = await response.text();
@@ -70,12 +72,16 @@ export class UmamiAnalyticsService {
 		const url = `${this.umamiHost}/api/${endpoint}?${queryString}`;
 
 		try {
-			const response = await fetch(url, {
-				method: 'GET',
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			});
+			// Last path segment only — the full endpoint embeds the website id.
+			const operation = `fetch:${endpoint.split('/').pop() || 'unknown'}`;
+			const response = await trackExternal('umami', operation, () =>
+				fetch(url, {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}),
+			);
 
 			if (!response.ok) {
 				const errorBody = await response.text();
@@ -152,29 +158,31 @@ export class UmamiAnalyticsService {
 		ip: string;
 	}): Promise<UmamiSendOutcome> {
 		try {
-			const response = await fetch(`${this.umamiHost}/api/send`, {
-				method: 'POST',
-				signal: AbortSignal.timeout(UMAMI_SEND_TIMEOUT_MS),
-				headers: {
-					'Content-Type': 'application/json',
-					'User-Agent': payload.userAgent,
-					'X-Client-Real-IP': payload.ip,
-				},
-				body: JSON.stringify({
-					type: 'event',
-					payload: {
-						website: this.umamiWebsiteId,
-						url: payload.url,
-						hostname: payload.hostname,
-						language: payload.language,
-						referrer: payload.referrer,
-						screen: payload.screen,
-						device: payload.deviceType,
-						browser: payload.browserName,
-						ip: payload.ip,
+			const response = await trackExternal('umami', 'send_event', () =>
+				fetch(`${this.umamiHost}/api/send`, {
+					method: 'POST',
+					signal: AbortSignal.timeout(UMAMI_SEND_TIMEOUT_MS),
+					headers: {
+						'Content-Type': 'application/json',
+						'User-Agent': payload.userAgent,
+						'X-Client-Real-IP': payload.ip,
 					},
+					body: JSON.stringify({
+						type: 'event',
+						payload: {
+							website: this.umamiWebsiteId,
+							url: payload.url,
+							hostname: payload.hostname,
+							language: payload.language,
+							referrer: payload.referrer,
+							screen: payload.screen,
+							device: payload.deviceType,
+							browser: payload.browserName,
+							ip: payload.ip,
+						},
+					}),
 				}),
-			});
+			);
 
 			const body = await response.text().catch(() => '');
 

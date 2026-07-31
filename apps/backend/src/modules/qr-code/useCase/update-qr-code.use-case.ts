@@ -11,6 +11,7 @@ import { ImageService } from '@/core/services/image.service';
 import { QrCodeDataService } from '../service/qr-code-data.service';
 import { ContentUpdateStrategyService } from '../service/content-update-strategy.service';
 import { UnitOfWork } from '@/core/db/unit-of-work';
+import { qrCodesUpdated, safely } from '@/core/metrics';
 
 @injectable()
 export class UpdateQrCodeUseCase implements IBaseUseCase<
@@ -96,6 +97,7 @@ export class UpdateQrCodeUseCase implements IBaseUseCase<
 				updatedBy,
 			},
 		});
+		safely(() => qrCodesUpdated.add(1, { 'content.type': updatedQrCode.content.type }));
 
 		return updatedQrCode;
 	}

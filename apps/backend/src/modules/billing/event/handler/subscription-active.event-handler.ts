@@ -59,6 +59,7 @@ export class SubscriptionActiveEventHandler extends AbstractEventHandler<Subscri
 					to: email,
 					subject: 'Welcome Back! Your QRcodly Subscription is Active',
 					html,
+					template: 'subscription-reactivated',
 				});
 
 				logger.info('subscription.reactivatedEmailSent', {

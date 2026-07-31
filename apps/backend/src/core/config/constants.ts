@@ -54,3 +54,20 @@ export const DEFAULT_PUBLIC_LINK_LIFETIME: number = 3600; // in seconds (1 Hour)
 // ---------------------------
 export const GRACE_PERIOD_DAYS = 1;
 export const CANCELLATION_REMINDER_DAYS_BEFORE = 3;
+
+// ---------------------------
+// ABUSE CONSTANTS
+// ---------------------------
+
+/**
+ * Who receives abuse alerts (auto-ban, repeat finding needing review, failed ban, block cap).
+ * Internal — never shown to users; they only ever see SUPPORT_MAIL.
+ * Override per environment with ABUSE_ALERT_MAIL so stage does not mail the production inbox.
+ */
+export const ABUSE_ALERT_MAIL: string = env.ABUSE_ALERT_MAIL ?? 'info@fb-dev.de';
+
+/**
+ * The address customers are pointed at. Must match the one on the /banned page, since a suspended
+ * user sees both. Never expose ABUSE_ALERT_MAIL to them — we only ever point at a qrcodly.de address.
+ */
+export const SUPPORT_MAIL: string = 'support@qrcodly.de';

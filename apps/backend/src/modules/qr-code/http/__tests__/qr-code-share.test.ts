@@ -9,6 +9,9 @@ import type {
 import { API_BASE_PATH } from '@/core/config/constants';
 import { generateQrCodeDto, getTestContext, createQrCodeRequest } from './utils';
 import { resetTestState } from '@/tests/shared/test-context';
+import db from '@/core/db';
+import { eq } from 'drizzle-orm';
+import shortUrl from '@/modules/url-shortener/domain/entities/short-url.entity';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 const PUBLIC_SHARE_API_PATH = `${API_BASE_PATH}/s`;
@@ -127,6 +130,32 @@ describe('QR Code Share', () => {
 			const share = JSON.parse(response.payload) as TQrCodeShareResponseDto;
 			expect(share.config.showName).toBe(false);
 			expect(share.config.showDownloadButton).toBe(false);
+		});
+
+		it('refuses to share a QR code we blocked for safety', async () => {
+			// Sharing is distribution — a public page for a destination we disabled defeats the block.
+			// must be dynamic — a static QR code has no short URL and so can never be blocked
+			const created = await createQrCodeRequest(
+				testServer,
+				{
+					...generateQrCodeDto(),
+					content: { type: 'url', data: { url: 'https://example.com', isDynamic: true } },
+				},
+				accessToken,
+			);
+			expect(created).toHaveStatusCode(201);
+			const qrCode = JSON.parse(created.payload) as TQrCodeWithRelationsResponseDto;
+
+			await db
+				.update(shortUrl)
+				.set({ isActive: false, safetyStatus: 'blocked', safetyBlockedAt: new Date() })
+				.where(eq(shortUrl.qrCodeId, qrCode.id))
+				.execute();
+
+			const response = await createShareRequest(qrCode.id, {}, accessToken);
+
+			expect(response).toHaveStatusCode(403);
+			expect(JSON.parse(response.payload).errorCode).toBe('SHORT_URL_BLOCKED');
 		});
 
 		it('should return 401 without authentication', async () => {

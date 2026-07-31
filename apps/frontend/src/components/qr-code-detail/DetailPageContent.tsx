@@ -34,7 +34,8 @@ import EpcContent from './content/Epc';
 import TextContent from './content/Text';
 import { Link } from '@/i18n/navigation';
 import { getQrCodeEditLink } from '@/lib/utils';
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PencilIcon, ShieldExclamationIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { Badge } from '@/components/ui/badge';
 
 import { Card, CardContent } from '../ui/card';
 import {
@@ -51,6 +52,10 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 
 	const [isDeleting, setIsDeleting] = React.useState(false);
 	const deleteMutation = useDeleteQrCodeMutation();
+
+	// A dynamic QR code's state lives on its linked short URL.
+	const isBlocked = qrCode.shortUrl?.safetyStatus === 'blocked';
+	const threatTypes = qrCode.shortUrl?.safetyThreatTypes?.split(',').filter(Boolean) ?? [];
 
 	const renderQrCodeContent = () => {
 		switch (qrCode?.content.type) {
@@ -136,11 +141,17 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 											: t('analytics.stateInactive')}
 									</Badge>
 								)} */}
+								{isBlocked && (
+									<Badge variant="destructive" className="mt-1">
+										{t('shortUrl.status.blocked')}
+									</Badge>
+								)}
 								<QrCodeTagBadges qrCodeId={qrCode.id} tags={qrCode.tags ?? []} />
 							</div>
 						</div>
 						<div className="flex items-center gap-2">
-							<ShareDialog qrCodeId={qrCode.id} />
+							{/* Sharing a blocked QR code would publish a destination we disabled; the API refuses it */}
+							{!isBlocked && <ShareDialog qrCodeId={qrCode.id} />}
 							<Link className={buttonVariants({ size: 'sm' })} href={getQrCodeEditLink(qrCode.id)}>
 								<PencilIcon className="size-4 lg:hidden" />
 								<span className="hidden lg:inline">{t('general.edit')}</span>
@@ -187,6 +198,34 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 					</div>
 				</CardContent>
 			</Card>
+
+			{/* Why this QR code stopped working — without it a blocked code just looks broken */}
+			{isBlocked && (
+				<div className="rounded-lg border border-red-300 bg-red-50 p-4 dark:border-red-900/60 dark:bg-red-950/40">
+					<div className="flex gap-3">
+						<ShieldExclamationIcon
+							aria-hidden="true"
+							className="size-5 shrink-0 text-red-600 dark:text-red-400"
+						/>
+						<div className="space-y-1">
+							<p className="text-sm font-semibold text-red-900 dark:text-red-100">
+								{t('shortUrl.safety.blocked.title')}
+							</p>
+							<p className="text-sm text-red-800 dark:text-red-200">
+								{t('shortUrl.safety.blocked.description')}
+							</p>
+							{threatTypes.length > 0 && (
+								<p className="text-sm text-red-800 dark:text-red-200">
+									{t('shortUrl.safety.blocked.threatTypes', { types: threatTypes.join(', ') })}
+								</p>
+							)}
+							<p className="text-sm text-red-700 dark:text-red-300">
+								{t('shortUrl.safety.blocked.support')}
+							</p>
+						</div>
+					</div>
+				</div>
+			)}
 
 			{/* Content Card */}
 			<Card>

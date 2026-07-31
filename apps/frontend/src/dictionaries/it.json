@@ -54,7 +54,8 @@
 			"active": "Attivo",
 			"inactive": "Disattivato",
 			"enable": "Attiva",
-			"disable": "Disattiva"
+			"disable": "Disattiva",
+			"blocked": "Bloccato"
 		},
 		"error": {
 			"maliciousDestination": {
@@ -79,12 +80,40 @@
 			},
 			"load": {
 				"title": "Errore durante il caricamento degli URL brevi. Riprova."
+			},
+			"blocked": {
+				"title": "Il link è bloccato",
+				"message": "Questo link è stato bloccato perché la sua destinazione è stata segnalata come non sicura e non può essere riattivato."
 			}
 		},
-		"featureBanner": {
-			"title": "Scopri gli URL brevi",
-			"description": "Ora puoi creare e gestire URL brevi direttamente — accorcia i link, monitora i clic e consulta analisi dettagliate. Nessun codice QR necessario.",
-			"cta": "Provalo ora"
+		"safety": {
+			"banner": {
+				"titleOne": "Uno dei tuoi link è stato bloccato",
+				"titleMany": "{count} dei tuoi link sono stati bloccati",
+				"description": "Google Safe Browsing ha segnalato la destinazione come non sicura, quindi abbiamo disattivato il link. Non reindirizza più nessuno.",
+				"warningActive": "Questo è un avviso: se su questo account viene usata di nuovo una destinazione malevola, lo sospenderemo.",
+				"dismiss": "Ho capito",
+				"breakdown": "Interessati: {shortUrls} URL brevi e {qrCodes} codici QR.",
+				"reviewShortUrlsCta": "Controlla gli URL brevi",
+				"reviewQrCodesCta": "Controlla i codici QR"
+			},
+			"blocked": {
+				"title": "Questo link è bloccato",
+				"description": "Lo abbiamo disattivato perché Google Safe Browsing segnala la sua destinazione come non sicura.",
+				"threatTypes": "Segnalato come: {types}",
+				"remediation": "Non puoi riattivare un link bloccato. Continuiamo a controllarlo automaticamente: quando la destinazione non è più segnalata, il blocco viene rimosso e potrai riattivarlo. Anche cambiare il link verso una destinazione sicura rimuove il blocco.",
+				"support": "Pensi che sia un errore? Contatta il supporto e lo verificheremo.",
+				"tooltip": "Bloccato per destinazione non sicura — non puoi riattivarlo tu.",
+				"menuHint": "I link bloccati non possono essere attivati né duplicati."
+			}
+		},
+		"filters": {
+			"status": {
+				"all": "Tutti",
+				"active": "Attivi",
+				"disabled": "Disattivati",
+				"blocked": "Bloccati"
+			}
 		}
 	},
 	"general": {
@@ -3718,5 +3747,11 @@
 			"title": "Supporto via e-mail",
 			"subtitle": "Contatta il nostro team"
 		}
+	},
+	"linkBlocked": {
+		"title": "Link bloccato",
+		"description": "Questo link è stato disattivato perché la destinazione è stata segnalata come non sicura.",
+		"note": "Per la tua sicurezza non ti abbiamo reindirizzato. Non inserire dati personali se sei arrivato qui da un messaggio inatteso.",
+		"button": "Torna alla home"
 	}
 }

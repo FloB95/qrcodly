@@ -1,4 +1,5 @@
 import { withRetry } from '@/core/utils/with-retry';
+import { dbDeadlockRetries, safely } from '@/core/metrics';
 
 /**
  * Checks whether an error is a MySQL deadlock (errno 1213 / ER_LOCK_DEADLOCK).
@@ -19,6 +20,10 @@ export function withDeadlockRetry<T>(fn: () => Promise<T>, maxRetries = 3): Prom
 		maxRetries,
 		baseDelayMs: 50,
 		maxDelayMs: 1000,
-		isRetryable: isDeadlockError,
+		isRetryable: (error) => {
+			const retryable = isDeadlockError(error);
+			if (retryable) safely(() => dbDeadlockRetries.add(1));
+			return retryable;
+		},
 	});
 }

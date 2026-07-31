@@ -56,7 +56,13 @@ describe('getShortUrl (internal API - scan lookup)', () => {
 		expect(body).not.toHaveProperty('name');
 
 		// Only expected fields
-		expect(Object.keys(body).sort()).toEqual(['deletedAt', 'destinationUrl', 'isActive']);
+		// `blocked` lets the frontend middleware route scanners to /link-blocked instead of /disabled
+		expect(Object.keys(body).sort()).toEqual([
+			'blocked',
+			'deletedAt',
+			'destinationUrl',
+			'isActive',
+		]);
 	});
 
 	it('should return null destinationUrl for reserved URLs', async () => {

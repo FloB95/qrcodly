@@ -38,7 +38,11 @@ import {
 	httpErrorsTotal,
 	httpActiveRequests,
 	rateLimitHits,
+	safely,
 } from './metrics';
+
+/** Single bucket for requests that matched no route, so scanners cannot inflate cardinality. */
+const UNMATCHED_ROUTE = '__unmatched__';
 
 @singleton()
 export class Server {
@@ -52,27 +56,36 @@ export class Server {
 	}
 
 	async build() {
-		// OTel request metrics hooks
+		// OTel request metrics hooks. Every emission is guarded: this runs on literally every
+		// request, and telemetry must never be able to fail one.
 		this.server.addHook('onRequest', (request, _reply, done) => {
 			request.startTime = process.hrtime.bigint();
-			httpActiveRequests.add(1);
+			safely(() => httpActiveRequests.add(1));
 			done();
 		});
 
 		this.server.addHook('onResponse', (request, reply, done) => {
+			// Decremented on its own, unconditionally: pairing it with the increment in `onRequest`
+			// is the only thing keeping the gauge honest. Bundling it with the recordings below
+			// would let one bad emission — or a missing startTime — leak a request forever.
+			safely(() => httpActiveRequests.add(-1));
+
 			if (request.startTime) {
 				const durationMs = Number(process.hrtime.bigint() - request.startTime) / 1e6;
-				const attrs = {
-					'http.method': request.method,
-					'http.route': request.routeOptions?.url || request.url,
-					'http.status_code': reply.statusCode,
-				};
-				httpRequestDuration.record(durationMs, attrs);
-				httpRequestsTotal.add(1, attrs);
-				httpActiveRequests.add(-1);
-				if (reply.statusCode >= 400) {
-					httpErrorsTotal.add(1, attrs);
-				}
+				safely(() => {
+					const attrs = {
+						'http.method': request.method,
+						// Never the raw url: unmatched requests carry attacker-controlled paths and
+						// query strings, and each distinct value would become its own time series.
+						'http.route': request.routeOptions?.url || UNMATCHED_ROUTE,
+						'http.status_code': reply.statusCode,
+					};
+					httpRequestDuration.record(durationMs, attrs);
+					httpRequestsTotal.add(1, attrs);
+					if (reply.statusCode >= 400) {
+						httpErrorsTotal.add(1, attrs);
+					}
+				});
 			}
 			done();
 		});
@@ -218,7 +231,12 @@ export class Server {
 					container.resolve(Logger).warn('request.rate.limit.hit', {
 						request: createRequestLogObject(req, { rateLimit: context.max }),
 					});
-					rateLimitHits.add(1);
+					safely(() =>
+						rateLimitHits.add(1, {
+							route: req.routeOptions?.url || UNMATCHED_ROUTE,
+							policy: req.routeOptions.config?.rateLimitPolicy ?? RateLimitPolicy.DEFAULT,
+						}),
+					);
 					throw new TooManyRequestsError();
 				},
 			});

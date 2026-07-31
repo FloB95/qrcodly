@@ -1,13 +1,16 @@
 // Live tests: dynamic QR codes must reject malicious destinations. Gated on
-// GOOGLE_WEB_RISK_API_KEY (skipped without it); per-test Redis reset avoids banning the shared user.
+// GOOGLE_WEB_RISK_API_KEY (skipped without it); per-test reset avoids banning the shared user.
 import { container } from 'tsyringe';
+import { eq } from 'drizzle-orm';
 import {
 	getTestContext as getGlobalTestContext,
 	resetTestState,
 	TEST_USER_ID,
 } from '@/tests/shared/test-context';
 import { UserBanService } from '@/core/auth';
-import { KeyCache } from '@/core/cache';
+import db from '@/core/db';
+import userSafetyStanding from '@/modules/url-shortener/domain/entities/user-safety-standing.entity';
+import urlSafetyIncident from '@/modules/url-shortener/domain/entities/url-safety-incident.entity';
 import { env } from '@/core/config/env';
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
@@ -30,10 +33,15 @@ describeLive('dynamic QR code destinationUrl safety — live Web Risk', () => {
 		await container.resolve(UserBanService).unban(TEST_USER_ID);
 	});
 
+	// The offence ladder is persisted now and bans on the second offence, so it has to be cleared
+	// between cases or this suite would suspend the shared Clerk test user.
 	beforeEach(async () => {
-		const client = container.resolve(KeyCache).getClient();
-		await client.del(`url_safety:violations:${TEST_USER_ID}`);
-		await client.del(`url_safety:violations:urls:${TEST_USER_ID}`);
+		await db.delete(urlSafetyIncident).where(eq(urlSafetyIncident.userId, TEST_USER_ID)).execute();
+		await db
+			.delete(userSafetyStanding)
+			.where(eq(userSafetyStanding.userId, TEST_USER_ID))
+			.execute();
+		await container.resolve(UserBanService).unban(TEST_USER_ID);
 	});
 
 	const createQrCode = (payload: object) =>

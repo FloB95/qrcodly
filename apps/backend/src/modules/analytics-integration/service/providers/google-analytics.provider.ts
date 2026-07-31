@@ -5,6 +5,7 @@ import {
 	type IValidationResult,
 } from './analytics-provider.interface';
 import { anonymizeIp } from '@/utils/general';
+import { trackExternal } from '@/core/metrics';
 
 interface GA4ValidationMessage {
 	fieldPath: string;
@@ -39,12 +40,14 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 
 		// Send directly to collect endpoint (debug endpoint only validates payload
 		// structure, not credentials, and adds unnecessary latency/dependency)
-		const collectResponse = await fetch(`${this.GA_COLLECT_URL}?${queryParams.toString()}`, {
-			method: 'POST',
-			headers,
-			body,
-			signal: AbortSignal.timeout(5000),
-		});
+		const collectResponse = await trackExternal('google_analytics', 'collect', () =>
+			fetch(`${this.GA_COLLECT_URL}?${queryParams.toString()}`, {
+				method: 'POST',
+				headers,
+				body,
+				signal: AbortSignal.timeout(5000),
+			}),
+		);
 
 		if (!collectResponse.ok) {
 			throw new Error(`GA4 collect endpoint returned status ${collectResponse.status}`);
@@ -81,12 +84,14 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 		};
 
 		try {
-			const response = await fetch(url, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(body),
-				signal: AbortSignal.timeout(5000),
-			});
+			const response = await trackExternal('google_analytics', 'validate', () =>
+				fetch(url, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(body),
+					signal: AbortSignal.timeout(5000),
+				}),
+			);
 
 			if (!response.ok) return { valid: false, credentialsVerified: false };
 

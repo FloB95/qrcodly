@@ -4,10 +4,12 @@ import { ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { TShortUrl, TShortUrlWithDomainAndTags } from '../domain/entities/short-url.entity';
 import TagRepository from '@/modules/tag/domain/repository/tag.repository';
+import type { TShortUrlStatusFilter } from '@shared/schemas';
 
 type ListParams = ISqlQueryFindBy<TShortUrl> & {
 	standalone?: boolean;
 	tagIds?: string[];
+	status?: TShortUrlStatusFilter;
 };
 
 type ListResponse = {
@@ -32,7 +34,7 @@ export class ListShortUrlsUseCase implements IBaseUseCase {
 	 * @returns An object containing the list of short URLs and the total count.
 	 */
 	async execute(
-		{ limit, page, where, standalone, tagIds }: ListParams,
+		{ limit, page, where, standalone, tagIds, status }: ListParams,
 		userId: string,
 	): Promise<ListResponse> {
 		const shortUrls = await this.shortUrlRepository.findAllWithDomain({
@@ -44,6 +46,7 @@ export class ListShortUrlsUseCase implements IBaseUseCase {
 			},
 			standalone,
 			tagIds,
+			status,
 		});
 
 		const total = await this.shortUrlRepository.countTotalFiltered(
@@ -53,6 +56,7 @@ export class ListShortUrlsUseCase implements IBaseUseCase {
 			},
 			standalone,
 			tagIds,
+			status,
 		);
 
 		// Batch-fetch tags for all returned short URLs

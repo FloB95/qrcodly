@@ -1,6 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import { BadRequestError } from '@/core/error/http';
 import { Logger } from '../logging';
+import { trackExternal } from '../metrics';
 
 @injectable()
 export class ScreenshotService {
@@ -21,11 +22,13 @@ export class ScreenshotService {
 			const screenshotUrl = `https://image.thum.io/get/width/1200/noanimate/${url}`;
 
 			// Fetch the screenshot
-			const response = await fetch(screenshotUrl, {
-				headers: {
-					'User-Agent': 'QRcodly/1.0',
-				},
-			});
+			const response = await trackExternal('screenshot', 'capture', () =>
+				fetch(screenshotUrl, {
+					headers: {
+						'User-Agent': 'QRcodly/1.0',
+					},
+				}),
+			);
 
 			if (!response.ok) {
 				this.logger.error('screenshot.apiError', {

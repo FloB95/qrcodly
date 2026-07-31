@@ -3,7 +3,10 @@ import { ListShortUrlsUseCase } from '../list-short-urls.use-case';
 import type ShortUrlRepository from '../../domain/repository/short-url.repository';
 import type TagRepository from '@/modules/tag/domain/repository/tag.repository';
 import { mock, type MockProxy } from 'jest-mock-extended';
-import { type TShortUrlWithDomainAndTags } from '../../domain/entities/short-url.entity';
+import {
+	SHORT_URL_SAFETY_DEFAULTS,
+	type TShortUrlWithDomainAndTags,
+} from '../../domain/entities/short-url.entity';
 import { type TTag } from '@/modules/tag/domain/entities/tag.entity';
 
 describe('ListShortUrlsUseCase', () => {
@@ -35,6 +38,7 @@ describe('ListShortUrlsUseCase', () => {
 		createdAt: new Date(),
 		updatedAt: null,
 		deletedAt: null,
+		...SHORT_URL_SAFETY_DEFAULTS,
 		tags: [],
 	};
 
@@ -161,6 +165,7 @@ describe('ListShortUrlsUseCase', () => {
 
 			expect(mockShortUrlRepository.countTotalFiltered).toHaveBeenCalledWith(
 				expect.objectContaining({ createdBy: { eq: userId } }),
+				undefined,
 				undefined,
 				undefined,
 			);

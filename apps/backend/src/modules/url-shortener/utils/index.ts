@@ -24,15 +24,18 @@ function toHost(url: string | null | undefined): string | null {
 }
 
 /**
- * True if `destinationUrl` points back at this short URL's own `/u/<code>` path on any host we
- * serve redirects on — the dedicated redirect domain (SHORT_URL_BASE_URL), the legacy brand domain
- * (FRONTEND_URL), or the short URL's custom domain — which would create a redirect loop.
+ * True if `destinationUrl` points at any of our own `/u/<code>` redirect paths — on the dedicated
+ * redirect domain (SHORT_URL_BASE_URL), the legacy brand domain (FRONTEND_URL), or the given custom
+ * domain. Covers both the self-referencing case (a redirect loop) and chaining one short URL onto
+ * another, which hides the real destination behind a hop that no safety check ever sees.
  * Host-set based rather than exact-string equality, so it stays correct across the domain split.
  * Best-effort: unparseable destinations return false.
+ *
+ * Residual: another user's custom domain is not in the host set, so a cross-tenant chain is not
+ * caught here — that hop is itself screened when its own short URL is created or updated.
  */
-export function isSelfReferencingShortUrl(
+export function isShortenedDestinationUrl(
 	destinationUrl: string | null | undefined,
-	shortCode: string,
 	customDomainHost?: string | null,
 ): boolean {
 	if (!destinationUrl) return false;
@@ -42,7 +45,7 @@ export function isSelfReferencingShortUrl(
 	} catch {
 		return false;
 	}
-	if (parsed.pathname.replace(/\/+$/, '') !== `/u/${shortCode}`) return false;
+	if (!/^\/u\/[^/]+\/*$/.test(parsed.pathname)) return false;
 
 	const hosts = new Set<string>();
 	for (const url of [env.SHORT_URL_BASE_URL, env.FRONTEND_URL]) {

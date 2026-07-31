@@ -7,9 +7,14 @@ import { TShortUrl } from '../domain/entities/short-url.entity';
 import QrCodeRepository from '@/modules/qr-code/domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
 import { RedirectLoopError } from '../error/http/redirect-loop.error';
-import { isSelfReferencingShortUrl } from '../utils';
+import { isShortenedDestinationUrl } from '../utils';
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 import { DestinationUrlSafetyService } from '../service/destination-url-safety.service';
+import { ShortUrlBlockedError } from '../error/http/short-url-blocked.error';
+import UrlSafetyIncidentRepository from '../domain/repository/url-safety-incident.repository';
+import { hoursFromNow } from '@/core/utils/date';
+import { URL_SAFETY_RECHECK_NEW_HOURS } from '../config/constants';
+import { safely, shortUrlsUpdated, urlSafetyUnblocks } from '@/core/metrics';
 
 /**
  * Internal input type for updating a short URL.
@@ -36,6 +41,8 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		@inject(EventEmitter) private eventEmitter: EventEmitter,
 		@inject(DestinationUrlSafetyService)
 		private destinationUrlSafetyService: DestinationUrlSafetyService,
+		@inject(UrlSafetyIncidentRepository)
+		private incidentRepository: UrlSafetyIncidentRepository,
 	) {}
 
 	/**
@@ -64,21 +71,60 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 			updatedAt: new Date(),
 		};
 
-		// prevent linking a destination that points back at this short URL (redirect loop) —
-		// matched on any host we serve it on: redirect domain, legacy brand domain, or custom domain
-		if (isSelfReferencingShortUrl(updatesDto?.destinationUrl, shortUrl.shortCode)) {
+		// refuse a destination that is itself one of our short URLs — a loop when it points back at
+		// this code, an unscreened hop that hides the real target when it points at another one
+		if (isShortenedDestinationUrl(updatesDto?.destinationUrl)) {
 			throw new RedirectLoopError();
 		}
 
+		// Requirement: a link we blocked stays off. This is the single choke point — the toggle
+		// endpoint, PATCH /:shortCode and the dynamic-QR strategies all reach isActive through here.
+		// Pointing the link somewhere else is still allowed; that path re-screens below and lifts the
+		// block when the new destination comes back clean.
+		const keepsSameDestination =
+			updatesDto.destinationUrl === undefined ||
+			updatesDto.destinationUrl === shortUrl.destinationUrl;
 		if (
-			updatesDto.destinationUrl !== undefined &&
-			updatesDto.destinationUrl !== shortUrl.destinationUrl
+			updatesDto.isActive === true &&
+			shortUrl.safetyStatus === 'blocked' &&
+			keepsSameDestination
 		) {
+			throw new ShortUrlBlockedError();
+		}
+
+		const destinationChanged =
+			updatesDto.destinationUrl !== undefined &&
+			updatesDto.destinationUrl !== shortUrl.destinationUrl;
+
+		if (destinationChanged) {
 			await this.destinationUrlSafetyService.assertDestinationUrlSafe(
 				updatesDto.destinationUrl,
 				updatedBy,
 				'update',
+				shortUrl.id,
 			);
+
+			// Any new destination re-enters the queue — including a reserved code getting its first one.
+			updates.nextSafetyCheckAt = updatesDto.destinationUrl
+				? hoursFromNow(URL_SAFETY_RECHECK_NEW_HOURS)
+				: null;
+
+			// The new destination passed screening, so the old block no longer applies. isActive is
+			// left alone: the owner switches the link back on deliberately, in a separate action.
+			if (shortUrl.safetyStatus === 'blocked') {
+				updates.safetyStatus = 'clean';
+				updates.safetyBlockedAt = null;
+				updates.safetyThreatTypes = null;
+				updates.safetyPendingSince = null;
+				updates.safetyCheckFailures = 0;
+				await this.incidentRepository.resolveForShortUrl(shortUrl.id);
+				urlSafetyUnblocks.add(1, { reason: 'destination_changed' });
+				this.logger.info('url_safety.unblocked', {
+					shortUrlId: shortUrl.id,
+					reason: 'destination_changed',
+					updatedBy,
+				});
+			}
 		}
 
 		if (linkedQrCodeId) {
@@ -112,6 +158,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 				updatedBy,
 			},
 		});
+		safely(() => shortUrlsUpdated.add(1));
 
 		return result!;
 	}

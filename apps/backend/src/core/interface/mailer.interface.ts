@@ -5,6 +5,16 @@ export interface Attachment {
 	content: string | Buffer | Readable | undefined;
 }
 
+export type TemplateName =
+	| 'subscription-past-due'
+	| 'subscription-cancel-initiated'
+	| 'subscription-cancellation-reminder'
+	| 'subscription-pro-features-disabled'
+	| 'subscription-reactivated'
+	| 'url-safety-link-blocked'
+	| 'url-safety-account-banned'
+	| 'url-safety-admin-alert';
+
 /**
  * Interface for a mailer service.
  */
@@ -17,6 +27,7 @@ export interface IMailer {
 	 * @param subject The subject of the email.
 	 * @param text The plain text body of the email.
 	 * @param html The HTML body of the email.
+	 * @param template Template name, used as the metrics label so failures are attributable.
 	 * @returns A promise that resolves with the email response.
 	 */
 	sendMail({
@@ -27,6 +38,7 @@ export interface IMailer {
 		text,
 		html,
 		attachments,
+		template,
 	}: {
 		from?: string;
 		to: string | string[];
@@ -35,6 +47,7 @@ export interface IMailer {
 		text?: string;
 		html?: string;
 		attachments?: Attachment[];
+		template?: TemplateName | 'unknown';
 	}): Promise<unknown>;
 
 	/**

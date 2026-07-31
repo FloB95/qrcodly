@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { ShortUrlStatusFilterSchema } from '@shared/schemas';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TableCell } from '@/components/ui/table';
@@ -75,8 +77,16 @@ const SkeletonRow = () => (
 
 export function ShortUrlList() {
 	const t = useTranslations('shortUrl');
+	const searchParams = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(1);
-	const [filters, setFilters] = useState<ShortUrlFiltersType>({});
+	// Seeded once, in the initializer, so the safety banner's "?status=blocked" link actually lands on
+	// a filtered list. Deliberately not synced back to the URL — reading and writing the same param in
+	// an effect is how these turn into render loops.
+	const [filters, setFilters] = useState<ShortUrlFiltersType>(() => {
+		const status = searchParams.get('status');
+		const parsed = ShortUrlStatusFilterSchema.safeParse(status);
+		return parsed.success && parsed.data !== 'all' ? { status: parsed.data } : {};
+	});
 	const currentLimit = 10;
 
 	const {

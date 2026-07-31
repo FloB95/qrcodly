@@ -1,9 +1,10 @@
 import { z } from 'zod';
 import { ShortUrlSchema } from '../../schemas/ShortUrl';
+import { SafeHttpUrlSchema } from '../../schemas/SafeUrl';
 
 /**
  * Schema for creating a short URL DTO via the public API.
- * Uses z.httpUrl() at the API boundary to enforce http/https protocol for user-provided URLs.
+ * Enforces http/https and rejects embedded credentials at the API boundary.
  * destinationUrl is required (non-nullable) — only internal flows (reserved URLs) may set null.
  */
 export const CreateShortUrlDto = ShortUrlSchema.pick({
@@ -12,9 +13,9 @@ export const CreateShortUrlDto = ShortUrlSchema.pick({
 	customDomainId: true,
 	name: true,
 }).extend({
-	destinationUrl: z
-		.httpUrl()
-		.describe('The destination URL to redirect to (must start with http:// or https://)'),
+	destinationUrl: SafeHttpUrlSchema.describe(
+		'The destination URL to redirect to (must start with http:// or https://)',
+	),
 	isActive: z
 		.boolean()
 		.default(true)

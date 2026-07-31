@@ -59,6 +59,7 @@ export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 						to: email,
 						subject: 'Your QRcodly Pro Features Have Been Disabled',
 						html,
+						template: 'subscription-pro-features-disabled',
 					});
 				}
 

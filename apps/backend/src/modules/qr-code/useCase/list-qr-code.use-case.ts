@@ -4,11 +4,13 @@ import { ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
 import { ImageService } from '@/core/services/image.service';
 import { TQrCode, TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
+import type { TShortUrlStatusFilter } from '@shared/schemas';
 import { TQrCodeContentType } from '@shared/schemas';
 
 type ListParams = ISqlQueryFindBy<TQrCode> & {
 	contentType?: TQrCodeContentType[];
 	tagIds?: string[];
+	status?: TShortUrlStatusFilter;
 };
 
 type ListResponse = {
@@ -34,7 +36,14 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 	 * @param contentType Optional content type filter.
 	 * @returns An object containing the list of QR codes and the total count.
 	 */
-	async execute({ limit, page, where, contentType, tagIds }: ListParams): Promise<ListResponse> {
+	async execute({
+		limit,
+		page,
+		where,
+		contentType,
+		tagIds,
+		status,
+	}: ListParams): Promise<ListResponse> {
 		// Retrieve QR codes based on the query parameters
 		const qrCodes = await this.qrCodeRepository.findAll({
 			limit,
@@ -42,6 +51,7 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 			where,
 			contentType,
 			tagIds,
+			status,
 		});
 
 		for (const qrCode of qrCodes) {
@@ -54,7 +64,7 @@ export class ListQrCodesUseCase implements IBaseUseCase {
 		}
 
 		// Count the total number of QR codes
-		const total = await this.qrCodeRepository.countTotal(where, contentType, tagIds);
+		const total = await this.qrCodeRepository.countTotal(where, contentType, tagIds, status);
 
 		return {
 			qrCodes,

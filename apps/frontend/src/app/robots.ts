@@ -17,6 +17,8 @@ export default function robots(): MetadataRoute.Robots {
 					'/short-url/',
 					'/u/',
 					'/banned',
+					'/disabled',
+					'/link-blocked',
 				],
 			},
 		],

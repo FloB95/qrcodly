@@ -2,10 +2,12 @@ import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
-import { TShortUrl, TShortUrlWithDomain } from '../domain/entities/short-url.entity';
+import { TShortUrlCreateInput, TShortUrlWithDomain } from '../domain/entities/short-url.entity';
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 import { shortUrlsCreated } from '@/core/metrics';
 import { DestinationUrlSafetyService } from '../service/destination-url-safety.service';
+import { RedirectLoopError } from '../error/http/redirect-loop.error';
+import { isShortenedDestinationUrl } from '../utils';
 
 /**
  * Internal input type for creating a short URL.
@@ -39,6 +41,12 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 	 * @returns A promise that resolves with the newly created ShortUrl entity.
 	 */
 	async execute(dto: CreateShortUrlInput, createdBy: string): Promise<TShortUrlWithDomain> {
+		// refuse a destination that is itself one of our short URLs — chaining hides the real target
+		// behind a hop that no safety check ever sees
+		if (isShortenedDestinationUrl(dto.destinationUrl)) {
+			throw new RedirectLoopError();
+		}
+
 		await this.destinationUrlSafetyService.assertDestinationUrlSafe(
 			dto.destinationUrl,
 			createdBy,
@@ -53,7 +61,7 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 		const newId = await this.shortUrlRepository.generateId();
 		const shortCode = await this.shortUrlRepository.generateShortCode();
 
-		const shortUrl: Omit<TShortUrl, 'createdAt' | 'updatedAt'> = {
+		const shortUrl: TShortUrlCreateInput = {
 			id: newId,
 			shortCode,
 			name: dto.name ?? null,

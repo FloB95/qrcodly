@@ -23,6 +23,7 @@ import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
 import { type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
 import { QrCodeShareNotFoundError } from '../../error/http/qr-code-share-not-found.error';
 import { CreateQrCodeShareUseCase } from '../../useCase/create-qr-code-share.use-case';
+import { ShortUrlBlockedError } from '@/modules/url-shortener/error/http/short-url-blocked.error';
 import { UpdateQrCodeShareUseCase } from '../../useCase/update-qr-code-share.use-case';
 import { DeleteQrCodeShareUseCase } from '../../useCase/delete-qr-code-share.use-case';
 import { GetPublicSharedQrCodeUseCase } from '../../useCase/get-public-shared-qr-code.use-case';
@@ -71,7 +72,12 @@ export class QrCodeShareController extends AbstractController {
 		request: IHttpRequest<TCreateQrCodeShareDto, TIdRequestQueryDto>,
 	): Promise<IHttpResponse<TQrCodeShareResponseDto>> {
 		const { id } = request.params;
-		await this.fetchOwnedQrCode(id, request.user.id);
+		const qrCode = await this.fetchOwnedQrCode(id, request.user.id);
+
+		// Sharing is distribution. A QR code whose destination we blocked must not get a public page.
+		if (qrCode.shortUrl?.safetyStatus === 'blocked') {
+			throw new ShortUrlBlockedError();
+		}
 
 		const share = await this.createShareUseCase.execute(id, request.user.id, request.body);
 

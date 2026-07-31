@@ -54,7 +54,8 @@
 			"active": "Actif",
 			"inactive": "Désactivé",
 			"enable": "Activer",
-			"disable": "Désactiver"
+			"disable": "Désactiver",
+			"blocked": "Bloqué"
 		},
 		"error": {
 			"maliciousDestination": {
@@ -79,12 +80,40 @@
 			},
 			"load": {
 				"title": "Erreur lors du chargement des URLs courtes. Veuillez réessayer."
+			},
+			"blocked": {
+				"title": "Le lien est bloqué",
+				"message": "Ce lien a été bloqué car sa destination a été signalée comme dangereuse et ne peut pas être réactivé."
 			}
 		},
-		"featureBanner": {
-			"title": "Découvrez les URLs courtes",
-			"description": "Vous pouvez désormais créer et gérer des URLs courtes directement — raccourcissez vos liens, suivez les clics et consultez des analyses détaillées. Aucun code QR nécessaire.",
-			"cta": "Essayer maintenant"
+		"safety": {
+			"banner": {
+				"titleOne": "Un de vos liens a été bloqué",
+				"titleMany": "{count} de vos liens ont été bloqués",
+				"description": "Google Safe Browsing a signalé la destination comme dangereuse, nous avons donc désactivé le lien. Il ne redirige plus personne.",
+				"warningActive": "Ceci est un avertissement : si une destination malveillante est réutilisée sur ce compte, nous le suspendrons.",
+				"dismiss": "Compris",
+				"breakdown": "Concernés : {shortUrls} URL(s) courte(s) et {qrCodes} QR code(s).",
+				"reviewShortUrlsCta": "Vérifier les URLs courtes",
+				"reviewQrCodesCta": "Vérifier les QR codes"
+			},
+			"blocked": {
+				"title": "Ce lien est bloqué",
+				"description": "Nous l’avons désactivé car Google Safe Browsing signale sa destination comme dangereuse.",
+				"threatTypes": "Signalé comme : {types}",
+				"remediation": "Vous ne pouvez pas réactiver un lien bloqué. Nous continuons à le vérifier automatiquement : dès que la destination n’est plus signalée, le blocage est levé et vous pouvez le réactiver. Changer le lien vers une destination sûre lève également le blocage.",
+				"support": "Vous pensez qu’il s’agit d’une erreur ? Contactez le support, nous vérifierons.",
+				"tooltip": "Bloqué pour destination dangereuse — vous ne pouvez pas le réactiver.",
+				"menuHint": "Les liens bloqués ne peuvent pas être activés ni dupliqués."
+			}
+		},
+		"filters": {
+			"status": {
+				"all": "Tous",
+				"active": "Actifs",
+				"disabled": "Désactivés",
+				"blocked": "Bloqués"
+			}
 		}
 	},
 	"general": {
@@ -3718,5 +3747,11 @@
 			"title": "Support par e-mail",
 			"subtitle": "Contactez notre équipe"
 		}
+	},
+	"linkBlocked": {
+		"title": "Lien bloqué",
+		"description": "Ce lien a été désactivé car sa destination a été signalée comme dangereuse.",
+		"note": "Pour votre protection, nous ne vous avons pas redirigé. N’entrez aucune donnée personnelle si vous êtes arrivé ici via un message inattendu.",
+		"button": "Retour à l’accueil"
 	}
 }

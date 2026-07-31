@@ -51,6 +51,9 @@ export const QrCodeMenuItems = ({
 	const t = useTranslations();
 	const tTemplates = useTranslations('templates');
 
+	// A QR code whose destination we blocked: it cannot be re-enabled, shared or copied.
+	const isBlocked = qr.shortUrl?.safetyStatus === 'blocked';
+
 	return (
 		<>
 			<Label>{t('qrCode.actionsMenu.title')}</Label>
@@ -97,11 +100,12 @@ export const QrCodeMenuItems = ({
 				</SubContent>
 			</Sub>
 
-			<Item onClick={() => onShare()} className="cursor-pointer">
+			{/* both hand out a usable copy of a destination we disabled — the API refuses them too */}
+			<Item onClick={() => onShare()} className="cursor-pointer" disabled={isBlocked}>
 				{t('general.share')}
 			</Item>
 
-			<Item onClick={() => onDuplicate()} className="cursor-pointer">
+			<Item onClick={() => onDuplicate()} className="cursor-pointer" disabled={isBlocked}>
 				{t('general.duplicate')}
 			</Item>
 
@@ -112,11 +116,19 @@ export const QrCodeMenuItems = ({
 			)}
 
 			{qr.shortUrl && (
-				<Item onClick={() => onToggle()} className="cursor-pointer">
-					{qr.shortUrl.isActive
-						? t('qrCode.actionsMenu.disableShortUrl')
-						: t('qrCode.actionsMenu.enableShortUrl')}
-				</Item>
+				<>
+					{/* Blocked for safety: the API refuses to switch it back on, so the UI must not offer it */}
+					<Item onClick={() => onToggle()} className="cursor-pointer" disabled={isBlocked}>
+						{qr.shortUrl.isActive
+							? t('qrCode.actionsMenu.disableShortUrl')
+							: t('qrCode.actionsMenu.enableShortUrl')}
+					</Item>
+					{isBlocked && (
+						<Label className="max-w-[16rem] text-xs font-normal text-muted-foreground">
+							{t('shortUrl.safety.blocked.menuHint')}
+						</Label>
+					)}
+				</>
 			)}
 
 			<Separator />

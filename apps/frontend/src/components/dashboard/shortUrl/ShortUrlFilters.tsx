@@ -12,7 +12,18 @@ import type { ShortUrlFilters as ShortUrlFiltersType } from '@/lib/api/url-short
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useListTagsQuery } from '@/lib/api/tag';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import { ShortUrlStatusFilterSchema, type TShortUrlStatusFilter } from '@shared/schemas';
 import posthog from 'posthog-js';
+
+// derived from the schema so the control can never drift from what the API accepts
+const SHORT_URL_STATUS_OPTIONS = ShortUrlStatusFilterSchema.options;
 
 interface ShortUrlFiltersProps {
 	filters: ShortUrlFiltersType;
@@ -70,7 +81,17 @@ export function ShortUrlFilters({ filters, onFiltersChange }: ShortUrlFiltersPro
 		[filters, onFiltersChange],
 	);
 
-	const hasActiveFilters = !!filters.search || !!filters.tagIds?.length;
+	const activeStatus = filters.status ?? 'all';
+	const hasActiveFilters =
+		!!filters.search || !!filters.tagIds?.length || (!!filters.status && filters.status !== 'all');
+
+	const handleStatusChange = useCallback(
+		(status: TShortUrlStatusFilter) => {
+			posthog.capture('short-url-list:filter-status-changed', { status });
+			onFiltersChange({ ...filters, status: status === 'all' ? undefined : status });
+		},
+		[filters, onFiltersChange],
+	);
 
 	const handleClearAll = useCallback(() => {
 		setSearchValue('');
@@ -173,6 +194,26 @@ export function ShortUrlFilters({ filters, onFiltersChange }: ShortUrlFiltersPro
 						)}
 					</PopoverContent>
 				</Popover>
+
+				{/* Status Filter */}
+				<Select value={activeStatus} onValueChange={handleStatusChange}>
+					<SelectTrigger
+						className={cn(
+							'h-9 w-auto min-w-[7.5rem] gap-1.5',
+							activeStatus !== 'all' && 'border-primary text-primary',
+						)}
+						aria-label={tShortUrl('table.status')}
+					>
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent>
+						{SHORT_URL_STATUS_OPTIONS.map((option) => (
+							<SelectItem key={option} value={option}>
+								{tShortUrl(`filters.status.${option}`)}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
 
 				{/* Clear All */}
 				{hasActiveFilters && (

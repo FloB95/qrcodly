@@ -103,7 +103,17 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 					isActive: !shortUrl.isActive,
 				});
 			},
-			onError: (error) => {
+			onError: (e) => {
+				const error = e as ApiError;
+				// stale list data can still offer the toggle; say what actually happened
+				if (error.errorCode === 'SHORT_URL_BLOCKED') {
+					toast({
+						title: t('error.blocked.title'),
+						description: t('error.blocked.message'),
+						variant: 'destructive',
+					});
+					return;
+				}
 				Sentry.captureException(error);
 				toast({
 					title: t('error.toggleActiveState.title'),
@@ -120,7 +130,16 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 				posthog.capture('short-url-duplicated', { shortCode: shortUrl.shortCode });
 				toast({ title: tGeneral('duplicated'), duration: 3000 });
 			},
-			onError: (error) => {
+			onError: (e) => {
+				const error = e as ApiError;
+				if (error.errorCode === 'SHORT_URL_BLOCKED') {
+					toast({
+						title: t('error.blocked.title'),
+						description: t('error.blocked.message'),
+						variant: 'destructive',
+					});
+					return;
+				}
 				Sentry.captureException(error);
 				posthog.capture('error:short-url-duplicated', {
 					shortCode: shortUrl.shortCode,
@@ -150,6 +169,9 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 		);
 	};
 
+	// We disabled this link and the API refuses to switch it back on, so the UI must not offer it.
+	const isBlocked = shortUrl.safetyStatus === 'blocked';
+
 	const menuItems = (Component: typeof DropdownMenuItem | typeof ContextMenuItem) => (
 		<>
 			<Component
@@ -161,12 +183,17 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 			<Component onClick={() => setEditOpen(true)} className="cursor-pointer">
 				{tGeneral('edit')}
 			</Component>
-			<Component onClick={handleDuplicate} className="cursor-pointer">
+			<Component onClick={handleDuplicate} className="cursor-pointer" disabled={isBlocked}>
 				{tGeneral('duplicate')}
 			</Component>
-			<Component onClick={handleToggle} className="cursor-pointer">
+			<Component onClick={handleToggle} className="cursor-pointer" disabled={isBlocked}>
 				{shortUrl.isActive ? t('status.disable') : t('status.enable')}
 			</Component>
+			{isBlocked && (
+				<div className="px-2 py-1.5 text-xs text-muted-foreground max-w-[16rem]">
+					{t('safety.blocked.menuHint')}
+				</div>
+			)}
 			<Component onClick={() => setDeleteOpen(true)} className="cursor-pointer text-destructive">
 				{tGeneral('delete')}
 			</Component>
@@ -189,9 +216,22 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 
 					{/* Status */}
 					<TableCell className="py-2">
-						<Badge variant={shortUrl.isActive ? 'blue' : 'outline'} className="text-xs">
-							{shortUrl.isActive ? t('status.active') : t('status.inactive')}
-						</Badge>
+						{isBlocked ? (
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Badge variant="destructive" className="text-xs">
+										{t('status.blocked')}
+									</Badge>
+								</TooltipTrigger>
+								<TooltipContent side="top" className="max-w-xs">
+									{t('safety.blocked.tooltip')}
+								</TooltipContent>
+							</Tooltip>
+						) : (
+							<Badge variant={shortUrl.isActive ? 'blue' : 'outline'} className="text-xs">
+								{shortUrl.isActive ? t('status.active') : t('status.inactive')}
+							</Badge>
+						)}
 					</TableCell>
 
 					{/* Views */}

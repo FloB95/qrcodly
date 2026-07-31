@@ -54,7 +54,8 @@
 			"active": "Active",
 			"inactive": "Disabled",
 			"enable": "Enable",
-			"disable": "Disable"
+			"disable": "Disable",
+			"blocked": "Blocked"
 		},
 		"error": {
 			"maliciousDestination": {
@@ -79,12 +80,40 @@
 			},
 			"load": {
 				"title": "Failed to load short URLs. Please try again."
+			},
+			"blocked": {
+				"title": "Link is blocked",
+				"message": "This link was blocked because its destination was flagged as unsafe and cannot be re-enabled."
 			}
 		},
-		"featureBanner": {
-			"title": "Introducing Short URLs",
-			"description": "You can now create and manage short URLs directly — shorten any link, track clicks, and view detailed analytics. No QR code needed.",
-			"cta": "Try it now"
+		"safety": {
+			"banner": {
+				"titleOne": "One of your links was blocked",
+				"titleMany": "{count} of your links were blocked",
+				"description": "Google Safe Browsing flagged the destination as unsafe, so we disabled the link. It no longer redirects anyone.",
+				"warningActive": "This is a warning: if a malicious destination is used again on this account, we will suspend it.",
+				"dismiss": "Got it",
+				"breakdown": "{shortUrls} short URL(s) and {qrCodes} QR code(s) are affected.",
+				"reviewShortUrlsCta": "Review short URLs",
+				"reviewQrCodesCta": "Review QR codes"
+			},
+			"blocked": {
+				"title": "This link is blocked",
+				"description": "We disabled it because Google Safe Browsing flagged its destination as unsafe.",
+				"threatTypes": "Reported as: {types}",
+				"remediation": "You cannot switch a blocked link back on. We keep re-checking it automatically — if the destination stops being flagged, the block is lifted and you can enable it again. Changing the link to a safe destination also clears the block.",
+				"support": "Believe this is a mistake? Contact support and we will review it.",
+				"tooltip": "Blocked for an unsafe destination — this cannot be re-enabled by you.",
+				"menuHint": "Blocked links cannot be enabled or duplicated."
+			}
+		},
+		"filters": {
+			"status": {
+				"all": "All",
+				"active": "Active",
+				"disabled": "Disabled",
+				"blocked": "Blocked"
+			}
 		}
 	},
 	"general": {
@@ -3718,5 +3747,11 @@
 			"title": "Email Support",
 			"subtitle": "Get in touch with our team"
 		}
+	},
+	"linkBlocked": {
+		"title": "Link Blocked",
+		"description": "This link was disabled because its destination was reported as unsafe.",
+		"note": "For your protection we did not forward you. Do not enter any personal data if you reached this from an unexpected message.",
+		"button": "Go Back Home"
 	}
 }

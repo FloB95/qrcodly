@@ -6,8 +6,10 @@ import { type TShortUrlWithDomainAndTags } from '../domain/entities/short-url.en
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 import TagRepository from '@/modules/tag/domain/repository/tag.repository';
 import { UnitOfWork } from '@/core/db/unit-of-work';
-import { shortUrlsCreated } from '@/core/metrics';
+import { shortUrlsCreated, shortUrlsDuplicated } from '@/core/metrics';
 import { SHORT_URL_NAME_MAX_LENGTH, buildCopyName } from '@shared/schemas';
+import { DestinationUrlSafetyService } from '../service/destination-url-safety.service';
+import { ShortUrlBlockedError } from '../error/http/short-url-blocked.error';
 
 @injectable()
 export class DuplicateShortUrlUseCase implements IBaseUseCase {
@@ -17,12 +19,29 @@ export class DuplicateShortUrlUseCase implements IBaseUseCase {
 		private customDomainValidationService: CustomDomainValidationService,
 		@inject(TagRepository) private tagRepository: TagRepository,
 		@inject(Logger) private logger: Logger,
+		@inject(DestinationUrlSafetyService)
+		private destinationUrlSafetyService: DestinationUrlSafetyService,
 	) {}
 
 	async execute(
 		source: TShortUrlWithDomainAndTags,
 		userId: string,
 	): Promise<TShortUrlWithDomainAndTags> {
+		// Copying a blocked link would hand the user a working clone of something we just disabled.
+		if (source.safetyStatus === 'blocked') {
+			throw new ShortUrlBlockedError();
+		}
+
+		// This use case writes through repository.create() directly, so it never passed the screening
+		// that create/update do — a destination that was listed after the original was made could be
+		// cloned freely.
+		await this.destinationUrlSafetyService.assertDestinationUrlSafe(
+			source.destinationUrl,
+			userId,
+			'duplicate',
+			source.id,
+		);
+
 		if (source.customDomainId) {
 			await this.customDomainValidationService.validateForUserUse(source.customDomainId, userId);
 		}
@@ -64,6 +83,7 @@ export class DuplicateShortUrlUseCase implements IBaseUseCase {
 				shortUrl: { id: result.id, sourceId: source.id, createdBy: userId },
 			});
 			shortUrlsCreated.add(1);
+			shortUrlsDuplicated.add(1);
 		} catch (telemetryError) {
 			this.logger.warn('shortUrl.duplicated.telemetry.failed', {
 				shortUrlId: result.id,
