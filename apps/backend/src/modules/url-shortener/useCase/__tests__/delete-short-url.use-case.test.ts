@@ -3,7 +3,7 @@ import { DeleteShortUrlUseCase } from '../delete-short-url.use-case';
 import type ShortUrlRepository from '../../domain/repository/short-url.repository';
 import { type Logger } from '@/core/logging';
 import { mock, type MockProxy } from 'jest-mock-extended';
-import { type TShortUrl } from '../../domain/entities/short-url.entity';
+import { SHORT_URL_SAFETY_DEFAULTS, type TShortUrl } from '../../domain/entities/short-url.entity';
 import { BadRequestError } from '@/core/error/http';
 
 describe('DeleteShortUrlUseCase', () => {
@@ -23,6 +23,7 @@ describe('DeleteShortUrlUseCase', () => {
 		createdAt: new Date(),
 		updatedAt: null,
 		deletedAt: null,
+		...SHORT_URL_SAFETY_DEFAULTS,
 	};
 
 	const mockLinkedShortUrl: TShortUrl = {

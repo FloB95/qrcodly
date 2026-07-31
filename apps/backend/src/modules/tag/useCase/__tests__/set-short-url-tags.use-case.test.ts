@@ -7,7 +7,10 @@ import { type DistributedLock } from '@/core/lock';
 import { mock, type MockProxy } from 'jest-mock-extended';
 import { type TTag } from '../../domain/entities/tag.entity';
 import { type TUser } from '@/core/domain/schema/UserSchema';
-import { type TShortUrlWithDomain } from '@/modules/url-shortener/domain/entities/short-url.entity';
+import {
+	SHORT_URL_SAFETY_DEFAULTS,
+	type TShortUrlWithDomain,
+} from '@/modules/url-shortener/domain/entities/short-url.entity';
 import { ShortUrlNotFoundError } from '@/modules/url-shortener/error/http/short-url-not-found.error';
 import { BadRequestError, ForbiddenError } from '@/core/error/http';
 import { MaxTagsExceededError } from '../../error/http/max-tags-exceeded.error';
@@ -42,6 +45,7 @@ describe('SetShortUrlTagsUseCase', () => {
 		createdAt: new Date(),
 		updatedAt: null,
 		deletedAt: null,
+		...SHORT_URL_SAFETY_DEFAULTS,
 	};
 
 	const mockTags: TTag[] = [

@@ -5,6 +5,7 @@ import {
 	type IValidationResult,
 } from './analytics-provider.interface';
 import { anonymizeIp } from '@/utils/general';
+import { trackExternal } from '@/core/metrics';
 
 function validateMatomoUrl(raw: string): URL {
 	let url: URL;
@@ -71,10 +72,12 @@ export class MatomoProvider implements IAnalyticsProvider {
 		fetchUrl.pathname = `${basePath}matomo.php`;
 		fetchUrl.search = params.toString();
 
-		const response = await fetch(fetchUrl.toString(), {
-			method: 'GET',
-			signal: AbortSignal.timeout(5000),
-		});
+		const response = await trackExternal('matomo', 'track', () =>
+			fetch(fetchUrl.toString(), {
+				method: 'GET',
+				signal: AbortSignal.timeout(5000),
+			}),
+		);
 
 		if (!response.ok) {
 			throw new Error(`Matomo request failed with status ${response.status}`);
@@ -106,10 +109,12 @@ export class MatomoProvider implements IAnalyticsProvider {
 			fetchUrl.search = params.toString();
 
 			try {
-				const response = await fetch(fetchUrl.toString(), {
-					method: 'GET',
-					signal: AbortSignal.timeout(5000),
-				});
+				const response = await trackExternal('matomo', 'validate', () =>
+					fetch(fetchUrl.toString(), {
+						method: 'GET',
+						signal: AbortSignal.timeout(5000),
+					}),
+				);
 
 				if (response.ok) {
 					const result = (await response.json()) as { idsite?: string } | { result?: string };
@@ -141,10 +146,12 @@ export class MatomoProvider implements IAnalyticsProvider {
 			trackUrl.pathname = `${basePath}matomo.php`;
 			trackUrl.search = trackParams.toString();
 
-			const response = await fetch(trackUrl.toString(), {
-				method: 'GET',
-				signal: AbortSignal.timeout(5000),
-			});
+			const response = await trackExternal('matomo', 'validate_track', () =>
+				fetch(trackUrl.toString(), {
+					method: 'GET',
+					signal: AbortSignal.timeout(5000),
+				}),
+			);
 
 			return { valid: response.ok, credentialsVerified: true };
 		} catch {

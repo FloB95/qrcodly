@@ -5,6 +5,7 @@ import { container } from 'tsyringe';
 import { type User } from '@clerk/fastify';
 import { CreateQrCodeUseCase } from '../../useCase/create-qr-code.use-case';
 import {
+	createQrCodeRequest,
 	generateQrCodeDto,
 	generateTextQrCodeDto,
 	generateWifiQrCodeDto,
@@ -12,6 +13,10 @@ import {
 } from './utils';
 import { PlanName } from '@/core/config/plan.config';
 import qs from 'qs';
+import db from '@/core/db';
+import { eq } from 'drizzle-orm';
+import shortUrl from '@/modules/url-shortener/domain/entities/short-url.entity';
+import qrCode from '../../domain/entities/qr-code.entity';
 
 const QR_CODE_API_PATH = `${API_BASE_PATH}/qr-code`;
 const TAG_API_PATH = `${API_BASE_PATH}/tag`;
@@ -167,6 +172,45 @@ describe('listQrCodes', () => {
 			const { data, total } = JSON.parse(response.payload);
 			expect(total).toBe(0);
 			expect(data).toHaveLength(0);
+		});
+	});
+
+	describe('status filter', () => {
+		it('returns only QR codes whose linked short URL is blocked', async () => {
+			// The safety banner links here with ?status=blocked. Without the filter the button lands on
+			// an unfiltered list and the user has to hunt for a red badge among everything they own.
+			// The fixture is removed again in the same test — the other cases assert exact totals.
+			const dynamic = await createQrCodeRequest(
+				testServer,
+				{
+					...generateQrCodeDto(),
+					content: { type: 'url', data: { url: 'https://example.com', isDynamic: true } },
+				},
+				accessToken,
+			);
+			expect(dynamic).toHaveStatusCode(201);
+			const created = JSON.parse(dynamic.payload) as { id: string };
+
+			try {
+				await db
+					.update(shortUrl)
+					.set({ isActive: false, safetyStatus: 'blocked', safetyBlockedAt: new Date() })
+					.where(eq(shortUrl.qrCodeId, created.id))
+					.execute();
+
+				const response = await listQrCodesRequest({ status: 'blocked' }, accessToken);
+				expect(response).toHaveStatusCode(200);
+
+				const { data, total } = JSON.parse(response.payload);
+				expect(total).toBe(1);
+				expect(data).toHaveLength(1);
+				expect(data[0].id).toBe(created.id);
+				// a static QR code has no short URL and can therefore never match
+				expect(data[0].shortUrl.safetyStatus).toBe('blocked');
+			} finally {
+				await db.delete(shortUrl).where(eq(shortUrl.qrCodeId, created.id)).execute();
+				await db.delete(qrCode).where(eq(qrCode.id, created.id)).execute();
+			}
 		});
 	});
 

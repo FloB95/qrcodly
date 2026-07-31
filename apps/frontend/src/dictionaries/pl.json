@@ -54,7 +54,8 @@
 			"active": "Aktywny",
 			"inactive": "Wyłączony",
 			"enable": "Włącz",
-			"disable": "Wyłącz"
+			"disable": "Wyłącz",
+			"blocked": "Zablokowany"
 		},
 		"error": {
 			"maliciousDestination": {
@@ -79,12 +80,40 @@
 			},
 			"load": {
 				"title": "Błąd ładowania krótkich adresów URL. Spróbuj ponownie."
+			},
+			"blocked": {
+				"title": "Link jest zablokowany",
+				"message": "Ten link został zablokowany, ponieważ jego miejsce docelowe oznaczono jako niebezpieczne, i nie można go ponownie włączyć."
 			}
 		},
-		"featureBanner": {
-			"title": "Przedstawiamy krótkie URLe",
-			"description": "Teraz możesz tworzyć i zarządzać krótkimi URLami bezpośrednio — skracaj linki, śledź kliknięcia i przeglądaj szczegółowe analizy. Kod QR nie jest potrzebny.",
-			"cta": "Wypróbuj teraz"
+		"safety": {
+			"banner": {
+				"titleOne": "Jeden z Twoich linków został zablokowany",
+				"titleMany": "Liczba zablokowanych linków: {count}",
+				"description": "Google Safe Browsing oznaczył miejsce docelowe jako niebezpieczne, dlatego wyłączyliśmy link. Nie przekierowuje już nikogo.",
+				"warningActive": "To ostrzeżenie: jeśli na tym koncie ponownie zostanie użyty złośliwy adres docelowy, zawiesimy je.",
+				"dismiss": "Rozumiem",
+				"breakdown": "Dotyczy {shortUrls} krótkich linków i {qrCodes} kodów QR.",
+				"reviewShortUrlsCta": "Sprawdź krótkie linki",
+				"reviewQrCodesCta": "Sprawdź kody QR"
+			},
+			"blocked": {
+				"title": "Ten link jest zablokowany",
+				"description": "Wyłączyliśmy go, ponieważ Google Safe Browsing oznacza jego miejsce docelowe jako niebezpieczne.",
+				"threatTypes": "Zgłoszono jako: {types}",
+				"remediation": "Nie możesz samodzielnie ponownie włączyć zablokowanego linku. Sprawdzamy go dalej automatycznie — gdy adres docelowy przestanie być oznaczany, blokada zostanie zdjęta i będziesz mógł go włączyć. Zmiana linku na bezpieczny adres również zdejmuje blokadę.",
+				"support": "Uważasz, że to pomyłka? Skontaktuj się z pomocą techniczną, sprawdzimy to.",
+				"tooltip": "Zablokowany z powodu niebezpiecznego adresu — nie możesz tego cofnąć.",
+				"menuHint": "Zablokowanych linków nie można włączyć ani zduplikować."
+			}
+		},
+		"filters": {
+			"status": {
+				"all": "Wszystkie",
+				"active": "Aktywne",
+				"disabled": "Wyłączone",
+				"blocked": "Zablokowane"
+			}
 		}
 	},
 	"general": {
@@ -3718,5 +3747,11 @@
 			"title": "Wsparcie e-mail",
 			"subtitle": "Skontaktuj się z naszym zespołem"
 		}
+	},
+	"linkBlocked": {
+		"title": "Link zablokowany",
+		"description": "Ten link został wyłączony, ponieważ jego miejsce docelowe zgłoszono jako niebezpieczne.",
+		"note": "Dla Twojego bezpieczeństwa nie przekierowaliśmy Cię. Nie podawaj danych osobowych, jeśli trafiłeś tu z nieoczekiwanej wiadomości.",
+		"button": "Wróć na stronę główną"
 	}
 }

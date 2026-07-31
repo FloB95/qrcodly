@@ -1,10 +1,13 @@
 // Live tests against the real Web Risk API (Google's test URLs). Gated on
-// GOOGLE_WEB_RISK_API_KEY (skipped without it); per-test Redis reset avoids banning the shared user.
+// GOOGLE_WEB_RISK_API_KEY (skipped without it); per-test reset avoids banning the shared user.
 import { container } from 'tsyringe';
+import { eq } from 'drizzle-orm';
 import { getTestContext, resetTestState, TEST_USER_ID } from '@/tests/shared/test-context';
 import { UserBanService } from '@/core/auth';
-import { KeyCache } from '@/core/cache';
+import db from '@/core/db';
 import { env } from '@/core/config/env';
+import userSafetyStanding from '../../domain/entities/user-safety-standing.entity';
+import urlSafetyIncident from '../../domain/entities/url-safety-incident.entity';
 import type { FastifyInstance } from 'fastify';
 import type { TShortUrlResponseDto } from '@shared/schemas';
 import { SHORT_URL_API_PATH, reserveShortUrl } from './utils';
@@ -28,12 +31,20 @@ describeLive('destinationUrl safety — live Web Risk', () => {
 		await container.resolve(UserBanService).unban(TEST_USER_ID);
 	});
 
-	// Drop the violation counter before each test so a flagged attempt never
-	// reaches the 3-strike ban threshold for the shared test user.
+	/**
+	 * Reset the offence ladder before every case.
+	 *
+	 * This matters more than it used to: the ladder is now persisted in `user_safety_standing` (a
+	 * Redis flush no longer clears it) and it bans on the *second* offence, so without this the
+	 * second test here would suspend the shared Clerk test user and poison every later suite.
+	 */
 	beforeEach(async () => {
-		const client = container.resolve(KeyCache).getClient();
-		await client.del(`url_safety:violations:${TEST_USER_ID}`);
-		await client.del(`url_safety:violations:urls:${TEST_USER_ID}`);
+		await db.delete(urlSafetyIncident).where(eq(urlSafetyIncident.userId, TEST_USER_ID)).execute();
+		await db
+			.delete(userSafetyStanding)
+			.where(eq(userSafetyStanding.userId, TEST_USER_ID))
+			.execute();
+		await container.resolve(UserBanService).unban(TEST_USER_ID);
 	});
 
 	const createShortUrl = (destinationUrl: string) =>

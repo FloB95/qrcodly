@@ -2,6 +2,7 @@ import { inject, singleton } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { env } from '@/core/config/env';
 import { withRetry } from '@/core/utils/with-retry';
+import { trackExternal } from '@/core/metrics';
 
 /**
  * Cloudflare Custom Hostname SSL validation record.
@@ -151,14 +152,16 @@ export class CloudflareService {
 		this.logger.debug('cloudflare.api.request', { api: { method, endpoint } });
 
 		try {
-			const response = await fetch(url, {
-				method,
-				headers: {
-					Authorization: `Bearer ${this.apiToken}`,
-					'Content-Type': 'application/json',
-				},
-				body: body ? JSON.stringify(body) : undefined,
-			});
+			const response = await trackExternal('cloudflare', method, () =>
+				fetch(url, {
+					method,
+					headers: {
+						Authorization: `Bearer ${this.apiToken}`,
+						'Content-Type': 'application/json',
+					},
+					body: body ? JSON.stringify(body) : undefined,
+				}),
+			);
 
 			const data = (await response.json()) as ICloudflareApiResponse<T>;
 

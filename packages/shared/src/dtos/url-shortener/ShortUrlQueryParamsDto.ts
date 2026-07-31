@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { DefaultStringWhereQueryParamSchema, PaginationQueryParamsSchema } from '../ListRequestDto';
+import { ShortUrlStatusFilterSchema } from './types/safety';
 
 const ShortUrlWhereSchema = z.object({
 	destinationUrl: DefaultStringWhereQueryParamSchema,
@@ -24,6 +25,9 @@ export const GetShortUrlQueryParamsSchema = PaginationQueryParamsSchema(ShortUrl
 			.describe(
 				'Filter by tag ID(s). Only returns short URLs that have at least one of the specified tags',
 			),
+		status: ShortUrlStatusFilterSchema.optional().describe(
+			'Filter by state: active, disabled by the owner, or blocked for safety',
+		),
 	},
 );
 

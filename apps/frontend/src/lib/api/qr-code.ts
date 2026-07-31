@@ -1,6 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@clerk/nextjs';
 import type {
+	TShortUrlStatusFilter,
 	TBulkImportQrCodeDto,
 	TCreateQrCodeDto,
 	TQrCodeContentType,
@@ -21,6 +22,7 @@ export type QrCodeFilters = {
 	search?: string;
 	contentType?: TQrCodeContentType[];
 	tagIds?: string[];
+	status?: TShortUrlStatusFilter;
 };
 
 export async function fetchQrCodesPage(
@@ -39,6 +41,9 @@ export async function fetchQrCodesPage(
 	}
 	if (filters?.tagIds && filters.tagIds.length > 0) {
 		queryParams.tagIds = filters.tagIds;
+	}
+	if (filters?.status && filters.status !== 'all') {
+		queryParams.status = filters.status;
 	}
 
 	return apiRequest<TQrCodeWithRelationsPaginatedResponseDto>(

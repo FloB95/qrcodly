@@ -6,12 +6,13 @@ import { ImageService } from '@/core/services/image.service';
 import { UnitOfWork } from '@/core/db/unit-of-work';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 import { CustomApiError } from '@/core/error/http';
-import { qrCodesCreated } from '@/core/metrics';
+import { qrCodesCreated, qrCodesDuplicated } from '@/core/metrics';
 import { type TUser } from '@/core/domain/schema/UserSchema';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
 import { type TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
 import { QrCodeCreatedEvent } from '../event/qr-code-created.event';
 import { CreateQrCodePolicy } from '../policies/create-qr-code.policy';
+import { ShortUrlBlockedError } from '@/modules/url-shortener/error/http/short-url-blocked.error';
 import { ShortUrlStrategyService } from '../service/short-url-strategy.service';
 import { QrCodeDataService } from '../service/qr-code-data.service';
 import TagRepository from '@/modules/tag/domain/repository/tag.repository';
@@ -38,6 +39,12 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 	}
 
 	async execute(source: TQrCodeWithRelations, user: TUser): Promise<TQrCodeWithRelations> {
+		// Copying a blocked QR code would hand the owner a working clone of a destination we just
+		// disabled — the copy gets a fresh short URL that has never been screened.
+		if (source.shortUrl?.safetyStatus === 'blocked') {
+			throw new ShortUrlBlockedError();
+		}
+
 		const syntheticDto = {
 			content: source.content,
 			name: source.name,
@@ -120,6 +127,7 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 				qrCode: { id: finalQrCode.id, sourceId: source.id, createdBy: user.id },
 			});
 			qrCodesCreated.add(1, { 'content.type': source.content.type });
+			qrCodesDuplicated.add(1, { 'content.type': source.content.type });
 		} catch (telemetryError) {
 			this.logger.warn('qrCode.duplicated.telemetry.failed', {
 				qrCodeId: finalQrCode.id,

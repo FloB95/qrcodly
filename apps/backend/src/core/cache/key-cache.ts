@@ -3,6 +3,37 @@ import { singleton } from 'tsyringe';
 import { type IKeyCache } from '../interface/key-cache.interface';
 import { env } from '../config/env';
 import { OnShutdown } from '../decorators/on-shutdown.decorator';
+import { cacheOperationDuration, cacheOperations, safely } from '../metrics';
+
+/**
+ * Times a Redis call and classifies its result.
+ *
+ * `classify` exists so reads can report hit/miss instead of a flat "ok" — without that split the
+ * counter says how busy Redis is but nothing about whether caching is actually working.
+ */
+async function track<T>(
+	operation: string,
+	fn: () => Promise<T>,
+	classify: (result: T) => string = () => 'ok',
+): Promise<T> {
+	const startedAt = Date.now();
+	try {
+		const result = await fn();
+		safely(() => {
+			cacheOperationDuration.record(Date.now() - startedAt, { operation });
+			cacheOperations.add(1, { operation, result: classify(result) });
+		});
+		return result;
+	} catch (error) {
+		safely(() => {
+			cacheOperationDuration.record(Date.now() - startedAt, { operation });
+			cacheOperations.add(1, { operation, result: 'error' });
+		});
+		throw error;
+	}
+}
+
+const hitOrMiss = (result: unknown): string => (result === null ? 'miss' : 'hit');
 
 /**
  * AppCache class for caching data using Redis.
@@ -23,19 +54,21 @@ export class KeyCache implements IKeyCache {
 		expirationTimeSeconds?: number,
 		tags?: string[],
 	): Promise<void> {
-		if (expirationTimeSeconds) {
-			await this.client.set(key, value, 'EX', expirationTimeSeconds);
-		} else {
-			await this.client.set(key, value);
-		}
-
-		if (tags && tags.length > 0) {
-			const pipeline = this.client.pipeline();
-			for (const tag of tags) {
-				pipeline.sadd(`tag:${tag}`, key);
+		await track('set', async () => {
+			if (expirationTimeSeconds) {
+				await this.client.set(key, value, 'EX', expirationTimeSeconds);
+			} else {
+				await this.client.set(key, value);
 			}
-			await pipeline.exec();
-		}
+
+			if (tags && tags.length > 0) {
+				const pipeline = this.client.pipeline();
+				for (const tag of tags) {
+					pipeline.sadd(`tag:${tag}`, key);
+				}
+				await pipeline.exec();
+			}
+		});
 	}
 
 	getClient() {
@@ -43,26 +76,28 @@ export class KeyCache implements IKeyCache {
 	}
 
 	async get(key: string): Promise<string | Buffer | number | null> {
-		return await this.client.get(key);
+		return await track('get', () => this.client.get(key), hitOrMiss);
 	}
 
 	async getBuffer(key: string): Promise<Buffer | null> {
-		return await this.client.getBuffer(key);
+		return await track('get_buffer', () => this.client.getBuffer(key), hitOrMiss);
 	}
 
 	async del(key: string): Promise<void> {
-		await this.client.del(key);
+		await track('del', () => this.client.del(key));
 	}
 
 	async invalidateTag(tag: string): Promise<void> {
-		const tagKey = `tag:${tag}`;
-		const keys = await this.client.smembers(tagKey);
+		await track('invalidate_tag', async () => {
+			const tagKey = `tag:${tag}`;
+			const keys = await this.client.smembers(tagKey);
 
-		if (keys.length > 0) {
-			await this.client.del(...keys);
-		}
+			if (keys.length > 0) {
+				await this.client.del(...keys);
+			}
 
-		await this.client.del(tagKey);
+			await this.client.del(tagKey);
+		});
 	}
 
 	async disconnect() {

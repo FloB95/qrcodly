@@ -10,6 +10,26 @@ import { streamToBuffer } from '@/utils/general';
 import { S3DeleteError, S3FetchError, S3SignedUrlError, S3UploadError } from '../error/s3';
 import { OnShutdown } from '../decorators/on-shutdown.decorator';
 import { withRetry } from '@/core/utils/with-retry';
+import { safely, storageOperationDuration, storageOperations } from '../metrics';
+
+/** Times an S3 call. Retries are inside `fn`, so the duration is the caller-visible latency. */
+async function track<T>(operation: string, fn: () => Promise<T>): Promise<T> {
+	const startedAt = Date.now();
+	try {
+		const result = await fn();
+		safely(() => {
+			storageOperationDuration.record(Date.now() - startedAt, { operation });
+			storageOperations.add(1, { operation, outcome: 'ok' });
+		});
+		return result;
+	} catch (error) {
+		safely(() => {
+			storageOperationDuration.record(Date.now() - startedAt, { operation });
+			storageOperations.add(1, { operation, outcome: 'error' });
+		});
+		throw error;
+	}
+}
 
 function isRetryableS3Error(error: unknown): boolean {
 	if (error == null || typeof error !== 'object') return false;
@@ -58,10 +78,12 @@ export class ObjectStorage implements IFileStorage {
 	async get(key: string): Promise<Buffer | null> {
 		const k = this.prefix + key;
 		try {
-			const response: GetObjectOutput = await this.s3Client.getObject({
-				Bucket: this.bucketName,
-				Key: k,
-			});
+			const response: GetObjectOutput = await track('get', () =>
+				this.s3Client.getObject({
+					Bucket: this.bucketName,
+					Key: k,
+				}),
+			);
 
 			if (!response.Body || !(response.Body instanceof Readable)) {
 				this.logger.warn('No readable body found in S3 response', {
@@ -97,15 +119,17 @@ export class ObjectStorage implements IFileStorage {
 		const body = data instanceof Readable ? await streamToBuffer(data) : data;
 
 		try {
-			await withRetry(
-				() =>
-					this.s3Client.putObject({
-						Bucket: this.bucketName,
-						Key: k,
-						Body: body,
-						ContentType: contentType,
-					}),
-				{ maxRetries: 3, isRetryable: isRetryableS3Error },
+			await track('upload', () =>
+				withRetry(
+					() =>
+						this.s3Client.putObject({
+							Bucket: this.bucketName,
+							Key: k,
+							Body: body,
+							ContentType: contentType,
+						}),
+					{ maxRetries: 3, isRetryable: isRetryableS3Error },
+				),
 			);
 			this.logger.info('file.uploaded', {
 				file: {
@@ -129,16 +153,18 @@ export class ObjectStorage implements IFileStorage {
 		const src = this.prefix + sourceKey;
 		const dest = this.prefix + destinationKey;
 		try {
-			await withRetry(
-				() =>
-					this.s3Client.send(
-						new CopyObjectCommand({
-							Bucket: this.bucketName,
-							CopySource: `${this.bucketName}/${src}`,
-							Key: dest,
-						}),
-					),
-				{ maxRetries: 3, isRetryable: isRetryableS3Error },
+			await track('copy', () =>
+				withRetry(
+					() =>
+						this.s3Client.send(
+							new CopyObjectCommand({
+								Bucket: this.bucketName,
+								CopySource: `${this.bucketName}/${src}`,
+								Key: dest,
+							}),
+						),
+					{ maxRetries: 3, isRetryable: isRetryableS3Error },
+				),
 			);
 			this.logger.info('file.copied', {
 				file: { sourceKey: src, destinationKey: dest },
@@ -155,10 +181,12 @@ export class ObjectStorage implements IFileStorage {
 	async delete(key: string): Promise<void> {
 		const k = this.prefix + key;
 		try {
-			await this.s3Client.deleteObject({
-				Bucket: this.bucketName,
-				Key: k,
-			});
+			await track('delete', () =>
+				this.s3Client.deleteObject({
+					Bucket: this.bucketName,
+					Key: k,
+				}),
+			);
 			this.logger.info('file.deleted', {
 				file: { key: k },
 			});
@@ -209,7 +237,9 @@ export class ObjectStorage implements IFileStorage {
 				Key: k,
 			});
 
-			const url = await getSignedUrl(this.s3Client, command, { expiresIn });
+			const url = await track('signed_url', () =>
+				getSignedUrl(this.s3Client, command, { expiresIn }),
+			);
 			return url;
 		} catch (error: unknown) {
 			this.logger.error('error.generating.signed.url', { file: { key: k }, error });

@@ -10,6 +10,9 @@ import {
 	QR_CODE_API_PATH,
 } from './utils';
 import { API_BASE_PATH } from '@/core/config/constants';
+import db from '@/core/db';
+import { eq } from 'drizzle-orm';
+import shortUrl from '@/modules/url-shortener/domain/entities/short-url.entity';
 
 const TAG_API_PATH = `${API_BASE_PATH}/tag`;
 const TEST_BASE64_IMAGE =
@@ -42,6 +45,28 @@ describe('duplicateQrCode', () => {
 		expect(response).toHaveStatusCode(201);
 		return JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto;
 	};
+
+	it('refuses to duplicate a QR code we blocked for safety', async () => {
+		// The copy would get a fresh, never-screened short URL pointing at the same bad destination.
+		const source = await createAndParse(
+			{
+				...generateQrCodeDto(),
+				content: { type: 'url', data: { url: 'https://example.com', isDynamic: true } },
+			},
+			accessToken,
+		);
+
+		await db
+			.update(shortUrl)
+			.set({ isActive: false, safetyStatus: 'blocked', safetyBlockedAt: new Date() })
+			.where(eq(shortUrl.qrCodeId, source.id))
+			.execute();
+
+		const response = await duplicateRequest(source.id, accessToken);
+
+		expect(response).toHaveStatusCode(403);
+		expect(JSON.parse(response.payload).errorCode).toBe('SHORT_URL_BLOCKED');
+	});
 
 	it('should duplicate a static QR code and return 201', async () => {
 		const dto = generateQrCodeDto();

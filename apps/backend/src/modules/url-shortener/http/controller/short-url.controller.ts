@@ -7,10 +7,14 @@ import { type IHttpResponse } from '@/core/interface/response.interface';
 import { ShortUrlNotFoundError } from '../../error/http/short-url-not-found.error';
 import { BadRequestError } from '@/core/error/http';
 import {
+	AcknowledgeSafetyIncidentsResponseDto,
 	AnalyticsResponseDto,
 	CreateShortUrlDto,
 	GetShortUrlQueryParamsSchema,
 	ReservedShortUrlResponseDto,
+	SafetyIncidentListResponseDto,
+	TAcknowledgeSafetyIncidentsResponseDto,
+	TSafetyIncidentListResponseDto,
 	ShortUrlWithCustomDomainPaginatedResponseDto,
 	ShortUrlWithCustomDomainResponseDto,
 	TAnalyticsResponseDto,
@@ -27,6 +31,7 @@ import {
 } from '@shared/schemas';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
 import { buildShortUrl } from '../../utils';
+import { HOT_SHORT_CODES_KEY } from '../../config/constants';
 import { UmamiAnalyticsService } from '../../service/umami-analytics.service';
 import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { CreateShortUrlUseCase } from '../../useCase/create-short-url.use-case';
@@ -43,6 +48,14 @@ import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { shortUrlScans } from '@/core/metrics';
 import { DuplicateShortUrlUseCase } from '../../useCase/duplicate-short-url.use-case';
 import { Logger } from '@/core/logging';
+import { ShortUrlBlockedError } from '../../error/http/short-url-blocked.error';
+import UrlSafetyIncidentRepository from '../../domain/repository/url-safety-incident.repository';
+import UserSafetyStandingRepository from '../../domain/repository/user-safety-standing.repository';
+import { daysAgo } from '@/core/utils/date';
+import {
+	URL_SAFETY_HOT_SHORT_CODE_LIMIT,
+	URL_SAFETY_OFFENCE_WINDOW_DAYS,
+} from '../../config/constants';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -66,12 +79,85 @@ export class ShortUrlController extends AbstractController {
 		@inject(DuplicateShortUrlUseCase)
 		private readonly duplicateShortUrlUseCase: DuplicateShortUrlUseCase,
 		@inject(Logger) private readonly logger: Logger,
+		@inject(UrlSafetyIncidentRepository)
+		private readonly safetyIncidentRepository: UrlSafetyIncidentRepository,
+		@inject(UserSafetyStandingRepository)
+		private readonly safetyStandingRepository: UserSafetyStandingRepository,
 	) {
 		super();
 	}
 
 	private getViewsCacheKey(shortCode: string): string {
 		return `views:${shortCode}`;
+	}
+
+	@Get('/safety-incidents', {
+		responseSchema: {
+			200: SafetyIncidentListResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['Short URLs'],
+			summary: 'List open URL safety findings',
+			description:
+				'Returns the safety findings the user has not dismissed yet, together with how many of ' +
+				'their links are currently blocked and whether the account has already been warned. ' +
+				'Only the flagged hostname is exposed, never the full destination URL.',
+			operationId: 'short-url/list-safety-incidents',
+		},
+	})
+	async listSafetyIncidents(
+		request: IHttpRequest,
+	): Promise<IHttpResponse<TSafetyIncidentListResponseDto>> {
+		const userId = request.user.id;
+		const [incidents, blocked, standing] = await Promise.all([
+			this.safetyIncidentRepository.findOpenForUser(userId),
+			this.shortUrlRepository.countBlockedForUser(userId),
+			this.safetyStandingRepository.findOneById(userId),
+		]);
+
+		const warningWindowStart = daysAgo(URL_SAFETY_OFFENCE_WINDOW_DAYS);
+		const warningActive =
+			standing?.warnedAt != null &&
+			standing.lastOffenceAt != null &&
+			standing.lastOffenceAt >= warningWindowStart;
+
+		return this.makeApiHttpResponse(
+			200,
+			SafetyIncidentListResponseDto.parse({
+				incidents,
+				blockedCount: blocked.total,
+				blockedStandaloneCount: blocked.standalone,
+				blockedQrCodeCount: blocked.qrLinked,
+				warningActive,
+			}),
+		);
+	}
+
+	@Post('/safety-incidents/acknowledge', {
+		responseSchema: {
+			200: AcknowledgeSafetyIncidentsResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['Short URLs'],
+			summary: 'Dismiss URL safety findings',
+			description:
+				'Marks all of the current open safety findings as seen so the dashboard banner stops ' +
+				'showing them. The block itself is unaffected.',
+			operationId: 'short-url/acknowledge-safety-incidents',
+		},
+	})
+	async acknowledgeSafetyIncidents(
+		request: IHttpRequest,
+	): Promise<IHttpResponse<TAcknowledgeSafetyIncidentsResponseDto>> {
+		const acknowledged = await this.safetyIncidentRepository.acknowledgeAllForUser(request.user.id);
+		return this.makeApiHttpResponse(
+			200,
+			AcknowledgeSafetyIncidentsResponseDto.parse({ acknowledged }),
+		);
 	}
 
 	@Get('', {
@@ -95,9 +181,9 @@ export class ShortUrlController extends AbstractController {
 	async list(
 		request: IHttpRequest<unknown, unknown, TGetShortUrlQueryParamsDto>,
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainPaginatedResponseDto>> {
-		const { page, limit, where, standalone, tagIds } = request.query;
+		const { page, limit, where, standalone, tagIds, status } = request.query;
 		const { shortUrls, total } = await this.listShortUrlsUseCase.execute(
-			{ limit, page, where, standalone, tagIds },
+			{ limit, page, where, standalone, tagIds, status },
 			request.user.id,
 		);
 
@@ -265,13 +351,21 @@ export class ShortUrlController extends AbstractController {
 	async getOneByShortCode(
 		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto, unknown, false>,
 	): Promise<
-		IHttpResponse<{ destinationUrl: string | null; isActive: boolean; deletedAt: Date | null }>
+		IHttpResponse<{
+			destinationUrl: string | null;
+			isActive: boolean;
+			deletedAt: Date | null;
+			blocked: boolean;
+		}>
 	> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode);
 		return this.makeApiHttpResponse(200, {
 			destinationUrl: shortUrl.destinationUrl,
 			isActive: shortUrl.isActive,
 			deletedAt: shortUrl.deletedAt,
+			// lets the frontend middleware send a scanner to /link-blocked instead of /disabled —
+			// telling a phishing victim to "contact the owner of this QR code" is bad advice
+			blocked: shortUrl.safetyStatus === 'blocked',
 		});
 	}
 
@@ -351,6 +445,12 @@ export class ShortUrlController extends AbstractController {
 		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
+
+		// UpdateShortUrlUseCase enforces this too — refusing here just avoids doing the work first
+		if (!shortUrl.isActive && shortUrl.safetyStatus === 'blocked') {
+			throw new ShortUrlBlockedError();
+		}
+
 		const updatedShortUrl = await this.updateShortUrlUseCase.execute(
 			shortUrl,
 			{ isActive: !shortUrl.isActive },
@@ -505,6 +605,11 @@ export class ShortUrlController extends AbstractController {
 		// 1. Clear views cache
 		void this.keyCache.del(this.getViewsCacheKey(shortCode));
 
+		// Traffic signal for the safety re-check tiering. Real view counts live in Umami, and querying
+		// it per link from a nightly job would be unaffordable, so the hot set is the cheap proxy: a
+		// sorted set bumped here (no DB write on the scan path) and trimmed by the job.
+		void this.bumpHotShortCode(shortCode);
+
 		// 2. Send to Umami
 		void this.umamiAnalyticsService.sendEvent({
 			url: body.url,
@@ -535,6 +640,18 @@ export class ShortUrlController extends AbstractController {
 		}
 
 		return this.makeApiHttpResponse(200, { status: 'ok' });
+	}
+
+	private async bumpHotShortCode(shortCode: string): Promise<void> {
+		try {
+			const client = this.keyCache.getClient();
+			await client.zincrby(HOT_SHORT_CODES_KEY, 1, shortCode);
+			// keep the set from growing without bound if the job never trims it
+			await client.zremrangebyrank(HOT_SHORT_CODES_KEY, 0, -(URL_SAFETY_HOT_SHORT_CODE_LIMIT + 1));
+		} catch (error) {
+			// a missing traffic hint only costs precision in the re-check tiering — never fail a scan
+			this.logger.debug('url_safety.hot_set_bump_failed', { shortCode, error: error as Error });
+		}
 	}
 
 	private async fetchShortUrl(shortCode: string, userId?: string): Promise<TShortUrl> {

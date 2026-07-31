@@ -1,9 +1,10 @@
 import { singleton } from 'tsyringe';
-import { and, desc, eq, inArray, sql, SQL } from 'drizzle-orm';
+import { and, desc, eq, inArray, ne, sql, SQL } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy, type WhereConditions } from '@/core/interface/repository.interface';
 import qrCode, { TQrCode, TQrCodeWithRelations } from '../entities/qr-code.entity';
 import { shortUrl, qrCodeTag, tag } from '@/core/db/schemas';
+import type { TShortUrlStatusFilter } from '@shared/schemas';
 import { TShortUrl } from '@/modules/url-shortener/domain/entities/short-url.entity';
 import { TQrCodeContentType, type TTag } from '@shared/schemas';
 import { convertWhereConditionToDrizzle } from '@/core/db/utils';
@@ -11,6 +12,7 @@ import { convertWhereConditionToDrizzle } from '@/core/db/utils';
 type FindAllParams = ISqlQueryFindBy<TQrCode> & {
 	contentType?: TQrCodeContentType[];
 	tagIds?: string[];
+	status?: TShortUrlStatusFilter;
 };
 
 /**
@@ -44,12 +46,26 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 			: convertWhereConditionToDrizzle<TQrCode>(where, this.table);
 	}
 
+	/**
+	 * A QR code's state lives on its linked short URL, so the filter runs against the joined row.
+	 * Static QR codes have no short URL and therefore never match a status filter.
+	 */
+	private statusCondition(status: TShortUrlStatusFilter): SQL | undefined {
+		if (status === 'blocked') return eq(shortUrl.safetyStatus, 'blocked');
+		if (status === 'active')
+			return and(eq(shortUrl.isActive, true), ne(shortUrl.safetyStatus, 'blocked'));
+		if (status === 'disabled')
+			return and(eq(shortUrl.isActive, false), ne(shortUrl.safetyStatus, 'blocked'));
+		return undefined;
+	}
+
 	async findAll({
 		limit,
 		page,
 		where,
 		contentType,
 		tagIds,
+		status,
 	}: FindAllParams): Promise<TQrCodeWithRelations[]> {
 		const query = this.db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
 
@@ -65,6 +81,10 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 		}
 		if (tagIds?.length) {
 			conditions.push(this.tagIdsCondition(tagIds));
+		}
+		if (status) {
+			const statusSql = this.statusCondition(status);
+			if (statusSql) conditions.push(statusSql);
 		}
 		if (conditions.length > 0) {
 			query.where(and(...conditions));
@@ -181,8 +201,9 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 		whereConditions?: WhereConditions<TQrCode> | SQL<TQrCode>,
 		contentType?: TQrCodeContentType[],
 		tagIds?: string[],
+		status?: TShortUrlStatusFilter,
 	): Promise<number> {
-		if (!contentType?.length && !tagIds?.length) {
+		if (!contentType?.length && !tagIds?.length && !status) {
 			return super.countTotal(whereConditions);
 		}
 
@@ -202,6 +223,13 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 			.select({ count: sql<number>`count(${this.table.id})` })
 			.from(this.table)
 			.$dynamic();
+
+		// the status lives on the linked short URL, so counting it needs the same join as findAll
+		if (status) {
+			query.leftJoin(shortUrl, eq(this.table.id, shortUrl.qrCodeId)).$dynamic();
+			const statusSql = this.statusCondition(status);
+			if (statusSql) conditions.push(statusSql);
+		}
 
 		query.where(and(...conditions));
 

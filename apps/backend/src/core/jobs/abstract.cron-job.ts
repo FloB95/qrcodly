@@ -1,6 +1,7 @@
 import { container } from 'tsyringe';
 import { Logger } from '../logging';
 import { KeyCache } from '../cache';
+import { cronDuration, cronRuns, safely } from '../metrics';
 
 export abstract class AbstractCronJob {
 	protected logger: Logger = container.resolve(Logger);
@@ -19,16 +20,21 @@ export abstract class AbstractCronJob {
 		const acquired = await cache.getClient().set(lockKey, '1', 'EX', lockTtlSeconds, 'NX');
 		if (!acquired) {
 			this.logger.debug(`Cron job ${this.name} skipped — already running on another instance`);
+			safely(() => cronRuns.add(1, { job: this.name, outcome: 'skipped_locked' }));
 			return;
 		}
 
 		this.logger.debug(`Starting cron job: ${this.name}`);
+		const startedAt = Date.now();
 		try {
 			await this.execute();
 			this.logger.info(`Cron job ${this.name} completed successfully.`);
+			safely(() => cronRuns.add(1, { job: this.name, outcome: 'success' }));
 		} catch (error) {
 			this.logger.error(`Error in cron job ${this.name}:`, { error });
+			safely(() => cronRuns.add(1, { job: this.name, outcome: 'failed' }));
 		} finally {
+			safely(() => cronDuration.record(Date.now() - startedAt, { job: this.name }));
 			await cache.del(lockKey);
 		}
 	}

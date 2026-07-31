@@ -57,6 +57,7 @@ export class SubscriptionPastDueEventHandler extends AbstractEventHandler<Subscr
 				to: email,
 				subject: 'Action Required: Your QRcodly Payment is Past Due',
 				html,
+				template: 'subscription-past-due',
 			});
 
 			// Mark as notified after successful email send to allow retries on failure

@@ -3,7 +3,10 @@ import type ShortUrlRepository from '../../domain/repository/short-url.repositor
 import type { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
 import { type Logger } from '@/core/logging';
 import { mock } from 'jest-mock-extended';
-import type { TShortUrlWithDomain } from '../../domain/entities/short-url.entity';
+import {
+	SHORT_URL_SAFETY_DEFAULTS,
+	type TShortUrlWithDomain,
+} from '../../domain/entities/short-url.entity';
 import type { DestinationUrlSafetyService } from '../../service/destination-url-safety.service';
 
 describe('CreateShortUrlUseCase', () => {
@@ -54,6 +57,7 @@ describe('CreateShortUrlUseCase', () => {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 			deletedAt: null,
+			...SHORT_URL_SAFETY_DEFAULTS,
 		};
 
 		it('should generate unique shortCode for new short URL', async () => {

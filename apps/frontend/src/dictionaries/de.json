@@ -54,7 +54,8 @@
 			"active": "Aktiv",
 			"inactive": "Deaktiviert",
 			"enable": "Aktivieren",
-			"disable": "Deaktivieren"
+			"disable": "Deaktivieren",
+			"blocked": "Gesperrt"
 		},
 		"error": {
 			"maliciousDestination": {
@@ -79,12 +80,40 @@
 			},
 			"load": {
 				"title": "Fehler beim Laden der Kurz-URLs. Bitte versuchen Sie es erneut."
+			},
+			"blocked": {
+				"title": "Link ist gesperrt",
+				"message": "Dieser Link wurde gesperrt, weil sein Ziel als unsicher eingestuft wurde, und kann nicht reaktiviert werden."
 			}
 		},
-		"featureBanner": {
-			"title": "Neu: Kurz-URLs",
-			"description": "Ab sofort kannst du Kurz-URLs direkt erstellen und verwalten — Links kürzen, Klicks tracken und detaillierte Analysen einsehen. Kein QR Code nötig.",
-			"cta": "Jetzt ausprobieren"
+		"safety": {
+			"banner": {
+				"titleOne": "Einer deiner Links wurde gesperrt",
+				"titleMany": "{count} deiner Links wurden gesperrt",
+				"description": "Google Safe Browsing hat das Ziel als unsicher eingestuft, deshalb haben wir den Link deaktiviert. Er leitet nicht mehr weiter.",
+				"warningActive": "Das ist eine Verwarnung: Wird in diesem Konto erneut ein schädliches Ziel verwendet, sperren wir es.",
+				"dismiss": "Verstanden",
+				"breakdown": "Betroffen sind {shortUrls} Kurz-URL(s) und {qrCodes} QR-Code(s).",
+				"reviewShortUrlsCta": "Kurz-URLs prüfen",
+				"reviewQrCodesCta": "QR-Codes prüfen"
+			},
+			"blocked": {
+				"title": "Dieser Link ist gesperrt",
+				"description": "Wir haben ihn deaktiviert, weil Google Safe Browsing sein Ziel als unsicher einstuft.",
+				"threatTypes": "Gemeldet als: {types}",
+				"remediation": "Einen gesperrten Link kannst du nicht selbst wieder aktivieren. Wir prüfen ihn automatisch weiter — sobald das Ziel nicht mehr gemeldet ist, fällt die Sperre und du kannst ihn wieder einschalten. Auch ein Wechsel auf ein sicheres Ziel hebt die Sperre auf.",
+				"support": "Du hältst das für einen Fehler? Melde dich beim Support, wir prüfen es.",
+				"tooltip": "Wegen unsicherem Ziel gesperrt — du kannst das nicht selbst aufheben.",
+				"menuHint": "Gesperrte Links können nicht aktiviert oder dupliziert werden."
+			}
+		},
+		"filters": {
+			"status": {
+				"all": "Alle",
+				"active": "Aktiv",
+				"disabled": "Deaktiviert",
+				"blocked": "Gesperrt"
+			}
 		}
 	},
 	"general": {
@@ -3718,5 +3747,11 @@
 			"title": "E-Mail-Support",
 			"subtitle": "Kontaktieren Sie unser Team"
 		}
+	},
+	"linkBlocked": {
+		"title": "Link gesperrt",
+		"description": "Dieser Link wurde deaktiviert, weil sein Ziel als unsicher gemeldet wurde.",
+		"note": "Zu deinem Schutz haben wir dich nicht weitergeleitet. Gib keine persönlichen Daten ein, falls du über eine unerwartete Nachricht hierher gelangt bist.",
+		"button": "Zur Startseite"
 	}
 }

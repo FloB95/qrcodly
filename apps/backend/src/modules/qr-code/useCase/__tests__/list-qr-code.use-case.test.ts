@@ -147,6 +147,7 @@ describe('ListQrCodesUseCase', () => {
 				},
 				undefined,
 				undefined,
+				undefined,
 			);
 		});
 
@@ -174,7 +175,12 @@ describe('ListQrCodesUseCase', () => {
 				contentType: undefined,
 				tagIds: undefined,
 			});
-			expect(mockRepository.countTotal).toHaveBeenCalledWith(undefined, undefined, undefined);
+			expect(mockRepository.countTotal).toHaveBeenCalledWith(
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+			);
 		});
 
 		it('should handle empty results', async () => {
@@ -255,6 +261,7 @@ describe('ListQrCodesUseCase', () => {
 					createdBy: { eq: 'user-123' },
 				},
 				['url', 'text'],
+				undefined,
 				undefined,
 			);
 		});

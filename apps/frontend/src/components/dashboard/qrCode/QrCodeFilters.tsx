@@ -45,7 +45,18 @@ import {
 	type QrCodeColumnVisibility,
 } from './hooks/useQrCodeColumnVisibility';
 import posthog from 'posthog-js';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import { ShortUrlStatusFilterSchema, type TShortUrlStatusFilter } from '@shared/schemas';
 import { SmartTipPopover } from '@/components/dashboard/smart-tips/SmartTipPopover';
+
+// A QR code's state lives on its linked short URL, so the same options apply.
+const QR_CODE_STATUS_OPTIONS = ShortUrlStatusFilterSchema.options;
 
 type QrCodeFiltersProps = {
 	filters: QrCodeFiltersType;
@@ -73,6 +84,8 @@ export const QrCodeFilters = ({
 	const tContent = useTranslations('generator.contentSwitch');
 	const tTags = useTranslations('tags');
 	const tTable = useTranslations('qrCode.table');
+	// the status labels live under the short URL namespace — a QR code's state is its short URL's
+	const tShortUrl = useTranslations('shortUrl');
 	const [searchValue, setSearchValue] = useState(filters.search ?? '');
 	const [debouncedSearch] = useDebouncedValue(searchValue, 400);
 	const [tagSearch, setTagSearch] = useState('');
@@ -136,8 +149,22 @@ export const QrCodeFilters = ({
 		[filters, onFiltersChange],
 	);
 
+	const activeStatus = filters.status ?? 'all';
+	// `status` has to count here: otherwise filtering to "blocked", emptying the result and then
+	// losing the filter bar leaves the user with no way to clear it.
 	const hasActiveFilters =
-		!!filters.search || !!filters.contentType?.length || !!filters.tagIds?.length;
+		!!filters.search ||
+		!!filters.contentType?.length ||
+		!!filters.tagIds?.length ||
+		(!!filters.status && filters.status !== 'all');
+
+	const handleStatusChange = useCallback(
+		(status: TShortUrlStatusFilter) => {
+			posthog.capture('qr-code-list:filter-status-changed', { status });
+			onFiltersChange({ ...filters, status: status === 'all' ? undefined : status });
+		},
+		[filters, onFiltersChange],
+	);
 
 	const handleClearAll = useCallback(() => {
 		setSearchValue('');
@@ -294,6 +321,26 @@ export const QrCodeFilters = ({
 						)}
 					</PopoverContent>
 				</Popover>
+
+				{/* Status Filter — mirrors the short URL list so both behave the same */}
+				<Select value={activeStatus} onValueChange={handleStatusChange}>
+					<SelectTrigger
+						className={cn(
+							'h-9 w-auto min-w-[7.5rem] gap-1.5',
+							activeStatus !== 'all' && 'border-primary text-primary',
+						)}
+						aria-label={tShortUrl('table.status')}
+					>
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent>
+						{QR_CODE_STATUS_OPTIONS.map((option) => (
+							<SelectItem key={option} value={option}>
+								{tShortUrl(`filters.status.${option}`)}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
 
 				{/* Clear All */}
 				{hasActiveFilters && (

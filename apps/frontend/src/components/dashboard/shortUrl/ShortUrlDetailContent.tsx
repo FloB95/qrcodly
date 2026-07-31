@@ -24,7 +24,13 @@ import {
 	BreadcrumbSeparator,
 	BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
-import { LinkIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+	ExclamationTriangleIcon,
+	LinkIcon,
+	PencilIcon,
+	TrashIcon,
+} from '@heroicons/react/24/outline';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { toast } from '@/components/ui/use-toast';
 import { CopyUrlButton } from '../qrCode/content-renderers/CopyUrlButton';
 import { AnalyticsSection } from '@/components/qr-code-detail/analytics/AnalyticsSection';
@@ -58,6 +64,10 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 
 	const fullLink = createLinkFromShortUrl(shortUrl);
 	const displayLink = createLinkFromShortUrl(shortUrl, { short: true });
+
+	// We disabled this link for safety; the API refuses to re-enable it, so neither may the UI.
+	const isBlocked = shortUrl.safetyStatus === 'blocked';
+	const threatTypes = shortUrl.safetyThreatTypes?.split(',').filter(Boolean) ?? [];
 
 	const handleDelete = useCallback(() => {
 		setIsDeleting(true);
@@ -104,7 +114,17 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 				});
 				router.refresh();
 			},
-			onError: (error) => {
+			onError: (e) => {
+				const error = e as ApiError;
+				// defence in depth: the control is disabled when blocked, but data can be stale
+				if (error.errorCode === 'SHORT_URL_BLOCKED') {
+					toast({
+						title: t('shortUrl.error.blocked.title'),
+						description: t('shortUrl.error.blocked.message'),
+						variant: 'destructive',
+					});
+					return;
+				}
 				Sentry.captureException(error);
 				toast({
 					title: t('shortUrl.error.toggleActiveState.title'),
@@ -143,20 +163,44 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 								<h1 className="text-base sm:text-lg font-semibold break-words leading-snug">
 									{displayLink}
 								</h1>
-								<Badge variant={shortUrl.isActive ? 'blue' : 'outline'} className="mt-1.5">
-									{shortUrl.isActive ? t('shortUrl.status.active') : t('shortUrl.status.inactive')}
-								</Badge>
+								{isBlocked ? (
+									<Badge variant="destructive" className="mt-1.5">
+										{t('shortUrl.status.blocked')}
+									</Badge>
+								) : (
+									<Badge variant={shortUrl.isActive ? 'blue' : 'outline'} className="mt-1.5">
+										{shortUrl.isActive
+											? t('shortUrl.status.active')
+											: t('shortUrl.status.inactive')}
+									</Badge>
+								)}
 							</div>
 						</div>
 						<div className="flex items-center gap-2">
-							<Button
-								size="sm"
-								variant="outline"
-								onClick={handleToggle}
-								disabled={toggleMutation.isPending}
-							>
-								{shortUrl.isActive ? t('shortUrl.status.disable') : t('shortUrl.status.enable')}
-							</Button>
+							{isBlocked ? (
+								<Tooltip>
+									{/* a disabled button swallows pointer events, so the trigger needs a wrapper */}
+									<TooltipTrigger asChild>
+										<span tabIndex={0} className="inline-flex">
+											<Button size="sm" variant="outline" disabled>
+												{t('shortUrl.status.enable')}
+											</Button>
+										</span>
+									</TooltipTrigger>
+									<TooltipContent side="bottom" className="max-w-xs">
+										{t('shortUrl.safety.blocked.tooltip')}
+									</TooltipContent>
+								</Tooltip>
+							) : (
+								<Button
+									size="sm"
+									variant="outline"
+									onClick={handleToggle}
+									disabled={toggleMutation.isPending}
+								>
+									{shortUrl.isActive ? t('shortUrl.status.disable') : t('shortUrl.status.enable')}
+								</Button>
+							)}
 							<Button size="sm" onClick={() => setEditOpen(true)}>
 								<PencilIcon className="size-4 lg:hidden" />
 								<span className="hidden lg:inline">{t('general.edit')}</span>
@@ -197,6 +241,40 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 					</div>
 				</CardContent>
 			</Card>
+
+			{isBlocked && (
+				<div
+					role="alert"
+					className="rounded-lg border border-red-300 bg-red-50 p-4 dark:border-red-900/60 dark:bg-red-950/40"
+				>
+					<div className="flex gap-3">
+						<ExclamationTriangleIcon
+							aria-hidden="true"
+							className="size-5 shrink-0 text-red-600 dark:text-red-400"
+						/>
+						<div className="space-y-1.5">
+							<p className="text-sm font-semibold text-red-900 dark:text-red-100">
+								{t('shortUrl.safety.blocked.title')}
+							</p>
+							<p className="text-sm text-red-800 dark:text-red-200">
+								{t('shortUrl.safety.blocked.description')}
+							</p>
+							{threatTypes.length > 0 && (
+								<p className="text-xs text-red-700 dark:text-red-300">
+									{t('shortUrl.safety.blocked.threatTypes')}{' '}
+									<span className="font-mono">{threatTypes.join(', ')}</span>
+								</p>
+							)}
+							<p className="text-sm text-red-800 dark:text-red-200">
+								{t('shortUrl.safety.blocked.remediation')}
+							</p>
+							<p className="text-xs text-red-700 dark:text-red-300">
+								{t('shortUrl.safety.blocked.support')}
+							</p>
+						</div>
+					</div>
+				</div>
+			)}
 
 			{/* Content Card */}
 			<Card>

@@ -1,4 +1,4 @@
-import { isSelfReferencingShortUrl } from '../index';
+import { isShortenedDestinationUrl } from '../index';
 
 // Control both recognized system hosts so we can assert the redirect-domain split behaviour.
 jest.mock('@/core/config/env', () => ({
@@ -8,43 +8,42 @@ jest.mock('@/core/config/env', () => ({
 	},
 }));
 
-describe('isSelfReferencingShortUrl', () => {
-	const code = 'abc12';
-
+describe('isShortenedDestinationUrl', () => {
 	it('matches the dedicated redirect domain', () => {
-		expect(isSelfReferencingShortUrl('https://qrco.ly/u/abc12', code)).toBe(true);
+		expect(isShortenedDestinationUrl('https://qrco.ly/u/abc12')).toBe(true);
 	});
 
 	it('matches the legacy brand domain (regression: old-domain self-reference)', () => {
-		expect(isSelfReferencingShortUrl('https://www.qrcodly.de/u/abc12', code)).toBe(true);
-		expect(isSelfReferencingShortUrl('https://qrcodly.de/u/abc12', code)).toBe(true);
+		expect(isShortenedDestinationUrl('https://www.qrcodly.de/u/abc12')).toBe(true);
+		expect(isShortenedDestinationUrl('https://qrcodly.de/u/abc12')).toBe(true);
 	});
 
 	it('matches a provided custom-domain host', () => {
-		expect(
-			isSelfReferencingShortUrl('https://links.acme.com/u/abc12', code, 'links.acme.com'),
-		).toBe(true);
+		expect(isShortenedDestinationUrl('https://links.acme.com/u/abc12', 'links.acme.com')).toBe(
+			true,
+		);
 	});
 
-	it('ignores a different short code on a recognized host', () => {
-		expect(isSelfReferencingShortUrl('https://qrco.ly/u/other', code)).toBe(false);
+	it('matches a different short code on a recognized host (chaining, not just self-reference)', () => {
+		expect(isShortenedDestinationUrl('https://qrco.ly/u/other')).toBe(true);
 	});
 
 	it('ignores an unrecognized host', () => {
-		expect(isSelfReferencingShortUrl('https://evil.example/u/abc12', code)).toBe(false);
+		expect(isShortenedDestinationUrl('https://evil.example/u/abc12')).toBe(false);
 	});
 
 	it('ignores a different path on a recognized host', () => {
-		expect(isSelfReferencingShortUrl('https://qrco.ly/pricing', code)).toBe(false);
+		expect(isShortenedDestinationUrl('https://qrco.ly/pricing')).toBe(false);
+		expect(isShortenedDestinationUrl('https://qrco.ly/u/abc12/deeper')).toBe(false);
 	});
 
 	it('tolerates a trailing slash', () => {
-		expect(isSelfReferencingShortUrl('https://qrco.ly/u/abc12/', code)).toBe(true);
+		expect(isShortenedDestinationUrl('https://qrco.ly/u/abc12/')).toBe(true);
 	});
 
 	it('returns false for empty or unparseable input', () => {
-		expect(isSelfReferencingShortUrl(null, code)).toBe(false);
-		expect(isSelfReferencingShortUrl(undefined, code)).toBe(false);
-		expect(isSelfReferencingShortUrl('not-a-url', code)).toBe(false);
+		expect(isShortenedDestinationUrl(null)).toBe(false);
+		expect(isShortenedDestinationUrl(undefined)).toBe(false);
+		expect(isShortenedDestinationUrl('not-a-url')).toBe(false);
 	});
 });

@@ -8,7 +8,7 @@ import { clerkClient, getAuth } from '@clerk/fastify';
 import { type FastifyRequest } from 'fastify';
 import { container } from 'tsyringe';
 import UserSubscriptionRepository from '@/modules/billing/domain/repository/user-subscription.repository';
-import { trackActiveSession } from '@/core/metrics';
+import { trackActiveSession, trackExternal } from '@/core/metrics';
 
 const USER_PLAN_CACHE_TTL = 300; // 5 minutes
 const USER_BAN_CACHE_TTL = 60; // 1 minute — bans are set manually in Clerk, so propagate quickly
@@ -29,7 +29,9 @@ async function resolveUserBanStatus(userId: string): Promise<boolean> {
 			return cached === 1 || cached === '1';
 		}
 
-		const user = await clerkClient.users.getUser(userId);
+		const user = await trackExternal('clerk', 'users.getUser', () =>
+			clerkClient.users.getUser(userId),
+		);
 		const banned = user.privateMetadata?.banned === true;
 
 		await cache.set(cacheKey, banned ? 1 : 0, USER_BAN_CACHE_TTL);

@@ -96,8 +96,13 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 		);
 	}
 
+	// `status` included so an empty "blocked" result still renders the filter bar — otherwise the
+	// user is stuck in a filtered empty list with no control to clear it.
 	const hasActiveFilters =
-		!!filters.search || !!filters.contentType?.length || !!filters.tagIds?.length;
+		!!filters.search ||
+		!!filters.contentType?.length ||
+		!!filters.tagIds?.length ||
+		(!!filters.status && filters.status !== 'all');
 
 	if (!isFetching && qrCodes.data.length === 0) {
 		return (

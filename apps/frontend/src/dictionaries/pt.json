@@ -54,7 +54,8 @@
 			"active": "Ativa",
 			"inactive": "Desativada",
 			"enable": "Ativar",
-			"disable": "Desativar"
+			"disable": "Desativar",
+			"blocked": "Bloqueado"
 		},
 		"error": {
 			"maliciousDestination": {
@@ -79,12 +80,40 @@
 			},
 			"load": {
 				"title": "Falha ao carregar URLs curtas. Por favor, tente novamente."
+			},
+			"blocked": {
+				"title": "O link está bloqueado",
+				"message": "Este link foi bloqueado porque o seu destino foi sinalizado como não seguro e não pode ser reativado."
 			}
 		},
-		"featureBanner": {
-			"title": "Apresentando URLs Curtas",
-			"description": "Agora você pode criar e gerenciar URLs curtas diretamente — encurte qualquer link, acompanhe cliques e veja análises detalhadas. Sem necessidade de QR code.",
-			"cta": "Experimente agora"
+		"safety": {
+			"banner": {
+				"titleOne": "Um dos seus links foi bloqueado",
+				"titleMany": "{count} dos seus links foram bloqueados",
+				"description": "O Google Safe Browsing sinalizou o destino como não seguro, por isso desativámos o link. Já não redireciona ninguém.",
+				"warningActive": "Este é um aviso: se um destino malicioso for usado novamente nesta conta, iremos suspendê-la.",
+				"dismiss": "Entendido",
+				"breakdown": "Afetados: {shortUrls} URL(s) curta(s) e {qrCodes} código(s) QR.",
+				"reviewShortUrlsCta": "Rever URLs curtos",
+				"reviewQrCodesCta": "Rever códigos QR"
+			},
+			"blocked": {
+				"title": "Este link está bloqueado",
+				"description": "Desativámo-lo porque o Google Safe Browsing sinaliza o seu destino como não seguro.",
+				"threatTypes": "Reportado como: {types}",
+				"remediation": "Não pode reativar um link bloqueado. Continuamos a verificá-lo automaticamente: quando o destino deixar de ser sinalizado, o bloqueio é levantado e poderá ativá-lo novamente. Alterar o link para um destino seguro também levanta o bloqueio.",
+				"support": "Acha que isto é um erro? Contacte o suporte e iremos verificar.",
+				"tooltip": "Bloqueado por destino não seguro — não pode ser reativado por você.",
+				"menuHint": "Links bloqueados não podem ser ativados nem duplicados."
+			}
+		},
+		"filters": {
+			"status": {
+				"all": "Todos",
+				"active": "Ativos",
+				"disabled": "Desativados",
+				"blocked": "Bloqueados"
+			}
 		}
 	},
 	"general": {
@@ -3718,5 +3747,11 @@
 			"title": "Suporte por e-mail",
 			"subtitle": "Entre em contato com nossa equipe"
 		}
+	},
+	"linkBlocked": {
+		"title": "Link bloqueado",
+		"description": "Este link foi desativado porque o seu destino foi reportado como não seguro.",
+		"note": "Para sua proteção não o redirecionámos. Não introduza dados pessoais se chegou aqui através de uma mensagem inesperada.",
+		"button": "Voltar ao início"
 	}
 }

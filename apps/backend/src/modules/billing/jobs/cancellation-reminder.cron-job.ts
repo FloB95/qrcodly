@@ -77,6 +77,7 @@ export class CancellationReminderCronJob extends AbstractCronJob {
 					to: email,
 					subject: 'Reminder: Your QRcodly Subscription Is Ending Soon',
 					html,
+					template: 'subscription-cancellation-reminder',
 				});
 
 				await repository.markCancellationReminderSent(subscription.userId);

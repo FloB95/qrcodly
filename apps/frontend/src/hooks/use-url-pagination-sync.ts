@@ -3,6 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import type { QrCodeFilters as QrCodeFiltersType } from '@/lib/api/qr-code';
+import { ShortUrlStatusFilterSchema } from '@shared/schemas';
+
+/** `?status=blocked` comes from the safety banner; anything unrecognised is ignored. */
+const parseStatus = (raw: string | null): QrCodeFiltersType['status'] => {
+	const parsed = ShortUrlStatusFilterSchema.safeParse(raw);
+	return parsed.success && parsed.data !== 'all' ? parsed.data : undefined;
+};
 
 /**
  * Bidirectional sync between URL search params and pagination/filter state.
@@ -16,9 +23,11 @@ export function useUrlPaginationSync() {
 
 	const pageParam = Number(searchParams.get('page')) || 1;
 	const tagParam = searchParams.get('tag');
+	const statusParam = searchParams.get('status');
 	const [currentPage, setCurrentPage] = useState(pageParam);
 	const [filters, setFilters] = useState<QrCodeFiltersType>(() => ({
 		tagIds: tagParam ? [tagParam] : undefined,
+		status: parseStatus(statusParam),
 	}));
 
 	const isInitialMount = useRef(true);
@@ -54,17 +63,22 @@ export function useUrlPaginationSync() {
 		router.replace(pathname + (search ? '?' + search : ''), { scroll: false });
 	}, [currentPage, pathname, router, searchParams]);
 
-	// URL → state: sync tag filter from ?tag= param (e.g. clicking a tag badge)
+	// URL → state: sync tag and status filters (a tag badge click, or the safety banner's
+	// ?status=blocked link). Both are rebuilt together — handling only one would wipe the other.
 	useEffect(() => {
-		setFilters(tagParam ? { tagIds: [tagParam] } : {});
-		// Only reset page to 1 when tag changes after initial mount,
+		const status = parseStatus(statusParam);
+		setFilters({
+			tagIds: tagParam ? [tagParam] : undefined,
+			status,
+		});
+		// Only reset page to 1 when a filter changes after initial mount,
 		// so ?page=3&tag=abc deep links preserve the page number
 		if (isInitialMount.current) {
 			isInitialMount.current = false;
 		} else {
 			setCurrentPage(1);
 		}
-	}, [tagParam]);
+	}, [tagParam, statusParam]);
 
 	const handleFiltersChange = (newFilters: QrCodeFiltersType) => {
 		setFilters(newFilters);

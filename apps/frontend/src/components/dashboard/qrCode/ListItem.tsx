@@ -109,6 +109,8 @@ export const QrCodeListItem = ({
 	} = useQrCodeActionHandlers(qr);
 
 	const isDynamicQr = !!qr.shortUrl && isDynamic(qr.content);
+	// We disabled this QR code's destination for safety; the API refuses to re-enable it.
+	const isBlocked = qr.shortUrl?.safetyStatus === 'blocked';
 
 	const menuItemProps = {
 		qr,
@@ -157,16 +159,29 @@ export const QrCodeListItem = ({
 							{qr.shortUrl && (
 								<Tooltip>
 									<TooltipTrigger asChild>
-										<Badge variant={qr.shortUrl.isActive ? 'blue' : 'outline'} className="text-xs">
-											{qr.shortUrl.isActive
-												? t('analytics.stateActive')
-												: t('analytics.stateInactive')}
-										</Badge>
+										{/* A QR code we blocked must be distinguishable from one the owner switched
+										    off — only the former cannot be re-enabled. */}
+										{isBlocked ? (
+											<Badge variant="destructive" className="text-xs">
+												{t('shortUrl.status.blocked')}
+											</Badge>
+										) : (
+											<Badge
+												variant={qr.shortUrl.isActive ? 'blue' : 'outline'}
+												className="text-xs"
+											>
+												{qr.shortUrl.isActive
+													? t('analytics.stateActive')
+													: t('analytics.stateInactive')}
+											</Badge>
+										)}
 									</TooltipTrigger>
-									<TooltipContent side="top">
-										{qr.shortUrl.isActive
-											? t('analytics.activeDescription')
-											: t('analytics.inactiveDescription')}
+									<TooltipContent side="top" className="max-w-xs">
+										{isBlocked
+											? t('shortUrl.safety.blocked.tooltip')
+											: qr.shortUrl.isActive
+												? t('analytics.activeDescription')
+												: t('analytics.inactiveDescription')}
 									</TooltipContent>
 								</Tooltip>
 							)}

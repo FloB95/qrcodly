@@ -11,13 +11,12 @@ import type { TUpdateShortUrlDto } from '@shared/schemas';
 import type { TQrCode } from '@shared/schemas';
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
 import { RedirectLoopError } from '../../error/http/redirect-loop.error';
-import { isSelfReferencingShortUrl } from '../../utils';
+import { isShortenedDestinationUrl } from '../../utils';
 import type { DestinationUrlSafetyService } from '../../service/destination-url-safety.service';
 
 jest.mock('../../utils', () => ({
-	isSelfReferencingShortUrl: jest.fn(
-		(destinationUrl: string | null | undefined, shortCode: string) =>
-			destinationUrl === `https://short.url/${shortCode}`,
+	isShortenedDestinationUrl: jest.fn((destinationUrl: string | null | undefined) =>
+		typeof destinationUrl === 'string' ? destinationUrl.startsWith('https://short.url/') : false,
 	),
 }));
 
@@ -255,7 +254,7 @@ describe('UpdateShortUrlUseCase', () => {
 			).resolves.toBeDefined();
 		});
 
-		it('should check self-reference via isSelfReferencingShortUrl()', async () => {
+		it('should reject a shortened destination via isShortenedDestinationUrl()', async () => {
 			const updateDto: TUpdateShortUrlDto = {
 				destinationUrl: 'https://short.url/ABC12',
 			};
@@ -278,10 +277,7 @@ describe('UpdateShortUrlUseCase', () => {
 				RedirectLoopError,
 			);
 
-			expect(isSelfReferencingShortUrl).toHaveBeenCalledWith(
-				'https://short.url/ABC12',
-				mockShortUrl.shortCode,
-			);
+			expect(isShortenedDestinationUrl).toHaveBeenCalledWith('https://short.url/ABC12');
 		});
 
 		it('should throw QrCodeNotFoundError when linkedQrCodeId provided but QR code does not exist', async () => {
@@ -336,7 +332,33 @@ describe('UpdateShortUrlUseCase', () => {
 				isActive: updateDto.isActive,
 				updatedAt: expect.any(Date),
 				qrCodeId: undefined,
+				// a changed destination re-enters the safety re-check queue
+				nextSafetyCheckAt: expect.any(Date),
 			});
+		});
+
+		it('should enrol a changed destination in the safety re-check queue', async () => {
+			mockShortUrlRepository.update.mockResolvedValue();
+			mockShortUrlRepository.findOneById.mockResolvedValue(mockShortUrl);
+
+			await useCase.execute(
+				mockShortUrl,
+				{ destinationUrl: 'https://new-example.com' },
+				mockUserId,
+			);
+
+			const payload = mockShortUrlRepository.update.mock.calls[0][1];
+			expect(payload.nextSafetyCheckAt).toBeInstanceOf(Date);
+			expect((payload.nextSafetyCheckAt as Date).getTime()).toBeGreaterThan(Date.now());
+		});
+
+		it('should clear nextSafetyCheckAt when a destination is removed', async () => {
+			mockShortUrlRepository.update.mockResolvedValue();
+			mockShortUrlRepository.findOneById.mockResolvedValue(mockShortUrl);
+
+			await useCase.execute(mockShortUrl, { destinationUrl: null }, mockUserId);
+
+			expect(mockShortUrlRepository.update.mock.calls[0][1].nextSafetyCheckAt).toBeNull();
 		});
 
 		it('should retrieve updated entity after update', async () => {

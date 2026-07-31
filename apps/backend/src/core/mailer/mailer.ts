@@ -1,11 +1,12 @@
 import nodemailer, { type Transporter } from 'nodemailer';
 import Handlebars from 'handlebars';
 import { inject, singleton } from 'tsyringe';
-import { type Attachment, type IMailer } from '../interface/mailer.interface';
+import { type Attachment, type IMailer, type TemplateName } from '../interface/mailer.interface';
 import { env } from '../config/env';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { DEFAULT_FROM_MAIL, IN_TEST } from '../config/constants';
 import { Logger } from '../logging';
+import { mailDuration, mailSent, safely } from '../metrics';
 import { dirname, join as pathJoin } from 'path';
 import { readFile } from 'fs/promises';
 import { OnShutdown } from '../decorators/on-shutdown.decorator';
@@ -13,12 +14,7 @@ import { fileURLToPath } from 'url';
 import { type Address } from 'nodemailer/lib/mailer';
 
 type Template = HandlebarsTemplateDelegate<unknown>;
-type TemplateName =
-	| 'subscription-past-due'
-	| 'subscription-cancel-initiated'
-	| 'subscription-cancellation-reminder'
-	| 'subscription-pro-features-disabled'
-	| 'subscription-reactivated';
+export type { TemplateName };
 
 /**
  * Mailer class for sending emails using Nodemailer.
@@ -52,6 +48,7 @@ export class Mailer implements IMailer {
 		text,
 		html,
 		attachments,
+		template = 'unknown',
 	}: {
 		from?: string;
 		to: string | string[] | Address;
@@ -60,10 +57,12 @@ export class Mailer implements IMailer {
 		text?: string;
 		html?: string;
 		attachments?: Attachment[];
+		template?: TemplateName | 'unknown';
 	}): Promise<SMTPTransport.SentMessageInfo | undefined> {
 		// Skip sending emails in test environment
 		if (IN_TEST) return;
 
+		const startedAt = Date.now();
 		try {
 			const info = await this.transporter.sendMail({
 				from: from || DEFAULT_FROM_MAIL,
@@ -82,6 +81,10 @@ export class Mailer implements IMailer {
 			this.logger.debug(`Email with Subject: ${subject} sent to: ${recipients}`, {
 				mail: info,
 			});
+			safely(() => {
+				mailDuration.record(Date.now() - startedAt, { template });
+				mailSent.add(1, { template, outcome: 'sent' });
+			});
 			return info;
 		} catch (error) {
 			this.logger.error(`Failed to send email`, {
@@ -89,6 +92,10 @@ export class Mailer implements IMailer {
 					recipients: to,
 				},
 				error: error as Error,
+			});
+			safely(() => {
+				mailDuration.record(Date.now() - startedAt, { template });
+				mailSent.add(1, { template, outcome: 'failed' });
 			});
 			throw error;
 		}

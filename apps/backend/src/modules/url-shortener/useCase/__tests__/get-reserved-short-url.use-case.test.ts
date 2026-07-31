@@ -2,7 +2,11 @@ import { GetReservedShortCodeUseCase } from '../get-reserved-short-url.use-case'
 import { type CreateShortUrlUseCase } from '../create-short-url.use-case';
 import type ShortUrlRepository from '../../domain/repository/short-url.repository';
 import { mock } from 'jest-mock-extended';
-import type { TShortUrl, TShortUrlWithDomain } from '../../domain/entities/short-url.entity';
+import {
+	SHORT_URL_SAFETY_DEFAULTS,
+	type TShortUrl,
+	type TShortUrlWithDomain,
+} from '../../domain/entities/short-url.entity';
 import type { GetDefaultCustomDomainUseCase } from '@/modules/custom-domain/useCase/get-default-custom-domain.use-case';
 import type { Logger } from '@/core/logging';
 
@@ -45,6 +49,7 @@ describe('GetReservedShortCodeUseCase', () => {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 			deletedAt: null,
+			...SHORT_URL_SAFETY_DEFAULTS,
 		};
 
 		const mockReservedShortUrlWithDomain: TShortUrlWithDomain = {

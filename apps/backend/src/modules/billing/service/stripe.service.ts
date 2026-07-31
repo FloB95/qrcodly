@@ -2,6 +2,7 @@ import { inject, singleton } from 'tsyringe';
 import Stripe from 'stripe';
 import { env } from '@/core/config/env';
 import { Logger } from '@/core/logging';
+import { trackExternal } from '@/core/metrics';
 
 @singleton()
 export class StripeService {
@@ -17,9 +18,11 @@ export class StripeService {
 		name?: string,
 	): Promise<Stripe.Customer> {
 		// Search for existing customer by metadata
-		const existing = await this.stripe.customers.search({
-			query: `metadata["clerkUserId"]:"${userId}"`,
-		});
+		const existing = await trackExternal('stripe', 'customers.search', () =>
+			this.stripe.customers.search({
+				query: `metadata["clerkUserId"]:"${userId}"`,
+			}),
+		);
 
 		const first = existing.data[0];
 		if (first) {
@@ -27,11 +30,13 @@ export class StripeService {
 		}
 
 		// Create new customer
-		const customer = await this.stripe.customers.create({
-			email,
-			name: name || undefined,
-			metadata: { clerkUserId: userId },
-		});
+		const customer = await trackExternal('stripe', 'customers.create', () =>
+			this.stripe.customers.create({
+				email,
+				name: name || undefined,
+				metadata: { clerkUserId: userId },
+			}),
+		);
 
 		this.logger.info('stripe.customer.created', {
 			stripe: { customerId: customer.id, userId },
@@ -48,29 +53,33 @@ export class StripeService {
 		userId: string;
 		locale?: string;
 	}): Promise<Stripe.Checkout.Session> {
-		return this.stripe.checkout.sessions.create({
-			customer: params.customerId,
-			mode: 'subscription',
-			line_items: [{ price: params.priceId, quantity: 1 }],
-			success_url: params.successUrl,
-			cancel_url: params.cancelUrl,
-			metadata: { clerkUserId: params.userId },
-			locale: (params.locale as Stripe.Checkout.SessionCreateParams.Locale) || 'auto',
-			billing_address_collection: 'auto',
-			subscription_data: {
+		return trackExternal('stripe', 'checkout.sessions.create', () =>
+			this.stripe.checkout.sessions.create({
+				customer: params.customerId,
+				mode: 'subscription',
+				line_items: [{ price: params.priceId, quantity: 1 }],
+				success_url: params.successUrl,
+				cancel_url: params.cancelUrl,
 				metadata: { clerkUserId: params.userId },
-			},
-		});
+				locale: (params.locale as Stripe.Checkout.SessionCreateParams.Locale) || 'auto',
+				billing_address_collection: 'auto',
+				subscription_data: {
+					metadata: { clerkUserId: params.userId },
+				},
+			}),
+		);
 	}
 
 	async createPortalSession(
 		stripeCustomerId: string,
 		locale?: string,
 	): Promise<Stripe.BillingPortal.Session> {
-		return this.stripe.billingPortal.sessions.create({
-			customer: stripeCustomerId,
-			locale: (locale as Stripe.BillingPortal.SessionCreateParams.Locale) || 'auto',
-		});
+		return trackExternal('stripe', 'billingPortal.sessions.create', () =>
+			this.stripe.billingPortal.sessions.create({
+				customer: stripeCustomerId,
+				locale: (locale as Stripe.BillingPortal.SessionCreateParams.Locale) || 'auto',
+			}),
+		);
 	}
 
 	constructWebhookEvent(body: string | Buffer, signature: string): Stripe.Event {
@@ -78,32 +87,39 @@ export class StripeService {
 	}
 
 	async getSubscription(subscriptionId: string): Promise<Stripe.Subscription> {
-		return this.stripe.subscriptions.retrieve(subscriptionId);
+		return trackExternal('stripe', 'subscriptions.retrieve', () =>
+			this.stripe.subscriptions.retrieve(subscriptionId),
+		);
 	}
 
 	async listActiveSubscriptions(): Promise<Stripe.Subscription[]> {
-		const subscriptions: Stripe.Subscription[] = [];
-		for (const status of ['active', 'trialing', 'past_due'] as const) {
-			for await (const sub of this.stripe.subscriptions.list({
-				status,
-				limit: 100,
-			})) {
-				subscriptions.push(sub);
+		// One span per status, not per auto-paginated page — the whole sweep is the unit of work.
+		return trackExternal('stripe', 'subscriptions.list', async () => {
+			const subscriptions: Stripe.Subscription[] = [];
+			for (const status of ['active', 'trialing', 'past_due'] as const) {
+				for await (const sub of this.stripe.subscriptions.list({
+					status,
+					limit: 100,
+				})) {
+					subscriptions.push(sub);
+				}
 			}
-		}
-		return subscriptions;
+			return subscriptions;
+		});
 	}
 
 	async listRecentCheckoutSessions(createdAfter: number): Promise<Stripe.Checkout.Session[]> {
-		const sessions: Stripe.Checkout.Session[] = [];
-		for await (const session of this.stripe.checkout.sessions.list({
-			status: 'complete',
-			created: { gte: createdAfter },
-			expand: ['data.subscription'],
-			limit: 100,
-		})) {
-			sessions.push(session);
-		}
-		return sessions;
+		return trackExternal('stripe', 'checkout.sessions.list', async () => {
+			const sessions: Stripe.Checkout.Session[] = [];
+			for await (const session of this.stripe.checkout.sessions.list({
+				status: 'complete',
+				created: { gte: createdAfter },
+				expand: ['data.subscription'],
+				limit: 100,
+			})) {
+				sessions.push(session);
+			}
+			return sessions;
+		});
 	}
 }

@@ -7,6 +7,14 @@ type ScanLookupResponse = {
 	destinationUrl: string | null;
 	isActive: boolean;
 	deletedAt: string | null;
+	/**
+	 * True when we disabled the link because its destination was flagged as unsafe.
+	 *
+	 * This type is hand-written and the backend endpoint has no response schema, so nothing here is
+	 * type-checked against the API — if this field is ever dropped server-side, blocked links quietly
+	 * fall back to /disabled with no build or test failure.
+	 */
+	blocked?: boolean;
 };
 
 export async function processAnalyticsAndRedirect(req: NextRequest) {
@@ -61,7 +69,10 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 			)
 				? (userLocale as (typeof SUPPORTED_LANGUAGES)[number])
 				: 'en';
-			return NextResponse.rewrite(new URL(`/${locale}/disabled`, req.url));
+			// A blocked link needs different copy: /disabled tells the visitor to contact the owner of
+			// the QR code, which is terrible advice when the owner is the one who pointed it at phishing.
+			const page = shortUrl?.blocked ? 'link-blocked' : 'disabled';
+			return NextResponse.rewrite(new URL(`/${locale}/${page}`, req.url));
 		}
 	} catch {
 		return NextResponse.rewrite(new URL('/404', req.url));

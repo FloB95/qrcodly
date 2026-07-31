@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { NavigationProgress } from '@/components/navigation-progress';
 import SatisfactionSurvey from '@/components/dashboard/satisfaction-survey/SatisfactionSurvey';
+import { SafetyIncidentBanner } from '@/components/dashboard/safety/SafetyIncidentBanner';
 import { SiteHeader } from '@/components/site-header';
 import Container from '@/components/ui/container';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
@@ -27,6 +28,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 						<div className="flex flex-1 flex-col">
 							<div className="@container/main flex flex-1 flex-col gap-2">
 								<div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
+									<SafetyIncidentBanner />
 									{children}
 								</div>
 							</div>

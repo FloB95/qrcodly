@@ -1,13 +1,18 @@
 /**
- * Sends all email templates with sample data to a given recipient.
+ * Renders every email template with sample data.
  *
  * Usage:
- *   npx tsx scripts/send-test-emails.ts
+ *   pnpm run script:preview-emails                    # write HTML files to ./tmp/email-preview
+ *   pnpm run script:preview-emails -- --send          # actually send them via SMTP
+ *   pnpm run script:preview-emails -- --send --only admin   # ... only matching subjects
+ *
+ * The write mode is the fast loop: no SMTP round-trip, and you can open the files side by side to
+ * compare wording and layout.
  */
 import 'dotenv/config';
 import nodemailer from 'nodemailer';
 import Handlebars from 'handlebars';
-import { readFile } from 'fs/promises';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import { dirname, join as pathJoin } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -73,8 +78,8 @@ const templates: TemplateConfig[] = [
 	},
 
 	{
-		file: 'subscription-domains-disabled.handlebars',
-		subject: '[Test] Custom Domains Disabled',
+		file: 'subscription-pro-features-disabled.handlebars',
+		subject: '[Test] Pro Features Disabled',
 		vars: {
 			firstName: 'Flo',
 			subscribeUrl: `${frontendUrl}/plans`,
@@ -90,27 +95,166 @@ const templates: TemplateConfig[] = [
 			year,
 		},
 	},
+
+	// --- URL safety ---
+	{
+		// first offence: block notice that doubles as the warning
+		file: 'url-safety-link-blocked.handlebars',
+		subject: '[Test] Link blocked (first offence — includes the warning)',
+		vars: {
+			firstName: 'Flo',
+			hosts: ['phishy-login.example.com'],
+			threatTypes: 'phishing / social engineering',
+			shortCodes: ['ab3xz'],
+			isWarning: true,
+			offenceCount: 1,
+			maxWarnings: 3,
+			dashboardUrl: `${frontendUrl}/dashboard/short-urls`,
+			supportEmail: 'support@qrcodly.de',
+			year,
+		},
+	},
+	{
+		// the realistic bad case: one compromised site flagging several of a customer's links at once
+		file: 'url-safety-link-blocked.handlebars',
+		subject: '[Test] Link blocked (several links, no warning box)',
+		vars: {
+			firstName: 'Flo',
+			hosts: ['hacked-cms.example.com', 'another-host.example.org'],
+			threatTypes: 'malware',
+			shortCodes: ['ab3xz', 'qq11z', 'zz99y'],
+			isWarning: false,
+			offenceCount: 2,
+			dashboardUrl: `${frontendUrl}/dashboard/short-urls`,
+			supportEmail: 'support@qrcodly.de',
+			year,
+		},
+	},
+	{
+		file: 'url-safety-account-banned.handlebars',
+		subject: '[Test] Account suspended',
+		vars: {
+			firstName: 'Flo',
+			hosts: ['phishy-login.example.com'],
+			threatTypes: 'phishing / social engineering',
+			shortCodes: ['ab3xz'],
+			occurredAt: '01/08/2026, 00:15:22',
+			supportEmail: 'support@qrcodly.de',
+			year,
+		},
+	},
+	{
+		file: 'url-safety-admin-alert.handlebars',
+		subject: '[Test] Admin alert — auto-ban',
+		vars: {
+			isAutoBan: true,
+			isUrgent: true,
+			userId: 'user_2fTGlAmh9a1UhD5JYOD70Z4Y31T',
+			offenceCount: 2,
+			source: 'update',
+			hosts: ['phishy-login.example.com'],
+			shortCodes: ['ab3xz'],
+			threatTypes: 'phishing / social engineering',
+			clerkUserUrl: 'https://dashboard.clerk.com/last-active?path=users/user_2fTG',
+			occurredAt: '01/08/2026, 00:15:22',
+			year,
+		},
+	},
+	{
+		file: 'url-safety-admin-alert.handlebars',
+		subject: '[Test] Admin alert — ban FAILED, act by hand',
+		vars: {
+			isAutoBan: false,
+			isBanFailed: true,
+			isUrgent: true,
+			userId: 'user_2fTGlAmh9a1UhD5JYOD70Z4Y31T',
+			offenceCount: 2,
+			source: 'update',
+			hosts: ['phishy-login.example.com'],
+			shortCodes: ['ab3xz'],
+			threatTypes: 'phishing / social engineering',
+			clerkUserUrl: 'https://dashboard.clerk.com/last-active?path=users/user_2fTG',
+			occurredAt: '01/08/2026, 00:15:22',
+			year,
+		},
+	},
+	{
+		file: 'url-safety-admin-alert.handlebars',
+		subject: '[Test] Admin alert — repeat finding needs review',
+		vars: {
+			isAutoBan: false,
+			isUrgent: false,
+			userId: 'user_2fTGlAmh9a1UhD5JYOD70Z4Y31T',
+			offenceCount: 2,
+			source: 'recheck',
+			hosts: ['hacked-cms.example.com'],
+			shortCodes: ['qq11z'],
+			threatTypes: 'malware',
+			clerkUserUrl: 'https://dashboard.clerk.com/last-active?path=users/user_2fTG',
+			occurredAt: '01/08/2026, 00:15:22',
+			year,
+		},
+	},
 ];
 
-async function main() {
-	console.log(`Sending ${templates.length} test emails to ${TO}...\n`);
+const slugify = (subject: string) =>
+	subject
+		.replace(/^\[Test\]\s*/, '')
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-|-$/g, '');
 
-	for (const tmpl of templates) {
+async function main() {
+	const send = process.argv.includes('--send');
+	const onlyIndex = process.argv.indexOf('--only');
+	const only = onlyIndex >= 0 ? process.argv[onlyIndex + 1]?.toLowerCase() : undefined;
+	const selected = only
+		? templates.filter((t) => t.subject.toLowerCase().includes(only) || t.file.includes(only))
+		: templates;
+
+	if (!selected.length) {
+		console.error(`No template matches "${only}".`);
+		process.exit(1);
+	}
+
+	const outDir = pathJoin(dir, '../tmp/email-preview');
+
+	if (!send) {
+		await mkdir(outDir, { recursive: true });
+		console.log(`Writing ${selected.length} previews to ${outDir}\n`);
+	} else {
+		console.log(`Sending ${selected.length} test emails to ${TO}...\n`);
+	}
+
+	for (const [index, tmpl] of selected.entries()) {
 		const markup = await readFile(pathJoin(templatesDir, tmpl.file), 'utf-8');
 		const compiled = Handlebars.compile(markup);
 		const html = compiled({ ...tmpl.vars, logoUrl });
 
-		await transporter.sendMail({
-			from: FROM,
-			to: TO,
-			subject: tmpl.subject,
-			html,
-		});
+		// an unresolved tag means the template expects a variable this sample does not provide
+		const leftover = html.match(/\{\{[^}]+\}\}/g);
+		if (leftover) {
+			console.warn(`  ! ${tmpl.file}: unresolved ${leftover.join(', ')}`);
+		}
 
-		console.log(`  Sent: ${tmpl.subject}`);
+		if (send) {
+			const info = await transporter.sendMail({ from: FROM, to: TO, subject: tmpl.subject, html });
+			console.log(`  Sent: ${tmpl.subject}`);
+			// Ethereal captures mail instead of delivering it and hands back a viewer URL
+			const preview = nodemailer.getTestMessageUrl(info);
+			if (preview) console.log(`        ${preview}`);
+		} else {
+			const name = `${String(index + 1).padStart(2, '0')}-${slugify(tmpl.subject)}.html`;
+			await writeFile(pathJoin(outDir, name), html, 'utf-8');
+			console.log(`  ${name}`);
+		}
 	}
 
-	console.log('\nDone! All emails sent.');
+	if (send) {
+		console.log('\nDone! All emails sent.');
+	} else {
+		console.log(`\nDone. Open them with:  open ${outDir}`);
+	}
 	transporter.close();
 }
 

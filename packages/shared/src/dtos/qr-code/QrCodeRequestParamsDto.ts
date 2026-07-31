@@ -5,6 +5,7 @@ import {
 	PaginationQueryParamsSchema,
 } from '../ListRequestDto';
 import { QrCodeContentType } from '../../schemas/QrCode';
+import { ShortUrlStatusFilterSchema } from '../url-shortener/types/safety';
 
 // Schema to validate the request query params for the GetCustomers controller action
 const QrCodeWhereSchema = z.object({
@@ -25,5 +26,9 @@ export const GetQrCodeQueryParamsSchema = PaginationQueryParamsSchema(QrCodeWher
 		.describe(
 			'Filter by tag ID(s). Only returns QR codes that have at least one of the specified tags',
 		),
+	status: ShortUrlStatusFilterSchema.optional().describe(
+		'Filter by the linked short URL state: active, disabled by the owner, or blocked for safety. ' +
+			'Static QR codes have no short URL and never match.',
+	),
 });
 export type TGetQrCodeQueryParamsDto = z.infer<typeof GetQrCodeQueryParamsSchema>;
