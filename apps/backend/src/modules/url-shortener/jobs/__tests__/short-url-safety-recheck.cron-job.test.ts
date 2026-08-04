@@ -285,14 +285,29 @@ describe('ShortUrlSafetyRecheckCronJob', () => {
 			);
 		});
 
-		it('does not block on UNWANTED_SOFTWARE alone', async () => {
+		it.each(['SOCIAL_ENGINEERING', 'MALWARE', 'UNWANTED_SOFTWARE'])(
+			'blocks on %s — anything Google reports as harmful counts',
+			async (threatType) => {
+				repo.findDueForSafetyCheck.mockResolvedValue([
+					shortUrl({ safetyPendingSince: new Date('2026-07-30') }),
+				]);
+				webRisk.lookup.mockResolvedValue({ status: 'unsafe', threatTypes: [threatType] });
+
+				await run();
+
+				expect(repo.blockForSafety).toHaveBeenCalledWith('su-1', [threatType], expect.any(Date));
+				expect(incidents.record).toHaveBeenCalledWith(
+					expect.objectContaining({ action: 'blocked' }),
+				);
+				expect(escalation.recordOffence).toHaveBeenCalled();
+			},
+		);
+
+		it('ignores a threat type outside the blocking policy', async () => {
 			repo.findDueForSafetyCheck.mockResolvedValue([
 				shortUrl({ safetyPendingSince: new Date('2026-07-30') }),
 			]);
-			webRisk.lookup.mockResolvedValue({
-				status: 'unsafe',
-				threatTypes: ['UNWANTED_SOFTWARE'],
-			});
+			webRisk.lookup.mockResolvedValue({ status: 'unsafe', threatTypes: ['SOME_FUTURE_TYPE'] });
 
 			await run();
 
