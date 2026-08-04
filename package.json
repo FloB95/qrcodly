@@ -35,6 +35,7 @@
 		"backend:build": "pnpm run build:shared-packages && cd apps/backend && pnpm build",
 		"backend:start": "cd apps/backend && pnpm run start",
 		"backend:dev": "cd apps/backend && pnpm run dev",
+		"backend:cli": "cd apps/backend && node build/src/cli.js",
 		"frontend:build": "pnpm run build:shared-packages && cd apps/frontend && pnpm build",
 		"frontend:start": "cd apps/frontend && pnpm run start",
 		"frontend:dev": "cd apps/frontend && pnpm run dev",

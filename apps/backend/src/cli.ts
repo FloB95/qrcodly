@@ -11,10 +11,10 @@ import { type AbstractCommand } from './core/command/abstract.command';
 process.env.TZ = 'Europe/Berlin';
 
 async function loadCommands(parentCommand: Command) {
-	// Get the current file's directory using fileURLToPath and dirname
-	const __dirname = dirname(fileURLToPath(import.meta.url)); // <-- Important change here
-	const modulesDir = resolve(__dirname, 'modules');
-	const coreCommandsDir = resolve(__dirname, 'core', 'command');
+	// not `__dirname` — tsc-esm-fix rewrites that identifier into invalid syntax in the build output
+	const srcDir = dirname(fileURLToPath(import.meta.url));
+	const modulesDir = resolve(srcDir, 'modules');
+	const coreCommandsDir = resolve(srcDir, 'core', 'command');
 
 	// Combine core commands and module commands into a single array of directories
 	const commandDirs = [{ path: coreCommandsDir, exclude: 'abstract-command.ts' }];
@@ -34,7 +34,7 @@ async function loadCommands(parentCommand: Command) {
 	for (const { path, exclude } of commandDirs) {
 		if (existsSync(path)) {
 			const commandFiles = readdirSync(path).filter(
-				(file) => file.endsWith('.command.ts') && file !== exclude,
+				(file) => /\.command\.(ts|js)$/.test(file) && file !== exclude,
 			);
 
 			for (const file of commandFiles) {
