@@ -113,8 +113,8 @@ describe('ShortUrlSafetyRecheckCronJob', () => {
 
 	afterEach(() => jest.clearAllMocks());
 
-	it('runs at 05:00, after the billing jobs', () => {
-		expect(job.schedule).toBe('0 5 * * *');
+	it('runs hourly', () => {
+		expect(job.schedule).toBe('0 * * * *');
 	});
 
 	it('skips entirely when no API key is configured', async () => {

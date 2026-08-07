@@ -12,8 +12,8 @@ import { CustomDomainValidationService } from '@/modules/custom-domain/service/c
 import { DestinationUrlSafetyService } from '../service/destination-url-safety.service';
 import { ShortUrlBlockedError } from '../error/http/short-url-blocked.error';
 import UrlSafetyIncidentRepository from '../domain/repository/url-safety-incident.repository';
-import { hoursFromNow } from '@/core/utils/date';
-import { URL_SAFETY_RECHECK_NEW_HOURS } from '../config/constants';
+import { minutesFromNow } from '@/core/utils/date';
+import { URL_SAFETY_FIRST_CHECK_MINUTES } from '../config/constants';
 import { safely, shortUrlsUpdated, urlSafetyUnblocks } from '@/core/metrics';
 
 /**
@@ -106,7 +106,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 
 			// Any new destination re-enters the queue — including a reserved code getting its first one.
 			updates.nextSafetyCheckAt = updatesDto.destinationUrl
-				? hoursFromNow(URL_SAFETY_RECHECK_NEW_HOURS)
+				? minutesFromNow(URL_SAFETY_FIRST_CHECK_MINUTES)
 				: null;
 
 			// The new destination passed screening, so the old block no longer applies. isActive is

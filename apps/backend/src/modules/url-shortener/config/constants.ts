@@ -88,6 +88,9 @@ export const URL_SAFETY_OFFENCE_WINDOW_DAYS = 90;
 /** 3 = first three offences only warn, the fourth suspends the account. */
 export const URL_SAFETY_OFFENCES_BEFORE_BAN = 3;
 
+/** First check after a link is created or repointed — the window a spam campaign runs in. */
+export const URL_SAFETY_FIRST_CHECK_MINUTES = 15;
+
 /** A link is "new" for this long after its last change, and gets checked more often. */
 export const URL_SAFETY_NEW_URL_AGE_DAYS = 7;
 export const URL_SAFETY_RECHECK_NEW_HOURS = 24;

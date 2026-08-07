@@ -9,8 +9,8 @@ import shortUrl, {
 } from '../entities/short-url.entity';
 import { convertWhereConditionToDrizzle } from '@/core/db/utils';
 import shortUrlTag from '../entities/short-url-tag.entity';
-import { hoursFromNow } from '@/core/utils/date';
-import { URL_SAFETY_RECHECK_NEW_HOURS } from '../../config/constants';
+import { minutesFromNow } from '@/core/utils/date';
+import { URL_SAFETY_FIRST_CHECK_MINUTES } from '../../config/constants';
 import type { TShortUrlSafetyStatus, TShortUrlStatusFilter } from '@shared/schemas';
 
 /**
@@ -247,7 +247,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 				createdAt: new Date(),
 				createdBy: shortUrl.createdBy,
 				nextSafetyCheckAt: shortUrl.destinationUrl
-					? hoursFromNow(URL_SAFETY_RECHECK_NEW_HOURS)
+					? minutesFromNow(URL_SAFETY_FIRST_CHECK_MINUTES)
 					: null,
 			})
 			.execute();

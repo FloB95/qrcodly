@@ -67,8 +67,8 @@ interface RunTally {
 @injectable()
 @CronJob()
 export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
-	// after the billing jobs at 02:00–04:00
-	schedule = '0 5 * * *';
+	// Hourly, so a confirmation due in an hour isn't picked up a day later. The due queue caps volume.
+	schedule = '0 * * * *';
 
 	protected async execute(): Promise<void> {
 		const startedAt = Date.now();
