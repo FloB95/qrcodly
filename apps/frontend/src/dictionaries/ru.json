@@ -1189,14 +1189,11 @@
 				"cancelError": "Не удалось завершить дополнительные домены",
 				"slotsUsed": "Использовано {used} из {total} доменов",
 				"breakdown": "{base} включено в Pro + {extra} дополнительно",
-				"manageSlots": "Управлять доменами",
-				"buySlots": "Добавить домены от {price} €",
 				"pendingReductionTitle": "Запланировано уменьшение",
 				"pendingReductionDescription": "С {date} у вас будет {quantity} дополнительных доменов. До этого ничего не изменится.",
 				"reactivate": "Оставить дополнительные домены",
 				"reactivated": "Дополнительные домены продолжат работать",
-				"reactivateError": "Не удалось сохранить дополнительные домены",
-				"atLimitHint": "Все слоты заняты. Дополнительные домены стоят от {price} € в месяц."
+				"reactivateError": "Не удалось сохранить дополнительные домены"
 			}
 		},
 		"apiKeys": {
@@ -1274,12 +1271,7 @@
 			"manageSubscription": "Управление подпиской",
 			"manageBilling": "Счета и оплата",
 			"addon": {
-				"title": "Дополнительные свои домены",
-				"bookedDescription": "Вы приобрели {quantity} дополнительных доменов сверх включённого в Pro.",
 				"emptyDescription": "В Pro входит один свой домен. Добавьте ещё, когда понадобится.",
-				"costMonthly": "{quantity} × {unit} € = {total} € в месяц",
-				"costAnnual": "{quantity} × {unit} € в месяц, годовая оплата — {total} € в год",
-				"renewsOn": "Продлевается {date}",
 				"manage": "Управлять",
 				"buy": "Добавить домены от {price} €",
 				"pendingReductionTitle": "Запланировано уменьшение",
@@ -1290,6 +1282,16 @@
 				"reactivated": "Дополнительные домены продолжат работать",
 				"reactivateError": "Не удалось сохранить дополнительные домены",
 				"cancelHint": "Отменить можно в любой момент — здесь через «Управлять» или выше, в разделе счетов и платежей."
+			},
+			"summary": {
+				"title": "Ваши подписки",
+				"description": "Всё, за что вы платите сейчас, в пересчёте на месяц.",
+				"proLabel": "План Pro",
+				"addonLabel": "Дополнительные свои домены ({quantity})",
+				"addonEmptyLabel": "Дополнительные свои домены",
+				"addonUnit": "{quantity} × {unit} € за домен",
+				"perMonth": "{price} € / мес.",
+				"totalLabel": "Итого"
 			}
 		},
 		"profile": {

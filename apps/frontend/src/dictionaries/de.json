@@ -1189,14 +1189,11 @@
 				"cancelError": "Zusätzliche Domains konnten nicht beendet werden",
 				"slotsUsed": "{used} von {total} Domains genutzt",
 				"breakdown": "{base} im Pro-Plan enthalten + {extra} zusätzlich",
-				"manageSlots": "Zusätzliche Domains verwalten",
-				"buySlots": "Domains ab {price} € buchen",
 				"pendingReductionTitle": "Reduzierung geplant",
 				"pendingReductionDescription": "Ab dem {date} hast du {quantity} zusätzliche Domains. Bis dahin ändert sich nichts.",
 				"reactivate": "Zusätzliche Domains behalten",
 				"reactivated": "Deine zusätzlichen Domains laufen weiter",
-				"reactivateError": "Zusätzliche Domains konnten nicht behalten werden",
-				"atLimitHint": "Alle Plätze sind belegt. Zusätzliche Domains kosten ab {price} € pro Monat."
+				"reactivateError": "Zusätzliche Domains konnten nicht behalten werden"
 			}
 		},
 		"apiKeys": {
@@ -1274,12 +1271,7 @@
 			"manageSubscription": "Abo verwalten",
 			"manageBilling": "Rechnungen & Zahlung",
 			"addon": {
-				"title": "Zusätzliche Custom Domains",
-				"bookedDescription": "Du hast {quantity} zusätzliche Domains gebucht, zusätzlich zu der im Pro-Plan enthaltenen.",
 				"emptyDescription": "Pro enthält eine Custom Domain. Weitere kannst du jederzeit dazubuchen.",
-				"costMonthly": "{quantity} × {unit} € = {total} € pro Monat",
-				"costAnnual": "{quantity} × {unit} € pro Monat, jährliche Abrechnung — {total} € pro Jahr",
-				"renewsOn": "Verlängert sich am {date}",
 				"manage": "Verwalten",
 				"buy": "Domains ab {price} € buchen",
 				"pendingReductionTitle": "Reduzierung geplant",
@@ -1290,6 +1282,16 @@
 				"reactivated": "Deine zusätzlichen Domains laufen weiter",
 				"reactivateError": "Zusätzliche Domains konnten nicht behalten werden",
 				"cancelHint": "Du kannst jederzeit kündigen — hier unter „Verwalten\" oder oben im Bereich Rechnungen & Zahlungen."
+			},
+			"summary": {
+				"title": "Deine Abos",
+				"description": "Alles, was du aktuell bezahlst, als Monatsbetrag.",
+				"proLabel": "Pro-Plan",
+				"addonLabel": "Zusätzliche Custom Domains ({quantity})",
+				"addonEmptyLabel": "Zusätzliche Custom Domains",
+				"addonUnit": "{quantity} × {unit} € pro Domain",
+				"perMonth": "{price} € / Monat",
+				"totalLabel": "Gesamt"
 			}
 		},
 		"profile": {

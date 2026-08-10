@@ -31,6 +31,7 @@ export function BuyDomainSlotsDialog({ open, onOpenChange }: Props) {
 	const t = useTranslations('settings.domains.addon');
 	const locale = useLocale();
 	const [quantity, setQuantity] = useState(1);
+	// Opens on annual billing to match the "from 2,99 €" price quoted in the CTAs.
 	const [isAnnual, setIsAnnual] = useState(true);
 
 	const checkout = useCreateDomainAddonCheckout();

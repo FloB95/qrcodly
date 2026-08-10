@@ -1189,14 +1189,11 @@
 				"cancelError": "Extra domeinen konden niet worden beëindigd",
 				"slotsUsed": "{used} van {total} domeinen gebruikt",
 				"breakdown": "{base} inbegrepen bij Pro + {extra} extra",
-				"manageSlots": "Extra domeinen beheren",
-				"buySlots": "Domeinen toevoegen vanaf {price} €",
 				"pendingReductionTitle": "Verlaging gepland",
 				"pendingReductionDescription": "Vanaf {date} heb je {quantity} extra domeinen. Tot dan verandert er niets.",
 				"reactivate": "Extra domeinen behouden",
 				"reactivated": "Je extra domeinen lopen door",
-				"reactivateError": "Extra domeinen konden niet worden behouden",
-				"atLimitHint": "Alle plaatsen zijn in gebruik. Extra domeinen kosten vanaf {price} € per maand."
+				"reactivateError": "Extra domeinen konden niet worden behouden"
 			}
 		},
 		"apiKeys": {
@@ -1274,12 +1271,7 @@
 			"manageSubscription": "Abonnement beheren",
 			"manageBilling": "Facturen & betaling",
 			"addon": {
-				"title": "Extra eigen domeinen",
-				"bookedDescription": "Je hebt {quantity} extra domeinen geboekt bovenop het domein dat bij Pro zit.",
 				"emptyDescription": "Pro bevat één eigen domein. Boek er meer wanneer je ze nodig hebt.",
-				"costMonthly": "{quantity} × {unit} € = {total} € per maand",
-				"costAnnual": "{quantity} × {unit} € per maand, jaarlijks gefactureerd — {total} € per jaar",
-				"renewsOn": "Verlengt op {date}",
 				"manage": "Beheren",
 				"buy": "Domeinen toevoegen vanaf {price} €",
 				"pendingReductionTitle": "Verlaging gepland",
@@ -1290,6 +1282,16 @@
 				"reactivated": "Je extra domeinen lopen door",
 				"reactivateError": "Extra domeinen konden niet worden behouden",
 				"cancelHint": "Je kunt op elk moment opzeggen — hier via “Beheren” of hierboven in het facturen- en betalingsportaal."
+			},
+			"summary": {
+				"title": "Je abonnementen",
+				"description": "Alles wat je nu betaalt, als maandbedrag.",
+				"proLabel": "Pro-abonnement",
+				"addonLabel": "Extra eigen domeinen ({quantity})",
+				"addonEmptyLabel": "Extra eigen domeinen",
+				"addonUnit": "{quantity} × {unit} € per domein",
+				"perMonth": "{price} € / maand",
+				"totalLabel": "Totaal"
 			}
 		},
 		"profile": {

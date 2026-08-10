@@ -1193,14 +1193,11 @@
 				"cancelError": "No se pudieron finalizar los dominios adicionales",
 				"slotsUsed": "{used} de {total} dominios usados",
 				"breakdown": "{base} incluidos en Pro + {extra} adicionales",
-				"manageSlots": "Gestionar dominios adicionales",
-				"buySlots": "Añadir dominios desde {price} €",
 				"pendingReductionTitle": "Reducción programada",
 				"pendingReductionDescription": "A partir del {date} tendrás {quantity} dominios adicionales. Hasta entonces no cambia nada.",
 				"reactivate": "Mantener dominios adicionales",
 				"reactivated": "Tus dominios adicionales continuarán",
-				"reactivateError": "No se pudieron mantener los dominios adicionales",
-				"atLimitHint": "Todas las plazas están en uso. Los dominios adicionales cuestan desde {price} € al mes."
+				"reactivateError": "No se pudieron mantener los dominios adicionales"
 			}
 		},
 		"apiKeys": {
@@ -1278,12 +1275,7 @@
 			"manageSubscription": "Gestionar suscripción",
 			"manageBilling": "Facturas y pago",
 			"addon": {
-				"title": "Dominios personalizados adicionales",
-				"bookedDescription": "Has contratado {quantity} dominios adicionales además del incluido en Pro.",
 				"emptyDescription": "Pro incluye un dominio personalizado. Añade más cuando los necesites.",
-				"costMonthly": "{quantity} × {unit} € = {total} € al mes",
-				"costAnnual": "{quantity} × {unit} € al mes, facturación anual — {total} € al año",
-				"renewsOn": "Se renueva el {date}",
 				"manage": "Gestionar",
 				"buy": "Añadir dominios desde {price} €",
 				"pendingReductionTitle": "Reducción programada",
@@ -1294,6 +1286,16 @@
 				"reactivated": "Tus dominios adicionales continuarán",
 				"reactivateError": "No se pudieron mantener los dominios adicionales",
 				"cancelHint": "Puedes cancelar en cualquier momento: aquí en «Gestionar» o arriba, en el portal de facturas y pagos."
+			},
+			"summary": {
+				"title": "Tus suscripciones",
+				"description": "Todo lo que pagas actualmente, como importe mensual.",
+				"proLabel": "Plan Pro",
+				"addonLabel": "Dominios personalizados adicionales ({quantity})",
+				"addonEmptyLabel": "Dominios personalizados adicionales",
+				"addonUnit": "{quantity} × {unit} € por dominio",
+				"perMonth": "{price} € / mes",
+				"totalLabel": "Total"
 			}
 		},
 		"profile": {

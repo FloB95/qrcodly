@@ -62,10 +62,9 @@ export function useAcknowledgeSafetyIncidentsMutation() {
 				'/short-url/safety-incidents/acknowledge',
 				{
 					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
-					},
+					// No Content-Type: this call sends no body, and declaring JSON for an empty body
+					// is what triggered FST_ERR_CTP_EMPTY_JSON_BODY.
+					headers: { Authorization: `Bearer ${token}` },
 				},
 			);
 		},

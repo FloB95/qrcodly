@@ -27,6 +27,7 @@ import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { getSystemDomain } from '@/lib/utils';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
+import { DomainSlotsSummary } from './DomainSlotsSummary';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -101,6 +102,7 @@ export function CustomDomainList() {
 					</AlertDescription>
 				</Alert>
 			)}
+			<DomainSlotsSummary />
 			<div className={cn('relative')}>
 				{isRefetching && <TableLoader />}
 				<div className="overflow-hidden rounded-lg border">

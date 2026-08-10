@@ -1189,14 +1189,11 @@
 				"cancelError": "Could not end extra domains",
 				"slotsUsed": "{used} of {total} domains used",
 				"breakdown": "{base} included with Pro + {extra} extra",
-				"manageSlots": "Manage extra domains",
-				"buySlots": "Add domains from {price} €",
 				"pendingReductionTitle": "Reduction scheduled",
 				"pendingReductionDescription": "From {date} you will have {quantity} extra domains. Until then nothing changes.",
 				"reactivate": "Keep extra domains",
 				"reactivated": "Your extra domains will continue",
-				"reactivateError": "Could not keep extra domains",
-				"atLimitHint": "All slots are in use. Extra domains cost from {price} € per month."
+				"reactivateError": "Could not keep extra domains"
 			}
 		},
 		"apiKeys": {
@@ -1274,12 +1271,7 @@
 			"manageSubscription": "Manage Subscription",
 			"manageBilling": "Invoices & Payment",
 			"addon": {
-				"title": "Extra custom domains",
-				"bookedDescription": "You have booked {quantity} extra domains on top of the one included with Pro.",
 				"emptyDescription": "Pro includes one custom domain. Book more whenever you need them.",
-				"costMonthly": "{quantity} × {unit} € = {total} € per month",
-				"costAnnual": "{quantity} × {unit} € per month, billed annually — {total} € per year",
-				"renewsOn": "Renews on {date}",
 				"manage": "Manage",
 				"buy": "Add domains from {price} €",
 				"pendingReductionTitle": "Reduction scheduled",
@@ -1290,6 +1282,16 @@
 				"reactivated": "Your extra domains will continue",
 				"reactivateError": "Could not keep extra domains",
 				"cancelHint": "You can cancel at any time — under “Manage” here, or in the invoices and payment portal above."
+			},
+			"summary": {
+				"title": "Your subscriptions",
+				"description": "Everything you currently pay for, as a monthly amount.",
+				"proLabel": "Pro plan",
+				"addonLabel": "Extra custom domains ({quantity})",
+				"addonEmptyLabel": "Extra custom domains",
+				"addonUnit": "{quantity} × {unit} € per domain",
+				"perMonth": "{price} € / month",
+				"totalLabel": "Total"
 			}
 		},
 		"profile": {

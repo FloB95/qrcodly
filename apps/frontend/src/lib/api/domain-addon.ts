@@ -115,12 +115,10 @@ export function useCancelDomainAddon() {
 			const token = await getToken();
 			if (!token) throw new Error('Missing auth token');
 
+			// No Content-Type: this call sends no body.
 			return apiRequest<TDomainAddonCancelResponseDto>(BASE_PATH, {
 				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
+				headers: { Authorization: `Bearer ${token}` },
 			});
 		},
 		onSuccess: invalidate,
@@ -136,13 +134,10 @@ export function useReactivateDomainAddon() {
 			const token = await getToken();
 			if (!token) throw new Error('Missing auth token');
 
+			// No Content-Type: this call sends no body.
 			return apiRequest<TDomainAddonCancelResponseDto>(`${BASE_PATH}/reactivate`, {
 				method: 'POST',
-				body: JSON.stringify({}),
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
+				headers: { Authorization: `Bearer ${token}` },
 			});
 		},
 		onSuccess: invalidate,

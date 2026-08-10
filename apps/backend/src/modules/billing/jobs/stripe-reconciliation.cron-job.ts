@@ -5,7 +5,10 @@ import { AbstractCronJob } from '@/core/jobs/abstract.cron-job';
 import { StripeService } from '../service/stripe.service';
 import { SubscriptionStatusTransitionService } from '../service/subscription-status-transition.service';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
-import { isProPriceId } from '../config/stripe-prices';
+import UserAddonSubscriptionRepository from '../domain/repository/user-addon-subscription.repository';
+import { DomainAddonWebhookService } from '../service/domain-addon-webhook.service';
+import { isAddonDomainPriceId, isProPriceId } from '../config/stripe-prices';
+import type Stripe from 'stripe';
 
 /**
  * Reconciliation job that syncs local subscription data with Stripe.
@@ -112,8 +115,11 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 		}
 
 		// --- Part 2: Find Stripe subscriptions missing from local DB ---
+		// Listing every active subscription is the expensive part of this job, so it is fetched
+		// once here and handed to the add-on pass below rather than swept twice.
+		let stripeSubscriptions: Stripe.Subscription[] = [];
 		try {
-			const stripeSubscriptions = await stripeService.listActiveSubscriptions();
+			stripeSubscriptions = await stripeService.listActiveSubscriptions();
 
 			for (const sub of stripeSubscriptions) {
 				try {
@@ -219,6 +225,100 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 				created,
 				errors,
 			},
+		});
+
+		await this.reconcileDomainAddons(stripeSubscriptions);
+	}
+
+	/**
+	 * Safety net for the domain add-on when a webhook is lost.
+	 *
+	 * Without this a dropped `checkout.session.completed` would leave the customer paying Stripe
+	 * for slots that never reached our database. Both passes feed Stripe's state through the same
+	 * handler the webhook uses, so the quantity and pending-reduction rules cannot drift between
+	 * the two paths.
+	 *
+	 * Runs inside the Pro job rather than as its own: it shares the expensive subscription listing,
+	 * inherits the same distributed lock, and is guaranteed to see the repaired Pro state — which
+	 * matters because add-on entitlement is zero without an active Pro plan.
+	 */
+	private async reconcileDomainAddons(stripeSubscriptions: Stripe.Subscription[]): Promise<void> {
+		const stripeService = container.resolve(StripeService);
+		const addonRepository = container.resolve(UserAddonSubscriptionRepository);
+		const addonWebhookService = container.resolve(DomainAddonWebhookService);
+
+		let repaired = 0;
+		let adopted = 0;
+		let errors = 0;
+
+		const sync = async (subscription: Stripe.Subscription) => {
+			const item = subscription.items.data[0];
+			if (!item?.current_period_start || !item?.current_period_end) {
+				this.logger.warn('stripe.reconciliation.addon.missingPeriod', {
+					stripe: { subscriptionId: subscription.id },
+				});
+				return false;
+			}
+
+			await addonWebhookService.handleSubscriptionUpsert(subscription, {
+				// Reconciliation reads the current truth, so it always wins over queued webhooks.
+				eventCreatedAt: new Date(),
+				period: {
+					periodStart: new Date(item.current_period_start * 1000),
+					periodEnd: new Date(item.current_period_end * 1000),
+				},
+			});
+			return true;
+		};
+
+		// --- Repair drift on add-ons we already know about ---
+		for (const local of await addonRepository.findAllNonCanceled()) {
+			try {
+				const remote = await stripeService.getSubscription(local.stripeSubscriptionId);
+				if (await sync(remote)) repaired++;
+			} catch (e) {
+				const err = e instanceof Error ? e : new Error(String(e));
+				errors++;
+				this.logger.error('stripe.reconciliation.addon.verifyError', {
+					stripe: { subscriptionId: local.stripeSubscriptionId, userId: local.userId },
+					error: { message: err.message, name: err.name },
+				});
+			}
+		}
+
+		// --- Adopt add-ons Stripe is billing that never reached us ---
+		for (const sub of stripeSubscriptions) {
+			try {
+				if (!isAddonDomainPriceId(sub.items.data[0]?.price.id)) continue;
+				if (await addonRepository.findByStripeSubscriptionId(sub.id)) continue;
+
+				if (!sub.metadata?.clerkUserId) {
+					this.logger.warn('stripe.reconciliation.addon.missingUserId', {
+						stripe: { subscriptionId: sub.id },
+					});
+					continue;
+				}
+
+				if (await sync(sub)) {
+					adopted++;
+					// Warn, not info: reaching this means a webhook was lost and a paying customer
+					// was without their slots until this run.
+					this.logger.warn('stripe.reconciliation.addon.adopted', {
+						stripe: { subscriptionId: sub.id, userId: sub.metadata.clerkUserId },
+					});
+				}
+			} catch (e) {
+				const err = e instanceof Error ? e : new Error(String(e));
+				errors++;
+				this.logger.error('stripe.reconciliation.addon.adoptError', {
+					stripe: { subscriptionId: sub.id },
+					error: { message: err.message, name: err.name },
+				});
+			}
+		}
+
+		this.logger.info('stripe.reconciliation.addon.complete', {
+			stripe: { repaired, adopted, errors },
 		});
 	}
 }

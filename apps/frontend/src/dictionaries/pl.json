@@ -1189,14 +1189,11 @@
 				"cancelError": "Nie udało się zakończyć dodatkowych domen",
 				"slotsUsed": "Wykorzystano {used} z {total} domen",
 				"breakdown": "{base} w planie Pro + {extra} dodatkowo",
-				"manageSlots": "Zarządzaj dodatkowymi domenami",
-				"buySlots": "Dodaj domeny od {price} €",
 				"pendingReductionTitle": "Zaplanowano zmniejszenie",
 				"pendingReductionDescription": "Od {date} będziesz mieć {quantity} dodatkowych domen. Do tego czasu nic się nie zmienia.",
 				"reactivate": "Zachowaj dodatkowe domeny",
 				"reactivated": "Dodatkowe domeny będą kontynuowane",
-				"reactivateError": "Nie udało się zachować dodatkowych domen",
-				"atLimitHint": "Wszystkie miejsca są zajęte. Dodatkowe domeny kosztują od {price} € miesięcznie."
+				"reactivateError": "Nie udało się zachować dodatkowych domen"
 			}
 		},
 		"apiKeys": {
@@ -1274,12 +1271,7 @@
 			"manageSubscription": "Zarządzaj subskrypcją",
 			"manageBilling": "Faktury i płatności",
 			"addon": {
-				"title": "Dodatkowe własne domeny",
-				"bookedDescription": "Masz wykupione {quantity} dodatkowych domen oprócz tej zawartej w planie Pro.",
 				"emptyDescription": "Plan Pro zawiera jedną własną domenę. Dokup kolejne, kiedy ich potrzebujesz.",
-				"costMonthly": "{quantity} × {unit} € = {total} € miesięcznie",
-				"costAnnual": "{quantity} × {unit} € miesięcznie, rozliczenie roczne — {total} € rocznie",
-				"renewsOn": "Odnawia się {date}",
 				"manage": "Zarządzaj",
 				"buy": "Dodaj domeny od {price} €",
 				"pendingReductionTitle": "Zaplanowano zmniejszenie",
@@ -1290,6 +1282,16 @@
 				"reactivated": "Dodatkowe domeny będą kontynuowane",
 				"reactivateError": "Nie udało się zachować dodatkowych domen",
 				"cancelHint": "Możesz zrezygnować w każdej chwili — tutaj przez „Zarządzaj\" lub powyżej w portalu faktur i płatności."
+			},
+			"summary": {
+				"title": "Twoje subskrypcje",
+				"description": "Wszystko, za co teraz płacisz, w ujęciu miesięcznym.",
+				"proLabel": "Plan Pro",
+				"addonLabel": "Dodatkowe własne domeny ({quantity})",
+				"addonEmptyLabel": "Dodatkowe własne domeny",
+				"addonUnit": "{quantity} × {unit} € za domenę",
+				"perMonth": "{price} € / mies.",
+				"totalLabel": "Razem"
 			}
 		},
 		"profile": {

@@ -29,6 +29,8 @@ describe('StripeReconciliationCronJob', () => {
 	let mockStripeService: MockProxy<StripeService>;
 	let mockRepository: MockProxy<UserSubscriptionRepository>;
 	let mockTransitionService: MockProxy<SubscriptionStatusTransitionService>;
+	let mockAddonRepository: Record<string, jest.Mock>;
+	let mockAddonWebhookService: Record<string, jest.Mock>;
 
 	const now = new Date();
 	const periodEnd = Math.floor(now.getTime() / 1000) + 86400;
@@ -49,6 +51,11 @@ describe('StripeReconciliationCronJob', () => {
 		mockStripeService = mock<StripeService>();
 		mockRepository = mock<UserSubscriptionRepository>();
 		mockTransitionService = mock<SubscriptionStatusTransitionService>();
+		mockAddonRepository = {
+			findAllNonCanceled: jest.fn().mockResolvedValue([]),
+			findByStripeSubscriptionId: jest.fn().mockResolvedValue(undefined),
+		};
+		mockAddonWebhookService = { handleSubscriptionUpsert: jest.fn() };
 
 		(container.resolve as jest.Mock).mockImplementation((token: unknown) => {
 			const name = typeof token === 'function' ? token.name : String(token);
@@ -61,6 +68,10 @@ describe('StripeReconciliationCronJob', () => {
 					return mockRepository;
 				case 'SubscriptionStatusTransitionService':
 					return mockTransitionService;
+				case 'UserAddonSubscriptionRepository':
+					return mockAddonRepository;
+				case 'DomainAddonWebhookService':
+					return mockAddonWebhookService;
 				default:
 					return {};
 			}
@@ -68,6 +79,8 @@ describe('StripeReconciliationCronJob', () => {
 
 		mockRepository.findAllNonCanceled.mockResolvedValue([]);
 		mockStripeService.listActiveSubscriptions.mockResolvedValue([]);
+		mockAddonRepository.findAllNonCanceled.mockResolvedValue([]);
+		mockAddonRepository.findByStripeSubscriptionId.mockResolvedValue(undefined);
 
 		job = new StripeReconciliationCronJob();
 		// Override the logger that AbstractCronJob resolves in the field initializer
@@ -278,6 +291,100 @@ describe('StripeReconciliationCronJob', () => {
 			expect.anything(),
 		);
 		expect(mockRepository.upsertByStripeSubscriptionId).not.toHaveBeenCalled();
+	});
+
+	describe('domain add-on reconciliation', () => {
+		const addonSubscription = (overrides: Record<string, unknown> = {}) =>
+			({
+				id: 'sub_addon_1',
+				status: 'active',
+				cancel_at_period_end: false,
+				customer: 'cus_addon',
+				metadata: { clerkUserId: 'user-999' },
+				items: {
+					data: [
+						{
+							price: { id: env.STRIPE_ADDON_DOMAIN_PRICE_ID_MONTHLY },
+							quantity: 2,
+							current_period_start: periodStart,
+							current_period_end: periodEnd,
+						},
+					],
+				},
+				...overrides,
+			}) as unknown as Stripe.Subscription;
+
+		it('should adopt an add-on subscription that never reached the database', async () => {
+			mockStripeService.listActiveSubscriptions.mockResolvedValue([addonSubscription()]);
+
+			await (job as unknown as { execute: () => Promise<void> }).execute();
+
+			expect(mockAddonWebhookService.handleSubscriptionUpsert).toHaveBeenCalledWith(
+				expect.objectContaining({ id: 'sub_addon_1' }),
+				expect.objectContaining({ period: expect.anything() }),
+			);
+			expect(mockLogger.warn).toHaveBeenCalledWith(
+				'stripe.reconciliation.addon.adopted',
+				expect.anything(),
+			);
+		});
+
+		it('should not adopt an add-on that is already stored', async () => {
+			mockStripeService.listActiveSubscriptions.mockResolvedValue([addonSubscription()]);
+			mockAddonRepository.findByStripeSubscriptionId.mockResolvedValue({ id: 'row-1' });
+
+			await (job as unknown as { execute: () => Promise<void> }).execute();
+
+			expect(mockAddonWebhookService.handleSubscriptionUpsert).not.toHaveBeenCalled();
+		});
+
+		it('should repair drift on a stored add-on', async () => {
+			mockAddonRepository.findAllNonCanceled.mockResolvedValue([
+				{ stripeSubscriptionId: 'sub_addon_1', userId: 'user-999' },
+			]);
+			mockStripeService.getSubscription.mockResolvedValue(
+				addonSubscription({ status: 'past_due' }),
+			);
+
+			await (job as unknown as { execute: () => Promise<void> }).execute();
+
+			expect(mockAddonWebhookService.handleSubscriptionUpsert).toHaveBeenCalledWith(
+				expect.objectContaining({ status: 'past_due' }),
+				expect.anything(),
+			);
+		});
+
+		it('should skip an add-on subscription without clerkUserId', async () => {
+			mockStripeService.listActiveSubscriptions.mockResolvedValue([
+				addonSubscription({ metadata: {} }),
+			]);
+
+			await (job as unknown as { execute: () => Promise<void> }).execute();
+
+			expect(mockAddonWebhookService.handleSubscriptionUpsert).not.toHaveBeenCalled();
+			expect(mockLogger.warn).toHaveBeenCalledWith(
+				'stripe.reconciliation.addon.missingUserId',
+				expect.anything(),
+			);
+		});
+
+		it('should keep going when one add-on fails to sync', async () => {
+			mockAddonRepository.findAllNonCanceled.mockResolvedValue([
+				{ stripeSubscriptionId: 'sub_addon_1', userId: 'user-999' },
+			]);
+			mockStripeService.getSubscription.mockRejectedValue(new Error('Stripe down'));
+
+			await (job as unknown as { execute: () => Promise<void> }).execute();
+
+			expect(mockLogger.error).toHaveBeenCalledWith(
+				'stripe.reconciliation.addon.verifyError',
+				expect.anything(),
+			);
+			expect(mockLogger.info).toHaveBeenCalledWith(
+				'stripe.reconciliation.addon.complete',
+				expect.objectContaining({ stripe: expect.objectContaining({ errors: 1 }) }),
+			);
+		});
 	});
 
 	it('should log error and continue when single subscription verification fails', async () => {

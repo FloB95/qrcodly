@@ -1189,14 +1189,11 @@
 				"cancelError": "Não foi possível terminar os domínios extra",
 				"slotsUsed": "{used} de {total} domínios usados",
 				"breakdown": "{base} incluídos no Pro + {extra} extra",
-				"manageSlots": "Gerir domínios extra",
-				"buySlots": "Adicionar domínios desde {price} €",
 				"pendingReductionTitle": "Redução agendada",
 				"pendingReductionDescription": "A partir de {date} terás {quantity} domínios extra. Até lá nada muda.",
 				"reactivate": "Manter domínios extra",
 				"reactivated": "Os teus domínios extra vão continuar",
-				"reactivateError": "Não foi possível manter os domínios extra",
-				"atLimitHint": "Todas as vagas estão em uso. Os domínios extra custam desde {price} € por mês."
+				"reactivateError": "Não foi possível manter os domínios extra"
 			}
 		},
 		"apiKeys": {
@@ -1274,12 +1271,7 @@
 			"manageSubscription": "Gerenciar Assinatura",
 			"manageBilling": "Faturas e Pagamento",
 			"addon": {
-				"title": "Domínios personalizados extra",
-				"bookedDescription": "Reservaste {quantity} domínios extra além do incluído no Pro.",
 				"emptyDescription": "O Pro inclui um domínio personalizado. Adiciona mais quando precisares.",
-				"costMonthly": "{quantity} × {unit} € = {total} € por mês",
-				"costAnnual": "{quantity} × {unit} € por mês, faturação anual — {total} € por ano",
-				"renewsOn": "Renova a {date}",
 				"manage": "Gerir",
 				"buy": "Adicionar domínios desde {price} €",
 				"pendingReductionTitle": "Redução agendada",
@@ -1290,6 +1282,16 @@
 				"reactivated": "Os teus domínios extra vão continuar",
 				"reactivateError": "Não foi possível manter os domínios extra",
 				"cancelHint": "Podes cancelar a qualquer momento — aqui em “Gerir” ou acima, no portal de faturas e pagamentos."
+			},
+			"summary": {
+				"title": "As tuas subscrições",
+				"description": "Tudo o que pagas atualmente, como valor mensal.",
+				"proLabel": "Plano Pro",
+				"addonLabel": "Domínios personalizados extra ({quantity})",
+				"addonEmptyLabel": "Domínios personalizados extra",
+				"addonUnit": "{quantity} × {unit} € por domínio",
+				"perMonth": "{price} € / mês",
+				"totalLabel": "Total"
 			}
 		},
 		"profile": {

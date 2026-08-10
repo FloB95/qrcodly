@@ -1189,14 +1189,11 @@
 				"cancelError": "Impossibile terminare i domini aggiuntivi",
 				"slotsUsed": "{used} di {total} domini utilizzati",
 				"breakdown": "{base} inclusi in Pro + {extra} aggiuntivi",
-				"manageSlots": "Gestisci i domini aggiuntivi",
-				"buySlots": "Aggiungi domini da {price} €",
 				"pendingReductionTitle": "Riduzione programmata",
 				"pendingReductionDescription": "Dal {date} avrai {quantity} domini aggiuntivi. Fino ad allora non cambia nulla.",
 				"reactivate": "Mantieni i domini aggiuntivi",
 				"reactivated": "I tuoi domini aggiuntivi continueranno",
-				"reactivateError": "Impossibile mantenere i domini aggiuntivi",
-				"atLimitHint": "Tutti i posti sono occupati. I domini aggiuntivi costano da {price} € al mese."
+				"reactivateError": "Impossibile mantenere i domini aggiuntivi"
 			}
 		},
 		"apiKeys": {
@@ -1274,12 +1271,7 @@
 			"manageSubscription": "Gestisci abbonamento",
 			"manageBilling": "Fatture e pagamento",
 			"addon": {
-				"title": "Domini personalizzati aggiuntivi",
-				"bookedDescription": "Hai acquistato {quantity} domini aggiuntivi oltre a quello incluso in Pro.",
 				"emptyDescription": "Pro include un dominio personalizzato. Aggiungine altri quando ti servono.",
-				"costMonthly": "{quantity} × {unit} € = {total} € al mese",
-				"costAnnual": "{quantity} × {unit} € al mese, fatturazione annuale — {total} € all’anno",
-				"renewsOn": "Si rinnova il {date}",
 				"manage": "Gestisci",
 				"buy": "Aggiungi domini da {price} €",
 				"pendingReductionTitle": "Riduzione programmata",
@@ -1290,6 +1282,16 @@
 				"reactivated": "I tuoi domini aggiuntivi continueranno",
 				"reactivateError": "Impossibile mantenere i domini aggiuntivi",
 				"cancelHint": "Puoi disdire in qualsiasi momento: qui con “Gestisci” oppure sopra, nel portale fatture e pagamenti."
+			},
+			"summary": {
+				"title": "I tuoi abbonamenti",
+				"description": "Tutto ciò che paghi attualmente, come importo mensile.",
+				"proLabel": "Piano Pro",
+				"addonLabel": "Domini personalizzati aggiuntivi ({quantity})",
+				"addonEmptyLabel": "Domini personalizzati aggiuntivi",
+				"addonUnit": "{quantity} × {unit} € per dominio",
+				"perMonth": "{price} € / mese",
+				"totalLabel": "Totale"
 			}
 		},
 		"profile": {

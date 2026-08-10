@@ -1193,14 +1193,11 @@
 				"cancelError": "Impossible de mettre fin aux domaines supplémentaires",
 				"slotsUsed": "{used} sur {total} domaines utilisés",
 				"breakdown": "{base} inclus avec Pro + {extra} supplémentaires",
-				"manageSlots": "Gérer les domaines supplémentaires",
-				"buySlots": "Ajouter des domaines à partir de {price} €",
 				"pendingReductionTitle": "Réduction programmée",
 				"pendingReductionDescription": "À partir du {date}, vous aurez {quantity} domaines supplémentaires. Rien ne change d’ici là.",
 				"reactivate": "Conserver les domaines supplémentaires",
 				"reactivated": "Vos domaines supplémentaires sont conservés",
-				"reactivateError": "Impossible de conserver les domaines supplémentaires",
-				"atLimitHint": "Toutes les places sont utilisées. Les domaines supplémentaires coûtent à partir de {price} € par mois."
+				"reactivateError": "Impossible de conserver les domaines supplémentaires"
 			}
 		},
 		"apiKeys": {
@@ -1278,12 +1275,7 @@
 			"manageSubscription": "Gérer l'abonnement",
 			"manageBilling": "Factures et paiement",
 			"addon": {
-				"title": "Domaines personnalisés supplémentaires",
-				"bookedDescription": "Vous avez réservé {quantity} domaines supplémentaires en plus de celui inclus avec Pro.",
 				"emptyDescription": "Pro inclut un domaine personnalisé. Ajoutez-en d’autres quand vous voulez.",
-				"costMonthly": "{quantity} × {unit} € = {total} € par mois",
-				"costAnnual": "{quantity} × {unit} € par mois, facturation annuelle — {total} € par an",
-				"renewsOn": "Se renouvelle le {date}",
 				"manage": "Gérer",
 				"buy": "Ajouter des domaines à partir de {price} €",
 				"pendingReductionTitle": "Réduction programmée",
@@ -1294,6 +1286,16 @@
 				"reactivated": "Vos domaines supplémentaires sont conservés",
 				"reactivateError": "Impossible de conserver les domaines supplémentaires",
 				"cancelHint": "Vous pouvez résilier à tout moment : ici via « Gérer » ou ci-dessus dans le portail factures et paiements."
+			},
+			"summary": {
+				"title": "Vos abonnements",
+				"description": "Tout ce que vous payez actuellement, en montant mensuel.",
+				"proLabel": "Plan Pro",
+				"addonLabel": "Domaines personnalisés supplémentaires ({quantity})",
+				"addonEmptyLabel": "Domaines personnalisés supplémentaires",
+				"addonUnit": "{quantity} × {unit} € par domaine",
+				"perMonth": "{price} € / mois",
+				"totalLabel": "Total"
 			}
 		},
 		"profile": {

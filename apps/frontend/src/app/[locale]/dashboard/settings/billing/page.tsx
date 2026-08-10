@@ -1,7 +1,7 @@
 import {
 	BillingHeader,
 	CurrentPlanSection,
-	DomainAddonSection,
+	SubscriptionSummarySection,
 } from '@/components/dashboard/billing';
 
 export default function Page() {
@@ -9,7 +9,7 @@ export default function Page() {
 		<div className="space-y-6">
 			<BillingHeader />
 			<CurrentPlanSection />
-			<DomainAddonSection />
+			<SubscriptionSummarySection />
 		</div>
 	);
 }

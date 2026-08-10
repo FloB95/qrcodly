@@ -6,16 +6,16 @@ import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/c
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
-import { useCreatePortalSession } from '@/lib/api/billing';
+import { useOpenBillingPortal } from '@/lib/api/billing';
 
 export function BillingHeader() {
 	const t = useTranslations('settings.billing');
 	const locale = useLocale();
 	const { hasStripeCustomer, isLoading } = useHasProPlan();
-	const createPortalSession = useCreatePortalSession();
+	const billingPortal = useOpenBillingPortal();
 
 	const handleManageBilling = () => {
-		createPortalSession.mutate({ locale });
+		billingPortal.open(locale);
 	};
 
 	return (
@@ -40,7 +40,7 @@ export function BillingHeader() {
 								size="sm"
 								className="w-full sm:w-auto shrink-0"
 								onClick={handleManageBilling}
-								disabled={createPortalSession.isPending}
+								disabled={billingPortal.isPending}
 							>
 								{t('manageBilling')}
 								<ArrowTopRightOnSquareIcon className="size-4 ml-2" />
