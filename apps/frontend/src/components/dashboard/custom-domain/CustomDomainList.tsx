@@ -26,11 +26,13 @@ import { TableLoader } from '@/components/ui/table-loader';
 import { cn } from '@/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { getSystemDomain } from '@/lib/utils';
+import { useHasProPlan } from '@/hooks/useHasProPlan';
 
 const ITEMS_PER_PAGE = 10;
 
 export function CustomDomainList() {
 	const t = useTranslations('settings.domains');
+	const { hasProPlan } = useHasProPlan();
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const pathname = usePathname();
@@ -80,14 +82,23 @@ export function CustomDomainList() {
 	const domains = data?.data ?? [];
 	const pagination = data?.pagination;
 	const hasDisabledDomains = domains.some((d) => !d.isEnabled);
+	// With Pro still active, a disabled domain means the extra slots lapsed rather than the plan —
+	// two very different fixes, so the alert has to say which one it is.
+	const disabledBecauseSlotsLapsed = hasDisabledDomains && hasProPlan;
 
 	return (
 		<div className="space-y-4">
 			{hasDisabledDomains && (
 				<Alert variant="destructive">
 					<AlertCircle className="h-4 w-4" />
-					<AlertTitle>{t('domainsDisabledTitle')}</AlertTitle>
-					<AlertDescription>{t('domainsDisabledDescription')}</AlertDescription>
+					<AlertTitle>
+						{disabledBecauseSlotsLapsed ? t('addon.slotsLapsedTitle') : t('domainsDisabledTitle')}
+					</AlertTitle>
+					<AlertDescription>
+						{disabledBecauseSlotsLapsed
+							? t('addon.slotsLapsedDescription')
+							: t('domainsDisabledDescription')}
+					</AlertDescription>
 				</Alert>
 			)}
 			<div className={cn('relative')}>

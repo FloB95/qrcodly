@@ -10,6 +10,8 @@ export class CreateCustomDomainPolicy extends AbstractPolicy {
 	constructor(
 		private readonly user: TUser | undefined,
 		private readonly currentDomainCount: number,
+		/** Plan limit plus purchased add-on slots. Falls back to the plain plan limit when omitted. */
+		private readonly effectiveLimit?: number,
 	) {
 		super();
 	}
@@ -19,7 +21,7 @@ export class CreateCustomDomainPolicy extends AbstractPolicy {
 			throw new UnauthorizedError('You need to be logged in to add custom domains.');
 		}
 
-		const limit = this.limits[this.user.plan ?? 'free'];
+		const limit = this.effectiveLimit ?? this.limits[this.user.plan ?? 'free'];
 		if (limit === 0 || this.currentDomainCount >= limit) {
 			throw new PlanLimitExceededError('custom domain', limit);
 		}

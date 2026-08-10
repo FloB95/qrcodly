@@ -58,6 +58,9 @@ const server = z.object({
 	STRIPE_WEBHOOK_SECRET: z.string(),
 	STRIPE_PRO_PRICE_ID_MONTHLY: z.string(),
 	STRIPE_PRO_PRICE_ID_ANNUAL: z.string(),
+	// Extra custom domains, sold per domain on top of an active Pro plan.
+	STRIPE_ADDON_DOMAIN_PRICE_ID_MONTHLY: z.string(),
+	STRIPE_ADDON_DOMAIN_PRICE_ID_ANNUAL: z.string(),
 	ANALYTICS_ENCRYPTION_KEY: z
 		.string()
 		.length(64)

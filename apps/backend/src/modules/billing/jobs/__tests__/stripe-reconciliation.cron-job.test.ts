@@ -7,6 +7,9 @@ import type UserSubscriptionRepository from '../../domain/repository/user-subscr
 import { type TUserSubscription } from '../../domain/entities/user-subscription.entity';
 import { container } from 'tsyringe';
 import type Stripe from 'stripe';
+import { env } from '@/core/config/env';
+
+const PRO_PRICE_ID = env.STRIPE_PRO_PRICE_ID_MONTHLY;
 
 jest.mock('@/core/decorators/cron-job.decorator', () => ({
 	CronJob: () => () => {},
@@ -181,7 +184,7 @@ describe('StripeReconciliationCronJob', () => {
 				items: {
 					data: [
 						{
-							price: { id: 'price_123' },
+							price: { id: PRO_PRICE_ID },
 							current_period_start: periodStart,
 							current_period_end: periodEnd,
 						},
@@ -203,6 +206,50 @@ describe('StripeReconciliationCronJob', () => {
 		);
 	});
 
+	it('should never adopt a non-Pro subscription into the Pro record', async () => {
+		// A user whose Pro lapsed but who still pays for a domain add-on: without the price
+		// filter the add-on would overwrite the canceled Pro row and hand out Pro for free.
+		const canceledPro: TUserSubscription = {
+			...mockLocalSubscription,
+			userId: 'user-789',
+			status: 'canceled',
+		};
+
+		mockStripeService.listActiveSubscriptions.mockResolvedValue([
+			{
+				id: 'sub_addon',
+				status: 'active',
+				cancel_at_period_end: false,
+				customer: 'cus_789',
+				metadata: { clerkUserId: 'user-789', product: 'domain_addon' },
+				items: {
+					data: [
+						{
+							price: { id: 'price_domain_addon_monthly' },
+							quantity: 3,
+							current_period_start: periodStart,
+							current_period_end: periodEnd,
+						},
+					],
+				},
+			} as unknown as Stripe.Subscription,
+		]);
+		mockRepository.findByStripeSubscriptionId.mockResolvedValue(undefined);
+		mockRepository.findByUserId.mockResolvedValue(canceledPro);
+
+		await (job as unknown as { execute: () => Promise<void> }).execute();
+
+		expect(mockRepository.update).not.toHaveBeenCalled();
+		expect(mockRepository.upsertByStripeSubscriptionId).not.toHaveBeenCalled();
+		expect(mockTransitionService.handleTransition).not.toHaveBeenCalled();
+		expect(mockLogger.info).toHaveBeenCalledWith(
+			'stripe.reconciliation.complete',
+			expect.objectContaining({
+				stripe: expect.objectContaining({ created: 0, errors: 0 }),
+			}),
+		);
+	});
+
 	it('should skip Stripe subscription without clerkUserId metadata', async () => {
 		mockStripeService.listActiveSubscriptions.mockResolvedValue([
 			{
@@ -212,7 +259,7 @@ describe('StripeReconciliationCronJob', () => {
 				items: {
 					data: [
 						{
-							price: { id: 'price_123' },
+							price: { id: PRO_PRICE_ID },
 							current_period_start: periodStart,
 							current_period_end: periodEnd,
 						},

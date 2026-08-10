@@ -5,6 +5,7 @@ import { AbstractCronJob } from '@/core/jobs/abstract.cron-job';
 import { StripeService } from '../service/stripe.service';
 import { SubscriptionStatusTransitionService } from '../service/subscription-status-transition.service';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
+import { isProPriceId } from '../config/stripe-prices';
 
 /**
  * Reconciliation job that syncs local subscription data with Stripe.
@@ -116,6 +117,13 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 
 			for (const sub of stripeSubscriptions) {
 				try {
+					const subItem = sub.items.data[0];
+					const priceId = subItem?.price.id ?? '';
+
+					// A customer can hold add-on subscriptions next to Pro. Adopting one here would
+					// overwrite their Pro record and hand out Pro for the price of an add-on.
+					if (!isProPriceId(priceId)) continue;
+
 					const existing = await repository.findByStripeSubscriptionId(sub.id);
 					if (existing) continue;
 
@@ -132,8 +140,6 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 					const byUser = await repository.findByUserId(userId);
 					if (byUser && byUser.status !== 'canceled') continue;
 
-					const subItem = sub.items.data[0];
-					const priceId = subItem?.price.id ?? '';
 					const customerId = typeof sub.customer === 'string' ? sub.customer : sub.customer.id;
 
 					const periodStart = subItem?.current_period_start;

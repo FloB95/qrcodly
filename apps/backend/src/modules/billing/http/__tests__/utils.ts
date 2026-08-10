@@ -8,9 +8,14 @@ import {
 import type { FastifyInstance } from 'fastify';
 import db from '@/core/db';
 import userSubscription from '../../domain/entities/user-subscription.entity';
+import userAddonSubscription from '../../domain/entities/user-addon-subscription.entity';
 import { eq } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
 import type { TUserSubscription } from '../../domain/entities/user-subscription.entity';
+import type {
+	TAddonType,
+	TUserAddonSubscription,
+} from '../../domain/entities/user-addon-subscription.entity';
 
 export const BILLING_API_PATH = `${API_BASE_PATH}/billing`;
 
@@ -23,9 +28,11 @@ export interface TestContext {
 	accessToken2: string;
 	accessTokenPro: string;
 	createdSubscriptionIds: string[];
+	createdAddonSubscriptionIds: string[];
 }
 
 const contextCreatedSubscriptionIds: string[] = [];
+const contextCreatedAddonSubscriptionIds: string[] = [];
 
 /**
  * Gets the shared test context.
@@ -46,8 +53,71 @@ export const getTestContext = async (): Promise<TestContext> => {
 		accessToken2: ctx.accessToken2,
 		accessTokenPro: ctx.accessTokenPro,
 		createdSubscriptionIds: contextCreatedSubscriptionIds,
+		createdAddonSubscriptionIds: contextCreatedAddonSubscriptionIds,
 	};
 };
+
+/**
+ * Helper to directly create an add-on subscription in the database.
+ */
+export const createAddonSubscriptionDirectly = async (
+	context: TestContext,
+	userId: string,
+	options: Partial<Omit<TUserAddonSubscription, 'id' | 'userId' | 'createdAt' | 'updatedAt'>> = {},
+): Promise<string> => {
+	const id = randomUUID();
+	const now = new Date();
+	const periodEnd = new Date();
+	periodEnd.setDate(periodEnd.getDate() + 30);
+
+	await db
+		.insert(userAddonSubscription)
+		.values({
+			id,
+			userId,
+			addonType: options.addonType ?? ('custom_domain' as TAddonType),
+			stripeCustomerId: options.stripeCustomerId ?? `cus_test_${randomUUID().slice(0, 8)}`,
+			stripeSubscriptionId:
+				options.stripeSubscriptionId ?? `sub_addon_test_${randomUUID().slice(0, 8)}`,
+			stripePriceId: options.stripePriceId ?? 'price_test_addon_monthly',
+			status: options.status ?? 'active',
+			quantity: options.quantity ?? 1,
+			pendingQuantity: options.pendingQuantity ?? null,
+			pendingQuantityEffectiveAt: options.pendingQuantityEffectiveAt ?? null,
+			currentPeriodStart: options.currentPeriodStart ?? now,
+			currentPeriodEnd: options.currentPeriodEnd ?? periodEnd,
+			cancelAtPeriodEnd: options.cancelAtPeriodEnd ?? false,
+			gracePeriodEndsAt: options.gracePeriodEndsAt ?? null,
+			addonFeaturesDisabledAt: options.addonFeaturesDisabledAt ?? null,
+			cancellationNotifiedAt: options.cancellationNotifiedAt ?? null,
+			cancellationReminderSentAt: options.cancellationReminderSentAt ?? null,
+			pastDueNotifiedAt: options.pastDueNotifiedAt ?? null,
+			lastStripeEventAt: options.lastStripeEventAt ?? null,
+			createdAt: now,
+			updatedAt: now,
+		})
+		.execute();
+
+	context.createdAddonSubscriptionIds.push(id);
+	return id;
+};
+
+/**
+ * Clean up all add-on subscriptions for a user.
+ */
+export const cleanupAddonSubscriptionsForUser = async (userIdToCleanup: string) => {
+	await db
+		.delete(userAddonSubscription)
+		.where(eq(userAddonSubscription.userId, userIdToCleanup))
+		.execute();
+};
+
+export const findAddonSubscriptionByUserId = async (
+	userId: string,
+): Promise<TUserAddonSubscription | undefined> =>
+	db.query.userAddonSubscription.findFirst({
+		where: eq(userAddonSubscription.userId, userId),
+	});
 
 /**
  * Helper to directly create a user subscription in the database.
@@ -114,6 +184,17 @@ export const cleanupCreatedSubscriptions = async (context: TestContext) => {
 		}
 	}
 	context.createdSubscriptionIds.length = 0;
+
+	// Add-on rows are cleaned on the same path: a leftover one raises the custom-domain limit
+	// for a shared test user and makes unrelated suites fail depending on file order.
+	for (const id of context.createdAddonSubscriptionIds) {
+		try {
+			await db.delete(userAddonSubscription).where(eq(userAddonSubscription.id, id)).execute();
+		} catch {
+			// Ignore if already deleted
+		}
+	}
+	context.createdAddonSubscriptionIds.length = 0;
 };
 
 // API helper functions

@@ -11,6 +11,7 @@ import { ConfigTemplateController } from '@/modules/config-template/http/control
 import { TagController } from '@/modules/tag/http/controller/tag.controller';
 import { ShortUrlController } from '@/modules/url-shortener/http/controller/short-url.controller';
 import { BillingController } from '@/modules/billing/http/controller/billing.controller';
+import { DomainAddonController } from '@/modules/billing/http/controller/domain-addon.controller';
 import { UserSurveyController } from '@/modules/user-survey/http/controller/user-survey.controller';
 
 const CONTROLLERS = [
@@ -23,6 +24,7 @@ const CONTROLLERS = [
 	TagController,
 	ShortUrlController,
 	BillingController,
+	DomainAddonController,
 	UserSurveyController,
 ];
 

@@ -1,9 +1,9 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
-import CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
 import AnalyticsIntegrationRepository from '@/modules/analytics-integration/domain/repository/analytics-integration.repository';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
+import { EnforceCustomDomainLimitUseCase } from './enforce-custom-domain-limit.use-case';
 
 /**
  * Use case for enabling all Pro features for a user.
@@ -12,7 +12,8 @@ import UserSubscriptionRepository from '../domain/repository/user-subscription.r
 @injectable()
 export class EnableProFeaturesUseCase implements IBaseUseCase {
 	constructor(
-		@inject(CustomDomainRepository) private customDomainRepository: CustomDomainRepository,
+		@inject(EnforceCustomDomainLimitUseCase)
+		private enforceCustomDomainLimitUseCase: EnforceCustomDomainLimitUseCase,
 		@inject(AnalyticsIntegrationRepository)
 		private analyticsIntegrationRepository: AnalyticsIntegrationRepository,
 		@inject(UserSubscriptionRepository)
@@ -25,8 +26,9 @@ export class EnableProFeaturesUseCase implements IBaseUseCase {
 	 * @param userId The ID of the user.
 	 */
 	async execute(userId: string): Promise<void> {
-		// Enable all custom domains for this user
-		await this.customDomainRepository.enableAllByUserId(userId);
+		// Re-enable custom domains up to what the user is entitled to. Enabling all of them would
+		// hand back every domain from a larger, lapsed add-on for the price of the Pro plan alone.
+		await this.enforceCustomDomainLimitUseCase.execute(userId);
 
 		// Enable all analytics integrations for this user
 		await this.analyticsIntegrationRepository.enableAllByUserId(userId);

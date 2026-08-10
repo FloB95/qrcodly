@@ -6,7 +6,19 @@ import { createClerkClient } from '@clerk/fastify';
 import { env } from '@/core/config/env';
 import { CANCELLATION_REMINDER_DAYS_BEFORE, GRACE_PERIOD_DAYS } from '@/core/config/constants';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
+import UserAddonSubscriptionRepository from '../domain/repository/user-addon-subscription.repository';
+import { EnforceCustomDomainLimitUseCase } from '../useCase/enforce-custom-domain-limit.use-case';
+import { CustomDomainEntitlementService } from '@/core/services/custom-domain-entitlement.service';
+import { ClerkUserInfoService } from '@/core/services/clerk-user-info.service';
 import { Mailer } from '@/core/mailer/mailer';
+
+const DATE_FORMAT: Intl.DateTimeFormatOptions = {
+	weekday: 'long',
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+	timeZone: 'UTC',
+};
 
 /**
  * Cron job to send reminder emails to users whose subscriptions are ending soon.
@@ -20,6 +32,11 @@ export class CancellationReminderCronJob extends AbstractCronJob {
 	schedule = '0 2 * * *';
 
 	protected async execute(): Promise<void> {
+		await this.sendProReminders();
+		await this.sendAddonReminders();
+	}
+
+	private async sendProReminders(): Promise<void> {
 		const repository = container.resolve(UserSubscriptionRepository);
 		const mailer = container.resolve(Mailer);
 		const clerkClient = createClerkClient({ secretKey: env.CLERK_SECRET_KEY });
@@ -91,6 +108,78 @@ export class CancellationReminderCronJob extends AbstractCronJob {
 			} catch (error) {
 				this.logger.error('subscription.cancellationReminderFailed', {
 					subscription: { userId: subscription.userId },
+					error: error as Error,
+				});
+			}
+		}
+	}
+
+	private async sendAddonReminders(): Promise<void> {
+		const addonSubscriptionRepository = container.resolve(UserAddonSubscriptionRepository);
+		const entitlementService = container.resolve(CustomDomainEntitlementService);
+		const enforceCustomDomainLimitUseCase = container.resolve(EnforceCustomDomainLimitUseCase);
+		const clerkUserInfoService = container.resolve(ClerkUserInfoService);
+		const mailer = container.resolve(Mailer);
+
+		const addons = await addonSubscriptionRepository.findPendingCancellationReminders(
+			CANCELLATION_REMINDER_DAYS_BEFORE,
+		);
+
+		if (addons.length === 0) {
+			this.logger.debug('No add-on cancellation reminders to send');
+			return;
+		}
+
+		this.logger.info(`Sending ${addons.length} add-on cancellation reminder(s)`);
+
+		for (const addon of addons) {
+			try {
+				const { email, firstName } = await clerkUserInfoService.getUserInfo(addon.userId);
+				if (!email) {
+					this.logger.warn('domainAddon.cancellationReminder.noEmail', {
+						subscription: { userId: addon.userId },
+					});
+					continue;
+				}
+
+				// Project the state after the slots lapse so the reminder names the same domains the
+				// enforcement will actually switch off.
+				const { baseLimit } = await entitlementService.getCustomDomainLimit(addon.userId);
+				const { disabled } = await enforceCustomDomainLimitUseCase.execute(addon.userId, {
+					dryRun: true,
+					overrideLimit: baseLimit,
+				});
+
+				const gracePeriodEndDate = new Date(addon.currentPeriodEnd);
+				gracePeriodEndDate.setDate(gracePeriodEndDate.getDate() + GRACE_PERIOD_DAYS);
+
+				const template = await mailer.getTemplate('domain-addon-cancel-initiated');
+				const html = template({
+					firstName: firstName || 'there',
+					periodEndDate: addon.currentPeriodEnd.toLocaleDateString('en-US', DATE_FORMAT),
+					gracePeriodEndDate: gracePeriodEndDate.toLocaleDateString('en-US', DATE_FORMAT),
+					affectedDomains: disabled,
+					hasAffectedDomains: disabled.length > 0,
+					domainsUrl: `${env.FRONTEND_URL}/dashboard/settings/domains`,
+					logoUrl: `${env.FRONTEND_URL}/email-logo.png`,
+					year: new Date().getFullYear(),
+				});
+
+				await mailer.sendMail({
+					to: email,
+					subject: 'Reminder: Your QRcodly Extra Domains Are Ending Soon',
+					html,
+					template: 'domain-addon-cancel-initiated',
+				});
+
+				await addonSubscriptionRepository.markCancellationReminderSent(addon);
+
+				this.logger.info('domainAddon.cancellationReminderSent', {
+					subscription: { userId: addon.userId },
+				});
+			} catch (error) {
+				this.logger.error('domainAddon.cancellationReminderFailed', {
+					subscription: { userId: addon.userId },
 					error: error as Error,
 				});
 			}

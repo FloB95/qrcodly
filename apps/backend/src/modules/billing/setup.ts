@@ -3,6 +3,7 @@ import { type FastifyInstance, type FastifyPluginCallback } from 'fastify';
 import { Logger } from '@/core/logging';
 import { registerRoutes } from '@/libs/fastify/helpers';
 import { BillingController } from './http/controller/billing.controller';
+import { DomainAddonController } from './http/controller/domain-addon.controller';
 
 // Import event handlers to register them
 import './event/handler';
@@ -11,9 +12,11 @@ import './event/handler';
 import './jobs/process-expired-grace-periods.cron-job';
 import './jobs/stripe-reconciliation.cron-job';
 import './jobs/cancellation-reminder.cron-job';
+import './jobs/apply-pending-addon-quantity.cron-job';
 
 const setupBillingModule: FastifyPluginCallback = (fastify: FastifyInstance, options, done) => {
 	registerRoutes(fastify, BillingController, `/billing`, options);
+	registerRoutes(fastify, DomainAddonController, `/billing/domain-addon`, options);
 	container.resolve(Logger).info('☑️  Billing module loaded');
 	done();
 };

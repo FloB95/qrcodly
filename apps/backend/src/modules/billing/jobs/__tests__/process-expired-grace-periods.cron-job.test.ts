@@ -36,6 +36,10 @@ describe('ProcessExpiredGracePeriodsCronJob', () => {
 	let mockMailer: MockProxy<Mailer>;
 	let mockRepository: MockProxy<UserSubscriptionRepository>;
 	let mockDisableProFeatures: MockProxy<DisableProFeaturesUseCase>;
+	let mockAddonRepository: Record<string, jest.Mock>;
+	let mockEnforceCustomDomainLimit: Record<string, jest.Mock>;
+	let mockSyncAddonWithPro: Record<string, jest.Mock>;
+	let mockClerkUserInfoService: Record<string, jest.Mock>;
 
 	const mockSubscription = {
 		userId: 'user-123',
@@ -46,6 +50,17 @@ describe('ProcessExpiredGracePeriodsCronJob', () => {
 		mockMailer = mock<Mailer>();
 		mockRepository = mock<UserSubscriptionRepository>();
 		mockDisableProFeatures = mock<DisableProFeaturesUseCase>();
+
+		mockRepository.findExpiredUnprocessedGracePeriods.mockResolvedValue([]);
+		mockAddonRepository = {
+			findExpiredUnprocessedGracePeriods: jest.fn().mockResolvedValue([]),
+			markAddonFeaturesDisabled: jest.fn(),
+		};
+		mockEnforceCustomDomainLimit = { execute: jest.fn().mockResolvedValue({ disabled: [] }) };
+		mockSyncAddonWithPro = { cancelAtPeriodEnd: jest.fn(), resume: jest.fn() };
+		mockClerkUserInfoService = {
+			getUserInfo: jest.fn().mockResolvedValue({ email: '', firstName: undefined }),
+		};
 
 		(container.resolve as jest.Mock).mockImplementation((token: unknown) => {
 			const name = typeof token === 'function' ? token.name : String(token);
@@ -58,6 +73,14 @@ describe('ProcessExpiredGracePeriodsCronJob', () => {
 					return mockDisableProFeatures;
 				case 'Mailer':
 					return mockMailer;
+				case 'UserAddonSubscriptionRepository':
+					return mockAddonRepository;
+				case 'EnforceCustomDomainLimitUseCase':
+					return mockEnforceCustomDomainLimit;
+				case 'SyncAddonWithProUseCase':
+					return mockSyncAddonWithPro;
+				case 'ClerkUserInfoService':
+					return mockClerkUserInfoService;
 				default:
 					return {};
 			}
@@ -130,5 +153,45 @@ describe('ProcessExpiredGracePeriodsCronJob', () => {
 			'subscription.gracePeriodProcessingFailed',
 			expect.objectContaining({ error: expect.any(Error) }),
 		);
+	});
+
+	describe('add-on grace periods', () => {
+		const expiredAddon = { id: 'addon-1', userId: 'user-456' };
+
+		it('should schedule the add-on to end when Pro lapses', async () => {
+			mockRepository.findExpiredUnprocessedGracePeriods.mockResolvedValue([mockSubscription]);
+
+			await (job as unknown as { execute: () => Promise<void> }).execute();
+
+			expect(mockSyncAddonWithPro.cancelAtPeriodEnd).toHaveBeenCalledWith('user-123');
+		});
+
+		it('should enforce the limit and mark the add-on processed', async () => {
+			mockAddonRepository.findExpiredUnprocessedGracePeriods.mockResolvedValue([expiredAddon]);
+			mockEnforceCustomDomainLimit.execute.mockResolvedValue({ disabled: ['b.example.com'] });
+			mockClerkUserInfoService.getUserInfo.mockResolvedValue({
+				email: 'user@example.com',
+				firstName: 'Jane',
+			});
+			mockMailer.getTemplate.mockResolvedValue(() => '<html></html>');
+
+			await (job as unknown as { execute: () => Promise<void> }).execute();
+
+			expect(mockEnforceCustomDomainLimit.execute).toHaveBeenCalledWith('user-456');
+			expect(mockAddonRepository.markAddonFeaturesDisabled).toHaveBeenCalledWith(expiredAddon);
+			expect(mockMailer.sendMail).toHaveBeenCalledWith(
+				expect.objectContaining({ template: 'domain-addon-features-disabled' }),
+			);
+		});
+
+		it('should still disable the add-on when the user has no email', async () => {
+			mockAddonRepository.findExpiredUnprocessedGracePeriods.mockResolvedValue([expiredAddon]);
+			mockClerkUserInfoService.getUserInfo.mockResolvedValue({ email: '' });
+
+			await (job as unknown as { execute: () => Promise<void> }).execute();
+
+			expect(mockAddonRepository.markAddonFeaturesDisabled).toHaveBeenCalled();
+			expect(mockMailer.sendMail).not.toHaveBeenCalled();
+		});
 	});
 });

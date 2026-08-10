@@ -232,6 +232,13 @@
 			"when": 1785512090789,
 			"tag": "0032_seed-safety-check-schedule",
 			"breakpoints": true
+		},
+		{
+			"idx": 33,
+			"version": "5",
+			"when": 1786362699627,
+			"tag": "0033_remarkable_karen_page",
+			"breakpoints": true
 		}
 	]
 }

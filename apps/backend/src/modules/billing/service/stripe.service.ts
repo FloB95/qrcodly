@@ -52,22 +52,89 @@ export class StripeService {
 		cancelUrl: string;
 		userId: string;
 		locale?: string;
+		quantity?: number;
+		/**
+		 * Copied onto both the session and the subscription. The subscription copy is what lets
+		 * the webhook tell a Pro subscription from an add-on before it touches a table.
+		 */
+		metadata?: Record<string, string>;
 	}): Promise<Stripe.Checkout.Session> {
+		const metadata = { clerkUserId: params.userId, ...params.metadata };
+
 		return trackExternal('stripe', 'checkout.sessions.create', () =>
 			this.stripe.checkout.sessions.create({
 				customer: params.customerId,
 				mode: 'subscription',
-				line_items: [{ price: params.priceId, quantity: 1 }],
+				line_items: [{ price: params.priceId, quantity: params.quantity ?? 1 }],
 				success_url: params.successUrl,
 				cancel_url: params.cancelUrl,
-				metadata: { clerkUserId: params.userId },
+				metadata,
 				locale: (params.locale as Stripe.Checkout.SessionCreateParams.Locale) || 'auto',
 				billing_address_collection: 'auto',
-				subscription_data: {
-					metadata: { clerkUserId: params.userId },
-				},
+				subscription_data: { metadata },
 			}),
 		);
+	}
+
+	/**
+	 * Changes the seat count on a single-item subscription.
+	 *
+	 * `billing: 'charge_now'` invoices the difference immediately, which is what an upgrade needs
+	 * so the slots are usable straight away. `billing: 'defer'` writes the new quantity to Stripe
+	 * without any proration, so the customer keeps what they paid for until the period ends and
+	 * never receives a credit — the product rule is that nothing is ever refunded.
+	 */
+	async updateSubscriptionQuantity(params: {
+		subscriptionId: string;
+		quantity: number;
+		billing: 'charge_now' | 'defer';
+	}): Promise<Stripe.Subscription> {
+		const subscription = await this.getSubscription(params.subscriptionId);
+		const item = subscription.items.data[0];
+		if (!item) {
+			throw new Error(`Stripe subscription ${params.subscriptionId} has no line items`);
+		}
+
+		const chargeNow = params.billing === 'charge_now';
+		const updated = await trackExternal('stripe', 'subscriptions.update', () =>
+			this.stripe.subscriptions.update(params.subscriptionId, {
+				items: [{ id: item.id, quantity: params.quantity }],
+				proration_behavior: chargeNow ? 'always_invoice' : 'none',
+				...(chargeNow ? { payment_behavior: 'error_if_incomplete' as const } : {}),
+				expand: ['latest_invoice'],
+			}),
+		);
+
+		if (chargeNow) this.assertProrationInvoiceSettled(updated);
+
+		return updated;
+	}
+
+	async setCancelAtPeriodEnd(
+		subscriptionId: string,
+		cancelAtPeriodEnd: boolean,
+	): Promise<Stripe.Subscription> {
+		return trackExternal('stripe', 'subscriptions.update', () =>
+			this.stripe.subscriptions.update(subscriptionId, {
+				cancel_at_period_end: cancelAtPeriodEnd,
+			}),
+		);
+	}
+
+	/**
+	 * `payment_behavior: 'error_if_incomplete'` is documented to reject an update it cannot
+	 * collect, but its interaction with `always_invoice` is not something we want to rely on
+	 * blindly — an unpaid invoice slipping through would grant slots the customer never paid for.
+	 * Checking the invoice we just created is cheap and makes the outcome unambiguous.
+	 */
+	private assertProrationInvoiceSettled(subscription: Stripe.Subscription): void {
+		const invoice = subscription.latest_invoice;
+		if (!invoice || typeof invoice === 'string') return;
+		if (invoice.status === 'open' || invoice.status === 'uncollectible') {
+			throw new Error(
+				`Stripe proration invoice ${invoice.id} for subscription ${subscription.id} is ${invoice.status}`,
+			);
+		}
 	}
 
 	async createPortalSession(

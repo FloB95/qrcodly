@@ -60,6 +60,24 @@ export const FEATURE_INFO_LINKS: Record<string, string> = {
 };
 
 /**
+ * Prices for the extra-custom-domains add-on, per domain.
+ *
+ * Kept here so the pricing page, the purchase dialogs and the billing summary can never show
+ * different numbers. German decimal formatting matches the rest of the pricing copy.
+ */
+export const DOMAIN_ADDON_PRICES = {
+	monthly: '3,99',
+	annual: '2,99',
+	annualTotal: '35,88',
+} as const;
+
+/** Multiplies a German-formatted price string by a whole quantity, e.g. ('3,99', 2) -> '7,98'. */
+export function multiplyPrice(price: string, quantity: number): string {
+	const cents = Math.round(Number(price.replace(',', '.')) * 100) * quantity;
+	return (cents / 100).toFixed(2).replace('.', ',');
+}
+
+/**
  * Helper to get a plan config by ID
  */
 export function getPlanConfig(planId: PlanId): PlanConfig {

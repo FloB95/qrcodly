@@ -2,3 +2,7 @@ import './subscription-past-due.event-handler';
 import './subscription-canceled.event-handler';
 import './subscription-active.event-handler';
 import './subscription-cancel-initiated.event-handler';
+import './domain-addon-active.event-handler';
+import './domain-addon-canceled.event-handler';
+import './domain-addon-cancel-initiated.event-handler';
+import './domain-addon-past-due.event-handler';

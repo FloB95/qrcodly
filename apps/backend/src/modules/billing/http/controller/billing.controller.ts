@@ -11,11 +11,8 @@ import UserSubscriptionRepository from '../../domain/repository/user-subscriptio
 import { createClerkClient } from '@clerk/fastify';
 import { CreateCheckoutSessionDto } from '../../domain/dto/create-checkout-session.dto';
 import { CreatePortalSessionDto } from '../../domain/dto/create-portal-session.dto';
-
-const ALLOWED_PRICE_IDS = new Set([
-	env.STRIPE_PRO_PRICE_ID_MONTHLY,
-	env.STRIPE_PRO_PRICE_ID_ANNUAL,
-]);
+import { PRO_PRICE_IDS } from '../../config/stripe-prices';
+import { isAllowedRedirect } from '../redirect-guard';
 
 @injectable()
 export class BillingController extends AbstractController {
@@ -42,19 +39,10 @@ export class BillingController extends AbstractController {
 	): Promise<IHttpResponse<{ url: string }>> {
 		const { priceId, locale, successUrl, cancelUrl } = request.body;
 
-		if (!priceId || !ALLOWED_PRICE_IDS.has(priceId)) {
+		if (!priceId || !PRO_PRICE_IDS.has(priceId)) {
 			throw new BadRequestError('Invalid price ID');
 		}
 
-		const frontendOrigin = new URL(env.FRONTEND_URL).origin;
-		const isAllowedRedirect = (url?: string) => {
-			if (!url) return true;
-			try {
-				return new URL(url).origin === frontendOrigin;
-			} catch {
-				return false;
-			}
-		};
 		if (!isAllowedRedirect(successUrl) || !isAllowedRedirect(cancelUrl)) {
 			throw new BadRequestError('Invalid redirect URL');
 		}
