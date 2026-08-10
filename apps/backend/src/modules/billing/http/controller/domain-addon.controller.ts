@@ -10,6 +10,10 @@ import {
 	DomainAddonQuantityResponseDto,
 	DomainAddonResponseDto,
 	UpdateDomainAddonQuantityDto,
+	DomainAddonQuantityPreviewDto,
+	DomainAddonQuantityPreviewQueryDto,
+	type TDomainAddonQuantityPreviewDto,
+	type TDomainAddonQuantityPreviewQueryDto,
 	type TCreateDomainAddonCheckoutDto,
 	type TDomainAddonCancelResponseDto,
 	type TDomainAddonCheckoutResponseDto,
@@ -77,6 +81,49 @@ export class DomainAddonController extends AbstractController {
 		return this.makeApiHttpResponse(200, result);
 	}
 
+	@Get('/quantity/preview', {
+		querySchema: DomainAddonQuantityPreviewQueryDto,
+		responseSchema: {
+			200: DomainAddonQuantityPreviewDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+		},
+		schema: { hide: true },
+	})
+	async previewQuantityChange(
+		request: IHttpRequest<unknown, unknown, TDomainAddonQuantityPreviewQueryDto>,
+	): Promise<IHttpResponse<TDomainAddonQuantityPreviewDto>> {
+		const { quantity } = DomainAddonQuantityPreviewQueryDto.parse(request.query);
+		const preview = await this.manageDomainAddonUseCase.previewQuantityChange(
+			request.user.id,
+			quantity,
+		);
+
+		return this.makeApiHttpResponse(200, {
+			...preview,
+			effectiveAt: preview.effectiveAt?.toISOString() ?? null,
+			periodEnd: preview.periodEnd.toISOString(),
+		});
+	}
+
+	@Post('/quantity/pending/cancel', {
+		responseSchema: {
+			200: DomainAddonResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+		},
+		schema: { hide: true },
+	})
+	async cancelPendingReduction(
+		request: IHttpRequest,
+	): Promise<IHttpResponse<TDomainAddonResponseDto>> {
+		await this.manageDomainAddonUseCase.cancelPendingReduction(request.user.id);
+		return this.get(request);
+	}
+
 	@Patch('/quantity', {
 		bodySchema: UpdateDomainAddonQuantityDto,
 		responseSchema: {
@@ -91,8 +138,10 @@ export class DomainAddonController extends AbstractController {
 	async updateQuantity(
 		request: IHttpRequest<TUpdateDomainAddonQuantityDto>,
 	): Promise<IHttpResponse<TDomainAddonQuantityResponseDto>> {
-		const { quantity } = UpdateDomainAddonQuantityDto.parse(request.body);
-		const result = await this.manageDomainAddonUseCase.updateQuantity(request.user.id, quantity);
+		const { quantity, prorationDate } = UpdateDomainAddonQuantityDto.parse(request.body);
+		const result = await this.manageDomainAddonUseCase.updateQuantity(request.user.id, quantity, {
+			prorationDate,
+		});
 
 		return this.makeApiHttpResponse(200, {
 			quantity: result.quantity,

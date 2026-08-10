@@ -53,6 +53,27 @@ export const DomainAddonQuantityResponseDto = z.object({
 
 export type TDomainAddonQuantityResponseDto = z.infer<typeof DomainAddonQuantityResponseDto>;
 
+/**
+ * A quote for a quantity change, taken before anything is applied.
+ *
+ * `amountDueNow` is in minor units (cents) — formatting is the client's job, and integers avoid
+ * the rounding drift a decimal string would introduce.
+ */
+export const DomainAddonQuantityPreviewDto = z.object({
+	quantity: z.number().int(),
+	currentQuantity: z.number().int(),
+	amountDueNow: z.number().int(),
+	currency: z.string(),
+	prorationDate: z.number().int().nullable(),
+	effectiveAt: z.iso.datetime().nullable(),
+	periodEnd: z.iso.datetime(),
+	willDisable: z.array(z.string()),
+	requiresPendingReset: z.boolean(),
+	paymentMethod: z.object({ brand: z.string(), last4: z.string() }).nullable(),
+});
+
+export type TDomainAddonQuantityPreviewDto = z.infer<typeof DomainAddonQuantityPreviewDto>;
+
 export const DomainAddonCancelResponseDto = z.object({
 	cancelAtPeriodEnd: z.boolean(),
 	effectiveAt: z.iso.datetime().nullable(),

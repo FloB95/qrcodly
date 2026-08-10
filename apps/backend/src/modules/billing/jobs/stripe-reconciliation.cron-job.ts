@@ -21,7 +21,7 @@ import type Stripe from 'stripe';
 @CronJob()
 export class StripeReconciliationCronJob extends AbstractCronJob {
 	// Run every day at 4:00 AM
-	schedule = '0 4 * * *';
+	schedule = '* * * * *';
 
 	protected async execute(): Promise<void> {
 		const stripeService = container.resolve(StripeService);

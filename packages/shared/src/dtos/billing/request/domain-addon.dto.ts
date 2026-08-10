@@ -30,6 +30,19 @@ export type TCreateDomainAddonCheckoutDto = z.infer<typeof CreateDomainAddonChec
  */
 export const UpdateDomainAddonQuantityDto = z.object({
 	quantity: slotQuantity,
+	/**
+	 * Timestamp returned by the preview. Passing it back makes Stripe bill exactly the amount that
+	 * was quoted, instead of recalculating for the seconds that passed since.
+	 */
+	prorationDate: z.number().int().positive().optional(),
 });
+
+export const DomainAddonQuantityPreviewQueryDto = z.object({
+	quantity: z.coerce.number().int().min(1).max(MAX_DOMAIN_ADDON_SLOTS),
+});
+
+export type TDomainAddonQuantityPreviewQueryDto = z.infer<
+	typeof DomainAddonQuantityPreviewQueryDto
+>;
 
 export type TUpdateDomainAddonQuantityDto = z.infer<typeof UpdateDomainAddonQuantityDto>;

@@ -88,26 +88,117 @@ export class StripeService {
 		subscriptionId: string;
 		quantity: number;
 		billing: 'charge_now' | 'defer';
-	}): Promise<Stripe.Subscription> {
+		/** Pass the value from a preview so the charge matches the quoted amount to the cent. */
+		prorationDate?: number;
+	}): Promise<{ subscription: Stripe.Subscription; paymentPending: boolean }> {
+		const item = await this.getFirstItem(params.subscriptionId);
+		const chargeNow = params.billing === 'charge_now';
+
+		const subscription = await trackExternal('stripe', 'subscriptions.update', () =>
+			this.stripe.subscriptions.update(params.subscriptionId, {
+				items: [{ id: item.id, quantity: params.quantity }],
+				proration_behavior: chargeNow ? 'always_invoice' : 'none',
+				// Without this Stripe applies the change even when the card declines and simply
+				// moves the subscription to past_due — the customer would hold slots they never
+				// paid for. `pending_if_incomplete` parks the change until the invoice is paid.
+				...(chargeNow
+					? {
+							payment_behavior: 'pending_if_incomplete' as const,
+							...(params.prorationDate ? { proration_date: params.prorationDate } : {}),
+						}
+					: {}),
+			}),
+		);
+
+		return { subscription, paymentPending: !!subscription.pending_update };
+	}
+
+	/**
+	 * Sets the quantity without any financial effect.
+	 *
+	 * Used to put Stripe back on the quantity the customer has already paid for before charging an
+	 * increase: while a reduction is pending, Stripe already holds the lower number, and prorating
+	 * an increase from there would bill for slots that were paid for once already.
+	 */
+	async resetSubscriptionQuantity(
+		subscriptionId: string,
+		quantity: number,
+	): Promise<Stripe.Subscription> {
+		const item = await this.getFirstItem(subscriptionId);
+
+		return trackExternal('stripe', 'subscriptions.update', () =>
+			this.stripe.subscriptions.update(subscriptionId, {
+				items: [{ id: item.id, quantity }],
+				proration_behavior: 'none',
+			}),
+		);
+	}
+
+	/**
+	 * What a quantity change would cost right now, without changing anything.
+	 *
+	 * Returns the `prorationDate` it was calculated at; feeding that back into the update keeps the
+	 * charge identical to the quoted amount, since Stripe prorates to the second.
+	 */
+	async previewQuantityChange(params: {
+		subscriptionId: string;
+		quantity: number;
+	}): Promise<{ amountDue: number; currency: string; prorationDate: number }> {
 		const subscription = await this.getSubscription(params.subscriptionId);
 		const item = subscription.items.data[0];
 		if (!item) {
 			throw new Error(`Stripe subscription ${params.subscriptionId} has no line items`);
 		}
 
-		const chargeNow = params.billing === 'charge_now';
-		const updated = await trackExternal('stripe', 'subscriptions.update', () =>
-			this.stripe.subscriptions.update(params.subscriptionId, {
-				items: [{ id: item.id, quantity: params.quantity }],
-				proration_behavior: chargeNow ? 'always_invoice' : 'none',
-				...(chargeNow ? { payment_behavior: 'error_if_incomplete' as const } : {}),
-				expand: ['latest_invoice'],
+		const prorationDate = Math.floor(Date.now() / 1000);
+		const customerId =
+			typeof subscription.customer === 'string' ? subscription.customer : subscription.customer.id;
+
+		const invoice = await trackExternal('stripe', 'invoices.createPreview', () =>
+			this.stripe.invoices.createPreview({
+				customer: customerId,
+				subscription: params.subscriptionId,
+				subscription_details: {
+					items: [{ id: item.id, quantity: params.quantity }],
+					proration_date: prorationDate,
+					proration_behavior: 'always_invoice',
+				},
 			}),
 		);
 
-		if (chargeNow) this.assertProrationInvoiceSettled(updated);
+		return { amountDue: invoice.amount_due, currency: invoice.currency, prorationDate };
+	}
 
-		return updated;
+	/** Card brand and last four digits of whatever Stripe would charge for this subscription. */
+	async getSubscriptionPaymentMethod(
+		subscriptionId: string,
+	): Promise<{ brand: string; last4: string } | null> {
+		const subscription = await trackExternal('stripe', 'subscriptions.retrieve', () =>
+			this.stripe.subscriptions.retrieve(subscriptionId, {
+				expand: ['default_payment_method', 'customer.invoice_settings.default_payment_method'],
+			}),
+		);
+
+		const fromSubscription = subscription.default_payment_method;
+		const customer = subscription.customer;
+		const fromCustomer =
+			typeof customer === 'object' && !('deleted' in customer && customer.deleted)
+				? customer.invoice_settings?.default_payment_method
+				: null;
+
+		const paymentMethod = fromSubscription ?? fromCustomer;
+		if (!paymentMethod || typeof paymentMethod === 'string' || !paymentMethod.card) return null;
+
+		return { brand: paymentMethod.card.brand, last4: paymentMethod.card.last4 };
+	}
+
+	private async getFirstItem(subscriptionId: string): Promise<Stripe.SubscriptionItem> {
+		const subscription = await this.getSubscription(subscriptionId);
+		const item = subscription.items.data[0];
+		if (!item) {
+			throw new Error(`Stripe subscription ${subscriptionId} has no line items`);
+		}
+		return item;
 	}
 
 	async setCancelAtPeriodEnd(
@@ -119,22 +210,6 @@ export class StripeService {
 				cancel_at_period_end: cancelAtPeriodEnd,
 			}),
 		);
-	}
-
-	/**
-	 * `payment_behavior: 'error_if_incomplete'` is documented to reject an update it cannot
-	 * collect, but its interaction with `always_invoice` is not something we want to rely on
-	 * blindly — an unpaid invoice slipping through would grant slots the customer never paid for.
-	 * Checking the invoice we just created is cheap and makes the outcome unambiguous.
-	 */
-	private assertProrationInvoiceSettled(subscription: Stripe.Subscription): void {
-		const invoice = subscription.latest_invoice;
-		if (!invoice || typeof invoice === 'string') return;
-		if (invoice.status === 'open' || invoice.status === 'uncollectible') {
-			throw new Error(
-				`Stripe proration invoice ${invoice.id} for subscription ${subscription.id} is ${invoice.status}`,
-			);
-		}
 	}
 
 	async createPortalSession(

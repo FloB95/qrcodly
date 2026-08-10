@@ -1,5 +1,6 @@
 import { BadRequestError } from './bad-request.error';
 import { ConflictError } from './conflict.error';
+import { PaymentRequiredError } from './payment-required.error';
 import { CustomApiError } from './custom-api.error';
 import { NotFoundError } from './not-found.error';
 import { UnauthorizedError } from './unauthorized.error';
@@ -13,6 +14,7 @@ export {
 	CustomApiError,
 	BadRequestError,
 	ConflictError,
+	PaymentRequiredError,
 	NotFoundError,
 	UnauthorizedError,
 	ForbiddenError,

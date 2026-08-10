@@ -8,6 +8,7 @@ import type {
 	TDomainAddonCancelResponseDto,
 	TDomainAddonCheckoutResponseDto,
 	TDomainAddonQuantityResponseDto,
+	TDomainAddonQuantityPreviewDto,
 	TDomainAddonResponseDto,
 } from '@shared/schemas';
 
@@ -84,22 +85,83 @@ export function useCreateDomainAddonCheckout() {
 	});
 }
 
+/**
+ * Quotes a quantity change before it is applied.
+ *
+ * Kept out of the mutation on purpose: the customer has to see the exact amount and the payment
+ * method before confirming, which is also what makes the confirmation legally sound for a paid
+ * order.
+ */
+export function useDomainAddonQuantityPreview(quantity: number, enabled: boolean) {
+	const { getToken, isLoaded, isSignedIn, userId } = useAuth();
+
+	return useQuery({
+		queryKey: [...domainAddonQueryKeys.addon, userId, 'preview', quantity],
+		enabled: enabled && isLoaded && !!isSignedIn,
+		queryFn: async (): Promise<TDomainAddonQuantityPreviewDto> => {
+			const token = await getToken();
+			if (!token) throw new Error('Missing auth token');
+
+			return apiRequest<TDomainAddonQuantityPreviewDto>(
+				`${BASE_PATH}/quantity/preview`,
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				},
+				{ quantity },
+			);
+		},
+		// Stripe prorates to the second, so a cached quote goes stale quickly.
+		staleTime: 0,
+		gcTime: 0,
+		retry: 1,
+	});
+}
+
 export function useUpdateDomainAddonQuantity() {
 	const { getToken } = useAuth();
 	const invalidate = useAddonMutationInvalidation();
 
 	return useMutation({
-		mutationFn: async (quantity: number): Promise<TDomainAddonQuantityResponseDto> => {
+		mutationFn: async (params: {
+			quantity: number;
+			prorationDate?: number | null;
+		}): Promise<TDomainAddonQuantityResponseDto> => {
 			const token = await getToken();
 			if (!token) throw new Error('Missing auth token');
 
 			return apiRequest<TDomainAddonQuantityResponseDto>(`${BASE_PATH}/quantity`, {
 				method: 'PATCH',
-				body: JSON.stringify({ quantity }),
+				body: JSON.stringify({
+					quantity: params.quantity,
+					// Sending the quote's timestamp back makes Stripe bill exactly what was shown.
+					...(params.prorationDate ? { prorationDate: params.prorationDate } : {}),
+				}),
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`,
 				},
+			});
+		},
+		onSuccess: invalidate,
+	});
+}
+
+export function useCancelPendingDomainAddonReduction() {
+	const { getToken } = useAuth();
+	const invalidate = useAddonMutationInvalidation();
+
+	return useMutation({
+		mutationFn: async (): Promise<TDomainAddonResponseDto> => {
+			const token = await getToken();
+			if (!token) throw new Error('Missing auth token');
+
+			return apiRequest<TDomainAddonResponseDto>(`${BASE_PATH}/quantity/pending/cancel`, {
+				method: 'POST',
+				headers: { Authorization: `Bearer ${token}` },
 			});
 		},
 		onSuccess: invalidate,

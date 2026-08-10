@@ -1,7 +1,13 @@
 import { inject, injectable } from 'tsyringe';
 import { env } from '@/core/config/env';
 import { Logger } from '@/core/logging';
-import { BadRequestError, ConflictError, ForbiddenError, NotFoundError } from '@/core/error/http';
+import {
+	BadRequestError,
+	ConflictError,
+	ForbiddenError,
+	NotFoundError,
+	PaymentRequiredError,
+} from '@/core/error/http';
 import { CustomDomainEntitlementService } from '@/core/services/custom-domain-entitlement.service';
 import CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
 import { type TCreateDomainAddonCheckoutDto } from '@shared/schemas';
@@ -31,6 +37,23 @@ export type TDomainAddonQuantityChange = {
 	pendingQuantity: number | null;
 	effectiveAt: Date | null;
 	willDisable: string[];
+};
+
+export type TDomainAddonQuantityPreview = {
+	quantity: number;
+	currentQuantity: number;
+	/** Amount Stripe would collect right now, in minor units. Zero for deferred reductions. */
+	amountDueNow: number;
+	currency: string;
+	/** Feed back into `updateQuantity` so the charge equals the quote. */
+	prorationDate: number | null;
+	/** When the change takes effect, or null if it is immediate. */
+	effectiveAt: Date | null;
+	periodEnd: Date;
+	willDisable: string[];
+	/** True when a scheduled reduction has to be withdrawn before an increase can be quoted. */
+	requiresPendingReset: boolean;
+	paymentMethod: { brand: string; last4: string } | null;
 };
 
 /**
@@ -117,12 +140,102 @@ export class ManageDomainAddonUseCase {
 		return { url: session.url };
 	}
 
-	async updateQuantity(userId: string, quantity: number): Promise<TDomainAddonQuantityChange> {
+	/**
+	 * Quotes a quantity change without applying it.
+	 *
+	 * The returned `prorationDate` is fed back into {@link updateQuantity} so the charge matches
+	 * the quoted amount exactly — Stripe prorates to the second, so a preview taken a minute
+	 * earlier would otherwise be a few cents off.
+	 */
+	async previewQuantityChange(
+		userId: string,
+		quantity: number,
+	): Promise<TDomainAddonQuantityPreview> {
+		await this.requireActivePro(userId);
+		const addon = await this.requireActiveAddon(userId);
+
+		const base = {
+			quantity,
+			currentQuantity: addon.quantity,
+			currency: 'eur',
+			periodEnd: addon.currentPeriodEnd,
+			paymentMethod: null as { brand: string; last4: string } | null,
+		};
+
+		// A pending reduction means Stripe already holds the lower quantity, so any quote taken
+		// from it would be wrong. The reduction has to be withdrawn first — an explicit step,
+		// rather than a preview that silently mutates the subscription to fix its own baseline.
+		if (addon.pendingQuantity !== null && quantity > addon.quantity) {
+			return {
+				...base,
+				amountDueNow: 0,
+				prorationDate: null,
+				effectiveAt: null,
+				willDisable: [],
+				requiresPendingReset: true,
+			};
+		}
+
+		if (quantity < addon.quantity) {
+			return {
+				...base,
+				amountDueNow: 0,
+				prorationDate: null,
+				effectiveAt: addon.currentPeriodEnd,
+				willDisable: await this.projectDisabledDomains(userId, quantity),
+				requiresPendingReset: false,
+			};
+		}
+
+		const [preview, paymentMethod] = await Promise.all([
+			this.stripeService.previewQuantityChange({
+				subscriptionId: addon.stripeSubscriptionId,
+				quantity,
+			}),
+			this.stripeService.getSubscriptionPaymentMethod(addon.stripeSubscriptionId),
+		]);
+
+		return {
+			...base,
+			amountDueNow: preview.amountDue,
+			currency: preview.currency,
+			prorationDate: preview.prorationDate,
+			effectiveAt: null,
+			willDisable: [],
+			requiresPendingReset: false,
+			paymentMethod,
+		};
+	}
+
+	/**
+	 * Withdraws a scheduled reduction at no cost.
+	 *
+	 * Puts Stripe back on the quantity the customer already paid for, which is also what makes a
+	 * later increase quote correctly.
+	 */
+	async cancelPendingReduction(userId: string): Promise<void> {
+		await this.requireActivePro(userId);
+		const addon = await this.requireActiveAddon(userId);
+		if (addon.pendingQuantity === null) return;
+
+		await this.stripeService.resetSubscriptionQuantity(addon.stripeSubscriptionId, addon.quantity);
+		await this.addonSubscriptionRepository.clearPendingQuantity(addon);
+
+		this.logger.info('domainAddon.pendingReductionWithdrawn', {
+			subscription: { userId, quantity: addon.quantity },
+		});
+	}
+
+	async updateQuantity(
+		userId: string,
+		quantity: number,
+		options: { prorationDate?: number } = {},
+	): Promise<TDomainAddonQuantityChange> {
 		await this.requireActivePro(userId);
 		const addon = await this.requireActiveAddon(userId);
 
 		if (quantity >= addon.quantity) {
-			return this.increaseQuantity(userId, addon, quantity);
+			return this.increaseQuantity(userId, addon, quantity, options.prorationDate);
 		}
 		return this.scheduleReduction(userId, addon, quantity);
 	}
@@ -169,17 +282,39 @@ export class ManageDomainAddonUseCase {
 		userId: string,
 		addon: TUserAddonSubscription,
 		quantity: number,
+		prorationDate?: number,
 	): Promise<TDomainAddonQuantityChange> {
 		if (quantity === addon.quantity && addon.pendingQuantity === null) {
 			return { quantity, pendingQuantity: null, effectiveAt: null, willDisable: [] };
 		}
 
-		// Stripe first: a declined card throws here, before we grant anything locally.
-		await this.stripeService.updateSubscriptionQuantity({
+		// Stripe holds the reduced number while a reduction is pending. Prorating an increase from
+		// there would charge again for slots the customer already paid for, so restore the paid-for
+		// quantity first — free of charge — and only then bill the real difference.
+		if (addon.pendingQuantity !== null) {
+			await this.stripeService.resetSubscriptionQuantity(
+				addon.stripeSubscriptionId,
+				addon.quantity,
+			);
+		}
+
+		const { paymentPending } = await this.stripeService.updateSubscriptionQuantity({
 			subscriptionId: addon.stripeSubscriptionId,
 			quantity,
 			billing: 'charge_now',
+			prorationDate,
 		});
+
+		// Stripe parks the change instead of applying it when the card declines. Granting the slots
+		// locally now would hand out what was never paid for.
+		if (paymentPending) {
+			this.logger.warn('domainAddon.increasePaymentFailed', {
+				subscription: { userId, quantity, previousQuantity: addon.quantity },
+			});
+			throw new PaymentRequiredError(
+				'The payment for the additional domains could not be collected. Please check your payment method and try again.',
+			);
+		}
 
 		await this.addonSubscriptionRepository.update(addon, {
 			quantity,
