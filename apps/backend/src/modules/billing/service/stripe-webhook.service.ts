@@ -4,7 +4,7 @@ import { Logger } from '@/core/logging';
 import { KeyCache } from '@/core/cache';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
 import UserAddonSubscriptionRepository from '../domain/repository/user-addon-subscription.repository';
-import { StripeService } from './stripe.service';
+import { StripeService, isEndingAtPeriodEnd } from './stripe.service';
 import { SubscriptionStatusTransitionService } from './subscription-status-transition.service';
 import { DomainAddonWebhookService } from './domain-addon-webhook.service';
 import { SyncAddonWithProUseCase } from '../useCase/sync-addon-with-pro.use-case';
@@ -189,7 +189,7 @@ export class StripeWebhookService {
 			status: subscription.status,
 			currentPeriodStart: periodStart,
 			currentPeriodEnd: periodEnd,
-			cancelAtPeriodEnd: subscription.cancel_at_period_end,
+			cancelAtPeriodEnd: isEndingAtPeriodEnd(subscription),
 			updatedAt: new Date(),
 		});
 
@@ -275,7 +275,7 @@ export class StripeWebhookService {
 			status: subscription.status,
 			currentPeriodStart: periodStart,
 			currentPeriodEnd: periodEnd,
-			cancelAtPeriodEnd: subscription.cancel_at_period_end,
+			cancelAtPeriodEnd: isEndingAtPeriodEnd(subscription),
 			updatedAt: new Date(),
 		});
 
@@ -289,7 +289,7 @@ export class StripeWebhookService {
 		});
 
 		// Detect cancelAtPeriodEnd flipping to true (user initiated cancellation)
-		if (subscription.cancel_at_period_end && !existing.cancelAtPeriodEnd) {
+		if (isEndingAtPeriodEnd(subscription) && !existing.cancelAtPeriodEnd) {
 			await this.transitionService.emitCancelInitiated({
 				userId: existing.userId,
 				stripeSubscriptionId: subscription.id,
@@ -299,7 +299,7 @@ export class StripeWebhookService {
 		}
 
 		// Detect cancelAtPeriodEnd flipping to false (user un-canceled)
-		if (!subscription.cancel_at_period_end && existing.cancelAtPeriodEnd) {
+		if (!isEndingAtPeriodEnd(subscription) && existing.cancelAtPeriodEnd) {
 			await this.userSubscriptionRepository.clearCancellationNotifications(existing.userId);
 			await this.syncAddonWithProUseCase.resume(existing.userId);
 		}

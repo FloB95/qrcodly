@@ -1306,7 +1306,8 @@
 				"addonEmptyLabel": "Дополнительные свои домены",
 				"addonUnit": "{quantity} × {unit} € за домен",
 				"perMonth": "{price} € / мес.",
-				"totalLabel": "Итого"
+				"totalLabel": "Итого",
+				"managePortal": "Управление подписками"
 			}
 		},
 		"profile": {

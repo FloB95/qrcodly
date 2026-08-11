@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, Clock, Loader2 } from 'lucide-react';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import {
 	BuyDomainSlotsDialog,
 	ManageDomainSlotsDialog,
@@ -17,6 +18,7 @@ import {
 	useReactivateDomainAddon,
 } from '@/lib/api/domain-addon';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
+import { useOpenBillingPortal } from '@/lib/api/billing';
 import {
 	DOMAIN_ADDON_PRICES,
 	formatPrice,
@@ -42,6 +44,9 @@ export function SubscriptionSummarySection() {
 	const { data, isLoading } = useDomainAddonQuery();
 	const reactivate = useReactivateDomainAddon();
 	const cancelReduction = useCancelScheduledDomainAddonReduction();
+	// Same destination as the header's invoices button — the portal is a dead end with no way
+	// back, so it opens in its own tab.
+	const billingPortal = useOpenBillingPortal();
 
 	const [buyOpen, setBuyOpen] = useState(false);
 	const [manageOpen, setManageOpen] = useState(false);
@@ -101,9 +106,21 @@ export function SubscriptionSummarySection() {
 		<>
 			<Card className="@container/card">
 				<CardContent className="px-4 sm:px-6 space-y-4">
-					<div>
-						<CardTitle className="mb-0.5">{t('summary.title')}</CardTitle>
-						<CardDescription>{t('summary.description')}</CardDescription>
+					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+						<div>
+							<CardTitle className="mb-0.5">{t('summary.title')}</CardTitle>
+							<CardDescription>{t('summary.description')}</CardDescription>
+						</div>
+						<Button
+							variant="outline"
+							size="sm"
+							className="w-full sm:w-auto shrink-0"
+							onClick={() => billingPortal.open(locale)}
+							disabled={billingPortal.isPending}
+						>
+							{t('summary.managePortal')}
+							<ArrowTopRightOnSquareIcon className="size-4 ml-2" />
+						</Button>
 					</div>
 
 					<ul className="divide-y rounded-lg border">

@@ -4,6 +4,20 @@ import { env } from '@/core/config/env';
 import { Logger } from '@/core/logging';
 import { trackExternal } from '@/core/metrics';
 
+/**
+ * Whether the subscription is set to end rather than renew.
+ *
+ * The `cancel_at_period_end` flag alone is not enough: the Stripe customer portal cancels by
+ * writing a concrete `cancel_at` timestamp and leaves the flag on `false`. Reading only the flag
+ * meant a cancellation made in the portal never reached the app at all — the customer saw their
+ * subscription as running when Stripe had already scheduled its end.
+ */
+export function isEndingAtPeriodEnd(subscription: Stripe.Subscription): boolean {
+	// `!= null` on purpose: the field is absent, not null, on some payloads, and `!== null`
+	// would then read every subscription as cancelling.
+	return subscription.cancel_at_period_end || subscription.cancel_at != null;
+}
+
 /** The live Stripe facts a quantity change is decided on. */
 export type TAddonSubscriptionState = {
 	subscriptionId: string;
@@ -264,7 +278,7 @@ export class StripeService {
 			currency: subscription.currency,
 			currentPeriodStart: new Date(item.current_period_start * 1000),
 			currentPeriodEnd: new Date(item.current_period_end * 1000),
-			cancelAtPeriodEnd: subscription.cancel_at_period_end,
+			cancelAtPeriodEnd: isEndingAtPeriodEnd(subscription),
 			scheduleId:
 				typeof subscription.schedule === 'string'
 					? subscription.schedule

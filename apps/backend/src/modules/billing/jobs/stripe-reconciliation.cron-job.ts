@@ -2,7 +2,7 @@ import { injectable } from 'tsyringe';
 import { container } from 'tsyringe';
 import { CronJob } from '@/core/decorators/cron-job.decorator';
 import { AbstractCronJob } from '@/core/jobs/abstract.cron-job';
-import { StripeService } from '../service/stripe.service';
+import { StripeService, isEndingAtPeriodEnd } from '../service/stripe.service';
 import { SubscriptionStatusTransitionService } from '../service/subscription-status-transition.service';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
 import UserAddonSubscriptionRepository from '../domain/repository/user-addon-subscription.repository';
@@ -76,7 +76,7 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 				const needsUpdate =
 					local.status !== stripe.status ||
 					local.stripePriceId !== priceId ||
-					local.cancelAtPeriodEnd !== stripe.cancel_at_period_end ||
+					local.cancelAtPeriodEnd !== isEndingAtPeriodEnd(stripe) ||
 					Math.abs(local.currentPeriodEnd.getTime() - periodEnd * 1000) > 60_000;
 
 				if (needsUpdate) {
@@ -85,7 +85,7 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 						stripePriceId: priceId,
 						currentPeriodStart: periodStartDate,
 						currentPeriodEnd: periodEndDate,
-						cancelAtPeriodEnd: stripe.cancel_at_period_end,
+						cancelAtPeriodEnd: isEndingAtPeriodEnd(stripe),
 					});
 
 					await transitionService.handleTransition({
@@ -98,7 +98,7 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 					});
 
 					// Detect cancelAtPeriodEnd flip (mirrors webhook logic)
-					if (stripe.cancel_at_period_end && !local.cancelAtPeriodEnd) {
+					if (isEndingAtPeriodEnd(stripe) && !local.cancelAtPeriodEnd) {
 						await transitionService.emitCancelInitiated({
 							userId: local.userId,
 							stripeSubscriptionId: local.stripeSubscriptionId,
@@ -106,7 +106,7 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 							currentPeriodEnd: periodEndDate,
 						});
 					}
-					if (!stripe.cancel_at_period_end && local.cancelAtPeriodEnd) {
+					if (!isEndingAtPeriodEnd(stripe) && local.cancelAtPeriodEnd) {
 						await repository.clearCancellationNotifications(local.userId);
 					}
 
@@ -190,7 +190,7 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 							status: sub.status,
 							currentPeriodStart: periodStartDate,
 							currentPeriodEnd: periodEndDate,
-							cancelAtPeriodEnd: sub.cancel_at_period_end,
+							cancelAtPeriodEnd: isEndingAtPeriodEnd(sub),
 						});
 					} else {
 						await repository.upsertByStripeSubscriptionId({
@@ -202,7 +202,7 @@ export class StripeReconciliationCronJob extends AbstractCronJob {
 							status: sub.status,
 							currentPeriodStart: periodStartDate,
 							currentPeriodEnd: periodEndDate,
-							cancelAtPeriodEnd: sub.cancel_at_period_end,
+							cancelAtPeriodEnd: isEndingAtPeriodEnd(sub),
 							updatedAt: new Date(),
 						});
 					}

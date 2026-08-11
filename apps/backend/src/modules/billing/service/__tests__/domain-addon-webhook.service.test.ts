@@ -19,6 +19,7 @@ const stripeSubscription = (
 		quantity?: number;
 		status?: string;
 		cancelAtPeriodEnd?: boolean;
+		cancelAt?: number | null;
 		metadata?: Record<string, string>;
 		schedule?: string | null;
 	} = {},
@@ -28,6 +29,7 @@ const stripeSubscription = (
 		customer: 'cus_1',
 		status: overrides.status ?? 'active',
 		cancel_at_period_end: overrides.cancelAtPeriodEnd ?? false,
+		cancel_at: overrides.cancelAt ?? null,
 		metadata: overrides.metadata ?? { clerkUserId: USER_ID },
 		schedule: overrides.schedule ?? null,
 		items: {
@@ -381,6 +383,23 @@ describe('DomainAddonWebhookService', () => {
 
 			await upsert(stripeSubscription({ cancelAtPeriodEnd: true }));
 
+			expect(mockTransitionService.emitCancelInitiated).toHaveBeenCalledWith(
+				expect.objectContaining({ userId: USER_ID }),
+			);
+		});
+
+		it('should treat a portal cancellation via cancel_at as ending at period end', async () => {
+			// The Stripe customer portal writes a concrete `cancel_at` and leaves the flag on
+			// false, so reading only the flag hid the cancellation from the customer entirely.
+			mockRepository.findByStripeSubscriptionId.mockResolvedValue(
+				storedAddon({ cancelAtPeriodEnd: false }),
+			);
+
+			await upsert(stripeSubscription({ cancelAtPeriodEnd: false, cancelAt: 1_900_000_000 }));
+
+			expect(mockRepository.upsertByUserAndType).toHaveBeenCalledWith(
+				expect.objectContaining({ cancelAtPeriodEnd: true }),
+			);
 			expect(mockTransitionService.emitCancelInitiated).toHaveBeenCalledWith(
 				expect.objectContaining({ userId: USER_ID }),
 			);

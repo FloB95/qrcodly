@@ -1306,7 +1306,8 @@
 				"addonEmptyLabel": "Zusätzliche Custom Domains",
 				"addonUnit": "{quantity} × {unit} € pro Domain",
 				"perMonth": "{price} € / Monat",
-				"totalLabel": "Gesamt"
+				"totalLabel": "Gesamt",
+				"managePortal": "Abos verwalten"
 			}
 		},
 		"profile": {

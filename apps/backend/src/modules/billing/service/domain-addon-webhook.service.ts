@@ -7,7 +7,7 @@ import UserAddonSubscriptionRepository, {
 import { type TUserAddonSubscription } from '../domain/entities/user-addon-subscription.entity';
 import { AddonSubscriptionStatusTransitionService } from './addon-subscription-status-transition.service';
 import { EnforceCustomDomainLimitUseCase } from '../useCase/enforce-custom-domain-limit.use-case';
-import { StripeService, readUpcomingPhase } from './stripe.service';
+import { StripeService, readUpcomingPhase, isEndingAtPeriodEnd } from './stripe.service';
 
 /**
  * Handles the add-on branch of the Stripe webhook.
@@ -89,7 +89,7 @@ export class DomainAddonWebhookService {
 			quantity,
 			currentPeriodStart: periodStart,
 			currentPeriodEnd: periodEnd,
-			cancelAtPeriodEnd: subscription.cancel_at_period_end,
+			cancelAtPeriodEnd: isEndingAtPeriodEnd(subscription),
 			lastStripeEventAt: context.eventCreatedAt,
 			scheduledChange,
 		});
@@ -129,10 +129,10 @@ export class DomainAddonWebhookService {
 			newStatus: subscription.status,
 		});
 
-		if (subscription.cancel_at_period_end && !existing?.cancelAtPeriodEnd) {
+		if (isEndingAtPeriodEnd(subscription) && !existing?.cancelAtPeriodEnd) {
 			await this.transitionService.emitCancelInitiated(transitionInput);
 		}
-		if (!subscription.cancel_at_period_end && existing?.cancelAtPeriodEnd) {
+		if (!isEndingAtPeriodEnd(subscription) && existing?.cancelAtPeriodEnd) {
 			await this.addonSubscriptionRepository.clearCancellationNotifications(row);
 		}
 

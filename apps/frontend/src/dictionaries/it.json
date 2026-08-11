@@ -1306,7 +1306,8 @@
 				"addonEmptyLabel": "Domini personalizzati aggiuntivi",
 				"addonUnit": "{quantity} × {unit} € per dominio",
 				"perMonth": "{price} € / mese",
-				"totalLabel": "Totale"
+				"totalLabel": "Totale",
+				"managePortal": "Gestisci abbonamenti"
 			}
 		},
 		"profile": {
