@@ -64,7 +64,13 @@ const AddDomainSchema = z.object({
 
 type AddDomainFormData = z.infer<typeof AddDomainSchema>;
 
-export function AddCustomDomainDialog() {
+type AddCustomDomainDialogProps = {
+	/** True when every slot is in use — offer buying one instead of a form that would 403. */
+	atLimit?: boolean;
+	onBuySlots?: () => void;
+};
+
+export function AddCustomDomainDialog({ atLimit, onBuySlots }: AddCustomDomainDialogProps = {}) {
 	const t = useTranslations('settings.domains');
 	const [open, setOpen] = useState(false);
 	const router = useRouter();
@@ -97,16 +103,30 @@ export function AddCustomDomainDialog() {
 				router.push(`${pathname}?${params.toString()}`);
 			},
 			onError: (error) => {
+				// Hitting the limit is an expected outcome, not a defect: show translated copy and
+				// keep it out of Sentry so real failures stay visible.
+				const isLimitReached = error.message.includes('Plan limit exceeded');
+
 				toast({
 					title: t('addError'),
-					description: error.message,
+					description: isLimitReached ? t('addon.limitReachedError') : error.message,
 					variant: 'destructive',
 				});
-				Sentry.captureException(error);
+				if (!isLimitReached) {
+					Sentry.captureException(error);
+				}
 				posthog.capture('error:custom-domain-create', { error, domain: data.domain });
 			},
 		});
 	};
+
+	if (atLimit && onBuySlots) {
+		return (
+			<Button size="sm" onClick={onBuySlots}>
+				{t('addon.unlockAnotherDomain')}
+			</Button>
+		);
+	}
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>

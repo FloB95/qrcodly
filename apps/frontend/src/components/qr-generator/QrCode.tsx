@@ -12,8 +12,7 @@ import {
 	type TShortUrlWithCustomDomainResponseDto,
 } from '@shared/schemas';
 import { DynamicBadge } from './DynamicBadge';
-import Link from 'next/link';
-import { PencilSquareIcon } from '@heroicons/react/24/solid';
+import { DefaultDomainPicker } from './DefaultDomainPicker';
 import { SmartTipPopover } from '@/components/dashboard/smart-tips/SmartTipPopover';
 import { useShortUrlLink } from '@/hooks/use-short-url-link';
 
@@ -42,7 +41,26 @@ function getQrCodeData(props: QrCodeProps): string {
 	);
 }
 
+/**
+ * Which custom domain the short URL points at, as far as the props reveal it.
+ *
+ * `getQrCodeData` cannot see this: it builds the link without a resolved domain, and a short URL
+ * that only carries `customDomainId` therefore always renders as the system link there. Comparing
+ * the id separately is what lets a domain switch through — the component resolves the id to a host
+ * itself, so without this the memo would report "equal" and the link under the code would freeze
+ * on the previous domain.
+ */
+function getCustomDomainKey(props: QrCodeProps): string | null {
+	const { shortUrl } = props;
+	if (!shortUrl) return null;
+	return 'customDomain' in shortUrl
+		? (shortUrl.customDomain?.id ?? null)
+		: (shortUrl.customDomainId ?? null);
+}
+
 function areQrCodePropsEqual(prev: QrCodeProps, next: QrCodeProps) {
+	if (getCustomDomainKey(prev) !== getCustomDomainKey(next)) return false;
+
 	const optionsPrev: Options = {
 		...convertQrCodeOptionsToLibraryOptions(prev.qrCode.config),
 		data: getQrCodeData(prev),
@@ -125,11 +143,7 @@ function QrCode({
 					>
 						<div className="text-xs ml-4 flex items-center gap-1">
 							<span className="pt-0.5">{shortUrlDisplay}</span>
-							{!hideDomainEdit && (
-								<Link href="/dashboard/settings/domains">
-									<PencilSquareIcon className="size-4 text-black" />
-								</Link>
-							)}
+							{!hideDomainEdit && <DefaultDomainPicker />}
 						</div>
 					</SmartTipPopover>
 				</div>

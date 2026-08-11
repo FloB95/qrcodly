@@ -8,6 +8,7 @@ import CustomDomainRepository from '../domain/repository/custom-domain.repositor
 import { TCustomDomain } from '../domain/entities/custom-domain.entity';
 import { CreateCustomDomainPolicy } from '../policies/create-custom-domain.policy';
 import { DomainAlreadyExistsError } from '../error/http/domain-already-exists.error';
+import { CustomDomainEntitlementService } from '@/core/services/custom-domain-entitlement.service';
 
 /**
  * Use case for creating a Custom Domain entity.
@@ -18,6 +19,8 @@ import { DomainAlreadyExistsError } from '../error/http/domain-already-exists.er
 export class CreateCustomDomainUseCase implements IBaseUseCase {
 	constructor(
 		@inject(CustomDomainRepository) private customDomainRepository: CustomDomainRepository,
+		@inject(CustomDomainEntitlementService)
+		private entitlementService: CustomDomainEntitlementService,
 		@inject(Logger) private logger: Logger,
 	) {}
 
@@ -37,10 +40,17 @@ export class CreateCustomDomainUseCase implements IBaseUseCase {
 			throw new DomainAlreadyExistsError(domain);
 		}
 
-		// Check plan limits
-		const currentDomainCount = await this.customDomainRepository.countByUserId(user.id);
+		// Check plan limits (plan allowance plus any purchased add-on slots)
+		const [currentDomainCount, entitlement] = await Promise.all([
+			this.customDomainRepository.countByUserId(user.id),
+			this.entitlementService.getCustomDomainLimit(user.id),
+		]);
 
-		const policy = new CreateCustomDomainPolicy(user, currentDomainCount);
+		const policy = new CreateCustomDomainPolicy(
+			user,
+			currentDomainCount,
+			entitlement.effectiveLimit,
+		);
 		await policy.checkAccess();
 
 		// Generate ID and verification token for new domain

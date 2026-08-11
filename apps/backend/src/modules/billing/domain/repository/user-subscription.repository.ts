@@ -81,6 +81,9 @@ class UserSubscriptionRepository extends AbstractRepository<TUserSubscription> {
 				set: {
 					userId: data.userId,
 					stripeCustomerId: data.stripeCustomerId,
+					// Must be written too: the insert can collide on the userId unique key when a
+					// user re-subscribes, and without this the row keeps the dead subscription id.
+					stripeSubscriptionId: data.stripeSubscriptionId,
 					stripePriceId: data.stripePriceId,
 					status: data.status,
 					currentPeriodStart: data.currentPeriodStart,

@@ -11,6 +11,10 @@ export type TemplateName =
 	| 'subscription-cancellation-reminder'
 	| 'subscription-pro-features-disabled'
 	| 'subscription-reactivated'
+	| 'domain-addon-cancel-initiated'
+	| 'domain-addon-features-disabled'
+	| 'domain-addon-quantity-reduced'
+	| 'domain-addon-reduction-scheduled'
 	| 'url-safety-link-blocked'
 	| 'url-safety-account-banned'
 	| 'url-safety-admin-alert';

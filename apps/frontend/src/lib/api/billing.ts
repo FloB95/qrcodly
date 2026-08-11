@@ -2,7 +2,7 @@
 
 import { useAuth } from '@clerk/nextjs';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { apiRequest } from '@/lib/utils';
+import { apiRequest, openDeferredWindow, type DeferredWindow } from '@/lib/utils';
 
 export const billingQueryKeys = {
 	subscription: ['subscription'] as const,
@@ -73,26 +73,54 @@ export function useCreateCheckoutSession() {
 	});
 }
 
+type PortalSessionParams = { locale?: string; target?: DeferredWindow };
+
 export function useCreatePortalSession() {
 	const { getToken } = useAuth();
 
 	return useMutation({
-		mutationFn: async (params: { locale?: string } | void): Promise<{ url: string }> => {
+		mutationFn: async (params: PortalSessionParams | void): Promise<{ url: string }> => {
 			const token = await getToken();
 			if (!token) {
 				throw new Error('Missing auth token');
 			}
 			return apiRequest<{ url: string }>('/billing/portal-session', {
 				method: 'POST',
-				body: JSON.stringify(params || {}),
+				body: JSON.stringify({ locale: params ? params.locale : undefined }),
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`,
 				},
 			});
 		},
-		onSuccess: (data) => {
-			window.location.href = data.url;
+		onSuccess: (data, variables) => {
+			const target = variables ? variables.target : undefined;
+			if (target) {
+				target.resolve(data.url);
+			} else {
+				window.location.href = data.url;
+			}
+		},
+		onError: (_error, variables) => {
+			if (variables && variables.target) variables.target.abort();
 		},
 	});
+}
+
+/**
+ * Opens the Stripe billing portal in a new tab.
+ *
+ * The portal is a dead end — it has no link back into the app — so sending the current tab there
+ * strands the user. Checkout is different and stays in the same tab, because it returns via its
+ * success URL and that keeps ad-click attribution intact.
+ */
+export function useOpenBillingPortal() {
+	const createPortalSession = useCreatePortalSession();
+
+	return {
+		open: (locale?: string) => {
+			createPortalSession.mutate({ locale, target: openDeferredWindow() });
+		},
+		isPending: createPortalSession.isPending,
+	};
 }

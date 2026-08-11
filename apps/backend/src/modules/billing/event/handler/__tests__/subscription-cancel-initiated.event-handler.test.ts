@@ -18,6 +18,7 @@ describe('SubscriptionCancelInitiatedEventHandler', () => {
 	let mockLogger: MockProxy<Logger>;
 	let mockMailer: MockProxy<Mailer>;
 	let mockRepository: MockProxy<UserSubscriptionRepository>;
+	let mockSyncAddonWithPro: Record<string, jest.Mock>;
 
 	const baseEventData = {
 		userId: 'user-123',
@@ -33,6 +34,8 @@ describe('SubscriptionCancelInitiatedEventHandler', () => {
 		mockMailer = mock<Mailer>();
 		mockRepository = mock<UserSubscriptionRepository>();
 
+		mockSyncAddonWithPro = { cancelAtPeriodEnd: jest.fn(), resume: jest.fn() };
+
 		(container.resolve as jest.Mock).mockImplementation((token: unknown) => {
 			const name = typeof token === 'function' ? token.name : String(token);
 			switch (name) {
@@ -42,6 +45,8 @@ describe('SubscriptionCancelInitiatedEventHandler', () => {
 					return mockMailer;
 				case 'UserSubscriptionRepository':
 					return mockRepository;
+				case 'SyncAddonWithProUseCase':
+					return mockSyncAddonWithPro;
 				default:
 					return {};
 			}

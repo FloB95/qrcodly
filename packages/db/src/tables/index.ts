@@ -47,6 +47,12 @@ export {
 	type TOwnershipStatus,
 } from './custom-domain';
 export { default as userSubscription, type TUserSubscription } from './user-subscription';
+export {
+	default as userAddonSubscription,
+	type TUserAddonSubscription,
+	ADDON_TYPES,
+	type TAddonType,
+} from './user-addon-subscription';
 export { default as tag, tagRelations, type TTag } from './tag';
 export { default as qrCodeTag, qrCodeTagRelations, type TQrCodeTag } from './qr-code-tag';
 export {

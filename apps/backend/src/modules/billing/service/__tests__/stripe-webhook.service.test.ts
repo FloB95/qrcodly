@@ -45,12 +45,38 @@ const mockCache = {
 	del: jest.fn(),
 } as any;
 
+const mockAddonRepository = {
+	findByStripeSubscriptionId: jest.fn(),
+	findByUserAndType: jest.fn(),
+} as any;
+
+// Defaults to Pro so the existing Pro cases below are unaffected; add-on cases override it.
+const mockProductResolver = {
+	resolveFromPriceId: jest.fn().mockReturnValue('pro'),
+	resolveFromSubscription: jest.fn().mockResolvedValue('pro'),
+} as any;
+
+const mockDomainAddonWebhookService = {
+	handleSubscriptionUpsert: jest.fn(),
+	handleSubscriptionDeleted: jest.fn(),
+	handlePaymentFailed: jest.fn(),
+} as any;
+
+const mockSyncAddonWithPro = {
+	cancelAtPeriodEnd: jest.fn(),
+	resume: jest.fn(),
+} as any;
+
 function createService(): StripeWebhookService {
 	return new StripeWebhookService(
 		mockLogger as any,
 		mockRepository,
+		mockAddonRepository,
 		mockStripeService,
 		mockTransitionService,
+		mockProductResolver,
+		mockDomainAddonWebhookService,
+		mockSyncAddonWithPro,
 		mockCache,
 	);
 }
@@ -80,6 +106,9 @@ describe('StripeWebhookService', () => {
 
 	beforeEach(() => {
 		jest.clearAllMocks();
+		// clearAllMocks leaves queued `...Once` implementations in place, so reset the default
+		// explicitly — otherwise an unconsumed stub leaks into the next test.
+		mockProductResolver.resolveFromSubscription.mockReset().mockResolvedValue('pro');
 		service = createService();
 	});
 
@@ -140,6 +169,103 @@ describe('StripeWebhookService', () => {
 					stripe: { eventType: 'customer.subscription.updated', eventId: 'evt_test' },
 				}),
 			);
+		});
+	});
+
+	describe('product routing', () => {
+		const makeEvent = (type: string, object: unknown): Stripe.Event =>
+			({
+				type,
+				id: 'evt_routing',
+				created: Math.floor(Date.now() / 1000),
+				data: { object },
+			}) as unknown as Stripe.Event;
+
+		it('should route an add-on update to the add-on handler only', async () => {
+			mockProductResolver.resolveFromSubscription.mockResolvedValueOnce('domain_addon');
+			const subscription = makeStripeSubscription();
+			mockStripeService.getSubscription.mockResolvedValue(subscription);
+
+			await service.handleWebhookEvent(makeEvent('customer.subscription.updated', subscription));
+
+			expect(mockDomainAddonWebhookService.handleSubscriptionUpsert).toHaveBeenCalled();
+			expect(mockRepository.upsertByStripeSubscriptionId).not.toHaveBeenCalled();
+			expect(mockTransitionService.handleTransition).not.toHaveBeenCalled();
+		});
+
+		// No resolver stub here on purpose: session metadata alone must be enough to route.
+		it('should route an add-on checkout to the add-on handler only', async () => {
+			mockStripeService.getSubscription.mockResolvedValue(makeStripeSubscription());
+
+			await service.handleWebhookEvent(
+				makeEvent('checkout.session.completed', {
+					id: 'cs_addon',
+					metadata: { clerkUserId: 'user_test_123', product: 'domain_addon' },
+					subscription: 'sub_test_123',
+				}),
+			);
+
+			expect(mockDomainAddonWebhookService.handleSubscriptionUpsert).toHaveBeenCalled();
+			expect(mockRepository.upsertByStripeSubscriptionId).not.toHaveBeenCalled();
+		});
+
+		it('should route an add-on deletion to the add-on handler only', async () => {
+			mockProductResolver.resolveFromSubscription.mockResolvedValueOnce('domain_addon');
+			const subscription = makeStripeSubscription();
+
+			await service.handleWebhookEvent(makeEvent('customer.subscription.deleted', subscription));
+
+			expect(mockDomainAddonWebhookService.handleSubscriptionDeleted).toHaveBeenCalled();
+			expect(mockRepository.update).not.toHaveBeenCalled();
+			expect(mockTransitionService.emitCanceled).not.toHaveBeenCalled();
+		});
+
+		it('should touch neither table for an unknown product', async () => {
+			mockProductResolver.resolveFromSubscription.mockResolvedValueOnce('unknown');
+			const subscription = makeStripeSubscription();
+
+			await service.handleWebhookEvent(makeEvent('customer.subscription.updated', subscription));
+
+			expect(mockDomainAddonWebhookService.handleSubscriptionUpsert).not.toHaveBeenCalled();
+			expect(mockRepository.upsertByStripeSubscriptionId).not.toHaveBeenCalled();
+			expect(mockLogger.warn).toHaveBeenCalledWith(
+				'stripe.webhook.unknownProduct',
+				expect.anything(),
+			);
+		});
+
+		it('should handle customer.subscription.created for the add-on', async () => {
+			mockProductResolver.resolveFromSubscription.mockResolvedValueOnce('domain_addon');
+			const subscription = makeStripeSubscription();
+			mockStripeService.getSubscription.mockResolvedValue(subscription);
+
+			await service.handleWebhookEvent(makeEvent('customer.subscription.created', subscription));
+
+			expect(mockDomainAddonWebhookService.handleSubscriptionUpsert).toHaveBeenCalled();
+		});
+
+		it('should ignore customer.subscription.created for Pro', async () => {
+			mockProductResolver.resolveFromSubscription.mockResolvedValueOnce('pro');
+			const subscription = makeStripeSubscription();
+
+			await service.handleWebhookEvent(makeEvent('customer.subscription.created', subscription));
+
+			expect(mockDomainAddonWebhookService.handleSubscriptionUpsert).not.toHaveBeenCalled();
+			expect(mockRepository.upsertByStripeSubscriptionId).not.toHaveBeenCalled();
+		});
+
+		it('should send an add-on payment failure to the add-on handler', async () => {
+			mockRepository.findByStripeSubscriptionId.mockResolvedValue(undefined);
+			mockAddonRepository.findByStripeSubscriptionId.mockResolvedValue({ userId: 'user_test_123' });
+
+			await service.handleWebhookEvent(
+				makeEvent('invoice.payment_failed', {
+					parent: { subscription_details: { subscription: 'sub_addon_1' } },
+				}),
+			);
+
+			expect(mockDomainAddonWebhookService.handlePaymentFailed).toHaveBeenCalled();
+			expect(mockTransitionService.emitPastDue).not.toHaveBeenCalled();
 		});
 	});
 

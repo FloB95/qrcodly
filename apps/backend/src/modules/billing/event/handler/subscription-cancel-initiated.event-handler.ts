@@ -7,6 +7,7 @@ import { Mailer } from '@/core/mailer/mailer';
 import { env } from '@/core/config/env';
 import { GRACE_PERIOD_DAYS } from '@/core/config/constants';
 import UserSubscriptionRepository from '../../domain/repository/user-subscription.repository';
+import { SyncAddonWithProUseCase } from '../../useCase/sync-addon-with-pro.use-case';
 
 @EventHandler(SubscriptionCancelInitiatedEvent.eventName)
 export class SubscriptionCancelInitiatedEventHandler extends AbstractEventHandler<SubscriptionCancelInitiatedEvent> {
@@ -35,6 +36,9 @@ export class SubscriptionCancelInitiatedEventHandler extends AbstractEventHandle
 				currentPeriodEnd,
 			},
 		});
+
+		// Extra domains are worthless without Pro, so let them run out alongside it.
+		await container.resolve(SyncAddonWithProUseCase).cancelAtPeriodEnd(userId);
 
 		try {
 			// Check idempotency — skip if already notified

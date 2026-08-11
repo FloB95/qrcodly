@@ -1,16 +1,27 @@
 'use client';
 
-import { AddCustomDomainDialog, CustomDomainList } from '@/components/dashboard/custom-domain';
+import { useState } from 'react';
+import {
+	AddCustomDomainDialog,
+	BuyDomainSlotsDialog,
+	CustomDomainList,
+} from '@/components/dashboard/custom-domain';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { ProPlanRequiredBadge } from '@/components/ProPlanRequiredBadge';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
+import { useDomainAddonQuery } from '@/lib/api/domain-addon';
 
 export default function Page() {
 	const t = useTranslations('settings.domains');
 	const { hasProPlan } = useHasProPlan();
+	const { data: addonData } = useDomainAddonQuery();
+	const [buyOpen, setBuyOpen] = useState(false);
+
+	const entitlement = addonData?.entitlement;
+	const atLimit = !!entitlement && entitlement.usedDomains >= entitlement.effectiveLimit;
 
 	return (
 		<>
@@ -42,7 +53,7 @@ export default function Page() {
 						</div>
 						<div className="ml-[60px] sm:ml-0">
 							{hasProPlan ? (
-								<AddCustomDomainDialog />
+								<AddCustomDomainDialog atLimit={atLimit} onBuySlots={() => setBuyOpen(true)} />
 							) : (
 								<ProPlanRequiredBadge source="custom_domains" />
 							)}
@@ -52,6 +63,8 @@ export default function Page() {
 			</Card>
 
 			<CustomDomainList />
+
+			<BuyDomainSlotsDialog open={buyOpen} onOpenChange={setBuyOpen} />
 		</>
 	);
 }

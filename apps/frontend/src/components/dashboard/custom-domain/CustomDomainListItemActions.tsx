@@ -26,6 +26,8 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 
 interface CustomDomainListItemActionsProps {
 	domain: TCustomDomainResponseDto;
+	/** Switched off because the plan no longer covers it — only deleting still makes sense. */
+	isDisabled?: boolean;
 	isDeleting: boolean;
 	isVerifying: boolean;
 	isSettingDefault: boolean;
@@ -38,6 +40,7 @@ interface CustomDomainListItemActionsProps {
 
 export function CustomDomainListItemActions({
 	domain,
+	isDisabled = false,
 	isDeleting,
 	isVerifying,
 	isSettingDefault,
@@ -53,7 +56,12 @@ export function CustomDomainListItemActions({
 	const [showInstructionsDialog, setShowInstructionsDialog] = useState(false);
 	const [hasAutoShown, setHasAutoShown] = useState(false);
 
-	const { data: instructions, refetch: refetchInstructions } = useSetupInstructionsQuery(domain.id);
+	// Only fetch once the dialog is open (or is about to auto-open). A disabled domain has no
+	// instructions at all, so fetching for every row also produced a backend error per row.
+	const { data: instructions, refetch: refetchInstructions } = useSetupInstructionsQuery(
+		domain.id,
+		!isDisabled && (showInstructionsDialog || !!autoShowInstructions),
+	);
 
 	// Auto-open instructions dialog if requested (e.g., after domain creation)
 	useEffect(() => {
@@ -137,9 +145,11 @@ export function CustomDomainListItemActions({
 	// Domain is fully ready when SSL is active
 	const isFullyVerified = domain.sslStatus === 'active';
 	// Still needs verification if SSL is not active
-	const needsVerification = domain.sslStatus !== 'active';
+	// A disabled domain resolves nowhere, so re-checking DNS or promoting it to default would
+	// only offer dead ends.
+	const needsVerification = !isDisabled && domain.sslStatus !== 'active';
 	// Can set as default only if fully verified and not already default
-	const canSetDefault = isFullyVerified && !domain.isDefault;
+	const canSetDefault = !isDisabled && isFullyVerified && !domain.isDefault;
 
 	return (
 		<>
@@ -190,6 +200,11 @@ export function CustomDomainListItemActions({
 							{t('deleteConfirmDescription', { domain: domain.domain })}
 						</DialogDescription>
 					</DialogHeader>
+					{/* Printed codes carry the domain baked into the image and cannot be re-pointed.
+					    Deleting is therefore irreversible for anything already in circulation. */}
+					<div className="rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
+						{t('deleteConfirmQrWarning')}
+					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
 							{t('cancel')}

@@ -11,11 +11,11 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { cn, formatDate } from '@/lib/utils';
 import { env } from '@/env';
-import { FEATURE_INFO_LINKS, PLAN_CONFIGS } from '@/lib/plan.config';
+import { FEATURE_INFO_LINKS, PLAN_CONFIGS, getProPricing } from '@/lib/plan.config';
 import { Skeleton } from '@/components/ui/skeleton';
 import posthog from 'posthog-js';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
-import { useCreateCheckoutSession, useCreatePortalSession } from '@/lib/api/billing';
+import { useCreateCheckoutSession, useOpenBillingPortal } from '@/lib/api/billing';
 
 export function CurrentPlanSection() {
 	const t = useTranslations('settings.billing');
@@ -24,7 +24,7 @@ export function CurrentPlanSection() {
 	const { hasProPlan, isCanceled, isLoading, subscription } = useHasProPlan();
 	const searchParams = useSearchParams();
 	const createCheckoutSession = useCreateCheckoutSession();
-	const createPortalSession = useCreatePortalSession();
+	const billingPortal = useOpenBillingPortal();
 	const [selectedPeriod, setSelectedPeriod] = useState<'annual' | 'month'>('annual');
 	const conversionTracked = useRef(false);
 
@@ -72,29 +72,15 @@ export function CurrentPlanSection() {
 	};
 
 	const handleManageSubscription = () => {
-		createPortalSession.mutate({ locale });
+		billingPortal.open(locale);
 	};
 
-	const legacyPriceIds = [
-		env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_MONTHLY_LEGACY,
-		env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL_LEGACY,
-	].filter(Boolean);
-	const isLegacySubscription = legacyPriceIds.includes(subscription?.stripePriceId ?? '');
-	const annualPriceIds = [
-		env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL,
-		env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL_LEGACY,
-	].filter(Boolean);
-	const isAnnualSubscription = annualPriceIds.includes(subscription?.stripePriceId ?? '');
+	const { isAnnual: isAnnualSubscription, monthlyPrice: currentProPrice } = getProPricing(
+		subscription?.stripePriceId,
+	);
 
 	const proPrice = selectedPeriod === 'annual' ? '6,99' : '8,99';
 	const billingNote = selectedPeriod === 'annual' ? t('billedAnnually') : t('billedMonthly');
-	const currentProPrice = isLegacySubscription
-		? isAnnualSubscription
-			? '4,00'
-			: '4,99'
-		: isAnnualSubscription
-			? '6,99'
-			: '8,99';
 	const currentBillingNote = isAnnualSubscription ? t('billedAnnually') : t('billedMonthly');
 
 	return (
@@ -231,7 +217,7 @@ export function CurrentPlanSection() {
 							<Button
 								variant="secondary"
 								onClick={handleManageSubscription}
-								disabled={createPortalSession.isPending}
+								disabled={billingPortal.isPending}
 							>
 								{isCanceled && <SparklesIcon className="size-4 mr-2" />}
 								{isCanceled ? t('renewSubscription') : t('manageSubscription')}

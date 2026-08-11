@@ -244,6 +244,21 @@ class CustomDomainRepository extends AbstractRepository<TCustomDomain> {
 	 * @param userId - The user ID.
 	 * @returns A promise that resolves to an array of Custom Domains.
 	 */
+	/**
+	 * Every user who owns at least one custom domain.
+	 *
+	 * Drives the periodic limit sweep: entitlement can drop without any request from the user
+	 * (a lapsed add-on, a schedule phase Stripe applied, a webhook that never arrived), and
+	 * nothing else would notice that their domains outlive what they pay for.
+	 */
+	async findUserIdsWithDomains(): Promise<string[]> {
+		const rows = await this.db
+			.selectDistinct({ userId: this.table.createdBy })
+			.from(this.table)
+			.execute();
+		return rows.map((row) => row.userId);
+	}
+
 	async findAllByUserId(userId: string): Promise<TCustomDomain[]> {
 		const result = await this.db
 			.select()

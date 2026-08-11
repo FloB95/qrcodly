@@ -79,11 +79,13 @@ describe('safety incidents', () => {
 			headers: { Authorization: `Bearer ${token}` },
 		});
 
+	// Sends the JSON content-type without a body, exactly like the browser client does. Omitting
+	// the header here hid FST_ERR_CTP_EMPTY_JSON_BODY from every test in this file.
 	const acknowledgeRequest = (token: string) =>
 		testServer.inject({
 			method: 'POST',
 			url: `${SHORT_URL_API_PATH}/safety-incidents/acknowledge`,
-			headers: { Authorization: `Bearer ${token}` },
+			headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
 		});
 
 	const parseList = (payload: string) => JSON.parse(payload) as TSafetyIncidentListResponseDto;

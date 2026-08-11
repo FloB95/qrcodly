@@ -5,8 +5,12 @@ import { AbstractCronJob } from '@/core/jobs/abstract.cron-job';
 import { createClerkClient } from '@clerk/fastify';
 import { env } from '@/core/config/env';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
+import UserAddonSubscriptionRepository from '../domain/repository/user-addon-subscription.repository';
 import { DisableProFeaturesUseCase } from '../useCase/disable-pro-features.use-case';
+import { EnforceCustomDomainLimitUseCase } from '../useCase/enforce-custom-domain-limit.use-case';
+import { SyncAddonWithProUseCase } from '../useCase/sync-addon-with-pro.use-case';
 import { Mailer } from '@/core/mailer/mailer';
+import { ClerkUserInfoService } from '@/core/services/clerk-user-info.service';
 
 /**
  * Cron job to process expired subscription grace periods.
@@ -16,9 +20,14 @@ import { Mailer } from '@/core/mailer/mailer';
 @CronJob()
 export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 	// Run every day at 3:00 AM
-	schedule = '0 3 * * *';
+	schedule = env.CRON_GRACE_PERIODS;
 
 	protected async execute(): Promise<void> {
+		await this.processExpiredProGracePeriods();
+		await this.processExpiredAddonGracePeriods();
+	}
+
+	private async processExpiredProGracePeriods(): Promise<void> {
 		const userSubscriptionRepository = container.resolve(UserSubscriptionRepository);
 		const disableProFeaturesUseCase = container.resolve(DisableProFeaturesUseCase);
 		const mailer = container.resolve(Mailer);
@@ -39,6 +48,10 @@ export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 			try {
 				// Disable the user's Pro features (custom domains, analytics integrations)
 				await disableProFeaturesUseCase.execute(subscription.userId);
+
+				// Stop billing for extra domains the user can no longer use. Scheduled to the end of
+				// the add-on's own paid period, never immediate — an immediate cancel would credit.
+				await container.resolve(SyncAddonWithProUseCase).cancelAtPeriodEnd(subscription.userId);
 
 				// Fetch user info from Clerk for email notification
 				const user = await clerkClient.users.getUser(subscription.userId);
@@ -73,6 +86,61 @@ export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 					subscription: {
 						userId: subscription.userId,
 					},
+					error: error as Error,
+				});
+			}
+		}
+	}
+
+	/**
+	 * Runs after the Pro sweep on purpose: losing Pro already drops the effective limit to zero,
+	 * so doing it in this order means the add-on pass sees the final entitlement.
+	 */
+	private async processExpiredAddonGracePeriods(): Promise<void> {
+		const addonSubscriptionRepository = container.resolve(UserAddonSubscriptionRepository);
+		const enforceCustomDomainLimitUseCase = container.resolve(EnforceCustomDomainLimitUseCase);
+		const clerkUserInfoService = container.resolve(ClerkUserInfoService);
+		const mailer = container.resolve(Mailer);
+
+		const expired = await addonSubscriptionRepository.findExpiredUnprocessedGracePeriods();
+		if (expired.length === 0) {
+			this.logger.debug('No expired add-on grace periods to process');
+			return;
+		}
+
+		this.logger.info(`Processing ${expired.length} expired add-on grace periods`);
+
+		for (const addon of expired) {
+			try {
+				const { disabled } = await enforceCustomDomainLimitUseCase.execute(addon.userId);
+				await addonSubscriptionRepository.markAddonFeaturesDisabled(addon);
+
+				const { email, firstName } = await clerkUserInfoService.getUserInfo(addon.userId);
+				if (email) {
+					const template = await mailer.getTemplate('domain-addon-features-disabled');
+					const html = template({
+						firstName: firstName || 'there',
+						affectedDomains: disabled,
+						hasAffectedDomains: disabled.length > 0,
+						domainsUrl: `${env.FRONTEND_URL}/dashboard/settings/domains`,
+						logoUrl: `${env.FRONTEND_URL}/email-logo.png`,
+						year: new Date().getFullYear(),
+					});
+
+					await mailer.sendMail({
+						to: email,
+						subject: 'Your QRcodly Extra Domains Have Been Disabled',
+						html,
+						template: 'domain-addon-features-disabled',
+					});
+				}
+
+				this.logger.info('domainAddon.gracePeriodExpired', {
+					subscription: { userId: addon.userId, disabled },
+				});
+			} catch (error) {
+				this.logger.error('domainAddon.gracePeriodProcessingFailed', {
+					subscription: { userId: addon.userId },
 					error: error as Error,
 				});
 			}
