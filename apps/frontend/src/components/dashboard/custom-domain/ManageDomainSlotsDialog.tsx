@@ -24,6 +24,7 @@ import { DOMAIN_ADDON_PRICES, multiplyPrice } from '@/lib/plan.config';
 import { env } from '@/env';
 import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 
 type Props = {
 	open: boolean;
@@ -65,8 +66,9 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 			Math.abs(minorUnits) / 100,
 		);
 
-	const handleError = (title: string) => (error: Error) => {
+	const handleError = (title: string, event: string) => (error: Error) => {
 		toast({ title, description: error.message, variant: 'destructive' });
+		posthog.capture(event, { message: error.message });
 		Sentry.captureException(error);
 	};
 
@@ -76,18 +78,35 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 			{
 				onSuccess: (result) => {
 					onOpenChange(false);
+					const isReduction = result.scheduledQuantity != null && result.effectiveAt;
+					// Three distinct outcomes behind one button — an increase billed now, a
+					// reduction parked for the renewal, and withdrawing a parked one. Funnelling
+					// them into one event would make the paid path unmeasurable.
+					posthog.capture(
+						isReduction
+							? 'domain-addon:reduction_scheduled'
+							: quantity === addon.quantity
+								? 'domain-addon:reduction_withdrawn'
+								: 'domain-addon:quantity_increased',
+						{
+							from: addon.quantity,
+							to: quantity,
+							amountDueNow: quote?.amountDueNow ?? 0,
+							currency: quote?.currency,
+							willDisableCount: quote?.willDisable.length ?? 0,
+						},
+					);
 					toast({
 						title: t('updated'),
-						description:
-							result.scheduledQuantity != null && result.effectiveAt
-								? t('reductionScheduled', {
-										date: formatDate(result.effectiveAt),
-										quantity: result.scheduledQuantity,
-									})
-								: t('quantityIncreased', { quantity: result.quantity }),
+						description: isReduction
+							? t('reductionScheduled', {
+									date: formatDate(result.effectiveAt!),
+									quantity: result.scheduledQuantity!,
+								})
+							: t('quantityIncreased', { quantity: result.quantity }),
 					});
 				},
-				onError: handleError(t('updateError')),
+				onError: handleError(t('updateError'), 'error:domain-addon-quantity-update'),
 			},
 		);
 	};
@@ -96,6 +115,10 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 		cancelAddon.mutate(undefined, {
 			onSuccess: (result) => {
 				onOpenChange(false);
+				posthog.capture('domain-addon:cancel_scheduled', {
+					quantity: addon.quantity,
+					willDisableCount: result.willDisable.length,
+				});
 				toast({
 					title: t('cancelScheduled'),
 					description: result.effectiveAt
@@ -103,7 +126,7 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 						: undefined,
 				});
 			},
-			onError: handleError(t('cancelError')),
+			onError: handleError(t('cancelError'), 'error:domain-addon-cancel'),
 		});
 	};
 

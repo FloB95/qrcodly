@@ -29,6 +29,7 @@ import {
 import { env } from '@/env';
 import { toast } from '@/components/ui/use-toast';
 import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 
 /**
  * What the customer actually pays, line by line, plus the controls to change it.
@@ -76,8 +77,12 @@ export function SubscriptionSummarySection() {
 
 	const handleReactivate = () => {
 		reactivate.mutate(undefined, {
-			onSuccess: () => toast({ title: t('addon.reactivated') }),
+			onSuccess: () => {
+				posthog.capture('domain-addon:reactivated', { quantity: addon?.quantity });
+				toast({ title: t('addon.reactivated') });
+			},
 			onError: (error) => {
+				posthog.capture('error:domain-addon-reactivate', { message: error.message });
 				toast({
 					title: t('addon.reactivateError'),
 					description: error.message,
@@ -90,8 +95,16 @@ export function SubscriptionSummarySection() {
 
 	const handleCancelReduction = () => {
 		cancelReduction.mutate(undefined, {
-			onSuccess: () => toast({ title: t('addon.pendingReductionUndone') }),
+			onSuccess: () => {
+				posthog.capture('domain-addon:reduction_withdrawn', {
+					quantity: addon?.quantity,
+					scheduledQuantity: addon?.scheduledQuantity,
+					source: 'billing_summary',
+				});
+				toast({ title: t('addon.pendingReductionUndone') });
+			},
 			onError: (error) => {
+				posthog.capture('error:domain-addon-reduction-withdraw', { message: error.message });
 				toast({
 					title: t('addon.pendingReductionUndoError'),
 					description: error.message,
@@ -115,7 +128,10 @@ export function SubscriptionSummarySection() {
 							variant="outline"
 							size="sm"
 							className="w-full sm:w-auto shrink-0"
-							onClick={() => billingPortal.open(locale)}
+							onClick={() => {
+								posthog.capture('billing:portal_opened', { source: 'subscription_summary' });
+								billingPortal.open(locale);
+							}}
 							disabled={billingPortal.isPending}
 						>
 							{t('summary.managePortal')}

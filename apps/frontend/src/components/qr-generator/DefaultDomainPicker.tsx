@@ -17,6 +17,7 @@ import {
 } from '@/lib/api/custom-domain';
 import { getSystemDomain } from '@/lib/utils';
 import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 
 const SYSTEM_DOMAIN_VALUE = 'system';
 
@@ -42,6 +43,7 @@ export function DefaultDomainPicker() {
 
 	const onError = (error: Error) => {
 		toast({ title: t('changeError'), description: error.message, variant: 'destructive' });
+		posthog.capture('error:custom-domain-set-default', { source: 'generator' });
 		Sentry.captureException(error);
 	};
 
@@ -56,6 +58,14 @@ export function DefaultDomainPicker() {
 		void mutation.then(
 			() => {
 				setOpen(false);
+				// `source` separates this from the settings page, which fires the same event —
+				// otherwise there is no way to tell whether the inline picker gets used at all.
+				posthog.capture(
+					domainId === SYSTEM_DOMAIN_VALUE
+						? 'custom-domain:set-system-default'
+						: 'custom-domain:set-default',
+					{ source: 'generator' },
+				);
 				toast({ title: t('changed') });
 			},
 			(error: Error) => onError(error),
