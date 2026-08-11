@@ -31,6 +31,7 @@ export * from './dtos/qr-code-share/UpdateQrCodeShareDto';
 export * from './dtos/qr-code-share/QrCodeShareResponseDto';
 
 export * from './dtos/custom-domain';
+export * from './dtos/billing';
 
 export * from './dtos/analytics-integration';
 

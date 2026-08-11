@@ -34,6 +34,10 @@ describe('CancellationReminderCronJob', () => {
 	let mockLogger: MockProxy<Logger>;
 	let mockMailer: MockProxy<Mailer>;
 	let mockRepository: MockProxy<UserSubscriptionRepository>;
+	let mockAddonRepository: Record<string, jest.Mock>;
+	let mockEnforceCustomDomainLimit: Record<string, jest.Mock>;
+	let mockEntitlementService: Record<string, jest.Mock>;
+	let mockClerkUserInfoService: Record<string, jest.Mock>;
 
 	const mockSubscription = {
 		userId: 'user-123',
@@ -45,6 +49,19 @@ describe('CancellationReminderCronJob', () => {
 		mockMailer = mock<Mailer>();
 		mockRepository = mock<UserSubscriptionRepository>();
 
+		mockAddonRepository = {
+			findPendingCancellationReminders: jest.fn().mockResolvedValue([]),
+			findPendingReductionReminders: jest.fn().mockResolvedValue([]),
+			markCancellationReminderSent: jest.fn(),
+		};
+		mockEnforceCustomDomainLimit = { execute: jest.fn().mockResolvedValue({ disabled: [] }) };
+		mockEntitlementService = {
+			getCustomDomainLimit: jest.fn().mockResolvedValue({ baseLimit: 1 }),
+		};
+		mockClerkUserInfoService = {
+			getUserInfo: jest.fn().mockResolvedValue({ email: '', firstName: undefined }),
+		};
+
 		(container.resolve as jest.Mock).mockImplementation((token: unknown) => {
 			const name = typeof token === 'function' ? token.name : String(token);
 			switch (name) {
@@ -54,6 +71,14 @@ describe('CancellationReminderCronJob', () => {
 					return mockRepository;
 				case 'Mailer':
 					return mockMailer;
+				case 'UserAddonSubscriptionRepository':
+					return mockAddonRepository;
+				case 'EnforceCustomDomainLimitUseCase':
+					return mockEnforceCustomDomainLimit;
+				case 'CustomDomainEntitlementService':
+					return mockEntitlementService;
+				case 'ClerkUserInfoService':
+					return mockClerkUserInfoService;
 				default:
 					return {};
 			}

@@ -560,7 +560,9 @@
 			"placeholder": "Seleziona un dominio",
 			"description": "Scegli quale dominio usare per il tuo URL breve",
 			"noDomains": "Nessun dominio personalizzato disponibile.",
-			"addDomain": "Aggiungi un dominio"
+			"addDomain": "Aggiungi un dominio",
+			"changed": "Dominio aggiornato",
+			"changeError": "Impossibile cambiare il dominio"
 		},
 		"tabs": {
 			"content": "Contenuto",
@@ -1154,7 +1156,57 @@
 				"disabled": "Disattivato"
 			},
 			"domainsDisabledTitle": "Domini personalizzati disattivati",
-			"domainsDisabledDescription": "I tuoi domini personalizzati sono stati disattivati perché il tuo abbonamento è scaduto. I codici QR con domini personalizzati non funzioneranno fino a quando non ti riabbonerai."
+			"domainsDisabledDescription": "I tuoi domini personalizzati sono stati disattivati perché il tuo abbonamento è scaduto. I codici QR con domini personalizzati non funzioneranno fino a quando non ti riabbonerai.",
+			"addon": {
+				"limitReachedError": "Hai esaurito i posti per i domini. Acquistane un altro per aggiungere questo dominio.",
+				"unlockAnotherDomain": "Sblocca un altro dominio",
+				"slotsLapsedTitle": "Domini aggiuntivi disattivati",
+				"slotsLapsedDescription": "I tuoi posti aggiuntivi per i domini sono terminati. Acquistali di nuovo per riattivare questi domini.",
+				"buyTitle": "Aggiungi domini aggiuntivi",
+				"buyDescription": "Scegli quanti domini personalizzati ti servono oltre a quello incluso in Pro.",
+				"quantity": "Domini aggiuntivi",
+				"decrease": "Diminuisci",
+				"increase": "Aumenta",
+				"billedAnnually": "Fatturazione annuale",
+				"pricePerDomain": "{price} € per dominio al mese",
+				"totalMonthly": "{total} € al mese",
+				"totalAnnual": "{total} € all’anno",
+				"noRefundNotice": "Le disdette hanno effetto alla fine del periodo pagato. Non sono previsti rimborsi.",
+				"cancel": "Annulla",
+				"continueToCheckout": "Vai al pagamento",
+				"purchaseError": "Impossibile avviare l’acquisto",
+				"manageTitle": "Gestisci i domini aggiuntivi",
+				"cancelAddon": "Termina i domini aggiuntivi",
+				"updated": "Domini aggiuntivi aggiornati",
+				"updateError": "Impossibile aggiornare i domini aggiuntivi",
+				"quantityIncreased": "Ora hai {quantity} domini aggiuntivi.",
+				"reductionScheduled": "Dal {date} avrai {quantity} domini aggiuntivi.",
+				"cancelScheduled": "I domini aggiuntivi stanno per terminare",
+				"cancelScheduledDescription": "I tuoi domini aggiuntivi restano disponibili fino al {date}.",
+				"cancelError": "Impossibile terminare i domini aggiuntivi",
+				"slotsUsed": "{used} di {total} domini utilizzati",
+				"breakdown": "{base} inclusi in Pro + {extra} aggiuntivi",
+				"pendingReductionTitle": "Riduzione programmata",
+				"pendingReductionDescription": "Dal {date} avrai {quantity} domini aggiuntivi. Fino ad allora non cambia nulla.",
+				"reactivate": "Mantieni i domini aggiuntivi",
+				"reactivated": "I tuoi domini aggiuntivi continueranno",
+				"reactivateError": "Impossibile mantenere i domini aggiuntivi",
+				"currentState": "Attualmente hai {quantity} domini aggiuntivi. Il periodo termina il {date}.",
+				"dueNowLabel": "Da pagare ora",
+				"proratedUntil": "Addebito proporzionale per il periodo restante fino al {date}.",
+				"chargedTo": "Addebitato sulla tua {brand} che termina con {last4}.",
+				"reductionEffective": "Dal {date} avrai {quantity} domini aggiuntivi. Fino ad allora non cambia nulla.",
+				"willDisableTitle": "Questi domini verranno disattivati il {date}:",
+				"previewError": "Non è stato possibile calcolare l’importo. Riprova.",
+				"confirmPaid": "Acquista ora",
+				"confirmChange": "Conferma la modifica",
+				"renewalNoticeMonthly": "Dal {date} poi {total} € al mese.",
+				"renewalNoticeAnnual": "Dal {date} poi {total} € all’anno.",
+				"nothingDue": "Nulla",
+				"reductionWithdrawExplainer": "Mantieni il numero attuale di domini aggiuntivi. La riduzione programmata viene ritirata e non viene addebitato nulla.",
+				"willDisableHint": "Elimina entro quella data i domini che non ti servono più, altrimenti verranno disattivati quelli aggiunti più di recente. Fino ad allora mantieni tutti i tuoi posti, quindi questo elenco può ancora allungarsi."
+			},
+			"deleteConfirmQrWarning": "I codici QR già stampati con questo dominio smetteranno di funzionare. L'indirizzo è incorporato nel codice e non può essere reindirizzato in seguito."
 		},
 		"apiKeys": {
 			"title": "Chiavi API",
@@ -1229,7 +1281,34 @@
 			"upgradeToPro": "Passa a Pro",
 			"renewSubscription": "Rinnova Abbonamento",
 			"manageSubscription": "Gestisci abbonamento",
-			"manageBilling": "Fatture e pagamento"
+			"manageBilling": "Fatture e pagamento",
+			"addon": {
+				"emptyDescription": "Pro include un dominio personalizzato. Aggiungine altri quando ti servono.",
+				"manage": "Gestisci",
+				"buy": "Aggiungi domini da {price} €",
+				"pendingReductionTitle": "Riduzione programmata",
+				"pendingReductionDescription": "Dal {date} verranno fatturati {quantity} domini aggiuntivi. Fino ad allora non cambia nulla.",
+				"cancelScheduled": "I domini aggiuntivi stanno per terminare",
+				"cancelScheduledDescription": "Restano disponibili fino al {date} e dopo non verranno più fatturati.",
+				"reactivate": "Mantieni i domini aggiuntivi",
+				"reactivated": "I tuoi domini aggiuntivi continueranno",
+				"reactivateError": "Impossibile mantenere i domini aggiuntivi",
+				"cancelHint": "Puoi disdire in qualsiasi momento: qui con “Gestisci” oppure sopra, nel portale fatture e pagamenti.",
+				"pendingReductionUndo": "Mantieni la quantità attuale",
+				"pendingReductionUndone": "La riduzione programmata è stata ritirata",
+				"pendingReductionUndoError": "Impossibile ritirare la riduzione programmata"
+			},
+			"summary": {
+				"title": "I tuoi abbonamenti",
+				"description": "Tutto ciò che paghi attualmente, come importo mensile.",
+				"proLabel": "Piano Pro",
+				"addonLabel": "Domini personalizzati aggiuntivi ({quantity})",
+				"addonEmptyLabel": "Domini personalizzati aggiuntivi",
+				"addonUnit": "{quantity} × {unit} € per dominio",
+				"perMonth": "{price} € / mese",
+				"totalLabel": "Totale",
+				"managePortal": "Gestisci abbonamenti"
+			}
 		},
 		"profile": {
 			"pageTitle": "Profilo",
@@ -1470,7 +1549,7 @@
 				"everythingInFree": "Tutto in Gratuito",
 				"unlimitedTags": "Tag illimitati",
 				"largerBulkImports": "Importazioni in blocco più grandi (50 righe, 2MB)",
-				"customDomains": "Un dominio personalizzato per codici QR e URL brevi",
+				"customDomains": "Un dominio personalizzato incluso — aggiungine altri quando vuoi",
 				"customShortCodes": "Percorsi URL brevi personalizzati (in arrivo)",
 				"prioritySupport": "Supporto prioritario",
 				"teamFeatures": "Funzionalità team (in arrivo)",
@@ -3601,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "Il dominio della tua agenzia su ogni link cliente",
-				"description": "Pro comprende un dominio personalizzato. Mettici il marchio della tua agenzia e dai a ogni cliente il suo slug leggibile: ogni deliverable parte con un link che sembra fatto da te.",
-				"bullet1": "Un dominio personalizzato per piano Pro, configurato via CNAME",
+				"description": "Pro include un dominio personalizzato e puoi aggiungerne altri quando un cliente vuole il proprio. Metti il marchio della tua agenzia su uno e dai a ogni cliente uno slug leggibile: ogni consegna porta un link che parla di te.",
+				"bullet1": "Un dominio personalizzato incluso, altri acquistabili per dominio",
 				"bullet2": "Slug leggibili per cliente invece di caratteri casuali",
 				"bullet3": "Configurazione DNS guidata con verifica"
 			},
@@ -3646,10 +3725,10 @@
 			"q3": "Posso condividere i dati di clic con i clienti?",
 			"a3": "Sì. Esporta le analisi dei link o condividi screenshot dalla dashboard. Ogni link mostra conteggi dei clic, dati geografici e informazioni sui dispositivi.",
 			"q4": "C'è un limite al numero di domini personalizzati che posso aggiungere?",
-			"a4": "Gli account Pro supportano più domini personalizzati. Il limite esatto dipende dal livello del piano — consulta la pagina prezzi per i dettagli.",
+			"a4": "Pro ne include uno. Puoi aggiungerne fino a 20 come componente aggiuntivo, con prezzo per dominio: vedi la pagina prezzi. I domini extra sono disponibili subito; se riduci il numero, la modifica ha effetto alla fine del periodo pagato.",
 			"viewAll": "Vedi tutte le FAQ",
-			"q5": "Posso collegare un dominio personalizzato per ogni cliente?",
-			"a5": "Non in un unico piano: Pro comprende un dominio personalizzato per account. La maggior parte delle agenzie mette il proprio marchio su quel dominio e separa i clienti con slug ed etichette. Se un cliente ha bisogno di link sul proprio dominio, la soluzione pulita è un piano sul suo account, così i link restano suoi se un giorno se ne va."
+			"q5": "Che fine fanno i link di un cliente se la collaborazione finisce?",
+			"a5": "I link restano nel tuo account e continuano a funzionare. Se il dominio è del cliente, rimuovilo qui e lascia che lo aggiunga al suo piano. Pianifica il passaggio prima di andare in stampa: un codice QR contiene il dominio nell'immagine, quindi i codici stampati smettono di funzionare quando il dominio non c'è più."
 		},
 		"cta": {
 			"title": "Scala la Gestione dei Link della Tua Agenzia",
@@ -3726,8 +3805,8 @@
 				"description": "Quando un cliente se ne va, dovrebbe poter portare con sé le sue destinazioni. Link che puoi reindirizzare rendono questo una conversazione invece che un sequestro."
 			},
 			"tip4": {
-				"title": "Un dominio, molti clienti",
-				"description": "Un piano Pro comprende un dominio personalizzato. Mettici il marchio della tua agenzia e separa i clienti con gli slug — oppure lascia che ogni cliente abbia il proprio piano se il dominio deve essere suo."
+				"title": "Un dominio per cliente",
+				"description": "Pro porta con sé un dominio personalizzato; aggiungine uno per cliente quando serve il suo branding. Oppure resta su un unico dominio d'agenzia e separa i clienti con slug e tag: funzionano entrambi e puoi cambiare idea in seguito."
 			}
 		}
 	},

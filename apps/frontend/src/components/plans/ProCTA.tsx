@@ -7,7 +7,7 @@ import posthog from 'posthog-js';
 import { Button } from '../ui/button';
 import { env } from '@/env';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
-import { useCreateCheckoutSession, useCreatePortalSession } from '@/lib/api/billing';
+import { useCreateCheckoutSession, useOpenBillingPortal } from '@/lib/api/billing';
 
 export const ProCTA = ({
 	locale,
@@ -21,7 +21,7 @@ export const ProCTA = ({
 	const t = useTranslations('plans');
 	const { hasProPlan, isCanceled } = useHasProPlan();
 	const createCheckoutSession = useCreateCheckoutSession();
-	const createPortalSession = useCreatePortalSession();
+	const billingPortal = useOpenBillingPortal();
 
 	const priceId =
 		planPeriod === 'annual'
@@ -52,8 +52,8 @@ export const ProCTA = ({
 			<Show when="signed-in">
 				<Button
 					variant="secondary"
-					onClick={() => createPortalSession.mutate({ locale })}
-					disabled={createPortalSession.isPending}
+					onClick={() => billingPortal.open(locale)}
+					disabled={billingPortal.isPending}
 				>
 					{t('renewSubscription')}
 				</Button>

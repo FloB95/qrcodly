@@ -19,6 +19,7 @@ import { addUserToRequestMiddleware } from '@/core/http/middleware/add-user-to-r
 import { env } from './config/env';
 import fastifyHelmet from '@fastify/helmet';
 import { TooManyRequestsError } from './error/http/too-many-requests.error';
+import { BadRequestError } from './error/http/bad-request.error';
 import fastifyCookie from '@fastify/cookie';
 import fastifyRateLimit from '@fastify/rate-limit';
 import fastifyCors from '@fastify/cors';
@@ -245,6 +246,28 @@ export class Server {
 				'Rate limiting is disabled. This should not be used in production environments.',
 			);
 		}
+
+		// Browsers and SDKs routinely send `Content-Type: application/json` on POST/DELETE calls
+		// that carry no body. Fastify's built-in parser rejects those with a 400
+		// (FST_ERR_CTP_EMPTY_JSON_BODY), which is a confusing failure for an endpoint that never
+		// wanted a body in the first place — so treat an empty body as `{}`.
+		this.server.addContentTypeParser(
+			'application/json',
+			{ parseAs: 'string' },
+			function (request, body, done) {
+				const raw = typeof body === 'string' ? body.trim() : '';
+				if (raw === '') {
+					done(null, {});
+					return;
+				}
+
+				try {
+					done(null, JSON.parse(raw));
+				} catch {
+					done(new BadRequestError('Request body is not valid JSON'), undefined);
+				}
+			},
+		);
 
 		this.server.addContentTypeParser('*', function (request, payload, done) {
 			let data = '';

@@ -3,8 +3,17 @@ import Stripe from 'stripe';
 import { Logger } from '@/core/logging';
 import { KeyCache } from '@/core/cache';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
-import { StripeService } from './stripe.service';
+import UserAddonSubscriptionRepository from '../domain/repository/user-addon-subscription.repository';
+import { StripeService, isEndingAtPeriodEnd } from './stripe.service';
 import { SubscriptionStatusTransitionService } from './subscription-status-transition.service';
+import { DomainAddonWebhookService } from './domain-addon-webhook.service';
+import { SyncAddonWithProUseCase } from '../useCase/sync-addon-with-pro.use-case';
+import {
+	DOMAIN_ADDON_PRODUCT,
+	SUBSCRIPTION_PRODUCT_METADATA_KEY,
+	SubscriptionProductResolver,
+	type TSubscriptionProduct,
+} from './subscription-product.resolver';
 
 const WEBHOOK_EVENT_DEDUP_TTL = 86400; // 24 hours
 
@@ -14,9 +23,17 @@ export class StripeWebhookService {
 		@inject(Logger) private readonly logger: Logger,
 		@inject(UserSubscriptionRepository)
 		private readonly userSubscriptionRepository: UserSubscriptionRepository,
+		@inject(UserAddonSubscriptionRepository)
+		private readonly addonSubscriptionRepository: UserAddonSubscriptionRepository,
 		@inject(StripeService) private readonly stripeService: StripeService,
 		@inject(SubscriptionStatusTransitionService)
 		private readonly transitionService: SubscriptionStatusTransitionService,
+		@inject(SubscriptionProductResolver)
+		private readonly productResolver: SubscriptionProductResolver,
+		@inject(DomainAddonWebhookService)
+		private readonly domainAddonWebhookService: DomainAddonWebhookService,
+		@inject(SyncAddonWithProUseCase)
+		private readonly syncAddonWithProUseCase: SyncAddonWithProUseCase,
 		@inject(KeyCache) private readonly cache: KeyCache,
 	) {}
 
@@ -40,16 +57,35 @@ export class StripeWebhookService {
 		try {
 			switch (event.type) {
 				case 'checkout.session.completed':
-					await this.handleCheckoutCompleted(event.data.object);
+					await this.handleCheckoutCompleted(event.data.object, event);
+					break;
+				case 'customer.subscription.created':
+					await this.handleSubscriptionCreated(event.data.object, event);
 					break;
 				case 'customer.subscription.updated':
-					await this.handleSubscriptionUpdated(event.data.object);
+					await this.handleSubscriptionUpdated(event.data.object, event);
 					break;
 				case 'customer.subscription.deleted':
 					await this.handleSubscriptionDeleted(event.data.object);
 					break;
 				case 'invoice.payment_failed':
 					await this.handlePaymentFailed(event.data.object);
+					break;
+				// A deferred slot reduction lives in a subscription schedule. These keep the local
+				// view of it honest, including for schedules the Stripe portal created itself.
+				case 'subscription_schedule.created':
+				case 'subscription_schedule.updated':
+					await this.domainAddonWebhookService.handleScheduleEvent(event.data.object, {
+						cleared: false,
+					});
+					break;
+				case 'subscription_schedule.released':
+				case 'subscription_schedule.completed':
+				case 'subscription_schedule.canceled':
+				case 'subscription_schedule.aborted':
+					await this.domainAddonWebhookService.handleScheduleEvent(event.data.object, {
+						cleared: true,
+					});
 					break;
 				default:
 					this.logger.info('stripe.webhook.unhandled', {
@@ -89,7 +125,23 @@ export class StripeWebhookService {
 		};
 	}
 
-	private async handleCheckoutCompleted(session: Stripe.Checkout.Session): Promise<void> {
+	/**
+	 * Resolves which product a subscription belongs to. Must run before any repository lookup:
+	 * a not-found in `user_subscription` is otherwise indistinguishable between "add-on event"
+	 * and "a genuine Pro record is missing".
+	 */
+	private async resolveProduct(
+		subscription: Stripe.Subscription,
+		declaredProduct?: string,
+	): Promise<TSubscriptionProduct> {
+		if (declaredProduct === DOMAIN_ADDON_PRODUCT) return 'domain_addon';
+		return this.productResolver.resolveFromSubscription(subscription);
+	}
+
+	private async handleCheckoutCompleted(
+		session: Stripe.Checkout.Session,
+		event: Stripe.Event,
+	): Promise<void> {
 		const userId = session.metadata?.clerkUserId;
 		if (!userId || !session.subscription) {
 			this.logger.warn('stripe.webhook.checkout.missingData', {
@@ -101,10 +153,32 @@ export class StripeWebhookService {
 		const subscriptionId =
 			typeof session.subscription === 'string' ? session.subscription : session.subscription.id;
 		const subscription = await this.stripeService.getSubscription(subscriptionId);
+		const period = await this.getSubscriptionPeriod(subscription);
+
+		const product = await this.resolveProduct(
+			subscription,
+			session.metadata?.[SUBSCRIPTION_PRODUCT_METADATA_KEY],
+		);
+
+		if (product === 'domain_addon') {
+			await this.domainAddonWebhookService.handleSubscriptionUpsert(subscription, {
+				eventCreatedAt: new Date(event.created * 1000),
+				period,
+			});
+			return;
+		}
+
+		if (product !== 'pro') {
+			this.logger.warn('stripe.webhook.unknownProduct', {
+				stripe: { subscriptionId, sessionId: session.id },
+			});
+			return;
+		}
+
 		const priceId = subscription.items.data[0]?.price.id ?? '';
 		const customerId =
 			typeof subscription.customer === 'string' ? subscription.customer : subscription.customer.id;
-		const { periodStart, periodEnd } = await this.getSubscriptionPeriod(subscription);
+		const { periodStart, periodEnd } = period;
 
 		await this.userSubscriptionRepository.upsertByStripeSubscriptionId({
 			id: this.userSubscriptionRepository.generateId(),
@@ -115,7 +189,7 @@ export class StripeWebhookService {
 			status: subscription.status,
 			currentPeriodStart: periodStart,
 			currentPeriodEnd: periodEnd,
-			cancelAtPeriodEnd: subscription.cancel_at_period_end,
+			cancelAtPeriodEnd: isEndingAtPeriodEnd(subscription),
 			updatedAt: new Date(),
 		});
 
@@ -131,7 +205,51 @@ export class StripeWebhookService {
 		});
 	}
 
-	private async handleSubscriptionUpdated(subscription: Stripe.Subscription): Promise<void> {
+	/**
+	 * Only the add-on reacts to `created`. The Pro record is written by
+	 * `checkout.session.completed`, which is the event that carries the Clerk user id — routing
+	 * Pro here as well would warn on every new subscription because the row does not exist yet.
+	 */
+	private async handleSubscriptionCreated(
+		subscription: Stripe.Subscription,
+		event: Stripe.Event,
+	): Promise<void> {
+		const product = await this.resolveProduct(subscription);
+		if (product !== 'domain_addon') {
+			this.logger.info('stripe.webhook.subscription.createdIgnored', {
+				stripe: { subscriptionId: subscription.id, product },
+			});
+			return;
+		}
+
+		await this.domainAddonWebhookService.handleSubscriptionUpsert(subscription, {
+			eventCreatedAt: new Date(event.created * 1000),
+			period: await this.getSubscriptionPeriod(subscription),
+		});
+	}
+
+	private async handleSubscriptionUpdated(
+		subscription: Stripe.Subscription,
+		event: Stripe.Event,
+	): Promise<void> {
+		const product = await this.resolveProduct(subscription);
+		const period = await this.getSubscriptionPeriod(subscription);
+
+		if (product === 'domain_addon') {
+			await this.domainAddonWebhookService.handleSubscriptionUpsert(subscription, {
+				eventCreatedAt: new Date(event.created * 1000),
+				period,
+			});
+			return;
+		}
+
+		if (product !== 'pro') {
+			this.logger.warn('stripe.webhook.unknownProduct', {
+				stripe: { subscriptionId: subscription.id },
+			});
+			return;
+		}
+
 		const existing = await this.userSubscriptionRepository.findByStripeSubscriptionId(
 			subscription.id,
 		);
@@ -146,7 +264,7 @@ export class StripeWebhookService {
 		const customerId =
 			typeof subscription.customer === 'string' ? subscription.customer : subscription.customer.id;
 		const priceId = subscription.items.data[0]?.price.id ?? existing.stripePriceId;
-		const { periodStart, periodEnd } = await this.getSubscriptionPeriod(subscription);
+		const { periodStart, periodEnd } = period;
 
 		await this.userSubscriptionRepository.upsertByStripeSubscriptionId({
 			id: existing.id,
@@ -157,7 +275,7 @@ export class StripeWebhookService {
 			status: subscription.status,
 			currentPeriodStart: periodStart,
 			currentPeriodEnd: periodEnd,
-			cancelAtPeriodEnd: subscription.cancel_at_period_end,
+			cancelAtPeriodEnd: isEndingAtPeriodEnd(subscription),
 			updatedAt: new Date(),
 		});
 
@@ -171,7 +289,7 @@ export class StripeWebhookService {
 		});
 
 		// Detect cancelAtPeriodEnd flipping to true (user initiated cancellation)
-		if (subscription.cancel_at_period_end && !existing.cancelAtPeriodEnd) {
+		if (isEndingAtPeriodEnd(subscription) && !existing.cancelAtPeriodEnd) {
 			await this.transitionService.emitCancelInitiated({
 				userId: existing.userId,
 				stripeSubscriptionId: subscription.id,
@@ -181,8 +299,9 @@ export class StripeWebhookService {
 		}
 
 		// Detect cancelAtPeriodEnd flipping to false (user un-canceled)
-		if (!subscription.cancel_at_period_end && existing.cancelAtPeriodEnd) {
+		if (!isEndingAtPeriodEnd(subscription) && existing.cancelAtPeriodEnd) {
 			await this.userSubscriptionRepository.clearCancellationNotifications(existing.userId);
+			await this.syncAddonWithProUseCase.resume(existing.userId);
 		}
 
 		this.logger.info('stripe.webhook.subscription.updated', {
@@ -196,17 +315,25 @@ export class StripeWebhookService {
 	}
 
 	private async handleSubscriptionDeleted(subscription: Stripe.Subscription): Promise<void> {
+		const product = await this.resolveProduct(subscription);
+		const period = await this.getSubscriptionPeriod(subscription);
+
+		if (product === 'domain_addon') {
+			await this.domainAddonWebhookService.handleSubscriptionDeleted(subscription, { period });
+			return;
+		}
+
 		const existing = await this.userSubscriptionRepository.findByStripeSubscriptionId(
 			subscription.id,
 		);
 		if (!existing) {
 			this.logger.warn('stripe.webhook.subscription.deleteNotFound', {
-				stripe: { subscriptionId: subscription.id },
+				stripe: { subscriptionId: subscription.id, product },
 			});
 			return;
 		}
 
-		const { periodEnd } = await this.getSubscriptionPeriod(subscription);
+		const { periodEnd } = period;
 
 		await this.userSubscriptionRepository.update(existing, {
 			status: 'canceled',
@@ -238,6 +365,13 @@ export class StripeWebhookService {
 		const existing =
 			await this.userSubscriptionRepository.findByStripeSubscriptionId(subscriptionId);
 		if (!existing) {
+			// Could be the add-on. Mis-routing here would send the Pro dunning email for a
+			// declined add-on charge, which is worse than staying silent.
+			const addon =
+				await this.addonSubscriptionRepository.findByStripeSubscriptionId(subscriptionId);
+			if (addon) {
+				await this.domainAddonWebhookService.handlePaymentFailed(addon);
+			}
 			return;
 		}
 

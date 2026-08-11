@@ -111,6 +111,34 @@ describe('UserSubscriptionRepository', () => {
 			expect(updated!.stripePriceId).toBe('price_annual');
 			expect(updated!.cancelAtPeriodEnd).toBe(true);
 		});
+
+		it('should replace the subscription id when a user re-subscribes', async () => {
+			// The insert collides on the userId unique key, not on stripeSubscriptionId — the row
+			// has to adopt the new subscription id or every later webhook for it is dropped.
+			await createSubscriptionDirectly(ctx, TEST_USER_PRO_ID, {
+				stripeSubscriptionId: 'sub_resubscribe_old',
+				status: 'canceled',
+			});
+
+			const now = new Date();
+			await repository.upsertByStripeSubscriptionId({
+				id: crypto.randomUUID(),
+				userId: TEST_USER_PRO_ID,
+				stripeCustomerId: 'cus_resubscribe',
+				stripeSubscriptionId: 'sub_resubscribe_new',
+				stripePriceId: 'price_monthly',
+				status: 'active',
+				currentPeriodStart: now,
+				currentPeriodEnd: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000),
+				cancelAtPeriodEnd: false,
+				updatedAt: now,
+			});
+
+			const byUser = await repository.findByUserId(TEST_USER_PRO_ID);
+			expect(byUser!.stripeSubscriptionId).toBe('sub_resubscribe_new');
+			expect(byUser!.status).toBe('active');
+			expect(await repository.findByStripeSubscriptionId('sub_resubscribe_old')).toBeUndefined();
+		});
 	});
 
 	describe('findByStripeCustomerId', () => {

@@ -878,7 +878,9 @@
 			"placeholder": "Selecione um domínio",
 			"description": "Escolha qual domínio usar para sua URL curta",
 			"noDomains": "Nenhum domínio personalizado disponível.",
-			"addDomain": "Adicionar um domínio"
+			"addDomain": "Adicionar um domínio",
+			"changed": "Domínio atualizado",
+			"changeError": "Não foi possível alterar o domínio"
 		},
 		"preview": {
 			"button": "Abrir Prévia",
@@ -1154,7 +1156,57 @@
 				"disabled": "Desativado"
 			},
 			"domainsDisabledTitle": "Domínios personalizados desativados",
-			"domainsDisabledDescription": "Seus domínios personalizados foram desativados porque sua assinatura expirou. QR codes usando domínios personalizados não funcionarão até você assinar novamente."
+			"domainsDisabledDescription": "Seus domínios personalizados foram desativados porque sua assinatura expirou. QR codes usando domínios personalizados não funcionarão até você assinar novamente.",
+			"addon": {
+				"limitReachedError": "Usaste todas as tuas vagas de domínio. Compra outra para adicionar este domínio.",
+				"unlockAnotherDomain": "Desbloquear outro domínio",
+				"slotsLapsedTitle": "Domínios adicionais desativados",
+				"slotsLapsedDescription": "As tuas vagas de domínio adicionais terminaram. Compra-as novamente para reativar estes domínios.",
+				"buyTitle": "Adicionar domínios extra",
+				"buyDescription": "Escolhe quantos domínios personalizados precisas além do incluído no Pro.",
+				"quantity": "Domínios extra",
+				"decrease": "Diminuir",
+				"increase": "Aumentar",
+				"billedAnnually": "Faturação anual",
+				"pricePerDomain": "{price} € por domínio e mês",
+				"totalMonthly": "{total} € por mês",
+				"totalAnnual": "{total} € por ano",
+				"noRefundNotice": "Os cancelamentos entram em vigor no fim do período pago. Não há reembolsos.",
+				"cancel": "Cancelar",
+				"continueToCheckout": "Continuar para o pagamento",
+				"purchaseError": "Não foi possível iniciar a compra",
+				"manageTitle": "Gerir domínios extra",
+				"cancelAddon": "Terminar domínios extra",
+				"updated": "Domínios extra atualizados",
+				"updateError": "Não foi possível atualizar os domínios extra",
+				"quantityIncreased": "Tens agora {quantity} domínios extra.",
+				"reductionScheduled": "A partir de {date} terá {quantity} domínios adicionais.",
+				"cancelScheduled": "Os domínios extra vão terminar",
+				"cancelScheduledDescription": "Os teus domínios extra ficam disponíveis até {date}.",
+				"cancelError": "Não foi possível terminar os domínios extra",
+				"slotsUsed": "{used} de {total} domínios usados",
+				"breakdown": "{base} incluídos no Pro + {extra} extra",
+				"pendingReductionTitle": "Redução agendada",
+				"pendingReductionDescription": "A partir de {date} terás {quantity} domínios extra. Até lá nada muda.",
+				"reactivate": "Manter domínios extra",
+				"reactivated": "Os teus domínios extra vão continuar",
+				"reactivateError": "Não foi possível manter os domínios extra",
+				"currentState": "Tens atualmente {quantity} domínios extra. O período decorre até {date}.",
+				"dueNowLabel": "A pagar agora",
+				"proratedUntil": "Cobrado proporcionalmente pelo período restante até {date}.",
+				"chargedTo": "Será cobrado no teu {brand} terminado em {last4}.",
+				"reductionEffective": "A partir de {date} terás {quantity} domínios extra. Até lá nada muda.",
+				"willDisableTitle": "Estes domínios serão desativados a {date}:",
+				"previewError": "Não foi possível calcular o valor. Tenta novamente.",
+				"confirmPaid": "Comprar agora",
+				"confirmChange": "Confirmar alteração",
+				"renewalNoticeMonthly": "A partir de {date}, {total} € por mês.",
+				"renewalNoticeAnnual": "A partir de {date}, {total} € por ano.",
+				"nothingDue": "Nada",
+				"reductionWithdrawExplainer": "Mantém o seu número atual de domínios adicionais. A redução agendada é retirada e nada é cobrado.",
+				"willDisableHint": "Elimine antes dessa data os domínios de que já não precisa; caso contrário, serão desativados os adicionados mais recentemente. Até lá mantém todos os seus lugares, por isso esta lista ainda pode aumentar."
+			},
+			"deleteConfirmQrWarning": "Os códigos QR já impressos com este domínio deixarão de funcionar. O endereço está gravado no código e não pode ser redirecionado depois."
 		},
 		"apiKeys": {
 			"title": "Chaves de API",
@@ -1229,7 +1281,34 @@
 			"upgradeToPro": "Fazer Upgrade para Pro",
 			"renewSubscription": "Renovar Assinatura",
 			"manageSubscription": "Gerenciar Assinatura",
-			"manageBilling": "Faturas e Pagamento"
+			"manageBilling": "Faturas e Pagamento",
+			"addon": {
+				"emptyDescription": "O Pro inclui um domínio personalizado. Adiciona mais quando precisares.",
+				"manage": "Gerir",
+				"buy": "Adicionar domínios desde {price} €",
+				"pendingReductionTitle": "Redução agendada",
+				"pendingReductionDescription": "A partir de {date} serão faturados {quantity} domínios extra. Até lá nada muda.",
+				"cancelScheduled": "Os domínios extra vão terminar",
+				"cancelScheduledDescription": "Ficam disponíveis até {date} e depois deixam de ser cobrados.",
+				"reactivate": "Manter domínios extra",
+				"reactivated": "Os teus domínios extra vão continuar",
+				"reactivateError": "Não foi possível manter os domínios extra",
+				"cancelHint": "Podes cancelar a qualquer momento — aqui em “Gerir” ou acima, no portal de faturas e pagamentos.",
+				"pendingReductionUndo": "Manter a quantidade atual",
+				"pendingReductionUndone": "A redução agendada foi retirada",
+				"pendingReductionUndoError": "Não foi possível retirar a redução agendada"
+			},
+			"summary": {
+				"title": "As tuas subscrições",
+				"description": "Tudo o que pagas atualmente, como valor mensal.",
+				"proLabel": "Plano Pro",
+				"addonLabel": "Domínios personalizados extra ({quantity})",
+				"addonEmptyLabel": "Domínios personalizados extra",
+				"addonUnit": "{quantity} × {unit} € por domínio",
+				"perMonth": "{price} € / mês",
+				"totalLabel": "Total",
+				"managePortal": "Gerir subscrições"
+			}
 		},
 		"profile": {
 			"pageTitle": "Perfil",
@@ -1470,7 +1549,7 @@
 				"everythingInFree": "Tudo do plano Gratuito",
 				"unlimitedTags": "Tags ilimitadas",
 				"largerBulkImports": "Importações em massa maiores (50 linhas, 2MB)",
-				"customDomains": "Um domínio personalizado para QR codes e URLs curtas",
+				"customDomains": "Um domínio próprio incluído — acrescente mais quando quiser",
 				"customShortCodes": "Caminhos de URL curtas personalizados (em breve)",
 				"prioritySupport": "Suporte prioritário",
 				"teamFeatures": "Recursos de equipe (em breve)",
@@ -3601,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "O domínio da sua agência em cada link de cliente",
-				"description": "O Pro inclui um domínio próprio. Coloque a marca da sua agência nele e dê a cada cliente o próprio slug legível — cada entregável sai com um link com a sua cara.",
-				"bullet1": "Um domínio próprio por plano Pro, configurado via CNAME",
+				"description": "O Pro inclui um domínio próprio e pode acrescentar mais sempre que um cliente precisar do seu. Ponha a marca da sua agência num deles e dê a cada cliente um slug legível — cada entrega leva um link com a sua assinatura.",
+				"bullet1": "Um domínio próprio incluído, mais subscritíveis por domínio",
 				"bullet2": "Slugs legíveis por cliente em vez de caracteres aleatórios",
 				"bullet3": "Configuração de DNS guiada com verificação"
 			},
@@ -3646,10 +3725,10 @@
 			"q3": "Posso compartilhar dados de cliques com clientes?",
 			"a3": "Sim. Exporte análises de links ou compartilhe capturas de tela do painel. Cada link mostra contagens de cliques, dados geográficos e detalhamentos de dispositivos.",
 			"q4": "Existe um limite de quantos domínios personalizados posso adicionar?",
-			"a4": "Contas Pro suportam múltiplos domínios personalizados. O limite exato depende do tier do seu plano — consulte a página de preços para detalhes.",
+			"a4": "O Pro inclui um. Pode subscrever até 20 adicionais como extra, com preço por domínio — veja a página de preços. Os domínios adicionais ficam disponíveis de imediato; se reduzir a quantidade, a alteração aplica-se no fim do período pago.",
 			"viewAll": "Ver todas as perguntas",
-			"q5": "Posso conectar um domínio próprio para cada cliente?",
-			"a5": "Não em um único plano: o Pro inclui um domínio próprio por conta. A maioria das agências coloca a própria marca nesse domínio e separa os clientes com slugs e etiquetas. Se um cliente precisa de links no próprio domínio, a solução limpa é um plano na conta dele — assim os links continuam sendo dele se um dia ele sair."
+			"q5": "O que acontece aos links de um cliente se a colaboração terminar?",
+			"a5": "Os links continuam na sua conta e a funcionar. Se o domínio for do cliente, remova-o aqui e deixe-o adicioná-lo ao plano dele. Planeie essa mudança antes de imprimir seja o que for: um código QR leva o domínio dentro da imagem, por isso os códigos impressos deixam de funcionar assim que o domínio desaparece."
 		},
 		"cta": {
 			"title": "Escale o Gerenciamento de Links da Sua Agência",
@@ -3726,8 +3805,8 @@
 				"description": "Quando um cliente sai, ele deveria poder levar os destinos dele. Links que você pode redirecionar tornam isso uma conversa em vez de um sequestro."
 			},
 			"tip4": {
-				"title": "Um domínio, muitos clientes",
-				"description": "Um plano Pro inclui um domínio próprio. Coloque a marca da sua agência nele e separe os clientes com slugs — ou deixe cada cliente ter o próprio plano se o domínio precisar ser dele."
+				"title": "Um domínio por cliente",
+				"description": "O Pro traz um domínio próprio; acrescente um por cliente quando este precisar da sua própria marca. Ou fique por um único domínio de agência e separe clientes com slugs e etiquetas — ambas funcionam e pode mudar de ideias depois."
 			}
 		}
 	},

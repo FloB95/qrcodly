@@ -32,6 +32,10 @@ export const ConflictErrorResponseSchema = BaseErrorResponseSchema.describe(
 	'Conflict — the request conflicts with existing data.',
 );
 
+export const PaymentRequiredErrorResponseSchema = BaseErrorResponseSchema.describe(
+	'Payment Required — the payment for this change could not be collected.',
+);
+
 export const InternalServerErrorResponseSchema = BaseErrorResponseSchema.describe(
 	'Internal Server Error — an unexpected error occurred.',
 );
@@ -43,6 +47,7 @@ export const ServiceUnavailableErrorResponseSchema = BaseErrorResponseSchema.des
 export const DEFAULT_ERROR_RESPONSES = {
 	400: BadRequestErrorResponseSchema,
 	401: UnauthorizedErrorResponseSchema,
+	402: PaymentRequiredErrorResponseSchema,
 	403: ForbiddenErrorResponseSchema,
 	404: NotFoundErrorResponseSchema,
 	409: ConflictErrorResponseSchema,

@@ -273,3 +273,35 @@ export const safeLocalStorage = {
 		}
 	},
 };
+
+export type DeferredWindow = {
+	/** Sends the pre-opened tab to the resolved URL. */
+	resolve: (url: string) => void;
+	/** Closes the pre-opened tab, e.g. when the request failed. */
+	abort: () => void;
+};
+
+/**
+ * Opens a new tab for a URL that is only known after a network round-trip.
+ *
+ * Browsers block `window.open` once the click gesture has been consumed by an await, so the tab is
+ * opened synchronously while the gesture is still valid and navigated when the URL arrives. If the
+ * popup was blocked anyway the current tab is used, so the button never silently does nothing.
+ */
+export function openDeferredWindow(): DeferredWindow {
+	const tab = typeof window !== 'undefined' ? window.open('', '_blank') : null;
+	if (tab) tab.opener = null;
+
+	return {
+		resolve: (url: string) => {
+			if (tab && !tab.closed) {
+				tab.location.href = url;
+			} else {
+				window.location.href = url;
+			}
+		},
+		abort: () => {
+			if (tab && !tab.closed) tab.close();
+		},
+	};
+}

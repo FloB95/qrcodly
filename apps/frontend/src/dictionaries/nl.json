@@ -560,7 +560,9 @@
 			"placeholder": "Selecteer een domein",
 			"description": "Kies welk domein je wilt gebruiken voor je korte URL",
 			"noDomains": "Geen aangepaste domeinen beschikbaar.",
-			"addDomain": "Domein toevoegen"
+			"addDomain": "Domein toevoegen",
+			"changed": "Domein bijgewerkt",
+			"changeError": "Kon het domein niet wijzigen"
 		},
 		"tabs": {
 			"content": "Inhoud",
@@ -1154,7 +1156,57 @@
 				"disabled": "Uitgeschakeld"
 			},
 			"domainsDisabledTitle": "Aangepaste domeinen uitgeschakeld",
-			"domainsDisabledDescription": "Uw aangepaste domeinen zijn uitgeschakeld omdat uw abonnement is verlopen. QR-codes met aangepaste domeinen werken pas weer als u zich opnieuw abonneert."
+			"domainsDisabledDescription": "Uw aangepaste domeinen zijn uitgeschakeld omdat uw abonnement is verlopen. QR-codes met aangepaste domeinen werken pas weer als u zich opnieuw abonneert.",
+			"addon": {
+				"limitReachedError": "Je hebt al je domeinplaatsen gebruikt. Koop er nog een om dit domein toe te voegen.",
+				"unlockAnotherDomain": "Nog een domein vrijschakelen",
+				"slotsLapsedTitle": "Extra domeinen uitgeschakeld",
+				"slotsLapsedDescription": "Je extra domeinplaatsen zijn beëindigd. Koop ze opnieuw om deze domeinen weer in te schakelen.",
+				"buyTitle": "Extra domeinen toevoegen",
+				"buyDescription": "Kies hoeveel eigen domeinen je nodig hebt bovenop het domein dat bij Pro zit.",
+				"quantity": "Extra domeinen",
+				"decrease": "Verlagen",
+				"increase": "Verhogen",
+				"billedAnnually": "Jaarlijkse facturering",
+				"pricePerDomain": "{price} € per domein per maand",
+				"totalMonthly": "{total} € per maand",
+				"totalAnnual": "{total} € per jaar",
+				"noRefundNotice": "Opzeggingen gaan in aan het einde van de betaalde periode. Er wordt niets terugbetaald.",
+				"cancel": "Annuleren",
+				"continueToCheckout": "Doorgaan naar afrekenen",
+				"purchaseError": "Aankoop kon niet worden gestart",
+				"manageTitle": "Extra domeinen beheren",
+				"cancelAddon": "Extra domeinen beëindigen",
+				"updated": "Extra domeinen bijgewerkt",
+				"updateError": "Extra domeinen konden niet worden bijgewerkt",
+				"quantityIncreased": "Je hebt nu {quantity} extra domeinen.",
+				"reductionScheduled": "Vanaf {date} heb je {quantity} extra domeinen.",
+				"cancelScheduled": "Extra domeinen lopen af",
+				"cancelScheduledDescription": "Je extra domeinen blijven beschikbaar tot {date}.",
+				"cancelError": "Extra domeinen konden niet worden beëindigd",
+				"slotsUsed": "{used} van {total} domeinen gebruikt",
+				"breakdown": "{base} inbegrepen bij Pro + {extra} extra",
+				"pendingReductionTitle": "Verlaging gepland",
+				"pendingReductionDescription": "Vanaf {date} heb je {quantity} extra domeinen. Tot dan verandert er niets.",
+				"reactivate": "Extra domeinen behouden",
+				"reactivated": "Je extra domeinen lopen door",
+				"reactivateError": "Extra domeinen konden niet worden behouden",
+				"currentState": "Je hebt momenteel {quantity} extra domeinen. De periode loopt tot {date}.",
+				"dueNowLabel": "Nu verschuldigd",
+				"proratedUntil": "Naar rato berekend voor de resterende periode tot {date}.",
+				"chargedTo": "Wordt afgeschreven van je {brand} eindigend op {last4}.",
+				"reductionEffective": "Vanaf {date} heb je {quantity} extra domeinen. Tot dan verandert er niets.",
+				"willDisableTitle": "Deze domeinen worden op {date} uitgeschakeld:",
+				"previewError": "Het bedrag kon niet worden berekend. Probeer het opnieuw.",
+				"confirmPaid": "Nu kopen",
+				"confirmChange": "Wijziging bevestigen",
+				"renewalNoticeMonthly": "Vanaf {date} daarna {total} € per maand.",
+				"renewalNoticeAnnual": "Vanaf {date} daarna {total} € per jaar.",
+				"nothingDue": "Niets",
+				"reductionWithdrawExplainer": "Je houdt je huidige aantal extra domeinen. De geplande verlaging wordt ingetrokken en er wordt niets in rekening gebracht.",
+				"willDisableHint": "Verwijder vóór die datum de domeinen die je niet meer nodig hebt, anders worden de laatst toegevoegde uitgeschakeld. Tot dan behoud je al je plaatsen, dus deze lijst kan nog langer worden."
+			},
+			"deleteConfirmQrWarning": "Reeds gedrukte QR-codes met dit domein werken daarna niet meer. Het adres zit vast in de code en kan achteraf niet worden omgeleid."
 		},
 		"apiKeys": {
 			"title": "API-sleutels",
@@ -1229,7 +1281,34 @@
 			"upgradeToPro": "Upgrade naar Pro",
 			"renewSubscription": "Abonnement Vernieuwen",
 			"manageSubscription": "Abonnement beheren",
-			"manageBilling": "Facturen & betaling"
+			"manageBilling": "Facturen & betaling",
+			"addon": {
+				"emptyDescription": "Pro bevat één eigen domein. Boek er meer wanneer je ze nodig hebt.",
+				"manage": "Beheren",
+				"buy": "Domeinen toevoegen vanaf {price} €",
+				"pendingReductionTitle": "Verlaging gepland",
+				"pendingReductionDescription": "Vanaf {date} worden {quantity} extra domeinen gefactureerd. Tot dan verandert er niets.",
+				"cancelScheduled": "Extra domeinen lopen af",
+				"cancelScheduledDescription": "Ze blijven beschikbaar tot {date} en worden daarna niet meer gefactureerd.",
+				"reactivate": "Extra domeinen behouden",
+				"reactivated": "Je extra domeinen lopen door",
+				"reactivateError": "Extra domeinen konden niet worden behouden",
+				"cancelHint": "Je kunt op elk moment opzeggen — hier via “Beheren” of hierboven in het facturen- en betalingsportaal.",
+				"pendingReductionUndo": "Huidig aantal behouden",
+				"pendingReductionUndone": "De geplande verlaging is ingetrokken",
+				"pendingReductionUndoError": "Kon de geplande verlaging niet intrekken"
+			},
+			"summary": {
+				"title": "Je abonnementen",
+				"description": "Alles wat je nu betaalt, als maandbedrag.",
+				"proLabel": "Pro-abonnement",
+				"addonLabel": "Extra eigen domeinen ({quantity})",
+				"addonEmptyLabel": "Extra eigen domeinen",
+				"addonUnit": "{quantity} × {unit} € per domein",
+				"perMonth": "{price} € / maand",
+				"totalLabel": "Totaal",
+				"managePortal": "Abonnementen beheren"
+			}
 		},
 		"profile": {
 			"pageTitle": "Profiel",
@@ -1470,7 +1549,7 @@
 				"everythingInFree": "Alles in Gratis",
 				"unlimitedTags": "Onbeperkte tags",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
-				"customDomains": "Eén aangepast domein voor QR-codes en korte URLs",
+				"customDomains": "Eén eigen domein inbegrepen — voeg er altijd meer toe",
 				"customShortCodes": "Aangepaste korte URL-paden (binnenkort beschikbaar)",
 				"prioritySupport": "Prioriteitsondersteuning",
 				"teamFeatures": "Teamfuncties (binnenkort)",
@@ -3601,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "Je bureaudomein op elke klantlink",
-				"description": "Pro bevat één eigen domein. Zet je bureaumerk erop en geef elke klant zijn eigen leesbare slug: elk opgeleverd stuk gaat de deur uit met een link waaraan te zien is dat jij hem bouwde.",
-				"bullet1": "Eén eigen domein per Pro-abonnement, ingesteld via CNAME",
+				"description": "Pro bevat één eigen domein, en je kunt er meer toevoegen zodra een klant een eigen domein wil. Zet je bureaumerk op één daarvan en geef elke klant een leesbare slug — elke oplevering krijgt een link waaraan je ziet wie hem maakte.",
+				"bullet1": "Eén eigen domein inbegrepen, meer per domein bij te boeken",
 				"bullet2": "Leesbare slugs per klant in plaats van willekeurige tekens",
 				"bullet3": "Begeleide DNS-instelling met verificatie"
 			},
@@ -3646,10 +3725,10 @@
 			"q3": "Kan ik klikgegevens delen met klanten?",
 			"a3": "Ja. Exporteer linkanalyses of deel screenshots vanuit het dashboard. Elke link toont het aantal klikken, geografische gegevens en apparaatoverzichten.",
 			"q4": "Is er een limiet op het aantal eigen domeinen dat ik kan toevoegen?",
-			"a4": "Pro-accounts ondersteunen meerdere eigen domeinen. De exacte limiet hangt af van je abonnement — bekijk de prijspagina voor details.",
+			"a4": "Pro bevat er één. Je kunt er tot 20 extra bijboeken als add-on, per domein geprijsd — zie de prijspagina. Extra domeinen zijn direct beschikbaar; verlaag je het aantal weer, dan gaat dat in aan het eind van de betaalde periode.",
 			"viewAll": "Bekijk alle veelgestelde vragen",
-			"q5": "Kan ik voor elke klant een eigen domein koppelen?",
-			"a5": "Niet in één abonnement: Pro bevat één eigen domein per account. De meeste bureaus zetten hun eigen merk op dat domein en scheiden klanten met slugs en labels. Heeft een klant links op zijn eigen domein nodig, dan is een abonnement op zijn account de schone oplossing — zo blijven de links ook van hem als hij ooit vertrekt."
+			"q5": "Wat gebeurt er met de links van een klant als de samenwerking stopt?",
+			"a5": "De links blijven in jouw account en blijven werken. Is het domein van de klant, verwijder het dan hier en laat hem het aan zijn eigen abonnement toevoegen. Plan die overstap vóór er iets naar de drukker gaat: een QR-code draagt het domein in de afbeelding, dus gedrukte codes werken niet meer zodra het domein weg is."
 		},
 		"cta": {
 			"title": "Schaal het linkbeheer van uw bureau",
@@ -3726,8 +3805,8 @@
 				"description": "Vertrekt een klant, dan zou hij zijn bestemmingen mee moeten kunnen nemen. Links die je kunt doorverwijzen maken daar een gesprek van in plaats van een gijzeling."
 			},
 			"tip4": {
-				"title": "Eén domein, veel klanten",
-				"description": "Een Pro-abonnement bevat één eigen domein. Zet je bureaumerk erop en scheid klanten met slugs — of laat elke klant een eigen abonnement voeren als het domein van hem moet zijn."
+				"title": "Eén domein per klant",
+				"description": "Pro heeft één eigen domein; voeg er een per klant toe als die eigen branding nodig heeft. Of houd één bureaudomein aan en scheid klanten met slugs en tags — beide werken, en je kunt later nog wisselen."
 			}
 		}
 	},

@@ -878,7 +878,9 @@
 			"placeholder": "Select a domain",
 			"description": "Choose which domain to use for your short URL",
 			"noDomains": "No custom domains available.",
-			"addDomain": "Add a domain"
+			"addDomain": "Add a domain",
+			"changed": "Domain updated",
+			"changeError": "Could not change the domain"
 		},
 		"preview": {
 			"button": "Open Preview",
@@ -1154,7 +1156,57 @@
 				"disabled": "Disabled"
 			},
 			"domainsDisabledTitle": "Custom domains disabled",
-			"domainsDisabledDescription": "Your custom domains have been disabled because your subscription has ended. QR codes using custom domains will not work until you resubscribe."
+			"domainsDisabledDescription": "Your custom domains have been disabled because your subscription has ended. QR codes using custom domains will not work until you resubscribe.",
+			"addon": {
+				"limitReachedError": "You have used all your domain slots. Buy another one to add this domain.",
+				"unlockAnotherDomain": "Unlock another domain",
+				"slotsLapsedTitle": "Extra domains disabled",
+				"slotsLapsedDescription": "Your extra domain slots have ended. Buy slots again to switch these domains back on.",
+				"buyTitle": "Add extra domains",
+				"buyDescription": "Choose how many custom domains you need on top of the one included with Pro.",
+				"quantity": "Extra domains",
+				"decrease": "Decrease",
+				"increase": "Increase",
+				"billedAnnually": "Billed annually",
+				"pricePerDomain": "{price} € per domain and month",
+				"totalMonthly": "{total} € per month",
+				"totalAnnual": "{total} € per year",
+				"noRefundNotice": "Cancellations take effect at the end of the paid period. There are no refunds.",
+				"cancel": "Cancel",
+				"continueToCheckout": "Continue to checkout",
+				"purchaseError": "Purchase could not be started",
+				"manageTitle": "Manage extra domains",
+				"cancelAddon": "End extra domains",
+				"updated": "Extra domains updated",
+				"updateError": "Could not update extra domains",
+				"quantityIncreased": "You now have {quantity} extra domains.",
+				"reductionScheduled": "From {date} you will have {quantity} extra domains.",
+				"cancelScheduled": "Extra domains are ending",
+				"cancelScheduledDescription": "Your extra domains stay available until {date}.",
+				"cancelError": "Could not end extra domains",
+				"slotsUsed": "{used} of {total} domains used",
+				"breakdown": "{base} included with Pro + {extra} extra",
+				"pendingReductionTitle": "Reduction scheduled",
+				"pendingReductionDescription": "From {date} you will have {quantity} extra domains. Until then nothing changes.",
+				"reactivate": "Keep extra domains",
+				"reactivated": "Your extra domains will continue",
+				"reactivateError": "Could not keep extra domains",
+				"currentState": "You currently have {quantity} extra domains. The period runs until {date}.",
+				"dueNowLabel": "Due now",
+				"proratedUntil": "Charged pro rata for the remaining period until {date}.",
+				"chargedTo": "Charged to your {brand} ending in {last4}.",
+				"reductionEffective": "From {date} you will have {quantity} extra domains. Nothing changes before then.",
+				"willDisableTitle": "These domains will be switched off on {date}:",
+				"previewError": "The amount could not be calculated. Please try again.",
+				"confirmPaid": "Buy now",
+				"confirmChange": "Confirm change",
+				"renewalNoticeMonthly": "From {date} then {total} € per month.",
+				"renewalNoticeAnnual": "From {date} then {total} € per year.",
+				"nothingDue": "Nothing",
+				"reductionWithdrawExplainer": "Keep your current number of extra domains. The scheduled reduction is withdrawn and nothing is charged.",
+				"willDisableHint": "Delete the domains you no longer need before that date — otherwise the most recently added ones are switched off. Until then you keep every slot, so this list can still grow."
+			},
+			"deleteConfirmQrWarning": "Any QR code already printed with this domain will stop working. The address is baked into the code and cannot be redirected afterwards."
 		},
 		"apiKeys": {
 			"title": "API Keys",
@@ -1229,7 +1281,34 @@
 			"upgradeToPro": "Upgrade to Pro",
 			"renewSubscription": "Renew Subscription",
 			"manageSubscription": "Manage Subscription",
-			"manageBilling": "Invoices & Payment"
+			"manageBilling": "Invoices & Payment",
+			"addon": {
+				"emptyDescription": "Pro includes one custom domain. Book more whenever you need them.",
+				"manage": "Manage",
+				"buy": "Add domains from {price} €",
+				"pendingReductionTitle": "Reduction scheduled",
+				"pendingReductionDescription": "From {date} you will be billed for {quantity} extra domains. Until then nothing changes.",
+				"cancelScheduled": "Extra domains are ending",
+				"cancelScheduledDescription": "They stay available until {date} and are not billed again after that.",
+				"reactivate": "Keep extra domains",
+				"reactivated": "Your extra domains will continue",
+				"reactivateError": "Could not keep extra domains",
+				"cancelHint": "You can cancel at any time — under “Manage” here, or in the invoices and payment portal above.",
+				"pendingReductionUndo": "Keep current number",
+				"pendingReductionUndone": "The scheduled reduction has been withdrawn",
+				"pendingReductionUndoError": "Could not withdraw the scheduled reduction"
+			},
+			"summary": {
+				"title": "Your subscriptions",
+				"description": "Everything you currently pay for, as a monthly amount.",
+				"proLabel": "Pro plan",
+				"addonLabel": "Extra custom domains ({quantity})",
+				"addonEmptyLabel": "Extra custom domains",
+				"addonUnit": "{quantity} × {unit} € per domain",
+				"perMonth": "{price} € / month",
+				"totalLabel": "Total",
+				"managePortal": "Manage subscriptions"
+			}
 		},
 		"profile": {
 			"pageTitle": "Profile",
@@ -1470,7 +1549,7 @@
 				"everythingInFree": "Everything in Free",
 				"unlimitedTags": "Unlimited tags",
 				"largerBulkImports": "Larger bulk imports (50 rows, 2MB)",
-				"customDomains": "One custom domain for QR codes & short URLs",
+				"customDomains": "One custom domain included — add more any time",
 				"customShortCodes": "Custom short URL paths (coming soon)",
 				"prioritySupport": "Priority support",
 				"teamFeatures": "Team features (coming soon)",
@@ -3601,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "Your Agency Domain on Every Client Link",
-				"description": "Pro includes one custom domain. Put your agency brand on it and give each client their own readable slug — every deliverable ships with a link that looks like you built it.",
-				"bullet1": "One custom domain per Pro plan, set up via CNAME",
+				"description": "Pro includes one custom domain, and you can add more whenever a client needs their own. Put your agency brand on one and give each client a readable slug — every deliverable ships with a link that looks like you built it.",
+				"bullet1": "One custom domain included, more bookable per domain",
 				"bullet2": "Readable per-client slugs instead of random characters",
 				"bullet3": "Guided DNS setup with verification"
 			},
@@ -3646,10 +3725,10 @@
 			"q3": "Can I share click data with clients?",
 			"a3": "Yes. Export link analytics or share screenshots from the dashboard. Each link shows click counts, geographic data, and device breakdowns.",
 			"q4": "Is there a limit on how many custom domains I can add?",
-			"a4": "Pro accounts support multiple custom domains. The exact limit depends on your plan tier — check the pricing page for details.",
+			"a4": "Pro includes one. You can book up to 20 more as an add-on, priced per domain — see the pricing page. Extra domains are available immediately; if you reduce the number again, the change takes effect at the end of the paid period.",
 			"viewAll": "View all FAQs",
-			"q5": "Can I connect a separate custom domain for each client?",
-			"a5": "Not on a single plan — Pro includes one custom domain per account. Most agencies put their own brand on that domain and separate clients through slugs and tags. If a client needs links on their own domain, the clean solution is a plan on their account, which also means the links stay theirs if they ever move on."
+			"q5": "What happens to a client's links if we part ways?",
+			"a5": "The links stay in your account and keep resolving. If the domain belongs to the client, remove it here and let them add it to their own plan. Plan that switch before anything goes to print: a QR code carries the domain inside the image, so codes printed on a domain stop working once it is gone."
 		},
 		"cta": {
 			"title": "Scale Your Agency's Link Management",
@@ -3726,8 +3805,8 @@
 				"description": "When a client leaves, they should be able to take their destinations with them. Links you can repoint make that a conversation instead of a hostage negotiation."
 			},
 			"tip4": {
-				"title": "One Domain, Many Clients",
-				"description": "A Pro plan carries one custom domain. Put your agency brand on it and use slugs per client — or have each client run their own plan if the domain must be theirs."
+				"title": "A Domain per Client",
+				"description": "Pro carries one custom domain; add one per client when they need their own branding. Or keep a single agency domain and separate clients through slugs and tags — both work, and you can change your mind later."
 			}
 		}
 	},

@@ -8,6 +8,7 @@ import { type TUser } from '@/core/domain/schema/UserSchema';
 import { DomainAlreadyExistsError } from '../../error/http/domain-already-exists.error';
 import { PlanLimitExceededError } from '@/core/error/http/plan-limit-exceeded.error';
 import { PlanName } from '@/core/config/plan.config';
+import { type CustomDomainEntitlementService } from '@/core/services/custom-domain-entitlement.service';
 
 jest.mock('../../policies/create-custom-domain.policy', () => ({
 	CreateCustomDomainPolicy: jest.fn().mockImplementation(() => ({
@@ -18,6 +19,7 @@ jest.mock('../../policies/create-custom-domain.policy', () => ({
 describe('CreateCustomDomainUseCase', () => {
 	let useCase: CreateCustomDomainUseCase;
 	let mockRepository: MockProxy<CustomDomainRepository>;
+	let mockEntitlementService: MockProxy<CustomDomainEntitlementService>;
 	let mockLogger: MockProxy<Logger>;
 
 	const userId = 'user-123';
@@ -54,9 +56,15 @@ describe('CreateCustomDomainUseCase', () => {
 
 	beforeEach(() => {
 		mockRepository = mock<CustomDomainRepository>();
+		mockEntitlementService = mock<CustomDomainEntitlementService>();
 		mockLogger = mock<Logger>();
-		useCase = new CreateCustomDomainUseCase(mockRepository, mockLogger);
+		useCase = new CreateCustomDomainUseCase(mockRepository, mockEntitlementService, mockLogger);
 
+		mockEntitlementService.getCustomDomainLimit.mockResolvedValue({
+			baseLimit: 1,
+			addonSlots: 0,
+			effectiveLimit: 1,
+		});
 		mockRepository.findOneByDomain.mockResolvedValue(undefined);
 		mockRepository.countByUserId.mockResolvedValue(0);
 		mockRepository.generateId.mockReturnValue(domainId);

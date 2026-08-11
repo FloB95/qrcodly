@@ -10,6 +10,7 @@ import type {
 	TCreateCustomDomainDto,
 } from '@shared/schemas';
 import { urlShortenerQueryKeys } from './url-shortener';
+import { domainAddonQueryKeys } from './domain-addon.keys';
 
 /**
  * Setup instructions type for two-phase verification.
@@ -178,6 +179,10 @@ export function useCreateCustomDomainMutation() {
 			void queryClient.refetchQueries({
 				queryKey: customDomainQueryKeys.all,
 			});
+			// The add-on payload carries the used/available slot count shown above the table.
+			void queryClient.refetchQueries({
+				queryKey: domainAddonQueryKeys.addon,
+			});
 		},
 	});
 }
@@ -246,8 +251,15 @@ export function useDeleteCustomDomainMutation() {
 			void queryClient.refetchQueries({
 				queryKey: customDomainQueryKeys.default,
 			});
-			// Remove cached reserved short URL in case it was using this domain
-			void queryClient.removeQueries({
+			// The add-on payload carries the used/available slot count shown above the table.
+			void queryClient.refetchQueries({
+				queryKey: domainAddonQueryKeys.addon,
+			});
+			// The reserved short URL may have pointed at this domain; the server reassigns it on
+			// the next read. `refetchQueries`, not `removeQueries` — the latter only drops the
+			// cache entry and never refetches a mounted observer, so the generator would keep
+			// showing the old domain until a full page reload.
+			void queryClient.refetchQueries({
 				queryKey: urlShortenerQueryKeys.reservedShortUrl,
 			});
 		},
@@ -280,10 +292,16 @@ export function useDefaultCustomDomainQuery() {
 /**
  * Hook to get setup instructions (Cloudflare TXT records + CNAME) for a custom domain.
  */
-export function useSetupInstructionsQuery(id: string) {
+/**
+ * @param enabled Fetch only once the instructions are actually wanted. The domain list renders one
+ * of these per row, so fetching eagerly meant a request per domain on every page load — and a
+ * backend error for every disabled domain, which has no instructions to hand out.
+ */
+export function useSetupInstructionsQuery(id: string, enabled = true) {
 	const { getToken } = useAuth();
 
 	return useQuery({
+		enabled: enabled && !!id,
 		queryKey: customDomainQueryKeys.setupInstructions(id),
 		queryFn: async (): Promise<TSetupInstructions> => {
 			const token = await getToken();
@@ -328,8 +346,10 @@ export function useSetDefaultCustomDomainMutation() {
 			void queryClient.refetchQueries({
 				queryKey: customDomainQueryKeys.default,
 			});
-			// Remove cached reserved short URL so it refetches with the new default domain
-			void queryClient.removeQueries({
+			// Pull the reserved short URL again so the generator shows the new domain at once.
+			// `removeQueries` would only drop the cache entry without refetching the mounted
+			// observer, which is what made the change visible only after a page reload.
+			void queryClient.refetchQueries({
 				queryKey: urlShortenerQueryKeys.reservedShortUrl,
 			});
 		},
@@ -365,8 +385,10 @@ export function useClearDefaultCustomDomainMutation() {
 			void queryClient.refetchQueries({
 				queryKey: customDomainQueryKeys.default,
 			});
-			// Remove cached reserved short URL so it refetches without the domain
-			void queryClient.removeQueries({
+			// Pull the reserved short URL again so the generator falls back to the system domain
+			// at once. See the note in the set-default mutation on why this is not
+			// `removeQueries`.
+			void queryClient.refetchQueries({
 				queryKey: urlShortenerQueryKeys.reservedShortUrl,
 			});
 		},

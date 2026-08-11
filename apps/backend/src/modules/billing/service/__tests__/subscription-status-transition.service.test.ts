@@ -37,11 +37,16 @@ const mockCache = {
 	del: jest.fn().mockResolvedValue(undefined),
 };
 
+const mockClerkUserInfoService = {
+	getUserInfo: jest.fn().mockResolvedValue({ email: 'test@example.com', firstName: 'Test' }),
+};
+
 function createService(): SubscriptionStatusTransitionService {
 	return new SubscriptionStatusTransitionService(
 		mockEventEmitter as any,
 		mockLogger as any,
 		mockCache as any,
+		mockClerkUserInfoService as any,
 	);
 }
 

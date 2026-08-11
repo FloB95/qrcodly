@@ -6,8 +6,7 @@ import { SubscriptionActiveEvent } from '@/core/event/subscription-active.event'
 import { SubscriptionCanceledEvent } from '@/core/event/subscription-canceled.event';
 import { SubscriptionPastDueEvent } from '@/core/event/subscription-past-due.event';
 import { SubscriptionCancelInitiatedEvent } from '@/core/event/subscription-cancel-initiated.event';
-import { createClerkClient } from '@clerk/fastify';
-import { env } from '@/core/config/env';
+import { ClerkUserInfoService } from '@/core/services/clerk-user-info.service';
 
 export interface StatusTransitionInput {
 	userId: string;
@@ -22,15 +21,12 @@ type UnconditionalInput = Omit<StatusTransitionInput, 'previousStatus' | 'newSta
 
 @injectable()
 export class SubscriptionStatusTransitionService {
-	private clerkClient: ReturnType<typeof createClerkClient>;
-
 	constructor(
 		@inject(EventEmitter) private readonly eventEmitter: EventEmitter,
 		@inject(Logger) private readonly logger: Logger,
 		@inject(KeyCache) private readonly cache: KeyCache,
-	) {
-		this.clerkClient = createClerkClient({ secretKey: env.CLERK_SECRET_KEY });
-	}
+		@inject(ClerkUserInfoService) private readonly clerkUserInfoService: ClerkUserInfoService,
+	) {}
 
 	async handleTransition(input: StatusTransitionInput): Promise<void> {
 		const { previousStatus, newStatus } = input;
@@ -111,19 +107,7 @@ export class SubscriptionStatusTransitionService {
 	}
 
 	private async getUserInfo(userId: string): Promise<{ email: string; firstName?: string }> {
-		try {
-			const user = await this.clerkClient.users.getUser(userId);
-			return {
-				email: user.emailAddresses[0]?.emailAddress ?? '',
-				firstName: user.firstName ?? undefined,
-			};
-		} catch (error) {
-			this.logger.error('subscription.transition.getUserInfo.failed', {
-				stripe: { userId },
-				error: error as Error,
-			});
-			return { email: '' };
-		}
+		return this.clerkUserInfoService.getUserInfo(userId);
 	}
 
 	private async invalidateUserPlanCache(userId: string): Promise<void> {
