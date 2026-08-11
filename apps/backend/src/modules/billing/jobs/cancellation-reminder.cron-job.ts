@@ -29,7 +29,7 @@ const DATE_FORMAT: Intl.DateTimeFormatOptions = {
 @CronJob()
 export class CancellationReminderCronJob extends AbstractCronJob {
 	// Run every day at 2:00 AM
-	schedule = env.CRON_CANCELLATION_REMINDER;
+	schedule = '0 2 * * *';
 
 	protected async execute(): Promise<void> {
 		await this.sendProReminders();

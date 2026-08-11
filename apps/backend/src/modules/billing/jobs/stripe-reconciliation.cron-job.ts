@@ -8,7 +8,6 @@ import UserSubscriptionRepository from '../domain/repository/user-subscription.r
 import UserAddonSubscriptionRepository from '../domain/repository/user-addon-subscription.repository';
 import { DomainAddonWebhookService } from '../service/domain-addon-webhook.service';
 import { isAddonDomainPriceId, isProPriceId } from '../config/stripe-prices';
-import { env } from '@/core/config/env';
 import type Stripe from 'stripe';
 
 /** Statuses under which an add-on still grants or is about to grant slots. */
@@ -33,15 +32,14 @@ function pickAddonSubscription(subscriptions: Stripe.Subscription[]): Stripe.Sub
 /**
  * Reconciliation job that syncs local subscription data with Stripe.
  *
- * Runs on `CRON_STRIPE_RECONCILIATION` (nightly by default) and performs two checks:
+ * Runs nightly and performs two checks:
  * 1. Verifies all non-canceled local subscriptions against Stripe (fixes drift)
  * 2. Lists all active Stripe subscriptions and creates missing local records (fills gaps)
  */
 @injectable()
 @CronJob()
 export class StripeReconciliationCronJob extends AbstractCronJob {
-	// Nightly by default; staging overrides it to watch a lifecycle in one sitting.
-	schedule = env.CRON_STRIPE_RECONCILIATION;
+	schedule = '0 4 * * *';
 
 	protected async execute(): Promise<void> {
 		const stripeService = container.resolve(StripeService);

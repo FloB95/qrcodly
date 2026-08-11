@@ -1,7 +1,6 @@
 import { injectable, container } from 'tsyringe';
 import { CronJob } from '@/core/decorators/cron-job.decorator';
 import { AbstractCronJob } from '@/core/jobs/abstract.cron-job';
-import { env } from '@/core/config/env';
 import CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
 import { EnforceCustomDomainLimitUseCase } from '../useCase/enforce-custom-domain-limit.use-case';
 
@@ -16,12 +15,12 @@ import { EnforceCustomDomainLimitUseCase } from '../useCase/enforce-custom-domai
  *
  * Deliberately not folded into the Stripe reconciliation job: that one only touches users who
  * have a subscription row to compare against, while this has to reach users whose subscription
- * disappeared entirely. It is also idempotent and cheap, so it can run far more often.
+ * disappeared entirely. It is also idempotent and cheap, hence the hourly run.
  */
 @injectable()
 @CronJob()
 export class EnforceCustomDomainLimitsCronJob extends AbstractCronJob {
-	schedule = env.CRON_CUSTOM_DOMAIN_LIMITS;
+	schedule = '30 * * * *';
 
 	protected async execute(): Promise<void> {
 		const customDomainRepository = container.resolve(CustomDomainRepository);

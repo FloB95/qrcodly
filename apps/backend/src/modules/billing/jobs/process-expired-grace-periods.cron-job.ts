@@ -20,7 +20,7 @@ import { ClerkUserInfoService } from '@/core/services/clerk-user-info.service';
 @CronJob()
 export class ProcessExpiredGracePeriodsCronJob extends AbstractCronJob {
 	// Run every day at 3:00 AM
-	schedule = env.CRON_GRACE_PERIODS;
+	schedule = '0 3 * * *';
 
 	protected async execute(): Promise<void> {
 		await this.processExpiredProGracePeriods();
