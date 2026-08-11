@@ -11,7 +11,11 @@ import {
 	BuyDomainSlotsDialog,
 	ManageDomainSlotsDialog,
 } from '@/components/dashboard/custom-domain';
-import { useDomainAddonQuery, useReactivateDomainAddon } from '@/lib/api/domain-addon';
+import {
+	useCancelScheduledDomainAddonReduction,
+	useDomainAddonQuery,
+	useReactivateDomainAddon,
+} from '@/lib/api/domain-addon';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
 import {
 	DOMAIN_ADDON_PRICES,
@@ -37,6 +41,7 @@ export function SubscriptionSummarySection() {
 	const { hasProPlan, isCanceled, isLoading: isPlanLoading, subscription } = useHasProPlan();
 	const { data, isLoading } = useDomainAddonQuery();
 	const reactivate = useReactivateDomainAddon();
+	const cancelReduction = useCancelScheduledDomainAddonReduction();
 
 	const [buyOpen, setBuyOpen] = useState(false);
 	const [manageOpen, setManageOpen] = useState(false);
@@ -70,6 +75,20 @@ export function SubscriptionSummarySection() {
 			onError: (error) => {
 				toast({
 					title: t('addon.reactivateError'),
+					description: error.message,
+					variant: 'destructive',
+				});
+				Sentry.captureException(error);
+			},
+		});
+	};
+
+	const handleCancelReduction = () => {
+		cancelReduction.mutate(undefined, {
+			onSuccess: () => toast({ title: t('addon.pendingReductionUndone') }),
+			onError: (error) => {
+				toast({
+					title: t('addon.pendingReductionUndoError'),
 					description: error.message,
 					variant: 'destructive',
 				});
@@ -154,15 +173,26 @@ export function SubscriptionSummarySection() {
 						</li>
 					</ul>
 
-					{addon?.pendingQuantity != null && addon.pendingQuantityEffectiveAt && (
+					{addon?.scheduledQuantity != null && addon.scheduledQuantityEffectiveAt && (
 						<Alert>
 							<Clock className="h-4 w-4" />
 							<AlertTitle>{t('addon.pendingReductionTitle')}</AlertTitle>
-							<AlertDescription>
-								{t('addon.pendingReductionDescription', {
-									quantity: addon.pendingQuantity,
-									date: formatDate(addon.pendingQuantityEffectiveAt),
-								})}
+							<AlertDescription className="flex flex-col items-start gap-2">
+								<span>
+									{t('addon.pendingReductionDescription', {
+										quantity: addon.scheduledQuantity,
+										date: formatDate(addon.scheduledQuantityEffectiveAt),
+									})}
+								</span>
+								<Button
+									size="sm"
+									variant="outline"
+									onClick={handleCancelReduction}
+									disabled={cancelReduction.isPending}
+								>
+									{cancelReduction.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+									{t('addon.pendingReductionUndo')}
+								</Button>
 							</AlertDescription>
 						</Alert>
 					)}

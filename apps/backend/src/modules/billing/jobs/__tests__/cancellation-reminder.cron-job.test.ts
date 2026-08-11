@@ -51,6 +51,7 @@ describe('CancellationReminderCronJob', () => {
 
 		mockAddonRepository = {
 			findPendingCancellationReminders: jest.fn().mockResolvedValue([]),
+			findPendingReductionReminders: jest.fn().mockResolvedValue([]),
 			markCancellationReminderSent: jest.fn(),
 		};
 		mockEnforceCustomDomainLimit = { execute: jest.fn().mockResolvedValue({ disabled: [] }) };

@@ -61,6 +61,17 @@ const server = z.object({
 	// Extra custom domains, sold per domain on top of an active Pro plan.
 	STRIPE_ADDON_DOMAIN_PRICE_ID_MONTHLY: z.string(),
 	STRIPE_ADDON_DOMAIN_PRICE_ID_ANNUAL: z.string(),
+	/**
+	 * Cron expressions for the billing jobs, overridable per environment.
+	 *
+	 * Staging wants minute-level runs to watch a whole subscription lifecycle in one sitting;
+	 * production wants them nightly. Keeping that in env rather than in code is what stops a
+	 * temporary `* * * * *` from being committed and shipped.
+	 */
+	CRON_STRIPE_RECONCILIATION: z.string().default('0 4 * * *'),
+	CRON_GRACE_PERIODS: z.string().default('0 3 * * *'),
+	CRON_CANCELLATION_REMINDER: z.string().default('0 2 * * *'),
+	CRON_CUSTOM_DOMAIN_LIMITS: z.string().default('30 * * * *'),
 	ANALYTICS_ENCRYPTION_KEY: z
 		.string()
 		.length(64)

@@ -560,7 +560,9 @@
 			"placeholder": "Wybierz domenę",
 			"description": "Wybierz, której domeny użyć dla krótkiego URL",
 			"noDomains": "Brak dostępnych domen niestandardowych.",
-			"addDomain": "Dodaj domenę"
+			"addDomain": "Dodaj domenę",
+			"changed": "Domena zaktualizowana",
+			"changeError": "Nie udało się zmienić domeny"
 		},
 		"tabs": {
 			"content": "Treść",
@@ -1178,7 +1180,7 @@
 				"updated": "Zaktualizowano dodatkowe domeny",
 				"updateError": "Nie udało się zaktualizować dodatkowych domen",
 				"quantityIncreased": "Masz teraz {quantity} dodatkowych domen.",
-				"reductionScheduled": "Zmniejszenie zacznie obowiązywać {date}.",
+				"reductionScheduled": "Od {date} będziesz mieć {quantity} dodatkowych domen.",
 				"cancelScheduled": "Dodatkowe domeny wygasają",
 				"cancelScheduledDescription": "Dodatkowe domeny pozostaną dostępne do {date}.",
 				"cancelError": "Nie udało się zakończyć dodatkowych domen",
@@ -1194,17 +1196,17 @@
 				"proratedUntil": "Naliczone proporcjonalnie za pozostały okres do {date}.",
 				"chargedTo": "Zostanie pobrane z karty {brand} kończącej się na {last4}.",
 				"reductionEffective": "Od {date} będziesz mieć {quantity} dodatkowych domen. Do tego czasu nic się nie zmienia.",
-				"willDisableTitle": "Te domeny zostaną wyłączone:",
+				"willDisableTitle": "Te domeny zostaną wyłączone {date}:",
 				"previewError": "Nie udało się obliczyć kwoty. Spróbuj ponownie.",
-				"pendingResetTitle": "Zmniejszenie jest już zaplanowane",
-				"pendingResetDescription": "Twoje miejsca spadną do {quantity} dnia {date}. Najpierw to wycofaj, aby kwota została poprawnie obliczona.",
-				"pendingResetAction": "Wycofaj zaplanowane zmniejszenie",
-				"pendingResetDone": "Zaplanowane zmniejszenie zostało wycofane",
 				"confirmPaid": "Zamawiam i płacę",
 				"confirmChange": "Potwierdź zmianę",
 				"renewalNoticeMonthly": "Od {date} następnie {total} € miesięcznie.",
-				"renewalNoticeAnnual": "Od {date} następnie {total} € rocznie."
-			}
+				"renewalNoticeAnnual": "Od {date} następnie {total} € rocznie.",
+				"nothingDue": "Nic",
+				"reductionWithdrawExplainer": "Zachowujesz obecną liczbę dodatkowych domen. Zaplanowane zmniejszenie zostaje wycofane i nic nie zostanie naliczone.",
+				"willDisableHint": "Usuń przed tą datą domeny, których już nie potrzebujesz — w przeciwnym razie wyłączone zostaną te dodane najpóźniej. Do tego czasu zachowujesz wszystkie miejsca, więc ta lista może się jeszcze wydłużyć."
+			},
+			"deleteConfirmQrWarning": "Wydrukowane już kody QR z tą domeną przestaną działać. Adres jest zapisany w kodzie i nie można go później przekierować."
 		},
 		"apiKeys": {
 			"title": "Klucze API",
@@ -1291,7 +1293,10 @@
 				"reactivate": "Zachowaj dodatkowe domeny",
 				"reactivated": "Dodatkowe domeny będą kontynuowane",
 				"reactivateError": "Nie udało się zachować dodatkowych domen",
-				"cancelHint": "Możesz zrezygnować w każdej chwili — tutaj przez „Zarządzaj\" lub powyżej w portalu faktur i płatności."
+				"cancelHint": "Możesz zrezygnować w każdej chwili — tutaj przez „Zarządzaj\" lub powyżej w portalu faktur i płatności.",
+				"pendingReductionUndo": "Zachowaj obecną liczbę",
+				"pendingReductionUndone": "Zaplanowane zmniejszenie zostało wycofane",
+				"pendingReductionUndoError": "Nie udało się wycofać zaplanowanego zmniejszenia"
 			},
 			"summary": {
 				"title": "Twoje subskrypcje",

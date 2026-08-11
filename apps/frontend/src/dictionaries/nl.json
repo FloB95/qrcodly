@@ -560,7 +560,9 @@
 			"placeholder": "Selecteer een domein",
 			"description": "Kies welk domein je wilt gebruiken voor je korte URL",
 			"noDomains": "Geen aangepaste domeinen beschikbaar.",
-			"addDomain": "Domein toevoegen"
+			"addDomain": "Domein toevoegen",
+			"changed": "Domein bijgewerkt",
+			"changeError": "Kon het domein niet wijzigen"
 		},
 		"tabs": {
 			"content": "Inhoud",
@@ -1178,7 +1180,7 @@
 				"updated": "Extra domeinen bijgewerkt",
 				"updateError": "Extra domeinen konden niet worden bijgewerkt",
 				"quantityIncreased": "Je hebt nu {quantity} extra domeinen.",
-				"reductionScheduled": "De verlaging gaat in op {date}.",
+				"reductionScheduled": "Vanaf {date} heb je {quantity} extra domeinen.",
 				"cancelScheduled": "Extra domeinen lopen af",
 				"cancelScheduledDescription": "Je extra domeinen blijven beschikbaar tot {date}.",
 				"cancelError": "Extra domeinen konden niet worden beëindigd",
@@ -1194,17 +1196,17 @@
 				"proratedUntil": "Naar rato berekend voor de resterende periode tot {date}.",
 				"chargedTo": "Wordt afgeschreven van je {brand} eindigend op {last4}.",
 				"reductionEffective": "Vanaf {date} heb je {quantity} extra domeinen. Tot dan verandert er niets.",
-				"willDisableTitle": "Deze domeinen worden uitgeschakeld:",
+				"willDisableTitle": "Deze domeinen worden op {date} uitgeschakeld:",
 				"previewError": "Het bedrag kon niet worden berekend. Probeer het opnieuw.",
-				"pendingResetTitle": "Er is al een verlaging gepland",
-				"pendingResetDescription": "Je plaatsen dalen op {date} naar {quantity}. Trek dat eerst in zodat het bedrag correct berekend kan worden.",
-				"pendingResetAction": "Geplande verlaging intrekken",
-				"pendingResetDone": "De geplande verlaging is ingetrokken",
 				"confirmPaid": "Nu kopen",
 				"confirmChange": "Wijziging bevestigen",
 				"renewalNoticeMonthly": "Vanaf {date} daarna {total} € per maand.",
-				"renewalNoticeAnnual": "Vanaf {date} daarna {total} € per jaar."
-			}
+				"renewalNoticeAnnual": "Vanaf {date} daarna {total} € per jaar.",
+				"nothingDue": "Niets",
+				"reductionWithdrawExplainer": "Je houdt je huidige aantal extra domeinen. De geplande verlaging wordt ingetrokken en er wordt niets in rekening gebracht.",
+				"willDisableHint": "Verwijder vóór die datum de domeinen die je niet meer nodig hebt, anders worden de laatst toegevoegde uitgeschakeld. Tot dan behoud je al je plaatsen, dus deze lijst kan nog langer worden."
+			},
+			"deleteConfirmQrWarning": "Reeds gedrukte QR-codes met dit domein werken daarna niet meer. Het adres zit vast in de code en kan achteraf niet worden omgeleid."
 		},
 		"apiKeys": {
 			"title": "API-sleutels",
@@ -1291,7 +1293,10 @@
 				"reactivate": "Extra domeinen behouden",
 				"reactivated": "Je extra domeinen lopen door",
 				"reactivateError": "Extra domeinen konden niet worden behouden",
-				"cancelHint": "Je kunt op elk moment opzeggen — hier via “Beheren” of hierboven in het facturen- en betalingsportaal."
+				"cancelHint": "Je kunt op elk moment opzeggen — hier via “Beheren” of hierboven in het facturen- en betalingsportaal.",
+				"pendingReductionUndo": "Huidig aantal behouden",
+				"pendingReductionUndone": "De geplande verlaging is ingetrokken",
+				"pendingReductionUndoError": "Kon de geplande verlaging niet intrekken"
 			},
 			"summary": {
 				"title": "Je abonnementen",

@@ -7,6 +7,13 @@ import userAddonSubscription, {
 	type TUserAddonSubscription,
 } from '../entities/user-addon-subscription.entity';
 
+/** A reduction parked in a Stripe subscription schedule, as mirrored locally. */
+export type TScheduledQuantityChange = {
+	stripeScheduleId: string;
+	quantity: number;
+	effectiveAt: Date;
+};
+
 /** Fields owned by Stripe. Everything else is our own lifecycle bookkeeping. */
 export type TAddonSubscriptionSyncData = {
 	userId: string;
@@ -20,7 +27,22 @@ export type TAddonSubscriptionSyncData = {
 	currentPeriodEnd: Date;
 	cancelAtPeriodEnd: boolean;
 	lastStripeEventAt?: Date | null;
+	/**
+	 * Three-valued on purpose: omit to leave the mirror alone, `null` to clear it, an object to
+	 * overwrite it. A caller that only knows about the subscription must not wipe a schedule it
+	 * never looked at.
+	 */
+	scheduledChange?: TScheduledQuantityChange | null;
 };
+
+/** Columns holding the schedule mirror, in the shape the table expects. */
+function scheduledChangeColumns(change: TScheduledQuantityChange | null) {
+	return {
+		stripeScheduleId: change?.stripeScheduleId ?? null,
+		scheduledQuantity: change?.quantity ?? null,
+		scheduledQuantityEffectiveAt: change?.effectiveAt ?? null,
+	};
+}
 
 @singleton()
 class UserAddonSubscriptionRepository extends AbstractRepository<TUserAddonSubscription> {
@@ -64,6 +86,27 @@ class UserAddonSubscriptionRepository extends AbstractRepository<TUserAddonSubsc
 		});
 	}
 
+	/**
+	 * Lookup path for `subscription_schedule.released`, whose payload carries no subscription id.
+	 */
+	async findByStripeScheduleId(
+		stripeScheduleId: string,
+	): Promise<TUserAddonSubscription | undefined> {
+		return this.db.query.userAddonSubscription.findFirst({
+			where: eq(this.table.stripeScheduleId, stripeScheduleId),
+		});
+	}
+
+	/**
+	 * Every add-on row regardless of status, for the reconciliation sweep.
+	 *
+	 * Canceled rows have to be included: buying again after a cancellation reuses the row, and
+	 * skipping it would leave the new subscription unnoticed whenever its webhook is lost.
+	 */
+	async findAllForReconciliation(): Promise<TUserAddonSubscription[]> {
+		return this.db.select().from(this.table).execute();
+	}
+
 	async findAllNonCanceled(): Promise<TUserAddonSubscription[]> {
 		return this.db.select().from(this.table).where(ne(this.table.status, 'canceled')).execute();
 	}
@@ -92,6 +135,9 @@ class UserAddonSubscriptionRepository extends AbstractRepository<TUserAddonSubsc
 					currentPeriodEnd: data.currentPeriodEnd,
 					cancelAtPeriodEnd: data.cancelAtPeriodEnd,
 					lastStripeEventAt: data.lastStripeEventAt ?? existing.lastStripeEventAt,
+					...(data.scheduledChange !== undefined
+						? scheduledChangeColumns(data.scheduledChange)
+						: {}),
 					updatedAt: now,
 				})
 				.where(eq(this.table.id, existing.id))
@@ -112,6 +158,7 @@ class UserAddonSubscriptionRepository extends AbstractRepository<TUserAddonSubsc
 					currentPeriodEnd: data.currentPeriodEnd,
 					cancelAtPeriodEnd: data.cancelAtPeriodEnd,
 					lastStripeEventAt: data.lastStripeEventAt ?? null,
+					...scheduledChangeColumns(data.scheduledChange ?? null),
 					createdAt: now,
 					updatedAt: now,
 				})
@@ -146,39 +193,6 @@ class UserAddonSubscriptionRepository extends AbstractRepository<TUserAddonSubsc
 			.execute();
 	}
 
-	/** Schedules a quantity change for the end of the paid period. */
-	async schedulePendingQuantity(
-		subscription: TUserAddonSubscription,
-		quantity: number,
-		effectiveAt: Date,
-	): Promise<void> {
-		await this.update(subscription, {
-			pendingQuantity: quantity,
-			pendingQuantityEffectiveAt: effectiveAt,
-		});
-	}
-
-	async clearPendingQuantity(subscription: TUserAddonSubscription): Promise<void> {
-		await this.update(subscription, {
-			pendingQuantity: null,
-			pendingQuantityEffectiveAt: null,
-		});
-	}
-
-	/** Rows whose scheduled quantity change is due — the safety net for a missed renewal webhook. */
-	async findDuePendingQuantities(): Promise<TUserAddonSubscription[]> {
-		return this.db
-			.select()
-			.from(this.table)
-			.where(
-				and(
-					isNotNull(this.table.pendingQuantityEffectiveAt),
-					lte(this.table.pendingQuantityEffectiveAt, new Date()),
-				),
-			)
-			.execute();
-	}
-
 	async findExpiredUnprocessedGracePeriods(): Promise<TUserAddonSubscription[]> {
 		return this.db
 			.select()
@@ -208,6 +222,51 @@ class UserAddonSubscriptionRepository extends AbstractRepository<TUserAddonSubsc
 					eq(this.table.status, 'active'),
 					gte(this.table.currentPeriodEnd, now),
 					lte(this.table.currentPeriodEnd, threshold),
+					isNull(this.table.cancellationReminderSentAt),
+				),
+			)
+			.execute();
+	}
+
+	async setScheduledQuantity(
+		subscription: TUserAddonSubscription,
+		change: TScheduledQuantityChange,
+	): Promise<void> {
+		await this.update(subscription, scheduledChangeColumns(change));
+	}
+
+	async clearScheduledQuantity(subscription: TUserAddonSubscription): Promise<void> {
+		// Also clears the reminder marker, so a reduction scheduled again later is announced again.
+		await this.update(subscription, {
+			...scheduledChangeColumns(null),
+			cancellationReminderSentAt: null,
+		});
+	}
+
+	/**
+	 * Add-ons whose parked reduction is about to take effect and that have not been reminded yet.
+	 *
+	 * Shares `cancellationReminderSentAt` with the cancellation reminder: the two states are
+	 * mutually exclusive by construction, since cancelling releases the schedule and a quantity
+	 * change is refused while the add-on is set to end.
+	 */
+	async findPendingReductionReminders(
+		daysBeforeEffective: number,
+	): Promise<TUserAddonSubscription[]> {
+		const now = new Date();
+		const threshold = new Date(now);
+		threshold.setDate(threshold.getDate() + daysBeforeEffective);
+
+		return this.db
+			.select()
+			.from(this.table)
+			.where(
+				and(
+					isNotNull(this.table.scheduledQuantityEffectiveAt),
+					eq(this.table.status, 'active'),
+					eq(this.table.cancelAtPeriodEnd, false),
+					gte(this.table.scheduledQuantityEffectiveAt, now),
+					lte(this.table.scheduledQuantityEffectiveAt, threshold),
 					isNull(this.table.cancellationReminderSentAt),
 				),
 			)

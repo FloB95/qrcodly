@@ -16,12 +16,13 @@ export type TCustomDomainEntitlementDto = z.infer<typeof CustomDomainEntitlement
 export const DomainAddonSubscriptionDto = z.object({
 	status: z.string(),
 	stripePriceId: z.string(),
+	/** Slots in force right now. A pending reduction does not lower this until it takes effect. */
 	quantity: z.number().int(),
-	/** Slot count that takes effect at `pendingQuantityEffectiveAt`, if a reduction is scheduled. */
-	pendingQuantity: z.number().int().nullable(),
-	pendingQuantityEffectiveAt: z.iso.datetime().nullable(),
 	currentPeriodEnd: z.iso.datetime(),
 	cancelAtPeriodEnd: z.boolean(),
+	/** Lower slot count that takes over at the end of the paid period, if one is parked. */
+	scheduledQuantity: z.number().int().nullable(),
+	scheduledQuantityEffectiveAt: z.iso.datetime().nullable(),
 });
 
 export type TDomainAddonSubscriptionDto = z.infer<typeof DomainAddonSubscriptionDto>;
@@ -43,10 +44,13 @@ export type TDomainAddonCheckoutResponseDto = z.infer<typeof DomainAddonCheckout
  * Result of a slot change. `willDisable` names the domains that lose their slot when the change
  * takes effect — it comes from the same code that later performs the change, so the warning in
  * the UI and the domain that actually goes dark can never diverge.
+ *
+ * After a reduction `quantity` still reports the slots in force; the requested number lands in
+ * `scheduledQuantity` and only applies from `effectiveAt`.
  */
 export const DomainAddonQuantityResponseDto = z.object({
 	quantity: z.number().int(),
-	pendingQuantity: z.number().int().nullable(),
+	scheduledQuantity: z.number().int().nullable(),
 	effectiveAt: z.iso.datetime().nullable(),
 	willDisable: z.array(z.string()),
 });
@@ -62,13 +66,16 @@ export type TDomainAddonQuantityResponseDto = z.infer<typeof DomainAddonQuantity
 export const DomainAddonQuantityPreviewDto = z.object({
 	quantity: z.number().int(),
 	currentQuantity: z.number().int(),
+	scheduledQuantity: z.number().int().nullable(),
+	/** `immediate` is billed on confirmation; `scheduled` costs nothing until `effectiveAt`. */
+	mode: z.enum(['immediate', 'scheduled']),
+	/** Always 0 in `scheduled` mode — a reduction is never credited back. */
 	amountDueNow: z.number().int(),
 	currency: z.string(),
 	prorationDate: z.number().int().nullable(),
-	effectiveAt: z.iso.datetime().nullable(),
 	periodEnd: z.iso.datetime(),
+	effectiveAt: z.iso.datetime().nullable(),
 	willDisable: z.array(z.string()),
-	requiresPendingReset: z.boolean(),
 	paymentMethod: z.object({ brand: z.string(), last4: z.string() }).nullable(),
 });
 

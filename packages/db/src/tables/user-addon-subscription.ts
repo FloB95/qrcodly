@@ -33,18 +33,19 @@ const userAddonSubscription = createTable(
 		stripeSubscriptionId: varchar({ length: 255 }).notNull().unique(),
 		stripePriceId: varchar({ length: 255 }).notNull(),
 		status: varchar({ length: 50 }).notNull(), // active, past_due, canceled, unpaid, trialing, incomplete
-		/** Slots the user is entitled to right now. */
+		/** Slots the user is entitled to. Mirrors the Stripe subscription item's quantity. */
 		quantity: int().notNull().default(0),
-		/**
-		 * A reduction takes effect at the end of the paid period, so Stripe already holds the
-		 * lower quantity while the user still has the higher one. This pair is the only record
-		 * of that gap — never overwrite `quantity` from a webhook while it is set.
-		 */
-		pendingQuantity: int(),
-		pendingQuantityEffectiveAt: datetime(),
 		currentPeriodStart: datetime().notNull(),
 		currentPeriodEnd: datetime().notNull(),
 		cancelAtPeriodEnd: boolean().notNull().default(false),
+		/**
+		 * Mirror of a Stripe subscription schedule holding a reduction that takes effect at the end
+		 * of the paid period. Stripe performs the switch; these columns only let the UI name it
+		 * without a round trip, so they are always rewritten from `subscription.schedule`.
+		 */
+		stripeScheduleId: varchar({ length: 255 }),
+		scheduledQuantity: int(),
+		scheduledQuantityEffectiveAt: datetime(),
 		gracePeriodEndsAt: datetime(),
 		addonFeaturesDisabledAt: datetime(),
 		cancellationNotifiedAt: datetime(),
@@ -60,7 +61,8 @@ const userAddonSubscription = createTable(
 		index('i_user_addon_subscription_stripe_customer_id').on(t.stripeCustomerId),
 		index('i_user_addon_subscription_status').on(t.status),
 		index('i_user_addon_subscription_grace_period_ends_at').on(t.gracePeriodEndsAt),
-		index('i_user_addon_subscription_pending_effective_at').on(t.pendingQuantityEffectiveAt),
+		// `subscription_schedule.released` carries no subscription id, only the schedule's own.
+		index('i_user_addon_subscription_stripe_schedule_id').on(t.stripeScheduleId),
 	],
 );
 

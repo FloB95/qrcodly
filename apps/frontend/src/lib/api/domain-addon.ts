@@ -4,6 +4,7 @@ import { useAuth } from '@clerk/nextjs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/utils';
 import { customDomainQueryKeys } from '@/lib/api/custom-domain';
+import { domainAddonQueryKeys } from './domain-addon.keys';
 import type {
 	TDomainAddonCancelResponseDto,
 	TDomainAddonCheckoutResponseDto,
@@ -12,9 +13,7 @@ import type {
 	TDomainAddonResponseDto,
 } from '@shared/schemas';
 
-export const domainAddonQueryKeys = {
-	addon: ['domain-addon'] as const,
-};
+export { domainAddonQueryKeys };
 
 const BASE_PATH = '/billing/domain-addon';
 
@@ -150,24 +149,6 @@ export function useUpdateDomainAddonQuantity() {
 	});
 }
 
-export function useCancelPendingDomainAddonReduction() {
-	const { getToken } = useAuth();
-	const invalidate = useAddonMutationInvalidation();
-
-	return useMutation({
-		mutationFn: async (): Promise<TDomainAddonResponseDto> => {
-			const token = await getToken();
-			if (!token) throw new Error('Missing auth token');
-
-			return apiRequest<TDomainAddonResponseDto>(`${BASE_PATH}/quantity/pending/cancel`, {
-				method: 'POST',
-				headers: { Authorization: `Bearer ${token}` },
-			});
-		},
-		onSuccess: invalidate,
-	});
-}
-
 export function useCancelDomainAddon() {
 	const { getToken } = useAuth();
 	const invalidate = useAddonMutationInvalidation();
@@ -180,6 +161,26 @@ export function useCancelDomainAddon() {
 			// No Content-Type: this call sends no body.
 			return apiRequest<TDomainAddonCancelResponseDto>(BASE_PATH, {
 				method: 'DELETE',
+				headers: { Authorization: `Bearer ${token}` },
+			});
+		},
+		onSuccess: invalidate,
+	});
+}
+
+/** Drops a parked reduction so the current slot count simply carries on. */
+export function useCancelScheduledDomainAddonReduction() {
+	const { getToken } = useAuth();
+	const invalidate = useAddonMutationInvalidation();
+
+	return useMutation({
+		mutationFn: async (): Promise<TDomainAddonQuantityResponseDto> => {
+			const token = await getToken();
+			if (!token) throw new Error('Missing auth token');
+
+			// No Content-Type: this call sends no body.
+			return apiRequest<TDomainAddonQuantityResponseDto>(`${BASE_PATH}/quantity/pending/cancel`, {
+				method: 'POST',
 				headers: { Authorization: `Bearer ${token}` },
 			});
 		},

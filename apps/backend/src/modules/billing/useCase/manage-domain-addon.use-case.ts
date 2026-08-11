@@ -15,7 +15,8 @@ import UserSubscriptionRepository from '../domain/repository/user-subscription.r
 import UserAddonSubscriptionRepository from '../domain/repository/user-addon-subscription.repository';
 import { type TUserAddonSubscription } from '../domain/entities/user-addon-subscription.entity';
 import { type TUserSubscription } from '../domain/entities/user-subscription.entity';
-import { StripeService } from '../service/stripe.service';
+import { StripeService, type TAddonSubscriptionState } from '../service/stripe.service';
+import { AddonSubscriptionStatusTransitionService } from '../service/addon-subscription-status-transition.service';
 import { ADDON_DOMAIN_PRICE_IDS } from '../config/stripe-prices';
 import {
 	DOMAIN_ADDON_PRODUCT,
@@ -33,35 +34,43 @@ export type TDomainAddonOverview = {
 };
 
 export type TDomainAddonQuantityChange = {
+	/** Slots the user is entitled to right now. Unchanged by a reduction. */
 	quantity: number;
-	pendingQuantity: number | null;
+	/** Set while a lower quantity is parked for the end of the period. */
+	scheduledQuantity: number | null;
+	/** When `scheduledQuantity` takes over, or when a cancellation takes effect. */
 	effectiveAt: Date | null;
+	/** Domain names that lose their slot when the change takes effect. */
 	willDisable: string[];
 };
 
 export type TDomainAddonQuantityPreview = {
 	quantity: number;
 	currentQuantity: number;
-	/** Amount Stripe would collect right now, in minor units. Zero for deferred reductions. */
+	scheduledQuantity: number | null;
+	/** Whether the change is billed now or only takes effect at the end of the period. */
+	mode: 'immediate' | 'scheduled';
+	/** In minor units. Always 0 for a reduction — nothing is ever credited back. */
 	amountDueNow: number;
 	currency: string;
-	/** Feed back into `updateQuantity` so the charge equals the quote. */
+	/** Feed back into `updateQuantity` so the charge equals the quote. Null when nothing is due. */
 	prorationDate: number | null;
-	/** When the change takes effect, or null if it is immediate. */
-	effectiveAt: Date | null;
 	periodEnd: Date;
+	/** When the change would take effect; null when it is immediate. */
+	effectiveAt: Date | null;
 	willDisable: string[];
-	/** True when a scheduled reduction has to be withdrawn before an increase can be quoted. */
-	requiresPendingReset: boolean;
 	paymentMethod: { brand: string; last4: string } | null;
 };
 
 /**
  * Everything a user can do with the extra-custom-domains add-on.
  *
- * Two rules run through all of it: an active Pro plan is a hard prerequisite, and nothing is ever
- * refunded — increases bill immediately, reductions and cancellations take effect at the end of
- * the paid period and leave the slots usable until then.
+ * An active Pro plan is a hard prerequisite. The billing rule is asymmetric on purpose:
+ * an increase applies at once and Stripe invoices the prorated difference, while a reduction is
+ * parked in a subscription schedule and only takes over when the paid period ends. Nothing is
+ * ever refunded or credited, so the customer keeps every slot they paid for — and the domains
+ * stay live until Stripe actually switches the quantity. Cancelling the add-on works the same
+ * way: it runs to the end of the period and then drops to the plan's own allowance.
  */
 @injectable()
 export class ManageDomainAddonUseCase {
@@ -76,6 +85,8 @@ export class ManageDomainAddonUseCase {
 		@inject(EnforceCustomDomainLimitUseCase)
 		private enforceCustomDomainLimitUseCase: EnforceCustomDomainLimitUseCase,
 		@inject(StripeService) private stripeService: StripeService,
+		@inject(AddonSubscriptionStatusTransitionService)
+		private transitionService: AddonSubscriptionStatusTransitionService,
 		@inject(Logger) private logger: Logger,
 	) {}
 
@@ -143,9 +154,11 @@ export class ManageDomainAddonUseCase {
 	/**
 	 * Quotes a quantity change without applying it.
 	 *
-	 * The returned `prorationDate` is fed back into {@link updateQuantity} so the charge matches
-	 * the quoted amount exactly — Stripe prorates to the second, so a preview taken a minute
-	 * earlier would otherwise be a few cents off.
+	 * Only an increase costs anything, and its amount comes from Stripe. The returned
+	 * `prorationDate` is fed back into {@link updateQuantity} so the charge matches the quote
+	 * exactly — Stripe prorates to the second, so a preview taken a minute earlier would
+	 * otherwise be a few cents off. A reduction is quoted locally as zero: it buys nothing today
+	 * and never produces a credit, so there is nothing for Stripe to compute.
 	 */
 	async previewQuantityChange(
 		userId: string,
@@ -153,79 +166,60 @@ export class ManageDomainAddonUseCase {
 	): Promise<TDomainAddonQuantityPreview> {
 		await this.requireActivePro(userId);
 		const addon = await this.requireActiveAddon(userId);
+		const state = await this.stripeService.getAddonSubscriptionState(addon.stripeSubscriptionId);
 
 		const base = {
 			quantity,
-			currentQuantity: addon.quantity,
-			currency: 'eur',
-			periodEnd: addon.currentPeriodEnd,
-			paymentMethod: null as { brand: string; last4: string } | null,
+			currentQuantity: state.quantity,
+			scheduledQuantity: addon.scheduledQuantity,
+			periodEnd: state.currentPeriodEnd,
 		};
 
-		// A pending reduction means Stripe already holds the lower quantity, so any quote taken
-		// from it would be wrong. The reduction has to be withdrawn first — an explicit step,
-		// rather than a preview that silently mutates the subscription to fix its own baseline.
-		if (addon.pendingQuantity !== null && quantity > addon.quantity) {
+		if (quantity > state.quantity) {
+			const [preview, paymentMethod] = await Promise.all([
+				this.stripeService.previewQuantityChange({
+					subscriptionId: addon.stripeSubscriptionId,
+					quantity,
+				}),
+				this.stripeService.getSubscriptionPaymentMethod(addon.stripeSubscriptionId),
+			]);
+
 			return {
 				...base,
-				amountDueNow: 0,
-				prorationDate: null,
+				mode: 'immediate',
+				amountDueNow: preview.amountDue,
+				currency: preview.currency,
+				prorationDate: preview.prorationDate,
 				effectiveAt: null,
 				willDisable: [],
-				requiresPendingReset: true,
+				paymentMethod,
 			};
 		}
-
-		if (quantity < addon.quantity) {
-			return {
-				...base,
-				amountDueNow: 0,
-				prorationDate: null,
-				effectiveAt: addon.currentPeriodEnd,
-				willDisable: await this.projectDisabledDomains(userId, quantity),
-				requiresPendingReset: false,
-			};
-		}
-
-		const [preview, paymentMethod] = await Promise.all([
-			this.stripeService.previewQuantityChange({
-				subscriptionId: addon.stripeSubscriptionId,
-				quantity,
-			}),
-			this.stripeService.getSubscriptionPaymentMethod(addon.stripeSubscriptionId),
-		]);
 
 		return {
 			...base,
-			amountDueNow: preview.amountDue,
-			currency: preview.currency,
-			prorationDate: preview.prorationDate,
-			effectiveAt: null,
-			willDisable: [],
-			requiresPendingReset: false,
-			paymentMethod,
+			mode: 'scheduled',
+			amountDueNow: 0,
+			// Nothing is due, but the field still has to name a real currency: a client that
+			// formats the amount unconditionally would throw on an empty one.
+			currency: state.currency,
+			prorationDate: null,
+			effectiveAt: quantity < state.quantity ? state.currentPeriodEnd : null,
+			willDisable:
+				quantity < state.quantity ? await this.projectDisabledDomains(userId, quantity) : [],
+			paymentMethod: null,
 		};
 	}
 
 	/**
-	 * Withdraws a scheduled reduction at no cost.
+	 * Moves the slot count to `quantity`, immediately or at the end of the period.
 	 *
-	 * Puts Stripe back on the quantity the customer already paid for, which is also what makes a
-	 * later increase quote correctly.
+	 * The direction is decided against what Stripe is billing right now, never against a pending
+	 * reduction. That single comparison covers every sequence the user can produce: raising the
+	 * count after scheduling a reduction simply drops the reduction, lowering it twice replaces
+	 * the parked value, and asking for the quantity already in force withdraws a pending
+	 * reduction altogether.
 	 */
-	async cancelPendingReduction(userId: string): Promise<void> {
-		await this.requireActivePro(userId);
-		const addon = await this.requireActiveAddon(userId);
-		if (addon.pendingQuantity === null) return;
-
-		await this.stripeService.resetSubscriptionQuantity(addon.stripeSubscriptionId, addon.quantity);
-		await this.addonSubscriptionRepository.clearPendingQuantity(addon);
-
-		this.logger.info('domainAddon.pendingReductionWithdrawn', {
-			subscription: { userId, quantity: addon.quantity },
-		});
-	}
-
 	async updateQuantity(
 		userId: string,
 		quantity: number,
@@ -233,17 +227,47 @@ export class ManageDomainAddonUseCase {
 	): Promise<TDomainAddonQuantityChange> {
 		await this.requireActivePro(userId);
 		const addon = await this.requireActiveAddon(userId);
+		const state = await this.stripeService.getAddonSubscriptionState(addon.stripeSubscriptionId);
 
-		if (quantity >= addon.quantity) {
-			return this.increaseQuantity(userId, addon, quantity, options.prorationDate);
+		if (state.cancelAtPeriodEnd && quantity !== state.quantity) {
+			throw new ConflictError(
+				'The extra domains are already set to end when the period does. Reactivate them before changing how many you have.',
+			);
 		}
-		return this.scheduleReduction(userId, addon, quantity);
+
+		if (quantity > state.quantity) {
+			return this.applyIncrease(userId, addon, state, quantity, options.prorationDate);
+		}
+
+		if (quantity < state.quantity) {
+			return this.scheduleReduction(userId, addon, state, quantity);
+		}
+
+		return this.withdrawScheduledReduction(userId, addon, state);
+	}
+
+	/**
+	 * Drops a parked reduction so the current slot count simply continues.
+	 *
+	 * Its own endpoint because the dialog offers it as "keep what I have", where there is no new
+	 * quantity to send — {@link updateQuantity} would need the caller to echo back the number it
+	 * is already on.
+	 */
+	async cancelScheduledReduction(userId: string): Promise<TDomainAddonQuantityChange> {
+		await this.requireActivePro(userId);
+		const addon = await this.requireActiveAddon(userId);
+		const state = await this.stripeService.getAddonSubscriptionState(addon.stripeSubscriptionId);
+
+		return this.withdrawScheduledReduction(userId, addon, state);
 	}
 
 	async cancel(userId: string): Promise<TDomainAddonQuantityChange & { cancelAtPeriodEnd: true }> {
 		const addon = await this.requireActiveAddon(userId);
 
 		if (!addon.cancelAtPeriodEnd) {
+			// A schedule-managed subscription rejects cancellation changes outright, and the parked
+			// reduction is moot anyway once everything ends on the same date.
+			await this.releaseSchedule(addon);
 			await this.stripeService.setCancelAtPeriodEnd(addon.stripeSubscriptionId, true);
 			await this.addonSubscriptionRepository.update(addon, { cancelAtPeriodEnd: true });
 		}
@@ -257,7 +281,7 @@ export class ManageDomainAddonUseCase {
 		return {
 			cancelAtPeriodEnd: true,
 			quantity: addon.quantity,
-			pendingQuantity: 0,
+			scheduledQuantity: null,
 			effectiveAt: addon.currentPeriodEnd,
 			willDisable,
 		};
@@ -268,6 +292,9 @@ export class ManageDomainAddonUseCase {
 		const addon = await this.requireActiveAddon(userId);
 
 		if (addon.cancelAtPeriodEnd) {
+			// Defensive: the Stripe portal can attach a schedule we never created, and that would
+			// make the cancellation change below fail.
+			await this.releaseSchedule(addon);
 			await this.stripeService.setCancelAtPeriodEnd(addon.stripeSubscriptionId, false);
 			await this.addonSubscriptionRepository.update(addon, { cancelAtPeriodEnd: false });
 		}
@@ -277,39 +304,31 @@ export class ManageDomainAddonUseCase {
 		return { cancelAtPeriodEnd: false };
 	}
 
-	/** Takes effect now and is invoiced immediately, so the slots are usable straight away. */
-	private async increaseQuantity(
+	/** Bills the difference for the rest of the period and hands over the slots at once. */
+	private async applyIncrease(
 		userId: string,
 		addon: TUserAddonSubscription,
+		state: TAddonSubscriptionState,
 		quantity: number,
 		prorationDate?: number,
 	): Promise<TDomainAddonQuantityChange> {
-		if (quantity === addon.quantity && addon.pendingQuantity === null) {
-			return { quantity, pendingQuantity: null, effectiveAt: null, willDisable: [] };
-		}
-
-		// Stripe holds the reduced number while a reduction is pending. Prorating an increase from
-		// there would charge again for slots the customer already paid for, so restore the paid-for
-		// quantity first — free of charge — and only then bill the real difference.
-		if (addon.pendingQuantity !== null) {
-			await this.stripeService.resetSubscriptionQuantity(
-				addon.stripeSubscriptionId,
-				addon.quantity,
-			);
+		// A parked reduction would otherwise overwrite the new count at the next renewal, and
+		// Stripe would reject the item update while the schedule owns the subscription.
+		if (state.scheduleId) {
+			await this.stripeService.releaseSchedule(state.scheduleId);
 		}
 
 		const { paymentPending } = await this.stripeService.updateSubscriptionQuantity({
 			subscriptionId: addon.stripeSubscriptionId,
 			quantity,
-			billing: 'charge_now',
 			prorationDate,
 		});
 
 		// Stripe parks the change instead of applying it when the card declines. Granting the slots
 		// locally now would hand out what was never paid for.
 		if (paymentPending) {
-			this.logger.warn('domainAddon.increasePaymentFailed', {
-				subscription: { userId, quantity, previousQuantity: addon.quantity },
+			this.logger.warn('domainAddon.quantityChangePaymentFailed', {
+				subscription: { userId, quantity, previousQuantity: state.quantity },
 			});
 			throw new PaymentRequiredError(
 				'The payment for the additional domains could not be collected. Please check your payment method and try again.',
@@ -318,54 +337,103 @@ export class ManageDomainAddonUseCase {
 
 		await this.addonSubscriptionRepository.update(addon, {
 			quantity,
-			pendingQuantity: null,
-			pendingQuantityEffectiveAt: null,
+			stripeScheduleId: null,
+			scheduledQuantity: null,
+			scheduledQuantityEffectiveAt: null,
 		});
-
-		await this.enforceCustomDomainLimitUseCase.execute(userId);
+		const { disabled } = await this.enforceCustomDomainLimitUseCase.execute(userId);
 
 		this.logger.info('domainAddon.quantityIncreased', {
-			subscription: { userId, previousQuantity: addon.quantity, quantity },
+			subscription: { userId, previousQuantity: state.quantity, quantity },
 		});
 
-		return { quantity, pendingQuantity: null, effectiveAt: null, willDisable: [] };
+		return { quantity, scheduledQuantity: null, effectiveAt: null, willDisable: disabled };
 	}
 
-	/** Written to Stripe now but only effective at period end — the user keeps what they paid for. */
+	/**
+	 * Parks a lower count for the end of the period.
+	 *
+	 * Deliberately does not enforce the domain limit: the user paid through to the period end and
+	 * keeps every slot until Stripe switches the quantity, at which point the webhook enforces it.
+	 * The reported domains are therefore a projection of what would go dark on that date.
+	 */
 	private async scheduleReduction(
 		userId: string,
 		addon: TUserAddonSubscription,
+		state: TAddonSubscriptionState,
 		quantity: number,
 	): Promise<TDomainAddonQuantityChange> {
-		await this.stripeService.updateSubscriptionQuantity({
-			subscriptionId: addon.stripeSubscriptionId,
+		const { scheduleId, effectiveAt } = await this.stripeService.scheduleQuantityAtPeriodEnd({
+			state,
 			quantity,
-			billing: 'defer',
 		});
 
-		await this.addonSubscriptionRepository.schedulePendingQuantity(
-			addon,
+		await this.addonSubscriptionRepository.setScheduledQuantity(addon, {
+			stripeScheduleId: scheduleId,
 			quantity,
-			addon.currentPeriodEnd,
-		);
+			effectiveAt,
+		});
 
 		const willDisable = await this.projectDisabledDomains(userId, quantity);
+
+		await this.transitionService.emitReductionScheduled({
+			userId,
+			stripeSubscriptionId: addon.stripeSubscriptionId,
+			quantity: state.quantity,
+			scheduledQuantity: quantity,
+			effectiveAt,
+		});
 
 		this.logger.info('domainAddon.reductionScheduled', {
 			subscription: {
 				userId,
-				quantity: addon.quantity,
-				pendingQuantity: quantity,
-				effectiveAt: addon.currentPeriodEnd.toISOString(),
+				quantity: state.quantity,
+				scheduledQuantity: quantity,
+				effectiveAt: effectiveAt.toISOString(),
 			},
 		});
 
 		return {
-			quantity: addon.quantity,
-			pendingQuantity: quantity,
-			effectiveAt: addon.currentPeriodEnd,
+			quantity: state.quantity,
+			scheduledQuantity: quantity,
+			effectiveAt,
 			willDisable,
 		};
+	}
+
+	private async withdrawScheduledReduction(
+		userId: string,
+		addon: TUserAddonSubscription,
+		state: TAddonSubscriptionState,
+	): Promise<TDomainAddonQuantityChange> {
+		const unchanged: TDomainAddonQuantityChange = {
+			quantity: state.quantity,
+			scheduledQuantity: null,
+			effectiveAt: null,
+			willDisable: [],
+		};
+
+		if (!state.scheduleId && addon.scheduledQuantity === null) return unchanged;
+
+		if (state.scheduleId) {
+			await this.stripeService.releaseSchedule(state.scheduleId);
+		}
+		await this.addonSubscriptionRepository.clearScheduledQuantity(addon);
+
+		this.logger.info('domainAddon.reductionWithdrawn', {
+			subscription: { userId, quantity: state.quantity },
+		});
+
+		return unchanged;
+	}
+
+	/** Detaches whatever schedule Stripe currently has on the add-on, if any. */
+	private async releaseSchedule(addon: TUserAddonSubscription): Promise<void> {
+		const state = await this.stripeService.getAddonSubscriptionState(addon.stripeSubscriptionId);
+		if (!state.scheduleId) return;
+
+		await this.stripeService.releaseSchedule(state.scheduleId);
+		await this.addonSubscriptionRepository.clearScheduledQuantity(addon);
 	}
 
 	/**

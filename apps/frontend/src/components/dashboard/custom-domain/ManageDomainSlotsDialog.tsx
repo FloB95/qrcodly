@@ -17,7 +17,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, CreditCard, Loader2, Minus, Plus } from 'lucide-react';
 import {
 	useCancelDomainAddon,
-	useCancelPendingDomainAddonReduction,
 	useDomainAddonQuantityPreview,
 	useUpdateDomainAddonQuantity,
 } from '@/lib/api/domain-addon';
@@ -40,26 +39,30 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 
 	const updateQuantity = useUpdateDomainAddonQuantity();
 	const cancelAddon = useCancelDomainAddon();
-	const cancelPending = useCancelPendingDomainAddonReduction();
 
-	const isUnchanged = quantity === addon.quantity;
-	const isIncrease = quantity > addon.quantity;
+	// Returning to the current count is a real change while a reduction is parked: it withdraws it.
+	const isSameQuantity = quantity === addon.quantity;
+	const isUnchanged = isSameQuantity && addon.scheduledQuantity == null;
 	const isAnnualAddon = addon.stripePriceId === env.NEXT_PUBLIC_STRIPE_ADDON_DOMAIN_PRICE_ID_ANNUAL;
 
-	const preview = useDomainAddonQuantityPreview(quantity, open && !isUnchanged);
+	const preview = useDomainAddonQuantityPreview(quantity, open && !isSameQuantity);
 
 	// The dialog stays mounted between openings, so reset to the server value each time.
 	useEffect(() => {
 		if (open) setQuantity(addon.quantity);
 	}, [open, addon.quantity]);
 
-	const isPending = updateQuantity.isPending || cancelAddon.isPending || cancelPending.isPending;
+	// A cancelled term cannot be re-planned; the backend refuses it, so do not offer it either.
+	const isLocked = addon.cancelAtPeriodEnd;
+	const isPending = updateQuantity.isPending || cancelAddon.isPending;
 	const quote = preview.data;
-	const requiresPendingReset = quote?.requiresPendingReset ?? false;
+	// Only an increase costs anything. A reduction quotes zero, so the amount alone cannot tell
+	// the two apart — the mode can.
+	const isCharge = quote?.mode === 'immediate';
 
 	const formatMoney = (minorUnits: number, currency: string) =>
 		new Intl.NumberFormat(locale, { style: 'currency', currency: currency.toUpperCase() }).format(
-			minorUnits / 100,
+			Math.abs(minorUnits) / 100,
 		);
 
 	const handleError = (title: string) => (error: Error) => {
@@ -75,9 +78,13 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 					onOpenChange(false);
 					toast({
 						title: t('updated'),
-						description: result.effectiveAt
-							? t('reductionScheduled', { date: formatDate(result.effectiveAt) })
-							: t('quantityIncreased', { quantity: result.quantity }),
+						description:
+							result.scheduledQuantity != null && result.effectiveAt
+								? t('reductionScheduled', {
+										date: formatDate(result.effectiveAt),
+										quantity: result.scheduledQuantity,
+									})
+								: t('quantityIncreased', { quantity: result.quantity }),
 					});
 				},
 				onError: handleError(t('updateError')),
@@ -97,13 +104,6 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 				});
 			},
 			onError: handleError(t('cancelError')),
-		});
-	};
-
-	const handleWithdrawPending = () => {
-		cancelPending.mutate(undefined, {
-			onSuccess: () => toast({ title: t('pendingResetDone') }),
-			onError: handleError(t('updateError')),
 		});
 	};
 
@@ -129,7 +129,7 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 								variant="outline"
 								size="icon"
 								aria-label={t('decrease')}
-								disabled={quantity <= 1 || isPending}
+								disabled={quantity <= 1 || isPending || isLocked}
 								onClick={() => setQuantity((value) => Math.max(1, value - 1))}
 							>
 								<Minus className="h-4 w-4" />
@@ -145,7 +145,7 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 								variant="outline"
 								size="icon"
 								aria-label={t('increase')}
-								disabled={quantity >= MAX_DOMAIN_ADDON_SLOTS || isPending}
+								disabled={quantity >= MAX_DOMAIN_ADDON_SLOTS || isPending || isLocked}
 								onClick={() => setQuantity((value) => Math.min(MAX_DOMAIN_ADDON_SLOTS, value + 1))}
 							>
 								<Plus className="h-4 w-4" />
@@ -153,52 +153,43 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 						</div>
 					</div>
 
-					{!isUnchanged && (
+					{/* Withdrawing a parked reduction needs no quote — it costs nothing and changes
+					    nothing today. */}
+					{isSameQuantity && addon.scheduledQuantity != null && (
+						<p className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
+							{t('reductionWithdrawExplainer')}
+						</p>
+					)}
+
+					{!isSameQuantity && (
 						<div className="rounded-lg border bg-muted/40 p-4 text-sm">
 							{preview.isPending ? (
 								<div className="space-y-2">
 									<Skeleton className="h-5 w-40" />
 									<Skeleton className="h-4 w-56" />
 								</div>
-							) : preview.isError ? (
+							) : preview.isError || !quote ? (
 								<p className="flex items-start gap-2 text-destructive">
 									<AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
 									{t('previewError')}
 								</p>
-							) : requiresPendingReset ? (
-								<div className="space-y-3">
-									<div>
-										<p className="font-medium">{t('pendingResetTitle')}</p>
-										<p className="text-muted-foreground">
-											{t('pendingResetDescription', {
-												quantity: addon.pendingQuantity ?? 0,
-												date: addon.pendingQuantityEffectiveAt
-													? formatDate(addon.pendingQuantityEffectiveAt)
-													: '',
-											})}
-										</p>
-									</div>
-									<Button
-										type="button"
-										size="sm"
-										variant="outline"
-										onClick={handleWithdrawPending}
-										disabled={isPending}
-									>
-										{cancelPending.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-										{t('pendingResetAction')}
-									</Button>
-								</div>
-							) : quote && isIncrease ? (
+							) : (
 								<div className="space-y-2">
 									<div className="flex items-baseline justify-between gap-3">
 										<span className="text-muted-foreground">{t('dueNowLabel')}</span>
 										<span className="text-lg font-semibold tabular-nums">
-											{formatMoney(quote.amountDueNow, quote.currency)}
+											{isCharge ? formatMoney(quote.amountDueNow, quote.currency) : t('nothingDue')}
 										</span>
 									</div>
 									<p className="text-muted-foreground">
-										{t('proratedUntil', { date: formatDate(quote.periodEnd) })}
+										{isCharge
+											? t('proratedUntil', { date: formatDate(quote.periodEnd) })
+											: quote.effectiveAt
+												? t('reductionEffective', {
+														date: formatDate(quote.effectiveAt),
+														quantity: quote.quantity,
+													})
+												: t('reductionWithdrawExplainer')}
 									</p>
 									{/* The follow-on price has to be visible before ordering, not just the
 									    amount due today. */}
@@ -213,7 +204,7 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 													date: formatDate(quote.periodEnd),
 												})}
 									</p>
-									{quote.paymentMethod && (
+									{isCharge && quote.paymentMethod && (
 										<p className="flex items-center gap-2 text-muted-foreground">
 											<CreditCard className="h-4 w-4 shrink-0" />
 											{t('chargedTo', {
@@ -222,34 +213,23 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 											})}
 										</p>
 									)}
-								</div>
-							) : quote ? (
-								<div className="space-y-2">
-									<div className="flex items-baseline justify-between gap-3">
-										<span className="text-muted-foreground">{t('dueNowLabel')}</span>
-										<span className="text-lg font-semibold tabular-nums">
-											{formatMoney(0, quote.currency)}
-										</span>
-									</div>
-									<p className="text-muted-foreground">
-										{t('reductionEffective', {
-											quantity,
-											date: formatDate(quote.periodEnd),
-										})}
-									</p>
-									<p className="text-muted-foreground">{t('noRefundNotice')}</p>
-									{quote.willDisable.length > 0 && (
+									{quote.willDisable.length > 0 && quote.effectiveAt && (
 										<div className="pt-1">
-											<p className="font-medium text-destructive">{t('willDisableTitle')}</p>
+											<p className="font-medium text-destructive">
+												{t('willDisableTitle', { date: formatDate(quote.effectiveAt) })}
+											</p>
 											<ul className="list-inside list-disc text-destructive">
 												{quote.willDisable.map((domain) => (
 													<li key={domain}>{domain}</li>
 												))}
 											</ul>
+											{/* The list is a projection: the user keeps every paid slot until the
+											    date, so domains added in the meantime can lengthen it. */}
+											<p className="pt-1 text-muted-foreground">{t('willDisableHint')}</p>
 										</div>
 									)}
 								</div>
-							) : null}
+							)}
 						</div>
 					)}
 
@@ -280,11 +260,16 @@ export function ManageDomainSlotsDialog({ open, onOpenChange, addon, formatDate 
 					<Button
 						type="button"
 						onClick={handleSave}
-						disabled={isPending || isUnchanged || requiresPendingReset || preview.isPending}
+						disabled={
+							isPending ||
+							isUnchanged ||
+							isLocked ||
+							(!isSameQuantity && (preview.isPending || preview.isError))
+						}
 					>
 						{updateQuantity.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 						{/* An order that costs money needs an unambiguous button label (§ 312j BGB). */}
-						{isIncrease ? t('confirmPaid') : t('confirmChange')}
+						{isCharge ? t('confirmPaid') : t('confirmChange')}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

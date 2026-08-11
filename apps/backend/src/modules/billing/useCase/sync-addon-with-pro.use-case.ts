@@ -38,6 +38,15 @@ export class SyncAddonWithProUseCase {
 		}
 
 		try {
+			// Stripe refuses cancellation changes while a subscription schedule owns the
+			// subscription. Without this the failure would be swallowed below and the add-on would
+			// keep billing after Pro ended.
+			const state = await this.stripeService.getAddonSubscriptionState(addon.stripeSubscriptionId);
+			if (state.scheduleId) {
+				await this.stripeService.releaseSchedule(state.scheduleId);
+				await this.addonSubscriptionRepository.clearScheduledQuantity(addon);
+			}
+
 			await this.stripeService.setCancelAtPeriodEnd(addon.stripeSubscriptionId, cancelAtPeriodEnd);
 			// Stripe will echo this back through a webhook; writing it now keeps the dashboard honest
 			// in the meantime.

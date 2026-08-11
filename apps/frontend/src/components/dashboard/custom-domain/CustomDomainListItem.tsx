@@ -149,19 +149,20 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 			</TableCell>
 			<TableCell className="text-muted-foreground">{formattedDate}</TableCell>
 			<TableCell className="px-2 sticky right-0 sticky-action-cell">
-				{isDisabled ? null : (
-					<CustomDomainListItemActions
-						domain={domain}
-						isDeleting={isDeleting}
-						isVerifying={isVerifying}
-						isSettingDefault={isSettingDefault}
-						onDelete={handleDelete}
-						onVerify={handleVerify}
-						onSetDefault={handleSetDefault}
-						autoShowInstructions={shouldAutoShowInstructions}
-						onInstructionsShown={clearShowInstructionsParam}
-					/>
-				)}
+				{/* A disabled domain still needs its menu: deleting it is the one way out of an
+				    over-limit state, and hiding the menu left the row with no action at all. */}
+				<CustomDomainListItemActions
+					domain={domain}
+					isDisabled={isDisabled}
+					isDeleting={isDeleting}
+					isVerifying={isVerifying}
+					isSettingDefault={isSettingDefault}
+					onDelete={handleDelete}
+					onVerify={handleVerify}
+					onSetDefault={handleSetDefault}
+					autoShowInstructions={shouldAutoShowInstructions}
+					onInstructionsShown={clearShowInstructionsParam}
+				/>
 			</TableCell>
 		</TableRow>
 	);

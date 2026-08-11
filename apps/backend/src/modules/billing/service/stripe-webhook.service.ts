@@ -71,6 +71,22 @@ export class StripeWebhookService {
 				case 'invoice.payment_failed':
 					await this.handlePaymentFailed(event.data.object);
 					break;
+				// A deferred slot reduction lives in a subscription schedule. These keep the local
+				// view of it honest, including for schedules the Stripe portal created itself.
+				case 'subscription_schedule.created':
+				case 'subscription_schedule.updated':
+					await this.domainAddonWebhookService.handleScheduleEvent(event.data.object, {
+						cleared: false,
+					});
+					break;
+				case 'subscription_schedule.released':
+				case 'subscription_schedule.completed':
+				case 'subscription_schedule.canceled':
+				case 'subscription_schedule.aborted':
+					await this.domainAddonWebhookService.handleScheduleEvent(event.data.object, {
+						cleared: true,
+					});
+					break;
 				default:
 					this.logger.info('stripe.webhook.unhandled', {
 						stripe: { eventType: event.type },

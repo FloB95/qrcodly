@@ -5,6 +5,8 @@ import { DomainAddonActiveEvent } from '@/core/event/domain-addon-active.event';
 import { DomainAddonCanceledEvent } from '@/core/event/domain-addon-canceled.event';
 import { DomainAddonCancelInitiatedEvent } from '@/core/event/domain-addon-cancel-initiated.event';
 import { DomainAddonPastDueEvent } from '@/core/event/domain-addon-past-due.event';
+import { DomainAddonReductionScheduledEvent } from '@/core/event/domain-addon-reduction-scheduled.event';
+import { DomainAddonQuantityReducedEvent } from '@/core/event/domain-addon-quantity-reduced.event';
 import { ClerkUserInfoService } from '@/core/services/clerk-user-info.service';
 
 export interface AddonTransitionInput {
@@ -58,6 +60,48 @@ export class AddonSubscriptionStatusTransitionService {
 
 	async emitPastDue(input: AddonTransitionInput): Promise<void> {
 		await this.emit(DomainAddonPastDueEvent, input);
+	}
+
+	/**
+	 * Not routed through {@link emit}: the announcement has to carry both the count still in force
+	 * and the one taking over, which the shared event payload has no room for.
+	 */
+	async emitReductionScheduled(input: {
+		userId: string;
+		stripeSubscriptionId: string;
+		quantity: number;
+		scheduledQuantity: number;
+		effectiveAt: Date;
+	}): Promise<void> {
+		const { email, firstName } = await this.clerkUserInfoService.getUserInfo(input.userId);
+
+		this.logger.debug('domainAddon.transition', {
+			subscription: {
+				userId: input.userId,
+				event: DomainAddonReductionScheduledEvent.eventName,
+			},
+		});
+
+		await this.eventEmitter.emit(
+			new DomainAddonReductionScheduledEvent({ ...input, email, firstName }),
+		);
+	}
+
+	/** A parked reduction has taken effect and the surplus domains are already switched off. */
+	async emitQuantityReduced(input: {
+		userId: string;
+		stripeSubscriptionId: string;
+		quantity: number;
+	}): Promise<void> {
+		const { email, firstName } = await this.clerkUserInfoService.getUserInfo(input.userId);
+
+		this.logger.debug('domainAddon.transition', {
+			subscription: { userId: input.userId, event: DomainAddonQuantityReducedEvent.eventName },
+		});
+
+		await this.eventEmitter.emit(
+			new DomainAddonQuantityReducedEvent({ ...input, email, firstName }),
+		);
 	}
 
 	private async emit(

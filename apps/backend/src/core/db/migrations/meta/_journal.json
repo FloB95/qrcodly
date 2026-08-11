@@ -239,6 +239,20 @@
 			"when": 1786362699627,
 			"tag": "0033_remarkable_karen_page",
 			"breakpoints": true
+		},
+		{
+			"idx": 34,
+			"version": "5",
+			"when": 1786383484361,
+			"tag": "0034_tidy_nextwave",
+			"breakpoints": true
+		},
+		{
+			"idx": 35,
+			"version": "5",
+			"when": 1786396742545,
+			"tag": "0035_serious_lady_mastermind",
+			"breakpoints": true
 		}
 	]
 }

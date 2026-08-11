@@ -12,7 +12,7 @@ import './event/handler';
 import './jobs/process-expired-grace-periods.cron-job';
 import './jobs/stripe-reconciliation.cron-job';
 import './jobs/cancellation-reminder.cron-job';
-import './jobs/apply-pending-addon-quantity.cron-job';
+import './jobs/enforce-custom-domain-limits.cron-job';
 
 const setupBillingModule: FastifyPluginCallback = (fastify: FastifyInstance, options, done) => {
 	registerRoutes(fastify, BillingController, `/billing`, options);

@@ -53,6 +53,7 @@ describe('StripeReconciliationCronJob', () => {
 		mockTransitionService = mock<SubscriptionStatusTransitionService>();
 		mockAddonRepository = {
 			findAllNonCanceled: jest.fn().mockResolvedValue([]),
+			findAllForReconciliation: jest.fn().mockResolvedValue([]),
 			findByStripeSubscriptionId: jest.fn().mockResolvedValue(undefined),
 		};
 		mockAddonWebhookService = { handleSubscriptionUpsert: jest.fn() };
@@ -80,6 +81,8 @@ describe('StripeReconciliationCronJob', () => {
 		mockRepository.findAllNonCanceled.mockResolvedValue([]);
 		mockStripeService.listActiveSubscriptions.mockResolvedValue([]);
 		mockAddonRepository.findAllNonCanceled.mockResolvedValue([]);
+		mockAddonRepository.findAllForReconciliation.mockResolvedValue([]);
+		mockStripeService.listSubscriptionsForCustomer.mockResolvedValue([]);
 		mockAddonRepository.findByStripeSubscriptionId.mockResolvedValue(undefined);
 
 		job = new StripeReconciliationCronJob();
@@ -298,6 +301,7 @@ describe('StripeReconciliationCronJob', () => {
 			({
 				id: 'sub_addon_1',
 				status: 'active',
+				created: 1_700_000_000,
 				cancel_at_period_end: false,
 				customer: 'cus_addon',
 				metadata: { clerkUserId: 'user-999' },
@@ -314,14 +318,21 @@ describe('StripeReconciliationCronJob', () => {
 				...overrides,
 			}) as unknown as Stripe.Subscription;
 
+		/** A customer we know about, which is what makes the add-on reachable at all. */
+		const knownCustomer = () =>
+			mockAddonRepository.findAllForReconciliation.mockResolvedValue([
+				{ stripeCustomerId: 'cus_addon', userId: 'user-999' },
+			]);
+
 		it('should adopt an add-on subscription that never reached the database', async () => {
-			mockStripeService.listActiveSubscriptions.mockResolvedValue([addonSubscription()]);
+			knownCustomer();
+			mockStripeService.listSubscriptionsForCustomer.mockResolvedValue([addonSubscription()]);
 
 			await (job as unknown as { execute: () => Promise<void> }).execute();
 
 			expect(mockAddonWebhookService.handleSubscriptionUpsert).toHaveBeenCalledWith(
 				expect.objectContaining({ id: 'sub_addon_1' }),
-				expect.objectContaining({ period: expect.anything() }),
+				expect.objectContaining({ period: expect.anything(), forceScheduleRefresh: true }),
 			);
 			expect(mockLogger.warn).toHaveBeenCalledWith(
 				'stripe.reconciliation.addon.adopted',
@@ -329,22 +340,44 @@ describe('StripeReconciliationCronJob', () => {
 			);
 		});
 
-		it('should not adopt an add-on that is already stored', async () => {
-			mockStripeService.listActiveSubscriptions.mockResolvedValue([addonSubscription()]);
-			mockAddonRepository.findByStripeSubscriptionId.mockResolvedValue({ id: 'row-1' });
+		it('should find an add-on that the unscoped Stripe listing cannot see', async () => {
+			// Stripe hides test-clock objects from unfiltered list calls, so going through the
+			// customer is the only way a staging setup is ever reconciled.
+			knownCustomer();
+			mockStripeService.listActiveSubscriptions.mockResolvedValue([]);
+			mockStripeService.listSubscriptionsForCustomer.mockResolvedValue([addonSubscription()]);
 
 			await (job as unknown as { execute: () => Promise<void> }).execute();
 
-			expect(mockAddonWebhookService.handleSubscriptionUpsert).not.toHaveBeenCalled();
+			expect(mockStripeService.listSubscriptionsForCustomer).toHaveBeenCalledWith('cus_addon');
+			expect(mockAddonWebhookService.handleSubscriptionUpsert).toHaveBeenCalled();
+		});
+
+		it('should adopt a re-purchase even though the stored row is canceled', async () => {
+			// The old pass skipped canceled rows entirely, so buying again after a cancellation
+			// went unnoticed whenever the webhook was lost.
+			mockAddonRepository.findAllForReconciliation.mockResolvedValue([
+				{ stripeCustomerId: 'cus_addon', userId: 'user-999', status: 'canceled' },
+			]);
+			mockStripeService.listSubscriptionsForCustomer.mockResolvedValue([
+				addonSubscription({ id: 'sub_addon_old', status: 'canceled', created: 1 }),
+				addonSubscription({ id: 'sub_addon_new', status: 'active', created: 2 }),
+			]);
+
+			await (job as unknown as { execute: () => Promise<void> }).execute();
+
+			expect(mockAddonWebhookService.handleSubscriptionUpsert).toHaveBeenCalledWith(
+				expect.objectContaining({ id: 'sub_addon_new' }),
+				expect.anything(),
+			);
 		});
 
 		it('should repair drift on a stored add-on', async () => {
-			mockAddonRepository.findAllNonCanceled.mockResolvedValue([
-				{ stripeSubscriptionId: 'sub_addon_1', userId: 'user-999' },
-			]);
-			mockStripeService.getSubscription.mockResolvedValue(
+			knownCustomer();
+			mockAddonRepository.findByStripeSubscriptionId.mockResolvedValue({ id: 'row-1' });
+			mockStripeService.listSubscriptionsForCustomer.mockResolvedValue([
 				addonSubscription({ status: 'past_due' }),
-			);
+			]);
 
 			await (job as unknown as { execute: () => Promise<void> }).execute();
 
@@ -352,27 +385,42 @@ describe('StripeReconciliationCronJob', () => {
 				expect.objectContaining({ status: 'past_due' }),
 				expect.anything(),
 			);
+			expect(mockLogger.warn).not.toHaveBeenCalledWith(
+				'stripe.reconciliation.addon.adopted',
+				expect.anything(),
+			);
 		});
 
-		it('should skip an add-on subscription without clerkUserId', async () => {
-			mockStripeService.listActiveSubscriptions.mockResolvedValue([
+		it('should fall back to the known user when the subscription carries no metadata', async () => {
+			// Bought straight in the Stripe dashboard: no clerkUserId, but we resolved the customer
+			// from our own records, so it can still be adopted.
+			knownCustomer();
+			mockStripeService.listSubscriptionsForCustomer.mockResolvedValue([
 				addonSubscription({ metadata: {} }),
 			]);
 
 			await (job as unknown as { execute: () => Promise<void> }).execute();
 
-			expect(mockAddonWebhookService.handleSubscriptionUpsert).not.toHaveBeenCalled();
-			expect(mockLogger.warn).toHaveBeenCalledWith(
-				'stripe.reconciliation.addon.missingUserId',
+			expect(mockAddonWebhookService.handleSubscriptionUpsert).toHaveBeenCalledWith(
+				expect.objectContaining({ metadata: { clerkUserId: 'user-999' } }),
 				expect.anything(),
 			);
 		});
 
-		it('should keep going when one add-on fails to sync', async () => {
-			mockAddonRepository.findAllNonCanceled.mockResolvedValue([
-				{ stripeSubscriptionId: 'sub_addon_1', userId: 'user-999' },
+		it('should ignore a customer that holds no add-on', async () => {
+			knownCustomer();
+			mockStripeService.listSubscriptionsForCustomer.mockResolvedValue([
+				addonSubscription({ items: { data: [{ price: { id: 'price_something_else' } }] } }),
 			]);
-			mockStripeService.getSubscription.mockRejectedValue(new Error('Stripe down'));
+
+			await (job as unknown as { execute: () => Promise<void> }).execute();
+
+			expect(mockAddonWebhookService.handleSubscriptionUpsert).not.toHaveBeenCalled();
+		});
+
+		it('should keep going when one customer fails', async () => {
+			knownCustomer();
+			mockStripeService.listSubscriptionsForCustomer.mockRejectedValue(new Error('Stripe down'));
 
 			await (job as unknown as { execute: () => Promise<void> }).execute();
 

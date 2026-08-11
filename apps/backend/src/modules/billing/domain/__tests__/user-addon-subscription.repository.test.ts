@@ -107,39 +107,79 @@ describe('UserAddonSubscriptionRepository', () => {
 
 			expect(row.lastStripeEventAt).toEqual(eventAt);
 		});
-	});
 
-	describe('pending quantity', () => {
-		it('should schedule and clear a pending quantity', async () => {
-			await createAddonSubscriptionDirectly(ctx, TEST_USER_PRO_ID, { quantity: 4 });
-			const row = (await repository.findByUserAndType(TEST_USER_PRO_ID, 'custom_domain'))!;
-			const effectiveAt = daysFromNow(10);
+		// Three-valued on purpose: a caller that only looked at the subscription must be able to
+		// leave a schedule it never inspected alone.
+		describe('scheduledChange', () => {
+			const effectiveAt = daysFromNow(29);
 
-			await repository.schedulePendingQuantity(row, 2, effectiveAt);
-			const scheduled = (await repository.findByUserAndType(TEST_USER_PRO_ID, 'custom_domain'))!;
-			expect(scheduled.pendingQuantity).toBe(2);
-			expect(scheduled.pendingQuantityEffectiveAt).toEqual(effectiveAt);
-			expect(scheduled.quantity).toBe(4);
+			it('should store a parked reduction', async () => {
+				const row = await repository.upsertByUserAndType(
+					syncData({
+						scheduledChange: { stripeScheduleId: 'sub_sched_1', quantity: 1, effectiveAt },
+					}),
+				);
 
-			await repository.clearPendingQuantity(scheduled);
-			const cleared = (await repository.findByUserAndType(TEST_USER_PRO_ID, 'custom_domain'))!;
-			expect(cleared.pendingQuantity).toBeNull();
-			expect(cleared.pendingQuantityEffectiveAt).toBeNull();
-		});
-
-		it('should only return pending quantities that are due', async () => {
-			await createAddonSubscriptionDirectly(ctx, TEST_USER_PRO_ID, {
-				pendingQuantity: 1,
-				pendingQuantityEffectiveAt: daysFromNow(-1),
-			});
-			await createAddonSubscriptionDirectly(ctx, TEST_USER_2_ID, {
-				pendingQuantity: 1,
-				pendingQuantityEffectiveAt: daysFromNow(5),
+				expect(row.stripeScheduleId).toBe('sub_sched_1');
+				expect(row.scheduledQuantity).toBe(1);
+				expect(row.scheduledQuantityEffectiveAt).toEqual(effectiveAt);
 			});
 
-			const due = await repository.findDuePendingQuantities();
+			it('should leave an existing mirror untouched when omitted', async () => {
+				await repository.upsertByUserAndType(
+					syncData({
+						scheduledChange: { stripeScheduleId: 'sub_sched_1', quantity: 1, effectiveAt },
+					}),
+				);
 
-			expect(due.map((r) => r.userId)).toEqual([TEST_USER_PRO_ID]);
+				const row = await repository.upsertByUserAndType(syncData({ quantity: 3 }));
+
+				expect(row.quantity).toBe(3);
+				expect(row.scheduledQuantity).toBe(1);
+				expect(row.stripeScheduleId).toBe('sub_sched_1');
+			});
+
+			it('should clear the mirror when explicitly set to null', async () => {
+				await repository.upsertByUserAndType(
+					syncData({
+						scheduledChange: { stripeScheduleId: 'sub_sched_1', quantity: 1, effectiveAt },
+					}),
+				);
+
+				const row = await repository.upsertByUserAndType(syncData({ scheduledChange: null }));
+
+				expect(row.stripeScheduleId).toBeNull();
+				expect(row.scheduledQuantity).toBeNull();
+				expect(row.scheduledQuantityEffectiveAt).toBeNull();
+			});
+
+			it('should find a row by its schedule id', async () => {
+				await repository.upsertByUserAndType(
+					syncData({
+						scheduledChange: { stripeScheduleId: 'sub_sched_1', quantity: 1, effectiveAt },
+					}),
+				);
+
+				// The release webhook carries no subscription id, only the schedule's own.
+				const found = await repository.findByStripeScheduleId('sub_sched_1');
+
+				expect(found?.userId).toBe(TEST_USER_PRO_ID);
+			});
+
+			it('should reset the reminder marker when the reduction is withdrawn', async () => {
+				const row = await repository.upsertByUserAndType(
+					syncData({
+						scheduledChange: { stripeScheduleId: 'sub_sched_1', quantity: 1, effectiveAt },
+					}),
+				);
+				await repository.markCancellationReminderSent(row);
+
+				await repository.clearScheduledQuantity(row);
+
+				const after = await repository.findByUserAndType(TEST_USER_PRO_ID, 'custom_domain');
+				expect(after?.scheduledQuantity).toBeNull();
+				expect(after?.cancellationReminderSentAt).toBeNull();
+			});
 		});
 	});
 

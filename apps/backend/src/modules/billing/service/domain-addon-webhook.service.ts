@@ -1,13 +1,13 @@
 import { inject, injectable } from 'tsyringe';
 import type Stripe from 'stripe';
 import { Logger } from '@/core/logging';
-import UserAddonSubscriptionRepository from '../domain/repository/user-addon-subscription.repository';
+import UserAddonSubscriptionRepository, {
+	type TScheduledQuantityChange,
+} from '../domain/repository/user-addon-subscription.repository';
 import { type TUserAddonSubscription } from '../domain/entities/user-addon-subscription.entity';
 import { AddonSubscriptionStatusTransitionService } from './addon-subscription-status-transition.service';
-import { ApplyPendingAddonQuantityUseCase } from '../useCase/apply-pending-addon-quantity.use-case';
-
-/** Clock skew tolerance when deciding whether the billing period rolled over. */
-const PERIOD_ROLL_TOLERANCE_MS = 60_000;
+import { EnforceCustomDomainLimitUseCase } from '../useCase/enforce-custom-domain-limit.use-case';
+import { StripeService, readUpcomingPhase } from './stripe.service';
 
 /**
  * Handles the add-on branch of the Stripe webhook.
@@ -23,8 +23,9 @@ export class DomainAddonWebhookService {
 		private readonly addonSubscriptionRepository: UserAddonSubscriptionRepository,
 		@inject(AddonSubscriptionStatusTransitionService)
 		private readonly transitionService: AddonSubscriptionStatusTransitionService,
-		@inject(ApplyPendingAddonQuantityUseCase)
-		private readonly applyPendingAddonQuantityUseCase: ApplyPendingAddonQuantityUseCase,
+		@inject(EnforceCustomDomainLimitUseCase)
+		private readonly enforceCustomDomainLimitUseCase: EnforceCustomDomainLimitUseCase,
+		@inject(StripeService) private readonly stripeService: StripeService,
 	) {}
 
 	/**
@@ -36,7 +37,17 @@ export class DomainAddonWebhookService {
 	 */
 	async handleSubscriptionUpsert(
 		subscription: Stripe.Subscription,
-		context: { eventCreatedAt: Date; period: { periodStart: Date; periodEnd: Date } },
+		context: {
+			eventCreatedAt: Date;
+			period: { periodStart: Date; periodEnd: Date };
+			/**
+			 * Re-read an already-known schedule instead of trusting the mirror. Set by the
+			 * reconciliation sweep: a schedule can change its contents while keeping its id, and
+			 * the cheap id comparison would otherwise never notice a lost
+			 * `subscription_schedule.updated`.
+			 */
+			forceScheduleRefresh?: boolean;
+		},
 	): Promise<void> {
 		const existing = await this.findExisting(subscription);
 		const userId = existing?.userId ?? subscription.metadata?.clerkUserId;
@@ -56,24 +67,18 @@ export class DomainAddonWebhookService {
 		}
 
 		const { periodStart, periodEnd } = context.period;
-		const stripeQuantity = subscription.items?.data?.[0]?.quantity ?? 1;
+		// Stripe's quantity is the entitlement, full stop — including right after a schedule has
+		// switched phases, which is how a deferred reduction reaches us.
+		const quantity = subscription.items?.data?.[0]?.quantity ?? 1;
 		const priceId = subscription.items?.data?.[0]?.price?.id ?? existing?.stripePriceId ?? '';
 		const customerId =
 			typeof subscription.customer === 'string' ? subscription.customer : subscription.customer.id;
 
-		const periodRolled =
-			!!existing &&
-			periodStart.getTime() > existing.currentPeriodStart.getTime() + PERIOD_ROLL_TOLERANCE_MS;
-		const hasPending = existing?.pendingQuantity != null;
-
-		// A reduction is written to Stripe straight away but only takes effect at period end, so
-		// while it is pending Stripe reports a lower quantity than the customer is entitled to.
-		// An increase (quantity at or above what we hold) always wins and cancels the reduction.
-		const currentQuantity = existing?.quantity ?? 0;
-		const deferQuantity = hasPending && !periodRolled && stripeQuantity < currentQuantity;
-		const quantity = deferQuantity ? currentQuantity : stripeQuantity;
-
 		const previousStatus = existing?.status ?? '';
+		const quantityChanged = !existing || existing.quantity !== quantity;
+		const scheduledChange = await this.resolveScheduledChange(subscription, existing, {
+			forceRefresh: context.forceScheduleRefresh ?? false,
+		});
 		const row = await this.addonSubscriptionRepository.upsertByUserAndType({
 			userId,
 			addonType: 'custom_domain',
@@ -86,20 +91,27 @@ export class DomainAddonWebhookService {
 			currentPeriodEnd: periodEnd,
 			cancelAtPeriodEnd: subscription.cancel_at_period_end,
 			lastStripeEventAt: context.eventCreatedAt,
+			scheduledChange,
 		});
 
-		if (hasPending) {
-			if (periodRolled) {
-				// Stripe's quantity is authoritative now that the period is over.
-				await this.applyPendingAddonQuantityUseCase.execute(row, { quantity: stripeQuantity });
-			} else if (deferQuantity) {
-				await this.addonSubscriptionRepository.schedulePendingQuantity(
-					row,
-					stripeQuantity,
-					row.currentPeriodEnd,
-				);
-			} else {
-				await this.addonSubscriptionRepository.clearPendingQuantity(row);
+		// A changed quantity changes how many domains may be live, so the domains have to follow
+		// straight away — including when the change was made in the Stripe portal rather than here.
+		if (quantityChanged) {
+			const { disabled } = await this.enforceCustomDomainLimitUseCase.execute(userId);
+			if (disabled.length > 0) {
+				this.logger.info('domainAddon.domainsDisabledByQuantityChange', {
+					subscription: { userId, quantity, disabled },
+				});
+			}
+
+			// This is how a deferred reduction reaches the user: Stripe moved into the next
+			// schedule phase and the domains have just gone dark, so confirm what happened.
+			if (existing && existing.scheduledQuantity === quantity && quantity < existing.quantity) {
+				await this.transitionService.emitQuantityReduced({
+					userId,
+					stripeSubscriptionId: subscription.id,
+					quantity,
+				});
 			}
 		}
 
@@ -149,9 +161,14 @@ export class DomainAddonWebhookService {
 			return;
 		}
 
+		// The row is reused when the user buys again, so a leftover scheduled quantity from the
+		// subscription that just died would ride along into the new one.
 		await this.addonSubscriptionRepository.update(existing, {
 			status: 'canceled',
 			cancelAtPeriodEnd: false,
+			stripeScheduleId: null,
+			scheduledQuantity: null,
+			scheduledQuantityEffectiveAt: null,
 		});
 
 		await this.transitionService.emitCanceled({
@@ -164,6 +181,54 @@ export class DomainAddonWebhookService {
 
 		this.logger.info('stripe.webhook.addon.deleted', {
 			stripe: { userId: existing.userId, subscriptionId: subscription.id },
+		});
+	}
+
+	/**
+	 * Keeps the local view of a parked reduction in step with Stripe.
+	 *
+	 * Schedules do not only come from us — the Stripe portal creates them too, and it creates them
+	 * for the Pro subscription as well, which is why an unknown schedule is ignored rather than
+	 * guessed at. `lastStripeEventAt` is deliberately not written here: it guards the subscription
+	 * stream, and bumping it from this one would start dropping genuine subscription events.
+	 */
+	async handleScheduleEvent(
+		schedule: Stripe.SubscriptionSchedule,
+		options: { cleared: boolean },
+	): Promise<void> {
+		const existing = await this.findBySchedule(schedule);
+		if (!existing) return;
+
+		if (options.cleared) {
+			// A release event for a schedule we have already replaced would otherwise wipe the
+			// replacement that is still pending.
+			if (existing.stripeScheduleId !== schedule.id) return;
+
+			await this.addonSubscriptionRepository.clearScheduledQuantity(existing);
+			this.logger.info('stripe.webhook.addon.scheduleCleared', {
+				stripe: { userId: existing.userId, scheduleId: schedule.id },
+			});
+			return;
+		}
+
+		const upcoming = readUpcomingPhase(schedule);
+		if (!upcoming) {
+			await this.addonSubscriptionRepository.clearScheduledQuantity(existing);
+			return;
+		}
+
+		await this.addonSubscriptionRepository.setScheduledQuantity(existing, {
+			stripeScheduleId: schedule.id,
+			quantity: upcoming.quantity,
+			effectiveAt: upcoming.effectiveAt,
+		});
+
+		this.logger.info('stripe.webhook.addon.scheduleSynced', {
+			stripe: {
+				userId: existing.userId,
+				scheduleId: schedule.id,
+				scheduledQuantity: upcoming.quantity,
+			},
 		});
 	}
 
@@ -197,6 +262,49 @@ export class DomainAddonWebhookService {
 		if (!userId) return undefined;
 
 		return this.addonSubscriptionRepository.findByUserAndType(userId, 'custom_domain');
+	}
+
+	/**
+	 * Derives the schedule mirror from the subscription itself.
+	 *
+	 * `upsertByUserAndType` writes an explicit column list, so a mirror that is not recomputed here
+	 * would never self-heal — after Stripe applied the reduction the UI would keep announcing it
+	 * for a date in the past. `undefined` means "leave as is" and costs no API call.
+	 */
+	private async resolveScheduledChange(
+		subscription: Stripe.Subscription,
+		existing: TUserAddonSubscription | undefined,
+		options: { forceRefresh: boolean },
+	): Promise<TScheduledQuantityChange | null | undefined> {
+		const scheduleId =
+			typeof subscription.schedule === 'string'
+				? subscription.schedule
+				: (subscription.schedule?.id ?? null);
+
+		if (!scheduleId) return existing?.stripeScheduleId ? null : undefined;
+		// A known schedule normally needs no lookup — but its phases can be rewritten while the id
+		// stays the same, so the reconciliation sweep has to look anyway.
+		if (scheduleId === existing?.stripeScheduleId && !options.forceRefresh) return undefined;
+
+		const upcoming = await this.stripeService.getScheduledQuantity(scheduleId);
+		if (!upcoming) return null;
+
+		return { stripeScheduleId: scheduleId, ...upcoming };
+	}
+
+	private async findBySchedule(
+		schedule: Stripe.SubscriptionSchedule,
+	): Promise<TUserAddonSubscription | undefined> {
+		const subscription = schedule.subscription ?? schedule.released_subscription;
+		const subscriptionId = typeof subscription === 'string' ? subscription : subscription?.id;
+
+		if (subscriptionId) {
+			const bySubscription =
+				await this.addonSubscriptionRepository.findByStripeSubscriptionId(subscriptionId);
+			if (bySubscription) return bySubscription;
+		}
+
+		return this.addonSubscriptionRepository.findByStripeScheduleId(schedule.id);
 	}
 
 	private isStale(existing: TUserAddonSubscription | undefined, eventCreatedAt: Date): boolean {

@@ -560,7 +560,9 @@
 			"placeholder": "Seleccionar un dominio",
 			"description": "Elige qué dominio usar para tu URL corta",
 			"noDomains": "No hay dominios personalizados disponibles.",
-			"addDomain": "Agregar un dominio"
+			"addDomain": "Agregar un dominio",
+			"changed": "Dominio actualizado",
+			"changeError": "No se pudo cambiar el dominio"
 		},
 		"tabs": {
 			"content": "Contenido",
@@ -1182,7 +1184,7 @@
 				"updated": "Dominios adicionales actualizados",
 				"updateError": "No se pudieron actualizar los dominios adicionales",
 				"quantityIncreased": "Ahora tienes {quantity} dominios adicionales.",
-				"reductionScheduled": "La reducción se aplicará el {date}.",
+				"reductionScheduled": "A partir del {date} tendrás {quantity} dominios adicionales.",
 				"cancelScheduled": "Los dominios adicionales van a finalizar",
 				"cancelScheduledDescription": "Tus dominios adicionales seguirán disponibles hasta el {date}.",
 				"cancelError": "No se pudieron finalizar los dominios adicionales",
@@ -1198,17 +1200,17 @@
 				"proratedUntil": "Cobro prorrateado por el periodo restante hasta el {date}.",
 				"chargedTo": "Se cargará a tu {brand} terminada en {last4}.",
 				"reductionEffective": "A partir del {date} tendrás {quantity} dominios adicionales. Hasta entonces no cambia nada.",
-				"willDisableTitle": "Estos dominios se desactivarán:",
+				"willDisableTitle": "Estos dominios se desactivarán el {date}:",
 				"previewError": "No se pudo calcular el importe. Inténtalo de nuevo.",
-				"pendingResetTitle": "Ya hay una reducción programada",
-				"pendingResetDescription": "Tus plazas bajarán a {quantity} el {date}. Anúlalo primero para poder calcular el importe correctamente.",
-				"pendingResetAction": "Anular la reducción programada",
-				"pendingResetDone": "Se ha anulado la reducción programada",
 				"confirmPaid": "Comprar ahora",
 				"confirmChange": "Confirmar cambio",
 				"renewalNoticeMonthly": "A partir del {date}, {total} € al mes.",
-				"renewalNoticeAnnual": "A partir del {date}, {total} € al año."
-			}
+				"renewalNoticeAnnual": "A partir del {date}, {total} € al año.",
+				"nothingDue": "Nada",
+				"reductionWithdrawExplainer": "Conservas tu número actual de dominios adicionales. La reducción programada se retira y no se cobra nada.",
+				"willDisableHint": "Elimina antes de esa fecha los dominios que ya no necesites; de lo contrario se desactivarán los añadidos más recientemente. Hasta entonces conservas todas tus plazas, así que esta lista aún puede crecer."
+			},
+			"deleteConfirmQrWarning": "Los códigos QR ya impresos con este dominio dejarán de funcionar. La dirección está incrustada en el código y no puede redirigirse después."
 		},
 		"apiKeys": {
 			"title": "Claves API",
@@ -1295,7 +1297,10 @@
 				"reactivate": "Mantener dominios adicionales",
 				"reactivated": "Tus dominios adicionales continuarán",
 				"reactivateError": "No se pudieron mantener los dominios adicionales",
-				"cancelHint": "Puedes cancelar en cualquier momento: aquí en «Gestionar» o arriba, en el portal de facturas y pagos."
+				"cancelHint": "Puedes cancelar en cualquier momento: aquí en «Gestionar» o arriba, en el portal de facturas y pagos.",
+				"pendingReductionUndo": "Mantener la cantidad actual",
+				"pendingReductionUndone": "La reducción programada se ha retirado",
+				"pendingReductionUndoError": "No se pudo retirar la reducción programada"
 			},
 			"summary": {
 				"title": "Tus suscripciones",

@@ -51,10 +51,10 @@ export class DomainAddonController extends AbstractController {
 						status: addon.status,
 						stripePriceId: addon.stripePriceId,
 						quantity: addon.quantity,
-						pendingQuantity: addon.pendingQuantity,
-						pendingQuantityEffectiveAt: addon.pendingQuantityEffectiveAt?.toISOString() ?? null,
 						currentPeriodEnd: addon.currentPeriodEnd.toISOString(),
 						cancelAtPeriodEnd: addon.cancelAtPeriodEnd,
+						scheduledQuantity: addon.scheduledQuantity,
+						scheduledQuantityEffectiveAt: addon.scheduledQuantityEffectiveAt?.toISOString() ?? null,
 					}
 				: null,
 			entitlement: { ...entitlement, usedDomains },
@@ -103,25 +103,9 @@ export class DomainAddonController extends AbstractController {
 
 		return this.makeApiHttpResponse(200, {
 			...preview,
-			effectiveAt: preview.effectiveAt?.toISOString() ?? null,
 			periodEnd: preview.periodEnd.toISOString(),
+			effectiveAt: preview.effectiveAt?.toISOString() ?? null,
 		});
-	}
-
-	@Post('/quantity/pending/cancel', {
-		responseSchema: {
-			200: DomainAddonResponseDto,
-			401: DEFAULT_ERROR_RESPONSES[401],
-			403: DEFAULT_ERROR_RESPONSES[403],
-			404: DEFAULT_ERROR_RESPONSES[404],
-		},
-		schema: { hide: true },
-	})
-	async cancelPendingReduction(
-		request: IHttpRequest,
-	): Promise<IHttpResponse<TDomainAddonResponseDto>> {
-		await this.manageDomainAddonUseCase.cancelPendingReduction(request.user.id);
-		return this.get(request);
 	}
 
 	@Patch('/quantity', {
@@ -145,7 +129,29 @@ export class DomainAddonController extends AbstractController {
 
 		return this.makeApiHttpResponse(200, {
 			quantity: result.quantity,
-			pendingQuantity: result.pendingQuantity,
+			scheduledQuantity: result.scheduledQuantity,
+			effectiveAt: result.effectiveAt?.toISOString() ?? null,
+			willDisable: result.willDisable,
+		});
+	}
+
+	@Post('/quantity/pending/cancel', {
+		responseSchema: {
+			200: DomainAddonQuantityResponseDto,
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+		},
+		schema: { hide: true },
+	})
+	async cancelScheduledReduction(
+		request: IHttpRequest,
+	): Promise<IHttpResponse<TDomainAddonQuantityResponseDto>> {
+		const result = await this.manageDomainAddonUseCase.cancelScheduledReduction(request.user.id);
+
+		return this.makeApiHttpResponse(200, {
+			quantity: result.quantity,
+			scheduledQuantity: result.scheduledQuantity,
 			effectiveAt: result.effectiveAt?.toISOString() ?? null,
 			willDisable: result.willDisable,
 		});

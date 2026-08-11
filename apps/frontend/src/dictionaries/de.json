@@ -878,7 +878,9 @@
 			"placeholder": "Domain auswählen",
 			"description": "Wähle die Domain für deine Kurz-URL",
 			"noDomains": "Keine eigenen Domains verfügbar.",
-			"addDomain": "Domain hinzufügen"
+			"addDomain": "Domain hinzufügen",
+			"changed": "Domain geändert",
+			"changeError": "Domain konnte nicht geändert werden"
 		},
 		"preview": {
 			"button": "Vorschau öffnen",
@@ -1178,7 +1180,7 @@
 				"updated": "Zusätzliche Domains aktualisiert",
 				"updateError": "Zusätzliche Domains konnten nicht aktualisiert werden",
 				"quantityIncreased": "Du hast jetzt {quantity} zusätzliche Domains.",
-				"reductionScheduled": "Die Reduzierung wird zum {date} wirksam.",
+				"reductionScheduled": "Ab {date} hast du {quantity} Zusatzdomains.",
 				"cancelScheduled": "Zusätzliche Domains laufen aus",
 				"cancelScheduledDescription": "Deine zusätzlichen Domains bleiben bis zum {date} verfügbar.",
 				"cancelError": "Zusätzliche Domains konnten nicht beendet werden",
@@ -1194,17 +1196,17 @@
 				"proratedUntil": "Anteilig berechnet für die Restlaufzeit bis zum {date}.",
 				"chargedTo": "Wird von deiner {brand} •••• {last4} abgebucht.",
 				"reductionEffective": "Ab dem {date} hast du {quantity} zusätzliche Domains. Bis dahin ändert sich nichts.",
-				"willDisableTitle": "Diese Domains werden abgeschaltet:",
+				"willDisableTitle": "Diese Domains werden am {date} gesperrt:",
 				"previewError": "Der Betrag konnte nicht berechnet werden. Bitte versuche es erneut.",
-				"pendingResetTitle": "Es ist bereits eine Reduzierung geplant",
-				"pendingResetDescription": "Deine Plätze sinken am {date} auf {quantity}. Hebe das zuerst auf, damit der Betrag korrekt berechnet werden kann.",
-				"pendingResetAction": "Geplante Reduzierung aufheben",
-				"pendingResetDone": "Die geplante Reduzierung wurde aufgehoben",
 				"confirmPaid": "Zahlungspflichtig buchen",
 				"confirmChange": "Änderung bestätigen",
 				"renewalNoticeMonthly": "Ab dem {date} dann {total} € pro Monat.",
-				"renewalNoticeAnnual": "Ab dem {date} dann {total} € pro Jahr."
-			}
+				"renewalNoticeAnnual": "Ab dem {date} dann {total} € pro Jahr.",
+				"nothingDue": "Nichts",
+				"reductionWithdrawExplainer": "Du behältst deine aktuelle Anzahl an Zusatzdomains. Die geplante Reduzierung wird zurückgenommen, es wird nichts berechnet.",
+				"willDisableHint": "Lösche bis dahin die Domains, die du nicht mehr brauchst — sonst werden die zuletzt hinzugefügten gesperrt. Bis dahin behältst du alle Plätze, die Liste kann also noch länger werden."
+			},
+			"deleteConfirmQrWarning": "Bereits gedruckte QR-Codes mit dieser Domain funktionieren danach nicht mehr. Die Adresse steckt fest im Code und lässt sich nachträglich nicht umleiten."
 		},
 		"apiKeys": {
 			"title": "API-Schlüssel",
@@ -1291,7 +1293,10 @@
 				"reactivate": "Zusätzliche Domains behalten",
 				"reactivated": "Deine zusätzlichen Domains laufen weiter",
 				"reactivateError": "Zusätzliche Domains konnten nicht behalten werden",
-				"cancelHint": "Du kannst jederzeit kündigen — hier unter „Verwalten\" oder oben im Bereich Rechnungen & Zahlungen."
+				"cancelHint": "Du kannst jederzeit kündigen — hier unter „Verwalten\" oder oben im Bereich Rechnungen & Zahlungen.",
+				"pendingReductionUndo": "Aktuelle Anzahl behalten",
+				"pendingReductionUndone": "Die geplante Reduzierung wurde zurückgenommen",
+				"pendingReductionUndoError": "Die geplante Reduzierung konnte nicht zurückgenommen werden"
 			},
 			"summary": {
 				"title": "Deine Abos",

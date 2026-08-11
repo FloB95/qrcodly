@@ -560,7 +560,9 @@
 			"placeholder": "Sélectionner un domaine",
 			"description": "Choisissez le domaine à utiliser pour votre URL courte",
 			"noDomains": "Aucun domaine personnalisé disponible.",
-			"addDomain": "Ajouter un domaine"
+			"addDomain": "Ajouter un domaine",
+			"changed": "Domaine mis à jour",
+			"changeError": "Impossible de changer le domaine"
 		},
 		"tabs": {
 			"content": "Contenu",
@@ -1182,7 +1184,7 @@
 				"updated": "Domaines supplémentaires mis à jour",
 				"updateError": "Impossible de mettre à jour les domaines supplémentaires",
 				"quantityIncreased": "Vous avez désormais {quantity} domaines supplémentaires.",
-				"reductionScheduled": "La réduction prendra effet le {date}.",
+				"reductionScheduled": "À partir du {date}, vous aurez {quantity} domaines supplémentaires.",
 				"cancelScheduled": "Les domaines supplémentaires prennent fin",
 				"cancelScheduledDescription": "Vos domaines supplémentaires restent disponibles jusqu’au {date}.",
 				"cancelError": "Impossible de mettre fin aux domaines supplémentaires",
@@ -1198,17 +1200,17 @@
 				"proratedUntil": "Facturé au prorata de la période restante jusqu’au {date}.",
 				"chargedTo": "Débité de votre {brand} se terminant par {last4}.",
 				"reductionEffective": "À partir du {date}, vous aurez {quantity} domaines supplémentaires. Rien ne change avant.",
-				"willDisableTitle": "Ces domaines seront désactivés :",
+				"willDisableTitle": "Ces domaines seront désactivés le {date} :",
 				"previewError": "Le montant n’a pas pu être calculé. Veuillez réessayer.",
-				"pendingResetTitle": "Une réduction est déjà programmée",
-				"pendingResetDescription": "Vos places passent à {quantity} le {date}. Annulez-la d’abord pour que le montant soit calculé correctement.",
-				"pendingResetAction": "Annuler la réduction programmée",
-				"pendingResetDone": "La réduction programmée a été annulée",
 				"confirmPaid": "Commander avec obligation de paiement",
 				"confirmChange": "Confirmer la modification",
 				"renewalNoticeMonthly": "À partir du {date}, {total} € par mois.",
-				"renewalNoticeAnnual": "À partir du {date}, {total} € par an."
-			}
+				"renewalNoticeAnnual": "À partir du {date}, {total} € par an.",
+				"nothingDue": "Rien",
+				"reductionWithdrawExplainer": "Vous conservez votre nombre actuel de domaines supplémentaires. La réduction planifiée est annulée et rien n'est facturé.",
+				"willDisableHint": "Supprimez avant cette date les domaines dont vous n'avez plus besoin, sinon les derniers ajoutés seront désactivés. D'ici là vous conservez toutes vos places, cette liste peut donc encore s'allonger."
+			},
+			"deleteConfirmQrWarning": "Les QR codes déjà imprimés avec ce domaine cesseront de fonctionner. L'adresse est intégrée au code et ne peut plus être redirigée."
 		},
 		"apiKeys": {
 			"title": "Clés API",
@@ -1295,7 +1297,10 @@
 				"reactivate": "Conserver les domaines supplémentaires",
 				"reactivated": "Vos domaines supplémentaires sont conservés",
 				"reactivateError": "Impossible de conserver les domaines supplémentaires",
-				"cancelHint": "Vous pouvez résilier à tout moment : ici via « Gérer » ou ci-dessus dans le portail factures et paiements."
+				"cancelHint": "Vous pouvez résilier à tout moment : ici via « Gérer » ou ci-dessus dans le portail factures et paiements.",
+				"pendingReductionUndo": "Conserver le nombre actuel",
+				"pendingReductionUndone": "La réduction planifiée a été annulée",
+				"pendingReductionUndoError": "Impossible d'annuler la réduction planifiée"
 			},
 			"summary": {
 				"title": "Vos abonnements",

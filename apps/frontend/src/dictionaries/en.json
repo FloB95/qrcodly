@@ -878,7 +878,9 @@
 			"placeholder": "Select a domain",
 			"description": "Choose which domain to use for your short URL",
 			"noDomains": "No custom domains available.",
-			"addDomain": "Add a domain"
+			"addDomain": "Add a domain",
+			"changed": "Domain updated",
+			"changeError": "Could not change the domain"
 		},
 		"preview": {
 			"button": "Open Preview",
@@ -1178,7 +1180,7 @@
 				"updated": "Extra domains updated",
 				"updateError": "Could not update extra domains",
 				"quantityIncreased": "You now have {quantity} extra domains.",
-				"reductionScheduled": "The reduction takes effect on {date}.",
+				"reductionScheduled": "From {date} you will have {quantity} extra domains.",
 				"cancelScheduled": "Extra domains are ending",
 				"cancelScheduledDescription": "Your extra domains stay available until {date}.",
 				"cancelError": "Could not end extra domains",
@@ -1194,17 +1196,17 @@
 				"proratedUntil": "Charged pro rata for the remaining period until {date}.",
 				"chargedTo": "Charged to your {brand} ending in {last4}.",
 				"reductionEffective": "From {date} you will have {quantity} extra domains. Nothing changes before then.",
-				"willDisableTitle": "These domains will be switched off:",
+				"willDisableTitle": "These domains will be switched off on {date}:",
 				"previewError": "The amount could not be calculated. Please try again.",
-				"pendingResetTitle": "A reduction is already scheduled",
-				"pendingResetDescription": "Your slots drop to {quantity} on {date}. Withdraw that first so the amount can be calculated correctly.",
-				"pendingResetAction": "Withdraw scheduled reduction",
-				"pendingResetDone": "The scheduled reduction has been withdrawn",
 				"confirmPaid": "Buy now",
 				"confirmChange": "Confirm change",
 				"renewalNoticeMonthly": "From {date} then {total} € per month.",
-				"renewalNoticeAnnual": "From {date} then {total} € per year."
-			}
+				"renewalNoticeAnnual": "From {date} then {total} € per year.",
+				"nothingDue": "Nothing",
+				"reductionWithdrawExplainer": "Keep your current number of extra domains. The scheduled reduction is withdrawn and nothing is charged.",
+				"willDisableHint": "Delete the domains you no longer need before that date — otherwise the most recently added ones are switched off. Until then you keep every slot, so this list can still grow."
+			},
+			"deleteConfirmQrWarning": "Any QR code already printed with this domain will stop working. The address is baked into the code and cannot be redirected afterwards."
 		},
 		"apiKeys": {
 			"title": "API Keys",
@@ -1291,7 +1293,10 @@
 				"reactivate": "Keep extra domains",
 				"reactivated": "Your extra domains will continue",
 				"reactivateError": "Could not keep extra domains",
-				"cancelHint": "You can cancel at any time — under “Manage” here, or in the invoices and payment portal above."
+				"cancelHint": "You can cancel at any time — under “Manage” here, or in the invoices and payment portal above.",
+				"pendingReductionUndo": "Keep current number",
+				"pendingReductionUndone": "The scheduled reduction has been withdrawn",
+				"pendingReductionUndoError": "Could not withdraw the scheduled reduction"
 			},
 			"summary": {
 				"title": "Your subscriptions",

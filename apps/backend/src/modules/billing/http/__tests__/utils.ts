@@ -82,8 +82,6 @@ export const createAddonSubscriptionDirectly = async (
 			stripePriceId: options.stripePriceId ?? 'price_test_addon_monthly',
 			status: options.status ?? 'active',
 			quantity: options.quantity ?? 1,
-			pendingQuantity: options.pendingQuantity ?? null,
-			pendingQuantityEffectiveAt: options.pendingQuantityEffectiveAt ?? null,
 			currentPeriodStart: options.currentPeriodStart ?? now,
 			currentPeriodEnd: options.currentPeriodEnd ?? periodEnd,
 			cancelAtPeriodEnd: options.cancelAtPeriodEnd ?? false,
@@ -93,6 +91,9 @@ export const createAddonSubscriptionDirectly = async (
 			cancellationReminderSentAt: options.cancellationReminderSentAt ?? null,
 			pastDueNotifiedAt: options.pastDueNotifiedAt ?? null,
 			lastStripeEventAt: options.lastStripeEventAt ?? null,
+			stripeScheduleId: options.stripeScheduleId ?? null,
+			scheduledQuantity: options.scheduledQuantity ?? null,
+			scheduledQuantityEffectiveAt: options.scheduledQuantityEffectiveAt ?? null,
 			createdAt: now,
 			updatedAt: now,
 		})

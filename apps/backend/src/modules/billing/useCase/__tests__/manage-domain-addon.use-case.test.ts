@@ -6,11 +6,17 @@ import type UserAddonSubscriptionRepository from '../../domain/repository/user-a
 import type CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
 import { type CustomDomainEntitlementService } from '@/core/services/custom-domain-entitlement.service';
 import { type EnforceCustomDomainLimitUseCase } from '../enforce-custom-domain-limit.use-case';
-import { type StripeService } from '../../service/stripe.service';
+import { type StripeService, type TAddonSubscriptionState } from '../../service/stripe.service';
+import { type AddonSubscriptionStatusTransitionService } from '../../service/addon-subscription-status-transition.service';
 import { type TUserAddonSubscription } from '../../domain/entities/user-addon-subscription.entity';
 import { type TUserSubscription } from '../../domain/entities/user-subscription.entity';
 import { type Logger } from '@/core/logging';
-import { ForbiddenError, NotFoundError, PaymentRequiredError } from '@/core/error/http';
+import {
+	ConflictError,
+	ForbiddenError,
+	NotFoundError,
+	PaymentRequiredError,
+} from '@/core/error/http';
 import type Stripe from 'stripe';
 
 const USER_ID = 'user-123';
@@ -25,12 +31,31 @@ const addonRow = (overrides: Partial<TUserAddonSubscription> = {}): TUserAddonSu
 		stripePriceId: 'price_addon',
 		status: 'active',
 		quantity: 4,
-		pendingQuantity: null,
-		pendingQuantityEffectiveAt: null,
 		currentPeriodEnd: PERIOD_END,
 		cancelAtPeriodEnd: false,
+		stripeScheduleId: null,
+		scheduledQuantity: null,
+		scheduledQuantityEffectiveAt: null,
 		...overrides,
 	}) as TUserAddonSubscription;
+
+/** What Stripe reports right now — the only thing the direction of a change is decided on. */
+const stripeState = (
+	overrides: Partial<TAddonSubscriptionState> = {},
+): TAddonSubscriptionState => ({
+	subscriptionId: 'sub_addon_1',
+	itemId: 'si_1',
+	priceId: 'price_addon',
+	quantity: 4,
+	currency: 'eur',
+	currentPeriodStart: new Date('2026-01-01T00:00:00Z'),
+	currentPeriodEnd: PERIOD_END,
+	cancelAtPeriodEnd: false,
+	scheduleId: null,
+	interval: 'month',
+	intervalCount: 1,
+	...overrides,
+});
 
 describe('ManageDomainAddonUseCase', () => {
 	let useCase: ManageDomainAddonUseCase;
@@ -40,6 +65,7 @@ describe('ManageDomainAddonUseCase', () => {
 	let mockEntitlementService: MockProxy<CustomDomainEntitlementService>;
 	let mockEnforce: MockProxy<EnforceCustomDomainLimitUseCase>;
 	let mockStripeService: MockProxy<StripeService>;
+	let mockTransitionService: MockProxy<AddonSubscriptionStatusTransitionService>;
 	let mockLogger: MockProxy<Logger>;
 
 	beforeEach(() => {
@@ -49,6 +75,7 @@ describe('ManageDomainAddonUseCase', () => {
 		mockEntitlementService = mock<CustomDomainEntitlementService>();
 		mockEnforce = mock<EnforceCustomDomainLimitUseCase>();
 		mockStripeService = mock<StripeService>();
+		mockTransitionService = mock<AddonSubscriptionStatusTransitionService>();
 		mockLogger = mock<Logger>();
 
 		useCase = new ManageDomainAddonUseCase(
@@ -58,6 +85,7 @@ describe('ManageDomainAddonUseCase', () => {
 			mockEntitlementService,
 			mockEnforce,
 			mockStripeService,
+			mockTransitionService,
 			mockLogger,
 		);
 
@@ -73,9 +101,14 @@ describe('ManageDomainAddonUseCase', () => {
 			effectiveLimit: 5,
 		});
 		mockEnforce.execute.mockResolvedValue({ effectiveLimit: 5, enabled: [], disabled: [] });
+		mockStripeService.getAddonSubscriptionState.mockResolvedValue(stripeState());
 		mockStripeService.updateSubscriptionQuantity.mockResolvedValue({
 			subscription: {} as Stripe.Subscription,
 			paymentPending: false,
+		});
+		mockStripeService.scheduleQuantityAtPeriodEnd.mockResolvedValue({
+			scheduleId: 'sub_sched_1',
+			effectiveAt: PERIOD_END,
 		});
 	});
 
@@ -98,20 +131,123 @@ describe('ManageDomainAddonUseCase', () => {
 		});
 	});
 
-	describe('increase', () => {
-		it('should charge immediately and grant the slots', async () => {
+	describe('quantity changes', () => {
+		it('should charge immediately and grant the slots on an increase', async () => {
 			await useCase.updateQuantity(USER_ID, 6, { prorationDate: 1_700_000_000 });
 
 			expect(mockStripeService.updateSubscriptionQuantity).toHaveBeenCalledWith({
 				subscriptionId: 'sub_addon_1',
 				quantity: 6,
-				billing: 'charge_now',
 				prorationDate: 1_700_000_000,
 			});
 			expect(mockAddonRepository.update).toHaveBeenCalledWith(
 				expect.anything(),
-				expect.objectContaining({ quantity: 6, pendingQuantity: null }),
+				expect.objectContaining({ quantity: 6 }),
 			);
+		});
+
+		it('should defer a reduction to the end of the period instead of applying it', async () => {
+			mockEnforce.execute.mockResolvedValue({
+				effectiveLimit: 3,
+				enabled: [],
+				disabled: ['b.example.com'],
+			});
+
+			const result = await useCase.updateQuantity(USER_ID, 2);
+
+			// The subscription itself must not be touched: that would prorate a credit, and this
+			// product never refunds.
+			expect(mockStripeService.updateSubscriptionQuantity).not.toHaveBeenCalled();
+			expect(mockStripeService.scheduleQuantityAtPeriodEnd).toHaveBeenCalledWith({
+				state: expect.objectContaining({ quantity: 4 }),
+				quantity: 2,
+			});
+			expect(mockAddonRepository.setScheduledQuantity).toHaveBeenCalledWith(expect.anything(), {
+				stripeScheduleId: 'sub_sched_1',
+				quantity: 2,
+				effectiveAt: PERIOD_END,
+			});
+			expect(result).toMatchObject({
+				quantity: 4,
+				scheduledQuantity: 2,
+				effectiveAt: PERIOD_END,
+				willDisable: ['b.example.com'],
+			});
+		});
+
+		it('should keep the domains live until a scheduled reduction takes effect', async () => {
+			await useCase.updateQuantity(USER_ID, 2);
+
+			// Only the dry run that names the doomed domains may run — nothing may be switched off.
+			expect(mockEnforce.execute).not.toHaveBeenCalledWith(USER_ID);
+			expect(mockEnforce.execute).toHaveBeenCalledWith(
+				USER_ID,
+				expect.objectContaining({ dryRun: true }),
+			);
+		});
+
+		it('should announce a scheduled reduction by email', async () => {
+			await useCase.updateQuantity(USER_ID, 2);
+
+			expect(mockTransitionService.emitReductionScheduled).toHaveBeenCalledWith({
+				userId: USER_ID,
+				stripeSubscriptionId: 'sub_addon_1',
+				quantity: 4,
+				scheduledQuantity: 2,
+				effectiveAt: PERIOD_END,
+			});
+		});
+
+		it('should drop a parked reduction when the quantity is raised again', async () => {
+			mockStripeService.getAddonSubscriptionState.mockResolvedValue(
+				stripeState({ scheduleId: 'sub_sched_1' }),
+			);
+			mockAddonRepository.findByUserAndType.mockResolvedValue(
+				addonRow({ stripeScheduleId: 'sub_sched_1', scheduledQuantity: 2 }),
+			);
+
+			const result = await useCase.updateQuantity(USER_ID, 8);
+
+			expect(mockStripeService.releaseSchedule).toHaveBeenCalledWith('sub_sched_1');
+			expect(mockStripeService.updateSubscriptionQuantity).toHaveBeenCalledWith(
+				expect.objectContaining({ quantity: 8 }),
+			);
+			expect(mockAddonRepository.update).toHaveBeenCalledWith(
+				expect.anything(),
+				expect.objectContaining({ quantity: 8, scheduledQuantity: null }),
+			);
+			expect(result.scheduledQuantity).toBeNull();
+		});
+
+		it('should replace a parked reduction rather than stack a second one', async () => {
+			mockStripeService.getAddonSubscriptionState.mockResolvedValue(
+				stripeState({ scheduleId: 'sub_sched_1' }),
+			);
+			mockAddonRepository.findByUserAndType.mockResolvedValue(
+				addonRow({ stripeScheduleId: 'sub_sched_1', scheduledQuantity: 3 }),
+			);
+
+			const result = await useCase.updateQuantity(USER_ID, 2);
+
+			expect(mockStripeService.scheduleQuantityAtPeriodEnd).toHaveBeenCalledWith(
+				expect.objectContaining({ quantity: 2 }),
+			);
+			expect(result).toMatchObject({ quantity: 4, scheduledQuantity: 2 });
+		});
+
+		it('should refuse a change once the add-on is set to end', async () => {
+			mockStripeService.getAddonSubscriptionState.mockResolvedValue(
+				stripeState({ cancelAtPeriodEnd: true }),
+			);
+
+			await expect(useCase.updateQuantity(USER_ID, 6)).rejects.toThrow(ConflictError);
+			expect(mockStripeService.updateSubscriptionQuantity).not.toHaveBeenCalled();
+		});
+
+		it('should bring the domains in line after an increase', async () => {
+			await useCase.updateQuantity(USER_ID, 6);
+
+			expect(mockEnforce.execute).toHaveBeenCalledWith(USER_ID);
 		});
 
 		it('should not grant slots when the payment could not be collected', async () => {
@@ -125,57 +261,70 @@ describe('ManageDomainAddonUseCase', () => {
 			expect(mockEnforce.execute).not.toHaveBeenCalled();
 		});
 
-		it('should restore the paid-for quantity before charging when a reduction is pending', async () => {
-			mockAddonRepository.findByUserAndType.mockResolvedValue(
-				addonRow({ quantity: 4, pendingQuantity: 2, pendingQuantityEffectiveAt: PERIOD_END }),
-			);
-
-			await useCase.updateQuantity(USER_ID, 6);
-
-			// Without this reset Stripe would prorate from 2 and bill twice for two slots.
-			expect(mockStripeService.resetSubscriptionQuantity).toHaveBeenCalledWith('sub_addon_1', 4);
-			const resetOrder = mockStripeService.resetSubscriptionQuantity.mock.invocationCallOrder[0];
-			const chargeOrder = mockStripeService.updateSubscriptionQuantity.mock.invocationCallOrder[0];
-			expect(resetOrder).toBeLessThan(chargeOrder);
-		});
-
-		it('should do nothing when the quantity is unchanged', async () => {
+		it('should do nothing when the quantity is unchanged and nothing is parked', async () => {
 			await useCase.updateQuantity(USER_ID, 4);
 
 			expect(mockStripeService.updateSubscriptionQuantity).not.toHaveBeenCalled();
+			expect(mockStripeService.scheduleQuantityAtPeriodEnd).not.toHaveBeenCalled();
+			expect(mockStripeService.releaseSchedule).not.toHaveBeenCalled();
 			expect(mockAddonRepository.update).not.toHaveBeenCalled();
+		});
+
+		it('should withdraw a parked reduction when the current quantity is confirmed', async () => {
+			mockStripeService.getAddonSubscriptionState.mockResolvedValue(
+				stripeState({ scheduleId: 'sub_sched_1' }),
+			);
+			mockAddonRepository.findByUserAndType.mockResolvedValue(
+				addonRow({ stripeScheduleId: 'sub_sched_1', scheduledQuantity: 2 }),
+			);
+
+			const result = await useCase.updateQuantity(USER_ID, 4);
+
+			expect(mockStripeService.releaseSchedule).toHaveBeenCalledWith('sub_sched_1');
+			expect(mockAddonRepository.clearScheduledQuantity).toHaveBeenCalled();
+			expect(mockStripeService.updateSubscriptionQuantity).not.toHaveBeenCalled();
+			expect(result).toMatchObject({ quantity: 4, scheduledQuantity: null, effectiveAt: null });
 		});
 	});
 
-	describe('reduction', () => {
-		it('should defer the reduction to the period end without charging', async () => {
+	describe('cancellation', () => {
+		it('should release a parked reduction before setting cancel-at-period-end', async () => {
+			// Stripe rejects cancellation changes while a schedule owns the subscription.
+			mockStripeService.getAddonSubscriptionState.mockResolvedValue(
+				stripeState({ scheduleId: 'sub_sched_1' }),
+			);
+			mockAddonRepository.findByUserAndType.mockResolvedValue(
+				addonRow({ stripeScheduleId: 'sub_sched_1', scheduledQuantity: 2 }),
+			);
+
+			await useCase.cancel(USER_ID);
+
+			expect(mockStripeService.releaseSchedule).toHaveBeenCalledWith('sub_sched_1');
+			expect(mockStripeService.setCancelAtPeriodEnd).toHaveBeenCalledWith('sub_addon_1', true);
+			const releaseOrder = mockStripeService.releaseSchedule.mock.invocationCallOrder[0];
+			const cancelOrder = mockStripeService.setCancelAtPeriodEnd.mock.invocationCallOrder[0];
+			expect(releaseOrder).toBeLessThan(cancelOrder);
+		});
+
+		it('should report the domains that lapse with the add-on', async () => {
 			mockEnforce.execute.mockResolvedValue({
-				effectiveLimit: 3,
+				effectiveLimit: 1,
 				enabled: [],
-				disabled: ['b.example.com'],
+				disabled: ['a.example.com'],
 			});
 
-			const result = await useCase.updateQuantity(USER_ID, 2);
+			const result = await useCase.cancel(USER_ID);
 
-			expect(mockStripeService.updateSubscriptionQuantity).toHaveBeenCalledWith(
-				expect.objectContaining({ quantity: 2, billing: 'defer' }),
-			);
-			expect(mockAddonRepository.schedulePendingQuantity).toHaveBeenCalledWith(
-				expect.anything(),
-				2,
-				PERIOD_END,
-			);
 			expect(result).toMatchObject({
-				quantity: 4,
-				pendingQuantity: 2,
+				cancelAtPeriodEnd: true,
 				effectiveAt: PERIOD_END,
-				willDisable: ['b.example.com'],
+				willDisable: ['a.example.com'],
 			});
 		});
 	});
 
 	describe('preview', () => {
-		it('should quote the Stripe amount for an increase', async () => {
+		beforeEach(() => {
 			mockStripeService.previewQuantityChange.mockResolvedValue({
 				amountDue: 8073,
 				currency: 'eur',
@@ -185,20 +334,23 @@ describe('ManageDomainAddonUseCase', () => {
 				brand: 'visa',
 				last4: '4242',
 			});
+		});
 
+		it('should quote the charge for an increase', async () => {
 			const preview = await useCase.previewQuantityChange(USER_ID, 6);
 
 			expect(preview).toMatchObject({
+				mode: 'immediate',
 				amountDueNow: 8073,
 				currency: 'eur',
 				prorationDate: 1_700_000_000,
-				effectiveAt: null,
-				requiresPendingReset: false,
 				paymentMethod: { brand: 'visa', last4: '4242' },
+				effectiveAt: null,
+				willDisable: [],
 			});
 		});
 
-		it('should quote nothing for a reduction and name the affected domains', async () => {
+		it('should quote a reduction as free and name the domains it would cost', async () => {
 			mockEnforce.execute.mockResolvedValue({
 				effectiveLimit: 3,
 				enabled: [],
@@ -207,43 +359,39 @@ describe('ManageDomainAddonUseCase', () => {
 
 			const preview = await useCase.previewQuantityChange(USER_ID, 2);
 
+			// Nothing is charged and nothing is credited, so there is no Stripe amount to fetch.
+			expect(mockStripeService.previewQuantityChange).not.toHaveBeenCalled();
 			expect(preview).toMatchObject({
+				mode: 'scheduled',
 				amountDueNow: 0,
+				prorationDate: null,
 				effectiveAt: PERIOD_END,
 				willDisable: ['b.example.com'],
 			});
-			expect(mockStripeService.previewQuantityChange).not.toHaveBeenCalled();
 		});
 
-		it('should ask for the pending reduction to be withdrawn before quoting an increase', async () => {
+		it('should quote withdrawing a parked reduction as free and immediate', async () => {
 			mockAddonRepository.findByUserAndType.mockResolvedValue(
-				addonRow({ quantity: 4, pendingQuantity: 2, pendingQuantityEffectiveAt: PERIOD_END }),
+				addonRow({ stripeScheduleId: 'sub_sched_1', scheduledQuantity: 2 }),
 			);
 
-			const preview = await useCase.previewQuantityChange(USER_ID, 6);
+			const preview = await useCase.previewQuantityChange(USER_ID, 4);
 
-			expect(preview.requiresPendingReset).toBe(true);
-			// Quoting from Stripe's reduced quantity would show a higher amount than is really due.
-			expect(mockStripeService.previewQuantityChange).not.toHaveBeenCalled();
-		});
-	});
-
-	describe('withdrawing a pending reduction', () => {
-		it('should reset Stripe to the paid-for quantity at no cost', async () => {
-			mockAddonRepository.findByUserAndType.mockResolvedValue(
-				addonRow({ quantity: 4, pendingQuantity: 2, pendingQuantityEffectiveAt: PERIOD_END }),
-			);
-
-			await useCase.cancelPendingReduction(USER_ID);
-
-			expect(mockStripeService.resetSubscriptionQuantity).toHaveBeenCalledWith('sub_addon_1', 4);
-			expect(mockAddonRepository.clearPendingQuantity).toHaveBeenCalled();
+			expect(preview).toMatchObject({
+				mode: 'scheduled',
+				amountDueNow: 0,
+				scheduledQuantity: 2,
+				effectiveAt: null,
+				willDisable: [],
+			});
 		});
 
-		it('should do nothing when no reduction is pending', async () => {
-			await useCase.cancelPendingReduction(USER_ID);
+		it('should not change anything while quoting', async () => {
+			await useCase.previewQuantityChange(USER_ID, 6);
 
-			expect(mockStripeService.resetSubscriptionQuantity).not.toHaveBeenCalled();
+			expect(mockStripeService.updateSubscriptionQuantity).not.toHaveBeenCalled();
+			expect(mockStripeService.scheduleQuantityAtPeriodEnd).not.toHaveBeenCalled();
+			expect(mockAddonRepository.update).not.toHaveBeenCalled();
 		});
 	});
 });

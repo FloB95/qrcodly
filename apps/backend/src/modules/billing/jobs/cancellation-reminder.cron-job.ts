@@ -29,11 +29,12 @@ const DATE_FORMAT: Intl.DateTimeFormatOptions = {
 @CronJob()
 export class CancellationReminderCronJob extends AbstractCronJob {
 	// Run every day at 2:00 AM
-	schedule = '0 2 * * *';
+	schedule = env.CRON_CANCELLATION_REMINDER;
 
 	protected async execute(): Promise<void> {
 		await this.sendProReminders();
 		await this.sendAddonReminders();
+		await this.sendAddonReductionReminders();
 	}
 
 	private async sendProReminders(): Promise<void> {
@@ -179,6 +180,86 @@ export class CancellationReminderCronJob extends AbstractCronJob {
 				});
 			} catch (error) {
 				this.logger.error('domainAddon.cancellationReminderFailed', {
+					subscription: { userId: addon.userId },
+					error: error as Error,
+				});
+			}
+		}
+	}
+
+	/**
+	 * Last call before a parked reduction takes effect.
+	 *
+	 * The domains are re-projected rather than taken from the announcement sent at scheduling
+	 * time: the user keeps every paid slot until the date, so anything added since then can have
+	 * changed which domains lose out.
+	 */
+	private async sendAddonReductionReminders(): Promise<void> {
+		const addonSubscriptionRepository = container.resolve(UserAddonSubscriptionRepository);
+		const entitlementService = container.resolve(CustomDomainEntitlementService);
+		const enforceCustomDomainLimitUseCase = container.resolve(EnforceCustomDomainLimitUseCase);
+		const clerkUserInfoService = container.resolve(ClerkUserInfoService);
+		const mailer = container.resolve(Mailer);
+
+		const addons = await addonSubscriptionRepository.findPendingReductionReminders(
+			CANCELLATION_REMINDER_DAYS_BEFORE,
+		);
+
+		if (addons.length === 0) {
+			this.logger.debug('No add-on reduction reminders to send');
+			return;
+		}
+
+		this.logger.info(`Sending ${addons.length} add-on reduction reminder(s)`);
+
+		for (const addon of addons) {
+			try {
+				const { scheduledQuantity, scheduledQuantityEffectiveAt } = addon;
+				if (scheduledQuantity === null || scheduledQuantityEffectiveAt === null) continue;
+
+				const { email, firstName } = await clerkUserInfoService.getUserInfo(addon.userId);
+				if (!email) {
+					this.logger.warn('domainAddon.reductionReminder.noEmail', {
+						subscription: { userId: addon.userId },
+					});
+					continue;
+				}
+
+				const { baseLimit } = await entitlementService.getCustomDomainLimit(addon.userId);
+				const { disabled } = await enforceCustomDomainLimitUseCase.execute(addon.userId, {
+					dryRun: true,
+					overrideLimit: baseLimit + scheduledQuantity,
+				});
+
+				const template = await mailer.getTemplate('domain-addon-reduction-scheduled');
+				const html = template({
+					firstName: firstName || 'there',
+					effectiveDate: scheduledQuantityEffectiveAt.toLocaleDateString('en-US', DATE_FORMAT),
+					currentQuantity: addon.quantity,
+					scheduledQuantity,
+					isCurrentSingular: addon.quantity === 1,
+					isScheduledSingular: scheduledQuantity === 1,
+					affectedDomains: disabled,
+					hasAffectedDomains: disabled.length > 0,
+					domainsUrl: `${env.FRONTEND_URL}/dashboard/settings/domains`,
+					logoUrl: `${env.FRONTEND_URL}/email-logo.png`,
+					year: new Date().getFullYear(),
+				});
+
+				await mailer.sendMail({
+					to: email,
+					subject: 'Reminder: Your QRcodly Extra Domains Change Soon',
+					html,
+					template: 'domain-addon-reduction-scheduled',
+				});
+
+				await addonSubscriptionRepository.markCancellationReminderSent(addon);
+
+				this.logger.info('domainAddon.reductionReminderSent', {
+					subscription: { userId: addon.userId, scheduledQuantity },
+				});
+			} catch (error) {
+				this.logger.error('domainAddon.reductionReminderFailed', {
 					subscription: { userId: addon.userId },
 					error: error as Error,
 				});

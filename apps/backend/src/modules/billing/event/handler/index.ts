@@ -6,3 +6,5 @@ import './domain-addon-active.event-handler';
 import './domain-addon-canceled.event-handler';
 import './domain-addon-cancel-initiated.event-handler';
 import './domain-addon-past-due.event-handler';
+import './domain-addon-reduction-scheduled.event-handler';
+import './domain-addon-quantity-reduced.event-handler';
