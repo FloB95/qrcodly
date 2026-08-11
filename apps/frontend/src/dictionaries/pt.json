@@ -1549,7 +1549,7 @@
 				"everythingInFree": "Tudo do plano Gratuito",
 				"unlimitedTags": "Tags ilimitadas",
 				"largerBulkImports": "Importações em massa maiores (50 linhas, 2MB)",
-				"customDomains": "Um domínio personalizado para QR codes e URLs curtas",
+				"customDomains": "Um domínio próprio incluído — acrescente mais quando quiser",
 				"customShortCodes": "Caminhos de URL curtas personalizados (em breve)",
 				"prioritySupport": "Suporte prioritário",
 				"teamFeatures": "Recursos de equipe (em breve)",
@@ -3680,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "O domínio da sua agência em cada link de cliente",
-				"description": "O Pro inclui um domínio próprio. Coloque a marca da sua agência nele e dê a cada cliente o próprio slug legível — cada entregável sai com um link com a sua cara.",
-				"bullet1": "Um domínio próprio por plano Pro, configurado via CNAME",
+				"description": "O Pro inclui um domínio próprio e pode acrescentar mais sempre que um cliente precisar do seu. Ponha a marca da sua agência num deles e dê a cada cliente um slug legível — cada entrega leva um link com a sua assinatura.",
+				"bullet1": "Um domínio próprio incluído, mais subscritíveis por domínio",
 				"bullet2": "Slugs legíveis por cliente em vez de caracteres aleatórios",
 				"bullet3": "Configuração de DNS guiada com verificação"
 			},
@@ -3725,10 +3725,10 @@
 			"q3": "Posso compartilhar dados de cliques com clientes?",
 			"a3": "Sim. Exporte análises de links ou compartilhe capturas de tela do painel. Cada link mostra contagens de cliques, dados geográficos e detalhamentos de dispositivos.",
 			"q4": "Existe um limite de quantos domínios personalizados posso adicionar?",
-			"a4": "Contas Pro suportam múltiplos domínios personalizados. O limite exato depende do tier do seu plano — consulte a página de preços para detalhes.",
+			"a4": "O Pro inclui um. Pode subscrever até 20 adicionais como extra, com preço por domínio — veja a página de preços. Os domínios adicionais ficam disponíveis de imediato; se reduzir a quantidade, a alteração aplica-se no fim do período pago.",
 			"viewAll": "Ver todas as perguntas",
-			"q5": "Posso conectar um domínio próprio para cada cliente?",
-			"a5": "Não em um único plano: o Pro inclui um domínio próprio por conta. A maioria das agências coloca a própria marca nesse domínio e separa os clientes com slugs e etiquetas. Se um cliente precisa de links no próprio domínio, a solução limpa é um plano na conta dele — assim os links continuam sendo dele se um dia ele sair."
+			"q5": "O que acontece aos links de um cliente se a colaboração terminar?",
+			"a5": "Os links continuam na sua conta e a funcionar. Se o domínio for do cliente, remova-o aqui e deixe-o adicioná-lo ao plano dele. Planeie essa mudança antes de imprimir seja o que for: um código QR leva o domínio dentro da imagem, por isso os códigos impressos deixam de funcionar assim que o domínio desaparece."
 		},
 		"cta": {
 			"title": "Escale o Gerenciamento de Links da Sua Agência",
@@ -3805,8 +3805,8 @@
 				"description": "Quando um cliente sai, ele deveria poder levar os destinos dele. Links que você pode redirecionar tornam isso uma conversa em vez de um sequestro."
 			},
 			"tip4": {
-				"title": "Um domínio, muitos clientes",
-				"description": "Um plano Pro inclui um domínio próprio. Coloque a marca da sua agência nele e separe os clientes com slugs — ou deixe cada cliente ter o próprio plano se o domínio precisar ser dele."
+				"title": "Um domínio por cliente",
+				"description": "O Pro traz um domínio próprio; acrescente um por cliente quando este precisar da sua própria marca. Ou fique por um único domínio de agência e separe clientes com slugs e etiquetas — ambas funcionam e pode mudar de ideias depois."
 			}
 		}
 	},

@@ -1549,7 +1549,7 @@
 				"everythingInFree": "Alles in Gratis",
 				"unlimitedTags": "Onbeperkte tags",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
-				"customDomains": "Eén aangepast domein voor QR-codes en korte URLs",
+				"customDomains": "Eén eigen domein inbegrepen — voeg er altijd meer toe",
 				"customShortCodes": "Aangepaste korte URL-paden (binnenkort beschikbaar)",
 				"prioritySupport": "Prioriteitsondersteuning",
 				"teamFeatures": "Teamfuncties (binnenkort)",
@@ -3680,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "Je bureaudomein op elke klantlink",
-				"description": "Pro bevat één eigen domein. Zet je bureaumerk erop en geef elke klant zijn eigen leesbare slug: elk opgeleverd stuk gaat de deur uit met een link waaraan te zien is dat jij hem bouwde.",
-				"bullet1": "Eén eigen domein per Pro-abonnement, ingesteld via CNAME",
+				"description": "Pro bevat één eigen domein, en je kunt er meer toevoegen zodra een klant een eigen domein wil. Zet je bureaumerk op één daarvan en geef elke klant een leesbare slug — elke oplevering krijgt een link waaraan je ziet wie hem maakte.",
+				"bullet1": "Eén eigen domein inbegrepen, meer per domein bij te boeken",
 				"bullet2": "Leesbare slugs per klant in plaats van willekeurige tekens",
 				"bullet3": "Begeleide DNS-instelling met verificatie"
 			},
@@ -3725,10 +3725,10 @@
 			"q3": "Kan ik klikgegevens delen met klanten?",
 			"a3": "Ja. Exporteer linkanalyses of deel screenshots vanuit het dashboard. Elke link toont het aantal klikken, geografische gegevens en apparaatoverzichten.",
 			"q4": "Is er een limiet op het aantal eigen domeinen dat ik kan toevoegen?",
-			"a4": "Pro-accounts ondersteunen meerdere eigen domeinen. De exacte limiet hangt af van je abonnement — bekijk de prijspagina voor details.",
+			"a4": "Pro bevat er één. Je kunt er tot 20 extra bijboeken als add-on, per domein geprijsd — zie de prijspagina. Extra domeinen zijn direct beschikbaar; verlaag je het aantal weer, dan gaat dat in aan het eind van de betaalde periode.",
 			"viewAll": "Bekijk alle veelgestelde vragen",
-			"q5": "Kan ik voor elke klant een eigen domein koppelen?",
-			"a5": "Niet in één abonnement: Pro bevat één eigen domein per account. De meeste bureaus zetten hun eigen merk op dat domein en scheiden klanten met slugs en labels. Heeft een klant links op zijn eigen domein nodig, dan is een abonnement op zijn account de schone oplossing — zo blijven de links ook van hem als hij ooit vertrekt."
+			"q5": "Wat gebeurt er met de links van een klant als de samenwerking stopt?",
+			"a5": "De links blijven in jouw account en blijven werken. Is het domein van de klant, verwijder het dan hier en laat hem het aan zijn eigen abonnement toevoegen. Plan die overstap vóór er iets naar de drukker gaat: een QR-code draagt het domein in de afbeelding, dus gedrukte codes werken niet meer zodra het domein weg is."
 		},
 		"cta": {
 			"title": "Schaal het linkbeheer van uw bureau",
@@ -3805,8 +3805,8 @@
 				"description": "Vertrekt een klant, dan zou hij zijn bestemmingen mee moeten kunnen nemen. Links die je kunt doorverwijzen maken daar een gesprek van in plaats van een gijzeling."
 			},
 			"tip4": {
-				"title": "Eén domein, veel klanten",
-				"description": "Een Pro-abonnement bevat één eigen domein. Zet je bureaumerk erop en scheid klanten met slugs — of laat elke klant een eigen abonnement voeren als het domein van hem moet zijn."
+				"title": "Eén domein per klant",
+				"description": "Pro heeft één eigen domein; voeg er een per klant toe als die eigen branding nodig heeft. Of houd één bureaudomein aan en scheid klanten met slugs en tags — beide werken, en je kunt later nog wisselen."
 			}
 		}
 	},

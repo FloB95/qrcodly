@@ -1549,7 +1549,7 @@
 				"everythingInFree": "Alles aus Free",
 				"unlimitedTags": "Unbegrenzte Tags",
 				"largerBulkImports": "Größere Massenimporte (50 Zeilen, 2MB)",
-				"customDomains": "Eine eigene Domain für QR-Codes & Kurz-URLs",
+				"customDomains": "Eine eigene Domain inklusive — jederzeit erweiterbar",
 				"customShortCodes": "Eigene Kurz-URL-Pfade (bald verfügbar)",
 				"prioritySupport": "Prioritäts-Support",
 				"teamFeatures": "Team-Funktionen (bald verfügbar)",
@@ -3680,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "Deine Agenturdomain auf jedem Kundenlink",
-				"description": "Pro enthält eine eigene Domain. Setz deine Agenturmarke darauf und gib jedem Kunden einen eigenen, lesbaren Slug — jedes Ergebnis geht mit einem Link raus, dem man ansieht, wer ihn gebaut hat.",
-				"bullet1": "Eine eigene Domain pro Pro-Plan, eingerichtet per CNAME",
+				"description": "Pro enthält eine eigene Domain, und du kannst jederzeit weitere dazubuchen, wenn ein Kunde seine eigene braucht. Setz deine Agenturmarke auf eine davon und gib jedem Kunden einen lesbaren Slug — jedes Deliverable trägt einen Link, dem man ansieht, wer ihn gebaut hat.",
+				"bullet1": "Eine eigene Domain inklusive, weitere pro Domain buchbar",
 				"bullet2": "Lesbare Slugs pro Kunde statt zufälliger Zeichen",
 				"bullet3": "Geführte DNS-Einrichtung mit Prüfung"
 			},
@@ -3725,10 +3725,10 @@
 			"q3": "Kann ich Klickdaten mit Kunden teilen?",
 			"a3": "Ja. Exportiere Link-Analysen oder teile Screenshots aus dem Dashboard. Jeder Link zeigt Klickzahlen, geografische Daten und Geräte-Aufschlüsselungen.",
 			"q4": "Gibt es ein Limit für eigene Domains?",
-			"a4": "Pro-Accounts unterstützen mehrere eigene Domains. Das genaue Limit hängt von deinem Tarif ab — prüfe die Preisseite für Details.",
+			"a4": "Bei Pro ist eine enthalten. Bis zu 20 weitere kannst du als Add-on dazubuchen, abgerechnet pro Domain — siehe Preisseite. Zusätzliche Domains stehen sofort bereit; reduzierst du die Anzahl wieder, greift die Änderung zum Ende der bezahlten Laufzeit.",
 			"viewAll": "Alle FAQs ansehen",
-			"q5": "Kann ich für jeden Kunden eine eigene Domain verbinden?",
-			"a5": "Nicht in einem einzelnen Plan — Pro enthält eine eigene Domain pro Konto. Die meisten Agenturen setzen ihre eigene Marke auf diese Domain und trennen Kunden über Slugs und Tags. Braucht ein Kunde Links auf seiner eigenen Domain, ist ein Plan auf seinem Konto die saubere Lösung — dann bleiben die Links auch seine, falls er später weiterzieht."
+			"q5": "Was passiert mit den Links eines Kunden, wenn die Zusammenarbeit endet?",
+			"a5": "Die Links bleiben in deinem Account und funktionieren weiter. Gehört die Domain dem Kunden, entfernst du sie hier und er fügt sie seinem eigenen Tarif hinzu. Plane diesen Wechsel, bevor etwas in den Druck geht: Ein QR-Code trägt die Domain fest im Bild — gedruckte Codes auf einer entfernten Domain funktionieren nicht mehr."
 		},
 		"cta": {
 			"title": "Die Link-Verwaltung deiner Agentur skalieren",
@@ -3805,8 +3805,8 @@
 				"description": "Verlässt ein Kunde die Agentur, sollte er seine Ziele mitnehmen können. Links, die du umleiten kannst, machen daraus ein Gespräch statt einer Geiselnahme."
 			},
 			"tip4": {
-				"title": "Eine Domain, viele Kunden",
-				"description": "Ein Pro-Plan enthält eine eigene Domain. Setz deine Agenturmarke darauf und trenne Kunden über Slugs — oder lass jeden Kunden einen eigenen Plan führen, wenn die Domain ihm gehören muss."
+				"title": "Eine Domain je Kunde",
+				"description": "Pro bringt eine eigene Domain mit; buche eine weitere pro Kunde, wenn er sein eigenes Branding braucht. Oder bleib bei einer Agenturdomain und trenne Kunden über Slugs und Tags — beides geht, und du kannst es später ändern."
 			}
 		}
 	},

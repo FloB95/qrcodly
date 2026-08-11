@@ -1549,7 +1549,7 @@
 				"everythingInFree": "Everything in Free",
 				"unlimitedTags": "Unlimited tags",
 				"largerBulkImports": "Larger bulk imports (50 rows, 2MB)",
-				"customDomains": "One custom domain for QR codes & short URLs",
+				"customDomains": "One custom domain included — add more any time",
 				"customShortCodes": "Custom short URL paths (coming soon)",
 				"prioritySupport": "Priority support",
 				"teamFeatures": "Team features (coming soon)",
@@ -3680,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "Your Agency Domain on Every Client Link",
-				"description": "Pro includes one custom domain. Put your agency brand on it and give each client their own readable slug — every deliverable ships with a link that looks like you built it.",
-				"bullet1": "One custom domain per Pro plan, set up via CNAME",
+				"description": "Pro includes one custom domain, and you can add more whenever a client needs their own. Put your agency brand on one and give each client a readable slug — every deliverable ships with a link that looks like you built it.",
+				"bullet1": "One custom domain included, more bookable per domain",
 				"bullet2": "Readable per-client slugs instead of random characters",
 				"bullet3": "Guided DNS setup with verification"
 			},
@@ -3725,10 +3725,10 @@
 			"q3": "Can I share click data with clients?",
 			"a3": "Yes. Export link analytics or share screenshots from the dashboard. Each link shows click counts, geographic data, and device breakdowns.",
 			"q4": "Is there a limit on how many custom domains I can add?",
-			"a4": "Pro accounts support multiple custom domains. The exact limit depends on your plan tier — check the pricing page for details.",
+			"a4": "Pro includes one. You can book up to 20 more as an add-on, priced per domain — see the pricing page. Extra domains are available immediately; if you reduce the number again, the change takes effect at the end of the paid period.",
 			"viewAll": "View all FAQs",
-			"q5": "Can I connect a separate custom domain for each client?",
-			"a5": "Not on a single plan — Pro includes one custom domain per account. Most agencies put their own brand on that domain and separate clients through slugs and tags. If a client needs links on their own domain, the clean solution is a plan on their account, which also means the links stay theirs if they ever move on."
+			"q5": "What happens to a client's links if we part ways?",
+			"a5": "The links stay in your account and keep resolving. If the domain belongs to the client, remove it here and let them add it to their own plan. Plan that switch before anything goes to print: a QR code carries the domain inside the image, so codes printed on a domain stop working once it is gone."
 		},
 		"cta": {
 			"title": "Scale Your Agency's Link Management",
@@ -3805,8 +3805,8 @@
 				"description": "When a client leaves, they should be able to take their destinations with them. Links you can repoint make that a conversation instead of a hostage negotiation."
 			},
 			"tip4": {
-				"title": "One Domain, Many Clients",
-				"description": "A Pro plan carries one custom domain. Put your agency brand on it and use slugs per client — or have each client run their own plan if the domain must be theirs."
+				"title": "A Domain per Client",
+				"description": "Pro carries one custom domain; add one per client when they need their own branding. Or keep a single agency domain and separate clients through slugs and tags — both work, and you can change your mind later."
 			}
 		}
 	},

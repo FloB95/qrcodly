@@ -1553,7 +1553,7 @@
 				"everythingInFree": "Todo en Gratis",
 				"unlimitedTags": "Etiquetas ilimitadas",
 				"largerBulkImports": "Importaciones masivas más grandes (50 filas, 2MB)",
-				"customDomains": "Un dominio personalizado para códigos QR y URLs cortas",
+				"customDomains": "Un dominio propio incluido: añade más cuando quieras",
 				"customShortCodes": "Rutas de URL cortas personalizadas (próximamente)",
 				"prioritySupport": "Soporte prioritario",
 				"teamFeatures": "Funciones de equipo (próximamente)",
@@ -3680,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "El dominio de tu agencia en cada enlace de cliente",
-				"description": "Pro incluye un dominio propio. Pon en él la marca de tu agencia y dale a cada cliente su propio slug legible: cada entregable sale con un enlace que se nota que lo hiciste tú.",
-				"bullet1": "Un dominio propio por plan Pro, configurado vía CNAME",
+				"description": "Pro incluye un dominio propio y puedes añadir más cuando un cliente necesite el suyo. Pon la marca de tu agencia en uno y da a cada cliente un slug legible: cada entregable lleva un enlace con tu sello.",
+				"bullet1": "Un dominio propio incluido, más contratables por dominio",
 				"bullet2": "Slugs legibles por cliente en vez de caracteres aleatorios",
 				"bullet3": "Configuración DNS guiada con verificación"
 			},
@@ -3725,10 +3725,10 @@
 			"q3": "¿Puedo compartir datos de clics con los clientes?",
 			"a3": "Sí. Exporta las analíticas de enlaces o comparte capturas de pantalla del panel. Cada enlace muestra conteos de clics, datos geográficos y desgloses de dispositivos.",
 			"q4": "¿Hay un límite en cuántos dominios personalizados puedo añadir?",
-			"a4": "Las cuentas Pro soportan múltiples dominios personalizados. El límite exacto depende de tu nivel de plan — consulta la página de precios para más detalles.",
+			"a4": "Pro incluye uno. Puedes contratar hasta 20 más como complemento, con precio por dominio; consulta la página de precios. Los dominios adicionales están disponibles de inmediato; si reduces la cantidad, el cambio se aplica al final del periodo pagado.",
 			"viewAll": "Ver todas las FAQs",
-			"q5": "¿Puedo conectar un dominio propio para cada cliente?",
-			"a5": "No dentro de un mismo plan: Pro incluye un dominio propio por cuenta. La mayoría de agencias ponen su propia marca en ese dominio y separan a los clientes con slugs y etiquetas. Si un cliente necesita enlaces en su propio dominio, la solución limpia es un plan en su cuenta, y así los enlaces siguen siendo suyos si algún día se marcha."
+			"q5": "¿Qué pasa con los enlaces de un cliente si dejamos de trabajar juntos?",
+			"a5": "Los enlaces permanecen en tu cuenta y siguen funcionando. Si el dominio es del cliente, elimínalo aquí y que lo añada a su propio plan. Planifica ese cambio antes de imprimir nada: un código QR lleva el dominio dentro de la imagen, así que los códigos impresos dejan de funcionar cuando el dominio desaparece."
 		},
 		"cta": {
 			"title": "Escala la Gestión de Enlaces de tu Agencia",
@@ -3805,8 +3805,8 @@
 				"description": "Cuando un cliente se va, debería poder llevarse sus destinos. Los enlaces que puedes redirigir convierten eso en una conversación y no en un secuestro."
 			},
 			"tip4": {
-				"title": "Un dominio, muchos clientes",
-				"description": "Un plan Pro incluye un dominio propio. Pon en él la marca de tu agencia y separa a los clientes con slugs, o deja que cada cliente tenga su propio plan si el dominio debe ser suyo."
+				"title": "Un dominio por cliente",
+				"description": "Pro incluye un dominio propio; añade uno por cliente cuando necesite su propia marca. O usa un único dominio de agencia y separa clientes con slugs y etiquetas: ambas opciones funcionan y puedes cambiar de idea después."
 			}
 		}
 	},

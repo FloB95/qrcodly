@@ -1549,7 +1549,7 @@
 				"everythingInFree": "Wszystko z Darmowego",
 				"unlimitedTags": "Nieograniczone tagi",
 				"largerBulkImports": "Większe importy masowe (50 wierszy, 2MB)",
-				"customDomains": "Jedna własna domena dla kodów QR i krótkich URL-i",
+				"customDomains": "Jedna własna domena w cenie — dodaj kolejne, kiedy chcesz",
 				"customShortCodes": "Własne ścieżki krótkich URL-i (wkrótce)",
 				"prioritySupport": "Priorytetowe wsparcie",
 				"teamFeatures": "Funkcje zespołowe (wkrótce)",
@@ -3680,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "Domena Twojej agencji na każdym linku klienta",
-				"description": "Pro obejmuje jedną własną domenę. Umieść na niej markę swojej agencji i daj każdemu klientowi własny czytelny slug — każdy dostarczony materiał wychodzi z linkiem, po którym widać, że to Twoja robota.",
-				"bullet1": "Jedna własna domena na plan Pro, skonfigurowana przez CNAME",
+				"description": "Pro zawiera jedną własną domenę, a kolejne dodasz, gdy klient potrzebuje swojej. Umieść markę agencji na jednej z nich i daj każdemu klientowi czytelny slug — każdy materiał trafia do niego z linkiem, po którym widać, kto go zrobił.",
+				"bullet1": "Jedna własna domena w cenie, kolejne do wykupienia za domenę",
 				"bullet2": "Czytelne slugi na klienta zamiast losowych znaków",
 				"bullet3": "Prowadzona konfiguracja DNS z weryfikacją"
 			},
@@ -3725,10 +3725,10 @@
 			"q3": "Czy mogę udostępniać dane o kliknięciach klientom?",
 			"a3": "Tak. Eksportuj analitykę linków lub udostępnij zrzuty ekranu z panelu. Każdy link pokazuje liczbę kliknięć, dane geograficzne i dane o urządzeniach.",
 			"q4": "Czy jest limit na liczbę własnych domen?",
-			"a4": "Konta Pro obsługują wiele własnych domen. Dokładny limit zależy od poziomu planu — sprawdź stronę z cenami po szczegóły.",
+			"a4": "Pro zawiera jedną. Możesz dokupić do 20 kolejnych jako dodatek, rozliczany za domenę — zobacz stronę z cennikiem. Dodatkowe domeny są dostępne od razu; gdy zmniejszysz ich liczbę, zmiana zadziała z końcem opłaconego okresu.",
 			"viewAll": "Zobacz wszystkie FAQ",
-			"q5": "Czy mogę podłączyć osobną własną domenę dla każdego klienta?",
-			"a5": "Nie w jednym planie: Pro obejmuje jedną własną domenę na konto. Większość agencji umieszcza na tej domenie własną markę i rozdziela klientów slugami i tagami. Jeśli klient potrzebuje linków na własnej domenie, czystym rozwiązaniem jest plan na jego koncie — wtedy linki pozostają jego, gdyby kiedyś odszedł."
+			"q5": "Co dzieje się z linkami klienta, gdy kończycie współpracę?",
+			"a5": "Linki zostają na Twoim koncie i działają dalej. Jeśli domena należy do klienta, usuń ją tutaj, a on doda ją do własnego planu. Zaplanuj to przed drukiem: kod QR ma domenę zapisaną w obrazie, więc wydrukowane kody przestaną działać, gdy domeny zabraknie."
 		},
 		"cta": {
 			"title": "Skaluj zarządzanie linkami w swojej agencji",
@@ -3805,8 +3805,8 @@
 				"description": "Gdy klient odchodzi, powinien móc zabrać swoje cele. Linki, które możesz przekierować, czynią z tego rozmowę, a nie porwanie zakładnika."
 			},
 			"tip4": {
-				"title": "Jedna domena, wielu klientów",
-				"description": "Plan Pro obejmuje jedną własną domenę. Umieść na niej markę swojej agencji i rozdziel klientów slugami — albo pozwól każdemu klientowi prowadzić własny plan, jeśli domena ma należeć do niego."
+				"title": "Domena na klienta",
+				"description": "Pro ma jedną własną domenę; dodaj po jednej na klienta, gdy potrzebuje własnego brandingu. Albo zostań przy jednej domenie agencji i rozdzielaj klientów slugami i tagami — obie drogi działają, a decyzję możesz zmienić później."
 			}
 		}
 	},

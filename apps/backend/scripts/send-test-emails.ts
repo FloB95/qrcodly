@@ -96,6 +96,78 @@ const templates: TemplateConfig[] = [
 		},
 	},
 
+	// --- Extra custom domains (paid add-on) ---
+	{
+		file: 'domain-addon-reduction-scheduled.handlebars',
+		subject: '[Test] Extra domains — reduction scheduled (the warning)',
+		vars: {
+			firstName: 'Flo',
+			effectiveDate: 'Wednesday, January 1, 2027',
+			currentQuantity: 5,
+			scheduledQuantity: 2,
+			isCurrentSingular: false,
+			isScheduledSingular: false,
+			affectedDomains: ['links.example.com', 'go.example.org', 'qr.example.net'],
+			hasAffectedDomains: true,
+			domainsUrl: `${frontendUrl}/dashboard/settings/domains`,
+			year,
+		},
+	},
+	{
+		// down to a single slot, so the singular wording is exercised too
+		file: 'domain-addon-reduction-scheduled.handlebars',
+		subject: '[Test] Extra domains — reduction scheduled (singular, nothing lost)',
+		vars: {
+			firstName: 'Flo',
+			effectiveDate: 'Wednesday, January 1, 2027',
+			currentQuantity: 2,
+			scheduledQuantity: 1,
+			isCurrentSingular: false,
+			isScheduledSingular: true,
+			affectedDomains: [],
+			hasAffectedDomains: false,
+			domainsUrl: `${frontendUrl}/dashboard/settings/domains`,
+			year,
+		},
+	},
+	{
+		file: 'domain-addon-quantity-reduced.handlebars',
+		subject: '[Test] Extra domains — reduction now in effect',
+		vars: {
+			firstName: 'Flo',
+			quantity: 2,
+			isSingular: false,
+			affectedDomains: ['go.example.org', 'qr.example.net'],
+			hasAffectedDomains: true,
+			domainsUrl: `${frontendUrl}/dashboard/settings/domains`,
+			year,
+		},
+	},
+	{
+		file: 'domain-addon-cancel-initiated.handlebars',
+		subject: '[Test] Extra domains — cancellation scheduled',
+		vars: {
+			firstName: 'Flo',
+			periodEndDate: 'Wednesday, January 1, 2027',
+			gracePeriodEndDate: 'Thursday, January 2, 2027',
+			affectedDomains: ['links.example.com', 'go.example.org'],
+			hasAffectedDomains: true,
+			domainsUrl: `${frontendUrl}/dashboard/settings/domains`,
+			year,
+		},
+	},
+	{
+		file: 'domain-addon-features-disabled.handlebars',
+		subject: '[Test] Extra domains — slots have lapsed',
+		vars: {
+			firstName: 'Flo',
+			affectedDomains: ['links.example.com', 'go.example.org'],
+			hasAffectedDomains: true,
+			domainsUrl: `${frontendUrl}/dashboard/settings/domains`,
+			year,
+		},
+	},
+
 	// --- URL safety ---
 	{
 		// first offence: block notice that doubles as the warning

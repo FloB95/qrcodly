@@ -1553,7 +1553,7 @@
 				"everythingInFree": "Tout dans Gratuit",
 				"unlimitedTags": "Tags illimités",
 				"largerBulkImports": "Importations en masse plus grandes (50 lignes, 2Mo)",
-				"customDomains": "Un domaine personnalisé pour codes QR et URLs courtes",
+				"customDomains": "Un domaine personnalisé inclus — ajoutez-en d'autres à tout moment",
 				"customShortCodes": "Chemins d'URL courtes personnalisés (bientôt disponible)",
 				"prioritySupport": "Support prioritaire",
 				"teamFeatures": "Fonctionnalités d'équipe (bientôt)",
@@ -3680,8 +3680,8 @@
 		"features": {
 			"feature1": {
 				"title": "Le domaine de ton agence sur chaque lien client",
-				"description": "Pro comprend un domaine personnalisé. Mets-y la marque de ton agence et donne à chaque client son propre slug lisible : chaque livrable part avec un lien qui a l’air d’avoir été fait par toi.",
-				"bullet1": "Un domaine personnalisé par offre Pro, configuré via CNAME",
+				"description": "Pro inclut un domaine personnalisé, et vous pouvez en ajouter dès qu'un client a besoin du sien. Placez la marque de votre agence sur l'un d'eux et donnez à chaque client un slug lisible : chaque livrable porte un lien qui vous ressemble.",
+				"bullet1": "Un domaine personnalisé inclus, d'autres réservables par domaine",
 				"bullet2": "Des slugs lisibles par client au lieu de caractères aléatoires",
 				"bullet3": "Configuration DNS guidée avec vérification"
 			},
@@ -3725,10 +3725,10 @@
 			"q3": "Puis-je partager les données de clics avec les clients ?",
 			"a3": "Oui. Exporte les analyses de liens ou partage des captures d'écran du tableau de bord. Chaque lien affiche le nombre de clics, les données géographiques et les détails par appareil.",
 			"q4": "Y a-t-il une limite au nombre de domaines personnalisés que je peux ajouter ?",
-			"a4": "Les comptes Pro supportent plusieurs domaines personnalisés. La limite exacte dépend de ton plan — consulte la page de tarification pour les détails.",
+			"a4": "Pro en inclut un. Vous pouvez en réserver jusqu'à 20 de plus en option, facturés par domaine — voir la page tarifs. Les domaines supplémentaires sont disponibles immédiatement ; si vous réduisez le nombre, la modification prend effet à la fin de la période payée.",
 			"viewAll": "Voir toutes les FAQ",
-			"q5": "Puis-je connecter un domaine personnalisé pour chaque client ?",
-			"a5": "Pas au sein d’une même offre : Pro comprend un domaine personnalisé par compte. La plupart des agences mettent leur propre marque sur ce domaine et séparent les clients par des slugs et des étiquettes. Si un client a besoin de liens sur son propre domaine, la solution propre est une offre sur son compte, et ainsi les liens restent les siens s’il part un jour."
+			"q5": "Qu'advient-il des liens d'un client si la collaboration s'arrête ?",
+			"a5": "Les liens restent dans votre compte et continuent de fonctionner. Si le domaine appartient au client, retirez-le ici et laissez-le l'ajouter à son propre forfait. Planifiez ce changement avant toute impression : un QR code contient le domaine dans l'image, donc les codes imprimés cessent de fonctionner une fois le domaine parti."
 		},
 		"cta": {
 			"title": "Développez la gestion de liens de votre agence",
@@ -3805,8 +3805,8 @@
 				"description": "Quand un client s’en va, il devrait pouvoir emporter ses destinations. Des liens que tu peux rediriger font de ça une conversation plutôt qu’une prise d’otage."
 			},
 			"tip4": {
-				"title": "Un domaine, plusieurs clients",
-				"description": "Une offre Pro comprend un domaine personnalisé. Mets-y la marque de ton agence et sépare les clients par des slugs — ou laisse chaque client avoir sa propre offre si le domaine doit être le sien."
+				"title": "Un domaine par client",
+				"description": "Pro comprend un domaine personnalisé ; ajoutez-en un par client lorsqu'il lui faut sa propre image. Ou gardez un seul domaine d'agence et séparez les clients par slugs et tags — les deux fonctionnent, et vous pourrez changer d'avis."
 			}
 		}
 	},
