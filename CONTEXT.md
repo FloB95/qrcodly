@@ -1,7 +1,7 @@
 # QRcodly
 
-QRcodly generates and manages QR codes and short URLs. A QR code can be *static* (the content is
-baked into the image forever) or *dynamic* (the image encodes a short URL we control, so the
+QRcodly generates and manages QR codes and short URLs. A QR code can be _static_ (the content is
+baked into the image forever) or _dynamic_ (the image encodes a short URL we control, so the
 destination can be changed after the code is printed). Nearly every hard problem in this codebase
 comes from that second case: the image is out in the world and immutable, but what it points at is
 not.
@@ -70,7 +70,7 @@ _Avoid_: Fixed QR code, plain QR code
 
 **QR code data**:
 The exact string encoded into a QR code image. For a dynamic QR code this is the fully-built short
-URL, which makes it a *derived* value — it changes whenever the addressing of its short URL
+URL, which makes it a _derived_ value — it changes whenever the addressing of its short URL
 changes.
 _Avoid_: Payload, content, encoded value
 
