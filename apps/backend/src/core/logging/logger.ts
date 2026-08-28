@@ -10,6 +10,15 @@ import { type ILogger } from '../interface/logger.interface';
 import { IN_TEST, LOGGER_REDACT_PATHS } from '../config/constants';
 
 /**
+ * Pino only applies its error serializer to the `err` key, and `message`/`stack` are
+ * non-enumerable on Error — so a raw Error logged under `error` would end up as `{}`.
+ * Non-Errors pass through untouched: call sites that hand-build an error object would
+ * otherwise get their `type` overwritten with "Object".
+ */
+export const errorSerializer = (error: unknown) =>
+	error instanceof Error ? pino.stdSerializers.err(error) : error;
+
+/**
  * Implementation of the ILogger interface using Pino.
  */
 @singleton()
@@ -46,6 +55,9 @@ export class Logger implements ILogger {
 			transport: transports,
 			name: 'backend-log',
 			enabled: !IN_TEST,
+			serializers: {
+				error: errorSerializer,
+			},
 			redact: {
 				paths: LOGGER_REDACT_PATHS,
 				censor: '***',

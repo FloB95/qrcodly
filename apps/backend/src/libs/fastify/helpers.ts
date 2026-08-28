@@ -48,6 +48,33 @@ export const fastifyRequestParser = <T extends IHttpRequest>(
 	return Object.freeze({ ...request, cookies, headers: request.headers }) as T;
 };
 
+/**
+ * Bare `Error`s that `@fastify/multipart`/busboy throws when a request body cannot be parsed.
+ * Internet background scanners produce these constantly (they fire a fixed multipart payload
+ * at every host), and unmapped they get counted as unhandled 500s.
+ */
+const MALFORMED_BODY_MESSAGES = [
+	'Multipart: Boundary not found',
+	'Unexpected end of multipart data',
+	'Unexpected end of form',
+	'Malformed part header',
+];
+
+/**
+ * Resolves the status code for a non-`CustomApiError` that is the client's fault, or null when
+ * the fault is ours. Body parsing runs before routing, so these never reach a route handler.
+ */
+export const resolveClientFaultStatus = (error: Error): number | null => {
+	if (error.name === 'SyntaxError') return 400;
+
+	const statusCode = (error as { statusCode?: unknown }).statusCode;
+	if (typeof statusCode === 'number' && statusCode >= 400 && statusCode < 500) {
+		return statusCode;
+	}
+
+	return MALFORMED_BODY_MESSAGES.some((message) => error.message.startsWith(message)) ? 400 : null;
+};
+
 export const fastifyErrorHandler = (
 	error: Error,
 	_request: FastifyRequest,
@@ -60,6 +87,13 @@ export const fastifyErrorHandler = (
 			message: error.message,
 			code: error.statusCode,
 		};
+
+		// An UnhandledServerError wraps an unexpected internal failure — its message ("QR code
+		// creation transaction failed.") is context for us, not for the caller. Deliberate 5xx
+		// such as ServiceUnavailableError keep their curated wording.
+		if (error instanceof UnhandledServerError) {
+			responsePayload.message = 'An unexpected error occurred.';
+		}
 
 		// Expose a machine-readable errorCode for any error that defines one (frontend mapping).
 		const maybeErrorCode = (error as { errorCode?: unknown }).errorCode;
@@ -88,17 +122,30 @@ export const fastifyErrorHandler = (
 			responsePayload.allowedTokenTypes = error.allowedTokenTypes;
 		}
 
-		logger.error('CustomApiError', {
+		// 4xx means the caller got it wrong, 5xx means we did. Only the latter is an incident,
+		// so only the latter is logged at error level and reported to Sentry.
+		const isServerFault = error.statusCode >= 500;
+		const cause = error instanceof UnhandledServerError ? error.originalError : error;
+
+		logger[isServerFault ? 'error' : 'warn']('CustomApiError', {
 			request: createRequestLogObject(_request),
 			error: {
 				type: error.constructor.name,
 				message: error.message,
+				statusCode: error.statusCode,
 				userId: error instanceof AccountBannedError ? error.userId : undefined,
 				zodErrors: (error as BadRequestError)?.zodError
 					? (error as BadRequestError)?.zodError?.issues
 					: undefined,
 			},
+			// Server faults carry the original throw site under `err`, where pino's built-in
+			// serializer keeps the stack.
+			...(isServerFault ? { err: cause } : {}),
 		});
+
+		if (isServerFault) {
+			container.resolve(ErrorReporter).error(cause, { level: 'error' });
+		}
 
 		if (error instanceof UnauthorizedError) {
 			container
@@ -110,8 +157,23 @@ export const fastifyErrorHandler = (
 		return reply.status(error.statusCode).send(responsePayload);
 	}
 
-	if (error.name === 'SyntaxError') {
-		return reply.status(400).send({ message: error.message, code: 400 });
+	const clientFaultStatus = resolveClientFaultStatus(error);
+	if (clientFaultStatus !== null) {
+		logger.warn('CustomApiError', {
+			request: createRequestLogObject(_request),
+			error: {
+				type: error.constructor.name,
+				message: error.message,
+				statusCode: clientFaultStatus,
+			},
+		});
+
+		// Deliberately generic: these messages come from busboy and Fastify internals, so
+		// echoing them back would hand scanners a fingerprint of the stack. The real message
+		// stays in the log above.
+		return reply
+			.status(clientFaultStatus)
+			.send({ message: 'Malformed or unsupported request body.', code: clientFaultStatus });
 	}
 
 	logger.error(`Unhandled Server error`, {

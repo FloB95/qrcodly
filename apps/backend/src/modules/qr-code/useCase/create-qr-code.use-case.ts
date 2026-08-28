@@ -113,7 +113,9 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 				return finalQrCode;
 			});
 		} catch (error: any) {
-			this.logger.error('qrCode.created.error', { error });
+			// Validation and plan-limit rejections are the caller's fault, not an incident.
+			const isServerFault = !(error instanceof CustomApiError) || error.statusCode >= 500;
+			this.logger[isServerFault ? 'error' : 'warn']('qrCode.created.error', { error });
 
 			// cleanup uploaded image if transaction fails
 			if (createdImage) await this.imageService.deleteImage(createdImage);

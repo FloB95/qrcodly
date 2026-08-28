@@ -1,19 +1,16 @@
-import { container } from 'tsyringe';
 import { CustomApiError } from './custom-api.error';
-import { Logger } from '@/core/logging';
-import { ErrorReporter } from '../error-reporter';
 
+/**
+ * Wraps an unexpected error so it surfaces as a 500 while keeping the original throw site
+ * around. Logging and error reporting happen centrally in `fastifyErrorHandler` — doing it
+ * here as well would produce a duplicate log line for every server fault.
+ */
 export class UnhandledServerError extends CustomApiError {
+	/** The error this one wraps, carrying the original message and stack. */
+	readonly originalError: Error;
+
 	constructor(error: Error, message = 'An unhandled error occurred') {
 		super(message, 500);
-
-		const logger = container.resolve(Logger);
-		logger.error(message, {
-			error,
-		});
-
-		container.resolve(ErrorReporter).error(error, {
-			level: 'error',
-		});
+		this.originalError = error;
 	}
 }
