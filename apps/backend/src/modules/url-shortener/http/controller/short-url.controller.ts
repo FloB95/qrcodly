@@ -617,9 +617,7 @@ export class ShortUrlController extends AbstractController {
 			hostname: body.hostname,
 			language: body.language,
 			referrer: body.referrer,
-			screen: body.screen,
 			deviceType: body.deviceType,
-			browserName: body.browserName,
 			ip: body.ip,
 		});
 

@@ -9,7 +9,6 @@ export const TrackScanDto = z.object({
 	ip: z.string(),
 	deviceType: z.string(),
 	browserName: z.string(),
-	screen: z.string().optional().default(''),
 });
 
 export type TTrackScanDto = z.infer<typeof TrackScanDto>;

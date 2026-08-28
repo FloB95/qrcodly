@@ -29,6 +29,11 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 	const userAgent = headers.get('user-agent') ?? '';
 	const { browser, device } = UAParser(userAgent);
 
+	// ua-parser models desktop as the *absence* of a device type, so `device.type` is undefined for
+	// every desktop browser. Forwarding that as '' made Umami and Matomo record a blank device for
+	// roughly a fifth of all scans instead of a desktop one.
+	const deviceType = device.type ?? 'desktop';
+
 	const language = headers.get('accept-language')
 		? headers.get('accept-language')?.split(',')[0]
 		: '';
@@ -92,9 +97,8 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 			language: language ?? '',
 			referrer: headers.get('referer') ?? '',
 			ip: scannerIp,
-			deviceType: device.type ?? '',
+			deviceType,
 			browserName: browser.name ?? '',
-			screen: headers.get('sec-ch-ua-platform') ?? '',
 		}),
 	}).catch(() => {});
 

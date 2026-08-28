@@ -100,7 +100,9 @@ export class UmamiAnalyticsService {
 	}
 
 	private mapMetrics(metrics: { x: string; y: number }[]): TAnalyticsMetric[] {
-		metrics = metrics.filter((metric) => metric.x !== null && metric.x !== undefined);
+		metrics = metrics.filter(
+			(metric) => metric.x !== null && metric.x !== undefined && metric.x !== '',
+		);
 
 		return metrics.map((metric) => ({
 			label: metric.x,
@@ -145,6 +147,12 @@ export class UmamiAnalyticsService {
 	 * bot filter silently discards it. Only the storing path echoes a cache token in the body,
 	 * so an empty 200 means the event never landed. Without that distinction the scan counter
 	 * and the Umami dashboard drift apart with nothing in the logs to explain it.
+	 *
+	 * Only `device` is overridden here. Umami 3 honours `payload.device`/`payload.browser` via `??`,
+	 * which does not fall through on '' — so an empty override silently blanks the dimension rather
+	 * than letting Umami derive it. `browser` is deliberately left to Umami: it names browsers with
+	 * detect-browser's lowercase keys ('chrome', 'crios', …), which is what BROWSERS maps for display
+	 * and what every pre-existing row in the database uses.
 	 */
 	public async sendEvent(payload: {
 		url: string;
@@ -152,9 +160,7 @@ export class UmamiAnalyticsService {
 		hostname: string;
 		language: string;
 		referrer: string;
-		screen: string;
 		deviceType: string;
-		browserName: string;
 		ip: string;
 	}): Promise<UmamiSendOutcome> {
 		try {
@@ -175,9 +181,11 @@ export class UmamiAnalyticsService {
 							hostname: payload.hostname,
 							language: payload.language,
 							referrer: payload.referrer,
-							screen: payload.screen,
-							device: payload.deviceType,
-							browser: payload.browserName,
+							// Sent in the body as well as in the header: browser and os are derived from it,
+							// and an outbound User-Agent header is the kind of thing a proxy rewrites.
+							userAgent: payload.userAgent,
+							// Omitted when empty so Umami falls back to its own user-agent detection.
+							device: payload.deviceType || undefined,
 							ip: payload.ip,
 						},
 					}),

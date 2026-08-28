@@ -13,7 +13,6 @@ const SCAN_PAYLOAD = {
 	ip: '203.0.113.42',
 	deviceType: 'desktop',
 	browserName: 'Chrome',
-	screen: 'Windows',
 };
 
 describe('recordScan (POST /:shortCode/record-scan)', () => {
@@ -72,13 +71,13 @@ describe('recordScan (POST /:shortCode/record-scan)', () => {
 		expect(body.status).toBe('ok');
 	});
 
-	it('should accept payload without optional screen field', async () => {
+	// A frontend deploy lags the backend, so the retired `screen` field keeps arriving for a while.
+	it('should ignore the retired screen field instead of rejecting the scan', async () => {
 		const shortUrl = await createShortUrl(testServer, accessToken);
-		const { screen: _, ...payloadWithoutScreen } = SCAN_PAYLOAD;
 
 		const response = await recordScanRequest(
 			shortUrl.shortCode,
-			payloadWithoutScreen,
+			{ ...SCAN_PAYLOAD, screen: 'Windows' },
 			env.INTERNAL_API_SECRET,
 		);
 		expect(response).toHaveStatusCode(200);

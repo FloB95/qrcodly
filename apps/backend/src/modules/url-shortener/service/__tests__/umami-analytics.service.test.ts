@@ -138,10 +138,14 @@ describe('UmamiAnalyticsService', () => {
 			hostname: 'qrco.ly',
 			language: 'en-GB',
 			referrer: '',
-			screen: '',
 			deviceType: 'mobile',
-			browserName: 'chrome',
 			ip: '203.0.113.7',
+		};
+
+		/** The `payload` object Umami receives, parsed back out of the mocked fetch call. */
+		const sentPayload = (): Record<string, unknown> => {
+			const [, init] = mockFetch.mock.calls[0] as [string, { body: string }];
+			return (JSON.parse(init.body) as { payload: Record<string, unknown> }).payload;
 		};
 
 		it('forwards the scanner IP via X-Client-Real-IP so Umami geolocates the visitor', async () => {
@@ -159,6 +163,39 @@ describe('UmamiAnalyticsService', () => {
 					}),
 				}),
 			);
+		});
+
+		it('forwards a resolved device type as the device override', async () => {
+			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
+
+			await service.sendEvent(payload);
+
+			expect(sentPayload()).toMatchObject({ device: 'mobile' });
+		});
+
+		// Umami 3 reads payload.device with `??`, so '' overrides its own detection instead of
+		// falling through — that is what blanked every desktop scan. Omitting the key restores it.
+		it('omits the device override entirely when the device type is empty', async () => {
+			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
+
+			await service.sendEvent({ ...payload, deviceType: '' });
+
+			expect(sentPayload()).not.toHaveProperty('device');
+		});
+
+		// Our ua-parser browser names ('Mobile Chrome') do not match the detect-browser keys
+		// ('crios') that Umami stores and BROWSERS maps for display.
+		it('never overrides browser, os or screen so Umami keeps deriving them', async () => {
+			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
+
+			await service.sendEvent(payload);
+
+			const sent = sentPayload();
+			expect(sent).not.toHaveProperty('browser');
+			expect(sent).not.toHaveProperty('os');
+			expect(sent).not.toHaveProperty('screen');
+			// The user agent they are derived from still has to reach Umami.
+			expect(sent).toMatchObject({ userAgent: payload.userAgent });
 		});
 
 		it('reports accepted when Umami echoes a cache token', async () => {

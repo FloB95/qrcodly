@@ -8,39 +8,6 @@ export const DYNAMIC_QR_BASE_URL = `${env.FRONTEND_URL}/api/dynamic-qr/`;
 /** Recently scanned short codes, so busy links get checked more often than dormant ones. */
 export const HOT_SHORT_CODES_KEY = 'url_safety:hot_short_codes';
 
-export const DESKTOP_OS = [
-	'BeOS',
-	'Chrome OS',
-	'Linux',
-	'Mac OS',
-	'Open BSD',
-	'OS/2',
-	'QNX',
-	'Sun OS',
-	'Windows 10',
-	'Windows 2000',
-	'Windows 3.11',
-	'Windows 7',
-	'Windows 8',
-	'Windows 8.1',
-	'Windows 95',
-	'Windows 98',
-	'Windows ME',
-	'Windows Server 2003',
-	'Windows Vista',
-	'Windows XP',
-];
-
-export const MOBILE_OS = ['Amazon OS', 'Android OS', 'BlackBerry OS', 'iOS', 'Windows Mobile'];
-
-export const OS_NAMES = {
-	'Android OS': 'Android',
-	'Chrome OS': 'ChromeOS',
-	'Mac OS': 'macOS',
-	'Sun OS': 'SunOS',
-	'Windows 10': 'Windows 10/11',
-};
-
 export const DEVICES = {
 	desktop: 'Desktop',
 	mobile: 'Mobile',
