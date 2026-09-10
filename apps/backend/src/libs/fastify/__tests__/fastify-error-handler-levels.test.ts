@@ -3,7 +3,13 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import { fastifyErrorHandler } from '../helpers';
 import { Logger } from '@/core/logging';
 import { ErrorReporter } from '@/core/error';
-import { BadRequestError, NotFoundError, ServiceUnavailableError } from '@/core/error/http';
+import { IpAbuseTrackerService } from '@/core/ip-protection';
+import {
+	BadRequestError,
+	NotFoundError,
+	ServiceUnavailableError,
+	UnauthorizedError,
+} from '@/core/error/http';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
 
 describe('fastifyErrorHandler log levels', () => {
@@ -242,5 +248,106 @@ describe('fastifyErrorHandler response leakage', () => {
 
 		expect(body.message).toBe('Malformed or unsupported request body.');
 		expect(JSON.stringify(body)).not.toContain('position 12');
+	});
+});
+
+describe('fastifyErrorHandler token decode faults', () => {
+	let errorSpy: jest.SpyInstance;
+	let warnSpy: jest.SpyInstance;
+	let reportSpy: jest.SpyInstance;
+	let trackSpy: jest.SpyInstance;
+	let send: jest.Mock;
+	let reply: FastifyReply;
+
+	const request = {
+		id: 'req-test',
+		clientIp: '203.0.113.10',
+		method: 'GET',
+		url: '/api/v1/qr-code?page=1&limit=20',
+		headers: { host: 'api.qrcodly.de' },
+	} as unknown as FastifyRequest;
+
+	/** A SyntaxError whose stack points into @clerk/backend, like Clerk's decode throws. */
+	const clerkDecodeError = (message: string, frame: string) => {
+		const error = new SyntaxError(message);
+		error.stack = `SyntaxError: ${message}\n    at parse (${frame})`;
+		return error;
+	};
+
+	const PNPM_FRAME =
+		'/app/node_modules/.pnpm/@clerk+backend@3.11.6/node_modules/@clerk/backend/dist/util/rfc4648.js:78:13';
+	const POSIX_FRAME = '/app/node_modules/@clerk/backend/dist/jwt/verifyJwt.js:83:24';
+	const WINDOWS_FRAME = 'C:\\app\\node_modules\\@clerk\\backend\\dist\\util\\rfc4648.js:78:13';
+
+	beforeEach(() => {
+		const logger = container.resolve(Logger);
+		errorSpy = jest.spyOn(logger, 'error').mockImplementation(() => undefined);
+		warnSpy = jest.spyOn(logger, 'warn').mockImplementation(() => undefined);
+		reportSpy = jest
+			.spyOn(container.resolve(ErrorReporter), 'error')
+			.mockImplementation(() => undefined);
+		trackSpy = jest
+			.spyOn(container.resolve(IpAbuseTrackerService), 'trackUnauthorizedAttempt')
+			.mockResolvedValue(undefined);
+
+		send = jest.fn();
+		reply = { status: jest.fn().mockReturnValue({ send }) } as unknown as FastifyReply;
+	});
+
+	afterEach(() => {
+		jest.restoreAllMocks();
+	});
+
+	it.each([
+		['a pnpm store path', PNPM_FRAME],
+		['a plain node_modules path', POSIX_FRAME],
+		['a windows path', WINDOWS_FRAME],
+	])('answers 401 when the stack shows %s', (_label, frame) => {
+		fastifyErrorHandler(clerkDecodeError('Invalid character :', frame), request, reply);
+
+		expect(reply.status).toHaveBeenCalledWith(401);
+		expect(send).toHaveBeenCalledWith({
+			message: 'The provided token is malformed',
+			code: 401,
+		});
+	});
+
+	it('keeps the decode detail in the log — it was the only forensic clue in the incident', () => {
+		fastifyErrorHandler(clerkDecodeError('Invalid character :', PNPM_FRAME), request, reply);
+
+		expect(warnSpy).toHaveBeenCalledWith(
+			'CustomApiError',
+			expect.objectContaining({
+				error: expect.objectContaining({
+					type: 'UnauthorizedError',
+					statusCode: 401,
+					cause: 'Invalid character :',
+				}),
+			}),
+		);
+		expect(errorSpy).not.toHaveBeenCalled();
+		expect(reportSpy).not.toHaveBeenCalled();
+	});
+
+	it('does not count the sender toward the IP abuse block — a broken stored key retries forever', () => {
+		fastifyErrorHandler(clerkDecodeError('Invalid character :', PNPM_FRAME), request, reply);
+
+		expect(trackSpy).not.toHaveBeenCalled();
+	});
+
+	it('still tracks a genuine wrong-credential 401', () => {
+		fastifyErrorHandler(new UnauthorizedError(), request, reply);
+
+		expect(trackSpy).toHaveBeenCalledWith('203.0.113.10');
+	});
+
+	it('leaves a SyntaxError from outside Clerk on the malformed-body 400 path', () => {
+		const error = new SyntaxError('Unexpected token } in JSON at position 12');
+		error.stack = 'SyntaxError: Unexpected token\n    at JSON.parse (<anonymous>)';
+
+		fastifyErrorHandler(error, request, reply);
+
+		expect(reply.status).toHaveBeenCalledWith(400);
+		expect(trackSpy).not.toHaveBeenCalled();
 	});
 });

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { clearApiKey, getStoredApiKey, storeApiKey } from './lib/uxp';
+import { QrcodlyApi } from './lib/api-client';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { ListScreen } from './screens/ListScreen';
 import { CreateScreen } from './screens/CreateScreen';
@@ -28,6 +29,7 @@ export default function App() {
 	}, []);
 
 	const onSaveKey = useCallback(async (key: string) => {
+		await new QrcodlyApi(key).verifyKey();
 		await storeApiKey(key);
 		setApiKey(key);
 		setScreen('list');

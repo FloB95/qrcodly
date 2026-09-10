@@ -45,7 +45,6 @@ export function SettingsScreen({ initialKey, onSave, loadError }: Props) {
 					type="password"
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
-					placeholder="qr_live_…"
 					autoFocus
 				/>
 			</div>

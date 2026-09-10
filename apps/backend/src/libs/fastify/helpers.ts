@@ -75,12 +75,36 @@ export const resolveClientFaultStatus = (error: Error): number | null => {
 	return MALFORMED_BODY_MESSAGES.some((message) => error.message.startsWith(message)) ? 400 : null;
 };
 
+/**
+ * Clerk's own `preHandler` hook decodes a Bearer token before it validates it, and that decoding
+ * throws bare `SyntaxError`s — `@clerk/backend/util/rfc4648` on a non-base64 segment, `JSON.parse`
+ * in `jwt/verifyJwt` on an unparseable payload. Any value with two dots is JWT-shaped enough to
+ * reach it, a pasted URL included. The errors escape Clerk's hook, so without this they land in
+ * the malformed-body branch below and every endpoint answers 400 about the request body — which
+ * is how a bad API key in the InDesign plugin looked like a server-side payload bug.
+ */
+const isTokenDecodeError = (error: Error): boolean =>
+	error instanceof SyntaxError && /@clerk[+/\\]backend/.test(error.stack ?? '');
+
+/**
+ * The wrapped original's message, kept in the log for diagnosis — it was the only clue in the
+ * InDesign incident. Truncated because Node's JSON.parse embeds decoded input in its messages.
+ */
+const causeMessageOf = (error: Error): string | undefined => {
+	const cause = (error as { cause?: unknown }).cause;
+	return cause instanceof Error ? cause.message.slice(0, 120) : undefined;
+};
+
 export const fastifyErrorHandler = (
-	error: Error,
+	rawError: Error,
 	_request: FastifyRequest,
 	reply: FastifyReply,
 ) => {
 	const logger = container.resolve(Logger);
+	const tokenDecodeFault = isTokenDecodeError(rawError);
+	const error = tokenDecodeFault
+		? Object.assign(new UnauthorizedError('The provided token is malformed'), { cause: rawError })
+		: rawError;
 
 	if (error instanceof CustomApiError) {
 		const responsePayload: any = {
@@ -133,6 +157,7 @@ export const fastifyErrorHandler = (
 				type: error.constructor.name,
 				message: error.message,
 				statusCode: error.statusCode,
+				cause: causeMessageOf(error),
 				userId: error instanceof AccountBannedError ? error.userId : undefined,
 				zodErrors: (error as BadRequestError)?.zodError
 					? (error as BadRequestError)?.zodError?.issues
@@ -147,7 +172,11 @@ export const fastifyErrorHandler = (
 			container.resolve(ErrorReporter).error(cause, { level: 'error' });
 		}
 
-		if (error instanceof UnauthorizedError) {
+		// A malformed token can never brute-force anything, and its sender is more often a customer
+		// with a broken stored credential than an attacker — retrying in the background it would walk
+		// straight into the 7-day IP block. Guessing attempts arrive as well-formed keys and stay
+		// tracked.
+		if (error instanceof UnauthorizedError && !tokenDecodeFault) {
 			container
 				.resolve(IpAbuseTrackerService)
 				.trackUnauthorizedAttempt(_request.clientIp)

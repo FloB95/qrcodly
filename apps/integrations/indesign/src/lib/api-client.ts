@@ -86,6 +86,26 @@ export class QrcodlyApi {
 		return this.request('/tag?page=1&limit=100');
 	}
 
+	/**
+	 * Cheapest authenticated call, used to reject a bad key while the user is still looking at the
+	 * field. Without it any pasted string is persisted and then fails on every screen, with nothing
+	 * pointing back at the key as the cause. A 403 keeps the server's own message — it names the
+	 * actual problem (missing read scope, banned account), which "not accepted" would hide.
+	 */
+	async verifyKey(): Promise<void> {
+		try {
+			await this.request('/tag?page=1&limit=1');
+		} catch (error) {
+			if (error instanceof ApiError && error.status === 401) {
+				throw new ApiError(
+					'That key was not accepted. Copy it from qrcodly.de → Settings → API Keys.',
+					error.status,
+				);
+			}
+			throw error;
+		}
+	}
+
 	listPredefinedTemplates(): Promise<{ data: TConfigTemplateResponseDto[] }> {
 		return this.request('/config-template/predefined');
 	}

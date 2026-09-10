@@ -15,7 +15,7 @@ if (perf && typeof perf.measure === 'function') {
 		} catch {
 			return undefined as unknown as PerformanceMeasure;
 		}
-	} as Performance['measure'];
+	};
 }
 
 export {};
