@@ -4,7 +4,14 @@ import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TrashIcon, UploadIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import type { TQrCodeOptions, TColorOrGradient } from '@shared/schemas';
+import Image from 'next/image';
+import type {
+	TQrCodeOptions,
+	TColorOrGradient,
+	TDotType,
+	TCornerSquareType,
+	TCornerDotType,
+} from '@shared/schemas';
 import {
 	Form,
 	FormControl,
@@ -29,6 +36,8 @@ import { FileUpload, FileUploadDropzone } from '@/components/ui/file-upload';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { ColorPicker } from './ColorPicker';
 import IconPicker from './IconPicker';
+import { StyleGridPicker, type StyleGridPickerOption } from './StyleGridPicker';
+import { DotStylePreviewTile } from './DotStylePreviewTile';
 import { useToast } from '@/components/ui/use-toast';
 
 // Constants
@@ -44,6 +53,17 @@ const MARGIN_CONFIG = {
 	MAX: 10,
 	STEP: 1,
 } as const;
+
+const CORNERS_SQUARE_ICON_MAP: Record<TCornerSquareType, string> = {
+	square: '/icons/corners-square-square.svg',
+	dot: '/icons/corners-square-dot.svg',
+	'extra-rounded': '/icons/corners-square-rounded.svg',
+};
+
+const CORNERS_DOT_ICON_MAP: Record<TCornerDotType, string> = {
+	square: '/icons/corners-dot-square.svg',
+	dot: '/icons/corners-dot-dot.svg',
+};
 
 export const SettingsForm = () => {
 	const t = useTranslations('generator.settingsForm');
@@ -83,6 +103,35 @@ export const SettingsForm = () => {
 	const form = useForm<TQrCodeOptions>({
 		defaultValues,
 	});
+
+	const dotStyleOptions = useMemo<StyleGridPickerOption[]>(
+		() => [
+			{ value: 'square', label: t('dotStyle.optionLabelSquare') },
+			{ value: 'dots', label: t('dotStyle.optionLabelDots') },
+			{ value: 'rounded', label: t('dotStyle.optionLabelRounded') },
+			{ value: 'extra-rounded', label: t('dotStyle.optionLabelExtraRound') },
+			{ value: 'classy', label: t('dotStyle.optionLabelClassy') },
+			{ value: 'classy-rounded', label: t('dotStyle.optionLabelClassyRounded') },
+		],
+		[t],
+	);
+
+	const cornersSquareOptions = useMemo<StyleGridPickerOption[]>(
+		() => [
+			{ value: 'square', label: t('cornersSquareOptions.optionLabelSquare') },
+			{ value: 'dot', label: t('cornersSquareOptions.optionLabelDot') },
+			{ value: 'extra-rounded', label: t('cornersSquareOptions.optionLabelExtraRound') },
+		],
+		[t],
+	);
+
+	const cornersDotOptions = useMemo<StyleGridPickerOption[]>(
+		() => [
+			{ value: 'square', label: t('cornersDotOptions.optionLabelSquare') },
+			{ value: 'dot', label: t('cornersDotOptions.optionLabelDot') },
+		],
+		[t],
+	);
 
 	// Memoized handler to update config immutably
 	const handleChange = useCallback(
@@ -204,7 +253,7 @@ export const SettingsForm = () => {
 
 	return (
 		<Form {...form}>
-			<form onChange={form.handleSubmit(handleChange)} className="space-y-6 xl:w-2/3">
+			<form onChange={form.handleSubmit(handleChange)} className="space-y-6 max-w-[650px]">
 				<Tabs defaultValue="general" className="w-full">
 					<TabsList className="mb-4 w-full">
 						<TabsTrigger className="flex-1" value="general">
@@ -286,39 +335,54 @@ export const SettingsForm = () => {
 					</TabsContent>
 
 					<TabsContent value="dot" className="mt-0">
-						<div className="flex flex-col flex-wrap space-y-6 p-2">
+						<div className="flex flex-col gap-5 p-2">
 							{/* Dots Options */}
-							<div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
+							<div className="space-y-4 rounded-lg border bg-card/30 p-4">
 								<FormField
 									control={form.control}
 									name="dotsOptions.type"
 									render={({ field }) => (
-										<FormItem className="flex-1">
+										<FormItem>
 											<FormLabel>{t('dotStyle.label')}</FormLabel>
 											<FormControl>
-												<Select onValueChange={field.onChange} value={field.value}>
-													<SelectTrigger>
-														<SelectValue placeholder={t('dotStyle.placeholder')} />
-													</SelectTrigger>
-													<SelectContent>
-														<SelectItem value="square">
-															{t('dotStyle.optionLabelSquare')}
-														</SelectItem>
-														<SelectItem value="dots">{t('dotStyle.optionLabelDots')}</SelectItem>
-														<SelectItem value="rounded">
-															{t('dotStyle.optionLabelRounded')}
-														</SelectItem>
-														<SelectItem value="extra-rounded">
-															{t('dotStyle.optionLabelExtraRound')}
-														</SelectItem>
-														<SelectItem value="classy">
-															{t('dotStyle.optionLabelClassy')}
-														</SelectItem>
-														<SelectItem value="classy-rounded">
-															{t('dotStyle.optionLabelClassyRounded')}
-														</SelectItem>
-													</SelectContent>
-												</Select>
+												<div>
+													<div className="md:hidden">
+														<Select onValueChange={field.onChange} value={field.value}>
+															<SelectTrigger>
+																<SelectValue placeholder={t('dotStyle.placeholder')} />
+															</SelectTrigger>
+															<SelectContent>
+																<SelectItem value="square">
+																	{t('dotStyle.optionLabelSquare')}
+																</SelectItem>
+																<SelectItem value="dots">
+																	{t('dotStyle.optionLabelDots')}
+																</SelectItem>
+																<SelectItem value="rounded">
+																	{t('dotStyle.optionLabelRounded')}
+																</SelectItem>
+																<SelectItem value="extra-rounded">
+																	{t('dotStyle.optionLabelExtraRound')}
+																</SelectItem>
+																<SelectItem value="classy">
+																	{t('dotStyle.optionLabelClassy')}
+																</SelectItem>
+																<SelectItem value="classy-rounded">
+																	{t('dotStyle.optionLabelClassyRounded')}
+																</SelectItem>
+															</SelectContent>
+														</Select>
+													</div>
+													<div className="hidden md:block">
+														<StyleGridPicker
+															value={field.value}
+															onChange={field.onChange}
+															ariaLabel={t('dotStyle.label')}
+															options={dotStyleOptions}
+															renderTile={(v) => <DotStylePreviewTile type={v as TDotType} />}
+														/>
+													</div>
+												</div>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -344,33 +408,55 @@ export const SettingsForm = () => {
 							</div>
 
 							{/* Corners Square Options */}
-							<div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
+							<div className="space-y-4 rounded-lg border bg-card/30 p-4">
 								<FormField
 									control={form.control}
 									name="cornersSquareOptions.type"
 									render={({ field }) => (
-										<FormItem className="flex-1">
+										<FormItem>
 											<FormLabel>{t('cornersSquareOptions.label')}</FormLabel>
 											<FormControl>
-												<Select onValueChange={field.onChange} value={field.value}>
-													<SelectTrigger>
-														<SelectValue placeholder={t('cornersSquareOptions.placeholder')} />
-													</SelectTrigger>
-													<SelectContent>
-														<SelectItem icon="icons/corners-square-square.svg" value="square">
-															{t('cornersSquareOptions.optionLabelSquare')}
-														</SelectItem>
-														<SelectItem icon="icons/corners-square-dot.svg" value="dot">
-															{t('cornersSquareOptions.optionLabelDot')}
-														</SelectItem>
-														<SelectItem
-															icon="icons/corners-square-rounded.svg"
-															value="extra-rounded"
-														>
-															{t('cornersSquareOptions.optionLabelExtraRound')}
-														</SelectItem>
-													</SelectContent>
-												</Select>
+												<div>
+													<div className="md:hidden">
+														<Select onValueChange={field.onChange} value={field.value}>
+															<SelectTrigger>
+																<SelectValue placeholder={t('cornersSquareOptions.placeholder')} />
+															</SelectTrigger>
+															<SelectContent>
+																<SelectItem icon="icons/corners-square-square.svg" value="square">
+																	{t('cornersSquareOptions.optionLabelSquare')}
+																</SelectItem>
+																<SelectItem icon="icons/corners-square-dot.svg" value="dot">
+																	{t('cornersSquareOptions.optionLabelDot')}
+																</SelectItem>
+																<SelectItem
+																	icon="icons/corners-square-rounded.svg"
+																	value="extra-rounded"
+																>
+																	{t('cornersSquareOptions.optionLabelExtraRound')}
+																</SelectItem>
+															</SelectContent>
+														</Select>
+													</div>
+													<div className="hidden md:block">
+														<StyleGridPicker
+															value={field.value}
+															onChange={field.onChange}
+															ariaLabel={t('cornersSquareOptions.label')}
+															options={cornersSquareOptions}
+															compact
+															renderTile={(v) => (
+																<Image
+																	src={CORNERS_SQUARE_ICON_MAP[v as TCornerSquareType]}
+																	alt=""
+																	width={48}
+																	height={48}
+																	className="h-12 w-12"
+																/>
+															)}
+														/>
+													</div>
+												</div>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -396,27 +482,49 @@ export const SettingsForm = () => {
 							</div>
 
 							{/* Corners Dot Options */}
-							<div className="block w-full flex-wrap space-y-2 sm:flex sm:space-y-0 sm:space-x-8">
+							<div className="space-y-4 rounded-lg border bg-card/30 p-4">
 								<FormField
 									control={form.control}
 									name="cornersDotOptions.type"
 									render={({ field }) => (
-										<FormItem className="flex-1">
+										<FormItem>
 											<FormLabel>{t('cornersDotOptions.label')}</FormLabel>
 											<FormControl>
-												<Select onValueChange={field.onChange} value={field.value}>
-													<SelectTrigger>
-														<SelectValue placeholder={t('cornersDotOptions.placeholder')} />
-													</SelectTrigger>
-													<SelectContent>
-														<SelectItem icon="icons/corners-dot-square.svg" value="square">
-															{t('cornersDotOptions.optionLabelSquare')}
-														</SelectItem>
-														<SelectItem icon="icons/corners-dot-dot.svg" value="dot">
-															{t('cornersDotOptions.optionLabelDot')}
-														</SelectItem>
-													</SelectContent>
-												</Select>
+												<div>
+													<div className="md:hidden">
+														<Select onValueChange={field.onChange} value={field.value}>
+															<SelectTrigger>
+																<SelectValue placeholder={t('cornersDotOptions.placeholder')} />
+															</SelectTrigger>
+															<SelectContent>
+																<SelectItem icon="icons/corners-dot-square.svg" value="square">
+																	{t('cornersDotOptions.optionLabelSquare')}
+																</SelectItem>
+																<SelectItem icon="icons/corners-dot-dot.svg" value="dot">
+																	{t('cornersDotOptions.optionLabelDot')}
+																</SelectItem>
+															</SelectContent>
+														</Select>
+													</div>
+													<div className="hidden md:block">
+														<StyleGridPicker
+															value={field.value}
+															onChange={field.onChange}
+															ariaLabel={t('cornersDotOptions.label')}
+															options={cornersDotOptions}
+															compact
+															renderTile={(v) => (
+																<Image
+																	src={CORNERS_DOT_ICON_MAP[v as TCornerDotType]}
+																	alt=""
+																	width={48}
+																	height={48}
+																	className="h-12 w-12"
+																/>
+															)}
+														/>
+													</div>
+												</div>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
