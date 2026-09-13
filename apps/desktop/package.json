@@ -68,7 +68,7 @@
 		"qr-code-styling": "^1.9.2",
 		"qs": "^6.15.3",
 		"react": "^19.2.7",
-		"react-dom": "^19.2.7",
+		"react-dom": "^19.2.8",
 		"react-hook-form": "^7.81.0",
 		"react-router-dom": "^7.18.1",
 		"recharts": "^3.9.2",
