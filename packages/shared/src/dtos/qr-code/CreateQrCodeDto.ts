@@ -7,6 +7,9 @@ export const CreateQrCodeDto = QrCodeSchema.pick({
 	content: true,
 })
 	.extend({
+		name: QrCodeSchema.shape.name
+			.optional()
+			.describe('Optional display name. Omit it to create the QR code without a name.'),
 		config: QrCodeOptionsSchema.optional().describe(
 			'QR code visual styling configuration. Optional when templateId is provided — the template styling will be used as the base. Any fields provided here override the template values.',
 		),
