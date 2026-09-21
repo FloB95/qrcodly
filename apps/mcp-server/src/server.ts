@@ -31,6 +31,23 @@ export async function startServer(
 	// upgrading to Fastify 6, which removes the flag.
 	const app = Fastify({ loggerInstance: logger, disableRequestLogging: true });
 
+	// Ending a session is a bodyless DELETE /mcp, but many MCP clients still send
+	// `Content-Type: application/json` on it. Fastify's default JSON parser then rejects the
+	// request with FST_ERR_CTP_EMPTY_JSON_BODY before it ever reaches the transport, so the
+	// session is never terminated and lingers — holding the caller's API key in memory — until
+	// the 30-minute TTL sweep. Treat an empty JSON body as no body instead.
+	app.addContentTypeParser('application/json', { parseAs: 'string' }, (_request, body, done) => {
+		if (typeof body !== 'string' || body.trim() === '') {
+			done(null, undefined);
+			return;
+		}
+		try {
+			done(null, JSON.parse(body));
+		} catch (error) {
+			done(error as Error, undefined);
+		}
+	});
+
 	await app.register(cors, {
 		origin: true,
 		methods: ['GET', 'HEAD', 'POST', 'DELETE'],
