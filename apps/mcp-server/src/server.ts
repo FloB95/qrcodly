@@ -6,6 +6,7 @@ import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
 import { type McpToolDefinition, type EndpointMeta } from './openapi-to-mcp.js';
 import { createMcpServer } from './mcp-server.js';
 import { env } from './env.js';
+import { axiomEnabled, logger } from './logger.js';
 
 const SESSION_TTL_MS = 30 * 60 * 1000; // 30 minutes
 const SESSION_CLEANUP_INTERVAL_MS = 5 * 60 * 1000; // check every 5 minutes
@@ -14,6 +15,7 @@ interface SessionEntry {
 	transport: StreamableHTTPServerTransport;
 	lastActivity: number;
 	apiKey: string;
+	startedAt: number;
 }
 
 const sessions = new Map<string, SessionEntry>();
@@ -22,7 +24,12 @@ export async function startServer(
 	tools: McpToolDefinition[],
 	toolMap: Map<string, EndpointMeta>,
 ): Promise<void> {
-	const app = Fastify({ logger: true });
+	// Every MCP request is a POST /mcp, so Fastify's per-request rows add ingest volume without
+	// adding signal — the `mcp.tool.call` events below carry the tool name, outcome and duration.
+	// `disableRequestLogging` is deprecated in favour of `logController` in Fastify 5, but that
+	// option resolves to the HTTP/2 server overload and breaks `request.raw` typing. Revisit when
+	// upgrading to Fastify 6, which removes the flag.
+	const app = Fastify({ loggerInstance: logger, disableRequestLogging: true });
 
 	await app.register(cors, {
 		origin: true,
@@ -71,6 +78,7 @@ export async function startServer(
 	app.post('/mcp', async (request, reply) => {
 		const apiKey = extractBearerToken(request.headers);
 		if (!apiKey) {
+			logger.warn({ mcp: { reason: 'missing_authorization_header' } }, 'mcp.auth.failed');
 			return reply.status(401).send({
 				jsonrpc: '2.0',
 				error: {
@@ -100,16 +108,44 @@ export async function startServer(
 			transport = new StreamableHTTPServerTransport({
 				sessionIdGenerator: () => randomUUID(),
 				onsessioninitialized: (sid) => {
-					sessions.set(sid, { transport, lastActivity: Date.now(), apiKey });
+					sessions.set(sid, {
+						transport,
+						lastActivity: Date.now(),
+						apiKey,
+						startedAt: Date.now(),
+					});
+					logger.info(
+						{ mcp: { sessionId: sid, activeSessions: sessions.size } },
+						'mcp.session.initialized',
+					);
 				},
 			});
 
 			transport.onclose = () => {
 				const sid = transport.sessionId;
-				if (sid) sessions.delete(sid);
+				if (!sid) return;
+				const closing = sessions.get(sid);
+				sessions.delete(sid);
+				logger.info(
+					{
+						mcp: {
+							sessionId: sid,
+							reason: 'client',
+							durationMs: closing ? Date.now() - closing.startedAt : undefined,
+							activeSessions: sessions.size,
+						},
+					},
+					'mcp.session.closed',
+				);
 			};
 
-			const server = createMcpServer(apiKey, env.QRCODLY_API_BASE_URL, tools, toolMap);
+			const server = createMcpServer(
+				apiKey,
+				env.QRCODLY_API_BASE_URL,
+				tools,
+				toolMap,
+				() => transport.sessionId,
+			);
 			await server.connect(transport);
 		} else if (sessionId) {
 			return reply.status(404).send({
@@ -181,11 +217,38 @@ export async function startServer(
 			if (now - entry.lastActivity > SESSION_TTL_MS) {
 				entry.transport.close().catch(() => {});
 				sessions.delete(sid);
+				logger.info(
+					{
+						mcp: {
+							sessionId: sid,
+							reason: 'ttl',
+							durationMs: now - entry.startedAt,
+							activeSessions: sessions.size,
+						},
+					},
+					'mcp.session.closed',
+				);
 			}
 		}
 	}, SESSION_CLEANUP_INTERVAL_MS);
 
 	await app.listen({ port: env.PORT, host: env.HOST });
+
+	logger.info(
+		{
+			mcp: {
+				toolCount: tools.length,
+				apiBaseUrl: env.QRCODLY_API_BASE_URL,
+				axiom: axiomEnabled,
+			},
+		},
+		'mcp.server.started',
+	);
+	if (!axiomEnabled) {
+		logger.warn(
+			'AXIOM_TOKEN / AXIOM_DATASET not set — MCP usage is logged to stdout only and will not appear in the dashboard',
+		);
+	}
 
 	process.once('SIGTERM', () => void shutdown(app, cleanupInterval));
 	process.once('SIGINT', () => void shutdown(app, cleanupInterval));

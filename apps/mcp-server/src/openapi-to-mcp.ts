@@ -83,6 +83,10 @@ const TOOL_NAME_OVERRIDES: Record<string, string> = {
 	'short-url/toggle-active-state': 'toggle_short_url_active',
 	'short-url/get-analytics': 'get_short_url_analytics',
 	'short-url/get-views': 'get_short_url_views',
+	'qr-code/duplicate': 'duplicate_qr_code',
+	'template/duplicate': 'duplicate_template',
+	'short-url/duplicate': 'duplicate_short_url',
+	'qr-code/render': 'render_qr_code',
 };
 
 // --- Public API ---
@@ -109,6 +113,16 @@ export function buildToolsFromOpenApi(spec: OpenApiSpec): {
 
 			const description = buildDescription(operation, name);
 			const annotations = buildAnnotations(httpMethod);
+
+			if (toolMap.has(name)) {
+				// operationIds like `qr-code/duplicate` and `template/duplicate` reduce to the same
+				// tool name; without this the later one silently replaces the earlier in `toolMap`
+				// and one of the two tools becomes unreachable at runtime.
+				throw new Error(
+					`Duplicate MCP tool name "${name}" (from operationId "${operation.operationId}"). ` +
+						`Add an entry to TOOL_NAME_OVERRIDES to disambiguate it.`,
+				);
+			}
 
 			tools.push({ name, description, inputSchema, annotations });
 			toolMap.set(name, {
@@ -214,9 +228,24 @@ function buildInputSchema(
 	}
 
 	const schema: JsonSchema = { type: 'object', properties };
-	if (required.length > 0) schema.required = required;
+	const effectiveRequired = required.filter((key) => !isEffectivelyOptional(properties[key]));
+	if (effectiveRequired.length > 0) schema.required = effectiveRequired;
 
 	return { schema, queryParams };
+}
+
+/**
+ * Zod still lists a field under OpenAPI `required` when `.default()` means the caller never has
+ * to send it. Agents read `required` literally: left alone, an LLM asked to "make a QR code for
+ * example.com" has to invent a `customDomainId` UUID and a pagination `page` before it can call
+ * anything. Anything the server fills in itself is dropped here.
+ *
+ * `nullable` on its own is NOT enough — Zod's `.nullable()` still demands the key be present, so
+ * dropping those would produce tool calls the API rejects at runtime.
+ */
+function isEffectivelyOptional(schema: JsonSchema | undefined): boolean {
+	if (!schema) return false;
+	return schema.default !== undefined;
 }
 
 function applyOverrides(toolName: string, inputSchema: JsonSchema): void {

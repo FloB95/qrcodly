@@ -124,6 +124,13 @@
 						"name": "tagIds",
 						"required": false,
 						"description": "Filter by tag ID(s). Only returns QR codes that have at least one of the specified tags"
+					},
+					{
+						"schema": { "type": "string", "enum": ["all", "active", "disabled", "blocked"] },
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"description": "Filter by the linked short URL state: active, disabled by the owner, or blocked for safety. Static QR codes have no short URL and never match."
 					}
 				],
 				"responses": {
@@ -169,9 +176,9 @@
 													},
 													"name": {
 														"nullable": true,
-														"description": "User-defined name for the QR code (max 32 characters)",
+														"description": "User-defined name for the QR code (max 50 characters)",
 														"type": "string",
-														"maxLength": 32
+														"maxLength": 50
 													},
 													"config": {
 														"type": "object",
@@ -661,32 +668,62 @@
 																				"minLength": 1,
 																				"maxLength": 64
 																			},
-																			"street": {
-																				"description": "Street address",
+																			"streetPrivate": {
+																				"description": "Private street address",
 																				"type": "string",
 																				"minLength": 1,
 																				"maxLength": 64
 																			},
-																			"city": {
-																				"description": "City",
+																			"cityPrivate": {
+																				"description": "Private city",
 																				"type": "string",
 																				"minLength": 1,
 																				"maxLength": 64
 																			},
-																			"zip": {
-																				"description": "Postal / ZIP code",
+																			"zipPrivate": {
+																				"description": "Private postal / ZIP code",
 																				"type": "string",
 																				"minLength": 1,
 																				"maxLength": 10
 																			},
-																			"state": {
-																				"description": "State or province",
+																			"statePrivate": {
+																				"description": "Private state or province",
 																				"type": "string",
 																				"minLength": 1,
 																				"maxLength": 64
 																			},
-																			"country": {
-																				"description": "Country",
+																			"countryPrivate": {
+																				"description": "Private country",
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64
+																			},
+																			"streetBusiness": {
+																				"description": "Business street address",
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64
+																			},
+																			"cityBusiness": {
+																				"description": "Business city",
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64
+																			},
+																			"zipBusiness": {
+																				"description": "Business postal / ZIP code",
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 10
+																			},
+																			"stateBusiness": {
+																				"description": "Business state or province",
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64
+																			},
+																			"countryBusiness": {
+																				"description": "Business country",
 																				"type": "string",
 																				"minLength": 1,
 																				"maxLength": 64
@@ -695,6 +732,12 @@
 																				"description": "Personal or company website URL",
 																				"type": "string",
 																				"format": "uri"
+																			},
+																			"note": {
+																				"description": "Free-form note or additional information",
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 300
 																			},
 																			"isDynamic": {
 																				"description": "If true, creates a dynamic vCard QR code with an editable short URL",
@@ -913,10 +956,10 @@
 															},
 															"name": {
 																"default": null,
-																"description": "User-defined name for the short URL",
+																"description": "User-defined name for the short URL (max 50 characters)",
 																"nullable": true,
 																"type": "string",
-																"maxLength": 255
+																"maxLength": 50
 															},
 															"destinationUrl": {
 																"nullable": true,
@@ -954,6 +997,26 @@
 																"type": "string",
 																"format": "date-time",
 																"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+															},
+															"safetyStatus": {
+																"default": "unchecked",
+																"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+																"type": "string",
+																"enum": ["unchecked", "clean", "blocked"]
+															},
+															"safetyBlockedAt": {
+																"default": null,
+																"description": "When the link was blocked for safety reasons, or null",
+																"nullable": true,
+																"type": "string",
+																"format": "date-time",
+																"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+															},
+															"safetyThreatTypes": {
+																"default": null,
+																"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+																"nullable": true,
+																"type": "string"
 															}
 														},
 														"required": [
@@ -967,7 +1030,10 @@
 															"customDomainId",
 															"isActive",
 															"createdBy",
-															"deletedAt"
+															"deletedAt",
+															"safetyStatus",
+															"safetyBlockedAt",
+															"safetyThreatTypes"
 														],
 														"additionalProperties": false
 													},
@@ -1118,6 +1184,7 @@
 				"tags": ["QR Codes", "Public"],
 				"description": "Creates a new QR code based on the provided data. Supports 8 content types: URL, Text, WiFi, vCard, Email, Location, Event, and EPC. If the QR code is dynamic (contentType=URL and isDynamic=true), a short URL is automatically generated and linked so the destination can be changed later. This endpoint is publicly accessible (no auth required) but rate-limited. Authenticated users get their QR codes saved to their account.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -1125,11 +1192,395 @@
 								"properties": {
 									"name": {
 										"nullable": true,
-										"description": "User-defined name for the QR code (max 32 characters)",
+										"description": "User-defined name for the QR code (max 50 characters)",
 										"type": "string",
-										"maxLength": 32
+										"maxLength": 50
+									},
+									"content": {
+										"oneOf": [
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["url"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"url": {
+																"type": "string",
+																"maxLength": 1000,
+																"format": "uri",
+																"description": "The target URL that the QR code points to"
+															},
+															"isDynamic": {
+																"description": "If true, creates a dynamic QR code with a short URL redirect so the destination can be changed later",
+																"type": "boolean"
+															}
+														},
+														"required": ["url"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["text"] },
+													"data": { "type": "string", "minLength": 1, "maxLength": 1000 }
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["wifi"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"ssid": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 32,
+																"description": "WiFi network name (SSID)"
+															},
+															"password": {
+																"type": "string",
+																"maxLength": 64,
+																"description": "WiFi password (leave empty for open networks)"
+															},
+															"encryption": {
+																"type": "string",
+																"enum": ["WPA", "WEP", "nopass"],
+																"description": "WiFi encryption type: WPA, WEP, or nopass (open)"
+															}
+														},
+														"required": ["ssid", "password", "encryption"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["vCard"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"title": {
+																"description": "Job title or honorific (e.g. Dr., Mr.)",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 32
+															},
+															"firstName": {
+																"description": "First name",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"lastName": {
+																"description": "Last name",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"email": {
+																"type": "string",
+																"maxLength": 100,
+																"format": "email",
+																"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+															},
+															"emailPrivate": {
+																"type": "string",
+																"maxLength": 100,
+																"format": "email",
+																"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+															},
+															"emailBusiness": {
+																"type": "string",
+																"maxLength": 100,
+																"format": "email",
+																"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+															},
+															"phone": {
+																"type": "string",
+																"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
+															},
+															"phonePrivate": {
+																"type": "string",
+																"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
+															},
+															"phoneMobile": {
+																"type": "string",
+																"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
+															},
+															"phoneBusiness": {
+																"type": "string",
+																"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
+															},
+															"fax": {
+																"type": "string",
+																"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
+															},
+															"company": {
+																"description": "Company or organization name",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"job": {
+																"description": "Job title or position",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"streetPrivate": {
+																"description": "Private street address",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"cityPrivate": {
+																"description": "Private city",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"zipPrivate": {
+																"description": "Private postal / ZIP code",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 10
+															},
+															"statePrivate": {
+																"description": "Private state or province",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"countryPrivate": {
+																"description": "Private country",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"streetBusiness": {
+																"description": "Business street address",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"cityBusiness": {
+																"description": "Business city",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"zipBusiness": {
+																"description": "Business postal / ZIP code",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 10
+															},
+															"stateBusiness": {
+																"description": "Business state or province",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"countryBusiness": {
+																"description": "Business country",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"website": {
+																"description": "Personal or company website URL",
+																"type": "string",
+																"format": "uri"
+															},
+															"note": {
+																"description": "Free-form note or additional information",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 300
+															},
+															"isDynamic": {
+																"description": "If true, creates a dynamic vCard QR code with an editable short URL",
+																"type": "boolean"
+															}
+														},
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["email"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"email": {
+																"type": "string",
+																"maxLength": 100,
+																"format": "email",
+																"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+																"description": "Recipient email address"
+															},
+															"subject": {
+																"description": "Pre-filled email subject line",
+																"type": "string",
+																"maxLength": 250
+															},
+															"body": {
+																"description": "Pre-filled email body text",
+																"type": "string",
+																"maxLength": 1000
+															}
+														},
+														"required": ["email"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["location"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"address": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 200,
+																"description": "Human-readable address (e.g. \"1600 Amphitheatre Parkway, Mountain View, CA\")"
+															},
+															"latitude": {
+																"description": "GPS latitude coordinate (-90 to 90)",
+																"type": "number",
+																"minimum": -90,
+																"maximum": 90
+															},
+															"longitude": {
+																"description": "GPS longitude coordinate (-180 to 180)",
+																"type": "number",
+																"minimum": -180,
+																"maximum": 180
+															}
+														},
+														"required": ["address"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["event"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"title": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 200,
+																"description": "Event title or name"
+															},
+															"description": {
+																"description": "Event description or details",
+																"type": "string",
+																"maxLength": 500
+															},
+															"location": {
+																"description": "Event location or venue",
+																"type": "string",
+																"maxLength": 200
+															},
+															"url": {
+																"description": "URL with more information about the event",
+																"type": "string",
+																"format": "uri"
+															},
+															"startDate": {
+																"type": "string",
+																"format": "date-time",
+																"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+																"description": "Event start date and time as ISO 8601 string (e.g. \"2025-06-15T14:00:00Z\")"
+															},
+															"endDate": {
+																"type": "string",
+																"format": "date-time",
+																"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+																"description": "Event end date and time as ISO 8601 string (must be after startDate)"
+															}
+														},
+														"required": ["title", "startDate", "endDate"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["epc"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"name": {
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 70,
+																"description": "Beneficiary name (payment recipient)"
+															},
+															"iban": {
+																"type": "string",
+																"minLength": 15,
+																"maxLength": 34,
+																"description": "IBAN of the beneficiary (e.g. \"DE89370400440532013000\")"
+															},
+															"bic": {
+																"description": "BIC/SWIFT code of the beneficiary bank",
+																"type": "string",
+																"pattern": "^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$"
+															},
+															"amount": {
+																"description": "Payment amount in EUR",
+																"type": "number",
+																"minimum": 0.01,
+																"maximum": 999999999.99
+															},
+															"purpose": {
+																"description": "Payment reference or purpose text",
+																"type": "string",
+																"maxLength": 140
+															}
+														},
+														"required": ["name", "iban"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											}
+										],
+										"description": "QR code content as a discriminated union — the \"type\" field determines which data schema applies"
 									},
 									"config": {
+										"description": "QR code visual styling configuration. Optional when templateId is provided — the template styling will be used as the base. Any fields provided here override the template values.",
 										"type": "object",
 										"properties": {
 											"width": {
@@ -1440,363 +1891,20 @@
 											"cornersDotOptions",
 											"backgroundOptions"
 										],
-										"additionalProperties": false,
-										"description": "QR code visual styling configuration (colors, shapes, dimensions, embedded image)"
+										"additionalProperties": false
 									},
-									"content": {
-										"oneOf": [
-											{
-												"type": "object",
-												"properties": {
-													"type": { "type": "string", "enum": ["url"] },
-													"data": {
-														"type": "object",
-														"properties": {
-															"url": {
-																"type": "string",
-																"maxLength": 1000,
-																"format": "uri",
-																"description": "The target URL that the QR code points to"
-															},
-															"isDynamic": {
-																"description": "If true, creates a dynamic QR code with a short URL redirect so the destination can be changed later",
-																"type": "boolean"
-															}
-														},
-														"required": ["url"],
-														"additionalProperties": false
-													}
-												},
-												"required": ["type", "data"],
-												"additionalProperties": false
-											},
-											{
-												"type": "object",
-												"properties": {
-													"type": { "type": "string", "enum": ["text"] },
-													"data": { "type": "string", "minLength": 1, "maxLength": 1000 }
-												},
-												"required": ["type", "data"],
-												"additionalProperties": false
-											},
-											{
-												"type": "object",
-												"properties": {
-													"type": { "type": "string", "enum": ["wifi"] },
-													"data": {
-														"type": "object",
-														"properties": {
-															"ssid": {
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 32,
-																"description": "WiFi network name (SSID)"
-															},
-															"password": {
-																"type": "string",
-																"maxLength": 64,
-																"description": "WiFi password (leave empty for open networks)"
-															},
-															"encryption": {
-																"type": "string",
-																"enum": ["WPA", "WEP", "nopass"],
-																"description": "WiFi encryption type: WPA, WEP, or nopass (open)"
-															}
-														},
-														"required": ["ssid", "password", "encryption"],
-														"additionalProperties": false
-													}
-												},
-												"required": ["type", "data"],
-												"additionalProperties": false
-											},
-											{
-												"type": "object",
-												"properties": {
-													"type": { "type": "string", "enum": ["vCard"] },
-													"data": {
-														"type": "object",
-														"properties": {
-															"title": {
-																"description": "Job title or honorific (e.g. Dr., Mr.)",
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 32
-															},
-															"firstName": {
-																"description": "First name",
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 64
-															},
-															"lastName": {
-																"description": "Last name",
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 64
-															},
-															"email": {
-																"type": "string",
-																"maxLength": 100,
-																"format": "email",
-																"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
-															},
-															"emailPrivate": {
-																"type": "string",
-																"maxLength": 100,
-																"format": "email",
-																"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
-															},
-															"emailBusiness": {
-																"type": "string",
-																"maxLength": 100,
-																"format": "email",
-																"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
-															},
-															"phone": {
-																"type": "string",
-																"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
-															},
-															"phonePrivate": {
-																"type": "string",
-																"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
-															},
-															"phoneMobile": {
-																"type": "string",
-																"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
-															},
-															"phoneBusiness": {
-																"type": "string",
-																"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
-															},
-															"fax": {
-																"type": "string",
-																"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
-															},
-															"company": {
-																"description": "Company or organization name",
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 64
-															},
-															"job": {
-																"description": "Job title or position",
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 64
-															},
-															"street": {
-																"description": "Street address",
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 64
-															},
-															"city": {
-																"description": "City",
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 64
-															},
-															"zip": {
-																"description": "Postal / ZIP code",
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 10
-															},
-															"state": {
-																"description": "State or province",
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 64
-															},
-															"country": {
-																"description": "Country",
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 64
-															},
-															"website": {
-																"description": "Personal or company website URL",
-																"type": "string",
-																"format": "uri"
-															},
-															"isDynamic": {
-																"description": "If true, creates a dynamic vCard QR code with an editable short URL",
-																"type": "boolean"
-															}
-														},
-														"additionalProperties": false
-													}
-												},
-												"required": ["type", "data"],
-												"additionalProperties": false
-											},
-											{
-												"type": "object",
-												"properties": {
-													"type": { "type": "string", "enum": ["email"] },
-													"data": {
-														"type": "object",
-														"properties": {
-															"email": {
-																"type": "string",
-																"maxLength": 100,
-																"format": "email",
-																"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
-																"description": "Recipient email address"
-															},
-															"subject": {
-																"description": "Pre-filled email subject line",
-																"type": "string",
-																"maxLength": 250
-															},
-															"body": {
-																"description": "Pre-filled email body text",
-																"type": "string",
-																"maxLength": 1000
-															}
-														},
-														"required": ["email"],
-														"additionalProperties": false
-													}
-												},
-												"required": ["type", "data"],
-												"additionalProperties": false
-											},
-											{
-												"type": "object",
-												"properties": {
-													"type": { "type": "string", "enum": ["location"] },
-													"data": {
-														"type": "object",
-														"properties": {
-															"address": {
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 200,
-																"description": "Human-readable address (e.g. \"1600 Amphitheatre Parkway, Mountain View, CA\")"
-															},
-															"latitude": {
-																"description": "GPS latitude coordinate (-90 to 90)",
-																"type": "number",
-																"minimum": -90,
-																"maximum": 90
-															},
-															"longitude": {
-																"description": "GPS longitude coordinate (-180 to 180)",
-																"type": "number",
-																"minimum": -180,
-																"maximum": 180
-															}
-														},
-														"required": ["address"],
-														"additionalProperties": false
-													}
-												},
-												"required": ["type", "data"],
-												"additionalProperties": false
-											},
-											{
-												"type": "object",
-												"properties": {
-													"type": { "type": "string", "enum": ["event"] },
-													"data": {
-														"type": "object",
-														"properties": {
-															"title": {
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 200,
-																"description": "Event title or name"
-															},
-															"description": {
-																"description": "Event description or details",
-																"type": "string",
-																"maxLength": 500
-															},
-															"location": {
-																"description": "Event location or venue",
-																"type": "string",
-																"maxLength": 200
-															},
-															"url": {
-																"description": "URL with more information about the event",
-																"type": "string",
-																"format": "uri"
-															},
-															"startDate": {
-																"type": "string",
-																"format": "date-time",
-																"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
-																"description": "Event start date and time as ISO 8601 string (e.g. \"2025-06-15T14:00:00Z\")"
-															},
-															"endDate": {
-																"type": "string",
-																"format": "date-time",
-																"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
-																"description": "Event end date and time as ISO 8601 string (must be after startDate)"
-															}
-														},
-														"required": ["title", "startDate", "endDate"],
-														"additionalProperties": false
-													}
-												},
-												"required": ["type", "data"],
-												"additionalProperties": false
-											},
-											{
-												"type": "object",
-												"properties": {
-													"type": { "type": "string", "enum": ["epc"] },
-													"data": {
-														"type": "object",
-														"properties": {
-															"name": {
-																"type": "string",
-																"minLength": 1,
-																"maxLength": 70,
-																"description": "Beneficiary name (payment recipient)"
-															},
-															"iban": {
-																"type": "string",
-																"minLength": 15,
-																"maxLength": 34,
-																"description": "IBAN of the beneficiary (e.g. \"DE89370400440532013000\")"
-															},
-															"bic": {
-																"description": "BIC/SWIFT code of the beneficiary bank",
-																"type": "string",
-																"pattern": "^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$"
-															},
-															"amount": {
-																"description": "Payment amount in EUR",
-																"type": "number",
-																"minimum": 0.01,
-																"maximum": 999999999.99
-															},
-															"purpose": {
-																"description": "Payment reference or purpose text",
-																"type": "string",
-																"maxLength": 140
-															}
-														},
-														"required": ["name", "iban"],
-														"additionalProperties": false
-													}
-												},
-												"required": ["type", "data"],
-												"additionalProperties": false
-											}
-										],
-										"description": "QR code content as a discriminated union — the \"type\" field determines which data schema applies"
+									"templateId": {
+										"description": "ID of a saved design template to apply. The template styling (colors, shapes, logo) is used as the base config. You can override individual fields via the config parameter.",
+										"type": "string",
+										"format": "uuid",
+										"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
 									}
 								},
-								"required": ["name", "config", "content"],
+								"required": ["name", "content"],
 								"additionalProperties": false
 							}
 						}
-					},
-					"required": true
+					}
 				},
 				"responses": {
 					"200": {
@@ -1827,9 +1935,9 @@
 										},
 										"name": {
 											"nullable": true,
-											"description": "User-defined name for the QR code (max 32 characters)",
+											"description": "User-defined name for the QR code (max 50 characters)",
 											"type": "string",
-											"maxLength": 32
+											"maxLength": 50
 										},
 										"config": {
 											"type": "object",
@@ -2287,32 +2395,62 @@
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"street": {
-																	"description": "Street address",
+																"streetPrivate": {
+																	"description": "Private street address",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"city": {
-																	"description": "City",
+																"cityPrivate": {
+																	"description": "Private city",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"zip": {
-																	"description": "Postal / ZIP code",
+																"zipPrivate": {
+																	"description": "Private postal / ZIP code",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 10
 																},
-																"state": {
-																	"description": "State or province",
+																"statePrivate": {
+																	"description": "Private state or province",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"country": {
-																	"description": "Country",
+																"countryPrivate": {
+																	"description": "Private country",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"streetBusiness": {
+																	"description": "Business street address",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"cityBusiness": {
+																	"description": "Business city",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"zipBusiness": {
+																	"description": "Business postal / ZIP code",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 10
+																},
+																"stateBusiness": {
+																	"description": "Business state or province",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"countryBusiness": {
+																	"description": "Business country",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
@@ -2321,6 +2459,12 @@
 																	"description": "Personal or company website URL",
 																	"type": "string",
 																	"format": "uri"
+																},
+																"note": {
+																	"description": "Free-form note or additional information",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 300
 																},
 																"isDynamic": {
 																	"description": "If true, creates a dynamic vCard QR code with an editable short URL",
@@ -2539,10 +2683,10 @@
 												},
 												"name": {
 													"default": null,
-													"description": "User-defined name for the short URL",
+													"description": "User-defined name for the short URL (max 50 characters)",
 													"nullable": true,
 													"type": "string",
-													"maxLength": 255
+													"maxLength": 50
 												},
 												"destinationUrl": {
 													"nullable": true,
@@ -2580,6 +2724,26 @@
 													"type": "string",
 													"format": "date-time",
 													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"safetyStatus": {
+													"default": "unchecked",
+													"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+													"type": "string",
+													"enum": ["unchecked", "clean", "blocked"]
+												},
+												"safetyBlockedAt": {
+													"default": null,
+													"description": "When the link was blocked for safety reasons, or null",
+													"nullable": true,
+													"type": "string",
+													"format": "date-time",
+													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"safetyThreatTypes": {
+													"default": null,
+													"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+													"nullable": true,
+													"type": "string"
 												}
 											},
 											"required": [
@@ -2593,7 +2757,10 @@
 												"customDomainId",
 												"isActive",
 												"createdBy",
-												"deletedAt"
+												"deletedAt",
+												"safetyStatus",
+												"safetyBlockedAt",
+												"safetyThreatTypes"
 											],
 											"additionalProperties": false
 										},
@@ -2732,6 +2899,7 @@
 				"tags": ["QR Codes"],
 				"description": "Generates multiple QR codes at once from a CSV file upload. Each row in the CSV maps to one QR code. All QR codes share the same styling configuration and content type. Returns an array of created QR code objects including any related entities.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -3062,8 +3230,7 @@
 								"additionalProperties": false
 							}
 						}
-					},
-					"required": true
+					}
 				},
 				"responses": {
 					"201": {
@@ -3094,9 +3261,9 @@
 										},
 										"name": {
 											"nullable": true,
-											"description": "User-defined name for the QR code (max 32 characters)",
+											"description": "User-defined name for the QR code (max 50 characters)",
 											"type": "string",
-											"maxLength": 32
+											"maxLength": 50
 										},
 										"config": {
 											"type": "object",
@@ -3554,32 +3721,62 @@
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"street": {
-																	"description": "Street address",
+																"streetPrivate": {
+																	"description": "Private street address",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"city": {
-																	"description": "City",
+																"cityPrivate": {
+																	"description": "Private city",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"zip": {
-																	"description": "Postal / ZIP code",
+																"zipPrivate": {
+																	"description": "Private postal / ZIP code",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 10
 																},
-																"state": {
-																	"description": "State or province",
+																"statePrivate": {
+																	"description": "Private state or province",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"country": {
-																	"description": "Country",
+																"countryPrivate": {
+																	"description": "Private country",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"streetBusiness": {
+																	"description": "Business street address",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"cityBusiness": {
+																	"description": "Business city",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"zipBusiness": {
+																	"description": "Business postal / ZIP code",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 10
+																},
+																"stateBusiness": {
+																	"description": "Business state or province",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"countryBusiness": {
+																	"description": "Business country",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
@@ -3588,6 +3785,12 @@
 																	"description": "Personal or company website URL",
 																	"type": "string",
 																	"format": "uri"
+																},
+																"note": {
+																	"description": "Free-form note or additional information",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 300
 																},
 																"isDynamic": {
 																	"description": "If true, creates a dynamic vCard QR code with an editable short URL",
@@ -3806,10 +4009,10 @@
 												},
 												"name": {
 													"default": null,
-													"description": "User-defined name for the short URL",
+													"description": "User-defined name for the short URL (max 50 characters)",
 													"nullable": true,
 													"type": "string",
-													"maxLength": 255
+													"maxLength": 50
 												},
 												"destinationUrl": {
 													"nullable": true,
@@ -3847,6 +4050,26 @@
 													"type": "string",
 													"format": "date-time",
 													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"safetyStatus": {
+													"default": "unchecked",
+													"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+													"type": "string",
+													"enum": ["unchecked", "clean", "blocked"]
+												},
+												"safetyBlockedAt": {
+													"default": null,
+													"description": "When the link was blocked for safety reasons, or null",
+													"nullable": true,
+													"type": "string",
+													"format": "date-time",
+													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"safetyThreatTypes": {
+													"default": null,
+													"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+													"nullable": true,
+													"type": "string"
 												}
 											},
 											"required": [
@@ -3860,7 +4083,10 @@
 												"customDomainId",
 												"isActive",
 												"createdBy",
-												"deletedAt"
+												"deletedAt",
+												"safetyStatus",
+												"safetyBlockedAt",
+												"safetyThreatTypes"
 											],
 											"additionalProperties": false
 										},
@@ -4036,9 +4262,9 @@
 										},
 										"name": {
 											"nullable": true,
-											"description": "User-defined name for the QR code (max 32 characters)",
+											"description": "User-defined name for the QR code (max 50 characters)",
 											"type": "string",
-											"maxLength": 32
+											"maxLength": 50
 										},
 										"config": {
 											"type": "object",
@@ -4496,32 +4722,62 @@
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"street": {
-																	"description": "Street address",
+																"streetPrivate": {
+																	"description": "Private street address",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"city": {
-																	"description": "City",
+																"cityPrivate": {
+																	"description": "Private city",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"zip": {
-																	"description": "Postal / ZIP code",
+																"zipPrivate": {
+																	"description": "Private postal / ZIP code",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 10
 																},
-																"state": {
-																	"description": "State or province",
+																"statePrivate": {
+																	"description": "Private state or province",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"country": {
-																	"description": "Country",
+																"countryPrivate": {
+																	"description": "Private country",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"streetBusiness": {
+																	"description": "Business street address",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"cityBusiness": {
+																	"description": "Business city",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"zipBusiness": {
+																	"description": "Business postal / ZIP code",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 10
+																},
+																"stateBusiness": {
+																	"description": "Business state or province",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"countryBusiness": {
+																	"description": "Business country",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
@@ -4530,6 +4786,12 @@
 																	"description": "Personal or company website URL",
 																	"type": "string",
 																	"format": "uri"
+																},
+																"note": {
+																	"description": "Free-form note or additional information",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 300
 																},
 																"isDynamic": {
 																	"description": "If true, creates a dynamic vCard QR code with an editable short URL",
@@ -4748,10 +5010,10 @@
 												},
 												"name": {
 													"default": null,
-													"description": "User-defined name for the short URL",
+													"description": "User-defined name for the short URL (max 50 characters)",
 													"nullable": true,
 													"type": "string",
-													"maxLength": 255
+													"maxLength": 50
 												},
 												"destinationUrl": {
 													"nullable": true,
@@ -4789,6 +5051,26 @@
 													"type": "string",
 													"format": "date-time",
 													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"safetyStatus": {
+													"default": "unchecked",
+													"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+													"type": "string",
+													"enum": ["unchecked", "clean", "blocked"]
+												},
+												"safetyBlockedAt": {
+													"default": null,
+													"description": "When the link was blocked for safety reasons, or null",
+													"nullable": true,
+													"type": "string",
+													"format": "date-time",
+													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"safetyThreatTypes": {
+													"default": null,
+													"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+													"nullable": true,
+													"type": "string"
 												}
 											},
 											"required": [
@@ -4802,7 +5084,10 @@
 												"customDomainId",
 												"isActive",
 												"createdBy",
-												"deletedAt"
+												"deletedAt",
+												"safetyStatus",
+												"safetyBlockedAt",
+												"safetyThreatTypes"
 											],
 											"additionalProperties": false
 										},
@@ -4951,6 +5236,7 @@
 				"tags": ["QR Codes"],
 				"description": "Partially updates a QR code. You can change the name, content, or styling configuration. For dynamic QR codes, updating the URL content also updates the linked short URL destination. Only the owner can update their QR codes.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -4958,9 +5244,9 @@
 								"properties": {
 									"name": {
 										"nullable": true,
-										"description": "User-defined name for the QR code (max 32 characters)",
+										"description": "User-defined name for the QR code (max 50 characters)",
 										"type": "string",
-										"maxLength": 32
+										"maxLength": 50
 									},
 									"content": {
 										"oneOf": [
@@ -5104,32 +5390,62 @@
 																"minLength": 1,
 																"maxLength": 64
 															},
-															"street": {
-																"description": "Street address",
+															"streetPrivate": {
+																"description": "Private street address",
 																"type": "string",
 																"minLength": 1,
 																"maxLength": 64
 															},
-															"city": {
-																"description": "City",
+															"cityPrivate": {
+																"description": "Private city",
 																"type": "string",
 																"minLength": 1,
 																"maxLength": 64
 															},
-															"zip": {
-																"description": "Postal / ZIP code",
+															"zipPrivate": {
+																"description": "Private postal / ZIP code",
 																"type": "string",
 																"minLength": 1,
 																"maxLength": 10
 															},
-															"state": {
-																"description": "State or province",
+															"statePrivate": {
+																"description": "Private state or province",
 																"type": "string",
 																"minLength": 1,
 																"maxLength": 64
 															},
-															"country": {
-																"description": "Country",
+															"countryPrivate": {
+																"description": "Private country",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"streetBusiness": {
+																"description": "Business street address",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"cityBusiness": {
+																"description": "Business city",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"zipBusiness": {
+																"description": "Business postal / ZIP code",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 10
+															},
+															"stateBusiness": {
+																"description": "Business state or province",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 64
+															},
+															"countryBusiness": {
+																"description": "Business country",
 																"type": "string",
 																"minLength": 1,
 																"maxLength": 64
@@ -5138,6 +5454,12 @@
 																"description": "Personal or company website URL",
 																"type": "string",
 																"format": "uri"
+															},
+															"note": {
+																"description": "Free-form note or additional information",
+																"type": "string",
+																"minLength": 1,
+																"maxLength": 300
 															},
 															"isDynamic": {
 																"description": "If true, creates a dynamic vCard QR code with an editable short URL",
@@ -5667,9 +5989,9 @@
 										},
 										"name": {
 											"nullable": true,
-											"description": "User-defined name for the QR code (max 32 characters)",
+											"description": "User-defined name for the QR code (max 50 characters)",
 											"type": "string",
-											"maxLength": 32
+											"maxLength": 50
 										},
 										"config": {
 											"type": "object",
@@ -6127,32 +6449,62 @@
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"street": {
-																	"description": "Street address",
+																"streetPrivate": {
+																	"description": "Private street address",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"city": {
-																	"description": "City",
+																"cityPrivate": {
+																	"description": "Private city",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"zip": {
-																	"description": "Postal / ZIP code",
+																"zipPrivate": {
+																	"description": "Private postal / ZIP code",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 10
 																},
-																"state": {
-																	"description": "State or province",
+																"statePrivate": {
+																	"description": "Private state or province",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"country": {
-																	"description": "Country",
+																"countryPrivate": {
+																	"description": "Private country",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"streetBusiness": {
+																	"description": "Business street address",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"cityBusiness": {
+																	"description": "Business city",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"zipBusiness": {
+																	"description": "Business postal / ZIP code",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 10
+																},
+																"stateBusiness": {
+																	"description": "Business state or province",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"countryBusiness": {
+																	"description": "Business country",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
@@ -6161,6 +6513,12 @@
 																	"description": "Personal or company website URL",
 																	"type": "string",
 																	"format": "uri"
+																},
+																"note": {
+																	"description": "Free-form note or additional information",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 300
 																},
 																"isDynamic": {
 																	"description": "If true, creates a dynamic vCard QR code with an editable short URL",
@@ -6379,10 +6737,10 @@
 												},
 												"name": {
 													"default": null,
-													"description": "User-defined name for the short URL",
+													"description": "User-defined name for the short URL (max 50 characters)",
 													"nullable": true,
 													"type": "string",
-													"maxLength": 255
+													"maxLength": 50
 												},
 												"destinationUrl": {
 													"nullable": true,
@@ -6420,6 +6778,26 @@
 													"type": "string",
 													"format": "date-time",
 													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"safetyStatus": {
+													"default": "unchecked",
+													"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+													"type": "string",
+													"enum": ["unchecked", "clean", "blocked"]
+												},
+												"safetyBlockedAt": {
+													"default": null,
+													"description": "When the link was blocked for safety reasons, or null",
+													"nullable": true,
+													"type": "string",
+													"format": "date-time",
+													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"safetyThreatTypes": {
+													"default": null,
+													"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+													"nullable": true,
+													"type": "string"
 												}
 											},
 											"required": [
@@ -6433,7 +6811,10 @@
 												"customDomainId",
 												"isActive",
 												"createdBy",
-												"deletedAt"
+												"deletedAt",
+												"safetyStatus",
+												"safetyBlockedAt",
+												"safetyThreatTypes"
 											],
 											"additionalProperties": false
 										},
@@ -6702,6 +7083,1369 @@
 				}
 			}
 		},
+		"/qr-code/{id}/duplicate": {
+			"post": {
+				"operationId": "qr-code/duplicate",
+				"summary": "Duplicate a QR code",
+				"tags": ["QR Codes"],
+				"description": "Creates a full copy of an existing QR code with a new ID. Images are copied independently, a new short URL is generated for dynamic QR codes, and all tags are carried over. Only the owner can duplicate their QR codes.",
+				"parameters": [
+					{
+						"schema": { "type": "string", "format": "uuid" },
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"description": "QR code UUID to duplicate"
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "Default Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string",
+											"format": "uuid",
+											"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+											"description": "Unique identifier (UUID v4)"
+										},
+										"createdAt": {
+											"description": "Timestamp when the resource was created (ISO 8601)",
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"updatedAt": {
+											"description": "Timestamp when the resource was last updated (ISO 8601), or null if never updated",
+											"nullable": true,
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"name": {
+											"nullable": true,
+											"description": "User-defined name for the QR code (max 50 characters)",
+											"type": "string",
+											"maxLength": 50
+										},
+										"config": {
+											"type": "object",
+											"properties": {
+												"width": {
+													"type": "number",
+													"minimum": 0,
+													"description": "QR code width in pixels"
+												},
+												"height": {
+													"type": "number",
+													"minimum": 0,
+													"description": "QR code height in pixels"
+												},
+												"margin": {
+													"type": "number",
+													"minimum": 0,
+													"description": "Quiet zone margin around the QR code in pixels"
+												},
+												"image": {
+													"description": "Base64-encoded logo image to embed in the center of the QR code. Max size 1 MB.",
+													"type": "string"
+												},
+												"imageOptions": {
+													"type": "object",
+													"properties": {
+														"hideBackgroundDots": {
+															"type": "boolean",
+															"description": "Whether to hide QR code dots behind the embedded logo image"
+														}
+													},
+													"required": ["hideBackgroundDots"],
+													"additionalProperties": false,
+													"description": "Options for the embedded logo image"
+												},
+												"dotsOptions": {
+													"type": "object",
+													"properties": {
+														"type": {
+															"type": "string",
+															"enum": [
+																"dots",
+																"rounded",
+																"classy",
+																"classy-rounded",
+																"square",
+																"extra-rounded"
+															],
+															"description": "Shape style of the QR code data dots: dots, rounded, classy, classy-rounded, square, or extra-rounded"
+														},
+														"style": {
+															"oneOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["hex"] },
+																		"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["rgba"] },
+																		"value": {
+																			"type": "string",
+																			"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																		}
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["gradient"] },
+																		"gradientType": {
+																			"type": "string",
+																			"enum": ["radial", "linear"]
+																		},
+																		"rotation": { "nullable": true, "type": "number" },
+																		"colorStops": {
+																			"minItems": 2,
+																			"maxItems": 2,
+																			"type": "array",
+																			"items": {
+																				"type": "object",
+																				"properties": {
+																					"offset": { "type": "number" },
+																					"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																				},
+																				"required": ["offset", "color"],
+																				"additionalProperties": false
+																			}
+																		}
+																	},
+																	"required": ["type", "gradientType", "rotation", "colorStops"],
+																	"additionalProperties": false
+																}
+															],
+															"description": "Color or gradient for the data dots"
+														}
+													},
+													"required": ["type", "style"],
+													"additionalProperties": false,
+													"description": "Styling for the QR code data dots"
+												},
+												"cornersSquareOptions": {
+													"type": "object",
+													"properties": {
+														"type": {
+															"type": "string",
+															"enum": ["dot", "square", "extra-rounded"],
+															"description": "Shape style of the corner squares: dot, square, or extra-rounded"
+														},
+														"style": {
+															"oneOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["hex"] },
+																		"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["rgba"] },
+																		"value": {
+																			"type": "string",
+																			"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																		}
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["gradient"] },
+																		"gradientType": {
+																			"type": "string",
+																			"enum": ["radial", "linear"]
+																		},
+																		"rotation": { "nullable": true, "type": "number" },
+																		"colorStops": {
+																			"minItems": 2,
+																			"maxItems": 2,
+																			"type": "array",
+																			"items": {
+																				"type": "object",
+																				"properties": {
+																					"offset": { "type": "number" },
+																					"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																				},
+																				"required": ["offset", "color"],
+																				"additionalProperties": false
+																			}
+																		}
+																	},
+																	"required": ["type", "gradientType", "rotation", "colorStops"],
+																	"additionalProperties": false
+																}
+															],
+															"description": "Color or gradient for the corner squares"
+														}
+													},
+													"required": ["type", "style"],
+													"additionalProperties": false,
+													"description": "Styling for the three corner squares (finder patterns)"
+												},
+												"cornersDotOptions": {
+													"type": "object",
+													"properties": {
+														"type": {
+															"type": "string",
+															"enum": ["dot", "square"],
+															"description": "Shape style of the corner dots: dot or square"
+														},
+														"style": {
+															"oneOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["hex"] },
+																		"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["rgba"] },
+																		"value": {
+																			"type": "string",
+																			"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																		}
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["gradient"] },
+																		"gradientType": {
+																			"type": "string",
+																			"enum": ["radial", "linear"]
+																		},
+																		"rotation": { "nullable": true, "type": "number" },
+																		"colorStops": {
+																			"minItems": 2,
+																			"maxItems": 2,
+																			"type": "array",
+																			"items": {
+																				"type": "object",
+																				"properties": {
+																					"offset": { "type": "number" },
+																					"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																				},
+																				"required": ["offset", "color"],
+																				"additionalProperties": false
+																			}
+																		}
+																	},
+																	"required": ["type", "gradientType", "rotation", "colorStops"],
+																	"additionalProperties": false
+																}
+															],
+															"description": "Color or gradient for the corner dots"
+														}
+													},
+													"required": ["type", "style"],
+													"additionalProperties": false,
+													"description": "Styling for the dots inside the corner squares"
+												},
+												"backgroundOptions": {
+													"type": "object",
+													"properties": {
+														"style": {
+															"oneOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["hex"] },
+																		"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["rgba"] },
+																		"value": {
+																			"type": "string",
+																			"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																		}
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["gradient"] },
+																		"gradientType": {
+																			"type": "string",
+																			"enum": ["radial", "linear"]
+																		},
+																		"rotation": { "nullable": true, "type": "number" },
+																		"colorStops": {
+																			"minItems": 2,
+																			"maxItems": 2,
+																			"type": "array",
+																			"items": {
+																				"type": "object",
+																				"properties": {
+																					"offset": { "type": "number" },
+																					"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																				},
+																				"required": ["offset", "color"],
+																				"additionalProperties": false
+																			}
+																		}
+																	},
+																	"required": ["type", "gradientType", "rotation", "colorStops"],
+																	"additionalProperties": false
+																}
+															],
+															"description": "Background color or gradient"
+														}
+													},
+													"required": ["style"],
+													"additionalProperties": false,
+													"description": "QR code background styling"
+												}
+											},
+											"required": [
+												"width",
+												"height",
+												"margin",
+												"imageOptions",
+												"dotsOptions",
+												"cornersSquareOptions",
+												"cornersDotOptions",
+												"backgroundOptions"
+											],
+											"additionalProperties": false,
+											"description": "QR code visual styling configuration (colors, shapes, dimensions, embedded image)"
+										},
+										"content": {
+											"oneOf": [
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["url"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"url": {
+																	"type": "string",
+																	"maxLength": 1000,
+																	"format": "uri",
+																	"description": "The target URL that the QR code points to"
+																},
+																"isDynamic": {
+																	"description": "If true, creates a dynamic QR code with a short URL redirect so the destination can be changed later",
+																	"type": "boolean"
+																}
+															},
+															"required": ["url"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["text"] },
+														"data": { "type": "string", "minLength": 1, "maxLength": 1000 }
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["wifi"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"ssid": {
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 32,
+																	"description": "WiFi network name (SSID)"
+																},
+																"password": {
+																	"type": "string",
+																	"maxLength": 64,
+																	"description": "WiFi password (leave empty for open networks)"
+																},
+																"encryption": {
+																	"type": "string",
+																	"enum": ["WPA", "WEP", "nopass"],
+																	"description": "WiFi encryption type: WPA, WEP, or nopass (open)"
+																}
+															},
+															"required": ["ssid", "password", "encryption"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["vCard"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"title": {
+																	"description": "Job title or honorific (e.g. Dr., Mr.)",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 32
+																},
+																"firstName": {
+																	"description": "First name",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"lastName": {
+																	"description": "Last name",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"email": {
+																	"type": "string",
+																	"maxLength": 100,
+																	"format": "email",
+																	"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+																},
+																"emailPrivate": {
+																	"type": "string",
+																	"maxLength": 100,
+																	"format": "email",
+																	"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+																},
+																"emailBusiness": {
+																	"type": "string",
+																	"maxLength": 100,
+																	"format": "email",
+																	"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+																},
+																"phone": {
+																	"type": "string",
+																	"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
+																},
+																"phonePrivate": {
+																	"type": "string",
+																	"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
+																},
+																"phoneMobile": {
+																	"type": "string",
+																	"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
+																},
+																"phoneBusiness": {
+																	"type": "string",
+																	"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
+																},
+																"fax": {
+																	"type": "string",
+																	"pattern": "^(?:\\+|0|\\d)[0-9\\-().]{6,19}$"
+																},
+																"company": {
+																	"description": "Company or organization name",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"job": {
+																	"description": "Job title or position",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"streetPrivate": {
+																	"description": "Private street address",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"cityPrivate": {
+																	"description": "Private city",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"zipPrivate": {
+																	"description": "Private postal / ZIP code",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 10
+																},
+																"statePrivate": {
+																	"description": "Private state or province",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"countryPrivate": {
+																	"description": "Private country",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"streetBusiness": {
+																	"description": "Business street address",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"cityBusiness": {
+																	"description": "Business city",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"zipBusiness": {
+																	"description": "Business postal / ZIP code",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 10
+																},
+																"stateBusiness": {
+																	"description": "Business state or province",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"countryBusiness": {
+																	"description": "Business country",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"website": {
+																	"description": "Personal or company website URL",
+																	"type": "string",
+																	"format": "uri"
+																},
+																"note": {
+																	"description": "Free-form note or additional information",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 300
+																},
+																"isDynamic": {
+																	"description": "If true, creates a dynamic vCard QR code with an editable short URL",
+																	"type": "boolean"
+																}
+															},
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["email"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"email": {
+																	"type": "string",
+																	"maxLength": 100,
+																	"format": "email",
+																	"pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$",
+																	"description": "Recipient email address"
+																},
+																"subject": {
+																	"description": "Pre-filled email subject line",
+																	"type": "string",
+																	"maxLength": 250
+																},
+																"body": {
+																	"description": "Pre-filled email body text",
+																	"type": "string",
+																	"maxLength": 1000
+																}
+															},
+															"required": ["email"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["location"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"address": {
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 200,
+																	"description": "Human-readable address (e.g. \"1600 Amphitheatre Parkway, Mountain View, CA\")"
+																},
+																"latitude": {
+																	"description": "GPS latitude coordinate (-90 to 90)",
+																	"type": "number",
+																	"minimum": -90,
+																	"maximum": 90
+																},
+																"longitude": {
+																	"description": "GPS longitude coordinate (-180 to 180)",
+																	"type": "number",
+																	"minimum": -180,
+																	"maximum": 180
+																}
+															},
+															"required": ["address"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["event"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"title": {
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 200,
+																	"description": "Event title or name"
+																},
+																"description": {
+																	"description": "Event description or details",
+																	"type": "string",
+																	"maxLength": 500
+																},
+																"location": {
+																	"description": "Event location or venue",
+																	"type": "string",
+																	"maxLength": 200
+																},
+																"url": {
+																	"description": "URL with more information about the event",
+																	"type": "string",
+																	"format": "uri"
+																},
+																"startDate": {
+																	"type": "string",
+																	"format": "date-time",
+																	"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+																	"description": "Event start date and time as ISO 8601 string (e.g. \"2025-06-15T14:00:00Z\")"
+																},
+																"endDate": {
+																	"type": "string",
+																	"format": "date-time",
+																	"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$",
+																	"description": "Event end date and time as ISO 8601 string (must be after startDate)"
+																}
+															},
+															"required": ["title", "startDate", "endDate"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["epc"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"name": {
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 70,
+																	"description": "Beneficiary name (payment recipient)"
+																},
+																"iban": {
+																	"type": "string",
+																	"minLength": 15,
+																	"maxLength": 34,
+																	"description": "IBAN of the beneficiary (e.g. \"DE89370400440532013000\")"
+																},
+																"bic": {
+																	"description": "BIC/SWIFT code of the beneficiary bank",
+																	"type": "string",
+																	"pattern": "^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$"
+																},
+																"amount": {
+																	"description": "Payment amount in EUR",
+																	"type": "number",
+																	"minimum": 0.01,
+																	"maximum": 999999999.99
+																},
+																"purpose": {
+																	"description": "Payment reference or purpose text",
+																	"type": "string",
+																	"maxLength": 140
+																}
+															},
+															"required": ["name", "iban"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												}
+											],
+											"description": "QR code content as a discriminated union — the \"type\" field determines which data schema applies"
+										},
+										"qrCodeData": {
+											"nullable": true,
+											"description": "Raw data string encoded in the QR code",
+											"type": "string"
+										},
+										"previewImage": {
+											"nullable": true,
+											"description": "URL to a preview image of the rendered QR code",
+											"type": "string"
+										},
+										"createdBy": {
+											"nullable": true,
+											"description": "User ID of the QR code owner",
+											"type": "string"
+										},
+										"shortUrl": {
+											"nullable": true,
+											"description": "Linked short URL for dynamic QR codes, or null for static QR codes",
+											"type": "object",
+											"properties": {
+												"id": {
+													"type": "string",
+													"format": "uuid",
+													"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+													"description": "Unique identifier (UUID v4)"
+												},
+												"createdAt": {
+													"description": "Timestamp when the resource was created (ISO 8601)",
+													"type": "string",
+													"format": "date-time",
+													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"updatedAt": {
+													"description": "Timestamp when the resource was last updated (ISO 8601), or null if never updated",
+													"nullable": true,
+													"type": "string",
+													"format": "date-time",
+													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"shortCode": {
+													"type": "string",
+													"minLength": 5,
+													"maxLength": 5,
+													"description": "Unique 5-character short code (e.g. \"Ab3xZ\")"
+												},
+												"name": {
+													"default": null,
+													"description": "User-defined name for the short URL (max 50 characters)",
+													"nullable": true,
+													"type": "string",
+													"maxLength": 50
+												},
+												"destinationUrl": {
+													"nullable": true,
+													"description": "The target URL that the short URL redirects to",
+													"type": "string",
+													"format": "uri"
+												},
+												"qrCodeId": {
+													"nullable": true,
+													"description": "ID of the linked QR code, or null for standalone short URLs",
+													"type": "string",
+													"format": "uuid",
+													"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+												},
+												"customDomainId": {
+													"default": null,
+													"description": "ID of the custom domain used for this short URL, or null for the default domain",
+													"nullable": true,
+													"type": "string",
+													"format": "uuid",
+													"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+												},
+												"isActive": {
+													"type": "boolean",
+													"description": "Whether the short URL is currently active and redirecting"
+												},
+												"createdBy": {
+													"type": "string",
+													"description": "User ID of the short URL owner"
+												},
+												"deletedAt": {
+													"default": null,
+													"description": "Soft-delete timestamp, or null if the short URL is active",
+													"nullable": true,
+													"type": "string",
+													"format": "date-time",
+													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"safetyStatus": {
+													"default": "unchecked",
+													"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+													"type": "string",
+													"enum": ["unchecked", "clean", "blocked"]
+												},
+												"safetyBlockedAt": {
+													"default": null,
+													"description": "When the link was blocked for safety reasons, or null",
+													"nullable": true,
+													"type": "string",
+													"format": "date-time",
+													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"safetyThreatTypes": {
+													"default": null,
+													"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+													"nullable": true,
+													"type": "string"
+												}
+											},
+											"required": [
+												"id",
+												"createdAt",
+												"updatedAt",
+												"shortCode",
+												"name",
+												"destinationUrl",
+												"qrCodeId",
+												"customDomainId",
+												"isActive",
+												"createdBy",
+												"deletedAt",
+												"safetyStatus",
+												"safetyBlockedAt",
+												"safetyThreatTypes"
+											],
+											"additionalProperties": false
+										},
+										"tags": {
+											"default": [],
+											"description": "Tags assigned to this QR code",
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"id": {
+														"type": "string",
+														"format": "uuid",
+														"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+														"description": "Unique identifier (UUID v4)"
+													},
+													"createdAt": {
+														"description": "Timestamp when the resource was created (ISO 8601)",
+														"type": "string",
+														"format": "date-time",
+														"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+													},
+													"updatedAt": {
+														"description": "Timestamp when the resource was last updated (ISO 8601), or null if never updated",
+														"nullable": true,
+														"type": "string",
+														"format": "date-time",
+														"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+													},
+													"name": {
+														"type": "string",
+														"minLength": 1,
+														"maxLength": 32,
+														"description": "Tag display name (max 32 characters)"
+													},
+													"color": {
+														"type": "string",
+														"pattern": "^#[0-9A-Fa-f]{6}$",
+														"description": "Tag color as hex code (e.g. \"#FF5733\")"
+													},
+													"createdBy": {
+														"type": "string",
+														"description": "User ID of the tag owner"
+													},
+													"qrCodeCount": {
+														"description": "Number of QR codes assigned to this tag",
+														"type": "number"
+													}
+												},
+												"required": ["id", "createdAt", "updatedAt", "name", "color", "createdBy"],
+												"additionalProperties": false
+											}
+										}
+									},
+									"required": [
+										"id",
+										"createdAt",
+										"updatedAt",
+										"name",
+										"config",
+										"content",
+										"qrCodeData",
+										"previewImage",
+										"createdBy",
+										"shortUrl",
+										"tags"
+									],
+									"additionalProperties": false
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized — missing or invalid Bearer token.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Unauthorized — missing or invalid Bearer token."
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden — you do not have permission to access this resource.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Forbidden — you do not have permission to access this resource."
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found — the requested resource does not exist.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Not Found — the requested resource does not exist."
+								}
+							}
+						}
+					},
+					"429": {
+						"description": "Too Many Requests — rate limit exceeded. Retry after the rate limit window resets.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Too Many Requests — rate limit exceeded. Retry after the rate limit window resets."
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/qr-code/render": {
+			"post": {
+				"operationId": "qr-code/render",
+				"summary": "Render a QR code to an image buffer",
+				"tags": ["QR Codes"],
+				"description": "Returns a fully rendered QR code in PNG, WebP, JPEG or SVG. Supports ETag-based caching. Intended for third-party clients (design plugins) that cannot render complex QR-styling output themselves.",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"config": {
+										"type": "object",
+										"properties": {
+											"width": {
+												"type": "number",
+												"minimum": 0,
+												"description": "QR code width in pixels"
+											},
+											"height": {
+												"type": "number",
+												"minimum": 0,
+												"description": "QR code height in pixels"
+											},
+											"margin": {
+												"type": "number",
+												"minimum": 0,
+												"description": "Quiet zone margin around the QR code in pixels"
+											},
+											"image": {
+												"description": "Base64-encoded logo image to embed in the center of the QR code. Max size 1 MB.",
+												"type": "string"
+											},
+											"imageOptions": {
+												"type": "object",
+												"properties": {
+													"hideBackgroundDots": {
+														"type": "boolean",
+														"description": "Whether to hide QR code dots behind the embedded logo image"
+													}
+												},
+												"required": ["hideBackgroundDots"],
+												"additionalProperties": false,
+												"description": "Options for the embedded logo image"
+											},
+											"dotsOptions": {
+												"type": "object",
+												"properties": {
+													"type": {
+														"type": "string",
+														"enum": [
+															"dots",
+															"rounded",
+															"classy",
+															"classy-rounded",
+															"square",
+															"extra-rounded"
+														],
+														"description": "Shape style of the QR code data dots: dots, rounded, classy, classy-rounded, square, or extra-rounded"
+													},
+													"style": {
+														"oneOf": [
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["hex"] },
+																	"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																},
+																"required": ["type", "value"],
+																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["rgba"] },
+																	"value": {
+																		"type": "string",
+																		"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																	}
+																},
+																"required": ["type", "value"],
+																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["gradient"] },
+																	"gradientType": {
+																		"type": "string",
+																		"enum": ["radial", "linear"]
+																	},
+																	"rotation": { "nullable": true, "type": "number" },
+																	"colorStops": {
+																		"minItems": 2,
+																		"maxItems": 2,
+																		"type": "array",
+																		"items": {
+																			"type": "object",
+																			"properties": {
+																				"offset": { "type": "number" },
+																				"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																			},
+																			"required": ["offset", "color"],
+																			"additionalProperties": false
+																		}
+																	}
+																},
+																"required": ["type", "gradientType", "rotation", "colorStops"],
+																"additionalProperties": false
+															}
+														],
+														"description": "Color or gradient for the data dots"
+													}
+												},
+												"required": ["type", "style"],
+												"additionalProperties": false,
+												"description": "Styling for the QR code data dots"
+											},
+											"cornersSquareOptions": {
+												"type": "object",
+												"properties": {
+													"type": {
+														"type": "string",
+														"enum": ["dot", "square", "extra-rounded"],
+														"description": "Shape style of the corner squares: dot, square, or extra-rounded"
+													},
+													"style": {
+														"oneOf": [
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["hex"] },
+																	"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																},
+																"required": ["type", "value"],
+																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["rgba"] },
+																	"value": {
+																		"type": "string",
+																		"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																	}
+																},
+																"required": ["type", "value"],
+																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["gradient"] },
+																	"gradientType": {
+																		"type": "string",
+																		"enum": ["radial", "linear"]
+																	},
+																	"rotation": { "nullable": true, "type": "number" },
+																	"colorStops": {
+																		"minItems": 2,
+																		"maxItems": 2,
+																		"type": "array",
+																		"items": {
+																			"type": "object",
+																			"properties": {
+																				"offset": { "type": "number" },
+																				"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																			},
+																			"required": ["offset", "color"],
+																			"additionalProperties": false
+																		}
+																	}
+																},
+																"required": ["type", "gradientType", "rotation", "colorStops"],
+																"additionalProperties": false
+															}
+														],
+														"description": "Color or gradient for the corner squares"
+													}
+												},
+												"required": ["type", "style"],
+												"additionalProperties": false,
+												"description": "Styling for the three corner squares (finder patterns)"
+											},
+											"cornersDotOptions": {
+												"type": "object",
+												"properties": {
+													"type": {
+														"type": "string",
+														"enum": ["dot", "square"],
+														"description": "Shape style of the corner dots: dot or square"
+													},
+													"style": {
+														"oneOf": [
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["hex"] },
+																	"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																},
+																"required": ["type", "value"],
+																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["rgba"] },
+																	"value": {
+																		"type": "string",
+																		"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																	}
+																},
+																"required": ["type", "value"],
+																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["gradient"] },
+																	"gradientType": {
+																		"type": "string",
+																		"enum": ["radial", "linear"]
+																	},
+																	"rotation": { "nullable": true, "type": "number" },
+																	"colorStops": {
+																		"minItems": 2,
+																		"maxItems": 2,
+																		"type": "array",
+																		"items": {
+																			"type": "object",
+																			"properties": {
+																				"offset": { "type": "number" },
+																				"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																			},
+																			"required": ["offset", "color"],
+																			"additionalProperties": false
+																		}
+																	}
+																},
+																"required": ["type", "gradientType", "rotation", "colorStops"],
+																"additionalProperties": false
+															}
+														],
+														"description": "Color or gradient for the corner dots"
+													}
+												},
+												"required": ["type", "style"],
+												"additionalProperties": false,
+												"description": "Styling for the dots inside the corner squares"
+											},
+											"backgroundOptions": {
+												"type": "object",
+												"properties": {
+													"style": {
+														"oneOf": [
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["hex"] },
+																	"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																},
+																"required": ["type", "value"],
+																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["rgba"] },
+																	"value": {
+																		"type": "string",
+																		"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																	}
+																},
+																"required": ["type", "value"],
+																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["gradient"] },
+																	"gradientType": {
+																		"type": "string",
+																		"enum": ["radial", "linear"]
+																	},
+																	"rotation": { "nullable": true, "type": "number" },
+																	"colorStops": {
+																		"minItems": 2,
+																		"maxItems": 2,
+																		"type": "array",
+																		"items": {
+																			"type": "object",
+																			"properties": {
+																				"offset": { "type": "number" },
+																				"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																			},
+																			"required": ["offset", "color"],
+																			"additionalProperties": false
+																		}
+																	}
+																},
+																"required": ["type", "gradientType", "rotation", "colorStops"],
+																"additionalProperties": false
+															}
+														],
+														"description": "Background color or gradient"
+													}
+												},
+												"required": ["style"],
+												"additionalProperties": false,
+												"description": "QR code background styling"
+											}
+										},
+										"required": [
+											"width",
+											"height",
+											"margin",
+											"imageOptions",
+											"dotsOptions",
+											"cornersSquareOptions",
+											"cornersDotOptions",
+											"backgroundOptions"
+										],
+										"additionalProperties": false
+									},
+									"data": { "type": "string", "minLength": 1, "maxLength": 4000 },
+									"format": { "type": "string", "enum": ["png", "webp", "jpeg", "svg"] },
+									"sizePx": {
+										"type": "integer",
+										"minimum": 0,
+										"exclusiveMinimum": true,
+										"maximum": 4096
+									},
+									"printSizeMm": {
+										"type": "number",
+										"minimum": 0,
+										"exclusiveMinimum": true,
+										"maximum": 500
+									}
+								},
+								"required": ["config", "data"],
+								"additionalProperties": false
+							}
+						}
+					}
+				},
+				"responses": { "200": { "description": "Default Response" } }
+			}
+		},
 		"/qr-code/{id}/share": {
 			"post": {
 				"operationId": "qr-code/create-share-link",
@@ -6709,6 +8453,7 @@
 				"tags": ["QR Code Sharing"],
 				"description": "Creates a shareable public link for a QR code. The share link allows anyone to view the QR code without authentication. You can configure whether the QR code name and a download button are shown on the public page.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -7049,6 +8794,7 @@
 				"tags": ["QR Code Sharing"],
 				"description": "Updates the display options (showName, showDownloadButton) for an existing share link.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -7489,32 +9235,62 @@
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"street": {
-																	"description": "Street address",
+																"streetPrivate": {
+																	"description": "Private street address",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"city": {
-																	"description": "City",
+																"cityPrivate": {
+																	"description": "Private city",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"zip": {
-																	"description": "Postal / ZIP code",
+																"zipPrivate": {
+																	"description": "Private postal / ZIP code",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 10
 																},
-																"state": {
-																	"description": "State or province",
+																"statePrivate": {
+																	"description": "Private state or province",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
 																},
-																"country": {
-																	"description": "Country",
+																"countryPrivate": {
+																	"description": "Private country",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"streetBusiness": {
+																	"description": "Business street address",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"cityBusiness": {
+																	"description": "Business city",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"zipBusiness": {
+																	"description": "Business postal / ZIP code",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 10
+																},
+																"stateBusiness": {
+																	"description": "Business state or province",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64
+																},
+																"countryBusiness": {
+																	"description": "Business country",
 																	"type": "string",
 																	"minLength": 1,
 																	"maxLength": 64
@@ -7523,6 +9299,12 @@
 																	"description": "Personal or company website URL",
 																	"type": "string",
 																	"format": "uri"
+																},
+																"note": {
+																	"description": "Free-form note or additional information",
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 300
 																},
 																"isDynamic": {
 																	"description": "If true, creates a dynamic vCard QR code with an editable short URL",
@@ -8531,8 +10313,8 @@
 													},
 													"name": {
 														"type": "string",
-														"maxLength": 32,
-														"description": "Template name (max 32 characters)"
+														"maxLength": 50,
+														"description": "Template name (max 50 characters)"
 													},
 													"previewImage": {
 														"nullable": true,
@@ -8624,6 +10406,7 @@
 				"tags": ["Templates"],
 				"description": "Saves a QR code styling configuration as a reusable template with a name. Templates store colors, dot styles, corner styles, margins, and embedded images.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -8631,8 +10414,8 @@
 								"properties": {
 									"name": {
 										"type": "string",
-										"maxLength": 32,
-										"description": "Template name (max 32 characters)"
+										"maxLength": 50,
+										"description": "Template name (max 50 characters)"
 									},
 									"config": {
 										"type": "object",
@@ -8953,8 +10736,7 @@
 								"additionalProperties": false
 							}
 						}
-					},
-					"required": true
+					}
 				},
 				"responses": {
 					"200": {
@@ -9303,8 +11085,8 @@
 										},
 										"name": {
 											"type": "string",
-											"maxLength": 32,
-											"description": "Template name (max 32 characters)"
+											"maxLength": 50,
+											"description": "Template name (max 50 characters)"
 										},
 										"previewImage": {
 											"nullable": true,
@@ -9784,8 +11566,8 @@
 													},
 													"name": {
 														"type": "string",
-														"maxLength": 32,
-														"description": "Template name (max 32 characters)"
+														"maxLength": 50,
+														"description": "Template name (max 50 characters)"
 													},
 													"previewImage": {
 														"nullable": true,
@@ -10195,8 +11977,8 @@
 										},
 										"name": {
 											"type": "string",
-											"maxLength": 32,
-											"description": "Template name (max 32 characters)"
+											"maxLength": 50,
+											"description": "Template name (max 50 characters)"
 										},
 										"previewImage": {
 											"nullable": true,
@@ -10294,6 +12076,7 @@
 				"tags": ["Templates"],
 				"description": "Partially updates a template name and/or styling configuration. Only the owner can update their templates.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -10301,8 +12084,8 @@
 								"properties": {
 									"name": {
 										"type": "string",
-										"maxLength": 32,
-										"description": "Template name (max 32 characters)"
+										"maxLength": 50,
+										"description": "Template name (max 50 characters)"
 									},
 									"config": {
 										"type": "object",
@@ -10980,8 +12763,8 @@
 										},
 										"name": {
 											"type": "string",
-											"maxLength": 32,
-											"description": "Template name (max 32 characters)"
+											"maxLength": 50,
+											"description": "Template name (max 50 characters)"
 										},
 										"previewImage": {
 											"nullable": true,
@@ -11199,6 +12982,700 @@
 				}
 			}
 		},
+		"/config-template/{id}/duplicate": {
+			"post": {
+				"operationId": "template/duplicate",
+				"summary": "Duplicate a template",
+				"tags": ["Templates"],
+				"description": "Creates a full copy of an existing template with a new ID. Images are copied independently. Only the owner can duplicate their templates.",
+				"parameters": [
+					{
+						"schema": { "type": "string", "format": "uuid" },
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"description": "Template UUID to duplicate"
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "Default Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string",
+											"format": "uuid",
+											"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+											"description": "Unique identifier (UUID v4)"
+										},
+										"createdAt": {
+											"description": "Timestamp when the resource was created (ISO 8601)",
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"updatedAt": {
+											"description": "Timestamp when the resource was last updated (ISO 8601), or null if never updated",
+											"nullable": true,
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"config": {
+											"type": "object",
+											"properties": {
+												"width": {
+													"type": "number",
+													"minimum": 0,
+													"description": "QR code width in pixels"
+												},
+												"height": {
+													"type": "number",
+													"minimum": 0,
+													"description": "QR code height in pixels"
+												},
+												"margin": {
+													"type": "number",
+													"minimum": 0,
+													"description": "Quiet zone margin around the QR code in pixels"
+												},
+												"image": {
+													"description": "Base64-encoded logo image to embed in the center of the QR code. Max size 1 MB.",
+													"type": "string"
+												},
+												"imageOptions": {
+													"type": "object",
+													"properties": {
+														"hideBackgroundDots": {
+															"type": "boolean",
+															"description": "Whether to hide QR code dots behind the embedded logo image"
+														}
+													},
+													"required": ["hideBackgroundDots"],
+													"additionalProperties": false,
+													"description": "Options for the embedded logo image"
+												},
+												"dotsOptions": {
+													"type": "object",
+													"properties": {
+														"type": {
+															"type": "string",
+															"enum": [
+																"dots",
+																"rounded",
+																"classy",
+																"classy-rounded",
+																"square",
+																"extra-rounded"
+															],
+															"description": "Shape style of the QR code data dots: dots, rounded, classy, classy-rounded, square, or extra-rounded"
+														},
+														"style": {
+															"oneOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["hex"] },
+																		"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["rgba"] },
+																		"value": {
+																			"type": "string",
+																			"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																		}
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["gradient"] },
+																		"gradientType": {
+																			"type": "string",
+																			"enum": ["radial", "linear"]
+																		},
+																		"rotation": { "nullable": true, "type": "number" },
+																		"colorStops": {
+																			"minItems": 2,
+																			"maxItems": 2,
+																			"type": "array",
+																			"items": {
+																				"type": "object",
+																				"properties": {
+																					"offset": { "type": "number" },
+																					"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																				},
+																				"required": ["offset", "color"],
+																				"additionalProperties": false
+																			}
+																		}
+																	},
+																	"required": ["type", "gradientType", "rotation", "colorStops"],
+																	"additionalProperties": false
+																}
+															],
+															"description": "Color or gradient for the data dots"
+														}
+													},
+													"required": ["type", "style"],
+													"additionalProperties": false,
+													"description": "Styling for the QR code data dots"
+												},
+												"cornersSquareOptions": {
+													"type": "object",
+													"properties": {
+														"type": {
+															"type": "string",
+															"enum": ["dot", "square", "extra-rounded"],
+															"description": "Shape style of the corner squares: dot, square, or extra-rounded"
+														},
+														"style": {
+															"oneOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["hex"] },
+																		"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["rgba"] },
+																		"value": {
+																			"type": "string",
+																			"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																		}
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["gradient"] },
+																		"gradientType": {
+																			"type": "string",
+																			"enum": ["radial", "linear"]
+																		},
+																		"rotation": { "nullable": true, "type": "number" },
+																		"colorStops": {
+																			"minItems": 2,
+																			"maxItems": 2,
+																			"type": "array",
+																			"items": {
+																				"type": "object",
+																				"properties": {
+																					"offset": { "type": "number" },
+																					"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																				},
+																				"required": ["offset", "color"],
+																				"additionalProperties": false
+																			}
+																		}
+																	},
+																	"required": ["type", "gradientType", "rotation", "colorStops"],
+																	"additionalProperties": false
+																}
+															],
+															"description": "Color or gradient for the corner squares"
+														}
+													},
+													"required": ["type", "style"],
+													"additionalProperties": false,
+													"description": "Styling for the three corner squares (finder patterns)"
+												},
+												"cornersDotOptions": {
+													"type": "object",
+													"properties": {
+														"type": {
+															"type": "string",
+															"enum": ["dot", "square"],
+															"description": "Shape style of the corner dots: dot or square"
+														},
+														"style": {
+															"oneOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["hex"] },
+																		"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["rgba"] },
+																		"value": {
+																			"type": "string",
+																			"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																		}
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["gradient"] },
+																		"gradientType": {
+																			"type": "string",
+																			"enum": ["radial", "linear"]
+																		},
+																		"rotation": { "nullable": true, "type": "number" },
+																		"colorStops": {
+																			"minItems": 2,
+																			"maxItems": 2,
+																			"type": "array",
+																			"items": {
+																				"type": "object",
+																				"properties": {
+																					"offset": { "type": "number" },
+																					"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																				},
+																				"required": ["offset", "color"],
+																				"additionalProperties": false
+																			}
+																		}
+																	},
+																	"required": ["type", "gradientType", "rotation", "colorStops"],
+																	"additionalProperties": false
+																}
+															],
+															"description": "Color or gradient for the corner dots"
+														}
+													},
+													"required": ["type", "style"],
+													"additionalProperties": false,
+													"description": "Styling for the dots inside the corner squares"
+												},
+												"backgroundOptions": {
+													"type": "object",
+													"properties": {
+														"style": {
+															"oneOf": [
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["hex"] },
+																		"value": { "type": "string", "pattern": "^#[0-9A-F]{6}$" }
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["rgba"] },
+																		"value": {
+																			"type": "string",
+																			"pattern": "^rgba?\\(\\s*\\d{1,3}\\s*,\\s*\\d{1,3}\\s*,\\s*\\d{1,3}(?:\\s*,\\s*(?:0|1|0?\\.\\d+))?\\s*\\)$"
+																		}
+																	},
+																	"required": ["type", "value"],
+																	"additionalProperties": false
+																},
+																{
+																	"type": "object",
+																	"properties": {
+																		"type": { "type": "string", "enum": ["gradient"] },
+																		"gradientType": {
+																			"type": "string",
+																			"enum": ["radial", "linear"]
+																		},
+																		"rotation": { "nullable": true, "type": "number" },
+																		"colorStops": {
+																			"minItems": 2,
+																			"maxItems": 2,
+																			"type": "array",
+																			"items": {
+																				"type": "object",
+																				"properties": {
+																					"offset": { "type": "number" },
+																					"color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+																				},
+																				"required": ["offset", "color"],
+																				"additionalProperties": false
+																			}
+																		}
+																	},
+																	"required": ["type", "gradientType", "rotation", "colorStops"],
+																	"additionalProperties": false
+																}
+															],
+															"description": "Background color or gradient"
+														}
+													},
+													"required": ["style"],
+													"additionalProperties": false,
+													"description": "QR code background styling"
+												}
+											},
+											"required": [
+												"width",
+												"height",
+												"margin",
+												"imageOptions",
+												"dotsOptions",
+												"cornersSquareOptions",
+												"cornersDotOptions",
+												"backgroundOptions"
+											],
+											"additionalProperties": false,
+											"description": "QR code styling configuration stored in this template"
+										},
+										"createdBy": {
+											"type": "string",
+											"description": "User ID of the template owner"
+										},
+										"name": {
+											"type": "string",
+											"maxLength": 50,
+											"description": "Template name (max 50 characters)"
+										},
+										"previewImage": {
+											"nullable": true,
+											"description": "URL to a preview image showing the template styling",
+											"type": "string"
+										}
+									},
+									"required": [
+										"id",
+										"createdAt",
+										"updatedAt",
+										"config",
+										"createdBy",
+										"name",
+										"previewImage"
+									],
+									"additionalProperties": false
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized — missing or invalid Bearer token.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Unauthorized — missing or invalid Bearer token."
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden — you do not have permission to access this resource.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Forbidden — you do not have permission to access this resource."
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found — the requested resource does not exist.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Not Found — the requested resource does not exist."
+								}
+							}
+						}
+					},
+					"429": {
+						"description": "Too Many Requests — rate limit exceeded. Retry after the rate limit window resets.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Too Many Requests — rate limit exceeded. Retry after the rate limit window resets."
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/short-url/safety-incidents": {
+			"get": {
+				"operationId": "short-url/list-safety-incidents",
+				"summary": "List open URL safety findings",
+				"tags": ["Short URLs"],
+				"description": "Returns the safety findings the user has not dismissed yet, together with how many of their links are currently blocked and whether the account has already been warned. Only the flagged hostname is exposed, never the full destination URL.",
+				"responses": {
+					"200": {
+						"description": "Default Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"incidents": {
+											"default": [],
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"id": {
+														"type": "string",
+														"format": "uuid",
+														"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+													},
+													"shortUrlId": {
+														"nullable": true,
+														"description": "Null when the write was refused and no link exists",
+														"type": "string",
+														"format": "uuid",
+														"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+													},
+													"shortCode": {
+														"default": null,
+														"description": "Short code of the affected link, or null",
+														"nullable": true,
+														"type": "string"
+													},
+													"name": {
+														"default": null,
+														"description": "User-defined name of the affected link",
+														"nullable": true,
+														"type": "string"
+													},
+													"qrCodeId": {
+														"default": null,
+														"description": "Set when the link belongs to a dynamic QR code, which lives in the QR code list",
+														"nullable": true,
+														"type": "string",
+														"format": "uuid",
+														"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+													},
+													"destinationHost": {
+														"type": "string",
+														"description": "Hostname of the flagged destination (never the full URL)"
+													},
+													"threatTypes": { "default": null, "nullable": true, "type": "string" },
+													"source": {
+														"type": "string",
+														"enum": ["create", "update", "duplicate", "recheck"]
+													},
+													"action": {
+														"type": "string",
+														"enum": ["rejected", "blocked", "shadow", "cleared"]
+													},
+													"acknowledgedAt": {
+														"default": null,
+														"nullable": true,
+														"type": "string",
+														"format": "date-time",
+														"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+													},
+													"resolvedAt": {
+														"default": null,
+														"nullable": true,
+														"type": "string",
+														"format": "date-time",
+														"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+													},
+													"createdAt": {
+														"type": "string",
+														"format": "date-time",
+														"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+													}
+												},
+												"required": [
+													"id",
+													"shortUrlId",
+													"shortCode",
+													"name",
+													"qrCodeId",
+													"destinationHost",
+													"threatTypes",
+													"source",
+													"action",
+													"acknowledgedAt",
+													"resolvedAt",
+													"createdAt"
+												],
+												"additionalProperties": false
+											}
+										},
+										"blockedCount": {
+											"type": "integer",
+											"minimum": -9007199254740991,
+											"maximum": 9007199254740991,
+											"description": "Total blocked links, standalone plus QR-linked"
+										},
+										"blockedStandaloneCount": {
+											"type": "integer",
+											"minimum": -9007199254740991,
+											"maximum": 9007199254740991,
+											"description": "Blocked links shown in the short URL list"
+										},
+										"blockedQrCodeCount": {
+											"type": "integer",
+											"minimum": -9007199254740991,
+											"maximum": 9007199254740991,
+											"description": "Blocked links belonging to a dynamic QR code"
+										},
+										"warningActive": {
+											"type": "boolean",
+											"description": "True once the account has been warned — the next offence suspends it"
+										}
+									},
+									"required": [
+										"incidents",
+										"blockedCount",
+										"blockedStandaloneCount",
+										"blockedQrCodeCount",
+										"warningActive"
+									],
+									"additionalProperties": false
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized — missing or invalid Bearer token.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Unauthorized — missing or invalid Bearer token."
+								}
+							}
+						}
+					},
+					"429": {
+						"description": "Too Many Requests — rate limit exceeded. Retry after the rate limit window resets.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Too Many Requests — rate limit exceeded. Retry after the rate limit window resets."
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/short-url/safety-incidents/acknowledge": {
+			"post": {
+				"operationId": "short-url/acknowledge-safety-incidents",
+				"summary": "Dismiss URL safety findings",
+				"tags": ["Short URLs"],
+				"description": "Marks all of the current open safety findings as seen so the dashboard banner stops showing them. The block itself is unaffected.",
+				"responses": {
+					"200": {
+						"description": "Default Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"acknowledged": {
+											"type": "integer",
+											"minimum": -9007199254740991,
+											"maximum": 9007199254740991,
+											"description": "How many open incidents were marked as seen"
+										}
+									},
+									"required": ["acknowledged"],
+									"additionalProperties": false
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized — missing or invalid Bearer token.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Unauthorized — missing or invalid Bearer token."
+								}
+							}
+						}
+					},
+					"429": {
+						"description": "Too Many Requests — rate limit exceeded. Retry after the rate limit window resets.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Too Many Requests — rate limit exceeded. Retry after the rate limit window resets."
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/short-url": {
 			"get": {
 				"operationId": "short-url/list-short-urls",
@@ -11271,6 +13748,13 @@
 						"name": "tagIds",
 						"required": false,
 						"description": "Filter by tag ID(s). Only returns short URLs that have at least one of the specified tags"
+					},
+					{
+						"schema": { "type": "string", "enum": ["all", "active", "disabled", "blocked"] },
+						"in": "query",
+						"name": "status",
+						"required": false,
+						"description": "Filter by state: active, disabled by the owner, or blocked for safety"
 					}
 				],
 				"responses": {
@@ -11322,10 +13806,10 @@
 													},
 													"name": {
 														"default": null,
-														"description": "User-defined name for the short URL",
+														"description": "User-defined name for the short URL (max 50 characters)",
 														"nullable": true,
 														"type": "string",
-														"maxLength": 255
+														"maxLength": 50
 													},
 													"destinationUrl": {
 														"nullable": true,
@@ -11355,6 +13839,26 @@
 														"type": "string",
 														"format": "date-time",
 														"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+													},
+													"safetyStatus": {
+														"default": "unchecked",
+														"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+														"type": "string",
+														"enum": ["unchecked", "clean", "blocked"]
+													},
+													"safetyBlockedAt": {
+														"default": null,
+														"description": "When the link was blocked for safety reasons, or null",
+														"nullable": true,
+														"type": "string",
+														"format": "date-time",
+														"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+													},
+													"safetyThreatTypes": {
+														"default": null,
+														"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+														"nullable": true,
+														"type": "string"
 													},
 													"customDomain": {
 														"nullable": true,
@@ -11520,6 +14024,9 @@
 													"isActive",
 													"createdBy",
 													"deletedAt",
+													"safetyStatus",
+													"safetyBlockedAt",
+													"safetyThreatTypes",
 													"customDomain",
 													"tags"
 												],
@@ -11599,6 +14106,7 @@
 				"tags": ["Short URLs"],
 				"description": "Creates a new standalone short URL (not linked to a QR code). A unique 5-character short code is automatically generated. Optionally assign a custom domain and set the active state.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -11624,18 +14132,17 @@
 									},
 									"name": {
 										"default": null,
-										"description": "User-defined name for the short URL",
+										"description": "User-defined name for the short URL (max 50 characters)",
 										"nullable": true,
 										"type": "string",
-										"maxLength": 255
+										"maxLength": 50
 									}
 								},
 								"required": ["destinationUrl", "isActive", "customDomainId", "name"],
 								"additionalProperties": false
 							}
 						}
-					},
-					"required": true
+					}
 				},
 				"responses": {
 					"201": {
@@ -11672,10 +14179,10 @@
 										},
 										"name": {
 											"default": null,
-											"description": "User-defined name for the short URL",
+											"description": "User-defined name for the short URL (max 50 characters)",
 											"nullable": true,
 											"type": "string",
-											"maxLength": 255
+											"maxLength": 50
 										},
 										"destinationUrl": {
 											"nullable": true,
@@ -11705,6 +14212,26 @@
 											"type": "string",
 											"format": "date-time",
 											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyStatus": {
+											"default": "unchecked",
+											"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+											"type": "string",
+											"enum": ["unchecked", "clean", "blocked"]
+										},
+										"safetyBlockedAt": {
+											"default": null,
+											"description": "When the link was blocked for safety reasons, or null",
+											"nullable": true,
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyThreatTypes": {
+											"default": null,
+											"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+											"nullable": true,
+											"type": "string"
 										},
 										"customDomain": {
 											"nullable": true,
@@ -11860,6 +14387,9 @@
 										"isActive",
 										"createdBy",
 										"deletedAt",
+										"safetyStatus",
+										"safetyBlockedAt",
+										"safetyThreatTypes",
 										"customDomain",
 										"tags"
 									],
@@ -11903,6 +14433,346 @@
 									"required": ["message", "code"],
 									"additionalProperties": false,
 									"description": "Unauthorized — missing or invalid Bearer token."
+								}
+							}
+						}
+					},
+					"429": {
+						"description": "Too Many Requests — rate limit exceeded. Retry after the rate limit window resets.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Too Many Requests — rate limit exceeded. Retry after the rate limit window resets."
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/short-url/{shortCode}/duplicate": {
+			"post": {
+				"operationId": "short-url/duplicate",
+				"summary": "Duplicate a short URL",
+				"tags": ["Short URLs"],
+				"description": "Creates a full copy of an existing standalone short URL with a new short code. Tags are carried over. Only the owner can duplicate their short URLs.",
+				"parameters": [
+					{
+						"schema": { "type": "string" },
+						"in": "path",
+						"name": "shortCode",
+						"required": true,
+						"description": "The 5-character short URL code to duplicate"
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "Default Response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string",
+											"format": "uuid",
+											"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+											"description": "Unique identifier (UUID v4)"
+										},
+										"createdAt": {
+											"description": "Timestamp when the resource was created (ISO 8601)",
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"updatedAt": {
+											"description": "Timestamp when the resource was last updated (ISO 8601), or null if never updated",
+											"nullable": true,
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"shortCode": {
+											"type": "string",
+											"minLength": 5,
+											"maxLength": 5,
+											"description": "Unique 5-character short code (e.g. \"Ab3xZ\")"
+										},
+										"name": {
+											"default": null,
+											"description": "User-defined name for the short URL (max 50 characters)",
+											"nullable": true,
+											"type": "string",
+											"maxLength": 50
+										},
+										"destinationUrl": {
+											"nullable": true,
+											"description": "The target URL that the short URL redirects to",
+											"type": "string",
+											"format": "uri"
+										},
+										"qrCodeId": {
+											"nullable": true,
+											"description": "ID of the linked QR code, or null for standalone short URLs",
+											"type": "string",
+											"format": "uuid",
+											"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+										},
+										"isActive": {
+											"type": "boolean",
+											"description": "Whether the short URL is currently active and redirecting"
+										},
+										"createdBy": {
+											"type": "string",
+											"description": "User ID of the short URL owner"
+										},
+										"deletedAt": {
+											"default": null,
+											"description": "Soft-delete timestamp, or null if the short URL is active",
+											"nullable": true,
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyStatus": {
+											"default": "unchecked",
+											"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+											"type": "string",
+											"enum": ["unchecked", "clean", "blocked"]
+										},
+										"safetyBlockedAt": {
+											"default": null,
+											"description": "When the link was blocked for safety reasons, or null",
+											"nullable": true,
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyThreatTypes": {
+											"default": null,
+											"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+											"nullable": true,
+											"type": "string"
+										},
+										"customDomain": {
+											"nullable": true,
+											"description": "Custom domain details, or null if using the default domain",
+											"type": "object",
+											"properties": {
+												"id": {
+													"type": "string",
+													"format": "uuid",
+													"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+													"description": "Unique identifier (UUID v4)"
+												},
+												"createdAt": {
+													"description": "Timestamp when the resource was created (ISO 8601)",
+													"type": "string",
+													"format": "date-time",
+													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"updatedAt": {
+													"description": "Timestamp when the resource was last updated (ISO 8601), or null if never updated",
+													"nullable": true,
+													"type": "string",
+													"format": "date-time",
+													"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+												},
+												"domain": { "type": "string" },
+												"isDefault": { "type": "boolean" },
+												"isEnabled": { "type": "boolean" },
+												"createdBy": { "type": "string" },
+												"verificationPhase": {
+													"type": "string",
+													"enum": ["dns_verification", "cloudflare_ssl"]
+												},
+												"ownershipTxtVerified": { "type": "boolean" },
+												"cnameVerified": { "type": "boolean" },
+												"cloudflareHostnameId": { "nullable": true, "type": "string" },
+												"sslStatus": {
+													"type": "string",
+													"enum": [
+														"initializing",
+														"pending_validation",
+														"pending_issuance",
+														"pending_deployment",
+														"active",
+														"pending_expiration",
+														"expired",
+														"deleted",
+														"validation_timed_out"
+													]
+												},
+												"ownershipStatus": { "type": "string", "enum": ["pending", "verified"] },
+												"sslValidationRecord": {
+													"nullable": true,
+													"type": "object",
+													"properties": {
+														"name": { "type": "string" },
+														"value": { "type": "string" }
+													},
+													"required": ["name", "value"],
+													"additionalProperties": false
+												},
+												"ownershipValidationRecord": {
+													"nullable": true,
+													"type": "object",
+													"properties": {
+														"name": { "type": "string" },
+														"value": { "type": "string" }
+													},
+													"required": ["name", "value"],
+													"additionalProperties": false
+												},
+												"validationErrors": {
+													"nullable": true,
+													"type": "array",
+													"items": { "type": "string" }
+												}
+											},
+											"required": [
+												"id",
+												"createdAt",
+												"updatedAt",
+												"domain",
+												"isDefault",
+												"isEnabled",
+												"createdBy",
+												"verificationPhase",
+												"ownershipTxtVerified",
+												"cnameVerified",
+												"sslStatus",
+												"ownershipStatus"
+											],
+											"additionalProperties": false
+										},
+										"tags": {
+											"default": [],
+											"description": "Tags assigned to this short URL",
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {
+													"id": {
+														"type": "string",
+														"format": "uuid",
+														"pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+														"description": "Unique identifier (UUID v4)"
+													},
+													"createdAt": {
+														"description": "Timestamp when the resource was created (ISO 8601)",
+														"type": "string",
+														"format": "date-time",
+														"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+													},
+													"updatedAt": {
+														"description": "Timestamp when the resource was last updated (ISO 8601), or null if never updated",
+														"nullable": true,
+														"type": "string",
+														"format": "date-time",
+														"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+													},
+													"name": {
+														"type": "string",
+														"minLength": 1,
+														"maxLength": 32,
+														"description": "Tag display name (max 32 characters)"
+													},
+													"color": {
+														"type": "string",
+														"pattern": "^#[0-9A-Fa-f]{6}$",
+														"description": "Tag color as hex code (e.g. \"#FF5733\")"
+													},
+													"createdBy": {
+														"type": "string",
+														"description": "User ID of the tag owner"
+													},
+													"qrCodeCount": {
+														"description": "Number of QR codes assigned to this tag",
+														"type": "number"
+													}
+												},
+												"required": ["id", "createdAt", "updatedAt", "name", "color", "createdBy"],
+												"additionalProperties": false
+											}
+										}
+									},
+									"required": [
+										"id",
+										"createdAt",
+										"updatedAt",
+										"shortCode",
+										"name",
+										"destinationUrl",
+										"qrCodeId",
+										"isActive",
+										"createdBy",
+										"deletedAt",
+										"safetyStatus",
+										"safetyBlockedAt",
+										"safetyThreatTypes",
+										"customDomain",
+										"tags"
+									],
+									"additionalProperties": false
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized — missing or invalid Bearer token.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Unauthorized — missing or invalid Bearer token."
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden — you do not have permission to access this resource.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Forbidden — you do not have permission to access this resource."
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found — the requested resource does not exist.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": { "type": "string", "description": "Human-readable error message" },
+										"code": { "type": "number", "description": "HTTP status code" }
+									},
+									"required": ["message", "code"],
+									"additionalProperties": false,
+									"description": "Not Found — the requested resource does not exist."
 								}
 							}
 						}
@@ -12059,6 +14929,7 @@
 				"tags": ["Short URLs"],
 				"description": "Partially updates a standalone short URL. You can change the destination URL, name, or active state. Short URLs linked to a QR code cannot be updated directly — update the QR code instead.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -12075,10 +14946,10 @@
 									},
 									"name": {
 										"default": null,
-										"description": "User-defined name for the short URL",
+										"description": "User-defined name for the short URL (max 50 characters)",
 										"nullable": true,
 										"type": "string",
-										"maxLength": 255
+										"maxLength": 50
 									}
 								},
 								"additionalProperties": false
@@ -12130,10 +15001,10 @@
 										},
 										"name": {
 											"default": null,
-											"description": "User-defined name for the short URL",
+											"description": "User-defined name for the short URL (max 50 characters)",
 											"nullable": true,
 											"type": "string",
-											"maxLength": 255
+											"maxLength": 50
 										},
 										"destinationUrl": {
 											"nullable": true,
@@ -12163,6 +15034,26 @@
 											"type": "string",
 											"format": "date-time",
 											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyStatus": {
+											"default": "unchecked",
+											"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+											"type": "string",
+											"enum": ["unchecked", "clean", "blocked"]
+										},
+										"safetyBlockedAt": {
+											"default": null,
+											"description": "When the link was blocked for safety reasons, or null",
+											"nullable": true,
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyThreatTypes": {
+											"default": null,
+											"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+											"nullable": true,
+											"type": "string"
 										},
 										"customDomain": {
 											"nullable": true,
@@ -12318,6 +15209,9 @@
 										"isActive",
 										"createdBy",
 										"deletedAt",
+										"safetyStatus",
+										"safetyBlockedAt",
+										"safetyThreatTypes",
 										"customDomain",
 										"tags"
 									],
@@ -12469,10 +15363,10 @@
 										},
 										"name": {
 											"default": null,
-											"description": "User-defined name for the short URL",
+											"description": "User-defined name for the short URL (max 50 characters)",
 											"nullable": true,
 											"type": "string",
-											"maxLength": 255
+											"maxLength": 50
 										},
 										"destinationUrl": {
 											"nullable": true,
@@ -12502,6 +15396,26 @@
 											"type": "string",
 											"format": "date-time",
 											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyStatus": {
+											"default": "unchecked",
+											"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+											"type": "string",
+											"enum": ["unchecked", "clean", "blocked"]
+										},
+										"safetyBlockedAt": {
+											"default": null,
+											"description": "When the link was blocked for safety reasons, or null",
+											"nullable": true,
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyThreatTypes": {
+											"default": null,
+											"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+											"nullable": true,
+											"type": "string"
 										},
 										"customDomain": {
 											"nullable": true,
@@ -12657,6 +15571,9 @@
 										"isActive",
 										"createdBy",
 										"deletedAt",
+										"safetyStatus",
+										"safetyBlockedAt",
+										"safetyThreatTypes",
 										"customDomain",
 										"tags"
 									],
@@ -12786,10 +15703,10 @@
 										},
 										"name": {
 											"default": null,
-											"description": "User-defined name for the short URL",
+											"description": "User-defined name for the short URL (max 50 characters)",
 											"nullable": true,
 											"type": "string",
-											"maxLength": 255
+											"maxLength": 50
 										},
 										"destinationUrl": {
 											"nullable": true,
@@ -12819,6 +15736,26 @@
 											"type": "string",
 											"format": "date-time",
 											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyStatus": {
+											"default": "unchecked",
+											"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+											"type": "string",
+											"enum": ["unchecked", "clean", "blocked"]
+										},
+										"safetyBlockedAt": {
+											"default": null,
+											"description": "When the link was blocked for safety reasons, or null",
+											"nullable": true,
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyThreatTypes": {
+											"default": null,
+											"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+											"nullable": true,
+											"type": "string"
 										},
 										"customDomain": {
 											"nullable": true,
@@ -12974,6 +15911,9 @@
 										"isActive",
 										"createdBy",
 										"deletedAt",
+										"safetyStatus",
+										"safetyBlockedAt",
+										"safetyThreatTypes",
 										"customDomain",
 										"tags"
 									],
@@ -13094,10 +16034,10 @@
 										},
 										"name": {
 											"default": null,
-											"description": "User-defined name for the short URL",
+											"description": "User-defined name for the short URL (max 50 characters)",
 											"nullable": true,
 											"type": "string",
-											"maxLength": 255
+											"maxLength": 50
 										},
 										"destinationUrl": {
 											"nullable": true,
@@ -13127,6 +16067,26 @@
 											"type": "string",
 											"format": "date-time",
 											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyStatus": {
+											"default": "unchecked",
+											"description": "Result of the destination safety screening. \"blocked\" means we disabled the link and the owner cannot re-enable it",
+											"type": "string",
+											"enum": ["unchecked", "clean", "blocked"]
+										},
+										"safetyBlockedAt": {
+											"default": null,
+											"description": "When the link was blocked for safety reasons, or null",
+											"nullable": true,
+											"type": "string",
+											"format": "date-time",
+											"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+										},
+										"safetyThreatTypes": {
+											"default": null,
+											"description": "Comma-separated Google Web Risk threat types behind the block, or null",
+											"nullable": true,
+											"type": "string"
 										},
 										"customDomain": {
 											"nullable": true,
@@ -13269,6 +16229,10 @@
 												"required": ["id", "createdAt", "updatedAt", "name", "color", "createdBy"],
 												"additionalProperties": false
 											}
+										},
+										"shortUrl": {
+											"type": "string",
+											"description": "Fully-built short URL for the reserved code (redirect domain or custom domain)."
 										}
 									},
 									"required": [
@@ -13282,8 +16246,12 @@
 										"isActive",
 										"createdBy",
 										"deletedAt",
+										"safetyStatus",
+										"safetyBlockedAt",
+										"safetyThreatTypes",
 										"customDomain",
-										"tags"
+										"tags",
+										"shortUrl"
 									],
 									"additionalProperties": false
 								}
@@ -13904,6 +16872,7 @@
 				"tags": ["Tags"],
 				"description": "Creates a new tag with a name and hex color. Tags can be assigned to QR codes and short URLs for organization.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -13925,8 +16894,7 @@
 								"additionalProperties": false
 							}
 						}
-					},
-					"required": true
+					}
 				},
 				"responses": {
 					"201": {
@@ -14044,6 +17012,7 @@
 				"tags": ["Tags"],
 				"description": "Partially updates a tag name and/or color. Only the owner can update their tags.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -14328,6 +17297,7 @@
 				"tags": ["Tags"],
 				"description": "Replaces all tags assigned to a QR code with the provided list of tag IDs. Pass an empty array to remove all tags. Returns the updated list of tags.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -14348,8 +17318,7 @@
 								"additionalProperties": false
 							}
 						}
-					},
-					"required": true
+					}
 				},
 				"parameters": [
 					{
@@ -14508,6 +17477,7 @@
 				"tags": ["Tags"],
 				"description": "Replaces all tags assigned to a short URL with the provided list of tag IDs. Pass an empty array to remove all tags. Returns the updated list of tags.",
 				"requestBody": {
+					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -14528,8 +17498,7 @@
 								"additionalProperties": false
 							}
 						}
-					},
-					"required": true
+					}
 				},
 				"parameters": [
 					{

@@ -5,6 +5,9 @@ const schema = z.object({
 	PORT: z.coerce.number().int().min(1).max(65535).default(3002),
 	HOST: z.string().default('0.0.0.0'),
 	NODE_ENV: z.enum(['development', 'test', 'production']).default('production'),
+	LOG_LEVEL: z.enum(['trace', 'debug', 'info', 'warn', 'error', 'fatal']).default('info'),
+	AXIOM_TOKEN: z.string().optional(),
+	AXIOM_DATASET: z.string().optional(),
 });
 
 const parsed = schema.safeParse(process.env);
