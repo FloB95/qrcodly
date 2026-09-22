@@ -41,6 +41,7 @@ export function createMcpServer(
 				sessionId: getSessionId(),
 				client: clientInfo(),
 				errorType: 'UnknownTool',
+				message: `Unknown tool: ${name}`,
 			});
 			return {
 				content: [{ type: 'text' as const, text: `Unknown tool: ${name}` }],
@@ -84,6 +85,7 @@ export function createMcpServer(
 				client: clientInfo(),
 				errorType: error instanceof Error ? error.name : 'Unknown',
 				status: error instanceof ApiError ? error.status : undefined,
+				message,
 			});
 
 			return {

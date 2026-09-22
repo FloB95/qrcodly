@@ -56,12 +56,14 @@ export function logToolCall(fields: {
 	client?: McpClientInfo;
 	errorType?: string;
 	status?: number;
+	message?: string;
 }): void {
 	logger.info(
 		{
 			mcp: {
 				...fields,
 				durationMs: Math.round(fields.durationMs),
+				message: fields.message?.slice(0, 300),
 			},
 		},
 		'mcp.tool.call',

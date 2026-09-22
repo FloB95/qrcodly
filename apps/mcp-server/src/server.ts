@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import Fastify from 'fastify';
+import Fastify, { type FastifyRequest } from 'fastify';
 import cors from '@fastify/cors';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
@@ -95,7 +95,19 @@ export async function startServer(
 	app.post('/mcp', async (request, reply) => {
 		const apiKey = extractBearerToken(request.headers);
 		if (!apiKey) {
-			logger.warn({ mcp: { reason: 'missing_authorization_header' } }, 'mcp.auth.failed');
+			// Without the caller, this event only says that something was rejected, not by whom —
+			// and unauthenticated probes against /mcp run around the clock, so the raw count alone
+			// cannot separate a registry crawler from a client with a broken configuration.
+			logger.warn(
+				{
+					mcp: {
+						reason: 'missing_authorization_header',
+						ip: resolveCallerIp(request),
+						userAgent: request.headers['user-agent'],
+					},
+				},
+				'mcp.auth.failed',
+			);
 			return reply.status(401).send({
 				jsonrpc: '2.0',
 				error: {
@@ -269,6 +281,23 @@ export async function startServer(
 
 	process.once('SIGTERM', () => void shutdown(app, cleanupInterval));
 	process.once('SIGINT', () => void shutdown(app, cleanupInterval));
+}
+
+/**
+ * The caller's real address. mcp.qrcodly.de is served through Cloudflare, which overwrites
+ * `cf-connecting-ip` on every inbound request, so that header cannot be spoofed from outside
+ * and is preferred over the forwarded-for chain.
+ */
+function resolveCallerIp(request: FastifyRequest): string | undefined {
+	const cfIp = request.headers['cf-connecting-ip'];
+	if (typeof cfIp === 'string' && cfIp.length > 0) return cfIp;
+
+	const forwardedFor = request.headers['x-forwarded-for'];
+	if (typeof forwardedFor === 'string' && forwardedFor.length > 0) {
+		return forwardedFor.split(',')[0]?.trim();
+	}
+
+	return request.ip;
 }
 
 function extractBearerToken(headers: Record<string, string | string[] | undefined>): string | null {
