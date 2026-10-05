@@ -384,6 +384,38 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 			.execute();
 	}
 
+	async findAllForUser(userId: string): Promise<TShortUrl[]> {
+		return this.db
+			.select()
+			.from(this.table)
+			.where(and(eq(this.table.createdBy, userId), isNull(this.table.deletedAt)))
+			.execute();
+	}
+
+	/**
+	 * Blocks every link a user owns after a manual abuse review.
+	 *
+	 * `nextSafetyCheckAt` is cleared so the re-check job never self-heals these blocks — the
+	 * destination may well be unlisted at Google, which is exactly why a human had to step in.
+	 */
+	async blockAllForUser(userId: string, threatTypes: string[]): Promise<number> {
+		const [result] = await this.db
+			.update(this.table)
+			.set({
+				isActive: false,
+				safetyStatus: 'blocked',
+				safetyBlockedAt: new Date(),
+				safetyThreatTypes: threatTypes.length ? threatTypes.join(',') : null,
+				safetyPendingSince: null,
+				safetyCheckFailures: 0,
+				nextSafetyCheckAt: null,
+				updatedAt: new Date(),
+			})
+			.where(and(eq(this.table.createdBy, userId), isNull(this.table.deletedAt)))
+			.execute();
+		return result.affectedRows;
+	}
+
 	/**
 	 * Lifts a block. `isActive` deliberately stays false: the owner has to consciously switch the
 	 * link back on rather than have traffic silently resume.
