@@ -59,10 +59,10 @@ interface RunTally {
  * covers the two cases it cannot: a destination swapped to a phishing page after the fact, and a
  * legitimate third-party site that got compromised later.
  *
- * Scheduling, batching and the lock: AbstractCronJob holds a Redis lock with a hard-coded 600s TTL
- * and releases it without checking ownership, so a long run can delete its successor's lock. Two
- * defences — a wall-clock budget well under the TTL, and claiming each batch's next-check date
- * before doing any lookups, so overlapping runs work on disjoint rows.
+ * Scheduling, batching and the lock: AbstractCronJob holds a Redis lock with a hard-coded 600s TTL,
+ * so a run that outlives it can overlap the next one. Two defences — a wall-clock budget well under
+ * the TTL, and claiming each batch's next-check date before doing any lookups, so overlapping runs
+ * work on disjoint rows.
  */
 @injectable()
 @CronJob()

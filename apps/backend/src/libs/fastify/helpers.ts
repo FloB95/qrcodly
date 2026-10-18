@@ -8,6 +8,7 @@ import {
 	type RouteOptions,
 } from 'fastify';
 import { env } from '@/core/config/env';
+import { API_BASE_PATH } from '@/core/config/constants';
 import { deepMerge, mergeZodErrorObjects } from '@/utils/general';
 import {
 	AccountBannedError,
@@ -432,6 +433,11 @@ function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type:
 			request.query = validatedData.data;
 		}
 	};
+}
+
+/** GET /api/v1 (HealthController), matched by route so clients can't fake it */
+export function isHealthCheckRequest(request: FastifyRequest): boolean {
+	return request.method === 'GET' && request.routeOptions?.url === API_BASE_PATH;
 }
 
 export function resolveClientIp(request: FastifyRequest): string {

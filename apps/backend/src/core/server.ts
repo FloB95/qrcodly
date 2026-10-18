@@ -12,6 +12,7 @@ import { clerkPlugin, getAuth } from '@clerk/fastify';
 import {
 	createRequestLogObject,
 	fastifyErrorHandler,
+	isHealthCheckRequest,
 	registerRoutes,
 	resolveClientIp,
 } from '@/libs/fastify/helpers';
@@ -226,6 +227,9 @@ export class Server {
 					return resolveRateLimit(request, policy);
 				},
 				redis: container.resolve(KeyCache).getClient(),
+				// Redis down: serve unlimited instead of 500
+				skipOnError: true,
+				allowList: (request) => isHealthCheckRequest(request),
 				timeWindow: RATE_LIMIT_TIME_WINDOW,
 				nameSpace: 'qrcodly-ratelimit-',
 				errorResponseBuilder: function (req, context) {

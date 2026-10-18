@@ -5,6 +5,7 @@ import { Logger } from '../logging';
 import { OnShutdown } from '../decorators/on-shutdown.decorator';
 import cron from 'node-cron';
 import { DEFAULT_TIME_ZONE } from '../config/constants';
+import { env } from '../config/env';
 
 interface ICronJob {
 	jobClass: AbstractCronJob;
@@ -20,6 +21,10 @@ export class CronJobWorker {
 	}
 
 	public start(): void {
+		if (!env.CRON_ENABLED) {
+			this.logger.warn('🗓  Cron worker disabled (CRON_ENABLED=false)');
+			return;
+		}
 		this.logger.info('🗓  Cron worker started...');
 		this.jobs.forEach((job) => job.task.start());
 	}
