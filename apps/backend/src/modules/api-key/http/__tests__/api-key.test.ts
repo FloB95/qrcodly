@@ -7,6 +7,7 @@ import userSubscription from '@/modules/billing/domain/entities/user-subscriptio
 import { eq } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
 import { KeyCache } from '@/core/cache';
+import { sleep } from '@/utils/general';
 import {
 	ALL_API_KEY_SCOPES,
 	API_KEY_API_PATH,
@@ -266,12 +267,18 @@ describe('api-key endpoints', () => {
 			const revokeResponse = await revokeApiKeyRequest(testServer, id, accessTokenPro);
 			expect(revokeResponse.statusCode).toBe(200);
 
-			const qrResponse = await testServer.inject({
-				method: 'GET',
-				url: `${QR_CODE_API_PATH}?page=1&limit=1`,
-				headers: { Authorization: `Bearer ${secret}` },
-			});
-			expect(qrResponse.statusCode).toBe(401);
+			// Clerk takes a moment until a revoked key is rejected everywhere
+			let statusCode = 0;
+			for (let attempt = 0; attempt < 10 && statusCode !== 401; attempt++) {
+				if (attempt > 0) await sleep(1000);
+				const qrResponse = await testServer.inject({
+					method: 'GET',
+					url: `${QR_CODE_API_PATH}?page=1&limit=1`,
+					headers: { Authorization: `Bearer ${secret}` },
+				});
+				statusCode = qrResponse.statusCode;
+			}
+			expect(statusCode).toBe(401);
 		});
 	});
 
