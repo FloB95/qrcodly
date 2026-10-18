@@ -1,4 +1,5 @@
 import { env } from '@/env';
+import { serverApiUrl } from '@/lib/server-api-url';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { NextResponse, type NextRequest } from 'next/server';
 import { UAParser } from 'ua-parser-js';
@@ -38,7 +39,11 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		? headers.get('accept-language')?.split(',')[0]
 		: '';
 
-	const scannerIp = headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? '';
+	// cf-connecting-ip is set by Cloudflare; the first X-Forwarded-For entry can be client-supplied
+	const scannerIp =
+		headers.get('cf-connecting-ip')?.trim() ||
+		headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+		'';
 
 	const urlCode = new URL(req.url).pathname.split('/').pop();
 	if (!urlCode) {
@@ -52,7 +57,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 
 	let shortUrl: ScanLookupResponse;
 	try {
-		const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}`, {
+		const response = await fetch(`${serverApiUrl()}/short-url/${urlCode}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -84,7 +89,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 	}
 
 	// Single consolidated call for all scan analytics
-	void fetch(`${env.NEXT_PUBLIC_API_URL}/short-url/${urlCode}/record-scan`, {
+	void fetch(`${serverApiUrl()}/short-url/${urlCode}/record-scan`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

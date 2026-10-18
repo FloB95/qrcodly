@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { getPublicSharedQrCode } from '@/lib/api/qr-code-share';
 import { PublicSharePageContent } from '@/components/qr-code-share/PublicSharePageContent';
 import Container from '@/components/ui/container';
-import { env } from '@/env';
+import { serverApiUrl } from '@/lib/server-api-url';
 
 interface PublicSharePageProps {
 	params: Promise<{
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: PublicSharePageProps): Promis
 	const { token } = await params;
 
 	try {
-		const sharedQrCode = await getPublicSharedQrCode(token, env.NEXT_PUBLIC_API_URL);
+		const sharedQrCode = await getPublicSharedQrCode(token, serverApiUrl());
 		const titleText = sharedQrCode.name
 			? `Shared QR Code ${sharedQrCode.name} | QRcodly`
 			: 'Shared QR Code | QRcodly';
@@ -40,7 +40,7 @@ export default async function PublicSharePage({ params }: PublicSharePageProps) 
 
 	let sharedQrCode;
 	try {
-		sharedQrCode = await getPublicSharedQrCode(token, env.NEXT_PUBLIC_API_URL);
+		sharedQrCode = await getPublicSharedQrCode(token, serverApiUrl());
 	} catch {
 		notFound();
 	}

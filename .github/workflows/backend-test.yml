@@ -123,24 +123,18 @@ jobs:
       - name: Build shared packages
         run: pnpm run build:shared-packages
 
-      - name: Start MinIO and create bucket
+      # MinIO no longer publishes images (Docker Hub repo and the mc download are gone).
+      # S3Mock: test-only S3 server, bucket created at start, credentials ignored, objects public.
+      - name: Start S3 mock with bucket
         run: |
-          docker run -d --name minio \
-            -p 9000:9000 \
-            -e MINIO_ROOT_USER=minio \
-            -e MINIO_ROOT_PASSWORD=testtest1 \
-            minio/minio:latest server /data
-          # Wait for MinIO to be ready
-          for i in $(seq 1 30); do
-            curl -sf http://127.0.0.1:9000/minio/health/live && break
+          docker run -d --name s3mock -p 9000:9090 \
+            -e COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS=qrcodly \
+            adobe/s3mock:5.2.3
+          for _ in $(seq 1 30); do
+            curl -sf -o /dev/null http://127.0.0.1:9000/qrcodly && exit 0
             sleep 1
           done
-          # Create bucket
-          curl -sL https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/local/bin/mc
-          chmod +x /usr/local/bin/mc
-          mc alias set ci http://127.0.0.1:9000 minio testtest1
-          mc mb ci/qrcodly --ignore-existing
-          mc anonymous set download ci/qrcodly
+          echo "S3 mock did not start"; docker logs s3mock; exit 1
 
       - name: Run Checks
         working-directory: apps/backend

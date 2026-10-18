@@ -3,7 +3,7 @@ import { type TTokenType } from '@/core/domain/schema/UserSchema';
 import { Logger } from '@/core/logging';
 import { KeyCache } from '@/core/cache';
 import { AccountBannedError } from '@/core/error/http';
-import { createRequestLogObject } from '@/libs/fastify/helpers';
+import { createRequestLogObject, isHealthCheckRequest } from '@/libs/fastify/helpers';
 import { clerkClient, getAuth } from '@clerk/fastify';
 import { type FastifyRequest } from 'fastify';
 import { container } from 'tsyringe';
@@ -94,8 +94,12 @@ export async function addUserToRequestMiddleware(request: FastifyRequest, _reply
 		request.user = undefined;
 	}
 
-	// don't log health check & uptime kuma
-	if (request.clientIp !== '127.0.0.1' && request.clientIp !== '152.53.13.36') {
+	// don't log health checks & uptime kuma
+	if (
+		!isHealthCheckRequest(request) &&
+		request.clientIp !== '127.0.0.1' &&
+		request.clientIp !== '152.53.13.36'
+	) {
 		container.resolve(Logger).info('api.request', {
 			request: createRequestLogObject(request, { accessType: tokenType }),
 		});

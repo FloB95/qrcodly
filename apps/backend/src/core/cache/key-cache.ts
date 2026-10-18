@@ -1,9 +1,10 @@
 import Redis from 'ioredis';
-import { singleton } from 'tsyringe';
+import { container, singleton } from 'tsyringe';
 import { type IKeyCache } from '../interface/key-cache.interface';
 import { env } from '../config/env';
 import { OnShutdown } from '../decorators/on-shutdown.decorator';
 import { cacheOperationDuration, cacheOperations, safely } from '../metrics';
+import { Logger } from '../logging';
 
 /**
  * Times a Redis call and classifies its result.
@@ -35,6 +36,15 @@ async function track<T>(
 
 const hitOrMiss = (result: unknown): string => (result === null ? 'miss' : 'hit');
 
+async function failOpen<T>(operation: string, fn: () => Promise<T>, fallback: T): Promise<T> {
+	try {
+		return await fn();
+	} catch (error) {
+		safely(() => container.resolve(Logger).warn('cache.unavailable', { operation, error }));
+		return fallback;
+	}
+}
+
 /**
  * AppCache class for caching data using Redis.
  */
@@ -45,6 +55,10 @@ export class KeyCache implements IKeyCache {
 	constructor() {
 		this.client = new Redis(env.REDIS_URL, {
 			maxRetriesPerRequest: 3,
+			// Fail fast instead of queueing while Redis is down; callers fall back without it
+			...(env.REDIS_COMMAND_TIMEOUT_MS
+				? { commandTimeout: env.REDIS_COMMAND_TIMEOUT_MS, enableOfflineQueue: false }
+				: {}),
 		});
 	}
 
@@ -54,21 +68,26 @@ export class KeyCache implements IKeyCache {
 		expirationTimeSeconds?: number,
 		tags?: string[],
 	): Promise<void> {
-		await track('set', async () => {
-			if (expirationTimeSeconds) {
-				await this.client.set(key, value, 'EX', expirationTimeSeconds);
-			} else {
-				await this.client.set(key, value);
-			}
+		await failOpen(
+			'set',
+			() =>
+				track('set', async () => {
+					if (expirationTimeSeconds) {
+						await this.client.set(key, value, 'EX', expirationTimeSeconds);
+					} else {
+						await this.client.set(key, value);
+					}
 
-			if (tags && tags.length > 0) {
-				const pipeline = this.client.pipeline();
-				for (const tag of tags) {
-					pipeline.sadd(`tag:${tag}`, key);
-				}
-				await pipeline.exec();
-			}
-		});
+					if (tags && tags.length > 0) {
+						const pipeline = this.client.pipeline();
+						for (const tag of tags) {
+							pipeline.sadd(`tag:${tag}`, key);
+						}
+						await pipeline.exec();
+					}
+				}),
+			undefined,
+		);
 	}
 
 	getClient() {
@@ -76,28 +95,37 @@ export class KeyCache implements IKeyCache {
 	}
 
 	async get(key: string): Promise<string | Buffer | number | null> {
-		return await track('get', () => this.client.get(key), hitOrMiss);
+		return await failOpen('get', () => track('get', () => this.client.get(key), hitOrMiss), null);
 	}
 
 	async getBuffer(key: string): Promise<Buffer | null> {
-		return await track('get_buffer', () => this.client.getBuffer(key), hitOrMiss);
+		return await failOpen(
+			'get_buffer',
+			() => track('get_buffer', () => this.client.getBuffer(key), hitOrMiss),
+			null,
+		);
 	}
 
 	async del(key: string): Promise<void> {
-		await track('del', () => this.client.del(key));
+		await failOpen('del', () => track('del', () => this.client.del(key)), 0);
 	}
 
 	async invalidateTag(tag: string): Promise<void> {
-		await track('invalidate_tag', async () => {
-			const tagKey = `tag:${tag}`;
-			const keys = await this.client.smembers(tagKey);
+		await failOpen(
+			'invalidate_tag',
+			() =>
+				track('invalidate_tag', async () => {
+					const tagKey = `tag:${tag}`;
+					const keys = await this.client.smembers(tagKey);
 
-			if (keys.length > 0) {
-				await this.client.del(...keys);
-			}
+					if (keys.length > 0) {
+						await this.client.del(...keys);
+					}
 
-			await this.client.del(tagKey);
-		});
+					await this.client.del(tagKey);
+				}),
+			undefined,
+		);
 	}
 
 	async disconnect() {

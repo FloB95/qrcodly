@@ -11,8 +11,17 @@ apps/**/*.test.*
 .git
 .github
 !.github/scripts
-*.tsbuildinfo
+**/*.tsbuildinfo
 packages/cli/dist/**/e2e.*
 docker/compose
 docker/**/Dockerfile
 .vscode
+
+# Local build output and tooling – images always build from source
+**/build
+**/.next
+**/.source
+**/.turbo
+**/coverage
+.claude
+load-tests

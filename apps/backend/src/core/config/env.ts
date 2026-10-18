@@ -21,11 +21,14 @@ const server = z.object({
 		.union([z.boolean(), z.string().transform((val) => val === 'true')])
 		.default(false),
 	DB_SEEDING: z.union([z.boolean(), z.string().transform((val) => val === 'true')]).default(false),
+	// false while a second deployment runs against a copy of the data (e.g. during a migration)
+	CRON_ENABLED: z.union([z.boolean(), z.string().transform((val) => val === 'true')]).default(true),
 	NODE_ENV: z.enum(['development', 'test', 'production']).default('production'),
 	API_PORT: z.string().default('5001'),
 	API_HOST: z.string().default('127.0.0.1'),
 	LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 	REDIS_URL: z.url(),
+	REDIS_COMMAND_TIMEOUT_MS: z.coerce.number().int().positive().optional(),
 	JWT_SECRET: z.string().min(32),
 	COOKIE_SECRET: z.string().min(32),
 	SMTP_HOST: z.string(),

@@ -48,8 +48,10 @@ describe('AppCache (Redis)', () => {
 		expect(await appCache.get(key)).toBeNull();
 	});
 
-	it('should disconnect from Redis', async () => {
+	it('should treat an unreachable Redis as a cache miss', async () => {
 		await appCache.disconnect();
-		await expect(appCache.get('test-key')).rejects.toThrow(); // Redis should be disconnected
+		await expect(appCache.get('test-key')).resolves.toBeNull();
+		await expect(appCache.set('test-key', 'value')).resolves.toBeUndefined();
+		await expect(appCache.del('test-key')).resolves.toBeUndefined();
 	});
 });
