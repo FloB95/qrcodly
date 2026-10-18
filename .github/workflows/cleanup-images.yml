@@ -1,0 +1,36 @@
+# Deletes old images in ghcr.io/flob95/qrcodly-* — every push to main/stage builds new ones.
+#   Keep:   everything younger than a day, plus the 10 newest older tagged versions per package
+#   Delete: all other versions and untagged leftovers (e.g. from cancelled runs)
+name: Clean up old images
+
+on:
+  schedule:
+    # Mondays 04:27 UTC — odd minute, GitHub is overloaded on the full hour
+    - cron: '27 4 * * 1'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Dry run: only show what would be deleted'
+        type: boolean
+        default: true
+
+concurrency:
+  group: cleanup-images
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    name: Delete old images
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      # Knows which untagged parts belong to a multi-platform image and keeps them
+      - uses: dataaxiom/ghcr-cleanup-action@d52806a0dc70b430571a37da1fde39733ffd640f # v1.2.2
+        with:
+          packages: qrcodly-backend,qrcodly-frontend,qrcodly-mcp-server
+          keep-n-tagged: 10
+          delete-untagged: true
+          older-than: 1 day
+          validate: true
+          dry-run: ${{ inputs.dry-run == true }}

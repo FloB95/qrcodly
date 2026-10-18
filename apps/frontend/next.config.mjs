@@ -21,6 +21,11 @@ await import('./src/env.js');
 
 /** @type {import("next").NextConfig} */
 const config = {
+	// Container image only (apps/frontend/Dockerfile); Coolify keeps using `next start`
+	...(process.env.NEXT_OUTPUT === 'standalone' && {
+		output: 'standalone',
+		outputFileTracingRoot: path.join(__dirname, '../../'),
+	}),
 	reactStrictMode: true,
 	productionBrowserSourceMaps: true,
 	experimental: {

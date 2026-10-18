@@ -1,0 +1,182 @@
+# Kubernetes images (my-k8s). Coolify keeps deploying from its own webhook; this doesn't touch it.
+#   push to main   -> prod:    images <commit>, frontend <commit>          -> apps/qrcodly/values.yaml
+#   push to stage  -> staging: images <commit>, frontend <commit>-staging  -> apps/qrcodly/values-staging.yaml
+# Backend and MCP server are the same image everywhere; the frontend bakes NEXT_PUBLIC_* in at build.
+#
+# Setup (Settings -> Secrets and variables -> Actions):
+#   variables  FRONTEND_BUILD_ARGS, STAGING_FRONTEND_BUILD_ARGS   one KEY=value per line (see apps/frontend/Dockerfile)
+#   secret     MY_K8S_DEPLOY_KEY                                  private half of a write deploy key on FloB95/my-k8s
+#
+# Third-party actions are pinned to a commit: these images get rolled out automatically.
+name: Container build & rollout
+
+on:
+  push:
+    branches: [main, stage]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'load-tests/**'
+      - 'apps/desktop/**'
+      - 'apps/browser-extension/**'
+      - 'apps/integrations/**'
+  workflow_dispatch:
+
+# One run per branch at a time: an older run must not overwrite a newer tag
+concurrency:
+  group: container-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  meta:
+    name: Version
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+      suffix: ${{ steps.meta.outputs.suffix }}
+      values-file: ${{ steps.meta.outputs.values-file }}
+    steps:
+      - id: meta
+        run: |
+          echo "tag=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          case "$GITHUB_REF_NAME" in
+            main)  echo "suffix=" >> "$GITHUB_OUTPUT"
+                   echo "values-file=apps/qrcodly/values.yaml" >> "$GITHUB_OUTPUT" ;;
+            stage) echo "suffix=-staging" >> "$GITHUB_OUTPUT"
+                   echo "values-file=apps/qrcodly/values-staging.yaml" >> "$GITHUB_OUTPUT" ;;
+            *)     echo "::error::Only main and stage are rolled out"; exit 1 ;;
+          esac
+
+  image:
+    name: Image (${{ matrix.app }})
+    needs: meta
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: true
+      matrix:
+        app: [backend, mcp-server]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # Hetzner servers are x86 only
+      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
+        with:
+          context: .
+          file: apps/${{ matrix.app }}/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ghcr.io/flob95/qrcodly-${{ matrix.app }}:${{ needs.meta.outputs.tag }}
+          labels: org.opencontainers.image.source=https://github.com/FloB95/qrcodly
+          cache-from: type=gha,scope=${{ matrix.app }}
+          cache-to: type=gha,scope=${{ matrix.app }},mode=max
+
+  frontend:
+    name: Image (frontend${{ needs.meta.outputs.suffix }})
+    needs: meta
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      BUILD_ARGS: ${{ github.ref_name == 'main' && vars.FRONTEND_BUILD_ARGS || vars.STAGING_FRONTEND_BUILD_ARGS }}
+    steps:
+      - name: Required build args are set
+        run: |
+          missing=0
+          for key in NEXT_PUBLIC_FRONTEND_URL NEXT_PUBLIC_API_URL NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY \
+                     NEXT_PUBLIC_SENTRY_DSN NEXT_PUBLIC_GOOGLE_API_KEY \
+                     NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_MONTHLY NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL \
+                     NEXT_PUBLIC_STRIPE_ADDON_DOMAIN_PRICE_ID_MONTHLY NEXT_PUBLIC_STRIPE_ADDON_DOMAIN_PRICE_ID_ANNUAL; do
+            if ! printf '%s\n' "$BUILD_ARGS" | grep -q "^${key}=."; then
+              echo "::error::${key} is missing in the build args variable"; missing=1
+            fi
+          done
+          exit $missing
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
+        with:
+          context: .
+          file: apps/frontend/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ghcr.io/flob95/qrcodly-frontend:${{ needs.meta.outputs.tag }}${{ needs.meta.outputs.suffix }}
+          labels: org.opencontainers.image.source=https://github.com/FloB95/qrcodly
+          build-args: ${{ env.BUILD_ARGS }}
+          cache-from: type=gha,scope=frontend${{ needs.meta.outputs.suffix }}
+          cache-to: type=gha,scope=frontend${{ needs.meta.outputs.suffix }},mode=max
+
+  # Known vulnerabilities BEFORE rollout (same gate as the other my-k8s projects): fails on
+  # CRITICAL findings that already have a fix; all fixable findings go to the run summary.
+  scan:
+    name: Vulnerability scan (${{ matrix.image }})
+    needs: [meta, image, frontend]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [backend, mcp-server, frontend]
+    steps:
+      - name: Scan with Grype
+        env:
+          IMAGE: ghcr.io/flob95/qrcodly-${{ matrix.image }}:${{ needs.meta.outputs.tag }}${{ matrix.image == 'frontend' && needs.meta.outputs.suffix || '' }}
+          GRYPE_REGISTRY_AUTH_AUTHORITY: ghcr.io
+          GRYPE_REGISTRY_AUTH_USERNAME: ${{ github.actor }}
+          GRYPE_REGISTRY_AUTH_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # without pipefail only tee's exit code counts
+          set -o pipefail
+          {
+            echo "### Vulnerabilities with an available fix in ${IMAGE}"
+            echo '```text'
+          } >> "$GITHUB_STEP_SUMMARY"
+          docker run --rm \
+            -e GRYPE_REGISTRY_AUTH_AUTHORITY -e GRYPE_REGISTRY_AUTH_USERNAME -e GRYPE_REGISTRY_AUTH_PASSWORD \
+            anchore/grype:v0.120.1@sha256:e4a44ef45d285b829ce6efe2642980329661bd2d18eab5fc539138d4adaebbbe \
+            "registry:${IMAGE}" --platform linux/amd64 --only-fixed --fail-on critical -o table \
+            | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: Write version into my-k8s
+    needs: [meta, scan]
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ needs.meta.outputs.tag }}
+      FILE: ${{ needs.meta.outputs.values-file }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: FloB95/my-k8s
+          ssh-key: ${{ secrets.MY_K8S_DEPLOY_KEY }}
+      # The values file holds exactly one `  tag: "…"` line (under image:)
+      - name: Set tag and push
+        run: |
+          if [ ! -f "$FILE" ]; then
+            echo "::notice::$FILE does not exist in my-k8s yet — nothing to roll out."
+            exit 0
+          fi
+          sed -i "s/^  tag: .*/  tag: \"${TAG}\"/" "$FILE"
+          if git diff --quiet; then
+            echo "Version ${TAG} is already set."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore(qrcodly): version ${TAG} ausrollen (${GITHUB_REF_NAME})"
+          git push
