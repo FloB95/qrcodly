@@ -27,6 +27,9 @@ concurrency:
   group: container-${{ github.ref_name }}
   cancel-in-progress: false
 
+# No token rights by default; jobs ask for what they need
+permissions: {}
+
 jobs:
   meta:
     name: Version
@@ -156,6 +159,9 @@ jobs:
     name: Write version into my-k8s
     needs: [meta, scan]
     runs-on: ubuntu-latest
+    # my-k8s is reached with the deploy key, not with this token
+    permissions:
+      contents: read
     env:
       TAG: ${{ needs.meta.outputs.tag }}
       FILE: ${{ needs.meta.outputs.values-file }}
