@@ -1,6 +1,7 @@
 # Kubernetes images (my-k8s). Coolify keeps deploying from its own webhook; this doesn't touch it.
 #   push to main   -> prod:    images <commit>, frontend <commit>          -> apps/qrcodly/values.yaml
 #   push to stage  -> staging: images <commit>, frontend <commit>-staging  -> apps/qrcodly/values-staging.yaml
+#   Run workflow   -> staging from any branch (e.g. main before it goes to prod); prod only from main
 # Backend and MCP server are the same image everywhere; the frontend bakes NEXT_PUBLIC_* in at build.
 #
 # Setup (Settings -> Secrets and variables -> Actions):
@@ -21,10 +22,16 @@ on:
       - 'apps/browser-extension/**'
       - 'apps/integrations/**'
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Roll out to'
+        type: choice
+        options: [staging, prod]
+        default: staging
 
-# One run per branch at a time: an older run must not overwrite a newer tag
+# One run per environment at a time: an older run must not overwrite a newer tag
 concurrency:
-  group: container-${{ github.ref_name }}
+  group: container-${{ inputs.environment || (github.ref_name == 'main' && 'prod') || 'staging' }}
   cancel-in-progress: false
 
 # No token rights by default; jobs ask for what they need
@@ -36,18 +43,32 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.meta.outputs.tag }}
+      environment: ${{ steps.meta.outputs.environment }}
       suffix: ${{ steps.meta.outputs.suffix }}
       values-file: ${{ steps.meta.outputs.values-file }}
     steps:
       - id: meta
+        env:
+          INPUT_ENVIRONMENT: ${{ inputs.environment }}
         run: |
           echo "tag=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
-          case "$GITHUB_REF_NAME" in
-            main)  echo "suffix=" >> "$GITHUB_OUTPUT"
-                   echo "values-file=apps/qrcodly/values.yaml" >> "$GITHUB_OUTPUT" ;;
-            stage) echo "suffix=-staging" >> "$GITHUB_OUTPUT"
-                   echo "values-file=apps/qrcodly/values-staging.yaml" >> "$GITHUB_OUTPUT" ;;
-            *)     echo "::error::Only main and stage are rolled out"; exit 1 ;;
+          target="$INPUT_ENVIRONMENT"
+          if [ -z "$target" ]; then
+            case "$GITHUB_REF_NAME" in
+              main)  target=prod ;;
+              stage) target=staging ;;
+            esac
+          fi
+          if [ "$target" = prod ] && [ "$GITHUB_REF_NAME" != main ]; then
+            echo "::error::prod is only rolled out from main"; exit 1
+          fi
+          echo "environment=$target" >> "$GITHUB_OUTPUT"
+          case "$target" in
+            prod)    echo "suffix=" >> "$GITHUB_OUTPUT"
+                     echo "values-file=apps/qrcodly/values.yaml" >> "$GITHUB_OUTPUT" ;;
+            staging) echo "suffix=-staging" >> "$GITHUB_OUTPUT"
+                     echo "values-file=apps/qrcodly/values-staging.yaml" >> "$GITHUB_OUTPUT" ;;
+            *)       echo "::error::Only main and stage are rolled out"; exit 1 ;;
           esac
 
   image:
@@ -89,7 +110,7 @@ jobs:
       contents: read
       packages: write
     env:
-      BUILD_ARGS: ${{ github.ref_name == 'main' && vars.FRONTEND_BUILD_ARGS || vars.STAGING_FRONTEND_BUILD_ARGS }}
+      BUILD_ARGS: ${{ needs.meta.outputs.environment == 'prod' && vars.FRONTEND_BUILD_ARGS || vars.STAGING_FRONTEND_BUILD_ARGS }}
     steps:
       - name: Required build args are set
         run: |
@@ -164,6 +185,7 @@ jobs:
       contents: read
     env:
       TAG: ${{ needs.meta.outputs.tag }}
+      TARGET: ${{ needs.meta.outputs.environment }}
       FILE: ${{ needs.meta.outputs.values-file }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -184,5 +206,5 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -am "chore(qrcodly): version ${TAG} ausrollen (${GITHUB_REF_NAME})"
+          git commit -am "chore(qrcodly): version ${TAG} ausrollen (${TARGET}, ${GITHUB_REF_NAME})"
           git push
