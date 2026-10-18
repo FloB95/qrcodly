@@ -1,9 +1,10 @@
+import { serverApiUrl } from '@/lib/server-api-url';
+
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
 	const { id } = await params;
 
 	try {
-		const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
-		const response = await fetch(`${backendUrl}/qr-code/${id}/download`, {
+		const response = await fetch(`${serverApiUrl()}/qr-code/${id}/download`, {
 			method: 'GET',
 		});
 

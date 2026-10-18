@@ -12,6 +12,8 @@ export const env = createEnv({
 		AXIOM_DATASET: z.string(),
 		CLERK_SECRET_KEY: z.string(),
 		INTERNAL_API_SECRET: z.string().min(32),
+		// Backend address for server-side calls (in-cluster); unset = NEXT_PUBLIC_API_URL
+		API_INTERNAL_URL: z.string().url().optional(),
 	},
 
 	/**
@@ -45,6 +47,7 @@ export const env = createEnv({
 	runtimeEnv: {
 		NODE_ENV: process.env.NODE_ENV,
 		NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+		API_INTERNAL_URL: process.env.API_INTERNAL_URL,
 		AXIOM_TOKEN: process.env.AXIOM_TOKEN,
 		AXIOM_DATASET: process.env.AXIOM_DATASET,
 		CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
