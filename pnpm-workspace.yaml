@@ -86,6 +86,9 @@ minimumReleaseAgeExclude:
   - tailwindcss@4.3.3
   - vite@8.1.5
 
+overrides:
+  'eslint-plugin-react-hooks>zod': 'catalog:'
+
 patchedDependencies:
   '@fumadocs/api-docs@0.2.1': patches/@fumadocs__api-docs@0.2.1.patch
   fumadocs-openapi@11.2.2: patches/fumadocs-openapi@11.2.2.patch
