@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge';
 import qs from 'qs';
 
 import { ApiError } from './api/ApiError';
+import { serverApiUrl } from './server-api-url';
 import type { z } from 'zod';
 import type {
 	TCustomDomainResponseDto,
@@ -189,9 +190,12 @@ export async function apiRequest<T>(
 	// Construct query string if queryParams are provided
 	const queryString = queryParams ? `?${qs.stringify(queryParams)}` : '';
 
+	// Server-rendered pages call the backend directly (in-cluster), the browser via the public URL
+	const baseUrl = typeof window === 'undefined' ? serverApiUrl() : env.NEXT_PUBLIC_API_URL;
+
 	let response: Response;
 	try {
-		response = await fetch(`${env.NEXT_PUBLIC_API_URL}${endpoint}${queryString}`, options);
+		response = await fetch(`${baseUrl}${endpoint}${queryString}`, options);
 	} catch {
 		throw new ApiError(
 			'Could not connect to the server. Please check your internet connection or disable any ad blockers and try again.',
