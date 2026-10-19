@@ -21,7 +21,10 @@ CHANGELOG-*.md
 # Load test results & secrets
 load-tests/results/*.json
 load-tests/results/*.csv
+load-tests/results/*.html
+load-tests/results/*.txt
 load-tests/.env
+load-tests/.state/
 
 # Desktop app build outputs
 apps/desktop/out/
