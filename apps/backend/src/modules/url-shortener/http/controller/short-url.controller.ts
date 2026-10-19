@@ -217,6 +217,9 @@ export class ShortUrlController extends AbstractController {
 				'Optionally assign a custom domain and set the active state.',
 			operationId: 'short-url/create-short-url',
 		},
+		config: {
+			rateLimitPolicy: RateLimitPolicy.SHORT_URL_CREATE,
+		},
 	})
 	async create(
 		request: IHttpRequest<TCreateShortUrlDto>,
@@ -253,6 +256,9 @@ export class ShortUrlController extends AbstractController {
 					},
 				},
 			},
+		},
+		config: {
+			rateLimitPolicy: RateLimitPolicy.SHORT_URL_CREATE,
 		},
 	})
 	async duplicate(
