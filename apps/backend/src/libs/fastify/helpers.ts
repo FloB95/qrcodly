@@ -28,6 +28,7 @@ import { type IHttpResponse } from '@/core/interface/response.interface';
 import type AbstractController from '@/core/http/controller/abstract.controller';
 import { defaultApiAuthMiddleware } from '@/core/http/middleware/default-api-auth.middleware';
 import { enforceScope } from '@/core/http/middleware/enforce-scope.middleware';
+import { isCloudflareIp } from './cloudflare-ip';
 import { enforceTokenType } from '@/core/http/middleware/enforce-token-type.middleware';
 import { type ApiKeyScope } from '@shared/schemas';
 import z, { type ZodType } from 'zod';
@@ -458,15 +459,16 @@ export function resolveClientIp(request: FastifyRequest): string {
 		}
 	}
 
-	const cfIp = request.headers['cf-connecting-ip'] as string | undefined;
-	if (cfIp) return cfIp;
+	// The reverse proxy in front of us (Traefik) appends the address it was connected from as the
+	// last X-Forwarded-For entry. Everything before it, and cf-connecting-ip, can be sent by the
+	// client itself – so cf-connecting-ip only counts when that address belongs to Cloudflare.
+	const forwardedFor = [request.headers['x-forwarded-for']].flat().join(',');
+	const peerIp = forwardedFor.split(',').pop()?.trim() || request.ip;
 
-	const xForwardedFor = request.headers['x-forwarded-for'] as string | undefined;
-	if (xForwardedFor) {
-		return xForwardedFor.split(',')[0].trim();
-	}
+	const cfIp = (request.headers['cf-connecting-ip'] as string | undefined)?.trim();
+	if (cfIp && isCloudflareIp(peerIp)) return cfIp;
 
-	return request.ip;
+	return peerIp;
 }
 
 const LOGGABLE_HEADERS = [
