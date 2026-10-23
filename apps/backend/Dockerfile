@@ -15,7 +15,7 @@
 # Migrations are NOT run on start (unlike `pnpm start`): with several replicas they would race.
 # In Kubernetes a Job runs them once per rollout, before the new pods start.
 
-ARG NODE_IMAGE=node:24.21.0-bookworm-slim
+ARG NODE_IMAGE=node:24.22.1-bookworm-slim
 ARG PNPM_VERSION=11.13.1
 
 # ── base ─────────────────────────────────────────────────────────────────────

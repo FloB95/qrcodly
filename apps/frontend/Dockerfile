@@ -15,7 +15,7 @@
 # The build fetches the API spec for the docs pages (src/lib/openapi.ts) — from OPENAPI_URL if
 # set, otherwise from NEXT_PUBLIC_API_URL. That address must be reachable from the build.
 
-ARG NODE_IMAGE=node:24.21.0-bookworm-slim
+ARG NODE_IMAGE=node:24.22.1-bookworm-slim
 ARG PNPM_VERSION=11.13.1
 
 # ── build ────────────────────────────────────────────────────────────────────
