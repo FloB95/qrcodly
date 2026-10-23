@@ -3,6 +3,8 @@ export enum RateLimitPolicy {
 	// qr code limits
 	QR_CREATE = 'qr_create',
 	BULK_QR_CREATE = 'bulk_qr_create',
+	// short url limits
+	SHORT_URL_CREATE = 'short_url_create',
 	// template limits
 	TEMPLATE_CREATE = 'template_create',
 	SCREENSHOT_CREATE = 'screenshot_create',
@@ -42,6 +44,11 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 	[RateLimitPolicy.QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 4,
 		[RateLimitTier.AUTHENTICATED]: 15,
+		[RateLimitTier.PRO_PLAN]: 30,
+	},
+	[RateLimitPolicy.SHORT_URL_CREATE]: {
+		[RateLimitTier.ANONYMOUS]: 0,
+		[RateLimitTier.AUTHENTICATED]: 5,
 		[RateLimitTier.PRO_PLAN]: 30,
 	},
 	[RateLimitPolicy.BULK_QR_CREATE]: {

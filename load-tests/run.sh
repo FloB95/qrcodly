@@ -1,116 +1,155 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # =============================================================================
-# QRcodly Load Test Runner
+# QRcodly load test runner — see README.md
 #
-# Usage:
-#   ./load-tests/run.sh                          # Smoke test (default)
-#   ./load-tests/run.sh medium                   # Medium load
-#   ./load-tests/run.sh heavy                    # 1000 VUs stress test
-#   ./load-tests/run.sh spike                    # Spike test
-#   SAVE_RESULTS=1 ./load-tests/run.sh heavy     # Save results to JSON
+#   ./run.sh provision [N]   create N Clerk test users + sessions (once, resumable)
+#   ./run.sh seed            give every test user a realistic starting account
+#   ./run.sh smoke           3 users for 2 min — always run this first
+#   ./run.sh baseline | load | stress | spike | soak
+#   ./run.sh cleanup         back to the seeded baseline (after every run)
+#   ./run.sh destroy         delete ALL test-user data, then the Clerk users
+#   ./run.sh status
 #
-# Reads configuration from load-tests/.env
+# Configuration comes from load-tests/.env (see .env.example); any variable can
+# also be set inline, e.g. USERS=2000 ./run.sh stress
 # =============================================================================
 
 set -euo pipefail
+cd "$(dirname "$0")"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ENV_FILE="$SCRIPT_DIR/.env"
-
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-NC='\033[0m'
-
-# Load .env file
-if [ -f "$ENV_FILE" ]; then
-    echo -e "${CYAN}Loading config from $ENV_FILE${NC}"
-    set -a
-    source "$ENV_FILE"
-    set +a
-else
-    echo -e "${YELLOW}No .env file found. Copy .env.example to .env and fill in your values.${NC}"
+# .env fills in defaults only: inline variables (STEPS=… ./run.sh stress) win, even over
+# the empty placeholders from .env.example.
+if [ -f .env ]; then
+	while IFS= read -r line || [ -n "$line" ]; do
+		case "$line" in '' | \#*) continue ;; esac
+		key="${line%%=*}"
+		value="${line#*=}"
+		value="${value%\"}"
+		value="${value#\"}"
+		if [ -z "${!key:-}" ]; then export "$key=$value"; fi
+	done <.env
 fi
 
-# CLI argument overrides .env PROFILE
-PROFILE="${1:-${PROFILE:-smoke}}"
+export API_URL="${API_URL:-https://api.qrcodly.de/api/v1}"
+export FRONTEND_URL="${FRONTEND_URL:-https://www.qrcodly.de}"
+STATE_DIR="$PWD/.state"
+RESULTS_DIR="$PWD/results"
+TOKENS_FILE="$STATE_DIR/tokens.json"
+mkdir -p "$STATE_DIR" "$RESULTS_DIR"
 
-echo -e "${GREEN}╔══════════════════════════════════════╗${NC}"
-echo -e "${GREEN}║   QRcodly Load Test — ${PROFILE}${NC}"
-echo -e "${GREEN}╚══════════════════════════════════════╝${NC}"
-echo ""
+for tool in node k6; do
+	command -v "$tool" >/dev/null || {
+		echo "Missing $tool (Node.js 22+, k6: brew install k6)"
+		exit 1
+	}
+done
 
-# Check prerequisites
-if ! command -v k6 &>/dev/null; then
-    echo -e "${RED}Error: k6 is not installed. Run: brew install k6${NC}"
-    exit 1
-fi
+# Passed to k6 one by one, so the Clerk secret in .env never ends up in k6's __ENV.
+K6_VARS=(
+	API_URL FRONTEND_URL SCAN_URL USERS STEPS RAMP HOLD THINK PAGE_LOADS SCAN_RATE UNIQUE_URLS
+	SLO_API_P95_MS SLO_PAGE_P95_MS SLO_ERROR_RATE ABORT_STREAK ABORT_LATENCY_MS
+	NEW_CODES_PER_USER SEED_QR_CODES SEED_SHORT_URLS SEED_TAGS SEED_TEMPLATES SEED_CONCURRENCY
+	CLEANUP_MODE CLEANUP_CONCURRENCY
+)
 
-# Build k6 env args
-K6_ENVS="-e PROFILE=$PROFILE"
-if [ -z "${BASE_URL:-}" ]; then
-    echo -e "${RED}Error: BASE_URL is required. Set it in .env${NC}"
-    exit 1
-fi
-if [ -z "${FRONTEND_URL:-}" ]; then
-    echo -e "${RED}Error: FRONTEND_URL is required. Set it in .env${NC}"
-    exit 1
-fi
-K6_ENVS="$K6_ENVS -e BASE_URL=$BASE_URL"
-K6_ENVS="$K6_ENVS -e FRONTEND_URL=$FRONTEND_URL"
-K6_ENVS="$K6_ENVS -e MODE=${MODE:-full}"
+k6_args() {
+	K6_ARGS=(--include-system-env-vars=false -e "TOKENS_FILE=$TOKENS_FILE" -e "RESULTS_DIR=$RESULTS_DIR")
+	for var in "${K6_VARS[@]}"; do
+		if [ -n "${!var:-}" ]; then K6_ARGS+=(-e "$var=${!var}"); fi
+	done
+}
 
-# HTAccess credentials
-if [ -n "${HTACCESS_USER:-}" ] && [ -n "${HTACCESS_PASS:-}" ]; then
-    K6_ENVS="$K6_ENVS -e HTACCESS_USER=$HTACCESS_USER -e HTACCESS_PASS=$HTACCESS_PASS"
-    echo -e "${CYAN}HTAccess auth: enabled${NC}"
-fi
+is_production() {
+	case "$API_URL" in
+	*localhost* | *127.0.0.1* | *stage* | *staging*) return 1 ;;
+	*) return 0 ;;
+	esac
+}
 
-# Short codes
-if [ -n "${SHORT_CODES:-}" ]; then
-    K6_ENVS="$K6_ENVS -e SHORT_CODES=$SHORT_CODES"
-    CODE_COUNT=$(echo "$SHORT_CODES" | tr ',' '\n' | wc -l | tr -d ' ')
-    echo -e "${CYAN}Short codes: $CODE_COUNT codes for scan simulation${NC}"
-fi
+confirm() {
+	if [ "${YES:-}" = "1" ]; then return 0; fi
+	printf '\n⚠️  %s\nType "yes" to continue: ' "$1"
+	read -r answer
+	if [ "$answer" != "yes" ]; then
+		echo "Aborted."
+		exit 1
+	fi
+}
 
-# Generate Clerk tokens (if secret key is set)
-if [ -n "${CLERK_SECRET_KEY:-}" ]; then
-    echo -e "${YELLOW}Generating Clerk tokens...${NC}"
-    TOKENS=$(node "$SCRIPT_DIR/generate-tokens.mjs")
+ready_users() {
+	node users.mjs count
+}
 
-    if [ -n "$TOKENS" ]; then
-        TOKEN_COUNT=$(echo "$TOKENS" | tr ',' '\n' | wc -l | tr -d ' ')
-        echo -e "${GREEN}Got $TOKEN_COUNT tokens${NC}"
-        K6_ENVS="$K6_ENVS -e CLERK_TOKENS=$TOKENS"
+run_profile() {
+	local profile="$1" run_id requirements max_vus seconds ready
+	run_id="${profile}-$(date +%Y%m%d-%H%M%S)"
+	k6_args
 
-        # Also pass the secret key for token refresh during test
-        K6_ENVS="$K6_ENVS -e CLERK_SECRET_KEY=$CLERK_SECRET_KEY"
-        K6_ENVS="$K6_ENVS -e JWT_TEMPLATE=$JWT_TEMPLATE"
-        K6_ENVS="$K6_ENVS -e TEST_USER_IDS=${TEST_USER_IDS:-}"
-    else
-        echo -e "${RED}Warning: Failed to generate tokens. CRUD tests will be skipped.${NC}"
-    fi
-else
-    echo -e "${YELLOW}No CLERK_SECRET_KEY set. Running scan-only mode.${NC}"
-    K6_ENVS="$K6_ENVS -e MODE=scan-only"
-fi
+	requirements=$(k6 inspect --execution-requirements "${K6_ARGS[@]}" -e "PROFILE=$profile" main.js)
+	read -r max_vus seconds < <(node -e '
+		const r = JSON.parse(require("fs").readFileSync(0, "utf8"));
+		const parts = r.totalDuration.match(/[\d.]+(h|m(?!s)|s)/g) || [];
+		const s = parts.reduce((t, p) => t + parseFloat(p) * { h: 3600, m: 60, s: 1 }[p.replace(/[\d.]/g, "")], 0);
+		console.log(r.maxVUs, Math.ceil(s));' <<<"$requirements")
 
-echo ""
+	ready=$(ready_users)
+	if [ "$ready" -lt "$max_vus" ]; then
+		echo "The $profile profile needs $max_vus test users, $ready are ready → ./run.sh provision $max_vus"
+		exit 1
+	fi
+	if is_production && [ "$profile" != "smoke" ]; then
+		confirm "Up to $max_vus concurrent users on PRODUCTION ($API_URL) for ~$((seconds / 60)) min."
+	fi
 
-# Add result output if requested
-if [ "${SAVE_RESULTS:-}" = "1" ]; then
-    TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-    RESULT_FILE="$SCRIPT_DIR/results/${PROFILE}_${TIMESTAMP}.json"
-    K6_EXTRA="--out json=$RESULT_FILE"
-    echo -e "${YELLOW}Results → $RESULT_FILE${NC}"
-    echo ""
-else
-    K6_EXTRA=""
-fi
+	node users.mjs tokens --count "$max_vus" --ttl $((seconds + 1800)) --out "$TOKENS_FILE"
 
-# Run k6
-echo -e "${YELLOW}Starting k6 with profile: $PROFILE${NC}"
-echo ""
-eval k6 run "$SCRIPT_DIR/main.js" $K6_ENVS $K6_EXTRA
+	echo "Run $run_id — live dashboard: http://127.0.0.1:5665"
+	K6_WEB_DASHBOARD="${DASHBOARD:-true}" \
+		K6_WEB_DASHBOARD_EXPORT="$RESULTS_DIR/$run_id.html" \
+		k6 run "${K6_ARGS[@]}" -e "PROFILE=$profile" -e "RUN_ID=$run_id" main.js
+}
+
+run_admin() {
+	local script="$1" ready
+	ready=$(ready_users)
+	if [ "$ready" -eq 0 ]; then
+		echo "No test users yet → ./run.sh provision <count>"
+		exit 1
+	fi
+	node users.mjs tokens --count "$ready" --ttl 14400 --out "$TOKENS_FILE"
+	k6_args
+	k6 run "${K6_ARGS[@]}" -e "RUN_ID=$script-$(date +%Y%m%d-%H%M%S)" "$script.js"
+}
+
+command="${1:-help}"
+case "$command" in
+provision)
+	count="${2:-${LOADTEST_USERS:-100}}"
+	if is_production; then
+		confirm "Creates $count test accounts in the PRODUCTION Clerk instance (they count as users there)."
+	fi
+	node users.mjs provision --count "$count"
+	;;
+seed)
+	if is_production; then confirm "Creates starting data for every test user on PRODUCTION ($API_URL)."; fi
+	run_admin seed
+	;;
+cleanup)
+	run_admin cleanup
+	;;
+destroy)
+	confirm "Deletes ALL data of the test users, then the test users themselves from Clerk."
+	# `set -e`: the Clerk users are only deleted if the cleanup verified that nothing is left.
+	CLEANUP_MODE=all run_admin cleanup
+	node users.mjs delete --yes
+	;;
+status)
+	node users.mjs status
+	;;
+smoke | baseline | load | stress | spike | soak)
+	run_profile "$command"
+	;;
+*)
+	sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'
+	;;
+esac

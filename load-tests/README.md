@@ -1,142 +1,82 @@
-# QRcodly Load Tests (k6)
+# QRcodly load test (k6)
 
-## Setup
+Simulates logged-in users working in the dashboard — the Next.js pages they open (full load
+first, then client-side navigations) plus every API call those screens fire: sidebar counts,
+lists with per-row view counts, detail pages with analytics, creating / editing / deleting /
+duplicating / sharing QR codes, short links, tags and templates, with human pauses in between.
+Each virtual user is its own Clerk test account, so per-user rate limits behave as in
+production. The report answers: **how many concurrent users stay within the SLOs?**
 
-```bash
-# Install k6
-brew install k6
-
-# Configure environment
-cp .env.example .env
-# → Fill in CLERK_SECRET_KEY, HTACCESS_USER/PASS
-```
-
-## Quick Start
+## Setup (once)
 
 ```bash
-# Smoke test (5 VUs, 30s)
-./run.sh
-
-# Medium load (250 VUs)
-./run.sh medium
-
-# Heavy load (1000 VUs)
-./run.sh heavy
-
-# Spike test (sudden surge to 1000)
-./run.sh spike
-
-# Save results as JSON
-SAVE_RESULTS=1 ./run.sh heavy
+brew install k6                # plus Node.js 22+
+cp .env.example .env           # fill in CLERK_SECRET_KEY + CLERK_PUBLISHABLE_KEY of the target instance
+./run.sh provision 1000        # create 1000 persistent test users (production: ~40 min, resumable)
+./run.sh seed                  # give each a starting account (8 QR codes, 1 link, 3 tags, 1 template)
 ```
 
-The `run.sh` script automatically reads `.env`, generates Clerk tokens, and starts k6.
+Test users are **permanent** (`loadtest-0001@loadtest.qrcodly.de` …, Clerk `external_id`
+`loadtest-NNNN`). Keep them between runs — no data of deleted users can dangle in the database,
+and their seeded short codes are reused instead of minting new ones each time.
 
-Test data (QR codes + short URLs) is **created automatically** in the `setup()` phase and cleaned up in `teardown()`. No manual short code entry needed.
-
-## .env Configuration
-
-| Variable           | Description                                                             |
-| ------------------ | ----------------------------------------------------------------------- |
-| `CLERK_SECRET_KEY` | Clerk secret key (staging) — for token generation                       |
-| `BASE_URL`         | Backend API URL (default: `https://stage-api.qrcodly.de/api/v1`)        |
-| `FRONTEND_URL`     | Frontend URL for scan simulation (default: `https://stage.qrcodly.de`)  |
-| `HTACCESS_USER`    | HTAccess username (if staging frontend is protected)                    |
-| `HTACCESS_PASS`    | HTAccess password                                                       |
-| `TEST_USER_IDS`    | Comma-separated Clerk user IDs                                          |
-| `SHORT_CODES`      | Additional short codes for scanning (optional, auto-created by default) |
-| `PROFILE`          | Default load profile                                                    |
-| `MODE`             | `full` (CRUD + scans) or `scan-only`                                    |
-
-## Modes
-
-### Full Mode (default)
-
-Requires: `CLERK_SECRET_KEY`
-
-Simulates complete user flows:
-
-- 25% QR code CRUD (create, edit, delete)
-- 10% QR code read (dashboard browsing)
-- 10% Short URL CRUD
-- 5% Template CRUD
-- 5% Tag CRUD
-- 35% Scans (diverse browsers/devices)
-- 10% Burst scans (viral QR code simulation)
-
-### Scan-Only Mode
-
-Requires: `SHORT_CODES` in `.env` (or auto-created with `CLERK_SECRET_KEY`)
-
-100% scan traffic with realistic user agents:
-
-- 70% Mobile (iPhone, Android, Samsung, Huawei)
-- 30% Desktop (Chrome, Firefox, Safari, Edge)
-- 16 languages (de, en, fr, es, it, nl, pl, ru, ...)
-- Various referrers (Google, social media, direct)
-- Randomized IPs
+## Every run
 
 ```bash
-MODE=scan-only ./run.sh heavy
+./run.sh smoke                                   # 3 users, 2 min — always first
+STEPS=50,200,500,1000 ./run.sh stress            # 5 min per step, 2 min ramps (~30 min)
+./run.sh cleanup                                 # back to the seeded baseline
 ```
 
-## Profiles
+Other profiles: `baseline` (25 users), `load` (`USERS`, default 200, 15 min), `soak` (60 min),
+`spike` (10 % → `USERS` in 30 s → back). Knobs: see `.env.example` (`THINK`, `PAGE_LOADS`, `HOLD`…).
 
-| Profile  | Max VUs | Duration | Purpose               |
-| -------- | ------- | -------- | --------------------- |
-| `smoke`  | 5       | 30s      | Verify endpoints work |
-| `light`  | 50      | 3 min    | Normal traffic        |
-| `medium` | 250     | 5 min    | Peak hours            |
-| `heavy`  | 1000    | 9 min    | Stress test           |
-| `spike`  | 1000    | 3.5 min  | Sudden traffic surge  |
+While running: live dashboard at http://127.0.0.1:5665 — close that tab when the run ends,
+k6 waits for open dashboard tabs before it writes the reports. Afterwards `results/<run>-report.txt`
+(capacity table + slowest endpoints), `<run>.html` (charts) and `<run>-summary.json`.
 
-## Automatic Test Data
+## Safety on production
 
-The `setup()` function runs once before all VUs and:
+- **401 → immediate stop.** The backend blocks an IP for 7 days after 30 × 401 per hour.
+  Tokens are minted to outlive the run and checked before it starts. If it ever happens:
+  `DEL ip_abuse:blocked:<ip> ip_abuse:attempts:<ip>` in Redis.
+- **Circuit breaker:** 10 failed (5xx/timeout) or > 20 s requests in a row stop the test.
+- **Short codes are reserved forever**, even after deletion. Each user may mint at most
+  `NEW_CODES_PER_USER` (default 2) per run; then it only creates static QR codes. The report
+  prints how many were used. Seeding costs 2 dynamic QR codes + 1 link per user, once.
+- **Cloudflare** fronts the frontend; if it challenges k6, the run stops. Allow the load
+  generator's IP in Cloudflare or rerun with `PAGE_LOADS=0` (API only).
+- Destination URLs come from a 25-URL pool, so Google Web Risk lookups stay cached.
+- Scans (`SCAN_RATE`) are off by default: they write Umami analytics and are limited to
+  200/min per IP by the backend.
+- Load-test traffic is recognisable in Axiom by `qrcodly-loadtest` in the user agent.
 
-1. Creates 5 dynamic QR codes (with short URLs for scanning)
-2. Creates 5 standalone short URLs
-3. Passes all short codes to VUs for scan simulation
+## Side effects to expect
 
-The `teardown()` function cleans up all created test data after the run.
+- Clerk: the test users count as users of the instance. During a run the backend asks Clerk
+  once per active user per minute (ban check) — ~17 requests/s at 1000 users, well within
+  Clerk's 1000 per 10 s. k6 itself makes no Clerk calls during a run.
+- S3: every created QR code/template gets a preview image; cleanup deletes them. A code
+  deleted within seconds of creation can leave its preview behind (app race).
+- MySQL: deleted links stay as soft-deleted rows — that is how QRcodly keeps codes reserved.
 
-## Token Refresh
+## Test users are permanent
 
-Clerk JWTs expire after ~60 seconds. The system refreshes tokens automatically:
+Provision once, reuse for every run — never delete them. Their short codes (seeded and minted
+during runs) simply stay theirs. `./run.sh destroy` exists only for the case the test accounts
+ever have to go; it would leave their soft-deleted links behind under user IDs that no longer
+exist, so don't use it casually.
 
-- Each VU monitors token expiry
-- 10 seconds before expiry, a new token is fetched via Clerk REST API
-- Requires `CLERK_SECRET_KEY` to be passed through to k6
+## Files
 
-## Interpreting Results
-
-Key metrics in k6 output:
-
-| Metric                         | Good            | Concerning          |
-| ------------------------------ | --------------- | ------------------- |
-| `http_req_duration (p95)`      | < 2s            | > 5s                |
-| `http_req_failed`              | < 5%            | > 10%               |
-| `http_reqs`                    | high throughput | dropping under load |
-| `http_req_duration{type:scan}` | < 1.5s          | > 3s                |
-
-## File Structure
-
-```
-├── .env                   # Secrets & config (gitignored)
-├── .env.example           # Template
-├── run.sh                 # One-click runner
-├── generate-tokens.mjs    # Clerk token generation (Node.js)
-├── main.js                # k6 entry point (setup/teardown/default)
-├── config.js              # Profiles & thresholds
-├── auth.js                # Token management & auto-refresh
-├── helpers.js             # HTTP helpers
-├── data/
-│   ├── payloads.js        # Test data generators
-│   └── user-agents.js     # Browser/device simulation
-├── scenarios/
-│   ├── qr-codes.js        # QR code CRUD + read
-│   ├── short-urls.js      # Short URL CRUD
-│   ├── templates-tags.js  # Templates + tags CRUD
-│   └── scan-traffic.js    # Scan & burst simulation
-└── results/               # Output (gitignored)
-```
+| File         | Purpose                                                          |
+| ------------ | ---------------------------------------------------------------- |
+| `run.sh`     | entry point for everything above                                 |
+| `users.mjs`  | Clerk test users: provision, tokens, status, delete              |
+| `main.js`    | k6 load test (setup preflight, users, optional scans)            |
+| `seed.js`    | baseline data per test user                                      |
+| `cleanup.js` | deletes run data (or everything) through the API and verifies it |
+| `config.js`  | target, knobs, profiles, thresholds                              |
+| `journeys/`  | what a user does: QR codes, short links, tags/templates, scans   |
+| `lib/`       | HTTP client + guards, query cache, sessions, preflight, report   |
+| `data/`      | payload generators (valid against the shared Zod DTOs), scan UAs |

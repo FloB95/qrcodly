@@ -22,7 +22,7 @@
 	"dependencies": {
 		"@axiomhq/pino": "^1.8.0",
 		"@fastify/cors": "catalog:",
-		"@modelcontextprotocol/sdk": "^1.29.0",
+		"@modelcontextprotocol/sdk": "^1.32.1",
 		"fastify": "catalog:",
 		"pino": "^10.3.1",
 		"pino-pretty": "^13.1.3",

@@ -15,7 +15,6 @@ const PAGES = [
 	'imprint',
 	'privacy-policy',
 	'terms-of-service',
-	'dpa',
 	...QR_CODE_USE_CASES.map((uc) => `${uc.parentPath.slice(1)}/${uc.slug}`),
 	...URL_SHORTENER_USE_CASES.map((uc) => `${uc.parentPath.slice(1)}/${uc.slug}`),
 ];
