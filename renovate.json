@@ -1,0 +1,66 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"description": "Renovate schlägt neue Versionen als Pull Request vor. Übersicht aller offenen Updates: Issue 'Dependency Dashboard'. Nichts wird automatisch übernommen – ein Merge auf main geht sofort live.",
+	"extends": [
+		"config:recommended"
+	],
+	"timezone": "Europe/Berlin",
+	"schedule": [
+		"before 7am on monday"
+	],
+	"minimumReleaseAge": "3 days",
+	"labels": [
+		"updates"
+	],
+	"osvVulnerabilityAlerts": true,
+	"vulnerabilityAlerts": {
+		"description": "Updates, die eine bekannte Sicherheitslücke schließen: sofort, ohne Zeitplan und ohne Wartezeit",
+		"labels": [
+			"updates",
+			"security"
+		]
+	},
+	"lockFileMaintenance": {
+		"description": "Einmal im Monat das Lockfile auffrischen – holt reparierte Unterpakete nach, die sonst auf alten Versionen hängen bleiben",
+		"enabled": true,
+		"schedule": [
+			"before 7am on the first day of the month"
+		]
+	},
+	"packageRules": [
+		{
+			"description": "Kleine Korrekturen gesammelt in einem Pull Request",
+			"matchUpdateTypes": [
+				"patch",
+				"digest",
+				"pinDigest"
+			],
+			"groupName": "Patch-Updates"
+		},
+		{
+			"description": "Neue Funktionen gesammelt in einem Pull Request",
+			"matchUpdateTypes": [
+				"minor"
+			],
+			"groupName": "Minor-Updates"
+		},
+		{
+			"description": "Große Versionssprünge (Major) nur als Kästchen im Dependency Dashboard – ein Pull Request entsteht erst, wenn du es dort anhakst",
+			"matchUpdateTypes": [
+				"major"
+			],
+			"dependencyDashboardApproval": true
+		},
+		{
+			"description": "Node.js-Image (Dockerfiles) einzeln statt in der Sammel-PR, damit Sicherheits-Releases auffallen; nur Versionen mit Langzeit-Pflege (gerade Hauptversionen)",
+			"matchDatasources": [
+				"docker"
+			],
+			"matchPackageNames": [
+				"node"
+			],
+			"groupName": "Node.js",
+			"allowedVersions": "/^\\d*[02468]\\./"
+		}
+	]
+}
