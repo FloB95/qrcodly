@@ -9,7 +9,7 @@
 # One image for every environment; settings come in as environment variables (src/env.ts).
 # The OpenAPI spec the tools are generated from is bundled (src/openapi.json).
 
-ARG NODE_IMAGE=node:24.21.0-bookworm-slim
+ARG NODE_IMAGE=node:24.22.1-bookworm-slim
 ARG PNPM_VERSION=11.13.1
 
 # ── base ─────────────────────────────────────────────────────────────────────
