@@ -4,14 +4,14 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite build --watch",
+		"dev": "vite build --watch --mode development",
 		"build": "tsc --noEmit && vite build",
 		"preview": "vite preview --port 5174",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
 	"dependencies": {
-		"@clerk/chrome-extension": "^3.1.53",
+		"@clerk/chrome-extension": "^3.1.98",
 		"@clerk/localizations": "^4.13.4",
 		"@clerk/themes": "^2.4.57",
 		"@heroicons/react": "^2.2.0",
