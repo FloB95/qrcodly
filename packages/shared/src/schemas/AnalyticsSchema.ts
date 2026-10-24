@@ -29,21 +29,51 @@ const ShortUrlStatsSchema = z.object({
 });
 export type TShortUrlStats = z.infer<typeof ShortUrlStatsSchema>;
 
+const TopEntrySchema = z.object({
+	label: z
+		.string()
+		.describe('Category label (country code for countries, device type for devices)'),
+	share: z.number().describe('Share of all tracked traffic in percent, rounded to a whole number'),
+});
+export type TAnalyticsTopEntry = z.infer<typeof TopEntrySchema>;
+
+const AnalyticsSummarySchema = z.object({
+	pageviewsLast7Days: z.number().describe('Pageviews over the last 7 days'),
+	visitorsLast7Days: z
+		.number()
+		.describe('Visitors over the last 7 days, summed from the hourly session counts'),
+	topCountry: TopEntrySchema.nullable().describe('Country with the most traffic, if any'),
+	topDevice: TopEntrySchema.nullable().describe('Device type with the most traffic, if any'),
+});
+export type TAnalyticsSummary = z.infer<typeof AnalyticsSummarySchema>;
+
 export const AnalyticsSchema = z.object({
 	shortUrlStats: ShortUrlStatsSchema.describe('Aggregate statistics for the short URL'),
-	viewsAndSessions: PageviewsAndSessionsSchema.describe(
-		'Time-series data for pageviews and sessions',
+	summary: AnalyticsSummarySchema.describe('Headline figures, available on every plan'),
+	detailsLocked: z
+		.boolean()
+		.describe(
+			'True when the detailed breakdowns below require the Pro plan; they are null in that case',
+		),
+	viewsAndSessions: PageviewsAndSessionsSchema.nullable().describe(
+		'Time-series data for pageviews and sessions (Pro only)',
 	),
 	browserMetrics: z
 		.array(MetricSchema)
-		.describe('Click breakdown by browser (e.g. Chrome, Firefox, Safari)'),
+		.nullable()
+		.describe('Click breakdown by browser, e.g. Chrome, Firefox, Safari (Pro only)'),
 	osMetrics: z
 		.array(MetricSchema)
-		.describe('Click breakdown by operating system (e.g. Windows, macOS, Android)'),
+		.nullable()
+		.describe('Click breakdown by operating system, e.g. Windows, macOS, Android (Pro only)'),
 	deviceMetrics: z
 		.array(MetricSchema)
-		.describe('Click breakdown by device type (e.g. desktop, mobile, tablet)'),
-	countryMetrics: z.array(MetricSchema).describe('Click breakdown by country'),
+		.nullable()
+		.describe('Click breakdown by device type, e.g. desktop, mobile, tablet (Pro only)'),
+	countryMetrics: z
+		.array(MetricSchema)
+		.nullable()
+		.describe('Click breakdown by country (Pro only)'),
 });
 
 export type Analytics = z.infer<typeof AnalyticsSchema>;

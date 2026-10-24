@@ -246,7 +246,12 @@
 		"topCountry": "Topland",
 		"topDevice": "Topapparaat",
 		"topBrowser": "Topbrowser",
-		"ofTraffic": "{pct}% van het verkeer"
+		"ofTraffic": "{pct}% van het verkeer",
+		"locked": {
+			"title": "Gedetailleerde analyses horen bij Pro",
+			"description": "Verloop in de tijd, een wereldkaart van je publiek en uitsplitsingen naar apparaat, browser en besturingssysteem. Je gegevens worden al vastgelegd, dus na de upgrade zie je meteen alles.",
+			"cta": "Upgrade naar Pro"
+		}
 	},
 	"chart": {
 		"title": {
@@ -969,7 +974,7 @@
 		"question2": "Hoe maak ik een QR-code aan?",
 		"answer2": "Met qrcodly.de maakt u in een handomdraai uw eigen QR-code: voer eenvoudig de gewenste inhoud in en download direct uw vers gegenereerde code. Snel en ongecompliceerd!",
 		"question3": "Wat is het verschil tussen statische en dynamische QR-codes?",
-		"answer3": "Statische QR-codes bevatten vaste informatie die na aanmaak niet meer kan worden gewijzigd. Dynamische QR-codes bieden daarentegen maximale flexibiliteit: u kunt de gekoppelde inhoud op elk moment na aanmaak aanpassen en profiteert bovendien van geavanceerde functies zoals gedetailleerde scanstatistieken.",
+		"answer3": "Statische QR-codes bevatten vaste informatie die na aanmaak niet meer kan worden gewijzigd. Dynamische QR-codes bieden daarentegen maximale flexibiliteit: u kunt de gekoppelde inhoud op elk moment na aanmaak aanpassen en profiteert bovendien van scanstatistieken, met gedetailleerde analyses in het Pro-abonnement.",
 		"question4": "Is het gratis om QR-codes te maken?",
 		"answer4": "Ja, de generatie van zowel statische als dynamische QR-codes is en blijft voor altijd gratis, zoveel als u wilt. In de toekomst zullen er beperkingen zijn voor API-verzoeken en voor bedrijven die met meerdere gebruikers werken.",
 		"question5": "Hoe lang is een QR-code geldig?",
@@ -979,7 +984,7 @@
 		"question7": "Heb ik een speciale app nodig om QR-codes te scannen?",
 		"answer7": "Nee, in de meeste gevallen is dat niet nodig! De geïntegreerde camerafunctie van moderne smartphones kan QR-codes nu direct herkennen en de ingebedde inhoud openen – zonder dat een extra app nodig is.",
 		"question8": "Welke statistieken worden verzameld voor dynamische QR-codes?",
-		"answer8": "Wanneer u statistieken inschakelt, wordt bij elke scan van uw dynamische QR-code informatie geregistreerd en geanalyseerd, zoals het aantal scans, bezoekers, gebruikte apparaten, landen, browsers en besturingssystemen.",
+		"answer8": "Wanneer u statistieken inschakelt, wordt bij elke scan van uw dynamische QR-code informatie geregistreerd en geanalyseerd, zoals het aantal scans, bezoekers, gebruikte apparaten, landen, browsers en besturingssystemen. Het gratis abonnement toont totalen, de laatste 7 dagen en het topland en -apparaat; Pro ontgrendelt de volledige uitsplitsing.",
 		"question9": "Kan ik een QR-code personaliseren met mijn logo?",
 		"answer9": "Ja, met qrcodly.de kunt u uw QR-codes precies naar wens ontwerpen: integreer uw logo en gebruik uw merkkleuren zonder de scanbaarheid te beïnvloeden. Zo blijven uw codes uniek en professioneel!",
 		"question10": "Werken QR-codes ook in gedrukte vorm?",
@@ -1515,9 +1520,9 @@
 	},
 	"plans": {
 		"metaTitle": "QR Code Generator Prijzen – Gratis & Pro",
-		"metaDescription": "Gratis QR code generator met onbeperkte codes, eigen design & analyses. Pro voor eigen domeinen, bulkimport & prioriteitsondersteuning. Geen verborgen kosten.",
+		"metaDescription": "Gratis QR code generator met onbeperkte codes, eigen design & scanstatistieken. Pro voor gedetailleerde analyses, eigen domeinen, bulkimport & prioriteitsondersteuning. Geen verborgen kosten.",
 		"title": "Eerlijk. Transparant. Geen verborgen kosten.",
-		"subtitle": "Het Free-abonnement blijft voor altijd gratis – onbeperkte QR-codes, scans en statistieken. Pro voegt de business-toolkit toe: je eigen domein, API-toegang en bulkimport. Altijd opzegbaar.",
+		"subtitle": "Het Free-abonnement blijft voor altijd gratis – onbeperkte QR-codes en scans, met scanstatistieken. Pro voegt de business-toolkit toe: gedetailleerde analyses, je eigen domein, API-toegang en bulkimport. Altijd opzegbaar.",
 		"annual": "Jaarlijks",
 		"monthly": "Maandelijks",
 		"perMonth": "maand",
@@ -1528,11 +1533,11 @@
 		"subscriptionSuccess": "Succesvol geabonneerd op Pro!",
 		"free": {
 			"name": "Gratis",
-			"description": "Volledig gratis. Toegang tot alle essentiële QR-codefuncties zonder limieten of betaalmuren."
+			"description": "Volledig gratis. Alle essentiële QR-codefuncties, zonder limieten op codes of scans."
 		},
 		"pro": {
 			"name": "Pro",
-			"description": "Gemaakt voor zakelijk gebruik: je eigen domein op elke korte link, REST API-automatisering, bulkimport en analytics-integraties."
+			"description": "Gemaakt voor zakelijk gebruik: gedetailleerde analyses, je eigen domein op elke korte link, REST API-automatisering, bulkimport en analytics-integraties."
 		},
 		"features": {
 			"free": {
@@ -1540,13 +1545,14 @@
 				"unlimitedShortUrls": "Onbeperkte korte URL's",
 				"staticDynamic": "Statische & dynamische QR-codes",
 				"customStyling": "Aangepaste stijlen & pictogrammen",
-				"detailedAnalytics": "Gedetailleerde analyses",
+				"basicAnalytics": "Scanstatistieken: totalen, laatste 7 dagen, topland & -apparaat",
 				"noCreditCard": "Geen creditcard vereist",
 				"unlimitedTags": "Onbeperkte tags",
 				"limitedBulk": "Beperkte bulk QR-code generatie"
 			},
 			"pro": {
 				"everythingInFree": "Alles in Gratis",
+				"detailedAnalytics": "Gedetailleerde analyses: verloop in de tijd, wereldkaart, apparaten, browsers & besturingssystemen",
 				"unlimitedTags": "Onbeperkte tags",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
 				"customDomains": "Eén eigen domein inbegrepen — voeg er altijd meer toe",
@@ -1634,8 +1640,8 @@
 				"title": "Gedetailleerde Realtime Analyse",
 				"description": "Begrijp hoe je QR-codes presteren met uitgebreide scananalyse. Zie wie scant, wanneer, waar en met welk apparaat.",
 				"bullet1": "Totaal aantal scans en unieke bezoekers bijhouden",
-				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem",
-				"bullet3": "Geografische spreiding per land"
+				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem (Pro)",
+				"bullet3": "Geografische spreiding per land (Pro)"
 			},
 			"collection": {
 				"tag": "Beheer",
@@ -1804,8 +1810,8 @@
 				"title": "Klikanalyse in Realtime",
 				"description": "Zie precies hoe je links presteren. Volg totale klikken, unieke bezoekers, geografische spreiding, apparaten en browsers — allemaal in realtime bijgewerkt.",
 				"bullet1": "Totale klikken en unieke bezoekers bijhouden",
-				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem",
-				"bullet3": "Geografische spreiding per land"
+				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem (Pro)",
+				"bullet3": "Geografische spreiding per land (Pro)"
 			},
 			"management": {
 				"title": "Georganiseerd Linkbeheer",
@@ -1926,10 +1932,10 @@
 			},
 			"analytics": {
 				"title": "Scananalyse & Tracking",
-				"description": "Elke dynamische QR-code wordt geleverd met ingebouwde analyse. Zie wie scant, wanneer, waar en met welk apparaat — allemaal in realtime vanuit je dashboard.",
+				"description": "Elke dynamische QR-code wordt geleverd met ingebouwde scanstatistieken in realtime. Met Pro zie je precies wanneer, waar en met welk apparaat er gescand wordt — allemaal vanuit je dashboard.",
 				"bullet1": "Realtime scan- en bezoekersregistratie",
-				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem",
-				"bullet3": "Geografische spreiding per land"
+				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem (Pro)",
+				"bullet3": "Geografische spreiding per land (Pro)"
 			},
 			"contentTypes": {
 				"title": "Meer dan 9 Inhoudstypen Ondersteund",
@@ -1990,7 +1996,7 @@
 		},
 		"cta": {
 			"title": "Klaar om je eerste QR-code te maken?",
-			"subtitle": "Ontwerp aangepaste QR-codes met volledige analysetracking. Voor altijd gratis, geen creditcard nodig.",
+			"subtitle": "Ontwerp aangepaste QR-codes en volg elke scan. Voor altijd gratis, geen creditcard nodig.",
 			"ctaLabel": "Maak Nu een QR Code"
 		},
 		"facts": {
@@ -2029,7 +2035,7 @@
 	},
 	"productsAnalytics": {
 		"metaTitle": "Analyse - Volg Prestaties van QR Codes & Korte URL's",
-		"metaDescription": "Volg elke scan en klik van QR-codes en korte URL's. Realtime analyse met inzichten in apparaat, browser, locatie en kanaal. Gratis analyse door QRcodly.",
+		"metaDescription": "Volg elke scan en klik van QR-codes en korte URL's. Gratis scanstatistieken voor elke dynamische code, plus gedetailleerde inzichten in apparaat, browser en locatie met Pro.",
 		"badge": "Analyse",
 		"hero": {
 			"title": "Ontdek wat je QR-codes & links echt doen.",
@@ -2067,7 +2073,7 @@
 				"title": "Realtime Prestatiestatistieken",
 				"description": "Zie je gegevens op het moment dat ze binnenkomen. Volg scans, klikken en unieke bezoekers in realtime met uitsplitsingen naar apparaat, browser en besturingssysteem.",
 				"bullet1": "Live scan- en kliktracking",
-				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem",
+				"bullet2": "Uitsplitsing naar apparaat, browser en besturingssysteem (Pro)",
 				"bullet3": "Identificatie van unieke bezoekers"
 			},
 			"channels": {
@@ -2123,8 +2129,8 @@
 			"title": "Veelgestelde Vragen",
 			"q1": "Welke analyse biedt QRcodly?",
 			"a1": "QRcodly volgt totale scans/klikken, unieke bezoekers, apparaattypen, browsers, besturingssystemen en geografische locaties voor zowel QR-codes als korte URL's — allemaal in realtime.",
-			"q2": "Is analyse inbegrepen bij het gratis abonnement?",
-			"a2": "Ja! Ingebouwde analyse is gratis inbegrepen voor alle dynamische QR-codes en korte URL's. Je krijgt realtime scan-/kliktracking, apparaatuitsplitsingen en geografische inzichten zonder kosten.",
+			"q2": "Welke analyses zijn gratis inbegrepen?",
+			"a2": "Elke dynamische QR-code en korte URL krijgt gratis scanstatistieken: totaal aantal scans of klikken, unieke bezoekers, de laatste 7 dagen en je topland en -apparaat. Pro ontgrendelt de gedetailleerde analyses: het verloop in de tijd, een wereldkaart van je publiek en uitsplitsingen naar apparaat, browser en besturingssysteem. Gegevens worden bij elk abonnement vastgelegd, dus na de upgrade zie je meteen alles, ook met terugwerkende kracht.",
 			"q3": "Kan ik Google Analytics koppelen?",
 			"a3": "Ja. Pro-abonnementgebruikers kunnen scan- en klikgegevens doorsturen naar Google Analytics 4 of Matomo. Alleen geanonimiseerde, niet-identificeerbare gegevens worden gedeeld, en de ingebouwde analyse van QRcodly blijft volledig actief.",
 			"q4": "Hoe worden geografische gegevens verzameld?",
@@ -2137,7 +2143,7 @@
 		},
 		"cta": {
 			"title": "Klaar om te zien wat je links je kunnen vertellen?",
-			"subtitle": "Volg elke scan en klik met realtime analyse. Voor altijd gratis, geen creditcard nodig.",
+			"subtitle": "Volg elke scan en klik gratis en ontgrendel gedetailleerde analyses met Pro. Geen creditcard nodig.",
 			"ctaLabel": "Begin Gratis met Tracken"
 		}
 	},
@@ -2178,13 +2184,13 @@
 				"q1": "Is de QR-codegenerator gratis?",
 				"a1": "Ja! QRcodly laat je onbeperkt statische en dynamische QR-codes gratis aanmaken. Geen verborgen kosten, geen watermerken en geen registratie vereist voor basis QR-codes.",
 				"q2": "Wat zijn dynamische QR-codes?",
-				"a2": "Dynamische QR-codes laten je de bestemmings-URL wijzigen nadat de code is afgedrukt. Ze volgen ook elke scan met gedetailleerde analyses — geen herdruk nodig wanneer de inhoud verandert.",
+				"a2": "Dynamische QR-codes laten je de bestemmings-URL wijzigen nadat de code is afgedrukt. Ze volgen ook elke scan, met gedetailleerde analyses in Pro — geen herdruk nodig wanneer de inhoud verandert.",
 				"q3": "Kan ik mijn logo toevoegen aan een QR-code?",
 				"a3": "Absoluut. Upload elk beeld als centraal logo voor je QR-code. Je kunt ook kleuren, hoekstijlen aanpassen en ontwerpen opslaan als herbruikbare sjablonen.",
 				"q4": "Welke inhoudstypen worden ondersteund?",
 				"a4": "QRcodly ondersteunt meer dan 9 inhoudstypen: URL, Tekst, WiFi, vCard (contactkaarten), E-mail, Locatie, Agenda-evenementen, EPC (betaling) en sociale media-profielen.",
 				"q5": "Kan ik QR-codescans volgen?",
-				"a5": "Ja. Elke dynamische QR-code volgt scans in realtime en toont totale scans, unieke bezoekers, apparaattypen, browsers, besturingssystemen en geografische locaties.",
+				"a5": "Ja. Elke dynamische QR-code volgt scans in realtime. Met het gratis plan zie je totale scans, unieke bezoekers, de laatste 7 dagen en het topland en -apparaat. Pro voegt het verloop in de tijd en volledige uitsplitsingen naar land, apparaattype, browser en besturingssysteem toe.",
 				"q6": "Verlopen QR-codes?",
 				"a6": "Nee. QR-codes gemaakt met QRcodly verlopen nooit. Dynamische QR-codes blijven volledig functioneel en traceerbaar zolang je account bestaat.",
 				"q7": "Kan ik QR-codes in bulk aanmaken?",
@@ -2196,7 +2202,7 @@
 			},
 			"urlShortener": {
 				"q1": "Is de URL-verkorter gratis?",
-				"a1": "Ja! De URL-verkorter van QRcodly is gratis te gebruiken. Je kunt korte URL's maken, klikken volgen en je links beheren zonder kosten. Pro-plannen ontgrendelen geavanceerde functies zoals aangepaste domeinen.",
+				"a1": "Ja! De URL-verkorter van QRcodly is gratis te gebruiken. Je kunt korte URL's maken, klikken volgen en je links beheren zonder kosten. Pro-plannen ontgrendelen geavanceerde functies zoals aangepaste domeinen en gedetailleerde analyses.",
 				"q2": "Kan ik mijn eigen domein gebruiken voor korte URL's?",
 				"a2": "Absoluut. Verbind je eigen domein om merkgebonden korte URL's te maken zoals go.jouwmerk.com/u/x7k9m. Aangepaste domeinen zijn beschikbaar bij Pro-plannen met automatische SSL-provisioning.",
 				"q3": "Hoe werkt kliktracking?",
@@ -2215,8 +2221,8 @@
 			"analytics": {
 				"q1": "Welke analyses biedt QRcodly?",
 				"a1": "QRcodly volgt totale scans/klikken, unieke bezoekers, apparaattypen, browsers, besturingssystemen en geografische locaties voor zowel QR-codes als korte URL's — allemaal in realtime.",
-				"q2": "Zijn analyses gratis inbegrepen?",
-				"a2": "Ja! Ingebouwde analyses zijn gratis inbegrepen voor alle dynamische QR-codes en korte URL's. Je krijgt realtime scan/klik-tracking, apparaatoverzichten en geografische inzichten zonder kosten.",
+				"q2": "Welke analyses zijn gratis inbegrepen?",
+				"a2": "Elke dynamische QR-code en korte URL krijgt gratis scanstatistieken: totaal aantal scans of klikken, unieke bezoekers, de laatste 7 dagen en je topland en -apparaat. Pro ontgrendelt de gedetailleerde analyses: het verloop in de tijd, een wereldkaart van je publiek en uitsplitsingen naar apparaat, browser en besturingssysteem. Gegevens worden bij elk abonnement vastgelegd, dus na de upgrade zie je meteen alles, ook met terugwerkende kracht.",
 				"q3": "Kan ik Google Analytics koppelen?",
 				"a3": "Ja. Pro-plangebruikers kunnen scan- en klikgegevens doorsturen naar Google Analytics 4 of Matomo. Alleen geanonimiseerde, niet-identificeerbare gegevens worden gedeeld, en de ingebouwde analyses van QRcodly blijven volledig actief.",
 				"q4": "Hoe worden geografische gegevens verzameld?",
@@ -2228,7 +2234,7 @@
 			},
 			"pricing": {
 				"q1": "Wat is inbegrepen in het gratis plan?",
-				"a1": "Het gratis plan omvat onbeperkte statische en dynamische QR-codes, een URL-verkorter met kliktracking, realtime analyses, aangepaste QR-codeontwerpen met logo's en QR-codesjablonen. Geen creditcard vereist.",
+				"a1": "Het gratis plan omvat onbeperkte statische en dynamische QR-codes, een URL-verkorter met kliktracking, scanstatistieken, aangepaste QR-codeontwerpen met logo's en QR-codesjablonen. Geen creditcard vereist. Gedetailleerde analyses horen bij Pro.",
 				"q2": "Hoe upgrade ik naar Pro?",
 				"a2": "Je kunt rechtstreeks vanuit je dashboard upgraden naar Pro. Ga naar de Plannen-pagina, kies je gewenste factureringscyclus en voltooi de checkout. Je Pro-functies worden direct geactiveerd.",
 				"q3": "Kan ik mijn abonnement op elk moment opzeggen?",
@@ -2304,7 +2310,7 @@
 			"a4": "Ja — link je QR-code aan je Google Bedrijf-reviewpagina of een feedbackformulier. Met een dynamische code kun je seizoensgebonden wisselen tussen je menu en reviewpagina.",
 			"viewAll": "Bekijk alle veelgestelde vragen",
 			"q5": "Wat gebeurt er met mijn gedrukte codes als ik stop met betalen?",
-			"a5": "Niets. QRcodly schakelt geen QR-codes uit als een abonnement eindigt — onbeperkte codes en scans horen bij het gratis abonnement, dus een gedrukte code blijft doorverwijzen. Alleen Pro-extra’s zoals een eigen domein en analyse-integraties worden uitgeschakeld. Dat is bewust: gedrukt materiaal mag nooit een gijzelaar zijn."
+			"a5": "Niets. QRcodly schakelt geen QR-codes uit als een abonnement eindigt — onbeperkte codes en scans horen bij het gratis abonnement, dus een gedrukte code blijft doorverwijzen. Alleen Pro-extra’s zoals een eigen domein, gedetailleerde analyses en analyse-integraties worden uitgeschakeld. Dat is bewust: gedrukt materiaal mag nooit een gijzelaar zijn."
 		},
 		"cta": {
 			"title": "Klaar om uw restaurant te moderniseren?",
@@ -2799,7 +2805,7 @@
 			"a4": "QR-codes zijn visueel, dus combineer ze met een korte URL eronder voor studenten die schermlezers gebruiken. De gelinkte pagina moet voldoen aan toegankelijkheidsrichtlijnen.",
 			"viewAll": "Bekijk alle veelgestelde vragen",
 			"q5": "Heb ik een betaald abonnement nodig om QR-codes in de klas te gebruiken?",
-			"a5": "Nee. Onbeperkte QR-codes, onbeperkte scans en de bijbehorende statistieken horen bij het gratis abonnement, zonder creditcard — precies wat telt voor een schoolbudget. Pro voegt een eigen domein, bulkimports en API-toegang toe, maar niets wat een klas nodig heeft zit daarachter."
+			"a5": "Nee. Onbeperkte QR-codes, onbeperkte scans en de bijbehorende scanstatistieken horen bij het gratis abonnement, zonder creditcard — precies wat telt voor een schoolbudget. Pro voegt gedetailleerde analyses, een eigen domein, bulkimports en API-toegang toe, maar niets wat een klas nodig heeft zit daarachter."
 		},
 		"cta": {
 			"title": "Breng QR-codes naar uw klaslokaal",
@@ -3017,7 +3023,7 @@
 				"description": "Bekijk hoe uw links presteren over kanalen. Volg klikken, geografische gegevens en apparaattypen voor elke korte link.",
 				"bullet1": "Realtime kliktracking voor elke link",
 				"bullet2": "Filter analyses op datumbereik",
-				"bullet3": "Bekijk geografische en apparaatgegevens"
+				"bullet3": "Bekijk geografische en apparaatgegevens (Pro)"
 			}
 		},
 		"relatedUseCases": {
@@ -3142,7 +3148,7 @@
 				"description": "Bekijk hoeveel klikken elke link krijgt. Vergelijk prestaties tussen platforms en berichten om te begrijpen wat uw publiek interesseert.",
 				"bullet1": "Realtime kliktracking voor elke link",
 				"bullet2": "Bekijk welke platforms het meeste verkeer genereren",
-				"bullet3": "Begrijp uw publiek met apparaatgegevens"
+				"bullet3": "Begrijp uw publiek met apparaatgegevens (Pro)"
 			},
 			"feature3": {
 				"title": "Dynamische links die u kunt bijwerken",
@@ -3285,7 +3291,7 @@
 				"title": "Meet outreachprestaties",
 				"description": "Vergelijk klikpercentages over campagnes en kanalen. Begrijp welke berichten en inhoud de meeste betrokkenheid genereren.",
 				"bullet1": "Vergelijk klikken over campagnes en kanalen",
-				"bullet2": "Bekijk geografische en apparaatgegevens",
+				"bullet2": "Bekijk geografische en apparaatgegevens (Pro)",
 				"bullet3": "Identificeer welke inhoud aanslaat bij prospects"
 			}
 		},
@@ -3420,7 +3426,7 @@
 				"description": "Bekijk welke kanalen het meeste verkeer naar uw producten sturen. Vergelijk klikprestaties over e-mail, social media, advertenties en meer.",
 				"bullet1": "Aparte links per kanaal voor duidelijke attributie",
 				"bullet2": "Realtime kliktracking en rapportage",
-				"bullet3": "Geografische en apparaatgegevens"
+				"bullet3": "Geografische en apparaatgegevens (Pro)"
 			}
 		},
 		"relatedUseCases": {
@@ -3690,7 +3696,7 @@
 				"description": "Volg klikprestaties voor elke link. Bespreek analysegegevens met klanten en toon campagneresultaten.",
 				"bullet1": "Kliktracking voor elke aangemaakte link",
 				"bullet2": "Analyses per link die u met klanten kunt bespreken",
-				"bullet3": "Geografische en apparaatgegevens"
+				"bullet3": "Geografische en apparaatgegevens (Pro)"
 			},
 			"feature3": {
 				"title": "Georganiseerd linkbeheer",

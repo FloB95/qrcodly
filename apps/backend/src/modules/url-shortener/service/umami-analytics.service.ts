@@ -2,7 +2,12 @@ import { inject, singleton } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { env } from '@/core/config/env';
 import QueryString from 'qs';
-import { TAnalyticsMetric, TAnalyticsResponseDto, TTimeSeries } from '@shared/schemas';
+import {
+	TAnalyticsMetric,
+	TAnalyticsResponseDto,
+	TAnalyticsTopEntry,
+	TTimeSeries,
+} from '@shared/schemas';
 import { BROWSERS, DEVICES } from '../config/constants';
 import { trackExternal, umamiEventsTotal } from '@/core/metrics';
 
@@ -10,6 +15,24 @@ const UMAMI_SEND_TIMEOUT_MS = 5_000;
 const UMAMI_ERROR_BODY_LIMIT = 500;
 
 export type UmamiSendOutcome = 'accepted' | 'discarded' | 'rejected' | 'error';
+
+/**
+ * Umami labels hourly buckets in Europe/Berlin time without an offset. The container runs with
+ * TZ=Europe/Berlin, so `new Date(label)` reads them the way the dashboard always has.
+ */
+function sumSince(series: TTimeSeries[], cutoff: Date): number {
+	return series
+		.filter((item) => new Date(item.date) >= cutoff)
+		.reduce((acc, item) => acc + item.value, 0);
+}
+
+function findTopEntry(metrics: TAnalyticsMetric[]): TAnalyticsTopEntry | null {
+	const [top] = [...metrics].sort((a, b) => b.count - a.count);
+	if (!top) return null;
+
+	const total = metrics.reduce((sum, item) => sum + item.count, 0);
+	return { label: top.label, share: total > 0 ? Math.round((top.count / total) * 100) : 0 };
+}
 
 @singleton()
 export class UmamiAnalyticsService {
@@ -248,7 +271,14 @@ export class UmamiAnalyticsService {
 		return websiteStats?.pageviews ?? 0;
 	}
 
-	public async getAnalyticsForEndpoint(url: string): Promise<TAnalyticsResponseDto> {
+	/**
+	 * Without `includeDetails` only the headline figures leave this service: the breakdowns and
+	 * the time series they are derived from are Pro-only and must not reach the client at all.
+	 */
+	public async getAnalyticsForEndpoint(
+		url: string,
+		{ includeDetails }: { includeDetails: boolean },
+	): Promise<TAnalyticsResponseDto> {
 		const now = Date.now();
 		const defaultParams = {
 			startAt: new Date('2025-01-01T00:00:00Z').getTime(), // old start date to get all data
@@ -272,22 +302,26 @@ export class UmamiAnalyticsService {
 			}),
 		);
 
-		const browserMetrics = this.mapMetrics(
-			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
-				...defaultParams,
-				type: 'browser',
-			}),
-		).map((metric) => ({
-			...metric,
-			label: BROWSERS[metric.label as keyof typeof BROWSERS] || metric.label,
-		}));
+		const browserMetrics = includeDetails
+			? this.mapMetrics(
+					await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
+						...defaultParams,
+						type: 'browser',
+					}),
+				).map((metric) => ({
+					...metric,
+					label: BROWSERS[metric.label as keyof typeof BROWSERS] || metric.label,
+				}))
+			: null;
 
-		const osMetrics = this.mapMetrics(
-			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
-				...defaultParams,
-				type: 'os',
-			}),
-		);
+		const osMetrics = includeDetails
+			? this.mapMetrics(
+					await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
+						...defaultParams,
+						type: 'os',
+					}),
+				)
+			: null;
 
 		const deviceMetrics = this.mapMetrics(
 			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
@@ -306,13 +340,23 @@ export class UmamiAnalyticsService {
 			}),
 		);
 
+		const oneWeekAgo = new Date(now);
+		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
 		return {
 			shortUrlStats: websiteStats,
-			viewsAndSessions,
+			summary: {
+				pageviewsLast7Days: sumSince(viewsAndSessions.pageviews, oneWeekAgo),
+				visitorsLast7Days: sumSince(viewsAndSessions.sessions, oneWeekAgo),
+				topCountry: findTopEntry(countryMetrics),
+				topDevice: findTopEntry(deviceMetrics),
+			},
+			detailsLocked: !includeDetails,
+			viewsAndSessions: includeDetails ? viewsAndSessions : null,
 			browserMetrics,
 			osMetrics,
-			deviceMetrics,
-			countryMetrics,
+			deviceMetrics: includeDetails ? deviceMetrics : null,
+			countryMetrics: includeDetails ? countryMetrics : null,
 		};
 	}
 }
