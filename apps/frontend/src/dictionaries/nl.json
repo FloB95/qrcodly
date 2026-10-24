@@ -1508,6 +1508,11 @@
 					"name": "Adobe InDesign",
 					"description": "Plaats QR-codes direct in je InDesign-ontwerpen, maak nieuwe aan en beheer bestaande — allemaal zonder InDesign te verlaten.",
 					"cta": "Plugin installeren"
+				},
+				"figma": {
+					"name": "Figma",
+					"description": "Blader door, maak en plaats je QR-codes direct op het Figma-canvas — als scherpe vectoren die bij je ontwerpen passen.",
+					"cta": "Plugin installeren"
 				}
 			},
 			"moreIntegrationsTeaser": "Meer integraties zijn onderweg. <contact>Stel een integratie voor</contact>"
