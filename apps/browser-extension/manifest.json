@@ -1,19 +1,12 @@
 {
 	"manifest_version": 3,
 	"name": "QRcodly",
-	"version": "1.0.1",
 	"description": "Generate and save QR codes directly from your browser",
 	"action": {
 		"default_popup": "index.html",
 		"default_icon": { "48": "icon-48.png", "128": "icon-128.png" }
 	},
-	"permissions": ["tabs", "storage", "cookies"],
-	"host_permissions": [
-		"https://api.qrcodly.de/*",
-		"https://clerk.qrcodly.de/*",
-		"https://accounts.qrcodly.de/*",
-		"https://www.qrcodly.de/*",
-		"https://s3.fr-par.scw.cloud/*"
-	],
+	"permissions": ["activeTab", "storage", "cookies"],
+	"host_permissions": ["https://api.qrcodly.de/*", "https://clerk.qrcodly.de/*"],
 	"icons": { "48": "icon-48.png", "128": "icon-128.png" }
 }
