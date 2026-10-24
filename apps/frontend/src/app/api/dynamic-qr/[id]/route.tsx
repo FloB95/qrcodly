@@ -6,10 +6,12 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 	try {
 		const response = await fetch(`${serverApiUrl()}/qr-code/${id}/download`, {
 			method: 'GET',
+			signal: AbortSignal.timeout(5000),
 		});
 
 		if (!response.ok) {
-			if (response.status === 404) {
+			// Permanent answers stay "not found"; only outages (5xx, 429) fall through to the retry page
+			if (response.status < 500 && response.status !== 429) {
 				return new Response('QR code not found', { status: 404 });
 			}
 			throw new Error(`Failed to download QR code content: ${response.statusText}`);
@@ -30,6 +32,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 		console.error('Error downloading QR code content:', err, {
 			qrCodeId: id,
 		});
-		return new Response('QR code not found', { status: 404 });
+		// Backend briefly unreachable: the scanned vCard/event code itself is fine
+		return new Response('Please scan again in a few seconds.', {
+			status: 503,
+			headers: { 'Retry-After': '5', 'Cache-Control': 'no-store' },
+		});
 	}
 }
