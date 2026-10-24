@@ -364,7 +364,9 @@ describe('UmamiAnalyticsService', () => {
 				});
 			});
 
-			const analytics = await service.getAnalyticsForEndpoint('/test-url');
+			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
+				includeDetails: true,
+			});
 
 			expect(analytics.shortUrlStats).toBeDefined();
 			expect(analytics.viewsAndSessions).toBeDefined();
@@ -395,11 +397,13 @@ describe('UmamiAnalyticsService', () => {
 				});
 			});
 
-			const analytics = await service.getAnalyticsForEndpoint('/test-url');
+			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
+				includeDetails: true,
+			});
 
 			expect(analytics.browserMetrics).toHaveLength(2);
-			expect(analytics.browserMetrics[0]).toHaveProperty('label');
-			expect(analytics.browserMetrics[0]).toHaveProperty('count');
+			expect(analytics.browserMetrics![0]).toHaveProperty('label');
+			expect(analytics.browserMetrics![0]).toHaveProperty('count');
 		});
 
 		it('should map sessions and pageviews with mapSessionsAndPageviews()', async () => {
@@ -429,11 +433,13 @@ describe('UmamiAnalyticsService', () => {
 				});
 			});
 
-			const analytics = await service.getAnalyticsForEndpoint('/test-url');
+			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
+				includeDetails: true,
+			});
 
-			expect(analytics.viewsAndSessions.pageviews).toHaveLength(2);
-			expect(analytics.viewsAndSessions.sessions).toHaveLength(2);
-			expect(analytics.viewsAndSessions.pageviews[0]).toEqual({
+			expect(analytics.viewsAndSessions!.pageviews).toHaveLength(2);
+			expect(analytics.viewsAndSessions!.sessions).toHaveLength(2);
+			expect(analytics.viewsAndSessions!.pageviews[0]).toEqual({
 				date: '2025-01-01',
 				value: 10,
 			});
@@ -461,11 +467,148 @@ describe('UmamiAnalyticsService', () => {
 				});
 			});
 
-			const analytics = await service.getAnalyticsForEndpoint('/test-url');
+			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
+				includeDetails: true,
+			});
 
 			// Should only have the valid metric
 			expect(analytics.browserMetrics).toHaveLength(1);
-			expect(analytics.browserMetrics[0].label).toBe('Chrome');
+			expect(analytics.browserMetrics![0].label).toBe('Chrome');
+		});
+
+		const mockDataResponses = (responses: unknown[]) => {
+			responses.forEach((response) => {
+				mockFetch.mockResolvedValueOnce({
+					ok: true,
+					status: 200,
+					json: async () => response,
+				});
+			});
+		};
+
+		const hoursAgoLabel = (hours: number) => {
+			const date = new Date(Date.now() - hours * 60 * 60 * 1000);
+			const pad = (value: number) => String(value).padStart(2, '0');
+			return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:00:00`;
+		};
+
+		it('should not fetch browser or os metrics without details', async () => {
+			mockDataResponses([
+				{ pageviews: 100, visitors: 50, visits: 75, bounces: 10, totaltime: 5000 },
+				{ pageviews: [], sessions: [] },
+				[{ x: 'mobile', y: 60 }],
+				[{ x: 'DE', y: 70 }],
+			]);
+
+			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
+				includeDetails: false,
+			});
+
+			const metricTypes = mockFetch.mock.calls
+				.map((call) => new URL(call[0] as string).searchParams.get('type'))
+				.filter(Boolean);
+			expect(metricTypes).toEqual(['device', 'country']);
+
+			expect(analytics.detailsLocked).toBe(true);
+			expect(analytics.viewsAndSessions).toBeNull();
+			expect(analytics.browserMetrics).toBeNull();
+			expect(analytics.osMetrics).toBeNull();
+			expect(analytics.deviceMetrics).toBeNull();
+			expect(analytics.countryMetrics).toBeNull();
+			expect(analytics.shortUrlStats.pageviews).toBe(100);
+			expect(analytics.summary.topCountry).toEqual({ label: 'DE', share: 100 });
+			expect(analytics.summary.topDevice).toEqual({ label: 'Mobile', share: 100 });
+		});
+
+		it('should return the details alongside the summary when included', async () => {
+			mockDataResponses([
+				{ pageviews: 100, visitors: 50, visits: 75, bounces: 10, totaltime: 5000 },
+				{ pageviews: [], sessions: [] },
+				[{ x: 'chrome', y: 50 }],
+				[{ x: 'windows', y: 40 }],
+				[{ x: 'mobile', y: 60 }],
+				[{ x: 'DE', y: 70 }],
+			]);
+
+			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
+				includeDetails: true,
+			});
+
+			expect(analytics.detailsLocked).toBe(false);
+			expect(analytics.browserMetrics).toEqual([{ label: 'Chrome', count: 50 }]);
+			expect(analytics.osMetrics).toEqual([{ label: 'windows', count: 40 }]);
+			expect(analytics.deviceMetrics).toEqual([{ label: 'Mobile', count: 60 }]);
+			expect(analytics.countryMetrics).toEqual([{ label: 'DE', count: 70 }]);
+			expect(analytics.summary.topCountry).toEqual({ label: 'DE', share: 100 });
+		});
+
+		it('should sum only the hourly buckets of the last 7 days', async () => {
+			mockDataResponses([
+				{ pageviews: 100, visitors: 50, visits: 75, bounces: 10, totaltime: 5000 },
+				{
+					pageviews: [
+						{ x: hoursAgoLabel(10 * 24), y: 40 },
+						{ x: hoursAgoLabel(3 * 24), y: 5 },
+						{ x: hoursAgoLabel(2), y: 7 },
+					],
+					sessions: [
+						{ x: hoursAgoLabel(10 * 24), y: 20 },
+						{ x: hoursAgoLabel(3 * 24), y: 2 },
+						{ x: hoursAgoLabel(2), y: 3 },
+					],
+				},
+				[],
+				[],
+			]);
+
+			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
+				includeDetails: false,
+			});
+
+			expect(analytics.summary.pageviewsLast7Days).toBe(12);
+			expect(analytics.summary.visitorsLast7Days).toBe(5);
+		});
+
+		it('should pick the largest country and device with their rounded share', async () => {
+			mockDataResponses([
+				{ pageviews: 3, visitors: 3, visits: 3, bounces: 0, totaltime: 0 },
+				{ pageviews: [], sessions: [] },
+				[
+					{ x: 'desktop', y: 1 },
+					{ x: 'mobile', y: 2 },
+				],
+				[
+					{ x: 'AT', y: 1 },
+					{ x: 'DE', y: 2 },
+				],
+			]);
+
+			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
+				includeDetails: false,
+			});
+
+			expect(analytics.summary.topCountry).toEqual({ label: 'DE', share: 67 });
+			expect(analytics.summary.topDevice).toEqual({ label: 'Mobile', share: 67 });
+		});
+
+		it('should report no top country or device when nothing was tracked', async () => {
+			mockDataResponses([
+				{ pageviews: 0, visitors: 0, visits: 0, bounces: 0, totaltime: 0 },
+				{ pageviews: [], sessions: [] },
+				[],
+				[],
+			]);
+
+			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
+				includeDetails: false,
+			});
+
+			expect(analytics.summary).toEqual({
+				pageviewsLast7Days: 0,
+				visitorsLast7Days: 0,
+				topCountry: null,
+				topDevice: null,
+			});
 		});
 
 		it('should throw error when auth request fails', async () => {
@@ -475,7 +618,9 @@ describe('UmamiAnalyticsService', () => {
 				text: () => Promise.resolve('Unauthorized'),
 			});
 
-			await expect(service.getAnalyticsForEndpoint('/test-url')).rejects.toThrow();
+			await expect(
+				service.getAnalyticsForEndpoint('/test-url', { includeDetails: true }),
+			).rejects.toThrow();
 		});
 
 		it('should log errors with status code and body', async () => {
@@ -491,7 +636,9 @@ describe('UmamiAnalyticsService', () => {
 					text: () => Promise.resolve('Internal Server Error'),
 				});
 
-			await expect(service.getAnalyticsForEndpoint('/test-url')).rejects.toThrow();
+			await expect(
+				service.getAnalyticsForEndpoint('/test-url', { includeDetails: true }),
+			).rejects.toThrow();
 
 			expect(mockLogger.error).toHaveBeenCalledWith(
 				'error.umamiApi.fetchData',
@@ -514,9 +661,9 @@ describe('UmamiAnalyticsService', () => {
 					text: () => Promise.resolve('Not Found'),
 				});
 
-			await expect(service.getAnalyticsForEndpoint('/test-url')).rejects.toThrow(
-				'Failed to fetch data from Umami',
-			);
+			await expect(
+				service.getAnalyticsForEndpoint('/test-url', { includeDetails: true }),
+			).rejects.toThrow('Failed to fetch data from Umami');
 		});
 
 		it('should handle network errors gracefully', async () => {
@@ -528,7 +675,9 @@ describe('UmamiAnalyticsService', () => {
 				})
 				.mockRejectedValueOnce(new Error('Network error'));
 
-			await expect(service.getAnalyticsForEndpoint('/test-url')).rejects.toThrow('Network error');
+			await expect(
+				service.getAnalyticsForEndpoint('/test-url', { includeDetails: true }),
+			).rejects.toThrow('Network error');
 
 			expect(mockLogger.error).toHaveBeenCalledWith(
 				'error.umamiApi.fetchData',
@@ -571,7 +720,7 @@ describe('UmamiAnalyticsService', () => {
 					json: async () => [],
 				});
 
-			await service.getAnalyticsForEndpoint('/test-url');
+			await service.getAnalyticsForEndpoint('/test-url', { includeDetails: true });
 
 			// Check that all data fetch calls include Authorization header
 			const dataFetchCalls = mockFetch.mock.calls.filter(

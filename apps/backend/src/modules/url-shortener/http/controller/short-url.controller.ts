@@ -52,6 +52,7 @@ import { ShortUrlBlockedError } from '../../error/http/short-url-blocked.error';
 import UrlSafetyIncidentRepository from '../../domain/repository/url-safety-incident.repository';
 import UserSafetyStandingRepository from '../../domain/repository/user-safety-standing.repository';
 import { daysAgo } from '@/core/utils/date';
+import { PlanName } from '@/core/config/plan.config';
 import {
 	URL_SAFETY_HOT_SHORT_CODE_LIMIT,
 	URL_SAFETY_OFFENCE_WINDOW_DAYS,
@@ -509,8 +510,10 @@ export class ShortUrlController extends AbstractController {
 			tags: ['Analytics'],
 			summary: 'Get analytics for a short URL',
 			description:
-				'Returns detailed analytics for a short URL: pageviews, unique visitors, sessions, bounce rate, ' +
-				'time-series data, and breakdowns by browser, operating system, device type, and country. ' +
+				'Returns analytics for a short URL. Every plan gets the aggregate statistics and a summary ' +
+				'(last 7 days, top country, top device). The time-series data and the breakdowns by ' +
+				'browser, operating system, device type and country require the Pro plan; without it ' +
+				'they are null and `detailsLocked` is true. ' +
 				'Only the owner can access analytics for their short URLs.',
 			operationId: 'short-url/get-analytics',
 			params: {
@@ -527,6 +530,7 @@ export class ShortUrlController extends AbstractController {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
 		const analyticsData = await this.umamiAnalyticsService.getAnalyticsForEndpoint(
 			`/u/${shortUrl.shortCode}`,
+			{ includeDetails: request.user.plan === PlanName.PRO },
 		);
 
 		return this.makeApiHttpResponse(200, AnalyticsResponseDto.parse(analyticsData));

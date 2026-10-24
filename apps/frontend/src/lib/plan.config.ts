@@ -29,7 +29,7 @@ export const PLAN_CONFIGS: Record<PlanId, PlanConfig> = {
 			'features.free.unlimitedTags',
 			'features.free.staticDynamic',
 			'features.free.customStyling',
-			'features.free.detailedAnalytics',
+			'features.free.basicAnalytics',
 			'features.free.noCreditCard',
 			'features.free.limitedBulk',
 		],
@@ -40,6 +40,7 @@ export const PLAN_CONFIGS: Record<PlanId, PlanConfig> = {
 		name: 'Pro',
 		featureKeys: [
 			'features.pro.everythingInFree',
+			'features.pro.detailedAnalytics',
 			'features.pro.customDomains',
 			'features.pro.customShortCodes',
 			'features.pro.largerBulkImports',

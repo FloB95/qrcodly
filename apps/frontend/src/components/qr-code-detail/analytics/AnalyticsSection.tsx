@@ -5,11 +5,8 @@ import { useLocale, useTranslations } from 'next-intl';
 import { getName } from 'i18n-iso-countries';
 import { useMemo } from 'react';
 import { AnalyticsSummaryCards } from './AnalyticsSummaryCards';
-import { AnalyticsTimeChart } from './AnalyticsTimeChart';
-import { AnalyticsDeviceChart } from './AnalyticsDeviceChart';
-import { AnalyticsBrowserChart } from './AnalyticsBrowserChart';
-import { AnalyticsCountryChart } from './AnalyticsCountryChart';
-import { AnalyticsOsChart } from './AnalyticsOsChart';
+import { AnalyticsDetails } from './AnalyticsDetails';
+import { LockedAnalyticsDetails } from './LockedAnalyticsDetails';
 import { AnalyticsSectionSkeleton } from './AnalyticsSectionSkeleton';
 
 function aggregateHourlyToDaily(
@@ -41,14 +38,6 @@ function aggregateHourlyToDaily(
 		}));
 }
 
-function getLast7DaysSum(series: { date: string; value: number }[]) {
-	const oneWeekAgo = new Date();
-	oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-	return series
-		.filter((item) => new Date(item.date) >= oneWeekAgo)
-		.reduce((acc, item) => acc + item.value, 0);
-}
-
 export type AnalyticsVariant = 'scan' | 'click';
 
 export const AnalyticsSection = ({
@@ -65,59 +54,38 @@ export const AnalyticsSection = ({
 	const derived = useMemo(() => {
 		if (!data) return null;
 
-		const { viewsAndSessions, browserMetrics, deviceMetrics, countryMetrics, osMetrics } = data;
-
-		const dailyData = aggregateHourlyToDaily(viewsAndSessions.pageviews, viewsAndSessions.sessions);
-
-		const scansLast7Days = getLast7DaysSum(viewsAndSessions.pageviews);
-		const visitorsLast7Days = getLast7DaysSum(viewsAndSessions.sessions);
-
-		const resolvedCountryMetrics = (countryMetrics ?? []).map((item) => ({
-			...item,
-			code: item.label.toUpperCase(),
-			label: getName(item.label.toLowerCase(), locale) ?? item.label,
-		}));
-
 		const unknownLabel = t('analytics.unknownLabel');
-		const replaceEmpty = (items: { label: string; count: number }[]) =>
-			items.map((item) => ({
-				...item,
-				label: item.label.trim() === '' ? unknownLabel : item.label,
-			}));
-
-		const processedCountryMetrics = resolvedCountryMetrics.map((item) => ({
+		const withFallbackLabel = <T extends { label: string }>(item: T): T => ({
 			...item,
 			label: item.label.trim() === '' ? unknownLabel : item.label,
-		}));
-		const processedDeviceMetrics = replaceEmpty(deviceMetrics ?? []);
+		});
+		const countryName = (code: string) => getName(code.toLowerCase(), locale) ?? code;
 
-		const sortedCountries = [...processedCountryMetrics].sort((a, b) => b.count - a.count);
-		const countryTotal = processedCountryMetrics.reduce((sum, item) => sum + item.count, 0);
-
-		const sortedDevices = [...processedDeviceMetrics].sort((a, b) => b.count - a.count);
-		const deviceTotal = processedDeviceMetrics.reduce((sum, item) => sum + item.count, 0);
+		const { topCountry, topDevice } = data.summary;
 
 		return {
-			dailyData,
-			scansLast7Days,
-			visitorsLast7Days,
-			browserMetrics: replaceEmpty(browserMetrics ?? []),
-			deviceMetrics: processedDeviceMetrics,
-			countryMetrics: processedCountryMetrics,
-			osMetrics: replaceEmpty(osMetrics ?? []),
-			topCountry: sortedCountries[0]
-				? {
-						label: sortedCountries[0].label,
-						share:
-							countryTotal > 0 ? Math.round((sortedCountries[0].count / countryTotal) * 100) : 0,
-					}
+			topCountry: topCountry
+				? withFallbackLabel({ ...topCountry, label: countryName(topCountry.label) })
 				: null,
-			topDevice: sortedDevices[0]
-				? {
-						label: sortedDevices[0].label,
-						share: deviceTotal > 0 ? Math.round((sortedDevices[0].count / deviceTotal) * 100) : 0,
-					}
-				: null,
+			topDevice: topDevice ? withFallbackLabel(topDevice) : null,
+			details: data.detailsLocked
+				? null
+				: {
+						dailyData: aggregateHourlyToDaily(
+							data.viewsAndSessions?.pageviews ?? [],
+							data.viewsAndSessions?.sessions ?? [],
+						),
+						countryMetrics: (data.countryMetrics ?? []).map((item) =>
+							withFallbackLabel({
+								...item,
+								code: item.label.toUpperCase(),
+								label: countryName(item.label),
+							}),
+						),
+						deviceMetrics: (data.deviceMetrics ?? []).map(withFallbackLabel),
+						browserMetrics: (data.browserMetrics ?? []).map(withFallbackLabel),
+						osMetrics: (data.osMetrics ?? []).map(withFallbackLabel),
+					},
 		};
 	}, [data, locale, t]);
 
@@ -130,26 +98,18 @@ export const AnalyticsSection = ({
 			<AnalyticsSummaryCards
 				totalScans={data.shortUrlStats.pageviews}
 				totalVisitors={data.shortUrlStats.visitors}
-				scansLast7Days={derived.scansLast7Days}
-				visitorsLast7Days={derived.visitorsLast7Days}
+				scansLast7Days={data.summary.pageviewsLast7Days}
+				visitorsLast7Days={data.summary.visitorsLast7Days}
 				topCountry={derived.topCountry}
 				topDevice={derived.topDevice}
 				variant={variant}
 			/>
 
-			<AnalyticsTimeChart data={derived.dailyData} locale={locale} variant={variant} />
-
-			<div className="grid grid-cols-1 lg:grid-cols-2 items-stretch gap-5 py-4">
-				<AnalyticsCountryChart data={derived.countryMetrics} />
-				<div className="flex flex-col gap-5">
-					<AnalyticsDeviceChart data={derived.deviceMetrics} />
-					<AnalyticsBrowserChart data={derived.browserMetrics} />
-				</div>
-			</div>
-
-			<div className="pb-4">
-				<AnalyticsOsChart data={derived.osMetrics} />
-			</div>
+			{derived.details ? (
+				<AnalyticsDetails data={derived.details} locale={locale} variant={variant} />
+			) : (
+				<LockedAnalyticsDetails locale={locale} variant={variant} />
+			)}
 		</>
 	);
 };

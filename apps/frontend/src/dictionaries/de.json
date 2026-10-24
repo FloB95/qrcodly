@@ -246,7 +246,12 @@
 		"topCountry": "Top-Land",
 		"topDevice": "Top-Gerät",
 		"topBrowser": "Top-Browser",
-		"ofTraffic": "{pct}% des Traffics"
+		"ofTraffic": "{pct}% des Traffics",
+		"locked": {
+			"title": "Detaillierte Analysen gibt es mit Pro",
+			"description": "Verlauf über die Zeit, Weltkarte deiner Besucher und Aufschlüsselung nach Gerät, Browser und Betriebssystem. Deine Daten werden bereits erfasst – nach dem Upgrade siehst du sofort alles.",
+			"cta": "Auf Pro upgraden"
+		}
 	},
 	"chart": {
 		"title": {
@@ -969,7 +974,7 @@
 		"question2": "Wie erstelle ich einen QR Code?",
 		"answer2": "Mit qrcodly.de gestaltest du deinen individuellen QR Code im Handumdrehen: Gib einfach den gewünschten Inhalt ein und lade deinen fertig generierten Code direkt herunter. Schnell und unkompliziert!",
 		"question3": "Was ist der Unterschied zwischen statischen und dynamischen QR Codes?",
-		"answer3": "Statische QR Codes enthalten fest hinterlegte Informationen, die nach der Erstellung nicht mehr veränderbar sind. Dynamische QR Codes bieten hingegen maximale Flexibilität: Du kannst den verlinkten Inhalt jederzeit nachträglich anpassen und profitierst zusätzlich von erweiterten Funktionen wie detaillierten Scan-Statistiken.",
+		"answer3": "Statische QR Codes enthalten fest hinterlegte Informationen, die nach der Erstellung nicht mehr veränderbar sind. Dynamische QR Codes bieten hingegen maximale Flexibilität: Du kannst den verlinkten Inhalt jederzeit nachträglich anpassen und profitierst zusätzlich von Scan-Statistiken, mit detaillierten Analysen im Pro-Plan.",
 		"question4": "Ist die Erstellung von QR Codes kostenlos?",
 		"answer4": "Ja, die Erstellung von statischen und dynamischen QR Codes ist und bleibt für immer kostenlos und unbegrenzt. Zukünftig wird es Einschränkungen für API-Anfragen und für Unternehmen mit mehreren Benutzern geben.",
 		"question5": "Wie lange ist ein QR Code gültig?",
@@ -979,7 +984,7 @@
 		"question7": "Benötige ich eine spezielle App zum Scannen von QR Codes?",
 		"answer7": "Nein, das ist in den meisten Fällen nicht nötig! Die integrierte Kamerafunktion moderner Smartphones ist heute in der Lage, QR Codes direkt zu erkennen und den hinterlegten Inhalt zu öffnen – ganz ohne zusätzliche App.",
 		"question8": "Welche Statistiken werden bei dynamischen QR Codes erfasst?",
-		"answer8": "Wenn du Statistiken aktivierst, werden bei jedem Scan deines dynamischen QR Codes Informationen wie Anzahl der Scans, Besucher, verwendete Geräte, Länder, Browser und Betriebssysteme erfasst und ausgewertet.",
+		"answer8": "Wenn du Statistiken aktivierst, werden bei jedem Scan deines dynamischen QR Codes Informationen wie Anzahl der Scans, Besucher, verwendete Geräte, Länder, Browser und Betriebssysteme erfasst und ausgewertet. Im kostenlosen Plan siehst du Gesamtzahlen, die letzten 7 Tage sowie Top-Land und Top-Gerät; Pro schaltet die vollständige Aufschlüsselung frei.",
 		"question9": "Kann ich einen QR Code mit meinem Logo personalisieren?",
 		"answer9": "Ja, mit qrcodly.de gestaltest du deine QR Codes ganz nach deinen Wünschen: Integriere dein Logo und nutze deine Markenfarben, ohne die Scanbarkeit zu beeinträchtigen. So bleiben deine Codes einzigartig und professionell!",
 		"question10": "Funktionieren QR Codes auch im Druck?",
@@ -1515,9 +1520,9 @@
 	},
 	"plans": {
 		"metaTitle": "QR Code Generator Preise – Kostenlos & Pro",
-		"metaDescription": "Kostenloser QR Code Generator mit unbegrenzten Codes, individuellem Design & Analysen. Pro für eigene Domains, Massenimport & Priority-Support. Keine versteckten Kosten.",
+		"metaDescription": "Kostenloser QR Code Generator mit unbegrenzten Codes, individuellem Design & Scan-Statistiken. Pro für detaillierte Analysen, eigene Domains, Massenimport & Priority-Support. Keine versteckten Kosten.",
 		"title": "Fair. Transparent. Ohne versteckte Kosten.",
-		"subtitle": "Der Free-Plan bleibt für immer kostenlos – unbegrenzte QR-Codes, Scans und Statistiken. Pro ergänzt das Business-Paket: eigene Domain, API-Zugang und Bulk-Workflows. Jederzeit kündbar.",
+		"subtitle": "Der Free-Plan bleibt für immer kostenlos – unbegrenzte QR-Codes, Scans und Scan-Statistiken. Pro ergänzt das Business-Paket: detaillierte Analysen, eigene Domain, API-Zugang und Bulk-Workflows. Jederzeit kündbar.",
 		"annual": "Jährlich",
 		"monthly": "Monatlich",
 		"perMonth": "Monat",
@@ -1528,11 +1533,11 @@
 		"subscriptionSuccess": "Erfolgreich Pro abonniert!",
 		"free": {
 			"name": "Free",
-			"description": "Komplett kostenlos. Zugang zu allen wesentlichen QR Code-Funktionen ohne Limits oder Paywalls."
+			"description": "Komplett kostenlos. Alle wesentlichen QR Code-Funktionen, ohne Limits bei Codes und Scans."
 		},
 		"pro": {
 			"name": "Pro",
-			"description": "Für den Business-Einsatz: eigene Domain auf jedem Kurzlink, REST-API-Automatisierung, Bulk-Importe und Analytics-Integrationen."
+			"description": "Für den Business-Einsatz: detaillierte Analysen, eigene Domain auf jedem Kurzlink, REST-API-Automatisierung, Bulk-Importe und Analytics-Integrationen."
 		},
 		"features": {
 			"free": {
@@ -1540,13 +1545,14 @@
 				"unlimitedShortUrls": "Unbegrenzte Kurzlinks",
 				"staticDynamic": "Statische & dynamische QR Codes",
 				"customStyling": "Individuelle Styles & Icons",
-				"detailedAnalytics": "Detaillierte Analysen",
+				"basicAnalytics": "Scan-Statistiken: Gesamtzahlen, letzte 7 Tage, Top-Land & -Gerät",
 				"noCreditCard": "Keine Kreditkarte erforderlich",
 				"unlimitedTags": "Unbegrenzte Tags",
 				"limitedBulk": "Eingeschränkte Massen-QR Code-Erstellung"
 			},
 			"pro": {
 				"everythingInFree": "Alles aus Free",
+				"detailedAnalytics": "Detaillierte Analysen: Verlauf, Weltkarte, Geräte, Browser & Betriebssysteme",
 				"unlimitedTags": "Unbegrenzte Tags",
 				"largerBulkImports": "Größere Massenimporte (50 Zeilen, 2MB)",
 				"customDomains": "Eine eigene Domain inklusive — jederzeit erweiterbar",
@@ -1634,8 +1640,8 @@
 				"title": "Detaillierte Echtzeit-Analysen",
 				"description": "Verstehe, wie deine QR Codes performen – mit umfassenden Scan-Statistiken. Sieh, wer scannt, wann, wo und mit welchem Gerät.",
 				"bullet1": "Gesamtscans und eindeutige Besucher tracken",
-				"bullet2": "Aufschlüsselung nach Gerät, Browser und Betriebssystem",
-				"bullet3": "Geografische Verteilung nach Land"
+				"bullet2": "Aufschlüsselung nach Gerät, Browser und Betriebssystem (Pro)",
+				"bullet3": "Geografische Verteilung nach Land (Pro)"
 			},
 			"collection": {
 				"tag": "Verwaltung",
@@ -1804,8 +1810,8 @@
 				"title": "Klick-Analysen in Echtzeit",
 				"description": "Sieh genau, wie deine Links performen. Verfolge Gesamtklicks, eindeutige Besucher, geografische Verteilung, Geräte und Browser – alles in Echtzeit.",
 				"bullet1": "Gesamtklicks und eindeutige Besucher tracken",
-				"bullet2": "Aufschlüsselung nach Gerät, Browser und Betriebssystem",
-				"bullet3": "Geografische Verteilung nach Land"
+				"bullet2": "Aufschlüsselung nach Gerät, Browser und Betriebssystem (Pro)",
+				"bullet3": "Geografische Verteilung nach Land (Pro)"
 			},
 			"management": {
 				"title": "Organisiertes Link-Management",
@@ -1926,10 +1932,10 @@
 			},
 			"analytics": {
 				"title": "Scan-Analysen & Tracking",
-				"description": "Jeder dynamische QR Code enthält integrierte Analysen. Sieh, wer scannt, wann, wo und mit welchem Gerät – alles in Echtzeit über dein Dashboard.",
+				"description": "Jeder dynamische QR Code enthält integrierte Scan-Statistiken in Echtzeit. Mit Pro siehst du genau, wann, wo und mit welchem Gerät gescannt wird – alles über dein Dashboard.",
 				"bullet1": "Echtzeit-Scan- und Besucher-Tracking",
-				"bullet2": "Aufschlüsselung nach Gerät, Browser und Betriebssystem",
-				"bullet3": "Geografische Verteilung nach Land"
+				"bullet2": "Aufschlüsselung nach Gerät, Browser und Betriebssystem (Pro)",
+				"bullet3": "Geografische Verteilung nach Land (Pro)"
 			},
 			"contentTypes": {
 				"title": "Über 9 Inhaltstypen unterstützt",
@@ -1990,7 +1996,7 @@
 		},
 		"cta": {
 			"title": "Bereit, deinen ersten QR Code zu erstellen?",
-			"subtitle": "Gestalte individuelle QR Codes mit vollständigem Analytics-Tracking. Für immer kostenlos, keine Kreditkarte erforderlich.",
+			"subtitle": "Gestalte individuelle QR Codes und verfolge jeden Scan. Für immer kostenlos, keine Kreditkarte erforderlich.",
 			"ctaLabel": "Jetzt QR Code erstellen"
 		},
 		"facts": {
@@ -2029,7 +2035,7 @@
 	},
 	"productsAnalytics": {
 		"metaTitle": "Analysen – QR Code & Kurz-URL-Performance tracken",
-		"metaDescription": "Verfolge jeden Scan und Klick über QR Codes und Kurz-URLs. Echtzeit-Analysen mit Geräte-, Browser-, Standort- und Kanal-Einblicken. Kostenlose Analysen von QRcodly.",
+		"metaDescription": "Verfolge jeden Scan und Klick über QR Codes und Kurz-URLs. Kostenlose Scan-Statistiken für jeden dynamischen Code, detaillierte Geräte-, Browser- und Standort-Einblicke mit Pro.",
 		"badge": "Analysen",
 		"hero": {
 			"title": "Sieh, was deine QR-Codes & Links wirklich bewirken.",
@@ -2067,7 +2073,7 @@
 				"title": "Echtzeit-Performance-Metriken",
 				"description": "Sieh deine Daten in dem Moment, in dem sie anfallen. Verfolge Scans, Klicks und eindeutige Besucher in Echtzeit mit Aufschlüsselung nach Gerät, Browser und Betriebssystem.",
 				"bullet1": "Live-Scan- und Klick-Tracking",
-				"bullet2": "Aufschlüsselung nach Gerät, Browser und Betriebssystem",
+				"bullet2": "Aufschlüsselung nach Gerät, Browser und Betriebssystem (Pro)",
 				"bullet3": "Identifikation eindeutiger Besucher"
 			},
 			"channels": {
@@ -2123,8 +2129,8 @@
 			"title": "Häufig gestellte Fragen",
 			"q1": "Welche Analysen bietet QRcodly?",
 			"a1": "QRcodly trackt Gesamtscans/-klicks, eindeutige Besucher, Gerätetypen, Browser, Betriebssysteme und geografische Standorte für QR Codes und Kurz-URLs – alles in Echtzeit.",
-			"q2": "Sind die Analysen kostenlos enthalten?",
-			"a2": "Ja! Integrierte Analysen sind für alle dynamischen QR Codes und Kurz-URLs kostenlos enthalten. Du bekommst Echtzeit-Scan-/Klick-Tracking, Geräte-Aufschlüsselungen und geografische Einblicke ohne Kosten.",
+			"q2": "Welche Analysen sind kostenlos enthalten?",
+			"a2": "Jeder dynamische QR Code und jede Kurz-URL enthält kostenlose Scan-Statistiken: Gesamtzahl der Scans bzw. Klicks, eindeutige Besucher, die letzten 7 Tage sowie Top-Land und Top-Gerät. Mit Pro schaltest du die detaillierten Analysen frei – Verlauf über die Zeit, Weltkarte deiner Besucher und Aufschlüsselung nach Gerät, Browser und Betriebssystem. Erfasst wird in jedem Plan, deshalb siehst du nach dem Upgrade sofort alles, auch rückwirkend.",
 			"q3": "Kann ich Google Analytics verbinden?",
 			"a3": "Ja. Pro-Plan-Nutzer können Scan- und Klickdaten an Google Analytics 4 oder Matomo weiterleiten. Nur anonymisierte, nicht-identifizierbare Daten werden geteilt, und die integrierten QRcodly-Analysen bleiben vollständig aktiv.",
 			"q4": "Wie werden geografische Daten erfasst?",
@@ -2137,7 +2143,7 @@
 		},
 		"cta": {
 			"title": "Bereit zu sehen, was deine Links verraten?",
-			"subtitle": "Verfolge jeden Scan und Klick mit Echtzeit-Analysen. Für immer kostenlos, keine Kreditkarte erforderlich.",
+			"subtitle": "Verfolge jeden Scan und Klick kostenlos und schalte mit Pro die detaillierten Analysen frei. Keine Kreditkarte erforderlich.",
 			"ctaLabel": "Jetzt kostenlos tracken"
 		}
 	},
@@ -2178,13 +2184,13 @@
 				"q1": "Ist der QR-Code-Generator kostenlos?",
 				"a1": "Ja! QRcodly ermöglicht dir die Erstellung unbegrenzter statischer und dynamischer QR-Codes kostenlos. Keine versteckten Gebühren, keine Wasserzeichen und keine Anmeldung für einfache QR-Codes erforderlich.",
 				"q2": "Was sind dynamische QR-Codes?",
-				"a2": "Dynamische QR-Codes ermöglichen es dir, die Ziel-URL zu ändern, nachdem der Code gedruckt wurde. Sie verfolgen zudem jeden Scan mit detaillierten Analysen — kein Nachdruck nötig, wenn sich der Inhalt ändert.",
+				"a2": "Dynamische QR-Codes ermöglichen es dir, die Ziel-URL zu ändern, nachdem der Code gedruckt wurde. Sie verfolgen zudem jeden Scan, mit detaillierten Analysen in Pro — kein Nachdruck nötig, wenn sich der Inhalt ändert.",
 				"q3": "Kann ich mein Logo zu einem QR-Code hinzufügen?",
 				"a3": "Selbstverständlich. Lade ein beliebiges Bild als zentrales Logo für deinen QR-Code hoch. Du kannst auch Farben, Eckstile anpassen und Designs als wiederverwendbare Vorlagen speichern.",
 				"q4": "Welche Inhaltstypen werden unterstützt?",
 				"a4": "QRcodly unterstützt 9+ Inhaltstypen: URL, Text, WiFi, vCard (Kontaktkarten), E-Mail, Standort, Kalendertermine, EPC (Zahlung) und Social-Media-Profile.",
 				"q5": "Kann ich QR-Code-Scans verfolgen?",
-				"a5": "Ja. Jeder dynamische QR-Code verfolgt Scans in Echtzeit und zeigt Gesamtscans, eindeutige Besucher, Gerätetypen, Browser, Betriebssysteme und geografische Standorte.",
+				"a5": "Ja. Jeder dynamische QR-Code verfolgt Scans in Echtzeit. Im kostenlosen Plan siehst du Gesamtscans, eindeutige Besucher, die letzten 7 Tage sowie Top-Land und Top-Gerät. Pro ergänzt den Verlauf über die Zeit und vollständige Aufschlüsselungen nach Land, Gerätetyp, Browser und Betriebssystem.",
 				"q6": "Laufen QR-Codes ab?",
 				"a6": "Nein. Mit QRcodly erstellte QR-Codes laufen nie ab. Dynamische QR-Codes bleiben voll funktionsfähig und verfolgbar, solange dein Konto existiert.",
 				"q7": "Kann ich QR-Codes in großen Mengen erstellen?",
@@ -2196,7 +2202,7 @@
 			},
 			"urlShortener": {
 				"q1": "Ist der URL-Shortener kostenlos?",
-				"a1": "Ja! Der URL-Shortener von QRcodly ist kostenlos. Du kannst Kurz-URLs erstellen, Klicks verfolgen und deine Links kostenlos verwalten. Pro-Pläne schalten erweiterte Funktionen wie eigene Domains frei.",
+				"a1": "Ja! Der URL-Shortener von QRcodly ist kostenlos. Du kannst Kurz-URLs erstellen, Klicks verfolgen und deine Links kostenlos verwalten. Pro-Pläne schalten erweiterte Funktionen wie eigene Domains und detaillierte Analysen frei.",
 				"q2": "Kann ich meine eigene Domain für Kurz-URLs verwenden?",
 				"a2": "Absolut. Verbinde deine eigene Domain, um gebrandete Kurz-URLs wie go.deineMarke.com/u/x7k9m zu erstellen. Eigene Domains sind bei Pro-Plänen mit automatischer SSL-Bereitstellung verfügbar.",
 				"q3": "Wie funktioniert das Klick-Tracking?",
@@ -2215,8 +2221,8 @@
 			"analytics": {
 				"q1": "Welche Analysen bietet QRcodly?",
 				"a1": "QRcodly verfolgt Gesamtscans/-klicks, eindeutige Besucher, Gerätetypen, Browser, Betriebssysteme und geografische Standorte für QR-Codes und Kurz-URLs — alles in Echtzeit.",
-				"q2": "Ist Analytics kostenlos inbegriffen?",
-				"a2": "Ja! Integrierte Analysen sind kostenlos für alle dynamischen QR-Codes und Kurz-URLs enthalten. Du erhältst Echtzeit-Scan/Klick-Tracking, Geräteaufschlüsselungen und geografische Einblicke ohne Kosten.",
+				"q2": "Welche Analysen sind kostenlos enthalten?",
+				"a2": "Jeder dynamische QR Code und jede Kurz-URL enthält kostenlose Scan-Statistiken: Gesamtzahl der Scans bzw. Klicks, eindeutige Besucher, die letzten 7 Tage sowie Top-Land und Top-Gerät. Mit Pro schaltest du die detaillierten Analysen frei – Verlauf über die Zeit, Weltkarte deiner Besucher und Aufschlüsselung nach Gerät, Browser und Betriebssystem. Erfasst wird in jedem Plan, deshalb siehst du nach dem Upgrade sofort alles, auch rückwirkend.",
 				"q3": "Kann ich Google Analytics verbinden?",
 				"a3": "Ja. Pro-Plan-Nutzer können Scan- und Klickdaten an Google Analytics 4 oder Matomo weiterleiten. Es werden nur anonymisierte, nicht-identifizierbare Daten geteilt, und die integrierten Analysen von QRcodly bleiben voll aktiv.",
 				"q4": "Wie werden geografische Daten erfasst?",
@@ -2228,7 +2234,7 @@
 			},
 			"pricing": {
 				"q1": "Was ist im kostenlosen Plan enthalten?",
-				"a1": "Der kostenlose Plan umfasst unbegrenzte statische und dynamische QR-Codes, einen URL-Shortener mit Klick-Tracking, Echtzeit-Analytics, individuelle QR-Code-Designs mit Logos und QR-Code-Vorlagen. Keine Kreditkarte erforderlich.",
+				"a1": "Der kostenlose Plan umfasst unbegrenzte statische und dynamische QR-Codes, einen URL-Shortener mit Klick-Tracking, Scan-Statistiken, individuelle QR-Code-Designs mit Logos und QR-Code-Vorlagen. Keine Kreditkarte erforderlich. Detaillierte Analysen gibt es mit Pro.",
 				"q2": "Wie upgrade ich auf Pro?",
 				"a2": "Du kannst direkt über dein Dashboard auf Pro upgraden. Gehe zur Plans-Seite, wähle deinen bevorzugten Abrechnungszyklus und schließe den Checkout ab. Deine Pro-Funktionen werden sofort aktiviert.",
 				"q3": "Kann ich mein Abonnement jederzeit kündigen?",
@@ -2304,7 +2310,7 @@
 			"a4": "Ja — verlinke deinen QR Code auf deine Google-Business-Bewertungsseite oder ein Feedbackformular. Mit einem dynamischen Code kannst du saisonweise zwischen Speisekarte und Bewertungsseite wechseln.",
 			"viewAll": "Alle FAQs anzeigen",
 			"q5": "Was passiert mit meinen gedruckten Codes, wenn ich nicht mehr zahle?",
-			"a5": "Nichts. QRcodly deaktiviert keine QR-Codes, wenn ein Abo endet — unbegrenzte Codes und Scans gehören zum kostenlosen Plan, ein gedruckter Code löst also weiter aus. Nur Pro-Extras wie eine eigene Domain und Analytics-Integrationen werden abgeschaltet. Das ist Absicht: Gedrucktes Material darf nie als Geisel dienen."
+			"a5": "Nichts. QRcodly deaktiviert keine QR-Codes, wenn ein Abo endet — unbegrenzte Codes und Scans gehören zum kostenlosen Plan, ein gedruckter Code löst also weiter aus. Nur Pro-Extras wie eine eigene Domain, detaillierte Analysen und Analytics-Integrationen werden abgeschaltet. Das ist Absicht: Gedrucktes Material darf nie als Geisel dienen."
 		},
 		"cta": {
 			"title": "Bereit, dein Restaurant zu modernisieren?",
@@ -2799,7 +2805,7 @@
 			"a4": "QR Codes sind visuell — drucke deshalb zusätzlich eine Kurz-URL unter den Code für Schüler, die Screenreader verwenden. Die verlinkte Seite sollte Barrierefreiheits-Best-Practices befolgen.",
 			"viewAll": "Alle FAQs anzeigen",
 			"q5": "Brauche ich einen kostenpflichtigen Plan für QR-Codes im Unterricht?",
-			"a5": "Nein. Unbegrenzte QR-Codes, unbegrenzte Scans und die zugehörigen Auswertungen gehören zum kostenlosen Plan, ohne Kreditkarte — genau darauf kommt es bei einem Schulbudget an. Pro ergänzt eigene Domain, Massenimporte und API-Zugang, aber nichts davon braucht ein Klassenzimmer."
+			"a5": "Nein. Unbegrenzte QR-Codes, unbegrenzte Scans und die zugehörigen Scan-Statistiken gehören zum kostenlosen Plan, ohne Kreditkarte — genau darauf kommt es bei einem Schulbudget an. Pro ergänzt detaillierte Analysen, eigene Domain, Massenimporte und API-Zugang, aber nichts davon braucht ein Klassenzimmer."
 		},
 		"cta": {
 			"title": "QR Codes in deinen Unterricht bringen",
@@ -3017,7 +3023,7 @@
 				"description": "Sieh dir an, wie deine Links über verschiedene Kanäle performen. Verfolge Klicks, geografische Daten und Gerätetypen für jeden Kurzlink.",
 				"bullet1": "Echtzeit-Klick-Tracking für jeden Link",
 				"bullet2": "Analysen nach Zeitraum filtern",
-				"bullet3": "Geografische und Geräte-Aufschlüsselungen einsehen"
+				"bullet3": "Geografische und Geräte-Aufschlüsselungen einsehen (Pro)"
 			}
 		},
 		"relatedUseCases": {
@@ -3142,7 +3148,7 @@
 				"description": "Sieh dir an, wie viele Klicks jeder Link erhält. Vergleiche die Performance über Plattformen und Beiträge hinweg, um zu verstehen, was dein Publikum interessiert.",
 				"bullet1": "Echtzeit-Klick-Tracking für jeden Link",
 				"bullet2": "Sehen, welche Plattformen den meisten Traffic bringen",
-				"bullet3": "Dein Publikum mit Gerätedaten besser verstehen"
+				"bullet3": "Dein Publikum mit Gerätedaten besser verstehen (Pro)"
 			},
 			"feature3": {
 				"title": "Dynamische Links, die du aktualisieren kannst",
@@ -3285,7 +3291,7 @@
 				"title": "Akquise-Performance messen",
 				"description": "Vergleiche Klickraten über Kampagnen und Kanäle hinweg. Verstehe, welche Botschaften und Inhalte das meiste Engagement erzielen.",
 				"bullet1": "Klicks über Kampagnen und Kanäle vergleichen",
-				"bullet2": "Geografische und Geräte-Aufschlüsselungen einsehen",
+				"bullet2": "Geografische und Geräte-Aufschlüsselungen einsehen (Pro)",
 				"bullet3": "Erkennen, welche Inhalte bei Interessenten ankommen"
 			}
 		},
@@ -3420,7 +3426,7 @@
 				"description": "Sieh, welche Kanäle den meisten Traffic auf deine Produkte lenken. Vergleiche die Klick-Performance über E-Mail, Social Media, Anzeigen und mehr.",
 				"bullet1": "Separate Links pro Kanal für klare Zuordnung",
 				"bullet2": "Echtzeit-Klick-Tracking und Berichte",
-				"bullet3": "Geografische und Geräte-Aufschlüsselungen"
+				"bullet3": "Geografische und Geräte-Aufschlüsselungen (Pro)"
 			}
 		},
 		"relatedUseCases": {
@@ -3690,7 +3696,7 @@
 				"description": "Verfolge die Klick-Performance für jeden Link. Besprich Analysedaten mit Kunden und belege Kampagnenergebnisse.",
 				"bullet1": "Klick-Tracking für jeden erstellten Link",
 				"bullet2": "Link-bezogene Analysen zur Besprechung mit Kunden",
-				"bullet3": "Geografische und Geräte-Aufschlüsselungen"
+				"bullet3": "Geografische und Geräte-Aufschlüsselungen (Pro)"
 			},
 			"feature3": {
 				"title": "Organisierte Link-Verwaltung",
