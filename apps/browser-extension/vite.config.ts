@@ -8,6 +8,7 @@ import type { Plugin } from 'vite';
 const shimDir = resolve(__dirname, 'src/shims');
 const frontendSrc = resolve(__dirname, '../frontend/src');
 const manifestPath = resolve(__dirname, 'manifest.json');
+const packageJsonPath = resolve(__dirname, 'package.json');
 
 // Without these the popup crashes on open and Chrome collapses it to nothing
 const requiredEnv = ['VITE_CLERK_PUBLISHABLE_KEY', 'VITE_CLERK_SYNC_HOST'];
@@ -53,6 +54,7 @@ function extensionAliasPlugin(): Plugin {
 		'next/dynamic': resolve(shimDir, 'next-dynamic.tsx'),
 		'@sentry/nextjs': resolve(shimDir, 'sentry.ts'),
 		'posthog-js': resolve(shimDir, 'posthog.ts'),
+		'@react-google-maps/api': resolve(shimDir, 'google-maps.tsx'),
 		'fumadocs-ui/css/shadcn.css': resolve(shimDir, 'empty.css'),
 		'fumadocs-ui/css/preset.css': resolve(shimDir, 'empty.css'),
 		'fumadocs-openapi/css/preset.css': resolve(shimDir, 'empty.css'),
@@ -109,9 +111,11 @@ function extensionManifest(mode: string): Plugin {
 		name: 'extension-manifest',
 		buildStart() {
 			this.addWatchFile(manifestPath);
+			this.addWatchFile(packageJsonPath);
 		},
 		generateBundle() {
 			const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
+			manifest.version = JSON.parse(readFileSync(packageJsonPath, 'utf-8')).version;
 			if (mode === 'development') {
 				manifest.host_permissions.push(...devHostPermissions);
 			}
