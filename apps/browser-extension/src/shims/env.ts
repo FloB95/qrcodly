@@ -4,6 +4,8 @@ export const env = {
 	// Left undefined when unset so the shared builder falls back to FRONTEND_URL (web-app semantics).
 	NEXT_PUBLIC_SHORT_URL_DOMAIN: import.meta.env.VITE_SHORT_URL_DOMAIN,
 	NEXT_PUBLIC_API_URL: import.meta.env.VITE_API_URL ?? 'https://api.qrcodly.de/api/v1',
+	// Server-only in the web app; the extension has no server
+	API_INTERNAL_URL: undefined as string | undefined,
 	NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY ?? '',
 	NEXT_PUBLIC_POSTHOG_KEY: import.meta.env.VITE_POSTHOG_KEY ?? '',
 	NEXT_PUBLIC_POSTHOG_HOST: import.meta.env.VITE_POSTHOG_HOST ?? '',
