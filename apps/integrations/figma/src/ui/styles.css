@@ -1,8 +1,10 @@
-/* QRcodly look (zinc/slate neutrals, slate gradient primary, teal accents)
-   adapted to a Figma panel. Figma toggles `figma-dark` on <html> when the
-   editor runs in dark mode (showUI themeColors: true). */
+/* QRcodly look (zinc → peach page gradient, slate gradient primary; teal only
+   for Pro and Dynamic, as in the web app) adapted to a Figma panel. Figma
+   toggles `figma-dark` on <html> when the editor runs in dark mode
+   (showUI themeColors: true). */
 
 :root {
+	--page: linear-gradient(135deg, #f4f4f5 0%, #fddfbc 100%);
 	--bg: #f8fafc;
 	--surface: #ffffff;
 	--surface-muted: #f4f4f5;
@@ -19,8 +21,6 @@
 	--teal: #0d9488;
 	--teal-strong: #115e59;
 	--teal-bright: #14b8a6;
-	--teal-soft: #f0fdfa;
-	--teal-border: #99f6e4;
 	--danger: #dc2626;
 	--danger-soft: #fef2f2;
 	--danger-border: #fecaca;
@@ -34,6 +34,7 @@
 }
 
 html.figma-dark {
+	--page: #09090b;
 	--bg: #09090b;
 	--surface: #18181b;
 	--surface-muted: #27272a;
@@ -49,8 +50,6 @@ html.figma-dark {
 	--ring: rgba(113, 113, 122, 0.6);
 	--teal: #2dd4bf;
 	--teal-strong: #134e4a;
-	--teal-soft: rgba(20, 184, 166, 0.12);
-	--teal-border: rgba(45, 212, 191, 0.35);
 	--danger: #f87171;
 	--danger-soft: rgba(248, 113, 113, 0.1);
 	--danger-border: rgba(248, 113, 113, 0.3);
@@ -73,7 +72,7 @@ body,
 }
 
 body {
-	background: var(--bg);
+	background: var(--page);
 	color: var(--text);
 	font-family:
 		Inter,
@@ -510,13 +509,9 @@ svg {
 
 .hint.is-targeted {
 	border-style: solid;
-	border-color: var(--teal-border);
-	background: var(--teal-soft);
-	color: var(--teal-strong);
-}
-
-html.figma-dark .hint.is-targeted {
-	color: var(--teal);
+	border-color: var(--text);
+	background: var(--surface);
+	color: var(--text);
 }
 
 /* ---------- Onboarding ---------- */
@@ -529,7 +524,6 @@ html.figma-dark .hint.is-targeted {
 	padding: 36px 20px 20px;
 	overflow-y: auto;
 	text-align: center;
-	background: linear-gradient(160deg, var(--teal-soft), var(--bg) 45%);
 }
 
 .onboarding-logo {

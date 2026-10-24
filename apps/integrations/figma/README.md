@@ -32,8 +32,8 @@ pnpm --filter @integrations/figma build
 Publishing needs the Figma desktop app and two-factor authentication on the publishing account:
 
 1. Figma logo → _Plugins → Manage plugins_ → options next to QRcodly → _Publish_.
-2. Fill in name, tagline, description, category, icon (128 × 128) and thumbnail (1920 × 1080), plus a support contact.
-3. Figma assigns the real plugin ID: replace the placeholder `id` in `manifest.json`.
+2. Fill in name, tagline, description, category (_Design tools → Import & export_), icon and thumbnail (both in `community/`), plus a support contact.
+3. Keep the plugin ID in `manifest.json` (`1695759428910776258`): Figma assigned it on first publish and ships every update under it.
 4. Figma reviews Community plugins before they are listed. Once approved, switch the `figma` entry in `apps/frontend/src/lib/integrations-catalog.ts` from `coming-soon` to `external-link` with the Community URL, `ctaKey: 'figma.cta'` and `requiresApiKey: true`.
 
 Later releases: rebuild, then _Publish new version_ from the same menu.
