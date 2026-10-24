@@ -15,8 +15,10 @@ const placementListeners = new Set<(target: PlacementTarget) => void>();
 let nextId = 0;
 
 // Opened as a plain page (e.g. `dist/ui.html` in a browser) there is no plugin
-// sandbox to talk to; fall back to localStorage so the UI stays usable in dev.
+// sandbox to talk to; fall back to in-page state so the UI stays usable in dev.
+// The API key stays in memory only — it must never land in localStorage.
 const inFigma = window.parent !== window;
+let devApiKey: string | null = null;
 
 window.addEventListener(
 	'message',
@@ -39,11 +41,15 @@ const devHandlers: {
 	[M in PluginMethod]: (params: PluginMethods[M]['params']) => Promise<PluginMethods[M]['result']>;
 } = {
 	getSettings: async () => ({
-		apiKey: localStorage.getItem('qrcodly.apiKey'),
+		apiKey: devApiKey,
 		insertFormat: localStorage.getItem('qrcodly.insertFormat') === 'png' ? 'png' : 'svg',
 	}),
-	setApiKey: async ({ apiKey }) => localStorage.setItem('qrcodly.apiKey', apiKey),
-	clearApiKey: async () => localStorage.removeItem('qrcodly.apiKey'),
+	setApiKey: async ({ apiKey }) => {
+		devApiKey = apiKey;
+	},
+	clearApiKey: async () => {
+		devApiKey = null;
+	},
 	setInsertFormat: async ({ format }) => localStorage.setItem('qrcodly.insertFormat', format),
 	getPlacement: async () => ({ mode: 'viewport' }),
 	insertQrCode: async (params) => console.info('qrcodly: insert (no Figma host)', params),

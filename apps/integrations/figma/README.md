@@ -19,7 +19,7 @@ Then in the Figma desktop app:
 1. _Plugins → Development → Import plugin from manifest…_ → select `apps/integrations/figma/manifest.json`
 2. Run it from _Plugins → Development → QRcodly_
 
-`dist/ui.html` also opens in a plain browser: the UI then falls back to `localStorage` instead of the plugin sandbox, which is handy for styling work.
+`dist/ui.html` also opens in a plain browser, which is handy for styling work: without the plugin sandbox the UI keeps its settings in the page, and the API key only in memory.
 
 Point a build at another API with `QRCODLY_API_URL=… pnpm --filter @integrations/figma build`. That host must also be listed in `manifest.json → networkAccess`, or Figma blocks the requests.
 
