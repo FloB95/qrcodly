@@ -12,6 +12,7 @@ const LOGO_FILE_BY_ID: Record<string, string> = {
 	'browser-extension-chrome': 'chrome.png',
 	chatgpt: 'chatgpt.webp',
 	'adobe-indesign': 'adobe-indesign.png',
+	figma: 'figma.svg',
 };
 
 type IntegrationLogoProps = {

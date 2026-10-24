@@ -77,4 +77,12 @@ export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 		ctaKey: 'adobeIndesign.cta',
 		requiresApiKey: true,
 	},
+	{
+		id: 'figma',
+		slug: 'figma',
+		kind: 'coming-soon',
+		tags: ['design'],
+		nameKey: 'figma.name',
+		descriptionKey: 'figma.description',
+	},
 ];

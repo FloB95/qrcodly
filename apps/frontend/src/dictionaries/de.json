@@ -1513,6 +1513,11 @@
 					"name": "Adobe InDesign",
 					"description": "QR-Codes direkt in deinen InDesign-Layouts platzieren, neue erstellen und bestehende verwalten — alles ohne InDesign zu verlassen.",
 					"cta": "Plugin installieren"
+				},
+				"figma": {
+					"name": "Figma",
+					"description": "QR-Codes direkt auf dem Figma-Canvas durchsuchen, erstellen und platzieren — als gestochen scharfe Vektoren, passend zu deinen Designs.",
+					"cta": "Plugin installieren"
 				}
 			},
 			"moreIntegrationsTeaser": "Weitere Integrationen sind in Arbeit. <contact>Eine Integration vorschlagen</contact>"

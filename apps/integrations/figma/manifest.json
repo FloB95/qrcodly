@@ -1,0 +1,13 @@
+{
+	"name": "QRcodly",
+	"id": "1695759428910776258",
+	"api": "1.0.0",
+	"main": "dist/code.js",
+	"ui": "dist/ui.html",
+	"editorType": ["figma", "figjam"],
+	"documentAccess": "dynamic-page",
+	"networkAccess": {
+		"allowedDomains": ["https://api.qrcodly.de"],
+		"devAllowedDomains": ["http://localhost:5001"]
+	}
+}

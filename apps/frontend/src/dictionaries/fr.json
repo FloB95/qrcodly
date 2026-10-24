@@ -1517,6 +1517,11 @@
 					"name": "Adobe InDesign",
 					"description": "Placez des QR codes directement dans vos maquettes InDesign, créez-en de nouveaux et gérez les existants — le tout sans quitter InDesign.",
 					"cta": "Installer le plugin"
+				},
+				"figma": {
+					"name": "Figma",
+					"description": "Parcourez, créez et placez vos QR codes directement sur le canevas Figma — en vecteurs nets, parfaitement intégrés à vos maquettes.",
+					"cta": "Installer le plugin"
 				}
 			},
 			"moreIntegrationsTeaser": "D'autres intégrations arrivent. <contact>Proposer une intégration</contact>"

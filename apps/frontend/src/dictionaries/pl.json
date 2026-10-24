@@ -1513,6 +1513,11 @@
 					"name": "Adobe InDesign",
 					"description": "Umieszczaj kody QR bezpośrednio w swoich projektach InDesign, twórz nowe i zarządzaj istniejącymi — wszystko bez opuszczania InDesign.",
 					"cta": "Zainstaluj plugin"
+				},
+				"figma": {
+					"name": "Figma",
+					"description": "Przeglądaj, twórz i umieszczaj kody QR bezpośrednio na płótnie Figma — jako ostre wektory dopasowane do Twoich projektów.",
+					"cta": "Zainstaluj plugin"
 				}
 			},
 			"moreIntegrationsTeaser": "Więcej integracji w przygotowaniu. <contact>Zaproponuj integrację</contact>"
