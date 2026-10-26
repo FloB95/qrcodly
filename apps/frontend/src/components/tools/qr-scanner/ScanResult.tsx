@@ -42,17 +42,32 @@ const LABEL_CLASS = 'text-xs font-semibold uppercase tracking-wider text-slate-4
 
 type Translate = ReturnType<typeof useTranslations<'qrScannerTool.result'>>;
 
+export type ResultAction =
+	| 'copy'
+	| 'copy-password'
+	| 'toggle-password'
+	| 'show-raw'
+	| 'open-link'
+	| 'download-vcf'
+	| 'compose-email'
+	| 'call'
+	| 'send-sms'
+	| 'show-map'
+	| 'reset';
+
 export function ScanResult({
 	raw,
 	parsed,
 	previewUrl,
 	onReset,
+	onAction,
 	headingRef,
 }: {
 	raw: string;
 	parsed: ParsedQrContent;
 	previewUrl: string | null;
 	onReset: () => void;
+	onAction: (action: ResultAction) => void;
 	headingRef: RefObject<HTMLHeadingElement | null>;
 }) {
 	const t = useTranslations('qrScannerTool.result');
@@ -88,7 +103,12 @@ export function ScanResult({
 						{t(`types.${parsed.type}`)}
 					</p>
 				</div>
-				<CopyButton text={raw} label={t('copy')} copiedLabel={t('copied')} />
+				<CopyButton
+					text={raw}
+					label={t('copy')}
+					copiedLabel={t('copied')}
+					onCopy={() => onAction('copy')}
+				/>
 			</header>
 
 			<div className="mt-6 border-t border-slate-100 pt-6">
@@ -96,12 +116,20 @@ export function ScanResult({
 					parsed={parsed}
 					t={t}
 					showPassword={showPassword}
-					onTogglePassword={() => setShowPassword((value) => !value)}
+					onTogglePassword={() => {
+						onAction('toggle-password');
+						setShowPassword((value) => !value);
+					}}
 				/>
 			</div>
 
 			{parsed.type !== 'text' && (
-				<details className="mt-6">
+				<details
+					className="mt-6"
+					onToggle={(event) => {
+						if (event.currentTarget.open) onAction('show-raw');
+					}}
+				>
 					<summary className="cursor-pointer rounded text-sm font-medium text-slate-500 underline-offset-4 hover:text-slate-900 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
 						{t('rawContent')}
 					</summary>
@@ -112,7 +140,7 @@ export function ScanResult({
 			)}
 
 			<footer className="mt-6 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-5">
-				<ResultActions parsed={parsed} raw={raw} t={t} />
+				<ResultActions parsed={parsed} raw={raw} t={t} onAction={onAction} />
 				<Button
 					type="button"
 					variant="ghost"
@@ -291,7 +319,17 @@ function ResultBody({
 	}
 }
 
-function ResultActions({ parsed, raw, t }: { parsed: ParsedQrContent; raw: string; t: Translate }) {
+function ResultActions({
+	parsed,
+	raw,
+	t,
+	onAction,
+}: {
+	parsed: ParsedQrContent;
+	raw: string;
+	t: Translate;
+	onAction: (action: ResultAction) => void;
+}) {
 	switch (parsed.type) {
 		case 'url':
 			return (
@@ -300,6 +338,7 @@ function ResultActions({ parsed, raw, t }: { parsed: ParsedQrContent; raw: strin
 					target="_blank"
 					rel="noopener noreferrer"
 					className={PRIMARY_LINK_CLASS}
+					onClick={() => onAction('open-link')}
 				>
 					<ArrowTopRightOnSquareIcon className="h-4 w-4" aria-hidden />
 					{t('openLink')}
@@ -312,6 +351,7 @@ function ResultActions({ parsed, raw, t }: { parsed: ParsedQrContent; raw: strin
 					label={t('copyPassword')}
 					copiedLabel={t('copied')}
 					variant="default"
+					onCopy={() => onAction('copy-password')}
 				/>
 			) : null;
 		case 'vcard':
@@ -320,6 +360,7 @@ function ResultActions({ parsed, raw, t }: { parsed: ParsedQrContent; raw: strin
 					href={`data:text/vcard;charset=utf-8,${encodeURIComponent(parsed.vcf)}`}
 					download={`${(parsed.name ?? 'contact').replace(/[^\p{L}\p{N} _-]/gu, '').trim() || 'contact'}.vcf`}
 					className={PRIMARY_LINK_CLASS}
+					onClick={() => onAction('download-vcf')}
 				>
 					<ArrowDownTrayIcon className="h-4 w-4" aria-hidden />
 					{t('downloadVcf')}
@@ -327,21 +368,33 @@ function ResultActions({ parsed, raw, t }: { parsed: ParsedQrContent; raw: strin
 			);
 		case 'email':
 			return (
-				<a href={raw.trim()} className={PRIMARY_LINK_CLASS}>
+				<a
+					href={raw.trim()}
+					className={PRIMARY_LINK_CLASS}
+					onClick={() => onAction('compose-email')}
+				>
 					<EnvelopeIcon className="h-4 w-4" aria-hidden />
 					{t('composeEmail')}
 				</a>
 			);
 		case 'phone':
 			return (
-				<a href={`tel:${parsed.number}`} className={PRIMARY_LINK_CLASS}>
+				<a
+					href={`tel:${parsed.number}`}
+					className={PRIMARY_LINK_CLASS}
+					onClick={() => onAction('call')}
+				>
 					<PhoneIcon className="h-4 w-4" aria-hidden />
 					{t('call')}
 				</a>
 			);
 		case 'sms':
 			return (
-				<a href={`sms:${parsed.number}`} className={PRIMARY_LINK_CLASS}>
+				<a
+					href={`sms:${parsed.number}`}
+					className={PRIMARY_LINK_CLASS}
+					onClick={() => onAction('send-sms')}
+				>
 					<ChatBubbleLeftEllipsisIcon className="h-4 w-4" aria-hidden />
 					{t('sendSms')}
 				</a>
@@ -353,6 +406,7 @@ function ResultActions({ parsed, raw, t }: { parsed: ParsedQrContent; raw: strin
 					target="_blank"
 					rel="noopener noreferrer"
 					className={SECONDARY_LINK_CLASS}
+					onClick={() => onAction('show-map')}
 				>
 					<MapPinIcon className="h-4 w-4" aria-hidden />
 					{t('showOnMap')}
@@ -453,11 +507,13 @@ function CopyButton({
 	label,
 	copiedLabel,
 	variant = 'ghost',
+	onCopy,
 }: {
 	text: string;
 	label: string;
 	copiedLabel: string;
 	variant?: 'ghost' | 'default';
+	onCopy?: () => void;
 }) {
 	const [copied, setCopied] = useState(false);
 
@@ -471,6 +527,7 @@ function CopyButton({
 		try {
 			await navigator.clipboard.writeText(text);
 			setCopied(true);
+			onCopy?.();
 		} catch {
 			setCopied(false);
 		}

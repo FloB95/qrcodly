@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { usePostHog } from 'posthog-js/react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import {
@@ -16,9 +17,10 @@ import { Loader2 } from 'lucide-react';
 import { decodeQrImageFile, isImageFile, type DecodeFailureReason } from './decodeQrImage';
 import { parseQrContent, type ParsedQrContent } from './parseQrContent';
 import { useCameraScanner, type CameraError } from './useCameraScanner';
-import { ScanResult } from './ScanResult';
+import { ScanResult, type ResultAction } from './ScanResult';
 
 type ScanError = DecodeFailureReason | CameraError;
+type ScanSource = 'file' | 'drop' | 'paste' | 'camera';
 
 type ScannerState =
 	| { status: 'idle' }
@@ -28,6 +30,7 @@ type ScannerState =
 
 export function QrScanner() {
 	const t = useTranslations('qrScannerTool.scanner');
+	const posthog = usePostHog();
 	const [state, setState] = useState<ScannerState>({ status: 'idle' });
 	const [isDragging, setIsDragging] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -35,6 +38,8 @@ export function QrScanner() {
 	const resultHeadingRef = useRef<HTMLHeadingElement | null>(null);
 	const previewUrlRef = useRef<string | null>(null);
 	const requestRef = useRef(0);
+	const sourceRef = useRef<ScanSource>('file');
+	const startedAtRef = useRef(0);
 
 	const replacePreview = useCallback((url: string | null) => {
 		if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
@@ -46,17 +51,25 @@ export function QrScanner() {
 	const showResult = useCallback(
 		(raw: string, previewUrl: string | null) => {
 			replacePreview(previewUrl);
-			setState({ status: 'result', raw, parsed: parseQrContent(raw), previewUrl });
+			const parsed = parseQrContent(raw);
+			setState({ status: 'result', raw, parsed, previewUrl });
+			posthog.capture('qr-scanner:scan-succeeded', {
+				source: sourceRef.current,
+				contentType: parsed.type,
+				isShortLink: parsed.type === 'url' ? parsed.isShortLink : undefined,
+				durationMs: Math.round(performance.now() - startedAtRef.current),
+			});
 		},
-		[replacePreview],
+		[posthog, replacePreview],
 	);
 
 	const showError = useCallback(
 		(error: ScanError) => {
 			replacePreview(null);
 			setState({ status: 'error', error });
+			posthog.capture('qr-scanner:scan-failed', { source: sourceRef.current, reason: error });
 		},
-		[replacePreview],
+		[posthog, replacePreview],
 	);
 
 	const onCameraDetected = useCallback((data: string) => showResult(data, null), [showResult]);
@@ -68,9 +81,12 @@ export function QrScanner() {
 	} = useCameraScanner({ onDetected: onCameraDetected, onError: showError });
 
 	const handleFile = useCallback(
-		async (file: File) => {
+		async (file: File, source: ScanSource) => {
 			stopCamera();
 			const requestId = ++requestRef.current;
+			sourceRef.current = source;
+			startedAtRef.current = performance.now();
+			posthog.capture('qr-scanner:scan-started', { source, fileType: file.type || 'unknown' });
 			if (!isImageFile(file)) {
 				showError('invalidFile');
 				return;
@@ -87,7 +103,7 @@ export function QrScanner() {
 			}
 			showResult(result.data, URL.createObjectURL(file));
 		},
-		[replacePreview, showError, showResult, stopCamera],
+		[posthog, replacePreview, showError, showResult, stopCamera],
 	);
 
 	const reset = useCallback(() => {
@@ -102,8 +118,19 @@ export function QrScanner() {
 		requestRef.current++;
 		replacePreview(null);
 		setState({ status: 'idle' });
+		sourceRef.current = 'camera';
+		startedAtRef.current = performance.now();
+		posthog.capture('qr-scanner:scan-started', { source: 'camera' });
 		void startCamera();
-	}, [replacePreview, startCamera]);
+	}, [posthog, replacePreview, startCamera]);
+
+	const trackAction = useCallback(
+		(action: ResultAction) => {
+			if (state.status !== 'result') return;
+			posthog.capture('qr-scanner:result-action', { action, contentType: state.parsed.type });
+		},
+		[posthog, state],
+	);
 
 	useEffect(() => {
 		const onPaste = (event: ClipboardEvent) => {
@@ -118,7 +145,7 @@ export function QrScanner() {
 			if (!file) return;
 
 			event.preventDefault();
-			void handleFile(file);
+			void handleFile(file, 'paste');
 		};
 
 		document.addEventListener('paste', onPaste);
@@ -146,7 +173,7 @@ export function QrScanner() {
 							event.preventDefault();
 							setIsDragging(false);
 							const file = event.dataTransfer.files[0];
-							if (file) void handleFile(file);
+							if (file) void handleFile(file, 'drop');
 						}}
 						className={cn(
 							'flex min-h-[320px] flex-col items-center justify-center gap-5 rounded-[20px] border border-dashed px-6 py-10 text-center transition-colors',
@@ -178,7 +205,7 @@ export function QrScanner() {
 									onChange={(event) => {
 										const file = event.target.files?.[0];
 										event.target.value = '';
-										if (file) void handleFile(file);
+										if (file) void handleFile(file, 'file');
 									}}
 								/>
 								<div className="flex flex-wrap items-center justify-center gap-3">
@@ -210,7 +237,11 @@ export function QrScanner() {
 						raw={state.raw}
 						parsed={state.parsed}
 						previewUrl={state.previewUrl}
-						onReset={reset}
+						onReset={() => {
+							trackAction('reset');
+							reset();
+						}}
+						onAction={trackAction}
 						headingRef={resultHeadingRef}
 					/>
 				)}
