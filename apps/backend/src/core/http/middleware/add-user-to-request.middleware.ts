@@ -9,6 +9,8 @@ import { type FastifyRequest } from 'fastify';
 import { container } from 'tsyringe';
 import UserSubscriptionRepository from '@/modules/billing/domain/repository/user-subscription.repository';
 import { trackActiveSession, trackExternal } from '@/core/metrics';
+import { detectApiClient } from '@/modules/integration-usage/utils/detect-api-client';
+import { RecordIntegrationUsageUseCase } from '@/modules/integration-usage/useCase/record-integration-usage.use-case';
 
 const USER_PLAN_CACHE_TTL = 300; // 5 minutes
 const USER_BAN_CACHE_TTL = 60; // 1 minute — bans are set manually in Clerk, so propagate quickly
@@ -77,9 +79,17 @@ export async function addUserToRequestMiddleware(request: FastifyRequest, _reply
 		userId: string | null;
 		tokenType: TTokenType;
 		scopes?: string[];
+		/** API key id, only set for api_key tokens */
+		id?: string;
+		sessionClaims?: { azp?: string };
 	};
 
 	const { userId, tokenType } = auth;
+	const apiClient = detectApiClient({
+		headers: request.headers,
+		tokenType: userId ? tokenType : null,
+		authorizedParty: auth.sessionClaims?.azp,
+	});
 
 	if (userId) {
 		if (await resolveUserBanStatus(userId)) {
@@ -90,6 +100,9 @@ export async function addUserToRequestMiddleware(request: FastifyRequest, _reply
 		const scopes = tokenType === 'api_key' ? (auth.scopes ?? []) : undefined;
 		request.user = { id: userId, tokenType, plan, scopes };
 		void trackActiveSession(container.resolve(KeyCache).getClient(), userId);
+		if (apiClient) {
+			void container.resolve(RecordIntegrationUsageUseCase).execute(userId, apiClient);
+		}
 	} else {
 		request.user = undefined;
 	}
@@ -101,7 +114,12 @@ export async function addUserToRequestMiddleware(request: FastifyRequest, _reply
 		request.clientIp !== '152.53.13.36'
 	) {
 		container.resolve(Logger).info('api.request', {
-			request: createRequestLogObject(request, { accessType: tokenType }),
+			request: createRequestLogObject(request, {
+				accessType: tokenType,
+				client: apiClient?.client,
+				clientVersion: apiClient?.version ?? undefined,
+				apiKeyId: tokenType === 'api_key' ? auth.id : undefined,
+			}),
 		});
 	}
 }

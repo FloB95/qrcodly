@@ -1,3 +1,8 @@
+export const SERVER_VERSION = '0.1.0';
+
+// Must match the `mcp-server` entry of API_CLIENTS in @shared/schemas
+const API_CLIENT = `mcp-server/${SERVER_VERSION}`;
+
 export class ApiClient {
 	private readonly baseUrl: string;
 	private readonly apiKey: string;
@@ -33,6 +38,7 @@ export class ApiClient {
 		const headers: Record<string, string> = {
 			Authorization: `Bearer ${this.apiKey}`,
 			Accept: 'application/json',
+			'X-QRcodly-Client': API_CLIENT,
 		};
 
 		const fetchOptions: RequestInit = { method, headers };

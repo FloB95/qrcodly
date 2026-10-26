@@ -7,10 +7,14 @@ import type {
 	TReservedShortUrlResponseDto,
 	TTagResponseDto,
 } from '@shared/schemas';
+import { API_CLIENT_HEADER, formatApiClientHeader } from '@shared/schemas/utils/ApiClient';
 
 // Injected at build time by build.mjs. Production → live API; dev →
 // http://localhost:5001/api/v1; override via env var QRCODLY_API_URL.
 declare const __QRCODLY_API_URL__: string;
+declare const __QRCODLY_PLUGIN_VERSION__: string;
+
+const API_CLIENT = formatApiClientHeader('figma', __QRCODLY_PLUGIN_VERSION__);
 
 export class ApiError extends Error {
 	constructor(
@@ -40,6 +44,7 @@ export class QrcodlyApi {
 				method: opts.method ?? 'GET',
 				headers: {
 					Authorization: `Bearer ${this.apiKey}`,
+					[API_CLIENT_HEADER]: API_CLIENT,
 					...(hasBody ? { 'Content-Type': 'application/json' } : {}),
 				},
 				body: hasBody ? JSON.stringify(opts.body) : undefined,

@@ -12,6 +12,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/env": ["./src/shims/env.ts"],
+			"@/lib/api-client-header": ["./src/shims/api-client-header.ts"],
 			"@/i18n/routing": ["./src/shims/i18n-routing.ts"],
 			"@/i18n/navigation": ["./src/shims/i18n-navigation.ts"],
 			"@/*": ["./../frontend/src/*"],

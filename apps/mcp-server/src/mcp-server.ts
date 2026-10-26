@@ -1,7 +1,7 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { ListToolsRequestSchema, CallToolRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { type McpToolDefinition, type EndpointMeta, splitArgs } from './openapi-to-mcp.js';
-import { ApiClient, ApiError } from './api-client.js';
+import { ApiClient, ApiError, SERVER_VERSION } from './api-client.js';
 import { logger, logToolCall, type McpClientInfo } from './logger.js';
 
 export function createMcpServer(
@@ -12,7 +12,10 @@ export function createMcpServer(
 	/** Resolved lazily: the transport only assigns a session id once `initialize` completes. */
 	getSessionId: () => string | undefined,
 ): Server {
-	const server = new Server({ name: 'qrcodly', version: '0.1.0' }, { capabilities: { tools: {} } });
+	const server = new Server(
+		{ name: 'qrcodly', version: SERVER_VERSION },
+		{ capabilities: { tools: {} } },
+	);
 	const client = new ApiClient(baseUrl, apiKey);
 
 	const clientInfo = (): McpClientInfo => {

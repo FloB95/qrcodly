@@ -62,5 +62,7 @@ export {
 	type TProviderType,
 	userSurvey,
 	type TUserSurvey,
+	integrationUsage,
+	type TIntegrationUsage,
 } from './tables';
 export { createTable } from './utils';

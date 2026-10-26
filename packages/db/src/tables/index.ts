@@ -63,3 +63,4 @@ export {
 	type TProviderType,
 } from './analytics-integration';
 export { default as userSurvey, type TUserSurvey } from './user-survey';
+export { default as integrationUsage, type TIntegrationUsage } from './integration-usage';
