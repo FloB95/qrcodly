@@ -2,8 +2,13 @@
 
 import { PuzzlePieceIcon } from '@heroicons/react/24/outline';
 import { Heading } from '@/components/ui/heading';
+import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import posthog from 'posthog-js';
+import { CHROME_EXTENSION_URL } from '@/lib/integrations-catalog';
 import Container from './ui/container';
 
 export function BrowserExtensionTeaser() {
@@ -36,6 +41,20 @@ export function BrowserExtensionTeaser() {
 								{t('headline')}
 							</Heading>
 							<p className="text-slate-700 mt-3 md:text-lg max-w-xl">{t('description')}</p>
+							<Button size="lg" className="mt-7 gap-2" asChild>
+								<Link
+									href={CHROME_EXTENSION_URL}
+									target="_blank"
+									rel="noopener noreferrer"
+									onClick={() =>
+										posthog.capture('browser-extension:store-link-clicked', { source: 'homepage' })
+									}
+								>
+									<Image src="/images/integrations/chrome.png" alt="" width={20} height={20} />
+									{t('cta')}
+								</Link>
+							</Button>
+							<p className="text-sm text-slate-500 mt-3">{t('note')}</p>
 						</div>
 					</div>
 				</motion.div>

@@ -8,59 +8,82 @@ Here you can see all recent updates, new features, improvements, and fixes — e
 
 <Callout type="info">Stay up-to-date with the latest features and improvements in QRcodly.</Callout>
 
-## Latest Release: 1.10.0 - 2026-03-12
+## Latest Release: 1.13.0 - 2026-10-26
 
 <Card
-  title="v1.10.0 Latest"
+  title="v1.13.0 Latest"
   description={
     <div>
-      <p>🚀 <strong>Release Notes – Version 1.10.0</strong></p>
+      <p>🚀 <strong>Release Notes – Version 1.13.0</strong></p>
       <h4>✨ New Features</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Short URL Management:</strong> Full standalone short URL experience — create, edit, delete, and view short URLs with a dedicated dashboard, detail pages with analytics, paginated searchable lists, and a hero form for quick creation.</li>
-        <li><strong>Short URL Tagging:</strong> Full tagging system for short URLs — assign, remove, and filter by tags, with tag management integrated into the list and detail views.</li>
-        <li><strong>Product Pages:</strong> Dedicated product pages for URL Shortener, QR Codes, and Analytics with hero sections, feature details, mockups, FAQs, and CTAs.</li>
-        <li><strong>Products Navigation Dropdown:</strong> New products dropdown menu in the header for easy access to all product pages.</li>
-        <li><strong>URL Validation:</strong> HTTP URL validation for QR code and short URL creation, ensuring only valid URLs are accepted.</li>
+        <li><strong>QRcodly for Chrome:</strong> The QRcodly browser extension is now available in the <a href="https://chromewebstore.google.com/detail/qrcodly/pagnaengchnbgecnappokojmdnagefpd">Chrome Web Store</a>. Create a QR code for the page you're on in one click: the extension fills in the page's link, gives you the full generator, and saves your QR codes to your account.</li>
+        <li><strong>No Extra Login:</strong> The extension uses your existing sign-in from qrcodly.de, so there is nothing new to set up.</li>
+        <li><strong>Integrations:</strong> The Chrome extension now links straight to the Chrome Web Store from Settings → Integrations.</li>
       </ul>
 
-      <h4>🎨 UI & UX Improvements</h4>
+      <h4>🔒 Privacy & Security</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Dashboard Polish:</strong> Reordered sidebar navigation, improved short URL list with search, sort, and tag filtering.</li>
-        <li><strong>Product Showcase:</strong> CrossProductCards and ProductUseCases components for cross-linking between product pages.</li>
-        <li><strong>Stats Bar:</strong> New stats bar on the home page showcasing key product metrics.</li>
-        <li><strong>Footer & Header:</strong> Language dropdown opens upward, refined header navigation with products dropdown.</li>
-      </ul>
-
-      <h4>🛠 Technical Improvements</h4>
-      <ul className="list-disc ml-5 space-y-1">
-        <li><strong>Backend Architecture:</strong> Full module structure for short URL management — entities, repositories, use cases, controllers, and event handlers.</li>
-        <li><strong>Expanded Test Coverage:</strong> Comprehensive backend tests for short URL CRUD, tag flows, URL validation, and edge cases.</li>
-        <li><strong>PostHog & Sentry:</strong> Event tracking and error reporting for short URL operations.</li>
-      </ul>
-
-      <h4>🐛 Bug Fixes</h4>
-      <ul className="list-disc ml-5 space-y-1">
-        <li>Fixed delete error toast showing confirmation title instead of error message.</li>
-        <li>Fixed toggle mutation refetching wrong query key.</li>
-        <li>Fixed stale detail page after short URL edit.</li>
-        <li>Fixed tag update toast showing wrong label for short URL tags.</li>
-        <li>Fixed page clamping when result set shrinks after deletion.</li>
+        <li>The extension only reads the current tab when you open it, and only talks to QRcodly's API and sign-in service.</li>
       </ul>
 
       <h4>🌍 Translations</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li>Updated translations across all supported languages (English, German, Spanish, French, Italian, Dutch, Polish, Russian).</li>
-        <li>Added new translation keys for short URL management, product pages, tagging, and dashboard features.</li>
+        <li>Home page announcement updated in all supported languages (English, German, Spanish, French, Italian, Dutch, Polish, Portuguese, Russian).</li>
       </ul>
     </div>
-
-}
+  }
 />
 
 ## Previous Releases
 
 <Cards>
+  <Card
+    title="v1.10.0 - 2026-03-12"
+    description={
+      <div>
+        <p>🚀 <strong>Release Notes – Version 1.10.0</strong></p>
+        <h4>✨ New Features</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Short URL Management:</strong> Full standalone short URL experience — create, edit, delete, and view short URLs with a dedicated dashboard, detail pages with analytics, paginated searchable lists, and a hero form for quick creation.</li>
+          <li><strong>Short URL Tagging:</strong> Full tagging system for short URLs — assign, remove, and filter by tags, with tag management integrated into the list and detail views.</li>
+          <li><strong>Product Pages:</strong> Dedicated product pages for URL Shortener, QR Codes, and Analytics with hero sections, feature details, mockups, FAQs, and CTAs.</li>
+          <li><strong>Products Navigation Dropdown:</strong> New products dropdown menu in the header for easy access to all product pages.</li>
+          <li><strong>URL Validation:</strong> HTTP URL validation for QR code and short URL creation, ensuring only valid URLs are accepted.</li>
+        </ul>
+
+        <h4>🎨 UI & UX Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Dashboard Polish:</strong> Reordered sidebar navigation, improved short URL list with search, sort, and tag filtering.</li>
+          <li><strong>Product Showcase:</strong> CrossProductCards and ProductUseCases components for cross-linking between product pages.</li>
+          <li><strong>Stats Bar:</strong> New stats bar on the home page showcasing key product metrics.</li>
+          <li><strong>Footer & Header:</strong> Language dropdown opens upward, refined header navigation with products dropdown.</li>
+        </ul>
+
+        <h4>🛠 Technical Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Backend Architecture:</strong> Full module structure for short URL management — entities, repositories, use cases, controllers, and event handlers.</li>
+          <li><strong>Expanded Test Coverage:</strong> Comprehensive backend tests for short URL CRUD, tag flows, URL validation, and edge cases.</li>
+          <li><strong>PostHog & Sentry:</strong> Event tracking and error reporting for short URL operations.</li>
+        </ul>
+
+        <h4>🐛 Bug Fixes</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li>Fixed delete error toast showing confirmation title instead of error message.</li>
+          <li>Fixed toggle mutation refetching wrong query key.</li>
+          <li>Fixed stale detail page after short URL edit.</li>
+          <li>Fixed tag update toast showing wrong label for short URL tags.</li>
+          <li>Fixed page clamping when result set shrinks after deletion.</li>
+        </ul>
+
+        <h4>🌍 Translations</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li>Updated translations across all supported languages (English, German, Spanish, French, Italian, Dutch, Polish, Russian).</li>
+          <li>Added new translation keys for short URL management, product pages, tagging, and dashboard features.</li>
+        </ul>
+      </div>
+    }
+  />
   <Card
     title="v1.9.0 - 2026-03-04"
     description={
