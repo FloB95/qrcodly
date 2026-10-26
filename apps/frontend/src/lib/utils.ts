@@ -1,4 +1,5 @@
 import { env } from '@/env';
+import { API_CLIENT } from '@/lib/api-client-header';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import qs from 'qs';
@@ -6,10 +7,11 @@ import qs from 'qs';
 import { ApiError } from './api/ApiError';
 import { serverApiUrl } from './server-api-url';
 import type { z } from 'zod';
-import type {
-	TCustomDomainResponseDto,
-	TShortUrlResponseDto,
-	TShortUrlWithCustomDomainResponseDto,
+import {
+	API_CLIENT_HEADER,
+	type TCustomDomainResponseDto,
+	type TShortUrlResponseDto,
+	type TShortUrlWithCustomDomainResponseDto,
 } from '@shared/schemas';
 import type { useUser } from '@clerk/nextjs';
 export function cn(...inputs: ClassValue[]) {
@@ -193,9 +195,12 @@ export async function apiRequest<T>(
 	// Server-rendered pages call the backend directly (in-cluster), the browser via the public URL
 	const baseUrl = typeof window === 'undefined' ? serverApiUrl() : env.NEXT_PUBLIC_API_URL;
 
+	const headers = new Headers(options.headers);
+	if (API_CLIENT) headers.set(API_CLIENT_HEADER, API_CLIENT);
+
 	let response: Response;
 	try {
-		response = await fetch(`${baseUrl}${endpoint}${queryString}`, options);
+		response = await fetch(`${baseUrl}${endpoint}${queryString}`, { ...options, headers });
 	} catch {
 		throw new ApiError(
 			'Could not connect to the server. Please check your internet connection or disable any ad blockers and try again.',

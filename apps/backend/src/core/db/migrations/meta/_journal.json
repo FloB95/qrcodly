@@ -253,6 +253,13 @@
 			"when": 1786396742545,
 			"tag": "0035_serious_lady_mastermind",
 			"breakpoints": true
+		},
+		{
+			"idx": 36,
+			"version": "5",
+			"when": 1793017410377,
+			"tag": "0036_motionless_amphibian",
+			"breakpoints": true
 		}
 	]
 }

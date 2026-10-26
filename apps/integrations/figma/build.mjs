@@ -1,5 +1,5 @@
 import { build, context } from 'esbuild';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 
 const watch = process.argv.includes('--watch');
 const production = process.argv.includes('--production');
@@ -10,6 +10,8 @@ const production = process.argv.includes('--production');
 const apiBaseUrl =
 	process.env.QRCODLY_API_URL ||
 	(production ? 'https://api.qrcodly.de/api/v1' : 'http://localhost:5001/api/v1');
+
+const pluginVersion = JSON.parse(await readFile('package.json', 'utf-8')).version;
 
 const shared = {
 	bundle: true,
@@ -66,6 +68,7 @@ const uiOptions = {
 	write: false,
 	define: {
 		__QRCODLY_API_URL__: JSON.stringify(apiBaseUrl),
+		__QRCODLY_PLUGIN_VERSION__: JSON.stringify(pluginVersion),
 		'process.env.NODE_ENV': JSON.stringify(production ? 'production' : 'development'),
 	},
 	plugins: [inlineHtml],

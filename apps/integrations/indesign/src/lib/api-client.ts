@@ -6,13 +6,16 @@ import type {
 	TQrCodeWithRelationsPaginatedResponseDto,
 	TTagResponseDto,
 } from '@shared/schemas';
+import { API_CLIENT_HEADER, formatApiClientHeader } from '@shared/schemas/utils/ApiClient';
 import qs from 'qs';
 
 // Injected at build time by webpack.config.cjs (DefinePlugin). Production
 // → live API; dev → http://localhost:5001/api/v1; override via env var
 // QRCODLY_API_URL when running `pnpm run build` / `pnpm run dev`.
 declare const __QRCODLY_API_URL__: string;
+declare const __QRCODLY_PLUGIN_VERSION__: string;
 const DEFAULT_BASE_URL = __QRCODLY_API_URL__;
+const API_CLIENT = formatApiClientHeader('indesign', __QRCODLY_PLUGIN_VERSION__);
 
 export class ApiError extends Error {
 	constructor(
@@ -40,6 +43,7 @@ export class QrcodlyApi {
 			headers: {
 				Authorization: `Bearer ${this.apiKey}`,
 				'Content-Type': 'application/json',
+				[API_CLIENT_HEADER]: API_CLIENT,
 			},
 			body: opts.body ? JSON.stringify(opts.body) : undefined,
 		});
@@ -129,6 +133,7 @@ export class QrcodlyApi {
 			headers: {
 				Authorization: `Bearer ${this.apiKey}`,
 				'Content-Type': 'application/json',
+				[API_CLIENT_HEADER]: API_CLIENT,
 			},
 			body: JSON.stringify({ ...payload, format: 'png' }),
 		});

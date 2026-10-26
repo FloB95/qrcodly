@@ -24,6 +24,7 @@ import { BadRequestError } from './error/http/bad-request.error';
 import fastifyCookie from '@fastify/cookie';
 import fastifyRateLimit from '@fastify/rate-limit';
 import fastifyCors from '@fastify/cors';
+import { API_CLIENT_HEADER } from '@shared/schemas';
 import { OnShutdown } from './decorators/on-shutdown.decorator';
 import { HealthController } from './http/controller/health.controller';
 import FastifySwagger from '@fastify/swagger';
@@ -189,7 +190,7 @@ export class Server {
 		});
 
 		await this.server.register(fastifyCors, {
-			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
+			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie', API_CLIENT_HEADER],
 			credentials: true,
 			methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 			origin: true,

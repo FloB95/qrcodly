@@ -1,6 +1,6 @@
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 import { resolve } from 'path';
-import { existsSync, statSync } from 'fs';
+import { existsSync, readFileSync, statSync } from 'fs';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import type { Plugin } from 'vite';
@@ -33,6 +33,7 @@ function tryResolve(basePath: string): string | null {
 function frontendAliasPlugin(): Plugin {
 	const exactAliases: Record<string, string> = {
 		'@/env': resolve(shimDir, 'env.ts'),
+		'@/lib/api-client-header': resolve(shimDir, 'api-client-header.ts'),
 		'@/i18n/routing': resolve(shimDir, 'i18n-routing.ts'),
 		'@/i18n/navigation': resolve(shimDir, 'i18n-navigation.ts'),
 		'@clerk/nextjs/server': resolve(shimDir, 'clerk-server.ts'),
@@ -113,6 +114,11 @@ export default defineConfig({
 		plugins: [frontendAliasPlugin(), react(), tailwindcss()],
 		resolve: {
 			alias: {},
+		},
+		define: {
+			__APP_VERSION__: JSON.stringify(
+				JSON.parse(readFileSync(resolve(__dirname, 'package.json'), 'utf-8')).version,
+			),
 		},
 	},
 });

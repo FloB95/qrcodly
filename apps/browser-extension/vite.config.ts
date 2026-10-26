@@ -40,6 +40,7 @@ function tryResolve(basePath: string): string | null {
 function extensionAliasPlugin(): Plugin {
 	const exactAliases: Record<string, string> = {
 		'@/env': resolve(shimDir, 'env.ts'),
+		'@/lib/api-client-header': resolve(shimDir, 'api-client-header.ts'),
 		'@/i18n/routing': resolve(shimDir, 'i18n-routing.ts'),
 		'@/i18n/navigation': resolve(shimDir, 'i18n-navigation.ts'),
 		'@clerk/nextjs/server': resolve(shimDir, 'clerk-server.ts'),
@@ -149,6 +150,9 @@ export default defineConfig(({ command, mode }) => {
 		build: {
 			outDir: 'dist',
 			emptyOutDir: true,
+		},
+		define: {
+			__APP_VERSION__: JSON.stringify(JSON.parse(readFileSync(packageJsonPath, 'utf-8')).version),
 		},
 	};
 });
