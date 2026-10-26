@@ -88,7 +88,7 @@ type TRequestAuth = {
  * origin, such as a taken-over qrcodly.de subdomain, must not act on the API. Tokens without `azp`
  * (minted server-side, e.g. in tests) and API keys are out of scope.
  */
-function isRejectedAuthorizedParty(request: FastifyRequest, auth: TRequestAuth): boolean {
+function shouldRejectForeignSession(request: FastifyRequest, auth: TRequestAuth): boolean {
 	const azp = auth.sessionClaims?.azp;
 	if (auth.tokenType !== 'session_token' || !azp || FIRST_PARTY_ORIGINS.includes(azp)) {
 		return false;
@@ -110,7 +110,7 @@ export async function addUserToRequestMiddleware(request: FastifyRequest, _reply
 	}) as TRequestAuth;
 
 	const { tokenType } = auth;
-	const userId = auth.userId && !isRejectedAuthorizedParty(request, auth) ? auth.userId : null;
+	const userId = auth.userId && !shouldRejectForeignSession(request, auth) ? auth.userId : null;
 	const apiClient = detectApiClient({
 		headers: request.headers,
 		tokenType: userId ? tokenType : null,
