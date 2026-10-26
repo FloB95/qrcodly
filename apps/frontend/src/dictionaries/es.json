@@ -275,7 +275,44 @@
 		"analyticsLink": "Analíticas",
 		"urlShortenerDesc": "Acorta, personaliza y rastrea cada enlace",
 		"qrCodesDesc": "Crea y personaliza códigos QR dinámicos",
-		"analyticsDesc": "Mide el rendimiento en todos los canales"
+		"analyticsDesc": "Mide el rendimiento en todos los canales",
+		"toolsLabel": "Herramientas gratuitas",
+		"scannerLink": "Escáner de códigos QR",
+		"scannerDesc": "Lee cualquier código QR en tu navegador",
+		"solutionsBtn": "Soluciones",
+		"resourcesBtn": "Recursos",
+		"allFeaturesLink": "Todas las funciones",
+		"allFeaturesDesc": "Todo lo que QRcodly puede hacer, de un vistazo",
+		"byIndustryLabel": "Por sector",
+		"byTeamLabel": "Por equipo",
+		"solRestaurants": "Restaurantes",
+		"solRetail": "Comercio minorista",
+		"solEvents": "Eventos",
+		"solRealEstate": "Inmobiliaria",
+		"solEducation": "Educación",
+		"solMarketing": "Marketing",
+		"solMarketingTeams": "Equipos de marketing",
+		"solSocialMedia": "Redes sociales",
+		"solSales": "Ventas",
+		"solEcommerce": "Comercio electrónico",
+		"solDevelopers": "Desarrolladores",
+		"solAgencies": "Agencias",
+		"docsLink": "Documentación y API",
+		"docsDesc": "Guías, referencia de la API e integraciones",
+		"faqLink": "Preguntas frecuentes",
+		"faqDesc": "Respuestas a las preguntas más comunes",
+		"solRestaurantsDesc": "Carta, WiFi y reseñas en la mesa",
+		"solRetailDesc": "Información y promociones en el lineal",
+		"solEventsDesc": "Entradas, check-in y programa",
+		"solRealEstateDesc": "Fichas y visitas desde el cartel",
+		"solEducationDesc": "Materiales y asistencia en clase",
+		"solMarketingDesc": "Campañas en impresos y envases",
+		"solMarketingTeamsDesc": "Enlaces de marca para cada campaña",
+		"solSocialMediaDesc": "Enlaces cortos para bios y publicaciones",
+		"solSalesDesc": "Enlaces rastreables para la prospección",
+		"solEcommerceDesc": "Enlaces para tienda, anuncios y newsletters",
+		"solDevelopersDesc": "API e integraciones para tu stack",
+		"solAgenciesDesc": "Enlaces y códigos para muchos clientes"
 	},
 	"footer": {
 		"tagline": "La plataforma de códigos QR de código abierto. Crea, gestiona y rastrea códigos QR con facilidad.",
@@ -294,7 +331,8 @@
 		"privacyPolicy": "Política de privacidad",
 		"termsOfService": "Términos de servicio",
 		"contact": "Contacto",
-		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED",
+		"scanner": "Escáner de códigos QR"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -2298,7 +2336,7 @@
 		"thankYouMessage": "Tu opinión nos ayuda a crear un mejor producto."
 	},
 	"qrCodesRestaurants": {
-		"metaTitle": "Códigos QR para Restaurantes – Menús Digitales, WiFi y Más | QRcodly",
+		"metaTitle": "Códigos QR para Restaurantes – Menús Digitales, WiFi y Más",
 		"metaDescription": "Cree códigos QR para su restaurante. Ofrezca menús digitales, acceso WiFi sencillo y realice seguimiento de la interacción — todo desde una sola plataforma.",
 		"hero": {
 			"title": "Códigos QR Diseñados para Restaurantes",
@@ -2422,7 +2460,7 @@
 		}
 	},
 	"qrCodesRetail": {
-		"metaTitle": "Códigos QR para Comercio Minorista – Información de Productos, Promociones y Seguimiento | QRcodly",
+		"metaTitle": "Códigos QR para Comercio Minorista – Información de Productos, Promociones y Seguimiento",
 		"metaDescription": "Use códigos QR en el comercio minorista para detalles de productos, promociones y engagement del cliente. Realice seguimiento de escaneos y actualice el contenido en cualquier momento.",
 		"hero": {
 			"title": "Códigos QR Diseñados para el Comercio Minorista",
@@ -2548,7 +2586,7 @@
 		}
 	},
 	"qrCodesEvents": {
-		"metaTitle": "Códigos QR para Eventos – Check-in, Programas y Networking | QRcodly",
+		"metaTitle": "Códigos QR para Eventos – Check-in, Programas y Networking",
 		"metaDescription": "Optimice sus eventos con códigos QR para check-in, programas y participación de asistentes. Cree y monitorice códigos QR para eventos fácilmente.",
 		"hero": {
 			"title": "Códigos QR Diseñados para Eventos",
@@ -2669,7 +2707,7 @@
 		}
 	},
 	"qrCodesRealEstate": {
-		"metaTitle": "Códigos QR para Inmobiliaria – Listados de Propiedades, Visitas Virtuales y Más | QRcodly",
+		"metaTitle": "Códigos QR para Inmobiliaria – Listados de Propiedades, Visitas Virtuales y Más",
 		"metaDescription": "Use códigos QR en inmobiliaria para listados de propiedades, visitas virtuales e inscripciones a jornadas de puertas abiertas. Monitorice la interacción de compradores fácilmente.",
 		"hero": {
 			"title": "Códigos QR Diseñados para Inmobiliaria",
@@ -2793,7 +2831,7 @@
 		}
 	},
 	"qrCodesEducation": {
-		"metaTitle": "Códigos QR para Educación – Recursos del Aula, Tareas y Más | QRcodly",
+		"metaTitle": "Códigos QR para Educación – Recursos del Aula, Tareas y Más",
 		"metaDescription": "Use códigos QR en educación para compartir recursos, tareas y materiales del aula. Involucre a los estudiantes con un simple escaneo.",
 		"hero": {
 			"title": "Códigos QR Diseñados para Educación",
@@ -2919,7 +2957,7 @@
 		}
 	},
 	"qrCodesMarketing": {
-		"metaTitle": "Códigos QR para Marketing – Campañas Impresas, Pruebas A/B y Branding | QRcodly",
+		"metaTitle": "Códigos QR para Marketing – Campañas Impresas, Pruebas A/B y Branding",
 		"metaDescription": "Conecte el marketing impreso y digital con códigos QR. Monitorice el rendimiento de campañas, personalice diseños y actualice destinos en cualquier momento.",
 		"hero": {
 			"title": "Códigos QR Diseñados para Marketing",
@@ -3042,7 +3080,7 @@
 		}
 	},
 	"urlShortenerMarketingTeams": {
-		"metaTitle": "Acortador de URL para Equipos de Marketing – Enlaces Personalizados y Seguimiento de Campañas | QRcodly",
+		"metaTitle": "Acortador de URL para Equipos de Marketing – Enlaces Personalizados y Seguimiento de Campañas",
 		"metaDescription": "Acorte y personalice sus enlaces de marketing. Monitorice clics, gestione campañas y use dominios personalizados — todo en una sola plataforma.",
 		"hero": {
 			"title": "Enlaces Cortos Diseñados para Equipos de Marketing",
@@ -3167,7 +3205,7 @@
 		}
 	},
 	"urlShortenerSocialMedia": {
-		"metaTitle": "Acortador de URL para Redes Sociales – Enlaces Limpios y Seguimiento de Clics | QRcodly",
+		"metaTitle": "Acortador de URL para Redes Sociales – Enlaces Limpios y Seguimiento de Clics",
 		"metaDescription": "Cree enlaces cortos y limpios para publicaciones en redes sociales. Monitorice clics y vea qué contenido genera más interacción.",
 		"hero": {
 			"title": "Enlaces Cortos Diseñados para Redes Sociales",
@@ -3304,7 +3342,7 @@
 		}
 	},
 	"urlShortenerSales": {
-		"metaTitle": "Acortador de URL para Equipos de Ventas – Enlaces Rastreables para Prospección | QRcodly",
+		"metaTitle": "Acortador de URL para Equipos de Ventas – Enlaces Rastreables para Prospección",
 		"metaDescription": "Cree enlaces cortos rastreables para la prospección comercial. Vea cuándo los prospectos hacen clic y mida la interacción en todas las campañas.",
 		"hero": {
 			"title": "Enlaces Cortos Diseñados para Equipos de Ventas",
@@ -3445,7 +3483,7 @@
 		}
 	},
 	"urlShortenerEcommerce": {
-		"metaTitle": "Acortador de URL para E-Commerce – Enlaces de Productos y Seguimiento por Canal | QRcodly",
+		"metaTitle": "Acortador de URL para E-Commerce – Enlaces de Productos y Seguimiento por Canal",
 		"metaDescription": "Cree enlaces cortos para páginas de productos, monitorice clics en todos los canales de venta y gestione URLs de campañas estacionales con facilidad.",
 		"hero": {
 			"title": "Enlaces Cortos Diseñados para E-Commerce",
@@ -3574,7 +3612,7 @@
 		}
 	},
 	"urlShortenerDevelopers": {
-		"metaTitle": "API de Acortador de URL para Desarrolladores – REST API y Dominios Personalizados | QRcodly",
+		"metaTitle": "API de Acortador de URL para Desarrolladores – REST API y Dominios Personalizados",
 		"metaDescription": "Integre el acortamiento de URLs en sus aplicaciones con nuestra REST API. Cree, gestione y monitorice enlaces cortos de forma programática.",
 		"hero": {
 			"title": "API de Acortador de URL para Desarrolladores",
@@ -3715,7 +3753,7 @@
 		}
 	},
 	"urlShortenerAgencies": {
-		"metaTitle": "Acortador de URL para Agencias – Dominios de Clientes, Enlaces Personalizados y Analíticas | QRcodly",
+		"metaTitle": "Acortador de URL para Agencias – Dominios de Clientes, Enlaces Personalizados y Analíticas",
 		"metaDescription": "Gestiona los enlaces cortos de todos tus clientes desde un solo sitio: tu dominio de agencia, etiquetas por cliente y analítica por enlace. Hecho para agencias.",
 		"hero": {
 			"title": "Enlaces Cortos Diseñados para Agencias",
@@ -3877,5 +3915,200 @@
 		"description": "Este enlace fue desactivado porque su destino se reportó como no seguro.",
 		"note": "Para protegerte no te hemos redirigido. No introduzcas datos personales si llegaste aquí desde un mensaje inesperado.",
 		"button": "Volver al inicio"
+	},
+	"qrScannerTool": {
+		"metaTitle": "Leer código QR online – Escanear y descifrar códigos QR desde una imagen, sin app",
+		"metaDescription": "Lee un código QR online desde una foto, una captura de pantalla o tu cámara, en PC, Mac, iPhone y Android, sin instalar ninguna app. Gratis, sin registro y descifrado al 100 % en tu navegador.",
+		"hero": {
+			"title": "Leer un código QR online",
+			"subtitle": "Escanea y descifra cualquier código QR desde una imagen, una captura de pantalla o tu cámara, sin app. Funciona en PC, Mac, iPhone y Android, directamente en tu navegador."
+		},
+		"trust": {
+			"item1": "Funciona al 100 % en tu navegador",
+			"item2": "Gratis, sin registro",
+			"item3": "PC, Mac, iPhone y Android"
+		},
+		"scanner": {
+			"dropzoneTitle": "Arrastra tu imagen aquí o elige un archivo",
+			"dropzoneHint": "Foto, captura de pantalla o archivo: PNG, JPG, WebP, GIF o SVG. O pégala con Ctrl+V / ⌘V.",
+			"selectImage": "Seleccionar imagen",
+			"useCamera": "Escanear con la cámara",
+			"stopCamera": "Detener cámara",
+			"cameraVideoLabel": "Vista previa en directo de la cámara",
+			"cameraStarting": "Iniciando la cámara…",
+			"cameraHint": "Apunta la cámara a un código QR. La cámara se apaga en cuanto se detecta un código.",
+			"decoding": "Leyendo el código QR…",
+			"previewAlt": "Imagen escaneada",
+			"scanAnother": "Escanear otro código",
+			"privacyNote": "Tu imagen se procesa únicamente en tu dispositivo y nunca se sube a un servidor.",
+			"errors": {
+				"noQrFound": "No se encontró ningún código QR. Asegúrate de que el código esté nítido, completamente visible y con algo de margen claro alrededor.",
+				"invalidFile": "Selecciona un archivo de imagen (PNG, JPG, WebP, GIF o SVG).",
+				"decodeFailed": "No se pudo leer esta imagen. Prueba con otro archivo u otro formato.",
+				"cameraDenied": "Se denegó el acceso a la cámara. Permítelo en la configuración del navegador o sube una imagen en su lugar.",
+				"cameraUnavailable": "No hay ninguna cámara disponible en este navegador. Sube una imagen o pega una captura de pantalla."
+			}
+		},
+		"result": {
+			"title": "Resultado del escaneo",
+			"copy": "Copiar",
+			"copied": "Copiado",
+			"copyPassword": "Copiar contraseña",
+			"showPassword": "Mostrar contraseña",
+			"hidePassword": "Ocultar contraseña",
+			"rawContent": "Mostrar datos sin procesar",
+			"openLink": "Abrir enlace",
+			"downloadVcf": "Guardar contacto (.vcf)",
+			"composeEmail": "Escribir correo",
+			"call": "Llamar",
+			"sendSms": "Enviar SMS",
+			"showOnMap": "Ver en el mapa",
+			"linkNotice": "Este enlace lleva a un sitio web externo. Comprueba el dominio antes de continuar y abre solo enlaces de fuentes en las que confíes.",
+			"shortLinkNotice": "Este es un enlace acortado. Su destino real solo se revela al abrirlo: continúa únicamente si confías en la fuente.",
+			"types": {
+				"url": "Enlace web",
+				"wifi": "Red WiFi",
+				"vcard": "Contacto",
+				"email": "Correo electrónico",
+				"phone": "Número de teléfono",
+				"sms": "SMS",
+				"geo": "Ubicación",
+				"text": "Texto"
+			},
+			"fields": {
+				"ssid": "Nombre de red (SSID)",
+				"password": "Contraseña",
+				"encryption": "Seguridad",
+				"noPassword": "Red abierta (sin contraseña)",
+				"hidden": "Red oculta",
+				"yes": "Sí",
+				"no": "No",
+				"name": "Nombre",
+				"organization": "Organización",
+				"jobTitle": "Cargo",
+				"phone": "Teléfono",
+				"email": "Correo electrónico",
+				"website": "Sitio web",
+				"address": "Dirección",
+				"note": "Nota",
+				"to": "Para",
+				"subject": "Asunto",
+				"message": "Mensaje",
+				"number": "Número",
+				"latitude": "Latitud",
+				"longitude": "Longitud"
+			}
+		},
+		"steps": {
+			"title": "Cómo leer un código QR sin app",
+			"subtitle": "Tres pasos, sin app y sin cuenta: funciona en tu móvil, tablet y ordenador.",
+			"step1": {
+				"title": "Añade la imagen",
+				"description": "Arrastra una foto o captura de pantalla del código QR al recuadro, elige un archivo o pégalo desde el portapapeles. También puedes iniciar la cámara."
+			},
+			"step2": {
+				"title": "El código se descifra en tu dispositivo",
+				"description": "El escáner encuentra el código QR y lo lee directamente en tu navegador. No se sube ni se guarda nada."
+			},
+			"step3": {
+				"title": "Lee, copia o abre el contenido",
+				"description": "Descubre qué contiene el código: un enlace, credenciales WiFi, un contacto o texto. Cópialo, guarda el contacto o abre el enlace cuando tú lo decidas."
+			}
+		},
+		"contentTypes": {
+			"title": "Qué reconoce el lector de códigos QR",
+			"subtitle": "El contenido descifrado se muestra de forma legible en lugar de texto sin procesar, con la acción adecuada para cada tipo.",
+			"url": {
+				"title": "Enlaces web",
+				"description": "La URL completa con el dominio resaltado. El enlace solo se abre cuando haces clic."
+			},
+			"wifi": {
+				"title": "Acceso WiFi",
+				"description": "Nombre de la red, tipo de seguridad y contraseña, oculta hasta que la muestres."
+			},
+			"vcard": {
+				"title": "Contactos (vCard)",
+				"description": "Nombre, teléfonos, correo y dirección. Guarda el contacto como archivo .vcf."
+			},
+			"email": {
+				"title": "Correo electrónico",
+				"description": "Destinatario, asunto y mensaje de códigos mailto:, listos para enviar."
+			},
+			"phone": {
+				"title": "Números de teléfono",
+				"description": "Números de códigos tel:, con botón de llamada en tu móvil."
+			},
+			"sms": {
+				"title": "SMS",
+				"description": "Destinatario y mensaje predefinido de códigos SMS."
+			},
+			"geo": {
+				"title": "Ubicaciones",
+				"description": "Coordenadas de códigos geo:, con un enlace para verlas en un mapa."
+			},
+			"text": {
+				"title": "Texto plano",
+				"description": "Todo lo demás se muestra como texto: números de serie, entradas, notas."
+			}
+		},
+		"privacy": {
+			"title": "Privado por diseño",
+			"tip1": {
+				"title": "Sin subidas, nunca",
+				"description": "La librería de decodificación se ejecuta en tu navegador. Tus fotos y capturas nunca salen de tu dispositivo."
+			},
+			"tip2": {
+				"title": "Sin cuenta, sin límites",
+				"description": "Escanea tantos códigos QR como quieras, sin registrarte, sin marcas de agua y sin contador."
+			},
+			"tip3": {
+				"title": "Cualquier origen",
+				"description": "Fotos del móvil, capturas de pantalla, archivos descargados o la cámara en directo: cualquier formato que tu navegador pueda mostrar."
+			},
+			"tip4": {
+				"title": "Tú decides qué se abre",
+				"description": "Los enlaces nunca se abren automáticamente. Primero ves la URL completa y el dominio, con un aviso en los enlaces acortados."
+			}
+		},
+		"dynamic": {
+			"title": "¿Has encontrado un enlace corto? Es un código QR dinámico",
+			"description": "Los códigos QR dinámicos no contienen el destino final. Apuntan a un enlace corto de redirección que su propietario puede cambiar en cualquier momento, sin reimprimir el código. Así es también como se cuentan los escaneos.",
+			"point1": "Cambia el destino cuando quieras, incluso después de imprimir",
+			"point2": "Descubre cuántas veces, cuándo y dónde se escanea el código",
+			"point3": "Gratis con QRcodly, estadísticas de escaneo incluidas",
+			"ctaLabel": "Más información sobre los códigos QR dinámicos",
+			"visual": {
+				"label": "Código QR dinámico",
+				"badge": "Mismo código",
+				"aria": "Un código QR impreso se redirige de un destino antiguo a uno nuevo",
+				"printedLabel": "Impreso una vez",
+				"oldDestination": "/menu/invierno-2025",
+				"newDestination": "/menu/primavera-2026",
+				"footnote": "Nuevo destino, el mismo código impreso: cada escaneo se cuenta por el camino."
+			}
+		},
+		"faq": {
+			"title": "Preguntas frecuentes",
+			"viewAll": "Ver todas las preguntas",
+			"q1": "¿Este escáner de códigos QR es gratuito?",
+			"a1": "Sí. El lector de códigos QR online es totalmente gratuito, no necesita cuenta y no tiene límite de escaneos.",
+			"q2": "¿Mis imágenes se suben a un servidor?",
+			"a2": "No. La imagen se descifra directamente en tu navegador. No se envía nada a QRcodly ni a terceros, y no se guarda nada.",
+			"q3": "¿Qué formatos de archivo puedo escanear?",
+			"a3": "PNG, JPG, WebP, GIF, BMP y SVG, además de capturas de pantalla pegadas desde el portapapeles. Los PDF no son compatibles: haz una captura de pantalla del código.",
+			"q4": "¿Por qué no se detecta mi código QR?",
+			"a4": "Normalmente la imagen está borrosa, es demasiado pequeña o está recortada, el código tiene poco margen claro alrededor o los colores tienen poco contraste. Prueba con una imagen más nítida y grande o con una captura sin elementos alrededor.",
+			"q5": "¿Puedo escanear un código QR con la cámara?",
+			"a5": "Sí. Haz clic en «Escanear con la cámara» y permite el acceso. La imagen en directo se analiza solo en tu dispositivo, y la cámara se apaga en cuanto se detecta un código o sales de la página.",
+			"q6": "¿Es seguro abrir un enlace de un código QR?",
+			"a6": "Un enlace es tan seguro como el sitio web al que lleva. El escáner te muestra la URL completa y el dominio antes de abrir nada. Ten cuidado con los enlaces acortados y los dominios desconocidos, y nunca introduzcas contraseñas ni datos de pago en una página a la que llegaste por un código inesperado.",
+			"q7": "¿Cómo leo un código QR en mi PC sin app?",
+			"a7": "Haz una captura de pantalla del código o guarda la imagen, arrástrala al escáner de arriba o pégala con Ctrl+V. El contenido aparece al instante: sin app, sin extensión y sin cuenta."
+		},
+		"cta": {
+			"title": "Crea tu propio código QR",
+			"subtitle": "Diseña en segundos un código QR gratuito con tu logo y tus colores: para enlaces, WiFi, contactos y más.",
+			"ctaLabel": "Crear un código QR gratis"
+		}
 	}
 }
