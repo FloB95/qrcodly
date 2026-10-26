@@ -118,6 +118,16 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 							</li>
 							<li>
 								<Link
+									href="/tools/qr-code-scanner"
+									title={t('scanner')}
+									aria-label={t('scanner')}
+									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+								>
+									{t('scanner')}
+								</Link>
+							</li>
+							<li>
+								<Link
 									href="/docs"
 									target="_blank"
 									locale={'en'}

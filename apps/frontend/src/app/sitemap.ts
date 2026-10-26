@@ -11,6 +11,7 @@ const PAGES = [
 	'products/url-shortener',
 	'products/qr-codes',
 	'products/analytics',
+	'tools/qr-code-scanner',
 	'faq',
 	'imprint',
 	'privacy-policy',

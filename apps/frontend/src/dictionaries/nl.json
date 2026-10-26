@@ -275,7 +275,44 @@
 		"analyticsLink": "Analyse",
 		"urlShortenerDesc": "Verkort, brand en volg elke link",
 		"qrCodesDesc": "Maak en pas dynamische QR-codes aan",
-		"analyticsDesc": "Meet prestaties over alle kanalen"
+		"analyticsDesc": "Meet prestaties over alle kanalen",
+		"toolsLabel": "Gratis tools",
+		"scannerLink": "QR-codescanner",
+		"scannerDesc": "Lees elke QR-code direct in je browser",
+		"solutionsBtn": "Oplossingen",
+		"resourcesBtn": "Bronnen",
+		"allFeaturesLink": "Alle functies",
+		"allFeaturesDesc": "Alles wat QRcodly kan, in één oogopslag",
+		"byIndustryLabel": "Per branche",
+		"byTeamLabel": "Per team",
+		"solRestaurants": "Restaurants",
+		"solRetail": "Retail",
+		"solEvents": "Evenementen",
+		"solRealEstate": "Vastgoed",
+		"solEducation": "Onderwijs",
+		"solMarketing": "Marketing",
+		"solMarketingTeams": "Marketingteams",
+		"solSocialMedia": "Social media",
+		"solSales": "Sales",
+		"solEcommerce": "E-commerce",
+		"solDevelopers": "Ontwikkelaars",
+		"solAgencies": "Bureaus",
+		"docsLink": "Documentatie & API",
+		"docsDesc": "Handleidingen, API-referentie en integraties",
+		"faqLink": "FAQ",
+		"faqDesc": "Antwoorden op de meestgestelde vragen",
+		"solRestaurantsDesc": "Menu, wifi en reviews aan tafel",
+		"solRetailDesc": "Productinfo en acties in het schap",
+		"solEventsDesc": "Tickets, check-in en programma",
+		"solRealEstateDesc": "Brochures en bezichtigingen via het bord",
+		"solEducationDesc": "Materiaal en aanwezigheid in de les",
+		"solMarketingDesc": "Campagnes op print en verpakking",
+		"solMarketingTeamsDesc": "Branded links voor elke campagne",
+		"solSocialMediaDesc": "Korte links voor bio’s en posts",
+		"solSalesDesc": "Traceerbare links voor outreach",
+		"solEcommerceDesc": "Links voor shop, ads en nieuwsbrieven",
+		"solDevelopersDesc": "API en integraties voor je stack",
+		"solAgenciesDesc": "Links en codes voor veel klanten"
 	},
 	"footer": {
 		"tagline": "Het open-source QR-codeplatform. Maak, beheer en volg QR-codes met gemak.",
@@ -294,7 +331,8 @@
 		"privacyPolicy": "Privacybeleid",
 		"termsOfService": "Algemene voorwaarden",
 		"contact": "Contact",
-		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED"
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED",
+		"scanner": "QR-codescanner"
 	},
 	"contentElements": {
 		"iconPicker": {
@@ -2267,7 +2305,7 @@
 		"thankYouMessage": "Je feedback helpt ons een beter product te maken."
 	},
 	"qrCodesRestaurants": {
-		"metaTitle": "QR-codes voor restaurants – Digitale menu's, WiFi en meer | QRcodly",
+		"metaTitle": "QR-codes voor restaurants – Digitale menu's, WiFi en meer",
 		"metaDescription": "Maak QR-codes voor uw restaurant. Bied digitale menu's, eenvoudige WiFi-toegang en volg betrokkenheid — alles vanuit één platform.",
 		"hero": {
 			"title": "QR-codes speciaal voor restaurants",
@@ -2391,7 +2429,7 @@
 		}
 	},
 	"qrCodesRetail": {
-		"metaTitle": "QR-codes voor retail – Productinformatie, promoties en tracking | QRcodly",
+		"metaTitle": "QR-codes voor retail – Productinformatie, promoties en tracking",
 		"metaDescription": "Gebruik QR-codes in de retail voor productdetails, promoties en klantbetrokkenheid. Volg scans en werk inhoud op elk moment bij.",
 		"hero": {
 			"title": "QR-codes speciaal voor retail",
@@ -2517,7 +2555,7 @@
 		}
 	},
 	"qrCodesEvents": {
-		"metaTitle": "QR-codes voor evenementen – Inchecken, programma's en netwerken | QRcodly",
+		"metaTitle": "QR-codes voor evenementen – Inchecken, programma's en netwerken",
 		"metaDescription": "Stroomlijn evenementen met QR-codes voor inchecken, programma's en deelnemersbetrokkenheid. Maak en volg QR-codes voor evenementen eenvoudig.",
 		"hero": {
 			"title": "QR-codes speciaal voor evenementen",
@@ -2638,7 +2676,7 @@
 		}
 	},
 	"qrCodesRealEstate": {
-		"metaTitle": "QR-codes voor vastgoed – Woningaanbiedingen, virtuele rondleidingen en meer | QRcodly",
+		"metaTitle": "QR-codes voor vastgoed – Woningaanbiedingen, virtuele rondleidingen en meer",
 		"metaDescription": "Gebruik QR-codes in vastgoed voor woningaanbiedingen, virtuele rondleidingen en open-huisregistraties. Volg de betrokkenheid van kopers eenvoudig.",
 		"hero": {
 			"title": "QR-codes speciaal voor vastgoed",
@@ -2762,7 +2800,7 @@
 		}
 	},
 	"qrCodesEducation": {
-		"metaTitle": "QR-codes voor onderwijs – Lesmaterialen, opdrachten en meer | QRcodly",
+		"metaTitle": "QR-codes voor onderwijs – Lesmaterialen, opdrachten en meer",
 		"metaDescription": "Gebruik QR-codes in het onderwijs om bronnen, opdrachten en lesmateriaal te delen. Betrek studenten met een eenvoudige scan.",
 		"hero": {
 			"title": "QR-codes speciaal voor onderwijs",
@@ -2888,7 +2926,7 @@
 		}
 	},
 	"qrCodesMarketing": {
-		"metaTitle": "QR-codes voor marketing – Printcampagnes, A/B-testen en branding | QRcodly",
+		"metaTitle": "QR-codes voor marketing – Printcampagnes, A/B-testen en branding",
 		"metaDescription": "Overbrugde print en digitale marketing met QR-codes. Volg campagneprestaties, pas ontwerpen aan en werk bestemmingen op elk moment bij.",
 		"hero": {
 			"title": "QR-codes speciaal voor marketing",
@@ -3011,7 +3049,7 @@
 		}
 	},
 	"urlShortenerMarketingTeams": {
-		"metaTitle": "URL-verkorter voor marketingteams – Merkgebonden links en campagnetracking | QRcodly",
+		"metaTitle": "URL-verkorter voor marketingteams – Merkgebonden links en campagnetracking",
 		"metaDescription": "Verkort en brand uw marketinglinks. Volg klikken, beheer campagnes en gebruik aangepaste domeinen — alles in één platform.",
 		"hero": {
 			"title": "Korte links speciaal voor marketingteams",
@@ -3136,7 +3174,7 @@
 		}
 	},
 	"urlShortenerSocialMedia": {
-		"metaTitle": "URL-verkorter voor social media – Nette links en kliktracking | QRcodly",
+		"metaTitle": "URL-verkorter voor social media – Nette links en kliktracking",
 		"metaDescription": "Maak korte, nette links voor social media-berichten. Volg klikken en ontdek welke inhoud de meeste betrokkenheid genereert.",
 		"hero": {
 			"title": "Korte links speciaal voor social media",
@@ -3273,7 +3311,7 @@
 		}
 	},
 	"urlShortenerSales": {
-		"metaTitle": "URL-verkorter voor salesteams – Traceerbare links voor outreach | QRcodly",
+		"metaTitle": "URL-verkorter voor salesteams – Traceerbare links voor outreach",
 		"metaDescription": "Maak traceerbare korte links voor salesoutreach. Zie wanneer prospects klikken en meet betrokkenheid over campagnes.",
 		"hero": {
 			"title": "Korte links speciaal voor salesteams",
@@ -3414,7 +3452,7 @@
 		}
 	},
 	"urlShortenerEcommerce": {
-		"metaTitle": "URL-verkorter voor e-commerce – Productlinks en kanaaltracking | QRcodly",
+		"metaTitle": "URL-verkorter voor e-commerce – Productlinks en kanaaltracking",
 		"metaDescription": "Maak korte links voor productpagina's, volg klikken over verkoopkanalen en beheer seizoenscampagne-URL's met gemak.",
 		"hero": {
 			"title": "Korte links speciaal voor e-commerce",
@@ -3543,7 +3581,7 @@
 		}
 	},
 	"urlShortenerDevelopers": {
-		"metaTitle": "URL-verkorter API voor ontwikkelaars – REST API en aangepaste domeinen | QRcodly",
+		"metaTitle": "URL-verkorter API voor ontwikkelaars – REST API en aangepaste domeinen",
 		"metaDescription": "Integreer URL-verkorting in uw apps met onze REST API. Maak, beheer en volg korte links programmatisch.",
 		"hero": {
 			"title": "URL-verkorter API voor ontwikkelaars",
@@ -3684,7 +3722,7 @@
 		}
 	},
 	"urlShortenerAgencies": {
-		"metaTitle": "URL-verkorter voor bureaus – Klantdomeinen, merkgebonden links en analyses | QRcodly",
+		"metaTitle": "URL-verkorter voor bureaus – Klantdomeinen, merkgebonden links en analyses",
 		"metaDescription": "Beheer de korte links van al je klanten vanaf één plek: je bureaudomein, labels per klant en statistieken per link. Gemaakt voor bureaus.",
 		"hero": {
 			"title": "Korte links speciaal voor bureaus",
@@ -3846,5 +3884,200 @@
 		"description": "Deze link is uitgeschakeld omdat de bestemming als onveilig is gerapporteerd.",
 		"note": "Ter bescherming hebben we je niet doorgestuurd. Vul geen persoonlijke gegevens in als je hier via een onverwacht bericht terechtkwam.",
 		"button": "Terug naar home"
+	},
+	"qrScannerTool": {
+		"metaTitle": "QR-code uitlezen & online scannen – zonder app, direct in je browser",
+		"metaDescription": "Lees een QR-code online uit een foto, screenshot of je camera – op pc, Mac, iPhone en Android, zonder app te installeren. Gratis, zonder registratie, 100 % in je browser gedecodeerd.",
+		"hero": {
+			"title": "QR-code online uitlezen",
+			"subtitle": "Scan en decodeer elke QR-code uit een afbeelding, screenshot of je camera – zonder app. Werkt op pc, Mac, iPhone en Android, direct in je browser."
+		},
+		"trust": {
+			"item1": "Werkt 100 % in je browser",
+			"item2": "Gratis, zonder registratie",
+			"item3": "Pc, Mac, iPhone & Android"
+		},
+		"scanner": {
+			"dropzoneTitle": "Sleep je afbeelding hierheen of kies een bestand",
+			"dropzoneHint": "Foto, screenshot of bestand – PNG, JPG, WebP, GIF of SVG. Of plak hem met Ctrl+V / ⌘V.",
+			"selectImage": "Afbeelding kiezen",
+			"useCamera": "Scannen met camera",
+			"stopCamera": "Camera stoppen",
+			"cameraVideoLabel": "Live cameravoorbeeld",
+			"cameraStarting": "Camera wordt gestart…",
+			"cameraHint": "Richt je camera op een QR-code. De camera gaat uit zodra een code is herkend.",
+			"decoding": "QR-code wordt gelezen…",
+			"previewAlt": "Gescande afbeelding",
+			"scanAnother": "Nog een code scannen",
+			"privacyNote": "Je afbeelding wordt alleen op je apparaat verwerkt en nooit naar een server geüpload.",
+			"errors": {
+				"noQrFound": "Geen QR-code gevonden. Zorg dat de code scherp en volledig zichtbaar is en wat lichte ruimte eromheen heeft.",
+				"invalidFile": "Kies een afbeeldingsbestand (PNG, JPG, WebP, GIF of SVG).",
+				"decodeFailed": "Deze afbeelding kon niet worden gelezen. Probeer een ander bestand of een ander formaat.",
+				"cameraDenied": "Toegang tot de camera is geweigerd. Sta het toe in je browserinstellingen of upload in plaats daarvan een afbeelding.",
+				"cameraUnavailable": "Er is geen camera beschikbaar in deze browser. Upload een afbeelding of plak een screenshot."
+			}
+		},
+		"result": {
+			"title": "Scanresultaat",
+			"copy": "Kopiëren",
+			"copied": "Gekopieerd",
+			"copyPassword": "Wachtwoord kopiëren",
+			"showPassword": "Wachtwoord tonen",
+			"hidePassword": "Wachtwoord verbergen",
+			"rawContent": "Ruwe gegevens tonen",
+			"openLink": "Link openen",
+			"downloadVcf": "Contact opslaan (.vcf)",
+			"composeEmail": "E-mail schrijven",
+			"call": "Bellen",
+			"sendSms": "Sms versturen",
+			"showOnMap": "Op kaart tonen",
+			"linkNotice": "Deze link leidt naar een externe website. Controleer het domein voordat je verdergaat en open alleen links van bronnen die je vertrouwt.",
+			"shortLinkNotice": "Dit is een verkorte link. De echte bestemming wordt pas zichtbaar na het openen – ga alleen verder als je de bron vertrouwt.",
+			"types": {
+				"url": "Websitelink",
+				"wifi": "Wifi-netwerk",
+				"vcard": "Contact",
+				"email": "E-mail",
+				"phone": "Telefoonnummer",
+				"sms": "Sms",
+				"geo": "Locatie",
+				"text": "Tekst"
+			},
+			"fields": {
+				"ssid": "Netwerknaam (SSID)",
+				"password": "Wachtwoord",
+				"encryption": "Beveiliging",
+				"noPassword": "Open netwerk (geen wachtwoord)",
+				"hidden": "Verborgen netwerk",
+				"yes": "Ja",
+				"no": "Nee",
+				"name": "Naam",
+				"organization": "Organisatie",
+				"jobTitle": "Functie",
+				"phone": "Telefoon",
+				"email": "E-mail",
+				"website": "Website",
+				"address": "Adres",
+				"note": "Notitie",
+				"to": "Aan",
+				"subject": "Onderwerp",
+				"message": "Bericht",
+				"number": "Nummer",
+				"latitude": "Breedtegraad",
+				"longitude": "Lengtegraad"
+			}
+		},
+		"steps": {
+			"title": "Zo lees je een QR-code uit zonder app",
+			"subtitle": "Drie stappen, geen app en geen account – werkt op je telefoon, tablet en computer.",
+			"step1": {
+				"title": "Voeg de afbeelding toe",
+				"description": "Sleep een foto of screenshot van de QR-code naar het vak, kies een bestand of plak het vanaf het klembord. Je kunt ook je camera starten."
+			},
+			"step2": {
+				"title": "De code wordt op je apparaat gedecodeerd",
+				"description": "De scanner vindt de QR-code en leest hem direct in je browser uit. Er wordt niets geüpload en niets opgeslagen."
+			},
+			"step3": {
+				"title": "Lees, kopieer of open de inhoud",
+				"description": "Zie wat de code bevat – een link, wifi-gegevens, een contact of gewone tekst. Kopieer het, sla het contact op of open de link wanneer jij dat wilt."
+			}
+		},
+		"contentTypes": {
+			"title": "Wat de QR-codelezer herkent",
+			"subtitle": "De gedecodeerde inhoud wordt leesbaar weergegeven in plaats van als ruwe tekst – met de passende actie voor elk type.",
+			"url": {
+				"title": "Websitelinks",
+				"description": "De volledige URL met het domein gemarkeerd. De link opent pas als je erop klikt."
+			},
+			"wifi": {
+				"title": "Wifi-toegang",
+				"description": "Netwerknaam, beveiligingstype en wachtwoord – verborgen totdat je het toont."
+			},
+			"vcard": {
+				"title": "Contacten (vCard)",
+				"description": "Naam, telefoonnummers, e-mail en adres. Sla het contact op als .vcf-bestand."
+			},
+			"email": {
+				"title": "E-mail",
+				"description": "Ontvanger, onderwerp en bericht uit mailto:-codes, klaar om te versturen."
+			},
+			"phone": {
+				"title": "Telefoonnummers",
+				"description": "Nummers uit tel:-codes, met een belknop op je telefoon."
+			},
+			"sms": {
+				"title": "Sms",
+				"description": "Ontvanger en vooraf ingevuld bericht uit sms-codes."
+			},
+			"geo": {
+				"title": "Locaties",
+				"description": "Coördinaten uit geo:-codes, met een link om ze op een kaart te tonen."
+			},
+			"text": {
+				"title": "Platte tekst",
+				"description": "Al het andere wordt als tekst getoond – serienummers, tickets, notities."
+			}
+		},
+		"privacy": {
+			"title": "Privacy by design",
+			"tip1": {
+				"title": "Nooit een upload",
+				"description": "De decodeerbibliotheek draait in je browser. Je foto's en screenshots verlaten je apparaat nooit."
+			},
+			"tip2": {
+				"title": "Geen account, geen limieten",
+				"description": "Scan zoveel QR-codes als je wilt – zonder registratie, zonder watermerk, zonder teller."
+			},
+			"tip3": {
+				"title": "Elke bron",
+				"description": "Foto's van je telefoon, screenshots, gedownloade bestanden of de live camera – elk formaat dat je browser kan weergeven."
+			},
+			"tip4": {
+				"title": "Jij bepaalt wat er opent",
+				"description": "Links worden nooit automatisch geopend. Je ziet eerst de volledige URL en het domein, met een melding bij verkorte links."
+			}
+		},
+		"dynamic": {
+			"title": "Een korte link gevonden? Dat is een dynamische QR-code",
+			"description": "Dynamische QR-codes bevatten niet de uiteindelijke bestemming. Ze verwijzen naar een korte doorstuurlink die de eigenaar op elk moment kan wijzigen – zonder de code opnieuw te drukken. Zo worden ook scans geteld.",
+			"point1": "Wijzig de bestemming op elk moment, ook na het drukken",
+			"point2": "Zie hoe vaak, wanneer en waar de code wordt gescand",
+			"point3": "Gratis met QRcodly – inclusief scanstatistieken",
+			"ctaLabel": "Meer over dynamische QR-codes",
+			"visual": {
+				"label": "Dynamische QR-code",
+				"badge": "Dezelfde code",
+				"aria": "Een gedrukte QR-code wordt van een oude naar een nieuwe bestemming omgeleid",
+				"printedLabel": "Eén keer gedrukt",
+				"oldDestination": "/menu/winter-2025",
+				"newDestination": "/menu/lente-2026",
+				"footnote": "Nieuwe bestemming, dezelfde gedrukte code – elke scan wordt onderweg geteld."
+			}
+		},
+		"faq": {
+			"title": "Veelgestelde vragen",
+			"viewAll": "Alle FAQ's bekijken",
+			"q1": "Is deze QR-codescanner gratis?",
+			"a1": "Ja. De online QR-codelezer is volledig gratis, vereist geen account en heeft geen scanlimiet.",
+			"q2": "Worden mijn afbeeldingen naar een server geüpload?",
+			"a2": "Nee. De afbeelding wordt direct in je browser gedecodeerd. Er wordt niets naar QRcodly of derden gestuurd en er wordt niets opgeslagen.",
+			"q3": "Welke bestandsformaten kan ik scannen?",
+			"a3": "PNG, JPG, WebP, GIF, BMP en SVG, plus screenshots die je vanaf het klembord plakt. Pdf's worden niet ondersteund – maak in plaats daarvan een screenshot van de code.",
+			"q4": "Waarom wordt mijn QR-code niet herkend?",
+			"a4": "Meestal is de afbeelding wazig, te klein of afgesneden, heeft de code te weinig lichte ruimte eromheen of hebben de kleuren te weinig contrast. Probeer een scherpere, grotere afbeelding of een screenshot zonder storende omgeving.",
+			"q5": "Kan ik een QR-code met mijn camera scannen?",
+			"a5": "Ja. Klik op 'Scannen met camera' en geef toegang tot de camera. Het livebeeld wordt alleen op je apparaat geanalyseerd en de camera gaat uit zodra een code is herkend of je de pagina verlaat.",
+			"q6": "Is het veilig om een link uit een QR-code te openen?",
+			"a6": "Een link is zo veilig als de website erachter. De scanner toont je de volledige URL en het domein voordat je iets opent. Wees voorzichtig met verkorte links en onbekende domeinen en voer nooit wachtwoorden of betaalgegevens in op een pagina die je via een onverwachte code hebt bereikt.",
+			"q7": "Hoe lees ik een QR-code op mijn pc uit zonder app?",
+			"a7": "Maak een screenshot van de code of sla de afbeelding op, sleep hem naar de scanner hierboven of plak hem met Ctrl+V. De inhoud verschijnt meteen – zonder app, zonder extensie, zonder account."
+		},
+		"cta": {
+			"title": "Maak je eigen QR-code",
+			"subtitle": "Ontwerp in enkele seconden een gratis QR-code met je logo en kleuren – voor links, wifi, contacten en meer.",
+			"ctaLabel": "Gratis QR-code maken"
+		}
 	}
 }
