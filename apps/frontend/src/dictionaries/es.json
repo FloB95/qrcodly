@@ -666,6 +666,9 @@
 				"location": "UBICACIÓN",
 				"event": "EVENTO",
 				"epc": "BANCO",
+				"phone": "TELÉFONO",
+				"sms": "SMS",
+				"whatsapp": "WHATSAPP",
 				"socials": "REDES"
 			},
 			"cancel": "Cancelar",
@@ -875,6 +878,34 @@
 				"purpose": {
 					"label": "Concepto",
 					"placeholder": "Motivo del pago"
+				}
+			},
+			"phone": {
+				"phone": {
+					"label": "Número de teléfono",
+					"placeholder": "p. ej. +34 600 123 456",
+					"hint": "Al escanear el código QR se llama a este número."
+				}
+			},
+			"sms": {
+				"phone": {
+					"label": "Número de teléfono",
+					"placeholder": "p. ej. +34 600 123 456"
+				},
+				"message": {
+					"label": "Mensaje",
+					"placeholder": "Mensaje de texto opcional"
+				}
+			},
+			"whatsapp": {
+				"phone": {
+					"label": "Número de WhatsApp",
+					"placeholder": "p. ej. +34 600 123 456",
+					"hint": "Usa el formato internacional con el prefijo del país, p. ej. +34 para España."
+				},
+				"message": {
+					"label": "Mensaje",
+					"placeholder": "Mensaje de chat opcional"
 				}
 			},
 			"social": {

@@ -7,9 +7,12 @@ import {
 	IdentificationIcon,
 	LinkIcon,
 	MapPinIcon,
+	PhoneIcon,
+	ChatBubbleBottomCenterTextIcon,
 	WifiIcon,
 } from '@heroicons/react/24/outline';
 import type { TQrCodeContentType, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import { WhatsAppIcon } from '../components/WhatsAppIcon';
 
 // Icons match the web app's content-type.config.ts.
 export const CONTENT_TYPES: Record<
@@ -24,6 +27,9 @@ export const CONTENT_TYPES: Record<
 	location: { label: 'Location', icon: MapPinIcon },
 	event: { label: 'Event', icon: CalendarDaysIcon },
 	epc: { label: 'EPC', icon: BanknotesIcon },
+	phone: { label: 'Phone', icon: PhoneIcon },
+	sms: { label: 'SMS', icon: ChatBubbleBottomCenterTextIcon },
+	whatsapp: { label: 'WhatsApp', icon: WhatsAppIcon },
 };
 
 export function isDynamicQrCode(qr: TQrCodeWithRelationsResponseDto): boolean {

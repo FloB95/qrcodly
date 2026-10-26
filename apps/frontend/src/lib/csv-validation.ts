@@ -5,6 +5,9 @@ import {
 	TextInputSchema,
 	WifiInputSchema,
 	VCardInputSchema,
+	PhoneInputSchema,
+	SmsInputSchema,
+	WhatsAppInputSchema,
 	type TQrCodeContentType,
 } from '@shared/schemas';
 
@@ -35,6 +38,21 @@ const BulkVCardCsvSchema = z.object({
 	...QrCodeSchema.pick({ name: true }).shape,
 	...vCardShapeWithoutDynamic,
 	isDynamic: booleanPreprocess,
+});
+
+const BulkPhoneCsvSchema = z.object({
+	...QrCodeSchema.pick({ name: true }).shape,
+	...PhoneInputSchema.shape,
+});
+
+const BulkSmsCsvSchema = z.object({
+	...QrCodeSchema.pick({ name: true }).shape,
+	...SmsInputSchema.shape,
+});
+
+const BulkWhatsAppCsvSchema = z.object({
+	...QrCodeSchema.pick({ name: true }).shape,
+	...WhatsAppInputSchema.shape,
 });
 
 const columnMap: Partial<Record<TQrCodeContentType, { columns: string[]; schema: z.ZodObject }>> = {
@@ -79,6 +97,18 @@ const columnMap: Partial<Record<TQrCodeContentType, { columns: string[]; schema:
 			'isDynamic',
 		],
 		schema: BulkVCardCsvSchema,
+	},
+	phone: {
+		columns: ['phone', 'name'],
+		schema: BulkPhoneCsvSchema,
+	},
+	sms: {
+		columns: ['phone', 'message', 'name'],
+		schema: BulkSmsCsvSchema,
+	},
+	whatsapp: {
+		columns: ['phone', 'message', 'name'],
+		schema: BulkWhatsAppCsvSchema,
 	},
 };
 

@@ -657,6 +657,9 @@
 				"location": "LOCATION",
 				"event": "EVENT",
 				"epc": "BANK",
+				"phone": "TELEFONE",
+				"sms": "SMS",
+				"whatsapp": "WHATSAPP",
 				"socials": "SOCIALS"
 			},
 			"cancel": "Cancelar",
@@ -866,6 +869,34 @@
 				"purpose": {
 					"label": "Finalidade",
 					"placeholder": "Finalidade do pagamento"
+				}
+			},
+			"phone": {
+				"phone": {
+					"label": "Número de telefone",
+					"placeholder": "ex. +351 912 345 678",
+					"hint": "Ao digitalizar o código QR é iniciada uma chamada para este número."
+				}
+			},
+			"sms": {
+				"phone": {
+					"label": "Número de telefone",
+					"placeholder": "ex. +351 912 345 678"
+				},
+				"message": {
+					"label": "Mensagem",
+					"placeholder": "Mensagem de texto pré-preenchida (opcional)"
+				}
+			},
+			"whatsapp": {
+				"phone": {
+					"label": "Número de WhatsApp",
+					"placeholder": "ex. +351 912 345 678",
+					"hint": "Use o formato internacional com o código do país, ex. +351 para Portugal."
+				},
+				"message": {
+					"label": "Mensagem",
+					"placeholder": "Mensagem de chat pré-preenchida (opcional)"
 				}
 			},
 			"social": {

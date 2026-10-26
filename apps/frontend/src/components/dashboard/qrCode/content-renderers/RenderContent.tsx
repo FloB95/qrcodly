@@ -9,6 +9,9 @@ import { VCardDetailsCard } from './VCardDetailsCard';
 import { WifiDetailsCard } from './WifiDetailsCard';
 import { EpcDetailsCard } from './EpcDetailsCard';
 import { LocationDetailsCard } from './LocationDetailsCard';
+import { PhoneDetailsCard } from './PhoneDetailsCard';
+import { SmsDetailsCard } from './SmsDetailsCard';
+import { WhatsAppDetailsCard } from './WhatsAppDetailsCard';
 import { CopyUrlButton } from './CopyUrlButton';
 import { TruncatedLink } from './TruncatedLink';
 
@@ -85,6 +88,12 @@ export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto
 			return renderEventContent(qr);
 		case 'epc':
 			return <EpcDetailsCard epc={qr.content.data} />;
+		case 'phone':
+			return <PhoneDetailsCard phone={qr.content.data} />;
+		case 'sms':
+			return <SmsDetailsCard sms={qr.content.data} />;
+		case 'whatsapp':
+			return <WhatsAppDetailsCard whatsapp={qr.content.data} />;
 		default:
 			return 'Unknown';
 	}

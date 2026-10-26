@@ -133,16 +133,49 @@ export const EmailInputSchema = z.object({
 });
 export type TEmailInput = z.infer<typeof EmailInputSchema>;
 
+const PHONE_NUMBER_CHARS = /^\+?[0-9\s()./-]+$/;
+const INTERNATIONAL_PHONE_NUMBER_CHARS = /^\+[0-9\s()./-]+$/;
+const countDigits = (value: string) => value.replace(/\D/g, '').length;
+
+// Spaces, dashes, dots, slashes and parentheses stay as typed; the payload converters strip them.
+const contactPhoneSchema = z
+	.string()
+	.trim()
+	.max(32)
+	.regex(PHONE_NUMBER_CHARS, 'Invalid phone number')
+	.refine((value) => countDigits(value) >= 3 && countDigits(value) <= 20, 'Invalid phone number');
+
+// wa.me links only work with the country code, so the leading "+" is mandatory.
+const internationalPhoneSchema = z
+	.string()
+	.trim()
+	.max(32)
+	.regex(
+		INTERNATIONAL_PHONE_NUMBER_CHARS,
+		'Phone number must start with "+" followed by the country code',
+	)
+	.refine((value) => countDigits(value) >= 7 && countDigits(value) <= 15, 'Invalid phone number');
+
 export const PhoneInputSchema = z.object({
-	phone: z.string().min(3),
+	phone: contactPhoneSchema.describe(
+		'Phone number to call when the QR code is scanned, e.g. "+49 170 1234567"',
+	),
 });
 export type TPhoneInput = z.infer<typeof PhoneInputSchema>;
 
 export const SmsInputSchema = z.object({
-	phone: z.string().min(3),
-	message: z.string().optional(),
+	phone: contactPhoneSchema.describe('Recipient phone number of the SMS, e.g. "+49 170 1234567"'),
+	message: z.string().max(500).optional().describe('Pre-filled SMS text (max 500 characters)'),
 });
 export type TSmsInput = z.infer<typeof SmsInputSchema>;
+
+export const WhatsAppInputSchema = z.object({
+	phone: internationalPhoneSchema.describe(
+		'WhatsApp number in international format with country code, e.g. "+49 170 1234567"',
+	),
+	message: z.string().max(500).optional().describe('Pre-filled chat message (max 500 characters)'),
+});
+export type TWhatsAppInput = z.infer<typeof WhatsAppInputSchema>;
 
 export const SocialPlatformEnum = z.enum([
 	'instagram',
@@ -228,6 +261,9 @@ export const ALL_QR_CODE_CONTENT_TYPES = [
 	'location',
 	'event',
 	'epc',
+	'phone',
+	'sms',
+	'whatsapp',
 	// 'socials',
 ] as const;
 
@@ -244,6 +280,9 @@ const ContentSchemas = {
 	location: LocationInputSchema,
 	event: EventInputSchema,
 	epc: EpcInputSchema,
+	phone: PhoneInputSchema,
+	sms: SmsInputSchema,
+	whatsapp: WhatsAppInputSchema,
 	// socials: SocialInputSchema,
 } as const;
 
@@ -262,6 +301,9 @@ export const QrCodeContent = z.discriminatedUnion('type', [
 	createContentSchema('location'),
 	createContentSchema('event'),
 	createContentSchema('epc'),
+	createContentSchema('phone'),
+	createContentSchema('sms'),
+	createContentSchema('whatsapp'),
 	// createContentSchema('socials'),
 ]);
 

@@ -657,6 +657,9 @@
 				"location": "STANDORT",
 				"event": "EVENT",
 				"epc": "BANK",
+				"phone": "TELEFON",
+				"sms": "SMS",
+				"whatsapp": "WHATSAPP",
 				"socials": "SOCIALS"
 			},
 			"cancel": "Abbrechen",
@@ -866,6 +869,34 @@
 				"purpose": {
 					"label": "Verwendungszweck",
 					"placeholder": "Zahlungsgrund"
+				}
+			},
+			"phone": {
+				"phone": {
+					"label": "Telefonnummer",
+					"placeholder": "z. B. +49 170 1234567",
+					"hint": "Beim Scannen des QR-Codes wird diese Nummer angerufen."
+				}
+			},
+			"sms": {
+				"phone": {
+					"label": "Telefonnummer",
+					"placeholder": "z. B. +49 170 1234567"
+				},
+				"message": {
+					"label": "Nachricht",
+					"placeholder": "Optionale vorausgefüllte SMS"
+				}
+			},
+			"whatsapp": {
+				"phone": {
+					"label": "WhatsApp-Nummer",
+					"placeholder": "z. B. +49 170 1234567",
+					"hint": "Internationales Format mit Ländervorwahl verwenden, z. B. +49 für Deutschland."
+				},
+				"message": {
+					"label": "Nachricht",
+					"placeholder": "Optionale vorausgefüllte Chat-Nachricht"
 				}
 			},
 			"social": {

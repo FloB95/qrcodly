@@ -666,6 +666,9 @@
 				"location": "EMPLACEMENT",
 				"event": "ÉVÉNEMENT",
 				"epc": "BANQUE",
+				"phone": "TÉLÉPHONE",
+				"sms": "SMS",
+				"whatsapp": "WHATSAPP",
 				"socials": "RÉSEAUX"
 			},
 			"cancel": "Annuler",
@@ -875,6 +878,34 @@
 				"purpose": {
 					"label": "Motif du paiement",
 					"placeholder": "Objet du paiement"
+				}
+			},
+			"phone": {
+				"phone": {
+					"label": "Numéro de téléphone",
+					"placeholder": "ex. +33 6 12 34 56 78",
+					"hint": "Scanner le QR code lance un appel vers ce numéro."
+				}
+			},
+			"sms": {
+				"phone": {
+					"label": "Numéro de téléphone",
+					"placeholder": "ex. +33 6 12 34 56 78"
+				},
+				"message": {
+					"label": "Message",
+					"placeholder": "Message texte prérempli (optionnel)"
+				}
+			},
+			"whatsapp": {
+				"phone": {
+					"label": "Numéro WhatsApp",
+					"placeholder": "ex. +33 6 12 34 56 78",
+					"hint": "Utilisez le format international avec l'indicatif du pays, ex. +33 pour la France."
+				},
+				"message": {
+					"label": "Message",
+					"placeholder": "Message de chat prérempli (optionnel)"
 				}
 			},
 			"social": {

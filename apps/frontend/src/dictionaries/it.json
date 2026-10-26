@@ -666,6 +666,9 @@
 				"location": "POSIZIONE",
 				"event": "EVENTO",
 				"epc": "BANCA",
+				"phone": "TELEFONO",
+				"sms": "SMS",
+				"whatsapp": "WHATSAPP",
 				"socials": "SOCIAL"
 			},
 			"cancel": "Annulla",
@@ -875,6 +878,34 @@
 				"purpose": {
 					"label": "Causale",
 					"placeholder": "Motivo del pagamento"
+				}
+			},
+			"phone": {
+				"phone": {
+					"label": "Numero di telefono",
+					"placeholder": "es. +39 312 345 6789",
+					"hint": "Scansionando il codice QR viene avviata una chiamata a questo numero."
+				}
+			},
+			"sms": {
+				"phone": {
+					"label": "Numero di telefono",
+					"placeholder": "es. +39 312 345 6789"
+				},
+				"message": {
+					"label": "Messaggio",
+					"placeholder": "Messaggio di testo precompilato (opzionale)"
+				}
+			},
+			"whatsapp": {
+				"phone": {
+					"label": "Numero WhatsApp",
+					"placeholder": "es. +39 312 345 6789",
+					"hint": "Usa il formato internazionale con il prefisso del paese, es. +39 per l'Italia."
+				},
+				"message": {
+					"label": "Messaggio",
+					"placeholder": "Messaggio di chat precompilato (opzionale)"
 				}
 			},
 			"social": {

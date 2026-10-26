@@ -4,6 +4,9 @@ import {
 	UrlInputSchema,
 	WifiInputSchema,
 	VCardInputSchema,
+	PhoneInputSchema,
+	SmsInputSchema,
+	WhatsAppInputSchema,
 	type TQrCodeContentType,
 } from '@shared/schemas';
 import { BulkImportQrCodesUseCase } from '../bulk-import-qr-codes.use-case';
@@ -22,6 +25,9 @@ describe('BulkImportQrCodesUseCase — Input-Schema coverage', () => {
 		url: UrlInputSchema.shape,
 		wifi: WifiInputSchema.shape,
 		vCard: VCardInputSchema.shape,
+		phone: PhoneInputSchema.shape,
+		sms: SmsInputSchema.shape,
+		whatsapp: WhatsAppInputSchema.shape,
 	} as const satisfies Partial<Record<TQrCodeContentType, Record<string, unknown>>>;
 
 	const useCase = new BulkImportQrCodesUseCase(mock<CreateQrCodeUseCase>(), mock<Logger>());

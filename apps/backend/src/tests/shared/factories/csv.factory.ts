@@ -50,6 +50,45 @@ export const generateVCardCsv = (rows: number = 3): string => {
 	return header + dataRows;
 };
 
+const generateInternationalPhone = () =>
+	`+49 170 ${faker.number.int({ min: 1000000, max: 9999999 })}`;
+
+/**
+ * Generates CSV content for Phone QR codes bulk import.
+ */
+export const generatePhoneCsv = (rows: number = 3): string => {
+	const header = 'Phone Number;Name\n';
+	const dataRows = Array.from(
+		{ length: rows },
+		() => `${generateInternationalPhone()};${faker.lorem.words(2)}`,
+	).join('\n');
+	return header + dataRows;
+};
+
+/**
+ * Generates CSV content for SMS QR codes bulk import.
+ */
+export const generateSmsCsv = (rows: number = 3): string => {
+	const header = 'Phone Number;Message;Name\n';
+	const dataRows = Array.from(
+		{ length: rows },
+		() => `${generateInternationalPhone()};${faker.lorem.sentence()};${faker.lorem.words(2)}`,
+	).join('\n');
+	return header + dataRows;
+};
+
+/**
+ * Generates CSV content for WhatsApp QR codes bulk import.
+ */
+export const generateWhatsAppCsv = (rows: number = 3): string => {
+	const header = 'Phone Number (international, e.g. +491701234567);Message;Name\n';
+	const dataRows = Array.from(
+		{ length: rows },
+		() => `${generateInternationalPhone()};${faker.lorem.sentence()};${faker.lorem.words(2)}`,
+	).join('\n');
+	return header + dataRows;
+};
+
 /**
  * Generates invalid CSV for error testing.
  */

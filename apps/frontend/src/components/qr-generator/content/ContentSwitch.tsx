@@ -25,6 +25,9 @@ import { EmailSection } from './EmailSection';
 import { LocationSection } from './LocationSection';
 import { EventSection } from './EventSection';
 import { EpcSection } from './EpcSection';
+import { PhoneSection } from './PhoneSection';
+import { SmsSection } from './SmsSection';
+import { WhatsAppSection } from './WhatsAppSection';
 import { CONTENT_TYPE_CONFIGS } from '@/lib/content-type.config';
 import { DynamicBadge } from '../DynamicBadge';
 import { useAuth } from '@clerk/nextjs';
@@ -53,6 +56,9 @@ const CONTENT_COMPONENTS = {
 	location: { edit: LocationSection, view: LocationSection },
 	event: { edit: EventSection, view: EventSection },
 	epc: { edit: EpcSection, view: EpcSection },
+	phone: { edit: PhoneSection, view: PhoneSection },
+	sms: { edit: SmsSection, view: SmsSection },
+	whatsapp: { edit: WhatsAppSection, view: WhatsAppSection },
 } as const;
 
 const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({

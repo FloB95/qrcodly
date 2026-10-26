@@ -32,6 +32,9 @@ import LocationContent from './content/Location';
 import EventContent from './content/Event';
 import EpcContent from './content/Epc';
 import TextContent from './content/Text';
+import PhoneContent from './content/Phone';
+import SmsContent from './content/Sms';
+import WhatsAppContent from './content/WhatsApp';
 import { Link } from '@/i18n/navigation';
 import { getQrCodeEditLink } from '@/lib/utils';
 import { PencilIcon, ShieldExclamationIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -75,6 +78,12 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 				return <EventContent qrCode={qrCode} />;
 			case 'epc':
 				return <EpcContent qrCode={qrCode} />;
+			case 'phone':
+				return <PhoneContent qrCode={qrCode} />;
+			case 'sms':
+				return <SmsContent qrCode={qrCode} />;
+			case 'whatsapp':
+				return <WhatsAppContent qrCode={qrCode} />;
 			default:
 				return <></>;
 		}

@@ -8,7 +8,10 @@ import {
 	CalendarDaysIcon,
 	EnvelopeOpenIcon,
 	BanknotesIcon,
+	PhoneIcon,
+	ChatBubbleBottomCenterTextIcon,
 } from '@heroicons/react/24/outline';
+import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 
 export type ContentTypeConfig = {
 	type: TQrCodeContentType;
@@ -65,6 +68,24 @@ export const CONTENT_TYPE_CONFIGS: ContentTypeConfig[] = [
 		label: 'epc',
 		icon: BanknotesIcon,
 		enableBulk: false,
+	},
+	{
+		type: 'phone',
+		label: 'phone',
+		icon: PhoneIcon,
+		enableBulk: true,
+	},
+	{
+		type: 'sms',
+		label: 'sms',
+		icon: ChatBubbleBottomCenterTextIcon,
+		enableBulk: true,
+	},
+	{
+		type: 'whatsapp',
+		label: 'whatsapp',
+		icon: WhatsAppIcon,
+		enableBulk: true,
 	},
 ];
 

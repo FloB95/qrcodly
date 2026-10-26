@@ -10,6 +10,9 @@ import {
 	type TLocationInput,
 	type TEmailInput,
 	type TEpcInput,
+	type TPhoneInput,
+	type TSmsInput,
+	type TWhatsAppInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
 import ical, { ICalCalendarMethod } from 'ical-generator';
@@ -207,6 +210,36 @@ export const convertEpcObjToString = (epcInput: TEpcInput): string => {
 	return lines.join('\n');
 };
 
+/**
+ * Strips spaces, dashes, dots, slashes and parentheses from a phone number
+ * and keeps a leading "+" so the result is dialable as entered.
+ */
+export const normalizePhoneNumber = (phone: string): string => {
+	const trimmed = phone.trim();
+	const digits = trimmed.replace(/\D/g, '');
+	return trimmed.startsWith('+') ? `+${digits}` : digits;
+};
+
+export const convertPhoneObjToString = (phoneInput: TPhoneInput): string => {
+	const phone = normalizePhoneNumber(phoneInput.phone ?? '');
+	return phone ? `tel:${phone}` : '';
+};
+
+export const convertSmsObjToString = (smsInput: TSmsInput): string => {
+	const phone = normalizePhoneNumber(smsInput.phone ?? '');
+	return phone ? `SMSTO:${phone}:${smsInput.message ?? ''}` : '';
+};
+
+export const convertWhatsAppObjToString = (whatsAppInput: TWhatsAppInput): string => {
+	// wa.me expects the number in international format without the "+"
+	const phone = normalizePhoneNumber(whatsAppInput.phone ?? '').replace(/^\+/, '');
+	if (!phone) {
+		return '';
+	}
+	const text = whatsAppInput.message ? `?text=${encodeURIComponent(whatsAppInput.message)}` : '';
+	return `https://wa.me/${phone}${text}`;
+};
+
 export const convertQRCodeDataToStringByType = (
 	content: TQrCodeContent,
 	shortUrl?: string,
@@ -232,6 +265,12 @@ export const convertQRCodeDataToStringByType = (
 			return shortUrl ?? '';
 		case 'epc':
 			return convertEpcObjToString(content.data);
+		case 'phone':
+			return convertPhoneObjToString(content.data);
+		case 'sms':
+			return convertSmsObjToString(content.data);
+		case 'whatsapp':
+			return convertWhatsAppObjToString(content.data);
 		default:
 			throw new Error('Invalid content type');
 	}
@@ -346,6 +385,29 @@ export const getDefaultContentByType = (
 					bic: undefined,
 					amount: undefined,
 					purpose: undefined,
+				},
+			};
+		case 'phone':
+			return {
+				type: 'phone',
+				data: {
+					phone: '',
+				},
+			};
+		case 'sms':
+			return {
+				type: 'sms',
+				data: {
+					phone: '',
+					message: '',
+				},
+			};
+		case 'whatsapp':
+			return {
+				type: 'whatsapp',
+				data: {
+					phone: '',
+					message: '',
 				},
 			};
 		// case 'socials':

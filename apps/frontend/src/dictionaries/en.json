@@ -657,6 +657,9 @@
 				"location": "LOCATION",
 				"event": "EVENT",
 				"epc": "BANK",
+				"phone": "PHONE",
+				"sms": "SMS",
+				"whatsapp": "WHATSAPP",
 				"socials": "SOCIALS"
 			},
 			"cancel": "Cancel",
@@ -866,6 +869,34 @@
 				"purpose": {
 					"label": "Purpose",
 					"placeholder": "Purpose of payment"
+				}
+			},
+			"phone": {
+				"phone": {
+					"label": "Phone number",
+					"placeholder": "e.g. +49 170 1234567",
+					"hint": "Scanning the QR code starts a call to this number."
+				}
+			},
+			"sms": {
+				"phone": {
+					"label": "Phone number",
+					"placeholder": "e.g. +49 170 1234567"
+				},
+				"message": {
+					"label": "Message",
+					"placeholder": "Optional pre-filled text message"
+				}
+			},
+			"whatsapp": {
+				"phone": {
+					"label": "WhatsApp number",
+					"placeholder": "e.g. +49 170 1234567",
+					"hint": "Use the international format with country code, e.g. +49 for Germany."
+				},
+				"message": {
+					"label": "Message",
+					"placeholder": "Optional pre-filled chat message"
 				}
 			},
 			"social": {
