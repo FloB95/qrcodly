@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { ComingSoonIntegrationEntry } from '@/lib/integrations-catalog';
 import { IntegrationLogo } from './IntegrationLogo';
+import { ApiKeyRequiredBadge } from './ApiKeyRequiredBadge';
 
 type ComingSoonCardProps = {
 	entry: ComingSoonIntegrationEntry;
@@ -25,6 +26,7 @@ export function ComingSoonCard({ entry }: ComingSoonCardProps) {
 							{t(`tag.${tag}`)}
 						</Badge>
 					))}
+					{entry.requiresApiKey && <ApiKeyRequiredBadge />}
 				</ItemTitle>
 				<ItemDescription>{t(entry.descriptionKey)}</ItemDescription>
 			</ItemContent>
