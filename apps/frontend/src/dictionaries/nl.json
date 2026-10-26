@@ -314,9 +314,11 @@
 			"emailBtn": "Neem contact op"
 		},
 		"browserExtensionTeaser": {
-			"badge": "Binnenkort beschikbaar",
-			"headline": "Browser-extensie",
-			"description": "Maak QR-codes onderweg — rechtstreeks vanuit je browser. Onze aankomende extensie laat je QR-codes genereren en beheren voor elke pagina met slechts één klik."
+			"badge": "Nu beschikbaar",
+			"headline": "QRcodly voor Chrome",
+			"description": "Maak met één klik een QR-code voor de pagina waarop je bent. De extensie vult de link voor je in, geeft je de volledige generator en slaat je QR-codes op in je account.",
+			"cta": "Toevoegen aan Chrome",
+			"note": "Gratis met je QRcodly-account"
 		},
 		"featuresCta": {
 			"headline": "Overzicht van de belangrijkste functies",
@@ -1503,7 +1505,8 @@
 				},
 				"browserExtensionChrome": {
 					"name": "Chrome-extensie",
-					"description": "Genereer en beheer QR-codes direct vanuit je browser met één klik."
+					"description": "Genereer en beheer QR-codes direct vanuit je browser met één klik.",
+					"cta": "Toevoegen aan Chrome"
 				},
 				"chatgpt": {
 					"name": "ChatGPT",

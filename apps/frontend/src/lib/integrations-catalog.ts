@@ -28,6 +28,9 @@ export type ComingSoonIntegrationEntry = BaseIntegrationEntry & {
 	kind: 'coming-soon';
 };
 
+export const CHROME_EXTENSION_URL =
+	'https://chromewebstore.google.com/detail/qrcodly/pagnaengchnbgecnappokojmdnagefpd';
+
 export type IntegrationCatalogEntry =
 	AnalyticsIntegrationEntry | ExternalLinkIntegrationEntry | ComingSoonIntegrationEntry;
 
@@ -53,10 +56,12 @@ export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 	{
 		id: 'browser-extension-chrome',
 		slug: 'browser-extension-chrome',
-		kind: 'coming-soon',
+		kind: 'external-link',
 		tags: ['browser'],
 		nameKey: 'browserExtensionChrome.name',
 		descriptionKey: 'browserExtensionChrome.description',
+		href: CHROME_EXTENSION_URL,
+		ctaKey: 'browserExtensionChrome.cta',
 	},
 	{
 		id: 'chatgpt',

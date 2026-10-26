@@ -314,9 +314,11 @@
 			"emailBtn": "Fale Conosco"
 		},
 		"browserExtensionTeaser": {
-			"badge": "Em Breve",
-			"headline": "Extensão para Navegador",
-			"description": "Crie QR codes instantaneamente — direto do seu navegador. Nossa futura extensão permite gerar e gerenciar QR codes para qualquer página com apenas um clique."
+			"badge": "Já disponível",
+			"headline": "QRcodly para Chrome",
+			"description": "Crie com um clique um QR code para a página em que você está. A extensão preenche o link para você, oferece o gerador completo e salva seus QR codes na sua conta.",
+			"cta": "Adicionar ao Chrome",
+			"note": "Grátis com sua conta QRcodly"
 		},
 		"featuresCta": {
 			"headline": "Visão Geral das Principais Funcionalidades",
@@ -1503,7 +1505,8 @@
 				},
 				"browserExtensionChrome": {
 					"name": "Extensão do Chrome",
-					"description": "Gere e gerencie códigos QR diretamente do seu navegador com um clique."
+					"description": "Gere e gerencie códigos QR diretamente do seu navegador com um clique.",
+					"cta": "Adicionar ao Chrome"
 				},
 				"chatgpt": {
 					"name": "ChatGPT",

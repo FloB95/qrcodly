@@ -314,9 +314,11 @@
 			"emailBtn": "Skontaktuj się"
 		},
 		"browserExtensionTeaser": {
-			"badge": "Wkrótce dostępne",
-			"headline": "Rozszerzenie Przeglądarki",
-			"description": "Twórz kody QR w locie — bezpośrednio z przeglądarki. Nasze nadchodzące rozszerzenie pozwoli ci generować i zarządzać kodami QR dla dowolnej strony jednym kliknięciem."
+			"badge": "Już dostępne",
+			"headline": "QRcodly dla Chrome",
+			"description": "Utwórz jednym kliknięciem kod QR dla strony, na której jesteś. Rozszerzenie samo uzupełni link, da ci pełny generator i zapisze twoje kody QR na twoim koncie.",
+			"cta": "Dodaj do Chrome",
+			"note": "Bezpłatnie z kontem QRcodly"
 		},
 		"featuresCta": {
 			"headline": "Przegląd kluczowych funkcji",
@@ -1503,7 +1505,8 @@
 				},
 				"browserExtensionChrome": {
 					"name": "Rozszerzenie Chrome",
-					"description": "Twórz i zarządzaj kodami QR bezpośrednio z przeglądarki jednym kliknięciem."
+					"description": "Twórz i zarządzaj kodami QR bezpośrednio z przeglądarki jednym kliknięciem.",
+					"cta": "Dodaj do Chrome"
 				},
 				"chatgpt": {
 					"name": "ChatGPT",
