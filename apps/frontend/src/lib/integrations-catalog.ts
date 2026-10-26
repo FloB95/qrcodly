@@ -10,6 +10,7 @@ type BaseIntegrationEntry = {
 	nameKey: string;
 	descriptionKey: string;
 	tags: IntegrationTag[];
+	requiresApiKey?: boolean;
 };
 
 export type AnalyticsIntegrationEntry = BaseIntegrationEntry & {
@@ -21,7 +22,6 @@ export type ExternalLinkIntegrationEntry = BaseIntegrationEntry & {
 	kind: 'external-link';
 	href: string;
 	ctaKey: string;
-	requiresApiKey?: boolean;
 };
 
 export type ComingSoonIntegrationEntry = BaseIntegrationEntry & {
@@ -89,5 +89,6 @@ export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 		tags: ['design'],
 		nameKey: 'figma.name',
 		descriptionKey: 'figma.description',
+		requiresApiKey: true,
 	},
 ];
