@@ -14,7 +14,7 @@ const CSV_TEMPLATES_DIR = path.resolve(
 	'../../../../../../frontend/public/csv-templates',
 );
 
-const LOCALES = ['en', 'de', 'es', 'fr', 'it', 'nl', 'pl', 'ru'] as const;
+const LOCALES = ['en', 'de', 'es', 'fr', 'it', 'nl', 'pl', 'pt', 'ru'] as const;
 
 const FILE_PREFIXES: Record<TQrCodeContentType, string> = {
 	url: 'qrcodly-import-url',
@@ -25,6 +25,9 @@ const FILE_PREFIXES: Record<TQrCodeContentType, string> = {
 	location: '',
 	event: '',
 	epc: '',
+	phone: 'qrcodly-import-phone',
+	sms: 'qrcodly-import-sms',
+	whatsapp: 'qrcodly-import-whatsapp',
 };
 
 const useCaseInstance = new BulkImportQrCodesUseCase(mock<CreateQrCodeUseCase>(), mock<Logger>());

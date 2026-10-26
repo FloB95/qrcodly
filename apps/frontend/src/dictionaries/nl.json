@@ -666,6 +666,9 @@
 				"location": "LOCATIE",
 				"event": "EVENT",
 				"epc": "BANK",
+				"phone": "TELEFOON",
+				"sms": "SMS",
+				"whatsapp": "WHATSAPP",
 				"socials": "SOCIALS"
 			},
 			"cancel": "Annuleren",
@@ -875,6 +878,34 @@
 				"purpose": {
 					"label": "Omschrijving",
 					"placeholder": "Doel van de betaling"
+				}
+			},
+			"phone": {
+				"phone": {
+					"label": "Telefoonnummer",
+					"placeholder": "bijv. +31 6 12345678",
+					"hint": "Bij het scannen van de QR-code wordt dit nummer gebeld."
+				}
+			},
+			"sms": {
+				"phone": {
+					"label": "Telefoonnummer",
+					"placeholder": "bijv. +31 6 12345678"
+				},
+				"message": {
+					"label": "Bericht",
+					"placeholder": "Optioneel vooraf ingevuld sms-bericht"
+				}
+			},
+			"whatsapp": {
+				"phone": {
+					"label": "WhatsApp-nummer",
+					"placeholder": "bijv. +31 6 12345678",
+					"hint": "Gebruik het internationale formaat met landcode, bijv. +31 voor Nederland."
+				},
+				"message": {
+					"label": "Bericht",
+					"placeholder": "Optioneel vooraf ingevuld chatbericht"
 				}
 			},
 			"social": {

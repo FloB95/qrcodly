@@ -666,6 +666,9 @@
 				"location": "LOKALIZACJA",
 				"event": "WYDARZENIE",
 				"epc": "BANK",
+				"phone": "TELEFON",
+				"sms": "SMS",
+				"whatsapp": "WHATSAPP",
 				"socials": "SOCIALS"
 			},
 			"cancel": "Anuluj",
@@ -875,6 +878,34 @@
 				"purpose": {
 					"label": "Tytuł przelewu",
 					"placeholder": "Cel płatności"
+				}
+			},
+			"phone": {
+				"phone": {
+					"label": "Numer telefonu",
+					"placeholder": "np. +48 601 234 567",
+					"hint": "Zeskanowanie kodu QR rozpoczyna połączenie z tym numerem."
+				}
+			},
+			"sms": {
+				"phone": {
+					"label": "Numer telefonu",
+					"placeholder": "np. +48 601 234 567"
+				},
+				"message": {
+					"label": "Wiadomość",
+					"placeholder": "Opcjonalna wstępnie wypełniona wiadomość SMS"
+				}
+			},
+			"whatsapp": {
+				"phone": {
+					"label": "Numer WhatsApp",
+					"placeholder": "np. +48 601 234 567",
+					"hint": "Użyj formatu międzynarodowego z kodem kraju, np. +48 dla Polski."
+				},
+				"message": {
+					"label": "Wiadomość",
+					"placeholder": "Opcjonalna wstępnie wypełniona wiadomość czatu"
 				}
 			},
 			"social": {

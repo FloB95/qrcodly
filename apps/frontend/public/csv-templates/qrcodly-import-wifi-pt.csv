@@ -1,0 +1,4 @@
+SSID;Senha;Criptografia (WPA, WEP, nopass);Nome
+MeuWiFi;senha123;WPA;Rede de casa
+WiFiConvidados;;nopass;Rede de convidados
+WiFiEscritorio;senhaescritorio;WEP;Escritório

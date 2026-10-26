@@ -120,7 +120,7 @@ export class Server {
 					{
 						name: 'QR Codes',
 						description:
-							'Create, read, update, and delete QR codes. Supports 8 content types: URL, Text, WiFi, vCard, Email, Location, Event, and EPC (SEPA payment). Dynamic QR codes (URL type with isDynamic=true) automatically generate a linked short URL so the destination can be changed after printing.',
+							'Create, read, update, and delete QR codes. Supports 11 content types: URL, Text, WiFi, vCard, Email, Location, Event, EPC (SEPA payment), Phone, SMS, and WhatsApp. Dynamic QR codes (URL type with isDynamic=true) automatically generate a linked short URL so the destination can be changed after printing.',
 					},
 					{
 						name: 'QR Code Sharing',

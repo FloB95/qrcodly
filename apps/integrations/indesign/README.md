@@ -48,7 +48,7 @@ src/
 
 ## Known limitations (MVP)
 
-- Only URL and Text content types are supported in the Create flow. Full set (WiFi, vCard, Email, Location, Event, EPC) to follow.
+- Only URL and Text content types are supported in the Create flow. Full set (WiFi, vCard, Email, Location, Event, EPC, Phone, SMS, WhatsApp) to follow.
 - QR preview in the list is a placeholder; rendering happens at insert time.
 - UXP-specific testing (`require('indesign')`, `require('uxp')`) requires a real InDesign host — the plugin falls back to `localStorage` when loaded in a plain browser for development.
 - Minimum fields in the Create flow; no advanced config editing (tweak the template on qrcodly.de instead).
