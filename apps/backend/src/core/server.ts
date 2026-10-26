@@ -17,6 +17,7 @@ import {
 	resolveClientIp,
 } from '@/libs/fastify/helpers';
 import { addUserToRequestMiddleware } from '@/core/http/middleware/add-user-to-request.middleware';
+import { stripClerkCookiesMiddleware } from '@/core/http/middleware/strip-clerk-cookies.middleware';
 import { env } from './config/env';
 import fastifyHelmet from '@fastify/helmet';
 import { TooManyRequestsError } from './error/http/too-many-requests.error';
@@ -189,12 +190,14 @@ export class Server {
 			},
 		});
 
+		// Open to every origin, without credentials: callers authenticate with a bearer token
 		await this.server.register(fastifyCors, {
 			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie', API_CLIENT_HEADER],
-			credentials: true,
 			methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 			origin: true,
 		});
+
+		this.server.addHook('onRequest', stripClerkCookiesMiddleware);
 
 		await this.server.register(clerkPlugin, {
 			secretKey: env.CLERK_SECRET_KEY,
