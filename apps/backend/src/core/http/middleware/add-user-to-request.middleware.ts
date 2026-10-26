@@ -1,4 +1,6 @@
 import { PlanName } from '@/core/config/plan.config';
+import { FIRST_PARTY_ORIGINS } from '@/core/config/constants';
+import { env } from '@/core/config/env';
 import { type TTokenType } from '@/core/domain/schema/UserSchema';
 import { Logger } from '@/core/logging';
 import { KeyCache } from '@/core/cache';
@@ -72,19 +74,43 @@ async function resolveUserPlan(userId: string): Promise<PlanName> {
 	}
 }
 
+type TRequestAuth = {
+	userId: string | null;
+	tokenType: TTokenType;
+	scopes?: string[];
+	/** API key id, only set for api_key tokens */
+	id?: string;
+	sessionClaims?: { azp?: string };
+};
+
+/**
+ * Clerk stamps a session token with the origin it was issued to (`azp`). One issued to a foreign
+ * origin, such as a taken-over qrcodly.de subdomain, must not act on the API. Tokens without `azp`
+ * (minted server-side, e.g. in tests) and API keys are out of scope.
+ */
+function isRejectedAuthorizedParty(request: FastifyRequest, auth: TRequestAuth): boolean {
+	const azp = auth.sessionClaims?.azp;
+	if (auth.tokenType !== 'session_token' || !azp || FIRST_PARTY_ORIGINS.includes(azp)) {
+		return false;
+	}
+
+	container.resolve(Logger).warn('auth.session.unauthorized-party', {
+		request: createRequestLogObject(request, {
+			azp,
+			userId: auth.userId,
+			mode: env.AUTHORIZED_PARTY_CHECK_MODE,
+		}),
+	});
+	return env.AUTHORIZED_PARTY_CHECK_MODE === 'enforce';
+}
+
 export async function addUserToRequestMiddleware(request: FastifyRequest, _reply: unknown) {
 	const auth = getAuth(request, {
 		acceptsToken: ['session_token', 'api_key'],
-	}) as {
-		userId: string | null;
-		tokenType: TTokenType;
-		scopes?: string[];
-		/** API key id, only set for api_key tokens */
-		id?: string;
-		sessionClaims?: { azp?: string };
-	};
+	}) as TRequestAuth;
 
-	const { userId, tokenType } = auth;
+	const { tokenType } = auth;
+	const userId = auth.userId && !isRejectedAuthorizedParty(request, auth) ? auth.userId : null;
 	const apiClient = detectApiClient({
 		headers: request.headers,
 		tokenType: userId ? tokenType : null,

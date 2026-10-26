@@ -12,11 +12,13 @@ export const FASTIFY_LOGGING: boolean = false;
 
 export const CLERK_JWT_TEMPLATE = 'QRcodly';
 export const RATE_LIMIT_TIME_WINDOW: string = '1 minute';
-export const ALLOWED_ORIGINS: string[] = [
+/** Origins of our own apps: the only `azp` a Clerk session token may carry. */
+export const FIRST_PARTY_ORIGINS: string[] = [
 	'http://localhost:3000',
 	'https://www.qrcodly.de',
 	'https://stage.qrcodly.de',
-	env.FRONTEND_URL,
+	new URL(env.FRONTEND_URL).origin,
+	'chrome-extension://pagnaengchnbgecnappokojmdnagefpd',
 ];
 export const UPLOAD_LIMIT = 2 * 1024 * 1024; // max 2MB
 export const MAX_QR_CODE_CSV_UPLOADS = 15;

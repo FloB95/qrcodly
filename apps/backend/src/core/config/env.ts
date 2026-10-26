@@ -75,6 +75,10 @@ const server = z.object({
 	// 'shadow' records findings without disabling anything — the safe default for the first rollout,
 	// because a blocked link takes a printed QR code out of service and cannot be un-printed.
 	URL_SAFETY_RECHECK_MODE: z.enum(['shadow', 'enforce']).default('shadow'),
+	// Session tokens issued to an origin outside FIRST_PARTY_ORIGINS: 'shadow' only logs them
+	// (auth.session.unauthorized-party), 'enforce' treats the request as signed out. Shadow first,
+	// because no log shows yet which `azp` each client's tokens carry.
+	AUTHORIZED_PARTY_CHECK_MODE: z.enum(['shadow', 'enforce']).default('shadow'),
 	// who receives abuse alerts; falls back to the constant so existing deploys keep working
 	ABUSE_ALERT_MAIL: z.string().email().optional(),
 	OTEL_METRICS_DATASET: z.string().optional(),
