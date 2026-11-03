@@ -6,6 +6,9 @@ import { Logger } from '@/core/logging';
 import { registerRoutes } from '@/libs/fastify/helpers';
 import { CustomDomainController } from './http/controller/custom-domain.controller';
 
+// Register Cron Jobs
+import './jobs/verify-pending-custom-domains.cron-job';
+
 const setupCustomDomainModule: FastifyPluginCallback = (
 	fastify: FastifyInstance,
 	options,
