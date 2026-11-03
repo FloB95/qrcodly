@@ -54,6 +54,23 @@ export const QrCodeMenuItems = ({
 	// A QR code whose destination we blocked: it cannot be re-enabled, shared or copied.
 	const isBlocked = qr.shortUrl?.safetyStatus === 'blocked';
 
+	const qrCodeFormatItems = (
+		<>
+			<Item className="cursor-pointer" onClick={() => void onDownloadQrCode('svg')}>
+				SVG
+			</Item>
+			<Item className="cursor-pointer" onClick={() => void onDownloadQrCode('jpeg')}>
+				JPG
+			</Item>
+			<Item className="cursor-pointer" onClick={() => void onDownloadQrCode('webp')}>
+				WEBP
+			</Item>
+			<Item className="cursor-pointer" onClick={() => void onDownloadQrCode('png')}>
+				PNG
+			</Item>
+		</>
+	);
+
 	return (
 		<>
 			<Label>{t('qrCode.actionsMenu.title')}</Label>
@@ -74,28 +91,19 @@ export const QrCodeMenuItems = ({
 			<Sub>
 				<SubTrigger>{t('qrCode.download.downloadBtn')}</SubTrigger>
 				<SubContent>
-					<Sub>
-						<SubTrigger>QR Code</SubTrigger>
-						<SubContent>
-							<Item className="cursor-pointer" onClick={() => void onDownloadQrCode('svg')}>
-								SVG
+					{/* only nest the image formats when there is a second download to choose from */}
+					{showContentFileDownload ? (
+						<>
+							<Sub>
+								<SubTrigger>QR Code</SubTrigger>
+								<SubContent>{qrCodeFormatItems}</SubContent>
+							</Sub>
+							<Item className="cursor-pointer" onClick={() => onDownloadContentFile()}>
+								{contentFileLabel}
 							</Item>
-							<Item className="cursor-pointer" onClick={() => void onDownloadQrCode('jpeg')}>
-								JPG
-							</Item>
-							<Item className="cursor-pointer" onClick={() => void onDownloadQrCode('webp')}>
-								WEBP
-							</Item>
-							<Item className="cursor-pointer" onClick={() => void onDownloadQrCode('png')}>
-								PNG
-							</Item>
-						</SubContent>
-					</Sub>
-
-					{showContentFileDownload && (
-						<Item className="cursor-pointer" onClick={() => onDownloadContentFile()}>
-							{contentFileLabel}
-						</Item>
+						</>
+					) : (
+						qrCodeFormatItems
 					)}
 				</SubContent>
 			</Sub>
