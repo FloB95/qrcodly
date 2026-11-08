@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { and, asc, desc, eq, inArray, isNull, isNotNull, lte, ne, sql, SQL } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, isNull, isNotNull, lte, ne, or, sql, SQL } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy, type WhereConditions } from '@/core/interface/repository.interface';
 import shortUrl, {
@@ -67,6 +67,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 
 		if (standalone) {
 			conditions.push(isNull(this.table.qrCodeId));
+			conditions.push(isNull(this.table.hostedPageId));
 			conditions.push(isNotNull(this.table.destinationUrl));
 		}
 
@@ -212,6 +213,63 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		await this.db.update(this.table).set(updates).where(eq(this.table.id, shortUrl.id));
 	}
 
+	/** Links a reserved code, but only while it is still unused; false when someone else was faster. */
+	async claimReserved(
+		id: string,
+		link: { qrCodeId: string | null; hostedPageId: string | null },
+	): Promise<boolean> {
+		const t = this.table;
+		const [result] = await this.db
+			.update(t)
+			.set({ ...link, updatedAt: new Date() })
+			.where(
+				and(
+					eq(t.id, id),
+					isNull(t.destinationUrl),
+					isNull(t.qrCodeId),
+					isNull(t.hostedPageId),
+					isNull(t.deletedAt),
+				),
+			)
+			.execute();
+		return result.affectedRows > 0;
+	}
+
+	/** The link, locked until the transaction ends. Only inside a transaction. */
+	async findOneByIdForUpdate(id: string): Promise<TShortUrl | undefined> {
+		const [row] = await this.db
+			.select()
+			.from(this.table)
+			.where(eq(this.table.id, id))
+			.limit(1)
+			.for('update')
+			.execute();
+		return row;
+	}
+
+	/**
+	 * Puts a link (back) into the safety re-check queue, or takes it out with null. A new address
+	 * starts over, so a confirmation armed for the previous one is dropped.
+	 */
+	async scheduleSafetyCheck(id: string, nextSafetyCheckAt: Date | null): Promise<void> {
+		await this.db
+			.update(this.table)
+			// a new address counts as changed now: the re-check keeps it on the short cadence for new links
+			.set({ nextSafetyCheckAt, safetyPendingSince: null, updatedAt: new Date() })
+			.where(eq(this.table.id, id))
+			.execute();
+	}
+
+	/** Detaches a purged page from its link; only soft-deleted links ever lose their page. */
+	async detachDeletedPage(hostedPageId: string): Promise<void> {
+		const t = this.table;
+		await this.db
+			.update(t)
+			.set({ hostedPageId: null })
+			.where(and(eq(t.hostedPageId, hostedPageId), isNotNull(t.deletedAt)))
+			.execute();
+	}
+
 	/**
 	 * Deletes a Short URL.
 	 * @param shortUrl - The Short URL to delete.
@@ -244,6 +302,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 				isActive: shortUrl.isActive,
 				customDomainId: shortUrl.customDomainId,
 				qrCodeId: shortUrl.qrCodeId,
+				hostedPageId: shortUrl.hostedPageId ?? null,
 				createdAt: new Date(),
 				createdBy: shortUrl.createdBy,
 				nextSafetyCheckAt: shortUrl.destinationUrl
@@ -299,7 +358,8 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 			.where(
 				and(
 					isNull(this.table.deletedAt),
-					isNotNull(this.table.destinationUrl),
+					// a page link has no destination; the links on its page are screened instead
+					or(isNotNull(this.table.destinationUrl), isNotNull(this.table.hostedPageId)),
 					isNotNull(this.table.nextSafetyCheckAt),
 					lte(this.table.nextSafetyCheckAt, now),
 				),
@@ -317,7 +377,8 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 			.where(
 				and(
 					isNull(this.table.deletedAt),
-					isNotNull(this.table.destinationUrl),
+					// a page link has no destination; the links on its page are screened instead
+					or(isNotNull(this.table.destinationUrl), isNotNull(this.table.hostedPageId)),
 					isNotNull(this.table.nextSafetyCheckAt),
 					lte(this.table.nextSafetyCheckAt, now),
 				),
@@ -347,7 +408,8 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		id: string,
 		updates: {
 			safetyStatus?: TShortUrlSafetyStatus;
-			nextSafetyCheckAt: Date;
+			/** null when there is nothing left to screen */
+			nextSafetyCheckAt: Date | null;
 			safetyCheckFailures?: number;
 			safetyPendingSince?: Date | null;
 			safetyThreatTypes?: string | null;
@@ -420,7 +482,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * Lifts a block. `isActive` deliberately stays false: the owner has to consciously switch the
 	 * link back on rather than have traffic silently resume.
 	 */
-	async clearSafetyBlock(id: string, nextSafetyCheckAt: Date): Promise<void> {
+	async clearSafetyBlock(id: string, nextSafetyCheckAt: Date | null): Promise<void> {
 		await this.db
 			.update(this.table)
 			.set({
@@ -451,8 +513,9 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	}> {
 		const [row] = await this.db
 			.select({
-				standalone: sql<number>`sum(case when ${this.table.qrCodeId} is null then 1 else 0 end)`,
-				qrLinked: sql<number>`sum(case when ${this.table.qrCodeId} is not null then 1 else 0 end)`,
+				standalone: sql<number>`sum(case when ${this.table.qrCodeId} is null and ${this.table.hostedPageId} is null then 1 else 0 end)`,
+				// page links are managed with their page, like QR-linked ones
+				qrLinked: sql<number>`sum(case when ${this.table.qrCodeId} is not null or ${this.table.hostedPageId} is not null then 1 else 0 end)`,
 			})
 			.from(this.table)
 			.where(

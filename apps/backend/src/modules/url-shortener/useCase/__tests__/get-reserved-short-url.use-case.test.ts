@@ -45,6 +45,7 @@ describe('GetReservedShortCodeUseCase', () => {
 			customDomainId: null,
 			isActive: false,
 			qrCodeId: null,
+			hostedPageId: null,
 			createdBy: mockUserId,
 			createdAt: new Date(),
 			updatedAt: new Date(),
@@ -85,6 +86,9 @@ describe('GetReservedShortCodeUseCase', () => {
 						eq: null,
 					},
 					qrCodeId: {
+						eq: null,
+					},
+					hostedPageId: {
 						eq: null,
 					},
 					deletedAt: {

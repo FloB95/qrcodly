@@ -1,11 +1,11 @@
 import { AbstractCommand } from '@/core/command/abstract.command';
-import { inject, injectable } from 'tsyringe';
+import { container, inject, injectable } from 'tsyringe';
+import { HostedPageCacheService } from '@/modules/hosted-page/service/hosted-page-cache.service';
 import { UserBanService } from '@/core/auth';
 import { Logger } from '@/core/logging';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import UserSafetyStandingRepository from '../domain/repository/user-safety-standing.repository';
-
-const MANUAL_THREAT_TYPE = 'MANUAL_ABUSE_REVIEW';
+import { URL_SAFETY_MANUAL_THREAT_TYPE as MANUAL_THREAT_TYPE } from '../config/constants';
 
 /**
  * Manual ban after a human abuse review: suspends the account and blocks every link it owns.
@@ -43,7 +43,7 @@ export default class BanUserCommand extends AbstractCommand {
 		console.log(`${shortUrls.length} short URL(s) owned by "${userId}":`);
 		for (const s of shortUrls) {
 			console.log(
-				`  ${s.shortCode}  active=${s.isActive}  safety=${s.safetyStatus}  qr=${s.qrCodeId ?? '-'}  -> ${s.destinationUrl ?? '(reserved)'}`,
+				`  ${s.shortCode}  active=${s.isActive}  safety=${s.safetyStatus}  qr=${s.qrCodeId ?? '-'}  -> ${s.hostedPageId ? `page:${s.hostedPageId}` : (s.destinationUrl ?? '(reserved)')}`,
 			);
 		}
 
@@ -54,6 +54,8 @@ export default class BanUserCommand extends AbstractCommand {
 
 		// links first: a failing Clerk call must not leave the phishing links live
 		const blocked = await this.shortUrlRepository.blockAllForUser(userId, [MANUAL_THREAT_TYPE]);
+		// hosted pages are cached briefly; a banned owner's pages must go offline now
+		await container.resolve(HostedPageCacheService).invalidateUser(userId);
 
 		await this.userBanService.ban(userId, {
 			reason,

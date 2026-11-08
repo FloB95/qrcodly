@@ -532,6 +532,16 @@
 				"description": "Nie można skopiować linku do schowka. Skopiuj go ręcznie."
 			},
 			"noVisibleContent": "Ten udostępniony kod QR nie ma widocznej zawartości."
+		},
+		"hostedPage": {
+			"title": "Hostowana strona",
+			"link": "Link do strony",
+			"open": "Otwórz stronę",
+			"edit": "Edytuj stronę",
+			"disabled": "Strona jest wyłączona, ponieważ kod QR jest nieaktywny.",
+			"offlineWithoutPro": "Strona jest offline, ponieważ Twój plan Pro wygasł. Gdy znów wykupisz Pro, od razu wróci.",
+			"loadError": "Nie udało się wczytać podglądu.",
+			"preview": "Podgląd"
 		}
 	},
 	"loginDialog": {
@@ -707,7 +717,8 @@
 				"phone": "TELEFON",
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
-				"socials": "SOCIALS"
+				"socials": "SOCIALS",
+				"pdf": "PDF"
 			},
 			"cancel": "Anuluj",
 			"bulkModeBtn": "Masowe tworzenie CSV",
@@ -956,6 +967,224 @@
 					"add": "Dodaj link",
 					"remove": "Usuń"
 				}
+			},
+			"hosted": {
+				"loginTitle": "Zaloguj się, aby hostować strony",
+				"loginDescription": "Hostowane strony wymagają konta: kod QR prowadzi do strony, którą QRcodly udostępnia za Ciebie.",
+				"loginCta": "Zaloguj się",
+				"proTitle": "Hostowane strony to funkcja Pro",
+				"proDescription": "Hostuj do {maxFiles} plików (PDF po maks. {maxSize} MB) i publikuj do {maxPages} stron docelowych w swoich kolorach, bez brandingu QRcodly.",
+				"upgradeCta": "Przejdź na Pro",
+				"preview": "Podgląd strony",
+				"design": {
+					"title": "Wygląd strony",
+					"primaryColor": "Kolor główny",
+					"hideBranding": "Ukryj „Made with QRcodly”",
+					"style": {
+						"label": "Styl",
+						"editorial": {
+							"title": "Redakcyjny",
+							"description": "Nagłówki szeryfowe, okładka na całą szerokość. Menu, hotele, wydarzenia"
+						},
+						"gallery": {
+							"title": "Galeria",
+							"description": "Okładka w ramce, karty dokumentów. Oferty, broszury"
+						},
+						"technical": {
+							"title": "Techniczny",
+							"description": "Zwarte wiersze i etykiety. Instrukcje, karty katalogowe"
+						}
+					},
+					"mode": {
+						"label": "Wygląd",
+						"light": "Jasny",
+						"dark": "Ciemny"
+					},
+					"accentColor": "Kolor akcentu",
+					"font": {
+						"label": "Czcionki"
+					}
+				},
+				"file": {
+					"replace": "Zamień",
+					"remove": "Usuń",
+					"uploadFailed": "Przesyłanie nie powiodło się",
+					"dragDrop": "Przeciągnij plik tutaj"
+				},
+				"previewSwitch": {
+					"label": "Podgląd",
+					"qr": "Kod QR",
+					"page": "Strona",
+					"sampleHint": "Przykładowa treść. Wybierz szablon, aby go przejąć, albo zacznij pisać."
+				},
+				"templates": {
+					"label": "Szablon",
+					"restaurantMenu": {
+						"name": "Menu restauracji",
+						"description": "Ciepły styl redakcyjny dla menu i kart win",
+						"buttonLabel": "Zobacz menu",
+						"linkLabel": "Zarezerwuj stolik",
+						"sample": {
+							"title": "Menu jesienne 2026",
+							"description": "Dania sezonowe ze składników z okolicznych gospodarstw. Możliwe zmiany.",
+							"brandName": "Trattoria Demo",
+							"documents": "Menu|Karta win|Lunch"
+						}
+					},
+					"cafeBar": {
+						"name": "Kawiarnia i bar",
+						"description": "Ciemny, przytulny, ze złotym akcentem",
+						"buttonLabel": "Zobacz kartę",
+						"linkLabel": "Dojazd",
+						"sample": {
+							"title": "Napoje i przekąski",
+							"description": "Kawa przez cały dzień, koktajle od siedemnastej. Happy hour do dziewiętnastej.",
+							"brandName": "Kaffeehaus Demo",
+							"documents": "Napoje|Przekąski"
+						}
+					},
+					"realEstate": {
+						"name": "Nieruchomości",
+						"description": "Zdjęcia w ramce dla ofert i rzutów",
+						"buttonLabel": "Otwórz ofertę",
+						"linkLabel": "Umów oglądanie",
+						"sample": {
+							"title": "Oferta ul. Klonowa 1",
+							"description": "Mieszkanie 3-pokojowe, 84 m², balkon od południa, dostępne od stycznia.",
+							"brandName": "Demo Nieruchomości",
+							"documents": "Oferta|Rzut"
+						}
+					},
+					"brochure": {
+						"name": "Broszura",
+						"description": "Mocne kolory dla katalogów i kampanii",
+						"buttonLabel": "Otwórz broszurę",
+						"linkLabel": "Strona www",
+						"sample": {
+							"title": "Kolekcja wiosna 2026",
+							"description": "Wszystkie nowe produkty, kolory i ceny w jednym miejscu.",
+							"brandName": "Nordlicht Demo",
+							"documents": "Broszura"
+						}
+					},
+					"eventProgram": {
+						"name": "Program wydarzenia",
+						"description": "Ciemny sceniczny styl dla programów",
+						"buttonLabel": "Zobacz program",
+						"linkLabel": "Kup bilety",
+						"sample": {
+							"title": "Festiwal letni 2026",
+							"description": "Trzy dni, cztery sceny, jeden weekend. Program i harmonogram.",
+							"brandName": "Verein Demo",
+							"documents": "Program|Mapa terenu"
+						}
+					},
+					"productManual": {
+						"name": "Instrukcja produktu",
+						"description": "Zwarte wiersze dla instrukcji i kart",
+						"buttonLabel": "Otwórz instrukcję",
+						"linkLabel": "Skontaktuj się z pomocą",
+						"sample": {
+							"title": "Instrukcja model X200",
+							"description": "Wszystko o Twoim urządzeniu, zawsze aktualne.",
+							"brandName": "Werk Demo",
+							"documents": "Instrukcja (PL)|Szybki start|Karta danych"
+						}
+					},
+					"priceList": {
+						"name": "Cennik",
+						"description": "Przejrzysty i neutralny dla cen i warunków",
+						"buttonLabel": "Zobacz ceny",
+						"linkLabel": "Kontakt",
+						"sample": {
+							"title": "Cennik 2026",
+							"description": "Wszystkie usługi i ceny, ważne od stycznia. Ceny zawierają VAT.",
+							"brandName": "Studio Demo",
+							"documents": "Cennik"
+						}
+					},
+					"blank": {
+						"name": "Pusta strona",
+						"description": "Zacznij od zera"
+					}
+				},
+				"usage": {
+					"title": "Zajęte po zapisaniu",
+					"landingPages": "Strony docelowe",
+					"files": "Pliki łącznie",
+					"filesHint": "PDF, okładki i logo",
+					"count": "{used} / {limit}",
+					"directHint": "PDF otwierany bezpośrednio nie zajmuje strony docelowej.",
+					"over": "To przekracza limit Twojego planu. Usuń coś, aby zapisać.",
+					"moreOnRequest": "Potrzebujesz więcej plików? <link>Na prośbę odblokujemy więcej.</link>"
+				}
+			},
+			"pdf": {
+				"intro": {
+					"page": "Po zeskanowaniu otwiera się strona mobilna z Twoim PDF. <strong>Plik możesz wymienić w każdej chwili, wydrukowany kod pozostaje ten sam.</strong>",
+					"direct": "Po zeskanowaniu Twój PDF otwiera się od razu. <strong>Plik możesz wymienić w każdej chwili, wydrukowany kod pozostaje ten sam.</strong>",
+					"pro": "Hostowane pliki PDF są częścią QRcodly Pro."
+				},
+				"title": {
+					"label": "Tytuł",
+					"placeholder": "np. Menu, broszura, instrukcja"
+				},
+				"description": {
+					"label": "Opis",
+					"placeholder": "Opcjonalny krótki tekst wyświetlany na stronie"
+				},
+				"documents": {
+					"title": "Dokumenty",
+					"count": "{count} z {max}",
+					"hint": "PDF do {maxSize} MB",
+					"titleLabel": "Nazwa dokumentu",
+					"titlePlaceholder": "np. Menu, karta win, karta katalogowa",
+					"remove": "Usuń dokument",
+					"replace": "Zastąp plik",
+					"replacing": "Przesyłanie nowego pliku…",
+					"replaceFailed": "Nie udało się zastąpić pliku",
+					"tooLarge": "Plik PDF jest większy niż {maxSize} MB",
+					"limitReached": "Osiągnięto limit plików w Twoim planie",
+					"retentionHint": "Zastąpione lub usunięte pliki przechowujemy jeszcze do 30 dni. Chcesz któryś odzyskać? Napisz do nas na support@qrcodly.de."
+				},
+				"brandName": {
+					"label": "Firma lub marka",
+					"placeholder": "np. Trattoria Rossi"
+				},
+				"buttonLabel": {
+					"label": "Tekst przycisku",
+					"placeholder": "np. Zobacz menu",
+					"hint": "Etykieta głównego przycisku, gdy strona ma dokładnie jeden dokument. Przy kilku dokumentach strona pokazuje listę."
+				},
+				"cover": {
+					"label": "Obraz okładki",
+					"hint": "PNG, JPG lub WebP do {maxSize} MB"
+				},
+				"logo": {
+					"label": "Logo",
+					"hint": "PNG, JPG lub WebP do {maxSize} MB"
+				},
+				"link": {
+					"title": "Przycisk z linkiem",
+					"description": "Opcjonalny drugi przycisk, np. do rezerwacji lub kontaktu.",
+					"label": "Tekst przycisku",
+					"labelPlaceholder": "np. Zarezerwuj stolik",
+					"url": "URL",
+					"urlPlaceholder": "https://…",
+					"urlMissing": "Wpisz adres, do którego prowadzi przycisk, albo usuń tekst przycisku.",
+					"labelMissing": "Wpisz tekst przycisku albo usuń adres."
+				},
+				"openMode": {
+					"label": "Po zeskanowaniu",
+					"page": {
+						"title": "Pokaż stronę",
+						"description": "Nagłówek, tekst, dokumenty i przyciski"
+					},
+					"direct": {
+						"title": "Otwórz PDF od razu",
+						"description": "Pierwszy dokument otwiera się od razu; strona pozostaje dostępna pod linkiem"
+					}
+				}
 			}
 		},
 		"preview": {
@@ -1164,6 +1393,7 @@
 			"stepCompleted": "Ukończono",
 			"dcvDelegationStep": "Automatyczne Odnawianie SSL (CNAME)",
 			"dcvDelegationDescription": "Ten rekord umożliwia automatyczne wydawanie i odnawianie certyfikatu SSL. Wysoce zalecane, aby uniknąć wygaśnięcia certyfikatu.",
+			"caaBlocked": "Twoje rekordy CAA blokują certyfikat SSL. Dodaj ten rekord DNS tam, gdzie są ustawione (zwykle w domenie głównej):",
 			"step4PendingDns": "Ukończ kroki 1 - 3, następnie kliknij \"Sprawdź Status\", aby kontynuować.",
 			"step4LoadingSsl": "Ładowanie instrukcji certyfikatu SSL... Kliknij \"Sprawdź Status\", aby odświeżyć.",
 			"sslValidationStep": "Walidacja Certyfikatu SSL (TXT)",
@@ -1637,7 +1867,8 @@
 				"prioritySupport": "Priorytetowe wsparcie",
 				"teamFeatures": "Funkcje zespołowe (wkrótce)",
 				"apiAccess": "Dostęp do REST API",
-				"marketplaceIntegrations": "Integracje zewnętrzne"
+				"marketplaceIntegrations": "Integracje zewnętrzne",
+				"hostedPages": "Hostowane pliki PDF: do 15 stron docelowych i 60 plików, PDF po maks. 25 MB"
 			}
 		},
 		"featureInfoAriaLabel": "Więcej informacji",
@@ -2387,7 +2618,7 @@
 			"a4": "Tak — połącz kod QR ze stroną opinii Google Business lub formularzem feedbacku. Z dynamicznym kodem możesz sezonowo przełączać się między menu a stroną opinii.",
 			"viewAll": "Zobacz wszystkie FAQ",
 			"q5": "Co dzieje się z moimi wydrukowanymi kodami, gdy przestanę płacić?",
-			"a5": "Nic. QRcodly nie dezaktywuje kodów QR po zakończeniu subskrypcji — nielimitowane kody i skany są częścią planu darmowego, więc wydrukowany kod nadal przekierowuje. Wyłączane są tylko dodatki Pro, takie jak własna domena, szczegółowa analityka i integracje analityczne. To celowe: materiały drukowane nigdy nie powinny być zakładnikiem."
+			"a5": "Same kody działają dalej: nielimitowane kody i skany są częścią planu darmowego, więc wydrukowany kod prowadzący na Twoją stronę nadal przekierowuje. Po okresie karencji wyłączane są tylko dodatki Pro, takie jak własna domena, szczegółowa analityka, integracje analityczne i pliki PDF, które dla Ciebie hostujemy, np. przesłane menu. Gdy znów wykupisz Pro, wszystko od razu wraca."
 		},
 		"cta": {
 			"title": "Gotowy na modernizację swojej restauracji?",
@@ -4109,6 +4340,23 @@
 			"title": "Stwórz własny kod QR",
 			"subtitle": "Zaprojektuj w kilka sekund darmowy kod QR z logo i kolorami – do linków, Wi-Fi, kontaktów i nie tylko.",
 			"ctaLabel": "Stwórz darmowy kod QR"
+		}
+	},
+	"hostedPage": {
+		"madeWith": "Utworzono za pomocą",
+		"createOwn": "Utwórz własny kod QR",
+		"pdf": {
+			"open": "Otwórz PDF",
+			"download": "Pobierz",
+			"documentsTitle": "Dokumenty",
+			"titlePlaceholder": "Twój nagłówek",
+			"noDocuments": "Dodaj PDF, aby zobaczyć go tutaj",
+			"document": "dokument",
+			"uploadPending": "Prześlij jeszcze PDF"
+		},
+		"unavailable": {
+			"title": "Chwileczkę",
+			"description": "Ta strona jest chwilowo niedostępna i za kilka sekund sama się przeładuje."
 		}
 	}
 }

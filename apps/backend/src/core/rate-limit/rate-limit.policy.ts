@@ -19,6 +19,10 @@ export enum RateLimitPolicy {
 	// scan limits
 	SCAN_LOOKUP = 'scan_lookup',
 	SCAN_RECORD = 'scan_record',
+	// hosted pages
+	HOSTED_UPLOAD = 'hosted_upload',
+	HOSTED_PAGE = 'hosted_page',
+	HOSTED_FILE = 'hosted_file',
 }
 
 export enum RateLimitTier {
@@ -100,5 +104,23 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.ANONYMOUS]: 200,
 		[RateLimitTier.AUTHENTICATED]: 200,
 		[RateLimitTier.PRO_PLAN]: 200,
+	},
+	[RateLimitPolicy.HOSTED_UPLOAD]: {
+		[RateLimitTier.ANONYMOUS]: 0,
+		[RateLimitTier.AUTHENTICATED]: 10,
+		[RateLimitTier.PRO_PLAN]: 30,
+	},
+	// A scanned page loads the page data and the file: well above what one visitor needs
+	[RateLimitPolicy.HOSTED_PAGE]: {
+		[RateLimitTier.ANONYMOUS]: 120,
+		[RateLimitTier.AUTHENTICATED]: 120,
+		[RateLimitTier.PRO_PLAN]: 120,
+	},
+	// One visitor needs a handful per minute, but guests on venue Wi-Fi or a mobile carrier share
+	// one address, and every reload revalidates (a 304 counts too)
+	[RateLimitPolicy.HOSTED_FILE]: {
+		[RateLimitTier.ANONYMOUS]: 120,
+		[RateLimitTier.AUTHENTICATED]: 120,
+		[RateLimitTier.PRO_PLAN]: 120,
 	},
 } as const;

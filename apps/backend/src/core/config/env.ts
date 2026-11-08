@@ -84,6 +84,11 @@ const server = z.object({
 	OTEL_METRICS_DATASET: z.string().optional(),
 	OTEL_METRICS_INTERVAL_MS: z.coerce.number().default(60000),
 	OTEL_TRACES_DATASET: z.string().optional(),
+	// clamd scanning every uploaded file for malware; without it uploads are not scanned (dev only)
+	CLAMAV_HOST: z.string().optional(),
+	CLAMAV_PORT: z.coerce.number().int().positive().default(3310),
+	/** Days a replaced or removed hosted file is kept before deletion (undo window) */
+	HOSTED_FILE_RETENTION_DAYS: z.coerce.number().int().min(0).default(30),
 });
 
 // Don't touch the part below

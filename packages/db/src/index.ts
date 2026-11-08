@@ -7,6 +7,7 @@ export {
 	qrCode,
 	qrCodeRelations,
 	type TQrCode,
+	type TQrCodeRow,
 	type TQrCodeWithRelations,
 	qrCodeShare,
 	qrCodeShareRelations,
@@ -64,5 +65,14 @@ export {
 	type TUserSurvey,
 	integrationUsage,
 	type TIntegrationUsage,
+	hostedPage,
+	hostedPageRelations,
+	type THostedPage,
+	storedFile,
+	type TStoredFile,
+	STORED_FILE_KINDS,
+	type TStoredFileKind,
+	STORED_FILE_OWNER_TYPES,
+	type TStoredFileOwnerType,
 } from './tables';
 export { createTable } from './utils';

@@ -4,13 +4,19 @@ import { TQrCode } from '@shared/schemas';
 import { UrlStrategy } from './short-url-strategies/url.strategy';
 import { EventUrlStrategy } from './short-url-strategies/event.strategy';
 import { VCardStrategy } from './short-url-strategies/vcard.strategy';
+import { HostedPageStrategy } from './short-url-strategies/hosted-page.strategy';
 
 @injectable()
 export class ShortUrlStrategyService {
 	private strategies: IShortUrlStrategy[];
 
 	constructor() {
-		this.strategies = [new UrlStrategy(), new EventUrlStrategy(), new VCardStrategy()];
+		this.strategies = [
+			new UrlStrategy(),
+			new EventUrlStrategy(),
+			new VCardStrategy(),
+			new HostedPageStrategy(),
+		];
 	}
 
 	async handle(qrCode: TQrCode) {

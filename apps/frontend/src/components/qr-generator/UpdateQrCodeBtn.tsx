@@ -13,6 +13,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import type { ApiError } from '@/lib/api/ApiError';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import { safeLocalStorage } from '@/lib/utils';
+import { isContentIncomplete } from '@/lib/qr-code-helpers';
 
 type UpdateBtnDto = Pick<
 	TQrCodeWithRelationsResponseDto,
@@ -127,7 +128,12 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 						void handleUpdate();
 					}
 				}}
-				disabled={!hasMounted || !hasValidChanges || updateQrCodeMutation.isPending}
+				disabled={
+					!hasMounted ||
+					!hasValidChanges ||
+					isContentIncomplete(qrCode.content) ||
+					updateQrCodeMutation.isPending
+				}
 			>
 				{t('updateBtn')}
 			</Button>

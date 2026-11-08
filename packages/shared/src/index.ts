@@ -35,6 +35,11 @@ export * from './dtos/billing';
 
 export * from './dtos/analytics-integration';
 
+export * from './dtos/hosted-page/HostedUploadDto';
+export * from './dtos/hosted-page/PublicHostedPageResponseDto';
+export * from './dtos/hosted-page/HostedPageUsageDto';
+export * from './dtos/hosted-page/HostedAssetUrlsDto';
+
 export * from './dtos/tag/CreateTagDto';
 export * from './dtos/tag/UpdateTagDto';
 export * from './dtos/tag/TagResponseDto';
@@ -70,6 +75,9 @@ export * from './schemas/QrCodeShare';
 export * from './schemas/CustomDomain';
 export * from './schemas/AnalyticsSchema';
 export * from './schemas/Tag';
+export * from './schemas/HostedPage';
+export * from './schemas/docs';
+export * from './hosted-pages';
 
 /***************************
  * Utils

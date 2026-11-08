@@ -75,6 +75,27 @@ export class ObjectStorage implements IFileStorage {
 		}
 	}
 
+	/**
+	 * Streams an object instead of buffering it, for responses that pass a file straight through.
+	 * Returns null when the object has no readable body.
+	 */
+	async getStream(key: string): Promise<{ body: Readable; contentLength?: number } | null> {
+		const k = this.prefix + key;
+		try {
+			const response: GetObjectOutput = await track('get', () =>
+				this.s3Client.getObject({ Bucket: this.bucketName, Key: k }),
+			);
+			if (!response.Body || !(response.Body instanceof Readable)) return null;
+			return { body: response.Body, contentLength: response.ContentLength };
+		} catch (error: unknown) {
+			this.logger.error('error.file.fetching', { file: { key: k }, error });
+			if (error instanceof Error) {
+				throw new S3FetchError('File fetch failed', error);
+			}
+			throw new S3FetchError('File fetch failed', new Error('Unknown error occurred'));
+		}
+	}
+
 	async get(key: string): Promise<Buffer | null> {
 		const k = this.prefix + key;
 		try {

@@ -5,6 +5,7 @@ import qrCode from './qr-code';
 import customDomain, { type TCustomDomain } from './custom-domain';
 import { type TTag } from './tag';
 import shortUrlTag from './short-url-tag';
+import hostedPage from './hosted-page';
 
 /**
  * Safety state of the destination URL, independent of `isActive`.
@@ -32,6 +33,14 @@ const shortUrl = createTable(
 		customDomainId: varchar({
 			length: 36,
 		}).references(() => customDomain.id, { onDelete: 'set null' }),
+		/**
+		 * The hosted page this link serves instead of redirecting. No ON DELETE: a page is only
+		 * removed after its link was soft deleted, so a live link never silently loses its page and
+		 * turns into a reserved code for the next QR code.
+		 */
+		hostedPageId: varchar({ length: 36 })
+			.references(() => hostedPage.id)
+			.unique(),
 		isActive: boolean().notNull(),
 		createdBy: varchar({ length: 255 }).notNull(),
 		createdAt: datetime().notNull(),
@@ -86,6 +95,10 @@ export const shortUrlRelations = relations(shortUrl, ({ one, many }) => ({
 	customDomain: one(customDomain, {
 		fields: [shortUrl.customDomainId],
 		references: [customDomain.id],
+	}),
+	hostedPage: one(hostedPage, {
+		fields: [shortUrl.hostedPageId],
+		references: [hostedPage.id],
 	}),
 	shortUrlTags: many(shortUrlTag),
 }));

@@ -30,7 +30,7 @@ describe('VCardStrategy', () => {
 	beforeEach(() => {
 		strategy = new VCardStrategy();
 		mockGetReservedUseCase = {
-			execute: jest.fn(),
+			take: jest.fn(),
 		} as any;
 		mockUpdateUseCase = {
 			execute: jest.fn(),
@@ -139,23 +139,25 @@ describe('VCardStrategy', () => {
 			deletedAt: null,
 		};
 
-		it('should call GetReservedShortCodeUseCase.execute() with createdBy', async () => {
-			mockGetReservedUseCase.execute.mockResolvedValue(mockReservedShortUrl);
+		it('should call GetReservedShortCodeUseCase.take() with createdBy and the QR code', async () => {
+			mockGetReservedUseCase.take.mockResolvedValue(mockReservedShortUrl);
 			mockUpdateUseCase.execute.mockResolvedValue(mockReservedShortUrl);
 
 			await strategy.handle(mockQrCode);
 
-			expect(mockGetReservedUseCase.execute).toHaveBeenCalledWith('user_123');
+			expect(mockGetReservedUseCase.take).toHaveBeenCalledWith('user_123', {
+				qrCodeId: expect.any(String),
+			});
 		});
 
 		it('should throw ShortUrlNotFoundError when no reserved URL available', async () => {
-			mockGetReservedUseCase.execute.mockResolvedValue(null as any);
+			mockGetReservedUseCase.take.mockResolvedValue(null as any);
 
 			await expect(strategy.handle(mockQrCode)).rejects.toThrow(ShortUrlNotFoundError);
 		});
 
 		it('should call UpdateShortUrlUseCase.execute() with reserved URL', async () => {
-			mockGetReservedUseCase.execute.mockResolvedValue(mockReservedShortUrl);
+			mockGetReservedUseCase.take.mockResolvedValue(mockReservedShortUrl);
 			mockUpdateUseCase.execute.mockResolvedValue(mockReservedShortUrl);
 
 			await strategy.handle(mockQrCode);
@@ -172,7 +174,7 @@ describe('VCardStrategy', () => {
 		});
 
 		it('should set destinationUrl to DYNAMIC_QR_BASE_URL + qrCodeId', async () => {
-			mockGetReservedUseCase.execute.mockResolvedValue(mockReservedShortUrl);
+			mockGetReservedUseCase.take.mockResolvedValue(mockReservedShortUrl);
 			mockUpdateUseCase.execute.mockResolvedValue(mockReservedShortUrl);
 
 			await strategy.handle(mockQrCode);
@@ -188,7 +190,7 @@ describe('VCardStrategy', () => {
 		});
 
 		it('should set isActive to true', async () => {
-			mockGetReservedUseCase.execute.mockResolvedValue(mockReservedShortUrl);
+			mockGetReservedUseCase.take.mockResolvedValue(mockReservedShortUrl);
 			mockUpdateUseCase.execute.mockResolvedValue(mockReservedShortUrl);
 
 			await strategy.handle(mockQrCode);
@@ -204,7 +206,7 @@ describe('VCardStrategy', () => {
 		});
 
 		it('should pass qrCodeId to UpdateShortUrlUseCase', async () => {
-			mockGetReservedUseCase.execute.mockResolvedValue(mockReservedShortUrl);
+			mockGetReservedUseCase.take.mockResolvedValue(mockReservedShortUrl);
 			mockUpdateUseCase.execute.mockResolvedValue(mockReservedShortUrl);
 
 			await strategy.handle(mockQrCode);
@@ -218,7 +220,7 @@ describe('VCardStrategy', () => {
 		});
 
 		it('should return reserved short URL', async () => {
-			mockGetReservedUseCase.execute.mockResolvedValue(mockReservedShortUrl);
+			mockGetReservedUseCase.take.mockResolvedValue(mockReservedShortUrl);
 			mockUpdateUseCase.execute.mockResolvedValue(mockReservedShortUrl);
 
 			const result = await strategy.handle(mockQrCode);

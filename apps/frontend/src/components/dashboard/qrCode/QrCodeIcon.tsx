@@ -3,6 +3,7 @@ import {
 	BanknotesIcon,
 	CalendarDaysIcon,
 	ChatBubbleBottomCenterTextIcon,
+	DocumentIcon,
 	DocumentTextIcon,
 	EnvelopeOpenIcon,
 	IdentificationIcon,
@@ -30,6 +31,7 @@ export const QrCodeIcon = memo(
 			phone: PhoneIcon,
 			sms: ChatBubbleBottomCenterTextIcon,
 			whatsapp: WhatsAppIcon,
+			pdf: DocumentIcon,
 			socials: AtSymbolIcon,
 		};
 		const Icon = icons[type] ?? (() => <>❓</>);

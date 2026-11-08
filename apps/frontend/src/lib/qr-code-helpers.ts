@@ -77,6 +77,17 @@ export function isContentAtDefault(content: TQrCodeContent, isSignedIn = false):
 }
 
 /**
+ * Content whose fields are each fine but which cannot be saved as it stands, e.g. a link button
+ * with only its text or only its address. Saving stays disabled until it is complete.
+ */
+export function isContentIncomplete(content: TQrCodeContent): boolean {
+	if (content.type === 'pdf' && content.data.link) {
+		return !content.data.link.label.trim() || !content.data.link.url.trim();
+	}
+	return false;
+}
+
+/**
  * Check if QR code data has changed
  */
 export function hasQrCodeChanged(

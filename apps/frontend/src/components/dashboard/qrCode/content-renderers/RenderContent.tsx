@@ -70,6 +70,20 @@ const renderVCardContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	return <VCardDetailsCard vcard={vcardData} trigger={displayName} />;
 };
 
+const renderPdfContent = (qr: TQrCodeWithRelationsResponseDto) => {
+	if (qr.content.type !== 'pdf') return null;
+
+	const { title } = qr.content.data;
+	if (!qr.shortUrl) return title;
+
+	return (
+		<ShortUrlDisplay
+			shortUrl={qr.shortUrl}
+			destinationContent={<span className="truncate pt-1 text-sm text-foreground">{title}</span>}
+		/>
+	);
+};
+
 export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
 	switch (qr.content.type) {
 		case 'url':
@@ -94,6 +108,8 @@ export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto
 			return <SmsDetailsCard sms={qr.content.data} />;
 		case 'whatsapp':
 			return <WhatsAppDetailsCard whatsapp={qr.content.data} />;
+		case 'pdf':
+			return renderPdfContent(qr);
 		default:
 			return 'Unknown';
 	}

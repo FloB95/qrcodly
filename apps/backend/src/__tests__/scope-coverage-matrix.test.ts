@@ -110,9 +110,15 @@ describe('scope-coverage-matrix', () => {
 	});
 
 	it('every hidden route is effectively session-only (default rule)', () => {
+		// hidden from the docs only, on purpose: API keys keep working as before
+		const docsOnly = new Set([
+			'ShortUrlController GET /safety-incidents',
+			'ShortUrlController POST /safety-incidents/acknowledge',
+		]);
 		const violations = rows.filter(
 			(r) =>
 				r.hidden &&
+				!docsOnly.has(`${r.controller} ${r.method} ${r.path}`) &&
 				r.authHandlerSetting !== 'disabled' &&
 				(!r.effectiveTokenTypes ||
 					!r.effectiveTokenTypes.includes('session_token') ||

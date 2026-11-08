@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { GetPublicSharedQrCodeUseCase } from '../get-public-shared-qr-code.use-case';
 import type QrCodeShareRepository from '../../domain/repository/qr-code-share.repository';
+import type QrCodeRepository from '../../domain/repository/qr-code.repository';
 import type { ImageService } from '@/core/services/image.service';
 import { type Logger } from '@/core/logging';
 import { mock, type MockProxy } from 'jest-mock-extended';
@@ -49,7 +50,12 @@ describe('GetPublicSharedQrCodeUseCase', () => {
 		mockImageService = mock<ImageService>();
 		mockLogger = mock<Logger>();
 
-		useCase = new GetPublicSharedQrCodeUseCase(mockRepository, mockImageService, mockLogger);
+		useCase = new GetPublicSharedQrCodeUseCase(
+			mockRepository,
+			mockImageService,
+			mockLogger,
+			mock<QrCodeRepository>(),
+		);
 
 		mockRepository.findByShareToken.mockResolvedValue(mockShareWithQrCode);
 		mockImageService.getPublicUrl.mockReturnValue('https://cdn.example.com/image.png');

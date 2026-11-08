@@ -532,6 +532,16 @@
 				"description": "Link konnte nicht kopiert werden. Bitte kopiere ihn manuell."
 			},
 			"noVisibleContent": "Dieser geteilte QR Code hat keinen sichtbaren Inhalt."
+		},
+		"hostedPage": {
+			"title": "Gehostete Seite",
+			"link": "Seitenlink",
+			"open": "Seite öffnen",
+			"edit": "Seite bearbeiten",
+			"disabled": "Die Seite ist abgeschaltet, weil der QR Code inaktiv ist.",
+			"offlineWithoutPro": "Die Seite ist offline, weil dein Pro-Abo abgelaufen ist. Schließt du Pro wieder ab, ist sie sofort wieder da.",
+			"loadError": "Die Vorschau konnte nicht geladen werden.",
+			"preview": "Vorschau"
 		}
 	},
 	"loginDialog": {
@@ -698,7 +708,8 @@
 				"phone": "TELEFON",
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
-				"socials": "SOCIALS"
+				"socials": "SOCIALS",
+				"pdf": "PDF"
 			},
 			"cancel": "Abbrechen",
 			"bulkModeBtn": "CSV Massenerstellung",
@@ -947,6 +958,224 @@
 					"add": "Link hinzufügen",
 					"remove": "Entfernen"
 				}
+			},
+			"hosted": {
+				"loginTitle": "Anmelden, um Seiten zu hosten",
+				"loginDescription": "Gehostete Seiten brauchen ein Konto: Der QR Code zeigt auf eine Seite, die QRcodly für dich ausliefert.",
+				"loginCta": "Anmelden",
+				"proTitle": "Gehostete Seiten sind ein Pro-Feature",
+				"proDescription": "Hoste bis zu {maxFiles} Dateien (PDFs je bis zu {maxSize} MB) und veröffentliche bis zu {maxPages} Landingpages in deinen Farben und ohne QRcodly-Branding.",
+				"upgradeCta": "Auf Pro upgraden",
+				"preview": "Seitenvorschau",
+				"design": {
+					"title": "Seitendesign",
+					"primaryColor": "Primärfarbe",
+					"hideBranding": "„Made with QRcodly“ ausblenden",
+					"style": {
+						"label": "Stil",
+						"editorial": {
+							"title": "Editorial",
+							"description": "Serifen-Überschriften, Cover in voller Breite. Speisekarten, Hotels, Events"
+						},
+						"gallery": {
+							"title": "Galerie",
+							"description": "Gerahmtes Cover, Dokument-Karten. Exposés, Broschüren"
+						},
+						"technical": {
+							"title": "Technisch",
+							"description": "Kompakte Zeilen und Labels. Anleitungen, Datenblätter"
+						}
+					},
+					"mode": {
+						"label": "Erscheinung",
+						"light": "Hell",
+						"dark": "Dunkel"
+					},
+					"accentColor": "Akzentfarbe",
+					"font": {
+						"label": "Schriften"
+					}
+				},
+				"file": {
+					"replace": "Ersetzen",
+					"remove": "Entfernen",
+					"uploadFailed": "Upload fehlgeschlagen",
+					"dragDrop": "Datei hierher ziehen"
+				},
+				"previewSwitch": {
+					"label": "Vorschau",
+					"qr": "QR Code",
+					"page": "Seite",
+					"sampleHint": "Beispielinhalt. Vorlage anklicken, um sie zu übernehmen, oder einfach lostippen."
+				},
+				"templates": {
+					"label": "Vorlage",
+					"restaurantMenu": {
+						"name": "Speisekarte",
+						"description": "Warmer Editorial-Look für Speise- und Weinkarten",
+						"buttonLabel": "Speisekarte ansehen",
+						"linkLabel": "Tisch reservieren",
+						"sample": {
+							"title": "Speisekarte Herbst 2026",
+							"description": "Saisonale Gerichte mit Zutaten von Höfen aus der Region. Änderungen vorbehalten.",
+							"brandName": "Trattoria Demo",
+							"documents": "Speisekarte|Weinkarte|Mittagsmenü"
+						}
+					},
+					"cafeBar": {
+						"name": "Café & Bar",
+						"description": "Dunkel, gemütlich, mit Gold-Akzent",
+						"buttonLabel": "Karte ansehen",
+						"linkLabel": "Anfahrt",
+						"sample": {
+							"title": "Getränke & Snacks",
+							"description": "Kaffee den ganzen Tag, Cocktails ab fünf. Happy Hour bis sieben.",
+							"brandName": "Kaffeehaus Demo",
+							"documents": "Getränke|Snacks"
+						}
+					},
+					"realEstate": {
+						"name": "Immobilien",
+						"description": "Gerahmte Fotos für Exposés und Grundrisse",
+						"buttonLabel": "Exposé öffnen",
+						"linkLabel": "Besichtigung anfragen",
+						"sample": {
+							"title": "Exposé Ahornstraße 1",
+							"description": "3-Zimmer-Wohnung, 84 m², Balkon nach Süden, bezugsfrei ab Januar.",
+							"brandName": "Demo Immobilien",
+							"documents": "Exposé|Grundriss"
+						}
+					},
+					"brochure": {
+						"name": "Broschüre",
+						"description": "Kräftige Farben für Kataloge und Kampagnen",
+						"buttonLabel": "Broschüre öffnen",
+						"linkLabel": "Zur Website",
+						"sample": {
+							"title": "Frühjahrskollektion 2026",
+							"description": "Alle neuen Produkte, Farben und Preise auf einen Blick.",
+							"brandName": "Nordlicht Demo",
+							"documents": "Broschüre"
+						}
+					},
+					"eventProgram": {
+						"name": "Eventprogramm",
+						"description": "Dunkler Bühnen-Look für Programme und Line-ups",
+						"buttonLabel": "Programm ansehen",
+						"linkLabel": "Tickets sichern",
+						"sample": {
+							"title": "Sommerfestival 2026",
+							"description": "Drei Tage, vier Bühnen, ein Wochenende. Programm und Zeitplan.",
+							"brandName": "Verein Demo",
+							"documents": "Programm|Geländeplan"
+						}
+					},
+					"productManual": {
+						"name": "Produkthandbuch",
+						"description": "Kompakte Zeilen für Anleitungen und Datenblätter",
+						"buttonLabel": "Anleitung öffnen",
+						"linkLabel": "Support kontaktieren",
+						"sample": {
+							"title": "Bedienungsanleitung Modell X200",
+							"description": "Alle Dokumente zu Ihrem Gerät, immer aktuell.",
+							"brandName": "Werk Demo",
+							"documents": "Anleitung (DE)|Schnellstart|Datenblatt"
+						}
+					},
+					"priceList": {
+						"name": "Preisliste",
+						"description": "Klar und neutral für Preise und Konditionen",
+						"buttonLabel": "Preise ansehen",
+						"linkLabel": "Kontakt aufnehmen",
+						"sample": {
+							"title": "Preise 2026",
+							"description": "Alle Leistungen und Preise, gültig ab Januar. Preise inkl. MwSt.",
+							"brandName": "Studio Demo",
+							"documents": "Preisliste"
+						}
+					},
+					"blank": {
+						"name": "Leere Seite",
+						"description": "Ohne Vorgaben starten"
+					}
+				},
+				"usage": {
+					"title": "Belegt nach dem Speichern",
+					"landingPages": "Landingpages",
+					"files": "Dateien insgesamt",
+					"filesHint": "PDFs, Titelbilder und Logos",
+					"count": "{used} / {limit}",
+					"directHint": "Ein direkt geöffnetes PDF belegt keine Landingpage.",
+					"over": "Das liegt über dem Limit deines Plans. Entferne etwas, um zu speichern.",
+					"moreOnRequest": "Mehr Dateien nötig? <link>Auf Anfrage schalten wir mehr frei.</link>"
+				}
+			},
+			"pdf": {
+				"intro": {
+					"page": "Beim Scannen öffnet sich eine mobile Seite mit deinem PDF. <strong>Du kannst die Datei jederzeit austauschen, der gedruckte Code bleibt gleich.</strong>",
+					"direct": "Beim Scannen öffnet sich dein PDF direkt. <strong>Du kannst die Datei jederzeit austauschen, der gedruckte Code bleibt gleich.</strong>",
+					"pro": "Gehostete PDFs sind Teil von QRcodly Pro."
+				},
+				"title": {
+					"label": "Titel",
+					"placeholder": "z. B. Speisekarte, Broschüre, Anleitung"
+				},
+				"description": {
+					"label": "Beschreibung",
+					"placeholder": "Optionaler Kurztext auf der Seite"
+				},
+				"documents": {
+					"title": "Dokumente",
+					"count": "{count} von {max}",
+					"hint": "PDF bis {maxSize} MB",
+					"titleLabel": "Bezeichnung",
+					"titlePlaceholder": "z. B. Speisekarte, Weinkarte, Datenblatt",
+					"remove": "Dokument entfernen",
+					"replace": "Datei ersetzen",
+					"replacing": "Neue Datei wird hochgeladen …",
+					"replaceFailed": "Die Datei konnte nicht ersetzt werden",
+					"tooLarge": "Das PDF ist größer als {maxSize} MB",
+					"limitReached": "Datei-Limit deines Plans erreicht",
+					"retentionHint": "Ersetzte oder entfernte Dateien heben wir noch bis zu 30 Tage auf. Brauchst du eine zurück, schreib uns an support@qrcodly.de."
+				},
+				"brandName": {
+					"label": "Firma oder Marke",
+					"placeholder": "z. B. Trattoria Rossi"
+				},
+				"buttonLabel": {
+					"label": "Button-Text",
+					"placeholder": "z. B. Speisekarte ansehen",
+					"hint": "Beschriftung des Hauptbuttons, wenn die Seite genau ein Dokument hat. Bei mehreren Dokumenten zeigt die Seite eine Liste."
+				},
+				"cover": {
+					"label": "Titelbild",
+					"hint": "PNG, JPG oder WebP bis {maxSize} MB"
+				},
+				"logo": {
+					"label": "Logo",
+					"hint": "PNG, JPG oder WebP bis {maxSize} MB"
+				},
+				"link": {
+					"title": "Link-Button",
+					"description": "Optionaler zweiter Button, z. B. zur Reservierung oder Kontaktseite.",
+					"label": "Button-Text",
+					"labelPlaceholder": "z. B. Tisch reservieren",
+					"url": "URL",
+					"urlPlaceholder": "https://…",
+					"urlMissing": "Gib die Adresse ein, zu der der Button führt, oder lösche den Button-Text.",
+					"labelMissing": "Gib einen Button-Text ein oder lösche die Adresse."
+				},
+				"openMode": {
+					"label": "Beim Scannen",
+					"page": {
+						"title": "Landingpage zeigen",
+						"description": "Überschrift, Text, Dokumente und Buttons"
+					},
+					"direct": {
+						"title": "PDF direkt öffnen",
+						"description": "Das erste Dokument öffnet sofort; die Seite bleibt über ihren Link erreichbar"
+					}
+				}
 			}
 		},
 		"domainSelector": {
@@ -1158,6 +1387,7 @@
 			"stepCompleted": "Abgeschlossen",
 			"dcvDelegationStep": "SSL-Auto-Erneuerung (CNAME)",
 			"dcvDelegationDescription": "Dieser Eintrag ermöglicht die automatische Ausstellung und Erneuerung des SSL-Zertifikats. Dringend empfohlen, um den Ablauf des Zertifikats zu verhindern.",
+			"caaBlocked": "Deine CAA-Einträge blockieren das SSL-Zertifikat. Füge diesen DNS-Eintrag dort hinzu, wo sie stehen (meist bei deiner Hauptdomain):",
 			"step4PendingDns": "Schließe Schritt 1 - 3 ab und klicke dann auf \"Status prüfen\", um fortzufahren.",
 			"step4LoadingSsl": "SSL-Zertifikat-Anweisungen werden geladen... Bitte klicke auf \"Status prüfen\" zum Aktualisieren.",
 			"sslValidationStep": "SSL-Zertifikat-Validierung (TXT)",
@@ -1637,7 +1867,8 @@
 				"prioritySupport": "Prioritäts-Support",
 				"teamFeatures": "Team-Funktionen (bald verfügbar)",
 				"apiAccess": "REST-API-Zugriff",
-				"marketplaceIntegrations": "Drittanbieter-Integrationen"
+				"marketplaceIntegrations": "Drittanbieter-Integrationen",
+				"hostedPages": "Gehostete PDFs: bis zu 15 Landingpages und 60 Dateien, PDFs je bis zu 25 MB"
 			}
 		},
 		"featureInfoAriaLabel": "Mehr Informationen",
@@ -2387,7 +2618,7 @@
 			"a4": "Ja — verlinke deinen QR Code auf deine Google-Business-Bewertungsseite oder ein Feedbackformular. Mit einem dynamischen Code kannst du saisonweise zwischen Speisekarte und Bewertungsseite wechseln.",
 			"viewAll": "Alle FAQs anzeigen",
 			"q5": "Was passiert mit meinen gedruckten Codes, wenn ich nicht mehr zahle?",
-			"a5": "Nichts. QRcodly deaktiviert keine QR-Codes, wenn ein Abo endet — unbegrenzte Codes und Scans gehören zum kostenlosen Plan, ein gedruckter Code löst also weiter aus. Nur Pro-Extras wie eine eigene Domain, detaillierte Analysen und Analytics-Integrationen werden abgeschaltet. Das ist Absicht: Gedrucktes Material darf nie als Geisel dienen."
+			"a5": "Deine Codes selbst laufen weiter: Unbegrenzte Codes und Scans gehören zum kostenlosen Plan, ein gedruckter Code, der auf deine eigene Website zeigt, löst also weiter aus. Nach einer Kulanzfrist werden nur Pro-Extras abgeschaltet, etwa eine eigene Domain, detaillierte Analysen, Analytics-Integrationen und PDFs, die wir für dich hosten, wie eine hochgeladene Speisekarte. Schließt du Pro wieder ab, ist alles sofort wieder da."
 		},
 		"cta": {
 			"title": "Bereit, dein Restaurant zu modernisieren?",
@@ -4109,6 +4340,23 @@
 			"title": "Erstelle deinen eigenen QR-Code",
 			"subtitle": "Gestalte in Sekunden einen kostenlosen QR-Code mit Logo und Farben – für Links, WLAN, Kontakte und mehr.",
 			"ctaLabel": "Kostenlosen QR-Code erstellen"
+		}
+	},
+	"hostedPage": {
+		"madeWith": "Erstellt mit",
+		"createOwn": "Eigenen QR Code erstellen",
+		"pdf": {
+			"open": "PDF öffnen",
+			"download": "Herunterladen",
+			"documentsTitle": "Dokumente",
+			"titlePlaceholder": "Deine Überschrift",
+			"noDocuments": "Lade ein PDF hoch, um es hier zu sehen",
+			"document": "Dokument",
+			"uploadPending": "PDF noch hochladen"
+		},
+		"unavailable": {
+			"title": "Einen Moment bitte",
+			"description": "Diese Seite ist kurz nicht erreichbar und lädt in wenigen Sekunden von selbst neu."
 		}
 	}
 }

@@ -151,7 +151,7 @@ pnpm run studio                  # Open Drizzle Studio
 
 **Tech Stack**: Fastify, Drizzle ORM (MySQL), Redis, Clerk auth, S3/MinIO, Pino logging, tsyringe DI
 
-**Module Structure** (`src/modules/`): 7 modules — `qr-code`, `url-shortener`, `billing`, `custom-domain`, `config-template`, `tag`, `analytics-integration`
+**Module Structure** (`src/modules/`): among others `qr-code`, `hosted-page`, `url-shortener`, `billing`, `custom-domain`, `config-template`, `tag`, `analytics-integration`
 
 Each module follows this layout:
 

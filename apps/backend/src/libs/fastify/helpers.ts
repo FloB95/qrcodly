@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import { Readable } from 'node:stream';
 import {
 	type FastifyInstance,
 	type RegisterOptions,
@@ -30,7 +31,7 @@ import { defaultApiAuthMiddleware } from '@/core/http/middleware/default-api-aut
 import { enforceScope } from '@/core/http/middleware/enforce-scope.middleware';
 import { isCloudflareIp } from './cloudflare-ip';
 import { enforceTokenType } from '@/core/http/middleware/enforce-token-type.middleware';
-import { type ApiKeyScope } from '@shared/schemas';
+import { type ApiKeyScope, undocumentedSchemas } from '@shared/schemas';
 import z, { type ZodType } from 'zod';
 import qs from 'qs';
 import { UnhandledServerError } from '@/core/error/http/unhandled-server.error';
@@ -238,6 +239,10 @@ const handleFastifyRequest = async (
 		const res = await handler(fastifyRequestParser(request));
 		reply.statusCode = res.statusCode;
 		void reply.headers(res.headers);
+		if (res.data instanceof Readable) {
+			await reply.send(res.data);
+			return;
+		}
 		void reply.send(res.data);
 	} catch (e) {
 		const error = e as Error;
@@ -326,24 +331,18 @@ export function registerRoutes(
 		const schema: Record<string, unknown> = { ...(routeMeta.options.schema ?? {}) };
 
 		if (routeMeta.options.bodySchema) {
-			schema.body = z.toJSONSchema(routeMeta.options.bodySchema, {
-				target: 'openapi-3.0',
-				unrepresentable: 'any',
-			});
+			schema.body = toOpenApiSchema(routeMeta.options.bodySchema);
 		}
 
 		if (routeMeta.options.querySchema) {
-			schema.querystring = z.toJSONSchema(routeMeta.options.querySchema, {
-				target: 'openapi-3.0',
-				unrepresentable: 'any',
-			});
+			schema.querystring = toOpenApiSchema(routeMeta.options.querySchema);
 		}
 
 		if (routeMeta.options.responseSchema) {
 			schema.response = Object.fromEntries(
 				Object.entries(routeMeta.options.responseSchema).map(([status, zodSchema]) => [
 					status,
-					z.toJSONSchema(zodSchema, { target: 'openapi-3.0', unrepresentable: 'any' }),
+					toOpenApiSchema(zodSchema),
 				]),
 			);
 		}
@@ -439,6 +438,43 @@ function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type:
 /** GET /api/v1 (HealthController), matched by route so clients can't fake it */
 export function isHealthCheckRequest(request: FastifyRequest): boolean {
 	return request.method === 'GET' && request.routeOptions?.url === API_BASE_PATH;
+}
+
+type TZodNode = { _zod: { def: { type: string; options?: TZodNode[] }; parent?: TZodNode } };
+
+/** Registry entry of a schema or of the schema it was cloned from (e.g. by `.describe()`). */
+function undocumentedMetaOf(schema: TZodNode | undefined) {
+	for (let current = schema; current; current = current._zod.parent) {
+		const meta = undocumentedSchemas.get(current as unknown as ZodType);
+		if (meta) return meta;
+	}
+	return undefined;
+}
+
+/**
+ * JSON Schema for the OpenAPI docs. Parts registered in `undocumentedSchemas` are left out: union
+ * members and enum values. Docs only: request validation runs on the Zod schemas themselves.
+ */
+function toOpenApiSchema(schema: ZodType) {
+	return z.toJSONSchema(schema, {
+		target: 'openapi-3.0',
+		unrepresentable: 'any',
+		override: ({ zodSchema, jsonSchema }) => {
+			const node = zodSchema as unknown as TZodNode;
+			const options = node._zod.def.type === 'union' ? node._zod.def.options : undefined;
+			const key = jsonSchema.oneOf ? 'oneOf' : 'anyOf';
+			const members = jsonSchema[key];
+			if (options && Array.isArray(members)) {
+				jsonSchema[key] = members.filter((_, index) => !undocumentedMetaOf(options[index]));
+			}
+			const hiddenValues = undocumentedMetaOf(node)?.values;
+			if (hiddenValues && Array.isArray(jsonSchema.enum)) {
+				jsonSchema.enum = jsonSchema.enum.filter(
+					(value) => !hiddenValues.includes(value as string),
+				);
+			}
+		},
+	});
 }
 
 export function resolveClientIp(request: FastifyRequest): string {

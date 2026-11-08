@@ -15,6 +15,8 @@ import {
 	type TWhatsAppInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
+import { getStylePresetTheme } from '../schemas/HostedPage';
+import { isHostedPageContent } from '../hosted-pages/registry';
 import ical, { ICalCalendarMethod } from 'ical-generator';
 
 // Utility function to check if all properties of an object are undefined
@@ -271,15 +273,16 @@ export const convertQRCodeDataToStringByType = (
 			return convertSmsObjToString(content.data);
 		case 'whatsapp':
 			return convertWhatsAppObjToString(content.data);
+		case 'pdf':
+			return shortUrl ?? '';
 		default:
 			throw new Error('Invalid content type');
 	}
 };
 
 export const isDynamic = (content: TQrCodeContent): boolean => {
-	const dynamicTypes: TQrCodeContentType[] = ['event'];
-
-	if (dynamicTypes.includes(content.type)) {
+	// hosted pages always live behind their short URL
+	if (content.type === 'event' || isHostedPageContent(content)) {
 		return true;
 	}
 
@@ -418,6 +421,16 @@ export const getDefaultContentByType = (
 		// 			links: [],
 		// 		},
 		// 	};
+		case 'pdf':
+			return {
+				type: 'pdf',
+				data: {
+					title: '',
+					documents: [],
+					theme: getStylePresetTheme('editorial'),
+					isDynamic: true,
+				},
+			};
 		default:
 			throw new Error('Invalid content type');
 	}

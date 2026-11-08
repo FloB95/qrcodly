@@ -9,6 +9,7 @@ import {
 	MapPinIcon,
 	PhoneIcon,
 	ChatBubbleBottomCenterTextIcon,
+	DocumentIcon,
 	WifiIcon,
 } from '@heroicons/react/24/outline';
 import type { TQrCodeContentType, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
@@ -30,6 +31,7 @@ export const CONTENT_TYPES: Record<
 	phone: { label: 'Phone', icon: PhoneIcon },
 	sms: { label: 'SMS', icon: ChatBubbleBottomCenterTextIcon },
 	whatsapp: { label: 'WhatsApp', icon: WhatsAppIcon },
+	pdf: { label: 'PDF', icon: DocumentIcon },
 };
 
 export function isDynamicQrCode(qr: TQrCodeWithRelationsResponseDto): boolean {

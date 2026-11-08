@@ -38,6 +38,26 @@ export function validateContentHttpUrls(
 		}
 	}
 
+	// a link button needs its address as well as its text (the text is required by the schema)
+	if (content.type === 'pdf' && content.data.link && !content.data.link.url.trim()) {
+		ctx.addIssue({
+			code: 'custom',
+			message: 'Enter the address the link button leads to, or remove the button',
+			path: [...basePath, 'link', 'url'],
+		});
+	}
+
+	if (content.type === 'pdf' && content.data.link?.url) {
+		const result = httpUrlSchema.safeParse(content.data.link.url);
+		if (!result.success) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'Link must be a valid HTTP or HTTPS URL',
+				path: [...basePath, 'link', 'url'],
+			});
+		}
+	}
+
 	if (content.type === 'event' && content.data.url) {
 		const result = httpUrlSchema.safeParse(content.data.url);
 		if (!result.success) {

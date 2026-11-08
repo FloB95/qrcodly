@@ -10,6 +10,7 @@ import {
 	BanknotesIcon,
 	PhoneIcon,
 	ChatBubbleBottomCenterTextIcon,
+	DocumentIcon,
 } from '@heroicons/react/24/outline';
 import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 
@@ -86,6 +87,12 @@ export const CONTENT_TYPE_CONFIGS: ContentTypeConfig[] = [
 		label: 'whatsapp',
 		icon: WhatsAppIcon,
 		enableBulk: true,
+	},
+	{
+		type: 'pdf',
+		label: 'pdf',
+		icon: DocumentIcon,
+		enableBulk: false,
 	},
 ];
 

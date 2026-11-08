@@ -1,5 +1,5 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
-import { inject, injectable } from 'tsyringe';
+import { container, inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import QrCodeRepository from '../domain/repository/qr-code.repository';
 import { TQrCode, TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
@@ -12,6 +12,11 @@ import { QrCodeDataService } from '../service/qr-code-data.service';
 import { ContentUpdateStrategyService } from '../service/content-update-strategy.service';
 import { UnitOfWork } from '@/core/db/unit-of-work';
 import { qrCodesUpdated, safely } from '@/core/metrics';
+import { isHostedPageContent } from '@shared/schemas';
+import {
+	HostedPageService,
+	type THostedPageUpdatePlan,
+} from '@/modules/hosted-page/service/hosted-page.service';
 
 @injectable()
 export class UpdateQrCodeUseCase implements IBaseUseCase<
@@ -53,9 +58,17 @@ export class UpdateQrCodeUseCase implements IBaseUseCase<
 			throw new QrCodeContentTypeChangeError();
 		}
 
+		// a hosted page is checked before any image work, so a refused save leaves logo and preview
+		let hostedPlan: THostedPageUpdatePlan | undefined;
 		if (diffs?.content && validatedUpdates.content) {
-			const strategy = this.contentUpdateStrategyService.resolve(qrCode.content.type);
-			await strategy.handleContentUpdate(qrCode, validatedUpdates);
+			if (isHostedPageContent(validatedUpdates.content)) {
+				hostedPlan = await container
+					.resolve(HostedPageService)
+					.prepareUpdate(qrCode, validatedUpdates.content);
+			} else {
+				const strategy = this.contentUpdateStrategyService.resolve(qrCode.content.type);
+				await strategy.handleContentUpdate(qrCode, validatedUpdates);
+			}
 		}
 
 		if (diffs?.config && validatedUpdates.config) {
@@ -67,7 +80,10 @@ export class UpdateQrCodeUseCase implements IBaseUseCase<
 			);
 		}
 
-		if ((diffs?.config || diffs?.content) && qrCode.previewImage) {
+		// the page lives in hosted_page and the QR code keeps encoding the same short URL
+		if (hostedPlan) delete validatedUpdates.content;
+
+		if ((diffs?.config || (diffs?.content && !hostedPlan)) && qrCode.previewImage) {
 			await this.imageService.deleteImage(qrCode.previewImage);
 			validatedUpdates.previewImage = null;
 		}
@@ -79,9 +95,24 @@ export class UpdateQrCodeUseCase implements IBaseUseCase<
 			);
 		}
 
+		let linkUnblocked = false;
 		await UnitOfWork.run(async () => {
+			if (hostedPlan) {
+				linkUnblocked = await container.resolve(HostedPageService).applyUpdate(hostedPlan);
+			}
 			await this.qrCodeRepository.update(qrCode, validatedUpdates);
 		});
+
+		// the public page is cached briefly; a content change must show up on the next scan
+		if (hostedPlan && qrCode.createdBy) {
+			await container
+				.resolve(HostedPageService)
+				.afterChange(
+					qrCode.createdBy,
+					hostedPlan.shortCode,
+					linkUnblocked ? { shortUrlId: hostedPlan.shortUrlId } : undefined,
+				);
+		}
 
 		const updatedQrCode = (await this.qrCodeRepository.findOneById(
 			qrCode.id,

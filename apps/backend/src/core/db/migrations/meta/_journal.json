@@ -260,6 +260,13 @@
 			"when": 1793017410377,
 			"tag": "0036_motionless_amphibian",
 			"breakpoints": true
+		},
+		{
+			"idx": 37,
+			"version": "5",
+			"when": 1794066874683,
+			"tag": "0037_aberrant_revanche",
+			"breakpoints": true
 		}
 	]
 }

@@ -34,6 +34,7 @@ describe('ListShortUrlsUseCase', () => {
 		customDomain: null,
 		isActive: true,
 		qrCodeId: null,
+		hostedPageId: null,
 		createdBy: userId,
 		createdAt: new Date(),
 		updatedAt: null,

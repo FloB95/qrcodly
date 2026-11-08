@@ -15,6 +15,8 @@ import UrlSafetyIncidentRepository from '../domain/repository/url-safety-inciden
 import { minutesFromNow } from '@/core/utils/date';
 import { URL_SAFETY_FIRST_CHECK_MINUTES } from '../config/constants';
 import { safely, shortUrlsUpdated, urlSafetyUnblocks } from '@/core/metrics';
+import { container } from 'tsyringe';
+import { HostedPageCacheService } from '@/modules/hosted-page/service/hosted-page-cache.service';
 
 /**
  * Internal input type for updating a short URL.
@@ -22,6 +24,7 @@ import { safely, shortUrlsUpdated, urlSafetyUnblocks } from '@/core/metrics';
  */
 type UpdateShortUrlInput = {
 	destinationUrl?: string | null;
+	hostedPageId?: string | null;
 	isActive?: boolean;
 	customDomainId?: string | null;
 	name?: string | null;
@@ -127,12 +130,9 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 			}
 		}
 
-		if (linkedQrCodeId) {
-			// verify that qr code exists
-			const qrCode = await this.qrCodeRepository.findOneById(linkedQrCodeId);
-			if (!qrCode) {
-				throw new QrCodeNotFoundError();
-			}
+		// existence only: the QR code may be mid-creation, its page not linked yet
+		if (linkedQrCodeId && !(await this.qrCodeRepository.existsById(linkedQrCodeId))) {
+			throw new QrCodeNotFoundError();
 		}
 
 		// Persist the updated ShortUrl entity in the database.
@@ -144,6 +144,11 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 
 		// Retrieve the updated ShortUrl entity from the database.
 		const result = await this.shortUrlRepository.findOneById(shortUrl.id);
+
+		// a hosted page served from cache must stop the moment its code is switched off
+		if (updatesDto.isActive !== undefined && (shortUrl.hostedPageId || updatesDto.hostedPageId)) {
+			await container.resolve(HostedPageCacheService).invalidateShortCode(shortUrl.shortCode);
+		}
 
 		// Emit the ShortUrlUpdatedEvent.
 		// const event = new ShortUrlUpdatedEvent(result);

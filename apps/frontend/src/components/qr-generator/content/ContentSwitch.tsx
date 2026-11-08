@@ -16,7 +16,12 @@ import { TextSection } from './TextSection';
 import { VCardSection } from './VcardSection';
 import { EditVCardSection } from './EditVCardSection';
 import { WiFiSection } from './WiFiSection';
-import { getDefaultContentByType, type TQrCodeContentType } from '@shared/schemas';
+import {
+	getDefaultContentByType,
+	isHostedPageType,
+	type TQrCodeContentType,
+} from '@shared/schemas';
+import { freshHostedDraft } from '@/lib/hosted-draft';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { useTranslations } from 'next-intl';
 import { EditUrlSection } from './EditUrlSection';
@@ -28,6 +33,8 @@ import { EpcSection } from './EpcSection';
 import { PhoneSection } from './PhoneSection';
 import { SmsSection } from './SmsSection';
 import { WhatsAppSection } from './WhatsAppSection';
+import { PdfSection } from './PdfSection';
+import { EditPdfSection } from './EditPdfSection';
 import { CONTENT_TYPE_CONFIGS } from '@/lib/content-type.config';
 import { DynamicBadge } from '../DynamicBadge';
 import { useAuth } from '@clerk/nextjs';
@@ -59,6 +66,7 @@ const CONTENT_COMPONENTS = {
 	phone: { edit: PhoneSection, view: PhoneSection },
 	sms: { edit: SmsSection, view: SmsSection },
 	whatsapp: { edit: WhatsAppSection, view: WhatsAppSection },
+	pdf: { edit: EditPdfSection, view: PdfSection },
 } as const;
 
 const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({
@@ -72,9 +80,15 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 	const t = useTranslations('generator.contentSwitch');
 	const { isSignedIn } = useAuth();
 
-	const { content, updateContent, bulkMode, updateBulkMode } = useQrCodeGeneratorStore(
-		(state) => state,
-	);
+	const {
+		content,
+		updateContent,
+		bulkMode,
+		updateBulkMode,
+		setHostedSampleTemplate,
+		setHostedPreviewView,
+		setHostedTemplate,
+	} = useQrCodeGeneratorStore((state) => state);
 
 	const activeTab = TABS.find((t) => t.type === content.type);
 	const bulkAllowed = activeTab?.enableBulk;
@@ -96,9 +110,20 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 
 	const handleTabChange = useCallback(
 		(value: string) => {
-			updateContent(getDefaultContentByType(value as TQrCodeContentType, isSignedIn === true));
+			const type = value as TQrCodeContentType;
+			setHostedTemplate(null);
+			if (isHostedPageType(type)) {
+				// a hosted page starts as a filled sample of its type's first template, shown in the preview
+				const draft = freshHostedDraft(type);
+				updateContent(draft.content);
+				setHostedSampleTemplate(draft.sampleTemplate);
+				setHostedPreviewView('page');
+				return;
+			}
+			updateContent(getDefaultContentByType(type, isSignedIn === true));
+			setHostedSampleTemplate(null);
 		},
-		[updateContent, isSignedIn],
+		[updateContent, isSignedIn, setHostedSampleTemplate, setHostedPreviewView, setHostedTemplate],
 	);
 
 	// Create stable onChange callbacks for each content type
@@ -138,9 +163,7 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 					</Select>
 				</div>
 			) : (
-				<TabsList
-					className={`mb-6 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4`}
-				>
+				<TabsList className="mb-6 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4">
 					{visibleTabs.map(({ type, icon: Icon, label }) => (
 						<TabsTrigger key={type} value={type} asChild>
 							<button className={buttonVariants({ variant: 'tab' })}>
@@ -209,8 +232,11 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 					const Component = CONTENT_COMPONENTS[tab.type][isEditMode ? 'edit' : 'view'];
 					return (
 						<TabsContent key={tab.type} value={tab.type} className="pt-2">
-							{/* eslint-disable-next-line @typescript-eslint/no-explicit-any -- discriminated union data varies by content type */}
-							<Component value={content.data as any} onChange={onChangeCallbacks[tab.type]} />
+							{/* the leaving tab stays mounted for a tick; never hand it another type's data */}
+							{content.type === tab.type && (
+								// eslint-disable-next-line @typescript-eslint/no-explicit-any -- discriminated union data varies by content type
+								<Component value={content.data as any} onChange={onChangeCallbacks[tab.type]} />
+							)}
 						</TabsContent>
 					);
 				})

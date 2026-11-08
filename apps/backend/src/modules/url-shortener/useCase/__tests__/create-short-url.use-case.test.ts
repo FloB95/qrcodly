@@ -53,6 +53,7 @@ describe('CreateShortUrlUseCase', () => {
 			customDomain: null,
 			isActive: mockDto.isActive,
 			qrCodeId: null,
+			hostedPageId: null,
 			createdBy: mockUserId,
 			createdAt: new Date(),
 			updatedAt: new Date(),

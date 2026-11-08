@@ -3,7 +3,7 @@
 import { useAuth } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { type TCreateQrCodeDto } from '@shared/schemas';
+import { isDynamic, type TCreateQrCodeDto } from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
 import { useTranslations } from 'next-intl';
 import posthog from 'posthog-js';
@@ -16,7 +16,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import type { ApiError } from '@/lib/api/ApiError';
-import { isContentAtDefault } from '@/lib/qr-code-helpers';
+import { isContentAtDefault, isContentIncomplete } from '@/lib/qr-code-helpers';
 import { safeLocalStorage } from '@/lib/utils';
 
 const SaveQrCodeBtn = ({
@@ -62,7 +62,8 @@ const SaveQrCodeBtn = ({
 							queryClient.refetchQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
 						]);
 
-						if (qrCode.content.type === 'url' && qrCode.content.data.isDynamic) {
+						// a saved dynamic code took the reserved short URL; editing on would target the next one
+						if (isDynamic(qrCode.content)) {
 							resetStore();
 						}
 
@@ -122,6 +123,7 @@ const SaveQrCodeBtn = ({
 	const isDisabled =
 		!hasMounted ||
 		isContentAtDefault(qrCode.content, isSignedIn === true) ||
+		isContentIncomplete(qrCode.content) ||
 		createQrCodeMutation.isPending;
 
 	return (

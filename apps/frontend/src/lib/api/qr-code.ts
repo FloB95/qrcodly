@@ -11,6 +11,7 @@ import type {
 } from '@shared/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
+import { hostedPageQueryKeys } from './hosted-page';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import type { ApiError } from './ApiError';
 
@@ -99,6 +100,7 @@ export function useCreateQrCodeMutation() {
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
+			void queryClient.invalidateQueries({ queryKey: hostedPageQueryKeys.usage });
 		},
 		onError: (e: Error) => {
 			const error = e as ApiError;
@@ -166,6 +168,8 @@ export function useUpdateQrCodeMutation() {
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
+			// the owner's previews of a hosted page must show the saved version right away
+			void queryClient.invalidateQueries({ queryKey: hostedPageQueryKeys.all });
 		},
 		onError: () => {},
 	});
@@ -187,6 +191,7 @@ export function useDuplicateQrCodeMutation() {
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
+			void queryClient.invalidateQueries({ queryKey: hostedPageQueryKeys.usage });
 		},
 	});
 }
@@ -210,6 +215,7 @@ export function useDeleteQrCodeMutation() {
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
+			void queryClient.invalidateQueries({ queryKey: hostedPageQueryKeys.usage });
 		},
 		onError: () => {},
 	});

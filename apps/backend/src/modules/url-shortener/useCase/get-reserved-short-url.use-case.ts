@@ -32,6 +32,9 @@ export class GetReservedShortCodeUseCase {
 				qrCodeId: {
 					eq: null,
 				},
+				hostedPageId: {
+					eq: null,
+				},
 				deletedAt: {
 					eq: null,
 				},
@@ -70,5 +73,30 @@ export class GetReservedShortCodeUseCase {
 		);
 
 		return shortUrl;
+	}
+
+	/**
+	 * Takes a reserved code for a QR code and/or hosted page. The take is a guarded update, so two
+	 * parallel creates never share a code. The loser gets a fresh code: inside its transaction a
+	 * repeatable read keeps showing the taken one as free, so looking again would not help.
+	 */
+	async take(
+		userId: string,
+		link: { qrCodeId?: string | null; hostedPageId?: string | null },
+	): Promise<TShortUrlWithDomain> {
+		const target = { qrCodeId: link.qrCodeId ?? null, hostedPageId: link.hostedPageId ?? null };
+		const reserved = await this.execute(userId);
+		if (await this.shortUrlRepository.claimReserved(reserved.id, target)) {
+			return { ...reserved, ...target };
+		}
+
+		const fresh = await this.createShortUrlUseCase.execute(
+			{ destinationUrl: null, customDomainId: reserved.customDomainId, isActive: false },
+			userId,
+		);
+		if (await this.shortUrlRepository.claimReserved(fresh.id, target)) {
+			return { ...fresh, ...target };
+		}
+		throw new Error('Could not take a reserved short code');
 	}
 }

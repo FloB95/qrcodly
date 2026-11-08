@@ -28,6 +28,7 @@ const FILE_PREFIXES: Record<TQrCodeContentType, string> = {
 	phone: 'qrcodly-import-phone',
 	sms: 'qrcodly-import-sms',
 	whatsapp: 'qrcodly-import-whatsapp',
+	pdf: '',
 };
 
 const useCaseInstance = new BulkImportQrCodesUseCase(mock<CreateQrCodeUseCase>(), mock<Logger>());

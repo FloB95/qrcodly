@@ -1,8 +1,12 @@
 import { env } from '@/env';
 import { serverApiUrl } from '@/lib/server-api-url';
+import { scannerIpFrom } from '@/lib/scanner-ip';
+import { rewriteToHostedPage } from '@/lib/hosted-page-route';
+import { isOnHostOf } from '@/lib/hosts';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { NextResponse, type NextRequest } from 'next/server';
 import { UAParser } from 'ua-parser-js';
+import type { THostedPageType } from '@shared/schemas';
 
 type ScanLookupResponse = {
 	destinationUrl: string | null;
@@ -16,6 +20,10 @@ type ScanLookupResponse = {
 	 * fall back to /disabled with no build or test failure.
 	 */
 	blocked?: boolean;
+	/** Set when QRcodly serves the page itself (a hosted page) instead of redirecting. */
+	hostedType?: THostedPageType | null;
+	/** The one address a hosted page is served at: the short URL in its QR code. */
+	hostedUrl?: string | null;
 };
 
 // Rollouts and database failovers make the backend unreachable for a few seconds
@@ -59,6 +67,15 @@ async function lookupShortUrl(url: string, headers: Record<string, string>): Pro
 	return { kind: 'unavailable', reason };
 }
 
+/** Locale for pages we render ourselves after a scan, from the scanner's browser language. */
+export function resolveLocale(headers: Headers): (typeof SUPPORTED_LANGUAGES)[number] {
+	const acceptLanguage = headers.get('accept-language') ?? 'en';
+	const userLocale = acceptLanguage.split(',')[0]?.split('-')[0] ?? 'en';
+	return SUPPORTED_LANGUAGES.includes(userLocale as (typeof SUPPORTED_LANGUAGES)[number])
+		? (userLocale as (typeof SUPPORTED_LANGUAGES)[number])
+		: 'en';
+}
+
 /** Printed codes must never show "not found" just because the backend hiccuped. */
 function temporaryErrorResponse() {
 	return new NextResponse(
@@ -76,6 +93,10 @@ function temporaryErrorResponse() {
 		},
 	);
 }
+
+// phones on the local network reach the dev server by IP, not by the configured short URL host
+const servedHere = (req: NextRequest, url: string) =>
+	env.NODE_ENV === 'development' || isOnHostOf(url, req.headers.get('host'));
 
 export async function processAnalyticsAndRedirect(req: NextRequest) {
 	const headers = req.headers;
@@ -98,11 +119,7 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		? headers.get('accept-language')?.split(',')[0]
 		: '';
 
-	// cf-connecting-ip is set by Cloudflare; the first X-Forwarded-For entry can be client-supplied
-	const scannerIp =
-		headers.get('cf-connecting-ip')?.trim() ||
-		headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-		'';
+	const scannerIp = scannerIpFrom(headers);
 
 	const urlCode = new URL(req.url).pathname.split('/').pop();
 	if (!urlCode) {
@@ -132,15 +149,18 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 
 	const shortUrl = lookup.data;
 	if (!shortUrl?.destinationUrl || !shortUrl.isActive || shortUrl.deletedAt) {
-		const acceptLanguage = headers.get('accept-language') ?? 'en';
-		const userLocale = acceptLanguage.split(',')[0]?.split('-')[0] ?? 'en';
-		const locale = SUPPORTED_LANGUAGES.includes(userLocale as (typeof SUPPORTED_LANGUAGES)[number])
-			? (userLocale as (typeof SUPPORTED_LANGUAGES)[number])
-			: 'en';
+		const locale = resolveLocale(headers);
 		// A blocked link needs different copy: /disabled tells the visitor to contact the owner of
 		// the QR code, which is terrible advice when the owner is the one who pointed it at phishing.
 		const page = shortUrl?.blocked ? 'link-blocked' : 'disabled';
 		return NextResponse.rewrite(new URL(`/${locale}/${page}`, req.url));
+	}
+
+	// A hosted page lives at one address only. Any other host is sent there before the scan is
+	// counted, so it is counted once, on the right host. Temporary like every scan redirect: the
+	// address follows the link's custom domain, and browsers keep permanent redirects for good.
+	if (shortUrl.hostedType && shortUrl.hostedUrl && !servedHere(req, shortUrl.hostedUrl)) {
+		return NextResponse.redirect(shortUrl.hostedUrl, 307);
 	}
 
 	// Single consolidated call for all scan analytics
@@ -162,5 +182,16 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 		}),
 	}).catch(() => {});
 
-	return NextResponse.redirect(new URL(shortUrl.destinationUrl));
+	// Hosted pages are served in place, so they work on custom domains without any redirect
+	if (shortUrl.hostedType) {
+		const locale = resolveLocale(headers);
+		return rewriteToHostedPage(req, locale, urlCode);
+	}
+
+	const destination = new URL(shortUrl.destinationUrl);
+	// in development the backend builds page addresses with the configured (production) host
+	if (env.NODE_ENV === 'development' && /^\/u\/[^/]+\/file\//.test(destination.pathname)) {
+		return NextResponse.redirect(new URL(destination.pathname + destination.search, req.url));
+	}
+	return NextResponse.redirect(destination);
 }

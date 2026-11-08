@@ -77,6 +77,9 @@ export const URL_SAFETY_RECHECK_MAX_RUNTIME_MS = 8 * 60 * 1000;
 export const URL_SAFETY_BLOCK_CAP_PER_RUN = 25;
 export const URL_SAFETY_HOT_SHORT_CODE_LIMIT = 200;
 
+/** Threat type of a block set by a human abuse review (ban); only an operator lifts it. */
+export const URL_SAFETY_MANUAL_THREAT_TYPE = 'MANUAL_ABUSE_REVIEW';
+
 /** Everything Web Risk reports as harmful blocks. Narrow if false positives show up. */
 export const URL_SAFETY_BLOCKING_THREAT_TYPES: readonly string[] = [
 	'SOCIAL_ENGINEERING',

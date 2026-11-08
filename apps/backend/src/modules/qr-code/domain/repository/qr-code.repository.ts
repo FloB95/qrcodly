@@ -1,12 +1,20 @@
-import { singleton } from 'tsyringe';
+import { container, singleton } from 'tsyringe';
 import { and, desc, eq, inArray, ne, sql, SQL } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy, type WhereConditions } from '@/core/interface/repository.interface';
-import qrCode, { TQrCode, TQrCodeWithRelations } from '../entities/qr-code.entity';
-import { shortUrl, qrCodeTag, tag } from '@/core/db/schemas';
+import qrCode, { TQrCode, TQrCodeRow, TQrCodeWithRelations } from '../entities/qr-code.entity';
+import { shortUrl, qrCodeTag, tag, hostedPage, type THostedPage } from '@/core/db/schemas';
+import { Logger } from '@/core/logging';
 import type { TShortUrlStatusFilter } from '@shared/schemas';
 import { TShortUrl } from '@/modules/url-shortener/domain/entities/short-url.entity';
-import { TQrCodeContentType, type TTag } from '@shared/schemas';
+import {
+	isHostedPageType,
+	toHostedQrContent,
+	toStoredQrCodeContent,
+	type TQrCodeContent,
+	TQrCodeContentType,
+	type TTag,
+} from '@shared/schemas';
 import { convertWhereConditionToDrizzle } from '@/core/db/utils';
 
 type FindAllParams = ISqlQueryFindBy<TQrCode> & {
@@ -24,6 +32,24 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 
 	constructor() {
 		super();
+	}
+
+	/**
+	 * The one place a stored row becomes a QR code: hosted content is a stub in `qr_code`, the page
+	 * itself comes from `hosted_page` through the code's short URL.
+	 */
+	private hydrate(row: TQrCodeRow, page: THostedPage | null | undefined): TQrCode {
+		if (!isHostedPageType(row.content.type)) return row as TQrCode;
+		if (page && !page.deletedAt) {
+			return {
+				...row,
+				content: toHostedQrContent({ type: page.type, data: page.data }),
+			};
+		}
+		if (Object.keys(row.content.data).length === 0) {
+			container.resolve(Logger).error('qrCode.hosted_page_missing', { qrCode: { id: row.id } });
+		}
+		return { ...row, content: row.content as TQrCodeContent };
 	}
 
 	private contentTypeCondition(contentTypes: TQrCodeContentType[]): SQL {
@@ -69,7 +95,10 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	}: FindAllParams): Promise<TQrCodeWithRelations[]> {
 		const query = this.db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
 
-		query.leftJoin(shortUrl, eq(this.table.id, shortUrl.qrCodeId)).$dynamic();
+		query
+			.leftJoin(shortUrl, eq(this.table.id, shortUrl.qrCodeId))
+			.leftJoin(hostedPage, eq(shortUrl.hostedPageId, hostedPage.id))
+			.$dynamic();
 
 		const conditions: SQL[] = [];
 		if (where) {
@@ -93,8 +122,9 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 		void this.withPagination(query, page, limit);
 
 		const qrCodes = (await query.execute()) as unknown as {
-			qr_code: TQrCode;
+			qr_code: TQrCodeRow;
 			short_url: TShortUrl | null;
+			hosted_page: THostedPage | null;
 		}[];
 
 		const qrCodeIds = qrCodes.map((row) => row.qr_code.id);
@@ -102,7 +132,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 
 		const qrCodesWithRelations = qrCodes.map((row) => {
 			return {
-				...row.qr_code,
+				...this.hydrate(row.qr_code, row.hosted_page),
 				shortUrl: row.short_url,
 				tags: tagsMap.get(row.qr_code.id) ?? [],
 			} as TQrCodeWithRelations;
@@ -134,14 +164,17 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	 * @returns A promise that resolves to the QR code if found, otherwise undefined.
 	 */
 	async findOneById(id: string): Promise<TQrCodeWithRelations | undefined> {
-		const qrCode = await this.db.query.qrCode.findFirst({
+		const row = await this.db.query.qrCode.findFirst({
 			where: eq(this.table.id, id),
 			with: {
-				shortUrl: true,
+				shortUrl: { with: { hostedPage: true } },
 				share: true,
 			},
 		});
-		if (!qrCode) return undefined;
+		if (!row) return undefined;
+		const { shortUrl: linked, ...qrCodeRow } = row;
+		const { hostedPage: page, ...link } = linked ?? { hostedPage: null };
+		const qrCode = { ...this.hydrate(qrCodeRow, page), shortUrl: linked ? link : null };
 
 		const tagRows = await this.db
 			.select({ tag })
@@ -161,8 +194,23 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 	 * @param qrCode - The QR code to update.
 	 * @param updates - The updates to apply to the QR code.
 	 */
-	async update(qrCode: TQrCode, updates: Partial<TQrCode>): Promise<void> {
-		await this.db.update(this.table).set(updates).where(eq(this.table.id, qrCode.id));
+	async update(qrCode: Pick<TQrCode, 'id'>, updates: Partial<TQrCode>): Promise<void> {
+		const { content, ...rest } = updates;
+		const values: Partial<TQrCodeRow> = content
+			? { ...rest, content: toStoredQrCodeContent(content) }
+			: rest;
+		await this.db.update(this.table).set(values).where(eq(this.table.id, qrCode.id));
+	}
+
+	/** Existence check without loading relations or the hosted page. */
+	async existsById(id: string): Promise<boolean> {
+		const [row] = await this.db
+			.select({ id: this.table.id })
+			.from(this.table)
+			.where(eq(this.table.id, id))
+			.limit(1)
+			.execute();
+		return !!row;
 	}
 
 	/**
@@ -187,7 +235,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 				id: qrCode.id,
 				name: qrCode.name,
 				config: qrCode.config,
-				content: qrCode.content,
+				content: toStoredQrCodeContent(qrCode.content),
 				qrCodeData: qrCode.qrCodeData,
 				createdAt: new Date(),
 				createdBy: qrCode.createdBy,
