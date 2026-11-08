@@ -49,7 +49,8 @@ services:
     init: true
     restart: always
     healthcheck:
-      test: ['CMD-SHELL', 'curl http://localhost:3001/api/heartbeat']
+      # inside the container Umami listens on 3000; 3001 is only the port on the host
+      test: ['CMD-SHELL', 'curl -fs http://localhost:3000/api/heartbeat']
       interval: 5s
       timeout: 5s
       retries: 5
