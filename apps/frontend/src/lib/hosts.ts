@@ -23,3 +23,17 @@ export function isOnHostOf(url: string, hostHeader: string | null): boolean {
 	const target = normalizeHost(url)?.toLowerCase();
 	return !!target && hostnameOf(hostHeader).replace(/^www\./, '') === target;
 }
+
+/**
+ * Whether a hosted page with the address `url` is shown on this host: its own address, and for an
+ * address on a customer domain also the brand host. Customer domains never reach this server:
+ * Cloudflare's custom-hostnames worker redirects them to the brand host with the same path.
+ */
+export function servesPageAt(url: string, hostHeader: string | null): boolean {
+	if (isOnHostOf(url, hostHeader)) return true;
+	const target = normalizeHost(url)?.toLowerCase();
+	const onCustomDomain = !!target && target !== brandHost && target !== shortUrlHost;
+	return (
+		onCustomDomain && !!brandHost && hostnameOf(hostHeader).replace(/^www\./, '') === brandHost
+	);
+}

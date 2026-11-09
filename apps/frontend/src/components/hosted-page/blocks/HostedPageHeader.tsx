@@ -32,6 +32,7 @@ export function HostedPageHeader({
 					{logoUrl && (
 						// eslint-disable-next-line @next/next/no-img-element -- logo lives on the storage CDN
 						<img
+							referrerPolicy="no-referrer"
 							src={logoUrl}
 							alt={brandName ?? ''}
 							className={cn(

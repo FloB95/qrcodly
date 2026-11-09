@@ -2,7 +2,7 @@ import { env } from '@/env';
 import { serverApiUrl } from '@/lib/server-api-url';
 import { scannerIpFrom } from '@/lib/scanner-ip';
 import { rewriteToHostedPage } from '@/lib/hosted-page-route';
-import { isOnHostOf } from '@/lib/hosts';
+import { servesPageAt } from '@/lib/hosts';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { NextResponse, type NextRequest } from 'next/server';
 import { UAParser } from 'ua-parser-js';
@@ -96,7 +96,7 @@ function temporaryErrorResponse() {
 
 // phones on the local network reach the dev server by IP, not by the configured short URL host
 const servedHere = (req: NextRequest, url: string) =>
-	env.NODE_ENV === 'development' || isOnHostOf(url, req.headers.get('host'));
+	env.NODE_ENV === 'development' || servesPageAt(url, req.headers.get('host'));
 
 /** A link to a hosted page; in "open directly" mode the lookup names its file, not the page. */
 function isHostedLink(shortUrl: ScanLookupResponse, urlCode: string): boolean {
