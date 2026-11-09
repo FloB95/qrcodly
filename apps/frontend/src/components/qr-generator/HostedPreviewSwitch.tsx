@@ -7,7 +7,7 @@ import { useHostedPagePreview } from '@/hooks/useHostedPagePreview';
 import { HostedPagePreview } from '@/components/hosted-page/HostedPagePreview';
 import { PreviewViewToggle, type TPreviewView } from '@/components/hosted-page/PreviewViewToggle';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
-import { opensFileDirectly } from '@shared/schemas';
+import { showsLandingPage } from '@shared/schemas';
 
 /**
  * For hosted content the output column can show either the QR code or the page a scan opens.
@@ -20,9 +20,8 @@ export function HostedPreviewSwitch({ children }: { children: ReactNode }) {
 		(state) => state,
 	);
 	const view: TPreviewView = hostedPreviewView ?? 'qr';
-	const direct = opensFileDirectly(content);
-
-	if (!page || direct) return <>{children}</>;
+	// "open directly": a scan opens the file, there is no page to preview (even before saving)
+	if (!page || !showsLandingPage(content)) return <>{children}</>;
 
 	return (
 		<div className="flex flex-col items-center gap-4">

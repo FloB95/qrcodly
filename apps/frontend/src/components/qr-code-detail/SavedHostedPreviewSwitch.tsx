@@ -1,11 +1,7 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
-import {
-	isHostedPageContent,
-	opensFileDirectly,
-	type TQrCodeWithRelationsResponseDto,
-} from '@shared/schemas';
+import { showsLandingPage, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { usePublicHostedPageQuery } from '@/lib/api/hosted-page';
 import { useHasMounted } from '@/hooks/use-has-mounted';
 import { HostedPagePreview } from '@/components/hosted-page/HostedPagePreview';
@@ -24,7 +20,7 @@ export function SavedHostedPreviewSwitch({
 	children: ReactNode;
 }) {
 	const [view, setView] = useState<TPreviewView>('qr');
-	const hosted = isHostedPageContent(qrCode.content) && !opensFileDirectly(qrCode.content);
+	const hosted = showsLandingPage(qrCode.content);
 	const live = usePublicHostedPageQuery(hosted ? qrCode.shortUrl?.shortCode : undefined);
 	const page = live.data?.status === 'ok' ? live.data.page : null;
 	// the switch depends on fetched data: shown only after hydration, so the server's HTML matches

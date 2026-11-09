@@ -7,15 +7,14 @@ import SaveQrCodeBtn from './SaveQrCodeBtn';
 import { useGetReservedShortUrlQuery } from '@/lib/api/url-shortener';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
 import { HostedPreviewSwitch } from './HostedPreviewSwitch';
-import { isHostedPageContent, opensFileDirectly } from '@shared/schemas';
+import { showsLandingPage } from '@shared/schemas';
 
 export const QrCodeWithDownloadBtn = () => {
 	const { config, content, bulkMode, hostedPreviewView } = useQrCodeGeneratorStore(
 		(state) => state,
 	);
 	// while the landing page is shown, downloading the QR image or saving its design makes no sense
-	const pageView =
-		hostedPreviewView === 'page' && isHostedPageContent(content) && !opensFileDirectly(content);
+	const pageView = hostedPreviewView === 'page' && showsLandingPage(content);
 	const { data: shortUrl } = useGetReservedShortUrlQuery();
 	const { hasProPlan } = useHasProPlan();
 

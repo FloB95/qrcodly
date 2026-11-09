@@ -82,10 +82,6 @@ export function getDirectDocumentId(content: THostedSource): string | null {
 	return isHosted(content) ? definitionOf(content).directDocumentId(content.data) : null;
 }
 
-export function opensFileDirectly(content: THostedSource): boolean {
-	return getDirectDocumentId(content) !== null;
-}
-
 export function getHostedOutboundUrls(content: THostedSource): string[] {
 	return isHosted(content) ? definitionOf(content).outboundUrls(content.data) : [];
 }
