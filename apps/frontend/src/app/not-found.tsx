@@ -24,7 +24,12 @@ export default async function NotFoundPage() {
 				<link rel="manifest" href="/site.webmanifest" />
 			</head>
 			<body className={`font-sans ${inter.variable}`}>
-				<NextIntlClientProvider locale="en" messages={messages}>
+				{/* only what Header and Footer read: Next embeds this page as the 404 boundary of every
+				    page, so the whole dictionary would ship with each of them */}
+				<NextIntlClientProvider
+					locale="en"
+					messages={{ header: messages.header, footer: messages.footer }}
+				>
 					<Providers locale="en">
 						<main className="flex min-h-screen flex-col justify-between bg-linear-to-br from-zinc-100 to-[#fddfbc] px-4 sm:px-0">
 							<Header />

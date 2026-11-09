@@ -26,8 +26,8 @@ export type TShortUrlSafetyColumns =
  */
 export type TShortUrlCreateInput = Omit<
 	TShortUrl,
-	'createdAt' | 'updatedAt' | TShortUrlSafetyColumns
->;
+	'createdAt' | 'updatedAt' | 'hostedPageId' | TShortUrlSafetyColumns
+> & { hostedPageId?: string | null };
 
 /** Safety column defaults, matching the DB defaults. Useful for test fixtures. */
 export const SHORT_URL_SAFETY_DEFAULTS = {

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import { AbstractEntitySchema } from './AbstractEntitySchema'; // Stelle sicher, dass der Pfad korrekt ist
+import { HOSTED_PAGE_TYPES, PdfInputSchema } from './HostedPage';
+import { undocumentedSchemas } from './docs';
 
 export const QR_CODE_NAME_MAX_LENGTH = 50;
 
@@ -265,11 +267,14 @@ export const ALL_QR_CODE_CONTENT_TYPES = [
 	'sms',
 	'whatsapp',
 	// 'socials',
+	'pdf',
 ] as const;
 
 // Alle Typen als Literal-Union
 export const QrCodeContentType = z.enum(ALL_QR_CODE_CONTENT_TYPES);
 export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
+// hosted pages work through the API but are not part of the public API docs
+undocumentedSchemas.add(QrCodeContentType, { values: HOSTED_PAGE_TYPES });
 
 const ContentSchemas = {
 	url: UrlInputSchema,
@@ -284,6 +289,7 @@ const ContentSchemas = {
 	sms: SmsInputSchema,
 	whatsapp: WhatsAppInputSchema,
 	// socials: SocialInputSchema,
+	pdf: PdfInputSchema,
 } as const;
 
 const createContentSchema = <T extends keyof typeof ContentSchemas>(type: T) =>
@@ -291,6 +297,9 @@ const createContentSchema = <T extends keyof typeof ContentSchemas>(type: T) =>
 		type: z.literal(type),
 		data: ContentSchemas[type],
 	});
+
+const pdfContentSchema = createContentSchema('pdf');
+undocumentedSchemas.add(pdfContentSchema, {});
 
 export const QrCodeContent = z.discriminatedUnion('type', [
 	createContentSchema('url'),
@@ -305,6 +314,7 @@ export const QrCodeContent = z.discriminatedUnion('type', [
 	createContentSchema('sms'),
 	createContentSchema('whatsapp'),
 	// createContentSchema('socials'),
+	pdfContentSchema,
 ]);
 
 export type TQrCodeContent = z.infer<typeof QrCodeContent>;

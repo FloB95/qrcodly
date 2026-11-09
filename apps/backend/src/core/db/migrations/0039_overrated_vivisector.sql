@@ -1,0 +1,1 @@
+CREATE INDEX `i_hosted_page_deleted_at` ON `hosted_page` (`deleted_at`);

@@ -1,4 +1,6 @@
+import { container } from 'tsyringe';
 import { TEST_USER_ID, getTestContext, resetTestState } from '@/tests/shared/test-context';
+import ShortUrlRepository from '../../domain/repository/short-url.repository';
 import db from '@/core/db';
 import { eq } from 'drizzle-orm';
 import shortUrl from '../../domain/entities/short-url.entity';
@@ -155,6 +157,54 @@ describe('short URL block enforcement', () => {
 		// the owner re-enables deliberately — traffic must not resume on its own
 		expect(row.isActive).toBe(false);
 		expect(row.nextSafetyCheckAt).not.toBeNull();
+	});
+
+	it('keeps a block from a manual abuse review through a destination change', async () => {
+		const blocked = await createBlocked();
+		await db
+			.update(shortUrl)
+			.set({ safetyThreatTypes: 'MANUAL_ABUSE_REVIEW' })
+			.where(eq(shortUrl.id, blocked.id))
+			.execute();
+
+		const response = await testServer.inject({
+			method: 'PATCH',
+			url: `${SHORT_URL_API_PATH}/${blocked.shortCode}`,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${accessToken}`,
+			},
+			payload: { destinationUrl: 'https://example.com/innocent-looking', isActive: true },
+		});
+
+		expect(response).toHaveStatusCode(403);
+		const row = await readBack(blocked.id);
+		expect(row.safetyStatus).toBe('blocked');
+		expect(row.safetyThreatTypes).toBe('MANUAL_ABUSE_REVIEW');
+		expect(row.isActive).toBe(false);
+	});
+
+	it('lets only the operator change a manual block, never a re-check working from an old read', async () => {
+		const blocked = await createBlocked();
+		await db
+			.update(shortUrl)
+			.set({ safetyThreatTypes: 'MANUAL_ABUSE_REVIEW' })
+			.where(eq(shortUrl.id, blocked.id))
+			.execute();
+		const repository = container.resolve(ShortUrlRepository);
+
+		await repository.clearSafetyBlock(blocked.id, null);
+		await repository.markSafetyChecked(blocked.id, {
+			safetyStatus: 'clean',
+			nextSafetyCheckAt: null,
+		});
+		await repository.blockForSafety(blocked.id, ['MALWARE'], new Date());
+		const kept = await readBack(blocked.id);
+		expect(kept.safetyStatus).toBe('blocked');
+		expect(kept.safetyThreatTypes).toBe('MANUAL_ABUSE_REVIEW');
+
+		await repository.clearSafetyBlock(blocked.id, null, { manual: true });
+		expect((await readBack(blocked.id)).safetyStatus).toBe('clean');
 	});
 
 	it('can be re-enabled again once the block is gone', async () => {

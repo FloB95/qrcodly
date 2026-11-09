@@ -41,6 +41,7 @@ describe('SetShortUrlTagsUseCase', () => {
 		customDomain: null,
 		isActive: true,
 		qrCodeId: null,
+		hostedPageId: null,
 		createdBy: userId,
 		createdAt: new Date(),
 		updatedAt: null,
@@ -114,6 +115,7 @@ describe('SetShortUrlTagsUseCase', () => {
 		mockShortUrlRepository.findOneById.mockResolvedValue({
 			...mockShortUrl,
 			qrCodeId: 'qr-code-1',
+			hostedPageId: null,
 		});
 
 		await expect(useCase.execute(shortUrlId, ['tag-1'], mockUser)).rejects.toThrow(BadRequestError);

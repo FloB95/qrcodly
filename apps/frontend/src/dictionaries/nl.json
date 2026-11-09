@@ -532,6 +532,16 @@
 				"description": "Kon de link niet naar het klembord kopiëren. Kopieer deze handmatig."
 			},
 			"noVisibleContent": "Deze gedeelde QR-code heeft geen zichtbare inhoud."
+		},
+		"hostedPage": {
+			"title": "Gehoste pagina",
+			"link": "Paginalink",
+			"open": "Pagina openen",
+			"edit": "Pagina bewerken",
+			"disabled": "De pagina is uitgeschakeld omdat de QR-code inactief is.",
+			"offlineWithoutPro": "De pagina is offline omdat je Pro-abonnement is afgelopen. Neem Pro opnieuw af en ze is meteen terug.",
+			"loadError": "Het voorbeeld kon niet worden geladen.",
+			"preview": "Voorbeeld"
 		}
 	},
 	"loginDialog": {
@@ -707,7 +717,8 @@
 				"phone": "TELEFOON",
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
-				"socials": "SOCIALS"
+				"socials": "SOCIALS",
+				"pdf": "PDF"
 			},
 			"cancel": "Annuleren",
 			"bulkModeBtn": "CSV Massale aanmaak",
@@ -955,6 +966,226 @@
 					"placeholder": "Profiel- of website-URL",
 					"add": "Link toevoegen",
 					"remove": "Verwijderen"
+				}
+			},
+			"hosted": {
+				"webOnly": "Landingspagina’s kun je alleen in de QRcodly-webapp bewerken.",
+				"loginTitle": "Log in om pagina’s te hosten",
+				"loginDescription": "Gehoste pagina’s vereisen een account: de QR-code verwijst naar een pagina die QRcodly voor je levert.",
+				"loginCta": "Inloggen",
+				"proTitle": "Gehoste pagina’s zijn een Pro-functie",
+				"proDescription": "Host tot {maxFiles} bestanden (pdf’s van elk tot {maxSize} MB) en publiceer tot {maxPages} landingspagina’s in je eigen kleuren, zonder QRcodly-branding.",
+				"upgradeCta": "Upgraden naar Pro",
+				"preview": "Paginavoorbeeld",
+				"design": {
+					"title": "Paginaontwerp",
+					"primaryColor": "Primaire kleur",
+					"hideBranding": "“Made with QRcodly” verbergen",
+					"style": {
+						"label": "Stijl",
+						"editorial": {
+							"title": "Editorial",
+							"description": "Serif-koppen, omslag op volle breedte. Menukaarten, hotels, events"
+						},
+						"gallery": {
+							"title": "Galerie",
+							"description": "Omkaderde omslag, documentkaarten. Exposés, brochures"
+						},
+						"technical": {
+							"title": "Technisch",
+							"description": "Compacte rijen en labels. Handleidingen, datasheets"
+						}
+					},
+					"mode": {
+						"label": "Weergave",
+						"light": "Licht",
+						"dark": "Donker"
+					},
+					"accentColor": "Accentkleur",
+					"font": {
+						"label": "Lettertypen"
+					}
+				},
+				"file": {
+					"replace": "Vervangen",
+					"remove": "Verwijderen",
+					"uploadFailed": "Upload mislukt",
+					"dragDrop": "Sleep je bestand hierheen"
+				},
+				"previewSwitch": {
+					"label": "Voorbeeld",
+					"qr": "QR-code",
+					"page": "Pagina",
+					"sampleHint": "Voorbeeldinhoud. Kies een sjabloon om het over te nemen, of begin te typen."
+				},
+				"templates": {
+					"label": "Sjabloon",
+					"restaurantMenu": {
+						"name": "Menukaart",
+						"description": "Warme editorial look voor menu- en wijnkaarten",
+						"buttonLabel": "Menukaart bekijken",
+						"linkLabel": "Tafel reserveren",
+						"sample": {
+							"title": "Herfstkaart 2026",
+							"description": "Seizoensgerechten met ingrediënten van boerderijen uit de buurt. Wijzigingen voorbehouden.",
+							"brandName": "Trattoria Demo",
+							"documents": "Menukaart|Wijnkaart|Lunchmenu"
+						}
+					},
+					"cafeBar": {
+						"name": "Café & bar",
+						"description": "Donker en gezellig, met gouden accent",
+						"buttonLabel": "Kaart bekijken",
+						"linkLabel": "Route",
+						"sample": {
+							"title": "Drankjes & snacks",
+							"description": "Koffie de hele dag, cocktails vanaf vijf. Happy hour tot zeven.",
+							"brandName": "Kaffeehaus Demo",
+							"documents": "Drankjes|Snacks"
+						}
+					},
+					"realEstate": {
+						"name": "Vastgoed",
+						"description": "Omkaderde foto’s voor exposés en plattegronden",
+						"buttonLabel": "Exposé openen",
+						"linkLabel": "Bezichtiging aanvragen",
+						"sample": {
+							"title": "Exposé Esdoornstraat 1",
+							"description": "3-kamerappartement, 84 m², balkon op het zuiden, beschikbaar vanaf januari.",
+							"brandName": "Demo Vastgoed",
+							"documents": "Exposé|Plattegrond"
+						}
+					},
+					"brochure": {
+						"name": "Brochure",
+						"description": "Krachtige kleuren voor catalogi en campagnes",
+						"buttonLabel": "Brochure openen",
+						"linkLabel": "Naar website",
+						"sample": {
+							"title": "Voorjaarscollectie 2026",
+							"description": "Alle nieuwe producten, kleuren en prijzen in één oogopslag.",
+							"brandName": "Nordlicht Demo",
+							"documents": "Brochure"
+						}
+					},
+					"eventProgram": {
+						"name": "Eventprogramma",
+						"description": "Donkere podiumlook voor programma’s",
+						"buttonLabel": "Programma bekijken",
+						"linkLabel": "Tickets kopen",
+						"sample": {
+							"title": "Zomerfestival 2026",
+							"description": "Drie dagen, vier podia, één weekend. Programma en tijdschema.",
+							"brandName": "Verein Demo",
+							"documents": "Programma|Terreinkaart"
+						}
+					},
+					"productManual": {
+						"name": "Handleiding",
+						"description": "Compacte rijen voor handleidingen en datasheets",
+						"buttonLabel": "Handleiding openen",
+						"linkLabel": "Support contacteren",
+						"sample": {
+							"title": "Handleiding model X200",
+							"description": "Alles over je apparaat, altijd actueel.",
+							"brandName": "Werk Demo",
+							"documents": "Handleiding (NL)|Snelstart|Datasheet"
+						}
+					},
+					"priceList": {
+						"name": "Prijslijst",
+						"description": "Helder en neutraal voor prijzen en voorwaarden",
+						"buttonLabel": "Prijzen bekijken",
+						"linkLabel": "Contact opnemen",
+						"sample": {
+							"title": "Prijzen 2026",
+							"description": "Alle diensten en prijzen, geldig vanaf januari. Inclusief btw.",
+							"brandName": "Studio Demo",
+							"documents": "Prijslijst"
+						}
+					},
+					"blank": {
+						"name": "Lege pagina",
+						"description": "Vanaf nul beginnen"
+					}
+				},
+				"usage": {
+					"title": "In gebruik na opslaan",
+					"landingPages": "Landingspagina’s",
+					"files": "Bestanden in totaal",
+					"filesHint": "Pdf’s, omslagen en logo’s",
+					"count": "{used} / {limit}",
+					"directHint": "Een pdf die direct opent, neemt geen landingspagina in.",
+					"over": "Dit gaat over de limiet van je abonnement. Verwijder iets om op te slaan."
+				}
+			},
+			"pdf": {
+				"intro": {
+					"page": "Bij het scannen opent een mobiele pagina met je pdf. <strong>Je kunt het bestand altijd vervangen, de gedrukte code blijft hetzelfde.</strong>",
+					"direct": "Bij het scannen opent je pdf meteen, zonder landingspagina. <strong>Je kunt het bestand altijd vervangen, de gedrukte code blijft hetzelfde.</strong>",
+					"pro": "Gehoste pdf’s horen bij QRcodly Pro."
+				},
+				"title": {
+					"label": "Titel",
+					"placeholder": "bijv. Menukaart, brochure, handleiding"
+				},
+				"description": {
+					"label": "Beschrijving",
+					"placeholder": "Optionele korte tekst op de pagina"
+				},
+				"documents": {
+					"title": "Documenten",
+					"count": "{count} van {max}",
+					"hint": "Pdf tot {maxSize} MB",
+					"titleLabel": "Documentnaam",
+					"titlePlaceholder": "bijv. Menukaart, wijnkaart, datasheet",
+					"remove": "Document verwijderen",
+					"replace": "Bestand vervangen",
+					"replacing": "Nieuw bestand wordt geüpload…",
+					"replaceFailed": "Het bestand kon niet worden vervangen",
+					"tooLarge": "De pdf is groter dan {maxSize} MB",
+					"limitReached": "Bestandslimiet van je abonnement bereikt",
+					"directOnlyOne": "Een code die zijn pdf direct opent, bevat precies één bestand. Wil je er meer aanbieden, toon dan de pagina.",
+					"retentionHint": "Vervangen of verwijderde bestanden bewaren we nog tot 30 dagen. Wil je er een terug? Mail ons op support@qrcodly.de."
+				},
+				"brandName": {
+					"label": "Bedrijf of merk",
+					"placeholder": "bijv. Trattoria Rossi"
+				},
+				"buttonLabel": {
+					"label": "Knoptekst",
+					"placeholder": "bijv. Menukaart bekijken",
+					"hint": "Tekst van de hoofdknop als de pagina precies één document heeft. Bij meerdere documenten toont de pagina een lijst."
+				},
+				"cover": {
+					"label": "Omslagafbeelding",
+					"hint": "PNG, JPG of WebP tot {maxSize} MB"
+				},
+				"logo": {
+					"label": "Logo",
+					"hint": "PNG, JPG of WebP tot {maxSize} MB"
+				},
+				"link": {
+					"title": "Linkknop",
+					"description": "Optionele tweede knop, bijv. naar reserveren of contact.",
+					"label": "Knoptekst",
+					"labelPlaceholder": "bijv. Tafel reserveren",
+					"url": "URL",
+					"urlPlaceholder": "https://…",
+					"urlMissing": "Vul het adres in waar de knop naartoe leidt, of wis de knoptekst.",
+					"labelMissing": "Vul een knoptekst in, of wis het adres."
+				},
+				"openMode": {
+					"label": "Bij het scannen",
+					"page": {
+						"title": "Pagina tonen",
+						"description": "Kop, tekst, documenten en knoppen"
+					},
+					"direct": {
+						"title": "Pdf direct openen",
+						"description": "De scan opent je enige pdf meteen, zonder landingspagina"
+					},
+					"directNeedsOne": "Direct openen werkt alleen met precies één pdf. Verwijder de andere documenten om het te gebruiken."
 				}
 			}
 		},
@@ -1638,7 +1869,8 @@
 				"prioritySupport": "Prioriteitsondersteuning",
 				"teamFeatures": "Teamfuncties (binnenkort)",
 				"apiAccess": "REST API-toegang",
-				"marketplaceIntegrations": "Integraties van derden"
+				"marketplaceIntegrations": "Integraties van derden",
+				"hostedPages": "PDF-QR-codes met een eigen landingspagina"
 			}
 		},
 		"featureInfoAriaLabel": "Meer informatie",
@@ -2388,7 +2620,7 @@
 			"a4": "Ja — link je QR-code aan je Google Bedrijf-reviewpagina of een feedbackformulier. Met een dynamische code kun je seizoensgebonden wisselen tussen je menu en reviewpagina.",
 			"viewAll": "Bekijk alle veelgestelde vragen",
 			"q5": "Wat gebeurt er met mijn gedrukte codes als ik stop met betalen?",
-			"a5": "Niets. QRcodly schakelt geen QR-codes uit als een abonnement eindigt — onbeperkte codes en scans horen bij het gratis abonnement, dus een gedrukte code blijft doorverwijzen. Alleen Pro-extra’s zoals een eigen domein, gedetailleerde analyses en analyse-integraties worden uitgeschakeld. Dat is bewust: gedrukt materiaal mag nooit een gijzelaar zijn."
+			"a5": "Je codes zelf blijven werken: onbeperkte codes en scans horen bij het gratis abonnement, dus een gedrukte code die naar je eigen website wijst, blijft doorverwijzen. Na een respijtperiode worden alleen Pro-extra’s uitgeschakeld, zoals een eigen domein, gedetailleerde analyses, analyse-integraties en pdf’s die wij voor je hosten, zoals een geüploade menukaart. Neem je Pro opnieuw af, dan is alles meteen terug."
 		},
 		"cta": {
 			"title": "Klaar om uw restaurant te moderniseren?",
@@ -4110,6 +4342,24 @@
 			"title": "Maak je eigen QR-code",
 			"subtitle": "Ontwerp in enkele seconden een gratis QR-code met je logo en kleuren – voor links, wifi, contacten en meer.",
 			"ctaLabel": "Gratis QR-code maken"
+		}
+	},
+	"hostedPage": {
+		"madeWith": "Gemaakt met",
+		"createOwn": "Maak je eigen QR-code",
+		"pdf": {
+			"open": "Pdf openen",
+			"download": "Downloaden",
+			"openDocument": "{title} openen",
+			"downloadDocument": "{title} downloaden",
+			"titlePlaceholder": "Jouw kop",
+			"noDocuments": "Upload een pdf om die hier te zien",
+			"documentCount": "{count, plural, one {# document} other {# documenten}}",
+			"uploadPending": "PDF nog uploaden"
+		},
+		"unavailable": {
+			"title": "Een ogenblik geduld",
+			"description": "Deze pagina is even niet bereikbaar en laadt over een paar seconden vanzelf opnieuw."
 		}
 	}
 }

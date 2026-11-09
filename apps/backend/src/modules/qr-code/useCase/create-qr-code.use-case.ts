@@ -1,8 +1,10 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
-import { inject, injectable } from 'tsyringe';
+import { container, inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { EventEmitter } from '@/core/event';
 import {
+	CreateQrCodeDto,
+	isHostedPageContent,
 	type TCreateQrCodeDto,
 	type TQrCode,
 	type TQrCodeOptions,
@@ -21,6 +23,7 @@ import { type TUser } from '@/core/domain/schema/UserSchema';
 import { ShortUrlStrategyService } from '../service/short-url-strategy.service';
 import { QrCodeDataService } from '../service/qr-code-data.service';
 import { qrCodesCreated } from '@/core/metrics';
+import { HostedPageService } from '@/modules/hosted-page/service/hosted-page.service';
 
 /**
  * Use case for creating a QrCode entity.
@@ -45,23 +48,32 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 	 * @param user The user object who created the QRcode.
 	 * @returns A promise that resolves with the newly created QRcode entity, potentially with linked shortUrl.
 	 */
-	async execute(dto: TCreateQrCodeDto, user: TUser | undefined): Promise<TQrCodeWithRelations> {
+	async execute(input: TCreateQrCodeDto, user: TUser | undefined): Promise<TQrCodeWithRelations> {
+		// every caller gets the same validation as the HTTP route: scripts, imports and
+		// integrations must not be able to store content the schema would reject
+		const dto = CreateQrCodeDto.parse(input);
+
 		// handle limitations and access check
 		const policy = new CreateQrCodePolicy(user, dto);
 		await policy.checkAccess();
+
+		// hosted pages reference uploaded files: ownership and the page limit are checked up front
+		const content = isHostedPageContent(dto.content)
+			? await container.resolve(HostedPageService).prepareForCreate(dto.content, user)
+			: dto.content;
 
 		const resolvedConfig = await this.resolveConfig(dto, user);
 
 		let createdImage: string | undefined;
 
 		try {
-			return await UnitOfWork.run<TQrCodeWithRelations>(async () => {
+			const created = await UnitOfWork.run<TQrCodeWithRelations>(async () => {
 				const newId = await this.qrCodeRepository.generateId();
 
 				const qrCodeEntity = {
 					id: newId,
 					name: dto.name ?? null,
-					content: dto.content,
+					content,
 					config: { ...resolvedConfig },
 					createdBy: user?.id ?? null,
 					qrCodeData: null as string | null,
@@ -92,26 +104,31 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 					qrCodeEntity.content,
 				);
 				// Update with computed qrCodeData - only id is needed for the where clause
-				await this.qrCodeRepository.update({ id: newId } as never, {
-					qrCodeData: computedQrCodeData,
-				});
+				await this.qrCodeRepository.update(
+					{ id: newId },
+					{
+						qrCodeData: computedQrCodeData,
+					},
+				);
 
 				const finalQrCode = await this.qrCodeRepository.findOneById(newId);
 
 				if (!finalQrCode) throw new Error('Failed to retrieve created QR code.');
 
-				this.eventEmitter.emit(new QrCodeCreatedEvent(finalQrCode));
-				this.logger.info('qrCode.created', {
-					qrCode: {
-						id: finalQrCode.id,
-						createdBy: finalQrCode.createdBy,
-					},
-				});
-				qrCodesCreated.add(1, { 'content.type': dto.content.type });
-
 				if (user?.id) await policy.incrementUsage();
 				return finalQrCode;
 			});
+
+			// after commit: handlers run detached and must not use the finished transaction
+			this.eventEmitter.emit(new QrCodeCreatedEvent(created));
+			this.logger.info('qrCode.created', {
+				qrCode: {
+					id: created.id,
+					createdBy: created.createdBy,
+				},
+			});
+			qrCodesCreated.add(1, { 'content.type': dto.content.type });
+			return created;
 		} catch (error: any) {
 			// Validation and plan-limit rejections are the caller's fault, not an incident.
 			const isServerFault = !(error instanceof CustomApiError) || error.statusCode >= 500;

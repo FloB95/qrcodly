@@ -32,16 +32,16 @@ export const ShortUrlDisplay = ({
 				<TruncatedLink href={shortUrl} className={cn('truncate', className)} />
 				<CopyUrlButton url={shortUrl} />
 			</div>
-			{destinationUrl && (
+			{(destinationUrl || destinationContent) && (
 				<div className="mt-1 ml-2 flex min-w-0 items-center">
 					<ArrowTurnDownRightIcon className="mr-3 h-6 w-6 shrink-0 font-semibold text-muted-foreground" />
-					{destinationContent || (
+					{destinationContent ?? (
 						<div className="group/url flex min-w-0 items-center gap-1">
 							<TruncatedLink
-								href={destinationUrl}
+								href={destinationUrl ?? ''}
 								className="truncate pt-1 text-sm text-foreground hover:underline"
 							/>
-							<CopyUrlButton url={destinationUrl} />
+							<CopyUrlButton url={destinationUrl ?? ''} />
 						</div>
 					)}
 				</div>

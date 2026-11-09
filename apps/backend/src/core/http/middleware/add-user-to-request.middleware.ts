@@ -49,7 +49,7 @@ async function resolveUserBanStatus(userId: string): Promise<boolean> {
 	}
 }
 
-async function resolveUserPlan(userId: string): Promise<PlanName> {
+export async function resolveUserPlan(userId: string): Promise<PlanName> {
 	try {
 		const cache = container.resolve(KeyCache);
 		const cacheKey = `user_plan:${userId}`;

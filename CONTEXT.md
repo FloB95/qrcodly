@@ -79,6 +79,56 @@ The rendered picture of a QR code, stored so it can be shown in lists and export
 QR code data, and therefore stale the moment that data changes without a re-render.
 _Avoid_: Thumbnail, QR image, render
 
+### Hosted pages
+
+**Hosted page**:
+A mobile page we serve ourselves instead of redirecting to a foreign destination. Its own entity
+(`hosted_page`), addressed by the short URL that points at it (`short_url.hosted_page_id`), so it
+inherits that link's short code, custom domain, active state and safety state. A QR code is only
+one way to reach the address: it encodes the short URL, and a page may exist without one. One
+family with several _types_ (PDF today; audio and business card pages follow). In the generator
+each page type is an ordinary QR content type; the QR code then stores only its type and the page
+is loaded in. The owner picks whether a scan shows the page or opens the file directly; both are
+the same page. See `docs/adr/0001-hosted-page-entity.md`.
+_Avoid_: Microsite, intermediate page; "landing page" only in user-facing copy
+
+**Page link**:
+The short URL of a hosted page. It has no destination of its own and never counts as a reserved
+code; its files are served under it (`/u/<code>/file/<documentId>`).
+_Avoid_: Placeholder destination, `/p/` link
+
+**Stored file**:
+A file a user uploaded, in the generic `stored_file` table: it starts _unowned_, is _claimed_ by
+the entity that uses it (`owner_type` + `owner_id`, today only hosted pages; QR code and template
+logos later), and is _released_ with a purge date when no longer used. Unowned uploads are swept
+after a day. Ownership is part of the storage key.
+_Avoid_: Hosted upload, attachment, asset, media
+
+**Visibility** (of a stored file):
+Which bucket the file lives in, recorded on its row. _Public_: the CDN bucket, every object has a
+permanent URL; for images shown inline (QR code images and logos, hosted page images, which are
+re-encoded on upload).
+_Private_: no public access, no URL; the app streams the file after its own checks, so a block,
+ban or deletion applies at once; for files users bring as they are (documents, later audio and
+video). `ObjectStorage` is the single entry to both.
+_Avoid_: Public file, protected file, ACL
+
+**Branding**:
+The "Made with QRcodly" footer on a hosted page; the owner may hide it. A page is only served
+while the owner's Pro features are on, so a served page always honours that choice.
+_Avoid_: Watermark, footer, ad
+
+**Offline page**:
+A hosted page whose owner's Pro features were disabled after the grace period, exactly like
+custom domains. Scans show an "unavailable" notice, files are not served; content and files are
+kept and the page is back as soon as Pro is enabled again.
+_Avoid_: Deleted page, expired page
+
+**Landing page (limit)**:
+A hosted QR code whose scan shows a page. A code that opens its file directly takes no landing
+page; every stored file (documents, cover and logo images) counts against the file limits.
+_Avoid_: Counting files as pages
+
 ### Safety
 
 **Safety status**:

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { QrCodeContentType, QrCodeOptionsSchema, QrCodeSchema } from '../../schemas/QrCode';
-import { validateContentHttpUrls } from './validateContentHttpUrls';
+import { validateContentHttpUrls, validateHostedPageContent } from './validateContentHttpUrls';
 
 export const CreateQrCodeDto = QrCodeSchema.pick({
 	name: true,
@@ -23,6 +23,7 @@ export const CreateQrCodeDto = QrCodeSchema.pick({
 	})
 	.superRefine((data, ctx) => {
 		validateContentHttpUrls(data.content, ctx);
+		validateHostedPageContent(data.content, ctx);
 	});
 
 export type TCreateQrCodeDto = z.infer<typeof CreateQrCodeDto>;

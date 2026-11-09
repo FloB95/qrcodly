@@ -6,6 +6,57 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Hosted pages: the chosen pairing sets display/body faces, the page body uses them */
+@utility hp-pair-playfair {
+	--hp-font-display: var(--font-hp-playfair);
+	--hp-font-body: var(--font-hp-source-sans);
+}
+@utility hp-pair-fraunces {
+	--hp-font-display: var(--font-hp-fraunces);
+	--hp-font-body: var(--font-hp-dm-sans);
+}
+@utility hp-pair-lora {
+	--hp-font-display: var(--font-hp-lora);
+	--hp-font-body: var(--font-hp-nunito-sans);
+}
+@utility hp-pair-grotesk {
+	--hp-font-display: var(--font-hp-space-grotesk);
+	--hp-font-body: var(--font-hp-plex-sans);
+}
+@utility hp-pair-manrope {
+	--hp-font-display: var(--font-hp-manrope);
+	--hp-font-body: var(--font-hp-manrope);
+}
+@utility hp-pair-inter {
+	--hp-font-display: var(--font-hp-inter);
+	--hp-font-body: var(--font-hp-inter);
+}
+@utility hp-pair-cormorant {
+	--hp-font-display: var(--font-hp-cormorant);
+	--hp-font-body: var(--font-hp-mulish);
+}
+@utility hp-pair-dmserif {
+	--hp-font-display: var(--font-hp-dm-serif);
+	--hp-font-body: var(--font-hp-dm-sans);
+}
+@utility hp-pair-outfit {
+	--hp-font-display: var(--font-hp-outfit);
+	--hp-font-body: var(--font-hp-inter);
+}
+@utility hp-pair-montserrat {
+	--hp-font-display: var(--font-hp-montserrat);
+	--hp-font-body: var(--font-hp-open-sans);
+}
+@utility font-hp-body {
+	font-family: var(--hp-font-body), ui-sans-serif, system-ui, sans-serif;
+}
+@utility font-hp-display {
+	font-family: var(--hp-font-display), ui-serif, Georgia, serif;
+}
+@utility font-hp-mono {
+	font-family: var(--font-hp-plex-mono), ui-monospace, monospace;
+}
+
 @utility scrollbar-hide {
 	-ms-overflow-style: none;
 	scrollbar-width: none;

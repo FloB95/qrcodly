@@ -7,8 +7,12 @@
 import * as Sentry from '@sentry/nextjs';
 import { env } from './env';
 
+// Pages reached by a scan (/u/<code>: hosted pages, disabled or blocked notices) belong to our
+// customers' visitors: no session replay or tracing there.
+const isScanPage = typeof window !== 'undefined' && window.location.pathname.startsWith('/u/');
+
 Sentry.init({
-	enabled: process.env.NODE_ENV === 'production',
+	enabled: process.env.NODE_ENV === 'production' && !isScanPage,
 	dsn: env.NEXT_PUBLIC_SENTRY_DSN,
 	environment: env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
 

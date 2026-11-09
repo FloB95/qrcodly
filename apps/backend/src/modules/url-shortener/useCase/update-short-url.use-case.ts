@@ -13,8 +13,9 @@ import { DestinationUrlSafetyService } from '../service/destination-url-safety.s
 import { ShortUrlBlockedError } from '../error/http/short-url-blocked.error';
 import UrlSafetyIncidentRepository from '../domain/repository/url-safety-incident.repository';
 import { minutesFromNow } from '@/core/utils/date';
-import { URL_SAFETY_FIRST_CHECK_MINUTES } from '../config/constants';
+import { URL_SAFETY_FIRST_CHECK_MINUTES, URL_SAFETY_MANUAL_THREAT_TYPE } from '../config/constants';
 import { safely, shortUrlsUpdated, urlSafetyUnblocks } from '@/core/metrics';
+import { ShortUrlStateChangedEvent } from '../event/short-url-state-changed.event';
 
 /**
  * Internal input type for updating a short URL.
@@ -80,14 +81,18 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		// Requirement: a link we blocked stays off. This is the single choke point — the toggle
 		// endpoint, PATCH /:shortCode and the dynamic-QR strategies all reach isActive through here.
 		// Pointing the link somewhere else is still allowed; that path re-screens below and lifts the
-		// block when the new destination comes back clean.
+		// block when the new destination comes back clean. A block from a manual abuse review is
+		// never lifted that way: only the operator's `url-safety:unblock` does.
 		const keepsSameDestination =
 			updatesDto.destinationUrl === undefined ||
 			updatesDto.destinationUrl === shortUrl.destinationUrl;
+		const manuallyBlocked =
+			shortUrl.safetyStatus === 'blocked' &&
+			!!shortUrl.safetyThreatTypes?.includes(URL_SAFETY_MANUAL_THREAT_TYPE);
 		if (
 			updatesDto.isActive === true &&
 			shortUrl.safetyStatus === 'blocked' &&
-			keepsSameDestination
+			(keepsSameDestination || manuallyBlocked)
 		) {
 			throw new ShortUrlBlockedError();
 		}
@@ -111,7 +116,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 
 			// The new destination passed screening, so the old block no longer applies. isActive is
 			// left alone: the owner switches the link back on deliberately, in a separate action.
-			if (shortUrl.safetyStatus === 'blocked') {
+			if (shortUrl.safetyStatus === 'blocked' && !manuallyBlocked) {
 				updates.safetyStatus = 'clean';
 				updates.safetyBlockedAt = null;
 				updates.safetyThreatTypes = null;
@@ -127,12 +132,9 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 			}
 		}
 
-		if (linkedQrCodeId) {
-			// verify that qr code exists
-			const qrCode = await this.qrCodeRepository.findOneById(linkedQrCodeId);
-			if (!qrCode) {
-				throw new QrCodeNotFoundError();
-			}
+		// existence only: the QR code may be mid-creation, its page not linked yet
+		if (linkedQrCodeId && !(await this.qrCodeRepository.existsById(linkedQrCodeId))) {
+			throw new QrCodeNotFoundError();
 		}
 
 		// Persist the updated ShortUrl entity in the database.
@@ -144,6 +146,8 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 
 		// Retrieve the updated ShortUrl entity from the database.
 		const result = await this.shortUrlRepository.findOneById(shortUrl.id);
+
+		this.eventEmitter.emit(new ShortUrlStateChangedEvent(shortUrl));
 
 		// Emit the ShortUrlUpdatedEvent.
 		// const event = new ShortUrlUpdatedEvent(result);

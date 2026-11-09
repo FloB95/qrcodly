@@ -8,7 +8,6 @@ import { type EventEmitter } from '@/core/event';
 import { mock } from 'jest-mock-extended';
 import type { TShortUrl } from '../../domain/entities/short-url.entity';
 import type { TUpdateShortUrlDto } from '@shared/schemas';
-import type { TQrCode } from '@shared/schemas';
 import { QrCodeNotFoundError } from '@/modules/qr-code/error/http/qr-code-not-found.error';
 import { RedirectLoopError } from '../../error/http/redirect-loop.error';
 import { isShortenedDestinationUrl } from '../../utils';
@@ -131,15 +130,7 @@ describe('UpdateShortUrlUseCase', () => {
 			};
 
 			const qrCodeId = 'qr_code_123';
-			const mockQrCode = {
-				id: qrCodeId,
-				content: {
-					type: 'event' as const,
-					data: {},
-				},
-			} as TQrCode;
-
-			mockQrCodeRepository.findOneById.mockResolvedValue(mockQrCode);
+			mockQrCodeRepository.existsById.mockResolvedValue(true);
 			mockShortUrlRepository.update.mockResolvedValue();
 			mockShortUrlRepository.findOneById.mockResolvedValue({
 				...mockShortUrl,
@@ -187,18 +178,7 @@ describe('UpdateShortUrlUseCase', () => {
 			};
 
 			const qrCodeId = 'qr_code_123';
-			const mockQrCode = {
-				id: qrCodeId,
-				content: {
-					type: 'url' as const,
-					data: {
-						url: 'https://example.com',
-						isDynamic: true,
-					},
-				},
-			} as TQrCode;
-
-			mockQrCodeRepository.findOneById.mockResolvedValue(mockQrCode);
+			mockQrCodeRepository.existsById.mockResolvedValue(true);
 
 			await expect(useCase.execute(mockShortUrl, updateDto, mockUserId, qrCodeId)).rejects.toThrow(
 				RedirectLoopError,
@@ -211,15 +191,7 @@ describe('UpdateShortUrlUseCase', () => {
 			};
 
 			const qrCodeId = 'qr_code_123';
-			const mockQrCode = {
-				id: qrCodeId,
-				content: {
-					type: 'event' as const,
-					data: {},
-				},
-			} as TQrCode;
-
-			mockQrCodeRepository.findOneById.mockResolvedValue(mockQrCode);
+			mockQrCodeRepository.existsById.mockResolvedValue(true);
 			mockShortUrlRepository.update.mockResolvedValue();
 			mockShortUrlRepository.findOneById.mockResolvedValue(mockShortUrl);
 
@@ -234,18 +206,7 @@ describe('UpdateShortUrlUseCase', () => {
 			};
 
 			const qrCodeId = 'qr_code_123';
-			const mockQrCode = {
-				id: qrCodeId,
-				content: {
-					type: 'url' as const,
-					data: {
-						url: 'https://example.com',
-						isDynamic: true,
-					},
-				},
-			} as TQrCode;
-
-			mockQrCodeRepository.findOneById.mockResolvedValue(mockQrCode);
+			mockQrCodeRepository.existsById.mockResolvedValue(true);
 			mockShortUrlRepository.update.mockResolvedValue();
 			mockShortUrlRepository.findOneById.mockResolvedValue(mockShortUrl);
 
@@ -260,18 +221,7 @@ describe('UpdateShortUrlUseCase', () => {
 			};
 
 			const qrCodeId = 'qr_code_123';
-			const mockQrCode = {
-				id: qrCodeId,
-				content: {
-					type: 'url' as const,
-					data: {
-						url: 'https://example.com',
-						isDynamic: true,
-					},
-				},
-			} as TQrCode;
-
-			mockQrCodeRepository.findOneById.mockResolvedValue(mockQrCode);
+			mockQrCodeRepository.existsById.mockResolvedValue(true);
 
 			await expect(useCase.execute(mockShortUrl, updateDto, mockUserId, qrCodeId)).rejects.toThrow(
 				RedirectLoopError,
@@ -286,7 +236,7 @@ describe('UpdateShortUrlUseCase', () => {
 			};
 
 			const qrCodeId = 'qr_code_123';
-			mockQrCodeRepository.findOneById.mockResolvedValue(undefined);
+			mockQrCodeRepository.existsById.mockResolvedValue(false);
 
 			await expect(useCase.execute(mockShortUrl, updateDto, mockUserId, qrCodeId)).rejects.toThrow(
 				QrCodeNotFoundError,
@@ -299,21 +249,13 @@ describe('UpdateShortUrlUseCase', () => {
 			};
 
 			const qrCodeId = 'qr_code_123';
-			const mockQrCode = {
-				id: qrCodeId,
-				content: {
-					type: 'event' as const,
-					data: {},
-				},
-			} as TQrCode;
-
-			mockQrCodeRepository.findOneById.mockResolvedValue(mockQrCode);
+			mockQrCodeRepository.existsById.mockResolvedValue(true);
 			mockShortUrlRepository.update.mockResolvedValue();
 			mockShortUrlRepository.findOneById.mockResolvedValue(mockShortUrl);
 
 			await useCase.execute(mockShortUrl, updateDto, mockUserId, qrCodeId);
 
-			expect(mockQrCodeRepository.findOneById).toHaveBeenCalledWith(qrCodeId);
+			expect(mockQrCodeRepository.existsById).toHaveBeenCalledWith(qrCodeId);
 		});
 
 		it('should call repository.update() with correct data', async () => {
@@ -392,15 +334,7 @@ describe('UpdateShortUrlUseCase', () => {
 			};
 
 			const qrCodeId = 'qr_code_123';
-			const mockQrCode = {
-				id: qrCodeId,
-				content: {
-					type: 'text' as const,
-					data: 'Some text',
-				},
-			} as TQrCode;
-
-			mockQrCodeRepository.findOneById.mockResolvedValue(mockQrCode);
+			mockQrCodeRepository.existsById.mockResolvedValue(true);
 			mockShortUrlRepository.update.mockResolvedValue();
 			mockShortUrlRepository.findOneById.mockResolvedValue({
 				...mockShortUrl,

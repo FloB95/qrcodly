@@ -37,8 +37,9 @@ import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { CreateShortUrlUseCase } from '../../useCase/create-short-url.use-case';
 import { ListShortUrlsUseCase } from '../../useCase/list-short-urls.use-case';
 import { DeleteShortUrlUseCase } from '../../useCase/delete-short-url.use-case';
-import { TShortUrl } from '../../domain/entities/short-url.entity';
+import { type TShortUrlWithDomain } from '../../domain/entities/short-url.entity';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
+import { TokenTypeSchema } from '@/core/domain/schema/UserSchema';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { KeyCache } from '@/core/cache';
 import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
@@ -57,6 +58,8 @@ import {
 	URL_SAFETY_HOT_SHORT_CODE_LIMIT,
 	URL_SAFETY_OFFENCE_WINDOW_DAYS,
 } from '../../config/constants';
+import { HostedPageService } from '@/modules/hosted-page/service/hosted-page.service';
+import { type THostedPageType } from '@shared/schemas';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -84,6 +87,7 @@ export class ShortUrlController extends AbstractController {
 		private readonly safetyIncidentRepository: UrlSafetyIncidentRepository,
 		@inject(UserSafetyStandingRepository)
 		private readonly safetyStandingRepository: UserSafetyStandingRepository,
+		@inject(HostedPageService) private readonly hostedPageService: HostedPageService,
 	) {
 		super();
 	}
@@ -98,7 +102,10 @@ export class ShortUrlController extends AbstractController {
 			401: DEFAULT_ERROR_RESPONSES[401],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
+		// hidden from the docs only: API keys keep working as before
+		config: { allowedTokenTypes: [...TokenTypeSchema.options] },
 		schema: {
+			hide: true,
 			tags: ['Short URLs'],
 			summary: 'List open URL safety findings',
 			description:
@@ -142,7 +149,10 @@ export class ShortUrlController extends AbstractController {
 			401: DEFAULT_ERROR_RESPONSES[401],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
+		// hidden from the docs only: API keys keep working as before
+		config: { allowedTokenTypes: [...TokenTypeSchema.options] },
 		schema: {
+			hide: true,
 			tags: ['Short URLs'],
 			summary: 'Dismiss URL safety findings',
 			description:
@@ -363,16 +373,24 @@ export class ShortUrlController extends AbstractController {
 			isActive: boolean;
 			deletedAt: Date | null;
 			blocked: boolean;
+			hostedType: THostedPageType | null;
+			hostedUrl: string | null;
 		}>
 	> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode);
+		// a hosted page is served in place of the redirect; "open directly" swaps the destination
+		// only page links read their page; every other scan stays a single lookup
+		const scanTarget = await this.hostedPageService.resolveScanTarget(shortUrl);
 		return this.makeApiHttpResponse(200, {
-			destinationUrl: shortUrl.destinationUrl,
+			destinationUrl: scanTarget.destinationUrl ?? shortUrl.destinationUrl,
 			isActive: shortUrl.isActive,
 			deletedAt: shortUrl.deletedAt,
 			// lets the frontend middleware send a scanner to /link-blocked instead of /disabled —
 			// telling a phishing victim to "contact the owner of this QR code" is bad advice
 			blocked: shortUrl.safetyStatus === 'blocked',
+			hostedType: scanTarget.hostedType,
+			// the one address a hosted page is served at; the frontend redirects every other host there
+			hostedUrl: scanTarget.hostedUrl ?? null,
 		});
 	}
 
@@ -406,9 +424,9 @@ export class ShortUrlController extends AbstractController {
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
 
-		if (shortUrl.qrCodeId != null) {
+		if (shortUrl.qrCodeId != null || shortUrl.hostedPageId != null) {
 			throw new BadRequestError(
-				'Cannot update a short URL linked to a QR code. Update the QR code instead.',
+				'Cannot update a short URL linked to a QR code or hosted page. Update that instead.',
 			);
 		}
 
@@ -662,7 +680,7 @@ export class ShortUrlController extends AbstractController {
 		}
 	}
 
-	private async fetchShortUrl(shortCode: string, userId?: string): Promise<TShortUrl> {
+	private async fetchShortUrl(shortCode: string, userId?: string): Promise<TShortUrlWithDomain> {
 		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
 		if (!shortUrl || shortUrl.deletedAt) {
 			throw new ShortUrlNotFoundError();

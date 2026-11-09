@@ -14,6 +14,16 @@ export function buildShortUrl(code: string, customDomainHost?: string | null): s
 	return `${SHORT_BASE_URL}${code}`;
 }
 
+/** Whether a request's Host header is the host of `url`; port, case and a leading www are ignored. */
+export function isHostOf(url: string, hostHeader: string | undefined): boolean {
+	const target = toHost(url)?.toLowerCase();
+	const host = (hostHeader ?? '')
+		.split(':')[0]
+		?.toLowerCase()
+		.replace(/^www\./, '');
+	return !!target && host === target;
+}
+
 function toHost(url: string | null | undefined): string | null {
 	if (!url) return null;
 	try {

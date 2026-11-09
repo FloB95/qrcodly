@@ -13,6 +13,8 @@ import { ShortUrlController } from '@/modules/url-shortener/http/controller/shor
 import { BillingController } from '@/modules/billing/http/controller/billing.controller';
 import { DomainAddonController } from '@/modules/billing/http/controller/domain-addon.controller';
 import { UserSurveyController } from '@/modules/user-survey/http/controller/user-survey.controller';
+import { HostedPageController } from '@/modules/hosted-page/http/controller/hosted-page.controller';
+import { HostedPageUsageController } from '@/modules/hosted-page/http/controller/hosted-page-usage.controller';
 
 const CONTROLLERS = [
 	ApiKeyController,
@@ -26,6 +28,8 @@ const CONTROLLERS = [
 	BillingController,
 	DomainAddonController,
 	UserSurveyController,
+	HostedPageController,
+	HostedPageUsageController,
 ];
 
 type RouteRow = {
@@ -110,9 +114,18 @@ describe('scope-coverage-matrix', () => {
 	});
 
 	it('every hidden route is effectively session-only (default rule)', () => {
+		// hidden from the docs only, on purpose: API keys keep working as before
+		const docsOnly = new Set([
+			'ShortUrlController GET /safety-incidents',
+			'ShortUrlController POST /safety-incidents/acknowledge',
+			'HostedPageController POST /upload',
+			'HostedPageController GET /assets',
+			'HostedPageUsageController GET /usage',
+		]);
 		const violations = rows.filter(
 			(r) =>
 				r.hidden &&
+				!docsOnly.has(`${r.controller} ${r.method} ${r.path}`) &&
 				r.authHandlerSetting !== 'disabled' &&
 				(!r.effectiveTokenTypes ||
 					!r.effectiveTokenTypes.includes('session_token') ||

@@ -532,6 +532,16 @@
 				"description": "Could not copy link to clipboard. Please copy it manually."
 			},
 			"noVisibleContent": "This shared QR code has no visible content."
+		},
+		"hostedPage": {
+			"title": "Hosted page",
+			"link": "Page link",
+			"open": "Open page",
+			"edit": "Edit page",
+			"disabled": "The page is switched off because the QR code is inactive.",
+			"offlineWithoutPro": "The page is offline because your Pro plan has ended. Resubscribe and it is back straight away.",
+			"loadError": "The preview could not be loaded.",
+			"preview": "Preview"
 		}
 	},
 	"loginDialog": {
@@ -698,7 +708,8 @@
 				"phone": "PHONE",
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
-				"socials": "SOCIALS"
+				"socials": "SOCIALS",
+				"pdf": "PDF"
 			},
 			"cancel": "Cancel",
 			"bulkModeBtn": "CSV Bulk Creation",
@@ -946,6 +957,226 @@
 					"placeholder": "Profile or website URL",
 					"add": "Add link",
 					"remove": "Remove"
+				}
+			},
+			"hosted": {
+				"webOnly": "Landing pages can only be edited in the QRcodly web app.",
+				"loginTitle": "Sign in to host pages",
+				"loginDescription": "Hosted pages need an account: the QR code points to a page that QRcodly serves for you.",
+				"loginCta": "Sign in",
+				"proTitle": "Hosted pages are a Pro feature",
+				"proDescription": "Host up to {maxFiles} files (PDFs up to {maxSize} MB each) and publish up to {maxPages} landing pages in your colours, without QRcodly branding.",
+				"upgradeCta": "Upgrade to Pro",
+				"preview": "Page preview",
+				"design": {
+					"title": "Page design",
+					"primaryColor": "Primary color",
+					"hideBranding": "Hide “Made with QRcodly”",
+					"style": {
+						"label": "Look",
+						"editorial": {
+							"title": "Editorial",
+							"description": "Serif headlines, full-width cover. Menus, hotels, events"
+						},
+						"gallery": {
+							"title": "Gallery",
+							"description": "Framed cover, document cards. Exposés, brochures"
+						},
+						"technical": {
+							"title": "Technical",
+							"description": "Compact rows and labels. Manuals, data sheets"
+						}
+					},
+					"mode": {
+						"label": "Appearance",
+						"light": "Light",
+						"dark": "Dark"
+					},
+					"accentColor": "Accent color",
+					"font": {
+						"label": "Fonts"
+					}
+				},
+				"file": {
+					"replace": "Replace",
+					"remove": "Remove",
+					"uploadFailed": "Upload failed",
+					"dragDrop": "Drag & drop your file here"
+				},
+				"previewSwitch": {
+					"label": "Preview",
+					"qr": "QR code",
+					"page": "Page",
+					"sampleHint": "Sample content. Pick a template to take it over, or start typing."
+				},
+				"templates": {
+					"label": "Template",
+					"restaurantMenu": {
+						"name": "Restaurant menu",
+						"description": "Warm editorial look for menus and wine lists",
+						"buttonLabel": "View menu",
+						"linkLabel": "Book a table",
+						"sample": {
+							"title": "Autumn menu 2026",
+							"description": "Seasonal dishes with ingredients from farms nearby. Subject to change.",
+							"brandName": "Trattoria Demo",
+							"documents": "Menu|Wine list|Lunch specials"
+						}
+					},
+					"cafeBar": {
+						"name": "Café & bar",
+						"description": "Dark, cosy, with a gold accent",
+						"buttonLabel": "View menu",
+						"linkLabel": "Find us",
+						"sample": {
+							"title": "Drinks & snacks",
+							"description": "Coffee all day, cocktails from five. Happy hour until seven.",
+							"brandName": "Kaffeehaus Demo",
+							"documents": "Drinks|Snacks"
+						}
+					},
+					"realEstate": {
+						"name": "Real estate",
+						"description": "Framed photos for exposés and floor plans",
+						"buttonLabel": "Open exposé",
+						"linkLabel": "Request a viewing",
+						"sample": {
+							"title": "Exposé Maple Street 1",
+							"description": "3-room apartment, 84 m², south-facing balcony, available from January.",
+							"brandName": "Demo Real Estate",
+							"documents": "Exposé|Floor plan"
+						}
+					},
+					"brochure": {
+						"name": "Brochure",
+						"description": "Bold colours for catalogues and campaigns",
+						"buttonLabel": "Open brochure",
+						"linkLabel": "Visit website",
+						"sample": {
+							"title": "Spring collection 2026",
+							"description": "All new products, colours and prices at a glance.",
+							"brandName": "Nordlicht Demo",
+							"documents": "Brochure"
+						}
+					},
+					"eventProgram": {
+						"name": "Event program",
+						"description": "Dark stage look for schedules and line-ups",
+						"buttonLabel": "View program",
+						"linkLabel": "Get tickets",
+						"sample": {
+							"title": "Summer festival 2026",
+							"description": "Three days, four stages, one weekend. Full programme and running order.",
+							"brandName": "Verein Demo",
+							"documents": "Programme|Site map"
+						}
+					},
+					"productManual": {
+						"name": "Product manual",
+						"description": "Compact rows for manuals and data sheets",
+						"buttonLabel": "Open manual",
+						"linkLabel": "Contact support",
+						"sample": {
+							"title": "Manual model X200",
+							"description": "Everything about your device, always up to date.",
+							"brandName": "Werk Demo",
+							"documents": "Manual (EN)|Quick start|Data sheet"
+						}
+					},
+					"priceList": {
+						"name": "Price list",
+						"description": "Clear and neutral for prices and terms",
+						"buttonLabel": "View prices",
+						"linkLabel": "Get in touch",
+						"sample": {
+							"title": "Prices 2026",
+							"description": "All services and prices, valid from January. Prices include VAT.",
+							"brandName": "Studio Demo",
+							"documents": "Price list"
+						}
+					},
+					"blank": {
+						"name": "Blank page",
+						"description": "Start from scratch"
+					}
+				},
+				"usage": {
+					"title": "Used after saving",
+					"landingPages": "Landing pages",
+					"files": "All files",
+					"filesHint": "PDFs, covers and logos",
+					"count": "{used} / {limit}",
+					"directHint": "A PDF that opens directly takes no landing page.",
+					"over": "This goes over your plan's limit. Remove something to save."
+				}
+			},
+			"pdf": {
+				"intro": {
+					"page": "When scanned, a mobile page with your PDF opens. <strong>You can swap the file at any time, the printed code stays the same.</strong>",
+					"direct": "When scanned, your PDF opens straight away, without a landing page. <strong>You can swap the file at any time, the printed code stays the same.</strong>",
+					"pro": "Hosted PDFs are part of QRcodly Pro."
+				},
+				"title": {
+					"label": "Title",
+					"placeholder": "e.g. Menu, brochure, manual"
+				},
+				"description": {
+					"label": "Description",
+					"placeholder": "Optional short text shown on the page"
+				},
+				"documents": {
+					"title": "Documents",
+					"count": "{count} of {max}",
+					"hint": "PDF up to {maxSize} MB",
+					"titleLabel": "Document name",
+					"titlePlaceholder": "e.g. Menu, wine list, data sheet",
+					"remove": "Remove document",
+					"replace": "Replace file",
+					"replacing": "Uploading the new file…",
+					"replaceFailed": "The file could not be replaced",
+					"tooLarge": "The PDF is larger than {maxSize} MB",
+					"limitReached": "File limit of your plan reached",
+					"directOnlyOne": "A code that opens its PDF directly holds exactly one file. To offer several, show the landing page.",
+					"retentionHint": "Replaced or removed files are kept for up to 30 days. Need one back? Write to us at support@qrcodly.de."
+				},
+				"brandName": {
+					"label": "Company or brand",
+					"placeholder": "e.g. Trattoria Rossi"
+				},
+				"buttonLabel": {
+					"label": "Button text",
+					"placeholder": "e.g. View menu",
+					"hint": "Label of the main button when the page holds exactly one document. With several documents the page shows a list instead."
+				},
+				"cover": {
+					"label": "Cover image",
+					"hint": "PNG, JPG or WebP up to {maxSize} MB"
+				},
+				"logo": {
+					"label": "Logo",
+					"hint": "PNG, JPG or WebP up to {maxSize} MB"
+				},
+				"link": {
+					"title": "Link button",
+					"description": "Optional second button, e.g. to a reservation or contact page.",
+					"label": "Button text",
+					"labelPlaceholder": "e.g. Book a table",
+					"url": "URL",
+					"urlPlaceholder": "https://…",
+					"urlMissing": "Add the address the button leads to, or clear the button text.",
+					"labelMissing": "Add a button text, or clear the address."
+				},
+				"openMode": {
+					"label": "When the code is scanned",
+					"page": {
+						"title": "Show landing page",
+						"description": "Headline, description, documents and buttons"
+					},
+					"direct": {
+						"title": "Open PDF directly",
+						"description": "The scan opens your single PDF right away, without a landing page"
+					},
+					"directNeedsOne": "Opening directly works with exactly one PDF. Remove the other documents to use it."
 				}
 			}
 		},
@@ -1638,7 +1869,8 @@
 				"prioritySupport": "Priority support",
 				"teamFeatures": "Team features (coming soon)",
 				"apiAccess": "REST API access",
-				"marketplaceIntegrations": "Third-party integrations"
+				"marketplaceIntegrations": "Third-party integrations",
+				"hostedPages": "PDF QR codes with their own landing page"
 			}
 		},
 		"featureInfoAriaLabel": "More information",
@@ -2388,7 +2620,7 @@
 			"a4": "Yes — link your QR code to your Google Business review page or a feedback form. With a dynamic code, you can swap between your menu and review page seasonally.",
 			"viewAll": "View all FAQs",
 			"q5": "What happens to my printed codes if I stop paying?",
-			"a5": "Nothing. QRcodly does not deactivate QR codes when a subscription ends — unlimited codes and scans are part of the free plan, so a code you printed keeps resolving. Only Pro extras such as a custom domain, detailed analytics and analytics integrations switch off. That is deliberate: printed material should never be a hostage."
+			"a5": "Your codes themselves keep working: unlimited codes and scans are part of the free plan, so a printed code that points to your own website keeps resolving. After a grace period only Pro extras switch off, such as a custom domain, detailed analytics, analytics integrations and PDFs we host for you, like an uploaded menu. Resubscribe and everything is back straight away."
 		},
 		"cta": {
 			"title": "Ready to Modernize Your Restaurant?",
@@ -4110,6 +4342,24 @@
 			"title": "Create your own QR code",
 			"subtitle": "Design a free QR code with your logo and colors in seconds – for links, WiFi, contacts and more.",
 			"ctaLabel": "Create a free QR code"
+		}
+	},
+	"hostedPage": {
+		"madeWith": "Made with",
+		"createOwn": "Create your own QR code",
+		"pdf": {
+			"open": "Open PDF",
+			"download": "Download",
+			"openDocument": "Open {title}",
+			"downloadDocument": "Download {title}",
+			"titlePlaceholder": "Your headline",
+			"noDocuments": "Add a PDF to see it here",
+			"documentCount": "{count, plural, one {# document} other {# documents}}",
+			"uploadPending": "Upload the PDF to activate"
+		},
+		"unavailable": {
+			"title": "Just a moment",
+			"description": "This page is briefly unavailable and reloads by itself in a few seconds."
 		}
 	}
 }

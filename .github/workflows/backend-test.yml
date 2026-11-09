@@ -64,6 +64,7 @@ jobs:
       S3_UPLOAD_SECRET: 'testtest1'
       S3_BUCKET_NAME: 'qrcodly'
       S3_PUBLIC_URL: 'http://127.0.0.1:9000/qrcodly'
+      S3_PRIVATE_BUCKET_NAME: 'qrcodly-private'
 
       # App config
       BACKEND_URL: 'http://localhost:5001'
@@ -115,7 +116,8 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          # as in the Docker image; Jest loads ESM-only packages (file-type) from Node 24.9 on
+          node-version: 24
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
@@ -128,7 +130,7 @@ jobs:
       - name: Start S3 mock with bucket
         run: |
           docker run -d --name s3mock -p 9000:9090 \
-            -e COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS=qrcodly \
+            -e COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS=qrcodly,qrcodly-private \
             adobe/s3mock:5.2.3
           for _ in $(seq 1 30); do
             curl -sf -o /dev/null http://127.0.0.1:9000/qrcodly && exit 0

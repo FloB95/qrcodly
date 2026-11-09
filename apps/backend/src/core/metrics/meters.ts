@@ -232,16 +232,35 @@ export const cacheOperationDuration = meter.createHistogram('cache.operation.dur
 
 // --- Object Storage (S3 / MinIO) ---
 
-/** Labels: operation = get|upload|copy|delete|signed_url, outcome = ok|error */
+/** Labels: operation = get|upload|copy|delete|signed_url, bucket = public|private, outcome = ok|error */
 export const storageOperations = meter.createCounter('storage.operations.total', {
 	description: 'Object storage operations, by operation and outcome',
 });
 
-/** Labels: operation */
+/** Labels: operation, bucket */
 export const storageOperationDuration = meter.createHistogram('storage.operation.duration', {
 	description: 'Duration of an object storage operation',
 	unit: 'ms',
 	advice: { explicitBucketBoundaries: [10, 25, 50, 100, 250, 500, 1000, 2500, 10000] },
+});
+
+// --- Uploaded Files ---
+
+/** Labels: kind = pdf|image|… (the hosted upload kind) */
+export const hostedFilesUploaded = meter.createCounter('business.hosted_files.uploaded', {
+	description: 'Files stored for hosted pages, by upload kind',
+});
+
+/** Labels: engine, outcome = clean|found|unavailable|not_configured */
+export const malwareScans = meter.createCounter('malware.scans.total', {
+	description: 'Malware scans of uploaded files, by outcome',
+});
+
+/** Labels: engine. Only completed scans (clean or found) */
+export const malwareScanDuration = meter.createHistogram('malware.scan.duration', {
+	description: 'Duration of a malware scan of one uploaded file',
+	unit: 'ms',
+	advice: { explicitBucketBoundaries: [10, 25, 50, 100, 250, 500, 1000, 2500, 10000, 60000] },
 });
 
 // --- External Dependencies ---

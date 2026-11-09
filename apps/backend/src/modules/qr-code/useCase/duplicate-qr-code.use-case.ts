@@ -1,5 +1,5 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
-import { inject, injectable } from 'tsyringe';
+import { container, inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import { EventEmitter } from '@/core/event';
 import { ImageService } from '@/core/services/image.service';
@@ -23,6 +23,7 @@ import {
 	type TCreateQrCodeDto,
 } from '@shared/schemas';
 import { QrCodeImageStrategy } from '../domain/strategies/qr-code-image.strategy';
+import { HostedPageService } from '@/modules/hosted-page/service/hosted-page.service';
 
 @injectable()
 export class DuplicateQrCodeUseCase implements IBaseUseCase {
@@ -52,10 +53,21 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 		const policy = new CreateQrCodePolicy(user, syntheticDto);
 		await policy.checkAccess();
 
+		const hostedPageService = container.resolve(HostedPageService);
+		await hostedPageService.assertCanDuplicate(source.content, user);
+
 		let copiedImage: string | undefined;
+		const copiedHostedKeys: string[] = [];
 		let finalQrCode: TQrCodeWithRelations;
 
 		try {
+			// hosted files are copied too, so deleting the original never breaks the copy
+			const content = await hostedPageService.copyFilesForDuplicate(
+				source.content,
+				user.id,
+				copiedHostedKeys,
+			);
+
 			finalQrCode = await UnitOfWork.run<TQrCodeWithRelations>(async () => {
 				const newId = this.qrCodeRepository.generateId();
 				const config = structuredClone(source.config);
@@ -70,7 +82,7 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 				const qrCodeEntity = {
 					id: newId,
 					name,
-					content: structuredClone(source.content),
+					content,
 					config,
 					createdBy: user.id,
 					qrCodeData: null as string | null,
@@ -85,9 +97,12 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 					newId,
 					qrCodeEntity.content,
 				);
-				await this.qrCodeRepository.update({ id: newId } as never, {
-					qrCodeData: computedQrCodeData,
-				});
+				await this.qrCodeRepository.update(
+					{ id: newId },
+					{
+						qrCodeData: computedQrCodeData,
+					},
+				);
 
 				if (source.tags.length > 0) {
 					await this.tagRepository.setQrCodeTags(
@@ -104,6 +119,10 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 			});
 		} catch (error: any) {
 			this.logger.error('qrCode.duplicated.error', { error, sourceId: source.id });
+
+			for (const key of copiedHostedKeys) {
+				await hostedPageService.discardFile(key);
+			}
 
 			if (copiedImage) {
 				try {

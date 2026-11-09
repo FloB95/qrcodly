@@ -2,6 +2,7 @@ import { Delete, Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
+import { Logger } from '@/core/logging';
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
 import { type IHttpResponse } from '@/core/interface/response.interface';
@@ -56,6 +57,7 @@ export class QrCodeController extends AbstractController {
 		@inject(ScreenshotService) private readonly screenshotService: ScreenshotService,
 		@inject(DuplicateQrCodeUseCase)
 		private readonly duplicateQrCodeUseCase: DuplicateQrCodeUseCase,
+		@inject(Logger) private readonly logger: Logger,
 	) {
 		super();
 	}
@@ -95,14 +97,20 @@ export class QrCodeController extends AbstractController {
 			status,
 		});
 
-		const pagination = {
-			page: page,
-			limit: limit,
-			total,
-			data: qrCodes,
-		};
+		// one broken row (e.g. a hosted code whose page is gone) must not take the whole list down
+		const data = qrCodes.flatMap((qrCode) => {
+			const parsed = QrCodeWithRelationsResponseDto.safeParse(qrCode);
+			if (parsed.success) return [parsed.data];
+			this.logger.error('qrCode.list.invalid_item', { qrCode: { id: qrCode.id } });
+			return [];
+		});
 
-		return this.makeApiHttpResponse(200, QrCodeWithRelationsPaginatedResponseDto.parse(pagination));
+		// a dropped row must not leave the count promising it
+		const shown = total - (qrCodes.length - data.length);
+		return this.makeApiHttpResponse(
+			200,
+			QrCodeWithRelationsPaginatedResponseDto.parse({ page, limit, total: shown, data }),
+		);
 	}
 
 	@Post('', {

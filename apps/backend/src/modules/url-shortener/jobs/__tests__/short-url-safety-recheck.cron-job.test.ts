@@ -43,6 +43,7 @@ const shortUrl = (overrides: Partial<TShortUrl> = {}): TShortUrl => ({
 	name: null,
 	destinationUrl: 'https://example.com/landing',
 	qrCodeId: null,
+	hostedPageId: null,
 	customDomainId: null,
 	isActive: true,
 	createdBy: 'user_1',
@@ -155,7 +156,7 @@ describe('ShortUrlSafetyRecheckCronJob', () => {
 			const payload = repo.markSafetyChecked.mock.calls[0][1];
 			expect(payload).not.toHaveProperty('safetyStatus');
 
-			const hours = (payload.nextSafetyCheckAt.getTime() - Date.now()) / 3_600_000;
+			const hours = (payload.nextSafetyCheckAt!.getTime() - Date.now()) / 3_600_000;
 			expect(hours).toBeLessThan(7); // the 6h backoff, not the 7-day tier
 		});
 
@@ -180,7 +181,7 @@ describe('ShortUrlSafetyRecheckCronJob', () => {
 			await run();
 
 			const payload = repo.markSafetyChecked.mock.calls[0][1];
-			const days = (payload.nextSafetyCheckAt.getTime() - Date.now()) / 86_400_000;
+			const days = (payload.nextSafetyCheckAt!.getTime() - Date.now()) / 86_400_000;
 			expect(days).toBeGreaterThan(6);
 		});
 
@@ -194,7 +195,7 @@ describe('ShortUrlSafetyRecheckCronJob', () => {
 			await run();
 
 			const payload = repo.markSafetyChecked.mock.calls[0][1];
-			const hours = (payload.nextSafetyCheckAt.getTime() - Date.now()) / 3_600_000;
+			const hours = (payload.nextSafetyCheckAt!.getTime() - Date.now()) / 3_600_000;
 			expect(hours).toBeLessThan(25);
 		});
 
@@ -443,6 +444,154 @@ describe('ShortUrlSafetyRecheckCronJob', () => {
 			'url_safety.recheck.completed',
 			expect.objectContaining({ errors: 1 }),
 		);
+	});
+
+	it('never re-screens or lifts a block from a manual abuse review', async () => {
+		repo.findDueForSafetyCheck.mockResolvedValue([
+			shortUrl({
+				safetyStatus: 'blocked',
+				isActive: false,
+				safetyBlockedAt: new Date(),
+				safetyThreatTypes: 'MANUAL_ABUSE_REVIEW',
+			}),
+		]);
+		webRisk.lookup.mockResolvedValue({ status: 'safe' });
+
+		await run();
+
+		expect(webRisk.lookup).not.toHaveBeenCalled();
+		expect(repo.clearSafetyBlock).not.toHaveBeenCalled();
+		expect(repo.markSafetyChecked).toHaveBeenCalledWith(
+			'su-1',
+			{ nextSafetyCheckAt: null },
+			{ manual: true },
+		);
+	});
+
+	describe('page links', () => {
+		// a hosted page has no destination; its link buttons are what a scan can lead to
+		const pageLink = (overrides: Partial<TShortUrl> = {}) =>
+			shortUrl({ destinationUrl: null, qrCodeId: 'qr-1', hostedPageId: 'page-1', ...overrides });
+		let pages: { outboundUrlsOf: jest.Mock };
+
+		beforeEach(() => {
+			pages = { outboundUrlsOf: jest.fn().mockResolvedValue(['https://book.example.com/table']) };
+			const resolve = container.resolve as jest.Mock;
+			const fallback = resolve.getMockImplementation()!;
+			resolve.mockImplementation((token: { name?: string }) =>
+				token?.name === 'HostedPageService' ? pages : fallback(token),
+			);
+		});
+
+		it('screens the link buttons of the page', async () => {
+			repo.findDueForSafetyCheck.mockResolvedValue([pageLink()]);
+			webRisk.lookup.mockResolvedValue({ status: 'safe' });
+
+			await run();
+
+			expect(pages.outboundUrlsOf).toHaveBeenCalledWith('page-1');
+			expect(webRisk.lookup).toHaveBeenCalledWith('https://book.example.com/table');
+			expect(repo.markSafetyChecked).toHaveBeenCalledWith(
+				'su-1',
+				expect.objectContaining({ safetyStatus: 'clean', nextSafetyCheckAt: expect.any(Date) }),
+			);
+		});
+
+		it('blocks the page once a button is confirmed unsafe', async () => {
+			pages.outboundUrlsOf.mockResolvedValue([
+				'https://book.example.com/table',
+				'https://phish.example.net/login',
+			]);
+			repo.findDueForSafetyCheck.mockResolvedValue([
+				pageLink({ safetyPendingSince: new Date('2026-07-30') }),
+			]);
+			webRisk.lookup.mockImplementation(async (url: string) =>
+				url.includes('phish')
+					? { status: 'unsafe', threatTypes: ['SOCIAL_ENGINEERING'] }
+					: { status: 'safe' },
+			);
+
+			await run();
+
+			expect(repo.blockForSafety).toHaveBeenCalledWith(
+				'su-1',
+				['SOCIAL_ENGINEERING'],
+				expect.any(Date),
+			);
+			expect(incidents.record).toHaveBeenCalledWith(
+				expect.objectContaining({ destinationHost: 'phish.example.net', action: 'blocked' }),
+			);
+		});
+
+		it('blocks for a phishing button even when another button has only a non-blocking finding', async () => {
+			pages.outboundUrlsOf.mockResolvedValue([
+				'https://tools.example.com/download',
+				'https://phish.example.net/login',
+			]);
+			repo.findDueForSafetyCheck.mockResolvedValue([
+				pageLink({ safetyPendingSince: new Date('2026-07-30') }),
+			]);
+			webRisk.lookup.mockImplementation(async (url: string) =>
+				url.includes('phish')
+					? { status: 'unsafe', threatTypes: ['SOCIAL_ENGINEERING'] }
+					: { status: 'unsafe', threatTypes: ['POTENTIALLY_HARMFUL_APPLICATION'] },
+			);
+
+			await run();
+
+			expect(repo.blockForSafety).toHaveBeenCalledWith(
+				'su-1',
+				['SOCIAL_ENGINEERING'],
+				expect.any(Date),
+			);
+		});
+
+		it('takes a page without buttons out of the queue', async () => {
+			pages.outboundUrlsOf.mockResolvedValue([]);
+			repo.findDueForSafetyCheck.mockResolvedValue([pageLink()]);
+
+			await run();
+
+			expect(webRisk.lookup).not.toHaveBeenCalled();
+			expect(repo.markSafetyChecked).toHaveBeenCalledWith(
+				'su-1',
+				expect.objectContaining({ nextSafetyCheckAt: null }),
+			);
+		});
+
+		it('lifts a block once the flagged button is gone, leaving the link switched off', async () => {
+			pages.outboundUrlsOf.mockResolvedValue([]);
+			repo.findDueForSafetyCheck.mockResolvedValue([
+				pageLink({ safetyStatus: 'blocked', isActive: false, safetyBlockedAt: new Date() }),
+			]);
+
+			await run();
+
+			expect(repo.clearSafetyBlock).toHaveBeenCalledWith('su-1', null);
+			expect(incidents.resolveForShortUrl).toHaveBeenCalledWith('su-1');
+			expect(repo.update).not.toHaveBeenCalled();
+		});
+
+		it('never lifts a block from a manual abuse review', async () => {
+			pages.outboundUrlsOf.mockResolvedValue([]);
+			repo.findDueForSafetyCheck.mockResolvedValue([
+				pageLink({
+					safetyStatus: 'blocked',
+					isActive: false,
+					safetyBlockedAt: new Date(),
+					safetyThreatTypes: 'MANUAL_ABUSE_REVIEW',
+				}),
+			]);
+
+			await run();
+
+			expect(repo.clearSafetyBlock).not.toHaveBeenCalled();
+			expect(repo.markSafetyChecked).toHaveBeenCalledWith(
+				'su-1',
+				{ nextSafetyCheckAt: null },
+				{ manual: true },
+			);
+		});
 	});
 
 	it('reports the backlog and prunes stale incidents', async () => {

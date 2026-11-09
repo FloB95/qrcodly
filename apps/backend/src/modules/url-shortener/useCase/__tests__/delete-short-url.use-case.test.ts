@@ -19,6 +19,7 @@ describe('DeleteShortUrlUseCase', () => {
 		customDomainId: null,
 		isActive: true,
 		qrCodeId: null,
+		hostedPageId: null,
 		createdBy: 'user-123',
 		createdAt: new Date(),
 		updatedAt: null,
@@ -29,6 +30,7 @@ describe('DeleteShortUrlUseCase', () => {
 	const mockLinkedShortUrl: TShortUrl = {
 		...mockStandaloneShortUrl,
 		qrCodeId: 'qr-code-1',
+		hostedPageId: null,
 	};
 
 	beforeEach(() => {

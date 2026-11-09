@@ -1,6 +1,8 @@
 import { type FastifyInstance, type FastifyPluginCallback } from 'fastify';
 
 // modules
+import storedFile from './stored-file/setup';
+import hostedPage from './hosted-page/setup';
 import qrCode from './qr-code/setup';
 import configTemplate from './config-template/setup';
 import urlShortener from './url-shortener/setup';
@@ -13,6 +15,8 @@ import apiKey from './api-key/setup';
 import integrationUsage from './integration-usage/setup';
 
 const modules: FastifyPluginCallback = (fastify: FastifyInstance, _options, done) => {
+	fastify.register(storedFile);
+	fastify.register(hostedPage);
 	fastify.register(qrCode);
 	fastify.register(configTemplate);
 	fastify.register(urlShortener);

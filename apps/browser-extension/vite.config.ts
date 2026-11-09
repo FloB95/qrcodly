@@ -40,6 +40,7 @@ function tryResolve(basePath: string): string | null {
 function extensionAliasPlugin(): Plugin {
 	const exactAliases: Record<string, string> = {
 		'@/env': resolve(shimDir, 'env.ts'),
+		'@/components/hosted-page/fonts': resolve(shimDir, 'hosted-page-fonts.ts'),
 		'@/lib/api-client-header': resolve(shimDir, 'api-client-header.ts'),
 		'@/i18n/routing': resolve(shimDir, 'i18n-routing.ts'),
 		'@/i18n/navigation': resolve(shimDir, 'i18n-navigation.ts'),

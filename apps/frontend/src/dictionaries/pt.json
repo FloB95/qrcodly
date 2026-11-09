@@ -532,6 +532,16 @@
 				"description": "Não foi possível copiar o link para a área de transferência. Por favor, copie manualmente."
 			},
 			"noVisibleContent": "Este QR code compartilhado não possui conteúdo visível."
+		},
+		"hostedPage": {
+			"title": "Página alojada",
+			"link": "Ligação da página",
+			"open": "Abrir página",
+			"edit": "Editar página",
+			"disabled": "A página está desativada porque o código QR está inativo.",
+			"offlineWithoutPro": "A página está offline porque o seu plano Pro terminou. Volte a assinar e ela regressa de imediato.",
+			"loadError": "Não foi possível carregar a pré-visualização.",
+			"preview": "Pré-visualização"
 		}
 	},
 	"loginDialog": {
@@ -698,7 +708,8 @@
 				"phone": "TELEFONE",
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
-				"socials": "SOCIALS"
+				"socials": "SOCIALS",
+				"pdf": "PDF"
 			},
 			"cancel": "Cancelar",
 			"bulkModeBtn": "Criação em Massa via CSV",
@@ -946,6 +957,226 @@
 					"placeholder": "URL do perfil ou website",
 					"add": "Adicionar link",
 					"remove": "Remover"
+				}
+			},
+			"hosted": {
+				"webOnly": "As páginas de destino só podem ser editadas na aplicação web do QRcodly.",
+				"loginTitle": "Inicie sessão para alojar páginas",
+				"loginDescription": "As páginas alojadas requerem uma conta: o código QR aponta para uma página que o QRcodly disponibiliza por si.",
+				"loginCta": "Iniciar sessão",
+				"proTitle": "As páginas alojadas são uma funcionalidade Pro",
+				"proDescription": "Aloje até {maxFiles} ficheiros (PDF até {maxSize} MB cada) e publique até {maxPages} páginas de destino com as suas cores, sem a marca QRcodly.",
+				"upgradeCta": "Mudar para Pro",
+				"preview": "Pré-visualização da página",
+				"design": {
+					"title": "Design da página",
+					"primaryColor": "Cor principal",
+					"hideBranding": "Ocultar «Made with QRcodly»",
+					"style": {
+						"label": "Estilo",
+						"editorial": {
+							"title": "Editorial",
+							"description": "Títulos serif, capa a toda a largura. Ementas, hotéis, eventos"
+						},
+						"gallery": {
+							"title": "Galeria",
+							"description": "Capa emoldurada, cartões de documentos. Dossiês, brochuras"
+						},
+						"technical": {
+							"title": "Técnico",
+							"description": "Linhas compactas e etiquetas. Manuais, fichas técnicas"
+						}
+					},
+					"mode": {
+						"label": "Aspeto",
+						"light": "Claro",
+						"dark": "Escuro"
+					},
+					"accentColor": "Cor de destaque",
+					"font": {
+						"label": "Tipos de letra"
+					}
+				},
+				"file": {
+					"replace": "Substituir",
+					"remove": "Remover",
+					"uploadFailed": "Falha no carregamento",
+					"dragDrop": "Arraste o seu ficheiro para aqui"
+				},
+				"previewSwitch": {
+					"label": "Pré-visualização",
+					"qr": "Código QR",
+					"page": "Página",
+					"sampleHint": "Conteúdo de exemplo. Escolha um modelo para o adotar ou comece a escrever."
+				},
+				"templates": {
+					"label": "Modelo",
+					"restaurantMenu": {
+						"name": "Ementa de restaurante",
+						"description": "Estilo editorial acolhedor para ementas e cartas de vinhos",
+						"buttonLabel": "Ver ementa",
+						"linkLabel": "Reservar mesa",
+						"sample": {
+							"title": "Ementa de outono 2026",
+							"description": "Pratos da época com ingredientes de quintas da região. Sujeito a alterações.",
+							"brandName": "Trattoria Demo",
+							"documents": "Ementa|Carta de vinhos|Menu de almoço"
+						}
+					},
+					"cafeBar": {
+						"name": "Café e bar",
+						"description": "Escuro e acolhedor, com toque dourado",
+						"buttonLabel": "Ver carta",
+						"linkLabel": "Como chegar",
+						"sample": {
+							"title": "Bebidas e snacks",
+							"description": "Café todo o dia, cocktails a partir das cinco. Happy hour até às sete.",
+							"brandName": "Kaffeehaus Demo",
+							"documents": "Bebidas|Snacks"
+						}
+					},
+					"realEstate": {
+						"name": "Imobiliário",
+						"description": "Fotos emolduradas para dossiês e plantas",
+						"buttonLabel": "Abrir dossiê",
+						"linkLabel": "Pedir visita",
+						"sample": {
+							"title": "Dossiê Rua dos Áceres 1",
+							"description": "Apartamento T2, 84 m², varanda a sul, disponível a partir de janeiro.",
+							"brandName": "Demo Imobiliária",
+							"documents": "Dossiê|Planta"
+						}
+					},
+					"brochure": {
+						"name": "Brochura",
+						"description": "Cores fortes para catálogos e campanhas",
+						"buttonLabel": "Abrir brochura",
+						"linkLabel": "Ir ao site",
+						"sample": {
+							"title": "Coleção primavera 2026",
+							"description": "Todos os novos produtos, cores e preços num relance.",
+							"brandName": "Nordlicht Demo",
+							"documents": "Brochura"
+						}
+					},
+					"eventProgram": {
+						"name": "Programa de evento",
+						"description": "Estilo de palco escuro para programas",
+						"buttonLabel": "Ver programa",
+						"linkLabel": "Comprar bilhetes",
+						"sample": {
+							"title": "Festival de verão 2026",
+							"description": "Três dias, quatro palcos, um fim de semana. Programa e horários.",
+							"brandName": "Verein Demo",
+							"documents": "Programa|Mapa do recinto"
+						}
+					},
+					"productManual": {
+						"name": "Manual do produto",
+						"description": "Linhas compactas para manuais e fichas",
+						"buttonLabel": "Abrir manual",
+						"linkLabel": "Contactar suporte",
+						"sample": {
+							"title": "Manual modelo X200",
+							"description": "Tudo sobre o seu aparelho, sempre atualizado.",
+							"brandName": "Werk Demo",
+							"documents": "Manual (PT)|Início rápido|Ficha técnica"
+						}
+					},
+					"priceList": {
+						"name": "Lista de preços",
+						"description": "Clara e neutra para preços e condições",
+						"buttonLabel": "Ver preços",
+						"linkLabel": "Entrar em contacto",
+						"sample": {
+							"title": "Preços 2026",
+							"description": "Todos os serviços e preços, válidos a partir de janeiro. IVA incluído.",
+							"brandName": "Studio Demo",
+							"documents": "Lista de preços"
+						}
+					},
+					"blank": {
+						"name": "Página em branco",
+						"description": "Começar do zero"
+					}
+				},
+				"usage": {
+					"title": "Ocupado ao guardar",
+					"landingPages": "Páginas de destino",
+					"files": "Ficheiros no total",
+					"filesHint": "PDF, capas e logótipos",
+					"count": "{used} / {limit}",
+					"directHint": "Um PDF que abre diretamente não ocupa nenhuma página de destino.",
+					"over": "Isto ultrapassa o limite do seu plano. Remova algo para guardar."
+				}
+			},
+			"pdf": {
+				"intro": {
+					"page": "Ao digitalizar, abre-se uma página móvel com o seu PDF. <strong>Pode trocar o ficheiro a qualquer momento, o código impresso continua igual.</strong>",
+					"direct": "Ao digitalizar, o seu PDF abre de imediato, sem página de destino. <strong>Pode trocar o ficheiro a qualquer momento, o código impresso continua igual.</strong>",
+					"pro": "Os PDF alojados fazem parte do QRcodly Pro."
+				},
+				"title": {
+					"label": "Título",
+					"placeholder": "p. ex. Ementa, brochura, manual"
+				},
+				"description": {
+					"label": "Descrição",
+					"placeholder": "Texto curto opcional apresentado na página"
+				},
+				"documents": {
+					"title": "Documentos",
+					"count": "{count} de {max}",
+					"hint": "PDF até {maxSize} MB",
+					"titleLabel": "Nome do documento",
+					"titlePlaceholder": "p. ex. Ementa, carta de vinhos, ficha técnica",
+					"remove": "Remover documento",
+					"replace": "Substituir ficheiro",
+					"replacing": "A carregar o novo ficheiro…",
+					"replaceFailed": "Não foi possível substituir o ficheiro",
+					"tooLarge": "O PDF é maior do que {maxSize} MB",
+					"limitReached": "Limite de ficheiros do seu plano atingido",
+					"directOnlyOne": "Um código que abre o seu PDF diretamente contém exatamente um ficheiro. Para oferecer vários, mostre a página.",
+					"retentionHint": "Guardamos os ficheiros substituídos ou removidos até 30 dias. Precisa de recuperar um? Escreva-nos para support@qrcodly.de."
+				},
+				"brandName": {
+					"label": "Empresa ou marca",
+					"placeholder": "p. ex. Trattoria Rossi"
+				},
+				"buttonLabel": {
+					"label": "Texto do botão",
+					"placeholder": "p. ex. Ver ementa",
+					"hint": "Texto do botão principal quando a página tem exatamente um documento. Com vários documentos a página mostra uma lista."
+				},
+				"cover": {
+					"label": "Imagem de capa",
+					"hint": "PNG, JPG ou WebP até {maxSize} MB"
+				},
+				"logo": {
+					"label": "Logótipo",
+					"hint": "PNG, JPG ou WebP até {maxSize} MB"
+				},
+				"link": {
+					"title": "Botão de ligação",
+					"description": "Segundo botão opcional, p. ex. para reservas ou contacto.",
+					"label": "Texto do botão",
+					"labelPlaceholder": "p. ex. Reservar mesa",
+					"url": "URL",
+					"urlPlaceholder": "https://…",
+					"urlMissing": "Indique o endereço para onde o botão leva ou apague o texto do botão.",
+					"labelMissing": "Indique um texto para o botão ou apague o endereço."
+				},
+				"openMode": {
+					"label": "Ao ler o código",
+					"page": {
+						"title": "Mostrar página",
+						"description": "Título, texto, documentos e botões"
+					},
+					"direct": {
+						"title": "Abrir o PDF diretamente",
+						"description": "A leitura abre de imediato o seu único PDF, sem página de destino"
+					},
+					"directNeedsOne": "Abrir diretamente só funciona com exatamente um PDF. Remova os outros documentos para o usar."
 				}
 			}
 		},
@@ -1638,7 +1869,8 @@
 				"prioritySupport": "Suporte prioritário",
 				"teamFeatures": "Recursos de equipe (em breve)",
 				"apiAccess": "Acesso à API REST",
-				"marketplaceIntegrations": "Integrações de terceiros"
+				"marketplaceIntegrations": "Integrações de terceiros",
+				"hostedPages": "Códigos QR de PDF com página de destino própria"
 			}
 		},
 		"featureInfoAriaLabel": "Mais informações",
@@ -2388,7 +2620,7 @@
 			"a4": "Sim — vincule seu QR code à sua página de avaliação do Google Meu Negócio ou a um formulário de feedback. Com um código dinâmico, você pode alternar entre cardápio e página de avaliação sazonalmente.",
 			"viewAll": "Ver todas as perguntas",
 			"q5": "O que acontece com meus códigos impressos se eu parar de pagar?",
-			"a5": "Nada. O QRcodly não desativa códigos QR ao fim de uma assinatura — códigos e escaneamentos ilimitados fazem parte do plano gratuito, então um código impresso continua redirecionando. Só os extras Pro, como o domínio próprio, as análises detalhadas e as integrações de análise, são desligados. É intencional: material impresso nunca deve virar refém."
+			"a5": "Os seus códigos continuam a funcionar: códigos e escaneamentos ilimitados fazem parte do plano gratuito, então um código impresso que aponta para o seu site continua redirecionando. Após um período de tolerância só os extras Pro são desligados, como o domínio próprio, as análises detalhadas, as integrações de análise e os PDF que alojamos para si, como uma ementa carregada. Volte a assinar e tudo regressa de imediato."
 		},
 		"cta": {
 			"title": "Pronto para Modernizar Seu Restaurante?",
@@ -4110,6 +4342,24 @@
 			"title": "Crie o seu próprio código QR",
 			"subtitle": "Crie em segundos um código QR gratuito com o seu logótipo e as suas cores – para ligações, Wi-Fi, contactos e muito mais.",
 			"ctaLabel": "Criar um código QR grátis"
+		}
+	},
+	"hostedPage": {
+		"madeWith": "Criado com",
+		"createOwn": "Crie o seu próprio código QR",
+		"pdf": {
+			"open": "Abrir PDF",
+			"download": "Transferir",
+			"openDocument": "Abrir {title}",
+			"downloadDocument": "Transferir {title}",
+			"titlePlaceholder": "O seu título",
+			"noDocuments": "Carregue um PDF para o ver aqui",
+			"documentCount": "{count, plural, one {# documento} other {# documentos}}",
+			"uploadPending": "Carregar ainda o PDF"
+		},
+		"unavailable": {
+			"title": "Um momento, por favor",
+			"description": "Esta página está temporariamente indisponível e será recarregada automaticamente em alguns segundos."
 		}
 	}
 }

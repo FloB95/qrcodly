@@ -186,7 +186,9 @@ class TestContextManager {
 			await cleanUpMockData();
 
 			try {
-				await container.resolve(ObjectStorage).emptyS3Directory('test/');
+				const storage = container.resolve(ObjectStorage);
+				await storage.public.emptyS3Directory('test/');
+				await storage.private.emptyS3Directory('test/');
 			} catch (error) {
 				console.warn('S3 cleanup warning:', error);
 			}

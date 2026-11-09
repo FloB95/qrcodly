@@ -1,5 +1,5 @@
 import { BadRequestError } from '@/core/error/http';
-import { ObjectStorage } from '@/core/storage';
+import { ObjectStorage, type PublicBucket } from '@/core/storage';
 import { Logger } from '@/core/logging';
 import { container } from 'tsyringe';
 import { randomUUID } from 'node:crypto';
@@ -7,11 +7,11 @@ import { randomUUID } from 'node:crypto';
 export abstract class BaseImageStrategy {
 	protected readonly validMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
 	protected readonly signedUrlExpirySeconds = 7 * 24 * 60 * 60; // 7 Days
-	protected readonly objectStorage: ObjectStorage;
+	protected readonly objectStorage: PublicBucket;
 	protected readonly logger: Logger;
 
 	constructor() {
-		this.objectStorage = container.resolve(ObjectStorage);
+		this.objectStorage = container.resolve(ObjectStorage).public;
 		this.logger = container.resolve(Logger);
 	}
 

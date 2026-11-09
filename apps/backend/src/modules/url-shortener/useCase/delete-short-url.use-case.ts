@@ -23,9 +23,9 @@ export class DeleteShortUrlUseCase implements IBaseUseCase {
 	 * @param userId The ID of the user performing the deletion.
 	 */
 	async execute(shortUrl: TShortUrl, userId: string): Promise<void> {
-		if (shortUrl.qrCodeId != null) {
+		if (shortUrl.qrCodeId != null || shortUrl.hostedPageId != null) {
 			throw new BadRequestError(
-				'Cannot delete a short URL linked to a QR code. Delete the QR code instead.',
+				'Cannot delete a short URL linked to a QR code or hosted page. Delete that instead.',
 			);
 		}
 

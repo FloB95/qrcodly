@@ -13,6 +13,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import type { ApiError } from '@/lib/api/ApiError';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import { safeLocalStorage } from '@/lib/utils';
+import { isContentIncomplete } from '@/lib/qr-code-helpers';
 
 type UpdateBtnDto = Pick<
 	TQrCodeWithRelationsResponseDto,
@@ -26,7 +27,9 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const [infoDialogIsOpen, setInfoDialogIsOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const updateQrCodeMutation = useUpdateQrCodeMutation();
-	const { latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
+	const { latestQrCode, updateLatestQrCode, hostedUploadsPending } = useQrCodeGeneratorStore(
+		(state) => state,
+	);
 	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
 
 	const hasValidChanges =
@@ -127,7 +130,13 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 						void handleUpdate();
 					}
 				}}
-				disabled={!hasMounted || !hasValidChanges || updateQrCodeMutation.isPending}
+				disabled={
+					!hasMounted ||
+					!hasValidChanges ||
+					isContentIncomplete(qrCode.content) ||
+					Boolean(hostedUploadsPending) ||
+					updateQrCodeMutation.isPending
+				}
 			>
 				{t('updateBtn')}
 			</Button>

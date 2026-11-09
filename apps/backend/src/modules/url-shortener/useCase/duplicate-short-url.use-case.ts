@@ -1,6 +1,7 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
+import { BadRequestError } from '@/core/error/http';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import { type TShortUrlWithDomainAndTags } from '../domain/entities/short-url.entity';
 import { CustomDomainValidationService } from '@/modules/custom-domain/service/custom-domain-validation.service';
@@ -27,6 +28,11 @@ export class DuplicateShortUrlUseCase implements IBaseUseCase {
 		source: TShortUrlWithDomainAndTags,
 		userId: string,
 	): Promise<TShortUrlWithDomainAndTags> {
+		// a page link has no destination to copy; its page is duplicated with the page instead
+		if (source.hostedPageId != null) {
+			throw new BadRequestError('Cannot duplicate the short URL of a hosted page.');
+		}
+
 		// Copying a blocked link would hand the user a working clone of something we just disabled.
 		if (source.safetyStatus === 'blocked') {
 			throw new ShortUrlBlockedError();
