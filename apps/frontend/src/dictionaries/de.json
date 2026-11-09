@@ -1870,7 +1870,7 @@
 				"teamFeatures": "Team-Funktionen (bald verfügbar)",
 				"apiAccess": "REST-API-Zugriff",
 				"marketplaceIntegrations": "Drittanbieter-Integrationen",
-				"hostedPages": "Gehostete PDFs: bis zu 15 Landingpages und 60 Dateien, PDFs je bis zu 25 MB"
+				"hostedPages": "PDF-QR-Codes mit eigener Landingpage"
 			}
 		},
 		"featureInfoAriaLabel": "Mehr Informationen",

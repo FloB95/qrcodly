@@ -1874,7 +1874,7 @@
 				"teamFeatures": "Fonctionnalités d'équipe (bientôt)",
 				"apiAccess": "Accès à l'API REST",
 				"marketplaceIntegrations": "Intégrations tierces",
-				"hostedPages": "PDF hébergés : jusqu’à 15 pages d’atterrissage et 60 fichiers, PDF de 25 Mo chacun"
+				"hostedPages": "QR codes PDF avec leur propre page d’atterrissage"
 			}
 		},
 		"featureInfoAriaLabel": "Plus d'informations",

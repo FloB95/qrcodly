@@ -1870,7 +1870,7 @@
 				"teamFeatures": "Командные функции (скоро)",
 				"apiAccess": "Доступ к REST API",
 				"marketplaceIntegrations": "Сторонние интеграции",
-				"hostedPages": "Размещённые PDF: до 15 лендингов и 60 файлов, PDF до 25 МБ каждый"
+				"hostedPages": "QR-коды для PDF с собственной целевой страницей"
 			}
 		},
 		"featureInfoAriaLabel": "Подробнее",

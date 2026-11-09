@@ -1870,7 +1870,7 @@
 				"teamFeatures": "Recursos de equipe (em breve)",
 				"apiAccess": "Acesso à API REST",
 				"marketplaceIntegrations": "Integrações de terceiros",
-				"hostedPages": "PDF alojados: até 15 páginas de destino e 60 ficheiros, PDF até 25 MB cada"
+				"hostedPages": "Códigos QR de PDF com página de destino própria"
 			}
 		},
 		"featureInfoAriaLabel": "Mais informações",

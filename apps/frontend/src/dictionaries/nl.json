@@ -1870,7 +1870,7 @@
 				"teamFeatures": "Teamfuncties (binnenkort)",
 				"apiAccess": "REST API-toegang",
 				"marketplaceIntegrations": "Integraties van derden",
-				"hostedPages": "Gehoste pdf’s: tot 15 landingspagina’s en 60 bestanden, pdf’s van elk tot 25 MB"
+				"hostedPages": "PDF-QR-codes met een eigen landingspagina"
 			}
 		},
 		"featureInfoAriaLabel": "Meer informatie",

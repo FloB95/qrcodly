@@ -1870,7 +1870,7 @@
 				"teamFeatures": "Funkcje zespołowe (wkrótce)",
 				"apiAccess": "Dostęp do REST API",
 				"marketplaceIntegrations": "Integracje zewnętrzne",
-				"hostedPages": "Hostowane pliki PDF: do 15 stron docelowych i 60 plików, PDF po maks. 25 MB"
+				"hostedPages": "Kody QR do plików PDF z własną stroną docelową"
 			}
 		},
 		"featureInfoAriaLabel": "Więcej informacji",

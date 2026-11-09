@@ -1870,7 +1870,7 @@
 				"teamFeatures": "Team features (coming soon)",
 				"apiAccess": "REST API access",
 				"marketplaceIntegrations": "Third-party integrations",
-				"hostedPages": "Hosted PDFs: up to 15 landing pages and 60 files, PDFs up to 25 MB each"
+				"hostedPages": "PDF QR codes with their own landing page"
 			}
 		},
 		"featureInfoAriaLabel": "More information",
