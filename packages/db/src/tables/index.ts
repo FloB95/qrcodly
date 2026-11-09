@@ -73,4 +73,6 @@ export {
 	type TStoredFileKind,
 	STORED_FILE_OWNER_TYPES,
 	type TStoredFileOwnerType,
+	STORED_FILE_VISIBILITIES,
+	type TStoredFileVisibility,
 } from './stored-file';

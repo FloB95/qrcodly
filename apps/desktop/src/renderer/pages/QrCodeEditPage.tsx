@@ -2,7 +2,11 @@ import { useParams } from 'react-router-dom';
 import { useAuth } from '@clerk/react';
 import { useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/utils';
-import { ALL_QR_CODE_CONTENT_TYPES, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import {
+	ALL_QR_CODE_CONTENT_TYPES,
+	isHostedPageType,
+	type TQrCodeWithRelationsResponseDto,
+} from '@shared/schemas';
 import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
 import { useTranslations } from 'next-intl';
@@ -49,6 +53,15 @@ export default function QrCodeEditPage() {
 		return (
 			<div className="flex items-center justify-center py-12">
 				<p className="text-muted-foreground">QR code not found</p>
+			</div>
+		);
+	}
+
+	// hosted pages are a web app feature only
+	if (isHostedPageType(qrCode.content.type)) {
+		return (
+			<div className="flex items-center justify-center py-12">
+				<p className="text-muted-foreground">{t('generator.contentSwitch.hosted.webOnly')}</p>
 			</div>
 		);
 	}

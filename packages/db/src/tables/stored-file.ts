@@ -4,6 +4,14 @@ import { createTable } from '../utils';
 export const STORED_FILE_KINDS = ['pdf', 'image'] as const;
 export type TStoredFileKind = (typeof STORED_FILE_KINDS)[number];
 
+/**
+ * Where a file's object lives: `public` in the CDN bucket (re-encoded images a page shows inline),
+ * `private` in a bucket without public access (files users bring as they are, streamed by the app
+ * after its checks). Recorded per file, so a later change of policy never loses an object.
+ */
+export const STORED_FILE_VISIBILITIES = ['public', 'private'] as const;
+export type TStoredFileVisibility = (typeof STORED_FILE_VISIBILITIES)[number];
+
 /** Entities that can own stored files. QR code and template logos join later. */
 export const STORED_FILE_OWNER_TYPES = ['hosted_page'] as const;
 export type TStoredFileOwnerType = (typeof STORED_FILE_OWNER_TYPES)[number];
@@ -23,6 +31,7 @@ const storedFile = createTable(
 		/** Kept after release, so a released file still points to where it was used */
 		ownerId: varchar({ length: 36 }),
 		kind: varchar({ length: 16 }).$type<TStoredFileKind>().notNull(),
+		visibility: varchar({ length: 16 }).$type<TStoredFileVisibility>().notNull(),
 		/** Role at the owner, e.g. "document", "cover", "logo" */
 		slot: varchar({ length: 32 }),
 		/** Stable item within the slot (the document id); groups the versions of one document */

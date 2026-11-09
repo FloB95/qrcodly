@@ -10,7 +10,10 @@ import shortUrl, {
 import { convertWhereConditionToDrizzle } from '@/core/db/utils';
 import shortUrlTag from '../entities/short-url-tag.entity';
 import { minutesFromNow } from '@/core/utils/date';
-import { URL_SAFETY_FIRST_CHECK_MINUTES } from '../../config/constants';
+import {
+	URL_SAFETY_FIRST_CHECK_MINUTES,
+	URL_SAFETY_MANUAL_THREAT_TYPE,
+} from '../../config/constants';
 import type { TShortUrlSafetyStatus, TShortUrlStatusFilter } from '@shared/schemas';
 
 /**
@@ -403,7 +406,26 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 			.execute();
 	}
 
-	/** Records the outcome of a completed lookup and schedules the next one. */
+	/**
+	 * The link, unless a manual abuse review blocked it since it was read: the re-check works from a
+	 * snapshot of its batch, and a block the operator set meanwhile must win.
+	 */
+	private unlessManuallyBlocked(id: string): SQL {
+		const t = this.table;
+		return and(
+			eq(t.id, id),
+			or(
+				ne(t.safetyStatus, 'blocked'),
+				isNull(t.safetyThreatTypes),
+				sql`${t.safetyThreatTypes} NOT LIKE ${`%${URL_SAFETY_MANUAL_THREAT_TYPE}%`}`,
+			),
+		) as SQL;
+	}
+
+	/**
+	 * Records the outcome of a completed lookup and schedules the next one. A manual block is left
+	 * alone unless `manual` says the caller knowingly handles one.
+	 */
 	async markSafetyChecked(
 		id: string,
 		updates: {
@@ -414,11 +436,12 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 			safetyPendingSince?: Date | null;
 			safetyThreatTypes?: string | null;
 		},
+		{ manual = false }: { manual?: boolean } = {},
 	): Promise<void> {
 		await this.db
 			.update(this.table)
 			.set({ ...updates, lastSafetyCheckAt: new Date() })
-			.where(eq(this.table.id, id))
+			.where(manual ? eq(this.table.id, id) : this.unlessManuallyBlocked(id))
 			.execute();
 	}
 
@@ -426,9 +449,15 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * Blocks a link: disables the redirect and marks it as ours to unblock.
 	 *
 	 * `isActive` and `safetyStatus` are set in one statement so a link can never be left flagged but
-	 * still redirecting.
+	 * still redirecting. Without a next check the re-check never self-heals it. Only a `manual` block
+	 * (the operator's) replaces one from a manual abuse review.
 	 */
-	async blockForSafety(id: string, threatTypes: string[], nextSafetyCheckAt: Date): Promise<void> {
+	async blockForSafety(
+		id: string,
+		threatTypes: string[],
+		nextSafetyCheckAt: Date | null,
+		{ manual = false }: { manual?: boolean } = {},
+	): Promise<void> {
 		await this.db
 			.update(this.table)
 			.set({
@@ -442,7 +471,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 				nextSafetyCheckAt,
 				updatedAt: new Date(),
 			})
-			.where(eq(this.table.id, id))
+			.where(manual ? eq(this.table.id, id) : this.unlessManuallyBlocked(id))
 			.execute();
 	}
 
@@ -480,9 +509,14 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 
 	/**
 	 * Lifts a block. `isActive` deliberately stays false: the owner has to consciously switch the
-	 * link back on rather than have traffic silently resume.
+	 * link back on rather than have traffic silently resume. A block from a manual abuse review is
+	 * only lifted with `manual` (the operator's unblock).
 	 */
-	async clearSafetyBlock(id: string, nextSafetyCheckAt: Date | null): Promise<void> {
+	async clearSafetyBlock(
+		id: string,
+		nextSafetyCheckAt: Date | null,
+		{ manual = false }: { manual?: boolean } = {},
+	): Promise<void> {
 		await this.db
 			.update(this.table)
 			.set({
@@ -495,7 +529,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 				nextSafetyCheckAt,
 				updatedAt: new Date(),
 			})
-			.where(eq(this.table.id, id))
+			.where(manual ? eq(this.table.id, id) : this.unlessManuallyBlocked(id))
 			.execute();
 	}
 

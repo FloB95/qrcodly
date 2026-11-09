@@ -1,4 +1,4 @@
-import { PdfPageDataSchema, type TPdfPageData } from '../schemas/HostedPage';
+import { type TPdfPageData } from '../schemas/HostedPage';
 import type { THostedPageTypeDefinition } from './page-type';
 
 const swap = (value: string | undefined, oldKey: string, newKey: string) =>
@@ -6,8 +6,6 @@ const swap = (value: string | undefined, oldKey: string, newKey: string) =>
 
 /** A landing page around one or more PDF documents, with an optional cover and logo. */
 export const pdfPageType: THostedPageTypeDefinition<TPdfPageData> = {
-	inputSchema: PdfPageDataSchema,
-
 	fileRefs: (data) => [
 		...data.documents.map((document) => ({
 			key: document.fileKey,
@@ -46,17 +44,7 @@ export const pdfPageType: THostedPageTypeDefinition<TPdfPageData> = {
 
 	servedFiles: (data) =>
 		data.documents.flatMap((document) =>
-			document.id
-				? [
-						{
-							documentId: document.id,
-							fileKey: document.fileKey,
-							fileName: document.fileName,
-							fileSize: document.fileSize,
-							contentType: 'application/pdf',
-						},
-					]
-				: [],
+			document.id ? [{ documentId: document.id, fileKey: document.fileKey }] : [],
 		),
 
 	directDocumentId: (data) => (data.openMode === 'direct' ? (data.documents[0]?.id ?? null) : null),
@@ -65,5 +53,14 @@ export const pdfPageType: THostedPageTypeDefinition<TPdfPageData> = {
 
 	outboundUrls: (data) => (data.link?.url ? [data.link.url] : []),
 
-	fileRetention: 'grace',
+	// a scan that skips the page opens one file: with several, all but the first were unreachable
+	inputIssues: (data) =>
+		data.openMode === 'direct' && data.documents.length !== 1
+			? [
+					{
+						path: ['openMode'],
+						message: 'Opening the document directly needs exactly one document',
+					},
+				]
+			: [],
 };

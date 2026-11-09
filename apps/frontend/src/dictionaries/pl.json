@@ -969,6 +969,7 @@
 				}
 			},
 			"hosted": {
+				"webOnly": "Strony docelowe można edytować tylko w aplikacji internetowej QRcodly.",
 				"loginTitle": "Zaloguj się, aby hostować strony",
 				"loginDescription": "Hostowane strony wymagają konta: kod QR prowadzi do strony, którą QRcodly udostępnia za Ciebie.",
 				"loginCta": "Zaloguj się",
@@ -1115,14 +1116,13 @@
 					"filesHint": "PDF, okładki i logo",
 					"count": "{used} / {limit}",
 					"directHint": "PDF otwierany bezpośrednio nie zajmuje strony docelowej.",
-					"over": "To przekracza limit Twojego planu. Usuń coś, aby zapisać.",
-					"moreOnRequest": "Potrzebujesz więcej plików? <link>Na prośbę odblokujemy więcej.</link>"
+					"over": "To przekracza limit Twojego planu. Usuń coś, aby zapisać."
 				}
 			},
 			"pdf": {
 				"intro": {
 					"page": "Po zeskanowaniu otwiera się strona mobilna z Twoim PDF. <strong>Plik możesz wymienić w każdej chwili, wydrukowany kod pozostaje ten sam.</strong>",
-					"direct": "Po zeskanowaniu Twój PDF otwiera się od razu. <strong>Plik możesz wymienić w każdej chwili, wydrukowany kod pozostaje ten sam.</strong>",
+					"direct": "Po zeskanowaniu Twój PDF otwiera się od razu, bez strony docelowej. <strong>Plik możesz wymienić w każdej chwili, wydrukowany kod pozostaje ten sam.</strong>",
 					"pro": "Hostowane pliki PDF są częścią QRcodly Pro."
 				},
 				"title": {
@@ -1145,6 +1145,7 @@
 					"replaceFailed": "Nie udało się zastąpić pliku",
 					"tooLarge": "Plik PDF jest większy niż {maxSize} MB",
 					"limitReached": "Osiągnięto limit plików w Twoim planie",
+					"directOnlyOne": "Kod, który otwiera swój PDF bezpośrednio, zawiera dokładnie jeden plik. Aby udostępnić kilka, pokaż stronę.",
 					"retentionHint": "Zastąpione lub usunięte pliki przechowujemy jeszcze do 30 dni. Chcesz któryś odzyskać? Napisz do nas na support@qrcodly.de."
 				},
 				"brandName": {
@@ -1182,8 +1183,9 @@
 					},
 					"direct": {
 						"title": "Otwórz PDF od razu",
-						"description": "Pierwszy dokument otwiera się od razu; strona pozostaje dostępna pod linkiem"
-					}
+						"description": "Skan od razu otwiera Twój jedyny PDF, bez strony docelowej"
+					},
+					"directNeedsOne": "Bezpośrednie otwieranie działa tylko z dokładnie jednym plikiem PDF. Usuń pozostałe dokumenty, aby z niego skorzystać."
 				}
 			}
 		},
@@ -4348,10 +4350,11 @@
 		"pdf": {
 			"open": "Otwórz PDF",
 			"download": "Pobierz",
-			"documentsTitle": "Dokumenty",
+			"openDocument": "Otwórz {title}",
+			"downloadDocument": "Pobierz {title}",
 			"titlePlaceholder": "Twój nagłówek",
 			"noDocuments": "Dodaj PDF, aby zobaczyć go tutaj",
-			"document": "dokument",
+			"documentCount": "{count, plural, one {# dokument} few {# dokumenty} many {# dokumentów} other {# dokumentu}}",
 			"uploadPending": "Prześlij jeszcze PDF"
 		},
 		"unavailable": {

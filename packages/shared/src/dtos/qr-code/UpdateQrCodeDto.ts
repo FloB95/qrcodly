@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { QrCodeSchema } from '../../schemas/QrCode';
-import { validateContentHttpUrls } from './validateContentHttpUrls';
+import { validateContentHttpUrls, validateHostedPageContent } from './validateContentHttpUrls';
 
 export const UpdateQrCodeDto = QrCodeSchema.pick({
 	name: true,
@@ -10,6 +10,7 @@ export const UpdateQrCodeDto = QrCodeSchema.pick({
 	.partial()
 	.superRefine((data, ctx) => {
 		validateContentHttpUrls(data.content, ctx);
+		validateHostedPageContent(data.content, ctx);
 	});
 
 export type TUpdateQrCodeDto = z.infer<typeof UpdateQrCodeDto>;

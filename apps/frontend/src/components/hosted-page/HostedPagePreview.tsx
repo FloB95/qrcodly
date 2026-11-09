@@ -19,12 +19,12 @@ export function HostedPagePreview({ page }: { page: TPublicHostedPageResponseDto
 				aria-hidden="true"
 				className="absolute top-[18px] left-1/2 z-10 h-[22px] w-[88px] -translate-x-1/2 rounded-full bg-slate-900"
 			/>
-			{/* the frame scrolls; the page inside ignores the pointer so nothing can be clicked */}
+			{/* the frame scrolls; the page inside is inert: nothing in it can be clicked or focused */}
 			<div
 				ref={frame}
 				className="h-[600px] overflow-y-auto overscroll-contain rounded-[1.9rem] bg-white [scrollbar-width:none]"
 			>
-				<div className="pointer-events-none flex min-h-full flex-col select-none">
+				<div inert className="pointer-events-none flex min-h-full flex-col select-none">
 					<HostedPageView page={page} preview />
 				</div>
 			</div>

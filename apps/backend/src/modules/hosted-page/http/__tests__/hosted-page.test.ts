@@ -33,6 +33,7 @@ import { PurgeDeletedHostedPagesCronJob } from '../../jobs/purge-deleted-hosted-
 import { GetReservedShortCodeUseCase } from '@/modules/url-shortener/useCase/get-reserved-short-url.use-case';
 import qrCodeTable from '@/modules/qr-code/domain/entities/qr-code.entity';
 import { HostedFileService } from '../../service/hosted-file.service';
+import { ObjectStorage } from '@/core/storage';
 import { HostedPageService } from '../../service/hosted-page.service';
 import { MalwareScanService } from '@/modules/stored-file/service/malware-scan.service';
 import { FileRejectedError } from '@/modules/stored-file/error/http/file-rejected.error';
@@ -47,7 +48,10 @@ import db from '@/core/db';
 import { eq, like } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 import storedFile from '@/modules/stored-file/domain/entities/stored-file.entity';
-import { HOSTED_UPLOAD_MAX_UNCLAIMED } from '@/modules/hosted-page/config/constants';
+import {
+	HOSTED_UPLOAD_HARD_LIMIT_BYTES,
+	HOSTED_UPLOAD_MAX_UNCLAIMED,
+} from '@/modules/hosted-page/config/constants';
 import shortUrl from '@/modules/url-shortener/domain/entities/short-url.entity';
 import {
 	createCustomDomainDirectly,
@@ -237,6 +241,22 @@ describe('Hosted pages', () => {
 	});
 
 	describe('POST /hosted-page/upload', () => {
+		it('refuses an anonymous or oversized upload through the guard', async () => {
+			expect(await uploadRequest('pdf', MINIMAL_PDF)).toHaveStatusCode(401);
+
+			const oversized = await testServer.inject({
+				method: 'POST',
+				url: `${HOSTED_API_PATH}/upload`,
+				payload: 'x',
+				headers: {
+					Authorization: `Bearer ${accessTokenPro}`,
+					'content-type': 'multipart/form-data; boundary=x',
+					'content-length': String(HOSTED_UPLOAD_HARD_LIMIT_BYTES * 2),
+				},
+			});
+			expect(oversized).toHaveStatusCode(413);
+		});
+
 		it('stores a PDF under the user prefix and detects the type from its bytes', async () => {
 			const response = await uploadRequest(
 				'pdf',
@@ -255,6 +275,10 @@ describe('Hosted pages', () => {
 			expect(upload.fileSize).toBe(MINIMAL_PDF.length);
 			// PDFs are only ever served through the page, never by a direct storage URL
 			expect(upload.url).toBeNull();
+			// ...and they live in the bucket without public access, not behind the CDN
+			const storage = container.resolve(ObjectStorage);
+			expect(await storage.private.get(upload.fileKey)).not.toBeNull();
+			await expect(storage.public.get(upload.fileKey)).rejects.toThrow();
 
 			const row = await container.resolve(StoredFileRepository).findByFileKey(upload.fileKey);
 			expect(row?.claimedAt).toBeNull();
@@ -361,7 +385,7 @@ describe('Hosted pages', () => {
 			let rowDuringUpload: unknown;
 			const failing = jest
 				.spyOn(container.resolve(HostedFileService), 'upload')
-				.mockImplementationOnce(async (fileKey: string) => {
+				.mockImplementationOnce(async ({ fileKey }) => {
 					// the row must exist before the object, or a crash in between hides the object
 					rowDuringUpload = await container.resolve(StoredFileRepository).findByFileKey(fileKey);
 					throw new Error('storage down');
@@ -416,6 +440,7 @@ describe('Hosted pages', () => {
 					ownerType: null,
 					ownerId: null,
 					kind: 'pdf' as const,
+					visibility: 'private' as const,
 					fileKey: `${marker}/${i}.pdf`,
 					fileName: `${i}.pdf`,
 					fileSize: 1,
@@ -535,7 +560,7 @@ describe('Hosted pages', () => {
 			expect(released?.releasedAt).toBeTruthy();
 			const retentionMs = env.HOSTED_FILE_RETENTION_DAYS * 24 * 60 * 60 * 1000;
 			expect(released!.purgeAfter!.getTime()).toBeGreaterThan(Date.now() + retentionMs - 60_000);
-			expect(await container.resolve(HostedFileService).get(oldKey)).not.toBeNull();
+			expect(await container.resolve(ObjectStorage).private.get(oldKey)).not.toBeNull();
 			const current = await repo.findByFileKey(replacement.fileKey);
 			expect(current?.ownerId).toBe(await pageIdOf(qrCode));
 			expect(current?.itemId).toBe(documentId);
@@ -563,6 +588,7 @@ describe('Hosted pages', () => {
 					ownerType: 'hosted_page',
 					ownerId: randomUUID(),
 					kind: 'pdf',
+					visibility: 'private',
 					fileKey: key,
 					fileName: 'old.pdf',
 					fileSize: 1,
@@ -729,7 +755,7 @@ describe('Hosted pages', () => {
 			expect(() =>
 				policy(usage(1, pro.maxFiles), usage(1, pro.maxFiles + 1)).checkAccess(),
 			).toThrow(/hosted file/);
-			// files granted on request raise the effective limit
+			// a higher effective limit (a later add-on) lets the save through
 			expect(
 				policy(usage(1, pro.maxFiles), usage(1, pro.maxFiles + 1), {
 					...pro,
@@ -767,9 +793,11 @@ describe('Hosted pages', () => {
 				`/u/${directCode}/file/`,
 			);
 
-			// new pages need an active plan, even during the grace period
+			// new pages need an active plan, even during the grace period (the plan is checked first)
 			const upload = await uploadPdf(accessTokenPro);
-			expect(await createCode(pdfDto(upload), accessToken2)).toHaveStatusCode(403);
+			const refused = await createCode(pdfDto(upload), accessToken2);
+			expect(refused).toHaveStatusCode(403);
+			expect(JSON.parse(refused.payload).message).toMatch(/^Plan limit exceeded/);
 
 			// the grace period job disables the Pro features: pages and files go offline
 			await container.resolve(DisableProFeaturesUseCase).execute(TEST_USER_2_ID);
@@ -1281,6 +1309,20 @@ describe('Hosted pages', () => {
 		it('answers 404 for unknown codes', async () => {
 			expect(await getPage('zzzzz')).toHaveStatusCode(404);
 		});
+
+		it('opens a document directly only when the page holds exactly one', async () => {
+			const [first, second] = [await uploadPdf(accessTokenPro), await uploadPdf(accessTokenPro)];
+			const document = (upload: THostedUploadResponseDto) => ({
+				fileKey: upload.fileKey,
+				fileName: upload.fileName,
+				fileSize: upload.fileSize,
+			});
+			const response = await createCode(
+				pdfDto(first, { openMode: 'direct', documents: [document(first), document(second)] }),
+				accessTokenPro,
+			);
+			expect(response).toHaveStatusCode(400);
+		});
 	});
 
 	describe('GET /hosted-page/by-code/:shortCode/files/:documentId', () => {
@@ -1306,6 +1348,32 @@ describe('Hosted pages', () => {
 			// a 304 refreshes the cached headers, so it has to carry the embedding policy as well
 			expect(notModified.headers['content-security-policy']).toBe("frame-ancestors 'none'");
 			expect(notModified.headers['content-length']).toBeUndefined();
+		});
+
+		it('serves byte ranges, so viewers and players can load large files in parts', async () => {
+			const qrCode = await createPdfCode(accessTokenPro);
+			const code = qrCode.shortUrl!.shortCode;
+			const size = MINIMAL_PDF.length;
+
+			const head = await getFile(code, '', { range: 'bytes=0-4' });
+			expect(head).toHaveStatusCode(206);
+			expect(head.rawPayload.toString()).toBe('%PDF-');
+			expect(head.headers['content-range']).toBe(`bytes 0-4/${size}`);
+			expect(head.headers['content-length']).toBe('5');
+			expect(head.headers['accept-ranges']).toBe('bytes');
+
+			const tail = await getFile(code, '', { range: 'bytes=-3' });
+			expect(tail).toHaveStatusCode(206);
+			expect(tail.rawPayload.equals(MINIMAL_PDF.subarray(size - 3))).toBe(true);
+
+			const beyond = await getFile(code, '', { range: `bytes=${size}-` });
+			expect(beyond).toHaveStatusCode(416);
+			expect(beyond.headers['content-range']).toBe(`bytes */${size}`);
+
+			// a range of a file that was swapped meanwhile gets the whole new file
+			const stale = await getFile(code, '', { range: 'bytes=0-4', 'if-range': '"outdated"' });
+			expect(stale).toHaveStatusCode(200);
+			expect(stale.rawPayload.length).toBe(size);
 		});
 
 		it('answers only the frontend, and only for the host of the page', async () => {

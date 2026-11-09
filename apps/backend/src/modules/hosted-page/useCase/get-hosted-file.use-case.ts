@@ -1,45 +1,37 @@
 import { inject, injectable } from 'tsyringe';
 import { createHash } from 'node:crypto';
-import { type Readable } from 'node:stream';
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { env } from '@/core/config/env';
-import {
-	getHostedServedFiles,
-	type THostedPageBody,
-	type THostedServedFile,
-} from '@shared/schemas';
+import { type TByteRange, type TObjectStream } from '@/core/storage';
+import { getHostedServedFiles } from '@shared/schemas';
 import { buildShortUrl, isHostOf } from '@/modules/url-shortener/utils';
+import StoredFileRepository from '@/modules/stored-file/domain/repository/stored-file.repository';
+import { type TStoredFile } from '@/modules/stored-file/domain/entities/stored-file.entity';
 import { toHostedPageBody } from '../domain/repository/hosted-page.repository';
 import { GetPublicHostedPageUseCase } from './get-public-hosted-page.use-case';
 import { HostedFileService } from '../service/hosted-file.service';
 import { HostedPageNotFoundError } from '../error/http/hosted-page-not-found.error';
 
-export type THostedFileInfo = {
-	fileName: string;
-	fileSize: number;
-	contentType: string;
+/** A file resolved for its page and host, not read from storage yet. */
+export type TResolvedHostedFile = Pick<
+	TStoredFile,
+	'fileKey' | 'visibility' | 'fileName' | 'fileSize' | 'contentType'
+> & {
 	/** Changes whenever the owner swaps the file, so browsers revalidate cheaply. */
 	etag: string;
 };
 
-/** A file resolved for its page and host, not read from storage yet. */
-export type TResolvedHostedFile = THostedFileInfo & { fileKey: string };
-
-export type THostedStream = {
-	body: Readable;
-	/** Bytes as stored, when the storage reports it */
-	contentLength?: number;
-};
-
 /**
- * A document of a hosted page, for the frontend that serves it under the page's own address. It is
- * only handed out for that address: another host (another customer's domain, a brand host) gets 404.
+ * A file of a hosted page, for the frontend that serves it under the page's own address. It is only
+ * handed out for that address (another customer's domain, a brand host get 404) and while the page
+ * is live; type, size and storage come from the stored file, which must belong to the page.
  */
 @injectable()
 export class GetHostedFileUseCase implements IBaseUseCase {
 	constructor(
 		@inject(GetPublicHostedPageUseCase)
 		private readonly getPublicHostedPageUseCase: GetPublicHostedPageUseCase,
+		@inject(StoredFileRepository) private readonly fileRepository: StoredFileRepository,
 		@inject(HostedFileService) private readonly fileService: HostedFileService,
 	) {}
 
@@ -56,9 +48,24 @@ export class GetHostedFileUseCase implements IBaseUseCase {
 		documentId: string,
 		host?: string,
 	): Promise<TResolvedHostedFile> {
-		const file = await this.resolve(shortCode, documentId, host);
+		const { page, shortUrl } = await this.getPublicHostedPageUseCase.resolveActivePage(shortCode);
+		const pageUrl = buildShortUrl(shortUrl.shortCode, shortUrl.customDomain?.domain ?? null);
+		// phones on the local network reach the dev server by IP
+		if (env.NODE_ENV !== 'development' && !isHostOf(pageUrl, host)) {
+			throw new HostedPageNotFoundError();
+		}
+
+		const served = getHostedServedFiles(toHostedPageBody(page)).find(
+			(entry) => entry.documentId === documentId,
+		);
+		const file = served && (await this.fileRepository.findByFileKey(served.fileKey));
+		if (!file || file.ownerType !== 'hosted_page' || file.ownerId !== page.id) {
+			throw new HostedPageNotFoundError();
+		}
+
 		return {
 			fileKey: file.fileKey,
+			visibility: file.visibility,
 			fileName: file.fileName,
 			fileSize: file.fileSize,
 			contentType: file.contentType,
@@ -66,30 +73,9 @@ export class GetHostedFileUseCase implements IBaseUseCase {
 		};
 	}
 
-	/** Streamed straight through: a large PDF never sits in memory as a whole. */
-	async open(file: TResolvedHostedFile): Promise<THostedStream> {
-		const stored = await this.fileService.getStream(file.fileKey);
+	async open(file: TResolvedHostedFile, range?: TByteRange): Promise<TObjectStream> {
+		const stored = await this.fileService.getStream(file, range);
 		if (!stored) throw new HostedPageNotFoundError();
 		return stored;
-	}
-
-	private async resolve(
-		shortCode: string,
-		documentId: string,
-		host?: string,
-	): Promise<THostedServedFile> {
-		const { page, shortUrl } = await this.getPublicHostedPageUseCase.resolveActivePage(shortCode);
-		const pageUrl = buildShortUrl(shortUrl.shortCode, shortUrl.customDomain?.domain ?? null);
-		// phones on the local network reach the dev server by IP
-		if (env.NODE_ENV !== 'development' && !isHostOf(pageUrl, host)) {
-			throw new HostedPageNotFoundError();
-		}
-		return this.pick(toHostedPageBody(page), documentId);
-	}
-
-	private pick(page: THostedPageBody, documentId: string): THostedServedFile {
-		const file = getHostedServedFiles(page).find((entry) => entry.documentId === documentId);
-		if (!file) throw new HostedPageNotFoundError();
-		return file;
 	}
 }

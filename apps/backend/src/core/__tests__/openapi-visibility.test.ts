@@ -15,6 +15,15 @@ const collectEnums = (node: unknown, found: unknown[][] = []): unknown[][] => {
 	return found;
 };
 
+/** Request bodies and parameters of every operation, without the responses. */
+const requestSchemasOf = (spec: { paths: Record<string, unknown> }): unknown[] =>
+	Object.values(spec.paths).flatMap((operations) =>
+		Object.values(operations as Record<string, TNode>).map((operation) => ({
+			...operation,
+			responses: undefined,
+		})),
+	);
+
 describe('OpenAPI document', () => {
 	let testServer: FastifyInstance;
 
@@ -33,10 +42,27 @@ describe('OpenAPI document', () => {
 		expect(Object.keys(spec.paths).filter((path) => path.includes('hosted'))).toEqual([]);
 		// the PDF content schema is not documented anywhere
 		expect(response.payload).not.toContain('openMode');
-		// every list of QR code content types stops at the public ones
-		const contentTypeLists = collectEnums(spec).filter((values) => values.includes('whatsapp'));
-		expect(contentTypeLists.length).toBeGreaterThan(0);
-		for (const values of contentTypeLists) expect(values).not.toContain('pdf');
+		// what clients send: every list of QR code content types stops at the public ones
+		const requestLists = collectEnums(requestSchemasOf(spec)).filter((values) =>
+			values.includes('whatsapp'),
+		);
+		expect(requestLists.length).toBeGreaterThan(0);
+		for (const values of requestLists) expect(values).not.toContain('pdf');
+	});
+
+	it('keeps hosted content readable in responses, as an opaque member', async () => {
+		const response = await testServer.inject({
+			method: 'GET',
+			url: `${API_BASE_PATH}/openapi.json`,
+		});
+		const spec = JSON.parse(response.payload) as { paths: Record<string, TNode> };
+		const [, listRoute] =
+			Object.entries(spec.paths).find(([path]) => /\/qr-code\/?$/.test(path)) ?? [];
+		const listResponse = JSON.stringify(listRoute?.get);
+		// a code list may contain a PDF page: generated clients must be able to parse it
+		expect(listResponse).toContain('"pdf"');
+		expect(listResponse).toContain('Not covered by this documentation');
+		expect(listResponse).not.toContain('openMode');
 	});
 
 	it('leaves the URL safety findings out of the docs, while the routes keep working', async () => {

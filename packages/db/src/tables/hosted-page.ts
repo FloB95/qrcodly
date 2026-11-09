@@ -21,7 +21,11 @@ const hostedPage = createTable(
 		updatedAt: datetime(),
 		deletedAt: datetime(),
 	},
-	(t) => [index('i_hosted_page_created_by_created_at').on(t.createdBy, t.createdAt)],
+	(t) => [
+		index('i_hosted_page_created_by_created_at').on(t.createdBy, t.createdAt),
+		// purge of deleted pages (WHERE deleted_at < ? ORDER BY deleted_at)
+		index('i_hosted_page_deleted_at').on(t.deletedAt),
+	],
 );
 
 export type THostedPage = typeof hostedPage.$inferSelect;

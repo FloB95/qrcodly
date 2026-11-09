@@ -16,9 +16,9 @@ export type HostedDocumentItem = {
 type HostedDocumentListProps = {
 	style: THostedPageStyle;
 	items: HostedDocumentItem[];
-	/** Accessible names of the two icon buttons */
-	openLabel: string;
-	downloadLabel: string;
+	/** Accessible names of the two icon buttons, one per document */
+	openLabel: (title: string) => string;
+	downloadLabel: (title: string) => string;
 	className?: string;
 };
 
@@ -54,6 +54,8 @@ export function HostedDocumentList({
 			)}
 		>
 			{items.map((item) => {
+				const open = openLabel(item.title);
+				const download = downloadLabel(item.title);
 				return (
 					<li
 						key={item.id}
@@ -107,16 +109,16 @@ export function HostedDocumentList({
 								href={item.openUrl}
 								target="_blank"
 								rel="noopener"
-								aria-label={openLabel}
-								title={openLabel}
+								aria-label={open}
+								title={open}
 								className={iconButton}
 							>
 								<EyeIcon className={actionIcon} aria-hidden="true" />
 							</a>
 							<a
 								href={item.downloadUrl}
-								aria-label={downloadLabel}
-								title={downloadLabel}
+								aria-label={download}
+								title={download}
 								className={iconButton}
 							>
 								<ArrowDownTrayIcon className={actionIcon} aria-hidden="true" />

@@ -98,6 +98,17 @@ function temporaryErrorResponse() {
 const servedHere = (req: NextRequest, url: string) =>
 	env.NODE_ENV === 'development' || isOnHostOf(url, req.headers.get('host'));
 
+/** A link to a hosted page; in "open directly" mode the lookup names its file, not the page. */
+function isHostedLink(shortUrl: ScanLookupResponse, urlCode: string): boolean {
+	if (shortUrl.hostedType) return true;
+	if (!shortUrl.destinationUrl) return false;
+	try {
+		return new URL(shortUrl.destinationUrl).pathname.startsWith(`/u/${urlCode}/file/`);
+	} catch {
+		return false;
+	}
+}
+
 export async function processAnalyticsAndRedirect(req: NextRequest) {
 	const headers = req.headers;
 	const rawHostname = headers.get('host') ?? '';
@@ -150,6 +161,10 @@ export async function processAnalyticsAndRedirect(req: NextRequest) {
 	const shortUrl = lookup.data;
 	if (!shortUrl?.destinationUrl || !shortUrl.isActive || shortUrl.deletedAt) {
 		const locale = resolveLocale(headers);
+		// the hosted page route shows these states itself, without the site's trackers and login
+		if (shortUrl && isHostedLink(shortUrl, urlCode)) {
+			return rewriteToHostedPage(req, locale, urlCode);
+		}
 		// A blocked link needs different copy: /disabled tells the visitor to contact the owner of
 		// the QR code, which is terrible advice when the owner is the one who pointed it at phishing.
 		const page = shortUrl?.blocked ? 'link-blocked' : 'disabled';

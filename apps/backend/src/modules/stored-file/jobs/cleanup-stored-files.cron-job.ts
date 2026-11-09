@@ -2,11 +2,11 @@ import { container, injectable } from 'tsyringe';
 import { CronJob } from '@/core/decorators/cron-job.decorator';
 import { AbstractCronJob } from '@/core/jobs/abstract.cron-job';
 import { type SQL } from 'drizzle-orm';
-import { ObjectStorage } from '@/core/storage/object.storage';
 import { UnitOfWork } from '@/core/db/unit-of-work';
 import StoredFileRepository from '../domain/repository/stored-file.repository';
 import { STORED_FILE_OWNER_TYPES, type TStoredFile } from '../domain/entities/stored-file.entity';
 import { STORED_FILE_ORPHAN_MAX_AGE_HOURS } from '../config/constants';
+import { ObjectStorage } from '@/core/storage';
 
 const BATCH_SIZE = 200;
 /** Batches per reason and run; enough to keep up with the pending-upload cap across many users. */
@@ -71,7 +71,7 @@ export class CleanupStoredFilesCronJob extends AbstractCronJob {
 						// the row goes first, still under the lock: when storage fails, the rollback
 						// brings it back for the next run, and nothing locks after the object is gone
 						await repository.delete(current);
-						await storage.delete(current.fileKey);
+						await storage.bucket(current.visibility).delete(current.fileKey);
 						return true;
 					});
 					if (removed) totals.deleted++;

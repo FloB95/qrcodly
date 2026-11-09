@@ -31,7 +31,9 @@ const SaveQrCodeBtn = ({
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
 	const [hasMounted, setHasMounted] = useState(false);
 	const queryClient = useQueryClient();
-	const { resetStore, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
+	const { resetStore, updateLatestQrCode, hostedUploadsPending } = useQrCodeGeneratorStore(
+		(state) => state,
+	);
 
 	const createQrCodeMutation = useCreateQrCodeMutation();
 
@@ -124,6 +126,7 @@ const SaveQrCodeBtn = ({
 		!hasMounted ||
 		isContentAtDefault(qrCode.content, isSignedIn === true) ||
 		isContentIncomplete(qrCode.content) ||
+		Boolean(hostedUploadsPending) ||
 		createQrCodeMutation.isPending;
 
 	return (

@@ -104,6 +104,15 @@ logos later), and is _released_ with a purge date when no longer used. Unowned u
 after a day. Ownership is part of the storage key.
 _Avoid_: Hosted upload, attachment, asset, media
 
+**Visibility** (of a stored file):
+Which bucket the file lives in, recorded on its row. _Public_: the CDN bucket, every object has a
+permanent URL; for images shown inline (QR code images and logos, hosted page images, which are
+re-encoded on upload).
+_Private_: no public access, no URL; the app streams the file after its own checks, so a block,
+ban or deletion applies at once; for files users bring as they are (documents, later audio and
+video). `ObjectStorage` is the single entry to both.
+_Avoid_: Public file, protected file, ACL
+
 **Branding**:
 The "Made with QRcodly" footer on a hosted page; the owner may hide it. A page is only served
 while the owner's Pro features are on, so a served page always honours that choice.

@@ -960,6 +960,7 @@
 				}
 			},
 			"hosted": {
+				"webOnly": "Landingpages lassen sich nur in der QRcodly-Web-App bearbeiten.",
 				"loginTitle": "Anmelden, um Seiten zu hosten",
 				"loginDescription": "Gehostete Seiten brauchen ein Konto: Der QR Code zeigt auf eine Seite, die QRcodly für dich ausliefert.",
 				"loginCta": "Anmelden",
@@ -1106,14 +1107,13 @@
 					"filesHint": "PDFs, Titelbilder und Logos",
 					"count": "{used} / {limit}",
 					"directHint": "Ein direkt geöffnetes PDF belegt keine Landingpage.",
-					"over": "Das liegt über dem Limit deines Plans. Entferne etwas, um zu speichern.",
-					"moreOnRequest": "Mehr Dateien nötig? <link>Auf Anfrage schalten wir mehr frei.</link>"
+					"over": "Das liegt über dem Limit deines Plans. Entferne etwas, um zu speichern."
 				}
 			},
 			"pdf": {
 				"intro": {
 					"page": "Beim Scannen öffnet sich eine mobile Seite mit deinem PDF. <strong>Du kannst die Datei jederzeit austauschen, der gedruckte Code bleibt gleich.</strong>",
-					"direct": "Beim Scannen öffnet sich dein PDF direkt. <strong>Du kannst die Datei jederzeit austauschen, der gedruckte Code bleibt gleich.</strong>",
+					"direct": "Beim Scannen öffnet sich dein PDF sofort, ohne Landingpage. <strong>Du kannst die Datei jederzeit austauschen, der gedruckte Code bleibt gleich.</strong>",
 					"pro": "Gehostete PDFs sind Teil von QRcodly Pro."
 				},
 				"title": {
@@ -1136,6 +1136,7 @@
 					"replaceFailed": "Die Datei konnte nicht ersetzt werden",
 					"tooLarge": "Das PDF ist größer als {maxSize} MB",
 					"limitReached": "Datei-Limit deines Plans erreicht",
+					"directOnlyOne": "Ein Code, der sein PDF direkt öffnet, enthält genau eine Datei. Für mehrere Dokumente zeig die Landingpage.",
 					"retentionHint": "Ersetzte oder entfernte Dateien heben wir noch bis zu 30 Tage auf. Brauchst du eine zurück, schreib uns an support@qrcodly.de."
 				},
 				"brandName": {
@@ -1173,8 +1174,9 @@
 					},
 					"direct": {
 						"title": "PDF direkt öffnen",
-						"description": "Das erste Dokument öffnet sofort; die Seite bleibt über ihren Link erreichbar"
-					}
+						"description": "Der Scan öffnet dein einzelnes PDF sofort, ohne Landingpage"
+					},
+					"directNeedsOne": "Direkt öffnen geht nur mit genau einem PDF. Entferne dafür die übrigen Dokumente."
 				}
 			}
 		},
@@ -4348,10 +4350,11 @@
 		"pdf": {
 			"open": "PDF öffnen",
 			"download": "Herunterladen",
-			"documentsTitle": "Dokumente",
+			"openDocument": "{title} öffnen",
+			"downloadDocument": "{title} herunterladen",
 			"titlePlaceholder": "Deine Überschrift",
 			"noDocuments": "Lade ein PDF hoch, um es hier zu sehen",
-			"document": "Dokument",
+			"documentCount": "{count, plural, one {# Dokument} other {# Dokumente}}",
 			"uploadPending": "PDF noch hochladen"
 		},
 		"unavailable": {

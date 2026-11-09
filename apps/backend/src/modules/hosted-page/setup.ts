@@ -7,6 +7,8 @@ import { HostedPageUsageController } from './http/controller/hosted-page-usage.c
 
 // Register Cron Jobs
 import './jobs/purge-deleted-hosted-pages.cron-job';
+// Register Event Handlers
+import './event/handler';
 
 /**
  * Pages and files QRcodly hosts for a QR code. The QR code module owns the code itself and calls

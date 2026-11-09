@@ -6,9 +6,8 @@ import {
 	ArrowTopRightOnSquareIcon,
 	DocumentTextIcon,
 } from '@heroicons/react/24/outline';
-import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import { hostedFileUrl, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { buttonVariants } from '@/components/ui/button';
-import { hostedFileUrl } from '@/lib/api/hosted-page';
 import { useShortUrlLink } from '@/hooks/use-short-url-link';
 import { formatBytes } from '@/components/hosted-page/format';
 import { HostedPageCard } from './HostedPageCard';

@@ -83,6 +83,13 @@ async function forward(request: Request, { params }: TContext, method: 'GET' | '
 			'retry-after': upstream.headers.get('retry-after') ?? '30',
 		});
 	}
+	// a range beyond the end: players and viewers read the size from Content-Range and retry
+	if (upstream.status === 416) {
+		await upstream.body?.cancel();
+		return plain(416, 'Range not satisfiable', {
+			'content-range': upstream.headers.get('content-range') ?? '',
+		});
+	}
 	// anything else that is not a file (e.g. a refused request) must not show the API's error body
 	if (upstream.status >= 400) {
 		await upstream.body?.cancel();

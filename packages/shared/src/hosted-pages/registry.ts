@@ -2,7 +2,7 @@ import type { TQrCodeContent } from '../schemas/QrCode';
 import { HOSTED_PAGE_TYPES, type THostedPageType } from '../schemas/HostedPage';
 import type {
 	THostedFileRef,
-	THostedFileRetention,
+	THostedInputIssue,
 	THostedPageTypeDefinition,
 	THostedServedFile,
 } from './page-type';
@@ -77,10 +77,6 @@ export function getHostedServedFiles(content: THostedSource): THostedServedFile[
 	return isHosted(content) ? definitionOf(content).servedFiles(content.data) : [];
 }
 
-export function getHostedFileRetention(content: THostedSource): THostedFileRetention {
-	return isHosted(content) ? definitionOf(content).fileRetention : 'grace';
-}
-
 /** Id of the document a scan opens directly, or null when the scan shows the page. */
 export function getDirectDocumentId(content: THostedSource): string | null {
 	return isHosted(content) ? definitionOf(content).directDocumentId(content.data) : null;
@@ -92,6 +88,10 @@ export function opensFileDirectly(content: THostedSource): boolean {
 
 export function getHostedOutboundUrls(content: THostedSource): string[] {
 	return isHosted(content) ? definitionOf(content).outboundUrls(content.data) : [];
+}
+
+export function getHostedInputIssues(content: THostedSource): THostedInputIssue[] {
+	return isHosted(content) ? definitionOf(content).inputIssues(content.data) : [];
 }
 
 /** Whether a scan shows a landing page (and takes a landing page slot). */

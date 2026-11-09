@@ -19,6 +19,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useUploadHostedFileMutation } from '@/lib/api/hosted-page';
+import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import type { ApiError } from '@/lib/api/ApiError';
 import { formatBytes } from '@/components/hosted-page/format';
 
@@ -49,11 +50,14 @@ export function HostedFileDropzone({
 	const tUpload = useTranslations('fileUpload');
 	const [files, setFiles] = React.useState<File[]>([]);
 	const upload = useUploadHostedFileMutation();
+	const startHostedUpload = useQrCodeGeneratorStore((state) => state.startHostedUpload);
+	const finishHostedUpload = useQrCodeGeneratorStore((state) => state.finishHostedUpload);
 
 	const onUpload: NonNullable<FileUploadProps['onUpload']> = React.useCallback(
 		async (selected, { onProgress, onSuccess, onError }) => {
 			const file = selected[0];
 			if (!file) return;
+			startHostedUpload();
 			try {
 				const result = await upload.mutateAsync({
 					file,
@@ -68,9 +72,11 @@ export function HostedFileDropzone({
 				onError(file, error);
 				toast({ variant: 'destructive', title: t('uploadFailed'), description: error.message });
 				setFiles([]);
+			} finally {
+				finishHostedUpload();
 			}
 		},
-		[upload, kind, onUploaded, t],
+		[upload, kind, onUploaded, t, startHostedUpload, finishHostedUpload],
 	);
 
 	const Icon = kind === 'pdf' ? DocumentIcon : PhotoIcon;

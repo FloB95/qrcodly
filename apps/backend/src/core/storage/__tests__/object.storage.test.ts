@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import { ObjectStorage } from '..';
 
 describe('S3StorageService', () => {
-	const fileStorage = container.resolve(ObjectStorage);
+	const fileStorage = container.resolve(ObjectStorage).public;
 
 	const testKey = 'test-file-key';
 	const testData = Buffer.from('file data');

@@ -13,10 +13,9 @@ import { DestinationUrlSafetyService } from '../service/destination-url-safety.s
 import { ShortUrlBlockedError } from '../error/http/short-url-blocked.error';
 import UrlSafetyIncidentRepository from '../domain/repository/url-safety-incident.repository';
 import { minutesFromNow } from '@/core/utils/date';
-import { URL_SAFETY_FIRST_CHECK_MINUTES } from '../config/constants';
+import { URL_SAFETY_FIRST_CHECK_MINUTES, URL_SAFETY_MANUAL_THREAT_TYPE } from '../config/constants';
 import { safely, shortUrlsUpdated, urlSafetyUnblocks } from '@/core/metrics';
-import { container } from 'tsyringe';
-import { HostedPageCacheService } from '@/modules/hosted-page/service/hosted-page-cache.service';
+import { ShortUrlStateChangedEvent } from '../event/short-url-state-changed.event';
 
 /**
  * Internal input type for updating a short URL.
@@ -24,7 +23,6 @@ import { HostedPageCacheService } from '@/modules/hosted-page/service/hosted-pag
  */
 type UpdateShortUrlInput = {
 	destinationUrl?: string | null;
-	hostedPageId?: string | null;
 	isActive?: boolean;
 	customDomainId?: string | null;
 	name?: string | null;
@@ -83,14 +81,18 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		// Requirement: a link we blocked stays off. This is the single choke point — the toggle
 		// endpoint, PATCH /:shortCode and the dynamic-QR strategies all reach isActive through here.
 		// Pointing the link somewhere else is still allowed; that path re-screens below and lifts the
-		// block when the new destination comes back clean.
+		// block when the new destination comes back clean. A block from a manual abuse review is
+		// never lifted that way: only the operator's `url-safety:unblock` does.
 		const keepsSameDestination =
 			updatesDto.destinationUrl === undefined ||
 			updatesDto.destinationUrl === shortUrl.destinationUrl;
+		const manuallyBlocked =
+			shortUrl.safetyStatus === 'blocked' &&
+			!!shortUrl.safetyThreatTypes?.includes(URL_SAFETY_MANUAL_THREAT_TYPE);
 		if (
 			updatesDto.isActive === true &&
 			shortUrl.safetyStatus === 'blocked' &&
-			keepsSameDestination
+			(keepsSameDestination || manuallyBlocked)
 		) {
 			throw new ShortUrlBlockedError();
 		}
@@ -114,7 +116,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 
 			// The new destination passed screening, so the old block no longer applies. isActive is
 			// left alone: the owner switches the link back on deliberately, in a separate action.
-			if (shortUrl.safetyStatus === 'blocked') {
+			if (shortUrl.safetyStatus === 'blocked' && !manuallyBlocked) {
 				updates.safetyStatus = 'clean';
 				updates.safetyBlockedAt = null;
 				updates.safetyThreatTypes = null;
@@ -145,10 +147,7 @@ export class UpdateShortUrlUseCase implements IBaseUseCase {
 		// Retrieve the updated ShortUrl entity from the database.
 		const result = await this.shortUrlRepository.findOneById(shortUrl.id);
 
-		// a hosted page served from cache must stop the moment its code is switched off
-		if (updatesDto.isActive !== undefined && (shortUrl.hostedPageId || updatesDto.hostedPageId)) {
-			await container.resolve(HostedPageCacheService).invalidateShortCode(shortUrl.shortCode);
-		}
+		this.eventEmitter.emit(new ShortUrlStateChangedEvent(shortUrl));
 
 		// Emit the ShortUrlUpdatedEvent.
 		// const event = new ShortUrlUpdatedEvent(result);

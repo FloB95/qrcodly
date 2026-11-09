@@ -50,13 +50,35 @@ function isRetryableS3Error(error: unknown): boolean {
 	return false;
 }
 
-@singleton()
-export class ObjectStorage implements IFileStorage {
-	private s3Client!: S3;
-	private bucketName!: string;
-	private prefix = IN_TEST ? 'test/' : '';
+/** An inclusive byte range of an object, as in an HTTP `Range: bytes=start-end` header. */
+export type TByteRange = { start: number; end: number };
 
-	constructor(@inject(Logger) private logger: Logger) {
+export type TObjectStream = {
+	body: Readable;
+	/** Bytes in this response: the range when one was asked for, else the whole object */
+	contentLength?: number;
+};
+
+/**
+ * Where a file lives, decided by what may happen to it:
+ * - `public`: the CDN bucket. Every object has a permanent public URL: images shown inline (QR code
+ *   images and logos, hosted page images, which are re-encoded on upload).
+ * - `private`: no public access at all. Objects have no URL; the app streams them after its own
+ *   checks, so blocking, deleting or taking a page offline applies at once. For files users bring
+ *   as they are (documents, later audio and video).
+ */
+export const STORAGE_VISIBILITIES = ['public', 'private'] as const;
+export type TStorageVisibility = (typeof STORAGE_VISIBILITIES)[number];
+
+/** One S3 bucket. Each bucket has its own client, so slow downloads from one never starve the other. */
+export abstract class S3Bucket {
+	protected s3Client!: S3;
+	protected prefix = IN_TEST ? 'test/' : '';
+
+	constructor(
+		protected readonly logger: Logger,
+		protected readonly bucketName: string,
+	) {
 		try {
 			this.s3Client = new S3({
 				endpoint: env.S3_ENDPOINT,
@@ -67,7 +89,6 @@ export class ObjectStorage implements IFileStorage {
 				},
 				forcePathStyle: true,
 			});
-			this.bucketName = env.S3_BUCKET_NAME;
 		} catch (e: any) {
 			this.logger.error('error.initializing.S3.client', {
 				error: e,
@@ -76,14 +97,18 @@ export class ObjectStorage implements IFileStorage {
 	}
 
 	/**
-	 * Streams an object instead of buffering it, for responses that pass a file straight through.
-	 * Returns null when the object has no readable body.
+	 * Streams an object (or a byte range of it) instead of buffering it, for responses that pass a
+	 * file straight through. Returns null when the object has no readable body.
 	 */
-	async getStream(key: string): Promise<{ body: Readable; contentLength?: number } | null> {
+	async getStream(key: string, range?: TByteRange): Promise<TObjectStream | null> {
 		const k = this.prefix + key;
 		try {
 			const response: GetObjectOutput = await track('get', () =>
-				this.s3Client.getObject({ Bucket: this.bucketName, Key: k }),
+				this.s3Client.getObject({
+					Bucket: this.bucketName,
+					Key: k,
+					...(range && { Range: `bytes=${range.start}-${range.end}` }),
+				}),
 			);
 			if (!response.Body || !(response.Body instanceof Readable)) return null;
 			return { body: response.Body, contentLength: response.ContentLength };
@@ -241,6 +266,14 @@ export class ObjectStorage implements IFileStorage {
 		if (listedObjects.IsTruncated) await this.emptyS3Directory(dir);
 	}
 
+	destroyClient() {
+		this.logger.debug('Shutting down S3 client', { bucket: this.bucketName });
+		this.s3Client.destroy();
+	}
+}
+
+/** The CDN bucket (`S3_BUCKET_NAME`, served at `S3_PUBLIC_URL`). */
+export class PublicBucket extends S3Bucket implements IFileStorage {
 	getPublicUrl(key: string): string {
 		const k = this.prefix + key;
 		const base = env.S3_PUBLIC_URL.replace(/\/$/, '');
@@ -267,10 +300,32 @@ export class ObjectStorage implements IFileStorage {
 			throw new S3SignedUrlError('Signed URL generation failed', error as Error);
 		}
 	}
+}
+
+/** The bucket without public access (`S3_PRIVATE_BUCKET_NAME`): read, stream, copy, delete; no URLs. */
+export class PrivateBucket extends S3Bucket {}
+
+/** The single entry to object storage: pick the bucket by name, or by a file's recorded visibility. */
+@singleton()
+export class ObjectStorage {
+	readonly public: PublicBucket;
+	readonly private: PrivateBucket;
+
+	constructor(@inject(Logger) logger: Logger) {
+		this.public = new PublicBucket(logger, env.S3_BUCKET_NAME);
+		this.private = new PrivateBucket(logger, env.S3_PRIVATE_BUCKET_NAME);
+	}
+
+	bucket(visibility: TStorageVisibility): S3Bucket {
+		if (visibility === 'public') return this.public;
+		if (visibility === 'private') return this.private;
+		// never fall back to the public bucket for a value we do not know
+		throw new Error(`Unknown storage visibility: ${String(visibility)}`);
+	}
 
 	@OnShutdown()
 	shutdown() {
-		this.logger.debug('Shutting down S3 client');
-		this.s3Client.destroy();
+		this.public.destroyClient();
+		this.private.destroyClient();
 	}
 }

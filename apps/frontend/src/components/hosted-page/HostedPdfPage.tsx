@@ -1,8 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { ArrowDownTrayIcon, ArrowUpRightIcon } from '@heroicons/react/24/outline';
-import type { TPublicHostedPdfPageDto } from '@shared/schemas';
+import { hostedFileUrl, type TPublicHostedPdfPageDto } from '@shared/schemas';
 import { cn } from '@/lib/utils';
-import { hostedFileUrl } from '@/lib/api/hosted-page';
 import { HostedPageShell } from './HostedPageShell';
 import { resolveHostedTheme, STYLE_TOKENS } from './theme';
 import { formatBytes } from './format';
@@ -117,8 +116,8 @@ export function HostedPdfPage({ page, preview }: HostedPdfPageProps) {
 		<HostedDocumentList
 			style={style}
 			items={items}
-			openLabel={t('open')}
-			downloadLabel={t('download')}
+			openLabel={(title) => t('openDocument', { title })}
+			downloadLabel={(title) => t('downloadDocument', { title })}
 		/>
 	);
 
@@ -209,8 +208,7 @@ export function HostedPdfPage({ page, preview }: HostedPdfPageProps) {
 						{header}
 						{primary && (
 							<p className="font-hp-mono text-[11px] text-[var(--hp-text-muted)]">
-								{page.documents.length}{' '}
-								{page.documents.length === 1 ? t('document') : t('documentsTitle')}
+								{t('documentCount', { count: page.documents.length })}
 							</p>
 						)}
 						{actions}

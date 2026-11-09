@@ -1,4 +1,4 @@
-import type { THostedPageTemplateId, TPdfInput } from '@shared/schemas';
+import { presentHostedPage, type THostedPageTemplateId, type TPdfInput } from '@shared/schemas';
 import {
 	resolvePreviewTheme,
 	SAMPLE_COVER_KEY,
@@ -50,32 +50,22 @@ export function isPdfContentUntouched(data: TPdfInput): boolean {
 }
 
 export const pdfPreview: HostedPagePreviewDefinition<'pdf'> = {
-	build: (data, options) => {
-		const asset = (key: string | undefined) => (key ? (options.assetUrls?.[key] ?? null) : null);
-		return {
-			type: 'pdf',
-			shortCode: options.shortCode ?? '',
-			url: '',
-			showBranding: !(options.hasProPlan && data.hideBranding),
-			theme: resolvePreviewTheme(data, options.hasProPlan),
-			title: data.title,
-			description: data.description || null,
-			brandName: data.brandName || null,
-			coverUrl: asset(data.coverKey),
-			logoUrl: asset(data.logoKey),
-			buttonLabel: data.buttonLabel || null,
-			// the button shows as soon as it has a label; the backend hides it until the URL is set
-			link: data.link?.label ? { label: data.link.label, url: data.link.url || '#' } : null,
-			documents: data.documents.map((document, index) => ({
-				id: document.id ?? `draft-${index}`,
-				title: document.title || document.fileName.replace(/\.pdf$/i, ''),
-				fileName: document.fileName,
-				fileSize: document.fileSize,
-				fileUrl: '#',
-				downloadUrl: '#',
-			})),
-		};
-	},
+	// the same presenter as the public page, in draft mode: a started link button already shows
+	build: (data, options) =>
+		presentHostedPage(
+			{ type: 'pdf', data },
+			{
+				shortCode: options.shortCode ?? '',
+				url: '',
+				showBranding: !(options.hasProPlan && data.hideBranding),
+				theme: resolvePreviewTheme(data, options.hasProPlan),
+			},
+			{
+				fileUrl: () => '#',
+				assetUrl: (key) => options.assetUrls?.[key] ?? null,
+				draft: true,
+			},
+		),
 
 	isUntouched: isPdfContentUntouched,
 

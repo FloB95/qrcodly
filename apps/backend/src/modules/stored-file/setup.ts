@@ -15,7 +15,9 @@ const setupStoredFileModule: FastifyPluginCallback = (
 ) => {
 	const logger = container.resolve(Logger);
 	if (env.NODE_ENV === 'production' && !container.resolve(MalwareScanService).isEnabled()) {
-		logger.warn('storedFile.malwareScan.disabled', { reason: 'CLAMAV_HOST is not set' });
+		logger.error('storedFile.malwareScan.disabled', {
+			reason: 'CLAMAV_HOST is not set, every upload is refused',
+		});
 	}
 	logger.info('☑️  Stored file module loaded');
 	done();

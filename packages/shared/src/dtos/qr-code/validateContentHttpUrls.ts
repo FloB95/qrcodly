@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { TQrCodeContent } from '../../schemas/QrCode';
 import { safeHttpUrl } from '../../schemas/SafeUrl';
+import { getHostedInputIssues } from '../../hosted-pages/registry';
 
 const httpUrlSchema = safeHttpUrl(1000);
 
@@ -38,26 +39,6 @@ export function validateContentHttpUrls(
 		}
 	}
 
-	// a link button needs its address as well as its text (the text is required by the schema)
-	if (content.type === 'pdf' && content.data.link && !content.data.link.url.trim()) {
-		ctx.addIssue({
-			code: 'custom',
-			message: 'Enter the address the link button leads to, or remove the button',
-			path: [...basePath, 'link', 'url'],
-		});
-	}
-
-	if (content.type === 'pdf' && content.data.link?.url) {
-		const result = httpUrlSchema.safeParse(content.data.link.url);
-		if (!result.success) {
-			ctx.addIssue({
-				code: 'custom',
-				message: 'Link must be a valid HTTP or HTTPS URL',
-				path: [...basePath, 'link', 'url'],
-			});
-		}
-	}
-
 	if (content.type === 'event' && content.data.url) {
 		const result = httpUrlSchema.safeParse(content.data.url);
 		if (!result.success) {
@@ -67,5 +48,17 @@ export function validateContentHttpUrls(
 				path: [...basePath, 'url'],
 			});
 		}
+	}
+}
+
+/** Cross-field rules of hosted page types, checked where content comes in (create, update). */
+export function validateHostedPageContent(
+	content: TQrCodeContent | undefined,
+	ctx: z.RefinementCtx,
+	basePath: string[] = ['content', 'data'],
+) {
+	if (!content) return;
+	for (const issue of getHostedInputIssues(content)) {
+		ctx.addIssue({ code: 'custom', message: issue.message, path: [...basePath, ...issue.path] });
 	}
 }

@@ -45,6 +45,8 @@ export type QrCodeGeneratorState = {
 	hostedAdopted?: Partial<
 		Record<'title' | 'description' | 'brandName' | 'buttonLabel' | 'coverKey' | 'logoKey', string>
 	> | null;
+	/** Hosted-page uploads still running; saving waits for them, or their result would be lost */
+	hostedUploadsPending?: number;
 };
 
 export type QrCodeGeneratorActions = {
@@ -68,6 +70,8 @@ export type QrCodeGeneratorActions = {
 	setHostedSampleTemplate: (id: THostedPageTemplateId | null) => void;
 	setHostedTemplate: (choice: HostedTemplateChoice | null) => void;
 	setHostedAdopted: (adopted: QrCodeGeneratorState['hostedAdopted']) => void;
+	startHostedUpload: () => void;
+	finishHostedUpload: () => void;
 	resetStore: () => void;
 };
 
@@ -167,7 +171,19 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState) => {
 		setHostedSampleTemplate: (hostedSampleTemplate) => set({ hostedSampleTemplate }),
 		setHostedTemplate: (hostedTemplate) => set({ hostedTemplate }),
 		setHostedAdopted: (hostedAdopted) => set({ hostedAdopted }),
-		// a saved page owns its template images now; the next page must upload its own
-		resetStore: () => set({ ...initState, hostedTemplateUploads: undefined }),
+		startHostedUpload: () =>
+			set((state) => ({ hostedUploadsPending: (state.hostedUploadsPending ?? 0) + 1 })),
+		finishHostedUpload: () =>
+			set((state) => ({
+				hostedUploadsPending: Math.max(0, (state.hostedUploadsPending ?? 0) - 1),
+			})),
+		// a saved page owns its template images now; the next page must upload its own. Uploads
+		// still running finish later and count themselves off.
+		resetStore: () =>
+			set((state) => ({
+				...initState,
+				hostedTemplateUploads: undefined,
+				hostedUploadsPending: state.hostedUploadsPending,
+			})),
 	}));
 };

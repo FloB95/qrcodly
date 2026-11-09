@@ -97,6 +97,7 @@ services:
       until (/usr/bin/mc alias set local http://minio:9000 minio testtest) do sleep 1; done;
       /usr/bin/mc mb --ignore-existing local/qrcodly;
       /usr/bin/mc anonymous set download local/qrcodly;
+      /usr/bin/mc mb --ignore-existing local/qrcodly-private;
       exit 0;
       "
 

@@ -969,6 +969,7 @@
 				}
 			},
 			"hosted": {
+				"webOnly": "Las páginas de destino solo se pueden editar en la aplicación web de QRcodly.",
 				"loginTitle": "Inicia sesión para alojar páginas",
 				"loginDescription": "Las páginas alojadas requieren una cuenta: el código QR apunta a una página que QRcodly sirve por ti.",
 				"loginCta": "Iniciar sesión",
@@ -1115,14 +1116,13 @@
 					"filesHint": "PDF, portadas y logotipos",
 					"count": "{used} / {limit}",
 					"directHint": "Un PDF que se abre directamente no ocupa ninguna página de destino.",
-					"over": "Esto supera el límite de tu plan. Quita algo para poder guardar.",
-					"moreOnRequest": "¿Necesitas más archivos? <link>Desbloqueamos más bajo petición.</link>"
+					"over": "Esto supera el límite de tu plan. Quita algo para poder guardar."
 				}
 			},
 			"pdf": {
 				"intro": {
 					"page": "Al escanear se abre una página móvil con tu PDF. <strong>Puedes cambiar el archivo cuando quieras, el código impreso sigue igual.</strong>",
-					"direct": "Al escanear se abre tu PDF directamente. <strong>Puedes cambiar el archivo cuando quieras, el código impreso sigue igual.</strong>",
+					"direct": "Al escanear, tu PDF se abre al instante, sin página de destino. <strong>Puedes cambiar el archivo cuando quieras, el código impreso sigue igual.</strong>",
 					"pro": "Los PDF alojados forman parte de QRcodly Pro."
 				},
 				"title": {
@@ -1145,6 +1145,7 @@
 					"replaceFailed": "No se pudo reemplazar el archivo",
 					"tooLarge": "El PDF supera {maxSize} MB",
 					"limitReached": "Has alcanzado el límite de archivos de tu plan",
+					"directOnlyOne": "Un código que abre su PDF directamente contiene un solo archivo. Para ofrecer varios, muestra la página.",
 					"retentionHint": "Guardamos los archivos reemplazados o eliminados hasta 30 días. ¿Necesitas recuperar uno? Escríbenos a support@qrcodly.de."
 				},
 				"brandName": {
@@ -1182,8 +1183,9 @@
 					},
 					"direct": {
 						"title": "Abrir el PDF directamente",
-						"description": "El primer documento se abre al instante; la página sigue accesible por su enlace"
-					}
+						"description": "El escaneo abre tu único PDF al instante, sin página de destino"
+					},
+					"directNeedsOne": "Abrir directamente solo funciona con exactamente un PDF. Elimina los demás documentos para usarlo."
 				}
 			}
 		},
@@ -4348,10 +4350,11 @@
 		"pdf": {
 			"open": "Abrir PDF",
 			"download": "Descargar",
-			"documentsTitle": "Documentos",
+			"openDocument": "Abrir {title}",
+			"downloadDocument": "Descargar {title}",
 			"titlePlaceholder": "Tu titular",
 			"noDocuments": "Sube un PDF para verlo aquí",
-			"document": "documento",
+			"documentCount": "{count, plural, one {# documento} other {# documentos}}",
 			"uploadPending": "Sube el PDF para activarlo"
 		},
 		"unavailable": {

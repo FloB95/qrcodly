@@ -461,7 +461,11 @@ describe('ShortUrlSafetyRecheckCronJob', () => {
 
 		expect(webRisk.lookup).not.toHaveBeenCalled();
 		expect(repo.clearSafetyBlock).not.toHaveBeenCalled();
-		expect(repo.markSafetyChecked).toHaveBeenCalledWith('su-1', { nextSafetyCheckAt: null });
+		expect(repo.markSafetyChecked).toHaveBeenCalledWith(
+			'su-1',
+			{ nextSafetyCheckAt: null },
+			{ manual: true },
+		);
 	});
 
 	describe('page links', () => {
@@ -582,7 +586,11 @@ describe('ShortUrlSafetyRecheckCronJob', () => {
 			await run();
 
 			expect(repo.clearSafetyBlock).not.toHaveBeenCalled();
-			expect(repo.markSafetyChecked).toHaveBeenCalledWith('su-1', { nextSafetyCheckAt: null });
+			expect(repo.markSafetyChecked).toHaveBeenCalledWith(
+				'su-1',
+				{ nextSafetyCheckAt: null },
+				{ manual: true },
+			);
 		});
 	});
 

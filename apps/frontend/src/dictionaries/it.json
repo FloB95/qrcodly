@@ -969,6 +969,7 @@
 				}
 			},
 			"hosted": {
+				"webOnly": "Le landing page si possono modificare solo nell'app web di QRcodly.",
 				"loginTitle": "Accedi per ospitare pagine",
 				"loginDescription": "Le pagine ospitate richiedono un account: il codice QR rimanda a una pagina che QRcodly pubblica per te.",
 				"loginCta": "Accedi",
@@ -1115,14 +1116,13 @@
 					"filesHint": "PDF, copertine e loghi",
 					"count": "{used} / {limit}",
 					"directHint": "Un PDF che si apre direttamente non occupa nessuna landing page.",
-					"over": "Così superi il limite del tuo piano. Rimuovi qualcosa per salvare.",
-					"moreOnRequest": "Ti servono più file? <link>Su richiesta ne sblocchiamo altri.</link>"
+					"over": "Così superi il limite del tuo piano. Rimuovi qualcosa per salvare."
 				}
 			},
 			"pdf": {
 				"intro": {
 					"page": "Alla scansione si apre una pagina mobile con il tuo PDF. <strong>Puoi sostituire il file in qualsiasi momento, il codice stampato resta lo stesso.</strong>",
-					"direct": "Alla scansione il tuo PDF si apre direttamente. <strong>Puoi sostituire il file in qualsiasi momento, il codice stampato resta lo stesso.</strong>",
+					"direct": "Alla scansione il tuo PDF si apre subito, senza pagina di destinazione. <strong>Puoi sostituire il file in qualsiasi momento, il codice stampato resta lo stesso.</strong>",
 					"pro": "I PDF ospitati fanno parte di QRcodly Pro."
 				},
 				"title": {
@@ -1145,6 +1145,7 @@
 					"replaceFailed": "Impossibile sostituire il file",
 					"tooLarge": "Il PDF supera {maxSize} MB",
 					"limitReached": "Limite di file del tuo piano raggiunto",
+					"directOnlyOne": "Un codice che apre direttamente il suo PDF contiene un solo file. Per offrirne diversi, mostra la pagina.",
 					"retentionHint": "Conserviamo i file sostituiti o rimossi fino a 30 giorni. Ne rivuoi uno? Scrivici a support@qrcodly.de."
 				},
 				"brandName": {
@@ -1182,8 +1183,9 @@
 					},
 					"direct": {
 						"title": "Apri subito il PDF",
-						"description": "Il primo documento si apre subito; la pagina resta raggiungibile dal suo link"
-					}
+						"description": "La scansione apre subito il tuo unico PDF, senza pagina di destinazione"
+					},
+					"directNeedsOne": "L’apertura diretta funziona solo con un unico PDF. Rimuovi gli altri documenti per usarla."
 				}
 			}
 		},
@@ -4348,10 +4350,11 @@
 		"pdf": {
 			"open": "Apri PDF",
 			"download": "Scarica",
-			"documentsTitle": "Documenti",
+			"openDocument": "Apri {title}",
+			"downloadDocument": "Scarica {title}",
 			"titlePlaceholder": "Il tuo titolo",
 			"noDocuments": "Carica un PDF per vederlo qui",
-			"document": "documento",
+			"documentCount": "{count, plural, one {# documento} other {# documenti}}",
 			"uploadPending": "Carica ancora il PDF"
 		},
 		"unavailable": {

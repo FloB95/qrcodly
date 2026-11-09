@@ -33,6 +33,8 @@ import UrlSafetyIncidentRepository from '../domain/repository/url-safety-inciden
 import { HOT_SHORT_CODES_KEY } from '../config/constants';
 import type { TShortUrl } from '../domain/entities/short-url.entity';
 import { HostedPageService } from '@/modules/hosted-page/service/hosted-page.service';
+import { EventEmitter } from '@/core/event';
+import { ShortUrlStateChangedEvent } from '../event/short-url-state-changed.event';
 
 /** One flagged link, collected during a run so findings can be grouped per owner afterwards. */
 interface Finding {
@@ -197,7 +199,11 @@ export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
 			shortUrl.safetyStatus === 'blocked' &&
 			shortUrl.safetyThreatTypes?.includes(URL_SAFETY_MANUAL_THREAT_TYPE)
 		) {
-			await shortUrlRepository.markSafetyChecked(shortUrl.id, { nextSafetyCheckAt: null });
+			await shortUrlRepository.markSafetyChecked(
+				shortUrl.id,
+				{ nextSafetyCheckAt: null },
+				{ manual: true },
+			);
 			return;
 		}
 
@@ -232,6 +238,7 @@ export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
 				// resumes when the owner deliberately re-enables it.
 				await shortUrlRepository.clearSafetyBlock(shortUrl.id, nextCheck);
 				await incidentRepository.resolveForShortUrl(shortUrl.id);
+				this.announceChange(shortUrl);
 				urlSafetyUnblocks.add(1, { reason: 'self_healed' });
 				tally.unblocked++;
 				this.logger.info('url_safety.unblocked', {
@@ -345,6 +352,7 @@ export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
 			threatTypes,
 			hoursFromNow(URL_SAFETY_RECHECK_NEW_HOURS),
 		);
+		this.announceChange(shortUrl);
 		await incidentRepository.record({
 			userId: shortUrl.createdBy,
 			shortUrlId: shortUrl.id,
@@ -376,15 +384,16 @@ export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
 		});
 	}
 
-	/**
-	 * Busy links are worth checking daily; a link nobody scans and nobody edited in months is not.
-	 * The hot set is a proxy — real view counts live in Umami and are too expensive to query per row.
-	 */
 	/** What a scan of the link can lead to: its destination, or the links on its hosted page. */
 	private async screenedUrls(shortUrl: TShortUrl): Promise<string[]> {
 		if (shortUrl.destinationUrl) return [shortUrl.destinationUrl];
 		if (!shortUrl.hostedPageId) return [];
 		return container.resolve(HostedPageService).outboundUrlsOf(shortUrl.hostedPageId);
+	}
+
+	/** A block or unblock changes what the link serves; whoever caches that must drop it. */
+	private announceChange(shortUrl: TShortUrl): void {
+		container.resolve(EventEmitter).emit(new ShortUrlStateChangedEvent(shortUrl));
 	}
 
 	/**
@@ -424,6 +433,7 @@ export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
 		if (shortUrl.safetyStatus === 'blocked') {
 			await shortUrlRepository.clearSafetyBlock(shortUrl.id, null);
 			await incidentRepository.resolveForShortUrl(shortUrl.id);
+			this.announceChange(shortUrl);
 			urlSafetyUnblocks.add(1, { reason: 'nothing_to_screen' });
 			tally.unblocked++;
 			this.logger.info('url_safety.unblocked', {
@@ -441,6 +451,10 @@ export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
 		});
 	}
 
+	/**
+	 * Busy links are worth checking daily; a link nobody scans and nobody edited in months is not.
+	 * The hot set is a proxy — real view counts live in Umami and are too expensive to query per row.
+	 */
 	private nextCheckFor(shortUrl: TShortUrl, hotShortCodes: Set<string>): Date {
 		if (hotShortCodes.has(shortUrl.shortCode)) {
 			return hoursFromNow(URL_SAFETY_RECHECK_NEW_HOURS);

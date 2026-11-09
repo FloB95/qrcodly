@@ -104,6 +104,8 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 		setHostedTemplate,
 		hostedTemplateUploads,
 		rememberTemplateUpload,
+		startHostedUpload,
+		finishHostedUpload,
 	} = useQrCodeGeneratorStore((state) => state);
 	const tTemplates = useTranslations('generator.contentSwitch.hosted.templates');
 	const assetUrls = useHostedAssetUrls();
@@ -161,6 +163,7 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 		const slots = (['coverKey', 'logoKey'] as const).filter(fromTemplate);
 		if (slots.length === 0) return;
 		setAdopting(true);
+		startHostedUpload();
 		try {
 			for (const slot of slots) {
 				// each template image is uploaded once per session: switching back and forth between
@@ -191,6 +194,7 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 			// texts and design are adopted already; the images stay for the owner to upload
 		} finally {
 			setAdopting(false);
+			finishHostedUpload();
 		}
 	};
 	const chooseTemplate = (choice: HostedTemplateChoice) => {
@@ -270,6 +274,9 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 	const draft = { type: 'pdf', data: value } as TQrCodeContent;
 	const { hasRoomForFile } = useHostedPlanRoom(draft, qrCodeId ?? null);
 	const documents = value.documents;
+	// "open directly" opens one file: it holds exactly one document and needs one to be chosen
+	const maxDocuments = direct ? 1 : HOSTED_PDF_MAX_DOCUMENTS;
+	const directBlocked = !direct && documents.length > 1;
 	// a link button needs both its text and its address; until then saving stays disabled
 	const hasLinkLabel = Boolean(fields.linkLabel.trim());
 	const hasLinkUrl = Boolean(fields.linkUrl.trim());
@@ -338,6 +345,7 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 			return;
 		}
 		setReplacing(documentId);
+		startHostedUpload();
 		try {
 			const result = await upload.mutateAsync({ file, kind: 'pdf' });
 			replaceDocumentFile(documentId, result);
@@ -349,6 +357,7 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 			});
 		} finally {
 			setReplacing(null);
+			finishHostedUpload();
 		}
 	};
 
@@ -416,13 +425,15 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 				<div role="radiogroup" aria-label={t('openMode.label')} className="grid grid-cols-2 gap-2">
 					{(['page', 'direct'] as const).map((mode) => {
 						const active = (value.openMode ?? 'page') === mode;
+						const blocked = mode === 'direct' && directBlocked;
 						return (
 							<button
 								key={mode}
 								type="button"
 								role="radio"
 								aria-checked={active}
-								disabled={locked}
+								aria-describedby={blocked ? 'pdf-direct-blocked' : undefined}
+								disabled={locked || blocked}
 								onClick={() => {
 									// a mode is not content: the sample stays and the preview follows the mode
 									commit({ ...value, openMode: mode });
@@ -443,6 +454,11 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 						);
 					})}
 				</div>
+				{directBlocked && (
+					<p id="pdf-direct-blocked" className="text-xs text-muted-foreground">
+						{t('openMode.directNeedsOne')}
+					</p>
+				)}
 			</section>
 
 			<p className="text-sm leading-relaxed text-muted-foreground">
@@ -477,7 +493,7 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 				<div className="flex items-baseline justify-between">
 					<Label>{t('documents.title')}</Label>
 					<span className="text-xs text-muted-foreground">
-						{t('documents.count', { count: documents.length, max: HOSTED_PDF_MAX_DOCUMENTS })}
+						{t('documents.count', { count: documents.length, max: maxDocuments })}
 					</span>
 				</div>
 				<input
@@ -546,7 +562,7 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 						</Button>
 					</div>
 				))}
-				{documents.length < HOSTED_PDF_MAX_DOCUMENTS && (
+				{documents.length < maxDocuments && (
 					<HostedFileDropzone
 						kind="pdf"
 						accept="application/pdf,.pdf"
@@ -561,6 +577,9 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 						onRemove={() => {}}
 						disabled={uploadsLocked || !hasRoomForFile}
 					/>
+				)}
+				{direct && documents.length >= maxDocuments && (
+					<p className="text-xs text-muted-foreground">{t('documents.directOnlyOne')}</p>
 				)}
 				{/* only saved files are kept: a draft's uploads are swept after a day */}
 				{isExistingPage && (

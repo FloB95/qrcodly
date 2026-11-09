@@ -1,6 +1,7 @@
 import { singleton } from 'tsyringe';
-import { and, eq, isNotNull, isNull, lt, ne } from 'drizzle-orm';
-import { TransactionContext } from '@/core/db/transaction-context';
+import { and, desc, eq, isNotNull, isNull, lt, ne } from 'drizzle-orm';
+import AbstractRepository from '@/core/domain/repository/abstract.repository';
+import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import { shortUrl } from '@/core/db/schemas';
 import { type THostedPageBody } from '@shared/schemas';
 import hostedPage, { type THostedPage } from '../entities/hosted-page.entity';
@@ -12,27 +13,56 @@ export const toHostedPageBody = (page: THostedPage): THostedPageBody => ({
 
 /** Hosted pages; their address and state live on the short URL pointing at them. */
 @singleton()
-class HostedPageRepository {
-	private get db() {
-		return TransactionContext.db;
+class HostedPageRepository extends AbstractRepository<THostedPage> {
+	table = hostedPage;
+
+	constructor() {
+		super();
 	}
 
-	async create(page: Omit<THostedPage, 'createdAt' | 'updatedAt' | 'deletedAt'>): Promise<void> {
+	async findAll({ limit, page, where }: ISqlQueryFindBy<THostedPage>): Promise<THostedPage[]> {
+		const query = this.db.select().from(this.table).orderBy(desc(this.table.createdAt)).$dynamic();
+		if (where) void this.withWhere(query, where);
+		void this.withPagination(query, page, limit);
+		return query.execute();
+	}
+
+	/** Any page, deleted or not; most callers want {@link findLiveById}. */
+	async findOneById(id: string): Promise<THostedPage | undefined> {
+		return this.db.query.hostedPage.findFirst({ where: eq(this.table.id, id) });
+	}
+
+	async create(page: THostedPage): Promise<void> {
+		await this.db.insert(this.table).values(page).execute();
+	}
+
+	async update(page: THostedPage, updates: Partial<THostedPage>): Promise<void> {
 		await this.db
-			.insert(hostedPage)
-			.values({ ...page, createdAt: new Date() })
+			.update(this.table)
+			.set({ ...updates, updatedAt: new Date() })
+			.where(eq(this.table.id, page.id))
+			.execute();
+	}
+
+	/** Removes the row for good; pages are soft deleted first and purged after the retention period. */
+	async delete(page: THostedPage): Promise<boolean> {
+		await this.db.delete(this.table).where(eq(this.table.id, page.id)).execute();
+		return true;
+	}
+
+	async softDelete(page: THostedPage): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({ deletedAt: new Date() })
+			.where(eq(this.table.id, page.id))
 			.execute();
 	}
 
 	/** A page that has not been deleted. */
 	async findLiveById(id: string): Promise<THostedPage | undefined> {
-		const [row] = await this.db
-			.select()
-			.from(hostedPage)
-			.where(and(eq(hostedPage.id, id), isNull(hostedPage.deletedAt)))
-			.limit(1)
-			.execute();
-		return row;
+		return this.db.query.hostedPage.findFirst({
+			where: and(eq(this.table.id, id), isNull(this.table.deletedAt)),
+		});
 	}
 
 	/**
@@ -42,8 +72,8 @@ class HostedPageRepository {
 	async findLiveByIdForUpdate(id: string): Promise<THostedPage | undefined> {
 		const [row] = await this.db
 			.select()
-			.from(hostedPage)
-			.where(and(eq(hostedPage.id, id), isNull(hostedPage.deletedAt)))
+			.from(this.table)
+			.where(and(eq(this.table.id, id), isNull(this.table.deletedAt)))
 			.limit(1)
 			.for('update')
 			.execute();
@@ -55,59 +85,38 @@ class HostedPageRepository {
 		qrCodeId: string,
 	): Promise<{ page: THostedPage; shortCode: string; shortUrlId: string } | undefined> {
 		const [row] = await this.db
-			.select({ page: hostedPage, shortCode: shortUrl.shortCode, shortUrlId: shortUrl.id })
+			.select({ page: this.table, shortCode: shortUrl.shortCode, shortUrlId: shortUrl.id })
 			.from(shortUrl)
-			.innerJoin(hostedPage, eq(shortUrl.hostedPageId, hostedPage.id))
-			.where(and(eq(shortUrl.qrCodeId, qrCodeId), isNull(hostedPage.deletedAt)))
+			.innerJoin(this.table, eq(shortUrl.hostedPageId, this.table.id))
+			.where(and(eq(shortUrl.qrCodeId, qrCodeId), isNull(this.table.deletedAt)))
 			.limit(1)
 			.execute();
 		return row;
 	}
 
-	async updateData(id: string, data: THostedPageBody['data']): Promise<void> {
-		await this.db
-			.update(hostedPage)
-			.set({ data, updatedAt: new Date() })
-			.where(eq(hostedPage.id, id))
-			.execute();
-	}
-
-	async softDelete(id: string): Promise<void> {
-		await this.db
-			.update(hostedPage)
-			.set({ deletedAt: new Date() })
-			.where(eq(hostedPage.id, id))
-			.execute();
-	}
-
-	/** Every live page of a user, for the plan limits; optionally leaving one page out. */
-	async findBodiesByUser(userId: string, excludePageId?: string): Promise<THostedPageBody[]> {
-		const rows = await this.db
-			.select({ type: hostedPage.type, data: hostedPage.data })
-			.from(hostedPage)
+	/** Every live page of a user; optionally leaving one page out. */
+	async findLiveByUser(userId: string, excludePageId?: string): Promise<THostedPage[]> {
+		return this.db
+			.select()
+			.from(this.table)
 			.where(
 				and(
-					eq(hostedPage.createdBy, userId),
-					isNull(hostedPage.deletedAt),
-					excludePageId ? ne(hostedPage.id, excludePageId) : undefined,
+					eq(this.table.createdBy, userId),
+					isNull(this.table.deletedAt),
+					excludePageId ? ne(this.table.id, excludePageId) : undefined,
 				),
 			)
 			.execute();
-		return rows;
 	}
 
 	async findDeletedBefore(cutoff: Date, limit: number): Promise<THostedPage[]> {
 		return this.db
 			.select()
-			.from(hostedPage)
-			.where(and(isNotNull(hostedPage.deletedAt), lt(hostedPage.deletedAt, cutoff)))
-			.orderBy(hostedPage.deletedAt)
+			.from(this.table)
+			.where(and(isNotNull(this.table.deletedAt), lt(this.table.deletedAt, cutoff)))
+			.orderBy(this.table.deletedAt)
 			.limit(limit)
 			.execute();
-	}
-
-	async hardDelete(id: string): Promise<void> {
-		await this.db.delete(hostedPage).where(eq(hostedPage.id, id)).execute();
 	}
 }
 

@@ -29,14 +29,6 @@ export const hostedPageQueryKeys = {
 	assetUrls: (keys: string[]) => ['hosted-page-assets', ...keys] as const,
 };
 
-/**
- * A document of a hosted page, under the page's own address: `pageUrl` is the page's short URL,
- * or empty for a link relative to the page currently shown.
- */
-export function hostedFileUrl(pageUrl: string, documentId: string, download = false): string {
-	return `${pageUrl}/file/${encodeURIComponent(documentId)}${download ? '?download=1' : ''}`;
-}
-
 /** Multipart upload through XMLHttpRequest, the only way to get upload progress in the browser. */
 export function uploadHostedFile(
 	file: File,

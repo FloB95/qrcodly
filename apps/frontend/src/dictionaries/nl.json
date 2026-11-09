@@ -969,6 +969,7 @@
 				}
 			},
 			"hosted": {
+				"webOnly": "Landingspagina’s kun je alleen in de QRcodly-webapp bewerken.",
 				"loginTitle": "Log in om pagina’s te hosten",
 				"loginDescription": "Gehoste pagina’s vereisen een account: de QR-code verwijst naar een pagina die QRcodly voor je levert.",
 				"loginCta": "Inloggen",
@@ -1115,14 +1116,13 @@
 					"filesHint": "Pdf’s, omslagen en logo’s",
 					"count": "{used} / {limit}",
 					"directHint": "Een pdf die direct opent, neemt geen landingspagina in.",
-					"over": "Dit gaat over de limiet van je abonnement. Verwijder iets om op te slaan.",
-					"moreOnRequest": "Meer bestanden nodig? <link>Op aanvraag zetten we er meer vrij.</link>"
+					"over": "Dit gaat over de limiet van je abonnement. Verwijder iets om op te slaan."
 				}
 			},
 			"pdf": {
 				"intro": {
 					"page": "Bij het scannen opent een mobiele pagina met je pdf. <strong>Je kunt het bestand altijd vervangen, de gedrukte code blijft hetzelfde.</strong>",
-					"direct": "Bij het scannen opent je pdf direct. <strong>Je kunt het bestand altijd vervangen, de gedrukte code blijft hetzelfde.</strong>",
+					"direct": "Bij het scannen opent je pdf meteen, zonder landingspagina. <strong>Je kunt het bestand altijd vervangen, de gedrukte code blijft hetzelfde.</strong>",
 					"pro": "Gehoste pdf’s horen bij QRcodly Pro."
 				},
 				"title": {
@@ -1145,6 +1145,7 @@
 					"replaceFailed": "Het bestand kon niet worden vervangen",
 					"tooLarge": "De pdf is groter dan {maxSize} MB",
 					"limitReached": "Bestandslimiet van je abonnement bereikt",
+					"directOnlyOne": "Een code die zijn pdf direct opent, bevat precies één bestand. Wil je er meer aanbieden, toon dan de pagina.",
 					"retentionHint": "Vervangen of verwijderde bestanden bewaren we nog tot 30 dagen. Wil je er een terug? Mail ons op support@qrcodly.de."
 				},
 				"brandName": {
@@ -1182,8 +1183,9 @@
 					},
 					"direct": {
 						"title": "Pdf direct openen",
-						"description": "Het eerste document opent meteen; de pagina blijft via de link bereikbaar"
-					}
+						"description": "De scan opent je enige pdf meteen, zonder landingspagina"
+					},
+					"directNeedsOne": "Direct openen werkt alleen met precies één pdf. Verwijder de andere documenten om het te gebruiken."
 				}
 			}
 		},
@@ -4348,10 +4350,11 @@
 		"pdf": {
 			"open": "Pdf openen",
 			"download": "Downloaden",
-			"documentsTitle": "Documenten",
+			"openDocument": "{title} openen",
+			"downloadDocument": "{title} downloaden",
 			"titlePlaceholder": "Jouw kop",
 			"noDocuments": "Upload een pdf om die hier te zien",
-			"document": "document",
+			"documentCount": "{count, plural, one {# document} other {# documenten}}",
 			"uploadPending": "PDF nog uploaden"
 		},
 		"unavailable": {

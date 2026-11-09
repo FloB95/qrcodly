@@ -1,0 +1,1 @@
+ALTER TABLE `stored_file` MODIFY COLUMN `visibility` varchar(16) NOT NULL;

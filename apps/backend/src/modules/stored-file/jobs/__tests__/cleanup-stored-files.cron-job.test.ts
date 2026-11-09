@@ -2,6 +2,7 @@ import { container } from 'tsyringe';
 import { randomUUID } from 'node:crypto';
 import { resetTestState, TEST_USER_ID } from '@/tests/shared/test-context';
 import { getTestContext } from '@/modules/qr-code/http/__tests__/utils';
+import { ObjectStorage, type PrivateBucket } from '@/core/storage';
 import { HostedFileService } from '@/modules/hosted-page/service/hosted-file.service';
 import StoredFileRepository from '../../domain/repository/stored-file.repository';
 import { CleanupStoredFilesCronJob } from '../cleanup-stored-files.cron-job';
@@ -13,6 +14,8 @@ const stale = () => hoursAgo(STORED_FILE_ORPHAN_MAX_AGE_HOURS + 1);
 describe('CleanupStoredFilesCronJob', () => {
 	let repository: StoredFileRepository;
 	let fileService: HostedFileService;
+	// documents live in the private bucket: the sweep must delete them there
+	let privateStorage: PrivateBucket;
 
 	const insertFile = async (
 		createdAt: Date,
@@ -22,13 +25,18 @@ describe('CleanupStoredFilesCronJob', () => {
 		} = {},
 	) => {
 		const fileKey = fileService.buildKey(TEST_USER_ID, 'pdf');
-		await fileService.upload(fileKey, Buffer.from('%PDF-1.4 test'), 'application/pdf');
+		await fileService.upload(
+			{ fileKey, visibility: 'private' },
+			Buffer.from('%PDF-1.4 test'),
+			'application/pdf',
+		);
 		await repository.create({
 			id: randomUUID(),
 			userId: TEST_USER_ID,
 			ownerType: state.owner ? 'hosted_page' : null,
 			ownerId: state.owner ?? null,
 			kind: 'pdf',
+			visibility: 'private',
 			slot: state.owner ? 'document' : null,
 			itemId: null,
 			fileKey,
@@ -50,6 +58,7 @@ describe('CleanupStoredFilesCronJob', () => {
 		await getTestContext();
 		repository = container.resolve(StoredFileRepository);
 		fileService = container.resolve(HostedFileService);
+		privateStorage = container.resolve(ObjectStorage).private;
 	});
 
 	it('removes stale unclaimed uploads and keeps fresh ones', async () => {
@@ -60,9 +69,9 @@ describe('CleanupStoredFilesCronJob', () => {
 
 		expect(result.errors).toBe(0);
 		expect(await repository.findByFileKey(staleUnclaimed)).toBeUndefined();
-		await expect(fileService.get(staleUnclaimed)).rejects.toThrow();
+		await expect(privateStorage.get(staleUnclaimed)).rejects.toThrow();
 		expect(await repository.findByFileKey(freshUnclaimed)).toBeDefined();
-		expect(await fileService.get(freshUnclaimed)).not.toBeNull();
+		expect(await privateStorage.get(freshUnclaimed)).not.toBeNull();
 	});
 
 	it('keeps released files until their purge date and never deletes files kept for good', async () => {
@@ -78,10 +87,10 @@ describe('CleanupStoredFilesCronJob', () => {
 		await sweep();
 
 		expect(await repository.findByFileKey(due)).toBeUndefined();
-		await expect(fileService.get(due)).rejects.toThrow();
+		await expect(privateStorage.get(due)).rejects.toThrow();
 		// the owner does not exist: released files still wait for their purge date
 		expect(await repository.findByFileKey(inGrace)).toBeDefined();
-		expect(await fileService.get(inGrace)).not.toBeNull();
+		expect(await privateStorage.get(inGrace)).not.toBeNull();
 		expect(await repository.findByFileKey(keptForGood)).toBeDefined();
 	});
 
@@ -113,7 +122,7 @@ describe('CleanupStoredFilesCronJob', () => {
 		}
 
 		expect(await repository.findByFileKey(fileKey)).toBeDefined();
-		expect(await fileService.get(fileKey)).not.toBeNull();
+		expect(await privateStorage.get(fileKey)).not.toBeNull();
 		await repository.deleteByFileKey(fileKey);
 	});
 
@@ -137,7 +146,7 @@ describe('CleanupStoredFilesCronJob', () => {
 		}
 
 		expect(await repository.findByFileKey(fileKey)).toBeDefined();
-		expect(await fileService.get(fileKey)).not.toBeNull();
+		expect(await privateStorage.get(fileKey)).not.toBeNull();
 		await repository.deleteByFileKey(fileKey);
 	});
 

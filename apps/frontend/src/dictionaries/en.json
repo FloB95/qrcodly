@@ -960,6 +960,7 @@
 				}
 			},
 			"hosted": {
+				"webOnly": "Landing pages can only be edited in the QRcodly web app.",
 				"loginTitle": "Sign in to host pages",
 				"loginDescription": "Hosted pages need an account: the QR code points to a page that QRcodly serves for you.",
 				"loginCta": "Sign in",
@@ -1106,14 +1107,13 @@
 					"filesHint": "PDFs, covers and logos",
 					"count": "{used} / {limit}",
 					"directHint": "A PDF that opens directly takes no landing page.",
-					"over": "This goes over your plan's limit. Remove something to save.",
-					"moreOnRequest": "Need more files? <link>We unlock more on request.</link>"
+					"over": "This goes over your plan's limit. Remove something to save."
 				}
 			},
 			"pdf": {
 				"intro": {
 					"page": "When scanned, a mobile page with your PDF opens. <strong>You can swap the file at any time, the printed code stays the same.</strong>",
-					"direct": "When scanned, your PDF opens directly. <strong>You can swap the file at any time, the printed code stays the same.</strong>",
+					"direct": "When scanned, your PDF opens straight away, without a landing page. <strong>You can swap the file at any time, the printed code stays the same.</strong>",
 					"pro": "Hosted PDFs are part of QRcodly Pro."
 				},
 				"title": {
@@ -1136,6 +1136,7 @@
 					"replaceFailed": "The file could not be replaced",
 					"tooLarge": "The PDF is larger than {maxSize} MB",
 					"limitReached": "File limit of your plan reached",
+					"directOnlyOne": "A code that opens its PDF directly holds exactly one file. To offer several, show the landing page.",
 					"retentionHint": "Replaced or removed files are kept for up to 30 days. Need one back? Write to us at support@qrcodly.de."
 				},
 				"brandName": {
@@ -1173,8 +1174,9 @@
 					},
 					"direct": {
 						"title": "Open PDF directly",
-						"description": "The first document opens right away; the page stays reachable via its link"
-					}
+						"description": "The scan opens your single PDF right away, without a landing page"
+					},
+					"directNeedsOne": "Opening directly works with exactly one PDF. Remove the other documents to use it."
 				}
 			}
 		},
@@ -4348,10 +4350,11 @@
 		"pdf": {
 			"open": "Open PDF",
 			"download": "Download",
-			"documentsTitle": "Documents",
+			"openDocument": "Open {title}",
+			"downloadDocument": "Download {title}",
 			"titlePlaceholder": "Your headline",
 			"noDocuments": "Add a PDF to see it here",
-			"document": "document",
+			"documentCount": "{count, plural, one {# document} other {# documents}}",
 			"uploadPending": "Upload the PDF to activate"
 		},
 		"unavailable": {

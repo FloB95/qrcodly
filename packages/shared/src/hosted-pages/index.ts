@@ -3,3 +3,5 @@ export * from './registry';
 export { pdfPageType } from './pdf.page-type';
 export * from './usage';
 export * from './content';
+export * from './presenters';
+export * from './urls';

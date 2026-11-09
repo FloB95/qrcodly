@@ -7,9 +7,6 @@ import { useHostedPageUsageQuery } from '@/lib/api/hosted-page';
 
 type UsageRow = { key: 'landingPages' | 'files'; used: number; limit: number };
 
-const MORE_FILES_MAIL =
-	'mailto:support@qrcodly.de?subject=Mehr%20Dateien%20f%C3%BCr%20gehostete%20Seiten';
-
 /**
  * What the plan holds once the draft is saved: every other hosted code of the user plus the draft
  * itself, so the counts move while documents are added or the open mode changes.
@@ -105,18 +102,6 @@ export function HostedPageUsage({ draft, qrCodeId, direct }: HostedPageUsageProp
 					{over ? t('over') : t('directHint')}
 				</p>
 			)}
-			<p className="mt-2 text-xs text-muted-foreground">
-				{t.rich('moreOnRequest', {
-					link: (chunks) => (
-						<a
-							href={MORE_FILES_MAIL}
-							className="font-medium text-foreground underline underline-offset-2"
-						>
-							{chunks}
-						</a>
-					),
-				})}
-			</p>
 		</div>
 	);
 }

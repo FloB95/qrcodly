@@ -273,9 +273,9 @@ export const convertQRCodeDataToStringByType = (
 			return convertSmsObjToString(content.data);
 		case 'whatsapp':
 			return convertWhatsAppObjToString(content.data);
-		case 'pdf':
-			return shortUrl ?? '';
 		default:
+			// every hosted page type encodes its short URL
+			if (isHostedPageContent(content)) return shortUrl ?? '';
 			throw new Error('Invalid content type');
 	}
 };

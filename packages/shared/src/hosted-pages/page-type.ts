@@ -1,4 +1,3 @@
-import type { z } from 'zod';
 import type { THostedPageSettings, THostedUploadKind } from '../schemas/HostedPage';
 
 /** A stored file a hosted page references, and the role it plays there. */
@@ -11,20 +10,17 @@ export type THostedFileRef = {
 	documentId?: string;
 };
 
-/** A file the public file endpoint streams, addressed by its document id. */
+/**
+ * A file the page's file endpoint streams, addressed by its document id. Type, size and storage come
+ * from the stored file itself.
+ */
 export type THostedServedFile = {
 	documentId: string;
 	fileKey: string;
-	fileName: string;
-	fileSize: number;
-	contentType: string;
 };
 
-/**
- * What a replaced or removed file is worth keeping for: "grace" keeps it for the configured
- * retention period (an undo window), "forever" never deletes it (e.g. versioned product pages).
- */
-export type THostedFileRetention = 'grace' | 'forever';
+/** A rule the content breaks on input; stored content is read as it is. */
+export type THostedInputIssue = { path: (string | number)[]; message: string };
 
 /**
  * Everything the platform needs to know about one hosted page type. Each type registers exactly
@@ -32,7 +28,6 @@ export type THostedFileRetention = 'grace' | 'forever';
  * `content.type`. Functions are pure and return copies.
  */
 export type THostedPageTypeDefinition<TData extends THostedPageSettings> = {
-	inputSchema: z.ZodType<TData>;
 	/** Every uploaded file the content references */
 	fileRefs(data: TData): THostedFileRef[];
 	/** The content with one storage key swapped, e.g. after duplicating the files */
@@ -52,5 +47,6 @@ export type THostedPageTypeDefinition<TData extends THostedPageSettings> = {
 	showsLandingPage(data: TData): boolean;
 	/** Links the page sends visitors to, screened like any redirect destination */
 	outboundUrls(data: TData): string[];
-	fileRetention: THostedFileRetention;
+	/** Rules across fields that new or changed content must follow (paths relative to the data) */
+	inputIssues(data: TData): THostedInputIssue[];
 };

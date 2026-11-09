@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { safeHttpUrl } from './SafeUrl';
 
 /** Page kinds QRcodly serves itself instead of redirecting the scanner elsewhere. */
 export const HOSTED_PAGE_TYPES = ['pdf'] as const;
@@ -145,10 +146,9 @@ export type THostedPdfDocument = z.infer<typeof HostedPdfDocumentSchema>;
 
 export const HostedPageLinkSchema = z.object({
 	label: z.string().min(1).max(40).describe('Button text, e.g. "Book a table"'),
-	url: z
-		.string()
-		.max(500)
-		.describe('Where the button leads (http or https); required together with the label'),
+	url: safeHttpUrl(500).describe(
+		'Where the button leads (http or https, no credentials); required together with the label',
+	),
 });
 export type THostedPageLink = z.infer<typeof HostedPageLinkSchema>;
 
@@ -165,7 +165,7 @@ export const PdfPageDataSchema = HostedPageSettingsSchema.extend({
 		.describe('Text of the main button when the page holds a single document, e.g. "View menu"'),
 	link: HostedPageLinkSchema.optional().describe('Optional secondary button leading to a URL'),
 	openMode: HostedPdfOpenModeSchema.optional().describe(
-		'"page" (default) shows the landing page; "direct" opens the first document right away when scanned',
+		'"page" (default) shows the landing page; "direct" opens the single document right away when scanned, without a landing page',
 	),
 	documents: z
 		.array(HostedPdfDocumentSchema)

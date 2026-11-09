@@ -35,7 +35,7 @@ export class PurgeDeletedHostedPagesCronJob extends AbstractCronJob {
 			try {
 				await UnitOfWork.run(async () => {
 					await shortUrlRepository.detachDeletedPage(page.id);
-					await pageRepository.hardDelete(page.id);
+					await pageRepository.delete(page);
 				});
 				purged++;
 			} catch (error) {

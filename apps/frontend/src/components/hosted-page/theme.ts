@@ -10,8 +10,8 @@ import {
 /**
  * Every colour on a hosted page is derived from the owner's primary (and optional accent) colour
  * in OKLCH, so the page stays readable whatever they pick: backgrounds are faint tints, text is
- * the same hue pushed to a readable lightness, and button text flips between white and ink by
- * contrast. Customers choose colours; they never choose text colours.
+ * the same hue pushed to a readable lightness, and button text is white or ink, whichever has the
+ * higher contrast. Customers choose colours; they never choose text colours.
  */
 
 type Oklch = { l: number; c: number; h: number };
@@ -70,8 +70,37 @@ function luminance(hex: string): number {
 	return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
 }
 
+/** WCAG contrast ratio of two colours, from 1 to 21. */
+export function contrastRatio(a: string, b: string): number {
+	const [la, lb] = [luminance(a), luminance(b)];
+	return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+}
+
+const WHITE = '#ffffff';
+const INK = '#0f172a';
+/** WCAG AA for normal-size text */
+const MIN_TEXT_CONTRAST = 4.5;
+
 export function readableOn(background: string): string {
-	return luminance(background) > 0.35 ? '#0f172a' : '#ffffff';
+	return contrastRatio(WHITE, background) >= contrastRatio(INK, background) ? WHITE : INK;
+}
+
+/**
+ * A button in the given colour and its text. Mid tones reach 4.5:1 with neither white nor ink;
+ * they are moved away from the text colour in lightness, keeping hue and chroma, until they do.
+ */
+function buttonColors(hex: string): { background: string; text: string } {
+	const text = readableOn(hex);
+	const base = rgbToOklch(hexToRgb(hex));
+	const step = text === WHITE ? -0.01 : 0.01;
+	let background = hex;
+	let l = base.l;
+	while (contrastRatio(text, background) < MIN_TEXT_CONTRAST) {
+		l += step;
+		if (l <= 0 || l >= 1) return { background: text === WHITE ? '#000000' : WHITE, text };
+		background = oklchToHex({ ...base, l });
+	}
+	return { background, text };
 }
 
 const shade = (base: Oklch, l: number, chromaScale = 1): string =>
@@ -113,15 +142,15 @@ export function resolveHostedTheme(theme: THostedPageTheme | undefined): Resolve
 	const accent = rgbToOklch(hexToRgb(accentHex));
 	const dark = mode === 'dark';
 
-	// primary buttons keep the owner's colour unless it is too light to carry white text in dark mode
-	const primaryButton = dark && primary.l < 0.55 ? shade(primary, 0.68) : primaryHex;
-	const accentButton = dark && accent.l < 0.55 ? shade(accent, 0.68) : accentHex;
+	// buttons keep the owner's colour, lifted in dark mode where a dark one would vanish
+	const primaryButton = buttonColors(dark && primary.l < 0.55 ? shade(primary, 0.68) : primaryHex);
+	const accentButton = buttonColors(dark && accent.l < 0.55 ? shade(accent, 0.68) : accentHex);
 
 	const vars: HostedPageVars = {
-		'--hp-primary': primaryButton,
-		'--hp-on-primary': readableOn(primaryButton),
-		'--hp-accent': accentButton,
-		'--hp-on-accent': readableOn(accentButton),
+		'--hp-primary': primaryButton.background,
+		'--hp-on-primary': primaryButton.text,
+		'--hp-accent': accentButton.background,
+		'--hp-on-accent': accentButton.text,
 		'--hp-bg': dark ? shade(primary, 0.17, 0.5) : shade(primary, 0.975, 0.35),
 		'--hp-surface': dark ? shade(primary, 0.23, 0.45) : '#ffffff',
 		'--hp-surface-2': dark ? shade(primary, 0.29, 0.45) : shade(primary, 0.95, 0.45),

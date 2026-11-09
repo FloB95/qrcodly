@@ -63,10 +63,7 @@ export const BULK_IMPORT_PLAN_LIMITS: Record<PlanName, BulkImportLimits> = {
 export type HostedPageLimits = {
 	/** Codes whose scan shows a landing page. A code that opens its file directly takes none. */
 	maxLandingPages: number;
-	/**
-	 * Stored files of every kind (documents, cover and logo images) across all hosted codes. Pro
-	 * users can get more on request; `HostedPageEntitlementService` adds those on top.
-	 */
+	/** Stored files of every kind (documents, cover and logo images) across all hosted codes. */
 	maxFiles: number;
 	maxFileSizeBytes: Record<THostedUploadKind, number>;
 	/** Whether the "Made with QRcodly" footer may be hidden. */

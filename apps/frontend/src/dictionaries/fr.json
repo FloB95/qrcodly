@@ -969,6 +969,7 @@
 				}
 			},
 			"hosted": {
+				"webOnly": "Les pages d'atterrissage ne peuvent être modifiées que dans l'application web QRcodly.",
 				"loginTitle": "Connectez-vous pour héberger des pages",
 				"loginDescription": "Les pages hébergées nécessitent un compte : le code QR pointe vers une page servie par QRcodly pour vous.",
 				"loginCta": "Se connecter",
@@ -1115,14 +1116,13 @@
 					"filesHint": "PDF, couvertures et logos",
 					"count": "{used} / {limit}",
 					"directHint": "Un PDF qui s’ouvre directement n’occupe aucune page d’atterrissage.",
-					"over": "Cela dépasse la limite de votre offre. Retirez un élément pour enregistrer.",
-					"moreOnRequest": "Besoin de plus de fichiers ? <link>Nous en débloquons davantage sur demande.</link>"
+					"over": "Cela dépasse la limite de votre offre. Retirez un élément pour enregistrer."
 				}
 			},
 			"pdf": {
 				"intro": {
 					"page": "Au scan, une page mobile avec votre PDF s’ouvre. <strong>Vous pouvez remplacer le fichier à tout moment, le code imprimé reste le même.</strong>",
-					"direct": "Au scan, votre PDF s’ouvre directement. <strong>Vous pouvez remplacer le fichier à tout moment, le code imprimé reste le même.</strong>",
+					"direct": "Au scan, votre PDF s’ouvre immédiatement, sans page d’accueil. <strong>Vous pouvez remplacer le fichier à tout moment, le code imprimé reste le même.</strong>",
 					"pro": "Les PDF hébergés font partie de QRcodly Pro."
 				},
 				"title": {
@@ -1145,6 +1145,7 @@
 					"replaceFailed": "Le fichier n’a pas pu être remplacé",
 					"tooLarge": "Le PDF dépasse {maxSize} Mo",
 					"limitReached": "Limite de fichiers de votre offre atteinte",
+					"directOnlyOne": "Un code qui ouvre son PDF directement contient un seul fichier. Pour en proposer plusieurs, affichez la page.",
 					"retentionHint": "Nous conservons les fichiers remplacés ou supprimés jusqu’à 30 jours. Besoin d’en récupérer un ? Écrivez-nous à support@qrcodly.de."
 				},
 				"brandName": {
@@ -1182,8 +1183,9 @@
 					},
 					"direct": {
 						"title": "Ouvrir le PDF directement",
-						"description": "Le premier document s’ouvre aussitôt ; la page reste accessible via son lien"
-					}
+						"description": "Le scan ouvre immédiatement votre PDF unique, sans page d’accueil"
+					},
+					"directNeedsOne": "L’ouverture directe ne fonctionne qu’avec un seul PDF. Supprimez les autres documents pour l’utiliser."
 				}
 			}
 		},
@@ -4348,10 +4350,11 @@
 		"pdf": {
 			"open": "Ouvrir le PDF",
 			"download": "Télécharger",
-			"documentsTitle": "Documents",
+			"openDocument": "Ouvrir {title}",
+			"downloadDocument": "Télécharger {title}",
 			"titlePlaceholder": "Votre titre",
 			"noDocuments": "Ajoutez un PDF pour le voir ici",
-			"document": "document",
+			"documentCount": "{count, plural, one {# document} other {# documents}}",
 			"uploadPending": "PDF encore à téléverser"
 		},
 		"unavailable": {

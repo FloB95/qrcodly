@@ -10,11 +10,10 @@ import { STORED_FILE_ORPHAN_MAX_AGE_HOURS } from '@/modules/stored-file/config/c
 import { HostedFileService } from '../service/hosted-file.service';
 import { HostedUploadPolicy } from '../policies/hosted-upload.policy';
 import { MalwareScanService } from '@/modules/stored-file/service/malware-scan.service';
+import { HOSTED_UPLOAD_MAX_UNCLAIMED } from '../config/constants';
+import { HostedTooManyPendingUploadsError } from '../error/http/hosted-too-many-pending-uploads.error';
 
 const FILE_NAME_MAX_LENGTH = 255;
-
-import { HOSTED_UPLOAD_MAX_UNCLAIMED } from '@/modules/hosted-page/config/constants';
-import { HostedTooManyPendingUploadsError } from '../error/http/hosted-too-many-pending-uploads.error';
 
 @injectable()
 export class UploadHostedFileUseCase implements IBaseUseCase {
@@ -49,6 +48,7 @@ export class UploadHostedFileUseCase implements IBaseUseCase {
 		});
 
 		const fileKey = this.fileService.buildKey(user.id, stored.extension);
+		const object = { fileKey, visibility: this.fileService.visibilityOf(dto.kind) };
 		const fileName = this.sanitizeFileName(dto.file.name, stored.extension);
 
 		// the row comes first: an object without one would be invisible to every cleanup
@@ -58,6 +58,7 @@ export class UploadHostedFileUseCase implements IBaseUseCase {
 			ownerType: null,
 			ownerId: null,
 			kind: dto.kind,
+			visibility: object.visibility,
 			slot: null,
 			itemId: null,
 			fileKey,
@@ -70,12 +71,12 @@ export class UploadHostedFileUseCase implements IBaseUseCase {
 			createdAt: new Date(),
 		});
 		try {
-			await this.fileService.upload(fileKey, stored.buffer, stored.contentType);
+			await this.fileService.upload(object, stored.buffer, stored.contentType);
 		} catch (error) {
 			// the object may exist after all (a lost response): the row only goes with a confirmed
 			// delete, otherwise it stays for the sweep
 			try {
-				await this.fileService.deleteOrThrow(fileKey);
+				await this.fileService.deleteOrThrow(object);
 				await this.fileRepository.deleteByFileKey(fileKey);
 			} catch {
 				// left to the sweep
@@ -93,8 +94,8 @@ export class UploadHostedFileUseCase implements IBaseUseCase {
 			fileName,
 			fileSize: stored.buffer.length,
 			contentType: stored.contentType,
-			// documents are only served through the page's file endpoint, which applies its checks
-			url: dto.kind === 'image' ? this.fileService.getPublicUrl(fileKey) : null,
+			// private files are only served through their page, which applies its checks
+			url: this.fileService.getPublicUrl(object),
 		};
 	}
 

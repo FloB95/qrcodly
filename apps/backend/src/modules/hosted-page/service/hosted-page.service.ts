@@ -8,9 +8,9 @@ import {
 	emptyHostedUsage,
 	getDirectDocumentId,
 	getHostedFileRefs,
-	getHostedFileRetention,
 	getHostedOutboundUrls,
 	getHostedUsage,
+	hostedFileUrl,
 	isHostedPageContent,
 	replaceHostedFileKey,
 	sumHostedUsage,
@@ -18,7 +18,6 @@ import {
 	withHostedDocumentIds,
 	withHostedUploadMetadata,
 	type THostedFileRef,
-	type THostedFileRetention,
 	type THostedPageBody,
 	type THostedPageContent,
 	type THostedPageType,
@@ -56,10 +55,6 @@ import { HostedUploadNotFoundError } from '../error/http/hosted-upload-not-found
 import { HostedPageNotFoundError } from '../error/http/hosted-page-not-found.error';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
-
-/** A document of a page, served by the frontend under the page's own address. */
-export const hostedFileUrl = (pageUrl: string, documentId: string, download = false): string =>
-	`${pageUrl}/file/${encodeURIComponent(documentId)}${download ? '?download=1' : ''}`;
 
 /** A checked update of a page, applied later inside the caller's transaction. */
 export type THostedPageUpdatePlan = {
@@ -116,8 +111,8 @@ export class HostedPageService {
 	}
 
 	/**
-	 * Checks a new hosted QR code before anything is written: login, file ownership and the plan
-	 * limits. Documents get their stable ids and file metadata comes from the stored files.
+	 * Checks a new hosted QR code before anything is written: login, the plan limits and file
+	 * ownership. Documents get their stable ids and file metadata comes from the stored files.
 	 */
 	async prepareForCreate(
 		content: TQrCodeContent,
@@ -128,11 +123,12 @@ export class HostedPageService {
 			throw new UnauthorizedError('You need to be logged in to create hosted pages');
 		}
 
+		// the plan first: without one, the files and links do not matter
+		await this.assertWithinLimits(user.id, content);
 		const prepared = await this.withCheckedFiles(
 			withHostedDocumentIds(content, randomUUID),
 			user.id,
 		);
-		await this.assertWithinLimits(user.id, prepared);
 		await this.assertLinksSafe(prepared, user.id, 'create');
 		return prepared;
 	}
@@ -147,12 +143,20 @@ export class HostedPageService {
 	/** Creates the page of prepared hosted content and binds its files. Runs inside a transaction. */
 	async createPage(content: THostedPageContent, userId: string): Promise<THostedPage> {
 		const body = toHostedPageBody(content);
-		const page = { id: randomUUID(), createdBy: userId, type: body.type, data: body.data };
+		const page: THostedPage = {
+			id: randomUUID(),
+			createdBy: userId,
+			type: body.type,
+			data: body.data,
+			createdAt: new Date(),
+			updatedAt: null,
+			deletedAt: null,
+		};
 		await this.pageRepository.create(page);
 		for (const ref of getHostedFileRefs(body)) {
 			await this.claim(ref, page.id);
 		}
-		return { ...page, createdAt: new Date(), updatedAt: null, deletedAt: null };
+		return page;
 	}
 
 	/**
@@ -195,15 +199,14 @@ export class HostedPageService {
 		if (!locked) throw new HostedPageNotFoundError();
 		const current = bodyOf(locked);
 		const nextKeys = new Set(plan.claims.map((ref) => ref.key));
-		const retention = getHostedFileRetention(current);
 
 		for (const ref of plan.claims) {
 			await this.claim(ref, plan.page.id);
 		}
 		for (const ref of getHostedFileRefs(current)) {
-			if (!nextKeys.has(ref.key)) await this.releaseFile(ref.key, retention);
+			if (!nextKeys.has(ref.key)) await this.releaseFile(ref.key);
 		}
-		await this.pageRepository.updateData(plan.page.id, toHostedPageBody(plan.next).data);
+		await this.pageRepository.update(locked, { data: toHostedPageBody(plan.next).data });
 
 		const previousUrls = getHostedOutboundUrls(current);
 		if (sameUrls(previousUrls, getHostedOutboundUrls(plan.next))) return false;
@@ -263,26 +266,30 @@ export class HostedPageService {
 		// locked like a save, so a save that commits first is released against what it wrote
 		const page = await this.pageRepository.findLiveByIdForUpdate(pageId);
 		if (!page) return undefined;
-		const body = bodyOf(page);
-		const retention = getHostedFileRetention(body);
-		await this.pageRepository.softDelete(page.id);
-		for (const ref of getHostedFileRefs(body)) {
-			await this.releaseFile(ref.key, retention);
+		await this.pageRepository.softDelete(page);
+		for (const ref of getHostedFileRefs(bodyOf(page))) {
+			await this.releaseFile(ref.key);
 		}
 		return page;
 	}
 
 	/**
-	 * After a committed change: cap the user's retained files, drop the cached page and report a
-	 * lifted safety block (only now, so a rolled-back save never counts as one).
+	 * After a committed change: drop the cached page, cap the user's retained files and report a
+	 * lifted safety block (only now, so a rolled-back save never counts as one). The change is
+	 * already saved, so nothing here may fail the request: a cache entry expires on its own, and
+	 * the cap is applied again on the next change.
 	 */
 	async afterChange(
 		userId: string,
 		shortCode?: string,
 		unblocked?: { shortUrlId: string },
 	): Promise<void> {
-		await this.fileRepository.purgeOldestRetained(userId, STORED_FILE_RETAINED_MAX);
-		if (shortCode) await this.cacheService.invalidateShortCode(shortCode);
+		try {
+			if (shortCode) await this.cacheService.invalidateShortCode(shortCode);
+			await this.fileRepository.purgeOldestRetained(userId, STORED_FILE_RETAINED_MAX);
+		} catch (error) {
+			this.logger.error('hostedPage.afterChange.failed', { userId, shortCode, error });
+		}
 		if (unblocked) {
 			urlSafetyUnblocks.add(1, { reason: 'links_changed' });
 			this.logger.info('url_safety.unblocked', {
@@ -308,6 +315,7 @@ export class HostedPageService {
 
 		for (const ref of getHostedFileRefs(content)) {
 			const source = await this.fileRepository.findByFileKey(ref.key);
+			if (!source) throw new HostedUploadNotFoundError(ref.key);
 			const newKey = this.fileService.copyKeyFor(ref.key, userId);
 			// the row comes first: an object without one would be invisible to every cleanup
 			await this.fileRepository.create({
@@ -315,20 +323,21 @@ export class HostedPageService {
 				userId,
 				ownerType: null,
 				ownerId: null,
-				kind: ref.kind,
+				kind: source.kind,
+				visibility: source.visibility,
 				slot: null,
 				itemId: null,
 				fileKey: newKey,
-				fileName: source?.fileName ?? newKey.slice(newKey.lastIndexOf('/') + 1),
-				fileSize: source?.fileSize ?? 0,
-				contentType: source?.contentType ?? 'application/octet-stream',
+				fileName: source.fileName,
+				fileSize: source.fileSize,
+				contentType: source.contentType,
 				claimedAt: null,
 				releasedAt: null,
 				purgeAfter: null,
 				createdAt: new Date(),
 			});
 			copiedKeys.push(newKey);
-			await this.fileService.copy(ref.key, newKey);
+			await this.fileService.copy(source, newKey);
 			copy = replaceHostedFileKey(copy, ref.key, newKey);
 		}
 
@@ -341,7 +350,9 @@ export class HostedPageService {
 	 */
 	async discardFile(fileKey: string): Promise<void> {
 		try {
-			await this.fileService.deleteOrThrow(fileKey);
+			const file = await this.fileRepository.findByFileKey(fileKey);
+			if (!file) return;
+			await this.fileService.deleteOrThrow(file);
 			await this.fileRepository.deleteByFileKey(fileKey);
 		} catch (error) {
 			// whatever is left is an unclaimed row, which the sweep removes together with its object
@@ -354,7 +365,7 @@ export class HostedPageService {
 		const excluded = excludeQrCodeId
 			? await this.pageRepository.findLiveByQrCodeId(excludeQrCodeId)
 			: undefined;
-		return sumHostedUsage(await this.pageRepository.findBodiesByUser(userId, excluded?.page.id));
+		return sumHostedUsage(await this.liveBodiesOf(userId, excluded?.page.id));
 	}
 
 	/** Link buttons on a page are screened by Web Risk, like a dynamic QR code's destination. */
@@ -381,12 +392,15 @@ export class HostedPageService {
 		}
 	}
 
-	private async releaseFile(fileKey: string, retention: THostedFileRetention): Promise<void> {
-		const purgeAfter =
-			retention === 'forever'
-				? null
-				: new Date(Date.now() + env.HOSTED_FILE_RETENTION_DAYS * DAY_MS);
+	/** A file the page no longer uses is kept for the retention period, so the swap can be undone. */
+	private async releaseFile(fileKey: string): Promise<void> {
+		const purgeAfter = new Date(Date.now() + env.HOSTED_FILE_RETENTION_DAYS * DAY_MS);
 		await this.fileRepository.release(fileKey, purgeAfter);
+	}
+
+	private async liveBodiesOf(userId: string, excludePageId?: string): Promise<THostedPageBody[]> {
+		const pages = await this.pageRepository.findLiveByUser(userId, excludePageId);
+		return pages.map(bodyOf);
 	}
 
 	/** Every referenced file is checked against its stored row, so names and sizes cannot be edited in. */
@@ -411,7 +425,7 @@ export class HostedPageService {
 	): Promise<void> {
 		const [{ limits }, others] = await Promise.all([
 			this.entitlementService.getLimits(userId),
-			this.pageRepository.findBodiesByUser(userId, current?.pageId).then(sumHostedUsage),
+			this.liveBodiesOf(userId, current?.pageId).then(sumHostedUsage),
 		]);
 		const before = addHostedUsage(
 			others,

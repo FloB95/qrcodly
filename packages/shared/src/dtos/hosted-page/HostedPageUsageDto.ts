@@ -27,7 +27,7 @@ export const HostedPageUsageResponseDto = z.object({
 		'QR codes whose scan shows a landing page; codes that open a file directly do not count',
 	),
 	files: UsageCounterSchema.describe(
-		'Stored files of every kind (documents, cover and logo images) across all hosted QR codes. The limit includes extra files granted on request',
+		'Stored files of every kind (documents, cover and logo images) across all hosted QR codes',
 	),
 	maxFileSizeBytes: z
 		.record(HostedUploadKindSchema, z.number().int())

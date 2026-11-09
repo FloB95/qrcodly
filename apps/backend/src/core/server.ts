@@ -199,14 +199,6 @@ export class Server {
 
 		this.server.addHook('onRequest', stripClerkCookiesMiddleware);
 
-		await this.server.register(clerkPlugin, {
-			secretKey: env.CLERK_SECRET_KEY,
-			publishableKey: env.CLERK_PUBLISHABLE_KEY,
-			telemetry: {
-				disabled: true,
-			},
-		});
-
 		await this.server.register(fastifyCookie, {
 			secret: env.COOKIE_SECRET,
 		});
@@ -301,6 +293,18 @@ export class Server {
 		});
 
 		await this.server.register(fastifyHelmet);
+
+		// onRequest, after the IP block and helmet (its headers stay on Clerk's errors): routes can
+		// then refuse anonymous requests before their body is read (uploads); everything else reads
+		// the result in preHandler as before
+		await this.server.register(clerkPlugin, {
+			secretKey: env.CLERK_SECRET_KEY,
+			publishableKey: env.CLERK_PUBLISHABLE_KEY,
+			hookName: 'onRequest',
+			telemetry: {
+				disabled: true,
+			},
+		});
 
 		registerRoutes(this.server, HealthController, API_BASE_PATH);
 		registerRoutes(this.server, ClerkWebhookController, API_BASE_PATH);

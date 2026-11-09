@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { hasLocale, NextIntlClientProvider } from 'next-intl';
+import { hasLocale } from 'next-intl';
 import { routing } from '@/i18n/routing';
 
 export const metadata: Metadata = {
@@ -11,7 +11,8 @@ export const metadata: Metadata = {
 
 /**
  * Customer pages, often on the customer's own domain, get a layout of their own: none of the
- * site's trackers, ads tag or login scripts run for the people who scan a customer's code.
+ * site's trackers, ads tag or login scripts run for the people who scan a customer's code. The
+ * pages translate on the server only, so no dictionary is sent to the browser.
  */
 export default async function HostedPageLayout({
 	children,
@@ -26,7 +27,7 @@ export default async function HostedPageLayout({
 	return (
 		<html lang={locale} className="light" suppressHydrationWarning>
 			<body className="flex min-h-screen flex-col font-sans" suppressHydrationWarning>
-				<NextIntlClientProvider>{children}</NextIntlClientProvider>
+				{children}
 			</body>
 		</html>
 	);

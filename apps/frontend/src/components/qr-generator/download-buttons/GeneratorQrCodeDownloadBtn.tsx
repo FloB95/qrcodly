@@ -43,8 +43,16 @@ export const GeneratorQrCodeDownloadBtn = ({
 }) => {
 	const { isSignedIn } = useUser();
 	const t = useTranslations('qrCode.download');
-	const { name, config, content, shortUrl, latestQrCode, updateLatestQrCode, resetStore } =
-		useQrCodeGeneratorStore((state) => state);
+	const {
+		name,
+		config,
+		content,
+		shortUrl,
+		latestQrCode,
+		updateLatestQrCode,
+		resetStore,
+		hostedUploadsPending,
+	} = useQrCodeGeneratorStore((state) => state);
 
 	const [qrCodeInstance, setQrCodeInstance] = useState<QRCodeStylingType | null>(null);
 	const [hasMounted, setHasMounted] = useState(false);
@@ -157,6 +165,7 @@ export const GeneratorQrCodeDownloadBtn = ({
 		!hasMounted ||
 		isContentAtDefault(content, isSignedIn === true) ||
 		isContentIncomplete(content) ||
+		Boolean(hostedUploadsPending) ||
 		createQrCodeMutation.isPending;
 
 	return (

@@ -27,7 +27,9 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const [infoDialogIsOpen, setInfoDialogIsOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const updateQrCodeMutation = useUpdateQrCodeMutation();
-	const { latestQrCode, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
+	const { latestQrCode, updateLatestQrCode, hostedUploadsPending } = useQrCodeGeneratorStore(
+		(state) => state,
+	);
 	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
 
 	const hasValidChanges =
@@ -132,6 +134,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 					!hasMounted ||
 					!hasValidChanges ||
 					isContentIncomplete(qrCode.content) ||
+					Boolean(hostedUploadsPending) ||
 					updateQrCodeMutation.isPending
 				}
 			>

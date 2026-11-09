@@ -27,6 +27,8 @@ import { GetHostedFileUseCase } from '../../useCase/get-hosted-file.use-case';
 import { GetHostedAssetUrlsUseCase } from '../../useCase/get-hosted-asset-urls.use-case';
 import { DownloadService } from '@/modules/qr-code/service/download.service';
 import { HOSTED_UPLOAD_HARD_LIMIT_BYTES } from '@/modules/hosted-page/config/constants';
+import { parseByteRange } from '@/core/http/byte-range';
+import { holdingUploadSlot, hostedUploadGuard } from '../hosted-upload.guard';
 
 const HostedFileQuerySchema = z.object({
 	download: z.string().optional().describe('Set to 1 to download instead of opening inline'),
@@ -82,12 +84,16 @@ export class HostedPageController extends AbstractController {
 			multipartOptions: { limits: { fileSize: HOSTED_UPLOAD_HARD_LIMIT_BYTES, files: 1 } },
 			allowedTokenTypes: ANY_TOKEN_TYPE,
 		},
+		// before the multipart body is read: it is buffered ahead of every preHandler
+		onRequest: hostedUploadGuard,
 		schema: UNDOCUMENTED,
 	})
 	async upload(
 		request: IHttpRequest<THostedUploadDto>,
 	): Promise<IHttpResponse<THostedUploadResponseDto>> {
-		const upload = await this.uploadUseCase.execute(request.body, request.user);
+		const upload = await holdingUploadSlot(request, () =>
+			this.uploadUseCase.execute(request.body, request.user),
+		);
 		return this.makeApiHttpResponse(201, HostedUploadResponseDto.parse(upload));
 	}
 
@@ -166,24 +172,41 @@ export class HostedPageController extends AbstractController {
 					...FILE_POLICY_HEADERS,
 					'Content-Type': file.contentType,
 					'Content-Length': String(file.fileSize),
+					'Accept-Ranges': 'bytes',
 					ETag: file.etag,
 				},
 			};
 		}
 
-		const stored = await this.getHostedFileUseCase.open(file);
+		const range = parseByteRange(
+			request.headers.range,
+			file.fileSize,
+			request.headers['if-range'] as string | undefined,
+			file.etag,
+		);
+		if (range === 'unsatisfiable') {
+			return {
+				statusCode: 416,
+				data: undefined,
+				headers: { ...FILE_POLICY_HEADERS, 'Content-Range': `bytes */${file.fileSize}` },
+			};
+		}
+
+		const stored = await this.getHostedFileUseCase.open(file, range ?? undefined);
 		const disposition = request.query.download === '1' ? 'attachment' : 'inline';
 		const asciiFilename = this.downloadService.sanitizeAsciiFilename(file.fileName);
 		const encodedFilename = this.downloadService.encodeRFC5987ValueChars(file.fileName);
 
 		return {
-			statusCode: 200,
+			statusCode: range ? 206 : 200,
 			data: stored.body,
 			headers: {
 				'Content-Type': file.contentType,
 				...(stored.contentLength !== undefined && {
 					'Content-Length': String(stored.contentLength),
 				}),
+				'Accept-Ranges': 'bytes',
+				...(range && { 'Content-Range': `bytes ${range.start}-${range.end}/${file.fileSize}` }),
 				'Content-Disposition': `${disposition}; filename="${asciiFilename}"; filename*=UTF-8''${encodedFilename}`,
 				...FILE_POLICY_HEADERS,
 				ETag: file.etag,

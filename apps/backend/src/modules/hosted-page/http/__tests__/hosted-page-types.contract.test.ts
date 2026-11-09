@@ -178,13 +178,15 @@ describe('Hosted page type contract', () => {
 		});
 
 		it('is Pro only', async () => {
+			// the plan is checked before the files, so another user's keys cannot mask the answer
 			const content = await PAGE_TYPE_FIXTURES[type](upload(accessTokenPro));
 			const response = await createQrCodeRequest(
 				testServer,
 				{ name: 'free', config: QrCodeDefaults, content },
 				accessToken,
 			);
-			expect([401, 403]).toContain(response.statusCode);
+			expect(response).toHaveStatusCode(403);
+			expect(JSON.parse(response.payload).message).toMatch(/^Plan limit exceeded/);
 		});
 
 		it('runs through create, public page, files, duplicate and delete', async () => {
@@ -232,7 +234,8 @@ describe('Hosted page type contract', () => {
 					},
 				});
 				expect(response).toHaveStatusCode(200);
-				expect(response.headers['content-type']).toContain(file.contentType);
+				const stored = await container.resolve(StoredFileRepository).findByFileKey(file.fileKey);
+				expect(response.headers['content-type']).toContain(stored!.contentType);
 			}
 
 			// a duplicate gets its own copies of every file

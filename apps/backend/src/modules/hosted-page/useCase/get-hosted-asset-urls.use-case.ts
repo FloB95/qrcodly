@@ -10,7 +10,7 @@ const MAX_KEYS = 20;
 /**
  * Public URLs of the caller's own images, for the editor of a saved page. Independent of whether
  * the page is served at the moment (switched off, offline after Pro), unlike the public page.
- * Documents get none: they are only served through their page.
+ * Private files get none: they are only served through their page.
  */
 @injectable()
 export class GetHostedAssetUrlsUseCase implements IBaseUseCase {
@@ -25,9 +25,10 @@ export class GetHostedAssetUrlsUseCase implements IBaseUseCase {
 			.filter((key) => this.fileService.belongsTo(key, userId));
 		const files = await this.fileRepository.findByFileKeys(own);
 		return Object.fromEntries(
-			files
-				.filter((file) => file.userId === userId && file.kind === 'image')
-				.map((file) => [file.fileKey, this.fileService.getPublicUrl(file.fileKey)]),
+			files.flatMap((file) => {
+				const url = file.userId === userId ? this.fileService.getPublicUrl(file) : null;
+				return url ? [[file.fileKey, url]] : [];
+			}),
 		);
 	}
 }

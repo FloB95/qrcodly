@@ -1,8 +1,13 @@
 import { inject, injectable } from 'tsyringe';
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { HOSTED_PAGE_PLAN_LIMITS, PlanName } from '@/core/config/plan.config';
-import { getStylePresetTheme, type TPublicHostedPageResponseDto } from '@shared/schemas';
-import { presentHostedPage } from '../presenters/page-presenters';
+import {
+	getHostedFileRefs,
+	getStylePresetTheme,
+	hostedFileUrl,
+	presentHostedPage,
+	type TPublicHostedPageResponseDto,
+} from '@shared/schemas';
 import { buildShortUrl } from '@/modules/url-shortener/utils';
 import ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
 import { type TShortUrlWithDomain } from '@/modules/url-shortener/domain/entities/short-url.entity';
@@ -12,8 +17,8 @@ import HostedPageRepository, {
 import { type THostedPage } from '../domain/entities/hosted-page.entity';
 import { HostedPageEntitlementService } from '../service/hosted-page-entitlement.service';
 import { HostedPageCacheService } from '../service/hosted-page-cache.service';
-import { hostedFileUrl } from '../service/hosted-page.service';
 import { HostedFileService } from '../service/hosted-file.service';
+import StoredFileRepository from '@/modules/stored-file/domain/repository/stored-file.repository';
 import { HostedPageBlockedError } from '../error/http/hosted-page-blocked.error';
 import { HostedPageDisabledError } from '../error/http/hosted-page-disabled.error';
 import { HostedPageNotFoundError } from '../error/http/hosted-page-not-found.error';
@@ -32,6 +37,7 @@ export class GetPublicHostedPageUseCase implements IBaseUseCase {
 		private readonly entitlementService: HostedPageEntitlementService,
 		@inject(HostedPageCacheService) private readonly cacheService: HostedPageCacheService,
 		@inject(HostedFileService) private readonly fileService: HostedFileService,
+		@inject(StoredFileRepository) private readonly fileRepository: StoredFileRepository,
 	) {}
 
 	async execute(shortCode: string): Promise<TPublicHostedPageResponseDto> {
@@ -39,7 +45,7 @@ export class GetPublicHostedPageUseCase implements IBaseUseCase {
 		if (cached) return cached;
 
 		const { shortUrl, page } = await this.resolveActivePage(shortCode);
-		const result = this.buildPage(shortUrl, page);
+		const result = await this.buildPage(shortUrl, page);
 
 		await this.cacheService.set(shortCode, page.createdBy, result);
 		return result;
@@ -66,11 +72,18 @@ export class GetPublicHostedPageUseCase implements IBaseUseCase {
 		return { shortUrl, page };
 	}
 
-	private buildPage(
+	private async buildPage(
 		shortUrl: TShortUrlWithDomain,
 		page: THostedPage,
-	): TPublicHostedPageResponseDto {
+	): Promise<TPublicHostedPageResponseDto> {
 		const body = toHostedPageBody(page);
+		// image URLs follow where each file was stored, not today's rule for its kind
+		const files = await this.fileRepository.findByFileKeys(
+			getHostedFileRefs(body).map((ref) => ref.key),
+		);
+		const publicUrls = new Map(
+			files.map((file) => [file.fileKey, this.fileService.getPublicUrl(file)]),
+		);
 		const limits = HOSTED_PAGE_PLAN_LIMITS[PlanName.PRO];
 		const settings = body.data;
 		const url = buildShortUrl(shortUrl.shortCode, shortUrl.customDomain?.domain ?? null);
@@ -86,7 +99,7 @@ export class GetPublicHostedPageUseCase implements IBaseUseCase {
 			},
 			{
 				fileUrl: (documentId, download) => hostedFileUrl(url, documentId, download),
-				assetUrl: (fileKey) => this.fileService.getPublicUrl(fileKey),
+				assetUrl: (fileKey) => publicUrls.get(fileKey) ?? null,
 			},
 		);
 	}

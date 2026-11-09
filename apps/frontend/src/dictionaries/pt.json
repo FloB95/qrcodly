@@ -960,6 +960,7 @@
 				}
 			},
 			"hosted": {
+				"webOnly": "As páginas de destino só podem ser editadas na aplicação web do QRcodly.",
 				"loginTitle": "Inicie sessão para alojar páginas",
 				"loginDescription": "As páginas alojadas requerem uma conta: o código QR aponta para uma página que o QRcodly disponibiliza por si.",
 				"loginCta": "Iniciar sessão",
@@ -1106,14 +1107,13 @@
 					"filesHint": "PDF, capas e logótipos",
 					"count": "{used} / {limit}",
 					"directHint": "Um PDF que abre diretamente não ocupa nenhuma página de destino.",
-					"over": "Isto ultrapassa o limite do seu plano. Remova algo para guardar.",
-					"moreOnRequest": "Precisa de mais ficheiros? <link>Desbloqueamos mais a pedido.</link>"
+					"over": "Isto ultrapassa o limite do seu plano. Remova algo para guardar."
 				}
 			},
 			"pdf": {
 				"intro": {
 					"page": "Ao digitalizar, abre-se uma página móvel com o seu PDF. <strong>Pode trocar o ficheiro a qualquer momento, o código impresso continua igual.</strong>",
-					"direct": "Ao digitalizar, o seu PDF abre diretamente. <strong>Pode trocar o ficheiro a qualquer momento, o código impresso continua igual.</strong>",
+					"direct": "Ao digitalizar, o seu PDF abre de imediato, sem página de destino. <strong>Pode trocar o ficheiro a qualquer momento, o código impresso continua igual.</strong>",
 					"pro": "Os PDF alojados fazem parte do QRcodly Pro."
 				},
 				"title": {
@@ -1136,6 +1136,7 @@
 					"replaceFailed": "Não foi possível substituir o ficheiro",
 					"tooLarge": "O PDF é maior do que {maxSize} MB",
 					"limitReached": "Limite de ficheiros do seu plano atingido",
+					"directOnlyOne": "Um código que abre o seu PDF diretamente contém exatamente um ficheiro. Para oferecer vários, mostre a página.",
 					"retentionHint": "Guardamos os ficheiros substituídos ou removidos até 30 dias. Precisa de recuperar um? Escreva-nos para support@qrcodly.de."
 				},
 				"brandName": {
@@ -1173,8 +1174,9 @@
 					},
 					"direct": {
 						"title": "Abrir o PDF diretamente",
-						"description": "O primeiro documento abre de imediato; a página continua acessível pela ligação"
-					}
+						"description": "A leitura abre de imediato o seu único PDF, sem página de destino"
+					},
+					"directNeedsOne": "Abrir diretamente só funciona com exatamente um PDF. Remova os outros documentos para o usar."
 				}
 			}
 		},
@@ -4348,10 +4350,11 @@
 		"pdf": {
 			"open": "Abrir PDF",
 			"download": "Transferir",
-			"documentsTitle": "Documentos",
+			"openDocument": "Abrir {title}",
+			"downloadDocument": "Transferir {title}",
 			"titlePlaceholder": "O seu título",
 			"noDocuments": "Carregue um PDF para o ver aqui",
-			"document": "documento",
+			"documentCount": "{count, plural, one {# documento} other {# documentos}}",
 			"uploadPending": "Carregar ainda o PDF"
 		},
 		"unavailable": {
