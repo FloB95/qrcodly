@@ -13,19 +13,23 @@ import { withRetry } from '@/core/utils/with-retry';
 import { safely, storageOperationDuration, storageOperations } from '../metrics';
 
 /** Times an S3 call. Retries are inside `fn`, so the duration is the caller-visible latency. */
-async function track<T>(operation: string, fn: () => Promise<T>): Promise<T> {
+async function track<T>(
+	operation: string,
+	bucket: TStorageVisibility,
+	fn: () => Promise<T>,
+): Promise<T> {
 	const startedAt = Date.now();
 	try {
 		const result = await fn();
 		safely(() => {
-			storageOperationDuration.record(Date.now() - startedAt, { operation });
-			storageOperations.add(1, { operation, outcome: 'ok' });
+			storageOperationDuration.record(Date.now() - startedAt, { operation, bucket });
+			storageOperations.add(1, { operation, bucket, outcome: 'ok' });
 		});
 		return result;
 	} catch (error) {
 		safely(() => {
-			storageOperationDuration.record(Date.now() - startedAt, { operation });
-			storageOperations.add(1, { operation, outcome: 'error' });
+			storageOperationDuration.record(Date.now() - startedAt, { operation, bucket });
+			storageOperations.add(1, { operation, bucket, outcome: 'error' });
 		});
 		throw error;
 	}
@@ -78,6 +82,8 @@ export abstract class S3Bucket {
 	constructor(
 		protected readonly logger: Logger,
 		protected readonly bucketName: string,
+		/** Which bucket this is, for metrics and logs */
+		protected readonly visibility: TStorageVisibility,
 	) {
 		try {
 			this.s3Client = new S3({
@@ -103,7 +109,7 @@ export abstract class S3Bucket {
 	async getStream(key: string, range?: TByteRange): Promise<TObjectStream | null> {
 		const k = this.prefix + key;
 		try {
-			const response: GetObjectOutput = await track('get', () =>
+			const response: GetObjectOutput = await track('get', this.visibility, () =>
 				this.s3Client.getObject({
 					Bucket: this.bucketName,
 					Key: k,
@@ -124,7 +130,7 @@ export abstract class S3Bucket {
 	async get(key: string): Promise<Buffer | null> {
 		const k = this.prefix + key;
 		try {
-			const response: GetObjectOutput = await track('get', () =>
+			const response: GetObjectOutput = await track('get', this.visibility, () =>
 				this.s3Client.getObject({
 					Bucket: this.bucketName,
 					Key: k,
@@ -165,7 +171,7 @@ export abstract class S3Bucket {
 		const body = data instanceof Readable ? await streamToBuffer(data) : data;
 
 		try {
-			await track('upload', () =>
+			await track('upload', this.visibility, () =>
 				withRetry(
 					() =>
 						this.s3Client.putObject({
@@ -199,7 +205,7 @@ export abstract class S3Bucket {
 		const src = this.prefix + sourceKey;
 		const dest = this.prefix + destinationKey;
 		try {
-			await track('copy', () =>
+			await track('copy', this.visibility, () =>
 				withRetry(
 					() =>
 						this.s3Client.send(
@@ -227,7 +233,7 @@ export abstract class S3Bucket {
 	async delete(key: string): Promise<void> {
 		const k = this.prefix + key;
 		try {
-			await track('delete', () =>
+			await track('delete', this.visibility, () =>
 				this.s3Client.deleteObject({
 					Bucket: this.bucketName,
 					Key: k,
@@ -291,7 +297,7 @@ export class PublicBucket extends S3Bucket implements IFileStorage {
 				Key: k,
 			});
 
-			const url = await track('signed_url', () =>
+			const url = await track('signed_url', this.visibility, () =>
 				getSignedUrl(this.s3Client, command, { expiresIn }),
 			);
 			return url;
@@ -312,8 +318,8 @@ export class ObjectStorage {
 	readonly private: PrivateBucket;
 
 	constructor(@inject(Logger) logger: Logger) {
-		this.public = new PublicBucket(logger, env.S3_BUCKET_NAME);
-		this.private = new PrivateBucket(logger, env.S3_PRIVATE_BUCKET_NAME);
+		this.public = new PublicBucket(logger, env.S3_BUCKET_NAME, 'public');
+		this.private = new PrivateBucket(logger, env.S3_PRIVATE_BUCKET_NAME, 'private');
 	}
 
 	bucket(visibility: TStorageVisibility): S3Bucket {

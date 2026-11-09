@@ -21,6 +21,8 @@ import { toast } from '@/components/ui/use-toast';
 import { useUploadHostedFileMutation } from '@/lib/api/hosted-page';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import type { ApiError } from '@/lib/api/ApiError';
+import posthog from 'posthog-js';
+import * as Sentry from '@sentry/nextjs';
 import { formatBytes } from '@/components/hosted-page/format';
 
 type HostedFileDropzoneProps = {
@@ -67,8 +69,19 @@ export function HostedFileDropzone({
 				onSuccess(file);
 				onUploaded(result);
 				setFiles([]);
+				posthog.capture('hosted-file-uploaded', { kind, fileSize: result.fileSize });
 			} catch (e) {
 				const error = e as ApiError;
+				// network failures and server faults are ours; refused files (type, size, virus) are not
+				if (error.code === 0 || error.code >= 500) {
+					Sentry.captureException(error, { extra: { kind, code: error.code } });
+				}
+				posthog.capture('error:hosted-file-upload', {
+					kind,
+					code: error.code,
+					errorCode: error.errorCode,
+					message: error.message,
+				});
 				onError(file, error);
 				toast({ variant: 'destructive', title: t('uploadFailed'), description: error.message });
 				setFiles([]);

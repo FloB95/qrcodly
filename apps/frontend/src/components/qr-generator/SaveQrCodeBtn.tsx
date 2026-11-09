@@ -76,6 +76,7 @@ const SaveQrCodeBtn = ({
 
 						posthog.capture('qr-code-created', {
 							qrCodeName: qrCodeName,
+							contentType: qrCode.content.type,
 						});
 					},
 					onError: (e: Error) => {

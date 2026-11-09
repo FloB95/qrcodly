@@ -10,6 +10,7 @@ import { STORED_FILE_ORPHAN_MAX_AGE_HOURS } from '@/modules/stored-file/config/c
 import { HostedFileService } from '../service/hosted-file.service';
 import { HostedUploadPolicy } from '../policies/hosted-upload.policy';
 import { MalwareScanService } from '@/modules/stored-file/service/malware-scan.service';
+import { hostedFilesUploaded, safely } from '@/core/metrics';
 import { HOSTED_UPLOAD_MAX_UNCLAIMED } from '../config/constants';
 import { HostedTooManyPendingUploadsError } from '../error/http/hosted-too-many-pending-uploads.error';
 
@@ -84,8 +85,16 @@ export class UploadHostedFileUseCase implements IBaseUseCase {
 			throw error;
 		}
 
+		safely(() => hostedFilesUploaded.add(1, { kind: dto.kind }));
 		this.logger.info('hostedPage.file.uploaded', {
-			hostedUpload: { userId: user.id, kind: dto.kind, fileKey, fileSize: stored.buffer.length },
+			hostedUpload: {
+				userId: user.id,
+				kind: dto.kind,
+				visibility: object.visibility,
+				fileKey,
+				fileSize: stored.buffer.length,
+				contentType: stored.contentType,
+			},
 		});
 
 		return {
