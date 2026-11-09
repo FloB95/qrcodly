@@ -4,80 +4,89 @@ import { resourceFromAttributes } from '@opentelemetry/resources';
 import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
 import { AggregationTemporality, PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
+import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { FastifyOtelInstrumentation } from '@fastify/otel';
 import { HostMetrics } from '@opentelemetry/host-metrics';
 
+const axiomToken = process.env.AXIOM_TOKEN;
 const metricsDataset = process.env.OTEL_METRICS_DATASET;
 const tracesDataset = process.env.OTEL_TRACES_DATASET;
-const metricsEnabled = !!metricsDataset;
-const tracesEnabled = !!tracesDataset;
+const metricsEnabled = !!metricsDataset && !!axiomToken;
+const tracesEnabled = !!tracesDataset && !!axiomToken;
+// Prometheus scrapes the same metrics from this port inside the cluster (Grafana)
+const prometheusPort = Number(process.env.METRICS_PORT) || 0;
+const prometheusEnabled = prometheusPort > 0;
 
 let sdk: NodeSDK | undefined;
 
-if (metricsEnabled || tracesEnabled) {
-	const axiomToken = process.env.AXIOM_TOKEN;
+if ((metricsDataset || tracesDataset) && !axiomToken) {
+	console.warn('[OTel] AXIOM_TOKEN not set — skipping the Axiom export');
+}
 
-	if (!axiomToken) {
-		console.warn('[OTel] AXIOM_TOKEN not set — skipping OpenTelemetry initialization');
-	} else {
-		const resource = resourceFromAttributes({
-			[ATTR_SERVICE_NAME]: 'qrcodly-backend',
-			[ATTR_SERVICE_VERSION]: '1.0.0',
-			'deployment.environment.name': process.env.NODE_ENV || 'development',
-		});
+if (metricsEnabled || tracesEnabled || prometheusEnabled) {
+	const resource = resourceFromAttributes({
+		[ATTR_SERVICE_NAME]: 'qrcodly-backend',
+		[ATTR_SERVICE_VERSION]: '1.0.0',
+		'deployment.environment.name': process.env.NODE_ENV || 'development',
+	});
 
-		const metricReader = metricsEnabled
-			? new PeriodicExportingMetricReader({
-					exporter: new OTLPMetricExporter({
-						url: 'https://api.axiom.co/v1/metrics',
-						headers: {
-							Authorization: `Bearer ${axiomToken}`,
-							'X-Axiom-Dataset': metricsDataset,
-						},
-						temporalityPreference: AggregationTemporality.DELTA,
-					}),
-					exportIntervalMillis: Number(process.env.OTEL_METRICS_INTERVAL_MS) || 60000,
-				})
-			: undefined;
-
-		const traceExporter = tracesEnabled
-			? new OTLPTraceExporter({
-					url: 'https://api.axiom.co/v1/traces',
+	const axiomMetricReader = metricsEnabled
+		? new PeriodicExportingMetricReader({
+				exporter: new OTLPMetricExporter({
+					url: 'https://api.axiom.co/v1/metrics',
 					headers: {
 						Authorization: `Bearer ${axiomToken}`,
-						'X-Axiom-Dataset': tracesDataset,
+						'X-Axiom-Dataset': metricsDataset,
 					},
-				})
-			: undefined;
+					temporalityPreference: AggregationTemporality.DELTA,
+				}),
+				exportIntervalMillis: Number(process.env.OTEL_METRICS_INTERVAL_MS) || 60000,
+			})
+		: undefined;
 
-		const fastifyOtel = new FastifyOtelInstrumentation();
+	const traceExporter = tracesEnabled
+		? new OTLPTraceExporter({
+				url: 'https://api.axiom.co/v1/traces',
+				headers: {
+					Authorization: `Bearer ${axiomToken}`,
+					'X-Axiom-Dataset': tracesDataset,
+				},
+			})
+		: undefined;
 
-		const instrumentations = tracesEnabled ? [new HttpInstrumentation(), fastifyOtel] : [];
+	const fastifyOtel = new FastifyOtelInstrumentation();
 
-		sdk = new NodeSDK({
-			resource,
-			...(metricReader ? { metricReader } : {}),
-			...(traceExporter ? { traceExporter } : {}),
-			instrumentations,
-		});
+	const instrumentations = tracesEnabled ? [new HttpInstrumentation(), fastifyOtel] : [];
 
-		sdk.start();
+	const metricReaders = [
+		axiomMetricReader,
+		prometheusEnabled ? new PrometheusExporter({ port: prometheusPort }) : undefined,
+	].filter((reader) => reader !== undefined);
 
-		if (metricsEnabled) {
-			const hostMetrics = new HostMetrics({});
-			hostMetrics.start();
-		}
+	sdk = new NodeSDK({
+		resource,
+		...(metricReaders.length ? { metricReaders } : {}),
+		...(traceExporter ? { traceExporter } : {}),
+		instrumentations,
+	});
 
-		const enabledFeatures = [
-			metricsEnabled ? `metrics → ${metricsDataset}` : null,
-			tracesEnabled ? `traces → ${tracesDataset}` : null,
-		]
-			.filter(Boolean)
-			.join(', ');
-		console.log(`[OTel] Initialized (${enabledFeatures})`);
+	sdk.start();
+
+	if (metricsEnabled || prometheusEnabled) {
+		const hostMetrics = new HostMetrics({});
+		hostMetrics.start();
 	}
+
+	const enabledFeatures = [
+		metricsEnabled ? `metrics → ${metricsDataset}` : null,
+		prometheusEnabled ? `metrics → :${prometheusPort}/metrics` : null,
+		tracesEnabled ? `traces → ${tracesDataset}` : null,
+	]
+		.filter(Boolean)
+		.join(', ');
+	console.log(`[OTel] Initialized (${enabledFeatures})`);
 }
 
 export async function shutdownOtel(): Promise<void> {
