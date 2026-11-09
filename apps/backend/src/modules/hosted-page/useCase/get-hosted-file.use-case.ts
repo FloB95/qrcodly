@@ -50,8 +50,10 @@ export class GetHostedFileUseCase implements IBaseUseCase {
 	): Promise<TResolvedHostedFile> {
 		const { page, shortUrl } = await this.getPublicHostedPageUseCase.resolveActivePage(shortCode);
 		const pageUrl = buildShortUrl(shortUrl.shortCode, shortUrl.customDomain?.domain ?? null);
+		// customer domains never reach us: Cloudflare redirects their visitors to the brand host
+		const servedAt = shortUrl.customDomain ? [pageUrl, env.FRONTEND_URL] : [pageUrl];
 		// phones on the local network reach the dev server by IP
-		if (env.NODE_ENV !== 'development' && !isHostOf(pageUrl, host)) {
+		if (env.NODE_ENV !== 'development' && !servedAt.some((url) => isHostOf(url, host))) {
 			throw new HostedPageNotFoundError();
 		}
 

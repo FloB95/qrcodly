@@ -1424,6 +1424,14 @@ describe('Hosted pages', () => {
 				);
 				const response = await getFile(code);
 				expect(response).toHaveStatusCode(200);
+
+				// Cloudflare sends customer-domain visitors to the brand host, so files are served there too
+				const brandHost = new URL(env.FRONTEND_URL).host;
+				expect(await getFile(code, '', { 'x-hosted-host': brandHost })).toHaveStatusCode(200);
+				// ...but never on another customer's domain
+				expect(
+					await getFile(code, '', { 'x-hosted-host': 'other-customer.example.com' }),
+				).toHaveStatusCode(404);
 			} finally {
 				await db
 					.update(shortUrl)

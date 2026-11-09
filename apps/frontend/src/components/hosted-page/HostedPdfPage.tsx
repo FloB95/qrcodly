@@ -140,6 +140,7 @@ export function HostedPdfPage({ page, preview }: HostedPdfPageProps) {
 						>
 							{/* eslint-disable-next-line @next/next/no-img-element -- cover lives on the storage CDN */}
 							<img
+								referrerPolicy="no-referrer"
 								src={page.coverUrl}
 								alt=""
 								className="aspect-[4/3] w-full object-cover @md:aspect-[2/1]"
@@ -169,6 +170,7 @@ export function HostedPdfPage({ page, preview }: HostedPdfPageProps) {
 						<div className="p-3 pb-0">
 							{/* eslint-disable-next-line @next/next/no-img-element -- cover lives on the storage CDN */}
 							<img
+								referrerPolicy="no-referrer"
 								src={page.coverUrl}
 								alt=""
 								className={cn('aspect-[4/3] w-full object-cover @md:aspect-[16/9]', tokens.radius)}
@@ -199,6 +201,7 @@ export function HostedPdfPage({ page, preview }: HostedPdfPageProps) {
 						// full card width, like a product shot heading a data sheet
 						// eslint-disable-next-line @next/next/no-img-element -- cover lives on the storage CDN
 						<img
+							referrerPolicy="no-referrer"
 							src={page.coverUrl}
 							alt=""
 							className="aspect-[4/3] w-full border-b border-[var(--hp-line)] object-cover @md:aspect-[16/9]"
