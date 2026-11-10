@@ -17,7 +17,7 @@ export const HOSTED_PAGE_LIMITS = {
 	pro: {
 		maxLandingPages: 15,
 		maxFiles: 60,
-		maxFileSizeBytes: { pdf: 25 * 1024 * 1024, image: 2 * 1024 * 1024 },
+		maxFileSizeBytes: { pdf: 50 * 1024 * 1024, image: 2 * 1024 * 1024 },
 	},
 } as const;
 
@@ -72,11 +72,22 @@ export function uploadHostedFile(
 	});
 }
 
+const UPLOAD_BUSY_RETRY_DELAYS_MS = [2000, 5000, 10000];
+
+// the backend holds only a few large uploads in memory at once, so files go up one after another
+let uploadQueue: Promise<unknown> = Promise.resolve();
+
+function enqueueUpload<T>(task: () => Promise<T>): Promise<T> {
+	const run = uploadQueue.then(task);
+	uploadQueue = run.catch(() => undefined);
+	return run;
+}
+
 export function useUploadHostedFileMutation() {
 	const { getToken } = useAuth();
 
 	return useMutation({
-		mutationFn: async ({
+		mutationFn: ({
 			file,
 			kind,
 			onProgress,
@@ -84,11 +95,24 @@ export function useUploadHostedFileMutation() {
 			file: File;
 			kind: THostedUploadKind;
 			onProgress?: (percent: number) => void;
-		}) => {
-			const token = await getToken();
-			if (!token) throw new ApiError('You need to be logged in to upload files', 401);
-			return uploadHostedFile(file, kind, token, onProgress);
-		},
+		}) =>
+			enqueueUpload(async () => {
+				for (let attempt = 0; ; attempt++) {
+					// fetched per attempt: a token taken before the wait in the queue would have expired
+					const token = await getToken();
+					if (!token) throw new ApiError('You need to be logged in to upload files', 401);
+					try {
+						return await uploadHostedFile(file, kind, token, onProgress);
+					} catch (error) {
+						const delay = UPLOAD_BUSY_RETRY_DELAYS_MS[attempt];
+						// 429: other uploads fill the server's memory budget right now
+						if (!(error instanceof ApiError) || error.code !== 429 || delay === undefined) {
+							throw error;
+						}
+						await new Promise((resolve) => setTimeout(resolve, delay));
+					}
+				}
+			}),
 	});
 }
 
