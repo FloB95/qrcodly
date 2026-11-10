@@ -718,7 +718,8 @@
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
 				"socials": "SOCIAL",
-				"pdf": "PDF"
+				"pdf": "PDF",
+				"product": "PRODOTTO"
 			},
 			"cancel": "Annulla",
 			"bulkModeBtn": "Creazione massiva CSV",
@@ -1089,7 +1090,8 @@
 							"title": "Manuale modello X200",
 							"description": "Tutto sul tuo dispositivo, sempre aggiornato.",
 							"brandName": "Werk Demo",
-							"documents": "Manuale (IT)|Avvio rapido|Scheda tecnica"
+							"documents": "Manuale (IT)|Avvio rapido|Scheda tecnica",
+							"address": "Via Esempio 12\n20121 Milano\nItalia"
 						}
 					},
 					"priceList": {
@@ -1186,6 +1188,91 @@
 						"description": "La scansione apre subito il tuo unico PDF, senza pagina di destinazione"
 					},
 					"directNeedsOne": "L’apertura diretta funziona solo con un unico PDF. Rimuovi gli altri documenti per usarla."
+				}
+			},
+			"product": {
+				"intro": {
+					"page": "Alla scansione si apre una pagina mobile con i documenti del tuo prodotto: istruzioni per l’uso, informazioni di sicurezza e dichiarazione di conformità, nella lingua del visitatore. <strong>Puoi sostituire un file in qualsiasi momento: il codice stampato resta lo stesso e la versione precedente viene conservata.</strong>",
+					"pro": "Le pagine prodotto fanno parte di QRcodly Pro."
+				},
+				"name": {
+					"label": "Nome del prodotto",
+					"placeholder": "es. Sega a nastro BS 400"
+				},
+				"model": {
+					"label": "Modello o tipo",
+					"placeholder": "es. BS-400/2",
+					"hint": "Il modello a cui si riferiscono i documenti. Compare in cima alla pagina."
+				},
+				"articleNumber": {
+					"label": "Codice articolo"
+				},
+				"gtin": {
+					"label": "GTIN / EAN"
+				},
+				"documents": {
+					"category": "Tipo di documento",
+					"language": "Lingua",
+					"version": "Revisione",
+					"titlePlaceholder": "Nome (facoltativo)",
+					"versionPlaceholder": "Revisione, es. Rev. 03",
+					"archiveHint": "Quando sostituisci o rimuovi un file, quello vecchio resta disponibile sulla pagina come versione precedente.",
+					"limitHint": "Le versioni precedenti contano come file. Eliminane una qui sotto per sostituire o aggiungere un file.",
+					"declarationHint": "Suggerimento: stampa l’indirizzo di questa pagina nel manuale, così la dichiarazione di conformità è raggiungibile da lì.",
+					"categories": {
+						"manual": "Istruzioni per l’uso",
+						"safety": "Informazioni di sicurezza",
+						"declaration": "Dichiarazione di conformità",
+						"datasheet": "Scheda tecnica",
+						"other": "Altro documento"
+					}
+				},
+				"archive": {
+					"title": "Versioni precedenti",
+					"description": "File che hai sostituito o rimosso. I visitatori possono ancora aprirli sulla pagina.",
+					"remove": "Elimina versione",
+					"pendingRemoval": "{count, plural, one {# versione verrà eliminata} other {# versioni verranno eliminate}} al salvataggio.",
+					"undo": "Annulla"
+				},
+				"manufacturer": {
+					"title": "Fabbricante",
+					"description": "Compare sulla pagina. Come contatto serve un indirizzo e-mail o un sito web.",
+					"prefill": "Usa i dati della mia ultima pagina prodotto"
+				},
+				"party": {
+					"name": "Ragione sociale",
+					"address": "Indirizzo",
+					"addressPlaceholder": "Via, CAP, città, paese",
+					"email": "E-mail",
+					"website": "Sito web o modulo di contatto",
+					"phone": "Telefono"
+				},
+				"euRepresentative": {
+					"title": "Rappresentante nell’UE (facoltativo)",
+					"description": "Per i fabbricanti fuori dall’UE: il mandatario o la persona responsabile nell’UE."
+				},
+				"safety": {
+					"title": "Informazioni di sicurezza",
+					"placeholder": "Le informazioni di sicurezza più importanti, direttamente sulla pagina",
+					"hint": "Per le macchine che possono essere usate anche dai consumatori, le informazioni di sicurezza essenziali vanno fornite anche su carta."
+				},
+				"paperRequest": {
+					"title": "Copia cartacea su richiesta",
+					"description": "I visitatori possono richiedere sulla pagina un manuale stampato. Ricevi ogni richiesta via e-mail e la trovi nella pagina di dettaglio di questo codice.",
+					"email": "Invia le richieste a"
+				},
+				"cover": {
+					"label": "Immagine del prodotto"
+				},
+				"link": {
+					"description": "Pulsante facoltativo, es. per ricambi o assistenza.",
+					"labelPlaceholder": "es. Ordina ricambi"
+				},
+				"issues": {
+					"title": "Manca ancora per poter salvare:",
+					"documents": "Almeno un documento",
+					"contact": "E-mail o sito web",
+					"other": "Controlla i dati inseriti"
 				}
 			}
 		},
@@ -4356,6 +4443,25 @@
 			"noDocuments": "Carica un PDF per vederlo qui",
 			"documentCount": "{count, plural, one {# documento} other {# documenti}}",
 			"uploadPending": "Carica ancora il PDF"
+		},
+		"product": {
+			"model": "Modello",
+			"articleNumber": "Cod. articolo",
+			"gtin": "GTIN",
+			"categories": {
+				"manual": "Istruzioni per l’uso",
+				"safety": "Informazioni di sicurezza",
+				"declaration": "Dichiarazione di conformità UE",
+				"datasheet": "Scheda tecnica",
+				"other": "Altri documenti"
+			},
+			"language": "Lingua dei documenti",
+			"since": "dal {date}",
+			"period": "{from} – {until}",
+			"earlierVersions": "Versioni precedenti",
+			"safety": "Informazioni di sicurezza",
+			"manufacturer": "Fabbricante",
+			"euRepresentative": "Rappresentante nell’UE"
 		},
 		"unavailable": {
 			"title": "Un momento, per favore",

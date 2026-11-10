@@ -35,6 +35,7 @@ import { SmsSection } from './SmsSection';
 import { WhatsAppSection } from './WhatsAppSection';
 import { PdfSection } from './PdfSection';
 import { EditPdfSection } from './EditPdfSection';
+import { ProductSection } from './ProductSection';
 import { CONTENT_TYPE_CONFIGS } from '@/lib/content-type.config';
 import { DynamicBadge } from '../DynamicBadge';
 import { useAuth } from '@clerk/nextjs';
@@ -67,6 +68,7 @@ const CONTENT_COMPONENTS = {
 	sms: { edit: SmsSection, view: SmsSection },
 	whatsapp: { edit: WhatsAppSection, view: WhatsAppSection },
 	pdf: { edit: EditPdfSection, view: PdfSection },
+	product: { edit: ProductSection, view: ProductSection },
 } as const;
 
 const TABS: TabConfig[] = CONTENT_TYPE_CONFIGS.map((config) => ({

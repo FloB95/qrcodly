@@ -22,6 +22,8 @@ export type THostedServedFile = {
 /** A rule the content breaks on input; stored content is read as it is. */
 export type THostedInputIssue = { path: (string | number)[]; message: string };
 
+export type THostedCarryOverContext = { now: Date; newId: () => string };
+
 /**
  * Everything the platform needs to know about one hosted page type. Each type registers exactly
  * one of these; services, the public page and the editor ask the registry instead of checking
@@ -49,4 +51,9 @@ export type THostedPageTypeDefinition<TData extends THostedPageSettings> = {
 	outboundUrls(data: TData): string[];
 	/** Rules across fields that new or changed content must follow (paths relative to the data) */
 	inputIssues(data: TData): THostedInputIssue[];
+	/**
+	 * The content to store when `next` replaces `current` (null for a new page or a duplicate).
+	 * What a type keeps of its past is decided here, on the server; clients cannot write it.
+	 */
+	carryOver(current: TData | null, next: TData, context: THostedCarryOverContext): TData;
 };

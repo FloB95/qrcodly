@@ -718,7 +718,8 @@
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
 				"socials": "REDES",
-				"pdf": "PDF"
+				"pdf": "PDF",
+				"product": "PRODUCTO"
 			},
 			"cancel": "Cancelar",
 			"bulkModeBtn": "Creación masiva con CSV",
@@ -1089,7 +1090,8 @@
 							"title": "Manual modelo X200",
 							"description": "Todo sobre tu dispositivo, siempre actualizado.",
 							"brandName": "Werk Demo",
-							"documents": "Manual (ES)|Inicio rápido|Ficha técnica"
+							"documents": "Manual (ES)|Inicio rápido|Ficha técnica",
+							"address": "Calle Ejemplo 12\n28001 Madrid\nEspaña"
 						}
 					},
 					"priceList": {
@@ -1186,6 +1188,91 @@
 						"description": "El escaneo abre tu único PDF al instante, sin página de destino"
 					},
 					"directNeedsOne": "Abrir directamente solo funciona con exactamente un PDF. Elimina los demás documentos para usarlo."
+				}
+			},
+			"product": {
+				"intro": {
+					"page": "Al escanear se abre una página móvil con los documentos de tu producto: manual de instrucciones, información de seguridad y declaración de conformidad, en el idioma del visitante. <strong>Puedes sustituir un archivo cuando quieras: el código impreso sigue igual y la versión anterior se conserva.</strong>",
+					"pro": "Las páginas de producto forman parte de QRcodly Pro."
+				},
+				"name": {
+					"label": "Nombre del producto",
+					"placeholder": "p. ej. Sierra de cinta BS 400"
+				},
+				"model": {
+					"label": "Modelo o tipo",
+					"placeholder": "p. ej. BS-400/2",
+					"hint": "El modelo al que corresponden los documentos. Se muestra en la parte superior de la página."
+				},
+				"articleNumber": {
+					"label": "Número de artículo"
+				},
+				"gtin": {
+					"label": "GTIN / EAN"
+				},
+				"documents": {
+					"category": "Tipo de documento",
+					"language": "Idioma",
+					"version": "Revisión",
+					"titlePlaceholder": "Nombre (opcional)",
+					"versionPlaceholder": "Revisión, p. ej. Rev. 03",
+					"archiveHint": "Si sustituyes o eliminas un archivo, el anterior sigue disponible en la página como versión anterior.",
+					"limitHint": "Las versiones anteriores cuentan como archivos. Elimina una abajo para sustituir o añadir un archivo.",
+					"declarationHint": "Consejo: imprime la dirección de esta página en tu manual para que la declaración de conformidad sea accesible a través de ella.",
+					"categories": {
+						"manual": "Manual de instrucciones",
+						"safety": "Información de seguridad",
+						"declaration": "Declaración de conformidad",
+						"datasheet": "Ficha técnica",
+						"other": "Otro documento"
+					}
+				},
+				"archive": {
+					"title": "Versiones anteriores",
+					"description": "Archivos que has sustituido o eliminado. Los visitantes pueden seguir abriéndolos en la página.",
+					"remove": "Eliminar versión",
+					"pendingRemoval": "{count, plural, one {Se eliminará # versión} other {Se eliminarán # versiones}} al guardar.",
+					"undo": "Deshacer"
+				},
+				"manufacturer": {
+					"title": "Fabricante",
+					"description": "Se muestra en la página. Como contacto se necesita un correo electrónico o un sitio web.",
+					"prefill": "Usar los datos de mi última página de producto"
+				},
+				"party": {
+					"name": "Nombre de la empresa",
+					"address": "Dirección",
+					"addressPlaceholder": "Calle, código postal, ciudad, país",
+					"email": "Correo electrónico",
+					"website": "Sitio web o formulario de contacto",
+					"phone": "Teléfono"
+				},
+				"euRepresentative": {
+					"title": "Representante en la UE (opcional)",
+					"description": "Para fabricantes de fuera de la UE: el representante autorizado o la persona responsable en la UE."
+				},
+				"safety": {
+					"title": "Información de seguridad",
+					"placeholder": "La información de seguridad más importante, directamente en la página",
+					"hint": "En las máquinas que también pueden usar consumidores, la información de seguridad esencial debe entregarse además en papel."
+				},
+				"paperRequest": {
+					"title": "Copia en papel bajo petición",
+					"description": "Los visitantes pueden pedir un manual impreso en la página. Recibes cada solicitud por correo electrónico y la encuentras en la página de detalle de este código.",
+					"email": "Enviar solicitudes a"
+				},
+				"cover": {
+					"label": "Imagen del producto"
+				},
+				"link": {
+					"description": "Botón opcional, p. ej. a repuestos o al servicio técnico.",
+					"labelPlaceholder": "p. ej. Pedir repuestos"
+				},
+				"issues": {
+					"title": "Aún falta para poder guardar:",
+					"documents": "Al menos un documento",
+					"contact": "Correo electrónico o sitio web",
+					"other": "Revisa tus datos"
 				}
 			}
 		},
@@ -4356,6 +4443,25 @@
 			"noDocuments": "Sube un PDF para verlo aquí",
 			"documentCount": "{count, plural, one {# documento} other {# documentos}}",
 			"uploadPending": "Sube el PDF para activarlo"
+		},
+		"product": {
+			"model": "Modelo",
+			"articleNumber": "N.º de artículo",
+			"gtin": "GTIN",
+			"categories": {
+				"manual": "Manual de instrucciones",
+				"safety": "Información de seguridad",
+				"declaration": "Declaración UE de conformidad",
+				"datasheet": "Ficha técnica",
+				"other": "Otros documentos"
+			},
+			"language": "Idioma de los documentos",
+			"since": "desde el {date}",
+			"period": "{from} – {until}",
+			"earlierVersions": "Versiones anteriores",
+			"safety": "Información de seguridad",
+			"manufacturer": "Fabricante",
+			"euRepresentative": "Representante en la UE"
 		},
 		"unavailable": {
 			"title": "Un momento, por favor",

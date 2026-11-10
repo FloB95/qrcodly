@@ -60,7 +60,7 @@ export async function fetchQrCodesPage(
 	);
 }
 
-export function useListQrCodesQuery(page = 1, limit = 10, filters?: QrCodeFilters) {
+export function useListQrCodesQuery(page = 1, limit = 10, filters?: QrCodeFilters, enabled = true) {
 	const { getToken } = useAuth();
 
 	return useQuery({
@@ -69,6 +69,7 @@ export function useListQrCodesQuery(page = 1, limit = 10, filters?: QrCodeFilter
 			const token = await getToken();
 			return fetchQrCodesPage(token, page, limit, filters);
 		},
+		enabled,
 		placeholderData: keepPreviousData,
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000,
@@ -152,13 +153,13 @@ export function useUpdateQrCodeMutation() {
 		}: {
 			qrCodeId: string;
 			data: TUpdateQrCodeDto;
-		}): Promise<void> => {
+		}): Promise<TQrCodeWithRelationsResponseDto> => {
 			const token = await getToken();
 			const headers: HeadersInit = {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			};
-			await apiRequest<void>(`/qr-code/${qrCodeId}`, {
+			return apiRequest<TQrCodeWithRelationsResponseDto>(`/qr-code/${qrCodeId}`, {
 				method: 'PATCH',
 				body: JSON.stringify(data),
 				headers,

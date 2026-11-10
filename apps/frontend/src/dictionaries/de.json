@@ -709,7 +709,8 @@
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
 				"socials": "SOCIALS",
-				"pdf": "PDF"
+				"pdf": "PDF",
+				"product": "PRODUKT"
 			},
 			"cancel": "Abbrechen",
 			"bulkModeBtn": "CSV Massenerstellung",
@@ -1080,7 +1081,8 @@
 							"title": "Bedienungsanleitung Modell X200",
 							"description": "Alle Dokumente zu Ihrem Gerät, immer aktuell.",
 							"brandName": "Werk Demo",
-							"documents": "Anleitung (DE)|Schnellstart|Datenblatt"
+							"documents": "Anleitung (DE)|Schnellstart|Datenblatt",
+							"address": "Musterstraße 12\n12345 Musterstadt\nDeutschland"
 						}
 					},
 					"priceList": {
@@ -1177,6 +1179,91 @@
 						"description": "Der Scan öffnet dein einzelnes PDF sofort, ohne Landingpage"
 					},
 					"directNeedsOne": "Direkt öffnen geht nur mit genau einem PDF. Entferne dafür die übrigen Dokumente."
+				}
+			},
+			"product": {
+				"intro": {
+					"page": "Beim Scannen öffnet sich eine mobile Seite mit den Dokumenten zu deinem Produkt: Betriebsanleitung, Sicherheitshinweise und Konformitätserklärung, in der Sprache des Besuchers. <strong>Du kannst eine Datei jederzeit ersetzen: Der gedruckte Code bleibt gleich und die frühere Fassung bleibt erhalten.</strong>",
+					"pro": "Produktseiten sind Teil von QRcodly Pro."
+				},
+				"name": {
+					"label": "Produktname",
+					"placeholder": "z. B. Bandsäge BS 400"
+				},
+				"model": {
+					"label": "Modell oder Typ",
+					"placeholder": "z. B. BS-400/2",
+					"hint": "Das Modell, für das die Dokumente gelten. Es steht oben auf der Seite."
+				},
+				"articleNumber": {
+					"label": "Artikelnummer"
+				},
+				"gtin": {
+					"label": "GTIN / EAN"
+				},
+				"documents": {
+					"category": "Dokumentart",
+					"language": "Sprache",
+					"version": "Revision",
+					"titlePlaceholder": "Name (optional)",
+					"versionPlaceholder": "Revision, z. B. Rev. 03",
+					"archiveHint": "Wenn du eine Datei ersetzt oder entfernst, bleibt die alte als frühere Fassung auf der Seite abrufbar.",
+					"limitHint": "Frühere Fassungen zählen als Dateien. Lösche unten eine, um eine Datei zu ersetzen oder hinzuzufügen.",
+					"declarationHint": "Tipp: Drucke die Adresse dieser Seite in deine Anleitung, damit die Konformitätserklärung darüber erreichbar ist.",
+					"categories": {
+						"manual": "Betriebsanleitung",
+						"safety": "Sicherheitshinweise",
+						"declaration": "Konformitätserklärung",
+						"datasheet": "Datenblatt",
+						"other": "Sonstiges Dokument"
+					}
+				},
+				"archive": {
+					"title": "Frühere Fassungen",
+					"description": "Dateien, die du ersetzt oder entfernt hast. Besucher können sie weiterhin auf der Seite öffnen.",
+					"remove": "Fassung löschen",
+					"pendingRemoval": "{count, plural, one {# Fassung wird} other {# Fassungen werden}} beim Speichern gelöscht.",
+					"undo": "Rückgängig"
+				},
+				"manufacturer": {
+					"title": "Hersteller",
+					"description": "Steht auf der Seite. Als Kontakt ist eine E-Mail-Adresse oder eine Website nötig.",
+					"prefill": "Daten meiner letzten Produktseite übernehmen"
+				},
+				"party": {
+					"name": "Firmenname",
+					"address": "Anschrift",
+					"addressPlaceholder": "Straße, PLZ, Ort, Land",
+					"email": "E-Mail",
+					"website": "Website oder Kontaktformular",
+					"phone": "Telefon"
+				},
+				"euRepresentative": {
+					"title": "EU-Bevollmächtigter (optional)",
+					"description": "Für Hersteller außerhalb der EU: der Bevollmächtigte oder die verantwortliche Person in der EU."
+				},
+				"safety": {
+					"title": "Sicherheitshinweise",
+					"placeholder": "Die wichtigsten Sicherheitshinweise, direkt auf der Seite",
+					"hint": "Bei Maschinen, die auch Verbraucher nutzen können, müssen die wesentlichen Sicherheitshinweise zusätzlich auf Papier beiliegen."
+				},
+				"paperRequest": {
+					"title": "Papierfassung auf Anfrage",
+					"description": "Besucher können auf der Seite eine gedruckte Anleitung anfordern. Du bekommst jede Anfrage per E-Mail und findest sie auf der Detailseite dieses Codes.",
+					"email": "Anfragen senden an"
+				},
+				"cover": {
+					"label": "Produktbild"
+				},
+				"link": {
+					"description": "Optionaler Button, z. B. zu Ersatzteilen oder zum Service.",
+					"labelPlaceholder": "z. B. Ersatzteile bestellen"
+				},
+				"issues": {
+					"title": "Das fehlt noch zum Speichern:",
+					"documents": "Mindestens ein Dokument",
+					"contact": "E-Mail oder Website",
+					"other": "Bitte prüfe deine Eingaben"
 				}
 			}
 		},
@@ -4356,6 +4443,25 @@
 			"noDocuments": "Lade ein PDF hoch, um es hier zu sehen",
 			"documentCount": "{count, plural, one {# Dokument} other {# Dokumente}}",
 			"uploadPending": "PDF noch hochladen"
+		},
+		"product": {
+			"model": "Modell",
+			"articleNumber": "Artikel-Nr.",
+			"gtin": "GTIN",
+			"categories": {
+				"manual": "Betriebsanleitung",
+				"safety": "Sicherheitshinweise",
+				"declaration": "EU-Konformitätserklärung",
+				"datasheet": "Datenblatt",
+				"other": "Weitere Dokumente"
+			},
+			"language": "Sprache der Dokumente",
+			"since": "seit {date}",
+			"period": "{from} – {until}",
+			"earlierVersions": "Frühere Fassungen",
+			"safety": "Sicherheitshinweise",
+			"manufacturer": "Hersteller",
+			"euRepresentative": "EU-Bevollmächtigter"
 		},
 		"unavailable": {
 			"title": "Einen Moment bitte",

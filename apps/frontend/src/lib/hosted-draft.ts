@@ -20,7 +20,10 @@ export function freshHostedDraft(type: THostedPageType): {
 	const sampleTemplate = getTemplatesForType(type)[0]?.id ?? null;
 	if (!sampleTemplate || !isHostedPageContent(content)) return { content, sampleTemplate: null };
 	return {
-		content: { ...content, data: { ...content.data, theme: getTemplateTheme(sampleTemplate) } },
+		content: {
+			...content,
+			data: { ...content.data, theme: getTemplateTheme(sampleTemplate) },
+		} as TQrCodeContent,
 		sampleTemplate,
 	};
 }

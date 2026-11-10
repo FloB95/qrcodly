@@ -5,6 +5,7 @@ import {
 	isDynamic,
 	isHostedPageContent,
 	type TCustomDomainResponseDto,
+	type THostedPageContent,
 	type THostedPageData,
 	type THostedPageType,
 	type TQrCodeContent,
@@ -12,6 +13,7 @@ import {
 	type TShortUrl,
 } from '@shared/schemas';
 import { createLinkFromShortUrl } from './utils';
+import { productPageIssues } from './product-page';
 import type { Options } from 'qr-code-styling';
 
 /**
@@ -91,6 +93,7 @@ const HOSTED_CONTENT_COMPLETE: {
 		(data.openMode !== 'direct' || data.documents.length === 1) &&
 		// a link button needs both its text and its address
 		(!data.link || (Boolean(data.link.label.trim()) && Boolean(data.link.url.trim()))),
+	product: (data) => productPageIssues(data).length === 0,
 };
 
 /**
@@ -98,7 +101,12 @@ const HOSTED_CONTENT_COMPLETE: {
  * without a document or a link button with only its text. Saving stays disabled until then.
  */
 export function isContentIncomplete(content: TQrCodeContent): boolean {
-	return isHostedPageContent(content) && !HOSTED_CONTENT_COMPLETE[content.type](content.data);
+	if (!isHostedPageContent(content)) return false;
+	// the type and its data belong together; the map's union cannot say so
+	const isComplete = HOSTED_CONTENT_COMPLETE[content.type] as (
+		data: THostedPageContent['data'],
+	) => boolean;
+	return !isComplete(content.data);
 }
 
 /**

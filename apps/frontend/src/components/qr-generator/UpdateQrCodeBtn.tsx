@@ -2,7 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { isDynamic, objDiff, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import {
+	isDynamic,
+	isHostedPageContent,
+	objDiff,
+	type TQrCodeWithRelationsResponseDto,
+} from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
@@ -27,9 +32,8 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const [infoDialogIsOpen, setInfoDialogIsOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const updateQrCodeMutation = useUpdateQrCodeMutation();
-	const { latestQrCode, updateLatestQrCode, hostedUploadsPending } = useQrCodeGeneratorStore(
-		(state) => state,
-	);
+	const { latestQrCode, updateLatestQrCode, updateContent, hostedUploadsPending } =
+		useQrCodeGeneratorStore((state) => state);
 	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
 
 	const hasValidChanges =
@@ -56,17 +60,20 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 					},
 				},
 				{
-					onSuccess: () => {
+					onSuccess: (saved) => {
 						toast({
 							title: t('update.successTitle'),
 							description: t('update.successDescription'),
 							duration: 5000,
 						});
 
+						// a hosted page comes back with what the server keeps of it, e.g. archived files
+						const content = isHostedPageContent(saved.content) ? saved.content : qrCode.content;
+						if (content !== qrCode.content) updateContent(content);
 						updateLatestQrCode({
 							name: qrCode.name,
 							config: qrCode.config,
-							content: qrCode.content,
+							content,
 						});
 
 						void queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes });

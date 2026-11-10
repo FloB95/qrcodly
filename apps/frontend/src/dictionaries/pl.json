@@ -718,7 +718,8 @@
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
 				"socials": "SOCIALS",
-				"pdf": "PDF"
+				"pdf": "PDF",
+				"product": "PRODUKT"
 			},
 			"cancel": "Anuluj",
 			"bulkModeBtn": "Masowe tworzenie CSV",
@@ -1089,7 +1090,8 @@
 							"title": "Instrukcja model X200",
 							"description": "Wszystko o Twoim urządzeniu, zawsze aktualne.",
 							"brandName": "Werk Demo",
-							"documents": "Instrukcja (PL)|Szybki start|Karta danych"
+							"documents": "Instrukcja (PL)|Szybki start|Karta danych",
+							"address": "ul. Przykładowa 12\n00-001 Warszawa\nPolska"
 						}
 					},
 					"priceList": {
@@ -1186,6 +1188,91 @@
 						"description": "Skan od razu otwiera Twój jedyny PDF, bez strony docelowej"
 					},
 					"directNeedsOne": "Bezpośrednie otwieranie działa tylko z dokładnie jednym plikiem PDF. Usuń pozostałe dokumenty, aby z niego skorzystać."
+				}
+			},
+			"product": {
+				"intro": {
+					"page": "Po zeskanowaniu otwiera się strona mobilna z dokumentami Twojego produktu: instrukcją obsługi, informacjami o bezpieczeństwie i deklaracją zgodności, w języku odwiedzającego. <strong>Plik możesz wymienić w każdej chwili: wydrukowany kod pozostaje ten sam, a wcześniejsza wersja zostaje zachowana.</strong>",
+					"pro": "Strony produktów są częścią QRcodly Pro."
+				},
+				"name": {
+					"label": "Nazwa produktu",
+					"placeholder": "np. Piła taśmowa BS 400"
+				},
+				"model": {
+					"label": "Model lub typ",
+					"placeholder": "np. BS-400/2",
+					"hint": "Model, którego dotyczą dokumenty. Jest widoczny na górze strony."
+				},
+				"articleNumber": {
+					"label": "Numer artykułu"
+				},
+				"gtin": {
+					"label": "GTIN / EAN"
+				},
+				"documents": {
+					"category": "Rodzaj dokumentu",
+					"language": "Język",
+					"version": "Wersja",
+					"titlePlaceholder": "Nazwa (opcjonalnie)",
+					"versionPlaceholder": "Wersja, np. Rev. 03",
+					"archiveHint": "Gdy wymienisz lub usuniesz plik, stary pozostaje dostępny na stronie jako wcześniejsza wersja.",
+					"limitHint": "Wcześniejsze wersje liczą się jako pliki. Usuń jedną poniżej, aby wymienić lub dodać plik.",
+					"declarationHint": "Wskazówka: wydrukuj adres tej strony w instrukcji, aby deklaracja zgodności była przez nią dostępna.",
+					"categories": {
+						"manual": "Instrukcja obsługi",
+						"safety": "Informacje o bezpieczeństwie",
+						"declaration": "Deklaracja zgodności",
+						"datasheet": "Karta danych",
+						"other": "Inny dokument"
+					}
+				},
+				"archive": {
+					"title": "Wcześniejsze wersje",
+					"description": "Pliki wymienione lub usunięte przez Ciebie. Odwiedzający nadal mogą je otworzyć na stronie.",
+					"remove": "Usuń wersję",
+					"pendingRemoval": "{count, plural, one {# wersja zostanie usunięta} few {# wersje zostaną usunięte} many {# wersji zostanie usuniętych} other {# wersji zostanie usuniętych}} przy zapisie.",
+					"undo": "Cofnij"
+				},
+				"manufacturer": {
+					"title": "Producent",
+					"description": "Widoczny na stronie. Jako kontakt wymagany jest adres e-mail lub strona internetowa.",
+					"prefill": "Użyj danych z mojej ostatniej strony produktu"
+				},
+				"party": {
+					"name": "Nazwa firmy",
+					"address": "Adres",
+					"addressPlaceholder": "Ulica, kod pocztowy, miejscowość, kraj",
+					"email": "E-mail",
+					"website": "Strona internetowa lub formularz kontaktowy",
+					"phone": "Telefon"
+				},
+				"euRepresentative": {
+					"title": "Przedstawiciel w UE (opcjonalnie)",
+					"description": "Dla producentów spoza UE: upoważniony przedstawiciel lub osoba odpowiedzialna w UE."
+				},
+				"safety": {
+					"title": "Informacje o bezpieczeństwie",
+					"placeholder": "Najważniejsze informacje o bezpieczeństwie, bezpośrednio na stronie",
+					"hint": "W przypadku maszyn, z których mogą korzystać także konsumenci, najważniejsze informacje o bezpieczeństwie trzeba dołączyć również na papierze."
+				},
+				"paperRequest": {
+					"title": "Wersja papierowa na żądanie",
+					"description": "Odwiedzający mogą na stronie poprosić o wydrukowaną instrukcję. Każdą prośbę otrzymasz e-mailem i znajdziesz ją na stronie szczegółów tego kodu.",
+					"email": "Wysyłaj prośby na adres"
+				},
+				"cover": {
+					"label": "Zdjęcie produktu"
+				},
+				"link": {
+					"description": "Opcjonalny przycisk, np. do części zamiennych lub serwisu.",
+					"labelPlaceholder": "np. Zamów części zamienne"
+				},
+				"issues": {
+					"title": "Do zapisania brakuje jeszcze:",
+					"documents": "Co najmniej jeden dokument",
+					"contact": "E-mail lub strona internetowa",
+					"other": "Sprawdź wprowadzone dane"
 				}
 			}
 		},
@@ -4356,6 +4443,25 @@
 			"noDocuments": "Dodaj PDF, aby zobaczyć go tutaj",
 			"documentCount": "{count, plural, one {# dokument} few {# dokumenty} many {# dokumentów} other {# dokumentu}}",
 			"uploadPending": "Prześlij jeszcze PDF"
+		},
+		"product": {
+			"model": "Model",
+			"articleNumber": "Nr artykułu",
+			"gtin": "GTIN",
+			"categories": {
+				"manual": "Instrukcja obsługi",
+				"safety": "Informacje o bezpieczeństwie",
+				"declaration": "Deklaracja zgodności UE",
+				"datasheet": "Karta danych",
+				"other": "Pozostałe dokumenty"
+			},
+			"language": "Język dokumentów",
+			"since": "od {date}",
+			"period": "{from} – {until}",
+			"earlierVersions": "Wcześniejsze wersje",
+			"safety": "Informacje o bezpieczeństwie",
+			"manufacturer": "Producent",
+			"euRepresentative": "Przedstawiciel w UE"
 		},
 		"unavailable": {
 			"title": "Chwileczkę",

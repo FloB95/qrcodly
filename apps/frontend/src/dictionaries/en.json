@@ -709,7 +709,8 @@
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
 				"socials": "SOCIALS",
-				"pdf": "PDF"
+				"pdf": "PDF",
+				"product": "PRODUCT"
 			},
 			"cancel": "Cancel",
 			"bulkModeBtn": "CSV Bulk Creation",
@@ -1080,7 +1081,8 @@
 							"title": "Manual model X200",
 							"description": "Everything about your device, always up to date.",
 							"brandName": "Werk Demo",
-							"documents": "Manual (EN)|Quick start|Data sheet"
+							"documents": "Manual (EN)|Quick start|Data sheet",
+							"address": "12 Sample Street\nLondon EC1A 1BB\nUnited Kingdom"
 						}
 					},
 					"priceList": {
@@ -1177,6 +1179,91 @@
 						"description": "The scan opens your single PDF right away, without a landing page"
 					},
 					"directNeedsOne": "Opening directly works with exactly one PDF. Remove the other documents to use it."
+				}
+			},
+			"product": {
+				"intro": {
+					"page": "When scanned, a mobile page with the documents of your product opens: operating instructions, safety information and declaration of conformity, in the visitor's language. <strong>You can replace a file at any time: the printed code stays the same and the earlier version is kept.</strong>",
+					"pro": "Product pages are part of QRcodly Pro."
+				},
+				"name": {
+					"label": "Product name",
+					"placeholder": "e.g. Band saw BS 400"
+				},
+				"model": {
+					"label": "Model or type",
+					"placeholder": "e.g. BS-400/2",
+					"hint": "The model the documents apply to. It is shown at the top of the page."
+				},
+				"articleNumber": {
+					"label": "Article number"
+				},
+				"gtin": {
+					"label": "GTIN / EAN"
+				},
+				"documents": {
+					"category": "Document type",
+					"language": "Language",
+					"version": "Revision",
+					"titlePlaceholder": "Name (optional)",
+					"versionPlaceholder": "Revision, e.g. Rev. 03",
+					"archiveHint": "When you replace or remove a file, the old one stays available on the page as an earlier version.",
+					"limitHint": "Earlier versions count as files. Delete one below to replace or add a file.",
+					"declarationHint": "Tip: print the address of this page in your manual, so the declaration of conformity can be reached through it.",
+					"categories": {
+						"manual": "Operating instructions",
+						"safety": "Safety information",
+						"declaration": "Declaration of conformity",
+						"datasheet": "Data sheet",
+						"other": "Other document"
+					}
+				},
+				"archive": {
+					"title": "Earlier versions",
+					"description": "Files you replaced or removed. Visitors can still open them on the page.",
+					"remove": "Delete version",
+					"pendingRemoval": "{count, plural, one {# version is} other {# versions are}} deleted when you save.",
+					"undo": "Undo"
+				},
+				"manufacturer": {
+					"title": "Manufacturer",
+					"description": "Shown on the page. An e-mail address or a website is required as a contact.",
+					"prefill": "Use the details of my last product page"
+				},
+				"party": {
+					"name": "Company name",
+					"address": "Address",
+					"addressPlaceholder": "Street, postal code, city, country",
+					"email": "E-mail",
+					"website": "Website or contact form",
+					"phone": "Phone"
+				},
+				"euRepresentative": {
+					"title": "EU representative (optional)",
+					"description": "For manufacturers outside the EU: the authorised representative or responsible person in the EU."
+				},
+				"safety": {
+					"title": "Safety information",
+					"placeholder": "The key safety information, shown directly on the page",
+					"hint": "For machines that consumers may use, the essential safety information must also be enclosed on paper."
+				},
+				"paperRequest": {
+					"title": "Paper copy on request",
+					"description": "Visitors can ask for a printed manual on the page. You receive every request by e-mail and find it on the detail page of this code.",
+					"email": "Send requests to"
+				},
+				"cover": {
+					"label": "Product image"
+				},
+				"link": {
+					"description": "Optional button, e.g. to spare parts or service.",
+					"labelPlaceholder": "e.g. Order spare parts"
+				},
+				"issues": {
+					"title": "Still needed before you can save:",
+					"documents": "At least one document",
+					"contact": "E-mail or website",
+					"other": "Check your entries"
 				}
 			}
 		},
@@ -4356,6 +4443,25 @@
 			"noDocuments": "Add a PDF to see it here",
 			"documentCount": "{count, plural, one {# document} other {# documents}}",
 			"uploadPending": "Upload the PDF to activate"
+		},
+		"product": {
+			"model": "Model",
+			"articleNumber": "Article no.",
+			"gtin": "GTIN",
+			"categories": {
+				"manual": "Operating instructions",
+				"safety": "Safety information",
+				"declaration": "EU declaration of conformity",
+				"datasheet": "Data sheet",
+				"other": "Further documents"
+			},
+			"language": "Document language",
+			"since": "since {date}",
+			"period": "{from} – {until}",
+			"earlierVersions": "Earlier versions",
+			"safety": "Safety information",
+			"manufacturer": "Manufacturer",
+			"euRepresentative": "EU representative"
 		},
 		"unavailable": {
 			"title": "Just a moment",

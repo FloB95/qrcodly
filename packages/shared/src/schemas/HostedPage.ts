@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { safeHttpUrl } from './SafeUrl';
 
 /** Page kinds QRcodly serves itself instead of redirecting the scanner elsewhere. */
-export const HOSTED_PAGE_TYPES = ['pdf'] as const;
+export const HOSTED_PAGE_TYPES = ['pdf', 'product'] as const;
 export const HostedPageTypeSchema = z.enum(HOSTED_PAGE_TYPES);
 export type THostedPageType = z.infer<typeof HostedPageTypeSchema>;
 
@@ -191,6 +191,170 @@ export const PdfInputSchema = PdfPageDataSchema.extend({
 });
 export type TPdfInput = z.infer<typeof PdfInputSchema>;
 
+export const HOSTED_PRODUCT_MAX_DOCUMENTS = 60;
+
+/** What a product document is, so the page can group it and name it in the visitor's language. */
+export const HOSTED_DOCUMENT_CATEGORIES = [
+	'manual',
+	'safety',
+	'declaration',
+	'datasheet',
+	'other',
+] as const;
+export const HostedDocumentCategorySchema = z.enum(HOSTED_DOCUMENT_CATEGORIES);
+export type THostedDocumentCategory = z.infer<typeof HostedDocumentCategorySchema>;
+
+/** Languages a document can be written in: the official languages of the EU and the EEA. */
+export const HOSTED_DOCUMENT_LANGUAGES = [
+	'bg',
+	'cs',
+	'da',
+	'de',
+	'el',
+	'en',
+	'es',
+	'et',
+	'fi',
+	'fr',
+	'ga',
+	'hr',
+	'hu',
+	'is',
+	'it',
+	'lt',
+	'lv',
+	'mt',
+	'nl',
+	'no',
+	'pl',
+	'pt',
+	'ro',
+	'sk',
+	'sl',
+	'sv',
+] as const;
+export const HostedDocumentLanguageSchema = z.enum(HOSTED_DOCUMENT_LANGUAGES);
+export type THostedDocumentLanguage = z.infer<typeof HostedDocumentLanguageSchema>;
+
+export const HostedProductDocumentSchema = HostedPdfDocumentSchema.extend({
+	title: z
+		.string()
+		.max(80)
+		.optional()
+		.describe('Name shown for this document. Falls back to the name of its category'),
+	category: HostedDocumentCategorySchema.describe(
+		'"manual" (operating instructions), "safety" (safety information), "declaration" (EU declaration of conformity), "datasheet" or "other"',
+	),
+	language: HostedDocumentLanguageSchema.describe(
+		'Language the document is written in (ISO 639-1)',
+	),
+	version: z
+		.string()
+		.max(40)
+		.optional()
+		.describe('Revision of the file as the manufacturer names it, e.g. "Rev. 03" or "2026-11"'),
+	validFrom: z.iso
+		.datetime()
+		.optional()
+		.describe('When this file went online. Set by the server; a value sent by a client is ignored'),
+});
+export type THostedProductDocument = z.infer<typeof HostedProductDocumentSchema>;
+
+/** A file a document used to have. The server archives it when the file is replaced or removed. */
+export const HostedProductArchivedDocumentSchema = HostedProductDocumentSchema.extend({
+	id: z
+		.string()
+		.min(1)
+		.max(64)
+		.describe('Id of this archived version; its file is served under it'),
+	documentId: z.string().min(1).max(64).describe('The document this file was a version of'),
+	validUntil: z.iso.datetime().describe('When the file was replaced or its document removed'),
+});
+export type THostedProductArchivedDocument = z.infer<typeof HostedProductArchivedDocumentSchema>;
+
+/** A company named on a product page: the manufacturer or its representative in the EU. */
+export const HostedProductPartySchema = z.object({
+	name: z.string().min(1).max(120).describe('Company name'),
+	address: z.string().min(1).max(300).describe('Full postal address'),
+	email: z.email().max(255).optional().describe('Contact e-mail address'),
+	website: safeHttpUrl(500).optional().describe('Website or contact form (http or https)'),
+	phone: z.string().max(40).optional(),
+});
+export type THostedProductParty = z.infer<typeof HostedProductPartySchema>;
+
+/**
+ * A product page holds what a manufacturer owes the user of a machine or device: instructions,
+ * safety information and the declaration of conformity per language, with every earlier file kept.
+ */
+export const ProductPageDataSchema = HostedPageSettingsSchema.extend({
+	...HostedPageHeaderSchema.shape,
+	model: z.string().min(1).max(120).describe('Model or type the documents apply to'),
+	articleNumber: z.string().max(60).optional().describe('Article or order number'),
+	gtin: z
+		.string()
+		.regex(/^(\d{8}|\d{12,14})$/)
+		.optional()
+		.describe('GTIN/EAN of the product (8, 12, 13 or 14 digits)'),
+	manufacturer: HostedProductPartySchema.describe(
+		'The manufacturer; needs an e-mail address or a website as digital contact',
+	),
+	euRepresentative: HostedProductPartySchema.optional().describe(
+		'Authorised representative or responsible person in the EU, for manufacturers outside it',
+	),
+	safetyNotice: z
+		.string()
+		.max(2000)
+		.optional()
+		.describe('Key safety information shown on the page itself'),
+	link: HostedPageLinkSchema.optional().describe(
+		'Optional button leading to a URL, e.g. spare parts or service',
+	),
+	documents: z
+		.array(HostedProductDocumentSchema)
+		.min(1)
+		.max(HOSTED_PRODUCT_MAX_DOCUMENTS)
+		.refine(
+			(documents) => {
+				const ids = documents.map((document) => document.id).filter(Boolean);
+				return new Set(ids).size === ids.length;
+			},
+			{ message: 'Document ids must be unique within a page' },
+		)
+		.describe('The current documents of the product, one per category and language'),
+	archive: z
+		.array(HostedProductArchivedDocumentSchema)
+		.optional()
+		.describe(
+			'Earlier files of the documents, kept by the server. Read-only: a value sent by a client is ignored, use removeArchiveIds to delete one',
+		),
+	removeArchiveIds: z
+		.array(z.string().min(1).max(64))
+		.max(500)
+		.optional()
+		.describe('Write-only: ids of archived versions to delete with this save'),
+	paperRequest: z
+		.object({
+			enabled: z.boolean().describe('Whether visitors can request a paper copy on the page'),
+			email: z
+				.email()
+				.max(255)
+				.optional()
+				.describe('Where requests are sent; required when enabled'),
+		})
+		.optional()
+		.describe('Paper copy on request, as the EU Machinery Regulation asks for'),
+});
+export type TProductPageData = z.infer<typeof ProductPageDataSchema>;
+
+/** Product content of a QR code: the page data plus the dynamic flag the QR code needs. */
+export const ProductInputSchema = ProductPageDataSchema.extend({
+	isDynamic: z
+		.literal(true)
+		.default(true)
+		.describe('Hosted pages are always dynamic: the QR code points to a short URL'),
+});
+export type TProductInput = z.infer<typeof ProductInputSchema>;
+
 /**
  * Landing page templates, the hosted-page counterpart of the QR code design templates: one per
  * use case, applying a style, colours, font and button wording in one tap. Labels live in the
@@ -229,7 +393,7 @@ export const HOSTED_PAGE_TEMPLATES = [
 	},
 	{
 		id: 'productManual',
-		type: 'pdf',
+		type: 'product',
 		style: 'technical',
 		theme: { primaryColor: '#1f2937', accentColor: '#0ea5e9', font: 'grotesk', mode: 'light' },
 	},

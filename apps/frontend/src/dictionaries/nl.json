@@ -718,7 +718,8 @@
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
 				"socials": "SOCIALS",
-				"pdf": "PDF"
+				"pdf": "PDF",
+				"product": "PRODUCT"
 			},
 			"cancel": "Annuleren",
 			"bulkModeBtn": "CSV Massale aanmaak",
@@ -1089,7 +1090,8 @@
 							"title": "Handleiding model X200",
 							"description": "Alles over je apparaat, altijd actueel.",
 							"brandName": "Werk Demo",
-							"documents": "Handleiding (NL)|Snelstart|Datasheet"
+							"documents": "Handleiding (NL)|Snelstart|Datasheet",
+							"address": "Voorbeeldstraat 12\n1012 AB Amsterdam\nNederland"
 						}
 					},
 					"priceList": {
@@ -1186,6 +1188,91 @@
 						"description": "De scan opent je enige pdf meteen, zonder landingspagina"
 					},
 					"directNeedsOne": "Direct openen werkt alleen met precies één pdf. Verwijder de andere documenten om het te gebruiken."
+				}
+			},
+			"product": {
+				"intro": {
+					"page": "Bij het scannen opent een mobiele pagina met de documenten van je product: gebruiksaanwijzing, veiligheidsinformatie en conformiteitsverklaring, in de taal van de bezoeker. <strong>Je kunt een bestand altijd vervangen: de gedrukte code blijft hetzelfde en de eerdere versie blijft bewaard.</strong>",
+					"pro": "Productpagina’s horen bij QRcodly Pro."
+				},
+				"name": {
+					"label": "Productnaam",
+					"placeholder": "bijv. Lintzaag BS 400"
+				},
+				"model": {
+					"label": "Model of type",
+					"placeholder": "bijv. BS-400/2",
+					"hint": "Het model waarvoor de documenten gelden. Het staat bovenaan de pagina."
+				},
+				"articleNumber": {
+					"label": "Artikelnummer"
+				},
+				"gtin": {
+					"label": "GTIN / EAN"
+				},
+				"documents": {
+					"category": "Soort document",
+					"language": "Taal",
+					"version": "Revisie",
+					"titlePlaceholder": "Naam (optioneel)",
+					"versionPlaceholder": "Revisie, bijv. Rev. 03",
+					"archiveHint": "Als je een bestand vervangt of verwijdert, blijft het oude als eerdere versie op de pagina beschikbaar.",
+					"limitHint": "Eerdere versies tellen als bestanden. Verwijder er hieronder een om een bestand te vervangen of toe te voegen.",
+					"declarationHint": "Tip: druk het adres van deze pagina af in je handleiding, zodat de conformiteitsverklaring daarlangs bereikbaar is.",
+					"categories": {
+						"manual": "Gebruiksaanwijzing",
+						"safety": "Veiligheidsinformatie",
+						"declaration": "Conformiteitsverklaring",
+						"datasheet": "Datasheet",
+						"other": "Ander document"
+					}
+				},
+				"archive": {
+					"title": "Eerdere versies",
+					"description": "Bestanden die je hebt vervangen of verwijderd. Bezoekers kunnen ze nog steeds op de pagina openen.",
+					"remove": "Versie verwijderen",
+					"pendingRemoval": "{count, plural, one {# versie wordt} other {# versies worden}} bij het opslaan verwijderd.",
+					"undo": "Ongedaan maken"
+				},
+				"manufacturer": {
+					"title": "Fabrikant",
+					"description": "Staat op de pagina. Als contact is een e-mailadres of een website nodig.",
+					"prefill": "Gegevens van mijn laatste productpagina overnemen"
+				},
+				"party": {
+					"name": "Bedrijfsnaam",
+					"address": "Adres",
+					"addressPlaceholder": "Straat, postcode, plaats, land",
+					"email": "E-mail",
+					"website": "Website of contactformulier",
+					"phone": "Telefoon"
+				},
+				"euRepresentative": {
+					"title": "Gemachtigde in de EU (optioneel)",
+					"description": "Voor fabrikanten buiten de EU: de gemachtigde of verantwoordelijke persoon in de EU."
+				},
+				"safety": {
+					"title": "Veiligheidsinformatie",
+					"placeholder": "De belangrijkste veiligheidsinformatie, direct op de pagina",
+					"hint": "Bij machines die ook door consumenten kunnen worden gebruikt, moet de essentiële veiligheidsinformatie ook op papier worden meegeleverd."
+				},
+				"paperRequest": {
+					"title": "Papieren exemplaar op aanvraag",
+					"description": "Bezoekers kunnen op de pagina een gedrukte handleiding aanvragen. Je krijgt elke aanvraag per e-mail en vindt die op de detailpagina van deze code.",
+					"email": "Aanvragen sturen naar"
+				},
+				"cover": {
+					"label": "Productafbeelding"
+				},
+				"link": {
+					"description": "Optionele knop, bijv. naar onderdelen of service.",
+					"labelPlaceholder": "bijv. Onderdelen bestellen"
+				},
+				"issues": {
+					"title": "Dit ontbreekt nog om op te slaan:",
+					"documents": "Minstens één document",
+					"contact": "E-mail of website",
+					"other": "Controleer je invoer"
 				}
 			}
 		},
@@ -4356,6 +4443,25 @@
 			"noDocuments": "Upload een pdf om die hier te zien",
 			"documentCount": "{count, plural, one {# document} other {# documenten}}",
 			"uploadPending": "PDF nog uploaden"
+		},
+		"product": {
+			"model": "Model",
+			"articleNumber": "Artikelnr.",
+			"gtin": "GTIN",
+			"categories": {
+				"manual": "Gebruiksaanwijzing",
+				"safety": "Veiligheidsinformatie",
+				"declaration": "EU-conformiteitsverklaring",
+				"datasheet": "Datasheet",
+				"other": "Overige documenten"
+			},
+			"language": "Taal van de documenten",
+			"since": "sinds {date}",
+			"period": "{from} – {until}",
+			"earlierVersions": "Eerdere versies",
+			"safety": "Veiligheidsinformatie",
+			"manufacturer": "Fabrikant",
+			"euRepresentative": "Gemachtigde in de EU"
 		},
 		"unavailable": {
 			"title": "Een ogenblik geduld",

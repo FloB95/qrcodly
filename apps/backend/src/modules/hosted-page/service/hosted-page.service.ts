@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { isDeepStrictEqual } from 'node:util';
 import { inject, singleton } from 'tsyringe';
 import { env } from '@/core/config/env';
 import { BadRequestError, ForbiddenError, UnauthorizedError } from '@/core/error/http';
@@ -15,6 +16,7 @@ import {
 	replaceHostedFileKey,
 	sumHostedUsage,
 	toHostedPageBody,
+	withHostedCarryOver,
 	withHostedDocumentIds,
 	withHostedUploadMetadata,
 	type THostedFileRef,
@@ -61,8 +63,10 @@ export type THostedPageUpdatePlan = {
 	page: THostedPage;
 	shortCode: string;
 	shortUrlId: string;
+	/** The content as it was sent, for carrying it over again if the page changed meanwhile */
+	input: THostedPageContent;
+	/** What is stored when the page is still as it was checked */
 	next: THostedPageContent;
-	claims: THostedFileRef[];
 };
 
 const sameUrls = (a: string[], b: string[]) => a.join('\n') === b.join('\n');
@@ -126,7 +130,7 @@ export class HostedPageService {
 		// the plan first: without one, the files and links do not matter
 		await this.assertWithinLimits(user.id, content);
 		const prepared = await this.withCheckedFiles(
-			withHostedDocumentIds(content, randomUUID),
+			this.carryOver(null, withHostedDocumentIds(content, randomUUID)),
 			user.id,
 		);
 		await this.assertLinksSafe(prepared, user.id, 'create');
@@ -135,7 +139,7 @@ export class HostedPageService {
 
 	async assertCanDuplicate(content: TQrCodeContent, user: TUser): Promise<void> {
 		if (isHostedPageContent(content)) {
-			await this.assertWithinLimits(user.id, content);
+			await this.assertWithinLimits(user.id, this.carryOver(null, content));
 			await this.assertLinksSafe(content, user.id, 'duplicate');
 		}
 	}
@@ -169,24 +173,18 @@ export class HostedPageService {
 		if (!linked) throw new HostedPageNotFoundError();
 		const { page, shortCode, shortUrlId } = linked;
 
+		const input = withHostedDocumentIds(next, randomUUID);
+		const current = bodyOf(page);
 		const checked = await this.withCheckedFiles(
-			withHostedDocumentIds(next, randomUUID),
+			this.carryOver(current, input),
 			qrCode.createdBy,
 			page.id,
 		);
-		const current = bodyOf(page);
 		await this.assertWithinLimits(qrCode.createdBy, checked, { pageId: page.id, body: current });
 		// only new buttons: those already on the page are the re-check's, as for a redirect
 		await this.assertLinksSafe(checked, qrCode.createdBy, 'update', getHostedOutboundUrls(current));
 
-		return {
-			page,
-			shortCode,
-			shortUrlId,
-			next: checked,
-			// every current file is claimed again, so a moved document or a changed role is recorded
-			claims: getHostedFileRefs(checked),
-		};
+		return { page, shortCode, shortUrlId, input, next: checked };
 	}
 
 	/**
@@ -198,19 +196,29 @@ export class HostedPageService {
 		const locked = await this.pageRepository.findLiveByIdForUpdate(plan.page.id);
 		if (!locked) throw new HostedPageNotFoundError();
 		const current = bodyOf(locked);
-		const nextKeys = new Set(plan.claims.map((ref) => ref.key));
+		// a save that raced this one changed the page: what it left behind is carried over again
+		const next = isDeepStrictEqual(locked.data, plan.page.data)
+			? plan.next
+			: await this.withCheckedFiles(
+					this.carryOver(current, plan.input),
+					locked.createdBy,
+					locked.id,
+				);
+		// every current file is claimed again, so a moved document or a changed role is recorded
+		const claims = getHostedFileRefs(next);
+		const nextKeys = new Set(claims.map((ref) => ref.key));
 
-		for (const ref of plan.claims) {
+		for (const ref of claims) {
 			await this.claim(ref, plan.page.id);
 		}
 		for (const ref of getHostedFileRefs(current)) {
 			if (!nextKeys.has(ref.key)) await this.releaseFile(ref.key);
 		}
-		await this.pageRepository.update(locked, { data: toHostedPageBody(plan.next).data });
+		await this.pageRepository.update(locked, { data: toHostedPageBody(next).data });
 
 		const previousUrls = getHostedOutboundUrls(current);
-		if (sameUrls(previousUrls, getHostedOutboundUrls(plan.next))) return false;
-		return this.rescreenLinks(plan.shortUrlId, previousUrls, plan.next);
+		if (sameUrls(previousUrls, getHostedOutboundUrls(next))) return false;
+		return this.rescreenLinks(plan.shortUrlId, previousUrls, next);
 	}
 
 	/**
@@ -311,9 +319,10 @@ export class HostedPageService {
 		userId: string,
 		copiedKeys: string[],
 	): Promise<TQrCodeContent> {
-		let copy = content;
+		// a duplicate is a new page: it starts without the source's past
+		let copy = isHostedPageContent(content) ? this.carryOver(null, content) : content;
 
-		for (const ref of getHostedFileRefs(content)) {
+		for (const ref of getHostedFileRefs(copy)) {
 			const source = await this.fileRepository.findByFileKey(ref.key);
 			if (!source) throw new HostedUploadNotFoundError(ref.key);
 			const newKey = this.fileService.copyKeyFor(ref.key, userId);
@@ -379,6 +388,10 @@ export class HostedPageService {
 			if (known.includes(url)) continue;
 			await this.urlSafetyService.assertDestinationUrlSafe(url, userId, context);
 		}
+	}
+
+	private carryOver<T extends THostedPageContent>(current: THostedPageBody | null, next: T): T {
+		return withHostedCarryOver(current, next, { now: new Date(), newId: randomUUID });
 	}
 
 	private async claim(ref: THostedFileRef, pageId: string): Promise<void> {

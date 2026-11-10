@@ -1,4 +1,8 @@
-import type { THostedPageType } from '../schemas/HostedPage';
+import type {
+	THostedPageType,
+	THostedProductDocument,
+	THostedProductParty,
+} from '../schemas/HostedPage';
 import type { TPublicHostedPageResponseDto } from '../dtos/hosted-page/PublicHostedPageResponseDto';
 import type { THostedPageBody, THostedPageBodyData } from './registry';
 
@@ -61,9 +65,66 @@ const presentPdfPage: THostedPagePresenter<'pdf'> = (data, { fileUrl, assetUrl, 
 	}),
 });
 
+const presentParty = (party: THostedProductParty) => ({
+	name: party.name,
+	address: party.address,
+	email: party.email || null,
+	website: party.website || null,
+	phone: party.phone || null,
+});
+
+const presentProductPage: THostedPagePresenter<'product'> = (
+	data,
+	{ fileUrl, assetUrl, draft },
+) => {
+	const present = (id: string, document: THostedProductDocument) => ({
+		id,
+		category: document.category,
+		language: document.language,
+		title: document.title || null,
+		version: document.version || null,
+		validFrom: document.validFrom ?? null,
+		fileName: document.fileName,
+		fileSize: document.fileSize,
+		fileUrl: fileUrl(id),
+		downloadUrl: fileUrl(id, true),
+	});
+
+	return {
+		type: 'product',
+		title: data.title,
+		description: data.description || null,
+		brandName: data.brandName || null,
+		coverUrl: data.coverKey ? assetUrl(data.coverKey) : null,
+		logoUrl: data.logoKey ? assetUrl(data.logoKey) : null,
+		model: data.model,
+		articleNumber: data.articleNumber || null,
+		gtin: data.gtin || null,
+		manufacturer: presentParty(data.manufacturer),
+		euRepresentative: data.euRepresentative?.name ? presentParty(data.euRepresentative) : null,
+		safetyNotice: data.safetyNotice || null,
+		link:
+			data.link?.label && (data.link.url || draft)
+				? { label: data.link.label, url: data.link.url || '#' }
+				: null,
+		documents: data.documents.flatMap((document, index) => {
+			const id = document.id ?? (draft ? `draft-${index}` : null);
+			return id ? [present(id, document)] : [];
+		}),
+		archive: (data.archive ?? []).map((entry) => ({
+			...present(entry.id, entry),
+			documentId: entry.documentId,
+			validUntil: entry.validUntil,
+		})),
+		// the address requests go to stays private
+		paperRequest: data.paperRequest?.enabled === true,
+	};
+};
+
 /** One presenter per hosted page type. */
 export const HOSTED_PAGE_PRESENTERS: { [K in THostedPageType]: THostedPagePresenter<K> } = {
 	pdf: presentPdfPage,
+	product: presentProductPage,
 };
 
 export function presentHostedPage<K extends THostedPageType>(
@@ -76,9 +137,7 @@ export function presentHostedPage(
 	base: TPublicPageBase,
 	context: THostedPagePresenterContext,
 ): TPublicHostedPageResponseDto {
-	// The single spot where the union of page types meets the union of presenters. With one page
-	// type no cast is needed; a second type makes this fail to compile until a widening cast
-	// (`as THostedPagePresenter<THostedPageType>`) is added here and nowhere else.
-	const present: THostedPagePresenter<THostedPageType> = HOSTED_PAGE_PRESENTERS[page.type];
-	return { ...base, ...present(page.data, context) };
+	// the single spot where the union of page types meets the union of presenters
+	const present = HOSTED_PAGE_PRESENTERS[page.type] as THostedPagePresenter<THostedPageType>;
+	return { ...base, ...present(page.data, context) } as TPublicHostedPageResponseDto;
 }

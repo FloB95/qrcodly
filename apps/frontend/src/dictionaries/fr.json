@@ -718,7 +718,8 @@
 				"sms": "SMS",
 				"whatsapp": "WHATSAPP",
 				"socials": "RÉSEAUX",
-				"pdf": "PDF"
+				"pdf": "PDF",
+				"product": "PRODUIT"
 			},
 			"cancel": "Annuler",
 			"bulkModeBtn": "Création en masse CSV",
@@ -1089,7 +1090,8 @@
 							"title": "Notice modèle X200",
 							"description": "Tout sur votre appareil, toujours à jour.",
 							"brandName": "Werk Demo",
-							"documents": "Notice (FR)|Démarrage rapide|Fiche technique"
+							"documents": "Notice (FR)|Démarrage rapide|Fiche technique",
+							"address": "12 rue de l’Exemple\n75001 Paris\nFrance"
 						}
 					},
 					"priceList": {
@@ -1186,6 +1188,91 @@
 						"description": "Le scan ouvre immédiatement votre PDF unique, sans page d’accueil"
 					},
 					"directNeedsOne": "L’ouverture directe ne fonctionne qu’avec un seul PDF. Supprimez les autres documents pour l’utiliser."
+				}
+			},
+			"product": {
+				"intro": {
+					"page": "Au scan, une page mobile s’ouvre avec les documents de votre produit : notice d’instructions, consignes de sécurité et déclaration de conformité, dans la langue du visiteur. <strong>Vous pouvez remplacer un fichier à tout moment : le code imprimé reste le même et la version précédente est conservée.</strong>",
+					"pro": "Les pages produit font partie de QRcodly Pro."
+				},
+				"name": {
+					"label": "Nom du produit",
+					"placeholder": "p. ex. Scie à ruban BS 400"
+				},
+				"model": {
+					"label": "Modèle ou type",
+					"placeholder": "p. ex. BS-400/2",
+					"hint": "Le modèle auquel les documents s’appliquent. Il s’affiche en haut de la page."
+				},
+				"articleNumber": {
+					"label": "Référence article"
+				},
+				"gtin": {
+					"label": "GTIN / EAN"
+				},
+				"documents": {
+					"category": "Type de document",
+					"language": "Langue",
+					"version": "Révision",
+					"titlePlaceholder": "Nom (facultatif)",
+					"versionPlaceholder": "Révision, p. ex. Rév. 03",
+					"archiveHint": "Quand vous remplacez ou supprimez un fichier, l’ancien reste disponible sur la page comme version précédente.",
+					"limitHint": "Les versions précédentes comptent comme des fichiers. Supprimez-en une ci-dessous pour remplacer ou ajouter un fichier.",
+					"declarationHint": "Conseil : imprimez l’adresse de cette page dans votre notice, afin que la déclaration de conformité soit accessible par ce biais.",
+					"categories": {
+						"manual": "Notice d’instructions",
+						"safety": "Consignes de sécurité",
+						"declaration": "Déclaration de conformité",
+						"datasheet": "Fiche technique",
+						"other": "Autre document"
+					}
+				},
+				"archive": {
+					"title": "Versions précédentes",
+					"description": "Fichiers que vous avez remplacés ou supprimés. Les visiteurs peuvent toujours les ouvrir sur la page.",
+					"remove": "Supprimer la version",
+					"pendingRemoval": "{count, plural, one {# version sera supprimée} other {# versions seront supprimées}} à l’enregistrement.",
+					"undo": "Annuler"
+				},
+				"manufacturer": {
+					"title": "Fabricant",
+					"description": "Affiché sur la page. Une adresse e-mail ou un site web est requis comme contact.",
+					"prefill": "Reprendre les données de ma dernière page produit"
+				},
+				"party": {
+					"name": "Nom de l’entreprise",
+					"address": "Adresse",
+					"addressPlaceholder": "Rue, code postal, ville, pays",
+					"email": "E-mail",
+					"website": "Site web ou formulaire de contact",
+					"phone": "Téléphone"
+				},
+				"euRepresentative": {
+					"title": "Mandataire dans l’UE (facultatif)",
+					"description": "Pour les fabricants hors UE : le mandataire ou la personne responsable dans l’UE."
+				},
+				"safety": {
+					"title": "Consignes de sécurité",
+					"placeholder": "Les consignes de sécurité essentielles, directement sur la page",
+					"hint": "Pour les machines pouvant être utilisées par des consommateurs, les consignes de sécurité essentielles doivent aussi être fournies sur papier."
+				},
+				"paperRequest": {
+					"title": "Version papier sur demande",
+					"description": "Les visiteurs peuvent demander une notice imprimée sur la page. Vous recevez chaque demande par e-mail et la retrouvez sur la page de détail de ce code.",
+					"email": "Envoyer les demandes à"
+				},
+				"cover": {
+					"label": "Image du produit"
+				},
+				"link": {
+					"description": "Bouton facultatif, p. ex. vers les pièces détachées ou le service après-vente.",
+					"labelPlaceholder": "p. ex. Commander des pièces"
+				},
+				"issues": {
+					"title": "Il manque encore pour enregistrer :",
+					"documents": "Au moins un document",
+					"contact": "E-mail ou site web",
+					"other": "Vérifiez vos saisies"
 				}
 			}
 		},
@@ -4356,6 +4443,25 @@
 			"noDocuments": "Ajoutez un PDF pour le voir ici",
 			"documentCount": "{count, plural, one {# document} other {# documents}}",
 			"uploadPending": "PDF encore à téléverser"
+		},
+		"product": {
+			"model": "Modèle",
+			"articleNumber": "Réf. article",
+			"gtin": "GTIN",
+			"categories": {
+				"manual": "Notice d’instructions",
+				"safety": "Consignes de sécurité",
+				"declaration": "Déclaration UE de conformité",
+				"datasheet": "Fiche technique",
+				"other": "Autres documents"
+			},
+			"language": "Langue des documents",
+			"since": "depuis le {date}",
+			"period": "{from} – {until}",
+			"earlierVersions": "Versions précédentes",
+			"safety": "Consignes de sécurité",
+			"manufacturer": "Fabricant",
+			"euRepresentative": "Mandataire dans l’UE"
 		},
 		"unavailable": {
 			"title": "Un instant, s'il vous plaît",

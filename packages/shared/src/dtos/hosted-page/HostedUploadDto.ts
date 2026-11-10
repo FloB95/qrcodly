@@ -3,7 +3,7 @@ import { HostedUploadKindSchema } from '../../schemas/HostedPage';
 
 export const HostedUploadDto = z.object({
 	kind: HostedUploadKindSchema.describe(
-		'"pdf" for a document of a PDF page, "image" for a cover or logo image',
+		'"pdf" for a document of a hosted page, "image" for a cover or logo image',
 	),
 	file: z
 		.instanceof(File, { error: 'Input is no file. Please upload a binary file.' })

@@ -7,7 +7,9 @@ import type {
 } from '@shared/schemas';
 import type { PreviewOptions, TemplateTranslator } from './preview';
 import { HostedPdfPage } from './HostedPdfPage';
+import { HostedProductPage } from './HostedProductPage';
 import { pdfPreview } from './page-types/pdf.preview';
+import { productPreview } from './page-types/product.preview';
 
 type TPageOf<K extends THostedPageType> = Extract<TPublicHostedPageResponseDto, { type: K }>;
 
@@ -47,20 +49,26 @@ export const HOSTED_PAGE_VIEWS: { [K in THostedPageType]: HostedPageView<K> } = 
 			description: page.description ?? page.brandName ?? page.documents[0]?.title ?? '',
 		}),
 	},
+	product: {
+		Page: HostedProductPage,
+		describe: (page) => ({
+			title: page.title,
+			description: page.description ?? `${page.model} · ${page.manufacturer.name}`,
+		}),
+	},
 };
 
 export const HOSTED_PAGE_PREVIEWS: { [K in THostedPageType]: HostedPagePreviewDefinition<K> } = {
 	pdf: pdfPreview,
+	product: productPreview,
 };
 
-// The single spots where the union of page types meets the union of views and previews. With one
-// page type no cast is needed; a second type makes these lines fail to compile until a widening
-// cast (`as HostedPageView<THostedPageType>`) is added here and nowhere else.
+// the single spots where the union of page types meets the union of views and previews
 export function viewOf(type: THostedPageType): HostedPageView<THostedPageType> {
-	return HOSTED_PAGE_VIEWS[type];
+	return HOSTED_PAGE_VIEWS[type] as HostedPageView<THostedPageType>;
 }
 export function previewOf(type: THostedPageType): HostedPagePreviewDefinition<THostedPageType> {
-	return HOSTED_PAGE_PREVIEWS[type];
+	return HOSTED_PAGE_PREVIEWS[type] as HostedPagePreviewDefinition<THostedPageType>;
 }
 
 export function HostedPageView({
