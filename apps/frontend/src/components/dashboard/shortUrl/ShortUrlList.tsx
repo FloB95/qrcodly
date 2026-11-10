@@ -34,13 +34,25 @@ import {
 } from '@/lib/api/url-shortener';
 import { ShortUrlFilters } from './ShortUrlFilters';
 import { ShortUrlListItem } from './ShortUrlListItem';
+import { useRowSelection, type TRowSelection } from '@/hooks/use-row-selection';
+import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
+import { BulkActionBar, BulkDeleteButton, SelectPageCheckbox } from '../table-selection';
 import { CreateShortUrlDialog } from './CreateShortUrlDialog';
 
-const ShortUrlTableHeader = () => {
+const ShortUrlTableHeader = ({
+	pageIds = [],
+	selection,
+}: {
+	pageIds?: string[];
+	selection?: TRowSelection;
+}) => {
 	const t = useTranslations('shortUrl.table');
 	return (
 		<TableHeader className="bg-muted sticky top-0 z-10">
 			<TableRow>
+				<TableHead className="w-[40px] pr-0">
+					{selection && <SelectPageCheckbox ids={pageIds} selection={selection} />}
+				</TableHead>
 				<TableHead>{t('name')}</TableHead>
 				<TableHead className="hidden md:table-cell">{t('content')}</TableHead>
 				<TableHead>{t('status')}</TableHead>
@@ -54,6 +66,7 @@ const ShortUrlTableHeader = () => {
 
 const SkeletonRow = () => (
 	<TableRow>
+		<TableCell className="py-2" />
 		<TableCell className="py-2">
 			<Skeleton className="h-4 w-32" />
 		</TableCell>
@@ -77,6 +90,7 @@ const SkeletonRow = () => (
 
 export function ShortUrlList() {
 	const t = useTranslations('shortUrl');
+	const tBulk = useTranslations('bulkActions');
 	const searchParams = useSearchParams();
 	const [currentPage, setCurrentPage] = useState(1);
 	// Seeded once, in the initializer, so the safety banner's "?status=blocked" link actually lands on
@@ -88,6 +102,11 @@ export function ShortUrlList() {
 		return parsed.success && parsed.data !== 'all' ? { status: parsed.data } : {};
 	});
 	const currentLimit = 10;
+	const selection = useRowSelection();
+	const { clear: clearSelection } = selection;
+
+	// a selection only makes sense for the list it was made in
+	useEffect(() => clearSelection(), [filters, clearSelection]);
 
 	const {
 		data: shortUrls,
@@ -189,15 +208,30 @@ export function ShortUrlList() {
 	}
 
 	const pageNumbers = getPageNumbers(currentPage, totalPages);
+	const selectedCodes = [...selection.selected];
 
 	return (
-		<div className="space-y-4">
+		<div className={cn('space-y-4', selectedCodes.length > 0 && 'pb-20')}>
 			<ShortUrlFilters filters={filters} onFiltersChange={handleFiltersChange} />
+			{selectedCodes.length > 0 && (
+				<BulkActionBar count={selectedCodes.length} onClear={selection.clear}>
+					<BulkDeleteButton
+						path="short-url"
+						ids={selectedCodes}
+						warning={tBulk('warningShortUrls')}
+						refetch={[urlShortenerQueryKeys.listShortUrls]}
+						onDone={selection.clear}
+					/>
+				</BulkActionBar>
+			)}
 			<div className={cn('relative')}>
 				{isRefetching && <TableLoader />}
 				<div className="overflow-hidden rounded-lg border">
 					<Table>
-						<ShortUrlTableHeader />
+						<ShortUrlTableHeader
+							pageIds={shortUrls.data.map((su) => su.shortCode)}
+							selection={selection}
+						/>
 						<TableBody
 							className={cn(
 								isRefetching &&
@@ -205,7 +239,7 @@ export function ShortUrlList() {
 							)}
 						>
 							{shortUrls.data.map((su) => (
-								<ShortUrlListItem key={su.id} shortUrl={su} />
+								<ShortUrlListItem key={su.id} shortUrl={su} selection={selection} />
 							))}
 						</TableBody>
 					</Table>

@@ -215,7 +215,7 @@
 		"filters": {
 			"searchPlaceholder": "Search QR codes...",
 			"contentType": "Content Type",
-			"clearAll": "Clear",
+			"clearAll": "Reset filters",
 			"customizeColumns": "Customize Columns",
 			"columns": "Columns",
 			"toggleColumns": "Toggle columns",
@@ -4363,5 +4363,23 @@
 			"title": "Just a moment",
 			"description": "This page is briefly unavailable and reloads by itself in a few seconds."
 		}
+	},
+	"bulkActions": {
+		"selected": "{count} selected",
+		"clear": "Clear selection",
+		"selectPage": "Select all on this page",
+		"selectRow": "Select row",
+		"download": "Download",
+		"delete": "Delete",
+		"confirmTitle": "Delete {count, plural, one {# item} other {# items}}?",
+		"warningQrCodes": "Dynamic QR codes stop working – codes already printed will lead nowhere. This cannot be undone.",
+		"warningTemplates": "The templates are deleted permanently. This cannot be undone.",
+		"warningShortUrls": "The short URLs stop working. This cannot be undone.",
+		"cancel": "Cancel",
+		"confirm": "Delete permanently",
+		"deleted": "{count} deleted",
+		"notDeleted": "{count} could not be deleted",
+		"error": "Deleting failed. Please try again.",
+		"rowsPerPage": "Rows per page"
 	}
 }

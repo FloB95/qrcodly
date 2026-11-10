@@ -31,6 +31,8 @@ import { QrCodeMenuItems, type MenuComponents } from './QrCodeMenuItems';
 import { QrCodePreviewCell } from './QrCodePreviewCell';
 import { QrCodeNameCell } from './QrCodeNameCell';
 import { QrCodeDialogs } from './QrCodeDialogs';
+import { SelectRowCheckbox } from '../table-selection';
+import type { TRowSelection } from '@/hooks/use-row-selection';
 
 const contextMenuComponents: MenuComponents = {
 	Item: ContextMenuItem,
@@ -84,9 +86,11 @@ const ViewComponent = ({ shortUrl, qrCodeId }: { shortUrl: TShortUrl; qrCodeId: 
 export const QrCodeListItem = ({
 	qr,
 	visibility,
+	selection,
 }: {
 	qr: TQrCodeWithRelationsResponseDto;
 	visibility: QrCodeColumnVisibility;
+	selection?: TRowSelection;
 }) => {
 	const t = useTranslations();
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -130,11 +134,15 @@ export const QrCodeListItem = ({
 		<ContextMenu>
 			<ContextMenuTrigger asChild disabled={isDeleting}>
 				<TableRow
+					data-state={selection?.selected.has(qr.id) ? 'selected' : undefined}
 					className={cn(
 						isDeleting && 'opacity-50',
 						qr.shortUrl?.isActive === false && 'opacity-60',
 					)}
 				>
+					<TableCell className="w-[40px] py-2 pr-0">
+						{selection && <SelectRowCheckbox id={qr.id} selection={selection} />}
+					</TableCell>
 					<QrCodePreviewCell qr={qr} />
 
 					<QrCodeNameCell
@@ -238,6 +246,7 @@ export const QrCodeListItem = ({
 export const SkeletonListItem = ({ visibility }: { visibility: QrCodeColumnVisibility }) => {
 	return (
 		<TableRow>
+			<TableCell className="py-2" />
 			<TableCell className="py-2">
 				<Skeleton className="h-10 w-10 rounded" />
 			</TableCell>

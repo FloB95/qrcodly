@@ -15,7 +15,9 @@ import { cn, getPageNumbers } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
-import { useListConfigTemplatesQuery } from '@/lib/api/config-template';
+import { queryKeys, useListConfigTemplatesQuery } from '@/lib/api/config-template';
+import { useRowSelection } from '@/hooks/use-row-selection';
+import { BulkActionBar, BulkDeleteButton, SelectPageCheckbox } from '../table-selection';
 import { TemplateListItem, SkeletonTemplateListItem } from './ListItem';
 import { TableLoader } from '@/components/ui/table-loader';
 import {
@@ -43,6 +45,11 @@ export const TemplateList = ({ onCreateTemplate }: TemplateListProps) => {
 	const [currentLimit] = useState(10);
 	const [searchValue, setSearchValue] = useState('');
 	const [debouncedSearch] = useDebouncedValue(searchValue, 400);
+	const selection = useRowSelection();
+	const { clear: clearSelection } = selection;
+
+	// a selection only makes sense for the list it was made in
+	useEffect(() => clearSelection(), [debouncedSearch, clearSelection]);
 
 	// If the URL changes (e.g., via back/forward), update currentPage
 	useEffect(() => {
@@ -79,6 +86,12 @@ export const TemplateList = ({ onCreateTemplate }: TemplateListProps) => {
 	const tableHeader = (
 		<TableHeader className="bg-muted sticky top-0 z-10">
 			<TableRow>
+				<TableHead className="w-[40px] pr-0">
+					<SelectPageCheckbox
+						ids={templates?.data.map((template) => template.id) ?? []}
+						selection={selection}
+					/>
+				</TableHead>
 				<TableHead className="w-[72px]">{t('qrCode.table.preview')}</TableHead>
 				<TableHead>{t('qrCode.table.name')}</TableHead>
 				<TableHead className="hidden md:table-cell">{t('qrCode.table.created')}</TableHead>
@@ -157,10 +170,22 @@ export const TemplateList = ({ onCreateTemplate }: TemplateListProps) => {
 	}
 
 	const pageNumbers = getPageNumbers(currentPage, totalPages);
+	const selectedIds = [...selection.selected];
 
 	return (
-		<div className="space-y-4">
+		<div className={cn('space-y-4', selectedIds.length > 0 && 'pb-20')}>
 			{searchInput}
+			{selectedIds.length > 0 && (
+				<BulkActionBar count={selectedIds.length} onClear={selection.clear}>
+					<BulkDeleteButton
+						path="config-template"
+						ids={selectedIds}
+						warning={t('bulkActions.warningTemplates')}
+						refetch={[queryKeys.listConfigTemplates]}
+						onDone={selection.clear}
+					/>
+				</BulkActionBar>
+			)}
 			<div className={cn('relative')}>
 				{isRefetching && <TableLoader />}
 				<div className="overflow-hidden rounded-lg border">
@@ -173,7 +198,7 @@ export const TemplateList = ({ onCreateTemplate }: TemplateListProps) => {
 							)}
 						>
 							{templates.data.map((template) => (
-								<TemplateListItem key={template.id} template={template} />
+								<TemplateListItem key={template.id} template={template} selection={selection} />
 							))}
 						</TableBody>
 					</Table>

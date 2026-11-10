@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
 import type { TFileExtension, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
@@ -50,6 +50,8 @@ const FILE_EXTENSIONS: { value: TFileExtension; label: string }[] = [
 interface BulkExportDialogProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
+	/** QR codes ticked in the table; without them the dialog starts with "export all". */
+	preselectedIds?: string[];
 }
 
 function sanitizeFileName(name: string | null | undefined, id: string): string {
@@ -84,7 +86,7 @@ async function generateQrCodeBlob(
 	return renderQrCodeBlob(options, fileExtension);
 }
 
-export function BulkExportDialog({ open, onOpenChange }: BulkExportDialogProps) {
+export function BulkExportDialog({ open, onOpenChange, preselectedIds }: BulkExportDialogProps) {
 	const { getToken } = useAuth();
 	const t = useTranslations('collection.bulkExport');
 
@@ -99,6 +101,13 @@ export function BulkExportDialog({ open, onOpenChange }: BulkExportDialogProps) 
 	const qrCodes = useMemo(() => qrCodeData?.data ?? [], [qrCodeData?.data]);
 	const total = qrCodeData?.total ?? 0;
 	const totalPages = useMemo(() => Math.max(1, Math.ceil(total / EXPORT_PAGE_LIMIT)), [total]);
+
+	// each opening starts from what the table hands over
+	useEffect(() => {
+		if (!open) return;
+		setSelectedIds(new Set(preselectedIds));
+		setExportAll(!preselectedIds?.length);
+	}, [open, preselectedIds]);
 
 	const pageAllSelected = qrCodes.length > 0 && qrCodes.every((qr) => selectedIds.has(qr.id));
 

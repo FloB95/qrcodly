@@ -43,11 +43,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { SelectRowCheckbox } from '../table-selection';
+import type { TRowSelection } from '@/hooks/use-row-selection';
 
 export const TemplateListItem = ({
 	template,
+	selection,
 }: {
 	template: Omit<TConfigTemplate, 'isPredefined'>;
+	selection?: TRowSelection;
 }) => {
 	const t = useTranslations();
 	const [isDeleting, setIsDeleting] = useState(false);
@@ -148,7 +152,13 @@ export const TemplateListItem = ({
 
 	return (
 		<>
-			<TableRow className={cn(isDeleting && 'opacity-50')}>
+			<TableRow
+				data-state={selection?.selected.has(template.id) ? 'selected' : undefined}
+				className={cn(isDeleting && 'opacity-50')}
+			>
+				<TableCell className="w-[40px] py-2 pr-0">
+					{selection && <SelectRowCheckbox id={template.id} selection={selection} />}
+				</TableCell>
 				<TableCell className="w-[72px] py-2 pr-2">
 					<HoverCard openDelay={200} closeDelay={100}>
 						<HoverCardTrigger asChild>
@@ -323,6 +333,7 @@ export const TemplateListItem = ({
 export const SkeletonTemplateListItem = () => {
 	return (
 		<TableRow>
+			<TableCell className="py-2" />
 			<TableCell className="py-2">
 				<Skeleton className="size-14 rounded" />
 			</TableCell>

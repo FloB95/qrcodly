@@ -21,6 +21,7 @@ export default function QrCodesPage() {
 	const tContent = useTranslations('generator.contentSwitch');
 	const [importDialogOpen, setImportDialogOpen] = useState(false);
 	const [exportDialogOpen, setExportDialogOpen] = useState(false);
+	const [exportIds, setExportIds] = useState<string[]>();
 	const [selectedContentType, setSelectedContentType] = useState<TQrCodeContentType | null>(null);
 
 	const handleContentTypeSelect = (contentType: TQrCodeContentType) => {
@@ -56,7 +57,10 @@ export default function QrCodesPage() {
 
 				<QrCodeList
 					onBulkImport={handleContentTypeSelect}
-					onBulkExport={() => setExportDialogOpen(true)}
+					onBulkExport={(ids) => {
+						setExportIds(ids);
+						setExportDialogOpen(true);
+					}}
 				/>
 
 				{/* Bulk Import Dialog */}
@@ -75,7 +79,11 @@ export default function QrCodesPage() {
 				</Dialog>
 
 				{/* Bulk Export Dialog */}
-				<BulkExportDialog open={exportDialogOpen} onOpenChange={setExportDialogOpen} />
+				<BulkExportDialog
+					open={exportDialogOpen}
+					onOpenChange={setExportDialogOpen}
+					preselectedIds={exportIds}
+				/>
 			</SmartTipsBehaviorTrackerProvider>
 		</QrCodeGeneratorStoreProvider>
 	);

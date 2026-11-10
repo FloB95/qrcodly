@@ -40,14 +40,17 @@ import type { TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
 import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
+import type { TRowSelection } from '@/hooks/use-row-selection';
+import { SelectRowCheckbox } from '../table-selection';
 
 interface ShortUrlListItemProps {
 	shortUrl: TShortUrlWithCustomDomainResponseDto;
+	selection?: TRowSelection;
 }
 
 const stopContextMenu = (e: React.MouseEvent) => e.stopPropagation();
 
-export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
+export function ShortUrlListItem({ shortUrl, selection }: ShortUrlListItemProps) {
 	const t = useTranslations('shortUrl');
 	const tGeneral = useTranslations('general');
 	const router = useRouter();
@@ -203,7 +206,13 @@ export function ShortUrlListItem({ shortUrl }: ShortUrlListItemProps) {
 	return (
 		<ContextMenu>
 			<ContextMenuTrigger asChild>
-				<TableRow className={shortUrl.isActive === false ? 'opacity-60' : ''}>
+				<TableRow
+					data-state={selection?.selected.has(shortUrl.shortCode) ? 'selected' : undefined}
+					className={shortUrl.isActive === false ? 'opacity-60' : ''}
+				>
+					<TableCell className="w-[40px] py-2 pr-0">
+						{selection && <SelectRowCheckbox id={shortUrl.shortCode} selection={selection} />}
+					</TableCell>
 					{/* Name */}
 					<ShortUrlNameCell shortUrl={shortUrl} onEditName={() => setNameDialogOpen(true)} />
 
