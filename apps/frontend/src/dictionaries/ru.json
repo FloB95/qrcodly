@@ -488,7 +488,8 @@
 			"downloadBtn": "Скачать",
 			"vcfFile": "Файл VCF",
 			"icsFile": "Файл ICS",
-			"errorTitle": "Ошибка сохранения QR-кода"
+			"errorTitle": "Ошибка сохранения QR-кода",
+			"renderError": "Не удалось создать QR-код. Попробуйте ещё раз."
 		},
 		"saveInfo": "Сохранить текущий QR-код в вашей коллекции.",
 		"savePopup": {
@@ -702,7 +703,8 @@
 			"clearBtn": "Очистить иконку",
 			"currentIcon": "Текущая иконка",
 			"uploadDragDrop": "Перетащите изображение сюда или нажмите для выбора",
-			"uploadFormats": "JPG, PNG, SVG, WebP (макс. 1 МБ)"
+			"uploadFormats": "JPG, PNG, SVG, WebP (макс. 1 МБ)",
+			"logoReadError": "Не удалось прочитать логотип. Выберите другой файл."
 		},
 		"contentSwitch": {
 			"tab": {

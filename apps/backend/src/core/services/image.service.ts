@@ -1,12 +1,13 @@
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import { BaseImageStrategy } from '../domain/strategies/base-image.strategy';
 import { QrCodeImageStrategy } from '@/modules/qr-code/domain/strategies/qr-code-image.strategy';
+import { QrCodeLogoService } from './qr-code-logo.service';
 
 @injectable()
 export class ImageService {
 	private strategy: BaseImageStrategy;
 
-	constructor() {
+	constructor(@inject(QrCodeLogoService) private readonly logoService: QrCodeLogoService) {
 		this.strategy = new QrCodeImageStrategy();
 	}
 
@@ -22,7 +23,11 @@ export class ImageService {
 		if (!this.strategy.validateAndConvertBase64) {
 			throw new Error('Strategy does not support base64 conversion.');
 		}
-		const file = this.strategy.validateAndConvertBase64(base64, fileName);
+		// stored normalized, so every later render starts from the same file
+		const file = this.strategy.validateAndConvertBase64(
+			await this.logoService.normalize(base64),
+			fileName,
+		);
 		return this.strategy.upload(file, userId);
 	}
 

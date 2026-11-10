@@ -137,7 +137,8 @@
 	}
 }
 
-.canvas-wrap canvas {
+.canvas-wrap canvas,
+.canvas-wrap img {
 	width: 100%;
 	height: 100%;
 }

@@ -12,11 +12,15 @@ import { type IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { ImageService } from '@/core/services/image.service';
 import { KeyCache } from '@/core/cache/key-cache';
 import { env } from '@/core/config/env';
-import { generateQrCodeStylingInstance } from '../lib/styled-qr-code';
+import { QrCodeLogoService } from '@/core/services/qr-code-logo.service';
+import { Logger } from '@/core/logging';
+import { renderQrCodeSvg } from '../lib/styled-qr-code';
 
 const CACHE_TTL_SECONDS = 86_400;
 const CACHE_PREFIX = 'qr_render:';
 const RENDER_TIMEOUT_MS = 5_000;
+// bump when the drawing changes, so cached images and ETags from before are not served again
+const RENDER_VERSION = 2;
 
 export type RenderQrCodeResult = {
 	buffer: Buffer;
@@ -29,6 +33,8 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 	constructor(
 		@inject(ImageService) private readonly imageService: ImageService,
 		@inject(KeyCache) private readonly cache: KeyCache,
+		@inject(QrCodeLogoService) private readonly logoService: QrCodeLogoService,
+		@inject(Logger) private readonly logger: Logger,
 	) {}
 
 	async execute(dto: TRenderQrCodeDto): Promise<RenderQrCodeResult> {
@@ -43,11 +49,23 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 			return { buffer: cached, contentType, etag };
 		}
 
-		const buffer = await withTimeout(
-			this.renderBuffer(dto, format, sizePx),
-			RENDER_TIMEOUT_MS,
-			'qr-render',
-		);
+		let buffer: Buffer;
+		try {
+			buffer = await withTimeout(
+				this.renderBuffer(dto, format, sizePx),
+				RENDER_TIMEOUT_MS,
+				'qr-render',
+			);
+		} catch (error) {
+			// design plugins and API clients get their images here; a failure must be visible
+			this.logger.error('error.qrCode.render', {
+				format,
+				sizePx,
+				hasLogo: Boolean(dto.config.image),
+				error: error as Error,
+			});
+			throw error;
+		}
 
 		await this.cache.set(cacheKey, buffer, CACHE_TTL_SECONDS);
 		return { buffer, contentType, etag };
@@ -60,7 +78,16 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 		printSizeMm: number | undefined,
 	): string {
 		const hash = createHash('sha1')
-			.update(JSON.stringify({ config: dto.config, data: dto.data, format, sizePx, printSizeMm }))
+			.update(
+				JSON.stringify({
+					config: dto.config,
+					data: dto.data,
+					format,
+					sizePx,
+					printSizeMm,
+					v: RENDER_VERSION,
+				}),
+			)
 			.digest('hex');
 		return `"${hash.slice(0, 16)}"`;
 	}
@@ -90,18 +117,10 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 	}
 
 	private async generateSvg(dto: TRenderQrCodeDto): Promise<string> {
-		const libraryOptions = convertQrCodeOptionsToLibraryOptions(dto.config);
-
-		if (libraryOptions.image) {
-			libraryOptions.image = (await this.resolveImage(libraryOptions.image)) ?? undefined;
-		}
-
-		const instance = generateQrCodeStylingInstance({ ...libraryOptions, data: dto.data });
-
-		const svgRaw = await instance.getRawData('svg');
-		if (!svgRaw) throw new Error('qr-code-styling returned no SVG data');
-		const rawBuffer = Buffer.isBuffer(svgRaw) ? svgRaw : Buffer.from(await svgRaw.arrayBuffer());
-		return rawBuffer.toString('utf8').replace(/url\(\s*['"]?#([^'"\)\s]+)['"]?\s*\)/g, 'url(#$1)');
+		const { image, ...libraryOptions } = convertQrCodeOptionsToLibraryOptions(dto.config);
+		const logoDataUrl = image ? await this.resolveImage(image) : undefined;
+		const logo = logoDataUrl ? await this.logoService.toLogo(logoDataUrl) : undefined;
+		return renderQrCodeSvg({ ...libraryOptions, data: dto.data }, logo);
 	}
 
 	private rasterize(svgText: string, sizePx: number): Buffer {
@@ -116,14 +135,18 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 		if (image.startsWith('data:')) return image;
 
 		const publicBase = env.S3_PUBLIC_URL.replace(/\/$/, '');
-		if (image.startsWith(`${publicBase}/`)) {
-			const storageKey = image.slice(publicBase.length + 1);
-			return this.imageService.getImageAsDataUrl(storageKey);
+		const isOurUrl = image.startsWith(`${publicBase}/`);
+		if (!isOurUrl && /^https?:\/\//i.test(image)) {
+			// foreign URLs are never fetched (SSRF); the code is drawn without them, as before
+			this.logger.warn('qrCode.render.externalLogoIgnored', { host: new URL(image).host });
+			return undefined;
 		}
 
-		if (/^https?:\/\//i.test(image)) return undefined;
-
-		return this.imageService.getImageAsDataUrl(image);
+		const storageKey = isOurUrl ? image.slice(publicBase.length + 1) : image;
+		const dataUrl = await this.imageService.getImageAsDataUrl(storageKey);
+		// a missing file must fail the render, not quietly produce a code without its logo
+		if (!dataUrl) throw new Error(`Stored logo not found: ${storageKey}`);
+		return dataUrl;
 	}
 }
 

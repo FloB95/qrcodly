@@ -488,7 +488,8 @@
 			"downloadBtn": "Herunterladen",
 			"vcfFile": "VCF-Datei",
 			"icsFile": "ICS-Datei",
-			"errorTitle": "Fehler beim Speichern des QR Codes"
+			"errorTitle": "Fehler beim Speichern des QR Codes",
+			"renderError": "Der QR Code konnte nicht erstellt werden. Bitte versuche es erneut."
 		},
 		"saveInfo": "Speichere den aktuellen QR Code in deiner Sammlung.",
 		"savePopup": {
@@ -693,7 +694,8 @@
 			"clearBtn": "Symbol löschen",
 			"currentIcon": "Aktuelles Symbol",
 			"uploadDragDrop": "Bild hierher ziehen oder klicken zum Durchsuchen",
-			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)"
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)",
+			"logoReadError": "Das Logo konnte nicht gelesen werden. Bitte wähle eine andere Datei."
 		},
 		"contentSwitch": {
 			"tab": {

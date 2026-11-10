@@ -26,9 +26,7 @@ import {
 	isContentIncomplete,
 	hasQrCodeChanged,
 } from '@/lib/qr-code-helpers';
-import type QRCodeStylingType from 'qr-code-styling';
-
-let QRCodeStyling: typeof QRCodeStylingType;
+import { useDownloadQrCode } from '@/hooks/use-download-qr-code';
 
 /**
  * Download button for GENERATOR (creating new QR codes)
@@ -43,6 +41,7 @@ export const GeneratorQrCodeDownloadBtn = ({
 }) => {
 	const { isSignedIn } = useUser();
 	const t = useTranslations('qrCode.download');
+	const downloadQrCode = useDownloadQrCode();
 	const {
 		name,
 		config,
@@ -54,25 +53,17 @@ export const GeneratorQrCodeDownloadBtn = ({
 		hostedUploadsPending,
 	} = useQrCodeGeneratorStore((state) => state);
 
-	const [qrCodeInstance, setQrCodeInstance] = useState<QRCodeStylingType | null>(null);
 	const [hasMounted, setHasMounted] = useState(false);
 	const createQrCodeMutation = useCreateQrCodeMutation();
 	const queryClient = useQueryClient();
 
 	useEffect(() => {
 		setHasMounted(true);
-
-		void import('qr-code-styling').then((module) => {
-			QRCodeStyling = module.default;
-			// For generator (new QR codes), compute on the fly since there's no stored qrCodeData yet
-			const options = getQrCodeStylingOptions(config, content, { shortUrl });
-			const instance = new QRCodeStyling(options);
-			setQrCodeInstance(instance);
-		});
-	}, [config, content, shortUrl]);
+	}, []);
 
 	const onDownloadClick = async (fileExt: TFileExtension) => {
-		if (!qrCodeInstance) return;
+		// For generator (new QR codes), compute on the fly since there's no stored qrCodeData yet
+		let options = getQrCodeStylingOptions(config, content, { shortUrl });
 
 		const currentQrCode = { name: name || null, config, content };
 		const hasChanged = hasQrCodeChanged(currentQrCode, latestQrCode);
@@ -143,22 +134,18 @@ export const GeneratorQrCodeDownloadBtn = ({
 					},
 				);
 
-				// Update instance with the stored qrCodeData (has correct custom domain)
+				// Use the stored qrCodeData (has correct custom domain)
 				if (savedQrCode?.qrCodeData) {
-					const updatedOptions = getQrCodeStylingOptions(config, content, {
+					options = getQrCodeStylingOptions(config, content, {
 						qrCodeData: savedQrCode.qrCodeData,
 					});
-					qrCodeInstance.update(updatedOptions);
 				}
 			} catch {
 				// silent catch - error already handled in onError
 			}
 		}
 
-		await qrCodeInstance.download({
-			name: 'qr-code',
-			extension: fileExt,
-		});
+		await downloadQrCode(options, 'qr-code', fileExt);
 	};
 
 	const isDisabled =

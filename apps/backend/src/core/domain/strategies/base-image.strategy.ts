@@ -3,6 +3,8 @@ import { ObjectStorage, type PublicBucket } from '@/core/storage';
 import { Logger } from '@/core/logging';
 import { container } from 'tsyringe';
 import { randomUUID } from 'node:crypto';
+import { type TQrCodeLogo } from '@shared/schemas';
+import { QrCodeLogoService } from '@/core/services/qr-code-logo.service';
 
 export abstract class BaseImageStrategy {
 	protected readonly validMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
@@ -61,6 +63,13 @@ export abstract class BaseImageStrategy {
 			this.logger.error('error.image.getAsDataUrl', { storagePath, error: error as Error });
 			return undefined;
 		}
+	}
+
+	/** Stored logo, ready to draw; a missing file throws instead of a preview without its logo. */
+	protected async loadLogo(storagePath: string): Promise<TQrCodeLogo> {
+		const dataUrl = await this.getImageAsDataUrl(storagePath);
+		if (!dataUrl) throw new Error(`Stored logo not found: ${storagePath}`);
+		return container.resolve(QrCodeLogoService).toLogo(dataUrl);
 	}
 
 	getPublicUrl(imagePath: string): string {
