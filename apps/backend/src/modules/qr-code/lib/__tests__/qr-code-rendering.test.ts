@@ -8,6 +8,7 @@ import sharp from 'sharp';
 import {
 	convertQrCodeOptionsToLibraryOptions,
 	measureImageDataUrl,
+	parseDataUrl,
 	QrCodeDefaults,
 } from '@shared/schemas';
 import { QrCodeLogoService } from '@/core/services/qr-code-logo.service';
@@ -126,5 +127,33 @@ describe('QR code rendering', () => {
 			width: 100,
 			height: 25,
 		});
+	});
+
+	it('parses hostile data URLs and SVGs in linear time', async () => {
+		// these took minutes with the old regexes (quadratic backtracking)
+		const hostileUrl = `data:${'+'.repeat(1_000_000)}`;
+		const hostileSvg = toDataUrl('image/svg+xml', '<svg '.repeat(200_000));
+		const started = Date.now();
+
+		expect(measureImageDataUrl(hostileUrl)).toBeUndefined();
+		expect(measureImageDataUrl(hostileSvg)).toBeUndefined();
+		await expect(logoService.normalize(hostileUrl)).rejects.toThrow('Invalid image format');
+		expect(Date.now() - started).toBeLessThan(1000);
+	});
+
+	it('reads data URLs like before', () => {
+		expect(parseDataUrl('data:image/png;base64,AAA')).toEqual({
+			mimeType: 'image/png',
+			base64: true,
+			payload: 'AAA',
+		});
+		expect(parseDataUrl('data:image/svg+xml;charset=utf-8,%3Csvg%3E')).toEqual({
+			mimeType: 'image/svg+xml',
+			base64: false,
+			payload: '%3Csvg%3E',
+		});
+		expect(parseDataUrl('data:;base64,AAA')).toBeUndefined();
+		expect(parseDataUrl('data:image/png')).toBeUndefined();
+		expect(parseDataUrl('https://example.com/logo.png')).toBeUndefined();
 	});
 });

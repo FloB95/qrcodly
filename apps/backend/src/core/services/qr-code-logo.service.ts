@@ -2,7 +2,7 @@ import { inject, singleton } from 'tsyringe';
 import { JSDOM } from 'jsdom';
 import { Resvg } from '@resvg/resvg-js';
 import sharp from 'sharp';
-import { measureImageDataUrl, type TQrCodeLogo } from '@shared/schemas';
+import { measureImageDataUrl, parseDataUrl, type TQrCodeLogo } from '@shared/schemas';
 import { BadRequestError } from '@/core/error/http';
 import { Logger } from '@/core/logging';
 
@@ -19,9 +19,9 @@ export class QrCodeLogoService {
 
 	/** `systemFonts` only for one-off runs on a machine that has fonts; the server has none. */
 	async normalize(dataUrl: string, { systemFonts = false } = {}): Promise<string> {
-		const match = /^data:([^;,]+)[^,]*?(;base64)?,(.*)$/s.exec(dataUrl);
-		if (!match) throw new BadRequestError('Invalid image format');
-		const [, mimeType, base64, payload] = match;
+		const parsed = parseDataUrl(dataUrl);
+		if (!parsed) throw new BadRequestError('Invalid image format');
+		const { mimeType, base64, payload } = parsed;
 		if (mimeType === 'image/png') return dataUrl;
 
 		const buffer = base64
@@ -60,7 +60,7 @@ export class QrCodeLogoService {
 		const size = measureImageDataUrl(normalized);
 		if (!size) {
 			this.logger.error('error.qrCode.logo.size', {
-				mimeType: /^data:([^;,]+)/.exec(normalized)?.[1],
+				mimeType: parseDataUrl(normalized)?.mimeType,
 			});
 			throw new Error('Logo size could not be read');
 		}

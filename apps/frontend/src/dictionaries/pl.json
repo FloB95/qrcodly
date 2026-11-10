@@ -215,7 +215,7 @@
 		"filters": {
 			"searchPlaceholder": "Szukaj kodów QR...",
 			"contentType": "Typ treści",
-			"clearAll": "Wyczyść",
+			"clearAll": "Wyczyść filtry",
 			"customizeColumns": "Dostosuj kolumny",
 			"columns": "Kolumny",
 			"toggleColumns": "Przełącz kolumny",
@@ -4363,5 +4363,23 @@
 			"title": "Chwileczkę",
 			"description": "Ta strona jest chwilowo niedostępna i za kilka sekund sama się przeładuje."
 		}
+	},
+	"bulkActions": {
+		"selected": "Wybrano: {count}",
+		"clear": "Wyczyść zaznaczenie",
+		"selectPage": "Zaznacz wszystko na tej stronie",
+		"selectRow": "Zaznacz wiersz",
+		"download": "Pobierz",
+		"delete": "Usuń",
+		"confirmTitle": "Usunąć zaznaczone ({count})?",
+		"warningQrCodes": "Dynamiczne kody QR przestaną działać – wydrukowane kody nie będą nigdzie prowadzić. Tej operacji nie można cofnąć.",
+		"warningTemplates": "Szablony zostaną trwale usunięte. Tej operacji nie można cofnąć.",
+		"warningShortUrls": "Krótkie adresy URL przestaną działać. Tej operacji nie można cofnąć.",
+		"cancel": "Anuluj",
+		"confirm": "Usuń trwale",
+		"deleted": "Usunięto: {count}",
+		"notDeleted": "Nie udało się usunąć: {count}",
+		"error": "Usuwanie nie powiodło się. Spróbuj ponownie.",
+		"rowsPerPage": "Wierszy na stronę"
 	}
 }

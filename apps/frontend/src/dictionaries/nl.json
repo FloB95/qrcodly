@@ -215,7 +215,7 @@
 		"filters": {
 			"searchPlaceholder": "QR-codes zoeken...",
 			"contentType": "Inhoudstype",
-			"clearAll": "Wissen",
+			"clearAll": "Filters wissen",
 			"customizeColumns": "Kolommen aanpassen",
 			"columns": "Kolommen",
 			"toggleColumns": "Kolommen in-/uitschakelen",
@@ -4363,5 +4363,23 @@
 			"title": "Een ogenblik geduld",
 			"description": "Deze pagina is even niet bereikbaar en laadt over een paar seconden vanzelf opnieuw."
 		}
+	},
+	"bulkActions": {
+		"selected": "{count} geselecteerd",
+		"clear": "Selectie opheffen",
+		"selectPage": "Alles op deze pagina selecteren",
+		"selectRow": "Rij selecteren",
+		"download": "Downloaden",
+		"delete": "Verwijderen",
+		"confirmTitle": "{count, plural, one {# item} other {# items}} verwijderen?",
+		"warningQrCodes": "Dynamische QR-codes werken daarna niet meer – al gedrukte codes leiden nergens heen. Dit kan niet ongedaan worden gemaakt.",
+		"warningTemplates": "De sjablonen worden definitief verwijderd. Dit kan niet ongedaan worden gemaakt.",
+		"warningShortUrls": "De korte URL's werken daarna niet meer. Dit kan niet ongedaan worden gemaakt.",
+		"cancel": "Annuleren",
+		"confirm": "Definitief verwijderen",
+		"deleted": "{count} verwijderd",
+		"notDeleted": "{count} konden niet worden verwijderd",
+		"error": "Verwijderen mislukt. Probeer het opnieuw.",
+		"rowsPerPage": "Rijen per pagina"
 	}
 }

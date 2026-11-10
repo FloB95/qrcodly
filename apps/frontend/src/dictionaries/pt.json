@@ -215,7 +215,7 @@
 		"filters": {
 			"searchPlaceholder": "Buscar QR codes...",
 			"contentType": "Tipo de Conteúdo",
-			"clearAll": "Limpar",
+			"clearAll": "Limpar filtros",
 			"customizeColumns": "Personalizar Colunas",
 			"columns": "Colunas",
 			"toggleColumns": "Alternar colunas",
@@ -4363,5 +4363,23 @@
 			"title": "Um momento, por favor",
 			"description": "Esta página está temporariamente indisponível e será recarregada automaticamente em alguns segundos."
 		}
+	},
+	"bulkActions": {
+		"selected": "{count} selecionados",
+		"clear": "Limpar seleção",
+		"selectPage": "Selecionar tudo nesta página",
+		"selectRow": "Selecionar linha",
+		"download": "Baixar",
+		"delete": "Excluir",
+		"confirmTitle": "Excluir {count, plural, one {# item} other {# itens}}?",
+		"warningQrCodes": "Os códigos QR dinâmicos deixarão de funcionar – códigos já impressos não levarão a lugar nenhum. Isso não pode ser desfeito.",
+		"warningTemplates": "Os modelos serão excluídos permanentemente. Isso não pode ser desfeito.",
+		"warningShortUrls": "As URLs curtas deixarão de funcionar. Isso não pode ser desfeito.",
+		"cancel": "Cancelar",
+		"confirm": "Excluir permanentemente",
+		"deleted": "{count} excluídos",
+		"notDeleted": "{count} não puderam ser excluídos",
+		"error": "Falha ao excluir. Tente novamente.",
+		"rowsPerPage": "Linhas por página"
 	}
 }

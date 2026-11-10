@@ -28,7 +28,12 @@ import {
 	TUpdateShortUrlDto,
 	TrackScanDto,
 	UpdateShortUrlDto,
+	BulkDeleteDto,
+	BulkDeleteResponseDto,
+	type TBulkDeleteDto,
+	type TBulkDeleteResponseDto,
 } from '@shared/schemas';
+import { deleteEach } from '@/core/http/bulk-delete';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
 import { buildShortUrl } from '../../utils';
 import { HOT_SHORT_CODES_KEY } from '../../config/constants';
@@ -320,6 +325,33 @@ export class ShortUrlController extends AbstractController {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
 		await this.deleteShortUrlUseCase.execute(shortUrl, request.user.id);
 		return this.makeApiHttpResponse(200, { deleted: true });
+	}
+
+	@Post('/bulk-delete', {
+		bodySchema: BulkDeleteDto,
+		responseSchema: {
+			200: BulkDeleteResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['Short URLs'],
+			summary: 'Delete several standalone short URLs',
+			description:
+				'Soft-deletes up to 100 standalone short URLs by their short codes, like deleting each one. Short URLs linked to QR codes are refused. ' +
+				'Items that are not found or not owned are listed in `failed`; the others are still deleted.',
+			operationId: 'short-url/bulk-delete-short-urls',
+		},
+	})
+	async bulkDelete(
+		request: IHttpRequest<TBulkDeleteDto>,
+	): Promise<IHttpResponse<TBulkDeleteResponseDto>> {
+		const result = await deleteEach('shortUrl', request.body.ids, async (id) => {
+			const shortUrl = await this.fetchShortUrl(id, request.user.id);
+			await this.deleteShortUrlUseCase.execute(shortUrl, request.user.id);
+		});
+		return this.makeApiHttpResponse(200, result);
 	}
 
 	@Get('/:shortCode/detail', {

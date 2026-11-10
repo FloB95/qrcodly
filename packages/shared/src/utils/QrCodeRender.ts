@@ -39,11 +39,27 @@ export async function buildQrCodeSvg(
 	return svg.replace(/url\(\s*['"]?#([^'")\s]+)['"]?\s*\)/g, 'url(#$1)');
 }
 
+/**
+ * Splits a data URL by plain string search. A regex here would backtrack on hostile input (up to
+ * minutes for a 1 MB string), and logos arrive from anonymous requests.
+ */
+export function parseDataUrl(
+	dataUrl: string,
+): { mimeType: string; base64: boolean; payload: string } | undefined {
+	if (!dataUrl.startsWith('data:')) return undefined;
+	const comma = dataUrl.indexOf(',');
+	if (comma === -1) return undefined;
+	const header = dataUrl.slice('data:'.length, comma);
+	const mimeType = header.split(';', 1)[0] ?? '';
+	if (!mimeType) return undefined;
+	return { mimeType, base64: header.endsWith(';base64'), payload: dataUrl.slice(comma + 1) };
+}
+
 /** Size of a PNG, JPEG, WebP or SVG data URL, read from the file bytes; undefined if unknown. */
 export function measureImageDataUrl(dataUrl: string): TImageSize | undefined {
-	const match = /^data:([^;,]+)[^,]*?(;base64)?,(.*)$/s.exec(dataUrl);
-	if (!match) return undefined;
-	const [, mimeType, base64, payload = ''] = match;
+	const parsed = parseDataUrl(dataUrl);
+	if (!parsed) return undefined;
+	const { mimeType, base64, payload } = parsed;
 	const bytes = base64
 		? Uint8Array.from(atob(payload), (char) => char.charCodeAt(0))
 		: new TextEncoder().encode(decodeURIComponent(payload));
@@ -63,8 +79,11 @@ export function measureImageDataUrl(dataUrl: string): TImageSize | undefined {
 }
 
 function readSvgSize(svg: string): TImageSize | undefined {
-	const tag = /<svg\b[^>]*>/i.exec(svg)?.[0];
-	if (!tag) return undefined;
+	// found by search, not by one regex: `<svg\b[^>]*>` rescans to the end for every unclosed `<svg`
+	const start = svg.search(/<svg\b/i);
+	const end = start === -1 ? -1 : svg.indexOf('>', start);
+	if (end === -1) return undefined;
+	const tag = svg.slice(start, end + 1);
 	const attr = (name: string) =>
 		new RegExp(`\\s${name}\\s*=\\s*["']([^"']*)["']`, 'i').exec(tag)?.[1];
 	// percentages and units other than px cannot be resolved without a layout

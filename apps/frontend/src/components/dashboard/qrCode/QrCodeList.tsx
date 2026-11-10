@@ -15,7 +15,7 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from '../../ui/pagination';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { cn, getPageNumbers } from '@/lib/utils';
 import { useQrCodeColumnVisibility } from './hooks/useQrCodeColumnVisibility';
 import {
@@ -31,21 +31,43 @@ import { buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 import type { TQrCodeContentType } from '@shared/schemas';
 import { useUrlPaginationSync } from '@/hooks/use-url-pagination-sync';
+import { useRowSelection, type TRowSelection } from '@/hooks/use-row-selection';
+import { qrCodeQueryKeys } from '@/lib/api/qr-code';
+import { hostedPageQueryKeys } from '@/lib/api/hosted-page';
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { Button } from '@/components/ui/button';
+import {
+	BulkActionBar,
+	BulkDeleteButton,
+	bulkBarButtonClass,
+	PAGE_SIZES,
+	PageSizeSelect,
+	SelectPageCheckbox,
+	usePageSize,
+} from '../table-selection';
 
 type QrCodeListProps = {
 	onBulkImport?: (contentType: TQrCodeContentType) => void;
-	onBulkExport?: () => void;
+	/** Opens the export dialog, with these QR codes already ticked when given. */
+	onBulkExport?: (ids?: string[]) => void;
 };
 
 const QrCodeTableHeader = ({
 	isVisible,
+	pageIds = [],
+	selection,
 }: {
 	isVisible: (col: 'content' | 'status' | 'scans' | 'created' | 'tags') => boolean;
+	pageIds?: string[];
+	selection?: TRowSelection;
 }) => {
 	const t = useTranslations('qrCode.table');
 	return (
 		<TableHeader className="bg-muted sticky top-0 z-10">
 			<TableRow>
+				<TableHead className="w-[40px] pr-0">
+					{selection && <SelectPageCheckbox ids={pageIds} selection={selection} />}
+				</TableHead>
 				<TableHead className="w-[60px]">{t('preview')}</TableHead>
 				<TableHead className="pl-[calc(1rem+18px+0.5rem)]">{t('name')}</TableHead>
 				{isVisible('content') && (
@@ -65,7 +87,12 @@ const QrCodeTableHeader = ({
 export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 	const t = useTranslations();
 	const { currentPage, filters, handleFiltersChange, handlePageChange } = useUrlPaginationSync();
-	const currentLimit = 10;
+	const [currentLimit, setPageSize] = usePageSize('qrcodly.qrCodes.pageSize');
+	const selection = useRowSelection();
+	const { clear: clearSelection } = selection;
+
+	// a selection only makes sense for the list it was made in
+	useEffect(() => clearSelection(), [filters, clearSelection]);
 	const { visibility, toggleColumn, isVisible } = useQrCodeColumnVisibility();
 
 	const {
@@ -140,8 +167,34 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 	}
 
 	const pageNumbers = getPageNumbers(currentPage, totalPages);
+	const pageIds = qrCodes.data.map((qr) => qr.id);
+	const selectedIds = [...selection.selected];
+
 	return (
-		<div className="space-y-4">
+		// room below the table so the floating selection bar never covers the pagination
+		<div className={cn('space-y-4', selectedIds.length > 0 && 'pb-20')}>
+			{selectedIds.length > 0 && (
+				<BulkActionBar count={selectedIds.length} onClear={selection.clear}>
+					{onBulkExport && (
+						<Button
+							variant="ghost"
+							size="sm"
+							className={bulkBarButtonClass}
+							onClick={() => onBulkExport(selectedIds)}
+						>
+							<ArrowDownTrayIcon className="size-4" />
+							<span className="hidden sm:inline">{t('bulkActions.download')}</span>
+						</Button>
+					)}
+					<BulkDeleteButton
+						path="qr-code"
+						ids={selectedIds}
+						warning={t('bulkActions.warningQrCodes')}
+						refetch={[qrCodeQueryKeys.listQrCodes, hostedPageQueryKeys.usage]}
+						onDone={selection.clear}
+					/>
+				</BulkActionBar>
+			)}
 			<QrCodeFilters
 				filters={filters}
 				onFiltersChange={handleFiltersChange}
@@ -155,7 +208,7 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 				{isRefetching && <TableLoader />}
 				<div className="overflow-hidden rounded-lg border">
 					<Table>
-						<QrCodeTableHeader isVisible={isVisible} />
+						<QrCodeTableHeader isVisible={isVisible} pageIds={pageIds} selection={selection} />
 						<TableBody
 							className={cn(
 								isRefetching &&
@@ -163,12 +216,23 @@ export const QrCodeList = ({ onBulkImport, onBulkExport }: QrCodeListProps) => {
 							)}
 						>
 							{qrCodes.data.map((qr) => (
-								<QrCodeListItem key={qr.id} qr={qr} visibility={visibility} />
+								<QrCodeListItem key={qr.id} qr={qr} visibility={visibility} selection={selection} />
 							))}
 						</TableBody>
 					</Table>
 				</div>
 			</div>
+			{qrCodes.total > PAGE_SIZES[0]! && (
+				<div className="flex justify-end">
+					<PageSizeSelect
+						value={currentLimit}
+						onChange={(size) => {
+							setPageSize(size);
+							handlePageChange(1, totalPages);
+						}}
+					/>
+				</div>
+			)}
 			{totalPages > 1 && (
 				<Pagination className={cn(isRefetching && 'pointer-events-none opacity-50')}>
 					<PaginationContent>

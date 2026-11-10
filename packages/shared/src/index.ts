@@ -59,6 +59,7 @@ export * from './dtos/user-survey/SubmitUserSurveyDto';
 export * from './dtos/user-survey/UserSurveyStatusResponseDto';
 
 export * from './dtos/IdRequestQuery';
+export * from './dtos/BulkDeleteDto';
 export * from './dtos/ListRequestDto';
 export * from './dtos/PaginationDto';
 export * from './dtos/WebsiteScreenshotDto';

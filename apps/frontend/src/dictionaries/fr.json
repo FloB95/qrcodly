@@ -215,7 +215,7 @@
 		"filters": {
 			"searchPlaceholder": "Rechercher des codes QR...",
 			"contentType": "Type de contenu",
-			"clearAll": "Effacer",
+			"clearAll": "Réinitialiser les filtres",
 			"customizeColumns": "Personnaliser les colonnes",
 			"columns": "Colonnes",
 			"toggleColumns": "Afficher/masquer les colonnes",
@@ -4363,5 +4363,23 @@
 			"title": "Un instant, s'il vous plaît",
 			"description": "Cette page est momentanément indisponible et se recharge d'elle-même dans quelques secondes."
 		}
+	},
+	"bulkActions": {
+		"selected": "{count} sélectionné(s)",
+		"clear": "Annuler la sélection",
+		"selectPage": "Tout sélectionner sur cette page",
+		"selectRow": "Sélectionner la ligne",
+		"download": "Télécharger",
+		"delete": "Supprimer",
+		"confirmTitle": "Supprimer {count, plural, one {# élément} other {# éléments}} ?",
+		"warningQrCodes": "Les codes QR dynamiques ne fonctionneront plus – les codes déjà imprimés ne mèneront nulle part. Cette action est irréversible.",
+		"warningTemplates": "Les modèles sont supprimés définitivement. Cette action est irréversible.",
+		"warningShortUrls": "Les URL courtes ne fonctionneront plus. Cette action est irréversible.",
+		"cancel": "Annuler",
+		"confirm": "Supprimer définitivement",
+		"deleted": "{count} supprimé(s)",
+		"notDeleted": "{count} n'ont pas pu être supprimés",
+		"error": "La suppression a échoué. Veuillez réessayer.",
+		"rowsPerPage": "Lignes par page"
 	}
 }
