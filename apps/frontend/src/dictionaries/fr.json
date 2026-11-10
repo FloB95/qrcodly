@@ -488,7 +488,8 @@
 			"downloadBtn": "Télécharger",
 			"vcfFile": "Fichier VCF",
 			"icsFile": "Fichier ICS",
-			"errorTitle": "Erreur lors de l'enregistrement du code QR"
+			"errorTitle": "Erreur lors de l'enregistrement du code QR",
+			"renderError": "Le code QR n'a pas pu être créé. Veuillez réessayer."
 		},
 		"saveInfo": "Enregistrez le code QR actuel dans votre collection.",
 		"savePopup": {
@@ -702,7 +703,8 @@
 			"clearBtn": "Effacer l'icône",
 			"currentIcon": "Icône actuelle",
 			"uploadDragDrop": "Glissez-déposez une image ici, ou cliquez pour parcourir",
-			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 Mo)"
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 Mo)",
+			"logoReadError": "Le logo n'a pas pu être lu. Choisissez un autre fichier."
 		},
 		"contentSwitch": {
 			"tab": {

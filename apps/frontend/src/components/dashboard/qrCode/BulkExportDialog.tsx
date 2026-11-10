@@ -4,7 +4,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
 import type { TFileExtension, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
-import type QRCodeStyling from 'qr-code-styling';
 import {
 	Dialog,
 	DialogContent,
@@ -19,6 +18,7 @@ import { Loader } from '@/components/ui/loader';
 import { toast } from '@/components/ui/use-toast';
 import { fetchQrCodesPage, useListQrCodesQuery } from '@/lib/api/qr-code';
 import { getQrCodeStylingOptions } from '@/lib/qr-code-helpers';
+import { renderQrCodeBlob } from '@/lib/qr-render';
 import {
 	Select,
 	SelectContent,
@@ -76,14 +76,12 @@ function getUniqueFileName(existingNames: Set<string>, baseName: string, ext: st
 async function generateQrCodeBlob(
 	qr: TQrCodeWithRelationsResponseDto,
 	fileExtension: TFileExtension,
-	QRCodeStylingModule: typeof QRCodeStyling,
-): Promise<Blob | null> {
+): Promise<Blob> {
 	const options = getQrCodeStylingOptions(qr.config, qr.content, {
 		qrCodeData: qr.qrCodeData,
 		shortUrl: qr.shortUrl || undefined,
 	});
-	const instance = new QRCodeStylingModule(options);
-	return instance.getRawData(fileExtension) as Promise<Blob | null>;
+	return renderQrCodeBlob(options, fileExtension);
 }
 
 export function BulkExportDialog({ open, onOpenChange }: BulkExportDialogProps) {
@@ -147,10 +145,7 @@ export function BulkExportDialog({ open, onOpenChange }: BulkExportDialogProps) 
 		setProgress(0);
 
 		try {
-			const [JSZip, QRCodeStylingModule] = await Promise.all([
-				import('jszip').then((m) => m.default),
-				import('qr-code-styling').then((m) => m.default),
-			]);
+			const JSZip = (await import('jszip')).default;
 
 			const zip = new JSZip();
 			const usedNames = new Set<string>();
@@ -190,15 +185,11 @@ export function BulkExportDialog({ open, onOpenChange }: BulkExportDialogProps) 
 			for (let i = 0; i < totalItems; i++) {
 				const qr = itemsToExport[i]!;
 				try {
-					const blob = await generateQrCodeBlob(qr, fileExtension, QRCodeStylingModule);
-					if (blob) {
-						const baseName = sanitizeFileName(qr.name, qr.id);
-						const fileName = getUniqueFileName(usedNames, baseName, fileExtension);
-						zip.file(fileName, blob);
-						successCount++;
-					} else {
-						failCount++;
-					}
+					const blob = await generateQrCodeBlob(qr, fileExtension);
+					const baseName = sanitizeFileName(qr.name, qr.id);
+					const fileName = getUniqueFileName(usedNames, baseName, fileExtension);
+					zip.file(fileName, blob);
+					successCount++;
 				} catch {
 					failCount++;
 				}

@@ -488,7 +488,8 @@
 			"downloadBtn": "Downloaden",
 			"vcfFile": "VCF-bestand",
 			"icsFile": "ICS-bestand",
-			"errorTitle": "Fout bij het opslaan van de QR-code"
+			"errorTitle": "Fout bij het opslaan van de QR-code",
+			"renderError": "De QR-code kon niet worden gemaakt. Probeer het opnieuw."
 		},
 		"saveInfo": "Sla de huidige QR-code op in uw verzameling.",
 		"savePopup": {
@@ -702,7 +703,8 @@
 			"clearBtn": "Icoon wissen",
 			"currentIcon": "Huidig icoon",
 			"uploadDragDrop": "Sleep een afbeelding hierheen, of klik om te bladeren",
-			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)"
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)",
+			"logoReadError": "Het logo kon niet worden gelezen. Kies een ander bestand."
 		},
 		"contentSwitch": {
 			"tab": {

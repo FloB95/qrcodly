@@ -488,7 +488,8 @@
 			"downloadBtn": "Download",
 			"vcfFile": "VCF File",
 			"icsFile": "ICS File",
-			"errorTitle": "Error saving QR code"
+			"errorTitle": "Error saving QR code",
+			"renderError": "The QR code could not be created. Please try again."
 		},
 		"saveInfo": "Save the current QR code in your collection for later use.",
 		"savePopup": {
@@ -693,7 +694,8 @@
 			"clearBtn": "Clear Icon",
 			"currentIcon": "Current icon",
 			"uploadDragDrop": "Drag & drop an image here, or click to browse",
-			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)"
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)",
+			"logoReadError": "The logo could not be read. Please choose another file."
 		},
 		"contentSwitch": {
 			"tab": {

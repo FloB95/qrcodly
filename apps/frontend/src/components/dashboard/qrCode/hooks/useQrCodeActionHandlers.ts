@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
@@ -12,34 +12,18 @@ import { useCreateConfigTemplateMutation } from '@/lib/api/config-template';
 import { toast } from '@/components/ui/use-toast';
 import type { ApiError } from '@/lib/api/ApiError';
 import { useBehaviorTracker } from '@/components/dashboard/smart-tips/SmartTipsBehaviorTracker';
-import type QRCodeStylingType from 'qr-code-styling';
-
-let QRCodeStyling: typeof QRCodeStylingType;
+import { useDownloadQrCode } from '@/hooks/use-download-qr-code';
 
 export function useQrCodeActionHandlers(qr: TQrCodeWithRelationsResponseDto) {
 	const t = useTranslations();
+	const downloadQrCode = useDownloadQrCode();
 	const tTemplates = useTranslations('templates');
-	const [qrCodeInstance, setQrCodeInstance] = useState<QRCodeStylingType | null>(null);
 	const [templateNameDialogOpen, setTemplateNameDialogOpen] = useState(false);
 	const [shareDialogOpen, setShareDialogOpen] = useState(false);
 	const createConfigTemplateMutation = useCreateConfigTemplateMutation();
 	const { trackAction } = useBehaviorTracker();
 
-	useEffect(() => {
-		void import('qr-code-styling').then((module) => {
-			QRCodeStyling = module.default;
-			const options = getQrCodeStylingOptions(qr.config, qr.content, {
-				qrCodeData: qr.qrCodeData,
-				shortUrl: qr.shortUrl || undefined,
-			});
-			const instance = new QRCodeStyling(options);
-			setQrCodeInstance(instance);
-		});
-	}, [qr.config, qr.content, qr.qrCodeData, qr.shortUrl]);
-
 	const handleQrCodeDownload = async (fileExt: TFileExtension) => {
-		if (!qrCodeInstance) return;
-
 		posthog.capture('dashboard.qr-code-download', {
 			qrCode: qr.id,
 			name: qr.name || 'qr-code',
@@ -47,10 +31,11 @@ export function useQrCodeActionHandlers(qr: TQrCodeWithRelationsResponseDto) {
 		});
 		trackAction('qr-download');
 
-		await qrCodeInstance.download({
-			name: qr.name || 'qr-code',
-			extension: fileExt,
+		const options = getQrCodeStylingOptions(qr.config, qr.content, {
+			qrCodeData: qr.qrCodeData,
+			shortUrl: qr.shortUrl || undefined,
 		});
+		await downloadQrCode(options, qr.name || 'qr-code', fileExt);
 	};
 
 	const handleContentFileDownload = () => {

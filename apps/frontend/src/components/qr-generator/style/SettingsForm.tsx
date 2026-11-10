@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TrashIcon, UploadIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -30,6 +30,7 @@ import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStore
 import { ColorPicker } from './ColorPicker';
 import IconPicker from './IconPicker';
 import { useToast } from '@/components/ui/use-toast';
+import { LogoTooLargeError, prepareLogo } from '@/lib/qr-render';
 
 // Constants
 const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
@@ -116,19 +117,45 @@ export const SettingsForm = () => {
 		[config, updateConfig],
 	);
 
+	// a newer pick wins over a slower conversion that is still running
+	const logoRequest = useRef(0);
+
+	// every logo becomes a PNG here, drawn with this browser's fonts, so it looks the same everywhere
+	const toPngLogo = useCallback(
+		async (dataUrl: string): Promise<string | undefined> => {
+			const request = ++logoRequest.current;
+			try {
+				const png = await prepareLogo(dataUrl);
+				return request === logoRequest.current ? png : undefined;
+			} catch (error) {
+				if (request === logoRequest.current) {
+					toast({
+						variant: 'destructive',
+						title: t(error instanceof LogoTooLargeError ? 'errorToLargeFile' : 'logoReadError'),
+					});
+				}
+				return undefined;
+			}
+		},
+		[t, toast],
+	);
+
 	// Memoized icon selection handler
 	const handleIconSelect = useCallback(
-		(iconBase64?: string, iconName?: string) => {
-			const updatedConfig = {
-				...config,
-				image: iconBase64,
-			};
-			updateConfig(updatedConfig);
+		async (iconBase64?: string, iconName?: string) => {
+			let image: string | undefined;
+			if (iconBase64) {
+				image = await toPngLogo(iconBase64);
+				if (!image) return;
+			} else {
+				logoRequest.current++;
+			}
+			updateConfig({ image });
 			setImageDisplayName(iconName);
-			form.setValue('image', iconBase64 ?? '');
+			form.setValue('image', image ?? '');
 			setUploadResetKey((prev) => prev + 1);
 		},
-		[config, updateConfig, form],
+		[toPngLogo, updateConfig, form],
 	);
 
 	// Memoized icon removal handler
@@ -150,9 +177,10 @@ export const SettingsForm = () => {
 
 			const reader = new FileReader();
 
-			reader.onload = () => {
-				const base64 = reader.result as string;
-				updateConfig({ image: base64 });
+			reader.onload = async () => {
+				const image = await toPngLogo(reader.result as string);
+				if (!image) return;
+				updateConfig({ image });
 				setImageDisplayName(file.name);
 				setUploadResetKey((prev) => prev + 1);
 			};
@@ -166,7 +194,7 @@ export const SettingsForm = () => {
 
 			reader.readAsDataURL(file);
 		},
-		[updateConfig, t, toast],
+		[toPngLogo, updateConfig, t, toast],
 	);
 
 	// Handler for FileUpload component rejected files

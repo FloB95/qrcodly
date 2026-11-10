@@ -1,8 +1,9 @@
 'use client';
 
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
-import QRCodeStyling, { type Options } from 'qr-code-styling';
+import { memo, useEffect, useMemo, useState } from 'react';
+import { type Options } from 'qr-code-styling';
 import { cn, createLinkFromShortUrl } from '@/lib/utils';
+import { renderQrCodeSvg, svgToDataUrl } from '@/lib/qr-render';
 import {
 	convertQRCodeDataToStringByType,
 	convertQrCodeOptionsToLibraryOptions,
@@ -98,25 +99,17 @@ function QrCode({
 			data,
 		};
 	}, [qrCode.config, qrCode.content, qrCode.qrCodeData, resolvedShortUrl]);
-	const [qrCodeInstance, setQrCode] = useState<QRCodeStyling>();
-	const ref = useRef<HTMLDivElement>(null);
+	const [svgUrl, setSvgUrl] = useState<string>();
 
 	useEffect(() => {
-		setQrCode(new QRCodeStyling(options));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	useEffect(() => {
-		if (ref.current) {
-			qrCodeInstance?.append(ref.current);
-		}
-	}, [qrCodeInstance, ref]);
-
-	useEffect(() => {
-		if (!qrCodeInstance) return;
-
-		qrCodeInstance?.update(options);
-	}, [qrCodeInstance, options]);
+		let isCurrent = true;
+		renderQrCodeSvg(options)
+			.then((svg) => isCurrent && setSvgUrl(svgToDataUrl(svg)))
+			.catch((error: unknown) => console.error('QR code preview failed', error));
+		return () => {
+			isCurrent = false;
+		};
+	}, [options]);
 
 	return (
 		<div className="flex flex-col">
@@ -125,8 +118,10 @@ function QrCode({
 					'canvas-wrap mx-auto max-h-[200px] max-w-[200px] lg:max-h-[300px] lg:max-w-[300px]',
 					additionalStyles,
 				)}
-				ref={ref}
-			/>
+			>
+				{/* eslint-disable-next-line @next/next/no-img-element -- generated SVG data URL */}
+				{svgUrl && <img src={svgUrl} alt="" />}
+			</div>
 
 			{shortUrl && isDynamic(qrCode.content) && (
 				<div className="mt-4 hidden flex-wrap xs:flex items-center justify-between">
