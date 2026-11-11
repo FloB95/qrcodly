@@ -43,6 +43,15 @@
 	--hp-font-display: var(--font-hp-outfit);
 	--hp-font-body: var(--font-hp-inter);
 }
+
+/* Hyphenates only long words (compound nouns), so short words never split. Safari ignores
+   hyphenate-limit-chars; six letters on each side give it the same twelve-letter minimum. */
+@utility hyphens-long-words {
+	hyphens: auto;
+	hyphenate-limit-chars: 12 5 5;
+	-webkit-hyphenate-limit-before: 6;
+	-webkit-hyphenate-limit-after: 6;
+}
 @utility hp-pair-montserrat {
 	--hp-font-display: var(--font-hp-montserrat);
 	--hp-font-body: var(--font-hp-open-sans);
@@ -207,14 +216,12 @@
 		/* a word longer than its box (compound nouns, URLs) breaks instead of spilling out */
 		overflow-wrap: break-word;
 	}
-	/* only long words get hyphenated, so short headings never split */
 	h1,
 	h2,
 	h3,
 	h4,
 	dt {
-		hyphens: auto;
-		hyphenate-limit-chars: 12 5 5;
+		@apply hyphens-long-words;
 	}
 }
 
