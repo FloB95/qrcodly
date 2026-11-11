@@ -2,7 +2,8 @@ import { cn } from '@/lib/utils';
 import type { HTMLAttributes } from 'react';
 
 const sizeClasses = {
-	hero: 'text-4xl sm:text-5xl lg:text-6xl',
+	// as heavy as the marketing page headlines
+	hero: 'text-4xl font-extrabold sm:text-5xl lg:text-6xl',
 	lg: 'text-3xl sm:text-4xl lg:text-5xl',
 	section: 'text-3xl sm:text-4xl',
 	md: 'text-2xl sm:text-3xl lg:text-4xl',
