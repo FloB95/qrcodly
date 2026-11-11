@@ -18,9 +18,6 @@ type EditorSectionsProps = {
 	children: ReactNode;
 };
 
-// the accordion's own collapse animation lasts 200 ms
-const SETTLE_MS = 320;
-
 const sectionHeader = (value: string) =>
 	document.querySelector<HTMLElement>(`[data-editor-section="${CSS.escape(value)}"]`);
 
@@ -35,19 +32,21 @@ function scrollParent(element: HTMLElement): HTMLElement {
 }
 
 /**
- * Keeps an element where it is on screen while the layout above it changes, frame by frame, so
- * a section closing above the one just opened does not pull the clicked header out of view.
+ * Keeps an element where it is on screen while another step closes above it. The closing step
+ * skips its animation (`data-switching`), so the layout settles at once and the scroll position is
+ * corrected in the first frame, before anything is painted. Correcting an animated collapse frame by
+ * frame always lagged one frame behind, which made long steps jump on phones.
  */
-function holdInPlace(element: HTMLElement) {
+function holdInPlace(element: HTMLElement, root: HTMLElement | null, then?: () => void) {
 	const top = element.getBoundingClientRect().top;
 	const scroller = scrollParent(element);
-	const until = performance.now() + SETTLE_MS;
-	const step = () => {
+	root?.setAttribute('data-switching', '');
+	requestAnimationFrame(() => {
+		root?.removeAttribute('data-switching');
 		const drift = element.getBoundingClientRect().top - top;
 		if (Math.abs(drift) >= 1) scroller.scrollTop += drift;
-		if (performance.now() < until) requestAnimationFrame(step);
-	};
-	requestAnimationFrame(step);
+		then?.();
+	});
 }
 
 type SectionsContext = {
@@ -69,6 +68,7 @@ export function EditorSections({ type, value, onValueChange, children }: EditorS
 	);
 	const valueRef = useRef(value);
 	valueRef.current = value;
+	const rootRef = useRef<HTMLDivElement>(null);
 
 	const open = (section: string | null) => {
 		if (section) posthog.capture('hosted-editor:section-opened', { type, section });
@@ -82,18 +82,20 @@ export function EditorSections({ type, value, onValueChange, children }: EditorS
 		}
 		// the header just clicked stays under the pointer while the open one closes
 		const header = sectionHeader(opened);
-		if (header) holdInPlace(header);
+		if (header) holdInPlace(header, rootRef.current);
 		open(opened);
 	};
 	const context: SectionsContext = {
 		next: (current) => order[order.findIndex((entry) => entry.value === current) + 1] ?? null,
 		// "next" closes the step it sits in, then brings the following step's header to the top
 		goTo: (section) => {
+			const header = sectionHeader(section);
+			if (header) {
+				holdInPlace(header, rootRef.current, () =>
+					header.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+				);
+			}
 			open(section);
-			window.setTimeout(
-				() => sectionHeader(section)?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
-				SETTLE_MS,
-			);
 		},
 	};
 
@@ -103,7 +105,8 @@ export function EditorSections({ type, value, onValueChange, children }: EditorS
 				type="multiple"
 				value={value}
 				onValueChange={change}
-				className="divide-y overflow-hidden rounded-xl border bg-white/60"
+				ref={rootRef}
+				className="group/editor divide-y overflow-hidden rounded-xl border bg-white/60"
 			>
 				{children}
 			</AccordionPrimitive.Root>
@@ -173,8 +176,8 @@ export function EditorSection({
 					/>
 				</AccordionPrimitive.Trigger>
 			</AccordionPrimitive.Header>
-			<AccordionPrimitive.Content className="overflow-hidden bg-white data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-				<div className="space-y-5 px-4 pt-1 pb-5">
+			<AccordionPrimitive.Content className="overflow-hidden bg-white data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down group-data-[switching]/editor:data-[state=closed]:animate-none">
+				<div className="@container space-y-5 px-4 pt-1 pb-5">
 					{children}
 					{next && (
 						<div className="flex justify-end border-t pt-5">

@@ -697,7 +697,7 @@ const ProductSectionBase = ({ value, onChange: commitToStore }: ProductSectionPr
 						onSelect={chooseTemplate}
 						showBlank={!isExistingPage}
 					/>
-					<div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+					<div className="grid grid-cols-1 gap-5 @md:grid-cols-2">
 						{imageField(
 							'coverKey',
 							t('cover.label'),
@@ -712,7 +712,7 @@ const ProductSectionBase = ({ value, onChange: commitToStore }: ProductSectionPr
 					{textField('brandName', tPdf('brandName.label'), { max: 80 })}
 					<div className="space-y-3">
 						{sectionTitle(tPdf('link.title'), t('link.description'))}
-						<div className="grid gap-3 sm:grid-cols-[2fr_3fr]">
+						<div className="grid gap-3 @md:grid-cols-[2fr_3fr]">
 							<Input
 								value={fields.linkLabel}
 								maxLength={40}
@@ -766,7 +766,7 @@ const ProductSectionBase = ({ value, onChange: commitToStore }: ProductSectionPr
 						max: 120,
 						hint: t('model.hint'),
 					})}
-					<div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+					<div className="grid grid-cols-1 gap-5 @md:grid-cols-2">
 						{textField('articleNumber', t('articleNumber.label'), { max: 60 })}
 						{textField('gtin', t('gtin.label'), { max: 14 })}
 					</div>
@@ -888,7 +888,7 @@ const ProductSectionBase = ({ value, onChange: commitToStore }: ProductSectionPr
 										<TrashIcon className="size-4" />
 									</Button>
 								</div>
-								<div className="grid gap-2 sm:grid-cols-[3fr_2fr]">
+								<div className="grid gap-2 @md:grid-cols-[3fr_2fr]">
 									<Input
 										value={document.title ?? ''}
 										maxLength={80}
@@ -1039,7 +1039,7 @@ const ProductSectionBase = ({ value, onChange: commitToStore }: ProductSectionPr
 						max: 300,
 						rows: 3,
 					})}
-					<div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+					<div className="grid grid-cols-1 gap-5 @md:grid-cols-2">
 						{textField('manufacturerEmail', t('party.email'), { max: 255, type: 'email' })}
 						{textField('manufacturerPhone', t('party.phone'), { max: 40, type: 'tel' })}
 					</div>

@@ -537,7 +537,7 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 							showBlank={!isExistingPage}
 						/>
 						{/* Images */}
-						<section className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+						<section className="grid grid-cols-1 gap-5 @md:grid-cols-2">
 							{imageField(
 								'coverKey',
 								t('cover.label'),
@@ -556,7 +556,7 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 								<Label>{t('link.title')}</Label>
 								<p className="mt-1 text-xs text-muted-foreground">{t('link.description')}</p>
 							</div>
-							<div className="grid gap-3 sm:grid-cols-[2fr_3fr]">
+							<div className="grid gap-3 @md:grid-cols-[2fr_3fr]">
 								<Input
 									value={fields.linkLabel}
 									maxLength={BUTTON_MAX}

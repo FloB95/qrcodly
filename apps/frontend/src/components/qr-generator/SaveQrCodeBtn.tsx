@@ -88,6 +88,14 @@ const SaveQrCodeBtn = ({
 						// a saved dynamic code took the reserved short URL; editing on would target the next one
 						if (isDynamic(qrCode.content)) {
 							resetStore();
+							// the reset generator is far shorter (a page editor turns back into the URL
+							// form), which would leave the visitor further down the home page
+							requestAnimationFrame(() => {
+								const generator = document.getElementById('generator');
+								if (generator && generator.getBoundingClientRect().top < 0) {
+									generator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+								}
+							});
 						}
 
 						updateLatestQrCode({

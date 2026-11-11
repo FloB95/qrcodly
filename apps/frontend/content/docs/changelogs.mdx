@@ -8,7 +8,7 @@ Here you can see all recent updates, new features, improvements, and fixes — e
 
 <Callout type="info">Stay up-to-date with the latest features and improvements in QRcodly.</Callout>
 
-## Latest Release: 1.13.0 - 2026-10-26
+## Latest Release: 1.13.0 - 2026-11-11
 
 <Card
   title="v1.13.0 Latest"
@@ -17,19 +17,56 @@ Here you can see all recent updates, new features, improvements, and fixes — e
       <p>🚀 <strong>Release Notes – Version 1.13.0</strong></p>
       <h4>✨ New Features</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li><strong>QRcodly for Chrome:</strong> The QRcodly browser extension is now available in the <a href="https://chromewebstore.google.com/detail/qrcodly/pagnaengchnbgecnappokojmdnagefpd">Chrome Web Store</a>. Create a QR code for the page you're on in one click: the extension fills in the page's link, gives you the full generator, and saves your QR codes to your account.</li>
-        <li><strong>No Extra Login:</strong> The extension uses your existing sign-in from qrcodly.de, so there is nothing new to set up.</li>
-        <li><strong>Integrations:</strong> The Chrome extension now links straight to the Chrome Web Store from Settings → Integrations.</li>
+        <li><strong>Product Pages (Digital Operating Instructions):</strong> A new Pro QR code type for manufacturers: one mobile page per product model with operating instructions, safety information, EU declaration of conformity and data sheets in 26 EU/EEA languages, an archive of earlier versions, and a paper copy on request through a prefilled e-mail — no visitor data is stored. Made for the digital instructions the EU Machinery Regulation allows from 20 January 2027.</li>
+        <li><strong>PDF Landing Pages:</strong> A new PDF QR code type: the short link opens a hosted mobile page listing one or more PDFs with cover, logo, title, description and an optional button — or opens the PDF directly. Pro includes 15 landing pages and 60 files, with PDFs up to 50 MB.</li>
+        <li><strong>Page Templates & Live Demos:</strong> Ready-made designs for restaurant menus, café & bar, real estate, brochures, event programs, price lists, machines, devices, household appliances and tools, with three page styles, font pairings, light/dark mode and your own colors. Every template has a live demo page.</li>
+        <li><strong>Guided Page Editor:</strong> PDF and product pages are built step by step, look first. Missing fields are marked where they are, and template images are only uploaded when you save.</li>
+        <li><strong>Phone, SMS & WhatsApp QR Codes:</strong> Three new content types — call a number, send a prefilled SMS or open a WhatsApp chat — including CSV bulk import.</li>
+        <li><strong>Free QR Code Scanner:</strong> A new <a href="/tools/qr-code-scanner">tool page</a> reads QR codes from images, the clipboard or the camera, entirely in your browser — nothing is uploaded.</li>
+        <li><strong>Bulk Actions:</strong> Select QR codes, templates and short URLs in the dashboard tables and download or delete them together. The QR code table shows 10, 25, 50 or 100 rows.</li>
+        <li><strong>Extra Custom Domains:</strong> Pro accounts can add more custom domains as an add-on: €3.99/month per domain, or €2.99/month billed annually.</li>
+        <li><strong>Self-Verifying Domains:</strong> Pending custom domains are checked automatically every 15 minutes for 7 days, and the dashboard explains when a CAA record blocks the certificate.</li>
+        <li><strong>QRcodly for Chrome:</strong> The QRcodly browser extension is now available in the <a href="https://chromewebstore.google.com/detail/qrcodly/pagnaengchnbgecnappokojmdnagefpd">Chrome Web Store</a>. Create a QR code for the page you're on in one click: the extension fills in the page's link, gives you the full generator, and saves your QR codes to your account. It uses your existing sign-in from qrcodly.de, so there is nothing new to set up.</li>
+        <li><strong>Figma Plugin (coming soon):</strong> Browse, search and filter your QR codes in Figma, create URL and text codes from a template and place them on the canvas. It appears in Settings → Integrations and goes live once Figma approves it.</li>
+        <li><strong>Solution Pages:</strong> Twelve use-case pages for restaurants, retail, events, real estate, education and marketing, and for short links in marketing teams, social media, sales, e-commerce, development and agencies.</li>
+      </ul>
+
+      <h4>💳 Plans</h4>
+      <ul className="list-disc ml-5 space-y-1">
+        <li><strong>Detailed Analytics in Pro:</strong> Every plan keeps the headline figures — totals, visitors, the last 7 days, top country and top device. Activity over time and breakdowns by device, browser, operating system and country are part of Pro.</li>
+      </ul>
+
+      <h4>🎨 UI & UX Improvements</h4>
+      <ul className="list-disc ml-5 space-y-1">
+        <li><strong>Refreshed Website:</strong> Home, product and solution pages in one new look; the features page now lives on the home page.</li>
+        <li><strong>New Navigation:</strong> Products, Solutions and Resources menus in the header.</li>
+        <li><strong>Shorter Download Menu:</strong> The QR code submenu is skipped when the image is the only thing to download.</li>
+        <li><strong>Calmer Page Editor on Phones:</strong> Steps open and close without the page jumping, and after saving, the generator stays in view.</li>
+        <li><strong>Layout in Every Language:</strong> Long labels no longer spill out of the generator's type buttons and the page editor; product and marketing pages are tuned for phones, tablets and laptops in all 9 languages.</li>
+      </ul>
+
+      <h4>🐛 Bug Fixes</h4>
+      <ul className="list-disc ml-5 space-y-1">
+        <li>QR codes look identical in the browser, downloads, API renders and the InDesign and Figma plugins — including text inside SVG logos, wide or tall logos and WebP logos.</li>
+        <li>Hosted pages on custom domains no longer redirect in a loop, and template logos load.</li>
+        <li>A printed dynamic code never shows "not found" when the backend briefly fails.</li>
+        <li>Desktop scans are recorded as desktop instead of blank.</li>
+        <li>The name is optional when creating a QR code through the API.</li>
+        <li>The InDesign plugin explains an invalid API key instead of failing.</li>
       </ul>
 
       <h4>🔒 Privacy & Security</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li>The extension only reads the current tab when you open it, and only talks to QRcodly's API and sign-in service.</li>
+        <li>Node.js and several dependencies updated for published security advisories.</li>
+        <li>The API authenticates by bearer token only; API keys keep working from every origin.</li>
+        <li>Stricter rate limits for creating and duplicating short URLs.</li>
+        <li>URL safety: every Google Web Risk threat type is blocked, and blocks take effect within an hour.</li>
+        <li>The Chrome extension only reads the current tab when you open it, and only talks to QRcodly's API and sign-in service.</li>
       </ul>
 
       <h4>🌍 Translations</h4>
       <ul className="list-disc ml-5 space-y-1">
-        <li>Home page announcement updated in all supported languages (English, German, Spanish, French, Italian, Dutch, Polish, Portuguese, Russian).</li>
+        <li>All new pages, the page editor and the product pages are available in every supported language (English, German, Spanish, French, Italian, Dutch, Polish, Portuguese, Russian).</li>
       </ul>
     </div>
   }
@@ -38,6 +75,84 @@ Here you can see all recent updates, new features, improvements, and fixes — e
 ## Previous Releases
 
 <Cards>
+  <Card
+    title="v1.12.0 - 2026-07-17"
+    description={
+      <div>
+        <p>🚀 <strong>Release Notes – Version 1.12.0</strong></p>
+        <h4>✨ New Features</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>InDesign Plugin:</strong> Generate and place QR codes directly in your Adobe InDesign layouts with an API key.</li>
+          <li><strong>Pro Checkout:</strong> Clicking "Upgrade to Pro" while signed out now leads straight into checkout after sign-in or sign-up, instead of the dashboard.</li>
+          <li><strong>Dedicated Redirect Domain:</strong> Short links are served from their own redirect domain, so a flagged destination can never affect the main site.</li>
+          <li><strong>URL Safety Screening:</strong> Destinations of short links and dynamic QR codes are checked against Google Web Risk (malware, phishing, unwanted software) before redirecting.</li>
+          <li><strong>API Key Scopes:</strong> API keys support read, write, update and delete scopes, and scopes, description and expiration can be edited afterwards.</li>
+          <li><strong>Duplicate:</strong> One-click duplication for QR codes, templates and short URLs, keeping settings, tags and images.</li>
+          <li><strong>vCard Upgrades:</strong> Separate private and business addresses; bulk import supports title, note and multi-line fields.</li>
+          <li><strong>Legal Pages:</strong> New Terms of Service and an updated privacy policy in German and English.</li>
+        </ul>
+
+        <h4>🎨 UI & UX Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Browser Extension Redesign:</strong> The extension popup matches the main app's look and starts noticeably faster.</li>
+          <li><strong>Clickable Previews:</strong> QR code and template preview images open on click.</li>
+          <li><strong>Pricing Update:</strong> Pro is €8.99/month or €6.99/month billed annually.</li>
+        </ul>
+
+        <h4>🐛 Bug Fixes</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li>Scan analytics locate visitors by their own IP again, so country statistics are accurate.</li>
+          <li>Analytics queries work with Umami 3.1 and newer.</li>
+          <li>Fixed Google indexing problems.</li>
+          <li>Google Maps no longer breaks when switching languages.</li>
+          <li>Updated previews and images show up right away instead of cached old versions.</li>
+          <li>Bulk import checks your plan's limit before uploading and shows a clear upgrade hint.</li>
+        </ul>
+
+        <h4>🛠 Technical Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Dependency Upgrades:</strong> pnpm 11, Clerk 7, Stripe 22, recharts 3 and fumadocs 11.</li>
+          <li><strong>Faster Rendering:</strong> Rendered QR codes are cached, and unchanged images are not rendered again.</li>
+          <li><strong>CDN Delivery:</strong> Previews and uploads use stable CDN URLs, so browser caching works.</li>
+        </ul>
+      </div>
+    }
+  />
+  <Card
+    title="v1.11.0 - 2026-04-09"
+    description={
+      <div>
+        <p>🚀 <strong>Release Notes – Version 1.11.0</strong></p>
+        <h4>✨ New Features</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>MCP Server:</strong> Control QRcodly from AI assistants like Claude, ChatGPT or Cursor — create and manage QR codes in a chat.</li>
+          <li><strong>Feedback Survey:</strong> A short thumbs up/down survey with an optional comment appears in the dashboard after two weeks.</li>
+          <li><strong>FAQ Page:</strong> A dedicated FAQ page with search and categories, linked from every product page.</li>
+        </ul>
+
+        <h4>🎨 UI & UX Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Analytics Redesign:</strong> An interactive world map for country statistics, expandable metrics and redesigned charts.</li>
+          <li><strong>"Dynamic" instead of "Editable":</strong> URL QR codes use the clearer label "Dynamic" everywhere.</li>
+          <li><strong>Drag-and-Drop Upload:</strong> QR code images can be dropped in, with better validation and a 1 MB limit.</li>
+          <li><strong>Pricing & Product Pages:</strong> A new design for the pricing section and adjusted text sizes on product pages.</li>
+        </ul>
+
+        <h4>🐛 Bug Fixes</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li>Bulk import works with QR codes that use a template image.</li>
+          <li>Clearer error messages for failed uploads.</li>
+          <li>Various fixes in the QR preview and generator.</li>
+        </ul>
+
+        <h4>🛠 Technical Improvements</h4>
+        <ul className="list-disc ml-5 space-y-1">
+          <li><strong>Custom Domain Performance:</strong> Faster domain lookups through caching and higher rate limits.</li>
+          <li><strong>Test Coverage:</strong> Unit tests across all modules and an isolated test environment per file.</li>
+        </ul>
+      </div>
+    }
+  />
   <Card
     title="v1.10.0 - 2026-03-12"
     description={

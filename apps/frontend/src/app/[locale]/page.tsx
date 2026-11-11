@@ -160,13 +160,13 @@ export default async function Page({ params }: DefaultPageParams) {
 									locale={locale}
 									template="restaurantMenu"
 									scale={0.5}
-									className="h-[380px] w-[190px]"
+									className="h-[380px] w-[190px] shrink-0"
 								/>
 								<TemplatePhone
 									locale={locale}
 									template="machineManual"
 									scale={0.5}
-									className="hidden h-[380px] w-[190px] translate-y-6 sm:block"
+									className="hidden h-[380px] w-[190px] shrink-0 translate-y-6 sm:block xl:-ml-20"
 								/>
 							</div>
 						),

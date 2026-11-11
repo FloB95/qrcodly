@@ -40,17 +40,20 @@ export function AnalyticsHeroMockup() {
 					</div>
 				</div>
 
-				<div className="flex items-end gap-1 sm:gap-1.5 flex-1 min-h-0">
-					{bars.map((h, i) => (
-						<motion.div
-							key={i}
-							className="flex-1 bg-indigo-600 rounded-t-sm"
-							initial={{ height: 0 }}
-							whileInView={{ height: `${h}%` }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.6, delay: i * 0.05 }}
-						/>
-					))}
+				{/* absolute, so the bars' percentage heights have a definite box to refer to */}
+				<div className="relative flex-1 min-h-24">
+					<div className="absolute inset-0 flex items-end gap-1 sm:gap-1.5">
+						{bars.map((h, i) => (
+							<motion.div
+								key={i}
+								className="flex-1 bg-indigo-600 rounded-t-sm"
+								initial={{ height: 0 }}
+								whileInView={{ height: `${h}%` }}
+								viewport={{ once: true }}
+								transition={{ duration: 0.6, delay: i * 0.05 }}
+							/>
+						))}
+					</div>
 				</div>
 			</div>
 		</div>

@@ -4511,7 +4511,7 @@
 		"badge": "Démo en direct",
 		"back": "Retour",
 		"cta": "Commencer avec ce modèle",
-		"ctaShort": "Utiliser le modèle",
+		"ctaShort": "Utiliser",
 		"metaTitle": "Démo en direct : {name}",
 		"metaDescription": {
 			"pdf": "Voici le modèle « {name} » tel qu’il apparaît après un scan : une page d’exemple à parcourir, avec des documents qui s’ouvrent.",
