@@ -177,12 +177,11 @@ export function EditorSection({
 				<div className="space-y-5 px-4 pt-1 pb-5">
 					{children}
 					{next && (
-						<div className="flex justify-end border-t pt-4">
+						<div className="flex justify-end border-t pt-5">
 							<Button
 								type="button"
-								variant="outline"
 								size="sm"
-								className="h-auto max-w-full py-1.5 whitespace-normal"
+								className="h-auto max-w-full gap-2 rounded-xl px-4 py-2 text-left whitespace-normal"
 								onClick={() => sections?.goTo(next.value)}
 							>
 								{t('nextStep', { step: next.title })}
