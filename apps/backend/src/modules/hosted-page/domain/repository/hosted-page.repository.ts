@@ -6,10 +6,9 @@ import { shortUrl } from '@/core/db/schemas';
 import { type THostedPageBody } from '@shared/schemas';
 import hostedPage, { type THostedPage } from '../entities/hosted-page.entity';
 
-export const toHostedPageBody = (page: THostedPage): THostedPageBody => ({
-	type: page.type,
-	data: page.data,
-});
+// the row's type and data belong together; the columns cannot say so
+export const toHostedPageBody = (page: THostedPage): THostedPageBody =>
+	({ type: page.type, data: page.data }) as THostedPageBody;
 
 /** Hosted pages; their address and state live on the short URL pointing at them. */
 @singleton()

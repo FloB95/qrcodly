@@ -55,7 +55,16 @@
 									<td style="background-color:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:20px;">
 										<p style="margin:0 0 8px 0;font-size:14px;font-weight:600;color:#0c4a6e;">What happens next</p>
 										<p style="margin:0 0 12px 0;font-size:14px;line-height:1.6;color:#0369a1;">Your subscription ends on <strong>{{periodEndDate}}</strong>. After that, you'll have a <strong>{{gracePeriodDays}}-day grace period</strong> until <strong>{{gracePeriodEndDate}}</strong> to resubscribe.</p>
-										<p style="margin:0;font-size:14px;line-height:1.6;color:#0369a1;">If you don't resubscribe by then, your <strong>Pro features (custom domains, hosted PDF pages, analytics integrations) will be disabled</strong>: QR codes using custom domains will stop working and your hosted PDF pages will go offline.</p>
+										<p style="margin:0;font-size:14px;line-height:1.6;color:#0369a1;">If you don't resubscribe by then, your <strong>Pro features (custom domains, hosted pages, analytics integrations) will be disabled</strong>: QR codes using custom domains will stop working and your hosted pages will go offline.</p>
+										{{#if hasAffectedPages}}
+										<p style="margin:12px 0 8px 0;font-size:14px;line-height:1.6;color:#0369a1;">These hosted pages will go offline:</p>
+										<ul style="margin:0;padding-left:20px;font-size:14px;line-height:1.7;color:#0369a1;">
+											{{#each affectedPages}}<li><strong>{{this}}</strong></li>{{/each}}
+										</ul>
+										{{/if}}
+										{{#if hasProductPages}}
+										<p style="margin:12px 0 0 0;font-size:14px;line-height:1.6;color:#0369a1;"><strong>Product pages:</strong> the codes printed on your products will then no longer open their manuals, safety information and declarations of conformity. Under the EU Machinery Regulation these must stay available for years, so please plan another way to provide them, or download your documents, before this date.</p>
+										{{/if}}
 									</td>
 								</tr>
 							</table>

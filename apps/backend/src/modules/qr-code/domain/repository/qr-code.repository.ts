@@ -11,6 +11,7 @@ import {
 	isHostedPageType,
 	toHostedQrContent,
 	toStoredQrCodeContent,
+	type THostedPageBody,
 	type TQrCodeContent,
 	TQrCodeContentType,
 	type TTag,
@@ -43,7 +44,7 @@ class QrCodeRepository extends AbstractRepository<TQrCode> {
 		if (page && !page.deletedAt) {
 			return {
 				...row,
-				content: toHostedQrContent({ type: page.type, data: page.data }),
+				content: toHostedQrContent({ type: page.type, data: page.data } as THostedPageBody),
 			};
 		}
 		if (Object.keys(row.content.data).length === 0) {

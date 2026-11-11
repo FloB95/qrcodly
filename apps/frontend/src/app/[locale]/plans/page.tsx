@@ -1,11 +1,11 @@
-import { CtaSection } from '@/components/CtaSection';
+import { ProductCtaSection } from '@/components/products/ProductCtaSection';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { PricingCard } from '@/components/plans/PricingCard';
 import Container from '@/components/ui/container';
 import { Heading } from '@/components/ui/heading';
-import { env } from '@/env';
-import { routing, SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { marketingMetadata } from '@/components/marketing/seo';
 import type { DefaultPageParams } from '@/types/page';
 import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
@@ -17,30 +17,16 @@ export async function generateMetadata({ params }: DefaultPageParams): Promise<M
 		return {};
 	}
 	const t = await getTranslations({ locale, namespace: 'plans' });
-	const baseUrl = env.NEXT_PUBLIC_FRONTEND_URL;
-
-	return {
+	return marketingMetadata(locale, 'plans', {
 		title: t('metaTitle'),
 		description: t('metaDescription'),
-		alternates: {
-			canonical:
-				locale === routing.defaultLocale ? `${baseUrl}/plans` : `${baseUrl}/${locale}/plans`,
-			languages: {
-				'x-default': `${baseUrl}/plans`,
-				...Object.fromEntries(
-					routing.locales.map((l) => [
-						l,
-						l === routing.defaultLocale ? `${baseUrl}/plans` : `${baseUrl}/${l}/plans`,
-					]),
-				),
-			},
-		},
-	};
+	});
 }
 
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
 	const t = await getTranslations('plans');
+	const tHome = await getTranslations({ locale, namespace: 'home' });
 	const { isAuthenticated } = await auth();
 
 	const plans = [
@@ -84,7 +70,12 @@ export default async function Page({ params }: DefaultPageParams) {
 				</div>
 			</Container>
 
-			<CtaSection />
+			<ProductCtaSection
+				title={tHome('cta.title')}
+				subtitle={tHome('cta.subtitle')}
+				ctaLabel={tHome('cta.button')}
+				ctaHref="/#generator"
+			/>
 
 			<Footer />
 		</>

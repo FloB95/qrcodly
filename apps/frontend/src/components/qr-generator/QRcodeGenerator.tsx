@@ -123,7 +123,7 @@ export const QRcodeGenerator = ({
 			<div className="mt-4 flex">
 				<div
 					className={cn(
-						'mx-auto flex flex-1 relative',
+						'mx-auto flex min-w-0 flex-1 relative',
 						compact
 							? ''
 							: 'min-h-[500px] max-w-[1200px] rounded-2xl from-white to-white/60 bg-gradient-to-br',
@@ -132,8 +132,8 @@ export const QRcodeGenerator = ({
 					{!compact && backLink}
 					<div
 						className={cn(
-							'flex flex-1 flex-col md:flex-row',
-							compact ? 'p-0 sm:p-6 md:gap-8' : 'p-6 md:gap-12',
+							'flex min-w-0 flex-1 flex-col md:flex-row',
+							compact ? 'p-0 sm:p-6 md:gap-8' : 'p-4 sm:p-6 md:gap-12',
 						)}
 					>
 						<div className="flex-1 mb-10 md:mb-0 min-w-0">

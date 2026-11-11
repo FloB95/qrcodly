@@ -8,6 +8,7 @@ import { env } from '@/core/config/env';
 import { GRACE_PERIOD_DAYS } from '@/core/config/constants';
 import UserSubscriptionRepository from '../../domain/repository/user-subscription.repository';
 import { SyncAddonWithProUseCase } from '../../useCase/sync-addon-with-pro.use-case';
+import { hostedPagesOfflineNotice } from '../../service/hosted-pages-offline-notice';
 
 @EventHandler(SubscriptionCancelInitiatedEvent.eventName)
 export class SubscriptionCancelInitiatedEventHandler extends AbstractEventHandler<SubscriptionCancelInitiatedEvent> {
@@ -71,6 +72,7 @@ export class SubscriptionCancelInitiatedEventHandler extends AbstractEventHandle
 				subscribeUrl: `${env.FRONTEND_URL}/plans`,
 				logoUrl: `${env.FRONTEND_URL}/email-logo.png`,
 				year: new Date().getFullYear(),
+				...(await hostedPagesOfflineNotice(userId)),
 			});
 
 			await mailer.sendMail({

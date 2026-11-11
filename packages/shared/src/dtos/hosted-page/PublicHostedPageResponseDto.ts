@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { HostedPageLinkSchema, HostedPageThemeSchema } from '../../schemas/HostedPage';
+import {
+	HostedDocumentCategorySchema,
+	HostedDocumentLanguageSchema,
+	HostedPageLinkSchema,
+	HostedPageThemeSchema,
+} from '../../schemas/HostedPage';
 
 const PublicHostedPageBase = z.object({
 	shortCode: z.string().describe('Short code the page is served under'),
@@ -35,6 +40,58 @@ export const PublicHostedPdfPageDto = PublicHostedPageBase.extend({
 });
 export type TPublicHostedPdfPageDto = z.infer<typeof PublicHostedPdfPageDto>;
 
+export const PublicHostedProductPartyDto = z.object({
+	name: z.string(),
+	address: z.string(),
+	email: z.string().nullable(),
+	website: z.string().nullable(),
+	phone: z.string().nullable(),
+});
+export type TPublicHostedProductPartyDto = z.infer<typeof PublicHostedProductPartyDto>;
+
+export const PublicHostedProductDocumentDto = PublicHostedPdfDocumentDto.extend({
+	title: z.string().nullable().describe('Display name; null means the name of the category'),
+	category: HostedDocumentCategorySchema,
+	language: HostedDocumentLanguageSchema,
+	version: z.string().nullable().describe('Revision as the manufacturer names it'),
+	validFrom: z.string().nullable().describe('When this file went online (ISO 8601)'),
+});
+export type TPublicHostedProductDocumentDto = z.infer<typeof PublicHostedProductDocumentDto>;
+
+export const PublicHostedProductArchivedDocumentDto = PublicHostedProductDocumentDto.extend({
+	documentId: z.string().describe('The document this file was a version of'),
+	validUntil: z.string().describe('When the file was replaced or removed (ISO 8601)'),
+});
+export type TPublicHostedProductArchivedDocumentDto = z.infer<
+	typeof PublicHostedProductArchivedDocumentDto
+>;
+
+export const PublicHostedProductPageDto = PublicHostedPageBase.extend({
+	type: z.literal('product'),
+	title: z.string(),
+	description: z.string().nullable(),
+	brandName: z.string().nullable(),
+	coverUrl: z.string().nullable(),
+	logoUrl: z.string().nullable(),
+	model: z.string(),
+	articleNumber: z.string().nullable(),
+	gtin: z.string().nullable(),
+	manufacturer: PublicHostedProductPartyDto,
+	euRepresentative: PublicHostedProductPartyDto.nullable(),
+	safetyNotice: z.string().nullable(),
+	link: HostedPageLinkSchema.nullable(),
+	documents: z.array(PublicHostedProductDocumentDto),
+	archive: z.array(PublicHostedProductArchivedDocumentDto),
+	paperRequestEmail: z
+		.string()
+		.nullable()
+		.describe('Where visitors write to request a paper copy; null when the page offers none'),
+});
+export type TPublicHostedProductPageDto = z.infer<typeof PublicHostedProductPageDto>;
+
 // One entry per hosted page type; a new type adds its page DTO here
-export const PublicHostedPageResponseDto = z.discriminatedUnion('type', [PublicHostedPdfPageDto]);
+export const PublicHostedPageResponseDto = z.discriminatedUnion('type', [
+	PublicHostedPdfPageDto,
+	PublicHostedProductPageDto,
+]);
 export type TPublicHostedPageResponseDto = z.infer<typeof PublicHostedPageResponseDto>;

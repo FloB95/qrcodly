@@ -1,3 +1,4 @@
+import type { THostedPageTemplateId } from '@shared/schemas';
 import type { MockupTone } from '@/components/products/mockups/UseCaseMockups';
 
 export type UseCaseIconName =
@@ -33,6 +34,8 @@ export type UseCaseDef = {
 	namespace: string;
 	iconName: UseCaseIconName;
 	parentPath: string;
+	/** PDF page template shown in the hero; solution pages without one show their first mockup. */
+	template?: THostedPageTemplateId;
 	/** One entry per feature section; length defines how many features the page renders. */
 	visuals: VisualSpec[];
 };
@@ -43,6 +46,7 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 		namespace: 'qrCodesRestaurants',
 		iconName: 'BuildingStorefrontIcon',
 		parentPath: '/products/qr-codes',
+		template: 'restaurantMenu',
 		visuals: [
 			{ kind: 'scanDestination', tone: 'amber' },
 			{ kind: 'placement', tone: 'violet' },
@@ -53,6 +57,7 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 		namespace: 'qrCodesRetail',
 		iconName: 'ShoppingBagIcon',
 		parentPath: '/products/qr-codes',
+		template: 'priceList',
 		visuals: [
 			{ kind: 'scanDestination', tone: 'violet' },
 			{ kind: 'dynamicSwap', tone: 'emerald' },
@@ -63,6 +68,7 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 		namespace: 'qrCodesEvents',
 		iconName: 'TicketIcon',
 		parentPath: '/products/qr-codes',
+		template: 'eventProgram',
 		visuals: [
 			{ kind: 'placement', tone: 'sky' },
 			{ kind: 'dynamicSwap', tone: 'emerald' },
@@ -73,6 +79,7 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 		namespace: 'qrCodesRealEstate',
 		iconName: 'HomeModernIcon',
 		parentPath: '/products/qr-codes',
+		template: 'realEstate',
 		visuals: [
 			{ kind: 'placement', tone: 'amber' },
 			{ kind: 'scanDestination', tone: 'violet' },
@@ -83,6 +90,7 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 		namespace: 'qrCodesEducation',
 		iconName: 'AcademicCapIcon',
 		parentPath: '/products/qr-codes',
+		template: 'brochure',
 		visuals: [
 			{ kind: 'scanDestination', tone: 'indigo' },
 			{ kind: 'dynamicSwap', tone: 'emerald' },
@@ -93,6 +101,7 @@ export const QR_CODE_USE_CASES: UseCaseDef[] = [
 		namespace: 'qrCodesMarketing',
 		iconName: 'MegaphoneIcon',
 		parentPath: '/products/qr-codes',
+		template: 'brochure',
 		visuals: [
 			{ kind: 'placement', tone: 'amber' },
 			{ kind: 'insights', tone: 'indigo' },

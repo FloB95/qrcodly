@@ -63,4 +63,6 @@ export const pdfPageType: THostedPageTypeDefinition<TPdfPageData> = {
 					},
 				]
 			: [],
+
+	carryOver: (_current, next) => next,
 };

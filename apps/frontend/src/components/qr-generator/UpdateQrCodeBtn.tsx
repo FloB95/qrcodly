@@ -2,12 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { isDynamic, objDiff, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import {
+	isDynamic,
+	isHostedPageContent,
+	objDiff,
+	type TQrCodeContent,
+	type TQrCodeWithRelationsResponseDto,
+} from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
 import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
+import { useResolveTemplateImages } from '@/hooks/useHostedTemplateImage';
 import * as Sentry from '@sentry/nextjs';
 import { qrCodeQueryKeys, useUpdateQrCodeMutation } from '@/lib/api/qr-code';
+import { hostedTrackingProps } from '@/lib/hosted-tracking';
 import { QrCodeUpdateDialog, UPDATE_DIALOG_DO_NOT_SHOW_AGAIN_KEY } from './QrCodeUpdateDialog';
 import { useQueryClient } from '@tanstack/react-query';
 import type { ApiError } from '@/lib/api/ApiError';
@@ -27,9 +35,10 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	const [infoDialogIsOpen, setInfoDialogIsOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const updateQrCodeMutation = useUpdateQrCodeMutation();
-	const { latestQrCode, updateLatestQrCode, hostedUploadsPending } = useQrCodeGeneratorStore(
-		(state) => state,
-	);
+	const resolveTemplateImages = useResolveTemplateImages();
+	const [resolving, setResolving] = useState(false);
+	const { latestQrCode, updateLatestQrCode, updateContent, hostedUploadsPending } =
+		useQrCodeGeneratorStore((state) => state);
 	const IS_DYNAMIC = !!qrCode.shortUrl && isDynamic(qrCode.content);
 
 	const hasValidChanges =
@@ -45,35 +54,59 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 	}, []);
 
 	const handleUpdate = async () => {
+		// an adopted template's images are uploaded now, only for the page that is really saved
+		let sent: TQrCodeContent;
+		setResolving(true);
+		try {
+			sent = await resolveTemplateImages(qrCode.content);
+		} catch (e) {
+			toast({
+				variant: 'destructive',
+				title: t('update.errorTitle'),
+				description: (e as Error).message,
+				duration: 5000,
+			});
+			return;
+		} finally {
+			setResolving(false);
+		}
+
 		try {
 			await updateQrCodeMutation.mutateAsync(
 				{
 					qrCodeId: qrCode.id,
 					data: {
 						config: qrCode.config,
-						content: qrCode.content,
+						content: sent,
 						name: qrCode.name,
 					},
 				},
 				{
-					onSuccess: () => {
+					onSuccess: (saved) => {
 						toast({
 							title: t('update.successTitle'),
 							description: t('update.successDescription'),
 							duration: 5000,
 						});
 
+						// a hosted page comes back with what the server keeps of it, e.g. archived files
+						const content = isHostedPageContent(saved.content) ? saved.content : sent;
+						if (content !== qrCode.content) updateContent(content);
 						updateLatestQrCode({
 							name: qrCode.name,
 							config: qrCode.config,
-							content: qrCode.content,
+							content,
 						});
 
 						void queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
+						// hosted pages hold manufacturer addresses and files: only their summary goes out
 						posthog.capture('qr-code-updated', {
 							name: qrCode.name,
 							config: qrCode.config,
-							content: qrCode.content,
+							contentType: qrCode.content.type,
+							...(isHostedPageContent(qrCode.content)
+								? hostedTrackingProps(qrCode.content)
+								: { content: qrCode.content }),
 						});
 					},
 					onError: (e: Error) => {
@@ -135,6 +168,7 @@ const UpdateQrCodeBtn = ({ qrCode }: { qrCode: UpdateBtnDto }) => {
 					!hasValidChanges ||
 					isContentIncomplete(qrCode.content) ||
 					Boolean(hostedUploadsPending) ||
+					resolving ||
 					updateQrCodeMutation.isPending
 				}
 			>

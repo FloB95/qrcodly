@@ -2,6 +2,7 @@
 
 import { memo, useEffect, useRef, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
+import posthog from 'posthog-js';
 import { useTranslations } from 'next-intl';
 import { ArrowPathIcon, DocumentTextIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { cn } from '@/lib/utils';
@@ -36,8 +37,11 @@ import { CharacterCounter } from './CharacterCounter';
 import { HostedFileDropzone } from './HostedFileDropzone';
 import { HostedPageDesignFields } from './HostedPageDesignFields';
 import { HostedPageProGate } from './HostedPageProGate';
+import { HostedPagesOfflineNotice } from '@/components/hosted-page/HostedPagesOfflineNotice';
 import { HostedPageTemplates, type HostedTemplateChoice } from './HostedPageTemplates';
-import { resolveActiveTemplate } from '@/components/hosted-page/preview';
+import { EditorSection, EditorSections } from './EditorSections';
+import { freshHostedDraft } from '@/lib/hosted-draft';
+import { resolveActiveTemplate, templateImageKey } from '@/components/hosted-page/preview';
 import {
 	getStylePresetTheme,
 	getTemplateTheme,
@@ -56,8 +60,6 @@ const BRAND_MAX = 80;
 const BUTTON_MAX = 40;
 const MB = 1024 * 1024;
 const IMAGE_ACCEPT = 'image/png,image/jpeg,image/webp';
-// unused uploads are deleted after 24 hours; a cached template image is reused well before that
-const TEMPLATE_UPLOAD_REUSE_MS = 12 * 60 * 60 * 1000;
 
 /** Text fields that are debounced before they reach the store (and with it the preview). */
 type TextFields = {
@@ -102,8 +104,6 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 		setHostedAdopted,
 		hostedTemplate,
 		setHostedTemplate,
-		hostedTemplateUploads,
-		rememberTemplateUpload,
 		startHostedUpload,
 		finishHostedUpload,
 	} = useQrCodeGeneratorStore((state) => state);
@@ -124,9 +124,16 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 	const commit = (next: TPdfInput) => {
 		if (mounted.current) commitToStore(next);
 	};
-	// the owner's first own change replaces the template sample in the preview
+	// The sample only illustrates; the owner's first own change ends it. Without a chosen template
+	// the owner works on the blank page from then on, so the picker and the preview agree.
 	const onChange = (next: TPdfInput) => {
-		if (hostedSampleTemplate) setHostedSampleTemplate(null);
+		if (hostedSampleTemplate) {
+			setHostedSampleTemplate(null);
+			if (!hostedTemplate) {
+				setHostedTemplate('blank');
+				if (next.theme === value.theme) next = { ...next, theme: getStylePresetTheme('editorial') };
+			}
+		}
 		commit(next);
 	};
 	const activeTemplate = resolveActiveTemplate(hostedTemplate, value.theme);
@@ -137,12 +144,11 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 	// from there instead of from nothing. A field is written only while it is empty or still holds
 	// what the previous template put there: the owner's own words and images always survive.
 	const upload = useUploadHostedFileMutation();
-	const [adopting, setAdopting] = useState(false);
 	const fromTemplate = (field: keyof NonNullable<typeof hostedAdopted>) => {
 		const current = value[field];
 		return !current || current === hostedAdopted?.[field];
 	};
-	const adoptTemplate = async (id: THostedPageTemplateId) => {
+	const adoptTemplate = (id: THostedPageTemplateId) => {
 		const texts = readPdfSampleTexts(tTemplates, id);
 		const adopted: NonNullable<typeof hostedAdopted> = {};
 		const next: TPdfInput = { ...value, theme: getTemplateTheme(id) };
@@ -152,52 +158,18 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 				adopted[field] = texts[field];
 			}
 		}
-		setHostedSampleTemplate(null);
-		setHostedAdopted({
-			...adopted,
-			coverKey: hostedAdopted?.coverKey,
-			logoKey: hostedAdopted?.logoKey,
-		});
-		commit(next);
-
-		const slots = (['coverKey', 'logoKey'] as const).filter(fromTemplate);
-		if (slots.length === 0) return;
-		setAdopting(true);
-		startHostedUpload();
-		try {
-			for (const slot of slots) {
-				// each template image is uploaded once per session: switching back and forth between
-				// templates must not use up the pending uploads or the upload rate
-				const slotKey = `${id}:${slot}`;
-				const cached = hostedTemplateUploads?.[slotKey];
-				let fileKey =
-					cached && Date.now() - cached.uploadedAt < TEMPLATE_UPLOAD_REUSE_MS
-						? cached.fileKey
-						: undefined;
-				if (!fileKey) {
-					const name = slot === 'coverKey' ? `${id}-cover.webp` : `${id}-logo.png`;
-					const response = await fetch(`/hosted-templates/${name}`);
-					if (!response.ok) continue;
-					const file = new File([await response.blob()], name, {
-						type: slot === 'coverKey' ? 'image/webp' : 'image/png',
-					});
-					const result = await upload.mutateAsync({ file, kind: 'image' });
-					rememberHostedAsset(result.fileKey, result.url);
-					rememberTemplateUpload(slotKey, result.fileKey);
-					fileKey = result.fileKey;
-				}
-				adopted[slot] = fileKey;
-				setHostedAdopted({ ...adopted });
-				commit({ ...latest.current, [slot]: fileKey });
+		for (const slot of ['coverKey', 'logoKey'] as const) {
+			if (fromTemplate(slot)) {
+				next[slot] = templateImageKey(id, slot);
+				adopted[slot] = next[slot];
 			}
-		} catch {
-			// texts and design are adopted already; the images stay for the owner to upload
-		} finally {
-			setAdopting(false);
-			finishHostedUpload();
 		}
+		setHostedSampleTemplate(null);
+		setHostedAdopted(adopted);
+		commit(next);
 	};
 	const chooseTemplate = (choice: HostedTemplateChoice) => {
+		posthog.capture('hosted-template:selected', { type: 'pdf', template: choice });
 		setHostedTemplate(choice);
 		if (choice === 'blank') {
 			// clears what a template wrote; whatever the owner typed or uploaded stays
@@ -215,8 +187,18 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 			});
 			return;
 		}
-		void adoptTemplate(choice);
+		adoptTemplate(choice);
 	};
+	// a template requested from outside (a landing page's "use template") is picked like a click
+	const { hostedTemplateRequest, setHostedTemplateRequest } = useQrCodeGeneratorStore(
+		(state) => state,
+	);
+	useEffect(() => {
+		if (!hostedTemplateRequest) return;
+		setHostedTemplateRequest(null);
+		chooseTemplate(hostedTemplateRequest);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [hostedTemplateRequest]);
 	const sampleText = (key: 'title' | 'description' | 'brandName' | 'documents') =>
 		activeTemplate ? tTemplates(`${activeTemplate}.sample.${key}`) : null;
 
@@ -369,6 +351,23 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 			),
 		});
 
+	// the texts of a direct-open page are short: everything else hides with the landing page
+	// a new page starts with its look, so a template can fill in the rest
+	const [openSections, setOpenSections] = useState<string[]>(() =>
+		isExistingPage ? [] : [direct ? 'documents' : 'design'],
+	);
+	// a manual belongs on a product page: languages, earlier versions and paper copies come with it
+	const updateContent = useQrCodeGeneratorStore((state) => state.updateContent);
+	const switchToProductPage = () => {
+		posthog.capture('hosted-page:switched-to-product');
+		const productDraft = freshHostedDraft('product');
+		setHostedTemplate(null);
+		setHostedAdopted(null);
+		updateContent(productDraft.content);
+		setHostedSampleTemplate(productDraft.sampleTemplate);
+		setHostedPreviewView('page');
+	};
+
 	const imageField = (key: 'coverKey' | 'logoKey', label: string, hint: string) => {
 		const current = value[key];
 		return (
@@ -391,6 +390,13 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 		);
 	};
 
+	// the title turns red once the owner left it empty, a saved page shows it at once
+	const [touched, setTouched] = useState<ReadonlySet<keyof TextFields>>(() => new Set());
+	const touch = (key: keyof TextFields) =>
+		setTouched((current) => (current.has(key) ? current : new Set(current).add(key)));
+	const fieldMissing = (key: keyof TextFields) =>
+		key === 'title' && !fields.title.trim() && (isExistingPage || touched.has(key));
+
 	const textField = (
 		key: keyof TextFields,
 		label: string,
@@ -399,7 +405,9 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 		id: string,
 	) => (
 		<div className="space-y-2">
-			<Label htmlFor={id}>{label}</Label>
+			<Label htmlFor={id} className={fieldMissing(key) ? 'text-destructive' : undefined}>
+				{label}
+			</Label>
 			<InputGroup>
 				<InputGroupInput
 					id={id}
@@ -407,18 +415,33 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 					maxLength={max}
 					placeholder={placeholder}
 					onChange={(e) => setField(key, e.target.value)}
+					onBlur={() => touch(key)}
 					disabled={locked}
 					className="pr-16"
+					aria-invalid={fieldMissing(key) || undefined}
+					aria-describedby={fieldMissing(key) ? `${id}-error` : undefined}
 				/>
 				<InputGroupAddon align="inline-end">
 					<CharacterCounter current={fields[key].length} max={max} />
 				</InputGroupAddon>
 			</InputGroup>
+			{fieldMissing(key) && (
+				<p id={`${id}-error`} className="text-xs text-destructive">
+					{t('fieldRequired')}
+				</p>
+			)}
 		</div>
 	);
 
+	// the template the picker shows as chosen; until one is, the look is not done
+	const pickedTemplate = hostedSampleTemplate
+		? null
+		: (hostedTemplate ??
+			(isPdfContentUntouched(value) && !hostedAdopted ? 'blank' : activeTemplate));
+	const designPicked = isExistingPage || pickedTemplate !== null;
+
 	return (
-		<div className="space-y-8">
+		<div className="space-y-6">
 			{/* What a scan opens */}
 			<section className="space-y-2">
 				<Label>{t('openMode.label')}</Label>
@@ -472,235 +495,280 @@ const PdfSectionBase = ({ value, onChange: commitToStore }: PdfSectionProps) => 
 			) : (
 				<HostedPageUsage draft={draft} qrCodeId={qrCodeId ?? null} direct={direct} />
 			)}
-
-			{!direct && (
-				<HostedPageTemplates
-					type="pdf"
-					activeId={
-						hostedSampleTemplate
-							? null
-							: (hostedTemplate ??
-								(isPdfContentUntouched(value) && !hostedAdopted ? 'blank' : activeTemplate))
-					}
-					disabled={uploadsLocked || adopting}
-					onSelect={chooseTemplate}
-					showBlank={!isExistingPage}
-				/>
-			)}
-
-			{/* Documents */}
-			<section className="space-y-3">
-				<div className="flex items-baseline justify-between">
-					<Label>{t('documents.title')}</Label>
-					<span className="text-xs text-muted-foreground">
-						{t('documents.count', { count: documents.length, max: maxDocuments })}
-					</span>
-				</div>
-				<input
-					ref={replaceInput}
-					type="file"
-					accept="application/pdf,.pdf"
-					className="hidden"
-					aria-hidden="true"
-					tabIndex={-1}
-					data-testid="pdf-replace-input"
-					onChange={(e) => void onReplacementChosen(e.target.files?.[0])}
-				/>
-				{documents.map((document, index) => (
-					<div
-						key={document.id ?? document.fileKey}
-						className="flex items-center gap-3 rounded-lg border bg-white p-3"
+			{!isExistingPage && !direct && (
+				<p className="text-xs text-muted-foreground">
+					{t('productHint')}{' '}
+					<button
+						type="button"
+						className="cursor-pointer font-medium text-foreground underline underline-offset-2"
+						onClick={switchToProductPage}
 					>
-						<div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-							<DocumentTextIcon className="size-5 text-muted-foreground" />
-						</div>
-						<div className="min-w-0 flex-1 space-y-1">
-							<Input
-								value={document.title ?? ''}
-								maxLength={80}
-								placeholder={
-									sampleText('documents')?.split('|')[index]?.trim() ||
-									t('documents.titlePlaceholder')
-								}
-								onChange={(e) => updateDocument(index, { title: e.target.value || undefined })}
-								disabled={locked}
-								className="h-8"
-								aria-label={t('documents.titleLabel')}
-							/>
-							<p className="truncate text-xs text-muted-foreground">
-								{replacing === document.id
-									? t('documents.replacing')
-									: `${document.fileName} · ${formatBytes(document.fileSize)}`}
-							</p>
-						</div>
-						<Button
-							type="button"
-							variant="ghost"
-							size="icon"
-							className="size-8 shrink-0"
-							onClick={() => pickReplacement(document.id)}
-							disabled={uploadsLocked || replacing !== null || !document.id}
-							aria-label={t('documents.replace')}
-							title={t('documents.replace')}
-						>
-							<ArrowPathIcon
-								className={cn('size-4', replacing === document.id && 'animate-spin')}
-							/>
-						</Button>
-						<Button
-							type="button"
-							variant="ghost"
-							size="icon"
-							className="size-8 shrink-0"
-							onClick={() =>
-								onChange({ ...value, documents: documents.filter((_, i) => i !== index) })
-							}
-							disabled={locked}
-							aria-label={t('documents.remove')}
-						>
-							<TrashIcon className="size-4" />
-						</Button>
-					</div>
-				))}
-				{documents.length < maxDocuments && (
-					<HostedFileDropzone
-						kind="pdf"
-						accept="application/pdf,.pdf"
-						maxSize={maxPdfBytes}
-						hint={
-							hasRoomForFile
-								? t('documents.hint', { maxSize: Math.round(maxPdfBytes / MB) })
-								: t('documents.limitReached')
-						}
-						current={null}
-						onUploaded={addDocument}
-						onRemove={() => {}}
-						disabled={uploadsLocked || !hasRoomForFile}
-					/>
-				)}
-				{direct && documents.length >= maxDocuments && (
-					<p className="text-xs text-muted-foreground">{t('documents.directOnlyOne')}</p>
-				)}
-				{/* only saved files are kept: a draft's uploads are swept after a day */}
-				{isExistingPage && (
-					<p className="text-xs text-muted-foreground">{t('documents.retentionHint')}</p>
-				)}
-			</section>
-
-			{/* Text */}
-			<section className="space-y-5">
-				{textField(
-					'title',
-					`${t('title.label')}*`,
-					sampleText('title') ?? t('title.placeholder'),
-					TITLE_MAX,
-					'pdf-title',
-				)}
-				{!direct && (
-					<>
-						<div className="space-y-2">
-							<Label htmlFor="pdf-description">{t('description.label')}</Label>
-							<div className="relative">
-								<Textarea
-									id="pdf-description"
-									value={fields.description}
-									maxLength={DESCRIPTION_MAX}
-									rows={3}
-									placeholder={sampleText('description') ?? t('description.placeholder')}
-									onChange={(e) => setField('description', e.target.value)}
-									disabled={locked}
-									className="resize-none pr-16"
-								/>
-								<div className="absolute right-3 bottom-2">
-									<CharacterCounter current={fields.description.length} max={DESCRIPTION_MAX} />
-								</div>
-							</div>
-						</div>
-						{textField(
-							'brandName',
-							t('brandName.label'),
-							sampleText('brandName') ?? t('brandName.placeholder'),
-							BRAND_MAX,
-							'pdf-brand',
-						)}
-						{showButtonLabel && (
-							<div className="space-y-1.5">
-								{textField(
-									'buttonLabel',
-									t('buttonLabel.label'),
-									activeTemplate
-										? tTemplates(`${activeTemplate}.buttonLabel`)
-										: t('buttonLabel.placeholder'),
-									BUTTON_MAX,
-									'pdf-button',
-								)}
-								<p className="text-xs text-muted-foreground">{t('buttonLabel.hint')}</p>
-							</div>
-						)}
-					</>
-				)}
-			</section>
-
-			{!direct && (
-				<>
-					{/* Images */}
-					<section className="grid gap-5 sm:grid-cols-2">
-						{imageField(
-							'coverKey',
-							t('cover.label'),
-							t('cover.hint', { maxSize: Math.round(maxImageBytes / MB) }),
-						)}
-						{imageField(
-							'logoKey',
-							t('logo.label'),
-							t('logo.hint', { maxSize: Math.round(maxImageBytes / MB) }),
-						)}
-					</section>
-
-					{/* Link button */}
-					<section className="space-y-3">
-						<div>
-							<Label>{t('link.title')}</Label>
-							<p className="mt-1 text-xs text-muted-foreground">{t('link.description')}</p>
-						</div>
-						<div className="grid gap-3 sm:grid-cols-[2fr_3fr]">
-							<Input
-								value={fields.linkLabel}
-								maxLength={BUTTON_MAX}
-								placeholder={
-									activeTemplate
-										? tTemplates(`${activeTemplate}.linkLabel`)
-										: t('link.labelPlaceholder')
-								}
-								onChange={(e) => setField('linkLabel', e.target.value)}
-								disabled={locked}
-								aria-label={t('link.label')}
-								aria-invalid={linkIssue === 'labelMissing'}
-							/>
-							<Input
-								value={fields.linkUrl}
-								maxLength={500}
-								placeholder={t('link.urlPlaceholder')}
-								onChange={(e) => setField('linkUrl', e.target.value)}
-								onBlur={(e) => {
-									const url = e.target.value.trim();
-									if (url && !/^https?:\/\//i.test(url)) setField('linkUrl', `https://${url}`);
-								}}
-								disabled={locked}
-								aria-label={t('link.url')}
-								aria-invalid={linkIssue === 'urlMissing'}
-							/>
-						</div>
-						{linkIssue && <p className="text-xs text-destructive">{t(`link.${linkIssue}`)}</p>}
-					</section>
-
-					<HostedPageDesignFields
-						value={{ theme: value.theme, hideBranding: value.hideBranding }}
-						onChange={(design) => onChange({ ...value, ...design })}
-						disabled={uploadsLocked}
-					/>
-				</>
+						{t('productHintCta')}
+					</button>
+				</p>
 			)}
+			<HostedPagesOfflineNotice scope="page" type="pdf" />
+
+			<EditorSections type="pdf" value={openSections} onValueChange={setOpenSections}>
+				{!direct && (
+					<EditorSection
+						value="design"
+						step={1}
+						title={t('sections.design')}
+						summary={
+							linkIssue
+								? t(`link.${linkIssue}`)
+								: !designPicked
+									? t('sections.designPick')
+									: pickedTemplate === 'blank'
+										? tTemplates('blank.name')
+										: activeTemplate
+											? tTemplates(`${activeTemplate}.name`)
+											: t('sections.designCustom')
+						}
+						missing={Boolean(linkIssue)}
+						complete={!linkIssue && designPicked}
+					>
+						<HostedPageTemplates
+							type="pdf"
+							activeId={pickedTemplate}
+							disabled={uploadsLocked}
+							onSelect={chooseTemplate}
+							showBlank={!isExistingPage}
+						/>
+						{/* Images */}
+						<section className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+							{imageField(
+								'coverKey',
+								t('cover.label'),
+								t('cover.hint', { maxSize: Math.round(maxImageBytes / MB) }),
+							)}
+							{imageField(
+								'logoKey',
+								t('logo.label'),
+								t('logo.hint', { maxSize: Math.round(maxImageBytes / MB) }),
+							)}
+						</section>
+
+						{/* Link button */}
+						<section className="space-y-3">
+							<div>
+								<Label>{t('link.title')}</Label>
+								<p className="mt-1 text-xs text-muted-foreground">{t('link.description')}</p>
+							</div>
+							<div className="grid gap-3 sm:grid-cols-[2fr_3fr]">
+								<Input
+									value={fields.linkLabel}
+									maxLength={BUTTON_MAX}
+									placeholder={
+										activeTemplate
+											? tTemplates(`${activeTemplate}.linkLabel`)
+											: t('link.labelPlaceholder')
+									}
+									onChange={(e) => setField('linkLabel', e.target.value)}
+									disabled={locked}
+									aria-label={t('link.label')}
+									aria-invalid={linkIssue === 'labelMissing'}
+								/>
+								<Input
+									value={fields.linkUrl}
+									maxLength={500}
+									placeholder={t('link.urlPlaceholder')}
+									onChange={(e) => setField('linkUrl', e.target.value)}
+									onBlur={(e) => {
+										const url = e.target.value.trim();
+										if (url && !/^https?:\/\//i.test(url)) setField('linkUrl', `https://${url}`);
+									}}
+									disabled={locked}
+									aria-label={t('link.url')}
+									aria-invalid={linkIssue === 'urlMissing'}
+								/>
+							</div>
+							{linkIssue && <p className="text-xs text-destructive">{t(`link.${linkIssue}`)}</p>}
+						</section>
+
+						<HostedPageDesignFields
+							value={{ theme: value.theme, hideBranding: value.hideBranding }}
+							onChange={(design) => onChange({ ...value, ...design })}
+							disabled={uploadsLocked}
+						/>
+					</EditorSection>
+				)}
+
+				<EditorSection
+					value="documents"
+					step={direct ? 1 : 2}
+					title={t('documents.title')}
+					summary={
+						documents.length === 0
+							? t('sections.missing', { fields: t('sections.oneDocument') })
+							: t('sections.documentsSummary', { count: documents.length })
+					}
+					missing={documents.length === 0}
+					complete={documents.length > 0}
+				>
+					<section className="space-y-3">
+						<div className="flex justify-end">
+							<span className="text-xs text-muted-foreground">
+								{t('documents.count', { count: documents.length, max: maxDocuments })}
+							</span>
+						</div>
+						<input
+							ref={replaceInput}
+							type="file"
+							accept="application/pdf,.pdf"
+							className="hidden"
+							aria-hidden="true"
+							tabIndex={-1}
+							data-testid="pdf-replace-input"
+							onChange={(e) => void onReplacementChosen(e.target.files?.[0])}
+						/>
+						{documents.map((document, index) => (
+							<div
+								key={document.id ?? document.fileKey}
+								className="flex items-center gap-3 rounded-lg border bg-white p-3"
+							>
+								<div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+									<DocumentTextIcon className="size-5 text-muted-foreground" />
+								</div>
+								<div className="min-w-0 flex-1 space-y-1">
+									<Input
+										value={document.title ?? ''}
+										maxLength={80}
+										placeholder={
+											sampleText('documents')?.split('|')[index]?.trim() ||
+											t('documents.titlePlaceholder')
+										}
+										onChange={(e) => updateDocument(index, { title: e.target.value || undefined })}
+										disabled={locked}
+										className="h-8"
+										aria-label={t('documents.titleLabel')}
+									/>
+									<p className="truncate text-xs text-muted-foreground">
+										{replacing === document.id
+											? t('documents.replacing')
+											: `${document.fileName} · ${formatBytes(document.fileSize)}`}
+									</p>
+								</div>
+								<Button
+									type="button"
+									variant="ghost"
+									size="icon"
+									className="size-8 shrink-0"
+									onClick={() => pickReplacement(document.id)}
+									disabled={uploadsLocked || replacing !== null || !document.id}
+									aria-label={t('documents.replace')}
+									title={t('documents.replace')}
+								>
+									<ArrowPathIcon
+										className={cn('size-4', replacing === document.id && 'animate-spin')}
+									/>
+								</Button>
+								<Button
+									type="button"
+									variant="ghost"
+									size="icon"
+									className="size-8 shrink-0"
+									onClick={() =>
+										onChange({ ...value, documents: documents.filter((_, i) => i !== index) })
+									}
+									disabled={locked}
+									aria-label={t('documents.remove')}
+								>
+									<TrashIcon className="size-4" />
+								</Button>
+							</div>
+						))}
+						{documents.length < maxDocuments && (
+							<HostedFileDropzone
+								kind="pdf"
+								accept="application/pdf,.pdf"
+								maxSize={maxPdfBytes}
+								hint={
+									hasRoomForFile
+										? t('documents.hint', { maxSize: Math.round(maxPdfBytes / MB) })
+										: t('documents.limitReached')
+								}
+								current={null}
+								onUploaded={addDocument}
+								onRemove={() => {}}
+								disabled={uploadsLocked || !hasRoomForFile}
+							/>
+						)}
+						{direct && documents.length >= maxDocuments && (
+							<p className="text-xs text-muted-foreground">{t('documents.directOnlyOne')}</p>
+						)}
+						{/* only saved files are kept: a draft's uploads are swept after a day */}
+						{isExistingPage && (
+							<p className="text-xs text-muted-foreground">{t('documents.retentionHint')}</p>
+						)}
+					</section>
+				</EditorSection>
+
+				<EditorSection
+					value="texts"
+					step={direct ? 2 : 3}
+					title={t('sections.texts')}
+					summary={
+						value.title.trim() ? value.title : t('sections.missing', { fields: t('title.label') })
+					}
+					missing={!value.title.trim()}
+					complete={Boolean(value.title.trim()) && !linkIssue}
+				>
+					<section className="space-y-5">
+						{textField(
+							'title',
+							`${t('title.label')}*`,
+							sampleText('title') ?? t('title.placeholder'),
+							TITLE_MAX,
+							'pdf-title',
+						)}
+						{!direct && (
+							<>
+								<div className="space-y-2">
+									<Label htmlFor="pdf-description">{t('description.label')}</Label>
+									<div className="relative">
+										<Textarea
+											id="pdf-description"
+											value={fields.description}
+											maxLength={DESCRIPTION_MAX}
+											rows={3}
+											placeholder={sampleText('description') ?? t('description.placeholder')}
+											onChange={(e) => setField('description', e.target.value)}
+											disabled={locked}
+											className="resize-none pr-16"
+										/>
+										<div className="absolute right-3 bottom-2">
+											<CharacterCounter current={fields.description.length} max={DESCRIPTION_MAX} />
+										</div>
+									</div>
+								</div>
+								{textField(
+									'brandName',
+									t('brandName.label'),
+									sampleText('brandName') ?? t('brandName.placeholder'),
+									BRAND_MAX,
+									'pdf-brand',
+								)}
+								{showButtonLabel && (
+									<div className="space-y-1.5">
+										{textField(
+											'buttonLabel',
+											t('buttonLabel.label'),
+											activeTemplate
+												? tTemplates(`${activeTemplate}.buttonLabel`)
+												: t('buttonLabel.placeholder'),
+											BUTTON_MAX,
+											'pdf-button',
+										)}
+										<p className="text-xs text-muted-foreground">{t('buttonLabel.hint')}</p>
+									</div>
+								)}
+							</>
+						)}
+					</section>
+				</EditorSection>
+			</EditorSections>
 		</div>
 	);
 };

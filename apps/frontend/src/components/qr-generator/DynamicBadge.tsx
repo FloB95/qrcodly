@@ -139,7 +139,11 @@ export const DynamicBadge = ({ className = '', checked, onChange }: DynamicBadge
 						<TooltipTrigger asChild>
 							<div className="absolute inset-0 pointer-events-none" />
 						</TooltipTrigger>
-						<TooltipContent side="right" className="max-w-xs">
+						<TooltipContent
+							side="right"
+							collisionPadding={8}
+							className="max-w-[min(20rem,var(--radix-tooltip-content-available-width))]"
+						>
 							<TooltipArrow className="fill-border" />
 							<p className="text-sm">
 								{t.rich('general.dynamicBadgeTooltip', {

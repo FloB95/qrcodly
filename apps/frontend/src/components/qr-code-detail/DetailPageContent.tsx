@@ -36,6 +36,7 @@ import PhoneContent from './content/Phone';
 import SmsContent from './content/Sms';
 import WhatsAppContent from './content/WhatsApp';
 import PdfContent from './content/Pdf';
+import ProductContent from './content/Product';
 import { SavedHostedPreviewSwitch } from './SavedHostedPreviewSwitch';
 import { Link } from '@/i18n/navigation';
 import { getQrCodeEditLink } from '@/lib/utils';
@@ -88,6 +89,8 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 				return <WhatsAppContent qrCode={qrCode} />;
 			case 'pdf':
 				return <PdfContent qrCode={qrCode} />;
+			case 'product':
+				return <ProductContent qrCode={qrCode} />;
 			default:
 				return <></>;
 		}

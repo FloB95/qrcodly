@@ -21,7 +21,7 @@ export function BrandQr({ className = 'w-24 h-24' }: { className?: string }) {
 				d="M0.5 2.5a2 2 0 0 1 2 -2H4.5a2 2 0 0 1 2 2V4.5a2 2 0 0 1 -2 2H2.5a2 2 0 0 1 -2 -2ZM18.5 2.5a2 2 0 0 1 2 -2H22.5a2 2 0 0 1 2 2V4.5a2 2 0 0 1 -2 2H20.5a2 2 0 0 1 -2 -2ZM0.5 20.5a2 2 0 0 1 2 -2H4.5a2 2 0 0 1 2 2V22.5a2 2 0 0 1 -2 2H2.5a2 2 0 0 1 -2 -2Z"
 				fill="none"
 				stroke="currentColor"
-				stroke-width="1"
+				strokeWidth="1"
 			/>
 			<circle cx="3.5" cy="3.5" r="1.5" />
 			<circle cx="21.5" cy="3.5" r="1.5" />

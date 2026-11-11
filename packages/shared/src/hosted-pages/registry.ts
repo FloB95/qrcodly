@@ -1,12 +1,14 @@
 import type { TQrCodeContent } from '../schemas/QrCode';
 import { HOSTED_PAGE_TYPES, type THostedPageType } from '../schemas/HostedPage';
 import type {
+	THostedCarryOverContext,
 	THostedFileRef,
 	THostedInputIssue,
 	THostedPageTypeDefinition,
 	THostedServedFile,
 } from './page-type';
 import { pdfPageType } from './pdf.page-type';
+import { productPageType } from './product.page-type';
 
 /** Content of a hosted page type as the QR code API carries it (the page data plus QR flags). */
 export type THostedPageData<K extends THostedPageType> = Extract<
@@ -30,6 +32,7 @@ export const HOSTED_PAGE_TYPE_DEFINITIONS: {
 	[K in THostedPageType]: THostedPageTypeDefinition<THostedPageBodyData<K>>;
 } = {
 	pdf: pdfPageType,
+	product: productPageType,
 };
 
 export function isHostedPageType(type: string): type is THostedPageType {
@@ -119,3 +122,11 @@ export const withHostedDocumentIds = <T extends THostedSource>(
 	content: T,
 	newId: () => string,
 ): T => mapData(content, (data, definition) => definition.withDocumentIds(data, newId));
+
+/** The content to store when `next` replaces the page `current` (null for a new page). */
+export const withHostedCarryOver = <T extends THostedSource>(
+	current: THostedPageBody | null,
+	next: T,
+	context: THostedCarryOverContext,
+): T =>
+	mapData(next, (data, definition) => definition.carryOver(current?.data ?? null, data, context));

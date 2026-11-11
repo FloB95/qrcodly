@@ -41,6 +41,8 @@ export type QrCodeGeneratorState = {
 	hostedSampleTemplate?: THostedPageTemplateId | null;
 	/** Template or blank sheet the owner picked in this session; unset for a loaded page */
 	hostedTemplate?: HostedTemplateChoice | null;
+	/** A template to adopt as soon as the editor is ready, e.g. from a landing page's "use template" */
+	hostedTemplateRequest?: THostedPageTemplateId | null;
 	/** What the last adopted template wrote, so the next template may replace exactly that */
 	hostedAdopted?: Partial<
 		Record<'title' | 'description' | 'brandName' | 'buttonLabel' | 'coverKey' | 'logoKey', string>
@@ -69,6 +71,7 @@ export type QrCodeGeneratorActions = {
 	setHostedPreviewView: (view: 'qr' | 'page') => void;
 	setHostedSampleTemplate: (id: THostedPageTemplateId | null) => void;
 	setHostedTemplate: (choice: HostedTemplateChoice | null) => void;
+	setHostedTemplateRequest: (id: THostedPageTemplateId | null) => void;
 	setHostedAdopted: (adopted: QrCodeGeneratorState['hostedAdopted']) => void;
 	startHostedUpload: () => void;
 	finishHostedUpload: () => void;
@@ -170,6 +173,7 @@ export const createQrCodeGeneratorStore = (initState: QrCodeGeneratorState) => {
 		setHostedPreviewView: (hostedPreviewView) => set({ hostedPreviewView }),
 		setHostedSampleTemplate: (hostedSampleTemplate) => set({ hostedSampleTemplate }),
 		setHostedTemplate: (hostedTemplate) => set({ hostedTemplate }),
+		setHostedTemplateRequest: (hostedTemplateRequest) => set({ hostedTemplateRequest }),
 		setHostedAdopted: (hostedAdopted) => set({ hostedAdopted }),
 		startHostedUpload: () =>
 			set((state) => ({ hostedUploadsPending: (state.hostedUploadsPending ?? 0) + 1 })),

@@ -70,8 +70,8 @@ const renderVCardContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	return <VCardDetailsCard vcard={vcardData} trigger={displayName} />;
 };
 
-const renderPdfContent = (qr: TQrCodeWithRelationsResponseDto) => {
-	if (qr.content.type !== 'pdf') return null;
+const renderHostedPageContent = (qr: TQrCodeWithRelationsResponseDto) => {
+	if (qr.content.type !== 'pdf' && qr.content.type !== 'product') return null;
 
 	const { title } = qr.content.data;
 	if (!qr.shortUrl) return title;
@@ -109,7 +109,8 @@ export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto
 		case 'whatsapp':
 			return <WhatsAppDetailsCard whatsapp={qr.content.data} />;
 		case 'pdf':
-			return renderPdfContent(qr);
+		case 'product':
+			return renderHostedPageContent(qr);
 		default:
 			return 'Unknown';
 	}

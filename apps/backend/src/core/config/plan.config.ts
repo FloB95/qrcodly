@@ -83,7 +83,7 @@ export const HOSTED_PAGE_PLAN_LIMITS: Record<PlanName, HostedPageLimits> = {
 	pro: {
 		maxLandingPages: 15,
 		maxFiles: 60,
-		maxFileSizeBytes: { pdf: 25 * 1024 * 1024, image: 2 * 1024 * 1024 },
+		maxFileSizeBytes: { pdf: 50 * 1024 * 1024, image: 2 * 1024 * 1024 },
 		brandingRemovable: true,
 		customTheme: true,
 	},

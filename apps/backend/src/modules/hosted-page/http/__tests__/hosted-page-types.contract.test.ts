@@ -85,6 +85,38 @@ const PAGE_TYPE_FIXTURES: Record<THostedPageType, (upload: TUpload) => Promise<T
 			},
 		};
 	},
+	product: async (upload) => {
+		const [manual, declaration, cover, logo] = [
+			await upload('pdf'),
+			await upload('pdf'),
+			await upload('image'),
+			await upload('image'),
+		];
+		const file = (upload: THostedUploadResponseDto) => ({
+			fileKey: upload.fileKey,
+			fileName: upload.fileName,
+			fileSize: upload.fileSize,
+		});
+		return {
+			type: 'product',
+			data: {
+				title: 'Contract product',
+				model: 'CP-1',
+				manufacturer: {
+					name: 'Contract GmbH',
+					address: 'Musterstraße 1, 12345 Musterstadt',
+					email: 'info@example.com',
+				},
+				documents: [
+					{ category: 'manual', language: 'de', ...file(manual) },
+					{ category: 'declaration', language: 'en', ...file(declaration) },
+				],
+				coverKey: cover.fileKey,
+				logoKey: logo.fileKey,
+				isDynamic: true,
+			},
+		};
+	},
 };
 
 describe('Hosted page type contract', () => {

@@ -11,6 +11,7 @@ import { EnforceCustomDomainLimitUseCase } from '../useCase/enforce-custom-domai
 import { CustomDomainEntitlementService } from '@/core/services/custom-domain-entitlement.service';
 import { ClerkUserInfoService } from '@/core/services/clerk-user-info.service';
 import { Mailer } from '@/core/mailer/mailer';
+import { hostedPagesOfflineNotice } from '../service/hosted-pages-offline-notice';
 
 const DATE_FORMAT: Intl.DateTimeFormatOptions = {
 	weekday: 'long',
@@ -89,6 +90,7 @@ export class CancellationReminderCronJob extends AbstractCronJob {
 					subscribeUrl: `${env.FRONTEND_URL}/plans`,
 					logoUrl: `${env.FRONTEND_URL}/email-logo.png`,
 					year: new Date().getFullYear(),
+					...(await hostedPagesOfflineNotice(subscription.userId)),
 				});
 
 				await mailer.sendMail({

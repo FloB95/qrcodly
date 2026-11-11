@@ -24,6 +24,8 @@ export function HostedPageHeader({
 	const t = useTranslations('hostedPage');
 	const tokens = STYLE_TOKENS[style];
 	const shownTitle = title || (preview ? t('pdf.titlePlaceholder') : '');
+	// a preview sits inside another page, which owns the h1
+	const Title = preview ? 'p' : 'h1';
 
 	return (
 		<div className={cn('flex flex-col gap-4', style === 'editorial' && 'items-center text-center')}>
@@ -44,9 +46,9 @@ export function HostedPageHeader({
 					{brandName && <p className={cn(tokens.eyebrow, 'text-[var(--hp-ink)]')}>{brandName}</p>}
 				</div>
 			)}
-			<h1
+			<Title
 				className={cn(
-					'font-hp-display text-balance break-words',
+					'font-hp-display text-balance [overflow-wrap:anywhere]',
 					style === 'editorial' &&
 						'text-[2.1rem] leading-[1.08] font-medium tracking-tight @md:text-5xl',
 					style === 'gallery' &&
@@ -57,7 +59,7 @@ export function HostedPageHeader({
 				)}
 			>
 				{shownTitle}
-			</h1>
+			</Title>
 			{description && (
 				<p
 					className={cn(

@@ -29,6 +29,7 @@ describe('BulkImportQrCodesUseCase — Input-Schema coverage', () => {
 		event: 'not offered yet',
 		epc: 'not offered yet',
 		pdf: 'hosted page — every row would need its own file upload',
+		product: 'hosted page — every row would need its own file uploads',
 	};
 
 	const schemaShapes = {
@@ -79,5 +80,6 @@ describe('BulkImportQrCodesUseCase — Input-Schema coverage', () => {
 
 	it('hosted page types never get a bulk import', () => {
 		expect(columnMap.pdf).toBeUndefined();
+		expect(columnMap.product).toBeUndefined();
 	});
 });

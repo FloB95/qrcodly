@@ -1,5 +1,5 @@
-import { env } from '@/env';
-import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { routing, SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { pageUrl } from '@/components/marketing/seo';
 import { QR_CODE_USE_CASES, URL_SHORTENER_USE_CASES } from '@/lib/use-case-pages';
 import type { MetadataRoute } from 'next';
 
@@ -7,10 +7,11 @@ const PAGES = [
 	'', // Home
 	'docs',
 	'plans',
-	'features',
 	'products/url-shortener',
 	'products/qr-codes',
 	'products/analytics',
+	'products/hosted-pages/pdf',
+	'products/hosted-pages/digital-manual',
 	'tools/qr-code-scanner',
 	'faq',
 	'imprint',
@@ -23,30 +24,19 @@ const PAGES = [
 const NOT_TRANSLATED = ['docs'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-	const baseUrl = env.NEXT_PUBLIC_FRONTEND_URL;
-
-	return PAGES.map((page) => {
-		const url = `${baseUrl}${page ? `/${page}` : ''}`;
-
-		let alternates: Record<string, string> = {};
-
-		if (!NOT_TRANSLATED.includes(page)) {
-			alternates = Object.fromEntries(
-				SUPPORTED_LANGUAGES.map((lang) => [
-					lang,
-					lang === 'en'
-						? `${baseUrl}${page ? `/${page}` : ''}`
-						: `${baseUrl}/${lang}${page ? `/${page}` : ''}`,
-				]),
-			);
+	return PAGES.flatMap((page) => {
+		if (NOT_TRANSLATED.includes(page)) {
+			return [{ url: pageUrl(routing.defaultLocale, page) }];
 		}
 
-		return {
-			url,
-			lastModified: new Date(),
-			alternates: {
-				languages: alternates,
-			},
+		const languages = {
+			'x-default': pageUrl(routing.defaultLocale, page),
+			...Object.fromEntries(SUPPORTED_LANGUAGES.map((lang) => [lang, pageUrl(lang, page)])),
 		};
+		// Every language version is its own entry, each listing all alternates.
+		return SUPPORTED_LANGUAGES.map((lang) => ({
+			url: pageUrl(lang, page),
+			alternates: { languages },
+		}));
 	});
 }

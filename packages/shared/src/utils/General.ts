@@ -431,6 +431,18 @@ export const getDefaultContentByType = (
 					isDynamic: true,
 				},
 			};
+		case 'product':
+			return {
+				type: 'product',
+				data: {
+					title: '',
+					model: '',
+					manufacturer: { name: '', address: '' },
+					documents: [],
+					theme: getStylePresetTheme('technical'),
+					isDynamic: true,
+				},
+			};
 		default:
 			throw new Error('Invalid content type');
 	}

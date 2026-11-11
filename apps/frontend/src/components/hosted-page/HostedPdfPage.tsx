@@ -20,12 +20,22 @@ type HostedPdfPageProps = {
 
 type DocumentLinks = { open: string; download: string };
 
+const sameSiteFile = (url: string | undefined) => (url?.startsWith('/') ? url : '#');
+
 /** Browser-facing document links; the API's absolute URLs are meant for API consumers. */
 function documentLinks(
 	page: TPublicHostedPdfPageDto,
 	documentId: string | undefined,
 ): DocumentLinks {
-	if (!page.shortCode || !documentId) return { open: '#', download: '#' };
+	if (!documentId) return { open: '#', download: '#' };
+	if (!page.shortCode) {
+		// without a short URL only a file of this site opens: the demo pages' sample document
+		const document = page.documents.find((entry) => entry.id === documentId);
+		return {
+			open: sameSiteFile(document?.fileUrl),
+			download: sameSiteFile(document?.downloadUrl),
+		};
+	}
 	return {
 		// relative: the page only renders on its own host, www and dev-by-IP included
 		open: hostedFileUrl(`/u/${page.shortCode}`, documentId),

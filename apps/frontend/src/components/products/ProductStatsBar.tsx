@@ -2,6 +2,7 @@
 
 import Container from '@/components/ui/container';
 import { AnimateOnScroll } from '@/components/features/AnimateOnScroll';
+import { Eyebrow } from '@/components/marketing/SectionHead';
 import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 
@@ -92,34 +93,49 @@ function AnimatedStatValue({
 	);
 }
 
-export function ProductStatsBar({ stats }: { stats: Array<{ value: string; label: string }> }) {
+export function ProductStatsBar({
+	stats,
+	eyebrow,
+	title,
+}: {
+	stats: Array<{ value: string; label: string }>;
+	eyebrow?: string;
+	title?: string;
+}) {
 	return (
-		<div className="py-16 sm:py-20">
+		<section className="-mx-4 my-8 bg-slate-900 text-white sm:mx-0 sm:my-12">
 			<Container>
-				<div className="sm:px-6 lg:px-8">
-					<div className="rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-4 py-8 sm:px-10 sm:py-14">
-						<div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 md:gap-6">
-							{stats.map((stat, i) => (
-								<AnimateOnScroll key={stat.label} delay={i * 0.1}>
-									<div className="relative text-center">
-										{i > 0 && (
-											<div className="absolute left-0 top-1/2 -translate-y-1/2 hidden md:block w-px h-12 bg-slate-700/50" />
-										)}
-										<AnimatedStatValue
-											value={stat.value}
-											delay={i * 0.1}
-											className="text-2xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight"
-										/>
-										<div className="text-xs sm:text-base text-slate-400 mt-1 sm:mt-2 font-medium">
-											{stat.label}
-										</div>
-									</div>
-								</AnimateOnScroll>
-							))}
+				<div className="flex flex-col gap-8 px-4 py-11 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:px-8">
+					{(eyebrow || title) && (
+						<div className="flex max-w-md flex-col gap-1.5">
+							{eyebrow && <Eyebrow className="text-amber-400">{eyebrow}</Eyebrow>}
+							{title && (
+								<p className="text-2xl font-bold tracking-tight text-balance sm:text-[26px]">
+									{title}
+								</p>
+							)}
 						</div>
-					</div>
+					)}
+					<dl className="grid grid-cols-2 gap-x-8 gap-y-6 sm:flex sm:flex-wrap sm:gap-12">
+						{stats.map((stat, i) => (
+							<AnimateOnScroll
+								key={stat.label}
+								delay={i * 0.08}
+								className="flex flex-col-reverse gap-1"
+							>
+								<dt className="text-sm text-slate-400">{stat.label}</dt>
+								<dd>
+									<AnimatedStatValue
+										value={stat.value}
+										delay={i * 0.08}
+										className="text-3xl font-extrabold tracking-tight sm:text-[40px] sm:leading-none"
+									/>
+								</dd>
+							</AnimateOnScroll>
+						))}
+					</dl>
 				</div>
 			</Container>
-		</div>
+		</section>
 	);
 }

@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowTopRightOnSquareIcon, PencilIcon } from '@heroicons/react/24/outline';
-import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
+import { isHostedPageType, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { buttonVariants } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
 import { usePublicHostedPageQuery } from '@/lib/api/hosted-page';
@@ -12,6 +12,7 @@ import { useHasProPlan } from '@/hooks/useHasProPlan';
 import { getQrCodeEditLink } from '@/lib/utils';
 import { CopyUrlButton } from '@/components/dashboard/qrCode/content-renderers/CopyUrlButton';
 import { TruncatedLink } from '@/components/dashboard/qrCode/content-renderers/TruncatedLink';
+import { HostedPagesOfflineNotice } from '@/components/hosted-page/HostedPagesOfflineNotice';
 
 type HostedPageCardProps = {
 	qrCode: TQrCodeWithRelationsResponseDto;
@@ -58,6 +59,9 @@ export function HostedPageCard({ qrCode, shortCode, children }: HostedPageCardPr
 						{t('edit')}
 					</Link>
 				</div>
+				{isHostedPageType(qrCode.content.type) && (
+					<HostedPagesOfflineNotice scope="page" type={qrCode.content.type} />
+				)}
 				{live.data?.status === 'disabled' && (
 					<p className="text-sm text-amber-700">
 						{!planLoading && !hasProPlan ? t('offlineWithoutPro') : t('disabled')}
