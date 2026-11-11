@@ -21,12 +21,25 @@ export type BentoTile = {
 	action?: { label: string; href: string; external?: boolean };
 };
 
+// Laptops get two columns: wide tiles take a whole row, so their visuals keep their room.
 const SPAN: Record<BentoTile['span'], string> = {
-	2: 'lg:col-span-2',
-	3: 'lg:col-span-3',
-	4: 'lg:col-span-4',
-	6: 'lg:col-span-6',
+	2: 'xl:col-span-2',
+	3: 'xl:col-span-3',
+	4: 'lg:col-span-2 xl:col-span-4',
+	6: 'lg:col-span-2 xl:col-span-6',
 };
+
+/** Narrow tiles that would sit alone in a two-column row; they take the whole row instead. */
+function loneOnLaptop(tiles: BentoTile[]) {
+	const narrow = tiles.map((tile) => tile.span < 4);
+	const lone = new Set<number>();
+	for (let i = 0; i < narrow.length; i++) {
+		if (!narrow[i]) continue;
+		if (narrow[i + 1]) i++;
+		else lone.add(i);
+	}
+	return lone;
+}
 
 function ActionLink({
 	action,
@@ -116,14 +129,19 @@ export function ProductBento({
 	subtitle?: string;
 	tiles: BentoTile[];
 }) {
+	const lone = loneOnLaptop(tiles);
 	return (
 		<section className="py-12 sm:py-20">
 			<Container>
 				<div className="sm:px-6 lg:px-8">
 					{title && <SectionHead eyebrow={eyebrow} title={title} subtitle={subtitle} />}
-					<div className="grid grid-cols-1 gap-5 lg:grid-cols-6">
+					<div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-6">
 						{tiles.map((tile, i) => (
-							<AnimateOnScroll key={tile.title} delay={(i % 3) * 0.08} className={SPAN[tile.span]}>
+							<AnimateOnScroll
+								key={tile.title}
+								delay={(i % 3) * 0.08}
+								className={cn(SPAN[tile.span], lone.has(i) && 'lg:col-span-2')}
+							>
 								<Tile tile={tile} heading={title ? 'h3' : 'h2'} />
 							</AnimateOnScroll>
 						))}

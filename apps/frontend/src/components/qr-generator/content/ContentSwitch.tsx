@@ -2,6 +2,7 @@
 
 import { useMemo, useCallback } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { DocumentArrowUpIcon } from '@heroicons/react/24/outline';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -167,11 +168,17 @@ export const ContentSwitch = ({ hiddenTabs = [], isEditMode, compact }: ContentS
 			) : (
 				<TabsList className="mb-6 grid h-auto grid-cols-2 gap-2 bg-transparent p-0 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4">
 					{visibleTabs.map(({ type, icon: Icon, label }) => (
-						<TabsTrigger key={type} value={type} asChild>
-							<button className={buttonVariants({ variant: 'tab' })}>
-								<Icon className="mr-2 h-6 w-6 min-w-5" />
-								{t(`tab.${label}`)}
-							</button>
+						<TabsTrigger
+							key={type}
+							value={type}
+							className={cn(
+								buttonVariants({ variant: 'tab' }),
+								'h-auto min-h-10 min-w-0 whitespace-normal px-2 leading-tight hyphens-auto wrap-anywhere',
+							)}
+						>
+							<Icon className="mr-2 h-6 w-6 min-w-5" />
+							{/* a wrapped label fills the row; left-aligned it stays next to the icon */}
+							<span className="text-left">{t(`tab.${label}`)}</span>
 						</TabsTrigger>
 					))}
 				</TabsList>

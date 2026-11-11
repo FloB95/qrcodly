@@ -456,18 +456,21 @@ export function QrScanAnalyticsMockup() {
 
 				{/* Bar chart */}
 				<div className="flex flex-col flex-1 min-h-0 mb-2.5 sm:mb-3">
-					<div className="flex items-end gap-[3px] sm:gap-1 flex-1 min-h-0">
-						{bars.map((h, i) => (
-							<div key={i} className="flex-1 flex flex-col items-center h-full justify-end">
-								<motion.div
-									className="w-full bg-slate-900 rounded-t-sm"
-									initial={{ height: 0 }}
-									whileInView={{ height: `${h}%` }}
-									viewport={{ once: true }}
-									transition={{ duration: 0.6, delay: i * 0.05 }}
-								/>
-							</div>
-						))}
+					{/* absolute, so the bars' percentage heights have a definite box to refer to */}
+					<div className="relative flex-1 min-h-16">
+						<div className="absolute inset-0 flex items-end gap-[3px] sm:gap-1">
+							{bars.map((h, i) => (
+								<div key={i} className="flex-1 flex flex-col items-center h-full justify-end">
+									<motion.div
+										className="w-full bg-slate-900 rounded-t-sm"
+										initial={{ height: 0 }}
+										whileInView={{ height: `${h}%` }}
+										viewport={{ once: true }}
+										transition={{ duration: 0.6, delay: i * 0.05 }}
+									/>
+								</div>
+							))}
+						</div>
 					</div>
 					<div className="flex gap-[3px] sm:gap-1 mt-1">
 						{months.map((m, i) => (

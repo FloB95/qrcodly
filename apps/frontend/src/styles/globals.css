@@ -204,6 +204,17 @@
 	}
 	body {
 		@apply bg-background text-foreground;
+		/* a word longer than its box (compound nouns, URLs) breaks instead of spilling out */
+		overflow-wrap: break-word;
+	}
+	/* only long words get hyphenated, so short headings never split */
+	h1,
+	h2,
+	h3,
+	h4,
+	dt {
+		hyphens: auto;
+		hyphenate-limit-chars: 12 5 5;
 	}
 }
 

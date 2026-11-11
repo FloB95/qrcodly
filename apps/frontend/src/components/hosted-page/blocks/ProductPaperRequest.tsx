@@ -41,8 +41,8 @@ export function ProductPaperRequest({
 					tokens.button,
 				)}
 			>
-				<EnvelopeIcon className="size-4" aria-hidden="true" />
-				{button}
+				<EnvelopeIcon className="size-4 shrink-0" aria-hidden="true" />
+				<span className="truncate">{button}</span>
 			</a>
 			<p className="text-center text-xs [overflow-wrap:anywhere] text-[var(--hp-text-muted)]">
 				{hint}

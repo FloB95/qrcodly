@@ -128,7 +128,7 @@ export function ProductStatsBar({
 									<AnimatedStatValue
 										value={stat.value}
 										delay={i * 0.08}
-										className="text-3xl font-extrabold tracking-tight sm:text-[40px] sm:leading-none"
+										className="text-3xl font-extrabold tracking-tight hyphens-auto sm:text-[40px] sm:leading-none"
 									/>
 								</dd>
 							</AnimateOnScroll>

@@ -88,7 +88,7 @@ export function HostedDocumentList({
 							<span className="min-w-0">
 								<span
 									className={cn(
-										'block truncate text-[15px] font-semibold @md:text-base',
+										'line-clamp-3 text-[15px] font-semibold hyphens-auto wrap-break-word [hyphenate-limit-chars:12_5_5] @md:text-base',
 										style === 'editorial' && 'font-hp-display text-base font-medium @md:text-lg',
 									)}
 								>

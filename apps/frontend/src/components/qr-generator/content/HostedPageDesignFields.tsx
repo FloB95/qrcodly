@@ -70,7 +70,7 @@ export function HostedPageDesignFields({ value, onChange, disabled }: HostedPage
 		const current = theme[key] ?? theme.primaryColor;
 		const set = (next: string) => setTheme({ [key]: next.toLowerCase() });
 		return (
-			<div className="flex items-center justify-between gap-4">
+			<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
 				<Label htmlFor={id} className="text-sm">
 					{label}
 				</Label>
@@ -92,12 +92,14 @@ export function HostedPageDesignFields({ value, onChange, disabled }: HostedPage
 	const currentFont = theme.font ?? HOSTED_PAGE_STYLE_PRESETS[theme.style ?? 'editorial'].font;
 
 	return (
-		<div className={cn('space-y-5 rounded-xl border bg-white/60 p-4', hostedFontVariables)}>
+		<div
+			className={cn('@container space-y-5 rounded-xl border bg-white/60 p-4', hostedFontVariables)}
+		>
 			<p className="text-sm font-medium">{t('title')}</p>
 
 			<div className="space-y-2">
 				<Label className="text-sm">{t('style.label')}</Label>
-				<div role="radiogroup" aria-label={t('style.label')} className="grid gap-2 sm:grid-cols-3">
+				<div role="radiogroup" aria-label={t('style.label')} className="grid gap-2 @md:grid-cols-3">
 					{HOSTED_PAGE_STYLES.map((style) => {
 						const active = (theme.style ?? 'editorial') === style;
 						const preset = HOSTED_PAGE_STYLE_PRESETS[style];
@@ -138,7 +140,7 @@ export function HostedPageDesignFields({ value, onChange, disabled }: HostedPage
 				</div>
 			</div>
 
-			<div className="flex items-center justify-between gap-4">
+			<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
 				<Label className="text-sm">{t('font.label')}</Label>
 				<Select
 					value={currentFont}
@@ -165,7 +167,7 @@ export function HostedPageDesignFields({ value, onChange, disabled }: HostedPage
 				</Select>
 			</div>
 
-			<div className="flex items-center justify-between gap-4">
+			<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
 				<Label className="text-sm">{t('mode.label')}</Label>
 				<div
 					role="radiogroup"

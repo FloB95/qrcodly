@@ -31,9 +31,9 @@ export function HostedPageTemplates({
 	const t = useTranslations('generator.contentSwitch.hosted.templates');
 
 	return (
-		<div className="space-y-2">
+		<div className="@container space-y-2">
 			<Label>{t('label')}</Label>
-			<div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+			<div className="grid grid-cols-2 gap-2 @lg:grid-cols-3 @3xl:grid-cols-4">
 				{showBlank && (
 					<button
 						type="button"
@@ -50,8 +50,12 @@ export function HostedPageTemplates({
 						<span className="mb-2 flex h-12 items-center justify-center rounded-lg border border-dashed border-border bg-white text-muted-foreground">
 							<DocumentPlusIcon className="size-5" aria-hidden="true" />
 						</span>
-						<span className="block text-sm font-medium">{t('blank.name')}</span>
-						<span className="block text-xs text-muted-foreground">{t('blank.description')}</span>
+						<span className="block text-sm font-medium hyphens-auto wrap-break-word">
+							{t('blank.name')}
+						</span>
+						<span className="block text-xs text-muted-foreground wrap-break-word">
+							{t('blank.description')}
+						</span>
 					</button>
 				)}
 				{getTemplatesForType(type).map((template) => {
@@ -80,23 +84,25 @@ export function HostedPageTemplates({
 								}}
 							>
 								<span
-									className="block h-2 w-10 rounded-full"
+									className="block h-2 w-10 max-w-full rounded-full"
 									style={{ backgroundColor: template.theme.accentColor }}
 								/>
 								<span
-									className="mt-1.5 block h-2 w-16 rounded-full"
+									className="mt-1.5 block h-2 w-16 max-w-full rounded-full"
 									style={{
 										backgroundColor: dark ? '#ffffff' : template.theme.primaryColor,
 										opacity: 0.85,
 									}}
 								/>
 								<span
-									className="mt-1.5 block h-3.5 w-20 rounded-full"
+									className="mt-1.5 block h-3.5 w-20 max-w-full rounded-full"
 									style={{ backgroundColor: template.theme.primaryColor, opacity: dark ? 0.5 : 1 }}
 								/>
 							</span>
-							<span className="block text-sm font-medium">{t(`${template.id}.name`)}</span>
-							<span className="block text-xs text-muted-foreground">
+							<span className="block text-sm font-medium hyphens-auto wrap-break-word">
+								{t(`${template.id}.name`)}
+							</span>
+							<span className="block text-xs text-muted-foreground wrap-break-word">
 								{t(`${template.id}.description`)}
 							</span>
 						</button>

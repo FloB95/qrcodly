@@ -70,10 +70,12 @@ export default async function Page({ params }: DemoPageParams) {
 						<span className="hidden text-sm font-medium sm:inline">{t('back')}</span>
 					</Link>
 					<div className="flex min-w-0 flex-1 items-center gap-2">
-						<span className="shrink-0 rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold tracking-wide text-slate-950 uppercase">
+						<span className="min-w-0 truncate rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-bold tracking-wide text-slate-950 uppercase sm:shrink-0">
 							{t('badge')}
 						</span>
-						<span className="truncate text-sm font-semibold">{tTemplates(`${template}.name`)}</span>
+						<span className="hidden truncate text-sm font-semibold sm:block">
+							{tTemplates(`${template}.name`)}
+						</span>
 					</div>
 					<Link
 						href={`/?type=${type}&template=${template}#generator`}

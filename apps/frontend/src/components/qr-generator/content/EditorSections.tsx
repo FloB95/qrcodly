@@ -174,7 +174,7 @@ export function EditorSection({
 				</AccordionPrimitive.Trigger>
 			</AccordionPrimitive.Header>
 			<AccordionPrimitive.Content className="overflow-hidden bg-white data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-				<div className="space-y-5 px-4 pt-1 pb-5">
+				<div className="@container space-y-5 px-4 pt-1 pb-5">
 					{children}
 					{next && (
 						<div className="flex justify-end border-t pt-5">
