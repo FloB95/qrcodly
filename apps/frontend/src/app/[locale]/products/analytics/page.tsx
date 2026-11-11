@@ -1,18 +1,18 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ProductHeroSection } from '@/components/products/ProductHeroSection';
-import { ProductFeatureSection } from '@/components/products/ProductFeatureSection';
-
+import { ProductBento } from '@/components/products/ProductBento';
+import { ProductStatsBar } from '@/components/products/ProductStatsBar';
 import { ProductUseCases } from '@/components/products/ProductUseCases';
 import { CrossProductCards } from '@/components/products/CrossProductCards';
 import { ProductFaqSection } from '@/components/products/ProductFaqSection';
+import { ProductCtaSection } from '@/components/products/ProductCtaSection';
+import { FaqJsonLd } from '@/components/seo/FaqJsonLd';
+import { BreadcrumbJsonLd, marketingMetadata } from '@/components/marketing/seo';
 import {
+	AnalyticsHeroMockup,
 	RealTimeMetricsMockup,
-	ChannelComparisonMockup,
 	IntegrationsDashboardMockup,
-	GeographicInsightsMockup,
-	ExportReportingMockup,
-	PrivacyFirstMockup,
 } from '@/components/products/mockups/AnalyticsMockups';
 import {
 	LinkIcon,
@@ -23,13 +23,14 @@ import {
 	DocumentChartBarIcon,
 	ArrowsRightLeftIcon,
 	ArrowsPointingInIcon,
+	ShieldCheckIcon,
+	GlobeEuropeAfricaIcon,
 } from '@heroicons/react/24/outline';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { routing, SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import type { Metadata } from 'next';
-import { env } from '@/env';
 
 const PAGE_PATH = 'products/analytics';
 
@@ -37,29 +38,10 @@ export async function generateMetadata({ params }: DefaultPageParams): Promise<M
 	const { locale } = await params;
 	if (!SUPPORTED_LANGUAGES.includes(locale)) return {};
 	const t = await getTranslations({ locale, namespace: 'productsAnalytics' });
-	const baseUrl = env.NEXT_PUBLIC_FRONTEND_URL;
-
-	return {
+	return marketingMetadata(locale, PAGE_PATH, {
 		title: t('metaTitle'),
 		description: t('metaDescription'),
-		alternates: {
-			canonical:
-				locale === routing.defaultLocale
-					? `${baseUrl}/${PAGE_PATH}`
-					: `${baseUrl}/${locale}/${PAGE_PATH}`,
-			languages: {
-				'x-default': `${baseUrl}/${PAGE_PATH}`,
-				...Object.fromEntries(
-					routing.locales.map((l) => [
-						l,
-						l === routing.defaultLocale
-							? `${baseUrl}/${PAGE_PATH}`
-							: `${baseUrl}/${l}/${PAGE_PATH}`,
-					]),
-				),
-			},
-		},
-	};
+	});
 }
 
 export default async function Page({ params }: DefaultPageParams) {
@@ -67,83 +49,21 @@ export default async function Page({ params }: DefaultPageParams) {
 	if (!SUPPORTED_LANGUAGES.includes(locale)) notFound();
 
 	const t = await getTranslations({ locale, namespace: 'productsAnalytics' });
+	const m = await getTranslations({ locale, namespace: 'marketing' });
 
-	const features = [
-		{
-			title: t('features.realTime.title'),
-			description: t('features.realTime.description'),
-			bullets: [
-				t('features.realTime.bullet1'),
-				t('features.realTime.bullet2'),
-				t('features.realTime.bullet3'),
-			],
-			visual: <RealTimeMetricsMockup />,
-		},
-		{
-			title: t('features.channels.title'),
-			comingSoon: t('features.channels.comingSoon'),
-			description: t('features.channels.description'),
-			bullets: [
-				t('features.channels.bullet1'),
-				t('features.channels.bullet2'),
-				t('features.channels.bullet3'),
-			],
-			visual: <ChannelComparisonMockup />,
-		},
-		{
-			title: t('features.integrations.title'),
-			description: t('features.integrations.description'),
-			bullets: [
-				t('features.integrations.bullet1'),
-				t('features.integrations.bullet2'),
-				t('features.integrations.bullet3'),
-			],
-			visual: <IntegrationsDashboardMockup />,
-		},
-		{
-			title: t('features.geographic.title'),
-			description: t('features.geographic.description'),
-			bullets: [
-				t('features.geographic.bullet1'),
-				t('features.geographic.bullet2'),
-				t('features.geographic.bullet3'),
-			],
-			visual: <GeographicInsightsMockup />,
-		},
-		{
-			title: t('features.exportReporting.title'),
-			comingSoon: t('features.exportReporting.comingSoon'),
-			description: t('features.exportReporting.description'),
-			bullets: [
-				t('features.exportReporting.bullet1'),
-				t('features.exportReporting.bullet2'),
-				t('features.exportReporting.bullet3'),
-			],
-			visual: <ExportReportingMockup />,
-		},
-		{
-			title: t('features.privacy.title'),
-			description: t('features.privacy.description'),
-			bullets: [
-				t('features.privacy.bullet1'),
-				t('features.privacy.bullet2'),
-				t('features.privacy.bullet3'),
-			],
-			visual: <PrivacyFirstMockup />,
-		},
-	];
+	const icon = 'size-5';
 
 	const useCaseIcons = [
-		<AdjustmentsHorizontalIcon key="1" className="h-5 w-5" />,
-		<MapPinIcon key="2" className="h-5 w-5" />,
-		<DevicePhoneMobileIcon key="3" className="h-5 w-5" />,
-		<DocumentChartBarIcon key="4" className="h-5 w-5" />,
-		<ArrowsRightLeftIcon key="5" className="h-5 w-5" />,
-		<ArrowsPointingInIcon key="6" className="h-5 w-5" />,
+		<AdjustmentsHorizontalIcon key="1" className={icon} />,
+		<MapPinIcon key="2" className={icon} />,
+		<DevicePhoneMobileIcon key="3" className={icon} />,
+		<DocumentChartBarIcon key="4" className={icon} />,
+		<ArrowsRightLeftIcon key="5" className={icon} />,
+		<ArrowsPointingInIcon key="6" className={icon} />,
 	];
 
-	const useCases = Array.from({ length: 6 }, (_, i) => ({
-		icon: useCaseIcons[i],
+	const useCases = useCaseIcons.map((caseIcon, i) => ({
+		icon: caseIcon,
 		title: t(`useCases.case${i + 1}Title`),
 		description: t(`useCases.case${i + 1}Description`),
 	}));
@@ -156,27 +76,61 @@ export default async function Page({ params }: DefaultPageParams) {
 	return (
 		<>
 			<Header />
-			<article>
+			<article className="text-slate-900">
+				<FaqJsonLd items={faqItems} />
+				<BreadcrumbJsonLd locale={locale} items={[{ name: t('badge'), path: PAGE_PATH }]} />
+
 				<ProductHeroSection
+					eyebrow={t('badge')}
 					title={t('hero.title')}
 					subtitle={t('hero.subtitle')}
 					ctaLabel={t('hero.ctaLabel')}
 					ctaHref="/#generator"
+					visual={<AnalyticsHeroMockup />}
 				/>
 
-				{features.map((feature, i) => (
-					<ProductFeatureSection
-						key={feature.title}
-						title={feature.title}
-						description={feature.description}
-						bullets={feature.bullets}
-						visual={feature.visual}
-						reversed={i % 2 === 1}
-						comingSoon={feature.comingSoon}
-					/>
-				))}
+				<ProductStatsBar
+					eyebrow={m('eyebrow.numbers')}
+					stats={[1, 2, 3, 4].map((n) => ({
+						value: t(`stats.stat${n}Value`),
+						label: t(`stats.stat${n}Label`),
+					}))}
+				/>
+
+				<ProductBento
+					eyebrow={m('eyebrow.features')}
+					title={t('features.title')}
+					tiles={[
+						{
+							title: t('features.realTime.title'),
+							description: t('features.realTime.description'),
+							span: 4,
+							visual: <RealTimeMetricsMockup />,
+						},
+						{
+							title: t('features.privacy.title'),
+							description: t('features.privacy.description'),
+							span: 2,
+							dark: true,
+							icon: <ShieldCheckIcon className={icon} />,
+						},
+						{
+							title: t('features.geographic.title'),
+							description: t('features.geographic.description'),
+							span: 2,
+							icon: <GlobeEuropeAfricaIcon className={icon} />,
+						},
+						{
+							title: t('features.integrations.title'),
+							description: t('features.integrations.description'),
+							span: 4,
+							visual: <IntegrationsDashboardMockup />,
+						},
+					]}
+				/>
 
 				<ProductUseCases
+					eyebrow={m('eyebrow.useCases')}
 					title={t('useCases.title')}
 					subtitle={t('useCases.subtitle')}
 					cases={useCases}
@@ -189,21 +143,29 @@ export default async function Page({ params }: DefaultPageParams) {
 							title: t('crossProducts.urlShortener.title'),
 							description: t('crossProducts.urlShortener.description'),
 							href: '/products/url-shortener',
-							icon: <LinkIcon className="h-5 w-5 sm:h-6 sm:w-6" />,
+							icon: <LinkIcon className={icon} />,
 						},
 						{
 							title: t('crossProducts.qrCodes.title'),
 							description: t('crossProducts.qrCodes.description'),
 							href: '/products/qr-codes',
-							icon: <QrCodeIcon className="h-5 w-5 sm:h-6 sm:w-6" />,
+							icon: <QrCodeIcon className={icon} />,
 						},
 					]}
 				/>
 
 				<ProductFaqSection
+					eyebrow={m('eyebrow.faq')}
 					title={t('faq.title')}
 					items={faqItems}
 					viewAllLabel={t('faq.viewAll')}
+				/>
+
+				<ProductCtaSection
+					title={t('cta.title')}
+					subtitle={t('cta.subtitle')}
+					ctaLabel={t('cta.ctaLabel')}
+					ctaHref="/#generator"
 				/>
 			</article>
 			<Footer />

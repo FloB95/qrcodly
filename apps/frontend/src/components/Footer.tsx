@@ -51,16 +51,6 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 						<ul className="space-y-2.5">
 							<li>
 								<Link
-									href="/features"
-									title={t('features')}
-									aria-label={t('features')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-								>
-									{t('features')}
-								</Link>
-							</li>
-							<li>
-								<Link
 									href="/plans"
 									title={t('pricing')}
 									aria-label={t('pricing')}

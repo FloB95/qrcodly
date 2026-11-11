@@ -334,12 +334,14 @@ export const ProductPageDataSchema = HostedPageSettingsSchema.extend({
 		.describe('Write-only: ids of archived versions to delete with this save'),
 	paperRequest: z
 		.object({
-			enabled: z.boolean().describe('Whether visitors can request a paper copy on the page'),
+			enabled: z
+				.boolean()
+				.describe('Whether the page offers a button that writes a paper copy request by e-mail'),
 			email: z
 				.email()
 				.max(255)
 				.optional()
-				.describe('Where requests are sent; required when enabled'),
+				.describe('Address the e-mail goes to; shown on the page; required when enabled'),
 		})
 		.optional()
 		.describe('Paper copy on request, as the EU Machinery Regulation asks for'),
@@ -396,6 +398,24 @@ export const HOSTED_PAGE_TEMPLATES = [
 		type: 'product',
 		style: 'technical',
 		theme: { primaryColor: '#1f2937', accentColor: '#0ea5e9', font: 'grotesk', mode: 'light' },
+	},
+	{
+		id: 'machineManual',
+		type: 'product',
+		style: 'technical',
+		theme: { primaryColor: '#111827', accentColor: '#f59e0b', font: 'grotesk', mode: 'dark' },
+	},
+	{
+		id: 'homeAppliance',
+		type: 'product',
+		style: 'gallery',
+		theme: { primaryColor: '#0f3d3e', accentColor: '#14b8a6', font: 'manrope', mode: 'light' },
+	},
+	{
+		id: 'powerTool',
+		type: 'product',
+		style: 'technical',
+		theme: { primaryColor: '#7c2d12', accentColor: '#ea580c', font: 'inter', mode: 'light' },
 	},
 	{
 		id: 'priceList',

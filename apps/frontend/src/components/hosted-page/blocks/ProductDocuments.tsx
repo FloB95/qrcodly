@@ -17,6 +17,8 @@ type ProductDocumentsProps = {
 	archive: ProductDocumentItem[];
 	/** Language of the page itself; the visitor's browser languages win when a document matches */
 	preferredLanguage: string;
+	/** Inside another page (editor, marketing): category titles are no headings there */
+	preview?: boolean;
 	languageLabel: string;
 	earlierLabel: string;
 	/** Messages with a `{title}` placeholder */
@@ -50,12 +52,14 @@ export function ProductDocuments({
 	documents,
 	archive,
 	preferredLanguage,
+	preview,
 	languageLabel,
 	earlierLabel,
 	openTemplate,
 	downloadTemplate,
 }: ProductDocumentsProps) {
 	const tokens = STYLE_TOKENS[style];
+	const Heading = preview ? 'p' : 'h2';
 	const languages = useMemo(
 		() => [...new Set([...documents, ...archive].map((document) => document.language))],
 		[documents, archive],
@@ -116,7 +120,9 @@ export function ProductDocuments({
 				if (current.length === 0 && earlier.length === 0) return null;
 				return (
 					<section key={id} className="pt-5 last:pb-2">
-						<h2 className={cn(tokens.eyebrow, 'px-5 pb-2 text-[var(--hp-text-muted)]')}>{label}</h2>
+						<Heading className={cn(tokens.eyebrow, 'px-5 pb-2 text-[var(--hp-text-muted)]')}>
+							{label}
+						</Heading>
 						{current.length > 0 && (
 							<div className={inset}>
 								<HostedDocumentList {...listProps} items={current} />

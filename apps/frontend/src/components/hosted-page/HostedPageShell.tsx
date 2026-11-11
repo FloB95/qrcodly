@@ -37,7 +37,8 @@ export function HostedPageShell({
 			data-hp-mode={resolved.mode}
 			data-hp-font={resolved.font}
 			className={cn(
-				'@container flex flex-1 flex-col items-center bg-[var(--hp-bg)] font-hp-body text-[var(--hp-text)] antialiased',
+				// owners type anything: an endless word wraps instead of pushing the page sideways
+				'@container flex flex-1 flex-col items-center bg-[var(--hp-bg)] font-hp-body text-[var(--hp-text)] antialiased [overflow-wrap:anywhere]',
 				hostedFontVariables,
 				resolved.fontClass,
 				preview
@@ -46,7 +47,9 @@ export function HostedPageShell({
 			)}
 			style={resolved.vars}
 		>
-			<div className={cn('w-full', wide && !preview ? 'max-w-3xl' : 'max-w-md')}>{children}</div>
+			<div className={cn('w-full min-w-0', wide && !preview ? 'max-w-3xl' : 'max-w-md')}>
+				{children}
+			</div>
 			{showBranding && (
 				<footer className="mt-10 flex flex-col items-center gap-2 text-center text-xs text-[var(--hp-text-muted)]">
 					<a

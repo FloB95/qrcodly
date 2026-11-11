@@ -1,8 +1,6 @@
 'use client';
 
-import { buttonVariants } from '@/components/ui/button';
 import Container from '@/components/ui/container';
-import { Heading } from '@/components/ui/heading';
 import { Link } from '@/i18n/navigation';
 import { AnimateOnScroll } from '@/components/features/AnimateOnScroll';
 
@@ -18,24 +16,29 @@ export function ProductCtaSection({
 	ctaHref: string;
 }) {
 	return (
-		<div className="py-16 sm:py-24">
+		<section className="pt-12 pb-20 sm:pt-16 sm:pb-28">
 			<Container>
 				<div className="sm:px-6 lg:px-8">
-					<AnimateOnScroll className="max-w-5xl mx-auto p-px rounded-2xl bg-gradient-to-r from-[#f4f4f5] to-[#fddfbc]">
-						<div className="flex flex-col items-center justify-center text-center py-12 px-5 xs:px-10 md:py-16 rounded-[15px] bg-gradient-to-r from-white to-[#fff3e6]">
-							<Heading as="h2" size="lg" className="">
+					<AnimateOnScroll className="relative flex flex-col gap-8 overflow-hidden rounded-[32px] bg-slate-900 px-6 py-12 text-white sm:px-12 sm:py-16 lg:flex-row lg:items-center lg:justify-between">
+						<div
+							aria-hidden="true"
+							className="pointer-events-none absolute -bottom-32 -left-20 size-80 rounded-full bg-[radial-gradient(circle,rgba(253,223,188,0.28),transparent_70%)]"
+						/>
+						<div className="relative flex max-w-2xl flex-col gap-3.5">
+							<h2 className="text-3xl font-extrabold tracking-tight text-balance sm:text-[42px] sm:leading-[1.08]">
 								{title}
-							</Heading>
-							<p className="text-slate-700 mt-3 md:text-lg max-w-xl">{subtitle}</p>
-							<div className="mt-8">
-								<Link href={ctaHref} className={buttonVariants({ size: 'lg' })}>
-									{ctaLabel}
-								</Link>
-							</div>
+							</h2>
+							<p className="text-base leading-relaxed text-slate-300 sm:text-lg">{subtitle}</p>
 						</div>
+						<Link
+							href={ctaHref}
+							className="relative inline-flex shrink-0 items-center justify-center self-start rounded-xl bg-white px-6 py-4 text-base font-bold text-slate-900 transition-colors hover:bg-[#fddfbc] lg:self-auto"
+						>
+							{ctaLabel}
+						</Link>
 					</AnimateOnScroll>
 				</div>
 			</Container>
-		</div>
+		</section>
 	);
 }

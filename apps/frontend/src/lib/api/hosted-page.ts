@@ -105,8 +105,13 @@ export function useUploadHostedFileMutation() {
 						return await uploadHostedFile(file, kind, token, onProgress);
 					} catch (error) {
 						const delay = UPLOAD_BUSY_RETRY_DELAYS_MS[attempt];
-						// 429: other uploads fill the server's memory budget right now
-						if (!(error instanceof ApiError) || error.code !== 429 || delay === undefined) {
+						// 429: other uploads fill the server's memory budget right now; waiting never
+						// helps against too many files that are on no page yet
+						const busy =
+							error instanceof ApiError &&
+							error.code === 429 &&
+							error.errorCode !== 'HOSTED_TOO_MANY_PENDING_UPLOADS';
+						if (!busy || delay === undefined) {
 							throw error;
 						}
 						await new Promise((resolve) => setTimeout(resolve, delay));

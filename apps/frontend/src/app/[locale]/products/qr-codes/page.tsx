@@ -1,8 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { ProductHeroSection } from '@/components/products/ProductHeroSection';
-import { ProductFeatureSection } from '@/components/products/ProductFeatureSection';
-
+import { ProductBento } from '@/components/products/ProductBento';
 import { ProductUseCases } from '@/components/products/ProductUseCases';
 import { ProductStatsBar } from '@/components/products/ProductStatsBar';
 import { DynamicVsStatic } from '@/components/products/DynamicVsStatic';
@@ -11,13 +10,13 @@ import { INHOTEL_TESTIMONIAL } from '@/lib/testimonials';
 import { CrossProductCards } from '@/components/products/CrossProductCards';
 import { ProductFaqSection } from '@/components/products/ProductFaqSection';
 import { ProductCtaSection } from '@/components/products/ProductCtaSection';
+import { FaqJsonLd } from '@/components/seo/FaqJsonLd';
+import { BreadcrumbJsonLd, marketingMetadata } from '@/components/marketing/seo';
+import { CONTENT_TYPE_CONFIGS } from '@/lib/content-type.config';
 import {
+	QrCodesHeroMockup,
 	QrCustomizationMockup,
 	QrScanAnalyticsMockup,
-	QrContentTypesMockup,
-	QrDynamicUpdatesMockup,
-	QrBulkTemplatesMockup,
-	QrApiAccessMockup,
 } from '@/components/products/mockups/QrCodesMockups';
 import {
 	LinkIcon,
@@ -28,43 +27,29 @@ import {
 	HomeModernIcon,
 	AcademicCapIcon,
 	MegaphoneIcon,
+	Squares2X2Icon,
+	ArrowPathIcon,
+	DocumentTextIcon,
+	RectangleStackIcon,
+	CommandLineIcon,
 } from '@heroicons/react/24/outline';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { routing, SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import type { Metadata } from 'next';
-import { env } from '@/env';
 
 const PAGE_PATH = 'products/qr-codes';
+const TYPE_COUNT = CONTENT_TYPE_CONFIGS.length;
 
 export async function generateMetadata({ params }: DefaultPageParams): Promise<Metadata> {
 	const { locale } = await params;
 	if (!SUPPORTED_LANGUAGES.includes(locale)) return {};
 	const t = await getTranslations({ locale, namespace: 'productsQrCodes' });
-	const baseUrl = env.NEXT_PUBLIC_FRONTEND_URL;
-
-	return {
+	return marketingMetadata(locale, PAGE_PATH, {
 		title: t('metaTitle'),
 		description: t('metaDescription'),
-		alternates: {
-			canonical:
-				locale === routing.defaultLocale
-					? `${baseUrl}/${PAGE_PATH}`
-					: `${baseUrl}/${locale}/${PAGE_PATH}`,
-			languages: {
-				'x-default': `${baseUrl}/${PAGE_PATH}`,
-				...Object.fromEntries(
-					routing.locales.map((l) => [
-						l,
-						l === routing.defaultLocale
-							? `${baseUrl}/${PAGE_PATH}`
-							: `${baseUrl}/${l}/${PAGE_PATH}`,
-					]),
-				),
-			},
-		},
-	};
+	});
 }
 
 export default async function Page({ params }: DefaultPageParams) {
@@ -72,91 +57,27 @@ export default async function Page({ params }: DefaultPageParams) {
 	if (!SUPPORTED_LANGUAGES.includes(locale)) notFound();
 
 	const t = await getTranslations({ locale, namespace: 'productsQrCodes' });
+	const m = await getTranslations({ locale, namespace: 'marketing' });
+	const tabs = await getTranslations({ locale, namespace: 'generator.contentSwitch.tab' });
 
-	const features = [
-		{
-			title: t('features.customization.title'),
-			description: t('features.customization.description'),
-			bullets: [
-				t('features.customization.bullet1'),
-				t('features.customization.bullet2'),
-				t('features.customization.bullet3'),
-			],
-			visual: <QrCustomizationMockup />,
-		},
-		{
-			title: t('features.analytics.title'),
-			description: t('features.analytics.description'),
-			bullets: [
-				t('features.analytics.bullet1'),
-				t('features.analytics.bullet2'),
-				t('features.analytics.bullet3'),
-			],
-			visual: <QrScanAnalyticsMockup />,
-		},
-		{
-			title: t('features.contentTypes.title'),
-			description: t('features.contentTypes.description'),
-			bullets: [
-				t('features.contentTypes.bullet1'),
-				t('features.contentTypes.bullet2'),
-				t('features.contentTypes.bullet3'),
-			],
-			visual: <QrContentTypesMockup />,
-		},
-		{
-			title: t('features.dynamicUpdates.title'),
-			description: t('features.dynamicUpdates.description'),
-			bullets: [
-				t('features.dynamicUpdates.bullet1'),
-				t('features.dynamicUpdates.bullet2'),
-				t('features.dynamicUpdates.bullet3'),
-			],
-			visual: <QrDynamicUpdatesMockup />,
-		},
-		{
-			title: t('features.bulkTemplates.title'),
-			description: t('features.bulkTemplates.description'),
-			bullets: [
-				t('features.bulkTemplates.bullet1'),
-				t('features.bulkTemplates.bullet2'),
-				t('features.bulkTemplates.bullet3'),
-			],
-			visual: <QrBulkTemplatesMockup />,
-		},
-		{
-			title: t('features.apiAccess.title'),
-			description: t('features.apiAccess.description'),
-			bullets: [
-				t('features.apiAccess.bullet1'),
-				t('features.apiAccess.bullet2'),
-				t('features.apiAccess.bullet3'),
-			],
-			visual: <QrApiAccessMockup />,
-			actionButton: {
-				label: t('features.apiAccess.actionLabel'),
-				href: '/docs/api',
-				external: true,
-			},
-		},
-	];
+	const icon = 'size-5';
 
 	const useCaseIcons = [
-		<BuildingStorefrontIcon key="1" className="h-5 w-5" />,
-		<ShoppingBagIcon key="2" className="h-5 w-5" />,
-		<TicketIcon key="3" className="h-5 w-5" />,
-		<HomeModernIcon key="4" className="h-5 w-5" />,
-		<AcademicCapIcon key="5" className="h-5 w-5" />,
-		<MegaphoneIcon key="6" className="h-5 w-5" />,
+		<BuildingStorefrontIcon key="1" className={icon} />,
+		<ShoppingBagIcon key="2" className={icon} />,
+		<TicketIcon key="3" className={icon} />,
+		<HomeModernIcon key="4" className={icon} />,
+		<AcademicCapIcon key="5" className={icon} />,
+		<MegaphoneIcon key="6" className={icon} />,
 	];
 
 	const useCaseSlugs = ['restaurants', 'retail', 'events', 'real-estate', 'education', 'marketing'];
 
-	const useCases = Array.from({ length: 6 }, (_, i) => ({
+	const useCases = useCaseSlugs.map((slug, i) => ({
 		icon: useCaseIcons[i],
 		title: t(`useCases.case${i + 1}Title`),
 		description: t(`useCases.case${i + 1}Description`),
-		href: `/products/qr-codes/${useCaseSlugs[i]}`,
+		href: `/products/qr-codes/${slug}`,
 	}));
 
 	const faqItems = Array.from({ length: 6 }, (_, i) => ({
@@ -167,36 +88,96 @@ export default async function Page({ params }: DefaultPageParams) {
 	return (
 		<>
 			<Header />
-			<article>
+			<article className="text-slate-900">
+				<FaqJsonLd items={faqItems} />
+				<BreadcrumbJsonLd locale={locale} items={[{ name: t('badge'), path: PAGE_PATH }]} />
+
 				<ProductHeroSection
+					eyebrow={t('badge')}
 					title={t('hero.title')}
 					subtitle={t('hero.subtitle')}
 					ctaLabel={t('hero.ctaLabel')}
 					ctaHref="/#generator"
 					secondaryCtaLabel={t('hero.viewPricing')}
 					secondaryCtaHref="/plans"
+					chips={CONTENT_TYPE_CONFIGS.map((config) => tabs(config.type))}
+					visual={<QrCodesHeroMockup />}
 				/>
 
 				<ProductStatsBar
-					stats={[1, 2, 3, 4].map((n) => ({
-						value: t(`facts.fact${n}Value`),
-						label: t(`facts.fact${n}Label`),
-					}))}
+					eyebrow={m('eyebrow.numbers')}
+					title={t('facts.title')}
+					stats={[
+						{ value: String(TYPE_COUNT), label: t('facts.fact1Label') },
+						...[2, 3, 4].map((n) => ({
+							value: t(`facts.fact${n}Value`),
+							label: t(`facts.fact${n}Label`),
+						})),
+					]}
 				/>
 
-				{features.map((feature, i) => (
-					<ProductFeatureSection
-						key={feature.title}
-						title={feature.title}
-						description={feature.description}
-						bullets={feature.bullets}
-						visual={feature.visual}
-						reversed={i % 2 === 1}
-						actionButton={feature.actionButton}
-					/>
-				))}
+				<ProductBento
+					eyebrow={m('eyebrow.features')}
+					title={t('features.title')}
+					tiles={[
+						{
+							title: t('features.customization.title'),
+							description: t('features.customization.description'),
+							span: 4,
+							visual: <QrCustomizationMockup />,
+						},
+						{
+							title: t('features.contentTypes.title', { count: TYPE_COUNT }),
+							description: t('features.contentTypes.description'),
+							span: 2,
+							dark: true,
+							icon: <Squares2X2Icon className={icon} />,
+						},
+						{
+							title: t('features.dynamicUpdates.title'),
+							description: t('features.dynamicUpdates.description'),
+							span: 2,
+							icon: <ArrowPathIcon className={icon} />,
+						},
+						{
+							title: t('features.hostedPages.title'),
+							description: t('features.hostedPages.description'),
+							span: 2,
+							icon: <DocumentTextIcon className={icon} />,
+							action: {
+								label: t('features.hostedPages.actionLabel'),
+								href: '/products/hosted-pages/pdf',
+							},
+						},
+						{
+							title: t('features.bulkTemplates.title'),
+							description: t('features.bulkTemplates.description'),
+							span: 2,
+							icon: <RectangleStackIcon className={icon} />,
+						},
+						{
+							title: t('features.analytics.title'),
+							description: t('features.analytics.description'),
+							span: 4,
+							visual: <QrScanAnalyticsMockup />,
+						},
+						{
+							title: t('features.apiAccess.title'),
+							description: t('features.apiAccess.description'),
+							span: 2,
+							dark: true,
+							icon: <CommandLineIcon className={icon} />,
+							action: {
+								label: t('features.apiAccess.actionLabel'),
+								href: '/docs/api',
+								external: true,
+							},
+						},
+					]}
+				/>
 
 				<DynamicVsStatic
+					eyebrow={m('eyebrow.comparison')}
 					title={t('dynamic.title')}
 					subtitle={t('dynamic.subtitle')}
 					staticLabel={t('dynamic.staticLabel')}
@@ -214,6 +195,7 @@ export default async function Page({ params }: DefaultPageParams) {
 				<ProductTestimonial eyebrow={t('testimonial.eyebrow')} testimonial={INHOTEL_TESTIMONIAL} />
 
 				<ProductUseCases
+					eyebrow={m('eyebrow.useCases')}
 					title={t('useCases.title')}
 					subtitle={t('useCases.subtitle')}
 					cases={useCases}
@@ -227,18 +209,19 @@ export default async function Page({ params }: DefaultPageParams) {
 							title: t('crossProducts.urlShortener.title'),
 							description: t('crossProducts.urlShortener.description'),
 							href: '/products/url-shortener',
-							icon: <LinkIcon className="h-5 w-5 sm:h-6 sm:w-6" />,
+							icon: <LinkIcon className={icon} />,
 						},
 						{
 							title: t('crossProducts.analytics.title'),
 							description: t('crossProducts.analytics.description'),
 							href: '/products/analytics',
-							icon: <ChartBarIcon className="h-5 w-5 sm:h-6 sm:w-6" />,
+							icon: <ChartBarIcon className={icon} />,
 						},
 					]}
 				/>
 
 				<ProductFaqSection
+					eyebrow={m('eyebrow.faq')}
 					title={t('faq.title')}
 					items={faqItems}
 					viewAllLabel={t('faq.viewAll')}

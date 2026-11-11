@@ -145,7 +145,7 @@
 	"hero": {
 		"badge": "Open Source i Zawsze Za Darmo",
 		"title": "Generator Kodów QR Bez Ograniczeń",
-		"subtitle": "Generuj nieograniczoną liczbę statycznych i dynamicznych kodów QR za darmo. Bez ukrytych opłat, bez ograniczeń. Potężne i proste tworzenie kodów QR.",
+		"subtitle": "Twórz za darmo nielimitowane statyczne i dynamiczne kody QR – bez znaków wodnych, bez limitu skanów, bez wygasającego okresu próbnego.",
 		"benefits": {
 			"unlimited": "Nieograniczone Kody QR",
 			"noSignup": "Darmowe Dynamiczne Kody QR",
@@ -160,9 +160,7 @@
 		"stat2Value": "5 000+",
 		"stat2Label": "Aktywnych użytkowników",
 		"stat3Value": "10K+",
-		"stat3Label": "Skanów i kliknięć dziennie",
-		"stat4Value": "< 50ms",
-		"stat4Label": "Szybkość przekierowania"
+		"stat3Label": "Skanów i kliknięć dziennie"
 	},
 	"metadata": {
 		"title": "Darmowy Generator Kodów QR i Skracacz URL | QRcodly",
@@ -281,8 +279,6 @@
 		"scannerDesc": "Odczytaj dowolny kod QR w przeglądarce",
 		"solutionsBtn": "Rozwiązania",
 		"resourcesBtn": "Zasoby",
-		"allFeaturesLink": "Wszystkie funkcje",
-		"allFeaturesDesc": "Wszystko, co potrafi QRcodly, w skrócie",
 		"byIndustryLabel": "Według branży",
 		"byTeamLabel": "Według zespołu",
 		"solRestaurants": "Restauracje",
@@ -312,12 +308,15 @@
 		"solSalesDesc": "Śledzone linki do kontaktu z klientami",
 		"solEcommerceDesc": "Linki do sklepu, reklam i newsletterów",
 		"solDevelopersDesc": "API i integracje dla Twojego stacku",
-		"solAgenciesDesc": "Linki i kody dla wielu klientów"
+		"solAgenciesDesc": "Linki i kody dla wielu klientów",
+		"digitalManualLink": "Instrukcja cyfrowa",
+		"digitalManualDesc": "Instrukcje pod kodem QR",
+		"hostedPdfLink": "Landing page PDF",
+		"hostedPdfDesc": "Udostępniaj i podmieniaj PDF-y kodem QR"
 	},
 	"footer": {
 		"tagline": "Platforma kodów QR open source. Twórz, zarządzaj i śledź kody QR z łatwością.",
 		"product": "Platforma",
-		"features": "Funkcje",
 		"pricing": "Cennik",
 		"urlShortener": "Skracacz URL",
 		"qrCodes": "Kody QR",
@@ -331,7 +330,7 @@
 		"privacyPolicy": "Polityka prywatności",
 		"termsOfService": "Regulamin",
 		"contact": "Kontakt",
-		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED",
+		"qrCodeCopyright": "QR code is a registered trademark of DENSO WAVE INCORPORATED. All other trademarks belong to their respective owners.",
 		"scanner": "Skaner kodów QR"
 	},
 	"contentElements": {
@@ -345,67 +344,6 @@
 		},
 		"loader": {
 			"loading": "Ładowanie..."
-		},
-		"feedbackCta": {
-			"headline": "Pytania lub uwagi?",
-			"subHeadline1": "Masz pytanie dotyczące QRcodly lub chcesz podzielić się opinią? Chętnie pomożemy i stale pracujemy nad ulepszeniami.",
-			"emailBtn": "Skontaktuj się"
-		},
-		"browserExtensionTeaser": {
-			"badge": "Już dostępne",
-			"headline": "QRcodly dla Chrome",
-			"description": "Utwórz jednym kliknięciem kod QR dla strony, na której jesteś. Rozszerzenie samo uzupełni link, da ci pełny generator i zapisze twoje kody QR na twoim koncie.",
-			"cta": "Dodaj do Chrome",
-			"note": "Bezpłatnie z kontem QRcodly"
-		},
-		"featuresCta": {
-			"headline": "Przegląd kluczowych funkcji",
-			"subHeadline": "Dzięki QRcodly możesz bezpłatnie tworzyć, edytować, zarządzać i analizować kody QR – wszystko w jednym miejscu.",
-			"allFeatures": "Wszystkie funkcje",
-			"emailBtn": "Napisz do nas",
-			"editFeature": {
-				"headline": "Edytuj kody QR w dowolnym momencie",
-				"subHeadline": "Twórz kody QR za darmo i dostosuj docelowy adres URL w dowolnym momencie, nawet po wydrukowaniu."
-			},
-			"statisticFeature": {
-				"headline": "Szczegółowe statystyki kodów QR w czasie rzeczywistym",
-				"subHeadline": "Monitoruj, jak często i skąd skanowane są Twoje kody QR."
-			},
-			"overviewFeature": {
-				"headline": "Przejrzysta kolekcja kodów QR",
-				"subHeadline": "Monitoruj wszystkie swoje wygenerowane kody QR w jednym, centralnym miejscu."
-			},
-			"templateFeature": {
-				"headline": "Twórz projekty za pomocą szablonów",
-				"subHeadline": "Oszczędź czas i zadbaj o spójny branding. Twórz szablony z ulubionymi stylami i łatwo stosuj je do nowych kodów QR."
-			},
-			"customDomainFeature": {
-				"headline": "Zachowaj kontrolę dzięki własnej domenie",
-				"subHeadline": "Użyj własnej domeny dla dynamicznych kodów QR. Zachowaj kontrolę, pozostań markowy i posiadaj każdy link."
-			},
-			"tagFeature": {
-				"headline": "Organizuj za pomocą tagów",
-				"subHeadline": "Oznaczaj i kategoryzuj swoje kody QR za pomocą własnych tagów. Filtruj i znajdź to, czego potrzebujesz w kilka sekund."
-			},
-			"exportImportFeature": {
-				"headline": "Eksportuj i importuj kody QR",
-				"subHeadline": "Twórz kopie zapasowe, migruj lub zarządzaj kodami QR hurtowo. Eksportuj i importuj je za pomocą kilku kliknięć."
-			},
-			"teamFeature": {
-				"headline": "Współpracuj w zespole",
-				"subHeadline": "Zapraszaj członków zespołu i wspólnie pracujcie nad kodami QR. Idealne dla firm, agencji i zespołów."
-			},
-			"shortUrlFeature": {
-				"headline": "Samodzielne krótkie URL-e",
-				"subHeadline": "Skracaj, zarządzaj i śledź swoje linki ze szczegółowymi analizami – bez kodu QR.",
-				"actionLabel": "Wypróbuj teraz"
-			},
-			"secureFeature": {
-				"headline": "Twoje dane pozostają u nas",
-				"subHeadline": "QRcodly przechowuje wszystkie dane lokalnie w Niemczech – bez udostępniania zewnętrznym usługom. Clerk używamy wyłącznie do uwierzytelniania."
-			},
-			"scrollLeft": "Przewiń w lewo",
-			"scrollRight": "Przewiń w prawo"
 		}
 	},
 	"accountBanned": {
@@ -721,7 +659,7 @@
 				"whatsapp": "WHATSAPP",
 				"socials": "SOCIALS",
 				"pdf": "PDF",
-				"product": "PRODUKT"
+				"product": "STRONA PRODUKTU"
 			},
 			"cancel": "Anuluj",
 			"bulkModeBtn": "Masowe tworzenie CSV",
@@ -1084,8 +1022,8 @@
 						}
 					},
 					"productManual": {
-						"name": "Instrukcja produktu",
-						"description": "Zwarte wiersze dla instrukcji i kart",
+						"name": "Urządzenie",
+						"description": "Przejrzyste wiersze dla urządzeń i elektroniki",
 						"buttonLabel": "Otwórz instrukcję",
 						"linkLabel": "Skontaktuj się z pomocą",
 						"sample": {
@@ -1111,6 +1049,42 @@
 					"blank": {
 						"name": "Pusta strona",
 						"description": "Zacznij od zera"
+					},
+					"machineManual": {
+						"name": "Maszyna",
+						"description": "Ciemny i solidny, dla maszyn i instalacji",
+						"linkLabel": "Zamów serwis",
+						"sample": {
+							"title": "Piła taśmowa BS 400",
+							"description": "Instrukcja obsługi, informacje o bezpieczeństwie i deklaracja zgodności.",
+							"brandName": "Demo Maszyny",
+							"documents": "Instrukcja obsługi|Informacje o bezpieczeństwie|Deklaracja zgodności|Karta danych",
+							"address": "ul. Przykładowa 12\n00-001 Warszawa\nPolska"
+						}
+					},
+					"homeAppliance": {
+						"name": "AGD",
+						"description": "Jasny i przyjazny, dla produktów konsumenckich",
+						"linkLabel": "Zarejestruj produkt",
+						"sample": {
+							"title": "Pralka W 800",
+							"description": "Wszystko o Twoim urządzeniu, zawsze aktualne.",
+							"brandName": "Demo Home",
+							"documents": "Instrukcja użytkowania|Informacje o bezpieczeństwie|Szybki start",
+							"address": "ul. Przykładowa 12\n00-001 Warszawa\nPolska"
+						}
+					},
+					"powerTool": {
+						"name": "Narzędzie",
+						"description": "Ciepłe kolory dla narzędzi i sprzętu ogrodowego",
+						"linkLabel": "Zamów części",
+						"sample": {
+							"title": "Wiertarko-wkrętarka WW 18",
+							"description": "Instrukcja, informacje o bezpieczeństwie i deklaracja Twojego narzędzia.",
+							"brandName": "Demo Narzędzia",
+							"documents": "Instrukcja obsługi|Informacje o bezpieczeństwie|Deklaracja zgodności",
+							"address": "ul. Przykładowa 12\n00-001 Warszawa\nPolska"
+						}
 					}
 				},
 				"usage": {
@@ -1121,7 +1095,8 @@
 					"count": "{used} / {limit}",
 					"directHint": "PDF otwierany bezpośrednio nie zajmuje strony docelowej.",
 					"over": "To przekracza limit Twojego planu. Usuń coś, aby zapisać."
-				}
+				},
+				"nextStep": "Dalej: {step}"
 			},
 			"pdf": {
 				"intro": {
@@ -1190,11 +1165,23 @@
 						"description": "Skan od razu otwiera Twój jedyny PDF, bez strony docelowej"
 					},
 					"directNeedsOne": "Bezpośrednie otwieranie działa tylko z dokładnie jednym plikiem PDF. Usuń pozostałe dokumenty, aby z niego skorzystać."
-				}
+				},
+				"productHint": "Potrzebujesz instrukcji do maszyny lub urządzenia?",
+				"productHintCta": "Użyj strony produktu",
+				"sections": {
+					"texts": "Teksty",
+					"design": "Wygląd",
+					"designCustom": "Własny wygląd",
+					"missing": "Brakuje: {fields}",
+					"oneDocument": "co najmniej jeden PDF",
+					"documentsSummary": "{count, plural, one {# dokument} few {# dokumenty} many {# dokumentów} other {# dokumentu}}",
+					"designPick": "Nie wybrano jeszcze szablonu"
+				},
+				"fieldRequired": "Pole wymagane",
+				"fieldInvalid": "Sprawdź ten wpis."
 			},
 			"product": {
 				"intro": {
-					"page": "Po zeskanowaniu otwiera się strona mobilna z dokumentami Twojego produktu: instrukcją obsługi, informacjami o bezpieczeństwie i deklaracją zgodności, w języku odwiedzającego. <strong>Plik możesz wymienić w każdej chwili: wydrukowany kod pozostaje ten sam, a wcześniejsza wersja zostaje zachowana.</strong>",
 					"pro": "Strony produktów są częścią QRcodly Pro."
 				},
 				"name": {
@@ -1227,7 +1214,8 @@
 						"declaration": "Deklaracja zgodności",
 						"datasheet": "Karta danych",
 						"other": "Inny dokument"
-					}
+					},
+					"categoryPlaceholder": "Wybierz rodzaj dokumentu"
 				},
 				"archive": {
 					"title": "Wcześniejsze wersje",
@@ -1251,7 +1239,8 @@
 				},
 				"euRepresentative": {
 					"title": "Przedstawiciel w UE (opcjonalnie)",
-					"description": "Dla producentów spoza UE: upoważniony przedstawiciel lub osoba odpowiedzialna w UE."
+					"description": "Dla producentów spoza UE: upoważniony przedstawiciel lub osoba odpowiedzialna w UE.",
+					"add": "Dodaj przedstawiciela w UE"
 				},
 				"safety": {
 					"title": "Informacje o bezpieczeństwie",
@@ -1260,8 +1249,8 @@
 				},
 				"paperRequest": {
 					"title": "Wersja papierowa na żądanie",
-					"description": "Odwiedzający mogą na stronie poprosić o wydrukowaną instrukcję. Każdą prośbę otrzymasz e-mailem i znajdziesz ją na stronie szczegółów tego kodu.",
-					"email": "Wysyłaj prośby na adres"
+					"description": "Odwiedzający widzą przycisk, który tworzy gotowego e-maila do Ciebie. QRcodly nie zapisuje o nich żadnych danych.",
+					"email": "E-mail na prośby o wersję papierową"
 				},
 				"cover": {
 					"label": "Zdjęcie produktu"
@@ -1274,7 +1263,25 @@
 					"title": "Do zapisania brakuje jeszcze:",
 					"documents": "Co najmniej jeden dokument",
 					"contact": "E-mail lub strona internetowa",
-					"other": "Sprawdź wprowadzone dane"
+					"other": "Sprawdź wprowadzone dane",
+					"category": "Rodzaj dokumentu dla każdego dokumentu",
+					"contactMissing": "Podaj adres e-mail lub stronę internetową."
+				},
+				"explainer": {
+					"title": "Cyfrowa instrukcja dla Twojego produktu",
+					"description": "Instrukcja, informacje o bezpieczeństwie i deklaracja zgodności pod jednym kodem QR na maszynie, w wielu językach i ze wszystkimi wcześniejszymi wersjami. Zgodnie z unijnym rozporządzeniem w sprawie maszyn (od 20.01.2027)."
+				},
+				"sections": {
+					"product": "Produkt",
+					"safety": "Bezpieczeństwo i wersja papierowa",
+					"design": "Wygląd",
+					"designCustom": "Własny wygląd",
+					"missing": "Brakuje: {fields}",
+					"documentsSummary": "{count, plural, one {# dokument} few {# dokumenty} many {# dokumentów} other {# dokumentu}} · {languages, plural, one {# język} few {# języki} many {# języków} other {# języka}}{archived, plural, =0 {} one { · # wcześniejsza wersja} few { · # wcześniejsze wersje} many { · # wcześniejszych wersji} other { · # wcześniejszej wersji}}",
+					"safetySet": "Informacje o bezpieczeństwie dodane",
+					"safetyNone": "Brak informacji o bezpieczeństwie",
+					"paperOn": "Prośby o papier włączone",
+					"paperOff": "Prośby o papier wyłączone"
 				}
 			}
 		},
@@ -1367,11 +1374,11 @@
 		"question3": "Jaka jest różnica między statycznymi a dynamicznymi kodami QR?",
 		"answer3": "Statyczne kody QR zawierają stałe informacje, których nie można zmienić po utworzeniu. Dynamiczne kody QR natomiast oferują maksymalną elastyczność: możesz dostosować połączoną treść w dowolnym momencie po utworzeniu, a także korzystać ze statystyk skanowania, a w planie Pro ze szczegółowej analityki.",
 		"question4": "Czy tworzenie kodów QR jest bezpłatne?",
-		"answer4": "Tak, generowanie statycznych i dynamicznych kodów QR jest i pozostanie bezpłatne na zawsze, w dowolnej ilości. W przyszłości pojawią się ograniczenia dla zapytań API oraz dla firm pracujących z wieloma użytkownikami.",
+		"answer4": "Tak. Statyczne i dynamiczne kody QR są darmowe, w dowolnej liczbie i z nielimitowanymi skanami. Pro dodaje szczegółowe statystyki, własne domeny, dostęp do API, większe importy i strony PDF.",
 		"question5": "Jak długo ważny jest kod QR?",
 		"answer5": "Statyczne kody QR nie wygasają i pozostają ważne na stałe, o ile połączona treść jest dostępna online. Dynamiczne kody QR pozostają aktywne tak długo, jak są zarządzane w naszym systemie i nie obowiązują żadne specyficzne ograniczenia ze strony dostawcy.",
 		"question6": "Jakie są zalety dynamicznych kodów QR?",
-		"answer6": "Dynamiczne kody QR są oznaczone odznaką Dynamic. Można je aktualizować w dowolnym momencie, nawet po ich utworzeniu lub wydrukowaniu. Dostarczają również przydatne statystyki skanowania – np. lokalizację, czas i używane urządzenia – aby skutecznie analizować i optymalizować kampanie.",
+		"answer6": "Dynamiczne kody QR można zmieniać w każdej chwili, także po wydruku. Mają statystyki skanów: sumy oraz główny kraj i urządzenie w każdym planie, a pełny podział według czasu, kraju i urządzenia w Pro.",
 		"question7": "Czy potrzebuję specjalnej aplikacji do skanowania kodów QR?",
 		"answer7": "Nie, w większości przypadków nie jest to konieczne! Zintegrowana funkcja aparatu w nowoczesnych smartfonach może teraz bezpośrednio rozpoznawać kody QR i otwierać osadzoną treść – bez konieczności używania dodatkowej aplikacji.",
 		"question8": "Jakie statystyki są zbierane dla dynamicznych kodów QR?",
@@ -1381,13 +1388,8 @@
 		"question10": "Czy kody QR działają również w formie drukowanej?",
 		"answer10": "Absolutnie! Kody QR są specjalnie zoptymalizowane do druku i działają niezawodnie na różnych materiałach, o ile pozostają wyraźne i nieuszkodzone. Zapewnij dobrą jakość druku, a Twoje kody będą gotowe do użycia w dowolnym miejscu!",
 		"question11": "Gdzie przechowywane są moje dane?",
-		"answer11": "Wszystkie dane w QRcodly są przechowywane wyłącznie na serwerach znajdujących się w Niemczech. Używamy Clerk do uwierzytelniania oraz narzędzi analitycznych przyjaznych prywatności w celu ulepszania naszej usługi. Twoje dane nie są sprzedawane ani udostępniane w celach reklamowych.",
+		"answer11": "Główna infrastruktura QRcodly działa na serwerach w Niemczech. Do logowania używamy Clerk, do płatności Stripe, a Sentry i PostHog pomagają znajdować błędy i ulepszać produkt. Twoje dane nie są sprzedawane ani wykorzystywane do reklam.",
 		"viewAll": "Zobacz wszystkie FAQ"
-	},
-	"productShowcase": {
-		"headline": "Potężny panel.",
-		"subHeadline": "Piękny interfejs.",
-		"description": "Zarządzaj wszystkimi kodami QR, śledź skany w czasie rzeczywistym i dostosowuj projekty — wszystko z jednego intuicyjnego panelu."
 	},
 	"fileUpload": {
 		"maxFiles": "Dozwolona maksymalnie {maxFiles} plików",
@@ -1959,7 +1961,7 @@
 				"teamFeatures": "Funkcje zespołowe (wkrótce)",
 				"apiAccess": "Dostęp do REST API",
 				"marketplaceIntegrations": "Integracje zewnętrzne",
-				"hostedPages": "Kody QR do plików PDF z własną stroną docelową"
+				"hostedPages": "Do 15 stron PDF i stron produktów za Twoimi kodami QR"
 			}
 		},
 		"featureInfoAriaLabel": "Więcej informacji",
@@ -2011,133 +2013,6 @@
 			"qrCodes": "Kody QR"
 		}
 	},
-	"featuresPage": {
-		"metaTitle": "Darmowy Generator Kodów QR – Funkcje",
-		"metaDescription": "Poznaj wszystkie funkcje generatora kodów QR: dynamiczne kody QR, analityka skanów, własne projekty z logo, tworzenie masowe, szablony oraz wsparcie dla URL, WiFi i vCard.",
-		"badge": "Funkcje",
-		"title": "Wszystko, czego potrzebujesz do profesjonalnych kodów QR",
-		"subtitle": "Od tworzenia po analitykę — QRcodly daje Ci potężne narzędzia do tworzenia, zarządzania i śledzenia kodów QR.",
-		"spotlight": {
-			"dynamicQr": {
-				"tag": "Główna Funkcja",
-				"title": "Dynamiczne Kody QR — Edytuj w Dowolnym Momencie",
-				"description": "Twórz kody QR, które można aktualizować po wydrukowaniu. Zmień docelowy URL, włączaj lub wyłączaj je i śledź każde skanowanie — bez konieczności generowania nowego kodu.",
-				"bullet1": "Aktualizuj treść w dowolnym momencie bez ponownego drukowania",
-				"bullet2": "Śledź każde skanowanie dzięki analityce w czasie rzeczywistym",
-				"bullet3": "Włączaj lub wyłączaj kody QR natychmiast"
-			},
-			"shortUrl": {
-				"tag": "Nowa Funkcja",
-				"title": "Samodzielne Krótkie URL-e",
-				"description": "Twórz i zarządzaj krótkimi URL-ami niezależnie — bez kodu QR. Skracaj dowolne URL-e, śledź kliknięcia w czasie rzeczywistym i uzyskuj szczegółowe analizy.",
-				"bullet1": "Skróć dowolny URL jednym kliknięciem",
-				"bullet2": "Śledź kliknięcia z analizą w czasie rzeczywistym",
-				"bullet3": "Działa z własnymi domenami dla markowych linków"
-			},
-			"analytics": {
-				"tag": "Statystyki",
-				"title": "Szczegółowa Analityka w Czasie Rzeczywistym",
-				"description": "Dowiedz się, jak działają Twoje kody QR, dzięki kompleksowej analityce skanowań. Zobacz, kto skanuje, kiedy, gdzie i na jakim urządzeniu.",
-				"bullet1": "Śledzenie łącznej liczby skanowań i unikalnych odwiedzających",
-				"bullet2": "Podział wg urządzenia, przeglądarki i systemu operacyjnego (Pro)",
-				"bullet3": "Rozkład geograficzny według kraju (Pro)"
-			},
-			"collection": {
-				"tag": "Zarządzanie",
-				"title": "Twój Centralny Panel Kodów QR",
-				"description": "Utrzymuj wszystkie kody QR uporządkowane w jednym potężnym panelu. Wyszukuj, filtruj, sortuj i zarządzaj wszystkim z jednego miejsca.",
-				"bullet1": "Centralny panel dla wszystkich kodów QR",
-				"bullet2": "Zaawansowane wyszukiwanie i filtrowanie wg typu treści",
-				"bullet3": "Szybkie akcje: edytuj, udostępnij, pobierz, usuń"
-			},
-			"templates": {
-				"tag": "Design",
-				"title": "Szablony Projektów do Wielokrotnego Użytku",
-				"description": "Zapisz ulubione projekty kodów QR jako szablony i wykorzystuj je we wszystkich kampaniach. Zachowaj spójny branding bez konieczności tworzenia stylów od nowa za każdym razem.",
-				"bullet1": "Zapisz dowolny projekt kodu QR jako szablon wielokrotnego użytku",
-				"bullet2": "Zastosuj szablony do nowych kodów jednym kliknięciem",
-				"bullet3": "Zachowaj spójny branding we wszystkich kampaniach"
-			},
-			"customDomain": {
-				"tag": "Branding",
-				"title": "Własne Domeny dla Krótkich URL-i",
-				"description": "Użyj własnej domeny dla krótkich URL-i kodów QR zamiast naszej. Wzmocnij tożsamość swojej marki i buduj zaufanie u swojej publiczności.",
-				"bullet1": "Podłącz własną domenę w kilka minut",
-				"bullet2": "Automatyczne udostępnianie certyfikatu SSL",
-				"bullet3": "Pełne zarządzanie DNS przez integrację z Cloudflare"
-			},
-			"tags": {
-				"tag": "Organizacja i analityka",
-				"title": "Tagi do organizacji, grupowania i analizy",
-				"description": "Przypisuj kolorowe tagi do kodów QR i krótkich URL-i, aby grupować je według kampanii, kanału lub dowolnej kategorii. Używaj tagów do filtrowania kolekcji i analizowania wyników w grupach.",
-				"bullet1": "Taguj kody QR i krótkie URL-e do grupowania kampanii",
-				"bullet2": "Filtruj, wyszukuj i porównuj po tagach",
-				"bullet3": "Analizuj wyniki skanowań i kliknięć po tagach"
-			},
-			"bulkOperations": {
-				"tag": "Produktywność",
-				"title": "Masowy Eksport i Import na Dużą Skalę",
-				"description": "Pracuj efektywnie z dużą liczbą kodów QR. Importuj przez CSV, aby tworzyć wiele naraz, lub eksportuj całą kolekcję jako archiwum ZIP.",
-				"bullet1": "Importuj kody QR masowo przez przesyłanie CSV",
-				"bullet2": "Eksportuj wszystkie obrazy kodów QR jako archiwum ZIP",
-				"bullet3": "Idealny do kampanii drukowanych na dużą skalę"
-			},
-			"contentTypes": {
-				"tag": "Wszechstronność",
-				"title": "Ponad 9 Typów Treści Obsługiwanych",
-				"description": "Wykrocz poza proste URL-e. Twórz kody QR dla sieci WiFi, wizytówek, wydarzeń kalendarza, adresów e-mail, lokalizacji geograficznych i więcej.",
-				"bullet1": "URL, WiFi, vCard, Email i Tekst",
-				"bullet2": "Wydarzenia kalendarza z pełnym wsparciem szczegółów",
-				"bullet3": "Lokalizacje geograficzne i linki płatności"
-			},
-			"security": {
-				"tag": "Prywatność",
-				"title": "Zorientowane na Prywatność i Open Source",
-				"description": "Twoje główne dane są przechowywane na serwerach w Niemczech. Korzystamy z zaufanych usług zewnętrznych, takich jak Clerk do uwierzytelniania, i zbieramy minimalne dane analityczne w celu ulepszenia produktu. QRcodly jest w pełni open source dla pełnej przejrzystości.",
-				"bullet1": "Główna infrastruktura na serwerach w Niemczech",
-				"bullet2": "W pełni open source na GitHubie — zawsze do wglądu",
-				"bullet3": "Transparentne wykorzystanie Clerk, Sentry i PostHog"
-			},
-			"integrations": {
-				"tag": "Integracje",
-				"title": "Integracje z Zewnętrznymi Narzędziami Analitycznymi",
-				"description": "Przekazuj dane skanowania do Google Analytics 4 lub Matomo — swoich własnych narzędzi analitycznych. QRcodly wysyła tylko zanonimizowane, nieidentyfikujące dane, a wbudowana analityka pozostaje w pełni aktywna.",
-				"bullet1": "Połącz Google Analytics 4 lub Matomo w kilka minut",
-				"bullet2": "Udostępniane są tylko zanonimizowane IP i dane nieosobowe",
-				"bullet3": "Wbudowana analityka QRcodly pozostaje nienaruszona"
-			},
-			"teams": {
-				"tag": "Wkrótce",
-				"title": "Team Workspaces — Pojawi się jeszcze w tym roku",
-				"description": "Zarządzaj kodami QR razem jako zespół. Twórz organizacje, zapraszaj członków i przydzielaj role — idealne dla agencji, zespołów marketingowych i firm każdej wielkości.",
-				"bullet1": "Tworzenie organizacji i zapraszanie członków zespołu",
-				"bullet2": "Dostęp oparty na rolach: Admin, Edytor i Przeglądający",
-				"bullet3": "Współpraca nad kodami QR w całym zespole"
-			}
-		},
-		"products": {
-			"qrCodes": {
-				"title": "Kody QR",
-				"description": "Twórz w pełni konfigurowalne dynamiczne kody QR z logo, kolorami i szablonami. Śledź każde skanowanie w czasie rzeczywistym."
-			},
-			"urlShortener": {
-				"title": "Skracacz URL",
-				"description": "Skracaj dowolne linki, używaj własnych domen i śledź każde kliknięcie dzięki analityce w czasie rzeczywistym."
-			},
-			"analytics": {
-				"title": "Analityka",
-				"description": "Śledź każde skanowanie i kliknięcie we wszystkich kodach QR i krótkich URL-ach ze szczegółowymi statystykami."
-			}
-		},
-		"moreFeatures": {
-			"title": "I jeszcze wiele więcej"
-		},
-		"cta": {
-			"title": "Gotowy, aby zacząć?",
-			"subtitle": "Stwórz swój pierwszy kod QR w kilka sekund. Zawsze za darmo, bez karty kredytowej.",
-			"button": "Stwórz Kod QR Teraz"
-		}
-	},
 	"notFound": {
 		"message": "Ups! Strona, której szukasz, nie istnieje.",
 		"goHome": "Wróć na stronę główną"
@@ -2186,55 +2061,40 @@
 			"case1Title": "Zespoły marketingowe",
 			"case1Description": "Śledź wyniki kampanii we wszystkich kanałach dzięki markowym linkom i szczegółowej analityce kliknięć.",
 			"case2Title": "Menedżerowie social media",
-			"case2Description": "Twórz czyste, markowe linki do każdego postu. Monitoruj zaangażowanie na wszystkich platformach z jednego panelu.",
+			"case2Description": "Czyste, firmowe linki do każdego posta – a jeden link na platformę pokazuje, skąd pochodzą kliknięcia.",
 			"case3Title": "Sprzedaż i partnerstwa",
-			"case3Description": "Udostępniaj śledzane linki w mailach sprzedażowych i ofertach. Sprawdź, kto klika, kiedy i skąd.",
+			"case3Description": "Udostępniaj mierzalne linki w mailach sprzedażowych i ofertach i sprawdzaj, ile razy każdy został otwarty.",
 			"case4Title": "E-Commerce",
-			"case4Description": "Skracaj linki do produktów w reklamach i kampaniach emailowych. Śledź konwersje z każdego punktu kontaktu.",
+			"case4Description": "Skracaj linki do produktów w reklamach i kampaniach e-mail. Jeden link na kanał pokazuje, skąd są kliknięcia.",
 			"case5Title": "Deweloperzy i API",
-			"case5Description": "Zintegruj skracanie URL w swoich aplikacjach przez nasze REST API. Pełna dokumentacja i wsparcie SDK.",
+			"case5Description": "Zintegruj skracanie linków ze swoimi aplikacjami przez nasze REST API (Pro) z pełną dokumentacją.",
 			"case6Title": "Agencje",
-			"case6Description": "Zarządzaj linkami klientów z własnymi domenami. Krótkie URL-e z white-label i brandingiem Twoich klientów.",
+			"case6Description": "Zarządzaj linkami klientów z własnymi domenami – agencji albo samych klientów.",
 			"learnMore": "Dowiedz się więcej"
 		},
 		"features": {
 			"brandedLinks": {
 				"title": "Markowe linki z własnymi domenami",
-				"description": "Zamień generyczne krótkie URL-e na własną domenę marki. Buduj zaufanie, zwiększaj współczynnik klikalności i wzmacniaj swoją tożsamość z każdym udostępnionym linkiem.",
-				"bullet1": "Podłącz własną domenę w kilka minut",
-				"bullet2": "Automatyczne udostępnianie certyfikatu SSL",
-				"bullet3": "Pełne zarządzanie DNS przez Cloudflare"
+				"description": "Zastąp ogólne krótkie linki własną domeną. Pro zawiera jedną domenę, kolejne dodasz w każdej chwili. QRcodly sprawdza rekordy DNS i automatycznie konfiguruje certyfikat SSL."
 			},
 			"analytics": {
 				"title": "Analityka kliknięć w czasie rzeczywistym",
-				"description": "Zobacz dokładnie, jak działają Twoje linki. Śledź łączne kliknięcia, unikalnych odwiedzających, rozkład geograficzny, urządzenia i przeglądarki — wszystko aktualizowane w czasie rzeczywistym.",
-				"bullet1": "Śledzenie łącznych kliknięć i unikalnych odwiedzających",
-				"bullet2": "Podział wg urządzenia, przeglądarki i systemu operacyjnego (Pro)",
-				"bullet3": "Rozkład geograficzny według kraju (Pro)"
+				"description": "Każdy link liczy kliknięcia i odwiedzających w każdym planie, w tym ostatnie 7 dni oraz główny kraj i urządzenie. Pro dodaje przebieg w czasie, mapę świata i podział według urządzenia, przeglądarki i systemu."
 			},
 			"management": {
 				"title": "Zorganizowane zarządzanie linkami",
-				"description": "Utrzymuj wszystkie krótkie URL-e uporządkowane za pomocą tagów, kontroli statusu i przeszukiwalnego panelu. Włączaj lub wyłączaj linki natychmiast i znajdź dowolny link w kilka sekund.",
-				"bullet1": "Taguj i kategoryzuj linki dla łatwego filtrowania",
-				"bullet2": "Włączaj lub wyłączaj linki jednym kliknięciem",
-				"bullet3": "Przeszukuj i sortuj całą bibliotekę linków"
+				"description": "Utrzymuj wszystkie krótkie URL-e uporządkowane za pomocą tagów, kontroli statusu i przeszukiwalnego panelu. Włączaj lub wyłączaj linki natychmiast i znajdź dowolny link w kilka sekund."
 			},
 			"bulkOperations": {
-				"title": "Masowe operacje na linkach",
-				"comingSoon": "Wkrótce dostępne",
-				"description": "Twórz, eksportuj i zarządzaj setkami krótkich URL-i jednocześnie. Idealne do dużych kampanii, katalogów produktów i procesów korporacyjnych.",
-				"bullet1": "Masowe tworzenie przez import CSV",
-				"bullet2": "Eksportuj wszystkie linki z pełnymi metadanymi",
-				"bullet3": "Aktywuj, dezaktywuj lub taguj linki zbiorczo"
+				"title": "Działania zbiorcze",
+				"description": "Zaznacz kilka linków w panelu i usuń je za jednym razem."
 			},
 			"apiAccess": {
 				"title": "REST API i integracje",
-				"description": "Zintegruj skracanie URL w swoich aplikacjach i procesach. Nasze udokumentowane REST API sprawia, że programowe zarządzanie linkami jest proste.",
-				"bullet1": "Pełne REST API z uwierzytelnianiem kluczem API",
-				"bullet2": "Twórz, odczytuj, aktualizuj i usuwaj linki programowo",
-				"bullet3": "Kompleksowa dokumentacja API",
+				"description": "W Pro tworzysz, zmieniasz i usuwasz linki z własnego kodu za pomocą klucza API. Dokumentacja opisuje wszystkie endpointy.",
 				"actionLabel": "Zobacz dokumentację API"
-			}
+			},
+			"title": "Krótkie linki z własną domeną, statystykami i celem, który możesz zmienić."
 		},
 		"crossProducts": {
 			"title": "Odkryj więcej produktów QRcodly",
@@ -2244,23 +2104,23 @@
 			},
 			"analytics": {
 				"title": "Analityka",
-				"description": "Ujednolicony panel analityczny dla wszystkich kodów QR i krótkich URL-i ze statystykami urządzeń, lokalizacji i przeglądarek."
+				"description": "Statystyki skanów i kliknięć dla każdego kodu QR i krótkiego linku – z urządzeniami, krajami i przeglądarkami w Pro."
 			}
 		},
 		"faq": {
 			"title": "Często zadawane pytania",
 			"q1": "Jak działają własne domeny z krótkimi linkami?",
-			"a1": "Podłącz własną domenę (np. go.twojamarka.com) w ustawieniach panelu. Skonfiguruj wskazane rekordy DNS, a certyfikat SSL zostanie wydany automatycznie. Wszystkie nowe linki będą używać Twojej domeny.",
+			"a1": "W Pro podłączasz własną domenę (np. go.twojamarka.pl) w ustawieniach panelu i dodajesz pokazane rekordy DNS. QRcodly je sprawdza i automatycznie konfiguruje SSL. Tworząc link, wybierasz domenę.",
 			"q2": "Czy mogę ustawić wygasanie linku lub reguły dostępu?",
-			"a2": "Obecnie linki pozostają aktywne bezterminowo. Możesz ręcznie wyłączyć dowolny link w dowolnym momencie z panelu. Automatyczne daty wygaśnięcia są na roadmapie.",
+			"a2": "Linki działają, dopóki ich nie wyłączysz lub nie usuniesz – nie ma automatycznych dat wygaśnięcia. Każdy link wyłączysz w dowolnej chwili w panelu.",
 			"q3": "Co się dzieje, gdy wyłączę krótki link?",
 			"a3": "Odwiedzający widzą stronę 'link niedostępny'. Link nie jest usuwany — możesz go ponownie włączyć w dowolnym momencie, a wszystkie wcześniejsze dane analityczne zostają zachowane.",
 			"q4": "Jak technicznie obsługiwane są przekierowania?",
-			"a4": "Krótkie linki używają przekierowań HTTP 301 (permanentnych). Przekierowanie następuje po stronie serwera w mniej niż 50 ms, więc użytkownicy praktycznie nie odczuwają opóźnienia.",
+			"a4": "Krótkie linki odpowiadają przekierowaniem HTTP 307 (tymczasowym) po stronie serwera. Przeglądarki nie zapamiętują przekierowań tymczasowych, więc nowy cel działa od razu.",
 			"q5": "Czy mogę organizować linki za pomocą tagów?",
 			"a5": "Tak. Dodaj jeden lub więcej tagów do dowolnego linku. Następnie filtruj panel według tagów, aby wyświetlać linki pogrupowane według kampanii, klienta lub dowolnej zdefiniowanej kategorii.",
 			"q6": "Jak API obsługuje masowe tworzenie linków?",
-			"a6": "Wysyłaj żądania POST do endpointu /api/v1/short-url dla każdego linku. Dla większych operacji masowych twórz skrypty z wieloma żądaniami lub użyj funkcji importu CSV w panelu.",
+			"a6": "W Pro wysyłasz dla każdego linku żądanie POST do endpointu /api/v1/short-url.",
 			"viewAll": "Więcej pytań? Zobacz wszystkie FAQ"
 		},
 		"facts": {
@@ -2269,9 +2129,10 @@
 			"fact2Value": "0",
 			"fact2Label": "Wymaganych kart płatniczych",
 			"fact3Value": "REST",
-			"fact3Label": "API do automatyzacji",
+			"fact3Label": "API do automatyzacji (Pro)",
 			"fact4Value": "MIT",
-			"fact4Label": "Licencja open source"
+			"fact4Label": "Licencja open source",
+			"title": "Nielimitowane linki i kliknięcia w darmowym planie."
 		},
 		"dynamic": {
 			"title": "Link, którego nie możesz zmienić, to decyzja, której nie cofniesz",
@@ -2292,6 +2153,11 @@
 			"lockInPill2": "Żadnego okresu próbnego, który wyłącza Twoje linki",
 			"lockInPill3": "Licencja MIT — sprawdź lub hostuj samodzielnie",
 			"lockInCtaLabel": "Zobacz, co zawiera plan darmowy"
+		},
+		"cta": {
+			"title": "Gotowy, by skrócić pierwszy link?",
+			"subtitle": "Nielimitowane krótkie linki i kliknięcia w darmowym planie. Bez karty kredytowej.",
+			"ctaLabel": "Zacznij za darmo"
 		}
 	},
 	"productsQrCodes": {
@@ -2312,7 +2178,7 @@
 			"case2Title": "Handel detaliczny i e-commerce",
 			"case2Description": "Informacje o produkcie, promocje i programy lojalnościowe na opakowaniach. Śledź, które produkty generują najwięcej skanowań.",
 			"case3Title": "Eventy i konferencje",
-			"case3Description": "Bilety, harmonogramy i wymiana kontaktów przez kody QR vCard. Idealne do identyfikatorów i materiałów drukowanych.",
+			"case3Description": "Harmonogramy, wpisy do kalendarza i wymiana kontaktów przez kody QR vCard. Idealne na identyfikatory i druki.",
 			"case4Title": "Nieruchomości",
 			"case4Description": "Oferty nieruchomości, wirtualne wycieczki i dane kontaktowe agenta na oznaczeniach. Śledź zainteresowanie według lokalizacji.",
 			"case5Title": "Edukacja",
@@ -2324,46 +2190,34 @@
 		"features": {
 			"customization": {
 				"title": "W pełni konfigurowalny design",
-				"description": "Wyjdź poza podstawowe czarno-białe kody. Dostosuj kolory, style narożników i dodaj logo, aby tworzyć kody QR idealnie pasujące do tożsamości Twojej marki.",
-				"bullet1": "Własne kolory tła, pierwszego planu i narożników",
-				"bullet2": "Wiele stylów punktów i kwadratów narożnych",
-				"bullet3": "Prześlij swoje logo do markowych kodów QR"
+				"description": "Wyjdź poza podstawowe czarno-białe kody. Dostosuj kolory, style narożników i dodaj logo, aby tworzyć kody QR idealnie pasujące do tożsamości Twojej marki."
 			},
 			"analytics": {
 				"title": "Analityka i śledzenie skanowań",
-				"description": "Każdy dynamiczny kod QR ma wbudowane statystyki skanów w czasie rzeczywistym. Z Pro zobaczysz dokładnie, kiedy, gdzie i na jakim urządzeniu jest skanowany — wszystko z Twojego panelu.",
-				"bullet1": "Śledzenie skanowań i odwiedzających w czasie rzeczywistym",
-				"bullet2": "Podział wg urządzenia, przeglądarki i systemu operacyjnego (Pro)",
-				"bullet3": "Rozkład geograficzny według kraju (Pro)"
+				"description": "Każdy dynamiczny kod QR ma wbudowane statystyki skanów w czasie rzeczywistym. Z Pro zobaczysz dokładnie, kiedy, gdzie i na jakim urządzeniu jest skanowany — wszystko z Twojego panelu."
 			},
 			"contentTypes": {
-				"title": "Ponad 9 obsługiwanych typów treści",
-				"description": "Twórz kody QR nie tylko dla URL-i. Wsparcie dla sieci WiFi, wizytówek, wydarzeń kalendarza, e-maili, lokalizacji, płatności i więcej.",
-				"bullet1": "URL, WiFi, vCard, Email i Tekst",
-				"bullet2": "Wydarzenia kalendarza z pełnym wsparciem szczegółów",
-				"bullet3": "Lokalizacje geograficzne i linki płatności EPC"
+				"title": "{count} typów treści",
+				"description": "Od URL, Wi-Fi i vCard po SMS, WhatsApp i przelewy EPC. Linki, vCard, wydarzenia, PDF i strony produktów mogą być dynamiczne – edytowalne po wydruku."
 			},
 			"dynamicUpdates": {
 				"title": "Dynamiczne aktualizacje treści",
-				"description": "Zmień cel kodu QR bez ponownego drukowania. Aktualizuj URL-e, zmieniaj typy treści lub przekierowuj na sezonowe kampanie — wydrukowane kody QR pozostają takie same.",
-				"bullet1": "Aktualizuj docelowe URL-e w dowolnym momencie",
-				"bullet2": "Zmieniaj typy treści w locie",
-				"bullet3": "Bez ponownego drukowania — nigdy"
+				"description": "Zmień cel kodu dynamicznego bez ponownego druku: nowa kampania, poprawiona literówka lub wstrzymanie kodu jednym kliknięciem. Wydrukowany wzór się nie zmienia."
 			},
 			"bulkTemplates": {
 				"title": "Szablony i masowe tworzenie",
-				"description": "Zapisz design kodu QR Twojej marki jako szablon wielokrotnego użytku. Następnie twórz setki kodów QR naraz przez import CSV — wszystkie z jednolitym stylem.",
-				"bullet1": "Zapisuj i wielokrotnie używaj szablonów brandowych",
-				"bullet2": "Masowe tworzenie przez przesyłanie CSV",
-				"bullet3": "Spójny branding we wszystkich kodach QR"
+				"description": "Zapisz projekt jako szablon i zastosuj go jednym kliknięciem. Importuj do 10 kodów na plik CSV w planie Free i 50 w Pro, a zaznaczone kody pobieraj lub usuwaj razem."
 			},
 			"apiAccess": {
 				"title": "REST API i integracje",
-				"description": "Zintegruj generowanie kodów QR ze swoimi aplikacjami i przepływami pracy. Nasze udokumentowane REST API ułatwia programistyczne tworzenie i zarządzanie kodami QR.",
-				"bullet1": "Pełne REST API z uwierzytelnianiem kluczem API",
-				"bullet2": "Twórz, dostosowuj i zarządzaj kodami QR programistycznie",
-				"bullet3": "Kompleksowa dokumentacja API",
+				"description": "W Pro tworzysz kody QR i zarządzasz nimi z własnego oprogramowania za pomocą klucza API. Albo pracujesz tam, gdzie projektujesz: z rozszerzeniem Chrome i wtyczką Adobe InDesign.",
 				"actionLabel": "Zobacz dokumentację API"
+			},
+			"title": "Wszystko, czego potrzebuje kod QR – w jednym generatorze.",
+			"hostedPages": {
+				"title": "Strony PDF i strony produktów",
+				"description": "W Pro skan otwiera stronę mobilną w Twoim stylu – dla menu, broszury lub instrukcji obsługi. Plik podmienisz później, kod zostaje.",
+				"actionLabel": "Zobacz strony PDF"
 			}
 		},
 		"crossProducts": {
@@ -2374,7 +2228,7 @@
 			},
 			"analytics": {
 				"title": "Analityka",
-				"description": "Ujednolicony panel analityczny dla wszystkich kodów QR i krótkich URL-i ze statystykami urządzeń, lokalizacji i przeglądarek."
+				"description": "Statystyki skanów i kliknięć dla każdego kodu QR i krótkiego linku – z urządzeniami, krajami i przeglądarkami w Pro."
 			}
 		},
 		"faq": {
@@ -2382,15 +2236,15 @@
 			"q1": "Jaka jest różnica między statycznymi a dynamicznymi kodami QR?",
 			"a1": "Statyczne kody kodują dane bezpośrednio — nie można ich edytować ani śledzić po utworzeniu. Dynamiczne kody używają krótkiego URL przekierowania, więc możesz zmienić cel i śledzić skanowania w dowolnym momencie.",
 			"q2": "Czy mogę tworzyć kody QR masowo?",
-			"a2": "Tak. Użyj importu CSV, aby utworzyć setki kodów QR naraz. Zastosuj zapisany szablon designu, aby zapewnić spójny branding we wszystkich kodach w partii.",
+			"a2": "Tak. Prześlij plik CSV, aby utworzyć kilka kodów naraz: do 10 wierszy na import w Free, 50 w Pro. Zapisany szablon nada wszystkim kodom ten sam wygląd.",
 			"q3": "Jak zapisać design kodu QR jako szablon?",
 			"a3": "Dostosuj swój kod QR (kolory, logo, styl), a następnie zapisz go jako szablon. Następnym razem wybierz swój szablon i zmień tylko treść — design zostanie zastosowany automatycznie.",
-			"q4": "Jakiego poziomu korekcji błędów powinienem użyć?",
-			"a4": "Średni (M) sprawdza się w większości przypadków. Jeśli dodajesz logo, użyj Wysokiego (H), aby kod pozostał skanowalny nawet z częścią zakrytą przez logo.",
+			"q4": "Czy logo uniemożliwi zeskanowanie kodu?",
+			"a4": "Zwykle nie. QRcodly tworzy każdy kod z poziomem korekcji błędów Q, który odtwarza mniej więcej jedną czwartą wzoru – wystarczy na logo pośrodku. Przed dużym nakładem przetestuj kod w docelowym rozmiarze.",
 			"q5": "Czy mogę używać kodów QR offline bez internetu?",
 			"a5": "Kody QR WiFi, vCard i Tekst działają w pełni offline — dane są zakodowane bezpośrednio w kodzie. Kody oparte na URL wymagają internetu do otwarcia linkowanej strony po skanowaniu.",
 			"q6": "Jak zintegrować generowanie kodów QR z własną aplikacją?",
-			"a6": "Użyj REST API QRcodly. Uwierzytelnij się kluczem API i wyślij żądanie POST, aby programowo tworzyć, dostosowywać i zarządzać kodami QR.",
+			"a6": "W Pro utworzysz klucz API w panelu i za pomocą REST API QRcodly stworzysz, ostylujesz i zarządzisz kodami QR. Dokumentacja opisuje wszystkie endpointy.",
 			"viewAll": "Więcej pytań? Zobacz wszystkie FAQ"
 		},
 		"cta": {
@@ -2399,14 +2253,14 @@
 			"ctaLabel": "Stwórz kod QR teraz"
 		},
 		"facts": {
-			"fact1Value": "8",
 			"fact1Label": "Typów treści QR",
 			"fact2Value": "∞",
 			"fact2Label": "Kodów i skanów w cenie",
 			"fact3Value": "0",
 			"fact3Label": "Wymaganych kart płatniczych",
 			"fact4Value": "MIT",
-			"fact4Label": "Licencja open source"
+			"fact4Label": "Licencja open source",
+			"title": "Za darmo naprawdę: bez limitu skanów i bez okresu próbnego, który wygasa."
 		},
 		"dynamic": {
 			"title": "Statyczny czy dynamiczny? Zdecyduj przed drukiem.",
@@ -2438,30 +2292,30 @@
 		"badge": "Analityka",
 		"hero": {
 			"title": "Zobacz, co naprawdę robią Twoje kody QR i linki.",
-			"subtitle": "Śledź każde skanowanie i kliknięcie we wszystkich kodach QR i krótkich URL-ach. Uzyskaj statystyki w czasie rzeczywistym o urządzeniach, lokalizacjach, przeglądarkach i wydajności kanałów.",
+			"subtitle": "Statystyki skanów i kliknięć są darmowe w każdym planie; Pro dodaje urządzenia, kraje, przeglądarki i przebieg w czasie.",
 			"ctaLabel": "Zacznij śledzić za darmo"
 		},
 		"stats": {
 			"stat1Value": "Czas rzeczywisty",
 			"stat1Label": "Aktualizacja danych",
-			"stat2Value": "10K+",
-			"stat2Label": "Wydarzeń dziennie",
+			"stat2Value": "∞",
+			"stat2Label": "Liczone skany i kliknięcia",
 			"stat3Value": "2",
 			"stat3Label": "Integracje",
-			"stat4Value": "100%",
-			"stat4Label": "Prywatność przede wszystkim"
+			"stat4Value": "0 €",
+			"stat4Label": "za statystyki skanów"
 		},
 		"useCases": {
 			"title": "Analityka, która napędza decyzje",
 			"subtitle": "Przekształć dane skanowań i kliknięć w praktyczne wnioski dla swojego zespołu.",
 			"case1Title": "Optymalizacja kampanii",
-			"case1Description": "Porównuj wydajność kodów QR i krótkich URL-i obok siebie. Stawiaj na kanały, które konwertują.",
+			"case1Description": "Daj każdemu miejscu własny kod QR lub krótki link i porównuj liczby. Stawiaj na to, co działa.",
 			"case2Title": "Targetowanie geograficzne",
 			"case2Description": "Sprawdź, skąd skanuje Twoja publiczność. Optymalizuj kampanie regionalne na podstawie prawdziwych danych.",
 			"case3Title": "Analiza urządzeń",
 			"case3Description": "Poznaj urządzenia i przeglądarki swojej publiczności. Optymalizuj strony docelowe pod kątem platform, które mają znaczenie.",
 			"case4Title": "Śledzenie kampanii",
-			"case4Description": "Używaj tagów do grupowania kodów QR i krótkich URL-i według kampanii. Porównuj wyniki między kanałami i okresami.",
+			"case4Description": "Grupuj tagami kody QR i krótkie linki kampanii, a potem porównuj ich statystyki po kolei.",
 			"case5Title": "Testy A/B",
 			"case5Description": "Twórz wiele kodów QR lub krótkich URL-i dla tego samego celu. Porównaj, który design lub umiejscowienie sprawdza się najlepiej.",
 			"case6Title": "Integracja z narzędziami zewnętrznymi",
@@ -2470,48 +2324,21 @@
 		"features": {
 			"realTime": {
 				"title": "Metryki wydajności w czasie rzeczywistym",
-				"description": "Zobacz swoje dane w momencie ich powstawania. Śledź skanowania, kliknięcia i unikalnych odwiedzających w czasie rzeczywistym z podziałem na urządzenia, przeglądarki i systemy operacyjne.",
-				"bullet1": "Śledzenie skanowań i kliknięć na żywo",
-				"bullet2": "Podział wg urządzenia, przeglądarki i systemu operacyjnego (Pro)",
-				"bullet3": "Identyfikacja unikalnych odwiedzających"
-			},
-			"channels": {
-				"title": "Śledzenie kampanii za pomocą tagów",
-				"comingSoon": "Wkrótce dostępne",
-				"description": "Grupuj kody QR i krótkie URL-e według kampanii za pomocą tagów. Porównuj wyniki między kampaniami, kanałami i okresami — wszystko z jednego panelu.",
-				"bullet1": "Grupowanie na podstawie tagów dla kampanii i kanałów",
-				"bullet2": "Porównuj wyniki różnych tagów obok siebie",
-				"bullet3": "Zidentyfikuj najlepsze kampanie na pierwszy rzut oka"
+				"description": "Widzisz skany i kliknięcia na bieżąco. Za darmo w każdym planie: sumy, odwiedzający, ostatnie 7 dni oraz główny kraj i urządzenie. Pro dodaje przebieg w czasie i podział według urządzenia, przeglądarki i systemu."
 			},
 			"integrations": {
 				"title": "Integracje z zewnętrznymi narzędziami",
-				"description": "Przekazuj dane skanowań i kliknięć do Google Analytics 4 lub Matomo. Zachowaj swój dotychczasowy workflow analityczny, podczas gdy wbudowana analityka QRcodly pozostaje w pełni aktywna.",
-				"bullet1": "Połącz Google Analytics 4 lub Matomo w kilka minut",
-				"bullet2": "Udostępniane są tylko zanonimizowane, nieosobowe dane",
-				"bullet3": "Wbudowana analityka QRcodly pozostaje nienaruszona"
+				"description": "Tak. W Pro przekazujesz dane skanów i kliknięć do Google Analytics 4 lub Matomo. QRcodly wysyła tylko skrócone adresy IP, a wbudowane statystyki działają dalej."
 			},
 			"geographic": {
 				"title": "Wgląd geograficzny",
-				"description": "Sprawdź dokładnie, gdzie znajduje się Twoja publiczność. Dane lokalizacji na poziomie kraju dla każdego skanowania i kliknięcia pomagają zrozumieć regionalne wzorce zaangażowania.",
-				"bullet1": "Śledzenie lokalizacji na poziomie kraju",
-				"bullet2": "Identyfikuj najlepiej działające regiony",
-				"bullet3": "Prywatność przede wszystkim: adresy IP nigdy nie są przechowywane"
-			},
-			"exportReporting": {
-				"title": "Eksport danych i raportowanie",
-				"comingSoon": "Wkrótce dostępne",
-				"description": "Eksportuj dane analityczne do indywidualnych raportów i prezentacji. Filtruj według zakresu dat, urządzenia lub lokalizacji i pobierz wszystko, czego potrzebujesz.",
-				"bullet1": "Eksportuj dane skanowań i kliknięć jako CSV",
-				"bullet2": "Filtruj według zakresu dat, urządzenia lub lokalizacji",
-				"bullet3": "Idealne do raportów zespołowych i prezentacji"
+				"description": "Zobacz, gdzie są Twoi odbiorcy. W Pro mapa świata pokazuje skany i kliknięcia według krajów dla każdego kodu i linku."
 			},
 			"privacy": {
-				"title": "Analityka z poszanowaniem prywatności",
-				"description": "Wszystkie dane są zbierane anonimowo, bez identyfikatorów osobowych. Adresy IP są skracane, user agenty redukowane do kategorii urządzenia — bez ciasteczek i fingerptintingu.",
-				"bullet1": "Adresy IP są skracane — nigdy nie są przechowywane w całości",
-				"bullet2": "User agent jest ograniczony do typu urządzenia, systemu i przeglądarki",
-				"bullet3": "Bez ciasteczek, bez fingerprintingu, bez danych osobowych"
-			}
+				"title": "Statystyki przyjazne prywatności",
+				"description": "Statystyki działają na naszej własnej instancji Umami. Przekierowanie po skanie nie ustawia plików cookie, a panel pokazuje kraje, urządzenia i przeglądarki – nigdy adresów IP ani konkretnych osób."
+			},
+			"title": "Od pierwszego skanu do pełnego obrazu."
 		},
 		"crossProducts": {
 			"title": "Odkryj więcej produktów QRcodly",
@@ -2527,15 +2354,15 @@
 		"faq": {
 			"title": "Często zadawane pytania",
 			"q1": "Jaką analitykę zapewnia QRcodly?",
-			"a1": "QRcodly śledzi łączne skanowania/kliknięcia, unikalnych odwiedzających, typy urządzeń, przeglądarki, systemy operacyjne i lokalizacje geograficzne zarówno dla kodów QR, jak i krótkich URL-i — wszystko w czasie rzeczywistym.",
+			"a1": "Dla każdego dynamicznego kodu QR i krótkiego linku: łączne skany lub kliknięcia, odwiedzający, ostatnie 7 dni oraz główny kraj i urządzenie. W Pro także przebieg w czasie, kraje na mapie świata, urządzenia, przeglądarki i systemy.",
 			"q2": "Jaka analityka jest dostępna za darmo?",
 			"a2": "Każdy dynamiczny kod QR i krótki URL ma darmowe statystyki skanów: łączną liczbę skanów lub kliknięć, unikalnych odwiedzających, ostatnie 7 dni oraz główny kraj i urządzenie. Pro odblokowuje szczegółową analitykę: przebieg w czasie, mapę świata Twoich odbiorców i podział według urządzeń, przeglądarek i systemów operacyjnych. Dane są zbierane w każdym planie, więc po przejściu na Pro od razu widzisz wszystko, także wstecz.",
 			"q3": "Czy mogę podłączyć Google Analytics?",
-			"a3": "Tak. Użytkownicy planu Pro mogą przekazywać dane skanowań i kliknięć do Google Analytics 4 lub Matomo. Udostępniane są tylko zanonimizowane, nieidentyfikujące dane, a wbudowana analityka QRcodly pozostaje w pełni aktywna.",
+			"a3": "Tak. W Pro przekazujesz dane skanów i kliknięć do Google Analytics 4 lub Matomo. QRcodly wysyła tylko skrócone adresy IP, a wbudowane statystyki działają dalej.",
 			"q4": "Jak zbierane są dane geograficzne?",
-			"a4": "Dane geograficzne są pozyskiwane z adresu IP w momencie skanowania lub kliknięcia. Adres IP jest anonimizowany i nigdy nie jest przechowywany. Rejestrowana jest tylko lokalizacja na poziomie kraju.",
-			"q5": "Czy mogę porównać wydajność kodów QR i krótkich URL-i?",
-			"a5": "Tak. Twój panel QRcodly pokazuje ujednoliconą analitykę dla wszystkich kodów QR i krótkich URL-i, co ułatwia porównywanie kanałów i identyfikację najlepszych wyników.",
+			"a4": "Kraj jest ustalany na podstawie adresu IP w chwili skanu lub kliknięcia. Statystyki pokazują kraj – nigdy sam adres IP.",
+			"q5": "Czy mogę porównywać kody QR i krótkie linki?",
+			"a5": "Tak, kod po kodzie: każdy kod QR i krótki link ma własną stronę statystyk, a tagi grupują kody kampanii.",
 			"q6": "Czy dane są w czasie rzeczywistym?",
 			"a6": "Tak. Wszystkie dane analityczne w QRcodly aktualizują się w czasie rzeczywistym. Gdy tylko ktoś zeskanuje kod QR lub kliknie krótki URL, dane pojawiają się w Twoim panelu.",
 			"viewAll": "Więcej pytań? Zobacz wszystkie FAQ"
@@ -2545,6 +2372,130 @@
 			"subtitle": "Śledź każde skanowanie i kliknięcie za darmo, a szczegółową analitykę odblokuj w Pro. Bez karty kredytowej.",
 			"ctaLabel": "Zacznij śledzić za darmo"
 		}
+	},
+	"productsDigitalManual": {
+		"metaTitle": "Cyfrowa instrukcja obsługi z kodem QR – unijne rozporządzenie w sprawie maszyn",
+		"metaDescription": "Instrukcja, informacje o bezpieczeństwie i deklaracja zgodności pod jednym kodem QR na model: wielojęzycznie, z wcześniejszymi wersjami i przyciskiem do zamówienia wersji papierowej. Gotowe na 20 stycznia 2027.",
+		"hero": {
+			"badge": "NOWOŚĆ",
+			"audience": "Dla producentów maszyn, urządzeń i narzędzi",
+			"title": "Instrukcja obsługi jest teraz w kodzie QR.",
+			"subtitle": "Od 20 stycznia 2027 instrukcje obsługi mogą być udostępniane w formie cyfrowej. QRcodly tworzy z nich jedną stronę na model – wielojęzycznie, z wcześniejszymi wersjami i przyciskiem do zamówienia wersji papierowej.",
+			"cta": "Wypróbuj teraz",
+			"secondary": "Jak to działa",
+			"point1": "Bez projektu wdrożeniowego",
+			"point2": "Twoi klienci nie potrzebują aplikacji",
+			"point3": "W ramach QRcodly Pro"
+		},
+		"band": {
+			"label": "ROZPORZĄDZENIE W SPRAWIE MASZYN (UE) 2023/1230",
+			"title": "Obowiązuje od 20 stycznia 2027.",
+			"s1Value": "1",
+			"s1Label": "kod QR na model",
+			"s2Value": "26",
+			"s2Label": "języków dokumentów",
+			"s3Value": "50 MB",
+			"s3Label": "na plik PDF"
+		},
+		"steps": {
+			"label": "JAK TO DZIAŁA",
+			"title": "Od tabliczki znamionowej do instrukcji w trzech krokach.",
+			"file1": "Instrukcja-obslugi.pdf",
+			"file2": "Informacje-o-bezpieczenstwie.pdf",
+			"file3": "Deklaracja-zgodnosci.pdf",
+			"s1Title": "Wgraj dokumenty",
+			"s1Text": "Instrukcja, informacje o bezpieczeństwie i deklaracja zgodności – jeden PDF na język, do 50 MB.",
+			"s2Title": "Kod na tabliczce",
+			"s2Text": "Jeden kod na model, z adresem zapisanym tekstem. Drukujesz raz – nowe wersje go nie zmieniają.",
+			"s3Title": "Klient skanuje",
+			"s3Text": "Strona otwiera się w języku jego telefonu – bez aplikacji i logowania."
+		},
+		"features": {
+			"label": "CO ZAWIERA",
+			"title": "Więcej niż link do PDF. Mniej niż projekt wdrożeniowy.",
+			"versions": {
+				"title": "Wcześniejsze wersje zostają na stronie",
+				"text": "Wgraj nową wersję – poprzednia trafia z datami obowiązywania do archiwum i nadal można ją otworzyć.",
+				"rev1Dates": "20.01.2027 – 14.06.2027",
+				"rev2Dates": "14.06.2027 – 02.03.2028",
+				"rev3Dates": "od 02.03.2028",
+				"rev3Label": "Wer. 3 · aktualna"
+			},
+			"languages": {
+				"title": "26 języków",
+				"text": "Jeden PDF na język. Strona wybiera język telefonu."
+			},
+			"paper": {
+				"title": "Wersja papierowa przez e-mail",
+				"text": "Przycisk otwiera gotowego e-maila do Ciebie – model i język są już wpisane.",
+				"mailTo": "Do: service@example.com",
+				"mailSubject": "Papierowa instrukcja do BS-400/2",
+				"mailBody": "Imię i nazwisko: …\nAdres dostawy: …\nNumer seryjny: …"
+			},
+			"declaration": {
+				"title": "Deklaracja zgodności w zestawie",
+				"text": "Osobny rodzaj dokumentu i osobna sekcja – pod tym samym adresem co instrukcja.",
+				"docTitle": "Deklaracja zgodności UE"
+			},
+			"brand": {
+				"title": "Twoja marka, Twoja domena",
+				"text": "Logo, kolory, czcionka – a na życzenie pod adresem docs.twoja-firma.pl."
+			}
+		},
+		"law": {
+			"label": "ART. 10 UST. 7 I 8",
+			"title": "Czego wymaga rozporządzenie – i kto co załatwia.",
+			"r1Rule": "Na maszynie podano, jak dotrzeć do instrukcji",
+			"r1Answer": "Kod QR i adres zapisany tekstem",
+			"r2Rule": "Instrukcja wskazuje model",
+			"r2Answer": "Model jest wymagany i widnieje na górze strony",
+			"r3Rule": "Drukowanie, pobieranie, zapisywanie",
+			"r3Answer": "Każdy dokument jako PDF do otwarcia i pobrania",
+			"r4Rule": "Wersja papierowa na życzenie, bezpłatnie, w ciągu miesiąca",
+			"r4Answer": "Przycisk do prośby e-mailem – wysyłkę realizujesz Ty",
+			"r5Rule": "Język określa każdy kraj",
+			"r5Answer": "Jeden PDF na język, 26 języków",
+			"r6Rule": "Online przez okres użytkowania, co najmniej 10 lat",
+			"r6Answer": "Online, dopóki trwa Twój plan Pro – uwzględnij 10 lat",
+			"note": "QRcodly zapewnia funkcje techniczne dla instrukcji cyfrowych. To, czy Twoja instrukcja spełnia wymogi rozporządzenia, zależy od treści, języków i terminów – za to odpowiada producent. Ta strona nie jest poradą prawną."
+		},
+		"compare": {
+			"label": "PORÓWNANIE",
+			"title": "Więcej niż kod QR prowadzący do PDF.",
+			"feature": "Funkcja",
+			"colPdf": "Kod QR do PDF",
+			"colUs": "Strona produktu QRcodly",
+			"r1": "Wcześniejsze wersje pozostają dostępne",
+			"r2": "Wiele języków, wybieranych automatycznie",
+			"r3": "Deklaracja zgodności w osobnej sekcji",
+			"r4": "Zamówienie wersji papierowej",
+			"r5": "Wymiana pliku bez ponownego druku",
+			"r5Pdf": "tylko z kodem dynamicznym"
+		},
+		"templates": {
+			"label": "SZABLONY",
+			"title": "Gotowe dla Twojej branży.",
+			"cta": "Zacznij od szablonu"
+		},
+		"faq": {
+			"title": "Najczęstsze pytania",
+			"q1": "Czy mogę zrezygnować z papierowej instrukcji?",
+			"a1": "Rozporządzenie dopuszcza instrukcje cyfrowe od 20 stycznia 2027 pod warunkami: instrukcja musi być dostępna cyfrowo, kupujący, który poprosi o nią przy zakupie, otrzymuje bezpłatnie wersję papierową w ciągu miesiąca, a przy maszynach używanych także przez konsumentów najważniejsze informacje o bezpieczeństwie nadal trzeba dołączyć na papierze. Które zasady dotyczą Twojego produktu, najlepiej sprawdzić z doradcą prawnym lub ds. CE.",
+			"q2": "Co się dzieje, gdy wgram nową wersję?",
+			"a2": "Wydrukowany kod się nie zmienia. Stary plik trafia z datami do „Wcześniejszych wersji” i pozostaje dostępny.",
+			"q3": "Czy moi klienci potrzebują aplikacji?",
+			"a3": "Nie. Każdy aparat w telefonie otwiera stronę w przeglądarce – bez aplikacji i konta.",
+			"q4": "Czy potrzebuję kodu dla każdej maszyny?",
+			"a4": "Nie, wystarczy jeden kod na model – rozporządzenie wymaga instrukcji odpowiadającej modelowi.",
+			"q5": "Ile to kosztuje?",
+			"a5": "Strony produktów są częścią QRcodly Pro, bez opłaty wdrożeniowej. Aktualne ceny znajdziesz na naszej stronie z cennikiem."
+		},
+		"cta": {
+			"title": "Gotowy na 20 stycznia?",
+			"text": "Utwórz pierwszą stronę produktu w kilka minut – z szablonem, instrukcją i deklaracją zgodności.",
+			"button": "Utwórz stronę produktu"
+		},
+		"breadcrumb": "Cyfrowa instrukcja obsługi"
 	},
 	"faqPage": {
 		"metaTitle": "FAQ - Najczęściej zadawane pytania",
@@ -2573,7 +2524,7 @@
 				"q4": "Czy kody QR działają również w druku?",
 				"a4": "Oczywiście! Kody QR są specjalnie zoptymalizowane do druku i działają niezawodnie na różnych materiałach, pod warunkiem, że pozostają czytelne i nieuszkodzone.",
 				"q5": "Gdzie są hostowane moje dane?",
-				"a5": "Wszystkie dane w QRcodly są przechowywane wyłącznie na serwerach znajdujących się w Niemczech. Używamy Clerk do uwierzytelniania oraz narzędzi analitycznych przyjaznych prywatności w celu ulepszania naszej usługi. Twoje dane nie są sprzedawane ani udostępniane w celach reklamowych.",
+				"a5": "Główna infrastruktura QRcodly działa na serwerach w Niemczech. Do logowania używamy Clerk, do płatności Stripe, a Sentry i PostHog pomagają znajdować błędy i ulepszać produkt. Twoje dane nie są sprzedawane ani wykorzystywane do reklam.",
 				"q6": "Czy QRcodly jest open source?",
 				"a6": "Tak! QRcodly jest w pełni open source i dostępny na GitHub. Możesz przejrzeć kod, wnieść swój wkład lub nawet hostować własną instancję.",
 				"q7": "Czy mogę używać QRcodly do celów komercyjnych?",
@@ -2587,25 +2538,25 @@
 				"q3": "Czy mogę dodać swoje logo do kodu QR?",
 				"a3": "Oczywiście. Prześlij dowolny obraz jako centralne logo dla swojego kodu QR. Możesz również dostosować kolory, style narożników i zapisać projekty jako szablony wielokrotnego użytku.",
 				"q4": "Jakie typy treści są obsługiwane?",
-				"a4": "QRcodly obsługuje ponad 9 typów treści: URL, Tekst, WiFi, vCard (wizytówki), E-mail, Lokalizacja, Wydarzenia kalendarza, EPC (płatność) i profile w mediach społecznościowych.",
+				"a4": "{count} typów treści: URL, tekst, Wi-Fi, vCard (wizytówka), e-mail, lokalizacja, wydarzenie, przelew EPC, telefon, SMS i WhatsApp – a w Pro strony PDF i produktów z własną stroną docelową.",
 				"q5": "Czy mogę śledzić skanowania kodów QR?",
 				"a5": "Tak. Każdy dynamiczny kod QR śledzi skanowania w czasie rzeczywistym. W darmowym planie widzisz łączne skanowania, unikalnych odwiedzających, ostatnie 7 dni oraz główny kraj i urządzenie. Pro dodaje przebieg w czasie i pełny podział według krajów, typów urządzeń, przeglądarek i systemów operacyjnych.",
 				"q6": "Czy kody QR wygasają?",
-				"a6": "Nie. Kody QR utworzone w QRcodly nigdy nie wygasają. Dynamiczne kody QR pozostają w pełni funkcjonalne i możliwe do śledzenia, dopóki istnieje Twoje konto.",
+				"a6": "Nie. Kody QR z QRcodly nie wygasają. Kody dynamiczne działają, dopóki istnieje Twoje konto; strony PDF i produktów przechodzą w tryb offline jakiś czas po końcu Pro i wracają po wznowieniu subskrypcji.",
 				"q7": "Czy mogę tworzyć kody QR masowo?",
-				"a7": "Tak! Możesz tworzyć kody QR masowo za pomocą importu CSV. Wystarczy przesłać plik CSV z treścią, a QRcodly wygeneruje wszystkie kody naraz. Możesz również używać szablonów dla spójnego stylu.",
+				"a7": "Tak. Prześlij plik CSV, a QRcodly utworzy wszystkie kody naraz: do 10 wierszy na import w Free i 50 w Pro. Szablon nada wszystkim ten sam wygląd.",
 				"q8": "Co to jest szablon kodu QR?",
 				"a8": "Szablon kodu QR zapisuje Twoje preferowane ustawienia projektu — kolory, logo, styl narożników i więcej — abyś mógł je natychmiast zastosować do nowych kodów QR bez ponownej konfiguracji.",
 				"q9": "W jakich formatach obrazu mogę pobierać kody QR?",
-				"a9": "Możesz pobierać swoje kody QR jako pliki PNG, SVG lub WEBP. SVG jest idealny do materiałów drukowanych, ponieważ skaluje się bez utraty jakości."
+				"a9": "PNG, JPEG, WEBP lub SVG. SVG najlepiej nadaje się do druku, bo skaluje się bez utraty jakości."
 			},
 			"urlShortener": {
 				"q1": "Czy skracacz URL jest bezpłatny?",
 				"a1": "Tak! Skracacz URL QRcodly jest darmowy. Możesz tworzyć krótkie URL-e, śledzić kliknięcia i zarządzać swoimi linkami bez kosztów. Plany Pro odblokowują zaawansowane funkcje, takie jak własne domeny i szczegółowa analityka.",
 				"q2": "Czy mogę użyć własnej domeny dla krótkich URL-i?",
-				"a2": "Oczywiście. Podłącz swoją własną domenę, aby tworzyć markowe krótkie URL-e jak go.twojamarka.com/u/x7k9m. Własne domeny są dostępne w planach Pro z automatycznym provisioning SSL.",
+				"a2": "Tak, w Pro. Podłącz własną domenę, by tworzyć firmowe krótkie linki jak go.twojamarka.pl/u/x7k9m. Jedna domena jest w cenie, kolejne można dokupić; SSL konfiguruje się automatycznie.",
 				"q3": "Jak działa śledzenie kliknięć?",
-				"a3": "Za każdym razem, gdy ktoś kliknie Twój krótki URL, QRcodly rejestruje kliknięcie wraz z metadanymi, takimi jak typ urządzenia, przeglądarka, system operacyjny i lokalizacja geograficzna — wszystko w czasie rzeczywistym.",
+				"a3": "Każde kliknięcie jest liczone wraz z typem urządzenia, przeglądarką, systemem i krajem. Sumy oraz główny kraj i urządzenie są darmowe; pełny podział jest w Pro.",
 				"q4": "Czy mogę edytować krótki URL po jego utworzeniu?",
 				"a4": "Tak. Możesz zaktualizować docelowy URL, włączyć lub wyłączyć krótki URL i zarządzać tagami w dowolnym momencie z poziomu dashboardu bez zmiany samego krótkiego URL-a.",
 				"q5": "Czy krótkie URL-e wygasają?",
@@ -2615,25 +2566,23 @@
 				"q7": "Co się stanie, jeśli usunę krótki URL?",
 				"a7": "Po usunięciu krótkiego URL-a staje się on trwale nieaktywny. Każdy, kto kliknie link, zobaczy stronę 404. Tej akcji nie można cofnąć, więc rozważ dezaktywację URL-a, jeśli możesz go później potrzebować.",
 				"q8": "Czy mogę tworzyć krótkie URL-e przez API?",
-				"a8": "Tak. QRcodly udostępnia REST API, które pozwala programowo tworzyć, aktualizować i zarządzać krótkimi URL-ami. Sprawdź dokumentację API, aby uzyskać szczegóły i konfigurację uwierzytelniania."
+				"a8": "Tak, w Pro. REST API pozwala tworzyć, zmieniać i zarządzać krótkimi linkami z poziomu kodu. Szczegóły i uwierzytelnianie opisuje dokumentacja API."
 			},
 			"analytics": {
 				"q1": "Jakie analizy zapewnia QRcodly?",
-				"a1": "QRcodly śledzi łączne skanowania/kliknięcia, unikalnych odwiedzających, typy urządzeń, przeglądarki, systemy operacyjne i lokalizacje geograficzne zarówno dla kodów QR, jak i krótkich URL-i — wszystko w czasie rzeczywistym.",
+				"a1": "Dla każdego dynamicznego kodu QR i krótkiego linku: łączne skany lub kliknięcia, odwiedzający, ostatnie 7 dni oraz główny kraj i urządzenie. W Pro także przebieg w czasie, kraje na mapie świata, urządzenia, przeglądarki i systemy.",
 				"q2": "Jaka analityka jest dostępna za darmo?",
 				"a2": "Każdy dynamiczny kod QR i krótki URL ma darmowe statystyki skanów: łączną liczbę skanów lub kliknięć, unikalnych odwiedzających, ostatnie 7 dni oraz główny kraj i urządzenie. Pro odblokowuje szczegółową analitykę: przebieg w czasie, mapę świata Twoich odbiorców i podział według urządzeń, przeglądarek i systemów operacyjnych. Dane są zbierane w każdym planie, więc po przejściu na Pro od razu widzisz wszystko, także wstecz.",
 				"q3": "Czy mogę połączyć Google Analytics?",
-				"a3": "Tak. Użytkownicy planu Pro mogą przesyłać dane o skanowaniach i kliknięciach do Google Analytics 4 lub Matomo. Udostępniane są tylko zanonimizowane, nieidentyfikujące dane, a wbudowane analizy QRcodly pozostają w pełni aktywne.",
+				"a3": "Tak. W Pro przekazujesz dane skanów i kliknięć do Google Analytics 4 lub Matomo. QRcodly wysyła tylko skrócone adresy IP, a wbudowane statystyki działają dalej.",
 				"q4": "Jak zbierane są dane geograficzne?",
-				"a4": "Dane geograficzne są pozyskiwane z adresu IP w momencie skanowania lub kliknięcia. IP jest anonimizowany i nigdy nie jest przechowywany. Rejestrowana jest tylko lokalizacja na poziomie kraju.",
+				"a4": "Kraj jest ustalany na podstawie adresu IP w chwili skanu lub kliknięcia. Statystyki pokazują kraj – nigdy sam adres IP.",
 				"q5": "Czy dane są w czasie rzeczywistym?",
-				"a5": "Tak. Wszystkie dane analityczne w QRcodly są aktualizowane w czasie rzeczywistym. Gdy tylko ktoś zeskanuje kod QR lub kliknie krótki URL, dane pojawiają się na Twoim dashboardzie.",
-				"q6": "Czy mogę eksportować moje dane analityczne?",
-				"a6": "Eksport danych analitycznych będzie dostępny wkrótce. W międzyczasie możesz przeglądać wszystkie swoje analizy w czasie rzeczywistym na dashboardzie i połączyć Google Analytics lub Matomo do dodatkowych raportów."
+				"a5": "Tak. Wszystkie dane analityczne w QRcodly są aktualizowane w czasie rzeczywistym. Gdy tylko ktoś zeskanuje kod QR lub kliknie krótki URL, dane pojawiają się na Twoim dashboardzie."
 			},
 			"pricing": {
 				"q1": "Co zawiera darmowy plan?",
-				"a1": "Darmowy plan obejmuje nieograniczone statyczne i dynamiczne kody QR, skracacz URL ze śledzeniem kliknięć, statystyki skanów, niestandardowe projekty kodów QR z logami i szablony kodów QR. Karta kredytowa nie jest wymagana. Szczegółowa analityka jest dostępna w Pro.",
+				"a1": "Nielimitowane statyczne i dynamiczne kody QR z nielimitowanymi skanami, skracacz linków ze statystykami kliknięć, własne projekty z logo, szablony i tagi. Bez karty kredytowej. Szczegółowe statystyki, własne domeny, API i strony PDF są w Pro.",
 				"q2": "Jak przejść na plan Pro?",
 				"a2": "Możesz przejść na Pro bezpośrednio z dashboardu. Przejdź na stronę Plany, wybierz preferowany cykl rozliczeniowy i dokończ proces płatności. Twoje funkcje Pro zostaną aktywowane natychmiast.",
 				"q3": "Czy mogę anulować subskrypcję w dowolnym momencie?",
@@ -2668,17 +2617,11 @@
 		"features": {
 			"feature1": {
 				"title": "Cyfrowe menu z natychmiastową aktualizacją",
-				"description": "Połącz kod QR ze swoim menu online. Zmieniaj ceny, dodawaj sezonowe dania lub aktualizuj promocje — goście zawsze widzą najnowszą wersję.",
-				"bullet1": "Aktualizuj pozycje menu bez ponownego drukowania",
-				"bullet2": "Linkuj do PDF, strony internetowej lub systemu zamówień",
-				"bullet3": "Działa na każdym smartfonie — bez potrzeby instalowania aplikacji"
+				"description": "Połącz kod QR ze swoim menu online. Zmieniaj ceny, dodawaj sezonowe dania lub aktualizuj promocje — goście zawsze widzą najnowszą wersję."
 			},
 			"feature2": {
 				"title": "Dostęp do WiFi jednym skanem",
-				"description": "Pozwól gościom połączyć się z WiFi natychmiast, skanując kod QR. Koniec z pytaniami o hasło czy wpisywaniem długich danych logowania.",
-				"bullet1": "Zakoduj nazwę sieci WiFi i hasło",
-				"bullet2": "Goście łączą się jednym dotknięciem po skanowaniu",
-				"bullet3": "Umieść na stolikach, ścianach lub ladzie recepcyjnej"
+				"description": "Pozwól gościom połączyć się z WiFi natychmiast, skanując kod QR. Koniec z pytaniami o hasło czy wpisywaniem długich danych logowania."
 			}
 		},
 		"relatedUseCases": {
@@ -2691,10 +2634,6 @@
 			"urlShortener": {
 				"title": "Skracacz URL",
 				"description": "Twórz krótkie, markowe linki do zamawiania online, stron rezerwacji i profili społecznościowych Twojej restauracji."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Zagłęb się w dane o skanowaniu dzięki pełnemu pakietowi analitycznemu. Zrozum zachowania gości i optymalizuj rozmieszczenie kodów."
 			}
 		},
 		"faq": {
@@ -2725,7 +2664,7 @@
 			},
 			"step2": {
 				"title": "Dodaj swoje menu lub link",
-				"description": "Prześlij menu w formacie PDF lub wklej link do strony zamawiania online. Kody WiFi wymagają tylko nazwy sieci i hasła."
+				"description": "Prześlij menu w PDF (Pro) lub wklej link do strony zamówień. Kody Wi-Fi potrzebują tylko nazwy sieci i hasła."
 			},
 			"step3": {
 				"title": "Dopasuj do brandingu restauracji",
@@ -2792,17 +2731,11 @@
 		"features": {
 			"feature1": {
 				"title": "Informacje o produkcie w jednej chwili",
-				"description": "Dodaj kody QR do opakowań lub etykiet półkowych. Klienci skanują, aby zobaczyć szczegółowe specyfikacje, opinie, filmy instruktażowe lub listę składników.",
-				"bullet1": "Linkuj do stron produktowych lub landing page",
-				"bullet2": "Udostępniaj tabele rozmiarów, instrukcje pielęgnacji lub poradniki",
-				"bullet3": "Aktualizuj linkowane treści bez zmiany opakowań"
+				"description": "Dodaj kody QR do opakowań lub etykiet półkowych. Klienci skanują, aby zobaczyć szczegółowe specyfikacje, opinie, filmy instruktażowe lub listę składników."
 			},
 			"feature2": {
 				"title": "Prowadź promocje w sklepie",
-				"description": "Zwiększ zaangażowanie za pomocą kodów QR linkujących do ekskluzywnych rabatów, programów lojalnościowych lub ofert sezonowych.",
-				"bullet1": "Linkuj do stron z kuponami lub kodami rabatowymi",
-				"bullet2": "Promuj zapisy do programu lojalnościowego lub pobieranie aplikacji",
-				"bullet3": "Zmieniaj oferty w czasie rzeczywistym dzięki dynamicznym kodom"
+				"description": "Zwiększ zaangażowanie za pomocą kodów QR linkujących do ekskluzywnych rabatów, programów lojalnościowych lub ofert sezonowych."
 			}
 		},
 		"relatedUseCases": {
@@ -2815,10 +2748,6 @@
 			"urlShortener": {
 				"title": "Skracacz URL",
 				"description": "Twórz krótkie linki do stron produktowych, promocyjnych landing page i ankiet dla klientów."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Uzyskaj szczegółowe informacje o wzorcach skanowania, typach urządzeń i metrykach zaangażowania klientów."
 			}
 		},
 		"faq": {
@@ -2908,27 +2837,21 @@
 		}
 	},
 	"qrCodesEvents": {
-		"metaTitle": "Kody QR na wydarzenia – rejestracja, harmonogramy i networking",
-		"metaDescription": "Usprawnij wydarzenia za pomocą kodów QR do rejestracji, harmonogramów i angażowania uczestników. Twórz i śledź kody QR na wydarzenia z łatwością.",
+		"metaTitle": "Kody QR na wydarzenia – program, kalendarz i networking",
+		"metaDescription": "Używaj kodów QR na wydarzeniach do aktualnego programu, wpisów do kalendarza i wymiany kontaktów. Łatwo je twórz i mierz.",
 		"hero": {
 			"title": "Kody QR stworzone na wydarzenia",
-			"subtitle": "Uprość rejestrację, udostępniaj harmonogramy i łącz uczestników. Jeden skan załatwia wszystko.",
+			"subtitle": "Udostępniaj aktualny program, dodawaj wydarzenie do kalendarzy uczestników i łącz ludzi – jednym skanem.",
 			"ctaLabel": "Stwórz kod QR na wydarzenie"
 		},
 		"features": {
 			"feature1": {
-				"title": "Szybsza rejestracja uczestników",
-				"description": "Wyślij spersonalizowane kody QR do uczestników. Obsługa skanuje je przy wejściu, zapewniając szybką, bezkontaktową rejestrację.",
-				"bullet1": "Generuj unikalne kody na uczestnika lub bilet",
-				"bullet2": "Przyspiesz kolejki wejściowe w każdym obiekcie",
-				"bullet3": "Działa z każdym smartfonem lub tabletem ze skanerem"
+				"title": "Kontakty i wpisy w kalendarzu jednym skanem",
+				"description": "Umieść kod QR vCard na identyfikatorach prelegentów, by goście od razu zapisali kontakt, albo kod QR wydarzenia, który doda datę, godzinę i miejsce do kalendarza."
 			},
 			"feature2": {
 				"title": "Harmonogramy i aktualizacje na żywo",
-				"description": "Połącz kody QR z harmonogramem wydarzenia. Aktualizuj godziny sesji, zmiany sal lub informacje o prelegentach — uczestnicy zawsze mają najnowsze dane.",
-				"bullet1": "Linkuj do harmonogramu lub agendy na żywo",
-				"bullet2": "Wprowadzaj zmiany w ostatniej chwili bez ponownego drukowania",
-				"bullet3": "Umieszczaj na identyfikatorach, tablicach lub drukowanych programach"
+				"description": "Połącz kody QR z harmonogramem wydarzenia. Aktualizuj godziny sesji, zmiany sal lub informacje o prelegentach — uczestnicy zawsze mają najnowsze dane."
 			}
 		},
 		"relatedUseCases": {
@@ -2941,16 +2864,12 @@
 			"urlShortener": {
 				"title": "Skracacz URL",
 				"description": "Twórz krótkie linki do stron rejestracji na wydarzenie, formularzy opinii i ankiet po wydarzeniu."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Śledź aktywność skanowań na swoim wydarzeniu. Zobacz, które sesje, stoiska lub materiały uzyskują największe zaangażowanie."
 			}
 		},
 		"faq": {
 			"title": "Najczęściej zadawane pytania",
-			"q1": "Jak używać kodów QR do rejestracji na wydarzeniu?",
-			"a1": "Wygeneruj unikalny kod QR na bilet lub uczestnika. Obsługa skanuje kod przy wejściu za pomocą dowolnego smartfona — linkuje on do strony rejestracji, która natychmiast oznacza obecność.",
+			"q1": "Jak uczestnicy dodają wydarzenie do kalendarza?",
+			"a1": "Utwórz kod QR wydarzenia z tytułem, datą, godziną i miejscem. Po skanie telefon zaproponuje zapisanie terminu w kalendarzu – bez wpisywania.",
 			"q2": "Czy mogę zaktualizować harmonogram po wydrukowaniu identyfikatorów?",
 			"a2": "Tak. Użyj dynamicznych kodów QR, które linkują do Twojej strony z harmonogramem online. Gdy sesje się zmienią, zaktualizuj stronę — wszystkie wydrukowane kody na identyfikatorach nadal działają.",
 			"q3": "Jak działają kody QR vCard do networkingu?",
@@ -2963,7 +2882,7 @@
 		},
 		"cta": {
 			"title": "Spraw, by Twoje kolejne wydarzenie było bezproblemowe",
-			"subtitle": "Kody QR do rejestracji, harmonogramów i networkingu. Stwórz je w kilka minut — darmowe na start.",
+			"subtitle": "Kody QR do programów, kalendarza i networkingu. Gotowe w kilka minut – za darmo na start.",
 			"ctaLabel": "Zacznij za darmo"
 		},
 		"steps": {
@@ -2971,11 +2890,11 @@
 			"subtitle": "Od identyfikatorów po tablice informacyjne — wszystko, czego potrzebujesz dla sprawnego przebiegu wydarzenia.",
 			"step1": {
 				"title": "Określ zastosowanie",
-				"description": "Wybierz, co kod QR ma robić: rejestracja, link do harmonogramu wydarzenia czy udostępnianie vCard do networkingu."
+				"description": "Wybierz, co ma robić kod QR: prowadzić do programu, dodawać wydarzenie do kalendarza czy udostępniać vCard do networkingu."
 			},
 			"step2": {
 				"title": "Stwórz swoje kody",
-				"description": "Wygeneruj kody QR linkujące do strony z agendą, URL rejestracji lub karty kontaktowej uczestnika."
+				"description": "Wygeneruj kody QR do strony programu, kod wydarzenia do kalendarza lub wizytówkę."
 			},
 			"step3": {
 				"title": "Zastosuj branding wydarzenia",
@@ -3005,17 +2924,17 @@
 				"description": "Umieść kody QR z harmonogramem przy każdym wejściu do sali, aby uczestnicy mogli szybko sprawdzić szczegóły sesji."
 			},
 			"tip4": {
-				"title": "Wysyłaj cyfrowe identyfikatory wcześniej",
-				"description": "Wyślij e-mailem cyfrowy identyfikator z kodem QR przed wydarzeniem. Szybsze wejście i mniej drukowania."
+				"title": "Udostępnij program wcześniej",
+				"description": "Dodaj kod QR programu do maila z potwierdzeniem, by uczestnicy wiedzieli, dokąd iść."
 			}
 		},
 		"visuals": {
 			"v1": {
 				"label": "Identyfikator uczestnika",
-				"aria": "Identyfikator wydarzenia z kodem QR do rejestracji przy wejściu",
+				"aria": "Identyfikator prelegenta z kodem QR zapisującym kontakt",
 				"mediumLabel": "Identyfikator",
-				"headline": "Zeskanuj, aby się zarejestrować",
-				"caption": "Zarejestrowano przy wejściu"
+				"headline": "Zeskanuj, by zapisać kontakt",
+				"caption": "Zapisano w kontaktach"
 			},
 			"v2": {
 				"label": "Program na żywo",
@@ -3039,17 +2958,11 @@
 		"features": {
 			"feature1": {
 				"title": "Szczegóły nieruchomości na każdej tablicy",
-				"description": "Dodaj kod QR do tablic, ulotek lub broszur. Kupujący skanują, aby zobaczyć pełną ofertę, zdjęcia i kluczowe informacje.",
-				"bullet1": "Linkuj do strony oferty lub witryny nieruchomości",
-				"bullet2": "Dołącz zdjęcia, rzuty mieszkań i cennik",
-				"bullet3": "Aktualizuj szczegóły oferty bez ponownego drukowania tablic"
+				"description": "Dodaj kod QR do tablic, ulotek lub broszur. Kupujący skanują, aby zobaczyć pełną ofertę, zdjęcia i kluczowe informacje."
 			},
 			"feature2": {
 				"title": "Wirtualne spacery jednym skanem",
-				"description": "Połącz kody QR z filmami wirtualnych spacerów lub prezentacjami 3D. Pozwól kupującym zwiedzać nieruchomości z dowolnego miejsca.",
-				"bullet1": "Linkuj do Matterport, YouTube lub dowolnej platformy spacerów",
-				"bullet2": "Umieszczaj na reklamach drukowanych, wysyłkach i arkuszach dni otwartych",
-				"bullet3": "Wymieniaj linki do spacerów, gdy nieruchomości się zmieniają"
+				"description": "Połącz kody QR z filmami wirtualnych spacerów lub prezentacjami 3D. Pozwól kupującym zwiedzać nieruchomości z dowolnego miejsca."
 			}
 		},
 		"relatedUseCases": {
@@ -3062,10 +2975,6 @@
 			"urlShortener": {
 				"title": "Skracacz URL",
 				"description": "Twórz czyste, krótkie linki do ofert nieruchomości, zapisów na dni otwarte i stron kontaktowych agentów."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Uzyskaj szczegółowe informacje o zaangażowaniu kupujących, lokalizacjach skanów i danych o urządzeniach dla każdej nieruchomości."
 			}
 		},
 		"faq": {
@@ -3123,7 +3032,7 @@
 			},
 			"tip3": {
 				"title": "Dodaj czytelne CTA na tablicach",
-				"description": "Wydrukuj 'Skanuj po wirtualny spacer' lub 'Skanuj po szczegóły' obok kodu. Zachęta znacząco zwiększa liczbę skanów."
+				"description": "Wydrukuj obok kodu „Zeskanuj, by zobaczyć wirtualny spacer” lub „Zeskanuj po szczegóły”. Krótka zachęta mówi, co daje skan."
 			},
 			"tip4": {
 				"title": "Przekieruj po sprzedaży",
@@ -3163,17 +3072,11 @@
 		"features": {
 			"feature1": {
 				"title": "Natychmiastowy dostęp do materiałów dydaktycznych",
-				"description": "Umieszczaj kody QR na kartach pracy, plakatach lub podręcznikach. Uczniowie skanują, aby uzyskać dostęp do filmów, artykułów lub interaktywnych ćwiczeń.",
-				"bullet1": "Linkuj do filmów edukacyjnych, plików PDF lub stron internetowych",
-				"bullet2": "Umieszczaj na drukowanych kartach pracy lub plakatach w klasie",
-				"bullet3": "Aktualizuj materiały bez ponownego drukowania"
+				"description": "Umieszczaj kody QR na kartach pracy, plakatach lub podręcznikach. Uczniowie skanują, aby uzyskać dostęp do filmów, artykułów lub interaktywnych ćwiczeń."
 			},
 			"feature2": {
 				"title": "Uprość dystrybucję zadań",
-				"description": "Udostępniaj zadania, listy lektur i przewodniki do nauki za pomocą kodów QR. Uczniowie skanują i mają dostęp — bez wpisywania długich URL.",
-				"bullet1": "Linkuj do Google Docs, stron LMS lub współdzielonych dysków",
-				"bullet2": "Uczniowie uzyskują dostęp do materiałów z dowolnego urządzenia",
-				"bullet3": "Zmieniaj linki, gdy zadania są aktualizowane"
+				"description": "Udostępniaj zadania, listy lektur i przewodniki do nauki za pomocą kodów QR. Uczniowie skanują i mają dostęp — bez wpisywania długich URL."
 			}
 		},
 		"relatedUseCases": {
@@ -3186,10 +3089,6 @@
 			"urlShortener": {
 				"title": "Skracacz URL",
 				"description": "Twórz krótkie, łatwe do wpisania linki dla uczniów, którzy wolą wpisywać URL zamiast skanować."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Sprawdź, które materiały dydaktyczne uzyskują największe zaangażowanie i poznaj wzorce dostępu uczniów."
 			}
 		},
 		"faq": {
@@ -3289,17 +3188,11 @@
 		"features": {
 			"feature1": {
 				"title": "Połącz druk z cyfrowym",
-				"description": "Dodaj kody QR do ulotek, plakatów, wizytówek i opakowań. Każdy skan to mierzalny punkt kontaktu w Twojej kampanii.",
-				"bullet1": "Połącz materiały drukowane z dowolnym landing page",
-				"bullet2": "Śledź wskaźniki skanowań na billboardach, wysyłkach i reklamach",
-				"bullet3": "Mierz ROI kampanii drukowanych za pomocą rzeczywistych danych"
+				"description": "Dodaj kody QR do ulotek, plakatów, wizytówek i opakowań. Każdy skan to mierzalny punkt kontaktu w Twojej kampanii."
 			},
 			"feature2": {
 				"title": "Testuj i optymalizuj kampanie",
-				"description": "Twórz wiele kodów QR dla różnych lokalizacji lub projektów. Porównuj wskaźniki skanowań, aby znaleźć to, co działa najlepiej.",
-				"bullet1": "Twórz osobne kody dla każdej lokalizacji",
-				"bullet2": "Porównuj wyniki między kanałami",
-				"bullet3": "Zamieniaj miejsca docelowe, aby testować różne landing page"
+				"description": "Twórz wiele kodów QR dla różnych lokalizacji lub projektów. Porównuj wskaźniki skanowań, aby znaleźć to, co działa najlepiej."
 			}
 		},
 		"relatedUseCases": {
@@ -3312,10 +3205,6 @@
 			"urlShortener": {
 				"title": "Skracacz URL",
 				"description": "Twórz markowe krótkie linki do kampanii. Łącz z kodami QR, aby uzyskać kompletną strategię śledzenia offline-to-online."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Zagłęb się w analitykę kampanii. Sprawdź skany według lokalizacji, urządzenia, czasu i więcej, aby zoptymalizować marketing."
 			}
 		},
 		"faq": {
@@ -3412,17 +3301,11 @@
 		"features": {
 			"feature1": {
 				"title": "Markowe linki budujące zaufanie",
-				"description": "Używaj własnej domeny niestandardowej do krótkich linków. Markowe URL uzyskują więcej kliknięć i wzmacniają identyfikację marki w każdym kanale.",
-				"bullet1": "Podłącz własną domenę do markowych krótkich URL",
-				"bullet2": "Markowe linki zwiększają współczynnik klikalności",
-				"bullet3": "Spójny branding w e-mail, mediach społecznościowych i reklamach"
+				"description": "Używaj własnej domeny dla krótkich linków (Pro). Znana domena wzmacnia markę w każdym kanale."
 			},
 			"feature2": {
 				"title": "Śledzenie kliknięć w kampaniach",
-				"description": "Sprawdź, jak Twoje linki radzą sobie w różnych kanałach. Śledź kliknięcia, dane geograficzne i typy urządzeń dla każdego krótkiego linku.",
-				"bullet1": "Śledzenie kliknięć w czasie rzeczywistym dla każdego linku",
-				"bullet2": "Filtruj analitykę według zakresu dat",
-				"bullet3": "Sprawdź dane geograficzne i o urządzeniach (Pro)"
+				"description": "Sprawdzaj wyniki linków w każdym kanale: kliknięcia każdego linku, a w Pro także kraje i urządzenia."
 			}
 		},
 		"relatedUseCases": {
@@ -3435,20 +3318,16 @@
 			"qrCodes": {
 				"title": "Generator kodów QR",
 				"description": "Połącz krótkie linki z kodami QR do kampanii drukowanych. Śledź skany i kliknięcia z jednego panelu."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Zagłęb się w wyniki linków dzięki szczegółowej analityce kliknięć, danym o źródłach odesłań i informacjom geograficznym."
 			}
 		},
 		"faq": {
 			"title": "Najczęściej zadawane pytania",
 			"q1": "Jak markowe linki poprawiają współczynnik klikalności?",
-			"a1": "Markowe linki pokazują Twoją domenę zamiast generycznego skracacza. To buduje zaufanie — odbiorcy rozpoznają nadawcę, co prowadzi do mierzalnie wyższego współczynnika klikalności.",
+			"a1": "Firmowe linki pokazują Twoją domenę zamiast ogólnego skracacza, więc odbiorca przed kliknięciem widzi, od kogo jest link.",
 			"q2": "Czy mogę śledzić kliknięcia z różnych kampanii osobno?",
 			"a2": "Tak. Stwórz unikalny krótki link dla każdej kampanii lub kanału. Użyj tagów do organizacji i filtruj panel, aby porównywać wyniki obok siebie.",
 			"q3": "Jak skonfigurować własną domenę dla mojego zespołu?",
-			"a3": "Przejdź do Ustawienia → Własne domeny, dodaj swoją domenę i skonfiguruj wskazane rekordy DNS. SSL jest wydawany automatycznie. Wszystkie nowe linki będą używać Twojej domeny.",
+			"a3": "W Pro otwórz ustawienia domen w panelu, dodaj domenę i ustaw pokazane rekordy DNS. QRcodly je sprawdzi i automatycznie skonfiguruje SSL. Tworząc link, wybierasz domenę.",
 			"q4": "Czy mogę zmienić cel linku po udostępnieniu?",
 			"a4": "Tak. Edytuj docelowy URL w dowolnym momencie z panelu. Krótki link pozostaje taki sam — odbiorcy, którzy go już mają, zostaną przekierowani na zaktualizowaną stronę.",
 			"viewAll": "Zobacz wszystkie FAQ",
@@ -3468,8 +3347,8 @@
 				"description": "Skopiuj długi URL ze swojego landing page, formularza lub listy w sklepie z aplikacjami i wklej go do skracacza."
 			},
 			"step2": {
-				"title": "Dostosuj krótki link",
-				"description": "Edytuj slug dla rozpoznawalności marki (np. /wiosenna-wyprzedaz-email). Użyj własnej domeny dla spójnego brandingu."
+				"title": "Nazwij link",
+				"description": "Nadaj linkowi nazwę, którą zespół rozpozna, i wybierz własną domenę (Pro) dla spójnej marki."
 			},
 			"step3": {
 				"title": "Dodaj tagi do śledzenia",
@@ -3491,8 +3370,8 @@
 				"description": "Twórz unikalny krótki link dla każdego kanału (e-mail, Instagram, reklamy), aby izolować wyniki i precyzyjnie przypisywać kliknięcia."
 			},
 			"tip2": {
-				"title": "Używaj opisowych slugów",
-				"description": "Nazywaj linki sensownie — 'wiosenna-wyprzedaz-email' mówi więcej niż 'link1.' Twój zespół będzie wdzięczny przy raportowaniu."
+				"title": "Używaj opisowych nazw",
+				"description": "Nazywaj linki z sensem – „Wyprzedaż wiosenna · E-mail” mówi więcej niż „link1”. Zespół podziękuje przy raportach."
 			},
 			"tip3": {
 				"title": "Skonfiguruj własną domenę od razu",
@@ -3509,7 +3388,7 @@
 				"badge": "Pro",
 				"aria": "Porównanie generycznego krótkiego linku z linkiem na własnej domenie",
 				"genericLink": "bit.ly/3xKf9Qa",
-				"brandedLink": "go.twojamarka.pl/wiosna",
+				"brandedLink": "go.twojamarka.pl/u/k3m9x",
 				"genericNote": "Odbiorca nie wie, dokąd prowadzi",
 				"brandedNote": "Twoja domena, Twoja reputacja"
 			},
@@ -3537,24 +3416,15 @@
 		"features": {
 			"feature1": {
 				"title": "Czyste linki do każdego posta",
-				"description": "Zamień długie, nieestetyczne URL na krótkie, markowe linki. Wyglądają lepiej w postach, bio i relacjach — i łatwiej się nimi dzielić.",
-				"bullet1": "Krótkie linki wyglądają czyściej w postach społecznościowych",
-				"bullet2": "Markowe domeny budują zaufanie u obserwujących",
-				"bullet3": "Działają na każdej platformie społecznościowej"
+				"description": "Zamień długie, nieestetyczne URL na krótkie, markowe linki. Wyglądają lepiej w postach, bio i relacjach — i łatwiej się nimi dzielić."
 			},
 			"feature2": {
 				"title": "Śledź zaangażowanie w mediach społecznościowych",
-				"description": "Sprawdź, ile kliknięć uzyskuje każdy link. Porównuj wyniki między platformami i postami, aby zrozumieć, co interesuje Twoich odbiorców.",
-				"bullet1": "Śledzenie kliknięć w czasie rzeczywistym dla każdego linku",
-				"bullet2": "Sprawdź, które platformy generują największy ruch",
-				"bullet3": "Poznaj swoich odbiorców dzięki danym o urządzeniach (Pro)"
+				"description": "Sprawdź, ile kliknięć uzyskuje każdy link. Porównuj wyniki między platformami i postami, aby zrozumieć, co interesuje Twoich odbiorców."
 			},
 			"feature3": {
 				"title": "Dynamiczne linki, które możesz aktualizować",
-				"description": "Zmień miejsce docelowe linku — nawet po opublikowaniu posta. Przekieruj obserwujących do nowych treści bez edycji posta.",
-				"bullet1": "Aktualizuj docelowe URL po opublikowaniu",
-				"bullet2": "Przekierowuj sezonowe lub terminowe kampanie",
-				"bullet3": "Naprawiaj uszkodzone linki bez ponownego publikowania"
+				"description": "Zmień miejsce docelowe linku — nawet po opublikowaniu posta. Przekieruj obserwujących do nowych treści bez edycji posta."
 			}
 		},
 		"relatedUseCases": {
@@ -3567,10 +3437,6 @@
 			"qrCodes": {
 				"title": "Generator kodów QR",
 				"description": "Twórz kody QR do swoich profili społecznościowych lub kampanijnych landing page. Świetne do cross-promocji między drukiem a cyfrowym."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Uzyskaj szczegółową analitykę kliknięć dla wszystkich linków społecznościowych. Sprawdź dane o źródłach odesłań, lokalizacjach i urządzeniach."
 			}
 		},
 		"faq": {
@@ -3580,7 +3446,7 @@
 			"q2": "Czy mogę zobaczyć, która platforma generuje najwięcej kliknięć?",
 			"a2": "Stwórz unikalny krótki link dla każdej platformy (jeden dla Instagrama, jeden dla Twittera/X, jeden dla LinkedIn). Porównaj liczbę kliknięć w panelu, aby znaleźć najlepszego performera.",
 			"q3": "Czy krótkie linki zostaną oznaczone jako spam na platformach społecznościowych?",
-			"a3": "Nie. Linki QRcodly używają czystych przekierowań i nie znajdują się na żadnych listach blokad. Używanie własnej domeny dodatkowo eliminuje wszelkie obawy o spam.",
+			"a3": "QRcodly sprawdza cele pod kątem znanego phishingu i złośliwego oprogramowania oraz blokuje nadużycia. Własna domena dodatkowo pokazuje, że link jest od Ciebie.",
 			"q4": "Czy mogę zmienić, dokąd prowadzi link po opublikowaniu?",
 			"a4": "Tak. Zaktualizuj docelowy URL w dowolnym momencie bez edytowania posta. Obserwujący klikający ten sam link zostaną przekierowani do nowej treści.",
 			"viewAll": "Zobacz wszystkie FAQ",
@@ -3600,8 +3466,8 @@
 				"description": "Skopiuj URL, który chcesz udostępnić — wpis na blogu, stronę produktu lub landing page — i wklej go do skracacza."
 			},
 			"step2": {
-				"title": "Dostosuj slug",
-				"description": "Edytuj slug krótkiego linku, aby uzyskać czysty, łatwy do zapamiętania URL, który świetnie wygląda w bio i podpisach."
+				"title": "Nazwij link",
+				"description": "Nazwij link od posta lub kampanii, by go odnaleźć, i używaj własnej domeny (Pro) w bio i opisach."
 			},
 			"step3": {
 				"title": "Skopiuj i opublikuj",
@@ -3618,7 +3484,7 @@
 				"badge": "Pro",
 				"aria": "Porównanie długiego adresu śledzącego z krótkim linkiem marki",
 				"genericLink": "example.com/produkty/kolekcja-letnia?utm_source=ig",
-				"brandedLink": "tm.link/lato",
+				"brandedLink": "tm.link/u/r7d2q",
 				"genericNote": "Obcięty w połowie podpisu",
 				"brandedNote": "Mieści się w każdym podpisie i pozostaje czytelny"
 			},
@@ -3650,8 +3516,8 @@
 				"description": "Niech jeden krótki link wskazuje to, co aktualne, zamiast edytować profil za każdym razem. Jeden adres, zarządzany z panelu."
 			},
 			"tip2": {
-				"title": "Używaj czytelnego sluga",
-				"description": "„tm.link/lato” zbiera więcej kliknięć niż losowy ciąg, bo widać, dokąd prowadzi, zanim się w niego stuknie."
+				"title": "Pokaż swoją domenę",
+				"description": "Własna domena w bio pokazuje obserwującym, skąd jest link, zanim go dotkną."
 			},
 			"tip3": {
 				"title": "Nadaj każdej platformie własny link",
@@ -3668,30 +3534,21 @@
 		"metaDescription": "Twórz śledzone krótkie linki do prospectingu sprzedażowego. Sprawdź, kiedy potencjalni klienci klikają i mierz zaangażowanie w kampaniach.",
 		"hero": {
 			"title": "Krótkie linki stworzone dla zespołów sprzedaży",
-			"subtitle": "Wysyłaj śledzone linki w e-mailach prospectingowych i ofertach. Dowiedz się, kiedy potencjalni klienci angażują się w Twoje treści.",
+			"subtitle": "Wysyłaj mierzalne linki w mailach sprzedażowych i ofertach i sprawdzaj, ile razy każdy został otwarty.",
 			"ctaLabel": "Skróć swój pierwszy link"
 		},
 		"features": {
 			"feature1": {
 				"title": "Śledzone linki do prospectingu",
-				"description": "Dodawaj krótkie linki do e-maili, ofert i prezentacji. Śledź każde kliknięcie, aby zobaczyć, którzy potencjalni klienci się angażują.",
-				"bullet1": "Sprawdź liczbę kliknięć dla każdego udostępnionego linku",
-				"bullet2": "Śledź czas i częstotliwość zaangażowania",
-				"bullet3": "Używaj markowych domen dla profesjonalnego wyglądu"
+				"description": "Dodawaj krótkie linki do e-maili, ofert i prezentacji. Śledź każde kliknięcie, aby zobaczyć, którzy potencjalni klienci się angażują."
 			},
 			"feature2": {
 				"title": "Markowe linki budują wiarygodność",
-				"description": "Używaj domeny firmowej do krótkich linków. Potencjalni klienci bardziej ufają markowym URL niż generycznym skracackom.",
-				"bullet1": "Podłącz swoją niestandardową domenę",
-				"bullet2": "Profesjonalny wygląd w e-mailach i ofertach",
-				"bullet3": "Spójny branding we wszystkich punktach kontaktu"
+				"description": "Używaj domeny firmowej do krótkich linków. Potencjalni klienci bardziej ufają markowym URL niż generycznym skracackom."
 			},
 			"feature3": {
 				"title": "Mierz wyniki prospectingu",
-				"description": "Porównuj wskaźniki kliknięć między kampaniami i kanałami. Dowiedz się, jaki przekaz i treści generują największe zaangażowanie.",
-				"bullet1": "Porównuj kliknięcia między kampaniami i kanałami",
-				"bullet2": "Sprawdź dane geograficzne i o urządzeniach (Pro)",
-				"bullet3": "Zidentyfikuj, które treści trafiają do potencjalnych klientów"
+				"description": "Porównuj wskaźniki kliknięć między kampaniami i kanałami. Dowiedz się, jaki przekaz i treści generują największe zaangażowanie."
 			}
 		},
 		"relatedUseCases": {
@@ -3704,18 +3561,14 @@
 			"qrCodes": {
 				"title": "Generator kodów QR",
 				"description": "Dodaj kody QR do drukowanych ofert, broszur i materiałów zostawianych u klientów. Śledź skany obok kliknięć w linki."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Szczegółowa analityka kliknięć dla każdego linku. Sprawdź, kiedy potencjalni klienci klikają, skąd i na jakim urządzeniu."
 			}
 		},
 		"faq": {
 			"title": "Najczęściej zadawane pytania",
 			"q1": "Czy mogę sprawdzić, kiedy konkretny potencjalny klient kliknął mój link?",
-			"a1": "Znaczniki czasu kliknięć i informacje o urządzeniu są śledzone per link. Jeśli wysyłasz unikalny krótki link do każdego potencjalnego klienta, zobaczysz dokładnie, kiedy angażuje się w Twoje treści.",
+			"a1": "Widzisz kliknięcia na link, a w Pro także aktywność według dni. Gdy każdy klient dostaje własny link, wiesz, czy – i którego dnia – go otworzył. Kliknięcia nigdy nie są przypisywane osobom.",
 			"q2": "Jak markowe linki pomagają w prospectingu sprzedażowym?",
-			"a2": "Generyczne linki ze skracaczy wyglądają podejrzanie w profesjonalnych e-mailach. Link na domenie firmowej (np. go.twojafirma.com/oferta) buduje zaufanie i uzyskuje znacząco więcej kliknięć.",
+			"a2": "Linki z ogólnych skracaczy wyglądają podejrzanie w mailach biznesowych. Link w domenie firmy (np. go.twojafirma.pl) pokazuje, kto go wysłał.",
 			"q3": "Czy mogę śledzić zaangażowanie w całym zespole sprzedaży?",
 			"a3": "Tak. Wszystkie linki utworzone w ramach Twojego konta są widoczne w jednym panelu. Użyj tagów (np. imię handlowca, etap deala), aby filtrować i porównywać wyniki w zespole.",
 			"q4": "Co się stanie, jeśli muszę zaktualizować udostępnioną ofertę?",
@@ -3738,7 +3591,7 @@
 			},
 			"step2": {
 				"title": "Użyj domeny firmowej",
-				"description": "Skonfiguruj własną domenę, aby linki wyglądały profesjonalnie — np. go.twojafirma.com/oferta."
+				"description": "Skonfiguruj własną domenę (Pro), by linki wyglądały profesjonalnie – np. go.twojafirma.pl."
 			},
 			"step3": {
 				"title": "Dodaj do e-maili i wiadomości",
@@ -3746,20 +3599,20 @@
 			},
 			"step4": {
 				"title": "Monitoruj zaangażowanie potencjalnych klientów",
-				"description": "Sprawdzaj panel pod kątem znaczników czasu kliknięć i danych o urządzeniach. Zobacz dokładnie, kiedy potencjalny klient otwiera Twój link."
+				"description": "Sprawdzaj w panelu kliknięcia na link – a w Pro aktywność według dni i urządzenia."
 			}
 		},
 		"visuals": {
 			"v1": {
 				"label": "Linki do ofert",
 				"aria": "Lista krótkich linków na transakcję z liczbą kliknięć",
-				"r1Link": "tm.link/acme-oferta",
+				"r1Link": "tm.link/u/a8k2m",
 				"r1Tag": "Acme Corp · Oferta",
 				"r1Clicks": "14",
-				"r2Link": "tm.link/globex-demo",
+				"r2Link": "tm.link/u/g4n7p",
 				"r2Tag": "Globex · Nagranie demo",
 				"r2Clicks": "7",
-				"r3Link": "tm.link/initech-umowa",
+				"r3Link": "tm.link/u/w2c9t",
 				"r3Tag": "Initech · Umowa",
 				"r3Clicks": "3"
 			},
@@ -3768,7 +3621,7 @@
 				"badge": "Pro",
 				"aria": "Porównanie anonimowego krótkiego linku z linkiem na domenie Twojej firmy",
 				"genericLink": "tinyurl.com/y7k2n9q",
-				"brandedLink": "go.twojafirma.pl/oferta",
+				"brandedLink": "go.twojafirma.pl/u/p4x7n",
 				"genericNote": "W skrzynce czyta się jak spam",
 				"brandedNote": "Domena Twojej firmy, rozpoznawalna od razu"
 			},
@@ -3795,8 +3648,8 @@
 				"description": "Link na domenie Twojej firmy przechodzi przez filtry spamu i sceptycyzm skrzynki znacznie lepiej niż anonimowy skracacz."
 			},
 			"tip3": {
-				"title": "Trzymaj sluga zrozumiałego",
-				"description": "„go.twojafirma.pl/acme-oferta” mówi odbiorcy, co otwiera. Losowy ciąg każe mu ufać w ciemno."
+				"title": "Używaj domeny firmy",
+				"description": "Domena firmy w linku mówi, kto go wysłał. Anonimowy skracacz wymaga ślepego zaufania."
 			},
 			"tip4": {
 				"title": "Aktualizuj zamiast wysyłać ponownie",
@@ -3815,17 +3668,11 @@
 		"features": {
 			"feature1": {
 				"title": "Krótkie linki do stron produktowych",
-				"description": "Zamień długie URL produktów w czyste, udostępnialne linki. Idealne do postów społecznościowych, kampanii e-mailowych i reklam.",
-				"bullet1": "Czyste URL do stron produktów i kolekcji",
-				"bullet2": "Łatwe udostępnianie we wszystkich kanałach sprzedaży",
-				"bullet3": "Branding niestandardową domeną dla profesjonalnego wyglądu"
+				"description": "Zamień długie URL produktów w czyste, udostępnialne linki. Idealne do postów społecznościowych, kampanii e-mailowych i reklam."
 			},
 			"feature2": {
 				"title": "Śledź kliknięcia w kanałach",
-				"description": "Sprawdź, które kanały generują najwięcej ruchu do Twoich produktów. Porównaj wyniki kliknięć w e-mail, mediach społecznościowych, reklamach i nie tylko.",
-				"bullet1": "Osobne linki na kanał dla jasnej atrybucji",
-				"bullet2": "Śledzenie i raportowanie kliknięć w czasie rzeczywistym",
-				"bullet3": "Dane geograficzne i o urządzeniach (Pro)"
+				"description": "Sprawdź, które kanały generują najwięcej ruchu do Twoich produktów. Porównaj wyniki kliknięć w e-mail, mediach społecznościowych, reklamach i nie tylko."
 			}
 		},
 		"relatedUseCases": {
@@ -3838,10 +3685,6 @@
 			"qrCodes": {
 				"title": "Generator kodów QR",
 				"description": "Dodaj kody QR do opakowań produktów, wkładek i materiałów drukowanych. Linkuj klientów do stron produktowych, opinii lub wsparcia."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Szczegółowa analityka dla każdego linku produktowego. Dowiedz się, które produkty uzyskują najwięcej kliknięć i z jakich kanałów."
 			}
 		},
 		"faq": {
@@ -3853,7 +3696,7 @@
 			"q3": "Czy mogę skracać linki z Shopify, WooCommerce lub Amazon?",
 			"a3": "Tak. Skracacz URL działa z dowolnym URL. Wklej link produktu z dowolnej platformy i natychmiast utwórz markowy krótki link.",
 			"q4": "Czy krótkie linki wpływają na SEO mojego sklepu?",
-			"a4": "Nie. Krótkie linki używają przekierowań 301, które przekazują pełną wartość SEO do strony docelowej. Twoje pozycje w wyszukiwarce nie są zagrożone.",
+			"a4": "Krótkie linki używają przekierowań tymczasowych (307) i służą do udostępniania w reklamach, mailach i postach. Na własnej stronie linkuj produkty bezpośrednio, by wyszukiwarki widziały oryginalne adresy.",
 			"viewAll": "Zobacz wszystkie FAQ",
 			"q5": "Co dzieje się z moimi linkami, gdy przejdę na inny system sklepowy?",
 			"a5": "Przekieruj je i wszystko, co opublikowałeś, pozostaje ważne. Ponieważ krótki link to adres, który klienci naprawdę mają, migracja przepisująca każdy adres produktu staje się zmianą w panelu zamiast poszukiwania po starych postach, e-mailach i reklamach."
@@ -3871,8 +3714,8 @@
 				"description": "Pobierz długi URL ze strony produktu w Shopify, WooCommerce, Amazon lub dowolnym innym sklepie."
 			},
 			"step2": {
-				"title": "Stwórz markowy krótki link",
-				"description": "Skróć URL i dostosuj slug dla czytelności (np. /sukienka-letnia lub /black-friday)."
+				"title": "Nazwij link",
+				"description": "Skróć adres i nadaj mu nazwę, np. „Sukienka letnia · Instagram”, by łatwo go odnaleźć."
 			},
 			"step3": {
 				"title": "Otaguj i zorganizuj",
@@ -3890,8 +3733,8 @@
 		"tips": {
 			"title": "Najlepsze praktyki dla linków e-commerce",
 			"tip1": {
-				"title": "Używaj opisowych slugów",
-				"description": "Łatwe do zapamiętania slugi jak /black-friday lub /letnia-wyprzedaz są lepiej rozpoznawane przez klientów i budzą większe zaufanie niż losowe znaki."
+				"title": "Używaj domeny sklepu",
+				"description": "Link w domenie sklepu (Pro) klienci łatwiej rozpoznają i bardziej mu ufają niż ogólnemu skracaczowi."
 			},
 			"tip2": {
 				"title": "Jeden link na produkt na kanał",
@@ -3910,13 +3753,13 @@
 			"v1": {
 				"label": "Linki produktów",
 				"aria": "Lista krótkich linków produktów według kanału z liczbą kliknięć",
-				"r1Link": "tm.link/sukienka-lato",
+				"r1Link": "tm.link/u/s5h8d",
 				"r1Tag": "Produkt · Instagram",
 				"r1Clicks": "1204",
-				"r2Link": "tm.link/wyprzedaz-40",
+				"r2Link": "tm.link/u/m3q6v",
 				"r2Tag": "Kampania · Newsletter",
 				"r2Clicks": "892",
-				"r3Link": "tm.link/przewodnik-prezenty",
+				"r3Link": "tm.link/u/b9t4k",
 				"r3Tag": "Sezon · Pinterest",
 				"r3Clicks": "431"
 			},
@@ -3944,24 +3787,15 @@
 		"features": {
 			"feature1": {
 				"title": "Proste REST API",
-				"description": "Twórz, aktualizuj i zarządzaj krótkimi linkami programistycznie. Nasze REST API jest intuicyjne z przejrzystą dokumentacją i przykładami kodu.",
-				"bullet1": "Punkty końcowe RESTful do operacji CRUD",
-				"bullet2": "Format żądań i odpowiedzi JSON",
-				"bullet3": "Kompleksowa dokumentacja API"
+				"description": "Twórz, aktualizuj i zarządzaj krótkimi linkami programistycznie. Nasze REST API jest intuicyjne z przejrzystą dokumentacją i przykładami kodu."
 			},
 			"feature2": {
 				"title": "Uwierzytelnianie kluczem API",
-				"description": "Uwierzytelniaj się za pomocą kluczy API do integracji serwer-serwer. Generuj klucze i zarządzaj nimi z panelu.",
-				"bullet1": "Generuj klucze API z panelu",
-				"bullet2": "Bezpieczne uwierzytelnianie serwer-serwer",
-				"bullet3": "Wbudowane limitowanie żądań dla sprawiedliwego użytkowania"
+				"description": "Uwierzytelniaj się kluczami API (Pro) w integracjach serwer–serwer. Klucze tworzysz i zarządzasz nimi w panelu."
 			},
 			"feature3": {
 				"title": "Integracja niestandardowych domen",
-				"description": "Używaj własnej domeny do linków tworzonych przez API. Branding niestandardową domeną dla bezproblemowego doświadczenia użytkownika.",
-				"bullet1": "Wszystkie linki utworzone przez API korzystają z Twojej niestandardowej domeny",
-				"bullet2": "Konfiguruj domeny przez panel lub API",
-				"bullet3": "Przewodniki konfiguracji DNS zawarte w dokumentacji"
+				"description": "Używaj własnej domeny do linków tworzonych przez API. Branding niestandardową domeną dla bezproblemowego doświadczenia użytkownika."
 			}
 		},
 		"relatedUseCases": {
@@ -3974,22 +3808,18 @@
 			"qrCodes": {
 				"title": "Generator kodów QR",
 				"description": "Generuj kody QR również przez API. Twórz dynamiczne kody QR programistycznie dla aplikacji, biletów lub opakowań."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Uzyskaj dostęp do analityki kliknięć dla linków utworzonych przez API. Przeglądaj dane o wydajności w panelu lub pobieraj je przez API."
 			}
 		},
 		"faq": {
 			"title": "Najczęściej zadawane pytania",
 			"q1": "Jakiej metody uwierzytelniania używa API?",
 			"a1": "Uwierzytelnianie tokenem Bearer. Wygeneruj klucz API w panelu i dołącz go w nagłówku Authorization: Authorization: Bearer TWOJ_KLUCZ_API.",
-			"q2": "Czy mogę ustawić niestandardowy slug przez API?",
-			"a2": "Tak. Dodaj pole customSlug w ciele żądania. Jeśli zostanie pominięte, automatycznie zostanie wygenerowany losowy krótki kod.",
+			"q2": "Czy mogę wybrać domenę lub krótki kod przez API?",
+			"a2": "Domenę tak: przekaż w treści żądania customDomainId jednej z podłączonych domen. Krótki kod jest zawsze generowany automatycznie.",
 			"q3": "Czy istnieje limit żądań API?",
-			"a3": "Tak. Limity żądań zależą od Twojego planu. Darmowe konta mają niższe limity; konta Pro otrzymują wyższą przepustowość. Sprawdź nagłówki odpowiedzi, aby poznać aktualne zużycie.",
+			"a3": "Tak. Żądania mają limit częstotliwości, a klucze API wymagają planu Pro. Po przekroczeniu limitu API zwraca HTTP 429 – spróbuj ponownie po chwili.",
 			"q4": "Czy mogę pobrać analitykę kliknięć przez API?",
-			"a4": "Tak. Endpointy analityczne zwracają liczbę kliknięć, znaczniki czasu, dane o urządzeniach i informacje geograficzne dla każdego krótkiego linku programowo.",
+			"a4": "Tak. Endpoint analityki zwraca sumy, odwiedzających, dzienny szereg czasowy i podział według kraju, urządzenia, przeglądarki i systemu dla każdego linku.",
 			"viewAll": "Zobacz wszystkie FAQ",
 			"q5": "Czy mogę hostować QRcodly samodzielnie?",
 			"a5": "Tak. Cały stack jest publiczny na licencji MIT, więc jeśli przekierowanie przez podmiot trzeci jest nie do przyjęcia ze względów zgodności albo po prostu nie chcesz żadnej zależności, możesz uruchomić go sam. To wyjście awaryjne jest powodem, dla którego usługa hostowana nie potrzebuje limitów skanów ani wyłączania po okresie próbnym, by Cię zatrzymać."
@@ -4008,7 +3838,7 @@
 			},
 			"step2": {
 				"title": "Wyślij żądanie POST",
-				"description": "Wyślij żądanie do endpointu /api/v1/short-url z długim URL i opcjonalnym niestandardowym slugiem w ciele JSON."
+				"description": "Wyślij długi adres w treści JSON do endpointu /api/v1/short-url."
 			},
 			"step3": {
 				"title": "Odbierz krótki link",
@@ -4016,7 +3846,7 @@
 			},
 			"step4": {
 				"title": "Pobierz analitykę kliknięć",
-				"description": "Użyj endpointów analitycznych, aby pobrać liczbę kliknięć, znaczniki czasu, dane o urządzeniach i informacje geograficzne per link."
+				"description": "Pobieraj przez endpoint analityki kliknięcia, dzienny szereg, urządzenia i kraje dla każdego linku."
 			}
 		},
 		"visuals": {
@@ -4048,8 +3878,8 @@
 				"label": "Własna domena",
 				"badge": "Pro",
 				"aria": "Porównanie współdzielonej domeny przekierowań z domeną własną",
-				"genericLink": "qrcodly.de/u/a1B2c3",
-				"brandedLink": "go.twojaaplikacja.dev/a1B2c3",
+				"genericLink": "qrcodly.de/u/a1B2c",
+				"brandedLink": "go.twojaaplikacja.dev/u/a1B2c",
 				"genericNote": "Współdzielona domena przekierowań",
 				"brandedNote": "Twoja własna domena przez CNAME"
 			}
@@ -4085,24 +3915,15 @@
 		"features": {
 			"feature1": {
 				"title": "Domena Twojej agencji na każdym linku klienta",
-				"description": "Pro zawiera jedną własną domenę, a kolejne dodasz, gdy klient potrzebuje swojej. Umieść markę agencji na jednej z nich i daj każdemu klientowi czytelny slug — każdy materiał trafia do niego z linkiem, po którym widać, kto go zrobił.",
-				"bullet1": "Jedna własna domena w cenie, kolejne do wykupienia za domenę",
-				"bullet2": "Czytelne slugi na klienta zamiast losowych znaków",
-				"bullet3": "Prowadzona konfiguracja DNS z weryfikacją"
+				"description": "Pro zawiera jedną własną domenę, kolejne dokupisz, gdy klient potrzebuje swojej. Umieść markę agencji na jednej i rozdzielaj linki klientów nazwami i tagami."
 			},
 			"feature2": {
 				"title": "Analityka per link",
-				"description": "Śledź wyniki kliknięć dla każdego linku. Przeglądaj dane analityczne z klientami i prezentuj wyniki kampanii.",
-				"bullet1": "Śledzenie kliknięć dla każdego utworzonego linku",
-				"bullet2": "Analityka per link do przeglądania z klientami",
-				"bullet3": "Dane geograficzne i o urządzeniach (Pro)"
+				"description": "Śledź wyniki kliknięć dla każdego linku. Przeglądaj dane analityczne z klientami i prezentuj wyniki kampanii."
 			},
 			"feature3": {
 				"title": "Zorganizowane zarządzanie linkami",
-				"description": "Taguj i organizuj linki według klienta, kampanii lub kanału. Wyszukuj i filtruj, aby natychmiast znaleźć dowolny link.",
-				"bullet1": "Taguj linki według klienta lub projektu",
-				"bullet2": "Wyszukuj i filtruj w ramach wszystkich linków",
-				"bullet3": "Utrzymuj prace klientów oddzielone i uporządkowane"
+				"description": "Taguj i organizuj linki według klienta, kampanii lub kanału. Wyszukuj i filtruj, aby natychmiast znaleźć dowolny link."
 			}
 		},
 		"relatedUseCases": {
@@ -4115,10 +3936,6 @@
 			"qrCodes": {
 				"title": "Generator kodów QR",
 				"description": "Twórz markowane kody QR do kampanii klientów. Połącz z krótkimi linkami dla kompletnego śledzenia offline-to-online."
-			},
-			"analytics": {
-				"title": "Panel analityczny",
-				"description": "Kompleksowa analityka kliknięć dla wszystkich linków klientów. Filtruj według klienta, kampanii lub okresu czasu."
 			}
 		},
 		"faq": {
@@ -4128,7 +3945,7 @@
 			"q2": "Jak utrzymać porządek w linkach klientów?",
 			"a2": "Używaj tagów do oznaczania każdego linku według klienta, projektu i kampanii. Filtruj panel, aby wyświetlać tylko linki jednego klienta do skoncentrowanego zarządzania.",
 			"q3": "Czy mogę udostępniać dane o kliknięciach klientom?",
-			"a3": "Tak. Eksportuj analitykę linków lub udostępnij zrzuty ekranu z panelu. Każdy link pokazuje liczbę kliknięć, dane geograficzne i dane o urządzeniach.",
+			"a3": "Tak. Strona statystyk każdego linku pokazuje kliknięcia – w Pro także kraje i urządzenia – możesz omówić ją z klientem lub udostępnić zrzut ekranu.",
 			"q4": "Czy jest limit na liczbę własnych domen?",
 			"a4": "Pro zawiera jedną. Możesz dokupić do 20 kolejnych jako dodatek, rozliczany za domenę — zobacz stronę z cennikiem. Dodatkowe domeny są dostępne od razu; gdy zmniejszysz ich liczbę, zmiana zadziała z końcem opłaconego okresu.",
 			"viewAll": "Zobacz wszystkie FAQ",
@@ -4156,8 +3973,8 @@
 				"description": "Dodaj tagi z nazwą klienta i tytułem kampanii. Pozwala to natychmiast filtrować panel do linków jednego klienta."
 			},
 			"step4": {
-				"title": "Udostępniaj raporty wyników",
-				"description": "Eksportuj analitykę kliknięć per klient. Przeglądajcie dane o wynikach wspólnie i wykorzystujcie je do planowania kolejnej kampanii."
+				"title": "Omawiajcie wyniki razem",
+				"description": "Otwórz z klientem statystyki każdego linku i zaplanujcie na ich podstawie kolejną kampanię."
 			}
 		},
 		"visuals": {
@@ -4166,7 +3983,7 @@
 				"badge": "Pro",
 				"aria": "Porównanie generycznego krótkiego linku z linkiem na domenie Twojej agencji",
 				"genericLink": "short.io/xY9k",
-				"brandedLink": "go.twojaagencja.pl/premiera",
+				"brandedLink": "go.twojaagencja.pl/u/h6r3y",
 				"genericNote": "Anonimowa domena na dostarczanych materiałach",
 				"brandedNote": "Domena Twojej agencji na każdej kampanii"
 			},
@@ -4184,13 +4001,13 @@
 			"v3": {
 				"label": "Uporządkowane wg klienta",
 				"aria": "Lista linków klientów pogrupowanych według tagu z liczbą kliknięć",
-				"r1Link": "go.twojaagencja.pl/acme-premiera",
+				"r1Link": "go.twojaagencja.pl/u/e2v8m",
 				"r1Tag": "Acme · Premiera",
 				"r1Clicks": "9140",
-				"r2Link": "go.twojaagencja.pl/globex-webinar",
+				"r2Link": "go.twojaagencja.pl/u/n5k1w",
 				"r2Tag": "Globex · Webinar",
 				"r2Clicks": "3802",
-				"r3Link": "go.twojaagencja.pl/initech-praca",
+				"r3Link": "go.twojaagencja.pl/u/z7p4f",
 				"r3Tag": "Initech · Employer branding",
 				"r3Clicks": "1477"
 			}
@@ -4202,8 +4019,8 @@
 				"description": "Tagi zmieniają wspólną pulę linków w raportowanie na klienta. Uzgodnijcie schemat nazw przed pierwszą kampanią, nie po pięćdziesiątej."
 			},
 			"tip2": {
-				"title": "Używaj czytelnych slugów kampanii",
-				"description": "„acme-premiera” bije „x7k2” na spotkaniu statusowym, w raporcie i przy przekazaniu osobie, która przejmie konto później."
+				"title": "Nazywaj linki według klienta i kampanii",
+				"description": "„Acme · Premiera” wygrywa z gołym kodem na spotkaniu, w raporcie i przy przekazaniu konta kolejnej osobie."
 			},
 			"tip3": {
 				"title": "Przekazuj czysto",
@@ -4211,7 +4028,7 @@
 			},
 			"tip4": {
 				"title": "Domena na klienta",
-				"description": "Pro ma jedną własną domenę; dodaj po jednej na klienta, gdy potrzebuje własnego brandingu. Albo zostań przy jednej domenie agencji i rozdzielaj klientów slugami i tagami — obie drogi działają, a decyzję możesz zmienić później."
+				"description": "Pro zawiera jedną domenę; dodaj kolejną dla klienta, który potrzebuje własnej marki. Albo zostań przy domenie agencji i rozdzielaj klientów nazwami linków i tagami – obie drogi działają i możesz to zmienić."
 			}
 		}
 	},
@@ -4463,11 +4280,25 @@
 			"earlierVersions": "Wcześniejsze wersje",
 			"safety": "Informacje o bezpieczeństwie",
 			"manufacturer": "Producent",
-			"euRepresentative": "Przedstawiciel w UE"
+			"euRepresentative": "Przedstawiciel w UE",
+			"paper": {
+				"button": "Poproś o wersję papierową",
+				"hint": "Otwiera Twój program pocztowy. Możesz też napisać na adres {email}.",
+				"subject": "Papierowa instrukcja do {model}",
+				"body": "Dzień dobry,\n\nproszę o przesłanie instrukcji obsługi {model} (nr artykułu {articleNumber}) w wersji papierowej.\n\nImię i nazwisko:\nAdres dostawy:\nNumer seryjny:\nData zakupu:\nJęzyk: {language}\n\nDziękuję"
+			}
 		},
 		"unavailable": {
 			"title": "Chwileczkę",
 			"description": "Ta strona jest chwilowo niedostępna i za kilka sekund sama się przeładuje."
+		},
+		"offlineNotice": {
+			"pageTitle": "Ta strona przestanie działać razem z planem Pro",
+			"accountTitle": "Twoje strony hostowane przestaną działać",
+			"pageDescription": "Twój plan Pro kończy się {date}. Potem ta strona będzie niedostępna, dopóki nie wykupisz Pro ponownie.",
+			"accountDescription": "Twój plan Pro kończy się {date}. Potem Twoje strony hostowane i ich pliki będą niedostępne, dopóki nie wykupisz Pro ponownie. Nic nie zostanie usunięte.",
+			"products": "Strony produktów zawierają instrukcje, które muszą być dostępne przez lata. Zaplanuj inny sposób ich udostępnienia albo zachowaj Pro.",
+			"keep": "Zachowaj Pro"
 		}
 	},
 	"bulkActions": {
@@ -4487,5 +4318,209 @@
 		"notDeleted": "Nie udało się usunąć: {count}",
 		"error": "Usuwanie nie powiodło się. Spróbuj ponownie.",
 		"rowsPerPage": "Wierszy na stronę"
+	},
+	"productsHostedPdf": {
+		"metaTitle": "PDF jako kod QR – menu, oferty nieruchomości i broszury",
+		"metaDescription": "Prześlij plik PDF i udostępnij go kodem QR na własnym landing page. Podmień plik w dowolnej chwili – wydrukowany kod pozostaje ten sam. Do 50 MB na PDF.",
+		"breadcrumb": "Landing page PDF",
+		"hero": {
+			"badge": "Pro",
+			"audience": "Do menu, ofert, broszur i programów",
+			"title": "Twój PDF za kodem QR.",
+			"subtitle": "Prześlij PDF, nadaj stronie swoje kolory i wydrukuj kod. Nowa wersja? Podmień plik – kod na stoliku, tablicy czy ulotce pozostaje ten sam.",
+			"cta": "Utwórz stronę PDF",
+			"secondary": "Zobacz szablony",
+			"useCasesLabel": "Popularne zastosowania",
+			"useCases": {
+				"restaurants": "Restauracje",
+				"realEstate": "Nieruchomości",
+				"events": "Wydarzenia",
+				"retail": "Handel",
+				"marketing": "Marketing"
+			},
+			"sideDocument": "Karta win",
+			"toastTitle": "Plik podmieniony",
+			"toastText": "Kod pozostaje ten sam"
+		},
+		"swap": {
+			"label": "Podmień plik",
+			"title": "Nowe menu, ten sam kod.",
+			"text": "Zmieniły się ceny albo program? Prześlij nowy plik. Każdy, kto zeskanuje kod, od razu zobaczy aktualną wersję – bez ponownego druku.",
+			"oldFile": "Menu_Lato.pdf",
+			"oldUntil": "do 30.09",
+			"newFile": "Menu_Jesien.pdf",
+			"newLive": "już online"
+		},
+		"mode": {
+			"label": "Dwa sposoby",
+			"title": "Z landing page lub bezpośrednio.",
+			"text": "Pokaż PDF na zaprojektowanej stronie z logo, tytułem i maksymalnie 10 dokumentami – albo otwórz plik od razu po zeskanowaniu.",
+			"page": "Landing page",
+			"direct": "PDF bezpośrednio"
+		},
+		"templates": {
+			"label": "Szablony",
+			"title": "Gotowe szablony dla Twojej branży.",
+			"text": "Wybierz szablon, podmień teksty i zdjęcia i prześlij swój PDF. Kolory, czcionki i logo dopasujesz w edytorze."
+		},
+		"facts": {
+			"f1Title": "50 MB",
+			"f1Text": "na PDF – wystarczy na ilustrowane menu i katalogi.",
+			"f2Title": "10 dokumentów",
+			"f2Text": "na jednej stronie, np. menu, karta napojów i win.",
+			"f3Title": "Twój branding",
+			"f3Text": "Logo, kolory i czcionki pasujące do Twojej marki.",
+			"f4Title": "Skany pod kontrolą",
+			"f4Text": "W panelu widzisz, jak często Twój kod jest skanowany."
+		},
+		"industries": {
+			"label": "Zastosowania",
+			"title": "Jeden PDF, wiele miejsc.",
+			"more": "Dowiedz się więcej",
+			"restaurantsTitle": "Restauracje i kawiarnie",
+			"restaurantsText": "Menu na stoliku, aktualizowane co sezon.",
+			"realEstateTitle": "Nieruchomości",
+			"realEstateText": "Oferta bezpośrednio na tablicy „Na sprzedaż”.",
+			"eventsTitle": "Wydarzenia",
+			"eventsText": "Program i plan terenu dla Twoich gości.",
+			"point1": "Bez aplikacji",
+			"point2": "Działa z każdym aparatem w telefonie",
+			"point3": "Wydrukowany kod pozostaje ten sam"
+		},
+		"manual": {
+			"label": "Dla producentów",
+			"title": "Chcesz udostępniać instrukcje obsługi w formie cyfrowej?",
+			"text": "Strony produktów łączą instrukcję, informacje o bezpieczeństwie i deklarację zgodności dla każdego modelu – z archiwum wcześniejszych wersji.",
+			"cta": "Zobacz strony produktów"
+		},
+		"faq": {
+			"title": "Najczęstsze pytania",
+			"q1": "Czy mogę później podmienić PDF?",
+			"a1": "Tak. Przesyłasz nowy plik – link, a więc i wydrukowany kod QR, pozostaje ten sam.",
+			"q2": "Jak duży może być PDF?",
+			"a2": "Do 50 MB na plik. Jedna strona może zawierać do 10 dokumentów.",
+			"q3": "Czy moi goście potrzebują aplikacji?",
+			"a3": "Nie. Strona otwiera się w przeglądarce, z każdym popularnym aparatem w telefonie.",
+			"q4": "Czy PDF może się otworzyć bez strony pośredniej?",
+			"a4": "Tak. W edytorze ustawisz, aby PDF otwierał się od razu po zeskanowaniu.",
+			"q5": "Ile to kosztuje?",
+			"a5": "Landing page PDF są częścią QRcodly Pro; aktualne ceny znajdziesz na naszej stronie z cennikiem. Gdy subskrypcja się zakończy, strony zostaną wyłączone – wcześniej poinformujemy Cię e-mailem."
+		},
+		"cta": {
+			"title": "Gotowy na swój pierwszy kod PDF?",
+			"text": "Wybierz szablon, prześlij PDF, wydrukuj kod.",
+			"button": "Utwórz stronę PDF"
+		}
+	},
+	"marketing": {
+		"eyebrow": {
+			"features": "Co zawiera",
+			"numbers": "W skrócie",
+			"useCases": "Zastosowania",
+			"howItWorks": "Jak to działa",
+			"tips": "Dobre praktyki",
+			"faq": "FAQ",
+			"comparison": "Statyczny czy dynamiczny"
+		},
+		"pdfBanner": {
+			"eyebrow": "Pro · Strona PDF",
+			"title": "Umieść swój PDF za kodem QR – jako stronę mobilną w Twoim stylu.",
+			"text": "Prześlij plik, wybierz szablon, wydrukuj kod. Nowa wersja? Podmień plik – wydrukowany kod zostaje.",
+			"cta": "Dowiedz się więcej"
+		}
+	},
+	"home": {
+		"statsTitle": "Darmowy, open source i tworzony w Niemczech.",
+		"products": {
+			"title": "Jedno konto na kody, linki, statystyki i strony.",
+			"subtitle": "Wszystko, co tworzysz, jest w jednym panelu – za darmo na start, z Pro, gdy potrzebujesz więcej."
+		},
+		"dashboard": {
+			"eyebrow": "Panel",
+			"title": "Każdy kod na oku.",
+			"subtitle": "Szukaj, filtruj po tagach i od razu sprawdzaj, które kody są dynamiczne i jak często są skanowane.",
+			"aria": "Panel QRcodly z listą kodów QR, tagów i liczbą skanów",
+			"rows": {
+				"r1": {
+					"name": "Menu jesienne",
+					"tag": "Restauracja"
+				},
+				"r2": {
+					"name": "Stoisko targowe 2027",
+					"tag": "Wydarzenia"
+				},
+				"r3": {
+					"name": "Wizytówka Anny",
+					"tag": "Sprzedaż"
+				},
+				"r4": {
+					"name": "Plakat letniej wyprzedaży",
+					"tag": "Marketing"
+				},
+				"l1": {
+					"name": "Newsletter październik"
+				},
+				"l2": {
+					"name": "Bio na Instagramie"
+				},
+				"l3": {
+					"name": "Oferta Nowak sp. z o.o."
+				},
+				"t1": {
+					"name": "Firmowy"
+				},
+				"t2": {
+					"name": "Restauracja"
+				},
+				"t3": {
+					"name": "Wydarzenie"
+				}
+			},
+			"views": {
+				"qrCodes": {
+					"title": "Kody QR",
+					"text": "Szukaj, taguj i sprawdzaj, co jest skanowane."
+				},
+				"shortUrls": {
+					"title": "Krótkie linki",
+					"text": "Każdy link z celem i kliknięciami."
+				},
+				"templates": {
+					"title": "Szablony",
+					"text": "Zapisz projekt raz i używaj go jednym kliknięciem."
+				}
+			}
+		},
+		"solutions": {
+			"title": "Rozwiązania dla Twojej branży",
+			"subtitle": "Praktyczne poradniki z przykładami, krokami i wskazówkami – od gastronomii i handlu po agencje i programistów."
+		},
+		"integrations": {
+			"eyebrow": "Integracje",
+			"title": "Działa tam, gdzie już pracujesz.",
+			"subtitle": "Twórz kody w przeglądarce lub programie do składu i wysyłaj dane skanów do narzędzi analitycznych, których już używasz.",
+			"api": "Twórz, zmieniaj i zarządzaj kodami QR oraz krótkimi linkami z własnego oprogramowania za pomocą klucza API."
+		},
+		"cta": {
+			"title": "Pierwszy kod QR w minutę.",
+			"subtitle": "Za darmo, bez karty kredytowej i bez wygasającego okresu próbnego.",
+			"button": "Utwórz kod QR"
+		}
+	},
+	"hostedDemo": {
+		"badge": "Demo na żywo",
+		"back": "Wstecz",
+		"cta": "Zacznij od tego szablonu",
+		"ctaShort": "Użyj szablonu",
+		"metaTitle": "Demo na żywo: {name}",
+		"metaDescription": {
+			"pdf": "Tak wygląda szablon „{name}” po zeskanowaniu: przykładowa strona do przejrzenia, z dokumentami, które się otwierają.",
+			"product": "Tak wygląda szablon strony produktu „{name}” po zeskanowaniu: przykładowa strona z instrukcją, informacjami o bezpieczeństwie i producentem."
+		},
+		"gallery": {
+			"demo": "Demo na żywo",
+			"use": "Użyj szablonu",
+			"openDemo": "Demo na żywo: {name}"
+		}
 	}
 }

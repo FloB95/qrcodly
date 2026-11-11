@@ -18,6 +18,7 @@ import {
 	useReactivateDomainAddon,
 } from '@/lib/api/domain-addon';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
+import { HostedPagesOfflineNotice } from '@/components/hosted-page/HostedPagesOfflineNotice';
 import { useOpenBillingPortal } from '@/lib/api/billing';
 import {
 	DOMAIN_ADDON_PRICES,
@@ -252,6 +253,8 @@ export function SubscriptionSummarySection() {
 							</AlertDescription>
 						</Alert>
 					)}
+
+					<HostedPagesOfflineNotice scope="account" />
 
 					{addon && <p className="text-sm text-muted-foreground">{t('addon.cancelHint')}</p>}
 				</CardContent>

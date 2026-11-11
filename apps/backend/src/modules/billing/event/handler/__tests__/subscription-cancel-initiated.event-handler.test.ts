@@ -19,6 +19,7 @@ describe('SubscriptionCancelInitiatedEventHandler', () => {
 	let mockMailer: MockProxy<Mailer>;
 	let mockRepository: MockProxy<UserSubscriptionRepository>;
 	let mockSyncAddonWithPro: Record<string, jest.Mock>;
+	let mockHostedPages: { offlineNotice: jest.Mock };
 
 	const baseEventData = {
 		userId: 'user-123',
@@ -35,6 +36,9 @@ describe('SubscriptionCancelInitiatedEventHandler', () => {
 		mockRepository = mock<UserSubscriptionRepository>();
 
 		mockSyncAddonWithPro = { cancelAtPeriodEnd: jest.fn(), resume: jest.fn() };
+		mockHostedPages = {
+			offlineNotice: jest.fn().mockResolvedValue({ titles: [], productPages: 0 }),
+		};
 
 		(container.resolve as jest.Mock).mockImplementation((token: unknown) => {
 			const name = typeof token === 'function' ? token.name : String(token);
@@ -47,6 +51,8 @@ describe('SubscriptionCancelInitiatedEventHandler', () => {
 					return mockRepository;
 				case 'SyncAddonWithProUseCase':
 					return mockSyncAddonWithPro;
+				case 'HostedPageService':
+					return mockHostedPages;
 				default:
 					return {};
 			}
@@ -137,5 +143,43 @@ describe('SubscriptionCancelInitiatedEventHandler', () => {
 			'subscription.cancelInitiatedEmailFailed',
 			expect.objectContaining({ error: expect.any(Error) }),
 		);
+	});
+
+	it('names the hosted pages that go offline and warns about product pages', async () => {
+		mockRepository.findByUserId.mockResolvedValue({
+			cancellationNotifiedAt: null,
+		} as TUserSubscription);
+		mockHostedPages.offlineNotice.mockResolvedValue({
+			titles: ['Speisekarte', 'Bandsäge BS 400'],
+			productPages: 1,
+		});
+		const templateFn = jest.fn().mockReturnValue('<html>email</html>');
+		mockMailer.getTemplate.mockResolvedValue(templateFn);
+
+		await handler.handle(new SubscriptionCancelInitiatedEvent(baseEventData));
+
+		expect(mockHostedPages.offlineNotice).toHaveBeenCalledWith('user-123');
+		expect(templateFn).toHaveBeenCalledWith(
+			expect.objectContaining({
+				affectedPages: ['Speisekarte', 'Bandsäge BS 400'],
+				hasAffectedPages: true,
+				hasProductPages: true,
+			}),
+		);
+		expect(mockMailer.sendMail).toHaveBeenCalled();
+	});
+
+	it('still sends the mail when the hosted pages cannot be listed', async () => {
+		mockRepository.findByUserId.mockResolvedValue({
+			cancellationNotifiedAt: null,
+		} as TUserSubscription);
+		mockHostedPages.offlineNotice.mockRejectedValue(new Error('db down'));
+		const templateFn = jest.fn().mockReturnValue('<html>email</html>');
+		mockMailer.getTemplate.mockResolvedValue(templateFn);
+
+		await handler.handle(new SubscriptionCancelInitiatedEvent(baseEventData));
+
+		expect(templateFn).toHaveBeenCalledWith(expect.objectContaining({ hasAffectedPages: false }));
+		expect(mockMailer.sendMail).toHaveBeenCalled();
 	});
 });

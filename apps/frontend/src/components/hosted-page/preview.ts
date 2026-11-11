@@ -24,14 +24,35 @@ export function resolvePreviewTheme(
 	return hasProPlan && settings?.theme ? settings.theme : getStylePresetTheme('editorial');
 }
 
+type TemplateImageSlot = 'coverKey' | 'logoKey';
+const TEMPLATE_IMAGE_KEY = /^template:([A-Za-z]+):(coverKey|logoKey)$/;
+
+/**
+ * An adopted template's image stays a shipped file until the page is saved, so trying templates
+ * never uploads anything; saving uploads the images the page still uses.
+ */
+export const templateImageKey = (id: THostedPageTemplateId, slot: TemplateImageSlot) =>
+	`template:${id}:${slot}`;
+
+export function parseTemplateImageKey(
+	key: string | undefined,
+): { id: THostedPageTemplateId; slot: TemplateImageSlot } | null {
+	const match = key ? TEMPLATE_IMAGE_KEY.exec(key) : null;
+	if (!match || !HOSTED_PAGE_TEMPLATES.some((template) => template.id === match[1])) return null;
+	return { id: match[1] as THostedPageTemplateId, slot: match[2] as TemplateImageSlot };
+}
+
+export const templateImageUrl = (id: THostedPageTemplateId, slot: TemplateImageSlot) =>
+	slot === 'coverKey' ? `/hosted-templates/${id}-cover.webp` : `/hosted-templates/${id}-logo.png`;
+
 export const SAMPLE_COVER_KEY = 'sample:cover';
 export const SAMPLE_LOGO_KEY = 'sample:logo';
 
 /** Static demo images shipped with the app, one pair per template. */
 export function hostedTemplateAssetUrls(id: THostedPageTemplateId): Record<string, string> {
 	return {
-		[SAMPLE_COVER_KEY]: `/hosted-templates/${id}-cover.webp`,
-		[SAMPLE_LOGO_KEY]: `/hosted-templates/${id}-logo.png`,
+		[SAMPLE_COVER_KEY]: templateImageUrl(id, 'coverKey'),
+		[SAMPLE_LOGO_KEY]: templateImageUrl(id, 'logoKey'),
 	};
 }
 

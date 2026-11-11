@@ -15,6 +15,7 @@ import { formatBytes } from './format';
 import { HostedPageHeader } from './blocks/HostedPageHeader';
 import { HostedLinkButton } from './blocks/HostedButtons';
 import { ProductDocuments, type ProductDocumentItem } from './blocks/ProductDocuments';
+import { ProductPaperRequest } from './blocks/ProductPaperRequest';
 
 type HostedProductPageProps = {
 	page: TPublicHostedProductPageDto;
@@ -25,6 +26,8 @@ type HostedProductPageProps = {
  * The page behind a code on a machine or device: which model it is, its documents per language
  * with their earlier versions, the key safety information and who made it.
  */
+const sameSiteFile = (url: string) => (url.startsWith('/') ? url : '#');
+
 export function HostedProductPage({ page, preview }: HostedProductPageProps) {
 	const t = useTranslations('hostedPage.product');
 	const tPdf = useTranslations('hostedPage.pdf');
@@ -32,6 +35,7 @@ export function HostedProductPage({ page, preview }: HostedProductPageProps) {
 	const { style } = resolveHostedTheme(page.theme);
 	const tokens = STYLE_TOKENS[style];
 	const dateFormat = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' });
+	const languageName = new Intl.DisplayNames([locale], { type: 'language' }).of(locale) ?? locale;
 	const formatDate = (iso: string | null) => (iso ? dateFormat.format(new Date(iso)) : null);
 
 	const toItem = (
@@ -44,8 +48,13 @@ export function HostedProductPage({ page, preview }: HostedProductPageProps) {
 		title: document.title ?? t(`categories.${document.category}`),
 		meta: meta.filter(Boolean).join(' · '),
 		// relative: the page only renders on its own host, www and dev-by-IP included
-		openUrl: page.shortCode ? hostedFileUrl(`/u/${page.shortCode}`, document.id) : '#',
-		downloadUrl: page.shortCode ? hostedFileUrl(`/u/${page.shortCode}`, document.id, true) : '#',
+		// without a short URL only a file of this site opens: the demo pages' sample document
+		openUrl: page.shortCode
+			? hostedFileUrl(`/u/${page.shortCode}`, document.id)
+			: sameSiteFile(document.fileUrl),
+		downloadUrl: page.shortCode
+			? hostedFileUrl(`/u/${page.shortCode}`, document.id, true)
+			: sameSiteFile(document.downloadUrl),
 	});
 	const documents = page.documents.map((document) => {
 		const since = formatDate(document.validFrom);
@@ -78,11 +87,14 @@ export function HostedProductPage({ page, preview }: HostedProductPageProps) {
 		[t('gtin'), page.gtin],
 	].filter((fact): fact is [string, string] => Boolean(fact[1]));
 
+	// a preview sits inside another page, whose outline must not gain these headings
+	const Heading = preview ? 'p' : 'h2';
+
 	const party = (label: string, value: TPublicHostedProductPartyDto) => (
 		<section className="space-y-1">
-			<h2 className={cn(tokens.eyebrow, 'text-[var(--hp-text-muted)]')}>{label}</h2>
-			<p className="font-semibold break-words">{value.name}</p>
-			<p className="text-sm break-words whitespace-pre-line text-[var(--hp-text-muted)]">
+			<Heading className={cn(tokens.eyebrow, 'text-[var(--hp-text-muted)]')}>{label}</Heading>
+			<p className="font-semibold [overflow-wrap:anywhere]">{value.name}</p>
+			<p className="text-sm [overflow-wrap:anywhere] whitespace-pre-line text-[var(--hp-text-muted)]">
 				{value.address}
 			</p>
 			<p className="flex flex-col items-start gap-0.5 pt-1 text-sm">
@@ -158,8 +170,10 @@ export function HostedProductPage({ page, preview }: HostedProductPageProps) {
 								aria-hidden="true"
 							/>
 							<div className="min-w-0 space-y-1">
-								<h2 className="text-sm font-semibold">{t('safety')}</h2>
-								<p className="text-sm break-words whitespace-pre-line">{page.safetyNotice}</p>
+								<Heading className="text-sm font-semibold">{t('safety')}</Heading>
+								<p className="text-sm [overflow-wrap:anywhere] whitespace-pre-line">
+									{page.safetyNotice}
+								</p>
 							</div>
 						</aside>
 					)}
@@ -181,6 +195,7 @@ export function HostedProductPage({ page, preview }: HostedProductPageProps) {
 						documents={documents}
 						archive={archive}
 						preferredLanguage={locale}
+						preview={preview}
 						languageLabel={t('language')}
 						earlierLabel={t('earlierVersions')}
 						openTemplate={tPdf.raw('openDocument') as string}
@@ -193,6 +208,21 @@ export function HostedProductPage({ page, preview }: HostedProductPageProps) {
 						<HostedLinkButton style={style} href={page.link.url}>
 							{page.link.label}
 						</HostedLinkButton>
+					)}
+					{page.paperRequestEmail && page.documents.length > 0 && (
+						<ProductPaperRequest
+							style={style}
+							email={page.paperRequestEmail}
+							disabled={preview}
+							button={t('paper.button')}
+							hint={t('paper.hint', { email: page.paperRequestEmail })}
+							subject={t('paper.subject', { model: page.model })}
+							body={t('paper.body', {
+								model: page.model,
+								articleNumber: page.articleNumber ?? '–',
+								language: languageName,
+							})}
+						/>
 					)}
 					{(page.manufacturer.name || page.manufacturer.address) &&
 						party(t('manufacturer'), page.manufacturer)}

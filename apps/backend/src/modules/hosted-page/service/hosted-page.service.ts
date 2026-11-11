@@ -157,9 +157,13 @@ export class HostedPageService {
 			deletedAt: null,
 		};
 		await this.pageRepository.create(page);
-		for (const ref of getHostedFileRefs(body)) {
+		const refs = getHostedFileRefs(body);
+		for (const ref of refs) {
 			await this.claim(ref, page.id);
 		}
+		this.logger.info('hostedPage.created', {
+			hostedPage: { id: page.id, type: page.type, userId, files: refs.length },
+		});
 		return page;
 	}
 
@@ -211,10 +215,25 @@ export class HostedPageService {
 		for (const ref of claims) {
 			await this.claim(ref, plan.page.id);
 		}
+		let released = 0;
 		for (const ref of getHostedFileRefs(current)) {
-			if (!nextKeys.has(ref.key)) await this.releaseFile(ref.key);
+			if (nextKeys.has(ref.key)) continue;
+			await this.releaseFile(ref.key);
+			released++;
 		}
 		await this.pageRepository.update(locked, { data: toHostedPageBody(next).data });
+		const archiveSize = (body: THostedPageBody | THostedPageContent) =>
+			getHostedFileRefs(body).filter((ref) => ref.slot === 'archive').length;
+		this.logger.info('hostedPage.updated', {
+			hostedPage: {
+				id: locked.id,
+				type: locked.type,
+				userId: locked.createdBy,
+				files: claims.length,
+				released,
+				archived: archiveSize(next) - archiveSize(current),
+			},
+		});
 
 		const previousUrls = getHostedOutboundUrls(current);
 		if (sameUrls(previousUrls, getHostedOutboundUrls(next))) return false;
@@ -375,6 +394,15 @@ export class HostedPageService {
 			? await this.pageRepository.findLiveByQrCodeId(excludeQrCodeId)
 			: undefined;
 		return sumHostedUsage(await this.liveBodiesOf(userId, excluded?.page.id));
+	}
+
+	/** The user's live pages by title, for notices that they go offline when Pro ends. */
+	async offlineNotice(userId: string): Promise<{ titles: string[]; productPages: number }> {
+		const bodies = await this.liveBodiesOf(userId);
+		return {
+			titles: bodies.map((body) => body.data.title || body.type),
+			productPages: bodies.filter((body) => body.type === 'product').length,
+		};
 	}
 
 	/** Link buttons on a page are screened by Web Risk, like a dynamic QR code's destination. */

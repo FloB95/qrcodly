@@ -1,0 +1,51 @@
+%PDF-1.4
+%âãÏÓ
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Length 680 >>
+stream
+q 0.06 0.09 0.16 rg 0 742 595 100 re f Q
+BT 1 1 1 rg /F2 22 Tf 72 785 Td (QRcodly) Tj ET
+0.06 0.09 0.16 rg
+BT /F2 34 Tf 72 700 Td (Demo) Tj ET
+BT /F1 15 Tf 72 668 Td (QRcodly · Sample document · Beispieldokument) Tj ET
+BT /F1 12 Tf 72 610 Td (This file stands in for your own PDF.) Tj ET
+BT /F1 12 Tf 72 592 Td (On a real page, a scan opens your menu, exposé, brochure or manual here.) Tj ET
+BT /F1 12 Tf 72 556 Td (Diese Datei steht für dein eigenes PDF.) Tj ET
+BT /F1 12 Tf 72 538 Td (Auf einer echten Seite öffnet der Scan hier deine Speisekarte, dein Exposé,) Tj ET
+BT /F1 12 Tf 72 520 Td (deine Broschüre oder deine Anleitung.) Tj ET
+BT /F1 10 Tf 72 80 Td (qrcodly.de) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Title (QRcodly demo document) /Producer (QRcodly) >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000121 00000 n 
+0000000257 00000 n 
+0000000354 00000 n 
+0000000456 00000 n 
+0000001186 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R /Info 7 0 R >>
+startxref
+1258
+%%EOF

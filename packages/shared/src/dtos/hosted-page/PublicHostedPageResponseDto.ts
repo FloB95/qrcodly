@@ -82,7 +82,10 @@ export const PublicHostedProductPageDto = PublicHostedPageBase.extend({
 	link: HostedPageLinkSchema.nullable(),
 	documents: z.array(PublicHostedProductDocumentDto),
 	archive: z.array(PublicHostedProductArchivedDocumentDto),
-	paperRequest: z.boolean().describe('Whether visitors can request a paper copy'),
+	paperRequestEmail: z
+		.string()
+		.nullable()
+		.describe('Where visitors write to request a paper copy; null when the page offers none'),
 });
 export type TPublicHostedProductPageDto = z.infer<typeof PublicHostedProductPageDto>;
 

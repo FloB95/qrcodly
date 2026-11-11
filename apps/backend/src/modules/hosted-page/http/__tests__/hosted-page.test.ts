@@ -451,6 +451,8 @@ describe('Hosted pages', () => {
 			try {
 				const response = await uploadRequest('pdf', MINIMAL_PDF, accessToken2);
 				expect(response).toHaveStatusCode(429);
+				// the editor gives up at once on this one instead of waiting as for a busy server
+				expect(response.json().errorCode).toBe('HOSTED_TOO_MANY_PENDING_UPLOADS');
 			} finally {
 				await db.delete(storedFile).where(like(storedFile.fileKey, `${marker}/%`));
 			}

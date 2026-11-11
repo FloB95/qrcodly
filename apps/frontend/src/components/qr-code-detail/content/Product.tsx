@@ -5,9 +5,11 @@ import { ArrowDownTrayIcon, DocumentTextIcon } from '@heroicons/react/24/outline
 import {
 	hostedFileUrl,
 	type THostedProductDocument,
+	type THostedProductParty,
 	type TQrCodeWithRelationsResponseDto,
 } from '@shared/schemas';
 import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { useShortUrlLink } from '@/hooks/use-short-url-link';
 import { formatBytes } from '@/components/hosted-page/format';
 import { HostedPageCard } from './HostedPageCard';
@@ -67,6 +69,19 @@ export default function ProductContent({ qrCode }: { qrCode: TQrCodeWithRelation
 		</ul>
 	);
 
+	const party = (label: string, value: THostedProductParty) => (
+		<div className="min-w-0">
+			<p className="mb-1 text-sm font-medium">{label}</p>
+			<p className="text-sm">{value.name}</p>
+			<p className="text-sm whitespace-pre-line text-muted-foreground">{value.address}</p>
+			{[value.email, value.phone, value.website].filter(Boolean).map((line) => (
+				<p key={line} className="truncate text-sm text-muted-foreground">
+					{line}
+				</p>
+			))}
+		</div>
+	);
+
 	const summary = (
 		<div className="space-y-5">
 			<div>
@@ -112,11 +127,49 @@ export default function ProductContent({ qrCode }: { qrCode: TQrCodeWithRelation
 			)}
 
 			<div>
-				<p className="mb-1 text-sm font-medium">{t('manufacturer.title')}</p>
-				<p className="text-sm">{data.manufacturer.name}</p>
-				<p className="text-sm whitespace-pre-line text-muted-foreground">
-					{data.manufacturer.address}
+				<p className="mb-1 text-sm font-medium">{t('safety.title')}</p>
+				<p
+					className={cn(
+						'text-sm whitespace-pre-line',
+						!data.safetyNotice && 'text-muted-foreground',
+					)}
+				>
+					{data.safetyNotice || t('sections.safetyNone')}
 				</p>
+			</div>
+
+			<div>
+				<p className="mb-1 text-sm font-medium">{t('paperRequest.title')}</p>
+				{data.paperRequest?.enabled && data.paperRequest.email ? (
+					<p className="text-sm">
+						{t('sections.paperOn')} ·{' '}
+						<a href={`mailto:${data.paperRequest.email}`} className="underline underline-offset-2">
+							{data.paperRequest.email}
+						</a>
+					</p>
+				) : (
+					<p className="text-sm text-muted-foreground">{t('sections.paperOff')}</p>
+				)}
+			</div>
+
+			{data.link && (
+				<div>
+					<p className="mb-1 text-sm font-medium">{tPdf('link.title')}</p>
+					<a
+						href={data.link.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="inline-flex max-w-full items-center gap-2 text-sm hover:underline"
+					>
+						<span className="shrink-0 font-medium">{data.link.label}</span>
+						<span className="truncate text-muted-foreground">{data.link.url}</span>
+					</a>
+				</div>
+			)}
+
+			<div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+				{party(t('manufacturer.title'), data.manufacturer)}
+				{data.euRepresentative && party(t('euRepresentative.title'), data.euRepresentative)}
 			</div>
 		</div>
 	);

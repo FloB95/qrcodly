@@ -116,8 +116,7 @@ const presentProductPage: THostedPagePresenter<'product'> = (
 			documentId: entry.documentId,
 			validUntil: entry.validUntil,
 		})),
-		// the address requests go to stays private
-		paperRequest: data.paperRequest?.enabled === true,
+		paperRequestEmail: (data.paperRequest?.enabled && data.paperRequest.email) || null,
 	};
 };
 

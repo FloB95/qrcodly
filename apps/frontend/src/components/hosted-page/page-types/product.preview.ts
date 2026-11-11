@@ -1,6 +1,6 @@
 import {
-	HOSTED_DOCUMENT_CATEGORIES,
 	presentHostedPage,
+	type THostedDocumentCategory,
 	type THostedPageTemplateId,
 	type THostedProductDocument,
 	type TProductInput,
@@ -28,6 +28,14 @@ export function isProductContentUntouched(data: TProductInput): boolean {
 	);
 }
 
+// what the sample documents of each template are, in the order its texts list them
+const SAMPLE_CATEGORIES: Partial<Record<THostedPageTemplateId, THostedDocumentCategory[]>> = {
+	productManual: ['manual', 'other', 'datasheet'],
+	machineManual: ['manual', 'safety', 'declaration', 'datasheet'],
+	homeAppliance: ['manual', 'safety', 'other'],
+	powerTool: ['manual', 'safety', 'declaration'],
+};
+
 /** The documents a template expects, as stand-ins: `size` 0 marks one still to be uploaded. */
 function templateDocuments(
 	t: TemplateTranslator,
@@ -42,13 +50,21 @@ function templateDocuments(
 		.map((title, index) => ({
 			id: `${prefix}-${index}`,
 			title,
-			category: HOSTED_DOCUMENT_CATEGORIES[index] ?? 'other',
+			category: SAMPLE_CATEGORIES[id]?.[index] ?? 'other',
 			language: 'en',
 			fileKey: `${prefix}:document:${index}`,
 			fileName: `${title}.pdf`,
 			fileSize: size(index),
 		}));
 }
+
+// the model the sample's title names, so the type line matches the headline
+const SAMPLE_MODELS: Partial<Record<string, string>> = {
+	machineManual: 'BS 400',
+	homeAppliance: 'W 800',
+	powerTool: 'AB 18',
+	productManual: 'X200',
+};
 
 export const productPreview: HostedPagePreviewDefinition<'product'> = {
 	build: (data, options) =>
@@ -74,7 +90,7 @@ export const productPreview: HostedPagePreviewDefinition<'product'> = {
 		title: t(`${templateId}.sample.title`),
 		description: t(`${templateId}.sample.description`),
 		brandName: t(`${templateId}.sample.brandName`),
-		model: 'X200',
+		model: SAMPLE_MODELS[templateId] ?? 'X200',
 		manufacturer: {
 			name: t(`${templateId}.sample.brandName`),
 			address: t(`${templateId}.sample.address`),

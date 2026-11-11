@@ -15,7 +15,8 @@ import {
 	LinkIcon,
 	QrCodeIcon,
 	ChartBarIcon,
-	Squares2X2Icon,
+	CubeIcon,
+	DocumentTextIcon,
 	ViewfinderCircleIcon,
 	BookOpenIcon,
 	QuestionMarkCircleIcon,
@@ -195,10 +196,16 @@ export default function Header({
 			icon: <ChartBarIcon className="h-5 w-5" />,
 		},
 		{
-			href: '/features',
-			title: t('allFeaturesLink'),
-			description: t('allFeaturesDesc'),
-			icon: <Squares2X2Icon className="h-5 w-5" />,
+			href: '/products/hosted-pages/pdf',
+			title: t('hostedPdfLink'),
+			description: t('hostedPdfDesc'),
+			icon: <DocumentTextIcon className="h-5 w-5" />,
+		},
+		{
+			href: '/products/hosted-pages/digital-manual',
+			title: t('digitalManualLink'),
+			description: t('digitalManualDesc'),
+			icon: <CubeIcon className="h-5 w-5" />,
 		},
 	];
 
