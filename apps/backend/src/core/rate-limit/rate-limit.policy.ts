@@ -5,6 +5,7 @@ export enum RateLimitPolicy {
 	BULK_QR_CREATE = 'bulk_qr_create',
 	// short url limits
 	SHORT_URL_CREATE = 'short_url_create',
+	SHORT_URL_VIEWS = 'short_url_views',
 	// template limits
 	TEMPLATE_CREATE = 'template_create',
 	SCREENSHOT_CREATE = 'screenshot_create',
@@ -54,6 +55,12 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 5,
 		[RateLimitTier.PRO_PLAN]: 30,
+	},
+	// one request per dynamic code in a list of up to 100 rows; counts are cached in Redis
+	[RateLimitPolicy.SHORT_URL_VIEWS]: {
+		[RateLimitTier.ANONYMOUS]: 30,
+		[RateLimitTier.AUTHENTICATED]: 600,
+		[RateLimitTier.PRO_PLAN]: 1000,
 	},
 	[RateLimitPolicy.BULK_QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,

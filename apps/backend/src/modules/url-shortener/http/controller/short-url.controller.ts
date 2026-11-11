@@ -587,6 +587,9 @@ export class ShortUrlController extends AbstractController {
 	}
 
 	@Get('/:shortCode/get-views', {
+		config: {
+			rateLimitPolicy: RateLimitPolicy.SHORT_URL_VIEWS,
+		},
 		responseSchema: {
 			401: DEFAULT_ERROR_RESPONSES[401],
 			403: DEFAULT_ERROR_RESPONSES[403],
