@@ -206,7 +206,7 @@ export default async function Page({ params }: DefaultPageParams) {
 				title={tHome('cta.title')}
 				subtitle={tHome('cta.subtitle')}
 				ctaLabel={tHome('cta.button')}
-				ctaHref="/#generator"
+				ctaHref="#generator"
 			/>
 
 			<Footer />

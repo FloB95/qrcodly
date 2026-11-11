@@ -4,6 +4,9 @@ import Container from '@/components/ui/container';
 import { Link } from '@/i18n/navigation';
 import { AnimateOnScroll } from '@/components/features/AnimateOnScroll';
 
+const buttonClass =
+	'relative inline-flex shrink-0 items-center justify-center self-start rounded-xl bg-white px-6 py-4 text-base font-bold text-slate-900 transition-colors hover:bg-[#fddfbc] lg:self-auto';
+
 export function ProductCtaSection({
 	title,
 	subtitle,
@@ -30,12 +33,16 @@ export function ProductCtaSection({
 							</h2>
 							<p className="text-base leading-relaxed text-slate-300 sm:text-lg">{subtitle}</p>
 						</div>
-						<Link
-							href={ctaHref}
-							className="relative inline-flex shrink-0 items-center justify-center self-start rounded-xl bg-white px-6 py-4 text-base font-bold text-slate-900 transition-colors hover:bg-[#fddfbc] lg:self-auto"
-						>
-							{ctaLabel}
-						</Link>
+						{/* a target on the same page is a plain jump: the localised "/de/#…" link never scrolled */}
+						{ctaHref.startsWith('#') ? (
+							<a href={ctaHref} className={buttonClass}>
+								{ctaLabel}
+							</a>
+						) : (
+							<Link href={ctaHref} className={buttonClass}>
+								{ctaLabel}
+							</Link>
+						)}
 					</AnimateOnScroll>
 				</div>
 			</Container>
