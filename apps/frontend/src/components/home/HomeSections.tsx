@@ -90,7 +90,7 @@ export async function HomeSolutions({ locale }: { locale: string }) {
 													href={`${useCase.parentPath}/${useCase.slug}`}
 													className="group flex h-full items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 transition-colors hover:border-white/25 hover:bg-white/[0.08]"
 												>
-													<span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white/[0.07] text-slate-200 ring-1 ring-white/10 transition-colors ring-inset group-hover:bg-amber-400 group-hover:text-slate-900 group-hover:ring-amber-400">
+													<span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white/[0.07] text-slate-200 ring-1 ring-white/10 transition-[background-color,color,box-shadow] duration-200 ring-inset group-hover:bg-amber-400/15 group-hover:text-amber-300 group-hover:ring-amber-400/40">
 														<Icon className="size-5" />
 													</span>
 													<span className="min-w-0 flex-1 text-[15px] font-semibold">
