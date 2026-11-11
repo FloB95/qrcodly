@@ -289,7 +289,7 @@ export function ScanInsightsMockup({
 						<div className="text-[10px] sm:text-xs text-slate-500 mt-0.5">{metricLabel}</div>
 					</div>
 					{trend && (
-						<span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 text-[10px] sm:text-xs font-medium text-emerald-700">
+						<span className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full bg-emerald-50 px-2 py-1 text-[10px] sm:text-xs font-medium text-emerald-700">
 							<SignalIcon className="h-3 w-3" />
 							{trend}
 						</span>
