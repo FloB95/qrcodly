@@ -215,7 +215,7 @@
 		"filters": {
 			"searchPlaceholder": "QR-Codes suchen...",
 			"contentType": "Inhaltstyp",
-			"clearAll": "Löschen",
+			"clearAll": "Filter zurücksetzen",
 			"customizeColumns": "Spalten anpassen",
 			"columns": "Spalten",
 			"toggleColumns": "Spalten ein-/ausblenden",
@@ -488,7 +488,8 @@
 			"downloadBtn": "Herunterladen",
 			"vcfFile": "VCF-Datei",
 			"icsFile": "ICS-Datei",
-			"errorTitle": "Fehler beim Speichern des QR Codes"
+			"errorTitle": "Fehler beim Speichern des QR Codes",
+			"renderError": "Der QR Code konnte nicht erstellt werden. Bitte versuche es erneut."
 		},
 		"saveInfo": "Speichere den aktuellen QR Code in deiner Sammlung.",
 		"savePopup": {
@@ -693,7 +694,8 @@
 			"clearBtn": "Symbol löschen",
 			"currentIcon": "Aktuelles Symbol",
 			"uploadDragDrop": "Bild hierher ziehen oder klicken zum Durchsuchen",
-			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)"
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)",
+			"logoReadError": "Das Logo konnte nicht gelesen werden. Bitte wähle eine andere Datei."
 		},
 		"contentSwitch": {
 			"tab": {
@@ -4467,5 +4469,23 @@
 			"title": "Einen Moment bitte",
 			"description": "Diese Seite ist kurz nicht erreichbar und lädt in wenigen Sekunden von selbst neu."
 		}
+	},
+	"bulkActions": {
+		"selected": "{count} ausgewählt",
+		"clear": "Auswahl aufheben",
+		"selectPage": "Alle auf dieser Seite auswählen",
+		"selectRow": "Zeile auswählen",
+		"download": "Herunterladen",
+		"delete": "Löschen",
+		"confirmTitle": "{count, plural, one {# Eintrag} other {# Einträge}} löschen?",
+		"warningQrCodes": "Dynamische QR-Codes funktionieren danach nicht mehr – bereits gedruckte Codes führen ins Leere. Das lässt sich nicht rückgängig machen.",
+		"warningTemplates": "Die Vorlagen werden endgültig gelöscht. Das lässt sich nicht rückgängig machen.",
+		"warningShortUrls": "Die Kurz-URLs funktionieren danach nicht mehr. Das lässt sich nicht rückgängig machen.",
+		"cancel": "Abbrechen",
+		"confirm": "Endgültig löschen",
+		"deleted": "{count} gelöscht",
+		"notDeleted": "{count} konnten nicht gelöscht werden",
+		"error": "Löschen fehlgeschlagen. Bitte versuche es erneut.",
+		"rowsPerPage": "Zeilen pro Seite"
 	}
 }

@@ -13,9 +13,7 @@ import { type TFileExtension, type TQrCodeWithRelationsResponseDto } from '@shar
 import { useTranslations } from 'next-intl';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import { getQrCodeStylingOptions } from '@/lib/qr-code-helpers';
-import type QRCodeStylingType from 'qr-code-styling';
-
-let QRCodeStyling: typeof QRCodeStylingType;
+import { useDownloadQrCode } from '@/hooks/use-download-qr-code';
 
 /**
  * Download button for EDITOR (editing existing QR codes)
@@ -30,33 +28,22 @@ export const EditorQrCodeDownloadBtn = ({
 	initialQrCode: TQrCodeWithRelationsResponseDto;
 }) => {
 	const t = useTranslations('qrCode.download');
+	const downloadQrCode = useDownloadQrCode();
 	const { config, content } = useQrCodeGeneratorStore((state) => state);
 
-	const [qrCodeInstance, setQrCodeInstance] = useState<QRCodeStylingType | null>(null);
 	const [hasMounted, setHasMounted] = useState(false);
 
 	useEffect(() => {
 		setHasMounted(true);
-
-		void import('qr-code-styling').then((module) => {
-			QRCodeStyling = module.default;
-			// Use stored qrCodeData from the saved QR code (has correct custom domain baked in)
-			// Config/styling comes from context store for live preview
-			const options = getQrCodeStylingOptions(config, content, {
-				qrCodeData: initialQrCode.qrCodeData,
-			});
-			const instance = new QRCodeStyling(options);
-			setQrCodeInstance(instance);
-		});
-	}, [config, content, initialQrCode.qrCodeData]);
+	}, []);
 
 	const onDownloadClick = async (fileExt: TFileExtension) => {
-		if (!qrCodeInstance) return;
-
-		await qrCodeInstance.download({
-			name: initialQrCode.name || 'qr-code',
-			extension: fileExt,
+		// Use stored qrCodeData from the saved QR code (has correct custom domain baked in)
+		// Config/styling comes from context store for live preview
+		const options = getQrCodeStylingOptions(config, content, {
+			qrCodeData: initialQrCode.qrCodeData,
 		});
+		await downloadQrCode(options, initialQrCode.name || 'qr-code', fileExt);
 	};
 
 	return (

@@ -215,7 +215,7 @@
 		"filters": {
 			"searchPlaceholder": "QR-codes zoeken...",
 			"contentType": "Inhoudstype",
-			"clearAll": "Wissen",
+			"clearAll": "Filters wissen",
 			"customizeColumns": "Kolommen aanpassen",
 			"columns": "Kolommen",
 			"toggleColumns": "Kolommen in-/uitschakelen",
@@ -488,7 +488,8 @@
 			"downloadBtn": "Downloaden",
 			"vcfFile": "VCF-bestand",
 			"icsFile": "ICS-bestand",
-			"errorTitle": "Fout bij het opslaan van de QR-code"
+			"errorTitle": "Fout bij het opslaan van de QR-code",
+			"renderError": "De QR-code kon niet worden gemaakt. Probeer het opnieuw."
 		},
 		"saveInfo": "Sla de huidige QR-code op in uw verzameling.",
 		"savePopup": {
@@ -702,7 +703,8 @@
 			"clearBtn": "Icoon wissen",
 			"currentIcon": "Huidig icoon",
 			"uploadDragDrop": "Sleep een afbeelding hierheen, of klik om te bladeren",
-			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)"
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)",
+			"logoReadError": "Het logo kon niet worden gelezen. Kies een ander bestand."
 		},
 		"contentSwitch": {
 			"tab": {
@@ -4467,5 +4469,23 @@
 			"title": "Een ogenblik geduld",
 			"description": "Deze pagina is even niet bereikbaar en laadt over een paar seconden vanzelf opnieuw."
 		}
+	},
+	"bulkActions": {
+		"selected": "{count} geselecteerd",
+		"clear": "Selectie opheffen",
+		"selectPage": "Alles op deze pagina selecteren",
+		"selectRow": "Rij selecteren",
+		"download": "Downloaden",
+		"delete": "Verwijderen",
+		"confirmTitle": "{count, plural, one {# item} other {# items}} verwijderen?",
+		"warningQrCodes": "Dynamische QR-codes werken daarna niet meer – al gedrukte codes leiden nergens heen. Dit kan niet ongedaan worden gemaakt.",
+		"warningTemplates": "De sjablonen worden definitief verwijderd. Dit kan niet ongedaan worden gemaakt.",
+		"warningShortUrls": "De korte URL's werken daarna niet meer. Dit kan niet ongedaan worden gemaakt.",
+		"cancel": "Annuleren",
+		"confirm": "Definitief verwijderen",
+		"deleted": "{count} verwijderd",
+		"notDeleted": "{count} konden niet worden verwijderd",
+		"error": "Verwijderen mislukt. Probeer het opnieuw.",
+		"rowsPerPage": "Rijen per pagina"
 	}
 }

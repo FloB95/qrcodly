@@ -215,7 +215,7 @@
 		"filters": {
 			"searchPlaceholder": "Cerca codici QR...",
 			"contentType": "Tipo di contenuto",
-			"clearAll": "Cancella",
+			"clearAll": "Reimposta filtri",
 			"customizeColumns": "Personalizza colonne",
 			"columns": "Colonne",
 			"toggleColumns": "Mostra/nascondi colonne",
@@ -488,7 +488,8 @@
 			"downloadBtn": "Scarica",
 			"vcfFile": "File VCF",
 			"icsFile": "File ICS",
-			"errorTitle": "Errore durante il salvataggio del codice QR"
+			"errorTitle": "Errore durante il salvataggio del codice QR",
+			"renderError": "Non è stato possibile creare il codice QR. Riprova."
 		},
 		"saveInfo": "Salva il codice QR attuale nella tua collezione.",
 		"savePopup": {
@@ -702,7 +703,8 @@
 			"clearBtn": "Cancella icona",
 			"currentIcon": "Icona attuale",
 			"uploadDragDrop": "Trascina e rilascia un'immagine qui, o clicca per sfogliare",
-			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)"
+			"uploadFormats": "JPG, PNG, SVG, WebP (max. 1 MB)",
+			"logoReadError": "Non è stato possibile leggere il logo. Scegli un altro file."
 		},
 		"contentSwitch": {
 			"tab": {
@@ -4467,5 +4469,23 @@
 			"title": "Un momento, per favore",
 			"description": "Questa pagina è momentaneamente non disponibile e si ricaricherà da sola tra pochi secondi."
 		}
+	},
+	"bulkActions": {
+		"selected": "{count} selezionati",
+		"clear": "Annulla selezione",
+		"selectPage": "Seleziona tutto in questa pagina",
+		"selectRow": "Seleziona riga",
+		"download": "Scarica",
+		"delete": "Elimina",
+		"confirmTitle": "Eliminare {count, plural, one {# elemento} other {# elementi}}?",
+		"warningQrCodes": "I codici QR dinamici smetteranno di funzionare: i codici già stampati non porteranno da nessuna parte. Operazione irreversibile.",
+		"warningTemplates": "I modelli vengono eliminati definitivamente. Operazione irreversibile.",
+		"warningShortUrls": "Gli URL brevi smetteranno di funzionare. Operazione irreversibile.",
+		"cancel": "Annulla",
+		"confirm": "Elimina definitivamente",
+		"deleted": "{count} eliminati",
+		"notDeleted": "{count} non è stato possibile eliminarli",
+		"error": "Eliminazione non riuscita. Riprova.",
+		"rowsPerPage": "Righe per pagina"
 	}
 }

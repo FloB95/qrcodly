@@ -9,6 +9,10 @@ import { type IHttpResponse } from '@/core/interface/response.interface';
 import { type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
 import {
 	BulkImportQrCodeDto,
+	BulkDeleteDto,
+	BulkDeleteResponseDto,
+	type TBulkDeleteDto,
+	type TBulkDeleteResponseDto,
 	CreateQrCodeDto,
 	GetQrCodeQueryParamsSchema,
 	QrCodeWithRelationsPaginatedResponseDto,
@@ -40,6 +44,7 @@ import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { DownloadService } from '../../service/download.service';
 import { BadRequestError } from '@/core/error/http';
 import { ScreenshotService } from '@/core/services/screenshot.service';
+import { deleteEach } from '@/core/http/bulk-delete';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -274,6 +279,33 @@ export class QrCodeController extends AbstractController {
 
 		await this.deleteQrCodeUseCase.execute(qrCode, request.user.id);
 		return this.makeApiHttpResponse(200, { deleted: true });
+	}
+
+	@Post('/bulk-delete', {
+		bodySchema: BulkDeleteDto,
+		responseSchema: {
+			200: BulkDeleteResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['QR Codes'],
+			summary: 'Delete several QR codes',
+			description:
+				'Permanently deletes up to 100 QR codes and their short URLs, like deleting each one. ' +
+				'Items that are not found or not owned are listed in `failed`; the others are still deleted.',
+			operationId: 'qr-code/bulk-delete-qr-codes',
+		},
+	})
+	async bulkDelete(
+		request: IHttpRequest<TBulkDeleteDto>,
+	): Promise<IHttpResponse<TBulkDeleteResponseDto>> {
+		const result = await deleteEach('qrCode', request.body.ids, async (id) => {
+			const qrCode = await this.fetchOwnedQrCode(id, request.user.id);
+			await this.deleteQrCodeUseCase.execute(qrCode, request.user.id);
+		});
+		return this.makeApiHttpResponse(200, result);
 	}
 
 	@Post('/:id/duplicate', {

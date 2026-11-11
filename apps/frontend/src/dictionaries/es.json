@@ -215,7 +215,7 @@
 		"filters": {
 			"searchPlaceholder": "Buscar códigos QR...",
 			"contentType": "Tipo de contenido",
-			"clearAll": "Borrar",
+			"clearAll": "Restablecer filtros",
 			"customizeColumns": "Personalizar columnas",
 			"columns": "Columnas",
 			"toggleColumns": "Alternar columnas",
@@ -488,7 +488,8 @@
 			"downloadBtn": "Descargar",
 			"vcfFile": "Archivo VCF",
 			"icsFile": "Archivo ICS",
-			"errorTitle": "Error al guardar el código QR"
+			"errorTitle": "Error al guardar el código QR",
+			"renderError": "No se pudo crear el código QR. Inténtalo de nuevo."
 		},
 		"saveInfo": "Guarda el código QR actual en tu colección.",
 		"savePopup": {
@@ -702,7 +703,8 @@
 			"clearBtn": "Borrar icono",
 			"currentIcon": "Icono actual",
 			"uploadDragDrop": "Arrastra y suelta una imagen aquí, o haz clic para buscar",
-			"uploadFormats": "JPG, PNG, SVG, WebP (máx. 1 MB)"
+			"uploadFormats": "JPG, PNG, SVG, WebP (máx. 1 MB)",
+			"logoReadError": "No se pudo leer el logotipo. Elige otro archivo."
 		},
 		"contentSwitch": {
 			"tab": {
@@ -4467,5 +4469,23 @@
 			"title": "Un momento, por favor",
 			"description": "Esta página no está disponible por un momento y se recargará sola en unos segundos."
 		}
+	},
+	"bulkActions": {
+		"selected": "{count} seleccionados",
+		"clear": "Quitar selección",
+		"selectPage": "Seleccionar todo en esta página",
+		"selectRow": "Seleccionar fila",
+		"download": "Descargar",
+		"delete": "Eliminar",
+		"confirmTitle": "¿Eliminar {count, plural, one {# elemento} other {# elementos}}?",
+		"warningQrCodes": "Los códigos QR dinámicos dejarán de funcionar: los códigos ya impresos no llevarán a ninguna parte. No se puede deshacer.",
+		"warningTemplates": "Las plantillas se eliminan de forma permanente. No se puede deshacer.",
+		"warningShortUrls": "Las URL cortas dejarán de funcionar. No se puede deshacer.",
+		"cancel": "Cancelar",
+		"confirm": "Eliminar definitivamente",
+		"deleted": "{count} eliminados",
+		"notDeleted": "{count} no se pudieron eliminar",
+		"error": "No se pudo eliminar. Inténtalo de nuevo.",
+		"rowsPerPage": "Filas por página"
 	}
 }
