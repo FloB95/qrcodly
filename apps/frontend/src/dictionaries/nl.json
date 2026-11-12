@@ -1388,7 +1388,7 @@
 		"question10": "Werken QR-codes ook in gedrukte vorm?",
 		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!",
 		"question11": "Waar worden mijn gegevens gehost?",
-		"answer11": "De kerninfrastructuur van QRcodly draait op servers in Duitsland. We gebruiken Clerk voor het inloggen, Stripe voor betalingen en Sentry en PostHog om fouten te vinden en het product te verbeteren. Je gegevens worden niet verkocht of voor reclame gebruikt.",
+		"answer11": "De kerninfrastructuur van QRcodly draait op servers in Duitsland. We gebruiken Clerk voor het inloggen, Stripe voor betalingen, Amazon SES voor het versturen van productnieuws en Sentry en PostHog om fouten te vinden en het product te verbeteren. Je gegevens worden niet verkocht of voor reclame van derden gebruikt. Met een account ontvang je af en toe productnieuws van QRcodly per e-mail. Dat kun je op elk moment uitzetten in de instellingen of via de link in elke e-mail.",
 		"viewAll": "Bekijk alle FAQ's"
 	},
 	"fileUpload": {
@@ -1756,7 +1756,19 @@
 			"emailAddError": "Toevoegen van e-mailadres mislukt. Probeer opnieuw.",
 			"emailNotFound": "E-mailadres niet gevonden. Probeer opnieuw.",
 			"verificationError": "Ongeldige verificatiecode. Probeer opnieuw.",
-			"currentPassword": "Huidig Wachtwoord"
+			"currentPassword": "Huidig Wachtwoord",
+			"newsletterTitle": "Productnieuws per e-mail",
+			"newsletterDescription": "Ongeveer 2–3 e-mails per jaar met nieuws over QRcodly. Je kunt je hier of via de link in elke e-mail afmelden. Meer informatie in onze <link>privacyverklaring</link>.",
+			"newsletterSwitchLabel": "Productnieuws ontvangen",
+			"newsletterSubscribed": "Je ontvangt nu productnieuws per e-mail.",
+			"newsletterUnsubscribed": "Je ontvangt geen productnieuws meer per e-mail.",
+			"newsletterError": "Je e-mailvoorkeur kon niet worden opgeslagen. Probeer het opnieuw.",
+			"newsletterVerifyEmail": "Bevestig eerst je e-mailadres. Daarna kun je deze instelling wijzigen.",
+			"newsletterUnavailable": "Deze instelling is momenteel niet beschikbaar. Probeer het later opnieuw.",
+			"newsletterBlocked": "Verzending naar je e-mailadres is geblokkeerd, bijvoorbeeld omdat je je eerder hebt afgemeld of omdat een e-mail niet kon worden afgeleverd. Wil je dit wijzigen? Stuur dan een e-mail naar <contact>info@qrcodly.de</contact>.",
+			"newsletterLanguageLabel": "Taal van de e-mails",
+			"newsletterLanguageHint": "We schrijven onze e-mails in het Engels en Duits.",
+			"newsletterLanguageSaved": "Taal opgeslagen."
 		},
 		"security": {
 			"title": "Beveiliging",
@@ -2524,7 +2536,7 @@
 				"q4": "Werken QR-codes ook in print?",
 				"a4": "Absoluut! QR-codes zijn specifiek geoptimaliseerd voor afdrukken en werken betrouwbaar op verschillende materialen, zolang ze duidelijk en onbeschadigd blijven.",
 				"q5": "Waar worden mijn gegevens gehost?",
-				"a5": "De kerninfrastructuur van QRcodly draait op servers in Duitsland. We gebruiken Clerk voor het inloggen, Stripe voor betalingen en Sentry en PostHog om fouten te vinden en het product te verbeteren. Je gegevens worden niet verkocht of voor reclame gebruikt.",
+				"a5": "De kerninfrastructuur van QRcodly draait op servers in Duitsland. We gebruiken Clerk voor het inloggen, Stripe voor betalingen, Amazon SES voor het versturen van productnieuws en Sentry en PostHog om fouten te vinden en het product te verbeteren. Je gegevens worden niet verkocht of voor reclame van derden gebruikt. Met een account ontvang je af en toe productnieuws van QRcodly per e-mail. Dat kun je op elk moment uitzetten in de instellingen of via de link in elke e-mail.",
 				"q6": "Is QRcodly open source?",
 				"a6": "Ja! QRcodly is volledig open source en beschikbaar op GitHub. Je kunt de code bekijken, bijdragen of zelfs je eigen instantie hosten.",
 				"q7": "Kan ik QRcodly voor commerciële doeleinden gebruiken?",
@@ -4521,6 +4533,27 @@
 			"demo": "Live demo",
 			"use": "Sjabloon gebruiken",
 			"openDemo": "Live demo: {name}"
+		}
+	},
+	"auth": {
+		"signIn": {
+			"metaTitle": "Inloggen",
+			"eyebrow": "Welkom terug",
+			"title": "Je QR-codes wachten op je.",
+			"subtitle": "Log in om je codes te bewerken, je korte links te beheren en te zien hoe ze presteren."
+		},
+		"signUp": {
+			"metaTitle": "Registreren",
+			"eyebrow": "Gratis account",
+			"title": "QR-codes en korte links op één plek.",
+			"subtitle": "Maak je gratis account aan en wijzig op elk moment waar je codes naartoe leiden, ook na het printen."
+		},
+		"benefitsTitle": "Gratis inbegrepen",
+		"benefits": {
+			"unlimited": "Onbeperkt QR-codes, korte links en scans",
+			"dynamic": "Dynamische QR-codes die je na het printen nog kunt wijzigen",
+			"statistics": "Scanstatistieken voor elke code",
+			"noCreditCard": "Geen creditcard vereist"
 		}
 	}
 }

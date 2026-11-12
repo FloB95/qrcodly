@@ -2,7 +2,7 @@ export default function PrivacyPolicyContentEn() {
 	return (
 		<div className="prose prose-neutral">
 			<h1 className="text-3xl font-semibold mb-6">Privacy Policy</h1>
-			<p className="text-sm text-muted-foreground mb-8">Last updated: April 2026</p>
+			<p className="text-sm text-muted-foreground mb-8">Last updated: November 2026</p>
 
 			{/* ========== 1. Privacy at a Glance ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">1. Privacy at a Glance</h2>
@@ -300,9 +300,9 @@ export default function PrivacyPolicyContentEn() {
 
 			<h3 className="text-xl font-semibold mt-6 mb-2">What data do we collect?</h3>
 			<p className="text-base leading-relaxed">
-				We only process personal data to the extent necessary for the provision of the QRcodly
-				platform and its associated services. In particular, the following personal data may be
-				processed:
+				We process personal data to provide the QRcodly platform and its associated services and for
+				the other purposes named in this privacy policy. In particular, the following personal data
+				may be processed:
 			</p>
 			<ul className="list-disc pl-6 space-y-1 text-base leading-relaxed">
 				<li>
@@ -324,6 +324,10 @@ export default function PrivacyPolicyContentEn() {
 				<li>
 					<strong>Payment data:</strong> Billing information when subscribing to a paid plan
 					(processed by Stripe)
+				</li>
+				<li>
+					<strong>Newsletter data:</strong> Email address, first name, language, and account ID for
+					occasional product news by email (see section 8)
 				</li>
 			</ul>
 
@@ -633,8 +637,108 @@ export default function PrivacyPolicyContentEn() {
 				visitors in accordance with our instructions and in compliance with the GDPR.
 			</p>
 
-			{/* ========== 8. Changes ========== */}
-			<h2 className="text-2xl font-semibold mt-10 mb-4">8. Changes to This Privacy Policy</h2>
+			{/* ========== 8. Product news by email (newsletter) ========== */}
+			<h2 className="text-2xl font-semibold mt-10 mb-4">8. Product news by email (newsletter)</h2>
+			<p className="text-base leading-relaxed">
+				If you have a QRcodly account, we send you an email with news about QRcodly about two to
+				three times a year, e.g. about new features and important improvements.
+			</p>
+			<p className="text-base leading-relaxed">
+				The legal basis is Art. 6(1)(f) GDPR. Our legitimate interest lies in informing you about
+				new features and improvements to QRcodly (direct marketing, Recital 47 GDPR).
+			</p>
+			<p className="text-base leading-relaxed">
+				<strong>Objection:</strong> You can object to the use of your email address for these emails
+				at any time (Art. 21(2) GDPR) without incurring any costs other than the transmission costs
+				at the basic rates. To do so, use the unsubscribe link in every email or the corresponding
+				setting in your account&apos;s profile settings.
+			</p>
+			<p className="text-base leading-relaxed">
+				<strong>Data processed:</strong> Email address, first name (or, if there is none, the part
+				of the email address before the &ldquo;@&rdquo;), language (for accounts that existed before
+				these emails were introduced, preset once based on how you have used QRcodly so far; for new
+				accounts, the language of the sign-up page; you can change it at any time in the settings),
+				your QRcodly account ID, the origin of the record (e.g. sign-up, account settings or our
+				previous newsletter service), the status of your subscription with timestamps and, for a
+				block, its reason, including the hard bounce or complaint report from Amazon SES.
+			</p>
+			<p className="text-base leading-relaxed">
+				<strong>Storage period:</strong> We keep this data as long as your account exists. If you
+				object, we keep the record with the status &ldquo;unsubscribed&rdquo; so that you do not
+				receive any further emails of this kind. When your account is deleted, we delete the record
+				promptly.
+			</p>
+			<p className="text-base leading-relaxed">
+				Records on our block list are the exception. A record is put on it if an email to the
+				address could not be delivered permanently (hard bounce) or was reported as spam
+				(complaint), if our previous newsletter service already listed the address as unsubscribed
+				or undeliverable, or if you ask us to block your address permanently. A block list entry is
+				kept even after your account is deleted, so that we do not send you such emails again, even
+				if you sign up again with the same address. After your account is deleted, we keep no more
+				than the email address, the reason for the block and when it happened. If a blocked record
+				is linked to your account, you will not receive product news even after changing your email
+				address, until you contact us. The legal basis is Art. 6(1)(f) GDPR; our legitimate interest
+				lies in permanently respecting objections and not mailing blocked addresses again.
+			</p>
+			<p className="text-base leading-relaxed">
+				We do not track whether individual recipients open an email or click on links in it. If
+				Amazon SES reports that an email could not be delivered permanently (hard bounce) or was
+				marked as spam (complaint), we put the record concerned on the block list. Amazon SES may
+				also keep such addresses on its own suppression list so that no further emails are sent to
+				them.
+			</p>
+
+			<h3 className="text-xl font-semibold mt-6 mb-2">listmonk</h3>
+			<p className="text-base leading-relaxed">
+				We use the open-source software listmonk to manage recipients and send the emails. We
+				operate listmonk ourselves on our servers at Hetzner in Germany (see section 5). The
+				listmonk database is part of our encrypted backups, which we store with Cloudflare (storage
+				service R2; for the provider, see section 5). Deleted records remain in them until the
+				backup in question is deleted automatically, which happens after about one year.
+			</p>
+
+			<h3 className="text-xl font-semibold mt-6 mb-2">Amazon Simple Email Service (Amazon SES)</h3>
+			<p className="text-base leading-relaxed">
+				We use Amazon Simple Email Service (Amazon SES) to deliver the emails. The provider is
+				Amazon Web Services EMEA SARL, 38 Avenue John F. Kennedy, L-1855 Luxembourg (hereinafter
+				AWS). We use the AWS region EU (Frankfurt).
+			</p>
+			<p className="text-base leading-relaxed">
+				For details, please refer to the AWS privacy notice:{' '}
+				<a
+					href="https://aws.amazon.com/privacy/"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="text-primary underline"
+				>
+					https://aws.amazon.com/privacy/
+				</a>
+				.
+			</p>
+			<p className="text-base leading-relaxed">
+				Access by the US parent company Amazon Web Services, Inc. cannot be ruled out. Any such data
+				transfer to the USA is based on the Standard Contractual Clauses of the EU Commission. In
+				addition, the company is certified under the &ldquo;EU-US Data Privacy Framework&rdquo;
+				(DPF). Further information is available at:{' '}
+				<a
+					href="https://www.dataprivacyframework.gov/"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="text-primary underline"
+				>
+					https://www.dataprivacyframework.gov/
+				</a>
+				.
+			</p>
+			<p className="text-base leading-relaxed">
+				<strong>Data processing agreement:</strong> The use of Amazon SES is covered by the AWS GDPR
+				Data Processing Addendum, which is part of our contract with AWS through the AWS Service
+				Terms. It ensures that AWS only processes the personal data in accordance with our
+				instructions and in compliance with the GDPR.
+			</p>
+
+			{/* ========== 9. Changes ========== */}
+			<h2 className="text-2xl font-semibold mt-10 mb-4">9. Changes to This Privacy Policy</h2>
 			<p className="text-base leading-relaxed">
 				We reserve the right to update this privacy policy as necessary to reflect changes in the
 				legal framework or changes to our service. The current version is always available on this

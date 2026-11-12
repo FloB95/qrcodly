@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useCallback, useRef, useState, useEffect } from 'react';
+import React, { Suspense, useCallback, useRef, useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { Link, usePathname } from '@/i18n/navigation';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
@@ -21,13 +22,29 @@ const LANGUAGE_NAMES: Record<string, string> = {
 	ru: 'Русский',
 };
 
-export const LanguageNav = ({
-	variant = 'auto',
-	direction = 'down',
-}: {
+type TLanguageNavProps = {
 	variant?: 'auto' | 'dropdown-up';
 	direction?: 'down' | 'up';
-}) => {
+};
+
+// Switching the language keeps the query: the sign-in page carries its return target there.
+// useSearchParams() needs the Suspense boundary; prerendered HTML gets the links without query.
+export const LanguageNav = (props: TLanguageNavProps) => (
+	<Suspense fallback={<LanguageNavMenu {...props} />}>
+		<LanguageNavWithQuery {...props} />
+	</Suspense>
+);
+
+const LanguageNavWithQuery = (props: TLanguageNavProps) => {
+	const query = useSearchParams().toString();
+	return <LanguageNavMenu {...props} search={query && `?${query}`} />;
+};
+
+const LanguageNavMenu = ({
+	variant = 'auto',
+	direction = 'down',
+	search = '',
+}: TLanguageNavProps & { search?: string }) => {
 	const locale = useLocale();
 	const currentPath = usePathname();
 	const [open, setOpen] = useState(false);
@@ -36,7 +53,7 @@ export const LanguageNav = ({
 
 	const languageLinks = SUPPORTED_LANGUAGES.map((lang) => ({
 		lang,
-		path: currentPath, // usePathname() from next-intl already returns locale-stripped path
+		path: currentPath + search, // usePathname() from next-intl already returns locale-stripped path
 	})).sort((a, b) => a.lang.localeCompare(b.lang));
 
 	const openMenu = useCallback(() => {

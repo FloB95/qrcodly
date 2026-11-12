@@ -1,6 +1,10 @@
 import { UserIcon } from '@heroicons/react/24/outline';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
-import { ProfileSection, ConnectedAccountsSection } from '@/components/dashboard/profile';
+import {
+	ProfileSection,
+	ConnectedAccountsSection,
+	NewsletterSection,
+} from '@/components/dashboard/profile';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 
@@ -30,6 +34,9 @@ export default async function Page({ params }: DefaultPageParams) {
 
 			{/* Connected Accounts Section */}
 			<ConnectedAccountsSection />
+
+			{/* Newsletter Section */}
+			<NewsletterSection />
 		</div>
 	);
 }

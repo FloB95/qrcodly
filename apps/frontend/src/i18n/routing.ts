@@ -10,6 +10,16 @@ export const routing = defineRouting({
 	localePrefix: 'as-needed',
 });
 
+function localizedPath(path: string, locale?: string) {
+	const prefixed =
+		locale !== routing.defaultLocale && SUPPORTED_LANGUAGES.some((l) => l === locale);
+	return prefixed ? `/${locale}${path}` : path;
+}
+
+/** Our own Clerk auth pages. Clerk's hosted pages ignore our localization and its notices. */
+export const signInPath = (locale?: string) => localizedPath('/sign-in', locale);
+export const signUpPath = (locale?: string) => localizedPath('/sign-up', locale);
+
 SUPPORTED_LANGUAGES.forEach((lang) => {
 	import(`i18n-iso-countries/langs/${lang}.json`)
 		.then((module) => {

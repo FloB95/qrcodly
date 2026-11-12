@@ -3,7 +3,7 @@ import { Logger } from 'next-axiom';
 import { type NextFetchEvent, type NextRequest, NextResponse } from 'next/server';
 import { processAnalyticsAndRedirect } from './middlewares/process-analytics-and-redirect.middleware';
 import createMiddleware from 'next-intl/middleware';
-import { routing, SUPPORTED_LANGUAGES } from './i18n/routing';
+import { routing, signInPath, signUpPath, SUPPORTED_LANGUAGES } from './i18n/routing';
 import { env } from '@/env';
 import { brandHost, shortUrlHost } from '@/lib/hosts';
 
@@ -43,6 +43,12 @@ function scanResponse(req: NextRequest) {
 	});
 }
 
+// auth().redirectToSignIn() goes to our auth pages, in the language of the requested page
+const clerkOptions = (req: NextRequest) => {
+	const locale = req.nextUrl.pathname.split('/')[1];
+	return { signInUrl: signInPath(locale), signUpUrl: signUpPath(locale) };
+};
+
 // Auth checks live in the protected layouts (resource-based, see dashboard/layout.tsx);
 // clerkMiddleware only provides the auth context here.
 const clerkHandler = clerkMiddleware(async (_auth, req, event) => {
@@ -79,7 +85,7 @@ const clerkHandler = clerkMiddleware(async (_auth, req, event) => {
 	}
 
 	return NextResponse.next();
-});
+}, clerkOptions);
 
 export default function middleware(req: NextRequest, event: NextFetchEvent) {
 	const { pathname, search } = new URL(req.url);

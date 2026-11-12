@@ -1388,7 +1388,7 @@
 		"question10": "Les Codes QR fonctionnent-ils également imprimés ?",
 		"answer10": "Absolument ! Les Codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, tant qu'ils restent clairs et intacts. Assurez une bonne qualité d'impression, et vos codes seront prêts à être utilisés partout !",
 		"question11": "Où sont hébergées mes données ?",
-		"answer11": "L'infrastructure principale de QRcodly tourne sur des serveurs en Allemagne. Nous utilisons Clerk pour la connexion, Stripe pour les paiements ainsi que Sentry et PostHog pour détecter les erreurs et améliorer le produit. Vos données ne sont ni vendues ni utilisées à des fins publicitaires.",
+		"answer11": "L'infrastructure principale de QRcodly tourne sur des serveurs en Allemagne. Nous utilisons Clerk pour la connexion, Stripe pour les paiements, Amazon SES pour l'envoi des actualités produit ainsi que Sentry et PostHog pour détecter les erreurs et améliorer le produit. Vos données ne sont ni vendues ni utilisées à des fins publicitaires par des tiers. Si vous avez un compte, vous recevez de temps en temps des actualités produit de QRcodly par email. Vous pouvez les désactiver à tout moment dans les paramètres ou via le lien présent dans chaque email.",
 		"viewAll": "Voir toutes les FAQ"
 	},
 	"notFound": {
@@ -1760,7 +1760,19 @@
 			"emailAddError": "Échec de l'ajout de l'adresse email. Veuillez réessayer.",
 			"emailNotFound": "Adresse email non trouvée. Veuillez réessayer.",
 			"verificationError": "Code de vérification invalide. Veuillez réessayer.",
-			"currentPassword": "Mot de Passe Actuel"
+			"currentPassword": "Mot de Passe Actuel",
+			"newsletterTitle": "Actualités produit par email",
+			"newsletterDescription": "Environ 2 à 3 emails par an avec des nouveautés sur QRcodly. Vous pouvez vous désabonner ici ou via le lien présent dans chaque email. Plus d'informations dans notre <link>politique de confidentialité</link>.",
+			"newsletterSwitchLabel": "Recevoir les actualités produit",
+			"newsletterSubscribed": "Vous recevrez désormais les actualités produit par email.",
+			"newsletterUnsubscribed": "Vous ne recevrez plus d'actualités produit par email.",
+			"newsletterError": "Impossible d'enregistrer votre préférence email. Veuillez réessayer.",
+			"newsletterVerifyEmail": "Veuillez d'abord vérifier votre adresse email. Vous pourrez ensuite modifier ce paramètre.",
+			"newsletterUnavailable": "Ce paramètre n'est pas disponible pour le moment. Veuillez réessayer plus tard.",
+			"newsletterBlocked": "L'envoi à votre adresse email est bloqué, par exemple parce que vous vous êtes désabonné auparavant ou qu'un email n'a pas pu être distribué. Pour changer cela, écrivez-nous à <contact>info@qrcodly.de</contact>.",
+			"newsletterLanguageLabel": "Langue des emails",
+			"newsletterLanguageHint": "Nous rédigeons nos emails en anglais et en allemand.",
+			"newsletterLanguageSaved": "Langue enregistrée."
 		},
 		"security": {
 			"title": "Sécurité",
@@ -2524,7 +2536,7 @@
 				"q4": "Les codes QR fonctionnent-ils aussi en impression ?",
 				"a4": "Absolument ! Les codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, à condition qu'ils restent clairs et intacts.",
 				"q5": "Où sont hébergées mes données ?",
-				"a5": "L'infrastructure principale de QRcodly tourne sur des serveurs en Allemagne. Nous utilisons Clerk pour la connexion, Stripe pour les paiements ainsi que Sentry et PostHog pour détecter les erreurs et améliorer le produit. Vos données ne sont ni vendues ni utilisées à des fins publicitaires.",
+				"a5": "L'infrastructure principale de QRcodly tourne sur des serveurs en Allemagne. Nous utilisons Clerk pour la connexion, Stripe pour les paiements, Amazon SES pour l'envoi des actualités produit ainsi que Sentry et PostHog pour détecter les erreurs et améliorer le produit. Vos données ne sont ni vendues ni utilisées à des fins publicitaires par des tiers. Si vous avez un compte, vous recevez de temps en temps des actualités produit de QRcodly par email. Vous pouvez les désactiver à tout moment dans les paramètres ou via le lien présent dans chaque email.",
 				"q6": "QRcodly est-il open source ?",
 				"a6": "Oui ! QRcodly est entièrement open source et disponible sur GitHub. Vous pouvez inspecter le code, contribuer ou même héberger votre propre instance.",
 				"q7": "Puis-je utiliser QRcodly à des fins commerciales ?",
@@ -4521,6 +4533,27 @@
 			"demo": "Démo en direct",
 			"use": "Utiliser le modèle",
 			"openDemo": "Démo en direct : {name}"
+		}
+	},
+	"auth": {
+		"signIn": {
+			"metaTitle": "Se connecter",
+			"eyebrow": "Bon retour",
+			"title": "Vos codes QR vous attendent.",
+			"subtitle": "Connectez-vous pour modifier vos codes, gérer vos liens courts et suivre leurs performances."
+		},
+		"signUp": {
+			"metaTitle": "S'inscrire",
+			"eyebrow": "Compte gratuit",
+			"title": "Codes QR et liens courts au même endroit.",
+			"subtitle": "Créez votre compte gratuit et changez à tout moment la destination de vos codes, même après impression."
+		},
+		"benefitsTitle": "Inclus gratuitement",
+		"benefits": {
+			"unlimited": "Codes QR, liens courts et scans illimités",
+			"dynamic": "Codes QR dynamiques modifiables même après impression",
+			"statistics": "Statistiques de scan pour chaque code",
+			"noCreditCard": "Aucune carte de crédit requise"
 		}
 	}
 }

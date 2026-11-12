@@ -13,6 +13,7 @@ import analyticsIntegration from './analytics-integration/setup';
 import userSurvey from './user-survey/setup';
 import apiKey from './api-key/setup';
 import integrationUsage from './integration-usage/setup';
+import newsletter from './newsletter/setup';
 
 const modules: FastifyPluginCallback = (fastify: FastifyInstance, _options, done) => {
 	fastify.register(storedFile);
@@ -27,6 +28,7 @@ const modules: FastifyPluginCallback = (fastify: FastifyInstance, _options, done
 	fastify.register(userSurvey);
 	fastify.register(apiKey);
 	fastify.register(integrationUsage);
+	fastify.register(newsletter);
 	done();
 };
 

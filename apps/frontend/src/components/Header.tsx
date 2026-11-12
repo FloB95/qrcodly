@@ -117,6 +117,7 @@ export default function Header({
 	hideDashboardLink = false,
 	hideLogo = false,
 	hideLanguageNav = false,
+	hideSignInButton = false,
 }) {
 	const t = useTranslations('header');
 	const locale = useLocale();
@@ -429,11 +430,13 @@ export default function Header({
 								{t('plansBtn')}
 							</Link>
 						</nav>
-						<Show when="signed-out">
-							<SignInButton signUpForceRedirectUrl={`/${locale}/signup-success`}>
-								<Button>{t('signInBtn')}</Button>
-							</SignInButton>
-						</Show>
+						{!hideSignInButton && (
+							<Show when="signed-out">
+								<SignInButton signUpForceRedirectUrl={`/${locale}/signup-success`}>
+									<Button>{t('signInBtn')}</Button>
+								</SignInButton>
+							</Show>
+						)}
 						<Show when="signed-in">
 							{!hideDashboardLink && (
 								<div className="flex items-center gap-2">

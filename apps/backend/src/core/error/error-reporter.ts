@@ -3,12 +3,31 @@ import { env } from '../config/env';
 import { OnShutdown } from '../decorators/on-shutdown.decorator';
 import {
 	init,
+	type Breadcrumb,
 	type NodeClient,
 	captureException,
 	isInitialized,
 	consoleLoggingIntegration,
 } from '@sentry/node';
 import { IN_PRODUCTION } from '../config/constants';
+
+const originOf = (url: unknown): string | null => {
+	try {
+		return typeof url === 'string' ? new URL(url).origin : null;
+	} catch {
+		return null;
+	}
+};
+
+/** listmonk lookups carry the email address in the query string, which fetch breadcrumbs record */
+export const redactListmonkBreadcrumb = (breadcrumb: Breadcrumb): Breadcrumb => {
+	const listmonkOrigin = originOf(env.LISTMONK_URL);
+	if (!breadcrumb.data || !listmonkOrigin || originOf(breadcrumb.data.url) !== listmonkOrigin) {
+		return breadcrumb;
+	}
+	const { 'http.query': _query, ...data } = breadcrumb.data;
+	return { ...breadcrumb, data };
+};
 
 export type TErrorLevel = 'fatal' | 'error' | 'warning' | 'info';
 
@@ -31,6 +50,7 @@ export class ErrorReporter {
 			environment: env.SENTRY_ENVIRONMENT,
 			enableLogs: true,
 			integrations: [consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] })],
+			beforeBreadcrumb: redactListmonkBreadcrumb,
 		});
 	}
 

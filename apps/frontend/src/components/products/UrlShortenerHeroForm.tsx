@@ -45,7 +45,10 @@ export function UrlShortenerHeroForm() {
 
 	const onSubmit = async (data: ShortenUrlForm) => {
 		if (!isSignedIn) {
-			clerk.openSignIn({ forceRedirectUrl: `/${locale}/dashboard/short-urls` });
+			clerk.openSignIn({
+				forceRedirectUrl: `/${locale}/dashboard/short-urls`,
+				unsafeMetadata: { locale },
+			});
 			return;
 		}
 

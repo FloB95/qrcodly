@@ -56,7 +56,6 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.AUTHENTICATED]: 5,
 		[RateLimitTier.PRO_PLAN]: 30,
 	},
-	// one request per dynamic code in a list of up to 100 rows; counts are cached in Redis
 	[RateLimitPolicy.SHORT_URL_VIEWS]: {
 		[RateLimitTier.ANONYMOUS]: 30,
 		[RateLimitTier.AUTHENTICATED]: 600,

@@ -2,7 +2,7 @@ export default function PrivacyPolicyContentDe() {
 	return (
 		<div className="prose prose-neutral">
 			<h1 className="text-3xl font-semibold mb-6">Datenschutzerkl&auml;rung</h1>
-			<p className="text-sm text-muted-foreground mb-8">Stand: April 2026</p>
+			<p className="text-sm text-muted-foreground mb-8">Stand: November 2026</p>
 
 			{/* ========== 1. Datenschutz auf einen Blick ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">1. Datenschutz auf einen Blick</h2>
@@ -339,9 +339,9 @@ export default function PrivacyPolicyContentDe() {
 
 			<h3 className="text-xl font-semibold mt-6 mb-2">Welche Daten erheben wir?</h3>
 			<p className="text-base leading-relaxed">
-				Wir verarbeiten personenbezogene Daten nur, soweit dies f&uuml;r die Bereitstellung der
-				QRcodly-Plattform und der damit verbundenen Dienste erforderlich ist. Im Einzelnen
-				k&ouml;nnen insbesondere folgende personenbezogene Daten verarbeitet werden:
+				Wir verarbeiten personenbezogene Daten f&uuml;r die Bereitstellung der QRcodly-Plattform und
+				der damit verbundenen Dienste sowie f&uuml;r die in dieser Erkl&auml;rung genannten Zwecke.
+				Im Einzelnen k&ouml;nnen insbesondere folgende personenbezogene Daten verarbeitet werden:
 			</p>
 			<ul className="list-disc pl-6 space-y-1 text-base leading-relaxed">
 				<li>
@@ -363,6 +363,10 @@ export default function PrivacyPolicyContentDe() {
 				<li>
 					<strong>Zahlungsdaten:</strong> Abrechnungsinformationen bei Abschluss eines
 					kostenpflichtigen Abonnements (verarbeitet durch Stripe)
+				</li>
+				<li>
+					<strong>Newsletter-Daten:</strong> E-Mail-Adresse, Vorname, Sprache und Konto-ID f&uuml;r
+					gelegentliche Produktneuigkeiten per E-Mail (siehe Abschnitt 8)
 				</li>
 			</ul>
 
@@ -686,9 +690,121 @@ export default function PrivacyPolicyContentDe() {
 				unseren Weisungen und unter Einhaltung der DSGVO verarbeitet.
 			</p>
 
-			{/* ========== 8. &Auml;nderungen ========== */}
+			{/* ========== 8. Produktneuigkeiten per E-Mail (Newsletter) ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">
-				8. &Auml;nderungen dieser Datenschutzerkl&auml;rung
+				8. Produktneuigkeiten per E-Mail (Newsletter)
+			</h2>
+			<p className="text-base leading-relaxed">
+				Wenn Sie ein Konto bei QRcodly haben, senden wir Ihnen etwa zwei- bis dreimal im Jahr eine
+				E-Mail mit Neuigkeiten zu QRcodly, z.&thinsp;B. zu neuen Funktionen und wichtigen
+				Verbesserungen.
+			</p>
+			<p className="text-base leading-relaxed">
+				Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt darin,
+				Sie &uuml;ber neue Funktionen und Verbesserungen von QRcodly zu informieren (Direktwerbung,
+				Erw&auml;gungsgrund 47 DSGVO).
+			</p>
+			<p className="text-base leading-relaxed">
+				<strong>Widerspruch:</strong> Sie k&ouml;nnen der Verwendung Ihrer E-Mail-Adresse f&uuml;r
+				diese E-Mails jederzeit widersprechen (Art. 21 Abs. 2 DSGVO), ohne dass hierf&uuml;r andere
+				als die &Uuml;bermittlungskosten nach den Basistarifen entstehen. Nutzen Sie dazu den
+				Abmeldelink in jeder E-Mail oder die entsprechende Einstellung in den Profileinstellungen
+				Ihres Kontos.
+			</p>
+			<p className="text-base leading-relaxed">
+				<strong>Verarbeitete Daten:</strong> E-Mail-Adresse, Vorname (oder, falls keiner hinterlegt
+				ist, der Teil der E-Mail-Adresse vor dem &bdquo;@&ldquo;), Sprache (bei Konten, die schon
+				vor Einf&uuml;hrung dieser E-Mails bestanden, einmalig anhand Ihrer bisherigen Nutzung von
+				QRcodly voreingestellt, bei neuen Konten die Sprache der Registrierungsseite; jederzeit in
+				den Einstellungen &auml;nderbar), Ihre Konto-ID bei QRcodly, die Herkunft des Eintrags
+				(z.&thinsp;B. Registrierung, Kontoeinstellungen oder unser fr&uuml;herer Newsletter-Dienst),
+				der Status Ihres Abonnements mit Zeitstempeln sowie bei einer Sperre deren Grund,
+				einschlie&szlig;lich der Meldung von Amazon SES zum Hard Bounce bzw. zur Beschwerde.
+			</p>
+			<p className="text-base leading-relaxed">
+				<strong>Speicherdauer:</strong> Wir speichern diese Daten, solange Ihr Konto besteht.
+				Widersprechen Sie, behalten wir den Eintrag mit dem Status &bdquo;abgemeldet&ldquo;, damit
+				Sie keine weiteren E-Mails dieser Art erhalten. Wird Ihr Konto gel&ouml;scht, l&ouml;schen
+				wir den Eintrag zeitnah.
+			</p>
+			<p className="text-base leading-relaxed">
+				Ausgenommen sind Eintr&auml;ge auf unserer Sperrliste. Dorthin kommt ein Eintrag, wenn eine
+				E-Mail an die Adresse dauerhaft nicht zugestellt werden kann (Hard Bounce) oder als Spam
+				gemeldet wird (Beschwerde), wenn die Adresse bei unserem fr&uuml;heren Newsletter-Dienst
+				bereits als abgemeldet oder unzustellbar gef&uuml;hrt wurde oder wenn Sie uns bitten, Ihre
+				Adresse dauerhaft zu sperren. Ein Eintrag auf der Sperrliste bleibt auch nach der
+				L&ouml;schung Ihres Kontos bestehen, damit wir Ihnen auch nach einer erneuten Registrierung
+				mit derselben Adresse keine solchen E-Mails senden. Nach der L&ouml;schung Ihres Kontos
+				behalten wir davon h&ouml;chstens die E-Mail-Adresse, den Grund der Sperre und deren
+				Zeitpunkt. Ist ein gesperrter Eintrag mit Ihrem Konto verkn&uuml;pft, erhalten Sie auch nach
+				einer &Auml;nderung Ihrer E-Mail-Adresse keine Produktneuigkeiten mehr, bis Sie uns
+				kontaktieren. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse
+				liegt darin, Widerspr&uuml;che dauerhaft zu beachten und gesperrte Adressen nicht erneut
+				anzuschreiben.
+			</p>
+			<p className="text-base leading-relaxed">
+				Wir erfassen nicht, ob einzelne Empf&auml;nger eine E-Mail &ouml;ffnen oder Links darin
+				anklicken. Meldet Amazon SES, dass eine E-Mail dauerhaft nicht zugestellt werden kann (Hard
+				Bounce) oder als Spam markiert wurde (Beschwerde), setzen wir den betroffenen Eintrag auf
+				die Sperrliste. Amazon SES kann solche Adressen au&szlig;erdem in einer eigenen Sperrliste
+				(Suppression List) speichern, damit an sie nicht weiter gesendet wird.
+			</p>
+
+			<h3 className="text-xl font-semibold mt-6 mb-2">listmonk</h3>
+			<p className="text-base leading-relaxed">
+				F&uuml;r die Verwaltung der Empf&auml;nger und den Versand nutzen wir die
+				Open-Source-Software listmonk. Wir betreiben listmonk selbst auf unseren Servern bei Hetzner
+				in Deutschland (siehe Abschnitt 5). Die Datenbank von listmonk ist Teil unserer
+				verschl&uuml;sselten Datensicherungen, die wir bei Cloudflare (Speicherdienst R2, Anbieter
+				siehe Abschnitt 5) ablegen. Gel&ouml;schte Eintr&auml;ge sind darin noch enthalten, bis die
+				jeweilige Sicherung automatisch gel&ouml;scht wird; das geschieht nach etwa einem Jahr.
+			</p>
+
+			<h3 className="text-xl font-semibold mt-6 mb-2">Amazon Simple Email Service (Amazon SES)</h3>
+			<p className="text-base leading-relaxed">
+				F&uuml;r die Zustellung der E-Mails nutzen wir Amazon Simple Email Service (Amazon SES).
+				Anbieter ist die Amazon Web Services EMEA SARL, 38 Avenue John F. Kennedy, L-1855 Luxemburg
+				(nachfolgend AWS). Wir nutzen die AWS-Region EU (Frankfurt).
+			</p>
+			<p className="text-base leading-relaxed">
+				Details entnehmen Sie der Datenschutzerkl&auml;rung von AWS:{' '}
+				<a
+					href="https://aws.amazon.com/privacy/"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="text-primary underline"
+				>
+					https://aws.amazon.com/privacy/
+				</a>
+				.
+			</p>
+			<p className="text-base leading-relaxed">
+				Ein Zugriff durch die US-Muttergesellschaft Amazon Web Services, Inc. ist nicht
+				auszuschlie&szlig;en. Eine solche Daten&uuml;bertragung in die USA wird auf die
+				Standardvertragsklauseln der EU-Kommission gest&uuml;tzt. Zudem ist das Unternehmen nach dem
+				&bdquo;EU-US Data Privacy Framework&ldquo; (DPF) zertifiziert. Weitere Informationen
+				erhalten Sie unter:{' '}
+				<a
+					href="https://www.dataprivacyframework.gov/"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="text-primary underline"
+				>
+					https://www.dataprivacyframework.gov/
+				</a>
+				.
+			</p>
+			<p className="text-base leading-relaxed">
+				<strong>Auftragsverarbeitung:</strong> F&uuml;r die Nutzung von Amazon SES gilt der
+				Auftragsverarbeitungsvertrag von AWS (AWS GDPR Data Processing Addendum), der &uuml;ber die
+				AWS-Dienstbedingungen Bestandteil unseres Vertrags mit AWS ist. Er stellt sicher, dass AWS
+				die personenbezogenen Daten nur nach unseren Weisungen und unter Einhaltung der DSGVO
+				verarbeitet.
+			</p>
+
+			{/* ========== 9. &Auml;nderungen ========== */}
+			<h2 className="text-2xl font-semibold mt-10 mb-4">
+				9. &Auml;nderungen dieser Datenschutzerkl&auml;rung
 			</h2>
 			<p className="text-base leading-relaxed">
 				Wir behalten uns vor, diese Datenschutzerkl&auml;rung bei Bedarf anzupassen, um sie an
