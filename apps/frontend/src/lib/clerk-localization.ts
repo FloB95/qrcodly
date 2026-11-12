@@ -2,7 +2,7 @@ import { deDE, enUS, esES, frFR, itIT, nlNL, plPL, ptBR, ruRU } from '@clerk/loc
 
 type ClerkLocalization = typeof enUS;
 
-// § 7 Abs. 3 Nr. 4 UWG: every account gets product news by email, so sign-up has to say so.
+// Every account gets product news by email (opt-out), so sign-up has to say so.
 // Sign-in shows it too: a Google/GitHub sign-up that starts there never reaches the sign-up card.
 // signUp.continue is where such a sign-up lands when it still needs the terms checkbox.
 // titleCombined: only used where Clerk lacks it, else the combined card (desktop app) shows the

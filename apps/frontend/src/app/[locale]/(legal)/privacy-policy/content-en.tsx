@@ -644,9 +644,8 @@ export default function PrivacyPolicyContentEn() {
 				three times a year, e.g. about new features and important improvements.
 			</p>
 			<p className="text-base leading-relaxed">
-				The legal basis is Art. 6(1)(f) GDPR. Our legitimate interest lies in direct marketing to
-				our own customers (Recital 47 GDPR). The emails are sent within the scope of &sect; 7(3) of
-				the German Act against Unfair Competition (UWG).
+				The legal basis is Art. 6(1)(f) GDPR. Our legitimate interest lies in informing you about
+				new features and improvements to QRcodly (direct marketing, Recital 47 GDPR).
 			</p>
 			<p className="text-base leading-relaxed">
 				<strong>Objection:</strong> You can object to the use of your email address for these emails
@@ -656,26 +655,30 @@ export default function PrivacyPolicyContentEn() {
 			</p>
 			<p className="text-base leading-relaxed">
 				<strong>Data processed:</strong> Email address, first name (or, if there is none, the part
-				of the email address before the &ldquo;@&rdquo;), language, your QRcodly account ID, the
-				origin of the record (e.g. sign-up, account settings or our previous newsletter service),
-				the status of your subscription with timestamps and, for a block, its reason, including the
-				hard bounce or complaint report from Amazon SES.
+				of the email address before the &ldquo;@&rdquo;), language (for accounts that existed before
+				these emails were introduced, preset once based on how you have used QRcodly so far; for new
+				accounts, the language of the sign-up page; you can change it at any time in the settings),
+				your QRcodly account ID, the origin of the record (e.g. sign-up, account settings or our
+				previous newsletter service), the status of your subscription with timestamps and, for a
+				block, its reason, including the hard bounce or complaint report from Amazon SES.
 			</p>
 			<p className="text-base leading-relaxed">
 				<strong>Storage period:</strong> We keep this data as long as your account exists. If you
 				object, we keep the record with the status &ldquo;unsubscribed&rdquo; so that you do not
-				receive any further emails of this kind. When your account is deleted, we delete the record.
+				receive any further emails of this kind. When your account is deleted, we delete the record
+				promptly.
 			</p>
 			<p className="text-base leading-relaxed">
-				Records on our block list are the exception. A record is only put on it if an email to the
+				Records on our block list are the exception. A record is put on it if an email to the
 				address could not be delivered permanently (hard bounce) or was reported as spam
-				(complaint), or if our previous newsletter service already listed the address as
-				unsubscribed or undeliverable. A block list entry contains no more than the data listed
-				above and is kept even after your account is deleted, so that we do not send you such emails
-				again, even if you sign up again with the same address. If a blocked record is linked to
-				your account, you will not receive product news even after changing your email address,
-				until you contact us. The legal basis is Art. 6(1)(f) GDPR; our legitimate interest lies in
-				permanently respecting objections and not mailing blocked addresses again.
+				(complaint), if our previous newsletter service already listed the address as unsubscribed
+				or undeliverable, or if you ask us to block your address permanently. A block list entry is
+				kept even after your account is deleted, so that we do not send you such emails again, even
+				if you sign up again with the same address. After your account is deleted, we keep no more
+				than the email address, the reason for the block and when it happened. If a blocked record
+				is linked to your account, you will not receive product news even after changing your email
+				address, until you contact us. The legal basis is Art. 6(1)(f) GDPR; our legitimate interest
+				lies in permanently respecting objections and not mailing blocked addresses again.
 			</p>
 			<p className="text-base leading-relaxed">
 				We do not track whether individual recipients open an email or click on links in it. If
@@ -691,7 +694,7 @@ export default function PrivacyPolicyContentEn() {
 				operate listmonk ourselves on our servers at Hetzner in Germany (see section 5). The
 				listmonk database is part of our encrypted backups, which we store with Cloudflare (storage
 				service R2; for the provider, see section 5). Deleted records remain in them until the
-				backup in question is deleted after one year at the latest.
+				backup in question is deleted automatically, which happens after about one year.
 			</p>
 
 			<h3 className="text-xl font-semibold mt-6 mb-2">Amazon Simple Email Service (Amazon SES)</h3>
