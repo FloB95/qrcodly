@@ -20,7 +20,7 @@ const GREEN = '#00ff00';
 const toDataUrl = (mimeType: string, content: Buffer | string) =>
 	`data:${mimeType};base64,${Buffer.from(content).toString('base64')}`;
 
-const solidImage = (format: 'png' | 'jpeg' | 'webp', width: number, height: number) =>
+const solidImage = (format: 'png' | 'jpeg' | 'gif' | 'webp', width: number, height: number) =>
 	sharp({ create: { width, height, channels: 3, background: GREEN } })
 		.toFormat(format)
 		.toBuffer();
@@ -89,6 +89,49 @@ describe('QR code rendering', () => {
 		const png = toDataUrl('image/png', await solidImage('png', 20, 20));
 
 		expect(await logoService.normalize(png)).toBe(png);
+	});
+
+	it('hands JPEG and GIF logos to resvg as they are', async () => {
+		const jpeg = toDataUrl('image/jpeg', await solidImage('jpeg', 30, 20));
+		const gif = toDataUrl('image/gif', await solidImage('gif', 30, 20));
+
+		expect(await logoService.normalize(jpeg)).toBe(jpeg);
+		expect(await logoService.toLogo(gif)).toEqual({ dataUrl: gif, width: 30, height: 20 });
+		expect(countGreenPixels(await renderWithLogo(jpeg))).toBeGreaterThan(100);
+	});
+
+	it('takes the file type from the bytes, not from the data URL', async () => {
+		const png = await solidImage('png', 20, 20);
+
+		expect(await logoService.normalize(toDataUrl('application/octet-stream', png))).toBe(
+			toDataUrl('image/png', png),
+		);
+	});
+
+	it('turns WebP logos into PNG and keeps their transparency', async () => {
+		const webp = await sharp({
+			create: {
+				width: 20,
+				height: 20,
+				channels: 4,
+				background: { r: 0, g: 255, b: 0, alpha: 0.5 },
+			},
+		})
+			.webp({ lossless: true })
+			.toBuffer();
+		const logo = await logoService.toLogo(toDataUrl('image/webp', webp));
+		const pixels = await sharp(Buffer.from(logo.dataUrl.split(',')[1], 'base64'))
+			.raw()
+			.toBuffer();
+
+		expect(logo.dataUrl.startsWith('data:image/png;base64,')).toBe(true);
+		expect([...pixels.subarray(0, 4)]).toEqual([0, 255, 0, 128]);
+	});
+
+	it('refuses files that are not images', async () => {
+		await expect(logoService.normalize(toDataUrl('image/png', 'not an image'))).rejects.toThrow(
+			'Unsupported logo format',
+		);
 	});
 
 	it('does not embed files from the server disk', async () => {
@@ -166,6 +209,9 @@ describe('QR code rendering', () => {
 		[270, 270],
 		[315, 315],
 		[null, 90],
+		[360, 0],
+		[-45, 315],
+		[450, 90],
 	])(
 		'draws a linear gradient stored as %sdeg in the CSS direction %sdeg',
 		async (rotation, css) => {
@@ -194,4 +240,27 @@ describe('QR code rendering', () => {
 			expect((drawn + 360) % 360).toBeCloseTo(css, 0);
 		},
 	);
+
+	it('draws the same direction with exactly the same numbers', () => {
+		const rotation = (degrees: number) =>
+			convertQrCodeOptionsToLibraryOptions({
+				...QrCodeDefaults,
+				dotsOptions: {
+					...QrCodeDefaults.dotsOptions,
+					style: {
+						type: 'gradient',
+						gradientType: 'linear',
+						rotation: degrees,
+						colorStops: [
+							{ offset: 0, color: '#000000' },
+							{ offset: 1, color: '#ffffff' },
+						],
+					},
+				},
+			}).dotsOptions?.gradient?.rotation;
+
+		expect(rotation(360)).toBe(rotation(0));
+		expect(rotation(-90)).toBe(rotation(270));
+		expect(rotation(765)).toBe(rotation(45));
+	});
 });

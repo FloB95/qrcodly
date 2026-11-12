@@ -461,7 +461,9 @@ function mapColorOrGradientToLibrary(option: TColorOrGradient): {
 			return { color: option.value, gradient: undefined };
 		case 'rgba':
 			return { color: option.value, gradient: undefined };
-		case 'gradient':
+		case 'gradient': {
+			// the same direction is always the same number, so 360deg draws exactly like 0deg
+			const cssAngle = (((option.rotation ?? 90) % 360) + 360) % 360;
 			return {
 				color: undefined,
 				gradient: {
@@ -469,10 +471,10 @@ function mapColorOrGradientToLibrary(option: TColorOrGradient): {
 					colorStops: option.colorStops,
 					// qr-code-styling wants radians with 0 = left to right; the stored rotation is a CSS
 					// angle (0deg = to top, null = the picker's 90deg default). Radial ignores rotation.
-					rotation:
-						option.gradientType === 'linear' ? degreesToRadians((option.rotation ?? 90) - 90) : 0,
+					rotation: option.gradientType === 'linear' ? degreesToRadians(cssAngle - 90) : 0,
 				},
 			};
+		}
 	}
 }
 

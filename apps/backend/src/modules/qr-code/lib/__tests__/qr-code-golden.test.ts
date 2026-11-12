@@ -6,32 +6,31 @@ import { join, resolve } from 'path';
 import sharp from 'sharp';
 import { build, type Plugin } from 'esbuild';
 import { chromium, type Browser, type Page } from 'playwright';
-import { QrCodeOptionsSchema, type TQrCodeOptions } from '@shared/schemas';
+import { QrCodeOptionsSchema, rasterizeQrCodeSvg, type TQrCodeOptions } from '@shared/schemas';
 import { RenderQrCodeUseCase } from '../../useCase/render-qr-code.use-case';
 import { QrCodeImageStrategy } from '../../domain/strategies/qr-code-image.strategy';
+import { qrCodeRenderer } from '../styled-qr-code';
 import { GOLDEN_CASES, GOLDEN_DIR, goldenLogo, type TGoldenCase } from './golden/cases';
 
 /**
- * Pixel comparison of every way a QR code gets drawn against reference images in ./golden.
- * Any change to how QR codes look fails here, so it can't reach customers unnoticed.
+ * Pixel comparison of every way a QR code gets drawn against one reference image per code in
+ * ./golden/resvg. Server and browser share one pipeline and one resvg build, so every path must
+ * match exactly; any difference fails here instead of reaching customers.
  *
  * Intended changes: `UPDATE_QR_GOLDEN=1 pnpm run test -- qr-code-golden`, then review the new
  * images in the diff before committing them.
  */
 
 const UPDATE = process.env.UPDATE_QR_GOLDEN === '1';
-// resvg draws bit-identical images on macOS and Linux, arm64 and x86. Chromium's edge smoothing
-// differs by up to ~10 levels between them; real changes are far above that.
-const CHANNEL_TOLERANCE = { resvg: 0, chromium: 32 } as const;
-type TRenderer = keyof typeof CHANNEL_TOLERANCE;
 const DIFF_DIR = join(tmpdir(), 'qrcodly-golden-diff');
 
-const APPS_DIR = resolve(__dirname, '../../../../../..');
-const FRONTEND_LIB = join(APPS_DIR, 'frontend/src/lib');
-const SHARED_SRC = join(APPS_DIR, '../packages/shared/src/index.ts');
+const FRONTEND_DIR = resolve(__dirname, '../../../../../../frontend');
+const FRONTEND_LIB = join(FRONTEND_DIR, 'src/lib');
+const SHARED_SRC = resolve(FRONTEND_DIR, '../../packages/shared/src/index.ts');
+// the browser page lives here, so the renderer fetches its WASM files from this origin
+const PAGE_ORIGIN = 'https://golden.test';
 
-const goldenFile = (renderer: TRenderer, golden: TGoldenCase, suffix = '') =>
-	join(GOLDEN_DIR, renderer, `${golden.id}${suffix}.png`);
+const goldenFile = (golden: TGoldenCase) => join(GOLDEN_DIR, 'resvg', `${golden.id}.png`);
 
 const withLogo = (golden: TGoldenCase, image: string | undefined): TQrCodeOptions => ({
 	...QrCodeOptionsSchema.parse(golden.config),
@@ -45,31 +44,14 @@ async function decode(png: Buffer): Promise<TPixels> {
 	return { data, width: info.width, height: info.height };
 }
 
-/** Largest difference of the premultiplied RGBA channels, so invisible transparent pixels match. */
-function pixelDifference(a: Buffer, b: Buffer, i: number): number {
-	const alphaA = a[i + 3] / 255;
-	const alphaB = b[i + 3] / 255;
-	let max = Math.abs(a[i + 3] - b[i + 3]);
-	for (let c = 0; c < 3; c++) {
-		max = Math.max(max, Math.abs(a[i + c] * alphaA - b[i + c] * alphaB));
-	}
-	return max;
-}
-
-async function expectGolden(
-	actualPng: Buffer,
-	renderer: TRenderer,
-	file: string,
-	label: string,
-	writeOnUpdate = false,
-) {
-	if (UPDATE && writeOnUpdate) {
+async function expectGolden(actualPng: Buffer, golden: TGoldenCase, label: string, write = false) {
+	const file = goldenFile(golden);
+	if (UPDATE && write) {
 		writeFileSync(file, actualPng);
 		return;
 	}
 
 	const [actual, expected] = await Promise.all([decode(actualPng), decode(readFileSync(file))]);
-	const name = `${label.replace(/\W+/g, '-')}`;
 
 	if (actual.width !== expected.width || actual.height !== expected.height) {
 		throw new Error(
@@ -81,9 +63,12 @@ async function expectGolden(
 	let differing = 0;
 	let largest = 0;
 	for (let i = 0; i < expected.data.length; i += 4) {
-		const difference = pixelDifference(actual.data, expected.data, i);
+		let difference = 0;
+		for (let c = 0; c < 4; c++) {
+			difference = Math.max(difference, Math.abs(actual.data[i + c] - expected.data[i + c]));
+		}
 		largest = Math.max(largest, difference);
-		const changed = difference > CHANNEL_TOLERANCE[renderer];
+		const changed = difference > 0;
 		if (changed) differing++;
 		// changed pixels red, the rest a faint copy of the reference
 		diff[i] = changed ? 255 : 255 - expected.data[i + 3] / 4;
@@ -93,6 +78,7 @@ async function expectGolden(
 	}
 
 	if (differing > 0) {
+		const name = label.replace(/\W+/g, '-');
 		mkdirSync(DIFF_DIR, { recursive: true });
 		const actualFile = join(DIFF_DIR, `${name}.actual.png`);
 		const diffFile = join(DIFF_DIR, `${name}.diff.png`);
@@ -110,10 +96,13 @@ async function expectGolden(
 
 /** The browser's own render module (apps/frontend/src/lib/qr-render.ts), bundled for Chromium. */
 async function bundleBrowserRenderer(): Promise<string> {
-	const stubs: Plugin = {
-		name: 'golden-stubs',
+	const aliases: Plugin = {
+		name: 'golden-aliases',
 		setup(bundler) {
 			bundler.onResolve({ filter: /^@shared\/schemas$/ }, () => ({ path: SHARED_SRC }));
+			bundler.onResolve({ filter: /^@\/lib\/qr-render-wasm$/ }, () => ({
+				path: join(FRONTEND_LIB, 'qr-render-wasm.ts'),
+			}));
 			bundler.onResolve({ filter: /^(@sentry\/nextjs|@\/lib\/utils)$/ }, (args) => ({
 				path: args.path,
 				namespace: 'stub',
@@ -131,20 +120,20 @@ async function bundleBrowserRenderer(): Promise<string> {
 	const result = await build({
 		stdin: {
 			contents: `
-				import { renderQrCodeSvg, renderQrCodeBlob } from './qr-render';
+				import { renderQrCodeBlob, renderQrCodePng } from './qr-render';
 				import { convertQrCodeOptionsToLibraryOptions } from '@shared/schemas';
 
 				const options = (config, data) => ({ ...convertQrCodeOptionsToLibraryOptions(config), data });
+				const base64 = async (blob) => {
+					let binary = '';
+					for (const byte of new Uint8Array(await blob.arrayBuffer())) binary += String.fromCharCode(byte);
+					return btoa(binary);
+				};
 
 				window.qrGolden = {
-					svg: (config, data) => renderQrCodeSvg(options(config, data)),
-					png: async (config, data) => {
-						const blob = await renderQrCodeBlob(options(config, data), 'png');
-						const bytes = new Uint8Array(await blob.arrayBuffer());
-						let binary = '';
-						for (const byte of bytes) binary += String.fromCharCode(byte);
-						return btoa(binary);
-					},
+					preview: async (config, data) => base64(await renderQrCodePng(options(config, data))),
+					download: async (config, data, extension) =>
+						base64(await renderQrCodeBlob(options(config, data), extension)),
 				};
 			`,
 			resolveDir: FRONTEND_LIB,
@@ -154,13 +143,23 @@ async function bundleBrowserRenderer(): Promise<string> {
 		write: false,
 		format: 'iife',
 		platform: 'browser',
-		target: 'es2020',
-		define: { 'process.env.NODE_ENV': '"production"' },
-		plugins: [stubs],
+		target: 'es2022',
+		define: {
+			'process.env.NODE_ENV': '"production"',
+			// as the bundlers do: WASM files are addressed relative to the page
+			'import.meta.url': '__goldenPageUrl',
+		},
+		banner: { js: 'var __goldenPageUrl = location.href;' },
+		plugins: [aliases],
 		logLevel: 'silent',
 	});
 	return result.outputFiles[0].text;
 }
+
+type TBrowserApi = {
+	preview: (config: unknown, data: string) => Promise<string>;
+	download: (config: unknown, data: string, extension: string) => Promise<string>;
+};
 
 describe('QR code golden images', () => {
 	const renderUseCase = container.resolve(RenderQrCodeUseCase);
@@ -168,8 +167,23 @@ describe('QR code golden images', () => {
 	let browser: Browser;
 	let page: Page;
 
-	const rasterize = (svg: string, golden: TGoldenCase): Buffer =>
-		renderUseCase['rasterize'](svg, golden.config.width);
+	const renderEndpoint = (golden: TGoldenCase, format: 'png' | 'svg', logo?: string) =>
+		renderUseCase['renderBuffer'](
+			{ config: withLogo(golden, logo), data: golden.data },
+			format,
+			golden.config.width,
+		);
+
+	const inBrowser = (golden: TGoldenCase, logo: string | undefined, extension?: 'png' | 'svg') =>
+		page
+			.evaluate(
+				([config, data, ext]) => {
+					const api = (window as unknown as { qrGolden: TBrowserApi }).qrGolden;
+					return ext ? api.download(config, data, ext) : api.preview(config, data);
+				},
+				[withLogo(golden, logo), golden.data, extension] as const,
+			)
+			.then((base64) => Buffer.from(base64, 'base64'));
 
 	beforeAll(async () => {
 		const script = await bundleBrowserRenderer();
@@ -181,8 +195,20 @@ describe('QR code golden images', () => {
 			);
 		}
 		page = await browser.newPage();
-		await page.setContent('<!doctype html><html><body></body></html>');
-		await page.addScriptTag({ content: script });
+		await page.route(`${PAGE_ORIGIN}/**`, async (route) => {
+			const path = decodeURIComponent(new URL(route.request().url()).pathname.slice(1));
+			if (!path) {
+				return route.fulfill({
+					contentType: 'text/html',
+					body: `<!doctype html><html><body><script>${script}</script></body></html>`,
+				});
+			}
+			if (!path.endsWith('.wasm')) return route.fulfill({ status: 404 });
+			// served from the frontend's node_modules, like a bundler would copy them
+			const file = require.resolve(path, { paths: [FRONTEND_DIR] });
+			return route.fulfill({ contentType: 'application/wasm', body: readFileSync(file) });
+		});
+		await page.goto(`${PAGE_ORIGIN}/`);
 	}, 60_000);
 
 	afterAll(async () => {
@@ -194,18 +220,8 @@ describe('QR code golden images', () => {
 		const logo = golden.logo ? goldenLogo(golden.logo) : undefined;
 
 		it('render endpoint (API, Figma, InDesign)', async () => {
-			const png = await renderUseCase['renderBuffer'](
-				{ config: withLogo(golden, logo?.dataUrl), data: golden.data },
-				'png',
-				golden.config.width,
-			);
-			await expectGolden(
-				png,
-				'resvg',
-				goldenFile('resvg', golden),
-				`${golden.id} render endpoint`,
-				true,
-			);
+			const png = await renderEndpoint(golden, 'png', logo?.dataUrl);
+			await expectGolden(png, golden, `${golden.id} render endpoint`, true);
 		});
 
 		it('preview image (dashboard)', async () => {
@@ -214,10 +230,9 @@ describe('QR code golden images', () => {
 			jest
 				.spyOn(storage, 'get')
 				.mockImplementation(async (key) => (key === logoPath && logo ? logo.buffer : null));
-			let svg = '';
-			jest.spyOn(storage, 'upload').mockImplementation(async (_key, body) => {
-				// generatePreview uploads the SVG as a Buffer
-				svg = (body as Buffer).toString('utf8');
+			let uploaded: { body: Buffer; contentType?: string } | undefined;
+			jest.spyOn(storage, 'upload').mockImplementation(async (_key, body, contentType) => {
+				uploaded = { body: body as Buffer, contentType };
 			});
 
 			const path = await previewStrategy.generatePreview({
@@ -227,46 +242,40 @@ describe('QR code golden images', () => {
 				qrCodeData: golden.data,
 			});
 
-			expect(path).toBeDefined();
-			await expectGolden(
-				rasterize(svg, golden),
-				'resvg',
-				goldenFile('resvg', golden),
-				`${golden.id} preview`,
-			);
+			expect(path).toMatch(/\.png$/);
+			expect(uploaded?.contentType).toBe('image/png');
+			await expectGolden(uploaded!.body, golden, `${golden.id} preview`);
 		});
 
-		it('browser preview (SVG)', async () => {
-			const svg = await page.evaluate(
-				([config, data]) =>
-					(
-						window as unknown as { qrGolden: { svg: (c: unknown, d: string) => Promise<string> } }
-					).qrGolden.svg(config, data),
-				[withLogo(golden, logo?.dataUrl), golden.data] as const,
-			);
+		it('browser preview (PNG, resvg-wasm)', async () => {
 			await expectGolden(
-				rasterize(svg, golden),
-				'resvg',
-				goldenFile('resvg', golden, golden.ownBrowserPreview ? '.browser' : ''),
+				await inBrowser(golden, logo?.dataUrl),
+				golden,
 				`${golden.id} browser preview`,
-				golden.ownBrowserPreview,
 			);
 		});
 
-		it('browser download (PNG drawn by Chromium)', async () => {
-			const base64 = await page.evaluate(
-				([config, data]) =>
-					(
-						window as unknown as { qrGolden: { png: (c: unknown, d: string) => Promise<string> } }
-					).qrGolden.png(config, data),
-				[withLogo(golden, logo?.dataUrl), golden.data] as const,
-			);
+		it('browser download (PNG)', async () => {
 			await expectGolden(
-				Buffer.from(base64, 'base64'),
-				'chromium',
-				goldenFile('chromium', golden),
+				await inBrowser(golden, logo?.dataUrl, 'png'),
+				golden,
 				`${golden.id} browser download`,
-				true,
+			);
+		});
+
+		it('SVG download is the same file in the browser and from the API', async () => {
+			const [browserSvg, apiSvg] = await Promise.all([
+				inBrowser(golden, logo?.dataUrl, 'svg'),
+				renderEndpoint(golden, 'svg', logo?.dataUrl),
+			]);
+
+			expect(browserSvg.toString('utf8')).toBe(apiSvg.toString('utf8'));
+			await expectGolden(
+				Buffer.from(
+					rasterizeQrCodeSvg(browserSvg.toString('utf8'), qrCodeRenderer, golden.config.width),
+				),
+				golden,
+				`${golden.id} SVG download`,
 			);
 		});
 	});

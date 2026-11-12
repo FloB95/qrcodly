@@ -3,13 +3,19 @@ import * as Sentry from '@sentry/nextjs';
 import {
 	buildQrCodeSvg,
 	measureImageDataUrl,
+	prepareQrCodeLogo,
+	rasterizeQrCodeSvg,
 	type TFileExtension,
 	type TQrCodeLogo,
+	type TQrCodeRenderer,
+	type TWebpCodec,
 } from '@shared/schemas';
 import { fetchImageAsBase64 } from '@/lib/utils';
+import { loadWasm } from '@/lib/qr-render-wasm';
 
-// Every QR image in the browser comes from here, built by the same shared function the backend
-// uses, so previews, downloads, exports and the design plugins all show the identical code.
+// Every QR image in the browser comes from here, through the same pipeline as on the server
+// (packages/shared QrCodeRender.ts) with the same resvg build, compiled to WASM. Previews, downloads
+// and exports are therefore pixel for pixel what the API, the dashboard and the design plugins get.
 
 // a failure here means a customer gets no QR code or a wrong one, so every one goes to Sentry
 function reportRenderError(error: unknown, stage: 'svg' | 'raster' | 'logo', image?: string) {
@@ -20,57 +26,122 @@ function reportRenderError(error: unknown, stage: 'svg' | 'raster' | 'logo', ima
 	});
 }
 
-// stored logos are fetched once per page view, not for every preview update or exported file
-const storedLogos = new Map<string, Promise<string>>();
-
-async function loadLogo(image: string | undefined): Promise<TQrCodeLogo | undefined> {
-	if (!image) return undefined;
-
-	let dataUrl = image;
-	if (!image.startsWith('data:')) {
-		if (!storedLogos.has(image)) storedLogos.set(image, fetchImageAsBase64(image));
-		dataUrl = await storedLogos.get(image)!.catch((error: unknown) => {
-			storedLogos.delete(image);
-			throw error;
-		});
-	}
-
-	const size = measureImageDataUrl(dataUrl);
-	if (!size) throw new Error('Unsupported logo format');
-	return { dataUrl, ...size };
+async function createRenderer(): Promise<TQrCodeRenderer> {
+	const [{ Resvg, initWasm }, wasm] = await Promise.all([
+		import('@resvg/resvg-wasm'),
+		loadWasm('resvg'),
+	]);
+	// resvg-wasm can be set up once per page; after a hot reload in development it already is
+	await initWasm(wasm).catch((error: unknown) => {
+		if (!String(error).includes('Already initialized')) throw error;
+	});
+	return { Resvg, DOMParser, XMLSerializer, loadWebpCodec };
 }
 
-export async function renderQrCodeSvg(options: Options): Promise<string> {
+async function createWebpCodec(): Promise<TWebpCodec> {
+	const [webp, png, webpWasm, pngWasm] = await Promise.all([
+		import('@jsquash/webp/decode.js'),
+		import('@jsquash/png/encode.js'),
+		loadWasm('webpDecoder'),
+		loadWasm('pngEncoder'),
+	]);
+	await Promise.all([webp.init(webpWasm), png.init(pngWasm)]);
+	return {
+		decode: (data) => webp.default(data),
+		encodePng: (image) => png.default(image as ImageData),
+	};
+}
+
+/** Retried on the next call if it failed, e.g. because the network dropped. */
+function once<T>(create: () => Promise<T>): () => Promise<T> {
+	let promise: Promise<T> | undefined;
+	return () => {
+		promise ??= create().catch((error: unknown) => {
+			promise = undefined;
+			throw error;
+		});
+		return promise;
+	};
+}
+
+const loadWebpCodec = once(createWebpCodec);
+const loadRenderer = once(createRenderer);
+
+// logos are prepared once per page view, not for every preview update or exported file
+const logos = new Map<string, Promise<TQrCodeLogo>>();
+const LOGO_CACHE_SIZE = 20;
+
+function loadLogo(image: string, renderer: TQrCodeRenderer): Promise<TQrCodeLogo> {
+	let logo = logos.get(image);
+	if (!logo) {
+		logo = (async () =>
+			prepareQrCodeLogo(
+				image.startsWith('data:') ? image : await fetchImageAsBase64(image),
+				renderer,
+			))();
+		logos.set(image, logo);
+		logo.catch(() => logos.delete(image));
+		// the oldest entry goes first; Map keeps insertion order
+		if (logos.size > LOGO_CACHE_SIZE) logos.delete(logos.keys().next().value!);
+	}
+	return logo;
+}
+
+async function render(options: Options): Promise<{ svg: string; renderer: TQrCodeRenderer }> {
+	const renderer = await loadRenderer();
+	let logo: TQrCodeLogo | undefined;
 	try {
-		return await buildQrCodeSvg(options, await loadLogo(options.image));
+		logo = options.image ? await loadLogo(options.image, renderer) : undefined;
+	} catch (error) {
+		reportRenderError(error, 'logo', options.image);
+		throw error;
+	}
+	try {
+		return { svg: await buildQrCodeSvg(options, logo), renderer };
 	} catch (error) {
 		reportRenderError(error, 'svg', options.image);
 		throw error;
 	}
 }
 
-export const svgToDataUrl = (svg: string) =>
-	`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+/** The SVG file, byte for byte the one the API returns. */
+export async function renderQrCodeSvg(options: Options): Promise<string> {
+	return (await render(options)).svg;
+}
 
-function loadImage(src: string): Promise<HTMLImageElement> {
-	const image = new Image();
-	return new Promise((resolve, reject) => {
-		image.onload = () => resolve(image);
-		image.onerror = () => reject(new Error('Image could not be drawn'));
-		image.src = src;
-	});
+/** The PNG at the code's own size, as shown in the preview and downloaded. */
+export async function renderQrCodePng(options: Options): Promise<Blob> {
+	const { svg, renderer } = await render(options);
+	try {
+		const png = rasterizeQrCodeSvg(svg, renderer, options.width);
+		return new Blob([png as Uint8Array<ArrayBuffer>], { type: 'image/png' });
+	} catch (error) {
+		reportRenderError(error, 'raster', options.image);
+		throw error;
+	}
 }
 
 export async function renderQrCodeBlob(options: Options, extension: TFileExtension): Promise<Blob> {
-	const svg = await renderQrCodeSvg(options);
-	if (extension === 'svg') return new Blob([svg], { type: 'image/svg+xml' });
+	if (extension === 'svg') {
+		return new Blob([await renderQrCodeSvg(options)], { type: 'image/svg+xml' });
+	}
+	const png = await renderQrCodePng(options);
+	if (extension === 'png') return png;
 
 	try {
-		const image = await loadImage(svgToDataUrl(svg));
+		const image = await createImageBitmap(png);
 		const canvas = document.createElement('canvas');
-		canvas.width = options.width ?? image.naturalWidth;
-		canvas.height = options.height ?? image.naturalHeight;
-		canvas.getContext('2d')?.drawImage(image, 0, 0, canvas.width, canvas.height);
+		canvas.width = image.width;
+		canvas.height = image.height;
+		const context = canvas.getContext('2d');
+		if (!context) throw new Error('Canvas is not available');
+		// JPEG has no transparency: white like the API's JPEGs, where a canvas would make it black
+		if (extension === 'jpeg') {
+			context.fillStyle = '#ffffff';
+			context.fillRect(0, 0, canvas.width, canvas.height);
+		}
+		context.drawImage(image, 0, 0);
+		image.close();
 
 		return await new Promise<Blob>((resolve, reject) =>
 			canvas.toBlob(
@@ -93,6 +164,17 @@ export async function downloadQrCode(options: Options, name: string, extension: 
 	link.click();
 	// the browser needs the URL until the download has started
 	setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+const svgToDataUrl = (svg: string) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+
+function loadImage(src: string): Promise<HTMLImageElement> {
+	const image = new Image();
+	return new Promise((resolve, reject) => {
+		image.onload = () => resolve(image);
+		image.onerror = () => reject(new Error('Image could not be drawn'));
+		image.src = src;
+	});
 }
 
 // longest side of a vector logo turned into PNG; ~2600 dpi for a 2 cm logo in print

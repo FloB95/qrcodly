@@ -8,8 +8,8 @@ import { GetObjectOutput, S3 } from '@aws-sdk/client-s3';
 import { createTable } from '../src/core/db/utils';
 import { datetime, json, text, varchar } from 'drizzle-orm/mysql-core';
 import { eq, isNull } from 'drizzle-orm';
-import { convertQrCodeOptionsToLibraryOptions } from '@shared/schemas';
-import { generateQrCodeStylingInstance } from '../src/modules/qr-code/lib/styled-qr-code';
+import { convertQrCodeOptionsToLibraryOptions, prepareQrCodeLogo } from '@shared/schemas';
+import { qrCodeRenderer, renderQrCodePng } from '../src/modules/qr-code/lib/styled-qr-code';
 
 const BATCH_SIZE = 1000;
 
@@ -80,6 +80,18 @@ async function getImageAsDataUrl(s3: S3, storagePath: string): Promise<string | 
 	}
 }
 
+// drawn exactly like the app does; a logo that is gone fails the row instead of a preview without it
+async function renderPreview(s3: S3, config: unknown, data: string): Promise<Buffer> {
+	const { image, ...libraryOptions } = convertQrCodeOptionsToLibraryOptions(config as any);
+	let logo;
+	if (image) {
+		const dataUrl = await getImageAsDataUrl(s3, image);
+		if (!dataUrl) throw new Error(`Stored logo not found: ${image}`);
+		logo = await prepareQrCodeLogo(dataUrl, qrCodeRenderer);
+	}
+	return renderQrCodePng({ ...libraryOptions, data }, logo);
+}
+
 function constructFilePath(folder: string, userId: string | undefined, fileName: string): string {
 	return userId ? `${folder}/${userId}/${fileName}` : `${folder}/${fileName}`;
 }
@@ -111,8 +123,9 @@ async function processInParallel<T>(
 				const result = await fn(items[i], i);
 				if (result) success++;
 				else skipped++;
-			} catch {
+			} catch (error) {
 				fail++;
+				console.warn(`  ${label}: item ${i} failed: ${(error as Error).message}`);
 			}
 			if ((success + fail + skipped) % 100 === 0) {
 				console.log(
@@ -129,7 +142,7 @@ async function processInParallel<T>(
 }
 
 async function main() {
-	console.log('=== Regenerate Preview Images (SVG) ===');
+	console.log('=== Regenerate Preview Images (PNG) ===');
 	console.log(`Mode: ${forceMode ? 'FORCE (all rows)' : 'default (missing only)'}`);
 	console.log(`Concurrency: ${CONCURRENCY}`);
 	console.log('');
@@ -189,22 +202,8 @@ async function main() {
 	const qrResult = await processInParallel(qrCodes, CONCURRENCY, 'QR codes', async (row) => {
 		if (!row.qrCodeData) return false;
 
-		const libraryOptions = convertQrCodeOptionsToLibraryOptions(row.config as any);
-
-		if (libraryOptions.image) {
-			libraryOptions.image = (await getImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
-		}
-
-		const instance = generateQrCodeStylingInstance({
-			...libraryOptions,
-			data: row.qrCodeData,
-		});
-
-		const svg = await instance.getRawData('svg');
-		if (!svg) return false;
-
-		const buffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
-		const fileName = `${row.id}.svg`;
+		const buffer = await renderPreview(s3, row.config, row.qrCodeData);
+		const fileName = `${row.id}.png`;
 		const filePath = constructFilePath(
 			QR_CODE_PREVIEW_IMAGE_FOLDER,
 			row.createdBy ?? undefined,
@@ -220,7 +219,7 @@ async function main() {
 			Bucket: scriptEnv.S3_BUCKET_NAME,
 			Key: filePath,
 			Body: buffer,
-			ContentType: 'image/svg+xml',
+			ContentType: 'image/png',
 		});
 
 		await db.update(qrCode).set({ previewImage: filePath }).where(eq(qrCode.id, row.id));
@@ -235,22 +234,8 @@ async function main() {
 		CONCURRENCY,
 		'Templates',
 		async (row) => {
-			const libraryOptions = convertQrCodeOptionsToLibraryOptions(row.config as any);
-
-			if (libraryOptions.image) {
-				libraryOptions.image = (await getImageAsDataUrl(s3, libraryOptions.image)) ?? undefined;
-			}
-
-			const instance = generateQrCodeStylingInstance({
-				...libraryOptions,
-				data: 'https://www.qrcodly.de/',
-			});
-
-			const svg = await instance.getRawData('svg');
-			if (!svg) return false;
-
-			const buffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
-			const fileName = `${row.id}.svg`;
+			const buffer = await renderPreview(s3, row.config, 'https://www.qrcodly.de/');
+			const fileName = `${row.id}.png`;
 			const filePath = constructFilePath(
 				CONFIG_TEMPLATE_PREVIEW_IMAGE_FOLDER,
 				row.createdBy ?? undefined,
@@ -266,7 +251,7 @@ async function main() {
 				Bucket: scriptEnv.S3_BUCKET_NAME,
 				Key: filePath,
 				Body: buffer,
-				ContentType: 'image/svg+xml',
+				ContentType: 'image/png',
 			});
 
 			await db

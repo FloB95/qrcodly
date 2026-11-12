@@ -6,7 +6,7 @@ import {
 	QR_CODE_TEMPLATE_UPLOAD_FOLDER,
 } from '../../config/constants';
 import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
-import { renderQrCodeSvg } from '@/modules/qr-code/lib/styled-qr-code';
+import { renderQrCodePng } from '@/modules/qr-code/lib/styled-qr-code';
 
 export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 	constructor() {
@@ -54,7 +54,7 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 		const { id, createdBy, config } = ConfigTemplate;
 
 		try {
-			const fileName = `${id}-${Date.now()}.svg`;
+			const fileName = `${id}-${Date.now()}.png`;
 			const filePath = this.constructFilePath(
 				QR_CODE_TEMPLATE_PREVIEW_IMAGE_FOLDER,
 				createdBy ?? undefined,
@@ -63,11 +63,11 @@ export class ConfigTemplateImageStrategy extends BaseImageStrategy {
 
 			const { image, ...libraryOptions } = convertQrCodeOptionsToLibraryOptions(config);
 			const logo = image ? await this.loadLogo(image) : undefined;
-			const svg = await renderQrCodeSvg(
+			const png = await renderQrCodePng(
 				{ ...libraryOptions, data: 'https://www.qrcodly.de/' },
 				logo,
 			);
-			await this.objectStorage.upload(filePath, Buffer.from(svg), 'image/svg+xml');
+			await this.objectStorage.upload(filePath, png, 'image/png');
 			return filePath;
 		} catch (error: any) {
 			this.logger.error('error.template.previewImage.create', {

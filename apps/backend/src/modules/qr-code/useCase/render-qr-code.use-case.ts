@@ -1,9 +1,9 @@
 import { createHash } from 'crypto';
 import { inject, injectable } from 'tsyringe';
-import { Resvg } from '@resvg/resvg-js';
 import sharp from 'sharp';
 import {
 	convertQrCodeOptionsToLibraryOptions,
+	rasterizeQrCodeSvg,
 	RENDER_QR_CODE_MIME_TYPES,
 	type TRenderQrCodeDto,
 	type TRenderQrCodeFormat,
@@ -14,13 +14,13 @@ import { KeyCache } from '@/core/cache/key-cache';
 import { env } from '@/core/config/env';
 import { QrCodeLogoService } from '@/core/services/qr-code-logo.service';
 import { Logger } from '@/core/logging';
-import { renderQrCodeSvg } from '../lib/styled-qr-code';
+import { qrCodeRenderer, renderQrCodeSvg } from '../lib/styled-qr-code';
 
 const CACHE_TTL_SECONDS = 86_400;
 const CACHE_PREFIX = 'qr_render:';
 const RENDER_TIMEOUT_MS = 5_000;
 // bump when the drawing changes, so cached images and ETags from before are not served again
-const RENDER_VERSION = 3;
+const RENDER_VERSION = 4;
 
 export type RenderQrCodeResult = {
 	buffer: Buffer;
@@ -101,7 +101,7 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 
 		if (format === 'svg') return Buffer.from(svgText, 'utf8');
 
-		const pngBuffer = this.rasterize(svgText, sizePx);
+		const pngBuffer = Buffer.from(rasterizeQrCodeSvg(svgText, qrCodeRenderer, sizePx));
 
 		if (format === 'png') {
 			if (dto.printSizeMm) {
@@ -121,14 +121,6 @@ export class RenderQrCodeUseCase implements IBaseUseCase {
 		const logoDataUrl = image ? await this.resolveImage(image) : undefined;
 		const logo = logoDataUrl ? await this.logoService.toLogo(logoDataUrl) : undefined;
 		return renderQrCodeSvg({ ...libraryOptions, data: dto.data }, logo);
-	}
-
-	private rasterize(svgText: string, sizePx: number): Buffer {
-		const resvg = new Resvg(Buffer.from(svgText, 'utf8'), {
-			fitTo: { mode: 'width', value: sizePx },
-			background: 'rgba(0,0,0,0)',
-		});
-		return Buffer.from(resvg.render().asPng());
 	}
 
 	private async resolveImage(image: string): Promise<string | undefined> {

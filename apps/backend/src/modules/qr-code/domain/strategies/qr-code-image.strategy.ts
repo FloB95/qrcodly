@@ -4,7 +4,7 @@ import {
 	QR_CODE_PREVIEW_IMAGE_FOLDER,
 	QR_CODE_UPLOAD_FOLDER,
 } from '../../config/constants';
-import { renderQrCodeSvg } from '../../lib/styled-qr-code';
+import { renderQrCodePng } from '../../lib/styled-qr-code';
 import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
 
 export class QrCodeImageStrategy extends BaseImageStrategy {
@@ -61,7 +61,7 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 		}
 
 		try {
-			const fileName = `${id}-${Date.now()}.svg`;
+			const fileName = `${id}-${Date.now()}.png`;
 			const filePath = this.constructFilePath(
 				QR_CODE_PREVIEW_IMAGE_FOLDER,
 				createdBy ?? undefined,
@@ -70,8 +70,8 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 
 			const { image, ...libraryOptions } = convertQrCodeOptionsToLibraryOptions(config);
 			const logo = image ? await this.loadLogo(image) : undefined;
-			const svg = await renderQrCodeSvg({ ...libraryOptions, data: qrCodeData }, logo);
-			await this.objectStorage.upload(filePath, Buffer.from(svg), 'image/svg+xml');
+			const png = await renderQrCodePng({ ...libraryOptions, data: qrCodeData }, logo);
+			await this.objectStorage.upload(filePath, png, 'image/png');
 			return filePath;
 		} catch (error) {
 			this.logger.error('error.qrCode.previewImage.create', {

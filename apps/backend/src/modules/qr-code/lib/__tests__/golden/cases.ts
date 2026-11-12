@@ -2,27 +2,29 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { QrCodeDefaults, type TQrCodeOptions } from '@shared/schemas';
 
-export type TGoldenLogo = 'png' | 'svg';
+const LOGO_MIME_TYPES = {
+	png: 'image/png',
+	svg: 'image/svg+xml',
+	jpg: 'image/jpeg',
+	webp: 'image/webp',
+} as const;
+
+export type TGoldenLogo = keyof typeof LOGO_MIME_TYPES;
 
 export type TGoldenCase = {
-	/** File name of the reference images. */
+	/** File name of the reference image. */
 	id: string;
 	data: string;
 	config: TQrCodeOptions;
+	/** golden/logo.<extension> */
 	logo?: TGoldenLogo;
-	/**
-	 * The browser draws SVG logos as vectors, the backend as a 2048px PNG that resvg scales down,
-	 * so their edges differ. Such cases keep a separate reference for the browser preview.
-	 */
-	ownBrowserPreview?: boolean;
 };
 
 export const GOLDEN_DIR = __dirname;
 
 export const goldenLogo = (logo: TGoldenLogo) => {
 	const buffer = readFileSync(join(GOLDEN_DIR, `logo.${logo}`));
-	const mimeType = logo === 'svg' ? 'image/svg+xml' : 'image/png';
-	return { buffer, dataUrl: `data:${mimeType};base64,${buffer.toString('base64')}` };
+	return { buffer, dataUrl: `data:${LOGO_MIME_TYPES[logo]};base64,${buffer.toString('base64')}` };
 };
 
 const hex = (value: string) => ({ type: 'hex' as const, value });
@@ -67,8 +69,8 @@ const VCARD_DATA = [
 
 /**
  * Fixed QR codes covering every dot and corner shape, solid, translucent and transparent colors,
- * linear gradients at several angles (and the null default), radial gradients, logos and a large
- * code. Their reference images pin down how QR codes look; see qr-code-golden.test.ts.
+ * linear gradients at several angles (and the null default), radial gradients, PNG, SVG, JPEG and
+ * transparent WebP logos and a large code. Their reference images pin down how QR codes look; see qr-code-golden.test.ts.
  */
 export const GOLDEN_CASES: TGoldenCase[] = [
 	{ id: '01-defaults', data: URL_DATA, config: base({}) },
@@ -156,7 +158,6 @@ export const GOLDEN_CASES: TGoldenCase[] = [
 		id: '09-logo-svg-dots-behind',
 		data: URL_DATA,
 		logo: 'svg',
-		ownBrowserPreview: true,
 		config: base({
 			imageOptions: { hideBackgroundDots: false },
 			dotsOptions: { type: 'dots', style: hex('#374151') },
@@ -176,6 +177,26 @@ export const GOLDEN_CASES: TGoldenCase[] = [
 			},
 			cornersSquareOptions: { type: 'extra-rounded', style: hex('#0f766e') },
 			cornersDotOptions: { type: 'dot', style: gradient('linear', 0, ['#22d3ee', '#0f766e']) },
+		}),
+	},
+	{
+		id: '11-logo-jpeg',
+		data: URL_DATA,
+		logo: 'jpg',
+		config: base({
+			imageOptions: { hideBackgroundDots: true },
+			dotsOptions: { type: 'square', style: hex('#0f172a') },
+		}),
+	},
+	{
+		// soft, half-transparent edges: a canvas would change their colors while decoding
+		id: '12-logo-webp-transparent',
+		data: URL_DATA,
+		logo: 'webp',
+		config: base({
+			imageOptions: { hideBackgroundDots: false },
+			dotsOptions: { type: 'dots', style: hex('#14532d') },
+			backgroundOptions: { style: hex('#ecfdf5') },
 		}),
 	},
 ];

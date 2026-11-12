@@ -3,7 +3,7 @@
 import { memo, useEffect, useMemo, useState } from 'react';
 import { type Options } from 'qr-code-styling';
 import { cn, createLinkFromShortUrl } from '@/lib/utils';
-import { renderQrCodeSvg, svgToDataUrl } from '@/lib/qr-render';
+import { renderQrCodePng } from '@/lib/qr-render';
 import {
 	convertQRCodeDataToStringByType,
 	convertQrCodeOptionsToLibraryOptions,
@@ -99,17 +99,25 @@ function QrCode({
 			data,
 		};
 	}, [qrCode.config, qrCode.content, qrCode.qrCodeData, resolvedShortUrl]);
-	const [svgUrl, setSvgUrl] = useState<string>();
+	const [pngUrl, setPngUrl] = useState<string>();
 
 	useEffect(() => {
 		let isCurrent = true;
-		renderQrCodeSvg(options)
-			.then((svg) => isCurrent && setSvgUrl(svgToDataUrl(svg)))
+		renderQrCodePng(options)
+			.then((png) => isCurrent && setPngUrl(URL.createObjectURL(png)))
 			.catch((error: unknown) => console.error('QR code preview failed', error));
 		return () => {
 			isCurrent = false;
 		};
 	}, [options]);
+
+	// the previous image is released once the next one is on screen
+	useEffect(
+		() => () => {
+			if (pngUrl) URL.revokeObjectURL(pngUrl);
+		},
+		[pngUrl],
+	);
 
 	return (
 		<div className="flex flex-col">
@@ -119,8 +127,8 @@ function QrCode({
 					additionalStyles,
 				)}
 			>
-				{/* eslint-disable-next-line @next/next/no-img-element -- generated SVG data URL */}
-				{svgUrl && <img src={svgUrl} alt="" />}
+				{/* eslint-disable-next-line @next/next/no-img-element -- generated PNG */}
+				{pngUrl && <img src={pngUrl} alt="" />}
 			</div>
 
 			{shortUrl && isDynamic(qrCode.content) && (

@@ -132,6 +132,12 @@ importers:
       '@fastify/swagger':
         specifier: ^9.8.1
         version: 9.8.1
+      '@jsquash/png':
+        specifier: 3.1.1
+        version: 3.1.1
+      '@jsquash/webp':
+        specifier: 1.5.0
+        version: 1.5.0
       '@opentelemetry/api':
         specifier: ^1.9.1
         version: 1.9.1
@@ -166,7 +172,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/db
       '@resvg/resvg-js':
-        specifier: ^2.6.2
+        specifier: 2.6.2
         version: 2.6.2
       '@sentry/node':
         specifier: 'catalog:'
@@ -738,6 +744,12 @@ importers:
       '@hookform/resolvers':
         specifier: 5.4.0
         version: 5.4.0(react-hook-form@7.81.0(react@19.2.7))
+      '@jsquash/png':
+        specifier: 3.1.1
+        version: 3.1.1
+      '@jsquash/webp':
+        specifier: 1.5.0
+        version: 1.5.0
       '@radix-ui/react-accordion':
         specifier: ^1.2.16
         version: 1.2.16(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -807,6 +819,9 @@ importers:
       '@react-google-maps/api':
         specifier: ^2.20.8
         version: 2.20.8(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@resvg/resvg-wasm':
+        specifier: 2.6.2
+        version: 2.6.2
       '@sentry/nextjs':
         specifier: 10.76.2
         version: 10.76.2(@opentelemetry/core@2.9.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.9.0(@opentelemetry/api@1.9.1))(next@16.4.2(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.61.1)(@types/node@26.1.1)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(webpack@5.108.4(esbuild@0.28.1)(postcss@8.5.19))
@@ -3305,6 +3320,12 @@ packages:
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
 
+  '@jsquash/png@3.1.1':
+    resolution: {integrity: sha512-C10pc+0H6j0h8fENOfnGOvkXCmvpSQTDGlfGd0sHphZhPSGTyLjIrHba0FaZZdsKqA/wlmhYicUHb92vfZphaw==}
+
+  '@jsquash/webp@1.5.0':
+    resolution: {integrity: sha512-KggLoj2MnRSfIqTeKe1EmbljTX2vuV7mh79k89PCL1pyqiDULcPM1L47twxXt0hkb68F70bXiL31MxsuoZtKFw==}
+
   '@lukeed/ms@2.0.2':
     resolution: {integrity: sha512-9I2Zn6+NJLfaGoz9jN3lpwDgAYvfGeNYdbAIjJOqzs4Tpc+VU3Jqq4IofSUBKajiDS8k9fZIg18/z13mpk1bsA==}
     engines: {node: '>=8'}
@@ -4499,6 +4520,10 @@ packages:
 
   '@resvg/resvg-js@2.6.2':
     resolution: {integrity: sha512-xBaJish5OeGmniDj9cW5PRa/PtmuVU3ziqrbr5xJj901ZDN4TosrVaNZpEiLZAxdfnhAe7uQ7QFWfjPe9d9K2Q==}
+    engines: {node: '>= 10'}
+
+  '@resvg/resvg-wasm@2.6.2':
+    resolution: {integrity: sha512-FqALmHI8D4o6lk/LRWDnhw95z5eO+eAa6ORjVg09YRR7BkcM6oPHU9uyC0gtQG5vpFLvgpeU4+zEAz2H8APHNw==}
     engines: {node: '>= 10'}
 
   '@rolldown/binding-android-arm-eabi@1.2.15':
@@ -11763,6 +11788,9 @@ packages:
   walker@1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
 
+  wasm-feature-detect@1.10.0:
+    resolution: {integrity: sha512-u0tkTCCo8s7xa9UoE2rtZGRYXTSqYx3kRPJ2XkbyYl2AbnMggSFmYNiJIispzzCPz7SIFTBTPTk0nI8yXwJgvA==}
+
   watchpack@2.5.2:
     resolution: {integrity: sha512-6i/00NBjP4yGPs+caKSyRfpTF/8Torsu0MOW3mMzIbhgISFder8i7xbqgHlLMwJrdiN8ndBV3UA1/AfzPSr+jg==}
     engines: {node: '>=10.13.0'}
@@ -14489,6 +14517,12 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
+  '@jsquash/png@3.1.1': {}
+
+  '@jsquash/webp@1.5.0':
+    dependencies:
+      wasm-feature-detect: 1.10.0
+
   '@lukeed/ms@2.0.2': {}
 
   '@malept/cross-spawn-promise@2.0.0':
@@ -15764,6 +15798,8 @@ snapshots:
       '@resvg/resvg-js-win32-arm64-msvc': 2.6.2
       '@resvg/resvg-js-win32-ia32-msvc': 2.6.2
       '@resvg/resvg-js-win32-x64-msvc': 2.6.2
+
+  '@resvg/resvg-wasm@2.6.2': {}
 
   '@rolldown/binding-android-arm-eabi@1.2.15':
     optional: true
@@ -23829,6 +23865,8 @@ snapshots:
   walker@1.0.8:
     dependencies:
       makeerror: 1.0.12
+
+  wasm-feature-detect@1.10.0: {}
 
   watchpack@2.5.2:
     dependencies:
