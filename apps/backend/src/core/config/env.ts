@@ -98,6 +98,11 @@ const server = z
 		CLAMAV_PORT: z.coerce.number().int().positive().default(3310),
 		/** Days a replaced or removed hosted file is kept before deletion (undo window) */
 		HOSTED_FILE_RETENTION_DAYS: z.coerce.number().int().min(0).default(30),
+		// Product-news newsletter in a self-hosted listmonk; the sync stays off until all four are set
+		LISTMONK_URL: z.url().optional(),
+		LISTMONK_API_USER: z.string().optional(),
+		LISTMONK_API_TOKEN: z.string().optional(),
+		LISTMONK_LIST_ID: z.coerce.number().int().positive().optional(),
 	})
 	.refine((values) => values.S3_PRIVATE_BUCKET_NAME !== values.S3_BUCKET_NAME, {
 		message: 'Must be a bucket of its own: the public bucket is served by the CDN',

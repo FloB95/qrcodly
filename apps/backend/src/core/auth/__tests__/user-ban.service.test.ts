@@ -2,6 +2,8 @@ import 'reflect-metadata';
 import { UserBanService } from '../user-ban.service';
 import type { KeyCache } from '@/core/cache';
 import type { Logger } from '@/core/logging';
+import type { EventEmitter } from '@/core/event';
+import { UserBannedEvent } from '@/core/event/user-banned.event';
 import { mock } from 'jest-mock-extended';
 import { clerkClient } from '@clerk/fastify';
 
@@ -13,12 +15,14 @@ describe('UserBanService', () => {
 	let service: UserBanService;
 	let mockCache: jest.Mocked<KeyCache>;
 	let mockLogger: jest.Mocked<Logger>;
+	let mockEventEmitter: jest.Mocked<EventEmitter>;
 
 	beforeEach(() => {
 		mockCache = mock<KeyCache>();
 		mockCache.set.mockResolvedValue();
 		mockLogger = mock<Logger>();
-		service = new UserBanService(mockCache, mockLogger);
+		mockEventEmitter = mock<EventEmitter>();
+		service = new UserBanService(mockCache, mockLogger, mockEventEmitter);
 	});
 
 	afterEach(() => jest.clearAllMocks());
@@ -43,6 +47,29 @@ describe('UserBanService', () => {
 		await service.ban('user_123', { reason: 'r', source: 's' });
 
 		expect(mockCache.set).toHaveBeenCalledWith('user_ban:user_123', 1, 60);
+	});
+
+	it('emits UserBannedEvent after the ban is stored in Clerk', async () => {
+		await service.ban('user_123', { reason: 'r', source: 's' });
+
+		expect(mockEventEmitter.emit).toHaveBeenCalledWith(new UserBannedEvent({ id: 'user_123' }));
+		expect(mockEventEmitter.emit.mock.invocationCallOrder[0]).toBeGreaterThan(
+			(clerkClient.users.updateUserMetadata as jest.Mock).mock.invocationCallOrder[0],
+		);
+	});
+
+	it('emits nothing when Clerk rejects the ban', async () => {
+		(clerkClient.users.updateUserMetadata as jest.Mock).mockRejectedValueOnce(new Error('down'));
+
+		await expect(service.ban('user_123', { reason: 'r', source: 's' })).rejects.toThrow('down');
+
+		expect(mockEventEmitter.emit).not.toHaveBeenCalled();
+	});
+
+	it('emits nothing on unban', async () => {
+		await service.unban('user_123');
+
+		expect(mockEventEmitter.emit).not.toHaveBeenCalled();
 	});
 
 	it('logs who and why for audit at info level', async () => {

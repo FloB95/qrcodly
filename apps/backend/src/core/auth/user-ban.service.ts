@@ -1,6 +1,8 @@
 import { inject, singleton } from 'tsyringe';
 import { clerkClient } from '@clerk/fastify';
 import { KeyCache } from '@/core/cache';
+import { EventEmitter } from '@/core/event';
+import { UserBannedEvent } from '@/core/event/user-banned.event';
 import { Logger } from '@/core/logging';
 import { trackExternal } from '@/core/metrics';
 
@@ -18,6 +20,7 @@ export class UserBanService {
 	constructor(
 		@inject(KeyCache) private readonly cache: KeyCache,
 		@inject(Logger) private readonly logger: Logger,
+		@inject(EventEmitter) private readonly eventEmitter: EventEmitter,
 	) {}
 
 	async ban(userId: string, params: BanUserParams): Promise<void> {
@@ -36,6 +39,7 @@ export class UserBanService {
 		);
 
 		await this.cache.set(banCacheKey(userId), 1, USER_BAN_CACHE_TTL);
+		this.eventEmitter.emit(new UserBannedEvent({ id: userId }));
 
 		this.logger.info('user.banned', {
 			userId,

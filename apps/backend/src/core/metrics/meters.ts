@@ -268,8 +268,8 @@ export const malwareScanDuration = meter.createHistogram('malware.scan.duration'
 /**
  * Every outbound call to a third party, recorded through `trackExternal`.
  *
- * Labels: provider = stripe|clerk|cloudflare|umami|web_risk|screenshot|google_analytics|matomo,
- * operation, outcome = ok|error
+ * Labels: provider = stripe|clerk|cloudflare|umami|web_risk|screenshot|google_analytics|matomo|
+ * listmonk, operation, outcome = ok|error
  */
 export const externalRequests = meter.createCounter('external.requests.total', {
 	description: 'Outbound requests to third-party APIs, by provider and outcome',

@@ -1,15 +1,16 @@
 import { inject, singleton } from 'tsyringe';
-import { createClerkClient } from '@clerk/fastify';
+import { createClerkClient, type User } from '@clerk/fastify';
 import { env } from '../config/env';
+import { type TClerkUserInfo, type TClerkUserPage } from '../interface/clerk-user-info.interface';
 import { Logger } from '../logging';
-
-export type TClerkUserInfo = { email: string; firstName?: string };
+import { trackExternal } from '../metrics';
 
 /**
- * Looks up the contact details needed to send a user an email.
+ * Reads users from Clerk.
  *
- * Fails soft: a Clerk outage must not stop a subscription transition from being recorded, so a
- * failed lookup yields an empty address and the caller simply sends no mail.
+ * `getUserInfo` looks up the contact details needed to send a user an email and fails soft: a
+ * Clerk outage must not stop a subscription transition from being recorded, so a failed lookup
+ * yields an empty address and the caller simply sends no mail. `getUser` and `listUsers` throw.
  */
 @singleton()
 export class ClerkUserInfoService {
@@ -33,5 +34,18 @@ export class ClerkUserInfoService {
 			});
 			return { email: '' };
 		}
+	}
+
+	/** A deleted or unknown account is rejected with an error whose `status` is 404 */
+	async getUser(userId: string): Promise<User> {
+		return trackExternal('clerk', 'users.getUser', () => this.clerkClient.users.getUser(userId));
+	}
+
+	/** One page of users, oldest first; Clerk allows a `limit` of up to 500 */
+	async listUsers({ limit, offset }: TClerkUserPage): Promise<User[]> {
+		const page = await trackExternal('clerk', 'users.getUserList', () =>
+			this.clerkClient.users.getUserList({ limit, offset, orderBy: '+created_at' }),
+		);
+		return page.data;
 	}
 }
