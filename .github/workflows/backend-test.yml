@@ -8,6 +8,9 @@ on:
     paths:
       - 'apps/backend/**'
       - 'packages/shared/**'
+      # the QR golden-image test also covers the browser renderer and renderer updates
+      - 'apps/frontend/src/lib/qr-render.ts'
+      - 'pnpm-lock.yaml'
       - '.github/workflows/backend-test.yml'
 
 permissions:
@@ -137,6 +140,11 @@ jobs:
             sleep 1
           done
           echo "S3 mock did not start"; docker logs s3mock; exit 1
+
+      # the QR golden-image test draws codes in Chromium, like customers' browsers do
+      - name: Install Chromium
+        working-directory: apps/backend
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Run Checks
         working-directory: apps/backend

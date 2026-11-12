@@ -53,6 +53,7 @@
 		"form-data": "^4.0.6",
 		"get-tsconfig": "^4.14.0",
 		"jest-mock-extended": "4.0.1",
+		"playwright": "^1.61.1",
 		"qrcodly-eslint-config": "workspace:*",
 		"qrcodly-typescript-config": "workspace:*",
 		"ts-jest": "^29.4.11",
