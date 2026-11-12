@@ -11,6 +11,7 @@ import {
 	type IListmonkSubscriber,
 	type IListmonkSubscriberLookup,
 	type IListmonkSubscriberPage,
+	type TListmonkReplaceSubscriberInput,
 	type TListmonkSubscriptionStatus,
 	type TListmonkUpdateSubscriberInput,
 } from './listmonk.interface';
@@ -193,6 +194,17 @@ export class ListmonkClient {
 			body: { ids: [id], action: 'unsubscribe', target_list_ids: [this.getListId()] },
 			idempotent: true,
 			...options,
+		});
+	}
+
+	/** PUT: the only way to remove `attribs` keys; it also drops every list membership */
+	async replaceSubscriber(id: number, input: TListmonkReplaceSubscriberInput): Promise<void> {
+		await this.request({
+			operation: 'subscribers.replace',
+			method: 'PUT',
+			path: `/api/subscribers/${id}`,
+			body: { ...input, lists: [], preconfirm_subscriptions: true },
+			idempotent: true,
 		});
 	}
 

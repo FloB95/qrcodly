@@ -47,6 +47,8 @@ export type TNewsletterReconciliationSummary = Record<
 	| TNewsletterSyncOutcome
 	| 'errors'
 	| 'deleted'
+	/** Blocklist entries of deleted accounts reduced to the address */
+	| 'anonymized'
 	| 'kept'
 	/** Banned accounts taken off the list */
 	| 'banned_unsubscribed'

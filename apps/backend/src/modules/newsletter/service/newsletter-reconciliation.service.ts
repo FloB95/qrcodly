@@ -13,7 +13,7 @@ import {
 	type TNewsletterReconciliationSummary,
 	type TNewsletterSyncOutcome,
 } from '../domain/newsletter-sync.interface';
-import { clerkUserIdOf, isOnList } from '../domain/subscriber-match';
+import { blockedAddressOnly, clerkUserIdOf, isOnList } from '../domain/subscriber-match';
 import { type ISubscriberMatch } from '../domain/subscriber-match.interface';
 import { NewsletterSyncAbortedError } from '../error/newsletter-sync-aborted.error';
 import { NewsletterSyncService } from './newsletter-sync.service';
@@ -97,6 +97,7 @@ export class NewsletterReconciliationService {
 			skipped: 0,
 			errors: 0,
 			deleted: 0,
+			anonymized: 0,
 			kept: 0,
 			banned_unsubscribed: 0,
 			recipients_de: 0,
@@ -120,7 +121,7 @@ export class NewsletterReconciliationService {
 		}
 	}
 
-	/** Linked subscribers whose account is not in the listing; blocklisted ones are kept for good */
+	/** Linked subscribers whose account is not in the listing; blocklisted ones are reduced, not deleted */
 	private findOrphans(
 		subscribers: IListmonkSubscriber[],
 		users: INewsletterUser[],
@@ -129,7 +130,7 @@ export class NewsletterReconciliationService {
 		const orphans: INewsletterOrphan[] = [];
 		for (const subscriber of subscribers) {
 			const clerkUserId = clerkUserIdOf(subscriber);
-			if (clerkUserId && !clerkUserIds.has(clerkUserId) && subscriber.status !== 'blocklisted') {
+			if (clerkUserId && !clerkUserIds.has(clerkUserId)) {
 				orphans.push({ subscriber, clerkUserId });
 			}
 		}
@@ -204,6 +205,13 @@ export class NewsletterReconciliationService {
 				// the paged listing can miss an account when another one is deleted meanwhile
 				if (await this.userExists(clerkUserId)) {
 					summary.kept++;
+					continue;
+				}
+				if (subscriber.status === 'blocklisted') {
+					if (!dryRun) {
+						await this.listmonk.replaceSubscriber(subscriber.id, blockedAddressOnly(subscriber));
+					}
+					summary.anonymized++;
 					continue;
 				}
 				if (!dryRun) await this.listmonk.deleteSubscriber(subscriber.id);

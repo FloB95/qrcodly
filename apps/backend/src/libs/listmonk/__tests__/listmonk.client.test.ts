@@ -283,6 +283,29 @@ describe('ListmonkClient', () => {
 		expect(lastCall().body).toEqual({ ids: [5], action: 'unsubscribe', target_list_ids: [7] });
 	});
 
+	it('replaces a subscriber with PUT, dropping its list memberships', async () => {
+		mockFetch.mockResolvedValue(jsonResponse(true));
+
+		await client.replaceSubscriber(5, {
+			email: 'gone@example.com',
+			name: 'gone@example.com',
+			status: 'blocklisted',
+			attribs: {},
+		});
+
+		const { url, init, body } = lastCall();
+		expect(init.method).toBe('PUT');
+		expect(url.pathname).toBe('/api/subscribers/5');
+		expect(body).toEqual({
+			email: 'gone@example.com',
+			name: 'gone@example.com',
+			status: 'blocklisted',
+			attribs: {},
+			lists: [],
+			preconfirm_subscriptions: true,
+		});
+	});
+
 	it('deletes a subscriber', async () => {
 		mockFetch.mockResolvedValue(jsonResponse(true));
 

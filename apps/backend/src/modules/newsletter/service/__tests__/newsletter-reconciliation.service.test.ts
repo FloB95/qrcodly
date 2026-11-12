@@ -117,6 +117,7 @@ describe('NewsletterReconciliationService', () => {
 			skipped: 2,
 			errors: 0,
 			deleted: 0,
+			anonymized: 0,
 			kept: 0,
 			banned_unsubscribed: 0,
 			recipients_de: 0,
@@ -339,7 +340,7 @@ describe('NewsletterReconciliationService', () => {
 		expect(listmonk.deleteSubscriber).not.toHaveBeenCalled();
 	});
 
-	it('deletes subscribers whose account Clerk confirms as gone, keeping blocklisted ones', async () => {
+	it('deletes subscribers whose account Clerk confirms as gone, reducing blocklisted ones', async () => {
 		clerkHas(clerkUser('user_1'));
 		listmonk.listAllSubscribers.mockResolvedValue([
 			subscriber(1, 'user_1@example.com', { attribs: { clerk_user_id: 'user_1' } }),
@@ -357,9 +358,30 @@ describe('NewsletterReconciliationService', () => {
 
 		const summary = await service.run({ dryRun: false });
 
-		expect(summary).toMatchObject({ deleted: 1, kept: 1, errors: 0 });
+		expect(summary).toMatchObject({ deleted: 1, anonymized: 1, kept: 1, errors: 0 });
 		expect(listmonk.deleteSubscriber).toHaveBeenCalledTimes(1);
 		expect(listmonk.deleteSubscriber).toHaveBeenCalledWith(2);
+		expect(listmonk.replaceSubscriber).toHaveBeenCalledTimes(1);
+		expect(listmonk.replaceSubscriber).toHaveBeenCalledWith(4, {
+			email: 'blocked@example.com',
+			name: 'blocked@example.com',
+			status: 'blocklisted',
+			attribs: {},
+		});
+	});
+
+	it('only counts reduced blocklist entries in a dry run', async () => {
+		clerkHas(clerkUser('user_1'));
+		listmonk.listAllSubscribers.mockResolvedValue([
+			subscriber(4, 'blocked@example.com', {
+				status: 'blocklisted',
+				attribs: { clerk_user_id: 'user_gone' },
+			}),
+		]);
+		clerkUsers.getUser.mockRejectedValue(notFound());
+
+		await expect(service.run({ dryRun: true })).resolves.toMatchObject({ anonymized: 1 });
+		expect(listmonk.replaceSubscriber).not.toHaveBeenCalled();
 	});
 
 	it('keeps a subscriber when Clerk fails with anything but a 404', async () => {

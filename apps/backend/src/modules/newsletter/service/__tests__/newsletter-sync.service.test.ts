@@ -434,12 +434,18 @@ describe('NewsletterSyncService', () => {
 			expect(listmonk.deleteSubscriber).toHaveBeenCalledWith(10);
 		});
 
-		it('keeps a blocklisted subscriber', async () => {
+		it('keeps a blocklisted subscriber, reduced to its address', async () => {
 			listmonk.findSubscribers.mockResolvedValue([subscriber({ status: 'blocklisted' })]);
 
 			await expect(service.removeUser('user_1')).resolves.toBe('blocked');
 
 			expect(listmonk.deleteSubscriber).not.toHaveBeenCalled();
+			expect(listmonk.replaceSubscriber).toHaveBeenCalledWith(10, {
+				email: 'jane@example.com',
+				name: 'jane@example.com',
+				status: 'blocklisted',
+				attribs: {},
+			});
 		});
 
 		it('ignores subscribers that only share the email', async () => {

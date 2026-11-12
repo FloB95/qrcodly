@@ -14,13 +14,20 @@ const clerkUser = ({
 	email = 'jane@example.com',
 	firstName = 'Jane',
 	verified = true,
+	banned = false,
 	signUpLocale,
-}: { email?: string; firstName?: string; verified?: boolean; signUpLocale?: string } = {}) =>
+}: {
+	email?: string;
+	firstName?: string;
+	verified?: boolean;
+	banned?: boolean;
+	signUpLocale?: string;
+} = {}) =>
 	({
 		id: 'user_1',
 		firstName,
 		locale: null,
-		banned: false,
+		banned,
 		privateMetadata: {},
 		unsafeMetadata: signUpLocale ? { locale: signUpLocale } : {},
 		primaryEmailAddress: {
@@ -495,6 +502,20 @@ describe('UpdateNewsletterSubscriptionUseCase', () => {
 		expect(listmonk.addToList).toHaveBeenCalledWith(10, 'confirmed', INTERACTIVE);
 	});
 
+	it('unsubscribes before a profile update that fails', async () => {
+		clerkUsers.getUser.mockResolvedValue(clerkUser({ firstName: 'Janet' }));
+		listmonk.findSubscribers.mockResolvedValue([subscriber()]);
+		listmonk.updateSubscriber.mockRejectedValue(new ListmonkApiError(500, 'x'));
+
+		await expect(useCase.execute('user_1', { subscribed: false })).rejects.toBeInstanceOf(
+			ServiceUnavailableError,
+		);
+		expect(listmonk.unsubscribeFromList).toHaveBeenCalledWith(10, INTERACTIVE);
+		expect(listmonk.unsubscribeFromList.mock.invocationCallOrder[0]).toBeLessThan(
+			listmonk.updateSubscriber.mock.invocationCallOrder[0],
+		);
+	});
+
 	it('answers 503 when listmonk fails', async () => {
 		listmonk.findSubscribers.mockResolvedValue([subscriber()]);
 		listmonk.unsubscribeFromList.mockRejectedValue(new ListmonkApiError(500, 'x'));
@@ -525,19 +546,54 @@ describe('UpdateNewsletterSubscriptionUseCase', () => {
 			await expect(useCase.execute('user_1', { subscribed })).rejects.toBeInstanceOf(
 				BadRequestError,
 			);
-			expect(listmonk.findSubscribers).toHaveBeenCalledWith(lookup(null), INTERACTIVE);
 			expect(listmonk.createSubscriber).not.toHaveBeenCalled();
 		},
 	);
 
-	it('still unsubscribes a linked subscriber when the account has no verified email', async () => {
+	describe.each([
+		['a banned account', clerkUser({ banned: true })],
+		['an account without a verified email', clerkUser({ verified: false })],
+	])('for %s', (_, user) => {
+		beforeEach(() => {
+			clerkUsers.getUser.mockResolvedValue(user);
+		});
+
+		it('answers 400 to subscribing without touching the linked subscriber', async () => {
+			listmonk.findSubscribers.mockResolvedValue([
+				subscriber({ lists: [{ id: 7, subscription_status: 'unsubscribed' }] }),
+			]);
+
+			await expect(useCase.execute('user_1', { subscribed: true })).rejects.toBeInstanceOf(
+				BadRequestError,
+			);
+			expect(listmonk.addToList).not.toHaveBeenCalled();
+			expect(listmonk.updateSubscriber).not.toHaveBeenCalled();
+		});
+
+		it('answers 400 to a language without a subscriber instead of creating one', async () => {
+			await expect(useCase.execute('user_1', { locale: 'de' })).rejects.toBeInstanceOf(
+				BadRequestError,
+			);
+			expect(listmonk.createSubscriber).not.toHaveBeenCalled();
+		});
+
+		it('still unsubscribes the linked subscriber', async () => {
+			listmonk.findSubscribers.mockResolvedValue([subscriber()]);
+
+			await expect(useCase.execute('user_1', { subscribed: false })).resolves.toEqual({
+				status: 'unsubscribed',
+				locale: 'en',
+			});
+			expect(listmonk.unsubscribeFromList).toHaveBeenCalledWith(10, INTERACTIVE);
+		});
+	});
+
+	it('looks up an account without a verified email by its id only', async () => {
 		clerkUsers.getUser.mockResolvedValue(clerkUser({ verified: false }));
 		listmonk.findSubscribers.mockResolvedValue([subscriber()]);
 
-		await expect(useCase.execute('user_1', { subscribed: false })).resolves.toEqual({
-			status: 'unsubscribed',
-			locale: 'en',
-		});
-		expect(listmonk.unsubscribeFromList).toHaveBeenCalledWith(10, INTERACTIVE);
+		await useCase.execute('user_1', { subscribed: false });
+
+		expect(listmonk.findSubscribers).toHaveBeenCalledWith(lookup(null), INTERACTIVE);
 	});
 });

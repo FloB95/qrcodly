@@ -44,6 +44,12 @@ export type TListmonkUpdateSubscriberInput = Partial<
 	Pick<IListmonkSubscriber, 'email' | 'name' | 'attribs'>
 >;
 
+/** A full replacement: `attribs` is stored exactly as sent and every list membership is dropped */
+export type TListmonkReplaceSubscriberInput = Pick<
+	IListmonkSubscriber,
+	'email' | 'name' | 'status' | 'attribs'
+>;
+
 export interface IListmonkAttributeCriterion {
 	/** Top-level key in `attribs`; lower case letters, digits and underscores only */
 	key: string;

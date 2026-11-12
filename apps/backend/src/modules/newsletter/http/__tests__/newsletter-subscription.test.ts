@@ -373,6 +373,30 @@ describe('newsletter subscription', () => {
 			expect(listmonk.createSubscriber).not.toHaveBeenCalled();
 		});
 
+		it.each([
+			['a banned account', { banned: true }],
+			['an account without a verified email', { email: null }],
+		])('returns 400 to %s subscribing with a linked subscriber', async (_, overrides) => {
+			jest.spyOn(container.resolve(NewsletterSyncService), 'getUser').mockResolvedValue({
+				id: TEST_USER_ID,
+				email: 'jane@example.com',
+				firstName: 'Jane',
+				locale: 'en',
+				banned: false,
+				...overrides,
+			});
+			jest
+				.spyOn(listmonk, 'findSubscribers')
+				.mockResolvedValue([
+					subscriber({ lists: [{ id: LIST_ID, subscription_status: 'unsubscribed' }] }),
+				]);
+
+			const response = await putRequest({ subscribed: true });
+
+			expect(response).toHaveStatusCode(400);
+			expect(listmonk.addToList).not.toHaveBeenCalled();
+		});
+
 		it('returns 503 when listmonk is not configured', async () => {
 			jest.spyOn(listmonk, 'isEnabled').mockReturnValue(false);
 

@@ -8,6 +8,7 @@ import { UserUpdatedEvent } from '@/core/event/user-updated.event';
 import { UserDeletedEvent } from '@/core/event/user-deleted.event';
 import { UserBannedEvent } from '@/core/event/user-banned.event';
 import { type NewsletterSyncService } from '../../../service/newsletter-sync.service';
+import { type INewsletterUser } from '../../../domain/newsletter-user.interface';
 import { AddNewsletterSubscriberOnUserCreatedEventHandler } from '../user-created.event-handler';
 import { SyncNewsletterEmailOnUserUpdatedEventHandler } from '../user-updated.event-handler';
 import { RemoveNewsletterSubscriberOnUserDeletedEventHandler } from '../user-deleted.event-handler';
@@ -30,7 +31,7 @@ const userJSON = {
 	],
 } as unknown as UserJSON;
 
-const expectedUser = {
+const expectedUser: INewsletterUser = {
 	id: 'user_1',
 	email: 'jane@example.com',
 	firstName: 'Jane',
@@ -67,31 +68,38 @@ describe('newsletter user event handlers', () => {
 	describe('user created', () => {
 		const handler = () => new AddNewsletterSubscriberOnUserCreatedEventHandler();
 
-		it('adds the new account with source signup', async () => {
+		it('adds the account as Clerk currently has it, with source signup', async () => {
+			sync.getUser.mockResolvedValue(expectedUser);
 			sync.ensureSubscriber.mockResolvedValue('created');
 
 			await handler().handle(new UserCreatedEvent(userJSON));
 
+			expect(sync.getUser).toHaveBeenCalledWith('user_1');
 			expect(sync.ensureSubscriber).toHaveBeenCalledWith(expectedUser, 'signup');
 		});
 
-		it('takes the language of the sign-up page', async () => {
-			sync.ensureSubscriber.mockResolvedValue('created');
-			const signedUpInGerman = {
-				...userJSON,
-				locale: null,
-				unsafe_metadata: { locale: 'de' },
-				email_addresses: [
-					{ id: 'idn_1', email_address: 'jane@example.com', verification: { status: 'verified' } },
-				],
-			} as unknown as UserJSON;
+		it('passes an account banned since the webhook was sent on as banned', async () => {
+			sync.getUser.mockResolvedValue({ ...expectedUser, banned: true });
+			sync.ensureSubscriber.mockResolvedValue('skipped');
 
-			await handler().handle(new UserCreatedEvent(signedUpInGerman));
+			await handler().handle(new UserCreatedEvent(userJSON));
 
 			expect(sync.ensureSubscriber).toHaveBeenCalledWith(
-				expect.objectContaining({ locale: 'de' }),
+				expect.objectContaining({ banned: true }),
 				'signup',
 			);
+		});
+
+		it('logs an account deleted since the webhook was sent and creates nothing', async () => {
+			sync.getUser.mockRejectedValue(new Error('not found'));
+
+			await expect(handler().handle(new UserCreatedEvent(userJSON))).resolves.toBeUndefined();
+
+			expect(sync.ensureSubscriber).not.toHaveBeenCalled();
+			expect(logger.error).toHaveBeenCalledWith('newsletter.sync.user-created.failed', {
+				error: expect.any(Error),
+				userId: 'user_1',
+			});
 		});
 
 		it('does nothing when listmonk is not configured', async () => {
@@ -99,10 +107,12 @@ describe('newsletter user event handlers', () => {
 
 			await handler().handle(new UserCreatedEvent(userJSON));
 
+			expect(sync.getUser).not.toHaveBeenCalled();
 			expect(sync.ensureSubscriber).not.toHaveBeenCalled();
 		});
 
 		it('logs failures with the user id only', async () => {
+			sync.getUser.mockResolvedValue(expectedUser);
 			sync.ensureSubscriber.mockRejectedValue(new Error('down'));
 
 			await expect(handler().handle(new UserCreatedEvent(userJSON))).resolves.toBeUndefined();

@@ -25,7 +25,7 @@ import {
 	localeAttribs,
 	storedLocale,
 } from '../domain/newsletter-locale';
-import { newSubscriberInput, subscriberName } from '../domain/newsletter-user';
+import { isEligible, newSubscriberInput, subscriberName } from '../domain/newsletter-user';
 import {
 	type INewsletterUser,
 	type TEligibleNewsletterUser,
@@ -71,15 +71,18 @@ export class UpdateNewsletterSubscriptionUseCase implements IBaseUseCase {
 		{ subscribed, locale }: TUpdateNewsletterSubscriptionDto,
 	): Promise<TNewsletterSubscriptionResponseDto> {
 		const user = await this.sync.getUser(userId);
+		if (subscribed && !isEligible(user)) {
+			throw new BadRequestError('The account cannot receive the newsletter');
+		}
 		let match = await this.sync.findMatch(userId, user.email, SETTINGS_REQUEST);
 		let subscriber = match.byClerkId ?? match.byEmail;
 
 		if (!subscriber) {
 			// nothing to store the choice under; the UI must not show it as saved
-			if (!user.email) throw new BadRequestError('The account has no verified email address');
+			if (!isEligible(user)) throw new BadRequestError('The account cannot receive the newsletter');
 			try {
 				// opt-out: an account without a subscriber counts as subscribed
-				return await this.create({ ...user, email: user.email }, subscribed ?? true, locale);
+				return await this.create(user, subscribed ?? true, locale);
 			} catch (error) {
 				// created in the meantime (sign-up webhook): continue with that record
 				if (!(error instanceof ListmonkApiError && error.status === 409)) throw error;
@@ -105,29 +108,28 @@ export class UpdateNewsletterSubscriptionUseCase implements IBaseUseCase {
 		if (emailConflict) this.logger.warn('newsletter.subscription.email-conflict', { userId });
 
 		const changes = this.profileChanges(subscriber, user, locale, !emailConflict);
-		if (changes) await this.listmonk.updateSubscriber(subscriber.id, changes, SETTINGS_REQUEST);
 		const resultLocale = storedLocale(changes?.attribs ?? subscriber.attribs);
 		const listId = this.listmonk.getListId();
+		let status: 'subscribed' | 'unsubscribed';
 
 		if (subscribed === undefined) {
-			return {
-				status: isOnList(subscriber, listId) ? 'subscribed' : 'unsubscribed',
-				locale: resultLocale,
-			};
-		}
-
-		if (subscribed) {
+			status = isOnList(subscriber, listId) ? 'subscribed' : 'unsubscribed';
+		} else if (subscribed) {
 			await this.listmonk.addToList(subscriber.id, 'confirmed', SETTINGS_REQUEST);
-			return { status: 'subscribed', locale: resultLocale };
+			status = 'subscribed';
+		} else {
+			const membership = subscriber.lists.find((list) => list.id === listId);
+			if (!membership) {
+				await this.listmonk.addToList(subscriber.id, 'unsubscribed', SETTINGS_REQUEST);
+			} else if (membership.subscription_status !== 'unsubscribed') {
+				await this.listmonk.unsubscribeFromList(subscriber.id, SETTINGS_REQUEST);
+			}
+			status = 'unsubscribed';
 		}
 
-		const membership = subscriber.lists.find((list) => list.id === listId);
-		if (!membership) {
-			await this.listmonk.addToList(subscriber.id, 'unsubscribed', SETTINGS_REQUEST);
-		} else if (membership.subscription_status !== 'unsubscribed') {
-			await this.listmonk.unsubscribeFromList(subscriber.id, SETTINGS_REQUEST);
-		}
-		return { status: 'unsubscribed', locale: resultLocale };
+		// after the membership change, so a failing profile write cannot block an opt-out
+		if (changes) await this.listmonk.updateSubscriber(subscriber.id, changes, SETTINGS_REQUEST);
+		return { status, locale: resultLocale };
 	}
 
 	private async create(

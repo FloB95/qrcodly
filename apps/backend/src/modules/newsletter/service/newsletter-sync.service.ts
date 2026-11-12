@@ -16,6 +16,7 @@ import {
 	type TNewsletterUnsubscribeOutcome,
 } from '../domain/newsletter-sync.interface';
 import {
+	blockedAddressOnly,
 	CLERK_USER_ID_ATTRIBUTE,
 	isBlocked,
 	isOnList,
@@ -82,8 +83,12 @@ export class NewsletterSyncService {
 	async removeUser(userId: string): Promise<TNewsletterRemoveOutcome> {
 		const { byClerkId } = await this.findMatch(userId);
 		if (!byClerkId) return 'missing';
-		// a blocklist entry has to outlive the account, or a new sign-up with the address mails again
-		if (byClerkId.status === 'blocklisted') return 'blocked';
+		// a blocklist entry has to outlive the account, or a new sign-up with the address mails again;
+		// only the address and the block stay
+		if (byClerkId.status === 'blocklisted') {
+			await this.listmonk.replaceSubscriber(byClerkId.id, blockedAddressOnly(byClerkId));
+			return 'blocked';
+		}
 		await this.listmonk.deleteSubscriber(byClerkId.id);
 		return 'deleted';
 	}

@@ -1,4 +1,4 @@
-import { type IListmonkSubscriber } from '@/libs/listmonk';
+import { type IListmonkSubscriber, type TListmonkReplaceSubscriberInput } from '@/libs/listmonk';
 import { type ISubscriberMatch } from './subscriber-match.interface';
 
 /** Subscriber attribute that links a listmonk record to the Clerk account */
@@ -33,6 +33,19 @@ export const matchSubscribers = (
  */
 export const isBlocked = ({ byClerkId, byEmail }: ISubscriberMatch): boolean =>
 	byClerkId?.status === 'blocklisted' || byEmail?.status === 'blocklisted';
+
+/**
+ * What a blocklist entry keeps once its account is gone: the address and the block itself (status
+ * and listmonk's bounce records), nothing else about the person
+ */
+export const blockedAddressOnly = (
+	subscriber: IListmonkSubscriber,
+): TListmonkReplaceSubscriberInput => ({
+	email: subscriber.email,
+	name: subscriber.email,
+	status: 'blocklisted',
+	attribs: {},
+});
 
 /**
  * The account's address is held by a subscriber linked to another account, whose email change has

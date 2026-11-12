@@ -10,5 +10,6 @@ export type {
 	IListmonkSubscriberPage,
 	TListmonkSubscriberStatus,
 	TListmonkSubscriptionStatus,
+	TListmonkReplaceSubscriberInput,
 	TListmonkUpdateSubscriberInput,
 } from './listmonk.interface';

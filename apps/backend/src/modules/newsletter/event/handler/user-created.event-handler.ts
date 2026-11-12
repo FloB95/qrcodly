@@ -4,7 +4,6 @@ import { AbstractEventHandler } from '@/core/event/handler/abstract.event-handle
 import { UserCreatedEvent } from '@/core/event/user-created.event';
 import { Logger } from '@/core/logging';
 import { NewsletterSyncService } from '../../service/newsletter-sync.service';
-import { fromUserJSON } from '../../domain/newsletter-user';
 
 @EventHandler(UserCreatedEvent.eventName)
 export class AddNewsletterSubscriberOnUserCreatedEventHandler extends AbstractEventHandler<UserCreatedEvent> {
@@ -17,7 +16,7 @@ export class AddNewsletterSubscriberOnUserCreatedEventHandler extends AbstractEv
 		if (!sync.isEnabled()) return;
 
 		try {
-			const outcome = await sync.ensureSubscriber(fromUserJSON(event.user), 'signup');
+			const outcome = await sync.ensureSubscriber(await sync.getUser(event.user.id), 'signup');
 			container.resolve(Logger).info('newsletter.sync.user-created', {
 				userId: event.user.id,
 				outcome,
