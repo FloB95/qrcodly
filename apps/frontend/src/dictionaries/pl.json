@@ -1388,7 +1388,7 @@
 		"question10": "Czy kody QR działają również w formie drukowanej?",
 		"answer10": "Absolutnie! Kody QR są specjalnie zoptymalizowane do druku i działają niezawodnie na różnych materiałach, o ile pozostają wyraźne i nieuszkodzone. Zapewnij dobrą jakość druku, a Twoje kody będą gotowe do użycia w dowolnym miejscu!",
 		"question11": "Gdzie przechowywane są moje dane?",
-		"answer11": "Główna infrastruktura QRcodly działa na serwerach w Niemczech. Do logowania używamy Clerk, do płatności Stripe, a Sentry i PostHog pomagają znajdować błędy i ulepszać produkt. Twoje dane nie są sprzedawane ani wykorzystywane do reklam.",
+		"answer11": "Główna infrastruktura QRcodly działa na serwerach w Niemczech. Do logowania używamy Clerk, do płatności Stripe, do wysyłki nowości o produkcie Amazon SES, a Sentry i PostHog pomagają znajdować błędy i ulepszać produkt. Twoje dane nie są sprzedawane ani wykorzystywane do reklam podmiotów trzecich. Jeśli masz konto, od czasu do czasu wysyłamy Ci e-mailem nowości o QRcodly. Możesz to w każdej chwili wyłączyć w ustawieniach lub za pomocą linku w każdym e-mailu.",
 		"viewAll": "Zobacz wszystkie FAQ"
 	},
 	"fileUpload": {
@@ -1756,7 +1756,19 @@
 			"emailAddError": "Nie udało się dodać adresu e-mail. Spróbuj ponownie.",
 			"emailNotFound": "Adres e-mail nie znaleziony. Spróbuj ponownie.",
 			"verificationError": "Nieprawidłowy kod weryfikacyjny. Spróbuj ponownie.",
-			"currentPassword": "Aktualne Hasło"
+			"currentPassword": "Aktualne Hasło",
+			"newsletterTitle": "Nowości o produkcie e-mailem",
+			"newsletterDescription": "Około 2–3 e-maile rocznie z nowościami o QRcodly. Możesz zrezygnować tutaj lub za pomocą linku w każdym e-mailu. Więcej informacji w naszej <link>polityce prywatności</link>.",
+			"newsletterSwitchLabel": "Otrzymuj nowości o produkcie",
+			"newsletterSubscribed": "Od teraz będziesz otrzymywać nowości o produkcie e-mailem.",
+			"newsletterUnsubscribed": "Nie będziesz już otrzymywać nowości o produkcie e-mailem.",
+			"newsletterError": "Nie udało się zapisać ustawienia e-mail. Spróbuj ponownie.",
+			"newsletterVerifyEmail": "Najpierw zweryfikuj swój adres e-mail. Potem możesz zmienić to ustawienie.",
+			"newsletterUnavailable": "To ustawienie jest obecnie niedostępne. Spróbuj ponownie później.",
+			"newsletterBlocked": "Wysyłka na Twój adres e-mail jest zablokowana, na przykład z powodu wcześniejszej rezygnacji z subskrypcji lub problemu z doręczeniem e-maila. Aby to zmienić, napisz do nas na <contact>info@qrcodly.de</contact>.",
+			"newsletterLanguageLabel": "Język e-maili",
+			"newsletterLanguageHint": "Nasze e-maile piszemy po angielsku i po niemiecku.",
+			"newsletterLanguageSaved": "Język zapisany."
 		},
 		"security": {
 			"title": "Bezpieczeństwo",
@@ -2524,7 +2536,7 @@
 				"q4": "Czy kody QR działają również w druku?",
 				"a4": "Oczywiście! Kody QR są specjalnie zoptymalizowane do druku i działają niezawodnie na różnych materiałach, pod warunkiem, że pozostają czytelne i nieuszkodzone.",
 				"q5": "Gdzie są hostowane moje dane?",
-				"a5": "Główna infrastruktura QRcodly działa na serwerach w Niemczech. Do logowania używamy Clerk, do płatności Stripe, a Sentry i PostHog pomagają znajdować błędy i ulepszać produkt. Twoje dane nie są sprzedawane ani wykorzystywane do reklam.",
+				"a5": "Główna infrastruktura QRcodly działa na serwerach w Niemczech. Do logowania używamy Clerk, do płatności Stripe, do wysyłki nowości o produkcie Amazon SES, a Sentry i PostHog pomagają znajdować błędy i ulepszać produkt. Twoje dane nie są sprzedawane ani wykorzystywane do reklam podmiotów trzecich. Jeśli masz konto, od czasu do czasu wysyłamy Ci e-mailem nowości o QRcodly. Możesz to w każdej chwili wyłączyć w ustawieniach lub za pomocą linku w każdym e-mailu.",
 				"q6": "Czy QRcodly jest open source?",
 				"a6": "Tak! QRcodly jest w pełni open source i dostępny na GitHub. Możesz przejrzeć kod, wnieść swój wkład lub nawet hostować własną instancję.",
 				"q7": "Czy mogę używać QRcodly do celów komercyjnych?",
@@ -4521,6 +4533,27 @@
 			"demo": "Demo na żywo",
 			"use": "Użyj szablonu",
 			"openDemo": "Demo na żywo: {name}"
+		}
+	},
+	"auth": {
+		"signIn": {
+			"metaTitle": "Zaloguj się",
+			"eyebrow": "Witaj ponownie",
+			"title": "Twoje kody QR czekają na Ciebie.",
+			"subtitle": "Zaloguj się, aby edytować kody, zarządzać krótkimi linkami i sprawdzać ich skuteczność."
+		},
+		"signUp": {
+			"metaTitle": "Zarejestruj się",
+			"eyebrow": "Darmowe konto",
+			"title": "Kody QR i krótkie linki w jednym miejscu.",
+			"subtitle": "Załóż darmowe konto i w każdej chwili zmieniaj, dokąd prowadzą Twoje kody – nawet po wydrukowaniu."
+		},
+		"benefitsTitle": "W cenie za darmo",
+		"benefits": {
+			"unlimited": "Nieograniczone kody QR, krótkie linki i skany",
+			"dynamic": "Dynamiczne kody QR, które zmienisz nawet po wydrukowaniu",
+			"statistics": "Statystyki skanów dla każdego kodu",
+			"noCreditCard": "Karta kredytowa nie jest wymagana"
 		}
 	}
 }

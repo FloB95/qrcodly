@@ -5,9 +5,10 @@ import type * as React from 'react';
 import { TooltipProvider } from '../ui/tooltip';
 import { PostHogProvider } from './PostHogProvider';
 import { ClerkProvider } from '@clerk/nextjs';
-import type { SupportedLanguages } from '@/i18n/routing';
-import { deDE, enUS, frFR, itIT, esES, nlNL, plPL, ptBR, ruRU } from '@clerk/localizations';
+import { signInPath, signUpPath, type SupportedLanguages } from '@/i18n/routing';
+import { getClerkLocalization } from '@/lib/clerk-localization';
 import { shadcn } from '@clerk/themes';
+import { authAppearance } from '@/lib/clerk-appearance';
 
 export default function Providers({
 	locale,
@@ -18,25 +19,15 @@ export default function Providers({
 }) {
 	const queryClient = getQueryClient();
 
-	const localeMap: Record<string, typeof enUS> = {
-		en: enUS,
-		de: deDE,
-		nl: nlNL,
-		fr: frFR,
-		it: itIT,
-		es: esES,
-		pl: plPL,
-		pt: ptBR,
-		ru: ruRU,
-	};
-
-	const clerkLocale = locale ? localeMap[locale] || enUS : enUS;
-
 	return (
 		<ClerkProvider
-			localization={clerkLocale}
+			localization={getClerkLocalization(locale)}
+			signInUrl={signInPath(locale)}
+			signUpUrl={signUpPath(locale)}
 			appearance={{
 				theme: shadcn,
+				signIn: authAppearance,
+				signUp: authAppearance,
 			}}
 		>
 			<QueryClientProvider client={queryClient}>

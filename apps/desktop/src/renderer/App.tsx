@@ -8,8 +8,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { getQueryClient } from './lib/queryClient';
 import { loadMessages, getPreferredLocale } from './lib/i18n';
 import type { SupportedLanguages } from './shims/i18n-routing';
-import { deDE, enUS, frFR, itIT, esES, nlNL, plPL, ruRU } from '@clerk/localizations';
 import { shadcn } from '@clerk/themes';
+import { getClerkLocalization } from '@/lib/clerk-localization';
 import DashboardLayout from './layouts/DashboardLayout';
 import QrCodesPage from './pages/QrCodesPage';
 import CreateQrCodePage from './pages/CreateQrCodePage';
@@ -28,17 +28,6 @@ import NotFoundPage from './pages/NotFoundPage';
 const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 const queryClient = getQueryClient();
-
-const localeMap: Record<string, typeof enUS> = {
-	en: enUS,
-	de: deDE,
-	nl: nlNL,
-	fr: frFR,
-	it: itIT,
-	es: esES,
-	pl: plPL,
-	ru: ruRU,
-};
 
 // Component to handle IPC navigation from main process
 function NavigationListener() {
@@ -79,12 +68,10 @@ export default function App() {
 		);
 	}
 
-	const clerkLocale = localeMap[locale] || enUS;
-
 	return (
 		<ClerkProvider
 			publishableKey={clerkPublishableKey}
-			localization={clerkLocale}
+			localization={getClerkLocalization(locale)}
 			appearance={{ theme: shadcn }}
 		>
 			<IntlProvider locale={locale} messages={messages}>
@@ -115,7 +102,7 @@ export default function App() {
 							</Show>
 							<Show when="signed-out">
 								<div className="flex items-center justify-center min-h-screen bg-background">
-									<SignIn routing="hash" />
+									<SignIn routing="hash" withSignUp unsafeMetadata={{ locale }} />
 								</div>
 							</Show>
 						</HashRouter>

@@ -1388,7 +1388,7 @@
 		"question10": "Do QR codes also work in print?",
 		"answer10": "Absolutely! QR codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
 		"question11": "Where is my data hosted?",
-		"answer11": "QRcodly's core infrastructure runs on servers in Germany. We use Clerk for sign-in, Stripe for payments and Sentry and PostHog to find errors and improve the product. Your data is not sold or used for advertising.",
+		"answer11": "QRcodly's core infrastructure runs on servers in Germany. We use Clerk for sign-in, Stripe for payments, Amazon SES to send our product news and Sentry and PostHog to find errors and improve the product. Your data is not sold or used for third-party advertising. If you have an account, we occasionally send you product news by email. You can turn this off at any time in the settings or via the link in every email.",
 		"viewAll": "See all FAQs"
 	},
 	"fileUpload": {
@@ -1756,7 +1756,19 @@
 			"emailAddError": "Failed to add email address. Please try again.",
 			"emailNotFound": "Email address not found. Please try again.",
 			"verificationError": "Invalid verification code. Please try again.",
-			"currentPassword": "Current Password"
+			"currentPassword": "Current Password",
+			"newsletterTitle": "Product news by email",
+			"newsletterDescription": "About 2–3 emails a year with news about QRcodly. You can unsubscribe here or via the link in every email. Learn more in our <link>privacy policy</link>.",
+			"newsletterSwitchLabel": "Receive product news",
+			"newsletterSubscribed": "You'll now receive product news by email.",
+			"newsletterUnsubscribed": "You won't receive product news by email anymore.",
+			"newsletterError": "Could not save your email preference. Please try again.",
+			"newsletterVerifyEmail": "Please verify your email address first. Then you can change this setting.",
+			"newsletterUnavailable": "This setting is currently not available. Please try again later.",
+			"newsletterBlocked": "Sending to your email address is blocked, for example because you unsubscribed earlier or an email could not be delivered. To change this, write to <contact>info@qrcodly.de</contact>.",
+			"newsletterLanguageLabel": "Language of the emails",
+			"newsletterLanguageHint": "We write our emails in English and German.",
+			"newsletterLanguageSaved": "Language saved."
 		},
 		"security": {
 			"title": "Security",
@@ -2524,7 +2536,7 @@
 				"q4": "Do QR codes also work in print?",
 				"a4": "Absolutely! QR codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
 				"q5": "Where is my data hosted?",
-				"a5": "QRcodly's core infrastructure runs on servers in Germany. We use Clerk for sign-in, Stripe for payments and Sentry and PostHog to find errors and improve the product. Your data is not sold or used for advertising.",
+				"a5": "QRcodly's core infrastructure runs on servers in Germany. We use Clerk for sign-in, Stripe for payments, Amazon SES to send our product news and Sentry and PostHog to find errors and improve the product. Your data is not sold or used for third-party advertising. If you have an account, we occasionally send you product news by email. You can turn this off at any time in the settings or via the link in every email.",
 				"q6": "Is QRcodly open source?",
 				"a6": "Yes! QRcodly is fully open source and available on GitHub. You can inspect the code, contribute, or even self-host your own instance.",
 				"q7": "Can I use QRcodly for commercial purposes?",
@@ -4521,6 +4533,27 @@
 			"demo": "Live demo",
 			"use": "Use template",
 			"openDemo": "Live demo: {name}"
+		}
+	},
+	"auth": {
+		"signIn": {
+			"metaTitle": "Sign in",
+			"eyebrow": "Welcome back",
+			"title": "Your QR codes are waiting for you.",
+			"subtitle": "Sign in to edit your codes, manage your short links and see how they perform."
+		},
+		"signUp": {
+			"metaTitle": "Sign up",
+			"eyebrow": "Free account",
+			"title": "QR codes and short links in one place.",
+			"subtitle": "Create your free account and change where your codes lead at any time, even after printing."
+		},
+		"benefitsTitle": "Included for free",
+		"benefits": {
+			"unlimited": "Unlimited QR codes, short links and scans",
+			"dynamic": "Dynamic QR codes you can still change after printing",
+			"statistics": "Scan statistics for every code",
+			"noCreditCard": "No credit card required"
 		}
 	}
 }
