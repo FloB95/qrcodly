@@ -20,7 +20,7 @@ const CACHE_TTL_SECONDS = 86_400;
 const CACHE_PREFIX = 'qr_render:';
 const RENDER_TIMEOUT_MS = 5_000;
 // bump when the drawing changes, so cached images and ETags from before are not served again
-const RENDER_VERSION = 2;
+const RENDER_VERSION = 3;
 
 export type RenderQrCodeResult = {
 	buffer: Buffer;

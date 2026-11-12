@@ -4,22 +4,21 @@
  * Encapsulates color picker state management, including:
  * - Color state and debouncing
  * - Conversion between TColorOrGradient and picker string format
- * - Gradient normalization and validation
- * - Proper React Hook dependencies to avoid stale closures
+ * - Normalizing picker output so the picker's own parser and our schema accept it
  */
 
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { useColorPicker } from 'react-best-gradient-color-picker';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import type { TColorOrGradient } from '@shared/schemas';
 import {
 	colorTypeToPickerString,
 	pickerStringToColorType,
-	normalizeGradientString,
-	type GetGradientObjectFn,
-	type GradientObject,
+	normalizePickerString,
 } from '@/lib/color-picker.utils';
-import { COLOR_PICKER_CONFIG } from '@/components/qr-generator/style/ColorPicker.constants';
+import {
+	COLOR_PICKER_CONFIG,
+	DEFAULT_GRADIENT,
+} from '@/components/qr-generator/style/ColorPicker.constants';
 
 /**
  * Props for the useColorPickerState hook
@@ -34,15 +33,13 @@ interface UseColorPickerStateProps {
  */
 interface UseColorPickerStateReturn {
 	color: string;
-	getGradientObject: GetGradientObjectFn;
 	handleColorChange: (newColor: string) => void;
+	/** The picker's `config` fallbacks: the user's own colors instead of the picker's samples. */
+	pickerDefaults: { defaultColor: string; defaultGradient: string };
 }
 
 /**
  * Custom hook for managing ColorPicker state
- *
- * This hook encapsulates all state logic for the ColorPicker component,
- * fixing the missing dependency warnings and preventing stale closures.
  *
  * @param props - Hook configuration
  * @returns Color state and handlers
@@ -50,7 +47,7 @@ interface UseColorPickerStateReturn {
  * @example
  * ```tsx
  * function ColorPicker({ defaultColor, onChange }) {
- *   const { color, getGradientObject, handleColorChange } = useColorPickerState({
+ *   const { color, handleColorChange } = useColorPickerState({
  *     defaultColor,
  *     onChange
  *   });
@@ -68,39 +65,53 @@ export function useColorPickerState({
 	defaultColor,
 	onChange,
 }: UseColorPickerStateProps): UseColorPickerStateReturn {
-	const [color, setColor] = useState<string>(
+	const [color, setColor] = useState<string>(() =>
 		defaultColor ? colorTypeToPickerString(defaultColor) : '#000000',
 	);
 
-	const { getGradientObject, deletePoint } = useColorPicker(color, setColor);
 	const [debouncedColor] = useDebouncedValue(color, COLOR_PICKER_CONFIG.DEBOUNCE_DELAY);
 	const onChangeRef = useRef(onChange);
+	const hasUserChange = useRef(false);
 
 	useEffect(() => {
 		onChangeRef.current = onChange;
 	}, [onChange]);
 
 	useEffect(() => {
-		const colorObject = pickerStringToColorType(debouncedColor, getGradientObject);
-		onChangeRef.current(colorObject);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		// Only report edits: converting the untouched stored value back would rewrite it on mount
+		if (!hasUserChange.current) return;
+		onChangeRef.current(pickerStringToColorType(debouncedColor));
 	}, [debouncedColor]);
+
+	// The picker's Solid/Gradient buttons fall back to its own sample colors, or to a gradient it
+	// remembered before later edits. Switching modes brings back what the user last had instead.
+	const lastByMode = useRef<{ solid?: string; gradient?: string }>({});
 
 	const handleColorChange = useCallback(
 		(newColor: string) => {
-			const normalizedColor = normalizeGradientString(newColor);
-			setColor(normalizedColor);
-			const gradientObject = getGradientObject(normalizedColor) as GradientObject | undefined;
-			if (gradientObject?.isGradient && gradientObject.colors.length > 2) {
-				deletePoint(1);
-			}
+			hasUserChange.current = true;
+			const current = isGradient(color) ? 'gradient' : 'solid';
+			lastByMode.current[current] = color;
+
+			const next = normalizePickerString(newColor);
+			const target = isGradient(next) ? 'gradient' : 'solid';
+			setColor(target === current ? next : (lastByMode.current[target] ?? next));
 		},
-		[getGradientObject, deletePoint],
+		[color],
 	);
+
+	const pickerDefaults = useMemo(() => {
+		const stored = pickerStringToColorType(color);
+		return stored.type === 'gradient'
+			? { defaultColor: stored.colorStops[0]?.color ?? '#000000', defaultGradient: color }
+			: { defaultColor: color, defaultGradient: DEFAULT_GRADIENT };
+	}, [color]);
 
 	return {
 		color,
-		getGradientObject,
 		handleColorChange,
+		pickerDefaults,
 	};
 }
+
+const isGradient = (color: string) => color.includes('gradient(');

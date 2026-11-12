@@ -15,11 +15,7 @@ import { cn } from '@/lib/utils';
 import type { TColorOrGradient } from '@shared/schemas';
 import { colorToButtonText, pickerStringToColorType } from '@/lib/color-picker.utils';
 import { useColorPickerState } from '@/hooks/use-color-picker-state';
-import {
-	SOLID_COLOR_PRESETS,
-	DEFAULT_GRADIENT,
-	COLOR_PICKER_CONFIG,
-} from './ColorPicker.constants';
+import { SOLID_COLOR_PRESETS, COLOR_PICKER_CONFIG } from './ColorPicker.constants';
 
 interface ColorPickerProps {
 	defaultColor?: TColorOrGradient;
@@ -44,17 +40,18 @@ interface ColorPickerProps {
  * ```
  */
 export function ColorPicker({ defaultColor, onChange, withGradient = true }: ColorPickerProps) {
-	const { color, getGradientObject, handleColorChange } = useColorPickerState({
+	const { color, handleColorChange, pickerDefaults } = useColorPickerState({
 		defaultColor,
 		onChange,
 	});
 
 	const buttonText = useMemo(() => {
 		if (!color) return 'Pick a color';
-		const colorObject = pickerStringToColorType(color, getGradientObject);
-		return colorToButtonText(colorObject);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		return colorToButtonText(pickerStringToColorType(color));
 	}, [color]);
+
+	// Gradient stops are stored without alpha, so don't offer transparency for them
+	const isGradient = color.includes('gradient(');
 
 	return (
 		<Dialog>
@@ -79,9 +76,12 @@ export function ColorPicker({ defaultColor, onChange, withGradient = true }: Col
 					Use the color picker dialog to select a color or gradient for the background.
 				</DialogDescription>
 				<ReactColorPicker
-					config={{ defaultGradient: DEFAULT_GRADIENT }}
+					config={pickerDefaults}
 					presets={SOLID_COLOR_PRESETS}
 					hideControls={!withGradient}
+					hideOpacity={isGradient}
+					// Without the native EyeDropper API (Safari, Firefox) the picker's fallback needs a #root element and leaves a blocking overlay behind
+					hideEyeDrop={typeof window === 'undefined' || !('EyeDropper' in window)}
 					disableDarkMode
 					hideGradientStop
 					hideColorGuide

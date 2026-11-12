@@ -156,4 +156,42 @@ describe('QR code rendering', () => {
 		expect(parseDataUrl('data:image/png')).toBeUndefined();
 		expect(parseDataUrl('https://example.com/logo.png')).toBeUndefined();
 	});
+
+	it.each([
+		[0, 0],
+		[45, 45],
+		[90, 90],
+		[135, 135],
+		[180, 180],
+		[270, 270],
+		[315, 315],
+		[null, 90],
+	])(
+		'draws a linear gradient stored as %sdeg in the CSS direction %sdeg',
+		async (rotation, css) => {
+			const { image: _image, ...options } = convertQrCodeOptionsToLibraryOptions({
+				...QrCodeDefaults,
+				backgroundOptions: {
+					style: {
+						type: 'gradient',
+						gradientType: 'linear',
+						rotation,
+						colorStops: [
+							{ offset: 0, color: '#000000' },
+							{ offset: 1, color: '#ffffff' },
+						],
+					},
+				},
+			});
+			const svg = await renderQrCodeSvg({ ...options, data: 'https://www.qrcodly.de/' }, undefined);
+
+			const tag = /<linearGradient[^>]*id="background-color[^"]*"[^>]*>/.exec(svg)?.[0] ?? '';
+			const [x1, y1, x2, y2] = ['x1', 'y1', 'x2', 'y2'].map((name) =>
+				Number(new RegExp(`${name}="([^"]+)"`).exec(tag)?.[1]),
+			);
+			// CSS angles run clockwise from "to top"; SVG y points down
+			const drawn = (Math.atan2(x2 - x1, y1 - y2) * 180) / Math.PI;
+			expect((drawn + 360) % 360).toBeCloseTo(css, 0);
+		},
+	);
 });

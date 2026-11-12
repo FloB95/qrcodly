@@ -467,7 +467,10 @@ function mapColorOrGradientToLibrary(option: TColorOrGradient): {
 				gradient: {
 					type: option.gradientType,
 					colorStops: option.colorStops,
-					rotation: option.rotation ? (option.rotation - 90 + 360) % 360 : undefined,
+					// qr-code-styling wants radians with 0 = left to right; the stored rotation is a CSS
+					// angle (0deg = to top, null = the picker's 90deg default). Radial ignores rotation.
+					rotation:
+						option.gradientType === 'linear' ? degreesToRadians((option.rotation ?? 90) - 90) : 0,
 				},
 			};
 	}
