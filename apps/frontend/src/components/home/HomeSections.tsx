@@ -6,7 +6,6 @@ import {
 	AcademicCapIcon,
 	ArrowRightIcon,
 	ArrowUpRightIcon,
-	SwatchIcon,
 	BuildingOffice2Icon,
 	BuildingStorefrontIcon,
 	ChatBubbleBottomCenterTextIcon,
@@ -133,8 +132,8 @@ export async function HomeIntegrations({ locale }: { locale: string }) {
 		{
 			name: c('adobeIndesign.name'),
 			description: c('adobeIndesign.description'),
-			// Adobe allows its product icons only with approval; neutral until Adobe answers
-			icon: SwatchIcon,
+			// Adobe allows only its "Designed for" badge here, never the bare InDesign icon
+			badge: '/images/integrations/designed-for-adobe-indesign.png',
 			href: catalogHref('adobe-indesign'),
 			cta: c('adobeIndesign.cta'),
 			pro: true,
@@ -170,10 +169,16 @@ export async function HomeIntegrations({ locale }: { locale: string }) {
 											height={36}
 											className="size-9 object-contain"
 										/>
-									) : item.icon ? (
-										<span className="flex size-9 items-center justify-center rounded-lg bg-slate-100 text-slate-700">
-											<item.icon className="size-5" />
-										</span>
+									) : item.badge ? (
+										// unoptimized: lossy re-encoding leaves a visible box around the badge
+										<Image
+											src={item.badge}
+											alt="Designed for Adobe InDesign"
+											width={172}
+											height={36}
+											className="h-9 w-auto"
+											unoptimized
+										/>
 									) : null}
 									{item.pro && (
 										<span className="rounded-full bg-slate-900 px-2 py-0.5 text-[11px] font-semibold text-white">
