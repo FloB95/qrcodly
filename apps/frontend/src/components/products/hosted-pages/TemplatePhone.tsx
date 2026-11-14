@@ -37,7 +37,7 @@ export async function TemplatePhone({
 			)}
 			aria-hidden="true"
 		>
-			<div className="pointer-events-none h-full overflow-hidden rounded-[34px] bg-white">
+			<div className="pointer-events-none h-full overflow-hidden rounded-[34px]">
 				<div
 					className="flex min-h-full origin-top-left flex-col"
 					style={{ transform: `scale(${scale})`, width: `${100 / scale}%` }}

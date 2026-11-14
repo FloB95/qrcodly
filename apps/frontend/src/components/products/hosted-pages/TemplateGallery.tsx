@@ -44,7 +44,7 @@ export async function TemplateGallery({
 								locale={locale}
 								template={id}
 								scale={0.5}
-								className="h-[440px] w-[220px] rounded-[36px] p-2 shadow-[0_40px_60px_-30px_rgba(0,0,0,0.75),0_0_0_1px_rgba(255,255,255,0.08)] transition duration-500 group-hover:-translate-y-2 group-hover:-rotate-2"
+								className="h-[440px] w-[220px] rounded-[36px] p-2 shadow-[0_40px_60px_-30px_rgba(0,0,0,0.75)] transition duration-500 group-hover:-translate-y-2 group-hover:-rotate-2"
 							/>
 							{/* a layer, not a wrapper: the page in the phone has links of its own */}
 							<Link
