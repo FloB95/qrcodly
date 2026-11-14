@@ -12,6 +12,7 @@ import { ProductFaqSection } from '@/components/products/ProductFaqSection';
 import { FaqJsonLd } from '@/components/seo/FaqJsonLd';
 import { TemplatePhone } from '@/components/products/hosted-pages/TemplatePhone';
 import { TemplateGallery } from '@/components/products/hosted-pages/TemplateGallery';
+import { CtaQrMotif } from '@/components/products/CtaQrMotif';
 import { BreadcrumbJsonLd, marketingMetadata } from '@/components/marketing/seo';
 import { Check, Eyebrow, SectionHead, cardClass } from '@/components/marketing/SectionHead';
 
@@ -282,10 +283,7 @@ export default async function Page({ params }: DefaultPageParams) {
 				<Container>
 					<section className="px-4 pb-24 sm:px-6">
 						<div className="relative flex flex-wrap items-center justify-between gap-8 overflow-hidden rounded-[32px] bg-[#7a3b12] px-8 py-14 text-[#fdf8f3] sm:px-12 sm:py-16">
-							<div
-								className="absolute -bottom-28 -left-20 size-80 rounded-full bg-[radial-gradient(circle,rgba(232,199,156,0.4),rgba(232,199,156,0))]"
-								aria-hidden="true"
-							/>
+							<CtaQrMotif />
 							<div className="relative flex max-w-xl flex-col gap-3.5">
 								<h2 className="font-serif text-3xl font-semibold sm:text-[44px] sm:leading-[1.06]">
 									{t('cta.title')}
