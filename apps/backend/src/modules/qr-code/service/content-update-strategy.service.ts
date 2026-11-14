@@ -15,6 +15,7 @@ export class ContentUpdateStrategyService {
 		@inject(DefaultContentUpdateStrategy) defaultStrategy: DefaultContentUpdateStrategy,
 	) {
 		this.defaultStrategy = defaultStrategy;
+		// hosted pages are updated by UpdateQrCodeUseCase through HostedPageService
 		this.strategies = [urlStrategy, vcardStrategy];
 	}
 

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import { AbstractEntitySchema } from './AbstractEntitySchema'; // Stelle sicher, dass der Pfad korrekt ist
+import { HOSTED_PAGE_TYPES, PdfInputSchema, ProductInputSchema } from './HostedPage';
+import { undocumentedSchemas } from './docs';
 
 export const QR_CODE_NAME_MAX_LENGTH = 50;
 
@@ -133,16 +135,49 @@ export const EmailInputSchema = z.object({
 });
 export type TEmailInput = z.infer<typeof EmailInputSchema>;
 
+const PHONE_NUMBER_CHARS = /^\+?[0-9\s()./-]+$/;
+const INTERNATIONAL_PHONE_NUMBER_CHARS = /^\+[0-9\s()./-]+$/;
+const countDigits = (value: string) => value.replace(/\D/g, '').length;
+
+// Spaces, dashes, dots, slashes and parentheses stay as typed; the payload converters strip them.
+const contactPhoneSchema = z
+	.string()
+	.trim()
+	.max(32)
+	.regex(PHONE_NUMBER_CHARS, 'Invalid phone number')
+	.refine((value) => countDigits(value) >= 3 && countDigits(value) <= 20, 'Invalid phone number');
+
+// wa.me links only work with the country code, so the leading "+" is mandatory.
+const internationalPhoneSchema = z
+	.string()
+	.trim()
+	.max(32)
+	.regex(
+		INTERNATIONAL_PHONE_NUMBER_CHARS,
+		'Phone number must start with "+" followed by the country code',
+	)
+	.refine((value) => countDigits(value) >= 7 && countDigits(value) <= 15, 'Invalid phone number');
+
 export const PhoneInputSchema = z.object({
-	phone: z.string().min(3),
+	phone: contactPhoneSchema.describe(
+		'Phone number to call when the QR code is scanned, e.g. "+49 170 1234567"',
+	),
 });
 export type TPhoneInput = z.infer<typeof PhoneInputSchema>;
 
 export const SmsInputSchema = z.object({
-	phone: z.string().min(3),
-	message: z.string().optional(),
+	phone: contactPhoneSchema.describe('Recipient phone number of the SMS, e.g. "+49 170 1234567"'),
+	message: z.string().max(500).optional().describe('Pre-filled SMS text (max 500 characters)'),
 });
 export type TSmsInput = z.infer<typeof SmsInputSchema>;
+
+export const WhatsAppInputSchema = z.object({
+	phone: internationalPhoneSchema.describe(
+		'WhatsApp number in international format with country code, e.g. "+49 170 1234567"',
+	),
+	message: z.string().max(500).optional().describe('Pre-filled chat message (max 500 characters)'),
+});
+export type TWhatsAppInput = z.infer<typeof WhatsAppInputSchema>;
 
 export const SocialPlatformEnum = z.enum([
 	'instagram',
@@ -228,12 +263,19 @@ export const ALL_QR_CODE_CONTENT_TYPES = [
 	'location',
 	'event',
 	'epc',
+	'phone',
+	'sms',
+	'whatsapp',
 	// 'socials',
+	'pdf',
+	'product',
 ] as const;
 
 // Alle Typen als Literal-Union
 export const QrCodeContentType = z.enum(ALL_QR_CODE_CONTENT_TYPES);
 export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
+// hosted pages work through the API but are not part of the public API docs
+undocumentedSchemas.add(QrCodeContentType, { values: HOSTED_PAGE_TYPES });
 
 const ContentSchemas = {
 	url: UrlInputSchema,
@@ -244,7 +286,12 @@ const ContentSchemas = {
 	location: LocationInputSchema,
 	event: EventInputSchema,
 	epc: EpcInputSchema,
+	phone: PhoneInputSchema,
+	sms: SmsInputSchema,
+	whatsapp: WhatsAppInputSchema,
 	// socials: SocialInputSchema,
+	pdf: PdfInputSchema,
+	product: ProductInputSchema,
 } as const;
 
 const createContentSchema = <T extends keyof typeof ContentSchemas>(type: T) =>
@@ -252,6 +299,11 @@ const createContentSchema = <T extends keyof typeof ContentSchemas>(type: T) =>
 		type: z.literal(type),
 		data: ContentSchemas[type],
 	});
+
+const pdfContentSchema = createContentSchema('pdf');
+undocumentedSchemas.add(pdfContentSchema, {});
+const productContentSchema = createContentSchema('product');
+undocumentedSchemas.add(productContentSchema, {});
 
 export const QrCodeContent = z.discriminatedUnion('type', [
 	createContentSchema('url'),
@@ -262,7 +314,12 @@ export const QrCodeContent = z.discriminatedUnion('type', [
 	createContentSchema('location'),
 	createContentSchema('event'),
 	createContentSchema('epc'),
+	createContentSchema('phone'),
+	createContentSchema('sms'),
+	createContentSchema('whatsapp'),
 	// createContentSchema('socials'),
+	pdfContentSchema,
+	productContentSchema,
 ]);
 
 export type TQrCodeContent = z.infer<typeof QrCodeContent>;

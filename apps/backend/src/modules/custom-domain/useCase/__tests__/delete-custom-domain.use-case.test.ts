@@ -3,6 +3,8 @@ import { DeleteCustomDomainUseCase } from '../delete-custom-domain.use-case';
 import type CustomDomainRepository from '../../domain/repository/custom-domain.repository';
 import { type CloudflareService } from '../../service/cloudflare.service';
 import { type Logger } from '@/core/logging';
+import { type EventEmitter } from '@/core/event';
+import { CustomDomainDeletedEvent } from '../../event/custom-domain-deleted.event';
 import { mock, type MockProxy } from 'jest-mock-extended';
 import { type TCustomDomain } from '../../domain/entities/custom-domain.entity';
 import { CloudflareApiError } from '../../service/cloudflare.service';
@@ -12,6 +14,7 @@ describe('DeleteCustomDomainUseCase', () => {
 	let mockRepository: MockProxy<CustomDomainRepository>;
 	let mockCloudflareService: MockProxy<CloudflareService>;
 	let mockLogger: MockProxy<Logger>;
+	let mockEventEmitter: MockProxy<EventEmitter>;
 
 	const mockDomainWithCloudflare: TCustomDomain = {
 		id: 'domain-1',
@@ -44,7 +47,13 @@ describe('DeleteCustomDomainUseCase', () => {
 		mockRepository = mock<CustomDomainRepository>();
 		mockCloudflareService = mock<CloudflareService>();
 		mockLogger = mock<Logger>();
-		useCase = new DeleteCustomDomainUseCase(mockRepository, mockCloudflareService, mockLogger);
+		mockEventEmitter = mock<EventEmitter>();
+		useCase = new DeleteCustomDomainUseCase(
+			mockRepository,
+			mockCloudflareService,
+			mockLogger,
+			mockEventEmitter,
+		);
 
 		mockCloudflareService.deleteCustomHostname.mockResolvedValue(undefined);
 		mockRepository.delete.mockResolvedValue(true);
@@ -59,6 +68,14 @@ describe('DeleteCustomDomainUseCase', () => {
 
 		expect(mockCloudflareService.deleteCustomHostname).toHaveBeenCalledWith('cf-hostname-1');
 		expect(mockRepository.delete).toHaveBeenCalledWith(mockDomainWithCloudflare);
+	});
+
+	it('announces the deletion, for modules that cache the domain', async () => {
+		await useCase.execute(mockDomainWithCloudflare);
+
+		expect(mockEventEmitter.emit).toHaveBeenCalledWith(expect.any(CustomDomainDeletedEvent));
+		const [event] = mockEventEmitter.emit.mock.calls[0] as [CustomDomainDeletedEvent];
+		expect(event.customDomain).toBe(mockDomainWithCloudflare);
 	});
 
 	it('should skip Cloudflare deletion when no cloudflareHostnameId', async () => {

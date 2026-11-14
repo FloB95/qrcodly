@@ -1,0 +1,3 @@
+Nome do QR;Título;Nome;Sobrenome;EmailPrivado;EmailComercial;TelefonePrivado;TelefoneCelular;TelefoneComercial;Fax;Empresa;Cargo;RuaPrivada;CidadePrivada;Código PostalPrivado;EstadoPrivado;PaísPrivado;RuaComercial;CidadeComercial;Código PostalComercial;EstadoComercial;PaísComercial;Site;Nota;Dinâmico (1 = sim, 0 = não)
+Contato João Silva;Dr.;João;Silva;joao@example.com;;;+351912345678;;;Example Lda.;Desenvolvedor;Rua Principal 123;Lisboa;1000-001;Lisboa;Portugal;Av. Comercial 100;Porto;4000-001;Porto;Portugal;https://example.com;Cliente desde 2020;0
+Contato Maria Santos;;Maria;Santos;;maria@example.com;;+351987654321;;;Example Corp.;Gerente;Rua das Flores 456;Coimbra;3000-001;Coimbra;Portugal;Rua Corporativa 200;Braga;4700-001;Braga;Portugal;https://example.org;;1

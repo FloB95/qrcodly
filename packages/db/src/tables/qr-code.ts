@@ -1,4 +1,8 @@
-import { type TQrCodeContent, type TQrCodeOptions } from '@shared/schemas';
+import {
+	type TQrCodeContent,
+	type TQrCodeOptions,
+	type TStoredQrCodeContent,
+} from '@shared/schemas';
 import { relations } from 'drizzle-orm';
 import { datetime, index, json, text, varchar } from 'drizzle-orm/mysql-core';
 import { createTable } from '../utils';
@@ -15,7 +19,8 @@ const qrCode = createTable(
 		}).primaryKey(),
 		name: varchar({ length: 50 }),
 		config: json().$type<TQrCodeOptions>().notNull(),
-		content: json().$type<TQrCodeContent>().notNull(),
+		/** For hosted types only the type: the page lives in `hosted_page`, see `TQrCode` */
+		content: json().$type<TStoredQrCodeContent>().notNull(),
 		qrCodeData: text(),
 		previewImage: text(),
 		createdBy: varchar({ length: 255 }),
@@ -28,7 +33,10 @@ const qrCode = createTable(
 	],
 );
 
-export type TQrCode = typeof qrCode.$inferSelect;
+/** A row as stored: hosted content is a stub. Only the QR code repository reads rows. */
+export type TQrCodeRow = typeof qrCode.$inferSelect;
+/** A QR code with its full content, hosted pages loaded in. */
+export type TQrCode = Omit<TQrCodeRow, 'content'> & { content: TQrCodeContent };
 export type TQrCodeWithRelations = TQrCode & {
 	shortUrl: TShortUrl | null;
 	share: TQrCodeShare | null;

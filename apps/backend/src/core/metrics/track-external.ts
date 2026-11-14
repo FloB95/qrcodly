@@ -9,7 +9,8 @@ export type ExternalProvider =
 	| 'web_risk'
 	| 'screenshot'
 	| 'google_analytics'
-	| 'matomo';
+	| 'matomo'
+	| 'listmonk';
 
 /**
  * Times an outbound third-party call and records its outcome.

@@ -17,6 +17,7 @@
 		"outDir": "./dist",
 		"paths": {
 			"@/env": ["./src/renderer/shims/env.ts"],
+			"@/lib/api-client-header": ["./src/renderer/shims/api-client-header.ts"],
 			"@/i18n/routing": ["./src/renderer/shims/i18n-routing.ts"],
 			"@/i18n/navigation": ["./src/renderer/shims/i18n-navigation.ts"],
 			"@/*": ["./../frontend/src/*"],

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { QrCodeContentType, QrCodeOptionsSchema, QrCodeSchema } from '../../schemas/QrCode';
-import { validateContentHttpUrls } from './validateContentHttpUrls';
+import { validateContentHttpUrls, validateHostedPageContent } from './validateContentHttpUrls';
 
 export const CreateQrCodeDto = QrCodeSchema.pick({
 	name: true,
@@ -23,6 +23,7 @@ export const CreateQrCodeDto = QrCodeSchema.pick({
 	})
 	.superRefine((data, ctx) => {
 		validateContentHttpUrls(data.content, ctx);
+		validateHostedPageContent(data.content, ctx);
 	});
 
 export type TCreateQrCodeDto = z.infer<typeof CreateQrCodeDto>;
@@ -32,7 +33,7 @@ export const BulkImportQrCodeDto = QrCodeSchema.pick({
 	config: true,
 }).extend({
 	contentType: QrCodeContentType.describe(
-		'Content type for all QR codes in the import: url, text, wifi, vCard, email, location, event, or epc',
+		'Content type for all QR codes in the import: url, text, wifi, vCard, phone, sms, or whatsapp (the other types do not support bulk import)',
 	),
 	file: z
 		.instanceof(File, { error: 'Input is no file. Please upload a binary file.' })

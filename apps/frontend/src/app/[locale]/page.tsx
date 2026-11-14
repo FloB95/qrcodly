@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Footer from '@/components/Footer';
 import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import Header from '@/components/Header';
@@ -5,6 +6,7 @@ import Container from '@/components/ui/container';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
+import { GeneratorPrefill } from '@/components/qr-generator/GeneratorPrefill';
 import Script from 'next/script';
 import { QrCodeDefaults } from '@shared/schemas';
 import { auth } from '@clerk/nextjs/server';
@@ -12,28 +14,16 @@ import { notFound } from 'next/navigation';
 import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
 import { Hero } from '@/components/Hero';
 import { ProductStatsBar } from '@/components/products/ProductStatsBar';
-import dynamic from 'next/dynamic';
-
-// Dynamic imports for below-the-fold components to reduce initial bundle size
-const FeatureSlider = dynamic(
-	() => import('@/components/FeatureSlider').then((mod) => mod.FeatureSlider),
-	{ ssr: true },
-);
-const ProductShowcase = dynamic(
-	() => import('@/components/ProductShowcase').then((mod) => mod.ProductShowcase),
-	{ ssr: true },
-);
-const Cta = dynamic(() => import('@/components/Cta').then((mod) => mod.Cta), {
-	ssr: true,
-});
-const BrowserExtensionTeaser = dynamic(
-	() => import('@/components/BrowserExtensionTeaser').then((mod) => mod.BrowserExtensionTeaser),
-	{ ssr: true },
-);
-const FAQSection = dynamic(() => import('@/components/Faq'), {
-	ssr: true,
-});
-
+import { ProductBento } from '@/components/products/ProductBento';
+import { ProductFaqSection } from '@/components/products/ProductFaqSection';
+import { ProductCtaSection } from '@/components/products/ProductCtaSection';
+import { TemplatePhone } from '@/components/products/hosted-pages/TemplatePhone';
+import { QrCustomizationMockup } from '@/components/products/mockups/QrCodesMockups';
+import { DashboardShowcase } from '@/components/marketing/DashboardScene';
+import { SectionHead } from '@/components/marketing/SectionHead';
+import { HomeIntegrations, HomeSolutions } from '@/components/home/HomeSections';
+import { FaqJsonLd } from '@/components/seo/FaqJsonLd';
+import { ChartBarIcon, LinkIcon } from '@heroicons/react/24/outline';
 export default async function Page({ params }: DefaultPageParams) {
 	const { locale } = await params;
 	if (!SUPPORTED_LANGUAGES.includes(locale)) {
@@ -42,6 +32,16 @@ export default async function Page({ params }: DefaultPageParams) {
 
 	const tMeta = await getTranslations({ locale, namespace: 'metadata' });
 	const tStats = await getTranslations({ locale, namespace: 'homeStats' });
+	const tHome = await getTranslations({ locale, namespace: 'home' });
+	const m = await getTranslations({ locale, namespace: 'marketing' });
+	const qr = await getTranslations({ locale, namespace: 'productsQrCodes' });
+	const url = await getTranslations({ locale, namespace: 'productsUrlShortener' });
+	const ana = await getTranslations({ locale, namespace: 'productsAnalytics' });
+	const tFaq = await getTranslations({ locale, namespace: 'faq' });
+	const faqItems = Array.from({ length: 12 }, (_, i) => ({
+		question: tFaq(`question${i + 1}`),
+		answer: tFaq(`answer${i + 1}`),
+	}));
 	const { userId } = await auth();
 	const isSignedIn = !!userId;
 
@@ -103,44 +103,111 @@ export default async function Page({ params }: DefaultPageParams) {
 
 						{/* Main QR Code Generator Tool */}
 						<section id="generator" aria-label="QR Code Generator Tool">
+							<Suspense fallback={null}>
+								<GeneratorPrefill />
+							</Suspense>
 							<QRcodeGenerator generatorType="QrCodeWithDownloadBtn" />
 						</section>
 					</Container>
 				</article>
 			</QrCodeGeneratorStoreProvider>
 
-			{/* Stats Bar */}
+			<FaqJsonLd items={faqItems} />
+
 			<ProductStatsBar
-				stats={Array.from({ length: 4 }, (_, i) => ({
-					value: tStats(`stat${i + 1}Value`),
-					label: tStats(`stat${i + 1}Label`),
+				eyebrow={m('eyebrow.numbers')}
+				title={tHome('statsTitle')}
+				stats={[1, 2, 3].map((n) => ({
+					value: tStats(`stat${n}Value`),
+					label: tStats(`stat${n}Label`),
 				}))}
 			/>
 
-			{/* Features Slider */}
-			<section id="features" aria-label="Features" className="py-10 sm:py-24">
-				<FeatureSlider />
+			<ProductBento
+				eyebrow={m('eyebrow.features')}
+				title={tHome('products.title')}
+				subtitle={tHome('products.subtitle')}
+				tiles={[
+					{
+						title: qr('badge'),
+						description: url('crossProducts.qrCodes.description'),
+						span: 4,
+						visual: <QrCustomizationMockup />,
+						action: { label: m('pdfBanner.cta'), href: '/products/qr-codes' },
+					},
+					{
+						title: url('badge'),
+						description: qr('crossProducts.urlShortener.description'),
+						span: 2,
+						dark: true,
+						icon: <LinkIcon className="size-5" />,
+						action: { label: m('pdfBanner.cta'), href: '/products/url-shortener' },
+					},
+					{
+						title: ana('badge'),
+						description: qr('crossProducts.analytics.description'),
+						span: 2,
+						icon: <ChartBarIcon className="size-5" />,
+						action: { label: m('pdfBanner.cta'), href: '/products/analytics' },
+					},
+					{
+						title: qr('features.hostedPages.title'),
+						description: qr('features.hostedPages.description'),
+						span: 4,
+						visual: (
+							<div className="flex h-[380px] justify-center gap-4" aria-hidden="true">
+								<TemplatePhone
+									locale={locale}
+									template="restaurantMenu"
+									scale={0.5}
+									className="h-[380px] w-[190px] shrink-0"
+								/>
+								<TemplatePhone
+									locale={locale}
+									template="machineManual"
+									scale={0.5}
+									className="hidden h-[380px] w-[190px] shrink-0 translate-y-6 sm:block xl:-ml-20"
+								/>
+							</div>
+						),
+						action: {
+							label: qr('features.hostedPages.actionLabel'),
+							href: '/products/hosted-pages/pdf',
+						},
+					},
+				]}
+			/>
+
+			<section className="py-12 sm:py-20">
+				<Container>
+					<div className="sm:px-6 lg:px-8">
+						<SectionHead
+							eyebrow={tHome('dashboard.eyebrow')}
+							title={tHome('dashboard.title')}
+							subtitle={tHome('dashboard.subtitle')}
+						/>
+						<DashboardShowcase className="mx-auto max-w-6xl" />
+					</div>
+				</Container>
 			</section>
 
-			{/* Product Showcase */}
-			<section id="showcase" aria-label="Product Showcase" className="py-10 sm:py-24">
-				<ProductShowcase />
-			</section>
+			<HomeSolutions locale={locale} />
 
-			{/* Browser Extension Teaser */}
-			<section aria-label="Browser Extension" className="py-10 sm:py-24">
-				<BrowserExtensionTeaser />
-			</section>
+			<HomeIntegrations locale={locale} />
 
-			{/* FAQ Section */}
-			<section id="faq" aria-label="FAQ" className="py-10 sm:py-24">
-				<FAQSection />
-			</section>
+			<ProductFaqSection
+				eyebrow={m('eyebrow.faq')}
+				title={tFaq('headline')}
+				items={faqItems}
+				viewAllLabel={tFaq('viewAll')}
+			/>
 
-			{/* Contact CTA */}
-			<section id="cta" aria-label="Contact Us" className="py-10 sm:py-24">
-				<Cta />
-			</section>
+			<ProductCtaSection
+				title={tHome('cta.title')}
+				subtitle={tHome('cta.subtitle')}
+				ctaLabel={tHome('cta.button')}
+				ctaHref="#generator"
+			/>
 
 			<Footer />
 		</>

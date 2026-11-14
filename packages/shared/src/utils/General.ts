@@ -10,8 +10,13 @@ import {
 	type TLocationInput,
 	type TEmailInput,
 	type TEpcInput,
+	type TPhoneInput,
+	type TSmsInput,
+	type TWhatsAppInput,
 } from '../schemas/QrCode';
 import VCF from 'vcf';
+import { getStylePresetTheme } from '../schemas/HostedPage';
+import { isHostedPageContent } from '../hosted-pages/registry';
 import ical, { ICalCalendarMethod } from 'ical-generator';
 
 // Utility function to check if all properties of an object are undefined
@@ -207,6 +212,36 @@ export const convertEpcObjToString = (epcInput: TEpcInput): string => {
 	return lines.join('\n');
 };
 
+/**
+ * Strips spaces, dashes, dots, slashes and parentheses from a phone number
+ * and keeps a leading "+" so the result is dialable as entered.
+ */
+export const normalizePhoneNumber = (phone: string): string => {
+	const trimmed = phone.trim();
+	const digits = trimmed.replace(/\D/g, '');
+	return trimmed.startsWith('+') ? `+${digits}` : digits;
+};
+
+export const convertPhoneObjToString = (phoneInput: TPhoneInput): string => {
+	const phone = normalizePhoneNumber(phoneInput.phone ?? '');
+	return phone ? `tel:${phone}` : '';
+};
+
+export const convertSmsObjToString = (smsInput: TSmsInput): string => {
+	const phone = normalizePhoneNumber(smsInput.phone ?? '');
+	return phone ? `SMSTO:${phone}:${smsInput.message ?? ''}` : '';
+};
+
+export const convertWhatsAppObjToString = (whatsAppInput: TWhatsAppInput): string => {
+	// wa.me expects the number in international format without the "+"
+	const phone = normalizePhoneNumber(whatsAppInput.phone ?? '').replace(/^\+/, '');
+	if (!phone) {
+		return '';
+	}
+	const text = whatsAppInput.message ? `?text=${encodeURIComponent(whatsAppInput.message)}` : '';
+	return `https://wa.me/${phone}${text}`;
+};
+
 export const convertQRCodeDataToStringByType = (
 	content: TQrCodeContent,
 	shortUrl?: string,
@@ -232,15 +267,22 @@ export const convertQRCodeDataToStringByType = (
 			return shortUrl ?? '';
 		case 'epc':
 			return convertEpcObjToString(content.data);
+		case 'phone':
+			return convertPhoneObjToString(content.data);
+		case 'sms':
+			return convertSmsObjToString(content.data);
+		case 'whatsapp':
+			return convertWhatsAppObjToString(content.data);
 		default:
+			// every hosted page type encodes its short URL
+			if (isHostedPageContent(content)) return shortUrl ?? '';
 			throw new Error('Invalid content type');
 	}
 };
 
 export const isDynamic = (content: TQrCodeContent): boolean => {
-	const dynamicTypes: TQrCodeContentType[] = ['event'];
-
-	if (dynamicTypes.includes(content.type)) {
+	// hosted pages always live behind their short URL
+	if (content.type === 'event' || isHostedPageContent(content)) {
 		return true;
 	}
 
@@ -348,6 +390,29 @@ export const getDefaultContentByType = (
 					purpose: undefined,
 				},
 			};
+		case 'phone':
+			return {
+				type: 'phone',
+				data: {
+					phone: '',
+				},
+			};
+		case 'sms':
+			return {
+				type: 'sms',
+				data: {
+					phone: '',
+					message: '',
+				},
+			};
+		case 'whatsapp':
+			return {
+				type: 'whatsapp',
+				data: {
+					phone: '',
+					message: '',
+				},
+			};
 		// case 'socials':
 		// 	return {
 		// 		type: 'socials',
@@ -356,6 +421,28 @@ export const getDefaultContentByType = (
 		// 			links: [],
 		// 		},
 		// 	};
+		case 'pdf':
+			return {
+				type: 'pdf',
+				data: {
+					title: '',
+					documents: [],
+					theme: getStylePresetTheme('editorial'),
+					isDynamic: true,
+				},
+			};
+		case 'product':
+			return {
+				type: 'product',
+				data: {
+					title: '',
+					model: '',
+					manufacturer: { name: '', address: '' },
+					documents: [],
+					theme: getStylePresetTheme('technical'),
+					isDynamic: true,
+				},
+			};
 		default:
 			throw new Error('Invalid content type');
 	}
@@ -380,7 +467,10 @@ function mapColorOrGradientToLibrary(option: TColorOrGradient): {
 				gradient: {
 					type: option.gradientType,
 					colorStops: option.colorStops,
-					rotation: option.rotation ? (option.rotation - 90 + 360) % 360 : undefined,
+					// qr-code-styling wants radians with 0 = left to right; the stored rotation is a CSS
+					// angle (0deg = to top, null = the picker's 90deg default). Radial ignores rotation.
+					rotation:
+						option.gradientType === 'linear' ? degreesToRadians((option.rotation ?? 90) - 90) : 0,
 				},
 			};
 	}

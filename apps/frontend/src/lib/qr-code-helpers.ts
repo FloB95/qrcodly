@@ -3,12 +3,17 @@ import {
 	convertQrCodeOptionsToLibraryOptions,
 	getDefaultContentByType,
 	isDynamic,
+	isHostedPageContent,
 	type TCustomDomainResponseDto,
+	type THostedPageContent,
+	type THostedPageData,
+	type THostedPageType,
 	type TQrCodeContent,
 	type TQrCodeOptions,
 	type TShortUrl,
 } from '@shared/schemas';
 import { createLinkFromShortUrl } from './utils';
+import { productPageIssues } from './product-page';
 import type { Options } from 'qr-code-styling';
 
 /**
@@ -74,6 +79,34 @@ export function isContentAtDefault(content: TQrCodeContent, isSignedIn = false):
 	return (
 		JSON.stringify(content) === JSON.stringify(getDefaultContentByType(content.type, isSignedIn))
 	);
+}
+
+/** What a hosted page of each type needs before it can be saved. */
+const HOSTED_CONTENT_COMPLETE: {
+	[K in THostedPageType]: (data: THostedPageData<K>) => boolean;
+} = {
+	pdf: (data) =>
+		Boolean(data.title.trim()) &&
+		data.documents.length > 0 &&
+		data.documents.every((document) => Boolean(document.fileKey)) &&
+		// "open directly" opens exactly one file
+		(data.openMode !== 'direct' || data.documents.length === 1) &&
+		// a link button needs both its text and its address
+		(!data.link || (Boolean(data.link.label.trim()) && Boolean(data.link.url.trim()))),
+	product: (data) => productPageIssues(data).length === 0,
+};
+
+/**
+ * Content whose fields are each fine but which cannot be saved as it stands, e.g. a hosted page
+ * without a document or a link button with only its text. Saving stays disabled until then.
+ */
+export function isContentIncomplete(content: TQrCodeContent): boolean {
+	if (!isHostedPageContent(content)) return false;
+	// the type and its data belong together; the map's union cannot say so
+	const isComplete = HOSTED_CONTENT_COMPLETE[content.type] as (
+		data: THostedPageContent['data'],
+	) => boolean;
+	return !isComplete(content.data);
 }
 
 /**

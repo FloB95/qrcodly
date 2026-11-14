@@ -1,0 +1,1 @@
+ALTER TABLE `stored_file` ADD `visibility` varchar(16) DEFAULT 'public' NOT NULL;

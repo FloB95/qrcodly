@@ -123,6 +123,21 @@ describe('CreateQrCodeUseCase', () => {
 	});
 
 	describe('execute', () => {
+		it('rejects content the schema rejects, whoever calls it', async () => {
+			// a seed script once stored a vCard phone with spaces; the list endpoint then failed
+			// for every QR code of that user because the response no longer matched the schema
+			const invalid = {
+				...mockQrCodeDto,
+				content: {
+					type: 'vCard',
+					data: { firstName: 'Max', lastName: 'Muster', phoneMobile: '+49 170 1234567' },
+				},
+			} as unknown as TCreateQrCodeDto;
+
+			await expect(useCase.execute(invalid, mockUser)).rejects.toThrow('Invalid phone number');
+			expect(mockRepository.create).not.toHaveBeenCalled();
+		});
+
 		it('should create QR code successfully with authenticated user', async () => {
 			const result = await useCase.execute(mockQrCodeDto, mockUser);
 

@@ -102,13 +102,25 @@
 							"type": "array",
 							"items": {
 								"type": "string",
-								"enum": ["url", "text", "wifi", "vCard", "email", "location", "event", "epc"]
+								"enum": [
+									"url",
+									"text",
+									"wifi",
+									"vCard",
+									"email",
+									"location",
+									"event",
+									"epc",
+									"phone",
+									"sms",
+									"whatsapp"
+								]
 							}
 						},
 						"in": "query",
 						"name": "contentType",
 						"required": false,
-						"description": "Filter by content type(s). Accepts one or more of: url, text, wifi, vCard, email, location, event, epc"
+						"description": "Filter by content type(s). Accepts one or more of: url, text, wifi, vCard, email, location, event, epc, phone, sms, whatsapp"
 					},
 					{
 						"schema": {
@@ -905,6 +917,79 @@
 																},
 																"required": ["type", "data"],
 																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["phone"] },
+																	"data": {
+																		"type": "object",
+																		"properties": {
+																			"phone": {
+																				"type": "string",
+																				"maxLength": 32,
+																				"pattern": "^\\+?[0-9\\s()./-]+$",
+																				"description": "Phone number to call when the QR code is scanned, e.g. \"+49 170 1234567\""
+																			}
+																		},
+																		"required": ["phone"],
+																		"additionalProperties": false
+																	}
+																},
+																"required": ["type", "data"],
+																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["sms"] },
+																	"data": {
+																		"type": "object",
+																		"properties": {
+																			"phone": {
+																				"type": "string",
+																				"maxLength": 32,
+																				"pattern": "^\\+?[0-9\\s()./-]+$",
+																				"description": "Recipient phone number of the SMS, e.g. \"+49 170 1234567\""
+																			},
+																			"message": {
+																				"description": "Pre-filled SMS text (max 500 characters)",
+																				"type": "string",
+																				"maxLength": 500
+																			}
+																		},
+																		"required": ["phone"],
+																		"additionalProperties": false
+																	}
+																},
+																"required": ["type", "data"],
+																"additionalProperties": false
+															},
+															{
+																"type": "object",
+																"properties": {
+																	"type": { "type": "string", "enum": ["whatsapp"] },
+																	"data": {
+																		"type": "object",
+																		"properties": {
+																			"phone": {
+																				"type": "string",
+																				"maxLength": 32,
+																				"pattern": "^\\+[0-9\\s()./-]+$",
+																				"description": "WhatsApp number in international format with country code, e.g. \"+49 170 1234567\""
+																			},
+																			"message": {
+																				"description": "Pre-filled chat message (max 500 characters)",
+																				"type": "string",
+																				"maxLength": 500
+																			}
+																		},
+																		"required": ["phone"],
+																		"additionalProperties": false
+																	}
+																},
+																"required": ["type", "data"],
+																"additionalProperties": false
 															}
 														],
 														"description": "QR code content as a discriminated union — the \"type\" field determines which data schema applies"
@@ -1182,7 +1267,7 @@
 				"operationId": "qr-code/create-qr-code",
 				"summary": "Create a new QR code",
 				"tags": ["QR Codes", "Public"],
-				"description": "Creates a new QR code based on the provided data. Supports 8 content types: URL, Text, WiFi, vCard, Email, Location, Event, and EPC. If the QR code is dynamic (contentType=URL and isDynamic=true), a short URL is automatically generated and linked so the destination can be changed later. This endpoint is publicly accessible (no auth required) but rate-limited. Authenticated users get their QR codes saved to their account.",
+				"description": "Creates a new QR code based on the provided data. Supports 11 content types: URL, Text, WiFi, vCard, Email, Location, Event, EPC, Phone, SMS, and WhatsApp. If the QR code is dynamic (contentType=URL and isDynamic=true), a short URL is automatically generated and linked so the destination can be changed later. This endpoint is publicly accessible (no auth required) but rate-limited. Authenticated users get their QR codes saved to their account.",
 				"requestBody": {
 					"required": true,
 					"content": {
@@ -1570,6 +1655,79 @@
 															}
 														},
 														"required": ["name", "iban"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["phone"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"phone": {
+																"type": "string",
+																"maxLength": 32,
+																"pattern": "^\\+?[0-9\\s()./-]+$",
+																"description": "Phone number to call when the QR code is scanned, e.g. \"+49 170 1234567\""
+															}
+														},
+														"required": ["phone"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["sms"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"phone": {
+																"type": "string",
+																"maxLength": 32,
+																"pattern": "^\\+?[0-9\\s()./-]+$",
+																"description": "Recipient phone number of the SMS, e.g. \"+49 170 1234567\""
+															},
+															"message": {
+																"description": "Pre-filled SMS text (max 500 characters)",
+																"type": "string",
+																"maxLength": 500
+															}
+														},
+														"required": ["phone"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["whatsapp"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"phone": {
+																"type": "string",
+																"maxLength": 32,
+																"pattern": "^\\+[0-9\\s()./-]+$",
+																"description": "WhatsApp number in international format with country code, e.g. \"+49 170 1234567\""
+															},
+															"message": {
+																"description": "Pre-filled chat message (max 500 characters)",
+																"type": "string",
+																"maxLength": 500
+															}
+														},
+														"required": ["phone"],
 														"additionalProperties": false
 													}
 												},
@@ -2632,6 +2790,79 @@
 													},
 													"required": ["type", "data"],
 													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["phone"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Phone number to call when the QR code is scanned, e.g. \"+49 170 1234567\""
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["sms"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Recipient phone number of the SMS, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled SMS text (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["whatsapp"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+[0-9\\s()./-]+$",
+																	"description": "WhatsApp number in international format with country code, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled chat message (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
 												}
 											],
 											"description": "QR code content as a discriminated union — the \"type\" field determines which data schema applies"
@@ -3221,8 +3452,20 @@
 									},
 									"contentType": {
 										"type": "string",
-										"enum": ["url", "text", "wifi", "vCard", "email", "location", "event", "epc"],
-										"description": "Content type for all QR codes in the import: url, text, wifi, vCard, email, location, event, or epc"
+										"enum": [
+											"url",
+											"text",
+											"wifi",
+											"vCard",
+											"email",
+											"location",
+											"event",
+											"epc",
+											"phone",
+											"sms",
+											"whatsapp"
+										],
+										"description": "Content type for all QR codes in the import: url, text, wifi, vCard, phone, sms, or whatsapp (the other types do not support bulk import)"
 									},
 									"file": { "description": "Pass csv file as binary" }
 								},
@@ -3953,6 +4196,79 @@
 																}
 															},
 															"required": ["name", "iban"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["phone"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Phone number to call when the QR code is scanned, e.g. \"+49 170 1234567\""
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["sms"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Recipient phone number of the SMS, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled SMS text (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["whatsapp"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+[0-9\\s()./-]+$",
+																	"description": "WhatsApp number in international format with country code, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled chat message (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
 															"additionalProperties": false
 														}
 													},
@@ -4959,6 +5275,79 @@
 													},
 													"required": ["type", "data"],
 													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["phone"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Phone number to call when the QR code is scanned, e.g. \"+49 170 1234567\""
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["sms"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Recipient phone number of the SMS, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled SMS text (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["whatsapp"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+[0-9\\s()./-]+$",
+																	"description": "WhatsApp number in international format with country code, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled chat message (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
 												}
 											],
 											"description": "QR code content as a discriminated union — the \"type\" field determines which data schema applies"
@@ -5622,6 +6011,79 @@
 															}
 														},
 														"required": ["name", "iban"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["phone"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"phone": {
+																"type": "string",
+																"maxLength": 32,
+																"pattern": "^\\+?[0-9\\s()./-]+$",
+																"description": "Phone number to call when the QR code is scanned, e.g. \"+49 170 1234567\""
+															}
+														},
+														"required": ["phone"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["sms"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"phone": {
+																"type": "string",
+																"maxLength": 32,
+																"pattern": "^\\+?[0-9\\s()./-]+$",
+																"description": "Recipient phone number of the SMS, e.g. \"+49 170 1234567\""
+															},
+															"message": {
+																"description": "Pre-filled SMS text (max 500 characters)",
+																"type": "string",
+																"maxLength": 500
+															}
+														},
+														"required": ["phone"],
+														"additionalProperties": false
+													}
+												},
+												"required": ["type", "data"],
+												"additionalProperties": false
+											},
+											{
+												"type": "object",
+												"properties": {
+													"type": { "type": "string", "enum": ["whatsapp"] },
+													"data": {
+														"type": "object",
+														"properties": {
+															"phone": {
+																"type": "string",
+																"maxLength": 32,
+																"pattern": "^\\+[0-9\\s()./-]+$",
+																"description": "WhatsApp number in international format with country code, e.g. \"+49 170 1234567\""
+															},
+															"message": {
+																"description": "Pre-filled chat message (max 500 characters)",
+																"type": "string",
+																"maxLength": 500
+															}
+														},
+														"required": ["phone"],
 														"additionalProperties": false
 													}
 												},
@@ -6681,6 +7143,79 @@
 																}
 															},
 															"required": ["name", "iban"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["phone"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Phone number to call when the QR code is scanned, e.g. \"+49 170 1234567\""
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["sms"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Recipient phone number of the SMS, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled SMS text (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["whatsapp"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+[0-9\\s()./-]+$",
+																	"description": "WhatsApp number in international format with country code, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled chat message (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
 															"additionalProperties": false
 														}
 													},
@@ -7819,6 +8354,79 @@
 																}
 															},
 															"required": ["name", "iban"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["phone"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Phone number to call when the QR code is scanned, e.g. \"+49 170 1234567\""
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["sms"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Recipient phone number of the SMS, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled SMS text (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["whatsapp"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+[0-9\\s()./-]+$",
+																	"description": "WhatsApp number in international format with country code, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled chat message (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
 															"additionalProperties": false
 														}
 													},
@@ -9467,6 +10075,79 @@
 																}
 															},
 															"required": ["name", "iban"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["phone"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Phone number to call when the QR code is scanned, e.g. \"+49 170 1234567\""
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["sms"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+?[0-9\\s()./-]+$",
+																	"description": "Recipient phone number of the SMS, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled SMS text (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
+															"additionalProperties": false
+														}
+													},
+													"required": ["type", "data"],
+													"additionalProperties": false
+												},
+												{
+													"type": "object",
+													"properties": {
+														"type": { "type": "string", "enum": ["whatsapp"] },
+														"data": {
+															"type": "object",
+															"properties": {
+																"phone": {
+																	"type": "string",
+																	"maxLength": 32,
+																	"pattern": "^\\+[0-9\\s()./-]+$",
+																	"description": "WhatsApp number in international format with country code, e.g. \"+49 170 1234567\""
+																},
+																"message": {
+																	"description": "Pre-filled chat message (max 500 characters)",
+																	"type": "string",
+																	"maxLength": 500
+																}
+															},
+															"required": ["phone"],
 															"additionalProperties": false
 														}
 													},
@@ -16300,7 +16981,7 @@
 				"operationId": "short-url/get-analytics",
 				"summary": "Get analytics for a short URL",
 				"tags": ["Analytics"],
-				"description": "Returns detailed analytics for a short URL: pageviews, unique visitors, sessions, bounce rate, time-series data, and breakdowns by browser, operating system, device type, and country. Only the owner can access analytics for their short URLs.",
+				"description": "Returns analytics for a short URL. Every plan gets the aggregate statistics and a summary (last 7 days, top country, top device). The time-series data and the breakdowns by browser, operating system, device type and country require the Pro plan; without it they are null and `detailsLocked` is true. Only the owner can access analytics for their short URLs.",
 				"parameters": [
 					{
 						"schema": { "type": "string" },
@@ -16346,7 +17027,68 @@
 											"additionalProperties": false,
 											"description": "Aggregate statistics for the short URL"
 										},
+										"summary": {
+											"type": "object",
+											"properties": {
+												"pageviewsLast7Days": {
+													"type": "number",
+													"description": "Pageviews over the last 7 days"
+												},
+												"visitorsLast7Days": {
+													"type": "number",
+													"description": "Visitors over the last 7 days, summed from the hourly session counts"
+												},
+												"topCountry": {
+													"nullable": true,
+													"description": "Country with the most traffic, if any",
+													"type": "object",
+													"properties": {
+														"label": {
+															"type": "string",
+															"description": "Category label (country code for countries, device type for devices)"
+														},
+														"share": {
+															"type": "number",
+															"description": "Share of all tracked traffic in percent, rounded to a whole number"
+														}
+													},
+													"required": ["label", "share"],
+													"additionalProperties": false
+												},
+												"topDevice": {
+													"nullable": true,
+													"description": "Device type with the most traffic, if any",
+													"type": "object",
+													"properties": {
+														"label": {
+															"type": "string",
+															"description": "Category label (country code for countries, device type for devices)"
+														},
+														"share": {
+															"type": "number",
+															"description": "Share of all tracked traffic in percent, rounded to a whole number"
+														}
+													},
+													"required": ["label", "share"],
+													"additionalProperties": false
+												}
+											},
+											"required": [
+												"pageviewsLast7Days",
+												"visitorsLast7Days",
+												"topCountry",
+												"topDevice"
+											],
+											"additionalProperties": false,
+											"description": "Headline figures, available on every plan"
+										},
+										"detailsLocked": {
+											"type": "boolean",
+											"description": "True when the detailed breakdowns below require the Pro plan; they are null in that case"
+										},
 										"viewsAndSessions": {
+											"nullable": true,
+											"description": "Time-series data for pageviews and sessions (Pro only)",
 											"type": "object",
 											"properties": {
 												"pageviews": {
@@ -16389,10 +17131,11 @@
 												}
 											},
 											"required": ["pageviews", "sessions"],
-											"additionalProperties": false,
-											"description": "Time-series data for pageviews and sessions"
+											"additionalProperties": false
 										},
 										"browserMetrics": {
+											"nullable": true,
+											"description": "Click breakdown by browser, e.g. Chrome, Firefox, Safari (Pro only)",
 											"type": "array",
 											"items": {
 												"type": "object",
@@ -16408,10 +17151,11 @@
 												},
 												"required": ["label", "count"],
 												"additionalProperties": false
-											},
-											"description": "Click breakdown by browser (e.g. Chrome, Firefox, Safari)"
+											}
 										},
 										"osMetrics": {
+											"nullable": true,
+											"description": "Click breakdown by operating system, e.g. Windows, macOS, Android (Pro only)",
 											"type": "array",
 											"items": {
 												"type": "object",
@@ -16427,10 +17171,11 @@
 												},
 												"required": ["label", "count"],
 												"additionalProperties": false
-											},
-											"description": "Click breakdown by operating system (e.g. Windows, macOS, Android)"
+											}
 										},
 										"deviceMetrics": {
+											"nullable": true,
+											"description": "Click breakdown by device type, e.g. desktop, mobile, tablet (Pro only)",
 											"type": "array",
 											"items": {
 												"type": "object",
@@ -16446,10 +17191,11 @@
 												},
 												"required": ["label", "count"],
 												"additionalProperties": false
-											},
-											"description": "Click breakdown by device type (e.g. desktop, mobile, tablet)"
+											}
 										},
 										"countryMetrics": {
+											"nullable": true,
+											"description": "Click breakdown by country (Pro only)",
 											"type": "array",
 											"items": {
 												"type": "object",
@@ -16465,12 +17211,13 @@
 												},
 												"required": ["label", "count"],
 												"additionalProperties": false
-											},
-											"description": "Click breakdown by country"
+											}
 										}
 									},
 									"required": [
 										"shortUrlStats",
+										"summary",
+										"detailsLocked",
 										"viewsAndSessions",
 										"browserMetrics",
 										"osMetrics",
@@ -17656,7 +18403,7 @@
 	"tags": [
 		{
 			"name": "QR Codes",
-			"description": "Create, read, update, and delete QR codes. Supports 8 content types: URL, Text, WiFi, vCard, Email, Location, Event, and EPC (SEPA payment). Dynamic QR codes (URL type with isDynamic=true) automatically generate a linked short URL so the destination can be changed after printing."
+			"description": "Create, read, update, and delete QR codes. Supports 11 content types: URL, Text, WiFi, vCard, Email, Location, Event, EPC (SEPA payment), Phone, SMS, and WhatsApp. Dynamic QR codes (URL type with isDynamic=true) automatically generate a linked short URL so the destination can be changed after printing."
 		},
 		{
 			"name": "QR Code Sharing",

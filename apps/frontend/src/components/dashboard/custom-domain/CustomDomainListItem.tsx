@@ -89,7 +89,13 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 
 	const statusInfo = getVerificationStatusInfo(domain);
 	const StatusIcon = statusInfo.icon;
-	const hasValidationErrors = domain.validationErrors && domain.validationErrors.length > 0;
+	// Cloudflare names the CA it tried: "...or add records for this authority (ssl.com)"
+	const caaAuthority = domain.validationErrors
+		?.find((error) => error.includes('CAA'))
+		?.match(/\(([^()\s]+)\)/)?.[1];
+	const otherValidationErrors = (domain.validationErrors ?? []).filter(
+		(error) => !caaAuthority || !error.includes('CAA'),
+	);
 
 	const isDisabled = !domain.isEnabled;
 
@@ -112,10 +118,21 @@ export function CustomDomainListItem({ domain }: CustomDomainListItemProps) {
 							</Badge>
 						)}
 					</div>
-					{hasValidationErrors && (
+					{caaAuthority && (
+						<div className="flex items-start gap-1 text-xs text-destructive">
+							<AlertCircle className="h-3 w-3 mt-0.5 shrink-0" />
+							<span>
+								{t('caaBlocked')}{' '}
+								<code className="font-mono whitespace-nowrap">
+									CAA 0 issue &quot;{caaAuthority}&quot;
+								</code>
+							</span>
+						</div>
+					)}
+					{otherValidationErrors.length > 0 && (
 						<div className="flex items-center gap-1 text-xs text-destructive">
 							<AlertCircle className="h-3 w-3" />
-							<span>{domain.validationErrors?.join(', ')}</span>
+							<span>{otherValidationErrors.join(', ')}</span>
 						</div>
 					)}
 				</div>

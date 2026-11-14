@@ -56,11 +56,14 @@ describe('getShortUrl (internal API - scan lookup)', () => {
 		expect(body).not.toHaveProperty('name');
 
 		// Only expected fields
-		// `blocked` lets the frontend middleware route scanners to /link-blocked instead of /disabled
+		// `blocked` lets the frontend middleware route scanners to /link-blocked instead of /disabled,
+		// `hostedType` tells it to serve a hosted page in place of the redirect, at `hostedUrl` only
 		expect(Object.keys(body).sort()).toEqual([
 			'blocked',
 			'deletedAt',
 			'destinationUrl',
+			'hostedType',
+			'hostedUrl',
 			'isActive',
 		]);
 	});

@@ -230,3 +230,56 @@ export const generateEpcQrCodeDto = (): TCreateQrCodeDto & {
 	},
 	config: QrCodeDefaults,
 });
+
+const generateInternationalPhone = () =>
+	`+49 170 ${faker.number.int({ min: 1000000, max: 9999999 })}`;
+
+/**
+ * Generates a phone (tel:) QR code DTO.
+ */
+export const generatePhoneQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
+	name: faker.lorem.words(3).substring(0, 50),
+	content: {
+		type: 'phone',
+		data: {
+			phone: generateInternationalPhone(),
+		},
+	},
+	config: QrCodeDefaults,
+});
+
+/**
+ * Generates an SMS QR code DTO.
+ */
+export const generateSmsQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
+	name: faker.lorem.words(3).substring(0, 50),
+	content: {
+		type: 'sms',
+		data: {
+			phone: generateInternationalPhone(),
+			message: faker.lorem.sentence(),
+		},
+	},
+	config: QrCodeDefaults,
+});
+
+/**
+ * Generates a WhatsApp QR code DTO.
+ */
+export const generateWhatsAppQrCodeDto = (): TCreateQrCodeDto & {
+	config: NonNullable<TCreateQrCodeDto['config']>;
+} => ({
+	name: faker.lorem.words(3).substring(0, 50),
+	content: {
+		type: 'whatsapp',
+		data: {
+			phone: generateInternationalPhone(),
+			message: faker.lorem.sentence(),
+		},
+	},
+	config: QrCodeDefaults,
+});

@@ -2,13 +2,18 @@ import {
 	AtSymbolIcon,
 	BanknotesIcon,
 	CalendarDaysIcon,
+	ChatBubbleBottomCenterTextIcon,
+	CubeIcon,
+	DocumentIcon,
 	DocumentTextIcon,
 	EnvelopeOpenIcon,
 	IdentificationIcon,
 	LinkIcon,
 	MapPinIcon,
+	PhoneIcon,
 	WifiIcon,
 } from '@heroicons/react/24/outline';
+import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon';
 import type { TQrCode } from '@shared/schemas';
 import { memo } from 'react';
 import { cn } from '@/lib/utils';
@@ -24,6 +29,11 @@ export const QrCodeIcon = memo(
 			location: MapPinIcon,
 			event: CalendarDaysIcon,
 			epc: BanknotesIcon,
+			phone: PhoneIcon,
+			sms: ChatBubbleBottomCenterTextIcon,
+			whatsapp: WhatsAppIcon,
+			pdf: DocumentIcon,
+			product: CubeIcon,
 			socials: AtSymbolIcon,
 		};
 		const Icon = icons[type] ?? (() => <>❓</>);

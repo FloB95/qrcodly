@@ -9,6 +9,9 @@ import { VCardDetailsCard } from './VCardDetailsCard';
 import { WifiDetailsCard } from './WifiDetailsCard';
 import { EpcDetailsCard } from './EpcDetailsCard';
 import { LocationDetailsCard } from './LocationDetailsCard';
+import { PhoneDetailsCard } from './PhoneDetailsCard';
+import { SmsDetailsCard } from './SmsDetailsCard';
+import { WhatsAppDetailsCard } from './WhatsAppDetailsCard';
 import { CopyUrlButton } from './CopyUrlButton';
 import { TruncatedLink } from './TruncatedLink';
 
@@ -67,6 +70,20 @@ const renderVCardContent = (qr: TQrCodeWithRelationsResponseDto) => {
 	return <VCardDetailsCard vcard={vcardData} trigger={displayName} />;
 };
 
+const renderHostedPageContent = (qr: TQrCodeWithRelationsResponseDto) => {
+	if (qr.content.type !== 'pdf' && qr.content.type !== 'product') return null;
+
+	const { title } = qr.content.data;
+	if (!qr.shortUrl) return title;
+
+	return (
+		<ShortUrlDisplay
+			shortUrl={qr.shortUrl}
+			destinationContent={<span className="truncate pt-1 text-sm text-foreground">{title}</span>}
+		/>
+	);
+};
+
 export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto }) => {
 	switch (qr.content.type) {
 		case 'url':
@@ -85,6 +102,15 @@ export const RenderContent = memo(({ qr }: { qr: TQrCodeWithRelationsResponseDto
 			return renderEventContent(qr);
 		case 'epc':
 			return <EpcDetailsCard epc={qr.content.data} />;
+		case 'phone':
+			return <PhoneDetailsCard phone={qr.content.data} />;
+		case 'sms':
+			return <SmsDetailsCard sms={qr.content.data} />;
+		case 'whatsapp':
+			return <WhatsAppDetailsCard whatsapp={qr.content.data} />;
+		case 'pdf':
+		case 'product':
+			return renderHostedPageContent(qr);
 		default:
 			return 'Unknown';
 	}

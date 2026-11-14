@@ -6,81 +6,110 @@ import { z } from 'zod';
  * Specify your server-side environment variables schema here. This way you can ensure the app isn't
  * built with invalid env vars.
  */
-const server = z.object({
-	BASE_URL: z.url().default('http://localhost:5001'),
-	FRONTEND_URL: z.url().default('https://www.qrcodly.de'),
-	SHORT_URL_BASE_URL: z.url().optional(),
-	BACKEND_URL: z.url(),
-	DB_HOST: z.string(),
-	DB_USER: z.string(),
-	DB_PASSWORD: z.string(),
-	DB_NAME: z.string(),
-	TEST_DB_NAME: z.string().default('qrcodly_test'),
-	DB_PORT: z.string(),
-	DB_MIGRATING: z
-		.union([z.boolean(), z.string().transform((val) => val === 'true')])
-		.default(false),
-	DB_SEEDING: z.union([z.boolean(), z.string().transform((val) => val === 'true')]).default(false),
-	// false while a second deployment runs against a copy of the data (e.g. during a migration)
-	CRON_ENABLED: z.union([z.boolean(), z.string().transform((val) => val === 'true')]).default(true),
-	NODE_ENV: z.enum(['development', 'test', 'production']).default('production'),
-	API_PORT: z.string().default('5001'),
-	API_HOST: z.string().default('127.0.0.1'),
-	LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
-	REDIS_URL: z.url(),
-	REDIS_COMMAND_TIMEOUT_MS: z.coerce.number().int().positive().optional(),
-	JWT_SECRET: z.string().min(32),
-	COOKIE_SECRET: z.string().min(32),
-	SMTP_HOST: z.string(),
-	SMTP_PORT: z.string(),
-	SMTP_USER: z.string(),
-	SMTP_PASS: z.string(),
-	S3_ENDPOINT: z.string(),
-	S3_REGION: z.string(),
-	S3_UPLOAD_KEY: z.string(),
-	S3_UPLOAD_SECRET: z.string(),
-	S3_BUCKET_NAME: z.string(),
-	S3_PUBLIC_URL: z.url(),
-	SENTRY_DSN: z.url(),
-	SENTRY_ENVIRONMENT: z.enum(['development', 'production']).default('production'),
-	AXIOM_DATASET: z.string().optional(),
-	AXIOM_TOKEN: z.string().optional(),
-	CLERK_PUBLISHABLE_KEY: z.string(),
-	CLERK_SECRET_KEY: z.string(),
-	CLERK_WEBHOOK_SECRET_KEY: z.string(),
-	UMAMI_HOST: z.url(),
-	UMAMI_WEBSITE: z.string(),
-	UMAMI_USERNAME: z.string(),
-	UMAMI_PASSWORD: z.string(),
-	CUSTOM_DOMAIN_CNAME_TARGET: z.string().default('customers.qrcodly.de'),
-	CLOUDFLARE_API_TOKEN: z.string(),
-	CLOUDFLARE_ZONE_ID: z.string(),
-	CLOUDFLARE_DCV_DELEGATION_TARGET: z.string(), // Full DCV delegation target (e.g., d0a467ae32366c3f.dcv.cloudflare.com)
-	INTERNAL_API_SECRET: z.string().min(32),
-	STRIPE_SECRET_KEY: z.string(),
-	STRIPE_WEBHOOK_SECRET: z.string(),
-	STRIPE_PRO_PRICE_ID_MONTHLY: z.string(),
-	STRIPE_PRO_PRICE_ID_ANNUAL: z.string(),
-	// Extra custom domains, sold per domain on top of an active Pro plan.
-	STRIPE_ADDON_DOMAIN_PRICE_ID_MONTHLY: z.string(),
-	STRIPE_ADDON_DOMAIN_PRICE_ID_ANNUAL: z.string(),
-	ANALYTICS_ENCRYPTION_KEY: z
-		.string()
-		.length(64)
-		.regex(/^[0-9a-f]+$/i, 'Must be a hex string'),
-	DISABLE_RATE_LIMITING: z
-		.union([z.boolean(), z.string().transform((val) => val === 'true')])
-		.default(false),
-	GOOGLE_WEB_RISK_API_KEY: z.string().optional(),
-	// 'shadow' records findings without disabling anything — the safe default for the first rollout,
-	// because a blocked link takes a printed QR code out of service and cannot be un-printed.
-	URL_SAFETY_RECHECK_MODE: z.enum(['shadow', 'enforce']).default('shadow'),
-	// who receives abuse alerts; falls back to the constant so existing deploys keep working
-	ABUSE_ALERT_MAIL: z.string().email().optional(),
-	OTEL_METRICS_DATASET: z.string().optional(),
-	OTEL_METRICS_INTERVAL_MS: z.coerce.number().default(60000),
-	OTEL_TRACES_DATASET: z.string().optional(),
-});
+const server = z
+	.object({
+		BASE_URL: z.url().default('http://localhost:5001'),
+		FRONTEND_URL: z.url().default('https://www.qrcodly.de'),
+		SHORT_URL_BASE_URL: z.url().optional(),
+		BACKEND_URL: z.url(),
+		DB_HOST: z.string(),
+		DB_USER: z.string(),
+		DB_PASSWORD: z.string(),
+		DB_NAME: z.string(),
+		TEST_DB_NAME: z.string().default('qrcodly_test'),
+		DB_PORT: z.string(),
+		DB_MIGRATING: z
+			.union([z.boolean(), z.string().transform((val) => val === 'true')])
+			.default(false),
+		DB_SEEDING: z
+			.union([z.boolean(), z.string().transform((val) => val === 'true')])
+			.default(false),
+		// false while a second deployment runs against a copy of the data (e.g. during a migration)
+		CRON_ENABLED: z
+			.union([z.boolean(), z.string().transform((val) => val === 'true')])
+			.default(true),
+		NODE_ENV: z.enum(['development', 'test', 'production']).default('production'),
+		API_PORT: z.string().default('5001'),
+		API_HOST: z.string().default('127.0.0.1'),
+		LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
+		REDIS_URL: z.url(),
+		REDIS_COMMAND_TIMEOUT_MS: z.coerce.number().int().positive().optional(),
+		JWT_SECRET: z.string().min(32),
+		COOKIE_SECRET: z.string().min(32),
+		SMTP_HOST: z.string(),
+		SMTP_PORT: z.string(),
+		SMTP_USER: z.string(),
+		SMTP_PASS: z.string(),
+		S3_ENDPOINT: z.string(),
+		S3_REGION: z.string(),
+		S3_UPLOAD_KEY: z.string(),
+		S3_UPLOAD_SECRET: z.string(),
+		S3_BUCKET_NAME: z.string(),
+		S3_PUBLIC_URL: z.url(),
+		// no public access at all: user documents, streamed by the app after its checks
+		S3_PRIVATE_BUCKET_NAME: z.string().min(1),
+		SENTRY_DSN: z.url(),
+		SENTRY_ENVIRONMENT: z.enum(['development', 'production']).default('production'),
+		AXIOM_DATASET: z.string().optional(),
+		AXIOM_TOKEN: z.string().optional(),
+		CLERK_PUBLISHABLE_KEY: z.string(),
+		CLERK_SECRET_KEY: z.string(),
+		CLERK_WEBHOOK_SECRET_KEY: z.string(),
+		UMAMI_HOST: z.url(),
+		UMAMI_WEBSITE: z.string(),
+		UMAMI_USERNAME: z.string(),
+		UMAMI_PASSWORD: z.string(),
+		CUSTOM_DOMAIN_CNAME_TARGET: z.string().default('customers.qrcodly.de'),
+		CLOUDFLARE_API_TOKEN: z.string(),
+		CLOUDFLARE_ZONE_ID: z.string(),
+		CLOUDFLARE_DCV_DELEGATION_TARGET: z.string(), // Full DCV delegation target (e.g., d0a467ae32366c3f.dcv.cloudflare.com)
+		INTERNAL_API_SECRET: z.string().min(32),
+		STRIPE_SECRET_KEY: z.string(),
+		STRIPE_WEBHOOK_SECRET: z.string(),
+		STRIPE_PRO_PRICE_ID_MONTHLY: z.string(),
+		STRIPE_PRO_PRICE_ID_ANNUAL: z.string(),
+		// Extra custom domains, sold per domain on top of an active Pro plan.
+		STRIPE_ADDON_DOMAIN_PRICE_ID_MONTHLY: z.string(),
+		STRIPE_ADDON_DOMAIN_PRICE_ID_ANNUAL: z.string(),
+		ANALYTICS_ENCRYPTION_KEY: z
+			.string()
+			.length(64)
+			.regex(/^[0-9a-f]+$/i, 'Must be a hex string'),
+		DISABLE_RATE_LIMITING: z
+			.union([z.boolean(), z.string().transform((val) => val === 'true')])
+			.default(false),
+		GOOGLE_WEB_RISK_API_KEY: z.string().optional(),
+		// 'shadow' records findings without disabling anything — the safe default for the first rollout,
+		// because a blocked link takes a printed QR code out of service and cannot be un-printed.
+		URL_SAFETY_RECHECK_MODE: z.enum(['shadow', 'enforce']).default('shadow'),
+		// Session tokens issued to an origin outside FIRST_PARTY_ORIGINS: 'shadow' only logs them
+		// (auth.session.unauthorized-party), 'enforce' treats the request as signed out. Shadow first,
+		// because no log shows yet which `azp` each client's tokens carry.
+		AUTHORIZED_PARTY_CHECK_MODE: z.enum(['shadow', 'enforce']).default('shadow'),
+		// who receives abuse alerts; falls back to the constant so existing deploys keep working
+		ABUSE_ALERT_MAIL: z.string().email().optional(),
+		// who is told about account deletion requests and revocations; defaults to SUPPORT_MAIL
+		ACCOUNT_DELETION_MAIL: z.string().email().optional(),
+		OTEL_METRICS_DATASET: z.string().optional(),
+		OTEL_METRICS_INTERVAL_MS: z.coerce.number().default(60000),
+		OTEL_TRACES_DATASET: z.string().optional(),
+		// clamd scanning every uploaded file for malware; without it production refuses uploads and
+		// development stores them unscanned. clamd needs `AlertExceedsMax yes`, or files above its scan
+		// limits come back clean
+		CLAMAV_HOST: z.string().optional(),
+		CLAMAV_PORT: z.coerce.number().int().positive().default(3310),
+		/** Days a replaced or removed hosted file is kept before deletion (undo window) */
+		HOSTED_FILE_RETENTION_DAYS: z.coerce.number().int().min(0).default(30),
+		// Product-news newsletter in a self-hosted listmonk; the sync stays off until all four are set
+		LISTMONK_URL: z.url().optional(),
+		LISTMONK_API_USER: z.string().optional(),
+		LISTMONK_API_TOKEN: z.string().optional(),
+		LISTMONK_LIST_ID: z.coerce.number().int().positive().optional(),
+	})
+	.refine((values) => values.S3_PRIVATE_BUCKET_NAME !== values.S3_BUCKET_NAME, {
+		message: 'Must be a bucket of its own: the public bucket is served by the CDN',
+		path: ['S3_PRIVATE_BUCKET_NAME'],
+	});
 
 // Don't touch the part below
 // --------------------------

@@ -1,3 +1,4 @@
+import { HOSTED_PAGE_TYPES } from '@shared/schemas';
 import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
 import { useTranslations } from 'next-intl';
@@ -18,7 +19,12 @@ export default function CreateQrCodePage() {
 
 	return (
 		<QrCodeGeneratorStoreProvider>
-			<QRcodeGenerator generatorType="QrCodeWithDownloadBtn" backLink={backLink} />
+			{/* hosted pages are a web app feature only */}
+			<QRcodeGenerator
+				generatorType="QrCodeWithDownloadBtn"
+				backLink={backLink}
+				hiddenContentTypes={[...HOSTED_PAGE_TYPES]}
+			/>
 		</QrCodeGeneratorStoreProvider>
 	);
 }

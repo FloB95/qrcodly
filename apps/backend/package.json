@@ -9,7 +9,7 @@
 	"author": "Florian Breuer",
 	"license": "ISC",
 	"engines": {
-		"node": ">=22.11.0"
+		"node": ">=24.9.0"
 	},
 	"scripts": {
 		"lint": "eslint .",
@@ -21,8 +21,8 @@
 		"dev-server": "docker-compose up -d",
 		"dev": "pnpm run db:migrate && TZ=Europe/Berlin tsx watch --include ./src src/index.ts",
 		"test": "export NODE_ENV=test && export NODE_OPTIONS=--experimental-vm-modules && export LOG_LEVEL=error && export FRONTEND_URL=https://test.qrcodly.de && pnpm run db:migrate && jest --maxWorkers=1 --workerIdleMemoryLimit=1536MB",
-		"test:coverage": "export NODE_ENV=test && export LOG_LEVEL=error && export FRONTEND_URL=https://test.qrcodly.de && pnpm run db:migrate && jest --runInBand --coverage",
-		"test:detectOpenHandles": "jest --silent --runInBand --detectOpenHandles",
+		"test:coverage": "export NODE_ENV=test && export NODE_OPTIONS=--experimental-vm-modules && export LOG_LEVEL=error && export FRONTEND_URL=https://test.qrcodly.de && pnpm run db:migrate && jest --runInBand --coverage",
+		"test:detectOpenHandles": "NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --detectOpenHandles",
 		"db:push": "drizzle-kit push --config=drizzle.config.ts",
 		"db:migrate": "DB_MIGRATING=true tsx src/core/db/migrate.ts",
 		"db:generate-migration": "drizzle-kit generate --config=drizzle.config.ts",
@@ -53,6 +53,7 @@
 		"form-data": "^4.0.6",
 		"get-tsconfig": "^4.14.0",
 		"jest-mock-extended": "4.0.1",
+		"playwright": "^1.61.1",
 		"qrcodly-eslint-config": "workspace:*",
 		"qrcodly-typescript-config": "workspace:*",
 		"ts-jest": "^29.4.11",
@@ -79,6 +80,7 @@
 		"@fastify/swagger": "^9.8.1",
 		"@opentelemetry/api": "^1.9.1",
 		"@opentelemetry/exporter-metrics-otlp-proto": "^0.220.0",
+		"@opentelemetry/exporter-prometheus": "^0.220.0",
 		"@opentelemetry/exporter-trace-otlp-proto": "^0.220.0",
 		"@opentelemetry/host-metrics": "^0.39.0",
 		"@opentelemetry/instrumentation-http": "^0.220.0",
@@ -96,6 +98,7 @@
 		"drizzle-orm": "^0.45.2",
 		"drizzle-zod": "^0.8.3",
 		"fastify": "catalog:",
+		"file-type": "^22.3.0",
 		"handlebars": "^4.7.10",
 		"ioredis": "^5.11.1",
 		"jsdom": "^26.1.0",

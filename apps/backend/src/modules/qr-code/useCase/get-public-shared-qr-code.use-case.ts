@@ -1,8 +1,14 @@
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
-import { TPublicSharedQrCodeResponseDto } from '@shared/schemas';
+import {
+	isHostedPageType,
+	TPublicSharedQrCodeResponseDto,
+	withoutHostedFileKeys,
+} from '@shared/schemas';
 import QrCodeShareRepository from '../domain/repository/qr-code-share.repository';
+import QrCodeRepository from '../domain/repository/qr-code.repository';
+import { type TQrCode } from '../domain/entities/qr-code.entity';
 import { ImageService } from '@/core/services/image.service';
 import { QrCodeShareNotFoundError } from '../error/http/qr-code-share-not-found.error';
 
@@ -15,6 +21,7 @@ export class GetPublicSharedQrCodeUseCase implements IBaseUseCase {
 		@inject(QrCodeShareRepository) private qrCodeShareRepository: QrCodeShareRepository,
 		@inject(ImageService) private imageService: ImageService,
 		@inject(Logger) private logger: Logger,
+		@inject(QrCodeRepository) private qrCodeRepository: QrCodeRepository,
 	) {}
 
 	/**
@@ -30,7 +37,11 @@ export class GetPublicSharedQrCodeUseCase implements IBaseUseCase {
 			throw new QrCodeShareNotFoundError();
 		}
 
-		const qrCode = share.qrCode;
+		// a hosted code stores only its type: load it through the repository to get its page
+		const qrCode =
+			share.qrCode && isHostedPageType(share.qrCode.content.type)
+				? await this.qrCodeRepository.findOneById(share.qrCode.id)
+				: (share.qrCode as TQrCode | undefined);
 		if (!qrCode) {
 			throw new QrCodeShareNotFoundError();
 		}
@@ -53,7 +64,8 @@ export class GetPublicSharedQrCodeUseCase implements IBaseUseCase {
 
 		return {
 			name: share.config.showName ? qrCode.name : null,
-			content: qrCode.content,
+			// hosted files are only served through their page, which checks whether it is online
+			content: withoutHostedFileKeys(qrCode.content),
 			config: qrCode.config,
 			shareConfig: share.config,
 			previewImage,

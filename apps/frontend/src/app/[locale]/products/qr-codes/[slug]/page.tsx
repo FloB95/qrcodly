@@ -17,9 +17,9 @@ import {
 } from '@/lib/use-case-pages';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { routing, SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { marketingMetadata } from '@/components/marketing/seo';
 import type { Metadata } from 'next';
-import { env } from '@/env';
 import type { SupportedLanguages } from '@/i18n/routing';
 
 const ICON_COMPONENTS: Partial<
@@ -66,28 +66,10 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
 	if (!useCase) return {};
 
 	const t = await getTranslations({ locale, namespace: useCase.namespace });
-	const baseUrl = env.NEXT_PUBLIC_FRONTEND_URL;
-	const pagePath = `products/qr-codes/${slug}`;
-
-	return {
+	return marketingMetadata(locale, `products/qr-codes/${slug}`, {
 		title: t('metaTitle'),
 		description: t('metaDescription'),
-		alternates: {
-			canonical:
-				locale === routing.defaultLocale
-					? `${baseUrl}/${pagePath}`
-					: `${baseUrl}/${locale}/${pagePath}`,
-			languages: {
-				'x-default': `${baseUrl}/${pagePath}`,
-				...Object.fromEntries(
-					routing.locales.map((l) => [
-						l,
-						l === routing.defaultLocale ? `${baseUrl}/${pagePath}` : `${baseUrl}/${l}/${pagePath}`,
-					]),
-				),
-			},
-		},
-	};
+	});
 }
 
 export default async function Page({ params }: PageParams) {

@@ -70,6 +70,17 @@ const config = {
 	},
 	// This is required to support PostHog trailing slash API requests
 	skipTrailingSlashRedirect: true,
+	// /features was folded into the home page; keep old links and rankings
+	async redirects() {
+		return [
+			{ source: '/features', destination: '/', statusCode: 301 },
+			{
+				source: '/:locale(de|es|fr|it|nl|pl|pt|ru|en)/features',
+				destination: '/:locale',
+				statusCode: 301,
+			},
+		];
+	},
 	async rewrites() {
 		return [
 			{

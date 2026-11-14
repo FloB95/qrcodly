@@ -1,0 +1,27 @@
+{
+	"name": "@integrations/figma",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "node build.mjs --watch",
+		"build": "node build.mjs --production",
+		"typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.plugin.json",
+		"lint": "eslint src/"
+	},
+	"dependencies": {
+		"@heroicons/react": "^2.2.0",
+		"@shared/schemas": "workspace:*",
+		"react": "catalog:",
+		"react-dom": "catalog:"
+	},
+	"devDependencies": {
+		"@figma/plugin-typings": "^1.142.0",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"esbuild": "^0.28.1",
+		"eslint": "^9.39.2",
+		"qrcodly-eslint-config": "workspace:*",
+		"typescript": "catalog:"
+	}
+}

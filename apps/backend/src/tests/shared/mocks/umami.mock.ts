@@ -18,6 +18,13 @@ export const createMockAnalyticsData = (): TAnalyticsResponseDto => ({
 		bounces: 10,
 		totaltime: 5000,
 	},
+	summary: {
+		pageviewsLast7Days: 25,
+		visitorsLast7Days: 13,
+		topCountry: { label: 'US', share: 70 },
+		topDevice: { label: 'Desktop', share: 60 },
+	},
+	detailsLocked: false,
 	viewsAndSessions: {
 		pageviews: [
 			{ date: '2025-01-01', value: 10 },

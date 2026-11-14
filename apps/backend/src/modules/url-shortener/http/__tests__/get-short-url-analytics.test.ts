@@ -3,11 +3,13 @@ import type { FastifyInstance } from 'fastify';
 import type { TShortUrlResponseDto, TAnalyticsResponseDto } from '@shared/schemas';
 import { SHORT_URL_API_PATH, reserveShortUrl } from './utils';
 import { mockFetchUmamiAllEndpoints, resetFetchMocks } from '@/tests/shared/mocks/umami.mock';
+import { ensureProSubscription } from '@/tests/shared/helpers';
 
 describe('getShortUrlAnalytics', () => {
 	let testServer: FastifyInstance;
 	let accessToken: string;
 	let accessToken2: string;
+	let accessTokenPro: string;
 
 	beforeAll(async () => {
 		await resetTestState();
@@ -15,6 +17,8 @@ describe('getShortUrlAnalytics', () => {
 		testServer = ctx.testServer;
 		accessToken = ctx.accessToken;
 		accessToken2 = ctx.accessToken2;
+		accessTokenPro = ctx.accessTokenPro;
+		await ensureProSubscription();
 	});
 
 	beforeEach(() => {
@@ -32,7 +36,7 @@ describe('getShortUrlAnalytics', () => {
 			headers: { Authorization: `Bearer ${token}` },
 		});
 
-	it('should return analytics data for short URL owner and return 200', async () => {
+	it('should return the summary but lock the details for a free user', async () => {
 		const reserveResponse = await reserveShortUrl(testServer, accessToken);
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
@@ -40,24 +44,36 @@ describe('getShortUrlAnalytics', () => {
 		expect(response).toHaveStatusCode(200);
 
 		const analytics = JSON.parse(response.payload) as TAnalyticsResponseDto;
-		expect(analytics).toBeDefined();
-		expect(analytics.shortUrlStats).toBeDefined();
+		expect(analytics.shortUrlStats.pageviews).toBe(100);
+		expect(analytics.summary).toEqual({
+			pageviewsLast7Days: expect.any(Number),
+			visitorsLast7Days: expect.any(Number),
+			topCountry: { label: 'Chrome', share: 63 },
+			topDevice: { label: 'Chrome', share: 63 },
+		});
+		expect(analytics.detailsLocked).toBe(true);
+		expect(analytics.viewsAndSessions).toBeNull();
+		expect(analytics.browserMetrics).toBeNull();
+		expect(analytics.osMetrics).toBeNull();
+		expect(analytics.deviceMetrics).toBeNull();
+		expect(analytics.countryMetrics).toBeNull();
 	});
 
-	it('should return analytics with correct structure', async () => {
-		const reserveResponse = await reserveShortUrl(testServer, accessToken);
+	it('should return the summary and the details for a pro user', async () => {
+		const reserveResponse = await reserveShortUrl(testServer, accessTokenPro);
 		const shortUrl = JSON.parse(reserveResponse.payload) as TShortUrlResponseDto;
 
-		const response = await getAnalyticsRequest(shortUrl.shortCode, accessToken);
+		const response = await getAnalyticsRequest(shortUrl.shortCode, accessTokenPro);
 		expect(response).toHaveStatusCode(200);
 
 		const analytics = JSON.parse(response.payload) as TAnalyticsResponseDto;
-		expect(analytics.shortUrlStats).toBeDefined();
-		expect(analytics.viewsAndSessions).toBeDefined();
-		expect(analytics.browserMetrics).toBeDefined();
-		expect(analytics.osMetrics).toBeDefined();
-		expect(analytics.deviceMetrics).toBeDefined();
-		expect(analytics.countryMetrics).toBeDefined();
+		expect(analytics.summary).toBeDefined();
+		expect(analytics.detailsLocked).toBe(false);
+		expect(analytics.viewsAndSessions?.pageviews).toHaveLength(2);
+		expect(analytics.browserMetrics).toHaveLength(2);
+		expect(analytics.osMetrics).toHaveLength(2);
+		expect(analytics.deviceMetrics).toHaveLength(2);
+		expect(analytics.countryMetrics).toHaveLength(2);
 	});
 
 	it('should return 401 when not authenticated', async () => {

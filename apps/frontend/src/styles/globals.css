@@ -6,6 +6,66 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Hosted pages: the chosen pairing sets display/body faces, the page body uses them */
+@utility hp-pair-playfair {
+	--hp-font-display: var(--font-hp-playfair);
+	--hp-font-body: var(--font-hp-source-sans);
+}
+@utility hp-pair-fraunces {
+	--hp-font-display: var(--font-hp-fraunces);
+	--hp-font-body: var(--font-hp-dm-sans);
+}
+@utility hp-pair-lora {
+	--hp-font-display: var(--font-hp-lora);
+	--hp-font-body: var(--font-hp-nunito-sans);
+}
+@utility hp-pair-grotesk {
+	--hp-font-display: var(--font-hp-space-grotesk);
+	--hp-font-body: var(--font-hp-plex-sans);
+}
+@utility hp-pair-manrope {
+	--hp-font-display: var(--font-hp-manrope);
+	--hp-font-body: var(--font-hp-manrope);
+}
+@utility hp-pair-inter {
+	--hp-font-display: var(--font-hp-inter);
+	--hp-font-body: var(--font-hp-inter);
+}
+@utility hp-pair-cormorant {
+	--hp-font-display: var(--font-hp-cormorant);
+	--hp-font-body: var(--font-hp-mulish);
+}
+@utility hp-pair-dmserif {
+	--hp-font-display: var(--font-hp-dm-serif);
+	--hp-font-body: var(--font-hp-dm-sans);
+}
+@utility hp-pair-outfit {
+	--hp-font-display: var(--font-hp-outfit);
+	--hp-font-body: var(--font-hp-inter);
+}
+
+/* Hyphenates only long words (compound nouns), so short words never split. Safari ignores
+   hyphenate-limit-chars; six letters on each side give it the same twelve-letter minimum. */
+@utility hyphens-long-words {
+	hyphens: auto;
+	hyphenate-limit-chars: 12 5 5;
+	-webkit-hyphenate-limit-before: 6;
+	-webkit-hyphenate-limit-after: 6;
+}
+@utility hp-pair-montserrat {
+	--hp-font-display: var(--font-hp-montserrat);
+	--hp-font-body: var(--font-hp-open-sans);
+}
+@utility font-hp-body {
+	font-family: var(--hp-font-body), ui-sans-serif, system-ui, sans-serif;
+}
+@utility font-hp-display {
+	font-family: var(--hp-font-display), ui-serif, Georgia, serif;
+}
+@utility font-hp-mono {
+	font-family: var(--font-hp-plex-mono), ui-monospace, monospace;
+}
+
 @utility scrollbar-hide {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
@@ -76,7 +136,7 @@
 	--muted-foreground: oklch(0.552 0.016 285.938);
 	--accent: oklch(0.967 0.001 286.375);
 	--accent-foreground: oklch(0.21 0.006 285.885);
-	--destructive: oklch(0.577 0.245 27.325);
+	--destructive: oklch(0.505 0.213 27.518);
 	--border: oklch(0.92 0.004 286.32);
 	--input: oklch(0.92 0.004 286.32);
 	--ring: oklch(0.705 0.015 286.067);
@@ -153,10 +213,25 @@
 	}
 	body {
 		@apply bg-background text-foreground;
+		/* a word longer than its box (compound nouns, URLs) breaks instead of spilling out */
+		overflow-wrap: break-word;
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	dt {
+		@apply hyphens-long-words;
+	}
+	/* Tailwind 4 dropped the pointer cursor on buttons */
+	button:not(:disabled),
+	[role='button']:not(:disabled) {
+		cursor: pointer;
 	}
 }
 
-.canvas-wrap canvas {
+.canvas-wrap canvas,
+.canvas-wrap img {
 	width: 100%;
 	height: 100%;
 }

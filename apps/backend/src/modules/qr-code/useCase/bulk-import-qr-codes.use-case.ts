@@ -10,6 +10,9 @@ import { sleep } from '@/utils/general';
 import { BulkTextCsvDto } from '../domain/dtos/BulkTextCsvDto';
 import { BulkWifiCsvDto } from '../domain/dtos/BulkWifiCsvDto';
 import { BulkVCardCsvDto } from '../domain/dtos/BulkVCardCsvDto';
+import { BulkPhoneCsvDto } from '../domain/dtos/BulkPhoneCsvDto';
+import { BulkSmsCsvDto } from '../domain/dtos/BulkSmsCsvDto';
+import { BulkWhatsAppCsvDto } from '../domain/dtos/BulkWhatsAppCsvDto';
 import { BadRequestError } from '@/core/error/http';
 import { TQrCodeWithRelations } from '../domain/entities/qr-code.entity';
 import { TUser } from '@/core/domain/schema/UserSchema';
@@ -69,6 +72,18 @@ export class BulkImportQrCodesUseCase {
 				'isDynamic',
 			],
 			schema: BulkVCardCsvDto,
+		},
+		phone: {
+			columns: ['phone', 'name'],
+			schema: BulkPhoneCsvDto,
+		},
+		sms: {
+			columns: ['phone', 'message', 'name'],
+			schema: BulkSmsCsvDto,
+		},
+		whatsapp: {
+			columns: ['phone', 'message', 'name'],
+			schema: BulkWhatsAppCsvDto,
 		},
 	};
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { QrCodeGeneratorStoreProvider } from '@/components/provider/QrCodeConfigStoreProvider';
 import { QRcodeGenerator } from '@/components/qr-generator/QRcodeGenerator';
 import type { QrCodeGeneratorState } from '@/store/useQrCodeStore';
-import { QrCodeDefaults } from '@shared/schemas';
+import { HOSTED_PAGE_TYPES, QrCodeDefaults } from '@shared/schemas';
 import { TableLoader } from '@/components/ui/table-loader';
 
 export function ExtensionQrGenerator() {
@@ -40,7 +40,12 @@ export function ExtensionQrGenerator() {
 
 	return (
 		<QrCodeGeneratorStoreProvider initState={initState}>
-			<QRcodeGenerator generatorType="QrCodeWithDownloadBtn" compact />
+			{/* hosted pages are a web app feature only */}
+			<QRcodeGenerator
+				generatorType="QrCodeWithDownloadBtn"
+				compact
+				hiddenContentTypes={[...HOSTED_PAGE_TYPES]}
+			/>
 		</QrCodeGeneratorStoreProvider>
 	);
 }

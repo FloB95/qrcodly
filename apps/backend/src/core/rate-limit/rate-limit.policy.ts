@@ -5,6 +5,7 @@ export enum RateLimitPolicy {
 	BULK_QR_CREATE = 'bulk_qr_create',
 	// short url limits
 	SHORT_URL_CREATE = 'short_url_create',
+	SHORT_URL_VIEWS = 'short_url_views',
 	// template limits
 	TEMPLATE_CREATE = 'template_create',
 	SCREENSHOT_CREATE = 'screenshot_create',
@@ -16,9 +17,15 @@ export enum RateLimitPolicy {
 	DOMAIN_RESOLVE = 'domain_resolve',
 	// survey limits
 	SURVEY_SUBMIT = 'survey_submit',
+	// account limits (each request or revocation mails the support inbox)
+	ACCOUNT_DELETION_REQUEST = 'account_deletion_request',
 	// scan limits
 	SCAN_LOOKUP = 'scan_lookup',
 	SCAN_RECORD = 'scan_record',
+	// hosted pages
+	HOSTED_UPLOAD = 'hosted_upload',
+	HOSTED_PAGE = 'hosted_page',
+	HOSTED_FILE = 'hosted_file',
 }
 
 export enum RateLimitTier {
@@ -51,6 +58,11 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.AUTHENTICATED]: 5,
 		[RateLimitTier.PRO_PLAN]: 30,
 	},
+	[RateLimitPolicy.SHORT_URL_VIEWS]: {
+		[RateLimitTier.ANONYMOUS]: 30,
+		[RateLimitTier.AUTHENTICATED]: 600,
+		[RateLimitTier.PRO_PLAN]: 1000,
+	},
 	[RateLimitPolicy.BULK_QR_CREATE]: {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 2,
@@ -81,6 +93,11 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.AUTHENTICATED]: 5,
 		[RateLimitTier.PRO_PLAN]: 5,
 	},
+	[RateLimitPolicy.ACCOUNT_DELETION_REQUEST]: {
+		[RateLimitTier.ANONYMOUS]: 0,
+		[RateLimitTier.AUTHENTICATED]: 5,
+		[RateLimitTier.PRO_PLAN]: 5,
+	},
 	[RateLimitPolicy.DOMAIN_VERIFY]: {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 0,
@@ -100,5 +117,20 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.ANONYMOUS]: 200,
 		[RateLimitTier.AUTHENTICATED]: 200,
 		[RateLimitTier.PRO_PLAN]: 200,
+	},
+	[RateLimitPolicy.HOSTED_UPLOAD]: {
+		[RateLimitTier.ANONYMOUS]: 0,
+		[RateLimitTier.AUTHENTICATED]: 10,
+		[RateLimitTier.PRO_PLAN]: 30,
+	},
+	[RateLimitPolicy.HOSTED_PAGE]: {
+		[RateLimitTier.ANONYMOUS]: 300,
+		[RateLimitTier.AUTHENTICATED]: 300,
+		[RateLimitTier.PRO_PLAN]: 300,
+	},
+	[RateLimitPolicy.HOSTED_FILE]: {
+		[RateLimitTier.ANONYMOUS]: 300,
+		[RateLimitTier.AUTHENTICATED]: 300,
+		[RateLimitTier.PRO_PLAN]: 300,
 	},
 } as const;

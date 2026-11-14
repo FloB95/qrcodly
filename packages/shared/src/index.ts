@@ -35,6 +35,11 @@ export * from './dtos/billing';
 
 export * from './dtos/analytics-integration';
 
+export * from './dtos/hosted-page/HostedUploadDto';
+export * from './dtos/hosted-page/PublicHostedPageResponseDto';
+export * from './dtos/hosted-page/HostedPageUsageDto';
+export * from './dtos/hosted-page/HostedAssetUrlsDto';
+
 export * from './dtos/tag/CreateTagDto';
 export * from './dtos/tag/UpdateTagDto';
 export * from './dtos/tag/TagResponseDto';
@@ -53,7 +58,15 @@ export * from './dtos/api-key/ApiKeyListResponseDto';
 export * from './dtos/user-survey/SubmitUserSurveyDto';
 export * from './dtos/user-survey/UserSurveyStatusResponseDto';
 
+export * from './dtos/account/AccountDeletionRequestResponseDto';
+
+export * from './dtos/newsletter/NewsletterContentLocale';
+export * from './dtos/newsletter/NewsletterSubscriptionStatus';
+export * from './dtos/newsletter/NewsletterSubscriptionResponseDto';
+export * from './dtos/newsletter/UpdateNewsletterSubscriptionDto';
+
 export * from './dtos/IdRequestQuery';
+export * from './dtos/BulkDeleteDto';
 export * from './dtos/ListRequestDto';
 export * from './dtos/PaginationDto';
 export * from './dtos/WebsiteScreenshotDto';
@@ -70,6 +83,9 @@ export * from './schemas/QrCodeShare';
 export * from './schemas/CustomDomain';
 export * from './schemas/AnalyticsSchema';
 export * from './schemas/Tag';
+export * from './schemas/HostedPage';
+export * from './schemas/docs';
+export * from './hosted-pages';
 
 /***************************
  * Utils

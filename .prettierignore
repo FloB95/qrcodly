@@ -5,3 +5,4 @@ coverage
 *.min.js
 *.handlebars
 .next
+pnpm-lock.yaml

@@ -4,6 +4,7 @@ import { hoursFromNow } from '@/core/utils/date';
 import { URL_SAFETY_RECHECK_NEW_HOURS } from '../config/constants';
 import { urlSafetyUnblocks } from '@/core/metrics';
 import { Logger } from '@/core/logging';
+import { HostedPageCacheService } from '@/modules/hosted-page/service/hosted-page-cache.service';
 import ShortUrlRepository from '../domain/repository/short-url.repository';
 import UrlSafetyIncidentRepository from '../domain/repository/url-safety-incident.repository';
 
@@ -20,6 +21,7 @@ export default class UnblockShortUrlCommand extends AbstractCommand {
 		@inject(ShortUrlRepository) private readonly shortUrlRepository: ShortUrlRepository,
 		@inject(UrlSafetyIncidentRepository)
 		private readonly incidentRepository: UrlSafetyIncidentRepository,
+		@inject(HostedPageCacheService) private readonly hostedPageCache: HostedPageCacheService,
 		@inject(Logger) private readonly logger: Logger,
 	) {
 		super();
@@ -29,7 +31,7 @@ export default class UnblockShortUrlCommand extends AbstractCommand {
 		this.command
 			.name('url-safety:unblock')
 			.description('Lift a URL safety block on a short URL (false-positive override)')
-			.requiredOption('-c, --short-code <code>', 'The 5-character short code')
+			.requiredOption('-c, --short-code <code>', 'The short code')
 			.option('-r, --reactivate', 'Also switch the link back on immediately', false);
 	}
 
@@ -52,12 +54,14 @@ export default class UnblockShortUrlCommand extends AbstractCommand {
 		await this.shortUrlRepository.clearSafetyBlock(
 			shortUrl.id,
 			hoursFromNow(URL_SAFETY_RECHECK_NEW_HOURS),
+			{ manual: true },
 		);
 		await this.incidentRepository.resolveForShortUrl(shortUrl.id);
 
 		if (reactivate) {
 			await this.shortUrlRepository.update(shortUrl, { isActive: true, updatedAt: new Date() });
 		}
+		if (shortUrl.hostedPageId) await this.hostedPageCache.invalidateShortCode(shortCode);
 
 		urlSafetyUnblocks.add(1, { reason: 'manual' });
 		this.logger.info('url_safety.unblocked', {

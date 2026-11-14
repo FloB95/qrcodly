@@ -4,7 +4,7 @@ import {
 	QR_CODE_PREVIEW_IMAGE_FOLDER,
 	QR_CODE_UPLOAD_FOLDER,
 } from '../../config/constants';
-import { generateQrCodeStylingInstance } from '../../lib/styled-qr-code';
+import { renderQrCodeSvg } from '../../lib/styled-qr-code';
 import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
 
 export class QrCodeImageStrategy extends BaseImageStrategy {
@@ -68,23 +68,10 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 				fileName,
 			);
 
-			const libraryOptions = convertQrCodeOptionsToLibraryOptions(config);
-
-			// Convert S3 storage path to a base64 data URL so JSDOM can handle it
-			if (libraryOptions.image) {
-				libraryOptions.image = (await this.getImageAsDataUrl(libraryOptions.image)) ?? undefined;
-			}
-
-			const instance = generateQrCodeStylingInstance({
-				...libraryOptions,
-				data: qrCodeData,
-			});
-
-			const svg = await instance.getRawData('svg');
-			if (!svg) return undefined;
-
-			const buffer = Buffer.isBuffer(svg) ? svg : Buffer.from(await svg.arrayBuffer());
-			await this.objectStorage.upload(filePath, buffer, 'image/svg+xml');
+			const { image, ...libraryOptions } = convertQrCodeOptionsToLibraryOptions(config);
+			const logo = image ? await this.loadLogo(image) : undefined;
+			const svg = await renderQrCodeSvg({ ...libraryOptions, data: qrCodeData }, logo);
+			await this.objectStorage.upload(filePath, Buffer.from(svg), 'image/svg+xml');
 			return filePath;
 		} catch (error) {
 			this.logger.error('error.qrCode.previewImage.create', {

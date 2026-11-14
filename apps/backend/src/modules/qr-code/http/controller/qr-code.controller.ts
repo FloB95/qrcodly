@@ -2,12 +2,17 @@ import { Delete, Get, Patch, Post } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
+import { Logger } from '@/core/logging';
 import QrCodeRepository from '../../domain/repository/qr-code.repository';
 import { QrCodeNotFoundError } from '../../error/http/qr-code-not-found.error';
 import { type IHttpResponse } from '@/core/interface/response.interface';
 import { type TQrCodeWithRelations } from '../../domain/entities/qr-code.entity';
 import {
 	BulkImportQrCodeDto,
+	BulkDeleteDto,
+	BulkDeleteResponseDto,
+	type TBulkDeleteDto,
+	type TBulkDeleteResponseDto,
 	CreateQrCodeDto,
 	GetQrCodeQueryParamsSchema,
 	QrCodeWithRelationsPaginatedResponseDto,
@@ -39,6 +44,7 @@ import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { DownloadService } from '../../service/download.service';
 import { BadRequestError } from '@/core/error/http';
 import { ScreenshotService } from '@/core/services/screenshot.service';
+import { deleteEach } from '@/core/http/bulk-delete';
 
 @injectable()
 export class QrCodeController extends AbstractController {
@@ -56,6 +62,7 @@ export class QrCodeController extends AbstractController {
 		@inject(ScreenshotService) private readonly screenshotService: ScreenshotService,
 		@inject(DuplicateQrCodeUseCase)
 		private readonly duplicateQrCodeUseCase: DuplicateQrCodeUseCase,
+		@inject(Logger) private readonly logger: Logger,
 	) {
 		super();
 	}
@@ -95,14 +102,20 @@ export class QrCodeController extends AbstractController {
 			status,
 		});
 
-		const pagination = {
-			page: page,
-			limit: limit,
-			total,
-			data: qrCodes,
-		};
+		// one broken row (e.g. a hosted code whose page is gone) must not take the whole list down
+		const data = qrCodes.flatMap((qrCode) => {
+			const parsed = QrCodeWithRelationsResponseDto.safeParse(qrCode);
+			if (parsed.success) return [parsed.data];
+			this.logger.error('qrCode.list.invalid_item', { qrCode: { id: qrCode.id } });
+			return [];
+		});
 
-		return this.makeApiHttpResponse(200, QrCodeWithRelationsPaginatedResponseDto.parse(pagination));
+		// a dropped row must not leave the count promising it
+		const shown = total - (qrCodes.length - data.length);
+		return this.makeApiHttpResponse(
+			200,
+			QrCodeWithRelationsPaginatedResponseDto.parse({ page, limit, total: shown, data }),
+		);
 	}
 
 	@Post('', {
@@ -121,7 +134,7 @@ export class QrCodeController extends AbstractController {
 			tags: ['QR Codes', 'Public'],
 			summary: 'Create a new QR code',
 			description:
-				'Creates a new QR code based on the provided data. Supports 8 content types: URL, Text, WiFi, vCard, Email, Location, Event, and EPC. ' +
+				'Creates a new QR code based on the provided data. Supports 11 content types: URL, Text, WiFi, vCard, Email, Location, Event, EPC, Phone, SMS, and WhatsApp. ' +
 				'If the QR code is dynamic (contentType=URL and isDynamic=true), a short URL is automatically generated and linked so the destination can be changed later. ' +
 				'This endpoint is publicly accessible (no auth required) but rate-limited. Authenticated users get their QR codes saved to their account.',
 			operationId: 'qr-code/create-qr-code',
@@ -266,6 +279,33 @@ export class QrCodeController extends AbstractController {
 
 		await this.deleteQrCodeUseCase.execute(qrCode, request.user.id);
 		return this.makeApiHttpResponse(200, { deleted: true });
+	}
+
+	@Post('/bulk-delete', {
+		bodySchema: BulkDeleteDto,
+		responseSchema: {
+			200: BulkDeleteResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['QR Codes'],
+			summary: 'Delete several QR codes',
+			description:
+				'Permanently deletes up to 100 QR codes and their short URLs, like deleting each one. ' +
+				'Items that are not found or not owned are listed in `failed`; the others are still deleted.',
+			operationId: 'qr-code/bulk-delete-qr-codes',
+		},
+	})
+	async bulkDelete(
+		request: IHttpRequest<TBulkDeleteDto>,
+	): Promise<IHttpResponse<TBulkDeleteResponseDto>> {
+		const result = await deleteEach('qrCode', request.body.ids, async (id) => {
+			const qrCode = await this.fetchOwnedQrCode(id, request.user.id);
+			await this.deleteQrCodeUseCase.execute(qrCode, request.user.id);
+		});
+		return this.makeApiHttpResponse(200, result);
 	}
 
 	@Post('/:id/duplicate', {

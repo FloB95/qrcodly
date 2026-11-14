@@ -10,6 +10,7 @@ type BaseIntegrationEntry = {
 	nameKey: string;
 	descriptionKey: string;
 	tags: IntegrationTag[];
+	requiresApiKey?: boolean;
 };
 
 export type AnalyticsIntegrationEntry = BaseIntegrationEntry & {
@@ -21,12 +22,14 @@ export type ExternalLinkIntegrationEntry = BaseIntegrationEntry & {
 	kind: 'external-link';
 	href: string;
 	ctaKey: string;
-	requiresApiKey?: boolean;
 };
 
 export type ComingSoonIntegrationEntry = BaseIntegrationEntry & {
 	kind: 'coming-soon';
 };
+
+export const CHROME_EXTENSION_URL =
+	'https://chromewebstore.google.com/detail/qrcodly/pagnaengchnbgecnappokojmdnagefpd';
 
 export type IntegrationCatalogEntry =
 	AnalyticsIntegrationEntry | ExternalLinkIntegrationEntry | ComingSoonIntegrationEntry;
@@ -53,10 +56,12 @@ export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 	{
 		id: 'browser-extension-chrome',
 		slug: 'browser-extension-chrome',
-		kind: 'coming-soon',
+		kind: 'external-link',
 		tags: ['browser'],
 		nameKey: 'browserExtensionChrome.name',
 		descriptionKey: 'browserExtensionChrome.description',
+		href: CHROME_EXTENSION_URL,
+		ctaKey: 'browserExtensionChrome.cta',
 	},
 	{
 		id: 'chatgpt',
@@ -75,6 +80,15 @@ export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 		descriptionKey: 'adobeIndesign.description',
 		href: 'https://exchange.adobe.com/apps/cc/7b62450e',
 		ctaKey: 'adobeIndesign.cta',
+		requiresApiKey: true,
+	},
+	{
+		id: 'figma',
+		slug: 'figma',
+		kind: 'coming-soon',
+		tags: ['design'],
+		nameKey: 'figma.name',
+		descriptionKey: 'figma.description',
 		requiresApiKey: true,
 	},
 ];

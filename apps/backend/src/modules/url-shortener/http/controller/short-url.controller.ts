@@ -28,7 +28,12 @@ import {
 	TUpdateShortUrlDto,
 	TrackScanDto,
 	UpdateShortUrlDto,
+	BulkDeleteDto,
+	BulkDeleteResponseDto,
+	type TBulkDeleteDto,
+	type TBulkDeleteResponseDto,
 } from '@shared/schemas';
+import { deleteEach } from '@/core/http/bulk-delete';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
 import { buildShortUrl } from '../../utils';
 import { HOT_SHORT_CODES_KEY } from '../../config/constants';
@@ -37,8 +42,9 @@ import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { CreateShortUrlUseCase } from '../../useCase/create-short-url.use-case';
 import { ListShortUrlsUseCase } from '../../useCase/list-short-urls.use-case';
 import { DeleteShortUrlUseCase } from '../../useCase/delete-short-url.use-case';
-import { TShortUrl } from '../../domain/entities/short-url.entity';
+import { type TShortUrlWithDomain } from '../../domain/entities/short-url.entity';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
+import { TokenTypeSchema } from '@/core/domain/schema/UserSchema';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { KeyCache } from '@/core/cache';
 import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
@@ -52,10 +58,13 @@ import { ShortUrlBlockedError } from '../../error/http/short-url-blocked.error';
 import UrlSafetyIncidentRepository from '../../domain/repository/url-safety-incident.repository';
 import UserSafetyStandingRepository from '../../domain/repository/user-safety-standing.repository';
 import { daysAgo } from '@/core/utils/date';
+import { PlanName } from '@/core/config/plan.config';
 import {
 	URL_SAFETY_HOT_SHORT_CODE_LIMIT,
 	URL_SAFETY_OFFENCE_WINDOW_DAYS,
 } from '../../config/constants';
+import { HostedPageService } from '@/modules/hosted-page/service/hosted-page.service';
+import { type THostedPageType } from '@shared/schemas';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -83,6 +92,7 @@ export class ShortUrlController extends AbstractController {
 		private readonly safetyIncidentRepository: UrlSafetyIncidentRepository,
 		@inject(UserSafetyStandingRepository)
 		private readonly safetyStandingRepository: UserSafetyStandingRepository,
+		@inject(HostedPageService) private readonly hostedPageService: HostedPageService,
 	) {
 		super();
 	}
@@ -97,7 +107,10 @@ export class ShortUrlController extends AbstractController {
 			401: DEFAULT_ERROR_RESPONSES[401],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
+		// hidden from the docs only: API keys keep working as before
+		config: { allowedTokenTypes: [...TokenTypeSchema.options] },
 		schema: {
+			hide: true,
 			tags: ['Short URLs'],
 			summary: 'List open URL safety findings',
 			description:
@@ -141,7 +154,10 @@ export class ShortUrlController extends AbstractController {
 			401: DEFAULT_ERROR_RESPONSES[401],
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
+		// hidden from the docs only: API keys keep working as before
+		config: { allowedTokenTypes: [...TokenTypeSchema.options] },
 		schema: {
+			hide: true,
 			tags: ['Short URLs'],
 			summary: 'Dismiss URL safety findings',
 			description:
@@ -311,6 +327,33 @@ export class ShortUrlController extends AbstractController {
 		return this.makeApiHttpResponse(200, { deleted: true });
 	}
 
+	@Post('/bulk-delete', {
+		bodySchema: BulkDeleteDto,
+		responseSchema: {
+			200: BulkDeleteResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['Short URLs'],
+			summary: 'Delete several standalone short URLs',
+			description:
+				'Soft-deletes up to 100 standalone short URLs by their short codes, like deleting each one. Short URLs linked to QR codes are refused. ' +
+				'Items that are not found or not owned are listed in `failed`; the others are still deleted.',
+			operationId: 'short-url/bulk-delete-short-urls',
+		},
+	})
+	async bulkDelete(
+		request: IHttpRequest<TBulkDeleteDto>,
+	): Promise<IHttpResponse<TBulkDeleteResponseDto>> {
+		const result = await deleteEach('shortUrl', request.body.ids, async (id) => {
+			const shortUrl = await this.fetchShortUrl(id, request.user.id);
+			await this.deleteShortUrlUseCase.execute(shortUrl, request.user.id);
+		});
+		return this.makeApiHttpResponse(200, result);
+	}
+
 	@Get('/:shortCode/detail', {
 		responseSchema: {
 			200: ShortUrlWithCustomDomainResponseDto,
@@ -362,16 +405,24 @@ export class ShortUrlController extends AbstractController {
 			isActive: boolean;
 			deletedAt: Date | null;
 			blocked: boolean;
+			hostedType: THostedPageType | null;
+			hostedUrl: string | null;
 		}>
 	> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode);
+		// a hosted page is served in place of the redirect; "open directly" swaps the destination
+		// only page links read their page; every other scan stays a single lookup
+		const scanTarget = await this.hostedPageService.resolveScanTarget(shortUrl);
 		return this.makeApiHttpResponse(200, {
-			destinationUrl: shortUrl.destinationUrl,
+			destinationUrl: scanTarget.destinationUrl ?? shortUrl.destinationUrl,
 			isActive: shortUrl.isActive,
 			deletedAt: shortUrl.deletedAt,
 			// lets the frontend middleware send a scanner to /link-blocked instead of /disabled —
 			// telling a phishing victim to "contact the owner of this QR code" is bad advice
 			blocked: shortUrl.safetyStatus === 'blocked',
+			hostedType: scanTarget.hostedType,
+			// the one address a hosted page is served at; the frontend redirects every other host there
+			hostedUrl: scanTarget.hostedUrl ?? null,
 		});
 	}
 
@@ -405,9 +456,9 @@ export class ShortUrlController extends AbstractController {
 	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
 
-		if (shortUrl.qrCodeId != null) {
+		if (shortUrl.qrCodeId != null || shortUrl.hostedPageId != null) {
 			throw new BadRequestError(
-				'Cannot update a short URL linked to a QR code. Update the QR code instead.',
+				'Cannot update a short URL linked to a QR code or hosted page. Update that instead.',
 			);
 		}
 
@@ -509,8 +560,10 @@ export class ShortUrlController extends AbstractController {
 			tags: ['Analytics'],
 			summary: 'Get analytics for a short URL',
 			description:
-				'Returns detailed analytics for a short URL: pageviews, unique visitors, sessions, bounce rate, ' +
-				'time-series data, and breakdowns by browser, operating system, device type, and country. ' +
+				'Returns analytics for a short URL. Every plan gets the aggregate statistics and a summary ' +
+				'(last 7 days, top country, top device). The time-series data and the breakdowns by ' +
+				'browser, operating system, device type and country require the Pro plan; without it ' +
+				'they are null and `detailsLocked` is true. ' +
 				'Only the owner can access analytics for their short URLs.',
 			operationId: 'short-url/get-analytics',
 			params: {
@@ -527,12 +580,16 @@ export class ShortUrlController extends AbstractController {
 		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
 		const analyticsData = await this.umamiAnalyticsService.getAnalyticsForEndpoint(
 			`/u/${shortUrl.shortCode}`,
+			{ includeDetails: request.user.plan === PlanName.PRO },
 		);
 
 		return this.makeApiHttpResponse(200, AnalyticsResponseDto.parse(analyticsData));
 	}
 
 	@Get('/:shortCode/get-views', {
+		config: {
+			rateLimitPolicy: RateLimitPolicy.SHORT_URL_VIEWS,
+		},
 		responseSchema: {
 			401: DEFAULT_ERROR_RESPONSES[401],
 			403: DEFAULT_ERROR_RESPONSES[403],
@@ -658,7 +715,7 @@ export class ShortUrlController extends AbstractController {
 		}
 	}
 
-	private async fetchShortUrl(shortCode: string, userId?: string): Promise<TShortUrl> {
+	private async fetchShortUrl(shortCode: string, userId?: string): Promise<TShortUrlWithDomain> {
 		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
 		if (!shortUrl || shortUrl.deletedAt) {
 			throw new ShortUrlNotFoundError();

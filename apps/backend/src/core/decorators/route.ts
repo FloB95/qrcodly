@@ -24,6 +24,8 @@ interface CustomRouteOptions {
 		scope?: ApiKeyScope;
 		/** Lock a route to specific token types — e.g. `['session_token']` for API-key management. */
 		allowedTokenTypes?: TTokenType[];
+		/** Per-route multipart limits, read by @fastify/multipart via `routeOptions.config`. */
+		multipartOptions?: { limits?: { fileSize?: number; files?: number } };
 	};
 }
 

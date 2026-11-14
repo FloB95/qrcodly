@@ -5,10 +5,8 @@ import {
 	GlobeAltIcon,
 	ChartBarIcon,
 	CheckIcon,
-	TagIcon,
 	ClipboardDocumentIcon,
 	ArrowTrendingUpIcon,
-	DocumentArrowUpIcon,
 	CommandLineIcon,
 } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
@@ -137,148 +135,21 @@ export function LinkAnalyticsMockup() {
 					</div>
 				</div>
 
-				<div className="flex items-end gap-1 sm:gap-1.5 flex-1 min-h-0">
-					{bars.map((h, i) => (
-						<motion.div
-							key={i}
-							className="flex-1 bg-teal-600 rounded-t-sm"
-							initial={{ height: 0 }}
-							whileInView={{ height: `${h}%` }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.6, delay: i * 0.05 }}
-						/>
-					))}
-				</div>
-			</div>
-		</div>
-	);
-}
-
-export function LinkManagementMockup() {
-	const links = [
-		{ short: 'qrcodly.de/u/x7k9m', status: 'Active', clicks: 1284, tag: 'Marketing' },
-		{ short: 'qrcodly.de/u/b3p2q', status: 'Active', clicks: 847, tag: 'Campaign' },
-		{ short: 'qrcodly.de/u/r8n4w', status: 'Active', clicks: 531, tag: 'Product' },
-	];
-	return (
-		<div className="relative bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
-				<div className="flex items-center justify-between mb-3 sm:mb-4">
-					<div className="flex items-center gap-2">
-						<LinkIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-						<span className="text-xs sm:text-sm font-medium text-slate-600">All Links</span>
+				{/* absolute, so the bars' percentage heights have a definite box to refer to */}
+				<div className="relative flex-1 min-h-24">
+					<div className="absolute inset-0 flex items-end gap-1 sm:gap-1.5">
+						{bars.map((h, i) => (
+							<motion.div
+								key={i}
+								className="flex-1 bg-teal-600 rounded-t-sm"
+								initial={{ height: 0 }}
+								whileInView={{ height: `${h}%` }}
+								viewport={{ once: true }}
+								transition={{ duration: 0.6, delay: i * 0.05 }}
+							/>
+						))}
 					</div>
-					<span className="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-teal-700">
-						{links.length} Active
-					</span>
 				</div>
-
-				<div className="flex-1 flex flex-col gap-2 sm:gap-3">
-					{links.map((link, i) => (
-						<motion.div
-							key={link.short}
-							className="bg-slate-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3"
-							initial={{ opacity: 0, y: 15 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.4, delay: i * 0.1 }}
-						>
-							<div className="flex items-center justify-between mb-1.5">
-								<span className="text-[10px] sm:text-xs font-mono font-medium text-slate-800">
-									{link.short}
-								</span>
-								<span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-medium text-emerald-700">
-									<div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-									{link.status}
-								</span>
-							</div>
-							<div className="flex items-center justify-between">
-								<span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] text-slate-500">
-									<TagIcon className="h-3 w-3" />
-									{link.tag}
-								</span>
-								<span className="text-[9px] sm:text-[10px] text-slate-400">
-									{link.clicks.toLocaleString('en-US')} clicks
-								</span>
-							</div>
-						</motion.div>
-					))}
-				</div>
-			</div>
-		</div>
-	);
-}
-
-export function BulkOperationsMockup() {
-	const items = [
-		{ url: 'qrcodly.de/u/x7k9m', status: 'created' },
-		{ url: 'qrcodly.de/u/b3p2q', status: 'created' },
-		{ url: 'qrcodly.de/u/r8n4w', status: 'created' },
-		{ url: 'qrcodly.de/u/m5j6t', status: 'pending' },
-	];
-	return (
-		<div className="relative bg-gradient-to-br from-cyan-50 to-sky-50 rounded-3xl p-4 sm:p-6 min-h-[350px] sm:min-h-[426px] flex flex-col overflow-hidden">
-			<div className="bg-white rounded-2xl shadow-xl border border-slate-200/60 p-4 sm:p-6 flex-1 flex flex-col">
-				<div className="flex items-center justify-between mb-3 sm:mb-4">
-					<div className="flex items-center gap-2">
-						<DocumentArrowUpIcon className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400" />
-						<span className="text-xs sm:text-sm font-medium text-slate-600">Bulk Import</span>
-					</div>
-					<span className="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-[10px] sm:text-xs font-medium text-blue-700">
-						4 of 248
-					</span>
-				</div>
-
-				<div className="flex-1 flex flex-col gap-2 sm:gap-2.5">
-					{items.map((item, i) => (
-						<motion.div
-							key={item.url}
-							className="flex items-center gap-2.5 bg-slate-50 rounded-lg p-2 sm:p-2.5"
-							initial={{ opacity: 0, y: 10 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.3, delay: i * 0.08 }}
-						>
-							<div
-								className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${item.status === 'created' ? 'bg-emerald-100' : 'bg-slate-200'}`}
-							>
-								{item.status === 'created' && (
-									<CheckIcon className="h-2.5 w-2.5 text-emerald-600" />
-								)}
-							</div>
-							<span className="text-[10px] sm:text-xs font-mono text-slate-700 flex-1">
-								{item.url}
-							</span>
-							<span
-								className={`text-[9px] sm:text-[10px] font-medium ${item.status === 'created' ? 'text-emerald-600' : 'text-slate-400'}`}
-							>
-								{item.status === 'created' ? 'Created' : 'Pending'}
-							</span>
-						</motion.div>
-					))}
-				</div>
-
-				<motion.div
-					className="mt-3 sm:mt-4"
-					initial={{ opacity: 0 }}
-					whileInView={{ opacity: 1 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.4, delay: 0.4 }}
-				>
-					<div className="flex items-center justify-between mb-1.5">
-						<span className="text-[10px] sm:text-xs text-slate-500">Progress</span>
-						<span className="text-[10px] sm:text-xs font-medium text-slate-700">75%</span>
-					</div>
-					<div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-						<motion.div
-							className="h-full bg-teal-500 rounded-full"
-							initial={{ width: 0 }}
-							whileInView={{ width: '75%' }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.8, delay: 0.5 }}
-						/>
-					</div>
-				</motion.div>
 			</div>
 		</div>
 	);

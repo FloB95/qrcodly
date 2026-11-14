@@ -5,6 +5,9 @@ import {
 	generateWifiCsv,
 	generateInvalidCsv,
 	generateTextCsv,
+	generatePhoneCsv,
+	generateSmsCsv,
+	generateWhatsAppCsv,
 } from '@/tests/shared/factories/csv.factory';
 import type { FastifyInstance } from 'fastify';
 import type { TQrCodeOptions, TQrCodeWithRelationsResponseDto } from '@shared/schemas';
@@ -114,6 +117,52 @@ describe('bulkImportQrCodes', () => {
 			qrCodes.forEach((qrCode) => {
 				expect(qrCode.content.type).toBe('wifi');
 			});
+		});
+
+		it('should import phone QR codes from CSV', async () => {
+			const csvContent = generatePhoneCsv(2);
+			const response = await bulkImportRequest('phone', csvContent, accessToken);
+
+			expect(response).toHaveStatusCode(201);
+			const qrCodes = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto[];
+			expect(qrCodes.length).toBe(2);
+			qrCodes.forEach((qrCode) => {
+				expect(qrCode.content.type).toBe('phone');
+				expect(qrCode.qrCodeData).toMatch(/^tel:\+49170\d{7}$/);
+			});
+		});
+
+		it('should import sms QR codes from CSV', async () => {
+			const csvContent = generateSmsCsv(2);
+			const response = await bulkImportRequest('sms', csvContent, accessToken);
+
+			expect(response).toHaveStatusCode(201);
+			const qrCodes = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto[];
+			expect(qrCodes.length).toBe(2);
+			qrCodes.forEach((qrCode) => {
+				expect(qrCode.content.type).toBe('sms');
+				expect(qrCode.qrCodeData).toMatch(/^SMSTO:\+49170\d{7}:.+$/);
+			});
+		});
+
+		it('should import whatsapp QR codes from CSV', async () => {
+			const csvContent = generateWhatsAppCsv(2);
+			const response = await bulkImportRequest('whatsapp', csvContent, accessToken);
+
+			expect(response).toHaveStatusCode(201);
+			const qrCodes = JSON.parse(response.payload) as TQrCodeWithRelationsResponseDto[];
+			expect(qrCodes.length).toBe(2);
+			qrCodes.forEach((qrCode) => {
+				expect(qrCode.content.type).toBe('whatsapp');
+				expect(qrCode.qrCodeData).toMatch(/^https:\/\/wa\.me\/49170\d{7}\?text=.+$/);
+			});
+		});
+
+		it('should reject whatsapp rows without a country code', async () => {
+			const csvContent = 'Phone Number;Message;Name\n0170 1234567;Hello;Test';
+			const response = await bulkImportRequest('whatsapp', csvContent, accessToken);
+
+			expect(response).toHaveStatusCode(400);
 		});
 
 		it('should return 400 with line number for invalid CSV row', async () => {

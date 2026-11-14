@@ -11,6 +11,7 @@ import type {
 } from '@shared/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '../utils';
+import { hostedPageQueryKeys } from './hosted-page';
 import { useQrCodeGeneratorStore } from '@/components/provider/QrCodeConfigStoreProvider';
 import type { ApiError } from './ApiError';
 
@@ -59,7 +60,7 @@ export async function fetchQrCodesPage(
 	);
 }
 
-export function useListQrCodesQuery(page = 1, limit = 10, filters?: QrCodeFilters) {
+export function useListQrCodesQuery(page = 1, limit = 10, filters?: QrCodeFilters, enabled = true) {
 	const { getToken } = useAuth();
 
 	return useQuery({
@@ -68,6 +69,7 @@ export function useListQrCodesQuery(page = 1, limit = 10, filters?: QrCodeFilter
 			const token = await getToken();
 			return fetchQrCodesPage(token, page, limit, filters);
 		},
+		enabled,
 		placeholderData: keepPreviousData,
 		refetchOnWindowFocus: false,
 		staleTime: 5 * 60 * 1000,
@@ -99,6 +101,7 @@ export function useCreateQrCodeMutation() {
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
+			void queryClient.invalidateQueries({ queryKey: hostedPageQueryKeys.usage });
 		},
 		onError: (e: Error) => {
 			const error = e as ApiError;
@@ -150,13 +153,13 @@ export function useUpdateQrCodeMutation() {
 		}: {
 			qrCodeId: string;
 			data: TUpdateQrCodeDto;
-		}): Promise<void> => {
+		}): Promise<TQrCodeWithRelationsResponseDto> => {
 			const token = await getToken();
 			const headers: HeadersInit = {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			};
-			await apiRequest<void>(`/qr-code/${qrCodeId}`, {
+			return apiRequest<TQrCodeWithRelationsResponseDto>(`/qr-code/${qrCodeId}`, {
 				method: 'PATCH',
 				body: JSON.stringify(data),
 				headers,
@@ -166,6 +169,8 @@ export function useUpdateQrCodeMutation() {
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
+			// the owner's previews of a hosted page must show the saved version right away
+			void queryClient.invalidateQueries({ queryKey: hostedPageQueryKeys.all });
 		},
 		onError: () => {},
 	});
@@ -187,6 +192,7 @@ export function useDuplicateQrCodeMutation() {
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
+			void queryClient.invalidateQueries({ queryKey: hostedPageQueryKeys.usage });
 		},
 	});
 }
@@ -210,6 +216,7 @@ export function useDeleteQrCodeMutation() {
 			void queryClient.refetchQueries({
 				queryKey: qrCodeQueryKeys.listQrCodes,
 			});
+			void queryClient.invalidateQueries({ queryKey: hostedPageQueryKeys.usage });
 		},
 		onError: () => {},
 	});

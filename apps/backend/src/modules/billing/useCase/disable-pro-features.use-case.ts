@@ -4,6 +4,7 @@ import { Logger } from '@/core/logging';
 import CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
 import AnalyticsIntegrationRepository from '@/modules/analytics-integration/domain/repository/analytics-integration.repository';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
+import { HostedPageCacheService } from '@/modules/hosted-page/service/hosted-page-cache.service';
 
 /**
  * Use case for disabling all Pro features for a user.
@@ -17,6 +18,7 @@ export class DisableProFeaturesUseCase implements IBaseUseCase {
 		private analyticsIntegrationRepository: AnalyticsIntegrationRepository,
 		@inject(UserSubscriptionRepository)
 		private userSubscriptionRepository: UserSubscriptionRepository,
+		@inject(HostedPageCacheService) private hostedPageCache: HostedPageCacheService,
 		@inject(Logger) private logger: Logger,
 	) {}
 
@@ -33,6 +35,9 @@ export class DisableProFeaturesUseCase implements IBaseUseCase {
 
 		// Mark pro features as disabled on the subscription
 		await this.userSubscriptionRepository.markProFeaturesDisabled(userId);
+
+		// Hosted pages go offline with the Pro features; dropping the cache applies it on the next scan
+		await this.hostedPageCache.invalidateUser(userId);
 
 		this.logger.info('subscription.proFeaturesDisabled', { subscription: { userId } });
 	}

@@ -51,16 +51,6 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 						<ul className="space-y-2.5">
 							<li>
 								<Link
-									href="/features"
-									title={t('features')}
-									aria-label={t('features')}
-									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-								>
-									{t('features')}
-								</Link>
-							</li>
-							<li>
-								<Link
 									href="/plans"
 									title={t('pricing')}
 									aria-label={t('pricing')}
@@ -114,6 +104,16 @@ export default function Footer({ hideLanguageNav }: { hideLanguageNav?: boolean 
 									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
 								>
 									{t('faqLink')}
+								</Link>
+							</li>
+							<li>
+								<Link
+									href="/tools/qr-code-scanner"
+									title={t('scanner')}
+									aria-label={t('scanner')}
+									className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+								>
+									{t('scanner')}
 								</Link>
 							</li>
 							<li>

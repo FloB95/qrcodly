@@ -39,14 +39,11 @@ catalog:
 
 minimumReleaseAgeExclude:
   - '@clerk/backend@3.11.6'
-  - '@clerk/chrome-extension@3.1.53'
-  - '@clerk/clerk-js@6.25.4'
   - '@clerk/fastify@3.1.52'
   - '@clerk/localizations@4.13.4'
   - '@clerk/nextjs@7.5.19'
   - '@clerk/react@6.12.4'
   - '@clerk/shared@4.25.4'
-  - '@clerk/ui@1.25.4'
   - '@fastify/cookie@11.1.2'
   - '@fumadocs/api-docs@0.2.1'
   - '@posthog/core@1.43.0'

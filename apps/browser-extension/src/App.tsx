@@ -13,6 +13,7 @@ import { deDE, enUS, frFR, itIT, esES, nlNL, plPL, ruRU } from '@clerk/localizat
 import { ExtensionQrGenerator } from '@ext/components/ExtensionQrGenerator';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const SYNC_HOST = import.meta.env.VITE_CLERK_SYNC_HOST;
 const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL ?? 'https://www.qrcodly.de';
 
 const queryClient = getQueryClient();
@@ -112,7 +113,7 @@ export default function App({ onReady }: AppProps) {
 	return (
 		<ClerkProvider
 			publishableKey={PUBLISHABLE_KEY}
-			syncHost="https://www.qrcodly.de"
+			syncHost={SYNC_HOST}
 			afterSignOutUrl="/"
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			localization={clerkLocale as any}

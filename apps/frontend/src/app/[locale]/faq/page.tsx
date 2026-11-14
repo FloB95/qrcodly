@@ -9,9 +9,10 @@ import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { routing, SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { SUPPORTED_LANGUAGES } from '@/i18n/routing';
+import { BreadcrumbJsonLd, marketingMetadata } from '@/components/marketing/seo';
 import type { Metadata } from 'next';
-import { env } from '@/env';
+import { CONTENT_TYPE_CONFIGS } from '@/lib/content-type.config';
 
 const PAGE_PATH = 'faq';
 
@@ -21,37 +22,18 @@ const CATEGORY_COUNTS: Record<(typeof CATEGORY_KEYS)[number], number> = {
 	general: 7,
 	qrCodes: 9,
 	urlShortener: 8,
-	analytics: 6,
-	pricing: 5,
+	analytics: 5,
+	pricing: 6,
 };
 
 export async function generateMetadata({ params }: DefaultPageParams): Promise<Metadata> {
 	const { locale } = await params;
 	if (!SUPPORTED_LANGUAGES.includes(locale)) return {};
 	const t = await getTranslations({ locale, namespace: 'faqPage' });
-	const baseUrl = env.NEXT_PUBLIC_FRONTEND_URL;
-
-	return {
+	return marketingMetadata(locale, PAGE_PATH, {
 		title: t('metaTitle'),
 		description: t('metaDescription'),
-		alternates: {
-			canonical:
-				locale === routing.defaultLocale
-					? `${baseUrl}/${PAGE_PATH}`
-					: `${baseUrl}/${locale}/${PAGE_PATH}`,
-			languages: {
-				'x-default': `${baseUrl}/${PAGE_PATH}`,
-				...Object.fromEntries(
-					routing.locales.map((l) => [
-						l,
-						l === routing.defaultLocale
-							? `${baseUrl}/${PAGE_PATH}`
-							: `${baseUrl}/${l}/${PAGE_PATH}`,
-					]),
-				),
-			},
-		},
-	};
+	});
 }
 
 export default async function Page({ params }: DefaultPageParams) {
@@ -74,7 +56,7 @@ export default async function Page({ params }: DefaultPageParams) {
 		items: Array.from({ length: CATEGORY_COUNTS[key] }, (_, i) => ({
 			id: `faq-${key}-${i + 1}`,
 			question: t(`categories.${key}.q${i + 1}`),
-			answer: t(`categories.${key}.a${i + 1}`),
+			answer: t(`categories.${key}.a${i + 1}`, { count: CONTENT_TYPE_CONFIGS.length }),
 		})),
 	}));
 
@@ -85,6 +67,7 @@ export default async function Page({ params }: DefaultPageParams) {
 			<Header />
 			<article>
 				<FaqJsonLd items={allFaqItems} />
+				<BreadcrumbJsonLd locale={locale} items={[{ name: t('heroTitle'), path: PAGE_PATH }]} />
 
 				{/* Hero */}
 				<section className="pt-24 pb-12 sm:pt-32 sm:pb-16 text-center">

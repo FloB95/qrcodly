@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { TQrCodeContent } from '../../schemas/QrCode';
 import { safeHttpUrl } from '../../schemas/SafeUrl';
+import { getHostedInputIssues } from '../../hosted-pages/registry';
 
 const httpUrlSchema = safeHttpUrl(1000);
 
@@ -47,5 +48,17 @@ export function validateContentHttpUrls(
 				path: [...basePath, 'url'],
 			});
 		}
+	}
+}
+
+/** Cross-field rules of hosted page types, checked where content comes in (create, update). */
+export function validateHostedPageContent(
+	content: TQrCodeContent | undefined,
+	ctx: z.RefinementCtx,
+	basePath: string[] = ['content', 'data'],
+) {
+	if (!content) return;
+	for (const issue of getHostedInputIssues(content)) {
+		ctx.addIssue({ code: 'custom', message: issue.message, path: [...basePath, ...issue.path] });
 	}
 }

@@ -19,7 +19,7 @@ export class UrlStrategy implements IShortUrlStrategy {
 
 		const reserved = await container
 			.resolve(GetReservedShortCodeUseCase)
-			.execute(qrCode.createdBy!);
+			.take(qrCode.createdBy!, { qrCodeId: qrCode.id });
 		if (!reserved) throw new ShortUrlNotFoundError();
 
 		// Get user's default custom domain (if any)

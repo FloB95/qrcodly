@@ -55,6 +55,9 @@ export class KeyCache implements IKeyCache {
 	constructor() {
 		this.client = new Redis(env.REDIS_URL, {
 			maxRetriesPerRequest: 3,
+			// Tests run against the developer's Redis: a separate logical database keeps their
+			// plan, rate-limit and usage entries away from the dev accounts the tests reuse
+			...(env.NODE_ENV === 'test' ? { db: 1 } : {}),
 			// Fail fast instead of queueing while Redis is down; callers fall back without it
 			...(env.REDIS_COMMAND_TIMEOUT_MS
 				? { commandTimeout: env.REDIS_COMMAND_TIMEOUT_MS, enableOfflineQueue: false }

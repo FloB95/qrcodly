@@ -11,6 +11,9 @@ module.exports = (_env, argv) => {
 		process.env.QRCODLY_API_URL ||
 		(isProduction ? 'https://api.qrcodly.de/api/v1' : 'http://localhost:5001/api/v1');
 
+	// The UXP manifest version is the one Adobe publishes and shows in the user agent
+	const pluginVersion = require('./plugin/manifest.json').version;
+
 	return {
 		entry: './src/index.tsx',
 		target: 'web',
@@ -49,6 +52,7 @@ module.exports = (_env, argv) => {
 		plugins: [
 			new webpack.DefinePlugin({
 				__QRCODLY_API_URL__: JSON.stringify(apiBaseUrl),
+				__QRCODLY_PLUGIN_VERSION__: JSON.stringify(pluginVersion),
 			}),
 			new CopyPlugin({
 				patterns: [{ from: 'plugin', to: '.' }],

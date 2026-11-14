@@ -4,6 +4,7 @@ import { Logger } from '@/core/logging';
 import AnalyticsIntegrationRepository from '@/modules/analytics-integration/domain/repository/analytics-integration.repository';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
 import { EnforceCustomDomainLimitUseCase } from './enforce-custom-domain-limit.use-case';
+import { HostedPageCacheService } from '@/modules/hosted-page/service/hosted-page-cache.service';
 
 /**
  * Use case for enabling all Pro features for a user.
@@ -18,6 +19,7 @@ export class EnableProFeaturesUseCase implements IBaseUseCase {
 		private analyticsIntegrationRepository: AnalyticsIntegrationRepository,
 		@inject(UserSubscriptionRepository)
 		private userSubscriptionRepository: UserSubscriptionRepository,
+		@inject(HostedPageCacheService) private hostedPageCache: HostedPageCacheService,
 		@inject(Logger) private logger: Logger,
 	) {}
 
@@ -35,6 +37,9 @@ export class EnableProFeaturesUseCase implements IBaseUseCase {
 
 		// Clear grace period fields on the subscription
 		await this.userSubscriptionRepository.clearGracePeriod(userId);
+
+		// Hosted pages are served again from the next scan on
+		await this.hostedPageCache.invalidateUser(userId);
 
 		this.logger.info('subscription.proFeaturesEnabled', { subscription: { userId } });
 	}

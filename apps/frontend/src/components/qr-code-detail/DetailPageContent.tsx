@@ -32,6 +32,12 @@ import LocationContent from './content/Location';
 import EventContent from './content/Event';
 import EpcContent from './content/Epc';
 import TextContent from './content/Text';
+import PhoneContent from './content/Phone';
+import SmsContent from './content/Sms';
+import WhatsAppContent from './content/WhatsApp';
+import PdfContent from './content/Pdf';
+import ProductContent from './content/Product';
+import { SavedHostedPreviewSwitch } from './SavedHostedPreviewSwitch';
 import { Link } from '@/i18n/navigation';
 import { getQrCodeEditLink } from '@/lib/utils';
 import { PencilIcon, ShieldExclamationIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -75,6 +81,16 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 				return <EventContent qrCode={qrCode} />;
 			case 'epc':
 				return <EpcContent qrCode={qrCode} />;
+			case 'phone':
+				return <PhoneContent qrCode={qrCode} />;
+			case 'sms':
+				return <SmsContent qrCode={qrCode} />;
+			case 'whatsapp':
+				return <WhatsAppContent qrCode={qrCode} />;
+			case 'pdf':
+				return <PdfContent qrCode={qrCode} />;
+			case 'product':
+				return <ProductContent qrCode={qrCode} />;
 			default:
 				return <></>;
 		}
@@ -234,20 +250,25 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 						<div className="flex-1 min-w-0 mb-6 md:mb-0">{renderQrCodeContent()}</div>
 						<div className="shrink-0">
 							<Suspense fallback={null}>
-								<div className="flex justify-center space-y-6 lg:flex-col lg:justify-start">
-									<DynamicQrCode
-										hideDomainEdit
-										qrCode={{
-											content: qrCode.content,
-											config: qrCode.config,
-											qrCodeData: qrCode.qrCodeData,
-										}}
-										shortUrl={qrCode.shortUrl || undefined}
-									/>
-								</div>
-								<div className="mt-4 flex justify-center">
-									<SavedQrCodeDownloadBtn qrCode={qrCode} />
-								</div>
+								{/* a hosted code can show the page a scan opens instead of its QR code */}
+								<SavedHostedPreviewSwitch qrCode={qrCode}>
+									<div>
+										<div className="flex justify-center space-y-6 lg:flex-col lg:justify-start">
+											<DynamicQrCode
+												hideDomainEdit
+												qrCode={{
+													content: qrCode.content,
+													config: qrCode.config,
+													qrCodeData: qrCode.qrCodeData,
+												}}
+												shortUrl={qrCode.shortUrl || undefined}
+											/>
+										</div>
+										<div className="mt-4 flex justify-center">
+											<SavedQrCodeDownloadBtn qrCode={qrCode} />
+										</div>
+									</div>
+								</SavedHostedPreviewSwitch>
 							</Suspense>
 						</div>
 					</div>

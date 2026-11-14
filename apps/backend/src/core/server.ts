@@ -17,6 +17,7 @@ import {
 	resolveClientIp,
 } from '@/libs/fastify/helpers';
 import { addUserToRequestMiddleware } from '@/core/http/middleware/add-user-to-request.middleware';
+import { stripClerkCookiesMiddleware } from '@/core/http/middleware/strip-clerk-cookies.middleware';
 import { env } from './config/env';
 import fastifyHelmet from '@fastify/helmet';
 import { TooManyRequestsError } from './error/http/too-many-requests.error';
@@ -24,6 +25,7 @@ import { BadRequestError } from './error/http/bad-request.error';
 import fastifyCookie from '@fastify/cookie';
 import fastifyRateLimit from '@fastify/rate-limit';
 import fastifyCors from '@fastify/cors';
+import { API_CLIENT_HEADER } from '@shared/schemas';
 import { OnShutdown } from './decorators/on-shutdown.decorator';
 import { HealthController } from './http/controller/health.controller';
 import FastifySwagger from '@fastify/swagger';
@@ -118,7 +120,7 @@ export class Server {
 					{
 						name: 'QR Codes',
 						description:
-							'Create, read, update, and delete QR codes. Supports 8 content types: URL, Text, WiFi, vCard, Email, Location, Event, and EPC (SEPA payment). Dynamic QR codes (URL type with isDynamic=true) automatically generate a linked short URL so the destination can be changed after printing.',
+							'Create, read, update, and delete QR codes. Supports 11 content types: URL, Text, WiFi, vCard, Email, Location, Event, EPC (SEPA payment), Phone, SMS, and WhatsApp. Dynamic QR codes (URL type with isDynamic=true) automatically generate a linked short URL so the destination can be changed after printing.',
 					},
 					{
 						name: 'QR Code Sharing',
@@ -188,20 +190,14 @@ export class Server {
 			},
 		});
 
+		// Open to every origin, without credentials: callers authenticate with a bearer token
 		await this.server.register(fastifyCors, {
-			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie'],
-			credentials: true,
+			allowedHeaders: ['Content-Type', 'Authorization', 'Set-Cookie', API_CLIENT_HEADER],
 			methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
 			origin: true,
 		});
 
-		await this.server.register(clerkPlugin, {
-			secretKey: env.CLERK_SECRET_KEY,
-			publishableKey: env.CLERK_PUBLISHABLE_KEY,
-			telemetry: {
-				disabled: true,
-			},
-		});
+		this.server.addHook('onRequest', stripClerkCookiesMiddleware);
 
 		await this.server.register(fastifyCookie, {
 			secret: env.COOKIE_SECRET,
@@ -297,6 +293,18 @@ export class Server {
 		});
 
 		await this.server.register(fastifyHelmet);
+
+		// onRequest, after the IP block and helmet (its headers stay on Clerk's errors): routes can
+		// then refuse anonymous requests before their body is read (uploads); everything else reads
+		// the result in preHandler as before
+		await this.server.register(clerkPlugin, {
+			secretKey: env.CLERK_SECRET_KEY,
+			publishableKey: env.CLERK_PUBLISHABLE_KEY,
+			hookName: 'onRequest',
+			telemetry: {
+				disabled: true,
+			},
+		});
 
 		registerRoutes(this.server, HealthController, API_BASE_PATH);
 		registerRoutes(this.server, ClerkWebhookController, API_BASE_PATH);

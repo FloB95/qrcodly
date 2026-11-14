@@ -3,9 +3,10 @@
 import { useAuth } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { type TCreateQrCodeDto } from '@shared/schemas';
+import { isDynamic, type TCreateQrCodeDto, type TQrCodeContent } from '@shared/schemas';
 import { toast } from '@/components/ui/use-toast';
 import { useTranslations } from 'next-intl';
+import { useResolveTemplateImages } from '@/hooks/useHostedTemplateImage';
 import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
 import { qrCodeQueryKeys, useCreateQrCodeMutation } from '@/lib/api/qr-code';
@@ -16,8 +17,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { urlShortenerQueryKeys } from '@/lib/api/url-shortener';
 import { useQrCodeGeneratorStore } from '../provider/QrCodeConfigStoreProvider';
 import type { ApiError } from '@/lib/api/ApiError';
-import { isContentAtDefault } from '@/lib/qr-code-helpers';
+import { isContentAtDefault, isContentIncomplete } from '@/lib/qr-code-helpers';
 import { safeLocalStorage } from '@/lib/utils';
+import { hostedTrackingProps } from '@/lib/hosted-tracking';
 
 const SaveQrCodeBtn = ({
 	qrCode,
@@ -31,9 +33,13 @@ const SaveQrCodeBtn = ({
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
 	const [hasMounted, setHasMounted] = useState(false);
 	const queryClient = useQueryClient();
-	const { resetStore, updateLatestQrCode } = useQrCodeGeneratorStore((state) => state);
+	const { resetStore, updateLatestQrCode, hostedUploadsPending } = useQrCodeGeneratorStore(
+		(state) => state,
+	);
 
 	const createQrCodeMutation = useCreateQrCodeMutation();
+	const resolveTemplateImages = useResolveTemplateImages();
+	const [resolving, setResolving] = useState(false);
 
 	useEffect(() => {
 		setHasMounted(true);
@@ -42,11 +48,28 @@ const SaveQrCodeBtn = ({
 	const handleSave = async (qrCodeName: string) => {
 		setNameDialogOpen(false);
 
+		// an adopted template's images are uploaded now, only for the page that is really saved
+		let sent: TQrCodeContent;
+		setResolving(true);
+		try {
+			sent = await resolveTemplateImages(qrCode.content);
+		} catch (e) {
+			toast({
+				variant: 'destructive',
+				title: t('download.errorTitle'),
+				description: (e as Error).message,
+				duration: 5000,
+			});
+			return;
+		} finally {
+			setResolving(false);
+		}
+
 		try {
 			await createQrCodeMutation.mutateAsync(
 				{
 					config: qrCode.config,
-					content: qrCode.content,
+					content: sent,
 					name: qrCodeName,
 				},
 				{
@@ -62,17 +85,28 @@ const SaveQrCodeBtn = ({
 							queryClient.refetchQueries({ queryKey: urlShortenerQueryKeys.reservedShortUrl }),
 						]);
 
-						if (qrCode.content.type === 'url' && qrCode.content.data.isDynamic) {
+						// a saved dynamic code took the reserved short URL; editing on would target the next one
+						if (isDynamic(qrCode.content)) {
 							resetStore();
+							// the reset generator is far shorter (a page editor turns back into the URL
+							// form), which would leave the visitor further down the home page
+							requestAnimationFrame(() => {
+								const generator = document.getElementById('generator');
+								if (generator && generator.getBoundingClientRect().top < 0) {
+									generator.scrollIntoView({ behavior: 'smooth', block: 'start' });
+								}
+							});
 						}
 
 						updateLatestQrCode({
 							config: qrCode.config,
-							content: qrCode.content,
+							content: sent,
 						});
 
 						posthog.capture('qr-code-created', {
 							qrCodeName: qrCodeName,
+							contentType: qrCode.content.type,
+							...hostedTrackingProps(qrCode.content),
 						});
 					},
 					onError: (e: Error) => {
@@ -122,6 +156,9 @@ const SaveQrCodeBtn = ({
 	const isDisabled =
 		!hasMounted ||
 		isContentAtDefault(qrCode.content, isSignedIn === true) ||
+		isContentIncomplete(qrCode.content) ||
+		Boolean(hostedUploadsPending) ||
+		resolving ||
 		createQrCodeMutation.isPending;
 
 	return (

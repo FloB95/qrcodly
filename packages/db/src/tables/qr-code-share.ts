@@ -2,7 +2,7 @@ import { type TQrCodeShareConfig } from '@shared/schemas';
 import { relations } from 'drizzle-orm';
 import { boolean, datetime, index, json, varchar } from 'drizzle-orm/mysql-core';
 import { createTable } from '../utils';
-import qrCode, { type TQrCode } from './qr-code';
+import qrCode, { type TQrCodeRow } from './qr-code';
 
 const qrCodeShare = createTable(
 	'qr_code_share',
@@ -32,7 +32,7 @@ const qrCodeShare = createTable(
 
 export type TQrCodeShare = typeof qrCodeShare.$inferSelect;
 export type TQrCodeShareWithQrCode = TQrCodeShare & {
-	qrCode: TQrCode;
+	qrCode: TQrCodeRow;
 };
 export default qrCodeShare;
 

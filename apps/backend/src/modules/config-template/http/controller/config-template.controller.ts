@@ -19,7 +19,12 @@ import {
 	TIdRequestQueryDto,
 	TUpdateConfigTemplateDto,
 	UpdateConfigTemplateDto,
+	BulkDeleteDto,
+	BulkDeleteResponseDto,
+	type TBulkDeleteDto,
+	type TBulkDeleteResponseDto,
 } from '@shared/schemas';
+import { deleteEach } from '@/core/http/bulk-delete';
 import { GetConfigTemplateUseCase } from '../../useCase/get-config-template.use-case';
 import { type TConfigTemplate } from '../../domain/entities/config-template.entity';
 import { DEFAULT_ERROR_RESPONSES } from '@/core/error/http/error.schemas';
@@ -253,6 +258,33 @@ export class ConfigTemplateController extends AbstractController {
 		const source = await this.fetchOwnedTemplate(request.params.id, request.user.id);
 		const duplicated = await this.duplicateConfigTemplateUseCase.execute(source, request.user.id);
 		return this.makeApiHttpResponse(201, ConfigTemplateResponseDto.parse(duplicated));
+	}
+
+	@Post('/bulk-delete', {
+		bodySchema: BulkDeleteDto,
+		responseSchema: {
+			200: BulkDeleteResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['Templates'],
+			summary: 'Delete several templates',
+			description:
+				'Permanently deletes up to 100 styling templates, like deleting each one. ' +
+				'Items that are not found or not owned are listed in `failed`; the others are still deleted.',
+			operationId: 'template/bulk-delete-templates',
+		},
+	})
+	async bulkDelete(
+		request: IHttpRequest<TBulkDeleteDto>,
+	): Promise<IHttpResponse<TBulkDeleteResponseDto>> {
+		const result = await deleteEach('configTemplate', request.body.ids, async (id) => {
+			const configTemplate = await this.fetchOwnedTemplate(id, request.user.id);
+			await this.deleteConfigTemplateUseCase.execute(configTemplate, request.user.id);
+		});
+		return this.makeApiHttpResponse(200, result);
 	}
 
 	@Delete('/:id', {

@@ -88,6 +88,13 @@ export const poolConnection = mysql.createPool({
 	connectionLimit: env.DB_MIGRATING || env.DB_SEEDING ? 1 : 50,
 	waitForConnections: true,
 	queueLimit: 0,
+	// After a database failover: fail fast instead of waiting 10 s, detect dead idle connections
+	// within seconds (keepalive starts after 10 s idle) and keep only 10 spare connections
+	connectTimeout: 3000,
+	keepAliveInitialDelay: 10000,
+	maxIdle: 10,
+	idleTimeout: 60000,
+	gracefulEnd: true,
 });
 
 instrumentQueryable(poolConnection);

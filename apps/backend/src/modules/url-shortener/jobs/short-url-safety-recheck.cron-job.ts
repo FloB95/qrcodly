@@ -9,6 +9,7 @@ import {
 	URL_SAFETY_CONFIRMATION_DELAY_HOURS,
 	URL_SAFETY_HOT_SHORT_CODE_LIMIT,
 	URL_SAFETY_INCIDENT_RETENTION_DAYS,
+	URL_SAFETY_MANUAL_THREAT_TYPE,
 	URL_SAFETY_NEW_URL_AGE_DAYS,
 	URL_SAFETY_RECHECK_BATCH_SIZE,
 	URL_SAFETY_RECHECK_CONCURRENCY,
@@ -31,6 +32,9 @@ import ShortUrlRepository from '../domain/repository/short-url.repository';
 import UrlSafetyIncidentRepository from '../domain/repository/url-safety-incident.repository';
 import { HOT_SHORT_CODES_KEY } from '../config/constants';
 import type { TShortUrl } from '../domain/entities/short-url.entity';
+import { HostedPageService } from '@/modules/hosted-page/service/hosted-page.service';
+import { EventEmitter } from '@/core/event';
+import { ShortUrlStateChangedEvent } from '../event/short-url-state-changed.event';
 
 /** One flagged link, collected during a run so findings can be grouped per owner afterwards. */
 interface Finding {
@@ -190,13 +194,30 @@ export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
 		findings: Finding[];
 	}): Promise<void> {
 		const { shortUrl, webRisk, shortUrlRepository, incidentRepository, tally, findings } = ctx;
-		if (!shortUrl.destinationUrl) return;
+		// a block from a manual abuse review is an operator's: never re-screened, never lifted
+		if (
+			shortUrl.safetyStatus === 'blocked' &&
+			shortUrl.safetyThreatTypes?.includes(URL_SAFETY_MANUAL_THREAT_TYPE)
+		) {
+			await shortUrlRepository.markSafetyChecked(
+				shortUrl.id,
+				{ nextSafetyCheckAt: null },
+				{ manual: true },
+			);
+			return;
+		}
 
-		const verdict = await webRisk.lookup(shortUrl.destinationUrl);
+		const urls = await this.screenedUrls(shortUrl);
+		if (!urls.length) {
+			await this.retireCheck(shortUrl, shortUrlRepository, incidentRepository, tally);
+			return;
+		}
+
+		const { url, verdict } = await this.lookupWorst(urls, webRisk);
 		urlSafetyChecks.add(1, { source: 'recheck', verdict: verdict.status });
 		tally.checked++;
 
-		const host = redactToHost(shortUrl.destinationUrl);
+		const host = redactToHost(url);
 
 		if (verdict.status === 'unknown') {
 			tally.unknown++;
@@ -217,6 +238,7 @@ export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
 				// resumes when the owner deliberately re-enables it.
 				await shortUrlRepository.clearSafetyBlock(shortUrl.id, nextCheck);
 				await incidentRepository.resolveForShortUrl(shortUrl.id);
+				this.announceChange(shortUrl);
 				urlSafetyUnblocks.add(1, { reason: 'self_healed' });
 				tally.unblocked++;
 				this.logger.info('url_safety.unblocked', {
@@ -330,6 +352,7 @@ export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
 			threatTypes,
 			hoursFromNow(URL_SAFETY_RECHECK_NEW_HOURS),
 		);
+		this.announceChange(shortUrl);
 		await incidentRepository.record({
 			userId: shortUrl.createdBy,
 			shortUrlId: shortUrl.id,
@@ -358,6 +381,73 @@ export class ShortUrlSafetyRecheckCronJob extends AbstractCronJob {
 			shortCode: shortUrl.shortCode,
 			host,
 			threatTypes,
+		});
+	}
+
+	/** What a scan of the link can lead to: its destination, or the links on its hosted page. */
+	private async screenedUrls(shortUrl: TShortUrl): Promise<string[]> {
+		if (shortUrl.destinationUrl) return [shortUrl.destinationUrl];
+		if (!shortUrl.hostedPageId) return [];
+		return container.resolve(HostedPageService).outboundUrlsOf(shortUrl.hostedPageId);
+	}
+
+	/** A block or unblock changes what the link serves; whoever caches that must drop it. */
+	private announceChange(shortUrl: TShortUrl): void {
+		container.resolve(EventEmitter).emit(new ShortUrlStateChangedEvent(shortUrl));
+	}
+
+	/**
+	 * The verdict that matters for the link: an address with a blocking threat first, then any
+	 * other unsafe one, then unknown, else safe.
+	 */
+	private async lookupWorst(
+		urls: string[],
+		webRisk: WebRiskService,
+	): Promise<{ url: string; verdict: Awaited<ReturnType<WebRiskService['lookup']>> }> {
+		const results = await Promise.all(
+			urls.map(async (url) => ({ url, verdict: await webRisk.lookup(url) })),
+		);
+		const blocking = (result: (typeof results)[number]) =>
+			result.verdict.status === 'unsafe' &&
+			(result.verdict.threatTypes ?? []).some((type) =>
+				URL_SAFETY_BLOCKING_THREAT_TYPES.includes(type),
+			);
+		return (
+			results.find(blocking) ??
+			results.find((result) => result.verdict.status === 'unsafe') ??
+			results.find((result) => result.verdict.status === 'unknown') ??
+			results[0]
+		);
+	}
+
+	/**
+	 * A page whose links are all gone has nothing left to screen: it leaves the queue, and a block
+	 * that came from one of those links is lifted (the link stays switched off, as on self-heal).
+	 */
+	private async retireCheck(
+		shortUrl: TShortUrl,
+		shortUrlRepository: ShortUrlRepository,
+		incidentRepository: UrlSafetyIncidentRepository,
+		tally: RunTally,
+	): Promise<void> {
+		if (shortUrl.safetyStatus === 'blocked') {
+			await shortUrlRepository.clearSafetyBlock(shortUrl.id, null);
+			await incidentRepository.resolveForShortUrl(shortUrl.id);
+			this.announceChange(shortUrl);
+			urlSafetyUnblocks.add(1, { reason: 'nothing_to_screen' });
+			tally.unblocked++;
+			this.logger.info('url_safety.unblocked', {
+				shortUrlId: shortUrl.id,
+				shortCode: shortUrl.shortCode,
+				reason: 'nothing_to_screen',
+			});
+			return;
+		}
+		await shortUrlRepository.markSafetyChecked(shortUrl.id, {
+			safetyStatus: 'clean',
+			nextSafetyCheckAt: null,
+			safetyCheckFailures: 0,
+			safetyPendingSince: null,
 		});
 	}
 

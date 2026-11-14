@@ -13,6 +13,7 @@
 		"lint:fix": "eslint . --fix",
 		"preview": "next build && next start",
 		"start": "next start",
+		"test": "vitest run",
 		"typecheck": "tsc --noEmit",
 		"generate:docs": "tsx ./src/scripts/generate-docs.ts"
 	},
@@ -67,6 +68,7 @@
 		"fumadocs-ui": "^16.11.5",
 		"i18n-iso-countries": "^7.14.0",
 		"input-otp": "^1.4.2",
+		"jsqr": "1.4.0",
 		"jszip": "^3.10.1",
 		"lucide-react": "^1.24.0",
 		"next": "^16.4.2",
@@ -115,7 +117,8 @@
 		"tsconfig-paths": "^4.2.0",
 		"tsx": "catalog:",
 		"typescript": "catalog:",
-		"typescript-eslint": "^8.64.0"
+		"typescript-eslint": "^8.64.0",
+		"vitest": "^4.1.10"
 	},
 	"ct3aMetadata": {
 		"initVersion": "7.39.3"

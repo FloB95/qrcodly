@@ -267,10 +267,11 @@ describe('api-key endpoints', () => {
 			const revokeResponse = await revokeApiKeyRequest(testServer, id, accessTokenPro);
 			expect(revokeResponse.statusCode).toBe(200);
 
-			// Clerk takes a moment until a revoked key is rejected everywhere
+			// Clerk takes a moment until a revoked key is rejected everywhere; from CI runners it has
+			// regularly taken longer than 10 seconds
 			let statusCode = 0;
-			for (let attempt = 0; attempt < 10 && statusCode !== 401; attempt++) {
-				if (attempt > 0) await sleep(1000);
+			for (let attempt = 0; attempt < 30 && statusCode !== 401; attempt++) {
+				if (attempt > 0) await sleep(2000);
 				const qrResponse = await testServer.inject({
 					method: 'GET',
 					url: `${QR_CODE_API_PATH}?page=1&limit=1`,
@@ -279,7 +280,7 @@ describe('api-key endpoints', () => {
 				statusCode = qrResponse.statusCode;
 			}
 			expect(statusCode).toBe(401);
-		});
+		}, 90_000);
 	});
 
 	describe('Security & data-leak scenarios', () => {

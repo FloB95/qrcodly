@@ -12,9 +12,7 @@ import { useEffect, useState } from 'react';
 import { type TFileExtension, type TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { useTranslations } from 'next-intl';
 import { getQrCodeStylingOptions } from '@/lib/qr-code-helpers';
-import type QRCodeStylingType from 'qr-code-styling';
-
-let QRCodeStyling: typeof QRCodeStylingType;
+import { useDownloadQrCode } from '@/hooks/use-download-qr-code';
 
 /**
  * Download button for SAVED QR codes (from database)
@@ -30,29 +28,18 @@ export const SavedQrCodeDownloadBtn = ({
 	noStyling?: boolean;
 }) => {
 	const t = useTranslations('qrCode.download');
-	const [qrCodeInstance, setQrCodeInstance] = useState<QRCodeStylingType | null>(null);
+	const downloadQrCode = useDownloadQrCode();
 	const [hasMounted, setHasMounted] = useState(false);
 
 	useEffect(() => {
 		setHasMounted(true);
-
-		void import('qr-code-styling').then((module) => {
-			QRCodeStyling = module.default;
-			const options = getQrCodeStylingOptions(qrCode.config, qrCode.content, {
-				qrCodeData: qrCode.qrCodeData,
-			});
-			const instance = new QRCodeStyling(options);
-			setQrCodeInstance(instance);
-		});
-	}, [qrCode.config, qrCode.content, qrCode.qrCodeData]);
+	}, []);
 
 	const onDownloadClick = async (fileExt: TFileExtension) => {
-		if (!qrCodeInstance) return;
-
-		await qrCodeInstance.download({
-			name: qrCode.name || 'qr-code',
-			extension: fileExt,
+		const options = getQrCodeStylingOptions(qrCode.config, qrCode.content, {
+			qrCodeData: qrCode.qrCodeData,
 		});
+		await downloadQrCode(options, qrCode.name || 'qr-code', fileExt);
 	};
 
 	return (
