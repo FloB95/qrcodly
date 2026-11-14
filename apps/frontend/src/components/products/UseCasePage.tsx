@@ -19,7 +19,7 @@ import { HowToJsonLd } from '@/components/seo/HowToJsonLd';
 import { buildUseCaseVisual } from '@/components/products/mockups/buildUseCaseVisual';
 import { getSiblingUseCases, type UseCaseDef } from '@/lib/use-case-pages';
 import { Link } from '@/i18n/navigation';
-import { ArrowRightIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { getTranslations } from 'next-intl/server';
 import type { SupportedLanguages } from '@/i18n/routing';
 import type { ReactNode } from 'react';
@@ -73,32 +73,49 @@ export async function UseCasePage({
 
 	const firstVisual = useCase.visuals[0];
 	const heroVisual = useCase.template ? (
-		<div className="relative mx-auto h-[600px] w-full max-w-[440px]">
-			<TemplatePhone
-				locale={locale}
-				template={useCase.template}
-				scale={0.72}
-				className="absolute top-0 left-1/2 h-[540px] w-[270px] -translate-x-1/2 sm:right-10 sm:left-auto sm:translate-x-0"
-			/>
-			{/* a layer, not a wrapper: the page in the phone has links of its own */}
-			<Link
-				href={demoPath(useCase.template)}
-				aria-label={tDemo('openDemo', { name: tTemplates(`${useCase.template}.name`) })}
-				className="absolute top-0 left-1/2 h-[540px] w-[270px] -translate-x-1/2 rounded-[44px] sm:right-10 sm:left-auto sm:translate-x-0"
-			/>
+		// as tall as the phone, so the hero grid centres the phone itself next to the text;
+		// zoomed down while the two-column hero is narrower than the 480px scene
+		<div className="relative mx-auto h-[540px] w-full max-w-[480px] lg:[zoom:0.875] xl:[zoom:1]">
+			{/* the printed code, scanned into the page on the phone */}
 			<div
-				className="absolute bottom-24 left-0 hidden rounded-2xl bg-white p-3 shadow-[0_20px_40px_-20px_rgba(15,23,42,0.45)] sm:block"
+				className="absolute top-[250px] left-0 hidden w-[172px] -rotate-6 rounded-2xl bg-white p-4 shadow-[0_30px_60px_-30px_rgba(15,23,42,0.55)] ring-1 ring-stone-200/70 sm:block"
 				aria-hidden="true"
 			>
-				<BrandQr className="size-24" />
+				<span className="block truncate font-mono text-[10px] tracking-[0.14em] text-slate-500 uppercase">
+					{tTemplates(`${useCase.template}.name`)}
+				</span>
+				<BrandQr className="mt-3 size-[140px] text-slate-900" />
 			</div>
-			<Link
-				href={demoPath(useCase.template)}
-				className="absolute bottom-0 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 sm:right-10 sm:left-auto sm:w-[270px] sm:translate-x-0 sm:justify-center"
+			<svg
+				width="120"
+				height="80"
+				viewBox="0 0 120 80"
+				className="absolute top-[170px] left-[92px] hidden sm:block"
+				aria-hidden="true"
 			>
-				<EyeIcon className="size-4" aria-hidden="true" />
-				{tDemo('demo')}
-			</Link>
+				<path
+					d="M4 70 C 40 70, 70 40, 108 14"
+					fill="none"
+					stroke="#0f172a"
+					strokeWidth="2"
+					strokeDasharray="5 6"
+				/>
+				<path d="M98 10 L110 13 L104 24" fill="none" stroke="#0f172a" strokeWidth="2" />
+			</svg>
+			<div className="absolute top-0 left-1/2 h-[540px] w-[270px] -translate-x-1/2 sm:right-0 sm:left-auto sm:translate-x-0">
+				<TemplatePhone
+					locale={locale}
+					template={useCase.template}
+					scale={0.72}
+					className="h-full w-full"
+				/>
+				{/* a layer, not a wrapper: the page in the phone has links of its own */}
+				<Link
+					href={demoPath(useCase.template)}
+					aria-label={tDemo('openDemo', { name: tTemplates(`${useCase.template}.name`) })}
+					className="absolute inset-0 rounded-[44px]"
+				/>
+			</div>
 		</div>
 	) : firstVisual ? (
 		buildUseCaseVisual(firstVisual, t, 0)
@@ -151,6 +168,8 @@ export async function UseCasePage({
 					subtitle={t('hero.subtitle')}
 					ctaLabel={t('hero.ctaLabel')}
 					ctaHref="/#generator"
+					secondaryCtaLabel={useCase.template ? tDemo('demo') : undefined}
+					secondaryCtaHref={useCase.template ? demoPath(useCase.template) : undefined}
 					visual={heroVisual}
 				/>
 

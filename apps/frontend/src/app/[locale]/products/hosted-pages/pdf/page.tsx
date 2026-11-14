@@ -285,7 +285,7 @@ export default async function Page({ params }: DefaultPageParams) {
 						<div className="relative flex flex-wrap items-center justify-between gap-8 overflow-hidden rounded-[32px] bg-[#7a3b12] px-8 py-14 text-[#fdf8f3] sm:px-12 sm:py-16">
 							<CtaQrMotif />
 							<div className="relative flex max-w-xl flex-col gap-3.5">
-								<h2 className="font-serif text-3xl font-semibold sm:text-[44px] sm:leading-[1.06]">
+								<h2 className="text-3xl font-extrabold tracking-tight sm:text-[42px] sm:leading-[1.08]">
 									{t('cta.title')}
 								</h2>
 								<p className="text-[17px] leading-relaxed text-orange-100">{t('cta.text')}</p>
