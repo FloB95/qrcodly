@@ -1389,6 +1389,8 @@
 		"answer10": "¡Absolutamente! Los Códigos QR están optimizados específicamente para la impresión y funcionan de manera fiable en diversos materiales, siempre que permanezcan claros y sin daños. ¡Asegura una buena calidad de impresión, y tus códigos estarán listos para usar en cualquier lugar!",
 		"question11": "¿Dónde se alojan mis datos?",
 		"answer11": "La infraestructura principal de QRcodly funciona en servidores en Alemania. Usamos Clerk para el inicio de sesión, Stripe para los pagos, Amazon SES para enviar las novedades de producto y Sentry y PostHog para detectar errores y mejorar el producto. Tus datos no se venden ni se usan para publicidad de terceros. Si tienes una cuenta, de vez en cuando te enviamos novedades de QRcodly por correo. Puedes desactivarlas en cualquier momento en la configuración o con el enlace que incluye cada correo.",
+		"question12": "¿Cómo elimino mi cuenta?",
+		"answer12": "En Configuración → Perfil, al final de la página, puedes solicitar la eliminación de tu cuenta. La eliminación es definitiva y no se puede deshacer: borramos tus datos personales y todo lo que hayas creado, como códigos QR, URLs cortas, plantillas y estadísticas. Después, tus códigos QR dinámicos y URLs cortas dejarán de funcionar. Hasta que eliminemos tu cuenta, puedes seguir usándola y retirar la solicitud allí. Solo conservamos las facturas durante el tiempo que exige la ley.",
 		"viewAll": "Ver todas las preguntas frecuentes"
 	},
 	"notFound": {
@@ -1772,7 +1774,25 @@
 			"newsletterBlocked": "El envío a tu dirección de correo está bloqueado, por ejemplo porque te diste de baja anteriormente o porque no se pudo entregar un correo. Para cambiarlo, escríbenos a <contact>info@qrcodly.de</contact>.",
 			"newsletterLanguageLabel": "Idioma de los correos",
 			"newsletterLanguageHint": "Escribimos nuestros correos en inglés y alemán.",
-			"newsletterLanguageSaved": "Idioma guardado."
+			"newsletterLanguageSaved": "Idioma guardado.",
+			"deletionTitle": "Eliminar cuenta",
+			"deletionDescription": "Solicita la eliminación de tu cuenta y de todos sus datos.",
+			"deletionWarningTitle": "La eliminación es definitiva y no se puede deshacer:",
+			"deletionWarning1": "Se borran tus datos personales y tu perfil.",
+			"deletionWarning2": "Se borra todo lo que hayas creado, como códigos QR, URLs cortas, plantillas, etiquetas y estadísticas.",
+			"deletionWarning3": "Tus códigos QR dinámicos y URLs cortas dejarán de funcionar.",
+			"deletionWarning4": "Solo conservamos las facturas durante el tiempo que exige la ley.",
+			"deletionRequestButton": "Solicitar eliminación",
+			"deletionConfirmTitle": "¿Solicitar la eliminación de tu cuenta?",
+			"deletionConfirmDescription": "Después eliminaremos tu cuenta con todos sus datos de forma definitiva. Hasta entonces puedes seguir usándola y retirar la solicitud aquí.",
+			"deletionConfirmButton": "Sí, solicitar eliminación",
+			"deletionRequestedAt": "Eliminación solicitada el {date}",
+			"deletionRequestedHint": "Puedes seguir usando tu cuenta con normalidad hasta que la eliminemos. ¿Has cambiado de opinión? Retira la solicitud.",
+			"deletionRevoke": "Retirar solicitud",
+			"deletionRequestedToast": "Tu solicitud se ha enviado.",
+			"deletionRevokedToast": "Tu solicitud se ha retirado.",
+			"deletionError": "No ha funcionado. Inténtalo de nuevo.",
+			"deletionLoadError": "No se pudo cargar el estado de tu solicitud de eliminación."
 		},
 		"security": {
 			"title": "Seguridad",
@@ -1815,21 +1835,7 @@
 			"allSessionsRevoked": "Todas las otras sesiones han sido revocadas.",
 			"sessionRevokeError": "Error al revocar sesión. Por favor intenta de nuevo.",
 			"noSessions": "No se encontraron sesiones activas.",
-			"cancel": "Cancelar",
-			"deleteAccountTitle": "Eliminar Cuenta",
-			"deleteAccountDescription": "Elimina permanentemente tu cuenta y todos los datos asociados.",
-			"deleteWarningTitle": "Esta acción no se puede deshacer. Esto:",
-			"deleteWarning1": "Eliminará permanentemente tu cuenta y perfil",
-			"deleteWarning2": "Eliminará todos tus códigos QR y plantillas",
-			"deleteWarning3": "Cancelará cualquier suscripción activa",
-			"deleteAccount": "Eliminar Cuenta",
-			"deleteConfirmTitle": "¿Estás absolutamente seguro?",
-			"deleteConfirmDescription": "Esta acción no se puede deshacer. Esto eliminará permanentemente tu cuenta, todos tus códigos QR, plantillas y cualquier dato asociado.",
-			"deleteConfirmInstruction": "Escribe \"{text}\" para confirmar",
-			"confirmationType": "Confirmación",
-			"deleteAccountPermanently": "Eliminar Cuenta Permanentemente",
-			"accountDeleted": "Tu cuenta ha sido eliminada.",
-			"accountDeleteError": "Error al eliminar cuenta. Por favor intenta de nuevo."
+			"cancel": "Cancelar"
 		},
 		"integrations": {
 			"title": "Integraciones",
@@ -2602,7 +2608,9 @@
 				"q4": "¿Necesito una cuenta para crear códigos QR?",
 				"a4": "¡No! Puede crear y descargar códigos QR estáticos sin una cuenta. Sin embargo, registrarse (gratis) desbloquea códigos QR dinámicos, análisis, acortamiento de URL y gestión del panel.",
 				"q5": "¿Puedo obtener facturas de mi suscripción Pro?",
-				"a5": "Sí. Después de adquirir el plan Pro, todas las facturas se generan automáticamente. Puede verlas y descargarlas en cualquier momento en su panel de control en Configuración → Facturación → Facturas y recibos."
+				"a5": "Sí. Después de adquirir el plan Pro, todas las facturas se generan automáticamente. Puede verlas y descargarlas en cualquier momento en su panel de control en Configuración → Facturación → Facturas y recibos.",
+				"q6": "¿Cómo elimino mi cuenta?",
+				"a6": "En Configuración → Perfil, al final de la página, puedes solicitar la eliminación de tu cuenta. La eliminación es definitiva y no se puede deshacer: borramos tus datos personales y todo lo que hayas creado, como códigos QR, URLs cortas, plantillas y estadísticas. Después, tus códigos QR dinámicos y URLs cortas dejarán de funcionar. Hasta que eliminemos tu cuenta, puedes seguir usándola y retirar la solicitud allí. Solo conservamos las facturas durante el tiempo que exige la ley."
 			}
 		}
 	},

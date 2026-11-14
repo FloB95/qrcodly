@@ -1389,6 +1389,8 @@
 		"answer10": "Absolut! QR Codes sind speziell für den Druck optimiert und funktionieren zuverlässig auf verschiedensten Materialien, solange sie klar und unbeschädigt bleiben. Achte auf gute Druckqualität, dann sind deine Codes überall einsatzbereit!",
 		"question11": "Wo werden meine Daten gehostet?",
 		"answer11": "Die Kerninfrastruktur von QRcodly läuft auf Servern in Deutschland. Für die Anmeldung nutzen wir Clerk, für Zahlungen Stripe, für den Versand der Produktneuigkeiten Amazon SES und Sentry und PostHog, um Fehler zu finden und das Produkt zu verbessern. Deine Daten werden weder verkauft noch für Werbung Dritter genutzt. Mit einem Konto bekommst du gelegentlich Produktneuigkeiten von QRcodly per E-Mail. Das kannst du jederzeit in den Einstellungen oder über den Link in jeder E-Mail abschalten.",
+		"question12": "Wie lösche ich mein Konto?",
+		"answer12": "Unter Einstellungen → Profil kannst du ganz unten die Löschung deines Kontos beantragen. Die Löschung ist endgültig und lässt sich nicht rückgängig machen: Wir löschen deine persönlichen Daten und alles, was du angelegt hast, etwa QR-Codes, Kurz-URLs, Vorlagen und Statistiken. Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr. Bis wir dein Konto löschen, kannst du es weiter nutzen und den Antrag dort widerrufen. Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt.",
 		"viewAll": "Alle FAQs anzeigen"
 	},
 	"fileUpload": {
@@ -1768,7 +1770,25 @@
 			"newsletterBlocked": "Der Versand an deine E-Mail-Adresse ist gesperrt, zum Beispiel weil du dich früher abgemeldet hast oder eine E-Mail nicht zugestellt werden konnte. Wenn du das ändern möchtest, schreib uns an <contact>info@qrcodly.de</contact>.",
 			"newsletterLanguageLabel": "Sprache der E-Mails",
 			"newsletterLanguageHint": "Wir schreiben unsere E-Mails auf Englisch und Deutsch.",
-			"newsletterLanguageSaved": "Sprache gespeichert."
+			"newsletterLanguageSaved": "Sprache gespeichert.",
+			"deletionTitle": "Konto löschen",
+			"deletionDescription": "Beantrage die Löschung deines Kontos und aller zugehörigen Daten.",
+			"deletionWarningTitle": "Die Löschung ist endgültig und lässt sich nicht rückgängig machen:",
+			"deletionWarning1": "Deine persönlichen Daten und dein Profil werden gelöscht.",
+			"deletionWarning2": "Alles, was du angelegt hast, wird gelöscht, etwa QR-Codes, Kurz-URLs, Vorlagen, Tags und Statistiken.",
+			"deletionWarning3": "Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr.",
+			"deletionWarning4": "Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt.",
+			"deletionRequestButton": "Löschung beantragen",
+			"deletionConfirmTitle": "Löschung deines Kontos beantragen?",
+			"deletionConfirmDescription": "Wir löschen dein Konto danach endgültig mit allen Daten. Bis dahin kannst du es weiter nutzen und den Antrag hier widerrufen.",
+			"deletionConfirmButton": "Ja, Löschung beantragen",
+			"deletionRequestedAt": "Löschung beantragt am {date}",
+			"deletionRequestedHint": "Bis wir dein Konto löschen, kannst du es ganz normal weiter nutzen. Hast du es dir anders überlegt, widerrufe den Antrag.",
+			"deletionRevoke": "Antrag widerrufen",
+			"deletionRequestedToast": "Deine Anfrage wurde gesendet.",
+			"deletionRevokedToast": "Dein Antrag wurde widerrufen.",
+			"deletionError": "Das hat nicht geklappt. Bitte versuche es erneut.",
+			"deletionLoadError": "Der Stand deines Löschantrags konnte nicht geladen werden."
 		},
 		"security": {
 			"title": "Sicherheit",
@@ -1811,21 +1831,7 @@
 			"allSessionsRevoked": "Alle anderen Sitzungen wurden beendet.",
 			"sessionRevokeError": "Sitzung konnte nicht beendet werden. Bitte versuche es erneut.",
 			"noSessions": "Keine aktiven Sitzungen gefunden.",
-			"cancel": "Abbrechen",
-			"deleteAccountTitle": "Konto löschen",
-			"deleteAccountDescription": "Lösche dein Konto und alle zugehörigen Daten dauerhaft.",
-			"deleteWarningTitle": "Diese Aktion kann nicht rückgängig gemacht werden. Dies wird:",
-			"deleteWarning1": "Dein Konto und Profil dauerhaft löschen",
-			"deleteWarning2": "Alle deine QR Codes und Vorlagen entfernen",
-			"deleteWarning3": "Alle aktiven Abonnements kündigen",
-			"deleteAccount": "Konto löschen",
-			"deleteConfirmTitle": "Bist du dir absolut sicher?",
-			"deleteConfirmDescription": "Diese Aktion kann nicht rückgängig gemacht werden. Dadurch werden dein Konto, alle deine QR Codes, Vorlagen und alle zugehörigen Daten dauerhaft gelöscht.",
-			"deleteConfirmInstruction": "Gib \"{text}\" ein, um zu bestätigen",
-			"confirmationType": "Bestätigung",
-			"deleteAccountPermanently": "Konto dauerhaft löschen",
-			"accountDeleted": "Dein Konto wurde gelöscht.",
-			"accountDeleteError": "Konto konnte nicht gelöscht werden. Bitte versuche es erneut."
+			"cancel": "Abbrechen"
 		},
 		"integrations": {
 			"title": "Integrationen",
@@ -2602,7 +2608,9 @@
 				"q4": "Brauche ich ein Konto, um QR-Codes zu erstellen?",
 				"a4": "Nein! Du kannst statische QR-Codes ohne Konto erstellen und herunterladen. Eine Registrierung (kostenlos) schaltet jedoch dynamische QR-Codes, Analytics, URL-Kürzung und Dashboard-Verwaltung frei.",
 				"q5": "Bekomme ich Rechnungen für mein Pro-Abonnement?",
-				"a5": "Ja. Nach dem Kauf des Pro-Plans werden alle Rechnungen automatisch erstellt. Du kannst diese jederzeit in deinem Dashboard unter Einstellungen → Abrechnung → Rechnungen & Belege einsehen und herunterladen."
+				"a5": "Ja. Nach dem Kauf des Pro-Plans werden alle Rechnungen automatisch erstellt. Du kannst diese jederzeit in deinem Dashboard unter Einstellungen → Abrechnung → Rechnungen & Belege einsehen und herunterladen.",
+				"q6": "Wie lösche ich mein Konto?",
+				"a6": "Unter Einstellungen → Profil kannst du ganz unten die Löschung deines Kontos beantragen. Die Löschung ist endgültig und lässt sich nicht rückgängig machen: Wir löschen deine persönlichen Daten und alles, was du angelegt hast, etwa QR-Codes, Kurz-URLs, Vorlagen und Statistiken. Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr. Bis wir dein Konto löschen, kannst du es weiter nutzen und den Antrag dort widerrufen. Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt."
 			}
 		}
 	},

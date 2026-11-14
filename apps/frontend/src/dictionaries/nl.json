@@ -1389,6 +1389,8 @@
 		"answer10": "Absoluut! QR-codes zijn speciaal geoptimaliseerd voor afdrukken en werken betrouwbaar op diverse materialen, zolang ze duidelijk en onbeschadigd blijven. Zorg voor een goede afdrukkwaliteit, en uw codes zijn overal klaar voor gebruik!",
 		"question11": "Waar worden mijn gegevens gehost?",
 		"answer11": "De kerninfrastructuur van QRcodly draait op servers in Duitsland. We gebruiken Clerk voor het inloggen, Stripe voor betalingen, Amazon SES voor het versturen van productnieuws en Sentry en PostHog om fouten te vinden en het product te verbeteren. Je gegevens worden niet verkocht of voor reclame van derden gebruikt. Met een account ontvang je af en toe productnieuws van QRcodly per e-mail. Dat kun je op elk moment uitzetten in de instellingen of via de link in elke e-mail.",
+		"question12": "Hoe verwijder ik mijn account?",
+		"answer12": "Onder Instellingen → Profiel kun je onderaan de pagina de verwijdering van je account aanvragen. Het verwijderen is definitief en kan niet ongedaan worden gemaakt: we wissen je persoonsgegevens en alles wat je hebt aangemaakt, zoals QR-codes, korte URL's, sjablonen en statistieken. Daarna werken je dynamische QR-codes en korte URL's niet meer. Tot we je account verwijderen, kun je het blijven gebruiken en de aanvraag daar intrekken. Alleen facturen bewaren we, zo lang als de wet voorschrijft.",
 		"viewAll": "Bekijk alle FAQ's"
 	},
 	"fileUpload": {
@@ -1768,7 +1770,25 @@
 			"newsletterBlocked": "Verzending naar je e-mailadres is geblokkeerd, bijvoorbeeld omdat je je eerder hebt afgemeld of omdat een e-mail niet kon worden afgeleverd. Wil je dit wijzigen? Stuur dan een e-mail naar <contact>info@qrcodly.de</contact>.",
 			"newsletterLanguageLabel": "Taal van de e-mails",
 			"newsletterLanguageHint": "We schrijven onze e-mails in het Engels en Duits.",
-			"newsletterLanguageSaved": "Taal opgeslagen."
+			"newsletterLanguageSaved": "Taal opgeslagen.",
+			"deletionTitle": "Account verwijderen",
+			"deletionDescription": "Vraag de verwijdering van je account en alle bijbehorende gegevens aan.",
+			"deletionWarningTitle": "Het verwijderen is definitief en kan niet ongedaan worden gemaakt:",
+			"deletionWarning1": "Je persoonsgegevens en je profiel worden gewist.",
+			"deletionWarning2": "Alles wat je hebt aangemaakt wordt gewist, zoals QR-codes, korte URL's, sjablonen, tags en statistieken.",
+			"deletionWarning3": "Je dynamische QR-codes en korte URL's werken daarna niet meer.",
+			"deletionWarning4": "Alleen facturen bewaren we, zo lang als de wet voorschrijft.",
+			"deletionRequestButton": "Verwijdering aanvragen",
+			"deletionConfirmTitle": "Verwijdering van je account aanvragen?",
+			"deletionConfirmDescription": "Daarna verwijderen we je account definitief met alle gegevens. Tot die tijd kun je het blijven gebruiken en de aanvraag hier intrekken.",
+			"deletionConfirmButton": "Ja, verwijdering aanvragen",
+			"deletionRequestedAt": "Verwijdering aangevraagd op {date}",
+			"deletionRequestedHint": "Tot we je account verwijderen, kun je het gewoon blijven gebruiken. Toch van gedachten veranderd? Trek de aanvraag in.",
+			"deletionRevoke": "Aanvraag intrekken",
+			"deletionRequestedToast": "Je aanvraag is verzonden.",
+			"deletionRevokedToast": "Je aanvraag is ingetrokken.",
+			"deletionError": "Dat is niet gelukt. Probeer het opnieuw.",
+			"deletionLoadError": "De status van je verwijderingsaanvraag kon niet worden geladen."
 		},
 		"security": {
 			"title": "Beveiliging",
@@ -1811,21 +1831,7 @@
 			"allSessionsRevoked": "Alle andere sessies zijn ingetrokken.",
 			"sessionRevokeError": "Intrekken van sessie mislukt. Probeer opnieuw.",
 			"noSessions": "Geen actieve sessies gevonden.",
-			"cancel": "Annuleren",
-			"deleteAccountTitle": "Account Verwijderen",
-			"deleteAccountDescription": "Verwijder je account en alle bijbehorende gegevens permanent.",
-			"deleteWarningTitle": "Deze actie kan niet ongedaan worden gemaakt. Dit zal:",
-			"deleteWarning1": "Je account en profiel permanent verwijderen",
-			"deleteWarning2": "Al je QR-codes en sjablonen verwijderen",
-			"deleteWarning3": "Alle actieve abonnementen opzeggen",
-			"deleteAccount": "Account Verwijderen",
-			"deleteConfirmTitle": "Weet je het absoluut zeker?",
-			"deleteConfirmDescription": "Deze actie kan niet ongedaan worden gemaakt. Dit zal je account, al je QR-codes, sjablonen en alle bijbehorende gegevens permanent verwijderen.",
-			"deleteConfirmInstruction": "Typ \"{text}\" om te bevestigen",
-			"confirmationType": "Bevestiging",
-			"deleteAccountPermanently": "Account Permanent Verwijderen",
-			"accountDeleted": "Je account is verwijderd.",
-			"accountDeleteError": "Verwijderen van account mislukt. Probeer opnieuw."
+			"cancel": "Annuleren"
 		},
 		"integrations": {
 			"title": "Integraties",
@@ -2602,7 +2608,9 @@
 				"q4": "Heb ik een account nodig om QR-codes te maken?",
 				"a4": "Nee! Je kunt statische QR-codes maken en downloaden zonder account. Registratie (gratis) ontgrendelt echter dynamische QR-codes, analyses, URL-verkorting en dashboardbeheer.",
 				"q5": "Kan ik facturen krijgen voor mijn Pro-abonnement?",
-				"a5": "Ja. Na de aankoop van het Pro-plan worden alle facturen automatisch gegenereerd. Je kunt ze op elk moment bekijken en downloaden in je dashboard onder Instellingen → Facturering → Facturen en bonnen."
+				"a5": "Ja. Na de aankoop van het Pro-plan worden alle facturen automatisch gegenereerd. Je kunt ze op elk moment bekijken en downloaden in je dashboard onder Instellingen → Facturering → Facturen en bonnen.",
+				"q6": "Hoe verwijder ik mijn account?",
+				"a6": "Onder Instellingen → Profiel kun je onderaan de pagina de verwijdering van je account aanvragen. Het verwijderen is definitief en kan niet ongedaan worden gemaakt: we wissen je persoonsgegevens en alles wat je hebt aangemaakt, zoals QR-codes, korte URL's, sjablonen en statistieken. Daarna werken je dynamische QR-codes en korte URL's niet meer. Tot we je account verwijderen, kun je het blijven gebruiken en de aanvraag daar intrekken. Alleen facturen bewaren we, zo lang als de wet voorschrijft."
 			}
 		}
 	},

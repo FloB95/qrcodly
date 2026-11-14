@@ -88,6 +88,8 @@ const server = z
 		AUTHORIZED_PARTY_CHECK_MODE: z.enum(['shadow', 'enforce']).default('shadow'),
 		// who receives abuse alerts; falls back to the constant so existing deploys keep working
 		ABUSE_ALERT_MAIL: z.string().email().optional(),
+		// who is told about account deletion requests and revocations; defaults to SUPPORT_MAIL
+		ACCOUNT_DELETION_MAIL: z.string().email().optional(),
 		OTEL_METRICS_DATASET: z.string().optional(),
 		OTEL_METRICS_INTERVAL_MS: z.coerce.number().default(60000),
 		OTEL_TRACES_DATASET: z.string().optional(),

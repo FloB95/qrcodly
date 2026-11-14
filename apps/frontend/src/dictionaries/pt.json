@@ -1389,6 +1389,8 @@
 		"answer10": "Com certeza! QR codes são especificamente otimizados para impressão e funcionam de forma confiável em diversos materiais, desde que permaneçam legíveis e sem danos. Garanta uma boa qualidade de impressão, e seus códigos estarão prontos para uso em qualquer lugar!",
 		"question11": "Onde meus dados são hospedados?",
 		"answer11": "A infraestrutura principal do QRcodly roda em servidores na Alemanha. Usamos Clerk para login, Stripe para pagamentos, Amazon SES para enviar as novidades do produto e Sentry e PostHog para encontrar erros e melhorar o produto. Seus dados não são vendidos nem usados para publicidade de terceiros. Se você tem uma conta, de vez em quando recebe novidades do QRcodly por e-mail. Você pode desativar isso a qualquer momento nas configurações ou pelo link em cada e-mail.",
+		"question12": "Como excluo minha conta?",
+		"answer12": "Em Configurações → Perfil, no fim da página, você pode solicitar a exclusão da sua conta. A exclusão é definitiva e não pode ser desfeita: apagamos seus dados pessoais e tudo o que você criou, como QR codes, URLs curtas, modelos e estatísticas. Depois disso, seus QR codes dinâmicos e URLs curtas deixam de funcionar. Até excluirmos sua conta, você pode continuar usando-a e retirar a solicitação lá. Apenas as faturas são guardadas, pelo tempo exigido por lei.",
 		"viewAll": "Ver todas as perguntas frequentes"
 	},
 	"fileUpload": {
@@ -1768,7 +1770,25 @@
 			"newsletterBlocked": "O envio para o seu endereço de e-mail está bloqueado, por exemplo porque você cancelou a inscrição anteriormente ou porque um e-mail não pôde ser entregue. Para mudar isso, escreva para <contact>info@qrcodly.de</contact>.",
 			"newsletterLanguageLabel": "Idioma dos e-mails",
 			"newsletterLanguageHint": "Escrevemos nossos e-mails em inglês e alemão.",
-			"newsletterLanguageSaved": "Idioma salvo."
+			"newsletterLanguageSaved": "Idioma salvo.",
+			"deletionTitle": "Excluir conta",
+			"deletionDescription": "Solicite a exclusão da sua conta e de todos os dados dela.",
+			"deletionWarningTitle": "A exclusão é definitiva e não pode ser desfeita:",
+			"deletionWarning1": "Seus dados pessoais e seu perfil são apagados.",
+			"deletionWarning2": "Tudo o que você criou é apagado, como QR codes, URLs curtas, modelos, tags e estatísticas.",
+			"deletionWarning3": "Seus QR codes dinâmicos e URLs curtas deixam de funcionar.",
+			"deletionWarning4": "Apenas as faturas são guardadas, pelo tempo exigido por lei.",
+			"deletionRequestButton": "Solicitar exclusão",
+			"deletionConfirmTitle": "Solicitar a exclusão da sua conta?",
+			"deletionConfirmDescription": "Depois, excluiremos sua conta com todos os dados de forma definitiva. Até lá, você pode continuar usando-a e retirar a solicitação aqui.",
+			"deletionConfirmButton": "Sim, solicitar exclusão",
+			"deletionRequestedAt": "Exclusão solicitada em {date}",
+			"deletionRequestedHint": "Você pode continuar usando sua conta normalmente até que a excluamos. Mudou de ideia? Retire a solicitação.",
+			"deletionRevoke": "Retirar solicitação",
+			"deletionRequestedToast": "Sua solicitação foi enviada.",
+			"deletionRevokedToast": "Sua solicitação foi retirada.",
+			"deletionError": "Não funcionou. Tente novamente.",
+			"deletionLoadError": "Não foi possível carregar o status da sua solicitação de exclusão."
 		},
 		"security": {
 			"title": "Segurança",
@@ -1811,21 +1831,7 @@
 			"allSessionsRevoked": "Todas as outras sessões foram revogadas.",
 			"sessionRevokeError": "Falha ao revogar sessão. Por favor, tente novamente.",
 			"noSessions": "Nenhuma sessão ativa encontrada.",
-			"cancel": "Cancelar",
-			"deleteAccountTitle": "Excluir Conta",
-			"deleteAccountDescription": "Exclua permanentemente sua conta e todos os dados associados.",
-			"deleteWarningTitle": "Esta ação não pode ser desfeita. Isso irá:",
-			"deleteWarning1": "Excluir permanentemente sua conta e perfil",
-			"deleteWarning2": "Remover todos os seus QR codes e modelos",
-			"deleteWarning3": "Cancelar quaisquer assinaturas ativas",
-			"deleteAccount": "Excluir Conta",
-			"deleteConfirmTitle": "Você tem certeza absoluta?",
-			"deleteConfirmDescription": "Esta ação não pode ser desfeita. Isso excluirá permanentemente sua conta, todos os seus QR codes, modelos e quaisquer dados associados.",
-			"deleteConfirmInstruction": "Digite \"{text}\" para confirmar",
-			"confirmationType": "Confirmação",
-			"deleteAccountPermanently": "Excluir Conta Permanentemente",
-			"accountDeleted": "Sua conta foi excluída.",
-			"accountDeleteError": "Falha ao excluir conta. Por favor, tente novamente."
+			"cancel": "Cancelar"
 		},
 		"integrations": {
 			"title": "Integrações",
@@ -2602,7 +2608,9 @@
 				"q4": "Preciso de uma conta para criar códigos QR?",
 				"a4": "Não! Você pode criar e baixar códigos QR estáticos sem uma conta. No entanto, criar uma conta (grátis) desbloqueia códigos QR dinâmicos, análises, encurtamento de URL e gerenciamento do painel.",
 				"q5": "Posso obter faturas da minha assinatura Pro?",
-				"a5": "Sim. Após a compra do plano Pro, todas as faturas são geradas automaticamente. Você pode visualizá-las e baixá-las a qualquer momento no seu painel em Configurações → Faturamento → Faturas e recibos."
+				"a5": "Sim. Após a compra do plano Pro, todas as faturas são geradas automaticamente. Você pode visualizá-las e baixá-las a qualquer momento no seu painel em Configurações → Faturamento → Faturas e recibos.",
+				"q6": "Como excluo minha conta?",
+				"a6": "Em Configurações → Perfil, no fim da página, você pode solicitar a exclusão da sua conta. A exclusão é definitiva e não pode ser desfeita: apagamos seus dados pessoais e tudo o que você criou, como QR codes, URLs curtas, modelos e estatísticas. Depois disso, seus QR codes dinâmicos e URLs curtas deixam de funcionar. Até excluirmos sua conta, você pode continuar usando-a e retirar a solicitação lá. Apenas as faturas são guardadas, pelo tempo exigido por lei."
 			}
 		}
 	},

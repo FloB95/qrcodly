@@ -1389,6 +1389,8 @@
 		"answer10": "Absolutely! QR codes are specifically optimized for printing and work reliably on various materials, as long as they remain clear and undamaged. Ensure good print quality, and your codes will be ready for use anywhere!",
 		"question11": "Where is my data hosted?",
 		"answer11": "QRcodly's core infrastructure runs on servers in Germany. We use Clerk for sign-in, Stripe for payments, Amazon SES to send our product news and Sentry and PostHog to find errors and improve the product. Your data is not sold or used for third-party advertising. If you have an account, we occasionally send you product news by email. You can turn this off at any time in the settings or via the link in every email.",
+		"question12": "How do I delete my account?",
+		"answer12": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs, templates and statistics. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, you can keep using it and withdraw the request there. Only invoices are kept, for as long as the law requires.",
 		"viewAll": "See all FAQs"
 	},
 	"fileUpload": {
@@ -1768,7 +1770,25 @@
 			"newsletterBlocked": "Sending to your email address is blocked, for example because you unsubscribed earlier or an email could not be delivered. To change this, write to <contact>info@qrcodly.de</contact>.",
 			"newsletterLanguageLabel": "Language of the emails",
 			"newsletterLanguageHint": "We write our emails in English and German.",
-			"newsletterLanguageSaved": "Language saved."
+			"newsletterLanguageSaved": "Language saved.",
+			"deletionTitle": "Delete account",
+			"deletionDescription": "Request the deletion of your account and all its data.",
+			"deletionWarningTitle": "Deletion is permanent and cannot be undone:",
+			"deletionWarning1": "Your personal data and profile are deleted.",
+			"deletionWarning2": "Everything you created is deleted, such as QR codes, short URLs, templates, tags and statistics.",
+			"deletionWarning3": "Your dynamic QR codes and short URLs stop working.",
+			"deletionWarning4": "Only invoices are kept, for as long as the law requires.",
+			"deletionRequestButton": "Request deletion",
+			"deletionConfirmTitle": "Request account deletion?",
+			"deletionConfirmDescription": "We will then delete your account and all its data for good. Until we do, you can keep using it and withdraw the request here.",
+			"deletionConfirmButton": "Yes, request deletion",
+			"deletionRequestedAt": "Deletion requested on {date}",
+			"deletionRequestedHint": "You can keep using your account until we delete it. Changed your mind? Withdraw the request.",
+			"deletionRevoke": "Withdraw request",
+			"deletionRequestedToast": "Your request has been sent.",
+			"deletionRevokedToast": "Your request has been withdrawn.",
+			"deletionError": "That didn't work. Please try again.",
+			"deletionLoadError": "The status of your deletion request could not be loaded."
 		},
 		"security": {
 			"title": "Security",
@@ -1811,21 +1831,7 @@
 			"allSessionsRevoked": "All other sessions have been revoked.",
 			"sessionRevokeError": "Failed to revoke session. Please try again.",
 			"noSessions": "No active sessions found.",
-			"cancel": "Cancel",
-			"deleteAccountTitle": "Delete Account",
-			"deleteAccountDescription": "Permanently delete your account and all associated data.",
-			"deleteWarningTitle": "This action cannot be undone. This will:",
-			"deleteWarning1": "Permanently delete your account and profile",
-			"deleteWarning2": "Remove all your QR codes and templates",
-			"deleteWarning3": "Cancel any active subscriptions",
-			"deleteAccount": "Delete Account",
-			"deleteConfirmTitle": "Are you absolutely sure?",
-			"deleteConfirmDescription": "This action cannot be undone. This will permanently delete your account, all your QR codes, templates, and any associated data.",
-			"deleteConfirmInstruction": "Type \"{text}\" to confirm",
-			"confirmationType": "Confirmation",
-			"deleteAccountPermanently": "Delete Account Permanently",
-			"accountDeleted": "Your account has been deleted.",
-			"accountDeleteError": "Failed to delete account. Please try again."
+			"cancel": "Cancel"
 		},
 		"integrations": {
 			"title": "Integrations",
@@ -2602,7 +2608,9 @@
 				"q4": "Do I need an account to create QR codes?",
 				"a4": "No! You can create and download static QR codes without an account. However, signing up (free) unlocks dynamic QR codes, analytics, URL shortening, and dashboard management.",
 				"q5": "Can I get invoices for my Pro subscription?",
-				"a5": "Yes. After purchasing the Pro plan, all invoices are automatically generated. You can view and download them anytime in your dashboard under Settings → Billing → Invoices & Receipts."
+				"a5": "Yes. After purchasing the Pro plan, all invoices are automatically generated. You can view and download them anytime in your dashboard under Settings → Billing → Invoices & Receipts.",
+				"q6": "How do I delete my account?",
+				"a6": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs, templates and statistics. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, you can keep using it and withdraw the request there. Only invoices are kept, for as long as the law requires."
 			}
 		}
 	},

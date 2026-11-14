@@ -1389,6 +1389,8 @@
 		"answer10": "Absolutnie! Kody QR są specjalnie zoptymalizowane do druku i działają niezawodnie na różnych materiałach, o ile pozostają wyraźne i nieuszkodzone. Zapewnij dobrą jakość druku, a Twoje kody będą gotowe do użycia w dowolnym miejscu!",
 		"question11": "Gdzie przechowywane są moje dane?",
 		"answer11": "Główna infrastruktura QRcodly działa na serwerach w Niemczech. Do logowania używamy Clerk, do płatności Stripe, do wysyłki nowości o produkcie Amazon SES, a Sentry i PostHog pomagają znajdować błędy i ulepszać produkt. Twoje dane nie są sprzedawane ani wykorzystywane do reklam podmiotów trzecich. Jeśli masz konto, od czasu do czasu wysyłamy Ci e-mailem nowości o QRcodly. Możesz to w każdej chwili wyłączyć w ustawieniach lub za pomocą linku w każdym e-mailu.",
+		"question12": "Jak usunąć moje konto?",
+		"answer12": "W sekcji Ustawienia → Profil, na dole strony, możesz złożyć wniosek o usunięcie konta. Usunięcie jest ostateczne i nie można go cofnąć: usuwamy Twoje dane osobowe i wszystkie utworzone przez Ciebie treści, np. kody QR, krótkie URL-e, szablony i statystyki. Potem Twoje dynamiczne kody QR i krótkie URL-e przestaną działać. Do czasu usunięcia możesz korzystać z konta i tam wycofać wniosek. Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo.",
 		"viewAll": "Zobacz wszystkie FAQ"
 	},
 	"fileUpload": {
@@ -1768,7 +1770,25 @@
 			"newsletterBlocked": "Wysyłka na Twój adres e-mail jest zablokowana, na przykład z powodu wcześniejszej rezygnacji z subskrypcji lub problemu z doręczeniem e-maila. Aby to zmienić, napisz do nas na <contact>info@qrcodly.de</contact>.",
 			"newsletterLanguageLabel": "Język e-maili",
 			"newsletterLanguageHint": "Nasze e-maile piszemy po angielsku i po niemiecku.",
-			"newsletterLanguageSaved": "Język zapisany."
+			"newsletterLanguageSaved": "Język zapisany.",
+			"deletionTitle": "Usuń konto",
+			"deletionDescription": "Złóż wniosek o usunięcie konta i wszystkich powiązanych danych.",
+			"deletionWarningTitle": "Usunięcie jest ostateczne i nie można go cofnąć:",
+			"deletionWarning1": "Twoje dane osobowe i profil zostaną usunięte.",
+			"deletionWarning2": "Wszystkie utworzone przez Ciebie treści zostaną usunięte, np. kody QR, krótkie URL-e, szablony, tagi i statystyki.",
+			"deletionWarning3": "Twoje dynamiczne kody QR i krótkie URL-e przestaną działać.",
+			"deletionWarning4": "Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo.",
+			"deletionRequestButton": "Złóż wniosek o usunięcie",
+			"deletionConfirmTitle": "Złożyć wniosek o usunięcie konta?",
+			"deletionConfirmDescription": "Następnie usuniemy Twoje konto wraz ze wszystkimi danymi na stałe. Do tego czasu możesz z niego korzystać i wycofać wniosek tutaj.",
+			"deletionConfirmButton": "Tak, złóż wniosek",
+			"deletionRequestedAt": "Wniosek o usunięcie złożony {date}",
+			"deletionRequestedHint": "Do czasu usunięcia możesz normalnie korzystać z konta. Jeśli zmienisz zdanie, wycofaj wniosek.",
+			"deletionRevoke": "Wycofaj wniosek",
+			"deletionRequestedToast": "Twój wniosek został wysłany.",
+			"deletionRevokedToast": "Twój wniosek został wycofany.",
+			"deletionError": "Nie udało się. Spróbuj ponownie.",
+			"deletionLoadError": "Nie udało się wczytać stanu wniosku o usunięcie."
 		},
 		"security": {
 			"title": "Bezpieczeństwo",
@@ -1811,21 +1831,7 @@
 			"allSessionsRevoked": "Wszystkie inne sesje zostały unieważnione.",
 			"sessionRevokeError": "Nie udało się unieważnić sesji. Spróbuj ponownie.",
 			"noSessions": "Nie znaleziono aktywnych sesji.",
-			"cancel": "Anuluj",
-			"deleteAccountTitle": "Usuń Konto",
-			"deleteAccountDescription": "Trwale usuń konto i wszystkie powiązane dane.",
-			"deleteWarningTitle": "Tej akcji nie można cofnąć. Spowoduje to:",
-			"deleteWarning1": "Trwałe usunięcie konta i profilu",
-			"deleteWarning2": "Usunięcie wszystkich kodów QR i szablonów",
-			"deleteWarning3": "Anulowanie wszystkich aktywnych subskrypcji",
-			"deleteAccount": "Usuń Konto",
-			"deleteConfirmTitle": "Czy jesteś absolutnie pewien?",
-			"deleteConfirmDescription": "Tej akcji nie można cofnąć. Spowoduje to trwałe usunięcie konta, wszystkich kodów QR, szablonów i wszelkich powiązanych danych.",
-			"deleteConfirmInstruction": "Wpisz \"{text}\", aby potwierdzić",
-			"confirmationType": "Potwierdzenie",
-			"deleteAccountPermanently": "Usuń Konto Trwale",
-			"accountDeleted": "Twoje konto zostało usunięte.",
-			"accountDeleteError": "Nie udało się usunąć konta. Spróbuj ponownie."
+			"cancel": "Anuluj"
 		},
 		"integrations": {
 			"title": "Integracje",
@@ -2602,7 +2608,9 @@
 				"q4": "Czy potrzebuję konta, aby tworzyć kody QR?",
 				"a4": "Nie! Możesz tworzyć i pobierać statyczne kody QR bez konta. Jednak rejestracja (bezpłatna) odblokowuje dynamiczne kody QR, analizy, skracanie URL i zarządzanie dashboardem.",
 				"q5": "Czy mogę otrzymać faktury za subskrypcję Pro?",
-				"a5": "Tak. Po zakupie planu Pro wszystkie faktury są generowane automatycznie. Możesz je przeglądać i pobierać w dowolnym momencie w panelu w Ustawienia → Rozliczenia → Faktury i paragony."
+				"a5": "Tak. Po zakupie planu Pro wszystkie faktury są generowane automatycznie. Możesz je przeglądać i pobierać w dowolnym momencie w panelu w Ustawienia → Rozliczenia → Faktury i paragony.",
+				"q6": "Jak usunąć moje konto?",
+				"a6": "W sekcji Ustawienia → Profil, na dole strony, możesz złożyć wniosek o usunięcie konta. Usunięcie jest ostateczne i nie można go cofnąć: usuwamy Twoje dane osobowe i wszystkie utworzone przez Ciebie treści, np. kody QR, krótkie URL-e, szablony i statystyki. Potem Twoje dynamiczne kody QR i krótkie URL-e przestaną działać. Do czasu usunięcia możesz korzystać z konta i tam wycofać wniosek. Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo."
 			}
 		}
 	},

@@ -64,6 +64,10 @@ export {
 	type TProviderType,
 } from './analytics-integration';
 export { default as userSurvey, type TUserSurvey } from './user-survey';
+export {
+	default as accountDeletionRequest,
+	type TAccountDeletionRequest,
+} from './account-deletion-request';
 export { default as integrationUsage, type TIntegrationUsage } from './integration-usage';
 export { default as hostedPage, hostedPageRelations, type THostedPage } from './hosted-page';
 export {

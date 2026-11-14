@@ -267,6 +267,33 @@ const templates: TemplateConfig[] = [
 			year,
 		},
 	},
+	{
+		file: 'account-deletion-admin-alert.handlebars',
+		subject: '[Test] Account deletion requested',
+		vars: {
+			isRevoked: false,
+			userId: 'user_2fTGlAmh9a1UhD5JYOD70Z4Y31T',
+			email: 'flo@example.com',
+			firstName: 'Flo',
+			requestedAt: '14/11/2026, 11:02:10',
+			clerkUserUrl: 'https://dashboard.clerk.com/last-active?path=users/user_2fTG',
+			year,
+		},
+	},
+	{
+		file: 'account-deletion-admin-alert.handlebars',
+		subject: '[Test] Account deletion withdrawn',
+		vars: {
+			isRevoked: true,
+			userId: 'user_2fTGlAmh9a1UhD5JYOD70Z4Y31T',
+			email: 'flo@example.com',
+			firstName: 'Flo',
+			requestedAt: '14/11/2026, 11:02:10',
+			revokedAt: '14/11/2026, 11:05:43',
+			clerkUserUrl: 'https://dashboard.clerk.com/last-active?path=users/user_2fTG',
+			year,
+		},
+	},
 ];
 
 const slugify = (subject: string) =>

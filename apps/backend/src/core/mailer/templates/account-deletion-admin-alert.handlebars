@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<title>QRcodly account deletion</title>
+	<meta charset="UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	<meta name="color-scheme" content="light only" />
+	<meta name="supported-color-schemes" content="light only" />
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+	<style>
+		:root { color-scheme: light only; supported-color-schemes: light only; }
+		@media (prefers-color-scheme: dark) {
+			body { background-color: #f4f4f5 !important; }
+			.email-card { background-color: #ffffff !important; }
+			.email-btn, .email-btn a { background-color: #000000 !important; color: #ffffff !important; }
+			.email-bar { background-color: #000000 !important; }
+			.email-bar span { color: #ffffff !important; }
+		}
+		@media only screen and (max-width: 600px) {
+			.email-bg { padding: 24px 12px !important; }
+			.email-pad { padding: 24px !important; }
+		}
+	</style>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+	<table class="email-bg" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4f4f5;padding:48px 16px;">
+		<tr>
+			<td align="center">
+				<!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0" width="600"><tr><td><![endif]-->
+				<table class="email-card" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08);">
+					<!-- Header — dark like the other internal alerts -->
+					<tr>
+						<td class="email-bar" style="padding:18px 32px;background-color:#000000;">
+							<table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+								<td style="vertical-align:middle;"><span style="font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">QRcodly</span></td>
+								<td style="vertical-align:middle;text-align:right;"><span style="font-size:11px;font-weight:600;color:#ffffff;letter-spacing:1.2px;text-transform:uppercase;">Internal</span></td>
+							</tr></table>
+						</td>
+					</tr>
+					<!-- Content -->
+					<tr>
+						<td class="email-pad" style="padding:32px;">
+							<h1 style="margin:0 0 8px 0;font-size:22px;font-weight:700;color:#0f172a;line-height:1.3;">{{#if isRevoked}}An account deletion request was withdrawn{{else}}A customer asked to delete their account{{/if}}</h1>
+							<p style="margin:0 0 24px 0;font-size:15px;line-height:1.6;color:#334155;">{{#if isRevoked}}The customer withdrew their request in the dashboard. <strong>Do not delete this account.</strong>{{else}}The request was made in the dashboard while signed in to this account, so it comes from the account owner. The account stays usable until you delete it. If the customer withdraws the request, you will get another mail.{{/if}}</p>
+
+							<!-- Request -->
+							<table cellpadding="0" cellspacing="0" border="0" width="100%">
+								<tr>
+									<td style="background-color:{{#if isRevoked}}#f0fdf4{{else}}#fef2f2{{/if}};border:1px solid {{#if isRevoked}}#bbf7d0{{else}}#fecaca{{/if}};border-radius:10px;padding:20px;">
+										<p style="margin:0 0 12px 0;font-size:14px;font-weight:600;color:{{#if isRevoked}}#166534{{else}}#991b1b{{/if}};">Account</p>
+										<p style="margin:0 0 6px 0;font-size:14px;line-height:1.6;color:{{#if isRevoked}}#14532d{{else}}#7f1d1d{{/if}};">Email: {{#if email}}{{email}}{{else}}could not be read from Clerk{{/if}}</p>
+										{{#if firstName}}
+										<p style="margin:0 0 6px 0;font-size:14px;line-height:1.6;color:{{#if isRevoked}}#14532d{{else}}#7f1d1d{{/if}};">First name: {{firstName}}</p>
+										{{/if}}
+										<p style="margin:0 0 6px 0;font-size:14px;line-height:1.6;color:{{#if isRevoked}}#14532d{{else}}#7f1d1d{{/if}};">Requested: {{requestedAt}}</p>
+										{{#if isRevoked}}
+										<p style="margin:0;font-size:14px;line-height:1.6;color:#14532d;">Withdrawn: {{revokedAt}}</p>
+										{{/if}}
+									</td>
+								</tr>
+							</table>
+
+							<!-- Button -->
+							<table cellpadding="0" cellspacing="0" border="0" style="margin-top:24px;">
+								<tr>
+									<td class="email-btn" style="border-radius:8px;background-color:#000000;" align="center">
+										<a href="{{clerkUserUrl}}" style="display:inline-block;padding:12px 28px;font-size:15px;font-weight:600;color:#ffffff;background-color:#000000;border-radius:8px;text-decoration:none;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">Open the account in Clerk</a>
+									</td>
+								</tr>
+							</table>
+
+							<!-- Operator details -->
+							<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:28px;">
+								<tr>
+									<td style="background-color:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;">
+										<p style="margin:0 0 8px 0;font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.4px;">For the record</p>
+										<p style="margin:0;font-size:13px;line-height:1.6;color:#475569;">Account: <span style="font-family:monospace;">{{userId}}</span></p>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<!-- Footer -->
+					<tr>
+						<td style="padding:24px 32px;border-top:1px solid #f0f0f0;">
+							<p style="margin:0;font-size:13px;color:#94a3b8;text-align:center;">&copy; {{year}} FB Dev. All rights reserved.</p>
+						</td>
+					</tr>
+				</table>
+				<!--[if mso]></td></tr></table><![endif]-->
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

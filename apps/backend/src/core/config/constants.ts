@@ -73,3 +73,9 @@ export const ABUSE_ALERT_MAIL: string = env.ABUSE_ALERT_MAIL ?? 'info@fb-dev.de'
  * user sees both. Never expose ABUSE_ALERT_MAIL to them — we only ever point at a qrcodly.de address.
  */
 export const SUPPORT_MAIL: string = 'support@qrcodly.de';
+
+/**
+ * Who is told when a customer requests or revokes the deletion of their account.
+ * Override per environment with ACCOUNT_DELETION_MAIL so stage does not mail the support inbox.
+ */
+export const ACCOUNT_DELETION_MAIL: string = env.ACCOUNT_DELETION_MAIL ?? SUPPORT_MAIL;

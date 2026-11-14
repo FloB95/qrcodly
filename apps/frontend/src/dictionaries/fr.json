@@ -1389,6 +1389,8 @@
 		"answer10": "Absolument ! Les Codes QR sont spécifiquement optimisés pour l'impression et fonctionnent de manière fiable sur divers matériaux, tant qu'ils restent clairs et intacts. Assurez une bonne qualité d'impression, et vos codes seront prêts à être utilisés partout !",
 		"question11": "Où sont hébergées mes données ?",
 		"answer11": "L'infrastructure principale de QRcodly tourne sur des serveurs en Allemagne. Nous utilisons Clerk pour la connexion, Stripe pour les paiements, Amazon SES pour l'envoi des actualités produit ainsi que Sentry et PostHog pour détecter les erreurs et améliorer le produit. Vos données ne sont ni vendues ni utilisées à des fins publicitaires par des tiers. Si vous avez un compte, vous recevez de temps en temps des actualités produit de QRcodly par email. Vous pouvez les désactiver à tout moment dans les paramètres ou via le lien présent dans chaque email.",
+		"question12": "Comment supprimer mon compte ?",
+		"answer12": "Dans Paramètres → Profil, en bas de la page, vous pouvez demander la suppression de votre compte. La suppression est définitive et irréversible : nous supprimons vos données personnelles et tout ce que vous avez créé, comme les QR codes, URL courtes, modèles et statistiques. Vos QR codes dynamiques et vos URL courtes ne fonctionneront plus ensuite. Jusqu'à la suppression, vous pouvez continuer à utiliser votre compte et y retirer la demande. Seules les factures sont conservées, aussi longtemps que la loi l'exige.",
 		"viewAll": "Voir toutes les FAQ"
 	},
 	"notFound": {
@@ -1772,7 +1774,25 @@
 			"newsletterBlocked": "L'envoi à votre adresse email est bloqué, par exemple parce que vous vous êtes désabonné auparavant ou qu'un email n'a pas pu être distribué. Pour changer cela, écrivez-nous à <contact>info@qrcodly.de</contact>.",
 			"newsletterLanguageLabel": "Langue des emails",
 			"newsletterLanguageHint": "Nous rédigeons nos emails en anglais et en allemand.",
-			"newsletterLanguageSaved": "Langue enregistrée."
+			"newsletterLanguageSaved": "Langue enregistrée.",
+			"deletionTitle": "Supprimer le compte",
+			"deletionDescription": "Demandez la suppression de votre compte et de toutes ses données.",
+			"deletionWarningTitle": "La suppression est définitive et irréversible :",
+			"deletionWarning1": "Vos données personnelles et votre profil sont supprimés.",
+			"deletionWarning2": "Tout ce que vous avez créé est supprimé, comme les QR codes, URL courtes, modèles, étiquettes et statistiques.",
+			"deletionWarning3": "Vos QR codes dynamiques et vos URL courtes ne fonctionneront plus.",
+			"deletionWarning4": "Seules les factures sont conservées, aussi longtemps que la loi l'exige.",
+			"deletionRequestButton": "Demander la suppression",
+			"deletionConfirmTitle": "Demander la suppression de votre compte ?",
+			"deletionConfirmDescription": "Nous supprimerons ensuite définitivement votre compte et toutes ses données. D'ici là, vous pouvez continuer à l'utiliser et retirer la demande ici.",
+			"deletionConfirmButton": "Oui, demander la suppression",
+			"deletionRequestedAt": "Suppression demandée le {date}",
+			"deletionRequestedHint": "Vous pouvez continuer à utiliser votre compte normalement jusqu'à sa suppression. Vous avez changé d'avis ? Retirez la demande.",
+			"deletionRevoke": "Retirer la demande",
+			"deletionRequestedToast": "Votre demande a été envoyée.",
+			"deletionRevokedToast": "Votre demande a été retirée.",
+			"deletionError": "Cela n'a pas fonctionné. Veuillez réessayer.",
+			"deletionLoadError": "Impossible de charger l'état de votre demande de suppression."
 		},
 		"security": {
 			"title": "Sécurité",
@@ -1815,21 +1835,7 @@
 			"allSessionsRevoked": "Toutes les autres sessions ont été révoquées.",
 			"sessionRevokeError": "Échec de la révocation de la session. Veuillez réessayer.",
 			"noSessions": "Aucune session active trouvée.",
-			"cancel": "Annuler",
-			"deleteAccountTitle": "Supprimer le Compte",
-			"deleteAccountDescription": "Supprimez définitivement votre compte et toutes les données associées.",
-			"deleteWarningTitle": "Cette action est irréversible. Cela :",
-			"deleteWarning1": "Supprimera définitivement votre compte et profil",
-			"deleteWarning2": "Supprimera tous vos codes QR et modèles",
-			"deleteWarning3": "Annulera tous les abonnements actifs",
-			"deleteAccount": "Supprimer le Compte",
-			"deleteConfirmTitle": "Êtes-vous absolument sûr ?",
-			"deleteConfirmDescription": "Cette action est irréversible. Cela supprimera définitivement votre compte, tous vos codes QR, modèles et toutes les données associées.",
-			"deleteConfirmInstruction": "Tapez \"{text}\" pour confirmer",
-			"confirmationType": "Confirmation",
-			"deleteAccountPermanently": "Supprimer le Compte Définitivement",
-			"accountDeleted": "Votre compte a été supprimé.",
-			"accountDeleteError": "Échec de la suppression du compte. Veuillez réessayer."
+			"cancel": "Annuler"
 		},
 		"integrations": {
 			"title": "Intégrations",
@@ -2602,7 +2608,9 @@
 				"q4": "Ai-je besoin d'un compte pour créer des codes QR ?",
 				"a4": "Non ! Vous pouvez créer et télécharger des codes QR statiques sans compte. Cependant, l'inscription (gratuite) débloque les codes QR dynamiques, les analyses, le raccourcissement d'URL et la gestion du tableau de bord.",
 				"q5": "Puis-je obtenir des factures pour mon abonnement Pro ?",
-				"a5": "Oui. Après l'achat du plan Pro, toutes les factures sont générées automatiquement. Vous pouvez les consulter et les télécharger à tout moment dans votre tableau de bord sous Paramètres → Facturation → Factures et reçus."
+				"a5": "Oui. Après l'achat du plan Pro, toutes les factures sont générées automatiquement. Vous pouvez les consulter et les télécharger à tout moment dans votre tableau de bord sous Paramètres → Facturation → Factures et reçus.",
+				"q6": "Comment supprimer mon compte ?",
+				"a6": "Dans Paramètres → Profil, en bas de la page, vous pouvez demander la suppression de votre compte. La suppression est définitive et irréversible : nous supprimons vos données personnelles et tout ce que vous avez créé, comme les QR codes, URL courtes, modèles et statistiques. Vos QR codes dynamiques et vos URL courtes ne fonctionneront plus ensuite. Jusqu'à la suppression, vous pouvez continuer à utiliser votre compte et y retirer la demande. Seules les factures sont conservées, aussi longtemps que la loi l'exige."
 			}
 		}
 	},

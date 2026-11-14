@@ -23,7 +23,7 @@ const CATEGORY_COUNTS: Record<(typeof CATEGORY_KEYS)[number], number> = {
 	qrCodes: 9,
 	urlShortener: 8,
 	analytics: 5,
-	pricing: 5,
+	pricing: 6,
 };
 
 export async function generateMetadata({ params }: DefaultPageParams): Promise<Metadata> {

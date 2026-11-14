@@ -58,6 +58,8 @@ export * from './dtos/api-key/ApiKeyListResponseDto';
 export * from './dtos/user-survey/SubmitUserSurveyDto';
 export * from './dtos/user-survey/UserSurveyStatusResponseDto';
 
+export * from './dtos/account/AccountDeletionRequestResponseDto';
+
 export * from './dtos/newsletter/NewsletterContentLocale';
 export * from './dtos/newsletter/NewsletterSubscriptionStatus';
 export * from './dtos/newsletter/NewsletterSubscriptionResponseDto';
