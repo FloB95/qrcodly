@@ -97,7 +97,13 @@ export const AnalyticsTimeChart = ({ data, locale, variant = 'scan' }: Analytics
 							/>
 							<ChartTooltip
 								content={
-									<ChartTooltipContent labelFormatter={(label) => formatDate(String(label))} />
+									<ChartTooltipContent
+										labelFormatter={(label) =>
+											typeof label === 'string' || typeof label === 'number'
+												? formatDate(String(label))
+												: ''
+										}
+									/>
 								}
 							/>
 							<ChartLegend content={<ChartLegendContent />} />
