@@ -21,7 +21,7 @@ allowBuilds:
 
 catalog:
   zod: 4.4.3
-  '@sentry/node': 10.76.2
+  '@sentry/node': 10.78.0
   dotenv: 17.4.2
   react: '^19.2.1'
   react-dom: '^19.2.1'
