@@ -62,7 +62,6 @@ if (metricsEnabled || tracesEnabled || prometheusEnabled) {
 
 	const metricReaders = [
 		axiomMetricReader,
-		// host: ab exporter-prometheus 0.301 sonst nur localhost – Prometheus erreicht den Pod dann nicht
 		prometheusEnabled
 			? new PrometheusExporter({ host: '0.0.0.0', port: prometheusPort })
 			: undefined,

@@ -85,7 +85,6 @@ const config = {
 		return [
 			{
 				source: '/__clerk-js/:path*',
-				// Muss zur SDK-Generation passen: @clerk/nextjs 7.x lädt clerk-js major 6
 				destination: 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@6/:path*',
 			},
 		];

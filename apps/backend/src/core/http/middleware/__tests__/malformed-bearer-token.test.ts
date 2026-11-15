@@ -40,7 +40,6 @@ describe('malformed bearer tokens', () => {
 
 			expect(response.payload).not.toContain('body');
 			expect(response.payload).not.toContain('Invalid character');
-			// Text hängt von der Clerk-Version ab: alte werfen beim Dekodieren („malformed“), neue melden nur „abgemeldet“
 			expect(JSON.parse(response.payload)).toMatchObject({ code: 401 });
 		});
 
