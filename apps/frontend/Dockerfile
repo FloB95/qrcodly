@@ -28,7 +28,6 @@ WORKDIR /app
 
 # 1) Dependencies — own layer, cached until a manifest or the lockfile changes
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY patches ./patches
 COPY packages/shared/package.json packages/shared/
 COPY packages/eslint-config/package.json packages/eslint-config/
 COPY packages/typescript-config/package.json packages/typescript-config/

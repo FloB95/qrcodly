@@ -25,7 +25,6 @@ RUN npm install -g pnpm@${PNPM_VERSION}
 WORKDIR /app
 # Only the manifests: the dependency layers below are cached until one of them changes
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY patches ./patches
 COPY packages/shared/package.json packages/shared/
 COPY packages/db/package.json packages/db/
 COPY packages/eslint-config/package.json packages/eslint-config/
