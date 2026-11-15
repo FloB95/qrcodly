@@ -228,9 +228,7 @@ export const resetTestState = async () => {
 
 // --- Clerk API helpers (rate-limit protection) ---
 
-// Normale Sitzungs-Tokens: neueres @clerk/backend lehnt Tokens aus JWT-Vorlagen im Header ab
 const TEST_TOKEN_TTL_SECONDS = 3600;
-// Neuer Dateiname, weil die alte Datei noch Vorlagen-Tokens (10 Jahre gültig) enthält
 const TOKEN_CACHE_FILE = join(tmpdir(), 'qrcodly-clerk-session-cache.json');
 
 type CachedToken = { sessionId: string; jwt: string; jwtExpMs: number };

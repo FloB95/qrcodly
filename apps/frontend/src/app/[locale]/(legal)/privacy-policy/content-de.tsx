@@ -4,7 +4,6 @@ export default function PrivacyPolicyContentDe() {
 			<h1 className="text-3xl font-semibold mb-6">Datenschutzerkl&auml;rung</h1>
 			<p className="text-sm text-muted-foreground mb-8">Stand: November 2026</p>
 
-			{/* ========== 1. Datenschutz auf einen Blick ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">1. Datenschutz auf einen Blick</h2>
 
 			<h3 className="text-xl font-semibold mt-6 mb-2">Allgemeine Hinweise</h3>
@@ -66,7 +65,6 @@ export default function PrivacyPolicyContentDe() {
 				wenden.
 			</p>
 
-			{/* ========== 2. Allgemeine Hinweise und Pflichtinformationen ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">
 				2. Allgemeine Hinweise und Pflichtinformationen
 			</h2>
@@ -275,7 +273,6 @@ export default function PrivacyPolicyContentDe() {
 				Europ&auml;ischen Union oder eines Mitgliedstaats verarbeitet werden.
 			</p>
 
-			{/* ========== 3. Datenerfassung auf dieser Website ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">3. Datenerfassung auf dieser Website</h2>
 
 			<h3 className="text-xl font-semibold mt-6 mb-2">Cookies</h3>
@@ -334,7 +331,6 @@ export default function PrivacyPolicyContentDe() {
 				</li>
 			</ul>
 
-			{/* ========== 4. &Uuml;bersicht der Datenverarbeitung ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">4. &Uuml;bersicht der Datenverarbeitung</h2>
 
 			<h3 className="text-xl font-semibold mt-6 mb-2">Welche Daten erheben wir?</h3>
@@ -370,7 +366,6 @@ export default function PrivacyPolicyContentDe() {
 				</li>
 			</ul>
 
-			{/* ========== 5. Hosting und Content Delivery Networks (CDN) ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">
 				5. Hosting und Content Delivery Networks (CDN)
 			</h2>
@@ -469,7 +464,6 @@ export default function PrivacyPolicyContentDe() {
 				unseren Weisungen und unter Einhaltung der DSGVO verarbeitet.
 			</p>
 
-			{/* ========== 6. Zahlungsdienste ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">6. Zahlungsdienste</h2>
 			<p className="text-base leading-relaxed">
 				Wir binden Zahlungsdienste von Drittunternehmen auf unserer Website ein. Wenn Sie einen Kauf
@@ -528,7 +522,6 @@ export default function PrivacyPolicyContentDe() {
 				.
 			</p>
 
-			{/* ========== 7. Plugins und Tools ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">7. Plugins und Tools</h2>
 
 			<h3 className="text-xl font-semibold mt-6 mb-2">Google Maps</h3>
@@ -690,7 +683,6 @@ export default function PrivacyPolicyContentDe() {
 				unseren Weisungen und unter Einhaltung der DSGVO verarbeitet.
 			</p>
 
-			{/* ========== 8. Produktneuigkeiten per E-Mail (Newsletter) ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">
 				8. Produktneuigkeiten per E-Mail (Newsletter)
 			</h2>
@@ -802,7 +794,6 @@ export default function PrivacyPolicyContentDe() {
 				verarbeitet.
 			</p>
 
-			{/* ========== 9. &Auml;nderungen ========== */}
 			<h2 className="text-2xl font-semibold mt-10 mb-4">
 				9. &Auml;nderungen dieser Datenschutzerkl&auml;rung
 			</h2>

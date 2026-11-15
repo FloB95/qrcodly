@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AbstractEntitySchema } from './AbstractEntitySchema'; // Stelle sicher, dass der Pfad korrekt ist
+import { AbstractEntitySchema } from './AbstractEntitySchema';
 import { HOSTED_PAGE_TYPES, PdfInputSchema, ProductInputSchema } from './HostedPage';
 import { undocumentedSchemas } from './docs';
 
@@ -271,7 +271,6 @@ export const ALL_QR_CODE_CONTENT_TYPES = [
 	'product',
 ] as const;
 
-// Alle Typen als Literal-Union
 export const QrCodeContentType = z.enum(ALL_QR_CODE_CONTENT_TYPES);
 export type TQrCodeContentType = z.infer<typeof QrCodeContentType>;
 // hosted pages work through the API but are not part of the public API docs
