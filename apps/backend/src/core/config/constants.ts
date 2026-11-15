@@ -10,7 +10,6 @@ export const IN_TEST = env.NODE_ENV === 'test';
 export const API_BASE_PATH: string = '/api/v1';
 export const FASTIFY_LOGGING: boolean = false;
 
-export const CLERK_JWT_TEMPLATE = 'QRcodly';
 export const RATE_LIMIT_TIME_WINDOW: string = '1 minute';
 /** Origins of our own apps: the only `azp` a Clerk session token may carry. */
 export const FIRST_PARTY_ORIGINS: string[] = [
