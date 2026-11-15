@@ -20,7 +20,7 @@ allowBuilds:
   utf-8-validate: true
 
 catalog:
-  zod: 4.4.3
+  zod: 4.6.6
   '@sentry/node': 10.78.0
   dotenv: 17.4.2
   react: '^19.2.1'
