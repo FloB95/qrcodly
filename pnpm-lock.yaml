@@ -257,8 +257,8 @@ importers:
         specifier: ^3.974.2
         version: 3.974.2
       '@faker-js/faker':
-        specifier: ^9.9.0
-        version: 9.9.0
+        specifier: ^10.0.0
+        version: 10.6.0
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
@@ -2819,9 +2819,9 @@ packages:
       '@noble/hashes':
         optional: true
 
-  '@faker-js/faker@9.9.0':
-    resolution: {integrity: sha512-OEl393iCOoo/z8bMezRlJu+GlRGlsKbUAN7jKB6LhnKoqKve5DXRpalbItIIcwnCjs1k/FOPjFzcA6Qn+H+YbA==}
-    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+  '@faker-js/faker@10.6.0':
+    resolution: {integrity: sha512-3RQHgEtvL1Frl/d1cSreo7qhJ3Gk1OdNUai/CtZ8G+wYeRQnJih3s9xJ9/kgYekPQRdwgh0HXRPqMlzWGwivIQ==}
+    engines: {node: ^20.19.0 || ^22.13.0 || ^23.5.0 || >=24.0.0, npm: '>=10'}
 
   '@fastify/ajv-compiler@4.0.5':
     resolution: {integrity: sha512-KoWKW+MhvfTRWL4qrhUwAAZoaChluo0m0vbiJlGMt2GXvL4LVPQEjt8kSpHI3IBq5Rez8fg+XeH3cneztq+C7A==}
@@ -5929,62 +5929,73 @@ packages:
     resolution: {integrity: sha512-1PI1tdfk0ozQ0tbEi740fYMz/3axKn+jR2nK2qBXdYZiyQKsPYW7lDockNbUY9Z5E3+nwEFjX6Pp19X4VIgrkQ==}
     cpu: [arm64]
     os: [darwin]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-analyzer/binding-darwin-x64@0.6.3':
     resolution: {integrity: sha512-VyC+KH0gwPzXjtysXbuBop+Qn107800pQhp8YzDElnBciu/X88Uw3xEJrCJtcyoV85sPpq+g1zvAgHWHwE8PlQ==}
     cpu: [x64]
     os: [darwin]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-analyzer/binding-freebsd-x64@0.6.3':
     resolution: {integrity: sha512-T5HRWQiy0e5bHaI01xn3cguopn0YCvNV4rast6p+o4ZjORLguCwM7i3GujOUXMzwQbQ/GFxI/ToDwYfI2IFFgg==}
     cpu: [x64]
     os: [freebsd]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-analyzer/binding-linux-arm-gnu@0.6.3':
     resolution: {integrity: sha512-QVMkLA7vqtADSl9sKpX0oDO9X9BmVO6rzlxwU2mJ8vNoYOucOfxOVj1NLW4I3p6m4TW2lIX6zW7kT81HVRmQtw==}
     cpu: [arm]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-analyzer/binding-linux-arm-musl@0.6.3':
     resolution: {integrity: sha512-MdgimxnvfC4uAMDs0UsQW8wGWi6im+cptlcdQi3l+FS5ouf0tmdIo6O5HoteM6zazUtc+vBEr9g1A4J5eFFKNw==}
     cpu: [arm]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-analyzer/binding-linux-arm64-gnu@0.6.3':
     resolution: {integrity: sha512-dRYQU8024UvbDnfU3yNDl4NAjLptjkog+Fbd7TsFvQKc9P7rMocC0CLWvsbp6GVu6mo1yATb7GQuSA0V/MBk7g==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-analyzer/binding-linux-arm64-musl@0.6.3':
     resolution: {integrity: sha512-RNj/MBlBYVamdO+Zexxj+tYQiRBPHUMHOLNpCXJ2sraVvKc+aT+HzgWwanG1TDL7RR1hfaDxpsmJpLgtDw65nQ==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-analyzer/binding-linux-x64-gnu@0.6.3':
     resolution: {integrity: sha512-gUHi0GkcJOfGc+RHkqyTSpjyLRNIm0cZUSEOVdH309iXDEMqD9E0Fz3kUoxepIrBwkHDAjF3xYrp0hEGogfkUw==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-analyzer/binding-linux-x64-musl@0.6.3':
     resolution: {integrity: sha512-7xIqcdYwyf6mSCJid9C0ZMxd6KdN3S72Ywnws55Wz3O7XWvVscZj+51DHAeqKklsD0gXey4evLQkaDtKxd8jBQ==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-analyzer/binding-win32-arm64@0.6.3':
     resolution: {integrity: sha512-tyU9RPF0reQ4Lu2JKDhsSZZIqSHJZdO3QD7vfcJQDhZAU2JBvfubpVejvf3uvAS+/2c0Ajfgj/K1JpDyAqVbQA==}
     cpu: [arm64]
     os: [win32]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-analyzer/binding-win32-x64@0.6.3':
     resolution: {integrity: sha512-84vgw5+SNDYhTJYFkLkgobYM++1IbN8fPY4QIRVSBuLZftHvuaKQnrjQTQkXvmPc0fiebY8ITnxNjHydDrItDA==}
     cpu: [x64]
     os: [win32]
+    deprecated: yuku-analyzer runs on yuku-core since 0.14
 
   '@yuku-toolchain/types@0.5.43':
     resolution: {integrity: sha512-kSpvPntnXw5+lYjO71ffBEnQ5ycQ74KGIYknh0TS4xeyCuBkOqxyJumxZkMhLBBUCLjDAbx2+Icnr3Zh4ftjpQ==}
@@ -13933,7 +13944,7 @@ snapshots:
     optionalDependencies:
       '@noble/hashes': 2.2.0
 
-  '@faker-js/faker@9.9.0': {}
+  '@faker-js/faker@10.6.0': {}
 
   '@fastify/ajv-compiler@4.0.5':
     dependencies:
