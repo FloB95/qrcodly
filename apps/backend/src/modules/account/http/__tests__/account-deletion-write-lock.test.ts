@@ -9,6 +9,8 @@ import { Mailer } from '@/core/mailer/mailer';
 import { ClerkUserInfoService } from '@/core/services/clerk-user-info.service';
 import { CreateQrCodeUseCase } from '@/modules/qr-code/useCase/create-qr-code.use-case';
 import { generateQrCodeDto } from '@/modules/qr-code/http/__tests__/utils';
+import AccountDeletionRequestRepository from '../../domain/repository/account-deletion-request.repository';
+import { AccountWriteLockService } from '../../service/account-write-lock.service';
 import {
 	getTestContext,
 	resetTestState,
@@ -77,6 +79,9 @@ describe('write lock once an account deletion is confirmed', () => {
 			.delete(accountDeletionRequest)
 			.where(inArray(accountDeletionRequest.userId, [TEST_USER_ID, TEST_USER_2_ID]))
 			.execute();
+		// the rows are removed behind the lock's back, so its cached answer has to go as well
+		const writeLock = container.resolve(AccountWriteLockService);
+		await Promise.all([writeLock.forget(TEST_USER_ID), writeLock.forget(TEST_USER_2_ID)]);
 	});
 
 	it('does not lock while the confirmation by mail is outstanding', async () => {
@@ -128,6 +133,29 @@ describe('write lock once an account deletion is confirmed', () => {
 		expect(await call('POST', QR_CODE_PATH, accessToken, generateQrCodeDto())).toHaveStatusCode(
 			201,
 		);
+	});
+
+	it('locks at once, also right after the account was seen as writable', async () => {
+		expect(await call('POST', QR_CODE_PATH, accessToken, generateQrCodeDto())).toHaveStatusCode(
+			201,
+		);
+
+		await requestAndConfirm(accessToken);
+
+		expectLocked(await call('POST', QR_CODE_PATH, accessToken, generateQrCodeDto()));
+	});
+
+	it('asks the database once and then answers from the cache', async () => {
+		await requestAndConfirm(accessToken);
+		const lookup = jest.spyOn(
+			container.resolve(AccountDeletionRequestRepository),
+			'findConfirmedByUserId',
+		);
+
+		expectLocked(await call('POST', QR_CODE_PATH, accessToken, generateQrCodeDto()));
+		expectLocked(await call('POST', QR_CODE_PATH, accessToken, generateQrCodeDto()));
+
+		expect(lookup).toHaveBeenCalledTimes(1);
 	});
 
 	it('does not lock other users', async () => {

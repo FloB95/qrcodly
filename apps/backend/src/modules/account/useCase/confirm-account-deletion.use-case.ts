@@ -5,6 +5,7 @@ import AccountDeletionRequestRepository from '../domain/repository/account-delet
 import { type TAccountDeletionRequest } from '../domain/entities/account-deletion-request.entity';
 import { AccountDeletionLinkInvalidError } from '../error/http/account-deletion-link-invalid.error';
 import { AccountDeletionNotificationService } from '../service/account-deletion-notification.service';
+import { AccountWriteLockService } from '../service/account-write-lock.service';
 import { hashConfirmationToken } from '../service/confirmation-token';
 
 /**
@@ -19,6 +20,7 @@ export class ConfirmAccountDeletionUseCase implements IBaseUseCase {
 		private readonly repository: AccountDeletionRequestRepository,
 		@inject(AccountDeletionNotificationService)
 		private readonly notification: AccountDeletionNotificationService,
+		@inject(AccountWriteLockService) private readonly writeLock: AccountWriteLockService,
 		@inject(Logger) private readonly logger: Logger,
 	) {}
 
@@ -53,6 +55,8 @@ export class ConfirmAccountDeletionUseCase implements IBaseUseCase {
 			});
 			throw new AccountDeletionLinkInvalidError();
 		}
+
+		await this.writeLock.forget(request.userId);
 
 		this.logger.info('account.deletion-request.confirmed', { user: { id: request.userId } });
 		await this.notification.notifyRequested(request.userId, request.requestedAt);

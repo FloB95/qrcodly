@@ -3,6 +3,7 @@ import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { Logger } from '@/core/logging';
 import AccountDeletionRequestRepository from '../domain/repository/account-deletion-request.repository';
 import { AccountDeletionNotificationService } from '../service/account-deletion-notification.service';
+import { AccountWriteLockService } from '../service/account-write-lock.service';
 
 /**
  * Withdraws the user's open deletion request, confirmed or not, and makes its confirmation link
@@ -16,6 +17,7 @@ export class RevokeAccountDeletionUseCase implements IBaseUseCase {
 		private readonly repository: AccountDeletionRequestRepository,
 		@inject(AccountDeletionNotificationService)
 		private readonly notification: AccountDeletionNotificationService,
+		@inject(AccountWriteLockService) private readonly writeLock: AccountWriteLockService,
 		@inject(Logger) private readonly logger: Logger,
 	) {}
 
@@ -29,6 +31,8 @@ export class RevokeAccountDeletionUseCase implements IBaseUseCase {
 			confirmationTokenHash: null,
 			confirmationExpiresAt: null,
 		});
+
+		await this.writeLock.forget(userId);
 
 		this.logger.info('account.deletion-request.revoked', { user: { id: userId } });
 		// a confirmation can land between the read above and the write: go by what is stored now,

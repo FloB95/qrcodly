@@ -13,6 +13,7 @@ import {
 	TEST_USER_ID,
 } from '@/tests/shared/test-context';
 import AccountDeletionRequestRepository from '../../domain/repository/account-deletion-request.repository';
+import { AccountWriteLockService } from '../../service/account-write-lock.service';
 import { hashConfirmationToken } from '../../service/confirmation-token';
 
 const DELETION_REQUEST_PATH = `${API_BASE_PATH}/account/deletion-request`;
@@ -82,6 +83,9 @@ describe('account deletion request', () => {
 			.delete(accountDeletionRequest)
 			.where(inArray(accountDeletionRequest.userId, [TEST_USER_ID, TEST_USER_2_ID]))
 			.execute();
+		// the rows are removed behind the lock's back, so its cached answer has to go as well
+		const writeLock = container.resolve(AccountWriteLockService);
+		await Promise.all([writeLock.forget(TEST_USER_ID), writeLock.forget(TEST_USER_2_ID)]);
 	});
 
 	it('requires authentication to read, request and withdraw', async () => {
