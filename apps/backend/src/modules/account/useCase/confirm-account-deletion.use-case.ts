@@ -26,10 +26,17 @@ export class ConfirmAccountDeletionUseCase implements IBaseUseCase {
 		const request = await this.repository.findOpenByConfirmationTokenHash(
 			hashConfirmationToken(token),
 		);
-		if (!request) throw new AccountDeletionLinkInvalidError();
+		if (!request) {
+			this.logger.warn('account.deletion-request.confirm_rejected', { reason: 'unknown_link' });
+			throw new AccountDeletionLinkInvalidError();
+		}
 		if (request.confirmedAt) return request;
 
 		if (!request.confirmationExpiresAt || request.confirmationExpiresAt < new Date()) {
+			this.logger.warn('account.deletion-request.confirm_rejected', {
+				reason: 'expired_link',
+				user: { id: request.userId },
+			});
 			throw new AccountDeletionLinkInvalidError();
 		}
 

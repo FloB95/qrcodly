@@ -24,7 +24,8 @@ export class ClerkUserInfoService {
 		try {
 			const user = await this.clerkClient.users.getUser(userId);
 			return {
-				email: user.emailAddresses[0]?.emailAddress ?? '',
+				// the primary address is the one the account owner chose to be reached at
+				email: user.primaryEmailAddress?.emailAddress ?? user.emailAddresses[0]?.emailAddress ?? '',
 				firstName: user.firstName ?? undefined,
 			};
 		} catch (error) {

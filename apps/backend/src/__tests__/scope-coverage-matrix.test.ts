@@ -119,6 +119,20 @@ describe('scope-coverage-matrix', () => {
 		expect(violations).toEqual([]);
 	});
 
+	it('account deletion is read, requested and withdrawn from a session only, never an API key', () => {
+		// the confirm route is left out: it takes no session at all, only the secret from the mail
+		const routes = rows.filter(
+			(r) =>
+				r.controller === 'AccountDeletionRequestController' && r.authHandlerSetting !== 'disabled',
+		);
+		expect(routes.map((r) => r.method).sort()).toEqual(['DELETE', 'GET', 'POST']);
+		expect(routes.map((r) => r.effectiveTokenTypes)).toEqual([
+			['session_token'],
+			['session_token'],
+			['session_token'],
+		]);
+	});
+
 	it('every hidden route is effectively session-only (default rule)', () => {
 		// hidden from the docs only, on purpose: API keys keep working as before
 		const docsOnly = new Set([

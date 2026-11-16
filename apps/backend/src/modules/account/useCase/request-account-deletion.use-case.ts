@@ -61,7 +61,10 @@ export class RequestAccountDeletionUseCase implements IBaseUseCase {
 			}
 		}
 
-		this.logger.info('account.deletion-request.created', { user: { id: userId } });
+		this.logger.info(
+			open ? 'account.deletion-request.confirmation_resent' : 'account.deletion-request.created',
+			{ user: { id: userId } },
+		);
 		await this.notification.sendConfirmationLink(userId, token);
 
 		return request;

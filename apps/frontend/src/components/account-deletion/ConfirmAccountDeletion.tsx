@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import posthog from 'posthog-js';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
 import { useConfirmAccountDeletionMutation } from '@/lib/api/account';
@@ -73,7 +74,11 @@ export function ConfirmAccountDeletion() {
 			)}
 			<Button
 				variant="destructive"
-				onClick={() => confirm.mutate(token)}
+				onClick={() =>
+					confirm.mutate(token, {
+						onSuccess: () => posthog.capture('account:deletion-confirmed'),
+					})
+				}
 				isLoading={confirm.isPending}
 			>
 				{t('confirmButton')}

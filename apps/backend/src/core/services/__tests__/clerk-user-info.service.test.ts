@@ -41,7 +41,23 @@ describe('ClerkUserInfoService', () => {
 	});
 
 	describe('getUserInfo', () => {
-		it('returns the first email address and the first name', async () => {
+		it('returns the primary email address and the first name', async () => {
+			mockClerk.users.getUser.mockResolvedValue({
+				primaryEmailAddress: { emailAddress: 'jane@example.com' },
+				emailAddresses: [
+					{ emailAddress: 'added-later@example.com' },
+					{ emailAddress: 'jane@example.com' },
+				],
+				firstName: 'Jane',
+			});
+
+			await expect(service.getUserInfo('user_1')).resolves.toEqual({
+				email: 'jane@example.com',
+				firstName: 'Jane',
+			});
+		});
+
+		it('falls back to the first email address without a primary one', async () => {
 			mockClerk.users.getUser.mockResolvedValue({
 				emailAddresses: [{ emailAddress: 'jane@example.com' }],
 				firstName: 'Jane',
