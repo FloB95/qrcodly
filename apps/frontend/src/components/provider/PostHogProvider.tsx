@@ -18,6 +18,8 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 			ui_host: env.NEXT_PUBLIC_POSTHOG_HOST,
 			capture_pageview: false, // We capture pageviews manually
 			capture_pageleave: true, // Enable pageleave capture
+			// fragments can carry secrets, e.g. the account deletion confirmation link
+			disable_capture_url_hashes: true,
 			defaults: '2026-01-30',
 		});
 	}, []);

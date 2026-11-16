@@ -23,9 +23,8 @@ export class ConfirmAccountDeletionUseCase implements IBaseUseCase {
 	) {}
 
 	async execute(token: string): Promise<TAccountDeletionRequest> {
-		const request = await this.repository.findOpenByConfirmationTokenHash(
-			hashConfirmationToken(token),
-		);
+		const tokenHash = hashConfirmationToken(token);
+		const request = await this.repository.findOpenByConfirmationTokenHash(tokenHash);
 		if (!request) {
 			this.logger.warn('account.deletion-request.confirm_rejected', { reason: 'unknown_link' });
 			throw new AccountDeletionLinkInvalidError();
@@ -43,7 +42,17 @@ export class ConfirmAccountDeletionUseCase implements IBaseUseCase {
 		// the column has no sub-second precision; keep the response equal to what a later read returns
 		const confirmedAt = new Date();
 		confirmedAt.setMilliseconds(0);
-		await this.repository.update(request, { confirmedAt });
+		if (!(await this.repository.confirm(request.id, tokenHash, confirmedAt))) {
+			// the request changed since it was read: confirmed by a parallel click, withdrawn or replaced
+			const current = await this.repository.findOpenByConfirmationTokenHash(tokenHash);
+			if (current?.confirmedAt) return current;
+
+			this.logger.warn('account.deletion-request.confirm_rejected', {
+				reason: 'changed_meanwhile',
+				user: { id: request.userId },
+			});
+			throw new AccountDeletionLinkInvalidError();
+		}
 
 		this.logger.info('account.deletion-request.confirmed', { user: { id: request.userId } });
 		await this.notification.notifyRequested(request.userId, request.requestedAt);

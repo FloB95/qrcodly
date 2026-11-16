@@ -30,7 +30,13 @@ export function ConfirmAccountDeletion() {
 	const [token, setToken] = useState<string | null>();
 
 	useEffect(() => {
-		setToken(new URLSearchParams(window.location.hash.slice(1)).get('token'));
+		const fromLink = new URLSearchParams(window.location.hash.slice(1)).get('token');
+		// keep the first read: the fragment is gone by the time the effect runs again
+		setToken((current) => current ?? fromLink);
+		// take the secret out of the address bar, so history, error reports and replays never see it
+		if (fromLink) {
+			window.history.replaceState(null, '', window.location.pathname + window.location.search);
+		}
 	}, []);
 
 	if (token === undefined) return null;

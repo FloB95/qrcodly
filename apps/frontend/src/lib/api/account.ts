@@ -43,7 +43,9 @@ function useAccountDeletionRequestMutation(method: 'POST' | 'DELETE') {
 
 	return useMutation({
 		mutationFn: () => call(method),
-		onSuccess: (data) => {
+		onSuccess: async (data) => {
+			// a status fetch started before the change must not overwrite its result afterwards
+			await queryClient.cancelQueries({ queryKey: accountQueryKeys.deletionRequest });
 			queryClient.setQueryData(accountQueryKeys.deletionRequest, data);
 		},
 	});

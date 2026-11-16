@@ -70,6 +70,28 @@ class AccountDeletionRequestRepository extends AbstractRepository<TAccountDeleti
 		});
 	}
 
+	/**
+	 * Marks a request confirmed, but only while it still is the open, unconfirmed request this
+	 * link belongs to. A withdrawal or a newer link between reading and writing must not be
+	 * confirmed by the old link.
+	 * @returns whether this call confirmed the request
+	 */
+	async confirm(id: string, tokenHash: string, confirmedAt: Date): Promise<boolean> {
+		const [result] = await this.db
+			.update(this.table)
+			.set({ confirmedAt })
+			.where(
+				and(
+					eq(this.table.id, id),
+					eq(this.table.confirmationTokenHash, tokenHash),
+					isNull(this.table.revokedAt),
+					isNull(this.table.confirmedAt),
+				),
+			)
+			.execute();
+		return result.affectedRows > 0;
+	}
+
 	async create(item: TAccountDeletionRequest): Promise<void> {
 		await this.db.insert(this.table).values(item).execute();
 	}

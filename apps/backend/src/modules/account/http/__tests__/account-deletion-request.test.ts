@@ -12,6 +12,7 @@ import {
 	TEST_USER_2_ID,
 	TEST_USER_ID,
 } from '@/tests/shared/test-context';
+import AccountDeletionRequestRepository from '../../domain/repository/account-deletion-request.repository';
 import { hashConfirmationToken } from '../../service/confirmation-token';
 
 const DELETION_REQUEST_PATH = `${API_BASE_PATH}/account/deletion-request`;
@@ -209,6 +210,23 @@ describe('account deletion request', () => {
 				.execute();
 
 			expectLinkInvalid(await confirm(mailedToken()));
+			expect(supportMails()).toHaveLength(0);
+		});
+
+		it('does not confirm a request withdrawn while its link was being checked', async () => {
+			await call('POST', accessToken);
+			const token = mailedToken();
+			const repository = container.resolve(AccountDeletionRequestRepository);
+			const readBeforeWithdrawal = await repository.findOpenByConfirmationTokenHash(
+				hashConfirmationToken(token),
+			);
+			await call('DELETE', accessToken);
+			jest
+				.spyOn(repository, 'findOpenByConfirmationTokenHash')
+				.mockResolvedValueOnce(readBeforeWithdrawal);
+
+			expectLinkInvalid(await confirm(token));
+			expect((await storedRequest(TEST_USER_ID))?.confirmedAt).toBeNull();
 			expect(supportMails()).toHaveLength(0);
 		});
 
