@@ -1390,7 +1390,7 @@
 		"question11": "Gdzie przechowywane są moje dane?",
 		"answer11": "Główna infrastruktura QRcodly działa na serwerach w Niemczech. Do logowania używamy Clerk, do płatności Stripe, do wysyłki nowości o produkcie Amazon SES, a Sentry i PostHog pomagają znajdować błędy i ulepszać produkt. Twoje dane nie są sprzedawane ani wykorzystywane do reklam podmiotów trzecich. Jeśli masz konto, od czasu do czasu wysyłamy Ci e-mailem nowości o QRcodly. Możesz to w każdej chwili wyłączyć w ustawieniach lub za pomocą linku w każdym e-mailu.",
 		"question12": "Jak usunąć moje konto?",
-		"answer12": "W sekcji Ustawienia → Profil, na dole strony, możesz złożyć wniosek o usunięcie konta. Usunięcie jest ostateczne i nie można go cofnąć: usuwamy Twoje dane osobowe i wszystkie utworzone przez Ciebie treści, np. kody QR, krótkie URL-e, szablony i statystyki. Potem Twoje dynamiczne kody QR i krótkie URL-e przestaną działać. Do czasu usunięcia możesz korzystać z konta i tam wycofać wniosek. Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo.",
+		"answer12": "W sekcji Ustawienia → Profil, na dole strony, możesz złożyć wniosek o usunięcie konta. Usunięcie jest ostateczne i nie można go cofnąć: usuwamy Twoje dane osobowe i wszystkie utworzone przez Ciebie treści, np. kody QR, krótkie URL-e, szablony i statystyki. Potem Twoje dynamiczne kody QR i krótkie URL-e przestaną działać. Do czasu usunięcia konto jest tylko do odczytu: możesz wszystko przeglądać i usuwać, ale nie możesz niczego tworzyć ani zmieniać. Wniosek możesz tam wycofać. Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo.",
 		"viewAll": "Zobacz wszystkie FAQ"
 	},
 	"fileUpload": {
@@ -1780,10 +1780,13 @@
 			"deletionWarning4": "Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo.",
 			"deletionRequestButton": "Złóż wniosek o usunięcie",
 			"deletionConfirmTitle": "Złożyć wniosek o usunięcie konta?",
-			"deletionConfirmDescription": "Następnie usuniemy Twoje konto wraz ze wszystkimi danymi na stałe. Do tego czasu możesz z niego korzystać i wycofać wniosek tutaj.",
+			"deletionConfirmDescription": "Następnie usuniemy Twoje konto wraz ze wszystkimi danymi na stałe. Do tego czasu konto jest tylko do odczytu: możesz wszystko przeglądać i usuwać, ale nie możesz niczego tworzyć ani zmieniać. Wniosek możesz wycofać tutaj.",
 			"deletionConfirmButton": "Tak, złóż wniosek",
 			"deletionRequestedAt": "Wniosek o usunięcie złożony {date}",
-			"deletionRequestedHint": "Do czasu usunięcia możesz normalnie korzystać z konta. Jeśli zmienisz zdanie, wycofaj wniosek.",
+			"deletionRequestedHint": "Do czasu usunięcia konto jest tylko do odczytu: możesz wszystko przeglądać i usuwać, ale nie możesz niczego tworzyć ani zmieniać. Jeśli zmienisz zdanie, wycofaj wniosek.",
+			"deletionBannerTitle": "Złożono wniosek o usunięcie Twojego konta",
+			"deletionBannerDescription": "Od złożenia wniosku {date} Twoje konto jest tylko do odczytu: możesz wszystko przeglądać i usuwać, ale nie możesz niczego tworzyć ani zmieniać. Twoje kody QR i krótkie URL-e działają do czasu usunięcia konta.",
+			"deletionBannerCta": "Zarządzaj wnioskiem",
 			"deletionRevoke": "Wycofaj wniosek",
 			"deletionRequestedToast": "Twój wniosek został wysłany.",
 			"deletionRevokedToast": "Twój wniosek został wycofany.",
@@ -2610,7 +2613,7 @@
 				"q5": "Czy mogę otrzymać faktury za subskrypcję Pro?",
 				"a5": "Tak. Po zakupie planu Pro wszystkie faktury są generowane automatycznie. Możesz je przeglądać i pobierać w dowolnym momencie w panelu w Ustawienia → Rozliczenia → Faktury i paragony.",
 				"q6": "Jak usunąć moje konto?",
-				"a6": "W sekcji Ustawienia → Profil, na dole strony, możesz złożyć wniosek o usunięcie konta. Usunięcie jest ostateczne i nie można go cofnąć: usuwamy Twoje dane osobowe i wszystkie utworzone przez Ciebie treści, np. kody QR, krótkie URL-e, szablony i statystyki. Potem Twoje dynamiczne kody QR i krótkie URL-e przestaną działać. Do czasu usunięcia możesz korzystać z konta i tam wycofać wniosek. Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo."
+				"a6": "W sekcji Ustawienia → Profil, na dole strony, możesz złożyć wniosek o usunięcie konta. Usunięcie jest ostateczne i nie można go cofnąć: usuwamy Twoje dane osobowe i wszystkie utworzone przez Ciebie treści, np. kody QR, krótkie URL-e, szablony i statystyki. Potem Twoje dynamiczne kody QR i krótkie URL-e przestaną działać. Do czasu usunięcia konto jest tylko do odczytu: możesz wszystko przeglądać i usuwać, ale nie możesz niczego tworzyć ani zmieniać. Wniosek możesz tam wycofać. Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo."
 			}
 		}
 	},

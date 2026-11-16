@@ -31,6 +31,7 @@ import { defaultApiAuthMiddleware } from '@/core/http/middleware/default-api-aut
 import { enforceScope } from '@/core/http/middleware/enforce-scope.middleware';
 import { isCloudflareIp } from './cloudflare-ip';
 import { enforceTokenType } from '@/core/http/middleware/enforce-token-type.middleware';
+import { enforceAccountWritable } from '@/core/http/middleware/enforce-account-writable.middleware';
 import { type ApiKeyScope, undocumentedSchemas } from '@shared/schemas';
 import z, { type ZodType } from 'zod';
 import qs from 'qs';
@@ -364,6 +365,10 @@ export function registerRoutes(
 		};
 
 		routeOptions.preHandler = [];
+		// First, so a locked account gets the lock message instead of a validation error.
+		if (isLockedDuringAccountDeletion(routeMeta)) {
+			routeOptions.preHandler.push(enforceAccountWritable);
+		}
 		if (routeMeta.options.bodySchema) {
 			routeOptions.preHandler.push(
 				createValidationHook(routeMeta.options.bodySchema, 'Invalid request body', 'body'),
@@ -406,6 +411,20 @@ export function registerRoutes(
 
 		fastify.route(routeOptions);
 	});
+}
+
+/**
+ * Routes that create or change data are locked while the account waits for its deletion.
+ * Custom auth handlers belong to machine callers (webhooks, internal API) and are left alone.
+ * Exported so the coverage test can assert the same rule.
+ */
+export function isLockedDuringAccountDeletion(routeMeta: RouteMetadata): boolean {
+	const { authHandler, config } = routeMeta.options;
+	if (authHandler !== undefined && authHandler !== false) return false;
+	if (config?.allowedDuringAccountDeletion) return false;
+
+	const scope = config?.scope ?? resolveScopeForMethod(routeMeta.method);
+	return scope === 'write' || scope === 'update';
 }
 
 function createValidationHook<T>(schema: ZodType<T>, errorMessage: string, type: 'body' | 'query') {

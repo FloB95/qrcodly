@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route';
-import { resolveScopeForMethod } from '@/libs/fastify/helpers';
+import { isLockedDuringAccountDeletion, resolveScopeForMethod } from '@/libs/fastify/helpers';
 
 import { ApiKeyController } from '@/modules/api-key/http/controller/api-key.controller';
 import { AnalyticsIntegrationController } from '@/modules/analytics-integration/http/controller/analytics-integration.controller';
@@ -15,6 +15,8 @@ import { DomainAddonController } from '@/modules/billing/http/controller/domain-
 import { UserSurveyController } from '@/modules/user-survey/http/controller/user-survey.controller';
 import { HostedPageController } from '@/modules/hosted-page/http/controller/hosted-page.controller';
 import { HostedPageUsageController } from '@/modules/hosted-page/http/controller/hosted-page-usage.controller';
+import { AccountDeletionRequestController } from '@/modules/account/http/controller/account-deletion-request.controller';
+import { NewsletterController } from '@/modules/newsletter/http/controller/newsletter.controller';
 
 const CONTROLLERS = [
 	ApiKeyController,
@@ -30,6 +32,8 @@ const CONTROLLERS = [
 	UserSurveyController,
 	HostedPageController,
 	HostedPageUsageController,
+	AccountDeletionRequestController,
+	NewsletterController,
 ];
 
 type RouteRow = {
@@ -42,6 +46,7 @@ type RouteRow = {
 	effectiveTokenTypes: string[] | null;
 	overrideExplicit: boolean;
 	hidden: boolean;
+	lockedDuringAccountDeletion: boolean;
 };
 
 function gatherRoutes(): RouteRow[] {
@@ -71,6 +76,7 @@ function gatherRoutes(): RouteRow[] {
 				effectiveTokenTypes: effectiveAllowed,
 				overrideExplicit: explicit !== undefined,
 				hidden,
+				lockedDuringAccountDeletion: isLockedDuringAccountDeletion(r),
 			});
 		}
 	}
@@ -130,6 +136,42 @@ describe('scope-coverage-matrix', () => {
 				(!r.effectiveTokenTypes ||
 					!r.effectiveTokenTypes.includes('session_token') ||
 					r.effectiveTokenTypes.includes('api_key')),
+		);
+		expect(violations).toEqual([]);
+	});
+
+	it('a pending account deletion locks every creating or changing route except a known few', () => {
+		const stayOpen = rows
+			.filter(
+				(r) =>
+					(r.scope === 'write' || r.scope === 'update') &&
+					r.authHandlerSetting !== 'custom' &&
+					!r.lockedDuringAccountDeletion,
+			)
+			.map((r) => `${r.controller} ${r.method} ${r.path}`)
+			.sort();
+
+		expect(stayOpen).toEqual([
+			// requesting again changes nothing
+			'AccountDeletionRequestController POST ',
+			// invoices, payment details and cancelling live in the portal
+			'BillingController POST /portal-session',
+			// deleting stays possible
+			'ConfigTemplateController POST /bulk-delete',
+			// unsubscribing must always work
+			'NewsletterController PUT /subscription',
+			'QrCodeController POST /bulk-delete',
+			'ShortUrlController POST /bulk-delete',
+			// dismisses a banner, changes no content
+			'ShortUrlController POST /safety-incidents/acknowledge',
+			// feedback, changes no content
+			'UserSurveyController POST ',
+		]);
+	});
+
+	it('a pending account deletion never locks reading or deleting', () => {
+		const violations = rows.filter(
+			(r) => (r.scope === 'read' || r.scope === 'delete') && r.lockedDuringAccountDeletion,
 		);
 		expect(violations).toEqual([]);
 	});

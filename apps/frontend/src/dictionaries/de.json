@@ -1390,7 +1390,7 @@
 		"question11": "Wo werden meine Daten gehostet?",
 		"answer11": "Die Kerninfrastruktur von QRcodly läuft auf Servern in Deutschland. Für die Anmeldung nutzen wir Clerk, für Zahlungen Stripe, für den Versand der Produktneuigkeiten Amazon SES und Sentry und PostHog, um Fehler zu finden und das Produkt zu verbessern. Deine Daten werden weder verkauft noch für Werbung Dritter genutzt. Mit einem Konto bekommst du gelegentlich Produktneuigkeiten von QRcodly per E-Mail. Das kannst du jederzeit in den Einstellungen oder über den Link in jeder E-Mail abschalten.",
 		"question12": "Wie lösche ich mein Konto?",
-		"answer12": "Unter Einstellungen → Profil kannst du ganz unten die Löschung deines Kontos beantragen. Die Löschung ist endgültig und lässt sich nicht rückgängig machen: Wir löschen deine persönlichen Daten und alles, was du angelegt hast, etwa QR-Codes, Kurz-URLs, Vorlagen und Statistiken. Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr. Bis wir dein Konto löschen, kannst du es weiter nutzen und den Antrag dort widerrufen. Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt.",
+		"answer12": "Unter Einstellungen → Profil kannst du ganz unten die Löschung deines Kontos beantragen. Die Löschung ist endgültig und lässt sich nicht rückgängig machen: Wir löschen deine persönlichen Daten und alles, was du angelegt hast, etwa QR-Codes, Kurz-URLs, Vorlagen und Statistiken. Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr. Bis wir dein Konto löschen, ist es schreibgeschützt: Du kannst alles ansehen und löschen, aber nichts Neues anlegen oder ändern. Den Antrag kannst du dort widerrufen. Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt.",
 		"viewAll": "Alle FAQs anzeigen"
 	},
 	"fileUpload": {
@@ -1780,10 +1780,13 @@
 			"deletionWarning4": "Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt.",
 			"deletionRequestButton": "Löschung beantragen",
 			"deletionConfirmTitle": "Löschung deines Kontos beantragen?",
-			"deletionConfirmDescription": "Wir löschen dein Konto danach endgültig mit allen Daten. Bis dahin kannst du es weiter nutzen und den Antrag hier widerrufen.",
+			"deletionConfirmDescription": "Wir löschen dein Konto danach endgültig mit allen Daten. Bis dahin ist es schreibgeschützt: Du kannst alles ansehen und löschen, aber nichts Neues anlegen oder ändern. Den Antrag kannst du hier widerrufen.",
 			"deletionConfirmButton": "Ja, Löschung beantragen",
 			"deletionRequestedAt": "Löschung beantragt am {date}",
-			"deletionRequestedHint": "Bis wir dein Konto löschen, kannst du es ganz normal weiter nutzen. Hast du es dir anders überlegt, widerrufe den Antrag.",
+			"deletionRequestedHint": "Bis wir dein Konto löschen, ist es schreibgeschützt: Du kannst alles ansehen und löschen, aber nichts Neues anlegen oder ändern. Hast du es dir anders überlegt, widerrufe den Antrag.",
+			"deletionBannerTitle": "Du hast die Löschung deines Kontos beantragt",
+			"deletionBannerDescription": "Seit deinem Antrag vom {date} ist dein Konto schreibgeschützt: Du kannst alles ansehen und löschen, aber nichts Neues anlegen oder ändern. Deine QR-Codes und Kurz-URLs funktionieren weiter, bis wir das Konto löschen.",
+			"deletionBannerCta": "Antrag verwalten",
 			"deletionRevoke": "Antrag widerrufen",
 			"deletionRequestedToast": "Deine Anfrage wurde gesendet.",
 			"deletionRevokedToast": "Dein Antrag wurde widerrufen.",
@@ -2610,7 +2613,7 @@
 				"q5": "Bekomme ich Rechnungen für mein Pro-Abonnement?",
 				"a5": "Ja. Nach dem Kauf des Pro-Plans werden alle Rechnungen automatisch erstellt. Du kannst diese jederzeit in deinem Dashboard unter Einstellungen → Abrechnung → Rechnungen & Belege einsehen und herunterladen.",
 				"q6": "Wie lösche ich mein Konto?",
-				"a6": "Unter Einstellungen → Profil kannst du ganz unten die Löschung deines Kontos beantragen. Die Löschung ist endgültig und lässt sich nicht rückgängig machen: Wir löschen deine persönlichen Daten und alles, was du angelegt hast, etwa QR-Codes, Kurz-URLs, Vorlagen und Statistiken. Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr. Bis wir dein Konto löschen, kannst du es weiter nutzen und den Antrag dort widerrufen. Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt."
+				"a6": "Unter Einstellungen → Profil kannst du ganz unten die Löschung deines Kontos beantragen. Die Löschung ist endgültig und lässt sich nicht rückgängig machen: Wir löschen deine persönlichen Daten und alles, was du angelegt hast, etwa QR-Codes, Kurz-URLs, Vorlagen und Statistiken. Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr. Bis wir dein Konto löschen, ist es schreibgeschützt: Du kannst alles ansehen und löschen, aber nichts Neues anlegen oder ändern. Den Antrag kannst du dort widerrufen. Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt."
 			}
 		}
 	},
