@@ -301,6 +301,21 @@ describe('account deletion request', () => {
 			expect(supportMails()[0].subject).toBe(`Account deletion withdrawn: ${OWNER_MAIL}`);
 		});
 
+		it('learns from the withdrawing write itself whether the request had been confirmed', async () => {
+			const repository = container.resolve(AccountDeletionRequestRepository);
+
+			await call('POST', accessToken);
+			const unconfirmed = (await storedRequest(TEST_USER_ID))!;
+			expect(await repository.withdraw(unconfirmed.id, new Date())).toEqual({
+				wasConfirmed: false,
+			});
+			expect(await repository.withdraw(unconfirmed.id, new Date())).toBeNull();
+
+			await call('POST', accessToken);
+			await confirm(mailedToken());
+			expect(await repository.withdraw(unconfirmed.id, new Date())).toEqual({ wasConfirmed: true });
+		});
+
 		it('does nothing without an open request', async () => {
 			const response = await call('DELETE', accessToken);
 

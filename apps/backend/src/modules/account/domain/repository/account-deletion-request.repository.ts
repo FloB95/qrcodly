@@ -93,6 +93,35 @@ class AccountDeletionRequestRepository extends AbstractRepository<TAccountDeleti
 		return result.affectedRows > 0;
 	}
 
+	/**
+	 * Withdraws an open request and reports, from that same write, whether it had been confirmed.
+	 * Reading that before or after the write would let a confirmation or a new request slip in
+	 * between and leave support with the wrong picture.
+	 * @returns `null` when there is no open request left to withdraw
+	 */
+	async withdraw(id: string, revokedAt: Date): Promise<{ wasConfirmed: boolean } | null> {
+		const withdrawIf = async (confirmed: boolean): Promise<boolean> => {
+			const [result] = await this.db
+				.update(this.table)
+				.set({ revokedAt, confirmationTokenHash: null, confirmationExpiresAt: null })
+				.where(
+					and(
+						eq(this.table.id, id),
+						isNull(this.table.revokedAt),
+						confirmed ? isNotNull(this.table.confirmedAt) : isNull(this.table.confirmedAt),
+					),
+				)
+				.execute();
+			return result.affectedRows > 0;
+		};
+
+		if (await withdrawIf(true)) return { wasConfirmed: true };
+		if (await withdrawIf(false)) return { wasConfirmed: false };
+		// a confirmation landed between the two attempts
+		if (await withdrawIf(true)) return { wasConfirmed: true };
+		return null;
+	}
+
 	async create(item: TAccountDeletionRequest): Promise<void> {
 		await this.db.insert(this.table).values(item).execute();
 	}
