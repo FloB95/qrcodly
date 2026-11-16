@@ -2602,7 +2602,13 @@
 				"q4": "Ai-je besoin d'un compte pour créer des codes QR ?",
 				"a4": "Non ! Vous pouvez créer et télécharger des codes QR statiques sans compte. Cependant, l'inscription (gratuite) débloque les codes QR dynamiques, les analyses, le raccourcissement d'URL et la gestion du tableau de bord.",
 				"q5": "Puis-je obtenir des factures pour mon abonnement Pro ?",
-				"a5": "Oui. Après l'achat du plan Pro, toutes les factures sont générées automatiquement. Vous pouvez les consulter et les télécharger à tout moment dans votre tableau de bord sous Paramètres → Facturation → Factures et reçus."
+				"a5": "Oui. Vous recevez une facture PDF pour chaque paiement. Elle est disponible dès l'achat dans votre compte, sous Paramètres → Facturation → « Factures et paiement », où vous pouvez aussi gérer vos moyens de paiement.",
+				"q6": "Est-ce que je reçois une facture par mois ou une seule pour toute l'année ?",
+				"a6": "Cela dépend de votre mode de paiement. En paiement mensuel, vous recevez une facture chaque mois pour le montant mensuel. En paiement annuel, vous recevez une seule facture couvrant les douze mois complets. Si vous avez besoin d'une facture unique pour toute l'année, choisissez le paiement annuel.",
+				"q7": "Les prix sont-ils TTC ou HT ?",
+				"a7": "Les prix affichés sont des prix finaux : vous payez exactement le montant indiqué sur la page des tarifs. Aucune TVA n'est ajoutée et aucune ne figure sur la facture.",
+				"q8": "Puis-je payer à l'année, et combien de temps dure l'abonnement ?",
+				"a8": "Oui. Lors du passage à Pro, vous choisissez entre paiement mensuel et annuel. En paiement annuel, vous payez une seule fois pour toute l'année et Pro est valable douze mois à compter de la date d'achat. L'abonnement se renouvelle ensuite automatiquement pour douze mois supplémentaires, et vous pouvez le résilier en ligne à tout moment, avec effet à la fin de la période."
 			}
 		}
 	},
