@@ -2602,7 +2602,13 @@
 				"q4": "Czy potrzebuję konta, aby tworzyć kody QR?",
 				"a4": "Nie! Możesz tworzyć i pobierać statyczne kody QR bez konta. Jednak rejestracja (bezpłatna) odblokowuje dynamiczne kody QR, analizy, skracanie URL i zarządzanie dashboardem.",
 				"q5": "Czy mogę otrzymać faktury za subskrypcję Pro?",
-				"a5": "Tak. Po zakupie planu Pro wszystkie faktury są generowane automatycznie. Możesz je przeglądać i pobierać w dowolnym momencie w panelu w Ustawienia → Rozliczenia → Faktury i paragony."
+				"a5": "Tak. Za każdą płatność otrzymujesz fakturę w formacie PDF. Znajdziesz ją zaraz po zakupie na swoim koncie w Ustawienia → Płatności → „Faktury i płatności”. Tam też zarządzasz danymi płatności.",
+				"q6": "Czy dostanę jedną fakturę co miesiąc, czy jedną za cały rok?",
+				"a6": "To zależy od sposobu płatności. Przy płatności miesięcznej otrzymujesz co miesiąc fakturę na kwotę miesięczną. Przy płatności rocznej otrzymujesz jedną fakturę za całe dwanaście miesięcy. Jeśli potrzebujesz jednej faktury za cały rok, wybierz płatność roczną.",
+				"q7": "Czy ceny są brutto, czy netto?",
+				"a7": "Podane ceny są cenami końcowymi: płacisz dokładnie kwotę widoczną na stronie z cennikiem. VAT nie jest doliczany i nie jest wykazywany na fakturze.",
+				"q8": "Czy mogę płacić rocznie i jak długo trwa wtedy subskrypcja?",
+				"a8": "Tak. Przy przejściu na Pro wybierasz płatność miesięczną lub roczną. Przy płatności rocznej płacisz raz za cały rok, a Pro obowiązuje przez dwanaście miesięcy od daty zakupu. Potem subskrypcja odnawia się automatycznie na kolejne dwanaście miesięcy; możesz ją anulować online w dowolnym momencie ze skutkiem na koniec okresu."
 			}
 		}
 	},
