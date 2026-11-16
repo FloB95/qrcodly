@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { and, desc, eq, isNotNull, isNull } from 'drizzle-orm';
+import { and, desc, eq, gt, isNotNull, isNull } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import accountDeletionRequest, {
@@ -72,8 +72,8 @@ class AccountDeletionRequestRepository extends AbstractRepository<TAccountDeleti
 
 	/**
 	 * Marks a request confirmed, but only while it still is the open, unconfirmed request this
-	 * link belongs to. A withdrawal or a newer link between reading and writing must not be
-	 * confirmed by the old link.
+	 * link belongs to and the link has not run out. A withdrawal, a newer link or the expiry
+	 * between reading and writing must not be confirmed by the old link.
 	 * @returns whether this call confirmed the request
 	 */
 	async confirm(id: string, tokenHash: string, confirmedAt: Date): Promise<boolean> {
@@ -86,6 +86,7 @@ class AccountDeletionRequestRepository extends AbstractRepository<TAccountDeleti
 					eq(this.table.confirmationTokenHash, tokenHash),
 					isNull(this.table.revokedAt),
 					isNull(this.table.confirmedAt),
+					gt(this.table.confirmationExpiresAt, confirmedAt),
 				),
 			)
 			.execute();

@@ -230,6 +230,19 @@ describe('account deletion request', () => {
 			expect(supportMails()).toHaveLength(0);
 		});
 
+		it('does not confirm when the link runs out between the check and the write', async () => {
+			await call('POST', accessToken);
+			const stored = (await storedRequest(TEST_USER_ID))!;
+			const afterExpiry = new Date(stored.confirmationExpiresAt!.getTime() + 1000);
+
+			const confirmed = await container
+				.resolve(AccountDeletionRequestRepository)
+				.confirm(stored.id, stored.confirmationTokenHash!, afterExpiry);
+
+			expect(confirmed).toBe(false);
+			expect((await storedRequest(TEST_USER_ID))?.confirmedAt).toBeNull();
+		});
+
 		it('stays confirmed when the mail to support fails', async () => {
 			await call('POST', accessToken);
 			sendMail.mockRejectedValueOnce(new Error('SMTP down'));
@@ -266,6 +279,20 @@ describe('account deletion request', () => {
 				confirmedAt: null,
 			});
 			expect((await storedRequest(TEST_USER_ID))?.revokedAt).toBeInstanceOf(Date);
+			expect(supportMails()).toHaveLength(1);
+			expect(supportMails()[0].subject).toBe(`Account deletion withdrawn: ${OWNER_MAIL}`);
+		});
+
+		it('tells support when the confirmation landed while the request was being withdrawn', async () => {
+			await call('POST', accessToken);
+			const repository = container.resolve(AccountDeletionRequestRepository);
+			const readBeforeConfirmation = await repository.findActiveByUserId(TEST_USER_ID);
+			await confirm(mailedToken());
+			sendMail.mockClear();
+			jest.spyOn(repository, 'findActiveByUserId').mockResolvedValueOnce(readBeforeConfirmation);
+
+			expect(await call('DELETE', accessToken)).toHaveStatusCode(200);
+
 			expect(supportMails()).toHaveLength(1);
 			expect(supportMails()[0].subject).toBe(`Account deletion withdrawn: ${OWNER_MAIL}`);
 		});

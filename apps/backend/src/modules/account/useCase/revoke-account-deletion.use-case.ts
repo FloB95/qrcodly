@@ -31,7 +31,10 @@ export class RevokeAccountDeletionUseCase implements IBaseUseCase {
 		});
 
 		this.logger.info('account.deletion-request.revoked', { user: { id: userId } });
-		if (open.confirmedAt) {
+		// a confirmation can land between the read above and the write: go by what is stored now,
+		// so support hears of the withdrawal whenever they heard of the request
+		const revoked = await this.repository.findOneById(open.id);
+		if (revoked?.confirmedAt) {
 			await this.notification.notifyRevoked(userId, open.requestedAt, revokedAt);
 		}
 	}
