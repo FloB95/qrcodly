@@ -38,7 +38,7 @@ export default async function Page({ params }: DefaultPageParams) {
 	const url = await getTranslations({ locale, namespace: 'productsUrlShortener' });
 	const ana = await getTranslations({ locale, namespace: 'productsAnalytics' });
 	const tFaq = await getTranslations({ locale, namespace: 'faq' });
-	const faqItems = Array.from({ length: 11 }, (_, i) => ({
+	const faqItems = Array.from({ length: 12 }, (_, i) => ({
 		question: tFaq(`question${i + 1}`),
 		answer: tFaq(`answer${i + 1}`),
 	}));

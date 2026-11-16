@@ -346,6 +346,16 @@
 			"loading": "Ładowanie..."
 		}
 	},
+	"accountDeletionConfirm": {
+		"title": "Potwierdź usunięcie konta",
+		"description": "Potwierdzając, składasz wniosek o trwałe usunięcie konta QRcodly. Do czasu usunięcia konto jest tylko do odczytu, a wniosek możesz wycofać w swoim profilu.",
+		"confirmButton": "Potwierdź usunięcie teraz",
+		"confirmedTitle": "Wniosek o usunięcie konta został złożony",
+		"confirmedDescription": "Twoje konto jest teraz tylko do odczytu: możesz wszystko przeglądać i usuwać, ale nie możesz niczego tworzyć ani zmieniać. Usuniemy je na stałe wraz ze wszystkimi danymi. Do tego czasu możesz wycofać wniosek w Ustawienia → Profil.",
+		"profileButton": "Przejdź do profilu",
+		"invalidTitle": "Ten link jest nieprawidłowy lub wygasł",
+		"invalidDescription": "Link jest ważny 24 godziny i tylko dopóki wniosek jest otwarty. Usunięcie możesz zgłosić ponownie w Ustawienia → Profil."
+	},
 	"accountBanned": {
 		"title": "Konto zawieszone",
 		"description": "Twoje konto zostało zawieszone za naruszenie naszego regulaminu.",
@@ -1389,6 +1399,8 @@
 		"answer10": "Absolutnie! Kody QR są specjalnie zoptymalizowane do druku i działają niezawodnie na różnych materiałach, o ile pozostają wyraźne i nieuszkodzone. Zapewnij dobrą jakość druku, a Twoje kody będą gotowe do użycia w dowolnym miejscu!",
 		"question11": "Gdzie przechowywane są moje dane?",
 		"answer11": "Główna infrastruktura QRcodly działa na serwerach w Niemczech. Do logowania używamy Clerk, do płatności Stripe, do wysyłki nowości o produkcie Amazon SES, a Sentry i PostHog pomagają znajdować błędy i ulepszać produkt. Twoje dane nie są sprzedawane ani wykorzystywane do reklam podmiotów trzecich. Jeśli masz konto, od czasu do czasu wysyłamy Ci e-mailem nowości o QRcodly. Możesz to w każdej chwili wyłączyć w ustawieniach lub za pomocą linku w każdym e-mailu.",
+		"question12": "Jak usunąć moje konto?",
+		"answer12": "W sekcji Ustawienia → Profil, na dole strony, możesz złożyć wniosek o usunięcie konta. Następnie wyślemy Ci e-mail, w którym potwierdzisz usunięcie. Usunięcie jest ostateczne i nie można go cofnąć: usuwamy Twoje dane osobowe i wszystkie utworzone przez Ciebie treści, np. kody QR, krótkie URL-e, szablony i statystyki. Potem Twoje dynamiczne kody QR i krótkie URL-e przestaną działać. Do czasu usunięcia konto jest tylko do odczytu: możesz wszystko przeglądać i usuwać, ale nie możesz niczego tworzyć ani zmieniać. Wniosek możesz tam wycofać. Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo.",
 		"viewAll": "Zobacz wszystkie FAQ"
 	},
 	"fileUpload": {
@@ -1768,7 +1780,31 @@
 			"newsletterBlocked": "Wysyłka na Twój adres e-mail jest zablokowana, na przykład z powodu wcześniejszej rezygnacji z subskrypcji lub problemu z doręczeniem e-maila. Aby to zmienić, napisz do nas na <contact>info@qrcodly.de</contact>.",
 			"newsletterLanguageLabel": "Język e-maili",
 			"newsletterLanguageHint": "Nasze e-maile piszemy po angielsku i po niemiecku.",
-			"newsletterLanguageSaved": "Język zapisany."
+			"newsletterLanguageSaved": "Język zapisany.",
+			"deletionTitle": "Usuń konto",
+			"deletionDescription": "Złóż wniosek o usunięcie konta i wszystkich powiązanych danych.",
+			"deletionWarningTitle": "Usunięcie jest ostateczne i nie można go cofnąć:",
+			"deletionWarning1": "Twoje dane osobowe i profil zostaną usunięte.",
+			"deletionWarning2": "Wszystkie utworzone przez Ciebie treści zostaną usunięte, np. kody QR, krótkie URL-e, szablony, tagi i statystyki.",
+			"deletionWarning3": "Twoje dynamiczne kody QR i krótkie URL-e przestaną działać.",
+			"deletionWarning4": "Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo.",
+			"deletionRequestButton": "Złóż wniosek o usunięcie",
+			"deletionConfirmTitle": "Złożyć wniosek o usunięcie konta?",
+			"deletionConfirmDescription": "Wyślemy Ci e-mail z linkiem potwierdzającym. Wniosek o usunięcie jest złożony dopiero wtedy, gdy potwierdzisz go tym linkiem. Potem konto będzie tylko do odczytu, dopóki nie usuniemy go na stałe wraz ze wszystkimi danymi.",
+			"deletionConfirmButton": "Tak, złóż wniosek",
+			"deletionRequestedAt": "Wniosek o usunięcie złożony {date}",
+			"deletionRequestedHint": "Do czasu usunięcia konto jest tylko do odczytu: możesz wszystko przeglądać i usuwać, ale nie możesz niczego tworzyć ani zmieniać. Jeśli zmienisz zdanie, wycofaj wniosek.",
+			"deletionPendingTitle": "Oczekiwanie na potwierdzenie e-mailem",
+			"deletionPendingHint": "{date} wysłaliśmy Ci e-mail. Potwierdź usunięcie linkiem z tej wiadomości; jest ważny 24 godziny. Do tego czasu na Twoim koncie nic się nie zmienia.",
+			"deletionResend": "Wyślij e-mail ponownie",
+			"deletionBannerTitle": "Złożono wniosek o usunięcie Twojego konta",
+			"deletionBannerDescription": "Od złożenia wniosku {date} Twoje konto jest tylko do odczytu: możesz wszystko przeglądać i usuwać, ale nie możesz niczego tworzyć ani zmieniać. Twoje kody QR i krótkie URL-e działają do czasu usunięcia konta.",
+			"deletionBannerCta": "Zarządzaj wnioskiem",
+			"deletionRevoke": "Wycofaj wniosek",
+			"deletionRequestedToast": "Wysłaliśmy Ci e-mail z prośbą o potwierdzenie.",
+			"deletionRevokedToast": "Twój wniosek został wycofany.",
+			"deletionError": "Nie udało się. Spróbuj ponownie.",
+			"deletionLoadError": "Nie udało się wczytać stanu wniosku o usunięcie."
 		},
 		"security": {
 			"title": "Bezpieczeństwo",
@@ -1811,21 +1847,7 @@
 			"allSessionsRevoked": "Wszystkie inne sesje zostały unieważnione.",
 			"sessionRevokeError": "Nie udało się unieważnić sesji. Spróbuj ponownie.",
 			"noSessions": "Nie znaleziono aktywnych sesji.",
-			"cancel": "Anuluj",
-			"deleteAccountTitle": "Usuń Konto",
-			"deleteAccountDescription": "Trwale usuń konto i wszystkie powiązane dane.",
-			"deleteWarningTitle": "Tej akcji nie można cofnąć. Spowoduje to:",
-			"deleteWarning1": "Trwałe usunięcie konta i profilu",
-			"deleteWarning2": "Usunięcie wszystkich kodów QR i szablonów",
-			"deleteWarning3": "Anulowanie wszystkich aktywnych subskrypcji",
-			"deleteAccount": "Usuń Konto",
-			"deleteConfirmTitle": "Czy jesteś absolutnie pewien?",
-			"deleteConfirmDescription": "Tej akcji nie można cofnąć. Spowoduje to trwałe usunięcie konta, wszystkich kodów QR, szablonów i wszelkich powiązanych danych.",
-			"deleteConfirmInstruction": "Wpisz \"{text}\", aby potwierdzić",
-			"confirmationType": "Potwierdzenie",
-			"deleteAccountPermanently": "Usuń Konto Trwale",
-			"accountDeleted": "Twoje konto zostało usunięte.",
-			"accountDeleteError": "Nie udało się usunąć konta. Spróbuj ponownie."
+			"cancel": "Anuluj"
 		},
 		"integrations": {
 			"title": "Integracje",
@@ -2608,7 +2630,9 @@
 				"q7": "Czy ceny są brutto, czy netto?",
 				"a7": "Podane ceny są cenami końcowymi: płacisz dokładnie kwotę widoczną na stronie z cennikiem. VAT nie jest doliczany i nie jest wykazywany na fakturze.",
 				"q8": "Czy mogę płacić rocznie i jak długo trwa wtedy subskrypcja?",
-				"a8": "Tak. Przy przejściu na Pro wybierasz płatność miesięczną lub roczną. Przy płatności rocznej płacisz raz za cały rok, a Pro obowiązuje przez dwanaście miesięcy od daty zakupu. Potem subskrypcja odnawia się automatycznie na kolejne dwanaście miesięcy; możesz ją anulować online w dowolnym momencie ze skutkiem na koniec okresu."
+				"a8": "Tak. Przy przejściu na Pro wybierasz płatność miesięczną lub roczną. Przy płatności rocznej płacisz raz za cały rok, a Pro obowiązuje przez dwanaście miesięcy od daty zakupu. Potem subskrypcja odnawia się automatycznie na kolejne dwanaście miesięcy; możesz ją anulować online w dowolnym momencie ze skutkiem na koniec okresu.",
+				"q9": "Jak usunąć moje konto?",
+				"a9": "W sekcji Ustawienia → Profil, na dole strony, możesz złożyć wniosek o usunięcie konta. Następnie wyślemy Ci e-mail, w którym potwierdzisz usunięcie. Usunięcie jest ostateczne i nie można go cofnąć: usuwamy Twoje dane osobowe i wszystkie utworzone przez Ciebie treści, np. kody QR, krótkie URL-e, szablony i statystyki. Potem Twoje dynamiczne kody QR i krótkie URL-e przestaną działać. Do czasu usunięcia konto jest tylko do odczytu: możesz wszystko przeglądać i usuwać, ale nie możesz niczego tworzyć ani zmieniać. Wniosek możesz tam wycofać. Przechowujemy jedynie faktury, tak długo, jak wymaga tego prawo."
 			}
 		}
 	},

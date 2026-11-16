@@ -63,6 +63,8 @@ export {
 	type TProviderType,
 	userSurvey,
 	type TUserSurvey,
+	accountDeletionRequest,
+	type TAccountDeletionRequest,
 	integrationUsage,
 	type TIntegrationUsage,
 	hostedPage,

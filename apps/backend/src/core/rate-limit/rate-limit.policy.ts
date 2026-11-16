@@ -17,6 +17,10 @@ export enum RateLimitPolicy {
 	DOMAIN_RESOLVE = 'domain_resolve',
 	// survey limits
 	SURVEY_SUBMIT = 'survey_submit',
+	// account limits (each request or revocation mails the support inbox)
+	ACCOUNT_DELETION_REQUEST = 'account_deletion_request',
+	// opened from the confirmation mail, possibly without a session
+	ACCOUNT_DELETION_CONFIRM = 'account_deletion_confirm',
 	// scan limits
 	SCAN_LOOKUP = 'scan_lookup',
 	SCAN_RECORD = 'scan_record',
@@ -90,6 +94,16 @@ export const RATE_LIMIT_POLICIES: RateLimitPolicies = {
 		[RateLimitTier.ANONYMOUS]: 0,
 		[RateLimitTier.AUTHENTICATED]: 5,
 		[RateLimitTier.PRO_PLAN]: 5,
+	},
+	[RateLimitPolicy.ACCOUNT_DELETION_REQUEST]: {
+		[RateLimitTier.ANONYMOUS]: 0,
+		[RateLimitTier.AUTHENTICATED]: 5,
+		[RateLimitTier.PRO_PLAN]: 5,
+	},
+	[RateLimitPolicy.ACCOUNT_DELETION_CONFIRM]: {
+		[RateLimitTier.ANONYMOUS]: 10,
+		[RateLimitTier.AUTHENTICATED]: 10,
+		[RateLimitTier.PRO_PLAN]: 10,
 	},
 	[RateLimitPolicy.DOMAIN_VERIFY]: {
 		[RateLimitTier.ANONYMOUS]: 0,

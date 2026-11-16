@@ -17,7 +17,9 @@ export type TemplateName =
 	| 'domain-addon-reduction-scheduled'
 	| 'url-safety-link-blocked'
 	| 'url-safety-account-banned'
-	| 'url-safety-admin-alert';
+	| 'url-safety-admin-alert'
+	| 'account-deletion-admin-alert'
+	| 'account-deletion-confirm';
 
 /**
  * Interface for a mailer service.

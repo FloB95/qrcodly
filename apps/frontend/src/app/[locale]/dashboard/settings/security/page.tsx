@@ -30,9 +30,6 @@ export default async function Page({ params }: DefaultPageParams) {
 
 			{/* Sessions Section */}
 			<SessionsSection />
-
-			{/* TODO: Implement delete account handling before re-enabling this section */}
-			{/* <DeleteAccountSection /> */}
 		</div>
 	);
 }

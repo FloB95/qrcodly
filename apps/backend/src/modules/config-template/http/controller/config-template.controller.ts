@@ -262,6 +262,7 @@ export class ConfigTemplateController extends AbstractController {
 
 	@Post('/bulk-delete', {
 		bodySchema: BulkDeleteDto,
+		config: { allowedDuringAccountDeletion: true },
 		responseSchema: {
 			200: BulkDeleteResponseDto,
 			400: DEFAULT_ERROR_RESPONSES[400],

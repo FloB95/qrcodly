@@ -4,6 +4,7 @@ import {
 	ProfileSection,
 	ConnectedAccountsSection,
 	NewsletterSection,
+	AccountDeletionSection,
 } from '@/components/dashboard/profile';
 import type { DefaultPageParams } from '@/types/page';
 import { getTranslations } from 'next-intl/server';
@@ -37,6 +38,9 @@ export default async function Page({ params }: DefaultPageParams) {
 
 			{/* Newsletter Section */}
 			<NewsletterSection />
+
+			{/* Account Deletion Section */}
+			<AccountDeletionSection />
 		</div>
 	);
 }

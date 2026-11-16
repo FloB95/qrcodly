@@ -155,7 +155,10 @@ export class ShortUrlController extends AbstractController {
 			429: DEFAULT_ERROR_RESPONSES[429],
 		},
 		// hidden from the docs only: API keys keep working as before
-		config: { allowedTokenTypes: [...TokenTypeSchema.options] },
+		config: {
+			allowedTokenTypes: [...TokenTypeSchema.options],
+			allowedDuringAccountDeletion: true,
+		},
 		schema: {
 			hide: true,
 			tags: ['Short URLs'],
@@ -329,6 +332,7 @@ export class ShortUrlController extends AbstractController {
 
 	@Post('/bulk-delete', {
 		bodySchema: BulkDeleteDto,
+		config: { allowedDuringAccountDeletion: true },
 		responseSchema: {
 			200: BulkDeleteResponseDto,
 			400: DEFAULT_ERROR_RESPONSES[400],
