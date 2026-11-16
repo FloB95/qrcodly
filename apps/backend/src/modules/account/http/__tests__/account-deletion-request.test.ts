@@ -15,6 +15,7 @@ import {
 import AccountDeletionRequestRepository from '../../domain/repository/account-deletion-request.repository';
 import { AccountWriteLockService } from '../../service/account-write-lock.service';
 import { hashConfirmationToken } from '../../service/confirmation-token';
+import { RevokeAccountDeletionUseCase } from '../../useCase/revoke-account-deletion.use-case';
 
 const DELETION_REQUEST_PATH = `${API_BASE_PATH}/account/deletion-request`;
 const OWNER_MAIL = 'owner@example.com';
@@ -245,6 +246,21 @@ describe('account deletion request', () => {
 
 			expect(confirmed).toBe(false);
 			expect((await storedRequest(TEST_USER_ID))?.confirmedAt).toBeNull();
+		});
+
+		it('does not mail support the request after a withdrawal that overtook the confirmation', async () => {
+			await call('POST', accessToken);
+			// the withdrawal lands right after the confirming write, before support is told
+			const writeLock = container.resolve(AccountWriteLockService);
+			jest.spyOn(writeLock, 'forget').mockImplementationOnce(async () => {
+				await container.resolve(RevokeAccountDeletionUseCase).execute(TEST_USER_ID);
+			});
+
+			await confirm(mailedToken());
+
+			expect(supportMails().map((mail) => mail.subject)).toEqual([
+				`Account deletion withdrawn: ${OWNER_MAIL}`,
+			]);
 		});
 
 		it('stays confirmed when the mail to support fails', async () => {

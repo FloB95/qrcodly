@@ -59,7 +59,11 @@ export class ConfirmAccountDeletionUseCase implements IBaseUseCase {
 		await this.writeLock.forget(request.userId);
 
 		this.logger.info('account.deletion-request.confirmed', { user: { id: request.userId } });
-		await this.notification.notifyRequested(request.userId, request.requestedAt);
+		// a withdrawal may have landed since the write: support has then already been told about it
+		// and must not get the request as the later, seemingly current mail
+		if (await this.repository.findConfirmedByUserId(request.userId)) {
+			await this.notification.notifyRequested(request.userId, request.requestedAt);
+		}
 
 		return { ...request, confirmedAt };
 	}
