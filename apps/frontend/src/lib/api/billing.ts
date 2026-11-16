@@ -66,8 +66,8 @@ export function useCreateCheckoutSession() {
 			});
 		},
 		onSuccess: (data) => {
-			// Same-tab redirect keeps ad-click attribution and returns the user
-			// to ?checkout=success in the tab where tracking is armed
+			// Same-tab redirect returns the user to ?checkout=success in the tab
+			// where tracking is armed
 			window.location.href = data.url;
 		},
 	});
@@ -112,7 +112,7 @@ export function useCreatePortalSession() {
  *
  * The portal is a dead end — it has no link back into the app — so sending the current tab there
  * strands the user. Checkout is different and stays in the same tab, because it returns via its
- * success URL and that keeps ad-click attribution intact.
+ * success URL.
  */
 export function useOpenBillingPortal() {
 	const createPortalSession = useCreatePortalSession();

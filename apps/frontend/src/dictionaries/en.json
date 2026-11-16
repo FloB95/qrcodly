@@ -2611,9 +2611,15 @@
 				"q4": "Do I need an account to create QR codes?",
 				"a4": "No! You can create and download static QR codes without an account. However, signing up (free) unlocks dynamic QR codes, analytics, URL shortening, and dashboard management.",
 				"q5": "Can I get invoices for my Pro subscription?",
-				"a5": "Yes. After purchasing the Pro plan, all invoices are automatically generated. You can view and download them anytime in your dashboard under Settings → Billing → Invoices & Receipts.",
-				"q6": "How do I delete my account?",
-				"a6": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs, templates and statistics. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request there. Only invoices are kept, for as long as the law requires."
+				"a5": "Yes. You get a PDF invoice for every payment. It's available right after purchase in your account under Settings → Billing → “Invoices & Payment”, where you can also manage your payment details.",
+				"q6": "Do I get one invoice per month or one for the whole year?",
+				"a6": "That depends on your billing cycle. With monthly billing you get one invoice each month for the monthly amount. With annual billing you get a single invoice covering the full twelve months. If you need one invoice for the whole year, choose annual billing.",
+				"q7": "Are the prices gross or net? Is VAT added?",
+				"a7": "The prices shown are final prices: you pay exactly the amount listed on the pricing page. No VAT is added on top, and none is shown on the invoice.",
+				"q8": "Can I pay annually, and how long does the subscription run?",
+				"a8": "Yes. When you upgrade, you choose between monthly and annual billing. With annual billing you pay once for the whole year, and Pro runs for twelve months from the purchase date. It then renews automatically for another twelve months, and you can cancel online at any time, effective at the end of the term.",
+				"q9": "How do I delete my account?",
+				"a9": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs, templates and statistics. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request there. Only invoices are kept, for as long as the law requires."
 			}
 		}
 	},

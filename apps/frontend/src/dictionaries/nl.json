@@ -2611,9 +2611,15 @@
 				"q4": "Heb ik een account nodig om QR-codes te maken?",
 				"a4": "Nee! Je kunt statische QR-codes maken en downloaden zonder account. Registratie (gratis) ontgrendelt echter dynamische QR-codes, analyses, URL-verkorting en dashboardbeheer.",
 				"q5": "Kan ik facturen krijgen voor mijn Pro-abonnement?",
-				"a5": "Ja. Na de aankoop van het Pro-plan worden alle facturen automatisch gegenereerd. Je kunt ze op elk moment bekijken en downloaden in je dashboard onder Instellingen → Facturering → Facturen en bonnen.",
-				"q6": "Hoe verwijder ik mijn account?",
-				"a6": "Onder Instellingen → Profiel kun je onderaan de pagina de verwijdering van je account aanvragen. Het verwijderen is definitief en kan niet ongedaan worden gemaakt: we wissen je persoonsgegevens en alles wat je hebt aangemaakt, zoals QR-codes, korte URL's, sjablonen en statistieken. Daarna werken je dynamische QR-codes en korte URL's niet meer. Tot we je account verwijderen, is het alleen-lezen: je kunt alles bekijken en verwijderen, maar niets nieuws aanmaken of wijzigen. De aanvraag kun je daar intrekken. Alleen facturen bewaren we, zo lang als de wet voorschrijft."
+				"a5": "Ja. Je krijgt voor elke betaling een factuur als pdf. Je vindt ze direct na aankoop in je account onder Instellingen → Facturering → ‘Facturen & betaling’. Daar beheer je ook je betaalgegevens.",
+				"q6": "Krijg ik één factuur per maand of één voor het hele jaar?",
+				"a6": "Dat hangt af van je betaalwijze. Bij maandelijkse betaling krijg je elke maand een factuur voor het maandbedrag. Bij jaarlijkse betaling krijg je één factuur voor de volledige twaalf maanden. Heb je één factuur voor het hele jaar nodig, kies dan voor jaarlijkse betaling.",
+				"q7": "Zijn de prijzen inclusief of exclusief btw?",
+				"a7": "De vermelde prijzen zijn eindprijzen: je betaalt precies het bedrag dat op de prijspagina staat. Er komt geen btw bovenop en er staat ook geen btw op de factuur.",
+				"q8": "Kan ik per jaar betalen, en hoe lang loopt het abonnement dan?",
+				"a8": "Ja. Bij het upgraden kies je tussen maandelijkse en jaarlijkse betaling. Bij jaarlijkse betaling betaal je één keer voor het hele jaar en geldt Pro twaalf maanden vanaf de aankoopdatum. Daarna wordt het abonnement automatisch met twaalf maanden verlengd; je kunt op elk moment online opzeggen tegen het einde van de looptijd.",
+				"q9": "Hoe verwijder ik mijn account?",
+				"a9": "Onder Instellingen → Profiel kun je onderaan de pagina de verwijdering van je account aanvragen. Het verwijderen is definitief en kan niet ongedaan worden gemaakt: we wissen je persoonsgegevens en alles wat je hebt aangemaakt, zoals QR-codes, korte URL's, sjablonen en statistieken. Daarna werken je dynamische QR-codes en korte URL's niet meer. Tot we je account verwijderen, is het alleen-lezen: je kunt alles bekijken en verwijderen, maar niets nieuws aanmaken of wijzigen. De aanvraag kun je daar intrekken. Alleen facturen bewaren we, zo lang als de wet voorschrijft."
 			}
 		}
 	},

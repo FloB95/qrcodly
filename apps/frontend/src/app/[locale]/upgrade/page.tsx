@@ -55,15 +55,6 @@ function UpgradeRedirect() {
 		if (startedRef.current) return;
 		startedRef.current = true;
 
-		// Pro-intent signups skip /signup-success, so fire the signup conversion here
-		if (isNewSignup && typeof window.gtag === 'function') {
-			window.gtag('event', 'conversion', {
-				send_to: 'AW-10838865201/nuV5CNm-pY0cELHqr7Ao',
-				value: 1.0,
-				currency: 'EUR',
-			});
-		}
-
 		posthog.capture('subscription:checkout_started', {
 			source: isNewSignup ? 'signup_pro_intent' : 'signin_pro_intent',
 			period,

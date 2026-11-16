@@ -62,7 +62,9 @@ if (metricsEnabled || tracesEnabled || prometheusEnabled) {
 
 	const metricReaders = [
 		axiomMetricReader,
-		prometheusEnabled ? new PrometheusExporter({ port: prometheusPort }) : undefined,
+		prometheusEnabled
+			? new PrometheusExporter({ host: '0.0.0.0', port: prometheusPort })
+			: undefined,
 	].filter((reader) => reader !== undefined);
 
 	sdk = new NodeSDK({

@@ -3,7 +3,6 @@ import { type FastifyInstance } from 'fastify';
 import { container } from 'tsyringe';
 import { ShutdownService } from '@/core/services/shutdown.service';
 import { clerkClient } from '@clerk/fastify';
-import { CLERK_JWT_TEMPLATE } from '@/core/config/constants';
 import { poolConnection } from '@/core/db';
 import { KeyCache } from '@/core/cache';
 import { ObjectStorage } from '@/core/storage';
@@ -126,7 +125,7 @@ class TestContextManager {
 		if (sessionId) {
 			try {
 				const tokenResponse = await withClerkRetry(() =>
-					clerkClient.sessions.getToken(sessionId!, CLERK_JWT_TEMPLATE),
+					clerkClient.sessions.getToken(sessionId!, undefined, TEST_TOKEN_TTL_SECONDS),
 				);
 				jwt = tokenResponse?.jwt;
 			} catch (error) {
@@ -149,7 +148,7 @@ class TestContextManager {
 			);
 			sessionId = session.id;
 			const tokenResponse = await withClerkRetry(() =>
-				clerkClient.sessions.getToken(session.id, CLERK_JWT_TEMPLATE),
+				clerkClient.sessions.getToken(session.id, undefined, TEST_TOKEN_TTL_SECONDS),
 			);
 			jwt = tokenResponse?.jwt;
 		}
@@ -229,7 +228,8 @@ export const resetTestState = async () => {
 
 // --- Clerk API helpers (rate-limit protection) ---
 
-const TOKEN_CACHE_FILE = join(tmpdir(), 'qrcodly-clerk-test-cache.json');
+const TEST_TOKEN_TTL_SECONDS = 3600;
+const TOKEN_CACHE_FILE = join(tmpdir(), 'qrcodly-clerk-session-cache.json');
 
 type CachedToken = { sessionId: string; jwt: string; jwtExpMs: number };
 

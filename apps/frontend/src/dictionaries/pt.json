@@ -2611,9 +2611,15 @@
 				"q4": "Preciso de uma conta para criar códigos QR?",
 				"a4": "Não! Você pode criar e baixar códigos QR estáticos sem uma conta. No entanto, criar uma conta (grátis) desbloqueia códigos QR dinâmicos, análises, encurtamento de URL e gerenciamento do painel.",
 				"q5": "Posso obter faturas da minha assinatura Pro?",
-				"a5": "Sim. Após a compra do plano Pro, todas as faturas são geradas automaticamente. Você pode visualizá-las e baixá-las a qualquer momento no seu painel em Configurações → Faturamento → Faturas e recibos.",
-				"q6": "Como excluo minha conta?",
-				"a6": "Em Configurações → Perfil, no fim da página, você pode solicitar a exclusão da sua conta. A exclusão é definitiva e não pode ser desfeita: apagamos seus dados pessoais e tudo o que você criou, como QR codes, URLs curtas, modelos e estatísticas. Depois disso, seus QR codes dinâmicos e URLs curtas deixam de funcionar. Até excluirmos sua conta, ela fica somente leitura: você pode ver e excluir tudo, mas não criar nem alterar nada. Você pode retirar a solicitação lá. Apenas as faturas são guardadas, pelo tempo exigido por lei."
+				"a5": "Sim. Você recebe uma fatura em PDF para cada pagamento. Ela fica disponível logo após a compra na sua conta, em Configurações → Faturamento → “Faturas e Pagamento”, onde você também gerencia seus dados de pagamento.",
+				"q6": "Recebo uma fatura por mês ou uma para o ano inteiro?",
+				"a6": "Depende da forma de pagamento. No pagamento mensal, você recebe uma fatura a cada mês no valor mensal. No pagamento anual, você recebe uma única fatura referente aos doze meses completos. Se você precisa de uma só fatura para o ano inteiro, escolha o pagamento anual.",
+				"q7": "Os preços são brutos ou líquidos? Há IVA adicional?",
+				"a7": "Os preços indicados são preços finais: você paga exatamente o valor exibido na página de preços. Nenhum IVA é acrescentado nem aparece na fatura.",
+				"q8": "Posso pagar anualmente e por quanto tempo vale a assinatura?",
+				"a8": "Sim. Ao fazer o upgrade, você escolhe entre pagamento mensal e anual. No pagamento anual, você paga uma única vez pelo ano inteiro e o Pro vale por doze meses a partir da data da compra. Depois, a assinatura é renovada automaticamente por mais doze meses, e você pode cancelar online a qualquer momento, com efeito no fim do período.",
+				"q9": "Como excluo minha conta?",
+				"a9": "Em Configurações → Perfil, no fim da página, você pode solicitar a exclusão da sua conta. A exclusão é definitiva e não pode ser desfeita: apagamos seus dados pessoais e tudo o que você criou, como QR codes, URLs curtas, modelos e estatísticas. Depois disso, seus QR codes dinâmicos e URLs curtas deixam de funcionar. Até excluirmos sua conta, ela fica somente leitura: você pode ver e excluir tudo, mas não criar nem alterar nada. Você pode retirar a solicitação lá. Apenas as faturas são guardadas, pelo tempo exigido por lei."
 			}
 		}
 	},

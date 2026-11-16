@@ -15,7 +15,12 @@ import { FEATURE_INFO_LINKS, PLAN_CONFIGS, getProPricing } from '@/lib/plan.conf
 import { Skeleton } from '@/components/ui/skeleton';
 import posthog from 'posthog-js';
 import { useHasProPlan } from '@/hooks/useHasProPlan';
-import { useCreateCheckoutSession, useOpenBillingPortal } from '@/lib/api/billing';
+import { useQueryClient } from '@tanstack/react-query';
+import {
+	billingQueryKeys,
+	useCreateCheckoutSession,
+	useOpenBillingPortal,
+} from '@/lib/api/billing';
 
 export function CurrentPlanSection() {
 	const t = useTranslations('settings.billing');
@@ -27,11 +32,28 @@ export function CurrentPlanSection() {
 	const billingPortal = useOpenBillingPortal();
 	const [selectedPeriod, setSelectedPeriod] = useState<'annual' | 'month'>('annual');
 	const conversionTracked = useRef(false);
+	const queryClient = useQueryClient();
+	const isCheckoutReturn = searchParams.get('checkout') === 'success';
 
-	// Conversion tracking (Google Ads + PostHog) after successful checkout
+	// The Stripe webhook can land after the redirect back, so poll until Pro shows up
+	useEffect(() => {
+		if (!isCheckoutReturn || hasProPlan) return;
+
+		const interval = setInterval(() => {
+			void queryClient.invalidateQueries({ queryKey: billingQueryKeys.subscription });
+		}, 2000);
+		const timeout = setTimeout(() => clearInterval(interval), 30_000);
+
+		return () => {
+			clearInterval(interval);
+			clearTimeout(timeout);
+		};
+	}, [isCheckoutReturn, hasProPlan, queryClient]);
+
+	// Conversion tracking (PostHog) after successful checkout
 	useEffect(() => {
 		if (conversionTracked.current) return;
-		if (searchParams.get('checkout') !== 'success') return;
+		if (!isCheckoutReturn || !hasProPlan) return;
 		if (!subscription?.stripePriceId) return;
 
 		const isAnnual = subscription.stripePriceId === env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID_ANNUAL;
@@ -41,16 +63,8 @@ export function CurrentPlanSection() {
 			period: isAnnual ? 'annual' : 'month',
 			value,
 		});
-
-		if (typeof window.gtag === 'function') {
-			window.gtag('event', 'conversion', {
-				send_to: 'AW-10838865201/Stq3CL_pnY0cELHqr7Ao',
-				value,
-				currency: 'EUR',
-			});
-		}
 		conversionTracked.current = true;
-	}, [searchParams, subscription?.stripePriceId]);
+	}, [isCheckoutReturn, hasProPlan, subscription?.stripePriceId]);
 
 	if (isLoading) {
 		return (

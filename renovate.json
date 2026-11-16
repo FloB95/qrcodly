@@ -1,39 +1,41 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"description": "Renovate schlägt neue Versionen als Pull Request vor. Übersicht aller offenen Updates: Issue 'Dependency Dashboard'. Nichts wird automatisch übernommen – ein Merge auf main geht sofort live.",
+	"description": "Renovate proposes new versions as pull requests. All open updates: issue 'Dependency Dashboard'. Runs daily as a GitHub Action (.github/workflows/renovate.yml), no schedule window. Nothing is merged automatically – a merge to main goes live immediately. After every update 'pnpm dedupe' removes duplicate package copies from the lockfile (otherwise e.g. the drizzle-orm types stop matching).",
 	"extends": ["config:recommended"],
 	"timezone": "Europe/Berlin",
-	"schedule": ["before 7am on monday"],
+	"prHourlyLimit": 0,
 	"minimumReleaseAge": "3 days",
 	"labels": ["updates"],
+	"assignees": ["FloB95"],
+	"postUpdateOptions": ["pnpmDedupe"],
 	"osvVulnerabilityAlerts": true,
 	"vulnerabilityAlerts": {
-		"description": "Updates, die eine bekannte Sicherheitslücke schließen: sofort, ohne Zeitplan und ohne Wartezeit",
+		"description": "Updates that fix a known vulnerability: right away, without schedule or waiting period",
 		"labels": ["updates", "security"]
 	},
 	"lockFileMaintenance": {
-		"description": "Einmal im Monat das Lockfile auffrischen – holt reparierte Unterpakete nach, die sonst auf alten Versionen hängen bleiben",
+		"description": "Refresh the lockfile once a month – picks up fixed sub-dependencies that would otherwise stay on old versions. The whole first week of the month, so a failed run does not miss the date",
 		"enabled": true,
-		"schedule": ["before 7am on the first day of the month"]
+		"schedule": ["* * 1-7 * *"]
 	},
 	"packageRules": [
 		{
-			"description": "Kleine Korrekturen gesammelt in einem Pull Request",
+			"description": "Small fixes grouped in one pull request",
 			"matchUpdateTypes": ["patch", "digest", "pinDigest"],
 			"groupName": "Patch-Updates"
 		},
 		{
-			"description": "Neue Funktionen gesammelt in einem Pull Request",
+			"description": "New features grouped in one pull request",
 			"matchUpdateTypes": ["minor"],
 			"groupName": "Minor-Updates"
 		},
 		{
-			"description": "Große Versionssprünge (Major) nur als Kästchen im Dependency Dashboard – ein Pull Request entsteht erst, wenn du es dort anhakst",
+			"description": "Major version jumps only as a checkbox in the Dependency Dashboard – the pull request is created once you tick it there",
 			"matchUpdateTypes": ["major"],
 			"dependencyDashboardApproval": true
 		},
 		{
-			"description": "Node.js-Image (Dockerfiles) einzeln statt in der Sammel-PR, damit Sicherheits-Releases auffallen; nur Versionen mit Langzeit-Pflege (gerade Hauptversionen)",
+			"description": "Node.js image (Dockerfiles) on its own instead of in the grouped PR, so security releases stand out; only long-term support versions (even major versions)",
 			"matchDatasources": ["docker"],
 			"matchPackageNames": ["node"],
 			"groupName": "Node.js",
