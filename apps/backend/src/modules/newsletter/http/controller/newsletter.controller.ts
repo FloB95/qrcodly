@@ -43,6 +43,8 @@ export class NewsletterController extends AbstractController {
 		responseSchema: {
 			200: NewsletterSubscriptionResponseDto,
 		},
+		// Unsubscribing must always work, also while the account waits for its deletion.
+		config: { allowedDuringAccountDeletion: true },
 		schema: {
 			hide: true,
 		},

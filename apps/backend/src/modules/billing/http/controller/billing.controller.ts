@@ -73,7 +73,12 @@ export class BillingController extends AbstractController {
 		}
 	}
 
-	@Post('/portal-session', { bodySchema: CreatePortalSessionDto, schema: { hide: true } })
+	// Stays open during a pending account deletion: invoices, payment details and cancelling live there.
+	@Post('/portal-session', {
+		bodySchema: CreatePortalSessionDto,
+		config: { allowedDuringAccountDeletion: true },
+		schema: { hide: true },
+	})
 	async createPortalSession(
 		request: IHttpRequest<{ locale?: string }>,
 	): Promise<IHttpResponse<{ url: string }>> {

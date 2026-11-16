@@ -42,6 +42,7 @@ export class UserSurveyController extends AbstractController {
 		},
 		config: {
 			rateLimitPolicy: RateLimitPolicy.SURVEY_SUBMIT,
+			allowedDuringAccountDeletion: true,
 		},
 		schema: {
 			hide: true,

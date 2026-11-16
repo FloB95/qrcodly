@@ -45,7 +45,11 @@ export class AccountDeletionRequestController extends AbstractController {
 
 	@Post('', {
 		...ROUTE_OPTIONS,
-		config: { ...SESSION_ONLY, rateLimitPolicy: RateLimitPolicy.ACCOUNT_DELETION_REQUEST },
+		config: {
+			...SESSION_ONLY,
+			rateLimitPolicy: RateLimitPolicy.ACCOUNT_DELETION_REQUEST,
+			allowedDuringAccountDeletion: true,
+		},
 	})
 	async request(request: IHttpRequest): Promise<IHttpResponse<TAccountDeletionRequestResponseDto>> {
 		const requestedAt = await this.requestUseCase.execute(request.user.id);

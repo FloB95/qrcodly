@@ -2,6 +2,9 @@
 
 exports[`scope-coverage-matrix snapshot of route → method → scope mapping (catches accidental drift) 1`] = `
 [
+  "AccountDeletionRequestController DELETE  → delete [session_token]",
+  "AccountDeletionRequestController GET  → read [session_token]",
+  "AccountDeletionRequestController POST  → write [session_token]",
   "AnalyticsIntegrationController DELETE /:id → delete [session_token]",
   "AnalyticsIntegrationController GET  → read [session_token]",
   "AnalyticsIntegrationController PATCH /:id → update [session_token]",
@@ -44,6 +47,8 @@ exports[`scope-coverage-matrix snapshot of route → method → scope mapping (c
   "HostedPageController GET /by-code/:shortCode/files/:documentId → read [session_token]",
   "HostedPageController POST /upload → write [session_token|api_key|m2m_token|oauth_token]",
   "HostedPageUsageController GET /usage → read [session_token|api_key|m2m_token|oauth_token]",
+  "NewsletterController GET /subscription → read [session_token]",
+  "NewsletterController PUT /subscription → update [session_token]",
   "QrCodeController DELETE /:id → delete",
   "QrCodeController GET  → read",
   "QrCodeController GET /:id → read",

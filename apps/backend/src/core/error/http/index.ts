@@ -6,6 +6,7 @@ import { NotFoundError } from './not-found.error';
 import { UnauthorizedError } from './unauthorized.error';
 import { ForbiddenError } from './forbidden.error';
 import { AccountBannedError } from './account-banned.error';
+import { AccountDeletionPendingError } from './account-deletion-pending.error';
 import { InsufficientScopeError } from './insufficient-scope.error';
 import { ServiceUnavailableError } from './service-unavailable.error';
 import { TokenTypeNotAllowedError } from './token-type-not-allowed.error';
@@ -19,6 +20,7 @@ export {
 	UnauthorizedError,
 	ForbiddenError,
 	AccountBannedError,
+	AccountDeletionPendingError,
 	InsufficientScopeError,
 	ServiceUnavailableError,
 	TokenTypeNotAllowedError,
