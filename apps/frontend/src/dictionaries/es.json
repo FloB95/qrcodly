@@ -346,6 +346,16 @@
 			"loading": "Cargando..."
 		}
 	},
+	"accountDeletionConfirm": {
+		"title": "Confirma la eliminación de tu cuenta",
+		"description": "Al confirmar, solicitas la eliminación definitiva de tu cuenta de QRcodly. Hasta que la eliminemos será de solo lectura y podrás retirar la solicitud en tu perfil.",
+		"confirmButton": "Confirmar eliminación ahora",
+		"confirmedTitle": "La eliminación de tu cuenta está solicitada",
+		"confirmedDescription": "Tu cuenta es ahora de solo lectura: puedes ver y eliminar todo, pero no crear ni modificar nada. La eliminaremos definitivamente con todos sus datos. Hasta entonces puedes retirar la solicitud en Configuración → Perfil.",
+		"profileButton": "Ir al perfil",
+		"invalidTitle": "Este enlace no es válido o ha caducado",
+		"invalidDescription": "El enlace es válido durante 24 horas y solo mientras la solicitud esté abierta. Puedes volver a solicitar la eliminación en Configuración → Perfil."
+	},
 	"accountBanned": {
 		"title": "Cuenta suspendida",
 		"description": "Tu cuenta ha sido suspendida por incumplir nuestras condiciones de servicio.",
@@ -1390,7 +1400,7 @@
 		"question11": "¿Dónde se alojan mis datos?",
 		"answer11": "La infraestructura principal de QRcodly funciona en servidores en Alemania. Usamos Clerk para el inicio de sesión, Stripe para los pagos, Amazon SES para enviar las novedades de producto y Sentry y PostHog para detectar errores y mejorar el producto. Tus datos no se venden ni se usan para publicidad de terceros. Si tienes una cuenta, de vez en cuando te enviamos novedades de QRcodly por correo. Puedes desactivarlas en cualquier momento en la configuración o con el enlace que incluye cada correo.",
 		"question12": "¿Cómo elimino mi cuenta?",
-		"answer12": "En Configuración → Perfil, al final de la página, puedes solicitar la eliminación de tu cuenta. La eliminación es definitiva y no se puede deshacer: borramos tus datos personales y todo lo que hayas creado, como códigos QR, URLs cortas, plantillas y estadísticas. Después, tus códigos QR dinámicos y URLs cortas dejarán de funcionar. Hasta que eliminemos tu cuenta, es de solo lectura: puedes ver y eliminar todo, pero no crear ni modificar nada. Puedes retirar la solicitud allí. Solo conservamos las facturas durante el tiempo que exige la ley.",
+		"answer12": "En Configuración → Perfil, al final de la página, puedes solicitar la eliminación de tu cuenta. Después te enviamos un correo en el que confirmas la eliminación. La eliminación es definitiva y no se puede deshacer: borramos tus datos personales y todo lo que hayas creado, como códigos QR, URLs cortas, plantillas y estadísticas. Después, tus códigos QR dinámicos y URLs cortas dejarán de funcionar. Hasta que eliminemos tu cuenta, es de solo lectura: puedes ver y eliminar todo, pero no crear ni modificar nada. Puedes retirar la solicitud allí. Solo conservamos las facturas durante el tiempo que exige la ley.",
 		"viewAll": "Ver todas las preguntas frecuentes"
 	},
 	"notFound": {
@@ -1784,15 +1794,18 @@
 			"deletionWarning4": "Solo conservamos las facturas durante el tiempo que exige la ley.",
 			"deletionRequestButton": "Solicitar eliminación",
 			"deletionConfirmTitle": "¿Solicitar la eliminación de tu cuenta?",
-			"deletionConfirmDescription": "Después eliminaremos tu cuenta con todos sus datos de forma definitiva. Hasta entonces es de solo lectura: puedes ver y eliminar todo, pero no crear ni modificar nada. Puedes retirar la solicitud aquí.",
+			"deletionConfirmDescription": "Te enviaremos un correo con un enlace de confirmación. La eliminación solo queda solicitada cuando la confirmes allí. Después tu cuenta será de solo lectura hasta que la eliminemos definitivamente con todos sus datos.",
 			"deletionConfirmButton": "Sí, solicitar eliminación",
 			"deletionRequestedAt": "Eliminación solicitada el {date}",
 			"deletionRequestedHint": "Hasta que eliminemos tu cuenta, es de solo lectura: puedes ver y eliminar todo, pero no crear ni modificar nada. ¿Has cambiado de opinión? Retira la solicitud.",
+			"deletionPendingTitle": "Pendiente de tu confirmación por correo",
+			"deletionPendingHint": "Te enviamos un correo el {date}. Confirma la eliminación con el enlace que contiene; es válido durante 24 horas. Hasta entonces no cambia nada en tu cuenta.",
+			"deletionResend": "Reenviar correo",
 			"deletionBannerTitle": "Has solicitado la eliminación de tu cuenta",
 			"deletionBannerDescription": "Desde tu solicitud del {date}, tu cuenta es de solo lectura: puedes ver y eliminar todo, pero no crear ni modificar nada. Tus códigos QR y URLs cortas siguen funcionando hasta que eliminemos la cuenta.",
 			"deletionBannerCta": "Gestionar solicitud",
 			"deletionRevoke": "Retirar solicitud",
-			"deletionRequestedToast": "Tu solicitud se ha enviado.",
+			"deletionRequestedToast": "Te hemos enviado un correo para confirmar.",
 			"deletionRevokedToast": "Tu solicitud se ha retirado.",
 			"deletionError": "No ha funcionado. Inténtalo de nuevo.",
 			"deletionLoadError": "No se pudo cargar el estado de tu solicitud de eliminación."
@@ -2619,7 +2632,7 @@
 				"q8": "¿Puedo pagar anualmente y cuánto dura la suscripción?",
 				"a8": "Sí. Al pasar a Pro, elige entre pago mensual y anual. Con el pago anual paga una sola vez por todo el año y Pro es válido durante doce meses desde la fecha de compra. Después se renueva automáticamente por otros doce meses, y puede cancelar en línea en cualquier momento con efecto al final del período.",
 				"q9": "¿Cómo elimino mi cuenta?",
-				"a9": "En Configuración → Perfil, al final de la página, puedes solicitar la eliminación de tu cuenta. La eliminación es definitiva y no se puede deshacer: borramos tus datos personales y todo lo que hayas creado, como códigos QR, URLs cortas, plantillas y estadísticas. Después, tus códigos QR dinámicos y URLs cortas dejarán de funcionar. Hasta que eliminemos tu cuenta, es de solo lectura: puedes ver y eliminar todo, pero no crear ni modificar nada. Puedes retirar la solicitud allí. Solo conservamos las facturas durante el tiempo que exige la ley."
+				"a9": "En Configuración → Perfil, al final de la página, puedes solicitar la eliminación de tu cuenta. Después te enviamos un correo en el que confirmas la eliminación. La eliminación es definitiva y no se puede deshacer: borramos tus datos personales y todo lo que hayas creado, como códigos QR, URLs cortas, plantillas y estadísticas. Después, tus códigos QR dinámicos y URLs cortas dejarán de funcionar. Hasta que eliminemos tu cuenta, es de solo lectura: puedes ver y eliminar todo, pero no crear ni modificar nada. Puedes retirar la solicitud allí. Solo conservamos las facturas durante el tiempo que exige la ley."
 			}
 		}
 	},

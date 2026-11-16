@@ -72,9 +72,11 @@ export function AccountDeletionSection() {
 		}
 	};
 
-	const requestedAt = data?.requestedAt
-		? new Date(data.requestedAt).toLocaleDateString(locale, { dateStyle: 'long' })
-		: null;
+	const formatDate = (date?: string | null) =>
+		date ? new Date(date).toLocaleDateString(locale, { dateStyle: 'long' }) : null;
+	const confirmedAt = formatDate(data?.confirmedAt);
+	// requested, but the link in the mail has not been opened yet
+	const pendingSince = confirmedAt ? null : formatDate(data?.requestedAt);
 
 	return (
 		<Card className="border-destructive/50">
@@ -94,11 +96,11 @@ export function AccountDeletionSection() {
 					<Skeleton className="h-24 w-full" />
 				) : isError ? (
 					<p className="text-sm text-muted-foreground">{t('deletionLoadError')}</p>
-				) : requestedAt ? (
+				) : confirmedAt ? (
 					<div className="flex flex-col gap-4 p-4 rounded-lg border bg-card sm:flex-row sm:items-center sm:justify-between">
 						<div className="min-w-0 space-y-1">
 							<p className="text-sm font-medium">
-								{t('deletionRequestedAt', { date: requestedAt })}
+								{t('deletionRequestedAt', { date: confirmedAt })}
 							</p>
 							<p className="text-sm text-muted-foreground">{t('deletionRequestedHint')}</p>
 						</div>
@@ -110,6 +112,27 @@ export function AccountDeletionSection() {
 						>
 							{t('deletionRevoke')}
 						</Button>
+					</div>
+				) : pendingSince ? (
+					<div className="flex flex-col gap-4 p-4 rounded-lg border bg-card sm:flex-row sm:items-center sm:justify-between">
+						<div className="min-w-0 space-y-1">
+							<p className="text-sm font-medium">{t('deletionPendingTitle')}</p>
+							<p className="text-sm text-muted-foreground">
+								{t('deletionPendingHint', { date: pendingSince })}
+							</p>
+						</div>
+						<div className="flex shrink-0 flex-col gap-2">
+							<Button
+								variant="outline"
+								onClick={handleRequest}
+								isLoading={requestMutation.isPending}
+							>
+								{t('deletionResend')}
+							</Button>
+							<Button variant="ghost" onClick={handleRevoke} isLoading={revokeMutation.isPending}>
+								{t('deletionRevoke')}
+							</Button>
+						</div>
 					</div>
 				) : (
 					<>

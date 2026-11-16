@@ -32,6 +32,8 @@ export function useAccountDeletionRequestQuery() {
 	return useQuery({
 		queryKey: accountQueryKeys.deletionRequest,
 		queryFn: () => call('GET'),
+		// the request is confirmed from a mail, usually in another tab: re-check when coming back
+		staleTime: 0,
 	});
 }
 
@@ -44,6 +46,21 @@ function useAccountDeletionRequestMutation(method: 'POST' | 'DELETE') {
 		onSuccess: (data) => {
 			queryClient.setQueryData(accountQueryKeys.deletionRequest, data);
 		},
+	});
+}
+
+/** Confirms a request with the secret from the mailed link. Needs no session. */
+export function useConfirmAccountDeletionMutation() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: (token: string) =>
+			apiRequest<TAccountDeletionRequestResponseDto>(`${DELETION_REQUEST_PATH}/confirm`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ token }),
+			}),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: accountQueryKeys.deletionRequest }),
 	});
 }
 

@@ -154,6 +154,8 @@ describe('scope-coverage-matrix', () => {
 		expect(stayOpen).toEqual([
 			// requesting again changes nothing
 			'AccountDeletionRequestController POST ',
+			// opened from the confirmation mail; must also work when it is opened twice
+			'AccountDeletionRequestController POST /confirm',
 			// invoices, payment details and cancelling live in the portal
 			'BillingController POST /portal-session',
 			// deleting stays possible

@@ -5,7 +5,8 @@ import AccountDeletionRequestRepository from '../domain/repository/account-delet
 import { AccountDeletionNotificationService } from '../service/account-deletion-notification.service';
 
 /**
- * Withdraws the user's open deletion request and tells support not to delete the account.
+ * Withdraws the user's open deletion request, confirmed or not, and makes its confirmation link
+ * useless. Support only hears about it if they were told about the request, i.e. it was confirmed.
  * Without an open request there is nothing to withdraw, so nothing happens and no mail is sent.
  */
 @injectable()
@@ -23,9 +24,15 @@ export class RevokeAccountDeletionUseCase implements IBaseUseCase {
 		if (!open) return;
 
 		const revokedAt = new Date();
-		await this.repository.update(open, { revokedAt });
+		await this.repository.update(open, {
+			revokedAt,
+			confirmationTokenHash: null,
+			confirmationExpiresAt: null,
+		});
 
 		this.logger.info('account.deletion-request.revoked', { user: { id: userId } });
-		await this.notification.notifyRevoked(userId, open.requestedAt, revokedAt);
+		if (open.confirmedAt) {
+			await this.notification.notifyRevoked(userId, open.requestedAt, revokedAt);
+		}
 	}
 }

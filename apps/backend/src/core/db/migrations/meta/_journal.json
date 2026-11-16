@@ -295,6 +295,13 @@
 			"when": 1794649845720,
 			"tag": "0041_short_veda",
 			"breakpoints": true
+		},
+		{
+			"idx": 42,
+			"version": "5",
+			"when": 1794846980746,
+			"tag": "0042_sweet_moira_mactaggert",
+			"breakpoints": true
 		}
 	]
 }

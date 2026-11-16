@@ -15,9 +15,10 @@ export function AccountDeletionBanner() {
 	const locale = useLocale();
 	const { data } = useAccountDeletionRequestQuery();
 
-	if (!data?.requestedAt) return null;
+	// only a request confirmed by mail locks the account
+	if (!data?.confirmedAt) return null;
 
-	const date = new Date(data.requestedAt).toLocaleDateString(locale, { dateStyle: 'long' });
+	const date = new Date(data.confirmedAt).toLocaleDateString(locale, { dateStyle: 'long' });
 
 	return (
 		<div

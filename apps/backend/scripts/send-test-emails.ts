@@ -268,6 +268,18 @@ const templates: TemplateConfig[] = [
 		},
 	},
 	{
+		file: 'account-deletion-confirm.handlebars',
+		subject: '[Test] Confirm the deletion of your QRcodly account',
+		vars: {
+			firstName: 'Flo',
+			email: 'flo@example.com',
+			confirmUrl: `${frontendUrl}/account-deletion/confirm#token=test-token`,
+			validHours: 24,
+			profileUrl: `${frontendUrl}/dashboard/settings/profile`,
+			year,
+		},
+	},
+	{
 		file: 'account-deletion-admin-alert.handlebars',
 		subject: '[Test] Account deletion requested',
 		vars: {

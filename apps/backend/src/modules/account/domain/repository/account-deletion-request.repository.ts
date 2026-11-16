@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { and, desc, eq, isNull } from 'drizzle-orm';
+import { and, desc, eq, isNotNull, isNull } from 'drizzle-orm';
 import AbstractRepository from '@/core/domain/repository/abstract.repository';
 import { type ISqlQueryFindBy } from '@/core/interface/repository.interface';
 import accountDeletionRequest, {
@@ -43,10 +43,30 @@ class AccountDeletionRequestRepository extends AbstractRepository<TAccountDeleti
 		});
 	}
 
-	/** The request that is still open, i.e. made and not revoked */
+	/** The request that is still open, i.e. made and not revoked, whether confirmed yet or not */
 	async findActiveByUserId(userId: string): Promise<TAccountDeletionRequest | undefined> {
 		return await this.db.query.accountDeletionRequest.findFirst({
 			where: and(eq(this.table.userId, userId), isNull(this.table.revokedAt)),
+		});
+	}
+
+	/** The open request the user confirmed by mail: only this one counts as a deletion request */
+	async findConfirmedByUserId(userId: string): Promise<TAccountDeletionRequest | undefined> {
+		return await this.db.query.accountDeletionRequest.findFirst({
+			where: and(
+				eq(this.table.userId, userId),
+				isNull(this.table.revokedAt),
+				isNotNull(this.table.confirmedAt),
+			),
+		});
+	}
+
+	/** The open request a confirmation link belongs to */
+	async findOpenByConfirmationTokenHash(
+		hash: string,
+	): Promise<TAccountDeletionRequest | undefined> {
+		return await this.db.query.accountDeletionRequest.findFirst({
+			where: and(eq(this.table.confirmationTokenHash, hash), isNull(this.table.revokedAt)),
 		});
 	}
 

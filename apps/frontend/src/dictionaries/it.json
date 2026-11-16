@@ -346,6 +346,16 @@
 			"loading": "Caricamento..."
 		}
 	},
+	"accountDeletionConfirm": {
+		"title": "Conferma la cancellazione del tuo account",
+		"description": "Confermando richiedi la cancellazione definitiva del tuo account QRcodly. Finché non lo cancelliamo è in sola lettura e puoi ritirare la richiesta nel tuo profilo.",
+		"confirmButton": "Conferma ora la cancellazione",
+		"confirmedTitle": "La cancellazione del tuo account è stata richiesta",
+		"confirmedDescription": "Il tuo account è ora in sola lettura: puoi vedere ed eliminare tutto, ma non creare o modificare nulla. Lo cancelleremo definitivamente con tutti i dati. Fino ad allora puoi ritirare la richiesta in Impostazioni → Profilo.",
+		"profileButton": "Vai al profilo",
+		"invalidTitle": "Questo link non è valido o è scaduto",
+		"invalidDescription": "Il link è valido per 24 ore e solo finché la richiesta è aperta. Puoi richiedere di nuovo la cancellazione in Impostazioni → Profilo."
+	},
 	"accountBanned": {
 		"title": "Account sospeso",
 		"description": "Il tuo account è stato sospeso per violazione dei nostri termini di servizio.",
@@ -1390,7 +1400,7 @@
 		"question11": "Dove vengono ospitati i miei dati?",
 		"answer11": "L'infrastruttura principale di QRcodly gira su server in Germania. Usiamo Clerk per l'accesso, Stripe per i pagamenti, Amazon SES per l'invio delle novità sul prodotto e Sentry e PostHog per trovare errori e migliorare il prodotto. I tuoi dati non vengono venduti né usati per la pubblicità di terzi. Se hai un account, ogni tanto ricevi da QRcodly novità sul prodotto via email. Puoi disattivarle in qualsiasi momento nelle impostazioni o tramite il link presente in ogni email.",
 		"question12": "Come elimino il mio account?",
-		"answer12": "In Impostazioni → Profilo, in fondo alla pagina, puoi richiedere la cancellazione del tuo account. La cancellazione è definitiva e non può essere annullata: eliminiamo i tuoi dati personali e tutto ciò che hai creato, come codici QR, URL brevi, modelli e statistiche. Dopo, i tuoi codici QR dinamici e gli URL brevi smetteranno di funzionare. Finché non cancelliamo il tuo account, è in sola lettura: puoi vedere ed eliminare tutto, ma non creare o modificare nulla. Lì puoi anche ritirare la richiesta. Conserviamo solo le fatture, per il tempo previsto dalla legge.",
+		"answer12": "In Impostazioni → Profilo, in fondo alla pagina, puoi richiedere la cancellazione del tuo account. Poi ti inviamo un'e-mail in cui confermi la cancellazione. La cancellazione è definitiva e non può essere annullata: eliminiamo i tuoi dati personali e tutto ciò che hai creato, come codici QR, URL brevi, modelli e statistiche. Dopo, i tuoi codici QR dinamici e gli URL brevi smetteranno di funzionare. Finché non cancelliamo il tuo account, è in sola lettura: puoi vedere ed eliminare tutto, ma non creare o modificare nulla. Lì puoi anche ritirare la richiesta. Conserviamo solo le fatture, per il tempo previsto dalla legge.",
 		"viewAll": "Vedi tutte le FAQ"
 	},
 	"fileUpload": {
@@ -1780,15 +1790,18 @@
 			"deletionWarning4": "Conserviamo solo le fatture, per il tempo previsto dalla legge.",
 			"deletionRequestButton": "Richiedi la cancellazione",
 			"deletionConfirmTitle": "Richiedere la cancellazione del tuo account?",
-			"deletionConfirmDescription": "Poi cancelleremo definitivamente il tuo account con tutti i dati. Fino ad allora è in sola lettura: puoi vedere ed eliminare tutto, ma non creare o modificare nulla. Puoi ritirare la richiesta qui.",
+			"deletionConfirmDescription": "Ti inviamo un'e-mail con un link di conferma. La cancellazione è richiesta solo dopo che l'avrai confermata lì. Poi il tuo account resta in sola lettura finché non lo cancelliamo definitivamente con tutti i dati.",
 			"deletionConfirmButton": "Sì, richiedi la cancellazione",
 			"deletionRequestedAt": "Cancellazione richiesta il {date}",
 			"deletionRequestedHint": "Finché non cancelliamo il tuo account, è in sola lettura: puoi vedere ed eliminare tutto, ma non creare o modificare nulla. Hai cambiato idea? Ritira la richiesta.",
+			"deletionPendingTitle": "In attesa della tua conferma via e-mail",
+			"deletionPendingHint": "Ti abbiamo inviato un'e-mail il {date}. Conferma la cancellazione con il link al suo interno; è valido per 24 ore. Fino ad allora nel tuo account non cambia nulla.",
+			"deletionResend": "Invia di nuovo l'e-mail",
 			"deletionBannerTitle": "Hai richiesto la cancellazione del tuo account",
 			"deletionBannerDescription": "Dalla tua richiesta del {date} il tuo account è in sola lettura: puoi vedere ed eliminare tutto, ma non creare o modificare nulla. I tuoi codici QR e URL brevi continuano a funzionare finché non cancelliamo l'account.",
 			"deletionBannerCta": "Gestisci richiesta",
 			"deletionRevoke": "Ritira la richiesta",
-			"deletionRequestedToast": "La tua richiesta è stata inviata.",
+			"deletionRequestedToast": "Ti abbiamo inviato un'e-mail di conferma.",
 			"deletionRevokedToast": "La tua richiesta è stata ritirata.",
 			"deletionError": "Non ha funzionato. Riprova.",
 			"deletionLoadError": "Impossibile caricare lo stato della tua richiesta di cancellazione."
@@ -2619,7 +2632,7 @@
 				"q8": "Posso pagare annualmente e quanto dura l'abbonamento?",
 				"a8": "Sì. Quando passi a Pro scegli tra pagamento mensile e annuale. Con il pagamento annuale paghi una sola volta per tutto l'anno e Pro vale per dodici mesi dalla data di acquisto. Poi l'abbonamento si rinnova automaticamente per altri dodici mesi e puoi disdirlo online in qualsiasi momento, con effetto alla fine del periodo.",
 				"q9": "Come elimino il mio account?",
-				"a9": "In Impostazioni → Profilo, in fondo alla pagina, puoi richiedere la cancellazione del tuo account. La cancellazione è definitiva e non può essere annullata: eliminiamo i tuoi dati personali e tutto ciò che hai creato, come codici QR, URL brevi, modelli e statistiche. Dopo, i tuoi codici QR dinamici e gli URL brevi smetteranno di funzionare. Finché non cancelliamo il tuo account, è in sola lettura: puoi vedere ed eliminare tutto, ma non creare o modificare nulla. Lì puoi anche ritirare la richiesta. Conserviamo solo le fatture, per il tempo previsto dalla legge."
+				"a9": "In Impostazioni → Profilo, in fondo alla pagina, puoi richiedere la cancellazione del tuo account. Poi ti inviamo un'e-mail in cui confermi la cancellazione. La cancellazione è definitiva e non può essere annullata: eliminiamo i tuoi dati personali e tutto ciò che hai creato, come codici QR, URL brevi, modelli e statistiche. Dopo, i tuoi codici QR dinamici e gli URL brevi smetteranno di funzionare. Finché non cancelliamo il tuo account, è in sola lettura: puoi vedere ed eliminare tutto, ma non creare o modificare nulla. Lì puoi anche ritirare la richiesta. Conserviamo solo le fatture, per il tempo previsto dalla legge."
 			}
 		}
 	},

@@ -78,3 +78,6 @@ export const SUPPORT_MAIL: string = 'support@qrcodly.de';
  * Override per environment with ACCOUNT_DELETION_MAIL so stage does not mail the support inbox.
  */
 export const ACCOUNT_DELETION_MAIL: string = env.ACCOUNT_DELETION_MAIL ?? SUPPORT_MAIL;
+
+/** How long the link in the account deletion confirmation mail works. */
+export const ACCOUNT_DELETION_CONFIRMATION_TTL_HOURS = 24;

@@ -19,6 +19,7 @@ export default function robots(): MetadataRoute.Robots {
 					'/banned',
 					'/disabled',
 					'/link-blocked',
+					'/account-deletion/',
 				],
 			},
 		],

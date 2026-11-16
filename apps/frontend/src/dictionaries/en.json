@@ -346,6 +346,16 @@
 			"loading": "Loading..."
 		}
 	},
+	"accountDeletionConfirm": {
+		"title": "Confirm the deletion of your account",
+		"description": "By confirming, you request the permanent deletion of your QRcodly account. Until we delete it, it is read-only, and you can withdraw the request in your profile.",
+		"confirmButton": "Confirm deletion now",
+		"confirmedTitle": "The deletion of your account is requested",
+		"confirmedDescription": "Your account is now read-only: you can view and delete everything, but not create or change anything. We will delete it for good, with all its data. Until then you can withdraw the request under Settings → Profile.",
+		"profileButton": "Go to profile",
+		"invalidTitle": "This link is invalid or has expired",
+		"invalidDescription": "The link works for 24 hours and only while the request is open. You can request the deletion again under Settings → Profile."
+	},
 	"accountBanned": {
 		"title": "Account Suspended",
 		"description": "Your account has been suspended for violating our terms of service.",
@@ -1390,7 +1400,7 @@
 		"question11": "Where is my data hosted?",
 		"answer11": "QRcodly's core infrastructure runs on servers in Germany. We use Clerk for sign-in, Stripe for payments, Amazon SES to send our product news and Sentry and PostHog to find errors and improve the product. Your data is not sold or used for third-party advertising. If you have an account, we occasionally send you product news by email. You can turn this off at any time in the settings or via the link in every email.",
 		"question12": "How do I delete my account?",
-		"answer12": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs, templates and statistics. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request there. Only invoices are kept, for as long as the law requires.",
+		"answer12": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. We then send you an email in which you confirm the deletion. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs, templates and statistics. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request there. Only invoices are kept, for as long as the law requires.",
 		"viewAll": "See all FAQs"
 	},
 	"fileUpload": {
@@ -1780,15 +1790,18 @@
 			"deletionWarning4": "Only invoices are kept, for as long as the law requires.",
 			"deletionRequestButton": "Request deletion",
 			"deletionConfirmTitle": "Request account deletion?",
-			"deletionConfirmDescription": "We will then delete your account and all its data for good. Until we do, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request here.",
+			"deletionConfirmDescription": "We will email you a confirmation link. The deletion is only requested once you confirm it there. After that your account is read-only until we delete it for good, with all its data.",
 			"deletionConfirmButton": "Yes, request deletion",
 			"deletionRequestedAt": "Deletion requested on {date}",
 			"deletionRequestedHint": "Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. Changed your mind? Withdraw the request.",
+			"deletionPendingTitle": "Waiting for your confirmation by email",
+			"deletionPendingHint": "We sent you an email on {date}. Confirm the deletion with the link in it; it works for 24 hours. Until then nothing about your account changes.",
+			"deletionResend": "Resend email",
 			"deletionBannerTitle": "You requested the deletion of your account",
 			"deletionBannerDescription": "Since your request on {date}, your account is read-only: you can view and delete everything, but not create or change anything. Your QR codes and short URLs keep working until we delete the account.",
 			"deletionBannerCta": "Manage request",
 			"deletionRevoke": "Withdraw request",
-			"deletionRequestedToast": "Your request has been sent.",
+			"deletionRequestedToast": "We sent you an email to confirm.",
 			"deletionRevokedToast": "Your request has been withdrawn.",
 			"deletionError": "That didn't work. Please try again.",
 			"deletionLoadError": "The status of your deletion request could not be loaded."
@@ -2619,7 +2632,7 @@
 				"q8": "Can I pay annually, and how long does the subscription run?",
 				"a8": "Yes. When you upgrade, you choose between monthly and annual billing. With annual billing you pay once for the whole year, and Pro runs for twelve months from the purchase date. It then renews automatically for another twelve months, and you can cancel online at any time, effective at the end of the term.",
 				"q9": "How do I delete my account?",
-				"a9": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs, templates and statistics. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request there. Only invoices are kept, for as long as the law requires."
+				"a9": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. We then send you an email in which you confirm the deletion. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs, templates and statistics. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request there. Only invoices are kept, for as long as the law requires."
 			}
 		}
 	},

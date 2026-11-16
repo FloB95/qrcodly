@@ -5,6 +5,7 @@ exports[`scope-coverage-matrix snapshot of route → method → scope mapping (c
   "AccountDeletionRequestController DELETE  → delete [session_token]",
   "AccountDeletionRequestController GET  → read [session_token]",
   "AccountDeletionRequestController POST  → write [session_token]",
+  "AccountDeletionRequestController POST /confirm → write",
   "AnalyticsIntegrationController DELETE /:id → delete [session_token]",
   "AnalyticsIntegrationController GET  → read [session_token]",
   "AnalyticsIntegrationController PATCH /:id → update [session_token]",
