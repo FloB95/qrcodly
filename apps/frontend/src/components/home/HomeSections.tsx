@@ -132,11 +132,20 @@ export async function HomeIntegrations({ locale }: { locale: string }) {
 		{
 			name: c('adobeIndesign.name'),
 			description: c('adobeIndesign.description'),
-			// Adobe allows only its "Designed for" badge here, never the bare InDesign icon
-			badge: '/images/integrations/designed-for-adobe-indesign.png',
+			// Adobe approved the bare icon for this card only; elsewhere use the "Designed for" badge
+			logo: '/images/integrations/adobe-indesign.png',
 			href: catalogHref('adobe-indesign'),
 			cta: c('adobeIndesign.cta'),
 			pro: true,
+		},
+		{
+			name: c('figma.name'),
+			description: c('figma.description'),
+			logo: '/images/integrations/figma.svg',
+			href: catalogHref('figma'),
+			cta: c('figma.cta'),
+			pro: true,
+			isNew: true,
 		},
 		{
 			name: c('googleAnalytics.name'),
@@ -161,30 +170,25 @@ export async function HomeIntegrations({ locale }: { locale: string }) {
 						{items.map((item) => (
 							<div key={item.name} className={cn(cardClass, 'flex flex-col gap-3 p-6')}>
 								<span className="flex items-center justify-between gap-3">
-									{item.logo ? (
-										<Image
-											src={item.logo}
-											alt=""
-											width={36}
-											height={36}
-											className="size-9 object-contain"
-										/>
-									) : item.badge ? (
-										// unoptimized: lossy re-encoding leaves a visible box around the badge
-										<Image
-											src={item.badge}
-											alt="Designed for Adobe InDesign"
-											width={172}
-											height={36}
-											className="h-9 w-auto"
-											unoptimized
-										/>
-									) : null}
-									{item.pro && (
-										<span className="rounded-full bg-slate-900 px-2 py-0.5 text-[11px] font-semibold text-white">
-											Pro
-										</span>
-									)}
+									<Image
+										src={item.logo}
+										alt=""
+										width={36}
+										height={36}
+										className="size-9 object-contain"
+									/>
+									<span className="flex items-center gap-1.5">
+										{item.isNew && (
+											<span className="rounded-full bg-amber-400 px-2 py-0.5 text-[11px] font-semibold text-slate-900">
+												{t('newBadge')}
+											</span>
+										)}
+										{item.pro && (
+											<span className="rounded-full bg-slate-900 px-2 py-0.5 text-[11px] font-semibold text-white">
+												Pro
+											</span>
+										)}
+									</span>
 								</span>
 								<h3 className="text-lg font-bold tracking-tight text-slate-900">{item.name}</h3>
 								<p className="text-[15px] leading-relaxed text-slate-600">{item.description}</p>
@@ -201,7 +205,7 @@ export async function HomeIntegrations({ locale }: { locale: string }) {
 								)}
 							</div>
 						))}
-						<div className="flex flex-col gap-3 rounded-[22px] bg-slate-900 p-6 text-white sm:col-span-2 lg:col-span-2">
+						<div className="flex flex-col gap-3 rounded-[22px] bg-slate-900 p-6 text-white">
 							<span className="flex items-center justify-between gap-3">
 								<span className="flex size-9 items-center justify-center rounded-lg bg-white/10 text-amber-300">
 									<CommandLineIcon className="size-5" />

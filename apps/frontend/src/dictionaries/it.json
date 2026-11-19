@@ -4541,7 +4541,8 @@
 			"eyebrow": "Integrazioni",
 			"title": "Funziona dove lavori già.",
 			"subtitle": "Crea codici nel browser o nel programma di impaginazione e invia i dati di scansione agli strumenti di analisi che già usi.",
-			"api": "Crea, aggiorna e gestisci codici QR e link brevi dal tuo software con una chiave API."
+			"api": "Crea, aggiorna e gestisci codici QR e link brevi dal tuo software con una chiave API.",
+			"newBadge": "Nuovo"
 		},
 		"cta": {
 			"title": "Il tuo primo codice QR in un minuto.",

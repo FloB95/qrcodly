@@ -85,10 +85,12 @@ export const INTEGRATIONS_CATALOG: IntegrationCatalogEntry[] = [
 	{
 		id: 'figma',
 		slug: 'figma',
-		kind: 'coming-soon',
+		kind: 'external-link',
 		tags: ['design'],
 		nameKey: 'figma.name',
 		descriptionKey: 'figma.description',
+		href: 'https://www.figma.com/community/plugin/1695759428910776258/qrcodly',
+		ctaKey: 'figma.cta',
 		requiresApiKey: true,
 	},
 ];

@@ -4541,7 +4541,8 @@
 			"eyebrow": "Integraties",
 			"title": "Werkt waar je al werkt.",
 			"subtitle": "Maak codes in je browser of opmaakprogramma en stuur scandata naar de analytics die je al gebruikt.",
-			"api": "Maak, wijzig en beheer QR-codes en korte links vanuit je eigen software met een API-sleutel."
+			"api": "Maak, wijzig en beheer QR-codes en korte links vanuit je eigen software met een API-sleutel.",
+			"newBadge": "Nieuw"
 		},
 		"cta": {
 			"title": "Je eerste QR-code in één minuut.",

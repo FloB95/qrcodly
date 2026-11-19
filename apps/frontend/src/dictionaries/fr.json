@@ -4541,7 +4541,8 @@
 			"eyebrow": "Intégrations",
 			"title": "Fonctionne là où vous travaillez déjà.",
 			"subtitle": "Créez des codes dans votre navigateur ou votre logiciel de mise en page et envoyez les données de scan vers vos outils d'analyse.",
-			"api": "Créez, modifiez et gérez QR codes et liens courts depuis votre propre logiciel grâce à une clé API."
+			"api": "Créez, modifiez et gérez QR codes et liens courts depuis votre propre logiciel grâce à une clé API.",
+			"newBadge": "Nouveau"
 		},
 		"cta": {
 			"title": "Votre premier QR code en une minute.",

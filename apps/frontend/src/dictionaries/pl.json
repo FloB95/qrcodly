@@ -4541,7 +4541,8 @@
 			"eyebrow": "Integracje",
 			"title": "Działa tam, gdzie już pracujesz.",
 			"subtitle": "Twórz kody w przeglądarce lub programie do składu i wysyłaj dane skanów do narzędzi analitycznych, których już używasz.",
-			"api": "Twórz, zmieniaj i zarządzaj kodami QR oraz krótkimi linkami z własnego oprogramowania za pomocą klucza API."
+			"api": "Twórz, zmieniaj i zarządzaj kodami QR oraz krótkimi linkami z własnego oprogramowania za pomocą klucza API.",
+			"newBadge": "Nowość"
 		},
 		"cta": {
 			"title": "Pierwszy kod QR w minutę.",

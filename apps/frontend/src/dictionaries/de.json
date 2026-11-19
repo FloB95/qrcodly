@@ -4541,7 +4541,8 @@
 			"eyebrow": "Integrationen",
 			"title": "Funktioniert dort, wo du schon arbeitest.",
 			"subtitle": "Erstelle Codes im Browser oder im Layout-Programm und schick Scandaten an die Statistik, die du schon nutzt.",
-			"api": "Erstelle, ändere und verwalte QR-Codes und Kurzlinks per API-Key aus deiner eigenen Software."
+			"api": "Erstelle, ändere und verwalte QR-Codes und Kurzlinks per API-Key aus deiner eigenen Software.",
+			"newBadge": "Neu"
 		},
 		"cta": {
 			"title": "Dein erster QR-Code dauert eine Minute.",

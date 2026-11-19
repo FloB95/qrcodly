@@ -4541,7 +4541,8 @@
 			"eyebrow": "Integrações",
 			"title": "Funciona onde você já trabalha.",
 			"subtitle": "Crie códigos no navegador ou no programa de diagramação e envie os dados de leitura para a análise que você já usa.",
-			"api": "Crie, atualize e gerencie QR codes e links curtos a partir do seu próprio software com uma chave de API."
+			"api": "Crie, atualize e gerencie QR codes e links curtos a partir do seu próprio software com uma chave de API.",
+			"newBadge": "Novo"
 		},
 		"cta": {
 			"title": "Seu primeiro QR code em um minuto.",

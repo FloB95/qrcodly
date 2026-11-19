@@ -4541,7 +4541,8 @@
 			"eyebrow": "Integrations",
 			"title": "Works where you already work.",
 			"subtitle": "Create codes in your browser or layout tool and send scan data to the analytics you already use.",
-			"api": "Create, update and manage QR codes and short links from your own software with an API key."
+			"api": "Create, update and manage QR codes and short links from your own software with an API key.",
+			"newBadge": "New"
 		},
 		"cta": {
 			"title": "Your first QR code takes a minute.",
