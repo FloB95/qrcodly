@@ -128,6 +128,11 @@ class AnalyticsIntegrationRepository extends AbstractRepository<TAnalyticsIntegr
 		await this.clearCache();
 		return true;
 	}
+
+	async deleteAllByUserId(userId: string): Promise<void> {
+		await this.db.delete(this.table).where(eq(this.table.createdBy, userId)).execute();
+		await this.clearCache();
+	}
 }
 
 export default AnalyticsIntegrationRepository;
