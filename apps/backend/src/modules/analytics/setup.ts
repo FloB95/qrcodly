@@ -3,12 +3,14 @@ import { type FastifyInstance, type FastifyPluginCallback } from 'fastify';
 import { Logger } from '@/core/logging';
 import { registerRoutes } from '@/libs/fastify/helpers';
 import { AnalyticsIntegrationController } from './http/controller/analytics-integration.controller';
+import { ShortUrlAnalyticsController } from './http/controller/short-url-analytics.controller';
 
 // Register event handlers
 import './event/handler/scan-tracking.event-handler';
 
 const setupAnalyticsModule: FastifyPluginCallback = (fastify: FastifyInstance, options, done) => {
 	registerRoutes(fastify, AnalyticsIntegrationController, `/analytics-integration`, options);
+	registerRoutes(fastify, ShortUrlAnalyticsController, `/short-url`, options);
 	container.resolve(Logger).info('☑️  Analytics module loaded');
 	done();
 };

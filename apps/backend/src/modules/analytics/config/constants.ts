@@ -1,5 +1,9 @@
 export const MAX_CONSECUTIVE_FAILURES = 10;
 
+/** Total views of a short URL, cached because Umami is slow; every scan clears it */
+export const SHORT_URL_VIEWS_CACHE_KEY_PREFIX = 'views:';
+export const SHORT_URL_VIEWS_CACHE_TTL_SECONDS = 3600;
+
 export const DEVICES = {
 	desktop: 'Desktop',
 	mobile: 'Mobile',

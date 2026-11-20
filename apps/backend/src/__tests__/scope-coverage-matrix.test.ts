@@ -4,6 +4,7 @@ import { isLockedDuringAccountDeletion, resolveScopeForMethod } from '@/libs/fas
 
 import { ApiKeyController } from '@/modules/api-key/http/controller/api-key.controller';
 import { AnalyticsIntegrationController } from '@/modules/analytics/http/controller/analytics-integration.controller';
+import { ShortUrlAnalyticsController } from '@/modules/analytics/http/controller/short-url-analytics.controller';
 import { QrCodeController } from '@/modules/qr-code/http/controller/qr-code.controller';
 import { QrCodeShareController } from '@/modules/qr-code/http/controller/qr-code-share.controller';
 import { CustomDomainController } from '@/modules/custom-domain/http/controller/custom-domain.controller';
@@ -21,6 +22,7 @@ import { NewsletterController } from '@/modules/newsletter/http/controller/newsl
 const CONTROLLERS = [
 	ApiKeyController,
 	AnalyticsIntegrationController,
+	ShortUrlAnalyticsController,
 	QrCodeController,
 	QrCodeShareController,
 	CustomDomainController,

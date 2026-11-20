@@ -1,7 +1,7 @@
 import { getTestContext, resetTestState } from '@/tests/shared/test-context';
 import type { FastifyInstance } from 'fastify';
 import type { TShortUrlResponseDto, TAnalyticsResponseDto } from '@shared/schemas';
-import { SHORT_URL_API_PATH, reserveShortUrl } from './utils';
+import { SHORT_URL_API_PATH, reserveShortUrl } from '@/modules/url-shortener/http/__tests__/utils';
 import { mockFetchUmamiAllEndpoints, resetFetchMocks } from '@/tests/shared/mocks/umami.mock';
 import { ensureProSubscription } from '@/tests/shared/helpers';
 
