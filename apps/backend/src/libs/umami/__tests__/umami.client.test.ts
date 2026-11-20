@@ -122,6 +122,114 @@ describe('UmamiClient', () => {
 			});
 			expect(logger.error).not.toHaveBeenCalledWith('error.umamiApi.fetchData', expect.anything());
 		});
+
+		it('logs in again on the next request after a failed login', async () => {
+			mockFetch
+				.mockResolvedValueOnce(errorResponse(500, 'Internal Server Error'))
+				.mockResolvedValueOnce(jsonResponse({ token: 'mock_jwt_token' }))
+				.mockResolvedValueOnce(jsonResponse({ pageviews: 100 }));
+
+			await expect(client.getWebsiteStats(query)).rejects.toThrow();
+			await expect(client.getWebsiteStats(query)).resolves.toEqual({ pageviews: 100 });
+
+			expect(mockFetch.mock.calls[1][0]).toBe('https://umami.example.com/api/auth/login');
+		});
+	});
+
+	describe('re-login', () => {
+		const loginCalls = () =>
+			mockFetch.mock.calls.filter(([url]) => String(url).includes('/api/auth/login'));
+		const bearerOf = (call: unknown[]) =>
+			(call[1] as { headers: Record<string, string> }).headers.Authorization;
+
+		it('logs in again once and retries the request when Umami rejects the token', async () => {
+			mockFetch
+				.mockResolvedValueOnce(jsonResponse({ token: 'stale_token' }))
+				.mockResolvedValueOnce(errorResponse(401, 'Unauthorized'))
+				.mockResolvedValueOnce(jsonResponse({ token: 'fresh_token' }))
+				.mockResolvedValueOnce(jsonResponse({ pageviews: 100 }));
+
+			await expect(client.getWebsiteStats(query)).resolves.toEqual({ pageviews: 100 });
+
+			expect(mockFetch).toHaveBeenCalledTimes(4);
+			expect(loginCalls()).toHaveLength(2);
+			expect(bearerOf(mockFetch.mock.calls[1])).toBe('Bearer stale_token');
+			expect(bearerOf(mockFetch.mock.calls[3])).toBe('Bearer fresh_token');
+			expect(logger.warn).toHaveBeenCalledWith('umami.auth.relogin', { operation: 'fetch:stats' });
+			expect(logger.error).not.toHaveBeenCalled();
+		});
+
+		it('keeps the new token for later requests', async () => {
+			mockFetch
+				.mockResolvedValueOnce(jsonResponse({ token: 'stale_token' }))
+				.mockResolvedValueOnce(errorResponse(401, 'Unauthorized'))
+				.mockResolvedValueOnce(jsonResponse({ token: 'fresh_token' }))
+				.mockResolvedValueOnce(jsonResponse({ pageviews: 100 }))
+				.mockResolvedValueOnce(jsonResponse({ pageviews: 200 }));
+
+			await client.getWebsiteStats(query);
+			await client.getWebsiteStats(query);
+
+			expect(mockFetch).toHaveBeenCalledTimes(5);
+			expect(loginCalls()).toHaveLength(2);
+			expect(bearerOf(mockFetch.mock.calls[4])).toBe('Bearer fresh_token');
+		});
+
+		it('logs and throws as before when the retried request is rejected again', async () => {
+			mockFetch
+				.mockResolvedValueOnce(jsonResponse({ token: 'stale_token' }))
+				.mockResolvedValueOnce(errorResponse(401, 'Unauthorized'))
+				.mockResolvedValueOnce(jsonResponse({ token: 'fresh_token' }))
+				.mockResolvedValueOnce(errorResponse(401, 'Unauthorized'));
+
+			await expect(client.getWebsiteStats(query)).rejects.toThrow(
+				'Failed to fetch data from Umami: 401 - Unauthorized',
+			);
+
+			expect(mockFetch).toHaveBeenCalledTimes(4);
+			expect(loginCalls()).toHaveLength(2);
+			expect(logger.error).toHaveBeenCalledWith('error.umamiApi.fetchData', {
+				status: 401,
+				body: 'Unauthorized',
+			});
+			expect(logger.error).toHaveBeenCalledWith('error.umamiApi.fetchData', {
+				error: expect.any(Error),
+			});
+		});
+
+		it('shares one re-login between concurrent requests that see the rejected token', async () => {
+			let logins = 0;
+			mockFetch.mockImplementation((url: string, init: { headers: Record<string, string> }) => {
+				if (url.endsWith('/api/auth/login')) {
+					return Promise.resolve(jsonResponse({ token: `token_${++logins}` }));
+				}
+				return Promise.resolve(
+					init.headers.Authorization === 'Bearer token_1'
+						? errorResponse(401, 'Unauthorized')
+						: jsonResponse({ pageviews: 100 }),
+				);
+			});
+
+			await Promise.all([
+				client.getWebsiteStats(query),
+				client.getWebsitePageviews(query),
+				client.getWebsiteMetrics({ ...query, type: 'os' }),
+			]);
+
+			// The first login plus a single re-login
+			expect(loginCalls()).toHaveLength(2);
+			const dataCalls = mockFetch.mock.calls.filter(([url]) => String(url).includes('/websites/'));
+			expect(dataCalls.map(bearerOf).sort()).toEqual([
+				'Bearer token_1',
+				'Bearer token_1',
+				'Bearer token_1',
+				'Bearer token_2',
+				'Bearer token_2',
+				'Bearer token_2',
+			]);
+			expect(logger.warn).toHaveBeenCalledTimes(1);
+			expect(logger.error).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('website data', () => {

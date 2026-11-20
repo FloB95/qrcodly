@@ -20,8 +20,8 @@ const ERROR_BODY_LIMIT = 500;
 /** HTTP client for a self-hosted Umami and the one website this app tracks */
 @singleton()
 export class UmamiClient {
-	/** Fetched on first use and kept for the lifetime of the process */
-	private authToken?: string;
+	/** Fetched on first use, shared by concurrent callers and kept until Umami rejects it */
+	private authToken?: Promise<string>;
 
 	constructor(@inject(Logger) private readonly logger: Logger) {}
 
@@ -122,7 +122,6 @@ export class UmamiClient {
 			}
 
 			const data = (await response.json()) as IUmamiLoginResponse;
-			this.authToken = data.token;
 			return data.token;
 		} catch (error) {
 			this.logger.error('error.umamiApi.fetchToken', { error });
@@ -130,24 +129,34 @@ export class UmamiClient {
 		}
 	}
 
-	private async get<T>(endpoint: string, query: object): Promise<T> {
-		const token = this.authToken || (await this.login());
+	private getToken(): Promise<string> {
+		this.authToken ??= this.login().catch((error: unknown) => {
+			this.authToken = undefined;
+			throw error;
+		});
+		return this.authToken;
+	}
 
+	private async get<T>(endpoint: string, query: object): Promise<T> {
 		const queryString = QueryString.stringify(query);
 		const url = `${env.UMAMI_HOST}/api/${endpoint}?${queryString}`;
+		// Last path segment only — the full endpoint embeds the website id.
+		const operation = `fetch:${endpoint.split('/').pop() || 'unknown'}`;
+
+		const token = this.getToken();
+		let response = await this.fetchData(url, operation, await token);
+
+		// Umami drops issued tokens when it restarts with a new secret or they expire. Only the
+		// first caller to see the rejected token resets it; the others reuse that new login.
+		if (response.status === 401) {
+			if (this.authToken === token) {
+				this.logger.warn('umami.auth.relogin', { operation });
+				this.authToken = undefined;
+			}
+			response = await this.fetchData(url, operation, await this.getToken());
+		}
 
 		try {
-			// Last path segment only — the full endpoint embeds the website id.
-			const operation = `fetch:${endpoint.split('/').pop() || 'unknown'}`;
-			const response = await trackExternal('umami', operation, () =>
-				fetch(url, {
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}),
-			);
-
 			if (!response.ok) {
 				const errorBody = await response.text();
 				this.logger.error(`error.umamiApi.fetchData`, {
@@ -158,6 +167,22 @@ export class UmamiClient {
 			}
 
 			return response.json() as Promise<T>;
+		} catch (error) {
+			this.logger.error('error.umamiApi.fetchData', { error });
+			throw error;
+		}
+	}
+
+	private async fetchData(url: string, operation: string, token: string): Promise<Response> {
+		try {
+			return await trackExternal('umami', operation, () =>
+				fetch(url, {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}),
+			);
 		} catch (error) {
 			this.logger.error('error.umamiApi.fetchData', { error });
 			throw error;
