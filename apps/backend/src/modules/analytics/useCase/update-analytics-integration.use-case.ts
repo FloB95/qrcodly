@@ -10,6 +10,7 @@ import AnalyticsIntegrationRepository from '../domain/repository/analytics-integ
 import { type TAnalyticsIntegration } from '../domain/entities/analytics-integration.entity';
 import { CredentialEncryptionService } from '../service/credential-encryption.service';
 import { BadRequestError } from '@/core/error/http/bad-request.error';
+import { validateMatomoUrl } from '@/libs/matomo';
 
 @injectable()
 export class UpdateAnalyticsIntegrationUseCase implements IBaseUseCase {
@@ -53,6 +54,12 @@ export class UpdateAnalyticsIntegrationUseCase implements IBaseUseCase {
 			const validationResult = credentialSchema.safeParse(mergedCredentials);
 			if (!validationResult.success) {
 				throw new BadRequestError('Invalid credentials after merge.', validationResult.error);
+			}
+			if (integration.providerType === 'matomo') {
+				// Tracking would reject this URL on every scan; say so when it is saved
+				await validateMatomoUrl(String(mergedCredentials.matomoUrl)).catch((error: Error) => {
+					throw new BadRequestError(error.message);
+				});
 			}
 			const { encrypted, iv, tag } = this.encryptionService.encrypt(mergedCredentials);
 			updates.encryptedCredentials = encrypted;

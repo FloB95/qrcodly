@@ -113,6 +113,25 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 		expect(result.hasAuthToken).toBe(true);
 	});
 
+	it('should return 400 when a Matomo URL is changed to an internal address', async () => {
+		const id = await createIntegrationDirectly(ctx, TEST_USER_PRO_ID, {
+			providerType: 'matomo',
+			credentials: { matomoUrl: 'https://matomo.example.com', siteId: '1' },
+		});
+
+		const response = await updateIntegrationViaApi(
+			ctx,
+			id,
+			{ credentials: { matomoUrl: 'https://192.168.1.10', siteId: '1' } },
+			ctx.accessTokenPro,
+		);
+
+		expect(response).toHaveStatusCode(400);
+		expect(JSON.parse(response.payload)).toMatchObject({
+			message: 'Matomo URL must not point to a private or internal address',
+		});
+	});
+
 	it('should preserve existing authToken when updating Matomo without providing a token', async () => {
 		const id = await createIntegrationDirectly(ctx, TEST_USER_PRO_ID, {
 			providerType: 'matomo',
@@ -129,7 +148,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 			id,
 			{
 				credentials: {
-					matomoUrl: 'https://matomo.updated.com',
+					matomoUrl: 'https://matomo-updated.example.com',
 					siteId: '1',
 				},
 			},
@@ -140,7 +159,7 @@ describe('PATCH /analytics-integration/:id (Update)', () => {
 
 		const result = JSON.parse(response.payload) as TAnalyticsIntegrationResponseDto;
 		expect(result.hasAuthToken).toBe(true);
-		expect(result.displayIdentifier).toContain('matomo.updated.com');
+		expect(result.displayIdentifier).toContain('matomo-updated.example.com');
 	});
 
 	it('should remove authToken when updating Matomo with an empty token string', async () => {

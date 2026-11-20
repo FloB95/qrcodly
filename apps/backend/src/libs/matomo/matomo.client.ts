@@ -1,36 +1,23 @@
 import { singleton } from 'tsyringe';
+import { Agent } from 'undici';
 import { trackExternal } from '@/core/metrics';
+import { lookupPublicAddress, validateMatomoUrl } from './matomo.address';
 import { MatomoApiError } from './matomo.error';
 import { type IMatomoTrackRequest, type TMatomoSiteCheck } from './matomo.interface';
 
 const TIMEOUT_MS = 5000;
 
-function validateMatomoUrl(raw: string): URL {
-	let url: URL;
-	try {
-		url = new URL(raw);
-	} catch {
-		throw new Error('Invalid Matomo URL format');
-	}
-	if (url.protocol !== 'https:') {
-		throw new Error('Matomo URL must use HTTPS');
-	}
-	const hostname = url.hostname.toLowerCase();
-	if (
-		hostname === 'localhost' ||
-		hostname === '::1' ||
-		hostname === '0.0.0.0' ||
-		hostname.endsWith('.local') ||
-		/^127\./.test(hostname) ||
-		hostname.startsWith('10.') ||
-		hostname.startsWith('192.168.') ||
-		/^172\.(1[6-9]|2\d|3[01])\./.test(hostname) ||
-		/^169\.254\./.test(hostname) ||
-		/^100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./.test(hostname)
-	) {
-		throw new Error('Matomo URL must not point to a private or internal address');
-	}
-	return url;
+/** Connects only to public addresses, checked again on every DNS answer */
+const dispatcher = new Agent({ connect: { lookup: lookupPublicAddress } });
+
+/** A redirect is not followed and fails like any other non-2xx answer */
+function requestInit(): RequestInit & { dispatcher: Agent } {
+	return {
+		method: 'GET',
+		redirect: 'manual',
+		dispatcher,
+		signal: AbortSignal.timeout(TIMEOUT_MS),
+	};
 }
 
 /** `file` below the path of the Matomo URL, with `params` as the query */
@@ -65,13 +52,10 @@ export class MatomoClient {
 			params.set('cip', request.auth.clientIp);
 		}
 
-		const fetchUrl = endpoint(validateMatomoUrl(matomoUrl), 'matomo.php', params);
+		const fetchUrl = endpoint(await validateMatomoUrl(matomoUrl), 'matomo.php', params);
 
 		const response = await trackExternal('matomo', 'track', () =>
-			fetch(fetchUrl.toString(), {
-				method: 'GET',
-				signal: AbortSignal.timeout(TIMEOUT_MS),
-			}),
+			fetch(fetchUrl.toString(), requestInit()),
 		);
 
 		if (!response.ok) {
@@ -85,7 +69,7 @@ export class MatomoClient {
 		siteId: string,
 		authToken?: string,
 	): Promise<TMatomoSiteCheck> {
-		const baseUrl = validateMatomoUrl(matomoUrl);
+		const baseUrl = await validateMatomoUrl(matomoUrl);
 
 		// Try the Reporting API first (requires auth token for most Matomo Cloud instances)
 		if (authToken) {
@@ -100,10 +84,7 @@ export class MatomoClient {
 
 			try {
 				const response = await trackExternal('matomo', 'validate', () =>
-					fetch(fetchUrl.toString(), {
-						method: 'GET',
-						signal: AbortSignal.timeout(TIMEOUT_MS),
-					}),
+					fetch(fetchUrl.toString(), requestInit()),
 				);
 
 				if (response.ok) {
@@ -131,10 +112,7 @@ export class MatomoClient {
 			const trackUrl = endpoint(baseUrl, 'matomo.php', trackParams);
 
 			const response = await trackExternal('matomo', 'validate_track', () =>
-				fetch(trackUrl.toString(), {
-					method: 'GET',
-					signal: AbortSignal.timeout(TIMEOUT_MS),
-				}),
+				fetch(trackUrl.toString(), requestInit()),
 			);
 
 			return response.ok ? 'accepted' : 'rejected';

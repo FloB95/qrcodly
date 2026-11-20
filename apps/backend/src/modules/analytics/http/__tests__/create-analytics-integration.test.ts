@@ -180,6 +180,35 @@ describe('POST /analytics-integration (Create)', () => {
 		expect(response).toHaveStatusCode(400);
 	});
 
+	it.each(['https://127.0.0.1', 'https://[::1]', 'https://10.0.0.5:8080'])(
+		'should return 400 for Matomo pointing to the internal address %s',
+		async (matomoUrl) => {
+			const response = await createIntegrationViaApi(
+				ctx,
+				{ providerType: 'matomo', credentials: { matomoUrl, siteId: '1' } },
+				ctx.accessTokenPro,
+			);
+
+			expect(response).toHaveStatusCode(400);
+			expect(JSON.parse(response.payload)).toMatchObject({
+				message: 'Matomo URL must not point to a private or internal address',
+			});
+		},
+	);
+
+	it('should return 400 for Matomo over plain HTTP', async () => {
+		const response = await createIntegrationViaApi(
+			ctx,
+			{
+				providerType: 'matomo',
+				credentials: { matomoUrl: 'http://matomo.example.com', siteId: '1' },
+			},
+			ctx.accessTokenPro,
+		);
+
+		expect(response).toHaveStatusCode(400);
+	});
+
 	it('should return 400 for Matomo with an empty site ID', async () => {
 		const response = await createIntegrationViaApi(
 			ctx,

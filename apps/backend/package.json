@@ -101,6 +101,7 @@
 		"file-type": "^22.3.0",
 		"handlebars": "^4.7.10",
 		"ioredis": "^5.11.1",
+		"ipaddr.js": "^2.4.0",
 		"jsdom": "^26.1.0",
 		"jsonwebtoken": "^9.0.3",
 		"mysql2": "^3.23.0",
@@ -115,6 +116,7 @@
 		"stripe": "^22.3.2",
 		"svix": "^1.97.0",
 		"tsyringe": "^4.10.0",
+		"undici": "^7.30.2",
 		"zod": "catalog:",
 		"zod-to-json-schema": "^3.25.2",
 		"zod-validation-error": "^5.0.0"

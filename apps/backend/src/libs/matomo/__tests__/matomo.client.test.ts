@@ -1,5 +1,15 @@
 import 'reflect-metadata';
+import { type LookupAddress } from 'node:dns';
+import { lookup } from 'node:dns/promises';
+import { Agent } from 'undici';
 import { MatomoApiError, MatomoClient, type IMatomoTrackRequest } from '..';
+
+jest.mock('node:dns/promises', () => ({
+	...jest.requireActual('node:dns/promises'),
+	lookup: jest.fn(),
+}));
+
+const mockLookup = lookup as unknown as jest.Mock<Promise<LookupAddress[]>>;
 
 describe('MatomoClient', () => {
 	let client: MatomoClient;
@@ -26,6 +36,8 @@ describe('MatomoClient', () => {
 		client = new MatomoClient();
 		mockFetch = jest.fn();
 		global.fetch = mockFetch;
+		mockLookup.mockReset();
+		mockLookup.mockResolvedValue([{ address: '93.184.215.14', family: 4 }]);
 	});
 
 	afterEach(() => {
@@ -129,6 +141,44 @@ describe('MatomoClient', () => {
 			expect(mockFetch).not.toHaveBeenCalled();
 		});
 
+		it('should reject a host that resolves to a private address without calling Matomo', async () => {
+			mockLookup.mockResolvedValue([{ address: '10.0.0.5', family: 4 }]);
+
+			await expect(client.track(matomoUrl, trackRequest)).rejects.toThrow(
+				'Matomo URL must not point to a private or internal address',
+			);
+			expect(mockFetch).not.toHaveBeenCalled();
+		});
+
+		it('should reject the IPv6 literal [::1] without calling Matomo', async () => {
+			await expect(client.track('https://[::1]', trackRequest)).rejects.toThrow(
+				'private or internal',
+			);
+			expect(mockLookup).not.toHaveBeenCalled();
+			expect(mockFetch).not.toHaveBeenCalled();
+		});
+
+		it('should send requests through one shared dispatcher without following redirects', async () => {
+			mockFetch.mockResolvedValue({ ok: true });
+
+			await client.track(matomoUrl, trackRequest);
+			await new MatomoClient().track(matomoUrl, trackRequest);
+
+			const [first, second] = mockFetch.mock.calls.map((call) => call[1]);
+			expect(first.redirect).toBe('manual');
+			expect(first.dispatcher).toBeInstanceOf(Agent);
+			expect(second.dispatcher).toBe(first.dispatcher);
+		});
+
+		it('should count a redirect as a failed request', async () => {
+			mockFetch.mockResolvedValueOnce({ ok: false, status: 302 });
+
+			const error = await client.track(matomoUrl, trackRequest).catch((e: unknown) => e);
+
+			expect(error).toBeInstanceOf(MatomoApiError);
+			expect((error as MatomoApiError).status).toBe(302);
+		});
+
 		it('should use GET method with a 5 second timeout', async () => {
 			const timeout = jest.spyOn(AbortSignal, 'timeout');
 			mockFetch.mockResolvedValueOnce({ ok: true });
@@ -159,6 +209,23 @@ describe('MatomoClient', () => {
 			await expect(client.checkSite('http://matomo.example.com', '5')).rejects.toThrow(
 				'Matomo URL must use HTTPS',
 			);
+			expect(mockFetch).not.toHaveBeenCalled();
+		});
+
+		it('should reject a host with any private address without calling Matomo', async () => {
+			mockLookup.mockResolvedValue([
+				{ address: '93.184.215.14', family: 4 },
+				{ address: '::ffff:127.0.0.1', family: 6 },
+			]);
+
+			await expect(client.checkSite(matomoUrl, '5', 'abc123tokenxyz')).rejects.toThrow(
+				'Matomo URL must not point to a private or internal address',
+			);
+			expect(mockFetch).not.toHaveBeenCalled();
+		});
+
+		it('should reject the IPv6 literal [::1] without calling Matomo', async () => {
+			await expect(client.checkSite('https://[::1]', '5')).rejects.toThrow('private or internal');
 			expect(mockFetch).not.toHaveBeenCalled();
 		});
 
@@ -225,6 +292,27 @@ describe('MatomoClient', () => {
 				expect(result).toBe('accepted');
 				expect(mockFetch).toHaveBeenCalledTimes(2);
 			});
+
+			it('should send both requests through the dispatcher without following redirects', async () => {
+				mockFetch.mockRejectedValueOnce(new Error('Network error'));
+				mockFetch.mockResolvedValueOnce({ ok: true });
+
+				await client.checkSite(matomoUrl, '5', 'abc123tokenxyz');
+
+				for (const [, options] of mockFetch.mock.calls) {
+					expect(options.redirect).toBe('manual');
+					expect(options.dispatcher).toBeInstanceOf(Agent);
+				}
+			});
+
+			it('should reject when the Reporting API redirects', async () => {
+				mockFetch.mockResolvedValueOnce({ ok: false, status: 301 });
+
+				const result = await client.checkSite(matomoUrl, '5', 'abc123tokenxyz');
+
+				expect(result).toBe('rejected');
+				expect(mockFetch).toHaveBeenCalledTimes(1);
+			});
 		});
 
 		describe('without auth token (tracking endpoint fallback)', () => {
@@ -259,6 +347,15 @@ describe('MatomoClient', () => {
 				const result = await client.checkSite(matomoUrl, '5');
 
 				expect(result).toBe('rejected');
+			});
+
+			it('should reject when the tracking endpoint redirects', async () => {
+				mockFetch.mockResolvedValueOnce({ ok: false, status: 302 });
+
+				const result = await client.checkSite(matomoUrl, '5');
+
+				expect(result).toBe('rejected');
+				expect(mockFetch.mock.calls[0][1].redirect).toBe('manual');
 			});
 
 			it('should report unreachable when fetch throws', async () => {

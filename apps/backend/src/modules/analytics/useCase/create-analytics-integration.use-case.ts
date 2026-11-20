@@ -7,6 +7,8 @@ import AnalyticsIntegrationRepository from '../domain/repository/analytics-integ
 import { type TAnalyticsIntegration } from '../domain/entities/analytics-integration.entity';
 import { ManageAnalyticsIntegrationPolicy } from '../policies/manage-analytics-integration.policy';
 import { CredentialEncryptionService } from '../service/credential-encryption.service';
+import { BadRequestError } from '@/core/error/http/bad-request.error';
+import { validateMatomoUrl } from '@/libs/matomo';
 
 @injectable()
 export class CreateAnalyticsIntegrationUseCase implements IBaseUseCase {
@@ -25,6 +27,13 @@ export class CreateAnalyticsIntegrationUseCase implements IBaseUseCase {
 
 		const policy = new ManageAnalyticsIntegrationPolicy(user, currentCount);
 		policy.checkAccess();
+
+		if (dto.providerType === 'matomo') {
+			// Tracking would reject this URL on every scan; say so when it is saved
+			await validateMatomoUrl(String(dto.credentials.matomoUrl)).catch((error: Error) => {
+				throw new BadRequestError(error.message);
+			});
+		}
 
 		const { encrypted, iv, tag } = this.encryptionService.encrypt(dto.credentials);
 
