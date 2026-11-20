@@ -3,6 +3,7 @@ import { singleton } from 'tsyringe';
 import { type AbstractEvent } from './abstract.event';
 import { type IEventEmitter } from '../interface/event-emitter.interface';
 import { OnShutdown } from '../decorators/on-shutdown.decorator';
+import { LOWEST_SHUTDOWN_PRIORITY } from '../config/constants';
 
 /**
  * AppEventEmitter class for emitting and listening to events using Node.js EventEmitter.
@@ -27,7 +28,7 @@ export class EventEmitter implements IEventEmitter {
 		this.emitter.off(eventName, listener);
 	}
 
-	@OnShutdown()
+	@OnShutdown(LOWEST_SHUTDOWN_PRIORITY)
 	onShutdown() {
 		this.emitter.removeAllListeners();
 	}

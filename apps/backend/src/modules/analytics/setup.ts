@@ -6,7 +6,7 @@ import { AnalyticsIntegrationController } from './http/controller/analytics-inte
 import { ShortUrlAnalyticsController } from './http/controller/short-url-analytics.controller';
 
 // Register event handlers
-import './event/handler/scan-tracking.event-handler';
+import './event/handler';
 
 const setupAnalyticsModule: FastifyPluginCallback = (fastify: FastifyInstance, options, done) => {
 	registerRoutes(fastify, AnalyticsIntegrationController, `/analytics-integration`, options);

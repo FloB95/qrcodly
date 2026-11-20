@@ -35,8 +35,6 @@ import { deleteEach } from '@/core/http/bulk-delete';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
 import { buildShortUrl } from '../../utils';
 import { HOT_SHORT_CODES_KEY } from '../../config/constants';
-import { UmamiAnalyticsService } from '@/modules/analytics/service/umami-analytics.service';
-import { SHORT_URL_VIEWS_CACHE_KEY_PREFIX } from '@/modules/analytics/config/constants';
 import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { CreateShortUrlUseCase } from '../../useCase/create-short-url.use-case';
 import { ListShortUrlsUseCase } from '../../useCase/list-short-urls.use-case';
@@ -47,11 +45,11 @@ import { TokenTypeSchema } from '@/core/domain/schema/UserSchema';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { KeyCache } from '@/core/cache';
 import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
-import { DispatchTrackingEventUseCase } from '@/modules/analytics/useCase/dispatch-tracking-event.use-case';
 import TagRepository from '@/modules/tag/domain/repository/tag.repository';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { shortUrlScans } from '@/core/metrics';
 import { DuplicateShortUrlUseCase } from '../../useCase/duplicate-short-url.use-case';
+import { RecordScanUseCase } from '../../useCase/record-scan.use-case';
 import { Logger } from '@/core/logging';
 import { ShortUrlBlockedError } from '../../error/http/short-url-blocked.error';
 import UrlSafetyIncidentRepository from '../../domain/repository/url-safety-incident.repository';
@@ -78,10 +76,7 @@ export class ShortUrlController extends AbstractController {
 		private readonly listShortUrlsUseCase: ListShortUrlsUseCase,
 		@inject(DeleteShortUrlUseCase)
 		private readonly deleteShortUrlUseCase: DeleteShortUrlUseCase,
-		@inject(UmamiAnalyticsService) private readonly umamiAnalyticsService: UmamiAnalyticsService,
 		@inject(KeyCache) private readonly keyCache: KeyCache,
-		@inject(DispatchTrackingEventUseCase)
-		private readonly dispatchTrackingEventUseCase: DispatchTrackingEventUseCase,
 		@inject(TagRepository) private readonly tagRepository: TagRepository,
 		@inject(DuplicateShortUrlUseCase)
 		private readonly duplicateShortUrlUseCase: DuplicateShortUrlUseCase,
@@ -91,6 +86,7 @@ export class ShortUrlController extends AbstractController {
 		@inject(UserSafetyStandingRepository)
 		private readonly safetyStandingRepository: UserSafetyStandingRepository,
 		@inject(HostedPageService) private readonly hostedPageService: HostedPageService,
+		@inject(RecordScanUseCase) private readonly recordScanUseCase: RecordScanUseCase,
 	) {
 		super();
 	}
@@ -572,40 +568,12 @@ export class ShortUrlController extends AbstractController {
 			referrer: body.referrer,
 		});
 
-		// 1. Clear views cache
-		void this.keyCache.del(`${SHORT_URL_VIEWS_CACHE_KEY_PREFIX}${shortCode}`);
-
 		// Traffic signal for the safety re-check tiering. Real view counts live in Umami, and querying
 		// it per link from a nightly job would be unaffordable, so the hot set is the cheap proxy: a
 		// sorted set bumped here (no DB write on the scan path) and trimmed by the job.
 		void this.bumpHotShortCode(shortCode);
 
-		// 2. Send to Umami
-		void this.umamiAnalyticsService.sendEvent({
-			url: body.url,
-			userAgent: body.userAgent,
-			hostname: body.hostname,
-			language: body.language,
-			referrer: body.referrer,
-			deviceType: body.deviceType,
-			ip: body.ip,
-		});
-
-		// 3. Dispatch to user analytics integrations (GA4, Matomo)
-		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
-		if (shortUrl?.createdBy) {
-			this.dispatchTrackingEventUseCase.execute({
-				userId: shortUrl.createdBy,
-				url: body.url,
-				userAgent: body.userAgent,
-				hostname: body.hostname,
-				language: body.language,
-				referrer: body.referrer,
-				ip: body.ip,
-				deviceType: body.deviceType,
-				browserName: body.browserName,
-			});
-		}
+		await this.recordScanUseCase.execute(shortCode, body);
 
 		return this.makeApiHttpResponse(200, { status: 'ok' });
 	}
