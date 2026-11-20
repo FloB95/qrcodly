@@ -1,11 +1,12 @@
 import 'reflect-metadata';
+import { mock, type MockProxy } from 'jest-mock-extended';
+import { Ga4ApiError, type Ga4Client } from '@/libs/ga4';
 import { GoogleAnalyticsProvider } from '../providers/google-analytics.provider';
 import type { IScanEventData } from '../providers/analytics-provider.interface';
 
 describe('GoogleAnalyticsProvider', () => {
 	let provider: GoogleAnalyticsProvider;
-	let mockFetch: jest.Mock;
-	const originalFetch = global.fetch;
+	let ga4Client: MockProxy<Ga4Client>;
 
 	const baseScanEvent: IScanEventData = {
 		url: 'https://example.com/landing',
@@ -24,56 +25,61 @@ describe('GoogleAnalyticsProvider', () => {
 	};
 
 	beforeEach(() => {
-		provider = new GoogleAnalyticsProvider();
-		mockFetch = jest.fn();
-		global.fetch = mockFetch;
-	});
-
-	afterEach(() => {
-		global.fetch = originalFetch;
-		jest.restoreAllMocks();
+		ga4Client = mock<Ga4Client>();
+		provider = new GoogleAnalyticsProvider(ga4Client);
 	});
 
 	describe('sendEvent', () => {
 		it('should send directly to collect endpoint', async () => {
-			mockFetch.mockResolvedValueOnce({ ok: true });
+			ga4Client.collect.mockResolvedValueOnce();
 
 			await provider.sendEvent(baseScanEvent, validCredentials);
 
-			expect(mockFetch).toHaveBeenCalledTimes(1);
-
-			const call = mockFetch.mock.calls[0];
-			expect(call[0]).toContain('/mp/collect');
-			expect(call[0]).not.toContain('/debug/');
-			expect(call[0]).toContain('measurement_id=G-ABCDEF1234');
-			expect(call[0]).toContain('api_secret=test_api_secret');
+			expect(ga4Client.collect).toHaveBeenCalledTimes(1);
+			expect(ga4Client.validate).not.toHaveBeenCalled();
+			expect(ga4Client.collect.mock.calls[0][0]).toEqual({
+				measurementId: 'G-ABCDEF1234',
+				apiSecret: 'test_api_secret',
+			});
 		});
 
 		it('should send page_view event with correct params', async () => {
-			mockFetch.mockResolvedValueOnce({ ok: true });
+			ga4Client.collect.mockResolvedValueOnce();
 
 			await provider.sendEvent(baseScanEvent, validCredentials);
 
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body as string);
-			expect(body.events).toHaveLength(1);
-			expect(body.events[0].name).toBe('page_view');
-			expect(body.events[0].params.page_location).toBe('https://example.com/landing');
-			expect(body.events[0].params.page_title).toBe('QR Code Scan');
-			expect(body.events[0].params.source).toBe('qr_code');
-			expect(body.events[0].params.language).toBe('en-US');
+			const payload = ga4Client.collect.mock.calls[0][1];
+			expect(payload.events).toHaveLength(1);
+			expect(payload.events[0].name).toBe('page_view');
+			expect(payload.events[0].params).toEqual({
+				page_location: 'https://example.com/landing',
+				page_title: 'QR Code Scan',
+				page_referrer: '',
+				language: 'en-US',
+				source: 'qr_code',
+			});
 		});
 
-		it('should not forward User-Agent header to protect privacy', async () => {
-			mockFetch.mockResolvedValueOnce({ ok: true });
+		it('should send the anonymized IP', async () => {
+			ga4Client.collect.mockResolvedValueOnce();
+
+			await provider.sendEvent({ ...baseScanEvent, ip: '203.0.113.42' }, validCredentials);
+
+			expect(ga4Client.collect.mock.calls[0][1].ip_override).toBe('203.0.113.0');
+		});
+
+		it('should not forward the User-Agent to protect privacy', async () => {
+			ga4Client.collect.mockResolvedValueOnce();
 
 			await provider.sendEvent(baseScanEvent, validCredentials);
 
-			const headers = mockFetch.mock.calls[0][1].headers;
-			expect(headers['User-Agent']).toBeUndefined();
+			expect(JSON.stringify(ga4Client.collect.mock.calls[0])).not.toContain(
+				baseScanEvent.userAgent,
+			);
 		});
 
 		it('should throw when collect endpoint returns non-OK status', async () => {
-			mockFetch.mockResolvedValueOnce({ ok: false, status: 503 });
+			ga4Client.collect.mockRejectedValueOnce(new Ga4ApiError(503, 'collect'));
 
 			await expect(provider.sendEvent(baseScanEvent, validCredentials)).rejects.toThrow(
 				'GA4 collect endpoint returned status 503',
@@ -81,44 +87,34 @@ describe('GoogleAnalyticsProvider', () => {
 		});
 
 		it('should generate a random client_id', async () => {
-			mockFetch.mockResolvedValueOnce({ ok: true });
+			ga4Client.collect.mockResolvedValueOnce();
 
 			await provider.sendEvent(baseScanEvent, validCredentials);
 
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body as string);
-			expect(body.client_id).toBeDefined();
-			expect(typeof body.client_id).toBe('string');
-			expect(body.client_id).toMatch(/^\d+\.\d+$/);
+			const payload = ga4Client.collect.mock.calls[0][1];
+			expect(payload.client_id).toBeDefined();
+			expect(typeof payload.client_id).toBe('string');
+			expect(payload.client_id).toMatch(/^\d+\.\d+$/);
 		});
 	});
 
 	describe('validateCredentials', () => {
 		it('should return valid with credentialsVerified: false when debug endpoint passes', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () => Promise.resolve({ validationMessages: [] }),
-			});
+			ga4Client.validate.mockResolvedValueOnce(true);
 
 			const result = await provider.validateCredentials(validCredentials);
 
 			expect(result).toEqual({ valid: true, credentialsVerified: false });
-			expect(mockFetch.mock.calls[0][0]).toContain('/debug/mp/collect');
+			expect(ga4Client.validate).toHaveBeenCalledTimes(1);
+			expect(ga4Client.collect).not.toHaveBeenCalled();
+			expect(ga4Client.validate.mock.calls[0][0]).toEqual({
+				measurementId: 'G-ABCDEF1234',
+				apiSecret: 'test_api_secret',
+			});
 		});
 
 		it('should always return credentialsVerified: false (GA4 cannot verify credentials)', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () =>
-					Promise.resolve({
-						validationMessages: [
-							{
-								fieldPath: 'measurement_id',
-								description: 'Invalid measurement ID.',
-								validationCode: 'INVALID_MEASUREMENT_ID',
-							},
-						],
-					}),
-			});
+			ga4Client.validate.mockResolvedValueOnce(false);
 
 			const result = await provider.validateCredentials(validCredentials);
 
@@ -126,7 +122,7 @@ describe('GoogleAnalyticsProvider', () => {
 		});
 
 		it('should return valid: false when debug endpoint returns non-OK status', async () => {
-			mockFetch.mockResolvedValueOnce({ ok: false, status: 401 });
+			ga4Client.validate.mockRejectedValueOnce(new Ga4ApiError(401, 'debug'));
 
 			const result = await provider.validateCredentials(validCredentials);
 
@@ -134,7 +130,7 @@ describe('GoogleAnalyticsProvider', () => {
 		});
 
 		it('should return valid: false when fetch throws', async () => {
-			mockFetch.mockRejectedValueOnce(new Error('Network error'));
+			ga4Client.validate.mockRejectedValueOnce(new Error('Network error'));
 
 			const result = await provider.validateCredentials(validCredentials);
 
@@ -142,15 +138,19 @@ describe('GoogleAnalyticsProvider', () => {
 		});
 
 		it('should send a page_view event for validation', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				json: () => Promise.resolve({ validationMessages: [] }),
-			});
+			ga4Client.validate.mockResolvedValueOnce(true);
 
 			await provider.validateCredentials(validCredentials);
 
-			const body = JSON.parse(mockFetch.mock.calls[0][1].body as string);
-			expect(body.events[0].name).toBe('page_view');
+			expect(ga4Client.validate.mock.calls[0][1]).toEqual({
+				client_id: 'test_validation',
+				events: [
+					{
+						name: 'page_view',
+						params: { page_location: 'https://example.com/test', page_title: 'Test' },
+					},
+				],
+			});
 		});
 	});
 });

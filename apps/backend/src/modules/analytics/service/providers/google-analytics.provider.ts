@@ -1,26 +1,28 @@
-import { singleton } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import {
 	type IAnalyticsProvider,
 	type IScanEventData,
 	type IValidationResult,
 } from './analytics-provider.interface';
 import { anonymizeIp } from '@/utils/general';
-import { trackExternal } from '@/core/metrics';
+import { Ga4Client, type IGa4Payload } from '@/libs/ga4';
 
-interface GA4ValidationMessage {
-	fieldPath: string;
-	description: string;
-	validationCode: string;
-}
-
-interface GA4DebugResponse {
-	validationMessages?: GA4ValidationMessage[];
-}
+const VALIDATION_PAYLOAD: IGa4Payload = {
+	client_id: 'test_validation',
+	events: [
+		{
+			name: 'page_view',
+			params: {
+				page_location: 'https://example.com/test',
+				page_title: 'Test',
+			},
+		},
+	],
+};
 
 @singleton()
 export class GoogleAnalyticsProvider implements IAnalyticsProvider {
-	private readonly GA_COLLECT_URL = 'https://www.google-analytics.com/mp/collect';
-	private readonly GA_DEBUG_URL = 'https://www.google-analytics.com/debug/mp/collect';
+	constructor(@inject(Ga4Client) private readonly ga4Client: Ga4Client) {}
 
 	async sendEvent(event: IScanEventData, credentials: Record<string, unknown>): Promise<void> {
 		const { measurementId, apiSecret } = credentials as {
@@ -28,30 +30,9 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 			apiSecret: string;
 		};
 
-		const queryParams = new URLSearchParams({
-			measurement_id: measurementId,
-			api_secret: apiSecret,
-		});
-		const payload = this.buildPayload(event);
-		const headers: Record<string, string> = {
-			'Content-Type': 'application/json',
-		};
-		const body = JSON.stringify(payload);
-
 		// Send directly to collect endpoint (debug endpoint only validates payload
 		// structure, not credentials, and adds unnecessary latency/dependency)
-		const collectResponse = await trackExternal('google_analytics', 'collect', () =>
-			fetch(`${this.GA_COLLECT_URL}?${queryParams.toString()}`, {
-				method: 'POST',
-				headers,
-				body,
-				signal: AbortSignal.timeout(5000),
-			}),
-		);
-
-		if (!collectResponse.ok) {
-			throw new Error(`GA4 collect endpoint returned status ${collectResponse.status}`);
-		}
+		await this.ga4Client.collect({ measurementId, apiSecret }, this.buildPayload(event));
 	}
 
 	async validateCredentials(credentials: Record<string, unknown>): Promise<IValidationResult> {
@@ -65,45 +46,18 @@ export class GoogleAnalyticsProvider implements IAnalyticsProvider {
 		// validates event payload structure, not credentials. We validate the
 		// payload format and return credentialsVerified: false to indicate that
 		// actual credential verification is not possible.
-		const params = new URLSearchParams({
-			measurement_id: measurementId,
-			api_secret: apiSecret,
-		});
-		const url = `${this.GA_DEBUG_URL}?${params.toString()}`;
-		const body = {
-			client_id: 'test_validation',
-			events: [
-				{
-					name: 'page_view',
-					params: {
-						page_location: 'https://example.com/test',
-						page_title: 'Test',
-					},
-				},
-			],
-		};
-
 		try {
-			const response = await trackExternal('google_analytics', 'validate', () =>
-				fetch(url, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(body),
-					signal: AbortSignal.timeout(5000),
-				}),
+			const formatValid = await this.ga4Client.validate(
+				{ measurementId, apiSecret },
+				VALIDATION_PAYLOAD,
 			);
-
-			if (!response.ok) return { valid: false, credentialsVerified: false };
-
-			const result = (await response.json()) as GA4DebugResponse;
-			const formatValid = !result.validationMessages || result.validationMessages.length === 0;
 			return { valid: formatValid, credentialsVerified: false };
 		} catch {
 			return { valid: false, credentialsVerified: false };
 		}
 	}
 
-	private buildPayload(event: IScanEventData) {
+	private buildPayload(event: IScanEventData): IGa4Payload {
 		return {
 			client_id: this.generateClientId(),
 			ip_override: anonymizeIp(event.ip),

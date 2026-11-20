@@ -1,20 +1,18 @@
 import { inject, singleton } from 'tsyringe';
-import { Logger } from '@/core/logging';
-import { env } from '@/core/config/env';
-import QueryString from 'qs';
 import {
 	TAnalyticsMetric,
 	TAnalyticsResponseDto,
 	TAnalyticsTopEntry,
 	TTimeSeries,
 } from '@shared/schemas';
+import {
+	type IUmamiDataPoint,
+	type IUmamiPageviews,
+	type IUmamiWebsiteQuery,
+	type TUmamiSendOutcome,
+	UmamiClient,
+} from '@/libs/umami';
 import { BROWSERS, DEVICES } from '../config/constants';
-import { trackExternal, umamiEventsTotal } from '@/core/metrics';
-
-const UMAMI_SEND_TIMEOUT_MS = 5_000;
-const UMAMI_ERROR_BODY_LIMIT = 500;
-
-export type UmamiSendOutcome = 'accepted' | 'discarded' | 'rejected' | 'error';
 
 /**
  * Umami labels hourly buckets in Europe/Berlin time without an offset. The container runs with
@@ -36,93 +34,9 @@ function findTopEntry(metrics: TAnalyticsMetric[]): TAnalyticsTopEntry | null {
 
 @singleton()
 export class UmamiAnalyticsService {
-	private umamiHost: string;
-	private umamiUsername: string;
-	private umamiPassword: string;
-	private umamiAuthToken: string;
-	private umamiWebsiteId: string;
-	private logger: Logger;
+	constructor(@inject(UmamiClient) private readonly umamiClient: UmamiClient) {}
 
-	constructor(@inject(Logger) logger: Logger) {
-		this.umamiHost = env.UMAMI_HOST;
-		this.umamiUsername = env.UMAMI_USERNAME;
-		this.umamiPassword = env.UMAMI_PASSWORD;
-		this.umamiWebsiteId = env.UMAMI_WEBSITE;
-
-		this.logger = logger;
-	}
-
-	private async fetchUmamiAuthToken(): Promise<string> {
-		const url = `${this.umamiHost}/api/auth/login`;
-		const body = {
-			username: this.umamiUsername,
-			password: this.umamiPassword,
-		};
-
-		try {
-			const response = await trackExternal('umami', 'auth_token', () =>
-				fetch(url, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(body),
-				}),
-			);
-
-			if (!response.ok) {
-				const errorBody = await response.text();
-				this.logger.error(`error.umamiApi.fetchToken`, {
-					status: response.status,
-					body: errorBody,
-				});
-				throw new Error(`Failed to fetch auth token from Umami: ${response.status} - ${errorBody}`);
-			}
-
-			const data = (await response.json()) as unknown as { token: string };
-			this.umamiAuthToken = data.token;
-			return data.token;
-		} catch (error) {
-			this.logger.error('error.umamiApi.fetchToken', { error });
-			throw error;
-		}
-	}
-
-	private async fetchUmamiData(endpoint: string, queryObject: object): Promise<any> {
-		const token = this.umamiAuthToken || (await this.fetchUmamiAuthToken());
-
-		const queryString = QueryString.stringify(queryObject);
-		const url = `${this.umamiHost}/api/${endpoint}?${queryString}`;
-
-		try {
-			// Last path segment only — the full endpoint embeds the website id.
-			const operation = `fetch:${endpoint.split('/').pop() || 'unknown'}`;
-			const response = await trackExternal('umami', operation, () =>
-				fetch(url, {
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				}),
-			);
-
-			if (!response.ok) {
-				const errorBody = await response.text();
-				this.logger.error(`error.umamiApi.fetchData`, {
-					status: response.status,
-					body: errorBody,
-				});
-				throw new Error(`Failed to fetch data from Umami: ${response.status} - ${errorBody}`);
-			}
-
-			return response.json();
-		} catch (error) {
-			this.logger.error('error.umamiApi.fetchData', { error });
-			throw error;
-		}
-	}
-
-	private mapMetrics(metrics: { x: string; y: number }[]): TAnalyticsMetric[] {
+	private mapMetrics(metrics: IUmamiDataPoint[]): TAnalyticsMetric[] {
 		metrics = metrics.filter(
 			(metric) => metric.x !== null && metric.x !== undefined && metric.x !== '',
 		);
@@ -133,13 +47,7 @@ export class UmamiAnalyticsService {
 		}));
 	}
 
-	private mapSessionsAndPageviews({
-		pageviews,
-		sessions,
-	}: {
-		pageviews: { x: string; y: number }[];
-		sessions: { x: string; y: number }[];
-	}): {
+	private mapSessionsAndPageviews({ pageviews, sessions }: IUmamiPageviews): {
 		pageviews: TTimeSeries[];
 		sessions: TTimeSeries[];
 	} {
@@ -164,12 +72,7 @@ export class UmamiAnalyticsService {
 	}
 
 	/**
-	 * Forwards a scan to Umami and reports what Umami did with it.
-	 *
-	 * Umami answers 200 in two very different cases: when it stores the event, and when its
-	 * bot filter silently discards it. Only the storing path echoes a cache token in the body,
-	 * so an empty 200 means the event never landed. Without that distinction the scan counter
-	 * and the Umami dashboard drift apart with nothing in the logs to explain it.
+	 * Forwards a scan to Umami and reports what Umami did with it (see UmamiClient.sendEvent).
 	 *
 	 * Only `device` is overridden here. Umami 3 honours `payload.device`/`payload.browser` via `??`,
 	 * which does not fall through on '' — so an empty override silently blanks the dimension rather
@@ -185,88 +88,32 @@ export class UmamiAnalyticsService {
 		referrer: string;
 		deviceType: string;
 		ip: string;
-	}): Promise<UmamiSendOutcome> {
-		try {
-			const response = await trackExternal('umami', 'send_event', () =>
-				fetch(`${this.umamiHost}/api/send`, {
-					method: 'POST',
-					signal: AbortSignal.timeout(UMAMI_SEND_TIMEOUT_MS),
-					headers: {
-						'Content-Type': 'application/json',
-						'User-Agent': payload.userAgent,
-						'X-Client-Real-IP': payload.ip,
-					},
-					body: JSON.stringify({
-						type: 'event',
-						payload: {
-							website: this.umamiWebsiteId,
-							url: payload.url,
-							hostname: payload.hostname,
-							language: payload.language,
-							referrer: payload.referrer,
-							// Sent in the body as well as in the header: browser and os are derived from it,
-							// and an outbound User-Agent header is the kind of thing a proxy rewrites.
-							userAgent: payload.userAgent,
-							// Omitted when empty so Umami falls back to its own user-agent detection.
-							device: payload.deviceType || undefined,
-							ip: payload.ip,
-						},
-					}),
-				}),
-			);
-
-			const body = await response.text().catch(() => '');
-
-			if (!response.ok) {
-				this.logger.error('error.umamiApi.sendEvent', {
-					status: response.status,
-					body: body.slice(0, UMAMI_ERROR_BODY_LIMIT),
-					userAgent: payload.userAgent,
-				});
-				umamiEventsTotal.add(1, { outcome: 'rejected', status: response.status });
-				return 'rejected';
-			}
-
-			if (body.trim().length === 0) {
-				this.logger.warn('umami.event.discarded', {
-					reason: 'empty_200_response',
-					userAgent: payload.userAgent,
-					hostname: payload.hostname,
-				});
-				umamiEventsTotal.add(1, { outcome: 'discarded' });
-				return 'discarded';
-			}
-
-			umamiEventsTotal.add(1, { outcome: 'accepted' });
-			return 'accepted';
-		} catch (error) {
-			this.logger.error('error.umamiApi.sendEvent', { error, userAgent: payload.userAgent });
-			umamiEventsTotal.add(1, { outcome: 'error' });
-			return 'error';
-		}
+	}): Promise<TUmamiSendOutcome> {
+		return this.umamiClient.sendEvent({
+			url: payload.url,
+			hostname: payload.hostname,
+			language: payload.language,
+			referrer: payload.referrer,
+			// Sent in the body as well as in the header: browser and os are derived from it,
+			// and an outbound User-Agent header is the kind of thing a proxy rewrites.
+			userAgent: payload.userAgent,
+			// Omitted when empty so Umami falls back to its own user-agent detection.
+			device: payload.deviceType || undefined,
+			ip: payload.ip,
+		});
 	}
 
 	public async getViewsForEndpoint(url: string): Promise<number> {
 		const now = Date.now();
-		const defaultParams = {
+		const defaultParams: IUmamiWebsiteQuery = {
 			startAt: new Date('2023-04-20T00:00:00Z').getTime(), // old start date to get all data
 			endAt: now,
 			unit: 'day',
 			path: url,
 			timezone: 'Europe/Berlin',
 		};
-		interface WebsiteStats {
-			pageviews: number;
-			visitors: number;
-			visits: number;
-			bounces: number;
-			totaltime: number;
-		}
 
-		const websiteStats = (await this.fetchUmamiData(
-			`websites/${this.umamiWebsiteId}/stats`,
-			defaultParams,
-		)) as WebsiteStats;
+		const websiteStats = await this.umamiClient.getWebsiteStats(defaultParams);
 
 		return websiteStats?.pageviews ?? 0;
 	}
@@ -280,7 +127,7 @@ export class UmamiAnalyticsService {
 		{ includeDetails }: { includeDetails: boolean },
 	): Promise<TAnalyticsResponseDto> {
 		const now = Date.now();
-		const defaultParams = {
+		const defaultParams: IUmamiWebsiteQuery = {
 			startAt: new Date('2025-01-01T00:00:00Z').getTime(), // old start date to get all data
 			endAt: now,
 			unit: 'day',
@@ -288,14 +135,11 @@ export class UmamiAnalyticsService {
 			timezone: 'Europe/Berlin',
 		};
 
-		const websiteStats = await this.fetchUmamiData(
-			`websites/${this.umamiWebsiteId}/stats`,
-			defaultParams,
-		);
+		const websiteStats = await this.umamiClient.getWebsiteStats(defaultParams);
 
 		const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000;
 		const viewsAndSessions = this.mapSessionsAndPageviews(
-			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/pageviews`, {
+			await this.umamiClient.getWebsitePageviews({
 				...defaultParams,
 				startAt: thirtyDaysAgo,
 				unit: 'hour',
@@ -304,7 +148,7 @@ export class UmamiAnalyticsService {
 
 		const browserMetrics = includeDetails
 			? this.mapMetrics(
-					await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
+					await this.umamiClient.getWebsiteMetrics({
 						...defaultParams,
 						type: 'browser',
 					}),
@@ -316,7 +160,7 @@ export class UmamiAnalyticsService {
 
 		const osMetrics = includeDetails
 			? this.mapMetrics(
-					await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
+					await this.umamiClient.getWebsiteMetrics({
 						...defaultParams,
 						type: 'os',
 					}),
@@ -324,7 +168,7 @@ export class UmamiAnalyticsService {
 			: null;
 
 		const deviceMetrics = this.mapMetrics(
-			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
+			await this.umamiClient.getWebsiteMetrics({
 				...defaultParams,
 				type: 'device',
 			}),
@@ -334,7 +178,7 @@ export class UmamiAnalyticsService {
 		}));
 
 		const countryMetrics = this.mapMetrics(
-			await this.fetchUmamiData(`websites/${this.umamiWebsiteId}/metrics`, {
+			await this.umamiClient.getWebsiteMetrics({
 				...defaultParams,
 				type: 'country',
 			}),

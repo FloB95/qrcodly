@@ -1,134 +1,35 @@
+import { mock, type MockProxy } from 'jest-mock-extended';
+import {
+	type IUmamiDataPoint,
+	type IUmamiPageviews,
+	type IUmamiWebsiteStats,
+	type TUmamiMetricType,
+	type UmamiClient,
+} from '@/libs/umami';
 import { UmamiAnalyticsService } from '../umami-analytics.service';
-import type { Logger } from '@/core/logging';
-import { mock } from 'jest-mock-extended';
 
-// Mock environment variables
-jest.mock('@/core/config/env', () => ({
-	env: {
-		UMAMI_HOST: 'https://umami.example.com',
-		UMAMI_USERNAME: 'test_user',
-		UMAMI_PASSWORD: 'test_password',
-		UMAMI_WEBSITE: 'website_123',
-	},
-}));
+const NOW = Date.parse('2026-06-15T12:00:00Z');
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+const stats = (pageviews = 100): IUmamiWebsiteStats => ({
+	pageviews,
+	visitors: 50,
+	visits: 75,
+	bounces: 10,
+	totaltime: 5000,
+});
 
 describe('UmamiAnalyticsService', () => {
+	let client: MockProxy<UmamiClient>;
 	let service: UmamiAnalyticsService;
-	let mockLogger: jest.Mocked<Logger>;
-	let mockFetch: jest.Mock;
 
 	beforeEach(() => {
-		mockLogger = mock<Logger>();
-		service = new UmamiAnalyticsService(mockLogger);
-		mockFetch = jest.fn();
-		global.fetch = mockFetch;
+		client = mock<UmamiClient>();
+		service = new UmamiAnalyticsService(client);
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
-	});
-
-	describe('fetchUmamiAuthToken', () => {
-		it('should fetch auth token from Umami API on first request', async () => {
-			const mockToken = 'mock_jwt_token';
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: () => Promise.resolve({ token: mockToken }),
-			});
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: () => Promise.resolve({ pageviews: 100 }),
-			});
-
-			await service.getViewsForEndpoint('/test-url');
-
-			expect(mockFetch).toHaveBeenCalledWith(
-				'https://umami.example.com/api/auth/login',
-				expect.objectContaining({
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({
-						username: 'test_user',
-						password: 'test_password',
-					}),
-				}),
-			);
-		});
-
-		it('should cache auth token for subsequent requests', async () => {
-			const mockToken = 'mock_jwt_token';
-			mockFetch
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: () => Promise.resolve({ token: mockToken }),
-				})
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: () => Promise.resolve({ pageviews: 100 }),
-				})
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: () => Promise.resolve({ pageviews: 200 }),
-				});
-
-			await service.getViewsForEndpoint('/test-url-1');
-			await service.getViewsForEndpoint('/test-url-2');
-
-			// Auth should only be called once
-
-			const authCalls = mockFetch.mock.calls.filter((call: any) =>
-				String(call[0]).includes('/api/auth/login'),
-			);
-			expect(authCalls).toHaveLength(1);
-		});
-
-		it('should send username and password to /api/auth/login', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: () => Promise.resolve({ pageviews: 100 }),
-			});
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: () => Promise.resolve({ token: 'mock_token' }),
-			});
-
-			await service.getViewsForEndpoint('/test-url');
-
-			const authCall = mockFetch.mock.calls.find((call: any) =>
-				String(call[0]).includes('/api/auth/login'),
-			);
-			expect(authCall).toBeDefined();
-
-			const body = JSON.parse(authCall[1].body) as { username: string; password: string };
-			expect(body.username).toBe('test_user');
-			expect(body.password).toBe('test_password');
-		});
-
-		it('should handle auth failures with error logging', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: false,
-				status: 401,
-				text: () => Promise.resolve('Unauthorized'),
-			});
-
-			await expect(service.getViewsForEndpoint('/test-url')).rejects.toThrow();
-
-			expect(mockLogger.error).toHaveBeenCalledWith(
-				'error.umamiApi.fetchToken',
-				expect.objectContaining({
-					error: expect.any(Error),
-				}),
-			);
-		});
+		jest.restoreAllMocks();
 	});
 
 	describe('sendEvent', () => {
@@ -142,55 +43,50 @@ describe('UmamiAnalyticsService', () => {
 			ip: '203.0.113.7',
 		};
 
-		/** The `payload` object Umami receives, parsed back out of the mocked fetch call. */
-		const sentPayload = (): Record<string, unknown> => {
-			const [, init] = mockFetch.mock.calls[0] as [string, { body: string }];
-			return (JSON.parse(init.body) as { payload: Record<string, unknown> }).payload;
-		};
+		/** The event payload handed to the Umami client */
+		const sentEvent = (): Record<string, unknown> =>
+			client.sendEvent.mock.calls[0][0] as unknown as Record<string, unknown>;
 
-		it('forwards the scanner IP via X-Client-Real-IP so Umami geolocates the visitor', async () => {
-			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
+		beforeEach(() => {
+			client.sendEvent.mockResolvedValue('accepted');
+		});
 
+		it('hands the scan to Umami with the scanner IP so Umami geolocates the visitor', async () => {
 			await service.sendEvent(payload);
 
-			expect(mockFetch).toHaveBeenCalledWith(
-				'https://umami.example.com/api/send',
-				expect.objectContaining({
-					method: 'POST',
-					headers: expect.objectContaining({
-						'User-Agent': payload.userAgent,
-						'X-Client-Real-IP': payload.ip,
-					}),
-				}),
-			);
+			expect(client.sendEvent).toHaveBeenCalledTimes(1);
+			expect(client.sendEvent).toHaveBeenCalledWith({
+				url: payload.url,
+				hostname: payload.hostname,
+				language: payload.language,
+				referrer: payload.referrer,
+				userAgent: payload.userAgent,
+				device: 'mobile',
+				ip: payload.ip,
+			});
 		});
 
 		it('forwards a resolved device type as the device override', async () => {
-			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
-
 			await service.sendEvent(payload);
 
-			expect(sentPayload()).toMatchObject({ device: 'mobile' });
+			expect(sentEvent()).toMatchObject({ device: 'mobile' });
 		});
 
 		// Umami 3 reads payload.device with `??`, so '' overrides its own detection instead of
-		// falling through — that is what blanked every desktop scan. Omitting the key restores it.
+		// falling through — that is what blanked every desktop scan. Leaving it unset (the client
+		// then drops the key) restores it.
 		it('omits the device override entirely when the device type is empty', async () => {
-			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
-
 			await service.sendEvent({ ...payload, deviceType: '' });
 
-			expect(sentPayload()).not.toHaveProperty('device');
+			expect(sentEvent().device).toBeUndefined();
 		});
 
 		// Our ua-parser browser names ('Mobile Chrome') do not match the detect-browser keys
 		// ('crios') that Umami stores and BROWSERS maps for display.
 		it('never overrides browser, os or screen so Umami keeps deriving them', async () => {
-			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
-
 			await service.sendEvent(payload);
 
-			const sent = sentPayload();
+			const sent = sentEvent();
 			expect(sent).not.toHaveProperty('browser');
 			expect(sent).not.toHaveProperty('os');
 			expect(sent).not.toHaveProperty('screen');
@@ -198,170 +94,141 @@ describe('UmamiAnalyticsService', () => {
 			expect(sent).toMatchObject({ userAgent: payload.userAgent });
 		});
 
-		it('reports accepted when Umami echoes a cache token', async () => {
-			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
+		it.each(['accepted', 'discarded', 'rejected', 'error'] as const)(
+			'reports the %s outcome of the client',
+			async (outcome) => {
+				client.sendEvent.mockResolvedValue(outcome);
 
-			await expect(service.sendEvent(payload)).resolves.toBe('accepted');
-			expect(mockLogger.warn).not.toHaveBeenCalled();
-			expect(mockLogger.error).not.toHaveBeenCalled();
-		});
-
-		it('reports discarded when Umami answers 200 with an empty body', async () => {
-			mockFetch.mockResolvedValue({ ok: true, text: async () => '' });
-
-			await expect(service.sendEvent(payload)).resolves.toBe('discarded');
-			expect(mockLogger.warn).toHaveBeenCalledWith(
-				'umami.event.discarded',
-				expect.objectContaining({ userAgent: payload.userAgent }),
-			);
-		});
-
-		it('reports rejected and logs the status when Umami returns an error response', async () => {
-			mockFetch.mockResolvedValue({ ok: false, status: 400, text: async () => 'bad payload' });
-
-			await expect(service.sendEvent(payload)).resolves.toBe('rejected');
-			expect(mockLogger.error).toHaveBeenCalledWith(
-				'error.umamiApi.sendEvent',
-				expect.objectContaining({ status: 400, body: 'bad payload' }),
-			);
-		});
-
-		it('does not throw and logs when the Umami request fails', async () => {
-			mockFetch.mockRejectedValue(new Error('network'));
-
-			await expect(service.sendEvent(payload)).resolves.toBe('error');
-			expect(mockLogger.error).toHaveBeenCalledWith('error.umamiApi.sendEvent', expect.anything());
-		});
-
-		it('aborts the request instead of hanging when Umami is unresponsive', async () => {
-			mockFetch.mockResolvedValue({ ok: true, text: async () => 'cache-token' });
-
-			await service.sendEvent(payload);
-
-			expect(mockFetch).toHaveBeenCalledWith(
-				'https://umami.example.com/api/send',
-				expect.objectContaining({ signal: expect.any(AbortSignal) }),
-			);
-		});
+				await expect(service.sendEvent(payload)).resolves.toBe(outcome);
+			},
+		);
 	});
 
 	describe('getViewsForEndpoint', () => {
-		beforeEach(() => {
-			// Mock successful auth
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => ({ token: 'mock_token' }),
-			});
-		});
-
-		it('should fetch page views from /websites/{id}/stats endpoint', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => ({
-					pageviews: 150,
-					visitors: 75,
-					visits: 100,
-					bounces: 10,
-					totaltime: 5000,
-				}),
-			});
-
-			await service.getViewsForEndpoint('/test-url');
-
-			const statsCall = mockFetch.mock.calls.find((call) => call[0].includes('/stats?'));
-			expect(statsCall).toBeDefined();
-			expect(statsCall![0]).toContain('websites/website_123/stats');
-		});
-
-		it('should return pageviews count from response', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => ({
-					pageviews: 250,
-					visitors: 100,
-				}),
-			});
-
-			const views = await service.getViewsForEndpoint('/test-url');
-
-			expect(views).toBe(250);
-		});
-
-		it('should return 0 when pageviews is undefined', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => ({}),
-			});
-
-			const views = await service.getViewsForEndpoint('/test-url');
-
-			expect(views).toBe(0);
-		});
-
-		it('should return 0 when pageviews is null', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => ({ pageviews: null }),
-			});
-
-			const views = await service.getViewsForEndpoint('/test-url');
-
-			expect(views).toBe(0);
-		});
-
-		it('should use correct query params (startAt, endAt, path, timezone)', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => ({ pageviews: 100 }),
-			});
+		it('asks for the stats of the path since 2023-04-20, per day, in Berlin time', async () => {
+			jest.spyOn(Date, 'now').mockReturnValue(NOW);
+			client.getWebsiteStats.mockResolvedValue(stats());
 
 			await service.getViewsForEndpoint('/custom-path');
 
-			const statsCall = mockFetch.mock.calls.find((call) => call[0].includes('/stats?'));
-			expect(statsCall![0]).toContain('path=%2Fcustom-path');
-			expect(statsCall![0]).toContain('timezone=Europe%2FBerlin');
-			expect(statsCall![0]).toContain('unit=day');
+			expect(client.getWebsiteStats).toHaveBeenCalledTimes(1);
+			const [query] = client.getWebsiteStats.mock.calls[0];
 			// Umami 3.1+ rejects compare values other than 'prev'|'yoy' — must not be sent.
-			expect(statsCall![0]).not.toContain('compare');
+			expect(query).toStrictEqual({
+				startAt: Date.parse('2023-04-20T00:00:00Z'),
+				endAt: NOW,
+				unit: 'day',
+				path: '/custom-path',
+				timezone: 'Europe/Berlin',
+			});
+			// The client sends the query in this order
+			expect(Object.keys(query)).toEqual(['startAt', 'endAt', 'unit', 'path', 'timezone']);
+		});
+
+		it('should return pageviews count from response', async () => {
+			client.getWebsiteStats.mockResolvedValue(stats(250));
+
+			await expect(service.getViewsForEndpoint('/test-url')).resolves.toBe(250);
+		});
+
+		it.each([
+			['undefined', {}],
+			['null', { pageviews: null }],
+		])('should return 0 when pageviews is %s', async (_, response) => {
+			client.getWebsiteStats.mockResolvedValue(response as unknown as IUmamiWebsiteStats);
+
+			await expect(service.getViewsForEndpoint('/test-url')).resolves.toBe(0);
+		});
+
+		it('propagates a failing Umami request', async () => {
+			client.getWebsiteStats.mockRejectedValue(
+				new Error('Failed to fetch auth token from Umami: 401 - Unauthorized'),
+			);
+
+			await expect(service.getViewsForEndpoint('/test-url')).rejects.toThrow(
+				'Failed to fetch auth token from Umami',
+			);
 		});
 	});
 
 	describe('getAnalyticsForEndpoint', () => {
-		beforeEach(() => {
-			// Mock successful auth
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => ({ token: 'mock_token' }),
+		const mockUmami = ({
+			websiteStats = stats(),
+			pageviews = { pageviews: [], sessions: [] },
+			metrics = {},
+		}: {
+			websiteStats?: IUmamiWebsiteStats;
+			pageviews?: IUmamiPageviews;
+			metrics?: Partial<Record<TUmamiMetricType, unknown[]>>;
+		}) => {
+			client.getWebsiteStats.mockResolvedValue(websiteStats);
+			client.getWebsitePageviews.mockResolvedValue(pageviews);
+			client.getWebsiteMetrics.mockImplementation(
+				async ({ type }) => (metrics[type] ?? []) as IUmamiDataPoint[],
+			);
+		};
+
+		const requestedMetricTypes = () =>
+			client.getWebsiteMetrics.mock.calls.map(([query]) => query.type);
+
+		const hoursAgoLabel = (hours: number) => {
+			const date = new Date(Date.now() - hours * 60 * 60 * 1000);
+			const pad = (value: number) => String(value).padStart(2, '0');
+			return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:00:00`;
+		};
+
+		it('asks for the stats, 30 days of hourly pageviews and every breakdown, in that order', async () => {
+			jest.spyOn(Date, 'now').mockReturnValue(NOW);
+			mockUmami({});
+
+			await service.getAnalyticsForEndpoint('/test-url', { includeDetails: true });
+
+			const baseQuery = {
+				startAt: Date.parse('2025-01-01T00:00:00Z'),
+				endAt: NOW,
+				unit: 'day',
+				path: '/test-url',
+				timezone: 'Europe/Berlin',
+			};
+			const keyOrder = ['startAt', 'endAt', 'unit', 'path', 'timezone'];
+
+			const [statsQuery] = client.getWebsiteStats.mock.calls[0];
+			expect(statsQuery).toStrictEqual(baseQuery);
+			expect(Object.keys(statsQuery)).toEqual(keyOrder);
+
+			const [pageviewsQuery] = client.getWebsitePageviews.mock.calls[0];
+			expect(pageviewsQuery).toStrictEqual({
+				...baseQuery,
+				startAt: NOW - 30 * DAY_MS,
+				unit: 'hour',
 			});
+			expect(Object.keys(pageviewsQuery)).toEqual(keyOrder);
+
+			expect(requestedMetricTypes()).toEqual(['browser', 'os', 'device', 'country']);
+			client.getWebsiteMetrics.mock.calls.forEach(([query]) => {
+				expect(query).toStrictEqual({ ...baseQuery, type: query.type });
+				expect(Object.keys(query)).toEqual([...keyOrder, 'type']);
+			});
+
+			const [statsOrder] = client.getWebsiteStats.mock.invocationCallOrder;
+			const [pageviewsOrder] = client.getWebsitePageviews.mock.invocationCallOrder;
+			const [firstMetricOrder] = client.getWebsiteMetrics.mock.invocationCallOrder;
+			expect(statsOrder).toBeLessThan(pageviewsOrder);
+			expect(pageviewsOrder).toBeLessThan(firstMetricOrder);
 		});
 
 		it('should fetch multiple metrics (stats, pageviews, browsers, os, device, country)', async () => {
-			// Mock all API calls
-			const mockResponses = [
-				{ pageviews: 100, visitors: 50, visits: 75, bounces: 10, totaltime: 5000 }, // stats
-				{
+			mockUmami({
+				pageviews: {
 					pageviews: [{ x: '2025-01-01', y: 10 }],
 					sessions: [{ x: '2025-01-01', y: 5 }],
-				}, // pageviews
-				[{ x: 'chrome', y: 50 }], // browsers
-				[{ x: 'windows', y: 40 }], // os
-				[{ x: 'desktop', y: 60 }], // device
-				[{ x: 'US', y: 70 }], // country
-			];
-
-			mockResponses.forEach((response) => {
-				mockFetch.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => response,
-				});
+				},
+				metrics: {
+					browser: [{ x: 'chrome', y: 50 }],
+					os: [{ x: 'windows', y: 40 }],
+					device: [{ x: 'desktop', y: 60 }],
+					country: [{ x: 'US', y: 70 }],
+				},
 			});
 
 			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
@@ -377,24 +244,16 @@ describe('UmamiAnalyticsService', () => {
 		});
 
 		it('should map metrics correctly with mapMetrics()', async () => {
-			const mockResponses = [
-				{ pageviews: 100 },
-				{ pageviews: [], sessions: [] },
-				[
-					{ x: 'chrome', y: 50 },
-					{ x: 'firefox', y: 30 },
-				],
-				[{ x: 'windows', y: 40 }],
-				[{ x: 'desktop', y: 60 }],
-				[{ x: 'US', y: 70 }],
-			];
-
-			mockResponses.forEach((response) => {
-				mockFetch.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => response,
-				});
+			mockUmami({
+				metrics: {
+					browser: [
+						{ x: 'chrome', y: 50 },
+						{ x: 'firefox', y: 30 },
+					],
+					os: [{ x: 'windows', y: 40 }],
+					device: [{ x: 'desktop', y: 60 }],
+					country: [{ x: 'US', y: 70 }],
+				},
 			});
 
 			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
@@ -407,9 +266,8 @@ describe('UmamiAnalyticsService', () => {
 		});
 
 		it('should map sessions and pageviews with mapSessionsAndPageviews()', async () => {
-			const mockResponses = [
-				{ pageviews: 100 },
-				{
+			mockUmami({
+				pageviews: {
 					pageviews: [
 						{ x: '2025-01-01', y: 10 },
 						{ x: '2025-01-02', y: 15 },
@@ -419,18 +277,6 @@ describe('UmamiAnalyticsService', () => {
 						{ x: '2025-01-02', y: 8 },
 					],
 				},
-				[],
-				[],
-				[],
-				[],
-			];
-
-			mockResponses.forEach((response) => {
-				mockFetch.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => response,
-				});
 			});
 
 			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
@@ -445,26 +291,16 @@ describe('UmamiAnalyticsService', () => {
 			});
 		});
 
-		it('should filter out null/undefined metric values', async () => {
-			const mockResponses = [
-				{ pageviews: 100 },
-				{ pageviews: [], sessions: [] },
-				[
-					{ x: 'chrome', y: 50 },
-					{ x: null, y: 30 },
-					{ x: undefined, y: 20 },
-				],
-				[],
-				[],
-				[],
-			];
-
-			mockResponses.forEach((response) => {
-				mockFetch.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => response,
-				});
+		it('should filter out null/undefined/empty metric values', async () => {
+			mockUmami({
+				metrics: {
+					browser: [
+						{ x: 'chrome', y: 50 },
+						{ x: null, y: 30 },
+						{ x: undefined, y: 20 },
+						{ x: '', y: 10 },
+					],
+				},
 			});
 
 			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
@@ -476,38 +312,19 @@ describe('UmamiAnalyticsService', () => {
 			expect(analytics.browserMetrics![0].label).toBe('Chrome');
 		});
 
-		const mockDataResponses = (responses: unknown[]) => {
-			responses.forEach((response) => {
-				mockFetch.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => response,
-				});
-			});
-		};
-
-		const hoursAgoLabel = (hours: number) => {
-			const date = new Date(Date.now() - hours * 60 * 60 * 1000);
-			const pad = (value: number) => String(value).padStart(2, '0');
-			return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:00:00`;
-		};
-
 		it('should not fetch browser or os metrics without details', async () => {
-			mockDataResponses([
-				{ pageviews: 100, visitors: 50, visits: 75, bounces: 10, totaltime: 5000 },
-				{ pageviews: [], sessions: [] },
-				[{ x: 'mobile', y: 60 }],
-				[{ x: 'DE', y: 70 }],
-			]);
+			mockUmami({
+				metrics: {
+					device: [{ x: 'mobile', y: 60 }],
+					country: [{ x: 'DE', y: 70 }],
+				},
+			});
 
 			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
 				includeDetails: false,
 			});
 
-			const metricTypes = mockFetch.mock.calls
-				.map((call) => new URL(call[0] as string).searchParams.get('type'))
-				.filter(Boolean);
-			expect(metricTypes).toEqual(['device', 'country']);
+			expect(requestedMetricTypes()).toEqual(['device', 'country']);
 
 			expect(analytics.detailsLocked).toBe(true);
 			expect(analytics.viewsAndSessions).toBeNull();
@@ -521,14 +338,14 @@ describe('UmamiAnalyticsService', () => {
 		});
 
 		it('should return the details alongside the summary when included', async () => {
-			mockDataResponses([
-				{ pageviews: 100, visitors: 50, visits: 75, bounces: 10, totaltime: 5000 },
-				{ pageviews: [], sessions: [] },
-				[{ x: 'chrome', y: 50 }],
-				[{ x: 'windows', y: 40 }],
-				[{ x: 'mobile', y: 60 }],
-				[{ x: 'DE', y: 70 }],
-			]);
+			mockUmami({
+				metrics: {
+					browser: [{ x: 'chrome', y: 50 }],
+					os: [{ x: 'windows', y: 40 }],
+					device: [{ x: 'mobile', y: 60 }],
+					country: [{ x: 'DE', y: 70 }],
+				},
+			});
 
 			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
 				includeDetails: true,
@@ -543,9 +360,8 @@ describe('UmamiAnalyticsService', () => {
 		});
 
 		it('should sum only the hourly buckets of the last 7 days', async () => {
-			mockDataResponses([
-				{ pageviews: 100, visitors: 50, visits: 75, bounces: 10, totaltime: 5000 },
-				{
+			mockUmami({
+				pageviews: {
 					pageviews: [
 						{ x: hoursAgoLabel(10 * 24), y: 40 },
 						{ x: hoursAgoLabel(3 * 24), y: 5 },
@@ -557,9 +373,7 @@ describe('UmamiAnalyticsService', () => {
 						{ x: hoursAgoLabel(2), y: 3 },
 					],
 				},
-				[],
-				[],
-			]);
+			});
 
 			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
 				includeDetails: false,
@@ -570,18 +384,19 @@ describe('UmamiAnalyticsService', () => {
 		});
 
 		it('should pick the largest country and device with their rounded share', async () => {
-			mockDataResponses([
-				{ pageviews: 3, visitors: 3, visits: 3, bounces: 0, totaltime: 0 },
-				{ pageviews: [], sessions: [] },
-				[
-					{ x: 'desktop', y: 1 },
-					{ x: 'mobile', y: 2 },
-				],
-				[
-					{ x: 'AT', y: 1 },
-					{ x: 'DE', y: 2 },
-				],
-			]);
+			mockUmami({
+				websiteStats: { pageviews: 3, visitors: 3, visits: 3, bounces: 0, totaltime: 0 },
+				metrics: {
+					device: [
+						{ x: 'desktop', y: 1 },
+						{ x: 'mobile', y: 2 },
+					],
+					country: [
+						{ x: 'AT', y: 1 },
+						{ x: 'DE', y: 2 },
+					],
+				},
+			});
 
 			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
 				includeDetails: false,
@@ -592,12 +407,9 @@ describe('UmamiAnalyticsService', () => {
 		});
 
 		it('should report no top country or device when nothing was tracked', async () => {
-			mockDataResponses([
-				{ pageviews: 0, visitors: 0, visits: 0, bounces: 0, totaltime: 0 },
-				{ pageviews: [], sessions: [] },
-				[],
-				[],
-			]);
+			mockUmami({
+				websiteStats: { pageviews: 0, visitors: 0, visits: 0, bounces: 0, totaltime: 0 },
+			});
 
 			const analytics = await service.getAnalyticsForEndpoint('/test-url', {
 				includeDetails: false,
@@ -611,150 +423,15 @@ describe('UmamiAnalyticsService', () => {
 			});
 		});
 
-		it('should throw error when auth request fails', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: false,
-				status: 401,
-				text: () => Promise.resolve('Unauthorized'),
-			});
-
-			await expect(
-				service.getAnalyticsForEndpoint('/test-url', { includeDetails: true }),
-			).rejects.toThrow();
-		});
-
-		it('should log errors with status code and body', async () => {
-			mockFetch
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => ({ token: 'mock_token' }),
-				})
-				.mockResolvedValueOnce({
-					ok: false,
-					status: 500,
-					text: () => Promise.resolve('Internal Server Error'),
-				});
-
-			await expect(
-				service.getAnalyticsForEndpoint('/test-url', { includeDetails: true }),
-			).rejects.toThrow();
-
-			expect(mockLogger.error).toHaveBeenCalledWith(
-				'error.umamiApi.fetchData',
-				expect.objectContaining({
-					error: expect.any(Error),
-				}),
+		it('should throw when a data request fails', async () => {
+			mockUmami({});
+			client.getWebsiteMetrics.mockRejectedValue(
+				new Error('Failed to fetch data from Umami: 404 - Not Found'),
 			);
-		});
-
-		it('should throw error when data fetch fails (non-200)', async () => {
-			mockFetch
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => ({ token: 'mock_token' }),
-				})
-				.mockResolvedValueOnce({
-					ok: false,
-					status: 404,
-					text: () => Promise.resolve('Not Found'),
-				});
 
 			await expect(
 				service.getAnalyticsForEndpoint('/test-url', { includeDetails: true }),
 			).rejects.toThrow('Failed to fetch data from Umami');
-		});
-
-		it('should handle network errors gracefully', async () => {
-			mockFetch
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => ({ token: 'mock_token' }),
-				})
-				.mockRejectedValueOnce(new Error('Network error'));
-
-			await expect(
-				service.getAnalyticsForEndpoint('/test-url', { includeDetails: true }),
-			).rejects.toThrow('Network error');
-
-			expect(mockLogger.error).toHaveBeenCalledWith(
-				'error.umamiApi.fetchData',
-				expect.objectContaining({
-					error: expect.any(Error),
-				}),
-			);
-		});
-
-		it('should include Authorization header with Bearer token', async () => {
-			mockFetch
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => ({ pageviews: 100 }),
-				})
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => ({ pageviews: [], sessions: [] }),
-				})
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => [],
-				})
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => [],
-				})
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => [],
-				})
-				.mockResolvedValueOnce({
-					ok: true,
-					status: 200,
-					json: async () => [],
-				});
-
-			await service.getAnalyticsForEndpoint('/test-url', { includeDetails: true });
-
-			// Check that all data fetch calls include Authorization header
-			const dataFetchCalls = mockFetch.mock.calls.filter(
-				(call) => !call[0].includes('/api/auth/login'),
-			);
-			dataFetchCalls.forEach((call) => {
-				expect(call[1]?.headers?.Authorization).toBeDefined();
-			});
-		});
-
-		it('should use correct Umami host from env', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => ({ pageviews: 100 }),
-			});
-
-			await service.getViewsForEndpoint('/test-url');
-
-			const statsCall = mockFetch.mock.calls.find((call) => call[0].includes('/stats'));
-			expect(statsCall![0]).toContain('https://umami.example.com');
-		});
-
-		it('should use correct website ID from env', async () => {
-			mockFetch.mockResolvedValueOnce({
-				ok: true,
-				status: 200,
-				json: async () => ({ pageviews: 100 }),
-			});
-
-			await service.getViewsForEndpoint('/test-url');
-
-			const statsCall = mockFetch.mock.calls.find((call) => call[0].includes('/stats'));
-			expect(statsCall![0]).toContain('websites/website_123');
 		});
 	});
 });
