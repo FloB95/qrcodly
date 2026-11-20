@@ -8,13 +8,13 @@ import {
 } from '../../http/__tests__/utils';
 import { DisableProFeaturesUseCase } from '../disable-pro-features.use-case';
 import { EnableProFeaturesUseCase } from '../enable-pro-features.use-case';
-import AnalyticsIntegrationRepository from '@/modules/analytics-integration/domain/repository/analytics-integration.repository';
+import AnalyticsIntegrationRepository from '@/modules/analytics/domain/repository/analytics-integration.repository';
 import UserSubscriptionRepository from '../../domain/repository/user-subscription.repository';
 import db from '@/core/db';
-import analyticsIntegration from '@/modules/analytics-integration/domain/entities/analytics-integration.entity';
+import analyticsIntegration from '@/modules/analytics/domain/entities/analytics-integration.entity';
 import { eq } from 'drizzle-orm';
 import { randomUUID } from 'crypto';
-import { CredentialEncryptionService } from '@/modules/analytics-integration/service/credential-encryption.service';
+import { CredentialEncryptionService } from '@/modules/analytics/service/credential-encryption.service';
 
 describe('Pro Features Use Cases', () => {
 	let ctx: TestContext;

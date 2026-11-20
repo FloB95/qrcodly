@@ -7,14 +7,10 @@ import { AnalyticsIntegrationController } from './http/controller/analytics-inte
 // Register event handlers
 import './event/handler/scan-tracking.event-handler';
 
-const setupAnalyticsIntegrationModule: FastifyPluginCallback = (
-	fastify: FastifyInstance,
-	options,
-	done,
-) => {
+const setupAnalyticsModule: FastifyPluginCallback = (fastify: FastifyInstance, options, done) => {
 	registerRoutes(fastify, AnalyticsIntegrationController, `/analytics-integration`, options);
-	container.resolve(Logger).info('☑️  Analytics integration module loaded');
+	container.resolve(Logger).info('☑️  Analytics module loaded');
 	done();
 };
 
-export default setupAnalyticsIntegrationModule;
+export default setupAnalyticsModule;

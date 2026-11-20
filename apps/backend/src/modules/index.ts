@@ -9,7 +9,7 @@ import urlShortener from './url-shortener/setup';
 import customDomain from './custom-domain/setup';
 import tag from './tag/setup';
 import billing from './billing/setup';
-import analyticsIntegration from './analytics-integration/setup';
+import analytics from './analytics/setup';
 import userSurvey from './user-survey/setup';
 import apiKey from './api-key/setup';
 import integrationUsage from './integration-usage/setup';
@@ -25,7 +25,7 @@ const modules: FastifyPluginCallback = (fastify: FastifyInstance, _options, done
 	fastify.register(customDomain);
 	fastify.register(tag);
 	fastify.register(billing);
-	fastify.register(analyticsIntegration);
+	fastify.register(analytics);
 	fastify.register(userSurvey);
 	fastify.register(apiKey);
 	fastify.register(integrationUsage);

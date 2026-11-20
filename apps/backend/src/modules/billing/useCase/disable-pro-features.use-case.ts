@@ -2,7 +2,7 @@ import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from '@/core/logging';
 import CustomDomainRepository from '@/modules/custom-domain/domain/repository/custom-domain.repository';
-import AnalyticsIntegrationRepository from '@/modules/analytics-integration/domain/repository/analytics-integration.repository';
+import AnalyticsIntegrationRepository from '@/modules/analytics/domain/repository/analytics-integration.repository';
 import UserSubscriptionRepository from '../domain/repository/user-subscription.repository';
 import { HostedPageCacheService } from '@/modules/hosted-page/service/hosted-page-cache.service';
 
