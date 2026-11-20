@@ -12,7 +12,7 @@ import {
 	type TUmamiSendOutcome,
 	UmamiClient,
 } from '@/libs/umami';
-import { BROWSERS, DEVICES } from '../config/constants';
+import { ANALYTICS_START_DATE, BROWSERS, DEVICES } from '../config/constants';
 
 /**
  * Umami labels hourly buckets in Europe/Berlin time without an offset. The container runs with
@@ -106,7 +106,7 @@ export class UmamiAnalyticsService {
 	public async getViewsForEndpoint(url: string): Promise<number> {
 		const now = Date.now();
 		const defaultParams: IUmamiWebsiteQuery = {
-			startAt: new Date('2023-04-20T00:00:00Z').getTime(), // old start date to get all data
+			startAt: ANALYTICS_START_DATE.getTime(),
 			endAt: now,
 			unit: 'day',
 			path: url,
@@ -128,7 +128,7 @@ export class UmamiAnalyticsService {
 	): Promise<TAnalyticsResponseDto> {
 		const now = Date.now();
 		const defaultParams: IUmamiWebsiteQuery = {
-			startAt: new Date('2025-01-01T00:00:00Z').getTime(), // old start date to get all data
+			startAt: ANALYTICS_START_DATE.getTime(),
 			endAt: now,
 			unit: 'day',
 			path: url,

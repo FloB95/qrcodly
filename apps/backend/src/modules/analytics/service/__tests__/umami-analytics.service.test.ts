@@ -183,8 +183,9 @@ describe('UmamiAnalyticsService', () => {
 
 			await service.getAnalyticsForEndpoint('/test-url', { includeDetails: true });
 
+			// Same start as getViewsForEndpoint, so the analytics page matches the views counter
 			const baseQuery = {
-				startAt: Date.parse('2025-01-01T00:00:00Z'),
+				startAt: Date.parse('2023-04-20T00:00:00Z'),
 				endAt: NOW,
 				unit: 'day',
 				path: '/test-url',

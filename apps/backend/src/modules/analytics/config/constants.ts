@@ -4,6 +4,9 @@ export const MAX_CONSECUTIVE_FAILURES = 10;
 export const SHORT_URL_VIEWS_CACHE_KEY_PREFIX = 'views:';
 export const SHORT_URL_VIEWS_CACHE_TTL_SECONDS = 3600;
 
+/** Lower bound of every all-time Umami query, so the views counter and the analytics page agree */
+export const ANALYTICS_START_DATE = new Date('2023-04-20T00:00:00Z');
+
 export const DEVICES = {
 	desktop: 'Desktop',
 	mobile: 'Mobile',
