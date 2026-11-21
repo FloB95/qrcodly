@@ -22,7 +22,7 @@
 		"node": ">=22.11.0",
 		"pnpm": ">=11.13.1"
 	},
-	"packageManager": "pnpm@11.28.11",
+	"packageManager": "pnpm@11.28.13",
 	"scripts": {
 		"setup": "pnpm install",
 		"build": "pnpm -r --if-present run build",

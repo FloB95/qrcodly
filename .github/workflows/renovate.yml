@@ -31,7 +31,7 @@ jobs:
           repositories: ${{ github.event.repository.name }}
 
       - name: Run Renovate
-        uses: renovatebot/github-action@266fef21329c44765ad42f9dea1f01f5d2d91084 # v46.3.13
+        uses: renovatebot/github-action@acdd6bda8b035c99ce59d5675816af2aa65a1774 # v46.3.14
         with:
           token: ${{ steps.app-token.outputs.token }}
           renovate-image: ghcr.io/renovatebot/renovate:44.239.1@sha256:7dba1a3b916a2cf302ba0df458ddcc8fcbac3c92d0fe9882ac13ba0363de656b
