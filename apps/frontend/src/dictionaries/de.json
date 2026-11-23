@@ -1400,7 +1400,7 @@
 		"question11": "Wo werden meine Daten gehostet?",
 		"answer11": "Die Kerninfrastruktur von QRcodly läuft auf Servern in Deutschland. Für die Anmeldung nutzen wir Clerk, für Zahlungen Stripe, für den Versand der Produktneuigkeiten Amazon SES und Sentry und PostHog, um Fehler zu finden und das Produkt zu verbessern. Deine Daten werden weder verkauft noch für Werbung Dritter genutzt. Mit einem Konto bekommst du gelegentlich Produktneuigkeiten von QRcodly per E-Mail. Das kannst du jederzeit in den Einstellungen oder über den Link in jeder E-Mail abschalten.",
 		"question12": "Wie lösche ich mein Konto?",
-		"answer12": "Unter Einstellungen → Profil kannst du ganz unten die Löschung deines Kontos beantragen. Wir schicken dir dann eine E-Mail, in der du die Löschung bestätigst. Die Löschung ist endgültig und lässt sich nicht rückgängig machen: Wir löschen deine persönlichen Daten und alles, was du angelegt hast, etwa QR-Codes, Kurz-URLs, Vorlagen und Statistiken. Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr. Bis wir dein Konto löschen, ist es schreibgeschützt: Du kannst alles ansehen und löschen, aber nichts Neues anlegen oder ändern. Den Antrag kannst du dort widerrufen. Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt.",
+		"answer12": "Unter Einstellungen → Profil kannst du ganz unten die Löschung deines Kontos beantragen. Wir schicken dir dann eine E-Mail, in der du die Löschung bestätigst. Die Löschung ist endgültig und lässt sich nicht rückgängig machen: Wir löschen deine persönlichen Daten und alles, was du angelegt hast, etwa QR-Codes, Kurz-URLs und Vorlagen. Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr. Bis wir dein Konto löschen, ist es schreibgeschützt: Du kannst alles ansehen und löschen, aber nichts Neues anlegen oder ändern. Den Antrag kannst du dort widerrufen. Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt.",
 		"viewAll": "Alle FAQs anzeigen"
 	},
 	"fileUpload": {
@@ -1786,7 +1786,7 @@
 			"deletionDescription": "Beantrage die Löschung deines Kontos und aller zugehörigen Daten.",
 			"deletionWarningTitle": "Die Löschung ist endgültig und lässt sich nicht rückgängig machen:",
 			"deletionWarning1": "Deine persönlichen Daten und dein Profil werden gelöscht.",
-			"deletionWarning2": "Alles, was du angelegt hast, wird gelöscht, etwa QR-Codes, Kurz-URLs, Vorlagen, Tags und Statistiken.",
+			"deletionWarning2": "Alles, was du angelegt hast, wird gelöscht, etwa QR-Codes, Kurz-URLs, Vorlagen und Tags.",
 			"deletionWarning3": "Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr.",
 			"deletionWarning4": "Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt.",
 			"deletionRequestButton": "Löschung beantragen",
@@ -2672,7 +2672,7 @@
 				"q8": "Kann ich jährlich zahlen, und wie lange läuft das Abo dann?",
 				"a8": "Ja. Beim Upgrade wählst du zwischen monatlicher und jährlicher Zahlung. Bei jährlicher Zahlung zahlst du einmal für das ganze Jahr, und Pro gilt für zwölf Monate ab dem Kaufdatum. Danach verlängert sich das Abo automatisch um weitere zwölf Monate; kündigen kannst du jederzeit online zum Ende der Laufzeit.",
 				"q9": "Wie lösche ich mein Konto?",
-				"a9": "Unter Einstellungen → Profil kannst du ganz unten die Löschung deines Kontos beantragen. Wir schicken dir dann eine E-Mail, in der du die Löschung bestätigst. Die Löschung ist endgültig und lässt sich nicht rückgängig machen: Wir löschen deine persönlichen Daten und alles, was du angelegt hast, etwa QR-Codes, Kurz-URLs, Vorlagen und Statistiken. Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr. Bis wir dein Konto löschen, ist es schreibgeschützt: Du kannst alles ansehen und löschen, aber nichts Neues anlegen oder ändern. Den Antrag kannst du dort widerrufen. Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt."
+				"a9": "Unter Einstellungen → Profil kannst du ganz unten die Löschung deines Kontos beantragen. Wir schicken dir dann eine E-Mail, in der du die Löschung bestätigst. Die Löschung ist endgültig und lässt sich nicht rückgängig machen: Wir löschen deine persönlichen Daten und alles, was du angelegt hast, etwa QR-Codes, Kurz-URLs und Vorlagen. Deine dynamischen QR-Codes und Kurz-URLs funktionieren danach nicht mehr. Bis wir dein Konto löschen, ist es schreibgeschützt: Du kannst alles ansehen und löschen, aber nichts Neues anlegen oder ändern. Den Antrag kannst du dort widerrufen. Nur Rechnungen bewahren wir so lange auf, wie es das Gesetz verlangt."
 			}
 		}
 	},

@@ -1400,7 +1400,7 @@
 		"question11": "Où sont hébergées mes données ?",
 		"answer11": "L'infrastructure principale de QRcodly tourne sur des serveurs en Allemagne. Nous utilisons Clerk pour la connexion, Stripe pour les paiements, Amazon SES pour l'envoi des actualités produit ainsi que Sentry et PostHog pour détecter les erreurs et améliorer le produit. Vos données ne sont ni vendues ni utilisées à des fins publicitaires par des tiers. Si vous avez un compte, vous recevez de temps en temps des actualités produit de QRcodly par email. Vous pouvez les désactiver à tout moment dans les paramètres ou via le lien présent dans chaque email.",
 		"question12": "Comment supprimer mon compte ?",
-		"answer12": "Dans Paramètres → Profil, en bas de la page, vous pouvez demander la suppression de votre compte. Nous vous envoyons ensuite un e-mail dans lequel vous confirmez la suppression. La suppression est définitive et irréversible : nous supprimons vos données personnelles et tout ce que vous avez créé, comme les QR codes, URL courtes, modèles et statistiques. Vos QR codes dynamiques et vos URL courtes ne fonctionneront plus ensuite. Jusqu'à la suppression, votre compte est en lecture seule : vous pouvez tout consulter et supprimer, mais ni créer ni modifier quoi que ce soit. Vous pouvez y retirer la demande. Seules les factures sont conservées, aussi longtemps que la loi l'exige.",
+		"answer12": "Dans Paramètres → Profil, en bas de la page, vous pouvez demander la suppression de votre compte. Nous vous envoyons ensuite un e-mail dans lequel vous confirmez la suppression. La suppression est définitive et irréversible : nous supprimons vos données personnelles et tout ce que vous avez créé, comme les QR codes, URL courtes et modèles. Vos QR codes dynamiques et vos URL courtes ne fonctionneront plus ensuite. Jusqu'à la suppression, votre compte est en lecture seule : vous pouvez tout consulter et supprimer, mais ni créer ni modifier quoi que ce soit. Vous pouvez y retirer la demande. Seules les factures sont conservées, aussi longtemps que la loi l'exige.",
 		"viewAll": "Voir toutes les FAQ"
 	},
 	"notFound": {
@@ -1790,7 +1790,7 @@
 			"deletionDescription": "Demandez la suppression de votre compte et de toutes ses données.",
 			"deletionWarningTitle": "La suppression est définitive et irréversible :",
 			"deletionWarning1": "Vos données personnelles et votre profil sont supprimés.",
-			"deletionWarning2": "Tout ce que vous avez créé est supprimé, comme les QR codes, URL courtes, modèles, étiquettes et statistiques.",
+			"deletionWarning2": "Tout ce que vous avez créé est supprimé, comme les QR codes, URL courtes, modèles et étiquettes.",
 			"deletionWarning3": "Vos QR codes dynamiques et vos URL courtes ne fonctionneront plus.",
 			"deletionWarning4": "Seules les factures sont conservées, aussi longtemps que la loi l'exige.",
 			"deletionRequestButton": "Demander la suppression",
@@ -2672,7 +2672,7 @@
 				"q8": "Puis-je payer à l'année, et combien de temps dure l'abonnement ?",
 				"a8": "Oui. Lors du passage à Pro, vous choisissez entre paiement mensuel et annuel. En paiement annuel, vous payez une seule fois pour toute l'année et Pro est valable douze mois à compter de la date d'achat. L'abonnement se renouvelle ensuite automatiquement pour douze mois supplémentaires, et vous pouvez le résilier en ligne à tout moment, avec effet à la fin de la période.",
 				"q9": "Comment supprimer mon compte ?",
-				"a9": "Dans Paramètres → Profil, en bas de la page, vous pouvez demander la suppression de votre compte. Nous vous envoyons ensuite un e-mail dans lequel vous confirmez la suppression. La suppression est définitive et irréversible : nous supprimons vos données personnelles et tout ce que vous avez créé, comme les QR codes, URL courtes, modèles et statistiques. Vos QR codes dynamiques et vos URL courtes ne fonctionneront plus ensuite. Jusqu'à la suppression, votre compte est en lecture seule : vous pouvez tout consulter et supprimer, mais ni créer ni modifier quoi que ce soit. Vous pouvez y retirer la demande. Seules les factures sont conservées, aussi longtemps que la loi l'exige."
+				"a9": "Dans Paramètres → Profil, en bas de la page, vous pouvez demander la suppression de votre compte. Nous vous envoyons ensuite un e-mail dans lequel vous confirmez la suppression. La suppression est définitive et irréversible : nous supprimons vos données personnelles et tout ce que vous avez créé, comme les QR codes, URL courtes et modèles. Vos QR codes dynamiques et vos URL courtes ne fonctionneront plus ensuite. Jusqu'à la suppression, votre compte est en lecture seule : vous pouvez tout consulter et supprimer, mais ni créer ni modifier quoi que ce soit. Vous pouvez y retirer la demande. Seules les factures sont conservées, aussi longtemps que la loi l'exige."
 			}
 		}
 	},
