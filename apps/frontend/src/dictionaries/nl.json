@@ -1400,7 +1400,7 @@
 		"question11": "Waar worden mijn gegevens gehost?",
 		"answer11": "De kerninfrastructuur van QRcodly draait op servers in Duitsland. We gebruiken Clerk voor het inloggen, Stripe voor betalingen, Amazon SES voor het versturen van productnieuws en Sentry en PostHog om fouten te vinden en het product te verbeteren. Je gegevens worden niet verkocht of voor reclame van derden gebruikt. Met een account ontvang je af en toe productnieuws van QRcodly per e-mail. Dat kun je op elk moment uitzetten in de instellingen of via de link in elke e-mail.",
 		"question12": "Hoe verwijder ik mijn account?",
-		"answer12": "Onder Instellingen → Profiel kun je onderaan de pagina de verwijdering van je account aanvragen. We sturen je dan een e-mail waarin je de verwijdering bevestigt. Het verwijderen is definitief en kan niet ongedaan worden gemaakt: we wissen je persoonsgegevens en alles wat je hebt aangemaakt, zoals QR-codes, korte URL's, sjablonen en statistieken. Daarna werken je dynamische QR-codes en korte URL's niet meer. Tot we je account verwijderen, is het alleen-lezen: je kunt alles bekijken en verwijderen, maar niets nieuws aanmaken of wijzigen. De aanvraag kun je daar intrekken. Alleen facturen bewaren we, zo lang als de wet voorschrijft.",
+		"answer12": "Onder Instellingen → Profiel kun je onderaan de pagina de verwijdering van je account aanvragen. We sturen je dan een e-mail waarin je de verwijdering bevestigt. Het verwijderen is definitief en kan niet ongedaan worden gemaakt: we wissen je persoonsgegevens en alles wat je hebt aangemaakt, zoals QR-codes, korte URL's en sjablonen. Daarna werken je dynamische QR-codes en korte URL's niet meer. Tot we je account verwijderen, is het alleen-lezen: je kunt alles bekijken en verwijderen, maar niets nieuws aanmaken of wijzigen. De aanvraag kun je daar intrekken. Alleen facturen bewaren we, zo lang als de wet voorschrijft.",
 		"viewAll": "Bekijk alle FAQ's"
 	},
 	"fileUpload": {
@@ -1786,7 +1786,7 @@
 			"deletionDescription": "Vraag de verwijdering van je account en alle bijbehorende gegevens aan.",
 			"deletionWarningTitle": "Het verwijderen is definitief en kan niet ongedaan worden gemaakt:",
 			"deletionWarning1": "Je persoonsgegevens en je profiel worden gewist.",
-			"deletionWarning2": "Alles wat je hebt aangemaakt wordt gewist, zoals QR-codes, korte URL's, sjablonen, tags en statistieken.",
+			"deletionWarning2": "Alles wat je hebt aangemaakt wordt gewist, zoals QR-codes, korte URL's, sjablonen en tags.",
 			"deletionWarning3": "Je dynamische QR-codes en korte URL's werken daarna niet meer.",
 			"deletionWarning4": "Alleen facturen bewaren we, zo lang als de wet voorschrijft.",
 			"deletionRequestButton": "Verwijdering aanvragen",
@@ -2672,7 +2672,7 @@
 				"q8": "Kan ik per jaar betalen, en hoe lang loopt het abonnement dan?",
 				"a8": "Ja. Bij het upgraden kies je tussen maandelijkse en jaarlijkse betaling. Bij jaarlijkse betaling betaal je één keer voor het hele jaar en geldt Pro twaalf maanden vanaf de aankoopdatum. Daarna wordt het abonnement automatisch met twaalf maanden verlengd; je kunt op elk moment online opzeggen tegen het einde van de looptijd.",
 				"q9": "Hoe verwijder ik mijn account?",
-				"a9": "Onder Instellingen → Profiel kun je onderaan de pagina de verwijdering van je account aanvragen. We sturen je dan een e-mail waarin je de verwijdering bevestigt. Het verwijderen is definitief en kan niet ongedaan worden gemaakt: we wissen je persoonsgegevens en alles wat je hebt aangemaakt, zoals QR-codes, korte URL's, sjablonen en statistieken. Daarna werken je dynamische QR-codes en korte URL's niet meer. Tot we je account verwijderen, is het alleen-lezen: je kunt alles bekijken en verwijderen, maar niets nieuws aanmaken of wijzigen. De aanvraag kun je daar intrekken. Alleen facturen bewaren we, zo lang als de wet voorschrijft."
+				"a9": "Onder Instellingen → Profiel kun je onderaan de pagina de verwijdering van je account aanvragen. We sturen je dan een e-mail waarin je de verwijdering bevestigt. Het verwijderen is definitief en kan niet ongedaan worden gemaakt: we wissen je persoonsgegevens en alles wat je hebt aangemaakt, zoals QR-codes, korte URL's en sjablonen. Daarna werken je dynamische QR-codes en korte URL's niet meer. Tot we je account verwijderen, is het alleen-lezen: je kunt alles bekijken en verwijderen, maar niets nieuws aanmaken of wijzigen. De aanvraag kun je daar intrekken. Alleen facturen bewaren we, zo lang als de wet voorschrijft."
 			}
 		}
 	},

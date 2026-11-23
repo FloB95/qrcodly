@@ -112,6 +112,14 @@ export class StripeService {
 		return customer;
 	}
 
+	/** The user's Stripe customers, found by their Clerk id; unlike findOrCreateCustomer, creates none */
+	async findCustomerIdsByUserId(userId: string): Promise<string[]> {
+		const result = await trackExternal('stripe', 'customers.search', () =>
+			this.stripe.customers.search({ query: `metadata["clerkUserId"]:"${userId}"` }),
+		);
+		return result.data.map((customer) => customer.id);
+	}
+
 	async createCheckoutSession(params: {
 		customerId: string;
 		priceId: string;
@@ -406,6 +414,29 @@ export class StripeService {
 			this.stripe.subscriptions.update(subscriptionId, {
 				cancel_at_period_end: cancelAtPeriodEnd,
 			}),
+		);
+	}
+
+	/**
+	 * Ends a subscription right away, without prorating or a final invoice. One that a schedule
+	 * manages is ended through that schedule, so no planned phase is left to start it again.
+	 */
+	async cancelSubscriptionNow(subscription: Stripe.Subscription): Promise<void> {
+		const scheduleId =
+			typeof subscription.schedule === 'string' ? subscription.schedule : subscription.schedule?.id;
+
+		if (scheduleId) {
+			await trackExternal('stripe', 'subscriptionSchedules.cancel', () =>
+				this.stripe.subscriptionSchedules.cancel(scheduleId, {
+					invoice_now: false,
+					prorate: false,
+				}),
+			);
+			return;
+		}
+
+		await trackExternal('stripe', 'subscriptions.cancel', () =>
+			this.stripe.subscriptions.cancel(subscription.id, { invoice_now: false, prorate: false }),
 		);
 	}
 

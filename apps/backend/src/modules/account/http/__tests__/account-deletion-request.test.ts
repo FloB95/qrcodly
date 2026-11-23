@@ -178,6 +178,16 @@ describe('account deletion request', () => {
 			expect(supportMails()[0].html).toContain(TEST_USER_ID);
 		});
 
+		it('keeps the address for the goodbye mail, which Clerk no longer has once the user is gone', async () => {
+			await call('POST', accessToken);
+			expect((await storedRequest(TEST_USER_ID))?.email).toBeNull();
+
+			await confirm(mailedToken());
+
+			expect((await storedRequest(TEST_USER_ID))?.email).toBe(OWNER_MAIL);
+			expect(JSON.parse((await call('GET', accessToken)).payload)).not.toHaveProperty('email');
+		});
+
 		it('changes nothing when the link is opened a second time', async () => {
 			await call('POST', accessToken);
 			const first = JSON.parse((await confirm(mailedToken())).payload);
@@ -242,7 +252,7 @@ describe('account deletion request', () => {
 
 			const confirmed = await container
 				.resolve(AccountDeletionRequestRepository)
-				.confirm(stored.id, stored.confirmationTokenHash!, afterExpiry);
+				.confirm(stored.id, stored.confirmationTokenHash!, afterExpiry, null);
 
 			expect(confirmed).toBe(false);
 			expect((await storedRequest(TEST_USER_ID))?.confirmedAt).toBeNull();
@@ -294,6 +304,7 @@ describe('account deletion request', () => {
 			const response = await call('DELETE', accessToken);
 
 			expect(response).toHaveStatusCode(200);
+			expect((await storedRequest(TEST_USER_ID))?.email).toBeNull();
 			expect(JSON.parse((await call('GET', accessToken)).payload)).toEqual({
 				requestedAt: null,
 				confirmedAt: null,

@@ -7,6 +7,8 @@ import { UserCreatedEvent } from '@/core/event/user-created.event';
 import { UserUpdatedEvent } from '@/core/event/user-updated.event';
 import { UserDeletedEvent } from '@/core/event/user-deleted.event';
 import { UserBannedEvent } from '@/core/event/user-banned.event';
+import { UserCleanupFailedEvent } from '@/core/event/user-cleanup-failed.event';
+import { type EventEmitter } from '@/core/event/event.emitter';
 import { type NewsletterSyncService } from '../../../service/newsletter-sync.service';
 import { type INewsletterUser } from '../../../domain/newsletter-user.interface';
 import { AddNewsletterSubscriberOnUserCreatedEventHandler } from '../user-created.event-handler';
@@ -18,6 +20,12 @@ jest.mock('tsyringe', () => {
 	const actual = jest.requireActual('tsyringe');
 	return { ...actual, container: { ...actual.container, resolve: jest.fn() } };
 });
+
+// the user cleanup retries with pauses in between; not in tests
+jest.mock('@/utils/general', () => ({
+	...jest.requireActual('@/utils/general'),
+	sleep: jest.fn().mockResolvedValue(undefined),
+}));
 
 const userJSON = {
 	id: 'user_1',
@@ -42,10 +50,12 @@ const expectedUser: INewsletterUser = {
 describe('newsletter user event handlers', () => {
 	let sync: MockProxy<NewsletterSyncService>;
 	let logger: MockProxy<Logger>;
+	let emitter: MockProxy<EventEmitter>;
 
 	beforeEach(() => {
 		sync = mock<NewsletterSyncService>();
 		logger = mock<Logger>();
+		emitter = mock<EventEmitter>();
 		sync.isEnabled.mockReturnValue(true);
 
 		(container.resolve as jest.Mock).mockImplementation((token: unknown) => {
@@ -55,6 +65,8 @@ describe('newsletter user event handlers', () => {
 					return sync;
 				case 'Logger':
 					return logger;
+				case 'EventEmitter':
+					return emitter;
 				default:
 					return {};
 			}
@@ -201,15 +213,18 @@ describe('newsletter user event handlers', () => {
 			expect(sync.removeUser).not.toHaveBeenCalled();
 		});
 
-		it('logs failures with the user id only', async () => {
+		it('retries, then logs and reports a failure with the user id only', async () => {
 			sync.removeUser.mockRejectedValue(new Error('down'));
 
 			await handler().handle(new UserDeletedEvent({ id: 'user_1' }));
 
-			expect(logger.error).toHaveBeenCalledWith('newsletter.sync.user-deleted.failed', {
+			expect(sync.removeUser).toHaveBeenCalledTimes(3);
+			expect(logger.error).toHaveBeenCalledWith('newsletter.user-cleanup.failed', {
 				error: expect.any(Error),
+				failedItems: undefined,
 				userId: 'user_1',
 			});
+			expect(emitter.emit).toHaveBeenCalledWith(expect.any(UserCleanupFailedEvent));
 		});
 	});
 

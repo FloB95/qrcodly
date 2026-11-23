@@ -2,7 +2,7 @@ import { container } from 'tsyringe';
 import { EventHandler } from '@/core/decorators/event-handler.decorator';
 import { AbstractEventHandler } from '@/core/event/handler/abstract.event-handler';
 import { UserDeletedEvent } from '@/core/event/user-deleted.event';
-import { Logger } from '@/core/logging';
+import { cleanUpAfterUser } from '@/core/utils/user-cleanup';
 import IntegrationUsageRepository from '../../domain/repository/integration-usage.repository';
 
 @EventHandler(UserDeletedEvent.eventName)
@@ -12,13 +12,8 @@ export class DeleteIntegrationUsageOnUserDeletedEventHandler extends AbstractEve
 	}
 
 	async handle(event: UserDeletedEvent): Promise<void> {
-		try {
-			await container.resolve(IntegrationUsageRepository).deleteByUserId(event.user.id);
-		} catch (error) {
-			container.resolve(Logger).error('integration-usage.user-cleanup.failed', {
-				error: error as Error,
-				userId: event.user.id,
-			});
-		}
+		await cleanUpAfterUser('integration-usage', event.user.id, () =>
+			container.resolve(IntegrationUsageRepository).deleteByUserId(event.user.id),
+		);
 	}
 }

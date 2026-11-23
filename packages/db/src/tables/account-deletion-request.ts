@@ -18,6 +18,8 @@ const accountDeletionRequest = createTable(
 		// SHA-256 of the secret in the confirmation link; the secret itself is never stored
 		confirmationTokenHash: varchar('confirmation_token_hash', { length: 64 }),
 		confirmationExpiresAt: datetime('confirmation_expires_at'),
+		// the address to tell once the account is gone; Clerk no longer knows it by then
+		email: varchar('email', { length: 255 }),
 	},
 	(t) => [uniqueIndex('i_account_deletion_request_user_id').on(t.userId)],
 );

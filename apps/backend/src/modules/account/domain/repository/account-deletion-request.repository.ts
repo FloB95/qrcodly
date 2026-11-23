@@ -76,10 +76,15 @@ class AccountDeletionRequestRepository extends AbstractRepository<TAccountDeleti
 	 * between reading and writing must not be confirmed by the old link.
 	 * @returns whether this call confirmed the request
 	 */
-	async confirm(id: string, tokenHash: string, confirmedAt: Date): Promise<boolean> {
+	async confirm(
+		id: string,
+		tokenHash: string,
+		confirmedAt: Date,
+		email: string | null,
+	): Promise<boolean> {
 		const [result] = await this.db
 			.update(this.table)
-			.set({ confirmedAt })
+			.set({ confirmedAt, email })
 			.where(
 				and(
 					eq(this.table.id, id),
@@ -103,7 +108,7 @@ class AccountDeletionRequestRepository extends AbstractRepository<TAccountDeleti
 		const withdrawIf = async (confirmed: boolean): Promise<boolean> => {
 			const [result] = await this.db
 				.update(this.table)
-				.set({ revokedAt, confirmationTokenHash: null, confirmationExpiresAt: null })
+				.set({ revokedAt, confirmationTokenHash: null, confirmationExpiresAt: null, email: null })
 				.where(
 					and(
 						eq(this.table.id, id),

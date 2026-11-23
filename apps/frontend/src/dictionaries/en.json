@@ -1400,7 +1400,7 @@
 		"question11": "Where is my data hosted?",
 		"answer11": "QRcodly's core infrastructure runs on servers in Germany. We use Clerk for sign-in, Stripe for payments, Amazon SES to send our product news and Sentry and PostHog to find errors and improve the product. Your data is not sold or used for third-party advertising. If you have an account, we occasionally send you product news by email. You can turn this off at any time in the settings or via the link in every email.",
 		"question12": "How do I delete my account?",
-		"answer12": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. We then send you an email in which you confirm the deletion. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs, templates and statistics. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request there. Only invoices are kept, for as long as the law requires.",
+		"answer12": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. We then send you an email in which you confirm the deletion. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs and templates. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request there. Only invoices are kept, for as long as the law requires.",
 		"viewAll": "See all FAQs"
 	},
 	"fileUpload": {
@@ -1786,7 +1786,7 @@
 			"deletionDescription": "Request the deletion of your account and all its data.",
 			"deletionWarningTitle": "Deletion is permanent and cannot be undone:",
 			"deletionWarning1": "Your personal data and profile are deleted.",
-			"deletionWarning2": "Everything you created is deleted, such as QR codes, short URLs, templates, tags and statistics.",
+			"deletionWarning2": "Everything you created is deleted, such as QR codes, short URLs, templates and tags.",
 			"deletionWarning3": "Your dynamic QR codes and short URLs stop working.",
 			"deletionWarning4": "Only invoices are kept, for as long as the law requires.",
 			"deletionRequestButton": "Request deletion",
@@ -2672,7 +2672,7 @@
 				"q8": "Can I pay annually, and how long does the subscription run?",
 				"a8": "Yes. When you upgrade, you choose between monthly and annual billing. With annual billing you pay once for the whole year, and Pro runs for twelve months from the purchase date. It then renews automatically for another twelve months, and you can cancel online at any time, effective at the end of the term.",
 				"q9": "How do I delete my account?",
-				"a9": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. We then send you an email in which you confirm the deletion. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs, templates and statistics. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request there. Only invoices are kept, for as long as the law requires."
+				"a9": "Go to Settings → Profile and request the deletion of your account at the bottom of the page. We then send you an email in which you confirm the deletion. Deletion is permanent and cannot be undone: we delete your personal data and everything you created, such as QR codes, short URLs and templates. Your dynamic QR codes and short URLs stop working afterwards. Until we delete your account, it is read-only: you can view and delete everything, but not create or change anything. You can withdraw the request there. Only invoices are kept, for as long as the law requires."
 			}
 		}
 	},

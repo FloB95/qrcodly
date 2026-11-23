@@ -1,6 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import { IBaseUseCase } from '@/core/interface/base-use-case.interface';
 import { Logger } from '@/core/logging';
+import { ClerkUserInfoService } from '@/core/services/clerk-user-info.service';
 import AccountDeletionRequestRepository from '../domain/repository/account-deletion-request.repository';
 import { type TAccountDeletionRequest } from '../domain/entities/account-deletion-request.entity';
 import { AccountDeletionLinkInvalidError } from '../error/http/account-deletion-link-invalid.error';
@@ -21,6 +22,7 @@ export class ConfirmAccountDeletionUseCase implements IBaseUseCase {
 		@inject(AccountDeletionNotificationService)
 		private readonly notification: AccountDeletionNotificationService,
 		@inject(AccountWriteLockService) private readonly writeLock: AccountWriteLockService,
+		@inject(ClerkUserInfoService) private readonly clerkUserInfo: ClerkUserInfoService,
 		@inject(Logger) private readonly logger: Logger,
 	) {}
 
@@ -41,10 +43,16 @@ export class ConfirmAccountDeletionUseCase implements IBaseUseCase {
 			throw new AccountDeletionLinkInvalidError();
 		}
 
+		// kept for the goodbye mail: once the account is deleted, Clerk no longer has the address
+		const { email } = await this.clerkUserInfo.getUserInfo(request.userId);
+		if (!email) {
+			this.logger.warn('account.deletion-request.email_unknown', { user: { id: request.userId } });
+		}
+
 		// the column has no sub-second precision; keep the response equal to what a later read returns
 		const confirmedAt = new Date();
 		confirmedAt.setMilliseconds(0);
-		if (!(await this.repository.confirm(request.id, tokenHash, confirmedAt))) {
+		if (!(await this.repository.confirm(request.id, tokenHash, confirmedAt, email || null))) {
 			// the request changed since it was read: confirmed by a parallel click, withdrawn or replaced
 			const current = await this.repository.findOpenByConfirmationTokenHash(tokenHash);
 			if (current?.confirmedAt) return current;
@@ -65,6 +73,6 @@ export class ConfirmAccountDeletionUseCase implements IBaseUseCase {
 			await this.notification.notifyRequested(request.userId, request.requestedAt);
 		}
 
-		return { ...request, confirmedAt };
+		return { ...request, confirmedAt, email: email || null };
 	}
 }

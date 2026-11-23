@@ -85,7 +85,7 @@ describe('DeleteCustomDomainUseCase', () => {
 		expect(mockRepository.delete).toHaveBeenCalledWith(mockDomainWithoutCloudflare);
 	});
 
-	it('should still delete from database even if Cloudflare deletion fails', async () => {
+	it('should still delete from database when the hostname is already gone at Cloudflare', async () => {
 		mockCloudflareService.deleteCustomHostname.mockRejectedValue(
 			new CloudflareApiError('Not found', 404),
 		);
@@ -93,6 +93,22 @@ describe('DeleteCustomDomainUseCase', () => {
 		await useCase.execute(mockDomainWithCloudflare);
 
 		expect(mockRepository.delete).toHaveBeenCalledWith(mockDomainWithCloudflare);
+	});
+
+	it.each([
+		['a Cloudflare server error', new CloudflareApiError('Internal error', 500)],
+		['a network error', new TypeError('fetch failed')],
+	])('keeps the domain when Cloudflare deletion fails with %s', async (_label, error) => {
+		mockCloudflareService.deleteCustomHostname.mockRejectedValue(error);
+
+		await expect(useCase.execute(mockDomainWithCloudflare)).rejects.toBe(error);
+
+		expect(mockRepository.delete).not.toHaveBeenCalled();
+		expect(mockEventEmitter.emit).not.toHaveBeenCalled();
+		expect(mockLogger.error).toHaveBeenCalledWith(
+			'customDomain.cloudflare.delete.error',
+			expect.any(Object),
+		);
 	});
 
 	it('should log a warning when Cloudflare deletion fails', async () => {

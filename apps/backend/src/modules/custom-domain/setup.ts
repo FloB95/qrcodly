@@ -8,6 +8,7 @@ import { CustomDomainController } from './http/controller/custom-domain.controll
 
 // Register Cron Jobs
 import './jobs/verify-pending-custom-domains.cron-job';
+import './event/handler/user-deleted.event-handler';
 
 const setupCustomDomainModule: FastifyPluginCallback = (
 	fastify: FastifyInstance,
