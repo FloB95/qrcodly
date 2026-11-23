@@ -67,6 +67,8 @@ export {
 	type TAccountDeletionRequest,
 	integrationUsage,
 	type TIntegrationUsage,
+	scanIpExclusion,
+	type TScanIpExclusion,
 	hostedPage,
 	hostedPageRelations,
 	type THostedPage,

@@ -109,6 +109,27 @@ If you need to rotate a secret or change your configuration:
 
 Removing an integration stops all future data forwarding immediately. Historical data already sent to the provider is not affected.
 
+## Excluding IP Addresses
+
+Your own tests can skew your numbers, for example when you scan a QR code from your office. You can exclude IP addresses or ranges so that scans from them are not counted. Excluded scans are not counted in your QRcodly statistics and are not forwarded to Google Analytics 4 or Matomo. The list applies to all short URLs and dynamic QR codes in your account.
+
+<Callout type="info">
+	Excluding IP addresses requires a **Pro Plan**, which includes up to 10 entries. If your plan
+	ends, your entries are kept and apply again once you're back on Pro.
+</Callout>
+
+1. Go to [Settings → Analytics](/dashboard/settings/analytics)
+2. Enter a single address (e.g. `203.0.113.7`) or a range in CIDR notation (e.g. `203.0.113.0/24`), or click the button to use the address you're currently connected from
+3. Optionally add a label such as "Office Wi-Fi" and click **Add**
+
+Keep in mind:
+
+- **Only future scans** are affected. Your existing statistics stay unchanged.
+- **IPv6**: Phones and laptops change their IPv6 address regularly, so exclude your network's IPv6 range (usually a `/64`) in addition to its IPv4 address. If you're connected over IPv6, the button fills in your `/64` network for you.
+- Only devices connected to that network are excluded. Scans over mobile data are still counted.
+- Ranges must be at least `/16` for IPv4 and `/32` for IPv6.
+- The scanner's IP address is only compared with your list at the moment of the scan. QRcodly doesn't store it for this and never shows it to you.
+
 ## Troubleshooting
 
 ### Validation error when saving credentials

@@ -38,10 +38,20 @@ describe('ForwardScanOnShortUrlScannedEventHandler', () => {
 		expect(forwardScan.execute).toHaveBeenCalledWith('abc12', 'user-1', scan);
 	});
 
-	it('logs a failure instead of letting it escape', async () => {
-		forwardScan.execute.mockImplementation(() => {
-			throw new Error('boom');
+	it('waits for the forwarding', async () => {
+		let finished = false;
+		forwardScan.execute.mockImplementation(async () => {
+			await new Promise((resolve) => setImmediate(resolve));
+			finished = true;
 		});
+
+		await handler.handle(event);
+
+		expect(finished).toBe(true);
+	});
+
+	it('logs a failure instead of letting it escape', async () => {
+		forwardScan.execute.mockRejectedValue(new Error('boom'));
 
 		await expect(handler.handle(event)).resolves.toBeUndefined();
 

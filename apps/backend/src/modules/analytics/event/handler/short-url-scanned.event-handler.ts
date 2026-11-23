@@ -13,7 +13,7 @@ export class ForwardScanOnShortUrlScannedEventHandler extends AbstractEventHandl
 
 	async handle({ shortCode, ownerId, scan }: ShortUrlScannedEvent): Promise<void> {
 		try {
-			container.resolve(ForwardScanUseCase).execute(shortCode, ownerId, scan);
+			await container.resolve(ForwardScanUseCase).execute(shortCode, ownerId, scan);
 		} catch (error) {
 			container.resolve(Logger).error('analytics.scan.forward.failed', {
 				error: error as Error,

@@ -69,6 +69,7 @@ export {
 	type TAccountDeletionRequest,
 } from './account-deletion-request';
 export { default as integrationUsage, type TIntegrationUsage } from './integration-usage';
+export { default as scanIpExclusion, type TScanIpExclusion } from './scan-ip-exclusion';
 export { default as hostedPage, hostedPageRelations, type THostedPage } from './hosted-page';
 export {
 	default as storedFile,

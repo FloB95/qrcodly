@@ -35,6 +35,8 @@ export * from './dtos/billing';
 
 export * from './dtos/analytics-integration';
 
+export * from './dtos/scan-ip-exclusion';
+
 export * from './dtos/hosted-page/HostedUploadDto';
 export * from './dtos/hosted-page/PublicHostedPageResponseDto';
 export * from './dtos/hosted-page/HostedPageUsageDto';

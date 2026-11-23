@@ -35,6 +35,12 @@ One visitor following a short URL. The unit of analytics, whether or not a camer
 a click from a pasted link is also a scan.
 _Avoid_: Click, hit, visit, view
 
+**Excluded IP range**:
+An IP address or CIDR range an owner keeps out of their analytics, typically their own office
+network. Applies to every short URL of the account and only to scans after it was added; the
+scanner's IP is compared at scan time and never stored. Pro only.
+_Avoid_: IP filter, IP block, blocklist (the scan still redirects; it is only not counted)
+
 ### Domains
 
 **Custom domain**:

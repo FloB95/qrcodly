@@ -1421,7 +1421,8 @@
 			"billing": "Fatturazione",
 			"apiKeys": "Chiavi API",
 			"domains": "Domini",
-			"integrations": "Integrazioni"
+			"integrations": "Integrazioni",
+			"analytics": "Statistiche"
 		},
 		"domains": {
 			"title": "Domini Personalizzati",
@@ -1950,6 +1951,45 @@
 				}
 			},
 			"moreIntegrationsTeaser": "Altre integrazioni in arrivo. <contact>Suggerisci un'integrazione</contact>"
+		},
+		"analytics": {
+			"title": "Statistiche",
+			"description": "Decidi quali scansioni vengono conteggiate nelle statistiche dei tuoi codici QR e URL brevi.",
+			"exclusionsTitle": "Escludi indirizzi IP",
+			"exclusionsDescription": "Le scansioni da questi indirizzi o intervalli IP non vengono conteggiate nelle tue statistiche né inoltrate alle tue integrazioni di analisi. Uso tipico: la rete del tuo ufficio, così i tuoi test non falsano i numeri.",
+			"ipLabel": "Indirizzo IP o intervallo",
+			"labelLabel": "Etichetta",
+			"optional": "opzionale",
+			"labelPlaceholder": "es. Wi-Fi dell'ufficio",
+			"add": "Aggiungi",
+			"useCurrentIp": "Usa il mio IP attuale ({ip})",
+			"useCurrentNetwork": "Usa la mia rete ({range})",
+			"invalidIp": "Inserisci un indirizzo IP o un intervallo valido, ad es. 203.0.113.7 o 203.0.113.0/24. Gli intervalli devono essere almeno /16 per IPv4 e /32 per IPv6.",
+			"limitReached": "Hai raggiunto il massimo di {max} voci. Eliminane una per aggiungerne una nuova.",
+			"emptyTitle": "Nessun indirizzo IP escluso",
+			"emptyDescription": "Al momento vengono conteggiate tutte le scansioni.",
+			"loadError": "Impossibile caricare i tuoi indirizzi IP esclusi. Riprova più tardi.",
+			"addedOn": "Aggiunto il {date}",
+			"delete": "Elimina",
+			"cancel": "Annulla",
+			"deleteConfirmTitle": "Rimuovere l'indirizzo IP?",
+			"deleteConfirmDescription": "Le prossime scansioni da {ipRange} verranno di nuovo conteggiate nelle tue statistiche.",
+			"addedToast": "Indirizzo IP escluso",
+			"addedToastDescription": "Le prossime scansioni da {ipRange} non verranno più conteggiate.",
+			"addedToastSavedAs": "Salvato come {ipRange}. Le prossime scansioni da lì non verranno più conteggiate.",
+			"deletedToast": "Indirizzo IP rimosso",
+			"deletedToastDescription": "Le prossime scansioni da {ipRange} verranno di nuovo conteggiate.",
+			"addErrorTitle": "Impossibile aggiungere l'indirizzo IP",
+			"deleteError": "Impossibile rimuovere l'indirizzo IP. Riprova.",
+			"errorDuplicate": "Questo indirizzo IP o intervallo è già nella tua lista.",
+			"errorLimit": "Il tuo piano non consente altre voci. Con Pro puoi escludere fino a {max} indirizzi o intervalli IP.",
+			"errorGeneric": "Qualcosa è andato storto. Riprova.",
+			"proUpsell": "Escludere indirizzi IP è una funzione Pro. Con Pro puoi escludere fino a {max} indirizzi o intervalli IP, ad esempio la rete del tuo ufficio.",
+			"inactiveWithoutPro": "Le tue voci restano salvate, ma tornano a valere solo con Pro. Fino ad allora vengono conteggiate tutte le scansioni.",
+			"hintNetworkOnly": "Vengono esclusi solo i dispositivi connessi a quella rete. Le scansioni con i dati mobili vengono comunque conteggiate.",
+			"hintIpv6": "Sul Wi-Fi gli smartphone usano spesso IPv6. Aggiungi anche l'intervallo IPv6 della tua rete, altrimenti le loro scansioni vengono comunque conteggiate.",
+			"hintFutureOnly": "Vale solo per le scansioni future. Le statistiche esistenti restano invariate.",
+			"hintPrivacy": "L'indirizzo IP di chi scansiona viene confrontato con la tua lista solo al momento della scansione. QRcodly non lo salva a questo scopo e non te lo mostra mai."
 		}
 	},
 	"plans": {

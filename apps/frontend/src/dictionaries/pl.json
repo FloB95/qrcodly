@@ -1421,7 +1421,8 @@
 			"billing": "Płatności",
 			"apiKeys": "Klucze API",
 			"domains": "Domeny",
-			"integrations": "Integracje"
+			"integrations": "Integracje",
+			"analytics": "Statystyki"
 		},
 		"domains": {
 			"title": "Własne Domeny",
@@ -1950,6 +1951,45 @@
 				}
 			},
 			"moreIntegrationsTeaser": "Więcej integracji w przygotowaniu. <contact>Zaproponuj integrację</contact>"
+		},
+		"analytics": {
+			"title": "Statystyki",
+			"description": "Zdecyduj, które skany są liczone w statystykach Twoich kodów QR i krótkich URL-i.",
+			"exclusionsTitle": "Wykluczanie adresów IP",
+			"exclusionsDescription": "Skany z tych adresów lub zakresów IP nie są liczone w Twoich statystykach ani przekazywane do Twoich integracji analitycznych. Typowe zastosowanie: sieć Twojego biura, aby Twoje własne testy nie zniekształcały wyników.",
+			"ipLabel": "Adres IP lub zakres",
+			"labelLabel": "Etykieta",
+			"optional": "opcjonalnie",
+			"labelPlaceholder": "np. Wi-Fi w biurze",
+			"add": "Dodaj",
+			"useCurrentIp": "Użyj mojego obecnego IP ({ip})",
+			"useCurrentNetwork": "Użyj mojej sieci ({range})",
+			"invalidIp": "Wpisz prawidłowy adres IP lub zakres, np. 203.0.113.7 lub 203.0.113.0/24. Zakres musi mieć co najmniej /16 dla IPv4 i /32 dla IPv6.",
+			"limitReached": "Osiągnięto maksymalną liczbę wpisów ({max}). Usuń jeden, aby dodać nowy.",
+			"emptyTitle": "Brak wykluczonych adresów IP",
+			"emptyDescription": "Obecnie liczone są wszystkie skany.",
+			"loadError": "Nie udało się wczytać wykluczonych adresów IP. Spróbuj ponownie później.",
+			"addedOn": "Dodano {date}",
+			"delete": "Usuń",
+			"cancel": "Anuluj",
+			"deleteConfirmTitle": "Usunąć adres IP?",
+			"deleteConfirmDescription": "Kolejne skany z {ipRange} znów będą liczone w Twoich statystykach.",
+			"addedToast": "Adres IP wykluczony",
+			"addedToastDescription": "Kolejne skany z {ipRange} nie będą już liczone.",
+			"addedToastSavedAs": "Zapisano jako {ipRange}. Kolejne skany stamtąd nie będą już liczone.",
+			"deletedToast": "Adres IP usunięty",
+			"deletedToastDescription": "Kolejne skany z {ipRange} znów będą liczone.",
+			"addErrorTitle": "Nie udało się dodać adresu IP",
+			"deleteError": "Nie udało się usunąć adresu IP. Spróbuj ponownie.",
+			"errorDuplicate": "Ten adres IP lub zakres jest już na Twojej liście.",
+			"errorLimit": "Twój plan nie pozwala na kolejne wpisy. W planie Pro możesz wykluczyć do {max} adresów lub zakresów IP.",
+			"errorGeneric": "Coś poszło nie tak. Spróbuj ponownie.",
+			"proUpsell": "Wykluczanie adresów IP to funkcja Pro. W planie Pro możesz wykluczyć do {max} adresów lub zakresów IP, np. sieć swojego biura.",
+			"inactiveWithoutPro": "Twoje wpisy pozostają zapisane, ale znów zaczną obowiązywać dopiero w planie Pro. Do tego czasu liczone są wszystkie skany.",
+			"hintNetworkOnly": "Wykluczane są tylko urządzenia połączone z tą siecią. Skany przez dane mobilne nadal są liczone.",
+			"hintIpv6": "Telefony w sieci Wi-Fi często korzystają z IPv6. Dodaj też zakres IPv6 swojej sieci, w przeciwnym razie ich skany nadal będą liczone.",
+			"hintFutureOnly": "Dotyczy to tylko przyszłych skanów. Dotychczasowe statystyki pozostają bez zmian.",
+			"hintPrivacy": "Adres IP osoby skanującej jest porównywany z Twoją listą tylko w momencie skanowania. QRcodly nie zapisuje go w tym celu i nigdy go nie wyświetla."
 		}
 	},
 	"plans": {

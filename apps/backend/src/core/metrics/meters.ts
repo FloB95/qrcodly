@@ -79,6 +79,11 @@ export const umamiEventsTotal = meter.createCounter('analytics.umami.events.tota
 	description: 'Scan events forwarded to Umami, by outcome',
 });
 
+/** No labels on purpose: an owner or IP label would tie excluded scans to an account or network */
+export const scansExcluded = meter.createCounter('analytics.scans.excluded', {
+	description: 'Scans not counted because they came from an excluded IP range of the owner',
+});
+
 // --- URL Safety ---
 
 /**

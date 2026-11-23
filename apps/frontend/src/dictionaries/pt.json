@@ -1421,7 +1421,8 @@
 			"billing": "Faturamento",
 			"apiKeys": "Chaves de API",
 			"domains": "Domínios",
-			"integrations": "Integrações"
+			"integrations": "Integrações",
+			"analytics": "Estatísticas"
 		},
 		"domains": {
 			"title": "Domínios Personalizados",
@@ -1950,6 +1951,45 @@
 				}
 			},
 			"moreIntegrationsTeaser": "Mais integrações a caminho. <contact>Sugerir uma integração</contact>"
+		},
+		"analytics": {
+			"title": "Estatísticas",
+			"description": "Defina quais leituras são contadas nas estatísticas dos seus QR codes e URLs curtas.",
+			"exclusionsTitle": "Ignorar endereços IP",
+			"exclusionsDescription": "As leituras feitas a partir destes endereços ou faixas de IP não são contadas nas suas estatísticas nem enviadas para as suas integrações de análise. Uso típico: a rede do seu escritório, para que seus próprios testes não distorçam os números.",
+			"ipLabel": "Endereço IP ou faixa",
+			"labelLabel": "Rótulo",
+			"optional": "opcional",
+			"labelPlaceholder": "ex.: Wi-Fi do escritório",
+			"add": "Adicionar",
+			"useCurrentIp": "Usar meu IP atual ({ip})",
+			"useCurrentNetwork": "Usar minha rede ({range})",
+			"invalidIp": "Informe um endereço IP ou uma faixa válida, ex.: 203.0.113.7 ou 203.0.113.0/24. As faixas devem ter no mínimo /16 para IPv4 e /32 para IPv6.",
+			"limitReached": "Você atingiu o máximo de {max} entradas. Exclua uma para adicionar outra.",
+			"emptyTitle": "Nenhum endereço IP ignorado ainda",
+			"emptyDescription": "No momento, todas as leituras são contadas.",
+			"loadError": "Não foi possível carregar seus endereços IP ignorados. Tente novamente mais tarde.",
+			"addedOn": "Adicionado em {date}",
+			"delete": "Excluir",
+			"cancel": "Cancelar",
+			"deleteConfirmTitle": "Remover endereço IP?",
+			"deleteConfirmDescription": "As próximas leituras de {ipRange} voltarão a ser contadas nas suas estatísticas.",
+			"addedToast": "Endereço IP ignorado",
+			"addedToastDescription": "As próximas leituras de {ipRange} não serão mais contadas.",
+			"addedToastSavedAs": "Salvo como {ipRange}. As próximas leituras vindas daí não serão mais contadas.",
+			"deletedToast": "Endereço IP removido",
+			"deletedToastDescription": "As próximas leituras de {ipRange} voltarão a ser contadas.",
+			"addErrorTitle": "Não foi possível adicionar o endereço IP",
+			"deleteError": "Não foi possível remover o endereço IP. Tente novamente.",
+			"errorDuplicate": "Este endereço IP ou faixa já está na sua lista.",
+			"errorLimit": "Seu plano não permite mais entradas. Com o Pro, você pode ignorar até {max} endereços ou faixas de IP.",
+			"errorGeneric": "Algo deu errado. Tente novamente.",
+			"proUpsell": "Ignorar endereços IP é um recurso Pro. Com o Pro, você pode ignorar até {max} endereços ou faixas de IP, por exemplo, a rede do seu escritório.",
+			"inactiveWithoutPro": "Suas entradas continuam salvas, mas só voltam a valer com o Pro. Até lá, todas as leituras são contadas.",
+			"hintNetworkOnly": "Só são ignorados os dispositivos conectados a essa rede. Leituras feitas com dados móveis continuam sendo contadas.",
+			"hintIpv6": "No Wi-Fi, celulares costumam usar IPv6. Adicione também a faixa IPv6 da sua rede; caso contrário, as leituras deles continuarão sendo contadas.",
+			"hintFutureOnly": "Isso vale apenas para leituras futuras. Suas estatísticas atuais não mudam.",
+			"hintPrivacy": "O endereço IP de quem faz a leitura só é comparado com a sua lista no momento da leitura. O QRcodly não o armazena para isso e nunca o mostra a você."
 		}
 	},
 	"plans": {
