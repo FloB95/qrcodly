@@ -319,7 +319,10 @@ export default function PrivacyPolicyContentEn() {
 				</li>
 				<li>
 					<strong>Scan data:</strong> When scanning QR codes or accessing short URLs: IP address,
-					browser, operating system, device type, language, referrer, country of origin
+					browser, operating system, device type, language, referrer, country of origin. Account
+					holders can store IP addresses or ranges (e.g. of their company network) whose scans are
+					not counted in their statistics; for this, the scanner&apos;s IP address is only compared
+					against that list at the moment of the scan and is not stored.
 				</li>
 				<li>
 					<strong>Payment data:</strong> Billing information when subscribing to a paid plan

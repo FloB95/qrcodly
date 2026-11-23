@@ -1425,7 +1425,8 @@
 			"billing": "Facturación",
 			"apiKeys": "Claves API",
 			"domains": "Dominios",
-			"integrations": "Integraciones"
+			"integrations": "Integraciones",
+			"analytics": "Estadísticas"
 		},
 		"domains": {
 			"title": "Dominios Personalizados",
@@ -1954,6 +1955,45 @@
 				}
 			},
 			"moreIntegrationsTeaser": "Más integraciones en camino. <contact>Sugerir una integración</contact>"
+		},
+		"analytics": {
+			"title": "Estadísticas",
+			"description": "Decide qué escaneos se cuentan en las estadísticas de tus códigos QR y URLs cortas.",
+			"exclusionsTitle": "Excluir direcciones IP",
+			"exclusionsDescription": "Los escaneos desde estas direcciones o rangos IP no se cuentan en tus estadísticas ni se envían a tus integraciones de análisis. Uso típico: la red de tu propia oficina, para que tus pruebas no distorsionen las cifras.",
+			"ipLabel": "Dirección IP o rango",
+			"labelLabel": "Etiqueta",
+			"optional": "opcional",
+			"labelPlaceholder": "p. ej., wifi de la oficina",
+			"add": "Añadir",
+			"useCurrentIp": "Usar mi IP actual ({ip})",
+			"useCurrentNetwork": "Usar mi red ({range})",
+			"invalidIp": "Introduce una dirección IP o un rango válido, p. ej., 203.0.113.7 o 203.0.113.0/24. Los rangos deben ser como mínimo /16 en IPv4 y /32 en IPv6.",
+			"limitReached": "Has alcanzado el máximo de {max} entradas. Elimina una para añadir otra nueva.",
+			"emptyTitle": "Aún no has excluido ninguna dirección IP",
+			"emptyDescription": "Ahora mismo se cuentan todos los escaneos.",
+			"loadError": "No se pudieron cargar tus direcciones IP excluidas. Inténtalo de nuevo más tarde.",
+			"addedOn": "Añadida el {date}",
+			"delete": "Eliminar",
+			"cancel": "Cancelar",
+			"deleteConfirmTitle": "¿Quitar la dirección IP?",
+			"deleteConfirmDescription": "Los próximos escaneos desde {ipRange} volverán a contarse en tus estadísticas.",
+			"addedToast": "Dirección IP excluida",
+			"addedToastDescription": "Los próximos escaneos desde {ipRange} ya no se contarán.",
+			"addedToastSavedAs": "Se guardó como {ipRange}. Los próximos escaneos desde ahí ya no se contarán.",
+			"deletedToast": "Dirección IP quitada",
+			"deletedToastDescription": "Los próximos escaneos desde {ipRange} volverán a contarse.",
+			"addErrorTitle": "No se pudo añadir la dirección IP",
+			"deleteError": "No se pudo quitar la dirección IP. Inténtalo de nuevo.",
+			"errorDuplicate": "Esta dirección IP o rango ya está en tu lista.",
+			"errorLimit": "Tu plan no permite más entradas. Con Pro puedes excluir hasta {max} direcciones o rangos IP.",
+			"errorGeneric": "Algo salió mal. Inténtalo de nuevo.",
+			"proUpsell": "Excluir direcciones IP es una función Pro. Con Pro puedes excluir hasta {max} direcciones o rangos IP, por ejemplo, la red de tu oficina.",
+			"inactiveWithoutPro": "Tus entradas se conservan, pero solo vuelven a aplicarse con Pro. Hasta entonces, se cuentan todos los escaneos.",
+			"hintNetworkOnly": "Solo se excluyen los dispositivos conectados a esa red. Los escaneos con datos móviles se siguen contando.",
+			"hintIpv6": "Los móviles suelen usar IPv6 en la wifi. Añade también el rango IPv6 de tu red; si no, sus escaneos se seguirán contando.",
+			"hintFutureOnly": "Solo afecta a los escaneos futuros. Tus estadísticas actuales no cambian.",
+			"hintPrivacy": "La dirección IP de quien escanea solo se compara con tu lista en el momento del escaneo. QRcodly no la guarda para ello y nunca te la muestra."
 		}
 	},
 	"plans": {

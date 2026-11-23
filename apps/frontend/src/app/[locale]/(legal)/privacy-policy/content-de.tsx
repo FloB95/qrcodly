@@ -354,7 +354,11 @@ export default function PrivacyPolicyContentDe() {
 				</li>
 				<li>
 					<strong>Scan-Daten:</strong> Beim Scannen von QR-Codes bzw. Aufrufen von Kurz-URLs:
-					IP-Adresse, Browser, Betriebssystem, Ger&auml;tetyp, Sprache, Referrer, Herkunftsland
+					IP-Adresse, Browser, Betriebssystem, Ger&auml;tetyp, Sprache, Referrer, Herkunftsland.
+					Kontoinhaber k&ouml;nnen IP-Adressen oder -Bereiche (z.&thinsp;B. ihres Firmennetzes)
+					hinterlegen, deren Scans nicht in ihrer Statistik gez&auml;hlt werden; die IP-Adresse der
+					scannenden Person wird daf&uuml;r nur im Moment des Scans mit dieser Liste abgeglichen und
+					nicht gespeichert.
 				</li>
 				<li>
 					<strong>Zahlungsdaten:</strong> Abrechnungsinformationen bei Abschluss eines

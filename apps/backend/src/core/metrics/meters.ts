@@ -73,10 +73,15 @@ export const shortUrlScans = meter.createCounter('business.short_urls.scans', {
 /**
  * Scan events handed to Umami, split by what Umami actually did with them.
  * The gap between this and `shortUrlScans` is the reason dashboard numbers
- * disagree with the scan count — see UmamiAnalyticsService.sendEvent.
+ * disagree with the scan count — see UmamiClient.sendEvent.
  */
 export const umamiEventsTotal = meter.createCounter('analytics.umami.events.total', {
 	description: 'Scan events forwarded to Umami, by outcome',
+});
+
+/** No labels on purpose: an owner or IP label would tie excluded scans to an account or network */
+export const scansExcluded = meter.createCounter('analytics.scans.excluded', {
+	description: 'Scans not counted because they came from an excluded IP range of the owner',
 });
 
 // --- URL Safety ---

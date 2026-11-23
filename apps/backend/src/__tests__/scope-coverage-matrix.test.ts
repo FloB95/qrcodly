@@ -3,7 +3,9 @@ import { ROUTE_METADATA_KEY, type RouteMetadata } from '@/core/decorators/route'
 import { isLockedDuringAccountDeletion, resolveScopeForMethod } from '@/libs/fastify/helpers';
 
 import { ApiKeyController } from '@/modules/api-key/http/controller/api-key.controller';
-import { AnalyticsIntegrationController } from '@/modules/analytics-integration/http/controller/analytics-integration.controller';
+import { AnalyticsIntegrationController } from '@/modules/analytics/http/controller/analytics-integration.controller';
+import { ShortUrlAnalyticsController } from '@/modules/analytics/http/controller/short-url-analytics.controller';
+import { ScanIpExclusionController } from '@/modules/analytics/http/controller/scan-ip-exclusion.controller';
 import { QrCodeController } from '@/modules/qr-code/http/controller/qr-code.controller';
 import { QrCodeShareController } from '@/modules/qr-code/http/controller/qr-code-share.controller';
 import { CustomDomainController } from '@/modules/custom-domain/http/controller/custom-domain.controller';
@@ -21,6 +23,8 @@ import { NewsletterController } from '@/modules/newsletter/http/controller/newsl
 const CONTROLLERS = [
 	ApiKeyController,
 	AnalyticsIntegrationController,
+	ShortUrlAnalyticsController,
+	ScanIpExclusionController,
 	QrCodeController,
 	QrCodeShareController,
 	CustomDomainController,

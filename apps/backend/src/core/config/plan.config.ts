@@ -1,4 +1,8 @@
-import { type THostedUploadKind, type TQrCodeContentType } from '@shared/schemas';
+import {
+	MAX_SCAN_IP_EXCLUSIONS,
+	type THostedUploadKind,
+	type TQrCodeContentType,
+} from '@shared/schemas';
 
 export enum PlanName {
 	FREE = 'free',
@@ -41,6 +45,16 @@ export type BulkImportLimits = {
 export const ANALYTICS_INTEGRATION_PLAN_LIMITS: Record<PlanName, number> = {
 	free: 0,
 	pro: 1,
+};
+
+/**
+ * Plan limits for excluded IP ranges (scans from them are not counted).
+ * - free: 0 ranges (not available)
+ * - pro: MAX_SCAN_IP_EXCLUSIONS ranges
+ */
+export const SCAN_IP_EXCLUSION_PLAN_LIMITS: Record<PlanName, number> = {
+	free: 0,
+	pro: MAX_SCAN_IP_EXCLUSIONS,
 };
 
 export const BULK_IMPORT_PLAN_LIMITS: Record<PlanName, BulkImportLimits> = {

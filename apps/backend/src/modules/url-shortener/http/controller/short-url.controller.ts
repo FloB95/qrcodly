@@ -8,7 +8,6 @@ import { ShortUrlNotFoundError } from '../../error/http/short-url-not-found.erro
 import { BadRequestError } from '@/core/error/http';
 import {
 	AcknowledgeSafetyIncidentsResponseDto,
-	AnalyticsResponseDto,
 	CreateShortUrlDto,
 	GetShortUrlQueryParamsSchema,
 	ReservedShortUrlResponseDto,
@@ -17,7 +16,6 @@ import {
 	TSafetyIncidentListResponseDto,
 	ShortUrlWithCustomDomainPaginatedResponseDto,
 	ShortUrlWithCustomDomainResponseDto,
-	TAnalyticsResponseDto,
 	TCreateShortUrlDto,
 	TGetShortUrlQueryParamsDto,
 	TGetShortUrlRequestQueryDto,
@@ -37,7 +35,6 @@ import { deleteEach } from '@/core/http/bulk-delete';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
 import { buildShortUrl } from '../../utils';
 import { HOT_SHORT_CODES_KEY } from '../../config/constants';
-import { UmamiAnalyticsService } from '../../service/umami-analytics.service';
 import { UpdateShortUrlUseCase } from '../../useCase/update-short-url.use-case';
 import { CreateShortUrlUseCase } from '../../useCase/create-short-url.use-case';
 import { ListShortUrlsUseCase } from '../../useCase/list-short-urls.use-case';
@@ -48,17 +45,16 @@ import { TokenTypeSchema } from '@/core/domain/schema/UserSchema';
 import { DeleteResponseSchema } from '@/core/domain/schema/DeleteResponseSchema';
 import { KeyCache } from '@/core/cache';
 import { internalApiAuthHandler } from '@/core/http/middleware/internal-api-auth.middleware';
-import { DispatchTrackingEventUseCase } from '@/modules/analytics-integration/useCase/dispatch-tracking-event.use-case';
 import TagRepository from '@/modules/tag/domain/repository/tag.repository';
 import { RateLimitPolicy } from '@/core/rate-limit/rate-limit.policy';
 import { shortUrlScans } from '@/core/metrics';
 import { DuplicateShortUrlUseCase } from '../../useCase/duplicate-short-url.use-case';
+import { RecordScanUseCase } from '../../useCase/record-scan.use-case';
 import { Logger } from '@/core/logging';
 import { ShortUrlBlockedError } from '../../error/http/short-url-blocked.error';
 import UrlSafetyIncidentRepository from '../../domain/repository/url-safety-incident.repository';
 import UserSafetyStandingRepository from '../../domain/repository/user-safety-standing.repository';
 import { daysAgo } from '@/core/utils/date';
-import { PlanName } from '@/core/config/plan.config';
 import {
 	URL_SAFETY_HOT_SHORT_CODE_LIMIT,
 	URL_SAFETY_OFFENCE_WINDOW_DAYS,
@@ -80,10 +76,7 @@ export class ShortUrlController extends AbstractController {
 		private readonly listShortUrlsUseCase: ListShortUrlsUseCase,
 		@inject(DeleteShortUrlUseCase)
 		private readonly deleteShortUrlUseCase: DeleteShortUrlUseCase,
-		@inject(UmamiAnalyticsService) private readonly umamiAnalyticsService: UmamiAnalyticsService,
 		@inject(KeyCache) private readonly keyCache: KeyCache,
-		@inject(DispatchTrackingEventUseCase)
-		private readonly dispatchTrackingEventUseCase: DispatchTrackingEventUseCase,
 		@inject(TagRepository) private readonly tagRepository: TagRepository,
 		@inject(DuplicateShortUrlUseCase)
 		private readonly duplicateShortUrlUseCase: DuplicateShortUrlUseCase,
@@ -93,12 +86,9 @@ export class ShortUrlController extends AbstractController {
 		@inject(UserSafetyStandingRepository)
 		private readonly safetyStandingRepository: UserSafetyStandingRepository,
 		@inject(HostedPageService) private readonly hostedPageService: HostedPageService,
+		@inject(RecordScanUseCase) private readonly recordScanUseCase: RecordScanUseCase,
 	) {
 		super();
-	}
-
-	private getViewsCacheKey(shortCode: string): string {
-		return `views:${shortCode}`;
 	}
 
 	@Get('/safety-incidents', {
@@ -552,97 +542,6 @@ export class ShortUrlController extends AbstractController {
 		);
 	}
 
-	@Get('/:shortCode/analytics', {
-		responseSchema: {
-			200: AnalyticsResponseDto,
-			401: DEFAULT_ERROR_RESPONSES[401],
-			403: DEFAULT_ERROR_RESPONSES[403],
-			404: DEFAULT_ERROR_RESPONSES[404],
-			429: DEFAULT_ERROR_RESPONSES[429],
-		},
-		schema: {
-			tags: ['Analytics'],
-			summary: 'Get analytics for a short URL',
-			description:
-				'Returns analytics for a short URL. Every plan gets the aggregate statistics and a summary ' +
-				'(last 7 days, top country, top device). The time-series data and the breakdowns by ' +
-				'browser, operating system, device type and country require the Pro plan; without it ' +
-				'they are null and `detailsLocked` is true. ' +
-				'Only the owner can access analytics for their short URLs.',
-			operationId: 'short-url/get-analytics',
-			params: {
-				type: 'object',
-				properties: {
-					shortCode: { type: 'string', description: 'The 5-character short URL code' },
-				},
-			},
-		},
-	})
-	async getAnalytics(
-		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
-	): Promise<IHttpResponse<TAnalyticsResponseDto>> {
-		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
-		const analyticsData = await this.umamiAnalyticsService.getAnalyticsForEndpoint(
-			`/u/${shortUrl.shortCode}`,
-			{ includeDetails: request.user.plan === PlanName.PRO },
-		);
-
-		return this.makeApiHttpResponse(200, AnalyticsResponseDto.parse(analyticsData));
-	}
-
-	@Get('/:shortCode/get-views', {
-		config: {
-			rateLimitPolicy: RateLimitPolicy.SHORT_URL_VIEWS,
-		},
-		responseSchema: {
-			401: DEFAULT_ERROR_RESPONSES[401],
-			403: DEFAULT_ERROR_RESPONSES[403],
-			404: DEFAULT_ERROR_RESPONSES[404],
-			429: DEFAULT_ERROR_RESPONSES[429],
-		},
-		schema: {
-			tags: ['Analytics'],
-			summary: 'Get total views for a short URL',
-			description:
-				'Returns the total view count for a short URL. Results are cached for 1 hour for performance. ' +
-				'Only the owner can access view counts for their short URLs.',
-			operationId: 'short-url/get-views',
-			params: {
-				type: 'object',
-				properties: {
-					shortCode: { type: 'string', description: 'The 5-character short URL code' },
-				},
-			},
-			response: {
-				200: {
-					type: 'object',
-					properties: {
-						views: {
-							type: 'number',
-							description: 'Total number of pageviews for this short URL',
-						},
-					},
-				},
-			},
-		},
-	})
-	async getViews(
-		request: IHttpRequest<unknown, TGetShortUrlRequestQueryDto>,
-	): Promise<IHttpResponse<{ views: number }>> {
-		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
-
-		const cacheKey = this.getViewsCacheKey(shortUrl.shortCode);
-		const cached = await this.keyCache.get(cacheKey);
-		if (cached !== null) {
-			return this.makeApiHttpResponse(200, { views: Number(cached) });
-		}
-
-		const views = await this.umamiAnalyticsService.getViewsForEndpoint(`/u/${shortUrl.shortCode}`);
-		await this.keyCache.set(cacheKey, views, 3600);
-
-		return this.makeApiHttpResponse(200, { views });
-	}
-
 	@Post('/:shortCode/record-scan', {
 		authHandler: internalApiAuthHandler,
 		bodySchema: TrackScanDto,
@@ -669,40 +568,12 @@ export class ShortUrlController extends AbstractController {
 			referrer: body.referrer,
 		});
 
-		// 1. Clear views cache
-		void this.keyCache.del(this.getViewsCacheKey(shortCode));
-
 		// Traffic signal for the safety re-check tiering. Real view counts live in Umami, and querying
 		// it per link from a nightly job would be unaffordable, so the hot set is the cheap proxy: a
 		// sorted set bumped here (no DB write on the scan path) and trimmed by the job.
 		void this.bumpHotShortCode(shortCode);
 
-		// 2. Send to Umami
-		void this.umamiAnalyticsService.sendEvent({
-			url: body.url,
-			userAgent: body.userAgent,
-			hostname: body.hostname,
-			language: body.language,
-			referrer: body.referrer,
-			deviceType: body.deviceType,
-			ip: body.ip,
-		});
-
-		// 3. Dispatch to user analytics integrations (GA4, Matomo)
-		const shortUrl = await this.shortUrlRepository.findOneByShortCode(shortCode);
-		if (shortUrl?.createdBy) {
-			this.dispatchTrackingEventUseCase.execute({
-				userId: shortUrl.createdBy,
-				url: body.url,
-				userAgent: body.userAgent,
-				hostname: body.hostname,
-				language: body.language,
-				referrer: body.referrer,
-				ip: body.ip,
-				deviceType: body.deviceType,
-				browserName: body.browserName,
-			});
-		}
+		await this.recordScanUseCase.execute(shortCode, body);
 
 		return this.makeApiHttpResponse(200, { status: 'ok' });
 	}

@@ -1421,7 +1421,8 @@
 			"billing": "Abrechnung",
 			"apiKeys": "API-Schlüssel",
 			"domains": "Domains",
-			"integrations": "Integrationen"
+			"integrations": "Integrationen",
+			"analytics": "Statistik"
 		},
 		"domains": {
 			"title": "Eigene Domains",
@@ -1950,6 +1951,45 @@
 				}
 			},
 			"moreIntegrationsTeaser": "Weitere Integrationen sind in Arbeit. <contact>Eine Integration vorschlagen</contact>"
+		},
+		"analytics": {
+			"title": "Statistik",
+			"description": "Lege fest, welche Scans in der Statistik deiner QR-Codes und Kurz-URLs gezählt werden.",
+			"exclusionsTitle": "IP-Adressen ausschließen",
+			"exclusionsDescription": "Scans von diesen IP-Adressen oder -Bereichen werden nicht in deiner Statistik gezählt und nicht an deine Analytics-Integrationen weitergeleitet. Typischer Fall: dein eigenes Büronetz, damit deine eigenen Tests die Zahlen nicht verfälschen.",
+			"ipLabel": "IP-Adresse oder -Bereich",
+			"labelLabel": "Bezeichnung",
+			"optional": "optional",
+			"labelPlaceholder": "z. B. Büro-WLAN",
+			"add": "Hinzufügen",
+			"useCurrentIp": "Meine aktuelle IP verwenden ({ip})",
+			"useCurrentNetwork": "Mein Netz verwenden ({range})",
+			"invalidIp": "Gib eine gültige IP-Adresse oder einen gültigen Bereich ein, z. B. 203.0.113.7 oder 203.0.113.0/24. Bereiche müssen mindestens /16 (IPv4) bzw. /32 (IPv6) sein.",
+			"limitReached": "Du hast das Maximum von {max} Einträgen erreicht. Lösche einen, um einen neuen hinzuzufügen.",
+			"emptyTitle": "Noch keine IP-Adressen ausgeschlossen",
+			"emptyDescription": "Aktuell werden alle Scans gezählt.",
+			"loadError": "Deine ausgeschlossenen IP-Adressen konnten nicht geladen werden. Bitte versuche es später erneut.",
+			"addedOn": "Hinzugefügt am {date}",
+			"delete": "Löschen",
+			"cancel": "Abbrechen",
+			"deleteConfirmTitle": "IP-Adresse entfernen?",
+			"deleteConfirmDescription": "Künftige Scans von {ipRange} werden dann wieder in deiner Statistik gezählt.",
+			"addedToast": "IP-Adresse ausgeschlossen",
+			"addedToastDescription": "Künftige Scans von {ipRange} werden nicht mehr gezählt.",
+			"addedToastSavedAs": "Gespeichert als {ipRange}. Künftige Scans von dort werden nicht mehr gezählt.",
+			"deletedToast": "IP-Adresse entfernt",
+			"deletedToastDescription": "Künftige Scans von {ipRange} werden wieder gezählt.",
+			"addErrorTitle": "IP-Adresse konnte nicht hinzugefügt werden",
+			"deleteError": "Die IP-Adresse konnte nicht entfernt werden. Bitte versuche es erneut.",
+			"errorDuplicate": "Diese IP-Adresse bzw. dieser Bereich steht schon auf deiner Liste.",
+			"errorLimit": "Mit deinem Plan sind keine weiteren Einträge möglich. Mit Pro kannst du bis zu {max} IP-Adressen oder -Bereiche ausschließen.",
+			"errorGeneric": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+			"proUpsell": "IP-Adressen auszuschließen ist eine Pro-Funktion. Mit Pro kannst du bis zu {max} IP-Adressen oder -Bereiche ausschließen, z. B. dein Büronetz.",
+			"inactiveWithoutPro": "Deine Einträge bleiben gespeichert, gelten aber erst wieder mit Pro. Bis dahin werden alle Scans gezählt.",
+			"hintNetworkOnly": "Ausgeschlossen werden nur Geräte, die mit diesem Netz verbunden sind. Scans über mobile Daten werden weiterhin gezählt.",
+			"hintIpv6": "Smartphones nutzen im WLAN oft IPv6. Trag deshalb auch den IPv6-Bereich deines Netzes ein, sonst werden ihre Scans weiterhin gezählt.",
+			"hintFutureOnly": "Das gilt nur für künftige Scans. Deine bisherige Statistik bleibt unverändert.",
+			"hintPrivacy": "Die IP-Adresse der scannenden Person wird nur im Moment des Scans mit deiner Liste abgeglichen. QRcodly speichert sie dafür nicht und zeigt sie dir nie an."
 		}
 	},
 	"plans": {

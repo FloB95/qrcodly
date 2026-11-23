@@ -1421,7 +1421,8 @@
 			"billing": "Facturering",
 			"apiKeys": "API-sleutels",
 			"domains": "Domeinen",
-			"integrations": "Integraties"
+			"integrations": "Integraties",
+			"analytics": "Statistieken"
 		},
 		"domains": {
 			"title": "Aangepaste Domeinen",
@@ -1950,6 +1951,45 @@
 				}
 			},
 			"moreIntegrationsTeaser": "Meer integraties zijn onderweg. <contact>Stel een integratie voor</contact>"
+		},
+		"analytics": {
+			"title": "Statistieken",
+			"description": "Bepaal welke scans meetellen in de statistieken van je QR-codes en korte URL's.",
+			"exclusionsTitle": "IP-adressen uitsluiten",
+			"exclusionsDescription": "Scans vanaf deze IP-adressen of -bereiken tellen niet mee in je statistieken en worden niet doorgestuurd naar je analytics-integraties. Typisch gebruik: het netwerk van je eigen kantoor, zodat je eigen tests de cijfers niet vertekenen.",
+			"ipLabel": "IP-adres of -bereik",
+			"labelLabel": "Label",
+			"optional": "optioneel",
+			"labelPlaceholder": "bijv. kantoor-wifi",
+			"add": "Toevoegen",
+			"useCurrentIp": "Mijn huidige IP gebruiken ({ip})",
+			"useCurrentNetwork": "Mijn netwerk gebruiken ({range})",
+			"invalidIp": "Voer een geldig IP-adres of -bereik in, bijv. 203.0.113.7 of 203.0.113.0/24. Bereiken moeten minimaal /16 zijn voor IPv4 en /32 voor IPv6.",
+			"limitReached": "Je hebt het maximum van {max} items bereikt. Verwijder er een om een nieuw item toe te voegen.",
+			"emptyTitle": "Nog geen IP-adressen uitgesloten",
+			"emptyDescription": "Op dit moment tellen alle scans mee.",
+			"loadError": "Je uitgesloten IP-adressen konden niet worden geladen. Probeer het later opnieuw.",
+			"addedOn": "Toegevoegd op {date}",
+			"delete": "Verwijderen",
+			"cancel": "Annuleren",
+			"deleteConfirmTitle": "IP-adres verwijderen?",
+			"deleteConfirmDescription": "Toekomstige scans vanaf {ipRange} tellen dan weer mee in je statistieken.",
+			"addedToast": "IP-adres uitgesloten",
+			"addedToastDescription": "Toekomstige scans vanaf {ipRange} tellen niet meer mee.",
+			"addedToastSavedAs": "Opgeslagen als {ipRange}. Toekomstige scans vanaf daar tellen niet meer mee.",
+			"deletedToast": "IP-adres verwijderd",
+			"deletedToastDescription": "Toekomstige scans vanaf {ipRange} tellen weer mee.",
+			"addErrorTitle": "IP-adres kon niet worden toegevoegd",
+			"deleteError": "Het IP-adres kon niet worden verwijderd. Probeer het opnieuw.",
+			"errorDuplicate": "Dit IP-adres of -bereik staat al op je lijst.",
+			"errorLimit": "Je plan staat geen extra items toe. Met Pro kun je tot {max} IP-adressen of -bereiken uitsluiten.",
+			"errorGeneric": "Er ging iets mis. Probeer het opnieuw.",
+			"proUpsell": "IP-adressen uitsluiten is een Pro-functie. Met Pro kun je tot {max} IP-adressen of -bereiken uitsluiten, bijvoorbeeld je kantoornetwerk.",
+			"inactiveWithoutPro": "Je items blijven bewaard, maar gelden pas weer met Pro. Tot die tijd tellen alle scans mee.",
+			"hintNetworkOnly": "Alleen apparaten die met dat netwerk verbonden zijn, worden uitgesloten. Scans via mobiele data tellen nog steeds mee.",
+			"hintIpv6": "Telefoons gebruiken op wifi vaak IPv6. Voeg daarom ook het IPv6-bereik van je netwerk toe, anders tellen hun scans nog steeds mee.",
+			"hintFutureOnly": "Dit geldt alleen voor toekomstige scans. Je bestaande statistieken blijven ongewijzigd.",
+			"hintPrivacy": "Het IP-adres van degene die scant, wordt alleen op het moment van de scan met je lijst vergeleken. QRcodly slaat het hiervoor niet op en laat het je nooit zien."
 		}
 	},
 	"plans": {

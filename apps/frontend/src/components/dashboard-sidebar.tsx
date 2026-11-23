@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/sidebar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
+	ChartBarIcon,
 	CodeBracketIcon,
 	CreditCardIcon,
 	GlobeAltIcon,
@@ -114,6 +115,11 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
 			title: tSettings('integrations'),
 			url: '/dashboard/settings/integrations',
 			icon: PuzzlePieceIcon,
+		},
+		{
+			title: tSettings('analytics'),
+			url: '/dashboard/settings/analytics',
+			icon: ChartBarIcon,
 		},
 	];
 

@@ -1421,7 +1421,8 @@
 			"billing": "Billing",
 			"apiKeys": "API Keys",
 			"domains": "Domains",
-			"integrations": "Integrations"
+			"integrations": "Integrations",
+			"analytics": "Analytics"
 		},
 		"domains": {
 			"title": "Custom Domains",
@@ -1950,6 +1951,45 @@
 				}
 			},
 			"moreIntegrationsTeaser": "More integrations are on the way. <contact>Suggest an integration</contact>"
+		},
+		"analytics": {
+			"title": "Analytics",
+			"description": "Control which scans are counted in the statistics of your QR codes and short URLs.",
+			"exclusionsTitle": "Exclude IP addresses",
+			"exclusionsDescription": "Scans from these IP addresses or ranges are not counted in your statistics and are not forwarded to your analytics integrations. Typical use: your own office network, so your own tests don't skew the numbers.",
+			"ipLabel": "IP address or range",
+			"labelLabel": "Label",
+			"optional": "optional",
+			"labelPlaceholder": "e.g. Office Wi-Fi",
+			"add": "Add",
+			"useCurrentIp": "Use my current IP ({ip})",
+			"useCurrentNetwork": "Use my network ({range})",
+			"invalidIp": "Enter a valid IP address or range, e.g. 203.0.113.7 or 203.0.113.0/24. Ranges must be at least /16 for IPv4 and /32 for IPv6.",
+			"limitReached": "You've reached the maximum of {max} entries. Delete one to add a new one.",
+			"emptyTitle": "No IP addresses excluded yet",
+			"emptyDescription": "All scans are currently counted.",
+			"loadError": "Your excluded IP addresses could not be loaded. Please try again later.",
+			"addedOn": "Added on {date}",
+			"delete": "Delete",
+			"cancel": "Cancel",
+			"deleteConfirmTitle": "Remove IP address?",
+			"deleteConfirmDescription": "Future scans from {ipRange} will be counted in your statistics again.",
+			"addedToast": "IP address excluded",
+			"addedToastDescription": "Future scans from {ipRange} will no longer be counted.",
+			"addedToastSavedAs": "Saved as {ipRange}. Future scans from there will no longer be counted.",
+			"deletedToast": "IP address removed",
+			"deletedToastDescription": "Future scans from {ipRange} will be counted again.",
+			"addErrorTitle": "Could not add IP address",
+			"deleteError": "The IP address could not be removed. Please try again.",
+			"errorDuplicate": "This IP address or range is already on your list.",
+			"errorLimit": "Your plan doesn't allow any more entries. With Pro you can exclude up to {max} IP addresses or ranges.",
+			"errorGeneric": "Something went wrong. Please try again.",
+			"proUpsell": "Excluding IP addresses is a Pro feature. With Pro you can exclude up to {max} IP addresses or ranges, e.g. your office network.",
+			"inactiveWithoutPro": "Your entries are kept, but they only apply again with Pro. Until then, all scans are counted.",
+			"hintNetworkOnly": "Only devices connected to that network are excluded. Scans over mobile data are still counted.",
+			"hintIpv6": "Phones on Wi-Fi often use IPv6. Add the IPv6 range of your network as well, otherwise their scans are still counted.",
+			"hintFutureOnly": "Only future scans are affected. Your existing statistics stay unchanged.",
+			"hintPrivacy": "The IP address of the person scanning is only compared with your list at the moment of the scan. QRcodly does not store it for this and never shows it to you."
 		}
 	},
 	"plans": {
