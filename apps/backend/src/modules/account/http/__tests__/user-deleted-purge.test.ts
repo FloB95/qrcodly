@@ -72,6 +72,7 @@ describe('purging a deleted user', () => {
 	beforeEach(() => {
 		sendMail = jest.spyOn(container.resolve(Mailer), 'sendMail').mockResolvedValue(undefined);
 		const stripe = container.resolve(StripeService);
+		jest.spyOn(stripe, 'findCustomerIdsByUserId').mockResolvedValue([]);
 		jest
 			.spyOn(stripe, 'listSubscriptionsForCustomer')
 			.mockResolvedValue([

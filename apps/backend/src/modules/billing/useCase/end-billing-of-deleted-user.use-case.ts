@@ -32,9 +32,11 @@ export class EndBillingOfDeletedUserUseCase implements IBaseUseCase {
 			limit: 100,
 		});
 
-		const customerIds = new Set(
-			[subscription, ...addons].flatMap((row) => (row ? [row.stripeCustomerId] : [])),
-		);
+		// also the customers Stripe knows by the user, for a subscription whose webhook has not landed yet
+		const customerIds = new Set([
+			...[subscription, ...addons].flatMap((row) => (row ? [row.stripeCustomerId] : [])),
+			...(await this.stripeService.findCustomerIdsByUserId(userId)),
+		]);
 		for (const customerId of customerIds) {
 			for (const stripeSubscription of await this.stripeService.listSubscriptionsForCustomer(
 				customerId,

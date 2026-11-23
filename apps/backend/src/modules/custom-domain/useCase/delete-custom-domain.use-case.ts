@@ -38,8 +38,8 @@ export class DeleteCustomDomainUseCase implements IBaseUseCase {
 					},
 				});
 			} catch (error) {
-				// Log but don't fail - we still want to delete from our database
-				if (error instanceof CloudflareApiError) {
+				// already gone at Cloudflare: finish the deletion in our database
+				if (error instanceof CloudflareApiError && error.statusCode === 404) {
 					this.logger.warn('customDomain.cloudflare.delete.failed', {
 						customDomain: {
 							cloudflareHostnameId: customDomain.cloudflareHostnameId,
@@ -49,6 +49,7 @@ export class DeleteCustomDomainUseCase implements IBaseUseCase {
 						statusCode: error.statusCode,
 					});
 				} else {
+					// keep the row, otherwise nothing can find and retry the hostname left at Cloudflare
 					this.logger.error('customDomain.cloudflare.delete.error', {
 						customDomain: {
 							cloudflareHostnameId: customDomain.cloudflareHostnameId,
@@ -56,6 +57,7 @@ export class DeleteCustomDomainUseCase implements IBaseUseCase {
 						},
 						error,
 					});
+					throw error;
 				}
 			}
 		}

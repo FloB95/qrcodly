@@ -112,6 +112,14 @@ export class StripeService {
 		return customer;
 	}
 
+	/** The user's Stripe customers, found by their Clerk id; unlike findOrCreateCustomer, creates none */
+	async findCustomerIdsByUserId(userId: string): Promise<string[]> {
+		const result = await trackExternal('stripe', 'customers.search', () =>
+			this.stripe.customers.search({ query: `metadata["clerkUserId"]:"${userId}"` }),
+		);
+		return result.data.map((customer) => customer.id);
+	}
+
 	async createCheckoutSession(params: {
 		customerId: string;
 		priceId: string;

@@ -31,12 +31,14 @@ describe('EndBillingOfDeletedUserUseCase', () => {
 		subscriptions = mock<UserSubscriptionRepository>();
 		addons = mock<UserAddonSubscriptionRepository>();
 		stripe = mock<StripeService>();
+		stripe.findCustomerIdsByUserId.mockResolvedValue([]);
 		useCase = new EndBillingOfDeletedUserUseCase(subscriptions, addons, stripe, mock<Logger>());
 	});
 
 	it('cancels every running subscription of the customer once and removes our copies', async () => {
 		subscriptions.findByUserId.mockResolvedValue(pro);
 		addons.findAll.mockResolvedValue([addon]);
+		stripe.findCustomerIdsByUserId.mockResolvedValue(['cus_1']);
 		stripe.listSubscriptionsForCustomer.mockResolvedValue([
 			stripeSubscription('sub_pro', 'active'),
 			stripeSubscription('sub_addon', 'past_due'),
@@ -62,8 +64,23 @@ describe('EndBillingOfDeletedUserUseCase', () => {
 
 		await useCase.execute(USER_ID);
 
+		expect(stripe.findCustomerIdsByUserId).toHaveBeenCalledWith(USER_ID);
 		expect(stripe.listSubscriptionsForCustomer).not.toHaveBeenCalled();
 		expect(subscriptions.delete).not.toHaveBeenCalled();
+	});
+
+	it('cancels a subscription whose webhook has not reached us yet', async () => {
+		subscriptions.findByUserId.mockResolvedValue(undefined);
+		addons.findAll.mockResolvedValue([]);
+		stripe.findCustomerIdsByUserId.mockResolvedValue(['cus_fresh']);
+		stripe.listSubscriptionsForCustomer.mockResolvedValue([
+			stripeSubscription('sub_new', 'active'),
+		]);
+
+		await useCase.execute(USER_ID);
+
+		expect(stripe.listSubscriptionsForCustomer).toHaveBeenCalledWith('cus_fresh');
+		expect(stripe.cancelSubscriptionNow.mock.calls.map(([sub]) => sub.id)).toEqual(['sub_new']);
 	});
 
 	it('keeps our copies when Stripe fails, so a second run can still cancel', async () => {
