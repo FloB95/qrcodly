@@ -239,6 +239,7 @@ Backend tests use Jest with:
 - **Formatting**: Prettier with tabs, semicolons, 100 char width
 - **Git hooks**: lefthook runs Prettier on staged files at pre-commit
 - **Locale translations**: When adding/changing user-facing strings, update all 9 locale dictionaries
+- **User deletion (mandatory check)**: Every new module, table, storage location or external service that holds user data must be removed when the user is deleted. Deleting a user in Clerk emits `UserDeletedEvent`; each module cleans up its own data in `modules/<m>/event/handler/user-deleted.event-handler.ts`, reusing the module's existing delete use cases, wrapped in `deleteAllOfUser` / `cleanUpAfterUser` from `core/utils/user-cleanup.ts` (retries, and alerts support when a step keeps failing). For every new feature, check on your own whether it needs such a handler and say so. New tables must be added to `user-data-coverage.test.ts` in the account module (purged or kept, with reason), otherwise the test fails.
 
 ## Git Conventions
 

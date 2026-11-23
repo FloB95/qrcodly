@@ -14,6 +14,7 @@ export class EventEmitter implements IEventEmitter {
 
 	constructor() {
 		this.emitter = new NodeEventEmitter();
+		this.emitter.setMaxListeners(50);
 	}
 
 	emit(event: AbstractEvent) {

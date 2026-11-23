@@ -409,6 +409,29 @@ export class StripeService {
 		);
 	}
 
+	/**
+	 * Ends a subscription right away, without prorating or a final invoice. One that a schedule
+	 * manages is ended through that schedule, so no planned phase is left to start it again.
+	 */
+	async cancelSubscriptionNow(subscription: Stripe.Subscription): Promise<void> {
+		const scheduleId =
+			typeof subscription.schedule === 'string' ? subscription.schedule : subscription.schedule?.id;
+
+		if (scheduleId) {
+			await trackExternal('stripe', 'subscriptionSchedules.cancel', () =>
+				this.stripe.subscriptionSchedules.cancel(scheduleId, {
+					invoice_now: false,
+					prorate: false,
+				}),
+			);
+			return;
+		}
+
+		await trackExternal('stripe', 'subscriptions.cancel', () =>
+			this.stripe.subscriptions.cancel(subscription.id, { invoice_now: false, prorate: false }),
+		);
+	}
+
 	async createPortalSession(
 		stripeCustomerId: string,
 		locale?: string,

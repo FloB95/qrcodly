@@ -5,7 +5,7 @@ import db from '@/core/db';
 import { integrationUsage, type TIntegrationUsage } from '@/core/db/schemas';
 import { KeyCache } from '@/core/cache';
 import { API_BASE_PATH } from '@/core/config/constants';
-import { EventEmitter } from '@/core/event/event.emitter';
+import { DeleteIntegrationUsageOnUserDeletedEventHandler } from '../../event/handler/user-deleted.event-handler';
 import { UserDeletedEvent } from '@/core/event/user-deleted.event';
 import { getTestContext, resetTestState, TEST_USER_ID } from '@/tests/shared/test-context';
 
@@ -121,7 +121,10 @@ describe('integration usage tracking', () => {
 		await listQrCodes('figma/0.4.2');
 		await waitForUsage('figma');
 
-		container.resolve(EventEmitter).emit(new UserDeletedEvent({ id: TEST_USER_ID }));
+		// only this module's handler: the full user deletion would purge the shared test user
+		await new DeleteIntegrationUsageOnUserDeletedEventHandler().handle(
+			new UserDeletedEvent({ id: TEST_USER_ID }),
+		);
 
 		for (let attempt = 0; attempt < 50; attempt++) {
 			const rows = await db.query.integrationUsage.findMany({

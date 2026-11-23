@@ -3,6 +3,8 @@ import { mock, type MockProxy } from 'jest-mock-extended';
 import { container } from 'tsyringe';
 import { type Logger } from '@/core/logging';
 import { UserDeletedEvent } from '@/core/event/user-deleted.event';
+import { UserCleanupFailedEvent } from '@/core/event/user-cleanup-failed.event';
+import { type EventEmitter } from '@/core/event/event.emitter';
 import type AnalyticsIntegrationRepository from '../../../domain/repository/analytics-integration.repository';
 import type ScanIpExclusionRepository from '../../../domain/repository/scan-ip-exclusion.repository';
 import { type ScanIpExclusionMatcherService } from '../../../service/scan-ip-exclusion-matcher.service';
@@ -13,8 +15,15 @@ jest.mock('tsyringe', () => {
 	return { ...actual, container: { ...actual.container, resolve: jest.fn() } };
 });
 
+// the user cleanup retries with pauses in between; not in tests
+jest.mock('@/utils/general', () => ({
+	...jest.requireActual('@/utils/general'),
+	sleep: jest.fn().mockResolvedValue(undefined),
+}));
+
 describe('DeleteAnalyticsDataOnUserDeletedEventHandler', () => {
 	let logger: MockProxy<Logger>;
+	let emitter: MockProxy<EventEmitter>;
 	let integrations: MockProxy<AnalyticsIntegrationRepository>;
 	let exclusions: MockProxy<ScanIpExclusionRepository>;
 	let matcher: MockProxy<ScanIpExclusionMatcherService>;
@@ -24,12 +33,14 @@ describe('DeleteAnalyticsDataOnUserDeletedEventHandler', () => {
 
 	beforeEach(() => {
 		logger = mock<Logger>();
+		emitter = mock<EventEmitter>();
 		integrations = mock<AnalyticsIntegrationRepository>();
 		exclusions = mock<ScanIpExclusionRepository>();
 		matcher = mock<ScanIpExclusionMatcherService>();
 		(container.resolve as jest.Mock).mockImplementation((token: unknown) => {
 			const name = typeof token === 'function' ? token.name : String(token);
 			if (name === 'Logger') return logger;
+			if (name === 'EventEmitter') return emitter;
 			if (name === 'AnalyticsIntegrationRepository') return integrations;
 			if (name === 'ScanIpExclusionRepository') return exclusions;
 			if (name === 'ScanIpExclusionMatcherService') return matcher;
@@ -59,6 +70,8 @@ describe('DeleteAnalyticsDataOnUserDeletedEventHandler', () => {
 			error: expect.any(Error),
 			userId: 'user-1',
 		});
+		expect(integrations.deleteAllByUserId).toHaveBeenCalledTimes(3);
+		expect(emitter.emit).toHaveBeenCalledWith(expect.any(UserCleanupFailedEvent));
 	});
 
 	it('logs a failed deletion of the excluded IP ranges instead of letting it escape', async () => {

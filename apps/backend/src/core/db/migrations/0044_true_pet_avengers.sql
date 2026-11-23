@@ -1,0 +1,1 @@
+ALTER TABLE `account_deletion_request` ADD `email` varchar(255);

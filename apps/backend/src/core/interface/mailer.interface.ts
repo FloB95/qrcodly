@@ -19,7 +19,9 @@ export type TemplateName =
 	| 'url-safety-account-banned'
 	| 'url-safety-admin-alert'
 	| 'account-deletion-admin-alert'
-	| 'account-deletion-confirm';
+	| 'account-deletion-confirm'
+	| 'account-deleted'
+	| 'account-deletion-cleanup-failed';
 
 /**
  * Interface for a mailer service.

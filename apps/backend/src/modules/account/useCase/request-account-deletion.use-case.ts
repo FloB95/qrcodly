@@ -40,7 +40,14 @@ export class RequestAccountDeletionUseCase implements IBaseUseCase {
 			request = { ...open, ...link };
 			await this.repository.update(open, link);
 		} else if (existing) {
-			request = { ...existing, ...link, requestedAt, revokedAt: null, confirmedAt: null };
+			request = {
+				...existing,
+				...link,
+				requestedAt,
+				revokedAt: null,
+				confirmedAt: null,
+				email: null,
+			};
 			await this.repository.update(existing, request);
 		} else {
 			request = {
@@ -49,6 +56,7 @@ export class RequestAccountDeletionUseCase implements IBaseUseCase {
 				requestedAt,
 				revokedAt: null,
 				confirmedAt: null,
+				email: null,
 				...link,
 			};
 			try {

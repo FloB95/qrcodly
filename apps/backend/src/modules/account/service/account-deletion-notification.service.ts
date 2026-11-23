@@ -55,6 +55,50 @@ export class AccountDeletionNotificationService {
 		});
 	}
 
+	/** Tells the former owner that the account is gone. Throws when the mail cannot be sent. */
+	async sendGoodbye(email: string): Promise<void> {
+		const template = await this.mailer.getTemplate('account-deleted');
+		const html = template({
+			email,
+			frontendUrl: env.FRONTEND_URL,
+			logoUrl: `${env.FRONTEND_URL}/email-logo.png`,
+			retentionDays: env.HOSTED_FILE_RETENTION_DAYS,
+			year: new Date().getFullYear(),
+		});
+
+		await this.mailer.sendMail({
+			to: email,
+			subject: 'Your QRcodly account has been deleted',
+			html,
+			template: 'account-deleted',
+		});
+	}
+
+	/** Tells support that part of a deleted user's data is still there, so it gets finished. */
+	async notifyCleanupFailed(failure: {
+		userId: string;
+		step: string;
+		failedItems?: number;
+		error: string;
+	}): Promise<void> {
+		try {
+			const template = await this.mailer.getTemplate('account-deletion-cleanup-failed');
+			const html = template({ ...failure, year: new Date().getFullYear() });
+			await this.mailer.sendMail({
+				to: ACCOUNT_DELETION_MAIL,
+				subject: `Account deletion incomplete: ${failure.step} (${failure.userId})`,
+				html,
+				template: 'account-deletion-cleanup-failed',
+			});
+		} catch (error) {
+			this.logger.error('account.deletion.cleanup_alert_failed', {
+				user: { id: failure.userId },
+				step: failure.step,
+				error: error as Error,
+			});
+		}
+	}
+
 	async notifyRequested(userId: string, requestedAt: Date): Promise<void> {
 		await this.notify(userId, requestedAt);
 	}

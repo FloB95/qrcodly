@@ -178,6 +178,11 @@ export class UrlSafetyIncidentRepository extends AbstractRepository<TUrlSafetyIn
 		return Number(row?.count ?? 0);
 	}
 
+	async deleteAllForUser(userId: string): Promise<void> {
+		await this.db.delete(this.table).where(eq(this.table.userId, userId)).execute();
+		await this.clearCache();
+	}
+
 	/** Retention sweep, run at the end of each job pass. */
 	async deleteOlderThan(cutoff: Date): Promise<number> {
 		const stale = await this.db
