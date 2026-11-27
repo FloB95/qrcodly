@@ -22,7 +22,9 @@ export class QrCodeLogoService {
 		const parsed = parseDataUrl(dataUrl);
 		if (!parsed) throw new BadRequestError('Invalid image format');
 		const { mimeType, base64, payload } = parsed;
-		if (mimeType === 'image/png') return dataUrl;
+		const isRaster = RASTER_TYPES.includes(mimeType);
+		// other types are rejected by the upload validation
+		if (!isRaster && mimeType !== 'image/svg+xml') return dataUrl;
 
 		const buffer = base64
 			? Buffer.from(payload, 'base64')
@@ -30,14 +32,18 @@ export class QrCodeLogoService {
 
 		let png: Buffer;
 		try {
-			if (mimeType === 'image/svg+xml') {
+			if (!isRaster) {
 				png = svgToPng(buffer.toString('utf8'), systemFonts);
-			} else if (mimeType === 'image/jpeg' || mimeType === 'image/webp') {
+			} else {
+				// the declared type is only a label: a renamed .jpg arrives as image/png
+				const actualType = detectRasterType(buffer);
+				if (!actualType) throw new BadRequestError('The logo could not be read.');
+				if (actualType === 'image/png') {
+					return mimeType === 'image/png' && base64 ? dataUrl : toPngDataUrl(buffer);
+				}
+				// only bytes recognised as JPEG or WebP reach sharp, never its other decoders;
 				// rotate() applies the EXIF orientation, which browsers honour and resvg ignores
 				png = await sharp(buffer).rotate().png().toBuffer();
-			} else {
-				// other types are rejected by the upload validation
-				return dataUrl;
 			}
 		} catch (error) {
 			if (error instanceof BadRequestError) {
@@ -51,7 +57,7 @@ export class QrCodeLogoService {
 			});
 			throw new BadRequestError('The logo could not be read.');
 		}
-		return `data:image/png;base64,${png.toString('base64')}`;
+		return toPngDataUrl(png);
 	}
 
 	/** Logo as PNG with its size, ready for buildQrCodeSvg. Throws rather than drop the logo. */
@@ -66,6 +72,20 @@ export class QrCodeLogoService {
 		}
 		return { dataUrl: normalized, ...size };
 	}
+}
+
+const RASTER_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+
+const toPngDataUrl = (png: Buffer) => `data:image/png;base64,${png.toString('base64')}`;
+
+function detectRasterType(bytes: Buffer): string | undefined {
+	if (bytes.subarray(0, 8).equals(PNG_SIGNATURE)) return 'image/png';
+	if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return 'image/jpeg';
+	if (bytes.toString('latin1', 0, 4) === 'RIFF' && bytes.toString('latin1', 8, 12) === 'WEBP') {
+		return 'image/webp';
+	}
+	return undefined;
 }
 
 function svgToPng(svg: string, systemFonts: boolean): Buffer {

@@ -91,6 +91,35 @@ describe('QR code rendering', () => {
 		expect(await logoService.normalize(png)).toBe(png);
 	});
 
+	it.each(['jpeg', 'webp'] as const)('converts a %s logo labelled as PNG', async (format) => {
+		const renamed = toDataUrl('image/png', await solidImage(format, 30, 20));
+
+		const normalized = await logoService.normalize(renamed);
+
+		expect(measureImageDataUrl(normalized)).toEqual({ width: 30, height: 20 });
+		expect(countGreenPixels(await renderWithLogo(renamed))).toBeGreaterThan(100);
+	});
+
+	it('takes a PNG labelled as JPEG as PNG', async () => {
+		const png = await solidImage('png', 20, 20);
+
+		expect(await logoService.normalize(toDataUrl('image/jpeg', png))).toBe(
+			toDataUrl('image/png', png),
+		);
+	});
+
+	it.each([
+		['an SVG', Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"/>')],
+		['a GIF', Buffer.from('GIF89a\x01\x00\x01\x00', 'latin1')],
+		['garbage', Buffer.from('not an image')],
+	])('rejects %s labelled as a raster image', async (_name, bytes) => {
+		for (const mimeType of ['image/png', 'image/jpeg', 'image/webp']) {
+			await expect(logoService.normalize(toDataUrl(mimeType, bytes))).rejects.toThrow(
+				'The logo could not be read.',
+			);
+		}
+	});
+
 	it('does not embed files from the server disk', async () => {
 		const file = join(mkdtempSync(join(tmpdir(), 'logo-')), 'secret.png');
 		writeFileSync(file, await solidImage('png', 10, 10));
