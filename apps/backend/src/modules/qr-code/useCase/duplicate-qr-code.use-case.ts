@@ -59,6 +59,8 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 		let copiedImage: string | undefined;
 		const copiedHostedKeys: string[] = [];
 		let finalQrCode: TQrCodeWithRelations;
+		// outside the transaction: the cleanup below names the QR code the logo was copied for
+		const newId = this.qrCodeRepository.generateId();
 
 		try {
 			// hosted files are copied too, so deleting the original never breaks the copy
@@ -69,7 +71,6 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 			);
 
 			finalQrCode = await UnitOfWork.run<TQrCodeWithRelations>(async () => {
-				const newId = this.qrCodeRepository.generateId();
 				const config = structuredClone(source.config);
 
 				if (config.image) {
@@ -126,7 +127,7 @@ export class DuplicateQrCodeUseCase implements IBaseUseCase {
 
 			if (copiedImage) {
 				try {
-					await this.imageService.deleteImage(copiedImage);
+					await this.imageService.deleteImage(copiedImage, { id: newId, createdBy: user.id });
 				} catch (cleanupError) {
 					this.logger.warn('qrCode.duplicated.cleanup.failed', {
 						copiedImage,

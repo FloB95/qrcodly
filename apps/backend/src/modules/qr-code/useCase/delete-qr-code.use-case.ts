@@ -23,8 +23,9 @@ export class DeleteQrCodeUseCase implements IBaseUseCase {
 	) {}
 
 	async execute(qrCode: TQrCode, deletedBy: string): Promise<boolean> {
-		await this.imageService.deleteImage(qrCode.config.image);
-		await this.imageService.deleteImage(qrCode.previewImage ?? undefined);
+		const owner = { id: qrCode.id, createdBy: qrCode.createdBy };
+		await this.imageService.deleteImage(qrCode.config.image, owner);
+		await this.imageService.deleteImage(qrCode.previewImage ?? undefined, owner);
 
 		let linkedShortCode: string | undefined;
 		let deletedPageOwner: string | undefined;

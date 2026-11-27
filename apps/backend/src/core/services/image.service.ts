@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { BaseImageStrategy } from '../domain/strategies/base-image.strategy';
+import { BaseImageStrategy, type TImageOwner } from '../domain/strategies/base-image.strategy';
 import { QrCodeImageStrategy } from '@/modules/qr-code/domain/strategies/qr-code-image.strategy';
 import { QrCodeLogoService } from './qr-code-logo.service';
 
@@ -35,8 +35,8 @@ export class ImageService {
 		return this.strategy.copyImage(sourcePath, newEntityId, userId);
 	}
 
-	async deleteImage(imagePath?: string): Promise<void> {
-		return this.strategy.delete(imagePath);
+	async deleteImage(imagePath?: string, owner?: TImageOwner): Promise<void> {
+		return this.strategy.delete(imagePath, owner);
 	}
 
 	async generatePreview(...args: any[]): Promise<string | undefined> {
@@ -68,13 +68,15 @@ export class ImageService {
 		entityId: string,
 		userId: string,
 	): Promise<string | undefined> {
+		const owner = { id: entityId, createdBy: userId };
+
 		if (currentImage && newImage && !newImage.includes(currentImage)) {
-			await this.deleteImage(currentImage);
+			await this.deleteImage(currentImage, owner);
 			return this.uploadImage(newImage, entityId, userId);
 		}
 
 		if (!newImage && currentImage) {
-			await this.deleteImage(currentImage);
+			await this.deleteImage(currentImage, owner);
 			return undefined;
 		}
 

@@ -300,6 +300,7 @@ describe('CreateQrCodeUseCase', () => {
 
 			expect(mockImageService.deleteImage).toHaveBeenCalledWith(
 				'https://cdn.example.com/image.png',
+				{ id: 'qr-123', createdBy: mockUser.id },
 			);
 		});
 

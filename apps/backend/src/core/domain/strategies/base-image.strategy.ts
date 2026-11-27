@@ -6,6 +6,9 @@ import { randomUUID } from 'node:crypto';
 import { type TQrCodeLogo } from '@shared/schemas';
 import { QrCodeLogoService } from '@/core/services/qr-code-logo.service';
 
+/** The record an image was stored for. */
+export type TImageOwner = { id: string; createdBy: string | null };
+
 export abstract class BaseImageStrategy {
 	protected readonly validMimeTypes = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
 	protected readonly signedUrlExpirySeconds = 7 * 24 * 60 * 60; // 7 Days
@@ -104,6 +107,6 @@ export abstract class BaseImageStrategy {
 		file: { buffer: Buffer; fileName: string; mimeType: string },
 		userId?: string,
 	): Promise<string | undefined>;
-	abstract delete(imagePath?: string): Promise<void>;
+	abstract delete(imagePath?: string, owner?: TImageOwner): Promise<void>;
 	abstract generatePreview?(...args: any[]): Promise<string | undefined>;
 }

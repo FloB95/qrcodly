@@ -65,11 +65,11 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 		const resolvedConfig = await this.resolveConfig(dto, user);
 
 		let createdImage: string | undefined;
+		// outside the transaction: the cleanup below names the QR code the logo was stored for
+		const newId = await this.qrCodeRepository.generateId();
 
 		try {
 			const created = await UnitOfWork.run<TQrCodeWithRelations>(async () => {
-				const newId = await this.qrCodeRepository.generateId();
-
 				const qrCodeEntity = {
 					id: newId,
 					name: dto.name ?? null,
@@ -135,7 +135,12 @@ export class CreateQrCodeUseCase implements IBaseUseCase {
 			this.logger[isServerFault ? 'error' : 'warn']('qrCode.created.error', { error });
 
 			// cleanup uploaded image if transaction fails
-			if (createdImage) await this.imageService.deleteImage(createdImage);
+			if (createdImage) {
+				await this.imageService.deleteImage(createdImage, {
+					id: newId,
+					createdBy: user?.id ?? null,
+				});
+			}
 
 			if (error instanceof CustomApiError) {
 				throw error;

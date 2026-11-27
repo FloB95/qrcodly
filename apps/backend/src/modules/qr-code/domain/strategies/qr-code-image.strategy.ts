@@ -1,11 +1,7 @@
 import { convertQrCodeOptionsToLibraryOptions, type TQrCode } from '@shared/schemas';
-import {
-	QR_CODE_IMAGE_FOLDER,
-	QR_CODE_PREVIEW_IMAGE_FOLDER,
-	QR_CODE_UPLOAD_FOLDER,
-} from '../../config/constants';
+import { QR_CODE_PREVIEW_IMAGE_FOLDER, QR_CODE_UPLOAD_FOLDER } from '../../config/constants';
 import { renderQrCodeSvg } from '../../lib/styled-qr-code';
-import { BaseImageStrategy } from '@/core/domain/strategies/base-image.strategy';
+import { BaseImageStrategy, type TImageOwner } from '@/core/domain/strategies/base-image.strategy';
 
 export class QrCodeImageStrategy extends BaseImageStrategy {
 	constructor() {
@@ -33,13 +29,12 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 		}
 	}
 
-	async delete(filePath?: string): Promise<void> {
-		if (!filePath) return;
-		const qrCodePathRegex = new RegExp(`^${QR_CODE_IMAGE_FOLDER}/`);
-		if (!qrCodePathRegex.test(filePath)) {
-			this.logger.warn(`Attempted to delete image outside the qrCode folder: ${filePath}`);
-			return;
-		}
+	/**
+	 * Deletes an image only if it was stored for this QR code. The logo path sits in the config,
+	 * where a client can put the path of somebody else's image, or of a template's.
+	 */
+	async delete(filePath?: string, owner?: TImageOwner): Promise<void> {
+		if (!filePath || !owner || !this.isStoredFor(filePath, owner)) return;
 		try {
 			await this.objectStorage.delete(filePath);
 		} catch (error) {
@@ -48,6 +43,14 @@ export class QrCodeImageStrategy extends BaseImageStrategy {
 				error,
 			});
 		}
+	}
+
+	/** Logos and previews are named after their QR code and lie in the folder of its creator. */
+	private isStoredFor(filePath: string, owner: TImageOwner): boolean {
+		return [QR_CODE_UPLOAD_FOLDER, QR_CODE_PREVIEW_IMAGE_FOLDER].some((folder) => {
+			const start = this.constructFilePath(folder, owner.createdBy ?? undefined, owner.id);
+			return filePath.startsWith(`${start}-`) || filePath.startsWith(`${start}.`);
+		});
 	}
 
 	async generatePreview(

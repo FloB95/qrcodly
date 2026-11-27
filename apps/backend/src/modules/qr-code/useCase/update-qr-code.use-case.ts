@@ -84,7 +84,10 @@ export class UpdateQrCodeUseCase implements IBaseUseCase<
 		if (hostedPlan) delete validatedUpdates.content;
 
 		if ((diffs?.config || (diffs?.content && !hostedPlan)) && qrCode.previewImage) {
-			await this.imageService.deleteImage(qrCode.previewImage);
+			await this.imageService.deleteImage(qrCode.previewImage, {
+				id: qrCode.id,
+				createdBy: qrCode.createdBy,
+			});
 			validatedUpdates.previewImage = null;
 		}
 

@@ -206,6 +206,7 @@ describe('UpdateQrCodeUseCase', () => {
 
 			expect(mockImageService.deleteImage).toHaveBeenCalledWith(
 				'https://cdn.example.com/preview.png',
+				{ id: 'qr-123', createdBy: 'user-123' },
 			);
 			expect(mockQrCodeRepo.update).toHaveBeenCalledWith(
 				qrCodeWithPreview,
@@ -235,6 +236,7 @@ describe('UpdateQrCodeUseCase', () => {
 
 			expect(mockImageService.deleteImage).toHaveBeenCalledWith(
 				'https://cdn.example.com/preview.png',
+				{ id: 'qr-123', createdBy: 'user-123' },
 			);
 		});
 

@@ -57,6 +57,7 @@ describe('DeleteQrCodeUseCase', () => {
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		};
+		const owner = { id: mockQrCode.id, createdBy: mockQrCode.createdBy };
 
 		it('should delete config.image before deleting QR code', async () => {
 			mockImageService.deleteImage.mockResolvedValue();
@@ -64,7 +65,7 @@ describe('DeleteQrCodeUseCase', () => {
 
 			await useCase.execute(mockQrCode, mockUserId);
 
-			expect(mockImageService.deleteImage).toHaveBeenCalledWith(mockQrCode.config.image);
+			expect(mockImageService.deleteImage).toHaveBeenCalledWith(mockQrCode.config.image, owner);
 		});
 
 		it('should delete previewImage before deleting QR code', async () => {
@@ -73,7 +74,7 @@ describe('DeleteQrCodeUseCase', () => {
 
 			await useCase.execute(mockQrCode, mockUserId);
 
-			expect(mockImageService.deleteImage).toHaveBeenCalledWith(mockQrCode.previewImage);
+			expect(mockImageService.deleteImage).toHaveBeenCalledWith(mockQrCode.previewImage, owner);
 		});
 
 		it('should handle null previewImage gracefully', async () => {
@@ -87,7 +88,7 @@ describe('DeleteQrCodeUseCase', () => {
 
 			await useCase.execute(qrCodeWithoutPreview, mockUserId);
 
-			expect(mockImageService.deleteImage).toHaveBeenCalledWith(undefined);
+			expect(mockImageService.deleteImage).toHaveBeenCalledWith(undefined, owner);
 		});
 
 		it('should handle null config.image gracefully', async () => {
@@ -104,7 +105,7 @@ describe('DeleteQrCodeUseCase', () => {
 
 			await useCase.execute(qrCodeWithoutImage, mockUserId);
 
-			expect(mockImageService.deleteImage).toHaveBeenCalledWith(undefined);
+			expect(mockImageService.deleteImage).toHaveBeenCalledWith(undefined, owner);
 		});
 
 		it('should call repository.delete() with QR code entity', async () => {
