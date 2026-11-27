@@ -78,7 +78,7 @@ export function AliasField({ label, domain, value, onChange, status }: AliasFiel
 					<Check className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
 				)}
 				{isError && <X className="mt-0.5 size-4 shrink-0" aria-hidden="true" />}
-				<span className="break-all">
+				<span className="[overflow-wrap:anywhere]">
 					{status === AliasInputStatus.EMPTY && t('hint')}
 					{status === AliasInputStatus.UNCHANGED && t('unchanged')}
 					{status === AliasInputStatus.TOO_SHORT &&

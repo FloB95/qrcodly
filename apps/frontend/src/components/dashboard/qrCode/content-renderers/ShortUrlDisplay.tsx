@@ -20,9 +20,8 @@ export const ShortUrlDisplay = ({
 	destinationContent,
 	className = 'text-muted-foreground hover:underline',
 }: ShortUrlDisplayProps) => {
-	const { link: shortUrl, isLoading } = useShortUrlLink(shortUrlData);
-	const { link: aliasUrl } = useShortUrlLink(shortUrlData, false, true);
-	const hasAlias = !!shortUrlData.alias && !!aliasUrl && aliasUrl !== shortUrl;
+	// a table row has room for one address: the alias where the owner set one
+	const { link: shortUrl, isLoading } = useShortUrlLink(shortUrlData, false, true);
 
 	if (!shortUrl || isLoading) {
 		return <div className={className}>Loading...</div>;
@@ -30,12 +29,6 @@ export const ShortUrlDisplay = ({
 
 	return (
 		<div className="min-w-0">
-			{hasAlias && (
-				<div className="group/url flex min-w-0 items-center gap-1">
-					<TruncatedLink href={aliasUrl} className={cn('truncate', className)} />
-					<CopyUrlButton url={aliasUrl} />
-				</div>
-			)}
 			<div className="group/url flex min-w-0 items-center gap-1">
 				<TruncatedLink href={shortUrl} className={cn('truncate', className)} />
 				<CopyUrlButton url={shortUrl} />
