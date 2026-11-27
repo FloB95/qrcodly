@@ -22,8 +22,7 @@
 			"taken": "This alias is already in use on {domain}.",
 			"notAvailable": "This alias is not available. Please choose another one.",
 			"checkFailed": "Availability could not be checked. You can still try to save.",
-			"systemDomain": "An alias needs a custom domain.",
-			"connectDomain": "Connect a domain",
+			"systemDomain": "An alias is only available for links on your own domain. The domain is set when a link is created and can’t be changed afterwards.",
 			"createNote": "Your link always gets a fixed short URL as well. The alias is added as a second address. You can change it later, the short URL stays as it is.",
 			"menuSet": "Set alias",
 			"menuChange": "Change alias",
@@ -36,11 +35,10 @@
 				"fixedHintQrCode": "This address is stored in the QR code and never changes. Printed codes stay valid, whatever you do with the alias.",
 				"changeable": "Changeable",
 				"aliasHint": "Additional address on your domain. Both addresses lead to the same destination and count towards the same statistics.",
-				"none": "No alias yet. Give this link a readable address, for example for flyers or newsletters.",
+				"none": "No alias yet. Give this link a readable address.",
 				"set": "Set alias",
 				"change": "Change",
-				"remove": "Remove",
-				"qrCodeNote": "The alias is for everything people read or type: the text below the QR code, newsletters, social media. Scans of the QR code and visits through the alias end up in the same statistics."
+				"remove": "Remove"
 			},
 			"dialog": {
 				"setTitle": "Set alias",

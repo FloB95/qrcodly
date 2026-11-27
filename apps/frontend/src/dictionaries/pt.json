@@ -22,8 +22,7 @@
 			"taken": "Este alias já está em uso em {domain}.",
 			"notAvailable": "Este alias não está disponível. Escolhe outro.",
 			"checkFailed": "Não foi possível verificar a disponibilidade. Podes tentar guardar na mesma.",
-			"systemDomain": "Um alias precisa de um domínio próprio.",
-			"connectDomain": "Ligar um domínio",
+			"systemDomain": "Um alias só está disponível para links no teu próprio domínio. O domínio é definido ao criar o link e não pode ser alterado depois.",
 			"createNote": "O teu link recebe sempre também um URL curto fixo. O alias junta-se como segundo endereço. Podes alterá-lo mais tarde, o URL curto fica como está.",
 			"menuSet": "Definir alias",
 			"menuChange": "Alterar alias",
@@ -36,11 +35,10 @@
 				"fixedHintQrCode": "Este endereço está guardado no código QR e nunca muda. Os códigos impressos continuam válidos, faças o que fizeres com o alias.",
 				"changeable": "Alterável",
 				"aliasHint": "Endereço adicional no teu domínio. Ambos os endereços levam ao mesmo destino e contam para a mesma estatística.",
-				"none": "Ainda sem alias. Dá a este link um endereço legível, por exemplo para folhetos ou newsletters.",
+				"none": "Ainda sem alias. Dá a este link um endereço legível.",
 				"set": "Definir alias",
 				"change": "Alterar",
-				"remove": "Remover",
-				"qrCodeNote": "O alias serve para tudo o que se lê ou se escreve: o texto por baixo do código QR, newsletters, redes sociais. As leituras do código QR e as visitas através do alias vão para a mesma estatística."
+				"remove": "Remover"
 			},
 			"dialog": {
 				"setTitle": "Definir alias",

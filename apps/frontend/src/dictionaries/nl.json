@@ -22,8 +22,7 @@
 			"taken": "Deze alias is al in gebruik op {domain}.",
 			"notAvailable": "Deze alias is niet beschikbaar. Kies een andere.",
 			"checkFailed": "De beschikbaarheid kon niet worden gecontroleerd. Je kunt toch proberen op te slaan.",
-			"systemDomain": "Voor een alias is een eigen domein nodig.",
-			"connectDomain": "Domein koppelen",
+			"systemDomain": "Een alias is alleen mogelijk voor links op je eigen domein. Het domein ligt vast bij het aanmaken van de link en kan daarna niet meer worden gewijzigd.",
 			"createNote": "Je link krijgt altijd ook een vaste korte URL. De alias komt er als tweede adres bij. Je kunt hem later wijzigen, de korte URL blijft zoals die is.",
 			"menuSet": "Alias instellen",
 			"menuChange": "Alias wijzigen",
@@ -36,11 +35,10 @@
 				"fixedHintQrCode": "Dit adres is opgeslagen in de QR-code en verandert nooit. Gedrukte codes blijven geldig, wat je ook met de alias doet.",
 				"changeable": "Wijzigbaar",
 				"aliasHint": "Extra adres op je domein. Beide adressen leiden naar dezelfde bestemming en tellen mee in dezelfde statistiek.",
-				"none": "Nog geen alias. Geef deze link een leesbaar adres, bijvoorbeeld voor flyers of nieuwsbrieven.",
+				"none": "Nog geen alias. Geef deze link een leesbaar adres.",
 				"set": "Alias instellen",
 				"change": "Wijzigen",
-				"remove": "Verwijderen",
-				"qrCodeNote": "De alias is voor alles wat mensen lezen of typen: de tekst onder de QR-code, nieuwsbrieven, sociale media. Scans van de QR-code en bezoeken via de alias komen in dezelfde statistiek terecht."
+				"remove": "Verwijderen"
 			},
 			"dialog": {
 				"setTitle": "Alias instellen",

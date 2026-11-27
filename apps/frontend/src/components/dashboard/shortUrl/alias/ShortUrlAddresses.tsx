@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { InformationCircleIcon, LockClosedIcon, PencilIcon } from '@heroicons/react/24/outline';
+import { LockClosedIcon, PencilIcon } from '@heroicons/react/24/outline';
 import * as Sentry from '@sentry/nextjs';
 import type { TShortUrlResponseDto, TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
 import {
@@ -18,7 +18,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/components/ui/use-toast';
-import { Link } from '@/i18n/navigation';
 import { useCustomDomainLookup } from '@/lib/api/custom-domain';
 import { useSetShortUrlAliasMutation } from '@/lib/api/url-shortener';
 import { createLinkFromShortUrl } from '@/lib/utils';
@@ -109,12 +108,7 @@ export function ShortUrlAddresses({
 				</div>
 
 				{!customDomainId && (
-					<p className="text-sm text-muted-foreground">
-						{t('systemDomain')}{' '}
-						<Link href="/dashboard/settings/domains" className="font-medium text-primary underline">
-							{t('connectDomain')}
-						</Link>
-					</p>
+					<p className="max-w-2xl text-sm text-muted-foreground">{t('systemDomain')}</p>
 				)}
 
 				{customDomain && !shortUrl.alias && (
@@ -159,13 +153,6 @@ export function ShortUrlAddresses({
 					<p className="text-sm text-muted-foreground">{t('systemDomain')}</p>
 				)}
 			</div>
-
-			{isQrCode && customDomain && (
-				<div className="flex gap-3 rounded-lg bg-muted p-3 text-sm text-muted-foreground">
-					<InformationCircleIcon aria-hidden="true" className="size-5 shrink-0" />
-					<p>{t('addresses.qrCodeNote')}</p>
-				</div>
-			)}
 
 			{customDomain && (
 				<ShortUrlAliasDialog
