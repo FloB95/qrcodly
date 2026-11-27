@@ -2093,9 +2093,8 @@
 				"unlimitedTags": "Tags illimités",
 				"largerBulkImports": "Importations en masse plus grandes (50 lignes, 2Mo)",
 				"customDomains": "Un domaine personnalisé inclus — ajoutez-en d'autres à tout moment",
-				"customShortCodes": "Chemins d'URL courtes personnalisés (bientôt disponible)",
+				"customShortCodes": "Chemins d'URL courtes personnalisés (alias) sur votre domaine",
 				"prioritySupport": "Support prioritaire",
-				"teamFeatures": "Fonctionnalités d'équipe (bientôt)",
 				"apiAccess": "Accès à l'API REST",
 				"marketplaceIntegrations": "Intégrations tierces",
 				"hostedPages": "Jusqu’à 15 pages PDF et pages produit derrière vos QR codes"
@@ -2699,7 +2698,15 @@
 				"q7": "Que se passe-t-il si je supprime une URL courte ?",
 				"a7": "Lorsque vous supprimez une URL courte, elle devient définitivement inactive. Toute personne cliquant sur le lien verra une page 404. Cette action ne peut pas être annulée, alors envisagez de désactiver l'URL si vous pourriez en avoir besoin plus tard.",
 				"q8": "Puis-je créer des URL courtes via l'API ?",
-				"a8": "Oui, avec Pro. L'API REST permet de créer, modifier et gérer des URL courtes par programmation. Consultez la documentation de l'API pour les détails et l'authentification."
+				"a8": "Oui, avec Pro. L'API REST permet de créer, modifier et gérer des URL courtes par programmation. Consultez la documentation de l'API pour les détails et l'authentification.",
+				"q9": "Qu'est-ce qu'un alias ?",
+				"a9": "Un alias est une deuxième adresse lisible pour une URL courte sur votre propre domaine, par exemple go.votremarque.fr/u/fete-ete à côté de go.votremarque.fr/u/x7k9m. L'URL courte reste en place et continue de fonctionner, et les deux adresses mènent à la même destination. Les alias sont inclus dans Pro pour tous les liens sur votre propre domaine.",
+				"q10": "Puis-je ajouter un alias plus tard ?",
+				"a10": "Oui. Vous pouvez choisir l'alias à la création d'une URL courte ou l'ajouter plus tard depuis votre tableau de bord, à tout moment, y compris pour des codes QR dynamiques déjà imprimés. Le code QR lui-même ne change pas. Le lien doit se trouver sur votre propre domaine ; le domaine est fixé à la création du lien et ne peut plus être modifié ensuite.",
+				"q11": "Qu'advient-il de mes statistiques si j'utilise un alias ?",
+				"a11": "Tous vos chiffres existants sont conservés. Les visites via l'alias comptent dans les mêmes statistiques que les visites via l'URL courte ; pour les codes QR, elles s'ajoutent donc aux scans. Il n'y a pas de deuxièmes statistiques séparées.",
+				"q12": "Puis-je modifier un alias ou l'attribuer à un autre lien ?",
+				"a12": "Oui. Vous pouvez modifier ou supprimer l'alias à tout moment. L'ancienne adresse de l'alias ne mène alors plus à votre lien, tandis que l'URL courte reste la même. Un alias supprimé redevient libre : vous pouvez donc l'attribuer à un autre lien sur le même domaine. Les codes QR imprimés contiennent toujours l'URL courte et continuent donc de fonctionner."
 			},
 			"analytics": {
 				"q1": "Quelles analyses QRcodly fournit-il ?",

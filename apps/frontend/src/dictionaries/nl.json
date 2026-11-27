@@ -2089,9 +2089,8 @@
 				"unlimitedTags": "Onbeperkte tags",
 				"largerBulkImports": "Grotere bulkimports (50 rijen, 2MB)",
 				"customDomains": "Eén eigen domein inbegrepen — voeg er altijd meer toe",
-				"customShortCodes": "Aangepaste korte URL-paden (binnenkort beschikbaar)",
+				"customShortCodes": "Aangepaste korte URL-paden (alias) op je eigen domein",
 				"prioritySupport": "Prioriteitsondersteuning",
-				"teamFeatures": "Teamfuncties (binnenkort)",
 				"apiAccess": "REST API-toegang",
 				"marketplaceIntegrations": "Integraties van derden",
 				"hostedPages": "Tot 15 pdf- en productpagina’s achter je QR-codes"
@@ -2699,7 +2698,15 @@
 				"q7": "Wat gebeurt er als ik een korte URL verwijder?",
 				"a7": "Wanneer je een korte URL verwijdert, wordt deze permanent inactief. Iedereen die op de link klikt, ziet een 404-pagina. Deze actie kan niet ongedaan worden gemaakt, dus overweeg de URL te deactiveren als je deze later nog nodig zou kunnen hebben.",
 				"q8": "Kan ik korte URL's aanmaken via de API?",
-				"a8": "Ja, met Pro. Met de REST API maak, wijzig en beheer je korte URL's via code. Details en authenticatie staan in de API-documentatie."
+				"a8": "Ja, met Pro. Met de REST API maak, wijzig en beheer je korte URL's via code. Details en authenticatie staan in de API-documentatie.",
+				"q9": "Wat is een alias?",
+				"a9": "Een alias is een tweede, leesbaar adres voor een korte URL op je eigen domein, bijvoorbeeld go.jouwmerk.nl/u/zomerfeest naast go.jouwmerk.nl/u/x7k9m. De korte URL blijft bestaan en blijft werken, en beide adressen leiden naar dezelfde bestemming. Aliassen zitten in Pro, voor alle links op je eigen domein.",
+				"q10": "Kan ik later nog een alias toevoegen?",
+				"a10": "Ja. Je kunt de alias kiezen bij het aanmaken van een korte URL of hem op elk moment later toevoegen in je dashboard, ook bij dynamische QR-codes die al gedrukt zijn. De QR-code zelf verandert daarbij niet. De link moet op je eigen domein staan; het domein ligt vast bij het aanmaken van de link en kan daarna niet meer worden gewijzigd.",
+				"q11": "Wat gebeurt er met mijn statistieken als ik een alias gebruik?",
+				"a11": "Al je bestaande cijfers blijven behouden. Bezoeken via de alias tellen mee in dezelfde statistiek als bezoeken via de korte URL; bij QR-codes worden ze dus samen met de scans geteld. Er komt geen tweede, aparte statistiek.",
+				"q12": "Kan ik een alias wijzigen of aan een andere link geven?",
+				"a12": "Ja. Je kunt de alias op elk moment wijzigen of verwijderen. Het oude alias-adres leidt daarna niet meer naar je link, terwijl de korte URL hetzelfde blijft. Een verwijderde alias is weer vrij, zodat je hem aan een andere link op hetzelfde domein kunt geven. Gedrukte QR-codes bevatten altijd de korte URL en blijven daardoor werken."
 			},
 			"analytics": {
 				"q1": "Welke analyses biedt QRcodly?",

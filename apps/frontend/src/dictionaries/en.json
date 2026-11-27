@@ -2089,9 +2089,8 @@
 				"unlimitedTags": "Unlimited tags",
 				"largerBulkImports": "Larger bulk imports (50 rows, 2MB)",
 				"customDomains": "One custom domain included — add more any time",
-				"customShortCodes": "Custom short URL paths (coming soon)",
+				"customShortCodes": "Custom short URL paths (alias) on your domain",
 				"prioritySupport": "Priority support",
-				"teamFeatures": "Team features (coming soon)",
 				"apiAccess": "REST API access",
 				"marketplaceIntegrations": "Third-party integrations",
 				"hostedPages": "Up to 15 PDF and product pages behind your QR codes"
@@ -2699,7 +2698,15 @@
 				"q7": "What happens if I delete a short URL?",
 				"a7": "When you delete a short URL, it becomes permanently inactive. Anyone clicking the link will see a 404 page. This action cannot be undone, so consider disabling the URL instead if you may need it later.",
 				"q8": "Can I create short URLs via the API?",
-				"a8": "Yes, with Pro. The REST API lets you create, update and manage short URLs programmatically. See the API documentation for details and authentication."
+				"a8": "Yes, with Pro. The REST API lets you create, update and manage short URLs programmatically. See the API documentation for details and authentication.",
+				"q9": "What is an alias?",
+				"a9": "An alias is a second, readable address for a short URL on your own domain, for example go.yourbrand.com/u/summer-party next to go.yourbrand.com/u/x7k9m. The short URL stays and keeps working, and both addresses lead to the same destination. Aliases come with Pro for every link on your own domain.",
+				"q10": "Can I add an alias later?",
+				"a10": "Yes. You can choose the alias when you create a short URL or add it from your dashboard at any time later, including for dynamic QR codes that are already printed. The QR code itself does not change. The link has to be on your own domain; the domain is set when the link is created and can’t be changed afterwards.",
+				"q11": "What happens to my statistics when I use an alias?",
+				"a11": "All your existing numbers are kept. Visits through the alias count towards the same statistics as visits through the short URL, so for QR codes they are counted together with the scans. There is no second, separate set of statistics.",
+				"q12": "Can I change an alias or give it to another link?",
+				"a12": "Yes. You can change or remove the alias at any time. The old alias address then no longer leads to your link, while the short URL stays the same. A removed alias is free again, so you can give it to another link on the same domain. Printed QR codes always contain the short URL and therefore keep working."
 			},
 			"analytics": {
 				"q1": "What analytics does QRcodly provide?",

@@ -48,7 +48,6 @@ export const PLAN_CONFIGS: Record<PlanId, PlanConfig> = {
 			'features.pro.apiAccess',
 			'features.pro.marketplaceIntegrations',
 			'features.pro.prioritySupport',
-			'features.pro.teamFeatures',
 		],
 		featured: true,
 	},

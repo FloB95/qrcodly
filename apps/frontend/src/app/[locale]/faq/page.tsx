@@ -21,7 +21,7 @@ const CATEGORY_KEYS = ['general', 'qrCodes', 'urlShortener', 'analytics', 'prici
 const CATEGORY_COUNTS: Record<(typeof CATEGORY_KEYS)[number], number> = {
 	general: 7,
 	qrCodes: 9,
-	urlShortener: 8,
+	urlShortener: 12,
 	analytics: 5,
 	pricing: 9,
 };

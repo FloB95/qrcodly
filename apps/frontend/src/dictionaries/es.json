@@ -2093,9 +2093,8 @@
 				"unlimitedTags": "Etiquetas ilimitadas",
 				"largerBulkImports": "Importaciones masivas más grandes (50 filas, 2MB)",
 				"customDomains": "Un dominio propio incluido: añade más cuando quieras",
-				"customShortCodes": "Rutas de URL cortas personalizadas (próximamente)",
+				"customShortCodes": "Rutas de URL cortas personalizadas (alias) en tu dominio",
 				"prioritySupport": "Soporte prioritario",
-				"teamFeatures": "Funciones de equipo (próximamente)",
 				"apiAccess": "Acceso a la API REST",
 				"marketplaceIntegrations": "Integraciones de terceros",
 				"hostedPages": "Hasta 15 páginas PDF y de producto detrás de tus códigos QR"
@@ -2699,7 +2698,15 @@
 				"q7": "¿Qué pasa si elimino una URL corta?",
 				"a7": "Cuando elimina una URL corta, se vuelve permanentemente inactiva. Cualquier persona que haga clic en el enlace verá una página 404. Esta acción no se puede deshacer, así que considere desactivar la URL si puede necesitarla más adelante.",
 				"q8": "¿Puedo crear URLs cortas a través de la API?",
-				"a8": "Sí, con Pro. La API REST te permite crear, actualizar y gestionar URL cortas mediante código. Consulta la documentación de la API para detalles y autenticación."
+				"a8": "Sí, con Pro. La API REST te permite crear, actualizar y gestionar URL cortas mediante código. Consulta la documentación de la API para detalles y autenticación.",
+				"q9": "¿Qué es un alias?",
+				"a9": "Un alias es una segunda dirección legible para una URL corta en tu propio dominio, por ejemplo go.tumarca.com/u/fiesta-verano junto a go.tumarca.com/u/x7k9m. La URL corta se mantiene y sigue funcionando, y ambas direcciones llevan al mismo destino. Los alias están incluidos en Pro para todos los enlaces en tu propio dominio.",
+				"q10": "¿Puedo añadir un alias más tarde?",
+				"a10": "Sí. Puedes elegir el alias al crear una URL corta o añadirlo más tarde desde tu panel en cualquier momento, también en códigos QR dinámicos que ya están impresos. El código QR en sí no cambia. El enlace tiene que estar en tu propio dominio; el dominio se fija al crear el enlace y no se puede cambiar después.",
+				"q11": "¿Qué pasa con mis estadísticas si uso un alias?",
+				"a11": "Todas tus cifras anteriores se conservan. Las visitas a través del alias cuentan en la misma estadística que las visitas a través de la URL corta; en los códigos QR, junto con los escaneos. No hay una segunda estadística separada.",
+				"q12": "¿Puedo cambiar un alias o dárselo a otro enlace?",
+				"a12": "Sí. Puedes cambiar o eliminar el alias en cualquier momento. La dirección del alias anterior deja de llevar a tu enlace, mientras que la URL corta no cambia. Un alias eliminado vuelve a estar libre, así que puedes dárselo a otro enlace del mismo dominio. Los códigos QR impresos siempre contienen la URL corta y por eso siguen funcionando."
 			},
 			"analytics": {
 				"q1": "¿Qué análisis proporciona QRcodly?",

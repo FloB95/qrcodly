@@ -2089,9 +2089,8 @@
 				"unlimitedTags": "Unbegrenzte Tags",
 				"largerBulkImports": "Größere Massenimporte (50 Zeilen, 2MB)",
 				"customDomains": "Eine eigene Domain inklusive — jederzeit erweiterbar",
-				"customShortCodes": "Eigene Kurz-URL-Pfade (bald verfügbar)",
+				"customShortCodes": "Eigene Kurz-URL-Pfade (Alias) unter deiner Domain",
 				"prioritySupport": "Prioritäts-Support",
-				"teamFeatures": "Team-Funktionen (bald verfügbar)",
 				"apiAccess": "REST-API-Zugriff",
 				"marketplaceIntegrations": "Drittanbieter-Integrationen",
 				"hostedPages": "Bis zu 15 PDF- und Produktseiten hinter deinen QR-Codes"
@@ -2699,7 +2698,15 @@
 				"q7": "Was passiert, wenn ich eine Kurz-URL lösche?",
 				"a7": "Wenn du eine Kurz-URL löschst, wird sie dauerhaft inaktiv. Jeder, der auf den Link klickt, sieht eine 404-Seite. Diese Aktion kann nicht rückgängig gemacht werden, daher erwäge, die URL stattdessen zu deaktivieren, falls du sie später noch benötigst.",
 				"q8": "Kann ich Kurz-URLs über die API erstellen?",
-				"a8": "Ja, mit Pro. Über die REST-API erstellst, änderst und verwaltest du Kurz-URLs programmatisch. Details und Authentifizierung stehen in der API-Dokumentation."
+				"a8": "Ja, mit Pro. Über die REST-API erstellst, änderst und verwaltest du Kurz-URLs programmatisch. Details und Authentifizierung stehen in der API-Dokumentation.",
+				"q9": "Was ist ein Alias?",
+				"a9": "Ein Alias ist eine zweite, lesbare Adresse für einen Kurzlink, zum Beispiel go.deinemarke.de/u/sommerfest neben go.deinemarke.de/u/x7k9m. Die Kurz-URL bleibt bestehen und funktioniert weiter, beide Adressen führen zum selben Ziel. Aliase gibt es mit Pro für alle Links, die über deine eigene Domain laufen.",
+				"q10": "Kann ich einen Alias auch nachträglich festlegen?",
+				"a10": "Ja. Du kannst den Alias direkt beim Erstellen eines Kurzlinks wählen oder jederzeit später im Dashboard ergänzen, auch bei dynamischen QR-Codes, die längst gedruckt sind. Der QR-Code selbst ändert sich dabei nicht. Der Link muss über deine eigene Domain laufen; die Domain wird beim Erstellen festgelegt und lässt sich danach nicht mehr ändern.",
+				"q11": "Was passiert mit meiner Statistik, wenn ich einen Alias nutze?",
+				"a11": "Deine bisherigen Zahlen bleiben vollständig erhalten. Aufrufe über den Alias zählen in dieselbe Statistik wie Aufrufe über die Kurz-URL, bei QR-Codes also zusammen mit den Scans. Es gibt keine zweite, getrennte Statistik.",
+				"q12": "Kann ich einen Alias ändern oder einem anderen Link geben?",
+				"a12": "Ja. Du kannst den Alias jederzeit ändern oder entfernen. Die alte Alias-Adresse führt danach nicht mehr zu deinem Link, die Kurz-URL bleibt unverändert. Ein entfernter Alias ist wieder frei, du kannst ihn also einem anderen Link unter derselben Domain geben. Gedruckte QR-Codes enthalten immer die Kurz-URL und funktionieren deshalb weiter."
 			},
 			"analytics": {
 				"q1": "Welche Analysen bietet QRcodly?",
