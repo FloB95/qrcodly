@@ -8,6 +8,9 @@ import {
 	type TShortUrlWithDomain,
 } from '../../domain/entities/short-url.entity';
 import type { DestinationUrlSafetyService } from '../../service/destination-url-safety.service';
+import type { ShortUrlAliasService } from '../../service/short-url-alias.service';
+import { ShortUrlAliasRequiresCustomDomainError } from '../../error/http/short-url-alias-requires-custom-domain.error';
+import { ShortUrlAliasTakenError } from '../../error/http/short-url-alias-taken.error';
 
 describe('CreateShortUrlUseCase', () => {
 	let useCase: CreateShortUrlUseCase;
@@ -15,17 +18,20 @@ describe('CreateShortUrlUseCase', () => {
 	let mockCustomDomainValidationService: jest.Mocked<CustomDomainValidationService>;
 	let mockLogger: jest.Mocked<Logger>;
 	let mockDestinationUrlSafetyService: jest.Mocked<DestinationUrlSafetyService>;
+	let mockShortUrlAliasService: jest.Mocked<ShortUrlAliasService>;
 
 	beforeEach(() => {
 		mockRepository = mock<ShortUrlRepository>();
 		mockCustomDomainValidationService = mock<CustomDomainValidationService>();
 		mockLogger = mock<Logger>();
 		mockDestinationUrlSafetyService = mock<DestinationUrlSafetyService>();
+		mockShortUrlAliasService = mock<ShortUrlAliasService>();
 		useCase = new CreateShortUrlUseCase(
 			mockRepository,
 			mockCustomDomainValidationService,
 			mockLogger,
 			mockDestinationUrlSafetyService,
+			mockShortUrlAliasService,
 		);
 	});
 
@@ -47,6 +53,7 @@ describe('CreateShortUrlUseCase', () => {
 		const mockCreatedShortUrl: TShortUrlWithDomain = {
 			id: mockId,
 			shortCode: mockShortCode,
+			alias: null,
 			name: null,
 			destinationUrl: mockDto.destinationUrl,
 			customDomainId: null,
@@ -168,6 +175,7 @@ describe('CreateShortUrlUseCase', () => {
 			expect(mockRepository.create).toHaveBeenCalledWith({
 				id: mockId,
 				shortCode: mockShortCode,
+				alias: null,
 				name: null,
 				destinationUrl: mockDto.destinationUrl,
 				customDomainId: mockDto.customDomainId,
@@ -187,6 +195,39 @@ describe('CreateShortUrlUseCase', () => {
 			await useCase.execute(mockDto, mockUserId);
 
 			expect(mockRepository.findOneById).toHaveBeenCalledWith(mockId);
+		});
+
+		it('should refuse an alias for a short URL without a custom domain', async () => {
+			await expect(useCase.execute({ ...mockDto, alias: 'menu' }, mockUserId)).rejects.toThrow(
+				ShortUrlAliasRequiresCustomDomainError,
+			);
+			expect(mockRepository.create).not.toHaveBeenCalled();
+		});
+
+		it('should check the alias before creating and store it with the short URL', async () => {
+			mockRepository.generateId.mockReturnValue(mockId);
+			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
+			mockRepository.create.mockResolvedValue();
+			mockRepository.findOneById.mockResolvedValue(mockCreatedShortUrl);
+
+			await useCase.execute({ ...mockDto, customDomainId: 'domain-1', alias: 'menu' }, mockUserId);
+
+			expect(mockShortUrlAliasService.assertAvailable).toHaveBeenCalledWith('domain-1', 'menu');
+			expect(mockRepository.create).toHaveBeenCalledWith(
+				expect.objectContaining({ customDomainId: 'domain-1', alias: 'menu' }),
+			);
+		});
+
+		it('should report a taken alias when the insert loses a race for it', async () => {
+			mockRepository.generateId.mockReturnValue(mockId);
+			mockRepository.generateShortCode.mockResolvedValue(mockShortCode);
+			mockRepository.create.mockRejectedValue(
+				Object.assign(new Error('Duplicate entry'), { code: 'ER_DUP_ENTRY' }),
+			);
+
+			await expect(
+				useCase.execute({ ...mockDto, customDomainId: 'domain-1', alias: 'menu' }, mockUserId),
+			).rejects.toThrow(ShortUrlAliasTakenError);
 		});
 
 		it('should throw error when repository.create() fails', async () => {

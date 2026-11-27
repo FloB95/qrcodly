@@ -35,6 +35,7 @@ describe('SetShortUrlTagsUseCase', () => {
 	const mockShortUrl: TShortUrlWithDomain = {
 		id: shortUrlId,
 		shortCode: 'ABC12',
+		alias: null,
 		name: null,
 		destinationUrl: 'https://example.com',
 		customDomainId: null,

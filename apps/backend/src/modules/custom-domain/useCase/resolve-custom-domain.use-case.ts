@@ -1,10 +1,12 @@
 import { inject, injectable } from 'tsyringe';
 import CustomDomainRepository from '../domain/repository/custom-domain.repository';
 import { CustomDomainValidationService } from '../service/custom-domain-validation.service';
+import ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
 
 export interface IResolvedDomain {
 	domain: string;
 	isValid: boolean;
+	hasAliases: boolean;
 }
 
 /**
@@ -19,6 +21,8 @@ export class ResolveCustomDomainUseCase {
 		private readonly customDomainRepository: CustomDomainRepository,
 		@inject(CustomDomainValidationService)
 		private readonly customDomainValidationService: CustomDomainValidationService,
+		@inject(ShortUrlRepository)
+		private readonly shortUrlRepository: ShortUrlRepository,
 	) {}
 
 	/**
@@ -35,6 +39,7 @@ export class ResolveCustomDomainUseCase {
 			return {
 				domain,
 				isValid: false,
+				hasAliases: false,
 			};
 		}
 
@@ -43,6 +48,9 @@ export class ResolveCustomDomainUseCase {
 		return {
 			domain: customDomain.domain,
 			isValid: validationResult.isValid,
+			hasAliases:
+				validationResult.isValid &&
+				(await this.shortUrlRepository.hasAliasOnDomain(customDomain.id)),
 		};
 	}
 }

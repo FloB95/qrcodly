@@ -7,6 +7,7 @@ import { z } from 'zod';
 export const ResolveDomainResponseDto = z.object({
 	domain: z.string(),
 	isValid: z.boolean(),
+	hasAliases: z.boolean().default(false),
 });
 
 export type TResolveDomainResponseDto = z.infer<typeof ResolveDomainResponseDto>;

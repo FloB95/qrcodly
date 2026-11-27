@@ -19,6 +19,13 @@ const nullableIsoDatetime = z
 
 export const ShortUrlSchema = AbstractEntitySchema.extend({
 	shortCode: ShortCodeSchema,
+	alias: z
+		.string()
+		.nullable()
+		.default(null)
+		.describe(
+			'Readable second address of the short URL on its custom domain (e.g. "summer-party-2026"), or null',
+		),
 	name: z
 		.string()
 		.max(SHORT_URL_NAME_MAX_LENGTH)

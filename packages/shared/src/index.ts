@@ -25,6 +25,7 @@ export * from './dtos/url-shortener/UpdateShortUrlDto';
 export * from './dtos/url-shortener/AnalyticsResponseDto';
 export * from './dtos/url-shortener/types/safety';
 export * from './dtos/url-shortener/SafetyIncidentResponseDto';
+export * from './dtos/url-shortener/ShortUrlAliasDto';
 
 export * from './dtos/qr-code-share/CreateQrCodeShareDto';
 export * from './dtos/qr-code-share/UpdateQrCodeShareDto';
@@ -82,6 +83,7 @@ export * from './schemas/SafeUrl';
 export * from './schemas/QrCode';
 export * from './schemas/QrCodeConfigTemplate';
 export * from './schemas/ShortUrl';
+export * from './schemas/ShortUrlAlias';
 export * from './schemas/QrCodeShare';
 export * from './schemas/CustomDomain';
 export * from './schemas/AnalyticsSchema';

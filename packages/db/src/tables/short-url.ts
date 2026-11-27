@@ -1,5 +1,14 @@
 import { relations } from 'drizzle-orm';
-import { boolean, datetime, index, int, mysqlEnum, text, varchar } from 'drizzle-orm/mysql-core';
+import {
+	boolean,
+	datetime,
+	index,
+	int,
+	mysqlEnum,
+	text,
+	uniqueIndex,
+	varchar,
+} from 'drizzle-orm/mysql-core';
 import { createTable } from '../utils';
 import qrCode from './qr-code';
 import customDomain, { type TCustomDomain } from './custom-domain';
@@ -23,6 +32,7 @@ const shortUrl = createTable(
 			length: 36,
 		}).primaryKey(),
 		shortCode: varchar({ length: 5 }).notNull().unique(),
+		alias: varchar({ length: 80 }),
 		name: varchar({ length: 50 }),
 		destinationUrl: text(),
 		qrCodeId: varchar({
@@ -68,6 +78,10 @@ const shortUrl = createTable(
 		index('i_short_url_reserved').on(t.createdBy, t.qrCodeId),
 		// Index for custom domain lookups
 		index('i_short_url_custom_domain_id').on(t.customDomainId),
+		// An alias is unique per custom domain; rows without one do not collide (NULL)
+		uniqueIndex('u_short_url_custom_domain_alias').on(t.customDomainId, t.alias),
+		// A new short code must not equal any alias: both are addressed as /u/<text>
+		index('i_short_url_alias').on(t.alias),
 		// Due-queue scan (WHERE nextSafetyCheckAt <= NOW() ORDER BY nextSafetyCheckAt)
 		index('i_short_url_next_safety_check').on(t.nextSafetyCheckAt),
 		// Banner / badge counts (WHERE createdBy=? AND safetyStatus='blocked')

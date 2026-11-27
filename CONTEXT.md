@@ -20,6 +20,12 @@ The generated identifier that addresses a short URL. Assigned by us, never chose
 unique across the whole system.
 _Avoid_: Slug, path, code
 
+**Alias**:
+A readable second address of a short URL on its custom domain (`links.customer.com/u/menu`),
+chosen by the owner, unique per custom domain and only reachable there. The owner may change or
+remove it at any time; the short code stays what a QR code encodes and what scans are counted under.
+_Avoid_: Slug, custom slug, vanity URL, back-half
+
 **Destination URL**:
 Where a short URL sends the visitor. Mutable over the life of the short URL, which is the entire
 point of a dynamic QR code.

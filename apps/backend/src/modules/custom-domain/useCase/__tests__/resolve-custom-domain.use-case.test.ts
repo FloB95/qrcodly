@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { ResolveCustomDomainUseCase } from '../resolve-custom-domain.use-case';
 import type CustomDomainRepository from '../../domain/repository/custom-domain.repository';
 import type { CustomDomainValidationService } from '../../service/custom-domain-validation.service';
+import type ShortUrlRepository from '@/modules/url-shortener/domain/repository/short-url.repository';
 import { mock, type MockProxy } from 'jest-mock-extended';
 import { type TCustomDomain } from '../../domain/entities/custom-domain.entity';
 
@@ -9,6 +10,7 @@ describe('ResolveCustomDomainUseCase', () => {
 	let useCase: ResolveCustomDomainUseCase;
 	let mockRepository: MockProxy<CustomDomainRepository>;
 	let mockValidationService: MockProxy<CustomDomainValidationService>;
+	let mockShortUrlRepository: MockProxy<ShortUrlRepository>;
 
 	const mockValidDomain: TCustomDomain = {
 		id: 'domain-1',
@@ -34,7 +36,12 @@ describe('ResolveCustomDomainUseCase', () => {
 	beforeEach(() => {
 		mockRepository = mock<CustomDomainRepository>();
 		mockValidationService = mock<CustomDomainValidationService>();
-		useCase = new ResolveCustomDomainUseCase(mockRepository, mockValidationService);
+		mockShortUrlRepository = mock<ShortUrlRepository>();
+		useCase = new ResolveCustomDomainUseCase(
+			mockRepository,
+			mockValidationService,
+			mockShortUrlRepository,
+		);
 	});
 
 	afterEach(() => {
@@ -87,5 +94,26 @@ describe('ResolveCustomDomainUseCase', () => {
 		await useCase.execute('unknown.example.com');
 
 		expect(mockValidationService.isValidForUse).not.toHaveBeenCalled();
+	});
+
+	it('should report aliases for a valid domain that has one', async () => {
+		mockRepository.findOneByDomain.mockResolvedValue(mockValidDomain);
+		mockValidationService.isValidForUse.mockReturnValue({ isValid: true });
+		mockShortUrlRepository.hasAliasOnDomain.mockResolvedValue(true);
+
+		const result = await useCase.execute('links.example.com');
+
+		expect(result.hasAliases).toBe(true);
+		expect(mockShortUrlRepository.hasAliasOnDomain).toHaveBeenCalledWith(mockValidDomain.id);
+	});
+
+	it('should not look for aliases on a domain that is not valid', async () => {
+		mockRepository.findOneByDomain.mockResolvedValue(mockValidDomain);
+		mockValidationService.isValidForUse.mockReturnValue({ isValid: false, reason: 'disabled' });
+
+		const result = await useCase.execute('links.example.com');
+
+		expect(result.hasAliases).toBe(false);
+		expect(mockShortUrlRepository.hasAliasOnDomain).not.toHaveBeenCalled();
 	});
 });

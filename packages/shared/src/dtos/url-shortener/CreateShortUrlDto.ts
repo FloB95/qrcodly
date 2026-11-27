@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { ShortUrlSchema } from '../../schemas/ShortUrl';
 import { SafeHttpUrlSchema } from '../../schemas/SafeUrl';
+import { ShortUrlAliasSchema } from '../../schemas/ShortUrlAlias';
 
 /**
  * Schema for creating a short URL DTO via the public API.
@@ -20,6 +21,9 @@ export const CreateShortUrlDto = ShortUrlSchema.pick({
 		.boolean()
 		.default(true)
 		.describe('Whether the short URL should be active immediately (default: true)'),
+	alias: ShortUrlAliasSchema.optional().describe(
+		'Readable second address on the custom domain (e.g. "summer-party-2026"). Requires customDomainId',
+	),
 });
 
 /**

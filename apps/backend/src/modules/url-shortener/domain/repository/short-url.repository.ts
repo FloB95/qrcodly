@@ -213,7 +213,47 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 	 * @param updates - The updates to apply to the Short URL.
 	 */
 	async update(shortUrl: TShortUrl, updates: Partial<TShortUrl>): Promise<void> {
-		await this.db.update(this.table).set(updates).where(eq(this.table.id, shortUrl.id));
+		// A deleted link gives its alias back to the domain. Done here because every delete of a
+		// link is this update, so no path can forget it.
+		const released = updates.deletedAt ? { alias: null } : {};
+		await this.db
+			.update(this.table)
+			.set({ ...updates, ...released })
+			.where(eq(this.table.id, shortUrl.id));
+	}
+
+	// ---------------------------------------------------------------------------
+	// Alias
+	// ---------------------------------------------------------------------------
+
+	async findOneByAlias(customDomainId: string, alias: string): Promise<TShortUrl | undefined> {
+		const [row] = await this.db
+			.select()
+			.from(this.table)
+			.where(and(eq(this.table.customDomainId, customDomainId), eq(this.table.alias, alias)))
+			.limit(1);
+		return row;
+	}
+
+	async hasAliasOnDomain(customDomainId: string): Promise<boolean> {
+		const [row] = await this.db
+			.select({ id: this.table.id })
+			.from(this.table)
+			.where(and(eq(this.table.customDomainId, customDomainId), isNotNull(this.table.alias)))
+			.limit(1);
+		return !!row;
+	}
+
+	/**
+	 * Clears the alias of every link without a custom domain. Deleting a domain leaves its links
+	 * without one (ON DELETE SET NULL), and an alias only exists on a custom domain.
+	 */
+	async clearAliasesWithoutDomain(): Promise<void> {
+		await this.db
+			.update(this.table)
+			.set({ alias: null })
+			.where(and(isNull(this.table.customDomainId), isNotNull(this.table.alias)))
+			.execute();
 	}
 
 	/** Links a reserved code, but only while it is still unused; false when someone else was faster. */
@@ -302,6 +342,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 				name: shortUrl.name,
 				destinationUrl: shortUrl.destinationUrl,
 				shortCode: shortUrl.shortCode,
+				alias: shortUrl.alias ?? null,
 				isActive: shortUrl.isActive,
 				customDomainId: shortUrl.customDomainId,
 				qrCodeId: shortUrl.qrCodeId,
@@ -333,7 +374,8 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 			const existing = await this.db
 				.select()
 				.from(this.table)
-				.where(eq(this.table.shortCode, shortCode))
+				// an alias is addressed as /u/<alias> too, so a code must not equal one either
+				.where(or(eq(this.table.shortCode, shortCode), eq(this.table.alias, shortCode)))
 				.execute();
 
 			if (existing.length === 0) {

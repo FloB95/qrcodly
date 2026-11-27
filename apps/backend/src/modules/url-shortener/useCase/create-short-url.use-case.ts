@@ -8,6 +8,10 @@ import { shortUrlsCreated } from '@/core/metrics';
 import { DestinationUrlSafetyService } from '../service/destination-url-safety.service';
 import { RedirectLoopError } from '../error/http/redirect-loop.error';
 import { isShortenedDestinationUrl } from '../utils';
+import { isDuplicateEntryError } from '@/core/db/utils';
+import { ShortUrlAliasService } from '../service/short-url-alias.service';
+import { ShortUrlAliasRequiresCustomDomainError } from '../error/http/short-url-alias-requires-custom-domain.error';
+import { ShortUrlAliasTakenError } from '../error/http/short-url-alias-taken.error';
 
 /**
  * Internal input type for creating a short URL.
@@ -18,6 +22,7 @@ type CreateShortUrlInput = {
 	isActive: boolean;
 	customDomainId?: string | null;
 	name?: string | null;
+	alias?: string;
 };
 
 /**
@@ -32,6 +37,7 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 		@inject(Logger) private logger: Logger,
 		@inject(DestinationUrlSafetyService)
 		private destinationUrlSafetyService: DestinationUrlSafetyService,
+		@inject(ShortUrlAliasService) private shortUrlAliasService: ShortUrlAliasService,
 	) {}
 
 	/**
@@ -58,12 +64,18 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 			await this.customDomainValidationService.validateForUserUse(dto.customDomainId, createdBy);
 		}
 
+		if (dto.alias) {
+			if (!dto.customDomainId) throw new ShortUrlAliasRequiresCustomDomainError();
+			await this.shortUrlAliasService.assertAvailable(dto.customDomainId, dto.alias);
+		}
+
 		const newId = await this.shortUrlRepository.generateId();
 		const shortCode = await this.shortUrlRepository.generateShortCode();
 
 		const shortUrl: TShortUrlCreateInput = {
 			id: newId,
 			shortCode,
+			alias: dto.alias ?? null,
 			name: dto.name ?? null,
 			qrCodeId: null,
 			customDomainId: dto.customDomainId ?? null,
@@ -74,7 +86,13 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 		};
 
 		// Create the ShortUrl entity in the database.
-		await this.shortUrlRepository.create(shortUrl);
+		try {
+			await this.shortUrlRepository.create(shortUrl);
+		} catch (error) {
+			// someone took the alias between the check and the insert
+			if (dto.alias && isDuplicateEntryError(error)) throw new ShortUrlAliasTakenError();
+			throw error;
+		}
 
 		// Retrieve the created ShortUrl entity from the database.
 		const createdShortUrl = await this.shortUrlRepository.findOneById(newId);

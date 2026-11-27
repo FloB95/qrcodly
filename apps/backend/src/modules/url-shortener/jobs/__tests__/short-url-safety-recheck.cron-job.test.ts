@@ -40,6 +40,7 @@ import { ShortUrlSafetyRecheckCronJob } from '../short-url-safety-recheck.cron-j
 const shortUrl = (overrides: Partial<TShortUrl> = {}): TShortUrl => ({
 	id: 'su-1',
 	shortCode: 'ab3xz',
+	alias: null,
 	name: null,
 	destinationUrl: 'https://example.com/landing',
 	qrCodeId: null,

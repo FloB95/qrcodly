@@ -40,6 +40,7 @@ describe('GetReservedShortCodeUseCase', () => {
 		const mockReservedShortUrl: TShortUrl = {
 			id: 'short_url_123',
 			shortCode: 'ABC12',
+			alias: null,
 			name: null,
 			destinationUrl: null,
 			customDomainId: null,

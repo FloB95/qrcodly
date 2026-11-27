@@ -1,4 +1,4 @@
-import { Delete, Get, Patch, Post } from '@/core/decorators/route';
+import { Delete, Get, Patch, Post, Put } from '@/core/decorators/route';
 import AbstractController from '@/core/http/controller/abstract.controller';
 import { type IHttpRequest } from '@/core/interface/request.interface';
 import { inject, injectable } from 'tsyringe';
@@ -30,6 +30,16 @@ import {
 	BulkDeleteResponseDto,
 	type TBulkDeleteDto,
 	type TBulkDeleteResponseDto,
+	SetShortUrlAliasDto,
+	type TSetShortUrlAliasDto,
+	ShortUrlAliasAvailabilityQueryDto,
+	type TShortUrlAliasAvailabilityQueryDto,
+	ShortUrlAliasAvailabilityResponseDto,
+	type TShortUrlAliasAvailabilityResponseDto,
+	ResolveShortUrlAliasQueryDto,
+	type TResolveShortUrlAliasQueryDto,
+	ResolveShortUrlAliasResponseDto,
+	type TResolveShortUrlAliasResponseDto,
 } from '@shared/schemas';
 import { deleteEach } from '@/core/http/bulk-delete';
 import { GetReservedShortCodeUseCase } from '../../useCase/get-reserved-short-url.use-case';
@@ -61,6 +71,9 @@ import {
 } from '../../config/constants';
 import { HostedPageService } from '@/modules/hosted-page/service/hosted-page.service';
 import { type THostedPageType } from '@shared/schemas';
+import { SetShortUrlAliasUseCase } from '../../useCase/set-short-url-alias.use-case';
+import { CheckShortUrlAliasAvailabilityUseCase } from '../../useCase/check-short-url-alias-availability.use-case';
+import { ResolveShortUrlAliasUseCase } from '../../useCase/resolve-short-url-alias.use-case';
 
 @injectable()
 export class ShortUrlController extends AbstractController {
@@ -87,6 +100,12 @@ export class ShortUrlController extends AbstractController {
 		private readonly safetyStandingRepository: UserSafetyStandingRepository,
 		@inject(HostedPageService) private readonly hostedPageService: HostedPageService,
 		@inject(RecordScanUseCase) private readonly recordScanUseCase: RecordScanUseCase,
+		@inject(SetShortUrlAliasUseCase)
+		private readonly setShortUrlAliasUseCase: SetShortUrlAliasUseCase,
+		@inject(CheckShortUrlAliasAvailabilityUseCase)
+		private readonly checkShortUrlAliasAvailabilityUseCase: CheckShortUrlAliasAvailabilityUseCase,
+		@inject(ResolveShortUrlAliasUseCase)
+		private readonly resolveShortUrlAliasUseCase: ResolveShortUrlAliasUseCase,
 	) {
 		super();
 	}
@@ -223,7 +242,7 @@ export class ShortUrlController extends AbstractController {
 			description:
 				'Creates a new standalone short URL (not linked to a QR code). ' +
 				'A unique 5-character short code is automatically generated. ' +
-				'Optionally assign a custom domain and set the active state.',
+				'Optionally assign a custom domain, an alias on that domain, and set the active state.',
 			operationId: 'short-url/create-short-url',
 		},
 		config: {
@@ -505,6 +524,114 @@ export class ShortUrlController extends AbstractController {
 		const updatedShortUrl = await this.updateShortUrlUseCase.execute(
 			shortUrl,
 			{ isActive: !shortUrl.isActive },
+			request.user.id,
+		);
+
+		const tags = await this.tagRepository.findTagsByShortUrlId(updatedShortUrl.id);
+		return this.makeApiHttpResponse(
+			200,
+			ShortUrlWithCustomDomainResponseDto.parse({ ...updatedShortUrl, tags }),
+		);
+	}
+
+	@Get('/alias-availability', {
+		querySchema: ShortUrlAliasAvailabilityQueryDto,
+		responseSchema: {
+			200: ShortUrlAliasAvailabilityResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['Short URLs'],
+			summary: 'Check whether an alias is available',
+			description:
+				'Tells whether an alias can still be used on one of your custom domains. ' +
+				'An alias is unique per custom domain and must not equal an existing short code.',
+			operationId: 'short-url/alias-availability',
+		},
+	})
+	async aliasAvailability(
+		request: IHttpRequest<unknown, unknown, TShortUrlAliasAvailabilityQueryDto>,
+	): Promise<IHttpResponse<TShortUrlAliasAvailabilityResponseDto>> {
+		const { customDomainId, alias } = request.query;
+		const result = await this.checkShortUrlAliasAvailabilityUseCase.execute(
+			customDomainId,
+			alias,
+			request.user.id,
+		);
+		return this.makeApiHttpResponse(200, ShortUrlAliasAvailabilityResponseDto.parse(result));
+	}
+
+	@Get('/resolve-alias', {
+		authHandler: false,
+		querySchema: ResolveShortUrlAliasQueryDto,
+		responseSchema: {
+			200: ResolveShortUrlAliasResponseDto,
+			404: DEFAULT_ERROR_RESPONSES[404],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		config: {
+			rateLimitPolicy: RateLimitPolicy.DOMAIN_RESOLVE,
+		},
+		schema: {
+			hide: true,
+			summary: 'Resolve an alias on a custom domain',
+			description:
+				'Public endpoint for the custom domain worker: translates an alias on a custom domain into the short code it stands for.',
+			operationId: 'short-url/resolve-alias',
+		},
+	})
+	async resolveAlias(
+		request: IHttpRequest<unknown, unknown, TResolveShortUrlAliasQueryDto, false>,
+	): Promise<IHttpResponse<TResolveShortUrlAliasResponseDto>> {
+		const { domain, alias } = ResolveShortUrlAliasQueryDto.parse(request.query);
+		const shortCode = await this.resolveShortUrlAliasUseCase.execute(domain, alias);
+		if (!shortCode) throw new ShortUrlNotFoundError();
+		return this.makeApiHttpResponse(200, { shortCode });
+	}
+
+	// Own route on purpose, not a field of PATCH /:shortCode. That update refuses the links of QR
+	// codes and hosted pages: their destination is a copy of the QR code's content and is changed
+	// through the QR code, so the two cannot drift apart. An alias is no QR code content. It is set
+	// on the link itself, for every kind of link, like the active state.
+	@Put('/:shortCode/alias', {
+		bodySchema: SetShortUrlAliasDto,
+		responseSchema: {
+			200: ShortUrlWithCustomDomainResponseDto,
+			400: DEFAULT_ERROR_RESPONSES[400],
+			401: DEFAULT_ERROR_RESPONSES[401],
+			403: DEFAULT_ERROR_RESPONSES[403],
+			404: DEFAULT_ERROR_RESPONSES[404],
+			409: DEFAULT_ERROR_RESPONSES[409],
+			429: DEFAULT_ERROR_RESPONSES[429],
+		},
+		schema: {
+			tags: ['Short URLs'],
+			summary: 'Set the alias of a short URL',
+			description:
+				'Sets or changes the alias of a short URL: a readable second address on its custom domain ' +
+				'(e.g. links.example.com/u/summer-party-2026). Pass null to remove it. ' +
+				'Only short URLs on a custom domain can have an alias, including those linked to a QR code. ' +
+				'The short code keeps working and scans are still counted under it; the previous alias stops working at once.',
+			operationId: 'short-url/set-alias',
+			params: {
+				type: 'object',
+				properties: {
+					shortCode: { type: 'string', description: 'The 5-character short URL code' },
+				},
+			},
+		},
+	})
+	async setAlias(
+		request: IHttpRequest<TSetShortUrlAliasDto, TGetShortUrlRequestQueryDto>,
+	): Promise<IHttpResponse<TShortUrlWithCustomDomainResponseDto>> {
+		const shortUrl = await this.fetchShortUrl(request.params.shortCode, request.user.id);
+		const updatedShortUrl = await this.setShortUrlAliasUseCase.execute(
+			shortUrl,
+			request.body.alias,
 			request.user.id,
 		);
 
