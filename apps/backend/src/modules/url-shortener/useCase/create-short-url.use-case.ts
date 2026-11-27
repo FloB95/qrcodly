@@ -107,6 +107,7 @@ export class CreateShortUrlUseCase implements IBaseUseCase {
 				id: createdShortUrl.id,
 				createdBy: createdShortUrl.createdBy,
 				customDomainId: createdShortUrl.customDomainId,
+				alias: createdShortUrl.alias,
 			},
 		});
 		shortUrlsCreated.add(1);

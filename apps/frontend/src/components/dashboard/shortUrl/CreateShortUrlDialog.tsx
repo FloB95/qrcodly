@@ -88,6 +88,7 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 			posthog.capture('short-url-created', {
 				destinationUrl: data.destinationUrl,
 			});
+			if (hasAlias) posthog.capture('short-url-alias:set', { source: 'create', isChange: false });
 			toast({ title: t('create.success'), description: t('create.successDescription') });
 			setOpen(false);
 			form.reset({ name: '', destinationUrl: '', customDomainId: defaultDomain?.id ?? null });

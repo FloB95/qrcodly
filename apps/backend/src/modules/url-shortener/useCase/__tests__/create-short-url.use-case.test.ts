@@ -138,6 +138,7 @@ describe('CreateShortUrlUseCase', () => {
 					id: mockId,
 					createdBy: mockUserId,
 					customDomainId: mockDto.customDomainId,
+					alias: null,
 				},
 			});
 		});

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { LockClosedIcon, PencilIcon } from '@heroicons/react/24/outline';
 import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 import type { TShortUrlResponseDto, TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
 import {
 	AlertDialog,
@@ -59,6 +60,7 @@ export function ShortUrlAddresses({
 			{ shortCode: shortUrl.shortCode, alias: null },
 			{
 				onSuccess: () => {
+					posthog.capture('short-url-alias:removed', { isQrCode });
 					toast({ title: t('removed') });
 					setRemoveOpen(false);
 					onChanged();

@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { ExclamationTriangleIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 import * as Sentry from '@sentry/nextjs';
+import posthog from 'posthog-js';
 import { ShortUrlAliasErrorCode } from '@shared/schemas';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -50,6 +51,7 @@ function AliasDialogContent({
 			{ shortCode, alias: alias.value },
 			{
 				onSuccess: () => {
+					posthog.capture('short-url-alias:set', { source: 'dialog', isChange: !!currentAlias });
 					toast({ title: t('saved.title'), description: t('saved.description') });
 					onSaved?.();
 					onClose();
