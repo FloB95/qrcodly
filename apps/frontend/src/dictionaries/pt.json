@@ -4692,5 +4692,58 @@
 			"statistics": "Estatísticas de leitura para cada código",
 			"noCreditCard": "Sem necessidade de cartão de crédito"
 		}
+	},
+	"announcements": {
+		"trigger": "Novidades",
+		"title": "Novidades",
+		"unseen": "Novas entradas",
+		"new": "Novo",
+		"learnMore": "Saber mais",
+		"faq": "Perguntas frequentes",
+		"items": {
+			"shortUrlAlias": {
+				"title": "Alias para URLs curtas",
+				"summary": "Dá aos links do teu domínio um segundo endereço legível.",
+				"description": "Além da URL curta fixa, um link pode agora ter um alias como /u/festa-verao. Pensado para tudo o que as pessoas leem ou escrevem: folhetos, newsletters, redes sociais.",
+				"points": {
+					"parallel": "Funciona em paralelo com a URL curta: os códigos QR impressos continuam válidos.",
+					"anytime": "Define-o, altera-o ou passa-o para outro link quando quiseres.",
+					"stats": "As visitas pelo alias contam na mesma estatística."
+				},
+				"requirement": "Disponível com Pro para links no teu próprio domínio.",
+				"cta": {
+					"shortUrls": "Ir para as tuas URLs curtas",
+					"domains": "Ligar um domínio",
+					"plans": "Ver o Pro"
+				},
+				"preview": {
+					"domain": "go.suamarca.com",
+					"alias": "festa-verao",
+					"visits": "Visitas"
+				}
+			},
+			"scanIpExclusions": {
+				"title": "Ignorar endereços IP",
+				"summary": "As leituras a partir da tua própria rede deixam de contar nas estatísticas.",
+				"description": "Testar os teus códigos QR no escritório distorce depressa os teus números. Adiciona a rede do escritório ou o teu endereço IP nas definições de Estatísticas e as leituras a partir daí deixam de ser contadas.",
+				"points": {
+					"oneClick": "Usa o teu endereço IP atual com um clique.",
+					"integrations": "Aplica-se também às tuas integrações de análise.",
+					"futureOnly": "Aplica-se às leituras futuras; as estatísticas atuais não mudam."
+				},
+				"requirement": "Disponível com Pro, para até 10 endereços ou intervalos IP.",
+				"cta": {
+					"settings": "Ir para as definições de estatísticas",
+					"plans": "Ver o Pro"
+				},
+				"preview": {
+					"office": "Wi-Fi do escritório",
+					"visitors": "Visitantes",
+					"scans": "Leituras",
+					"excluded": "Ignorado",
+					"notCounted": "não conta"
+				}
+			}
+		}
 	}
 }

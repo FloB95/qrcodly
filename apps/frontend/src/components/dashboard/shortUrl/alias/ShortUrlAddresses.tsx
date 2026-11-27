@@ -23,6 +23,7 @@ import { useCustomDomainLookup } from '@/lib/api/custom-domain';
 import { useSetShortUrlAliasMutation } from '@/lib/api/url-shortener';
 import { createLinkFromShortUrl } from '@/lib/utils';
 import { CopyUrlButton } from '../../qrCode/content-renderers/CopyUrlButton';
+import { NewFeatureBadge } from '../../announcements/NewBadge';
 import { ShortUrlAliasDialog } from './ShortUrlAliasDialog';
 
 interface ShortUrlAddressesProps {
@@ -101,6 +102,7 @@ export function ShortUrlAddresses({
 			<div>
 				<div className="mb-1 flex items-center gap-2">
 					<p className="text-sm font-medium text-muted-foreground">{t('label')}</p>
+					{customDomain && <NewFeatureBadge announcementId="short-url-alias" />}
 					{shortUrl.alias && customDomain && (
 						<Badge variant="secondary" className="gap-1">
 							<PencilIcon aria-hidden="true" className="size-3" />

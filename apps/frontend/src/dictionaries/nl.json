@@ -4692,5 +4692,58 @@
 			"statistics": "Scanstatistieken voor elke code",
 			"noCreditCard": "Geen creditcard vereist"
 		}
+	},
+	"announcements": {
+		"trigger": "Wat is nieuw",
+		"title": "Wat is nieuw",
+		"unseen": "Nieuwe berichten",
+		"new": "Nieuw",
+		"learnMore": "Meer informatie",
+		"faq": "Veelgestelde vragen",
+		"items": {
+			"shortUrlAlias": {
+				"title": "Aliassen voor korte URL's",
+				"summary": "Geef links op je domein een tweede, leesbaar adres.",
+				"description": "Naast de vaste korte URL kan een link nu een alias krijgen, zoals /u/zomerfeest. Gemaakt voor alles wat mensen lezen of overtypen: flyers, nieuwsbrieven, social media.",
+				"points": {
+					"parallel": "Werkt naast de korte URL, dus gedrukte QR-codes blijven geldig.",
+					"anytime": "Stel hem op elk moment in, wijzig hem of geef hem aan een andere link.",
+					"stats": "Bezoeken via de alias tellen mee in dezelfde statistiek."
+				},
+				"requirement": "Beschikbaar met Pro voor links op je eigen domein.",
+				"cta": {
+					"shortUrls": "Naar je korte URL's",
+					"domains": "Domein koppelen",
+					"plans": "Pro bekijken"
+				},
+				"preview": {
+					"domain": "go.jouwmerk.nl",
+					"alias": "zomerfeest",
+					"visits": "Bezoeken"
+				}
+			},
+			"scanIpExclusions": {
+				"title": "IP-adressen uitsluiten",
+				"summary": "Scans vanuit je eigen netwerk tellen niet meer mee in je statistieken.",
+				"description": "Wie zijn QR-codes op kantoor test, vertekent snel de eigen cijfers. Voeg je kantoornetwerk of IP-adres toe in de instellingen bij Statistieken, dan worden scans vanaf daar niet meer geteld.",
+				"points": {
+					"oneClick": "Neem je huidige IP-adres met één klik over.",
+					"integrations": "Geldt ook voor je analytics-integraties.",
+					"futureOnly": "Geldt voor toekomstige scans; je bestaande statistieken blijven ongewijzigd."
+				},
+				"requirement": "Beschikbaar met Pro, voor maximaal 10 IP-adressen of -bereiken.",
+				"cta": {
+					"settings": "Naar de statistiekinstellingen",
+					"plans": "Pro bekijken"
+				},
+				"preview": {
+					"office": "Kantoor-wifi",
+					"visitors": "Bezoekers",
+					"scans": "Scans",
+					"excluded": "Uitgesloten",
+					"notCounted": "niet geteld"
+				}
+			}
+		}
 	}
 }

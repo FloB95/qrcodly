@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { ExclamationTriangleIcon, LockClosedIcon } from '@heroicons/react/24/outline';
 import * as Sentry from '@sentry/nextjs';
@@ -10,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { useSetShortUrlAliasMutation } from '@/lib/api/url-shortener';
 import type { ApiError } from '@/lib/api/ApiError';
+import { useNewFeatureBadge } from '../../announcements/use-announcements';
 import { AliasField } from './AliasField';
 import { canSaveAlias } from './alias-input-status';
 import { useAliasInput } from './use-alias-input';
@@ -45,6 +47,10 @@ function AliasDialogContent({
 	const alias = useAliasInput({ customDomainId: customDomain.id, currentAlias });
 	const setAlias = useSetShortUrlAliasMutation();
 	const address = (text: string) => `${customDomain.domain}/u/${text}`;
+
+	// whoever opened this has found the feature: its "new" badge can go
+	const { markUsed } = useNewFeatureBadge('short-url-alias');
+	useEffect(() => markUsed(), [markUsed]);
 
 	const save = () => {
 		setAlias.mutate(

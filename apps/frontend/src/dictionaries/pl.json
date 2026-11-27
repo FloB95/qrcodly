@@ -4692,5 +4692,58 @@
 			"statistics": "Statystyki skanów dla każdego kodu",
 			"noCreditCard": "Karta kredytowa nie jest wymagana"
 		}
+	},
+	"announcements": {
+		"trigger": "Nowości",
+		"title": "Nowości",
+		"unseen": "Nowe wpisy",
+		"new": "Nowość",
+		"learnMore": "Dowiedz się więcej",
+		"faq": "Częste pytania",
+		"items": {
+			"shortUrlAlias": {
+				"title": "Aliasy dla krótkich linków",
+				"summary": "Nadaj linkom w swojej domenie drugi, czytelny adres.",
+				"description": "Oprócz stałego krótkiego URL-a link może teraz mieć alias, np. /u/letni-festyn. Idealny do wszystkiego, co ludzie czytają lub wpisują: ulotek, newsletterów, mediów społecznościowych.",
+				"points": {
+					"parallel": "Działa równolegle z krótkim URL-em, więc wydrukowane kody QR pozostają ważne.",
+					"anytime": "Ustaw go, zmień lub przypisz do innego linku w dowolnym momencie.",
+					"stats": "Wejścia przez alias liczą się do tej samej statystyki."
+				},
+				"requirement": "Dostępne w Pro dla linków w Twojej własnej domenie.",
+				"cta": {
+					"shortUrls": "Przejdź do krótkich linków",
+					"domains": "Połącz domenę",
+					"plans": "Zobacz Pro"
+				},
+				"preview": {
+					"domain": "go.twojamarka.pl",
+					"alias": "letni-festyn",
+					"visits": "Wejścia"
+				}
+			},
+			"scanIpExclusions": {
+				"title": "Wykluczanie adresów IP",
+				"summary": "Skany z Twojej własnej sieci nie liczą się już do statystyk.",
+				"description": "Testowanie kodów QR w biurze szybko zawyża Twoje liczby. Dodaj sieć biura lub swój adres IP w ustawieniach Statystyki, a skany z niej przestaną być liczone.",
+				"points": {
+					"oneClick": "Przejmij swój obecny adres IP jednym kliknięciem.",
+					"integrations": "Dotyczy też Twoich integracji analitycznych.",
+					"futureOnly": "Dotyczy przyszłych skanów; dotychczasowe statystyki pozostają bez zmian."
+				},
+				"requirement": "Dostępne w Pro, dla maksymalnie 10 adresów lub zakresów IP.",
+				"cta": {
+					"settings": "Przejdź do ustawień statystyk",
+					"plans": "Zobacz Pro"
+				},
+				"preview": {
+					"office": "Wi-Fi w biurze",
+					"visitors": "Odwiedzający",
+					"scans": "Skany",
+					"excluded": "Wykluczone",
+					"notCounted": "nie liczy się"
+				}
+			}
+		}
 	}
 }

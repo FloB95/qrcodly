@@ -4692,5 +4692,58 @@
 			"statistics": "Scan-Statistiken für jeden Code",
 			"noCreditCard": "Keine Kreditkarte erforderlich"
 		}
+	},
+	"announcements": {
+		"trigger": "Neuigkeiten",
+		"title": "Neuigkeiten",
+		"unseen": "Neue Einträge",
+		"new": "Neu",
+		"learnMore": "Mehr erfahren",
+		"faq": "Häufige Fragen",
+		"items": {
+			"shortUrlAlias": {
+				"title": "Aliase für Kurzlinks",
+				"summary": "Gib deinen Kurzlinks eine zweite, lesbare Adresse unter deiner eigenen Domain.",
+				"description": "Neben der festen Kurz-URL kann ein Link jetzt einen Alias wie /u/sommerfest bekommen. Gemacht für alles, was Menschen lesen oder abtippen: Flyer, Newsletter, Social Media.",
+				"points": {
+					"parallel": "Läuft parallel zur Kurz-URL, gedruckte QR-Codes bleiben gültig.",
+					"anytime": "Jederzeit festlegen, ändern oder einem anderen Link geben.",
+					"stats": "Aufrufe über den Alias zählen in dieselbe Statistik."
+				},
+				"requirement": "Verfügbar mit Pro für Links, die über deine eigene Domain laufen.",
+				"cta": {
+					"shortUrls": "Zu deinen Kurzlinks",
+					"domains": "Domain verbinden",
+					"plans": "Pro ansehen"
+				},
+				"preview": {
+					"domain": "go.deinemarke.de",
+					"alias": "sommerfest",
+					"visits": "Aufrufe"
+				}
+			},
+			"scanIpExclusions": {
+				"title": "IP-Adressen ausschließen",
+				"summary": "Scans aus deinem eigenen Netz zählen nicht mehr in deiner Statistik.",
+				"description": "Wer seine QR-Codes im Büro testet, verfälscht schnell die eigenen Zahlen. Trag dein Büronetz oder deine IP-Adresse in den Einstellungen unter „Statistik“ ein, dann werden Scans von dort nicht mehr gezählt.",
+				"points": {
+					"oneClick": "Deine aktuelle IP-Adresse mit einem Klick übernehmen.",
+					"integrations": "Gilt auch für deine Analytics-Integrationen.",
+					"futureOnly": "Gilt für künftige Scans, deine bisherige Statistik bleibt unverändert."
+				},
+				"requirement": "Verfügbar mit Pro, für bis zu 10 IP-Adressen oder -Bereiche.",
+				"cta": {
+					"settings": "Zu den Statistik-Einstellungen",
+					"plans": "Pro ansehen"
+				},
+				"preview": {
+					"office": "Büro-WLAN",
+					"visitors": "Besucher",
+					"scans": "Scans",
+					"excluded": "Ausgeschlossen",
+					"notCounted": "nicht gezählt"
+				}
+			}
+		}
 	}
 }

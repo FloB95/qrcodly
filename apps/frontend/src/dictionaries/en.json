@@ -4692,5 +4692,58 @@
 			"statistics": "Scan statistics for every code",
 			"noCreditCard": "No credit card required"
 		}
+	},
+	"announcements": {
+		"trigger": "What’s new",
+		"title": "What’s new",
+		"unseen": "New entries",
+		"new": "New",
+		"learnMore": "Learn more",
+		"faq": "FAQ",
+		"items": {
+			"shortUrlAlias": {
+				"title": "Aliases for short URLs",
+				"summary": "Give links on your domain a second, readable address.",
+				"description": "Next to its fixed short URL, a link can now have an alias like /u/summer-party. Made for everything people read or type: flyers, newsletters, social media.",
+				"points": {
+					"parallel": "Works alongside the short URL, so printed QR codes stay valid.",
+					"anytime": "Set it, change it or give it to another link at any time.",
+					"stats": "Visits through the alias count towards the same statistics."
+				},
+				"requirement": "Available with Pro for links on your own domain.",
+				"cta": {
+					"shortUrls": "Go to your short URLs",
+					"domains": "Connect a domain",
+					"plans": "See Pro"
+				},
+				"preview": {
+					"domain": "go.yourbrand.com",
+					"alias": "summer-party",
+					"visits": "Visits"
+				}
+			},
+			"scanIpExclusions": {
+				"title": "Exclude IP addresses",
+				"summary": "Scans from your own network no longer count in your statistics.",
+				"description": "Testing your QR codes at the office quickly skews your own numbers. Add your office network or IP address in the Analytics settings, and scans from there are no longer counted.",
+				"points": {
+					"oneClick": "Add your current IP address in one click.",
+					"integrations": "Also applies to your analytics integrations.",
+					"futureOnly": "Applies to future scans; your existing statistics stay unchanged."
+				},
+				"requirement": "Available with Pro, for up to 10 IP addresses or ranges.",
+				"cta": {
+					"settings": "Go to analytics settings",
+					"plans": "See Pro"
+				},
+				"preview": {
+					"office": "Office Wi-Fi",
+					"visitors": "Visitors",
+					"scans": "Scans",
+					"excluded": "Excluded",
+					"notCounted": "not counted"
+				}
+			}
+		}
 	}
 }

@@ -4692,5 +4692,58 @@
 			"statistics": "Statistiche di scansione per ogni codice",
 			"noCreditCard": "Nessuna carta di credito richiesta"
 		}
+	},
+	"announcements": {
+		"trigger": "Novità",
+		"title": "Novità",
+		"unseen": "Nuovi contenuti",
+		"new": "Nuovo",
+		"learnMore": "Scopri di più",
+		"faq": "Domande frequenti",
+		"items": {
+			"shortUrlAlias": {
+				"title": "Alias per gli URL brevi",
+				"summary": "Dai ai link sul tuo dominio un secondo indirizzo leggibile.",
+				"description": "Oltre al suo URL breve fisso, un link ora può avere un alias come /u/festa-estate. Pensato per tutto ciò che si legge o si digita: volantini, newsletter, social media.",
+				"points": {
+					"parallel": "Funziona accanto all’URL breve: i codici QR stampati restano validi.",
+					"anytime": "Impostalo, cambialo o assegnalo a un altro link quando vuoi.",
+					"stats": "Le visite tramite l’alias contano nella stessa statistica."
+				},
+				"requirement": "Disponibile con Pro per i link sul tuo dominio.",
+				"cta": {
+					"shortUrls": "Vai ai tuoi URL brevi",
+					"domains": "Collega un dominio",
+					"plans": "Scopri Pro"
+				},
+				"preview": {
+					"domain": "go.tuobrand.it",
+					"alias": "festa-estate",
+					"visits": "Visite"
+				}
+			},
+			"scanIpExclusions": {
+				"title": "Escludi indirizzi IP",
+				"summary": "Le scansioni dalla tua rete non contano più nelle tue statistiche.",
+				"description": "Se provi i tuoi codici QR in ufficio, falsi subito i tuoi numeri. Aggiungi la rete del tuo ufficio o il tuo indirizzo IP nelle impostazioni Statistiche e le scansioni da lì non verranno più contate.",
+				"points": {
+					"oneClick": "Usa il tuo indirizzo IP attuale con un clic.",
+					"integrations": "Vale anche per le tue integrazioni di analisi.",
+					"futureOnly": "Vale per le scansioni future; le statistiche esistenti restano invariate."
+				},
+				"requirement": "Disponibile con Pro, per un massimo di 10 indirizzi o intervalli IP.",
+				"cta": {
+					"settings": "Vai alle impostazioni Statistiche",
+					"plans": "Scopri Pro"
+				},
+				"preview": {
+					"office": "Wi-Fi dell’ufficio",
+					"visitors": "Visitatori",
+					"scans": "Scansioni",
+					"excluded": "Escluso",
+					"notCounted": "non contata"
+				}
+			}
+		}
 	}
 }

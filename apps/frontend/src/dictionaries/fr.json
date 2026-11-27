@@ -4692,5 +4692,58 @@
 			"statistics": "Statistiques de scan pour chaque code",
 			"noCreditCard": "Aucune carte de crédit requise"
 		}
+	},
+	"announcements": {
+		"trigger": "Nouveautés",
+		"title": "Nouveautés",
+		"unseen": "Nouvelles entrées",
+		"new": "Nouveau",
+		"learnMore": "En savoir plus",
+		"faq": "Questions fréquentes",
+		"items": {
+			"shortUrlAlias": {
+				"title": "Des alias pour les URL courtes",
+				"summary": "Donne aux liens de ton domaine une deuxième adresse lisible.",
+				"description": "En plus de son URL courte fixe, un lien peut désormais avoir un alias comme /u/fete-ete. Idéal pour tout ce qu’on lit ou qu’on tape : flyers, newsletters, réseaux sociaux.",
+				"points": {
+					"parallel": "Fonctionne en parallèle de l’URL courte : les codes QR imprimés restent valides.",
+					"anytime": "Définis-le, modifie-le ou attribue-le à un autre lien à tout moment.",
+					"stats": "Les visites via l’alias comptent dans les mêmes statistiques."
+				},
+				"requirement": "Disponible avec Pro pour les liens sur ton propre domaine.",
+				"cta": {
+					"shortUrls": "Voir tes URL courtes",
+					"domains": "Connecter un domaine",
+					"plans": "Découvrir Pro"
+				},
+				"preview": {
+					"domain": "go.votremarque.fr",
+					"alias": "fete-ete",
+					"visits": "Visites"
+				}
+			},
+			"scanIpExclusions": {
+				"title": "Exclure des adresses IP",
+				"summary": "Les scans depuis ton propre réseau ne comptent plus dans tes statistiques.",
+				"description": "Tester tes codes QR au bureau fausse vite tes propres chiffres. Ajoute le réseau de ton bureau ou ton adresse IP dans les paramètres Statistiques, et les scans depuis là ne seront plus comptés.",
+				"points": {
+					"oneClick": "Reprends ton adresse IP actuelle en un clic.",
+					"integrations": "S’applique aussi à tes intégrations d’analyse.",
+					"futureOnly": "S’applique aux scans futurs ; tes statistiques existantes restent inchangées."
+				},
+				"requirement": "Disponible avec Pro, pour jusqu’à 10 adresses ou plages IP.",
+				"cta": {
+					"settings": "Ouvrir les paramètres Statistiques",
+					"plans": "Découvrir Pro"
+				},
+				"preview": {
+					"office": "Wi-Fi du bureau",
+					"visitors": "Visiteurs",
+					"scans": "Scans",
+					"excluded": "Exclu",
+					"notCounted": "non compté"
+				}
+			}
+		}
 	}
 }

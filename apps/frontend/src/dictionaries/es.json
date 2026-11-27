@@ -4692,5 +4692,58 @@
 			"statistics": "Estadísticas de escaneo para cada código",
 			"noCreditCard": "Sin tarjeta de crédito"
 		}
+	},
+	"announcements": {
+		"trigger": "Novedades",
+		"title": "Novedades",
+		"unseen": "Entradas nuevas",
+		"new": "Nuevo",
+		"learnMore": "Más información",
+		"faq": "Preguntas frecuentes",
+		"items": {
+			"shortUrlAlias": {
+				"title": "Alias para URL cortas",
+				"summary": "Da a los enlaces de tu dominio una segunda dirección legible.",
+				"description": "Además de su URL corta fija, un enlace puede tener ahora un alias como /u/fiesta-verano. Pensado para todo lo que la gente lee o escribe: folletos, boletines, redes sociales.",
+				"points": {
+					"parallel": "Funciona junto a la URL corta, así que los códigos QR impresos siguen siendo válidos.",
+					"anytime": "Defínelo, cámbialo o dáselo a otro enlace cuando quieras.",
+					"stats": "Las visitas a través del alias cuentan en la misma estadística."
+				},
+				"requirement": "Disponible con Pro para enlaces en tu propio dominio.",
+				"cta": {
+					"shortUrls": "Ir a tus URL cortas",
+					"domains": "Conectar un dominio",
+					"plans": "Ver Pro"
+				},
+				"preview": {
+					"domain": "go.tumarca.com",
+					"alias": "fiesta-verano",
+					"visits": "Visitas"
+				}
+			},
+			"scanIpExclusions": {
+				"title": "Excluir direcciones IP",
+				"summary": "Los escaneos desde tu propia red ya no cuentan en tus estadísticas.",
+				"description": "Si pruebas tus códigos QR en la oficina, tus propias cifras se distorsionan enseguida. Añade la red de tu oficina o tu dirección IP en los ajustes de Estadísticas y los escaneos desde allí dejarán de contarse.",
+				"points": {
+					"oneClick": "Añade tu dirección IP actual con un clic.",
+					"integrations": "También se aplica a tus integraciones de analítica.",
+					"futureOnly": "Se aplica a los escaneos futuros; tus estadísticas actuales no cambian."
+				},
+				"requirement": "Disponible con Pro, para hasta 10 direcciones o rangos IP.",
+				"cta": {
+					"settings": "Ir a los ajustes de estadísticas",
+					"plans": "Ver Pro"
+				},
+				"preview": {
+					"office": "Wifi de la oficina",
+					"visitors": "Visitantes",
+					"scans": "Escaneos",
+					"excluded": "Excluida",
+					"notCounted": "no cuenta"
+				}
+			}
+		}
 	}
 }
