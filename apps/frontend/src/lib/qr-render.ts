@@ -107,7 +107,8 @@ export class LogoTooLargeError extends Error {}
  * the file holds only pixels, so every renderer and print tool shows exactly what was seen here.
  */
 export async function prepareLogo(dataUrl: string): Promise<string> {
-	if (dataUrl.startsWith('data:image/png')) return dataUrl;
+	// the type comes from the file name, so a renamed .jpg says PNG; only real PNG bytes pass
+	if (dataUrl.startsWith('data:image/png') && measureImageDataUrl(dataUrl)) return dataUrl;
 	try {
 		return await convertLogoToPng(dataUrl);
 	} catch (error) {
