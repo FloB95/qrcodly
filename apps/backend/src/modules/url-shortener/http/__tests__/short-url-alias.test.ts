@@ -1,8 +1,10 @@
 import type { FastifyInstance } from 'fastify';
 import { container } from 'tsyringe';
 import { eq } from 'drizzle-orm';
-import { ShortUrlAliasConflict } from '@shared/schemas';
+import qs from 'qs';
+import { ShortUrlAliasConflict, ShortUrlAliasErrorCode } from '@shared/schemas';
 import type {
+	TShortUrlWithCustomDomainPaginatedResponseDto,
 	TResolveDomainResponseDto,
 	TShortUrlAliasAvailabilityResponseDto,
 	TShortUrlWithCustomDomainResponseDto,
@@ -160,7 +162,7 @@ describe('short URL alias', () => {
 			const response = await setAlias(link.shortCode, uniqueAlias());
 
 			expect(response).toHaveStatusCode(400);
-			expect(errorCodeOf(response.payload)).toBe('SHORT_URL_ALIAS_REQUIRES_CUSTOM_DOMAIN');
+			expect(errorCodeOf(response.payload)).toBe(ShortUrlAliasErrorCode.REQUIRES_CUSTOM_DOMAIN);
 		});
 
 		it('refuses an alias another short URL already has on the same domain', async () => {
@@ -172,7 +174,7 @@ describe('short URL alias', () => {
 			const response = await setAlias(second.shortCode, alias);
 
 			expect(response).toHaveStatusCode(409);
-			expect(errorCodeOf(response.payload)).toBe('SHORT_URL_ALIAS_TAKEN');
+			expect(errorCodeOf(response.payload)).toBe(ShortUrlAliasErrorCode.TAKEN);
 			expect((await getDetail(second.shortCode)).alias).toBeNull();
 		});
 
@@ -194,7 +196,7 @@ describe('short URL alias', () => {
 			const response = await setAlias(link.shortCode, other.shortCode);
 
 			expect(response).toHaveStatusCode(409);
-			expect(errorCodeOf(response.payload)).toBe('SHORT_URL_ALIAS_MATCHES_SHORT_CODE');
+			expect(errorCodeOf(response.payload)).toBe(ShortUrlAliasErrorCode.MATCHES_SHORT_CODE);
 		});
 
 		it('replaces the alias and frees the previous one at once', async () => {
@@ -295,7 +297,7 @@ describe('short URL alias', () => {
 			const response = await create(generateShortUrlDto({ alias: uniqueAlias() }));
 
 			expect(response).toHaveStatusCode(400);
-			expect(errorCodeOf(response.payload)).toBe('SHORT_URL_ALIAS_REQUIRES_CUSTOM_DOMAIN');
+			expect(errorCodeOf(response.payload)).toBe(ShortUrlAliasErrorCode.REQUIRES_CUSTOM_DOMAIN);
 		});
 
 		it('creates nothing when the alias is taken', async () => {
@@ -307,7 +309,7 @@ describe('short URL alias', () => {
 			const response = await create(dto);
 
 			expect(response).toHaveStatusCode(409);
-			expect(errorCodeOf(response.payload)).toBe('SHORT_URL_ALIAS_TAKEN');
+			expect(errorCodeOf(response.payload)).toBe(ShortUrlAliasErrorCode.TAKEN);
 			const [created] = await db.query.shortUrl.findMany({
 				where: (shortUrl, { eq: equals }) => equals(shortUrl.destinationUrl, dto.destinationUrl),
 			});
@@ -423,6 +425,43 @@ describe('short URL alias', () => {
 			await setAlias(link.shortCode, uniqueAlias());
 
 			expect((await resolveDomain(name)).hasAliases).toBe(true);
+		});
+	});
+
+	describe('GET /short-url search', () => {
+		/** The dashboard searches short code, alias and destination with one term. */
+		const search = async (term: string) => {
+			const where = {
+				shortCode: { like: term },
+				alias: { like: term },
+				destinationUrl: { like: term },
+			};
+			const response = await testServer.inject({
+				method: 'GET',
+				url: `${SHORT_URL_API_PATH}?${qs.stringify({ standalone: true, where })}`,
+				headers: { Authorization: `Bearer ${tokenPro}` },
+			});
+			expect(response).toHaveStatusCode(200);
+			const page = JSON.parse(response.payload) as TShortUrlWithCustomDomainPaginatedResponseDto;
+			return page.data.map((shortUrl) => shortUrl.shortCode);
+		};
+
+		it('finds a short URL by its alias, and by a part of it', async () => {
+			const alias = uniqueAlias('findme');
+			const link = await createLink();
+			await createLink();
+			await setAlias(link.shortCode, alias);
+
+			expect(await search(alias)).toEqual([link.shortCode]);
+			expect(await search(alias.replace('findme-', ''))).toEqual([link.shortCode]);
+		});
+
+		it('does not find the alias of another account', async () => {
+			const alias = uniqueAlias('theirs');
+			const theirs = await createLink(TEST_USER_2_ID, otherDomainId);
+			expect(await setAlias(theirs.shortCode, alias, token2)).toHaveStatusCode(200);
+
+			expect(await search(alias)).toEqual([]);
 		});
 	});
 

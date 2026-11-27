@@ -38,13 +38,18 @@ export function getSystemDomain(): string {
  * @param options - Options object
  * @param options.short - If true, returns a shortened URL without protocol (for display)
  * @param options.customDomain - Optional custom domain to use (for when shortUrl only has customDomainId)
+ * @param options.alias - If true, the address with the alias, where the short URL has one
  * @returns The full or shortened URL
  */
 export function createLinkFromShortUrl(
 	shortUrl: TShortUrlWithCustomDomainResponseDto | TShortUrlResponseDto,
-	options: { short?: boolean; customDomain?: TCustomDomainResponseDto | null } = {},
+	options: {
+		short?: boolean;
+		customDomain?: TCustomDomainResponseDto | null;
+		alias?: boolean;
+	} = {},
 ): string {
-	const { short = false, customDomain: providedDomain } = options;
+	const { short = false, customDomain: providedDomain, alias = false } = options;
 	const { shortCode } = shortUrl;
 
 	// Use embedded customDomain first, then fall back to provided domain
@@ -53,7 +58,8 @@ export function createLinkFromShortUrl(
 
 	let url: string;
 	if (customDomain) {
-		url = `https://${customDomain.domain}/u/${shortCode}`;
+		// an alias only exists on the custom domain
+		url = `https://${customDomain.domain}/u/${alias && shortUrl.alias ? shortUrl.alias : shortCode}`;
 	} else {
 		// System short links live on the dedicated redirect domain (falls back to the app
 		// domain), using the /u/ prefix (e.g. qrco.ly/u/abc12).

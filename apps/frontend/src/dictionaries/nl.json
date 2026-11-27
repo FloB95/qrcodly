@@ -9,6 +9,66 @@
 		}
 	},
 	"shortUrl": {
+		"alias": {
+			"label": "Alias",
+			"optional": "(optioneel)",
+			"placeholder": "bijv. zomerfeest-2026",
+			"hint": "Een tweede, leesbaar adres voor deze link. Spaties en speciale tekens worden tijdens het typen aangepast.",
+			"unchanged": "Dit is de huidige alias.",
+			"tooShort": "Minstens {min} tekens.",
+			"trailingHyphen": "De alias mag niet op een koppelteken eindigen.",
+			"checking": "Beschikbaarheid wordt gecontroleerd",
+			"available": "{address} is beschikbaar.",
+			"taken": "Deze alias is al in gebruik op {domain}.",
+			"notAvailable": "Deze alias is niet beschikbaar. Kies een andere.",
+			"checkFailed": "De beschikbaarheid kon niet worden gecontroleerd. Je kunt toch proberen op te slaan.",
+			"systemDomain": "Voor een alias is een eigen domein nodig.",
+			"connectDomain": "Domein koppelen",
+			"createNote": "Je link krijgt altijd ook een vaste korte URL. De alias komt er als tweede adres bij. Je kunt hem later wijzigen, de korte URL blijft zoals die is.",
+			"menuSet": "Alias instellen",
+			"menuChange": "Alias wijzigen",
+			"deleteNote": "De alias “{alias}” komt daarbij weer vrij.",
+			"removed": "Alias verwijderd",
+			"addresses": {
+				"shortUrl": "Korte URL",
+				"fixed": "Vast",
+				"fixedHint": "Dit adres verandert nooit. QR-codes bevatten altijd dit adres.",
+				"fixedHintQrCode": "Dit adres is opgeslagen in de QR-code en verandert nooit. Gedrukte codes blijven geldig, wat je ook met de alias doet.",
+				"changeable": "Wijzigbaar",
+				"aliasHint": "Extra adres op je domein. Beide adressen leiden naar dezelfde bestemming en tellen mee in dezelfde statistiek.",
+				"none": "Nog geen alias. Geef deze link een leesbaar adres, bijvoorbeeld voor flyers of nieuwsbrieven.",
+				"set": "Alias instellen",
+				"change": "Wijzigen",
+				"remove": "Verwijderen",
+				"qrCodeNote": "De alias is voor alles wat mensen lezen of typen: de tekst onder de QR-code, nieuwsbrieven, sociale media. Scans van de QR-code en bezoeken via de alias komen in dezelfde statistiek terecht."
+			},
+			"dialog": {
+				"setTitle": "Alias instellen",
+				"changeTitle": "Alias wijzigen",
+				"newLabel": "Nieuwe alias",
+				"warningTitle": "Het vorige adres werkt daarna niet meer",
+				"warningText": "{address} toont na het opslaan een foutpagina. Controleer eerst of je dit adres hebt gedrukt of gedeeld.",
+				"unchangedTitle": "Dit blijft ongewijzigd",
+				"unchangedShortUrl": "de korte URL {address}",
+				"unchangedQrCodes": "alle QR-codes, ook al gedrukte",
+				"unchangedStatistics": "de bestemming en de statistiek tot nu toe",
+				"save": "Alias opslaan",
+				"change": "Alias wijzigen"
+			},
+			"remove": {
+				"title": "Alias verwijderen?",
+				"text": "{address} werkt daarna niet meer en toont een foutpagina. De alias komt weer vrij. De korte URL {shortUrl} en alle QR-codes blijven ongewijzigd.",
+				"confirm": "Alias verwijderen"
+			},
+			"saved": {
+				"title": "Alias opgeslagen",
+				"description": "Het kan tot een minuut duren voordat het nieuwe adres overal werkt."
+			},
+			"error": {
+				"title": "Alias kon niet worden opgeslagen",
+				"generic": "Probeer het opnieuw."
+			}
+		},
 		"title": "Korte URLs",
 		"description": "Verkort, beheer en volg je links met gedetailleerde analyses",
 		"createBtn": "Korte URL aanmaken",
@@ -1618,6 +1678,7 @@
 				"reductionWithdrawExplainer": "Je houdt je huidige aantal extra domeinen. De geplande verlaging wordt ingetrokken en er wordt niets in rekening gebracht.",
 				"willDisableHint": "Verwijder vóór die datum de domeinen die je niet meer nodig hebt, anders worden de laatst toegevoegde uitgeschakeld. Tot dan behoud je al je plaatsen, dus deze lijst kan nog langer worden."
 			},
+			"deleteConfirmAliasWarning": "Aliassen op dit domein worden samen met het domein verwijderd en zijn daarna niet meer bereikbaar.",
 			"deleteConfirmQrWarning": "Reeds gedrukte QR-codes met dit domein werken daarna niet meer. Het adres zit vast in de code en kan achteraf niet worden omgeleid."
 		},
 		"apiKeys": {

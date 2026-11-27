@@ -8,6 +8,7 @@ import type {
 	TCreateShortUrlDto,
 	TSafetyIncidentListResponseDto,
 	TShortUrl,
+	TShortUrlAliasAvailabilityResponseDto,
 	TShortUrlStatusFilter,
 	TShortUrlWithCustomDomainPaginatedResponseDto,
 	TShortUrlWithCustomDomainResponseDto,
@@ -21,6 +22,7 @@ export const urlShortenerQueryKeys = {
 	reservedShortUrl: ['reservedShortUrl'],
 	listShortUrls: ['listShortUrls'],
 	safetyIncidents: ['safetyIncidents'],
+	aliasAvailability: ['shortUrlAliasAvailability'],
 } as const;
 
 /**
@@ -188,6 +190,7 @@ export function useListShortUrlsQuery(page = 1, limit = 10, filters?: ShortUrlFi
 			if (filters?.search) {
 				queryParams['where[destinationUrl][like]'] = filters.search;
 				queryParams['where[shortCode][like]'] = filters.search;
+				queryParams['where[alias][like]'] = filters.search;
 			}
 
 			if (filters?.tagIds && filters.tagIds.length > 0) {
@@ -340,5 +343,66 @@ export function useUpdateShortUrlMutation() {
 				queryKey: urlShortenerQueryKeys.listShortUrls,
 			});
 		},
+	});
+}
+
+/** Sets or changes the alias of a short URL; `null` removes it. Works for the links of QR codes too. */
+export function useSetShortUrlAliasMutation() {
+	const queryClient = useQueryClient();
+	const { getToken } = useAuth();
+
+	return useMutation({
+		mutationFn: async ({
+			shortCode,
+			alias,
+		}: {
+			shortCode: string;
+			alias: string | null;
+		}): Promise<TShortUrlWithCustomDomainResponseDto> => {
+			const token = await getToken();
+			return apiRequest<TShortUrlWithCustomDomainResponseDto>(`/short-url/${shortCode}/alias`, {
+				method: 'PUT',
+				body: JSON.stringify({ alias }),
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			});
+		},
+		onSuccess: () => {
+			void queryClient.refetchQueries({ queryKey: urlShortenerQueryKeys.listShortUrls });
+			void queryClient.refetchQueries({ queryKey: qrCodeQueryKeys.listQrCodes });
+			void queryClient.invalidateQueries({ queryKey: urlShortenerQueryKeys.aliasAvailability });
+		},
+	});
+}
+
+export function useShortUrlAliasAvailabilityQuery(
+	customDomainId: string | null | undefined,
+	alias: string,
+	enabled: boolean,
+) {
+	const { getToken } = useAuth();
+
+	return useQuery({
+		queryKey: [...urlShortenerQueryKeys.aliasAvailability, customDomainId, alias],
+		queryFn: async (): Promise<TShortUrlAliasAvailabilityResponseDto> => {
+			const token = await getToken();
+			return apiRequest<TShortUrlAliasAvailabilityResponseDto>(
+				'/short-url/alias-availability',
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+				},
+				{ customDomainId, alias },
+			);
+		},
+		enabled: enabled && !!customDomainId,
+		staleTime: 30 * 1000,
+		refetchOnWindowFocus: false,
+		retry: false,
 	});
 }

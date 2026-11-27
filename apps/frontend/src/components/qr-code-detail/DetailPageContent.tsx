@@ -6,6 +6,7 @@ import { ShareDialog } from '../qr-code-share/ShareDialog';
 import { DynamicQrCode } from '../qr-generator/DynamicQrCode';
 import { SavedQrCodeDownloadBtn } from '../qr-generator/download-buttons';
 import { AnalyticsSection } from './analytics/AnalyticsSection';
+import { ShortUrlAddresses } from '../dashboard/shortUrl/alias/ShortUrlAddresses';
 import type { TQrCodeWithRelationsResponseDto } from '@shared/schemas';
 import { UrlContent } from './content/Url';
 import { useTranslations } from 'next-intl';
@@ -274,6 +275,18 @@ export const DetailPageContent = ({ qrCode }: { qrCode: TQrCodeWithRelationsResp
 					</div>
 				</CardContent>
 			</Card>
+
+			{qrCode.shortUrl && (
+				<Card>
+					<CardContent className="px-4 sm:px-6">
+						<ShortUrlAddresses
+							shortUrl={qrCode.shortUrl}
+							onChanged={() => router.refresh()}
+							isQrCode
+						/>
+					</CardContent>
+				</Card>
+			)}
 
 			{/* Analytics */}
 			{qrCode.shortUrl && <AnalyticsSection shortCode={qrCode.shortUrl.shortCode} />}

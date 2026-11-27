@@ -9,6 +9,66 @@
 		}
 	},
 	"shortUrl": {
+		"alias": {
+			"label": "Alias",
+			"optional": "(optional)",
+			"placeholder": "z.B. sommerfest-2026",
+			"hint": "Eine zweite, lesbare Adresse für diesen Link. Leerzeichen und Sonderzeichen passen wir beim Tippen an.",
+			"unchanged": "Das ist der aktuelle Alias.",
+			"tooShort": "Mindestens {min} Zeichen.",
+			"trailingHyphen": "Der Alias darf nicht mit einem Bindestrich enden.",
+			"checking": "Verfügbarkeit wird geprüft",
+			"available": "{address} ist frei.",
+			"taken": "Dieser Alias ist auf {domain} schon vergeben.",
+			"notAvailable": "Dieser Alias ist nicht verfügbar. Bitte wähle einen anderen.",
+			"checkFailed": "Die Verfügbarkeit konnte nicht geprüft werden. Du kannst trotzdem versuchen zu speichern.",
+			"systemDomain": "Ein Alias ist nur mit eigener Domain möglich.",
+			"connectDomain": "Domain verbinden",
+			"createNote": "Dein Link bekommt immer auch eine feste Kurz-URL. Der Alias kommt als zweite Adresse dazu. Du kannst ihn später ändern, die Kurz-URL nicht.",
+			"menuSet": "Alias festlegen",
+			"menuChange": "Alias ändern",
+			"deleteNote": "Der Alias „{alias}“ wird dabei wieder frei.",
+			"removed": "Alias entfernt",
+			"addresses": {
+				"shortUrl": "Kurz-URL",
+				"fixed": "Fest",
+				"fixedHint": "Diese Adresse ändert sich nie. QR-Codes enthalten immer sie.",
+				"fixedHintQrCode": "Diese Adresse ist im QR-Code gespeichert und ändert sich nie. Gedruckte Codes bleiben gültig, egal was du am Alias änderst.",
+				"changeable": "Änderbar",
+				"aliasHint": "Zusätzliche Adresse auf deiner Domain. Beide Adressen führen zum selben Ziel und zählen in dieselbe Statistik.",
+				"none": "Noch kein Alias. Gib diesem Link eine lesbare Adresse, zum Beispiel für Flyer oder Newsletter.",
+				"set": "Alias festlegen",
+				"change": "Ändern",
+				"remove": "Entfernen",
+				"qrCodeNote": "Der Alias ist für alles, was man liest oder tippt: den Text unter dem QR-Code, Newsletter, Social Media. Scans des QR-Codes und Aufrufe über den Alias landen in derselben Statistik."
+			},
+			"dialog": {
+				"setTitle": "Alias festlegen",
+				"changeTitle": "Alias ändern",
+				"newLabel": "Neuer Alias",
+				"warningTitle": "Die bisherige Adresse funktioniert danach nicht mehr",
+				"warningText": "{address} zeigt nach dem Speichern eine Fehlerseite. Prüfe vorher, ob du diese Adresse gedruckt oder geteilt hast.",
+				"unchangedTitle": "Das bleibt unverändert",
+				"unchangedShortUrl": "die Kurz-URL {address}",
+				"unchangedQrCodes": "alle QR-Codes, auch bereits gedruckte",
+				"unchangedStatistics": "das Ziel und die bisherige Statistik",
+				"save": "Alias speichern",
+				"change": "Alias ändern"
+			},
+			"remove": {
+				"title": "Alias entfernen?",
+				"text": "{address} funktioniert danach nicht mehr und zeigt eine Fehlerseite. Der Alias wird wieder frei. Die Kurz-URL {shortUrl} und alle QR-Codes bleiben unverändert.",
+				"confirm": "Alias entfernen"
+			},
+			"saved": {
+				"title": "Alias gespeichert",
+				"description": "Es kann bis zu einer Minute dauern, bis die neue Adresse überall erreichbar ist."
+			},
+			"error": {
+				"title": "Alias konnte nicht gespeichert werden",
+				"generic": "Bitte versuche es erneut."
+			}
+		},
 		"title": "Kurz-URLs",
 		"description": "Kürze, verwalte und verfolge deine Links mit detaillierten Analysen",
 		"createBtn": "Kurz-URL erstellen",
@@ -1618,6 +1678,7 @@
 				"reductionWithdrawExplainer": "Du behältst deine aktuelle Anzahl an Zusatzdomains. Die geplante Reduzierung wird zurückgenommen, es wird nichts berechnet.",
 				"willDisableHint": "Lösche bis dahin die Domains, die du nicht mehr brauchst — sonst werden die zuletzt hinzugefügten gesperrt. Bis dahin behältst du alle Plätze, die Liste kann also noch länger werden."
 			},
+			"deleteConfirmAliasWarning": "Aliasse auf dieser Domain werden mit ihr gelöscht und sind danach nicht mehr erreichbar.",
 			"deleteConfirmQrWarning": "Bereits gedruckte QR-Codes mit dieser Domain funktionieren danach nicht mehr. Die Adresse steckt fest im Code und lässt sich nachträglich nicht umleiten."
 		},
 		"apiKeys": {

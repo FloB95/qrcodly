@@ -6,6 +6,7 @@ import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import {
 	AlertDialog,
 	AlertDialogTrigger,
@@ -41,6 +42,7 @@ import {
 } from '@/lib/api/url-shortener';
 import { createLinkFromShortUrl } from '@/lib/utils';
 import { EditShortUrlDialog } from './EditShortUrlDialog';
+import { ShortUrlAddresses } from './alias/ShortUrlAddresses';
 import type { TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
 import { Link } from '@/i18n/navigation';
 import { useQueryClient } from '@tanstack/react-query';
@@ -62,8 +64,8 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 	const deleteMutation = useDeleteShortUrlMutation();
 	const toggleMutation = useToggleActiveStateMutation();
 
-	const fullLink = createLinkFromShortUrl(shortUrl);
-	const displayLink = createLinkFromShortUrl(shortUrl, { short: true });
+	// the alias is the address the owner chose, so it names the page where there is one
+	const displayLink = createLinkFromShortUrl(shortUrl, { short: true, alias: true });
 
 	// We disabled this link for safety; the API refuses to re-enable it, so neither may the UI.
 	const isBlocked = shortUrl.safetyStatus === 'blocked';
@@ -220,7 +222,11 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 								<AlertDialogContent>
 									<AlertDialogHeader>
 										<AlertDialogTitle>{t('shortUrl.delete.title')}</AlertDialogTitle>
-										<AlertDialogDescription>{t('shortUrl.delete.confirm')}</AlertDialogDescription>
+										<AlertDialogDescription>
+											{t('shortUrl.delete.confirm')}
+											{shortUrl.alias &&
+												` ${t('shortUrl.alias.deleteNote', { alias: shortUrl.alias })}`}
+										</AlertDialogDescription>
 									</AlertDialogHeader>
 									<AlertDialogFooter>
 										<AlertDialogCancel asChild>
@@ -280,15 +286,8 @@ export function ShortUrlDetailContent({ shortUrl }: ShortUrlDetailContentProps) 
 			<Card>
 				<CardContent className="px-4 sm:px-6">
 					<div className="space-y-4">
-						<div>
-							<p className="text-sm font-medium text-muted-foreground mb-1">
-								{t('shortUrl.table.shortUrl')}
-							</p>
-							<div className="group/url flex items-center gap-2 [&_button]:opacity-100">
-								<span className="text-sm font-medium text-primary">{displayLink}</span>
-								<CopyUrlButton url={fullLink} />
-							</div>
-						</div>
+						<ShortUrlAddresses shortUrl={shortUrl} onChanged={() => router.refresh()} />
+						<Separator />
 						<div>
 							<p className="text-sm font-medium text-muted-foreground mb-1">
 								{t('shortUrl.table.destination')}

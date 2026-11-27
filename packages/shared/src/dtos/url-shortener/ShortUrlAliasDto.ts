@@ -23,6 +23,13 @@ export enum ShortUrlAliasConflict {
 }
 export const ShortUrlAliasConflictSchema = z.enum(ShortUrlAliasConflict);
 
+/** The `errorCode` of an API error that refuses an alias. */
+export enum ShortUrlAliasErrorCode {
+	TAKEN = 'SHORT_URL_ALIAS_TAKEN',
+	MATCHES_SHORT_CODE = 'SHORT_URL_ALIAS_MATCHES_SHORT_CODE',
+	REQUIRES_CUSTOM_DOMAIN = 'SHORT_URL_ALIAS_REQUIRES_CUSTOM_DOMAIN',
+}
+
 export const ShortUrlAliasAvailabilityResponseDto = z.object({
 	available: z.boolean(),
 	conflict: ShortUrlAliasConflictSchema.nullable().describe('Why it is not available, or null'),

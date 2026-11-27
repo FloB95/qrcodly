@@ -203,7 +203,8 @@ export function CustomDomainListItemActions({
 					{/* Printed codes carry the domain baked into the image and cannot be re-pointed.
 					    Deleting is therefore irreversible for anything already in circulation. */}
 					<div className="rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
-						{t('deleteConfirmQrWarning')}
+						<p>{t('deleteConfirmQrWarning')}</p>
+						<p className="mt-2">{t('deleteConfirmAliasWarning')}</p>
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setShowDeleteDialog(false)}>

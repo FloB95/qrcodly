@@ -9,6 +9,66 @@
 		}
 	},
 	"shortUrl": {
+		"alias": {
+			"label": "Alias",
+			"optional": "(facoltativo)",
+			"placeholder": "es. festa-estate-2026",
+			"hint": "Un secondo indirizzo leggibile per questo link. Spazi e caratteri speciali vengono adattati mentre scrivi.",
+			"unchanged": "Questo è l’alias attuale.",
+			"tooShort": "Almeno {min} caratteri.",
+			"trailingHyphen": "L’alias non può terminare con un trattino.",
+			"checking": "Verifica della disponibilità",
+			"available": "{address} è disponibile.",
+			"taken": "Questo alias è già in uso su {domain}.",
+			"notAvailable": "Questo alias non è disponibile. Scegline un altro.",
+			"checkFailed": "Non è stato possibile verificare la disponibilità. Puoi comunque provare a salvare.",
+			"systemDomain": "Un alias richiede un dominio personalizzato.",
+			"connectDomain": "Collega un dominio",
+			"createNote": "Il tuo link riceve sempre anche un URL breve fisso. L’alias si aggiunge come secondo indirizzo. Puoi cambiarlo in seguito, l’URL breve resta com’è.",
+			"menuSet": "Imposta alias",
+			"menuChange": "Cambia alias",
+			"deleteNote": "L’alias «{alias}» torna disponibile.",
+			"removed": "Alias rimosso",
+			"addresses": {
+				"shortUrl": "URL breve",
+				"fixed": "Fisso",
+				"fixedHint": "Questo indirizzo non cambia mai. I codici QR lo contengono sempre.",
+				"fixedHintQrCode": "Questo indirizzo è salvato nel codice QR e non cambia mai. I codici stampati restano validi, qualunque cosa tu faccia con l’alias.",
+				"changeable": "Modificabile",
+				"aliasHint": "Indirizzo aggiuntivo sul tuo dominio. Entrambi gli indirizzi portano alla stessa destinazione e contano nella stessa statistica.",
+				"none": "Ancora nessun alias. Dai a questo link un indirizzo leggibile, ad esempio per volantini o newsletter.",
+				"set": "Imposta alias",
+				"change": "Cambia",
+				"remove": "Rimuovi",
+				"qrCodeNote": "L’alias serve per tutto ciò che si legge o si digita: il testo sotto il codice QR, newsletter, social media. Le scansioni del codice QR e le visite tramite l’alias finiscono nella stessa statistica."
+			},
+			"dialog": {
+				"setTitle": "Imposta alias",
+				"changeTitle": "Cambia alias",
+				"newLabel": "Nuovo alias",
+				"warningTitle": "L’indirizzo precedente smetterà di funzionare",
+				"warningText": "{address} mostrerà una pagina di errore dopo il salvataggio. Controlla prima se hai stampato o condiviso questo indirizzo.",
+				"unchangedTitle": "Questo resta invariato",
+				"unchangedShortUrl": "l’URL breve {address}",
+				"unchangedQrCodes": "tutti i codici QR, anche quelli già stampati",
+				"unchangedStatistics": "la destinazione e la statistica finora",
+				"save": "Salva alias",
+				"change": "Cambia alias"
+			},
+			"remove": {
+				"title": "Rimuovere l’alias?",
+				"text": "{address} smetterà di funzionare e mostrerà una pagina di errore. L’alias torna disponibile. L’URL breve {shortUrl} e tutti i codici QR restano invariati.",
+				"confirm": "Rimuovi alias"
+			},
+			"saved": {
+				"title": "Alias salvato",
+				"description": "Può volerci fino a un minuto prima che il nuovo indirizzo funzioni ovunque."
+			},
+			"error": {
+				"title": "Impossibile salvare l’alias",
+				"generic": "Riprova."
+			}
+		},
 		"title": "URL brevi",
 		"description": "Accorcia, gestisci e monitora i tuoi link con analisi dettagliate",
 		"createBtn": "Crea URL breve",
@@ -1618,6 +1678,7 @@
 				"reductionWithdrawExplainer": "Mantieni il numero attuale di domini aggiuntivi. La riduzione programmata viene ritirata e non viene addebitato nulla.",
 				"willDisableHint": "Elimina entro quella data i domini che non ti servono più, altrimenti verranno disattivati quelli aggiunti più di recente. Fino ad allora mantieni tutti i tuoi posti, quindi questo elenco può ancora allungarsi."
 			},
+			"deleteConfirmAliasWarning": "Gli alias di questo dominio vengono eliminati insieme ad esso e non sono più raggiungibili.",
 			"deleteConfirmQrWarning": "I codici QR già stampati con questo dominio smetteranno di funzionare. L'indirizzo è incorporato nel codice e non può essere reindirizzato in seguito."
 		},
 		"apiKeys": {

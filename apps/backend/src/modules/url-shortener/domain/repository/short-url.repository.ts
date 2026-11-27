@@ -39,7 +39,7 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 
 	/**
 	 * Builds SQL conditions for filtering short URLs.
-	 * Splits search fields (shortCode, destinationUrl) into OR conditions,
+	 * Splits search fields (shortCode, alias, destinationUrl) into OR conditions,
 	 * and remaining fields into AND conditions.
 	 */
 	private buildFilterConditions(
@@ -51,9 +51,10 @@ class ShortUrlRepository extends AbstractRepository<TShortUrl> {
 		const conditions: SQL[] = [isNull(this.table.deletedAt)];
 
 		if (where && !(where instanceof SQL)) {
-			const { shortCode, destinationUrl, ...rest } = where;
+			const { shortCode, alias, destinationUrl, ...rest } = where;
 			const searchWhere: WhereConditions<TShortUrl> = {
 				...(shortCode && { shortCode }),
+				...(alias && { alias }),
 				...(destinationUrl && { destinationUrl }),
 			};
 			const searchSql = Object.keys(searchWhere).length

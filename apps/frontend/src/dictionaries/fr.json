@@ -9,6 +9,66 @@
 		}
 	},
 	"shortUrl": {
+		"alias": {
+			"label": "Alias",
+			"optional": "(facultatif)",
+			"placeholder": "p. ex. fete-ete-2026",
+			"hint": "Une deuxième adresse lisible pour ce lien. Les espaces et caractères spéciaux sont adaptés pendant la saisie.",
+			"unchanged": "C’est l’alias actuel.",
+			"tooShort": "Au moins {min} caractères.",
+			"trailingHyphen": "L’alias ne doit pas se terminer par un tiret.",
+			"checking": "Vérification de la disponibilité",
+			"available": "{address} est disponible.",
+			"taken": "Cet alias est déjà utilisé sur {domain}.",
+			"notAvailable": "Cet alias n’est pas disponible. Choisis-en un autre.",
+			"checkFailed": "La disponibilité n’a pas pu être vérifiée. Tu peux quand même essayer d’enregistrer.",
+			"systemDomain": "Un alias nécessite un domaine personnalisé.",
+			"connectDomain": "Connecter un domaine",
+			"createNote": "Ton lien reçoit toujours aussi une URL courte fixe. L’alias s’ajoute comme deuxième adresse. Tu peux le modifier plus tard, l’URL courte ne change pas.",
+			"menuSet": "Définir un alias",
+			"menuChange": "Modifier l’alias",
+			"deleteNote": "L’alias « {alias} » redevient disponible.",
+			"removed": "Alias supprimé",
+			"addresses": {
+				"shortUrl": "URL courte",
+				"fixed": "Fixe",
+				"fixedHint": "Cette adresse ne change jamais. Les codes QR la contiennent toujours.",
+				"fixedHintQrCode": "Cette adresse est enregistrée dans le code QR et ne change jamais. Les codes imprimés restent valides, quoi que tu fasses de l’alias.",
+				"changeable": "Modifiable",
+				"aliasHint": "Adresse supplémentaire sur ton domaine. Les deux adresses mènent à la même destination et comptent dans les mêmes statistiques.",
+				"none": "Pas encore d’alias. Donne à ce lien une adresse lisible, par exemple pour des flyers ou des newsletters.",
+				"set": "Définir un alias",
+				"change": "Modifier",
+				"remove": "Supprimer",
+				"qrCodeNote": "L’alias sert à tout ce qu’on lit ou qu’on tape : le texte sous le code QR, les newsletters, les réseaux sociaux. Les scans du code QR et les visites via l’alias arrivent dans les mêmes statistiques."
+			},
+			"dialog": {
+				"setTitle": "Définir un alias",
+				"changeTitle": "Modifier l’alias",
+				"newLabel": "Nouvel alias",
+				"warningTitle": "L’adresse précédente ne fonctionnera plus",
+				"warningText": "{address} affichera une page d’erreur après l’enregistrement. Vérifie d’abord si tu as imprimé ou partagé cette adresse.",
+				"unchangedTitle": "Ce qui ne change pas",
+				"unchangedShortUrl": "l’URL courte {address}",
+				"unchangedQrCodes": "tous les codes QR, y compris ceux déjà imprimés",
+				"unchangedStatistics": "la destination et les statistiques existantes",
+				"save": "Enregistrer l’alias",
+				"change": "Modifier l’alias"
+			},
+			"remove": {
+				"title": "Supprimer l’alias ?",
+				"text": "{address} ne fonctionnera plus et affichera une page d’erreur. L’alias redevient disponible. L’URL courte {shortUrl} et tous les codes QR restent inchangés.",
+				"confirm": "Supprimer l’alias"
+			},
+			"saved": {
+				"title": "Alias enregistré",
+				"description": "Il peut falloir jusqu’à une minute pour que la nouvelle adresse fonctionne partout."
+			},
+			"error": {
+				"title": "L’alias n’a pas pu être enregistré",
+				"generic": "Réessaie."
+			}
+		},
 		"title": "URLs courtes",
 		"description": "Raccourcissez, gérez et suivez vos liens avec des analyses détaillées",
 		"createBtn": "Créer une URL courte",
@@ -1622,6 +1682,7 @@
 				"reductionWithdrawExplainer": "Vous conservez votre nombre actuel de domaines supplémentaires. La réduction planifiée est annulée et rien n'est facturé.",
 				"willDisableHint": "Supprimez avant cette date les domaines dont vous n'avez plus besoin, sinon les derniers ajoutés seront désactivés. D'ici là vous conservez toutes vos places, cette liste peut donc encore s'allonger."
 			},
+			"deleteConfirmAliasWarning": "Les alias de ce domaine sont supprimés avec lui et ne sont plus accessibles.",
 			"deleteConfirmQrWarning": "Les QR codes déjà imprimés avec ce domaine cesseront de fonctionner. L'adresse est intégrée au code et ne peut plus être redirigée."
 		},
 		"apiKeys": {

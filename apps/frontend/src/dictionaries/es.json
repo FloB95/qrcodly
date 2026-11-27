@@ -9,6 +9,66 @@
 		}
 	},
 	"shortUrl": {
+		"alias": {
+			"label": "Alias",
+			"optional": "(opcional)",
+			"placeholder": "p. ej. fiesta-verano-2026",
+			"hint": "Una segunda dirección legible para este enlace. Los espacios y caracteres especiales se ajustan mientras escribes.",
+			"unchanged": "Este es el alias actual.",
+			"tooShort": "Al menos {min} caracteres.",
+			"trailingHyphen": "El alias no puede terminar con un guion.",
+			"checking": "Comprobando disponibilidad",
+			"available": "{address} está disponible.",
+			"taken": "Este alias ya está en uso en {domain}.",
+			"notAvailable": "Este alias no está disponible. Elige otro.",
+			"checkFailed": "No se pudo comprobar la disponibilidad. Aun así puedes intentar guardar.",
+			"systemDomain": "Un alias necesita un dominio propio.",
+			"connectDomain": "Conectar un dominio",
+			"createNote": "Tu enlace siempre recibe además una URL corta fija. El alias se añade como segunda dirección. Puedes cambiarlo más tarde; la URL corta no cambia.",
+			"menuSet": "Definir alias",
+			"menuChange": "Cambiar alias",
+			"deleteNote": "El alias «{alias}» vuelve a quedar libre.",
+			"removed": "Alias eliminado",
+			"addresses": {
+				"shortUrl": "URL corta",
+				"fixed": "Fija",
+				"fixedHint": "Esta dirección nunca cambia. Los códigos QR siempre la contienen.",
+				"fixedHintQrCode": "Esta dirección está guardada en el código QR y nunca cambia. Los códigos impresos siguen siendo válidos, hagas lo que hagas con el alias.",
+				"changeable": "Modificable",
+				"aliasHint": "Dirección adicional en tu dominio. Ambas direcciones llevan al mismo destino y cuentan en la misma estadística.",
+				"none": "Aún no hay alias. Da a este enlace una dirección legible, por ejemplo para folletos o boletines.",
+				"set": "Definir alias",
+				"change": "Cambiar",
+				"remove": "Eliminar",
+				"qrCodeNote": "El alias es para todo lo que se lee o se escribe: el texto bajo el código QR, boletines, redes sociales. Los escaneos del código QR y las visitas a través del alias acaban en la misma estadística."
+			},
+			"dialog": {
+				"setTitle": "Definir alias",
+				"changeTitle": "Cambiar alias",
+				"newLabel": "Nuevo alias",
+				"warningTitle": "La dirección anterior dejará de funcionar",
+				"warningText": "{address} mostrará una página de error después de guardar. Comprueba antes si has impreso o compartido esta dirección.",
+				"unchangedTitle": "Esto no cambia",
+				"unchangedShortUrl": "la URL corta {address}",
+				"unchangedQrCodes": "todos los códigos QR, también los ya impresos",
+				"unchangedStatistics": "el destino y la estadística hasta ahora",
+				"save": "Guardar alias",
+				"change": "Cambiar alias"
+			},
+			"remove": {
+				"title": "¿Eliminar alias?",
+				"text": "{address} dejará de funcionar y mostrará una página de error. El alias vuelve a quedar libre. La URL corta {shortUrl} y todos los códigos QR no cambian.",
+				"confirm": "Eliminar alias"
+			},
+			"saved": {
+				"title": "Alias guardado",
+				"description": "Puede tardar hasta un minuto en que la nueva dirección funcione en todas partes."
+			},
+			"error": {
+				"title": "No se pudo guardar el alias",
+				"generic": "Inténtalo de nuevo."
+			}
+		},
 		"title": "URLs cortas",
 		"description": "Acorta, gestiona y rastrea tus enlaces con analíticas detalladas",
 		"createBtn": "Crear URL corta",
@@ -1622,6 +1682,7 @@
 				"reductionWithdrawExplainer": "Conservas tu número actual de dominios adicionales. La reducción programada se retira y no se cobra nada.",
 				"willDisableHint": "Elimina antes de esa fecha los dominios que ya no necesites; de lo contrario se desactivarán los añadidos más recientemente. Hasta entonces conservas todas tus plazas, así que esta lista aún puede crecer."
 			},
+			"deleteConfirmAliasWarning": "Los alias de este dominio se eliminan con él y dejan de ser accesibles.",
 			"deleteConfirmQrWarning": "Los códigos QR ya impresos con este dominio dejarán de funcionar. La dirección está incrustada en el código y no puede redirigirse después."
 		},
 		"apiKeys": {

@@ -13,11 +13,13 @@ type ShortUrlInput = TShortUrlResponseDto | TShortUrlWithCustomDomainResponseDto
  *
  * @param shortUrl - The short URL object (can have customDomainId or embedded customDomain)
  * @param short - If true, returns URL without protocol (for display)
+ * @param alias - If true, the address with the alias, where the short URL has one
  * @returns Object with the link and loading state
  */
 export function useShortUrlLink(
 	shortUrl: ShortUrlInput | null | undefined,
 	short = false,
+	alias = false,
 ): { link: string | null; isLoading: boolean } {
 	// Get customDomainId if it exists and shortUrl doesn't have embedded customDomain
 	const customDomainId = shortUrl && !('customDomain' in shortUrl) ? shortUrl.customDomainId : null;
@@ -26,8 +28,8 @@ export function useShortUrlLink(
 
 	const link = useMemo(() => {
 		if (!shortUrl) return null;
-		return createLinkFromShortUrl(shortUrl, { short, customDomain: domain });
-	}, [shortUrl, short, domain]);
+		return createLinkFromShortUrl(shortUrl, { short, customDomain: domain, alias });
+	}, [shortUrl, short, domain, alias]);
 
 	return { link, isLoading };
 }

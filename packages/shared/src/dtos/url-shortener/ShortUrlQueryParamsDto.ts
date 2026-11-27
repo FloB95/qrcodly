@@ -5,6 +5,7 @@ import { ShortUrlStatusFilterSchema } from './types/safety';
 const ShortUrlWhereSchema = z.object({
 	destinationUrl: DefaultStringWhereQueryParamSchema,
 	shortCode: DefaultStringWhereQueryParamSchema,
+	alias: DefaultStringWhereQueryParamSchema,
 });
 
 export const GetShortUrlQueryParamsSchema = PaginationQueryParamsSchema(ShortUrlWhereSchema).extend(

@@ -25,11 +25,16 @@ import {
 import { toast } from '@/components/ui/use-toast';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useCreateShortUrlMutation } from '@/lib/api/url-shortener';
-import { useDefaultCustomDomainQuery } from '@/lib/api/custom-domain';
+import { useCustomDomainLookup, useDefaultCustomDomainQuery } from '@/lib/api/custom-domain';
 import { DomainSelector } from '@/components/qr-generator/content/DomainSelector';
 import posthog from 'posthog-js';
 import * as Sentry from '@sentry/nextjs';
 import type { ApiError } from '@/lib/api/ApiError';
+import { ShortUrlAliasErrorCode } from '@shared/schemas';
+import { AliasField } from './alias/AliasField';
+import { aliasErrorMessage } from './alias/ShortUrlAliasDialog';
+import { AliasInputStatus, canSaveAlias } from './alias/alias-input-status';
+import { useAliasInput } from './alias/use-alias-input';
 
 const createShortUrlSchema = z.object({
 	name: z.string().max(255).optional(),
@@ -45,6 +50,7 @@ type CreateShortUrlDialogProps = {
 
 export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 	const t = useTranslations('shortUrl');
+	const tAlias = useTranslations('shortUrl.alias');
 	const [open, setOpen] = useState(false);
 	const createMutation = useCreateShortUrlMutation();
 	const { data: defaultDomain } = useDefaultCustomDomainQuery();
@@ -57,6 +63,12 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 			customDomainId: null,
 		},
 	});
+
+	// an alias only exists on a custom domain, so the field follows the chosen domain
+	const customDomainId = form.watch('customDomainId');
+	const { domain: customDomain } = useCustomDomainLookup(customDomainId);
+	const alias = useAliasInput({ customDomainId });
+	const hasAlias = !!customDomain && alias.status !== AliasInputStatus.EMPTY;
 
 	useEffect(() => {
 		if (defaultDomain?.id && !form.getValues('customDomainId')) {
@@ -71,6 +83,7 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 				destinationUrl: data.destinationUrl,
 				isActive: true,
 				customDomainId: data.customDomainId,
+				...(hasAlias && { alias: alias.value }),
 			});
 			posthog.capture('short-url-created', {
 				destinationUrl: data.destinationUrl,
@@ -78,6 +91,7 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 			toast({ title: t('create.success'), description: t('create.successDescription') });
 			setOpen(false);
 			form.reset({ name: '', destinationUrl: '', customDomainId: defaultDomain?.id ?? null });
+			alias.setValue('');
 		} catch (e: unknown) {
 			const error = e as ApiError;
 			if (error.code === 0 || error.code >= 500) {
@@ -91,6 +105,17 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 			posthog.capture('error:short-url-created', {
 				error: { code: error.code, message: error.message },
 			});
+			const isAliasRefused =
+				error.errorCode === ShortUrlAliasErrorCode.TAKEN ||
+				error.errorCode === ShortUrlAliasErrorCode.MATCHES_SHORT_CODE;
+			if (isAliasRefused && customDomain) {
+				toast({
+					variant: 'destructive',
+					title: tAlias('error.title'),
+					description: aliasErrorMessage(error, tAlias, customDomain.domain),
+				});
+				return;
+			}
 			const isMaliciousUrl = error.errorCode === 'MALICIOUS_DESTINATION_URL';
 			toast({
 				variant: 'destructive',
@@ -151,10 +176,24 @@ export function CreateShortUrlDialog({ trigger }: CreateShortUrlDialogProps) {
 								<DomainSelector value={field.value} onChange={field.onChange} />
 							)}
 						/>
+						{customDomain && (
+							<>
+								<AliasField
+									label={`${tAlias('label')} ${tAlias('optional')}`}
+									domain={customDomain.domain}
+									value={alias.value}
+									onChange={alias.setValue}
+									status={alias.status}
+								/>
+								<p className="rounded-lg bg-muted p-3 text-sm text-muted-foreground">
+									{tAlias('createNote')}
+								</p>
+							</>
+						)}
 						<div className="flex justify-end">
 							<Button
 								type="submit"
-								disabled={createMutation.isPending}
+								disabled={createMutation.isPending || (hasAlias && !canSaveAlias(alias.status))}
 								isLoading={createMutation.isPending}
 							>
 								{t('create.submitBtn')}

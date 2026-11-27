@@ -17,6 +17,8 @@ interface DeleteShortUrlDialogProps {
 	onOpenChange: (open: boolean) => void;
 	onConfirm: () => void;
 	isDeleting: boolean;
+	/** The alias of the short URL, which is free again once it is deleted. */
+	alias?: string | null;
 }
 
 export function DeleteShortUrlDialog({
@@ -24,6 +26,7 @@ export function DeleteShortUrlDialog({
 	onOpenChange,
 	onConfirm,
 	isDeleting,
+	alias,
 }: DeleteShortUrlDialogProps) {
 	const t = useTranslations('shortUrl');
 	const tGeneral = useTranslations('general');
@@ -33,7 +36,10 @@ export function DeleteShortUrlDialog({
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>{t('delete.title')}</AlertDialogTitle>
-					<AlertDialogDescription>{t('delete.confirm')}</AlertDialogDescription>
+					<AlertDialogDescription>
+						{t('delete.confirm')}
+						{alias && ` ${t('alias.deleteNote', { alias })}`}
+					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel asChild>

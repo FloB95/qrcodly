@@ -34,6 +34,7 @@ import { formatDate } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import { EditShortUrlDialog } from './EditShortUrlDialog';
 import { DeleteShortUrlDialog } from './DeleteShortUrlDialog';
+import { ShortUrlAliasDialog } from './alias/ShortUrlAliasDialog';
 import { ShortUrlNameCell } from './ShortUrlNameCell';
 import { NameDialog } from '@/components/qr-generator/NameDialog';
 import type { TShortUrlWithCustomDomainResponseDto } from '@shared/schemas';
@@ -57,6 +58,7 @@ export function ShortUrlListItem({ shortUrl, selection }: ShortUrlListItemProps)
 	const [editOpen, setEditOpen] = useState(false);
 	const [deleteOpen, setDeleteOpen] = useState(false);
 	const [nameDialogOpen, setNameDialogOpen] = useState(false);
+	const [aliasOpen, setAliasOpen] = useState(false);
 
 	const deleteMutation = useDeleteShortUrlMutation();
 	const duplicateMutation = useDuplicateShortUrlMutation();
@@ -186,6 +188,11 @@ export function ShortUrlListItem({ shortUrl, selection }: ShortUrlListItemProps)
 			<Component onClick={() => setEditOpen(true)} className="cursor-pointer">
 				{tGeneral('edit')}
 			</Component>
+			{shortUrl.customDomain && (
+				<Component onClick={() => setAliasOpen(true)} className="cursor-pointer">
+					{shortUrl.alias ? t('alias.menuChange') : t('alias.menuSet')}
+				</Component>
+			)}
 			<Component onClick={handleDuplicate} className="cursor-pointer" disabled={isBlocked}>
 				{tGeneral('duplicate')}
 			</Component>
@@ -297,7 +304,17 @@ export function ShortUrlListItem({ shortUrl, selection }: ShortUrlListItemProps)
 				onOpenChange={setDeleteOpen}
 				onConfirm={handleDelete}
 				isDeleting={deleteMutation.isPending}
+				alias={shortUrl.alias}
 			/>
+			{shortUrl.customDomain && (
+				<ShortUrlAliasDialog
+					open={aliasOpen}
+					onOpenChange={setAliasOpen}
+					shortCode={shortUrl.shortCode}
+					currentAlias={shortUrl.alias}
+					customDomain={shortUrl.customDomain}
+				/>
+			)}
 			<NameDialog
 				dialogHeadline={t('edit.title')}
 				placeholder={t('create.namePlaceholder')}

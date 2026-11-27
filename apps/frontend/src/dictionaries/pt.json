@@ -9,6 +9,66 @@
 		}
 	},
 	"shortUrl": {
+		"alias": {
+			"label": "Alias",
+			"optional": "(opcional)",
+			"placeholder": "ex.: festa-verao-2026",
+			"hint": "Um segundo endereço legível para este link. Espaços e caracteres especiais são ajustados enquanto escreves.",
+			"unchanged": "Este é o alias atual.",
+			"tooShort": "Pelo menos {min} caracteres.",
+			"trailingHyphen": "O alias não pode terminar com um hífen.",
+			"checking": "A verificar a disponibilidade",
+			"available": "{address} está disponível.",
+			"taken": "Este alias já está em uso em {domain}.",
+			"notAvailable": "Este alias não está disponível. Escolhe outro.",
+			"checkFailed": "Não foi possível verificar a disponibilidade. Podes tentar guardar na mesma.",
+			"systemDomain": "Um alias precisa de um domínio próprio.",
+			"connectDomain": "Ligar um domínio",
+			"createNote": "O teu link recebe sempre também um URL curto fixo. O alias junta-se como segundo endereço. Podes alterá-lo mais tarde, o URL curto fica como está.",
+			"menuSet": "Definir alias",
+			"menuChange": "Alterar alias",
+			"deleteNote": "O alias “{alias}” volta a ficar livre.",
+			"removed": "Alias removido",
+			"addresses": {
+				"shortUrl": "URL curto",
+				"fixed": "Fixo",
+				"fixedHint": "Este endereço nunca muda. Os códigos QR contêm-no sempre.",
+				"fixedHintQrCode": "Este endereço está guardado no código QR e nunca muda. Os códigos impressos continuam válidos, faças o que fizeres com o alias.",
+				"changeable": "Alterável",
+				"aliasHint": "Endereço adicional no teu domínio. Ambos os endereços levam ao mesmo destino e contam para a mesma estatística.",
+				"none": "Ainda sem alias. Dá a este link um endereço legível, por exemplo para folhetos ou newsletters.",
+				"set": "Definir alias",
+				"change": "Alterar",
+				"remove": "Remover",
+				"qrCodeNote": "O alias serve para tudo o que se lê ou se escreve: o texto por baixo do código QR, newsletters, redes sociais. As leituras do código QR e as visitas através do alias vão para a mesma estatística."
+			},
+			"dialog": {
+				"setTitle": "Definir alias",
+				"changeTitle": "Alterar alias",
+				"newLabel": "Novo alias",
+				"warningTitle": "O endereço anterior deixa de funcionar",
+				"warningText": "{address} mostra uma página de erro depois de guardares. Verifica primeiro se imprimiste ou partilhaste este endereço.",
+				"unchangedTitle": "Isto não muda",
+				"unchangedShortUrl": "o URL curto {address}",
+				"unchangedQrCodes": "todos os códigos QR, incluindo os já impressos",
+				"unchangedStatistics": "o destino e a estatística até agora",
+				"save": "Guardar alias",
+				"change": "Alterar alias"
+			},
+			"remove": {
+				"title": "Remover o alias?",
+				"text": "{address} deixa de funcionar e mostra uma página de erro. O alias volta a ficar livre. O URL curto {shortUrl} e todos os códigos QR não mudam.",
+				"confirm": "Remover alias"
+			},
+			"saved": {
+				"title": "Alias guardado",
+				"description": "Pode demorar até um minuto para o novo endereço funcionar em todo o lado."
+			},
+			"error": {
+				"title": "Não foi possível guardar o alias",
+				"generic": "Tenta novamente."
+			}
+		},
 		"title": "URLs Curtas",
 		"description": "Encurte, gerencie e acompanhe seus links com análises detalhadas",
 		"createBtn": "Criar URL Curta",
@@ -1618,6 +1678,7 @@
 				"reductionWithdrawExplainer": "Mantém o seu número atual de domínios adicionais. A redução agendada é retirada e nada é cobrado.",
 				"willDisableHint": "Elimine antes dessa data os domínios de que já não precisa; caso contrário, serão desativados os adicionados mais recentemente. Até lá mantém todos os seus lugares, por isso esta lista ainda pode aumentar."
 			},
+			"deleteConfirmAliasWarning": "Os alias deste domínio são eliminados com ele e deixam de estar acessíveis.",
 			"deleteConfirmQrWarning": "Os códigos QR já impressos com este domínio deixarão de funcionar. O endereço está gravado no código e não pode ser redirecionado depois."
 		},
 		"apiKeys": {

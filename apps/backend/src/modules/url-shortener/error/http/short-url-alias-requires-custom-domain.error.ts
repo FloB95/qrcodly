@@ -1,7 +1,8 @@
 import { BadRequestError } from '@/core/error/http';
+import { ShortUrlAliasErrorCode } from '@shared/schemas';
 
 export class ShortUrlAliasRequiresCustomDomainError extends BadRequestError {
-	public readonly errorCode = 'SHORT_URL_ALIAS_REQUIRES_CUSTOM_DOMAIN' as const;
+	public readonly errorCode = ShortUrlAliasErrorCode.REQUIRES_CUSTOM_DOMAIN;
 
 	constructor() {
 		super('An alias is only possible for a short URL on a custom domain.');
