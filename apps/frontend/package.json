@@ -60,7 +60,7 @@
 		"clsx": "^2.1.1",
 		"d3-geo-projection": "^4.0.0",
 		"dotenv": "^17.4.2",
-		"framer-motion": "^12.42.2",
+		"motion": "^12.42.2",
 		"fumadocs-core": "^16.11.5",
 		"fumadocs-mdx": "^15.2.0",
 		"fumadocs-openapi": "^11.2.2",
