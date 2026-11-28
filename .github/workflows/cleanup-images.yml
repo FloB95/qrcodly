@@ -26,7 +26,7 @@ jobs:
       packages: write
     steps:
       # Knows which untagged parts belong to a multi-platform image and keeps them
-      - uses: dataaxiom/ghcr-cleanup-action@d52806a0dc70b430571a37da1fde39733ffd640f # v1.2.2
+      - uses: dataaxiom/ghcr-cleanup-action@ac45a8c04b1eb4b27974ca79a0a74f344c93664b # v1.3.0
         with:
           packages: qrcodly-backend,qrcodly-frontend,qrcodly-mcp-server
           keep-n-tagged: 10
